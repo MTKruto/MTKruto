@@ -6,7 +6,7 @@ export abstract class Type_ extends TLObject {
 
 // Unknown type (generic)
 export abstract class TypeX_ extends Type_ {
-  static get [name]() {
+  static get [name](): string {
     return "TypeX";
   }
 }
@@ -1406,11 +1406,11 @@ export class ResPQ_ extends _ResPQ_ {
   pq: Uint8Array;
   server_public_key_fingerprints: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x05162463;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "resPQ"
   }
 
@@ -1450,11 +1450,11 @@ export class P_q_inner_data_dc_ extends _P_Q_inner_data_ {
   new_nonce: bigint;
   dc: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA9F55F95;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "p_q_inner_data_dc"
   }
 
@@ -1504,11 +1504,11 @@ export class P_q_inner_data_temp_dc_ extends _P_Q_inner_data_ {
   dc: number;
   expires_in: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x56FDDF88;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "p_q_inner_data_temp_dc"
   }
 
@@ -1556,11 +1556,11 @@ export class Server_DH_params_ok_ extends _Server_DH_Params_ {
   server_nonce: bigint;
   encrypted_answer: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD0E8075C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "server_DH_params_ok"
   }
 
@@ -1596,11 +1596,11 @@ export class Server_DH_inner_data_ extends _Server_DH_inner_data_ {
   g_a: Uint8Array;
   server_time: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB5890DBA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "server_DH_inner_data"
   }
 
@@ -1643,11 +1643,11 @@ export class Client_DH_inner_data_ extends _Client_DH_Inner_Data_ {
   retry_id: bigint;
   g_b: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6643B654;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "client_DH_inner_data"
   }
 
@@ -1683,11 +1683,11 @@ export class Dh_gen_ok_ extends _Set_client_DH_params_answer_ {
   server_nonce: bigint;
   new_nonce_hash1: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3BCBF734;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "dh_gen_ok"
   }
 
@@ -1720,11 +1720,11 @@ export class Dh_gen_retry_ extends _Set_client_DH_params_answer_ {
   server_nonce: bigint;
   new_nonce_hash2: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x46DC1FB9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "dh_gen_retry"
   }
 
@@ -1757,11 +1757,11 @@ export class Dh_gen_fail_ extends _Set_client_DH_params_answer_ {
   server_nonce: bigint;
   new_nonce_hash3: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA69DAE02;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "dh_gen_fail"
   }
 
@@ -1796,11 +1796,11 @@ export class Bind_auth_key_inner_ extends _BindAuthKeyInner_ {
   temp_session_id: bigint;
   expires_at: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x75A3F765;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bind_auth_key_inner"
   }
 
@@ -1838,11 +1838,11 @@ export class Rpc_error_ extends _RpcError_ {
   error_code: number;
   error_message: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2144CA19;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "rpc_error"
   }
 
@@ -1868,11 +1868,11 @@ export class Rpc_error_ extends _RpcError_ {
 }
 
 export class Rpc_answer_unknown_ extends _RpcDropAnswer_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5E2AD36E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "rpc_answer_unknown"
   }
 
@@ -1890,11 +1890,11 @@ export class Rpc_answer_unknown_ extends _RpcDropAnswer_ {
 }
 
 export class Rpc_answer_dropped_running_ extends _RpcDropAnswer_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCD78E586;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "rpc_answer_dropped_running"
   }
 
@@ -1916,11 +1916,11 @@ export class Rpc_answer_dropped_ extends _RpcDropAnswer_ {
   seq_no: number;
   bytes: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA43AD8B7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "rpc_answer_dropped"
   }
 
@@ -1953,11 +1953,11 @@ export class Future_salt_ extends _FutureSalt_ {
   valid_until: number;
   salt: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0949D9DC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "future_salt"
   }
 
@@ -1990,11 +1990,11 @@ export class Future_salts_ extends _FutureSalts_ {
   now: number;
   salts: Array<enums.FutureSalt>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAE500895;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "future_salts"
   }
 
@@ -2026,11 +2026,11 @@ export class Pong_ extends _Pong_ {
   msg_id: bigint;
   ping_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x347773C5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pong"
   }
 
@@ -2058,11 +2058,11 @@ export class Pong_ extends _Pong_ {
 export class Destroy_session_ok_ extends _DestroySessionRes_ {
   session_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE22045FC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "destroy_session_ok"
   }
 
@@ -2087,11 +2087,11 @@ export class Destroy_session_ok_ extends _DestroySessionRes_ {
 export class Destroy_session_none_ extends _DestroySessionRes_ {
   session_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x62D350C9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "destroy_session_none"
   }
 
@@ -2118,11 +2118,11 @@ export class New_session_created_ extends _NewSession_ {
   unique_id: bigint;
   server_salt: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9EC20908;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "new_session_created"
   }
 
@@ -2153,11 +2153,11 @@ export class New_session_created_ extends _NewSession_ {
 export class Gzip_packed_ extends _Object_ {
   packed_data: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3072CFA1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "gzip_packed"
   }
 
@@ -2182,11 +2182,11 @@ export class Gzip_packed_ extends _Object_ {
 export class Msgs_ack_ extends _MsgsAck_ {
   msg_ids: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x62D6B459;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "msgs_ack"
   }
 
@@ -2213,11 +2213,11 @@ export class Bad_msg_notification_ extends _BadMsgNotification_ {
   bad_msg_seqno: number;
   error_code: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA7EFF811;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bad_msg_notification"
   }
 
@@ -2251,11 +2251,11 @@ export class Bad_server_salt_ extends _BadMsgNotification_ {
   error_code: number;
   new_server_salt: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEDAB447B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bad_server_salt"
   }
 
@@ -2289,11 +2289,11 @@ export class Bad_server_salt_ extends _BadMsgNotification_ {
 export class Msg_resend_req_ extends _MsgResendReq_ {
   msg_ids: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7D861A08;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "msg_resend_req"
   }
 
@@ -2318,11 +2318,11 @@ export class Msg_resend_req_ extends _MsgResendReq_ {
 export class Msgs_state_req_ extends _MsgsStateReq_ {
   msg_ids: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDA69FB52;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "msgs_state_req"
   }
 
@@ -2348,11 +2348,11 @@ export class Msgs_state_info_ extends _MsgsStateInfo_ {
   req_msg_id: bigint;
   info: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x04DEB57D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "msgs_state_info"
   }
 
@@ -2381,11 +2381,11 @@ export class Msgs_all_info_ extends _MsgsAllInfo_ {
   msg_ids: Array<bigint>;
   info: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8CC0D131;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "msgs_all_info"
   }
 
@@ -2416,11 +2416,11 @@ export class Msg_detailed_info_ extends _MsgDetailedInfo_ {
   bytes: number;
   status: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x276D3EC6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "msg_detailed_info"
   }
 
@@ -2456,11 +2456,11 @@ export class Msg_new_detailed_info_ extends _MsgDetailedInfo_ {
   bytes: number;
   status: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x809DB6DF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "msg_new_detailed_info"
   }
 
@@ -2489,11 +2489,11 @@ export class Msg_new_detailed_info_ extends _MsgDetailedInfo_ {
 }
 
 export class Destroy_auth_key_ok_ extends _DestroyAuthKeyRes_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF660E1D4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "destroy_auth_key_ok"
   }
 
@@ -2511,11 +2511,11 @@ export class Destroy_auth_key_ok_ extends _DestroyAuthKeyRes_ {
 }
 
 export class Destroy_auth_key_none_ extends _DestroyAuthKeyRes_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0A9F2259;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "destroy_auth_key_none"
   }
 
@@ -2533,11 +2533,11 @@ export class Destroy_auth_key_none_ extends _DestroyAuthKeyRes_ {
 }
 
 export class Destroy_auth_key_fail_ extends _DestroyAuthKeyRes_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEA109B13;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "destroy_auth_key_fail"
   }
 
@@ -2559,11 +2559,11 @@ export class Http_wait_ extends _HttpWait_ {
   wait_after: number;
   max_wait: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9299359F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "http_wait"
   }
 
@@ -2592,11 +2592,11 @@ export class Http_wait_ extends _HttpWait_ {
 }
 
 export class True_ extends _True_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3FEDD339;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "true"
   }
 
@@ -2617,11 +2617,11 @@ export class Error_ extends _Error_ {
   code: number;
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC4B9F9BB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "error"
   }
 
@@ -2647,11 +2647,11 @@ export class Error_ extends _Error_ {
 }
 
 export class Null_ extends _Null_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x56730BCC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "null"
   }
 
@@ -2669,11 +2669,11 @@ export class Null_ extends _Null_ {
 }
 
 export class InputPeerEmpty_ extends _InputPeer_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7F3B18EA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPeerEmpty"
   }
 
@@ -2691,11 +2691,11 @@ export class InputPeerEmpty_ extends _InputPeer_ {
 }
 
 export class InputPeerSelf_ extends _InputPeer_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7DA07EC9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPeerSelf"
   }
 
@@ -2715,11 +2715,11 @@ export class InputPeerSelf_ extends _InputPeer_ {
 export class InputPeerChat_ extends _InputPeer_ {
   chat_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x35A95CB9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPeerChat"
   }
 
@@ -2745,11 +2745,11 @@ export class InputPeerUser_ extends _InputPeer_ {
   user_id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDDE8A54C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPeerUser"
   }
 
@@ -2778,11 +2778,11 @@ export class InputPeerChannel_ extends _InputPeer_ {
   channel_id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x27BCBBFC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPeerChannel"
   }
 
@@ -2812,11 +2812,11 @@ export class InputPeerUserFromMessage_ extends _InputPeer_ {
   msg_id: number;
   user_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA87B0A1C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPeerUserFromMessage"
   }
 
@@ -2849,11 +2849,11 @@ export class InputPeerChannelFromMessage_ extends _InputPeer_ {
   msg_id: number;
   channel_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBD2A0840;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPeerChannelFromMessage"
   }
 
@@ -2882,11 +2882,11 @@ export class InputPeerChannelFromMessage_ extends _InputPeer_ {
 }
 
 export class InputUserEmpty_ extends _InputUser_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB98886CF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputUserEmpty"
   }
 
@@ -2904,11 +2904,11 @@ export class InputUserEmpty_ extends _InputUser_ {
 }
 
 export class InputUserSelf_ extends _InputUser_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF7C1B13F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputUserSelf"
   }
 
@@ -2929,11 +2929,11 @@ export class InputUser_ extends _InputUser_ {
   user_id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF21158C6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputUser"
   }
 
@@ -2963,11 +2963,11 @@ export class InputUserFromMessage_ extends _InputUser_ {
   msg_id: number;
   user_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1DA448E2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputUserFromMessage"
   }
 
@@ -3001,11 +3001,11 @@ export class InputPhoneContact_ extends _InputContact_ {
   first_name: string;
   last_name: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF392B7F4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPhoneContact"
   }
 
@@ -3042,11 +3042,11 @@ export class InputFile_ extends _InputFile_ {
   name: string;
   md5_checksum: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF52FF27F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputFile"
   }
 
@@ -3082,11 +3082,11 @@ export class InputFileBig_ extends _InputFile_ {
   parts: number;
   name: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFA4F0BB5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputFileBig"
   }
 
@@ -3115,11 +3115,11 @@ export class InputFileBig_ extends _InputFile_ {
 }
 
 export class InputMediaEmpty_ extends _InputMedia_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9664F57F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaEmpty"
   }
 
@@ -3142,11 +3142,11 @@ export class InputMediaUploadedPhoto_ extends _InputMedia_ {
   stickers?: Array<enums.InputDocument>;
   ttl_seconds?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1E287D04;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaUploadedPhoto"
   }
 
@@ -3184,11 +3184,11 @@ export class InputMediaPhoto_ extends _InputMedia_ {
   id: enums.InputPhoto;
   ttl_seconds?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB3BA0635;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaPhoto"
   }
 
@@ -3221,11 +3221,11 @@ export class InputMediaPhoto_ extends _InputMedia_ {
 export class InputMediaGeoPoint_ extends _InputMedia_ {
   geo_point: enums.InputGeoPoint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF9C44144;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaGeoPoint"
   }
 
@@ -3253,11 +3253,11 @@ export class InputMediaContact_ extends _InputMedia_ {
   last_name: string;
   vcard: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF8AB7DFB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaContact"
   }
 
@@ -3299,11 +3299,11 @@ export class InputMediaUploadedDocument_ extends _InputMedia_ {
   stickers?: Array<enums.InputDocument>;
   ttl_seconds?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5B38C6C1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaUploadedDocument"
   }
 
@@ -3357,11 +3357,11 @@ export class InputMediaDocument_ extends _InputMedia_ {
   ttl_seconds?: number;
   query?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x33473058;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaDocument"
   }
 
@@ -3402,11 +3402,11 @@ export class InputMediaVenue_ extends _InputMedia_ {
   venue_id: string;
   venue_type: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC13D1C11;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaVenue"
   }
 
@@ -3448,11 +3448,11 @@ export class InputMediaPhotoExternal_ extends _InputMedia_ {
   url: string;
   ttl_seconds?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE5BBFE1A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaPhotoExternal"
   }
 
@@ -3487,11 +3487,11 @@ export class InputMediaDocumentExternal_ extends _InputMedia_ {
   url: string;
   ttl_seconds?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFB52DC99;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaDocumentExternal"
   }
 
@@ -3524,11 +3524,11 @@ export class InputMediaDocumentExternal_ extends _InputMedia_ {
 export class InputMediaGame_ extends _InputMedia_ {
   id: enums.InputGame;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD33F43F3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaGame"
   }
 
@@ -3561,11 +3561,11 @@ export class InputMediaInvoice_ extends _InputMedia_ {
   start_param?: string;
   extended_media?: enums.InputMedia;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8EB5A6D5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaInvoice"
   }
 
@@ -3620,11 +3620,11 @@ export class InputMediaGeoLive_ extends _InputMedia_ {
   period?: number;
   proximity_notification_radius?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x971FA843;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaGeoLive"
   }
 
@@ -3666,11 +3666,11 @@ export class InputMediaPoll_ extends _InputMedia_ {
   solution?: string;
   solution_entities?: Array<enums.MessageEntity>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0F94E5F1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaPoll"
   }
 
@@ -3706,11 +3706,11 @@ export class InputMediaPoll_ extends _InputMedia_ {
 export class InputMediaDice_ extends _InputMedia_ {
   emoticon: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE66FBF7B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaDice"
   }
 
@@ -3736,11 +3736,11 @@ export class InputMediaStory_ extends _InputMedia_ {
   peer: enums.InputPeer;
   id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x89FDD778;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaStory"
   }
 
@@ -3771,11 +3771,11 @@ export class InputMediaWebPage_ extends _InputMedia_ {
   optional?: true;
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC21B8849;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaWebPage"
   }
 
@@ -3809,11 +3809,11 @@ export class InputMediaWebPage_ extends _InputMedia_ {
 }
 
 export class InputChatPhotoEmpty_ extends _InputChatPhoto_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1CA48F57;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputChatPhotoEmpty"
   }
 
@@ -3836,11 +3836,11 @@ export class InputChatUploadedPhoto_ extends _InputChatPhoto_ {
   video_start_ts?: number;
   video_emoji_markup?: enums.VideoSize;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBDCDAEC0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputChatUploadedPhoto"
   }
 
@@ -3876,11 +3876,11 @@ export class InputChatUploadedPhoto_ extends _InputChatPhoto_ {
 export class InputChatPhoto_ extends _InputChatPhoto_ {
   id: enums.InputPhoto;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8953AD37;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputChatPhoto"
   }
 
@@ -3903,11 +3903,11 @@ export class InputChatPhoto_ extends _InputChatPhoto_ {
 }
 
 export class InputGeoPointEmpty_ extends _InputGeoPoint_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE4C123D6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputGeoPointEmpty"
   }
 
@@ -3929,11 +3929,11 @@ export class InputGeoPoint_ extends _InputGeoPoint_ {
   long: number;
   accuracy_radius?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x48222FAF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputGeoPoint"
   }
 
@@ -3964,11 +3964,11 @@ export class InputGeoPoint_ extends _InputGeoPoint_ {
 }
 
 export class InputPhotoEmpty_ extends _InputPhoto_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1CD7BF0D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPhotoEmpty"
   }
 
@@ -3990,11 +3990,11 @@ export class InputPhoto_ extends _InputPhoto_ {
   access_hash: bigint;
   file_reference: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3BB3B94A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPhoto"
   }
 
@@ -4028,11 +4028,11 @@ export class InputFileLocation_ extends _InputFileLocation_ {
   secret: bigint;
   file_reference: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDFDAABE1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputFileLocation"
   }
 
@@ -4067,11 +4067,11 @@ export class InputEncryptedFileLocation_ extends _InputFileLocation_ {
   id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF5235D55;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputEncryptedFileLocation"
   }
 
@@ -4102,11 +4102,11 @@ export class InputDocumentFileLocation_ extends _InputFileLocation_ {
   file_reference: Uint8Array;
   thumb_size: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBAD07584;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputDocumentFileLocation"
   }
 
@@ -4141,11 +4141,11 @@ export class InputSecureFileLocation_ extends _InputFileLocation_ {
   id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCBC7EE28;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputSecureFileLocation"
   }
 
@@ -4171,11 +4171,11 @@ export class InputSecureFileLocation_ extends _InputFileLocation_ {
 }
 
 export class InputTakeoutFileLocation_ extends _InputFileLocation_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x29BE5899;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputTakeoutFileLocation"
   }
 
@@ -4198,11 +4198,11 @@ export class InputPhotoFileLocation_ extends _InputFileLocation_ {
   file_reference: Uint8Array;
   thumb_size: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x40181FFE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPhotoFileLocation"
   }
 
@@ -4241,11 +4241,11 @@ export class InputPhotoLegacyFileLocation_ extends _InputFileLocation_ {
   local_id: number;
   secret: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD83466F3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPhotoLegacyFileLocation"
   }
 
@@ -4287,11 +4287,11 @@ export class InputPeerPhotoFileLocation_ extends _InputFileLocation_ {
   peer: enums.InputPeer;
   photo_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x37257E99;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPeerPhotoFileLocation"
   }
 
@@ -4325,11 +4325,11 @@ export class InputStickerSetThumb_ extends _InputFileLocation_ {
   stickerset: enums.InputStickerSet;
   thumb_version: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9D84F3DB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickerSetThumb"
   }
 
@@ -4361,11 +4361,11 @@ export class InputGroupCallStream_ extends _InputFileLocation_ {
   video_channel?: number;
   video_quality?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0598A92A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputGroupCallStream"
   }
 
@@ -4404,11 +4404,11 @@ export class InputGroupCallStream_ extends _InputFileLocation_ {
 export class PeerUser_ extends _Peer_ {
   user_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x59511722;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "peerUser"
   }
 
@@ -4433,11 +4433,11 @@ export class PeerUser_ extends _Peer_ {
 export class PeerChat_ extends _Peer_ {
   chat_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x36C6019A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "peerChat"
   }
 
@@ -4462,11 +4462,11 @@ export class PeerChat_ extends _Peer_ {
 export class PeerChannel_ extends _Peer_ {
   channel_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA2A5371E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "peerChannel"
   }
 
@@ -4489,11 +4489,11 @@ export class PeerChannel_ extends _Peer_ {
 }
 
 export class storage_FileUnknown_ extends _storage_FileType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAA963B05;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storage.fileUnknown"
   }
 
@@ -4511,11 +4511,11 @@ export class storage_FileUnknown_ extends _storage_FileType_ {
 }
 
 export class storage_FilePartial_ extends _storage_FileType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x40BC6F52;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storage.filePartial"
   }
 
@@ -4533,11 +4533,11 @@ export class storage_FilePartial_ extends _storage_FileType_ {
 }
 
 export class storage_FileJpeg_ extends _storage_FileType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x007EFE0E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storage.fileJpeg"
   }
 
@@ -4555,11 +4555,11 @@ export class storage_FileJpeg_ extends _storage_FileType_ {
 }
 
 export class storage_FileGif_ extends _storage_FileType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCAE1AADF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storage.fileGif"
   }
 
@@ -4577,11 +4577,11 @@ export class storage_FileGif_ extends _storage_FileType_ {
 }
 
 export class storage_FilePng_ extends _storage_FileType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0A4F63C0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storage.filePng"
   }
 
@@ -4599,11 +4599,11 @@ export class storage_FilePng_ extends _storage_FileType_ {
 }
 
 export class storage_FilePdf_ extends _storage_FileType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAE1E508D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storage.filePdf"
   }
 
@@ -4621,11 +4621,11 @@ export class storage_FilePdf_ extends _storage_FileType_ {
 }
 
 export class storage_FileMp3_ extends _storage_FileType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x528A0677;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storage.fileMp3"
   }
 
@@ -4643,11 +4643,11 @@ export class storage_FileMp3_ extends _storage_FileType_ {
 }
 
 export class storage_FileMov_ extends _storage_FileType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4B09EBBC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storage.fileMov"
   }
 
@@ -4665,11 +4665,11 @@ export class storage_FileMov_ extends _storage_FileType_ {
 }
 
 export class storage_FileMp4_ extends _storage_FileType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB3CEA0E4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storage.fileMp4"
   }
 
@@ -4687,11 +4687,11 @@ export class storage_FileMp4_ extends _storage_FileType_ {
 }
 
 export class storage_FileWebp_ extends _storage_FileType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1081464C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storage.fileWebp"
   }
 
@@ -4711,11 +4711,11 @@ export class storage_FileWebp_ extends _storage_FileType_ {
 export class UserEmpty_ extends _User_ {
   id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD3BC4B7A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "userEmpty"
   }
 
@@ -4779,11 +4779,11 @@ export class User_ extends _User_ {
   color?: enums.PeerColor;
   profile_color?: enums.PeerColor;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x215C4438;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "user"
   }
 
@@ -4927,11 +4927,11 @@ export class User_ extends _User_ {
 }
 
 export class UserProfilePhotoEmpty_ extends _UserProfilePhoto_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4F11BAE1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "userProfilePhotoEmpty"
   }
 
@@ -4955,11 +4955,11 @@ export class UserProfilePhoto_ extends _UserProfilePhoto_ {
   stripped_thumb?: Uint8Array;
   dc_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x82D1F706;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "userProfilePhoto"
   }
 
@@ -4996,11 +4996,11 @@ export class UserProfilePhoto_ extends _UserProfilePhoto_ {
 }
 
 export class UserStatusEmpty_ extends _UserStatus_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x09D05049;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "userStatusEmpty"
   }
 
@@ -5020,11 +5020,11 @@ export class UserStatusEmpty_ extends _UserStatus_ {
 export class UserStatusOnline_ extends _UserStatus_ {
   expires: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEDB93949;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "userStatusOnline"
   }
 
@@ -5049,11 +5049,11 @@ export class UserStatusOnline_ extends _UserStatus_ {
 export class UserStatusOffline_ extends _UserStatus_ {
   was_online: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x008C703F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "userStatusOffline"
   }
 
@@ -5078,11 +5078,11 @@ export class UserStatusOffline_ extends _UserStatus_ {
 export class UserStatusRecently_ extends _UserStatus_ {
   by_me?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7B197DC8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "userStatusRecently"
   }
 
@@ -5109,11 +5109,11 @@ export class UserStatusRecently_ extends _UserStatus_ {
 export class UserStatusLastWeek_ extends _UserStatus_ {
   by_me?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x541A1D1A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "userStatusLastWeek"
   }
 
@@ -5140,11 +5140,11 @@ export class UserStatusLastWeek_ extends _UserStatus_ {
 export class UserStatusLastMonth_ extends _UserStatus_ {
   by_me?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x65899777;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "userStatusLastMonth"
   }
 
@@ -5171,11 +5171,11 @@ export class UserStatusLastMonth_ extends _UserStatus_ {
 export class ChatEmpty_ extends _Chat_ {
   id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x29562865;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatEmpty"
   }
 
@@ -5214,11 +5214,11 @@ export class Chat_ extends _Chat_ {
   admin_rights?: enums.ChatAdminRights;
   default_banned_rights?: enums.ChatBannedRights;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x41CBF256;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chat"
   }
 
@@ -5288,11 +5288,11 @@ export class ChatForbidden_ extends _Chat_ {
   id: bigint;
   title: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6592A1A7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatForbidden"
   }
 
@@ -5359,11 +5359,11 @@ export class Channel_ extends _Chat_ {
   emoji_status?: enums.EmojiStatus;
   level?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0AADFC8F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channel"
   }
 
@@ -5514,11 +5514,11 @@ export class ChannelForbidden_ extends _Chat_ {
   title: string;
   until_date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x17D493D5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelForbidden"
   }
 
@@ -5578,11 +5578,11 @@ export class ChatFull_ extends _ChatFull_ {
   recent_requesters?: Array<bigint>;
   available_reactions?: enums.ChatReactions;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC9D31138;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatFull"
   }
 
@@ -5716,11 +5716,11 @@ export class ChannelFull_ extends _ChatFull_ {
   boosts_unrestrict?: number;
   emojiset?: enums.StickerSet;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x44C054A7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelFull"
   }
 
@@ -5910,11 +5910,11 @@ export class ChatParticipant_ extends _ChatParticipant_ {
   inviter_id: bigint;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC02D4007;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatParticipant"
   }
 
@@ -5945,11 +5945,11 @@ export class ChatParticipant_ extends _ChatParticipant_ {
 export class ChatParticipantCreator_ extends _ChatParticipant_ {
   user_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE46BCEE4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatParticipantCreator"
   }
 
@@ -5976,11 +5976,11 @@ export class ChatParticipantAdmin_ extends _ChatParticipant_ {
   inviter_id: bigint;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA0933F5B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatParticipantAdmin"
   }
 
@@ -6012,11 +6012,11 @@ export class ChatParticipantsForbidden_ extends _ChatParticipants_ {
   chat_id: bigint;
   self_participant?: enums.ChatParticipant;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8763D3E1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatParticipantsForbidden"
   }
 
@@ -6048,11 +6048,11 @@ export class ChatParticipants_ extends _ChatParticipants_ {
   participants: Array<enums.ChatParticipant>;
   version: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3CBC93F8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatParticipants"
   }
 
@@ -6081,11 +6081,11 @@ export class ChatParticipants_ extends _ChatParticipants_ {
 }
 
 export class ChatPhotoEmpty_ extends _ChatPhoto_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x37C1011C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatPhotoEmpty"
   }
 
@@ -6108,11 +6108,11 @@ export class ChatPhoto_ extends _ChatPhoto_ {
   stripped_thumb?: Uint8Array;
   dc_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1C6E1C11;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatPhoto"
   }
 
@@ -6149,11 +6149,11 @@ export class MessageEmpty_ extends _Message_ {
   id: number;
   peer_id?: enums.Peer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x90A6CA84;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEmpty"
   }
 
@@ -6215,11 +6215,11 @@ export class Message_ extends _Message_ {
   restriction_reason?: Array<enums.RestrictionReason>;
   ttl_period?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1E4C8A69;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "message"
   }
 
@@ -6354,11 +6354,11 @@ export class MessageService_ extends _Message_ {
   action: enums.MessageAction;
   ttl_period?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2B085862;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageService"
   }
 
@@ -6419,11 +6419,11 @@ export class MessageService_ extends _Message_ {
 }
 
 export class MessageMediaEmpty_ extends _MessageMedia_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3DED6320;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaEmpty"
   }
 
@@ -6445,11 +6445,11 @@ export class MessageMediaPhoto_ extends _MessageMedia_ {
   photo?: enums.Photo;
   ttl_seconds?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x695150D7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaPhoto"
   }
 
@@ -6482,11 +6482,11 @@ export class MessageMediaPhoto_ extends _MessageMedia_ {
 export class MessageMediaGeo_ extends _MessageMedia_ {
   geo: enums.GeoPoint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x56E0D474;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaGeo"
   }
 
@@ -6515,11 +6515,11 @@ export class MessageMediaContact_ extends _MessageMedia_ {
   vcard: string;
   user_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x70322949;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaContact"
   }
 
@@ -6554,11 +6554,11 @@ export class MessageMediaContact_ extends _MessageMedia_ {
 }
 
 export class MessageMediaUnsupported_ extends _MessageMedia_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9F84F49E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaUnsupported"
   }
 
@@ -6585,11 +6585,11 @@ export class MessageMediaDocument_ extends _MessageMedia_ {
   alt_document?: enums.Document;
   ttl_seconds?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4CF4D72D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaDocument"
   }
 
@@ -6641,11 +6641,11 @@ export class MessageMediaWebPage_ extends _MessageMedia_ {
   safe?: true;
   webpage: enums.WebPage;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDDF10C3B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaWebPage"
   }
 
@@ -6689,11 +6689,11 @@ export class MessageMediaVenue_ extends _MessageMedia_ {
   venue_id: string;
   venue_type: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2EC0533F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaVenue"
   }
 
@@ -6733,11 +6733,11 @@ export class MessageMediaVenue_ extends _MessageMedia_ {
 export class MessageMediaGame_ extends _MessageMedia_ {
   game: enums.Game;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFDB19008;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaGame"
   }
 
@@ -6771,11 +6771,11 @@ export class MessageMediaInvoice_ extends _MessageMedia_ {
   start_param: string;
   extended_media?: enums.MessageExtendedMedia;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF6A548D3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaInvoice"
   }
 
@@ -6832,11 +6832,11 @@ export class MessageMediaGeoLive_ extends _MessageMedia_ {
   period: number;
   proximity_notification_radius?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB940C666;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaGeoLive"
   }
 
@@ -6873,11 +6873,11 @@ export class MessageMediaPoll_ extends _MessageMedia_ {
   poll: enums.Poll;
   results: enums.PollResults;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4BD6E798;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaPoll"
   }
 
@@ -6906,11 +6906,11 @@ export class MessageMediaDice_ extends _MessageMedia_ {
   value: number;
   emoticon: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3F7EE58B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaDice"
   }
 
@@ -6941,11 +6941,11 @@ export class MessageMediaStory_ extends _MessageMedia_ {
   id: number;
   story?: enums.StoryItem;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x68CB6283;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaStory"
   }
 
@@ -6988,11 +6988,11 @@ export class MessageMediaGiveaway_ extends _MessageMedia_ {
   months: number;
   until_date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDAAD85B0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaGiveaway"
   }
 
@@ -7050,11 +7050,11 @@ export class MessageMediaGiveawayResults_ extends _MessageMedia_ {
   prize_description?: string;
   until_date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC6991068;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageMediaGiveawayResults"
   }
 
@@ -7109,11 +7109,11 @@ export class MessageMediaGiveawayResults_ extends _MessageMedia_ {
 }
 
 export class MessageActionEmpty_ extends _MessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB6AEF7B0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionEmpty"
   }
 
@@ -7134,11 +7134,11 @@ export class MessageActionChatCreate_ extends _MessageAction_ {
   title: string;
   users: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBD47CBAD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionChatCreate"
   }
 
@@ -7166,11 +7166,11 @@ export class MessageActionChatCreate_ extends _MessageAction_ {
 export class MessageActionChatEditTitle_ extends _MessageAction_ {
   title: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB5A1CE5A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionChatEditTitle"
   }
 
@@ -7195,11 +7195,11 @@ export class MessageActionChatEditTitle_ extends _MessageAction_ {
 export class MessageActionChatEditPhoto_ extends _MessageAction_ {
   photo: enums.Photo;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7FCB13A8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionChatEditPhoto"
   }
 
@@ -7222,11 +7222,11 @@ export class MessageActionChatEditPhoto_ extends _MessageAction_ {
 }
 
 export class MessageActionChatDeletePhoto_ extends _MessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x95E3FBEF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionChatDeletePhoto"
   }
 
@@ -7246,11 +7246,11 @@ export class MessageActionChatDeletePhoto_ extends _MessageAction_ {
 export class MessageActionChatAddUser_ extends _MessageAction_ {
   users: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x15CEFD00;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionChatAddUser"
   }
 
@@ -7275,11 +7275,11 @@ export class MessageActionChatAddUser_ extends _MessageAction_ {
 export class MessageActionChatDeleteUser_ extends _MessageAction_ {
   user_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA43F30CC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionChatDeleteUser"
   }
 
@@ -7304,11 +7304,11 @@ export class MessageActionChatDeleteUser_ extends _MessageAction_ {
 export class MessageActionChatJoinedByLink_ extends _MessageAction_ {
   inviter_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x031224C3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionChatJoinedByLink"
   }
 
@@ -7333,11 +7333,11 @@ export class MessageActionChatJoinedByLink_ extends _MessageAction_ {
 export class MessageActionChannelCreate_ extends _MessageAction_ {
   title: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x95D2AC92;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionChannelCreate"
   }
 
@@ -7362,11 +7362,11 @@ export class MessageActionChannelCreate_ extends _MessageAction_ {
 export class MessageActionChatMigrateTo_ extends _MessageAction_ {
   channel_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE1037F92;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionChatMigrateTo"
   }
 
@@ -7392,11 +7392,11 @@ export class MessageActionChannelMigrateFrom_ extends _MessageAction_ {
   title: string;
   chat_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEA3948E9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionChannelMigrateFrom"
   }
 
@@ -7422,11 +7422,11 @@ export class MessageActionChannelMigrateFrom_ extends _MessageAction_ {
 }
 
 export class MessageActionPinMessage_ extends _MessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x94BD38ED;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionPinMessage"
   }
 
@@ -7444,11 +7444,11 @@ export class MessageActionPinMessage_ extends _MessageAction_ {
 }
 
 export class MessageActionHistoryClear_ extends _MessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9FBAB604;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionHistoryClear"
   }
 
@@ -7469,11 +7469,11 @@ export class MessageActionGameScore_ extends _MessageAction_ {
   game_id: bigint;
   score: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x92A72876;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionGameScore"
   }
 
@@ -7508,11 +7508,11 @@ export class MessageActionPaymentSentMe_ extends _MessageAction_ {
   shipping_option_id?: string;
   charge: enums.PaymentCharge;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8F31B327;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionPaymentSentMe"
   }
 
@@ -7564,11 +7564,11 @@ export class MessageActionPaymentSent_ extends _MessageAction_ {
   total_amount: bigint;
   invoice_slug?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x96163F56;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionPaymentSent"
   }
 
@@ -7610,11 +7610,11 @@ export class MessageActionPhoneCall_ extends _MessageAction_ {
   reason?: enums.PhoneCallDiscardReason;
   duration?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x80E11A7F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionPhoneCall"
   }
 
@@ -7648,11 +7648,11 @@ export class MessageActionPhoneCall_ extends _MessageAction_ {
 }
 
 export class MessageActionScreenshotTaken_ extends _MessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4792929B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionScreenshotTaken"
   }
 
@@ -7672,11 +7672,11 @@ export class MessageActionScreenshotTaken_ extends _MessageAction_ {
 export class MessageActionCustomAction_ extends _MessageAction_ {
   message: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFAE69F56;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionCustomAction"
   }
 
@@ -7704,11 +7704,11 @@ export class MessageActionBotAllowed_ extends _MessageAction_ {
   domain?: string;
   app?: enums.BotApp;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC516D679;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionBotAllowed"
   }
 
@@ -7745,11 +7745,11 @@ export class MessageActionSecureValuesSentMe_ extends _MessageAction_ {
   values: Array<enums.SecureValue>;
   credentials: enums.SecureCredentialsEncrypted;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1B287353;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionSecureValuesSentMe"
   }
 
@@ -7777,11 +7777,11 @@ export class MessageActionSecureValuesSentMe_ extends _MessageAction_ {
 export class MessageActionSecureValuesSent_ extends _MessageAction_ {
   types: Array<enums.SecureValueType>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD95C6154;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionSecureValuesSent"
   }
 
@@ -7804,11 +7804,11 @@ export class MessageActionSecureValuesSent_ extends _MessageAction_ {
 }
 
 export class MessageActionContactSignUp_ extends _MessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF3F25F76;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionContactSignUp"
   }
 
@@ -7830,11 +7830,11 @@ export class MessageActionGeoProximityReached_ extends _MessageAction_ {
   to_id: enums.Peer;
   distance: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x98E0D697;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionGeoProximityReached"
   }
 
@@ -7866,11 +7866,11 @@ export class MessageActionGroupCall_ extends _MessageAction_ {
   call: enums.InputGroupCall;
   duration?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7A0D7F42;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionGroupCall"
   }
 
@@ -7901,11 +7901,11 @@ export class MessageActionInviteToGroupCall_ extends _MessageAction_ {
   call: enums.InputGroupCall;
   users: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x502F92F7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionInviteToGroupCall"
   }
 
@@ -7934,11 +7934,11 @@ export class MessageActionSetMessagesTTL_ extends _MessageAction_ {
   period: number;
   auto_setting_from?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3C134D7B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionSetMessagesTTL"
   }
 
@@ -7969,11 +7969,11 @@ export class MessageActionGroupCallScheduled_ extends _MessageAction_ {
   call: enums.InputGroupCall;
   schedule_date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB3A07661;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionGroupCallScheduled"
   }
 
@@ -8001,11 +8001,11 @@ export class MessageActionGroupCallScheduled_ extends _MessageAction_ {
 export class MessageActionSetChatTheme_ extends _MessageAction_ {
   emoticon: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAA786345;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionSetChatTheme"
   }
 
@@ -8028,11 +8028,11 @@ export class MessageActionSetChatTheme_ extends _MessageAction_ {
 }
 
 export class MessageActionChatJoinedByRequest_ extends _MessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEBBCA3CB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionChatJoinedByRequest"
   }
 
@@ -8053,11 +8053,11 @@ export class MessageActionWebViewDataSentMe_ extends _MessageAction_ {
   text: string;
   data: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x47DD8079;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionWebViewDataSentMe"
   }
 
@@ -8085,11 +8085,11 @@ export class MessageActionWebViewDataSentMe_ extends _MessageAction_ {
 export class MessageActionWebViewDataSent_ extends _MessageAction_ {
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB4C38CB5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionWebViewDataSent"
   }
 
@@ -8118,11 +8118,11 @@ export class MessageActionGiftPremium_ extends _MessageAction_ {
   crypto_currency?: string;
   crypto_amount?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC83D6AEC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionGiftPremium"
   }
 
@@ -8163,11 +8163,11 @@ export class MessageActionTopicCreate_ extends _MessageAction_ {
   icon_color: number;
   icon_emoji_id?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0D999256;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionTopicCreate"
   }
 
@@ -8203,11 +8203,11 @@ export class MessageActionTopicEdit_ extends _MessageAction_ {
   closed?: boolean;
   hidden?: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC0944820;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionTopicEdit"
   }
 
@@ -8243,11 +8243,11 @@ export class MessageActionTopicEdit_ extends _MessageAction_ {
 export class MessageActionSuggestProfilePhoto_ extends _MessageAction_ {
   photo: enums.Photo;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x57DE635E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionSuggestProfilePhoto"
   }
 
@@ -8273,11 +8273,11 @@ export class MessageActionRequestedPeer_ extends _MessageAction_ {
   button_id: number;
   peers: Array<enums.Peer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x31518E9B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionRequestedPeer"
   }
 
@@ -8307,11 +8307,11 @@ export class MessageActionSetChatWallPaper_ extends _MessageAction_ {
   for_both?: true;
   wallpaper: enums.WallPaper;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5060A3F4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionSetChatWallPaper"
   }
 
@@ -8352,11 +8352,11 @@ export class MessageActionGiftCode_ extends _MessageAction_ {
   crypto_currency?: string;
   crypto_amount?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x678C2E09;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionGiftCode"
   }
 
@@ -8405,11 +8405,11 @@ export class MessageActionGiftCode_ extends _MessageAction_ {
 }
 
 export class MessageActionGiveawayLaunch_ extends _MessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x332BA9ED;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionGiveawayLaunch"
   }
 
@@ -8430,11 +8430,11 @@ export class MessageActionGiveawayResults_ extends _MessageAction_ {
   winners_count: number;
   unclaimed_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2A9FADC5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionGiveawayResults"
   }
 
@@ -8462,11 +8462,11 @@ export class MessageActionGiveawayResults_ extends _MessageAction_ {
 export class MessageActionBoostApply_ extends _MessageAction_ {
   boosts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCC02AA6D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageActionBoostApply"
   }
 
@@ -8505,11 +8505,11 @@ export class Dialog_ extends _Dialog_ {
   folder_id?: number;
   ttl_period?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD58A08C6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "dialog"
   }
 
@@ -8585,11 +8585,11 @@ export class DialogFolder_ extends _Dialog_ {
   unread_muted_messages_count: number;
   unread_unmuted_messages_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x71BD134C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "dialogFolder"
   }
 
@@ -8637,11 +8637,11 @@ export class DialogFolder_ extends _Dialog_ {
 export class PhotoEmpty_ extends _Photo_ {
   id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2331B22D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photoEmpty"
   }
 
@@ -8673,11 +8673,11 @@ export class Photo_ extends _Photo_ {
   video_sizes?: Array<enums.VideoSize>;
   dc_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFB197A65;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photo"
   }
 
@@ -8725,11 +8725,11 @@ export class Photo_ extends _Photo_ {
 export class PhotoSizeEmpty_ extends _PhotoSize_ {
   type: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0E17E23C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photoSizeEmpty"
   }
 
@@ -8757,11 +8757,11 @@ export class PhotoSize_ extends _PhotoSize_ {
   h: number;
   size: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x75C78E60;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photoSize"
   }
 
@@ -8798,11 +8798,11 @@ export class PhotoCachedSize_ extends _PhotoSize_ {
   h: number;
   bytes: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x021E1AD6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photoCachedSize"
   }
 
@@ -8837,11 +8837,11 @@ export class PhotoStrippedSize_ extends _PhotoSize_ {
   type: string;
   bytes: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE0B0BC2E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photoStrippedSize"
   }
 
@@ -8872,11 +8872,11 @@ export class PhotoSizeProgressive_ extends _PhotoSize_ {
   h: number;
   sizes: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFA3EFB95;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photoSizeProgressive"
   }
 
@@ -8911,11 +8911,11 @@ export class PhotoPathSize_ extends _PhotoSize_ {
   type: string;
   bytes: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD8214D41;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photoPathSize"
   }
 
@@ -8941,11 +8941,11 @@ export class PhotoPathSize_ extends _PhotoSize_ {
 }
 
 export class GeoPointEmpty_ extends _GeoPoint_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1117DD5F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "geoPointEmpty"
   }
 
@@ -8968,11 +8968,11 @@ export class GeoPoint_ extends _GeoPoint_ {
   access_hash: bigint;
   accuracy_radius?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB2A2F663;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "geoPoint"
   }
 
@@ -9011,11 +9011,11 @@ export class auth_SentCode_ extends _auth_SentCode_ {
   next_type?: enums.auth.CodeType;
   timeout?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5E002502;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.sentCode"
   }
 
@@ -9051,11 +9051,11 @@ export class auth_SentCode_ extends _auth_SentCode_ {
 export class auth_SentCodeSuccess_ extends _auth_SentCode_ {
   authorization: enums.auth.Authorization;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2390FE44;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.sentCodeSuccess"
   }
 
@@ -9084,11 +9084,11 @@ export class auth_Authorization_ extends _auth_Authorization_ {
   future_auth_token?: Uint8Array;
   user: enums.User;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2EA2C0D4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.authorization"
   }
 
@@ -9127,11 +9127,11 @@ export class auth_Authorization_ extends _auth_Authorization_ {
 export class auth_AuthorizationSignUpRequired_ extends _auth_Authorization_ {
   terms_of_service?: enums.help.TermsOfService;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x44747E9A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.authorizationSignUpRequired"
   }
 
@@ -9159,11 +9159,11 @@ export class auth_ExportedAuthorization_ extends _auth_ExportedAuthorization_ {
   id: bigint;
   bytes: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB434E2B8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.exportedAuthorization"
   }
 
@@ -9191,11 +9191,11 @@ export class auth_ExportedAuthorization_ extends _auth_ExportedAuthorization_ {
 export class InputNotifyPeer_ extends _InputNotifyPeer_ {
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB8BC5B0C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputNotifyPeer"
   }
 
@@ -9218,11 +9218,11 @@ export class InputNotifyPeer_ extends _InputNotifyPeer_ {
 }
 
 export class InputNotifyUsers_ extends _InputNotifyPeer_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x193B4417;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputNotifyUsers"
   }
 
@@ -9240,11 +9240,11 @@ export class InputNotifyUsers_ extends _InputNotifyPeer_ {
 }
 
 export class InputNotifyChats_ extends _InputNotifyPeer_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4A95E84E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputNotifyChats"
   }
 
@@ -9262,11 +9262,11 @@ export class InputNotifyChats_ extends _InputNotifyPeer_ {
 }
 
 export class InputNotifyBroadcasts_ extends _InputNotifyPeer_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB1DB7C7E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputNotifyBroadcasts"
   }
 
@@ -9287,11 +9287,11 @@ export class InputNotifyForumTopic_ extends _InputNotifyPeer_ {
   peer: enums.InputPeer;
   top_msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5C467992;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputNotifyForumTopic"
   }
 
@@ -9325,11 +9325,11 @@ export class InputPeerNotifySettings_ extends _InputPeerNotifySettings_ {
   stories_hide_sender?: boolean;
   stories_sound?: enums.NotificationSound;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCACB6AE2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPeerNotifySettings"
   }
 
@@ -9384,11 +9384,11 @@ export class PeerNotifySettings_ extends _PeerNotifySettings_ {
   stories_android_sound?: enums.NotificationSound;
   stories_other_sound?: enums.NotificationSound;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x99622C0C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "peerNotifySettings"
   }
 
@@ -9456,11 +9456,11 @@ export class PeerSettings_ extends _PeerSettings_ {
   request_chat_title?: string;
   request_chat_date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA518110D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "peerSettings"
   }
 
@@ -9528,11 +9528,11 @@ export class WallPaper_ extends _WallPaper_ {
   document: enums.Document;
   settings?: enums.WallPaperSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA437C3ED;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "wallPaper"
   }
 
@@ -9586,11 +9586,11 @@ export class WallPaperNoFile_ extends _WallPaper_ {
   dark?: true;
   settings?: enums.WallPaperSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE0804116;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "wallPaperNoFile"
   }
 
@@ -9624,11 +9624,11 @@ export class WallPaperNoFile_ extends _WallPaper_ {
 }
 
 export class InputReportReasonSpam_ extends _ReportReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x58DBCAB8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputReportReasonSpam"
   }
 
@@ -9646,11 +9646,11 @@ export class InputReportReasonSpam_ extends _ReportReason_ {
 }
 
 export class InputReportReasonViolence_ extends _ReportReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1E22C78D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputReportReasonViolence"
   }
 
@@ -9668,11 +9668,11 @@ export class InputReportReasonViolence_ extends _ReportReason_ {
 }
 
 export class InputReportReasonPornography_ extends _ReportReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2E59D922;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputReportReasonPornography"
   }
 
@@ -9690,11 +9690,11 @@ export class InputReportReasonPornography_ extends _ReportReason_ {
 }
 
 export class InputReportReasonChildAbuse_ extends _ReportReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xADF44EE3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputReportReasonChildAbuse"
   }
 
@@ -9712,11 +9712,11 @@ export class InputReportReasonChildAbuse_ extends _ReportReason_ {
 }
 
 export class InputReportReasonOther_ extends _ReportReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC1E4A2B1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputReportReasonOther"
   }
 
@@ -9734,11 +9734,11 @@ export class InputReportReasonOther_ extends _ReportReason_ {
 }
 
 export class InputReportReasonCopyright_ extends _ReportReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9B89F93A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputReportReasonCopyright"
   }
 
@@ -9756,11 +9756,11 @@ export class InputReportReasonCopyright_ extends _ReportReason_ {
 }
 
 export class InputReportReasonGeoIrrelevant_ extends _ReportReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDBD4FEED;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputReportReasonGeoIrrelevant"
   }
 
@@ -9778,11 +9778,11 @@ export class InputReportReasonGeoIrrelevant_ extends _ReportReason_ {
 }
 
 export class InputReportReasonFake_ extends _ReportReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF5DDD6E7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputReportReasonFake"
   }
 
@@ -9800,11 +9800,11 @@ export class InputReportReasonFake_ extends _ReportReason_ {
 }
 
 export class InputReportReasonIllegalDrugs_ extends _ReportReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0A8EB2BE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputReportReasonIllegalDrugs"
   }
 
@@ -9822,11 +9822,11 @@ export class InputReportReasonIllegalDrugs_ extends _ReportReason_ {
 }
 
 export class InputReportReasonPersonalDetails_ extends _ReportReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9EC7863D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputReportReasonPersonalDetails"
   }
 
@@ -9877,11 +9877,11 @@ export class UserFull_ extends _UserFull_ {
   wallpaper?: enums.WallPaper;
   stories?: enums.PeerStories;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB9B12C6C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "userFull"
   }
 
@@ -10002,11 +10002,11 @@ export class Contact_ extends _Contact_ {
   user_id: bigint;
   mutual: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x145ADE0B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contact"
   }
 
@@ -10035,11 +10035,11 @@ export class ImportedContact_ extends _ImportedContact_ {
   user_id: bigint;
   client_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC13E3C50;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "importedContact"
   }
 
@@ -10068,11 +10068,11 @@ export class ContactStatus_ extends _ContactStatus_ {
   user_id: bigint;
   status: enums.UserStatus;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x16D9703B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contactStatus"
   }
 
@@ -10098,11 +10098,11 @@ export class ContactStatus_ extends _ContactStatus_ {
 }
 
 export class contacts_ContactsNotModified_ extends _contacts_Contacts_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB74BA9D2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.contactsNotModified"
   }
 
@@ -10124,11 +10124,11 @@ export class contacts_Contacts_ extends _contacts_Contacts_ {
   saved_count: number;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEAE87E42;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.contacts"
   }
 
@@ -10162,11 +10162,11 @@ export class contacts_ImportedContacts_ extends _contacts_ImportedContacts_ {
   retry_contacts: Array<bigint>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x77D01C3B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.importedContacts"
   }
 
@@ -10202,11 +10202,11 @@ export class contacts_Blocked_ extends _contacts_Blocked_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0ADE1591;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.blocked"
   }
 
@@ -10240,11 +10240,11 @@ export class contacts_BlockedSlice_ extends _contacts_Blocked_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE1664194;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.blockedSlice"
   }
 
@@ -10281,11 +10281,11 @@ export class messages_Dialogs_ extends _messages_Dialogs_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x15BA6C40;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.dialogs"
   }
 
@@ -10323,11 +10323,11 @@ export class messages_DialogsSlice_ extends _messages_Dialogs_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x71E094F3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.dialogsSlice"
   }
 
@@ -10364,11 +10364,11 @@ export class messages_DialogsSlice_ extends _messages_Dialogs_ {
 export class messages_DialogsNotModified_ extends _messages_Dialogs_ {
   count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF0E3E596;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.dialogsNotModified"
   }
 
@@ -10395,11 +10395,11 @@ export class messages_Messages_ extends _messages_Messages_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8C718E87;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.messages"
   }
 
@@ -10436,11 +10436,11 @@ export class messages_MessagesSlice_ extends _messages_Messages_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3A54685E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.messagesSlice"
   }
 
@@ -10492,11 +10492,11 @@ export class messages_ChannelMessages_ extends _messages_Messages_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC776BA4E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.channelMessages"
   }
 
@@ -10544,11 +10544,11 @@ export class messages_ChannelMessages_ extends _messages_Messages_ {
 export class messages_MessagesNotModified_ extends _messages_Messages_ {
   count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x74535F21;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.messagesNotModified"
   }
 
@@ -10573,11 +10573,11 @@ export class messages_MessagesNotModified_ extends _messages_Messages_ {
 export class messages_Chats_ extends _messages_Chats_ {
   chats: Array<enums.Chat>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x64FF9FD5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.chats"
   }
 
@@ -10603,11 +10603,11 @@ export class messages_ChatsSlice_ extends _messages_Chats_ {
   count: number;
   chats: Array<enums.Chat>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9CD81144;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.chatsSlice"
   }
 
@@ -10637,11 +10637,11 @@ export class messages_ChatFull_ extends _messages_ChatFull_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE5D7D19C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.chatFull"
   }
 
@@ -10674,11 +10674,11 @@ export class messages_AffectedHistory_ extends _messages_AffectedHistory_ {
   pts_count: number;
   offset: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB45C69D1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.affectedHistory"
   }
 
@@ -10707,11 +10707,11 @@ export class messages_AffectedHistory_ extends _messages_AffectedHistory_ {
 }
 
 export class InputMessagesFilterEmpty_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x57E2F66C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterEmpty"
   }
 
@@ -10729,11 +10729,11 @@ export class InputMessagesFilterEmpty_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterPhotos_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9609A51C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterPhotos"
   }
 
@@ -10751,11 +10751,11 @@ export class InputMessagesFilterPhotos_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterVideo_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9FC00E65;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterVideo"
   }
 
@@ -10773,11 +10773,11 @@ export class InputMessagesFilterVideo_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterPhotoVideo_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x56E9F0E4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterPhotoVideo"
   }
 
@@ -10795,11 +10795,11 @@ export class InputMessagesFilterPhotoVideo_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterDocument_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9EDDF188;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterDocument"
   }
 
@@ -10817,11 +10817,11 @@ export class InputMessagesFilterDocument_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterUrl_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7EF0DD87;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterUrl"
   }
 
@@ -10839,11 +10839,11 @@ export class InputMessagesFilterUrl_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterGif_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFFC86587;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterGif"
   }
 
@@ -10861,11 +10861,11 @@ export class InputMessagesFilterGif_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterVoice_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x50F5C392;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterVoice"
   }
 
@@ -10883,11 +10883,11 @@ export class InputMessagesFilterVoice_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterMusic_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3751B49E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterMusic"
   }
 
@@ -10905,11 +10905,11 @@ export class InputMessagesFilterMusic_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterChatPhotos_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3A20ECB8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterChatPhotos"
   }
 
@@ -10929,11 +10929,11 @@ export class InputMessagesFilterChatPhotos_ extends _MessagesFilter_ {
 export class InputMessagesFilterPhoneCalls_ extends _MessagesFilter_ {
   missed?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x80C99768;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterPhoneCalls"
   }
 
@@ -10958,11 +10958,11 @@ export class InputMessagesFilterPhoneCalls_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterRoundVoice_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7A7C17A4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterRoundVoice"
   }
 
@@ -10980,11 +10980,11 @@ export class InputMessagesFilterRoundVoice_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterRoundVideo_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB549DA53;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterRoundVideo"
   }
 
@@ -11002,11 +11002,11 @@ export class InputMessagesFilterRoundVideo_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterMyMentions_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC1F8E69A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterMyMentions"
   }
 
@@ -11024,11 +11024,11 @@ export class InputMessagesFilterMyMentions_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterGeo_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE7026D0D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterGeo"
   }
 
@@ -11046,11 +11046,11 @@ export class InputMessagesFilterGeo_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterContacts_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE062DB83;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterContacts"
   }
 
@@ -11068,11 +11068,11 @@ export class InputMessagesFilterContacts_ extends _MessagesFilter_ {
 }
 
 export class InputMessagesFilterPinned_ extends _MessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1BB00451;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagesFilterPinned"
   }
 
@@ -11094,11 +11094,11 @@ export class UpdateNewMessage_ extends _Update_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1F2B0AFD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateNewMessage"
   }
 
@@ -11130,11 +11130,11 @@ export class UpdateMessageID_ extends _Update_ {
   id: number;
   random_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4E90BFD6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateMessageID"
   }
 
@@ -11164,11 +11164,11 @@ export class UpdateDeleteMessages_ extends _Update_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA20DB0E5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateDeleteMessages"
   }
 
@@ -11200,11 +11200,11 @@ export class UpdateUserTyping_ extends _Update_ {
   user_id: bigint;
   action: enums.SendMessageAction;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC01E857F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateUserTyping"
   }
 
@@ -11234,11 +11234,11 @@ export class UpdateChatUserTyping_ extends _Update_ {
   from_id: enums.Peer;
   action: enums.SendMessageAction;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x83487AF0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChatUserTyping"
   }
 
@@ -11269,11 +11269,11 @@ export class UpdateChatUserTyping_ extends _Update_ {
 export class UpdateChatParticipants_ extends _Update_ {
   participants: enums.ChatParticipants;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x07761198;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChatParticipants"
   }
 
@@ -11299,11 +11299,11 @@ export class UpdateUserStatus_ extends _Update_ {
   user_id: bigint;
   status: enums.UserStatus;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE5BDF8DE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateUserStatus"
   }
 
@@ -11334,11 +11334,11 @@ export class UpdateUserName_ extends _Update_ {
   last_name: string;
   usernames: Array<enums.Username>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA7848924;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateUserName"
   }
 
@@ -11376,11 +11376,11 @@ export class UpdateNewAuthorization_ extends _Update_ {
   device?: string;
   location?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8951ABEF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateNewAuthorization"
   }
 
@@ -11420,11 +11420,11 @@ export class UpdateNewEncryptedMessage_ extends _Update_ {
   message: enums.EncryptedMessage;
   qts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x12BCBD9A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateNewEncryptedMessage"
   }
 
@@ -11452,11 +11452,11 @@ export class UpdateNewEncryptedMessage_ extends _Update_ {
 export class UpdateEncryptedChatTyping_ extends _Update_ {
   chat_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1710F156;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateEncryptedChatTyping"
   }
 
@@ -11482,11 +11482,11 @@ export class UpdateEncryption_ extends _Update_ {
   chat: enums.EncryptedChat;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB4A2E88D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateEncryption"
   }
 
@@ -11516,11 +11516,11 @@ export class UpdateEncryptedMessagesRead_ extends _Update_ {
   max_date: number;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x38FE25B7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateEncryptedMessagesRead"
   }
 
@@ -11555,11 +11555,11 @@ export class UpdateChatParticipantAdd_ extends _Update_ {
   date: number;
   version: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3DDA5451;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChatParticipantAdd"
   }
 
@@ -11598,11 +11598,11 @@ export class UpdateChatParticipantDelete_ extends _Update_ {
   user_id: bigint;
   version: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE32F3D77;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChatParticipantDelete"
   }
 
@@ -11633,11 +11633,11 @@ export class UpdateChatParticipantDelete_ extends _Update_ {
 export class UpdateDcOptions_ extends _Update_ {
   dc_options: Array<enums.DcOption>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8E5E9873;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateDcOptions"
   }
 
@@ -11663,11 +11663,11 @@ export class UpdateNotifySettings_ extends _Update_ {
   peer: enums.NotifyPeer;
   notify_settings: enums.PeerNotifySettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBEC268EF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateNotifySettings"
   }
 
@@ -11701,11 +11701,11 @@ export class UpdateServiceNotification_ extends _Update_ {
   media: enums.MessageMedia;
   entities: Array<enums.MessageEntity>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEBE46819;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateServiceNotification"
   }
 
@@ -11751,11 +11751,11 @@ export class UpdatePrivacy_ extends _Update_ {
   key: enums.PrivacyKey;
   rules: Array<enums.PrivacyRule>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEE3B272A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePrivacy"
   }
 
@@ -11784,11 +11784,11 @@ export class UpdateUserPhone_ extends _Update_ {
   user_id: bigint;
   phone: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x05492A13;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateUserPhone"
   }
 
@@ -11821,11 +11821,11 @@ export class UpdateReadHistoryInbox_ extends _Update_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9C974FDF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateReadHistoryInbox"
   }
 
@@ -11870,11 +11870,11 @@ export class UpdateReadHistoryOutbox_ extends _Update_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2F2F21BF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateReadHistoryOutbox"
   }
 
@@ -11910,11 +11910,11 @@ export class UpdateWebPage_ extends _Update_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7F891213;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateWebPage"
   }
 
@@ -11948,11 +11948,11 @@ export class UpdateReadMessagesContents_ extends _Update_ {
   pts_count: number;
   date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF8227181;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateReadMessagesContents"
   }
 
@@ -11989,11 +11989,11 @@ export class UpdateChannelTooLong_ extends _Update_ {
   channel_id: bigint;
   pts?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x108D941F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChannelTooLong"
   }
 
@@ -12023,11 +12023,11 @@ export class UpdateChannelTooLong_ extends _Update_ {
 export class UpdateChannel_ extends _Update_ {
   channel_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x635B4C09;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChannel"
   }
 
@@ -12054,11 +12054,11 @@ export class UpdateNewChannelMessage_ extends _Update_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x62BA04D9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateNewChannelMessage"
   }
 
@@ -12093,11 +12093,11 @@ export class UpdateReadChannelInbox_ extends _Update_ {
   still_unread_count: number;
   pts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x922E6E10;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateReadChannelInbox"
   }
 
@@ -12139,11 +12139,11 @@ export class UpdateDeleteChannelMessages_ extends _Update_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC32D5B12;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateDeleteChannelMessages"
   }
 
@@ -12179,11 +12179,11 @@ export class UpdateChannelMessageViews_ extends _Update_ {
   id: number;
   views: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF226AC08;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChannelMessageViews"
   }
 
@@ -12217,11 +12217,11 @@ export class UpdateChatParticipantAdmin_ extends _Update_ {
   is_admin: boolean;
   version: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD7CA61A2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChatParticipantAdmin"
   }
 
@@ -12255,11 +12255,11 @@ export class UpdateChatParticipantAdmin_ extends _Update_ {
 export class UpdateNewStickerSet_ extends _Update_ {
   stickerset: enums.messages.StickerSet;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x688A30AA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateNewStickerSet"
   }
 
@@ -12286,11 +12286,11 @@ export class UpdateStickerSetsOrder_ extends _Update_ {
   emojis?: true;
   order: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0BB2D201;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateStickerSetsOrder"
   }
 
@@ -12324,11 +12324,11 @@ export class UpdateStickerSets_ extends _Update_ {
   masks?: true;
   emojis?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x31C24808;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateStickerSets"
   }
 
@@ -12356,11 +12356,11 @@ export class UpdateStickerSets_ extends _Update_ {
 }
 
 export class UpdateSavedGifs_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9375341E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateSavedGifs"
   }
 
@@ -12385,11 +12385,11 @@ export class UpdateBotInlineQuery_ extends _Update_ {
   peer_type?: enums.InlineQueryPeerType;
   offset: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x496F379C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotInlineQuery"
   }
 
@@ -12435,11 +12435,11 @@ export class UpdateBotInlineSend_ extends _Update_ {
   id: string;
   msg_id?: enums.InputBotInlineMessageID;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x12F12A07;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotInlineSend"
   }
 
@@ -12480,11 +12480,11 @@ export class UpdateEditChannelMessage_ extends _Update_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1B3F4DF7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateEditChannelMessage"
   }
 
@@ -12521,11 +12521,11 @@ export class UpdateBotCallbackQuery_ extends _Update_ {
   data?: Uint8Array;
   game_short_name?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB9CFC48D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotCallbackQuery"
   }
 
@@ -12572,11 +12572,11 @@ export class UpdateEditMessage_ extends _Update_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE40370A3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateEditMessage"
   }
 
@@ -12612,11 +12612,11 @@ export class UpdateInlineBotCallbackQuery_ extends _Update_ {
   data?: Uint8Array;
   game_short_name?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x691E9052;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateInlineBotCallbackQuery"
   }
 
@@ -12659,11 +12659,11 @@ export class UpdateReadChannelOutbox_ extends _Update_ {
   channel_id: bigint;
   max_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB75F99A9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateReadChannelOutbox"
   }
 
@@ -12693,11 +12693,11 @@ export class UpdateDraftMessage_ extends _Update_ {
   top_msg_id?: number;
   draft: enums.DraftMessage;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1B49EC6D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateDraftMessage"
   }
 
@@ -12728,11 +12728,11 @@ export class UpdateDraftMessage_ extends _Update_ {
 }
 
 export class UpdateReadFeaturedStickers_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x571D2742;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateReadFeaturedStickers"
   }
 
@@ -12750,11 +12750,11 @@ export class UpdateReadFeaturedStickers_ extends _Update_ {
 }
 
 export class UpdateRecentStickers_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9A422C20;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateRecentStickers"
   }
 
@@ -12772,11 +12772,11 @@ export class UpdateRecentStickers_ extends _Update_ {
 }
 
 export class UpdateConfig_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA229DD06;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateConfig"
   }
 
@@ -12794,11 +12794,11 @@ export class UpdateConfig_ extends _Update_ {
 }
 
 export class UpdatePtsChanged_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3354678F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePtsChanged"
   }
 
@@ -12821,11 +12821,11 @@ export class UpdateChannelWebPage_ extends _Update_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2F2BA99F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChannelWebPage"
   }
 
@@ -12861,11 +12861,11 @@ export class UpdateDialogPinned_ extends _Update_ {
   folder_id?: number;
   peer: enums.DialogPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6E6FE51C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateDialogPinned"
   }
 
@@ -12899,11 +12899,11 @@ export class UpdatePinnedDialogs_ extends _Update_ {
   folder_id?: number;
   order?: Array<enums.DialogPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFA0F3CA2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePinnedDialogs"
   }
 
@@ -12933,11 +12933,11 @@ export class UpdatePinnedDialogs_ extends _Update_ {
 export class UpdateBotWebhookJSON_ extends _Update_ {
   data: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8317C0C3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotWebhookJSON"
   }
 
@@ -12964,11 +12964,11 @@ export class UpdateBotWebhookJSONQuery_ extends _Update_ {
   data: enums.DataJSON;
   timeout: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9B9240A6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotWebhookJSONQuery"
   }
 
@@ -13002,11 +13002,11 @@ export class UpdateBotShippingQuery_ extends _Update_ {
   payload: Uint8Array;
   shipping_address: enums.PostAddress;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB5AEFD7D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotShippingQuery"
   }
 
@@ -13046,11 +13046,11 @@ export class UpdateBotPrecheckoutQuery_ extends _Update_ {
   currency: string;
   total_amount: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8CAA9A96;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotPrecheckoutQuery"
   }
 
@@ -13095,11 +13095,11 @@ export class UpdateBotPrecheckoutQuery_ extends _Update_ {
 export class UpdatePhoneCall_ extends _Update_ {
   phone_call: enums.PhoneCall;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAB0F6B1E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePhoneCall"
   }
 
@@ -13124,11 +13124,11 @@ export class UpdatePhoneCall_ extends _Update_ {
 export class UpdateLangPackTooLong_ extends _Update_ {
   lang_code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x46560264;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateLangPackTooLong"
   }
 
@@ -13153,11 +13153,11 @@ export class UpdateLangPackTooLong_ extends _Update_ {
 export class UpdateLangPack_ extends _Update_ {
   difference: enums.LangPackDifference;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x56022F4D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateLangPack"
   }
 
@@ -13180,11 +13180,11 @@ export class UpdateLangPack_ extends _Update_ {
 }
 
 export class UpdateFavedStickers_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE511996D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateFavedStickers"
   }
 
@@ -13206,11 +13206,11 @@ export class UpdateChannelReadMessagesContents_ extends _Update_ {
   top_msg_id?: number;
   messages: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEA29055D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChannelReadMessagesContents"
   }
 
@@ -13241,11 +13241,11 @@ export class UpdateChannelReadMessagesContents_ extends _Update_ {
 }
 
 export class UpdateContactsReset_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7084A7BE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateContactsReset"
   }
 
@@ -13266,11 +13266,11 @@ export class UpdateChannelAvailableMessages_ extends _Update_ {
   channel_id: bigint;
   available_min_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB23FC698;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChannelAvailableMessages"
   }
 
@@ -13299,11 +13299,11 @@ export class UpdateDialogUnreadMark_ extends _Update_ {
   unread?: true;
   peer: enums.DialogPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE16459C3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateDialogUnreadMark"
   }
 
@@ -13335,11 +13335,11 @@ export class UpdateMessagePoll_ extends _Update_ {
   poll?: enums.Poll;
   results: enums.PollResults;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xACA1657B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateMessagePoll"
   }
 
@@ -13374,11 +13374,11 @@ export class UpdateChatDefaultBannedRights_ extends _Update_ {
   default_banned_rights: enums.ChatBannedRights;
   version: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x54C01850;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChatDefaultBannedRights"
   }
 
@@ -13411,11 +13411,11 @@ export class UpdateFolderPeers_ extends _Update_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x19360DC0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateFolderPeers"
   }
 
@@ -13447,11 +13447,11 @@ export class UpdatePeerSettings_ extends _Update_ {
   peer: enums.Peer;
   settings: enums.PeerSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6A7E7366;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePeerSettings"
   }
 
@@ -13479,11 +13479,11 @@ export class UpdatePeerSettings_ extends _Update_ {
 export class UpdatePeerLocated_ extends _Update_ {
   peers: Array<enums.PeerLocated>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB4AFCFB0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePeerLocated"
   }
 
@@ -13508,11 +13508,11 @@ export class UpdatePeerLocated_ extends _Update_ {
 export class UpdateNewScheduledMessage_ extends _Update_ {
   message: enums.Message;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x39A51DFB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateNewScheduledMessage"
   }
 
@@ -13538,11 +13538,11 @@ export class UpdateDeleteScheduledMessages_ extends _Update_ {
   peer: enums.Peer;
   messages: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x90866CEE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateDeleteScheduledMessages"
   }
 
@@ -13570,11 +13570,11 @@ export class UpdateDeleteScheduledMessages_ extends _Update_ {
 export class UpdateTheme_ extends _Update_ {
   theme: enums.Theme;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8216FBA3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateTheme"
   }
 
@@ -13600,11 +13600,11 @@ export class UpdateGeoLiveViewed_ extends _Update_ {
   peer: enums.Peer;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x871FB939;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateGeoLiveViewed"
   }
 
@@ -13630,11 +13630,11 @@ export class UpdateGeoLiveViewed_ extends _Update_ {
 }
 
 export class UpdateLoginToken_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x564FE691;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateLoginToken"
   }
 
@@ -13657,11 +13657,11 @@ export class UpdateMessagePollVote_ extends _Update_ {
   options: Array<Uint8Array>;
   qts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x24F40E77;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateMessagePollVote"
   }
 
@@ -13696,11 +13696,11 @@ export class UpdateDialogFilter_ extends _Update_ {
   id: number;
   filter?: enums.DialogFilter;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x26FFDE7D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateDialogFilter"
   }
 
@@ -13730,11 +13730,11 @@ export class UpdateDialogFilter_ extends _Update_ {
 export class UpdateDialogFilterOrder_ extends _Update_ {
   order: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA5D72105;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateDialogFilterOrder"
   }
 
@@ -13757,11 +13757,11 @@ export class UpdateDialogFilterOrder_ extends _Update_ {
 }
 
 export class UpdateDialogFilters_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3504914F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateDialogFilters"
   }
 
@@ -13782,11 +13782,11 @@ export class UpdatePhoneCallSignalingData_ extends _Update_ {
   phone_call_id: bigint;
   data: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2661BF09;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePhoneCallSignalingData"
   }
 
@@ -13816,11 +13816,11 @@ export class UpdateChannelMessageForwards_ extends _Update_ {
   id: number;
   forwards: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD29A27F4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChannelMessageForwards"
   }
 
@@ -13855,11 +13855,11 @@ export class UpdateReadChannelDiscussionInbox_ extends _Update_ {
   broadcast_id?: bigint;
   broadcast_post?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD6B19546;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateReadChannelDiscussionInbox"
   }
 
@@ -13900,11 +13900,11 @@ export class UpdateReadChannelDiscussionOutbox_ extends _Update_ {
   top_msg_id: number;
   read_max_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x695C9E7C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateReadChannelDiscussionOutbox"
   }
 
@@ -13937,11 +13937,11 @@ export class UpdatePeerBlocked_ extends _Update_ {
   blocked_my_stories_from?: true;
   peer_id: enums.Peer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEBE07752;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePeerBlocked"
   }
 
@@ -13977,11 +13977,11 @@ export class UpdateChannelUserTyping_ extends _Update_ {
   from_id: enums.Peer;
   action: enums.SendMessageAction;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8C88C923;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChannelUserTyping"
   }
 
@@ -14021,11 +14021,11 @@ export class UpdatePinnedMessages_ extends _Update_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xED85EAB5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePinnedMessages"
   }
 
@@ -14068,11 +14068,11 @@ export class UpdatePinnedChannelMessages_ extends _Update_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5BB98608;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePinnedChannelMessages"
   }
 
@@ -14111,11 +14111,11 @@ export class UpdatePinnedChannelMessages_ extends _Update_ {
 export class UpdateChat_ extends _Update_ {
   chat_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF89A6A4E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChat"
   }
 
@@ -14142,11 +14142,11 @@ export class UpdateGroupCallParticipants_ extends _Update_ {
   participants: Array<enums.GroupCallParticipant>;
   version: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF2EBDB4E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateGroupCallParticipants"
   }
 
@@ -14178,11 +14178,11 @@ export class UpdateGroupCall_ extends _Update_ {
   chat_id: bigint;
   call: enums.GroupCall;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x14B24500;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateGroupCall"
   }
 
@@ -14211,11 +14211,11 @@ export class UpdatePeerHistoryTTL_ extends _Update_ {
   peer: enums.Peer;
   ttl_period?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBB9BB9A5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePeerHistoryTTL"
   }
 
@@ -14252,11 +14252,11 @@ export class UpdateChatParticipant_ extends _Update_ {
   invite?: enums.ExportedChatInvite;
   qts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD087663A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChatParticipant"
   }
 
@@ -14312,11 +14312,11 @@ export class UpdateChannelParticipant_ extends _Update_ {
   invite?: enums.ExportedChatInvite;
   qts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x985D3ABB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChannelParticipant"
   }
 
@@ -14370,11 +14370,11 @@ export class UpdateBotStopped_ extends _Update_ {
   stopped: boolean;
   qts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC4870A49;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotStopped"
   }
 
@@ -14409,11 +14409,11 @@ export class UpdateGroupCallConnection_ extends _Update_ {
   presentation?: true;
   params: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0B783982;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateGroupCallConnection"
   }
 
@@ -14445,11 +14445,11 @@ export class UpdateBotCommands_ extends _Update_ {
   bot_id: bigint;
   commands: Array<enums.BotCommand>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4D712F2E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotCommands"
   }
 
@@ -14482,11 +14482,11 @@ export class UpdatePendingJoinRequests_ extends _Update_ {
   requests_pending: number;
   recent_requesters: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7063C3DB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePendingJoinRequests"
   }
 
@@ -14522,11 +14522,11 @@ export class UpdateBotChatInviteRequester_ extends _Update_ {
   invite: enums.ExportedChatInvite;
   qts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x11DFA986;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotChatInviteRequester"
   }
 
@@ -14569,11 +14569,11 @@ export class UpdateMessageReactions_ extends _Update_ {
   top_msg_id?: number;
   reactions: enums.MessageReactions;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5E1B3CB8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateMessageReactions"
   }
 
@@ -14607,11 +14607,11 @@ export class UpdateMessageReactions_ extends _Update_ {
 }
 
 export class UpdateAttachMenuBots_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x17B7A20B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateAttachMenuBots"
   }
 
@@ -14631,11 +14631,11 @@ export class UpdateAttachMenuBots_ extends _Update_ {
 export class UpdateWebViewResultSent_ extends _Update_ {
   query_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1592B79D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateWebViewResultSent"
   }
 
@@ -14661,11 +14661,11 @@ export class UpdateBotMenuButton_ extends _Update_ {
   bot_id: bigint;
   button: enums.BotMenuButton;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x14B85813;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotMenuButton"
   }
 
@@ -14691,11 +14691,11 @@ export class UpdateBotMenuButton_ extends _Update_ {
 }
 
 export class UpdateSavedRingtones_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x74D8BE99;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateSavedRingtones"
   }
 
@@ -14719,11 +14719,11 @@ export class UpdateTranscribedAudio_ extends _Update_ {
   transcription_id: bigint;
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0084CD5A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateTranscribedAudio"
   }
 
@@ -14760,11 +14760,11 @@ export class UpdateTranscribedAudio_ extends _Update_ {
 }
 
 export class UpdateReadFeaturedEmojiStickers_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFB4C496C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateReadFeaturedEmojiStickers"
   }
 
@@ -14785,11 +14785,11 @@ export class UpdateUserEmojiStatus_ extends _Update_ {
   user_id: bigint;
   emoji_status: enums.EmojiStatus;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x28373599;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateUserEmojiStatus"
   }
 
@@ -14815,11 +14815,11 @@ export class UpdateUserEmojiStatus_ extends _Update_ {
 }
 
 export class UpdateRecentEmojiStatuses_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x30F443DB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateRecentEmojiStatuses"
   }
 
@@ -14837,11 +14837,11 @@ export class UpdateRecentEmojiStatuses_ extends _Update_ {
 }
 
 export class UpdateRecentReactions_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6F7863F4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateRecentReactions"
   }
 
@@ -14863,11 +14863,11 @@ export class UpdateMoveStickerSetToTop_ extends _Update_ {
   emojis?: true;
   stickerset: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x86FCCF85;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateMoveStickerSetToTop"
   }
 
@@ -14902,11 +14902,11 @@ export class UpdateMessageExtendedMedia_ extends _Update_ {
   msg_id: number;
   extended_media: enums.MessageExtendedMedia;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5A73A98C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateMessageExtendedMedia"
   }
 
@@ -14939,11 +14939,11 @@ export class UpdateChannelPinnedTopic_ extends _Update_ {
   channel_id: bigint;
   topic_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x192EFBE3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChannelPinnedTopic"
   }
 
@@ -14977,11 +14977,11 @@ export class UpdateChannelPinnedTopics_ extends _Update_ {
   channel_id: bigint;
   order?: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFE198602;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChannelPinnedTopics"
   }
 
@@ -15011,11 +15011,11 @@ export class UpdateChannelPinnedTopics_ extends _Update_ {
 export class UpdateUser_ extends _Update_ {
   user_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x20529438;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateUser"
   }
 
@@ -15038,11 +15038,11 @@ export class UpdateUser_ extends _Update_ {
 }
 
 export class UpdateAutoSaveSettings_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEC05B097;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateAutoSaveSettings"
   }
 
@@ -15062,11 +15062,11 @@ export class UpdateAutoSaveSettings_ extends _Update_ {
 export class UpdateGroupInvitePrivacyForbidden_ extends _Update_ {
   user_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCCF08AD6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateGroupInvitePrivacyForbidden"
   }
 
@@ -15092,11 +15092,11 @@ export class UpdateStory_ extends _Update_ {
   peer: enums.Peer;
   story: enums.StoryItem;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x75B3B798;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateStory"
   }
 
@@ -15125,11 +15125,11 @@ export class UpdateReadStories_ extends _Update_ {
   peer: enums.Peer;
   max_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF74E932B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateReadStories"
   }
 
@@ -15158,11 +15158,11 @@ export class UpdateStoryID_ extends _Update_ {
   id: number;
   random_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1BF335B9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateStoryID"
   }
 
@@ -15190,11 +15190,11 @@ export class UpdateStoryID_ extends _Update_ {
 export class UpdateStoriesStealthMode_ extends _Update_ {
   stealth_mode: enums.StoriesStealthMode;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2C084DC1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateStoriesStealthMode"
   }
 
@@ -15221,11 +15221,11 @@ export class UpdateSentStoryReaction_ extends _Update_ {
   story_id: number;
   reaction: enums.Reaction;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7D627683;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateSentStoryReaction"
   }
 
@@ -15258,11 +15258,11 @@ export class UpdateBotChatBoost_ extends _Update_ {
   boost: enums.Boost;
   qts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x904DD49C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotChatBoost"
   }
 
@@ -15294,11 +15294,11 @@ export class UpdateChannelViewForumAsMessages_ extends _Update_ {
   channel_id: bigint;
   enabled: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x07B68920;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateChannelViewForumAsMessages"
   }
 
@@ -15328,11 +15328,11 @@ export class UpdatePeerWallpaper_ extends _Update_ {
   peer: enums.Peer;
   wallpaper?: enums.WallPaper;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAE3F101D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePeerWallpaper"
   }
 
@@ -15371,11 +15371,11 @@ export class UpdateBotMessageReaction_ extends _Update_ {
   new_reactions: Array<enums.Reaction>;
   qts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAC21D3CE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotMessageReaction"
   }
 
@@ -15422,11 +15422,11 @@ export class UpdateBotMessageReactions_ extends _Update_ {
   reactions: Array<enums.ReactionCount>;
   qts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x09CB7759;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateBotMessageReactions"
   }
 
@@ -15464,11 +15464,11 @@ export class UpdateSavedDialogPinned_ extends _Update_ {
   pinned?: true;
   peer: enums.DialogPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAEAF9E74;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateSavedDialogPinned"
   }
 
@@ -15498,11 +15498,11 @@ export class UpdateSavedDialogPinned_ extends _Update_ {
 export class UpdatePinnedSavedDialogs_ extends _Update_ {
   order?: Array<enums.DialogPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x686C85A6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatePinnedSavedDialogs"
   }
 
@@ -15527,11 +15527,11 @@ export class UpdatePinnedSavedDialogs_ extends _Update_ {
 }
 
 export class UpdateSavedReactionTags_ extends _Update_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x39C67432;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateSavedReactionTags"
   }
 
@@ -15555,11 +15555,11 @@ export class updates_State_ extends _updates_State_ {
   seq: number;
   unread_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA56C2A3E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updates.state"
   }
 
@@ -15597,11 +15597,11 @@ export class updates_DifferenceEmpty_ extends _updates_Difference_ {
   date: number;
   seq: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5D75A138;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updates.differenceEmpty"
   }
 
@@ -15634,11 +15634,11 @@ export class updates_Difference_ extends _updates_Difference_ {
   users: Array<enums.User>;
   state: enums.updates.State;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x00F49CA0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updates.difference"
   }
 
@@ -15683,11 +15683,11 @@ export class updates_DifferenceSlice_ extends _updates_Difference_ {
   users: Array<enums.User>;
   intermediate_state: enums.updates.State;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA8FB1981;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updates.differenceSlice"
   }
 
@@ -15727,11 +15727,11 @@ export class updates_DifferenceSlice_ extends _updates_Difference_ {
 export class updates_DifferenceTooLong_ extends _updates_Difference_ {
   pts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4AFE8F6D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updates.differenceTooLong"
   }
 
@@ -15754,11 +15754,11 @@ export class updates_DifferenceTooLong_ extends _updates_Difference_ {
 }
 
 export class UpdatesTooLong_ extends _Updates_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE317AF7E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatesTooLong"
   }
 
@@ -15792,11 +15792,11 @@ export class UpdateShortMessage_ extends _Updates_ {
   entities?: Array<enums.MessageEntity>;
   ttl_period?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x313BC7F8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateShortMessage"
   }
 
@@ -15880,11 +15880,11 @@ export class UpdateShortChatMessage_ extends _Updates_ {
   entities?: Array<enums.MessageEntity>;
   ttl_period?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4D6DEEA5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateShortChatMessage"
   }
 
@@ -15957,11 +15957,11 @@ export class UpdateShort_ extends _Updates_ {
   update: enums.Update;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x78D4DEC1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateShort"
   }
 
@@ -15994,11 +15994,11 @@ export class UpdatesCombined_ extends _Updates_ {
   seq_start: number;
   seq: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x725B04C3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updatesCombined"
   }
 
@@ -16042,11 +16042,11 @@ export class Updates_ extends _Updates_ {
   date: number;
   seq: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x74AE4240;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updates"
   }
 
@@ -16090,11 +16090,11 @@ export class UpdateShortSentMessage_ extends _Updates_ {
   entities?: Array<enums.MessageEntity>;
   ttl_period?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9015E101;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updateShortSentMessage"
   }
 
@@ -16143,11 +16143,11 @@ export class photos_Photos_ extends _photos_Photos_ {
   photos: Array<enums.Photo>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8DCA6AA5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photos.photos"
   }
 
@@ -16177,11 +16177,11 @@ export class photos_PhotosSlice_ extends _photos_Photos_ {
   photos: Array<enums.Photo>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x15051F54;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photos.photosSlice"
   }
 
@@ -16213,11 +16213,11 @@ export class photos_Photo_ extends _photos_Photo_ {
   photo: enums.Photo;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x20212CA8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photos.photo"
   }
 
@@ -16247,11 +16247,11 @@ export class upload_File_ extends _upload_File_ {
   mtime: number;
   bytes: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x096A18D5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "upload.file"
   }
 
@@ -16286,11 +16286,11 @@ export class upload_FileCdnRedirect_ extends _upload_File_ {
   encryption_iv: Uint8Array;
   file_hashes: Array<enums.FileHash>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF18CDA44;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "upload.fileCdnRedirect"
   }
 
@@ -16336,11 +16336,11 @@ export class DcOption_ extends _DcOption_ {
   port: number;
   secret?: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x18B7A10D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "dcOption"
   }
 
@@ -16440,11 +16440,11 @@ export class Config_ extends _Config_ {
   reactions_default?: enums.Reaction;
   autologin_token?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCC1A241E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "config"
   }
 
@@ -16611,11 +16611,11 @@ export class NearestDc_ extends _NearestDc_ {
   this_dc: number;
   nearest_dc: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8E1A1775;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "nearestDc"
   }
 
@@ -16653,11 +16653,11 @@ export class help_AppUpdate_ extends _help_AppUpdate_ {
   url?: string;
   sticker?: enums.Document;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCCBBCE30;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.appUpdate"
   }
 
@@ -16703,11 +16703,11 @@ export class help_AppUpdate_ extends _help_AppUpdate_ {
 }
 
 export class help_NoAppUpdate_ extends _help_AppUpdate_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC45A6536;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.noAppUpdate"
   }
 
@@ -16727,11 +16727,11 @@ export class help_NoAppUpdate_ extends _help_AppUpdate_ {
 export class help_InviteText_ extends _help_InviteText_ {
   message: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x18CB9F78;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.inviteText"
   }
 
@@ -16756,11 +16756,11 @@ export class help_InviteText_ extends _help_InviteText_ {
 export class EncryptedChatEmpty_ extends _EncryptedChat_ {
   id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAB7EC0A0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "encryptedChatEmpty"
   }
 
@@ -16789,11 +16789,11 @@ export class EncryptedChatWaiting_ extends _EncryptedChat_ {
   admin_id: bigint;
   participant_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x66B25953;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "encryptedChatWaiting"
   }
 
@@ -16836,11 +16836,11 @@ export class EncryptedChatRequested_ extends _EncryptedChat_ {
   participant_id: bigint;
   g_a: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x48F1D94C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "encryptedChatRequested"
   }
 
@@ -16891,11 +16891,11 @@ export class EncryptedChat_ extends _EncryptedChat_ {
   g_a_or_b: Uint8Array;
   key_fingerprint: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x61F0D4C7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "encryptedChat"
   }
 
@@ -16939,11 +16939,11 @@ export class EncryptedChatDiscarded_ extends _EncryptedChat_ {
   history_deleted?: true;
   id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1E1C7C45;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "encryptedChatDiscarded"
   }
 
@@ -16974,11 +16974,11 @@ export class InputEncryptedChat_ extends _InputEncryptedChat_ {
   chat_id: number;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF141B5E1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputEncryptedChat"
   }
 
@@ -17004,11 +17004,11 @@ export class InputEncryptedChat_ extends _InputEncryptedChat_ {
 }
 
 export class EncryptedFileEmpty_ extends _EncryptedFile_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC21F497E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "encryptedFileEmpty"
   }
 
@@ -17032,11 +17032,11 @@ export class EncryptedFile_ extends _EncryptedFile_ {
   dc_id: number;
   key_fingerprint: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA8008CD8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "encryptedFile"
   }
 
@@ -17071,11 +17071,11 @@ export class EncryptedFile_ extends _EncryptedFile_ {
 }
 
 export class InputEncryptedFileEmpty_ extends _InputEncryptedFile_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1837C364;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputEncryptedFileEmpty"
   }
 
@@ -17098,11 +17098,11 @@ export class InputEncryptedFileUploaded_ extends _InputEncryptedFile_ {
   md5_checksum: string;
   key_fingerprint: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x64BD0306;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputEncryptedFileUploaded"
   }
 
@@ -17137,11 +17137,11 @@ export class InputEncryptedFile_ extends _InputEncryptedFile_ {
   id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5A17B5E5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputEncryptedFile"
   }
 
@@ -17171,11 +17171,11 @@ export class InputEncryptedFileBigUploaded_ extends _InputEncryptedFile_ {
   parts: number;
   key_fingerprint: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2DC173C8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputEncryptedFileBigUploaded"
   }
 
@@ -17210,11 +17210,11 @@ export class EncryptedMessage_ extends _EncryptedMessage_ {
   bytes: Uint8Array;
   file: enums.EncryptedFile;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xED18C118;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "encryptedMessage"
   }
 
@@ -17254,11 +17254,11 @@ export class EncryptedMessageService_ extends _EncryptedMessage_ {
   date: number;
   bytes: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x23734B06;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "encryptedMessageService"
   }
 
@@ -17292,11 +17292,11 @@ export class EncryptedMessageService_ extends _EncryptedMessage_ {
 export class messages_DhConfigNotModified_ extends _messages_DhConfig_ {
   random: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC0E24635;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.dhConfigNotModified"
   }
 
@@ -17324,11 +17324,11 @@ export class messages_DhConfig_ extends _messages_DhConfig_ {
   version: number;
   random: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2C221EDD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.dhConfig"
   }
 
@@ -17362,11 +17362,11 @@ export class messages_DhConfig_ extends _messages_DhConfig_ {
 export class messages_SentEncryptedMessage_ extends _messages_SentEncryptedMessage_ {
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x560F8935;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sentEncryptedMessage"
   }
 
@@ -17392,11 +17392,11 @@ export class messages_SentEncryptedFile_ extends _messages_SentEncryptedMessage_
   date: number;
   file: enums.EncryptedFile;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9493FF32;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sentEncryptedFile"
   }
 
@@ -17422,11 +17422,11 @@ export class messages_SentEncryptedFile_ extends _messages_SentEncryptedMessage_
 }
 
 export class InputDocumentEmpty_ extends _InputDocument_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x72F0EAAE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputDocumentEmpty"
   }
 
@@ -17448,11 +17448,11 @@ export class InputDocument_ extends _InputDocument_ {
   access_hash: bigint;
   file_reference: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1ABFB575;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputDocument"
   }
 
@@ -17483,11 +17483,11 @@ export class InputDocument_ extends _InputDocument_ {
 export class DocumentEmpty_ extends _Document_ {
   id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x36F8C871;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "documentEmpty"
   }
 
@@ -17521,11 +17521,11 @@ export class Document_ extends _Document_ {
   dc_id: number;
   attributes: Array<enums.DocumentAttribute>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8FD4C4D8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "document"
   }
 
@@ -17580,11 +17580,11 @@ export class help_Support_ extends _help_Support_ {
   phone_number: string;
   user: enums.User;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x17C6B5F6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.support"
   }
 
@@ -17612,11 +17612,11 @@ export class help_Support_ extends _help_Support_ {
 export class NotifyPeer_ extends _NotifyPeer_ {
   peer: enums.Peer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9FD40BD8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "notifyPeer"
   }
 
@@ -17639,11 +17639,11 @@ export class NotifyPeer_ extends _NotifyPeer_ {
 }
 
 export class NotifyUsers_ extends _NotifyPeer_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB4C83B4C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "notifyUsers"
   }
 
@@ -17661,11 +17661,11 @@ export class NotifyUsers_ extends _NotifyPeer_ {
 }
 
 export class NotifyChats_ extends _NotifyPeer_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC007CEC3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "notifyChats"
   }
 
@@ -17683,11 +17683,11 @@ export class NotifyChats_ extends _NotifyPeer_ {
 }
 
 export class NotifyBroadcasts_ extends _NotifyPeer_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD612E8EF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "notifyBroadcasts"
   }
 
@@ -17708,11 +17708,11 @@ export class NotifyForumTopic_ extends _NotifyPeer_ {
   peer: enums.Peer;
   top_msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x226E6308;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "notifyForumTopic"
   }
 
@@ -17738,11 +17738,11 @@ export class NotifyForumTopic_ extends _NotifyPeer_ {
 }
 
 export class SendMessageTypingAction_ extends _SendMessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x16BF744E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageTypingAction"
   }
 
@@ -17760,11 +17760,11 @@ export class SendMessageTypingAction_ extends _SendMessageAction_ {
 }
 
 export class SendMessageCancelAction_ extends _SendMessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFD5EC8F5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageCancelAction"
   }
 
@@ -17782,11 +17782,11 @@ export class SendMessageCancelAction_ extends _SendMessageAction_ {
 }
 
 export class SendMessageRecordVideoAction_ extends _SendMessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA187D66F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageRecordVideoAction"
   }
 
@@ -17806,11 +17806,11 @@ export class SendMessageRecordVideoAction_ extends _SendMessageAction_ {
 export class SendMessageUploadVideoAction_ extends _SendMessageAction_ {
   progress: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE9763AEC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageUploadVideoAction"
   }
 
@@ -17833,11 +17833,11 @@ export class SendMessageUploadVideoAction_ extends _SendMessageAction_ {
 }
 
 export class SendMessageRecordAudioAction_ extends _SendMessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD52F73F7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageRecordAudioAction"
   }
 
@@ -17857,11 +17857,11 @@ export class SendMessageRecordAudioAction_ extends _SendMessageAction_ {
 export class SendMessageUploadAudioAction_ extends _SendMessageAction_ {
   progress: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF351D7AB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageUploadAudioAction"
   }
 
@@ -17886,11 +17886,11 @@ export class SendMessageUploadAudioAction_ extends _SendMessageAction_ {
 export class SendMessageUploadPhotoAction_ extends _SendMessageAction_ {
   progress: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD1D34A26;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageUploadPhotoAction"
   }
 
@@ -17915,11 +17915,11 @@ export class SendMessageUploadPhotoAction_ extends _SendMessageAction_ {
 export class SendMessageUploadDocumentAction_ extends _SendMessageAction_ {
   progress: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAA0CD9E4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageUploadDocumentAction"
   }
 
@@ -17942,11 +17942,11 @@ export class SendMessageUploadDocumentAction_ extends _SendMessageAction_ {
 }
 
 export class SendMessageGeoLocationAction_ extends _SendMessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x176F8BA1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageGeoLocationAction"
   }
 
@@ -17964,11 +17964,11 @@ export class SendMessageGeoLocationAction_ extends _SendMessageAction_ {
 }
 
 export class SendMessageChooseContactAction_ extends _SendMessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x628CBC6F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageChooseContactAction"
   }
 
@@ -17986,11 +17986,11 @@ export class SendMessageChooseContactAction_ extends _SendMessageAction_ {
 }
 
 export class SendMessageGamePlayAction_ extends _SendMessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDD6A8F48;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageGamePlayAction"
   }
 
@@ -18008,11 +18008,11 @@ export class SendMessageGamePlayAction_ extends _SendMessageAction_ {
 }
 
 export class SendMessageRecordRoundAction_ extends _SendMessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x88F27FBC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageRecordRoundAction"
   }
 
@@ -18032,11 +18032,11 @@ export class SendMessageRecordRoundAction_ extends _SendMessageAction_ {
 export class SendMessageUploadRoundAction_ extends _SendMessageAction_ {
   progress: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x243E1C66;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageUploadRoundAction"
   }
 
@@ -18059,11 +18059,11 @@ export class SendMessageUploadRoundAction_ extends _SendMessageAction_ {
 }
 
 export class SpeakingInGroupCallAction_ extends _SendMessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD92C2285;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "speakingInGroupCallAction"
   }
 
@@ -18083,11 +18083,11 @@ export class SpeakingInGroupCallAction_ extends _SendMessageAction_ {
 export class SendMessageHistoryImportAction_ extends _SendMessageAction_ {
   progress: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDBDA9246;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageHistoryImportAction"
   }
 
@@ -18110,11 +18110,11 @@ export class SendMessageHistoryImportAction_ extends _SendMessageAction_ {
 }
 
 export class SendMessageChooseStickerAction_ extends _SendMessageAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB05AC6B1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageChooseStickerAction"
   }
 
@@ -18136,11 +18136,11 @@ export class SendMessageEmojiInteraction_ extends _SendMessageAction_ {
   msg_id: number;
   interaction: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x25972BCB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageEmojiInteraction"
   }
 
@@ -18171,11 +18171,11 @@ export class SendMessageEmojiInteraction_ extends _SendMessageAction_ {
 export class SendMessageEmojiInteractionSeen_ extends _SendMessageAction_ {
   emoticon: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB665902E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendMessageEmojiInteractionSeen"
   }
 
@@ -18203,11 +18203,11 @@ export class contacts_Found_ extends _contacts_Found_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB3134D9D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.found"
   }
 
@@ -18239,11 +18239,11 @@ export class contacts_Found_ extends _contacts_Found_ {
 }
 
 export class InputPrivacyKeyStatusTimestamp_ extends _InputPrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4F96CB18;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyKeyStatusTimestamp"
   }
 
@@ -18261,11 +18261,11 @@ export class InputPrivacyKeyStatusTimestamp_ extends _InputPrivacyKey_ {
 }
 
 export class InputPrivacyKeyChatInvite_ extends _InputPrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBDFB0426;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyKeyChatInvite"
   }
 
@@ -18283,11 +18283,11 @@ export class InputPrivacyKeyChatInvite_ extends _InputPrivacyKey_ {
 }
 
 export class InputPrivacyKeyPhoneCall_ extends _InputPrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFABADC5F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyKeyPhoneCall"
   }
 
@@ -18305,11 +18305,11 @@ export class InputPrivacyKeyPhoneCall_ extends _InputPrivacyKey_ {
 }
 
 export class InputPrivacyKeyPhoneP2P_ extends _InputPrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDB9E70D2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyKeyPhoneP2P"
   }
 
@@ -18327,11 +18327,11 @@ export class InputPrivacyKeyPhoneP2P_ extends _InputPrivacyKey_ {
 }
 
 export class InputPrivacyKeyForwards_ extends _InputPrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA4DD4C08;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyKeyForwards"
   }
 
@@ -18349,11 +18349,11 @@ export class InputPrivacyKeyForwards_ extends _InputPrivacyKey_ {
 }
 
 export class InputPrivacyKeyProfilePhoto_ extends _InputPrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5719BACC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyKeyProfilePhoto"
   }
 
@@ -18371,11 +18371,11 @@ export class InputPrivacyKeyProfilePhoto_ extends _InputPrivacyKey_ {
 }
 
 export class InputPrivacyKeyPhoneNumber_ extends _InputPrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0352DAFA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyKeyPhoneNumber"
   }
 
@@ -18393,11 +18393,11 @@ export class InputPrivacyKeyPhoneNumber_ extends _InputPrivacyKey_ {
 }
 
 export class InputPrivacyKeyAddedByPhone_ extends _InputPrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD1219BDD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyKeyAddedByPhone"
   }
 
@@ -18415,11 +18415,11 @@ export class InputPrivacyKeyAddedByPhone_ extends _InputPrivacyKey_ {
 }
 
 export class InputPrivacyKeyVoiceMessages_ extends _InputPrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAEE69D68;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyKeyVoiceMessages"
   }
 
@@ -18437,11 +18437,11 @@ export class InputPrivacyKeyVoiceMessages_ extends _InputPrivacyKey_ {
 }
 
 export class InputPrivacyKeyAbout_ extends _InputPrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3823CC40;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyKeyAbout"
   }
 
@@ -18459,11 +18459,11 @@ export class InputPrivacyKeyAbout_ extends _InputPrivacyKey_ {
 }
 
 export class PrivacyKeyStatusTimestamp_ extends _PrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBC2EAB30;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyKeyStatusTimestamp"
   }
 
@@ -18481,11 +18481,11 @@ export class PrivacyKeyStatusTimestamp_ extends _PrivacyKey_ {
 }
 
 export class PrivacyKeyChatInvite_ extends _PrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x500E6DFA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyKeyChatInvite"
   }
 
@@ -18503,11 +18503,11 @@ export class PrivacyKeyChatInvite_ extends _PrivacyKey_ {
 }
 
 export class PrivacyKeyPhoneCall_ extends _PrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3D662B7B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyKeyPhoneCall"
   }
 
@@ -18525,11 +18525,11 @@ export class PrivacyKeyPhoneCall_ extends _PrivacyKey_ {
 }
 
 export class PrivacyKeyPhoneP2P_ extends _PrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x39491CC8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyKeyPhoneP2P"
   }
 
@@ -18547,11 +18547,11 @@ export class PrivacyKeyPhoneP2P_ extends _PrivacyKey_ {
 }
 
 export class PrivacyKeyForwards_ extends _PrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x69EC56A3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyKeyForwards"
   }
 
@@ -18569,11 +18569,11 @@ export class PrivacyKeyForwards_ extends _PrivacyKey_ {
 }
 
 export class PrivacyKeyProfilePhoto_ extends _PrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x96151FED;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyKeyProfilePhoto"
   }
 
@@ -18591,11 +18591,11 @@ export class PrivacyKeyProfilePhoto_ extends _PrivacyKey_ {
 }
 
 export class PrivacyKeyPhoneNumber_ extends _PrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD19AE46D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyKeyPhoneNumber"
   }
 
@@ -18613,11 +18613,11 @@ export class PrivacyKeyPhoneNumber_ extends _PrivacyKey_ {
 }
 
 export class PrivacyKeyAddedByPhone_ extends _PrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x42FFD42B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyKeyAddedByPhone"
   }
 
@@ -18635,11 +18635,11 @@ export class PrivacyKeyAddedByPhone_ extends _PrivacyKey_ {
 }
 
 export class PrivacyKeyVoiceMessages_ extends _PrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0697F414;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyKeyVoiceMessages"
   }
 
@@ -18657,11 +18657,11 @@ export class PrivacyKeyVoiceMessages_ extends _PrivacyKey_ {
 }
 
 export class PrivacyKeyAbout_ extends _PrivacyKey_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA486B761;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyKeyAbout"
   }
 
@@ -18679,11 +18679,11 @@ export class PrivacyKeyAbout_ extends _PrivacyKey_ {
 }
 
 export class InputPrivacyValueAllowContacts_ extends _InputPrivacyRule_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0D09E07B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyValueAllowContacts"
   }
 
@@ -18701,11 +18701,11 @@ export class InputPrivacyValueAllowContacts_ extends _InputPrivacyRule_ {
 }
 
 export class InputPrivacyValueAllowAll_ extends _InputPrivacyRule_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x184B35CE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyValueAllowAll"
   }
 
@@ -18725,11 +18725,11 @@ export class InputPrivacyValueAllowAll_ extends _InputPrivacyRule_ {
 export class InputPrivacyValueAllowUsers_ extends _InputPrivacyRule_ {
   users: Array<enums.InputUser>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x131CC67F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyValueAllowUsers"
   }
 
@@ -18752,11 +18752,11 @@ export class InputPrivacyValueAllowUsers_ extends _InputPrivacyRule_ {
 }
 
 export class InputPrivacyValueDisallowContacts_ extends _InputPrivacyRule_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0BA52007;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyValueDisallowContacts"
   }
 
@@ -18774,11 +18774,11 @@ export class InputPrivacyValueDisallowContacts_ extends _InputPrivacyRule_ {
 }
 
 export class InputPrivacyValueDisallowAll_ extends _InputPrivacyRule_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD66B66C9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyValueDisallowAll"
   }
 
@@ -18798,11 +18798,11 @@ export class InputPrivacyValueDisallowAll_ extends _InputPrivacyRule_ {
 export class InputPrivacyValueDisallowUsers_ extends _InputPrivacyRule_ {
   users: Array<enums.InputUser>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x90110467;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyValueDisallowUsers"
   }
 
@@ -18827,11 +18827,11 @@ export class InputPrivacyValueDisallowUsers_ extends _InputPrivacyRule_ {
 export class InputPrivacyValueAllowChatParticipants_ extends _InputPrivacyRule_ {
   chats: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x840649CF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyValueAllowChatParticipants"
   }
 
@@ -18856,11 +18856,11 @@ export class InputPrivacyValueAllowChatParticipants_ extends _InputPrivacyRule_ 
 export class InputPrivacyValueDisallowChatParticipants_ extends _InputPrivacyRule_ {
   chats: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE94F0F86;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyValueDisallowChatParticipants"
   }
 
@@ -18883,11 +18883,11 @@ export class InputPrivacyValueDisallowChatParticipants_ extends _InputPrivacyRul
 }
 
 export class InputPrivacyValueAllowCloseFriends_ extends _InputPrivacyRule_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2F453E49;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPrivacyValueAllowCloseFriends"
   }
 
@@ -18905,11 +18905,11 @@ export class InputPrivacyValueAllowCloseFriends_ extends _InputPrivacyRule_ {
 }
 
 export class PrivacyValueAllowContacts_ extends _PrivacyRule_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFFFE1BAC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyValueAllowContacts"
   }
 
@@ -18927,11 +18927,11 @@ export class PrivacyValueAllowContacts_ extends _PrivacyRule_ {
 }
 
 export class PrivacyValueAllowAll_ extends _PrivacyRule_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x65427B82;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyValueAllowAll"
   }
 
@@ -18951,11 +18951,11 @@ export class PrivacyValueAllowAll_ extends _PrivacyRule_ {
 export class PrivacyValueAllowUsers_ extends _PrivacyRule_ {
   users: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB8905FB2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyValueAllowUsers"
   }
 
@@ -18978,11 +18978,11 @@ export class PrivacyValueAllowUsers_ extends _PrivacyRule_ {
 }
 
 export class PrivacyValueDisallowContacts_ extends _PrivacyRule_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF888FA1A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyValueDisallowContacts"
   }
 
@@ -19000,11 +19000,11 @@ export class PrivacyValueDisallowContacts_ extends _PrivacyRule_ {
 }
 
 export class PrivacyValueDisallowAll_ extends _PrivacyRule_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8B73E763;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyValueDisallowAll"
   }
 
@@ -19024,11 +19024,11 @@ export class PrivacyValueDisallowAll_ extends _PrivacyRule_ {
 export class PrivacyValueDisallowUsers_ extends _PrivacyRule_ {
   users: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE4621141;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyValueDisallowUsers"
   }
 
@@ -19053,11 +19053,11 @@ export class PrivacyValueDisallowUsers_ extends _PrivacyRule_ {
 export class PrivacyValueAllowChatParticipants_ extends _PrivacyRule_ {
   chats: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6B134E8E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyValueAllowChatParticipants"
   }
 
@@ -19082,11 +19082,11 @@ export class PrivacyValueAllowChatParticipants_ extends _PrivacyRule_ {
 export class PrivacyValueDisallowChatParticipants_ extends _PrivacyRule_ {
   chats: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x41C87565;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyValueDisallowChatParticipants"
   }
 
@@ -19109,11 +19109,11 @@ export class PrivacyValueDisallowChatParticipants_ extends _PrivacyRule_ {
 }
 
 export class PrivacyValueAllowCloseFriends_ extends _PrivacyRule_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF7E8D89B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "privacyValueAllowCloseFriends"
   }
 
@@ -19135,11 +19135,11 @@ export class account_PrivacyRules_ extends _account_PrivacyRules_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x50A04E45;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.privacyRules"
   }
 
@@ -19170,11 +19170,11 @@ export class account_PrivacyRules_ extends _account_PrivacyRules_ {
 export class AccountDaysTTL_ extends _AccountDaysTTL_ {
   days: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB8D0AFDF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "accountDaysTTL"
   }
 
@@ -19200,11 +19200,11 @@ export class DocumentAttributeImageSize_ extends _DocumentAttribute_ {
   w: number;
   h: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6C37C15C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "documentAttributeImageSize"
   }
 
@@ -19230,11 +19230,11 @@ export class DocumentAttributeImageSize_ extends _DocumentAttribute_ {
 }
 
 export class DocumentAttributeAnimated_ extends _DocumentAttribute_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x11B58939;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "documentAttributeAnimated"
   }
 
@@ -19257,11 +19257,11 @@ export class DocumentAttributeSticker_ extends _DocumentAttribute_ {
   stickerset: enums.InputStickerSet;
   mask_coords?: enums.MaskCoords;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6319D612;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "documentAttributeSticker"
   }
 
@@ -19303,11 +19303,11 @@ export class DocumentAttributeVideo_ extends _DocumentAttribute_ {
   h: number;
   preload_prefix_size?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD38FF1C2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "documentAttributeVideo"
   }
 
@@ -19356,11 +19356,11 @@ export class DocumentAttributeAudio_ extends _DocumentAttribute_ {
   performer?: string;
   waveform?: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9852F9C6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "documentAttributeAudio"
   }
 
@@ -19399,11 +19399,11 @@ export class DocumentAttributeAudio_ extends _DocumentAttribute_ {
 export class DocumentAttributeFilename_ extends _DocumentAttribute_ {
   file_name: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x15590068;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "documentAttributeFilename"
   }
 
@@ -19426,11 +19426,11 @@ export class DocumentAttributeFilename_ extends _DocumentAttribute_ {
 }
 
 export class DocumentAttributeHasStickers_ extends _DocumentAttribute_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9801D2F7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "documentAttributeHasStickers"
   }
 
@@ -19453,11 +19453,11 @@ export class DocumentAttributeCustomEmoji_ extends _DocumentAttribute_ {
   alt: string;
   stickerset: enums.InputStickerSet;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFD149899;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "documentAttributeCustomEmoji"
   }
 
@@ -19491,11 +19491,11 @@ export class DocumentAttributeCustomEmoji_ extends _DocumentAttribute_ {
 }
 
 export class messages_StickersNotModified_ extends _messages_Stickers_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF1749A22;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.stickersNotModified"
   }
 
@@ -19516,11 +19516,11 @@ export class messages_Stickers_ extends _messages_Stickers_ {
   hash: bigint;
   stickers: Array<enums.Document>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x30A6EC7E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.stickers"
   }
 
@@ -19549,11 +19549,11 @@ export class StickerPack_ extends _StickerPack_ {
   emoticon: string;
   documents: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x12B299D4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickerPack"
   }
 
@@ -19579,11 +19579,11 @@ export class StickerPack_ extends _StickerPack_ {
 }
 
 export class messages_AllStickersNotModified_ extends _messages_AllStickers_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE86602C3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.allStickersNotModified"
   }
 
@@ -19604,11 +19604,11 @@ export class messages_AllStickers_ extends _messages_AllStickers_ {
   hash: bigint;
   sets: Array<enums.StickerSet>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCDBBCEBB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.allStickers"
   }
 
@@ -19637,11 +19637,11 @@ export class messages_AffectedMessages_ extends _messages_AffectedMessages_ {
   pts: number;
   pts_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x84D19185;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.affectedMessages"
   }
 
@@ -19670,11 +19670,11 @@ export class WebPageEmpty_ extends _WebPage_ {
   id: bigint;
   url?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x211A1788;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "webPageEmpty"
   }
 
@@ -19706,11 +19706,11 @@ export class WebPagePending_ extends _WebPage_ {
   url?: string;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB0D13E47;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "webPagePending"
   }
 
@@ -19761,11 +19761,11 @@ export class WebPage_ extends _WebPage_ {
   cached_page?: enums.Page;
   attributes?: Array<enums.WebPageAttribute>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE89C45B2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "webPage"
   }
 
@@ -19846,11 +19846,11 @@ export class WebPage_ extends _WebPage_ {
 export class WebPageNotModified_ extends _WebPage_ {
   cached_page_views?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7311CA11;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "webPageNotModified"
   }
 
@@ -19894,11 +19894,11 @@ export class Authorization_ extends _Authorization_ {
   country: string;
   region: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAD01D61D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "authorization"
   }
 
@@ -19977,11 +19977,11 @@ export class account_Authorizations_ extends _account_Authorizations_ {
   authorization_ttl_days: number;
   authorizations: Array<enums.Authorization>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4BFF8EA0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.authorizations"
   }
 
@@ -20021,11 +20021,11 @@ export class account_Password_ extends _account_Password_ {
   pending_reset_date?: number;
   login_email_pattern?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x957B50FB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.password"
   }
 
@@ -20089,11 +20089,11 @@ export class account_PasswordSettings_ extends _account_PasswordSettings_ {
   email?: string;
   secure_settings?: enums.SecureSecretSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9A5C33E5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.passwordSettings"
   }
 
@@ -20127,11 +20127,11 @@ export class account_PasswordInputSettings_ extends _account_PasswordInputSettin
   email?: string;
   new_secure_settings?: enums.SecureSecretSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC23727C9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.passwordInputSettings"
   }
 
@@ -20170,11 +20170,11 @@ export class account_PasswordInputSettings_ extends _account_PasswordInputSettin
 export class auth_PasswordRecovery_ extends _auth_PasswordRecovery_ {
   email_pattern: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x137948A5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.passwordRecovery"
   }
 
@@ -20200,11 +20200,11 @@ export class ReceivedNotifyMessage_ extends _ReceivedNotifyMessage_ {
   id: number;
   flags: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA384B779;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "receivedNotifyMessage"
   }
 
@@ -20243,11 +20243,11 @@ export class ChatInviteExported_ extends _ExportedChatInvite_ {
   requested?: number;
   title?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0AB4A819;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatInviteExported"
   }
 
@@ -20305,11 +20305,11 @@ export class ChatInviteExported_ extends _ExportedChatInvite_ {
 }
 
 export class ChatInvitePublicJoinRequests_ extends _ExportedChatInvite_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xED107AB7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatInvitePublicJoinRequests"
   }
 
@@ -20329,11 +20329,11 @@ export class ChatInvitePublicJoinRequests_ extends _ExportedChatInvite_ {
 export class ChatInviteAlready_ extends _ChatInvite_ {
   chat: enums.Chat;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5A686D7C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatInviteAlready"
   }
 
@@ -20371,11 +20371,11 @@ export class ChatInvite_ extends _ChatInvite_ {
   participants?: Array<enums.User>;
   color: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCDE0EC40;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatInvite"
   }
 
@@ -20442,11 +20442,11 @@ export class ChatInvitePeek_ extends _ChatInvite_ {
   chat: enums.Chat;
   expires: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x61695CB0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatInvitePeek"
   }
 
@@ -20472,11 +20472,11 @@ export class ChatInvitePeek_ extends _ChatInvite_ {
 }
 
 export class InputStickerSetEmpty_ extends _InputStickerSet_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFFB62B95;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickerSetEmpty"
   }
 
@@ -20497,11 +20497,11 @@ export class InputStickerSetID_ extends _InputStickerSet_ {
   id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9DE7A269;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickerSetID"
   }
 
@@ -20529,11 +20529,11 @@ export class InputStickerSetID_ extends _InputStickerSet_ {
 export class InputStickerSetShortName_ extends _InputStickerSet_ {
   short_name: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x861CC8A0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickerSetShortName"
   }
 
@@ -20556,11 +20556,11 @@ export class InputStickerSetShortName_ extends _InputStickerSet_ {
 }
 
 export class InputStickerSetAnimatedEmoji_ extends _InputStickerSet_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x028703C8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickerSetAnimatedEmoji"
   }
 
@@ -20580,11 +20580,11 @@ export class InputStickerSetAnimatedEmoji_ extends _InputStickerSet_ {
 export class InputStickerSetDice_ extends _InputStickerSet_ {
   emoticon: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE67F520E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickerSetDice"
   }
 
@@ -20607,11 +20607,11 @@ export class InputStickerSetDice_ extends _InputStickerSet_ {
 }
 
 export class InputStickerSetAnimatedEmojiAnimations_ extends _InputStickerSet_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0CDE3739;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickerSetAnimatedEmojiAnimations"
   }
 
@@ -20629,11 +20629,11 @@ export class InputStickerSetAnimatedEmojiAnimations_ extends _InputStickerSet_ {
 }
 
 export class InputStickerSetPremiumGifts_ extends _InputStickerSet_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC88B3B02;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickerSetPremiumGifts"
   }
 
@@ -20651,11 +20651,11 @@ export class InputStickerSetPremiumGifts_ extends _InputStickerSet_ {
 }
 
 export class InputStickerSetEmojiGenericAnimations_ extends _InputStickerSet_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x04C4D4CE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickerSetEmojiGenericAnimations"
   }
 
@@ -20673,11 +20673,11 @@ export class InputStickerSetEmojiGenericAnimations_ extends _InputStickerSet_ {
 }
 
 export class InputStickerSetEmojiDefaultStatuses_ extends _InputStickerSet_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x29D0F5EE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickerSetEmojiDefaultStatuses"
   }
 
@@ -20695,11 +20695,11 @@ export class InputStickerSetEmojiDefaultStatuses_ extends _InputStickerSet_ {
 }
 
 export class InputStickerSetEmojiDefaultTopicIcons_ extends _InputStickerSet_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x44C1F8E9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickerSetEmojiDefaultTopicIcons"
   }
 
@@ -20717,11 +20717,11 @@ export class InputStickerSetEmojiDefaultTopicIcons_ extends _InputStickerSet_ {
 }
 
 export class InputStickerSetEmojiChannelDefaultStatuses_ extends _InputStickerSet_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x49748553;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickerSetEmojiChannelDefaultStatuses"
   }
 
@@ -20759,11 +20759,11 @@ export class StickerSet_ extends _StickerSet_ {
   count: number;
   hash: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2DD14EDC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickerSet"
   }
 
@@ -20847,11 +20847,11 @@ export class messages_StickerSet_ extends _messages_StickerSet_ {
   keywords: Array<enums.StickerKeyword>;
   documents: Array<enums.Document>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6E153F16;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.stickerSet"
   }
 
@@ -20883,11 +20883,11 @@ export class messages_StickerSet_ extends _messages_StickerSet_ {
 }
 
 export class messages_StickerSetNotModified_ extends _messages_StickerSet_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD3F924EB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.stickerSetNotModified"
   }
 
@@ -20908,11 +20908,11 @@ export class BotCommand_ extends _BotCommand_ {
   command: string;
   description: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC27AC8C7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botCommand"
   }
 
@@ -20945,11 +20945,11 @@ export class BotInfo_ extends _BotInfo_ {
   commands?: Array<enums.BotCommand>;
   menu_button?: enums.BotMenuButton;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8F300B57;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botInfo"
   }
 
@@ -20991,11 +20991,11 @@ export class BotInfo_ extends _BotInfo_ {
 export class KeyboardButton_ extends _KeyboardButton_ {
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA2FA4880;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButton"
   }
 
@@ -21021,11 +21021,11 @@ export class KeyboardButtonUrl_ extends _KeyboardButton_ {
   text: string;
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x258AFF05;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonUrl"
   }
 
@@ -21055,11 +21055,11 @@ export class KeyboardButtonCallback_ extends _KeyboardButton_ {
   text: string;
   data: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x35BBDB6B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonCallback"
   }
 
@@ -21092,11 +21092,11 @@ export class KeyboardButtonCallback_ extends _KeyboardButton_ {
 export class KeyboardButtonRequestPhone_ extends _KeyboardButton_ {
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB16A6C29;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonRequestPhone"
   }
 
@@ -21121,11 +21121,11 @@ export class KeyboardButtonRequestPhone_ extends _KeyboardButton_ {
 export class KeyboardButtonRequestGeoLocation_ extends _KeyboardButton_ {
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFC796B3F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonRequestGeoLocation"
   }
 
@@ -21153,11 +21153,11 @@ export class KeyboardButtonSwitchInline_ extends _KeyboardButton_ {
   query: string;
   peer_types?: Array<enums.InlineQueryPeerType>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x93B9FBB5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonSwitchInline"
   }
 
@@ -21193,11 +21193,11 @@ export class KeyboardButtonSwitchInline_ extends _KeyboardButton_ {
 export class KeyboardButtonGame_ extends _KeyboardButton_ {
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x50F41CCF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonGame"
   }
 
@@ -21222,11 +21222,11 @@ export class KeyboardButtonGame_ extends _KeyboardButton_ {
 export class KeyboardButtonBuy_ extends _KeyboardButton_ {
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAFD93FBB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonBuy"
   }
 
@@ -21254,11 +21254,11 @@ export class KeyboardButtonUrlAuth_ extends _KeyboardButton_ {
   url: string;
   button_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x10B78D29;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonUrlAuth"
   }
 
@@ -21298,11 +21298,11 @@ export class InputKeyboardButtonUrlAuth_ extends _KeyboardButton_ {
   url: string;
   bot: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD02E7FD4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputKeyboardButtonUrlAuth"
   }
 
@@ -21342,11 +21342,11 @@ export class KeyboardButtonRequestPoll_ extends _KeyboardButton_ {
   quiz?: boolean;
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBBC7515D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonRequestPoll"
   }
 
@@ -21377,11 +21377,11 @@ export class InputKeyboardButtonUserProfile_ extends _KeyboardButton_ {
   text: string;
   user_id: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE988037B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputKeyboardButtonUserProfile"
   }
 
@@ -21410,11 +21410,11 @@ export class KeyboardButtonUserProfile_ extends _KeyboardButton_ {
   text: string;
   user_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x308660C1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonUserProfile"
   }
 
@@ -21443,11 +21443,11 @@ export class KeyboardButtonWebView_ extends _KeyboardButton_ {
   text: string;
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x13767230;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonWebView"
   }
 
@@ -21476,11 +21476,11 @@ export class KeyboardButtonSimpleWebView_ extends _KeyboardButton_ {
   text: string;
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA0C0505C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonSimpleWebView"
   }
 
@@ -21511,11 +21511,11 @@ export class KeyboardButtonRequestPeer_ extends _KeyboardButton_ {
   peer_type: enums.RequestPeerType;
   max_quantity: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x53D7BFD8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonRequestPeer"
   }
 
@@ -21549,11 +21549,11 @@ export class KeyboardButtonRequestPeer_ extends _KeyboardButton_ {
 export class KeyboardButtonRow_ extends _KeyboardButtonRow_ {
   buttons: Array<enums.KeyboardButton>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x77608B83;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "keyboardButtonRow"
   }
 
@@ -21578,11 +21578,11 @@ export class KeyboardButtonRow_ extends _KeyboardButtonRow_ {
 export class ReplyKeyboardHide_ extends _ReplyMarkup_ {
   selective?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA03E5B85;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "replyKeyboardHide"
   }
 
@@ -21611,11 +21611,11 @@ export class ReplyKeyboardForceReply_ extends _ReplyMarkup_ {
   selective?: true;
   placeholder?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x86B40B08;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "replyKeyboardForceReply"
   }
 
@@ -21653,11 +21653,11 @@ export class ReplyKeyboardMarkup_ extends _ReplyMarkup_ {
   rows: Array<enums.KeyboardButtonRow>;
   placeholder?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x85DD99D1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "replyKeyboardMarkup"
   }
 
@@ -21699,11 +21699,11 @@ export class ReplyKeyboardMarkup_ extends _ReplyMarkup_ {
 export class ReplyInlineMarkup_ extends _ReplyMarkup_ {
   rows: Array<enums.KeyboardButtonRow>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x48A30254;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "replyInlineMarkup"
   }
 
@@ -21729,11 +21729,11 @@ export class MessageEntityUnknown_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBB92BA95;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityUnknown"
   }
 
@@ -21762,11 +21762,11 @@ export class MessageEntityMention_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFA04579D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityMention"
   }
 
@@ -21795,11 +21795,11 @@ export class MessageEntityHashtag_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6F635B0D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityHashtag"
   }
 
@@ -21828,11 +21828,11 @@ export class MessageEntityBotCommand_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6CEF8AC7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityBotCommand"
   }
 
@@ -21861,11 +21861,11 @@ export class MessageEntityUrl_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6ED02538;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityUrl"
   }
 
@@ -21894,11 +21894,11 @@ export class MessageEntityEmail_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x64E475C2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityEmail"
   }
 
@@ -21927,11 +21927,11 @@ export class MessageEntityBold_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBD610BC9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityBold"
   }
 
@@ -21960,11 +21960,11 @@ export class MessageEntityItalic_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x826F8B60;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityItalic"
   }
 
@@ -21993,11 +21993,11 @@ export class MessageEntityCode_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x28A20571;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityCode"
   }
 
@@ -22027,11 +22027,11 @@ export class MessageEntityPre_ extends _MessageEntity_ {
   length: number;
   language: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x73924BE0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityPre"
   }
 
@@ -22064,11 +22064,11 @@ export class MessageEntityTextUrl_ extends _MessageEntity_ {
   length: number;
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x76A6D327;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityTextUrl"
   }
 
@@ -22101,11 +22101,11 @@ export class MessageEntityMentionName_ extends _MessageEntity_ {
   length: number;
   user_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDC7B1140;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityMentionName"
   }
 
@@ -22138,11 +22138,11 @@ export class InputMessageEntityMentionName_ extends _MessageEntity_ {
   length: number;
   user_id: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x208E68C9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessageEntityMentionName"
   }
 
@@ -22174,11 +22174,11 @@ export class MessageEntityPhone_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9B69E34B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityPhone"
   }
 
@@ -22207,11 +22207,11 @@ export class MessageEntityCashtag_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4C4E743F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityCashtag"
   }
 
@@ -22240,11 +22240,11 @@ export class MessageEntityUnderline_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9C4E7E8B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityUnderline"
   }
 
@@ -22273,11 +22273,11 @@ export class MessageEntityStrike_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBF0693D4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityStrike"
   }
 
@@ -22306,11 +22306,11 @@ export class MessageEntityBankCard_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x761E6AF4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityBankCard"
   }
 
@@ -22339,11 +22339,11 @@ export class MessageEntitySpoiler_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x32CA960F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntitySpoiler"
   }
 
@@ -22373,11 +22373,11 @@ export class MessageEntityCustomEmoji_ extends _MessageEntity_ {
   length: number;
   document_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC8CF05F8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityCustomEmoji"
   }
 
@@ -22409,11 +22409,11 @@ export class MessageEntityBlockquote_ extends _MessageEntity_ {
   offset: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x020DF5D0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageEntityBlockquote"
   }
 
@@ -22439,11 +22439,11 @@ export class MessageEntityBlockquote_ extends _MessageEntity_ {
 }
 
 export class InputChannelEmpty_ extends _InputChannel_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEE8C1E86;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputChannelEmpty"
   }
 
@@ -22464,11 +22464,11 @@ export class InputChannel_ extends _InputChannel_ {
   channel_id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF35AEC28;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputChannel"
   }
 
@@ -22498,11 +22498,11 @@ export class InputChannelFromMessage_ extends _InputChannel_ {
   msg_id: number;
   channel_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5B934F9D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputChannelFromMessage"
   }
 
@@ -22535,11 +22535,11 @@ export class contacts_ResolvedPeer_ extends _contacts_ResolvedPeer_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7F077AD9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.resolvedPeer"
   }
 
@@ -22571,11 +22571,11 @@ export class MessageRange_ extends _MessageRange_ {
   min_id: number;
   max_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0AE30253;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageRange"
   }
 
@@ -22605,11 +22605,11 @@ export class updates_ChannelDifferenceEmpty_ extends _updates_ChannelDifference_
   pts: number;
   timeout?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3E11AFFB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updates.channelDifferenceEmpty"
   }
 
@@ -22647,11 +22647,11 @@ export class updates_ChannelDifferenceTooLong_ extends _updates_ChannelDifferenc
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA4BCC6FE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updates.channelDifferenceTooLong"
   }
 
@@ -22699,11 +22699,11 @@ export class updates_ChannelDifference_ extends _updates_ChannelDifference_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2064674E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updates.channelDifference"
   }
 
@@ -22746,11 +22746,11 @@ export class updates_ChannelDifference_ extends _updates_ChannelDifference_ {
 }
 
 export class ChannelMessagesFilterEmpty_ extends _ChannelMessagesFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x94D42EE7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelMessagesFilterEmpty"
   }
 
@@ -22771,11 +22771,11 @@ export class ChannelMessagesFilter_ extends _ChannelMessagesFilter_ {
   exclude_new_messages?: true;
   ranges: Array<enums.MessageRange>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCD77D957;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelMessagesFilter"
   }
 
@@ -22806,11 +22806,11 @@ export class ChannelParticipant_ extends _ChannelParticipant_ {
   user_id: bigint;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC00C07C0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipant"
   }
 
@@ -22841,11 +22841,11 @@ export class ChannelParticipantSelf_ extends _ChannelParticipant_ {
   inviter_id: bigint;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x35A8BFA7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipantSelf"
   }
 
@@ -22883,11 +22883,11 @@ export class ChannelParticipantCreator_ extends _ChannelParticipant_ {
   admin_rights: enums.ChatAdminRights;
   rank?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2FE601D3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipantCreator"
   }
 
@@ -22927,11 +22927,11 @@ export class ChannelParticipantAdmin_ extends _ChannelParticipant_ {
   admin_rights: enums.ChatAdminRights;
   rank?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x34C3BB53;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipantAdmin"
   }
 
@@ -22983,11 +22983,11 @@ export class ChannelParticipantBanned_ extends _ChannelParticipant_ {
   date: number;
   banned_rights: enums.ChatBannedRights;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6DF8014E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipantBanned"
   }
 
@@ -23026,11 +23026,11 @@ export class ChannelParticipantBanned_ extends _ChannelParticipant_ {
 export class ChannelParticipantLeft_ extends _ChannelParticipant_ {
   peer: enums.Peer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1B03F006;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipantLeft"
   }
 
@@ -23053,11 +23053,11 @@ export class ChannelParticipantLeft_ extends _ChannelParticipant_ {
 }
 
 export class ChannelParticipantsRecent_ extends _ChannelParticipantsFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDE3F3C79;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipantsRecent"
   }
 
@@ -23075,11 +23075,11 @@ export class ChannelParticipantsRecent_ extends _ChannelParticipantsFilter_ {
 }
 
 export class ChannelParticipantsAdmins_ extends _ChannelParticipantsFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB4608969;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipantsAdmins"
   }
 
@@ -23099,11 +23099,11 @@ export class ChannelParticipantsAdmins_ extends _ChannelParticipantsFilter_ {
 export class ChannelParticipantsKicked_ extends _ChannelParticipantsFilter_ {
   q: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA3B54985;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipantsKicked"
   }
 
@@ -23126,11 +23126,11 @@ export class ChannelParticipantsKicked_ extends _ChannelParticipantsFilter_ {
 }
 
 export class ChannelParticipantsBots_ extends _ChannelParticipantsFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB0D1865B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipantsBots"
   }
 
@@ -23150,11 +23150,11 @@ export class ChannelParticipantsBots_ extends _ChannelParticipantsFilter_ {
 export class ChannelParticipantsBanned_ extends _ChannelParticipantsFilter_ {
   q: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1427A5E1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipantsBanned"
   }
 
@@ -23179,11 +23179,11 @@ export class ChannelParticipantsBanned_ extends _ChannelParticipantsFilter_ {
 export class ChannelParticipantsSearch_ extends _ChannelParticipantsFilter_ {
   q: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0656AC4B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipantsSearch"
   }
 
@@ -23208,11 +23208,11 @@ export class ChannelParticipantsSearch_ extends _ChannelParticipantsFilter_ {
 export class ChannelParticipantsContacts_ extends _ChannelParticipantsFilter_ {
   q: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBB6AE88D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipantsContacts"
   }
 
@@ -23238,11 +23238,11 @@ export class ChannelParticipantsMentions_ extends _ChannelParticipantsFilter_ {
   q?: string;
   top_msg_id?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE04B5CEB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelParticipantsMentions"
   }
 
@@ -23275,11 +23275,11 @@ export class channels_ChannelParticipants_ extends _channels_ChannelParticipants
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9AB0FEAF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.channelParticipants"
   }
 
@@ -23311,11 +23311,11 @@ export class channels_ChannelParticipants_ extends _channels_ChannelParticipants
 }
 
 export class channels_ChannelParticipantsNotModified_ extends _channels_ChannelParticipants_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF0173FE9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.channelParticipantsNotModified"
   }
 
@@ -23337,11 +23337,11 @@ export class channels_ChannelParticipant_ extends _channels_ChannelParticipant_ 
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDFB80317;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.channelParticipant"
   }
 
@@ -23376,11 +23376,11 @@ export class help_TermsOfService_ extends _help_TermsOfService_ {
   entities: Array<enums.MessageEntity>;
   min_age_confirm?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x780A0310;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.termsOfService"
   }
 
@@ -23417,11 +23417,11 @@ export class help_TermsOfService_ extends _help_TermsOfService_ {
 }
 
 export class messages_SavedGifsNotModified_ extends _messages_SavedGifs_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE8025CA2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.savedGifsNotModified"
   }
 
@@ -23442,11 +23442,11 @@ export class messages_SavedGifs_ extends _messages_SavedGifs_ {
   hash: bigint;
   gifs: Array<enums.Document>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x84A02A0D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.savedGifs"
   }
 
@@ -23477,11 +23477,11 @@ export class InputBotInlineMessageMediaAuto_ extends _InputBotInlineMessage_ {
   entities?: Array<enums.MessageEntity>;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3380C786;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineMessageMediaAuto"
   }
 
@@ -23521,11 +23521,11 @@ export class InputBotInlineMessageText_ extends _InputBotInlineMessage_ {
   entities?: Array<enums.MessageEntity>;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3DCD7A87;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineMessageText"
   }
 
@@ -23568,11 +23568,11 @@ export class InputBotInlineMessageMediaGeo_ extends _InputBotInlineMessage_ {
   proximity_notification_radius?: number;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x96929A85;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineMessageMediaGeo"
   }
 
@@ -23617,11 +23617,11 @@ export class InputBotInlineMessageMediaVenue_ extends _InputBotInlineMessage_ {
   venue_type: string;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x417BBF11;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineMessageMediaVenue"
   }
 
@@ -23670,11 +23670,11 @@ export class InputBotInlineMessageMediaContact_ extends _InputBotInlineMessage_ 
   vcard: string;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA6EDBFFD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineMessageMediaContact"
   }
 
@@ -23713,11 +23713,11 @@ export class InputBotInlineMessageMediaContact_ extends _InputBotInlineMessage_ 
 export class InputBotInlineMessageGame_ extends _InputBotInlineMessage_ {
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4B425864;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineMessageGame"
   }
 
@@ -23751,11 +23751,11 @@ export class InputBotInlineMessageMediaInvoice_ extends _InputBotInlineMessage_ 
   provider_data: enums.DataJSON;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD7E78225;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineMessageMediaInvoice"
   }
 
@@ -23810,11 +23810,11 @@ export class InputBotInlineMessageMediaWebPage_ extends _InputBotInlineMessage_ 
   url: string;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBDDCC510;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineMessageMediaWebPage"
   }
 
@@ -23869,11 +23869,11 @@ export class InputBotInlineResult_ extends _InputBotInlineResult_ {
   content?: enums.InputWebDocument;
   send_message: enums.InputBotInlineMessage;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x88BF9319;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineResult"
   }
 
@@ -23924,11 +23924,11 @@ export class InputBotInlineResultPhoto_ extends _InputBotInlineResult_ {
   photo: enums.InputPhoto;
   send_message: enums.InputBotInlineMessage;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA8D864A7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineResultPhoto"
   }
 
@@ -23967,11 +23967,11 @@ export class InputBotInlineResultDocument_ extends _InputBotInlineResult_ {
   document: enums.InputDocument;
   send_message: enums.InputBotInlineMessage;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFFF8FDC4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineResultDocument"
   }
 
@@ -24015,11 +24015,11 @@ export class InputBotInlineResultGame_ extends _InputBotInlineResult_ {
   short_name: string;
   send_message: enums.InputBotInlineMessage;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4FA417F2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineResultGame"
   }
 
@@ -24053,11 +24053,11 @@ export class BotInlineMessageMediaAuto_ extends _BotInlineMessage_ {
   entities?: Array<enums.MessageEntity>;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x764CF810;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botInlineMessageMediaAuto"
   }
 
@@ -24097,11 +24097,11 @@ export class BotInlineMessageText_ extends _BotInlineMessage_ {
   entities?: Array<enums.MessageEntity>;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8C7F65E2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botInlineMessageText"
   }
 
@@ -24144,11 +24144,11 @@ export class BotInlineMessageMediaGeo_ extends _BotInlineMessage_ {
   proximity_notification_radius?: number;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x051846FD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botInlineMessageMediaGeo"
   }
 
@@ -24193,11 +24193,11 @@ export class BotInlineMessageMediaVenue_ extends _BotInlineMessage_ {
   venue_type: string;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8A86659C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botInlineMessageMediaVenue"
   }
 
@@ -24246,11 +24246,11 @@ export class BotInlineMessageMediaContact_ extends _BotInlineMessage_ {
   vcard: string;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x18D1CDC2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botInlineMessageMediaContact"
   }
 
@@ -24296,11 +24296,11 @@ export class BotInlineMessageMediaInvoice_ extends _BotInlineMessage_ {
   total_amount: bigint;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x354A9B09;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botInlineMessageMediaInvoice"
   }
 
@@ -24356,11 +24356,11 @@ export class BotInlineMessageMediaWebPage_ extends _BotInlineMessage_ {
   url: string;
   reply_markup?: enums.ReplyMarkup;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x809AD9A6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botInlineMessageMediaWebPage"
   }
 
@@ -24418,11 +24418,11 @@ export class BotInlineResult_ extends _BotInlineResult_ {
   content?: enums.WebDocument;
   send_message: enums.BotInlineMessage;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x11965F3A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botInlineResult"
   }
 
@@ -24476,11 +24476,11 @@ export class BotInlineMediaResult_ extends _BotInlineResult_ {
   description?: string;
   send_message: enums.BotInlineMessage;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x17DB940B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botInlineMediaResult"
   }
 
@@ -24532,11 +24532,11 @@ export class messages_BotResults_ extends _messages_BotResults_ {
   cache_time: number;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE021F2F6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.botResults"
   }
 
@@ -24585,11 +24585,11 @@ export class ExportedMessageLink_ extends _ExportedMessageLink_ {
   link: string;
   html: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5DAB1AF4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "exportedMessageLink"
   }
 
@@ -24629,11 +24629,11 @@ export class MessageFwdHeader_ extends _MessageFwdHeader_ {
   saved_date?: number;
   psa_type?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4E4DF4BB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageFwdHeader"
   }
 
@@ -24694,11 +24694,11 @@ export class MessageFwdHeader_ extends _MessageFwdHeader_ {
 }
 
 export class auth_CodeTypeSms_ extends _auth_CodeType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x72A3158C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.codeTypeSms"
   }
 
@@ -24716,11 +24716,11 @@ export class auth_CodeTypeSms_ extends _auth_CodeType_ {
 }
 
 export class auth_CodeTypeCall_ extends _auth_CodeType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x741CD3E3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.codeTypeCall"
   }
 
@@ -24738,11 +24738,11 @@ export class auth_CodeTypeCall_ extends _auth_CodeType_ {
 }
 
 export class auth_CodeTypeFlashCall_ extends _auth_CodeType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x226CCEFB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.codeTypeFlashCall"
   }
 
@@ -24760,11 +24760,11 @@ export class auth_CodeTypeFlashCall_ extends _auth_CodeType_ {
 }
 
 export class auth_CodeTypeMissedCall_ extends _auth_CodeType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD61AD6EE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.codeTypeMissedCall"
   }
 
@@ -24782,11 +24782,11 @@ export class auth_CodeTypeMissedCall_ extends _auth_CodeType_ {
 }
 
 export class auth_CodeTypeFragmentSms_ extends _auth_CodeType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x06ED998C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.codeTypeFragmentSms"
   }
 
@@ -24806,11 +24806,11 @@ export class auth_CodeTypeFragmentSms_ extends _auth_CodeType_ {
 export class auth_SentCodeTypeApp_ extends _auth_SentCodeType_ {
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3DBB5986;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.sentCodeTypeApp"
   }
 
@@ -24835,11 +24835,11 @@ export class auth_SentCodeTypeApp_ extends _auth_SentCodeType_ {
 export class auth_SentCodeTypeSms_ extends _auth_SentCodeType_ {
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC000BBA2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.sentCodeTypeSms"
   }
 
@@ -24864,11 +24864,11 @@ export class auth_SentCodeTypeSms_ extends _auth_SentCodeType_ {
 export class auth_SentCodeTypeCall_ extends _auth_SentCodeType_ {
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5353E5A7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.sentCodeTypeCall"
   }
 
@@ -24893,11 +24893,11 @@ export class auth_SentCodeTypeCall_ extends _auth_SentCodeType_ {
 export class auth_SentCodeTypeFlashCall_ extends _auth_SentCodeType_ {
   pattern: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAB03C6D9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.sentCodeTypeFlashCall"
   }
 
@@ -24923,11 +24923,11 @@ export class auth_SentCodeTypeMissedCall_ extends _auth_SentCodeType_ {
   prefix: string;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x82006484;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.sentCodeTypeMissedCall"
   }
 
@@ -24960,11 +24960,11 @@ export class auth_SentCodeTypeEmailCode_ extends _auth_SentCodeType_ {
   reset_available_period?: number;
   reset_pending_date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF450F59B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.sentCodeTypeEmailCode"
   }
 
@@ -25007,11 +25007,11 @@ export class auth_SentCodeTypeSetUpEmailRequired_ extends _auth_SentCodeType_ {
   apple_signin_allowed?: true;
   google_signin_allowed?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA5491DEA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.sentCodeTypeSetUpEmailRequired"
   }
 
@@ -25042,11 +25042,11 @@ export class auth_SentCodeTypeFragmentSms_ extends _auth_SentCodeType_ {
   url: string;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD9565C39;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.sentCodeTypeFragmentSms"
   }
 
@@ -25077,11 +25077,11 @@ export class auth_SentCodeTypeFirebaseSms_ extends _auth_SentCodeType_ {
   push_timeout?: number;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE57B1432;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.sentCodeTypeFirebaseSms"
   }
 
@@ -25122,11 +25122,11 @@ export class messages_BotCallbackAnswer_ extends _messages_BotCallbackAnswer_ {
   url?: string;
   cache_time: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x36585EA4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.botCallbackAnswer"
   }
 
@@ -25168,11 +25168,11 @@ export class messages_BotCallbackAnswer_ extends _messages_BotCallbackAnswer_ {
 export class messages_MessageEditData_ extends _messages_MessageEditData_ {
   caption?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x26B5DDE6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.messageEditData"
   }
 
@@ -25201,11 +25201,11 @@ export class InputBotInlineMessageID_ extends _InputBotInlineMessageID_ {
   id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x890C3D89;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineMessageID"
   }
 
@@ -25239,11 +25239,11 @@ export class InputBotInlineMessageID64_ extends _InputBotInlineMessageID_ {
   id: number;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB6D915D7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotInlineMessageID64"
   }
 
@@ -25278,11 +25278,11 @@ export class InlineBotSwitchPM_ extends _InlineBotSwitchPM_ {
   text: string;
   start_param: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3C20629F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inlineBotSwitchPM"
   }
 
@@ -25314,11 +25314,11 @@ export class messages_PeerDialogs_ extends _messages_PeerDialogs_ {
   users: Array<enums.User>;
   state: enums.updates.State;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3371C354;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.peerDialogs"
   }
 
@@ -25356,11 +25356,11 @@ export class TopPeer_ extends _TopPeer_ {
   peer: enums.Peer;
   rating: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEDCDC05B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "topPeer"
   }
 
@@ -25386,11 +25386,11 @@ export class TopPeer_ extends _TopPeer_ {
 }
 
 export class TopPeerCategoryBotsPM_ extends _TopPeerCategory_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAB661B5B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "topPeerCategoryBotsPM"
   }
 
@@ -25408,11 +25408,11 @@ export class TopPeerCategoryBotsPM_ extends _TopPeerCategory_ {
 }
 
 export class TopPeerCategoryBotsInline_ extends _TopPeerCategory_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x148677E2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "topPeerCategoryBotsInline"
   }
 
@@ -25430,11 +25430,11 @@ export class TopPeerCategoryBotsInline_ extends _TopPeerCategory_ {
 }
 
 export class TopPeerCategoryCorrespondents_ extends _TopPeerCategory_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0637B7ED;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "topPeerCategoryCorrespondents"
   }
 
@@ -25452,11 +25452,11 @@ export class TopPeerCategoryCorrespondents_ extends _TopPeerCategory_ {
 }
 
 export class TopPeerCategoryGroups_ extends _TopPeerCategory_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBD17A14A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "topPeerCategoryGroups"
   }
 
@@ -25474,11 +25474,11 @@ export class TopPeerCategoryGroups_ extends _TopPeerCategory_ {
 }
 
 export class TopPeerCategoryChannels_ extends _TopPeerCategory_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x161D9628;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "topPeerCategoryChannels"
   }
 
@@ -25496,11 +25496,11 @@ export class TopPeerCategoryChannels_ extends _TopPeerCategory_ {
 }
 
 export class TopPeerCategoryPhoneCalls_ extends _TopPeerCategory_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1E76A78C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "topPeerCategoryPhoneCalls"
   }
 
@@ -25518,11 +25518,11 @@ export class TopPeerCategoryPhoneCalls_ extends _TopPeerCategory_ {
 }
 
 export class TopPeerCategoryForwardUsers_ extends _TopPeerCategory_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA8406CA9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "topPeerCategoryForwardUsers"
   }
 
@@ -25540,11 +25540,11 @@ export class TopPeerCategoryForwardUsers_ extends _TopPeerCategory_ {
 }
 
 export class TopPeerCategoryForwardChats_ extends _TopPeerCategory_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFBEEC0F0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "topPeerCategoryForwardChats"
   }
 
@@ -25566,11 +25566,11 @@ export class TopPeerCategoryPeers_ extends _TopPeerCategoryPeers_ {
   count: number;
   peers: Array<enums.TopPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFB834291;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "topPeerCategoryPeers"
   }
 
@@ -25599,11 +25599,11 @@ export class TopPeerCategoryPeers_ extends _TopPeerCategoryPeers_ {
 }
 
 export class contacts_TopPeersNotModified_ extends _contacts_TopPeers_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDE266EF5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.topPeersNotModified"
   }
 
@@ -25625,11 +25625,11 @@ export class contacts_TopPeers_ extends _contacts_TopPeers_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x70B772A8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.topPeers"
   }
 
@@ -25658,11 +25658,11 @@ export class contacts_TopPeers_ extends _contacts_TopPeers_ {
 }
 
 export class contacts_TopPeersDisabled_ extends _contacts_TopPeers_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB52C939D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.topPeersDisabled"
   }
 
@@ -25682,11 +25682,11 @@ export class contacts_TopPeersDisabled_ extends _contacts_TopPeers_ {
 export class DraftMessageEmpty_ extends _DraftMessage_ {
   date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1B0C841A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "draftMessageEmpty"
   }
 
@@ -25719,11 +25719,11 @@ export class DraftMessage_ extends _DraftMessage_ {
   media?: enums.InputMedia;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3FCCF7EF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "draftMessage"
   }
 
@@ -25768,11 +25768,11 @@ export class DraftMessage_ extends _DraftMessage_ {
 export class messages_FeaturedStickersNotModified_ extends _messages_FeaturedStickers_ {
   count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC6DC0C66;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.featuredStickersNotModified"
   }
 
@@ -25801,11 +25801,11 @@ export class messages_FeaturedStickers_ extends _messages_FeaturedStickers_ {
   sets: Array<enums.StickerSetCovered>;
   unread: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBE382906;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.featuredStickers"
   }
 
@@ -25842,11 +25842,11 @@ export class messages_FeaturedStickers_ extends _messages_FeaturedStickers_ {
 }
 
 export class messages_RecentStickersNotModified_ extends _messages_RecentStickers_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0B17F890;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.recentStickersNotModified"
   }
 
@@ -25869,11 +25869,11 @@ export class messages_RecentStickers_ extends _messages_RecentStickers_ {
   stickers: Array<enums.Document>;
   dates: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x88D37C56;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.recentStickers"
   }
 
@@ -25908,11 +25908,11 @@ export class messages_ArchivedStickers_ extends _messages_ArchivedStickers_ {
   count: number;
   sets: Array<enums.StickerSetCovered>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4FCBA9C8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.archivedStickers"
   }
 
@@ -25938,11 +25938,11 @@ export class messages_ArchivedStickers_ extends _messages_ArchivedStickers_ {
 }
 
 export class messages_StickerSetInstallResultSuccess_ extends _messages_StickerSetInstallResult_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x38641628;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.stickerSetInstallResultSuccess"
   }
 
@@ -25962,11 +25962,11 @@ export class messages_StickerSetInstallResultSuccess_ extends _messages_StickerS
 export class messages_StickerSetInstallResultArchive_ extends _messages_StickerSetInstallResult_ {
   sets: Array<enums.StickerSetCovered>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x35E410A8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.stickerSetInstallResultArchive"
   }
 
@@ -25992,11 +25992,11 @@ export class StickerSetCovered_ extends _StickerSetCovered_ {
   set: enums.StickerSet;
   cover: enums.Document;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6410A5D2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickerSetCovered"
   }
 
@@ -26025,11 +26025,11 @@ export class StickerSetMultiCovered_ extends _StickerSetCovered_ {
   set: enums.StickerSet;
   covers: Array<enums.Document>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3407E51B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickerSetMultiCovered"
   }
 
@@ -26060,11 +26060,11 @@ export class StickerSetFullCovered_ extends _StickerSetCovered_ {
   keywords: Array<enums.StickerKeyword>;
   documents: Array<enums.Document>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x40D13C0E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickerSetFullCovered"
   }
 
@@ -26098,11 +26098,11 @@ export class StickerSetFullCovered_ extends _StickerSetCovered_ {
 export class StickerSetNoCovered_ extends _StickerSetCovered_ {
   set: enums.StickerSet;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x77B15D1C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickerSetNoCovered"
   }
 
@@ -26130,11 +26130,11 @@ export class MaskCoords_ extends _MaskCoords_ {
   y: number;
   zoom: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAED6DBB2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "maskCoords"
   }
 
@@ -26168,11 +26168,11 @@ export class MaskCoords_ extends _MaskCoords_ {
 export class InputStickeredMediaPhoto_ extends _InputStickeredMedia_ {
   id: enums.InputPhoto;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4A992157;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickeredMediaPhoto"
   }
 
@@ -26197,11 +26197,11 @@ export class InputStickeredMediaPhoto_ extends _InputStickeredMedia_ {
 export class InputStickeredMediaDocument_ extends _InputStickeredMedia_ {
   id: enums.InputDocument;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0438865B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickeredMediaDocument"
   }
 
@@ -26232,11 +26232,11 @@ export class Game_ extends _Game_ {
   photo: enums.Photo;
   document?: enums.Document;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBDF9653B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "game"
   }
 
@@ -26282,11 +26282,11 @@ export class InputGameID_ extends _InputGame_ {
   id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x032C3E77;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputGameID"
   }
 
@@ -26315,11 +26315,11 @@ export class InputGameShortName_ extends _InputGame_ {
   bot_id: enums.InputUser;
   short_name: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC331E80A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputGameShortName"
   }
 
@@ -26349,11 +26349,11 @@ export class HighScore_ extends _HighScore_ {
   user_id: bigint;
   score: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x73A379EB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "highScore"
   }
 
@@ -26385,11 +26385,11 @@ export class messages_HighScores_ extends _messages_HighScores_ {
   scores: Array<enums.HighScore>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9A3BFD99;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.highScores"
   }
 
@@ -26415,11 +26415,11 @@ export class messages_HighScores_ extends _messages_HighScores_ {
 }
 
 export class TextEmpty_ extends _RichText_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDC3D824F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textEmpty"
   }
 
@@ -26439,11 +26439,11 @@ export class TextEmpty_ extends _RichText_ {
 export class TextPlain_ extends _RichText_ {
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x744694E0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textPlain"
   }
 
@@ -26468,11 +26468,11 @@ export class TextPlain_ extends _RichText_ {
 export class TextBold_ extends _RichText_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6724ABC4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textBold"
   }
 
@@ -26497,11 +26497,11 @@ export class TextBold_ extends _RichText_ {
 export class TextItalic_ extends _RichText_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD912A59C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textItalic"
   }
 
@@ -26526,11 +26526,11 @@ export class TextItalic_ extends _RichText_ {
 export class TextUnderline_ extends _RichText_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC12622C4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textUnderline"
   }
 
@@ -26555,11 +26555,11 @@ export class TextUnderline_ extends _RichText_ {
 export class TextStrike_ extends _RichText_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9BF8BB95;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textStrike"
   }
 
@@ -26584,11 +26584,11 @@ export class TextStrike_ extends _RichText_ {
 export class TextFixed_ extends _RichText_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6C3F19B9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textFixed"
   }
 
@@ -26615,11 +26615,11 @@ export class TextUrl_ extends _RichText_ {
   url: string;
   webpage_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3C2884C1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textUrl"
   }
 
@@ -26651,11 +26651,11 @@ export class TextEmail_ extends _RichText_ {
   text: enums.RichText;
   email: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDE5A0DD6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textEmail"
   }
 
@@ -26683,11 +26683,11 @@ export class TextEmail_ extends _RichText_ {
 export class TextConcat_ extends _RichText_ {
   texts: Array<enums.RichText>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7E6260D7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textConcat"
   }
 
@@ -26712,11 +26712,11 @@ export class TextConcat_ extends _RichText_ {
 export class TextSubscript_ extends _RichText_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xED6A8504;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textSubscript"
   }
 
@@ -26741,11 +26741,11 @@ export class TextSubscript_ extends _RichText_ {
 export class TextSuperscript_ extends _RichText_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC7FB5E01;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textSuperscript"
   }
 
@@ -26770,11 +26770,11 @@ export class TextSuperscript_ extends _RichText_ {
 export class TextMarked_ extends _RichText_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x034B8621;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textMarked"
   }
 
@@ -26800,11 +26800,11 @@ export class TextPhone_ extends _RichText_ {
   text: enums.RichText;
   phone: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1CCB966A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textPhone"
   }
 
@@ -26834,11 +26834,11 @@ export class TextImage_ extends _RichText_ {
   w: number;
   h: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x081CCF4F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textImage"
   }
 
@@ -26870,11 +26870,11 @@ export class TextAnchor_ extends _RichText_ {
   text: enums.RichText;
   name: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x35553762;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textAnchor"
   }
 
@@ -26900,11 +26900,11 @@ export class TextAnchor_ extends _RichText_ {
 }
 
 export class PageBlockUnsupported_ extends _PageBlock_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x13567E8A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockUnsupported"
   }
 
@@ -26924,11 +26924,11 @@ export class PageBlockUnsupported_ extends _PageBlock_ {
 export class PageBlockTitle_ extends _PageBlock_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x70ABC3FD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockTitle"
   }
 
@@ -26953,11 +26953,11 @@ export class PageBlockTitle_ extends _PageBlock_ {
 export class PageBlockSubtitle_ extends _PageBlock_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8FFA9A1F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockSubtitle"
   }
 
@@ -26983,11 +26983,11 @@ export class PageBlockAuthorDate_ extends _PageBlock_ {
   author: enums.RichText;
   published_date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBAAFE5E0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockAuthorDate"
   }
 
@@ -27015,11 +27015,11 @@ export class PageBlockAuthorDate_ extends _PageBlock_ {
 export class PageBlockHeader_ extends _PageBlock_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBFD064EC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockHeader"
   }
 
@@ -27044,11 +27044,11 @@ export class PageBlockHeader_ extends _PageBlock_ {
 export class PageBlockSubheader_ extends _PageBlock_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF12BB6E1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockSubheader"
   }
 
@@ -27073,11 +27073,11 @@ export class PageBlockSubheader_ extends _PageBlock_ {
 export class PageBlockParagraph_ extends _PageBlock_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x467A0766;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockParagraph"
   }
 
@@ -27103,11 +27103,11 @@ export class PageBlockPreformatted_ extends _PageBlock_ {
   text: enums.RichText;
   language: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC070D93E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockPreformatted"
   }
 
@@ -27135,11 +27135,11 @@ export class PageBlockPreformatted_ extends _PageBlock_ {
 export class PageBlockFooter_ extends _PageBlock_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x48870999;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockFooter"
   }
 
@@ -27162,11 +27162,11 @@ export class PageBlockFooter_ extends _PageBlock_ {
 }
 
 export class PageBlockDivider_ extends _PageBlock_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDB20B188;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockDivider"
   }
 
@@ -27186,11 +27186,11 @@ export class PageBlockDivider_ extends _PageBlock_ {
 export class PageBlockAnchor_ extends _PageBlock_ {
   name: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCE0D37B0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockAnchor"
   }
 
@@ -27215,11 +27215,11 @@ export class PageBlockAnchor_ extends _PageBlock_ {
 export class PageBlockList_ extends _PageBlock_ {
   items: Array<enums.PageListItem>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE4E88011;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockList"
   }
 
@@ -27245,11 +27245,11 @@ export class PageBlockBlockquote_ extends _PageBlock_ {
   text: enums.RichText;
   caption: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x263D7C26;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockBlockquote"
   }
 
@@ -27278,11 +27278,11 @@ export class PageBlockPullquote_ extends _PageBlock_ {
   text: enums.RichText;
   caption: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4F4456D3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockPullquote"
   }
 
@@ -27313,11 +27313,11 @@ export class PageBlockPhoto_ extends _PageBlock_ {
   url?: string;
   webpage_id?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1759C560;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockPhoto"
   }
 
@@ -27356,11 +27356,11 @@ export class PageBlockVideo_ extends _PageBlock_ {
   video_id: bigint;
   caption: enums.PageCaption;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7C8FE7B6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockVideo"
   }
 
@@ -27396,11 +27396,11 @@ export class PageBlockVideo_ extends _PageBlock_ {
 export class PageBlockCover_ extends _PageBlock_ {
   cover: enums.PageBlock;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x39F23300;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockCover"
   }
 
@@ -27432,11 +27432,11 @@ export class PageBlockEmbed_ extends _PageBlock_ {
   h?: number;
   caption: enums.PageCaption;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA8718DC5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockEmbed"
   }
 
@@ -27490,11 +27490,11 @@ export class PageBlockEmbedPost_ extends _PageBlock_ {
   blocks: Array<enums.PageBlock>;
   caption: enums.PageCaption;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF259A80B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockEmbedPost"
   }
 
@@ -27538,11 +27538,11 @@ export class PageBlockCollage_ extends _PageBlock_ {
   items: Array<enums.PageBlock>;
   caption: enums.PageCaption;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x65A0FA4D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockCollage"
   }
 
@@ -27571,11 +27571,11 @@ export class PageBlockSlideshow_ extends _PageBlock_ {
   items: Array<enums.PageBlock>;
   caption: enums.PageCaption;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x031F9590;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockSlideshow"
   }
 
@@ -27603,11 +27603,11 @@ export class PageBlockSlideshow_ extends _PageBlock_ {
 export class PageBlockChannel_ extends _PageBlock_ {
   channel: enums.Chat;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEF1751B5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockChannel"
   }
 
@@ -27633,11 +27633,11 @@ export class PageBlockAudio_ extends _PageBlock_ {
   audio_id: bigint;
   caption: enums.PageCaption;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x804361EA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockAudio"
   }
 
@@ -27665,11 +27665,11 @@ export class PageBlockAudio_ extends _PageBlock_ {
 export class PageBlockKicker_ extends _PageBlock_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1E148390;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockKicker"
   }
 
@@ -27697,11 +27697,11 @@ export class PageBlockTable_ extends _PageBlock_ {
   title: enums.RichText;
   rows: Array<enums.PageTableRow>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBF4DEA82;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockTable"
   }
 
@@ -27737,11 +27737,11 @@ export class PageBlockTable_ extends _PageBlock_ {
 export class PageBlockOrderedList_ extends _PageBlock_ {
   items: Array<enums.PageListOrderedItem>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9A8AE1E1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockOrderedList"
   }
 
@@ -27768,11 +27768,11 @@ export class PageBlockDetails_ extends _PageBlock_ {
   blocks: Array<enums.PageBlock>;
   title: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x76768BED;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockDetails"
   }
 
@@ -27806,11 +27806,11 @@ export class PageBlockRelatedArticles_ extends _PageBlock_ {
   title: enums.RichText;
   articles: Array<enums.PageRelatedArticle>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x16115A96;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockRelatedArticles"
   }
 
@@ -27842,11 +27842,11 @@ export class PageBlockMap_ extends _PageBlock_ {
   h: number;
   caption: enums.PageCaption;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA44F3EF6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageBlockMap"
   }
 
@@ -27881,11 +27881,11 @@ export class PageBlockMap_ extends _PageBlock_ {
 }
 
 export class PhoneCallDiscardReasonMissed_ extends _PhoneCallDiscardReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x85E42301;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phoneCallDiscardReasonMissed"
   }
 
@@ -27903,11 +27903,11 @@ export class PhoneCallDiscardReasonMissed_ extends _PhoneCallDiscardReason_ {
 }
 
 export class PhoneCallDiscardReasonDisconnect_ extends _PhoneCallDiscardReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE095C1A0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phoneCallDiscardReasonDisconnect"
   }
 
@@ -27925,11 +27925,11 @@ export class PhoneCallDiscardReasonDisconnect_ extends _PhoneCallDiscardReason_ 
 }
 
 export class PhoneCallDiscardReasonHangup_ extends _PhoneCallDiscardReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x57ADC690;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phoneCallDiscardReasonHangup"
   }
 
@@ -27947,11 +27947,11 @@ export class PhoneCallDiscardReasonHangup_ extends _PhoneCallDiscardReason_ {
 }
 
 export class PhoneCallDiscardReasonBusy_ extends _PhoneCallDiscardReason_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFAF7E8C9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phoneCallDiscardReasonBusy"
   }
 
@@ -27971,11 +27971,11 @@ export class PhoneCallDiscardReasonBusy_ extends _PhoneCallDiscardReason_ {
 export class DataJSON_ extends _DataJSON_ {
   data: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7D748D04;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "dataJSON"
   }
 
@@ -28001,11 +28001,11 @@ export class LabeledPrice_ extends _LabeledPrice_ {
   label: string;
   amount: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCB296BF8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "labeledPrice"
   }
 
@@ -28046,11 +28046,11 @@ export class Invoice_ extends _Invoice_ {
   suggested_tip_amounts?: Array<bigint>;
   terms_url?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5DB95A15;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "invoice"
   }
 
@@ -28117,11 +28117,11 @@ export class PaymentCharge_ extends _PaymentCharge_ {
   id: string;
   provider_charge_id: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEA02C27E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "paymentCharge"
   }
 
@@ -28154,11 +28154,11 @@ export class PostAddress_ extends _PostAddress_ {
   country_iso2: string;
   post_code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1E8CAAEB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "postAddress"
   }
 
@@ -28201,11 +28201,11 @@ export class PaymentRequestedInfo_ extends _PaymentRequestedInfo_ {
   email?: string;
   shipping_address?: enums.PostAddress;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x909C3F94;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "paymentRequestedInfo"
   }
 
@@ -28242,11 +28242,11 @@ export class PaymentSavedCredentialsCard_ extends _PaymentSavedCredentials_ {
   id: string;
   title: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCDC27A1F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "paymentSavedCredentialsCard"
   }
 
@@ -28278,11 +28278,11 @@ export class WebDocument_ extends _WebDocument_ {
   mime_type: string;
   attributes: Array<enums.DocumentAttribute>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1C570ED1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "webDocument"
   }
 
@@ -28322,11 +28322,11 @@ export class WebDocumentNoProxy_ extends _WebDocument_ {
   mime_type: string;
   attributes: Array<enums.DocumentAttribute>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF9C8BCC6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "webDocumentNoProxy"
   }
 
@@ -28363,11 +28363,11 @@ export class InputWebDocument_ extends _InputWebDocument_ {
   mime_type: string;
   attributes: Array<enums.DocumentAttribute>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9BED434D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputWebDocument"
   }
 
@@ -28402,11 +28402,11 @@ export class InputWebFileLocation_ extends _InputWebFileLocation_ {
   url: string;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC239D686;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputWebFileLocation"
   }
 
@@ -28439,11 +28439,11 @@ export class InputWebFileGeoPointLocation_ extends _InputWebFileLocation_ {
   zoom: number;
   scale: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9F2221C9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputWebFileGeoPointLocation"
   }
 
@@ -28486,11 +28486,11 @@ export class InputWebFileAudioAlbumThumbLocation_ extends _InputWebFileLocation_
   title?: string;
   performer?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF46FE924;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputWebFileAudioAlbumThumbLocation"
   }
 
@@ -28530,11 +28530,11 @@ export class upload_WebFile_ extends _upload_WebFile_ {
   mtime: number;
   bytes: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x21E753BC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "upload.webFile"
   }
 
@@ -28586,11 +28586,11 @@ export class payments_PaymentForm_ extends _payments_PaymentForm_ {
   saved_credentials?: Array<enums.PaymentSavedCredentials>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA0058751;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.paymentForm"
   }
 
@@ -28663,11 +28663,11 @@ export class payments_ValidatedRequestedInfo_ extends _payments_ValidatedRequest
   id?: string;
   shipping_options?: Array<enums.ShippingOption>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD1451883;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.validatedRequestedInfo"
   }
 
@@ -28697,11 +28697,11 @@ export class payments_ValidatedRequestedInfo_ extends _payments_ValidatedRequest
 export class payments_PaymentResult_ extends _payments_PaymentResult_ {
   updates: enums.Updates;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4E5F810D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.paymentResult"
   }
 
@@ -28726,11 +28726,11 @@ export class payments_PaymentResult_ extends _payments_PaymentResult_ {
 export class payments_PaymentVerificationNeeded_ extends _payments_PaymentResult_ {
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD8411139;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.paymentVerificationNeeded"
   }
 
@@ -28768,11 +28768,11 @@ export class payments_PaymentReceipt_ extends _payments_PaymentReceipt_ {
   credentials_title: string;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x70C4FE03;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.paymentReceipt"
   }
 
@@ -28839,11 +28839,11 @@ export class payments_SavedInfo_ extends _payments_SavedInfo_ {
   has_saved_credentials?: true;
   saved_info?: enums.PaymentRequestedInfo;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFB8FE43C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.savedInfo"
   }
 
@@ -28874,11 +28874,11 @@ export class InputPaymentCredentialsSaved_ extends _InputPaymentCredentials_ {
   id: string;
   tmp_password: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC10EB2CF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPaymentCredentialsSaved"
   }
 
@@ -28907,11 +28907,11 @@ export class InputPaymentCredentials_ extends _InputPaymentCredentials_ {
   save?: true;
   data: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3417D728;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPaymentCredentials"
   }
 
@@ -28941,11 +28941,11 @@ export class InputPaymentCredentials_ extends _InputPaymentCredentials_ {
 export class InputPaymentCredentialsApplePay_ extends _InputPaymentCredentials_ {
   payment_data: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0AA1C39F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPaymentCredentialsApplePay"
   }
 
@@ -28970,11 +28970,11 @@ export class InputPaymentCredentialsApplePay_ extends _InputPaymentCredentials_ 
 export class InputPaymentCredentialsGooglePay_ extends _InputPaymentCredentials_ {
   payment_token: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8AC32801;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPaymentCredentialsGooglePay"
   }
 
@@ -29000,11 +29000,11 @@ export class account_TmpPassword_ extends _account_TmpPassword_ {
   tmp_password: Uint8Array;
   valid_until: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDB64FD34;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.tmpPassword"
   }
 
@@ -29034,11 +29034,11 @@ export class ShippingOption_ extends _ShippingOption_ {
   title: string;
   prices: Array<enums.LabeledPrice>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB6213CDF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "shippingOption"
   }
 
@@ -29072,11 +29072,11 @@ export class InputStickerSetItem_ extends _InputStickerSetItem_ {
   mask_coords?: enums.MaskCoords;
   keywords?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x32DA9E9C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStickerSetItem"
   }
 
@@ -29113,11 +29113,11 @@ export class InputPhoneCall_ extends _InputPhoneCall_ {
   id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1E36FDED;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputPhoneCall"
   }
 
@@ -29145,11 +29145,11 @@ export class InputPhoneCall_ extends _InputPhoneCall_ {
 export class PhoneCallEmpty_ extends _PhoneCall_ {
   id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5366C915;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phoneCallEmpty"
   }
 
@@ -29181,11 +29181,11 @@ export class PhoneCallWaiting_ extends _PhoneCall_ {
   protocol: enums.PhoneCallProtocol;
   receive_date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC5226F17;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phoneCallWaiting"
   }
 
@@ -29240,11 +29240,11 @@ export class PhoneCallRequested_ extends _PhoneCall_ {
   g_a_hash: Uint8Array;
   protocol: enums.PhoneCallProtocol;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x14B0ED0C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phoneCallRequested"
   }
 
@@ -29299,11 +29299,11 @@ export class PhoneCallAccepted_ extends _PhoneCall_ {
   g_b: Uint8Array;
   protocol: enums.PhoneCallProtocol;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3660C311;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phoneCallAccepted"
   }
 
@@ -29362,11 +29362,11 @@ export class PhoneCall_ extends _PhoneCall_ {
   connections: Array<enums.PhoneConnection>;
   start_date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x967F7C67;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phoneCall"
   }
 
@@ -29431,11 +29431,11 @@ export class PhoneCallDiscarded_ extends _PhoneCall_ {
   reason?: enums.PhoneCallDiscardReason;
   duration?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x50CA4DE1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phoneCallDiscarded"
   }
 
@@ -29482,11 +29482,11 @@ export class PhoneConnection_ extends _PhoneConnection_ {
   port: number;
   peer_tag: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9CC123C7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phoneConnection"
   }
 
@@ -29535,11 +29535,11 @@ export class PhoneConnectionWebrtc_ extends _PhoneConnection_ {
   username: string;
   password: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x635FE375;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phoneConnectionWebrtc"
   }
 
@@ -29591,11 +29591,11 @@ export class PhoneCallProtocol_ extends _PhoneCallProtocol_ {
   max_layer: number;
   library_versions: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFC878FC8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phoneCallProtocol"
   }
 
@@ -29635,11 +29635,11 @@ export class phone_PhoneCall_ extends _phone_PhoneCall_ {
   phone_call: enums.PhoneCall;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEC82E140;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.phoneCall"
   }
 
@@ -29667,11 +29667,11 @@ export class phone_PhoneCall_ extends _phone_PhoneCall_ {
 export class upload_CdnFileReuploadNeeded_ extends _upload_CdnFile_ {
   request_token: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEEA8E46E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "upload.cdnFileReuploadNeeded"
   }
 
@@ -29696,11 +29696,11 @@ export class upload_CdnFileReuploadNeeded_ extends _upload_CdnFile_ {
 export class upload_CdnFile_ extends _upload_CdnFile_ {
   bytes: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA99FCA4F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "upload.cdnFile"
   }
 
@@ -29726,11 +29726,11 @@ export class CdnPublicKey_ extends _CdnPublicKey_ {
   dc_id: number;
   public_key: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC982EABA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "cdnPublicKey"
   }
 
@@ -29758,11 +29758,11 @@ export class CdnPublicKey_ extends _CdnPublicKey_ {
 export class CdnConfig_ extends _CdnConfig_ {
   public_keys: Array<enums.CdnPublicKey>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5725E40A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "cdnConfig"
   }
 
@@ -29788,11 +29788,11 @@ export class LangPackString_ extends _LangPackString_ {
   key: string;
   value: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCAD181F6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "langPackString"
   }
 
@@ -29826,11 +29826,11 @@ export class LangPackStringPluralized_ extends _LangPackString_ {
   many_value?: string;
   other_value: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6C47AC9F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "langPackStringPluralized"
   }
 
@@ -29875,11 +29875,11 @@ export class LangPackStringPluralized_ extends _LangPackString_ {
 export class LangPackStringDeleted_ extends _LangPackString_ {
   key: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2979EEB2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "langPackStringDeleted"
   }
 
@@ -29907,11 +29907,11 @@ export class LangPackDifference_ extends _LangPackDifference_ {
   version: number;
   strings: Array<enums.LangPackString>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF385C1F6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "langPackDifference"
   }
 
@@ -29955,11 +29955,11 @@ export class LangPackLanguage_ extends _LangPackLanguage_ {
   translated_count: number;
   translations_url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEECA5CE3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "langPackLanguage"
   }
 
@@ -30017,11 +30017,11 @@ export class ChannelAdminLogEventActionChangeTitle_ extends _ChannelAdminLogEven
   prev_value: string;
   new_value: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE6DFB825;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangeTitle"
   }
 
@@ -30050,11 +30050,11 @@ export class ChannelAdminLogEventActionChangeAbout_ extends _ChannelAdminLogEven
   prev_value: string;
   new_value: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x55188A2E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangeAbout"
   }
 
@@ -30083,11 +30083,11 @@ export class ChannelAdminLogEventActionChangeUsername_ extends _ChannelAdminLogE
   prev_value: string;
   new_value: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6A4AFC38;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangeUsername"
   }
 
@@ -30116,11 +30116,11 @@ export class ChannelAdminLogEventActionChangePhoto_ extends _ChannelAdminLogEven
   prev_photo: enums.Photo;
   new_photo: enums.Photo;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x434BD2AF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangePhoto"
   }
 
@@ -30148,11 +30148,11 @@ export class ChannelAdminLogEventActionChangePhoto_ extends _ChannelAdminLogEven
 export class ChannelAdminLogEventActionToggleInvites_ extends _ChannelAdminLogEventAction_ {
   new_value: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1B7907AE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionToggleInvites"
   }
 
@@ -30177,11 +30177,11 @@ export class ChannelAdminLogEventActionToggleInvites_ extends _ChannelAdminLogEv
 export class ChannelAdminLogEventActionToggleSignatures_ extends _ChannelAdminLogEventAction_ {
   new_value: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x26AE0971;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionToggleSignatures"
   }
 
@@ -30206,11 +30206,11 @@ export class ChannelAdminLogEventActionToggleSignatures_ extends _ChannelAdminLo
 export class ChannelAdminLogEventActionUpdatePinned_ extends _ChannelAdminLogEventAction_ {
   message: enums.Message;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE9E82C18;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionUpdatePinned"
   }
 
@@ -30236,11 +30236,11 @@ export class ChannelAdminLogEventActionEditMessage_ extends _ChannelAdminLogEven
   prev_message: enums.Message;
   new_message: enums.Message;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x709B2405;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionEditMessage"
   }
 
@@ -30268,11 +30268,11 @@ export class ChannelAdminLogEventActionEditMessage_ extends _ChannelAdminLogEven
 export class ChannelAdminLogEventActionDeleteMessage_ extends _ChannelAdminLogEventAction_ {
   message: enums.Message;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x42E047BB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionDeleteMessage"
   }
 
@@ -30295,11 +30295,11 @@ export class ChannelAdminLogEventActionDeleteMessage_ extends _ChannelAdminLogEv
 }
 
 export class ChannelAdminLogEventActionParticipantJoin_ extends _ChannelAdminLogEventAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x183040D3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionParticipantJoin"
   }
 
@@ -30317,11 +30317,11 @@ export class ChannelAdminLogEventActionParticipantJoin_ extends _ChannelAdminLog
 }
 
 export class ChannelAdminLogEventActionParticipantLeave_ extends _ChannelAdminLogEventAction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF89777F2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionParticipantLeave"
   }
 
@@ -30341,11 +30341,11 @@ export class ChannelAdminLogEventActionParticipantLeave_ extends _ChannelAdminLo
 export class ChannelAdminLogEventActionParticipantInvite_ extends _ChannelAdminLogEventAction_ {
   participant: enums.ChannelParticipant;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE31C34D8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionParticipantInvite"
   }
 
@@ -30371,11 +30371,11 @@ export class ChannelAdminLogEventActionParticipantToggleBan_ extends _ChannelAdm
   prev_participant: enums.ChannelParticipant;
   new_participant: enums.ChannelParticipant;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE6D83D7E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionParticipantToggleBan"
   }
 
@@ -30404,11 +30404,11 @@ export class ChannelAdminLogEventActionParticipantToggleAdmin_ extends _ChannelA
   prev_participant: enums.ChannelParticipant;
   new_participant: enums.ChannelParticipant;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD5676710;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionParticipantToggleAdmin"
   }
 
@@ -30437,11 +30437,11 @@ export class ChannelAdminLogEventActionChangeStickerSet_ extends _ChannelAdminLo
   prev_stickerset: enums.InputStickerSet;
   new_stickerset: enums.InputStickerSet;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB1C3CAA7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangeStickerSet"
   }
 
@@ -30469,11 +30469,11 @@ export class ChannelAdminLogEventActionChangeStickerSet_ extends _ChannelAdminLo
 export class ChannelAdminLogEventActionTogglePreHistoryHidden_ extends _ChannelAdminLogEventAction_ {
   new_value: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5F5C95F1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionTogglePreHistoryHidden"
   }
 
@@ -30499,11 +30499,11 @@ export class ChannelAdminLogEventActionDefaultBannedRights_ extends _ChannelAdmi
   prev_banned_rights: enums.ChatBannedRights;
   new_banned_rights: enums.ChatBannedRights;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2DF5FC0A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionDefaultBannedRights"
   }
 
@@ -30531,11 +30531,11 @@ export class ChannelAdminLogEventActionDefaultBannedRights_ extends _ChannelAdmi
 export class ChannelAdminLogEventActionStopPoll_ extends _ChannelAdminLogEventAction_ {
   message: enums.Message;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8F079643;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionStopPoll"
   }
 
@@ -30561,11 +30561,11 @@ export class ChannelAdminLogEventActionChangeLinkedChat_ extends _ChannelAdminLo
   prev_value: bigint;
   new_value: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x050C7AC8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangeLinkedChat"
   }
 
@@ -30594,11 +30594,11 @@ export class ChannelAdminLogEventActionChangeLocation_ extends _ChannelAdminLogE
   prev_value: enums.ChannelLocation;
   new_value: enums.ChannelLocation;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0E6B76AE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangeLocation"
   }
 
@@ -30627,11 +30627,11 @@ export class ChannelAdminLogEventActionToggleSlowMode_ extends _ChannelAdminLogE
   prev_value: number;
   new_value: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x53909779;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionToggleSlowMode"
   }
 
@@ -30659,11 +30659,11 @@ export class ChannelAdminLogEventActionToggleSlowMode_ extends _ChannelAdminLogE
 export class ChannelAdminLogEventActionStartGroupCall_ extends _ChannelAdminLogEventAction_ {
   call: enums.InputGroupCall;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x23209745;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionStartGroupCall"
   }
 
@@ -30688,11 +30688,11 @@ export class ChannelAdminLogEventActionStartGroupCall_ extends _ChannelAdminLogE
 export class ChannelAdminLogEventActionDiscardGroupCall_ extends _ChannelAdminLogEventAction_ {
   call: enums.InputGroupCall;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDB9F9140;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionDiscardGroupCall"
   }
 
@@ -30717,11 +30717,11 @@ export class ChannelAdminLogEventActionDiscardGroupCall_ extends _ChannelAdminLo
 export class ChannelAdminLogEventActionParticipantMute_ extends _ChannelAdminLogEventAction_ {
   participant: enums.GroupCallParticipant;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF92424D2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionParticipantMute"
   }
 
@@ -30746,11 +30746,11 @@ export class ChannelAdminLogEventActionParticipantMute_ extends _ChannelAdminLog
 export class ChannelAdminLogEventActionParticipantUnmute_ extends _ChannelAdminLogEventAction_ {
   participant: enums.GroupCallParticipant;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE64429C0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionParticipantUnmute"
   }
 
@@ -30775,11 +30775,11 @@ export class ChannelAdminLogEventActionParticipantUnmute_ extends _ChannelAdminL
 export class ChannelAdminLogEventActionToggleGroupCallSetting_ extends _ChannelAdminLogEventAction_ {
   join_muted: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x56D6A247;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionToggleGroupCallSetting"
   }
 
@@ -30805,11 +30805,11 @@ export class ChannelAdminLogEventActionParticipantJoinByInvite_ extends _Channel
   via_chatlist?: true;
   invite: enums.ExportedChatInvite;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFE9FC158;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionParticipantJoinByInvite"
   }
 
@@ -30839,11 +30839,11 @@ export class ChannelAdminLogEventActionParticipantJoinByInvite_ extends _Channel
 export class ChannelAdminLogEventActionExportedInviteDelete_ extends _ChannelAdminLogEventAction_ {
   invite: enums.ExportedChatInvite;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5A50FCA4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionExportedInviteDelete"
   }
 
@@ -30868,11 +30868,11 @@ export class ChannelAdminLogEventActionExportedInviteDelete_ extends _ChannelAdm
 export class ChannelAdminLogEventActionExportedInviteRevoke_ extends _ChannelAdminLogEventAction_ {
   invite: enums.ExportedChatInvite;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x410A134E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionExportedInviteRevoke"
   }
 
@@ -30898,11 +30898,11 @@ export class ChannelAdminLogEventActionExportedInviteEdit_ extends _ChannelAdmin
   prev_invite: enums.ExportedChatInvite;
   new_invite: enums.ExportedChatInvite;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE90EBB59;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionExportedInviteEdit"
   }
 
@@ -30930,11 +30930,11 @@ export class ChannelAdminLogEventActionExportedInviteEdit_ extends _ChannelAdmin
 export class ChannelAdminLogEventActionParticipantVolume_ extends _ChannelAdminLogEventAction_ {
   participant: enums.GroupCallParticipant;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3E7F6847;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionParticipantVolume"
   }
 
@@ -30960,11 +30960,11 @@ export class ChannelAdminLogEventActionChangeHistoryTTL_ extends _ChannelAdminLo
   prev_value: number;
   new_value: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6E941A38;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangeHistoryTTL"
   }
 
@@ -30993,11 +30993,11 @@ export class ChannelAdminLogEventActionParticipantJoinByRequest_ extends _Channe
   invite: enums.ExportedChatInvite;
   approved_by: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAFB6144A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionParticipantJoinByRequest"
   }
 
@@ -31025,11 +31025,11 @@ export class ChannelAdminLogEventActionParticipantJoinByRequest_ extends _Channe
 export class ChannelAdminLogEventActionToggleNoForwards_ extends _ChannelAdminLogEventAction_ {
   new_value: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCB2AC766;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionToggleNoForwards"
   }
 
@@ -31054,11 +31054,11 @@ export class ChannelAdminLogEventActionToggleNoForwards_ extends _ChannelAdminLo
 export class ChannelAdminLogEventActionSendMessage_ extends _ChannelAdminLogEventAction_ {
   message: enums.Message;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x278F2868;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionSendMessage"
   }
 
@@ -31084,11 +31084,11 @@ export class ChannelAdminLogEventActionChangeAvailableReactions_ extends _Channe
   prev_value: enums.ChatReactions;
   new_value: enums.ChatReactions;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBE4E0EF8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangeAvailableReactions"
   }
 
@@ -31117,11 +31117,11 @@ export class ChannelAdminLogEventActionChangeUsernames_ extends _ChannelAdminLog
   prev_value: Array<string>;
   new_value: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF04FB3A9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangeUsernames"
   }
 
@@ -31149,11 +31149,11 @@ export class ChannelAdminLogEventActionChangeUsernames_ extends _ChannelAdminLog
 export class ChannelAdminLogEventActionToggleForum_ extends _ChannelAdminLogEventAction_ {
   new_value: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x02CC6383;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionToggleForum"
   }
 
@@ -31178,11 +31178,11 @@ export class ChannelAdminLogEventActionToggleForum_ extends _ChannelAdminLogEven
 export class ChannelAdminLogEventActionCreateTopic_ extends _ChannelAdminLogEventAction_ {
   topic: enums.ForumTopic;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x58707D28;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionCreateTopic"
   }
 
@@ -31208,11 +31208,11 @@ export class ChannelAdminLogEventActionEditTopic_ extends _ChannelAdminLogEventA
   prev_topic: enums.ForumTopic;
   new_topic: enums.ForumTopic;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF06FE208;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionEditTopic"
   }
 
@@ -31240,11 +31240,11 @@ export class ChannelAdminLogEventActionEditTopic_ extends _ChannelAdminLogEventA
 export class ChannelAdminLogEventActionDeleteTopic_ extends _ChannelAdminLogEventAction_ {
   topic: enums.ForumTopic;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAE168909;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionDeleteTopic"
   }
 
@@ -31270,11 +31270,11 @@ export class ChannelAdminLogEventActionPinTopic_ extends _ChannelAdminLogEventAc
   prev_topic?: enums.ForumTopic;
   new_topic?: enums.ForumTopic;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5D8D353B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionPinTopic"
   }
 
@@ -31304,11 +31304,11 @@ export class ChannelAdminLogEventActionPinTopic_ extends _ChannelAdminLogEventAc
 export class ChannelAdminLogEventActionToggleAntiSpam_ extends _ChannelAdminLogEventAction_ {
   new_value: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x64F36DFC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionToggleAntiSpam"
   }
 
@@ -31334,11 +31334,11 @@ export class ChannelAdminLogEventActionChangePeerColor_ extends _ChannelAdminLog
   prev_value: enums.PeerColor;
   new_value: enums.PeerColor;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5796E780;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangePeerColor"
   }
 
@@ -31367,11 +31367,11 @@ export class ChannelAdminLogEventActionChangeProfilePeerColor_ extends _ChannelA
   prev_value: enums.PeerColor;
   new_value: enums.PeerColor;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5E477B25;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangeProfilePeerColor"
   }
 
@@ -31400,11 +31400,11 @@ export class ChannelAdminLogEventActionChangeWallpaper_ extends _ChannelAdminLog
   prev_value: enums.WallPaper;
   new_value: enums.WallPaper;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x31BB5D52;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangeWallpaper"
   }
 
@@ -31433,11 +31433,11 @@ export class ChannelAdminLogEventActionChangeEmojiStatus_ extends _ChannelAdminL
   prev_value: enums.EmojiStatus;
   new_value: enums.EmojiStatus;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3EA9FEB1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangeEmojiStatus"
   }
 
@@ -31466,11 +31466,11 @@ export class ChannelAdminLogEventActionChangeEmojiStickerSet_ extends _ChannelAd
   prev_stickerset: enums.InputStickerSet;
   new_stickerset: enums.InputStickerSet;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x46D840AB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventActionChangeEmojiStickerSet"
   }
 
@@ -31501,11 +31501,11 @@ export class ChannelAdminLogEvent_ extends _ChannelAdminLogEvent_ {
   user_id: bigint;
   action: enums.ChannelAdminLogEventAction;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1FAD68CD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEvent"
   }
 
@@ -31541,11 +31541,11 @@ export class channels_AdminLogResults_ extends _channels_AdminLogResults_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xED8AF74D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.adminLogResults"
   }
 
@@ -31593,11 +31593,11 @@ export class ChannelAdminLogEventsFilter_ extends _ChannelAdminLogEventsFilter_ 
   send?: true;
   forums?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEA107AE4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelAdminLogEventsFilter"
   }
 
@@ -31676,11 +31676,11 @@ export class PopularContact_ extends _PopularContact_ {
   client_id: bigint;
   importers: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5CE14175;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "popularContact"
   }
 
@@ -31706,11 +31706,11 @@ export class PopularContact_ extends _PopularContact_ {
 }
 
 export class messages_FavedStickersNotModified_ extends _messages_FavedStickers_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9E8FA6D3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.favedStickersNotModified"
   }
 
@@ -31732,11 +31732,11 @@ export class messages_FavedStickers_ extends _messages_FavedStickers_ {
   packs: Array<enums.StickerPack>;
   stickers: Array<enums.Document>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2CB51097;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.favedStickers"
   }
 
@@ -31767,11 +31767,11 @@ export class messages_FavedStickers_ extends _messages_FavedStickers_ {
 export class RecentMeUrlUnknown_ extends _RecentMeUrl_ {
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x46E1D13D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "recentMeUrlUnknown"
   }
 
@@ -31797,11 +31797,11 @@ export class RecentMeUrlUser_ extends _RecentMeUrl_ {
   url: string;
   user_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB92C09E2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "recentMeUrlUser"
   }
 
@@ -31830,11 +31830,11 @@ export class RecentMeUrlChat_ extends _RecentMeUrl_ {
   url: string;
   chat_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB2DA71D2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "recentMeUrlChat"
   }
 
@@ -31863,11 +31863,11 @@ export class RecentMeUrlChatInvite_ extends _RecentMeUrl_ {
   url: string;
   chat_invite: enums.ChatInvite;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEB49081D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "recentMeUrlChatInvite"
   }
 
@@ -31896,11 +31896,11 @@ export class RecentMeUrlStickerSet_ extends _RecentMeUrl_ {
   url: string;
   set: enums.StickerSetCovered;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBC0A57DC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "recentMeUrlStickerSet"
   }
 
@@ -31930,11 +31930,11 @@ export class help_RecentMeUrls_ extends _help_RecentMeUrls_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0E0310D7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.recentMeUrls"
   }
 
@@ -31968,11 +31968,11 @@ export class InputSingleMedia_ extends _InputSingleMedia_ {
   message: string;
   entities?: Array<enums.MessageEntity>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1CC6E91F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputSingleMedia"
   }
 
@@ -32016,11 +32016,11 @@ export class WebAuthorization_ extends _WebAuthorization_ {
   ip: string;
   region: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA6F8F452;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "webAuthorization"
   }
 
@@ -32070,11 +32070,11 @@ export class account_WebAuthorizations_ extends _account_WebAuthorizations_ {
   authorizations: Array<enums.WebAuthorization>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xED56C9FC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.webAuthorizations"
   }
 
@@ -32102,11 +32102,11 @@ export class account_WebAuthorizations_ extends _account_WebAuthorizations_ {
 export class InputMessageID_ extends _InputMessage_ {
   id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA676A322;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessageID"
   }
 
@@ -32131,11 +32131,11 @@ export class InputMessageID_ extends _InputMessage_ {
 export class InputMessageReplyTo_ extends _InputMessage_ {
   id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBAD88395;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessageReplyTo"
   }
 
@@ -32158,11 +32158,11 @@ export class InputMessageReplyTo_ extends _InputMessage_ {
 }
 
 export class InputMessagePinned_ extends _InputMessage_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x86872538;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessagePinned"
   }
 
@@ -32183,11 +32183,11 @@ export class InputMessageCallbackQuery_ extends _InputMessage_ {
   id: number;
   query_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xACFA1A7E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMessageCallbackQuery"
   }
 
@@ -32215,11 +32215,11 @@ export class InputMessageCallbackQuery_ extends _InputMessage_ {
 export class InputDialogPeer_ extends _InputDialogPeer_ {
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFCAAFEB7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputDialogPeer"
   }
 
@@ -32244,11 +32244,11 @@ export class InputDialogPeer_ extends _InputDialogPeer_ {
 export class InputDialogPeerFolder_ extends _InputDialogPeer_ {
   folder_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x64600527;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputDialogPeerFolder"
   }
 
@@ -32273,11 +32273,11 @@ export class InputDialogPeerFolder_ extends _InputDialogPeer_ {
 export class DialogPeer_ extends _DialogPeer_ {
   peer: enums.Peer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE56DBF05;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "dialogPeer"
   }
 
@@ -32302,11 +32302,11 @@ export class DialogPeer_ extends _DialogPeer_ {
 export class DialogPeerFolder_ extends _DialogPeer_ {
   folder_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x514519E2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "dialogPeerFolder"
   }
 
@@ -32329,11 +32329,11 @@ export class DialogPeerFolder_ extends _DialogPeer_ {
 }
 
 export class messages_FoundStickerSetsNotModified_ extends _messages_FoundStickerSets_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0D54B65D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.foundStickerSetsNotModified"
   }
 
@@ -32354,11 +32354,11 @@ export class messages_FoundStickerSets_ extends _messages_FoundStickerSets_ {
   hash: bigint;
   sets: Array<enums.StickerSetCovered>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8AF09DD2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.foundStickerSets"
   }
 
@@ -32388,11 +32388,11 @@ export class FileHash_ extends _FileHash_ {
   limit: number;
   hash: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF39B035C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "fileHash"
   }
 
@@ -32424,11 +32424,11 @@ export class InputClientProxy_ extends _InputClientProxy_ {
   address: string;
   port: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x75588B3F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputClientProxy"
   }
 
@@ -32456,11 +32456,11 @@ export class InputClientProxy_ extends _InputClientProxy_ {
 export class help_TermsOfServiceUpdateEmpty_ extends _help_TermsOfServiceUpdate_ {
   expires: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE3309F7F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.termsOfServiceUpdateEmpty"
   }
 
@@ -32486,11 +32486,11 @@ export class help_TermsOfServiceUpdate_ extends _help_TermsOfServiceUpdate_ {
   expires: number;
   terms_of_service: enums.help.TermsOfService;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x28ECF961;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.termsOfServiceUpdate"
   }
 
@@ -32522,11 +32522,11 @@ export class InputSecureFileUploaded_ extends _InputSecureFile_ {
   file_hash: Uint8Array;
   secret: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3334B0F0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputSecureFileUploaded"
   }
 
@@ -32564,11 +32564,11 @@ export class InputSecureFile_ extends _InputSecureFile_ {
   id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5367E5BE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputSecureFile"
   }
 
@@ -32594,11 +32594,11 @@ export class InputSecureFile_ extends _InputSecureFile_ {
 }
 
 export class SecureFileEmpty_ extends _SecureFile_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x64199744;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureFileEmpty"
   }
 
@@ -32624,11 +32624,11 @@ export class SecureFile_ extends _SecureFile_ {
   file_hash: Uint8Array;
   secret: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7D09C27E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureFile"
   }
 
@@ -32673,11 +32673,11 @@ export class SecureData_ extends _SecureData_ {
   data_hash: Uint8Array;
   secret: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8AEABEC3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureData"
   }
 
@@ -32708,11 +32708,11 @@ export class SecureData_ extends _SecureData_ {
 export class SecurePlainPhone_ extends _SecurePlainData_ {
   phone: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7D6099DD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "securePlainPhone"
   }
 
@@ -32737,11 +32737,11 @@ export class SecurePlainPhone_ extends _SecurePlainData_ {
 export class SecurePlainEmail_ extends _SecurePlainData_ {
   email: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x21EC5A5F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "securePlainEmail"
   }
 
@@ -32764,11 +32764,11 @@ export class SecurePlainEmail_ extends _SecurePlainData_ {
 }
 
 export class SecureValueTypePersonalDetails_ extends _SecureValueType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9D2A81E3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueTypePersonalDetails"
   }
 
@@ -32786,11 +32786,11 @@ export class SecureValueTypePersonalDetails_ extends _SecureValueType_ {
 }
 
 export class SecureValueTypePassport_ extends _SecureValueType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3DAC6A00;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueTypePassport"
   }
 
@@ -32808,11 +32808,11 @@ export class SecureValueTypePassport_ extends _SecureValueType_ {
 }
 
 export class SecureValueTypeDriverLicense_ extends _SecureValueType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x06E425C4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueTypeDriverLicense"
   }
 
@@ -32830,11 +32830,11 @@ export class SecureValueTypeDriverLicense_ extends _SecureValueType_ {
 }
 
 export class SecureValueTypeIdentityCard_ extends _SecureValueType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA0D0744B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueTypeIdentityCard"
   }
 
@@ -32852,11 +32852,11 @@ export class SecureValueTypeIdentityCard_ extends _SecureValueType_ {
 }
 
 export class SecureValueTypeInternalPassport_ extends _SecureValueType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x99A48F23;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueTypeInternalPassport"
   }
 
@@ -32874,11 +32874,11 @@ export class SecureValueTypeInternalPassport_ extends _SecureValueType_ {
 }
 
 export class SecureValueTypeAddress_ extends _SecureValueType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCBE31E26;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueTypeAddress"
   }
 
@@ -32896,11 +32896,11 @@ export class SecureValueTypeAddress_ extends _SecureValueType_ {
 }
 
 export class SecureValueTypeUtilityBill_ extends _SecureValueType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFC36954E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueTypeUtilityBill"
   }
 
@@ -32918,11 +32918,11 @@ export class SecureValueTypeUtilityBill_ extends _SecureValueType_ {
 }
 
 export class SecureValueTypeBankStatement_ extends _SecureValueType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x89137C0D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueTypeBankStatement"
   }
 
@@ -32940,11 +32940,11 @@ export class SecureValueTypeBankStatement_ extends _SecureValueType_ {
 }
 
 export class SecureValueTypeRentalAgreement_ extends _SecureValueType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8B883488;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueTypeRentalAgreement"
   }
 
@@ -32962,11 +32962,11 @@ export class SecureValueTypeRentalAgreement_ extends _SecureValueType_ {
 }
 
 export class SecureValueTypePassportRegistration_ extends _SecureValueType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x99E3806A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueTypePassportRegistration"
   }
 
@@ -32984,11 +32984,11 @@ export class SecureValueTypePassportRegistration_ extends _SecureValueType_ {
 }
 
 export class SecureValueTypeTemporaryRegistration_ extends _SecureValueType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEA02EC33;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueTypeTemporaryRegistration"
   }
 
@@ -33006,11 +33006,11 @@ export class SecureValueTypeTemporaryRegistration_ extends _SecureValueType_ {
 }
 
 export class SecureValueTypePhone_ extends _SecureValueType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB320AADB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueTypePhone"
   }
 
@@ -33028,11 +33028,11 @@ export class SecureValueTypePhone_ extends _SecureValueType_ {
 }
 
 export class SecureValueTypeEmail_ extends _SecureValueType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8E3CA7EE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueTypeEmail"
   }
 
@@ -33060,11 +33060,11 @@ export class SecureValue_ extends _SecureValue_ {
   plain_data?: enums.SecurePlainData;
   hash: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x187FA0CA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValue"
   }
 
@@ -33122,11 +33122,11 @@ export class InputSecureValue_ extends _InputSecureValue_ {
   files?: Array<enums.InputSecureFile>;
   plain_data?: enums.SecurePlainData;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDB21D0A7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputSecureValue"
   }
 
@@ -33175,11 +33175,11 @@ export class SecureValueHash_ extends _SecureValueHash_ {
   type: enums.SecureValueType;
   hash: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xED1ECDB0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueHash"
   }
 
@@ -33210,11 +33210,11 @@ export class SecureValueErrorData_ extends _SecureValueError_ {
   field: string;
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE8A40BD9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueErrorData"
   }
 
@@ -33250,11 +33250,11 @@ export class SecureValueErrorFrontSide_ extends _SecureValueError_ {
   file_hash: Uint8Array;
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x00BE3DFA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueErrorFrontSide"
   }
 
@@ -33287,11 +33287,11 @@ export class SecureValueErrorReverseSide_ extends _SecureValueError_ {
   file_hash: Uint8Array;
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x868A2AA5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueErrorReverseSide"
   }
 
@@ -33324,11 +33324,11 @@ export class SecureValueErrorSelfie_ extends _SecureValueError_ {
   file_hash: Uint8Array;
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE537CED6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueErrorSelfie"
   }
 
@@ -33361,11 +33361,11 @@ export class SecureValueErrorFile_ extends _SecureValueError_ {
   file_hash: Uint8Array;
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7A700873;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueErrorFile"
   }
 
@@ -33398,11 +33398,11 @@ export class SecureValueErrorFiles_ extends _SecureValueError_ {
   file_hash: Array<Uint8Array>;
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x666220E9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueErrorFiles"
   }
 
@@ -33435,11 +33435,11 @@ export class SecureValueError_ extends _SecureValueError_ {
   hash: Uint8Array;
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x869D758F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueError"
   }
 
@@ -33472,11 +33472,11 @@ export class SecureValueErrorTranslationFile_ extends _SecureValueError_ {
   file_hash: Uint8Array;
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA1144770;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueErrorTranslationFile"
   }
 
@@ -33509,11 +33509,11 @@ export class SecureValueErrorTranslationFiles_ extends _SecureValueError_ {
   file_hash: Array<Uint8Array>;
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x34636DD8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureValueErrorTranslationFiles"
   }
 
@@ -33546,11 +33546,11 @@ export class SecureCredentialsEncrypted_ extends _SecureCredentialsEncrypted_ {
   hash: Uint8Array;
   secret: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x33F0EA47;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureCredentialsEncrypted"
   }
 
@@ -33585,11 +33585,11 @@ export class account_AuthorizationForm_ extends _account_AuthorizationForm_ {
   users: Array<enums.User>;
   privacy_policy_url?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAD2E1CD8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.authorizationForm"
   }
 
@@ -33629,11 +33629,11 @@ export class account_SentEmailCode_ extends _account_SentEmailCode_ {
   email_pattern: string;
   length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x811F854F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.sentEmailCode"
   }
 
@@ -33659,11 +33659,11 @@ export class account_SentEmailCode_ extends _account_SentEmailCode_ {
 }
 
 export class help_DeepLinkInfoEmpty_ extends _help_DeepLinkInfo_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x66AFA166;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.deepLinkInfoEmpty"
   }
 
@@ -33685,11 +33685,11 @@ export class help_DeepLinkInfo_ extends _help_DeepLinkInfo_ {
   message: string;
   entities?: Array<enums.MessageEntity>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6A4EE832;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.deepLinkInfo"
   }
 
@@ -33725,11 +33725,11 @@ export class SavedPhoneContact_ extends _SavedContact_ {
   last_name: string;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1142BD56;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "savedPhoneContact"
   }
 
@@ -33763,11 +33763,11 @@ export class SavedPhoneContact_ extends _SavedContact_ {
 export class account_Takeout_ extends _account_Takeout_ {
   id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4DBA4501;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.takeout"
   }
 
@@ -33790,11 +33790,11 @@ export class account_Takeout_ extends _account_Takeout_ {
 }
 
 export class PasswordKdfAlgoUnknown_ extends _PasswordKdfAlgo_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD45AB096;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "passwordKdfAlgoUnknown"
   }
 
@@ -33817,11 +33817,11 @@ export class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow_ 
   g: number;
   p: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3A912D4A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow"
   }
 
@@ -33853,11 +33853,11 @@ export class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow_ 
 }
 
 export class SecurePasswordKdfAlgoUnknown_ extends _SecurePasswordKdfAlgo_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x004A8537;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "securePasswordKdfAlgoUnknown"
   }
 
@@ -33877,11 +33877,11 @@ export class SecurePasswordKdfAlgoUnknown_ extends _SecurePasswordKdfAlgo_ {
 export class SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000_ extends _SecurePasswordKdfAlgo_ {
   salt: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBBF2DDA0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "securePasswordKdfAlgoPBKDF2HMACSHA512iter100000"
   }
 
@@ -33906,11 +33906,11 @@ export class SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000_ extends _SecurePas
 export class SecurePasswordKdfAlgoSHA512_ extends _SecurePasswordKdfAlgo_ {
   salt: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x86471D92;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "securePasswordKdfAlgoSHA512"
   }
 
@@ -33937,11 +33937,11 @@ export class SecureSecretSettings_ extends _SecureSecretSettings_ {
   secure_secret: Uint8Array;
   secure_secret_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1527BCAC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureSecretSettings"
   }
 
@@ -33970,11 +33970,11 @@ export class SecureSecretSettings_ extends _SecureSecretSettings_ {
 }
 
 export class InputCheckPasswordEmpty_ extends _InputCheckPasswordSRP_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9880F658;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputCheckPasswordEmpty"
   }
 
@@ -33996,11 +33996,11 @@ export class InputCheckPasswordSRP_ extends _InputCheckPasswordSRP_ {
   A: Uint8Array;
   M1: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD27FF082;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputCheckPasswordSRP"
   }
 
@@ -34034,11 +34034,11 @@ export class SecureRequiredType_ extends _SecureRequiredType_ {
   translation_required?: true;
   type: enums.SecureValueType;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x829D99DA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureRequiredType"
   }
 
@@ -34074,11 +34074,11 @@ export class SecureRequiredType_ extends _SecureRequiredType_ {
 export class SecureRequiredTypeOneOf_ extends _SecureRequiredType_ {
   types: Array<enums.SecureRequiredType>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x027477B4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "secureRequiredTypeOneOf"
   }
 
@@ -34101,11 +34101,11 @@ export class SecureRequiredTypeOneOf_ extends _SecureRequiredType_ {
 }
 
 export class help_PassportConfigNotModified_ extends _help_PassportConfig_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBFB9F457;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.passportConfigNotModified"
   }
 
@@ -34126,11 +34126,11 @@ export class help_PassportConfig_ extends _help_PassportConfig_ {
   hash: number;
   countries_langs: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA098D6AF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.passportConfig"
   }
 
@@ -34161,11 +34161,11 @@ export class InputAppEvent_ extends _InputAppEvent_ {
   peer: bigint;
   data: enums.JSONValue;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1D1B1245;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputAppEvent"
   }
 
@@ -34200,11 +34200,11 @@ export class JsonObjectValue_ extends _JSONObjectValue_ {
   key: string;
   value: enums.JSONValue;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC0DE1BD9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "jsonObjectValue"
   }
 
@@ -34230,11 +34230,11 @@ export class JsonObjectValue_ extends _JSONObjectValue_ {
 }
 
 export class JsonNull_ extends _JSONValue_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3F6D7B68;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "jsonNull"
   }
 
@@ -34254,11 +34254,11 @@ export class JsonNull_ extends _JSONValue_ {
 export class JsonBool_ extends _JSONValue_ {
   value: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC7345E6A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "jsonBool"
   }
 
@@ -34283,11 +34283,11 @@ export class JsonBool_ extends _JSONValue_ {
 export class JsonNumber_ extends _JSONValue_ {
   value: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2BE0DFA4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "jsonNumber"
   }
 
@@ -34312,11 +34312,11 @@ export class JsonNumber_ extends _JSONValue_ {
 export class JsonString_ extends _JSONValue_ {
   value: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB71E767A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "jsonString"
   }
 
@@ -34341,11 +34341,11 @@ export class JsonString_ extends _JSONValue_ {
 export class JsonArray_ extends _JSONValue_ {
   value: Array<enums.JSONValue>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF7444763;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "jsonArray"
   }
 
@@ -34370,11 +34370,11 @@ export class JsonArray_ extends _JSONValue_ {
 export class JsonObject_ extends _JSONValue_ {
   value: Array<enums.JSONObjectValue>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x99C1D49D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "jsonObject"
   }
 
@@ -34406,11 +34406,11 @@ export class PageTableCell_ extends _PageTableCell_ {
   colspan?: number;
   rowspan?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x34566B6A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageTableCell"
   }
 
@@ -34458,11 +34458,11 @@ export class PageTableCell_ extends _PageTableCell_ {
 export class PageTableRow_ extends _PageTableRow_ {
   cells: Array<enums.PageTableCell>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE0C0C5E5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageTableRow"
   }
 
@@ -34488,11 +34488,11 @@ export class PageCaption_ extends _PageCaption_ {
   text: enums.RichText;
   credit: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6F747657;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageCaption"
   }
 
@@ -34520,11 +34520,11 @@ export class PageCaption_ extends _PageCaption_ {
 export class PageListItemText_ extends _PageListItem_ {
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB92FB6CD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageListItemText"
   }
 
@@ -34549,11 +34549,11 @@ export class PageListItemText_ extends _PageListItem_ {
 export class PageListItemBlocks_ extends _PageListItem_ {
   blocks: Array<enums.PageBlock>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x25E073FC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageListItemBlocks"
   }
 
@@ -34579,11 +34579,11 @@ export class PageListOrderedItemText_ extends _PageListOrderedItem_ {
   num: string;
   text: enums.RichText;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5E068047;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageListOrderedItemText"
   }
 
@@ -34612,11 +34612,11 @@ export class PageListOrderedItemBlocks_ extends _PageListOrderedItem_ {
   num: string;
   blocks: Array<enums.PageBlock>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x98DD8936;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageListOrderedItemBlocks"
   }
 
@@ -34650,11 +34650,11 @@ export class PageRelatedArticle_ extends _PageRelatedArticle_ {
   author?: string;
   published_date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB390DC08;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pageRelatedArticle"
   }
 
@@ -34706,11 +34706,11 @@ export class Page_ extends _Page_ {
   documents: Array<enums.Document>;
   views?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x98657F0D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "page"
   }
 
@@ -34758,11 +34758,11 @@ export class Page_ extends _Page_ {
 export class help_SupportName_ extends _help_SupportName_ {
   name: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8C05F1C9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.supportName"
   }
 
@@ -34785,11 +34785,11 @@ export class help_SupportName_ extends _help_SupportName_ {
 }
 
 export class help_UserInfoEmpty_ extends _help_UserInfo_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF3AE2EED;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.userInfoEmpty"
   }
 
@@ -34812,11 +34812,11 @@ export class help_UserInfo_ extends _help_UserInfo_ {
   author: string;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x01EB3758;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.userInfo"
   }
 
@@ -34851,11 +34851,11 @@ export class PollAnswer_ extends _PollAnswer_ {
   text: string;
   option: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6CA9C2E9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pollAnswer"
   }
 
@@ -34891,11 +34891,11 @@ export class Poll_ extends _Poll_ {
   close_period?: number;
   close_date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x86E18161;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "poll"
   }
 
@@ -34949,11 +34949,11 @@ export class PollAnswerVoters_ extends _PollAnswerVoters_ {
   option: Uint8Array;
   voters: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3B6DDAD2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pollAnswerVoters"
   }
 
@@ -34994,11 +34994,11 @@ export class PollResults_ extends _PollResults_ {
   solution?: string;
   solution_entities?: Array<enums.MessageEntity>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7ADF2420;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "pollResults"
   }
 
@@ -35040,11 +35040,11 @@ export class PollResults_ extends _PollResults_ {
 export class ChatOnlines_ extends _ChatOnlines_ {
   onlines: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF041E250;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatOnlines"
   }
 
@@ -35069,11 +35069,11 @@ export class ChatOnlines_ extends _ChatOnlines_ {
 export class StatsURL_ extends _StatsURL_ {
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x47A971E0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "statsURL"
   }
 
@@ -35112,11 +35112,11 @@ export class ChatAdminRights_ extends _ChatAdminRights_ {
   edit_stories?: true;
   delete_stories?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5FB224D5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatAdminRights"
   }
 
@@ -35205,11 +35205,11 @@ export class ChatBannedRights_ extends _ChatBannedRights_ {
   send_plain?: true;
   until_date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9F120418;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatBannedRights"
   }
 
@@ -35297,11 +35297,11 @@ export class InputWallPaper_ extends _InputWallPaper_ {
   id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE630B979;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputWallPaper"
   }
 
@@ -35329,11 +35329,11 @@ export class InputWallPaper_ extends _InputWallPaper_ {
 export class InputWallPaperSlug_ extends _InputWallPaper_ {
   slug: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x72091C80;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputWallPaperSlug"
   }
 
@@ -35358,11 +35358,11 @@ export class InputWallPaperSlug_ extends _InputWallPaper_ {
 export class InputWallPaperNoFile_ extends _InputWallPaper_ {
   id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x967A462E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputWallPaperNoFile"
   }
 
@@ -35385,11 +35385,11 @@ export class InputWallPaperNoFile_ extends _InputWallPaper_ {
 }
 
 export class account_WallPapersNotModified_ extends _account_WallPapers_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1C199183;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.wallPapersNotModified"
   }
 
@@ -35410,11 +35410,11 @@ export class account_WallPapers_ extends _account_WallPapers_ {
   hash: bigint;
   wallpapers: Array<enums.WallPaper>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCDC3858C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.wallPapers"
   }
 
@@ -35449,11 +35449,11 @@ export class CodeSettings_ extends _CodeSettings_ {
   token?: string;
   app_sandbox?: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAD253D78;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "codeSettings"
   }
 
@@ -35509,11 +35509,11 @@ export class WallPaperSettings_ extends _WallPaperSettings_ {
   rotation?: number;
   emoticon?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x372EFCD0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "wallPaperSettings"
   }
 
@@ -35574,11 +35574,11 @@ export class AutoDownloadSettings_ extends _AutoDownloadSettings_ {
   small_queue_active_operations_max: number;
   large_queue_active_operations_max: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBAA57628;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "autoDownloadSettings"
   }
 
@@ -35637,11 +35637,11 @@ export class account_AutoDownloadSettings_ extends _account_AutoDownloadSettings
   medium: enums.AutoDownloadSettings;
   high: enums.AutoDownloadSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x63CACF26;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.autoDownloadSettings"
   }
 
@@ -35673,11 +35673,11 @@ export class EmojiKeyword_ extends _EmojiKeyword_ {
   keyword: string;
   emoticons: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD5B3B9F9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emojiKeyword"
   }
 
@@ -35706,11 +35706,11 @@ export class EmojiKeywordDeleted_ extends _EmojiKeyword_ {
   keyword: string;
   emoticons: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x236DF622;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emojiKeywordDeleted"
   }
 
@@ -35741,11 +35741,11 @@ export class EmojiKeywordsDifference_ extends _EmojiKeywordsDifference_ {
   version: number;
   keywords: Array<enums.EmojiKeyword>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5CC761BD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emojiKeywordsDifference"
   }
 
@@ -35779,11 +35779,11 @@ export class EmojiKeywordsDifference_ extends _EmojiKeywordsDifference_ {
 export class EmojiURL_ extends _EmojiURL_ {
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA575739D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emojiURL"
   }
 
@@ -35808,11 +35808,11 @@ export class EmojiURL_ extends _EmojiURL_ {
 export class EmojiLanguage_ extends _EmojiLanguage_ {
   lang_code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB3FB5361;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emojiLanguage"
   }
 
@@ -35842,11 +35842,11 @@ export class Folder_ extends _Folder_ {
   title: string;
   photo?: enums.ChatPhoto;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFF544E65;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "folder"
   }
 
@@ -35889,11 +35889,11 @@ export class InputFolderPeer_ extends _InputFolderPeer_ {
   peer: enums.InputPeer;
   folder_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFBD2C296;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputFolderPeer"
   }
 
@@ -35922,11 +35922,11 @@ export class FolderPeer_ extends _FolderPeer_ {
   peer: enums.Peer;
   folder_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE9BAA668;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "folderPeer"
   }
 
@@ -35956,11 +35956,11 @@ export class messages_SearchCounter_ extends _messages_SearchCounter_ {
   filter: enums.MessagesFilter;
   count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE844EBFF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.searchCounter"
   }
 
@@ -35995,11 +35995,11 @@ export class UrlAuthResultRequest_ extends _UrlAuthResult_ {
   bot: enums.User;
   domain: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x92D33A0E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "urlAuthResultRequest"
   }
 
@@ -36032,11 +36032,11 @@ export class UrlAuthResultRequest_ extends _UrlAuthResult_ {
 export class UrlAuthResultAccepted_ extends _UrlAuthResult_ {
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8F8C0E4E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "urlAuthResultAccepted"
   }
 
@@ -36059,11 +36059,11 @@ export class UrlAuthResultAccepted_ extends _UrlAuthResult_ {
 }
 
 export class UrlAuthResultDefault_ extends _UrlAuthResult_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA9D6DB1F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "urlAuthResultDefault"
   }
 
@@ -36081,11 +36081,11 @@ export class UrlAuthResultDefault_ extends _UrlAuthResult_ {
 }
 
 export class ChannelLocationEmpty_ extends _ChannelLocation_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBFB5AD8B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelLocationEmpty"
   }
 
@@ -36106,11 +36106,11 @@ export class ChannelLocation_ extends _ChannelLocation_ {
   geo_point: enums.GeoPoint;
   address: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x209B82DB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channelLocation"
   }
 
@@ -36140,11 +36140,11 @@ export class PeerLocated_ extends _PeerLocated_ {
   expires: number;
   distance: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCA461B5D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "peerLocated"
   }
 
@@ -36175,11 +36175,11 @@ export class PeerLocated_ extends _PeerLocated_ {
 export class PeerSelfLocated_ extends _PeerLocated_ {
   expires: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF8EC284B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "peerSelfLocated"
   }
 
@@ -36206,11 +36206,11 @@ export class RestrictionReason_ extends _RestrictionReason_ {
   reason: string;
   text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD072ACB4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "restrictionReason"
   }
 
@@ -36242,11 +36242,11 @@ export class InputTheme_ extends _InputTheme_ {
   id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3C5693E9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputTheme"
   }
 
@@ -36274,11 +36274,11 @@ export class InputTheme_ extends _InputTheme_ {
 export class InputThemeSlug_ extends _InputTheme_ {
   slug: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF5890DF1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputThemeSlug"
   }
 
@@ -36313,11 +36313,11 @@ export class Theme_ extends _Theme_ {
   emoticon?: string;
   installs_count?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA00E67D6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "theme"
   }
 
@@ -36372,11 +36372,11 @@ export class Theme_ extends _Theme_ {
 }
 
 export class account_ThemesNotModified_ extends _account_Themes_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF41EB622;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.themesNotModified"
   }
 
@@ -36397,11 +36397,11 @@ export class account_Themes_ extends _account_Themes_ {
   hash: bigint;
   themes: Array<enums.Theme>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9A3D8C6D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.themes"
   }
 
@@ -36430,11 +36430,11 @@ export class auth_LoginToken_ extends _auth_LoginToken_ {
   expires: number;
   token: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x629F1980;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.loginToken"
   }
 
@@ -36463,11 +36463,11 @@ export class auth_LoginTokenMigrateTo_ extends _auth_LoginToken_ {
   dc_id: number;
   token: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x068E9916;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.loginTokenMigrateTo"
   }
 
@@ -36495,11 +36495,11 @@ export class auth_LoginTokenMigrateTo_ extends _auth_LoginToken_ {
 export class auth_LoginTokenSuccess_ extends _auth_LoginToken_ {
   authorization: enums.auth.Authorization;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x390D5C5E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.loginTokenSuccess"
   }
 
@@ -36525,11 +36525,11 @@ export class account_ContentSettings_ extends _account_ContentSettings_ {
   sensitive_enabled?: true;
   sensitive_can_change?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x57E28221;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.contentSettings"
   }
 
@@ -36561,11 +36561,11 @@ export class messages_InactiveChats_ extends _messages_InactiveChats_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA927FEC5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.inactiveChats"
   }
 
@@ -36594,11 +36594,11 @@ export class messages_InactiveChats_ extends _messages_InactiveChats_ {
 }
 
 export class BaseThemeClassic_ extends _BaseTheme_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC3A12462;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "baseThemeClassic"
   }
 
@@ -36616,11 +36616,11 @@ export class BaseThemeClassic_ extends _BaseTheme_ {
 }
 
 export class BaseThemeDay_ extends _BaseTheme_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFBD81688;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "baseThemeDay"
   }
 
@@ -36638,11 +36638,11 @@ export class BaseThemeDay_ extends _BaseTheme_ {
 }
 
 export class BaseThemeNight_ extends _BaseTheme_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB7B31EA8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "baseThemeNight"
   }
 
@@ -36660,11 +36660,11 @@ export class BaseThemeNight_ extends _BaseTheme_ {
 }
 
 export class BaseThemeTinted_ extends _BaseTheme_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6D5F77EE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "baseThemeTinted"
   }
 
@@ -36682,11 +36682,11 @@ export class BaseThemeTinted_ extends _BaseTheme_ {
 }
 
 export class BaseThemeArctic_ extends _BaseTheme_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5B11125A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "baseThemeArctic"
   }
 
@@ -36712,11 +36712,11 @@ export class InputThemeSettings_ extends _InputThemeSettings_ {
   wallpaper?: enums.InputWallPaper;
   wallpaper_settings?: enums.WallPaperSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8FDE504F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputThemeSettings"
   }
 
@@ -36766,11 +36766,11 @@ export class ThemeSettings_ extends _ThemeSettings_ {
   message_colors?: Array<number>;
   wallpaper?: enums.WallPaper;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFA58B6D4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "themeSettings"
   }
 
@@ -36813,11 +36813,11 @@ export class WebPageAttributeTheme_ extends _WebPageAttribute_ {
   documents?: Array<enums.Document>;
   settings?: enums.ThemeSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x54B56617;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "webPageAttributeTheme"
   }
 
@@ -36849,11 +36849,11 @@ export class WebPageAttributeStory_ extends _WebPageAttribute_ {
   id: number;
   story?: enums.StoryItem;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2E94C3E7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "webPageAttributeStory"
   }
 
@@ -36890,11 +36890,11 @@ export class messages_VotesList_ extends _messages_VotesList_ {
   users: Array<enums.User>;
   next_offset?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4899484E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.votesList"
   }
 
@@ -36934,11 +36934,11 @@ export class BankCardOpenUrl_ extends _BankCardOpenUrl_ {
   url: string;
   name: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF568028A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bankCardOpenUrl"
   }
 
@@ -36967,11 +36967,11 @@ export class payments_BankCardData_ extends _payments_BankCardData_ {
   title: string;
   open_urls: Array<enums.BankCardOpenUrl>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3E24E573;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.bankCardData"
   }
 
@@ -37012,11 +37012,11 @@ export class DialogFilter_ extends _DialogFilter_ {
   include_peers: Array<enums.InputPeer>;
   exclude_peers: Array<enums.InputPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7438F7E8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "dialogFilter"
   }
 
@@ -37080,11 +37080,11 @@ export class DialogFilter_ extends _DialogFilter_ {
 }
 
 export class DialogFilterDefault_ extends _DialogFilter_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x363293AE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "dialogFilterDefault"
   }
 
@@ -37109,11 +37109,11 @@ export class DialogFilterChatlist_ extends _DialogFilter_ {
   pinned_peers: Array<enums.InputPeer>;
   include_peers: Array<enums.InputPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD64A04A8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "dialogFilterChatlist"
   }
 
@@ -37156,11 +37156,11 @@ export class DialogFilterSuggested_ extends _DialogFilterSuggested_ {
   filter: enums.DialogFilter;
   description: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x77744D4A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "dialogFilterSuggested"
   }
 
@@ -37189,11 +37189,11 @@ export class StatsDateRangeDays_ extends _StatsDateRangeDays_ {
   min_date: number;
   max_date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB637EDAF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "statsDateRangeDays"
   }
 
@@ -37222,11 +37222,11 @@ export class StatsAbsValueAndPrev_ extends _StatsAbsValueAndPrev_ {
   current: number;
   previous: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCB43ACDE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "statsAbsValueAndPrev"
   }
 
@@ -37255,11 +37255,11 @@ export class StatsPercentValue_ extends _StatsPercentValue_ {
   part: number;
   total: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCBCE2FE0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "statsPercentValue"
   }
 
@@ -37287,11 +37287,11 @@ export class StatsPercentValue_ extends _StatsPercentValue_ {
 export class StatsGraphAsync_ extends _StatsGraph_ {
   token: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4A27EB2D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "statsGraphAsync"
   }
 
@@ -37316,11 +37316,11 @@ export class StatsGraphAsync_ extends _StatsGraph_ {
 export class StatsGraphError_ extends _StatsGraph_ {
   error: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBEDC9822;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "statsGraphError"
   }
 
@@ -37346,11 +37346,11 @@ export class StatsGraph_ extends _StatsGraph_ {
   json: enums.DataJSON;
   zoom_token?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8EA464B6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "statsGraph"
   }
 
@@ -37401,11 +37401,11 @@ export class stats_BroadcastStats_ extends _stats_BroadcastStats_ {
   story_reactions_by_emotion_graph: enums.StatsGraph;
   recent_posts_interactions: Array<enums.PostInteractionCounters>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x396CA5FC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stats.broadcastStats"
   }
 
@@ -37493,11 +37493,11 @@ export class stats_BroadcastStats_ extends _stats_BroadcastStats_ {
 export class help_PromoDataEmpty_ extends _help_PromoData_ {
   expires: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x98F6AC75;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.promoDataEmpty"
   }
 
@@ -37528,11 +37528,11 @@ export class help_PromoData_ extends _help_PromoData_ {
   psa_type?: string;
   psa_message?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8C39793F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.promoData"
   }
 
@@ -37581,11 +37581,11 @@ export class VideoSize_ extends _VideoSize_ {
   size: number;
   video_start_ts?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDE33B094;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "videoSize"
   }
 
@@ -37625,11 +37625,11 @@ export class VideoSizeEmojiMarkup_ extends _VideoSize_ {
   emoji_id: bigint;
   background_colors: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF85C413C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "videoSizeEmojiMarkup"
   }
 
@@ -37659,11 +37659,11 @@ export class VideoSizeStickerMarkup_ extends _VideoSize_ {
   sticker_id: bigint;
   background_colors: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0DA082FE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "videoSizeStickerMarkup"
   }
 
@@ -37696,11 +37696,11 @@ export class StatsGroupTopPoster_ extends _StatsGroupTopPoster_ {
   messages: number;
   avg_chars: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9D04AF9B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "statsGroupTopPoster"
   }
 
@@ -37734,11 +37734,11 @@ export class StatsGroupTopAdmin_ extends _StatsGroupTopAdmin_ {
   kicked: number;
   banned: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD7584C87;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "statsGroupTopAdmin"
   }
 
@@ -37773,11 +37773,11 @@ export class StatsGroupTopInviter_ extends _StatsGroupTopInviter_ {
   user_id: bigint;
   invitations: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x535F779D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "statsGroupTopInviter"
   }
 
@@ -37821,11 +37821,11 @@ export class stats_MegagroupStats_ extends _stats_MegagroupStats_ {
   top_inviters: Array<enums.StatsGroupTopInviter>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEF7FF916;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stats.megagroupStats"
   }
 
@@ -37902,11 +37902,11 @@ export class GlobalPrivacySettings_ extends _GlobalPrivacySettings_ {
   hide_read_marks?: true;
   new_noncontact_peers_require_premium?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x734C4CCB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "globalPrivacySettings"
   }
 
@@ -37947,11 +37947,11 @@ export class help_CountryCode_ extends _help_CountryCode_ {
   prefixes?: Array<string>;
   patterns?: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4203C5EF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.countryCode"
   }
 
@@ -37988,11 +37988,11 @@ export class help_Country_ extends _help_Country_ {
   name?: string;
   country_codes: Array<enums.help.CountryCode>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC3878E23;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.country"
   }
 
@@ -38029,11 +38029,11 @@ export class help_Country_ extends _help_Country_ {
 }
 
 export class help_CountriesListNotModified_ extends _help_CountriesList_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x93CC1F32;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.countriesListNotModified"
   }
 
@@ -38054,11 +38054,11 @@ export class help_CountriesList_ extends _help_CountriesList_ {
   countries: Array<enums.help.Country>;
   hash: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x87D0759E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.countriesList"
   }
 
@@ -38088,11 +38088,11 @@ export class MessageViews_ extends _MessageViews_ {
   forwards?: number;
   replies?: enums.MessageReplies;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x455B853D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageViews"
   }
 
@@ -38127,11 +38127,11 @@ export class messages_MessageViews_ extends _messages_MessageViews_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB6C4F543;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.messageViews"
   }
 
@@ -38168,11 +38168,11 @@ export class messages_DiscussionMessage_ extends _messages_DiscussionMessage_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA6341782;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.discussionMessage"
   }
 
@@ -38227,11 +38227,11 @@ export class MessageReplyHeader_ extends _MessageReplyHeader_ {
   quote_entities?: Array<enums.MessageEntity>;
   quote_offset?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAFBC09DB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageReplyHeader"
   }
 
@@ -38289,11 +38289,11 @@ export class MessageReplyStoryHeader_ extends _MessageReplyHeader_ {
   peer: enums.Peer;
   story_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0E5AF939;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageReplyStoryHeader"
   }
 
@@ -38327,11 +38327,11 @@ export class MessageReplies_ extends _MessageReplies_ {
   max_id?: number;
   read_max_id?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x83D60FC2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageReplies"
   }
 
@@ -38377,11 +38377,11 @@ export class PeerBlocked_ extends _PeerBlocked_ {
   peer_id: enums.Peer;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE8FD8014;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "peerBlocked"
   }
 
@@ -38410,11 +38410,11 @@ export class stats_MessageStats_ extends _stats_MessageStats_ {
   views_graph: enums.StatsGraph;
   reactions_by_emotion_graph: enums.StatsGraph;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7FE91C14;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stats.messageStats"
   }
 
@@ -38444,11 +38444,11 @@ export class GroupCallDiscarded_ extends _GroupCall_ {
   access_hash: bigint;
   duration: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7780BCB4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "groupCallDiscarded"
   }
 
@@ -38496,11 +38496,11 @@ export class GroupCall_ extends _GroupCall_ {
   unmuted_video_limit: number;
   version: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD597650C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "groupCall"
   }
 
@@ -38579,11 +38579,11 @@ export class InputGroupCall_ extends _InputGroupCall_ {
   id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD8AA840F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputGroupCall"
   }
 
@@ -38629,11 +38629,11 @@ export class GroupCallParticipant_ extends _GroupCallParticipant_ {
   video?: enums.GroupCallParticipantVideo;
   presentation?: enums.GroupCallParticipantVideo;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEBA636FE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "groupCallParticipant"
   }
 
@@ -38718,11 +38718,11 @@ export class phone_GroupCall_ extends _phone_GroupCall_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9E727AAD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.groupCall"
   }
 
@@ -38764,11 +38764,11 @@ export class phone_GroupParticipants_ extends _phone_GroupParticipants_ {
   users: Array<enums.User>;
   version: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF47751B6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.groupParticipants"
   }
 
@@ -38806,11 +38806,11 @@ export class phone_GroupParticipants_ extends _phone_GroupParticipants_ {
 }
 
 export class InlineQueryPeerTypeSameBotPM_ extends _InlineQueryPeerType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3081ED9D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inlineQueryPeerTypeSameBotPM"
   }
 
@@ -38828,11 +38828,11 @@ export class InlineQueryPeerTypeSameBotPM_ extends _InlineQueryPeerType_ {
 }
 
 export class InlineQueryPeerTypePM_ extends _InlineQueryPeerType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x833C0FAC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inlineQueryPeerTypePM"
   }
 
@@ -38850,11 +38850,11 @@ export class InlineQueryPeerTypePM_ extends _InlineQueryPeerType_ {
 }
 
 export class InlineQueryPeerTypeChat_ extends _InlineQueryPeerType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD766C50A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inlineQueryPeerTypeChat"
   }
 
@@ -38872,11 +38872,11 @@ export class InlineQueryPeerTypeChat_ extends _InlineQueryPeerType_ {
 }
 
 export class InlineQueryPeerTypeMegagroup_ extends _InlineQueryPeerType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5EC4BE43;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inlineQueryPeerTypeMegagroup"
   }
 
@@ -38894,11 +38894,11 @@ export class InlineQueryPeerTypeMegagroup_ extends _InlineQueryPeerType_ {
 }
 
 export class InlineQueryPeerTypeBroadcast_ extends _InlineQueryPeerType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6334EE9A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inlineQueryPeerTypeBroadcast"
   }
 
@@ -38916,11 +38916,11 @@ export class InlineQueryPeerTypeBroadcast_ extends _InlineQueryPeerType_ {
 }
 
 export class InlineQueryPeerTypeBotPM_ extends _InlineQueryPeerType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0E3B2D0C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inlineQueryPeerTypeBotPM"
   }
 
@@ -38940,11 +38940,11 @@ export class InlineQueryPeerTypeBotPM_ extends _InlineQueryPeerType_ {
 export class messages_HistoryImport_ extends _messages_HistoryImport_ {
   id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1662AF0B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.historyImport"
   }
 
@@ -38971,11 +38971,11 @@ export class messages_HistoryImportParsed_ extends _messages_HistoryImportParsed
   group?: true;
   title?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5E0FB7B9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.historyImportParsed"
   }
 
@@ -39011,11 +39011,11 @@ export class messages_AffectedFoundMessages_ extends _messages_AffectedFoundMess
   offset: number;
   messages: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEF8D3E6C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.affectedFoundMessages"
   }
 
@@ -39054,11 +39054,11 @@ export class ChatInviteImporter_ extends _ChatInviteImporter_ {
   about?: string;
   approved_by?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8C5ADFD9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatInviteImporter"
   }
 
@@ -39102,11 +39102,11 @@ export class messages_ExportedChatInvites_ extends _messages_ExportedChatInvites
   invites: Array<enums.ExportedChatInvite>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBDC62DCC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.exportedChatInvites"
   }
 
@@ -39138,11 +39138,11 @@ export class messages_ExportedChatInvite_ extends _messages_ExportedChatInvite_ 
   invite: enums.ExportedChatInvite;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1871BE50;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.exportedChatInvite"
   }
 
@@ -39172,11 +39172,11 @@ export class messages_ExportedChatInviteReplaced_ extends _messages_ExportedChat
   new_invite: enums.ExportedChatInvite;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x222600EF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.exportedChatInviteReplaced"
   }
 
@@ -39209,11 +39209,11 @@ export class messages_ChatInviteImporters_ extends _messages_ChatInviteImporters
   importers: Array<enums.ChatInviteImporter>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x81B6B00A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.chatInviteImporters"
   }
 
@@ -39246,11 +39246,11 @@ export class ChatAdminWithInvites_ extends _ChatAdminWithInvites_ {
   invites_count: number;
   revoked_invites_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF2ECEF23;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatAdminWithInvites"
   }
 
@@ -39282,11 +39282,11 @@ export class messages_ChatAdminsWithInvites_ extends _messages_ChatAdminsWithInv
   admins: Array<enums.ChatAdminWithInvites>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB69B72D7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.chatAdminsWithInvites"
   }
 
@@ -39314,11 +39314,11 @@ export class messages_ChatAdminsWithInvites_ extends _messages_ChatAdminsWithInv
 export class messages_CheckedHistoryImportPeer_ extends _messages_CheckedHistoryImportPeer_ {
   confirm_text: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA24DE717;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.checkedHistoryImportPeer"
   }
 
@@ -39345,11 +39345,11 @@ export class phone_JoinAsPeers_ extends _phone_JoinAsPeers_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAFE5623F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.joinAsPeers"
   }
 
@@ -39380,11 +39380,11 @@ export class phone_JoinAsPeers_ extends _phone_JoinAsPeers_ {
 export class phone_ExportedGroupCallInvite_ extends _phone_ExportedGroupCallInvite_ {
   link: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x204BD158;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.exportedGroupCallInvite"
   }
 
@@ -39410,11 +39410,11 @@ export class GroupCallParticipantVideoSourceGroup_ extends _GroupCallParticipant
   semantics: string;
   sources: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDCB118B7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "groupCallParticipantVideoSourceGroup"
   }
 
@@ -39445,11 +39445,11 @@ export class GroupCallParticipantVideo_ extends _GroupCallParticipantVideo_ {
   source_groups: Array<enums.GroupCallParticipantVideoSourceGroup>;
   audio_source?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x67753AC8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "groupCallParticipantVideo"
   }
 
@@ -39485,11 +39485,11 @@ export class GroupCallParticipantVideo_ extends _GroupCallParticipantVideo_ {
 export class stickers_SuggestedShortName_ extends _stickers_SuggestedShortName_ {
   short_name: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x85FEA03F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickers.suggestedShortName"
   }
 
@@ -39512,11 +39512,11 @@ export class stickers_SuggestedShortName_ extends _stickers_SuggestedShortName_ 
 }
 
 export class BotCommandScopeDefault_ extends _BotCommandScope_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2F6CB2AB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botCommandScopeDefault"
   }
 
@@ -39534,11 +39534,11 @@ export class BotCommandScopeDefault_ extends _BotCommandScope_ {
 }
 
 export class BotCommandScopeUsers_ extends _BotCommandScope_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3C4F04D8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botCommandScopeUsers"
   }
 
@@ -39556,11 +39556,11 @@ export class BotCommandScopeUsers_ extends _BotCommandScope_ {
 }
 
 export class BotCommandScopeChats_ extends _BotCommandScope_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6FE1A881;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botCommandScopeChats"
   }
 
@@ -39578,11 +39578,11 @@ export class BotCommandScopeChats_ extends _BotCommandScope_ {
 }
 
 export class BotCommandScopeChatAdmins_ extends _BotCommandScope_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB9AA606A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botCommandScopeChatAdmins"
   }
 
@@ -39602,11 +39602,11 @@ export class BotCommandScopeChatAdmins_ extends _BotCommandScope_ {
 export class BotCommandScopePeer_ extends _BotCommandScope_ {
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDB9D897D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botCommandScopePeer"
   }
 
@@ -39631,11 +39631,11 @@ export class BotCommandScopePeer_ extends _BotCommandScope_ {
 export class BotCommandScopePeerAdmins_ extends _BotCommandScope_ {
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3FD863D1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botCommandScopePeerAdmins"
   }
 
@@ -39661,11 +39661,11 @@ export class BotCommandScopePeerUser_ extends _BotCommandScope_ {
   peer: enums.InputPeer;
   user_id: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0A1321F3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botCommandScopePeerUser"
   }
 
@@ -39693,11 +39693,11 @@ export class BotCommandScopePeerUser_ extends _BotCommandScope_ {
 export class account_ResetPasswordFailedWait_ extends _account_ResetPasswordResult_ {
   retry_date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE3779861;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.resetPasswordFailedWait"
   }
 
@@ -39722,11 +39722,11 @@ export class account_ResetPasswordFailedWait_ extends _account_ResetPasswordResu
 export class account_ResetPasswordRequestedWait_ extends _account_ResetPasswordResult_ {
   until_date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE9EFFC7D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.resetPasswordRequestedWait"
   }
 
@@ -39749,11 +39749,11 @@ export class account_ResetPasswordRequestedWait_ extends _account_ResetPasswordR
 }
 
 export class account_ResetPasswordOk_ extends _account_ResetPasswordResult_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE926D63E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.resetPasswordOk"
   }
 
@@ -39787,11 +39787,11 @@ export class SponsoredMessage_ extends _SponsoredMessage_ {
   sponsor_info?: string;
   additional_info?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xED5383F7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sponsoredMessage"
   }
 
@@ -39863,11 +39863,11 @@ export class messages_SponsoredMessages_ extends _messages_SponsoredMessages_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC9EE1D87;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sponsoredMessages"
   }
 
@@ -39901,11 +39901,11 @@ export class messages_SponsoredMessages_ extends _messages_SponsoredMessages_ {
 }
 
 export class messages_SponsoredMessagesEmpty_ extends _messages_SponsoredMessages_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1839490F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sponsoredMessagesEmpty"
   }
 
@@ -39928,11 +39928,11 @@ export class SearchResultsCalendarPeriod_ extends _SearchResultsCalendarPeriod_ 
   max_msg_id: number;
   count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC9B0539F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "searchResultsCalendarPeriod"
   }
 
@@ -39974,11 +39974,11 @@ export class messages_SearchResultsCalendar_ extends _messages_SearchResultsCale
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x147EE23C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.searchResultsCalendar"
   }
 
@@ -40031,11 +40031,11 @@ export class SearchResultPosition_ extends _SearchResultsPosition_ {
   date: number;
   offset: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7F648B67;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "searchResultPosition"
   }
 
@@ -40067,11 +40067,11 @@ export class messages_SearchResultsPositions_ extends _messages_SearchResultsPos
   count: number;
   positions: Array<enums.SearchResultsPosition>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x53B22BAF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.searchResultsPositions"
   }
 
@@ -40101,11 +40101,11 @@ export class channels_SendAsPeers_ extends _channels_SendAsPeers_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF496B0C6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.sendAsPeers"
   }
 
@@ -40138,11 +40138,11 @@ export class users_UserFull_ extends _users_UserFull_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3B6D152E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "users.userFull"
   }
 
@@ -40175,11 +40175,11 @@ export class messages_PeerSettings_ extends _messages_PeerSettings_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6880B94D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.peerSettings"
   }
 
@@ -40210,11 +40210,11 @@ export class messages_PeerSettings_ extends _messages_PeerSettings_ {
 export class auth_LoggedOut_ extends _auth_LoggedOut_ {
   future_auth_token?: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC3A2835F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.loggedOut"
   }
 
@@ -40243,11 +40243,11 @@ export class ReactionCount_ extends _ReactionCount_ {
   reaction: enums.Reaction;
   count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA3D1CB80;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "reactionCount"
   }
 
@@ -40284,11 +40284,11 @@ export class MessageReactions_ extends _MessageReactions_ {
   results: Array<enums.ReactionCount>;
   recent_reactions?: Array<enums.MessagePeerReaction>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4F2B9479;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageReactions"
   }
 
@@ -40331,11 +40331,11 @@ export class messages_MessageReactionsList_ extends _messages_MessageReactionsLi
   users: Array<enums.User>;
   next_offset?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x31BD492D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.messageReactionsList"
   }
 
@@ -40384,11 +40384,11 @@ export class AvailableReaction_ extends _AvailableReaction_ {
   around_animation?: enums.Document;
   center_icon?: enums.Document;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC077EC01;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "availableReaction"
   }
 
@@ -40443,11 +40443,11 @@ export class AvailableReaction_ extends _AvailableReaction_ {
 }
 
 export class messages_AvailableReactionsNotModified_ extends _messages_AvailableReactions_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9F071957;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.availableReactionsNotModified"
   }
 
@@ -40468,11 +40468,11 @@ export class messages_AvailableReactions_ extends _messages_AvailableReactions_ 
   hash: number;
   reactions: Array<enums.AvailableReaction>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x768E3AAD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.availableReactions"
   }
 
@@ -40505,11 +40505,11 @@ export class MessagePeerReaction_ extends _MessagePeerReaction_ {
   date: number;
   reaction: enums.Reaction;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8C79B63C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messagePeerReaction"
   }
 
@@ -40553,11 +40553,11 @@ export class GroupCallStreamChannel_ extends _GroupCallStreamChannel_ {
   scale: number;
   last_timestamp_ms: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x80EB48AF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "groupCallStreamChannel"
   }
 
@@ -40588,11 +40588,11 @@ export class GroupCallStreamChannel_ extends _GroupCallStreamChannel_ {
 export class phone_GroupCallStreamChannels_ extends _phone_GroupCallStreamChannels_ {
   channels: Array<enums.GroupCallStreamChannel>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD0E482B2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.groupCallStreamChannels"
   }
 
@@ -40618,11 +40618,11 @@ export class phone_GroupCallStreamRtmpUrl_ extends _phone_GroupCallStreamRtmpUrl
   url: string;
   key: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2DBF3432;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.groupCallStreamRtmpUrl"
   }
 
@@ -40651,11 +40651,11 @@ export class AttachMenuBotIconColor_ extends _AttachMenuBotIconColor_ {
   name: string;
   color: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4576F3F0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "attachMenuBotIconColor"
   }
 
@@ -40685,11 +40685,11 @@ export class AttachMenuBotIcon_ extends _AttachMenuBotIcon_ {
   icon: enums.Document;
   colors?: Array<enums.AttachMenuBotIconColor>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB2A7386B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "attachMenuBotIcon"
   }
 
@@ -40731,11 +40731,11 @@ export class AttachMenuBot_ extends _AttachMenuBot_ {
   peer_types?: Array<enums.AttachMenuPeerType>;
   icons: Array<enums.AttachMenuBotIcon>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD90D8DFE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "attachMenuBot"
   }
 
@@ -40787,11 +40787,11 @@ export class AttachMenuBot_ extends _AttachMenuBot_ {
 }
 
 export class AttachMenuBotsNotModified_ extends _AttachMenuBots_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF1D88A5C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "attachMenuBotsNotModified"
   }
 
@@ -40813,11 +40813,11 @@ export class AttachMenuBots_ extends _AttachMenuBots_ {
   bots: Array<enums.AttachMenuBot>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3C4301C0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "attachMenuBots"
   }
 
@@ -40849,11 +40849,11 @@ export class AttachMenuBotsBot_ extends _AttachMenuBotsBot_ {
   bot: enums.AttachMenuBot;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x93BF667F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "attachMenuBotsBot"
   }
 
@@ -40882,11 +40882,11 @@ export class WebViewResultUrl_ extends _WebViewResult_ {
   query_id: bigint;
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0C14557C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "webViewResultUrl"
   }
 
@@ -40914,11 +40914,11 @@ export class WebViewResultUrl_ extends _WebViewResult_ {
 export class SimpleWebViewResultUrl_ extends _SimpleWebViewResult_ {
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x882F76BB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "simpleWebViewResultUrl"
   }
 
@@ -40943,11 +40943,11 @@ export class SimpleWebViewResultUrl_ extends _SimpleWebViewResult_ {
 export class WebViewMessageSent_ extends _WebViewMessageSent_ {
   msg_id?: enums.InputBotInlineMessageID;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0C94511C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "webViewMessageSent"
   }
 
@@ -40972,11 +40972,11 @@ export class WebViewMessageSent_ extends _WebViewMessageSent_ {
 }
 
 export class BotMenuButtonDefault_ extends _BotMenuButton_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7533A588;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botMenuButtonDefault"
   }
 
@@ -40994,11 +40994,11 @@ export class BotMenuButtonDefault_ extends _BotMenuButton_ {
 }
 
 export class BotMenuButtonCommands_ extends _BotMenuButton_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4258C205;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botMenuButtonCommands"
   }
 
@@ -41019,11 +41019,11 @@ export class BotMenuButton_ extends _BotMenuButton_ {
   text: string;
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC7B57CE6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botMenuButton"
   }
 
@@ -41049,11 +41049,11 @@ export class BotMenuButton_ extends _BotMenuButton_ {
 }
 
 export class account_SavedRingtonesNotModified_ extends _account_SavedRingtones_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFBF6E8B1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.savedRingtonesNotModified"
   }
 
@@ -41074,11 +41074,11 @@ export class account_SavedRingtones_ extends _account_SavedRingtones_ {
   hash: bigint;
   ringtones: Array<enums.Document>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC1E92CC5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.savedRingtones"
   }
 
@@ -41104,11 +41104,11 @@ export class account_SavedRingtones_ extends _account_SavedRingtones_ {
 }
 
 export class NotificationSoundDefault_ extends _NotificationSound_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x97E8BEBE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "notificationSoundDefault"
   }
 
@@ -41126,11 +41126,11 @@ export class NotificationSoundDefault_ extends _NotificationSound_ {
 }
 
 export class NotificationSoundNone_ extends _NotificationSound_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6F0C34DF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "notificationSoundNone"
   }
 
@@ -41151,11 +41151,11 @@ export class NotificationSoundLocal_ extends _NotificationSound_ {
   title: string;
   data: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x830B9AE4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "notificationSoundLocal"
   }
 
@@ -41183,11 +41183,11 @@ export class NotificationSoundLocal_ extends _NotificationSound_ {
 export class NotificationSoundRingtone_ extends _NotificationSound_ {
   id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFF6C8049;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "notificationSoundRingtone"
   }
 
@@ -41210,11 +41210,11 @@ export class NotificationSoundRingtone_ extends _NotificationSound_ {
 }
 
 export class account_SavedRingtone_ extends _account_SavedRingtone_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB7263F6D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.savedRingtone"
   }
 
@@ -41234,11 +41234,11 @@ export class account_SavedRingtone_ extends _account_SavedRingtone_ {
 export class account_SavedRingtoneConverted_ extends _account_SavedRingtone_ {
   document: enums.Document;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1F307EB7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.savedRingtoneConverted"
   }
 
@@ -41261,11 +41261,11 @@ export class account_SavedRingtoneConverted_ extends _account_SavedRingtone_ {
 }
 
 export class AttachMenuPeerTypeSameBotPM_ extends _AttachMenuPeerType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7D6BE90E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "attachMenuPeerTypeSameBotPM"
   }
 
@@ -41283,11 +41283,11 @@ export class AttachMenuPeerTypeSameBotPM_ extends _AttachMenuPeerType_ {
 }
 
 export class AttachMenuPeerTypeBotPM_ extends _AttachMenuPeerType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC32BFA1A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "attachMenuPeerTypeBotPM"
   }
 
@@ -41305,11 +41305,11 @@ export class AttachMenuPeerTypeBotPM_ extends _AttachMenuPeerType_ {
 }
 
 export class AttachMenuPeerTypePM_ extends _AttachMenuPeerType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF146D31F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "attachMenuPeerTypePM"
   }
 
@@ -41327,11 +41327,11 @@ export class AttachMenuPeerTypePM_ extends _AttachMenuPeerType_ {
 }
 
 export class AttachMenuPeerTypeChat_ extends _AttachMenuPeerType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0509113F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "attachMenuPeerTypeChat"
   }
 
@@ -41349,11 +41349,11 @@ export class AttachMenuPeerTypeChat_ extends _AttachMenuPeerType_ {
 }
 
 export class AttachMenuPeerTypeBroadcast_ extends _AttachMenuPeerType_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7BFBDEFC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "attachMenuPeerTypeBroadcast"
   }
 
@@ -41374,11 +41374,11 @@ export class InputInvoiceMessage_ extends _InputInvoice_ {
   peer: enums.InputPeer;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC5B56859;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputInvoiceMessage"
   }
 
@@ -41406,11 +41406,11 @@ export class InputInvoiceMessage_ extends _InputInvoice_ {
 export class InputInvoiceSlug_ extends _InputInvoice_ {
   slug: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC326CAEF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputInvoiceSlug"
   }
 
@@ -41436,11 +41436,11 @@ export class InputInvoicePremiumGiftCode_ extends _InputInvoice_ {
   purpose: enums.InputStorePaymentPurpose;
   option: enums.PremiumGiftCodeOption;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x98986C0D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputInvoicePremiumGiftCode"
   }
 
@@ -41468,11 +41468,11 @@ export class InputInvoicePremiumGiftCode_ extends _InputInvoice_ {
 export class payments_ExportedInvoice_ extends _payments_ExportedInvoice_ {
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAED0CBD9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.exportedInvoice"
   }
 
@@ -41501,11 +41501,11 @@ export class messages_TranscribedAudio_ extends _messages_TranscribedAudio_ {
   trial_remains_num?: number;
   trial_remains_until_date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCFB9D957;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.transcribedAudio"
   }
 
@@ -41549,11 +41549,11 @@ export class help_PremiumPromo_ extends _help_PremiumPromo_ {
   period_options: Array<enums.PremiumSubscriptionOption>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5334759C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.premiumPromo"
   }
 
@@ -41594,11 +41594,11 @@ export class InputStorePaymentPremiumSubscription_ extends _InputStorePaymentPur
   restore?: true;
   upgrade?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA6751E66;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStorePaymentPremiumSubscription"
   }
 
@@ -41630,11 +41630,11 @@ export class InputStorePaymentGiftPremium_ extends _InputStorePaymentPurpose_ {
   currency: string;
   amount: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x616F7FE8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStorePaymentGiftPremium"
   }
 
@@ -41668,11 +41668,11 @@ export class InputStorePaymentPremiumGiftCode_ extends _InputStorePaymentPurpose
   currency: string;
   amount: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA3805F3F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStorePaymentPremiumGiftCode"
   }
 
@@ -41717,11 +41717,11 @@ export class InputStorePaymentPremiumGiveaway_ extends _InputStorePaymentPurpose
   currency: string;
   amount: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x160544CA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputStorePaymentPremiumGiveaway"
   }
 
@@ -41779,11 +41779,11 @@ export class PremiumGiftOption_ extends _PremiumGiftOption_ {
   bot_url: string;
   store_product?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x74C34319;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "premiumGiftOption"
   }
 
@@ -41823,11 +41823,11 @@ export class PaymentFormMethod_ extends _PaymentFormMethod_ {
   url: string;
   title: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x88F8F21B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "paymentFormMethod"
   }
 
@@ -41853,11 +41853,11 @@ export class PaymentFormMethod_ extends _PaymentFormMethod_ {
 }
 
 export class EmojiStatusEmpty_ extends _EmojiStatus_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2DE11AAE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emojiStatusEmpty"
   }
 
@@ -41877,11 +41877,11 @@ export class EmojiStatusEmpty_ extends _EmojiStatus_ {
 export class EmojiStatus_ extends _EmojiStatus_ {
   document_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x929B619D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emojiStatus"
   }
 
@@ -41907,11 +41907,11 @@ export class EmojiStatusUntil_ extends _EmojiStatus_ {
   document_id: bigint;
   until: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFA30A8C7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emojiStatusUntil"
   }
 
@@ -41937,11 +41937,11 @@ export class EmojiStatusUntil_ extends _EmojiStatus_ {
 }
 
 export class account_EmojiStatusesNotModified_ extends _account_EmojiStatuses_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD08CE645;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.emojiStatusesNotModified"
   }
 
@@ -41962,11 +41962,11 @@ export class account_EmojiStatuses_ extends _account_EmojiStatuses_ {
   hash: bigint;
   statuses: Array<enums.EmojiStatus>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x90C467D1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.emojiStatuses"
   }
 
@@ -41992,11 +41992,11 @@ export class account_EmojiStatuses_ extends _account_EmojiStatuses_ {
 }
 
 export class ReactionEmpty_ extends _Reaction_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x79F5D419;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "reactionEmpty"
   }
 
@@ -42016,11 +42016,11 @@ export class ReactionEmpty_ extends _Reaction_ {
 export class ReactionEmoji_ extends _Reaction_ {
   emoticon: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1B2286B8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "reactionEmoji"
   }
 
@@ -42045,11 +42045,11 @@ export class ReactionEmoji_ extends _Reaction_ {
 export class ReactionCustomEmoji_ extends _Reaction_ {
   document_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8935FC73;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "reactionCustomEmoji"
   }
 
@@ -42072,11 +42072,11 @@ export class ReactionCustomEmoji_ extends _Reaction_ {
 }
 
 export class ChatReactionsNone_ extends _ChatReactions_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEAFC32BC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatReactionsNone"
   }
 
@@ -42096,11 +42096,11 @@ export class ChatReactionsNone_ extends _ChatReactions_ {
 export class ChatReactionsAll_ extends _ChatReactions_ {
   allow_custom?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x52928BCA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatReactionsAll"
   }
 
@@ -42127,11 +42127,11 @@ export class ChatReactionsAll_ extends _ChatReactions_ {
 export class ChatReactionsSome_ extends _ChatReactions_ {
   reactions: Array<enums.Reaction>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x661D4037;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatReactionsSome"
   }
 
@@ -42154,11 +42154,11 @@ export class ChatReactionsSome_ extends _ChatReactions_ {
 }
 
 export class messages_ReactionsNotModified_ extends _messages_Reactions_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB06FDBDF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.reactionsNotModified"
   }
 
@@ -42179,11 +42179,11 @@ export class messages_Reactions_ extends _messages_Reactions_ {
   hash: bigint;
   reactions: Array<enums.Reaction>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEAFDF716;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.reactions"
   }
 
@@ -42212,11 +42212,11 @@ export class EmailVerifyPurposeLoginSetup_ extends _EmailVerifyPurpose_ {
   phone_number: string;
   phone_code_hash: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4345BE73;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emailVerifyPurposeLoginSetup"
   }
 
@@ -42242,11 +42242,11 @@ export class EmailVerifyPurposeLoginSetup_ extends _EmailVerifyPurpose_ {
 }
 
 export class EmailVerifyPurposeLoginChange_ extends _EmailVerifyPurpose_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x527D22EB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emailVerifyPurposeLoginChange"
   }
 
@@ -42264,11 +42264,11 @@ export class EmailVerifyPurposeLoginChange_ extends _EmailVerifyPurpose_ {
 }
 
 export class EmailVerifyPurposePassport_ extends _EmailVerifyPurpose_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBBF51685;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emailVerifyPurposePassport"
   }
 
@@ -42288,11 +42288,11 @@ export class EmailVerifyPurposePassport_ extends _EmailVerifyPurpose_ {
 export class EmailVerificationCode_ extends _EmailVerification_ {
   code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x922E55A9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emailVerificationCode"
   }
 
@@ -42317,11 +42317,11 @@ export class EmailVerificationCode_ extends _EmailVerification_ {
 export class EmailVerificationGoogle_ extends _EmailVerification_ {
   token: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDB909EC2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emailVerificationGoogle"
   }
 
@@ -42346,11 +42346,11 @@ export class EmailVerificationGoogle_ extends _EmailVerification_ {
 export class EmailVerificationApple_ extends _EmailVerification_ {
   token: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x96D074FD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emailVerificationApple"
   }
 
@@ -42375,11 +42375,11 @@ export class EmailVerificationApple_ extends _EmailVerification_ {
 export class account_EmailVerified_ extends _account_EmailVerified_ {
   email: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2B96CD1B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.emailVerified"
   }
 
@@ -42405,11 +42405,11 @@ export class account_EmailVerifiedLogin_ extends _account_EmailVerified_ {
   email: string;
   sent_code: enums.auth.SentCode;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE1BB0D61;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.emailVerifiedLogin"
   }
 
@@ -42444,11 +42444,11 @@ export class PremiumSubscriptionOption_ extends _PremiumSubscriptionOption_ {
   bot_url: string;
   store_product?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5F2D1DF2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "premiumSubscriptionOption"
   }
 
@@ -42497,11 +42497,11 @@ export class SendAsPeer_ extends _SendAsPeer_ {
   premium_required?: true;
   peer: enums.Peer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB81C7034;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sendAsPeer"
   }
 
@@ -42534,11 +42534,11 @@ export class MessageExtendedMediaPreview_ extends _MessageExtendedMedia_ {
   thumb?: enums.PhotoSize;
   video_duration?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAD628CC8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageExtendedMediaPreview"
   }
 
@@ -42574,11 +42574,11 @@ export class MessageExtendedMediaPreview_ extends _MessageExtendedMedia_ {
 export class MessageExtendedMedia_ extends _MessageExtendedMedia_ {
   media: enums.MessageMedia;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEE479C64;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messageExtendedMedia"
   }
 
@@ -42604,11 +42604,11 @@ export class StickerKeyword_ extends _StickerKeyword_ {
   document_id: bigint;
   keyword: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFCFEB29C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickerKeyword"
   }
 
@@ -42638,11 +42638,11 @@ export class Username_ extends _Username_ {
   active?: true;
   username: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB4073647;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "username"
   }
 
@@ -42675,11 +42675,11 @@ export class Username_ extends _Username_ {
 export class ForumTopicDeleted_ extends _ForumTopic_ {
   id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x023F109B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "forumTopicDeleted"
   }
 
@@ -42722,11 +42722,11 @@ export class ForumTopic_ extends _ForumTopic_ {
   notify_settings: enums.PeerNotifySettings;
   draft?: enums.DraftMessage;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x71701DA9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "forumTopic"
   }
 
@@ -42813,11 +42813,11 @@ export class messages_ForumTopics_ extends _messages_ForumTopics_ {
   users: Array<enums.User>;
   pts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x367617D3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.forumTopics"
   }
 
@@ -42862,11 +42862,11 @@ export class messages_ForumTopics_ extends _messages_ForumTopics_ {
 export class DefaultHistoryTTL_ extends _DefaultHistoryTTL_ {
   period: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x43B46B20;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "defaultHistoryTTL"
   }
 
@@ -42892,11 +42892,11 @@ export class ExportedContactToken_ extends _ExportedContactToken_ {
   url: string;
   expires: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x41BF109B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "exportedContactToken"
   }
 
@@ -42925,11 +42925,11 @@ export class RequestPeerTypeUser_ extends _RequestPeerType_ {
   bot?: boolean;
   premium?: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5F3B8A00;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "requestPeerTypeUser"
   }
 
@@ -42964,11 +42964,11 @@ export class RequestPeerTypeChat_ extends _RequestPeerType_ {
   user_admin_rights?: enums.ChatAdminRights;
   bot_admin_rights?: enums.ChatAdminRights;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC9F06E1B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "requestPeerTypeChat"
   }
 
@@ -43013,11 +43013,11 @@ export class RequestPeerTypeBroadcast_ extends _RequestPeerType_ {
   user_admin_rights?: enums.ChatAdminRights;
   bot_admin_rights?: enums.ChatAdminRights;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x339BEF6C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "requestPeerTypeBroadcast"
   }
 
@@ -43051,11 +43051,11 @@ export class RequestPeerTypeBroadcast_ extends _RequestPeerType_ {
 }
 
 export class EmojiListNotModified_ extends _EmojiList_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x481EADFA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emojiListNotModified"
   }
 
@@ -43076,11 +43076,11 @@ export class EmojiList_ extends _EmojiList_ {
   hash: bigint;
   document_id: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7A1E11D1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emojiList"
   }
 
@@ -43110,11 +43110,11 @@ export class EmojiGroup_ extends _EmojiGroup_ {
   icon_emoji_id: bigint;
   emoticons: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7A9ABDA9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "emojiGroup"
   }
 
@@ -43143,11 +43143,11 @@ export class EmojiGroup_ extends _EmojiGroup_ {
 }
 
 export class messages_EmojiGroupsNotModified_ extends _messages_EmojiGroups_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6FB4AD87;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.emojiGroupsNotModified"
   }
 
@@ -43168,11 +43168,11 @@ export class messages_EmojiGroups_ extends _messages_EmojiGroups_ {
   hash: number;
   groups: Array<enums.EmojiGroup>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x881FB94B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.emojiGroups"
   }
 
@@ -43201,11 +43201,11 @@ export class TextWithEntities_ extends _TextWithEntities_ {
   text: string;
   entities: Array<enums.MessageEntity>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x751F3146;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "textWithEntities"
   }
 
@@ -43233,11 +43233,11 @@ export class TextWithEntities_ extends _TextWithEntities_ {
 export class messages_TranslateResult_ extends _messages_TranslatedText_ {
   result: Array<enums.TextWithEntities>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x33DB32F8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.translateResult"
   }
 
@@ -43264,11 +43264,11 @@ export class AutoSaveSettings_ extends _AutoSaveSettings_ {
   videos?: true;
   video_max_size?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC84834CE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "autoSaveSettings"
   }
 
@@ -43302,11 +43302,11 @@ export class AutoSaveException_ extends _AutoSaveException_ {
   peer: enums.Peer;
   settings: enums.AutoSaveSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x81602D47;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "autoSaveException"
   }
 
@@ -43339,11 +43339,11 @@ export class account_AutoSaveSettings_ extends _account_AutoSaveSettings_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4C3E069D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.autoSaveSettings"
   }
 
@@ -43381,11 +43381,11 @@ export class account_AutoSaveSettings_ extends _account_AutoSaveSettings_ {
 }
 
 export class help_AppConfigNotModified_ extends _help_AppConfig_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7CDE641D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.appConfigNotModified"
   }
 
@@ -43406,11 +43406,11 @@ export class help_AppConfig_ extends _help_AppConfig_ {
   hash: number;
   config: enums.JSONValue;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDD18782E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.appConfig"
   }
 
@@ -43439,11 +43439,11 @@ export class InputBotAppID_ extends _InputBotApp_ {
   id: bigint;
   access_hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA920BD7A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotAppID"
   }
 
@@ -43472,11 +43472,11 @@ export class InputBotAppShortName_ extends _InputBotApp_ {
   bot_id: enums.InputUser;
   short_name: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x908C0407;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputBotAppShortName"
   }
 
@@ -43502,11 +43502,11 @@ export class InputBotAppShortName_ extends _InputBotApp_ {
 }
 
 export class BotAppNotModified_ extends _BotApp_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5DA674B7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botAppNotModified"
   }
 
@@ -43533,11 +43533,11 @@ export class BotApp_ extends _BotApp_ {
   document?: enums.Document;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x95FCD1D6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "botApp"
   }
 
@@ -43588,11 +43588,11 @@ export class messages_BotApp_ extends _messages_BotApp_ {
   has_settings?: true;
   app: enums.BotApp;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEB50ADF5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.botApp"
   }
 
@@ -43628,11 +43628,11 @@ export class messages_BotApp_ extends _messages_BotApp_ {
 export class AppWebViewResultUrl_ extends _AppWebViewResult_ {
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3C1B4F0D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "appWebViewResultUrl"
   }
 
@@ -43658,11 +43658,11 @@ export class InlineBotWebView_ extends _InlineBotWebView_ {
   text: string;
   url: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB57295D5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inlineBotWebView"
   }
 
@@ -43691,11 +43691,11 @@ export class ReadParticipantDate_ extends _ReadParticipantDate_ {
   user_id: bigint;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4A4FF172;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "readParticipantDate"
   }
 
@@ -43723,11 +43723,11 @@ export class ReadParticipantDate_ extends _ReadParticipantDate_ {
 export class InputChatlistDialogFilter_ extends _InputChatlist_ {
   filter_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF3E0DA33;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputChatlistDialogFilter"
   }
 
@@ -43754,11 +43754,11 @@ export class ExportedChatlistInvite_ extends _ExportedChatlistInvite_ {
   url: string;
   peers: Array<enums.Peer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0C5181AC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "exportedChatlistInvite"
   }
 
@@ -43792,11 +43792,11 @@ export class chatlists_ExportedChatlistInvite_ extends _chatlists_ExportedChatli
   filter: enums.DialogFilter;
   invite: enums.ExportedChatlistInvite;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x10E6E3A6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.exportedChatlistInvite"
   }
 
@@ -43826,11 +43826,11 @@ export class chatlists_ExportedInvites_ extends _chatlists_ExportedInvites_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x10AB6DC7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.exportedInvites"
   }
 
@@ -43865,11 +43865,11 @@ export class chatlists_ChatlistInviteAlready_ extends _chatlists_ChatlistInvite_
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFA87F659;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.chatlistInviteAlready"
   }
 
@@ -43910,11 +43910,11 @@ export class chatlists_ChatlistInvite_ extends _chatlists_ChatlistInvite_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1DCD839D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.chatlistInvite"
   }
 
@@ -43955,11 +43955,11 @@ export class chatlists_ChatlistUpdates_ extends _chatlists_ChatlistUpdates_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x93BD878D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.chatlistUpdates"
   }
 
@@ -43992,11 +43992,11 @@ export class bots_BotInfo_ extends _bots_BotInfo_ {
   about: string;
   description: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE8A775B0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.botInfo"
   }
 
@@ -44029,11 +44029,11 @@ export class MessagePeerVote_ extends _MessagePeerVote_ {
   option: Uint8Array;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB6CC2D5C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messagePeerVote"
   }
 
@@ -44065,11 +44065,11 @@ export class MessagePeerVoteInputOption_ extends _MessagePeerVote_ {
   peer: enums.Peer;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x74CDA504;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messagePeerVoteInputOption"
   }
 
@@ -44099,11 +44099,11 @@ export class MessagePeerVoteMultiple_ extends _MessagePeerVote_ {
   options: Array<Uint8Array>;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4628F6E6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messagePeerVoteMultiple"
   }
 
@@ -44136,11 +44136,11 @@ export class SponsoredWebPage_ extends _SponsoredWebPage_ {
   site_name: string;
   photo?: enums.Photo;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3DB8EC63;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "sponsoredWebPage"
   }
 
@@ -44178,11 +44178,11 @@ export class StoryViews_ extends _StoryViews_ {
   reactions_count?: number;
   recent_viewers?: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8D595CD6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storyViews"
   }
 
@@ -44224,11 +44224,11 @@ export class StoryViews_ extends _StoryViews_ {
 export class StoryItemDeleted_ extends _StoryItem_ {
   id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x51E6EE4F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storyItemDeleted"
   }
 
@@ -44256,11 +44256,11 @@ export class StoryItemSkipped_ extends _StoryItem_ {
   date: number;
   expire_date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFFADC913;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storyItemSkipped"
   }
 
@@ -44316,11 +44316,11 @@ export class StoryItem_ extends _StoryItem_ {
   views?: enums.StoryViews;
   sent_reaction?: enums.Reaction;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x79B26A24;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storyItem"
   }
 
@@ -44408,11 +44408,11 @@ export class stories_AllStoriesNotModified_ extends _stories_AllStories_ {
   state: string;
   stealth_mode: enums.StoriesStealthMode;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1158FE3E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.allStoriesNotModified"
   }
 
@@ -44448,11 +44448,11 @@ export class stories_AllStories_ extends _stories_AllStories_ {
   users: Array<enums.User>;
   stealth_mode: enums.StoriesStealthMode;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6EFC5E81;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.allStories"
   }
 
@@ -44500,11 +44500,11 @@ export class stories_Stories_ extends _stories_Stories_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5DD8C3C8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.stories"
   }
 
@@ -44542,11 +44542,11 @@ export class StoryView_ extends _StoryView_ {
   date: number;
   reaction?: enums.Reaction;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB0BDEAC5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storyView"
   }
 
@@ -44587,11 +44587,11 @@ export class StoryViewPublicForward_ extends _StoryView_ {
   blocked_my_stories_from?: true;
   message: enums.Message;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9083670B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storyViewPublicForward"
   }
 
@@ -44627,11 +44627,11 @@ export class StoryViewPublicRepost_ extends _StoryView_ {
   peer_id: enums.Peer;
   story: enums.StoryItem;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBD74CF49;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storyViewPublicRepost"
   }
 
@@ -44674,11 +44674,11 @@ export class stories_StoryViewsList_ extends _stories_StoryViewsList_ {
   users: Array<enums.User>;
   next_offset?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x59D78FC5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.storyViewsList"
   }
 
@@ -44727,11 +44727,11 @@ export class stories_StoryViews_ extends _stories_StoryViews_ {
   views: Array<enums.StoryViews>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDE9EED1D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.storyViews"
   }
 
@@ -44764,11 +44764,11 @@ export class InputReplyToMessage_ extends _InputReplyTo_ {
   quote_entities?: Array<enums.MessageEntity>;
   quote_offset?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x22C0F6D5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputReplyToMessage"
   }
 
@@ -44811,11 +44811,11 @@ export class InputReplyToStory_ extends _InputReplyTo_ {
   peer: enums.InputPeer;
   story_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5881323A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputReplyToStory"
   }
 
@@ -44843,11 +44843,11 @@ export class InputReplyToStory_ extends _InputReplyTo_ {
 export class ExportedStoryLink_ extends _ExportedStoryLink_ {
   link: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3FC9053B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "exportedStoryLink"
   }
 
@@ -44873,11 +44873,11 @@ export class StoriesStealthMode_ extends _StoriesStealthMode_ {
   active_until_date?: number;
   cooldown_until_date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x712E27FD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storiesStealthMode"
   }
 
@@ -44911,11 +44911,11 @@ export class MediaAreaCoordinates_ extends _MediaAreaCoordinates_ {
   h: number;
   rotation: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x03D1EA4E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "mediaAreaCoordinates"
   }
 
@@ -44958,11 +44958,11 @@ export class MediaAreaVenue_ extends _MediaArea_ {
   venue_id: string;
   venue_type: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBE82DB9C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "mediaAreaVenue"
   }
 
@@ -45007,11 +45007,11 @@ export class InputMediaAreaVenue_ extends _MediaArea_ {
   query_id: bigint;
   result_id: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB282217F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaAreaVenue"
   }
 
@@ -45043,11 +45043,11 @@ export class MediaAreaGeoPoint_ extends _MediaArea_ {
   coordinates: enums.MediaAreaCoordinates;
   geo: enums.GeoPoint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDF8B3B22;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "mediaAreaGeoPoint"
   }
 
@@ -45078,11 +45078,11 @@ export class MediaAreaSuggestedReaction_ extends _MediaArea_ {
   coordinates: enums.MediaAreaCoordinates;
   reaction: enums.Reaction;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x14455871;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "mediaAreaSuggestedReaction"
   }
 
@@ -45120,11 +45120,11 @@ export class MediaAreaChannelPost_ extends _MediaArea_ {
   channel_id: bigint;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x770416AF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "mediaAreaChannelPost"
   }
 
@@ -45157,11 +45157,11 @@ export class InputMediaAreaChannelPost_ extends _MediaArea_ {
   channel: enums.InputChannel;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2271F2BF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "inputMediaAreaChannelPost"
   }
 
@@ -45194,11 +45194,11 @@ export class PeerStories_ extends _PeerStories_ {
   max_read_id?: number;
   stories: Array<enums.StoryItem>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9A35E999;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "peerStories"
   }
 
@@ -45233,11 +45233,11 @@ export class stories_PeerStories_ extends _stories_PeerStories_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCAE68768;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.peerStories"
   }
 
@@ -45270,11 +45270,11 @@ export class messages_WebPage_ extends _messages_WebPage_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFD5E12BD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.webPage"
   }
 
@@ -45310,11 +45310,11 @@ export class PremiumGiftCodeOption_ extends _PremiumGiftCodeOption_ {
   currency: string;
   amount: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x257E962B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "premiumGiftCodeOption"
   }
 
@@ -45364,11 +45364,11 @@ export class payments_CheckedGiftCode_ extends _payments_CheckedGiftCode_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x284A1096;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.checkedGiftCode"
   }
 
@@ -45424,11 +45424,11 @@ export class payments_GiveawayInfo_ extends _payments_GiveawayInfo_ {
   admin_disallowed_chat_id?: bigint;
   disallowed_country?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4367DAA0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.giveawayInfo"
   }
 
@@ -45476,11 +45476,11 @@ export class payments_GiveawayInfoResults_ extends _payments_GiveawayInfo_ {
   winners_count: number;
   activated_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x00CD5570;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.giveawayInfoResults"
   }
 
@@ -45528,11 +45528,11 @@ export class PrepaidGiveaway_ extends _PrepaidGiveaway_ {
   quantity: number;
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB2539D54;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "prepaidGiveaway"
   }
 
@@ -45575,11 +45575,11 @@ export class Boost_ extends _Boost_ {
   used_gift_slug?: string;
   multiplier?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2A1C8C71;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "boost"
   }
 
@@ -45636,11 +45636,11 @@ export class premium_BoostsList_ extends _premium_BoostsList_ {
   next_offset?: string;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x86F8613C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "premium.boostsList"
   }
 
@@ -45680,11 +45680,11 @@ export class MyBoost_ extends _MyBoost_ {
   expires: number;
   cooldown_until_date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC448415C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "myBoost"
   }
 
@@ -45725,11 +45725,11 @@ export class premium_MyBoosts_ extends _premium_MyBoosts_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9AE228E2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "premium.myBoosts"
   }
 
@@ -45769,11 +45769,11 @@ export class premium_BoostsStatus_ extends _premium_BoostsStatus_ {
   prepaid_giveaways?: Array<enums.PrepaidGiveaway>;
   my_boost_slots?: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4959427A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "premium.boostsStatus"
   }
 
@@ -45830,11 +45830,11 @@ export class StoryFwdHeader_ extends _StoryFwdHeader_ {
   from_name?: string;
   story_id?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB826E150;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storyFwdHeader"
   }
 
@@ -45873,11 +45873,11 @@ export class PostInteractionCountersMessage_ extends _PostInteractionCounters_ {
   forwards: number;
   reactions: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE7058E7F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "postInteractionCountersMessage"
   }
 
@@ -45914,11 +45914,11 @@ export class PostInteractionCountersStory_ extends _PostInteractionCounters_ {
   forwards: number;
   reactions: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8A480E27;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "postInteractionCountersStory"
   }
 
@@ -45953,11 +45953,11 @@ export class stats_StoryStats_ extends _stats_StoryStats_ {
   views_graph: enums.StatsGraph;
   reactions_by_emotion_graph: enums.StatsGraph;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x50CD067C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stats.storyStats"
   }
 
@@ -45985,11 +45985,11 @@ export class stats_StoryStats_ extends _stats_StoryStats_ {
 export class PublicForwardMessage_ extends _PublicForward_ {
   message: enums.Message;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x01F2BF4A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "publicForwardMessage"
   }
 
@@ -46015,11 +46015,11 @@ export class PublicForwardStory_ extends _PublicForward_ {
   peer: enums.Peer;
   story: enums.StoryItem;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEDF3ADD0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "publicForwardStory"
   }
 
@@ -46051,11 +46051,11 @@ export class stats_PublicForwards_ extends _stats_PublicForwards_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x93037E20;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stats.publicForwards"
   }
 
@@ -46095,11 +46095,11 @@ export class PeerColor_ extends _PeerColor_ {
   color?: number;
   background_emoji_id?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB54B5ACF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "peerColor"
   }
 
@@ -46129,11 +46129,11 @@ export class PeerColor_ extends _PeerColor_ {
 export class help_PeerColorSet_ extends _help_PeerColorSet_ {
   colors: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x26219A58;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.peerColorSet"
   }
 
@@ -46160,11 +46160,11 @@ export class help_PeerColorProfileSet_ extends _help_PeerColorSet_ {
   bg_colors: Array<number>;
   story_colors: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x767D61EB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.peerColorProfileSet"
   }
 
@@ -46200,11 +46200,11 @@ export class help_PeerColorOption_ extends _help_PeerColorOption_ {
   channel_min_level?: number;
   group_min_level?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xADEC6EBE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.peerColorOption"
   }
 
@@ -46244,11 +46244,11 @@ export class help_PeerColorOption_ extends _help_PeerColorOption_ {
 }
 
 export class help_PeerColorsNotModified_ extends _help_PeerColors_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2BA1F5CE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.peerColorsNotModified"
   }
 
@@ -46269,11 +46269,11 @@ export class help_PeerColors_ extends _help_PeerColors_ {
   hash: number;
   colors: Array<enums.help.PeerColorOption>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x00F8ED08;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.peerColors"
   }
 
@@ -46303,11 +46303,11 @@ export class StoryReaction_ extends _StoryReaction_ {
   date: number;
   reaction: enums.Reaction;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6090D6D5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storyReaction"
   }
 
@@ -46338,11 +46338,11 @@ export class StoryReaction_ extends _StoryReaction_ {
 export class StoryReactionPublicForward_ extends _StoryReaction_ {
   message: enums.Message;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBBAB2643;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storyReactionPublicForward"
   }
 
@@ -46368,11 +46368,11 @@ export class StoryReactionPublicRepost_ extends _StoryReaction_ {
   peer_id: enums.Peer;
   story: enums.StoryItem;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCFCD0F13;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "storyReactionPublicRepost"
   }
 
@@ -46404,11 +46404,11 @@ export class stories_StoryReactionsList_ extends _stories_StoryReactionsList_ {
   users: Array<enums.User>;
   next_offset?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAA5F789C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.storyReactionsList"
   }
 
@@ -46449,11 +46449,11 @@ export class SavedDialog_ extends _SavedDialog_ {
   peer: enums.Peer;
   top_message: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBD87CB6C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "savedDialog"
   }
 
@@ -46489,11 +46489,11 @@ export class messages_SavedDialogs_ extends _messages_SavedDialogs_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF83AE221;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.savedDialogs"
   }
 
@@ -46531,11 +46531,11 @@ export class messages_SavedDialogsSlice_ extends _messages_SavedDialogs_ {
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x44BA9DD9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.savedDialogsSlice"
   }
 
@@ -46572,11 +46572,11 @@ export class messages_SavedDialogsSlice_ extends _messages_SavedDialogs_ {
 export class messages_SavedDialogsNotModified_ extends _messages_SavedDialogs_ {
   count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC01F6FE8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.savedDialogsNotModified"
   }
 
@@ -46603,11 +46603,11 @@ export class SavedReactionTag_ extends _SavedReactionTag_ {
   title?: string;
   count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCB6FF828;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "savedReactionTag"
   }
 
@@ -46638,11 +46638,11 @@ export class SavedReactionTag_ extends _SavedReactionTag_ {
 }
 
 export class messages_SavedReactionTagsNotModified_ extends _messages_SavedReactionTags_ {
-  protected get [id]() {
+  protected get [id](): number {
     return 0x889B59EF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.savedReactionTagsNotModified"
   }
 
@@ -46663,11 +46663,11 @@ export class messages_SavedReactionTags_ extends _messages_SavedReactionTags_ {
   tags: Array<enums.SavedReactionTag>;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3259950A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.savedReactionTags"
   }
 
@@ -46695,11 +46695,11 @@ export class messages_SavedReactionTags_ extends _messages_SavedReactionTags_ {
 export class OutboxReadDate_ extends _OutboxReadDate_ {
   date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3BB842AC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "outboxReadDate"
   }
 

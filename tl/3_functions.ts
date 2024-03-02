@@ -3,18 +3,18 @@ import { id, params, TLObject, Params, paramDesc, ParamDesc, flags, name } from 
 import { types, enums } from "./2_types.ts";
 
 export abstract class Function_<T> extends TLObject {
-  __R: T = Symbol() as unknown as T; // virtual member
+  __R: T = null as unknown as T; // virtual member
 }
 
 export class req_pq_multi_ extends Function_<enums.ResPQ> {
-  static __F = Symbol() as unknown as (params: { nonce: bigint }) => enums.ResPQ;
+  static __F: (params: { nonce: bigint }) => enums.ResPQ = null as unknown as (params: { nonce: bigint }) => enums.ResPQ;
   nonce: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBE7E8EF1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "req_pq_multi"
   }
 
@@ -37,7 +37,7 @@ export class req_pq_multi_ extends Function_<enums.ResPQ> {
 }
 
 export class req_DH_params_ extends Function_<enums.Server_DH_Params> {
-  static __F = Symbol() as unknown as (params: { nonce: bigint; server_nonce: bigint; p: Uint8Array; q: Uint8Array; public_key_fingerprint: bigint; encrypted_data: Uint8Array }) => enums.Server_DH_Params;
+  static __F: (params: { nonce: bigint; server_nonce: bigint; p: Uint8Array; q: Uint8Array; public_key_fingerprint: bigint; encrypted_data: Uint8Array }) => enums.Server_DH_Params = null as unknown as (params: { nonce: bigint; server_nonce: bigint; p: Uint8Array; q: Uint8Array; public_key_fingerprint: bigint; encrypted_data: Uint8Array }) => enums.Server_DH_Params;
   nonce: bigint;
   server_nonce: bigint;
   p: Uint8Array;
@@ -45,11 +45,11 @@ export class req_DH_params_ extends Function_<enums.Server_DH_Params> {
   public_key_fingerprint: bigint;
   encrypted_data: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD712E4BE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "req_DH_params"
   }
 
@@ -87,16 +87,16 @@ export class req_DH_params_ extends Function_<enums.Server_DH_Params> {
 }
 
 export class set_client_DH_params_ extends Function_<enums.Set_client_DH_params_answer> {
-  static __F = Symbol() as unknown as (params: { nonce: bigint; server_nonce: bigint; encrypted_data: Uint8Array }) => enums.Set_client_DH_params_answer;
+  static __F: (params: { nonce: bigint; server_nonce: bigint; encrypted_data: Uint8Array }) => enums.Set_client_DH_params_answer = null as unknown as (params: { nonce: bigint; server_nonce: bigint; encrypted_data: Uint8Array }) => enums.Set_client_DH_params_answer;
   nonce: bigint;
   server_nonce: bigint;
   encrypted_data: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF5045F1F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "set_client_DH_params"
   }
 
@@ -125,14 +125,14 @@ export class set_client_DH_params_ extends Function_<enums.Set_client_DH_params_
 }
 
 export class rpc_drop_answer_ extends Function_<enums.RpcDropAnswer> {
-  static __F = Symbol() as unknown as (params: { req_msg_id: bigint }) => enums.RpcDropAnswer;
+  static __F: (params: { req_msg_id: bigint }) => enums.RpcDropAnswer = null as unknown as (params: { req_msg_id: bigint }) => enums.RpcDropAnswer;
   req_msg_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x58E4A740;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "rpc_drop_answer"
   }
 
@@ -155,14 +155,14 @@ export class rpc_drop_answer_ extends Function_<enums.RpcDropAnswer> {
 }
 
 export class get_future_salts_ extends Function_<enums.FutureSalts> {
-  static __F = Symbol() as unknown as (params: { num: number }) => enums.FutureSalts;
+  static __F: (params: { num: number }) => enums.FutureSalts = null as unknown as (params: { num: number }) => enums.FutureSalts;
   num: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB921BD04;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "get_future_salts"
   }
 
@@ -185,14 +185,14 @@ export class get_future_salts_ extends Function_<enums.FutureSalts> {
 }
 
 export class ping_ extends Function_<enums.Pong> {
-  static __F = Symbol() as unknown as (params: { ping_id: bigint }) => enums.Pong;
+  static __F: (params: { ping_id: bigint }) => enums.Pong = null as unknown as (params: { ping_id: bigint }) => enums.Pong;
   ping_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7ABE77EC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "ping"
   }
 
@@ -215,15 +215,15 @@ export class ping_ extends Function_<enums.Pong> {
 }
 
 export class ping_delay_disconnect_ extends Function_<enums.Pong> {
-  static __F = Symbol() as unknown as (params: { ping_id: bigint; disconnect_delay: number }) => enums.Pong;
+  static __F: (params: { ping_id: bigint; disconnect_delay: number }) => enums.Pong = null as unknown as (params: { ping_id: bigint; disconnect_delay: number }) => enums.Pong;
   ping_id: bigint;
   disconnect_delay: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF3427B8C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "ping_delay_disconnect"
   }
 
@@ -249,14 +249,14 @@ export class ping_delay_disconnect_ extends Function_<enums.Pong> {
 }
 
 export class destroy_session_ extends Function_<enums.DestroySessionRes> {
-  static __F = Symbol() as unknown as (params: { session_id: bigint }) => enums.DestroySessionRes;
+  static __F: (params: { session_id: bigint }) => enums.DestroySessionRes = null as unknown as (params: { session_id: bigint }) => enums.DestroySessionRes;
   session_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE7512126;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "destroy_session"
   }
 
@@ -279,12 +279,12 @@ export class destroy_session_ extends Function_<enums.DestroySessionRes> {
 }
 
 export class destroy_auth_key_ extends Function_<enums.DestroyAuthKeyRes> {
-  static __F = Symbol() as unknown as () => enums.DestroyAuthKeyRes;
-  protected get [id]() {
+  static __F: () => enums.DestroyAuthKeyRes = null as unknown as () => enums.DestroyAuthKeyRes;
+  protected get [id](): number {
     return 0xD1435160;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "destroy_auth_key"
   }
 
@@ -302,15 +302,15 @@ export class destroy_auth_key_ extends Function_<enums.DestroyAuthKeyRes> {
 }
 
 export class invokeAfterMsg_<T extends Function_<unknown>> extends Function_<T["__R"]> {
-  static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { msg_id: bigint; query: T }) => T["__R"];
+  static __F: <T extends Function_<unknown>>(params: { msg_id: bigint; query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { msg_id: bigint; query: T }) => T["__R"];
   msg_id: bigint;
   query: T;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCB9F372D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "invokeAfterMsg"
   }
 
@@ -336,15 +336,15 @@ export class invokeAfterMsg_<T extends Function_<unknown>> extends Function_<T["
 }
 
 export class invokeAfterMsgs_<T extends Function_<unknown>> extends Function_<T["__R"]> {
-  static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { msg_ids: Array<bigint>; query: T }) => T["__R"];
+  static __F: <T extends Function_<unknown>>(params: { msg_ids: Array<bigint>; query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { msg_ids: Array<bigint>; query: T }) => T["__R"];
   msg_ids: Array<bigint>;
   query: T;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3DC4B4F0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "invokeAfterMsgs"
   }
 
@@ -370,7 +370,7 @@ export class invokeAfterMsgs_<T extends Function_<unknown>> extends Function_<T[
 }
 
 export class initConnection_<T extends Function_<unknown>> extends Function_<T["__R"]> {
-  static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { api_id: number; device_model: string; system_version: string; app_version: string; system_lang_code: string; lang_pack: string; lang_code: string; proxy?: enums.InputClientProxy; params?: enums.JSONValue; query: T }) => T["__R"];
+  static __F: <T extends Function_<unknown>>(params: { api_id: number; device_model: string; system_version: string; app_version: string; system_lang_code: string; lang_pack: string; lang_code: string; proxy?: enums.InputClientProxy; params?: enums.JSONValue; query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { api_id: number; device_model: string; system_version: string; app_version: string; system_lang_code: string; lang_pack: string; lang_code: string; proxy?: enums.InputClientProxy; params?: enums.JSONValue; query: T }) => T["__R"];
   api_id: number;
   device_model: string;
   system_version: string;
@@ -382,11 +382,11 @@ export class initConnection_<T extends Function_<unknown>> extends Function_<T["
   params?: enums.JSONValue;
   query: T;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC1CD5EA9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "initConnection"
   }
 
@@ -438,15 +438,15 @@ export class initConnection_<T extends Function_<unknown>> extends Function_<T["
 }
 
 export class invokeWithLayer_<T extends Function_<unknown>> extends Function_<T["__R"]> {
-  static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { layer: number; query: T }) => T["__R"];
+  static __F: <T extends Function_<unknown>>(params: { layer: number; query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { layer: number; query: T }) => T["__R"];
   layer: number;
   query: T;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDA9B0D0D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "invokeWithLayer"
   }
 
@@ -472,14 +472,14 @@ export class invokeWithLayer_<T extends Function_<unknown>> extends Function_<T[
 }
 
 export class invokeWithoutUpdates_<T extends Function_<unknown>> extends Function_<T["__R"]> {
-  static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { query: T }) => T["__R"];
+  static __F: <T extends Function_<unknown>>(params: { query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { query: T }) => T["__R"];
   query: T;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBF9459B7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "invokeWithoutUpdates"
   }
 
@@ -502,15 +502,15 @@ export class invokeWithoutUpdates_<T extends Function_<unknown>> extends Functio
 }
 
 export class invokeWithMessagesRange_<T extends Function_<unknown>> extends Function_<T["__R"]> {
-  static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { range: enums.MessageRange; query: T }) => T["__R"];
+  static __F: <T extends Function_<unknown>>(params: { range: enums.MessageRange; query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { range: enums.MessageRange; query: T }) => T["__R"];
   range: enums.MessageRange;
   query: T;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x365275F2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "invokeWithMessagesRange"
   }
 
@@ -536,15 +536,15 @@ export class invokeWithMessagesRange_<T extends Function_<unknown>> extends Func
 }
 
 export class invokeWithTakeout_<T extends Function_<unknown>> extends Function_<T["__R"]> {
-  static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { takeout_id: bigint; query: T }) => T["__R"];
+  static __F: <T extends Function_<unknown>>(params: { takeout_id: bigint; query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { takeout_id: bigint; query: T }) => T["__R"];
   takeout_id: bigint;
   query: T;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xACA9FD2E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "invokeWithTakeout"
   }
 
@@ -570,17 +570,17 @@ export class invokeWithTakeout_<T extends Function_<unknown>> extends Function_<
 }
 
 export class auth_sendCode_ extends Function_<enums.auth.SentCode> {
-  static __F = Symbol() as unknown as (params: { phone_number: string; api_id: number; api_hash: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
+  static __F: (params: { phone_number: string; api_id: number; api_hash: string; settings: enums.CodeSettings }) => enums.auth.SentCode = null as unknown as (params: { phone_number: string; api_id: number; api_hash: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
   phone_number: string;
   api_id: number;
   api_hash: string;
   settings: enums.CodeSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA677244F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.sendCode"
   }
 
@@ -612,18 +612,18 @@ export class auth_sendCode_ extends Function_<enums.auth.SentCode> {
 }
 
 export class auth_signUp_ extends Function_<enums.auth.Authorization> {
-  static __F = Symbol() as unknown as (params: { no_joined_notifications?: true; phone_number: string; phone_code_hash: string; first_name: string; last_name: string }) => enums.auth.Authorization;
+  static __F: (params: { no_joined_notifications?: true; phone_number: string; phone_code_hash: string; first_name: string; last_name: string }) => enums.auth.Authorization = null as unknown as (params: { no_joined_notifications?: true; phone_number: string; phone_code_hash: string; first_name: string; last_name: string }) => enums.auth.Authorization;
   no_joined_notifications?: true;
   phone_number: string;
   phone_code_hash: string;
   first_name: string;
   last_name: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAAC7B717;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.signUp"
   }
 
@@ -660,17 +660,17 @@ export class auth_signUp_ extends Function_<enums.auth.Authorization> {
 }
 
 export class auth_signIn_ extends Function_<enums.auth.Authorization> {
-  static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string; phone_code?: string; email_verification?: enums.EmailVerification }) => enums.auth.Authorization;
+  static __F: (params: { phone_number: string; phone_code_hash: string; phone_code?: string; email_verification?: enums.EmailVerification }) => enums.auth.Authorization = null as unknown as (params: { phone_number: string; phone_code_hash: string; phone_code?: string; email_verification?: enums.EmailVerification }) => enums.auth.Authorization;
   phone_number: string;
   phone_code_hash: string;
   phone_code?: string;
   email_verification?: enums.EmailVerification;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8D52A951;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.signIn"
   }
 
@@ -704,12 +704,12 @@ export class auth_signIn_ extends Function_<enums.auth.Authorization> {
 }
 
 export class auth_logOut_ extends Function_<enums.auth.LoggedOut> {
-  static __F = Symbol() as unknown as () => enums.auth.LoggedOut;
-  protected get [id]() {
+  static __F: () => enums.auth.LoggedOut = null as unknown as () => enums.auth.LoggedOut;
+  protected get [id](): number {
     return 0x3E72BA19;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.logOut"
   }
 
@@ -727,12 +727,12 @@ export class auth_logOut_ extends Function_<enums.auth.LoggedOut> {
 }
 
 export class auth_resetAuthorizations_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as () => boolean;
-  protected get [id]() {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
     return 0x9FAB0D1A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.resetAuthorizations"
   }
 
@@ -750,14 +750,14 @@ export class auth_resetAuthorizations_ extends Function_<boolean> {
 }
 
 export class auth_exportAuthorization_ extends Function_<enums.auth.ExportedAuthorization> {
-  static __F = Symbol() as unknown as (params: { dc_id: number }) => enums.auth.ExportedAuthorization;
+  static __F: (params: { dc_id: number }) => enums.auth.ExportedAuthorization = null as unknown as (params: { dc_id: number }) => enums.auth.ExportedAuthorization;
   dc_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE5BFFFCD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.exportAuthorization"
   }
 
@@ -780,15 +780,15 @@ export class auth_exportAuthorization_ extends Function_<enums.auth.ExportedAuth
 }
 
 export class auth_importAuthorization_ extends Function_<enums.auth.Authorization> {
-  static __F = Symbol() as unknown as (params: { id: bigint; bytes: Uint8Array }) => enums.auth.Authorization;
+  static __F: (params: { id: bigint; bytes: Uint8Array }) => enums.auth.Authorization = null as unknown as (params: { id: bigint; bytes: Uint8Array }) => enums.auth.Authorization;
   id: bigint;
   bytes: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA57A7DAD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.importAuthorization"
   }
 
@@ -814,17 +814,17 @@ export class auth_importAuthorization_ extends Function_<enums.auth.Authorizatio
 }
 
 export class auth_bindTempAuthKey_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { perm_auth_key_id: bigint; nonce: bigint; expires_at: number; encrypted_message: Uint8Array }) => boolean;
+  static __F: (params: { perm_auth_key_id: bigint; nonce: bigint; expires_at: number; encrypted_message: Uint8Array }) => boolean = null as unknown as (params: { perm_auth_key_id: bigint; nonce: bigint; expires_at: number; encrypted_message: Uint8Array }) => boolean;
   perm_auth_key_id: bigint;
   nonce: bigint;
   expires_at: number;
   encrypted_message: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCDD42A05;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.bindTempAuthKey"
   }
 
@@ -856,17 +856,17 @@ export class auth_bindTempAuthKey_ extends Function_<boolean> {
 }
 
 export class auth_importBotAuthorization_ extends Function_<enums.auth.Authorization> {
-  static __F = Symbol() as unknown as (params: { flags: number; api_id: number; api_hash: string; bot_auth_token: string }) => enums.auth.Authorization;
+  static __F: (params: { flags: number; api_id: number; api_hash: string; bot_auth_token: string }) => enums.auth.Authorization = null as unknown as (params: { flags: number; api_id: number; api_hash: string; bot_auth_token: string }) => enums.auth.Authorization;
   flags: number;
   api_id: number;
   api_hash: string;
   bot_auth_token: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x67A3FF2C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.importBotAuthorization"
   }
 
@@ -898,14 +898,14 @@ export class auth_importBotAuthorization_ extends Function_<enums.auth.Authoriza
 }
 
 export class auth_checkPassword_ extends Function_<enums.auth.Authorization> {
-  static __F = Symbol() as unknown as (params: { password: enums.InputCheckPasswordSRP }) => enums.auth.Authorization;
+  static __F: (params: { password: enums.InputCheckPasswordSRP }) => enums.auth.Authorization = null as unknown as (params: { password: enums.InputCheckPasswordSRP }) => enums.auth.Authorization;
   password: enums.InputCheckPasswordSRP;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD18B4D16;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.checkPassword"
   }
 
@@ -928,12 +928,12 @@ export class auth_checkPassword_ extends Function_<enums.auth.Authorization> {
 }
 
 export class auth_requestPasswordRecovery_ extends Function_<enums.auth.PasswordRecovery> {
-  static __F = Symbol() as unknown as () => enums.auth.PasswordRecovery;
-  protected get [id]() {
+  static __F: () => enums.auth.PasswordRecovery = null as unknown as () => enums.auth.PasswordRecovery;
+  protected get [id](): number {
     return 0xD897BC66;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.requestPasswordRecovery"
   }
 
@@ -951,15 +951,15 @@ export class auth_requestPasswordRecovery_ extends Function_<enums.auth.Password
 }
 
 export class auth_recoverPassword_ extends Function_<enums.auth.Authorization> {
-  static __F = Symbol() as unknown as (params: { code: string; new_settings?: enums.account.PasswordInputSettings }) => enums.auth.Authorization;
+  static __F: (params: { code: string; new_settings?: enums.account.PasswordInputSettings }) => enums.auth.Authorization = null as unknown as (params: { code: string; new_settings?: enums.account.PasswordInputSettings }) => enums.auth.Authorization;
   code: string;
   new_settings?: enums.account.PasswordInputSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x37096C70;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.recoverPassword"
   }
 
@@ -987,15 +987,15 @@ export class auth_recoverPassword_ extends Function_<enums.auth.Authorization> {
 }
 
 export class auth_resendCode_ extends Function_<enums.auth.SentCode> {
-  static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string }) => enums.auth.SentCode;
+  static __F: (params: { phone_number: string; phone_code_hash: string }) => enums.auth.SentCode = null as unknown as (params: { phone_number: string; phone_code_hash: string }) => enums.auth.SentCode;
   phone_number: string;
   phone_code_hash: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3EF1A9BF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.resendCode"
   }
 
@@ -1021,15 +1021,15 @@ export class auth_resendCode_ extends Function_<enums.auth.SentCode> {
 }
 
 export class auth_cancelCode_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string }) => boolean;
+  static __F: (params: { phone_number: string; phone_code_hash: string }) => boolean = null as unknown as (params: { phone_number: string; phone_code_hash: string }) => boolean;
   phone_number: string;
   phone_code_hash: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1F040578;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.cancelCode"
   }
 
@@ -1055,14 +1055,14 @@ export class auth_cancelCode_ extends Function_<boolean> {
 }
 
 export class auth_dropTempAuthKeys_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { except_auth_keys: Array<bigint> }) => boolean;
+  static __F: (params: { except_auth_keys: Array<bigint> }) => boolean = null as unknown as (params: { except_auth_keys: Array<bigint> }) => boolean;
   except_auth_keys: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8E48A188;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.dropTempAuthKeys"
   }
 
@@ -1085,16 +1085,16 @@ export class auth_dropTempAuthKeys_ extends Function_<boolean> {
 }
 
 export class auth_exportLoginToken_ extends Function_<enums.auth.LoginToken> {
-  static __F = Symbol() as unknown as (params: { api_id: number; api_hash: string; except_ids: Array<bigint> }) => enums.auth.LoginToken;
+  static __F: (params: { api_id: number; api_hash: string; except_ids: Array<bigint> }) => enums.auth.LoginToken = null as unknown as (params: { api_id: number; api_hash: string; except_ids: Array<bigint> }) => enums.auth.LoginToken;
   api_id: number;
   api_hash: string;
   except_ids: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB7E085FE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.exportLoginToken"
   }
 
@@ -1123,14 +1123,14 @@ export class auth_exportLoginToken_ extends Function_<enums.auth.LoginToken> {
 }
 
 export class auth_importLoginToken_ extends Function_<enums.auth.LoginToken> {
-  static __F = Symbol() as unknown as (params: { token: Uint8Array }) => enums.auth.LoginToken;
+  static __F: (params: { token: Uint8Array }) => enums.auth.LoginToken = null as unknown as (params: { token: Uint8Array }) => enums.auth.LoginToken;
   token: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x95AC5CE4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.importLoginToken"
   }
 
@@ -1153,14 +1153,14 @@ export class auth_importLoginToken_ extends Function_<enums.auth.LoginToken> {
 }
 
 export class auth_acceptLoginToken_ extends Function_<enums.Authorization> {
-  static __F = Symbol() as unknown as (params: { token: Uint8Array }) => enums.Authorization;
+  static __F: (params: { token: Uint8Array }) => enums.Authorization = null as unknown as (params: { token: Uint8Array }) => enums.Authorization;
   token: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE894AD4D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.acceptLoginToken"
   }
 
@@ -1183,14 +1183,14 @@ export class auth_acceptLoginToken_ extends Function_<enums.Authorization> {
 }
 
 export class auth_checkRecoveryPassword_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { code: string }) => boolean;
+  static __F: (params: { code: string }) => boolean = null as unknown as (params: { code: string }) => boolean;
   code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0D36BF79;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.checkRecoveryPassword"
   }
 
@@ -1213,16 +1213,16 @@ export class auth_checkRecoveryPassword_ extends Function_<boolean> {
 }
 
 export class auth_importWebTokenAuthorization_ extends Function_<enums.auth.Authorization> {
-  static __F = Symbol() as unknown as (params: { api_id: number; api_hash: string; web_auth_token: string }) => enums.auth.Authorization;
+  static __F: (params: { api_id: number; api_hash: string; web_auth_token: string }) => enums.auth.Authorization = null as unknown as (params: { api_id: number; api_hash: string; web_auth_token: string }) => enums.auth.Authorization;
   api_id: number;
   api_hash: string;
   web_auth_token: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2DB873A9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.importWebTokenAuthorization"
   }
 
@@ -1251,17 +1251,17 @@ export class auth_importWebTokenAuthorization_ extends Function_<enums.auth.Auth
 }
 
 export class auth_requestFirebaseSms_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string; safety_net_token?: string; ios_push_secret?: string }) => boolean;
+  static __F: (params: { phone_number: string; phone_code_hash: string; safety_net_token?: string; ios_push_secret?: string }) => boolean = null as unknown as (params: { phone_number: string; phone_code_hash: string; safety_net_token?: string; ios_push_secret?: string }) => boolean;
   phone_number: string;
   phone_code_hash: string;
   safety_net_token?: string;
   ios_push_secret?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x89464B50;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.requestFirebaseSms"
   }
 
@@ -1295,15 +1295,15 @@ export class auth_requestFirebaseSms_ extends Function_<boolean> {
 }
 
 export class auth_resetLoginEmail_ extends Function_<enums.auth.SentCode> {
-  static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string }) => enums.auth.SentCode;
+  static __F: (params: { phone_number: string; phone_code_hash: string }) => enums.auth.SentCode = null as unknown as (params: { phone_number: string; phone_code_hash: string }) => enums.auth.SentCode;
   phone_number: string;
   phone_code_hash: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7E960193;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "auth.resetLoginEmail"
   }
 
@@ -1329,7 +1329,7 @@ export class auth_resetLoginEmail_ extends Function_<enums.auth.SentCode> {
 }
 
 export class account_registerDevice_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { no_muted?: true; token_type: number; token: string; app_sandbox: boolean; secret: Uint8Array; other_uids: Array<bigint> }) => boolean;
+  static __F: (params: { no_muted?: true; token_type: number; token: string; app_sandbox: boolean; secret: Uint8Array; other_uids: Array<bigint> }) => boolean = null as unknown as (params: { no_muted?: true; token_type: number; token: string; app_sandbox: boolean; secret: Uint8Array; other_uids: Array<bigint> }) => boolean;
   no_muted?: true;
   token_type: number;
   token: string;
@@ -1337,11 +1337,11 @@ export class account_registerDevice_ extends Function_<boolean> {
   secret: Uint8Array;
   other_uids: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEC86017A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.registerDevice"
   }
 
@@ -1381,16 +1381,16 @@ export class account_registerDevice_ extends Function_<boolean> {
 }
 
 export class account_unregisterDevice_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { token_type: number; token: string; other_uids: Array<bigint> }) => boolean;
+  static __F: (params: { token_type: number; token: string; other_uids: Array<bigint> }) => boolean = null as unknown as (params: { token_type: number; token: string; other_uids: Array<bigint> }) => boolean;
   token_type: number;
   token: string;
   other_uids: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6A0D3206;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.unregisterDevice"
   }
 
@@ -1419,15 +1419,15 @@ export class account_unregisterDevice_ extends Function_<boolean> {
 }
 
 export class account_updateNotifySettings_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputNotifyPeer; settings: enums.InputPeerNotifySettings }) => boolean;
+  static __F: (params: { peer: enums.InputNotifyPeer; settings: enums.InputPeerNotifySettings }) => boolean = null as unknown as (params: { peer: enums.InputNotifyPeer; settings: enums.InputPeerNotifySettings }) => boolean;
   peer: enums.InputNotifyPeer;
   settings: enums.InputPeerNotifySettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x84BE5B93;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.updateNotifySettings"
   }
 
@@ -1453,14 +1453,14 @@ export class account_updateNotifySettings_ extends Function_<boolean> {
 }
 
 export class account_getNotifySettings_ extends Function_<enums.PeerNotifySettings> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputNotifyPeer }) => enums.PeerNotifySettings;
+  static __F: (params: { peer: enums.InputNotifyPeer }) => enums.PeerNotifySettings = null as unknown as (params: { peer: enums.InputNotifyPeer }) => enums.PeerNotifySettings;
   peer: enums.InputNotifyPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x12B3AD31;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getNotifySettings"
   }
 
@@ -1483,12 +1483,12 @@ export class account_getNotifySettings_ extends Function_<enums.PeerNotifySettin
 }
 
 export class account_resetNotifySettings_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as () => boolean;
-  protected get [id]() {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
     return 0xDB7E1747;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.resetNotifySettings"
   }
 
@@ -1506,16 +1506,16 @@ export class account_resetNotifySettings_ extends Function_<boolean> {
 }
 
 export class account_updateProfile_ extends Function_<enums.User> {
-  static __F = Symbol() as unknown as (params?: { first_name?: string; last_name?: string; about?: string }) => enums.User;
+  static __F: (params?: { first_name?: string; last_name?: string; about?: string }) => enums.User = null as unknown as (params?: { first_name?: string; last_name?: string; about?: string }) => enums.User;
   first_name?: string;
   last_name?: string;
   about?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x78515775;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.updateProfile"
   }
 
@@ -1546,14 +1546,14 @@ export class account_updateProfile_ extends Function_<enums.User> {
 }
 
 export class account_updateStatus_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { offline: boolean }) => boolean;
+  static __F: (params: { offline: boolean }) => boolean = null as unknown as (params: { offline: boolean }) => boolean;
   offline: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6628562C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.updateStatus"
   }
 
@@ -1576,14 +1576,14 @@ export class account_updateStatus_ extends Function_<boolean> {
 }
 
 export class account_getWallPapers_ extends Function_<enums.account.WallPapers> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.account.WallPapers;
+  static __F: (params: { hash: bigint }) => enums.account.WallPapers = null as unknown as (params: { hash: bigint }) => enums.account.WallPapers;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x07967D36;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getWallPapers"
   }
 
@@ -1606,16 +1606,16 @@ export class account_getWallPapers_ extends Function_<enums.account.WallPapers> 
 }
 
 export class account_reportPeer_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; reason: enums.ReportReason; message: string }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; reason: enums.ReportReason; message: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; reason: enums.ReportReason; message: string }) => boolean;
   peer: enums.InputPeer;
   reason: enums.ReportReason;
   message: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC5BA3D86;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.reportPeer"
   }
 
@@ -1644,14 +1644,14 @@ export class account_reportPeer_ extends Function_<boolean> {
 }
 
 export class account_checkUsername_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { username: string }) => boolean;
+  static __F: (params: { username: string }) => boolean = null as unknown as (params: { username: string }) => boolean;
   username: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2714D86C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.checkUsername"
   }
 
@@ -1674,14 +1674,14 @@ export class account_checkUsername_ extends Function_<boolean> {
 }
 
 export class account_updateUsername_ extends Function_<enums.User> {
-  static __F = Symbol() as unknown as (params: { username: string }) => enums.User;
+  static __F: (params: { username: string }) => enums.User = null as unknown as (params: { username: string }) => enums.User;
   username: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3E0BDD7C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.updateUsername"
   }
 
@@ -1704,14 +1704,14 @@ export class account_updateUsername_ extends Function_<enums.User> {
 }
 
 export class account_getPrivacy_ extends Function_<enums.account.PrivacyRules> {
-  static __F = Symbol() as unknown as (params: { key: enums.InputPrivacyKey }) => enums.account.PrivacyRules;
+  static __F: (params: { key: enums.InputPrivacyKey }) => enums.account.PrivacyRules = null as unknown as (params: { key: enums.InputPrivacyKey }) => enums.account.PrivacyRules;
   key: enums.InputPrivacyKey;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDADBC950;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getPrivacy"
   }
 
@@ -1734,15 +1734,15 @@ export class account_getPrivacy_ extends Function_<enums.account.PrivacyRules> {
 }
 
 export class account_setPrivacy_ extends Function_<enums.account.PrivacyRules> {
-  static __F = Symbol() as unknown as (params: { key: enums.InputPrivacyKey; rules: Array<enums.InputPrivacyRule> }) => enums.account.PrivacyRules;
+  static __F: (params: { key: enums.InputPrivacyKey; rules: Array<enums.InputPrivacyRule> }) => enums.account.PrivacyRules = null as unknown as (params: { key: enums.InputPrivacyKey; rules: Array<enums.InputPrivacyRule> }) => enums.account.PrivacyRules;
   key: enums.InputPrivacyKey;
   rules: Array<enums.InputPrivacyRule>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC9F81CE8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.setPrivacy"
   }
 
@@ -1768,15 +1768,15 @@ export class account_setPrivacy_ extends Function_<enums.account.PrivacyRules> {
 }
 
 export class account_deleteAccount_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { reason: string; password?: enums.InputCheckPasswordSRP }) => boolean;
+  static __F: (params: { reason: string; password?: enums.InputCheckPasswordSRP }) => boolean = null as unknown as (params: { reason: string; password?: enums.InputCheckPasswordSRP }) => boolean;
   reason: string;
   password?: enums.InputCheckPasswordSRP;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA2C0CF74;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.deleteAccount"
   }
 
@@ -1804,12 +1804,12 @@ export class account_deleteAccount_ extends Function_<boolean> {
 }
 
 export class account_getAccountTTL_ extends Function_<enums.AccountDaysTTL> {
-  static __F = Symbol() as unknown as () => enums.AccountDaysTTL;
-  protected get [id]() {
+  static __F: () => enums.AccountDaysTTL = null as unknown as () => enums.AccountDaysTTL;
+  protected get [id](): number {
     return 0x08FC711D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getAccountTTL"
   }
 
@@ -1827,14 +1827,14 @@ export class account_getAccountTTL_ extends Function_<enums.AccountDaysTTL> {
 }
 
 export class account_setAccountTTL_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { ttl: enums.AccountDaysTTL }) => boolean;
+  static __F: (params: { ttl: enums.AccountDaysTTL }) => boolean = null as unknown as (params: { ttl: enums.AccountDaysTTL }) => boolean;
   ttl: enums.AccountDaysTTL;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2442485E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.setAccountTTL"
   }
 
@@ -1857,15 +1857,15 @@ export class account_setAccountTTL_ extends Function_<boolean> {
 }
 
 export class account_sendChangePhoneCode_ extends Function_<enums.auth.SentCode> {
-  static __F = Symbol() as unknown as (params: { phone_number: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
+  static __F: (params: { phone_number: string; settings: enums.CodeSettings }) => enums.auth.SentCode = null as unknown as (params: { phone_number: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
   phone_number: string;
   settings: enums.CodeSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x82574AE5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.sendChangePhoneCode"
   }
 
@@ -1891,16 +1891,16 @@ export class account_sendChangePhoneCode_ extends Function_<enums.auth.SentCode>
 }
 
 export class account_changePhone_ extends Function_<enums.User> {
-  static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string; phone_code: string }) => enums.User;
+  static __F: (params: { phone_number: string; phone_code_hash: string; phone_code: string }) => enums.User = null as unknown as (params: { phone_number: string; phone_code_hash: string; phone_code: string }) => enums.User;
   phone_number: string;
   phone_code_hash: string;
   phone_code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x70C32EDB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.changePhone"
   }
 
@@ -1929,14 +1929,14 @@ export class account_changePhone_ extends Function_<enums.User> {
 }
 
 export class account_updateDeviceLocked_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { period: number }) => boolean;
+  static __F: (params: { period: number }) => boolean = null as unknown as (params: { period: number }) => boolean;
   period: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x38DF3532;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.updateDeviceLocked"
   }
 
@@ -1959,12 +1959,12 @@ export class account_updateDeviceLocked_ extends Function_<boolean> {
 }
 
 export class account_getAuthorizations_ extends Function_<enums.account.Authorizations> {
-  static __F = Symbol() as unknown as () => enums.account.Authorizations;
-  protected get [id]() {
+  static __F: () => enums.account.Authorizations = null as unknown as () => enums.account.Authorizations;
+  protected get [id](): number {
     return 0xE320C158;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getAuthorizations"
   }
 
@@ -1982,14 +1982,14 @@ export class account_getAuthorizations_ extends Function_<enums.account.Authoriz
 }
 
 export class account_resetAuthorization_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => boolean;
+  static __F: (params: { hash: bigint }) => boolean = null as unknown as (params: { hash: bigint }) => boolean;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDF77F3BC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.resetAuthorization"
   }
 
@@ -2012,12 +2012,12 @@ export class account_resetAuthorization_ extends Function_<boolean> {
 }
 
 export class account_getPassword_ extends Function_<enums.account.Password> {
-  static __F = Symbol() as unknown as () => enums.account.Password;
-  protected get [id]() {
+  static __F: () => enums.account.Password = null as unknown as () => enums.account.Password;
+  protected get [id](): number {
     return 0x548A30F5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getPassword"
   }
 
@@ -2035,14 +2035,14 @@ export class account_getPassword_ extends Function_<enums.account.Password> {
 }
 
 export class account_getPasswordSettings_ extends Function_<enums.account.PasswordSettings> {
-  static __F = Symbol() as unknown as (params: { password: enums.InputCheckPasswordSRP }) => enums.account.PasswordSettings;
+  static __F: (params: { password: enums.InputCheckPasswordSRP }) => enums.account.PasswordSettings = null as unknown as (params: { password: enums.InputCheckPasswordSRP }) => enums.account.PasswordSettings;
   password: enums.InputCheckPasswordSRP;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9CD4EAF9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getPasswordSettings"
   }
 
@@ -2065,15 +2065,15 @@ export class account_getPasswordSettings_ extends Function_<enums.account.Passwo
 }
 
 export class account_updatePasswordSettings_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { password: enums.InputCheckPasswordSRP; new_settings: enums.account.PasswordInputSettings }) => boolean;
+  static __F: (params: { password: enums.InputCheckPasswordSRP; new_settings: enums.account.PasswordInputSettings }) => boolean = null as unknown as (params: { password: enums.InputCheckPasswordSRP; new_settings: enums.account.PasswordInputSettings }) => boolean;
   password: enums.InputCheckPasswordSRP;
   new_settings: enums.account.PasswordInputSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA59B102F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.updatePasswordSettings"
   }
 
@@ -2099,15 +2099,15 @@ export class account_updatePasswordSettings_ extends Function_<boolean> {
 }
 
 export class account_sendConfirmPhoneCode_ extends Function_<enums.auth.SentCode> {
-  static __F = Symbol() as unknown as (params: { hash: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
+  static __F: (params: { hash: string; settings: enums.CodeSettings }) => enums.auth.SentCode = null as unknown as (params: { hash: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
   hash: string;
   settings: enums.CodeSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1B3FAA88;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.sendConfirmPhoneCode"
   }
 
@@ -2133,15 +2133,15 @@ export class account_sendConfirmPhoneCode_ extends Function_<enums.auth.SentCode
 }
 
 export class account_confirmPhone_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { phone_code_hash: string; phone_code: string }) => boolean;
+  static __F: (params: { phone_code_hash: string; phone_code: string }) => boolean = null as unknown as (params: { phone_code_hash: string; phone_code: string }) => boolean;
   phone_code_hash: string;
   phone_code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5F2178C3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.confirmPhone"
   }
 
@@ -2167,15 +2167,15 @@ export class account_confirmPhone_ extends Function_<boolean> {
 }
 
 export class account_getTmpPassword_ extends Function_<enums.account.TmpPassword> {
-  static __F = Symbol() as unknown as (params: { password: enums.InputCheckPasswordSRP; period: number }) => enums.account.TmpPassword;
+  static __F: (params: { password: enums.InputCheckPasswordSRP; period: number }) => enums.account.TmpPassword = null as unknown as (params: { password: enums.InputCheckPasswordSRP; period: number }) => enums.account.TmpPassword;
   password: enums.InputCheckPasswordSRP;
   period: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x449E0B51;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getTmpPassword"
   }
 
@@ -2201,12 +2201,12 @@ export class account_getTmpPassword_ extends Function_<enums.account.TmpPassword
 }
 
 export class account_getWebAuthorizations_ extends Function_<enums.account.WebAuthorizations> {
-  static __F = Symbol() as unknown as () => enums.account.WebAuthorizations;
-  protected get [id]() {
+  static __F: () => enums.account.WebAuthorizations = null as unknown as () => enums.account.WebAuthorizations;
+  protected get [id](): number {
     return 0x182E6D6F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getWebAuthorizations"
   }
 
@@ -2224,14 +2224,14 @@ export class account_getWebAuthorizations_ extends Function_<enums.account.WebAu
 }
 
 export class account_resetWebAuthorization_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => boolean;
+  static __F: (params: { hash: bigint }) => boolean = null as unknown as (params: { hash: bigint }) => boolean;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2D01B9EF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.resetWebAuthorization"
   }
 
@@ -2254,12 +2254,12 @@ export class account_resetWebAuthorization_ extends Function_<boolean> {
 }
 
 export class account_resetWebAuthorizations_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as () => boolean;
-  protected get [id]() {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
     return 0x682D2594;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.resetWebAuthorizations"
   }
 
@@ -2277,12 +2277,12 @@ export class account_resetWebAuthorizations_ extends Function_<boolean> {
 }
 
 export class account_getAllSecureValues_ extends Function_<enums.SecureValue[]> {
-  static __F = Symbol() as unknown as () => enums.SecureValue[];
-  protected get [id]() {
+  static __F: () => enums.SecureValue[] = null as unknown as () => enums.SecureValue[];
+  protected get [id](): number {
     return 0xB288BC7D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getAllSecureValues"
   }
 
@@ -2300,14 +2300,14 @@ export class account_getAllSecureValues_ extends Function_<enums.SecureValue[]> 
 }
 
 export class account_getSecureValue_ extends Function_<enums.SecureValue[]> {
-  static __F = Symbol() as unknown as (params: { types: Array<enums.SecureValueType> }) => enums.SecureValue[];
+  static __F: (params: { types: Array<enums.SecureValueType> }) => enums.SecureValue[] = null as unknown as (params: { types: Array<enums.SecureValueType> }) => enums.SecureValue[];
   types: Array<enums.SecureValueType>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x73665BC2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getSecureValue"
   }
 
@@ -2330,15 +2330,15 @@ export class account_getSecureValue_ extends Function_<enums.SecureValue[]> {
 }
 
 export class account_saveSecureValue_ extends Function_<enums.SecureValue> {
-  static __F = Symbol() as unknown as (params: { value: enums.InputSecureValue; secure_secret_id: bigint }) => enums.SecureValue;
+  static __F: (params: { value: enums.InputSecureValue; secure_secret_id: bigint }) => enums.SecureValue = null as unknown as (params: { value: enums.InputSecureValue; secure_secret_id: bigint }) => enums.SecureValue;
   value: enums.InputSecureValue;
   secure_secret_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x899FE31D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.saveSecureValue"
   }
 
@@ -2364,14 +2364,14 @@ export class account_saveSecureValue_ extends Function_<enums.SecureValue> {
 }
 
 export class account_deleteSecureValue_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { types: Array<enums.SecureValueType> }) => boolean;
+  static __F: (params: { types: Array<enums.SecureValueType> }) => boolean = null as unknown as (params: { types: Array<enums.SecureValueType> }) => boolean;
   types: Array<enums.SecureValueType>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB880BC4B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.deleteSecureValue"
   }
 
@@ -2394,16 +2394,16 @@ export class account_deleteSecureValue_ extends Function_<boolean> {
 }
 
 export class account_getAuthorizationForm_ extends Function_<enums.account.AuthorizationForm> {
-  static __F = Symbol() as unknown as (params: { bot_id: bigint; scope: string; public_key: string }) => enums.account.AuthorizationForm;
+  static __F: (params: { bot_id: bigint; scope: string; public_key: string }) => enums.account.AuthorizationForm = null as unknown as (params: { bot_id: bigint; scope: string; public_key: string }) => enums.account.AuthorizationForm;
   bot_id: bigint;
   scope: string;
   public_key: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA929597A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getAuthorizationForm"
   }
 
@@ -2432,18 +2432,18 @@ export class account_getAuthorizationForm_ extends Function_<enums.account.Autho
 }
 
 export class account_acceptAuthorization_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { bot_id: bigint; scope: string; public_key: string; value_hashes: Array<enums.SecureValueHash>; credentials: enums.SecureCredentialsEncrypted }) => boolean;
+  static __F: (params: { bot_id: bigint; scope: string; public_key: string; value_hashes: Array<enums.SecureValueHash>; credentials: enums.SecureCredentialsEncrypted }) => boolean = null as unknown as (params: { bot_id: bigint; scope: string; public_key: string; value_hashes: Array<enums.SecureValueHash>; credentials: enums.SecureCredentialsEncrypted }) => boolean;
   bot_id: bigint;
   scope: string;
   public_key: string;
   value_hashes: Array<enums.SecureValueHash>;
   credentials: enums.SecureCredentialsEncrypted;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF3ED4C73;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.acceptAuthorization"
   }
 
@@ -2478,15 +2478,15 @@ export class account_acceptAuthorization_ extends Function_<boolean> {
 }
 
 export class account_sendVerifyPhoneCode_ extends Function_<enums.auth.SentCode> {
-  static __F = Symbol() as unknown as (params: { phone_number: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
+  static __F: (params: { phone_number: string; settings: enums.CodeSettings }) => enums.auth.SentCode = null as unknown as (params: { phone_number: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
   phone_number: string;
   settings: enums.CodeSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA5A356F9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.sendVerifyPhoneCode"
   }
 
@@ -2512,16 +2512,16 @@ export class account_sendVerifyPhoneCode_ extends Function_<enums.auth.SentCode>
 }
 
 export class account_verifyPhone_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string; phone_code: string }) => boolean;
+  static __F: (params: { phone_number: string; phone_code_hash: string; phone_code: string }) => boolean = null as unknown as (params: { phone_number: string; phone_code_hash: string; phone_code: string }) => boolean;
   phone_number: string;
   phone_code_hash: string;
   phone_code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4DD3A7F6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.verifyPhone"
   }
 
@@ -2550,15 +2550,15 @@ export class account_verifyPhone_ extends Function_<boolean> {
 }
 
 export class account_sendVerifyEmailCode_ extends Function_<enums.account.SentEmailCode> {
-  static __F = Symbol() as unknown as (params: { purpose: enums.EmailVerifyPurpose; email: string }) => enums.account.SentEmailCode;
+  static __F: (params: { purpose: enums.EmailVerifyPurpose; email: string }) => enums.account.SentEmailCode = null as unknown as (params: { purpose: enums.EmailVerifyPurpose; email: string }) => enums.account.SentEmailCode;
   purpose: enums.EmailVerifyPurpose;
   email: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x98E037BB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.sendVerifyEmailCode"
   }
 
@@ -2584,15 +2584,15 @@ export class account_sendVerifyEmailCode_ extends Function_<enums.account.SentEm
 }
 
 export class account_verifyEmail_ extends Function_<enums.account.EmailVerified> {
-  static __F = Symbol() as unknown as (params: { purpose: enums.EmailVerifyPurpose; verification: enums.EmailVerification }) => enums.account.EmailVerified;
+  static __F: (params: { purpose: enums.EmailVerifyPurpose; verification: enums.EmailVerification }) => enums.account.EmailVerified = null as unknown as (params: { purpose: enums.EmailVerifyPurpose; verification: enums.EmailVerification }) => enums.account.EmailVerified;
   purpose: enums.EmailVerifyPurpose;
   verification: enums.EmailVerification;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x032DA4CF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.verifyEmail"
   }
 
@@ -2618,7 +2618,7 @@ export class account_verifyEmail_ extends Function_<enums.account.EmailVerified>
 }
 
 export class account_initTakeoutSession_ extends Function_<enums.account.Takeout> {
-  static __F = Symbol() as unknown as (params?: { contacts?: true; message_users?: true; message_chats?: true; message_megagroups?: true; message_channels?: true; files?: true; file_max_size?: bigint }) => enums.account.Takeout;
+  static __F: (params?: { contacts?: true; message_users?: true; message_chats?: true; message_megagroups?: true; message_channels?: true; files?: true; file_max_size?: bigint }) => enums.account.Takeout = null as unknown as (params?: { contacts?: true; message_users?: true; message_chats?: true; message_megagroups?: true; message_channels?: true; files?: true; file_max_size?: bigint }) => enums.account.Takeout;
   contacts?: true;
   message_users?: true;
   message_chats?: true;
@@ -2627,11 +2627,11 @@ export class account_initTakeoutSession_ extends Function_<enums.account.Takeout
   files?: true;
   file_max_size?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8EF3EAB0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.initTakeoutSession"
   }
 
@@ -2674,14 +2674,14 @@ export class account_initTakeoutSession_ extends Function_<enums.account.Takeout
 }
 
 export class account_finishTakeoutSession_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params?: { success?: true }) => boolean;
+  static __F: (params?: { success?: true }) => boolean = null as unknown as (params?: { success?: true }) => boolean;
   success?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1D2652EE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.finishTakeoutSession"
   }
 
@@ -2706,14 +2706,14 @@ export class account_finishTakeoutSession_ extends Function_<boolean> {
 }
 
 export class account_confirmPasswordEmail_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { code: string }) => boolean;
+  static __F: (params: { code: string }) => boolean = null as unknown as (params: { code: string }) => boolean;
   code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8FDF1920;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.confirmPasswordEmail"
   }
 
@@ -2736,12 +2736,12 @@ export class account_confirmPasswordEmail_ extends Function_<boolean> {
 }
 
 export class account_resendPasswordEmail_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as () => boolean;
-  protected get [id]() {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
     return 0x7A7F2A15;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.resendPasswordEmail"
   }
 
@@ -2759,12 +2759,12 @@ export class account_resendPasswordEmail_ extends Function_<boolean> {
 }
 
 export class account_cancelPasswordEmail_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as () => boolean;
-  protected get [id]() {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
     return 0xC1CBD5B6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.cancelPasswordEmail"
   }
 
@@ -2782,12 +2782,12 @@ export class account_cancelPasswordEmail_ extends Function_<boolean> {
 }
 
 export class account_getContactSignUpNotification_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as () => boolean;
-  protected get [id]() {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
     return 0x9F07C728;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getContactSignUpNotification"
   }
 
@@ -2805,14 +2805,14 @@ export class account_getContactSignUpNotification_ extends Function_<boolean> {
 }
 
 export class account_setContactSignUpNotification_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { silent: boolean }) => boolean;
+  static __F: (params: { silent: boolean }) => boolean = null as unknown as (params: { silent: boolean }) => boolean;
   silent: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCFF43F61;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.setContactSignUpNotification"
   }
 
@@ -2835,16 +2835,16 @@ export class account_setContactSignUpNotification_ extends Function_<boolean> {
 }
 
 export class account_getNotifyExceptions_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params?: { compare_sound?: true; compare_stories?: true; peer?: enums.InputNotifyPeer }) => enums.Updates;
+  static __F: (params?: { compare_sound?: true; compare_stories?: true; peer?: enums.InputNotifyPeer }) => enums.Updates = null as unknown as (params?: { compare_sound?: true; compare_stories?: true; peer?: enums.InputNotifyPeer }) => enums.Updates;
   compare_sound?: true;
   compare_stories?: true;
   peer?: enums.InputNotifyPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x53577479;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getNotifyExceptions"
   }
 
@@ -2875,14 +2875,14 @@ export class account_getNotifyExceptions_ extends Function_<enums.Updates> {
 }
 
 export class account_getWallPaper_ extends Function_<enums.WallPaper> {
-  static __F = Symbol() as unknown as (params: { wallpaper: enums.InputWallPaper }) => enums.WallPaper;
+  static __F: (params: { wallpaper: enums.InputWallPaper }) => enums.WallPaper = null as unknown as (params: { wallpaper: enums.InputWallPaper }) => enums.WallPaper;
   wallpaper: enums.InputWallPaper;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFC8DDBEA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getWallPaper"
   }
 
@@ -2905,17 +2905,17 @@ export class account_getWallPaper_ extends Function_<enums.WallPaper> {
 }
 
 export class account_uploadWallPaper_ extends Function_<enums.WallPaper> {
-  static __F = Symbol() as unknown as (params: { for_chat?: true; file: enums.InputFile; mime_type: string; settings: enums.WallPaperSettings }) => enums.WallPaper;
+  static __F: (params: { for_chat?: true; file: enums.InputFile; mime_type: string; settings: enums.WallPaperSettings }) => enums.WallPaper = null as unknown as (params: { for_chat?: true; file: enums.InputFile; mime_type: string; settings: enums.WallPaperSettings }) => enums.WallPaper;
   for_chat?: true;
   file: enums.InputFile;
   mime_type: string;
   settings: enums.WallPaperSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE39A8F03;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.uploadWallPaper"
   }
 
@@ -2949,16 +2949,16 @@ export class account_uploadWallPaper_ extends Function_<enums.WallPaper> {
 }
 
 export class account_saveWallPaper_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { wallpaper: enums.InputWallPaper; unsave: boolean; settings: enums.WallPaperSettings }) => boolean;
+  static __F: (params: { wallpaper: enums.InputWallPaper; unsave: boolean; settings: enums.WallPaperSettings }) => boolean = null as unknown as (params: { wallpaper: enums.InputWallPaper; unsave: boolean; settings: enums.WallPaperSettings }) => boolean;
   wallpaper: enums.InputWallPaper;
   unsave: boolean;
   settings: enums.WallPaperSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6C5A5B37;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.saveWallPaper"
   }
 
@@ -2987,15 +2987,15 @@ export class account_saveWallPaper_ extends Function_<boolean> {
 }
 
 export class account_installWallPaper_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { wallpaper: enums.InputWallPaper; settings: enums.WallPaperSettings }) => boolean;
+  static __F: (params: { wallpaper: enums.InputWallPaper; settings: enums.WallPaperSettings }) => boolean = null as unknown as (params: { wallpaper: enums.InputWallPaper; settings: enums.WallPaperSettings }) => boolean;
   wallpaper: enums.InputWallPaper;
   settings: enums.WallPaperSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFEED5769;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.installWallPaper"
   }
 
@@ -3021,12 +3021,12 @@ export class account_installWallPaper_ extends Function_<boolean> {
 }
 
 export class account_resetWallPapers_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as () => boolean;
-  protected get [id]() {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
     return 0xBB3B9804;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.resetWallPapers"
   }
 
@@ -3044,12 +3044,12 @@ export class account_resetWallPapers_ extends Function_<boolean> {
 }
 
 export class account_getAutoDownloadSettings_ extends Function_<enums.account.AutoDownloadSettings> {
-  static __F = Symbol() as unknown as () => enums.account.AutoDownloadSettings;
-  protected get [id]() {
+  static __F: () => enums.account.AutoDownloadSettings = null as unknown as () => enums.account.AutoDownloadSettings;
+  protected get [id](): number {
     return 0x56DA0B3F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getAutoDownloadSettings"
   }
 
@@ -3067,16 +3067,16 @@ export class account_getAutoDownloadSettings_ extends Function_<enums.account.Au
 }
 
 export class account_saveAutoDownloadSettings_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { low?: true; high?: true; settings: enums.AutoDownloadSettings }) => boolean;
+  static __F: (params: { low?: true; high?: true; settings: enums.AutoDownloadSettings }) => boolean = null as unknown as (params: { low?: true; high?: true; settings: enums.AutoDownloadSettings }) => boolean;
   low?: true;
   high?: true;
   settings: enums.AutoDownloadSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x76F36233;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.saveAutoDownloadSettings"
   }
 
@@ -3107,17 +3107,17 @@ export class account_saveAutoDownloadSettings_ extends Function_<boolean> {
 }
 
 export class account_uploadTheme_ extends Function_<enums.Document> {
-  static __F = Symbol() as unknown as (params: { file: enums.InputFile; thumb?: enums.InputFile; file_name: string; mime_type: string }) => enums.Document;
+  static __F: (params: { file: enums.InputFile; thumb?: enums.InputFile; file_name: string; mime_type: string }) => enums.Document = null as unknown as (params: { file: enums.InputFile; thumb?: enums.InputFile; file_name: string; mime_type: string }) => enums.Document;
   file: enums.InputFile;
   thumb?: enums.InputFile;
   file_name: string;
   mime_type: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1C3DB333;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.uploadTheme"
   }
 
@@ -3151,17 +3151,17 @@ export class account_uploadTheme_ extends Function_<enums.Document> {
 }
 
 export class account_createTheme_ extends Function_<enums.Theme> {
-  static __F = Symbol() as unknown as (params: { slug: string; title: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) => enums.Theme;
+  static __F: (params: { slug: string; title: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) => enums.Theme = null as unknown as (params: { slug: string; title: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) => enums.Theme;
   slug: string;
   title: string;
   document?: enums.InputDocument;
   settings?: Array<enums.InputThemeSettings>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x652E4400;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.createTheme"
   }
 
@@ -3195,7 +3195,7 @@ export class account_createTheme_ extends Function_<enums.Theme> {
 }
 
 export class account_updateTheme_ extends Function_<enums.Theme> {
-  static __F = Symbol() as unknown as (params: { format: string; theme: enums.InputTheme; slug?: string; title?: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) => enums.Theme;
+  static __F: (params: { format: string; theme: enums.InputTheme; slug?: string; title?: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) => enums.Theme = null as unknown as (params: { format: string; theme: enums.InputTheme; slug?: string; title?: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) => enums.Theme;
   format: string;
   theme: enums.InputTheme;
   slug?: string;
@@ -3203,11 +3203,11 @@ export class account_updateTheme_ extends Function_<enums.Theme> {
   document?: enums.InputDocument;
   settings?: Array<enums.InputThemeSettings>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2BF40CCC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.updateTheme"
   }
 
@@ -3247,15 +3247,15 @@ export class account_updateTheme_ extends Function_<enums.Theme> {
 }
 
 export class account_saveTheme_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { theme: enums.InputTheme; unsave: boolean }) => boolean;
+  static __F: (params: { theme: enums.InputTheme; unsave: boolean }) => boolean = null as unknown as (params: { theme: enums.InputTheme; unsave: boolean }) => boolean;
   theme: enums.InputTheme;
   unsave: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF257106C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.saveTheme"
   }
 
@@ -3281,17 +3281,17 @@ export class account_saveTheme_ extends Function_<boolean> {
 }
 
 export class account_installTheme_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params?: { dark?: true; theme?: enums.InputTheme; format?: string; base_theme?: enums.BaseTheme }) => boolean;
+  static __F: (params?: { dark?: true; theme?: enums.InputTheme; format?: string; base_theme?: enums.BaseTheme }) => boolean = null as unknown as (params?: { dark?: true; theme?: enums.InputTheme; format?: string; base_theme?: enums.BaseTheme }) => boolean;
   dark?: true;
   theme?: enums.InputTheme;
   format?: string;
   base_theme?: enums.BaseTheme;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC727BB3B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.installTheme"
   }
 
@@ -3325,15 +3325,15 @@ export class account_installTheme_ extends Function_<boolean> {
 }
 
 export class account_getTheme_ extends Function_<enums.Theme> {
-  static __F = Symbol() as unknown as (params: { format: string; theme: enums.InputTheme }) => enums.Theme;
+  static __F: (params: { format: string; theme: enums.InputTheme }) => enums.Theme = null as unknown as (params: { format: string; theme: enums.InputTheme }) => enums.Theme;
   format: string;
   theme: enums.InputTheme;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3A5869EC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getTheme"
   }
 
@@ -3359,15 +3359,15 @@ export class account_getTheme_ extends Function_<enums.Theme> {
 }
 
 export class account_getThemes_ extends Function_<enums.account.Themes> {
-  static __F = Symbol() as unknown as (params: { format: string; hash: bigint }) => enums.account.Themes;
+  static __F: (params: { format: string; hash: bigint }) => enums.account.Themes = null as unknown as (params: { format: string; hash: bigint }) => enums.account.Themes;
   format: string;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7206E458;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getThemes"
   }
 
@@ -3393,14 +3393,14 @@ export class account_getThemes_ extends Function_<enums.account.Themes> {
 }
 
 export class account_setContentSettings_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params?: { sensitive_enabled?: true }) => boolean;
+  static __F: (params?: { sensitive_enabled?: true }) => boolean = null as unknown as (params?: { sensitive_enabled?: true }) => boolean;
   sensitive_enabled?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB574B16B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.setContentSettings"
   }
 
@@ -3425,12 +3425,12 @@ export class account_setContentSettings_ extends Function_<boolean> {
 }
 
 export class account_getContentSettings_ extends Function_<enums.account.ContentSettings> {
-  static __F = Symbol() as unknown as () => enums.account.ContentSettings;
-  protected get [id]() {
+  static __F: () => enums.account.ContentSettings = null as unknown as () => enums.account.ContentSettings;
+  protected get [id](): number {
     return 0x8B9B4DAE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getContentSettings"
   }
 
@@ -3448,14 +3448,14 @@ export class account_getContentSettings_ extends Function_<enums.account.Content
 }
 
 export class account_getMultiWallPapers_ extends Function_<enums.WallPaper[]> {
-  static __F = Symbol() as unknown as (params: { wallpapers: Array<enums.InputWallPaper> }) => enums.WallPaper[];
+  static __F: (params: { wallpapers: Array<enums.InputWallPaper> }) => enums.WallPaper[] = null as unknown as (params: { wallpapers: Array<enums.InputWallPaper> }) => enums.WallPaper[];
   wallpapers: Array<enums.InputWallPaper>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x65AD71DC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getMultiWallPapers"
   }
 
@@ -3478,12 +3478,12 @@ export class account_getMultiWallPapers_ extends Function_<enums.WallPaper[]> {
 }
 
 export class account_getGlobalPrivacySettings_ extends Function_<enums.GlobalPrivacySettings> {
-  static __F = Symbol() as unknown as () => enums.GlobalPrivacySettings;
-  protected get [id]() {
+  static __F: () => enums.GlobalPrivacySettings = null as unknown as () => enums.GlobalPrivacySettings;
+  protected get [id](): number {
     return 0xEB2B4CF6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getGlobalPrivacySettings"
   }
 
@@ -3501,14 +3501,14 @@ export class account_getGlobalPrivacySettings_ extends Function_<enums.GlobalPri
 }
 
 export class account_setGlobalPrivacySettings_ extends Function_<enums.GlobalPrivacySettings> {
-  static __F = Symbol() as unknown as (params: { settings: enums.GlobalPrivacySettings }) => enums.GlobalPrivacySettings;
+  static __F: (params: { settings: enums.GlobalPrivacySettings }) => enums.GlobalPrivacySettings = null as unknown as (params: { settings: enums.GlobalPrivacySettings }) => enums.GlobalPrivacySettings;
   settings: enums.GlobalPrivacySettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1EDAAAC2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.setGlobalPrivacySettings"
   }
 
@@ -3531,17 +3531,17 @@ export class account_setGlobalPrivacySettings_ extends Function_<enums.GlobalPri
 }
 
 export class account_reportProfilePhoto_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; photo_id: enums.InputPhoto; reason: enums.ReportReason; message: string }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; photo_id: enums.InputPhoto; reason: enums.ReportReason; message: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; photo_id: enums.InputPhoto; reason: enums.ReportReason; message: string }) => boolean;
   peer: enums.InputPeer;
   photo_id: enums.InputPhoto;
   reason: enums.ReportReason;
   message: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFA8CC6F5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.reportProfilePhoto"
   }
 
@@ -3573,12 +3573,12 @@ export class account_reportProfilePhoto_ extends Function_<boolean> {
 }
 
 export class account_resetPassword_ extends Function_<enums.account.ResetPasswordResult> {
-  static __F = Symbol() as unknown as () => enums.account.ResetPasswordResult;
-  protected get [id]() {
+  static __F: () => enums.account.ResetPasswordResult = null as unknown as () => enums.account.ResetPasswordResult;
+  protected get [id](): number {
     return 0x9308CE1B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.resetPassword"
   }
 
@@ -3596,12 +3596,12 @@ export class account_resetPassword_ extends Function_<enums.account.ResetPasswor
 }
 
 export class account_declinePasswordReset_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as () => boolean;
-  protected get [id]() {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
     return 0x4C9409F6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.declinePasswordReset"
   }
 
@@ -3619,14 +3619,14 @@ export class account_declinePasswordReset_ extends Function_<boolean> {
 }
 
 export class account_getChatThemes_ extends Function_<enums.account.Themes> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.account.Themes;
+  static __F: (params: { hash: bigint }) => enums.account.Themes = null as unknown as (params: { hash: bigint }) => enums.account.Themes;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD638DE89;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getChatThemes"
   }
 
@@ -3649,14 +3649,14 @@ export class account_getChatThemes_ extends Function_<enums.account.Themes> {
 }
 
 export class account_setAuthorizationTTL_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { authorization_ttl_days: number }) => boolean;
+  static __F: (params: { authorization_ttl_days: number }) => boolean = null as unknown as (params: { authorization_ttl_days: number }) => boolean;
   authorization_ttl_days: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBF899AA0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.setAuthorizationTTL"
   }
 
@@ -3679,17 +3679,17 @@ export class account_setAuthorizationTTL_ extends Function_<boolean> {
 }
 
 export class account_changeAuthorizationSettings_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { confirmed?: true; hash: bigint; encrypted_requests_disabled?: boolean; call_requests_disabled?: boolean }) => boolean;
+  static __F: (params: { confirmed?: true; hash: bigint; encrypted_requests_disabled?: boolean; call_requests_disabled?: boolean }) => boolean = null as unknown as (params: { confirmed?: true; hash: bigint; encrypted_requests_disabled?: boolean; call_requests_disabled?: boolean }) => boolean;
   confirmed?: true;
   hash: bigint;
   encrypted_requests_disabled?: boolean;
   call_requests_disabled?: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x40F48462;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.changeAuthorizationSettings"
   }
 
@@ -3723,14 +3723,14 @@ export class account_changeAuthorizationSettings_ extends Function_<boolean> {
 }
 
 export class account_getSavedRingtones_ extends Function_<enums.account.SavedRingtones> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.account.SavedRingtones;
+  static __F: (params: { hash: bigint }) => enums.account.SavedRingtones = null as unknown as (params: { hash: bigint }) => enums.account.SavedRingtones;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE1902288;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getSavedRingtones"
   }
 
@@ -3753,15 +3753,15 @@ export class account_getSavedRingtones_ extends Function_<enums.account.SavedRin
 }
 
 export class account_saveRingtone_ extends Function_<enums.account.SavedRingtone> {
-  static __F = Symbol() as unknown as (params: { id: enums.InputDocument; unsave: boolean }) => enums.account.SavedRingtone;
+  static __F: (params: { id: enums.InputDocument; unsave: boolean }) => enums.account.SavedRingtone = null as unknown as (params: { id: enums.InputDocument; unsave: boolean }) => enums.account.SavedRingtone;
   id: enums.InputDocument;
   unsave: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3DEA5B03;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.saveRingtone"
   }
 
@@ -3787,16 +3787,16 @@ export class account_saveRingtone_ extends Function_<enums.account.SavedRingtone
 }
 
 export class account_uploadRingtone_ extends Function_<enums.Document> {
-  static __F = Symbol() as unknown as (params: { file: enums.InputFile; file_name: string; mime_type: string }) => enums.Document;
+  static __F: (params: { file: enums.InputFile; file_name: string; mime_type: string }) => enums.Document = null as unknown as (params: { file: enums.InputFile; file_name: string; mime_type: string }) => enums.Document;
   file: enums.InputFile;
   file_name: string;
   mime_type: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x831A83A2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.uploadRingtone"
   }
 
@@ -3825,14 +3825,14 @@ export class account_uploadRingtone_ extends Function_<enums.Document> {
 }
 
 export class account_updateEmojiStatus_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { emoji_status: enums.EmojiStatus }) => boolean;
+  static __F: (params: { emoji_status: enums.EmojiStatus }) => boolean = null as unknown as (params: { emoji_status: enums.EmojiStatus }) => boolean;
   emoji_status: enums.EmojiStatus;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFBD3DE6B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.updateEmojiStatus"
   }
 
@@ -3855,14 +3855,14 @@ export class account_updateEmojiStatus_ extends Function_<boolean> {
 }
 
 export class account_getDefaultEmojiStatuses_ extends Function_<enums.account.EmojiStatuses> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.account.EmojiStatuses;
+  static __F: (params: { hash: bigint }) => enums.account.EmojiStatuses = null as unknown as (params: { hash: bigint }) => enums.account.EmojiStatuses;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD6753386;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getDefaultEmojiStatuses"
   }
 
@@ -3885,14 +3885,14 @@ export class account_getDefaultEmojiStatuses_ extends Function_<enums.account.Em
 }
 
 export class account_getRecentEmojiStatuses_ extends Function_<enums.account.EmojiStatuses> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.account.EmojiStatuses;
+  static __F: (params: { hash: bigint }) => enums.account.EmojiStatuses = null as unknown as (params: { hash: bigint }) => enums.account.EmojiStatuses;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0F578105;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getRecentEmojiStatuses"
   }
 
@@ -3915,12 +3915,12 @@ export class account_getRecentEmojiStatuses_ extends Function_<enums.account.Emo
 }
 
 export class account_clearRecentEmojiStatuses_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as () => boolean;
-  protected get [id]() {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
     return 0x18201AAE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.clearRecentEmojiStatuses"
   }
 
@@ -3938,14 +3938,14 @@ export class account_clearRecentEmojiStatuses_ extends Function_<boolean> {
 }
 
 export class account_reorderUsernames_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { order: Array<string> }) => boolean;
+  static __F: (params: { order: Array<string> }) => boolean = null as unknown as (params: { order: Array<string> }) => boolean;
   order: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEF500EAB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.reorderUsernames"
   }
 
@@ -3968,15 +3968,15 @@ export class account_reorderUsernames_ extends Function_<boolean> {
 }
 
 export class account_toggleUsername_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { username: string; active: boolean }) => boolean;
+  static __F: (params: { username: string; active: boolean }) => boolean = null as unknown as (params: { username: string; active: boolean }) => boolean;
   username: string;
   active: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x58D6B376;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.toggleUsername"
   }
 
@@ -4002,14 +4002,14 @@ export class account_toggleUsername_ extends Function_<boolean> {
 }
 
 export class account_getDefaultProfilePhotoEmojis_ extends Function_<enums.EmojiList> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.EmojiList;
+  static __F: (params: { hash: bigint }) => enums.EmojiList = null as unknown as (params: { hash: bigint }) => enums.EmojiList;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE2750328;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getDefaultProfilePhotoEmojis"
   }
 
@@ -4032,14 +4032,14 @@ export class account_getDefaultProfilePhotoEmojis_ extends Function_<enums.Emoji
 }
 
 export class account_getDefaultGroupPhotoEmojis_ extends Function_<enums.EmojiList> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.EmojiList;
+  static __F: (params: { hash: bigint }) => enums.EmojiList = null as unknown as (params: { hash: bigint }) => enums.EmojiList;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x915860AE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getDefaultGroupPhotoEmojis"
   }
 
@@ -4062,12 +4062,12 @@ export class account_getDefaultGroupPhotoEmojis_ extends Function_<enums.EmojiLi
 }
 
 export class account_getAutoSaveSettings_ extends Function_<enums.account.AutoSaveSettings> {
-  static __F = Symbol() as unknown as () => enums.account.AutoSaveSettings;
-  protected get [id]() {
+  static __F: () => enums.account.AutoSaveSettings = null as unknown as () => enums.account.AutoSaveSettings;
+  protected get [id](): number {
     return 0xADCBBCDA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getAutoSaveSettings"
   }
 
@@ -4085,18 +4085,18 @@ export class account_getAutoSaveSettings_ extends Function_<enums.account.AutoSa
 }
 
 export class account_saveAutoSaveSettings_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { users?: true; chats?: true; broadcasts?: true; peer?: enums.InputPeer; settings: enums.AutoSaveSettings }) => boolean;
+  static __F: (params: { users?: true; chats?: true; broadcasts?: true; peer?: enums.InputPeer; settings: enums.AutoSaveSettings }) => boolean = null as unknown as (params: { users?: true; chats?: true; broadcasts?: true; peer?: enums.InputPeer; settings: enums.AutoSaveSettings }) => boolean;
   users?: true;
   chats?: true;
   broadcasts?: true;
   peer?: enums.InputPeer;
   settings: enums.AutoSaveSettings;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD69B8361;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.saveAutoSaveSettings"
   }
 
@@ -4133,12 +4133,12 @@ export class account_saveAutoSaveSettings_ extends Function_<boolean> {
 }
 
 export class account_deleteAutoSaveExceptions_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as () => boolean;
-  protected get [id]() {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
     return 0x53BC0020;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.deleteAutoSaveExceptions"
   }
 
@@ -4156,14 +4156,14 @@ export class account_deleteAutoSaveExceptions_ extends Function_<boolean> {
 }
 
 export class account_invalidateSignInCodes_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { codes: Array<string> }) => boolean;
+  static __F: (params: { codes: Array<string> }) => boolean = null as unknown as (params: { codes: Array<string> }) => boolean;
   codes: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCA8AE8BA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.invalidateSignInCodes"
   }
 
@@ -4186,16 +4186,16 @@ export class account_invalidateSignInCodes_ extends Function_<boolean> {
 }
 
 export class account_updateColor_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params?: { for_profile?: true; color?: number; background_emoji_id?: bigint }) => boolean;
+  static __F: (params?: { for_profile?: true; color?: number; background_emoji_id?: bigint }) => boolean = null as unknown as (params?: { for_profile?: true; color?: number; background_emoji_id?: bigint }) => boolean;
   for_profile?: true;
   color?: number;
   background_emoji_id?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7CEFA15D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.updateColor"
   }
 
@@ -4226,14 +4226,14 @@ export class account_updateColor_ extends Function_<boolean> {
 }
 
 export class account_getDefaultBackgroundEmojis_ extends Function_<enums.EmojiList> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.EmojiList;
+  static __F: (params: { hash: bigint }) => enums.EmojiList = null as unknown as (params: { hash: bigint }) => enums.EmojiList;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA60AB9CE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getDefaultBackgroundEmojis"
   }
 
@@ -4256,14 +4256,14 @@ export class account_getDefaultBackgroundEmojis_ extends Function_<enums.EmojiLi
 }
 
 export class account_getChannelDefaultEmojiStatuses_ extends Function_<enums.account.EmojiStatuses> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.account.EmojiStatuses;
+  static __F: (params: { hash: bigint }) => enums.account.EmojiStatuses = null as unknown as (params: { hash: bigint }) => enums.account.EmojiStatuses;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7727A7D5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getChannelDefaultEmojiStatuses"
   }
 
@@ -4286,14 +4286,14 @@ export class account_getChannelDefaultEmojiStatuses_ extends Function_<enums.acc
 }
 
 export class account_getChannelRestrictedStatusEmojis_ extends Function_<enums.EmojiList> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.EmojiList;
+  static __F: (params: { hash: bigint }) => enums.EmojiList = null as unknown as (params: { hash: bigint }) => enums.EmojiList;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x35A9E0D5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "account.getChannelRestrictedStatusEmojis"
   }
 
@@ -4316,14 +4316,14 @@ export class account_getChannelRestrictedStatusEmojis_ extends Function_<enums.E
 }
 
 export class users_getUsers_ extends Function_<enums.User[]> {
-  static __F = Symbol() as unknown as (params: { id: Array<enums.InputUser> }) => enums.User[];
+  static __F: (params: { id: Array<enums.InputUser> }) => enums.User[] = null as unknown as (params: { id: Array<enums.InputUser> }) => enums.User[];
   id: Array<enums.InputUser>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0D91A548;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "users.getUsers"
   }
 
@@ -4346,14 +4346,14 @@ export class users_getUsers_ extends Function_<enums.User[]> {
 }
 
 export class users_getFullUser_ extends Function_<enums.users.UserFull> {
-  static __F = Symbol() as unknown as (params: { id: enums.InputUser }) => enums.users.UserFull;
+  static __F: (params: { id: enums.InputUser }) => enums.users.UserFull = null as unknown as (params: { id: enums.InputUser }) => enums.users.UserFull;
   id: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB60F5918;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "users.getFullUser"
   }
 
@@ -4376,15 +4376,15 @@ export class users_getFullUser_ extends Function_<enums.users.UserFull> {
 }
 
 export class users_setSecureValueErrors_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { id: enums.InputUser; errors: Array<enums.SecureValueError> }) => boolean;
+  static __F: (params: { id: enums.InputUser; errors: Array<enums.SecureValueError> }) => boolean = null as unknown as (params: { id: enums.InputUser; errors: Array<enums.SecureValueError> }) => boolean;
   id: enums.InputUser;
   errors: Array<enums.SecureValueError>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x90C894B5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "users.setSecureValueErrors"
   }
 
@@ -4410,14 +4410,14 @@ export class users_setSecureValueErrors_ extends Function_<boolean> {
 }
 
 export class users_getIsPremiumRequiredToContact_ extends Function_<boolean[]> {
-  static __F = Symbol() as unknown as (params: { id: Array<enums.InputUser> }) => boolean[];
+  static __F: (params: { id: Array<enums.InputUser> }) => boolean[] = null as unknown as (params: { id: Array<enums.InputUser> }) => boolean[];
   id: Array<enums.InputUser>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA622AA10;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "users.getIsPremiumRequiredToContact"
   }
 
@@ -4440,14 +4440,14 @@ export class users_getIsPremiumRequiredToContact_ extends Function_<boolean[]> {
 }
 
 export class contacts_getContactIDs_ extends Function_<number[]> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => number[];
+  static __F: (params: { hash: bigint }) => number[] = null as unknown as (params: { hash: bigint }) => number[];
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7ADC669D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.getContactIDs"
   }
 
@@ -4470,12 +4470,12 @@ export class contacts_getContactIDs_ extends Function_<number[]> {
 }
 
 export class contacts_getStatuses_ extends Function_<enums.ContactStatus[]> {
-  static __F = Symbol() as unknown as () => enums.ContactStatus[];
-  protected get [id]() {
+  static __F: () => enums.ContactStatus[] = null as unknown as () => enums.ContactStatus[];
+  protected get [id](): number {
     return 0xC4A353EE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.getStatuses"
   }
 
@@ -4493,14 +4493,14 @@ export class contacts_getStatuses_ extends Function_<enums.ContactStatus[]> {
 }
 
 export class contacts_getContacts_ extends Function_<enums.contacts.Contacts> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.contacts.Contacts;
+  static __F: (params: { hash: bigint }) => enums.contacts.Contacts = null as unknown as (params: { hash: bigint }) => enums.contacts.Contacts;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5DD69E12;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.getContacts"
   }
 
@@ -4523,14 +4523,14 @@ export class contacts_getContacts_ extends Function_<enums.contacts.Contacts> {
 }
 
 export class contacts_importContacts_ extends Function_<enums.contacts.ImportedContacts> {
-  static __F = Symbol() as unknown as (params: { contacts: Array<enums.InputContact> }) => enums.contacts.ImportedContacts;
+  static __F: (params: { contacts: Array<enums.InputContact> }) => enums.contacts.ImportedContacts = null as unknown as (params: { contacts: Array<enums.InputContact> }) => enums.contacts.ImportedContacts;
   contacts: Array<enums.InputContact>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2C800BE5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.importContacts"
   }
 
@@ -4553,14 +4553,14 @@ export class contacts_importContacts_ extends Function_<enums.contacts.ImportedC
 }
 
 export class contacts_deleteContacts_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { id: Array<enums.InputUser> }) => enums.Updates;
+  static __F: (params: { id: Array<enums.InputUser> }) => enums.Updates = null as unknown as (params: { id: Array<enums.InputUser> }) => enums.Updates;
   id: Array<enums.InputUser>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x096A0E00;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.deleteContacts"
   }
 
@@ -4583,14 +4583,14 @@ export class contacts_deleteContacts_ extends Function_<enums.Updates> {
 }
 
 export class contacts_deleteByPhones_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { phones: Array<string> }) => boolean;
+  static __F: (params: { phones: Array<string> }) => boolean = null as unknown as (params: { phones: Array<string> }) => boolean;
   phones: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1013FD9E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.deleteByPhones"
   }
 
@@ -4613,15 +4613,15 @@ export class contacts_deleteByPhones_ extends Function_<boolean> {
 }
 
 export class contacts_block_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { my_stories_from?: true; id: enums.InputPeer }) => boolean;
+  static __F: (params: { my_stories_from?: true; id: enums.InputPeer }) => boolean = null as unknown as (params: { my_stories_from?: true; id: enums.InputPeer }) => boolean;
   my_stories_from?: true;
   id: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2E2E8734;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.block"
   }
 
@@ -4649,15 +4649,15 @@ export class contacts_block_ extends Function_<boolean> {
 }
 
 export class contacts_unblock_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { my_stories_from?: true; id: enums.InputPeer }) => boolean;
+  static __F: (params: { my_stories_from?: true; id: enums.InputPeer }) => boolean = null as unknown as (params: { my_stories_from?: true; id: enums.InputPeer }) => boolean;
   my_stories_from?: true;
   id: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB550D328;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.unblock"
   }
 
@@ -4685,16 +4685,16 @@ export class contacts_unblock_ extends Function_<boolean> {
 }
 
 export class contacts_getBlocked_ extends Function_<enums.contacts.Blocked> {
-  static __F = Symbol() as unknown as (params: { my_stories_from?: true; offset: number; limit: number }) => enums.contacts.Blocked;
+  static __F: (params: { my_stories_from?: true; offset: number; limit: number }) => enums.contacts.Blocked = null as unknown as (params: { my_stories_from?: true; offset: number; limit: number }) => enums.contacts.Blocked;
   my_stories_from?: true;
   offset: number;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9A868F80;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.getBlocked"
   }
 
@@ -4725,15 +4725,15 @@ export class contacts_getBlocked_ extends Function_<enums.contacts.Blocked> {
 }
 
 export class contacts_search_ extends Function_<enums.contacts.Found> {
-  static __F = Symbol() as unknown as (params: { q: string; limit: number }) => enums.contacts.Found;
+  static __F: (params: { q: string; limit: number }) => enums.contacts.Found = null as unknown as (params: { q: string; limit: number }) => enums.contacts.Found;
   q: string;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x11F812D8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.search"
   }
 
@@ -4759,14 +4759,14 @@ export class contacts_search_ extends Function_<enums.contacts.Found> {
 }
 
 export class contacts_resolveUsername_ extends Function_<enums.contacts.ResolvedPeer> {
-  static __F = Symbol() as unknown as (params: { username: string }) => enums.contacts.ResolvedPeer;
+  static __F: (params: { username: string }) => enums.contacts.ResolvedPeer = null as unknown as (params: { username: string }) => enums.contacts.ResolvedPeer;
   username: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF93CCBA3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.resolveUsername"
   }
 
@@ -4789,7 +4789,7 @@ export class contacts_resolveUsername_ extends Function_<enums.contacts.Resolved
 }
 
 export class contacts_getTopPeers_ extends Function_<enums.contacts.TopPeers> {
-  static __F = Symbol() as unknown as (params: { correspondents?: true; bots_pm?: true; bots_inline?: true; phone_calls?: true; forward_users?: true; forward_chats?: true; groups?: true; channels?: true; offset: number; limit: number; hash: bigint }) => enums.contacts.TopPeers;
+  static __F: (params: { correspondents?: true; bots_pm?: true; bots_inline?: true; phone_calls?: true; forward_users?: true; forward_chats?: true; groups?: true; channels?: true; offset: number; limit: number; hash: bigint }) => enums.contacts.TopPeers = null as unknown as (params: { correspondents?: true; bots_pm?: true; bots_inline?: true; phone_calls?: true; forward_users?: true; forward_chats?: true; groups?: true; channels?: true; offset: number; limit: number; hash: bigint }) => enums.contacts.TopPeers;
   correspondents?: true;
   bots_pm?: true;
   bots_inline?: true;
@@ -4802,11 +4802,11 @@ export class contacts_getTopPeers_ extends Function_<enums.contacts.TopPeers> {
   limit: number;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x973478B6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.getTopPeers"
   }
 
@@ -4861,15 +4861,15 @@ export class contacts_getTopPeers_ extends Function_<enums.contacts.TopPeers> {
 }
 
 export class contacts_resetTopPeerRating_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { category: enums.TopPeerCategory; peer: enums.InputPeer }) => boolean;
+  static __F: (params: { category: enums.TopPeerCategory; peer: enums.InputPeer }) => boolean = null as unknown as (params: { category: enums.TopPeerCategory; peer: enums.InputPeer }) => boolean;
   category: enums.TopPeerCategory;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1AE373AC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.resetTopPeerRating"
   }
 
@@ -4895,12 +4895,12 @@ export class contacts_resetTopPeerRating_ extends Function_<boolean> {
 }
 
 export class contacts_resetSaved_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as () => boolean;
-  protected get [id]() {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
     return 0x879537F1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.resetSaved"
   }
 
@@ -4918,12 +4918,12 @@ export class contacts_resetSaved_ extends Function_<boolean> {
 }
 
 export class contacts_getSaved_ extends Function_<enums.SavedContact[]> {
-  static __F = Symbol() as unknown as () => enums.SavedContact[];
-  protected get [id]() {
+  static __F: () => enums.SavedContact[] = null as unknown as () => enums.SavedContact[];
+  protected get [id](): number {
     return 0x82F1E39F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.getSaved"
   }
 
@@ -4941,14 +4941,14 @@ export class contacts_getSaved_ extends Function_<enums.SavedContact[]> {
 }
 
 export class contacts_toggleTopPeers_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { enabled: boolean }) => boolean;
+  static __F: (params: { enabled: boolean }) => boolean = null as unknown as (params: { enabled: boolean }) => boolean;
   enabled: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8514BDDA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.toggleTopPeers"
   }
 
@@ -4971,18 +4971,18 @@ export class contacts_toggleTopPeers_ extends Function_<boolean> {
 }
 
 export class contacts_addContact_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { add_phone_privacy_exception?: true; id: enums.InputUser; first_name: string; last_name: string; phone: string }) => enums.Updates;
+  static __F: (params: { add_phone_privacy_exception?: true; id: enums.InputUser; first_name: string; last_name: string; phone: string }) => enums.Updates = null as unknown as (params: { add_phone_privacy_exception?: true; id: enums.InputUser; first_name: string; last_name: string; phone: string }) => enums.Updates;
   add_phone_privacy_exception?: true;
   id: enums.InputUser;
   first_name: string;
   last_name: string;
   phone: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE8F463D0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.addContact"
   }
 
@@ -5019,14 +5019,14 @@ export class contacts_addContact_ extends Function_<enums.Updates> {
 }
 
 export class contacts_acceptContact_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { id: enums.InputUser }) => enums.Updates;
+  static __F: (params: { id: enums.InputUser }) => enums.Updates = null as unknown as (params: { id: enums.InputUser }) => enums.Updates;
   id: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF831A20F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.acceptContact"
   }
 
@@ -5049,16 +5049,16 @@ export class contacts_acceptContact_ extends Function_<enums.Updates> {
 }
 
 export class contacts_getLocated_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { background?: true; geo_point: enums.InputGeoPoint; self_expires?: number }) => enums.Updates;
+  static __F: (params: { background?: true; geo_point: enums.InputGeoPoint; self_expires?: number }) => enums.Updates = null as unknown as (params: { background?: true; geo_point: enums.InputGeoPoint; self_expires?: number }) => enums.Updates;
   background?: true;
   geo_point: enums.InputGeoPoint;
   self_expires?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD348BC44;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.getLocated"
   }
 
@@ -5089,17 +5089,17 @@ export class contacts_getLocated_ extends Function_<enums.Updates> {
 }
 
 export class contacts_blockFromReplies_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { delete_message?: true; delete_history?: true; report_spam?: true; msg_id: number }) => enums.Updates;
+  static __F: (params: { delete_message?: true; delete_history?: true; report_spam?: true; msg_id: number }) => enums.Updates = null as unknown as (params: { delete_message?: true; delete_history?: true; report_spam?: true; msg_id: number }) => enums.Updates;
   delete_message?: true;
   delete_history?: true;
   report_spam?: true;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x29A8962C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.blockFromReplies"
   }
 
@@ -5133,14 +5133,14 @@ export class contacts_blockFromReplies_ extends Function_<enums.Updates> {
 }
 
 export class contacts_resolvePhone_ extends Function_<enums.contacts.ResolvedPeer> {
-  static __F = Symbol() as unknown as (params: { phone: string }) => enums.contacts.ResolvedPeer;
+  static __F: (params: { phone: string }) => enums.contacts.ResolvedPeer = null as unknown as (params: { phone: string }) => enums.contacts.ResolvedPeer;
   phone: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8AF94344;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.resolvePhone"
   }
 
@@ -5163,12 +5163,12 @@ export class contacts_resolvePhone_ extends Function_<enums.contacts.ResolvedPee
 }
 
 export class contacts_exportContactToken_ extends Function_<enums.ExportedContactToken> {
-  static __F = Symbol() as unknown as () => enums.ExportedContactToken;
-  protected get [id]() {
+  static __F: () => enums.ExportedContactToken = null as unknown as () => enums.ExportedContactToken;
+  protected get [id](): number {
     return 0xF8654027;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.exportContactToken"
   }
 
@@ -5186,14 +5186,14 @@ export class contacts_exportContactToken_ extends Function_<enums.ExportedContac
 }
 
 export class contacts_importContactToken_ extends Function_<enums.User> {
-  static __F = Symbol() as unknown as (params: { token: string }) => enums.User;
+  static __F: (params: { token: string }) => enums.User = null as unknown as (params: { token: string }) => enums.User;
   token: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x13005788;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.importContactToken"
   }
 
@@ -5216,14 +5216,14 @@ export class contacts_importContactToken_ extends Function_<enums.User> {
 }
 
 export class contacts_editCloseFriends_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { id: Array<bigint> }) => boolean;
+  static __F: (params: { id: Array<bigint> }) => boolean = null as unknown as (params: { id: Array<bigint> }) => boolean;
   id: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBA6705F0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.editCloseFriends"
   }
 
@@ -5246,16 +5246,16 @@ export class contacts_editCloseFriends_ extends Function_<boolean> {
 }
 
 export class contacts_setBlocked_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { my_stories_from?: true; id: Array<enums.InputPeer>; limit: number }) => boolean;
+  static __F: (params: { my_stories_from?: true; id: Array<enums.InputPeer>; limit: number }) => boolean = null as unknown as (params: { my_stories_from?: true; id: Array<enums.InputPeer>; limit: number }) => boolean;
   my_stories_from?: true;
   id: Array<enums.InputPeer>;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x94C65C76;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "contacts.setBlocked"
   }
 
@@ -5286,14 +5286,14 @@ export class contacts_setBlocked_ extends Function_<boolean> {
 }
 
 export class messages_getMessages_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { id: Array<enums.InputMessage> }) => enums.messages.Messages;
+  static __F: (params: { id: Array<enums.InputMessage> }) => enums.messages.Messages = null as unknown as (params: { id: Array<enums.InputMessage> }) => enums.messages.Messages;
   id: Array<enums.InputMessage>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x63C66506;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getMessages"
   }
 
@@ -5316,7 +5316,7 @@ export class messages_getMessages_ extends Function_<enums.messages.Messages> {
 }
 
 export class messages_getDialogs_ extends Function_<enums.messages.Dialogs> {
-  static __F = Symbol() as unknown as (params: { exclude_pinned?: true; folder_id?: number; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.Dialogs;
+  static __F: (params: { exclude_pinned?: true; folder_id?: number; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.Dialogs = null as unknown as (params: { exclude_pinned?: true; folder_id?: number; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.Dialogs;
   exclude_pinned?: true;
   folder_id?: number;
   offset_date: number;
@@ -5325,11 +5325,11 @@ export class messages_getDialogs_ extends Function_<enums.messages.Dialogs> {
   limit: number;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA0F4CB4F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getDialogs"
   }
 
@@ -5372,7 +5372,7 @@ export class messages_getDialogs_ extends Function_<enums.messages.Dialogs> {
 }
 
 export class messages_getHistory_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
+  static __F: (params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
   peer: enums.InputPeer;
   offset_id: number;
   offset_date: number;
@@ -5382,11 +5382,11 @@ export class messages_getHistory_ extends Function_<enums.messages.Messages> {
   min_id: number;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4423E6C5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getHistory"
   }
 
@@ -5430,7 +5430,7 @@ export class messages_getHistory_ extends Function_<enums.messages.Messages> {
 }
 
 export class messages_search_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; q: string; from_id?: enums.InputPeer; saved_peer_id?: enums.InputPeer; saved_reaction?: Array<enums.Reaction>; top_msg_id?: number; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
+  static __F: (params: { peer: enums.InputPeer; q: string; from_id?: enums.InputPeer; saved_peer_id?: enums.InputPeer; saved_reaction?: Array<enums.Reaction>; top_msg_id?: number; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; q: string; from_id?: enums.InputPeer; saved_peer_id?: enums.InputPeer; saved_reaction?: Array<enums.Reaction>; top_msg_id?: number; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
   peer: enums.InputPeer;
   q: string;
   from_id?: enums.InputPeer;
@@ -5447,11 +5447,11 @@ export class messages_search_ extends Function_<enums.messages.Messages> {
   min_id: number;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x29EE847A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.search"
   }
 
@@ -5518,15 +5518,15 @@ export class messages_search_ extends Function_<enums.messages.Messages> {
 }
 
 export class messages_readHistory_ extends Function_<enums.messages.AffectedMessages> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; max_id: number }) => enums.messages.AffectedMessages;
+  static __F: (params: { peer: enums.InputPeer; max_id: number }) => enums.messages.AffectedMessages = null as unknown as (params: { peer: enums.InputPeer; max_id: number }) => enums.messages.AffectedMessages;
   peer: enums.InputPeer;
   max_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0E306D3A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.readHistory"
   }
 
@@ -5552,7 +5552,7 @@ export class messages_readHistory_ extends Function_<enums.messages.AffectedMess
 }
 
 export class messages_deleteHistory_ extends Function_<enums.messages.AffectedHistory> {
-  static __F = Symbol() as unknown as (params: { just_clear?: true; revoke?: true; peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) => enums.messages.AffectedHistory;
+  static __F: (params: { just_clear?: true; revoke?: true; peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) => enums.messages.AffectedHistory = null as unknown as (params: { just_clear?: true; revoke?: true; peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) => enums.messages.AffectedHistory;
   just_clear?: true;
   revoke?: true;
   peer: enums.InputPeer;
@@ -5560,11 +5560,11 @@ export class messages_deleteHistory_ extends Function_<enums.messages.AffectedHi
   min_date?: number;
   max_date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB08F922A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.deleteHistory"
   }
 
@@ -5604,15 +5604,15 @@ export class messages_deleteHistory_ extends Function_<enums.messages.AffectedHi
 }
 
 export class messages_deleteMessages_ extends Function_<enums.messages.AffectedMessages> {
-  static __F = Symbol() as unknown as (params: { revoke?: true; id: Array<number> }) => enums.messages.AffectedMessages;
+  static __F: (params: { revoke?: true; id: Array<number> }) => enums.messages.AffectedMessages = null as unknown as (params: { revoke?: true; id: Array<number> }) => enums.messages.AffectedMessages;
   revoke?: true;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE58E95D2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.deleteMessages"
   }
 
@@ -5640,14 +5640,14 @@ export class messages_deleteMessages_ extends Function_<enums.messages.AffectedM
 }
 
 export class messages_receivedMessages_ extends Function_<enums.ReceivedNotifyMessage[]> {
-  static __F = Symbol() as unknown as (params: { max_id: number }) => enums.ReceivedNotifyMessage[];
+  static __F: (params: { max_id: number }) => enums.ReceivedNotifyMessage[] = null as unknown as (params: { max_id: number }) => enums.ReceivedNotifyMessage[];
   max_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x05A954C0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.receivedMessages"
   }
 
@@ -5670,16 +5670,16 @@ export class messages_receivedMessages_ extends Function_<enums.ReceivedNotifyMe
 }
 
 export class messages_setTyping_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; action: enums.SendMessageAction }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; top_msg_id?: number; action: enums.SendMessageAction }) => boolean = null as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; action: enums.SendMessageAction }) => boolean;
   peer: enums.InputPeer;
   top_msg_id?: number;
   action: enums.SendMessageAction;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x58943EE2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setTyping"
   }
 
@@ -5710,7 +5710,7 @@ export class messages_setTyping_ extends Function_<boolean> {
 }
 
 export class messages_sendMessage_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  static __F: (params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
   no_webpage?: true;
   silent?: true;
   background?: true;
@@ -5727,11 +5727,11 @@ export class messages_sendMessage_ extends Function_<enums.Updates> {
   schedule_date?: number;
   send_as?: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x280D096F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendMessage"
   }
 
@@ -5798,7 +5798,7 @@ export class messages_sendMessage_ extends Function_<enums.Updates> {
 }
 
 export class messages_sendMedia_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; media: enums.InputMedia; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  static __F: (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; media: enums.InputMedia; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; media: enums.InputMedia; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
   silent?: true;
   background?: true;
   clear_draft?: true;
@@ -5815,11 +5815,11 @@ export class messages_sendMedia_ extends Function_<enums.Updates> {
   schedule_date?: number;
   send_as?: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x72CCC23D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendMedia"
   }
 
@@ -5886,7 +5886,7 @@ export class messages_sendMedia_ extends Function_<enums.Updates> {
 }
 
 export class messages_forwardMessages_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: enums.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: enums.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  static __F: (params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: enums.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: enums.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: enums.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: enums.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
   silent?: true;
   background?: true;
   with_my_score?: true;
@@ -5901,11 +5901,11 @@ export class messages_forwardMessages_ extends Function_<enums.Updates> {
   schedule_date?: number;
   send_as?: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC661BBC4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.forwardMessages"
   }
 
@@ -5966,14 +5966,14 @@ export class messages_forwardMessages_ extends Function_<enums.Updates> {
 }
 
 export class messages_reportSpam_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => boolean;
+  static __F: (params: { peer: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCF1592DB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.reportSpam"
   }
 
@@ -5996,14 +5996,14 @@ export class messages_reportSpam_ extends Function_<boolean> {
 }
 
 export class messages_getPeerSettings_ extends Function_<enums.messages.PeerSettings> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.messages.PeerSettings;
+  static __F: (params: { peer: enums.InputPeer }) => enums.messages.PeerSettings = null as unknown as (params: { peer: enums.InputPeer }) => enums.messages.PeerSettings;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEFD9A6A2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getPeerSettings"
   }
 
@@ -6026,17 +6026,17 @@ export class messages_getPeerSettings_ extends Function_<enums.messages.PeerSett
 }
 
 export class messages_report_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) => boolean;
   peer: enums.InputPeer;
   id: Array<number>;
   reason: enums.ReportReason;
   message: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8953AB4E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.report"
   }
 
@@ -6068,14 +6068,14 @@ export class messages_report_ extends Function_<boolean> {
 }
 
 export class messages_getChats_ extends Function_<enums.messages.Chats> {
-  static __F = Symbol() as unknown as (params: { id: Array<bigint> }) => enums.messages.Chats;
+  static __F: (params: { id: Array<bigint> }) => enums.messages.Chats = null as unknown as (params: { id: Array<bigint> }) => enums.messages.Chats;
   id: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x49E9528F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getChats"
   }
 
@@ -6098,14 +6098,14 @@ export class messages_getChats_ extends Function_<enums.messages.Chats> {
 }
 
 export class messages_getFullChat_ extends Function_<enums.messages.ChatFull> {
-  static __F = Symbol() as unknown as (params: { chat_id: bigint }) => enums.messages.ChatFull;
+  static __F: (params: { chat_id: bigint }) => enums.messages.ChatFull = null as unknown as (params: { chat_id: bigint }) => enums.messages.ChatFull;
   chat_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAEB00B34;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getFullChat"
   }
 
@@ -6128,15 +6128,15 @@ export class messages_getFullChat_ extends Function_<enums.messages.ChatFull> {
 }
 
 export class messages_editChatTitle_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { chat_id: bigint; title: string }) => enums.Updates;
+  static __F: (params: { chat_id: bigint; title: string }) => enums.Updates = null as unknown as (params: { chat_id: bigint; title: string }) => enums.Updates;
   chat_id: bigint;
   title: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x73783FFD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.editChatTitle"
   }
 
@@ -6162,15 +6162,15 @@ export class messages_editChatTitle_ extends Function_<enums.Updates> {
 }
 
 export class messages_editChatPhoto_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { chat_id: bigint; photo: enums.InputChatPhoto }) => enums.Updates;
+  static __F: (params: { chat_id: bigint; photo: enums.InputChatPhoto }) => enums.Updates = null as unknown as (params: { chat_id: bigint; photo: enums.InputChatPhoto }) => enums.Updates;
   chat_id: bigint;
   photo: enums.InputChatPhoto;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x35DDD674;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.editChatPhoto"
   }
 
@@ -6196,16 +6196,16 @@ export class messages_editChatPhoto_ extends Function_<enums.Updates> {
 }
 
 export class messages_addChatUser_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { chat_id: bigint; user_id: enums.InputUser; fwd_limit: number }) => enums.Updates;
+  static __F: (params: { chat_id: bigint; user_id: enums.InputUser; fwd_limit: number }) => enums.Updates = null as unknown as (params: { chat_id: bigint; user_id: enums.InputUser; fwd_limit: number }) => enums.Updates;
   chat_id: bigint;
   user_id: enums.InputUser;
   fwd_limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF24753E3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.addChatUser"
   }
 
@@ -6234,16 +6234,16 @@ export class messages_addChatUser_ extends Function_<enums.Updates> {
 }
 
 export class messages_deleteChatUser_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { revoke_history?: true; chat_id: bigint; user_id: enums.InputUser }) => enums.Updates;
+  static __F: (params: { revoke_history?: true; chat_id: bigint; user_id: enums.InputUser }) => enums.Updates = null as unknown as (params: { revoke_history?: true; chat_id: bigint; user_id: enums.InputUser }) => enums.Updates;
   revoke_history?: true;
   chat_id: bigint;
   user_id: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA2185CAB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.deleteChatUser"
   }
 
@@ -6274,16 +6274,16 @@ export class messages_deleteChatUser_ extends Function_<enums.Updates> {
 }
 
 export class messages_createChat_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { users: Array<enums.InputUser>; title: string; ttl_period?: number }) => enums.Updates;
+  static __F: (params: { users: Array<enums.InputUser>; title: string; ttl_period?: number }) => enums.Updates = null as unknown as (params: { users: Array<enums.InputUser>; title: string; ttl_period?: number }) => enums.Updates;
   users: Array<enums.InputUser>;
   title: string;
   ttl_period?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0034A818;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.createChat"
   }
 
@@ -6314,15 +6314,15 @@ export class messages_createChat_ extends Function_<enums.Updates> {
 }
 
 export class messages_getDhConfig_ extends Function_<enums.messages.DhConfig> {
-  static __F = Symbol() as unknown as (params: { version: number; random_length: number }) => enums.messages.DhConfig;
+  static __F: (params: { version: number; random_length: number }) => enums.messages.DhConfig = null as unknown as (params: { version: number; random_length: number }) => enums.messages.DhConfig;
   version: number;
   random_length: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x26CF8950;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getDhConfig"
   }
 
@@ -6348,16 +6348,16 @@ export class messages_getDhConfig_ extends Function_<enums.messages.DhConfig> {
 }
 
 export class messages_requestEncryption_ extends Function_<enums.EncryptedChat> {
-  static __F = Symbol() as unknown as (params: { user_id: enums.InputUser; random_id: number; g_a: Uint8Array }) => enums.EncryptedChat;
+  static __F: (params: { user_id: enums.InputUser; random_id: number; g_a: Uint8Array }) => enums.EncryptedChat = null as unknown as (params: { user_id: enums.InputUser; random_id: number; g_a: Uint8Array }) => enums.EncryptedChat;
   user_id: enums.InputUser;
   random_id: number;
   g_a: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF64DAF43;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.requestEncryption"
   }
 
@@ -6386,16 +6386,16 @@ export class messages_requestEncryption_ extends Function_<enums.EncryptedChat> 
 }
 
 export class messages_acceptEncryption_ extends Function_<enums.EncryptedChat> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputEncryptedChat; g_b: Uint8Array; key_fingerprint: bigint }) => enums.EncryptedChat;
+  static __F: (params: { peer: enums.InputEncryptedChat; g_b: Uint8Array; key_fingerprint: bigint }) => enums.EncryptedChat = null as unknown as (params: { peer: enums.InputEncryptedChat; g_b: Uint8Array; key_fingerprint: bigint }) => enums.EncryptedChat;
   peer: enums.InputEncryptedChat;
   g_b: Uint8Array;
   key_fingerprint: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3DBC0415;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.acceptEncryption"
   }
 
@@ -6424,15 +6424,15 @@ export class messages_acceptEncryption_ extends Function_<enums.EncryptedChat> {
 }
 
 export class messages_discardEncryption_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { delete_history?: true; chat_id: number }) => boolean;
+  static __F: (params: { delete_history?: true; chat_id: number }) => boolean = null as unknown as (params: { delete_history?: true; chat_id: number }) => boolean;
   delete_history?: true;
   chat_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF393AEA0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.discardEncryption"
   }
 
@@ -6460,15 +6460,15 @@ export class messages_discardEncryption_ extends Function_<boolean> {
 }
 
 export class messages_setEncryptedTyping_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputEncryptedChat; typing: boolean }) => boolean;
+  static __F: (params: { peer: enums.InputEncryptedChat; typing: boolean }) => boolean = null as unknown as (params: { peer: enums.InputEncryptedChat; typing: boolean }) => boolean;
   peer: enums.InputEncryptedChat;
   typing: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x791451ED;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setEncryptedTyping"
   }
 
@@ -6494,15 +6494,15 @@ export class messages_setEncryptedTyping_ extends Function_<boolean> {
 }
 
 export class messages_readEncryptedHistory_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputEncryptedChat; max_date: number }) => boolean;
+  static __F: (params: { peer: enums.InputEncryptedChat; max_date: number }) => boolean = null as unknown as (params: { peer: enums.InputEncryptedChat; max_date: number }) => boolean;
   peer: enums.InputEncryptedChat;
   max_date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7F4B690A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.readEncryptedHistory"
   }
 
@@ -6528,17 +6528,17 @@ export class messages_readEncryptedHistory_ extends Function_<boolean> {
 }
 
 export class messages_sendEncrypted_ extends Function_<enums.messages.SentEncryptedMessage> {
-  static __F = Symbol() as unknown as (params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) => enums.messages.SentEncryptedMessage;
+  static __F: (params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) => enums.messages.SentEncryptedMessage = null as unknown as (params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) => enums.messages.SentEncryptedMessage;
   silent?: true;
   peer: enums.InputEncryptedChat;
   random_id: bigint;
   data: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x44FA7A15;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendEncrypted"
   }
 
@@ -6572,18 +6572,18 @@ export class messages_sendEncrypted_ extends Function_<enums.messages.SentEncryp
 }
 
 export class messages_sendEncryptedFile_ extends Function_<enums.messages.SentEncryptedMessage> {
-  static __F = Symbol() as unknown as (params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array; file: enums.InputEncryptedFile }) => enums.messages.SentEncryptedMessage;
+  static __F: (params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array; file: enums.InputEncryptedFile }) => enums.messages.SentEncryptedMessage = null as unknown as (params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array; file: enums.InputEncryptedFile }) => enums.messages.SentEncryptedMessage;
   silent?: true;
   peer: enums.InputEncryptedChat;
   random_id: bigint;
   data: Uint8Array;
   file: enums.InputEncryptedFile;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5559481D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendEncryptedFile"
   }
 
@@ -6620,16 +6620,16 @@ export class messages_sendEncryptedFile_ extends Function_<enums.messages.SentEn
 }
 
 export class messages_sendEncryptedService_ extends Function_<enums.messages.SentEncryptedMessage> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) => enums.messages.SentEncryptedMessage;
+  static __F: (params: { peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) => enums.messages.SentEncryptedMessage = null as unknown as (params: { peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) => enums.messages.SentEncryptedMessage;
   peer: enums.InputEncryptedChat;
   random_id: bigint;
   data: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x32D439A4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendEncryptedService"
   }
 
@@ -6658,14 +6658,14 @@ export class messages_sendEncryptedService_ extends Function_<enums.messages.Sen
 }
 
 export class messages_receivedQueue_ extends Function_<bigint[]> {
-  static __F = Symbol() as unknown as (params: { max_qts: number }) => bigint[];
+  static __F: (params: { max_qts: number }) => bigint[] = null as unknown as (params: { max_qts: number }) => bigint[];
   max_qts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x55A5BB66;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.receivedQueue"
   }
 
@@ -6688,14 +6688,14 @@ export class messages_receivedQueue_ extends Function_<bigint[]> {
 }
 
 export class messages_reportEncryptedSpam_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputEncryptedChat }) => boolean;
+  static __F: (params: { peer: enums.InputEncryptedChat }) => boolean = null as unknown as (params: { peer: enums.InputEncryptedChat }) => boolean;
   peer: enums.InputEncryptedChat;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4B0C8C0F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.reportEncryptedSpam"
   }
 
@@ -6718,14 +6718,14 @@ export class messages_reportEncryptedSpam_ extends Function_<boolean> {
 }
 
 export class messages_readMessageContents_ extends Function_<enums.messages.AffectedMessages> {
-  static __F = Symbol() as unknown as (params: { id: Array<number> }) => enums.messages.AffectedMessages;
+  static __F: (params: { id: Array<number> }) => enums.messages.AffectedMessages = null as unknown as (params: { id: Array<number> }) => enums.messages.AffectedMessages;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x36A73F77;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.readMessageContents"
   }
 
@@ -6748,15 +6748,15 @@ export class messages_readMessageContents_ extends Function_<enums.messages.Affe
 }
 
 export class messages_getStickers_ extends Function_<enums.messages.Stickers> {
-  static __F = Symbol() as unknown as (params: { emoticon: string; hash: bigint }) => enums.messages.Stickers;
+  static __F: (params: { emoticon: string; hash: bigint }) => enums.messages.Stickers = null as unknown as (params: { emoticon: string; hash: bigint }) => enums.messages.Stickers;
   emoticon: string;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD5A5D3A1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getStickers"
   }
 
@@ -6782,14 +6782,14 @@ export class messages_getStickers_ extends Function_<enums.messages.Stickers> {
 }
 
 export class messages_getAllStickers_ extends Function_<enums.messages.AllStickers> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.AllStickers;
+  static __F: (params: { hash: bigint }) => enums.messages.AllStickers = null as unknown as (params: { hash: bigint }) => enums.messages.AllStickers;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB8A0A1A8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getAllStickers"
   }
 
@@ -6812,15 +6812,15 @@ export class messages_getAllStickers_ extends Function_<enums.messages.AllSticke
 }
 
 export class messages_getWebPagePreview_ extends Function_<enums.MessageMedia> {
-  static __F = Symbol() as unknown as (params: { message: string; entities?: Array<enums.MessageEntity> }) => enums.MessageMedia;
+  static __F: (params: { message: string; entities?: Array<enums.MessageEntity> }) => enums.MessageMedia = null as unknown as (params: { message: string; entities?: Array<enums.MessageEntity> }) => enums.MessageMedia;
   message: string;
   entities?: Array<enums.MessageEntity>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8B68B0CC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getWebPagePreview"
   }
 
@@ -6848,7 +6848,7 @@ export class messages_getWebPagePreview_ extends Function_<enums.MessageMedia> {
 }
 
 export class messages_exportChatInvite_ extends Function_<enums.ExportedChatInvite> {
-  static __F = Symbol() as unknown as (params: { legacy_revoke_permanent?: true; request_needed?: true; peer: enums.InputPeer; expire_date?: number; usage_limit?: number; title?: string }) => enums.ExportedChatInvite;
+  static __F: (params: { legacy_revoke_permanent?: true; request_needed?: true; peer: enums.InputPeer; expire_date?: number; usage_limit?: number; title?: string }) => enums.ExportedChatInvite = null as unknown as (params: { legacy_revoke_permanent?: true; request_needed?: true; peer: enums.InputPeer; expire_date?: number; usage_limit?: number; title?: string }) => enums.ExportedChatInvite;
   legacy_revoke_permanent?: true;
   request_needed?: true;
   peer: enums.InputPeer;
@@ -6856,11 +6856,11 @@ export class messages_exportChatInvite_ extends Function_<enums.ExportedChatInvi
   usage_limit?: number;
   title?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA02CE5D5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.exportChatInvite"
   }
 
@@ -6900,14 +6900,14 @@ export class messages_exportChatInvite_ extends Function_<enums.ExportedChatInvi
 }
 
 export class messages_checkChatInvite_ extends Function_<enums.ChatInvite> {
-  static __F = Symbol() as unknown as (params: { hash: string }) => enums.ChatInvite;
+  static __F: (params: { hash: string }) => enums.ChatInvite = null as unknown as (params: { hash: string }) => enums.ChatInvite;
   hash: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3EADB1BB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.checkChatInvite"
   }
 
@@ -6930,14 +6930,14 @@ export class messages_checkChatInvite_ extends Function_<enums.ChatInvite> {
 }
 
 export class messages_importChatInvite_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { hash: string }) => enums.Updates;
+  static __F: (params: { hash: string }) => enums.Updates = null as unknown as (params: { hash: string }) => enums.Updates;
   hash: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6C50051C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.importChatInvite"
   }
 
@@ -6960,15 +6960,15 @@ export class messages_importChatInvite_ extends Function_<enums.Updates> {
 }
 
 export class messages_getStickerSet_ extends Function_<enums.messages.StickerSet> {
-  static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet; hash: number }) => enums.messages.StickerSet;
+  static __F: (params: { stickerset: enums.InputStickerSet; hash: number }) => enums.messages.StickerSet = null as unknown as (params: { stickerset: enums.InputStickerSet; hash: number }) => enums.messages.StickerSet;
   stickerset: enums.InputStickerSet;
   hash: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC8A0EC74;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getStickerSet"
   }
 
@@ -6994,15 +6994,15 @@ export class messages_getStickerSet_ extends Function_<enums.messages.StickerSet
 }
 
 export class messages_installStickerSet_ extends Function_<enums.messages.StickerSetInstallResult> {
-  static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet; archived: boolean }) => enums.messages.StickerSetInstallResult;
+  static __F: (params: { stickerset: enums.InputStickerSet; archived: boolean }) => enums.messages.StickerSetInstallResult = null as unknown as (params: { stickerset: enums.InputStickerSet; archived: boolean }) => enums.messages.StickerSetInstallResult;
   stickerset: enums.InputStickerSet;
   archived: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC78FE460;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.installStickerSet"
   }
 
@@ -7028,14 +7028,14 @@ export class messages_installStickerSet_ extends Function_<enums.messages.Sticke
 }
 
 export class messages_uninstallStickerSet_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet }) => boolean;
+  static __F: (params: { stickerset: enums.InputStickerSet }) => boolean = null as unknown as (params: { stickerset: enums.InputStickerSet }) => boolean;
   stickerset: enums.InputStickerSet;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF96E55DE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.uninstallStickerSet"
   }
 
@@ -7058,17 +7058,17 @@ export class messages_uninstallStickerSet_ extends Function_<boolean> {
 }
 
 export class messages_startBot_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { bot: enums.InputUser; peer: enums.InputPeer; random_id: bigint; start_param: string }) => enums.Updates;
+  static __F: (params: { bot: enums.InputUser; peer: enums.InputPeer; random_id: bigint; start_param: string }) => enums.Updates = null as unknown as (params: { bot: enums.InputUser; peer: enums.InputPeer; random_id: bigint; start_param: string }) => enums.Updates;
   bot: enums.InputUser;
   peer: enums.InputPeer;
   random_id: bigint;
   start_param: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE6DF7378;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.startBot"
   }
 
@@ -7100,16 +7100,16 @@ export class messages_startBot_ extends Function_<enums.Updates> {
 }
 
 export class messages_getMessagesViews_ extends Function_<enums.messages.MessageViews> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number>; increment: boolean }) => enums.messages.MessageViews;
+  static __F: (params: { peer: enums.InputPeer; id: Array<number>; increment: boolean }) => enums.messages.MessageViews = null as unknown as (params: { peer: enums.InputPeer; id: Array<number>; increment: boolean }) => enums.messages.MessageViews;
   peer: enums.InputPeer;
   id: Array<number>;
   increment: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5784D3E1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getMessagesViews"
   }
 
@@ -7138,16 +7138,16 @@ export class messages_getMessagesViews_ extends Function_<enums.messages.Message
 }
 
 export class messages_editChatAdmin_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { chat_id: bigint; user_id: enums.InputUser; is_admin: boolean }) => boolean;
+  static __F: (params: { chat_id: bigint; user_id: enums.InputUser; is_admin: boolean }) => boolean = null as unknown as (params: { chat_id: bigint; user_id: enums.InputUser; is_admin: boolean }) => boolean;
   chat_id: bigint;
   user_id: enums.InputUser;
   is_admin: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA85BD1C2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.editChatAdmin"
   }
 
@@ -7176,14 +7176,14 @@ export class messages_editChatAdmin_ extends Function_<boolean> {
 }
 
 export class messages_migrateChat_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { chat_id: bigint }) => enums.Updates;
+  static __F: (params: { chat_id: bigint }) => enums.Updates = null as unknown as (params: { chat_id: bigint }) => enums.Updates;
   chat_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA2875319;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.migrateChat"
   }
 
@@ -7206,7 +7206,7 @@ export class messages_migrateChat_ extends Function_<enums.Updates> {
 }
 
 export class messages_searchGlobal_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { folder_id?: number; q: string; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_rate: number; offset_peer: enums.InputPeer; offset_id: number; limit: number }) => enums.messages.Messages;
+  static __F: (params: { folder_id?: number; q: string; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_rate: number; offset_peer: enums.InputPeer; offset_id: number; limit: number }) => enums.messages.Messages = null as unknown as (params: { folder_id?: number; q: string; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_rate: number; offset_peer: enums.InputPeer; offset_id: number; limit: number }) => enums.messages.Messages;
   folder_id?: number;
   q: string;
   filter: enums.MessagesFilter;
@@ -7217,11 +7217,11 @@ export class messages_searchGlobal_ extends Function_<enums.messages.Messages> {
   offset_id: number;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4BC6589A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.searchGlobal"
   }
 
@@ -7270,16 +7270,16 @@ export class messages_searchGlobal_ extends Function_<enums.messages.Messages> {
 }
 
 export class messages_reorderStickerSets_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { masks?: true; emojis?: true; order: Array<bigint> }) => boolean;
+  static __F: (params: { masks?: true; emojis?: true; order: Array<bigint> }) => boolean = null as unknown as (params: { masks?: true; emojis?: true; order: Array<bigint> }) => boolean;
   masks?: true;
   emojis?: true;
   order: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x78337739;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.reorderStickerSets"
   }
 
@@ -7310,16 +7310,16 @@ export class messages_reorderStickerSets_ extends Function_<boolean> {
 }
 
 export class messages_getDocumentByHash_ extends Function_<enums.Document> {
-  static __F = Symbol() as unknown as (params: { sha256: Uint8Array; size: bigint; mime_type: string }) => enums.Document;
+  static __F: (params: { sha256: Uint8Array; size: bigint; mime_type: string }) => enums.Document = null as unknown as (params: { sha256: Uint8Array; size: bigint; mime_type: string }) => enums.Document;
   sha256: Uint8Array;
   size: bigint;
   mime_type: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB1F2061F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getDocumentByHash"
   }
 
@@ -7348,14 +7348,14 @@ export class messages_getDocumentByHash_ extends Function_<enums.Document> {
 }
 
 export class messages_getSavedGifs_ extends Function_<enums.messages.SavedGifs> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.SavedGifs;
+  static __F: (params: { hash: bigint }) => enums.messages.SavedGifs = null as unknown as (params: { hash: bigint }) => enums.messages.SavedGifs;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5CF09635;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getSavedGifs"
   }
 
@@ -7378,15 +7378,15 @@ export class messages_getSavedGifs_ extends Function_<enums.messages.SavedGifs> 
 }
 
 export class messages_saveGif_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { id: enums.InputDocument; unsave: boolean }) => boolean;
+  static __F: (params: { id: enums.InputDocument; unsave: boolean }) => boolean = null as unknown as (params: { id: enums.InputDocument; unsave: boolean }) => boolean;
   id: enums.InputDocument;
   unsave: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x327A30CB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.saveGif"
   }
 
@@ -7412,18 +7412,18 @@ export class messages_saveGif_ extends Function_<boolean> {
 }
 
 export class messages_getInlineBotResults_ extends Function_<enums.messages.BotResults> {
-  static __F = Symbol() as unknown as (params: { bot: enums.InputUser; peer: enums.InputPeer; geo_point?: enums.InputGeoPoint; query: string; offset: string }) => enums.messages.BotResults;
+  static __F: (params: { bot: enums.InputUser; peer: enums.InputPeer; geo_point?: enums.InputGeoPoint; query: string; offset: string }) => enums.messages.BotResults = null as unknown as (params: { bot: enums.InputUser; peer: enums.InputPeer; geo_point?: enums.InputGeoPoint; query: string; offset: string }) => enums.messages.BotResults;
   bot: enums.InputUser;
   peer: enums.InputPeer;
   geo_point?: enums.InputGeoPoint;
   query: string;
   offset: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x514E999D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getInlineBotResults"
   }
 
@@ -7460,7 +7460,7 @@ export class messages_getInlineBotResults_ extends Function_<enums.messages.BotR
 }
 
 export class messages_setInlineBotResults_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { gallery?: true; private?: true; query_id: bigint; results: Array<enums.InputBotInlineResult>; cache_time: number; next_offset?: string; switch_pm?: enums.InlineBotSwitchPM; switch_webview?: enums.InlineBotWebView }) => boolean;
+  static __F: (params: { gallery?: true; private?: true; query_id: bigint; results: Array<enums.InputBotInlineResult>; cache_time: number; next_offset?: string; switch_pm?: enums.InlineBotSwitchPM; switch_webview?: enums.InlineBotWebView }) => boolean = null as unknown as (params: { gallery?: true; private?: true; query_id: bigint; results: Array<enums.InputBotInlineResult>; cache_time: number; next_offset?: string; switch_pm?: enums.InlineBotSwitchPM; switch_webview?: enums.InlineBotWebView }) => boolean;
   gallery?: true;
   private?: true;
   query_id: bigint;
@@ -7470,11 +7470,11 @@ export class messages_setInlineBotResults_ extends Function_<boolean> {
   switch_pm?: enums.InlineBotSwitchPM;
   switch_webview?: enums.InlineBotWebView;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBB12A419;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setInlineBotResults"
   }
 
@@ -7520,7 +7520,7 @@ export class messages_setInlineBotResults_ extends Function_<boolean> {
 }
 
 export class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  static __F: (params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
   silent?: true;
   background?: true;
   clear_draft?: true;
@@ -7533,11 +7533,11 @@ export class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
   schedule_date?: number;
   send_as?: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF7BC68BA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendInlineBotResult"
   }
 
@@ -7592,15 +7592,15 @@ export class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
 }
 
 export class messages_getMessageEditData_ extends Function_<enums.messages.MessageEditData> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number }) => enums.messages.MessageEditData;
+  static __F: (params: { peer: enums.InputPeer; id: number }) => enums.messages.MessageEditData = null as unknown as (params: { peer: enums.InputPeer; id: number }) => enums.messages.MessageEditData;
   peer: enums.InputPeer;
   id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFDA68D36;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getMessageEditData"
   }
 
@@ -7626,7 +7626,7 @@ export class messages_getMessageEditData_ extends Function_<enums.messages.Messa
 }
 
 export class messages_editMessage_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { no_webpage?: true; invert_media?: true; peer: enums.InputPeer; id: number; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number }) => enums.Updates;
+  static __F: (params: { no_webpage?: true; invert_media?: true; peer: enums.InputPeer; id: number; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number }) => enums.Updates = null as unknown as (params: { no_webpage?: true; invert_media?: true; peer: enums.InputPeer; id: number; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number }) => enums.Updates;
   no_webpage?: true;
   invert_media?: true;
   peer: enums.InputPeer;
@@ -7637,11 +7637,11 @@ export class messages_editMessage_ extends Function_<enums.Updates> {
   entities?: Array<enums.MessageEntity>;
   schedule_date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x48F71778;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.editMessage"
   }
 
@@ -7690,7 +7690,7 @@ export class messages_editMessage_ extends Function_<enums.Updates> {
 }
 
 export class messages_editInlineBotMessage_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { no_webpage?: true; invert_media?: true; id: enums.InputBotInlineMessageID; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity> }) => boolean;
+  static __F: (params: { no_webpage?: true; invert_media?: true; id: enums.InputBotInlineMessageID; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity> }) => boolean = null as unknown as (params: { no_webpage?: true; invert_media?: true; id: enums.InputBotInlineMessageID; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity> }) => boolean;
   no_webpage?: true;
   invert_media?: true;
   id: enums.InputBotInlineMessageID;
@@ -7699,11 +7699,11 @@ export class messages_editInlineBotMessage_ extends Function_<boolean> {
   reply_markup?: enums.ReplyMarkup;
   entities?: Array<enums.MessageEntity>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x83557DBA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.editInlineBotMessage"
   }
 
@@ -7746,18 +7746,18 @@ export class messages_editInlineBotMessage_ extends Function_<boolean> {
 }
 
 export class messages_getBotCallbackAnswer_ extends Function_<enums.messages.BotCallbackAnswer> {
-  static __F = Symbol() as unknown as (params: { game?: true; peer: enums.InputPeer; msg_id: number; data?: Uint8Array; password?: enums.InputCheckPasswordSRP }) => enums.messages.BotCallbackAnswer;
+  static __F: (params: { game?: true; peer: enums.InputPeer; msg_id: number; data?: Uint8Array; password?: enums.InputCheckPasswordSRP }) => enums.messages.BotCallbackAnswer = null as unknown as (params: { game?: true; peer: enums.InputPeer; msg_id: number; data?: Uint8Array; password?: enums.InputCheckPasswordSRP }) => enums.messages.BotCallbackAnswer;
   game?: true;
   peer: enums.InputPeer;
   msg_id: number;
   data?: Uint8Array;
   password?: enums.InputCheckPasswordSRP;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9342CA07;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getBotCallbackAnswer"
   }
 
@@ -7794,18 +7794,18 @@ export class messages_getBotCallbackAnswer_ extends Function_<enums.messages.Bot
 }
 
 export class messages_setBotCallbackAnswer_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { alert?: true; query_id: bigint; message?: string; url?: string; cache_time: number }) => boolean;
+  static __F: (params: { alert?: true; query_id: bigint; message?: string; url?: string; cache_time: number }) => boolean = null as unknown as (params: { alert?: true; query_id: bigint; message?: string; url?: string; cache_time: number }) => boolean;
   alert?: true;
   query_id: bigint;
   message?: string;
   url?: string;
   cache_time: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD58F130A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setBotCallbackAnswer"
   }
 
@@ -7842,14 +7842,14 @@ export class messages_setBotCallbackAnswer_ extends Function_<boolean> {
 }
 
 export class messages_getPeerDialogs_ extends Function_<enums.messages.PeerDialogs> {
-  static __F = Symbol() as unknown as (params: { peers: Array<enums.InputDialogPeer> }) => enums.messages.PeerDialogs;
+  static __F: (params: { peers: Array<enums.InputDialogPeer> }) => enums.messages.PeerDialogs = null as unknown as (params: { peers: Array<enums.InputDialogPeer> }) => enums.messages.PeerDialogs;
   peers: Array<enums.InputDialogPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE470BCFD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getPeerDialogs"
   }
 
@@ -7872,7 +7872,7 @@ export class messages_getPeerDialogs_ extends Function_<enums.messages.PeerDialo
 }
 
 export class messages_saveDraft_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { no_webpage?: true; invert_media?: true; reply_to?: enums.InputReplyTo; peer: enums.InputPeer; message: string; entities?: Array<enums.MessageEntity>; media?: enums.InputMedia }) => boolean;
+  static __F: (params: { no_webpage?: true; invert_media?: true; reply_to?: enums.InputReplyTo; peer: enums.InputPeer; message: string; entities?: Array<enums.MessageEntity>; media?: enums.InputMedia }) => boolean = null as unknown as (params: { no_webpage?: true; invert_media?: true; reply_to?: enums.InputReplyTo; peer: enums.InputPeer; message: string; entities?: Array<enums.MessageEntity>; media?: enums.InputMedia }) => boolean;
   no_webpage?: true;
   invert_media?: true;
   reply_to?: enums.InputReplyTo;
@@ -7881,11 +7881,11 @@ export class messages_saveDraft_ extends Function_<boolean> {
   entities?: Array<enums.MessageEntity>;
   media?: enums.InputMedia;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7FF3B806;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.saveDraft"
   }
 
@@ -7928,12 +7928,12 @@ export class messages_saveDraft_ extends Function_<boolean> {
 }
 
 export class messages_getAllDrafts_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as () => enums.Updates;
-  protected get [id]() {
+  static __F: () => enums.Updates = null as unknown as () => enums.Updates;
+  protected get [id](): number {
     return 0x6A3F8D65;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getAllDrafts"
   }
 
@@ -7951,14 +7951,14 @@ export class messages_getAllDrafts_ extends Function_<enums.Updates> {
 }
 
 export class messages_getFeaturedStickers_ extends Function_<enums.messages.FeaturedStickers> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.FeaturedStickers;
+  static __F: (params: { hash: bigint }) => enums.messages.FeaturedStickers = null as unknown as (params: { hash: bigint }) => enums.messages.FeaturedStickers;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x64780B14;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getFeaturedStickers"
   }
 
@@ -7981,14 +7981,14 @@ export class messages_getFeaturedStickers_ extends Function_<enums.messages.Feat
 }
 
 export class messages_readFeaturedStickers_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { id: Array<bigint> }) => boolean;
+  static __F: (params: { id: Array<bigint> }) => boolean = null as unknown as (params: { id: Array<bigint> }) => boolean;
   id: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5B118126;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.readFeaturedStickers"
   }
 
@@ -8011,15 +8011,15 @@ export class messages_readFeaturedStickers_ extends Function_<boolean> {
 }
 
 export class messages_getRecentStickers_ extends Function_<enums.messages.RecentStickers> {
-  static __F = Symbol() as unknown as (params: { attached?: true; hash: bigint }) => enums.messages.RecentStickers;
+  static __F: (params: { attached?: true; hash: bigint }) => enums.messages.RecentStickers = null as unknown as (params: { attached?: true; hash: bigint }) => enums.messages.RecentStickers;
   attached?: true;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9DA9403B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getRecentStickers"
   }
 
@@ -8047,16 +8047,16 @@ export class messages_getRecentStickers_ extends Function_<enums.messages.Recent
 }
 
 export class messages_saveRecentSticker_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { attached?: true; id: enums.InputDocument; unsave: boolean }) => boolean;
+  static __F: (params: { attached?: true; id: enums.InputDocument; unsave: boolean }) => boolean = null as unknown as (params: { attached?: true; id: enums.InputDocument; unsave: boolean }) => boolean;
   attached?: true;
   id: enums.InputDocument;
   unsave: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x392718F8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.saveRecentSticker"
   }
 
@@ -8087,14 +8087,14 @@ export class messages_saveRecentSticker_ extends Function_<boolean> {
 }
 
 export class messages_clearRecentStickers_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params?: { attached?: true }) => boolean;
+  static __F: (params?: { attached?: true }) => boolean = null as unknown as (params?: { attached?: true }) => boolean;
   attached?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8999602D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.clearRecentStickers"
   }
 
@@ -8119,17 +8119,17 @@ export class messages_clearRecentStickers_ extends Function_<boolean> {
 }
 
 export class messages_getArchivedStickers_ extends Function_<enums.messages.ArchivedStickers> {
-  static __F = Symbol() as unknown as (params: { masks?: true; emojis?: true; offset_id: bigint; limit: number }) => enums.messages.ArchivedStickers;
+  static __F: (params: { masks?: true; emojis?: true; offset_id: bigint; limit: number }) => enums.messages.ArchivedStickers = null as unknown as (params: { masks?: true; emojis?: true; offset_id: bigint; limit: number }) => enums.messages.ArchivedStickers;
   masks?: true;
   emojis?: true;
   offset_id: bigint;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x57F17692;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getArchivedStickers"
   }
 
@@ -8163,14 +8163,14 @@ export class messages_getArchivedStickers_ extends Function_<enums.messages.Arch
 }
 
 export class messages_getMaskStickers_ extends Function_<enums.messages.AllStickers> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.AllStickers;
+  static __F: (params: { hash: bigint }) => enums.messages.AllStickers = null as unknown as (params: { hash: bigint }) => enums.messages.AllStickers;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x640F82B8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getMaskStickers"
   }
 
@@ -8193,14 +8193,14 @@ export class messages_getMaskStickers_ extends Function_<enums.messages.AllStick
 }
 
 export class messages_getAttachedStickers_ extends Function_<enums.StickerSetCovered[]> {
-  static __F = Symbol() as unknown as (params: { media: enums.InputStickeredMedia }) => enums.StickerSetCovered[];
+  static __F: (params: { media: enums.InputStickeredMedia }) => enums.StickerSetCovered[] = null as unknown as (params: { media: enums.InputStickeredMedia }) => enums.StickerSetCovered[];
   media: enums.InputStickeredMedia;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCC5B67CC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getAttachedStickers"
   }
 
@@ -8223,7 +8223,7 @@ export class messages_getAttachedStickers_ extends Function_<enums.StickerSetCov
 }
 
 export class messages_setGameScore_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { edit_message?: true; force?: true; peer: enums.InputPeer; id: number; user_id: enums.InputUser; score: number }) => enums.Updates;
+  static __F: (params: { edit_message?: true; force?: true; peer: enums.InputPeer; id: number; user_id: enums.InputUser; score: number }) => enums.Updates = null as unknown as (params: { edit_message?: true; force?: true; peer: enums.InputPeer; id: number; user_id: enums.InputUser; score: number }) => enums.Updates;
   edit_message?: true;
   force?: true;
   peer: enums.InputPeer;
@@ -8231,11 +8231,11 @@ export class messages_setGameScore_ extends Function_<enums.Updates> {
   user_id: enums.InputUser;
   score: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8EF8ECC0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setGameScore"
   }
 
@@ -8275,18 +8275,18 @@ export class messages_setGameScore_ extends Function_<enums.Updates> {
 }
 
 export class messages_setInlineGameScore_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { edit_message?: true; force?: true; id: enums.InputBotInlineMessageID; user_id: enums.InputUser; score: number }) => boolean;
+  static __F: (params: { edit_message?: true; force?: true; id: enums.InputBotInlineMessageID; user_id: enums.InputUser; score: number }) => boolean = null as unknown as (params: { edit_message?: true; force?: true; id: enums.InputBotInlineMessageID; user_id: enums.InputUser; score: number }) => boolean;
   edit_message?: true;
   force?: true;
   id: enums.InputBotInlineMessageID;
   user_id: enums.InputUser;
   score: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x15AD9F64;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setInlineGameScore"
   }
 
@@ -8323,16 +8323,16 @@ export class messages_setInlineGameScore_ extends Function_<boolean> {
 }
 
 export class messages_getGameHighScores_ extends Function_<enums.messages.HighScores> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number; user_id: enums.InputUser }) => enums.messages.HighScores;
+  static __F: (params: { peer: enums.InputPeer; id: number; user_id: enums.InputUser }) => enums.messages.HighScores = null as unknown as (params: { peer: enums.InputPeer; id: number; user_id: enums.InputUser }) => enums.messages.HighScores;
   peer: enums.InputPeer;
   id: number;
   user_id: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE822649D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getGameHighScores"
   }
 
@@ -8361,15 +8361,15 @@ export class messages_getGameHighScores_ extends Function_<enums.messages.HighSc
 }
 
 export class messages_getInlineGameHighScores_ extends Function_<enums.messages.HighScores> {
-  static __F = Symbol() as unknown as (params: { id: enums.InputBotInlineMessageID; user_id: enums.InputUser }) => enums.messages.HighScores;
+  static __F: (params: { id: enums.InputBotInlineMessageID; user_id: enums.InputUser }) => enums.messages.HighScores = null as unknown as (params: { id: enums.InputBotInlineMessageID; user_id: enums.InputUser }) => enums.messages.HighScores;
   id: enums.InputBotInlineMessageID;
   user_id: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0F635E1B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getInlineGameHighScores"
   }
 
@@ -8395,16 +8395,16 @@ export class messages_getInlineGameHighScores_ extends Function_<enums.messages.
 }
 
 export class messages_getCommonChats_ extends Function_<enums.messages.Chats> {
-  static __F = Symbol() as unknown as (params: { user_id: enums.InputUser; max_id: bigint; limit: number }) => enums.messages.Chats;
+  static __F: (params: { user_id: enums.InputUser; max_id: bigint; limit: number }) => enums.messages.Chats = null as unknown as (params: { user_id: enums.InputUser; max_id: bigint; limit: number }) => enums.messages.Chats;
   user_id: enums.InputUser;
   max_id: bigint;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE40CA104;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getCommonChats"
   }
 
@@ -8433,15 +8433,15 @@ export class messages_getCommonChats_ extends Function_<enums.messages.Chats> {
 }
 
 export class messages_getWebPage_ extends Function_<enums.messages.WebPage> {
-  static __F = Symbol() as unknown as (params: { url: string; hash: number }) => enums.messages.WebPage;
+  static __F: (params: { url: string; hash: number }) => enums.messages.WebPage = null as unknown as (params: { url: string; hash: number }) => enums.messages.WebPage;
   url: string;
   hash: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8D9692A3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getWebPage"
   }
 
@@ -8467,15 +8467,15 @@ export class messages_getWebPage_ extends Function_<enums.messages.WebPage> {
 }
 
 export class messages_toggleDialogPin_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { pinned?: true; peer: enums.InputDialogPeer }) => boolean;
+  static __F: (params: { pinned?: true; peer: enums.InputDialogPeer }) => boolean = null as unknown as (params: { pinned?: true; peer: enums.InputDialogPeer }) => boolean;
   pinned?: true;
   peer: enums.InputDialogPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA731E257;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.toggleDialogPin"
   }
 
@@ -8503,16 +8503,16 @@ export class messages_toggleDialogPin_ extends Function_<boolean> {
 }
 
 export class messages_reorderPinnedDialogs_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { force?: true; folder_id: number; order: Array<enums.InputDialogPeer> }) => boolean;
+  static __F: (params: { force?: true; folder_id: number; order: Array<enums.InputDialogPeer> }) => boolean = null as unknown as (params: { force?: true; folder_id: number; order: Array<enums.InputDialogPeer> }) => boolean;
   force?: true;
   folder_id: number;
   order: Array<enums.InputDialogPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3B1ADF37;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.reorderPinnedDialogs"
   }
 
@@ -8543,14 +8543,14 @@ export class messages_reorderPinnedDialogs_ extends Function_<boolean> {
 }
 
 export class messages_getPinnedDialogs_ extends Function_<enums.messages.PeerDialogs> {
-  static __F = Symbol() as unknown as (params: { folder_id: number }) => enums.messages.PeerDialogs;
+  static __F: (params: { folder_id: number }) => enums.messages.PeerDialogs = null as unknown as (params: { folder_id: number }) => enums.messages.PeerDialogs;
   folder_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD6B94DF2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getPinnedDialogs"
   }
 
@@ -8573,16 +8573,16 @@ export class messages_getPinnedDialogs_ extends Function_<enums.messages.PeerDia
 }
 
 export class messages_setBotShippingResults_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { query_id: bigint; error?: string; shipping_options?: Array<enums.ShippingOption> }) => boolean;
+  static __F: (params: { query_id: bigint; error?: string; shipping_options?: Array<enums.ShippingOption> }) => boolean = null as unknown as (params: { query_id: bigint; error?: string; shipping_options?: Array<enums.ShippingOption> }) => boolean;
   query_id: bigint;
   error?: string;
   shipping_options?: Array<enums.ShippingOption>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE5F672FA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setBotShippingResults"
   }
 
@@ -8613,16 +8613,16 @@ export class messages_setBotShippingResults_ extends Function_<boolean> {
 }
 
 export class messages_setBotPrecheckoutResults_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { success?: true; query_id: bigint; error?: string }) => boolean;
+  static __F: (params: { success?: true; query_id: bigint; error?: string }) => boolean = null as unknown as (params: { success?: true; query_id: bigint; error?: string }) => boolean;
   success?: true;
   query_id: bigint;
   error?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x09C2DD95;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setBotPrecheckoutResults"
   }
 
@@ -8653,15 +8653,15 @@ export class messages_setBotPrecheckoutResults_ extends Function_<boolean> {
 }
 
 export class messages_uploadMedia_ extends Function_<enums.MessageMedia> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; media: enums.InputMedia }) => enums.MessageMedia;
+  static __F: (params: { peer: enums.InputPeer; media: enums.InputMedia }) => enums.MessageMedia = null as unknown as (params: { peer: enums.InputPeer; media: enums.InputMedia }) => enums.MessageMedia;
   peer: enums.InputPeer;
   media: enums.InputMedia;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x519BC2B1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.uploadMedia"
   }
 
@@ -8687,16 +8687,16 @@ export class messages_uploadMedia_ extends Function_<enums.MessageMedia> {
 }
 
 export class messages_sendScreenshotNotification_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; reply_to: enums.InputReplyTo; random_id: bigint }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; reply_to: enums.InputReplyTo; random_id: bigint }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; reply_to: enums.InputReplyTo; random_id: bigint }) => enums.Updates;
   peer: enums.InputPeer;
   reply_to: enums.InputReplyTo;
   random_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA1405817;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendScreenshotNotification"
   }
 
@@ -8725,14 +8725,14 @@ export class messages_sendScreenshotNotification_ extends Function_<enums.Update
 }
 
 export class messages_getFavedStickers_ extends Function_<enums.messages.FavedStickers> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.FavedStickers;
+  static __F: (params: { hash: bigint }) => enums.messages.FavedStickers = null as unknown as (params: { hash: bigint }) => enums.messages.FavedStickers;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x04F1AAA9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getFavedStickers"
   }
 
@@ -8755,15 +8755,15 @@ export class messages_getFavedStickers_ extends Function_<enums.messages.FavedSt
 }
 
 export class messages_faveSticker_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { id: enums.InputDocument; unfave: boolean }) => boolean;
+  static __F: (params: { id: enums.InputDocument; unfave: boolean }) => boolean = null as unknown as (params: { id: enums.InputDocument; unfave: boolean }) => boolean;
   id: enums.InputDocument;
   unfave: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB9FFC55B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.faveSticker"
   }
 
@@ -8789,7 +8789,7 @@ export class messages_faveSticker_ extends Function_<boolean> {
 }
 
 export class messages_getUnreadMentions_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) => enums.messages.Messages;
+  static __F: (params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) => enums.messages.Messages;
   peer: enums.InputPeer;
   top_msg_id?: number;
   offset_id: number;
@@ -8798,11 +8798,11 @@ export class messages_getUnreadMentions_ extends Function_<enums.messages.Messag
   max_id: number;
   min_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF107E790;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getUnreadMentions"
   }
 
@@ -8845,15 +8845,15 @@ export class messages_getUnreadMentions_ extends Function_<enums.messages.Messag
 }
 
 export class messages_readMentions_ extends Function_<enums.messages.AffectedHistory> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory;
+  static __F: (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory = null as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory;
   peer: enums.InputPeer;
   top_msg_id?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x36E5BF4D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.readMentions"
   }
 
@@ -8881,16 +8881,16 @@ export class messages_readMentions_ extends Function_<enums.messages.AffectedHis
 }
 
 export class messages_getRecentLocations_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.Messages;
+  static __F: (params: { peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.Messages;
   peer: enums.InputPeer;
   limit: number;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x702A40E0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getRecentLocations"
   }
 
@@ -8919,7 +8919,7 @@ export class messages_getRecentLocations_ extends Function_<enums.messages.Messa
 }
 
 export class messages_sendMultiMedia_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; multi_media: Array<enums.InputSingleMedia>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  static __F: (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; multi_media: Array<enums.InputSingleMedia>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; multi_media: Array<enums.InputSingleMedia>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
   silent?: true;
   background?: true;
   clear_draft?: true;
@@ -8932,11 +8932,11 @@ export class messages_sendMultiMedia_ extends Function_<enums.Updates> {
   schedule_date?: number;
   send_as?: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x456E8987;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendMultiMedia"
   }
 
@@ -8991,15 +8991,15 @@ export class messages_sendMultiMedia_ extends Function_<enums.Updates> {
 }
 
 export class messages_uploadEncryptedFile_ extends Function_<enums.EncryptedFile> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputEncryptedChat; file: enums.InputEncryptedFile }) => enums.EncryptedFile;
+  static __F: (params: { peer: enums.InputEncryptedChat; file: enums.InputEncryptedFile }) => enums.EncryptedFile = null as unknown as (params: { peer: enums.InputEncryptedChat; file: enums.InputEncryptedFile }) => enums.EncryptedFile;
   peer: enums.InputEncryptedChat;
   file: enums.InputEncryptedFile;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5057C497;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.uploadEncryptedFile"
   }
 
@@ -9025,16 +9025,16 @@ export class messages_uploadEncryptedFile_ extends Function_<enums.EncryptedFile
 }
 
 export class messages_searchStickerSets_ extends Function_<enums.messages.FoundStickerSets> {
-  static __F = Symbol() as unknown as (params: { exclude_featured?: true; q: string; hash: bigint }) => enums.messages.FoundStickerSets;
+  static __F: (params: { exclude_featured?: true; q: string; hash: bigint }) => enums.messages.FoundStickerSets = null as unknown as (params: { exclude_featured?: true; q: string; hash: bigint }) => enums.messages.FoundStickerSets;
   exclude_featured?: true;
   q: string;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x35705B8A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.searchStickerSets"
   }
 
@@ -9065,12 +9065,12 @@ export class messages_searchStickerSets_ extends Function_<enums.messages.FoundS
 }
 
 export class messages_getSplitRanges_ extends Function_<enums.MessageRange[]> {
-  static __F = Symbol() as unknown as () => enums.MessageRange[];
-  protected get [id]() {
+  static __F: () => enums.MessageRange[] = null as unknown as () => enums.MessageRange[];
+  protected get [id](): number {
     return 0x1CFF7E08;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getSplitRanges"
   }
 
@@ -9088,15 +9088,15 @@ export class messages_getSplitRanges_ extends Function_<enums.MessageRange[]> {
 }
 
 export class messages_markDialogUnread_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { unread?: true; peer: enums.InputDialogPeer }) => boolean;
+  static __F: (params: { unread?: true; peer: enums.InputDialogPeer }) => boolean = null as unknown as (params: { unread?: true; peer: enums.InputDialogPeer }) => boolean;
   unread?: true;
   peer: enums.InputDialogPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC286D98F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.markDialogUnread"
   }
 
@@ -9124,12 +9124,12 @@ export class messages_markDialogUnread_ extends Function_<boolean> {
 }
 
 export class messages_getDialogUnreadMarks_ extends Function_<enums.DialogPeer[]> {
-  static __F = Symbol() as unknown as () => enums.DialogPeer[];
-  protected get [id]() {
+  static __F: () => enums.DialogPeer[] = null as unknown as () => enums.DialogPeer[];
+  protected get [id](): number {
     return 0x22E24E22;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getDialogUnreadMarks"
   }
 
@@ -9147,12 +9147,12 @@ export class messages_getDialogUnreadMarks_ extends Function_<enums.DialogPeer[]
 }
 
 export class messages_clearAllDrafts_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as () => boolean;
-  protected get [id]() {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
     return 0x7E58EE9C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.clearAllDrafts"
   }
 
@@ -9170,18 +9170,18 @@ export class messages_clearAllDrafts_ extends Function_<boolean> {
 }
 
 export class messages_updatePinnedMessage_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { silent?: true; unpin?: true; pm_oneside?: true; peer: enums.InputPeer; id: number }) => enums.Updates;
+  static __F: (params: { silent?: true; unpin?: true; pm_oneside?: true; peer: enums.InputPeer; id: number }) => enums.Updates = null as unknown as (params: { silent?: true; unpin?: true; pm_oneside?: true; peer: enums.InputPeer; id: number }) => enums.Updates;
   silent?: true;
   unpin?: true;
   pm_oneside?: true;
   peer: enums.InputPeer;
   id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD2AAF7EC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.updatePinnedMessage"
   }
 
@@ -9218,16 +9218,16 @@ export class messages_updatePinnedMessage_ extends Function_<enums.Updates> {
 }
 
 export class messages_sendVote_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number; options: Array<Uint8Array> }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; msg_id: number; options: Array<Uint8Array> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; msg_id: number; options: Array<Uint8Array> }) => enums.Updates;
   peer: enums.InputPeer;
   msg_id: number;
   options: Array<Uint8Array>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x10EA6184;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendVote"
   }
 
@@ -9256,15 +9256,15 @@ export class messages_sendVote_ extends Function_<enums.Updates> {
 }
 
 export class messages_getPollResults_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; msg_id: number }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.Updates;
   peer: enums.InputPeer;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x73BB643B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getPollResults"
   }
 
@@ -9290,14 +9290,14 @@ export class messages_getPollResults_ extends Function_<enums.Updates> {
 }
 
 export class messages_getOnlines_ extends Function_<enums.ChatOnlines> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.ChatOnlines;
+  static __F: (params: { peer: enums.InputPeer }) => enums.ChatOnlines = null as unknown as (params: { peer: enums.InputPeer }) => enums.ChatOnlines;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6E2BE050;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getOnlines"
   }
 
@@ -9320,15 +9320,15 @@ export class messages_getOnlines_ extends Function_<enums.ChatOnlines> {
 }
 
 export class messages_editChatAbout_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; about: string }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; about: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; about: string }) => boolean;
   peer: enums.InputPeer;
   about: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDEF60797;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.editChatAbout"
   }
 
@@ -9354,15 +9354,15 @@ export class messages_editChatAbout_ extends Function_<boolean> {
 }
 
 export class messages_editChatDefaultBannedRights_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; banned_rights: enums.ChatBannedRights }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; banned_rights: enums.ChatBannedRights }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; banned_rights: enums.ChatBannedRights }) => enums.Updates;
   peer: enums.InputPeer;
   banned_rights: enums.ChatBannedRights;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA5866B41;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.editChatDefaultBannedRights"
   }
 
@@ -9388,14 +9388,14 @@ export class messages_editChatDefaultBannedRights_ extends Function_<enums.Updat
 }
 
 export class messages_getEmojiKeywords_ extends Function_<enums.EmojiKeywordsDifference> {
-  static __F = Symbol() as unknown as (params: { lang_code: string }) => enums.EmojiKeywordsDifference;
+  static __F: (params: { lang_code: string }) => enums.EmojiKeywordsDifference = null as unknown as (params: { lang_code: string }) => enums.EmojiKeywordsDifference;
   lang_code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x35A0E062;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getEmojiKeywords"
   }
 
@@ -9418,15 +9418,15 @@ export class messages_getEmojiKeywords_ extends Function_<enums.EmojiKeywordsDif
 }
 
 export class messages_getEmojiKeywordsDifference_ extends Function_<enums.EmojiKeywordsDifference> {
-  static __F = Symbol() as unknown as (params: { lang_code: string; from_version: number }) => enums.EmojiKeywordsDifference;
+  static __F: (params: { lang_code: string; from_version: number }) => enums.EmojiKeywordsDifference = null as unknown as (params: { lang_code: string; from_version: number }) => enums.EmojiKeywordsDifference;
   lang_code: string;
   from_version: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1508B6AF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getEmojiKeywordsDifference"
   }
 
@@ -9452,14 +9452,14 @@ export class messages_getEmojiKeywordsDifference_ extends Function_<enums.EmojiK
 }
 
 export class messages_getEmojiKeywordsLanguages_ extends Function_<enums.EmojiLanguage[]> {
-  static __F = Symbol() as unknown as (params: { lang_codes: Array<string> }) => enums.EmojiLanguage[];
+  static __F: (params: { lang_codes: Array<string> }) => enums.EmojiLanguage[] = null as unknown as (params: { lang_codes: Array<string> }) => enums.EmojiLanguage[];
   lang_codes: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4E9963B2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getEmojiKeywordsLanguages"
   }
 
@@ -9482,14 +9482,14 @@ export class messages_getEmojiKeywordsLanguages_ extends Function_<enums.EmojiLa
 }
 
 export class messages_getEmojiURL_ extends Function_<enums.EmojiURL> {
-  static __F = Symbol() as unknown as (params: { lang_code: string }) => enums.EmojiURL;
+  static __F: (params: { lang_code: string }) => enums.EmojiURL = null as unknown as (params: { lang_code: string }) => enums.EmojiURL;
   lang_code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD5B10C26;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getEmojiURL"
   }
 
@@ -9512,17 +9512,17 @@ export class messages_getEmojiURL_ extends Function_<enums.EmojiURL> {
 }
 
 export class messages_getSearchCounters_ extends Function_<enums.messages.SearchCounter[]> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; top_msg_id?: number; filters: Array<enums.MessagesFilter> }) => enums.messages.SearchCounter[];
+  static __F: (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; top_msg_id?: number; filters: Array<enums.MessagesFilter> }) => enums.messages.SearchCounter[] = null as unknown as (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; top_msg_id?: number; filters: Array<enums.MessagesFilter> }) => enums.messages.SearchCounter[];
   peer: enums.InputPeer;
   saved_peer_id?: enums.InputPeer;
   top_msg_id?: number;
   filters: Array<enums.MessagesFilter>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1BBCF300;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getSearchCounters"
   }
 
@@ -9556,17 +9556,17 @@ export class messages_getSearchCounters_ extends Function_<enums.messages.Search
 }
 
 export class messages_requestUrlAuth_ extends Function_<enums.UrlAuthResult> {
-  static __F = Symbol() as unknown as (params?: { peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) => enums.UrlAuthResult;
+  static __F: (params?: { peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) => enums.UrlAuthResult = null as unknown as (params?: { peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) => enums.UrlAuthResult;
   peer?: enums.InputPeer;
   msg_id?: number;
   button_id?: number;
   url?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x198FB446;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.requestUrlAuth"
   }
 
@@ -9600,18 +9600,18 @@ export class messages_requestUrlAuth_ extends Function_<enums.UrlAuthResult> {
 }
 
 export class messages_acceptUrlAuth_ extends Function_<enums.UrlAuthResult> {
-  static __F = Symbol() as unknown as (params?: { write_allowed?: true; peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) => enums.UrlAuthResult;
+  static __F: (params?: { write_allowed?: true; peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) => enums.UrlAuthResult = null as unknown as (params?: { write_allowed?: true; peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) => enums.UrlAuthResult;
   write_allowed?: true;
   peer?: enums.InputPeer;
   msg_id?: number;
   button_id?: number;
   url?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB12C7125;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.acceptUrlAuth"
   }
 
@@ -9648,14 +9648,14 @@ export class messages_acceptUrlAuth_ extends Function_<enums.UrlAuthResult> {
 }
 
 export class messages_hidePeerSettingsBar_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => boolean;
+  static __F: (params: { peer: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4FACB138;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.hidePeerSettingsBar"
   }
 
@@ -9678,15 +9678,15 @@ export class messages_hidePeerSettingsBar_ extends Function_<boolean> {
 }
 
 export class messages_getScheduledHistory_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; hash: bigint }) => enums.messages.Messages;
+  static __F: (params: { peer: enums.InputPeer; hash: bigint }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; hash: bigint }) => enums.messages.Messages;
   peer: enums.InputPeer;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF516760B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getScheduledHistory"
   }
 
@@ -9712,15 +9712,15 @@ export class messages_getScheduledHistory_ extends Function_<enums.messages.Mess
 }
 
 export class messages_getScheduledMessages_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.messages.Messages;
+  static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.messages.Messages;
   peer: enums.InputPeer;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBDBB0464;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getScheduledMessages"
   }
 
@@ -9746,15 +9746,15 @@ export class messages_getScheduledMessages_ extends Function_<enums.messages.Mes
 }
 
 export class messages_sendScheduledMessages_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
   peer: enums.InputPeer;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBD38850A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendScheduledMessages"
   }
 
@@ -9780,15 +9780,15 @@ export class messages_sendScheduledMessages_ extends Function_<enums.Updates> {
 }
 
 export class messages_deleteScheduledMessages_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
   peer: enums.InputPeer;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x59AE2B16;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.deleteScheduledMessages"
   }
 
@@ -9814,18 +9814,18 @@ export class messages_deleteScheduledMessages_ extends Function_<enums.Updates> 
 }
 
 export class messages_getPollVotes_ extends Function_<enums.messages.VotesList> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number; option?: Uint8Array; offset?: string; limit: number }) => enums.messages.VotesList;
+  static __F: (params: { peer: enums.InputPeer; id: number; option?: Uint8Array; offset?: string; limit: number }) => enums.messages.VotesList = null as unknown as (params: { peer: enums.InputPeer; id: number; option?: Uint8Array; offset?: string; limit: number }) => enums.messages.VotesList;
   peer: enums.InputPeer;
   id: number;
   option?: Uint8Array;
   offset?: string;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB86E380E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getPollVotes"
   }
 
@@ -9862,17 +9862,17 @@ export class messages_getPollVotes_ extends Function_<enums.messages.VotesList> 
 }
 
 export class messages_toggleStickerSets_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { uninstall?: true; archive?: true; unarchive?: true; stickersets: Array<enums.InputStickerSet> }) => boolean;
+  static __F: (params: { uninstall?: true; archive?: true; unarchive?: true; stickersets: Array<enums.InputStickerSet> }) => boolean = null as unknown as (params: { uninstall?: true; archive?: true; unarchive?: true; stickersets: Array<enums.InputStickerSet> }) => boolean;
   uninstall?: true;
   archive?: true;
   unarchive?: true;
   stickersets: Array<enums.InputStickerSet>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB5052FEA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.toggleStickerSets"
   }
 
@@ -9906,12 +9906,12 @@ export class messages_toggleStickerSets_ extends Function_<boolean> {
 }
 
 export class messages_getDialogFilters_ extends Function_<enums.DialogFilter[]> {
-  static __F = Symbol() as unknown as () => enums.DialogFilter[];
-  protected get [id]() {
+  static __F: () => enums.DialogFilter[] = null as unknown as () => enums.DialogFilter[];
+  protected get [id](): number {
     return 0xF19ED96D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getDialogFilters"
   }
 
@@ -9929,12 +9929,12 @@ export class messages_getDialogFilters_ extends Function_<enums.DialogFilter[]> 
 }
 
 export class messages_getSuggestedDialogFilters_ extends Function_<enums.DialogFilterSuggested[]> {
-  static __F = Symbol() as unknown as () => enums.DialogFilterSuggested[];
-  protected get [id]() {
+  static __F: () => enums.DialogFilterSuggested[] = null as unknown as () => enums.DialogFilterSuggested[];
+  protected get [id](): number {
     return 0xA29CD42C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getSuggestedDialogFilters"
   }
 
@@ -9952,15 +9952,15 @@ export class messages_getSuggestedDialogFilters_ extends Function_<enums.DialogF
 }
 
 export class messages_updateDialogFilter_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { id: number; filter?: enums.DialogFilter }) => boolean;
+  static __F: (params: { id: number; filter?: enums.DialogFilter }) => boolean = null as unknown as (params: { id: number; filter?: enums.DialogFilter }) => boolean;
   id: number;
   filter?: enums.DialogFilter;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1AD4A04A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.updateDialogFilter"
   }
 
@@ -9988,14 +9988,14 @@ export class messages_updateDialogFilter_ extends Function_<boolean> {
 }
 
 export class messages_updateDialogFiltersOrder_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { order: Array<number> }) => boolean;
+  static __F: (params: { order: Array<number> }) => boolean = null as unknown as (params: { order: Array<number> }) => boolean;
   order: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC563C1E4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.updateDialogFiltersOrder"
   }
 
@@ -10018,16 +10018,16 @@ export class messages_updateDialogFiltersOrder_ extends Function_<boolean> {
 }
 
 export class messages_getOldFeaturedStickers_ extends Function_<enums.messages.FeaturedStickers> {
-  static __F = Symbol() as unknown as (params: { offset: number; limit: number; hash: bigint }) => enums.messages.FeaturedStickers;
+  static __F: (params: { offset: number; limit: number; hash: bigint }) => enums.messages.FeaturedStickers = null as unknown as (params: { offset: number; limit: number; hash: bigint }) => enums.messages.FeaturedStickers;
   offset: number;
   limit: number;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7ED094A1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getOldFeaturedStickers"
   }
 
@@ -10056,7 +10056,7 @@ export class messages_getOldFeaturedStickers_ extends Function_<enums.messages.F
 }
 
 export class messages_getReplies_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
+  static __F: (params: { peer: enums.InputPeer; msg_id: number; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; msg_id: number; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
   peer: enums.InputPeer;
   msg_id: number;
   offset_id: number;
@@ -10067,11 +10067,11 @@ export class messages_getReplies_ extends Function_<enums.messages.Messages> {
   min_id: number;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x22DDD30C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getReplies"
   }
 
@@ -10118,15 +10118,15 @@ export class messages_getReplies_ extends Function_<enums.messages.Messages> {
 }
 
 export class messages_getDiscussionMessage_ extends Function_<enums.messages.DiscussionMessage> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.messages.DiscussionMessage;
+  static __F: (params: { peer: enums.InputPeer; msg_id: number }) => enums.messages.DiscussionMessage = null as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.messages.DiscussionMessage;
   peer: enums.InputPeer;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x446972FD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getDiscussionMessage"
   }
 
@@ -10152,16 +10152,16 @@ export class messages_getDiscussionMessage_ extends Function_<enums.messages.Dis
 }
 
 export class messages_readDiscussion_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number; read_max_id: number }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; msg_id: number; read_max_id: number }) => boolean = null as unknown as (params: { peer: enums.InputPeer; msg_id: number; read_max_id: number }) => boolean;
   peer: enums.InputPeer;
   msg_id: number;
   read_max_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF731A9F4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.readDiscussion"
   }
 
@@ -10190,15 +10190,15 @@ export class messages_readDiscussion_ extends Function_<boolean> {
 }
 
 export class messages_unpinAllMessages_ extends Function_<enums.messages.AffectedHistory> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory;
+  static __F: (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory = null as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory;
   peer: enums.InputPeer;
   top_msg_id?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEE22B9A8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.unpinAllMessages"
   }
 
@@ -10226,14 +10226,14 @@ export class messages_unpinAllMessages_ extends Function_<enums.messages.Affecte
 }
 
 export class messages_deleteChat_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { chat_id: bigint }) => boolean;
+  static __F: (params: { chat_id: bigint }) => boolean = null as unknown as (params: { chat_id: bigint }) => boolean;
   chat_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5BD0EE50;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.deleteChat"
   }
 
@@ -10256,14 +10256,14 @@ export class messages_deleteChat_ extends Function_<boolean> {
 }
 
 export class messages_deletePhoneCallHistory_ extends Function_<enums.messages.AffectedFoundMessages> {
-  static __F = Symbol() as unknown as (params?: { revoke?: true }) => enums.messages.AffectedFoundMessages;
+  static __F: (params?: { revoke?: true }) => enums.messages.AffectedFoundMessages = null as unknown as (params?: { revoke?: true }) => enums.messages.AffectedFoundMessages;
   revoke?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF9CBE409;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.deletePhoneCallHistory"
   }
 
@@ -10288,14 +10288,14 @@ export class messages_deletePhoneCallHistory_ extends Function_<enums.messages.A
 }
 
 export class messages_checkHistoryImport_ extends Function_<enums.messages.HistoryImportParsed> {
-  static __F = Symbol() as unknown as (params: { import_head: string }) => enums.messages.HistoryImportParsed;
+  static __F: (params: { import_head: string }) => enums.messages.HistoryImportParsed = null as unknown as (params: { import_head: string }) => enums.messages.HistoryImportParsed;
   import_head: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x43FE19F3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.checkHistoryImport"
   }
 
@@ -10318,16 +10318,16 @@ export class messages_checkHistoryImport_ extends Function_<enums.messages.Histo
 }
 
 export class messages_initHistoryImport_ extends Function_<enums.messages.HistoryImport> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; file: enums.InputFile; media_count: number }) => enums.messages.HistoryImport;
+  static __F: (params: { peer: enums.InputPeer; file: enums.InputFile; media_count: number }) => enums.messages.HistoryImport = null as unknown as (params: { peer: enums.InputPeer; file: enums.InputFile; media_count: number }) => enums.messages.HistoryImport;
   peer: enums.InputPeer;
   file: enums.InputFile;
   media_count: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x34090C3B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.initHistoryImport"
   }
 
@@ -10356,17 +10356,17 @@ export class messages_initHistoryImport_ extends Function_<enums.messages.Histor
 }
 
 export class messages_uploadImportedMedia_ extends Function_<enums.MessageMedia> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; import_id: bigint; file_name: string; media: enums.InputMedia }) => enums.MessageMedia;
+  static __F: (params: { peer: enums.InputPeer; import_id: bigint; file_name: string; media: enums.InputMedia }) => enums.MessageMedia = null as unknown as (params: { peer: enums.InputPeer; import_id: bigint; file_name: string; media: enums.InputMedia }) => enums.MessageMedia;
   peer: enums.InputPeer;
   import_id: bigint;
   file_name: string;
   media: enums.InputMedia;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2A862092;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.uploadImportedMedia"
   }
 
@@ -10398,15 +10398,15 @@ export class messages_uploadImportedMedia_ extends Function_<enums.MessageMedia>
 }
 
 export class messages_startHistoryImport_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; import_id: bigint }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; import_id: bigint }) => boolean = null as unknown as (params: { peer: enums.InputPeer; import_id: bigint }) => boolean;
   peer: enums.InputPeer;
   import_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB43DF344;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.startHistoryImport"
   }
 
@@ -10432,7 +10432,7 @@ export class messages_startHistoryImport_ extends Function_<boolean> {
 }
 
 export class messages_getExportedChatInvites_ extends Function_<enums.messages.ExportedChatInvites> {
-  static __F = Symbol() as unknown as (params: { revoked?: true; peer: enums.InputPeer; admin_id: enums.InputUser; offset_date?: number; offset_link?: string; limit: number }) => enums.messages.ExportedChatInvites;
+  static __F: (params: { revoked?: true; peer: enums.InputPeer; admin_id: enums.InputUser; offset_date?: number; offset_link?: string; limit: number }) => enums.messages.ExportedChatInvites = null as unknown as (params: { revoked?: true; peer: enums.InputPeer; admin_id: enums.InputUser; offset_date?: number; offset_link?: string; limit: number }) => enums.messages.ExportedChatInvites;
   revoked?: true;
   peer: enums.InputPeer;
   admin_id: enums.InputUser;
@@ -10440,11 +10440,11 @@ export class messages_getExportedChatInvites_ extends Function_<enums.messages.E
   offset_link?: string;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA2B5A3F6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getExportedChatInvites"
   }
 
@@ -10484,15 +10484,15 @@ export class messages_getExportedChatInvites_ extends Function_<enums.messages.E
 }
 
 export class messages_getExportedChatInvite_ extends Function_<enums.messages.ExportedChatInvite> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; link: string }) => enums.messages.ExportedChatInvite;
+  static __F: (params: { peer: enums.InputPeer; link: string }) => enums.messages.ExportedChatInvite = null as unknown as (params: { peer: enums.InputPeer; link: string }) => enums.messages.ExportedChatInvite;
   peer: enums.InputPeer;
   link: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x73746F5C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getExportedChatInvite"
   }
 
@@ -10518,7 +10518,7 @@ export class messages_getExportedChatInvite_ extends Function_<enums.messages.Ex
 }
 
 export class messages_editExportedChatInvite_ extends Function_<enums.messages.ExportedChatInvite> {
-  static __F = Symbol() as unknown as (params: { revoked?: true; peer: enums.InputPeer; link: string; expire_date?: number; usage_limit?: number; request_needed?: boolean; title?: string }) => enums.messages.ExportedChatInvite;
+  static __F: (params: { revoked?: true; peer: enums.InputPeer; link: string; expire_date?: number; usage_limit?: number; request_needed?: boolean; title?: string }) => enums.messages.ExportedChatInvite = null as unknown as (params: { revoked?: true; peer: enums.InputPeer; link: string; expire_date?: number; usage_limit?: number; request_needed?: boolean; title?: string }) => enums.messages.ExportedChatInvite;
   revoked?: true;
   peer: enums.InputPeer;
   link: string;
@@ -10527,11 +10527,11 @@ export class messages_editExportedChatInvite_ extends Function_<enums.messages.E
   request_needed?: boolean;
   title?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBDCA2F75;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.editExportedChatInvite"
   }
 
@@ -10574,15 +10574,15 @@ export class messages_editExportedChatInvite_ extends Function_<enums.messages.E
 }
 
 export class messages_deleteRevokedExportedChatInvites_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; admin_id: enums.InputUser }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; admin_id: enums.InputUser }) => boolean = null as unknown as (params: { peer: enums.InputPeer; admin_id: enums.InputUser }) => boolean;
   peer: enums.InputPeer;
   admin_id: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x56987BD5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.deleteRevokedExportedChatInvites"
   }
 
@@ -10608,15 +10608,15 @@ export class messages_deleteRevokedExportedChatInvites_ extends Function_<boolea
 }
 
 export class messages_deleteExportedChatInvite_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; link: string }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; link: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; link: string }) => boolean;
   peer: enums.InputPeer;
   link: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD464A42B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.deleteExportedChatInvite"
   }
 
@@ -10642,14 +10642,14 @@ export class messages_deleteExportedChatInvite_ extends Function_<boolean> {
 }
 
 export class messages_getAdminsWithInvites_ extends Function_<enums.messages.ChatAdminsWithInvites> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.messages.ChatAdminsWithInvites;
+  static __F: (params: { peer: enums.InputPeer }) => enums.messages.ChatAdminsWithInvites = null as unknown as (params: { peer: enums.InputPeer }) => enums.messages.ChatAdminsWithInvites;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3920E6EF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getAdminsWithInvites"
   }
 
@@ -10672,7 +10672,7 @@ export class messages_getAdminsWithInvites_ extends Function_<enums.messages.Cha
 }
 
 export class messages_getChatInviteImporters_ extends Function_<enums.messages.ChatInviteImporters> {
-  static __F = Symbol() as unknown as (params: { requested?: true; peer: enums.InputPeer; link?: string; q?: string; offset_date: number; offset_user: enums.InputUser; limit: number }) => enums.messages.ChatInviteImporters;
+  static __F: (params: { requested?: true; peer: enums.InputPeer; link?: string; q?: string; offset_date: number; offset_user: enums.InputUser; limit: number }) => enums.messages.ChatInviteImporters = null as unknown as (params: { requested?: true; peer: enums.InputPeer; link?: string; q?: string; offset_date: number; offset_user: enums.InputUser; limit: number }) => enums.messages.ChatInviteImporters;
   requested?: true;
   peer: enums.InputPeer;
   link?: string;
@@ -10681,11 +10681,11 @@ export class messages_getChatInviteImporters_ extends Function_<enums.messages.C
   offset_user: enums.InputUser;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDF04DD4E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getChatInviteImporters"
   }
 
@@ -10728,15 +10728,15 @@ export class messages_getChatInviteImporters_ extends Function_<enums.messages.C
 }
 
 export class messages_setHistoryTTL_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; period: number }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; period: number }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; period: number }) => enums.Updates;
   peer: enums.InputPeer;
   period: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB80E5FE4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setHistoryTTL"
   }
 
@@ -10762,14 +10762,14 @@ export class messages_setHistoryTTL_ extends Function_<enums.Updates> {
 }
 
 export class messages_checkHistoryImportPeer_ extends Function_<enums.messages.CheckedHistoryImportPeer> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.messages.CheckedHistoryImportPeer;
+  static __F: (params: { peer: enums.InputPeer }) => enums.messages.CheckedHistoryImportPeer = null as unknown as (params: { peer: enums.InputPeer }) => enums.messages.CheckedHistoryImportPeer;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5DC60F03;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.checkHistoryImportPeer"
   }
 
@@ -10792,15 +10792,15 @@ export class messages_checkHistoryImportPeer_ extends Function_<enums.messages.C
 }
 
 export class messages_setChatTheme_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; emoticon: string }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; emoticon: string }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; emoticon: string }) => enums.Updates;
   peer: enums.InputPeer;
   emoticon: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE63BE13F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setChatTheme"
   }
 
@@ -10826,15 +10826,15 @@ export class messages_setChatTheme_ extends Function_<enums.Updates> {
 }
 
 export class messages_getMessageReadParticipants_ extends Function_<enums.ReadParticipantDate[]> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.ReadParticipantDate[];
+  static __F: (params: { peer: enums.InputPeer; msg_id: number }) => enums.ReadParticipantDate[] = null as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.ReadParticipantDate[];
   peer: enums.InputPeer;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x31C1C44F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getMessageReadParticipants"
   }
 
@@ -10860,18 +10860,18 @@ export class messages_getMessageReadParticipants_ extends Function_<enums.ReadPa
 }
 
 export class messages_getSearchResultsCalendar_ extends Function_<enums.messages.SearchResultsCalendar> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; offset_date: number }) => enums.messages.SearchResultsCalendar;
+  static __F: (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; offset_date: number }) => enums.messages.SearchResultsCalendar = null as unknown as (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; offset_date: number }) => enums.messages.SearchResultsCalendar;
   peer: enums.InputPeer;
   saved_peer_id?: enums.InputPeer;
   filter: enums.MessagesFilter;
   offset_id: number;
   offset_date: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6AA3F6BD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getSearchResultsCalendar"
   }
 
@@ -10908,18 +10908,18 @@ export class messages_getSearchResultsCalendar_ extends Function_<enums.messages
 }
 
 export class messages_getSearchResultsPositions_ extends Function_<enums.messages.SearchResultsPositions> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; limit: number }) => enums.messages.SearchResultsPositions;
+  static __F: (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; limit: number }) => enums.messages.SearchResultsPositions = null as unknown as (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; limit: number }) => enums.messages.SearchResultsPositions;
   peer: enums.InputPeer;
   saved_peer_id?: enums.InputPeer;
   filter: enums.MessagesFilter;
   offset_id: number;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9C7F2F10;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getSearchResultsPositions"
   }
 
@@ -10956,16 +10956,16 @@ export class messages_getSearchResultsPositions_ extends Function_<enums.message
 }
 
 export class messages_hideChatJoinRequest_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { approved?: true; peer: enums.InputPeer; user_id: enums.InputUser }) => enums.Updates;
+  static __F: (params: { approved?: true; peer: enums.InputPeer; user_id: enums.InputUser }) => enums.Updates = null as unknown as (params: { approved?: true; peer: enums.InputPeer; user_id: enums.InputUser }) => enums.Updates;
   approved?: true;
   peer: enums.InputPeer;
   user_id: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7FE7E815;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.hideChatJoinRequest"
   }
 
@@ -10996,16 +10996,16 @@ export class messages_hideChatJoinRequest_ extends Function_<enums.Updates> {
 }
 
 export class messages_hideAllChatJoinRequests_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { approved?: true; peer: enums.InputPeer; link?: string }) => enums.Updates;
+  static __F: (params: { approved?: true; peer: enums.InputPeer; link?: string }) => enums.Updates = null as unknown as (params: { approved?: true; peer: enums.InputPeer; link?: string }) => enums.Updates;
   approved?: true;
   peer: enums.InputPeer;
   link?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE085F4EA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.hideAllChatJoinRequests"
   }
 
@@ -11036,15 +11036,15 @@ export class messages_hideAllChatJoinRequests_ extends Function_<enums.Updates> 
 }
 
 export class messages_toggleNoForwards_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; enabled: boolean }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; enabled: boolean }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; enabled: boolean }) => enums.Updates;
   peer: enums.InputPeer;
   enabled: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB11EAFA2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.toggleNoForwards"
   }
 
@@ -11070,15 +11070,15 @@ export class messages_toggleNoForwards_ extends Function_<enums.Updates> {
 }
 
 export class messages_saveDefaultSendAs_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; send_as: enums.InputPeer }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; send_as: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer; send_as: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
   send_as: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCCFDDF96;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.saveDefaultSendAs"
   }
 
@@ -11104,18 +11104,18 @@ export class messages_saveDefaultSendAs_ extends Function_<boolean> {
 }
 
 export class messages_sendReaction_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { big?: true; add_to_recent?: true; peer: enums.InputPeer; msg_id: number; reaction?: Array<enums.Reaction> }) => enums.Updates;
+  static __F: (params: { big?: true; add_to_recent?: true; peer: enums.InputPeer; msg_id: number; reaction?: Array<enums.Reaction> }) => enums.Updates = null as unknown as (params: { big?: true; add_to_recent?: true; peer: enums.InputPeer; msg_id: number; reaction?: Array<enums.Reaction> }) => enums.Updates;
   big?: true;
   add_to_recent?: true;
   peer: enums.InputPeer;
   msg_id: number;
   reaction?: Array<enums.Reaction>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD30D78D4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendReaction"
   }
 
@@ -11152,15 +11152,15 @@ export class messages_sendReaction_ extends Function_<enums.Updates> {
 }
 
 export class messages_getMessagesReactions_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
   peer: enums.InputPeer;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8BBA90E6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getMessagesReactions"
   }
 
@@ -11186,18 +11186,18 @@ export class messages_getMessagesReactions_ extends Function_<enums.Updates> {
 }
 
 export class messages_getMessageReactionsList_ extends Function_<enums.messages.MessageReactionsList> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) => enums.messages.MessageReactionsList;
+  static __F: (params: { peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) => enums.messages.MessageReactionsList = null as unknown as (params: { peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) => enums.messages.MessageReactionsList;
   peer: enums.InputPeer;
   id: number;
   reaction?: enums.Reaction;
   offset?: string;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x461B3F48;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getMessageReactionsList"
   }
 
@@ -11234,15 +11234,15 @@ export class messages_getMessageReactionsList_ extends Function_<enums.messages.
 }
 
 export class messages_setChatAvailableReactions_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; available_reactions: enums.ChatReactions }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; available_reactions: enums.ChatReactions }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; available_reactions: enums.ChatReactions }) => enums.Updates;
   peer: enums.InputPeer;
   available_reactions: enums.ChatReactions;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFEB16771;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setChatAvailableReactions"
   }
 
@@ -11268,14 +11268,14 @@ export class messages_setChatAvailableReactions_ extends Function_<enums.Updates
 }
 
 export class messages_getAvailableReactions_ extends Function_<enums.messages.AvailableReactions> {
-  static __F = Symbol() as unknown as (params: { hash: number }) => enums.messages.AvailableReactions;
+  static __F: (params: { hash: number }) => enums.messages.AvailableReactions = null as unknown as (params: { hash: number }) => enums.messages.AvailableReactions;
   hash: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x18DEA0AC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getAvailableReactions"
   }
 
@@ -11298,14 +11298,14 @@ export class messages_getAvailableReactions_ extends Function_<enums.messages.Av
 }
 
 export class messages_setDefaultReaction_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { reaction: enums.Reaction }) => boolean;
+  static __F: (params: { reaction: enums.Reaction }) => boolean = null as unknown as (params: { reaction: enums.Reaction }) => boolean;
   reaction: enums.Reaction;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4F47A016;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setDefaultReaction"
   }
 
@@ -11328,17 +11328,17 @@ export class messages_setDefaultReaction_ extends Function_<boolean> {
 }
 
 export class messages_translateText_ extends Function_<enums.messages.TranslatedText> {
-  static __F = Symbol() as unknown as (params: { peer?: enums.InputPeer; id?: Array<number>; text?: Array<enums.TextWithEntities>; to_lang: string }) => enums.messages.TranslatedText;
+  static __F: (params: { peer?: enums.InputPeer; id?: Array<number>; text?: Array<enums.TextWithEntities>; to_lang: string }) => enums.messages.TranslatedText = null as unknown as (params: { peer?: enums.InputPeer; id?: Array<number>; text?: Array<enums.TextWithEntities>; to_lang: string }) => enums.messages.TranslatedText;
   peer?: enums.InputPeer;
   id?: Array<number>;
   text?: Array<enums.TextWithEntities>;
   to_lang: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x63183030;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.translateText"
   }
 
@@ -11372,7 +11372,7 @@ export class messages_translateText_ extends Function_<enums.messages.Translated
 }
 
 export class messages_getUnreadReactions_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) => enums.messages.Messages;
+  static __F: (params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) => enums.messages.Messages;
   peer: enums.InputPeer;
   top_msg_id?: number;
   offset_id: number;
@@ -11381,11 +11381,11 @@ export class messages_getUnreadReactions_ extends Function_<enums.messages.Messa
   max_id: number;
   min_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3223495B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getUnreadReactions"
   }
 
@@ -11428,15 +11428,15 @@ export class messages_getUnreadReactions_ extends Function_<enums.messages.Messa
 }
 
 export class messages_readReactions_ extends Function_<enums.messages.AffectedHistory> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory;
+  static __F: (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory = null as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory;
   peer: enums.InputPeer;
   top_msg_id?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x54AA7F8E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.readReactions"
   }
 
@@ -11464,16 +11464,16 @@ export class messages_readReactions_ extends Function_<enums.messages.AffectedHi
 }
 
 export class messages_searchSentMedia_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { q: string; filter: enums.MessagesFilter; limit: number }) => enums.messages.Messages;
+  static __F: (params: { q: string; filter: enums.MessagesFilter; limit: number }) => enums.messages.Messages = null as unknown as (params: { q: string; filter: enums.MessagesFilter; limit: number }) => enums.messages.Messages;
   q: string;
   filter: enums.MessagesFilter;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x107E31A0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.searchSentMedia"
   }
 
@@ -11502,14 +11502,14 @@ export class messages_searchSentMedia_ extends Function_<enums.messages.Messages
 }
 
 export class messages_getAttachMenuBots_ extends Function_<enums.AttachMenuBots> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.AttachMenuBots;
+  static __F: (params: { hash: bigint }) => enums.AttachMenuBots = null as unknown as (params: { hash: bigint }) => enums.AttachMenuBots;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x16FCC2CB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getAttachMenuBots"
   }
 
@@ -11532,14 +11532,14 @@ export class messages_getAttachMenuBots_ extends Function_<enums.AttachMenuBots>
 }
 
 export class messages_getAttachMenuBot_ extends Function_<enums.AttachMenuBotsBot> {
-  static __F = Symbol() as unknown as (params: { bot: enums.InputUser }) => enums.AttachMenuBotsBot;
+  static __F: (params: { bot: enums.InputUser }) => enums.AttachMenuBotsBot = null as unknown as (params: { bot: enums.InputUser }) => enums.AttachMenuBotsBot;
   bot: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x77216192;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getAttachMenuBot"
   }
 
@@ -11562,16 +11562,16 @@ export class messages_getAttachMenuBot_ extends Function_<enums.AttachMenuBotsBo
 }
 
 export class messages_toggleBotInAttachMenu_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { write_allowed?: true; bot: enums.InputUser; enabled: boolean }) => boolean;
+  static __F: (params: { write_allowed?: true; bot: enums.InputUser; enabled: boolean }) => boolean = null as unknown as (params: { write_allowed?: true; bot: enums.InputUser; enabled: boolean }) => boolean;
   write_allowed?: true;
   bot: enums.InputUser;
   enabled: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x69F59D69;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.toggleBotInAttachMenu"
   }
 
@@ -11602,7 +11602,7 @@ export class messages_toggleBotInAttachMenu_ extends Function_<boolean> {
 }
 
 export class messages_requestWebView_ extends Function_<enums.WebViewResult> {
-  static __F = Symbol() as unknown as (params: { from_bot_menu?: true; silent?: true; peer: enums.InputPeer; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) => enums.WebViewResult;
+  static __F: (params: { from_bot_menu?: true; silent?: true; peer: enums.InputPeer; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) => enums.WebViewResult = null as unknown as (params: { from_bot_menu?: true; silent?: true; peer: enums.InputPeer; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) => enums.WebViewResult;
   from_bot_menu?: true;
   silent?: true;
   peer: enums.InputPeer;
@@ -11614,11 +11614,11 @@ export class messages_requestWebView_ extends Function_<enums.WebViewResult> {
   reply_to?: enums.InputReplyTo;
   send_as?: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x269DC2C1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.requestWebView"
   }
 
@@ -11670,7 +11670,7 @@ export class messages_requestWebView_ extends Function_<enums.WebViewResult> {
 }
 
 export class messages_prolongWebView_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { silent?: true; peer: enums.InputPeer; bot: enums.InputUser; query_id: bigint; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) => boolean;
+  static __F: (params: { silent?: true; peer: enums.InputPeer; bot: enums.InputUser; query_id: bigint; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) => boolean = null as unknown as (params: { silent?: true; peer: enums.InputPeer; bot: enums.InputUser; query_id: bigint; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) => boolean;
   silent?: true;
   peer: enums.InputPeer;
   bot: enums.InputUser;
@@ -11678,11 +11678,11 @@ export class messages_prolongWebView_ extends Function_<boolean> {
   reply_to?: enums.InputReplyTo;
   send_as?: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB0D81A83;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.prolongWebView"
   }
 
@@ -11722,7 +11722,7 @@ export class messages_prolongWebView_ extends Function_<boolean> {
 }
 
 export class messages_requestSimpleWebView_ extends Function_<enums.SimpleWebViewResult> {
-  static __F = Symbol() as unknown as (params: { from_switch_webview?: true; from_side_menu?: true; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string }) => enums.SimpleWebViewResult;
+  static __F: (params: { from_switch_webview?: true; from_side_menu?: true; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string }) => enums.SimpleWebViewResult = null as unknown as (params: { from_switch_webview?: true; from_side_menu?: true; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string }) => enums.SimpleWebViewResult;
   from_switch_webview?: true;
   from_side_menu?: true;
   bot: enums.InputUser;
@@ -11731,11 +11731,11 @@ export class messages_requestSimpleWebView_ extends Function_<enums.SimpleWebVie
   theme_params?: enums.DataJSON;
   platform: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1A46500A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.requestSimpleWebView"
   }
 
@@ -11778,15 +11778,15 @@ export class messages_requestSimpleWebView_ extends Function_<enums.SimpleWebVie
 }
 
 export class messages_sendWebViewResultMessage_ extends Function_<enums.WebViewMessageSent> {
-  static __F = Symbol() as unknown as (params: { bot_query_id: string; result: enums.InputBotInlineResult }) => enums.WebViewMessageSent;
+  static __F: (params: { bot_query_id: string; result: enums.InputBotInlineResult }) => enums.WebViewMessageSent = null as unknown as (params: { bot_query_id: string; result: enums.InputBotInlineResult }) => enums.WebViewMessageSent;
   bot_query_id: string;
   result: enums.InputBotInlineResult;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0A4314F5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendWebViewResultMessage"
   }
 
@@ -11812,17 +11812,17 @@ export class messages_sendWebViewResultMessage_ extends Function_<enums.WebViewM
 }
 
 export class messages_sendWebViewData_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { bot: enums.InputUser; random_id: bigint; button_text: string; data: string }) => enums.Updates;
+  static __F: (params: { bot: enums.InputUser; random_id: bigint; button_text: string; data: string }) => enums.Updates = null as unknown as (params: { bot: enums.InputUser; random_id: bigint; button_text: string; data: string }) => enums.Updates;
   bot: enums.InputUser;
   random_id: bigint;
   button_text: string;
   data: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDC0242C8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendWebViewData"
   }
 
@@ -11854,15 +11854,15 @@ export class messages_sendWebViewData_ extends Function_<enums.Updates> {
 }
 
 export class messages_transcribeAudio_ extends Function_<enums.messages.TranscribedAudio> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.messages.TranscribedAudio;
+  static __F: (params: { peer: enums.InputPeer; msg_id: number }) => enums.messages.TranscribedAudio = null as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.messages.TranscribedAudio;
   peer: enums.InputPeer;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x269E9A49;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.transcribeAudio"
   }
 
@@ -11888,17 +11888,17 @@ export class messages_transcribeAudio_ extends Function_<enums.messages.Transcri
 }
 
 export class messages_rateTranscribedAudio_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number; transcription_id: bigint; good: boolean }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; msg_id: number; transcription_id: bigint; good: boolean }) => boolean = null as unknown as (params: { peer: enums.InputPeer; msg_id: number; transcription_id: bigint; good: boolean }) => boolean;
   peer: enums.InputPeer;
   msg_id: number;
   transcription_id: bigint;
   good: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7F1D072F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.rateTranscribedAudio"
   }
 
@@ -11930,14 +11930,14 @@ export class messages_rateTranscribedAudio_ extends Function_<boolean> {
 }
 
 export class messages_getCustomEmojiDocuments_ extends Function_<enums.Document[]> {
-  static __F = Symbol() as unknown as (params: { document_id: Array<bigint> }) => enums.Document[];
+  static __F: (params: { document_id: Array<bigint> }) => enums.Document[] = null as unknown as (params: { document_id: Array<bigint> }) => enums.Document[];
   document_id: Array<bigint>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD9AB0F54;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getCustomEmojiDocuments"
   }
 
@@ -11960,14 +11960,14 @@ export class messages_getCustomEmojiDocuments_ extends Function_<enums.Document[
 }
 
 export class messages_getEmojiStickers_ extends Function_<enums.messages.AllStickers> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.AllStickers;
+  static __F: (params: { hash: bigint }) => enums.messages.AllStickers = null as unknown as (params: { hash: bigint }) => enums.messages.AllStickers;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFBFCA18F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getEmojiStickers"
   }
 
@@ -11990,14 +11990,14 @@ export class messages_getEmojiStickers_ extends Function_<enums.messages.AllStic
 }
 
 export class messages_getFeaturedEmojiStickers_ extends Function_<enums.messages.FeaturedStickers> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.FeaturedStickers;
+  static __F: (params: { hash: bigint }) => enums.messages.FeaturedStickers = null as unknown as (params: { hash: bigint }) => enums.messages.FeaturedStickers;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0ECF6736;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getFeaturedEmojiStickers"
   }
 
@@ -12020,16 +12020,16 @@ export class messages_getFeaturedEmojiStickers_ extends Function_<enums.messages
 }
 
 export class messages_reportReaction_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number; reaction_peer: enums.InputPeer }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; id: number; reaction_peer: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer; id: number; reaction_peer: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
   id: number;
   reaction_peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3F64C076;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.reportReaction"
   }
 
@@ -12058,15 +12058,15 @@ export class messages_reportReaction_ extends Function_<boolean> {
 }
 
 export class messages_getTopReactions_ extends Function_<enums.messages.Reactions> {
-  static __F = Symbol() as unknown as (params: { limit: number; hash: bigint }) => enums.messages.Reactions;
+  static __F: (params: { limit: number; hash: bigint }) => enums.messages.Reactions = null as unknown as (params: { limit: number; hash: bigint }) => enums.messages.Reactions;
   limit: number;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBB8125BA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getTopReactions"
   }
 
@@ -12092,15 +12092,15 @@ export class messages_getTopReactions_ extends Function_<enums.messages.Reaction
 }
 
 export class messages_getRecentReactions_ extends Function_<enums.messages.Reactions> {
-  static __F = Symbol() as unknown as (params: { limit: number; hash: bigint }) => enums.messages.Reactions;
+  static __F: (params: { limit: number; hash: bigint }) => enums.messages.Reactions = null as unknown as (params: { limit: number; hash: bigint }) => enums.messages.Reactions;
   limit: number;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x39461DB2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getRecentReactions"
   }
 
@@ -12126,12 +12126,12 @@ export class messages_getRecentReactions_ extends Function_<enums.messages.React
 }
 
 export class messages_clearRecentReactions_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as () => boolean;
-  protected get [id]() {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
     return 0x9DFEEFB4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.clearRecentReactions"
   }
 
@@ -12149,15 +12149,15 @@ export class messages_clearRecentReactions_ extends Function_<boolean> {
 }
 
 export class messages_getExtendedMedia_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
   peer: enums.InputPeer;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x84F80814;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getExtendedMedia"
   }
 
@@ -12183,14 +12183,14 @@ export class messages_getExtendedMedia_ extends Function_<enums.Updates> {
 }
 
 export class messages_setDefaultHistoryTTL_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { period: number }) => boolean;
+  static __F: (params: { period: number }) => boolean = null as unknown as (params: { period: number }) => boolean;
   period: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9EB51445;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setDefaultHistoryTTL"
   }
 
@@ -12213,12 +12213,12 @@ export class messages_setDefaultHistoryTTL_ extends Function_<boolean> {
 }
 
 export class messages_getDefaultHistoryTTL_ extends Function_<enums.DefaultHistoryTTL> {
-  static __F = Symbol() as unknown as () => enums.DefaultHistoryTTL;
-  protected get [id]() {
+  static __F: () => enums.DefaultHistoryTTL = null as unknown as () => enums.DefaultHistoryTTL;
+  protected get [id](): number {
     return 0x658B7188;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getDefaultHistoryTTL"
   }
 
@@ -12236,17 +12236,17 @@ export class messages_getDefaultHistoryTTL_ extends Function_<enums.DefaultHisto
 }
 
 export class messages_sendBotRequestedPeer_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number; button_id: number; requested_peers: Array<enums.InputPeer> }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; msg_id: number; button_id: number; requested_peers: Array<enums.InputPeer> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; msg_id: number; button_id: number; requested_peers: Array<enums.InputPeer> }) => enums.Updates;
   peer: enums.InputPeer;
   msg_id: number;
   button_id: number;
   requested_peers: Array<enums.InputPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x91B2D060;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.sendBotRequestedPeer"
   }
 
@@ -12278,14 +12278,14 @@ export class messages_sendBotRequestedPeer_ extends Function_<enums.Updates> {
 }
 
 export class messages_getEmojiGroups_ extends Function_<enums.messages.EmojiGroups> {
-  static __F = Symbol() as unknown as (params: { hash: number }) => enums.messages.EmojiGroups;
+  static __F: (params: { hash: number }) => enums.messages.EmojiGroups = null as unknown as (params: { hash: number }) => enums.messages.EmojiGroups;
   hash: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7488CE5B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getEmojiGroups"
   }
 
@@ -12308,14 +12308,14 @@ export class messages_getEmojiGroups_ extends Function_<enums.messages.EmojiGrou
 }
 
 export class messages_getEmojiStatusGroups_ extends Function_<enums.messages.EmojiGroups> {
-  static __F = Symbol() as unknown as (params: { hash: number }) => enums.messages.EmojiGroups;
+  static __F: (params: { hash: number }) => enums.messages.EmojiGroups = null as unknown as (params: { hash: number }) => enums.messages.EmojiGroups;
   hash: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2ECD56CD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getEmojiStatusGroups"
   }
 
@@ -12338,14 +12338,14 @@ export class messages_getEmojiStatusGroups_ extends Function_<enums.messages.Emo
 }
 
 export class messages_getEmojiProfilePhotoGroups_ extends Function_<enums.messages.EmojiGroups> {
-  static __F = Symbol() as unknown as (params: { hash: number }) => enums.messages.EmojiGroups;
+  static __F: (params: { hash: number }) => enums.messages.EmojiGroups = null as unknown as (params: { hash: number }) => enums.messages.EmojiGroups;
   hash: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x21A548F3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getEmojiProfilePhotoGroups"
   }
 
@@ -12368,15 +12368,15 @@ export class messages_getEmojiProfilePhotoGroups_ extends Function_<enums.messag
 }
 
 export class messages_searchCustomEmoji_ extends Function_<enums.EmojiList> {
-  static __F = Symbol() as unknown as (params: { emoticon: string; hash: bigint }) => enums.EmojiList;
+  static __F: (params: { emoticon: string; hash: bigint }) => enums.EmojiList = null as unknown as (params: { emoticon: string; hash: bigint }) => enums.EmojiList;
   emoticon: string;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2C11C0D7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.searchCustomEmoji"
   }
 
@@ -12402,15 +12402,15 @@ export class messages_searchCustomEmoji_ extends Function_<enums.EmojiList> {
 }
 
 export class messages_togglePeerTranslations_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { disabled?: true; peer: enums.InputPeer }) => boolean;
+  static __F: (params: { disabled?: true; peer: enums.InputPeer }) => boolean = null as unknown as (params: { disabled?: true; peer: enums.InputPeer }) => boolean;
   disabled?: true;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE47CB579;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.togglePeerTranslations"
   }
 
@@ -12438,15 +12438,15 @@ export class messages_togglePeerTranslations_ extends Function_<boolean> {
 }
 
 export class messages_getBotApp_ extends Function_<enums.messages.BotApp> {
-  static __F = Symbol() as unknown as (params: { app: enums.InputBotApp; hash: bigint }) => enums.messages.BotApp;
+  static __F: (params: { app: enums.InputBotApp; hash: bigint }) => enums.messages.BotApp = null as unknown as (params: { app: enums.InputBotApp; hash: bigint }) => enums.messages.BotApp;
   app: enums.InputBotApp;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x34FDC5C3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getBotApp"
   }
 
@@ -12472,7 +12472,7 @@ export class messages_getBotApp_ extends Function_<enums.messages.BotApp> {
 }
 
 export class messages_requestAppWebView_ extends Function_<enums.AppWebViewResult> {
-  static __F = Symbol() as unknown as (params: { write_allowed?: true; peer: enums.InputPeer; app: enums.InputBotApp; start_param?: string; theme_params?: enums.DataJSON; platform: string }) => enums.AppWebViewResult;
+  static __F: (params: { write_allowed?: true; peer: enums.InputPeer; app: enums.InputBotApp; start_param?: string; theme_params?: enums.DataJSON; platform: string }) => enums.AppWebViewResult = null as unknown as (params: { write_allowed?: true; peer: enums.InputPeer; app: enums.InputBotApp; start_param?: string; theme_params?: enums.DataJSON; platform: string }) => enums.AppWebViewResult;
   write_allowed?: true;
   peer: enums.InputPeer;
   app: enums.InputBotApp;
@@ -12480,11 +12480,11 @@ export class messages_requestAppWebView_ extends Function_<enums.AppWebViewResul
   theme_params?: enums.DataJSON;
   platform: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8C5A3B3C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.requestAppWebView"
   }
 
@@ -12524,7 +12524,7 @@ export class messages_requestAppWebView_ extends Function_<enums.AppWebViewResul
 }
 
 export class messages_setChatWallPaper_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { for_both?: true; revert?: true; peer: enums.InputPeer; wallpaper?: enums.InputWallPaper; settings?: enums.WallPaperSettings; id?: number }) => enums.Updates;
+  static __F: (params: { for_both?: true; revert?: true; peer: enums.InputPeer; wallpaper?: enums.InputWallPaper; settings?: enums.WallPaperSettings; id?: number }) => enums.Updates = null as unknown as (params: { for_both?: true; revert?: true; peer: enums.InputPeer; wallpaper?: enums.InputWallPaper; settings?: enums.WallPaperSettings; id?: number }) => enums.Updates;
   for_both?: true;
   revert?: true;
   peer: enums.InputPeer;
@@ -12532,11 +12532,11 @@ export class messages_setChatWallPaper_ extends Function_<enums.Updates> {
   settings?: enums.WallPaperSettings;
   id?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8FFACAE1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.setChatWallPaper"
   }
 
@@ -12576,16 +12576,16 @@ export class messages_setChatWallPaper_ extends Function_<enums.Updates> {
 }
 
 export class messages_searchEmojiStickerSets_ extends Function_<enums.messages.FoundStickerSets> {
-  static __F = Symbol() as unknown as (params: { exclude_featured?: true; q: string; hash: bigint }) => enums.messages.FoundStickerSets;
+  static __F: (params: { exclude_featured?: true; q: string; hash: bigint }) => enums.messages.FoundStickerSets = null as unknown as (params: { exclude_featured?: true; q: string; hash: bigint }) => enums.messages.FoundStickerSets;
   exclude_featured?: true;
   q: string;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x92B4494C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.searchEmojiStickerSets"
   }
 
@@ -12616,7 +12616,7 @@ export class messages_searchEmojiStickerSets_ extends Function_<enums.messages.F
 }
 
 export class messages_getSavedDialogs_ extends Function_<enums.messages.SavedDialogs> {
-  static __F = Symbol() as unknown as (params: { exclude_pinned?: true; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.SavedDialogs;
+  static __F: (params: { exclude_pinned?: true; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.SavedDialogs = null as unknown as (params: { exclude_pinned?: true; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.SavedDialogs;
   exclude_pinned?: true;
   offset_date: number;
   offset_id: number;
@@ -12624,11 +12624,11 @@ export class messages_getSavedDialogs_ extends Function_<enums.messages.SavedDia
   limit: number;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5381D21A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getSavedDialogs"
   }
 
@@ -12668,7 +12668,7 @@ export class messages_getSavedDialogs_ extends Function_<enums.messages.SavedDia
 }
 
 export class messages_getSavedHistory_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
+  static __F: (params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
   peer: enums.InputPeer;
   offset_id: number;
   offset_date: number;
@@ -12678,11 +12678,11 @@ export class messages_getSavedHistory_ extends Function_<enums.messages.Messages
   min_id: number;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3D9A414D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getSavedHistory"
   }
 
@@ -12726,17 +12726,17 @@ export class messages_getSavedHistory_ extends Function_<enums.messages.Messages
 }
 
 export class messages_deleteSavedHistory_ extends Function_<enums.messages.AffectedHistory> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) => enums.messages.AffectedHistory;
+  static __F: (params: { peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) => enums.messages.AffectedHistory = null as unknown as (params: { peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) => enums.messages.AffectedHistory;
   peer: enums.InputPeer;
   max_id: number;
   min_date?: number;
   max_date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6E98102B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.deleteSavedHistory"
   }
 
@@ -12770,12 +12770,12 @@ export class messages_deleteSavedHistory_ extends Function_<enums.messages.Affec
 }
 
 export class messages_getPinnedSavedDialogs_ extends Function_<enums.messages.SavedDialogs> {
-  static __F = Symbol() as unknown as () => enums.messages.SavedDialogs;
-  protected get [id]() {
+  static __F: () => enums.messages.SavedDialogs = null as unknown as () => enums.messages.SavedDialogs;
+  protected get [id](): number {
     return 0xD63D94E0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getPinnedSavedDialogs"
   }
 
@@ -12793,15 +12793,15 @@ export class messages_getPinnedSavedDialogs_ extends Function_<enums.messages.Sa
 }
 
 export class messages_toggleSavedDialogPin_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { pinned?: true; peer: enums.InputDialogPeer }) => boolean;
+  static __F: (params: { pinned?: true; peer: enums.InputDialogPeer }) => boolean = null as unknown as (params: { pinned?: true; peer: enums.InputDialogPeer }) => boolean;
   pinned?: true;
   peer: enums.InputDialogPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAC81BBDE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.toggleSavedDialogPin"
   }
 
@@ -12829,15 +12829,15 @@ export class messages_toggleSavedDialogPin_ extends Function_<boolean> {
 }
 
 export class messages_reorderPinnedSavedDialogs_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { force?: true; order: Array<enums.InputDialogPeer> }) => boolean;
+  static __F: (params: { force?: true; order: Array<enums.InputDialogPeer> }) => boolean = null as unknown as (params: { force?: true; order: Array<enums.InputDialogPeer> }) => boolean;
   force?: true;
   order: Array<enums.InputDialogPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8B716587;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.reorderPinnedSavedDialogs"
   }
 
@@ -12865,15 +12865,15 @@ export class messages_reorderPinnedSavedDialogs_ extends Function_<boolean> {
 }
 
 export class messages_getSavedReactionTags_ extends Function_<enums.messages.SavedReactionTags> {
-  static __F = Symbol() as unknown as (params: { peer?: enums.InputPeer; hash: bigint }) => enums.messages.SavedReactionTags;
+  static __F: (params: { peer?: enums.InputPeer; hash: bigint }) => enums.messages.SavedReactionTags = null as unknown as (params: { peer?: enums.InputPeer; hash: bigint }) => enums.messages.SavedReactionTags;
   peer?: enums.InputPeer;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3637E05B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getSavedReactionTags"
   }
 
@@ -12901,15 +12901,15 @@ export class messages_getSavedReactionTags_ extends Function_<enums.messages.Sav
 }
 
 export class messages_updateSavedReactionTag_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { reaction: enums.Reaction; title?: string }) => boolean;
+  static __F: (params: { reaction: enums.Reaction; title?: string }) => boolean = null as unknown as (params: { reaction: enums.Reaction; title?: string }) => boolean;
   reaction: enums.Reaction;
   title?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x60297DEC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.updateSavedReactionTag"
   }
 
@@ -12937,14 +12937,14 @@ export class messages_updateSavedReactionTag_ extends Function_<boolean> {
 }
 
 export class messages_getDefaultTagReactions_ extends Function_<enums.messages.Reactions> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.Reactions;
+  static __F: (params: { hash: bigint }) => enums.messages.Reactions = null as unknown as (params: { hash: bigint }) => enums.messages.Reactions;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBDF93428;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getDefaultTagReactions"
   }
 
@@ -12967,15 +12967,15 @@ export class messages_getDefaultTagReactions_ extends Function_<enums.messages.R
 }
 
 export class messages_getOutboxReadDate_ extends Function_<enums.OutboxReadDate> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.OutboxReadDate;
+  static __F: (params: { peer: enums.InputPeer; msg_id: number }) => enums.OutboxReadDate = null as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.OutboxReadDate;
   peer: enums.InputPeer;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8C4BFE5D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "messages.getOutboxReadDate"
   }
 
@@ -13001,12 +13001,12 @@ export class messages_getOutboxReadDate_ extends Function_<enums.OutboxReadDate>
 }
 
 export class updates_getState_ extends Function_<enums.updates.State> {
-  static __F = Symbol() as unknown as () => enums.updates.State;
-  protected get [id]() {
+  static __F: () => enums.updates.State = null as unknown as () => enums.updates.State;
+  protected get [id](): number {
     return 0xEDD4882A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updates.getState"
   }
 
@@ -13024,7 +13024,7 @@ export class updates_getState_ extends Function_<enums.updates.State> {
 }
 
 export class updates_getDifference_ extends Function_<enums.updates.Difference> {
-  static __F = Symbol() as unknown as (params: { pts: number; pts_limit?: number; pts_total_limit?: number; date: number; qts: number; qts_limit?: number }) => enums.updates.Difference;
+  static __F: (params: { pts: number; pts_limit?: number; pts_total_limit?: number; date: number; qts: number; qts_limit?: number }) => enums.updates.Difference = null as unknown as (params: { pts: number; pts_limit?: number; pts_total_limit?: number; date: number; qts: number; qts_limit?: number }) => enums.updates.Difference;
   pts: number;
   pts_limit?: number;
   pts_total_limit?: number;
@@ -13032,11 +13032,11 @@ export class updates_getDifference_ extends Function_<enums.updates.Difference> 
   qts: number;
   qts_limit?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x19C2F763;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updates.getDifference"
   }
 
@@ -13076,18 +13076,18 @@ export class updates_getDifference_ extends Function_<enums.updates.Difference> 
 }
 
 export class updates_getChannelDifference_ extends Function_<enums.updates.ChannelDifference> {
-  static __F = Symbol() as unknown as (params: { force?: true; channel: enums.InputChannel; filter: enums.ChannelMessagesFilter; pts: number; limit: number }) => enums.updates.ChannelDifference;
+  static __F: (params: { force?: true; channel: enums.InputChannel; filter: enums.ChannelMessagesFilter; pts: number; limit: number }) => enums.updates.ChannelDifference = null as unknown as (params: { force?: true; channel: enums.InputChannel; filter: enums.ChannelMessagesFilter; pts: number; limit: number }) => enums.updates.ChannelDifference;
   force?: true;
   channel: enums.InputChannel;
   filter: enums.ChannelMessagesFilter;
   pts: number;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x03173D78;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "updates.getChannelDifference"
   }
 
@@ -13124,16 +13124,16 @@ export class updates_getChannelDifference_ extends Function_<enums.updates.Chann
 }
 
 export class photos_updateProfilePhoto_ extends Function_<enums.photos.Photo> {
-  static __F = Symbol() as unknown as (params: { fallback?: true; bot?: enums.InputUser; id: enums.InputPhoto }) => enums.photos.Photo;
+  static __F: (params: { fallback?: true; bot?: enums.InputUser; id: enums.InputPhoto }) => enums.photos.Photo = null as unknown as (params: { fallback?: true; bot?: enums.InputUser; id: enums.InputPhoto }) => enums.photos.Photo;
   fallback?: true;
   bot?: enums.InputUser;
   id: enums.InputPhoto;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x09E82039;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photos.updateProfilePhoto"
   }
 
@@ -13164,7 +13164,7 @@ export class photos_updateProfilePhoto_ extends Function_<enums.photos.Photo> {
 }
 
 export class photos_uploadProfilePhoto_ extends Function_<enums.photos.Photo> {
-  static __F = Symbol() as unknown as (params?: { fallback?: true; bot?: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) => enums.photos.Photo;
+  static __F: (params?: { fallback?: true; bot?: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) => enums.photos.Photo = null as unknown as (params?: { fallback?: true; bot?: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) => enums.photos.Photo;
   fallback?: true;
   bot?: enums.InputUser;
   file?: enums.InputFile;
@@ -13172,11 +13172,11 @@ export class photos_uploadProfilePhoto_ extends Function_<enums.photos.Photo> {
   video_start_ts?: number;
   video_emoji_markup?: enums.VideoSize;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0388A3B5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photos.uploadProfilePhoto"
   }
 
@@ -13216,14 +13216,14 @@ export class photos_uploadProfilePhoto_ extends Function_<enums.photos.Photo> {
 }
 
 export class photos_deletePhotos_ extends Function_<bigint[]> {
-  static __F = Symbol() as unknown as (params: { id: Array<enums.InputPhoto> }) => bigint[];
+  static __F: (params: { id: Array<enums.InputPhoto> }) => bigint[] = null as unknown as (params: { id: Array<enums.InputPhoto> }) => bigint[];
   id: Array<enums.InputPhoto>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x87CF7F2F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photos.deletePhotos"
   }
 
@@ -13246,17 +13246,17 @@ export class photos_deletePhotos_ extends Function_<bigint[]> {
 }
 
 export class photos_getUserPhotos_ extends Function_<enums.photos.Photos> {
-  static __F = Symbol() as unknown as (params: { user_id: enums.InputUser; offset: number; max_id: bigint; limit: number }) => enums.photos.Photos;
+  static __F: (params: { user_id: enums.InputUser; offset: number; max_id: bigint; limit: number }) => enums.photos.Photos = null as unknown as (params: { user_id: enums.InputUser; offset: number; max_id: bigint; limit: number }) => enums.photos.Photos;
   user_id: enums.InputUser;
   offset: number;
   max_id: bigint;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x91CD32A8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photos.getUserPhotos"
   }
 
@@ -13288,7 +13288,7 @@ export class photos_getUserPhotos_ extends Function_<enums.photos.Photos> {
 }
 
 export class photos_uploadContactProfilePhoto_ extends Function_<enums.photos.Photo> {
-  static __F = Symbol() as unknown as (params: { suggest?: true; save?: true; user_id: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) => enums.photos.Photo;
+  static __F: (params: { suggest?: true; save?: true; user_id: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) => enums.photos.Photo = null as unknown as (params: { suggest?: true; save?: true; user_id: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) => enums.photos.Photo;
   suggest?: true;
   save?: true;
   user_id: enums.InputUser;
@@ -13297,11 +13297,11 @@ export class photos_uploadContactProfilePhoto_ extends Function_<enums.photos.Ph
   video_start_ts?: number;
   video_emoji_markup?: enums.VideoSize;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE14C4A71;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "photos.uploadContactProfilePhoto"
   }
 
@@ -13344,16 +13344,16 @@ export class photos_uploadContactProfilePhoto_ extends Function_<enums.photos.Ph
 }
 
 export class upload_saveFilePart_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { file_id: bigint; file_part: number; bytes: Uint8Array }) => boolean;
+  static __F: (params: { file_id: bigint; file_part: number; bytes: Uint8Array }) => boolean = null as unknown as (params: { file_id: bigint; file_part: number; bytes: Uint8Array }) => boolean;
   file_id: bigint;
   file_part: number;
   bytes: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB304A621;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "upload.saveFilePart"
   }
 
@@ -13382,18 +13382,18 @@ export class upload_saveFilePart_ extends Function_<boolean> {
 }
 
 export class upload_getFile_ extends Function_<enums.upload.File> {
-  static __F = Symbol() as unknown as (params: { precise?: true; cdn_supported?: true; location: enums.InputFileLocation; offset: bigint; limit: number }) => enums.upload.File;
+  static __F: (params: { precise?: true; cdn_supported?: true; location: enums.InputFileLocation; offset: bigint; limit: number }) => enums.upload.File = null as unknown as (params: { precise?: true; cdn_supported?: true; location: enums.InputFileLocation; offset: bigint; limit: number }) => enums.upload.File;
   precise?: true;
   cdn_supported?: true;
   location: enums.InputFileLocation;
   offset: bigint;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBE5335BE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "upload.getFile"
   }
 
@@ -13430,17 +13430,17 @@ export class upload_getFile_ extends Function_<enums.upload.File> {
 }
 
 export class upload_saveBigFilePart_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { file_id: bigint; file_part: number; file_total_parts: number; bytes: Uint8Array }) => boolean;
+  static __F: (params: { file_id: bigint; file_part: number; file_total_parts: number; bytes: Uint8Array }) => boolean = null as unknown as (params: { file_id: bigint; file_part: number; file_total_parts: number; bytes: Uint8Array }) => boolean;
   file_id: bigint;
   file_part: number;
   file_total_parts: number;
   bytes: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDE7B673D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "upload.saveBigFilePart"
   }
 
@@ -13472,16 +13472,16 @@ export class upload_saveBigFilePart_ extends Function_<boolean> {
 }
 
 export class upload_getWebFile_ extends Function_<enums.upload.WebFile> {
-  static __F = Symbol() as unknown as (params: { location: enums.InputWebFileLocation; offset: number; limit: number }) => enums.upload.WebFile;
+  static __F: (params: { location: enums.InputWebFileLocation; offset: number; limit: number }) => enums.upload.WebFile = null as unknown as (params: { location: enums.InputWebFileLocation; offset: number; limit: number }) => enums.upload.WebFile;
   location: enums.InputWebFileLocation;
   offset: number;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x24E6818D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "upload.getWebFile"
   }
 
@@ -13510,16 +13510,16 @@ export class upload_getWebFile_ extends Function_<enums.upload.WebFile> {
 }
 
 export class upload_getCdnFile_ extends Function_<enums.upload.CdnFile> {
-  static __F = Symbol() as unknown as (params: { file_token: Uint8Array; offset: bigint; limit: number }) => enums.upload.CdnFile;
+  static __F: (params: { file_token: Uint8Array; offset: bigint; limit: number }) => enums.upload.CdnFile = null as unknown as (params: { file_token: Uint8Array; offset: bigint; limit: number }) => enums.upload.CdnFile;
   file_token: Uint8Array;
   offset: bigint;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x395F69DA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "upload.getCdnFile"
   }
 
@@ -13548,15 +13548,15 @@ export class upload_getCdnFile_ extends Function_<enums.upload.CdnFile> {
 }
 
 export class upload_reuploadCdnFile_ extends Function_<enums.FileHash[]> {
-  static __F = Symbol() as unknown as (params: { file_token: Uint8Array; request_token: Uint8Array }) => enums.FileHash[];
+  static __F: (params: { file_token: Uint8Array; request_token: Uint8Array }) => enums.FileHash[] = null as unknown as (params: { file_token: Uint8Array; request_token: Uint8Array }) => enums.FileHash[];
   file_token: Uint8Array;
   request_token: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9B2754A8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "upload.reuploadCdnFile"
   }
 
@@ -13582,15 +13582,15 @@ export class upload_reuploadCdnFile_ extends Function_<enums.FileHash[]> {
 }
 
 export class upload_getCdnFileHashes_ extends Function_<enums.FileHash[]> {
-  static __F = Symbol() as unknown as (params: { file_token: Uint8Array; offset: bigint }) => enums.FileHash[];
+  static __F: (params: { file_token: Uint8Array; offset: bigint }) => enums.FileHash[] = null as unknown as (params: { file_token: Uint8Array; offset: bigint }) => enums.FileHash[];
   file_token: Uint8Array;
   offset: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x91DC3F31;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "upload.getCdnFileHashes"
   }
 
@@ -13616,15 +13616,15 @@ export class upload_getCdnFileHashes_ extends Function_<enums.FileHash[]> {
 }
 
 export class upload_getFileHashes_ extends Function_<enums.FileHash[]> {
-  static __F = Symbol() as unknown as (params: { location: enums.InputFileLocation; offset: bigint }) => enums.FileHash[];
+  static __F: (params: { location: enums.InputFileLocation; offset: bigint }) => enums.FileHash[] = null as unknown as (params: { location: enums.InputFileLocation; offset: bigint }) => enums.FileHash[];
   location: enums.InputFileLocation;
   offset: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9156982A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "upload.getFileHashes"
   }
 
@@ -13650,12 +13650,12 @@ export class upload_getFileHashes_ extends Function_<enums.FileHash[]> {
 }
 
 export class help_getConfig_ extends Function_<enums.Config> {
-  static __F = Symbol() as unknown as () => enums.Config;
-  protected get [id]() {
+  static __F: () => enums.Config = null as unknown as () => enums.Config;
+  protected get [id](): number {
     return 0xC4F9186B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getConfig"
   }
 
@@ -13673,12 +13673,12 @@ export class help_getConfig_ extends Function_<enums.Config> {
 }
 
 export class help_getNearestDc_ extends Function_<enums.NearestDc> {
-  static __F = Symbol() as unknown as () => enums.NearestDc;
-  protected get [id]() {
+  static __F: () => enums.NearestDc = null as unknown as () => enums.NearestDc;
+  protected get [id](): number {
     return 0x1FB33026;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getNearestDc"
   }
 
@@ -13696,14 +13696,14 @@ export class help_getNearestDc_ extends Function_<enums.NearestDc> {
 }
 
 export class help_getAppUpdate_ extends Function_<enums.help.AppUpdate> {
-  static __F = Symbol() as unknown as (params: { source: string }) => enums.help.AppUpdate;
+  static __F: (params: { source: string }) => enums.help.AppUpdate = null as unknown as (params: { source: string }) => enums.help.AppUpdate;
   source: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x522D5A7D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getAppUpdate"
   }
 
@@ -13726,12 +13726,12 @@ export class help_getAppUpdate_ extends Function_<enums.help.AppUpdate> {
 }
 
 export class help_getInviteText_ extends Function_<enums.help.InviteText> {
-  static __F = Symbol() as unknown as () => enums.help.InviteText;
-  protected get [id]() {
+  static __F: () => enums.help.InviteText = null as unknown as () => enums.help.InviteText;
+  protected get [id](): number {
     return 0x4D392343;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getInviteText"
   }
 
@@ -13749,12 +13749,12 @@ export class help_getInviteText_ extends Function_<enums.help.InviteText> {
 }
 
 export class help_getSupport_ extends Function_<enums.help.Support> {
-  static __F = Symbol() as unknown as () => enums.help.Support;
-  protected get [id]() {
+  static __F: () => enums.help.Support = null as unknown as () => enums.help.Support;
+  protected get [id](): number {
     return 0x9CDF08CD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getSupport"
   }
 
@@ -13772,15 +13772,15 @@ export class help_getSupport_ extends Function_<enums.help.Support> {
 }
 
 export class help_setBotUpdatesStatus_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { pending_updates_count: number; message: string }) => boolean;
+  static __F: (params: { pending_updates_count: number; message: string }) => boolean = null as unknown as (params: { pending_updates_count: number; message: string }) => boolean;
   pending_updates_count: number;
   message: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEC22CFCD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.setBotUpdatesStatus"
   }
 
@@ -13806,12 +13806,12 @@ export class help_setBotUpdatesStatus_ extends Function_<boolean> {
 }
 
 export class help_getCdnConfig_ extends Function_<enums.CdnConfig> {
-  static __F = Symbol() as unknown as () => enums.CdnConfig;
-  protected get [id]() {
+  static __F: () => enums.CdnConfig = null as unknown as () => enums.CdnConfig;
+  protected get [id](): number {
     return 0x52029342;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getCdnConfig"
   }
 
@@ -13829,14 +13829,14 @@ export class help_getCdnConfig_ extends Function_<enums.CdnConfig> {
 }
 
 export class help_getRecentMeUrls_ extends Function_<enums.help.RecentMeUrls> {
-  static __F = Symbol() as unknown as (params: { referer: string }) => enums.help.RecentMeUrls;
+  static __F: (params: { referer: string }) => enums.help.RecentMeUrls = null as unknown as (params: { referer: string }) => enums.help.RecentMeUrls;
   referer: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3DC0F114;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getRecentMeUrls"
   }
 
@@ -13859,12 +13859,12 @@ export class help_getRecentMeUrls_ extends Function_<enums.help.RecentMeUrls> {
 }
 
 export class help_getTermsOfServiceUpdate_ extends Function_<enums.help.TermsOfServiceUpdate> {
-  static __F = Symbol() as unknown as () => enums.help.TermsOfServiceUpdate;
-  protected get [id]() {
+  static __F: () => enums.help.TermsOfServiceUpdate = null as unknown as () => enums.help.TermsOfServiceUpdate;
+  protected get [id](): number {
     return 0x2CA51FD1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getTermsOfServiceUpdate"
   }
 
@@ -13882,14 +13882,14 @@ export class help_getTermsOfServiceUpdate_ extends Function_<enums.help.TermsOfS
 }
 
 export class help_acceptTermsOfService_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { id: enums.DataJSON }) => boolean;
+  static __F: (params: { id: enums.DataJSON }) => boolean = null as unknown as (params: { id: enums.DataJSON }) => boolean;
   id: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEE72F79A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.acceptTermsOfService"
   }
 
@@ -13912,14 +13912,14 @@ export class help_acceptTermsOfService_ extends Function_<boolean> {
 }
 
 export class help_getDeepLinkInfo_ extends Function_<enums.help.DeepLinkInfo> {
-  static __F = Symbol() as unknown as (params: { path: string }) => enums.help.DeepLinkInfo;
+  static __F: (params: { path: string }) => enums.help.DeepLinkInfo = null as unknown as (params: { path: string }) => enums.help.DeepLinkInfo;
   path: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3FEDC75F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getDeepLinkInfo"
   }
 
@@ -13942,14 +13942,14 @@ export class help_getDeepLinkInfo_ extends Function_<enums.help.DeepLinkInfo> {
 }
 
 export class help_getAppConfig_ extends Function_<enums.help.AppConfig> {
-  static __F = Symbol() as unknown as (params: { hash: number }) => enums.help.AppConfig;
+  static __F: (params: { hash: number }) => enums.help.AppConfig = null as unknown as (params: { hash: number }) => enums.help.AppConfig;
   hash: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x61E3F854;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getAppConfig"
   }
 
@@ -13972,14 +13972,14 @@ export class help_getAppConfig_ extends Function_<enums.help.AppConfig> {
 }
 
 export class help_saveAppLog_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { events: Array<enums.InputAppEvent> }) => boolean;
+  static __F: (params: { events: Array<enums.InputAppEvent> }) => boolean = null as unknown as (params: { events: Array<enums.InputAppEvent> }) => boolean;
   events: Array<enums.InputAppEvent>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6F02F748;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.saveAppLog"
   }
 
@@ -14002,14 +14002,14 @@ export class help_saveAppLog_ extends Function_<boolean> {
 }
 
 export class help_getPassportConfig_ extends Function_<enums.help.PassportConfig> {
-  static __F = Symbol() as unknown as (params: { hash: number }) => enums.help.PassportConfig;
+  static __F: (params: { hash: number }) => enums.help.PassportConfig = null as unknown as (params: { hash: number }) => enums.help.PassportConfig;
   hash: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC661AD08;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getPassportConfig"
   }
 
@@ -14032,12 +14032,12 @@ export class help_getPassportConfig_ extends Function_<enums.help.PassportConfig
 }
 
 export class help_getSupportName_ extends Function_<enums.help.SupportName> {
-  static __F = Symbol() as unknown as () => enums.help.SupportName;
-  protected get [id]() {
+  static __F: () => enums.help.SupportName = null as unknown as () => enums.help.SupportName;
+  protected get [id](): number {
     return 0xD360E72C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getSupportName"
   }
 
@@ -14055,14 +14055,14 @@ export class help_getSupportName_ extends Function_<enums.help.SupportName> {
 }
 
 export class help_getUserInfo_ extends Function_<enums.help.UserInfo> {
-  static __F = Symbol() as unknown as (params: { user_id: enums.InputUser }) => enums.help.UserInfo;
+  static __F: (params: { user_id: enums.InputUser }) => enums.help.UserInfo = null as unknown as (params: { user_id: enums.InputUser }) => enums.help.UserInfo;
   user_id: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x038A08D3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getUserInfo"
   }
 
@@ -14085,16 +14085,16 @@ export class help_getUserInfo_ extends Function_<enums.help.UserInfo> {
 }
 
 export class help_editUserInfo_ extends Function_<enums.help.UserInfo> {
-  static __F = Symbol() as unknown as (params: { user_id: enums.InputUser; message: string; entities: Array<enums.MessageEntity> }) => enums.help.UserInfo;
+  static __F: (params: { user_id: enums.InputUser; message: string; entities: Array<enums.MessageEntity> }) => enums.help.UserInfo = null as unknown as (params: { user_id: enums.InputUser; message: string; entities: Array<enums.MessageEntity> }) => enums.help.UserInfo;
   user_id: enums.InputUser;
   message: string;
   entities: Array<enums.MessageEntity>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x66B91B70;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.editUserInfo"
   }
 
@@ -14123,12 +14123,12 @@ export class help_editUserInfo_ extends Function_<enums.help.UserInfo> {
 }
 
 export class help_getPromoData_ extends Function_<enums.help.PromoData> {
-  static __F = Symbol() as unknown as () => enums.help.PromoData;
-  protected get [id]() {
+  static __F: () => enums.help.PromoData = null as unknown as () => enums.help.PromoData;
+  protected get [id](): number {
     return 0xC0977421;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getPromoData"
   }
 
@@ -14146,14 +14146,14 @@ export class help_getPromoData_ extends Function_<enums.help.PromoData> {
 }
 
 export class help_hidePromoData_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => boolean;
+  static __F: (params: { peer: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1E251C95;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.hidePromoData"
   }
 
@@ -14176,15 +14176,15 @@ export class help_hidePromoData_ extends Function_<boolean> {
 }
 
 export class help_dismissSuggestion_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; suggestion: string }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; suggestion: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; suggestion: string }) => boolean;
   peer: enums.InputPeer;
   suggestion: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF50DBAA1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.dismissSuggestion"
   }
 
@@ -14210,15 +14210,15 @@ export class help_dismissSuggestion_ extends Function_<boolean> {
 }
 
 export class help_getCountriesList_ extends Function_<enums.help.CountriesList> {
-  static __F = Symbol() as unknown as (params: { lang_code: string; hash: number }) => enums.help.CountriesList;
+  static __F: (params: { lang_code: string; hash: number }) => enums.help.CountriesList = null as unknown as (params: { lang_code: string; hash: number }) => enums.help.CountriesList;
   lang_code: string;
   hash: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x735787A8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getCountriesList"
   }
 
@@ -14244,12 +14244,12 @@ export class help_getCountriesList_ extends Function_<enums.help.CountriesList> 
 }
 
 export class help_getPremiumPromo_ extends Function_<enums.help.PremiumPromo> {
-  static __F = Symbol() as unknown as () => enums.help.PremiumPromo;
-  protected get [id]() {
+  static __F: () => enums.help.PremiumPromo = null as unknown as () => enums.help.PremiumPromo;
+  protected get [id](): number {
     return 0xB81B93D4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getPremiumPromo"
   }
 
@@ -14267,14 +14267,14 @@ export class help_getPremiumPromo_ extends Function_<enums.help.PremiumPromo> {
 }
 
 export class help_getPeerColors_ extends Function_<enums.help.PeerColors> {
-  static __F = Symbol() as unknown as (params: { hash: number }) => enums.help.PeerColors;
+  static __F: (params: { hash: number }) => enums.help.PeerColors = null as unknown as (params: { hash: number }) => enums.help.PeerColors;
   hash: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDA80F42F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getPeerColors"
   }
 
@@ -14297,14 +14297,14 @@ export class help_getPeerColors_ extends Function_<enums.help.PeerColors> {
 }
 
 export class help_getPeerProfileColors_ extends Function_<enums.help.PeerColors> {
-  static __F = Symbol() as unknown as (params: { hash: number }) => enums.help.PeerColors;
+  static __F: (params: { hash: number }) => enums.help.PeerColors = null as unknown as (params: { hash: number }) => enums.help.PeerColors;
   hash: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xABCFA9FD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "help.getPeerProfileColors"
   }
 
@@ -14327,15 +14327,15 @@ export class help_getPeerProfileColors_ extends Function_<enums.help.PeerColors>
 }
 
 export class channels_readHistory_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; max_id: number }) => boolean;
+  static __F: (params: { channel: enums.InputChannel; max_id: number }) => boolean = null as unknown as (params: { channel: enums.InputChannel; max_id: number }) => boolean;
   channel: enums.InputChannel;
   max_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCC104937;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.readHistory"
   }
 
@@ -14361,15 +14361,15 @@ export class channels_readHistory_ extends Function_<boolean> {
 }
 
 export class channels_deleteMessages_ extends Function_<enums.messages.AffectedMessages> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; id: Array<number> }) => enums.messages.AffectedMessages;
+  static __F: (params: { channel: enums.InputChannel; id: Array<number> }) => enums.messages.AffectedMessages = null as unknown as (params: { channel: enums.InputChannel; id: Array<number> }) => enums.messages.AffectedMessages;
   channel: enums.InputChannel;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x84C1FD4E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.deleteMessages"
   }
 
@@ -14395,16 +14395,16 @@ export class channels_deleteMessages_ extends Function_<enums.messages.AffectedM
 }
 
 export class channels_reportSpam_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer; id: Array<number> }) => boolean;
+  static __F: (params: { channel: enums.InputChannel; participant: enums.InputPeer; id: Array<number> }) => boolean = null as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer; id: Array<number> }) => boolean;
   channel: enums.InputChannel;
   participant: enums.InputPeer;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF44A8315;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.reportSpam"
   }
 
@@ -14433,15 +14433,15 @@ export class channels_reportSpam_ extends Function_<boolean> {
 }
 
 export class channels_getMessages_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; id: Array<enums.InputMessage> }) => enums.messages.Messages;
+  static __F: (params: { channel: enums.InputChannel; id: Array<enums.InputMessage> }) => enums.messages.Messages = null as unknown as (params: { channel: enums.InputChannel; id: Array<enums.InputMessage> }) => enums.messages.Messages;
   channel: enums.InputChannel;
   id: Array<enums.InputMessage>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAD8C9A23;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getMessages"
   }
 
@@ -14467,18 +14467,18 @@ export class channels_getMessages_ extends Function_<enums.messages.Messages> {
 }
 
 export class channels_getParticipants_ extends Function_<enums.channels.ChannelParticipants> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; filter: enums.ChannelParticipantsFilter; offset: number; limit: number; hash: bigint }) => enums.channels.ChannelParticipants;
+  static __F: (params: { channel: enums.InputChannel; filter: enums.ChannelParticipantsFilter; offset: number; limit: number; hash: bigint }) => enums.channels.ChannelParticipants = null as unknown as (params: { channel: enums.InputChannel; filter: enums.ChannelParticipantsFilter; offset: number; limit: number; hash: bigint }) => enums.channels.ChannelParticipants;
   channel: enums.InputChannel;
   filter: enums.ChannelParticipantsFilter;
   offset: number;
   limit: number;
   hash: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x77CED9D0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getParticipants"
   }
 
@@ -14513,15 +14513,15 @@ export class channels_getParticipants_ extends Function_<enums.channels.ChannelP
 }
 
 export class channels_getParticipant_ extends Function_<enums.channels.ChannelParticipant> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer }) => enums.channels.ChannelParticipant;
+  static __F: (params: { channel: enums.InputChannel; participant: enums.InputPeer }) => enums.channels.ChannelParticipant = null as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer }) => enums.channels.ChannelParticipant;
   channel: enums.InputChannel;
   participant: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA0AB6CC6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getParticipant"
   }
 
@@ -14547,14 +14547,14 @@ export class channels_getParticipant_ extends Function_<enums.channels.ChannelPa
 }
 
 export class channels_getChannels_ extends Function_<enums.messages.Chats> {
-  static __F = Symbol() as unknown as (params: { id: Array<enums.InputChannel> }) => enums.messages.Chats;
+  static __F: (params: { id: Array<enums.InputChannel> }) => enums.messages.Chats = null as unknown as (params: { id: Array<enums.InputChannel> }) => enums.messages.Chats;
   id: Array<enums.InputChannel>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0A7F6BBB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getChannels"
   }
 
@@ -14577,14 +14577,14 @@ export class channels_getChannels_ extends Function_<enums.messages.Chats> {
 }
 
 export class channels_getFullChannel_ extends Function_<enums.messages.ChatFull> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.messages.ChatFull;
+  static __F: (params: { channel: enums.InputChannel }) => enums.messages.ChatFull = null as unknown as (params: { channel: enums.InputChannel }) => enums.messages.ChatFull;
   channel: enums.InputChannel;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x08736A09;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getFullChannel"
   }
 
@@ -14607,7 +14607,7 @@ export class channels_getFullChannel_ extends Function_<enums.messages.ChatFull>
 }
 
 export class channels_createChannel_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { broadcast?: true; megagroup?: true; for_import?: true; forum?: true; title: string; about: string; geo_point?: enums.InputGeoPoint; address?: string; ttl_period?: number }) => enums.Updates;
+  static __F: (params: { broadcast?: true; megagroup?: true; for_import?: true; forum?: true; title: string; about: string; geo_point?: enums.InputGeoPoint; address?: string; ttl_period?: number }) => enums.Updates = null as unknown as (params: { broadcast?: true; megagroup?: true; for_import?: true; forum?: true; title: string; about: string; geo_point?: enums.InputGeoPoint; address?: string; ttl_period?: number }) => enums.Updates;
   broadcast?: true;
   megagroup?: true;
   for_import?: true;
@@ -14618,11 +14618,11 @@ export class channels_createChannel_ extends Function_<enums.Updates> {
   address?: string;
   ttl_period?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x91006707;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.createChannel"
   }
 
@@ -14671,17 +14671,17 @@ export class channels_createChannel_ extends Function_<enums.Updates> {
 }
 
 export class channels_editAdmin_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; user_id: enums.InputUser; admin_rights: enums.ChatAdminRights; rank: string }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; user_id: enums.InputUser; admin_rights: enums.ChatAdminRights; rank: string }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; user_id: enums.InputUser; admin_rights: enums.ChatAdminRights; rank: string }) => enums.Updates;
   channel: enums.InputChannel;
   user_id: enums.InputUser;
   admin_rights: enums.ChatAdminRights;
   rank: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD33C8902;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.editAdmin"
   }
 
@@ -14713,15 +14713,15 @@ export class channels_editAdmin_ extends Function_<enums.Updates> {
 }
 
 export class channels_editTitle_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; title: string }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; title: string }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; title: string }) => enums.Updates;
   channel: enums.InputChannel;
   title: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x566DECD0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.editTitle"
   }
 
@@ -14747,15 +14747,15 @@ export class channels_editTitle_ extends Function_<enums.Updates> {
 }
 
 export class channels_editPhoto_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; photo: enums.InputChatPhoto }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; photo: enums.InputChatPhoto }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; photo: enums.InputChatPhoto }) => enums.Updates;
   channel: enums.InputChannel;
   photo: enums.InputChatPhoto;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF12E57C9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.editPhoto"
   }
 
@@ -14781,15 +14781,15 @@ export class channels_editPhoto_ extends Function_<enums.Updates> {
 }
 
 export class channels_checkUsername_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; username: string }) => boolean;
+  static __F: (params: { channel: enums.InputChannel; username: string }) => boolean = null as unknown as (params: { channel: enums.InputChannel; username: string }) => boolean;
   channel: enums.InputChannel;
   username: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x10E6BD2C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.checkUsername"
   }
 
@@ -14815,15 +14815,15 @@ export class channels_checkUsername_ extends Function_<boolean> {
 }
 
 export class channels_updateUsername_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; username: string }) => boolean;
+  static __F: (params: { channel: enums.InputChannel; username: string }) => boolean = null as unknown as (params: { channel: enums.InputChannel; username: string }) => boolean;
   channel: enums.InputChannel;
   username: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3514B3DE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.updateUsername"
   }
 
@@ -14849,14 +14849,14 @@ export class channels_updateUsername_ extends Function_<boolean> {
 }
 
 export class channels_joinChannel_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
   channel: enums.InputChannel;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x24B524C5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.joinChannel"
   }
 
@@ -14879,14 +14879,14 @@ export class channels_joinChannel_ extends Function_<enums.Updates> {
 }
 
 export class channels_leaveChannel_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
   channel: enums.InputChannel;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF836AA95;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.leaveChannel"
   }
 
@@ -14909,15 +14909,15 @@ export class channels_leaveChannel_ extends Function_<enums.Updates> {
 }
 
 export class channels_inviteToChannel_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; users: Array<enums.InputUser> }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; users: Array<enums.InputUser> }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; users: Array<enums.InputUser> }) => enums.Updates;
   channel: enums.InputChannel;
   users: Array<enums.InputUser>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x199F3A6C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.inviteToChannel"
   }
 
@@ -14943,14 +14943,14 @@ export class channels_inviteToChannel_ extends Function_<enums.Updates> {
 }
 
 export class channels_deleteChannel_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
   channel: enums.InputChannel;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC0111FE3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.deleteChannel"
   }
 
@@ -14973,17 +14973,17 @@ export class channels_deleteChannel_ extends Function_<enums.Updates> {
 }
 
 export class channels_exportMessageLink_ extends Function_<enums.ExportedMessageLink> {
-  static __F = Symbol() as unknown as (params: { grouped?: true; thread?: true; channel: enums.InputChannel; id: number }) => enums.ExportedMessageLink;
+  static __F: (params: { grouped?: true; thread?: true; channel: enums.InputChannel; id: number }) => enums.ExportedMessageLink = null as unknown as (params: { grouped?: true; thread?: true; channel: enums.InputChannel; id: number }) => enums.ExportedMessageLink;
   grouped?: true;
   thread?: true;
   channel: enums.InputChannel;
   id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE63FADEB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.exportMessageLink"
   }
 
@@ -15017,15 +15017,15 @@ export class channels_exportMessageLink_ extends Function_<enums.ExportedMessage
 }
 
 export class channels_toggleSignatures_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1F69B606;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.toggleSignatures"
   }
 
@@ -15051,15 +15051,15 @@ export class channels_toggleSignatures_ extends Function_<enums.Updates> {
 }
 
 export class channels_getAdminedPublicChannels_ extends Function_<enums.messages.Chats> {
-  static __F = Symbol() as unknown as (params?: { by_location?: true; check_limit?: true }) => enums.messages.Chats;
+  static __F: (params?: { by_location?: true; check_limit?: true }) => enums.messages.Chats = null as unknown as (params?: { by_location?: true; check_limit?: true }) => enums.messages.Chats;
   by_location?: true;
   check_limit?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF8B036AF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getAdminedPublicChannels"
   }
 
@@ -15087,16 +15087,16 @@ export class channels_getAdminedPublicChannels_ extends Function_<enums.messages
 }
 
 export class channels_editBanned_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer; banned_rights: enums.ChatBannedRights }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; participant: enums.InputPeer; banned_rights: enums.ChatBannedRights }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer; banned_rights: enums.ChatBannedRights }) => enums.Updates;
   channel: enums.InputChannel;
   participant: enums.InputPeer;
   banned_rights: enums.ChatBannedRights;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x96E6CD81;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.editBanned"
   }
 
@@ -15125,7 +15125,7 @@ export class channels_editBanned_ extends Function_<enums.Updates> {
 }
 
 export class channels_getAdminLog_ extends Function_<enums.channels.AdminLogResults> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; q: string; events_filter?: enums.ChannelAdminLogEventsFilter; admins?: Array<enums.InputUser>; max_id: bigint; min_id: bigint; limit: number }) => enums.channels.AdminLogResults;
+  static __F: (params: { channel: enums.InputChannel; q: string; events_filter?: enums.ChannelAdminLogEventsFilter; admins?: Array<enums.InputUser>; max_id: bigint; min_id: bigint; limit: number }) => enums.channels.AdminLogResults = null as unknown as (params: { channel: enums.InputChannel; q: string; events_filter?: enums.ChannelAdminLogEventsFilter; admins?: Array<enums.InputUser>; max_id: bigint; min_id: bigint; limit: number }) => enums.channels.AdminLogResults;
   channel: enums.InputChannel;
   q: string;
   events_filter?: enums.ChannelAdminLogEventsFilter;
@@ -15134,11 +15134,11 @@ export class channels_getAdminLog_ extends Function_<enums.channels.AdminLogResu
   min_id: bigint;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x33DDF480;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getAdminLog"
   }
 
@@ -15181,15 +15181,15 @@ export class channels_getAdminLog_ extends Function_<enums.channels.AdminLogResu
 }
 
 export class channels_setStickers_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; stickerset: enums.InputStickerSet }) => boolean;
+  static __F: (params: { channel: enums.InputChannel; stickerset: enums.InputStickerSet }) => boolean = null as unknown as (params: { channel: enums.InputChannel; stickerset: enums.InputStickerSet }) => boolean;
   channel: enums.InputChannel;
   stickerset: enums.InputStickerSet;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEA8CA4F9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.setStickers"
   }
 
@@ -15215,15 +15215,15 @@ export class channels_setStickers_ extends Function_<boolean> {
 }
 
 export class channels_readMessageContents_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; id: Array<number> }) => boolean;
+  static __F: (params: { channel: enums.InputChannel; id: Array<number> }) => boolean = null as unknown as (params: { channel: enums.InputChannel; id: Array<number> }) => boolean;
   channel: enums.InputChannel;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEAB5DC38;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.readMessageContents"
   }
 
@@ -15249,16 +15249,16 @@ export class channels_readMessageContents_ extends Function_<boolean> {
 }
 
 export class channels_deleteHistory_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { for_everyone?: true; channel: enums.InputChannel; max_id: number }) => enums.Updates;
+  static __F: (params: { for_everyone?: true; channel: enums.InputChannel; max_id: number }) => enums.Updates = null as unknown as (params: { for_everyone?: true; channel: enums.InputChannel; max_id: number }) => enums.Updates;
   for_everyone?: true;
   channel: enums.InputChannel;
   max_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9BAA9647;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.deleteHistory"
   }
 
@@ -15289,15 +15289,15 @@ export class channels_deleteHistory_ extends Function_<enums.Updates> {
 }
 
 export class channels_togglePreHistoryHidden_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEABBB94C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.togglePreHistoryHidden"
   }
 
@@ -15323,14 +15323,14 @@ export class channels_togglePreHistoryHidden_ extends Function_<enums.Updates> {
 }
 
 export class channels_getLeftChannels_ extends Function_<enums.messages.Chats> {
-  static __F = Symbol() as unknown as (params: { offset: number }) => enums.messages.Chats;
+  static __F: (params: { offset: number }) => enums.messages.Chats = null as unknown as (params: { offset: number }) => enums.messages.Chats;
   offset: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8341ECC0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getLeftChannels"
   }
 
@@ -15353,12 +15353,12 @@ export class channels_getLeftChannels_ extends Function_<enums.messages.Chats> {
 }
 
 export class channels_getGroupsForDiscussion_ extends Function_<enums.messages.Chats> {
-  static __F = Symbol() as unknown as () => enums.messages.Chats;
-  protected get [id]() {
+  static __F: () => enums.messages.Chats = null as unknown as () => enums.messages.Chats;
+  protected get [id](): number {
     return 0xF5DAD378;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getGroupsForDiscussion"
   }
 
@@ -15376,15 +15376,15 @@ export class channels_getGroupsForDiscussion_ extends Function_<enums.messages.C
 }
 
 export class channels_setDiscussionGroup_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { broadcast: enums.InputChannel; group: enums.InputChannel }) => boolean;
+  static __F: (params: { broadcast: enums.InputChannel; group: enums.InputChannel }) => boolean = null as unknown as (params: { broadcast: enums.InputChannel; group: enums.InputChannel }) => boolean;
   broadcast: enums.InputChannel;
   group: enums.InputChannel;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x40582BB2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.setDiscussionGroup"
   }
 
@@ -15410,16 +15410,16 @@ export class channels_setDiscussionGroup_ extends Function_<boolean> {
 }
 
 export class channels_editCreator_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; user_id: enums.InputUser; password: enums.InputCheckPasswordSRP }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; user_id: enums.InputUser; password: enums.InputCheckPasswordSRP }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; user_id: enums.InputUser; password: enums.InputCheckPasswordSRP }) => enums.Updates;
   channel: enums.InputChannel;
   user_id: enums.InputUser;
   password: enums.InputCheckPasswordSRP;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8F38CD1F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.editCreator"
   }
 
@@ -15448,16 +15448,16 @@ export class channels_editCreator_ extends Function_<enums.Updates> {
 }
 
 export class channels_editLocation_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; geo_point: enums.InputGeoPoint; address: string }) => boolean;
+  static __F: (params: { channel: enums.InputChannel; geo_point: enums.InputGeoPoint; address: string }) => boolean = null as unknown as (params: { channel: enums.InputChannel; geo_point: enums.InputGeoPoint; address: string }) => boolean;
   channel: enums.InputChannel;
   geo_point: enums.InputGeoPoint;
   address: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x58E63F6D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.editLocation"
   }
 
@@ -15486,15 +15486,15 @@ export class channels_editLocation_ extends Function_<boolean> {
 }
 
 export class channels_toggleSlowMode_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; seconds: number }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; seconds: number }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; seconds: number }) => enums.Updates;
   channel: enums.InputChannel;
   seconds: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEDD49EF0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.toggleSlowMode"
   }
 
@@ -15520,12 +15520,12 @@ export class channels_toggleSlowMode_ extends Function_<enums.Updates> {
 }
 
 export class channels_getInactiveChannels_ extends Function_<enums.messages.InactiveChats> {
-  static __F = Symbol() as unknown as () => enums.messages.InactiveChats;
-  protected get [id]() {
+  static __F: () => enums.messages.InactiveChats = null as unknown as () => enums.messages.InactiveChats;
+  protected get [id](): number {
     return 0x11E831EE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getInactiveChannels"
   }
 
@@ -15543,14 +15543,14 @@ export class channels_getInactiveChannels_ extends Function_<enums.messages.Inac
 }
 
 export class channels_convertToGigagroup_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
   channel: enums.InputChannel;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0B290C69;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.convertToGigagroup"
   }
 
@@ -15573,15 +15573,15 @@ export class channels_convertToGigagroup_ extends Function_<enums.Updates> {
 }
 
 export class channels_viewSponsoredMessage_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; random_id: Uint8Array }) => boolean;
+  static __F: (params: { channel: enums.InputChannel; random_id: Uint8Array }) => boolean = null as unknown as (params: { channel: enums.InputChannel; random_id: Uint8Array }) => boolean;
   channel: enums.InputChannel;
   random_id: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBEAEDB94;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.viewSponsoredMessage"
   }
 
@@ -15607,14 +15607,14 @@ export class channels_viewSponsoredMessage_ extends Function_<boolean> {
 }
 
 export class channels_getSponsoredMessages_ extends Function_<enums.messages.SponsoredMessages> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.messages.SponsoredMessages;
+  static __F: (params: { channel: enums.InputChannel }) => enums.messages.SponsoredMessages = null as unknown as (params: { channel: enums.InputChannel }) => enums.messages.SponsoredMessages;
   channel: enums.InputChannel;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEC210FBF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getSponsoredMessages"
   }
 
@@ -15637,14 +15637,14 @@ export class channels_getSponsoredMessages_ extends Function_<enums.messages.Spo
 }
 
 export class channels_getSendAs_ extends Function_<enums.channels.SendAsPeers> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.channels.SendAsPeers;
+  static __F: (params: { peer: enums.InputPeer }) => enums.channels.SendAsPeers = null as unknown as (params: { peer: enums.InputPeer }) => enums.channels.SendAsPeers;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0DC770EE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getSendAs"
   }
 
@@ -15667,15 +15667,15 @@ export class channels_getSendAs_ extends Function_<enums.channels.SendAsPeers> {
 }
 
 export class channels_deleteParticipantHistory_ extends Function_<enums.messages.AffectedHistory> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer }) => enums.messages.AffectedHistory;
+  static __F: (params: { channel: enums.InputChannel; participant: enums.InputPeer }) => enums.messages.AffectedHistory = null as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer }) => enums.messages.AffectedHistory;
   channel: enums.InputChannel;
   participant: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x367544DB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.deleteParticipantHistory"
   }
 
@@ -15701,15 +15701,15 @@ export class channels_deleteParticipantHistory_ extends Function_<enums.messages
 }
 
 export class channels_toggleJoinToSend_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE4CB9580;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.toggleJoinToSend"
   }
 
@@ -15735,15 +15735,15 @@ export class channels_toggleJoinToSend_ extends Function_<enums.Updates> {
 }
 
 export class channels_toggleJoinRequest_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4C2985B6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.toggleJoinRequest"
   }
 
@@ -15769,15 +15769,15 @@ export class channels_toggleJoinRequest_ extends Function_<enums.Updates> {
 }
 
 export class channels_reorderUsernames_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; order: Array<string> }) => boolean;
+  static __F: (params: { channel: enums.InputChannel; order: Array<string> }) => boolean = null as unknown as (params: { channel: enums.InputChannel; order: Array<string> }) => boolean;
   channel: enums.InputChannel;
   order: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB45CED1D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.reorderUsernames"
   }
 
@@ -15803,16 +15803,16 @@ export class channels_reorderUsernames_ extends Function_<boolean> {
 }
 
 export class channels_toggleUsername_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; username: string; active: boolean }) => boolean;
+  static __F: (params: { channel: enums.InputChannel; username: string; active: boolean }) => boolean = null as unknown as (params: { channel: enums.InputChannel; username: string; active: boolean }) => boolean;
   channel: enums.InputChannel;
   username: string;
   active: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x50F24105;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.toggleUsername"
   }
 
@@ -15841,14 +15841,14 @@ export class channels_toggleUsername_ extends Function_<boolean> {
 }
 
 export class channels_deactivateAllUsernames_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => boolean;
+  static __F: (params: { channel: enums.InputChannel }) => boolean = null as unknown as (params: { channel: enums.InputChannel }) => boolean;
   channel: enums.InputChannel;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0A245DD3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.deactivateAllUsernames"
   }
 
@@ -15871,15 +15871,15 @@ export class channels_deactivateAllUsernames_ extends Function_<boolean> {
 }
 
 export class channels_toggleForum_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA4298B29;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.toggleForum"
   }
 
@@ -15905,7 +15905,7 @@ export class channels_toggleForum_ extends Function_<enums.Updates> {
 }
 
 export class channels_createForumTopic_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; title: string; icon_color?: number; icon_emoji_id?: bigint; random_id: bigint; send_as?: enums.InputPeer }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; title: string; icon_color?: number; icon_emoji_id?: bigint; random_id: bigint; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; title: string; icon_color?: number; icon_emoji_id?: bigint; random_id: bigint; send_as?: enums.InputPeer }) => enums.Updates;
   channel: enums.InputChannel;
   title: string;
   icon_color?: number;
@@ -15913,11 +15913,11 @@ export class channels_createForumTopic_ extends Function_<enums.Updates> {
   random_id: bigint;
   send_as?: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF40C0224;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.createForumTopic"
   }
 
@@ -15957,7 +15957,7 @@ export class channels_createForumTopic_ extends Function_<enums.Updates> {
 }
 
 export class channels_getForumTopics_ extends Function_<enums.messages.ForumTopics> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; q?: string; offset_date: number; offset_id: number; offset_topic: number; limit: number }) => enums.messages.ForumTopics;
+  static __F: (params: { channel: enums.InputChannel; q?: string; offset_date: number; offset_id: number; offset_topic: number; limit: number }) => enums.messages.ForumTopics = null as unknown as (params: { channel: enums.InputChannel; q?: string; offset_date: number; offset_id: number; offset_topic: number; limit: number }) => enums.messages.ForumTopics;
   channel: enums.InputChannel;
   q?: string;
   offset_date: number;
@@ -15965,11 +15965,11 @@ export class channels_getForumTopics_ extends Function_<enums.messages.ForumTopi
   offset_topic: number;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0DE560D1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getForumTopics"
   }
 
@@ -16009,15 +16009,15 @@ export class channels_getForumTopics_ extends Function_<enums.messages.ForumTopi
 }
 
 export class channels_getForumTopicsByID_ extends Function_<enums.messages.ForumTopics> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; topics: Array<number> }) => enums.messages.ForumTopics;
+  static __F: (params: { channel: enums.InputChannel; topics: Array<number> }) => enums.messages.ForumTopics = null as unknown as (params: { channel: enums.InputChannel; topics: Array<number> }) => enums.messages.ForumTopics;
   channel: enums.InputChannel;
   topics: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB0831EB9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getForumTopicsByID"
   }
 
@@ -16043,7 +16043,7 @@ export class channels_getForumTopicsByID_ extends Function_<enums.messages.Forum
 }
 
 export class channels_editForumTopic_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; topic_id: number; title?: string; icon_emoji_id?: bigint; closed?: boolean; hidden?: boolean }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; topic_id: number; title?: string; icon_emoji_id?: bigint; closed?: boolean; hidden?: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; topic_id: number; title?: string; icon_emoji_id?: bigint; closed?: boolean; hidden?: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   topic_id: number;
   title?: string;
@@ -16051,11 +16051,11 @@ export class channels_editForumTopic_ extends Function_<enums.Updates> {
   closed?: boolean;
   hidden?: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF4DFA185;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.editForumTopic"
   }
 
@@ -16095,16 +16095,16 @@ export class channels_editForumTopic_ extends Function_<enums.Updates> {
 }
 
 export class channels_updatePinnedForumTopic_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; topic_id: number; pinned: boolean }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; topic_id: number; pinned: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; topic_id: number; pinned: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   topic_id: number;
   pinned: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6C2D9026;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.updatePinnedForumTopic"
   }
 
@@ -16133,15 +16133,15 @@ export class channels_updatePinnedForumTopic_ extends Function_<enums.Updates> {
 }
 
 export class channels_deleteTopicHistory_ extends Function_<enums.messages.AffectedHistory> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; top_msg_id: number }) => enums.messages.AffectedHistory;
+  static __F: (params: { channel: enums.InputChannel; top_msg_id: number }) => enums.messages.AffectedHistory = null as unknown as (params: { channel: enums.InputChannel; top_msg_id: number }) => enums.messages.AffectedHistory;
   channel: enums.InputChannel;
   top_msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x34435F2D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.deleteTopicHistory"
   }
 
@@ -16167,16 +16167,16 @@ export class channels_deleteTopicHistory_ extends Function_<enums.messages.Affec
 }
 
 export class channels_reorderPinnedForumTopics_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { force?: true; channel: enums.InputChannel; order: Array<number> }) => enums.Updates;
+  static __F: (params: { force?: true; channel: enums.InputChannel; order: Array<number> }) => enums.Updates = null as unknown as (params: { force?: true; channel: enums.InputChannel; order: Array<number> }) => enums.Updates;
   force?: true;
   channel: enums.InputChannel;
   order: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2950A18F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.reorderPinnedForumTopics"
   }
 
@@ -16207,15 +16207,15 @@ export class channels_reorderPinnedForumTopics_ extends Function_<enums.Updates>
 }
 
 export class channels_toggleAntiSpam_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x68F3E4EB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.toggleAntiSpam"
   }
 
@@ -16241,15 +16241,15 @@ export class channels_toggleAntiSpam_ extends Function_<enums.Updates> {
 }
 
 export class channels_reportAntiSpamFalsePositive_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; msg_id: number }) => boolean;
+  static __F: (params: { channel: enums.InputChannel; msg_id: number }) => boolean = null as unknown as (params: { channel: enums.InputChannel; msg_id: number }) => boolean;
   channel: enums.InputChannel;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA850A693;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.reportAntiSpamFalsePositive"
   }
 
@@ -16275,15 +16275,15 @@ export class channels_reportAntiSpamFalsePositive_ extends Function_<boolean> {
 }
 
 export class channels_toggleParticipantsHidden_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6A6E7854;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.toggleParticipantsHidden"
   }
 
@@ -16309,15 +16309,15 @@ export class channels_toggleParticipantsHidden_ extends Function_<enums.Updates>
 }
 
 export class channels_clickSponsoredMessage_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; random_id: Uint8Array }) => boolean;
+  static __F: (params: { channel: enums.InputChannel; random_id: Uint8Array }) => boolean = null as unknown as (params: { channel: enums.InputChannel; random_id: Uint8Array }) => boolean;
   channel: enums.InputChannel;
   random_id: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x18AFBC93;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.clickSponsoredMessage"
   }
 
@@ -16343,17 +16343,17 @@ export class channels_clickSponsoredMessage_ extends Function_<boolean> {
 }
 
 export class channels_updateColor_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { for_profile?: true; channel: enums.InputChannel; color?: number; background_emoji_id?: bigint }) => enums.Updates;
+  static __F: (params: { for_profile?: true; channel: enums.InputChannel; color?: number; background_emoji_id?: bigint }) => enums.Updates = null as unknown as (params: { for_profile?: true; channel: enums.InputChannel; color?: number; background_emoji_id?: bigint }) => enums.Updates;
   for_profile?: true;
   channel: enums.InputChannel;
   color?: number;
   background_emoji_id?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD8AA3671;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.updateColor"
   }
 
@@ -16387,15 +16387,15 @@ export class channels_updateColor_ extends Function_<enums.Updates> {
 }
 
 export class channels_toggleViewForumAsMessages_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9738BB15;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.toggleViewForumAsMessages"
   }
 
@@ -16421,14 +16421,14 @@ export class channels_toggleViewForumAsMessages_ extends Function_<enums.Updates
 }
 
 export class channels_getChannelRecommendations_ extends Function_<enums.messages.Chats> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.messages.Chats;
+  static __F: (params: { channel: enums.InputChannel }) => enums.messages.Chats = null as unknown as (params: { channel: enums.InputChannel }) => enums.messages.Chats;
   channel: enums.InputChannel;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x83B70D97;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.getChannelRecommendations"
   }
 
@@ -16451,15 +16451,15 @@ export class channels_getChannelRecommendations_ extends Function_<enums.message
 }
 
 export class channels_updateEmojiStatus_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; emoji_status: enums.EmojiStatus }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; emoji_status: enums.EmojiStatus }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; emoji_status: enums.EmojiStatus }) => enums.Updates;
   channel: enums.InputChannel;
   emoji_status: enums.EmojiStatus;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF0D3E6A8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.updateEmojiStatus"
   }
 
@@ -16485,15 +16485,15 @@ export class channels_updateEmojiStatus_ extends Function_<enums.Updates> {
 }
 
 export class channels_setBoostsToUnblockRestrictions_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; boosts: number }) => enums.Updates;
+  static __F: (params: { channel: enums.InputChannel; boosts: number }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; boosts: number }) => enums.Updates;
   channel: enums.InputChannel;
   boosts: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAD399CEE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.setBoostsToUnblockRestrictions"
   }
 
@@ -16519,15 +16519,15 @@ export class channels_setBoostsToUnblockRestrictions_ extends Function_<enums.Up
 }
 
 export class channels_setEmojiStickers_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; stickerset: enums.InputStickerSet }) => boolean;
+  static __F: (params: { channel: enums.InputChannel; stickerset: enums.InputStickerSet }) => boolean = null as unknown as (params: { channel: enums.InputChannel; stickerset: enums.InputStickerSet }) => boolean;
   channel: enums.InputChannel;
   stickerset: enums.InputStickerSet;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3CD930B7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "channels.setEmojiStickers"
   }
 
@@ -16553,15 +16553,15 @@ export class channels_setEmojiStickers_ extends Function_<boolean> {
 }
 
 export class bots_sendCustomRequest_ extends Function_<enums.DataJSON> {
-  static __F = Symbol() as unknown as (params: { custom_method: string; params: enums.DataJSON }) => enums.DataJSON;
+  static __F: (params: { custom_method: string; params: enums.DataJSON }) => enums.DataJSON = null as unknown as (params: { custom_method: string; params: enums.DataJSON }) => enums.DataJSON;
   custom_method: string;
   params: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAA2769ED;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.sendCustomRequest"
   }
 
@@ -16587,15 +16587,15 @@ export class bots_sendCustomRequest_ extends Function_<enums.DataJSON> {
 }
 
 export class bots_answerWebhookJSONQuery_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { query_id: bigint; data: enums.DataJSON }) => boolean;
+  static __F: (params: { query_id: bigint; data: enums.DataJSON }) => boolean = null as unknown as (params: { query_id: bigint; data: enums.DataJSON }) => boolean;
   query_id: bigint;
   data: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE6213F4D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.answerWebhookJSONQuery"
   }
 
@@ -16621,16 +16621,16 @@ export class bots_answerWebhookJSONQuery_ extends Function_<boolean> {
 }
 
 export class bots_setBotCommands_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { scope: enums.BotCommandScope; lang_code: string; commands: Array<enums.BotCommand> }) => boolean;
+  static __F: (params: { scope: enums.BotCommandScope; lang_code: string; commands: Array<enums.BotCommand> }) => boolean = null as unknown as (params: { scope: enums.BotCommandScope; lang_code: string; commands: Array<enums.BotCommand> }) => boolean;
   scope: enums.BotCommandScope;
   lang_code: string;
   commands: Array<enums.BotCommand>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0517165A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.setBotCommands"
   }
 
@@ -16659,15 +16659,15 @@ export class bots_setBotCommands_ extends Function_<boolean> {
 }
 
 export class bots_resetBotCommands_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { scope: enums.BotCommandScope; lang_code: string }) => boolean;
+  static __F: (params: { scope: enums.BotCommandScope; lang_code: string }) => boolean = null as unknown as (params: { scope: enums.BotCommandScope; lang_code: string }) => boolean;
   scope: enums.BotCommandScope;
   lang_code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3D8DE0F9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.resetBotCommands"
   }
 
@@ -16693,15 +16693,15 @@ export class bots_resetBotCommands_ extends Function_<boolean> {
 }
 
 export class bots_getBotCommands_ extends Function_<enums.BotCommand[]> {
-  static __F = Symbol() as unknown as (params: { scope: enums.BotCommandScope; lang_code: string }) => enums.BotCommand[];
+  static __F: (params: { scope: enums.BotCommandScope; lang_code: string }) => enums.BotCommand[] = null as unknown as (params: { scope: enums.BotCommandScope; lang_code: string }) => enums.BotCommand[];
   scope: enums.BotCommandScope;
   lang_code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE34C0DD6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.getBotCommands"
   }
 
@@ -16727,15 +16727,15 @@ export class bots_getBotCommands_ extends Function_<enums.BotCommand[]> {
 }
 
 export class bots_setBotMenuButton_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { user_id: enums.InputUser; button: enums.BotMenuButton }) => boolean;
+  static __F: (params: { user_id: enums.InputUser; button: enums.BotMenuButton }) => boolean = null as unknown as (params: { user_id: enums.InputUser; button: enums.BotMenuButton }) => boolean;
   user_id: enums.InputUser;
   button: enums.BotMenuButton;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4504D54F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.setBotMenuButton"
   }
 
@@ -16761,14 +16761,14 @@ export class bots_setBotMenuButton_ extends Function_<boolean> {
 }
 
 export class bots_getBotMenuButton_ extends Function_<enums.BotMenuButton> {
-  static __F = Symbol() as unknown as (params: { user_id: enums.InputUser }) => enums.BotMenuButton;
+  static __F: (params: { user_id: enums.InputUser }) => enums.BotMenuButton = null as unknown as (params: { user_id: enums.InputUser }) => enums.BotMenuButton;
   user_id: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9C60EB28;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.getBotMenuButton"
   }
 
@@ -16791,14 +16791,14 @@ export class bots_getBotMenuButton_ extends Function_<enums.BotMenuButton> {
 }
 
 export class bots_setBotBroadcastDefaultAdminRights_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { admin_rights: enums.ChatAdminRights }) => boolean;
+  static __F: (params: { admin_rights: enums.ChatAdminRights }) => boolean = null as unknown as (params: { admin_rights: enums.ChatAdminRights }) => boolean;
   admin_rights: enums.ChatAdminRights;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x788464E1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.setBotBroadcastDefaultAdminRights"
   }
 
@@ -16821,14 +16821,14 @@ export class bots_setBotBroadcastDefaultAdminRights_ extends Function_<boolean> 
 }
 
 export class bots_setBotGroupDefaultAdminRights_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { admin_rights: enums.ChatAdminRights }) => boolean;
+  static __F: (params: { admin_rights: enums.ChatAdminRights }) => boolean = null as unknown as (params: { admin_rights: enums.ChatAdminRights }) => boolean;
   admin_rights: enums.ChatAdminRights;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x925EC9EA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.setBotGroupDefaultAdminRights"
   }
 
@@ -16851,18 +16851,18 @@ export class bots_setBotGroupDefaultAdminRights_ extends Function_<boolean> {
 }
 
 export class bots_setBotInfo_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { bot?: enums.InputUser; lang_code: string; name?: string; about?: string; description?: string }) => boolean;
+  static __F: (params: { bot?: enums.InputUser; lang_code: string; name?: string; about?: string; description?: string }) => boolean = null as unknown as (params: { bot?: enums.InputUser; lang_code: string; name?: string; about?: string; description?: string }) => boolean;
   bot?: enums.InputUser;
   lang_code: string;
   name?: string;
   about?: string;
   description?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x10CF3123;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.setBotInfo"
   }
 
@@ -16899,15 +16899,15 @@ export class bots_setBotInfo_ extends Function_<boolean> {
 }
 
 export class bots_getBotInfo_ extends Function_<enums.bots.BotInfo> {
-  static __F = Symbol() as unknown as (params: { bot?: enums.InputUser; lang_code: string }) => enums.bots.BotInfo;
+  static __F: (params: { bot?: enums.InputUser; lang_code: string }) => enums.bots.BotInfo = null as unknown as (params: { bot?: enums.InputUser; lang_code: string }) => enums.bots.BotInfo;
   bot?: enums.InputUser;
   lang_code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDCD914FD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.getBotInfo"
   }
 
@@ -16935,15 +16935,15 @@ export class bots_getBotInfo_ extends Function_<enums.bots.BotInfo> {
 }
 
 export class bots_reorderUsernames_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { bot: enums.InputUser; order: Array<string> }) => boolean;
+  static __F: (params: { bot: enums.InputUser; order: Array<string> }) => boolean = null as unknown as (params: { bot: enums.InputUser; order: Array<string> }) => boolean;
   bot: enums.InputUser;
   order: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9709B1C2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.reorderUsernames"
   }
 
@@ -16969,16 +16969,16 @@ export class bots_reorderUsernames_ extends Function_<boolean> {
 }
 
 export class bots_toggleUsername_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { bot: enums.InputUser; username: string; active: boolean }) => boolean;
+  static __F: (params: { bot: enums.InputUser; username: string; active: boolean }) => boolean = null as unknown as (params: { bot: enums.InputUser; username: string; active: boolean }) => boolean;
   bot: enums.InputUser;
   username: string;
   active: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x053CA973;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.toggleUsername"
   }
 
@@ -17007,14 +17007,14 @@ export class bots_toggleUsername_ extends Function_<boolean> {
 }
 
 export class bots_canSendMessage_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { bot: enums.InputUser }) => boolean;
+  static __F: (params: { bot: enums.InputUser }) => boolean = null as unknown as (params: { bot: enums.InputUser }) => boolean;
   bot: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1359F4E6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.canSendMessage"
   }
 
@@ -17037,14 +17037,14 @@ export class bots_canSendMessage_ extends Function_<boolean> {
 }
 
 export class bots_allowSendMessage_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { bot: enums.InputUser }) => enums.Updates;
+  static __F: (params: { bot: enums.InputUser }) => enums.Updates = null as unknown as (params: { bot: enums.InputUser }) => enums.Updates;
   bot: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF132E3EF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.allowSendMessage"
   }
 
@@ -17067,16 +17067,16 @@ export class bots_allowSendMessage_ extends Function_<enums.Updates> {
 }
 
 export class bots_invokeWebViewCustomMethod_ extends Function_<enums.DataJSON> {
-  static __F = Symbol() as unknown as (params: { bot: enums.InputUser; custom_method: string; params: enums.DataJSON }) => enums.DataJSON;
+  static __F: (params: { bot: enums.InputUser; custom_method: string; params: enums.DataJSON }) => enums.DataJSON = null as unknown as (params: { bot: enums.InputUser; custom_method: string; params: enums.DataJSON }) => enums.DataJSON;
   bot: enums.InputUser;
   custom_method: string;
   params: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x087FC5E7;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "bots.invokeWebViewCustomMethod"
   }
 
@@ -17105,15 +17105,15 @@ export class bots_invokeWebViewCustomMethod_ extends Function_<enums.DataJSON> {
 }
 
 export class payments_getPaymentForm_ extends Function_<enums.payments.PaymentForm> {
-  static __F = Symbol() as unknown as (params: { invoice: enums.InputInvoice; theme_params?: enums.DataJSON }) => enums.payments.PaymentForm;
+  static __F: (params: { invoice: enums.InputInvoice; theme_params?: enums.DataJSON }) => enums.payments.PaymentForm = null as unknown as (params: { invoice: enums.InputInvoice; theme_params?: enums.DataJSON }) => enums.payments.PaymentForm;
   invoice: enums.InputInvoice;
   theme_params?: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x37148DBB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.getPaymentForm"
   }
 
@@ -17141,15 +17141,15 @@ export class payments_getPaymentForm_ extends Function_<enums.payments.PaymentFo
 }
 
 export class payments_getPaymentReceipt_ extends Function_<enums.payments.PaymentReceipt> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.payments.PaymentReceipt;
+  static __F: (params: { peer: enums.InputPeer; msg_id: number }) => enums.payments.PaymentReceipt = null as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.payments.PaymentReceipt;
   peer: enums.InputPeer;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2478D1CC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.getPaymentReceipt"
   }
 
@@ -17175,16 +17175,16 @@ export class payments_getPaymentReceipt_ extends Function_<enums.payments.Paymen
 }
 
 export class payments_validateRequestedInfo_ extends Function_<enums.payments.ValidatedRequestedInfo> {
-  static __F = Symbol() as unknown as (params: { save?: true; invoice: enums.InputInvoice; info: enums.PaymentRequestedInfo }) => enums.payments.ValidatedRequestedInfo;
+  static __F: (params: { save?: true; invoice: enums.InputInvoice; info: enums.PaymentRequestedInfo }) => enums.payments.ValidatedRequestedInfo = null as unknown as (params: { save?: true; invoice: enums.InputInvoice; info: enums.PaymentRequestedInfo }) => enums.payments.ValidatedRequestedInfo;
   save?: true;
   invoice: enums.InputInvoice;
   info: enums.PaymentRequestedInfo;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB6C8F12B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.validateRequestedInfo"
   }
 
@@ -17215,7 +17215,7 @@ export class payments_validateRequestedInfo_ extends Function_<enums.payments.Va
 }
 
 export class payments_sendPaymentForm_ extends Function_<enums.payments.PaymentResult> {
-  static __F = Symbol() as unknown as (params: { form_id: bigint; invoice: enums.InputInvoice; requested_info_id?: string; shipping_option_id?: string; credentials: enums.InputPaymentCredentials; tip_amount?: bigint }) => enums.payments.PaymentResult;
+  static __F: (params: { form_id: bigint; invoice: enums.InputInvoice; requested_info_id?: string; shipping_option_id?: string; credentials: enums.InputPaymentCredentials; tip_amount?: bigint }) => enums.payments.PaymentResult = null as unknown as (params: { form_id: bigint; invoice: enums.InputInvoice; requested_info_id?: string; shipping_option_id?: string; credentials: enums.InputPaymentCredentials; tip_amount?: bigint }) => enums.payments.PaymentResult;
   form_id: bigint;
   invoice: enums.InputInvoice;
   requested_info_id?: string;
@@ -17223,11 +17223,11 @@ export class payments_sendPaymentForm_ extends Function_<enums.payments.PaymentR
   credentials: enums.InputPaymentCredentials;
   tip_amount?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2D03522F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.sendPaymentForm"
   }
 
@@ -17267,12 +17267,12 @@ export class payments_sendPaymentForm_ extends Function_<enums.payments.PaymentR
 }
 
 export class payments_getSavedInfo_ extends Function_<enums.payments.SavedInfo> {
-  static __F = Symbol() as unknown as () => enums.payments.SavedInfo;
-  protected get [id]() {
+  static __F: () => enums.payments.SavedInfo = null as unknown as () => enums.payments.SavedInfo;
+  protected get [id](): number {
     return 0x227D824B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.getSavedInfo"
   }
 
@@ -17290,15 +17290,15 @@ export class payments_getSavedInfo_ extends Function_<enums.payments.SavedInfo> 
 }
 
 export class payments_clearSavedInfo_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params?: { credentials?: true; info?: true }) => boolean;
+  static __F: (params?: { credentials?: true; info?: true }) => boolean = null as unknown as (params?: { credentials?: true; info?: true }) => boolean;
   credentials?: true;
   info?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xD83D70C1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.clearSavedInfo"
   }
 
@@ -17326,14 +17326,14 @@ export class payments_clearSavedInfo_ extends Function_<boolean> {
 }
 
 export class payments_getBankCardData_ extends Function_<enums.payments.BankCardData> {
-  static __F = Symbol() as unknown as (params: { number: string }) => enums.payments.BankCardData;
+  static __F: (params: { number: string }) => enums.payments.BankCardData = null as unknown as (params: { number: string }) => enums.payments.BankCardData;
   number: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2E79D779;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.getBankCardData"
   }
 
@@ -17356,14 +17356,14 @@ export class payments_getBankCardData_ extends Function_<enums.payments.BankCard
 }
 
 export class payments_exportInvoice_ extends Function_<enums.payments.ExportedInvoice> {
-  static __F = Symbol() as unknown as (params: { invoice_media: enums.InputMedia }) => enums.payments.ExportedInvoice;
+  static __F: (params: { invoice_media: enums.InputMedia }) => enums.payments.ExportedInvoice = null as unknown as (params: { invoice_media: enums.InputMedia }) => enums.payments.ExportedInvoice;
   invoice_media: enums.InputMedia;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x0F91B065;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.exportInvoice"
   }
 
@@ -17386,15 +17386,15 @@ export class payments_exportInvoice_ extends Function_<enums.payments.ExportedIn
 }
 
 export class payments_assignAppStoreTransaction_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { receipt: Uint8Array; purpose: enums.InputStorePaymentPurpose }) => enums.Updates;
+  static __F: (params: { receipt: Uint8Array; purpose: enums.InputStorePaymentPurpose }) => enums.Updates = null as unknown as (params: { receipt: Uint8Array; purpose: enums.InputStorePaymentPurpose }) => enums.Updates;
   receipt: Uint8Array;
   purpose: enums.InputStorePaymentPurpose;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x80ED747D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.assignAppStoreTransaction"
   }
 
@@ -17420,15 +17420,15 @@ export class payments_assignAppStoreTransaction_ extends Function_<enums.Updates
 }
 
 export class payments_assignPlayMarketTransaction_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { receipt: enums.DataJSON; purpose: enums.InputStorePaymentPurpose }) => enums.Updates;
+  static __F: (params: { receipt: enums.DataJSON; purpose: enums.InputStorePaymentPurpose }) => enums.Updates = null as unknown as (params: { receipt: enums.DataJSON; purpose: enums.InputStorePaymentPurpose }) => enums.Updates;
   receipt: enums.DataJSON;
   purpose: enums.InputStorePaymentPurpose;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDFFD50D3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.assignPlayMarketTransaction"
   }
 
@@ -17454,14 +17454,14 @@ export class payments_assignPlayMarketTransaction_ extends Function_<enums.Updat
 }
 
 export class payments_canPurchasePremium_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { purpose: enums.InputStorePaymentPurpose }) => boolean;
+  static __F: (params: { purpose: enums.InputStorePaymentPurpose }) => boolean = null as unknown as (params: { purpose: enums.InputStorePaymentPurpose }) => boolean;
   purpose: enums.InputStorePaymentPurpose;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9FC19EB6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.canPurchasePremium"
   }
 
@@ -17484,14 +17484,14 @@ export class payments_canPurchasePremium_ extends Function_<boolean> {
 }
 
 export class payments_getPremiumGiftCodeOptions_ extends Function_<enums.PremiumGiftCodeOption[]> {
-  static __F = Symbol() as unknown as (params?: { boost_peer?: enums.InputPeer }) => enums.PremiumGiftCodeOption[];
+  static __F: (params?: { boost_peer?: enums.InputPeer }) => enums.PremiumGiftCodeOption[] = null as unknown as (params?: { boost_peer?: enums.InputPeer }) => enums.PremiumGiftCodeOption[];
   boost_peer?: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2757BA54;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.getPremiumGiftCodeOptions"
   }
 
@@ -17516,14 +17516,14 @@ export class payments_getPremiumGiftCodeOptions_ extends Function_<enums.Premium
 }
 
 export class payments_checkGiftCode_ extends Function_<enums.payments.CheckedGiftCode> {
-  static __F = Symbol() as unknown as (params: { slug: string }) => enums.payments.CheckedGiftCode;
+  static __F: (params: { slug: string }) => enums.payments.CheckedGiftCode = null as unknown as (params: { slug: string }) => enums.payments.CheckedGiftCode;
   slug: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8E51B4C1;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.checkGiftCode"
   }
 
@@ -17546,14 +17546,14 @@ export class payments_checkGiftCode_ extends Function_<enums.payments.CheckedGif
 }
 
 export class payments_applyGiftCode_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { slug: string }) => enums.Updates;
+  static __F: (params: { slug: string }) => enums.Updates = null as unknown as (params: { slug: string }) => enums.Updates;
   slug: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF6E26854;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.applyGiftCode"
   }
 
@@ -17576,15 +17576,15 @@ export class payments_applyGiftCode_ extends Function_<enums.Updates> {
 }
 
 export class payments_getGiveawayInfo_ extends Function_<enums.payments.GiveawayInfo> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.payments.GiveawayInfo;
+  static __F: (params: { peer: enums.InputPeer; msg_id: number }) => enums.payments.GiveawayInfo = null as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.payments.GiveawayInfo;
   peer: enums.InputPeer;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF4239425;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.getGiveawayInfo"
   }
 
@@ -17610,16 +17610,16 @@ export class payments_getGiveawayInfo_ extends Function_<enums.payments.Giveaway
 }
 
 export class payments_launchPrepaidGiveaway_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; giveaway_id: bigint; purpose: enums.InputStorePaymentPurpose }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; giveaway_id: bigint; purpose: enums.InputStorePaymentPurpose }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; giveaway_id: bigint; purpose: enums.InputStorePaymentPurpose }) => enums.Updates;
   peer: enums.InputPeer;
   giveaway_id: bigint;
   purpose: enums.InputStorePaymentPurpose;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5FF58F20;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "payments.launchPrepaidGiveaway"
   }
 
@@ -17648,7 +17648,7 @@ export class payments_launchPrepaidGiveaway_ extends Function_<enums.Updates> {
 }
 
 export class stickers_createStickerSet_ extends Function_<enums.messages.StickerSet> {
-  static __F = Symbol() as unknown as (params: { masks?: true; animated?: true; videos?: true; emojis?: true; text_color?: true; user_id: enums.InputUser; title: string; short_name: string; thumb?: enums.InputDocument; stickers: Array<enums.InputStickerSetItem>; software?: string }) => enums.messages.StickerSet;
+  static __F: (params: { masks?: true; animated?: true; videos?: true; emojis?: true; text_color?: true; user_id: enums.InputUser; title: string; short_name: string; thumb?: enums.InputDocument; stickers: Array<enums.InputStickerSetItem>; software?: string }) => enums.messages.StickerSet = null as unknown as (params: { masks?: true; animated?: true; videos?: true; emojis?: true; text_color?: true; user_id: enums.InputUser; title: string; short_name: string; thumb?: enums.InputDocument; stickers: Array<enums.InputStickerSetItem>; software?: string }) => enums.messages.StickerSet;
   masks?: true;
   animated?: true;
   videos?: true;
@@ -17661,11 +17661,11 @@ export class stickers_createStickerSet_ extends Function_<enums.messages.Sticker
   stickers: Array<enums.InputStickerSetItem>;
   software?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9021AB67;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickers.createStickerSet"
   }
 
@@ -17720,14 +17720,14 @@ export class stickers_createStickerSet_ extends Function_<enums.messages.Sticker
 }
 
 export class stickers_removeStickerFromSet_ extends Function_<enums.messages.StickerSet> {
-  static __F = Symbol() as unknown as (params: { sticker: enums.InputDocument }) => enums.messages.StickerSet;
+  static __F: (params: { sticker: enums.InputDocument }) => enums.messages.StickerSet = null as unknown as (params: { sticker: enums.InputDocument }) => enums.messages.StickerSet;
   sticker: enums.InputDocument;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF7760F51;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickers.removeStickerFromSet"
   }
 
@@ -17750,15 +17750,15 @@ export class stickers_removeStickerFromSet_ extends Function_<enums.messages.Sti
 }
 
 export class stickers_changeStickerPosition_ extends Function_<enums.messages.StickerSet> {
-  static __F = Symbol() as unknown as (params: { sticker: enums.InputDocument; position: number }) => enums.messages.StickerSet;
+  static __F: (params: { sticker: enums.InputDocument; position: number }) => enums.messages.StickerSet = null as unknown as (params: { sticker: enums.InputDocument; position: number }) => enums.messages.StickerSet;
   sticker: enums.InputDocument;
   position: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFFB6D4CA;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickers.changeStickerPosition"
   }
 
@@ -17784,15 +17784,15 @@ export class stickers_changeStickerPosition_ extends Function_<enums.messages.St
 }
 
 export class stickers_addStickerToSet_ extends Function_<enums.messages.StickerSet> {
-  static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet; sticker: enums.InputStickerSetItem }) => enums.messages.StickerSet;
+  static __F: (params: { stickerset: enums.InputStickerSet; sticker: enums.InputStickerSetItem }) => enums.messages.StickerSet = null as unknown as (params: { stickerset: enums.InputStickerSet; sticker: enums.InputStickerSetItem }) => enums.messages.StickerSet;
   stickerset: enums.InputStickerSet;
   sticker: enums.InputStickerSetItem;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8653FEBE;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickers.addStickerToSet"
   }
 
@@ -17818,16 +17818,16 @@ export class stickers_addStickerToSet_ extends Function_<enums.messages.StickerS
 }
 
 export class stickers_setStickerSetThumb_ extends Function_<enums.messages.StickerSet> {
-  static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet; thumb?: enums.InputDocument; thumb_document_id?: bigint }) => enums.messages.StickerSet;
+  static __F: (params: { stickerset: enums.InputStickerSet; thumb?: enums.InputDocument; thumb_document_id?: bigint }) => enums.messages.StickerSet = null as unknown as (params: { stickerset: enums.InputStickerSet; thumb?: enums.InputDocument; thumb_document_id?: bigint }) => enums.messages.StickerSet;
   stickerset: enums.InputStickerSet;
   thumb?: enums.InputDocument;
   thumb_document_id?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA76A5392;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickers.setStickerSetThumb"
   }
 
@@ -17858,14 +17858,14 @@ export class stickers_setStickerSetThumb_ extends Function_<enums.messages.Stick
 }
 
 export class stickers_checkShortName_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { short_name: string }) => boolean;
+  static __F: (params: { short_name: string }) => boolean = null as unknown as (params: { short_name: string }) => boolean;
   short_name: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x284B3639;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickers.checkShortName"
   }
 
@@ -17888,14 +17888,14 @@ export class stickers_checkShortName_ extends Function_<boolean> {
 }
 
 export class stickers_suggestShortName_ extends Function_<enums.stickers.SuggestedShortName> {
-  static __F = Symbol() as unknown as (params: { title: string }) => enums.stickers.SuggestedShortName;
+  static __F: (params: { title: string }) => enums.stickers.SuggestedShortName = null as unknown as (params: { title: string }) => enums.stickers.SuggestedShortName;
   title: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x4DAFC503;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickers.suggestShortName"
   }
 
@@ -17918,17 +17918,17 @@ export class stickers_suggestShortName_ extends Function_<enums.stickers.Suggest
 }
 
 export class stickers_changeSticker_ extends Function_<enums.messages.StickerSet> {
-  static __F = Symbol() as unknown as (params: { sticker: enums.InputDocument; emoji?: string; mask_coords?: enums.MaskCoords; keywords?: string }) => enums.messages.StickerSet;
+  static __F: (params: { sticker: enums.InputDocument; emoji?: string; mask_coords?: enums.MaskCoords; keywords?: string }) => enums.messages.StickerSet = null as unknown as (params: { sticker: enums.InputDocument; emoji?: string; mask_coords?: enums.MaskCoords; keywords?: string }) => enums.messages.StickerSet;
   sticker: enums.InputDocument;
   emoji?: string;
   mask_coords?: enums.MaskCoords;
   keywords?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF5537EBC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickers.changeSticker"
   }
 
@@ -17962,15 +17962,15 @@ export class stickers_changeSticker_ extends Function_<enums.messages.StickerSet
 }
 
 export class stickers_renameStickerSet_ extends Function_<enums.messages.StickerSet> {
-  static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet; title: string }) => enums.messages.StickerSet;
+  static __F: (params: { stickerset: enums.InputStickerSet; title: string }) => enums.messages.StickerSet = null as unknown as (params: { stickerset: enums.InputStickerSet; title: string }) => enums.messages.StickerSet;
   stickerset: enums.InputStickerSet;
   title: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x124B1C00;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickers.renameStickerSet"
   }
 
@@ -17996,14 +17996,14 @@ export class stickers_renameStickerSet_ extends Function_<enums.messages.Sticker
 }
 
 export class stickers_deleteStickerSet_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet }) => boolean;
+  static __F: (params: { stickerset: enums.InputStickerSet }) => boolean = null as unknown as (params: { stickerset: enums.InputStickerSet }) => boolean;
   stickerset: enums.InputStickerSet;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x87704394;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stickers.deleteStickerSet"
   }
 
@@ -18026,12 +18026,12 @@ export class stickers_deleteStickerSet_ extends Function_<boolean> {
 }
 
 export class phone_getCallConfig_ extends Function_<enums.DataJSON> {
-  static __F = Symbol() as unknown as () => enums.DataJSON;
-  protected get [id]() {
+  static __F: () => enums.DataJSON = null as unknown as () => enums.DataJSON;
+  protected get [id](): number {
     return 0x55451FA9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.getCallConfig"
   }
 
@@ -18049,18 +18049,18 @@ export class phone_getCallConfig_ extends Function_<enums.DataJSON> {
 }
 
 export class phone_requestCall_ extends Function_<enums.phone.PhoneCall> {
-  static __F = Symbol() as unknown as (params: { video?: true; user_id: enums.InputUser; random_id: number; g_a_hash: Uint8Array; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall;
+  static __F: (params: { video?: true; user_id: enums.InputUser; random_id: number; g_a_hash: Uint8Array; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall = null as unknown as (params: { video?: true; user_id: enums.InputUser; random_id: number; g_a_hash: Uint8Array; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall;
   video?: true;
   user_id: enums.InputUser;
   random_id: number;
   g_a_hash: Uint8Array;
   protocol: enums.PhoneCallProtocol;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x42FF96ED;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.requestCall"
   }
 
@@ -18097,16 +18097,16 @@ export class phone_requestCall_ extends Function_<enums.phone.PhoneCall> {
 }
 
 export class phone_acceptCall_ extends Function_<enums.phone.PhoneCall> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPhoneCall; g_b: Uint8Array; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall;
+  static __F: (params: { peer: enums.InputPhoneCall; g_b: Uint8Array; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall = null as unknown as (params: { peer: enums.InputPhoneCall; g_b: Uint8Array; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall;
   peer: enums.InputPhoneCall;
   g_b: Uint8Array;
   protocol: enums.PhoneCallProtocol;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x3BD2B4A0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.acceptCall"
   }
 
@@ -18135,17 +18135,17 @@ export class phone_acceptCall_ extends Function_<enums.phone.PhoneCall> {
 }
 
 export class phone_confirmCall_ extends Function_<enums.phone.PhoneCall> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPhoneCall; g_a: Uint8Array; key_fingerprint: bigint; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall;
+  static __F: (params: { peer: enums.InputPhoneCall; g_a: Uint8Array; key_fingerprint: bigint; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall = null as unknown as (params: { peer: enums.InputPhoneCall; g_a: Uint8Array; key_fingerprint: bigint; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall;
   peer: enums.InputPhoneCall;
   g_a: Uint8Array;
   key_fingerprint: bigint;
   protocol: enums.PhoneCallProtocol;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2EFE1722;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.confirmCall"
   }
 
@@ -18177,14 +18177,14 @@ export class phone_confirmCall_ extends Function_<enums.phone.PhoneCall> {
 }
 
 export class phone_receivedCall_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPhoneCall }) => boolean;
+  static __F: (params: { peer: enums.InputPhoneCall }) => boolean = null as unknown as (params: { peer: enums.InputPhoneCall }) => boolean;
   peer: enums.InputPhoneCall;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x17D54F61;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.receivedCall"
   }
 
@@ -18207,18 +18207,18 @@ export class phone_receivedCall_ extends Function_<boolean> {
 }
 
 export class phone_discardCall_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { video?: true; peer: enums.InputPhoneCall; duration: number; reason: enums.PhoneCallDiscardReason; connection_id: bigint }) => enums.Updates;
+  static __F: (params: { video?: true; peer: enums.InputPhoneCall; duration: number; reason: enums.PhoneCallDiscardReason; connection_id: bigint }) => enums.Updates = null as unknown as (params: { video?: true; peer: enums.InputPhoneCall; duration: number; reason: enums.PhoneCallDiscardReason; connection_id: bigint }) => enums.Updates;
   video?: true;
   peer: enums.InputPhoneCall;
   duration: number;
   reason: enums.PhoneCallDiscardReason;
   connection_id: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB2CBC1C0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.discardCall"
   }
 
@@ -18255,17 +18255,17 @@ export class phone_discardCall_ extends Function_<enums.Updates> {
 }
 
 export class phone_setCallRating_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { user_initiative?: true; peer: enums.InputPhoneCall; rating: number; comment: string }) => enums.Updates;
+  static __F: (params: { user_initiative?: true; peer: enums.InputPhoneCall; rating: number; comment: string }) => enums.Updates = null as unknown as (params: { user_initiative?: true; peer: enums.InputPhoneCall; rating: number; comment: string }) => enums.Updates;
   user_initiative?: true;
   peer: enums.InputPhoneCall;
   rating: number;
   comment: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x59EAD627;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.setCallRating"
   }
 
@@ -18299,15 +18299,15 @@ export class phone_setCallRating_ extends Function_<enums.Updates> {
 }
 
 export class phone_saveCallDebug_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPhoneCall; debug: enums.DataJSON }) => boolean;
+  static __F: (params: { peer: enums.InputPhoneCall; debug: enums.DataJSON }) => boolean = null as unknown as (params: { peer: enums.InputPhoneCall; debug: enums.DataJSON }) => boolean;
   peer: enums.InputPhoneCall;
   debug: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x277ADD7E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.saveCallDebug"
   }
 
@@ -18333,15 +18333,15 @@ export class phone_saveCallDebug_ extends Function_<boolean> {
 }
 
 export class phone_sendSignalingData_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPhoneCall; data: Uint8Array }) => boolean;
+  static __F: (params: { peer: enums.InputPhoneCall; data: Uint8Array }) => boolean = null as unknown as (params: { peer: enums.InputPhoneCall; data: Uint8Array }) => boolean;
   peer: enums.InputPhoneCall;
   data: Uint8Array;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFF7A9383;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.sendSignalingData"
   }
 
@@ -18367,18 +18367,18 @@ export class phone_sendSignalingData_ extends Function_<boolean> {
 }
 
 export class phone_createGroupCall_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { rtmp_stream?: true; peer: enums.InputPeer; random_id: number; title?: string; schedule_date?: number }) => enums.Updates;
+  static __F: (params: { rtmp_stream?: true; peer: enums.InputPeer; random_id: number; title?: string; schedule_date?: number }) => enums.Updates = null as unknown as (params: { rtmp_stream?: true; peer: enums.InputPeer; random_id: number; title?: string; schedule_date?: number }) => enums.Updates;
   rtmp_stream?: true;
   peer: enums.InputPeer;
   random_id: number;
   title?: string;
   schedule_date?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x48CDC6D8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.createGroupCall"
   }
 
@@ -18415,7 +18415,7 @@ export class phone_createGroupCall_ extends Function_<enums.Updates> {
 }
 
 export class phone_joinGroupCall_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { muted?: true; video_stopped?: true; call: enums.InputGroupCall; join_as: enums.InputPeer; invite_hash?: string; params: enums.DataJSON }) => enums.Updates;
+  static __F: (params: { muted?: true; video_stopped?: true; call: enums.InputGroupCall; join_as: enums.InputPeer; invite_hash?: string; params: enums.DataJSON }) => enums.Updates = null as unknown as (params: { muted?: true; video_stopped?: true; call: enums.InputGroupCall; join_as: enums.InputPeer; invite_hash?: string; params: enums.DataJSON }) => enums.Updates;
   muted?: true;
   video_stopped?: true;
   call: enums.InputGroupCall;
@@ -18423,11 +18423,11 @@ export class phone_joinGroupCall_ extends Function_<enums.Updates> {
   invite_hash?: string;
   params: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB132FF7B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.joinGroupCall"
   }
 
@@ -18467,15 +18467,15 @@ export class phone_joinGroupCall_ extends Function_<enums.Updates> {
 }
 
 export class phone_leaveGroupCall_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; source: number }) => enums.Updates;
+  static __F: (params: { call: enums.InputGroupCall; source: number }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall; source: number }) => enums.Updates;
   call: enums.InputGroupCall;
   source: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x500377F9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.leaveGroupCall"
   }
 
@@ -18501,15 +18501,15 @@ export class phone_leaveGroupCall_ extends Function_<enums.Updates> {
 }
 
 export class phone_inviteToGroupCall_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; users: Array<enums.InputUser> }) => enums.Updates;
+  static __F: (params: { call: enums.InputGroupCall; users: Array<enums.InputUser> }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall; users: Array<enums.InputUser> }) => enums.Updates;
   call: enums.InputGroupCall;
   users: Array<enums.InputUser>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7B393160;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.inviteToGroupCall"
   }
 
@@ -18535,14 +18535,14 @@ export class phone_inviteToGroupCall_ extends Function_<enums.Updates> {
 }
 
 export class phone_discardGroupCall_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall }) => enums.Updates;
+  static __F: (params: { call: enums.InputGroupCall }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall }) => enums.Updates;
   call: enums.InputGroupCall;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7A777135;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.discardGroupCall"
   }
 
@@ -18565,16 +18565,16 @@ export class phone_discardGroupCall_ extends Function_<enums.Updates> {
 }
 
 export class phone_toggleGroupCallSettings_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { reset_invite_hash?: true; call: enums.InputGroupCall; join_muted?: boolean }) => enums.Updates;
+  static __F: (params: { reset_invite_hash?: true; call: enums.InputGroupCall; join_muted?: boolean }) => enums.Updates = null as unknown as (params: { reset_invite_hash?: true; call: enums.InputGroupCall; join_muted?: boolean }) => enums.Updates;
   reset_invite_hash?: true;
   call: enums.InputGroupCall;
   join_muted?: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x74BBB43D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.toggleGroupCallSettings"
   }
 
@@ -18605,15 +18605,15 @@ export class phone_toggleGroupCallSettings_ extends Function_<enums.Updates> {
 }
 
 export class phone_getGroupCall_ extends Function_<enums.phone.GroupCall> {
-  static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; limit: number }) => enums.phone.GroupCall;
+  static __F: (params: { call: enums.InputGroupCall; limit: number }) => enums.phone.GroupCall = null as unknown as (params: { call: enums.InputGroupCall; limit: number }) => enums.phone.GroupCall;
   call: enums.InputGroupCall;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x041845DB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.getGroupCall"
   }
 
@@ -18639,18 +18639,18 @@ export class phone_getGroupCall_ extends Function_<enums.phone.GroupCall> {
 }
 
 export class phone_getGroupParticipants_ extends Function_<enums.phone.GroupParticipants> {
-  static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; ids: Array<enums.InputPeer>; sources: Array<number>; offset: string; limit: number }) => enums.phone.GroupParticipants;
+  static __F: (params: { call: enums.InputGroupCall; ids: Array<enums.InputPeer>; sources: Array<number>; offset: string; limit: number }) => enums.phone.GroupParticipants = null as unknown as (params: { call: enums.InputGroupCall; ids: Array<enums.InputPeer>; sources: Array<number>; offset: string; limit: number }) => enums.phone.GroupParticipants;
   call: enums.InputGroupCall;
   ids: Array<enums.InputPeer>;
   sources: Array<number>;
   offset: string;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC558D8AB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.getGroupParticipants"
   }
 
@@ -18685,15 +18685,15 @@ export class phone_getGroupParticipants_ extends Function_<enums.phone.GroupPart
 }
 
 export class phone_checkGroupCall_ extends Function_<number[]> {
-  static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; sources: Array<number> }) => number[];
+  static __F: (params: { call: enums.InputGroupCall; sources: Array<number> }) => number[] = null as unknown as (params: { call: enums.InputGroupCall; sources: Array<number> }) => number[];
   call: enums.InputGroupCall;
   sources: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB59CF977;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.checkGroupCall"
   }
 
@@ -18719,18 +18719,18 @@ export class phone_checkGroupCall_ extends Function_<number[]> {
 }
 
 export class phone_toggleGroupCallRecord_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { start?: true; video?: true; call: enums.InputGroupCall; title?: string; video_portrait?: boolean }) => enums.Updates;
+  static __F: (params: { start?: true; video?: true; call: enums.InputGroupCall; title?: string; video_portrait?: boolean }) => enums.Updates = null as unknown as (params: { start?: true; video?: true; call: enums.InputGroupCall; title?: string; video_portrait?: boolean }) => enums.Updates;
   start?: true;
   video?: true;
   call: enums.InputGroupCall;
   title?: string;
   video_portrait?: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF128C708;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.toggleGroupCallRecord"
   }
 
@@ -18767,7 +18767,7 @@ export class phone_toggleGroupCallRecord_ extends Function_<enums.Updates> {
 }
 
 export class phone_editGroupCallParticipant_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; participant: enums.InputPeer; muted?: boolean; volume?: number; raise_hand?: boolean; video_stopped?: boolean; video_paused?: boolean; presentation_paused?: boolean }) => enums.Updates;
+  static __F: (params: { call: enums.InputGroupCall; participant: enums.InputPeer; muted?: boolean; volume?: number; raise_hand?: boolean; video_stopped?: boolean; video_paused?: boolean; presentation_paused?: boolean }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall; participant: enums.InputPeer; muted?: boolean; volume?: number; raise_hand?: boolean; video_stopped?: boolean; video_paused?: boolean; presentation_paused?: boolean }) => enums.Updates;
   call: enums.InputGroupCall;
   participant: enums.InputPeer;
   muted?: boolean;
@@ -18777,11 +18777,11 @@ export class phone_editGroupCallParticipant_ extends Function_<enums.Updates> {
   video_paused?: boolean;
   presentation_paused?: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA5273ABF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.editGroupCallParticipant"
   }
 
@@ -18827,15 +18827,15 @@ export class phone_editGroupCallParticipant_ extends Function_<enums.Updates> {
 }
 
 export class phone_editGroupCallTitle_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; title: string }) => enums.Updates;
+  static __F: (params: { call: enums.InputGroupCall; title: string }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall; title: string }) => enums.Updates;
   call: enums.InputGroupCall;
   title: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1CA6AC0A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.editGroupCallTitle"
   }
 
@@ -18861,14 +18861,14 @@ export class phone_editGroupCallTitle_ extends Function_<enums.Updates> {
 }
 
 export class phone_getGroupCallJoinAs_ extends Function_<enums.phone.JoinAsPeers> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.phone.JoinAsPeers;
+  static __F: (params: { peer: enums.InputPeer }) => enums.phone.JoinAsPeers = null as unknown as (params: { peer: enums.InputPeer }) => enums.phone.JoinAsPeers;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEF7C213A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.getGroupCallJoinAs"
   }
 
@@ -18891,15 +18891,15 @@ export class phone_getGroupCallJoinAs_ extends Function_<enums.phone.JoinAsPeers
 }
 
 export class phone_exportGroupCallInvite_ extends Function_<enums.phone.ExportedGroupCallInvite> {
-  static __F = Symbol() as unknown as (params: { can_self_unmute?: true; call: enums.InputGroupCall }) => enums.phone.ExportedGroupCallInvite;
+  static __F: (params: { can_self_unmute?: true; call: enums.InputGroupCall }) => enums.phone.ExportedGroupCallInvite = null as unknown as (params: { can_self_unmute?: true; call: enums.InputGroupCall }) => enums.phone.ExportedGroupCallInvite;
   can_self_unmute?: true;
   call: enums.InputGroupCall;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE6AA647F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.exportGroupCallInvite"
   }
 
@@ -18927,15 +18927,15 @@ export class phone_exportGroupCallInvite_ extends Function_<enums.phone.Exported
 }
 
 export class phone_toggleGroupCallStartSubscription_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; subscribed: boolean }) => enums.Updates;
+  static __F: (params: { call: enums.InputGroupCall; subscribed: boolean }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall; subscribed: boolean }) => enums.Updates;
   call: enums.InputGroupCall;
   subscribed: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x219C34E6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.toggleGroupCallStartSubscription"
   }
 
@@ -18961,14 +18961,14 @@ export class phone_toggleGroupCallStartSubscription_ extends Function_<enums.Upd
 }
 
 export class phone_startScheduledGroupCall_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall }) => enums.Updates;
+  static __F: (params: { call: enums.InputGroupCall }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall }) => enums.Updates;
   call: enums.InputGroupCall;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5680E342;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.startScheduledGroupCall"
   }
 
@@ -18991,15 +18991,15 @@ export class phone_startScheduledGroupCall_ extends Function_<enums.Updates> {
 }
 
 export class phone_saveDefaultGroupCallJoinAs_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; join_as: enums.InputPeer }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; join_as: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer; join_as: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
   join_as: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x575E1F8C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.saveDefaultGroupCallJoinAs"
   }
 
@@ -19025,15 +19025,15 @@ export class phone_saveDefaultGroupCallJoinAs_ extends Function_<boolean> {
 }
 
 export class phone_joinGroupCallPresentation_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; params: enums.DataJSON }) => enums.Updates;
+  static __F: (params: { call: enums.InputGroupCall; params: enums.DataJSON }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall; params: enums.DataJSON }) => enums.Updates;
   call: enums.InputGroupCall;
   params: enums.DataJSON;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCBEA6BC4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.joinGroupCallPresentation"
   }
 
@@ -19059,14 +19059,14 @@ export class phone_joinGroupCallPresentation_ extends Function_<enums.Updates> {
 }
 
 export class phone_leaveGroupCallPresentation_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall }) => enums.Updates;
+  static __F: (params: { call: enums.InputGroupCall }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall }) => enums.Updates;
   call: enums.InputGroupCall;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1C50D144;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.leaveGroupCallPresentation"
   }
 
@@ -19089,14 +19089,14 @@ export class phone_leaveGroupCallPresentation_ extends Function_<enums.Updates> 
 }
 
 export class phone_getGroupCallStreamChannels_ extends Function_<enums.phone.GroupCallStreamChannels> {
-  static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall }) => enums.phone.GroupCallStreamChannels;
+  static __F: (params: { call: enums.InputGroupCall }) => enums.phone.GroupCallStreamChannels = null as unknown as (params: { call: enums.InputGroupCall }) => enums.phone.GroupCallStreamChannels;
   call: enums.InputGroupCall;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1AB21940;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.getGroupCallStreamChannels"
   }
 
@@ -19119,15 +19119,15 @@ export class phone_getGroupCallStreamChannels_ extends Function_<enums.phone.Gro
 }
 
 export class phone_getGroupCallStreamRtmpUrl_ extends Function_<enums.phone.GroupCallStreamRtmpUrl> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; revoke: boolean }) => enums.phone.GroupCallStreamRtmpUrl;
+  static __F: (params: { peer: enums.InputPeer; revoke: boolean }) => enums.phone.GroupCallStreamRtmpUrl = null as unknown as (params: { peer: enums.InputPeer; revoke: boolean }) => enums.phone.GroupCallStreamRtmpUrl;
   peer: enums.InputPeer;
   revoke: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDEB3ABBF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.getGroupCallStreamRtmpUrl"
   }
 
@@ -19153,15 +19153,15 @@ export class phone_getGroupCallStreamRtmpUrl_ extends Function_<enums.phone.Grou
 }
 
 export class phone_saveCallLog_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPhoneCall; file: enums.InputFile }) => boolean;
+  static __F: (params: { peer: enums.InputPhoneCall; file: enums.InputFile }) => boolean = null as unknown as (params: { peer: enums.InputPhoneCall; file: enums.InputFile }) => boolean;
   peer: enums.InputPhoneCall;
   file: enums.InputFile;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x41248786;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "phone.saveCallLog"
   }
 
@@ -19187,15 +19187,15 @@ export class phone_saveCallLog_ extends Function_<boolean> {
 }
 
 export class langpack_getLangPack_ extends Function_<enums.LangPackDifference> {
-  static __F = Symbol() as unknown as (params: { lang_pack: string; lang_code: string }) => enums.LangPackDifference;
+  static __F: (params: { lang_pack: string; lang_code: string }) => enums.LangPackDifference = null as unknown as (params: { lang_pack: string; lang_code: string }) => enums.LangPackDifference;
   lang_pack: string;
   lang_code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xF2F2330A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "langpack.getLangPack"
   }
 
@@ -19221,16 +19221,16 @@ export class langpack_getLangPack_ extends Function_<enums.LangPackDifference> {
 }
 
 export class langpack_getStrings_ extends Function_<enums.LangPackString[]> {
-  static __F = Symbol() as unknown as (params: { lang_pack: string; lang_code: string; keys: Array<string> }) => enums.LangPackString[];
+  static __F: (params: { lang_pack: string; lang_code: string; keys: Array<string> }) => enums.LangPackString[] = null as unknown as (params: { lang_pack: string; lang_code: string; keys: Array<string> }) => enums.LangPackString[];
   lang_pack: string;
   lang_code: string;
   keys: Array<string>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEFEA3803;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "langpack.getStrings"
   }
 
@@ -19259,16 +19259,16 @@ export class langpack_getStrings_ extends Function_<enums.LangPackString[]> {
 }
 
 export class langpack_getDifference_ extends Function_<enums.LangPackDifference> {
-  static __F = Symbol() as unknown as (params: { lang_pack: string; lang_code: string; from_version: number }) => enums.LangPackDifference;
+  static __F: (params: { lang_pack: string; lang_code: string; from_version: number }) => enums.LangPackDifference = null as unknown as (params: { lang_pack: string; lang_code: string; from_version: number }) => enums.LangPackDifference;
   lang_pack: string;
   lang_code: string;
   from_version: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCD984AA5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "langpack.getDifference"
   }
 
@@ -19297,14 +19297,14 @@ export class langpack_getDifference_ extends Function_<enums.LangPackDifference>
 }
 
 export class langpack_getLanguages_ extends Function_<enums.LangPackLanguage[]> {
-  static __F = Symbol() as unknown as (params: { lang_pack: string }) => enums.LangPackLanguage[];
+  static __F: (params: { lang_pack: string }) => enums.LangPackLanguage[] = null as unknown as (params: { lang_pack: string }) => enums.LangPackLanguage[];
   lang_pack: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x42C6978F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "langpack.getLanguages"
   }
 
@@ -19327,15 +19327,15 @@ export class langpack_getLanguages_ extends Function_<enums.LangPackLanguage[]> 
 }
 
 export class langpack_getLanguage_ extends Function_<enums.LangPackLanguage> {
-  static __F = Symbol() as unknown as (params: { lang_pack: string; lang_code: string }) => enums.LangPackLanguage;
+  static __F: (params: { lang_pack: string; lang_code: string }) => enums.LangPackLanguage = null as unknown as (params: { lang_pack: string; lang_code: string }) => enums.LangPackLanguage;
   lang_pack: string;
   lang_code: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6A596502;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "langpack.getLanguage"
   }
 
@@ -19361,14 +19361,14 @@ export class langpack_getLanguage_ extends Function_<enums.LangPackLanguage> {
 }
 
 export class folders_editPeerFolders_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { folder_peers: Array<enums.InputFolderPeer> }) => enums.Updates;
+  static __F: (params: { folder_peers: Array<enums.InputFolderPeer> }) => enums.Updates = null as unknown as (params: { folder_peers: Array<enums.InputFolderPeer> }) => enums.Updates;
   folder_peers: Array<enums.InputFolderPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6847D0AB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "folders.editPeerFolders"
   }
 
@@ -19391,15 +19391,15 @@ export class folders_editPeerFolders_ extends Function_<enums.Updates> {
 }
 
 export class stats_getBroadcastStats_ extends Function_<enums.stats.BroadcastStats> {
-  static __F = Symbol() as unknown as (params: { dark?: true; channel: enums.InputChannel }) => enums.stats.BroadcastStats;
+  static __F: (params: { dark?: true; channel: enums.InputChannel }) => enums.stats.BroadcastStats = null as unknown as (params: { dark?: true; channel: enums.InputChannel }) => enums.stats.BroadcastStats;
   dark?: true;
   channel: enums.InputChannel;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAB42441A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stats.getBroadcastStats"
   }
 
@@ -19427,15 +19427,15 @@ export class stats_getBroadcastStats_ extends Function_<enums.stats.BroadcastSta
 }
 
 export class stats_loadAsyncGraph_ extends Function_<enums.StatsGraph> {
-  static __F = Symbol() as unknown as (params: { token: string; x?: bigint }) => enums.StatsGraph;
+  static __F: (params: { token: string; x?: bigint }) => enums.StatsGraph = null as unknown as (params: { token: string; x?: bigint }) => enums.StatsGraph;
   token: string;
   x?: bigint;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x621D5FA0;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stats.loadAsyncGraph"
   }
 
@@ -19463,15 +19463,15 @@ export class stats_loadAsyncGraph_ extends Function_<enums.StatsGraph> {
 }
 
 export class stats_getMegagroupStats_ extends Function_<enums.stats.MegagroupStats> {
-  static __F = Symbol() as unknown as (params: { dark?: true; channel: enums.InputChannel }) => enums.stats.MegagroupStats;
+  static __F: (params: { dark?: true; channel: enums.InputChannel }) => enums.stats.MegagroupStats = null as unknown as (params: { dark?: true; channel: enums.InputChannel }) => enums.stats.MegagroupStats;
   dark?: true;
   channel: enums.InputChannel;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xDCDF8607;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stats.getMegagroupStats"
   }
 
@@ -19499,17 +19499,17 @@ export class stats_getMegagroupStats_ extends Function_<enums.stats.MegagroupSta
 }
 
 export class stats_getMessagePublicForwards_ extends Function_<enums.stats.PublicForwards> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; msg_id: number; offset: string; limit: number }) => enums.stats.PublicForwards;
+  static __F: (params: { channel: enums.InputChannel; msg_id: number; offset: string; limit: number }) => enums.stats.PublicForwards = null as unknown as (params: { channel: enums.InputChannel; msg_id: number; offset: string; limit: number }) => enums.stats.PublicForwards;
   channel: enums.InputChannel;
   msg_id: number;
   offset: string;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5F150144;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stats.getMessagePublicForwards"
   }
 
@@ -19541,16 +19541,16 @@ export class stats_getMessagePublicForwards_ extends Function_<enums.stats.Publi
 }
 
 export class stats_getMessageStats_ extends Function_<enums.stats.MessageStats> {
-  static __F = Symbol() as unknown as (params: { dark?: true; channel: enums.InputChannel; msg_id: number }) => enums.stats.MessageStats;
+  static __F: (params: { dark?: true; channel: enums.InputChannel; msg_id: number }) => enums.stats.MessageStats = null as unknown as (params: { dark?: true; channel: enums.InputChannel; msg_id: number }) => enums.stats.MessageStats;
   dark?: true;
   channel: enums.InputChannel;
   msg_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB6E0A3F5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stats.getMessageStats"
   }
 
@@ -19581,16 +19581,16 @@ export class stats_getMessageStats_ extends Function_<enums.stats.MessageStats> 
 }
 
 export class stats_getStoryStats_ extends Function_<enums.stats.StoryStats> {
-  static __F = Symbol() as unknown as (params: { dark?: true; peer: enums.InputPeer; id: number }) => enums.stats.StoryStats;
+  static __F: (params: { dark?: true; peer: enums.InputPeer; id: number }) => enums.stats.StoryStats = null as unknown as (params: { dark?: true; peer: enums.InputPeer; id: number }) => enums.stats.StoryStats;
   dark?: true;
   peer: enums.InputPeer;
   id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x374FEF40;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stats.getStoryStats"
   }
 
@@ -19621,17 +19621,17 @@ export class stats_getStoryStats_ extends Function_<enums.stats.StoryStats> {
 }
 
 export class stats_getStoryPublicForwards_ extends Function_<enums.stats.PublicForwards> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number; offset: string; limit: number }) => enums.stats.PublicForwards;
+  static __F: (params: { peer: enums.InputPeer; id: number; offset: string; limit: number }) => enums.stats.PublicForwards = null as unknown as (params: { peer: enums.InputPeer; id: number; offset: string; limit: number }) => enums.stats.PublicForwards;
   peer: enums.InputPeer;
   id: number;
   offset: string;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA6437EF6;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stats.getStoryPublicForwards"
   }
 
@@ -19663,16 +19663,16 @@ export class stats_getStoryPublicForwards_ extends Function_<enums.stats.PublicF
 }
 
 export class chatlists_exportChatlistInvite_ extends Function_<enums.chatlists.ExportedChatlistInvite> {
-  static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist; title: string; peers: Array<enums.InputPeer> }) => enums.chatlists.ExportedChatlistInvite;
+  static __F: (params: { chatlist: enums.InputChatlist; title: string; peers: Array<enums.InputPeer> }) => enums.chatlists.ExportedChatlistInvite = null as unknown as (params: { chatlist: enums.InputChatlist; title: string; peers: Array<enums.InputPeer> }) => enums.chatlists.ExportedChatlistInvite;
   chatlist: enums.InputChatlist;
   title: string;
   peers: Array<enums.InputPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x8472478E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.exportChatlistInvite"
   }
 
@@ -19701,15 +19701,15 @@ export class chatlists_exportChatlistInvite_ extends Function_<enums.chatlists.E
 }
 
 export class chatlists_deleteExportedInvite_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist; slug: string }) => boolean;
+  static __F: (params: { chatlist: enums.InputChatlist; slug: string }) => boolean = null as unknown as (params: { chatlist: enums.InputChatlist; slug: string }) => boolean;
   chatlist: enums.InputChatlist;
   slug: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x719C5C5E;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.deleteExportedInvite"
   }
 
@@ -19735,17 +19735,17 @@ export class chatlists_deleteExportedInvite_ extends Function_<boolean> {
 }
 
 export class chatlists_editExportedInvite_ extends Function_<enums.ExportedChatlistInvite> {
-  static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist; slug: string; title?: string; peers?: Array<enums.InputPeer> }) => enums.ExportedChatlistInvite;
+  static __F: (params: { chatlist: enums.InputChatlist; slug: string; title?: string; peers?: Array<enums.InputPeer> }) => enums.ExportedChatlistInvite = null as unknown as (params: { chatlist: enums.InputChatlist; slug: string; title?: string; peers?: Array<enums.InputPeer> }) => enums.ExportedChatlistInvite;
   chatlist: enums.InputChatlist;
   slug: string;
   title?: string;
   peers?: Array<enums.InputPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x653DB63D;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.editExportedInvite"
   }
 
@@ -19779,14 +19779,14 @@ export class chatlists_editExportedInvite_ extends Function_<enums.ExportedChatl
 }
 
 export class chatlists_getExportedInvites_ extends Function_<enums.chatlists.ExportedInvites> {
-  static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist }) => enums.chatlists.ExportedInvites;
+  static __F: (params: { chatlist: enums.InputChatlist }) => enums.chatlists.ExportedInvites = null as unknown as (params: { chatlist: enums.InputChatlist }) => enums.chatlists.ExportedInvites;
   chatlist: enums.InputChatlist;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xCE03DA83;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.getExportedInvites"
   }
 
@@ -19809,14 +19809,14 @@ export class chatlists_getExportedInvites_ extends Function_<enums.chatlists.Exp
 }
 
 export class chatlists_checkChatlistInvite_ extends Function_<enums.chatlists.ChatlistInvite> {
-  static __F = Symbol() as unknown as (params: { slug: string }) => enums.chatlists.ChatlistInvite;
+  static __F: (params: { slug: string }) => enums.chatlists.ChatlistInvite = null as unknown as (params: { slug: string }) => enums.chatlists.ChatlistInvite;
   slug: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x41C10FFF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.checkChatlistInvite"
   }
 
@@ -19839,15 +19839,15 @@ export class chatlists_checkChatlistInvite_ extends Function_<enums.chatlists.Ch
 }
 
 export class chatlists_joinChatlistInvite_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { slug: string; peers: Array<enums.InputPeer> }) => enums.Updates;
+  static __F: (params: { slug: string; peers: Array<enums.InputPeer> }) => enums.Updates = null as unknown as (params: { slug: string; peers: Array<enums.InputPeer> }) => enums.Updates;
   slug: string;
   peers: Array<enums.InputPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA6B1E39A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.joinChatlistInvite"
   }
 
@@ -19873,14 +19873,14 @@ export class chatlists_joinChatlistInvite_ extends Function_<enums.Updates> {
 }
 
 export class chatlists_getChatlistUpdates_ extends Function_<enums.chatlists.ChatlistUpdates> {
-  static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist }) => enums.chatlists.ChatlistUpdates;
+  static __F: (params: { chatlist: enums.InputChatlist }) => enums.chatlists.ChatlistUpdates = null as unknown as (params: { chatlist: enums.InputChatlist }) => enums.chatlists.ChatlistUpdates;
   chatlist: enums.InputChatlist;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x89419521;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.getChatlistUpdates"
   }
 
@@ -19903,15 +19903,15 @@ export class chatlists_getChatlistUpdates_ extends Function_<enums.chatlists.Cha
 }
 
 export class chatlists_joinChatlistUpdates_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) => enums.Updates;
+  static __F: (params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) => enums.Updates = null as unknown as (params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) => enums.Updates;
   chatlist: enums.InputChatlist;
   peers: Array<enums.InputPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE089F8F5;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.joinChatlistUpdates"
   }
 
@@ -19937,14 +19937,14 @@ export class chatlists_joinChatlistUpdates_ extends Function_<enums.Updates> {
 }
 
 export class chatlists_hideChatlistUpdates_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist }) => boolean;
+  static __F: (params: { chatlist: enums.InputChatlist }) => boolean = null as unknown as (params: { chatlist: enums.InputChatlist }) => boolean;
   chatlist: enums.InputChatlist;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x66E486FB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.hideChatlistUpdates"
   }
 
@@ -19967,14 +19967,14 @@ export class chatlists_hideChatlistUpdates_ extends Function_<boolean> {
 }
 
 export class chatlists_getLeaveChatlistSuggestions_ extends Function_<enums.Peer[]> {
-  static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist }) => enums.Peer[];
+  static __F: (params: { chatlist: enums.InputChatlist }) => enums.Peer[] = null as unknown as (params: { chatlist: enums.InputChatlist }) => enums.Peer[];
   chatlist: enums.InputChatlist;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xFDBCD714;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.getLeaveChatlistSuggestions"
   }
 
@@ -19997,15 +19997,15 @@ export class chatlists_getLeaveChatlistSuggestions_ extends Function_<enums.Peer
 }
 
 export class chatlists_leaveChatlist_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) => enums.Updates;
+  static __F: (params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) => enums.Updates = null as unknown as (params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) => enums.Updates;
   chatlist: enums.InputChatlist;
   peers: Array<enums.InputPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x74FAE13A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "chatlists.leaveChatlist"
   }
 
@@ -20031,14 +20031,14 @@ export class chatlists_leaveChatlist_ extends Function_<enums.Updates> {
 }
 
 export class stories_canSendStory_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => boolean;
+  static __F: (params: { peer: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xC7DFDFDD;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.canSendStory"
   }
 
@@ -20061,7 +20061,7 @@ export class stories_canSendStory_ extends Function_<boolean> {
 }
 
 export class stories_sendStory_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { pinned?: true; noforwards?: true; fwd_modified?: true; peer: enums.InputPeer; media: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules: Array<enums.InputPrivacyRule>; random_id: bigint; period?: number; fwd_from_id?: enums.InputPeer; fwd_from_story?: number }) => enums.Updates;
+  static __F: (params: { pinned?: true; noforwards?: true; fwd_modified?: true; peer: enums.InputPeer; media: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules: Array<enums.InputPrivacyRule>; random_id: bigint; period?: number; fwd_from_id?: enums.InputPeer; fwd_from_story?: number }) => enums.Updates = null as unknown as (params: { pinned?: true; noforwards?: true; fwd_modified?: true; peer: enums.InputPeer; media: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules: Array<enums.InputPrivacyRule>; random_id: bigint; period?: number; fwd_from_id?: enums.InputPeer; fwd_from_story?: number }) => enums.Updates;
   pinned?: true;
   noforwards?: true;
   fwd_modified?: true;
@@ -20076,11 +20076,11 @@ export class stories_sendStory_ extends Function_<enums.Updates> {
   fwd_from_id?: enums.InputPeer;
   fwd_from_story?: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xE4E6694B;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.sendStory"
   }
 
@@ -20141,7 +20141,7 @@ export class stories_sendStory_ extends Function_<enums.Updates> {
 }
 
 export class stories_editStory_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number; media?: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules?: Array<enums.InputPrivacyRule> }) => enums.Updates;
+  static __F: (params: { peer: enums.InputPeer; id: number; media?: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules?: Array<enums.InputPrivacyRule> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; id: number; media?: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules?: Array<enums.InputPrivacyRule> }) => enums.Updates;
   peer: enums.InputPeer;
   id: number;
   media?: enums.InputMedia;
@@ -20150,11 +20150,11 @@ export class stories_editStory_ extends Function_<enums.Updates> {
   entities?: Array<enums.MessageEntity>;
   privacy_rules?: Array<enums.InputPrivacyRule>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB583BA46;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.editStory"
   }
 
@@ -20197,15 +20197,15 @@ export class stories_editStory_ extends Function_<enums.Updates> {
 }
 
 export class stories_deleteStories_ extends Function_<number[]> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => number[];
+  static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => number[] = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => number[];
   peer: enums.InputPeer;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xAE59DB5F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.deleteStories"
   }
 
@@ -20231,16 +20231,16 @@ export class stories_deleteStories_ extends Function_<number[]> {
 }
 
 export class stories_togglePinned_ extends Function_<number[]> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number>; pinned: boolean }) => number[];
+  static __F: (params: { peer: enums.InputPeer; id: Array<number>; pinned: boolean }) => number[] = null as unknown as (params: { peer: enums.InputPeer; id: Array<number>; pinned: boolean }) => number[];
   peer: enums.InputPeer;
   id: Array<number>;
   pinned: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x9A75A1EF;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.togglePinned"
   }
 
@@ -20269,16 +20269,16 @@ export class stories_togglePinned_ extends Function_<number[]> {
 }
 
 export class stories_getAllStories_ extends Function_<enums.stories.AllStories> {
-  static __F = Symbol() as unknown as (params?: { next?: true; hidden?: true; state?: string }) => enums.stories.AllStories;
+  static __F: (params?: { next?: true; hidden?: true; state?: string }) => enums.stories.AllStories = null as unknown as (params?: { next?: true; hidden?: true; state?: string }) => enums.stories.AllStories;
   next?: true;
   hidden?: true;
   state?: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xEEB0D625;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.getAllStories"
   }
 
@@ -20309,16 +20309,16 @@ export class stories_getAllStories_ extends Function_<enums.stories.AllStories> 
 }
 
 export class stories_getPinnedStories_ extends Function_<enums.stories.Stories> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; offset_id: number; limit: number }) => enums.stories.Stories;
+  static __F: (params: { peer: enums.InputPeer; offset_id: number; limit: number }) => enums.stories.Stories = null as unknown as (params: { peer: enums.InputPeer; offset_id: number; limit: number }) => enums.stories.Stories;
   peer: enums.InputPeer;
   offset_id: number;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5821A5DC;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.getPinnedStories"
   }
 
@@ -20347,16 +20347,16 @@ export class stories_getPinnedStories_ extends Function_<enums.stories.Stories> 
 }
 
 export class stories_getStoriesArchive_ extends Function_<enums.stories.Stories> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; offset_id: number; limit: number }) => enums.stories.Stories;
+  static __F: (params: { peer: enums.InputPeer; offset_id: number; limit: number }) => enums.stories.Stories = null as unknown as (params: { peer: enums.InputPeer; offset_id: number; limit: number }) => enums.stories.Stories;
   peer: enums.InputPeer;
   offset_id: number;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB4352016;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.getStoriesArchive"
   }
 
@@ -20385,15 +20385,15 @@ export class stories_getStoriesArchive_ extends Function_<enums.stories.Stories>
 }
 
 export class stories_getStoriesByID_ extends Function_<enums.stories.Stories> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.stories.Stories;
+  static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.stories.Stories = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.stories.Stories;
   peer: enums.InputPeer;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x5774CA74;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.getStoriesByID"
   }
 
@@ -20419,14 +20419,14 @@ export class stories_getStoriesByID_ extends Function_<enums.stories.Stories> {
 }
 
 export class stories_toggleAllStoriesHidden_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { hidden: boolean }) => boolean;
+  static __F: (params: { hidden: boolean }) => boolean = null as unknown as (params: { hidden: boolean }) => boolean;
   hidden: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7C2557C4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.toggleAllStoriesHidden"
   }
 
@@ -20449,15 +20449,15 @@ export class stories_toggleAllStoriesHidden_ extends Function_<boolean> {
 }
 
 export class stories_readStories_ extends Function_<number[]> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; max_id: number }) => number[];
+  static __F: (params: { peer: enums.InputPeer; max_id: number }) => number[] = null as unknown as (params: { peer: enums.InputPeer; max_id: number }) => number[];
   peer: enums.InputPeer;
   max_id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xA556DAC8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.readStories"
   }
 
@@ -20483,15 +20483,15 @@ export class stories_readStories_ extends Function_<number[]> {
 }
 
 export class stories_incrementStoryViews_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => boolean = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => boolean;
   peer: enums.InputPeer;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB2028AFB;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.incrementStoryViews"
   }
 
@@ -20517,7 +20517,7 @@ export class stories_incrementStoryViews_ extends Function_<boolean> {
 }
 
 export class stories_getStoryViewsList_ extends Function_<enums.stories.StoryViewsList> {
-  static __F = Symbol() as unknown as (params: { just_contacts?: true; reactions_first?: true; forwards_first?: true; peer: enums.InputPeer; q?: string; id: number; offset: string; limit: number }) => enums.stories.StoryViewsList;
+  static __F: (params: { just_contacts?: true; reactions_first?: true; forwards_first?: true; peer: enums.InputPeer; q?: string; id: number; offset: string; limit: number }) => enums.stories.StoryViewsList = null as unknown as (params: { just_contacts?: true; reactions_first?: true; forwards_first?: true; peer: enums.InputPeer; q?: string; id: number; offset: string; limit: number }) => enums.stories.StoryViewsList;
   just_contacts?: true;
   reactions_first?: true;
   forwards_first?: true;
@@ -20527,11 +20527,11 @@ export class stories_getStoryViewsList_ extends Function_<enums.stories.StoryVie
   offset: string;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7ED23C57;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.getStoryViewsList"
   }
 
@@ -20577,15 +20577,15 @@ export class stories_getStoryViewsList_ extends Function_<enums.stories.StoryVie
 }
 
 export class stories_getStoriesViews_ extends Function_<enums.stories.StoryViews> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.stories.StoryViews;
+  static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.stories.StoryViews = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.stories.StoryViews;
   peer: enums.InputPeer;
   id: Array<number>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x28E16CC8;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.getStoriesViews"
   }
 
@@ -20611,15 +20611,15 @@ export class stories_getStoriesViews_ extends Function_<enums.stories.StoryViews
 }
 
 export class stories_exportStoryLink_ extends Function_<enums.ExportedStoryLink> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number }) => enums.ExportedStoryLink;
+  static __F: (params: { peer: enums.InputPeer; id: number }) => enums.ExportedStoryLink = null as unknown as (params: { peer: enums.InputPeer; id: number }) => enums.ExportedStoryLink;
   peer: enums.InputPeer;
   id: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7B8DEF20;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.exportStoryLink"
   }
 
@@ -20645,17 +20645,17 @@ export class stories_exportStoryLink_ extends Function_<enums.ExportedStoryLink>
 }
 
 export class stories_report_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) => boolean;
   peer: enums.InputPeer;
   id: Array<number>;
   reason: enums.ReportReason;
   message: string;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x1923FA8C;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.report"
   }
 
@@ -20687,15 +20687,15 @@ export class stories_report_ extends Function_<boolean> {
 }
 
 export class stories_activateStealthMode_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params?: { past?: true; future?: true }) => enums.Updates;
+  static __F: (params?: { past?: true; future?: true }) => enums.Updates = null as unknown as (params?: { past?: true; future?: true }) => enums.Updates;
   past?: true;
   future?: true;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x57BBD166;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.activateStealthMode"
   }
 
@@ -20723,17 +20723,17 @@ export class stories_activateStealthMode_ extends Function_<enums.Updates> {
 }
 
 export class stories_sendReaction_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { add_to_recent?: true; peer: enums.InputPeer; story_id: number; reaction: enums.Reaction }) => enums.Updates;
+  static __F: (params: { add_to_recent?: true; peer: enums.InputPeer; story_id: number; reaction: enums.Reaction }) => enums.Updates = null as unknown as (params: { add_to_recent?: true; peer: enums.InputPeer; story_id: number; reaction: enums.Reaction }) => enums.Updates;
   add_to_recent?: true;
   peer: enums.InputPeer;
   story_id: number;
   reaction: enums.Reaction;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x7FD736B2;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.sendReaction"
   }
 
@@ -20767,14 +20767,14 @@ export class stories_sendReaction_ extends Function_<enums.Updates> {
 }
 
 export class stories_getPeerStories_ extends Function_<enums.stories.PeerStories> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.stories.PeerStories;
+  static __F: (params: { peer: enums.InputPeer }) => enums.stories.PeerStories = null as unknown as (params: { peer: enums.InputPeer }) => enums.stories.PeerStories;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x2C4ADA50;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.getPeerStories"
   }
 
@@ -20797,12 +20797,12 @@ export class stories_getPeerStories_ extends Function_<enums.stories.PeerStories
 }
 
 export class stories_getAllReadPeerStories_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as () => enums.Updates;
-  protected get [id]() {
+  static __F: () => enums.Updates = null as unknown as () => enums.Updates;
+  protected get [id](): number {
     return 0x9B5AE7F9;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.getAllReadPeerStories"
   }
 
@@ -20820,14 +20820,14 @@ export class stories_getAllReadPeerStories_ extends Function_<enums.Updates> {
 }
 
 export class stories_getPeerMaxIDs_ extends Function_<number[]> {
-  static __F = Symbol() as unknown as (params: { id: Array<enums.InputPeer> }) => number[];
+  static __F: (params: { id: Array<enums.InputPeer> }) => number[] = null as unknown as (params: { id: Array<enums.InputPeer> }) => number[];
   id: Array<enums.InputPeer>;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x535983C3;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.getPeerMaxIDs"
   }
 
@@ -20850,12 +20850,12 @@ export class stories_getPeerMaxIDs_ extends Function_<number[]> {
 }
 
 export class stories_getChatsToSend_ extends Function_<enums.messages.Chats> {
-  static __F = Symbol() as unknown as () => enums.messages.Chats;
-  protected get [id]() {
+  static __F: () => enums.messages.Chats = null as unknown as () => enums.messages.Chats;
+  protected get [id](): number {
     return 0xA56A8B60;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.getChatsToSend"
   }
 
@@ -20873,15 +20873,15 @@ export class stories_getChatsToSend_ extends Function_<enums.messages.Chats> {
 }
 
 export class stories_togglePeerStoriesHidden_ extends Function_<boolean> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; hidden: boolean }) => boolean;
+  static __F: (params: { peer: enums.InputPeer; hidden: boolean }) => boolean = null as unknown as (params: { peer: enums.InputPeer; hidden: boolean }) => boolean;
   peer: enums.InputPeer;
   hidden: boolean;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xBD0415C4;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.togglePeerStoriesHidden"
   }
 
@@ -20907,7 +20907,7 @@ export class stories_togglePeerStoriesHidden_ extends Function_<boolean> {
 }
 
 export class stories_getStoryReactionsList_ extends Function_<enums.stories.StoryReactionsList> {
-  static __F = Symbol() as unknown as (params: { forwards_first?: true; peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) => enums.stories.StoryReactionsList;
+  static __F: (params: { forwards_first?: true; peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) => enums.stories.StoryReactionsList = null as unknown as (params: { forwards_first?: true; peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) => enums.stories.StoryReactionsList;
   forwards_first?: true;
   peer: enums.InputPeer;
   id: number;
@@ -20915,11 +20915,11 @@ export class stories_getStoryReactionsList_ extends Function_<enums.stories.Stor
   offset?: string;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0xB9B2881F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "stories.getStoryReactionsList"
   }
 
@@ -20959,17 +20959,17 @@ export class stories_getStoryReactionsList_ extends Function_<enums.stories.Stor
 }
 
 export class premium_getBoostsList_ extends Function_<enums.premium.BoostsList> {
-  static __F = Symbol() as unknown as (params: { gifts?: true; peer: enums.InputPeer; offset: string; limit: number }) => enums.premium.BoostsList;
+  static __F: (params: { gifts?: true; peer: enums.InputPeer; offset: string; limit: number }) => enums.premium.BoostsList = null as unknown as (params: { gifts?: true; peer: enums.InputPeer; offset: string; limit: number }) => enums.premium.BoostsList;
   gifts?: true;
   peer: enums.InputPeer;
   offset: string;
   limit: number;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x60F67660;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "premium.getBoostsList"
   }
 
@@ -21003,12 +21003,12 @@ export class premium_getBoostsList_ extends Function_<enums.premium.BoostsList> 
 }
 
 export class premium_getMyBoosts_ extends Function_<enums.premium.MyBoosts> {
-  static __F = Symbol() as unknown as () => enums.premium.MyBoosts;
-  protected get [id]() {
+  static __F: () => enums.premium.MyBoosts = null as unknown as () => enums.premium.MyBoosts;
+  protected get [id](): number {
     return 0x0BE77B4A;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "premium.getMyBoosts"
   }
 
@@ -21026,15 +21026,15 @@ export class premium_getMyBoosts_ extends Function_<enums.premium.MyBoosts> {
 }
 
 export class premium_applyBoost_ extends Function_<enums.premium.MyBoosts> {
-  static __F = Symbol() as unknown as (params: { slots?: Array<number>; peer: enums.InputPeer }) => enums.premium.MyBoosts;
+  static __F: (params: { slots?: Array<number>; peer: enums.InputPeer }) => enums.premium.MyBoosts = null as unknown as (params: { slots?: Array<number>; peer: enums.InputPeer }) => enums.premium.MyBoosts;
   slots?: Array<number>;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x6B7DA746;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "premium.applyBoost"
   }
 
@@ -21062,14 +21062,14 @@ export class premium_applyBoost_ extends Function_<enums.premium.MyBoosts> {
 }
 
 export class premium_getBoostsStatus_ extends Function_<enums.premium.BoostsStatus> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.premium.BoostsStatus;
+  static __F: (params: { peer: enums.InputPeer }) => enums.premium.BoostsStatus = null as unknown as (params: { peer: enums.InputPeer }) => enums.premium.BoostsStatus;
   peer: enums.InputPeer;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x042F1F61;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "premium.getBoostsStatus"
   }
 
@@ -21092,15 +21092,15 @@ export class premium_getBoostsStatus_ extends Function_<enums.premium.BoostsStat
 }
 
 export class premium_getUserBoosts_ extends Function_<enums.premium.BoostsList> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; user_id: enums.InputUser }) => enums.premium.BoostsList;
+  static __F: (params: { peer: enums.InputPeer; user_id: enums.InputUser }) => enums.premium.BoostsList = null as unknown as (params: { peer: enums.InputPeer; user_id: enums.InputUser }) => enums.premium.BoostsList;
   peer: enums.InputPeer;
   user_id: enums.InputUser;
 
-  protected get [id]() {
+  protected get [id](): number {
     return 0x39854D1F;
   }
 
-  static get [name]() {
+  static get [name](): string {
     return "premium.getUserBoosts"
   }
 
