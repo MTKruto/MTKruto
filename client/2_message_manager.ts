@@ -6,7 +6,7 @@ import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, 
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
-import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
+import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
@@ -1135,5 +1135,18 @@ export class MessageManager {
       usage_limit: params?.limit,
     });
     return await constructInviteLink(result[as](types.ChatInviteExported), this.#c.getEntity);
+  }
+
+  async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams) {
+    await this.#c.storage.assertUser("getCreatedInviteLinks");
+    const { invites } = await this.#c.api.messages.getExportedChatInvites({
+      peer: await this.#c.getInputPeer(chatId),
+      revoked: params?.revoked ? true : undefined,
+      admin_id: params?.by ? await this.#c.getInputUser(params.by) : new types.InputUserEmpty(),
+      limit: params?.limit ?? 100,
+      offset_date: params?.afterDate ? toUnixTimestamp(params.afterDate) : undefined,
+      offset_link: params?.afterInviteLink,
+    });
+    return await Promise.all(invites.map((v) => v[as](types.ChatInviteExported)).map((v) => constructInviteLink(v, this.#c.getEntity)));
   }
 }

@@ -335,3 +335,14 @@ export interface CreateInviteLinkParams {
   /** Whether an admin must explicitly approve join requests originating from this invite link. Cannot be `true` while `limit` is specified. */
   requireApproval?: boolean;
 }
+
+export interface GetCreatedInviteLinksParams {
+  /** The identifier of an admin. If specified, only invite links created by this admin will be returned. */
+  by?: ID;
+  /** The maximum number of results to return. Must be in the range 1-100. Defaults to 100. */
+  limit?: number;
+  /** Whether only revoked invite links must be returned. */
+  revoked?: boolean;
+  afterDate?: Date;
+  afterInviteLink?: string;
+}
