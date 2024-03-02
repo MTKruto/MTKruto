@@ -1,14 +1,12 @@
 import { contentType } from "../0_deps.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
-import { constructChatMemberUpdated } from "../3_types.ts";
+import { constructChatMemberUpdated, constructInviteLink } from "../3_types.ts";
 import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
-import { _SendCommon, BanChatMemberParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams } from "./0_params.ts";
-import { SearchMessagesParams } from "./0_params.ts";
-import { AddReactionParams, SetReactionsParams } from "./0_params.ts";
+import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
@@ -1123,5 +1121,19 @@ export class MessageManager {
   async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number) {
     const channel = await this.#c.getInputChannel(chatId);
     await this.#c.api.channels.setBoostsToUnblockRestrictions({ channel, boosts });
+  }
+
+  async createInviteLink(chatId: ID, params?: CreateInviteLinkParams) {
+    if (params?.requireApproval && params?.limit) {
+      throw new Error("createInviteLink: requireApproval cannot be true while limit is specified");
+    }
+    const result = await this.#c.api.messages.exportChatInvite({
+      peer: await this.#c.getInputPeer(chatId),
+      title: params?.title,
+      expire_date: params?.expireAt ? toUnixTimestamp(params.expireAt) : undefined,
+      request_needed: params?.requireApproval ? true : undefined,
+      usage_limit: params?.limit,
+    });
+    return await constructInviteLink(result[as](types.ChatInviteExported), this.#c.getEntity);
   }
 }
