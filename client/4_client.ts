@@ -1598,7 +1598,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#handle = concat(this.#handle, flatten(composer));
     return composer;
   }
-  
+
   branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>): Composer<pdateIntersection<C>> {
     const trueHandler = flatten(trueHandler_);
     const falseHandler = flatten(falseHandler_);
