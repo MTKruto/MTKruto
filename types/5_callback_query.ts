@@ -1,5 +1,5 @@
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, cleanObject, UNREACHABLE } from "../1_utilities.ts";
-import { peerToChatId, serialize, TLReader, types } from "../2_tl.ts";
+import { enums, peerToChatId, serialize, TLReader, types } from "../2_tl.ts";
 import { EntityGetter } from "./1__getters.ts";
 import { constructUser, User } from "./1_user.ts";
 import { Message, MessageGetter } from "./4_message.ts";
@@ -16,7 +16,7 @@ export interface CallbackQuery {
 }
 
 const ERR_INVALID_INLINE_MESSAGE_ID = new Error("Invalid inline message ID");
-export function deserializeInlineMessageId(inlineMessageId: string) {
+export function deserializeInlineMessageId(inlineMessageId: string): enums.InputBotInlineMessageID {
   try {
     const buffer = base64DecodeUrlSafe(inlineMessageId);
     const reader = new TLReader(buffer);

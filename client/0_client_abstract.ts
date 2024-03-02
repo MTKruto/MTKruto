@@ -34,7 +34,7 @@ export abstract class ClientAbstract {
 
   protected stateChangeHandler?: (connected: boolean) => void;
 
-  get dcId() {
+  get dcId(): number {
     if (!this.transport) {
       throw new Error("Not connected");
     }
@@ -46,7 +46,7 @@ export abstract class ClientAbstract {
     this.#dc = dc;
   }
 
-  get connected() {
+  get connected(): boolean {
     return this.transport === undefined ? false : this.transport.connection.connected;
   }
 

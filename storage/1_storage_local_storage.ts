@@ -17,22 +17,22 @@ export class StorageLocalStorage extends Storage implements Storage {
     this.#prefix = prefix;
   }
 
-  get prefix() {
+  get prefix(): string {
     return this.#prefix;
   }
 
-  branch(id: string) {
+  branch(id: string): StorageLocalStorage {
     return new StorageLocalStorage(this.prefix + "S__" + id);
   }
 
   initialize() {
   }
 
-  get supportsFiles() {
+  get supportsFiles(): boolean {
     return false;
   }
 
-  get<T>(key_: readonly StorageKeyPart[]) {
+  get<T>(key_: readonly StorageKeyPart[]): T | null {
     const key = this.prefix + toString(key_);
     const value = localStorage.getItem(key);
     if (value != null) {
@@ -42,7 +42,7 @@ export class StorageLocalStorage extends Storage implements Storage {
     }
   }
 
-  *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }) {
+  *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }): Generator<[readonly StorageKeyPart[], T]> {
     let entries = Object.entries(localStorage).sort(([a], [b]) => a.localeCompare(b));
     if (params?.reverse) {
       entries.reverse();

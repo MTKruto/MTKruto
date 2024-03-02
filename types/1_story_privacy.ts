@@ -48,7 +48,7 @@ async function restrict(users_: number[], rules: enums.InputPrivacyRule[], getEn
   }
 }
 
-export async function storyPrivacyToTlObject(privacy: StoryPrivacy, getEntity: EntityGetter) {
+export async function storyPrivacyToTlObject(privacy: StoryPrivacy, getEntity: EntityGetter): Promise<enums.InputPrivacyRule[]> {
   const rules = new Array<enums.InputPrivacyRule>();
   if ("everyoneExcept" in privacy) {
     await restrict(privacy.everyoneExcept, rules, getEntity);

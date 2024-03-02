@@ -1,14 +1,14 @@
 import { UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { enums, types } from "./2_types.ts";
 
-export function getChannelChatId(channelId: bigint) {
+export function getChannelChatId(channelId: bigint): number {
   return ZERO_CHANNEL_ID + -Number(channelId);
 }
 
 // convenience types
 export type AnyEntity = types.User | types.Channel | types.ChannelForbidden | types.Chat | types.ChatForbidden;
 
-export function peerToChatId(peer: enums.Peer | enums.InputPeer | AnyEntity | { channel_id: bigint } | { user_id: bigint } | { chat_id: bigint }) {
+export function peerToChatId(peer: enums.Peer | enums.InputPeer | AnyEntity | { channel_id: bigint } | { user_id: bigint } | { chat_id: bigint }): number {
   if (peer instanceof types.PeerUser || peer instanceof types.InputPeerUser || peer instanceof types.User || "user_id" in peer) {
     return Number("id" in peer ? peer.id : peer.user_id);
   } else if (peer instanceof types.PeerChat || peer instanceof types.InputPeerChat || peer instanceof types.Chat || peer instanceof types.ChatForbidden || "chat_id" in peer) {
@@ -20,7 +20,7 @@ export function peerToChatId(peer: enums.Peer | enums.InputPeer | AnyEntity | { 
   }
 }
 
-export function chatIdToPeer(chatId: number) {
+export function chatIdToPeer(chatId: number): enums.Peer {
   if (chatId > 0) {
     return new types.PeerUser({ user_id: BigInt(chatId) });
   } else if (chatId > ZERO_CHANNEL_ID) {
@@ -30,7 +30,7 @@ export function chatIdToPeer(chatId: number) {
   }
 }
 
-export function chatIdToPeerId(chatId: number) {
+export function chatIdToPeerId(chatId: number): bigint {
   const peer = chatIdToPeer(chatId);
   if ("user_id" in peer) {
     return peer.user_id;
@@ -43,7 +43,7 @@ export function chatIdToPeerId(chatId: number) {
   }
 }
 
-export function getChatIdPeerType(chatId: number) {
+export function getChatIdPeerType(chatId: number): "user" | "chat" | "channel" {
   if (chatId > 0) {
     return "user";
   } else if (chatId > ZERO_CHANNEL_ID) {
@@ -53,7 +53,7 @@ export function getChatIdPeerType(chatId: number) {
   }
 }
 
-export function inputPeerToPeer(inputPeer: enums.InputPeer) {
+export function inputPeerToPeer(inputPeer: enums.InputPeer): enums.Peer {
   if ("user_id" in inputPeer) {
     return new types.PeerUser(inputPeer);
   } else if ("chat_id" in inputPeer) {

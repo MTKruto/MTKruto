@@ -57,17 +57,17 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
     this.#handle = middleware.length == 0 ? skip : middleware.map(flatten).reduce(concat);
   }
 
-  middleware() {
+  middleware(): MiddlewareFn<C> {
     return this.#handle;
   }
 
-  use(...middleware: Middleware<UpdateIntersection<C>>[]) {
+  use(...middleware: Middleware<UpdateIntersection<C>>[]): Composer<C> {
     const composer = new Composer(...middleware);
     this.#handle = concat(this.#handle, flatten(composer));
     return composer;
   }
 
-  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>) {
+  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>): Composer<C> {
     const trueHandler = flatten(trueHandler_);
     const falseHandler = flatten(falseHandler_);
     return this.use(async (upd, next) => {
@@ -99,7 +99,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
   on<Q extends FilterQuery>(
     filter: Q,
     ...middleawre: Middleware<WithFilter<C, Q>>[]
-  ) {
+  ): Composer<UpdateIntersection<WithFilter<C, Q>>> {
     return this.filter((ctx): ctx is UpdateIntersection<WithFilter<C, Q>> => {
       return match(filter, ctx);
     }, ...middleawre);
@@ -111,7 +111,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
       prefixes: string | string[];
     },
     ...middleawre: Middleware<WithFilter<C, "message:text">>[]
-  ) {
+  ): Composer<WithFilter<C, "message:text">> {
     const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
     const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
     const prefixes_ = typeof commands === "object" && "prefixes" in commands ? commands.prefixes : (this.#prefixes ?? []);

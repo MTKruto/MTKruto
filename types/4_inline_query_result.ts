@@ -250,7 +250,7 @@ export type InlineQueryResult =
   | InlineQueryResultVoice;
 
 // deno-lint-ignore no-explicit-any
-export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => Promise<readonly [string, any[] | undefined]>, usernameResolver: UsernameResolver) {
+export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => Promise<readonly [string, any[] | undefined]>, usernameResolver: UsernameResolver): Promise<enums.InputBotInlineResult> {
   let document: enums.InputWebDocument | null = null;
   let thumb: types.InputWebDocument | null = null;
   let fileId_: string | null = null;

@@ -1,53 +1,53 @@
 import { bufferFromBigInt, concat } from "../1_utilities.ts";
 
 export class TLRawWriter {
-  protected _buffer = new Uint8Array();
+  protected _buffer: Uint8Array = new Uint8Array();
 
   constructor() {
   }
 
-  get buffer() {
+  get buffer(): Uint8Array {
     return this._buffer;
   }
 
-  write(buffer: Uint8Array) {
+  write(buffer: Uint8Array): typeof this {
     this._buffer = concat(this._buffer, buffer);
     return this;
   }
 
-  writeInt24(int: number, signed = true) {
+  writeInt24(int: number, signed = true): typeof this {
     this.write(bufferFromBigInt(int, 24 / 8, true, signed));
     return this;
   }
 
-  writeInt32(int: number, signed = true) {
+  writeInt32(int: number, signed = true): typeof this {
     this.write(bufferFromBigInt(int, 32 / 8, true, signed));
     return this;
   }
 
-  writeInt64(int: bigint, signed = true) {
+  writeInt64(int: bigint, signed = true): typeof this {
     this.write(bufferFromBigInt(int, 64 / 8, true, signed));
     return this;
   }
 
-  writeDouble(double: number) {
+  writeDouble(double: number): typeof this {
     const buffer = new Uint8Array(8);
     new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength).setFloat64(0, double, true);
     this.write(buffer);
     return this;
   }
 
-  writeInt128(int: bigint, signed = true) {
+  writeInt128(int: bigint, signed = true): typeof this {
     this.write(bufferFromBigInt(int, 128 / 8, true, signed));
     return this;
   }
 
-  writeInt256(int: bigint, signed = true) {
+  writeInt256(int: bigint, signed = true): typeof this {
     this.write(bufferFromBigInt(int, 256 / 8, true, signed));
     return this;
   }
 
-  writeBytes(bytes: Uint8Array) {
+  writeBytes(bytes: Uint8Array): typeof this {
     let padding: number;
     if (bytes.length > 253) {
       this.write(new Uint8Array([254]));
@@ -65,7 +65,7 @@ export class TLRawWriter {
     return this;
   }
 
-  writeString(string: string) {
+  writeString(string: string): typeof this {
     this.writeBytes(new TextEncoder().encode(string));
     return this;
   }

@@ -36,7 +36,7 @@ export interface InvokeErrorHandler<C> {
 let id = 0;
 
 const getEntity = Symbol();
-export const handleMigrationError = Symbol();
+export const handleMigrationError = Symbol("handleMigrationError");
 
 const functionNamespaces = Object.entries(functions).filter(([, v]) => !(v instanceof Function)).map(([k]) => k);
 
@@ -170,7 +170,7 @@ export function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
   return (_ctx, next) => next();
 }
 
-export const restartAuth = Symbol();
+export const restartAuth = Symbol("restartAuth");
 
 export interface ClientParams extends ClientPlainParams {
   /** A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defauls to `ParseMode.None`. */
@@ -446,7 +446,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
     return proxies;
   })();
-  api = new Proxy({} as unknown as Api, {
+  api: Api = new Proxy({} as unknown as Api, {
     get: (_, key) => {
       if (key in functions) {
         const func = functions[key as keyof typeof functions];
@@ -784,7 +784,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   #lastPropagatedConnectionState: ConnectionState | null = null;
-  protected stateChangeHandler = ((connected: boolean) => {
+  protected stateChangeHandler: (connected: boolean) => void = ((connected: boolean) => {
     this.#connectMutex.lock().then((unlock) => {
       try {
         const connectionState = connected ? "ready" : "notConnected";
@@ -851,7 +851,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           plain.setDc(dc);
         }
         await plain.connect();
-        const { authKey, salt } = await plain.createAuthKey();
+        const [authKey, salt] = await plain.createAuthKey();
         await plain.disconnect();
         await this.storage.setAuthKey(authKey);
         await this.#setAuth(authKey);
@@ -1360,7 +1360,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @param function_ The function to invoke.
    */
-  invoke = Object.assign(
+  invoke: {
+    <T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
+    <T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
+    <T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void>;
+    use(handler: InvokeErrorHandler<Client<C>>): void;
+  } = Object.assign(
     this.#invoke,
     {
       use: (handler: InvokeErrorHandler<Client<C>>) => {
@@ -1380,7 +1385,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Alias for `invoke` with its second parameter being `true`.
    */
-  send<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T) {
+  send<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<void> {
     return this.invoke(function_, true);
   }
 
@@ -1411,7 +1416,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return channel?.access_hash ?? 0n;
   }
 
-  async getInputPeer(id: ID) {
+  async getInputPeer(id: ID): Promise<enums.InputPeer> {
     if (id === "me") {
       return new types.InputPeerSelf();
     }
@@ -1426,7 +1431,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return inputPeer;
   }
 
-  async getInputChannel(id: ID) {
+  async getInputChannel(id: ID): Promise<types.InputChannel> {
     const inputPeer = await this.getInputPeer(id);
     if (!(inputPeer instanceof types.InputPeerChannel)) {
       UNREACHABLE();
@@ -1434,7 +1439,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return new types.InputChannel(inputPeer);
   }
 
-  async getInputUser(id: ID) {
+  async getInputUser(id: ID): Promise<types.InputUser> {
     const inputPeer = await this.getInputPeer(id);
     if (!(inputPeer instanceof types.InputPeerUser)) {
       UNREACHABLE();
@@ -1589,13 +1594,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   //#region Composer
   #handle: MiddlewareFn<C> = skip;
 
-  use(...middleware: Middleware<UpdateIntersection<C>>[]) {
+  use(...middleware: Middleware<UpdateIntersection<C>>[]): Composer<C> {
     const composer = new Composer(...middleware);
     this.#handle = concat(this.#handle, flatten(composer));
     return composer;
   }
 
-  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>) {
+  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>): Composer<C> {
     const trueHandler = flatten(trueHandler_);
     const falseHandler = flatten(falseHandler_);
     return this.use(async (upd, next) => {
@@ -1627,7 +1632,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   on<Q extends FilterQuery>(
     filter: Q,
     ...middleawre: Middleware<WithFilter<C, Q>>[]
-  ) {
+  ): Composer<UpdateIntersection<WithFilter<C, Q>>> {
     return this.filter((ctx): ctx is UpdateIntersection<WithFilter<C, Q>> => {
       return match(filter, ctx);
     }, ...middleawre);
@@ -1639,7 +1644,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       prefixes: string | string[];
     },
     ...middleawre: Middleware<WithFilter<C, "message:text">>[]
-  ) {
+  ): Composer<WithFilter<C, "message:text">> {
     const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
     const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
     const prefixes_ = typeof commands === "object" && "prefixes" in commands ? commands.prefixes : (this.#prefixes ?? []);
@@ -1881,7 +1886,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param contents The contents of the file.
    * @returns The uploaded file.
    */
-  async upload(contents: Uint8Array, params?: UploadParams) { // TODO: return type
+  // deno-lint-ignore no-explicit-any
+  async upload(contents: Uint8Array, params?: UploadParams): Promise<any> { // TODO: return type
     return await this.#fileManager.upload(contents, params);
   }
 

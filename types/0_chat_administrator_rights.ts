@@ -28,7 +28,7 @@ export interface ChatAdministratorRights {
   canManageTopics?: boolean;
 }
 
-export function constructChatAdministratorRights(rights_: enums.ChatAdminRights) {
+export function constructChatAdministratorRights(rights_: enums.ChatAdminRights): ChatAdministratorRights {
   const rights: ChatAdministratorRights = {
     isAnonymous: rights_.anonymous || false,
     canManageChat: rights_.other || false,
@@ -56,7 +56,7 @@ export function constructChatAdministratorRights(rights_: enums.ChatAdminRights)
   return rights;
 }
 
-export function chatAdministratorRightsToTlObject(rights: ChatAdministratorRights) {
+export function chatAdministratorRightsToTlObject(rights: ChatAdministratorRights): types.ChatAdminRights {
   return new types.ChatAdminRights({
     anonymous: rights.isAnonymous || undefined,
     other: rights.canManageChat || undefined,

@@ -46,6 +46,10 @@ jobs:
 
       - run: deno run --allow-read https://raw.githubusercontent.com/MTKruto/tools/main/check_imports.ts
 
+      - run: deno run -A https://esm.sh/gh/mtkruto/tools@4ca0c02076/pre_jsr.ts 0.0.0
+
+      - run: deno lint
+
   test:
     strategy:
       matrix:

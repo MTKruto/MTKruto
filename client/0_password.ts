@@ -79,7 +79,7 @@ export function pad(bigint: number | bigint | Uint8Array) {
   }
 }
 
-export async function checkPassword(password_: string, ap: enums.account.Password) {
+export async function checkPassword(password_: string, ap: enums.account.Password): Promise<types.InputCheckPasswordSRP> {
   const password = new TextEncoder().encode(password_);
   const algo = ap.current_algo;
   if (

@@ -50,7 +50,7 @@ export class ClientPlain extends ClientAbstract {
     return result;
   }
 
-  async createAuthKey() {
+  async createAuthKey(): Promise<[Uint8Array, bigint]> {
     const nonce = getRandomBigInt(16, false, true);
     LcreateAuthKey.debug("auth key creation started");
 
@@ -169,9 +169,6 @@ export class ClientPlain extends ClientAbstract {
 
     LcreateAuthKey.debug("auth key created");
 
-    return {
-      authKey,
-      salt: bigIntFromBuffer(salt, true, false),
-    };
+    return [authKey, bigIntFromBuffer(salt, true, false)];
   }
 }

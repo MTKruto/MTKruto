@@ -54,7 +54,7 @@ const prefixMap = {
   "FLOOD_WAIT_": FloodWait,
 };
 
-export function upgradeInstance(error: types.Rpc_error, call: TLObject) {
+export function upgradeInstance(error: types.Rpc_error, call: TLObject): types.Rpc_error {
   for (const [k, v] of Object.entries(prefixMap)) {
     if (error.error_message.startsWith(k)) {
       return new v({ ...error, call });

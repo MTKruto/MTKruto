@@ -86,10 +86,10 @@ export function fromString<T>(string: string): T {
   }
 }
 
-export function fixKey(key: readonly StorageKeyPart[]) {
+export function fixKey(key: readonly StorageKeyPart[]): IDBValidKey[] {
   return key.map((v) => typeof v === "bigint" ? String(ValueType.BigInt) + String(v) : typeof v === "string" ? String(ValueType.String) + v : v);
 }
-export function restoreKey(key: readonly StorageKeyPart[]) {
+export function restoreKey(key: readonly StorageKeyPart[]): StorageKeyPart[] {
   return key.map((v) => {
     if (typeof v === "string") {
       const t = Number(v[0]);
@@ -108,7 +108,7 @@ export function restoreKey(key: readonly StorageKeyPart[]) {
 
 // Source: https://gist.github.com/inexorabletash/5462871
 // deno-lint-ignore no-explicit-any
-export function getPrefixKeyRange(prefix: any) {
+export function getPrefixKeyRange(prefix: any): IDBKeyRange {
   // Ensure prefix is a valid key itself:
   if (indexedDB.cmp(prefix, prefix) !== 0) throw new TypeError();
 
@@ -168,7 +168,7 @@ function successor(key: any) {
   throw new TypeError();
 }
 
-export function isInRange(key: StorageKeyPart[], start: readonly StorageKeyPart[], end: readonly StorageKeyPart[]) {
+export function isInRange(key: StorageKeyPart[], start: readonly StorageKeyPart[], end: readonly StorageKeyPart[]): boolean {
   for (const [i, part] of key.entries()) {
     const left = start[i];
     const right = end[i];

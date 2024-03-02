@@ -24,17 +24,17 @@ export class StorageIndexedDB extends Storage {
     this.#supportsFiles = params?.fileStorage ?? true;
   }
 
-  get name() {
+  get name(): string {
     return this.#name;
   }
 
-  branch(id: string) {
+  branch(id: string): StorageIndexedDB {
     const storage = new StorageIndexedDB(this.name);
     storage.#id = id;
     return storage;
   }
 
-  initialize() {
+  initialize(): Promise<void> {
     const db = indexedDB.open(this.name, VERSION);
     return new Promise<void>((res, rej) => {
       db.onblocked = rej;
@@ -49,7 +49,7 @@ export class StorageIndexedDB extends Storage {
     });
   }
 
-  get supportsFiles() {
+  get supportsFiles(): boolean {
     return this.#supportsFiles;
   }
 
@@ -61,7 +61,7 @@ export class StorageIndexedDB extends Storage {
     }
   }
 
-  set(k: readonly StorageKeyPart[], v: unknown, tx_?: IDBTransaction) {
+  set(k: readonly StorageKeyPart[], v: unknown, tx_?: IDBTransaction): Promise<void> {
     k = this.#fixKey(k);
     if (!this.database) {
       throw new Error("Not initialized");
@@ -87,7 +87,7 @@ export class StorageIndexedDB extends Storage {
     });
   }
 
-  get<T>(k: readonly StorageKeyPart[], tx_?: IDBTransaction | null, fix = true) {
+  get<T>(k: readonly StorageKeyPart[], tx_?: IDBTransaction | null, fix = true): Promise<T | null> {
     if (fix) {
       k = this.#fixKey(k);
     }
@@ -107,7 +107,7 @@ export class StorageIndexedDB extends Storage {
     });
   }
 
-  async *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }, tx_?: IDBTransaction) {
+  async *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }, tx_?: IDBTransaction): AsyncGenerator<[readonly StorageKeyPart[], T]> {
     if ("prefix" in filter && this.#id !== null) {
       filter.prefix = this.#fixKey(filter.prefix);
     }

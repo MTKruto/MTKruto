@@ -63,9 +63,9 @@ export const LAYER = 174;
 export const APP_VERSION = "MTKruto 0.1.155";
 
 // @ts-ignore: lib
-export const DEVICE_MODEL = typeof Deno === "undefined" ? typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : process.platform + "-" + process.arch : navigator.userAgent.split(" ")[0] : Deno.build.os + "-" + Deno.build.arch;
+export const DEVICE_MODEL: string = typeof Deno === "undefined" ? typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : process.platform + "-" + process.arch : navigator.userAgent.split(" ")[0] : Deno.build.os + "-" + Deno.build.arch;
 
-export const LANG_CODE = typeof navigator === "undefined" || typeof navigator.language !== "string" ? "en" : navigator.language.split("-")[0];
+export const LANG_CODE: string = typeof navigator === "undefined" || typeof navigator.language !== "string" ? "en" : navigator.language.split("-")[0];
 
 export const LANG_PACK = "";
 

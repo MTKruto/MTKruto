@@ -36,7 +36,7 @@ export interface User {
   addedToAttachmentMenu: boolean;
 }
 
-export function constructUser(user_: types.User) {
+export function constructUser(user_: types.User): User {
   const id = Number(user_.id);
   const usernames = user_.usernames?.map((v) => v.username);
   const username = user_.username ?? usernames?.shift();

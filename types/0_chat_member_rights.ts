@@ -61,7 +61,7 @@ export function constructChatMemberRights(rights: types.ChatBannedRights): ChatM
   };
 }
 
-export function chatMemberRightsToTlObject(rights?: ChatMemberRights, untilDate?: Date) {
+export function chatMemberRightsToTlObject(rights?: ChatMemberRights, untilDate?: Date): types.ChatBannedRights {
   return new types.ChatBannedRights({
     until_date: untilDate ? toUnixTimestamp(untilDate) : 0,
     send_messages: rights?.canSendMessages ? true : undefined,

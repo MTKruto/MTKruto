@@ -133,7 +133,7 @@ export function constructKeyboardButton(button_: enums.KeyboardButton): Keyboard
   }
 }
 
-export function keyboardButtonToTlObject(button: KeyboardButton) {
+export function keyboardButtonToTlObject(button: KeyboardButton): enums.KeyboardButton {
   if ("requestUser" in button) {
     return new types.KeyboardButtonRequestPeer({
       text: button.text,

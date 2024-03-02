@@ -61,6 +61,6 @@ export interface TransportProviderParams {
 
 export type TransportProvider = (params: TransportProviderParams) => { connection: Connection; transport: Transport; dcId: number };
 
-export function getDcId(dc: DC, cdn: boolean) {
+export function getDcId(dc: DC, cdn: boolean): number {
   return Number(dc[0]) + (dc.endsWith("-test") ? 10_000 : 0) * (cdn ? -1 : 1);
 }
