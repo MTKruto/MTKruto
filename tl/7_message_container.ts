@@ -4,18 +4,18 @@ import { TLWriter } from "./4_tl_writer.ts";
 import { Message_ } from "./6_message.ts";
 
 export class MessageContainer {
-  static get [id]() {
+  static get [id](): number {
     return 0x73F1F8DC;
   }
 
-  get [name]() {
+  get [name](): string {
     return "msg_container";
   }
 
   constructor(public messages: Message_[]) {
   }
 
-  serialize() {
+  serialize(): Uint8Array {
     const writer = new TLWriter();
     writer.writeInt32(MessageContainer[id]);
     writer.writeInt32(this.messages.length);
@@ -25,7 +25,7 @@ export class MessageContainer {
     return writer.buffer;
   }
 
-  static deserialize(buffer: Uint8Array) {
+  static deserialize(buffer: Uint8Array): MessageContainer {
     const reader = new TLReader(buffer);
     const length = reader.readInt32();
     const messages = new Array<Message_>();

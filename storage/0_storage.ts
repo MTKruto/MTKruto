@@ -1,55 +1,55 @@
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { AnyEntity, enums, peerToChatId, serialize, TLObject, TLReader, TLWriter, types } from "../2_tl.ts";
+import { AnyEntity, enums, peerToChatId, ReadObject, serialize, TLObject, TLReader, TLWriter, types } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
 
 // key parts
 export const K = {
   session: {
-    P: (string: string) => `session.${string}`,
-    serverSalt: () => [K.session.P("serverSalt")],
+    P: (string: string): string => `session.${string}`,
+    serverSalt: (): StorageKeyPart[] => [K.session.P("serverSalt")],
   },
   auth: {
-    P: (string: string) => `auth.${string}`,
-    dc: () => [K.auth.P("dc")],
-    key: () => [K.auth.P("key")],
-    accountType: () => [K.auth.P("accountType")],
+    P: (string: string): string => `auth.${string}`,
+    dc: (): StorageKeyPart[] => [K.auth.P("dc")],
+    key: (): StorageKeyPart[] => [K.auth.P("key")],
+    accountType: (): StorageKeyPart[] => [K.auth.P("accountType")],
   },
   updates: {
-    P: (string: string) => `updates.${string}`,
-    state: () => [K.updates.P("state")],
-    all: () => [K.updates.P("updates")],
-    updates: (boxId: bigint) => [...K.updates.all(), boxId],
-    update: (boxId: bigint, id: bigint) => [...K.updates.updates(boxId), id],
-    channelPts: (channelId: bigint) => [K.updates.P("channelPts"), channelId],
+    P: (string: string): string => `updates.${string}`,
+    state: (): StorageKeyPart[] => [K.updates.P("state")],
+    all: (): StorageKeyPart[] => [K.updates.P("updates")],
+    updates: (boxId: bigint): StorageKeyPart[] => [...K.updates.all(), boxId],
+    update: (boxId: bigint, id: bigint): StorageKeyPart[] => [...K.updates.updates(boxId), id],
+    channelPts: (channelId: bigint): StorageKeyPart[] => [K.updates.P("channelPts"), channelId],
   },
   cache: {
-    P: (string: string) => `cache.${string}`,
-    usernames: () => [K.cache.P("username")],
-    username: (v: string) => [...K.cache.usernames(), v],
-    peers: () => [K.cache.P("peer")],
-    peer: (id: number) => [...K.cache.peers(), id],
-    stickerSetNames: () => [K.cache.P("stickerSetNames")],
-    stickerSetName: (id: bigint, accessHash: bigint) => [...K.cache.stickerSetNames(), id, accessHash],
-    files: () => [K.cache.P("files")],
-    file: (fileId: bigint) => [...K.cache.files(), fileId],
-    fileParts: () => [K.cache.P("fileParts")],
-    filePart: (fileId: bigint, n: number) => [...K.cache.fileParts(), fileId, n],
-    customEmojiDocuments: () => [K.cache.P("customEmojiDocuments")],
-    customEmojiDocument: (id: bigint) => [...K.cache.customEmojiDocuments(), id],
+    P: (string: string): string => `cache.${string}`,
+    usernames: (): StorageKeyPart[] => [K.cache.P("username")],
+    username: (v: string): StorageKeyPart[] => [...K.cache.usernames(), v],
+    peers: (): StorageKeyPart[] => [K.cache.P("peer")],
+    peer: (id: number): StorageKeyPart[] => [...K.cache.peers(), id],
+    stickerSetNames: (): StorageKeyPart[] => [K.cache.P("stickerSetNames")],
+    stickerSetName: (id: bigint, accessHash: bigint): StorageKeyPart[] => [...K.cache.stickerSetNames(), id, accessHash],
+    files: (): StorageKeyPart[] => [K.cache.P("files")],
+    file: (fileId: bigint): StorageKeyPart[] => [...K.cache.files(), fileId],
+    fileParts: (): StorageKeyPart[] => [K.cache.P("fileParts")],
+    filePart: (fileId: bigint, n: number): StorageKeyPart[] => [...K.cache.fileParts(), fileId, n],
+    customEmojiDocuments: (): StorageKeyPart[] => [K.cache.P("customEmojiDocuments")],
+    customEmojiDocument: (id: bigint): StorageKeyPart[] => [...K.cache.customEmojiDocuments(), id],
   },
   messages: {
-    P: (string: string) => `messages.${string}`,
-    messages: (chatId: number) => [K.messages.P("messages"), chatId],
-    message: (chatId: number, messageId: number) => [...K.messages.messages(chatId), messageId],
-    allMessageRefs: () => [K.messages.P("messageRefs")],
-    messageRef: (messageId: number) => [...K.messages.allMessageRefs(), messageId],
+    P: (string: string): string => `messages.${string}`,
+    messages: (chatId: number): StorageKeyPart[] => [K.messages.P("messages"), chatId],
+    message: (chatId: number, messageId: number): StorageKeyPart[] => [...K.messages.messages(chatId), messageId],
+    allMessageRefs: (): StorageKeyPart[] => [K.messages.P("messageRefs")],
+    messageRef: (messageId: number): StorageKeyPart[] => [...K.messages.allMessageRefs(), messageId],
   },
   chatlists: {
-    P: (string: string) => `chatlists.${string}`,
-    hasAllChats: (listId: number) => [K.chatlists.P("hasAllChats"), listId],
-    chats: (listId: number) => [K.chatlists.P("chats"), listId],
-    chat: (listId: number, chatId: number) => [...K.chatlists.chats(listId), chatId],
-    pinnedChats: (listId: number) => [K.chatlists.P("pinnedChats"), listId],
+    P: (string: string): string => `chatlists.${string}`,
+    hasAllChats: (listId: number): StorageKeyPart[] => [K.chatlists.P("hasAllChats"), listId],
+    chats: (listId: number): StorageKeyPart[] => [K.chatlists.P("chats"), listId],
+    chat: (listId: number, chatId: number): StorageKeyPart[] => [...K.chatlists.chats(listId), chatId],
+    pinnedChats: (listId: number): StorageKeyPart[] => [K.chatlists.P("pinnedChats"), listId],
   },
 };
 
@@ -69,15 +69,15 @@ export abstract class Storage {
   abstract get supportsFiles(): boolean;
   abstract branch(id: string): Storage;
 
-  get isMemoryStorage() {
+  get isMemoryStorage(): boolean {
     return false;
   }
 
-  setDc(dc: DC | null) {
-    return this.set(K.auth.dc(), dc);
+  async setDc(dc: DC | null) {
+    await this.set(K.auth.dc(), dc);
   }
 
-  getDc() {
+  getDc(): MaybePromise<DC | null> {
     return this.get<DC>(K.auth.dc());
   }
 
@@ -89,7 +89,7 @@ export abstract class Storage {
     }
   }
 
-  async getAuthKey() {
+  async getAuthKey(): Promise<Uint8Array | null> {
     const authKey = await this.get<Uint8Array>(K.auth.key());
     await this.#resetAuthKeyId(authKey);
     return authKey;
@@ -100,11 +100,11 @@ export abstract class Storage {
     await this.#resetAuthKeyId(authKey);
   }
 
-  get authKeyId() {
+  get authKeyId(): bigint | null {
     return this.#authKeyId;
   }
 
-  async exportAuthString() {
+  async exportAuthString(): Promise<string> {
     const [dc, authKey] = await Promise.all([this.getDc(), this.getAuthKey()]);
     if (dc == null || authKey == null) {
       throw new Error("Not authorized");
@@ -125,7 +125,7 @@ export abstract class Storage {
     await this.setAuthKey(authKey);
   }
 
-  async getChannelAccessHash(id: number) {
+  async getChannelAccessHash(id: number): Promise<bigint | null> {
     const channel = await this.getEntity(id);
     if (channel) {
       if (!(channel instanceof types.Channel) && !(channel instanceof types.ChannelForbidden)) {
@@ -137,7 +137,7 @@ export abstract class Storage {
     }
   }
 
-  async getUserAccessHash(id: number) {
+  async getUserAccessHash(id: number): Promise<bigint | null> {
     const user = await this.getEntity(id);
     if (user) {
       if (!(user instanceof types.User)) {
@@ -156,7 +156,7 @@ export abstract class Storage {
     }
   }
 
-  async getUsername(username: string) {
+  async getUsername(username: string): Promise<[number, Date] | null> {
     username = username.toLowerCase();
     return await this.get<[number, Date]>(K.cache.username(username));
   }
@@ -169,7 +169,7 @@ export abstract class Storage {
     }
   }
 
-  async getTlObject(keyOrBuffer: TLObject | Uint8Array | readonly StorageKeyPart[]) {
+  async getTlObject(keyOrBuffer: TLObject | Uint8Array | readonly StorageKeyPart[]): Promise<ReadObject | null> {
     const buffer = (keyOrBuffer instanceof Uint8Array || keyOrBuffer instanceof TLObject) ? keyOrBuffer : await this.get<Uint8Array>(keyOrBuffer);
     if (buffer != null) {
       if (buffer instanceof Uint8Array) {
@@ -186,7 +186,7 @@ export abstract class Storage {
     await this.setTlObject(K.updates.state(), state);
   }
 
-  async getState() {
+  async getState(): Promise<enums.updates.State | null> {
     return await this.getTlObject(K.updates.state()) as enums.updates.State | null;
   }
 
@@ -205,15 +205,15 @@ export abstract class Storage {
     await Promise.all(maybePromises.filter((v) => v instanceof Promise));
   }
 
-  getMessageChat(messageId: number) {
+  getMessageChat(messageId: number): MaybePromise<number | null> {
     return this.get<number>(K.messages.messageRef(messageId));
   }
 
-  async getMessage(chatId: number, messageId: number) {
+  async getMessage(chatId: number, messageId: number): Promise<enums.Message | null> {
     return await this.getTlObject(K.messages.message(chatId, messageId)) as enums.Message | null;
   }
 
-  async getLastMessage(chatId: number) {
+  async getLastMessage(chatId: number): Promise<enums.Message | null> {
     for await (const [_, buffer] of await this.getMany<Uint8Array>({ prefix: K.messages.messages(chatId) }, { limit: 1, reverse: true })) {
       return await this.getTlObject(buffer) as enums.Message;
     }
@@ -224,7 +224,7 @@ export abstract class Storage {
     await this.set(K.updates.channelPts(channelId), pts);
   }
 
-  getChannelPts(channelId: bigint) {
+  getChannelPts(channelId: bigint): MaybePromise<number | null> {
     return this.get<number>(K.updates.channelPts(channelId));
   }
 
@@ -232,7 +232,7 @@ export abstract class Storage {
     await this.set(K.cache.peer(peerToChatId(entity)), [this.isMemoryStorage ? entity : rleEncode(entity[serialize]()), new Date()]);
   }
 
-  async getEntity(key: number) {
+  async getEntity(key: number): Promise<ReadObject | null> {
     const peer_ = await this.get<[Uint8Array, Date]>(K.cache.peer(key));
     if (peer_ != null) {
       const [obj_] = peer_;
@@ -256,7 +256,7 @@ export abstract class Storage {
   }
 
   #accountType: "user" | "bot" | null = null;
-  async getAccountType() {
+  async getAccountType(): Promise<"user" | "bot" | null> {
     if (this.#accountType != null) {
       return this.#accountType;
     } else {
@@ -268,7 +268,7 @@ export abstract class Storage {
     await this.set(K.cache.stickerSetName(id, accessHash), [name, new Date()]);
   }
 
-  getStickerSetName(id: bigint, accessHash: bigint) {
+  getStickerSetName(id: bigint, accessHash: bigint): MaybePromise<[string, Date] | null> {
     return this.get<[string, Date]>(K.cache.stickerSetName(id, accessHash));
   }
 
@@ -276,7 +276,7 @@ export abstract class Storage {
     await this.set(K.session.serverSalt(), serverSalt);
   }
 
-  getServerSalt() {
+  getServerSalt(): MaybePromise<bigint | null> {
     return this.get<bigint>(K.session.serverSalt());
   }
 
@@ -284,7 +284,7 @@ export abstract class Storage {
     await this.set(K.chatlists.chat(listId, chatId), [pinned, topMessageId, topMessageDate]);
   }
 
-  async getChats(listId: number) {
+  async getChats(listId: number): Promise<{ chatId: number; pinned: number; topMessageId: number; topMessageDate: Date }[]> {
     const chats = new Array<{ chatId: number; pinned: number; topMessageId: number; topMessageDate: Date }>();
     for await (const [key, value] of await this.getMany<[number, number, Date]>({ prefix: K.chatlists.chats(listId) })) {
       if (key.length != 3 || typeof key[2] !== "number") {
@@ -307,7 +307,7 @@ export abstract class Storage {
     await this.set(K.chatlists.hasAllChats(listId), hasAllChats);
   }
 
-  async hasAllChats(listId: number) {
+  async hasAllChats(listId: number): Promise<boolean> {
     const v = await this.get<boolean>(K.chatlists.hasAllChats(listId));
     return v == true;
   }
@@ -316,11 +316,11 @@ export abstract class Storage {
     await this.set(K.chatlists.pinnedChats(listId), chatIds);
   }
 
-  async getPinnedChats(listId: number) {
+  async getPinnedChats(listId: number): Promise<number[] | null> {
     return await this.get<number[]>(K.chatlists.pinnedChats(listId));
   }
 
-  async getHistory(chatId: number, offsetId: number, limit: number) {
+  async getHistory(chatId: number, offsetId: number, limit: number): Promise<enums.Message[]> {
     if (offsetId == 0) {
       offsetId = Infinity;
     }
@@ -336,14 +336,14 @@ export abstract class Storage {
     return messages;
   }
 
-  async getFile(id: bigint) {
+  async getFile(id: bigint): Promise<[number, number] | null> {
     if (!this.supportsFiles) {
       return null;
     }
     return await this.get<[number, number]>(K.cache.file(id));
   }
 
-  async *iterFileParts(id: bigint, partCount: number, offset: number) {
+  async *iterFileParts(id: bigint, partCount: number, offset: number): AsyncGenerator<Uint8Array> {
     if (!this.supportsFiles) {
       return;
     }
@@ -374,7 +374,7 @@ export abstract class Storage {
     await this.set(K.cache.customEmojiDocument(id), [this.isMemoryStorage ? document : rleEncode(document[serialize]()), new Date()]);
   }
 
-  async getCustomEmojiDocument(id: bigint) {
+  async getCustomEmojiDocument(id: bigint): Promise<[types.Document, Date] | null> {
     const v = await this.get<[Uint8Array, Date]>(K.cache.customEmojiDocument(id));
     if (v != null) {
       return [await this.getTlObject(v[0]), v[1]] as [types.Document, Date];
@@ -404,9 +404,9 @@ export abstract class Storage {
     await Promise.all(maybePromises.filter((v) => v instanceof Promise));
   }
 
-  async getFirstUpdate(boxId: bigint) {
+  async getFirstUpdate(boxId: bigint): Promise<[readonly StorageKeyPart[], enums.Update] | null> {
     for await (const [key, update] of await this.getMany<Uint8Array>({ prefix: K.updates.updates(boxId) }, { limit: 1 })) {
-      return [key, await this.getTlObject(update).then((v) => v as enums.Update)] as const;
+      return [key, await this.getTlObject(update).then((v) => v as enums.Update)];
     }
     return null;
   }

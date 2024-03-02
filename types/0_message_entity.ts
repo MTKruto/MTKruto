@@ -200,7 +200,7 @@ export function constructMessageEntity(obj: enums.MessageEntity): MessageEntity 
   }
 }
 
-export async function messageEntityToTlObject(entity: MessageEntity, getEntity: EntityGetter) {
+export async function messageEntityToTlObject(entity: MessageEntity, getEntity: EntityGetter): Promise<enums.MessageEntity> {
   const { offset, length } = entity;
   switch (entity.type) {
     case "mention":

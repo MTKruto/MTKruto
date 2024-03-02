@@ -11,7 +11,7 @@ export class CacheMap<K, V> extends Map<K, V> {
     this.#limit = limit;
   }
 
-  set(key: K, value: V) {
+  set(key: K, value: V): typeof this {
     super.set(key, value);
     if (this.size > this.#limit) {
       this.delete(this.keys().next().value);

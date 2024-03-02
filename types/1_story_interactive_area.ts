@@ -102,7 +102,7 @@ function storyInteractiveAreaPositionToTlObject(position: StoryInteractiveAreaPo
     rotation: position.rotationAngle,
   });
 }
-export async function storyInteractiveAreaToTlObject(area: StoryInteractiveArea, getEntity: EntityGetter) {
+export async function storyInteractiveAreaToTlObject(area: StoryInteractiveArea, getEntity: EntityGetter): Promise<enums.MediaArea> {
   const coordinates = storyInteractiveAreaPositionToTlObject(area.position);
   if ("location" in area) {
     const geo = new types.GeoPoint({ lat: area.location.latitude, long: area.location.longitude, access_hash: 0n, accuracy_radius: area.location.horizontalAccuracy });

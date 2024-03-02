@@ -73,7 +73,7 @@ export class FileID {
     this.params.thumbnailSize ??= "";
   }
 
-  static decode(fileId: string) {
+  static decode(fileId: string): FileID {
     const decoded = rleDecode(base64DecodeUrlSafe(fileId));
 
     const major = decoded[decoded.length - 1];
@@ -158,7 +158,7 @@ export class FileID {
     }
   }
 
-  encode(major?: number, minor?: number) {
+  encode(major?: number, minor?: number): string {
     major ??= this.major;
     minor ??= this.minor;
 
@@ -274,7 +274,7 @@ interface FileUniqueParams {
 export class FileUniqueID {
   constructor(private readonly fileUniqueType: FileUniqueType, private readonly params: FileUniqueParams) {}
 
-  static decode(fileId: string) {
+  static decode(fileId: string): FileUniqueID {
     const reader = new TLReader(rleDecode(base64DecodeUrlSafe(fileId)));
     const fileUniqueType = reader.readInt32() as FileUniqueType;
 
@@ -300,7 +300,7 @@ export class FileUniqueID {
     }
   }
 
-  encode() {
+  encode(): string {
     const writer = new TLWriter();
     writer.writeInt32(this.fileUniqueType);
 

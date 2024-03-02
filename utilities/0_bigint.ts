@@ -50,6 +50,6 @@ export function getRandomBigInt(byteLength: number, little?: boolean, signed?: b
   return bigIntFromBuffer(randomBytes, little, signed);
 }
 
-export function getRandomId() {
+export function getRandomId(): bigint {
   return getRandomBigInt(8, true, true);
 }

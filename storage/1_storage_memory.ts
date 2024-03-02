@@ -3,8 +3,8 @@ import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 import { fromString, isInRange, toString } from "./0_utilities.ts";
 
 export class StorageMemory extends Storage implements Storage {
-  protected map = new Map<string, unknown>();
-  protected messageMap = new CacheMap<string, unknown>(30_000);
+  protected map: Map<string, unknown> = new Map<string, unknown>();
+  protected messageMap: CacheMap<string, unknown> = new CacheMap<string, unknown>(30_000);
   #id: string | null = null;
   #authString?: string;
 
@@ -13,7 +13,7 @@ export class StorageMemory extends Storage implements Storage {
     this.#authString = authString;
   }
 
-  get isMemoryStorage() {
+  get isMemoryStorage(): boolean {
     return true;
   }
 
@@ -23,7 +23,7 @@ export class StorageMemory extends Storage implements Storage {
     }
   }
 
-  getMap(key: readonly StorageKeyPart[]) {
+  getMap(key: readonly StorageKeyPart[]): Map<string, unknown> {
     if (key[0] == "messages.messages") {
       return this.messageMap;
     } else {
@@ -31,7 +31,7 @@ export class StorageMemory extends Storage implements Storage {
     }
   }
 
-  getMaps() {
+  getMaps(): [Map<string, unknown>, Map<string, unknown>] {
     return [this.map, this.messageMap];
   }
 
@@ -49,11 +49,11 @@ export class StorageMemory extends Storage implements Storage {
     return storage;
   }
 
-  get supportsFiles() {
+  get supportsFiles(): boolean {
     return false;
   }
 
-  get<T>(key: readonly StorageKeyPart[]) {
+  get<T>(key: readonly StorageKeyPart[]): T | null {
     key = this.#fixKey(key);
     return this.getMap(key).get(toString(key)) as T ?? null;
   }
@@ -71,7 +71,7 @@ export class StorageMemory extends Storage implements Storage {
     return entries;
   }
 
-  *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }) {
+  *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }): Generator<[readonly StorageKeyPart[], T]> {
     let entries = this.#getEntries();
     if (params?.reverse) {
       entries.reverse();

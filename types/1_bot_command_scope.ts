@@ -1,5 +1,5 @@
 import { UNREACHABLE } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 import { ID } from "./0_id.ts";
 import { InputPeerGetter } from "./1__getters.ts";
 
@@ -45,7 +45,7 @@ export interface BotCommandScopeChatMember {
 /** A type specifying where bot commads are available. */
 export type BotCommandScope = BotCommandScopeDefault | BotCommandScopeAllPrivateChats | BotCommandScopeAllGroupChats | BotCommandScopeAllChatAdministrators | BotCommandScopeChat | BotCommandScopeChatAdministrators | BotCommandScopeChatMember;
 
-export async function botCommandScopeToTlObject(scope: BotCommandScope, getInputPeer: InputPeerGetter) {
+export async function botCommandScopeToTlObject(scope: BotCommandScope, getInputPeer: InputPeerGetter): Promise<enums.BotCommandScope> {
   switch (scope.type) {
     case "default":
       return new types.BotCommandScopeDefault();

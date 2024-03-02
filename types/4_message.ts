@@ -529,7 +529,7 @@ const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
   giveaway: ["giveaway"],
   unsupported: ["unsupported"],
 };
-export function assertMessageType<T extends keyof MessageTypes>(message: Message, type: T) {
+export function assertMessageType<T extends keyof MessageTypes>(message: Message, type: T): MessageTypes[T] {
   for (const key of keys[type]) {
     if (!(key in message) || message[key as keyof typeof message] === undefined) {
       UNREACHABLE();
@@ -748,7 +748,7 @@ export async function constructMessage(
   getMessage: Message_MessageGetter,
   getStickerSetName: StickerSetNameGetter,
   getReply_ = true,
-) {
+): Promise<Message> {
   if (!(message_ instanceof types.Message) && !(message_ instanceof types.MessageService)) {
     UNREACHABLE();
   }

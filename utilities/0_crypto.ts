@@ -1,7 +1,7 @@
 import { ctr256 } from "../0_deps.ts";
 
 export class CTR {
-  state = new Uint8Array(1);
+  state: Uint8Array = new Uint8Array(1);
 
   constructor(public readonly key: Uint8Array, public iv: Uint8Array) {
   }
