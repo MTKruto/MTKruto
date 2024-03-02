@@ -143,7 +143,7 @@ function forceReplyToTlObject(replyMarkup: ReplyMarkupForceReply) {
 /** A message's reply markup. */
 export type ReplyMarkup = ReplyMarkupInlineKeyboard | ReplyMarkupKeyboard | ReplyMarkupRemoveKeyboard | ReplyMarkupForceReply;
 
-export function constructReplyMarkup(replyMarkup: enums.ReplyMarkup) {
+export function constructReplyMarkup(replyMarkup: enums.ReplyMarkup): ReplyMarkup {
   if (replyMarkup instanceof types.ReplyKeyboardMarkup) {
     return constructReplyKeyboardMarkup(replyMarkup);
   } else if (replyMarkup instanceof types.ReplyInlineMarkup) {
@@ -157,7 +157,7 @@ export function constructReplyMarkup(replyMarkup: enums.ReplyMarkup) {
   }
 }
 
-export async function replyMarkupToTlObject(replyMarkup: ReplyMarkup, usernameResolver: UsernameResolver) {
+export async function replyMarkupToTlObject(replyMarkup: ReplyMarkup, usernameResolver: UsernameResolver): Promise<enums.ReplyMarkup> {
   if ("inlineKeyboard" in replyMarkup) {
     return await inlineKeyboardMarkupToTlObject(replyMarkup, usernameResolver);
   } else if ("keyboard" in replyMarkup) {

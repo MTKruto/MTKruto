@@ -1,5 +1,5 @@
 import { UNREACHABLE } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 
 export type MessageSearchFilter =
   | "empty"
@@ -17,7 +17,7 @@ export type MessageSearchFilter =
   | "mentions"
   | "pinned";
 
-export function messageSearchFilterToTlObject(filter: MessageSearchFilter) {
+export function messageSearchFilterToTlObject(filter: MessageSearchFilter): enums.MessagesFilter {
   switch (filter) {
     case "empty":
       return new types.InputMessagesFilterEmpty();

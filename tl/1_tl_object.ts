@@ -53,16 +53,16 @@ export const paramDesc = Symbol("paramDesc");
 
 export const length = Symbol("length");
 
-export const serialize = Symbol();
+export const serialize = Symbol("serialize");
 
-export const as = Symbol();
+export const as = Symbol("as");
 
-export const name = Symbol();
+export const name = Symbol("name");
 
-export function isOptionalParam(ntype: string) {
+export function isOptionalParam(ntype: string): boolean {
   return ntype.includes("?");
 }
-export function analyzeOptionalParam(ntype: string) {
+export function analyzeOptionalParam(ntype: string): { flagField: string; bitIndex: number } {
   if (!isOptionalParam(ntype)) {
     throw new Error("Parameter not optional");
   }
@@ -178,7 +178,7 @@ export abstract class TLObject {
     return `ctor_${this.constructor.name}`;
   }
 
-  get [name]() {
+  get [name](): string {
     return (this.constructor as typeof TLObject)[name];
   }
 
@@ -187,11 +187,11 @@ export abstract class TLObject {
     return [];
   }
 
-  get [length]() {
+  get [length](): number {
     return this[serialize]().byteLength;
   }
 
-  [serialize]() {
+  [serialize](): Uint8Array {
     const writer = new TLRawWriter();
     writer.writeInt32(this[id], false);
 
@@ -240,7 +240,7 @@ export abstract class TLObject {
     return writer.buffer;
   }
 
-  [as]<T extends TLObjectConstructor<InstanceType<T>>>(constructor: T) {
+  [as]<T extends TLObjectConstructor<InstanceType<T>>>(constructor: T): InstanceType<T> {
     if (this instanceof constructor) {
       return this as InstanceType<T>;
     } else {
@@ -248,7 +248,7 @@ export abstract class TLObject {
     }
   }
 
-  toJSON() {
+  toJSON(): object {
     // deno-lint-ignore no-explicit-any
     const r: Record<string, any> = { _: this[name] + `#${this[id].toString(16).toUpperCase()}` };
     const desc = (this.constructor as typeof TLObject)[paramDesc];

@@ -8,11 +8,11 @@ export class TLRawReader {
   constructor(protected _buffer: Uint8Array) {
   }
 
-  get buffer() {
+  get buffer(): Uint8Array {
     return this._buffer;
   }
 
-  read(count: number) {
+  read(count: number): Uint8Array {
     if (this._buffer.length < count) {
       throw new TLError("No data remaining");
     }
@@ -21,37 +21,37 @@ export class TLRawReader {
     return buffer;
   }
 
-  readInt24(signed = true) {
+  readInt24(signed = true): number {
     const buffer = this.read(24 / 8);
     return Number(bigIntFromBuffer(buffer, true, signed));
   }
 
-  readInt32(signed = true) {
+  readInt32(signed = true): number {
     const buffer = this.read(32 / 8);
     return Number(bigIntFromBuffer(buffer, true, signed));
   }
 
-  readInt64(signed = true) {
+  readInt64(signed = true): bigint {
     const buffer = this.read(64 / 8);
     return bigIntFromBuffer(buffer, true, signed);
   }
 
-  readDouble() {
+  readDouble(): number {
     const buffer = this.read(8);
     return new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength).getFloat64(0, true);
   }
 
-  readInt128(signed = true) {
+  readInt128(signed = true): bigint {
     const buffer = this.read(128 / 8);
     return bigIntFromBuffer(buffer, true, signed);
   }
 
-  readInt256(signed = true) {
+  readInt256(signed = true): bigint {
     const buffer = this.read(256 / 8);
     return bigIntFromBuffer(buffer, true, signed);
   }
 
-  readBytes() {
+  readBytes(): Uint8Array {
     let L = this.read(1)[0];
     let padding: number;
     if (L > 253) {
@@ -68,7 +68,7 @@ export class TLRawReader {
     return bytes;
   }
 
-  readString() {
+  readString(): string {
     return new TextDecoder().decode(this.readBytes());
   }
 }

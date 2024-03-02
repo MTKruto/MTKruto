@@ -64,7 +64,7 @@ function getChatPAlsoPhoto(entity: enums.User | enums.Chat | undefined) {
   return { chatP, also, photo };
 }
 
-export function getChatOrder(lastMessage: Omit<Message, "replyToMessage"> | undefined, pinned: number) {
+export function getChatOrder(lastMessage: Omit<Message, "replyToMessage"> | undefined, pinned: number): string {
   const p = pinned == -1 ? "" : `P${100 - pinned}`;
   if (!lastMessage) {
     return p + "0";

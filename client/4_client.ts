@@ -1360,7 +1360,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @param function_ The function to invoke.
    */
-  invoke = Object.assign(
+  invoke: {
+    <T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
+    <T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
+    <T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void>;
+  } = Object.assign(
     this.#invoke,
     {
       use: (handler: InvokeErrorHandler<Client<C>>) => {
@@ -1426,7 +1430,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return inputPeer;
   }
 
-  async getInputChannel(id: ID) {
+  async getInputChannel(id: ID): types.InputChannel {
     const inputPeer = await this.getInputPeer(id);
     if (!(inputPeer instanceof types.InputPeerChannel)) {
       UNREACHABLE();
@@ -1434,7 +1438,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return new types.InputChannel(inputPeer);
   }
 
-  async getInputUser(id: ID) {
+  async getInputUser(id: ID): types.InputUser {
     const inputPeer = await this.getInputPeer(id);
     if (!(inputPeer instanceof types.InputPeerUser)) {
       UNREACHABLE();
@@ -1589,13 +1593,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   //#region Composer
   #handle: MiddlewareFn<C> = skip;
 
-  use(...middleware: Middleware<UpdateIntersection<C>>[]) {
+  use(...middleware: Middleware<UpdateIntersection<C>>[]): Composer {
     const composer = new Composer(...middleware);
     this.#handle = concat(this.#handle, flatten(composer));
     return composer;
   }
-
-  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>) {
+  
+  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>): Composer<pdateIntersection<C>> {
     const trueHandler = flatten(trueHandler_);
     const falseHandler = flatten(falseHandler_);
     return this.use(async (upd, next) => {
@@ -1627,7 +1631,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   on<Q extends FilterQuery>(
     filter: Q,
     ...middleawre: Middleware<WithFilter<C, Q>>[]
-  ) {
+  ): Composer<WithFilter<C, Q>> {
     return this.filter((ctx): ctx is UpdateIntersection<WithFilter<C, Q>> => {
       return match(filter, ctx);
     }, ...middleawre);
@@ -1639,7 +1643,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       prefixes: string | string[];
     },
     ...middleawre: Middleware<WithFilter<C, "message:text">>[]
-  ) {
+  ): Composer<WithFilter<C, "message:text">> {
     const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
     const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
     const prefixes_ = typeof commands === "object" && "prefixes" in commands ? commands.prefixes : (this.#prefixes ?? []);
@@ -1881,7 +1885,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param contents The contents of the file.
    * @returns The uploaded file.
    */
-  async upload(contents: Uint8Array, params?: UploadParams) { // TODO: return type
+  // deno-lint-ignore no-explicit-any
+  async upload(contents: Uint8Array, params?: UploadParams): any { // TODO: return type
     return await this.#fileManager.upload(contents, params);
   }
 

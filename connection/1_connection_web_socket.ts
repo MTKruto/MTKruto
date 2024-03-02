@@ -56,7 +56,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
     return webSocket;
   }
 
-  get connected() {
+  get connected(): boolean {
     return this.#webSocket.readyState == WebSocket.OPEN;
   }
 

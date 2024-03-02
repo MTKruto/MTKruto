@@ -27,7 +27,7 @@ export class TransportIntermediate extends Transport implements Transport {
     }
   }
 
-  async receive() {
+  async receive(): Promise<Uint8Array> {
     let length: number;
 
     {
@@ -60,7 +60,7 @@ export class TransportIntermediate extends Transport implements Transport {
     this.#initialized = false;
   }
 
-  get initialized() {
+  get initialized(): boolean {
     return this.#initialized;
   }
 }

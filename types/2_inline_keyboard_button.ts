@@ -84,7 +84,7 @@ export function constructInlineKeyboardButton(button_: enums.KeyboardButton): In
   }
 }
 
-export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButton, usernameResolver: UsernameResolver) {
+export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButton, usernameResolver: UsernameResolver): Promise<enums.KeyboardButton> {
   if ("url" in button) {
     return new types.KeyboardButtonUrl({ text: button.text, url: button.url });
   } else if ("callbackData" in button) {
