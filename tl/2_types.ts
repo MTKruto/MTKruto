@@ -2591,6 +2591,7 @@ export class Http_wait_ extends _HttpWait_ {
   }
 }
 
+/** See [predefined identifiers](https://core.telegram.org/mtproto/TL-formal#predefined-identifiers). */
 export class True_ extends _True_ {
   protected get [id](): number {
     return 0x3FEDD339;
@@ -2613,8 +2614,11 @@ export class True_ extends _True_ {
   }
 }
 
+/** Error. */
 export class Error_ extends _Error_ {
+  /** Error code */
   code: number;
+  /** Message */
   text: string;
 
   protected get [id](): number {
@@ -2646,6 +2650,7 @@ export class Error_ extends _Error_ {
   }
 }
 
+/** Corresponds to an arbitrary empty object. */
 export class Null_ extends _Null_ {
   protected get [id](): number {
     return 0x56730BCC;
@@ -2668,6 +2673,7 @@ export class Null_ extends _Null_ {
   }
 }
 
+/** An empty constructor, no user or chat is defined. */
 export class InputPeerEmpty_ extends _InputPeer_ {
   protected get [id](): number {
     return 0x7F3B18EA;
@@ -2690,6 +2696,7 @@ export class InputPeerEmpty_ extends _InputPeer_ {
   }
 }
 
+/** Defines the current user. */
 export class InputPeerSelf_ extends _InputPeer_ {
   protected get [id](): number {
     return 0x7DA07EC9;
@@ -2712,7 +2719,9 @@ export class InputPeerSelf_ extends _InputPeer_ {
   }
 }
 
+/** Defines a chat for further interaction. */
 export class InputPeerChat_ extends _InputPeer_ {
+  /** Chat identifier */
   chat_id: bigint;
 
   protected get [id](): number {
@@ -2741,8 +2750,11 @@ export class InputPeerChat_ extends _InputPeer_ {
   }
 }
 
+/** Defines a user for further interaction. */
 export class InputPeerUser_ extends _InputPeer_ {
+  /** User identifier */
   user_id: bigint;
+  /** **access\_hash** value from the [user](https://core.telegram.org/constructor/user) constructor */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -2774,8 +2786,11 @@ export class InputPeerUser_ extends _InputPeer_ {
   }
 }
 
+/** Defines a channel for further interaction. */
 export class InputPeerChannel_ extends _InputPeer_ {
+  /** Channel identifier */
   channel_id: bigint;
+  /** **access\_hash** value from the [channel](https://core.telegram.org/constructor/channel) constructor */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -2807,9 +2822,13 @@ export class InputPeerChannel_ extends _InputPeer_ {
   }
 }
 
+/** Defines a [min](https://core.telegram.org/api/min) user that was seen in a certain message of a certain chat. */
 export class InputPeerUserFromMessage_ extends _InputPeer_ {
+  /** The chat where the user was seen */
   peer: enums.InputPeer;
+  /** The message ID */
   msg_id: number;
+  /** The identifier of the user that was seen */
   user_id: bigint;
 
   protected get [id](): number {
@@ -2844,9 +2863,13 @@ export class InputPeerUserFromMessage_ extends _InputPeer_ {
   }
 }
 
+/** Defines a [min](https://core.telegram.org/api/min) channel that was seen in a certain message of a certain chat. */
 export class InputPeerChannelFromMessage_ extends _InputPeer_ {
+  /** The chat where the channel's message was seen */
   peer: enums.InputPeer;
+  /** The message ID */
   msg_id: number;
+  /** The identifier of the channel that was seen */
   channel_id: bigint;
 
   protected get [id](): number {
@@ -2881,6 +2904,7 @@ export class InputPeerChannelFromMessage_ extends _InputPeer_ {
   }
 }
 
+/** Empty constructor, does not define a user. */
 export class InputUserEmpty_ extends _InputUser_ {
   protected get [id](): number {
     return 0xB98886CF;
@@ -2903,6 +2927,7 @@ export class InputUserEmpty_ extends _InputUser_ {
   }
 }
 
+/** Defines the current user. */
 export class InputUserSelf_ extends _InputUser_ {
   protected get [id](): number {
     return 0xF7C1B13F;
@@ -2925,8 +2950,11 @@ export class InputUserSelf_ extends _InputUser_ {
   }
 }
 
+/** Defines a user for further interaction. */
 export class InputUser_ extends _InputUser_ {
+  /** User identifier */
   user_id: bigint;
+  /** **access\_hash** value from the [user](https://core.telegram.org/constructor/user) constructor */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -2958,9 +2986,13 @@ export class InputUser_ extends _InputUser_ {
   }
 }
 
+/** Defines a [min](https://core.telegram.org/api/min) user that was seen in a certain message of a certain chat. */
 export class InputUserFromMessage_ extends _InputUser_ {
+  /** The chat where the user was seen */
   peer: enums.InputPeer;
+  /** The message ID */
   msg_id: number;
+  /** The identifier of the user that was seen */
   user_id: bigint;
 
   protected get [id](): number {
@@ -2995,10 +3027,15 @@ export class InputUserFromMessage_ extends _InputUser_ {
   }
 }
 
+/** Phone contact. */
 export class InputPhoneContact_ extends _InputContact_ {
+  /** An arbitrary 64-bit integer: it should be set, for example, to an incremental number when using [contacts.importContacts](https://core.telegram.org/method/contacts.importContacts), in order to retry importing only the contacts that weren't imported successfully, according to the client\_ids returned in [contacts.importedContacts](https://core.telegram.org/constructor/contacts.importedContacts).`retry_contacts`. */
   client_id: bigint;
+  /** Phone number */
   phone: string;
+  /** Contact's first name */
   first_name: string;
+  /** Contact's last name */
   last_name: string;
 
   protected get [id](): number {
@@ -3036,10 +3073,15 @@ export class InputPhoneContact_ extends _InputContact_ {
   }
 }
 
+/** Defines a file saved in parts using the method [upload.saveFilePart](https://core.telegram.org/method/upload.saveFilePart). */
 export class InputFile_ extends _InputFile_ {
+  /** Random file identifier created by the client */
   id: bigint;
+  /** Number of parts saved */
   parts: number;
+  /** Full name of the file */
   name: string;
+  /** In case the file's [md5-hash](https://en.wikipedia.org/wiki/MD5#MD5_hashes) was passed, contents of the file will be checked prior to use */
   md5_checksum: string;
 
   protected get [id](): number {
@@ -3077,9 +3119,13 @@ export class InputFile_ extends _InputFile_ {
   }
 }
 
+/** Assigns a big file (over 10 MB in size), saved in part using the method [upload.saveBigFilePart](https://core.telegram.org/method/upload.saveBigFilePart). */
 export class InputFileBig_ extends _InputFile_ {
+  /** Random file id, created by the client */
   id: bigint;
+  /** Number of parts saved */
   parts: number;
+  /** Full file name */
   name: string;
 
   protected get [id](): number {
@@ -3114,6 +3160,7 @@ export class InputFileBig_ extends _InputFile_ {
   }
 }
 
+/** Empty media content of a message. */
 export class InputMediaEmpty_ extends _InputMedia_ {
   protected get [id](): number {
     return 0x9664F57F;
@@ -3136,10 +3183,15 @@ export class InputMediaEmpty_ extends _InputMedia_ {
   }
 }
 
+/** Photo */
 export class InputMediaUploadedPhoto_ extends _InputMedia_ {
+  /** Whether this media should be hidden behind a spoiler warning */
   spoiler?: true;
+  /** The [uploaded file](https://core.telegram.org/api/files) */
   file: enums.InputFile;
+  /** Attached mask stickers */
   stickers?: Array<enums.InputDocument>;
+  /** Time to live in seconds of self-destructing photo */
   ttl_seconds?: number;
 
   protected get [id](): number {
@@ -3179,9 +3231,13 @@ export class InputMediaUploadedPhoto_ extends _InputMedia_ {
   }
 }
 
+/** Forwarded photo */
 export class InputMediaPhoto_ extends _InputMedia_ {
+  /** Whether this media should be hidden behind a spoiler warning */
   spoiler?: true;
+  /** Photo to be forwarded */
   id: enums.InputPhoto;
+  /** Time to live in seconds of self-destructing photo */
   ttl_seconds?: number;
 
   protected get [id](): number {
@@ -3218,7 +3274,9 @@ export class InputMediaPhoto_ extends _InputMedia_ {
   }
 }
 
+/** Map. */
 export class InputMediaGeoPoint_ extends _InputMedia_ {
+  /** GeoPoint */
   geo_point: enums.InputGeoPoint;
 
   protected get [id](): number {
@@ -3247,10 +3305,15 @@ export class InputMediaGeoPoint_ extends _InputMedia_ {
   }
 }
 
+/** Phone book contact */
 export class InputMediaContact_ extends _InputMedia_ {
+  /** Phone number */
   phone_number: string;
+  /** Contact's first name */
   first_name: string;
+  /** Contact's last name */
   last_name: string;
+  /** Contact vcard */
   vcard: string;
 
   protected get [id](): number {
@@ -3288,15 +3351,25 @@ export class InputMediaContact_ extends _InputMedia_ {
   }
 }
 
+/** New document */
 export class InputMediaUploadedDocument_ extends _InputMedia_ {
+  /** Whether the specified document is a video file with no audio tracks (a GIF animation (even as MPEG4), for example) */
   nosound_video?: true;
+  /** Force the media file to be uploaded as document */
   force_file?: true;
+  /** Whether this media should be hidden behind a spoiler warning */
   spoiler?: true;
+  /** The [uploaded file](https://core.telegram.org/api/files) */
   file: enums.InputFile;
+  /** Thumbnail of the document, uploaded as for the file */
   thumb?: enums.InputFile;
+  /** MIME type of document */
   mime_type: string;
+  /** Attributes that specify the type of the document (video, audio, voice, sticker, etc.) */
   attributes: Array<enums.DocumentAttribute>;
+  /** Attached stickers */
   stickers?: Array<enums.InputDocument>;
+  /** Time to live in seconds of self-destructing document */
   ttl_seconds?: number;
 
   protected get [id](): number {
@@ -3351,10 +3424,15 @@ export class InputMediaUploadedDocument_ extends _InputMedia_ {
   }
 }
 
+/** Forwarded document */
 export class InputMediaDocument_ extends _InputMedia_ {
+  /** Whether this media should be hidden behind a spoiler warning */
   spoiler?: true;
+  /** The document to be forwarded. */
   id: enums.InputDocument;
+  /** Time to live of self-destructing document */
   ttl_seconds?: number;
+  /** Text query or emoji that was used by the user to find this sticker or GIF: used to improve search result relevance. */
   query?: string;
 
   protected get [id](): number {
@@ -3394,12 +3472,19 @@ export class InputMediaDocument_ extends _InputMedia_ {
   }
 }
 
+/** Can be used to send a venue geolocation. */
 export class InputMediaVenue_ extends _InputMedia_ {
+  /** Geolocation */
   geo_point: enums.InputGeoPoint;
+  /** Venue name */
   title: string;
+  /** Physical address of the venue */
   address: string;
+  /** Venue provider: currently only "foursquare" and "gplaces" (Google Places) need to be supported */
   provider: string;
+  /** Venue ID in the provider's database */
   venue_id: string;
+  /** Venue type in the provider's database */
   venue_type: string;
 
   protected get [id](): number {
@@ -3443,9 +3528,13 @@ export class InputMediaVenue_ extends _InputMedia_ {
   }
 }
 
+/** New photo that will be uploaded by the server using the specified URL */
 export class InputMediaPhotoExternal_ extends _InputMedia_ {
+  /** Whether this media should be hidden behind a spoiler warning */
   spoiler?: true;
+  /** URL of the photo */
   url: string;
+  /** Self-destruct time to live of photo */
   ttl_seconds?: number;
 
   protected get [id](): number {
@@ -3482,9 +3571,13 @@ export class InputMediaPhotoExternal_ extends _InputMedia_ {
   }
 }
 
+/** Document that will be downloaded by the telegram servers */
 export class InputMediaDocumentExternal_ extends _InputMedia_ {
+  /** Whether this media should be hidden behind a spoiler warning */
   spoiler?: true;
+  /** URL of the document */
   url: string;
+  /** Self-destruct time to live of document */
   ttl_seconds?: number;
 
   protected get [id](): number {
@@ -3521,7 +3614,9 @@ export class InputMediaDocumentExternal_ extends _InputMedia_ {
   }
 }
 
+/** A game */
 export class InputMediaGame_ extends _InputMedia_ {
+  /** The game to forward */
   id: enums.InputGame;
 
   protected get [id](): number {
@@ -3550,15 +3645,25 @@ export class InputMediaGame_ extends _InputMedia_ {
   }
 }
 
+/** Generated invoice of a [bot payment](https://core.telegram.org/bots/payments) */
 export class InputMediaInvoice_ extends _InputMedia_ {
+  /** Product name, 1-32 characters */
   title: string;
+  /** Product description, 1-255 characters */
   description: string;
+  /** URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for. */
   photo?: enums.InputWebDocument;
+  /** The actual invoice */
   invoice: enums.Invoice;
+  /** Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes. */
   payload: Uint8Array;
+  /** Payments provider token, obtained via [Botfather](https://t.me/botfather) */
   provider: string;
+  /** JSON-encoded data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider. */
   provider_data: enums.DataJSON;
+  /** Unique [bot deep links start parameter](https://core.telegram.org/api/links#bot-links). If present, forwarded copies of the sent message will have a URL button with a [deep link](https://core.telegram.org/api/links#bot-links) to the bot (instead of a Pay button), with the value used as the start parameter. If absent, forwarded copies of the sent message will have a Pay button, allowing multiple users to pay directly from the forwarded message, using the same invoice. */
   start_param?: string;
+  /** Extended media */
   extended_media?: enums.InputMedia;
 
   protected get [id](): number {
@@ -3613,11 +3718,17 @@ export class InputMediaInvoice_ extends _InputMedia_ {
   }
 }
 
+/** [Live geolocation](https://core.telegram.org/api/live-location) */
 export class InputMediaGeoLive_ extends _InputMedia_ {
+  /** Whether sending of the geolocation was stopped */
   stopped?: true;
+  /** Current geolocation */
   geo_point: enums.InputGeoPoint;
+  /** For [live locations](https://core.telegram.org/api/live-location), a direction in which the location moves, in degrees; 1-360. */
   heading?: number;
+  /** Validity period of the current location */
   period?: number;
+  /** For [live locations](https://core.telegram.org/api/live-location), a maximum distance to another chat member for proximity alerts, in meters (0-100000) */
   proximity_notification_radius?: number;
 
   protected get [id](): number {
@@ -3660,10 +3771,15 @@ export class InputMediaGeoLive_ extends _InputMedia_ {
   }
 }
 
+/** A poll */
 export class InputMediaPoll_ extends _InputMedia_ {
+  /** The poll to send */
   poll: enums.Poll;
+  /** Correct answer IDs (for quiz polls) */
   correct_answers?: Array<Uint8Array>;
+  /** Explanation of quiz solution */
   solution?: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   solution_entities?: Array<enums.MessageEntity>;
 
   protected get [id](): number {
@@ -3703,7 +3819,9 @@ export class InputMediaPoll_ extends _InputMedia_ {
   }
 }
 
+/** Send a [dice-based animated sticker](https://core.telegram.org/api/dice) */
 export class InputMediaDice_ extends _InputMedia_ {
+  /** The emoji, for now ![🏀](//telegram.org/img/emoji/40/F09F8F80.png), ![🎲](//telegram.org/img/emoji/40/F09F8EB2.png) and ![🎯](//telegram.org/img/emoji/40/F09F8EAF.png) are supported */
   emoticon: string;
 
   protected get [id](): number {
@@ -3732,8 +3850,11 @@ export class InputMediaDice_ extends _InputMedia_ {
   }
 }
 
+/** Forwarded story */
 export class InputMediaStory_ extends _InputMedia_ {
+  /** Peer where the story was posted */
   peer: enums.InputPeer;
+  /** Story ID */
   id: number;
 
   protected get [id](): number {
@@ -3765,10 +3886,15 @@ export class InputMediaStory_ extends _InputMedia_ {
   }
 }
 
+/** Specifies options that will be used to generate the link preview for the caption, or even a standalone link preview without an attached message. */
 export class InputMediaWebPage_ extends _InputMedia_ {
+  /** If set, specifies that a large media preview should be used. */
   force_large_media?: true;
+  /** If set, specifies that a small media preview should be used. */
   force_small_media?: true;
+  /** If **not** set, a `WEBPAGE_NOT_FOUND` RPC error will be emitted if a webpage preview cannot be generated for the specified `url`; otherwise, no error will be emitted (unless the provided message is also empty, in which case a `MESSAGE_EMPTY` will be emitted, instead). */
   optional?: true;
+  /** The URL to use for the link preview. */
   url: string;
 
   protected get [id](): number {
@@ -3808,6 +3934,7 @@ export class InputMediaWebPage_ extends _InputMedia_ {
   }
 }
 
+/** Empty constructor, remove group photo. */
 export class InputChatPhotoEmpty_ extends _InputChatPhoto_ {
   protected get [id](): number {
     return 0x1CA48F57;
@@ -3830,10 +3957,15 @@ export class InputChatPhotoEmpty_ extends _InputChatPhoto_ {
   }
 }
 
+/** New photo to be set as group profile photo. */
 export class InputChatUploadedPhoto_ extends _InputChatPhoto_ {
+  /** File saved in parts using the method [upload.saveFilePart](https://core.telegram.org/method/upload.saveFilePart) */
   file?: enums.InputFile;
+  /** Square video for animated profile picture */
   video?: enums.InputFile;
+  /** Floating point UNIX timestamp in seconds, indicating the frame of the video/sticker that should be used as static preview; can only be used if `video` or `video_emoji_markup` is set. */
   video_start_ts?: number;
+  /** Animated sticker profile picture, must contain either a [videoSizeEmojiMarkup](https://core.telegram.org/constructor/videoSizeEmojiMarkup) or a [videoSizeStickerMarkup](https://core.telegram.org/constructor/videoSizeStickerMarkup) constructor. */
   video_emoji_markup?: enums.VideoSize;
 
   protected get [id](): number {
@@ -3873,7 +4005,9 @@ export class InputChatUploadedPhoto_ extends _InputChatPhoto_ {
   }
 }
 
+/** Existing photo to be set as a chat profile photo. */
 export class InputChatPhoto_ extends _InputChatPhoto_ {
+  /** Existing photo */
   id: enums.InputPhoto;
 
   protected get [id](): number {
@@ -3902,6 +4036,7 @@ export class InputChatPhoto_ extends _InputChatPhoto_ {
   }
 }
 
+/** Empty GeoPoint constructor. */
 export class InputGeoPointEmpty_ extends _InputGeoPoint_ {
   protected get [id](): number {
     return 0xE4C123D6;
@@ -3924,9 +4059,13 @@ export class InputGeoPointEmpty_ extends _InputGeoPoint_ {
   }
 }
 
+/** Defines a GeoPoint by its coordinates. */
 export class InputGeoPoint_ extends _InputGeoPoint_ {
+  /** Latitude */
   lat: number;
+  /** Longitude */
   long: number;
+  /** The estimated horizontal accuracy of the location, in meters; as defined by the sender. */
   accuracy_radius?: number;
 
   protected get [id](): number {
@@ -3963,6 +4102,7 @@ export class InputGeoPoint_ extends _InputGeoPoint_ {
   }
 }
 
+/** Empty constructor. */
 export class InputPhotoEmpty_ extends _InputPhoto_ {
   protected get [id](): number {
     return 0x1CD7BF0D;
@@ -3985,9 +4125,13 @@ export class InputPhotoEmpty_ extends _InputPhoto_ {
   }
 }
 
+/** Defines a photo for further interaction. */
 export class InputPhoto_ extends _InputPhoto_ {
+  /** Photo identifier */
   id: bigint;
+  /** **access\_hash** value from the [photo](https://core.telegram.org/constructor/photo) constructor */
   access_hash: bigint;
+  /** [File reference](https://core.telegram.org/api/file_reference) */
   file_reference: Uint8Array;
 
   protected get [id](): number {
@@ -4022,10 +4166,15 @@ export class InputPhoto_ extends _InputPhoto_ {
   }
 }
 
+/** DEPRECATED location of a photo */
 export class InputFileLocation_ extends _InputFileLocation_ {
+  /** Server volume */
   volume_id: bigint;
+  /** File identifier */
   local_id: number;
+  /** Check sum to access the file */
   secret: bigint;
+  /** [File reference](https://core.telegram.org/api/file_reference) */
   file_reference: Uint8Array;
 
   protected get [id](): number {
@@ -4063,8 +4212,11 @@ export class InputFileLocation_ extends _InputFileLocation_ {
   }
 }
 
+/** Location of encrypted secret chat file. */
 export class InputEncryptedFileLocation_ extends _InputFileLocation_ {
+  /** File ID, **id** parameter value from [encryptedFile](https://core.telegram.org/constructor/encryptedFile) */
   id: bigint;
+  /** Checksum, **access\_hash** parameter value from [encryptedFile](https://core.telegram.org/constructor/encryptedFile) */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -4096,10 +4248,15 @@ export class InputEncryptedFileLocation_ extends _InputFileLocation_ {
   }
 }
 
+/** Document location (video, voice, audio, basically every type except photo) */
 export class InputDocumentFileLocation_ extends _InputFileLocation_ {
+  /** Document ID */
   id: bigint;
+  /** **access\_hash** parameter from the [document](https://core.telegram.org/constructor/document) constructor */
   access_hash: bigint;
+  /** [File reference](https://core.telegram.org/api/file_reference) */
   file_reference: Uint8Array;
+  /** Thumbnail size to download the thumbnail */
   thumb_size: string;
 
   protected get [id](): number {
@@ -4137,8 +4294,11 @@ export class InputDocumentFileLocation_ extends _InputFileLocation_ {
   }
 }
 
+/** Location of encrypted telegram [passport](https://core.telegram.org/passport) file. */
 export class InputSecureFileLocation_ extends _InputFileLocation_ {
+  /** File ID, **id** parameter value from [secureFile](https://core.telegram.org/constructor/secureFile) */
   id: bigint;
+  /** Checksum, **access\_hash** parameter value from [secureFile](https://core.telegram.org/constructor/secureFile) */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -4170,6 +4330,7 @@ export class InputSecureFileLocation_ extends _InputFileLocation_ {
   }
 }
 
+/** Used to download a JSON file that will contain all personal data related to features that do not have a specialized [takeout method](https://core.telegram.org/api/takeout) yet, see [here »](https://core.telegram.org/api/takeout) for more info on the takeout API. */
 export class InputTakeoutFileLocation_ extends _InputFileLocation_ {
   protected get [id](): number {
     return 0x29BE5899;
@@ -4192,10 +4353,15 @@ export class InputTakeoutFileLocation_ extends _InputFileLocation_ {
   }
 }
 
+/** Use this object to download a photo with [upload.getFile](https://core.telegram.org/method/upload.getFile) method */
 export class InputPhotoFileLocation_ extends _InputFileLocation_ {
+  /** Photo ID, obtained from the [photo](https://core.telegram.org/constructor/photo) object */
   id: bigint;
+  /** Photo's access hash, obtained from the [photo](https://core.telegram.org/constructor/photo) object */
   access_hash: bigint;
+  /** [File reference](https://core.telegram.org/api/file_reference) */
   file_reference: Uint8Array;
+  /** The [PhotoSize](https://core.telegram.org/type/PhotoSize) to download: must be set to the `type` field of the desired PhotoSize object of the [photo](https://core.telegram.org/constructor/photo) */
   thumb_size: string;
 
   protected get [id](): number {
@@ -4233,12 +4399,19 @@ export class InputPhotoFileLocation_ extends _InputFileLocation_ {
   }
 }
 
+/** DEPRECATED legacy photo file location */
 export class InputPhotoLegacyFileLocation_ extends _InputFileLocation_ {
+  /** Photo ID */
   id: bigint;
+  /** Access hash */
   access_hash: bigint;
+  /** File reference */
   file_reference: Uint8Array;
+  /** Volume ID */
   volume_id: bigint;
+  /** Local ID */
   local_id: number;
+  /** Secret */
   secret: bigint;
 
   protected get [id](): number {
@@ -4282,9 +4455,13 @@ export class InputPhotoLegacyFileLocation_ extends _InputFileLocation_ {
   }
 }
 
+/** Location of profile photo of channel/group/supergroup/user */
 export class InputPeerPhotoFileLocation_ extends _InputFileLocation_ {
+  /** Whether to download the high-quality version of the picture */
   big?: true;
+  /** The peer whose profile picture should be downloaded */
   peer: enums.InputPeer;
+  /** Photo ID */
   photo_id: bigint;
 
   protected get [id](): number {
@@ -4321,8 +4498,11 @@ export class InputPeerPhotoFileLocation_ extends _InputFileLocation_ {
   }
 }
 
+/** Location of stickerset thumbnail (see [files](https://core.telegram.org/api/files)) */
 export class InputStickerSetThumb_ extends _InputFileLocation_ {
+  /** Sticker set */
   stickerset: enums.InputStickerSet;
+  /** Thumbnail version */
   thumb_version: number;
 
   protected get [id](): number {
@@ -4354,11 +4534,17 @@ export class InputStickerSetThumb_ extends _InputFileLocation_ {
   }
 }
 
+/** Chunk of a livestream */
 export class InputGroupCallStream_ extends _InputFileLocation_ {
+  /** Livestream info */
   call: enums.InputGroupCall;
+  /** Timestamp in milliseconds */
   time_ms: bigint;
+  /** Specifies the duration of the video segment to fetch in milliseconds, by bitshifting `1000` to the right `scale` times: `duration_ms := 1000 >> scale` */
   scale: number;
+  /** Selected video channel */
   video_channel?: number;
+  /** Selected video quality (0 = lowest, 1 = medium, 2 = best) */
   video_quality?: number;
 
   protected get [id](): number {
@@ -4401,7 +4587,9 @@ export class InputGroupCallStream_ extends _InputFileLocation_ {
   }
 }
 
+/** Chat partner */
 export class PeerUser_ extends _Peer_ {
+  /** User identifier */
   user_id: bigint;
 
   protected get [id](): number {
@@ -4430,7 +4618,9 @@ export class PeerUser_ extends _Peer_ {
   }
 }
 
+/** Group. */
 export class PeerChat_ extends _Peer_ {
+  /** Group identifier */
   chat_id: bigint;
 
   protected get [id](): number {
@@ -4459,7 +4649,9 @@ export class PeerChat_ extends _Peer_ {
   }
 }
 
+/** Channel/supergroup */
 export class PeerChannel_ extends _Peer_ {
+  /** Channel ID */
   channel_id: bigint;
 
   protected get [id](): number {
@@ -4488,6 +4680,7 @@ export class PeerChannel_ extends _Peer_ {
   }
 }
 
+/** Unknown type. */
 export class storage_FileUnknown_ extends _storage_FileType_ {
   protected get [id](): number {
     return 0xAA963B05;
@@ -4510,6 +4703,7 @@ export class storage_FileUnknown_ extends _storage_FileType_ {
   }
 }
 
+/** Part of a bigger file. */
 export class storage_FilePartial_ extends _storage_FileType_ {
   protected get [id](): number {
     return 0x40BC6F52;
@@ -4532,6 +4726,7 @@ export class storage_FilePartial_ extends _storage_FileType_ {
   }
 }
 
+/** JPEG image. MIME type: `image/jpeg`. */
 export class storage_FileJpeg_ extends _storage_FileType_ {
   protected get [id](): number {
     return 0x007EFE0E;
@@ -4554,6 +4749,7 @@ export class storage_FileJpeg_ extends _storage_FileType_ {
   }
 }
 
+/** GIF image. MIME type: `image/gif`. */
 export class storage_FileGif_ extends _storage_FileType_ {
   protected get [id](): number {
     return 0xCAE1AADF;
@@ -4576,6 +4772,7 @@ export class storage_FileGif_ extends _storage_FileType_ {
   }
 }
 
+/** PNG image. MIME type: `image/png`. */
 export class storage_FilePng_ extends _storage_FileType_ {
   protected get [id](): number {
     return 0x0A4F63C0;
@@ -4598,6 +4795,7 @@ export class storage_FilePng_ extends _storage_FileType_ {
   }
 }
 
+/** PDF document image. MIME type: `application/pdf`. */
 export class storage_FilePdf_ extends _storage_FileType_ {
   protected get [id](): number {
     return 0xAE1E508D;
@@ -4620,6 +4818,7 @@ export class storage_FilePdf_ extends _storage_FileType_ {
   }
 }
 
+/** Mp3 audio. MIME type: `audio/mpeg`. */
 export class storage_FileMp3_ extends _storage_FileType_ {
   protected get [id](): number {
     return 0x528A0677;
@@ -4642,6 +4841,7 @@ export class storage_FileMp3_ extends _storage_FileType_ {
   }
 }
 
+/** Quicktime video. MIME type: `video/quicktime`. */
 export class storage_FileMov_ extends _storage_FileType_ {
   protected get [id](): number {
     return 0x4B09EBBC;
@@ -4664,6 +4864,7 @@ export class storage_FileMov_ extends _storage_FileType_ {
   }
 }
 
+/** MPEG-4 video. MIME type: `video/mp4`. */
 export class storage_FileMp4_ extends _storage_FileType_ {
   protected get [id](): number {
     return 0xB3CEA0E4;
@@ -4686,6 +4887,7 @@ export class storage_FileMp4_ extends _storage_FileType_ {
   }
 }
 
+/** WEBP image. MIME type: `image/webp`. */
 export class storage_FileWebp_ extends _storage_FileType_ {
   protected get [id](): number {
     return 0x1081464C;
@@ -4708,7 +4910,9 @@ export class storage_FileWebp_ extends _storage_FileType_ {
   }
 }
 
+/** Empty constructor, non-existent user. */
 export class UserEmpty_ extends _User_ {
+  /** User identifier or `0` */
   id: bigint;
 
   protected get [id](): number {
@@ -4737,46 +4941,86 @@ export class UserEmpty_ extends _User_ {
   }
 }
 
+/** Indicates info about a certain user */
 export class User_ extends _User_ {
+  /** Whether this user indicates the currently logged in user */
   self?: true;
+  /** Whether this user is a contact */
   contact?: true;
+  /** Whether this user is a mutual contact */
   mutual_contact?: true;
+  /** Whether the account of this user was deleted */
   deleted?: true;
+  /** Is this user a bot? */
   bot?: true;
+  /** Can the bot see all messages in groups? */
   bot_chat_history?: true;
+  /** Can the bot be added to groups? */
   bot_nochats?: true;
+  /** Whether this user is verified */
   verified?: true;
+  /** Access to this user must be restricted for the reason specified in `restriction_reason` */
   restricted?: true;
+  /** See [min](https://core.telegram.org/api/min) */
   min?: true;
+  /** Whether the bot can request our geolocation in inline mode */
   bot_inline_geo?: true;
+  /** Whether this is an official support user */
   support?: true;
+  /** This may be a scam user */
   scam?: true;
+  /** If set, the profile picture for this user should be refetched */
   apply_min_photo?: true;
+  /** If set, this user was reported by many users as a fake or scam user: be careful when interacting with them. */
   fake?: true;
+  /** Whether this bot offers an [attachment menu web app](https://core.telegram.org/api/bots/attach) */
   bot_attach_menu?: true;
+  /** Whether this user is a Telegram Premium user */
   premium?: true;
+  /** Whether we installed the [attachment menu web app](https://core.telegram.org/api/bots/attach) offered by this bot */
   attach_menu_enabled?: true;
+  /** Whether we can edit the profile picture, name, about text and description of this bot because we own it. */
   bot_can_edit?: true;
+  /** Whether we marked this user as a [close friend, see here » for more info](https://core.telegram.org/api/privacy) */
   close_friend?: true;
+  /** Whether we have [hidden »](https://core.telegram.org/api/stories#hiding-stories-of-other-users) all active stories of this user. */
   stories_hidden?: true;
+  /** No stories from this user are visible. */
   stories_unavailable?: true;
   contact_require_premium?: true;
+  /** ID of the user */
   id: bigint;
+  /** Access hash of the user */
   access_hash?: bigint;
+  /** First name */
   first_name?: string;
+  /** Last name */
   last_name?: string;
+  /** Username */
   username?: string;
+  /** Phone number */
   phone?: string;
+  /** Profile picture of user */
   photo?: enums.UserProfilePhoto;
+  /** Online status of user */
   status?: enums.UserStatus;
+  /** Version of the [bot\_info field in userFull](https://core.telegram.org/constructor/userFull), incremented every time it changes */
   bot_info_version?: number;
+  /** Contains the reason why access to this user must be restricted. */
   restriction_reason?: Array<enums.RestrictionReason>;
+  /** Inline placeholder for this inline bot */
   bot_inline_placeholder?: string;
+  /** Language code of the user */
   lang_code?: string;
+  /** [Emoji status](https://core.telegram.org/api/emoji-status) */
   emoji_status?: enums.EmojiStatus;
+  /** Additional usernames */
   usernames?: Array<enums.Username>;
+  /** ID of the maximum read [story](https://core.telegram.org/api/stories). */
   stories_max_id?: number;
+  /** The user's [accent color](https://core.telegram.org/api/colors). */
   color?: enums.PeerColor;
+  /** The user's [profile color](https://core.telegram.org/api/colors). */
   profile_color?: enums.PeerColor;
 
   protected get [id](): number {
@@ -4926,6 +5170,7 @@ export class User_ extends _User_ {
   }
 }
 
+/** Profile photo has not been set, or was hidden. */
 export class UserProfilePhotoEmpty_ extends _UserProfilePhoto_ {
   protected get [id](): number {
     return 0x4F11BAE1;
@@ -4948,11 +5193,17 @@ export class UserProfilePhotoEmpty_ extends _UserProfilePhoto_ {
   }
 }
 
+/** User profile photo. */
 export class UserProfilePhoto_ extends _UserProfilePhoto_ {
+  /** Whether an [animated profile picture](https://core.telegram.org/api/files#animated-profile-pictures) is available for this user */
   has_video?: true;
+  /** Whether this profile photo is only visible to us (i.e. it was set using [photos.uploadContactProfilePhoto](https://core.telegram.org/method/photos.uploadContactProfilePhoto)). */
   personal?: true;
+  /** Identifier of the respective photo */
   photo_id: bigint;
+  /** [Stripped thumbnail](https://core.telegram.org/api/files#stripped-thumbnails) */
   stripped_thumb?: Uint8Array;
+  /** DC ID where the photo is stored */
   dc_id: number;
 
   protected get [id](): number {
@@ -4995,6 +5246,7 @@ export class UserProfilePhoto_ extends _UserProfilePhoto_ {
   }
 }
 
+/** User status has not been set yet. */
 export class UserStatusEmpty_ extends _UserStatus_ {
   protected get [id](): number {
     return 0x09D05049;
@@ -5017,7 +5269,9 @@ export class UserStatusEmpty_ extends _UserStatus_ {
   }
 }
 
+/** Online status of the user. */
 export class UserStatusOnline_ extends _UserStatus_ {
+  /** Time to expiration of the current online status */
   expires: number;
 
   protected get [id](): number {
@@ -5046,7 +5300,9 @@ export class UserStatusOnline_ extends _UserStatus_ {
   }
 }
 
+/** The user's offline status. */
 export class UserStatusOffline_ extends _UserStatus_ {
+  /** Time the user was last seen online */
   was_online: number;
 
   protected get [id](): number {
@@ -5075,6 +5331,7 @@ export class UserStatusOffline_ extends _UserStatus_ {
   }
 }
 
+/** Online status: last seen recently */
 export class UserStatusRecently_ extends _UserStatus_ {
   by_me?: true;
 
@@ -5106,6 +5363,7 @@ export class UserStatusRecently_ extends _UserStatus_ {
   }
 }
 
+/** Online status: last seen last week */
 export class UserStatusLastWeek_ extends _UserStatus_ {
   by_me?: true;
 
@@ -5137,6 +5395,7 @@ export class UserStatusLastWeek_ extends _UserStatus_ {
   }
 }
 
+/** Online status: last seen last month */
 export class UserStatusLastMonth_ extends _UserStatus_ {
   by_me?: true;
 
@@ -5168,7 +5427,9 @@ export class UserStatusLastMonth_ extends _UserStatus_ {
   }
 }
 
+/** Empty constructor, group doesn't exist */
 export class ChatEmpty_ extends _Chat_ {
+  /** Group identifier */
   id: bigint;
 
   protected get [id](): number {
@@ -5197,21 +5458,37 @@ export class ChatEmpty_ extends _Chat_ {
   }
 }
 
+/** Info about a group */
 export class Chat_ extends _Chat_ {
+  /** Whether the current user is the creator of the group */
   creator?: true;
+  /** Whether the current user has left the group */
   left?: true;
+  /** Whether the group was [migrated](https://core.telegram.org/api/channel) */
   deactivated?: true;
+  /** Whether a group call is currently active */
   call_active?: true;
+  /** Whether there's anyone in the group call */
   call_not_empty?: true;
+  /** Whether this group is [protected](https://telegram.org/blog/protected-content-delete-by-date-and-more), thus does not allow forwarding messages from it */
   noforwards?: true;
+  /** ID of the group */
   id: bigint;
+  /** Title */
   title: string;
+  /** Chat photo */
   photo: enums.ChatPhoto;
+  /** Participant count */
   participants_count: number;
+  /** Date of creation of the group */
   date: number;
+  /** Used in basic groups to reorder updates and make sure that all of them were received. */
   version: number;
+  /** Means this chat was [upgraded](https://core.telegram.org/api/channel) to a supergroup */
   migrated_to?: enums.InputChannel;
+  /** [Admin rights](https://core.telegram.org/api/rights) of the user in the group */
   admin_rights?: enums.ChatAdminRights;
+  /** [Default banned rights](https://core.telegram.org/api/rights) of all users in the group */
   default_banned_rights?: enums.ChatBannedRights;
 
   protected get [id](): number {
@@ -5284,8 +5561,11 @@ export class Chat_ extends _Chat_ {
   }
 }
 
+/** A group to which the user has no access. E.g., because the user was kicked from the group. */
 export class ChatForbidden_ extends _Chat_ {
+  /** User identifier */
   id: bigint;
+  /** Group name */
   title: string;
 
   protected get [id](): number {
@@ -5317,46 +5597,87 @@ export class ChatForbidden_ extends _Chat_ {
   }
 }
 
+/** Channel/supergroup info */
 export class Channel_ extends _Chat_ {
+  /** Whether the current user is the creator of this channel */
   creator?: true;
+  /** Whether the current user has left or is not a member of this channel */
   left?: true;
+  /** Is this a channel? */
   broadcast?: true;
+  /** Is this channel verified by telegram? */
   verified?: true;
+  /** Is this a supergroup? */
   megagroup?: true;
+  /** Whether viewing/writing in this channel for a reason (see `restriction_reason` */
   restricted?: true;
+  /** Whether signatures are enabled (channels) */
   signatures?: true;
+  /** See [min](https://core.telegram.org/api/min) */
   min?: true;
+  /** This channel/supergroup is probably a scam */
   scam?: true;
+  /** Whether this channel has a private join link */
   has_link?: true;
+  /** Whether this chanel has a geoposition */
   has_geo?: true;
+  /** Whether slow mode is enabled for groups to prevent flood in chat */
   slowmode_enabled?: true;
+  /** Whether a group call or livestream is currently active */
   call_active?: true;
+  /** Whether there's anyone in the group call or livestream */
   call_not_empty?: true;
+  /** If set, this [supergroup/channel](https://core.telegram.org/api/channel) was reported by many users as a fake or scam: be careful when interacting with it. */
   fake?: true;
+  /** Whether this [supergroup](https://core.telegram.org/api/channel) is a gigagroup */
   gigagroup?: true;
+  /** Whether this channel or group is [protected](https://telegram.org/blog/protected-content-delete-by-date-and-more), thus does not allow forwarding messages from it */
   noforwards?: true;
+  /** Whether a user needs to join the supergroup before they can send messages: can be false only for [discussion groups »](https://core.telegram.org/api/discussion), toggle using [channels.toggleJoinToSend](https://core.telegram.org/method/channels.toggleJoinToSend) */
   join_to_send?: true;
+  /** Whether a user's join request will have to be [approved by administrators](https://core.telegram.org/api/invites#join-requests), toggle using [channels.toggleJoinToSend](https://core.telegram.org/method/channels.toggleJoinRequest) */
   join_request?: true;
+  /** Whether this supergroup is a [forum](https://core.telegram.org/api/forum) */
   forum?: true;
+  /** Whether we have [hidden all stories posted by this channel »](https://core.telegram.org/api/stories#hiding-stories-of-other-users). */
   stories_hidden?: true;
+  /** If set, indicates that the `stories_hidden` flag was not populated, and its value must cannot be relied on; use the previously cached value, or re-fetch the constructor using [channels.getChannels](https://core.telegram.org/method/channels.getChannels) to obtain the latest value of the `stories_hidden` flag. */
   stories_hidden_min?: true;
+  /** No stories from the channel are visible. */
   stories_unavailable?: true;
+  /** ID of the channel */
   id: bigint;
+  /** Access hash */
   access_hash?: bigint;
+  /** Title */
   title: string;
+  /** Username */
   username?: string;
+  /** Profile photo */
   photo: enums.ChatPhoto;
+  /** Date when the user joined the supergroup/channel, or if the user isn't a member, its creation date */
   date: number;
+  /** Contains the reason why access to this channel must be restricted. */
   restriction_reason?: Array<enums.RestrictionReason>;
+  /** Admin rights of the user in this channel (see [rights](https://core.telegram.org/api/rights)) */
   admin_rights?: enums.ChatAdminRights;
+  /** Banned rights of the user in this channel (see [rights](https://core.telegram.org/api/rights)) */
   banned_rights?: enums.ChatBannedRights;
+  /** Default chat rights (see [rights](https://core.telegram.org/api/rights)) */
   default_banned_rights?: enums.ChatBannedRights;
+  /** Participant count */
   participants_count?: number;
+  /** Additional usernames */
   usernames?: Array<enums.Username>;
+  /** ID of the maximum read [story](https://core.telegram.org/api/stories). */
   stories_max_id?: number;
+  /** The channel's [accent color](https://core.telegram.org/api/colors). */
   color?: enums.PeerColor;
+  /** The channel's [profile color](https://core.telegram.org/api/colors). */
   profile_color?: enums.PeerColor;
+  /** [Emoji status](https://core.telegram.org/api/emoji-status) */
   emoji_status?: enums.EmojiStatus;
+  /** [Boost level](https://core.telegram.org/api/boost) */
   level?: number;
 
   protected get [id](): number {
@@ -5506,12 +5827,19 @@ export class Channel_ extends _Chat_ {
   }
 }
 
+/** Indicates a channel/supergroup we can't access because we were banned, or for some other reason. */
 export class ChannelForbidden_ extends _Chat_ {
+  /** Is this a channel */
   broadcast?: true;
+  /** Is this a supergroup */
   megagroup?: true;
+  /** Channel ID */
   id: bigint;
+  /** Access hash */
   access_hash: bigint;
+  /** Title */
   title: string;
+  /** The ban is valid until the specified date */
   until_date?: number;
 
   protected get [id](): number {
@@ -5557,25 +5885,45 @@ export class ChannelForbidden_ extends _Chat_ {
   }
 }
 
+/** Full info about a [basic group](https://core.telegram.org/api/channel#basic-groups). */
 export class ChatFull_ extends _ChatFull_ {
+  /** Can we change the username of this chat */
   can_set_username?: true;
+  /** Whether [scheduled messages](https://core.telegram.org/api/scheduled-messages) are available */
   has_scheduled?: true;
+  /** Whether the [real-time chat translation popup](https://core.telegram.org/api/translation) should be hidden. */
   translations_disabled?: true;
+  /** ID of the chat */
   id: bigint;
+  /** About string for this chat */
   about: string;
+  /** Participant list */
   participants: enums.ChatParticipants;
+  /** Chat photo */
   chat_photo?: enums.Photo;
+  /** Notification settings */
   notify_settings: enums.PeerNotifySettings;
+  /** Chat invite */
   exported_invite?: enums.ExportedChatInvite;
+  /** Info about bots that are in this chat */
   bot_info?: Array<enums.BotInfo>;
+  /** Message ID of the last [pinned message](https://core.telegram.org/api/pin) */
   pinned_msg_id?: number;
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id?: number;
+  /** Group call information */
   call?: enums.InputGroupCall;
+  /** Time-To-Live of messages sent by the current user to this chat */
   ttl_period?: number;
+  /** When using [phone.getGroupCallJoinAs](https://core.telegram.org/method/phone.getGroupCallJoinAs) to get a list of peers that can be used to join a group call, this field indicates the peer that should be selected by default. */
   groupcall_default_join_as?: enums.Peer;
+  /** Emoji representing a specific chat theme */
   theme_emoticon?: string;
+  /** Pending [join requests »](https://core.telegram.org/api/invites#join-requests) */
   requests_pending?: number;
+  /** IDs of users who requested to join recently */
   recent_requesters?: Array<bigint>;
+  /** Allowed [message reactions »](https://core.telegram.org/api/reactions) */
   available_reactions?: enums.ChatReactions;
 
   protected get [id](): number {
@@ -5660,57 +6008,110 @@ export class ChatFull_ extends _ChatFull_ {
   }
 }
 
+/** Full info about a [channel](https://core.telegram.org/api/channel#channels), [supergroup](https://core.telegram.org/api/channel#supergroups) or [gigagroup](https://core.telegram.org/api/channel#gigagroups). */
 export class ChannelFull_ extends _ChatFull_ {
+  /** Can we view the participant list? */
   can_view_participants?: true;
+  /** Can we set the channel's username? */
   can_set_username?: true;
+  /** Can we [associate](https://core.telegram.org/method/channels.setStickers) a stickerpack to the supergroup? */
   can_set_stickers?: true;
+  /** Is the history before we joined hidden to us? */
   hidden_prehistory?: true;
+  /** Can we set the geolocation of this group (for geogroups) */
   can_set_location?: true;
+  /** Whether scheduled messages are available */
   has_scheduled?: true;
+  /** Can the user view [channel/supergroup statistics](https://core.telegram.org/api/stats) */
   can_view_stats?: true;
+  /** Whether any anonymous admin of this supergroup was blocked: if set, you won't receive messages from anonymous group admins in [discussion replies via @replies](https://core.telegram.org/api/discussion) */
   blocked?: true;
+  /** Can we delete this channel? */
   can_delete_channel?: true;
+  /** Whether [native antispam](https://core.telegram.org/api/antispam) functionality is enabled in this supergroup. */
   antispam?: true;
+  /** Whether the participant list is hidden. */
   participants_hidden?: true;
+  /** Whether the [real-time chat translation popup](https://core.telegram.org/api/translation) should be hidden. */
   translations_disabled?: true;
+  /** Whether this user has some [pinned stories](https://core.telegram.org/api/stories#pinned-or-archived-stories). */
   stories_pinned_available?: true;
+  /** Users may also choose to display messages from all topics of a [forum](https://core.telegram.org/api/forum) as if they were sent to a normal group, using a "View as messages" setting in the local client.  
+  This setting only affects the current account, and is synced to other logged in sessions using the [channels.toggleViewForumAsMessages](https://core.telegram.org/method/channels.toggleViewForumAsMessages) method; invoking this method will update the value of this flag. */
   view_forum_as_messages?: true;
+  /** ID of the channel */
   id: bigint;
+  /** Info about the channel */
   about: string;
+  /** Number of participants of the channel */
   participants_count?: number;
+  /** Number of channel admins */
   admins_count?: number;
+  /** Number of users [kicked](https://core.telegram.org/api/rights) from the channel */
   kicked_count?: number;
+  /** Number of users [banned](https://core.telegram.org/api/rights) from the channel */
   banned_count?: number;
+  /** Number of users currently online */
   online_count?: number;
+  /** Position up to which all incoming messages are read. */
   read_inbox_max_id: number;
+  /** Position up to which all outgoing messages are read. */
   read_outbox_max_id: number;
+  /** Count of unread messages */
   unread_count: number;
+  /** Channel picture */
   chat_photo: enums.Photo;
+  /** Notification settings */
   notify_settings: enums.PeerNotifySettings;
+  /** Invite link */
   exported_invite?: enums.ExportedChatInvite;
+  /** Info about bots in the channel/supergroup */
   bot_info: Array<enums.BotInfo>;
+  /** The chat ID from which this group was [migrated](https://core.telegram.org/api/channel) */
   migrated_from_chat_id?: bigint;
+  /** The message ID in the original chat at which this group was [migrated](https://core.telegram.org/api/channel) */
   migrated_from_max_id?: number;
+  /** Message ID of the last [pinned message](https://core.telegram.org/api/pin) */
   pinned_msg_id?: number;
+  /** Associated stickerset */
   stickerset?: enums.StickerSet;
+  /** Identifier of a maximum unavailable message in a channel due to hidden history. */
   available_min_id?: number;
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id?: number;
+  /** ID of the linked [discussion chat](https://core.telegram.org/api/discussion) for channels */
   linked_chat_id?: bigint;
+  /** Location of the geogroup */
   location?: enums.ChannelLocation;
+  /** If specified, users in supergroups will only be able to send one message every `slowmode_seconds` seconds */
   slowmode_seconds?: number;
+  /** Indicates when the user will be allowed to send another message in the supergroup (unixtime) */
   slowmode_next_send_date?: number;
+  /** If set, specifies the DC to use for fetching channel statistics */
   stats_dc?: number;
+  /** Latest [PTS](https://core.telegram.org/api/updates) for this channel */
   pts: number;
+  /** Livestream or group call information */
   call?: enums.InputGroupCall;
+  /** Time-To-Live of messages in this channel or supergroup */
   ttl_period?: number;
+  /** A list of [suggested actions](https://core.telegram.org/api/config#suggestions) for the supergroup admin, [see here for more info »](https://core.telegram.org/api/config#suggestions). */
   pending_suggestions?: Array<string>;
+  /** When using [phone.getGroupCallJoinAs](https://core.telegram.org/method/phone.getGroupCallJoinAs) to get a list of peers that can be used to join a group call, this field indicates the peer that should be selected by default. */
   groupcall_default_join_as?: enums.Peer;
+  /** Emoji representing a specific chat theme */
   theme_emoticon?: string;
+  /** Pending [join requests »](https://core.telegram.org/api/invites#join-requests) */
   requests_pending?: number;
+  /** IDs of users who requested to join recently */
   recent_requesters?: Array<bigint>;
+  /** Default peer used for sending messages to this channel */
   default_send_as?: enums.Peer;
+  /** Allowed [message reactions »](https://core.telegram.org/api/reactions) */
   available_reactions?: enums.ChatReactions;
+  /** Channel [stories](https://core.telegram.org/api/stories) */
   stories?: enums.PeerStories;
+  /** [Wallpaper](https://core.telegram.org/api/wallpapers) */
   wallpaper?: enums.WallPaper;
   boosts_applied?: number;
   boosts_unrestrict?: number;
@@ -5905,9 +6306,13 @@ export class ChannelFull_ extends _ChatFull_ {
   }
 }
 
+/** Group member. */
 export class ChatParticipant_ extends _ChatParticipant_ {
+  /** Member user ID */
   user_id: bigint;
+  /** ID of the user that added the member to the group */
   inviter_id: bigint;
+  /** Date added to the group */
   date: number;
 
   protected get [id](): number {
@@ -5942,7 +6347,9 @@ export class ChatParticipant_ extends _ChatParticipant_ {
   }
 }
 
+/** Represents the creator of the group */
 export class ChatParticipantCreator_ extends _ChatParticipant_ {
+  /** ID of the user that created the group */
   user_id: bigint;
 
   protected get [id](): number {
@@ -5971,9 +6378,13 @@ export class ChatParticipantCreator_ extends _ChatParticipant_ {
   }
 }
 
+/** Chat admin */
 export class ChatParticipantAdmin_ extends _ChatParticipant_ {
+  /** ID of a group member that is admin */
   user_id: bigint;
+  /** ID of the user that added the member to the group */
   inviter_id: bigint;
+  /** Date when the user was added */
   date: number;
 
   protected get [id](): number {
@@ -6008,8 +6419,11 @@ export class ChatParticipantAdmin_ extends _ChatParticipant_ {
   }
 }
 
+/** Info on members is unavailable */
 export class ChatParticipantsForbidden_ extends _ChatParticipants_ {
+  /** Group ID */
   chat_id: bigint;
+  /** Info about the group membership of the current user */
   self_participant?: enums.ChatParticipant;
 
   protected get [id](): number {
@@ -6043,9 +6457,13 @@ export class ChatParticipantsForbidden_ extends _ChatParticipants_ {
   }
 }
 
+/** Group members. */
 export class ChatParticipants_ extends _ChatParticipants_ {
+  /** Group identifier */
   chat_id: bigint;
+  /** List of group members */
   participants: Array<enums.ChatParticipant>;
+  /** Group version number */
   version: number;
 
   protected get [id](): number {
@@ -6080,6 +6498,7 @@ export class ChatParticipants_ extends _ChatParticipants_ {
   }
 }
 
+/** Group photo is not set. */
 export class ChatPhotoEmpty_ extends _ChatPhoto_ {
   protected get [id](): number {
     return 0x37C1011C;
@@ -6102,10 +6521,15 @@ export class ChatPhotoEmpty_ extends _ChatPhoto_ {
   }
 }
 
+/** Group profile photo. */
 export class ChatPhoto_ extends _ChatPhoto_ {
+  /** Whether the user has an animated profile picture */
   has_video?: true;
+  /** Photo ID */
   photo_id: bigint;
+  /** [Stripped thumbnail](https://core.telegram.org/api/files#stripped-thumbnails) */
   stripped_thumb?: Uint8Array;
+  /** DC where this photo is stored */
   dc_id: number;
 
   protected get [id](): number {
@@ -6145,8 +6569,11 @@ export class ChatPhoto_ extends _ChatPhoto_ {
   }
 }
 
+/** Empty constructor, non-existent message. */
 export class MessageEmpty_ extends _Message_ {
+  /** Message identifier */
   id: number;
+  /** Peer ID, the chat where this message was sent */
   peer_id?: enums.Peer;
 
   protected get [id](): number {
@@ -6180,39 +6607,72 @@ export class MessageEmpty_ extends _Message_ {
   }
 }
 
+/** A message */
 export class Message_ extends _Message_ {
+  /** Is this an outgoing message */
   out?: true;
+  /** Whether we were [mentioned](https://core.telegram.org/api/mentions) in this message */
   mentioned?: true;
+  /** Whether there are unread media attachments in this message */
   media_unread?: true;
+  /** Whether this is a silent message (no notification triggered) */
   silent?: true;
+  /** Whether this is a channel post */
   post?: true;
+  /** Whether this is a [scheduled message](https://core.telegram.org/api/scheduled-messages) */
   from_scheduled?: true;
+  /** This is a legacy message: it has to be refetched with the new layer */
   legacy?: true;
+  /** Whether the message should be shown as not modified to the user, even if an edit date is present */
   edit_hide?: true;
+  /** Whether this message is [pinned](https://core.telegram.org/api/pin) */
   pinned?: true;
+  /** Whether this message is [protected](https://telegram.org/blog/protected-content-delete-by-date-and-more) and thus cannot be forwarded; clients should also prevent users from saving attached media (i.e. videos should only be streamed, photos should be kept in RAM, et cetera). */
   noforwards?: true;
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** ID of the message */
   id: number;
+  /** ID of the sender of the message */
   from_id?: enums.Peer;
   from_boosts_applied?: number;
+  /** Peer ID, the chat where this message was sent */
   peer_id: enums.Peer;
+  /** Messages fetched from a [saved messages dialog »](https://core.telegram.org/api/saved-messages) will have `peer`\=[inputPeerSelf](https://core.telegram.org/constructor/inputPeerSelf) and the `saved_peer_id` flag set to the ID of the saved dialog. */
   saved_peer_id?: enums.Peer;
+  /** Info about forwarded messages */
   fwd_from?: enums.MessageFwdHeader;
+  /** ID of the inline bot that generated the message */
   via_bot_id?: bigint;
+  /** Reply information */
   reply_to?: enums.MessageReplyHeader;
+  /** Date of the message */
   date: number;
+  /** The message */
   message: string;
+  /** Media attachment */
   media?: enums.MessageMedia;
+  /** Reply markup (bot/inline keyboards) */
   reply_markup?: enums.ReplyMarkup;
+  /** Message [entities](https://core.telegram.org/api/entities) for styled text */
   entities?: Array<enums.MessageEntity>;
+  /** View count for channel posts */
   views?: number;
+  /** Forward counter */
   forwards?: number;
+  /** Info about [post comments (for channels) or message replies (for groups)](https://core.telegram.org/api/threads) */
   replies?: enums.MessageReplies;
+  /** Last edit date of this message */
   edit_date?: number;
+  /** Name of the author of this message for channel posts (with signatures enabled) */
   post_author?: string;
+  /** Multiple media messages sent using [messages.sendMultiMedia](https://core.telegram.org/method/messages.sendMultiMedia) with the same grouped ID indicate an [album or media group](https://core.telegram.org/api/files#albums-grouped-media) */
   grouped_id?: bigint;
+  /** Reactions to this message */
   reactions?: enums.MessageReactions;
+  /** Contains the reason why access to this message must be restricted. */
   restriction_reason?: Array<enums.RestrictionReason>;
+  /** Time To Live of the message, once message.date+message.ttl\_period === time(), the message will be deleted on the server, and must be deleted locally as well. */
   ttl_period?: number;
 
   protected get [id](): number {
@@ -6339,19 +6799,33 @@ export class Message_ extends _Message_ {
   }
 }
 
+/** Indicates a service message */
 export class MessageService_ extends _Message_ {
+  /** Whether the message is outgoing */
   out?: true;
+  /** Whether we were mentioned in the message */
   mentioned?: true;
+  /** Whether the message contains unread media */
   media_unread?: true;
+  /** Whether the message is silent */
   silent?: true;
+  /** Whether it's a channel post */
   post?: true;
+  /** This is a legacy message: it has to be refetched with the new layer */
   legacy?: true;
+  /** Message ID */
   id: number;
+  /** ID of the sender of this message */
   from_id?: enums.Peer;
+  /** Sender of service message */
   peer_id: enums.Peer;
+  /** Reply (thread) information */
   reply_to?: enums.MessageReplyHeader;
+  /** Message date */
   date: number;
+  /** Event connected with the service message */
   action: enums.MessageAction;
+  /** Time To Live of the message, once message.date+message.ttl\_period === time(), the message will be deleted on the server, and must be deleted locally as well. */
   ttl_period?: number;
 
   protected get [id](): number {
@@ -6418,6 +6892,7 @@ export class MessageService_ extends _Message_ {
   }
 }
 
+/** Empty constructor. */
 export class MessageMediaEmpty_ extends _MessageMedia_ {
   protected get [id](): number {
     return 0x3DED6320;
@@ -6440,9 +6915,13 @@ export class MessageMediaEmpty_ extends _MessageMedia_ {
   }
 }
 
+/** Attached photo. */
 export class MessageMediaPhoto_ extends _MessageMedia_ {
+  /** Whether this media should be hidden behind a spoiler warning */
   spoiler?: true;
+  /** Photo */
   photo?: enums.Photo;
+  /** Time to live in seconds of self-destructing photo */
   ttl_seconds?: number;
 
   protected get [id](): number {
@@ -6479,7 +6958,9 @@ export class MessageMediaPhoto_ extends _MessageMedia_ {
   }
 }
 
+/** Attached map. */
 export class MessageMediaGeo_ extends _MessageMedia_ {
+  /** GeoPoint */
   geo: enums.GeoPoint;
 
   protected get [id](): number {
@@ -6508,11 +6989,17 @@ export class MessageMediaGeo_ extends _MessageMedia_ {
   }
 }
 
+/** Attached contact. */
 export class MessageMediaContact_ extends _MessageMedia_ {
+  /** Phone number */
   phone_number: string;
+  /** Contact's first name */
   first_name: string;
+  /** Contact's last name */
   last_name: string;
+  /** VCARD of contact */
   vcard: string;
+  /** User identifier or `0`, if the user with the given phone number is not registered */
   user_id: bigint;
 
   protected get [id](): number {
@@ -6553,6 +7040,7 @@ export class MessageMediaContact_ extends _MessageMedia_ {
   }
 }
 
+/** Current version of the client does not support this media type. */
 export class MessageMediaUnsupported_ extends _MessageMedia_ {
   protected get [id](): number {
     return 0x9F84F49E;
@@ -6575,14 +7063,23 @@ export class MessageMediaUnsupported_ extends _MessageMedia_ {
   }
 }
 
+/** Document (video, audio, voice, sticker, any media type except photo) */
 export class MessageMediaDocument_ extends _MessageMedia_ {
+  /** Whether this is a normal sticker, if not set this is a premium sticker and a premium sticker animation must be played. */
   nopremium?: true;
+  /** Whether this media should be hidden behind a spoiler warning */
   spoiler?: true;
+  /** Whether this is a video. */
   video?: true;
+  /** Whether this is a round video. */
   round?: true;
+  /** Whether this is a voice message. */
   voice?: true;
+  /** Attached document */
   document?: enums.Document;
+  /** Currently only used for story videos, may contain an alternative version of the story video, explicitly encoded using H.264 (in MPEG4 transport) at a lower resolution than `document`. */
   alt_document?: enums.Document;
+  /** Time to live of self-destructing document */
   ttl_seconds?: number;
 
   protected get [id](): number {
@@ -6634,11 +7131,17 @@ export class MessageMediaDocument_ extends _MessageMedia_ {
   }
 }
 
+/** Preview of webpage */
 export class MessageMediaWebPage_ extends _MessageMedia_ {
+  /** If set, specifies that a large media preview should be used. */
   force_large_media?: true;
+  /** If set, specifies that a small media preview should be used. */
   force_small_media?: true;
+  /** If set, indicates that the URL used for the webpage preview was specified manually using [inputMediaWebPage](https://core.telegram.org/constructor/inputMediaWebPage), and may not be related to any of the URLs specified in the message. */
   manual?: true;
+  /** If set, the webpage can be opened directly without user confirmation; otherwise, user confirmation is required, showing the exact URL that will be opened. */
   safe?: true;
+  /** Webpage preview */
   webpage: enums.WebPage;
 
   protected get [id](): number {
@@ -6681,12 +7184,19 @@ export class MessageMediaWebPage_ extends _MessageMedia_ {
   }
 }
 
+/** Venue */
 export class MessageMediaVenue_ extends _MessageMedia_ {
+  /** Geolocation of venue */
   geo: enums.GeoPoint;
+  /** Venue name */
   title: string;
+  /** Address */
   address: string;
+  /** Venue provider: currently only "foursquare" and "gplaces" (Google Places) need to be supported */
   provider: string;
+  /** Venue ID in the provider's database */
   venue_id: string;
+  /** Venue type in the provider's database */
   venue_type: string;
 
   protected get [id](): number {
@@ -6730,7 +7240,9 @@ export class MessageMediaVenue_ extends _MessageMedia_ {
   }
 }
 
+/** Telegram game */
 export class MessageMediaGame_ extends _MessageMedia_ {
+  /** Game */
   game: enums.Game;
 
   protected get [id](): number {
@@ -6759,16 +7271,27 @@ export class MessageMediaGame_ extends _MessageMedia_ {
   }
 }
 
+/** Invoice */
 export class MessageMediaInvoice_ extends _MessageMedia_ {
+  /** Whether the shipping address was requested */
   shipping_address_requested?: true;
+  /** Whether this is an example invoice */
   test?: true;
+  /** Product name, 1-32 characters */
   title: string;
+  /** Product description, 1-255 characters */
   description: string;
+  /** URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for. */
   photo?: enums.WebDocument;
+  /** Message ID of receipt: if set, clients should change the text of the first [keyboardButtonBuy](https://core.telegram.org/constructor/keyboardButtonBuy) button always attached to the [message](https://core.telegram.org/constructor/message) to a localized version of the word `Receipt` */
   receipt_msg_id?: number;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Total price in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   total_amount: bigint;
+  /** Unique bot deep-linking parameter that can be used to generate this invoice */
   start_param: string;
+  /** Extended media */
   extended_media?: enums.MessageExtendedMedia;
 
   protected get [id](): number {
@@ -6826,10 +7349,15 @@ export class MessageMediaInvoice_ extends _MessageMedia_ {
   }
 }
 
+/** Indicates a [live geolocation](https://core.telegram.org/api/live-location) */
 export class MessageMediaGeoLive_ extends _MessageMedia_ {
+  /** Geolocation */
   geo: enums.GeoPoint;
+  /** For [live locations](https://core.telegram.org/api/live-location), a direction in which the location moves, in degrees; 1-360 */
   heading?: number;
+  /** Validity period of provided geolocation */
   period: number;
+  /** For [live locations](https://core.telegram.org/api/live-location), a maximum distance to another chat member for proximity alerts, in meters (0-100000). */
   proximity_notification_radius?: number;
 
   protected get [id](): number {
@@ -6869,8 +7397,11 @@ export class MessageMediaGeoLive_ extends _MessageMedia_ {
   }
 }
 
+/** Poll */
 export class MessageMediaPoll_ extends _MessageMedia_ {
+  /** The poll */
   poll: enums.Poll;
+  /** The results of the poll */
   results: enums.PollResults;
 
   protected get [id](): number {
@@ -6902,8 +7433,11 @@ export class MessageMediaPoll_ extends _MessageMedia_ {
   }
 }
 
+/** [Dice-based animated sticker](https://core.telegram.org/api/dice) */
 export class MessageMediaDice_ extends _MessageMedia_ {
+  /** [Dice value](https://core.telegram.org/api/dice) */
   value: number;
+  /** The emoji, for now ![🏀](//telegram.org/img/emoji/40/F09F8F80.png), ![🎲](//telegram.org/img/emoji/40/F09F8EB2.png) and ![🎯](//telegram.org/img/emoji/40/F09F8EAF.png) are supported */
   emoticon: string;
 
   protected get [id](): number {
@@ -6935,10 +7469,15 @@ export class MessageMediaDice_ extends _MessageMedia_ {
   }
 }
 
+/** Represents a forwarded [story](https://core.telegram.org/api/stories) or a story mention. */
 export class MessageMediaStory_ extends _MessageMedia_ {
+  /** If set, indicates that this someone has mentioned us in this story (i.e. by tagging us in the description) or vice versa, we have mentioned the other peer (if the message is outgoing). */
   via_mention?: true;
+  /** Peer that posted the story. */
   peer: enums.Peer;
+  /** Story ID */
   id: number;
+  /** The story itself, if absent fetch it using [stories.getStoriesByID](https://core.telegram.org/method/stories.getStoriesByID) and the `peer`/`id` parameters specified above. */
   story?: enums.StoryItem;
 
   protected get [id](): number {
@@ -6978,14 +7517,23 @@ export class MessageMediaStory_ extends _MessageMedia_ {
   }
 }
 
+/** Contains info about a [giveaway, see here »](https://core.telegram.org/api/giveaways) for more info. */
 export class MessageMediaGiveaway_ extends _MessageMedia_ {
+  /** If set, only new subscribers starting from the giveaway creation date will be able to participate to the giveaway. */
   only_new_subscribers?: true;
+  /** If set, giveaway winners are public and will be listed in a [messageMediaGiveawayResults](https://core.telegram.org/constructor/messageMediaGiveawayResults) message that will be automatically sent to the channel once the giveaway ends. */
   winners_are_visible?: true;
+  /** The channels that the user must join to participate in the giveaway. */
   channels: Array<bigint>;
+  /** If set, only users residing in these countries can participate in the giveaway, (specified as a list of two-letter ISO 3166-1 alpha-2 country codes); otherwise there are no country-based limitations. */
   countries_iso2?: Array<string>;
+  /** Can contain a textual description of additional giveaway prizes. */
   prize_description?: string;
+  /** Number of [Telegram Premium](https://core.telegram.org/api/premium) subscriptions given away. */
   quantity: number;
+  /** Duration in months of each [Telegram Premium](https://core.telegram.org/api/premium) subscription in the giveaway. */
   months: number;
+  /** The end date of the giveaway. */
   until_date: number;
 
   protected get [id](): number {
@@ -7037,17 +7585,29 @@ export class MessageMediaGiveaway_ extends _MessageMedia_ {
   }
 }
 
+/** A [giveaway](https://core.telegram.org/api/giveaways) with public winners has finished, this constructor contains info about the winners. */
 export class MessageMediaGiveawayResults_ extends _MessageMedia_ {
+  /** If set, only new subscribers starting from the giveaway creation date participated in the giveaway. */
   only_new_subscribers?: true;
+  /** If set, the giveaway was canceled and was fully refunded. */
   refunded?: true;
+  /** ID of the channel that was automatically [boosted](https://core.telegram.org/api/boost) by the winners of the giveaway for duration of the Premium subscription. */
   channel_id: bigint;
+  /** Number of other channels that participated in the giveaway. */
   additional_peers_count?: number;
+  /** Identifier of the message with the giveaway in `channel_id`. */
   launch_msg_id: number;
+  /** Total number of winners in the giveaway. */
   winners_count: number;
+  /** Number of not-yet-claimed prizes. */
   unclaimed_count: number;
+  /** Up to 100 user identifiers of the winners of the giveaway. */
   winners: Array<bigint>;
+  /** Duration in months of each [Telegram Premium](https://core.telegram.org/api/premium) subscription in the giveaway. */
   months: number;
+  /** Can contain a textual description of additional giveaway prizes. */
   prize_description?: string;
+  /** Point in time (Unix timestamp) when the winners were selected. May be bigger than winners selection date specified in initial parameters of the giveaway. */
   until_date: number;
 
   protected get [id](): number {
@@ -7108,6 +7668,7 @@ export class MessageMediaGiveawayResults_ extends _MessageMedia_ {
   }
 }
 
+/** Empty constructor. */
 export class MessageActionEmpty_ extends _MessageAction_ {
   protected get [id](): number {
     return 0xB6AEF7B0;
@@ -7130,8 +7691,11 @@ export class MessageActionEmpty_ extends _MessageAction_ {
   }
 }
 
+/** Group created */
 export class MessageActionChatCreate_ extends _MessageAction_ {
+  /** Group name */
   title: string;
+  /** List of group members */
   users: Array<bigint>;
 
   protected get [id](): number {
@@ -7163,7 +7727,9 @@ export class MessageActionChatCreate_ extends _MessageAction_ {
   }
 }
 
+/** Group name changed. */
 export class MessageActionChatEditTitle_ extends _MessageAction_ {
+  /** New group name */
   title: string;
 
   protected get [id](): number {
@@ -7192,7 +7758,9 @@ export class MessageActionChatEditTitle_ extends _MessageAction_ {
   }
 }
 
+/** Group profile changed */
 export class MessageActionChatEditPhoto_ extends _MessageAction_ {
+  /** New group profile photo */
   photo: enums.Photo;
 
   protected get [id](): number {
@@ -7221,6 +7789,7 @@ export class MessageActionChatEditPhoto_ extends _MessageAction_ {
   }
 }
 
+/** Group profile photo removed. */
 export class MessageActionChatDeletePhoto_ extends _MessageAction_ {
   protected get [id](): number {
     return 0x95E3FBEF;
@@ -7243,7 +7812,9 @@ export class MessageActionChatDeletePhoto_ extends _MessageAction_ {
   }
 }
 
+/** New member in the group */
 export class MessageActionChatAddUser_ extends _MessageAction_ {
+  /** Users that were invited to the chat */
   users: Array<bigint>;
 
   protected get [id](): number {
@@ -7272,7 +7843,9 @@ export class MessageActionChatAddUser_ extends _MessageAction_ {
   }
 }
 
+/** User left the group. */
 export class MessageActionChatDeleteUser_ extends _MessageAction_ {
+  /** Leaving user ID */
   user_id: bigint;
 
   protected get [id](): number {
@@ -7301,7 +7874,9 @@ export class MessageActionChatDeleteUser_ extends _MessageAction_ {
   }
 }
 
+/** A user joined the chat via an invite link */
 export class MessageActionChatJoinedByLink_ extends _MessageAction_ {
+  /** ID of the user that created the invite link */
   inviter_id: bigint;
 
   protected get [id](): number {
@@ -7330,7 +7905,9 @@ export class MessageActionChatJoinedByLink_ extends _MessageAction_ {
   }
 }
 
+/** The channel was created */
 export class MessageActionChannelCreate_ extends _MessageAction_ {
+  /** Original channel/supergroup title */
   title: string;
 
   protected get [id](): number {
@@ -7359,7 +7936,9 @@ export class MessageActionChannelCreate_ extends _MessageAction_ {
   }
 }
 
+/** Indicates the chat was [migrated](https://core.telegram.org/api/channel) to the specified supergroup */
 export class MessageActionChatMigrateTo_ extends _MessageAction_ {
+  /** The supergroup it was migrated to */
   channel_id: bigint;
 
   protected get [id](): number {
@@ -7388,8 +7967,11 @@ export class MessageActionChatMigrateTo_ extends _MessageAction_ {
   }
 }
 
+/** Indicates the channel was [migrated](https://core.telegram.org/api/channel) from the specified chat */
 export class MessageActionChannelMigrateFrom_ extends _MessageAction_ {
+  /** The old chat title */
   title: string;
+  /** The old chat ID */
   chat_id: bigint;
 
   protected get [id](): number {
@@ -7421,6 +8003,7 @@ export class MessageActionChannelMigrateFrom_ extends _MessageAction_ {
   }
 }
 
+/** A message was pinned */
 export class MessageActionPinMessage_ extends _MessageAction_ {
   protected get [id](): number {
     return 0x94BD38ED;
@@ -7443,6 +8026,7 @@ export class MessageActionPinMessage_ extends _MessageAction_ {
   }
 }
 
+/** Chat history was cleared */
 export class MessageActionHistoryClear_ extends _MessageAction_ {
   protected get [id](): number {
     return 0x9FBAB604;
@@ -7465,8 +8049,11 @@ export class MessageActionHistoryClear_ extends _MessageAction_ {
   }
 }
 
+/** Someone scored in a game */
 export class MessageActionGameScore_ extends _MessageAction_ {
+  /** Game ID */
   game_id: bigint;
+  /** Score */
   score: number;
 
   protected get [id](): number {
@@ -7498,14 +8085,23 @@ export class MessageActionGameScore_ extends _MessageAction_ {
   }
 }
 
+/** A user just sent a payment to me (a bot) */
 export class MessageActionPaymentSentMe_ extends _MessageAction_ {
+  /** Whether this is the first payment of a recurring payment we just subscribed to */
   recurring_init?: true;
+  /** Whether this payment is part of a recurring payment */
   recurring_used?: true;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   total_amount: bigint;
+  /** Bot specified invoice payload */
   payload: Uint8Array;
+  /** Order info provided by the user */
   info?: enums.PaymentRequestedInfo;
+  /** Identifier of the shipping option chosen by the user */
   shipping_option_id?: string;
+  /** Provider payment identifier */
   charge: enums.PaymentCharge;
 
   protected get [id](): number {
@@ -7557,11 +8153,17 @@ export class MessageActionPaymentSentMe_ extends _MessageAction_ {
   }
 }
 
+/** A payment was sent */
 export class MessageActionPaymentSent_ extends _MessageAction_ {
+  /** Whether this is the first payment of a recurring payment we just subscribed to */
   recurring_init?: true;
+  /** Whether this payment is part of a recurring payment */
   recurring_used?: true;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   total_amount: bigint;
+  /** An invoice slug taken from an [invoice deep link](https://core.telegram.org/api/links#invoice-links) or from the [`premium_invoice_slug` app config parameter »](https://core.telegram.org/api/config#premium-invoice-slug) */
   invoice_slug?: string;
 
   protected get [id](): number {
@@ -7604,10 +8206,15 @@ export class MessageActionPaymentSent_ extends _MessageAction_ {
   }
 }
 
+/** A phone call */
 export class MessageActionPhoneCall_ extends _MessageAction_ {
+  /** Is this a video call? */
   video?: true;
+  /** Call ID */
   call_id: bigint;
+  /** If the call has ended, the reason why it ended */
   reason?: enums.PhoneCallDiscardReason;
+  /** Duration of the call in seconds */
   duration?: number;
 
   protected get [id](): number {
@@ -7647,6 +8254,7 @@ export class MessageActionPhoneCall_ extends _MessageAction_ {
   }
 }
 
+/** A screenshot of the chat was taken */
 export class MessageActionScreenshotTaken_ extends _MessageAction_ {
   protected get [id](): number {
     return 0x4792929B;
@@ -7669,7 +8277,9 @@ export class MessageActionScreenshotTaken_ extends _MessageAction_ {
   }
 }
 
+/** Custom action (most likely not supported by the current layer, an upgrade might be needed) */
 export class MessageActionCustomAction_ extends _MessageAction_ {
+  /** Action message */
   message: string;
 
   protected get [id](): number {
@@ -7698,10 +8308,15 @@ export class MessageActionCustomAction_ extends _MessageAction_ {
   }
 }
 
+/** We have given the bot permission to send us direct messages. */
 export class MessageActionBotAllowed_ extends _MessageAction_ {
+  /** We have authorized the bot to send us messages by installing the bot's [attachment menu](https://core.telegram.org/api/bots/attach). */
   attach_menu?: true;
+  /** We have allowed the bot to send us messages using [bots.allowSendMessage »](https://core.telegram.org/method/bots.allowSendMessage). */
   from_request?: true;
+  /** We have authorized the bot to send us messages by logging into a website via [Telegram Login »](https://core.telegram.org/widgets/login); this field contains the domain name of the website on which the user has logged in. */
   domain?: string;
+  /** We have authorized the bot to send us messages by opening the specified [bot mini app](https://core.telegram.org/api/bots/webapps). */
   app?: enums.BotApp;
 
   protected get [id](): number {
@@ -7741,8 +8356,11 @@ export class MessageActionBotAllowed_ extends _MessageAction_ {
   }
 }
 
+/** Secure [telegram passport](https://core.telegram.org/passport) values were received */
 export class MessageActionSecureValuesSentMe_ extends _MessageAction_ {
+  /** Vector with information about documents and other Telegram Passport elements that were shared with the bot */
   values: Array<enums.SecureValue>;
+  /** Encrypted credentials required to decrypt the data */
   credentials: enums.SecureCredentialsEncrypted;
 
   protected get [id](): number {
@@ -7774,7 +8392,9 @@ export class MessageActionSecureValuesSentMe_ extends _MessageAction_ {
   }
 }
 
+/** Request for secure [telegram passport](https://core.telegram.org/passport) values was sent */
 export class MessageActionSecureValuesSent_ extends _MessageAction_ {
+  /** Secure value types */
   types: Array<enums.SecureValueType>;
 
   protected get [id](): number {
@@ -7803,6 +8423,7 @@ export class MessageActionSecureValuesSent_ extends _MessageAction_ {
   }
 }
 
+/** A contact just signed up to telegram */
 export class MessageActionContactSignUp_ extends _MessageAction_ {
   protected get [id](): number {
     return 0xF3F25F76;
@@ -7825,9 +8446,13 @@ export class MessageActionContactSignUp_ extends _MessageAction_ {
   }
 }
 
+/** A user of the chat is now in proximity of another user */
 export class MessageActionGeoProximityReached_ extends _MessageAction_ {
+  /** The user or chat that is now in proximity of `to_id` */
   from_id: enums.Peer;
+  /** The user or chat that subscribed to [live geolocation proximity alerts](https://core.telegram.org/api/live-location#proximity-alert) */
   to_id: enums.Peer;
+  /** Distance, in meters (0-100000) */
   distance: number;
 
   protected get [id](): number {
@@ -7862,8 +8487,11 @@ export class MessageActionGeoProximityReached_ extends _MessageAction_ {
   }
 }
 
+/** The group call has ended */
 export class MessageActionGroupCall_ extends _MessageAction_ {
+  /** Group call */
   call: enums.InputGroupCall;
+  /** Group call duration */
   duration?: number;
 
   protected get [id](): number {
@@ -7897,8 +8525,11 @@ export class MessageActionGroupCall_ extends _MessageAction_ {
   }
 }
 
+/** A set of users was invited to the group call */
 export class MessageActionInviteToGroupCall_ extends _MessageAction_ {
+  /** The group call */
   call: enums.InputGroupCall;
+  /** The invited users */
   users: Array<bigint>;
 
   protected get [id](): number {
@@ -7930,8 +8561,11 @@ export class MessageActionInviteToGroupCall_ extends _MessageAction_ {
   }
 }
 
+/** The Time-To-Live of messages in this chat was changed. */
 export class MessageActionSetMessagesTTL_ extends _MessageAction_ {
+  /** New Time-To-Live of all messages sent in this chat; if 0, autodeletion was disabled. */
   period: number;
+  /** If set, the chat TTL setting was set not due to a manual change by one of participants, but automatically because one of the participants has the [default TTL settings enabled »](https://core.telegram.org/method/messages.setDefaultHistoryTTL). For example, when a user writes to us for the first time and we have set a default messages TTL of 1 week, this service message (with `auto_setting_from=our_userid`) will be emitted before our first message. */
   auto_setting_from?: bigint;
 
   protected get [id](): number {
@@ -7965,8 +8599,11 @@ export class MessageActionSetMessagesTTL_ extends _MessageAction_ {
   }
 }
 
+/** A group call was scheduled */
 export class MessageActionGroupCallScheduled_ extends _MessageAction_ {
+  /** The group call */
   call: enums.InputGroupCall;
+  /** When is this group call scheduled to start */
   schedule_date: number;
 
   protected get [id](): number {
@@ -7998,7 +8635,9 @@ export class MessageActionGroupCallScheduled_ extends _MessageAction_ {
   }
 }
 
+/** The chat theme was changed */
 export class MessageActionSetChatTheme_ extends _MessageAction_ {
+  /** The emoji that identifies a chat theme */
   emoticon: string;
 
   protected get [id](): number {
@@ -8027,6 +8666,7 @@ export class MessageActionSetChatTheme_ extends _MessageAction_ {
   }
 }
 
+/** A user was accepted into the group by an admin */
 export class MessageActionChatJoinedByRequest_ extends _MessageAction_ {
   protected get [id](): number {
     return 0xEBBCA3CB;
@@ -8049,8 +8689,11 @@ export class MessageActionChatJoinedByRequest_ extends _MessageAction_ {
   }
 }
 
+/** Data from an opened [reply keyboard bot mini app](https://core.telegram.org/api/bots/webapps) was relayed to the bot that owns it (bot side service message). */
 export class MessageActionWebViewDataSentMe_ extends _MessageAction_ {
+  /** Text of the [keyboardButtonSimpleWebView](https://core.telegram.org/constructor/keyboardButtonSimpleWebView) that was pressed to open the web app. */
   text: string;
+  /** Relayed data. */
   data: string;
 
   protected get [id](): number {
@@ -8082,7 +8725,9 @@ export class MessageActionWebViewDataSentMe_ extends _MessageAction_ {
   }
 }
 
+/** Data from an opened [reply keyboard bot mini app](https://core.telegram.org/api/bots/webapps) was relayed to the bot that owns it (user side service message). */
 export class MessageActionWebViewDataSent_ extends _MessageAction_ {
+  /** Text of the [keyboardButtonSimpleWebView](https://core.telegram.org/constructor/keyboardButtonSimpleWebView) that was pressed to open the web app. */
   text: string;
 
   protected get [id](): number {
@@ -8111,11 +8756,17 @@ export class MessageActionWebViewDataSent_ extends _MessageAction_ {
   }
 }
 
+/** Info about a gifted Telegram Premium subscription */
 export class MessageActionGiftPremium_ extends _MessageAction_ {
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Price of the gift in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   amount: bigint;
+  /** Duration of the gifted Telegram Premium subscription */
   months: number;
+  /** If the gift was bought using a cryptocurrency, the cryptocurrency name. */
   crypto_currency?: string;
+  /** If the gift was bought using a cryptocurrency, price of the gift in the smallest units of a cryptocurrency. */
   crypto_amount?: bigint;
 
   protected get [id](): number {
@@ -8158,9 +8809,13 @@ export class MessageActionGiftPremium_ extends _MessageAction_ {
   }
 }
 
+/** A [forum topic](https://core.telegram.org/api/forum#forum-topics) was created. */
 export class MessageActionTopicCreate_ extends _MessageAction_ {
+  /** Topic name. */
   title: string;
+  /** If no custom emoji icon is specified, specifies the color of the fallback topic icon (RGB), one of `0x6FB9F0`, `0xFFD67E`, `0xCB86DB`, `0x8EEE98`, `0xFF93B2`, or `0xFB6F5F`. */
   icon_color: number;
+  /** ID of the [custom emoji](https://core.telegram.org/api/custom-emoji) used as topic icon. */
   icon_emoji_id?: bigint;
 
   protected get [id](): number {
@@ -8197,10 +8852,15 @@ export class MessageActionTopicCreate_ extends _MessageAction_ {
   }
 }
 
+/** [Forum topic](https://core.telegram.org/api/forum#forum-topics) information was edited. */
 export class MessageActionTopicEdit_ extends _MessageAction_ {
+  /** New topic title. */
   title?: string;
+  /** ID of the new [custom emoji](https://core.telegram.org/api/custom-emoji) used as topic icon, or if it was removed. */
   icon_emoji_id?: bigint;
+  /** Whether the topic was opened or closed. */
   closed?: boolean;
+  /** Whether the topic was hidden or unhidden (only valid for the "General" topic, `id=1`). */
   hidden?: boolean;
 
   protected get [id](): number {
@@ -8240,7 +8900,9 @@ export class MessageActionTopicEdit_ extends _MessageAction_ {
   }
 }
 
+/** A new profile picture was suggested using [photos.uploadContactProfilePhoto](https://core.telegram.org/method/photos.uploadContactProfilePhoto). */
 export class MessageActionSuggestProfilePhoto_ extends _MessageAction_ {
+  /** The photo that the user suggested we set as profile picture. */
   photo: enums.Photo;
 
   protected get [id](): number {
@@ -8269,8 +8931,11 @@ export class MessageActionSuggestProfilePhoto_ extends _MessageAction_ {
   }
 }
 
+/** Contains info about one or more peers that the user shared with the bot after clicking on a [keyboardButtonRequestPeer](https://core.telegram.org/constructor/keyboardButtonRequestPeer) button. */
 export class MessageActionRequestedPeer_ extends _MessageAction_ {
+  /** `button_id` contained in the [keyboardButtonRequestPeer](https://core.telegram.org/constructor/keyboardButtonRequestPeer) */
   button_id: number;
+  /** The shared peers */
   peers: Array<enums.Peer>;
 
   protected get [id](): number {
@@ -8302,9 +8967,14 @@ export class MessageActionRequestedPeer_ extends _MessageAction_ {
   }
 }
 
+/** The [wallpaper »](https://core.telegram.org/api/wallpapers) of the current chat was changed. */
 export class MessageActionSetChatWallPaper_ extends _MessageAction_ {
+  /** If set, indicates the user applied a [wallpaper »](https://core.telegram.org/api/wallpapers) previously sent by the other user in a [messageActionSetChatWallPaper](https://core.telegram.org/constructor/messageActionSetChatWallPaper) message. */
   same?: true;
+  /** If set, indicates the wallpaper was forcefully applied for both sides, without explicit confirmation from the other side.  
+  If the message is incoming, and we did not like the new wallpaper the other user has chosen for us, we can re-set our previous wallpaper just on our side, by invoking [messages.setChatWallPaper](https://core.telegram.org/method/messages.setChatWallPaper), providing only the `revert` flag (and obviously the `peer` parameter). */
   for_both?: true;
+  /** New [wallpaper](https://core.telegram.org/api/wallpapers) */
   wallpaper: enums.WallPaper;
 
   protected get [id](): number {
@@ -8341,15 +9011,25 @@ export class MessageActionSetChatWallPaper_ extends _MessageAction_ {
   }
 }
 
+/** Contains a [Telegram Premium giftcode link](https://core.telegram.org/api/links#premium-giftcode-links). */
 export class MessageActionGiftCode_ extends _MessageAction_ {
+  /** If set, this gift code was received from a [giveaway »](https://core.telegram.org/api/giveaways) started by a channel we're subscribed to. */
   via_giveaway?: true;
+  /** If set, the link was not [redeemed](https://core.telegram.org/api/links#premium-giftcode-links) yet. */
   unclaimed?: true;
+  /** Identifier of the channel that created the gift code [either directly or through a giveaway](https://core.telegram.org/api/giveaways): if we import this giftcode link, we will also automatically [boost](https://core.telegram.org/api/boost) this channel. */
   boost_peer?: enums.Peer;
+  /** Duration in months of the gifted [Telegram Premium subscription](https://core.telegram.org/api/premium). */
   months: number;
+  /** Slug of the [Telegram Premium giftcode link](https://core.telegram.org/api/links#premium-giftcode-links) */
   slug: string;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency?: string;
+  /** Total price in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   amount?: bigint;
+  /** If set, the gift was made using the specified cryptocurrency. */
   crypto_currency?: string;
+  /** If `crypto_currency` is set, contains the paid amount, in the smallest units of the cryptocurrency. */
   crypto_amount?: bigint;
 
   protected get [id](): number {
@@ -8404,6 +9084,7 @@ export class MessageActionGiftCode_ extends _MessageAction_ {
   }
 }
 
+/** A [giveaway](https://core.telegram.org/api/giveaways) was started. */
 export class MessageActionGiveawayLaunch_ extends _MessageAction_ {
   protected get [id](): number {
     return 0x332BA9ED;
@@ -8426,8 +9107,11 @@ export class MessageActionGiveawayLaunch_ extends _MessageAction_ {
   }
 }
 
+/** A [giveaway](https://core.telegram.org/api/giveaways) has ended. */
 export class MessageActionGiveawayResults_ extends _MessageAction_ {
+  /** Number of winners in the giveaway */
   winners_count: number;
+  /** Number of undistributed prizes */
   unclaimed_count: number;
 
   protected get [id](): number {
@@ -8488,21 +9172,38 @@ export class MessageActionBoostApply_ extends _MessageAction_ {
   }
 }
 
+/** Chat */
 export class Dialog_ extends _Dialog_ {
+  /** Is the dialog pinned */
   pinned?: true;
+  /** Whether the chat was manually marked as unread */
   unread_mark?: true;
+  /** Users may also choose to display messages from all topics of a [forum](https://core.telegram.org/api/forum) as if they were sent to a normal group, using a "View as messages" setting in the local client.  
+  This setting only affects the current account, and is synced to other logged in sessions using the [channels.toggleViewForumAsMessages](https://core.telegram.org/method/channels.toggleViewForumAsMessages) method; invoking this method will update the value of this flag. */
   view_forum_as_messages?: true;
+  /** The chat */
   peer: enums.Peer;
+  /** The latest message ID */
   top_message: number;
+  /** Position up to which all incoming messages are read. */
   read_inbox_max_id: number;
+  /** Position up to which all outgoing messages are read. */
   read_outbox_max_id: number;
+  /** Number of unread messages */
   unread_count: number;
+  /** Number of [unread mentions](https://core.telegram.org/api/mentions) */
   unread_mentions_count: number;
+  /** Number of unread reactions to messages you sent */
   unread_reactions_count: number;
+  /** Notification settings */
   notify_settings: enums.PeerNotifySettings;
+  /** [PTS](https://core.telegram.org/api/updates) */
   pts?: number;
+  /** Message [draft](https://core.telegram.org/api/drafts) */
   draft?: enums.DraftMessage;
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id?: number;
+  /** Time-to-live of all messages sent in this dialog */
   ttl_period?: number;
 
   protected get [id](): number {
@@ -8575,14 +9276,23 @@ export class Dialog_ extends _Dialog_ {
   }
 }
 
+/** Dialog in folder */
 export class DialogFolder_ extends _Dialog_ {
+  /** Is this folder pinned */
   pinned?: true;
+  /** The folder */
   folder: enums.Folder;
+  /** Peer in folder */
   peer: enums.Peer;
+  /** Latest message ID of dialog */
   top_message: number;
+  /** Number of unread muted peers in folder */
   unread_muted_peers_count: number;
+  /** Number of unread unmuted peers in folder */
   unread_unmuted_peers_count: number;
+  /** Number of unread messages from muted peers in folder */
   unread_muted_messages_count: number;
+  /** Number of unread messages from unmuted peers in folder */
   unread_unmuted_messages_count: number;
 
   protected get [id](): number {
@@ -8634,7 +9344,9 @@ export class DialogFolder_ extends _Dialog_ {
   }
 }
 
+/** Empty constructor, non-existent photo */
 export class PhotoEmpty_ extends _Photo_ {
+  /** Photo identifier */
   id: bigint;
 
   protected get [id](): number {
@@ -8663,14 +9375,23 @@ export class PhotoEmpty_ extends _Photo_ {
   }
 }
 
+/** Photo */
 export class Photo_ extends _Photo_ {
+  /** Whether the photo has mask stickers attached to it */
   has_stickers?: true;
+  /** ID */
   id: bigint;
+  /** Access hash */
   access_hash: bigint;
+  /** [file reference](https://core.telegram.org/api/file_reference) */
   file_reference: Uint8Array;
+  /** Date of upload */
   date: number;
+  /** Available sizes for download */
   sizes: Array<enums.PhotoSize>;
+  /** [For animated profiles](https://core.telegram.org/api/files#animated-profile-pictures), the MPEG4 videos */
   video_sizes?: Array<enums.VideoSize>;
+  /** DC ID to use for download */
   dc_id: number;
 
   protected get [id](): number {
@@ -8722,7 +9443,9 @@ export class Photo_ extends _Photo_ {
   }
 }
 
+/** Empty constructor. Image with this thumbnail is unavailable. */
 export class PhotoSizeEmpty_ extends _PhotoSize_ {
+  /** [Thumbnail type »](https://core.telegram.org/api/files#image-thumbnail-types) */
   type: string;
 
   protected get [id](): number {
@@ -8751,10 +9474,15 @@ export class PhotoSizeEmpty_ extends _PhotoSize_ {
   }
 }
 
+/** Image description. */
 export class PhotoSize_ extends _PhotoSize_ {
+  /** [Thumbnail type »](https://core.telegram.org/api/files#image-thumbnail-types) */
   type: string;
+  /** Image width */
   w: number;
+  /** Image height */
   h: number;
+  /** File size */
   size: number;
 
   protected get [id](): number {
@@ -8792,10 +9520,15 @@ export class PhotoSize_ extends _PhotoSize_ {
   }
 }
 
+/** Description of an image and its content. */
 export class PhotoCachedSize_ extends _PhotoSize_ {
+  /** Thumbnail type */
   type: string;
+  /** Image width */
   w: number;
+  /** Image height */
   h: number;
+  /** Binary data, file content */
   bytes: Uint8Array;
 
   protected get [id](): number {
@@ -8833,8 +9566,11 @@ export class PhotoCachedSize_ extends _PhotoSize_ {
   }
 }
 
+/** A low-resolution compressed JPG payload */
 export class PhotoStrippedSize_ extends _PhotoSize_ {
+  /** Thumbnail type */
   type: string;
+  /** Thumbnail data, see [here for more info on decompression »](https://core.telegram.org/api/files#stripped-thumbnails) */
   bytes: Uint8Array;
 
   protected get [id](): number {
@@ -8866,10 +9602,15 @@ export class PhotoStrippedSize_ extends _PhotoSize_ {
   }
 }
 
+/** Progressively encoded photosize */
 export class PhotoSizeProgressive_ extends _PhotoSize_ {
+  /** [Photosize type »](https://core.telegram.org/api/files#image-thumbnail-types) */
   type: string;
+  /** Photo width */
   w: number;
+  /** Photo height */
   h: number;
+  /** Sizes of progressive JPEG file prefixes, which can be used to preliminarily show the image. */
   sizes: Array<number>;
 
   protected get [id](): number {
@@ -8907,8 +9648,11 @@ export class PhotoSizeProgressive_ extends _PhotoSize_ {
   }
 }
 
+/** Messages with animated stickers can have a compressed svg (< 300 bytes) to show the outline of the sticker before fetching the actual lottie animation. */
 export class PhotoPathSize_ extends _PhotoSize_ {
+  /** Always `j` */
   type: string;
+  /** Compressed SVG path payload, [see here for decompression instructions](https://core.telegram.org/api/files#vector-thumbnails) */
   bytes: Uint8Array;
 
   protected get [id](): number {
@@ -8940,6 +9684,7 @@ export class PhotoPathSize_ extends _PhotoSize_ {
   }
 }
 
+/** Empty constructor. */
 export class GeoPointEmpty_ extends _GeoPoint_ {
   protected get [id](): number {
     return 0x1117DD5F;
@@ -8962,10 +9707,15 @@ export class GeoPointEmpty_ extends _GeoPoint_ {
   }
 }
 
+/** GeoPoint. */
 export class GeoPoint_ extends _GeoPoint_ {
+  /** Longitude */
   long: number;
+  /** Latitude */
   lat: number;
+  /** Access hash */
   access_hash: bigint;
+  /** The estimated horizontal accuracy of the location, in meters; as defined by the sender. */
   accuracy_radius?: number;
 
   protected get [id](): number {
@@ -9005,10 +9755,15 @@ export class GeoPoint_ extends _GeoPoint_ {
   }
 }
 
+/** Contains info about a sent verification code. */
 export class auth_SentCode_ extends _auth_SentCode_ {
+  /** Phone code type */
   type: enums.auth.SentCodeType;
+  /** Phone code hash, to be stored and later re-used with [auth.signIn](https://core.telegram.org/method/auth.signIn) */
   phone_code_hash: string;
+  /** Phone code type that will be sent next, if the phone code is not received within `timeout` seconds: to send it use [auth.resendCode](https://core.telegram.org/method/auth.resendCode) */
   next_type?: enums.auth.CodeType;
+  /** Timeout for reception of the phone code */
   timeout?: number;
 
   protected get [id](): number {
@@ -9048,7 +9803,9 @@ export class auth_SentCode_ extends _auth_SentCode_ {
   }
 }
 
+/** The user successfully authorized using [future auth tokens](https://core.telegram.org/api/auth#future-auth-tokens) */
 export class auth_SentCodeSuccess_ extends _auth_SentCode_ {
+  /** Authorization info */
   authorization: enums.auth.Authorization;
 
   protected get [id](): number {
@@ -9077,11 +9834,17 @@ export class auth_SentCodeSuccess_ extends _auth_SentCode_ {
   }
 }
 
+/** Contains user authorization info. */
 export class auth_Authorization_ extends _auth_Authorization_ {
+  /** Suggests the user to set up a 2-step verification password to be able to log in again */
   setup_password_required?: true;
+  /** Iff setup\_password\_required is set and the user declines to set a 2-step verification password, they will be able to log into their account via SMS again only after this many days pass. */
   otherwise_relogin_days?: number;
+  /** Temporary [passport](https://core.telegram.org/passport) sessions */
   tmp_sessions?: number;
+  /** A [future auth token](https://core.telegram.org/api/auth#future-auth-tokens) */
   future_auth_token?: Uint8Array;
+  /** Info on authorized user */
   user: enums.User;
 
   protected get [id](): number {
@@ -9124,7 +9887,9 @@ export class auth_Authorization_ extends _auth_Authorization_ {
   }
 }
 
+/** An account with this phone number doesn't exist on telegram: the user has to [enter basic information and sign up](https://core.telegram.org/api/auth) */
 export class auth_AuthorizationSignUpRequired_ extends _auth_Authorization_ {
+  /** Telegram's terms of service: the user must read and accept the terms of service before signing up to telegram */
   terms_of_service?: enums.help.TermsOfService;
 
   protected get [id](): number {
@@ -9155,8 +9920,11 @@ export class auth_AuthorizationSignUpRequired_ extends _auth_Authorization_ {
   }
 }
 
+/** Data for copying of authorization between data centers. */
 export class auth_ExportedAuthorization_ extends _auth_ExportedAuthorization_ {
+  /** current user identifier */
   id: bigint;
+  /** authorizes key */
   bytes: Uint8Array;
 
   protected get [id](): number {
@@ -9188,7 +9956,9 @@ export class auth_ExportedAuthorization_ extends _auth_ExportedAuthorization_ {
   }
 }
 
+/** Notifications generated by a certain user or group. */
 export class InputNotifyPeer_ extends _InputNotifyPeer_ {
+  /** User or group */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -9217,6 +9987,7 @@ export class InputNotifyPeer_ extends _InputNotifyPeer_ {
   }
 }
 
+/** Notifications generated by all users. */
 export class InputNotifyUsers_ extends _InputNotifyPeer_ {
   protected get [id](): number {
     return 0x193B4417;
@@ -9239,6 +10010,7 @@ export class InputNotifyUsers_ extends _InputNotifyPeer_ {
   }
 }
 
+/** Notifications generated by all groups. */
 export class InputNotifyChats_ extends _InputNotifyPeer_ {
   protected get [id](): number {
     return 0x4A95E84E;
@@ -9261,6 +10033,7 @@ export class InputNotifyChats_ extends _InputNotifyPeer_ {
   }
 }
 
+/** All [channels](https://core.telegram.org/api/channel) */
 export class InputNotifyBroadcasts_ extends _InputNotifyPeer_ {
   protected get [id](): number {
     return 0xB1DB7C7E;
@@ -9283,8 +10056,11 @@ export class InputNotifyBroadcasts_ extends _InputNotifyPeer_ {
   }
 }
 
+/** Notifications generated by a [topic](https://core.telegram.org/api/forum#forum-topics) in a [forum](https://core.telegram.org/api/forum). */
 export class InputNotifyForumTopic_ extends _InputNotifyPeer_ {
+  /** Forum ID */
   peer: enums.InputPeer;
+  /** [Topic ID](https://core.telegram.org/api/forum#forum-topics) */
   top_msg_id: number;
 
   protected get [id](): number {
@@ -9316,13 +10092,21 @@ export class InputNotifyForumTopic_ extends _InputNotifyPeer_ {
   }
 }
 
+/** Notification settings. */
 export class InputPeerNotifySettings_ extends _InputPeerNotifySettings_ {
+  /** If the text of the message shall be displayed in notification */
   show_previews?: boolean;
+  /** Peer was muted? */
   silent?: boolean;
+  /** Date until which all notifications shall be switched off */
   mute_until?: number;
+  /** Identifier of an audio file to play for notifications. */
   sound?: enums.NotificationSound;
+  /** Whether story notifications should be disabled. */
   stories_muted?: boolean;
+  /** Whether the sender name should be displayed in story notifications. */
   stories_hide_sender?: boolean;
+  /** Identifier of an audio file to play for story notifications. */
   stories_sound?: enums.NotificationSound;
 
   protected get [id](): number {
@@ -9371,17 +10155,29 @@ export class InputPeerNotifySettings_ extends _InputPeerNotifySettings_ {
   }
 }
 
+/** Notification settings. */
 export class PeerNotifySettings_ extends _PeerNotifySettings_ {
+  /** (Ternary value) If set, indicates whether or not to display previews of messages in notifications; otherwise the default behavior should be used. */
   show_previews?: boolean;
+  /** (Ternary value) If set, indicates whether to mute or unmute the peer; otherwise the default behavior should be used. */
   silent?: boolean;
+  /** Mute all notifications until this date */
   mute_until?: number;
+  /** Notification sound for the official iOS application */
   ios_sound?: enums.NotificationSound;
+  /** Notification sound for the official android application */
   android_sound?: enums.NotificationSound;
+  /** Notification sound for other applications */
   other_sound?: enums.NotificationSound;
+  /** Whether story notifications should be disabled. */
   stories_muted?: boolean;
+  /** Whether the sender name should be displayed in story notifications. */
   stories_hide_sender?: boolean;
+  /** Sound for story notifications on the official iOS application */
   stories_ios_sound?: enums.NotificationSound;
+  /** Sound for story notifications on the official Android application */
   stories_android_sound?: enums.NotificationSound;
+  /** Sound for story notifications on other applications */
   stories_other_sound?: enums.NotificationSound;
 
   protected get [id](): number {
@@ -9442,18 +10238,31 @@ export class PeerNotifySettings_ extends _PeerNotifySettings_ {
   }
 }
 
+/** List of actions that are possible when interacting with this user, to be shown as suggested actions in the [chat action bar »](https://core.telegram.org/api/action-bar), see [here »](https://core.telegram.org/api/action-bar) for more info. */
 export class PeerSettings_ extends _PeerSettings_ {
+  /** Whether we can still report the user for spam */
   report_spam?: true;
+  /** Whether we can add the user as contact */
   add_contact?: true;
+  /** Whether we can block the user */
   block_contact?: true;
+  /** Whether we can share the user's contact */
   share_contact?: true;
+  /** Whether a special exception for contacts is needed */
   need_contacts_exception?: true;
+  /** Whether we can report a geogroup as irrelevant for this location */
   report_geo?: true;
+  /** Whether this peer was automatically archived according to [privacy settings](https://core.telegram.org/constructor/globalPrivacySettings) and can be unarchived */
   autoarchived?: true;
+  /** If set, this is a recently created group chat to which new members can be invited */
   invite_members?: true;
+  /** This flag is set if `request_chat_title` and `request_chat_date` fields are set and the [join request »](https://core.telegram.org/api/invites#join-requests) is related to a channel (otherwise if only the request fields are set, the [join request »](https://core.telegram.org/api/invites#join-requests) is related to a chat). */
   request_chat_broadcast?: true;
+  /** Distance in meters between us and this peer */
   geo_distance?: number;
+  /** If set, this is a private chat with an administrator of a chat or channel to which the user sent a join request, and this field contains the chat/channel's title. */
   request_chat_title?: string;
+  /** If set, this is a private chat with an administrator of a chat or channel to which the user sent a join request, and this field contains the timestamp when the [join request »](https://core.telegram.org/api/invites#join-requests) was sent. */
   request_chat_date?: number;
 
   protected get [id](): number {
@@ -9517,15 +10326,25 @@ export class PeerSettings_ extends _PeerSettings_ {
   }
 }
 
+/** Represents a [wallpaper](https://core.telegram.org/api/wallpapers) based on an image. */
 export class WallPaper_ extends _WallPaper_ {
+  /** Identifier */
   id: bigint;
+  /** Whether we created this wallpaper */
   creator?: true;
+  /** Whether this is the default wallpaper */
   default?: true;
+  /** Whether this is a [pattern wallpaper »](https://core.telegram.org/api/wallpapers#pattern-wallpapers) */
   pattern?: true;
+  /** Whether this wallpaper should be used in dark mode. */
   dark?: true;
+  /** Access hash */
   access_hash: bigint;
+  /** Unique wallpaper ID, used when generating [wallpaper links](https://core.telegram.org/api/links#wallpaper-links) or [importing wallpaper links](https://core.telegram.org/api/wallpapers). */
   slug: string;
+  /** The actual wallpaper */
   document: enums.Document;
+  /** Info on how to generate the wallpaper, according to [these instructions »](https://core.telegram.org/api/wallpapers). */
   settings?: enums.WallPaperSettings;
 
   protected get [id](): number {
@@ -9580,10 +10399,15 @@ export class WallPaper_ extends _WallPaper_ {
   }
 }
 
+/** Represents a [wallpaper](https://core.telegram.org/api/wallpapers) only based on colors/gradients. */
 export class WallPaperNoFile_ extends _WallPaper_ {
+  /** Wallpaper ID */
   id: bigint;
+  /** Whether this is the default wallpaper */
   default?: true;
+  /** Whether this wallpaper should be used in dark mode. */
   dark?: true;
+  /** Info on how to generate the wallpaper. */
   settings?: enums.WallPaperSettings;
 
   protected get [id](): number {
@@ -9623,6 +10447,7 @@ export class WallPaperNoFile_ extends _WallPaper_ {
   }
 }
 
+/** Report for spam */
 export class InputReportReasonSpam_ extends _ReportReason_ {
   protected get [id](): number {
     return 0x58DBCAB8;
@@ -9645,6 +10470,7 @@ export class InputReportReasonSpam_ extends _ReportReason_ {
   }
 }
 
+/** Report for violence */
 export class InputReportReasonViolence_ extends _ReportReason_ {
   protected get [id](): number {
     return 0x1E22C78D;
@@ -9667,6 +10493,7 @@ export class InputReportReasonViolence_ extends _ReportReason_ {
   }
 }
 
+/** Report for pornography */
 export class InputReportReasonPornography_ extends _ReportReason_ {
   protected get [id](): number {
     return 0x2E59D922;
@@ -9689,6 +10516,7 @@ export class InputReportReasonPornography_ extends _ReportReason_ {
   }
 }
 
+/** Report for child abuse */
 export class InputReportReasonChildAbuse_ extends _ReportReason_ {
   protected get [id](): number {
     return 0xADF44EE3;
@@ -9711,6 +10539,7 @@ export class InputReportReasonChildAbuse_ extends _ReportReason_ {
   }
 }
 
+/** Other */
 export class InputReportReasonOther_ extends _ReportReason_ {
   protected get [id](): number {
     return 0xC1E4A2B1;
@@ -9733,6 +10562,7 @@ export class InputReportReasonOther_ extends _ReportReason_ {
   }
 }
 
+/** Report for copyrighted content */
 export class InputReportReasonCopyright_ extends _ReportReason_ {
   protected get [id](): number {
     return 0x9B89F93A;
@@ -9755,6 +10585,7 @@ export class InputReportReasonCopyright_ extends _ReportReason_ {
   }
 }
 
+/** Report an irrelevant geogroup */
 export class InputReportReasonGeoIrrelevant_ extends _ReportReason_ {
   protected get [id](): number {
     return 0xDBD4FEED;
@@ -9777,6 +10608,7 @@ export class InputReportReasonGeoIrrelevant_ extends _ReportReason_ {
   }
 }
 
+/** Report for impersonation */
 export class InputReportReasonFake_ extends _ReportReason_ {
   protected get [id](): number {
     return 0xF5DDD6E7;
@@ -9799,6 +10631,7 @@ export class InputReportReasonFake_ extends _ReportReason_ {
   }
 }
 
+/** Report for illegal drugs */
 export class InputReportReasonIllegalDrugs_ extends _ReportReason_ {
   protected get [id](): number {
     return 0x0A8EB2BE;
@@ -9821,6 +10654,7 @@ export class InputReportReasonIllegalDrugs_ extends _ReportReason_ {
   }
 }
 
+/** Report for divulgation of personal details */
 export class InputReportReasonPersonalDetails_ extends _ReportReason_ {
   protected get [id](): number {
     return 0x9EC7863D;
@@ -9843,38 +10677,69 @@ export class InputReportReasonPersonalDetails_ extends _ReportReason_ {
   }
 }
 
+/** Extended user info */
 export class UserFull_ extends _UserFull_ {
+  /** Whether you have blocked this user */
   blocked?: true;
+  /** Whether this user can make VoIP calls */
   phone_calls_available?: true;
+  /** Whether this user's privacy settings allow you to call them */
   phone_calls_private?: true;
+  /** Whether you can pin messages in the chat with this user, you can do this only for a chat with yourself */
   can_pin_message?: true;
+  /** Whether [scheduled messages](https://core.telegram.org/api/scheduled-messages) are available */
   has_scheduled?: true;
+  /** Whether the user can receive video calls */
   video_calls_available?: true;
+  /** Whether this user doesn't allow sending voice messages in a private chat with them */
   voice_messages_forbidden?: true;
+  /** Whether the [real-time chat translation popup](https://core.telegram.org/api/translation) should be hidden. */
   translations_disabled?: true;
+  /** Whether this user has some [pinned stories](https://core.telegram.org/api/stories#pinned-or-archived-stories). */
   stories_pinned_available?: true;
+  /** Whether we've [blocked this user, preventing them from seeing our stories »](https://core.telegram.org/api/block). */
   blocked_my_stories_from?: true;
+  /** Whether the other user has chosen a custom wallpaper for us using [messages.setChatWallPaper](https://core.telegram.org/method/messages.setChatWallPaper) and the `for_both` flag, see [here »](https://core.telegram.org/api/wallpapers#installing-wallpapers-in-a-specific-chat-or-channel) for more info. */
   wallpaper_overridden?: true;
   contact_require_premium?: true;
   read_dates_private?: true;
+  /** User ID */
   id: bigint;
+  /** Bio of the user */
   about?: string;
+  /** Peer settings */
   settings: enums.PeerSettings;
+  /** Personal profile photo, to be shown instead of `profile_photo`. */
   personal_photo?: enums.Photo;
+  /** Profile photo */
   profile_photo?: enums.Photo;
+  /** Fallback profile photo, displayed if no photo is present in `profile_photo` or `personal_photo`, due to privacy settings. */
   fallback_photo?: enums.Photo;
+  /** Notification settings */
   notify_settings: enums.PeerNotifySettings;
+  /** For bots, info about the bot (bot commands, etc) */
   bot_info?: enums.BotInfo;
+  /** Message ID of the last [pinned message](https://core.telegram.org/api/pin) */
   pinned_msg_id?: number;
+  /** Chats in common with this user */
   common_chats_count: number;
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id?: number;
+  /** Time To Live of all messages in this chat; once a message is this many seconds old, it must be deleted. */
   ttl_period?: number;
+  /** Emoji associated with chat theme */
   theme_emoticon?: string;
+  /** Anonymized text to be shown instead of the user's name on forwarded messages */
   private_forward_name?: string;
+  /** A [suggested set of administrator rights](https://core.telegram.org/api/rights#suggested-bot-rights) for the bot, to be shown when adding the bot as admin to a group, see [here for more info on how to handle them »](https://core.telegram.org/api/rights#suggested-bot-rights). */
   bot_group_admin_rights?: enums.ChatAdminRights;
+  /** A [suggested set of administrator rights](https://core.telegram.org/api/rights#suggested-bot-rights) for the bot, to be shown when adding the bot as admin to a channel, see [here for more info on how to handle them »](https://core.telegram.org/api/rights#suggested-bot-rights). */
   bot_broadcast_admin_rights?: enums.ChatAdminRights;
+  /** Telegram Premium subscriptions gift options */
   premium_gifts?: Array<enums.PremiumGiftOption>;
+  /** [Wallpaper](https://core.telegram.org/api/wallpapers) to use in the private chat with the user. */
   wallpaper?: enums.WallPaper;
+  /** Active [stories »](https://core.telegram.org/api/stories) */
   stories?: enums.PeerStories;
 
   protected get [id](): number {
@@ -9998,8 +10863,11 @@ export class UserFull_ extends _UserFull_ {
   }
 }
 
+/** A contact of the current user that is registered in the system. */
 export class Contact_ extends _Contact_ {
+  /** User identifier */
   user_id: bigint;
+  /** Current user is in the user's contact list */
   mutual: boolean;
 
   protected get [id](): number {
@@ -10031,8 +10899,11 @@ export class Contact_ extends _Contact_ {
   }
 }
 
+/** Successfully imported contact. */
 export class ImportedContact_ extends _ImportedContact_ {
+  /** User identifier */
   user_id: bigint;
+  /** The contact's client identifier (passed to one of the [InputContact](https://core.telegram.org/type/InputContact) constructors) */
   client_id: bigint;
 
   protected get [id](): number {
@@ -10064,8 +10935,11 @@ export class ImportedContact_ extends _ImportedContact_ {
   }
 }
 
+/** Contact status: online / offline. */
 export class ContactStatus_ extends _ContactStatus_ {
+  /** User identifier */
   user_id: bigint;
+  /** Online status */
   status: enums.UserStatus;
 
   protected get [id](): number {
@@ -10097,6 +10971,7 @@ export class ContactStatus_ extends _ContactStatus_ {
   }
 }
 
+/** Contact list on the server is the same as the list on the client. */
 export class contacts_ContactsNotModified_ extends _contacts_Contacts_ {
   protected get [id](): number {
     return 0xB74BA9D2;
@@ -10119,9 +10994,13 @@ export class contacts_ContactsNotModified_ extends _contacts_Contacts_ {
   }
 }
 
+/** The current user's contact list and info on users. */
 export class contacts_Contacts_ extends _contacts_Contacts_ {
+  /** Contact list */
   contacts: Array<enums.Contact>;
+  /** Number of contacts that were saved successfully */
   saved_count: number;
+  /** User list */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -10156,10 +11035,15 @@ export class contacts_Contacts_ extends _contacts_Contacts_ {
   }
 }
 
+/** Info on successfully imported contacts. */
 export class contacts_ImportedContacts_ extends _contacts_ImportedContacts_ {
+  /** List of successfully imported contacts */
   imported: Array<enums.ImportedContact>;
+  /** Popular contacts */
   popular_invites: Array<enums.PopularContact>;
+  /** List of contact ids that could not be imported due to system limitation and will need to be imported at a later date. */
   retry_contacts: Array<bigint>;
+  /** List of users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -10197,9 +11081,13 @@ export class contacts_ImportedContacts_ extends _contacts_ImportedContacts_ {
   }
 }
 
+/** Full list of blocked users. */
 export class contacts_Blocked_ extends _contacts_Blocked_ {
+  /** List of blocked users */
   blocked: Array<enums.PeerBlocked>;
+  /** Blocked chats */
   chats: Array<enums.Chat>;
+  /** List of users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -10234,10 +11122,15 @@ export class contacts_Blocked_ extends _contacts_Blocked_ {
   }
 }
 
+/** Incomplete list of blocked users. */
 export class contacts_BlockedSlice_ extends _contacts_Blocked_ {
+  /** Total number of elements in the list */
   count: number;
+  /** List of blocked users */
   blocked: Array<enums.PeerBlocked>;
+  /** Blocked chats */
   chats: Array<enums.Chat>;
+  /** List of users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -10275,10 +11168,15 @@ export class contacts_BlockedSlice_ extends _contacts_Blocked_ {
   }
 }
 
+/** Full list of chats with messages and auxiliary data. */
 export class messages_Dialogs_ extends _messages_Dialogs_ {
+  /** List of chats */
   dialogs: Array<enums.Dialog>;
+  /** List of last messages from each chat */
   messages: Array<enums.Message>;
+  /** List of groups mentioned in the chats */
   chats: Array<enums.Chat>;
+  /** List of users mentioned in messages and groups */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -10316,11 +11214,17 @@ export class messages_Dialogs_ extends _messages_Dialogs_ {
   }
 }
 
+/** Incomplete list of dialogs with messages and auxiliary data. */
 export class messages_DialogsSlice_ extends _messages_Dialogs_ {
+  /** Total number of dialogs */
   count: number;
+  /** List of dialogs */
   dialogs: Array<enums.Dialog>;
+  /** List of last messages from dialogs */
   messages: Array<enums.Message>;
+  /** List of chats mentioned in dialogs */
   chats: Array<enums.Chat>;
+  /** List of users mentioned in messages and chats */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -10361,7 +11265,9 @@ export class messages_DialogsSlice_ extends _messages_Dialogs_ {
   }
 }
 
+/** Dialogs haven't changed */
 export class messages_DialogsNotModified_ extends _messages_Dialogs_ {
+  /** Number of dialogs found server-side by the query */
   count: number;
 
   protected get [id](): number {
@@ -10390,9 +11296,13 @@ export class messages_DialogsNotModified_ extends _messages_Dialogs_ {
   }
 }
 
+/** Full list of messages with auxiliary data. */
 export class messages_Messages_ extends _messages_Messages_ {
+  /** List of messages */
   messages: Array<enums.Message>;
+  /** List of chats mentioned in dialogs */
   chats: Array<enums.Chat>;
+  /** List of users mentioned in messages and chats */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -10427,13 +11337,22 @@ export class messages_Messages_ extends _messages_Messages_ {
   }
 }
 
+/** Incomplete list of messages and auxiliary data. */
 export class messages_MessagesSlice_ extends _messages_Messages_ {
+  /** If set, indicates that the results may be inexact */
   inexact?: true;
+  /** Total number of messages in the list */
   count: number;
+  /** Rate to use in the `offset_rate` parameter in the next call to [messages.searchGlobal](https://core.telegram.org/method/messages.searchGlobal) */
   next_rate?: number;
+  /** Indicates the absolute position of `messages[0]` within the total result set with count `count`.  
+  This is useful, for example, if the result was fetched using `offset_id`, and we need to display a `progress/total` counter (like `photo 134 of 200`, for all media in a chat, we could simply use `photo ${offset_id_offset} of ${count}`. */
   offset_id_offset?: number;
+  /** List of messages */
   messages: Array<enums.Message>;
+  /** List of chats mentioned in messages */
   chats: Array<enums.Chat>;
+  /** List of users mentioned in messages and chats */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -10482,14 +11401,24 @@ export class messages_MessagesSlice_ extends _messages_Messages_ {
   }
 }
 
+/** Channel messages */
 export class messages_ChannelMessages_ extends _messages_Messages_ {
+  /** If set, returned results may be inexact */
   inexact?: true;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** Total number of results were found server-side (may not be all included here) */
   count: number;
+  /** Indicates the absolute position of `messages[0]` within the total result set with count `count`.  
+  This is useful, for example, if the result was fetched using `offset_id`, and we need to display a `progress/total` counter (like `photo 134 of 200`, for all media in a chat, we could simply use `photo ${offset_id_offset} of ${count}`. */
   offset_id_offset?: number;
+  /** Found messages */
   messages: Array<enums.Message>;
+  /** [Forum topic](https://core.telegram.org/api/forum#forum-topics) information */
   topics: Array<enums.ForumTopic>;
+  /** Chats */
   chats: Array<enums.Chat>;
+  /** Users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -10541,7 +11470,9 @@ export class messages_ChannelMessages_ extends _messages_Messages_ {
   }
 }
 
+/** No new messages matching the query were found */
 export class messages_MessagesNotModified_ extends _messages_Messages_ {
+  /** Number of results found server-side by the given query */
   count: number;
 
   protected get [id](): number {
@@ -10570,7 +11501,9 @@ export class messages_MessagesNotModified_ extends _messages_Messages_ {
   }
 }
 
+/** List of chats with auxiliary data. */
 export class messages_Chats_ extends _messages_Chats_ {
+  /** List of chats */
   chats: Array<enums.Chat>;
 
   protected get [id](): number {
@@ -10599,8 +11532,11 @@ export class messages_Chats_ extends _messages_Chats_ {
   }
 }
 
+/** Partial list of chats, more would have to be fetched with [pagination](https://core.telegram.org/api/offsets) */
 export class messages_ChatsSlice_ extends _messages_Chats_ {
+  /** Total number of results that were found server-side (not all are included in `chats`) */
   count: number;
+  /** Chats */
   chats: Array<enums.Chat>;
 
   protected get [id](): number {
@@ -10632,9 +11568,13 @@ export class messages_ChatsSlice_ extends _messages_Chats_ {
   }
 }
 
+/** Full info about a [channel](https://core.telegram.org/api/channel#channels), [supergroup](https://core.telegram.org/api/channel#supergroups), [gigagroup](https://core.telegram.org/api/channel#gigagroups) or [basic group](https://core.telegram.org/api/channel#basic-groups). */
 export class messages_ChatFull_ extends _messages_ChatFull_ {
+  /** Full info */
   full_chat: enums.ChatFull;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -10669,9 +11609,13 @@ export class messages_ChatFull_ extends _messages_ChatFull_ {
   }
 }
 
+/** Affected part of communication history with the user or in a chat. */
 export class messages_AffectedHistory_ extends _messages_AffectedHistory_ {
+  /** Number of events occurred in a text box */
   pts: number;
+  /** Number of affected events */
   pts_count: number;
+  /** If a parameter contains positive value, it is necessary to repeat the method call using the given value; during the proceeding of all the history the value itself shall gradually decrease */
   offset: number;
 
   protected get [id](): number {
@@ -10706,6 +11650,7 @@ export class messages_AffectedHistory_ extends _messages_AffectedHistory_ {
   }
 }
 
+/** Filter is absent. */
 export class InputMessagesFilterEmpty_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0x57E2F66C;
@@ -10728,6 +11673,7 @@ export class InputMessagesFilterEmpty_ extends _MessagesFilter_ {
   }
 }
 
+/** Filter for messages containing photos. */
 export class InputMessagesFilterPhotos_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0x9609A51C;
@@ -10750,6 +11696,7 @@ export class InputMessagesFilterPhotos_ extends _MessagesFilter_ {
   }
 }
 
+/** Filter for messages containing videos. */
 export class InputMessagesFilterVideo_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0x9FC00E65;
@@ -10772,6 +11719,7 @@ export class InputMessagesFilterVideo_ extends _MessagesFilter_ {
   }
 }
 
+/** Filter for messages containing photos or videos. */
 export class InputMessagesFilterPhotoVideo_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0x56E9F0E4;
@@ -10794,6 +11742,7 @@ export class InputMessagesFilterPhotoVideo_ extends _MessagesFilter_ {
   }
 }
 
+/** Filter for messages containing documents. */
 export class InputMessagesFilterDocument_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0x9EDDF188;
@@ -10816,6 +11765,7 @@ export class InputMessagesFilterDocument_ extends _MessagesFilter_ {
   }
 }
 
+/** Return only messages containing URLs */
 export class InputMessagesFilterUrl_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0x7EF0DD87;
@@ -10838,6 +11788,7 @@ export class InputMessagesFilterUrl_ extends _MessagesFilter_ {
   }
 }
 
+/** Return only messages containing gifs */
 export class InputMessagesFilterGif_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0xFFC86587;
@@ -10860,6 +11811,7 @@ export class InputMessagesFilterGif_ extends _MessagesFilter_ {
   }
 }
 
+/** Return only messages containing voice notes */
 export class InputMessagesFilterVoice_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0x50F5C392;
@@ -10882,6 +11834,7 @@ export class InputMessagesFilterVoice_ extends _MessagesFilter_ {
   }
 }
 
+/** Return only messages containing audio files */
 export class InputMessagesFilterMusic_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0x3751B49E;
@@ -10904,6 +11857,7 @@ export class InputMessagesFilterMusic_ extends _MessagesFilter_ {
   }
 }
 
+/** Return only chat photo changes */
 export class InputMessagesFilterChatPhotos_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0x3A20ECB8;
@@ -10926,7 +11880,9 @@ export class InputMessagesFilterChatPhotos_ extends _MessagesFilter_ {
   }
 }
 
+/** Return only phone calls */
 export class InputMessagesFilterPhoneCalls_ extends _MessagesFilter_ {
+  /** Return only missed phone calls */
   missed?: true;
 
   protected get [id](): number {
@@ -10957,6 +11913,7 @@ export class InputMessagesFilterPhoneCalls_ extends _MessagesFilter_ {
   }
 }
 
+/** Return only round videos and voice notes */
 export class InputMessagesFilterRoundVoice_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0x7A7C17A4;
@@ -10979,6 +11936,7 @@ export class InputMessagesFilterRoundVoice_ extends _MessagesFilter_ {
   }
 }
 
+/** Return only round videos */
 export class InputMessagesFilterRoundVideo_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0xB549DA53;
@@ -11001,6 +11959,7 @@ export class InputMessagesFilterRoundVideo_ extends _MessagesFilter_ {
   }
 }
 
+/** Return only messages where the current user was [mentioned](https://core.telegram.org/api/mentions). */
 export class InputMessagesFilterMyMentions_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0xC1F8E69A;
@@ -11023,6 +11982,7 @@ export class InputMessagesFilterMyMentions_ extends _MessagesFilter_ {
   }
 }
 
+/** Return only messages containing geolocations */
 export class InputMessagesFilterGeo_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0xE7026D0D;
@@ -11045,6 +12005,7 @@ export class InputMessagesFilterGeo_ extends _MessagesFilter_ {
   }
 }
 
+/** Return only messages containing contacts */
 export class InputMessagesFilterContacts_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0xE062DB83;
@@ -11067,6 +12028,7 @@ export class InputMessagesFilterContacts_ extends _MessagesFilter_ {
   }
 }
 
+/** Fetch only pinned messages */
 export class InputMessagesFilterPinned_ extends _MessagesFilter_ {
   protected get [id](): number {
     return 0x1BB00451;
@@ -11089,9 +12051,13 @@ export class InputMessagesFilterPinned_ extends _MessagesFilter_ {
   }
 }
 
+/** New message in a private chat or in a [basic group](https://core.telegram.org/api/channel#basic-groups). */
 export class UpdateNewMessage_ extends _Update_ {
+  /** Message */
   message: enums.Message;
+  /** New quantity of actions in a message box */
   pts: number;
+  /** Number of generated events */
   pts_count: number;
 
   protected get [id](): number {
@@ -11126,8 +12092,11 @@ export class UpdateNewMessage_ extends _Update_ {
   }
 }
 
+/** Sent message with **random\_id** client identifier was assigned an identifier. */
 export class UpdateMessageID_ extends _Update_ {
+  /** **id** identifier of a respective [Message](https://core.telegram.org/type/Message) */
   id: number;
+  /** Previously transferred client **random\_id** identifier */
   random_id: bigint;
 
   protected get [id](): number {
@@ -11159,9 +12128,13 @@ export class UpdateMessageID_ extends _Update_ {
   }
 }
 
+/** Messages were deleted. */
 export class UpdateDeleteMessages_ extends _Update_ {
+  /** List of identifiers of deleted messages */
   messages: Array<number>;
+  /** New quality of actions in a message box */
   pts: number;
+  /** Number of generated [events](https://core.telegram.org/api/updates) */
   pts_count: number;
 
   protected get [id](): number {
@@ -11196,8 +12169,11 @@ export class UpdateDeleteMessages_ extends _Update_ {
   }
 }
 
+/** The user is preparing a message; typing, recording, uploading, etc. This update is valid for 6 seconds. If no further updates of this kind are received after 6 seconds, it should be considered that the user stopped doing whatever they were doing */
 export class UpdateUserTyping_ extends _Update_ {
+  /** User id */
   user_id: bigint;
+  /** Action type */
   action: enums.SendMessageAction;
 
   protected get [id](): number {
@@ -11229,9 +12205,13 @@ export class UpdateUserTyping_ extends _Update_ {
   }
 }
 
+/** The user is preparing a message in a group; typing, recording, uploading, etc. This update is valid for 6 seconds. If no further updates of this kind are received after 6 seconds, it should be considered that the user stopped doing whatever they were doing */
 export class UpdateChatUserTyping_ extends _Update_ {
+  /** Group id */
   chat_id: bigint;
+  /** Peer that started typing (can be the chat itself, in case of anonymous admins). */
   from_id: enums.Peer;
+  /** Type of action */
   action: enums.SendMessageAction;
 
   protected get [id](): number {
@@ -11266,7 +12246,9 @@ export class UpdateChatUserTyping_ extends _Update_ {
   }
 }
 
+/** Composition of chat participants changed. */
 export class UpdateChatParticipants_ extends _Update_ {
+  /** Updated chat participants */
   participants: enums.ChatParticipants;
 
   protected get [id](): number {
@@ -11295,8 +12277,11 @@ export class UpdateChatParticipants_ extends _Update_ {
   }
 }
 
+/** Contact status update. */
 export class UpdateUserStatus_ extends _Update_ {
+  /** User identifier */
   user_id: bigint;
+  /** New status */
   status: enums.UserStatus;
 
   protected get [id](): number {
@@ -11328,10 +12313,15 @@ export class UpdateUserStatus_ extends _Update_ {
   }
 }
 
+/** Changes the user's first name, last name and username. */
 export class UpdateUserName_ extends _Update_ {
+  /** User identifier */
   user_id: bigint;
+  /** New first name. Corresponds to the new value of **real\_first\_name** field of the [userFull](https://core.telegram.org/constructor/userFull) constructor. */
   first_name: string;
+  /** New last name. Corresponds to the new value of **real\_last\_name** field of the [userFull](https://core.telegram.org/constructor/userFull) constructor. */
   last_name: string;
+  /** Usernames. */
   usernames: Array<enums.Username>;
 
   protected get [id](): number {
@@ -11369,11 +12359,17 @@ export class UpdateUserName_ extends _Update_ {
   }
 }
 
+/** A new session logged into the current user's account through an unknown device. */
 export class UpdateNewAuthorization_ extends _Update_ {
+  /** Whether the session is [unconfirmed, see here »](https://core.telegram.org/api/auth#confirming-login) for more info. */
   unconfirmed?: true;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** Authorization date */
   date?: number;
+  /** Name of device, for example _Android_ */
   device?: string;
+  /** Location, for example _USA, NY (IP=1.2.3.4)_ */
   location?: string;
 
   protected get [id](): number {
@@ -11416,8 +12412,11 @@ export class UpdateNewAuthorization_ extends _Update_ {
   }
 }
 
+/** New encrypted message. */
 export class UpdateNewEncryptedMessage_ extends _Update_ {
+  /** Message */
   message: enums.EncryptedMessage;
+  /** New **qts** value, see [updates »](https://core.telegram.org/api/updates) for more info. */
   qts: number;
 
   protected get [id](): number {
@@ -11449,7 +12448,9 @@ export class UpdateNewEncryptedMessage_ extends _Update_ {
   }
 }
 
+/** Interlocutor is typing a message in an encrypted chat. Update period is 6 second. If upon this time there is no repeated update, it shall be considered that the interlocutor stopped typing. */
 export class UpdateEncryptedChatTyping_ extends _Update_ {
+  /** Chat ID */
   chat_id: number;
 
   protected get [id](): number {
@@ -11478,8 +12479,11 @@ export class UpdateEncryptedChatTyping_ extends _Update_ {
   }
 }
 
+/** Change of state in an encrypted chat. */
 export class UpdateEncryption_ extends _Update_ {
+  /** Encrypted chat */
   chat: enums.EncryptedChat;
+  /** Date of change */
   date: number;
 
   protected get [id](): number {
@@ -11511,9 +12515,13 @@ export class UpdateEncryption_ extends _Update_ {
   }
 }
 
+/** Communication history in an encrypted chat was marked as read. */
 export class UpdateEncryptedMessagesRead_ extends _Update_ {
+  /** Chat ID */
   chat_id: number;
+  /** Maximum value of data for read messages */
   max_date: number;
+  /** Time when messages were read */
   date: number;
 
   protected get [id](): number {
@@ -11548,11 +12556,17 @@ export class UpdateEncryptedMessagesRead_ extends _Update_ {
   }
 }
 
+/** New group member. */
 export class UpdateChatParticipantAdd_ extends _Update_ {
+  /** Group ID */
   chat_id: bigint;
+  /** ID of the new member */
   user_id: bigint;
+  /** ID of the user, who added member to the group */
   inviter_id: bigint;
+  /** When was the participant added */
   date: number;
+  /** Chat version number */
   version: number;
 
   protected get [id](): number {
@@ -11593,9 +12607,13 @@ export class UpdateChatParticipantAdd_ extends _Update_ {
   }
 }
 
+/** A member has left the group. */
 export class UpdateChatParticipantDelete_ extends _Update_ {
+  /** Group ID */
   chat_id: bigint;
+  /** ID of the user */
   user_id: bigint;
+  /** Used in basic groups to reorder updates and make sure that all of them was received. */
   version: number;
 
   protected get [id](): number {
@@ -11630,7 +12648,9 @@ export class UpdateChatParticipantDelete_ extends _Update_ {
   }
 }
 
+/** Changes in the data center configuration options. */
 export class UpdateDcOptions_ extends _Update_ {
+  /** New connection options */
   dc_options: Array<enums.DcOption>;
 
   protected get [id](): number {
@@ -11659,8 +12679,11 @@ export class UpdateDcOptions_ extends _Update_ {
   }
 }
 
+/** Changes in notification settings. */
 export class UpdateNotifySettings_ extends _Update_ {
+  /** Notification source */
   peer: enums.NotifyPeer;
+  /** New notification settings */
   notify_settings: enums.PeerNotifySettings;
 
   protected get [id](): number {
@@ -11692,13 +12715,22 @@ export class UpdateNotifySettings_ extends _Update_ {
   }
 }
 
+/** A service message for the user. */
 export class UpdateServiceNotification_ extends _Update_ {
+  /** If set, the message must be displayed in a popup. */
   popup?: true;
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** When was the notification received  
+  The message must also be stored locally as part of the message history with the user id `777000` (Telegram Notifications). */
   inbox_date?: number;
+  /** String, identical in format and contents to the [**type**](https://core.telegram.org/api/errors#error-type) field in API errors. Describes type of service message. It is acceptable to ignore repeated messages of the same **type** within a short period of time (15 minutes). */
   type: string;
+  /** Message text */
   message: string;
+  /** Media content (optional) */
   media: enums.MessageMedia;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities: Array<enums.MessageEntity>;
 
   protected get [id](): number {
@@ -11747,8 +12779,11 @@ export class UpdateServiceNotification_ extends _Update_ {
   }
 }
 
+/** Privacy rules were changed */
 export class UpdatePrivacy_ extends _Update_ {
+  /** Peers to which the privacy rules apply */
   key: enums.PrivacyKey;
+  /** New privacy rules */
   rules: Array<enums.PrivacyRule>;
 
   protected get [id](): number {
@@ -11780,8 +12815,11 @@ export class UpdatePrivacy_ extends _Update_ {
   }
 }
 
+/** A user's phone number was changed */
 export class UpdateUserPhone_ extends _Update_ {
+  /** User ID */
   user_id: bigint;
+  /** New phone number */
   phone: string;
 
   protected get [id](): number {
@@ -11813,12 +12851,19 @@ export class UpdateUserPhone_ extends _Update_ {
   }
 }
 
+/** Incoming messages were read */
 export class UpdateReadHistoryInbox_ extends _Update_ {
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id?: number;
+  /** Peer */
   peer: enums.Peer;
+  /** Maximum ID of messages read */
   max_id: number;
+  /** Number of messages that are still unread */
   still_unread_count: number;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [Number of events that were generated](https://core.telegram.org/api/updates) */
   pts_count: number;
 
   protected get [id](): number {
@@ -11864,10 +12909,15 @@ export class UpdateReadHistoryInbox_ extends _Update_ {
   }
 }
 
+/** Outgoing messages were read */
 export class UpdateReadHistoryOutbox_ extends _Update_ {
+  /** Peer */
   peer: enums.Peer;
+  /** Maximum ID of read outgoing messages */
   max_id: number;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [Number of events that were generated](https://core.telegram.org/api/updates) */
   pts_count: number;
 
   protected get [id](): number {
@@ -11905,9 +12955,13 @@ export class UpdateReadHistoryOutbox_ extends _Update_ {
   }
 }
 
+/** An [instant view](https://instantview.telegram.org) webpage preview was generated */
 export class UpdateWebPage_ extends _Update_ {
+  /** Webpage preview */
   webpage: enums.WebPage;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [Number of events that were generated](https://core.telegram.org/api/updates) */
   pts_count: number;
 
   protected get [id](): number {
@@ -11942,10 +12996,15 @@ export class UpdateWebPage_ extends _Update_ {
   }
 }
 
+/** Contents of messages in the common [message box](https://core.telegram.org/api/updates) were read */
 export class UpdateReadMessagesContents_ extends _Update_ {
+  /** IDs of read messages */
   messages: Array<number>;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [Number of events that were generated](https://core.telegram.org/api/updates) */
   pts_count: number;
+  /** When was the last message in `messages` marked as read. */
   date?: number;
 
   protected get [id](): number {
@@ -11985,8 +13044,12 @@ export class UpdateReadMessagesContents_ extends _Update_ {
   }
 }
 
+/** There are new updates in the specified channel, the client must fetch them.  
+If the difference is too long or if the channel isn't currently in the states, start fetching from the specified pts. */
 export class UpdateChannelTooLong_ extends _Update_ {
+  /** The channel */
   channel_id: bigint;
+  /** The [PTS](https://core.telegram.org/api/updates). */
   pts?: number;
 
   protected get [id](): number {
@@ -12020,7 +13083,9 @@ export class UpdateChannelTooLong_ extends _Update_ {
   }
 }
 
+/** A new channel or supergroup is available, or info about an existing channel has changed and must be refeteched. */
 export class UpdateChannel_ extends _Update_ {
+  /** Channel ID */
   channel_id: bigint;
 
   protected get [id](): number {
@@ -12049,9 +13114,13 @@ export class UpdateChannel_ extends _Update_ {
   }
 }
 
+/** A new message was sent in a [channel/supergroup](https://core.telegram.org/api/channel) */
 export class UpdateNewChannelMessage_ extends _Update_ {
+  /** New message */
   message: enums.Message;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [Number of events that were generated](https://core.telegram.org/api/updates) */
   pts_count: number;
 
   protected get [id](): number {
@@ -12086,11 +13155,17 @@ export class UpdateNewChannelMessage_ extends _Update_ {
   }
 }
 
+/** Incoming messages in a [channel/supergroup](https://core.telegram.org/api/channel) were read */
 export class UpdateReadChannelInbox_ extends _Update_ {
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id?: number;
+  /** Channel/supergroup ID */
   channel_id: bigint;
+  /** Position up to which all incoming messages are read. */
   max_id: number;
+  /** Count of messages weren't read yet */
   still_unread_count: number;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
 
   protected get [id](): number {
@@ -12133,10 +13208,15 @@ export class UpdateReadChannelInbox_ extends _Update_ {
   }
 }
 
+/** Some messages in a [supergroup/channel](https://core.telegram.org/api/channel) were deleted */
 export class UpdateDeleteChannelMessages_ extends _Update_ {
+  /** Channel ID */
   channel_id: bigint;
+  /** IDs of messages that were deleted */
   messages: Array<number>;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [Number of events that were generated](https://core.telegram.org/api/updates) */
   pts_count: number;
 
   protected get [id](): number {
@@ -12174,9 +13254,13 @@ export class UpdateDeleteChannelMessages_ extends _Update_ {
   }
 }
 
+/** The view counter of a message in a channel has changed */
 export class UpdateChannelMessageViews_ extends _Update_ {
+  /** Channel ID */
   channel_id: bigint;
+  /** ID of the message */
   id: number;
+  /** New view counter */
   views: number;
 
   protected get [id](): number {
@@ -12211,10 +13295,15 @@ export class UpdateChannelMessageViews_ extends _Update_ {
   }
 }
 
+/** Admin permissions of a user in a [basic group](https://core.telegram.org/api/channel#basic-groups) were changed */
 export class UpdateChatParticipantAdmin_ extends _Update_ {
+  /** Chat ID */
   chat_id: bigint;
+  /** ID of the (de)admined user */
   user_id: bigint;
+  /** Whether the user was rendered admin */
   is_admin: boolean;
+  /** Used in basic groups to reorder updates and make sure that all of them was received. */
   version: number;
 
   protected get [id](): number {
@@ -12252,7 +13341,9 @@ export class UpdateChatParticipantAdmin_ extends _Update_ {
   }
 }
 
+/** A new stickerset was installed */
 export class UpdateNewStickerSet_ extends _Update_ {
+  /** The installed stickerset */
   stickerset: enums.messages.StickerSet;
 
   protected get [id](): number {
@@ -12281,9 +13372,13 @@ export class UpdateNewStickerSet_ extends _Update_ {
   }
 }
 
+/** The order of stickersets was changed */
 export class UpdateStickerSetsOrder_ extends _Update_ {
+  /** Whether the updated stickers are mask stickers */
   masks?: true;
+  /** Whether the updated stickers are custom emoji stickers */
   emojis?: true;
+  /** New sticker order by sticker ID */
   order: Array<bigint>;
 
   protected get [id](): number {
@@ -12320,8 +13415,11 @@ export class UpdateStickerSetsOrder_ extends _Update_ {
   }
 }
 
+/** Installed stickersets have changed, the client should refetch them as [described in the docs](https://core.telegram.org/api/stickers#installing-stickersets). */
 export class UpdateStickerSets_ extends _Update_ {
+  /** Whether mask stickersets have changed */
   masks?: true;
+  /** Whether the list of installed [custom emoji stickersets](https://core.telegram.org/api/custom-emoji) has changed */
   emojis?: true;
 
   protected get [id](): number {
@@ -12355,6 +13453,7 @@ export class UpdateStickerSets_ extends _Update_ {
   }
 }
 
+/** The saved gif list has changed, the client should refetch it using [messages.getSavedGifs](https://core.telegram.org/method/messages.getSavedGifs) */
 export class UpdateSavedGifs_ extends _Update_ {
   protected get [id](): number {
     return 0x9375341E;
@@ -12377,12 +13476,19 @@ export class UpdateSavedGifs_ extends _Update_ {
   }
 }
 
+/** An incoming inline query */
 export class UpdateBotInlineQuery_ extends _Update_ {
+  /** Query ID */
   query_id: bigint;
+  /** User that sent the query */
   user_id: bigint;
+  /** Text of query */
   query: string;
+  /** Attached geolocation */
   geo?: enums.GeoPoint;
+  /** Type of the chat from which the inline query was sent. */
   peer_type?: enums.InlineQueryPeerType;
+  /** Offset to navigate through results */
   offset: string;
 
   protected get [id](): number {
@@ -12428,11 +13534,17 @@ export class UpdateBotInlineQuery_ extends _Update_ {
   }
 }
 
+/** The result of an inline query that was chosen by a user and sent to their chat partner. Please see our documentation on the [feedback collecting](https://core.telegram.org/bots/inline#collecting-feedback) for details on how to enable these updates for your bot. */
 export class UpdateBotInlineSend_ extends _Update_ {
+  /** The user that chose the result */
   user_id: bigint;
+  /** The query that was used to obtain the result */
   query: string;
+  /** Optional. Sender location, only for bots that require user location */
   geo?: enums.GeoPoint;
+  /** The unique identifier for the result that was chosen */
   id: string;
+  /** Identifier of the sent inline message. Available only if there is an inline keyboard attached to the message. Will be also received in callback queries and can be used to edit the message. */
   msg_id?: enums.InputBotInlineMessageID;
 
   protected get [id](): number {
@@ -12475,9 +13587,13 @@ export class UpdateBotInlineSend_ extends _Update_ {
   }
 }
 
+/** A message was edited in a [channel/supergroup](https://core.telegram.org/api/channel) */
 export class UpdateEditChannelMessage_ extends _Update_ {
+  /** The new message */
   message: enums.Message;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [Number of events that were generated](https://core.telegram.org/api/updates) */
   pts_count: number;
 
   protected get [id](): number {
@@ -12512,13 +13628,21 @@ export class UpdateEditChannelMessage_ extends _Update_ {
   }
 }
 
+/** A callback button was pressed, and the button data was sent to the bot that created the button */
 export class UpdateBotCallbackQuery_ extends _Update_ {
+  /** Query ID */
   query_id: bigint;
+  /** ID of the user that pressed the button */
   user_id: bigint;
+  /** Chat where the inline keyboard was sent */
   peer: enums.Peer;
+  /** Message ID */
   msg_id: number;
+  /** Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games. */
   chat_instance: bigint;
+  /** Callback data */
   data?: Uint8Array;
+  /** Short name of a Game to be returned, serves as the unique identifier for the game */
   game_short_name?: string;
 
   protected get [id](): number {
@@ -12567,9 +13691,13 @@ export class UpdateBotCallbackQuery_ extends _Update_ {
   }
 }
 
+/** A message was edited */
 export class UpdateEditMessage_ extends _Update_ {
+  /** The new edited message */
   message: enums.Message;
+  /** [PTS](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [PTS count](https://core.telegram.org/api/updates) */
   pts_count: number;
 
   protected get [id](): number {
@@ -12604,12 +13732,19 @@ export class UpdateEditMessage_ extends _Update_ {
   }
 }
 
+/** This notification is received by bots when a button is pressed */
 export class UpdateInlineBotCallbackQuery_ extends _Update_ {
+  /** Query ID */
   query_id: bigint;
+  /** ID of the user that pressed the button */
   user_id: bigint;
+  /** ID of the inline message with the button */
   msg_id: enums.InputBotInlineMessageID;
+  /** Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games. */
   chat_instance: bigint;
+  /** Data associated with the callback button. Be aware that a bad client can send arbitrary data in this field. */
   data?: Uint8Array;
+  /** Short name of a Game to be returned, serves as the unique identifier for the game */
   game_short_name?: string;
 
   protected get [id](): number {
@@ -12655,8 +13790,11 @@ export class UpdateInlineBotCallbackQuery_ extends _Update_ {
   }
 }
 
+/** Outgoing messages in a [channel/supergroup](https://core.telegram.org/api/channel) were read */
 export class UpdateReadChannelOutbox_ extends _Update_ {
+  /** Channel/supergroup ID */
   channel_id: bigint;
+  /** Position up to which all outgoing messages are read. */
   max_id: number;
 
   protected get [id](): number {
@@ -12688,9 +13826,13 @@ export class UpdateReadChannelOutbox_ extends _Update_ {
   }
 }
 
+/** Notifies a change of a message [draft](https://core.telegram.org/api/drafts). */
 export class UpdateDraftMessage_ extends _Update_ {
+  /** The peer to which the draft is associated */
   peer: enums.Peer;
+  /** ID of the [forum topic](https://core.telegram.org/api/forum#forum-topics) to which the draft is associated */
   top_msg_id?: number;
+  /** The draft */
   draft: enums.DraftMessage;
 
   protected get [id](): number {
@@ -12727,6 +13869,7 @@ export class UpdateDraftMessage_ extends _Update_ {
   }
 }
 
+/** Some featured stickers were marked as read */
 export class UpdateReadFeaturedStickers_ extends _Update_ {
   protected get [id](): number {
     return 0x571D2742;
@@ -12749,6 +13892,7 @@ export class UpdateReadFeaturedStickers_ extends _Update_ {
   }
 }
 
+/** The recent sticker list was updated */
 export class UpdateRecentStickers_ extends _Update_ {
   protected get [id](): number {
     return 0x9A422C20;
@@ -12771,6 +13915,7 @@ export class UpdateRecentStickers_ extends _Update_ {
   }
 }
 
+/** The server-side configuration has changed; the client should re-fetch the config using [help.getConfig](https://core.telegram.org/method/help.getConfig) */
 export class UpdateConfig_ extends _Update_ {
   protected get [id](): number {
     return 0xA229DD06;
@@ -12793,6 +13938,7 @@ export class UpdateConfig_ extends _Update_ {
   }
 }
 
+/** [Common message box sequence PTS](https://core.telegram.org/api/updates) has changed, [state has to be refetched using updates.getState](https://core.telegram.org/api/updates#fetching-state) */
 export class UpdatePtsChanged_ extends _Update_ {
   protected get [id](): number {
     return 0x3354678F;
@@ -12815,10 +13961,15 @@ export class UpdatePtsChanged_ extends _Update_ {
   }
 }
 
+/** A webpage preview of a link in a [channel/supergroup](https://core.telegram.org/api/channel) message was generated */
 export class UpdateChannelWebPage_ extends _Update_ {
+  /** [Channel/supergroup](https://core.telegram.org/api/channel) ID */
   channel_id: bigint;
+  /** Generated webpage preview */
   webpage: enums.WebPage;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [Number of events that were generated](https://core.telegram.org/api/updates) */
   pts_count: number;
 
   protected get [id](): number {
@@ -12856,9 +14007,13 @@ export class UpdateChannelWebPage_ extends _Update_ {
   }
 }
 
+/** A dialog was pinned/unpinned */
 export class UpdateDialogPinned_ extends _Update_ {
+  /** Whether the dialog was pinned */
   pinned?: true;
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id?: number;
+  /** The dialog */
   peer: enums.DialogPeer;
 
   protected get [id](): number {
@@ -12895,8 +14050,11 @@ export class UpdateDialogPinned_ extends _Update_ {
   }
 }
 
+/** Pinned dialogs were updated */
 export class UpdatePinnedDialogs_ extends _Update_ {
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id?: number;
+  /** New order of pinned dialogs */
   order?: Array<enums.DialogPeer>;
 
   protected get [id](): number {
@@ -12930,7 +14088,9 @@ export class UpdatePinnedDialogs_ extends _Update_ {
   }
 }
 
+/** A new incoming event; for bots only */
 export class UpdateBotWebhookJSON_ extends _Update_ {
+  /** The event */
   data: enums.DataJSON;
 
   protected get [id](): number {
@@ -12959,9 +14119,13 @@ export class UpdateBotWebhookJSON_ extends _Update_ {
   }
 }
 
+/** A new incoming query; for bots only */
 export class UpdateBotWebhookJSONQuery_ extends _Update_ {
+  /** Query identifier */
   query_id: bigint;
+  /** Query data */
   data: enums.DataJSON;
+  /** Query timeout */
   timeout: number;
 
   protected get [id](): number {
@@ -12996,10 +14160,15 @@ export class UpdateBotWebhookJSONQuery_ extends _Update_ {
   }
 }
 
+/** This object contains information about an incoming shipping query. */
 export class UpdateBotShippingQuery_ extends _Update_ {
+  /** Unique query identifier */
   query_id: bigint;
+  /** User who sent the query */
   user_id: bigint;
+  /** Bot specified invoice payload */
   payload: Uint8Array;
+  /** User specified shipping address */
   shipping_address: enums.PostAddress;
 
   protected get [id](): number {
@@ -13037,13 +14206,21 @@ export class UpdateBotShippingQuery_ extends _Update_ {
   }
 }
 
+/** This object contains information about an incoming pre-checkout query. */
 export class UpdateBotPrecheckoutQuery_ extends _Update_ {
+  /** Unique query identifier */
   query_id: bigint;
+  /** User who sent the query */
   user_id: bigint;
+  /** Bot specified invoice payload */
   payload: Uint8Array;
+  /** Order info provided by the user */
   info?: enums.PaymentRequestedInfo;
+  /** Identifier of the shipping option chosen by the user */
   shipping_option_id?: string;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Total amount in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   total_amount: bigint;
 
   protected get [id](): number {
@@ -13092,7 +14269,9 @@ export class UpdateBotPrecheckoutQuery_ extends _Update_ {
   }
 }
 
+/** An incoming phone call */
 export class UpdatePhoneCall_ extends _Update_ {
+  /** Phone call */
   phone_call: enums.PhoneCall;
 
   protected get [id](): number {
@@ -13121,7 +14300,9 @@ export class UpdatePhoneCall_ extends _Update_ {
   }
 }
 
+/** A language pack has changed, the client should manually fetch the changed strings using [langpack.getDifference](https://core.telegram.org/method/langpack.getDifference) */
 export class UpdateLangPackTooLong_ extends _Update_ {
+  /** Language code */
   lang_code: string;
 
   protected get [id](): number {
@@ -13150,7 +14331,9 @@ export class UpdateLangPackTooLong_ extends _Update_ {
   }
 }
 
+/** Language pack updated */
 export class UpdateLangPack_ extends _Update_ {
+  /** Changed strings */
   difference: enums.LangPackDifference;
 
   protected get [id](): number {
@@ -13179,6 +14362,7 @@ export class UpdateLangPack_ extends _Update_ {
   }
 }
 
+/** The list of favorited stickers was changed, the client should call [messages.getFavedStickers](https://core.telegram.org/method/messages.getFavedStickers) to refetch the new list */
 export class UpdateFavedStickers_ extends _Update_ {
   protected get [id](): number {
     return 0xE511996D;
@@ -13201,9 +14385,13 @@ export class UpdateFavedStickers_ extends _Update_ {
   }
 }
 
+/** The specified [channel/supergroup](https://core.telegram.org/api/channel) messages were read */
 export class UpdateChannelReadMessagesContents_ extends _Update_ {
+  /** [Channel/supergroup](https://core.telegram.org/api/channel) ID */
   channel_id: bigint;
+  /** [Forum topic ID](https://core.telegram.org/api/forum#forum-topics). */
   top_msg_id?: number;
+  /** IDs of messages that were read */
   messages: Array<number>;
 
   protected get [id](): number {
@@ -13240,6 +14428,7 @@ export class UpdateChannelReadMessagesContents_ extends _Update_ {
   }
 }
 
+/** All contacts were deleted */
 export class UpdateContactsReset_ extends _Update_ {
   protected get [id](): number {
     return 0x7084A7BE;
@@ -13262,8 +14451,11 @@ export class UpdateContactsReset_ extends _Update_ {
   }
 }
 
+/** The history of a [channel/supergroup](https://core.telegram.org/api/channel) was hidden. */
 export class UpdateChannelAvailableMessages_ extends _Update_ {
+  /** Channel/supergroup ID */
   channel_id: bigint;
+  /** Identifier of a maximum unavailable message in a channel due to hidden history. */
   available_min_id: number;
 
   protected get [id](): number {
@@ -13295,8 +14487,11 @@ export class UpdateChannelAvailableMessages_ extends _Update_ {
   }
 }
 
+/** The manual unread mark of a chat was changed */
 export class UpdateDialogUnreadMark_ extends _Update_ {
+  /** Was the chat marked or unmarked as read */
   unread?: true;
+  /** The dialog */
   peer: enums.DialogPeer;
 
   protected get [id](): number {
@@ -13330,9 +14525,13 @@ export class UpdateDialogUnreadMark_ extends _Update_ {
   }
 }
 
+/** The results of a poll have changed */
 export class UpdateMessagePoll_ extends _Update_ {
+  /** Poll ID */
   poll_id: bigint;
+  /** If the server knows the client hasn't cached this poll yet, the poll itself */
   poll?: enums.Poll;
+  /** New poll results */
   results: enums.PollResults;
 
   protected get [id](): number {
@@ -13369,9 +14568,13 @@ export class UpdateMessagePoll_ extends _Update_ {
   }
 }
 
+/** Default banned rights in a [normal chat](https://core.telegram.org/api/channel) were updated */
 export class UpdateChatDefaultBannedRights_ extends _Update_ {
+  /** The chat */
   peer: enums.Peer;
+  /** New default banned rights */
   default_banned_rights: enums.ChatBannedRights;
+  /** Version */
   version: number;
 
   protected get [id](): number {
@@ -13406,9 +14609,13 @@ export class UpdateChatDefaultBannedRights_ extends _Update_ {
   }
 }
 
+/** The peer list of a [peer folder](https://core.telegram.org/api/folders#peer-folders) was updated */
 export class UpdateFolderPeers_ extends _Update_ {
+  /** New peer list */
   folder_peers: Array<enums.FolderPeer>;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [Number of events that were generated](https://core.telegram.org/api/updates) */
   pts_count: number;
 
   protected get [id](): number {
@@ -13443,8 +14650,11 @@ export class UpdateFolderPeers_ extends _Update_ {
   }
 }
 
+/** Settings of a certain peer have changed */
 export class UpdatePeerSettings_ extends _Update_ {
+  /** The peer */
   peer: enums.Peer;
+  /** Associated peer settings */
   settings: enums.PeerSettings;
 
   protected get [id](): number {
@@ -13476,7 +14686,9 @@ export class UpdatePeerSettings_ extends _Update_ {
   }
 }
 
+/** List of peers near you was updated */
 export class UpdatePeerLocated_ extends _Update_ {
+  /** Geolocated peer list update */
   peers: Array<enums.PeerLocated>;
 
   protected get [id](): number {
@@ -13505,7 +14717,9 @@ export class UpdatePeerLocated_ extends _Update_ {
   }
 }
 
+/** A message was added to the [schedule queue of a chat](https://core.telegram.org/api/scheduled-messages) */
 export class UpdateNewScheduledMessage_ extends _Update_ {
+  /** Message */
   message: enums.Message;
 
   protected get [id](): number {
@@ -13534,8 +14748,11 @@ export class UpdateNewScheduledMessage_ extends _Update_ {
   }
 }
 
+/** Some [scheduled messages](https://core.telegram.org/api/scheduled-messages) were deleted from the schedule queue of a chat */
 export class UpdateDeleteScheduledMessages_ extends _Update_ {
+  /** Peer */
   peer: enums.Peer;
+  /** Deleted scheduled messages */
   messages: Array<number>;
 
   protected get [id](): number {
@@ -13567,7 +14784,9 @@ export class UpdateDeleteScheduledMessages_ extends _Update_ {
   }
 }
 
+/** A cloud theme was updated */
 export class UpdateTheme_ extends _Update_ {
+  /** Theme */
   theme: enums.Theme;
 
   protected get [id](): number {
@@ -13596,8 +14815,11 @@ export class UpdateTheme_ extends _Update_ {
   }
 }
 
+/** Live geoposition message was viewed */
 export class UpdateGeoLiveViewed_ extends _Update_ {
+  /** The user that viewed the live geoposition */
   peer: enums.Peer;
+  /** Message ID of geoposition message */
   msg_id: number;
 
   protected get [id](): number {
@@ -13629,6 +14851,7 @@ export class UpdateGeoLiveViewed_ extends _Update_ {
   }
 }
 
+/** A login token (for login via QR code) was accepted. */
 export class UpdateLoginToken_ extends _Update_ {
   protected get [id](): number {
     return 0x564FE691;
@@ -13651,10 +14874,15 @@ export class UpdateLoginToken_ extends _Update_ {
   }
 }
 
+/** A specific peer has voted in a poll */
 export class UpdateMessagePollVote_ extends _Update_ {
+  /** Poll ID */
   poll_id: bigint;
+  /** The peer that voted in the poll */
   peer: enums.Peer;
+  /** Chosen option(s) */
   options: Array<Uint8Array>;
+  /** New **qts** value, see [updates »](https://core.telegram.org/api/updates) for more info. */
   qts: number;
 
   protected get [id](): number {
@@ -13692,8 +14920,11 @@ export class UpdateMessagePollVote_ extends _Update_ {
   }
 }
 
+/** A new [folder](https://core.telegram.org/api/folders) was added */
 export class UpdateDialogFilter_ extends _Update_ {
+  /** [Folder](https://core.telegram.org/api/folders) ID */
   id: number;
+  /** [Folder](https://core.telegram.org/api/folders) info */
   filter?: enums.DialogFilter;
 
   protected get [id](): number {
@@ -13727,7 +14958,9 @@ export class UpdateDialogFilter_ extends _Update_ {
   }
 }
 
+/** New [folder](https://core.telegram.org/api/folders) order */
 export class UpdateDialogFilterOrder_ extends _Update_ {
+  /** Ordered [folder IDs](https://core.telegram.org/api/folders) */
   order: Array<number>;
 
   protected get [id](): number {
@@ -13756,6 +14989,7 @@ export class UpdateDialogFilterOrder_ extends _Update_ {
   }
 }
 
+/** Clients should update [folder](https://core.telegram.org/api/folders) info */
 export class UpdateDialogFilters_ extends _Update_ {
   protected get [id](): number {
     return 0x3504914F;
@@ -13778,8 +15012,11 @@ export class UpdateDialogFilters_ extends _Update_ {
   }
 }
 
+/** Incoming phone call signaling payload */
 export class UpdatePhoneCallSignalingData_ extends _Update_ {
+  /** Phone call ID */
   phone_call_id: bigint;
+  /** Signaling payload */
   data: Uint8Array;
 
   protected get [id](): number {
@@ -13811,9 +15048,13 @@ export class UpdatePhoneCallSignalingData_ extends _Update_ {
   }
 }
 
+/** The forward counter of a message in a channel has changed */
 export class UpdateChannelMessageForwards_ extends _Update_ {
+  /** Channel ID */
   channel_id: bigint;
+  /** ID of the message */
   id: number;
+  /** New forward counter */
   forwards: number;
 
   protected get [id](): number {
@@ -13848,11 +15089,17 @@ export class UpdateChannelMessageForwards_ extends _Update_ {
   }
 }
 
+/** Incoming comments in a [discussion thread](https://core.telegram.org/api/threads) were marked as read */
 export class UpdateReadChannelDiscussionInbox_ extends _Update_ {
+  /** [Discussion group ID](https://core.telegram.org/api/channel) */
   channel_id: bigint;
+  /** ID of the group message that started the [thread](https://core.telegram.org/api/threads) (message in linked discussion group) */
   top_msg_id: number;
+  /** Message ID of latest read incoming message for this [thread](https://core.telegram.org/api/threads) */
   read_max_id: number;
+  /** If set, contains the ID of the [channel](https://core.telegram.org/api/channel) that contains the post that started the [comment thread](https://core.telegram.org/api/threads) in the discussion group (`channel_id`) */
   broadcast_id?: bigint;
+  /** If set, contains the ID of the channel post that started the [comment thread](https://core.telegram.org/api/threads) */
   broadcast_post?: number;
 
   protected get [id](): number {
@@ -13895,9 +15142,13 @@ export class UpdateReadChannelDiscussionInbox_ extends _Update_ {
   }
 }
 
+/** Outgoing comments in a [discussion thread](https://core.telegram.org/api/threads) were marked as read */
 export class UpdateReadChannelDiscussionOutbox_ extends _Update_ {
+  /** [Supergroup ID](https://core.telegram.org/api/channel) */
   channel_id: bigint;
+  /** ID of the group message that started the [thread](https://core.telegram.org/api/threads) */
   top_msg_id: number;
+  /** Message ID of latest read outgoing message for this [thread](https://core.telegram.org/api/threads) */
   read_max_id: number;
 
   protected get [id](): number {
@@ -13932,9 +15183,13 @@ export class UpdateReadChannelDiscussionOutbox_ extends _Update_ {
   }
 }
 
+/** We blocked a peer, see [here »](https://core.telegram.org/api/block) for more info on blocklists. */
 export class UpdatePeerBlocked_ extends _Update_ {
+  /** Whether the peer was blocked or unblocked */
   blocked?: true;
+  /** Whether the peer was added/removed to/from the story blocklist; if not set, this update affects the main blocklist, see [here »](https://core.telegram.org/api/block) for more info. */
   blocked_my_stories_from?: true;
+  /** The (un)blocked peer */
   peer_id: enums.Peer;
 
   protected get [id](): number {
@@ -13971,10 +15226,15 @@ export class UpdatePeerBlocked_ extends _Update_ {
   }
 }
 
+/** A user is typing in a [supergroup, channel](https://core.telegram.org/api/channel) or [message thread](https://core.telegram.org/api/threads) */
 export class UpdateChannelUserTyping_ extends _Update_ {
+  /** Channel ID */
   channel_id: bigint;
+  /** [Thread ID](https://core.telegram.org/api/threads) */
   top_msg_id?: number;
+  /** The peer that is typing */
   from_id: enums.Peer;
+  /** Whether the user is typing, sending a media or doing something else */
   action: enums.SendMessageAction;
 
   protected get [id](): number {
@@ -14014,11 +15274,17 @@ export class UpdateChannelUserTyping_ extends _Update_ {
   }
 }
 
+/** Some messages were pinned in a chat */
 export class UpdatePinnedMessages_ extends _Update_ {
+  /** Whether the messages were pinned or unpinned */
   pinned?: true;
+  /** Peer */
   peer: enums.Peer;
+  /** Message IDs */
   messages: Array<number>;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [Number of events that were generated](https://core.telegram.org/api/updates) */
   pts_count: number;
 
   protected get [id](): number {
@@ -14061,11 +15327,17 @@ export class UpdatePinnedMessages_ extends _Update_ {
   }
 }
 
+/** Messages were pinned/unpinned in a [channel/supergroup](https://core.telegram.org/api/channel) */
 export class UpdatePinnedChannelMessages_ extends _Update_ {
+  /** Whether the messages were pinned or unpinned */
   pinned?: true;
+  /** Channel ID */
   channel_id: bigint;
+  /** Messages */
   messages: Array<number>;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [Number of events that were generated](https://core.telegram.org/api/updates) */
   pts_count: number;
 
   protected get [id](): number {
@@ -14108,7 +15380,9 @@ export class UpdatePinnedChannelMessages_ extends _Update_ {
   }
 }
 
+/** A new chat is available */
 export class UpdateChat_ extends _Update_ {
+  /** Chat ID */
   chat_id: bigint;
 
   protected get [id](): number {
@@ -14137,9 +15411,13 @@ export class UpdateChat_ extends _Update_ {
   }
 }
 
+/** The participant list of a certain group call has changed */
 export class UpdateGroupCallParticipants_ extends _Update_ {
+  /** Group call */
   call: enums.InputGroupCall;
+  /** New participant list */
   participants: Array<enums.GroupCallParticipant>;
+  /** Version */
   version: number;
 
   protected get [id](): number {
@@ -14174,8 +15452,11 @@ export class UpdateGroupCallParticipants_ extends _Update_ {
   }
 }
 
+/** A new groupcall was started */
 export class UpdateGroupCall_ extends _Update_ {
+  /** The [channel/supergroup](https://core.telegram.org/api/channel) where this group call or livestream takes place */
   chat_id: bigint;
+  /** Info about the group call or livestream */
   call: enums.GroupCall;
 
   protected get [id](): number {
@@ -14207,8 +15488,11 @@ export class UpdateGroupCall_ extends _Update_ {
   }
 }
 
+/** The Time-To-Live for messages sent by the current user in a specific chat has changed */
 export class UpdatePeerHistoryTTL_ extends _Update_ {
+  /** The chat */
   peer: enums.Peer;
+  /** The new Time-To-Live */
   ttl_period?: number;
 
   protected get [id](): number {
@@ -14242,14 +15526,23 @@ export class UpdatePeerHistoryTTL_ extends _Update_ {
   }
 }
 
+/** A user has joined or left a specific chat */
 export class UpdateChatParticipant_ extends _Update_ {
+  /** [Chat](https://core.telegram.org/api/channel) ID */
   chat_id: bigint;
+  /** When did this event occur */
   date: number;
+  /** User that triggered the change (inviter, admin that kicked the user, or the even the **user\_id** itself) */
   actor_id: bigint;
+  /** User that was affected by the change */
   user_id: bigint;
+  /** Previous participant info (empty if this participant just joined) */
   prev_participant?: enums.ChatParticipant;
+  /** New participant info (empty if this participant just left) */
   new_participant?: enums.ChatParticipant;
+  /** The invite that was used to join the group */
   invite?: enums.ExportedChatInvite;
+  /** New **qts** value, see [updates »](https://core.telegram.org/api/updates) for more info. */
   qts: number;
 
   protected get [id](): number {
@@ -14301,15 +15594,25 @@ export class UpdateChatParticipant_ extends _Update_ {
   }
 }
 
+/** A participant has left, joined, was banned or admined in a [channel or supergroup](https://core.telegram.org/api/channel). */
 export class UpdateChannelParticipant_ extends _Update_ {
+  /** Whether the participant joined using a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
   via_chatlist?: true;
+  /** Channel ID */
   channel_id: bigint;
+  /** Date of the event */
   date: number;
+  /** User that triggered the change (inviter, admin that kicked the user, or the even the **user\_id** itself) */
   actor_id: bigint;
+  /** User that was affected by the change */
   user_id: bigint;
+  /** Previous participant status */
   prev_participant?: enums.ChannelParticipant;
+  /** New participant status */
   new_participant?: enums.ChannelParticipant;
+  /** Chat invite used to join the [channel/supergroup](https://core.telegram.org/api/channel) */
   invite?: enums.ExportedChatInvite;
+  /** New **qts** value, see [updates »](https://core.telegram.org/api/updates) for more info. */
   qts: number;
 
   protected get [id](): number {
@@ -14364,10 +15667,15 @@ export class UpdateChannelParticipant_ extends _Update_ {
   }
 }
 
+/** A bot was stopped or re-started. */
 export class UpdateBotStopped_ extends _Update_ {
+  /** The user ID */
   user_id: bigint;
+  /** When did this action occur */
   date: number;
+  /** Whether the bot was stopped or started */
   stopped: boolean;
+  /** New **qts** value, see [updates »](https://core.telegram.org/api/updates) for more info. */
   qts: number;
 
   protected get [id](): number {
@@ -14405,8 +15713,11 @@ export class UpdateBotStopped_ extends _Update_ {
   }
 }
 
+/** New WebRTC parameters */
 export class UpdateGroupCallConnection_ extends _Update_ {
+  /** Are these parameters related to the screen capture session currently in progress? */
   presentation?: true;
+  /** WebRTC parameters */
   params: enums.DataJSON;
 
   protected get [id](): number {
@@ -14440,9 +15751,13 @@ export class UpdateGroupCallConnection_ extends _Update_ {
   }
 }
 
+/** The [command set](https://core.telegram.org/api/bots/commands) of a certain bot in a certain chat has changed. */
 export class UpdateBotCommands_ extends _Update_ {
+  /** The affected chat */
   peer: enums.Peer;
+  /** ID of the bot that changed its command set */
   bot_id: bigint;
+  /** New bot commands */
   commands: Array<enums.BotCommand>;
 
   protected get [id](): number {
@@ -14477,9 +15792,13 @@ export class UpdateBotCommands_ extends _Update_ {
   }
 }
 
+/** Someone has requested to join a chat or channel */
 export class UpdatePendingJoinRequests_ extends _Update_ {
+  /** Chat or channel */
   peer: enums.Peer;
+  /** Number of pending [join requests »](https://core.telegram.org/api/invites#join-requests) for the chat or channel */
   requests_pending: number;
+  /** IDs of users that have recently requested to join */
   recent_requesters: Array<bigint>;
 
   protected get [id](): number {
@@ -14514,12 +15833,19 @@ export class UpdatePendingJoinRequests_ extends _Update_ {
   }
 }
 
+/** Someone has requested to join a chat or channel (bots only, users will receive an [updatePendingJoinRequests](https://core.telegram.org/constructor/updatePendingJoinRequests), instead) */
 export class UpdateBotChatInviteRequester_ extends _Update_ {
+  /** The chat or channel in question */
   peer: enums.Peer;
+  /** When was the [join request »](https://core.telegram.org/api/invites#join-requests) made */
   date: number;
+  /** The user ID that is asking to join the chat or channel */
   user_id: bigint;
+  /** Bio of the user */
   about: string;
+  /** Chat invite link that was used by the user to send the [join request »](https://core.telegram.org/api/invites#join-requests) */
   invite: enums.ExportedChatInvite;
+  /** [QTS](https://core.telegram.org/api/updates) event sequence identifier */
   qts: number;
 
   protected get [id](): number {
@@ -14563,10 +15889,15 @@ export class UpdateBotChatInviteRequester_ extends _Update_ {
   }
 }
 
+/** New [message reactions »](https://core.telegram.org/api/reactions) are available */
 export class UpdateMessageReactions_ extends _Update_ {
+  /** Peer */
   peer: enums.Peer;
+  /** Message ID */
   msg_id: number;
+  /** [Forum topic ID](https://core.telegram.org/api/forum#forum-topics) */
   top_msg_id?: number;
+  /** Reactions */
   reactions: enums.MessageReactions;
 
   protected get [id](): number {
@@ -14606,6 +15937,7 @@ export class UpdateMessageReactions_ extends _Update_ {
   }
 }
 
+/** The list of installed [attachment menu entries »](https://core.telegram.org/api/bots/attach) has changed, use [messages.getAttachMenuBots](https://core.telegram.org/method/messages.getAttachMenuBots) to fetch the updated list. */
 export class UpdateAttachMenuBots_ extends _Update_ {
   protected get [id](): number {
     return 0x17B7A20B;
@@ -14628,7 +15960,9 @@ export class UpdateAttachMenuBots_ extends _Update_ {
   }
 }
 
+/** Indicates to a bot that a webview was closed and an inline message was sent on behalf of the user using [messages.sendWebViewResultMessage](https://core.telegram.org/method/messages.sendWebViewResultMessage) */
 export class UpdateWebViewResultSent_ extends _Update_ {
+  /** Web app interaction ID */
   query_id: bigint;
 
   protected get [id](): number {
@@ -14657,8 +15991,11 @@ export class UpdateWebViewResultSent_ extends _Update_ {
   }
 }
 
+/** The menu button behavior for the specified bot has changed */
 export class UpdateBotMenuButton_ extends _Update_ {
+  /** Bot ID */
   bot_id: bigint;
+  /** New menu button */
   button: enums.BotMenuButton;
 
   protected get [id](): number {
@@ -14690,6 +16027,7 @@ export class UpdateBotMenuButton_ extends _Update_ {
   }
 }
 
+/** The list of saved notification sounds has changed, use [account.getSavedRingtones](https://core.telegram.org/method/account.getSavedRingtones) to fetch the new list. */
 export class UpdateSavedRingtones_ extends _Update_ {
   protected get [id](): number {
     return 0x74D8BE99;
@@ -14712,11 +16050,17 @@ export class UpdateSavedRingtones_ extends _Update_ {
   }
 }
 
+/** A pending [voice message transcription »](https://core.telegram.org/api/transcribe) initiated with [messages.transcribeAudio](https://core.telegram.org/method/messages.transcribeAudio) was updated. */
 export class UpdateTranscribedAudio_ extends _Update_ {
+  /** Whether this transcription is still pending and further [updateTranscribedAudio](https://core.telegram.org/constructor/updateTranscribedAudio) about it will be sent in the future. */
   pending?: true;
+  /** Peer of the transcribed message */
   peer: enums.Peer;
+  /** Transcribed message ID */
   msg_id: number;
+  /** Transcription ID */
   transcription_id: bigint;
+  /** Transcribed text */
   text: string;
 
   protected get [id](): number {
@@ -14759,6 +16103,7 @@ export class UpdateTranscribedAudio_ extends _Update_ {
   }
 }
 
+/** Some featured [custom emoji stickers](https://core.telegram.org/api/custom-emoji) were marked as read */
 export class UpdateReadFeaturedEmojiStickers_ extends _Update_ {
   protected get [id](): number {
     return 0xFB4C496C;
@@ -14781,8 +16126,11 @@ export class UpdateReadFeaturedEmojiStickers_ extends _Update_ {
   }
 }
 
+/** The [emoji status](https://core.telegram.org/api/emoji-status) of a certain user has changed */
 export class UpdateUserEmojiStatus_ extends _Update_ {
+  /** User ID */
   user_id: bigint;
+  /** New [emoji status](https://core.telegram.org/api/emoji-status) */
   emoji_status: enums.EmojiStatus;
 
   protected get [id](): number {
@@ -14814,6 +16162,7 @@ export class UpdateUserEmojiStatus_ extends _Update_ {
   }
 }
 
+/** The list of recent [emoji statuses](https://core.telegram.org/api/emoji-status) has changed */
 export class UpdateRecentEmojiStatuses_ extends _Update_ {
   protected get [id](): number {
     return 0x30F443DB;
@@ -14836,6 +16185,7 @@ export class UpdateRecentEmojiStatuses_ extends _Update_ {
   }
 }
 
+/** The list of recent [message reactions](https://core.telegram.org/api/reactions) has changed */
 export class UpdateRecentReactions_ extends _Update_ {
   protected get [id](): number {
     return 0x6F7863F4;
@@ -14858,9 +16208,13 @@ export class UpdateRecentReactions_ extends _Update_ {
   }
 }
 
+/** A stickerset was just moved to top, [see here for more info »](https://core.telegram.org/api/stickers#recent-stickersets) */
 export class UpdateMoveStickerSetToTop_ extends _Update_ {
+  /** This update is referring to a [mask stickerset](https://core.telegram.org/api/stickers#mask-stickers) */
   masks?: true;
+  /** This update is referring to a [custom emoji stickerset](https://core.telegram.org/api/custom-emoji) */
   emojis?: true;
+  /** [Stickerset](https://core.telegram.org/api/stickers) ID */
   stickerset: bigint;
 
   protected get [id](): number {
@@ -14897,9 +16251,13 @@ export class UpdateMoveStickerSetToTop_ extends _Update_ {
   }
 }
 
+/** Extended media update */
 export class UpdateMessageExtendedMedia_ extends _Update_ {
+  /** Peer */
   peer: enums.Peer;
+  /** Message ID */
   msg_id: number;
+  /** Extended media */
   extended_media: enums.MessageExtendedMedia;
 
   protected get [id](): number {
@@ -14934,9 +16292,13 @@ export class UpdateMessageExtendedMedia_ extends _Update_ {
   }
 }
 
+/** A [forum topic »](https://core.telegram.org/api/forum#forum-topics) was pinned or unpinned. */
 export class UpdateChannelPinnedTopic_ extends _Update_ {
+  /** Whether the topic was pinned or unpinned */
   pinned?: true;
+  /** The forum ID */
   channel_id: bigint;
+  /** The topic ID */
   topic_id: number;
 
   protected get [id](): number {
@@ -14973,8 +16335,11 @@ export class UpdateChannelPinnedTopic_ extends _Update_ {
   }
 }
 
+/** The [pinned topics](https://core.telegram.org/api/forum#forum-topics) of a forum have changed. */
 export class UpdateChannelPinnedTopics_ extends _Update_ {
+  /** Forum ID. */
   channel_id: bigint;
+  /** Ordered list containing the IDs of all pinned topics. */
   order?: Array<number>;
 
   protected get [id](): number {
@@ -15008,7 +16373,9 @@ export class UpdateChannelPinnedTopics_ extends _Update_ {
   }
 }
 
+/** User information was updated, it must be refetched using [users.getFullUser](https://core.telegram.org/method/users.getFullUser). */
 export class UpdateUser_ extends _Update_ {
+  /** User ID */
   user_id: bigint;
 
   protected get [id](): number {
@@ -15037,6 +16404,7 @@ export class UpdateUser_ extends _Update_ {
   }
 }
 
+/** Media autosave settings have changed and must be refetched using [account.getAutoSaveSettings](https://core.telegram.org/method/account.getAutoSaveSettings). */
 export class UpdateAutoSaveSettings_ extends _Update_ {
   protected get [id](): number {
     return 0xEC05B097;
@@ -15059,7 +16427,9 @@ export class UpdateAutoSaveSettings_ extends _Update_ {
   }
 }
 
+/** 0-N updates of this type may be returned only when invoking [messages.addChatUser](https://core.telegram.org/method/messages.addChatUser), [channels.inviteToChannel](https://core.telegram.org/method/channels.inviteToChannel) or [messages.createChat](https://core.telegram.org/method/messages.createChat): it indicates we couldn't add a user to a chat because of their privacy settings; if required, an [invite link](https://core.telegram.org/api/invites) can be shared with the user, instead. */
 export class UpdateGroupInvitePrivacyForbidden_ extends _Update_ {
+  /** ID of the user we couldn't add. */
   user_id: bigint;
 
   protected get [id](): number {
@@ -15088,8 +16458,11 @@ export class UpdateGroupInvitePrivacyForbidden_ extends _Update_ {
   }
 }
 
+/** A new story was posted. */
 export class UpdateStory_ extends _Update_ {
+  /** ID of the poster. */
   peer: enums.Peer;
+  /** The story that was posted. */
   story: enums.StoryItem;
 
   protected get [id](): number {
@@ -15121,8 +16494,11 @@ export class UpdateStory_ extends _Update_ {
   }
 }
 
+/** Stories of a specific peer were marked as read. */
 export class UpdateReadStories_ extends _Update_ {
+  /** The peer */
   peer: enums.Peer;
+  /** ID of the last story that was marked as read */
   max_id: number;
 
   protected get [id](): number {
@@ -15154,8 +16530,11 @@ export class UpdateReadStories_ extends _Update_ {
   }
 }
 
+/** A story was successfully uploaded. */
 export class UpdateStoryID_ extends _Update_ {
+  /** The `id` that was attributed to the story. */
   id: number;
+  /** The `random_id` that was passed to [stories.sendStory](https://core.telegram.org/method/stories.sendStory). */
   random_id: bigint;
 
   protected get [id](): number {
@@ -15187,7 +16566,9 @@ export class UpdateStoryID_ extends _Update_ {
   }
 }
 
+/** Indicates that [stories stealth mode](https://core.telegram.org/api/stories#stealth-mode) was activated. */
 export class UpdateStoriesStealthMode_ extends _Update_ {
+  /** Information about the current [stealth mode](https://core.telegram.org/api/stories#stealth-mode) session. */
   stealth_mode: enums.StoriesStealthMode;
 
   protected get [id](): number {
@@ -15216,9 +16597,13 @@ export class UpdateStoriesStealthMode_ extends _Update_ {
   }
 }
 
+/** Indicates we [reacted to a story »](https://core.telegram.org/api/stories#reactions). */
 export class UpdateSentStoryReaction_ extends _Update_ {
+  /** The peer that sent the story */
   peer: enums.Peer;
+  /** ID of the story we reacted to */
   story_id: number;
+  /** The reaction that was sent */
   reaction: enums.Reaction;
 
   protected get [id](): number {
@@ -15253,9 +16638,13 @@ export class UpdateSentStoryReaction_ extends _Update_ {
   }
 }
 
+/** A [channel boost](https://core.telegram.org/api/boost) has changed (bots only) */
 export class UpdateBotChatBoost_ extends _Update_ {
+  /** Channel */
   peer: enums.Peer;
+  /** New boost information */
   boost: enums.Boost;
+  /** [QTS](https://core.telegram.org/api/updates) event sequence identifier */
   qts: number;
 
   protected get [id](): number {
@@ -15290,8 +16679,12 @@ export class UpdateBotChatBoost_ extends _Update_ {
   }
 }
 
+/** Users may also choose to display messages from all topics as if they were sent to a normal group, using a "View as messages" setting in the local client.  
+This setting only affects the current account, and is synced to other logged in sessions using the [channels.toggleViewForumAsMessages](https://core.telegram.org/method/channels.toggleViewForumAsMessages) method; invoking this method will update the value of the `view_forum_as_messages` flag of [channelFull](https://core.telegram.org/constructor/channelFull) or [dialog](https://core.telegram.org/constructor/dialog) and emit an [updateChannelViewForumAsMessages](https://core.telegram.org/constructor/updateChannelViewForumAsMessages). */
 export class UpdateChannelViewForumAsMessages_ extends _Update_ {
+  /** The forum ID */
   channel_id: bigint;
+  /** The new value of the toggle. */
   enabled: boolean;
 
   protected get [id](): number {
@@ -15323,9 +16716,13 @@ export class UpdateChannelViewForumAsMessages_ extends _Update_ {
   }
 }
 
+/** The [wallpaper »](https://core.telegram.org/api/wallpapers) of a given peer has changed. */
 export class UpdatePeerWallpaper_ extends _Update_ {
+  /** Whether the other user has chosen a custom wallpaper for us using [messages.setChatWallPaper](https://core.telegram.org/method/messages.setChatWallPaper) and the `for_both` flag, see [here »](https://core.telegram.org/api/wallpapers#installing-wallpapers-in-a-specific-chat-or-channel) for more info. */
   wallpaper_overridden?: true;
+  /** The peer where the wallpaper has changed. */
   peer: enums.Peer;
+  /** The new wallpaper, if none the wallpaper was removed and the default wallpaper should be used. */
   wallpaper?: enums.WallPaper;
 
   protected get [id](): number {
@@ -15362,13 +16759,21 @@ export class UpdatePeerWallpaper_ extends _Update_ {
   }
 }
 
+/** Bots only: a user has changed their reactions on a message with public reactions. */
 export class UpdateBotMessageReaction_ extends _Update_ {
+  /** Peer of the reacted-to message. */
   peer: enums.Peer;
+  /** ID of the reacted-to message. */
   msg_id: number;
+  /** Date of the change. */
   date: number;
+  /** The user that (un)reacted to the message. */
   actor: enums.Peer;
+  /** Old reactions */
   old_reactions: Array<enums.Reaction>;
+  /** New reactions */
   new_reactions: Array<enums.Reaction>;
+  /** [QTS](https://core.telegram.org/api/updates) event sequence identifier */
   qts: number;
 
   protected get [id](): number {
@@ -15415,11 +16820,17 @@ export class UpdateBotMessageReaction_ extends _Update_ {
   }
 }
 
+/** Bots only: the number of reactions on a message with anonymous reactions has changed. */
 export class UpdateBotMessageReactions_ extends _Update_ {
+  /** Peer of the reacted-to message. */
   peer: enums.Peer;
+  /** ID of the reacted-to message. */
   msg_id: number;
+  /** Date of the change. */
   date: number;
+  /** New reaction counters. */
   reactions: Array<enums.ReactionCount>;
+  /** [QTS](https://core.telegram.org/api/updates) event sequence identifier */
   qts: number;
 
   protected get [id](): number {
@@ -15460,8 +16871,11 @@ export class UpdateBotMessageReactions_ extends _Update_ {
   }
 }
 
+/** A [saved message dialog](https://core.telegram.org/api/saved-messages) was pinned/unpinned */
 export class UpdateSavedDialogPinned_ extends _Update_ {
+  /** Whether the dialog was pinned */
   pinned?: true;
+  /** The dialog */
   peer: enums.DialogPeer;
 
   protected get [id](): number {
@@ -15495,7 +16909,9 @@ export class UpdateSavedDialogPinned_ extends _Update_ {
   }
 }
 
+/** [Pinned saved dialogs »](https://core.telegram.org/api/saved-messages) were updated */
 export class UpdatePinnedSavedDialogs_ extends _Update_ {
+  /** New order of pinned saved dialogs */
   order?: Array<enums.DialogPeer>;
 
   protected get [id](): number {
@@ -15548,11 +16964,17 @@ export class UpdateSavedReactionTags_ extends _Update_ {
   }
 }
 
+/** Updates state. */
 export class updates_State_ extends _updates_State_ {
+  /** Number of events occurred in a text box */
   pts: number;
+  /** Position in a sequence of updates in secret chats. For further details refer to article [secret chats](https://core.telegram.org/api/end-to-end) */
   qts: number;
+  /** Date of condition */
   date: number;
+  /** Number of sent updates */
   seq: number;
+  /** Number of unread messages */
   unread_count: number;
 
   protected get [id](): number {
@@ -15593,8 +17015,11 @@ export class updates_State_ extends _updates_State_ {
   }
 }
 
+/** No events. */
 export class updates_DifferenceEmpty_ extends _updates_Difference_ {
+  /** Current date */
   date: number;
+  /** Number of sent updates */
   seq: number;
 
   protected get [id](): number {
@@ -15626,12 +17051,19 @@ export class updates_DifferenceEmpty_ extends _updates_Difference_ {
   }
 }
 
+/** Full list of occurred events. */
 export class updates_Difference_ extends _updates_Difference_ {
+  /** List of new messages */
   new_messages: Array<enums.Message>;
+  /** List of new encrypted secret chat messages */
   new_encrypted_messages: Array<enums.EncryptedMessage>;
+  /** List of updates */
   other_updates: Array<enums.Update>;
+  /** List of chats mentioned in events */
   chats: Array<enums.Chat>;
+  /** List of users mentioned in events */
   users: Array<enums.User>;
+  /** Current state */
   state: enums.updates.State;
 
   protected get [id](): number {
@@ -15675,12 +17107,19 @@ export class updates_Difference_ extends _updates_Difference_ {
   }
 }
 
+/** Incomplete list of occurred events. */
 export class updates_DifferenceSlice_ extends _updates_Difference_ {
+  /** List of new messages */
   new_messages: Array<enums.Message>;
+  /** New messages from the [encrypted event sequence](https://core.telegram.org/api/updates) */
   new_encrypted_messages: Array<enums.EncryptedMessage>;
+  /** List of updates */
   other_updates: Array<enums.Update>;
+  /** List of chats mentioned in events */
   chats: Array<enums.Chat>;
+  /** List of users mentioned in events */
   users: Array<enums.User>;
+  /** Intermediary state */
   intermediate_state: enums.updates.State;
 
   protected get [id](): number {
@@ -15724,7 +17163,9 @@ export class updates_DifferenceSlice_ extends _updates_Difference_ {
   }
 }
 
+/** The difference is [too long](https://core.telegram.org/api/updates#recovering-gaps), and the specified state must be used to refetch updates. */
 export class updates_DifferenceTooLong_ extends _updates_Difference_ {
+  /** The new state to use. */
   pts: number;
 
   protected get [id](): number {
@@ -15753,6 +17194,7 @@ export class updates_DifferenceTooLong_ extends _updates_Difference_ {
   }
 }
 
+/** Too many updates, it is necessary to execute [updates.getDifference](https://core.telegram.org/method/updates.getDifference). */
 export class UpdatesTooLong_ extends _Updates_ {
   protected get [id](): number {
     return 0xE317AF7E;
@@ -15775,21 +17217,37 @@ export class UpdatesTooLong_ extends _Updates_ {
   }
 }
 
+/** Info about a message sent to (received from) another user */
 export class UpdateShortMessage_ extends _Updates_ {
+  /** Whether the message is outgoing */
   out?: true;
+  /** Whether we were mentioned in the message */
   mentioned?: true;
+  /** Whether there are some **unread** mentions in this message */
   media_unread?: true;
+  /** If true, the message is a silent message, no notifications should be triggered */
   silent?: true;
+  /** The message ID */
   id: number;
+  /** The ID of the sender (if `outgoing` will be the ID of the destination) of the message */
   user_id: bigint;
+  /** The message */
   message: string;
+  /** [PTS](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [PTS count](https://core.telegram.org/api/updates) */
   pts_count: number;
+  /** [date](https://core.telegram.org/api/updates) */
   date: number;
+  /** Info about a forwarded message */
   fwd_from?: enums.MessageFwdHeader;
+  /** Info about the inline bot used to generate this message */
   via_bot_id?: bigint;
+  /** Reply and [thread](https://core.telegram.org/api/threads) information */
   reply_to?: enums.MessageReplyHeader;
+  /** [Entities](https://core.telegram.org/api/entities) for styled text */
   entities?: Array<enums.MessageEntity>;
+  /** Time To Live of the message, once message.date+message.ttl\_period === time(), the message will be deleted on the server, and must be deleted locally as well. */
   ttl_period?: number;
 
   protected get [id](): number {
@@ -15862,22 +17320,39 @@ export class UpdateShortMessage_ extends _Updates_ {
   }
 }
 
+/** Shortened constructor containing info on one new incoming text message from a chat */
 export class UpdateShortChatMessage_ extends _Updates_ {
+  /** Whether the message is outgoing */
   out?: true;
+  /** Whether we were mentioned in this message */
   mentioned?: true;
+  /** Whether the message contains some **unread** mentions */
   media_unread?: true;
+  /** If true, the message is a silent message, no notifications should be triggered */
   silent?: true;
+  /** ID of the message */
   id: number;
+  /** ID of the sender of the message */
   from_id: bigint;
+  /** ID of the chat where the message was sent */
   chat_id: bigint;
+  /** Message */
   message: string;
+  /** [PTS](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [PTS count](https://core.telegram.org/api/updates) */
   pts_count: number;
+  /** [date](https://core.telegram.org/api/updates) */
   date: number;
+  /** Info about a forwarded message */
   fwd_from?: enums.MessageFwdHeader;
+  /** Info about the inline bot used to generate this message */
   via_bot_id?: bigint;
+  /** Reply (thread) information */
   reply_to?: enums.MessageReplyHeader;
+  /** [Entities](https://core.telegram.org/api/entities) for styled text */
   entities?: Array<enums.MessageEntity>;
+  /** Time To Live of the message, once updateShortChatMessage.date+updateShortChatMessage.ttl\_period === time(), the message will be deleted on the server, and must be deleted locally as well. */
   ttl_period?: number;
 
   protected get [id](): number {
@@ -15953,8 +17428,11 @@ export class UpdateShortChatMessage_ extends _Updates_ {
   }
 }
 
+/** Shortened constructor containing info on one update not requiring auxiliary data */
 export class UpdateShort_ extends _Updates_ {
+  /** Update */
   update: enums.Update;
+  /** Date of event */
   date: number;
 
   protected get [id](): number {
@@ -15986,12 +17464,19 @@ export class UpdateShort_ extends _Updates_ {
   }
 }
 
+/** Constructor for a group of updates. */
 export class UpdatesCombined_ extends _Updates_ {
+  /** List of updates */
   updates: Array<enums.Update>;
+  /** List of users mentioned in updates */
   users: Array<enums.User>;
+  /** List of chats mentioned in updates */
   chats: Array<enums.Chat>;
+  /** Current date */
   date: number;
+  /** Value **seq** for the earliest update in a group */
   seq_start: number;
+  /** Value **seq** for the latest update in a group */
   seq: number;
 
   protected get [id](): number {
@@ -16035,11 +17520,17 @@ export class UpdatesCombined_ extends _Updates_ {
   }
 }
 
+/** Full constructor of updates */
 export class Updates_ extends _Updates_ {
+  /** List of updates */
   updates: Array<enums.Update>;
+  /** List of users mentioned in updates */
   users: Array<enums.User>;
+  /** List of chats mentioned in updates */
   chats: Array<enums.Chat>;
+  /** Current date */
   date: number;
+  /** Total number of sent updates */
   seq: number;
 
   protected get [id](): number {
@@ -16080,14 +17571,23 @@ export class Updates_ extends _Updates_ {
   }
 }
 
+/** Shortened constructor containing info on one outgoing message to a contact (the destination chat has to be extracted from the method call that returned this object). */
 export class UpdateShortSentMessage_ extends _Updates_ {
+  /** Whether the message is outgoing */
   out?: true;
+  /** ID of the sent message */
   id: number;
+  /** [PTS](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [PTS count](https://core.telegram.org/api/updates) */
   pts_count: number;
+  /** [date](https://core.telegram.org/api/updates) */
   date: number;
+  /** Attached media */
   media?: enums.MessageMedia;
+  /** [Entities](https://core.telegram.org/api/entities) for styled text */
   entities?: Array<enums.MessageEntity>;
+  /** Time To Live of the message, once message.date+message.ttl\_period === time(), the message will be deleted on the server, and must be deleted locally as well. */
   ttl_period?: number;
 
   protected get [id](): number {
@@ -16139,8 +17639,11 @@ export class UpdateShortSentMessage_ extends _Updates_ {
   }
 }
 
+/** Full list of photos with auxiliary data. */
 export class photos_Photos_ extends _photos_Photos_ {
+  /** List of photos */
   photos: Array<enums.Photo>;
+  /** List of mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -16172,9 +17675,13 @@ export class photos_Photos_ extends _photos_Photos_ {
   }
 }
 
+/** Incomplete list of photos with auxiliary data. */
 export class photos_PhotosSlice_ extends _photos_Photos_ {
+  /** Total number of photos */
   count: number;
+  /** List of photos */
   photos: Array<enums.Photo>;
+  /** List of mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -16209,8 +17716,11 @@ export class photos_PhotosSlice_ extends _photos_Photos_ {
   }
 }
 
+/** Photo with auxiliary data. */
 export class photos_Photo_ extends _photos_Photo_ {
+  /** Photo */
   photo: enums.Photo;
+  /** Users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -16242,9 +17752,13 @@ export class photos_Photo_ extends _photos_Photo_ {
   }
 }
 
+/** File content. */
 export class upload_File_ extends _upload_File_ {
+  /** File type */
   type: enums.storage.FileType;
+  /** Modification time */
   mtime: number;
+  /** Binary data, file content */
   bytes: Uint8Array;
 
   protected get [id](): number {
@@ -16279,11 +17793,17 @@ export class upload_File_ extends _upload_File_ {
   }
 }
 
+/** The file must be downloaded from a [CDN DC](https://core.telegram.org/cdn). */
 export class upload_FileCdnRedirect_ extends _upload_File_ {
+  /** [CDN DC](https://core.telegram.org/cdn) ID */
   dc_id: number;
+  /** File token (see [CDN files](https://core.telegram.org/cdn)) */
   file_token: Uint8Array;
+  /** Encryption key (see [CDN files](https://core.telegram.org/cdn)) */
   encryption_key: Uint8Array;
+  /** Encryption IV (see [CDN files](https://core.telegram.org/cdn)) */
   encryption_iv: Uint8Array;
+  /** File hashes (see [CDN files](https://core.telegram.org/cdn)) */
   file_hashes: Array<enums.FileHash>;
 
   protected get [id](): number {
@@ -16324,16 +17844,27 @@ export class upload_FileCdnRedirect_ extends _upload_File_ {
   }
 }
 
+/** Data center */
 export class DcOption_ extends _DcOption_ {
+  /** Whether the specified IP is an IPv6 address */
   ipv6?: true;
+  /** Whether this DC should only be used to [download or upload files](https://core.telegram.org/api/files) */
   media_only?: true;
+  /** Whether this DC only supports connection with [transport obfuscation](https://core.telegram.org/mtproto/mtproto-transports#transport-obfuscation) */
   tcpo_only?: true;
+  /** Whether this is a [CDN DC](https://core.telegram.org/cdn). */
   cdn?: true;
+  /** If set, this IP should be used when connecting through a proxy */
   static?: true;
+  /** If set, clients must connect using only the specified port, without trying any other port. */
   this_port_only?: true;
+  /** DC ID */
   id: number;
+  /** IP address of DC */
   ip_address: string;
+  /** Port */
   port: number;
+  /** If the `tcpo_only` flag is set, specifies the secret to use when connecting using [transport obfuscation](https://core.telegram.org/mtproto/mtproto-transports#transport-obfuscation) */
   secret?: Uint8Array;
 
   protected get [id](): number {
@@ -16391,53 +17922,101 @@ export class DcOption_ extends _DcOption_ {
   }
 }
 
+/** Current configuration */
 export class Config_ extends _Config_ {
+  /** Whether the client should use P2P by default for phone calls with contacts */
   default_p2p_contacts?: true;
+  /** Whether the client should preload featured stickers */
   preload_featured_stickers?: true;
+  /** Whether incoming private messages can be deleted for both participants */
   revoke_pm_inbox?: true;
+  /** Indicates that telegram is _probably_ censored by governments/ISPs in the current region */
   blocked_mode?: true;
+  /** Whether to forcefully connect using IPv6 [dcOptions](https://core.telegram.org/type/DcOption), even if the client knows that IPv4 is available. */
   force_try_ipv6?: true;
+  /** Current date at the server */
   date: number;
+  /** Expiration date of this config: when it expires it'll have to be refetched using [help.getConfig](https://core.telegram.org/method/help.getConfig) */
   expires: number;
+  /** Whether we're connected to the test DCs */
   test_mode: boolean;
+  /** ID of the DC that returned the reply */
   this_dc: number;
+  /** DC IP list */
   dc_options: Array<enums.DcOption>;
+  /** Domain name for fetching encrypted DC list from DNS TXT record */
   dc_txt_domain_name: string;
+  /** Maximum member count for normal [groups](https://core.telegram.org/api/channel) */
   chat_size_max: number;
+  /** Maximum member count for [supergroups](https://core.telegram.org/api/channel) */
   megagroup_size_max: number;
+  /** Maximum number of messages that can be forwarded at once using [messages.forwardMessages](https://core.telegram.org/method/messages.forwardMessages). */
   forwarded_count_max: number;
+  /** The client should [update its online status](https://core.telegram.org/method/account.updateStatus) every N milliseconds */
   online_update_period_ms: number;
+  /** Delay before offline status needs to be sent to the server */
   offline_blur_timeout_ms: number;
+  /** Time without any user activity after which it should be treated offline */
   offline_idle_timeout_ms: number;
+  /** If we are offline, but were online from some other client in last `online_cloud_timeout_ms` milliseconds after we had gone offline, then delay offline notification for `notify_cloud_delay_ms` milliseconds. */
   online_cloud_timeout_ms: number;
+  /** If we are offline, but online from some other client then delay sending the offline notification for `notify_cloud_delay_ms` milliseconds. */
   notify_cloud_delay_ms: number;
+  /** If some other client is online, then delay notification for `notification_default_delay_ms` milliseconds */
   notify_default_delay_ms: number;
+  /** Not for client use */
   push_chat_period_ms: number;
+  /** Not for client use */
   push_chat_limit: number;
+  /** Only messages with age smaller than the one specified can be edited */
   edit_time_limit: number;
+  /** Only channel/supergroup messages with age smaller than the specified can be deleted */
   revoke_time_limit: number;
+  /** Only private messages with age smaller than the specified can be deleted */
   revoke_pm_time_limit: number;
+  /** Exponential decay rate for computing [top peer rating](https://core.telegram.org/api/top-rating) */
   rating_e_decay: number;
+  /** Maximum number of recent stickers */
   stickers_recent_limit: number;
+  /** Indicates that round videos (video notes) and voice messages sent in channels and older than the specified period must be marked as read */
   channels_read_media_period: number;
+  /** Temporary [passport](https://core.telegram.org/passport) sessions */
   tmp_sessions?: number;
+  /** Maximum allowed outgoing ring time in VoIP calls: if the user we're calling doesn't reply within the specified time (in milliseconds), we should hang up the call */
   call_receive_timeout_ms: number;
+  /** Maximum allowed incoming ring time in VoIP calls: if the current user doesn't reply within the specified time (in milliseconds), the call will be automatically refused */
   call_ring_timeout_ms: number;
+  /** VoIP connection timeout: if the instance of libtgvoip on the other side of the call doesn't connect to our instance of libtgvoip within the specified time (in milliseconds), the call must be aborted */
   call_connect_timeout_ms: number;
+  /** If during a VoIP call a packet isn't received for the specified period of time, the call must be aborted */
   call_packet_timeout_ms: number;
+  /** The domain to use to parse [deep links »](https://core.telegram.org/api/links). */
   me_url_prefix: string;
+  /** URL to use to auto-update the current app */
   autoupdate_url_prefix?: string;
+  /** Username of the bot to use to search for GIFs */
   gif_search_username?: string;
+  /** Username of the bot to use to search for venues */
   venue_search_username?: string;
+  /** Username of the bot to use for image search */
   img_search_username?: string;
+  /** ID of the map provider to use for venues */
   static_maps_provider?: string;
+  /** Maximum length of caption (length in utf8 codepoints) */
   caption_length_max: number;
+  /** Maximum length of messages (length in utf8 codepoints) */
   message_length_max: number;
+  /** DC ID to use to download [webfiles](https://core.telegram.org/api/files#downloading-webfiles) */
   webfile_dc_id: number;
+  /** Suggested language code */
   suggested_lang_code?: string;
+  /** Language pack version */
   lang_pack_version?: number;
+  /** Basic language pack version */
   base_lang_pack_version?: number;
+  /** Default [message reaction](https://core.telegram.org/api/reactions) */
   reactions_default?: enums.Reaction;
+  /** Autologin token, [click here for more info on URL authorization »](https://core.telegram.org/api/url-authorization#link-url-authorization). */
   autologin_token?: string;
 
   protected get [id](): number {
@@ -16606,9 +18185,13 @@ export class Config_ extends _Config_ {
   }
 }
 
+/** Nearest data center, according to geo-ip. */
 export class NearestDc_ extends _NearestDc_ {
+  /** Country code determined by geo-ip */
   country: string;
+  /** Number of current data center */
   this_dc: number;
+  /** Number of nearest data center */
   nearest_dc: number;
 
   protected get [id](): number {
@@ -16643,14 +18226,23 @@ export class NearestDc_ extends _NearestDc_ {
   }
 }
 
+/** An update is available for the application. */
 export class help_AppUpdate_ extends _help_AppUpdate_ {
+  /** Unskippable, the new info must be shown to the user (with a popup or something else) */
   can_not_skip?: true;
+  /** Update ID */
   id: number;
+  /** New version name */
   version: string;
+  /** Text description of the update */
   text: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities: Array<enums.MessageEntity>;
+  /** Application binary */
   document?: enums.Document;
+  /** Application download URL */
   url?: string;
+  /** Associated sticker */
   sticker?: enums.Document;
 
   protected get [id](): number {
@@ -16702,6 +18294,7 @@ export class help_AppUpdate_ extends _help_AppUpdate_ {
   }
 }
 
+/** No updates are available for the application. */
 export class help_NoAppUpdate_ extends _help_AppUpdate_ {
   protected get [id](): number {
     return 0xC45A6536;
@@ -16724,7 +18317,9 @@ export class help_NoAppUpdate_ extends _help_AppUpdate_ {
   }
 }
 
+/** Text of a text message with an invitation to install Telegram. */
 export class help_InviteText_ extends _help_InviteText_ {
+  /** Text of the message */
   message: string;
 
   protected get [id](): number {
@@ -16753,7 +18348,9 @@ export class help_InviteText_ extends _help_InviteText_ {
   }
 }
 
+/** Empty constructor. */
 export class EncryptedChatEmpty_ extends _EncryptedChat_ {
+  /** Chat ID */
   id: number;
 
   protected get [id](): number {
@@ -16782,11 +18379,17 @@ export class EncryptedChatEmpty_ extends _EncryptedChat_ {
   }
 }
 
+/** Chat waiting for approval of second participant. */
 export class EncryptedChatWaiting_ extends _EncryptedChat_ {
+  /** Chat ID */
   id: number;
+  /** Checking sum depending on user ID */
   access_hash: bigint;
+  /** Date of chat creation */
   date: number;
+  /** Chat creator ID */
   admin_id: bigint;
+  /** ID of second chat participant */
   participant_id: bigint;
 
   protected get [id](): number {
@@ -16827,13 +18430,21 @@ export class EncryptedChatWaiting_ extends _EncryptedChat_ {
   }
 }
 
+/** Request to create an encrypted chat. */
 export class EncryptedChatRequested_ extends _EncryptedChat_ {
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id?: number;
+  /** Chat ID */
   id: number;
+  /** Check sum depending on user ID */
   access_hash: bigint;
+  /** Chat creation date */
   date: number;
+  /** Chat creator ID */
   admin_id: bigint;
+  /** ID of second chat participant */
   participant_id: bigint;
+  /** `A = g ^ a mod p`, see [Wikipedia](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange) */
   g_a: Uint8Array;
 
   protected get [id](): number {
@@ -16882,13 +18493,23 @@ export class EncryptedChatRequested_ extends _EncryptedChat_ {
   }
 }
 
+/** Encrypted chat */
 export class EncryptedChat_ extends _EncryptedChat_ {
+  /** Chat ID */
   id: number;
+  /** Check sum dependent on the user ID */
   access_hash: bigint;
+  /** Date chat was created */
   date: number;
+  /** Chat creator ID */
   admin_id: bigint;
+  /** ID of the second chat participant */
   participant_id: bigint;
+  /** `B = g ^ b mod p`, if the currently authorized user is the chat's creator,  
+  or `A = g ^ a mod p` otherwise  
+  See [Wikipedia](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange) for more info */
   g_a_or_b: Uint8Array;
+  /** 64-bit fingerprint of received key */
   key_fingerprint: bigint;
 
   protected get [id](): number {
@@ -16935,8 +18556,11 @@ export class EncryptedChat_ extends _EncryptedChat_ {
   }
 }
 
+/** Discarded or deleted chat. */
 export class EncryptedChatDiscarded_ extends _EncryptedChat_ {
+  /** Whether both users of this secret chat should also remove all of its messages */
   history_deleted?: true;
+  /** Chat ID */
   id: number;
 
   protected get [id](): number {
@@ -16970,8 +18594,11 @@ export class EncryptedChatDiscarded_ extends _EncryptedChat_ {
   }
 }
 
+/** Creates an encrypted chat. */
 export class InputEncryptedChat_ extends _InputEncryptedChat_ {
+  /** Chat ID */
   chat_id: number;
+  /** Checking sum from constructor [encryptedChat](https://core.telegram.org/constructor/encryptedChat), [encryptedChatWaiting](https://core.telegram.org/constructor/encryptedChatWaiting) or [encryptedChatRequested](https://core.telegram.org/constructor/encryptedChatRequested) */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -17003,6 +18630,7 @@ export class InputEncryptedChat_ extends _InputEncryptedChat_ {
   }
 }
 
+/** Empty constructor, non-existing file. */
 export class EncryptedFileEmpty_ extends _EncryptedFile_ {
   protected get [id](): number {
     return 0xC21F497E;
@@ -17025,11 +18653,17 @@ export class EncryptedFileEmpty_ extends _EncryptedFile_ {
   }
 }
 
+/** Encrypted file. */
 export class EncryptedFile_ extends _EncryptedFile_ {
+  /** File ID */
   id: bigint;
+  /** Checking sum depending on user ID */
   access_hash: bigint;
+  /** File size in bytes */
   size: bigint;
+  /** Number of data center */
   dc_id: number;
+  /** 32-bit fingerprint of key used for file encryption */
   key_fingerprint: number;
 
   protected get [id](): number {
@@ -17070,6 +18704,7 @@ export class EncryptedFile_ extends _EncryptedFile_ {
   }
 }
 
+/** Empty constructor. */
 export class InputEncryptedFileEmpty_ extends _InputEncryptedFile_ {
   protected get [id](): number {
     return 0x1837C364;
@@ -17092,10 +18727,15 @@ export class InputEncryptedFileEmpty_ extends _InputEncryptedFile_ {
   }
 }
 
+/** Sets new encrypted file saved by parts using upload.saveFilePart method. */
 export class InputEncryptedFileUploaded_ extends _InputEncryptedFile_ {
+  /** Random file ID created by client */
   id: bigint;
+  /** Number of saved parts */
   parts: number;
+  /** In case [md5-HASH](https://en.wikipedia.org/wiki/MD5) of the (already encrypted) file was transmitted, file content will be checked prior to use */
   md5_checksum: string;
+  /** 32-bit fingerprint of the key used to encrypt a file */
   key_fingerprint: number;
 
   protected get [id](): number {
@@ -17133,8 +18773,11 @@ export class InputEncryptedFileUploaded_ extends _InputEncryptedFile_ {
   }
 }
 
+/** Sets forwarded encrypted file for attachment. */
 export class InputEncryptedFile_ extends _InputEncryptedFile_ {
+  /** File ID, value of **id** parameter from [encryptedFile](https://core.telegram.org/constructor/encryptedFile) */
   id: bigint;
+  /** Checking sum, value of **access\_hash** parameter from [encryptedFile](https://core.telegram.org/constructor/encryptedFile) */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -17166,9 +18809,13 @@ export class InputEncryptedFile_ extends _InputEncryptedFile_ {
   }
 }
 
+/** Assigns a new big encrypted file (over 10 MB in size), saved in parts using the method [upload.saveBigFilePart](https://core.telegram.org/method/upload.saveBigFilePart). */
 export class InputEncryptedFileBigUploaded_ extends _InputEncryptedFile_ {
+  /** Random file id, created by the client */
   id: bigint;
+  /** Number of saved parts */
   parts: number;
+  /** 32-bit imprint of the key used to encrypt the file */
   key_fingerprint: number;
 
   protected get [id](): number {
@@ -17203,11 +18850,17 @@ export class InputEncryptedFileBigUploaded_ extends _InputEncryptedFile_ {
   }
 }
 
+/** Encrypted message. */
 export class EncryptedMessage_ extends _EncryptedMessage_ {
+  /** Random message ID, assigned by the author of message */
   random_id: bigint;
+  /** ID of encrypted chat */
   chat_id: number;
+  /** Date of sending */
   date: number;
+  /** TL-serialization of [DecryptedMessage](https://core.telegram.org/type/DecryptedMessage) type, encrypted with the key created at chat initialization */
   bytes: Uint8Array;
+  /** Attached encrypted file */
   file: enums.EncryptedFile;
 
   protected get [id](): number {
@@ -17248,10 +18901,15 @@ export class EncryptedMessage_ extends _EncryptedMessage_ {
   }
 }
 
+/** Encrypted service message */
 export class EncryptedMessageService_ extends _EncryptedMessage_ {
+  /** Random message ID, assigned by the author of message */
   random_id: bigint;
+  /** ID of encrypted chat */
   chat_id: number;
+  /** Date of sending */
   date: number;
+  /** TL-serialization of the [DecryptedMessage](https://core.telegram.org/type/DecryptedMessage) type, encrypted with the key created at chat initialization */
   bytes: Uint8Array;
 
   protected get [id](): number {
@@ -17289,7 +18947,9 @@ export class EncryptedMessageService_ extends _EncryptedMessage_ {
   }
 }
 
+/** Configuring parameters did not change. */
 export class messages_DhConfigNotModified_ extends _messages_DhConfig_ {
+  /** Random sequence of bytes of assigned length */
   random: Uint8Array;
 
   protected get [id](): number {
@@ -17318,10 +18978,15 @@ export class messages_DhConfigNotModified_ extends _messages_DhConfig_ {
   }
 }
 
+/** New set of configuring parameters. */
 export class messages_DhConfig_ extends _messages_DhConfig_ {
+  /** New value **prime**, see [Wikipedia](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange) */
   g: number;
+  /** New value **primitive root**, see [Wikipedia](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange) */
   p: Uint8Array;
+  /** Version of set of parameters */
   version: number;
+  /** Random sequence of bytes of assigned length */
   random: Uint8Array;
 
   protected get [id](): number {
@@ -17359,7 +19024,9 @@ export class messages_DhConfig_ extends _messages_DhConfig_ {
   }
 }
 
+/** Message without file attachments sent to an encrypted file. */
 export class messages_SentEncryptedMessage_ extends _messages_SentEncryptedMessage_ {
+  /** Date of sending */
   date: number;
 
   protected get [id](): number {
@@ -17388,8 +19055,11 @@ export class messages_SentEncryptedMessage_ extends _messages_SentEncryptedMessa
   }
 }
 
+/** Message with a file enclosure sent to a protected chat */
 export class messages_SentEncryptedFile_ extends _messages_SentEncryptedMessage_ {
+  /** Sending date */
   date: number;
+  /** Attached file */
   file: enums.EncryptedFile;
 
   protected get [id](): number {
@@ -17421,6 +19091,7 @@ export class messages_SentEncryptedFile_ extends _messages_SentEncryptedMessage_
   }
 }
 
+/** Empty constructor. */
 export class InputDocumentEmpty_ extends _InputDocument_ {
   protected get [id](): number {
     return 0x72F0EAAE;
@@ -17443,9 +19114,13 @@ export class InputDocumentEmpty_ extends _InputDocument_ {
   }
 }
 
+/** Defines a document for subsequent interaction. */
 export class InputDocument_ extends _InputDocument_ {
+  /** Document ID */
   id: bigint;
+  /** **access\_hash** parameter from the [document](https://core.telegram.org/constructor/document) constructor */
   access_hash: bigint;
+  /** [File reference](https://core.telegram.org/api/file_reference) */
   file_reference: Uint8Array;
 
   protected get [id](): number {
@@ -17480,7 +19155,9 @@ export class InputDocument_ extends _InputDocument_ {
   }
 }
 
+/** Empty constructor, document doesn't exist. */
 export class DocumentEmpty_ extends _Document_ {
+  /** Document ID or `0` */
   id: bigint;
 
   protected get [id](): number {
@@ -17509,16 +19186,27 @@ export class DocumentEmpty_ extends _Document_ {
   }
 }
 
+/** Document */
 export class Document_ extends _Document_ {
+  /** Document ID */
   id: bigint;
+  /** Check sum, dependent on document ID */
   access_hash: bigint;
+  /** [File reference](https://core.telegram.org/api/file_reference) */
   file_reference: Uint8Array;
+  /** Creation date */
   date: number;
+  /** MIME type */
   mime_type: string;
+  /** Size */
   size: bigint;
+  /** Thumbnails */
   thumbs?: Array<enums.PhotoSize>;
+  /** Video thumbnails */
   video_thumbs?: Array<enums.VideoSize>;
+  /** DC ID */
   dc_id: number;
+  /** Attributes */
   attributes: Array<enums.DocumentAttribute>;
 
   protected get [id](): number {
@@ -17576,8 +19264,11 @@ export class Document_ extends _Document_ {
   }
 }
 
+/** Info on support user. */
 export class help_Support_ extends _help_Support_ {
+  /** Phone number */
   phone_number: string;
+  /** User */
   user: enums.User;
 
   protected get [id](): number {
@@ -17609,7 +19300,9 @@ export class help_Support_ extends _help_Support_ {
   }
 }
 
+/** Notifications generated by a certain user or group. */
 export class NotifyPeer_ extends _NotifyPeer_ {
+  /** user or group */
   peer: enums.Peer;
 
   protected get [id](): number {
@@ -17638,6 +19331,7 @@ export class NotifyPeer_ extends _NotifyPeer_ {
   }
 }
 
+/** Notifications generated by all users. */
 export class NotifyUsers_ extends _NotifyPeer_ {
   protected get [id](): number {
     return 0xB4C83B4C;
@@ -17660,6 +19354,7 @@ export class NotifyUsers_ extends _NotifyPeer_ {
   }
 }
 
+/** Notifications generated by all groups. */
 export class NotifyChats_ extends _NotifyPeer_ {
   protected get [id](): number {
     return 0xC007CEC3;
@@ -17682,6 +19377,7 @@ export class NotifyChats_ extends _NotifyPeer_ {
   }
 }
 
+/** Channel notification settings */
 export class NotifyBroadcasts_ extends _NotifyPeer_ {
   protected get [id](): number {
     return 0xD612E8EF;
@@ -17704,8 +19400,11 @@ export class NotifyBroadcasts_ extends _NotifyPeer_ {
   }
 }
 
+/** Notifications generated by a [topic](https://core.telegram.org/api/forum#forum-topics) in a [forum](https://core.telegram.org/api/forum). */
 export class NotifyForumTopic_ extends _NotifyPeer_ {
+  /** Forum ID */
   peer: enums.Peer;
+  /** [Topic ID](https://core.telegram.org/api/forum#forum-topics) */
   top_msg_id: number;
 
   protected get [id](): number {
@@ -17737,6 +19436,7 @@ export class NotifyForumTopic_ extends _NotifyPeer_ {
   }
 }
 
+/** User is typing. */
 export class SendMessageTypingAction_ extends _SendMessageAction_ {
   protected get [id](): number {
     return 0x16BF744E;
@@ -17759,6 +19459,7 @@ export class SendMessageTypingAction_ extends _SendMessageAction_ {
   }
 }
 
+/** Invalidate all previous action updates. E.g. when user deletes entered text or aborts a video upload. */
 export class SendMessageCancelAction_ extends _SendMessageAction_ {
   protected get [id](): number {
     return 0xFD5EC8F5;
@@ -17781,6 +19482,7 @@ export class SendMessageCancelAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is recording a video. */
 export class SendMessageRecordVideoAction_ extends _SendMessageAction_ {
   protected get [id](): number {
     return 0xA187D66F;
@@ -17803,7 +19505,9 @@ export class SendMessageRecordVideoAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is uploading a video. */
 export class SendMessageUploadVideoAction_ extends _SendMessageAction_ {
+  /** Progress percentage */
   progress: number;
 
   protected get [id](): number {
@@ -17832,6 +19536,7 @@ export class SendMessageUploadVideoAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is recording a voice message. */
 export class SendMessageRecordAudioAction_ extends _SendMessageAction_ {
   protected get [id](): number {
     return 0xD52F73F7;
@@ -17854,7 +19559,9 @@ export class SendMessageRecordAudioAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is uploading a voice message. */
 export class SendMessageUploadAudioAction_ extends _SendMessageAction_ {
+  /** Progress percentage */
   progress: number;
 
   protected get [id](): number {
@@ -17883,7 +19590,9 @@ export class SendMessageUploadAudioAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is uploading a photo. */
 export class SendMessageUploadPhotoAction_ extends _SendMessageAction_ {
+  /** Progress percentage */
   progress: number;
 
   protected get [id](): number {
@@ -17912,7 +19621,9 @@ export class SendMessageUploadPhotoAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is uploading a file. */
 export class SendMessageUploadDocumentAction_ extends _SendMessageAction_ {
+  /** Progress percentage */
   progress: number;
 
   protected get [id](): number {
@@ -17941,6 +19652,7 @@ export class SendMessageUploadDocumentAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is selecting a location to share. */
 export class SendMessageGeoLocationAction_ extends _SendMessageAction_ {
   protected get [id](): number {
     return 0x176F8BA1;
@@ -17963,6 +19675,7 @@ export class SendMessageGeoLocationAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is selecting a contact to share. */
 export class SendMessageChooseContactAction_ extends _SendMessageAction_ {
   protected get [id](): number {
     return 0x628CBC6F;
@@ -17985,6 +19698,7 @@ export class SendMessageChooseContactAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is playing a game */
 export class SendMessageGamePlayAction_ extends _SendMessageAction_ {
   protected get [id](): number {
     return 0xDD6A8F48;
@@ -18007,6 +19721,7 @@ export class SendMessageGamePlayAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is recording a round video to share */
 export class SendMessageRecordRoundAction_ extends _SendMessageAction_ {
   protected get [id](): number {
     return 0x88F27FBC;
@@ -18029,7 +19744,9 @@ export class SendMessageRecordRoundAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is uploading a round video */
 export class SendMessageUploadRoundAction_ extends _SendMessageAction_ {
+  /** Progress percentage */
   progress: number;
 
   protected get [id](): number {
@@ -18058,6 +19775,7 @@ export class SendMessageUploadRoundAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is currently speaking in the group call */
 export class SpeakingInGroupCallAction_ extends _SendMessageAction_ {
   protected get [id](): number {
     return 0xD92C2285;
@@ -18080,7 +19798,9 @@ export class SpeakingInGroupCallAction_ extends _SendMessageAction_ {
   }
 }
 
+/** Chat history is being imported */
 export class SendMessageHistoryImportAction_ extends _SendMessageAction_ {
+  /** Progress percentage */
   progress: number;
 
   protected get [id](): number {
@@ -18109,6 +19829,7 @@ export class SendMessageHistoryImportAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is choosing a sticker */
 export class SendMessageChooseStickerAction_ extends _SendMessageAction_ {
   protected get [id](): number {
     return 0xB05AC6B1;
@@ -18131,9 +19852,13 @@ export class SendMessageChooseStickerAction_ extends _SendMessageAction_ {
   }
 }
 
+/** User has clicked on an animated emoji triggering a [reaction, click here for more info »](https://core.telegram.org/api/animated-emojis#emoji-reactions). */
 export class SendMessageEmojiInteraction_ extends _SendMessageAction_ {
+  /** Emoji */
   emoticon: string;
+  /** Message ID of the animated emoji that was clicked */
   msg_id: number;
+  /** A JSON object with interaction info, [click here for more info »](https://core.telegram.org/api/animated-emojis#emoji-reactions) */
   interaction: enums.DataJSON;
 
   protected get [id](): number {
@@ -18168,7 +19893,9 @@ export class SendMessageEmojiInteraction_ extends _SendMessageAction_ {
   }
 }
 
+/** User is watching an animated emoji reaction triggered by another user, [click here for more info »](https://core.telegram.org/api/animated-emojis#emoji-reactions). */
 export class SendMessageEmojiInteractionSeen_ extends _SendMessageAction_ {
+  /** Emoji */
   emoticon: string;
 
   protected get [id](): number {
@@ -18197,10 +19924,15 @@ export class SendMessageEmojiInteractionSeen_ extends _SendMessageAction_ {
   }
 }
 
+/** Users found by name substring and auxiliary data. */
 export class contacts_Found_ extends _contacts_Found_ {
+  /** Personalized results */
   my_results: Array<enums.Peer>;
+  /** List of found user identifiers */
   results: Array<enums.Peer>;
+  /** Found chats */
   chats: Array<enums.Chat>;
+  /** List of users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -18238,6 +19970,7 @@ export class contacts_Found_ extends _contacts_Found_ {
   }
 }
 
+/** Whether people will be able to see your exact last online timestamp */
 export class InputPrivacyKeyStatusTimestamp_ extends _InputPrivacyKey_ {
   protected get [id](): number {
     return 0x4F96CB18;
@@ -18260,6 +19993,7 @@ export class InputPrivacyKeyStatusTimestamp_ extends _InputPrivacyKey_ {
   }
 }
 
+/** Whether people will be able to invite you to chats */
 export class InputPrivacyKeyChatInvite_ extends _InputPrivacyKey_ {
   protected get [id](): number {
     return 0xBDFB0426;
@@ -18282,6 +20016,7 @@ export class InputPrivacyKeyChatInvite_ extends _InputPrivacyKey_ {
   }
 }
 
+/** Whether you will accept phone calls */
 export class InputPrivacyKeyPhoneCall_ extends _InputPrivacyKey_ {
   protected get [id](): number {
     return 0xFABADC5F;
@@ -18304,6 +20039,7 @@ export class InputPrivacyKeyPhoneCall_ extends _InputPrivacyKey_ {
   }
 }
 
+/** Whether to allow P2P communication during VoIP calls */
 export class InputPrivacyKeyPhoneP2P_ extends _InputPrivacyKey_ {
   protected get [id](): number {
     return 0xDB9E70D2;
@@ -18326,6 +20062,7 @@ export class InputPrivacyKeyPhoneP2P_ extends _InputPrivacyKey_ {
   }
 }
 
+/** Whether messages forwarded from you will be [anonymous](https://telegram.org/blog/unsend-privacy-emoji#anonymous-forwarding) */
 export class InputPrivacyKeyForwards_ extends _InputPrivacyKey_ {
   protected get [id](): number {
     return 0xA4DD4C08;
@@ -18348,6 +20085,7 @@ export class InputPrivacyKeyForwards_ extends _InputPrivacyKey_ {
   }
 }
 
+/** Whether people will be able to see your profile picture */
 export class InputPrivacyKeyProfilePhoto_ extends _InputPrivacyKey_ {
   protected get [id](): number {
     return 0x5719BACC;
@@ -18370,6 +20108,7 @@ export class InputPrivacyKeyProfilePhoto_ extends _InputPrivacyKey_ {
   }
 }
 
+/** Whether people will be able to see your phone number */
 export class InputPrivacyKeyPhoneNumber_ extends _InputPrivacyKey_ {
   protected get [id](): number {
     return 0x0352DAFA;
@@ -18392,6 +20131,7 @@ export class InputPrivacyKeyPhoneNumber_ extends _InputPrivacyKey_ {
   }
 }
 
+/** Whether people can add you to their contact list by your phone number */
 export class InputPrivacyKeyAddedByPhone_ extends _InputPrivacyKey_ {
   protected get [id](): number {
     return 0xD1219BDD;
@@ -18414,6 +20154,7 @@ export class InputPrivacyKeyAddedByPhone_ extends _InputPrivacyKey_ {
   }
 }
 
+/** Whether people can send you voice messages */
 export class InputPrivacyKeyVoiceMessages_ extends _InputPrivacyKey_ {
   protected get [id](): number {
     return 0xAEE69D68;
@@ -18436,6 +20177,7 @@ export class InputPrivacyKeyVoiceMessages_ extends _InputPrivacyKey_ {
   }
 }
 
+/** Whether people can see your bio */
 export class InputPrivacyKeyAbout_ extends _InputPrivacyKey_ {
   protected get [id](): number {
     return 0x3823CC40;
@@ -18458,6 +20200,7 @@ export class InputPrivacyKeyAbout_ extends _InputPrivacyKey_ {
   }
 }
 
+/** Whether we can see the last online timestamp of this user */
 export class PrivacyKeyStatusTimestamp_ extends _PrivacyKey_ {
   protected get [id](): number {
     return 0xBC2EAB30;
@@ -18480,6 +20223,7 @@ export class PrivacyKeyStatusTimestamp_ extends _PrivacyKey_ {
   }
 }
 
+/** Whether the user can be invited to chats */
 export class PrivacyKeyChatInvite_ extends _PrivacyKey_ {
   protected get [id](): number {
     return 0x500E6DFA;
@@ -18502,6 +20246,7 @@ export class PrivacyKeyChatInvite_ extends _PrivacyKey_ {
   }
 }
 
+/** Whether the user accepts phone calls */
 export class PrivacyKeyPhoneCall_ extends _PrivacyKey_ {
   protected get [id](): number {
     return 0x3D662B7B;
@@ -18524,6 +20269,7 @@ export class PrivacyKeyPhoneCall_ extends _PrivacyKey_ {
   }
 }
 
+/** Whether P2P connections in phone calls with this user are allowed */
 export class PrivacyKeyPhoneP2P_ extends _PrivacyKey_ {
   protected get [id](): number {
     return 0x39491CC8;
@@ -18546,6 +20292,7 @@ export class PrivacyKeyPhoneP2P_ extends _PrivacyKey_ {
   }
 }
 
+/** Whether messages forwarded from the user will be [anonymously forwarded](https://telegram.org/blog/unsend-privacy-emoji#anonymous-forwarding) */
 export class PrivacyKeyForwards_ extends _PrivacyKey_ {
   protected get [id](): number {
     return 0x69EC56A3;
@@ -18568,6 +20315,7 @@ export class PrivacyKeyForwards_ extends _PrivacyKey_ {
   }
 }
 
+/** Whether the profile picture of the user is visible */
 export class PrivacyKeyProfilePhoto_ extends _PrivacyKey_ {
   protected get [id](): number {
     return 0x96151FED;
@@ -18590,6 +20338,7 @@ export class PrivacyKeyProfilePhoto_ extends _PrivacyKey_ {
   }
 }
 
+/** Whether the user allows us to see his phone number */
 export class PrivacyKeyPhoneNumber_ extends _PrivacyKey_ {
   protected get [id](): number {
     return 0xD19AE46D;
@@ -18612,6 +20361,7 @@ export class PrivacyKeyPhoneNumber_ extends _PrivacyKey_ {
   }
 }
 
+/** Whether this user can be added to our contact list by their phone number */
 export class PrivacyKeyAddedByPhone_ extends _PrivacyKey_ {
   protected get [id](): number {
     return 0x42FFD42B;
@@ -18634,6 +20384,7 @@ export class PrivacyKeyAddedByPhone_ extends _PrivacyKey_ {
   }
 }
 
+/** Whether the user accepts voice messages */
 export class PrivacyKeyVoiceMessages_ extends _PrivacyKey_ {
   protected get [id](): number {
     return 0x0697F414;
@@ -18656,6 +20407,7 @@ export class PrivacyKeyVoiceMessages_ extends _PrivacyKey_ {
   }
 }
 
+/** Whether people can see your bio */
 export class PrivacyKeyAbout_ extends _PrivacyKey_ {
   protected get [id](): number {
     return 0xA486B761;
@@ -18678,6 +20430,7 @@ export class PrivacyKeyAbout_ extends _PrivacyKey_ {
   }
 }
 
+/** Allow only contacts */
 export class InputPrivacyValueAllowContacts_ extends _InputPrivacyRule_ {
   protected get [id](): number {
     return 0x0D09E07B;
@@ -18700,6 +20453,7 @@ export class InputPrivacyValueAllowContacts_ extends _InputPrivacyRule_ {
   }
 }
 
+/** Allow all users */
 export class InputPrivacyValueAllowAll_ extends _InputPrivacyRule_ {
   protected get [id](): number {
     return 0x184B35CE;
@@ -18722,7 +20476,9 @@ export class InputPrivacyValueAllowAll_ extends _InputPrivacyRule_ {
   }
 }
 
+/** Allow only certain users */
 export class InputPrivacyValueAllowUsers_ extends _InputPrivacyRule_ {
+  /** Allowed users */
   users: Array<enums.InputUser>;
 
   protected get [id](): number {
@@ -18751,6 +20507,7 @@ export class InputPrivacyValueAllowUsers_ extends _InputPrivacyRule_ {
   }
 }
 
+/** Disallow only contacts */
 export class InputPrivacyValueDisallowContacts_ extends _InputPrivacyRule_ {
   protected get [id](): number {
     return 0x0BA52007;
@@ -18773,6 +20530,7 @@ export class InputPrivacyValueDisallowContacts_ extends _InputPrivacyRule_ {
   }
 }
 
+/** Disallow all */
 export class InputPrivacyValueDisallowAll_ extends _InputPrivacyRule_ {
   protected get [id](): number {
     return 0xD66B66C9;
@@ -18795,7 +20553,9 @@ export class InputPrivacyValueDisallowAll_ extends _InputPrivacyRule_ {
   }
 }
 
+/** Disallow only certain users */
 export class InputPrivacyValueDisallowUsers_ extends _InputPrivacyRule_ {
+  /** Users to disallow */
   users: Array<enums.InputUser>;
 
   protected get [id](): number {
@@ -18824,7 +20584,9 @@ export class InputPrivacyValueDisallowUsers_ extends _InputPrivacyRule_ {
   }
 }
 
+/** Allow only participants of certain chats */
 export class InputPrivacyValueAllowChatParticipants_ extends _InputPrivacyRule_ {
+  /** Allowed chat IDs */
   chats: Array<bigint>;
 
   protected get [id](): number {
@@ -18853,7 +20615,9 @@ export class InputPrivacyValueAllowChatParticipants_ extends _InputPrivacyRule_ 
   }
 }
 
+/** Disallow only participants of certain chats */
 export class InputPrivacyValueDisallowChatParticipants_ extends _InputPrivacyRule_ {
+  /** Disallowed chat IDs */
   chats: Array<bigint>;
 
   protected get [id](): number {
@@ -18882,6 +20646,7 @@ export class InputPrivacyValueDisallowChatParticipants_ extends _InputPrivacyRul
   }
 }
 
+/** Allow only [close friends »](https://core.telegram.org/api/privacy) */
 export class InputPrivacyValueAllowCloseFriends_ extends _InputPrivacyRule_ {
   protected get [id](): number {
     return 0x2F453E49;
@@ -18904,6 +20669,7 @@ export class InputPrivacyValueAllowCloseFriends_ extends _InputPrivacyRule_ {
   }
 }
 
+/** Allow all contacts */
 export class PrivacyValueAllowContacts_ extends _PrivacyRule_ {
   protected get [id](): number {
     return 0xFFFE1BAC;
@@ -18926,6 +20692,7 @@ export class PrivacyValueAllowContacts_ extends _PrivacyRule_ {
   }
 }
 
+/** Allow all users */
 export class PrivacyValueAllowAll_ extends _PrivacyRule_ {
   protected get [id](): number {
     return 0x65427B82;
@@ -18948,7 +20715,9 @@ export class PrivacyValueAllowAll_ extends _PrivacyRule_ {
   }
 }
 
+/** Allow only certain users */
 export class PrivacyValueAllowUsers_ extends _PrivacyRule_ {
+  /** Allowed users */
   users: Array<bigint>;
 
   protected get [id](): number {
@@ -18977,6 +20746,7 @@ export class PrivacyValueAllowUsers_ extends _PrivacyRule_ {
   }
 }
 
+/** Disallow only contacts */
 export class PrivacyValueDisallowContacts_ extends _PrivacyRule_ {
   protected get [id](): number {
     return 0xF888FA1A;
@@ -18999,6 +20769,7 @@ export class PrivacyValueDisallowContacts_ extends _PrivacyRule_ {
   }
 }
 
+/** Disallow all users */
 export class PrivacyValueDisallowAll_ extends _PrivacyRule_ {
   protected get [id](): number {
     return 0x8B73E763;
@@ -19021,7 +20792,9 @@ export class PrivacyValueDisallowAll_ extends _PrivacyRule_ {
   }
 }
 
+/** Disallow only certain users */
 export class PrivacyValueDisallowUsers_ extends _PrivacyRule_ {
+  /** Disallowed users */
   users: Array<bigint>;
 
   protected get [id](): number {
@@ -19050,7 +20823,9 @@ export class PrivacyValueDisallowUsers_ extends _PrivacyRule_ {
   }
 }
 
+/** Allow all participants of certain chats */
 export class PrivacyValueAllowChatParticipants_ extends _PrivacyRule_ {
+  /** Allowed chats */
   chats: Array<bigint>;
 
   protected get [id](): number {
@@ -19079,7 +20854,9 @@ export class PrivacyValueAllowChatParticipants_ extends _PrivacyRule_ {
   }
 }
 
+/** Disallow only participants of certain chats */
 export class PrivacyValueDisallowChatParticipants_ extends _PrivacyRule_ {
+  /** Disallowed chats */
   chats: Array<bigint>;
 
   protected get [id](): number {
@@ -19108,6 +20885,7 @@ export class PrivacyValueDisallowChatParticipants_ extends _PrivacyRule_ {
   }
 }
 
+/** Allow only [close friends »](https://core.telegram.org/api/privacy) */
 export class PrivacyValueAllowCloseFriends_ extends _PrivacyRule_ {
   protected get [id](): number {
     return 0xF7E8D89B;
@@ -19130,9 +20908,13 @@ export class PrivacyValueAllowCloseFriends_ extends _PrivacyRule_ {
   }
 }
 
+/** Privacy rules */
 export class account_PrivacyRules_ extends _account_PrivacyRules_ {
+  /** Privacy rules */
   rules: Array<enums.PrivacyRule>;
+  /** Chats to which the rules apply */
   chats: Array<enums.Chat>;
+  /** Users to which the rules apply */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -19167,7 +20949,9 @@ export class account_PrivacyRules_ extends _account_PrivacyRules_ {
   }
 }
 
+/** Time to live in days of the current account */
 export class AccountDaysTTL_ extends _AccountDaysTTL_ {
+  /** This account will self-destruct in the specified number of days */
   days: number;
 
   protected get [id](): number {
@@ -19196,8 +20980,11 @@ export class AccountDaysTTL_ extends _AccountDaysTTL_ {
   }
 }
 
+/** Defines the width and height of an image uploaded as document */
 export class DocumentAttributeImageSize_ extends _DocumentAttribute_ {
+  /** Width of image */
   w: number;
+  /** Height of image */
   h: number;
 
   protected get [id](): number {
@@ -19229,6 +21016,7 @@ export class DocumentAttributeImageSize_ extends _DocumentAttribute_ {
   }
 }
 
+/** Defines an animated GIF */
 export class DocumentAttributeAnimated_ extends _DocumentAttribute_ {
   protected get [id](): number {
     return 0x11B58939;
@@ -19251,10 +21039,15 @@ export class DocumentAttributeAnimated_ extends _DocumentAttribute_ {
   }
 }
 
+/** Defines a sticker */
 export class DocumentAttributeSticker_ extends _DocumentAttribute_ {
+  /** Whether this is a mask sticker */
   mask?: true;
+  /** Alternative emoji representation of sticker */
   alt: string;
+  /** Associated stickerset */
   stickerset: enums.InputStickerSet;
+  /** Mask coordinates (if this is a mask sticker, attached to a photo) */
   mask_coords?: enums.MaskCoords;
 
   protected get [id](): number {
@@ -19294,13 +21087,21 @@ export class DocumentAttributeSticker_ extends _DocumentAttribute_ {
   }
 }
 
+/** Defines a video */
 export class DocumentAttributeVideo_ extends _DocumentAttribute_ {
+  /** Whether this is a round video */
   round_message?: true;
+  /** Whether the video supports streaming */
   supports_streaming?: true;
+  /** Whether the specified document is a video file with no audio tracks (a GIF animation (even as MPEG4), for example) */
   nosound?: true;
+  /** Duration in seconds */
   duration: number;
+  /** Video width */
   w: number;
+  /** Video height */
   h: number;
+  /** Number of bytes to preload when preloading videos (particularly [video stories](https://core.telegram.org/api/stories)). */
   preload_prefix_size?: number;
 
   protected get [id](): number {
@@ -19349,11 +21150,18 @@ export class DocumentAttributeVideo_ extends _DocumentAttribute_ {
   }
 }
 
+/** Represents an audio file */
 export class DocumentAttributeAudio_ extends _DocumentAttribute_ {
+  /** Whether this is a voice message */
   voice?: true;
+  /** Duration in seconds */
   duration: number;
+  /** Name of song */
   title?: string;
+  /** Performer */
   performer?: string;
+  /** Waveform: consists in a series of bitpacked 5-bit values.  
+  Example implementation: [android](https://github.com/DrKLO/Telegram/blob/96dce2c9aabc33b87db61d830aa087b6b03fe397/TMessagesProj/jni/audio.c#L546). */
   waveform?: Uint8Array;
 
   protected get [id](): number {
@@ -19396,7 +21204,9 @@ export class DocumentAttributeAudio_ extends _DocumentAttribute_ {
   }
 }
 
+/** A simple document with a file name */
 export class DocumentAttributeFilename_ extends _DocumentAttribute_ {
+  /** The file name */
   file_name: string;
 
   protected get [id](): number {
@@ -19425,6 +21235,7 @@ export class DocumentAttributeFilename_ extends _DocumentAttribute_ {
   }
 }
 
+/** Whether the current document has stickers attached */
 export class DocumentAttributeHasStickers_ extends _DocumentAttribute_ {
   protected get [id](): number {
     return 0x9801D2F7;
@@ -19447,10 +21258,15 @@ export class DocumentAttributeHasStickers_ extends _DocumentAttribute_ {
   }
 }
 
+/** Info about a custom emoji */
 export class DocumentAttributeCustomEmoji_ extends _DocumentAttribute_ {
+  /** Whether this custom emoji can be sent by non-Premium users */
   free?: true;
+  /** Whether the color of this TGS custom emoji should be changed to the text color when used in messages, the accent color if used as emoji status, white on chat photos, or another appropriate color based on context. */
   text_color?: true;
+  /** The actual emoji */
   alt: string;
+  /** The emoji stickerset to which this emoji belongs. */
   stickerset: enums.InputStickerSet;
 
   protected get [id](): number {
@@ -19490,6 +21306,7 @@ export class DocumentAttributeCustomEmoji_ extends _DocumentAttribute_ {
   }
 }
 
+/** No new stickers were found for the given query */
 export class messages_StickersNotModified_ extends _messages_Stickers_ {
   protected get [id](): number {
     return 0xF1749A22;
@@ -19512,8 +21329,11 @@ export class messages_StickersNotModified_ extends _messages_Stickers_ {
   }
 }
 
+/** Found stickers */
 export class messages_Stickers_ extends _messages_Stickers_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** Stickers */
   stickers: Array<enums.Document>;
 
   protected get [id](): number {
@@ -19545,8 +21365,12 @@ export class messages_Stickers_ extends _messages_Stickers_ {
   }
 }
 
+/** A stickerpack is a group of stickers associated to the same emoji.  
+It is **not** a sticker pack the way it is usually intended, you may be looking for a [StickerSet](https://core.telegram.org/type/StickerSet). */
 export class StickerPack_ extends _StickerPack_ {
+  /** Emoji */
   emoticon: string;
+  /** Stickers */
   documents: Array<bigint>;
 
   protected get [id](): number {
@@ -19578,6 +21402,7 @@ export class StickerPack_ extends _StickerPack_ {
   }
 }
 
+/** Info about all installed stickers hasn't changed */
 export class messages_AllStickersNotModified_ extends _messages_AllStickers_ {
   protected get [id](): number {
     return 0xE86602C3;
@@ -19600,8 +21425,11 @@ export class messages_AllStickersNotModified_ extends _messages_AllStickers_ {
   }
 }
 
+/** Info about all installed stickers */
 export class messages_AllStickers_ extends _messages_AllStickers_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** All stickersets */
   sets: Array<enums.StickerSet>;
 
   protected get [id](): number {
@@ -19633,8 +21461,11 @@ export class messages_AllStickers_ extends _messages_AllStickers_ {
   }
 }
 
+/** Events affected by operation */
 export class messages_AffectedMessages_ extends _messages_AffectedMessages_ {
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [Number of events that were generated](https://core.telegram.org/api/updates) */
   pts_count: number;
 
   protected get [id](): number {
@@ -19666,8 +21497,11 @@ export class messages_AffectedMessages_ extends _messages_AffectedMessages_ {
   }
 }
 
+/** No preview is available for the webpage */
 export class WebPageEmpty_ extends _WebPage_ {
+  /** Preview ID */
   id: bigint;
+  /** URL of the webpage. */
   url?: string;
 
   protected get [id](): number {
@@ -19701,9 +21535,13 @@ export class WebPageEmpty_ extends _WebPage_ {
   }
 }
 
+/** A preview of the webpage is currently being generated */
 export class WebPagePending_ extends _WebPage_ {
+  /** ID of preview */
   id: bigint;
+  /** URL of the webpage */
   url?: string;
+  /** When was the processing started */
   date: number;
 
   protected get [id](): number {
@@ -19740,25 +21578,45 @@ export class WebPagePending_ extends _WebPage_ {
   }
 }
 
+/** Webpage preview */
 export class WebPage_ extends _WebPage_ {
+  /** Whether the size of the media in the preview can be changed. */
   has_large_media?: true;
+  /** Preview ID */
   id: bigint;
+  /** URL of previewed webpage */
   url: string;
+  /** Webpage URL to be displayed to the user */
   display_url: string;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
+  /** Type of the web page. Can be: article, photo, audio, video, document, profile, app, or something else */
   type?: string;
+  /** Short name of the site (e.g., Google Docs, App Store) */
   site_name?: string;
+  /** Title of the content */
   title?: string;
+  /** Content description */
   description?: string;
+  /** Image representing the content */
   photo?: enums.Photo;
+  /** URL to show in the embedded preview */
   embed_url?: string;
+  /** MIME type of the embedded preview, (e.g., text/html or video/mp4) */
   embed_type?: string;
+  /** Width of the embedded preview */
   embed_width?: number;
+  /** Height of the embedded preview */
   embed_height?: number;
+  /** Duration of the content, in seconds */
   duration?: number;
+  /** Author of the content */
   author?: string;
+  /** Preview of the content as a media file */
   document?: enums.Document;
+  /** Page contents in [instant view](https://instantview.telegram.org) format */
   cached_page?: enums.Page;
+  /** Webpage attributes */
   attributes?: Array<enums.WebPageAttribute>;
 
   protected get [id](): number {
@@ -19843,7 +21701,9 @@ export class WebPage_ extends _WebPage_ {
   }
 }
 
+/** The preview of the webpage hasn't changed */
 export class WebPageNotModified_ extends _WebPage_ {
+  /** Page view count */
   cached_page_views?: number;
 
   protected get [id](): number {
@@ -19874,24 +21734,43 @@ export class WebPageNotModified_ extends _WebPage_ {
   }
 }
 
+/** Logged-in session */
 export class Authorization_ extends _Authorization_ {
+  /** Whether this is the current session */
   current?: true;
+  /** Whether the session is from an official app */
   official_app?: true;
+  /** Whether the session is still waiting for a 2FA password */
   password_pending?: true;
+  /** Whether this session will accept encrypted chats */
   encrypted_requests_disabled?: true;
+  /** Whether this session will accept phone calls */
   call_requests_disabled?: true;
+  /** Whether the session is [unconfirmed, see here »](https://core.telegram.org/api/auth#confirming-login) for more info. */
   unconfirmed?: true;
+  /** Identifier */
   hash: bigint;
+  /** Device model */
   device_model: string;
+  /** Platform */
   platform: string;
+  /** System version */
   system_version: string;
+  /** [API ID](https://core.telegram.org/api/obtaining_api_id) */
   api_id: number;
+  /** App name */
   app_name: string;
+  /** App version */
   app_version: string;
+  /** When was the session created */
   date_created: number;
+  /** When was the session last active */
   date_active: number;
+  /** Last known IP */
   ip: string;
+  /** Country determined from IP */
   country: string;
+  /** Region determined from IP */
   region: string;
 
   protected get [id](): number {
@@ -19973,8 +21852,11 @@ export class Authorization_ extends _Authorization_ {
   }
 }
 
+/** Logged-in sessions */
 export class account_Authorizations_ extends _account_Authorizations_ {
+  /** Time-to-live of session */
   authorization_ttl_days: number;
+  /** Logged-in sessions */
   authorizations: Array<enums.Authorization>;
 
   protected get [id](): number {
@@ -20006,19 +21888,33 @@ export class account_Authorizations_ extends _account_Authorizations_ {
   }
 }
 
+/** Configuration for two-factor authorization */
 export class account_Password_ extends _account_Password_ {
+  /** Whether the user has a recovery method configured */
   has_recovery?: true;
+  /** Whether telegram [passport](https://core.telegram.org/passport) is enabled */
   has_secure_values?: true;
+  /** Whether the user has a password */
   has_password?: true;
+  /** The [KDF algorithm for SRP two-factor authentication](https://core.telegram.org/api/srp) of the current password */
   current_algo?: enums.PasswordKdfAlgo;
+  /** Srp B param for [SRP authorization](https://core.telegram.org/api/srp) */
   srp_B?: Uint8Array;
+  /** Srp ID param for [SRP authorization](https://core.telegram.org/api/srp) */
   srp_id?: bigint;
+  /** Text hint for the password */
   hint?: string;
+  /** A [password recovery email](https://core.telegram.org/api/srp#email-verification) with the specified [pattern](https://core.telegram.org/api/pattern) is still awaiting verification */
   email_unconfirmed_pattern?: string;
+  /** The [KDF algorithm for SRP two-factor authentication](https://core.telegram.org/api/srp) to use when creating new passwords */
   new_algo: enums.PasswordKdfAlgo;
+  /** The KDF algorithm for telegram [passport](https://core.telegram.org/passport) */
   new_secure_algo: enums.SecurePasswordKdfAlgo;
+  /** Secure random string */
   secure_random: Uint8Array;
+  /** The 2FA password will be automatically removed at this date, unless the user cancels the operation */
   pending_reset_date?: number;
+  /** A verified login email with the specified [pattern](https://core.telegram.org/api/pattern) is configured */
   login_email_pattern?: string;
 
   protected get [id](): number {
@@ -20085,8 +21981,11 @@ export class account_Password_ extends _account_Password_ {
   }
 }
 
+/** Private info associated to the password info (recovery email, telegram [passport](https://core.telegram.org/passport) info & so on) */
 export class account_PasswordSettings_ extends _account_PasswordSettings_ {
+  /** [2FA Recovery email](https://core.telegram.org/api/srp#email-verification) */
   email?: string;
+  /** Telegram [passport](https://core.telegram.org/passport) settings */
   secure_settings?: enums.SecureSecretSettings;
 
   protected get [id](): number {
@@ -20120,11 +22019,17 @@ export class account_PasswordSettings_ extends _account_PasswordSettings_ {
   }
 }
 
+/** Settings for setting up a new password */
 export class account_PasswordInputSettings_ extends _account_PasswordInputSettings_ {
+  /** The [SRP algorithm](https://core.telegram.org/api/srp) to use */
   new_algo?: enums.PasswordKdfAlgo;
+  /** The [computed password hash](https://core.telegram.org/api/srp) */
   new_password_hash?: Uint8Array;
+  /** Text hint for the password */
   hint?: string;
+  /** Password recovery email */
   email?: string;
+  /** Telegram [passport](https://core.telegram.org/passport) settings */
   new_secure_settings?: enums.SecureSecretSettings;
 
   protected get [id](): number {
@@ -20167,7 +22072,9 @@ export class account_PasswordInputSettings_ extends _account_PasswordInputSettin
   }
 }
 
+/** Recovery info of a [2FA password](https://core.telegram.org/api/srp), only for accounts with a [recovery email configured](https://core.telegram.org/api/srp#email-verification). */
 export class auth_PasswordRecovery_ extends _auth_PasswordRecovery_ {
+  /** The email to which the recovery code was sent must match this [pattern](https://core.telegram.org/api/pattern). */
   email_pattern: string;
 
   protected get [id](): number {
@@ -20196,8 +22103,11 @@ export class auth_PasswordRecovery_ extends _auth_PasswordRecovery_ {
   }
 }
 
+/** Message ID, for which PUSH-notifications were cancelled. */
 export class ReceivedNotifyMessage_ extends _ReceivedNotifyMessage_ {
+  /** Message ID, for which PUSH-notifications were canceled */
   id: number;
+  /** Reserved for future use */
   flags: number;
 
   protected get [id](): number {
@@ -20229,18 +22139,31 @@ export class ReceivedNotifyMessage_ extends _ReceivedNotifyMessage_ {
   }
 }
 
+/** Exported chat invite */
 export class ChatInviteExported_ extends _ExportedChatInvite_ {
+  /** Whether this chat invite was revoked */
   revoked?: true;
+  /** Whether this chat invite has no expiration */
   permanent?: true;
+  /** Whether users importing this invite link will have to be approved to join the channel or group */
   request_needed?: true;
+  /** Chat invitation link */
   link: string;
+  /** ID of the admin that created this chat invite */
   admin_id: bigint;
+  /** When was this chat invite created */
   date: number;
+  /** When was this chat invite last modified */
   start_date?: number;
+  /** When does this chat invite expire */
   expire_date?: number;
+  /** Maximum number of users that can join using this link */
   usage_limit?: number;
+  /** How many users joined using this link */
   usage?: number;
+  /** Number of users that have already used this link to join */
   requested?: number;
+  /** Custom description for the invite link, visible only to admins */
   title?: string;
 
   protected get [id](): number {
@@ -20304,6 +22227,7 @@ export class ChatInviteExported_ extends _ExportedChatInvite_ {
   }
 }
 
+/** Used in updates and in the channel log to indicate when a user is requesting to join or has joined a [discussion group](https://core.telegram.org/api/discussion#requiring-users-to-join-the-group) */
 export class ChatInvitePublicJoinRequests_ extends _ExportedChatInvite_ {
   protected get [id](): number {
     return 0xED107AB7;
@@ -20326,7 +22250,9 @@ export class ChatInvitePublicJoinRequests_ extends _ExportedChatInvite_ {
   }
 }
 
+/** The user has already joined this chat */
 export class ChatInviteAlready_ extends _ChatInvite_ {
+  /** The chat connected to the invite */
   chat: enums.Chat;
 
   protected get [id](): number {
@@ -20355,20 +22281,35 @@ export class ChatInviteAlready_ extends _ChatInvite_ {
   }
 }
 
+/** Chat invite info */
 export class ChatInvite_ extends _ChatInvite_ {
+  /** Whether this is a [channel/supergroup](https://core.telegram.org/api/channel) or a [normal group](https://core.telegram.org/api/channel) */
   channel?: true;
+  /** Whether this is a [channel](https://core.telegram.org/api/channel) */
   broadcast?: true;
+  /** Whether this is a public [channel/supergroup](https://core.telegram.org/api/channel) */
   public?: true;
+  /** Whether this is a [supergroup](https://core.telegram.org/api/channel) */
   megagroup?: true;
+  /** Whether the [join request »](https://core.telegram.org/api/invites#join-requests) must be first approved by an administrator */
   request_needed?: true;
+  /** Is this chat or channel verified by Telegram? */
   verified?: true;
+  /** This chat is probably a scam */
   scam?: true;
+  /** If set, this chat was reported by many users as a fake or scam: be careful when interacting with it. */
   fake?: true;
+  /** Chat/supergroup/channel title */
   title: string;
+  /** Description of the group of channel */
   about?: string;
+  /** Chat/supergroup/channel photo */
   photo: enums.Photo;
+  /** Participant count */
   participants_count: number;
+  /** A few of the participants that are in the group */
   participants?: Array<enums.User>;
+  /** [Profile color palette ID](https://core.telegram.org/api/colors) */
   color: number;
 
   protected get [id](): number {
@@ -20438,8 +22379,11 @@ export class ChatInvite_ extends _ChatInvite_ {
   }
 }
 
+/** A chat invitation that also allows peeking into the group to read messages without joining it. */
 export class ChatInvitePeek_ extends _ChatInvite_ {
+  /** Chat information */
   chat: enums.Chat;
+  /** Read-only anonymous access to this group will be revoked at this date */
   expires: number;
 
   protected get [id](): number {
@@ -20471,6 +22415,7 @@ export class ChatInvitePeek_ extends _ChatInvite_ {
   }
 }
 
+/** Empty constructor */
 export class InputStickerSetEmpty_ extends _InputStickerSet_ {
   protected get [id](): number {
     return 0xFFB62B95;
@@ -20493,8 +22438,11 @@ export class InputStickerSetEmpty_ extends _InputStickerSet_ {
   }
 }
 
+/** Stickerset by ID */
 export class InputStickerSetID_ extends _InputStickerSet_ {
+  /** ID */
   id: bigint;
+  /** Access hash */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -20526,7 +22474,9 @@ export class InputStickerSetID_ extends _InputStickerSet_ {
   }
 }
 
+/** Stickerset by short name, from a [stickerset deep link »](https://core.telegram.org/api/links#stickerset-links) */
 export class InputStickerSetShortName_ extends _InputStickerSet_ {
+  /** Short name from a [stickerset deep link »](https://core.telegram.org/api/links#stickerset-links) */
   short_name: string;
 
   protected get [id](): number {
@@ -20555,6 +22505,7 @@ export class InputStickerSetShortName_ extends _InputStickerSet_ {
   }
 }
 
+/** Animated emojis stickerset */
 export class InputStickerSetAnimatedEmoji_ extends _InputStickerSet_ {
   protected get [id](): number {
     return 0x028703C8;
@@ -20577,7 +22528,9 @@ export class InputStickerSetAnimatedEmoji_ extends _InputStickerSet_ {
   }
 }
 
+/** Used for fetching [animated dice stickers](https://core.telegram.org/api/dice) */
 export class InputStickerSetDice_ extends _InputStickerSet_ {
+  /** The emoji, for now ![🏀](//telegram.org/img/emoji/40/F09F8F80.png), ![🎲](//telegram.org/img/emoji/40/F09F8EB2.png) and ![🎯](//telegram.org/img/emoji/40/F09F8EAF.png) are supported */
   emoticon: string;
 
   protected get [id](): number {
@@ -20606,6 +22559,7 @@ export class InputStickerSetDice_ extends _InputStickerSet_ {
   }
 }
 
+/** Animated emoji reaction stickerset (contains animations to play when a user clicks on a given animated emoji) */
 export class InputStickerSetAnimatedEmojiAnimations_ extends _InputStickerSet_ {
   protected get [id](): number {
     return 0x0CDE3739;
@@ -20628,6 +22582,7 @@ export class InputStickerSetAnimatedEmojiAnimations_ extends _InputStickerSet_ {
   }
 }
 
+/** Stickers to show when receiving a gifted Telegram Premium subscription */
 export class InputStickerSetPremiumGifts_ extends _InputStickerSet_ {
   protected get [id](): number {
     return 0xC88B3B02;
@@ -20650,6 +22605,7 @@ export class InputStickerSetPremiumGifts_ extends _InputStickerSet_ {
   }
 }
 
+/** Generic animation stickerset containing animations to play when [reacting to messages using a normal emoji without a custom animation](https://core.telegram.org/api/reactions) */
 export class InputStickerSetEmojiGenericAnimations_ extends _InputStickerSet_ {
   protected get [id](): number {
     return 0x04C4D4CE;
@@ -20672,6 +22628,7 @@ export class InputStickerSetEmojiGenericAnimations_ extends _InputStickerSet_ {
   }
 }
 
+/** Default [custom emoji status](https://core.telegram.org/api/emoji-status) stickerset */
 export class InputStickerSetEmojiDefaultStatuses_ extends _InputStickerSet_ {
   protected get [id](): number {
     return 0x29D0F5EE;
@@ -20694,6 +22651,7 @@ export class InputStickerSetEmojiDefaultStatuses_ extends _InputStickerSet_ {
   }
 }
 
+/** Default [custom emoji](https://core.telegram.org/api/custom-emoji) stickerset for [forum topic icons](https://core.telegram.org/api/forum#forum-topics) */
 export class InputStickerSetEmojiDefaultTopicIcons_ extends _InputStickerSet_ {
   protected get [id](): number {
     return 0x44C1F8E9;
@@ -20716,6 +22674,7 @@ export class InputStickerSetEmojiDefaultTopicIcons_ extends _InputStickerSet_ {
   }
 }
 
+/** Default [custom emoji status](https://core.telegram.org/api/emoji-status) stickerset for channel statuses */
 export class InputStickerSetEmojiChannelDefaultStatuses_ extends _InputStickerSet_ {
   protected get [id](): number {
     return 0x49748553;
@@ -20738,25 +22697,45 @@ export class InputStickerSetEmojiChannelDefaultStatuses_ extends _InputStickerSe
   }
 }
 
+/** Represents a stickerset (stickerpack) */
 export class StickerSet_ extends _StickerSet_ {
+  /** Whether this stickerset was archived (due to too many saved stickers in the current account) */
   archived?: true;
+  /** Is this stickerset official */
   official?: true;
+  /** Is this a mask stickerset */
   masks?: true;
+  /** Is this an animated stickerpack */
   animated?: true;
+  /** Is this a video stickerpack */
   videos?: true;
+  /** This is a custom emoji stickerset */
   emojis?: true;
+  /** Whether the color of this TGS custom emoji stickerset should be changed to the text color when used in messages, the accent color if used as emoji status, white on chat photos, or another appropriate color based on context. */
   text_color?: true;
+  /** If set, this custom emoji stickerset can be used in [channel emoji statuses](https://core.telegram.org/api/emoji-status). */
   channel_emoji_status?: true;
+  /** When was this stickerset installed */
   installed_date?: number;
+  /** ID of the stickerset */
   id: bigint;
+  /** Access hash of stickerset */
   access_hash: bigint;
+  /** Title of stickerset */
   title: string;
+  /** Short name of stickerset, used when sharing stickerset using [stickerset deep links](https://core.telegram.org/api/links#stickerset-links). */
   short_name: string;
+  /** Stickerset thumbnail */
   thumbs?: Array<enums.PhotoSize>;
+  /** DC ID of thumbnail */
   thumb_dc_id?: number;
+  /** Thumbnail version */
   thumb_version?: number;
+  /** Document ID of custom emoji thumbnail, fetch the document using [messages.getCustomEmojiDocuments](https://core.telegram.org/method/messages.getCustomEmojiDocuments) */
   thumb_document_id?: bigint;
+  /** Number of stickers in pack */
   count: number;
+  /** Hash */
   hash: number;
 
   protected get [id](): number {
@@ -20841,10 +22820,15 @@ export class StickerSet_ extends _StickerSet_ {
   }
 }
 
+/** Stickerset and stickers inside it */
 export class messages_StickerSet_ extends _messages_StickerSet_ {
+  /** The stickerset */
   set: enums.StickerSet;
+  /** Emoji info for stickers */
   packs: Array<enums.StickerPack>;
+  /** Keywords for some or every sticker in the stickerset. */
   keywords: Array<enums.StickerKeyword>;
+  /** Stickers in stickerset */
   documents: Array<enums.Document>;
 
   protected get [id](): number {
@@ -20882,6 +22866,7 @@ export class messages_StickerSet_ extends _messages_StickerSet_ {
   }
 }
 
+/** The stickerset hasn't changed */
 export class messages_StickerSetNotModified_ extends _messages_StickerSet_ {
   protected get [id](): number {
     return 0xD3F924EB;
@@ -20904,8 +22889,11 @@ export class messages_StickerSetNotModified_ extends _messages_StickerSet_ {
   }
 }
 
+/** Describes a bot command that can be used in a chat */
 export class BotCommand_ extends _BotCommand_ {
+  /** `/command` name */
   command: string;
+  /** Description of the command */
   description: string;
 
   protected get [id](): number {
@@ -20937,12 +22925,19 @@ export class BotCommand_ extends _BotCommand_ {
   }
 }
 
+/** Info about bots (available bot commands, etc) */
 export class BotInfo_ extends _BotInfo_ {
+  /** ID of the bot */
   user_id?: bigint;
+  /** Description of the bot */
   description?: string;
+  /** Description photo */
   description_photo?: enums.Photo;
+  /** Description animation in MPEG4 format */
   description_document?: enums.Document;
+  /** Bot commands that can be used in the chat */
   commands?: Array<enums.BotCommand>;
+  /** Indicates the action to execute when pressing the in-UI menu button for bots */
   menu_button?: enums.BotMenuButton;
 
   protected get [id](): number {
@@ -20988,7 +22983,9 @@ export class BotInfo_ extends _BotInfo_ {
   }
 }
 
+/** Bot keyboard button */
 export class KeyboardButton_ extends _KeyboardButton_ {
+  /** Button text */
   text: string;
 
   protected get [id](): number {
@@ -21017,8 +23014,11 @@ export class KeyboardButton_ extends _KeyboardButton_ {
   }
 }
 
+/** URL button */
 export class KeyboardButtonUrl_ extends _KeyboardButton_ {
+  /** Button label */
   text: string;
+  /** URL */
   url: string;
 
   protected get [id](): number {
@@ -21050,9 +23050,13 @@ export class KeyboardButtonUrl_ extends _KeyboardButton_ {
   }
 }
 
+/** Callback button */
 export class KeyboardButtonCallback_ extends _KeyboardButton_ {
+  /** Whether the user should verify his identity by entering his [2FA SRP parameters](https://core.telegram.org/api/srp) to the [messages.getBotCallbackAnswer](https://core.telegram.org/method/messages.getBotCallbackAnswer) method. NOTE: telegram and the bot WILL NOT have access to the plaintext password, thanks to [SRP](https://core.telegram.org/api/srp). This button is mainly used by the official [@botfather](https://t.me/botfather) bot, for verifying the user's identity before transferring ownership of a bot to another user. */
   requires_password?: true;
+  /** Button text */
   text: string;
+  /** Callback data */
   data: Uint8Array;
 
   protected get [id](): number {
@@ -21089,7 +23093,9 @@ export class KeyboardButtonCallback_ extends _KeyboardButton_ {
   }
 }
 
+/** Button to request a user's phone number */
 export class KeyboardButtonRequestPhone_ extends _KeyboardButton_ {
+  /** Button text */
   text: string;
 
   protected get [id](): number {
@@ -21118,7 +23124,9 @@ export class KeyboardButtonRequestPhone_ extends _KeyboardButton_ {
   }
 }
 
+/** Button to request a user's geolocation */
 export class KeyboardButtonRequestGeoLocation_ extends _KeyboardButton_ {
+  /** Button text */
   text: string;
 
   protected get [id](): number {
@@ -21147,10 +23155,15 @@ export class KeyboardButtonRequestGeoLocation_ extends _KeyboardButton_ {
   }
 }
 
+/** Button to force a user to switch to inline mode: pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field. */
 export class KeyboardButtonSwitchInline_ extends _KeyboardButton_ {
+  /** If set, pressing the button will insert the bot's username and the specified inline `query` in the current chat's input field. */
   same_peer?: true;
+  /** Button label */
   text: string;
+  /** The inline query to use */
   query: string;
+  /** Filter to use when selecting chats. */
   peer_types?: Array<enums.InlineQueryPeerType>;
 
   protected get [id](): number {
@@ -21190,7 +23203,9 @@ export class KeyboardButtonSwitchInline_ extends _KeyboardButton_ {
   }
 }
 
+/** Button to start a game */
 export class KeyboardButtonGame_ extends _KeyboardButton_ {
+  /** Button text */
   text: string;
 
   protected get [id](): number {
@@ -21219,7 +23234,9 @@ export class KeyboardButtonGame_ extends _KeyboardButton_ {
   }
 }
 
+/** Button to buy a product */
 export class KeyboardButtonBuy_ extends _KeyboardButton_ {
+  /** Button text */
   text: string;
 
   protected get [id](): number {
@@ -21248,10 +23265,17 @@ export class KeyboardButtonBuy_ extends _KeyboardButton_ {
   }
 }
 
+/** Button to request a user to authorize via URL using [Seamless Telegram Login](https://telegram.org/blog/privacy-discussions-web-bots#meet-seamless-web-bots). When the user clicks on such a button, [messages.requestUrlAuth](https://core.telegram.org/method/messages.requestUrlAuth) should be called, providing the `button_id` and the ID of the container message. The returned [urlAuthResultRequest](https://core.telegram.org/constructor/urlAuthResultRequest) object will contain more details about the authorization request (`request_write_access` if the bot would like to send messages to the user along with the username of the bot which will be used for user authorization). Finally, the user can choose to call [messages.acceptUrlAuth](https://core.telegram.org/method/messages.acceptUrlAuth) to get a [urlAuthResultAccepted](https://core.telegram.org/constructor/urlAuthResultAccepted) with the URL to open instead of the `url` of this constructor, or a [urlAuthResultDefault](https://core.telegram.org/constructor/urlAuthResultDefault), in which case the `url` of this constructor must be opened, instead. If the user refuses the authorization request but still wants to open the link, the `url` of this constructor must be used. */
 export class KeyboardButtonUrlAuth_ extends _KeyboardButton_ {
+  /** Button label */
   text: string;
+  /** New text of the button in forwarded messages. */
   fwd_text?: string;
+  /** An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in [Receiving authorization data](https://core.telegram.org/widgets/login#receiving-authorization-data).  
+    
+  **NOTE**: Services must **always** check the hash of the received data to verify the authentication and the integrity of the data as described in [Checking authorization](https://core.telegram.org/widgets/login#checking-authorization). */
   url: string;
+  /** ID of the button to pass to [messages.requestUrlAuth](https://core.telegram.org/method/messages.requestUrlAuth) */
   button_id: number;
 
   protected get [id](): number {
@@ -21291,11 +23315,18 @@ export class KeyboardButtonUrlAuth_ extends _KeyboardButton_ {
   }
 }
 
+/** Button to request a user to [authorize](https://core.telegram.org/method/messages.acceptUrlAuth) via URL using [Seamless Telegram Login](https://telegram.org/blog/privacy-discussions-web-bots#meet-seamless-web-bots). */
 export class InputKeyboardButtonUrlAuth_ extends _KeyboardButton_ {
+  /** Set this flag to request the permission for your bot to send messages to the user. */
   request_write_access?: true;
+  /** Button text */
   text: string;
+  /** New text of the button in forwarded messages. */
   fwd_text?: string;
+  /** An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in [Receiving authorization data](https://core.telegram.org/widgets/login#receiving-authorization-data).  
+  NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in [Checking authorization](https://core.telegram.org/widgets/login#checking-authorization). */
   url: string;
+  /** Username of a bot, which will be used for user authorization. See [Setting up a bot](https://core.telegram.org/widgets/login#setting-up-a-bot) for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot. See [Linking your domain to the bot](https://core.telegram.org/widgets/login#linking-your-domain-to-the-bot) for more details. */
   bot: enums.InputUser;
 
   protected get [id](): number {
@@ -21338,8 +23369,11 @@ export class InputKeyboardButtonUrlAuth_ extends _KeyboardButton_ {
   }
 }
 
+/** A button that allows the user to create and send a poll when pressed; available only in private */
 export class KeyboardButtonRequestPoll_ extends _KeyboardButton_ {
+  /** If set, only quiz polls can be sent */
   quiz?: boolean;
+  /** Button text */
   text: string;
 
   protected get [id](): number {
@@ -21373,8 +23407,11 @@ export class KeyboardButtonRequestPoll_ extends _KeyboardButton_ {
   }
 }
 
+/** Button that links directly to a user profile */
 export class InputKeyboardButtonUserProfile_ extends _KeyboardButton_ {
+  /** Button text */
   text: string;
+  /** User ID */
   user_id: enums.InputUser;
 
   protected get [id](): number {
@@ -21406,8 +23443,11 @@ export class InputKeyboardButtonUserProfile_ extends _KeyboardButton_ {
   }
 }
 
+/** Button that links directly to a user profile */
 export class KeyboardButtonUserProfile_ extends _KeyboardButton_ {
+  /** Button text */
   text: string;
+  /** User ID */
   user_id: bigint;
 
   protected get [id](): number {
@@ -21439,8 +23479,11 @@ export class KeyboardButtonUserProfile_ extends _KeyboardButton_ {
   }
 }
 
+/** Button to open a [bot mini app](https://core.telegram.org/api/bots/webapps) using [messages.requestWebView](https://core.telegram.org/method/messages.requestWebView), sending over user information after user confirmation. */
 export class KeyboardButtonWebView_ extends _KeyboardButton_ {
+  /** Button text */
   text: string;
+  /** [Web app url](https://core.telegram.org/api/bots/webapps) */
   url: string;
 
   protected get [id](): number {
@@ -21472,8 +23515,11 @@ export class KeyboardButtonWebView_ extends _KeyboardButton_ {
   }
 }
 
+/** Button to open a [bot mini app](https://core.telegram.org/api/bots/webapps) using [messages.requestSimpleWebView](https://core.telegram.org/method/messages.requestSimpleWebView), without sending user information to the web app. */
 export class KeyboardButtonSimpleWebView_ extends _KeyboardButton_ {
+  /** Button text */
   text: string;
+  /** [Web app URL](https://core.telegram.org/api/bots/webapps) */
   url: string;
 
   protected get [id](): number {
@@ -21505,10 +23551,16 @@ export class KeyboardButtonSimpleWebView_ extends _KeyboardButton_ {
   }
 }
 
+/** Prompts the user to select and share one or more peers with the bot using [messages.sendBotRequestedPeer](https://core.telegram.org/method/messages.sendBotRequestedPeer) */
 export class KeyboardButtonRequestPeer_ extends _KeyboardButton_ {
+  /** Button text */
   text: string;
+  /** Button ID, to be passed to [messages.sendBotRequestedPeer](https://core.telegram.org/method/messages.sendBotRequestedPeer). */
   button_id: number;
+  /** Filtering criteria to use for the peer selection list shown to the user.  
+  The list should display all existing peers of the specified type, and should also offer an option for the user to create and immediately use one or more (up to `max_quantity`) peers of the specified type, if needed. */
   peer_type: enums.RequestPeerType;
+  /** Maximum number of peers that can be chosne. */
   max_quantity: number;
 
   protected get [id](): number {
@@ -21546,7 +23598,9 @@ export class KeyboardButtonRequestPeer_ extends _KeyboardButton_ {
   }
 }
 
+/** Inline keyboard row */
 export class KeyboardButtonRow_ extends _KeyboardButtonRow_ {
+  /** Bot or inline keyboard buttons */
   buttons: Array<enums.KeyboardButton>;
 
   protected get [id](): number {
@@ -21575,7 +23629,11 @@ export class KeyboardButtonRow_ extends _KeyboardButtonRow_ {
   }
 }
 
+/** Hide sent bot keyboard */
 export class ReplyKeyboardHide_ extends _ReplyMarkup_ {
+  /** Use this flag if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply\_to\_message\_id), sender of the original message.  
+    
+  Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet */
   selective?: true;
 
   protected get [id](): number {
@@ -21606,9 +23664,14 @@ export class ReplyKeyboardHide_ extends _ReplyMarkup_ {
   }
 }
 
+/** Force the user to send a reply */
 export class ReplyKeyboardForceReply_ extends _ReplyMarkup_ {
+  /** Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again. */
   single_use?: true;
+  /** Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply\_to\_message\_id), sender of the original message.  
+  Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard. */
   selective?: true;
+  /** The placeholder to be shown in the input field when the keyboard is active; 1-64 characters. */
   placeholder?: string;
 
   protected get [id](): number {
@@ -21645,12 +23708,21 @@ export class ReplyKeyboardForceReply_ extends _ReplyMarkup_ {
   }
 }
 
+/** Bot keyboard */
 export class ReplyKeyboardMarkup_ extends _ReplyMarkup_ {
+  /** Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). If not set, the custom keyboard is always of the same height as the app's standard keyboard. */
   resize?: true;
+  /** Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again. */
   single_use?: true;
+  /** Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply\_to\_message\_id), sender of the original message.  
+    
+  Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard. */
   selective?: true;
+  /** Requests clients to always show the keyboard when the regular keyboard is hidden. */
   persistent?: true;
+  /** Button row */
   rows: Array<enums.KeyboardButtonRow>;
+  /** The placeholder to be shown in the input field when the keyboard is active; 1-64 characters. */
   placeholder?: string;
 
   protected get [id](): number {
@@ -21696,7 +23768,9 @@ export class ReplyKeyboardMarkup_ extends _ReplyMarkup_ {
   }
 }
 
+/** Bot or inline keyboard */
 export class ReplyInlineMarkup_ extends _ReplyMarkup_ {
+  /** Bot or inline keyboard rows */
   rows: Array<enums.KeyboardButtonRow>;
 
   protected get [id](): number {
@@ -21725,8 +23799,11 @@ export class ReplyInlineMarkup_ extends _ReplyMarkup_ {
   }
 }
 
+/** Unknown message entity */
 export class MessageEntityUnknown_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -21758,8 +23835,11 @@ export class MessageEntityUnknown_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity [mentioning](https://core.telegram.org/api/mentions) a user by `@username`; [messageEntityMentionName](https://core.telegram.org/constructor/messageEntityMentionName) can also be used to mention users by their ID. */
 export class MessageEntityMention_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -21791,8 +23871,11 @@ export class MessageEntityMention_ extends _MessageEntity_ {
   }
 }
 
+/** **#hashtag** message entity */
 export class MessageEntityHashtag_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -21824,8 +23907,11 @@ export class MessageEntityHashtag_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing a bot /command */
 export class MessageEntityBotCommand_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -21857,8 +23943,11 @@ export class MessageEntityBotCommand_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing an in-text url: [https://google.com](https://google.com); for [text urls](https://google.com), use [messageEntityTextUrl](https://core.telegram.org/constructor/messageEntityTextUrl). */
 export class MessageEntityUrl_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -21890,8 +23979,11 @@ export class MessageEntityUrl_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing an [email@example.com](mailto:email@example.com). */
 export class MessageEntityEmail_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -21923,8 +24015,11 @@ export class MessageEntityEmail_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing **bold text**. */
 export class MessageEntityBold_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -21956,8 +24051,11 @@ export class MessageEntityBold_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing _italic text_. */
 export class MessageEntityItalic_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -21989,8 +24087,11 @@ export class MessageEntityItalic_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing a `codeblock`. */
 export class MessageEntityCode_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -22022,9 +24123,13 @@ export class MessageEntityCode_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing a preformatted `codeblock`, allowing the user to specify a programming language for the codeblock. */
 export class MessageEntityPre_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
+  /** Programming language of the code */
   language: string;
 
   protected get [id](): number {
@@ -22059,9 +24164,13 @@ export class MessageEntityPre_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing a [text url](https://google.com): for in-text urls like [https://google.com](https://google.com) use [messageEntityUrl](https://core.telegram.org/constructor/messageEntityUrl). */
 export class MessageEntityTextUrl_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
+  /** The actual URL */
   url: string;
 
   protected get [id](): number {
@@ -22096,9 +24205,13 @@ export class MessageEntityTextUrl_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing a [user mention](https://core.telegram.org/api/mentions): for _creating_ a mention use [inputMessageEntityMentionName](https://core.telegram.org/constructor/inputMessageEntityMentionName). */
 export class MessageEntityMentionName_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
+  /** Identifier of the user that was mentioned */
   user_id: bigint;
 
   protected get [id](): number {
@@ -22133,9 +24246,13 @@ export class MessageEntityMentionName_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity that can be used to create a user [user mention](https://core.telegram.org/api/mentions): received mentions use the [messageEntityMentionName](https://core.telegram.org/constructor/messageEntityMentionName) constructor, instead. */
 export class InputMessageEntityMentionName_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
+  /** Identifier of the user that was mentioned */
   user_id: enums.InputUser;
 
   protected get [id](): number {
@@ -22170,8 +24287,11 @@ export class InputMessageEntityMentionName_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing a phone number. */
 export class MessageEntityPhone_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -22203,8 +24323,11 @@ export class MessageEntityPhone_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing a **$cashtag**. */
 export class MessageEntityCashtag_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -22236,8 +24359,11 @@ export class MessageEntityCashtag_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing underlined text. */
 export class MessageEntityUnderline_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -22269,8 +24395,11 @@ export class MessageEntityUnderline_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing strikethrough text. */
 export class MessageEntityStrike_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -22302,8 +24431,11 @@ export class MessageEntityStrike_ extends _MessageEntity_ {
   }
 }
 
+/** Indicates a credit card number */
 export class MessageEntityBankCard_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -22335,8 +24467,11 @@ export class MessageEntityBankCard_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing a spoiler */
 export class MessageEntitySpoiler_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -22368,9 +24503,14 @@ export class MessageEntitySpoiler_ extends _MessageEntity_ {
   }
 }
 
+/** Represents a custom emoji.  
+Note that this entity must wrap exactly one regular emoji (the one contained in [documentAttributeCustomEmoji](https://core.telegram.org/constructor/documentAttributeCustomEmoji).`alt`) in the related text, otherwise the server will ignore it. */
 export class MessageEntityCustomEmoji_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
+  /** Document ID of the [custom emoji](https://core.telegram.org/api/custom-emoji), use [messages.getCustomEmojiDocuments](https://core.telegram.org/method/messages.getCustomEmojiDocuments) to fetch the emoji animation and the actual emoji it represents. */
   document_id: bigint;
 
   protected get [id](): number {
@@ -22405,8 +24545,11 @@ export class MessageEntityCustomEmoji_ extends _MessageEntity_ {
   }
 }
 
+/** Message entity representing a block quote. */
 export class MessageEntityBlockquote_ extends _MessageEntity_ {
+  /** Offset of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   offset: number;
+  /** Length of message entity within message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)) */
   length: number;
 
   protected get [id](): number {
@@ -22438,6 +24581,7 @@ export class MessageEntityBlockquote_ extends _MessageEntity_ {
   }
 }
 
+/** Represents the absence of a channel */
 export class InputChannelEmpty_ extends _InputChannel_ {
   protected get [id](): number {
     return 0xEE8C1E86;
@@ -22460,8 +24604,11 @@ export class InputChannelEmpty_ extends _InputChannel_ {
   }
 }
 
+/** Represents a channel */
 export class InputChannel_ extends _InputChannel_ {
+  /** Channel ID */
   channel_id: bigint;
+  /** Access hash taken from the [channel](https://core.telegram.org/constructor/channel) constructor */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -22493,9 +24640,13 @@ export class InputChannel_ extends _InputChannel_ {
   }
 }
 
+/** Defines a [min](https://core.telegram.org/api/min) channel that was seen in a certain message of a certain chat. */
 export class InputChannelFromMessage_ extends _InputChannel_ {
+  /** The chat where the channel was seen */
   peer: enums.InputPeer;
+  /** The message ID in the chat where the channel was seen */
   msg_id: number;
+  /** The channel ID */
   channel_id: bigint;
 
   protected get [id](): number {
@@ -22530,9 +24681,13 @@ export class InputChannelFromMessage_ extends _InputChannel_ {
   }
 }
 
+/** Resolved peer */
 export class contacts_ResolvedPeer_ extends _contacts_ResolvedPeer_ {
+  /** The peer */
   peer: enums.Peer;
+  /** Chats */
   chats: Array<enums.Chat>;
+  /** Users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -22567,8 +24722,11 @@ export class contacts_ResolvedPeer_ extends _contacts_ResolvedPeer_ {
   }
 }
 
+/** Indicates a range of chat messages */
 export class MessageRange_ extends _MessageRange_ {
+  /** Start of range (message ID) */
   min_id: number;
+  /** End of range (message ID) */
   max_id: number;
 
   protected get [id](): number {
@@ -22600,9 +24758,13 @@ export class MessageRange_ extends _MessageRange_ {
   }
 }
 
+/** There are no new updates */
 export class updates_ChannelDifferenceEmpty_ extends _updates_ChannelDifference_ {
+  /** Whether there are more updates that must be fetched (always false) */
   final?: true;
+  /** The latest [PTS](https://core.telegram.org/api/updates) */
   pts: number;
+  /** Clients are supposed to refetch the channel difference after timeout seconds have elapsed */
   timeout?: number;
 
   protected get [id](): number {
@@ -22639,12 +24801,19 @@ export class updates_ChannelDifferenceEmpty_ extends _updates_ChannelDifference_
   }
 }
 
+/** The provided `pts + limit < remote pts`. Simply, there are too many updates to be fetched (more than `limit`), the client has to resolve the update gap in one of the following ways (assuming the existence of a persistent database to locally store messages): */
 export class updates_ChannelDifferenceTooLong_ extends _updates_ChannelDifference_ {
+  /** Whether there are more updates that must be fetched (always false) */
   final?: true;
+  /** Clients are supposed to refetch the channel difference after timeout seconds have elapsed */
   timeout?: number;
+  /** Dialog containing the latest [PTS](https://core.telegram.org/api/updates) that can be used to reset the channel state */
   dialog: enums.Dialog;
+  /** The latest messages */
   messages: Array<enums.Message>;
+  /** Chats from messages */
   chats: Array<enums.Chat>;
+  /** Users from messages */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -22690,13 +24859,21 @@ export class updates_ChannelDifferenceTooLong_ extends _updates_ChannelDifferenc
   }
 }
 
+/** The new updates */
 export class updates_ChannelDifference_ extends _updates_ChannelDifference_ {
+  /** Whether there are more updates to be fetched using getDifference, starting from the provided `pts` */
   final?: true;
+  /** The [PTS](https://core.telegram.org/api/updates) from which to start getting updates the next time */
   pts: number;
+  /** Clients are supposed to refetch the channel difference after timeout seconds have elapsed */
   timeout?: number;
+  /** New messages */
   new_messages: Array<enums.Message>;
+  /** Other updates */
   other_updates: Array<enums.Update>;
+  /** Chats */
   chats: Array<enums.Chat>;
+  /** Users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -22745,6 +24922,7 @@ export class updates_ChannelDifference_ extends _updates_ChannelDifference_ {
   }
 }
 
+/** No filter */
 export class ChannelMessagesFilterEmpty_ extends _ChannelMessagesFilter_ {
   protected get [id](): number {
     return 0x94D42EE7;
@@ -22767,8 +24945,11 @@ export class ChannelMessagesFilterEmpty_ extends _ChannelMessagesFilter_ {
   }
 }
 
+/** Filter for getting only certain types of channel messages */
 export class ChannelMessagesFilter_ extends _ChannelMessagesFilter_ {
+  /** Whether to exclude new messages from the search */
   exclude_new_messages?: true;
+  /** A range of messages to fetch */
   ranges: Array<enums.MessageRange>;
 
   protected get [id](): number {
@@ -22802,8 +24983,11 @@ export class ChannelMessagesFilter_ extends _ChannelMessagesFilter_ {
   }
 }
 
+/** Channel/supergroup participant */
 export class ChannelParticipant_ extends _ChannelParticipant_ {
+  /** Participant user ID */
   user_id: bigint;
+  /** Date joined */
   date: number;
 
   protected get [id](): number {
@@ -22835,10 +25019,15 @@ export class ChannelParticipant_ extends _ChannelParticipant_ {
   }
 }
 
+/** Myself */
 export class ChannelParticipantSelf_ extends _ChannelParticipant_ {
+  /** Whether I joined upon specific approval of an admin */
   via_request?: true;
+  /** User ID */
   user_id: bigint;
+  /** User that invited me to the channel/supergroup */
   inviter_id: bigint;
+  /** When did I join the channel/supergroup */
   date: number;
 
   protected get [id](): number {
@@ -22878,9 +25067,13 @@ export class ChannelParticipantSelf_ extends _ChannelParticipant_ {
   }
 }
 
+/** Channel/supergroup creator */
 export class ChannelParticipantCreator_ extends _ChannelParticipant_ {
+  /** User ID */
   user_id: bigint;
+  /** Creator admin rights */
   admin_rights: enums.ChatAdminRights;
+  /** The role (rank) of the group creator in the group: just an arbitrary string, `admin` by default */
   rank?: string;
 
   protected get [id](): number {
@@ -22917,14 +25110,23 @@ export class ChannelParticipantCreator_ extends _ChannelParticipant_ {
   }
 }
 
+/** Admin */
 export class ChannelParticipantAdmin_ extends _ChannelParticipant_ {
+  /** Can this admin promote other admins with the same permissions? */
   can_edit?: true;
+  /** Is this the current user */
   self?: true;
+  /** Admin user ID */
   user_id: bigint;
+  /** User that invited the admin to the channel/group */
   inviter_id?: bigint;
+  /** User that promoted the user to admin */
   promoted_by: bigint;
+  /** When did the user join */
   date: number;
+  /** Admin [rights](https://core.telegram.org/api/rights) */
   admin_rights: enums.ChatAdminRights;
+  /** The role (rank) of the admin in the group: just an arbitrary string, `admin` by default */
   rank?: string;
 
   protected get [id](): number {
@@ -22976,11 +25178,17 @@ export class ChannelParticipantAdmin_ extends _ChannelParticipant_ {
   }
 }
 
+/** Banned/kicked user */
 export class ChannelParticipantBanned_ extends _ChannelParticipant_ {
+  /** Whether the user has left the group */
   left?: true;
+  /** The banned peer */
   peer: enums.Peer;
+  /** User was kicked by the specified admin */
   kicked_by: bigint;
+  /** When did the user join the group */
   date: number;
+  /** Banned [rights](https://core.telegram.org/api/rights) */
   banned_rights: enums.ChatBannedRights;
 
   protected get [id](): number {
@@ -23023,7 +25231,9 @@ export class ChannelParticipantBanned_ extends _ChannelParticipant_ {
   }
 }
 
+/** A participant that left the channel/supergroup */
 export class ChannelParticipantLeft_ extends _ChannelParticipant_ {
+  /** The peer that left */
   peer: enums.Peer;
 
   protected get [id](): number {
@@ -23052,6 +25262,7 @@ export class ChannelParticipantLeft_ extends _ChannelParticipant_ {
   }
 }
 
+/** Fetch only recent participants */
 export class ChannelParticipantsRecent_ extends _ChannelParticipantsFilter_ {
   protected get [id](): number {
     return 0xDE3F3C79;
@@ -23074,6 +25285,7 @@ export class ChannelParticipantsRecent_ extends _ChannelParticipantsFilter_ {
   }
 }
 
+/** Fetch only admin participants */
 export class ChannelParticipantsAdmins_ extends _ChannelParticipantsFilter_ {
   protected get [id](): number {
     return 0xB4608969;
@@ -23096,7 +25308,9 @@ export class ChannelParticipantsAdmins_ extends _ChannelParticipantsFilter_ {
   }
 }
 
+/** Fetch only kicked participants */
 export class ChannelParticipantsKicked_ extends _ChannelParticipantsFilter_ {
+  /** Optional filter for searching kicked participants by name (otherwise empty) */
   q: string;
 
   protected get [id](): number {
@@ -23125,6 +25339,7 @@ export class ChannelParticipantsKicked_ extends _ChannelParticipantsFilter_ {
   }
 }
 
+/** Fetch only bot participants */
 export class ChannelParticipantsBots_ extends _ChannelParticipantsFilter_ {
   protected get [id](): number {
     return 0xB0D1865B;
@@ -23147,7 +25362,9 @@ export class ChannelParticipantsBots_ extends _ChannelParticipantsFilter_ {
   }
 }
 
+/** Fetch only banned participants */
 export class ChannelParticipantsBanned_ extends _ChannelParticipantsFilter_ {
+  /** Optional filter for searching banned participants by name (otherwise empty) */
   q: string;
 
   protected get [id](): number {
@@ -23176,7 +25393,9 @@ export class ChannelParticipantsBanned_ extends _ChannelParticipantsFilter_ {
   }
 }
 
+/** Query participants by name */
 export class ChannelParticipantsSearch_ extends _ChannelParticipantsFilter_ {
+  /** Search query */
   q: string;
 
   protected get [id](): number {
@@ -23205,7 +25424,9 @@ export class ChannelParticipantsSearch_ extends _ChannelParticipantsFilter_ {
   }
 }
 
+/** Fetch only participants that are also contacts */
 export class ChannelParticipantsContacts_ extends _ChannelParticipantsFilter_ {
+  /** Optional search query for searching contact participants by name */
   q: string;
 
   protected get [id](): number {
@@ -23234,8 +25455,12 @@ export class ChannelParticipantsContacts_ extends _ChannelParticipantsFilter_ {
   }
 }
 
+/** This filter is used when looking for supergroup members to mention.  
+This filter will automatically remove anonymous admins, and return even non-participant users that replied to a specific [thread](https://core.telegram.org/api/threads) through the [comment section](https://core.telegram.org/api/threads#channel-comments) of a channel. */
 export class ChannelParticipantsMentions_ extends _ChannelParticipantsFilter_ {
+  /** Filter by user name or username */
   q?: string;
+  /** Look only for users that posted in this [thread](https://core.telegram.org/api/threads) */
   top_msg_id?: number;
 
   protected get [id](): number {
@@ -23269,10 +25494,15 @@ export class ChannelParticipantsMentions_ extends _ChannelParticipantsFilter_ {
   }
 }
 
+/** Represents multiple channel participants */
 export class channels_ChannelParticipants_ extends _channels_ChannelParticipants_ {
+  /** Total number of participants that correspond to the given query */
   count: number;
+  /** Participants */
   participants: Array<enums.ChannelParticipant>;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Users mentioned in participant info */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -23310,6 +25540,7 @@ export class channels_ChannelParticipants_ extends _channels_ChannelParticipants
   }
 }
 
+/** No new participant info could be found */
 export class channels_ChannelParticipantsNotModified_ extends _channels_ChannelParticipants_ {
   protected get [id](): number {
     return 0xF0173FE9;
@@ -23332,9 +25563,13 @@ export class channels_ChannelParticipantsNotModified_ extends _channels_ChannelP
   }
 }
 
+/** Represents a channel participant */
 export class channels_ChannelParticipant_ extends _channels_ChannelParticipant_ {
+  /** The channel participant */
   participant: enums.ChannelParticipant;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -23369,11 +25604,17 @@ export class channels_ChannelParticipant_ extends _channels_ChannelParticipant_ 
   }
 }
 
+/** Info about the latest telegram Terms Of Service */
 export class help_TermsOfService_ extends _help_TermsOfService_ {
+  /** Whether a prompt must be showed to the user, in order to accept the new terms. */
   popup?: true;
+  /** ID of the new terms */
   id: enums.DataJSON;
+  /** Text of the new terms */
   text: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities: Array<enums.MessageEntity>;
+  /** Minimum age required to sign up to telegram, the user must confirm that they is older than the minimum age. */
   min_age_confirm?: number;
 
   protected get [id](): number {
@@ -23416,6 +25657,7 @@ export class help_TermsOfService_ extends _help_TermsOfService_ {
   }
 }
 
+/** No new saved gifs were found */
 export class messages_SavedGifsNotModified_ extends _messages_SavedGifs_ {
   protected get [id](): number {
     return 0xE8025CA2;
@@ -23438,8 +25680,11 @@ export class messages_SavedGifsNotModified_ extends _messages_SavedGifs_ {
   }
 }
 
+/** Saved gifs */
 export class messages_SavedGifs_ extends _messages_SavedGifs_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** List of saved gifs */
   gifs: Array<enums.Document>;
 
   protected get [id](): number {
@@ -23471,10 +25716,15 @@ export class messages_SavedGifs_ extends _messages_SavedGifs_ {
   }
 }
 
+/** A media */
 export class InputBotInlineMessageMediaAuto_ extends _InputBotInlineMessage_ {
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** Caption */
   message: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities?: Array<enums.MessageEntity>;
+  /** Inline keyboard */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -23514,11 +25764,17 @@ export class InputBotInlineMessageMediaAuto_ extends _InputBotInlineMessage_ {
   }
 }
 
+/** Simple text message */
 export class InputBotInlineMessageText_ extends _InputBotInlineMessage_ {
+  /** Disable webpage preview */
   no_webpage?: true;
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** Message */
   message: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities?: Array<enums.MessageEntity>;
+  /** Inline keyboard */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -23561,11 +25817,17 @@ export class InputBotInlineMessageText_ extends _InputBotInlineMessage_ {
   }
 }
 
+/** Geolocation */
 export class InputBotInlineMessageMediaGeo_ extends _InputBotInlineMessage_ {
+  /** Geolocation */
   geo_point: enums.InputGeoPoint;
+  /** For [live locations](https://core.telegram.org/api/live-location), a direction in which the location moves, in degrees; 1-360 */
   heading?: number;
+  /** Validity period */
   period?: number;
+  /** For [live locations](https://core.telegram.org/api/live-location), a maximum distance to another chat member for proximity alerts, in meters (0-100000) */
   proximity_notification_radius?: number;
+  /** Reply markup for bot/inline keyboards */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -23608,13 +25870,21 @@ export class InputBotInlineMessageMediaGeo_ extends _InputBotInlineMessage_ {
   }
 }
 
+/** Venue */
 export class InputBotInlineMessageMediaVenue_ extends _InputBotInlineMessage_ {
+  /** Geolocation */
   geo_point: enums.InputGeoPoint;
+  /** Venue name */
   title: string;
+  /** Address */
   address: string;
+  /** Venue provider: currently only "foursquare" and "gplaces" (Google Places) need to be supported */
   provider: string;
+  /** Venue ID in the provider's database */
   venue_id: string;
+  /** Venue type in the provider's database */
   venue_type: string;
+  /** Inline keyboard */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -23663,11 +25933,17 @@ export class InputBotInlineMessageMediaVenue_ extends _InputBotInlineMessage_ {
   }
 }
 
+/** A contact */
 export class InputBotInlineMessageMediaContact_ extends _InputBotInlineMessage_ {
+  /** Phone number */
   phone_number: string;
+  /** First name */
   first_name: string;
+  /** Last name */
   last_name: string;
+  /** VCard info */
   vcard: string;
+  /** Inline keyboard */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -23710,7 +25986,9 @@ export class InputBotInlineMessageMediaContact_ extends _InputBotInlineMessage_ 
   }
 }
 
+/** A game */
 export class InputBotInlineMessageGame_ extends _InputBotInlineMessage_ {
+  /** Inline keyboard */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -23741,14 +26019,23 @@ export class InputBotInlineMessageGame_ extends _InputBotInlineMessage_ {
   }
 }
 
+/** An invoice */
 export class InputBotInlineMessageMediaInvoice_ extends _InputBotInlineMessage_ {
+  /** Product name, 1-32 characters */
   title: string;
+  /** Product description, 1-255 characters */
   description: string;
+  /** Invoice photo */
   photo?: enums.InputWebDocument;
+  /** The invoice */
   invoice: enums.Invoice;
+  /** Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes. */
   payload: Uint8Array;
+  /** Payments provider token, obtained via [Botfather](https://t.me/botfather) */
   provider: string;
+  /** A JSON-serialized object for data about the invoice, which will be shared with the payment provider. A detailed description of the required fields should be provided by the payment provider. */
   provider_data: enums.DataJSON;
+  /** Inline keyboard */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -23800,14 +26087,23 @@ export class InputBotInlineMessageMediaInvoice_ extends _InputBotInlineMessage_ 
   }
 }
 
+/** Specifies options that will be used to generate the link preview for the message, or even a standalone link preview without an attached message. */
 export class InputBotInlineMessageMediaWebPage_ extends _InputBotInlineMessage_ {
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** If set, specifies that a large media preview should be used. */
   force_large_media?: true;
+  /** If set, specifies that a small media preview should be used. */
   force_small_media?: true;
+  /** If **not** set, a `WEBPAGE_NOT_FOUND` RPC error will be emitted if a webpage preview cannot be generated for the specified `url`; otherwise, no error will be emitted (unless the provided message is also empty, in which case a `MESSAGE_EMPTY` will be emitted, instead). */
   optional?: true;
+  /** The message, can be empty. */
   message: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities?: Array<enums.MessageEntity>;
+  /** The URL to use for the link preview. */
   url: string;
+  /** Inline keyboard */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -23859,14 +26155,23 @@ export class InputBotInlineMessageMediaWebPage_ extends _InputBotInlineMessage_ 
   }
 }
 
+/** An inline bot result */
 export class InputBotInlineResult_ extends _InputBotInlineResult_ {
+  /** ID of result */
   id: string;
+  /** Result type (see [bot API docs](https://core.telegram.org/bots/api#inlinequeryresult)) */
   type: string;
+  /** Result title */
   title?: string;
+  /** Result description */
   description?: string;
+  /** URL of result */
   url?: string;
+  /** Thumbnail for result */
   thumb?: enums.InputWebDocument;
+  /** Result contents */
   content?: enums.InputWebDocument;
+  /** Message to send when the result is selected */
   send_message: enums.InputBotInlineMessage;
 
   protected get [id](): number {
@@ -23918,10 +26223,15 @@ export class InputBotInlineResult_ extends _InputBotInlineResult_ {
   }
 }
 
+/** Photo */
 export class InputBotInlineResultPhoto_ extends _InputBotInlineResult_ {
+  /** Result ID */
   id: string;
+  /** Result type (see [bot API docs](https://core.telegram.org/bots/api#inlinequeryresult)) */
   type: string;
+  /** Photo to send */
   photo: enums.InputPhoto;
+  /** Message to send when the result is selected */
   send_message: enums.InputBotInlineMessage;
 
   protected get [id](): number {
@@ -23959,12 +26269,19 @@ export class InputBotInlineResultPhoto_ extends _InputBotInlineResult_ {
   }
 }
 
+/** Document (media of any type except for photos) */
 export class InputBotInlineResultDocument_ extends _InputBotInlineResult_ {
+  /** Result ID */
   id: string;
+  /** Result type (see [bot API docs](https://core.telegram.org/bots/api#inlinequeryresult)) */
   type: string;
+  /** Result title */
   title?: string;
+  /** Result description */
   description?: string;
+  /** Document to send */
   document: enums.InputDocument;
+  /** Message to send when the result is selected */
   send_message: enums.InputBotInlineMessage;
 
   protected get [id](): number {
@@ -24010,9 +26327,13 @@ export class InputBotInlineResultDocument_ extends _InputBotInlineResult_ {
   }
 }
 
+/** Game */
 export class InputBotInlineResultGame_ extends _InputBotInlineResult_ {
+  /** Result ID */
   id: string;
+  /** Game short name */
   short_name: string;
+  /** Message to send when the result is selected */
   send_message: enums.InputBotInlineMessage;
 
   protected get [id](): number {
@@ -24047,10 +26368,15 @@ export class InputBotInlineResultGame_ extends _InputBotInlineResult_ {
   }
 }
 
+/** Send whatever media is attached to the [botInlineMediaResult](https://core.telegram.org/constructor/botInlineMediaResult) */
 export class BotInlineMessageMediaAuto_ extends _BotInlineMessage_ {
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** Caption */
   message: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities?: Array<enums.MessageEntity>;
+  /** Inline keyboard */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -24090,11 +26416,17 @@ export class BotInlineMessageMediaAuto_ extends _BotInlineMessage_ {
   }
 }
 
+/** Send a simple text message */
 export class BotInlineMessageText_ extends _BotInlineMessage_ {
+  /** Disable webpage preview */
   no_webpage?: true;
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** The message */
   message: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities?: Array<enums.MessageEntity>;
+  /** Inline keyboard */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -24137,11 +26469,17 @@ export class BotInlineMessageText_ extends _BotInlineMessage_ {
   }
 }
 
+/** Send a geolocation */
 export class BotInlineMessageMediaGeo_ extends _BotInlineMessage_ {
+  /** Geolocation */
   geo: enums.GeoPoint;
+  /** For [live locations](https://core.telegram.org/api/live-location), a direction in which the location moves, in degrees; 1-360. */
   heading?: number;
+  /** Validity period */
   period?: number;
+  /** For [live locations](https://core.telegram.org/api/live-location), a maximum distance to another chat member for proximity alerts, in meters (0-100000). */
   proximity_notification_radius?: number;
+  /** Inline keyboard */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -24184,13 +26522,21 @@ export class BotInlineMessageMediaGeo_ extends _BotInlineMessage_ {
   }
 }
 
+/** Send a venue */
 export class BotInlineMessageMediaVenue_ extends _BotInlineMessage_ {
+  /** Geolocation of venue */
   geo: enums.GeoPoint;
+  /** Venue name */
   title: string;
+  /** Address */
   address: string;
+  /** Venue provider: currently only "foursquare" and "gplaces" (Google Places) need to be supported */
   provider: string;
+  /** Venue ID in the provider's database */
   venue_id: string;
+  /** Venue type in the provider's database */
   venue_type: string;
+  /** Inline keyboard */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -24239,11 +26585,17 @@ export class BotInlineMessageMediaVenue_ extends _BotInlineMessage_ {
   }
 }
 
+/** Send a contact */
 export class BotInlineMessageMediaContact_ extends _BotInlineMessage_ {
+  /** Phone number */
   phone_number: string;
+  /** First name */
   first_name: string;
+  /** Last name */
   last_name: string;
+  /** VCard info */
   vcard: string;
+  /** Inline keyboard */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -24286,14 +26638,23 @@ export class BotInlineMessageMediaContact_ extends _BotInlineMessage_ {
   }
 }
 
+/** Send an invoice */
 export class BotInlineMessageMediaInvoice_ extends _BotInlineMessage_ {
+  /** Set this flag if you require the user's shipping address to complete the order */
   shipping_address_requested?: true;
+  /** Test invoice */
   test?: true;
+  /** Product name, 1-32 characters */
   title: string;
+  /** Product description, 1-255 characters */
   description: string;
+  /** Product photo */
   photo?: enums.WebDocument;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Total price in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   total_amount: bigint;
+  /** Inline keyboard */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -24345,15 +26706,25 @@ export class BotInlineMessageMediaInvoice_ extends _BotInlineMessage_ {
   }
 }
 
+/** Specifies options that must be used to generate the link preview for the message, or even a standalone link preview without an attached message. */
 export class BotInlineMessageMediaWebPage_ extends _BotInlineMessage_ {
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** If set, specifies that a large media preview should be used. */
   force_large_media?: true;
+  /** If set, specifies that a small media preview should be used. */
   force_small_media?: true;
+  /** If set, indicates that the URL used for the webpage preview was specified manually using [inputMediaWebPage](https://core.telegram.org/constructor/inputMediaWebPage), and may not be related to any of the URLs specified in the message. */
   manual?: true;
+  /** If set, the link can be opened directly without user confirmation. */
   safe?: true;
+  /** The message, can be empty. */
   message: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities?: Array<enums.MessageEntity>;
+  /** The URL to use for the link preview. */
   url: string;
+  /** Reply markup for sending bot buttons */
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id](): number {
@@ -24408,14 +26779,23 @@ export class BotInlineMessageMediaWebPage_ extends _BotInlineMessage_ {
   }
 }
 
+/** Generic result */
 export class BotInlineResult_ extends _BotInlineResult_ {
+  /** Result ID */
   id: string;
+  /** Result type (see [bot API docs](https://core.telegram.org/bots/api#inlinequeryresult)) */
   type: string;
+  /** Result title */
   title?: string;
+  /** Result description */
   description?: string;
+  /** URL of article or webpage */
   url?: string;
+  /** Thumbnail for the result */
   thumb?: enums.WebDocument;
+  /** Content of the result */
   content?: enums.WebDocument;
+  /** Message to send */
   send_message: enums.BotInlineMessage;
 
   protected get [id](): number {
@@ -24467,13 +26847,21 @@ export class BotInlineResult_ extends _BotInlineResult_ {
   }
 }
 
+/** Media result */
 export class BotInlineMediaResult_ extends _BotInlineResult_ {
+  /** Result ID */
   id: string;
+  /** Result type (see [bot API docs](https://core.telegram.org/bots/api#inlinequeryresult)) */
   type: string;
+  /** If type is `photo`, the photo to send */
   photo?: enums.Photo;
+  /** If type is `document`, the document to send */
   document?: enums.Document;
+  /** Result title */
   title?: string;
+  /** Description */
   description?: string;
+  /** Depending on the `type` and on the [constructor](https://core.telegram.org/type/BotInlineMessage), contains the caption of the media or the content of the message to be sent **instead** of the media */
   send_message: enums.BotInlineMessage;
 
   protected get [id](): number {
@@ -24522,14 +26910,23 @@ export class BotInlineMediaResult_ extends _BotInlineResult_ {
   }
 }
 
+/** Result of a query to an inline bot */
 export class messages_BotResults_ extends _messages_BotResults_ {
+  /** Whether the result is a picture gallery */
   gallery?: true;
+  /** Query ID */
   query_id: bigint;
+  /** The next offset to use when navigating through results */
   next_offset?: string;
+  /** Shown as a button on top of the remaining inline result list; if clicked, redirects the user to a private chat with the bot with the specified start parameter. */
   switch_pm?: enums.InlineBotSwitchPM;
+  /** Shown as a button on top of the remaining inline result list; if clicked, opens the specified [inline mode mini app](https://core.telegram.org/api/bots/webapps#inline-mode-mini-apps). */
   switch_webview?: enums.InlineBotWebView;
+  /** The results */
   results: Array<enums.BotInlineResult>;
+  /** Caching validity of the results */
   cache_time: number;
+  /** Users mentioned in the results */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -24581,8 +26978,11 @@ export class messages_BotResults_ extends _messages_BotResults_ {
   }
 }
 
+/** Link to a message in a supergroup/channel */
 export class ExportedMessageLink_ extends _ExportedMessageLink_ {
+  /** URL */
   link: string;
+  /** Embed code */
   html: string;
 
   protected get [id](): number {
@@ -24614,19 +27014,33 @@ export class ExportedMessageLink_ extends _ExportedMessageLink_ {
   }
 }
 
+/** Info about a forwarded message */
 export class MessageFwdHeader_ extends _MessageFwdHeader_ {
+  /** Whether this message was [imported from a foreign chat service, click here for more info »](https://core.telegram.org/api/import) */
   imported?: true;
+  /** Only for messages forwarded to [saved messages »](https://core.telegram.org/api/saved-messages), set if the original message was outgoing (though the message may have been originally outgoing even if this flag is not set, if `from_id` points to the current user). */
   saved_out?: true;
+  /** The ID of the user that originally sent the message */
   from_id?: enums.Peer;
+  /** The name of the user that originally sent the message */
   from_name?: string;
+  /** When was the message originally sent */
   date: number;
+  /** ID of the channel message that was forwarded */
   channel_post?: number;
+  /** For channels and if signatures are enabled, author of the channel message */
   post_author?: string;
+  /** Only for messages forwarded to [saved messages »](https://core.telegram.org/api/saved-messages), contains the dialog where the message was originally sent. */
   saved_from_peer?: enums.Peer;
+  /** Only for messages forwarded to [saved messages »](https://core.telegram.org/api/saved-messages), contains the original ID of the message in `saved_from_peer`. */
   saved_from_msg_id?: number;
+  /** Only for forwarded messages reforwarded to [saved messages »](https://core.telegram.org/api/saved-messages), contains the sender of the original message (i.e. if user A sends a message, then user B forwards it somewhere, then user C saves it to saved messages, this field will contain the ID of user B and `from_id` will contain the ID of user A). */
   saved_from_id?: enums.Peer;
+  /** Only for forwarded messages from users with forward privacy enabled, sent by users with forward privacy enabled, reforwarded to [saved messages »](https://core.telegram.org/api/saved-messages), contains the sender of the original message (i.e. if user A (fwd privacy enabled) sends a message, then user B (fwd privacy enabled) forwards it somewhere, then user C saves it to saved messages, this field will contain the name of user B and `from_name` will contain the name of user A). */
   saved_from_name?: string;
+  /** Only for forwarded messages reforwarded to [saved messages »](https://core.telegram.org/api/saved-messages), indicates when was the original message sent (i.e. if user A sends a message @ unixtime 1, then user B forwards it somewhere @ unixtime 2, then user C saves it to saved messages @ unixtime 3, this field will contain 2, `date` will contain 1 and the `date` of the containing [message](https://core.telegram.org/constructor/message) will contain 3). */
   saved_date?: number;
+  /** PSA type */
   psa_type?: string;
 
   protected get [id](): number {
@@ -24693,6 +27107,7 @@ export class MessageFwdHeader_ extends _MessageFwdHeader_ {
   }
 }
 
+/** The next time, the authentication code will be delivered via an immediately canceled incoming call. */
 export class auth_CodeTypeSms_ extends _auth_CodeType_ {
   protected get [id](): number {
     return 0x72A3158C;
@@ -24715,6 +27130,7 @@ export class auth_CodeTypeSms_ extends _auth_CodeType_ {
   }
 }
 
+/** The next time, the authentication code is to be delivered via an outgoing phone call. */
 export class auth_CodeTypeCall_ extends _auth_CodeType_ {
   protected get [id](): number {
     return 0x741CD3E3;
@@ -24737,6 +27153,7 @@ export class auth_CodeTypeCall_ extends _auth_CodeType_ {
   }
 }
 
+/** The next time, the authentication code will be delivered via an immediately canceled incoming call. */
 export class auth_CodeTypeFlashCall_ extends _auth_CodeType_ {
   protected get [id](): number {
     return 0x226CCEFB;
@@ -24759,6 +27176,7 @@ export class auth_CodeTypeFlashCall_ extends _auth_CodeType_ {
   }
 }
 
+/** The next time, the authentication code will be delivered via an immediately canceled incoming call, handled manually by the user. */
 export class auth_CodeTypeMissedCall_ extends _auth_CodeType_ {
   protected get [id](): number {
     return 0xD61AD6EE;
@@ -24781,6 +27199,7 @@ export class auth_CodeTypeMissedCall_ extends _auth_CodeType_ {
   }
 }
 
+/** The next time, the authentication code will be delivered via [fragment.com](https://fragment.com) */
 export class auth_CodeTypeFragmentSms_ extends _auth_CodeType_ {
   protected get [id](): number {
     return 0x06ED998C;
@@ -24803,7 +27222,9 @@ export class auth_CodeTypeFragmentSms_ extends _auth_CodeType_ {
   }
 }
 
+/** The code was sent through the telegram app */
 export class auth_SentCodeTypeApp_ extends _auth_SentCodeType_ {
+  /** Length of the code in bytes */
   length: number;
 
   protected get [id](): number {
@@ -24832,7 +27253,9 @@ export class auth_SentCodeTypeApp_ extends _auth_SentCodeType_ {
   }
 }
 
+/** The code was sent via SMS */
 export class auth_SentCodeTypeSms_ extends _auth_SentCodeType_ {
+  /** Length of the code in bytes */
   length: number;
 
   protected get [id](): number {
@@ -24861,7 +27284,9 @@ export class auth_SentCodeTypeSms_ extends _auth_SentCodeType_ {
   }
 }
 
+/** The code will be sent via a phone call: a synthesized voice will tell the user which verification code to input. */
 export class auth_SentCodeTypeCall_ extends _auth_SentCodeType_ {
+  /** Length of the verification code */
   length: number;
 
   protected get [id](): number {
@@ -24890,7 +27315,9 @@ export class auth_SentCodeTypeCall_ extends _auth_SentCodeType_ {
   }
 }
 
+/** The code will be sent via a flash phone call, that will be closed immediately. The phone code will then be the phone number itself, just make sure that the phone number matches the specified pattern. */
 export class auth_SentCodeTypeFlashCall_ extends _auth_SentCodeType_ {
+  /** [pattern](https://core.telegram.org/api/pattern) to match */
   pattern: string;
 
   protected get [id](): number {
@@ -24919,8 +27346,11 @@ export class auth_SentCodeTypeFlashCall_ extends _auth_SentCodeType_ {
   }
 }
 
+/** The code will be sent via a flash phone call, that will be closed immediately. The last digits of the phone number that calls are the code that must be entered manually by the user. */
 export class auth_SentCodeTypeMissedCall_ extends _auth_SentCodeType_ {
+  /** Prefix of the phone number from which the call will be made */
   prefix: string;
+  /** Length of the verification code */
   length: number;
 
   protected get [id](): number {
@@ -24952,12 +27382,19 @@ export class auth_SentCodeTypeMissedCall_ extends _auth_SentCodeType_ {
   }
 }
 
+/** The code was sent via the [previously configured login email »](https://core.telegram.org/api/auth#email-verification) */
 export class auth_SentCodeTypeEmailCode_ extends _auth_SentCodeType_ {
+  /** Whether authorization through Apple ID is allowed */
   apple_signin_allowed?: true;
+  /** Whether authorization through Google ID is allowed */
   google_signin_allowed?: true;
+  /** [Pattern](https://core.telegram.org/api/pattern) of the email */
   email_pattern: string;
+  /** Length of the sent verification code */
   length: number;
+  /** Clients should wait for the specified amount of seconds before allowing the user to invoke [auth.resetLoginEmail](https://core.telegram.org/method/auth.resetLoginEmail) (will be 0 for [Premium](https://core.telegram.org/api/premium) users). */
   reset_available_period?: number;
+  /** An email reset was already requested, and will occur at the specified date. */
   reset_pending_date?: number;
 
   protected get [id](): number {
@@ -25003,8 +27440,11 @@ export class auth_SentCodeTypeEmailCode_ extends _auth_SentCodeType_ {
   }
 }
 
+/** The user should add and verify an email address in order to login as described [here »](https://core.telegram.org/api/auth#email-verification). */
 export class auth_SentCodeTypeSetUpEmailRequired_ extends _auth_SentCodeType_ {
+  /** Whether authorization through Apple ID is allowed */
   apple_signin_allowed?: true;
+  /** Whether authorization through Google ID is allowed */
   google_signin_allowed?: true;
 
   protected get [id](): number {
@@ -25038,8 +27478,11 @@ export class auth_SentCodeTypeSetUpEmailRequired_ extends _auth_SentCodeType_ {
   }
 }
 
+/** The code was delivered via [fragment.com](https://fragment.com). */
 export class auth_SentCodeTypeFragmentSms_ extends _auth_SentCodeType_ {
+  /** Open the specified URL to log into [fragment.com](https://fragment.com) with the wallet that owns the specified phone number and view the code. */
   url: string;
+  /** Length of the delivered code. */
   length: number;
 
   protected get [id](): number {
@@ -25071,10 +27514,15 @@ export class auth_SentCodeTypeFragmentSms_ extends _auth_SentCodeType_ {
   }
 }
 
+/** An authentication code should be delivered via SMS after Firebase attestation, as described in the [auth documentation »](https://core.telegram.org/api/auth). */
 export class auth_SentCodeTypeFirebaseSms_ extends _auth_SentCodeType_ {
+  /** On Android, the nonce to be used as described in the [auth documentation »](https://core.telegram.org/api/auth) */
   nonce?: Uint8Array;
+  /** On iOS, must be compared with the `receipt` extracted from the received push notification. */
   receipt?: string;
+  /** On iOS: if a push notification with the `ios_push_secret` isn't received within `push_timeout` seconds, the `next_type` authentication method must be used, with [auth.resendCode](https://core.telegram.org/method/auth.resendCode). */
   push_timeout?: number;
+  /** Length of the code that will be delivered. */
   length: number;
 
   protected get [id](): number {
@@ -25114,12 +27562,19 @@ export class auth_SentCodeTypeFirebaseSms_ extends _auth_SentCodeType_ {
   }
 }
 
+/** Callback answer sent by the bot in response to a button press */
 export class messages_BotCallbackAnswer_ extends _messages_BotCallbackAnswer_ {
+  /** Whether an alert should be shown to the user instead of a toast notification */
   alert?: true;
+  /** Whether an URL is present */
   has_url?: true;
+  /** Whether to show games in WebView or in native UI. */
   native_ui?: true;
+  /** Alert to show */
   message?: string;
+  /** URL to open */
   url?: string;
+  /** For how long should this answer be cached */
   cache_time: number;
 
   protected get [id](): number {
@@ -25165,7 +27620,9 @@ export class messages_BotCallbackAnswer_ extends _messages_BotCallbackAnswer_ {
   }
 }
 
+/** Message edit data for media */
 export class messages_MessageEditData_ extends _messages_MessageEditData_ {
+  /** Media caption, if the specified media's caption can be edited */
   caption?: true;
 
   protected get [id](): number {
@@ -25196,9 +27653,13 @@ export class messages_MessageEditData_ extends _messages_MessageEditData_ {
   }
 }
 
+/** Represents a sent inline message from the perspective of a bot (legacy constructor) */
 export class InputBotInlineMessageID_ extends _InputBotInlineMessageID_ {
+  /** DC ID to use when working with this inline message */
   dc_id: number;
+  /** ID of message, contains both the (32-bit, legacy) owner ID and the message ID, used only for Bot API backwards compatibility with 32-bit user ID. */
   id: bigint;
+  /** Access hash of message */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -25233,10 +27694,15 @@ export class InputBotInlineMessageID_ extends _InputBotInlineMessageID_ {
   }
 }
 
+/** Represents a sent inline message from the perspective of a bot */
 export class InputBotInlineMessageID64_ extends _InputBotInlineMessageID_ {
+  /** DC ID to use when working with this inline message */
   dc_id: number;
+  /** ID of the owner of this message */
   owner_id: bigint;
+  /** ID of message */
   id: number;
+  /** Access hash of message */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -25274,8 +27740,11 @@ export class InputBotInlineMessageID64_ extends _InputBotInlineMessageID_ {
   }
 }
 
+/** The bot requested the user to message them in private */
 export class InlineBotSwitchPM_ extends _InlineBotSwitchPM_ {
+  /** Text for the button that switches the user to a private chat with the bot and sends the bot a start message with the parameter `start_parameter` (can be empty) */
   text: string;
+  /** The parameter for the `/start parameter` */
   start_param: string;
 
   protected get [id](): number {
@@ -25307,11 +27776,17 @@ export class InlineBotSwitchPM_ extends _InlineBotSwitchPM_ {
   }
 }
 
+/** Dialog info of multiple peers */
 export class messages_PeerDialogs_ extends _messages_PeerDialogs_ {
+  /** Dialog info */
   dialogs: Array<enums.Dialog>;
+  /** Messages mentioned in dialog info */
   messages: Array<enums.Message>;
+  /** Chats */
   chats: Array<enums.Chat>;
+  /** Users */
   users: Array<enums.User>;
+  /** Current [update state of dialog](https://core.telegram.org/api/updates) */
   state: enums.updates.State;
 
   protected get [id](): number {
@@ -25352,8 +27827,11 @@ export class messages_PeerDialogs_ extends _messages_PeerDialogs_ {
   }
 }
 
+/** Top peer */
 export class TopPeer_ extends _TopPeer_ {
+  /** Peer */
   peer: enums.Peer;
+  /** Rating as computed in [top peer rating »](https://core.telegram.org/api/top-rating) */
   rating: number;
 
   protected get [id](): number {
@@ -25385,6 +27863,7 @@ export class TopPeer_ extends _TopPeer_ {
   }
 }
 
+/** Most used bots */
 export class TopPeerCategoryBotsPM_ extends _TopPeerCategory_ {
   protected get [id](): number {
     return 0xAB661B5B;
@@ -25407,6 +27886,7 @@ export class TopPeerCategoryBotsPM_ extends _TopPeerCategory_ {
   }
 }
 
+/** Most used inline bots */
 export class TopPeerCategoryBotsInline_ extends _TopPeerCategory_ {
   protected get [id](): number {
     return 0x148677E2;
@@ -25429,6 +27909,7 @@ export class TopPeerCategoryBotsInline_ extends _TopPeerCategory_ {
   }
 }
 
+/** Users we've chatted most frequently with */
 export class TopPeerCategoryCorrespondents_ extends _TopPeerCategory_ {
   protected get [id](): number {
     return 0x0637B7ED;
@@ -25451,6 +27932,7 @@ export class TopPeerCategoryCorrespondents_ extends _TopPeerCategory_ {
   }
 }
 
+/** Often-opened groups and supergroups */
 export class TopPeerCategoryGroups_ extends _TopPeerCategory_ {
   protected get [id](): number {
     return 0xBD17A14A;
@@ -25473,6 +27955,7 @@ export class TopPeerCategoryGroups_ extends _TopPeerCategory_ {
   }
 }
 
+/** Most frequently visited channels */
 export class TopPeerCategoryChannels_ extends _TopPeerCategory_ {
   protected get [id](): number {
     return 0x161D9628;
@@ -25495,6 +27978,7 @@ export class TopPeerCategoryChannels_ extends _TopPeerCategory_ {
   }
 }
 
+/** Most frequently called users */
 export class TopPeerCategoryPhoneCalls_ extends _TopPeerCategory_ {
   protected get [id](): number {
     return 0x1E76A78C;
@@ -25517,6 +28001,7 @@ export class TopPeerCategoryPhoneCalls_ extends _TopPeerCategory_ {
   }
 }
 
+/** Users to which the users often forwards messages to */
 export class TopPeerCategoryForwardUsers_ extends _TopPeerCategory_ {
   protected get [id](): number {
     return 0xA8406CA9;
@@ -25539,6 +28024,7 @@ export class TopPeerCategoryForwardUsers_ extends _TopPeerCategory_ {
   }
 }
 
+/** Chats to which the users often forwards messages to */
 export class TopPeerCategoryForwardChats_ extends _TopPeerCategory_ {
   protected get [id](): number {
     return 0xFBEEC0F0;
@@ -25561,9 +28047,13 @@ export class TopPeerCategoryForwardChats_ extends _TopPeerCategory_ {
   }
 }
 
+/** Top peer category */
 export class TopPeerCategoryPeers_ extends _TopPeerCategoryPeers_ {
+  /** Top peer category of peers */
   category: enums.TopPeerCategory;
+  /** Count of peers */
   count: number;
+  /** Peers */
   peers: Array<enums.TopPeer>;
 
   protected get [id](): number {
@@ -25598,6 +28088,7 @@ export class TopPeerCategoryPeers_ extends _TopPeerCategoryPeers_ {
   }
 }
 
+/** Top peer info hasn't changed */
 export class contacts_TopPeersNotModified_ extends _contacts_TopPeers_ {
   protected get [id](): number {
     return 0xDE266EF5;
@@ -25620,9 +28111,13 @@ export class contacts_TopPeersNotModified_ extends _contacts_TopPeers_ {
   }
 }
 
+/** Top peers */
 export class contacts_TopPeers_ extends _contacts_TopPeers_ {
+  /** Top peers by top peer category */
   categories: Array<enums.TopPeerCategoryPeers>;
+  /** Chats */
   chats: Array<enums.Chat>;
+  /** Users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -25657,6 +28152,7 @@ export class contacts_TopPeers_ extends _contacts_TopPeers_ {
   }
 }
 
+/** Top peers disabled */
 export class contacts_TopPeersDisabled_ extends _contacts_TopPeers_ {
   protected get [id](): number {
     return 0xB52C939D;
@@ -25679,7 +28175,9 @@ export class contacts_TopPeersDisabled_ extends _contacts_TopPeers_ {
   }
 }
 
+/** Empty draft */
 export class DraftMessageEmpty_ extends _DraftMessage_ {
+  /** When was the draft last updated */
   date?: number;
 
   protected get [id](): number {
@@ -25710,13 +28208,21 @@ export class DraftMessageEmpty_ extends _DraftMessage_ {
   }
 }
 
+/** Represents a message [draft](https://core.telegram.org/api/drafts). */
 export class DraftMessage_ extends _DraftMessage_ {
+  /** Whether no webpage preview will be generated */
   no_webpage?: true;
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** If set, indicates that the message should be sent in reply to the specified message or story. */
   reply_to?: enums.InputReplyTo;
+  /** The draft */
   message: string;
+  /** Message [entities](https://core.telegram.org/api/entities) for styled text. */
   entities?: Array<enums.MessageEntity>;
+  /** Media. */
   media?: enums.InputMedia;
+  /** Date of last update of the draft. */
   date: number;
 
   protected get [id](): number {
@@ -25765,7 +28271,9 @@ export class DraftMessage_ extends _DraftMessage_ {
   }
 }
 
+/** Featured stickers haven't changed */
 export class messages_FeaturedStickersNotModified_ extends _messages_FeaturedStickers_ {
+  /** Total number of featured stickers */
   count: number;
 
   protected get [id](): number {
@@ -25794,11 +28302,17 @@ export class messages_FeaturedStickersNotModified_ extends _messages_FeaturedSti
   }
 }
 
+/** Featured stickersets */
 export class messages_FeaturedStickers_ extends _messages_FeaturedStickers_ {
+  /** Whether this is a premium stickerset */
   premium?: true;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** Total number of featured stickers */
   count: number;
+  /** Featured stickersets */
   sets: Array<enums.StickerSetCovered>;
+  /** IDs of new featured stickersets */
   unread: Array<bigint>;
 
   protected get [id](): number {
@@ -25841,6 +28355,7 @@ export class messages_FeaturedStickers_ extends _messages_FeaturedStickers_ {
   }
 }
 
+/** No new recent sticker was found */
 export class messages_RecentStickersNotModified_ extends _messages_RecentStickers_ {
   protected get [id](): number {
     return 0x0B17F890;
@@ -25863,10 +28378,15 @@ export class messages_RecentStickersNotModified_ extends _messages_RecentSticker
   }
 }
 
+/** Recently used stickers */
 export class messages_RecentStickers_ extends _messages_RecentStickers_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** Emojis associated to stickers */
   packs: Array<enums.StickerPack>;
+  /** Recent stickers */
   stickers: Array<enums.Document>;
+  /** When was each sticker last used */
   dates: Array<number>;
 
   protected get [id](): number {
@@ -25904,8 +28424,11 @@ export class messages_RecentStickers_ extends _messages_RecentStickers_ {
   }
 }
 
+/** Archived stickersets */
 export class messages_ArchivedStickers_ extends _messages_ArchivedStickers_ {
+  /** Number of archived stickers */
   count: number;
+  /** Archived stickersets */
   sets: Array<enums.StickerSetCovered>;
 
   protected get [id](): number {
@@ -25937,6 +28460,7 @@ export class messages_ArchivedStickers_ extends _messages_ArchivedStickers_ {
   }
 }
 
+/** The stickerset was installed successfully */
 export class messages_StickerSetInstallResultSuccess_ extends _messages_StickerSetInstallResult_ {
   protected get [id](): number {
     return 0x38641628;
@@ -25959,7 +28483,9 @@ export class messages_StickerSetInstallResultSuccess_ extends _messages_StickerS
   }
 }
 
+/** The stickerset was installed, but since there are too many stickersets some were archived */
 export class messages_StickerSetInstallResultArchive_ extends _messages_StickerSetInstallResult_ {
+  /** Archived stickersets */
   sets: Array<enums.StickerSetCovered>;
 
   protected get [id](): number {
@@ -25988,8 +28514,11 @@ export class messages_StickerSetInstallResultArchive_ extends _messages_StickerS
   }
 }
 
+/** Stickerset with a single sticker as preview */
 export class StickerSetCovered_ extends _StickerSetCovered_ {
+  /** Stickerset */
   set: enums.StickerSet;
+  /** Preview */
   cover: enums.Document;
 
   protected get [id](): number {
@@ -26021,8 +28550,11 @@ export class StickerSetCovered_ extends _StickerSetCovered_ {
   }
 }
 
+/** Stickerset, with multiple stickers as preview */
 export class StickerSetMultiCovered_ extends _StickerSetCovered_ {
+  /** Stickerset */
   set: enums.StickerSet;
+  /** Preview stickers */
   covers: Array<enums.Document>;
 
   protected get [id](): number {
@@ -26054,10 +28586,16 @@ export class StickerSetMultiCovered_ extends _StickerSetCovered_ {
   }
 }
 
+/** Stickerset preview with all stickers of the stickerset included.  
+Currently used only for [custom emoji stickersets](https://core.telegram.org/api/custom-emoji), to avoid a further call to [messages.getStickerSet](https://core.telegram.org/method/messages.getStickerSet). */
 export class StickerSetFullCovered_ extends _StickerSetCovered_ {
+  /** Stickerset */
   set: enums.StickerSet;
+  /** Emoji information about every sticker in the stickerset */
   packs: Array<enums.StickerPack>;
+  /** Keywords for some or every sticker in the stickerset. */
   keywords: Array<enums.StickerKeyword>;
+  /** Stickers */
   documents: Array<enums.Document>;
 
   protected get [id](): number {
@@ -26095,7 +28633,9 @@ export class StickerSetFullCovered_ extends _StickerSetCovered_ {
   }
 }
 
+/** Just the stickerset information, with no previews. */
 export class StickerSetNoCovered_ extends _StickerSetCovered_ {
+  /** Stickerset information. */
   set: enums.StickerSet;
 
   protected get [id](): number {
@@ -26124,10 +28664,15 @@ export class StickerSetNoCovered_ extends _StickerSetCovered_ {
   }
 }
 
+/** Position on a photo where a mask should be placed when [attaching stickers to media »](https://core.telegram.org/api/stickers#attached-stickers) */
 export class MaskCoords_ extends _MaskCoords_ {
+  /** Part of the face, relative to which the mask should be placed */
   n: number;
+  /** Shift by X-axis measured in widths of the mask scaled to the face size, from left to right. (For example, -1.0 will place the mask just to the left of the default mask position) */
   x: number;
+  /** Shift by Y-axis measured in widths of the mask scaled to the face size, from left to right. (For example, -1.0 will place the mask just below the default mask position) */
   y: number;
+  /** Mask scaling coefficient. (For example, 2.0 means a doubled size) */
   zoom: number;
 
   protected get [id](): number {
@@ -26165,7 +28710,9 @@ export class MaskCoords_ extends _MaskCoords_ {
   }
 }
 
+/** A photo with stickers attached */
 export class InputStickeredMediaPhoto_ extends _InputStickeredMedia_ {
+  /** The photo */
   id: enums.InputPhoto;
 
   protected get [id](): number {
@@ -26194,7 +28741,9 @@ export class InputStickeredMediaPhoto_ extends _InputStickeredMedia_ {
   }
 }
 
+/** A document with stickers attached */
 export class InputStickeredMediaDocument_ extends _InputStickeredMedia_ {
+  /** The document */
   id: enums.InputDocument;
 
   protected get [id](): number {
@@ -26223,13 +28772,21 @@ export class InputStickeredMediaDocument_ extends _InputStickeredMedia_ {
   }
 }
 
+/** Indicates an already sent game */
 export class Game_ extends _Game_ {
+  /** ID of the game */
   id: bigint;
+  /** Access hash of the game */
   access_hash: bigint;
+  /** Short name for the game */
   short_name: string;
+  /** Title of the game */
   title: string;
+  /** Game description */
   description: string;
+  /** Game preview */
   photo: enums.Photo;
+  /** Optional attached document */
   document?: enums.Document;
 
   protected get [id](): number {
@@ -26278,8 +28835,11 @@ export class Game_ extends _Game_ {
   }
 }
 
+/** Indicates an already sent game */
 export class InputGameID_ extends _InputGame_ {
+  /** game ID from [Game](https://core.telegram.org/type/Game) constructor */
   id: bigint;
+  /** access hash from [Game](https://core.telegram.org/type/Game) constructor */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -26311,8 +28871,11 @@ export class InputGameID_ extends _InputGame_ {
   }
 }
 
+/** Game by short name */
 export class InputGameShortName_ extends _InputGame_ {
+  /** The bot that provides the game */
   bot_id: enums.InputUser;
+  /** The game's short name, usually obtained from a [game link »](https://core.telegram.org/api/links#game-links) */
   short_name: string;
 
   protected get [id](): number {
@@ -26344,9 +28907,13 @@ export class InputGameShortName_ extends _InputGame_ {
   }
 }
 
+/** Game highscore */
 export class HighScore_ extends _HighScore_ {
+  /** Position in highscore list */
   pos: number;
+  /** User ID */
   user_id: bigint;
+  /** Score */
   score: number;
 
   protected get [id](): number {
@@ -26381,8 +28948,11 @@ export class HighScore_ extends _HighScore_ {
   }
 }
 
+/** Highscores in a game */
 export class messages_HighScores_ extends _messages_HighScores_ {
+  /** Highscores */
   scores: Array<enums.HighScore>;
+  /** Users, associated to the highscores */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -26414,6 +28984,7 @@ export class messages_HighScores_ extends _messages_HighScores_ {
   }
 }
 
+/** Empty rich text element */
 export class TextEmpty_ extends _RichText_ {
   protected get [id](): number {
     return 0xDC3D824F;
@@ -26436,7 +29007,9 @@ export class TextEmpty_ extends _RichText_ {
   }
 }
 
+/** Plain text */
 export class TextPlain_ extends _RichText_ {
+  /** Text */
   text: string;
 
   protected get [id](): number {
@@ -26465,7 +29038,9 @@ export class TextPlain_ extends _RichText_ {
   }
 }
 
+/** **Bold** text */
 export class TextBold_ extends _RichText_ {
+  /** Text */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -26494,7 +29069,9 @@ export class TextBold_ extends _RichText_ {
   }
 }
 
+/** _Italic_ text */
 export class TextItalic_ extends _RichText_ {
+  /** Text */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -26523,7 +29100,9 @@ export class TextItalic_ extends _RichText_ {
   }
 }
 
+/** Underlined text */
 export class TextUnderline_ extends _RichText_ {
+  /** Text */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -26552,7 +29131,9 @@ export class TextUnderline_ extends _RichText_ {
   }
 }
 
+/** Strikethrough text */
 export class TextStrike_ extends _RichText_ {
+  /** Text */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -26581,7 +29162,9 @@ export class TextStrike_ extends _RichText_ {
   }
 }
 
+/** `fixed-width` rich text */
 export class TextFixed_ extends _RichText_ {
+  /** Text */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -26610,9 +29193,13 @@ export class TextFixed_ extends _RichText_ {
   }
 }
 
+/** Link */
 export class TextUrl_ extends _RichText_ {
+  /** Text of link */
   text: enums.RichText;
+  /** Webpage HTTP URL */
   url: string;
+  /** If a preview was already generated for the page, the page ID */
   webpage_id: bigint;
 
   protected get [id](): number {
@@ -26647,8 +29234,11 @@ export class TextUrl_ extends _RichText_ {
   }
 }
 
+/** Rich text email link */
 export class TextEmail_ extends _RichText_ {
+  /** Link text */
   text: enums.RichText;
+  /** Email address */
   email: string;
 
   protected get [id](): number {
@@ -26680,7 +29270,9 @@ export class TextEmail_ extends _RichText_ {
   }
 }
 
+/** Concatenation of rich texts */
 export class TextConcat_ extends _RichText_ {
+  /** Concatenated rich texts */
   texts: Array<enums.RichText>;
 
   protected get [id](): number {
@@ -26709,7 +29301,9 @@ export class TextConcat_ extends _RichText_ {
   }
 }
 
+/** Subscript text */
 export class TextSubscript_ extends _RichText_ {
+  /** Text */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -26738,7 +29332,9 @@ export class TextSubscript_ extends _RichText_ {
   }
 }
 
+/** Superscript text */
 export class TextSuperscript_ extends _RichText_ {
+  /** Text */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -26767,7 +29363,9 @@ export class TextSuperscript_ extends _RichText_ {
   }
 }
 
+/** Highlighted text */
 export class TextMarked_ extends _RichText_ {
+  /** Text */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -26796,8 +29394,11 @@ export class TextMarked_ extends _RichText_ {
   }
 }
 
+/** Rich text linked to a phone number */
 export class TextPhone_ extends _RichText_ {
+  /** Text */
   text: enums.RichText;
+  /** Phone number */
   phone: string;
 
   protected get [id](): number {
@@ -26829,9 +29430,13 @@ export class TextPhone_ extends _RichText_ {
   }
 }
 
+/** Inline image */
 export class TextImage_ extends _RichText_ {
+  /** Document ID */
   document_id: bigint;
+  /** Width */
   w: number;
+  /** Height */
   h: number;
 
   protected get [id](): number {
@@ -26866,8 +29471,11 @@ export class TextImage_ extends _RichText_ {
   }
 }
 
+/** Text linking to another section of the page */
 export class TextAnchor_ extends _RichText_ {
+  /** Text */
   text: enums.RichText;
+  /** Section name */
   name: string;
 
   protected get [id](): number {
@@ -26899,6 +29507,7 @@ export class TextAnchor_ extends _RichText_ {
   }
 }
 
+/** Unsupported IV element */
 export class PageBlockUnsupported_ extends _PageBlock_ {
   protected get [id](): number {
     return 0x13567E8A;
@@ -26921,7 +29530,9 @@ export class PageBlockUnsupported_ extends _PageBlock_ {
   }
 }
 
+/** Title */
 export class PageBlockTitle_ extends _PageBlock_ {
+  /** Title */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -26950,7 +29561,9 @@ export class PageBlockTitle_ extends _PageBlock_ {
   }
 }
 
+/** Subtitle */
 export class PageBlockSubtitle_ extends _PageBlock_ {
+  /** Text */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -26979,8 +29592,11 @@ export class PageBlockSubtitle_ extends _PageBlock_ {
   }
 }
 
+/** Author and date of creation of article */
 export class PageBlockAuthorDate_ extends _PageBlock_ {
+  /** Author name */
   author: enums.RichText;
+  /** Date of publication */
   published_date: number;
 
   protected get [id](): number {
@@ -27012,7 +29628,9 @@ export class PageBlockAuthorDate_ extends _PageBlock_ {
   }
 }
 
+/** Page header */
 export class PageBlockHeader_ extends _PageBlock_ {
+  /** Contents */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -27041,7 +29659,9 @@ export class PageBlockHeader_ extends _PageBlock_ {
   }
 }
 
+/** Subheader */
 export class PageBlockSubheader_ extends _PageBlock_ {
+  /** Subheader */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -27070,7 +29690,9 @@ export class PageBlockSubheader_ extends _PageBlock_ {
   }
 }
 
+/** A paragraph */
 export class PageBlockParagraph_ extends _PageBlock_ {
+  /** Text */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -27099,8 +29721,11 @@ export class PageBlockParagraph_ extends _PageBlock_ {
   }
 }
 
+/** Preformatted (`<pre>` text) */
 export class PageBlockPreformatted_ extends _PageBlock_ {
+  /** Text */
   text: enums.RichText;
+  /** Programming language of preformatted text */
   language: string;
 
   protected get [id](): number {
@@ -27132,7 +29757,9 @@ export class PageBlockPreformatted_ extends _PageBlock_ {
   }
 }
 
+/** Page footer */
 export class PageBlockFooter_ extends _PageBlock_ {
+  /** Contents */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -27161,6 +29788,7 @@ export class PageBlockFooter_ extends _PageBlock_ {
   }
 }
 
+/** An empty block separating a page */
 export class PageBlockDivider_ extends _PageBlock_ {
   protected get [id](): number {
     return 0xDB20B188;
@@ -27183,7 +29811,9 @@ export class PageBlockDivider_ extends _PageBlock_ {
   }
 }
 
+/** Link to section within the page itself (like `<a href="#target">anchor</a>`) */
 export class PageBlockAnchor_ extends _PageBlock_ {
+  /** Name of target section */
   name: string;
 
   protected get [id](): number {
@@ -27212,7 +29842,9 @@ export class PageBlockAnchor_ extends _PageBlock_ {
   }
 }
 
+/** Unordered list of IV blocks */
 export class PageBlockList_ extends _PageBlock_ {
+  /** List of blocks in an IV page */
   items: Array<enums.PageListItem>;
 
   protected get [id](): number {
@@ -27241,8 +29873,11 @@ export class PageBlockList_ extends _PageBlock_ {
   }
 }
 
+/** Quote (equivalent to the HTML `<blockquote>`) */
 export class PageBlockBlockquote_ extends _PageBlock_ {
+  /** Quote contents */
   text: enums.RichText;
+  /** Caption */
   caption: enums.RichText;
 
   protected get [id](): number {
@@ -27274,8 +29909,11 @@ export class PageBlockBlockquote_ extends _PageBlock_ {
   }
 }
 
+/** Pullquote */
 export class PageBlockPullquote_ extends _PageBlock_ {
+  /** Text */
   text: enums.RichText;
+  /** Caption */
   caption: enums.RichText;
 
   protected get [id](): number {
@@ -27307,10 +29945,15 @@ export class PageBlockPullquote_ extends _PageBlock_ {
   }
 }
 
+/** A photo */
 export class PageBlockPhoto_ extends _PageBlock_ {
+  /** Photo ID */
   photo_id: bigint;
+  /** Caption */
   caption: enums.PageCaption;
+  /** HTTP URL of page the photo leads to when clicked */
   url?: string;
+  /** ID of preview of the page the photo leads to when clicked */
   webpage_id?: bigint;
 
   protected get [id](): number {
@@ -27350,10 +29993,15 @@ export class PageBlockPhoto_ extends _PageBlock_ {
   }
 }
 
+/** Video */
 export class PageBlockVideo_ extends _PageBlock_ {
+  /** Whether the video is set to autoplay */
   autoplay?: true;
+  /** Whether the video is set to loop */
   loop?: true;
+  /** Video ID */
   video_id: bigint;
+  /** Caption */
   caption: enums.PageCaption;
 
   protected get [id](): number {
@@ -27393,7 +30041,9 @@ export class PageBlockVideo_ extends _PageBlock_ {
   }
 }
 
+/** A page cover */
 export class PageBlockCover_ extends _PageBlock_ {
+  /** Cover */
   cover: enums.PageBlock;
 
   protected get [id](): number {
@@ -27422,14 +30072,23 @@ export class PageBlockCover_ extends _PageBlock_ {
   }
 }
 
+/** An embedded webpage */
 export class PageBlockEmbed_ extends _PageBlock_ {
+  /** Whether the block should be full width */
   full_width?: true;
+  /** Whether scrolling should be allowed */
   allow_scrolling?: true;
+  /** Web page URL, if available */
   url?: string;
+  /** HTML-markup of the embedded page */
   html?: string;
+  /** Poster photo, if available */
   poster_photo_id?: bigint;
+  /** Block width, if known */
   w?: number;
+  /** Block height, if known */
   h?: number;
+  /** Caption */
   caption: enums.PageCaption;
 
   protected get [id](): number {
@@ -27481,13 +30140,21 @@ export class PageBlockEmbed_ extends _PageBlock_ {
   }
 }
 
+/** An embedded post */
 export class PageBlockEmbedPost_ extends _PageBlock_ {
+  /** Web page URL */
   url: string;
+  /** ID of generated webpage preview */
   webpage_id: bigint;
+  /** ID of the author's photo */
   author_photo_id: bigint;
+  /** Author name */
   author: string;
+  /** Creation date */
   date: number;
+  /** Post contents */
   blocks: Array<enums.PageBlock>;
+  /** Caption */
   caption: enums.PageCaption;
 
   protected get [id](): number {
@@ -27534,8 +30201,11 @@ export class PageBlockEmbedPost_ extends _PageBlock_ {
   }
 }
 
+/** Collage of media */
 export class PageBlockCollage_ extends _PageBlock_ {
+  /** Media elements */
   items: Array<enums.PageBlock>;
+  /** Caption */
   caption: enums.PageCaption;
 
   protected get [id](): number {
@@ -27567,8 +30237,11 @@ export class PageBlockCollage_ extends _PageBlock_ {
   }
 }
 
+/** Slideshow */
 export class PageBlockSlideshow_ extends _PageBlock_ {
+  /** Slideshow items */
   items: Array<enums.PageBlock>;
+  /** Caption */
   caption: enums.PageCaption;
 
   protected get [id](): number {
@@ -27600,7 +30273,9 @@ export class PageBlockSlideshow_ extends _PageBlock_ {
   }
 }
 
+/** Reference to a telegram channel */
 export class PageBlockChannel_ extends _PageBlock_ {
+  /** The channel/supergroup/chat */
   channel: enums.Chat;
 
   protected get [id](): number {
@@ -27629,8 +30304,11 @@ export class PageBlockChannel_ extends _PageBlock_ {
   }
 }
 
+/** Audio */
 export class PageBlockAudio_ extends _PageBlock_ {
+  /** Audio ID (to be fetched from the container [page](https://core.telegram.org/constructor/page) constructor */
   audio_id: bigint;
+  /** Audio caption */
   caption: enums.PageCaption;
 
   protected get [id](): number {
@@ -27662,7 +30340,9 @@ export class PageBlockAudio_ extends _PageBlock_ {
   }
 }
 
+/** Kicker */
 export class PageBlockKicker_ extends _PageBlock_ {
+  /** Contents */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -27691,10 +30371,15 @@ export class PageBlockKicker_ extends _PageBlock_ {
   }
 }
 
+/** Table */
 export class PageBlockTable_ extends _PageBlock_ {
+  /** Does the table have a visible border? */
   bordered?: true;
+  /** Is the table striped? */
   striped?: true;
+  /** Title */
   title: enums.RichText;
+  /** Table rows */
   rows: Array<enums.PageTableRow>;
 
   protected get [id](): number {
@@ -27734,7 +30419,9 @@ export class PageBlockTable_ extends _PageBlock_ {
   }
 }
 
+/** Ordered list of IV blocks */
 export class PageBlockOrderedList_ extends _PageBlock_ {
+  /** List items */
   items: Array<enums.PageListOrderedItem>;
 
   protected get [id](): number {
@@ -27763,9 +30450,13 @@ export class PageBlockOrderedList_ extends _PageBlock_ {
   }
 }
 
+/** A collapsible details block */
 export class PageBlockDetails_ extends _PageBlock_ {
+  /** Whether the block is open by default */
   open?: true;
+  /** Block contents */
   blocks: Array<enums.PageBlock>;
+  /** Always visible heading for the block */
   title: enums.RichText;
 
   protected get [id](): number {
@@ -27802,8 +30493,11 @@ export class PageBlockDetails_ extends _PageBlock_ {
   }
 }
 
+/** Related articles */
 export class PageBlockRelatedArticles_ extends _PageBlock_ {
+  /** Title */
   title: enums.RichText;
+  /** Related articles */
   articles: Array<enums.PageRelatedArticle>;
 
   protected get [id](): number {
@@ -27835,11 +30529,17 @@ export class PageBlockRelatedArticles_ extends _PageBlock_ {
   }
 }
 
+/** A map */
 export class PageBlockMap_ extends _PageBlock_ {
+  /** Location of the map center */
   geo: enums.GeoPoint;
+  /** Map zoom level; 13-20 */
   zoom: number;
+  /** Map width in pixels before applying scale; 16-102 */
   w: number;
+  /** Map height in pixels before applying scale; 16-1024 */
   h: number;
+  /** Caption */
   caption: enums.PageCaption;
 
   protected get [id](): number {
@@ -27880,6 +30580,7 @@ export class PageBlockMap_ extends _PageBlock_ {
   }
 }
 
+/** The phone call was missed */
 export class PhoneCallDiscardReasonMissed_ extends _PhoneCallDiscardReason_ {
   protected get [id](): number {
     return 0x85E42301;
@@ -27902,6 +30603,7 @@ export class PhoneCallDiscardReasonMissed_ extends _PhoneCallDiscardReason_ {
   }
 }
 
+/** The phone call was disconnected */
 export class PhoneCallDiscardReasonDisconnect_ extends _PhoneCallDiscardReason_ {
   protected get [id](): number {
     return 0xE095C1A0;
@@ -27924,6 +30626,7 @@ export class PhoneCallDiscardReasonDisconnect_ extends _PhoneCallDiscardReason_ 
   }
 }
 
+/** The phone call was ended normally */
 export class PhoneCallDiscardReasonHangup_ extends _PhoneCallDiscardReason_ {
   protected get [id](): number {
     return 0x57ADC690;
@@ -27946,6 +30649,7 @@ export class PhoneCallDiscardReasonHangup_ extends _PhoneCallDiscardReason_ {
   }
 }
 
+/** The phone call was discarded because the user is busy in another call */
 export class PhoneCallDiscardReasonBusy_ extends _PhoneCallDiscardReason_ {
   protected get [id](): number {
     return 0xFAF7E8C9;
@@ -27968,7 +30672,9 @@ export class PhoneCallDiscardReasonBusy_ extends _PhoneCallDiscardReason_ {
   }
 }
 
+/** Represents a json-encoded object */
 export class DataJSON_ extends _DataJSON_ {
+  /** JSON-encoded object */
   data: string;
 
   protected get [id](): number {
@@ -27997,8 +30703,11 @@ export class DataJSON_ extends _DataJSON_ {
   }
 }
 
+/** This object represents a portion of the price for goods or services. */
 export class LabeledPrice_ extends _LabeledPrice_ {
+  /** Portion label */
   label: string;
+  /** Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   amount: bigint;
 
   protected get [id](): number {
@@ -28030,20 +30739,35 @@ export class LabeledPrice_ extends _LabeledPrice_ {
   }
 }
 
+/** Invoice */
 export class Invoice_ extends _Invoice_ {
+  /** Test invoice */
   test?: true;
+  /** Set this flag if you require the user's full name to complete the order */
   name_requested?: true;
+  /** Set this flag if you require the user's phone number to complete the order */
   phone_requested?: true;
+  /** Set this flag if you require the user's email address to complete the order */
   email_requested?: true;
+  /** Set this flag if you require the user's shipping address to complete the order */
   shipping_address_requested?: true;
+  /** Set this flag if the final price depends on the shipping method */
   flexible?: true;
+  /** Set this flag if user's phone number should be sent to provider */
   phone_to_provider?: true;
+  /** Set this flag if user's email address should be sent to provider */
   email_to_provider?: true;
+  /** Whether this is a recurring payment */
   recurring?: true;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.) */
   prices: Array<enums.LabeledPrice>;
+  /** The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   max_tip_amount?: bigint;
+  /** A vector of suggested amounts of tips in the _smallest units_ of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed `max_tip_amount`. */
   suggested_tip_amounts?: Array<bigint>;
+  /** Terms of service URL */
   terms_url?: string;
 
   protected get [id](): number {
@@ -28113,8 +30837,11 @@ export class Invoice_ extends _Invoice_ {
   }
 }
 
+/** Payment identifier */
 export class PaymentCharge_ extends _PaymentCharge_ {
+  /** Telegram payment identifier */
   id: string;
+  /** Provider payment identifier */
   provider_charge_id: string;
 
   protected get [id](): number {
@@ -28146,12 +30873,19 @@ export class PaymentCharge_ extends _PaymentCharge_ {
   }
 }
 
+/** Shipping address */
 export class PostAddress_ extends _PostAddress_ {
+  /** First line for the address */
   street_line1: string;
+  /** Second line for the address */
   street_line2: string;
+  /** City */
   city: string;
+  /** State, if applicable (empty otherwise) */
   state: string;
+  /** ISO 3166-1 alpha-2 country code */
   country_iso2: string;
+  /** Address post code */
   post_code: string;
 
   protected get [id](): number {
@@ -28195,10 +30929,15 @@ export class PostAddress_ extends _PostAddress_ {
   }
 }
 
+/** Order info provided by the user */
 export class PaymentRequestedInfo_ extends _PaymentRequestedInfo_ {
+  /** User's full name */
   name?: string;
+  /** User's phone number */
   phone?: string;
+  /** User's email address */
   email?: string;
+  /** User's shipping address */
   shipping_address?: enums.PostAddress;
 
   protected get [id](): number {
@@ -28238,8 +30977,11 @@ export class PaymentRequestedInfo_ extends _PaymentRequestedInfo_ {
   }
 }
 
+/** Saved credit card */
 export class PaymentSavedCredentialsCard_ extends _PaymentSavedCredentials_ {
+  /** Card ID */
   id: string;
+  /** Title */
   title: string;
 
   protected get [id](): number {
@@ -28271,11 +31013,17 @@ export class PaymentSavedCredentialsCard_ extends _PaymentSavedCredentials_ {
   }
 }
 
+/** Remote document */
 export class WebDocument_ extends _WebDocument_ {
+  /** Document URL */
   url: string;
+  /** Access hash */
   access_hash: bigint;
+  /** File size */
   size: number;
+  /** MIME type */
   mime_type: string;
+  /** Attributes for media types */
   attributes: Array<enums.DocumentAttribute>;
 
   protected get [id](): number {
@@ -28316,10 +31064,15 @@ export class WebDocument_ extends _WebDocument_ {
   }
 }
 
+/** Remote document that can be downloaded without [proxying through telegram](https://core.telegram.org/api/files) */
 export class WebDocumentNoProxy_ extends _WebDocument_ {
+  /** Document URL */
   url: string;
+  /** File size */
   size: number;
+  /** MIME type */
   mime_type: string;
+  /** Attributes for media types */
   attributes: Array<enums.DocumentAttribute>;
 
   protected get [id](): number {
@@ -28357,10 +31110,15 @@ export class WebDocumentNoProxy_ extends _WebDocument_ {
   }
 }
 
+/** The document */
 export class InputWebDocument_ extends _InputWebDocument_ {
+  /** Remote document URL to be downloaded using the appropriate [method](https://core.telegram.org/api/files) */
   url: string;
+  /** Remote file size */
   size: number;
+  /** Mime type */
   mime_type: string;
+  /** Attributes for media types */
   attributes: Array<enums.DocumentAttribute>;
 
   protected get [id](): number {
@@ -28398,8 +31156,11 @@ export class InputWebDocument_ extends _InputWebDocument_ {
   }
 }
 
+/** Location of a remote HTTP(s) file */
 export class InputWebFileLocation_ extends _InputWebFileLocation_ {
+  /** HTTP URL of file */
   url: string;
+  /** Access hash */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -28431,12 +31192,19 @@ export class InputWebFileLocation_ extends _InputWebFileLocation_ {
   }
 }
 
+/** Used to download a server-generated image with the map preview from a [geoPoint](https://core.telegram.org/constructor/geoPoint), see the [webfile docs for more info »](https://core.telegram.org/api/files#downloading-webfiles). */
 export class InputWebFileGeoPointLocation_ extends _InputWebFileLocation_ {
+  /** Generated from the `lat`, `long` and `accuracy_radius` parameters of the [geoPoint](https://core.telegram.org/constructor/geoPoint) */
   geo_point: enums.InputGeoPoint;
+  /** Access hash of the [geoPoint](https://core.telegram.org/constructor/geoPoint) */
   access_hash: bigint;
+  /** Map width in pixels before applying scale; 16-1024 */
   w: number;
+  /** Map height in pixels before applying scale; 16-1024 */
   h: number;
+  /** Map zoom level; 13-20 */
   zoom: number;
+  /** Map scale; 1-3 */
   scale: number;
 
   protected get [id](): number {
@@ -28480,10 +31248,15 @@ export class InputWebFileGeoPointLocation_ extends _InputWebFileLocation_ {
   }
 }
 
+/** Used to download an album cover for any music file using [upload.getWebFile](https://core.telegram.org/method/upload.getWebFile), see the [webfile docs for more info »](https://core.telegram.org/api/files#downloading-webfiles). */
 export class InputWebFileAudioAlbumThumbLocation_ extends _InputWebFileLocation_ {
+  /** Used to return a thumbnail with `100x100` resolution (instead of the default `600x600`) */
   small?: true;
+  /** The audio file in question: must NOT be provided in secret chats, provide the `title` and `performer` fields instead. */
   document?: enums.InputDocument;
+  /** Song title: should only be used in secret chats, in normal chats provide `document` instead, as it has more lax rate limits. */
   title?: string;
+  /** Song performer: should only be used in secret chats, in normal chats provide `document` instead, as it has more lax rate limits. */
   performer?: string;
 
   protected get [id](): number {
@@ -28523,11 +31296,17 @@ export class InputWebFileAudioAlbumThumbLocation_ extends _InputWebFileLocation_
   }
 }
 
+/** Represents a chunk of an [HTTP webfile](https://core.telegram.org/api/files) downloaded through telegram's secure MTProto servers */
 export class upload_WebFile_ extends _upload_WebFile_ {
+  /** File size */
   size: number;
+  /** Mime type */
   mime_type: string;
+  /** File type */
   file_type: enums.storage.FileType;
+  /** Modified time */
   mtime: number;
+  /** Data */
   bytes: Uint8Array;
 
   protected get [id](): number {
@@ -28568,22 +31347,48 @@ export class upload_WebFile_ extends _upload_WebFile_ {
   }
 }
 
+/** Payment form */
 export class payments_PaymentForm_ extends _payments_PaymentForm_ {
+  /** Whether the user can choose to save credentials. */
   can_save_credentials?: true;
+  /** Indicates that the user can save payment credentials, but only after setting up a [2FA password](https://core.telegram.org/api/srp) (currently the account doesn't have a [2FA password](https://core.telegram.org/api/srp)) */
   password_missing?: true;
+  /** Form ID */
   form_id: bigint;
+  /** Bot ID */
   bot_id: bigint;
+  /** Form title */
   title: string;
+  /** Description */
   description: string;
+  /** Product photo */
   photo?: enums.WebDocument;
+  /** Invoice */
   invoice: enums.Invoice;
+  /** Payment provider ID. */
   provider_id: bigint;
+  /** Payment form URL */
   url: string;
+  /** Payment provider name.  
+  One of the following:  
+  \- `stripe` */
   native_provider?: string;
+  /** Contains information about the payment provider, if available, to support it natively without the need for opening the URL.  
+  A JSON object that can contain the following fields:  
+    
+  \- `apple_pay_merchant_id`: Apple Pay merchant ID  
+  \- `google_pay_public_key`: Google Pay public key  
+  \- `need_country`: True, if the user country must be provided,  
+  \- `need_zip`: True, if the user ZIP/postal code must be provided,  
+  \- `need_cardholder_name`: True, if the cardholder name must be provided */
   native_params?: enums.DataJSON;
+  /** Additional payment methods */
   additional_methods?: Array<enums.PaymentFormMethod>;
+  /** Saved server-side order information */
   saved_info?: enums.PaymentRequestedInfo;
+  /** Contains information about saved card credentials */
   saved_credentials?: Array<enums.PaymentSavedCredentials>;
+  /** Users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -28659,8 +31464,11 @@ export class payments_PaymentForm_ extends _payments_PaymentForm_ {
   }
 }
 
+/** Validated user-provided info */
 export class payments_ValidatedRequestedInfo_ extends _payments_ValidatedRequestedInfo_ {
+  /** ID */
   id?: string;
+  /** Shipping options */
   shipping_options?: Array<enums.ShippingOption>;
 
   protected get [id](): number {
@@ -28694,7 +31502,9 @@ export class payments_ValidatedRequestedInfo_ extends _payments_ValidatedRequest
   }
 }
 
+/** Payment result */
 export class payments_PaymentResult_ extends _payments_PaymentResult_ {
+  /** Info about the payment */
   updates: enums.Updates;
 
   protected get [id](): number {
@@ -28723,7 +31533,9 @@ export class payments_PaymentResult_ extends _payments_PaymentResult_ {
   }
 }
 
+/** Payment was not successful, additional verification is needed */
 export class payments_PaymentVerificationNeeded_ extends _payments_PaymentResult_ {
+  /** URL for additional payment credentials verification */
   url: string;
 
   protected get [id](): number {
@@ -28752,20 +31564,35 @@ export class payments_PaymentVerificationNeeded_ extends _payments_PaymentResult
   }
 }
 
+/** Receipt */
 export class payments_PaymentReceipt_ extends _payments_PaymentReceipt_ {
+  /** Date of generation */
   date: number;
+  /** Bot ID */
   bot_id: bigint;
+  /** Provider ID */
   provider_id: bigint;
+  /** Title */
   title: string;
+  /** Description */
   description: string;
+  /** Photo */
   photo?: enums.WebDocument;
+  /** Invoice */
   invoice: enums.Invoice;
+  /** Info */
   info?: enums.PaymentRequestedInfo;
+  /** Selected shipping option */
   shipping?: enums.ShippingOption;
+  /** Tipped amount */
   tip_amount?: bigint;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Total amount in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   total_amount: bigint;
+  /** Payment credential name */
   credentials_title: string;
+  /** Users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -28835,8 +31662,11 @@ export class payments_PaymentReceipt_ extends _payments_PaymentReceipt_ {
   }
 }
 
+/** Saved server-side order information */
 export class payments_SavedInfo_ extends _payments_SavedInfo_ {
+  /** Whether the user has some saved payment credentials */
   has_saved_credentials?: true;
+  /** Saved server-side order information */
   saved_info?: enums.PaymentRequestedInfo;
 
   protected get [id](): number {
@@ -28870,8 +31700,11 @@ export class payments_SavedInfo_ extends _payments_SavedInfo_ {
   }
 }
 
+/** Saved payment credentials */
 export class InputPaymentCredentialsSaved_ extends _InputPaymentCredentials_ {
+  /** Credential ID */
   id: string;
+  /** Temporary password */
   tmp_password: Uint8Array;
 
   protected get [id](): number {
@@ -28903,8 +31736,11 @@ export class InputPaymentCredentialsSaved_ extends _InputPaymentCredentials_ {
   }
 }
 
+/** Payment credentials */
 export class InputPaymentCredentials_ extends _InputPaymentCredentials_ {
+  /** Save payment credential for future use */
   save?: true;
+  /** Payment credentials */
   data: enums.DataJSON;
 
   protected get [id](): number {
@@ -28938,7 +31774,9 @@ export class InputPaymentCredentials_ extends _InputPaymentCredentials_ {
   }
 }
 
+/** Apple pay payment credentials */
 export class InputPaymentCredentialsApplePay_ extends _InputPaymentCredentials_ {
+  /** Payment data */
   payment_data: enums.DataJSON;
 
   protected get [id](): number {
@@ -28967,7 +31805,9 @@ export class InputPaymentCredentialsApplePay_ extends _InputPaymentCredentials_ 
   }
 }
 
+/** Google Pay payment credentials */
 export class InputPaymentCredentialsGooglePay_ extends _InputPaymentCredentials_ {
+  /** Payment token */
   payment_token: enums.DataJSON;
 
   protected get [id](): number {
@@ -28996,8 +31836,11 @@ export class InputPaymentCredentialsGooglePay_ extends _InputPaymentCredentials_
   }
 }
 
+/** Temporary payment password */
 export class account_TmpPassword_ extends _account_TmpPassword_ {
+  /** Temporary password */
   tmp_password: Uint8Array;
+  /** Validity period */
   valid_until: number;
 
   protected get [id](): number {
@@ -29029,9 +31872,13 @@ export class account_TmpPassword_ extends _account_TmpPassword_ {
   }
 }
 
+/** Shipping option */
 export class ShippingOption_ extends _ShippingOption_ {
+  /** Option ID */
   id: string;
+  /** Title */
   title: string;
+  /** List of price portions */
   prices: Array<enums.LabeledPrice>;
 
   protected get [id](): number {
@@ -29066,10 +31913,15 @@ export class ShippingOption_ extends _ShippingOption_ {
   }
 }
 
+/** Sticker in a stickerset */
 export class InputStickerSetItem_ extends _InputStickerSetItem_ {
+  /** The sticker */
   document: enums.InputDocument;
+  /** Associated emoji */
   emoji: string;
+  /** Coordinates for mask sticker */
   mask_coords?: enums.MaskCoords;
+  /** Set of keywords, separated by commas (can't be provided for mask stickers) */
   keywords?: string;
 
   protected get [id](): number {
@@ -29109,8 +31961,11 @@ export class InputStickerSetItem_ extends _InputStickerSetItem_ {
   }
 }
 
+/** Phone call */
 export class InputPhoneCall_ extends _InputPhoneCall_ {
+  /** Call ID */
   id: bigint;
+  /** Access hash */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -29142,7 +31997,9 @@ export class InputPhoneCall_ extends _InputPhoneCall_ {
   }
 }
 
+/** Empty constructor */
 export class PhoneCallEmpty_ extends _PhoneCall_ {
+  /** Call ID */
   id: bigint;
 
   protected get [id](): number {
@@ -29171,14 +32028,23 @@ export class PhoneCallEmpty_ extends _PhoneCall_ {
   }
 }
 
+/** Incoming phone call */
 export class PhoneCallWaiting_ extends _PhoneCall_ {
+  /** Is this a video call */
   video?: true;
+  /** Call ID */
   id: bigint;
+  /** Access hash */
   access_hash: bigint;
+  /** Date */
   date: number;
+  /** Admin ID */
   admin_id: bigint;
+  /** Participant ID */
   participant_id: bigint;
+  /** Phone call protocol info */
   protocol: enums.PhoneCallProtocol;
+  /** When was the phone call received */
   receive_date?: number;
 
   protected get [id](): number {
@@ -29230,14 +32096,23 @@ export class PhoneCallWaiting_ extends _PhoneCall_ {
   }
 }
 
+/** Requested phone call */
 export class PhoneCallRequested_ extends _PhoneCall_ {
+  /** Whether this is a video call */
   video?: true;
+  /** Phone call ID */
   id: bigint;
+  /** Access hash */
   access_hash: bigint;
+  /** When was the phone call created */
   date: number;
+  /** ID of the creator of the phone call */
   admin_id: bigint;
+  /** ID of the other participant of the phone call */
   participant_id: bigint;
+  /** [Parameter for key exchange](https://core.telegram.org/api/end-to-end/voice-calls) */
   g_a_hash: Uint8Array;
+  /** Call protocol info to be passed to libtgvoip */
   protocol: enums.PhoneCallProtocol;
 
   protected get [id](): number {
@@ -29289,14 +32164,23 @@ export class PhoneCallRequested_ extends _PhoneCall_ {
   }
 }
 
+/** An accepted phone call */
 export class PhoneCallAccepted_ extends _PhoneCall_ {
+  /** Whether this is a video call */
   video?: true;
+  /** ID of accepted phone call */
   id: bigint;
+  /** Access hash of phone call */
   access_hash: bigint;
+  /** When was the call accepted */
   date: number;
+  /** ID of the call creator */
   admin_id: bigint;
+  /** ID of the other user in the call */
   participant_id: bigint;
+  /** B parameter for [secure E2E phone call key exchange](https://core.telegram.org/api/end-to-end/voice-calls) */
   g_b: Uint8Array;
+  /** Protocol to use for phone call */
   protocol: enums.PhoneCallProtocol;
 
   protected get [id](): number {
@@ -29348,18 +32232,31 @@ export class PhoneCallAccepted_ extends _PhoneCall_ {
   }
 }
 
+/** Phone call */
 export class PhoneCall_ extends _PhoneCall_ {
+  /** Whether P2P connection to the other peer is allowed */
   p2p_allowed?: true;
+  /** Whether this is a video call */
   video?: true;
+  /** Call ID */
   id: bigint;
+  /** Access hash */
   access_hash: bigint;
+  /** Date of creation of the call */
   date: number;
+  /** User ID of the creator of the call */
   admin_id: bigint;
+  /** User ID of the other participant in the call */
   participant_id: bigint;
+  /** [Parameter for key exchange](https://core.telegram.org/api/end-to-end/voice-calls) */
   g_a_or_b: Uint8Array;
+  /** [Key fingerprint](https://core.telegram.org/api/end-to-end/voice-calls) */
   key_fingerprint: bigint;
+  /** Call protocol info to be passed to libtgvoip */
   protocol: enums.PhoneCallProtocol;
+  /** List of endpoints the user can connect to to exchange call data */
   connections: Array<enums.PhoneConnection>;
+  /** When was the call actually started */
   start_date: number;
 
   protected get [id](): number {
@@ -29423,12 +32320,19 @@ export class PhoneCall_ extends _PhoneCall_ {
   }
 }
 
+/** Indicates a discarded phone call */
 export class PhoneCallDiscarded_ extends _PhoneCall_ {
+  /** Whether the server required the user to [rate](https://core.telegram.org/method/phone.setCallRating) the call */
   need_rating?: true;
+  /** Whether the server required the client to [send](https://core.telegram.org/method/phone.saveCallDebug) the libtgvoip call debug data */
   need_debug?: true;
+  /** Whether the call was a video call */
   video?: true;
+  /** Call ID */
   id: bigint;
+  /** Why was the phone call discarded */
   reason?: enums.PhoneCallDiscardReason;
+  /** Duration of the phone call in seconds */
   duration?: number;
 
   protected get [id](): number {
@@ -29474,12 +32378,19 @@ export class PhoneCallDiscarded_ extends _PhoneCall_ {
   }
 }
 
+/** Identifies an endpoint that can be used to connect to the other user in a phone call */
 export class PhoneConnection_ extends _PhoneConnection_ {
+  /** Whether TCP should be used */
   tcp?: true;
+  /** Endpoint ID */
   id: bigint;
+  /** IP address of endpoint */
   ip: string;
+  /** IPv6 address of endpoint */
   ipv6: string;
+  /** Port ID */
   port: number;
+  /** Our peer tag */
   peer_tag: Uint8Array;
 
   protected get [id](): number {
@@ -29525,14 +32436,23 @@ export class PhoneConnection_ extends _PhoneConnection_ {
   }
 }
 
+/** WebRTC connection parameters */
 export class PhoneConnectionWebrtc_ extends _PhoneConnection_ {
+  /** Whether this is a TURN endpoint */
   turn?: true;
+  /** Whether this is a STUN endpoint */
   stun?: true;
+  /** Endpoint ID */
   id: bigint;
+  /** IP address */
   ip: string;
+  /** IPv6 address */
   ipv6: string;
+  /** Port */
   port: number;
+  /** Username */
   username: string;
+  /** Password */
   password: string;
 
   protected get [id](): number {
@@ -29584,11 +32504,18 @@ export class PhoneConnectionWebrtc_ extends _PhoneConnection_ {
   }
 }
 
+/** Protocol info for libtgvoip */
 export class PhoneCallProtocol_ extends _PhoneCallProtocol_ {
+  /** Whether to allow P2P connection to the other participant */
   udp_p2p?: true;
+  /** Whether to allow connection to the other participants through the reflector servers */
   udp_reflector?: true;
+  /** Minimum layer for remote libtgvoip */
   min_layer: number;
+  /** Maximum layer for remote libtgvoip */
   max_layer: number;
+  /** When using [phone.requestCall](https://core.telegram.org/method/phone.requestCall) and [phone.acceptCall](https://core.telegram.org/method/phone.acceptCall), specify all library versions supported by the client.  
+  The server will merge and choose the best library version supported by both peers, returning only the best value in the result of the callee's [phone.acceptCall](https://core.telegram.org/method/phone.acceptCall) and in the [phoneCallAccepted](https://core.telegram.org/constructor/phoneCallAccepted) update received by the caller. */
   library_versions: Array<string>;
 
   protected get [id](): number {
@@ -29631,8 +32558,11 @@ export class PhoneCallProtocol_ extends _PhoneCallProtocol_ {
   }
 }
 
+/** A VoIP phone call */
 export class phone_PhoneCall_ extends _phone_PhoneCall_ {
+  /** The VoIP phone call */
   phone_call: enums.PhoneCall;
+  /** VoIP phone call participants */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -29664,7 +32594,9 @@ export class phone_PhoneCall_ extends _phone_PhoneCall_ {
   }
 }
 
+/** The file was cleared from the temporary RAM cache of the [CDN](https://core.telegram.org/cdn) and has to be re-uploaded. */
 export class upload_CdnFileReuploadNeeded_ extends _upload_CdnFile_ {
+  /** Request token (see [CDN](https://core.telegram.org/cdn)) */
   request_token: Uint8Array;
 
   protected get [id](): number {
@@ -29693,7 +32625,9 @@ export class upload_CdnFileReuploadNeeded_ extends _upload_CdnFile_ {
   }
 }
 
+/** Represent a chunk of a [CDN](https://core.telegram.org/cdn) file. */
 export class upload_CdnFile_ extends _upload_CdnFile_ {
+  /** The data */
   bytes: Uint8Array;
 
   protected get [id](): number {
@@ -29722,8 +32656,11 @@ export class upload_CdnFile_ extends _upload_CdnFile_ {
   }
 }
 
+/** Public key to use **only** during handshakes to [CDN](https://core.telegram.org/cdn) DCs. */
 export class CdnPublicKey_ extends _CdnPublicKey_ {
+  /** [CDN DC](https://core.telegram.org/cdn) ID */
   dc_id: number;
+  /** RSA public key */
   public_key: string;
 
   protected get [id](): number {
@@ -29755,7 +32692,9 @@ export class CdnPublicKey_ extends _CdnPublicKey_ {
   }
 }
 
+/** Configuration for [CDN](https://core.telegram.org/cdn) file downloads. */
 export class CdnConfig_ extends _CdnConfig_ {
+  /** Vector of public keys to use **only** during handshakes to [CDN](https://core.telegram.org/cdn) DCs. */
   public_keys: Array<enums.CdnPublicKey>;
 
   protected get [id](): number {
@@ -29784,8 +32723,11 @@ export class CdnConfig_ extends _CdnConfig_ {
   }
 }
 
+/** Translated localization string */
 export class LangPackString_ extends _LangPackString_ {
+  /** Language key */
   key: string;
+  /** Value */
   value: string;
 
   protected get [id](): number {
@@ -29817,13 +32759,21 @@ export class LangPackString_ extends _LangPackString_ {
   }
 }
 
+/** A language pack string which has different forms based on the number of some object it mentions. See [https://www.unicode.org/cldr/charts/latest/supplemental/language\_plural\_rules.html](https://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) for more info */
 export class LangPackStringPluralized_ extends _LangPackString_ {
+  /** Localization key */
   key: string;
+  /** Value for zero objects */
   zero_value?: string;
+  /** Value for one object */
   one_value?: string;
+  /** Value for two objects */
   two_value?: string;
+  /** Value for a few objects */
   few_value?: string;
+  /** Value for many objects */
   many_value?: string;
+  /** Default value */
   other_value: string;
 
   protected get [id](): number {
@@ -29872,7 +32822,9 @@ export class LangPackStringPluralized_ extends _LangPackString_ {
   }
 }
 
+/** Deleted localization string */
 export class LangPackStringDeleted_ extends _LangPackString_ {
+  /** Localization key */
   key: string;
 
   protected get [id](): number {
@@ -29901,10 +32853,15 @@ export class LangPackStringDeleted_ extends _LangPackString_ {
   }
 }
 
+/** Changes to the app's localization pack */
 export class LangPackDifference_ extends _LangPackDifference_ {
+  /** Language code */
   lang_code: string;
+  /** Previous version number */
   from_version: number;
+  /** New version number */
   version: number;
+  /** Localized strings */
   strings: Array<enums.LangPackString>;
 
   protected get [id](): number {
@@ -29942,17 +32899,29 @@ export class LangPackDifference_ extends _LangPackDifference_ {
   }
 }
 
+/** Identifies a localization pack */
 export class LangPackLanguage_ extends _LangPackLanguage_ {
+  /** Whether the language pack is official */
   official?: true;
+  /** Is this a localization pack for an RTL language */
   rtl?: true;
+  /** Is this a beta localization pack? */
   beta?: true;
+  /** Language name */
   name: string;
+  /** Language name in the language itself */
   native_name: string;
+  /** Language code (pack identifier) */
   lang_code: string;
+  /** Identifier of a base language pack; may be empty. If a string is missed in the language pack, then it should be fetched from base language pack. Unsupported in custom language packs */
   base_lang_code?: string;
+  /** A language code to be used to apply plural forms. See [https://www.unicode.org/cldr/charts/latest/supplemental/language\_plural\_rules.html](https://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) for more info */
   plural_code: string;
+  /** Total number of non-deleted strings from the language pack */
   strings_count: number;
+  /** Total number of translated strings from the language pack */
   translated_count: number;
+  /** Link to language translation interface; empty for custom local language packs */
   translations_url: string;
 
   protected get [id](): number {
@@ -30013,8 +32982,11 @@ export class LangPackLanguage_ extends _LangPackLanguage_ {
   }
 }
 
+/** Channel/supergroup title was changed */
 export class ChannelAdminLogEventActionChangeTitle_ extends _ChannelAdminLogEventAction_ {
+  /** Previous title */
   prev_value: string;
+  /** New title */
   new_value: string;
 
   protected get [id](): number {
@@ -30046,8 +33018,11 @@ export class ChannelAdminLogEventActionChangeTitle_ extends _ChannelAdminLogEven
   }
 }
 
+/** The description was changed */
 export class ChannelAdminLogEventActionChangeAbout_ extends _ChannelAdminLogEventAction_ {
+  /** Previous description */
   prev_value: string;
+  /** New description */
   new_value: string;
 
   protected get [id](): number {
@@ -30079,8 +33054,11 @@ export class ChannelAdminLogEventActionChangeAbout_ extends _ChannelAdminLogEven
   }
 }
 
+/** Channel/supergroup username was changed */
 export class ChannelAdminLogEventActionChangeUsername_ extends _ChannelAdminLogEventAction_ {
+  /** Old username */
   prev_value: string;
+  /** New username */
   new_value: string;
 
   protected get [id](): number {
@@ -30112,8 +33090,11 @@ export class ChannelAdminLogEventActionChangeUsername_ extends _ChannelAdminLogE
   }
 }
 
+/** The channel/supergroup's picture was changed */
 export class ChannelAdminLogEventActionChangePhoto_ extends _ChannelAdminLogEventAction_ {
+  /** Previous picture */
   prev_photo: enums.Photo;
+  /** New picture */
   new_photo: enums.Photo;
 
   protected get [id](): number {
@@ -30145,7 +33126,9 @@ export class ChannelAdminLogEventActionChangePhoto_ extends _ChannelAdminLogEven
   }
 }
 
+/** Invites were enabled/disabled */
 export class ChannelAdminLogEventActionToggleInvites_ extends _ChannelAdminLogEventAction_ {
+  /** New value */
   new_value: boolean;
 
   protected get [id](): number {
@@ -30174,7 +33157,9 @@ export class ChannelAdminLogEventActionToggleInvites_ extends _ChannelAdminLogEv
   }
 }
 
+/** Channel signatures were enabled/disabled */
 export class ChannelAdminLogEventActionToggleSignatures_ extends _ChannelAdminLogEventAction_ {
+  /** New value */
   new_value: boolean;
 
   protected get [id](): number {
@@ -30203,7 +33188,9 @@ export class ChannelAdminLogEventActionToggleSignatures_ extends _ChannelAdminLo
   }
 }
 
+/** A message was pinned */
 export class ChannelAdminLogEventActionUpdatePinned_ extends _ChannelAdminLogEventAction_ {
+  /** The message that was pinned */
   message: enums.Message;
 
   protected get [id](): number {
@@ -30232,8 +33219,11 @@ export class ChannelAdminLogEventActionUpdatePinned_ extends _ChannelAdminLogEve
   }
 }
 
+/** A message was edited */
 export class ChannelAdminLogEventActionEditMessage_ extends _ChannelAdminLogEventAction_ {
+  /** Old message */
   prev_message: enums.Message;
+  /** New message */
   new_message: enums.Message;
 
   protected get [id](): number {
@@ -30265,7 +33255,9 @@ export class ChannelAdminLogEventActionEditMessage_ extends _ChannelAdminLogEven
   }
 }
 
+/** A message was deleted */
 export class ChannelAdminLogEventActionDeleteMessage_ extends _ChannelAdminLogEventAction_ {
+  /** The message that was deleted */
   message: enums.Message;
 
   protected get [id](): number {
@@ -30294,6 +33286,7 @@ export class ChannelAdminLogEventActionDeleteMessage_ extends _ChannelAdminLogEv
   }
 }
 
+/** A user has joined the group (in the case of big groups, info of the user that has joined isn't shown) */
 export class ChannelAdminLogEventActionParticipantJoin_ extends _ChannelAdminLogEventAction_ {
   protected get [id](): number {
     return 0x183040D3;
@@ -30316,6 +33309,7 @@ export class ChannelAdminLogEventActionParticipantJoin_ extends _ChannelAdminLog
   }
 }
 
+/** A user left the channel/supergroup (in the case of big groups, info of the user that has joined isn't shown) */
 export class ChannelAdminLogEventActionParticipantLeave_ extends _ChannelAdminLogEventAction_ {
   protected get [id](): number {
     return 0xF89777F2;
@@ -30338,7 +33332,9 @@ export class ChannelAdminLogEventActionParticipantLeave_ extends _ChannelAdminLo
   }
 }
 
+/** A user was invited to the group */
 export class ChannelAdminLogEventActionParticipantInvite_ extends _ChannelAdminLogEventAction_ {
+  /** The user that was invited */
   participant: enums.ChannelParticipant;
 
   protected get [id](): number {
@@ -30367,8 +33363,11 @@ export class ChannelAdminLogEventActionParticipantInvite_ extends _ChannelAdminL
   }
 }
 
+/** The banned [rights](https://core.telegram.org/api/rights) of a user were changed */
 export class ChannelAdminLogEventActionParticipantToggleBan_ extends _ChannelAdminLogEventAction_ {
+  /** Old banned rights of user */
   prev_participant: enums.ChannelParticipant;
+  /** New banned rights of user */
   new_participant: enums.ChannelParticipant;
 
   protected get [id](): number {
@@ -30400,8 +33399,11 @@ export class ChannelAdminLogEventActionParticipantToggleBan_ extends _ChannelAdm
   }
 }
 
+/** The admin [rights](https://core.telegram.org/api/rights) of a user were changed */
 export class ChannelAdminLogEventActionParticipantToggleAdmin_ extends _ChannelAdminLogEventAction_ {
+  /** Previous admin rights */
   prev_participant: enums.ChannelParticipant;
+  /** New admin rights */
   new_participant: enums.ChannelParticipant;
 
   protected get [id](): number {
@@ -30433,8 +33435,11 @@ export class ChannelAdminLogEventActionParticipantToggleAdmin_ extends _ChannelA
   }
 }
 
+/** The supergroup's stickerset was changed */
 export class ChannelAdminLogEventActionChangeStickerSet_ extends _ChannelAdminLogEventAction_ {
+  /** Previous stickerset */
   prev_stickerset: enums.InputStickerSet;
+  /** New stickerset */
   new_stickerset: enums.InputStickerSet;
 
   protected get [id](): number {
@@ -30466,7 +33471,9 @@ export class ChannelAdminLogEventActionChangeStickerSet_ extends _ChannelAdminLo
   }
 }
 
+/** The hidden prehistory setting was [changed](https://core.telegram.org/method/channels.togglePreHistoryHidden) */
 export class ChannelAdminLogEventActionTogglePreHistoryHidden_ extends _ChannelAdminLogEventAction_ {
+  /** New value */
   new_value: boolean;
 
   protected get [id](): number {
@@ -30495,8 +33502,11 @@ export class ChannelAdminLogEventActionTogglePreHistoryHidden_ extends _ChannelA
   }
 }
 
+/** The default banned rights were modified */
 export class ChannelAdminLogEventActionDefaultBannedRights_ extends _ChannelAdminLogEventAction_ {
+  /** Previous global [banned rights](https://core.telegram.org/api/rights) */
   prev_banned_rights: enums.ChatBannedRights;
+  /** New global [banned rights](https://core.telegram.org/api/rights). */
   new_banned_rights: enums.ChatBannedRights;
 
   protected get [id](): number {
@@ -30528,7 +33538,9 @@ export class ChannelAdminLogEventActionDefaultBannedRights_ extends _ChannelAdmi
   }
 }
 
+/** A poll was stopped */
 export class ChannelAdminLogEventActionStopPoll_ extends _ChannelAdminLogEventAction_ {
+  /** The poll that was stopped */
   message: enums.Message;
 
   protected get [id](): number {
@@ -30557,8 +33569,11 @@ export class ChannelAdminLogEventActionStopPoll_ extends _ChannelAdminLogEventAc
   }
 }
 
+/** The linked chat was changed */
 export class ChannelAdminLogEventActionChangeLinkedChat_ extends _ChannelAdminLogEventAction_ {
+  /** Previous linked chat */
   prev_value: bigint;
+  /** New linked chat */
   new_value: bigint;
 
   protected get [id](): number {
@@ -30590,8 +33605,11 @@ export class ChannelAdminLogEventActionChangeLinkedChat_ extends _ChannelAdminLo
   }
 }
 
+/** The geogroup location was changed */
 export class ChannelAdminLogEventActionChangeLocation_ extends _ChannelAdminLogEventAction_ {
+  /** Previous location */
   prev_value: enums.ChannelLocation;
+  /** New location */
   new_value: enums.ChannelLocation;
 
   protected get [id](): number {
@@ -30623,8 +33641,11 @@ export class ChannelAdminLogEventActionChangeLocation_ extends _ChannelAdminLogE
   }
 }
 
+/** [Slow mode setting for supergroups was changed](https://core.telegram.org/method/channels.toggleSlowMode) */
 export class ChannelAdminLogEventActionToggleSlowMode_ extends _ChannelAdminLogEventAction_ {
+  /** Previous slow mode value */
   prev_value: number;
+  /** New slow mode value */
   new_value: number;
 
   protected get [id](): number {
@@ -30656,7 +33677,9 @@ export class ChannelAdminLogEventActionToggleSlowMode_ extends _ChannelAdminLogE
   }
 }
 
+/** A group call was started */
 export class ChannelAdminLogEventActionStartGroupCall_ extends _ChannelAdminLogEventAction_ {
+  /** Group call */
   call: enums.InputGroupCall;
 
   protected get [id](): number {
@@ -30685,7 +33708,9 @@ export class ChannelAdminLogEventActionStartGroupCall_ extends _ChannelAdminLogE
   }
 }
 
+/** A group call was terminated */
 export class ChannelAdminLogEventActionDiscardGroupCall_ extends _ChannelAdminLogEventAction_ {
+  /** The group call that was terminated */
   call: enums.InputGroupCall;
 
   protected get [id](): number {
@@ -30714,7 +33739,9 @@ export class ChannelAdminLogEventActionDiscardGroupCall_ extends _ChannelAdminLo
   }
 }
 
+/** A group call participant was muted */
 export class ChannelAdminLogEventActionParticipantMute_ extends _ChannelAdminLogEventAction_ {
+  /** The participant that was muted */
   participant: enums.GroupCallParticipant;
 
   protected get [id](): number {
@@ -30743,7 +33770,9 @@ export class ChannelAdminLogEventActionParticipantMute_ extends _ChannelAdminLog
   }
 }
 
+/** A group call participant was unmuted */
 export class ChannelAdminLogEventActionParticipantUnmute_ extends _ChannelAdminLogEventAction_ {
+  /** The participant that was unmuted */
   participant: enums.GroupCallParticipant;
 
   protected get [id](): number {
@@ -30772,7 +33801,9 @@ export class ChannelAdminLogEventActionParticipantUnmute_ extends _ChannelAdminL
   }
 }
 
+/** Group call settings were changed */
 export class ChannelAdminLogEventActionToggleGroupCallSetting_ extends _ChannelAdminLogEventAction_ {
+  /** Whether all users are muted by default upon joining */
   join_muted: boolean;
 
   protected get [id](): number {
@@ -30801,8 +33832,11 @@ export class ChannelAdminLogEventActionToggleGroupCallSetting_ extends _ChannelA
   }
 }
 
+/** A user joined the [supergroup/channel](https://core.telegram.org/api/channel) using a specific invite link */
 export class ChannelAdminLogEventActionParticipantJoinByInvite_ extends _ChannelAdminLogEventAction_ {
+  /** The participant joined by importing a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
   via_chatlist?: true;
+  /** The invite link used to join the [supergroup/channel](https://core.telegram.org/api/channel) */
   invite: enums.ExportedChatInvite;
 
   protected get [id](): number {
@@ -30836,7 +33870,9 @@ export class ChannelAdminLogEventActionParticipantJoinByInvite_ extends _Channel
   }
 }
 
+/** A chat invite was deleted */
 export class ChannelAdminLogEventActionExportedInviteDelete_ extends _ChannelAdminLogEventAction_ {
+  /** The deleted chat invite */
   invite: enums.ExportedChatInvite;
 
   protected get [id](): number {
@@ -30865,7 +33901,9 @@ export class ChannelAdminLogEventActionExportedInviteDelete_ extends _ChannelAdm
   }
 }
 
+/** A specific invite link was revoked */
 export class ChannelAdminLogEventActionExportedInviteRevoke_ extends _ChannelAdminLogEventAction_ {
+  /** The invite link that was revoked */
   invite: enums.ExportedChatInvite;
 
   protected get [id](): number {
@@ -30894,8 +33932,11 @@ export class ChannelAdminLogEventActionExportedInviteRevoke_ extends _ChannelAdm
   }
 }
 
+/** A chat invite was edited */
 export class ChannelAdminLogEventActionExportedInviteEdit_ extends _ChannelAdminLogEventAction_ {
+  /** Previous chat invite information */
   prev_invite: enums.ExportedChatInvite;
+  /** New chat invite information */
   new_invite: enums.ExportedChatInvite;
 
   protected get [id](): number {
@@ -30927,7 +33968,9 @@ export class ChannelAdminLogEventActionExportedInviteEdit_ extends _ChannelAdmin
   }
 }
 
+/** channelAdminLogEvent.user\_id has set the volume of participant.peer to participant.volume */
 export class ChannelAdminLogEventActionParticipantVolume_ extends _ChannelAdminLogEventAction_ {
+  /** The participant whose volume was changed */
   participant: enums.GroupCallParticipant;
 
   protected get [id](): number {
@@ -30956,8 +33999,11 @@ export class ChannelAdminLogEventActionParticipantVolume_ extends _ChannelAdminL
   }
 }
 
+/** The Time-To-Live of messages in this chat was changed */
 export class ChannelAdminLogEventActionChangeHistoryTTL_ extends _ChannelAdminLogEventAction_ {
+  /** Previous value */
   prev_value: number;
+  /** New value */
   new_value: number;
 
   protected get [id](): number {
@@ -30989,8 +34035,11 @@ export class ChannelAdminLogEventActionChangeHistoryTTL_ extends _ChannelAdminLo
   }
 }
 
+/** A new member was accepted to the chat by an admin */
 export class ChannelAdminLogEventActionParticipantJoinByRequest_ extends _ChannelAdminLogEventAction_ {
+  /** The invite link that was used to join the chat */
   invite: enums.ExportedChatInvite;
+  /** ID of the admin that approved the invite */
   approved_by: bigint;
 
   protected get [id](): number {
@@ -31022,7 +34071,9 @@ export class ChannelAdminLogEventActionParticipantJoinByRequest_ extends _Channe
   }
 }
 
+/** Forwards were enabled or disabled */
 export class ChannelAdminLogEventActionToggleNoForwards_ extends _ChannelAdminLogEventAction_ {
+  /** Old value */
   new_value: boolean;
 
   protected get [id](): number {
@@ -31051,7 +34102,9 @@ export class ChannelAdminLogEventActionToggleNoForwards_ extends _ChannelAdminLo
   }
 }
 
+/** A message was posted in a channel */
 export class ChannelAdminLogEventActionSendMessage_ extends _ChannelAdminLogEventAction_ {
+  /** The message that was sent */
   message: enums.Message;
 
   protected get [id](): number {
@@ -31080,8 +34133,11 @@ export class ChannelAdminLogEventActionSendMessage_ extends _ChannelAdminLogEven
   }
 }
 
+/** The set of allowed [message reactions »](https://core.telegram.org/api/reactions) for this channel has changed */
 export class ChannelAdminLogEventActionChangeAvailableReactions_ extends _ChannelAdminLogEventAction_ {
+  /** Previously allowed reaction emojis */
   prev_value: enums.ChatReactions;
+  /** New allowed reaction emojis */
   new_value: enums.ChatReactions;
 
   protected get [id](): number {
@@ -31113,8 +34169,11 @@ export class ChannelAdminLogEventActionChangeAvailableReactions_ extends _Channe
   }
 }
 
+/** The list of usernames associated with the channel was changed */
 export class ChannelAdminLogEventActionChangeUsernames_ extends _ChannelAdminLogEventAction_ {
+  /** Previous set of usernames */
   prev_value: Array<string>;
+  /** New set of usernames */
   new_value: Array<string>;
 
   protected get [id](): number {
@@ -31146,7 +34205,9 @@ export class ChannelAdminLogEventActionChangeUsernames_ extends _ChannelAdminLog
   }
 }
 
+/** [Forum](https://core.telegram.org/api/forum) functionality was enabled or disabled. */
 export class ChannelAdminLogEventActionToggleForum_ extends _ChannelAdminLogEventAction_ {
+  /** Whether [forum](https://core.telegram.org/api/forum) functionality was enabled or disabled. */
   new_value: boolean;
 
   protected get [id](): number {
@@ -31175,7 +34236,9 @@ export class ChannelAdminLogEventActionToggleForum_ extends _ChannelAdminLogEven
   }
 }
 
+/** A [forum topic](https://core.telegram.org/api/forum#forum-topics) was created */
 export class ChannelAdminLogEventActionCreateTopic_ extends _ChannelAdminLogEventAction_ {
+  /** The [forum topic](https://core.telegram.org/api/forum#forum-topics) that was created */
   topic: enums.ForumTopic;
 
   protected get [id](): number {
@@ -31204,8 +34267,11 @@ export class ChannelAdminLogEventActionCreateTopic_ extends _ChannelAdminLogEven
   }
 }
 
+/** A [forum topic](https://core.telegram.org/api/forum#forum-topics) was edited */
 export class ChannelAdminLogEventActionEditTopic_ extends _ChannelAdminLogEventAction_ {
+  /** Previous topic information */
   prev_topic: enums.ForumTopic;
+  /** New topic information */
   new_topic: enums.ForumTopic;
 
   protected get [id](): number {
@@ -31237,7 +34303,9 @@ export class ChannelAdminLogEventActionEditTopic_ extends _ChannelAdminLogEventA
   }
 }
 
+/** A [forum topic](https://core.telegram.org/api/forum#forum-topics) was deleted */
 export class ChannelAdminLogEventActionDeleteTopic_ extends _ChannelAdminLogEventAction_ {
+  /** The [forum topic](https://core.telegram.org/api/forum#forum-topics) that was deleted */
   topic: enums.ForumTopic;
 
   protected get [id](): number {
@@ -31266,8 +34334,11 @@ export class ChannelAdminLogEventActionDeleteTopic_ extends _ChannelAdminLogEven
   }
 }
 
+/** A [forum topic](https://core.telegram.org/api/forum#forum-topics) was pinned or unpinned */
 export class ChannelAdminLogEventActionPinTopic_ extends _ChannelAdminLogEventAction_ {
+  /** Previous topic information */
   prev_topic?: enums.ForumTopic;
+  /** New topic information */
   new_topic?: enums.ForumTopic;
 
   protected get [id](): number {
@@ -31301,7 +34372,9 @@ export class ChannelAdminLogEventActionPinTopic_ extends _ChannelAdminLogEventAc
   }
 }
 
+/** [Native antispam](https://core.telegram.org/api/antispam) functionality was enabled or disabled. */
 export class ChannelAdminLogEventActionToggleAntiSpam_ extends _ChannelAdminLogEventAction_ {
+  /** Whether antispam functionality was enabled or disabled. */
   new_value: boolean;
 
   protected get [id](): number {
@@ -31330,8 +34403,11 @@ export class ChannelAdminLogEventActionToggleAntiSpam_ extends _ChannelAdminLogE
   }
 }
 
+/** The [message accent color](https://core.telegram.org/api/colors) was changed */
 export class ChannelAdminLogEventActionChangePeerColor_ extends _ChannelAdminLogEventAction_ {
+  /** Previous accent palette */
   prev_value: enums.PeerColor;
+  /** New accent palette */
   new_value: enums.PeerColor;
 
   protected get [id](): number {
@@ -31363,8 +34439,11 @@ export class ChannelAdminLogEventActionChangePeerColor_ extends _ChannelAdminLog
   }
 }
 
+/** The [profile accent color](https://core.telegram.org/api/colors) was changed */
 export class ChannelAdminLogEventActionChangeProfilePeerColor_ extends _ChannelAdminLogEventAction_ {
+  /** Previous accent palette */
   prev_value: enums.PeerColor;
+  /** New accent palette */
   new_value: enums.PeerColor;
 
   protected get [id](): number {
@@ -31396,8 +34475,11 @@ export class ChannelAdminLogEventActionChangeProfilePeerColor_ extends _ChannelA
   }
 }
 
+/** The [wallpaper](https://core.telegram.org/api/wallpapers) was changed */
 export class ChannelAdminLogEventActionChangeWallpaper_ extends _ChannelAdminLogEventAction_ {
+  /** Previous wallpaper */
   prev_value: enums.WallPaper;
+  /** New wallpaper */
   new_value: enums.WallPaper;
 
   protected get [id](): number {
@@ -31429,8 +34511,11 @@ export class ChannelAdminLogEventActionChangeWallpaper_ extends _ChannelAdminLog
   }
 }
 
+/** The [emoji status](https://core.telegram.org/api/emoji-status) was changed */
 export class ChannelAdminLogEventActionChangeEmojiStatus_ extends _ChannelAdminLogEventAction_ {
+  /** Previous emoji status */
   prev_value: enums.EmojiStatus;
+  /** New emoji status */
   new_value: enums.EmojiStatus;
 
   protected get [id](): number {
@@ -31495,10 +34580,15 @@ export class ChannelAdminLogEventActionChangeEmojiStickerSet_ extends _ChannelAd
   }
 }
 
+/** Admin log event */
 export class ChannelAdminLogEvent_ extends _ChannelAdminLogEvent_ {
+  /** Event ID */
   id: bigint;
+  /** Date */
   date: number;
+  /** User ID */
   user_id: bigint;
+  /** Action */
   action: enums.ChannelAdminLogEventAction;
 
   protected get [id](): number {
@@ -31536,9 +34626,13 @@ export class ChannelAdminLogEvent_ extends _ChannelAdminLogEvent_ {
   }
 }
 
+/** Admin log events */
 export class channels_AdminLogResults_ extends _channels_AdminLogResults_ {
+  /** Admin log events */
   events: Array<enums.ChannelAdminLogEvent>;
+  /** Chats mentioned in events */
   chats: Array<enums.Chat>;
+  /** Users mentioned in events */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -31573,24 +34667,43 @@ export class channels_AdminLogResults_ extends _channels_AdminLogResults_ {
   }
 }
 
+/** Filter only certain admin log events */
 export class ChannelAdminLogEventsFilter_ extends _ChannelAdminLogEventsFilter_ {
+  /** [Join events](https://core.telegram.org/constructor/channelAdminLogEventActionParticipantJoin), including [joins using invite links](https://core.telegram.org/constructor/channelAdminLogEventActionParticipantJoinByInvite) and [join requests](https://core.telegram.org/constructor/channelAdminLogEventActionParticipantJoinByRequest). */
   join?: true;
+  /** [Leave events](https://core.telegram.org/constructor/channelAdminLogEventActionParticipantLeave) */
   leave?: true;
+  /** [Invite events](https://core.telegram.org/constructor/channelAdminLogEventActionParticipantInvite) */
   invite?: true;
+  /** [Ban events](https://core.telegram.org/constructor/channelAdminLogEventActionParticipantToggleBan) */
   ban?: true;
+  /** [Unban events](https://core.telegram.org/constructor/channelAdminLogEventActionParticipantToggleBan) */
   unban?: true;
+  /** [Kick events](https://core.telegram.org/constructor/channelAdminLogEventActionParticipantToggleBan) */
   kick?: true;
+  /** [Unkick events](https://core.telegram.org/constructor/channelAdminLogEventActionParticipantToggleBan) */
   unkick?: true;
+  /** [Admin promotion events](https://core.telegram.org/constructor/channelAdminLogEventActionParticipantToggleAdmin) */
   promote?: true;
+  /** [Admin demotion events](https://core.telegram.org/constructor/channelAdminLogEventActionParticipantToggleAdmin) */
   demote?: true;
+  /** Info change events (when [about](https://core.telegram.org/constructor/channelAdminLogEventActionChangeAbout), [linked chat](https://core.telegram.org/constructor/channelAdminLogEventActionChangeLinkedChat), [location](https://core.telegram.org/constructor/channelAdminLogEventActionChangeLocation), [photo](https://core.telegram.org/constructor/channelAdminLogEventActionChangePhoto), [stickerset](https://core.telegram.org/constructor/channelAdminLogEventActionChangeStickerSet), [title](https://core.telegram.org/constructor/channelAdminLogEventActionChangeTitle) or [username](https://core.telegram.org/constructor/channelAdminLogEventActionChangeUsername), [slowmode](https://core.telegram.org/constructor/channelAdminLogEventActionToggleSlowMode), [history TTL](https://core.telegram.org/constructor/channelAdminLogEventActionChangeHistoryTTL) settings of a channel gets modified) */
   info?: true;
+  /** Settings change events ([invites](https://core.telegram.org/constructor/channelAdminLogEventActionToggleInvites), [hidden prehistory](https://core.telegram.org/constructor/channelAdminLogEventActionTogglePreHistoryHidden), [signatures](https://core.telegram.org/constructor/channelAdminLogEventActionToggleSignatures), [default banned rights](https://core.telegram.org/constructor/channelAdminLogEventActionDefaultBannedRights), [forum toggle events](https://core.telegram.org/constructor/channelAdminLogEventActionToggleForum)) */
   settings?: true;
+  /** [Message pin events](https://core.telegram.org/constructor/channelAdminLogEventActionUpdatePinned) */
   pinned?: true;
+  /** [Message edit events](https://core.telegram.org/constructor/channelAdminLogEventActionEditMessage) */
   edit?: true;
+  /** [Message deletion events](https://core.telegram.org/constructor/channelAdminLogEventActionDeleteMessage) */
   delete?: true;
+  /** Group call events */
   group_call?: true;
+  /** Invite events */
   invites?: true;
+  /** A message was posted in a channel */
   send?: true;
+  /** [Forum](https://core.telegram.org/api/forum)\-related events */
   forums?: true;
 
   protected get [id](): number {
@@ -31672,8 +34785,11 @@ export class ChannelAdminLogEventsFilter_ extends _ChannelAdminLogEventsFilter_ 
   }
 }
 
+/** Popular contact */
 export class PopularContact_ extends _PopularContact_ {
+  /** Contact identifier */
   client_id: bigint;
+  /** How many people imported this contact */
   importers: number;
 
   protected get [id](): number {
@@ -31705,6 +34821,7 @@ export class PopularContact_ extends _PopularContact_ {
   }
 }
 
+/** No new favorited stickers were found */
 export class messages_FavedStickersNotModified_ extends _messages_FavedStickers_ {
   protected get [id](): number {
     return 0x9E8FA6D3;
@@ -31727,9 +34844,13 @@ export class messages_FavedStickersNotModified_ extends _messages_FavedStickers_
   }
 }
 
+/** Favorited stickers */
 export class messages_FavedStickers_ extends _messages_FavedStickers_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** Emojis associated to stickers */
   packs: Array<enums.StickerPack>;
+  /** Favorited stickers */
   stickers: Array<enums.Document>;
 
   protected get [id](): number {
@@ -31764,7 +34885,9 @@ export class messages_FavedStickers_ extends _messages_FavedStickers_ {
   }
 }
 
+/** Unknown t.me url */
 export class RecentMeUrlUnknown_ extends _RecentMeUrl_ {
+  /** URL */
   url: string;
 
   protected get [id](): number {
@@ -31793,8 +34916,11 @@ export class RecentMeUrlUnknown_ extends _RecentMeUrl_ {
   }
 }
 
+/** Recent t.me link to a user */
 export class RecentMeUrlUser_ extends _RecentMeUrl_ {
+  /** URL */
   url: string;
+  /** User ID */
   user_id: bigint;
 
   protected get [id](): number {
@@ -31826,8 +34952,11 @@ export class RecentMeUrlUser_ extends _RecentMeUrl_ {
   }
 }
 
+/** Recent t.me link to a chat */
 export class RecentMeUrlChat_ extends _RecentMeUrl_ {
+  /** t.me URL */
   url: string;
+  /** Chat ID */
   chat_id: bigint;
 
   protected get [id](): number {
@@ -31859,8 +34988,11 @@ export class RecentMeUrlChat_ extends _RecentMeUrl_ {
   }
 }
 
+/** Recent t.me invite link to a chat */
 export class RecentMeUrlChatInvite_ extends _RecentMeUrl_ {
+  /** t.me URL */
   url: string;
+  /** Chat invitation */
   chat_invite: enums.ChatInvite;
 
   protected get [id](): number {
@@ -31892,8 +35024,11 @@ export class RecentMeUrlChatInvite_ extends _RecentMeUrl_ {
   }
 }
 
+/** Recent t.me stickerset installation URL */
 export class RecentMeUrlStickerSet_ extends _RecentMeUrl_ {
+  /** t.me URL */
   url: string;
+  /** Stickerset */
   set: enums.StickerSetCovered;
 
   protected get [id](): number {
@@ -31925,9 +35060,13 @@ export class RecentMeUrlStickerSet_ extends _RecentMeUrl_ {
   }
 }
 
+/** Recent t.me URLs */
 export class help_RecentMeUrls_ extends _help_RecentMeUrls_ {
+  /** URLs */
   urls: Array<enums.RecentMeUrl>;
+  /** Chats */
   chats: Array<enums.Chat>;
+  /** Users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -31962,10 +35101,15 @@ export class help_RecentMeUrls_ extends _help_RecentMeUrls_ {
   }
 }
 
+/** A single media in an [album or grouped media](https://core.telegram.org/api/files#albums-grouped-media) sent with [messages.sendMultiMedia](https://core.telegram.org/method/messages.sendMultiMedia). */
 export class InputSingleMedia_ extends _InputSingleMedia_ {
+  /** The media */
   media: enums.InputMedia;
+  /** Unique client media ID required to prevent message resending */
   random_id: bigint;
+  /** A caption for the media */
   message: string;
+  /** Message [entities](https://core.telegram.org/api/entities) for styled text */
   entities?: Array<enums.MessageEntity>;
 
   protected get [id](): number {
@@ -32005,15 +35149,25 @@ export class InputSingleMedia_ extends _InputSingleMedia_ {
   }
 }
 
+/** Represents a bot logged in using the [Telegram login widget](https://core.telegram.org/widgets/login) */
 export class WebAuthorization_ extends _WebAuthorization_ {
+  /** Authorization hash */
   hash: bigint;
+  /** Bot ID */
   bot_id: bigint;
+  /** The domain name of the website on which the user has logged in. */
   domain: string;
+  /** Browser user-agent */
   browser: string;
+  /** Platform */
   platform: string;
+  /** When was the web session created */
   date_created: number;
+  /** When was the web session last active */
   date_active: number;
+  /** IP address */
   ip: string;
+  /** Region, determined from IP address */
   region: string;
 
   protected get [id](): number {
@@ -32066,8 +35220,11 @@ export class WebAuthorization_ extends _WebAuthorization_ {
   }
 }
 
+/** Web authorizations */
 export class account_WebAuthorizations_ extends _account_WebAuthorizations_ {
+  /** Web authorization list */
   authorizations: Array<enums.WebAuthorization>;
+  /** Users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -32099,7 +35256,9 @@ export class account_WebAuthorizations_ extends _account_WebAuthorizations_ {
   }
 }
 
+/** Message by ID */
 export class InputMessageID_ extends _InputMessage_ {
+  /** Message ID */
   id: number;
 
   protected get [id](): number {
@@ -32128,7 +35287,9 @@ export class InputMessageID_ extends _InputMessage_ {
   }
 }
 
+/** Message to which the specified message replies to */
 export class InputMessageReplyTo_ extends _InputMessage_ {
+  /** ID of the message that replies to the message we need */
   id: number;
 
   protected get [id](): number {
@@ -32157,6 +35318,7 @@ export class InputMessageReplyTo_ extends _InputMessage_ {
   }
 }
 
+/** Pinned message */
 export class InputMessagePinned_ extends _InputMessage_ {
   protected get [id](): number {
     return 0x86872538;
@@ -32179,8 +35341,11 @@ export class InputMessagePinned_ extends _InputMessage_ {
   }
 }
 
+/** Used by bots for fetching information about the message that originated a callback query */
 export class InputMessageCallbackQuery_ extends _InputMessage_ {
+  /** Message ID */
   id: number;
+  /** Callback query ID */
   query_id: bigint;
 
   protected get [id](): number {
@@ -32212,7 +35377,9 @@ export class InputMessageCallbackQuery_ extends _InputMessage_ {
   }
 }
 
+/** A peer */
 export class InputDialogPeer_ extends _InputDialogPeer_ {
+  /** Peer */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -32241,7 +35408,9 @@ export class InputDialogPeer_ extends _InputDialogPeer_ {
   }
 }
 
+/** All peers in a [peer folder](https://core.telegram.org/api/folders#peer-folders) */
 export class InputDialogPeerFolder_ extends _InputDialogPeer_ {
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id: number;
 
   protected get [id](): number {
@@ -32270,7 +35439,9 @@ export class InputDialogPeerFolder_ extends _InputDialogPeer_ {
   }
 }
 
+/** Peer */
 export class DialogPeer_ extends _DialogPeer_ {
+  /** Peer */
   peer: enums.Peer;
 
   protected get [id](): number {
@@ -32299,7 +35470,9 @@ export class DialogPeer_ extends _DialogPeer_ {
   }
 }
 
+/** [Peer folder](https://core.telegram.org/api/folders#peer-folders) */
 export class DialogPeerFolder_ extends _DialogPeer_ {
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id: number;
 
   protected get [id](): number {
@@ -32328,6 +35501,7 @@ export class DialogPeerFolder_ extends _DialogPeer_ {
   }
 }
 
+/** No further results were found */
 export class messages_FoundStickerSetsNotModified_ extends _messages_FoundStickerSets_ {
   protected get [id](): number {
     return 0x0D54B65D;
@@ -32350,8 +35524,11 @@ export class messages_FoundStickerSetsNotModified_ extends _messages_FoundSticke
   }
 }
 
+/** Found stickersets */
 export class messages_FoundStickerSets_ extends _messages_FoundStickerSets_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** Found stickersets */
   sets: Array<enums.StickerSetCovered>;
 
   protected get [id](): number {
@@ -32383,9 +35560,13 @@ export class messages_FoundStickerSets_ extends _messages_FoundStickerSets_ {
   }
 }
 
+/** SHA256 Hash of an uploaded file, to be checked for validity after download */
 export class FileHash_ extends _FileHash_ {
+  /** Offset from where to start computing SHA-256 hash */
   offset: bigint;
+  /** Length */
   limit: number;
+  /** SHA-256 Hash of file chunk, to be checked for validity after download */
   hash: Uint8Array;
 
   protected get [id](): number {
@@ -32420,8 +35601,11 @@ export class FileHash_ extends _FileHash_ {
   }
 }
 
+/** Info about an [MTProxy](https://core.telegram.org/mtproto/mtproto-transports#transport-obfuscation) used to connect. */
 export class InputClientProxy_ extends _InputClientProxy_ {
+  /** Proxy address */
   address: string;
+  /** Proxy port */
   port: number;
 
   protected get [id](): number {
@@ -32453,7 +35637,9 @@ export class InputClientProxy_ extends _InputClientProxy_ {
   }
 }
 
+/** No changes were made to telegram's terms of service */
 export class help_TermsOfServiceUpdateEmpty_ extends _help_TermsOfServiceUpdate_ {
+  /** New TOS updates will have to be queried using [help.getTermsOfServiceUpdate](https://core.telegram.org/method/help.getTermsOfServiceUpdate) in `expires` seconds */
   expires: number;
 
   protected get [id](): number {
@@ -32482,8 +35668,11 @@ export class help_TermsOfServiceUpdateEmpty_ extends _help_TermsOfServiceUpdate_
   }
 }
 
+/** Info about an update of telegram's terms of service. If the terms of service are declined, then the [account.deleteAccount](https://core.telegram.org/method/account.deleteAccount) method should be called with the reason "Decline ToS update" */
 export class help_TermsOfServiceUpdate_ extends _help_TermsOfServiceUpdate_ {
+  /** New TOS updates will have to be queried using [help.getTermsOfServiceUpdate](https://core.telegram.org/method/help.getTermsOfServiceUpdate) in `expires` seconds */
   expires: number;
+  /** New terms of service */
   terms_of_service: enums.help.TermsOfService;
 
   protected get [id](): number {
@@ -32515,11 +35704,17 @@ export class help_TermsOfServiceUpdate_ extends _help_TermsOfServiceUpdate_ {
   }
 }
 
+/** Uploaded secure file, for more info [see the passport docs »](https://core.telegram.org/passport/encryption#inputsecurefile) */
 export class InputSecureFileUploaded_ extends _InputSecureFile_ {
+  /** Secure file ID */
   id: bigint;
+  /** Secure file part count */
   parts: number;
+  /** MD5 hash of encrypted uploaded file, to be checked server-side */
   md5_checksum: string;
+  /** File hash */
   file_hash: Uint8Array;
+  /** Secret */
   secret: Uint8Array;
 
   protected get [id](): number {
@@ -32560,8 +35755,11 @@ export class InputSecureFileUploaded_ extends _InputSecureFile_ {
   }
 }
 
+/** Pre-uploaded [passport](https://core.telegram.org/passport) file, for more info [see the passport docs »](https://core.telegram.org/passport/encryption#inputsecurefile) */
 export class InputSecureFile_ extends _InputSecureFile_ {
+  /** Secure file ID */
   id: bigint;
+  /** Secure file access hash */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -32593,6 +35791,7 @@ export class InputSecureFile_ extends _InputSecureFile_ {
   }
 }
 
+/** Empty constructor */
 export class SecureFileEmpty_ extends _SecureFile_ {
   protected get [id](): number {
     return 0x64199744;
@@ -32615,13 +35814,21 @@ export class SecureFileEmpty_ extends _SecureFile_ {
   }
 }
 
+/** Secure [passport](https://core.telegram.org/passport) file, for more info [see the passport docs »](https://core.telegram.org/passport/encryption#inputsecurefile) */
 export class SecureFile_ extends _SecureFile_ {
+  /** ID */
   id: bigint;
+  /** Access hash */
   access_hash: bigint;
+  /** File size */
   size: bigint;
+  /** DC ID */
   dc_id: number;
+  /** Date of upload */
   date: number;
+  /** File hash */
   file_hash: Uint8Array;
+  /** Secret */
   secret: Uint8Array;
 
   protected get [id](): number {
@@ -32668,9 +35875,13 @@ export class SecureFile_ extends _SecureFile_ {
   }
 }
 
+/** Secure [passport](https://core.telegram.org/passport) data, for more info [see the passport docs »](https://core.telegram.org/passport/encryption#securedata) */
 export class SecureData_ extends _SecureData_ {
+  /** Data */
   data: Uint8Array;
+  /** Data hash */
   data_hash: Uint8Array;
+  /** Secret */
   secret: Uint8Array;
 
   protected get [id](): number {
@@ -32705,7 +35916,9 @@ export class SecureData_ extends _SecureData_ {
   }
 }
 
+/** Phone number to use in [telegram passport](https://core.telegram.org/passport): [it must be verified, first »](https://core.telegram.org/passport/encryption#secureplaindata). */
 export class SecurePlainPhone_ extends _SecurePlainData_ {
+  /** Phone number */
   phone: string;
 
   protected get [id](): number {
@@ -32734,7 +35947,9 @@ export class SecurePlainPhone_ extends _SecurePlainData_ {
   }
 }
 
+/** Email address to use in [telegram passport](https://core.telegram.org/passport): [it must be verified, first »](https://core.telegram.org/passport/encryption#secureplaindata). */
 export class SecurePlainEmail_ extends _SecurePlainData_ {
+  /** Email address */
   email: string;
 
   protected get [id](): number {
@@ -32763,6 +35978,7 @@ export class SecurePlainEmail_ extends _SecurePlainData_ {
   }
 }
 
+/** Personal details */
 export class SecureValueTypePersonalDetails_ extends _SecureValueType_ {
   protected get [id](): number {
     return 0x9D2A81E3;
@@ -32785,6 +36001,7 @@ export class SecureValueTypePersonalDetails_ extends _SecureValueType_ {
   }
 }
 
+/** Passport */
 export class SecureValueTypePassport_ extends _SecureValueType_ {
   protected get [id](): number {
     return 0x3DAC6A00;
@@ -32807,6 +36024,7 @@ export class SecureValueTypePassport_ extends _SecureValueType_ {
   }
 }
 
+/** Driver's license */
 export class SecureValueTypeDriverLicense_ extends _SecureValueType_ {
   protected get [id](): number {
     return 0x06E425C4;
@@ -32829,6 +36047,7 @@ export class SecureValueTypeDriverLicense_ extends _SecureValueType_ {
   }
 }
 
+/** Identity card */
 export class SecureValueTypeIdentityCard_ extends _SecureValueType_ {
   protected get [id](): number {
     return 0xA0D0744B;
@@ -32851,6 +36070,7 @@ export class SecureValueTypeIdentityCard_ extends _SecureValueType_ {
   }
 }
 
+/** Internal [passport](https://core.telegram.org/passport) */
 export class SecureValueTypeInternalPassport_ extends _SecureValueType_ {
   protected get [id](): number {
     return 0x99A48F23;
@@ -32873,6 +36093,7 @@ export class SecureValueTypeInternalPassport_ extends _SecureValueType_ {
   }
 }
 
+/** Address */
 export class SecureValueTypeAddress_ extends _SecureValueType_ {
   protected get [id](): number {
     return 0xCBE31E26;
@@ -32895,6 +36116,7 @@ export class SecureValueTypeAddress_ extends _SecureValueType_ {
   }
 }
 
+/** Utility bill */
 export class SecureValueTypeUtilityBill_ extends _SecureValueType_ {
   protected get [id](): number {
     return 0xFC36954E;
@@ -32917,6 +36139,7 @@ export class SecureValueTypeUtilityBill_ extends _SecureValueType_ {
   }
 }
 
+/** Bank statement */
 export class SecureValueTypeBankStatement_ extends _SecureValueType_ {
   protected get [id](): number {
     return 0x89137C0D;
@@ -32939,6 +36162,7 @@ export class SecureValueTypeBankStatement_ extends _SecureValueType_ {
   }
 }
 
+/** Rental agreement */
 export class SecureValueTypeRentalAgreement_ extends _SecureValueType_ {
   protected get [id](): number {
     return 0x8B883488;
@@ -32961,6 +36185,7 @@ export class SecureValueTypeRentalAgreement_ extends _SecureValueType_ {
   }
 }
 
+/** Internal registration [passport](https://core.telegram.org/passport) */
 export class SecureValueTypePassportRegistration_ extends _SecureValueType_ {
   protected get [id](): number {
     return 0x99E3806A;
@@ -32983,6 +36208,7 @@ export class SecureValueTypePassportRegistration_ extends _SecureValueType_ {
   }
 }
 
+/** Temporary registration */
 export class SecureValueTypeTemporaryRegistration_ extends _SecureValueType_ {
   protected get [id](): number {
     return 0xEA02EC33;
@@ -33005,6 +36231,7 @@ export class SecureValueTypeTemporaryRegistration_ extends _SecureValueType_ {
   }
 }
 
+/** Phone */
 export class SecureValueTypePhone_ extends _SecureValueType_ {
   protected get [id](): number {
     return 0xB320AADB;
@@ -33027,6 +36254,7 @@ export class SecureValueTypePhone_ extends _SecureValueType_ {
   }
 }
 
+/** Email */
 export class SecureValueTypeEmail_ extends _SecureValueType_ {
   protected get [id](): number {
     return 0x8E3CA7EE;
@@ -33049,15 +36277,25 @@ export class SecureValueTypeEmail_ extends _SecureValueType_ {
   }
 }
 
+/** Secure value */
 export class SecureValue_ extends _SecureValue_ {
+  /** Secure [passport](https://core.telegram.org/passport) value type */
   type: enums.SecureValueType;
+  /** Encrypted [Telegram Passport](https://core.telegram.org/passport) element data */
   data?: enums.SecureData;
+  /** Encrypted [passport](https://core.telegram.org/passport) file with the front side of the document */
   front_side?: enums.SecureFile;
+  /** Encrypted [passport](https://core.telegram.org/passport) file with the reverse side of the document */
   reverse_side?: enums.SecureFile;
+  /** Encrypted [passport](https://core.telegram.org/passport) file with a selfie of the user holding the document */
   selfie?: enums.SecureFile;
+  /** Array of encrypted [passport](https://core.telegram.org/passport) files with translated versions of the provided documents */
   translation?: Array<enums.SecureFile>;
+  /** Array of encrypted [passport](https://core.telegram.org/passport) files with photos the of the documents */
   files?: Array<enums.SecureFile>;
+  /** Plaintext verified [passport](https://core.telegram.org/passport) data */
   plain_data?: enums.SecurePlainData;
+  /** Data hash */
   hash: Uint8Array;
 
   protected get [id](): number {
@@ -33112,14 +36350,23 @@ export class SecureValue_ extends _SecureValue_ {
   }
 }
 
+/** Secure value, [for more info see the passport docs »](https://core.telegram.org/passport/encryption#encryption) */
 export class InputSecureValue_ extends _InputSecureValue_ {
+  /** Secure [passport](https://core.telegram.org/passport) value type */
   type: enums.SecureValueType;
+  /** Encrypted [Telegram Passport](https://core.telegram.org/passport) element data */
   data?: enums.SecureData;
+  /** Encrypted [passport](https://core.telegram.org/passport) file with the front side of the document */
   front_side?: enums.InputSecureFile;
+  /** Encrypted [passport](https://core.telegram.org/passport) file with the reverse side of the document */
   reverse_side?: enums.InputSecureFile;
+  /** Encrypted [passport](https://core.telegram.org/passport) file with a selfie of the user holding the document */
   selfie?: enums.InputSecureFile;
+  /** Array of encrypted [passport](https://core.telegram.org/passport) files with translated versions of the provided documents */
   translation?: Array<enums.InputSecureFile>;
+  /** Array of encrypted [passport](https://core.telegram.org/passport) files with photos the of the documents */
   files?: Array<enums.InputSecureFile>;
+  /** Plaintext verified [passport](https://core.telegram.org/passport) data */
   plain_data?: enums.SecurePlainData;
 
   protected get [id](): number {
@@ -33171,8 +36418,11 @@ export class InputSecureValue_ extends _InputSecureValue_ {
   }
 }
 
+/** Secure value hash */
 export class SecureValueHash_ extends _SecureValueHash_ {
+  /** Secure value type */
   type: enums.SecureValueType;
+  /** Hash */
   hash: Uint8Array;
 
   protected get [id](): number {
@@ -33204,10 +36454,15 @@ export class SecureValueHash_ extends _SecureValueHash_ {
   }
 }
 
+/** Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes. */
 export class SecureValueErrorData_ extends _SecureValueError_ {
+  /** The section of the user's Telegram Passport which has the error, one of [secureValueTypePersonalDetails](https://core.telegram.org/constructor/secureValueTypePersonalDetails), [secureValueTypePassport](https://core.telegram.org/constructor/secureValueTypePassport), [secureValueTypeDriverLicense](https://core.telegram.org/constructor/secureValueTypeDriverLicense), [secureValueTypeIdentityCard](https://core.telegram.org/constructor/secureValueTypeIdentityCard), [secureValueTypeInternalPassport](https://core.telegram.org/constructor/secureValueTypeInternalPassport), [secureValueTypeAddress](https://core.telegram.org/constructor/secureValueTypeAddress) */
   type: enums.SecureValueType;
+  /** Data hash */
   data_hash: Uint8Array;
+  /** Name of the data field which has the error */
   field: string;
+  /** Error message */
   text: string;
 
   protected get [id](): number {
@@ -33245,9 +36500,13 @@ export class SecureValueErrorData_ extends _SecureValueError_ {
   }
 }
 
+/** Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes. */
 export class SecureValueErrorFrontSide_ extends _SecureValueError_ {
+  /** One of [secureValueTypePassport](https://core.telegram.org/constructor/secureValueTypePassport), [secureValueTypeDriverLicense](https://core.telegram.org/constructor/secureValueTypeDriverLicense), [secureValueTypeIdentityCard](https://core.telegram.org/constructor/secureValueTypeIdentityCard), [secureValueTypeInternalPassport](https://core.telegram.org/constructor/secureValueTypeInternalPassport) */
   type: enums.SecureValueType;
+  /** File hash */
   file_hash: Uint8Array;
+  /** Error message */
   text: string;
 
   protected get [id](): number {
@@ -33282,9 +36541,13 @@ export class SecureValueErrorFrontSide_ extends _SecureValueError_ {
   }
 }
 
+/** Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes. */
 export class SecureValueErrorReverseSide_ extends _SecureValueError_ {
+  /** One of [secureValueTypeDriverLicense](https://core.telegram.org/constructor/secureValueTypeDriverLicense), [secureValueTypeIdentityCard](https://core.telegram.org/constructor/secureValueTypeIdentityCard) */
   type: enums.SecureValueType;
+  /** File hash */
   file_hash: Uint8Array;
+  /** Error message */
   text: string;
 
   protected get [id](): number {
@@ -33319,9 +36582,13 @@ export class SecureValueErrorReverseSide_ extends _SecureValueError_ {
   }
 }
 
+/** Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes. */
 export class SecureValueErrorSelfie_ extends _SecureValueError_ {
+  /** One of [secureValueTypePassport](https://core.telegram.org/constructor/secureValueTypePassport), [secureValueTypeDriverLicense](https://core.telegram.org/constructor/secureValueTypeDriverLicense), [secureValueTypeIdentityCard](https://core.telegram.org/constructor/secureValueTypeIdentityCard), [secureValueTypeInternalPassport](https://core.telegram.org/constructor/secureValueTypeInternalPassport) */
   type: enums.SecureValueType;
+  /** File hash */
   file_hash: Uint8Array;
+  /** Error message */
   text: string;
 
   protected get [id](): number {
@@ -33356,9 +36623,13 @@ export class SecureValueErrorSelfie_ extends _SecureValueError_ {
   }
 }
 
+/** Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes. */
 export class SecureValueErrorFile_ extends _SecureValueError_ {
+  /** One of [secureValueTypeUtilityBill](https://core.telegram.org/constructor/secureValueTypeUtilityBill), [secureValueTypeBankStatement](https://core.telegram.org/constructor/secureValueTypeBankStatement), [secureValueTypeRentalAgreement](https://core.telegram.org/constructor/secureValueTypeRentalAgreement), [secureValueTypePassportRegistration](https://core.telegram.org/constructor/secureValueTypePassportRegistration), [secureValueTypeTemporaryRegistration](https://core.telegram.org/constructor/secureValueTypeTemporaryRegistration) */
   type: enums.SecureValueType;
+  /** File hash */
   file_hash: Uint8Array;
+  /** Error message */
   text: string;
 
   protected get [id](): number {
@@ -33393,9 +36664,13 @@ export class SecureValueErrorFile_ extends _SecureValueError_ {
   }
 }
 
+/** Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes. */
 export class SecureValueErrorFiles_ extends _SecureValueError_ {
+  /** One of [secureValueTypeUtilityBill](https://core.telegram.org/constructor/secureValueTypeUtilityBill), [secureValueTypeBankStatement](https://core.telegram.org/constructor/secureValueTypeBankStatement), [secureValueTypeRentalAgreement](https://core.telegram.org/constructor/secureValueTypeRentalAgreement), [secureValueTypePassportRegistration](https://core.telegram.org/constructor/secureValueTypePassportRegistration), [secureValueTypeTemporaryRegistration](https://core.telegram.org/constructor/secureValueTypeTemporaryRegistration) */
   type: enums.SecureValueType;
+  /** File hash */
   file_hash: Array<Uint8Array>;
+  /** Error message */
   text: string;
 
   protected get [id](): number {
@@ -33430,9 +36705,13 @@ export class SecureValueErrorFiles_ extends _SecureValueError_ {
   }
 }
 
+/** Secure value error */
 export class SecureValueError_ extends _SecureValueError_ {
+  /** Type of element which has the issue */
   type: enums.SecureValueType;
+  /** Hash */
   hash: Uint8Array;
+  /** Error message */
   text: string;
 
   protected get [id](): number {
@@ -33467,9 +36746,13 @@ export class SecureValueError_ extends _SecureValueError_ {
   }
 }
 
+/** Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes. */
 export class SecureValueErrorTranslationFile_ extends _SecureValueError_ {
+  /** One of [secureValueTypePersonalDetails](https://core.telegram.org/constructor/secureValueTypePersonalDetails), [secureValueTypePassport](https://core.telegram.org/constructor/secureValueTypePassport), [secureValueTypeDriverLicense](https://core.telegram.org/constructor/secureValueTypeDriverLicense), [secureValueTypeIdentityCard](https://core.telegram.org/constructor/secureValueTypeIdentityCard), [secureValueTypeInternalPassport](https://core.telegram.org/constructor/secureValueTypeInternalPassport), [secureValueTypeUtilityBill](https://core.telegram.org/constructor/secureValueTypeUtilityBill), [secureValueTypeBankStatement](https://core.telegram.org/constructor/secureValueTypeBankStatement), [secureValueTypeRentalAgreement](https://core.telegram.org/constructor/secureValueTypeRentalAgreement), [secureValueTypePassportRegistration](https://core.telegram.org/constructor/secureValueTypePassportRegistration), [secureValueTypeTemporaryRegistration](https://core.telegram.org/constructor/secureValueTypeTemporaryRegistration) */
   type: enums.SecureValueType;
+  /** File hash */
   file_hash: Uint8Array;
+  /** Error message */
   text: string;
 
   protected get [id](): number {
@@ -33504,9 +36787,13 @@ export class SecureValueErrorTranslationFile_ extends _SecureValueError_ {
   }
 }
 
+/** Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation changes. */
 export class SecureValueErrorTranslationFiles_ extends _SecureValueError_ {
+  /** One of [secureValueTypePersonalDetails](https://core.telegram.org/constructor/secureValueTypePersonalDetails), [secureValueTypePassport](https://core.telegram.org/constructor/secureValueTypePassport), [secureValueTypeDriverLicense](https://core.telegram.org/constructor/secureValueTypeDriverLicense), [secureValueTypeIdentityCard](https://core.telegram.org/constructor/secureValueTypeIdentityCard), [secureValueTypeInternalPassport](https://core.telegram.org/constructor/secureValueTypeInternalPassport), [secureValueTypeUtilityBill](https://core.telegram.org/constructor/secureValueTypeUtilityBill), [secureValueTypeBankStatement](https://core.telegram.org/constructor/secureValueTypeBankStatement), [secureValueTypeRentalAgreement](https://core.telegram.org/constructor/secureValueTypeRentalAgreement), [secureValueTypePassportRegistration](https://core.telegram.org/constructor/secureValueTypePassportRegistration), [secureValueTypeTemporaryRegistration](https://core.telegram.org/constructor/secureValueTypeTemporaryRegistration) */
   type: enums.SecureValueType;
+  /** Hash */
   file_hash: Array<Uint8Array>;
+  /** Error message */
   text: string;
 
   protected get [id](): number {
@@ -33541,9 +36828,13 @@ export class SecureValueErrorTranslationFiles_ extends _SecureValueError_ {
   }
 }
 
+/** Encrypted credentials required to decrypt [telegram passport](https://core.telegram.org/passport) data. */
 export class SecureCredentialsEncrypted_ extends _SecureCredentialsEncrypted_ {
+  /** Encrypted JSON-serialized data with unique user's payload, data hashes and secrets required for EncryptedPassportElement decryption and authentication, as described in [decrypting data »](https://core.telegram.org/passport#decrypting-data) */
   data: Uint8Array;
+  /** Data hash for data authentication as described in [decrypting data »](https://core.telegram.org/passport#decrypting-data) */
   hash: Uint8Array;
+  /** Secret, encrypted with the bot's public RSA key, required for data decryption as described in [decrypting data »](https://core.telegram.org/passport#decrypting-data) */
   secret: Uint8Array;
 
   protected get [id](): number {
@@ -33578,11 +36869,17 @@ export class SecureCredentialsEncrypted_ extends _SecureCredentialsEncrypted_ {
   }
 }
 
+/** [Telegram Passport](https://core.telegram.org/passport) authorization form */
 export class account_AuthorizationForm_ extends _account_AuthorizationForm_ {
+  /** Required [Telegram Passport](https://core.telegram.org/passport) documents */
   required_types: Array<enums.SecureRequiredType>;
+  /** Already submitted [Telegram Passport](https://core.telegram.org/passport) documents */
   values: Array<enums.SecureValue>;
+  /** [Telegram Passport](https://core.telegram.org/passport) errors */
   errors: Array<enums.SecureValueError>;
+  /** Info about the bot to which the form will be submitted */
   users: Array<enums.User>;
+  /** URL of the service's privacy policy */
   privacy_policy_url?: string;
 
   protected get [id](): number {
@@ -33625,8 +36922,11 @@ export class account_AuthorizationForm_ extends _account_AuthorizationForm_ {
   }
 }
 
+/** The sent email code */
 export class account_SentEmailCode_ extends _account_SentEmailCode_ {
+  /** The email (to which the code was sent) must match this [pattern](https://core.telegram.org/api/pattern) */
   email_pattern: string;
+  /** The length of the verification code */
   length: number;
 
   protected get [id](): number {
@@ -33658,6 +36958,7 @@ export class account_SentEmailCode_ extends _account_SentEmailCode_ {
   }
 }
 
+/** Deep link info empty */
 export class help_DeepLinkInfoEmpty_ extends _help_DeepLinkInfo_ {
   protected get [id](): number {
     return 0x66AFA166;
@@ -33680,9 +36981,13 @@ export class help_DeepLinkInfoEmpty_ extends _help_DeepLinkInfo_ {
   }
 }
 
+/** Deep link info, see [the here for more details](https://core.telegram.org/api/links#unsupported-links) */
 export class help_DeepLinkInfo_ extends _help_DeepLinkInfo_ {
+  /** An update of the app is required to parse this link */
   update_app?: true;
+  /** Message to show to the user */
   message: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities?: Array<enums.MessageEntity>;
 
   protected get [id](): number {
@@ -33719,10 +37024,15 @@ export class help_DeepLinkInfo_ extends _help_DeepLinkInfo_ {
   }
 }
 
+/** Saved contact */
 export class SavedPhoneContact_ extends _SavedContact_ {
+  /** Phone number */
   phone: string;
+  /** First name */
   first_name: string;
+  /** Last name */
   last_name: string;
+  /** Date added */
   date: number;
 
   protected get [id](): number {
@@ -33760,7 +37070,9 @@ export class SavedPhoneContact_ extends _SavedContact_ {
   }
 }
 
+/** Takeout info */
 export class account_Takeout_ extends _account_Takeout_ {
+  /** Takeout ID */
   id: bigint;
 
   protected get [id](): number {
@@ -33789,6 +37101,7 @@ export class account_Takeout_ extends _account_Takeout_ {
   }
 }
 
+/** Unknown KDF (most likely, the client is outdated and does not support the specified KDF algorithm) */
 export class PasswordKdfAlgoUnknown_ extends _PasswordKdfAlgo_ {
   protected get [id](): number {
     return 0xD45AB096;
@@ -33811,10 +37124,15 @@ export class PasswordKdfAlgoUnknown_ extends _PasswordKdfAlgo_ {
   }
 }
 
+/** This key derivation algorithm defines that [SRP 2FA login](https://core.telegram.org/api/srp) must be used */
 export class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow_ extends _PasswordKdfAlgo_ {
+  /** One of two salts used by the derivation function (see [SRP 2FA login](https://core.telegram.org/api/srp)) */
   salt1: Uint8Array;
+  /** One of two salts used by the derivation function (see [SRP 2FA login](https://core.telegram.org/api/srp)) */
   salt2: Uint8Array;
+  /** Base (see [SRP 2FA login](https://core.telegram.org/api/srp)) */
   g: number;
+  /** 2048-bit modulus (see [SRP 2FA login](https://core.telegram.org/api/srp)) */
   p: Uint8Array;
 
   protected get [id](): number {
@@ -33852,6 +37170,7 @@ export class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow_ 
   }
 }
 
+/** Unknown KDF algo (most likely the client has to be updated) */
 export class SecurePasswordKdfAlgoUnknown_ extends _SecurePasswordKdfAlgo_ {
   protected get [id](): number {
     return 0x004A8537;
@@ -33874,7 +37193,9 @@ export class SecurePasswordKdfAlgoUnknown_ extends _SecurePasswordKdfAlgo_ {
   }
 }
 
+/** PBKDF2 with SHA512 and 100000 iterations KDF algo */
 export class SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000_ extends _SecurePasswordKdfAlgo_ {
+  /** Salt */
   salt: Uint8Array;
 
   protected get [id](): number {
@@ -33903,7 +37224,9 @@ export class SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000_ extends _SecurePas
   }
 }
 
+/** SHA512 KDF algo */
 export class SecurePasswordKdfAlgoSHA512_ extends _SecurePasswordKdfAlgo_ {
+  /** Salt */
   salt: Uint8Array;
 
   protected get [id](): number {
@@ -33932,9 +37255,13 @@ export class SecurePasswordKdfAlgoSHA512_ extends _SecurePasswordKdfAlgo_ {
   }
 }
 
+/** Secure settings */
 export class SecureSecretSettings_ extends _SecureSecretSettings_ {
+  /** Secure KDF algo */
   secure_algo: enums.SecurePasswordKdfAlgo;
+  /** Secure secret */
   secure_secret: Uint8Array;
+  /** Secret ID */
   secure_secret_id: bigint;
 
   protected get [id](): number {
@@ -33969,6 +37296,7 @@ export class SecureSecretSettings_ extends _SecureSecretSettings_ {
   }
 }
 
+/** There is no password */
 export class InputCheckPasswordEmpty_ extends _InputCheckPasswordSRP_ {
   protected get [id](): number {
     return 0x9880F658;
@@ -33991,9 +37319,13 @@ export class InputCheckPasswordEmpty_ extends _InputCheckPasswordSRP_ {
   }
 }
 
+/** Constructor for checking the validity of a 2FA SRP password (see [SRP](https://core.telegram.org/api/srp)) */
 export class InputCheckPasswordSRP_ extends _InputCheckPasswordSRP_ {
+  /** [SRP ID](https://core.telegram.org/api/srp) */
   srp_id: bigint;
+  /** `A` parameter (see [SRP](https://core.telegram.org/api/srp)) */
   A: Uint8Array;
+  /** `M1` parameter (see [SRP](https://core.telegram.org/api/srp)) */
   M1: Uint8Array;
 
   protected get [id](): number {
@@ -34028,10 +37360,15 @@ export class InputCheckPasswordSRP_ extends _InputCheckPasswordSRP_ {
   }
 }
 
+/** Required type */
 export class SecureRequiredType_ extends _SecureRequiredType_ {
+  /** Native names */
   native_names?: true;
+  /** Is a selfie required */
   selfie_required?: true;
+  /** Is a translation required */
   translation_required?: true;
+  /** Secure value type */
   type: enums.SecureValueType;
 
   protected get [id](): number {
@@ -34071,7 +37408,9 @@ export class SecureRequiredType_ extends _SecureRequiredType_ {
   }
 }
 
+/** One of */
 export class SecureRequiredTypeOneOf_ extends _SecureRequiredType_ {
+  /** Secure required value types */
   types: Array<enums.SecureRequiredType>;
 
   protected get [id](): number {
@@ -34100,6 +37439,7 @@ export class SecureRequiredTypeOneOf_ extends _SecureRequiredType_ {
   }
 }
 
+/** Password configuration not modified */
 export class help_PassportConfigNotModified_ extends _help_PassportConfig_ {
   protected get [id](): number {
     return 0xBFB9F457;
@@ -34122,8 +37462,11 @@ export class help_PassportConfigNotModified_ extends _help_PassportConfig_ {
   }
 }
 
+/** Telegram [passport](https://core.telegram.org/passport) configuration */
 export class help_PassportConfig_ extends _help_PassportConfig_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
+  /** Localization */
   countries_langs: enums.DataJSON;
 
   protected get [id](): number {
@@ -34155,10 +37498,15 @@ export class help_PassportConfig_ extends _help_PassportConfig_ {
   }
 }
 
+/** Event that occurred in the application. */
 export class InputAppEvent_ extends _InputAppEvent_ {
+  /** Client's exact timestamp for the event */
   time: number;
+  /** Type of event */
   type: string;
+  /** Arbitrary numeric value for more convenient selection of certain event types, or events referring to a certain object */
   peer: bigint;
+  /** Details of the event */
   data: enums.JSONValue;
 
   protected get [id](): number {
@@ -34196,8 +37544,11 @@ export class InputAppEvent_ extends _InputAppEvent_ {
   }
 }
 
+/** JSON key: value pair */
 export class JsonObjectValue_ extends _JSONObjectValue_ {
+  /** Key */
   key: string;
+  /** Value */
   value: enums.JSONValue;
 
   protected get [id](): number {
@@ -34229,6 +37580,7 @@ export class JsonObjectValue_ extends _JSONObjectValue_ {
   }
 }
 
+/** null JSON value */
 export class JsonNull_ extends _JSONValue_ {
   protected get [id](): number {
     return 0x3F6D7B68;
@@ -34251,7 +37603,9 @@ export class JsonNull_ extends _JSONValue_ {
   }
 }
 
+/** JSON boolean value */
 export class JsonBool_ extends _JSONValue_ {
+  /** Value */
   value: boolean;
 
   protected get [id](): number {
@@ -34280,7 +37634,9 @@ export class JsonBool_ extends _JSONValue_ {
   }
 }
 
+/** JSON numeric value */
 export class JsonNumber_ extends _JSONValue_ {
+  /** Value */
   value: number;
 
   protected get [id](): number {
@@ -34309,7 +37665,9 @@ export class JsonNumber_ extends _JSONValue_ {
   }
 }
 
+/** JSON string */
 export class JsonString_ extends _JSONValue_ {
+  /** Value */
   value: string;
 
   protected get [id](): number {
@@ -34338,7 +37696,9 @@ export class JsonString_ extends _JSONValue_ {
   }
 }
 
+/** JSON array */
 export class JsonArray_ extends _JSONValue_ {
+  /** JSON values */
   value: Array<enums.JSONValue>;
 
   protected get [id](): number {
@@ -34367,7 +37727,9 @@ export class JsonArray_ extends _JSONValue_ {
   }
 }
 
+/** JSON object value */
 export class JsonObject_ extends _JSONValue_ {
+  /** Values */
   value: Array<enums.JSONObjectValue>;
 
   protected get [id](): number {
@@ -34396,14 +37758,23 @@ export class JsonObject_ extends _JSONValue_ {
   }
 }
 
+/** Table cell */
 export class PageTableCell_ extends _PageTableCell_ {
+  /** Is this element part of the column header */
   header?: true;
+  /** Horizontally centered block */
   align_center?: true;
+  /** Right-aligned block */
   align_right?: true;
+  /** Vertically centered block */
   valign_middle?: true;
+  /** Block vertically-aligned to the bottom */
   valign_bottom?: true;
+  /** Content */
   text?: enums.RichText;
+  /** For how many columns should this cell extend */
   colspan?: number;
+  /** For how many rows should this cell extend */
   rowspan?: number;
 
   protected get [id](): number {
@@ -34455,7 +37826,9 @@ export class PageTableCell_ extends _PageTableCell_ {
   }
 }
 
+/** Table row */
 export class PageTableRow_ extends _PageTableRow_ {
+  /** Table cells */
   cells: Array<enums.PageTableCell>;
 
   protected get [id](): number {
@@ -34484,8 +37857,11 @@ export class PageTableRow_ extends _PageTableRow_ {
   }
 }
 
+/** Page caption */
 export class PageCaption_ extends _PageCaption_ {
+  /** Caption */
   text: enums.RichText;
+  /** Credits */
   credit: enums.RichText;
 
   protected get [id](): number {
@@ -34517,7 +37893,9 @@ export class PageCaption_ extends _PageCaption_ {
   }
 }
 
+/** List item */
 export class PageListItemText_ extends _PageListItem_ {
+  /** Text */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -34546,7 +37924,9 @@ export class PageListItemText_ extends _PageListItem_ {
   }
 }
 
+/** List item */
 export class PageListItemBlocks_ extends _PageListItem_ {
+  /** Blocks */
   blocks: Array<enums.PageBlock>;
 
   protected get [id](): number {
@@ -34575,8 +37955,11 @@ export class PageListItemBlocks_ extends _PageListItem_ {
   }
 }
 
+/** Ordered list of text items */
 export class PageListOrderedItemText_ extends _PageListOrderedItem_ {
+  /** Number of element within ordered list */
   num: string;
+  /** Text */
   text: enums.RichText;
 
   protected get [id](): number {
@@ -34608,8 +37991,11 @@ export class PageListOrderedItemText_ extends _PageListOrderedItem_ {
   }
 }
 
+/** Ordered list of [IV](https://instantview.telegram.org) blocks */
 export class PageListOrderedItemBlocks_ extends _PageListOrderedItem_ {
+  /** Number of element within ordered list */
   num: string;
+  /** Item contents */
   blocks: Array<enums.PageBlock>;
 
   protected get [id](): number {
@@ -34641,13 +38027,21 @@ export class PageListOrderedItemBlocks_ extends _PageListOrderedItem_ {
   }
 }
 
+/** Related article */
 export class PageRelatedArticle_ extends _PageRelatedArticle_ {
+  /** URL of article */
   url: string;
+  /** Webpage ID of generated IV preview */
   webpage_id: bigint;
+  /** Title */
   title?: string;
+  /** Description */
   description?: string;
+  /** ID of preview photo */
   photo_id?: bigint;
+  /** Author name */
   author?: string;
+  /** Date of publication */
   published_date?: number;
 
   protected get [id](): number {
@@ -34696,14 +38090,23 @@ export class PageRelatedArticle_ extends _PageRelatedArticle_ {
   }
 }
 
+/** [Instant view](https://instantview.telegram.org) page */
 export class Page_ extends _Page_ {
+  /** Indicates that not full page preview is available to the client and it will need to fetch full Instant View from the server using [messages.getWebPagePreview](https://core.telegram.org/method/messages.getWebPagePreview). */
   part?: true;
+  /** Whether the page contains RTL text */
   rtl?: true;
+  /** Whether this is an [IV v2](https://instantview.telegram.org/docs#what-39s-new-in-2-0) page */
   v2?: true;
+  /** Original page HTTP URL */
   url: string;
+  /** Page elements (like with HTML elements, only as TL constructors) */
   blocks: Array<enums.PageBlock>;
+  /** Photos in page */
   photos: Array<enums.Photo>;
+  /** Media in page */
   documents: Array<enums.Document>;
+  /** View count */
   views?: number;
 
   protected get [id](): number {
@@ -34755,7 +38158,9 @@ export class Page_ extends _Page_ {
   }
 }
 
+/** Localized name for telegram support */
 export class help_SupportName_ extends _help_SupportName_ {
+  /** Localized name */
   name: string;
 
   protected get [id](): number {
@@ -34784,6 +38189,7 @@ export class help_SupportName_ extends _help_SupportName_ {
   }
 }
 
+/** Internal use */
 export class help_UserInfoEmpty_ extends _help_UserInfo_ {
   protected get [id](): number {
     return 0xF3AE2EED;
@@ -34806,10 +38212,15 @@ export class help_UserInfoEmpty_ extends _help_UserInfo_ {
   }
 }
 
+/** Internal use */
 export class help_UserInfo_ extends _help_UserInfo_ {
+  /** Info */
   message: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities: Array<enums.MessageEntity>;
+  /** Author */
   author: string;
+  /** Date */
   date: number;
 
   protected get [id](): number {
@@ -34847,8 +38258,11 @@ export class help_UserInfo_ extends _help_UserInfo_ {
   }
 }
 
+/** A possible answer of a poll */
 export class PollAnswer_ extends _PollAnswer_ {
+  /** Textual representation of the answer */
   text: string;
+  /** The param that has to be passed to [messages.sendVote](https://core.telegram.org/method/messages.sendVote). */
   option: Uint8Array;
 
   protected get [id](): number {
@@ -34880,15 +38294,25 @@ export class PollAnswer_ extends _PollAnswer_ {
   }
 }
 
+/** Poll */
 export class Poll_ extends _Poll_ {
+  /** ID of the poll */
   id: bigint;
+  /** Whether the poll is closed and doesn't accept any more answers */
   closed?: true;
+  /** Whether cast votes are publicly visible to all users (non-anonymous poll) */
   public_voters?: true;
+  /** Whether multiple options can be chosen as answer */
   multiple_choice?: true;
+  /** Whether this is a quiz (with wrong and correct answers, results shown in the return type) */
   quiz?: true;
+  /** The question of the poll */
   question: string;
+  /** The possible answers, vote using [messages.sendVote](https://core.telegram.org/method/messages.sendVote). */
   answers: Array<enums.PollAnswer>;
+  /** Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close\_date. */
   close_period?: number;
+  /** Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future; can't be used together with close\_period. */
   close_date?: number;
 
   protected get [id](): number {
@@ -34943,10 +38367,15 @@ export class Poll_ extends _Poll_ {
   }
 }
 
+/** A poll answer, and how users voted on it */
 export class PollAnswerVoters_ extends _PollAnswerVoters_ {
+  /** Whether we have chosen this answer */
   chosen?: true;
+  /** For quizzes, whether the option we have chosen is correct */
   correct?: true;
+  /** The param that has to be passed to [messages.sendVote](https://core.telegram.org/method/messages.sendVote). */
   option: Uint8Array;
+  /** How many users voted for this option */
   voters: number;
 
   protected get [id](): number {
@@ -34986,12 +38415,19 @@ export class PollAnswerVoters_ extends _PollAnswerVoters_ {
   }
 }
 
+/** Results of poll */
 export class PollResults_ extends _PollResults_ {
+  /** Similar to [min](https://core.telegram.org/api/min) objects, used for poll constructors that are the same for all users so they don't have the option chosen by the current user (you can use [messages.getPollResults](https://core.telegram.org/method/messages.getPollResults) to get the full poll results). */
   min?: true;
+  /** Poll results */
   results?: Array<enums.PollAnswerVoters>;
+  /** Total number of people that voted in the poll */
   total_voters?: number;
+  /** IDs of the last users that recently voted in the poll */
   recent_voters?: Array<enums.Peer>;
+  /** Explanation of quiz solution */
   solution?: string;
+  /** [Message entities for styled text in quiz solution](https://core.telegram.org/api/entities) */
   solution_entities?: Array<enums.MessageEntity>;
 
   protected get [id](): number {
@@ -35037,7 +38473,9 @@ export class PollResults_ extends _PollResults_ {
   }
 }
 
+/** Number of online users in a chat */
 export class ChatOnlines_ extends _ChatOnlines_ {
+  /** Number of online users */
   onlines: number;
 
   protected get [id](): number {
@@ -35066,7 +38504,9 @@ export class ChatOnlines_ extends _ChatOnlines_ {
   }
 }
 
+/** URL with chat statistics */
 export class StatsURL_ extends _StatsURL_ {
+  /** Chat statistics */
   url: string;
 
   protected get [id](): number {
@@ -35095,21 +38535,37 @@ export class StatsURL_ extends _StatsURL_ {
   }
 }
 
+/** Represents the rights of an admin in a [channel/supergroup](https://core.telegram.org/api/channel). */
 export class ChatAdminRights_ extends _ChatAdminRights_ {
+  /** If set, allows the admin to modify the description of the [channel/supergroup](https://core.telegram.org/api/channel) */
   change_info?: true;
+  /** If set, allows the admin to post messages in the [channel](https://core.telegram.org/api/channel) */
   post_messages?: true;
+  /** If set, allows the admin to also edit messages from other admins in the [channel](https://core.telegram.org/api/channel) */
   edit_messages?: true;
+  /** If set, allows the admin to also delete messages from other admins in the [channel](https://core.telegram.org/api/channel) */
   delete_messages?: true;
+  /** If set, allows the admin to ban users from the [channel/supergroup](https://core.telegram.org/api/channel) */
   ban_users?: true;
+  /** If set, allows the admin to invite users in the [channel/supergroup](https://core.telegram.org/api/channel) */
   invite_users?: true;
+  /** If set, allows the admin to pin messages in the [channel/supergroup](https://core.telegram.org/api/channel) */
   pin_messages?: true;
+  /** If set, allows the admin to add other admins with the same (or more limited) permissions in the [channel/supergroup](https://core.telegram.org/api/channel) */
   add_admins?: true;
+  /** Whether this admin is anonymous */
   anonymous?: true;
+  /** If set, allows the admin to change group call/livestream settings */
   manage_call?: true;
+  /** Set this flag if none of the other flags are set, but you still want the user to be an admin: if this or any of the other flags are set, the admin can get the chat [admin log](https://core.telegram.org/api/recent-actions), get [chat statistics](https://core.telegram.org/api/stats), get [message statistics in channels](https://core.telegram.org/api/stats), get channel members, see anonymous administrators in supergroups and ignore slow mode. */
   other?: true;
+  /** If set, allows the admin to create, delete or modify [forum topics »](https://core.telegram.org/api/forum#forum-topics). */
   manage_topics?: true;
+  /** If set, allows the admin to post [stories](https://core.telegram.org/api/stories) as the [channel](https://core.telegram.org/api/channel). */
   post_stories?: true;
+  /** If set, allows the admin to edit [stories](https://core.telegram.org/api/stories) posted by the other admins of the [channel](https://core.telegram.org/api/channel). */
   edit_stories?: true;
+  /** If set, allows the admin to delete [stories](https://core.telegram.org/api/stories) posted by the other admins of the [channel](https://core.telegram.org/api/channel). */
   delete_stories?: true;
 
   protected get [id](): number {
@@ -35182,27 +38638,49 @@ export class ChatAdminRights_ extends _ChatAdminRights_ {
   }
 }
 
+/** Represents the rights of a normal user in a [supergroup/channel/chat](https://core.telegram.org/api/channel). In this case, the flags are inverted: if set, a flag **does not allow** a user to do X. */
 export class ChatBannedRights_ extends _ChatBannedRights_ {
+  /** If set, does not allow a user to view messages in a [supergroup/channel/chat](https://core.telegram.org/api/channel) */
   view_messages?: true;
+  /** If set, does not allow a user to send messages in a [supergroup/chat](https://core.telegram.org/api/channel) */
   send_messages?: true;
+  /** If set, does not allow a user to send any media in a [supergroup/chat](https://core.telegram.org/api/channel) */
   send_media?: true;
+  /** If set, does not allow a user to send stickers in a [supergroup/chat](https://core.telegram.org/api/channel) */
   send_stickers?: true;
+  /** If set, does not allow a user to send gifs in a [supergroup/chat](https://core.telegram.org/api/channel) */
   send_gifs?: true;
+  /** If set, does not allow a user to send games in a [supergroup/chat](https://core.telegram.org/api/channel) */
   send_games?: true;
+  /** If set, does not allow a user to use inline bots in a [supergroup/chat](https://core.telegram.org/api/channel). */
   send_inline?: true;
+  /** If set, does not allow a user to embed links in the messages of a [supergroup/chat](https://core.telegram.org/api/channel) */
   embed_links?: true;
+  /** If set, does not allow a user to send polls in a [supergroup/chat](https://core.telegram.org/api/channel) */
   send_polls?: true;
+  /** If set, does not allow any user to change the description of a [supergroup/chat](https://core.telegram.org/api/channel) */
   change_info?: true;
+  /** If set, does not allow any user to invite users in a [supergroup/chat](https://core.telegram.org/api/channel) */
   invite_users?: true;
+  /** If set, does not allow any user to pin messages in a [supergroup/chat](https://core.telegram.org/api/channel) */
   pin_messages?: true;
+  /** If set, does not allow any user to create, delete or modify [forum topics »](https://core.telegram.org/api/forum#forum-topics). */
   manage_topics?: true;
+  /** If set, does not allow a user to send photos in a [supergroup/chat](https://core.telegram.org/api/channel). */
   send_photos?: true;
+  /** If set, does not allow a user to send videos in a [supergroup/chat](https://core.telegram.org/api/channel). */
   send_videos?: true;
+  /** If set, does not allow a user to send round videos in a [supergroup/chat](https://core.telegram.org/api/channel). */
   send_roundvideos?: true;
+  /** If set, does not allow a user to send audio files in a [supergroup/chat](https://core.telegram.org/api/channel). */
   send_audios?: true;
+  /** If set, does not allow a user to send voice messages in a [supergroup/chat](https://core.telegram.org/api/channel). */
   send_voices?: true;
+  /** If set, does not allow a user to send documents in a [supergroup/chat](https://core.telegram.org/api/channel). */
   send_docs?: true;
+  /** If set, does not allow a user to send text messages in a [supergroup/chat](https://core.telegram.org/api/channel). */
   send_plain?: true;
+  /** Validity of said permissions (it is considered forever any value less then 30 seconds or more then 366 days). */
   until_date: number;
 
   protected get [id](): number {
@@ -35293,8 +38771,11 @@ export class ChatBannedRights_ extends _ChatBannedRights_ {
   }
 }
 
+/** [Wallpaper](https://core.telegram.org/api/wallpapers) */
 export class InputWallPaper_ extends _InputWallPaper_ {
+  /** [Wallpaper](https://core.telegram.org/api/wallpapers) ID */
   id: bigint;
+  /** Access hash */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -35326,7 +38807,9 @@ export class InputWallPaper_ extends _InputWallPaper_ {
   }
 }
 
+/** [Wallpaper](https://core.telegram.org/api/wallpapers) by slug (a unique ID, obtained from a [wallpaper link »](https://core.telegram.org/api/links#wallpaper-links)) */
 export class InputWallPaperSlug_ extends _InputWallPaper_ {
+  /** Unique wallpaper ID */
   slug: string;
 
   protected get [id](): number {
@@ -35355,7 +38838,9 @@ export class InputWallPaperSlug_ extends _InputWallPaper_ {
   }
 }
 
+/** [Wallpaper](https://core.telegram.org/api/wallpapers) with no file access hash, used for example when deleting (`unsave=true`) wallpapers using [account.saveWallPaper](https://core.telegram.org/method/account.saveWallPaper), specifying just the wallpaper ID. */
 export class InputWallPaperNoFile_ extends _InputWallPaper_ {
+  /** Wallpaper ID */
   id: bigint;
 
   protected get [id](): number {
@@ -35384,6 +38869,7 @@ export class InputWallPaperNoFile_ extends _InputWallPaper_ {
   }
 }
 
+/** No new [wallpapers](https://core.telegram.org/api/wallpapers) were found */
 export class account_WallPapersNotModified_ extends _account_WallPapers_ {
   protected get [id](): number {
     return 0x1C199183;
@@ -35406,8 +38892,11 @@ export class account_WallPapersNotModified_ extends _account_WallPapers_ {
   }
 }
 
+/** Installed [wallpapers](https://core.telegram.org/api/wallpapers) */
 export class account_WallPapers_ extends _account_WallPapers_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** [Wallpapers](https://core.telegram.org/api/wallpapers) */
   wallpapers: Array<enums.WallPaper>;
 
   protected get [id](): number {
@@ -35439,14 +38928,23 @@ export class account_WallPapers_ extends _account_WallPapers_ {
   }
 }
 
+/** Settings used by telegram servers for sending the confirm code. */
 export class CodeSettings_ extends _CodeSettings_ {
+  /** Whether to allow phone verification via [phone calls](https://core.telegram.org/api/auth). */
   allow_flashcall?: true;
+  /** Pass true if the phone number is used on the current device. Ignored if allow\_flashcall is not set. */
   current_number?: true;
+  /** If a token that will be included in eventually sent SMSs is required: required in newer versions of android, to use the [android SMS receiver APIs](https://developers.google.com/identity/sms-retriever/overview) */
   allow_app_hash?: true;
+  /** Whether this device supports receiving the code using the [auth.codeTypeMissedCall](https://core.telegram.org/constructor/auth.codeTypeMissedCall) method */
   allow_missed_call?: true;
+  /** Whether Firebase auth is supported */
   allow_firebase?: true;
+  /** Previously stored future auth tokens, see [the documentation for more info »](https://core.telegram.org/api/auth#future-auth-tokens) */
   logout_tokens?: Array<Uint8Array>;
+  /** Used only by official iOS apps for Firebase auth: device token for apple push. */
   token?: string;
+  /** Used only by official iOS apps for firebase auth: whether a sandbox-certificate will be used during transmission of the push notification. */
   app_sandbox?: boolean;
 
   protected get [id](): number {
@@ -35498,15 +38996,25 @@ export class CodeSettings_ extends _CodeSettings_ {
   }
 }
 
+/** [Wallpaper](https://core.telegram.org/api/wallpapers) rendering information. */
 export class WallPaperSettings_ extends _WallPaperSettings_ {
+  /** For [image wallpapers »](https://core.telegram.org/api/wallpapers#image-wallpapers): if set, the JPEG must be downscaled to fit in 450x450 square and then box-blurred with radius 12. */
   blur?: true;
+  /** If set, the background needs to be slightly moved when the device is rotated. */
   motion?: true;
+  /** Used for [solid »](https://core.telegram.org/api/wallpapers#solid-fill), [gradient »](https://core.telegram.org/api/wallpapers#gradient-fill) and [freeform gradient »](https://core.telegram.org/api/wallpapers#freeform-gradient-fill) fills. */
   background_color?: number;
+  /** Used for [gradient »](https://core.telegram.org/api/wallpapers#gradient-fill) and [freeform gradient »](https://core.telegram.org/api/wallpapers#freeform-gradient-fill) fills. */
   second_background_color?: number;
+  /** Used for [freeform gradient »](https://core.telegram.org/api/wallpapers#freeform-gradient-fill) fills. */
   third_background_color?: number;
+  /** Used for [freeform gradient »](https://core.telegram.org/api/wallpapers#freeform-gradient-fill) fills. */
   fourth_background_color?: number;
+  /** Used for [pattern wallpapers »](https://core.telegram.org/api/wallpapers#pattern-wallpapers). */
   intensity?: number;
+  /** Clockwise rotation angle of the gradient, in degrees; 0-359. Should be always divisible by 45. */
   rotation?: number;
+  /** If set, this wallpaper can be used as a channel wallpaper and is represented by the specified UTF-8 emoji. */
   emoticon?: string;
 
   protected get [id](): number {
@@ -35561,17 +39069,29 @@ export class WallPaperSettings_ extends _WallPaperSettings_ {
   }
 }
 
+/** Autodownload settings */
 export class AutoDownloadSettings_ extends _AutoDownloadSettings_ {
+  /** Disable automatic media downloads? */
   disabled?: true;
+  /** Whether to preload the first seconds of videos larger than the specified limit */
   video_preload_large?: true;
+  /** Whether to preload the next audio track when you're listening to music */
   audio_preload_next?: true;
+  /** Whether to enable data saving mode in phone calls */
   phonecalls_less_data?: true;
+  /** Whether to preload [stories](https://core.telegram.org/api/stories); in particular, the first [documentAttributeVideo](https://core.telegram.org/constructor/documentAttributeVideo).`preload_prefix_size` bytes of story videos should be preloaded. */
   stories_preload?: true;
+  /** Maximum size of photos to preload */
   photo_size_max: number;
+  /** Maximum size of videos to preload */
   video_size_max: bigint;
+  /** Maximum size of other files to preload */
   file_size_max: bigint;
+  /** Maximum suggested bitrate for **uploading** videos */
   video_upload_maxbitrate: number;
+  /** A limit, specifying the maximum number of files that should be downloaded in parallel from the same DC, for files smaller than 20MB. */
   small_queue_active_operations_max: number;
+  /** A limit, specifying the maximum number of files that should be downloaded in parallel from the same DC, for files bigger than 20MB. */
   large_queue_active_operations_max: number;
 
   protected get [id](): number {
@@ -35632,9 +39152,13 @@ export class AutoDownloadSettings_ extends _AutoDownloadSettings_ {
   }
 }
 
+/** Media autodownload settings */
 export class account_AutoDownloadSettings_ extends _account_AutoDownloadSettings_ {
+  /** Low data usage preset */
   low: enums.AutoDownloadSettings;
+  /** Medium data usage preset */
   medium: enums.AutoDownloadSettings;
+  /** High data usage preset */
   high: enums.AutoDownloadSettings;
 
   protected get [id](): number {
@@ -35669,8 +39193,11 @@ export class account_AutoDownloadSettings_ extends _account_AutoDownloadSettings
   }
 }
 
+/** Emoji keyword */
 export class EmojiKeyword_ extends _EmojiKeyword_ {
+  /** Keyword */
   keyword: string;
+  /** Emojis associated to keyword */
   emoticons: Array<string>;
 
   protected get [id](): number {
@@ -35702,8 +39229,11 @@ export class EmojiKeyword_ extends _EmojiKeyword_ {
   }
 }
 
+/** Deleted emoji keyword */
 export class EmojiKeywordDeleted_ extends _EmojiKeyword_ {
+  /** Keyword */
   keyword: string;
+  /** Emojis that were associated to keyword */
   emoticons: Array<string>;
 
   protected get [id](): number {
@@ -35735,10 +39265,15 @@ export class EmojiKeywordDeleted_ extends _EmojiKeyword_ {
   }
 }
 
+/** Changes to emoji keywords */
 export class EmojiKeywordsDifference_ extends _EmojiKeywordsDifference_ {
+  /** Language code for keywords */
   lang_code: string;
+  /** Previous emoji keyword list version */
   from_version: number;
+  /** Current version of emoji keyword list */
   version: number;
+  /** Emojis associated to keywords */
   keywords: Array<enums.EmojiKeyword>;
 
   protected get [id](): number {
@@ -35776,7 +39311,9 @@ export class EmojiKeywordsDifference_ extends _EmojiKeywordsDifference_ {
   }
 }
 
+/** An HTTP URL which can be used to automatically log in into translation platform and suggest new emoji replacements. The URL will be valid for 30 seconds after generation */
 export class EmojiURL_ extends _EmojiURL_ {
+  /** An HTTP URL which can be used to automatically log in into translation platform and suggest new emoji replacements. The URL will be valid for 30 seconds after generation */
   url: string;
 
   protected get [id](): number {
@@ -35805,7 +39342,9 @@ export class EmojiURL_ extends _EmojiURL_ {
   }
 }
 
+/** Emoji language */
 export class EmojiLanguage_ extends _EmojiLanguage_ {
+  /** Language code */
   lang_code: string;
 
   protected get [id](): number {
@@ -35834,12 +39373,19 @@ export class EmojiLanguage_ extends _EmojiLanguage_ {
   }
 }
 
+/** Folder */
 export class Folder_ extends _Folder_ {
+  /** Automatically add new channels to this folder */
   autofill_new_broadcasts?: true;
+  /** Automatically add joined new public supergroups to this folder */
   autofill_public_groups?: true;
+  /** Automatically add new private chats to this folder */
   autofill_new_correspondents?: true;
+  /** Folder ID */
   id: number;
+  /** Folder title */
   title: string;
+  /** Folder picture */
   photo?: enums.ChatPhoto;
 
   protected get [id](): number {
@@ -35885,8 +39431,11 @@ export class Folder_ extends _Folder_ {
   }
 }
 
+/** Peer in a folder */
 export class InputFolderPeer_ extends _InputFolderPeer_ {
+  /** Peer */
   peer: enums.InputPeer;
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id: number;
 
   protected get [id](): number {
@@ -35918,8 +39467,11 @@ export class InputFolderPeer_ extends _InputFolderPeer_ {
   }
 }
 
+/** Peer in a folder */
 export class FolderPeer_ extends _FolderPeer_ {
+  /** Folder peer info */
   peer: enums.Peer;
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id: number;
 
   protected get [id](): number {
@@ -35951,9 +39503,13 @@ export class FolderPeer_ extends _FolderPeer_ {
   }
 }
 
+/** Indicates how many results would be found by a [messages.search](https://core.telegram.org/method/messages.search) call with the same parameters */
 export class messages_SearchCounter_ extends _messages_SearchCounter_ {
+  /** If set, the results may be inexact */
   inexact?: true;
+  /** Provided message filter */
   filter: enums.MessagesFilter;
+  /** Number of results that were found server-side */
   count: number;
 
   protected get [id](): number {
@@ -35990,9 +39546,13 @@ export class messages_SearchCounter_ extends _messages_SearchCounter_ {
   }
 }
 
+/** Details about the authorization request, for more info [click here »](https://core.telegram.org/api/url-authorization) */
 export class UrlAuthResultRequest_ extends _UrlAuthResult_ {
+  /** Whether the bot would like to send messages to the user */
   request_write_access?: true;
+  /** Username of a bot, which will be used for user authorization. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot. See [Linking your domain to the bot](https://core.telegram.org/widgets/login#linking-your-domain-to-the-bot) for more details. */
   bot: enums.User;
+  /** The domain name of the website on which the user will log in. */
   domain: string;
 
   protected get [id](): number {
@@ -36029,7 +39589,9 @@ export class UrlAuthResultRequest_ extends _UrlAuthResult_ {
   }
 }
 
+/** Details about an accepted authorization request, for more info [click here »](https://core.telegram.org/api/url-authorization) */
 export class UrlAuthResultAccepted_ extends _UrlAuthResult_ {
+  /** The URL name of the website on which the user has logged in. */
   url: string;
 
   protected get [id](): number {
@@ -36058,6 +39620,7 @@ export class UrlAuthResultAccepted_ extends _UrlAuthResult_ {
   }
 }
 
+/** Details about an accepted authorization request, for more info [click here »](https://core.telegram.org/api/url-authorization) */
 export class UrlAuthResultDefault_ extends _UrlAuthResult_ {
   protected get [id](): number {
     return 0xA9D6DB1F;
@@ -36080,6 +39643,7 @@ export class UrlAuthResultDefault_ extends _UrlAuthResult_ {
   }
 }
 
+/** No location (normal supergroup) */
 export class ChannelLocationEmpty_ extends _ChannelLocation_ {
   protected get [id](): number {
     return 0xBFB5AD8B;
@@ -36102,8 +39666,11 @@ export class ChannelLocationEmpty_ extends _ChannelLocation_ {
   }
 }
 
+/** Geographical location of supergroup (geogroups) */
 export class ChannelLocation_ extends _ChannelLocation_ {
+  /** Geographical location of supergroup */
   geo_point: enums.GeoPoint;
+  /** Textual description of the address */
   address: string;
 
   protected get [id](): number {
@@ -36135,9 +39702,13 @@ export class ChannelLocation_ extends _ChannelLocation_ {
   }
 }
 
+/** Peer geolocated nearby */
 export class PeerLocated_ extends _PeerLocated_ {
+  /** Peer */
   peer: enums.Peer;
+  /** Validity period of current data */
   expires: number;
+  /** Distance from the peer in meters */
   distance: number;
 
   protected get [id](): number {
@@ -36172,7 +39743,9 @@ export class PeerLocated_ extends _PeerLocated_ {
   }
 }
 
+/** Current peer */
 export class PeerSelfLocated_ extends _PeerLocated_ {
+  /** Expiry of geolocation info for current peer */
   expires: number;
 
   protected get [id](): number {
@@ -36201,9 +39774,13 @@ export class PeerSelfLocated_ extends _PeerLocated_ {
   }
 }
 
+/** Restriction reason. */
 export class RestrictionReason_ extends _RestrictionReason_ {
+  /** Platform identifier (ios, android, wp, all, etc.), can be concatenated with a dash as separator (`android-ios`, `ios-wp`, etc) */
   platform: string;
+  /** Restriction reason (`porno`, `terms`, etc.) */
   reason: string;
+  /** Error message to be shown to the user */
   text: string;
 
   protected get [id](): number {
@@ -36238,8 +39815,11 @@ export class RestrictionReason_ extends _RestrictionReason_ {
   }
 }
 
+/** Theme */
 export class InputTheme_ extends _InputTheme_ {
+  /** ID */
   id: bigint;
+  /** Access hash */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -36271,7 +39851,9 @@ export class InputTheme_ extends _InputTheme_ {
   }
 }
 
+/** Theme by theme ID */
 export class InputThemeSlug_ extends _InputTheme_ {
+  /** Unique theme ID obtained from a [theme deep link »](https://core.telegram.org/api/links#theme-links) */
   slug: string;
 
   protected get [id](): number {
@@ -36300,17 +39882,29 @@ export class InputThemeSlug_ extends _InputTheme_ {
   }
 }
 
+/** Theme */
 export class Theme_ extends _Theme_ {
+  /** Whether the current user is the creator of this theme */
   creator?: true;
+  /** Whether this is the default theme */
   default?: true;
+  /** Whether this theme is meant to be used as a [chat theme](https://telegram.org/blog/chat-themes-interactive-emoji-read-receipts) */
   for_chat?: true;
+  /** Theme ID */
   id: bigint;
+  /** Theme access hash */
   access_hash: bigint;
+  /** Unique theme ID */
   slug: string;
+  /** Theme name */
   title: string;
+  /** Theme */
   document?: enums.Document;
+  /** Theme settings */
   settings?: Array<enums.ThemeSettings>;
+  /** Theme emoji */
   emoticon?: string;
+  /** Installation count */
   installs_count?: number;
 
   protected get [id](): number {
@@ -36371,6 +39965,7 @@ export class Theme_ extends _Theme_ {
   }
 }
 
+/** No new themes were installed */
 export class account_ThemesNotModified_ extends _account_Themes_ {
   protected get [id](): number {
     return 0xF41EB622;
@@ -36393,8 +39988,11 @@ export class account_ThemesNotModified_ extends _account_Themes_ {
   }
 }
 
+/** Installed themes */
 export class account_Themes_ extends _account_Themes_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** Themes */
   themes: Array<enums.Theme>;
 
   protected get [id](): number {
@@ -36426,8 +40024,11 @@ export class account_Themes_ extends _account_Themes_ {
   }
 }
 
+/** Login token (for [QR code login](https://core.telegram.org/api/qr-login)) */
 export class auth_LoginToken_ extends _auth_LoginToken_ {
+  /** Expiration date of QR code */
   expires: number;
+  /** Token to render in QR code */
   token: Uint8Array;
 
   protected get [id](): number {
@@ -36459,8 +40060,11 @@ export class auth_LoginToken_ extends _auth_LoginToken_ {
   }
 }
 
+/** Repeat the query to the specified DC */
 export class auth_LoginTokenMigrateTo_ extends _auth_LoginToken_ {
+  /** DC ID */
   dc_id: number;
+  /** Token to use for login */
   token: Uint8Array;
 
   protected get [id](): number {
@@ -36492,7 +40096,9 @@ export class auth_LoginTokenMigrateTo_ extends _auth_LoginToken_ {
   }
 }
 
+/** Login via token (QR code) succeeded! */
 export class auth_LoginTokenSuccess_ extends _auth_LoginToken_ {
+  /** Authorization info */
   authorization: enums.auth.Authorization;
 
   protected get [id](): number {
@@ -36521,8 +40127,11 @@ export class auth_LoginTokenSuccess_ extends _auth_LoginToken_ {
   }
 }
 
+/** Sensitive content settings */
 export class account_ContentSettings_ extends _account_ContentSettings_ {
+  /** Whether viewing of sensitive (NSFW) content is enabled */
   sensitive_enabled?: true;
+  /** Whether the current client can change the sensitive content settings to view NSFW content */
   sensitive_can_change?: true;
 
   protected get [id](): number {
@@ -36556,9 +40165,13 @@ export class account_ContentSettings_ extends _account_ContentSettings_ {
   }
 }
 
+/** Inactive chat list */
 export class messages_InactiveChats_ extends _messages_InactiveChats_ {
+  /** When was the chat last active */
   dates: Array<number>;
+  /** Chat list */
   chats: Array<enums.Chat>;
+  /** Users mentioned in the chat list */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -36593,6 +40206,7 @@ export class messages_InactiveChats_ extends _messages_InactiveChats_ {
   }
 }
 
+/** Classic theme */
 export class BaseThemeClassic_ extends _BaseTheme_ {
   protected get [id](): number {
     return 0xC3A12462;
@@ -36615,6 +40229,7 @@ export class BaseThemeClassic_ extends _BaseTheme_ {
   }
 }
 
+/** Day theme */
 export class BaseThemeDay_ extends _BaseTheme_ {
   protected get [id](): number {
     return 0xFBD81688;
@@ -36637,6 +40252,7 @@ export class BaseThemeDay_ extends _BaseTheme_ {
   }
 }
 
+/** Night theme */
 export class BaseThemeNight_ extends _BaseTheme_ {
   protected get [id](): number {
     return 0xB7B31EA8;
@@ -36659,6 +40275,7 @@ export class BaseThemeNight_ extends _BaseTheme_ {
   }
 }
 
+/** Tinted theme */
 export class BaseThemeTinted_ extends _BaseTheme_ {
   protected get [id](): number {
     return 0x6D5F77EE;
@@ -36681,6 +40298,7 @@ export class BaseThemeTinted_ extends _BaseTheme_ {
   }
 }
 
+/** Arctic theme */
 export class BaseThemeArctic_ extends _BaseTheme_ {
   protected get [id](): number {
     return 0x5B11125A;
@@ -36703,13 +40321,24 @@ export class BaseThemeArctic_ extends _BaseTheme_ {
   }
 }
 
+/** Theme settings */
 export class InputThemeSettings_ extends _InputThemeSettings_ {
+  /** If set, the freeform gradient fill needs to be animated on every sent message */
   message_colors_animated?: true;
+  /** Default theme on which this theme is based */
   base_theme: enums.BaseTheme;
+  /** Accent color, ARGB format */
   accent_color: number;
+  /** Accent color of outgoing messages in ARGB format */
   outbox_accent_color?: number;
+  /** The fill to be used as a background for outgoing messages, in RGB24 format.  
+  If just one or two equal colors are provided, describes a solid fill of a background.  
+  If two different colors are provided, describes the top and bottom colors of a 0-degree gradient.  
+  If three or four colors are provided, describes a freeform gradient fill of a background. */
   message_colors?: Array<number>;
+  /** [inputWallPaper](https://core.telegram.org/constructor/inputWallPaper) or [inputWallPaperSlug](https://core.telegram.org/constructor/inputWallPaper) when passing wallpaper files for [image](https://core.telegram.org/api/wallpapers#image-wallpapers) or [pattern](https://core.telegram.org/api/wallpapers#pattern-wallpapers) wallpapers, [inputWallPaperNoFile](https://core.telegram.org/constructor/inputWallPaperNoFile) with `id=0` otherwise. */
   wallpaper?: enums.InputWallPaper;
+  /** [Wallpaper](https://core.telegram.org/api/wallpapers) settings. */
   wallpaper_settings?: enums.WallPaperSettings;
 
   protected get [id](): number {
@@ -36758,12 +40387,22 @@ export class InputThemeSettings_ extends _InputThemeSettings_ {
   }
 }
 
+/** Theme settings */
 export class ThemeSettings_ extends _ThemeSettings_ {
+  /** If set, the freeform gradient fill needs to be animated on every sent message. */
   message_colors_animated?: true;
+  /** Base theme */
   base_theme: enums.BaseTheme;
+  /** Accent color, ARGB format */
   accent_color: number;
+  /** Accent color of outgoing messages in ARGB format */
   outbox_accent_color?: number;
+  /** The fill to be used as a background for outgoing messages, in RGB24 format.  
+  If just one or two equal colors are provided, describes a solid fill of a background.  
+  If two different colors are provided, describes the top and bottom colors of a 0-degree gradient.  
+  If three or four colors are provided, describes a freeform gradient fill of a background. */
   message_colors?: Array<number>;
+  /** [Wallpaper](https://core.telegram.org/api/wallpapers) */
   wallpaper?: enums.WallPaper;
 
   protected get [id](): number {
@@ -36809,8 +40448,11 @@ export class ThemeSettings_ extends _ThemeSettings_ {
   }
 }
 
+/** Page theme */
 export class WebPageAttributeTheme_ extends _WebPageAttribute_ {
+  /** Theme files */
   documents?: Array<enums.Document>;
+  /** Theme settings */
   settings?: enums.ThemeSettings;
 
   protected get [id](): number {
@@ -36844,9 +40486,13 @@ export class WebPageAttributeTheme_ extends _WebPageAttribute_ {
   }
 }
 
+/** Webpage preview of a Telegram story */
 export class WebPageAttributeStory_ extends _WebPageAttribute_ {
+  /** Peer that posted the story */
   peer: enums.Peer;
+  /** [Story ID](https://core.telegram.org/api/stories#watching-stories) */
   id: number;
+  /** May contain the story, if not the story should be fetched when and if needed using [stories.getStoriesByID](https://core.telegram.org/method/stories.getStoriesByID) with the above `id` and `peer`. */
   story?: enums.StoryItem;
 
   protected get [id](): number {
@@ -36883,11 +40529,17 @@ export class WebPageAttributeStory_ extends _WebPageAttribute_ {
   }
 }
 
+/** How users voted in a poll */
 export class messages_VotesList_ extends _messages_VotesList_ {
+  /** Total number of votes for all options (or only for the chosen `option`, if provided to [messages.getPollVotes](https://core.telegram.org/method/messages.getPollVotes)) */
   count: number;
+  /** Vote info for each user */
   votes: Array<enums.MessagePeerVote>;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Info about users that voted in the poll */
   users: Array<enums.User>;
+  /** Offset to use with the next [messages.getPollVotes](https://core.telegram.org/method/messages.getPollVotes) request, empty string if no more results are available. */
   next_offset?: string;
 
   protected get [id](): number {
@@ -36930,8 +40582,11 @@ export class messages_VotesList_ extends _messages_VotesList_ {
   }
 }
 
+/** Credit card info URL provided by the bank */
 export class BankCardOpenUrl_ extends _BankCardOpenUrl_ {
+  /** Info URL */
   url: string;
+  /** Bank name */
   name: string;
 
   protected get [id](): number {
@@ -36963,8 +40618,11 @@ export class BankCardOpenUrl_ extends _BankCardOpenUrl_ {
   }
 }
 
+/** Credit card info, provided by the card's bank(s) */
 export class payments_BankCardData_ extends _payments_BankCardData_ {
+  /** Credit card title */
   title: string;
+  /** Info URL(s) provided by the card's bank(s) */
   open_urls: Array<enums.BankCardOpenUrl>;
 
   protected get [id](): number {
@@ -36996,20 +40654,35 @@ export class payments_BankCardData_ extends _payments_BankCardData_ {
   }
 }
 
+/** Dialog filter AKA [folder](https://core.telegram.org/api/folders) */
 export class DialogFilter_ extends _DialogFilter_ {
+  /** Whether to include all contacts in this [folder](https://core.telegram.org/api/folders) */
   contacts?: true;
+  /** Whether to include all non-contacts in this [folder](https://core.telegram.org/api/folders) */
   non_contacts?: true;
+  /** Whether to include all groups in this [folder](https://core.telegram.org/api/folders) */
   groups?: true;
+  /** Whether to include all channels in this [folder](https://core.telegram.org/api/folders) */
   broadcasts?: true;
+  /** Whether to include all bots in this [folder](https://core.telegram.org/api/folders) */
   bots?: true;
+  /** Whether to exclude muted chats from this [folder](https://core.telegram.org/api/folders) */
   exclude_muted?: true;
+  /** Whether to exclude read chats from this [folder](https://core.telegram.org/api/folders) */
   exclude_read?: true;
+  /** Whether to exclude archived chats from this [folder](https://core.telegram.org/api/folders) */
   exclude_archived?: true;
+  /** [Folder](https://core.telegram.org/api/folders) ID */
   id: number;
+  /** [Folder](https://core.telegram.org/api/folders) name */
   title: string;
+  /** Emoji to use as icon for the folder. */
   emoticon?: string;
+  /** Pinned chats, [folders](https://core.telegram.org/api/folders) can have unlimited pinned chats */
   pinned_peers: Array<enums.InputPeer>;
+  /** Include the following chats in this [folder](https://core.telegram.org/api/folders) */
   include_peers: Array<enums.InputPeer>;
+  /** Exclude the following chats from this [folder](https://core.telegram.org/api/folders) */
   exclude_peers: Array<enums.InputPeer>;
 
   protected get [id](): number {
@@ -37079,6 +40752,7 @@ export class DialogFilter_ extends _DialogFilter_ {
   }
 }
 
+/** Used only when reordering folders to indicate the default (all chats) folder. */
 export class DialogFilterDefault_ extends _DialogFilter_ {
   protected get [id](): number {
     return 0x363293AE;
@@ -37101,12 +40775,19 @@ export class DialogFilterDefault_ extends _DialogFilter_ {
   }
 }
 
+/** A folder imported using a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
 export class DialogFilterChatlist_ extends _DialogFilter_ {
+  /** Whether the current user has created some [chat folder deep links »](https://core.telegram.org/api/links#chat-folder-links) to share the folder as well. */
   has_my_invites?: true;
+  /** ID of the folder */
   id: number;
+  /** Name of the folder */
   title: string;
+  /** Emoji to use as icon for the folder. */
   emoticon?: string;
+  /** Pinned chats, [folders](https://core.telegram.org/api/folders) can have unlimited pinned chats */
   pinned_peers: Array<enums.InputPeer>;
+  /** Chats to include in the folder */
   include_peers: Array<enums.InputPeer>;
 
   protected get [id](): number {
@@ -37152,8 +40833,11 @@ export class DialogFilterChatlist_ extends _DialogFilter_ {
   }
 }
 
+/** Suggested [folders](https://core.telegram.org/api/folders) */
 export class DialogFilterSuggested_ extends _DialogFilterSuggested_ {
+  /** [Folder info](https://core.telegram.org/api/folders) */
   filter: enums.DialogFilter;
+  /** [Folder](https://core.telegram.org/api/folders) description */
   description: string;
 
   protected get [id](): number {
@@ -37185,8 +40869,11 @@ export class DialogFilterSuggested_ extends _DialogFilterSuggested_ {
   }
 }
 
+/** [Channel statistics](https://core.telegram.org/api/stats) date range */
 export class StatsDateRangeDays_ extends _StatsDateRangeDays_ {
+  /** Initial date */
   min_date: number;
+  /** Final date */
   max_date: number;
 
   protected get [id](): number {
@@ -37218,8 +40905,11 @@ export class StatsDateRangeDays_ extends _StatsDateRangeDays_ {
   }
 }
 
+/** Statistics value couple; initial and final value for period of time currently in consideration */
 export class StatsAbsValueAndPrev_ extends _StatsAbsValueAndPrev_ {
+  /** Current value */
   current: number;
+  /** Previous value */
   previous: number;
 
   protected get [id](): number {
@@ -37251,8 +40941,12 @@ export class StatsAbsValueAndPrev_ extends _StatsAbsValueAndPrev_ {
   }
 }
 
+/** [Channel statistics percentage](https://core.telegram.org/api/stats).  
+Compute the percentage simply by doing `part * total / 100` */
 export class StatsPercentValue_ extends _StatsPercentValue_ {
+  /** Partial value */
   part: number;
+  /** Total value */
   total: number;
 
   protected get [id](): number {
@@ -37284,7 +40978,9 @@ export class StatsPercentValue_ extends _StatsPercentValue_ {
   }
 }
 
+/** This [channel statistics graph](https://core.telegram.org/api/stats) must be generated asynchronously using [stats.loadAsyncGraph](https://core.telegram.org/method/stats.loadAsyncGraph) to reduce server load */
 export class StatsGraphAsync_ extends _StatsGraph_ {
+  /** Token to use for fetching the async graph */
   token: string;
 
   protected get [id](): number {
@@ -37313,7 +41009,9 @@ export class StatsGraphAsync_ extends _StatsGraph_ {
   }
 }
 
+/** An error occurred while generating the [statistics graph](https://core.telegram.org/api/stats) */
 export class StatsGraphError_ extends _StatsGraph_ {
+  /** The error */
   error: string;
 
   protected get [id](): number {
@@ -37342,8 +41040,11 @@ export class StatsGraphError_ extends _StatsGraph_ {
   }
 }
 
+/** [Channel statistics graph](https://core.telegram.org/api/stats) */
 export class StatsGraph_ extends _StatsGraph_ {
+  /** Statistics data */
   json: enums.DataJSON;
+  /** Zoom token */
   zoom_token?: string;
 
   protected get [id](): number {
@@ -37377,28 +41078,57 @@ export class StatsGraph_ extends _StatsGraph_ {
   }
 }
 
+/** [Channel statistics](https://core.telegram.org/api/stats). */
 export class stats_BroadcastStats_ extends _stats_BroadcastStats_ {
+  /** Period in consideration */
   period: enums.StatsDateRangeDays;
+  /** Follower count change for period in consideration */
   followers: enums.StatsAbsValueAndPrev;
+  /** `total_viewcount/postcount`, for posts posted during the period in consideration.  
+  Note that in this case, `current` refers to the `period` in consideration (`min_date` till `max_date`), and `prev` refers to the previous period (`(min_date - (max_date - min_date))` till `min_date`). */
   views_per_post: enums.StatsAbsValueAndPrev;
+  /** `total_sharecount/postcount`, for posts posted during the period in consideration.  
+  Note that in this case, `current` refers to the `period` in consideration (`min_date` till `max_date`), and `prev` refers to the previous period (`(min_date - (max_date - min_date))` till `min_date`) */
   shares_per_post: enums.StatsAbsValueAndPrev;
+  /** `total_reactions/postcount`, for posts posted during the period in consideration.  
+  Note that in this case, `current` refers to the `period` in consideration (`min_date` till `max_date`), and `prev` refers to the previous period (`(min_date - (max_date - min_date))` till `min_date`) */
   reactions_per_post: enums.StatsAbsValueAndPrev;
+  /** `total_views/storycount`, for posts posted during the period in consideration.  
+  Note that in this case, `current` refers to the `period` in consideration (`min_date` till `max_date`), and `prev` refers to the previous period (`(min_date - (max_date - min_date))` till `min_date`) */
   views_per_story: enums.StatsAbsValueAndPrev;
+  /** `total_shares/storycount`, for posts posted during the period in consideration.  
+  Note that in this case, `current` refers to the `period` in consideration (`min_date` till `max_date`), and `prev` refers to the previous period (`(min_date - (max_date - min_date))` till `min_date`) */
   shares_per_story: enums.StatsAbsValueAndPrev;
+  /** `total_reactions/storycount`, for posts posted during the period in consideration.  
+  Note that in this case, `current` refers to the `period` in consideration (`min_date` till `max_date`), and `prev` refers to the previous period (`(min_date - (max_date - min_date))` till `min_date`) */
   reactions_per_story: enums.StatsAbsValueAndPrev;
+  /** Percentage of subscribers with enabled notifications */
   enabled_notifications: enums.StatsPercentValue;
+  /** Channel growth graph (absolute subscriber count) */
   growth_graph: enums.StatsGraph;
+  /** Followers growth graph (relative subscriber count) */
   followers_graph: enums.StatsGraph;
+  /** Muted users graph (relative) */
   mute_graph: enums.StatsGraph;
+  /** Views per hour graph (absolute) */
   top_hours_graph: enums.StatsGraph;
+  /** Interactions graph (absolute) */
   interactions_graph: enums.StatsGraph;
+  /** IV interactions graph (absolute) */
   iv_interactions_graph: enums.StatsGraph;
+  /** Views by source graph (absolute) */
   views_by_source_graph: enums.StatsGraph;
+  /** New followers by source graph (absolute) */
   new_followers_by_source_graph: enums.StatsGraph;
+  /** Subscriber language graph (pie chart) */
   languages_graph: enums.StatsGraph;
+  /** A graph containing the number of reactions on posts categorized by emotion */
   reactions_by_emotion_graph: enums.StatsGraph;
+  /** A graph containing the number of story views and shares */
   story_interactions_graph: enums.StatsGraph;
+  /** A graph containing the number of reactions on stories categorized by emotion */
   story_reactions_by_emotion_graph: enums.StatsGraph;
+  /** Detailed statistics about number of views and shares of recently sent messages and stories */
   recent_posts_interactions: Array<enums.PostInteractionCounters>;
 
   protected get [id](): number {
@@ -37490,7 +41220,9 @@ export class stats_BroadcastStats_ extends _stats_BroadcastStats_ {
   }
 }
 
+/** No PSA/MTProxy info is available */
 export class help_PromoDataEmpty_ extends _help_PromoData_ {
+  /** Re-fetch PSA/MTProxy info after the specified number of seconds */
   expires: number;
 
   protected get [id](): number {
@@ -37519,13 +41251,21 @@ export class help_PromoDataEmpty_ extends _help_PromoData_ {
   }
 }
 
+/** MTProxy/Public Service Announcement information */
 export class help_PromoData_ extends _help_PromoData_ {
+  /** MTProxy-related channel */
   proxy?: true;
+  /** Expiry of PSA/MTProxy info */
   expires: number;
+  /** MTProxy/PSA peer */
   peer: enums.Peer;
+  /** Chat info */
   chats: Array<enums.Chat>;
+  /** User info */
   users: Array<enums.User>;
+  /** PSA type */
   psa_type?: string;
+  /** PSA message */
   psa_message?: string;
 
   protected get [id](): number {
@@ -37574,11 +41314,17 @@ export class help_PromoData_ extends _help_PromoData_ {
   }
 }
 
+/** An [animated profile picture](https://core.telegram.org/api/files#animated-profile-pictures) in MPEG4 format */
 export class VideoSize_ extends _VideoSize_ {
+  /** `u` for animated profile pictures, and `v` for trimmed and downscaled video previews */
   type: string;
+  /** Video width */
   w: number;
+  /** Video height */
   h: number;
+  /** File size */
   size: number;
+  /** Timestamp that should be shown as static preview to the user (seconds) */
   video_start_ts?: number;
 
   protected get [id](): number {
@@ -37621,8 +41367,11 @@ export class VideoSize_ extends _VideoSize_ {
   }
 }
 
+/** An [animated profile picture](https://core.telegram.org/api/files#animated-profile-pictures) based on a [custom emoji sticker](https://core.telegram.org/api/custom-emoji). */
 export class VideoSizeEmojiMarkup_ extends _VideoSize_ {
+  /** [Custom emoji ID](https://core.telegram.org/api/custom-emoji): the custom emoji sticker is shown at the center of the profile picture and occupies at most 67% of it. */
   emoji_id: bigint;
+  /** 1, 2, 3 or 4 RBG-24 colors used to generate a solid (1), gradient (2) or freeform gradient (3, 4) background, similar to how [fill wallpapers](https://core.telegram.org/api/wallpapers#fill-types) are generated. The rotation angle for gradient backgrounds is 0. */
   background_colors: Array<number>;
 
   protected get [id](): number {
@@ -37654,9 +41403,13 @@ export class VideoSizeEmojiMarkup_ extends _VideoSize_ {
   }
 }
 
+/** An [animated profile picture](https://core.telegram.org/api/files#animated-profile-pictures) based on a [sticker](https://core.telegram.org/api/stickers). */
 export class VideoSizeStickerMarkup_ extends _VideoSize_ {
+  /** Stickerset */
   stickerset: enums.InputStickerSet;
+  /** Sticker ID */
   sticker_id: bigint;
+  /** 1, 2, 3 or 4 RBG-24 colors used to generate a solid (1), gradient (2) or freeform gradient (3, 4) background, similar to how [fill wallpapers](https://core.telegram.org/api/wallpapers#fill-types) are generated. The rotation angle for gradient backgrounds is 0. */
   background_colors: Array<number>;
 
   protected get [id](): number {
@@ -37691,9 +41444,13 @@ export class VideoSizeStickerMarkup_ extends _VideoSize_ {
   }
 }
 
+/** Information about an active user in a supergroup */
 export class StatsGroupTopPoster_ extends _StatsGroupTopPoster_ {
+  /** User ID */
   user_id: bigint;
+  /** Number of messages for [statistics](https://core.telegram.org/api/stats) period in consideration */
   messages: number;
+  /** Average number of characters per message */
   avg_chars: number;
 
   protected get [id](): number {
@@ -37728,10 +41485,15 @@ export class StatsGroupTopPoster_ extends _StatsGroupTopPoster_ {
   }
 }
 
+/** Information about an active admin in a supergroup */
 export class StatsGroupTopAdmin_ extends _StatsGroupTopAdmin_ {
+  /** User ID */
   user_id: bigint;
+  /** Number of deleted messages for [statistics](https://core.telegram.org/api/stats) period in consideration */
   deleted: number;
+  /** Number of kicked users for [statistics](https://core.telegram.org/api/stats) period in consideration */
   kicked: number;
+  /** Number of banned users for [statistics](https://core.telegram.org/api/stats) period in consideration */
   banned: number;
 
   protected get [id](): number {
@@ -37769,8 +41531,11 @@ export class StatsGroupTopAdmin_ extends _StatsGroupTopAdmin_ {
   }
 }
 
+/** Information about an active supergroup inviter */
 export class StatsGroupTopInviter_ extends _StatsGroupTopInviter_ {
+  /** User ID */
   user_id: bigint;
+  /** Number of invitations for [statistics](https://core.telegram.org/api/stats) period in consideration */
   invitations: number;
 
   protected get [id](): number {
@@ -37802,23 +41567,41 @@ export class StatsGroupTopInviter_ extends _StatsGroupTopInviter_ {
   }
 }
 
+/** Supergroup [statistics](https://core.telegram.org/api/stats) */
 export class stats_MegagroupStats_ extends _stats_MegagroupStats_ {
+  /** Period in consideration */
   period: enums.StatsDateRangeDays;
+  /** Member count change for period in consideration */
   members: enums.StatsAbsValueAndPrev;
+  /** Message number change for period in consideration */
   messages: enums.StatsAbsValueAndPrev;
+  /** Number of users that viewed messages, for range in consideration */
   viewers: enums.StatsAbsValueAndPrev;
+  /** Number of users that posted messages, for range in consideration */
   posters: enums.StatsAbsValueAndPrev;
+  /** Supergroup growth graph (absolute subscriber count) */
   growth_graph: enums.StatsGraph;
+  /** Members growth (relative subscriber count) */
   members_graph: enums.StatsGraph;
+  /** New members by source graph */
   new_members_by_source_graph: enums.StatsGraph;
+  /** Subscriber language graph (pie chart) */
   languages_graph: enums.StatsGraph;
+  /** Message activity graph (stacked bar graph, message type) */
   messages_graph: enums.StatsGraph;
+  /** Group activity graph (deleted, modified messages, blocked users) */
   actions_graph: enums.StatsGraph;
+  /** Activity per hour graph (absolute) */
   top_hours_graph: enums.StatsGraph;
+  /** Activity per day of week graph (absolute) */
   weekdays_graph: enums.StatsGraph;
+  /** Info about most active group members */
   top_posters: Array<enums.StatsGroupTopPoster>;
+  /** Info about most active group admins */
   top_admins: Array<enums.StatsGroupTopAdmin>;
+  /** Info about most active group inviters */
   top_inviters: Array<enums.StatsGroupTopInviter>;
+  /** Info about users mentioned in statistics */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -37895,9 +41678,13 @@ export class stats_MegagroupStats_ extends _stats_MegagroupStats_ {
   }
 }
 
+/** Global privacy settings */
 export class GlobalPrivacySettings_ extends _GlobalPrivacySettings_ {
+  /** Whether to archive and mute new chats from non-contacts */
   archive_and_mute_new_noncontact_peers?: true;
+  /** Whether unmuted chats will be kept in the Archive chat list when they get a new message. */
   keep_archived_unmuted?: true;
+  /** Whether unmuted chats that are always included or pinned in a [folder](https://core.telegram.org/api/folders), will be kept in the Archive chat list when they get a new message. Ignored if `keep_archived_unmuted` is set. */
   keep_archived_folders?: true;
   hide_read_marks?: true;
   new_noncontact_peers_require_premium?: true;
@@ -37942,9 +41729,13 @@ export class GlobalPrivacySettings_ extends _GlobalPrivacySettings_ {
   }
 }
 
+/** Country code and phone number pattern of a specific country */
 export class help_CountryCode_ extends _help_CountryCode_ {
+  /** ISO country code */
   country_code: string;
+  /** Possible phone prefixes */
   prefixes?: Array<string>;
+  /** Phone patterns: for example, `XXX XXX XXX` */
   patterns?: Array<string>;
 
   protected get [id](): number {
@@ -37981,11 +41772,17 @@ export class help_CountryCode_ extends _help_CountryCode_ {
   }
 }
 
+/** Name, ISO code, localized name and phone codes/patterns of a specific country */
 export class help_Country_ extends _help_Country_ {
+  /** Whether this country should not be shown in the list */
   hidden?: true;
+  /** ISO code of country */
   iso2: string;
+  /** Name of the country in the country's language */
   default_name: string;
+  /** Name of the country in the user's language, if different from the original name */
   name?: string;
+  /** Phone codes/patterns */
   country_codes: Array<enums.help.CountryCode>;
 
   protected get [id](): number {
@@ -38028,6 +41825,7 @@ export class help_Country_ extends _help_Country_ {
   }
 }
 
+/** The country list has not changed */
 export class help_CountriesListNotModified_ extends _help_CountriesList_ {
   protected get [id](): number {
     return 0x93CC1F32;
@@ -38050,8 +41848,11 @@ export class help_CountriesListNotModified_ extends _help_CountriesList_ {
   }
 }
 
+/** Name, ISO code, localized name and phone codes/patterns of all available countries */
 export class help_CountriesList_ extends _help_CountriesList_ {
+  /** Name, ISO code, localized name and phone codes/patterns of all available countries */
   countries: Array<enums.help.Country>;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
 
   protected get [id](): number {
@@ -38083,9 +41884,13 @@ export class help_CountriesList_ extends _help_CountriesList_ {
   }
 }
 
+/** View, forward counter + info about replies of a specific message */
 export class MessageViews_ extends _MessageViews_ {
+  /** View count of message */
   views?: number;
+  /** Forward count of message */
   forwards?: number;
+  /** Reply and [thread](https://core.telegram.org/api/threads) information of message */
   replies?: enums.MessageReplies;
 
   protected get [id](): number {
@@ -38122,9 +41927,13 @@ export class MessageViews_ extends _MessageViews_ {
   }
 }
 
+/** View, forward counter + info about replies */
 export class messages_MessageViews_ extends _messages_MessageViews_ {
+  /** View, forward counter + info about replies */
   views: Array<enums.MessageViews>;
+  /** Chats mentioned in constructor */
   chats: Array<enums.Chat>;
+  /** Users mentioned in constructor */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -38159,13 +41968,21 @@ export class messages_MessageViews_ extends _messages_MessageViews_ {
   }
 }
 
+/** Information about a [message thread](https://core.telegram.org/api/threads) */
 export class messages_DiscussionMessage_ extends _messages_DiscussionMessage_ {
+  /** The messages from which the thread starts. The messages are returned in reverse chronological order (i.e., in order of decreasing message ID). */
   messages: Array<enums.Message>;
+  /** Message ID of latest reply in this [thread](https://core.telegram.org/api/threads) */
   max_id?: number;
+  /** Message ID of latest read incoming message in this [thread](https://core.telegram.org/api/threads) */
   read_inbox_max_id?: number;
+  /** Message ID of latest read outgoing message in this [thread](https://core.telegram.org/api/threads) */
   read_outbox_max_id?: number;
+  /** Number of unread messages */
   unread_count: number;
+  /** Chats mentioned in constructor */
   chats: Array<enums.Chat>;
+  /** Users mentioned in constructor */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -38214,17 +42031,29 @@ export class messages_DiscussionMessage_ extends _messages_DiscussionMessage_ {
   }
 }
 
+/** Message replies and [thread](https://core.telegram.org/api/threads) information */
 export class MessageReplyHeader_ extends _MessageReplyHeader_ {
+  /** This is a reply to a scheduled message. */
   reply_to_scheduled?: true;
+  /** Whether this message was sent in a [forum topic](https://core.telegram.org/api/forum#forum-topics) (except for the General topic). */
   forum_topic?: true;
+  /** Whether this message is quoting a part of another message. */
   quote?: true;
+  /** ID of message to which this message is replying */
   reply_to_msg_id?: number;
+  /** For replies sent in [channel discussion threads](https://core.telegram.org/api/threads) of which the current user is not a member, the discussion group ID */
   reply_to_peer_id?: enums.Peer;
+  /** When replying to a message sent by a certain peer to another chat, contains info about the peer that originally sent the message to that other chat. */
   reply_from?: enums.MessageFwdHeader;
+  /** When replying to a media sent by a certain peer to another chat, contains the media of the replied-to message. */
   reply_media?: enums.MessageMedia;
+  /** ID of the message that started this [message thread](https://core.telegram.org/api/threads) */
   reply_to_top_id?: number;
+  /** Used to quote-reply to only a certain section (specified here) of the original message. */
   quote_text?: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) from the `quote_text` field. */
   quote_entities?: Array<enums.MessageEntity>;
+  /** Offset of the message `quote_text` within the original message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)). */
   quote_offset?: number;
 
   protected get [id](): number {
@@ -38285,8 +42114,10 @@ export class MessageReplyHeader_ extends _MessageReplyHeader_ {
   }
 }
 
+/** Represents a reply to a [story](https://core.telegram.org/api/stories) */
 export class MessageReplyStoryHeader_ extends _MessageReplyHeader_ {
   peer: enums.Peer;
+  /** Story ID */
   story_id: number;
 
   protected get [id](): number {
@@ -38318,13 +42149,21 @@ export class MessageReplyStoryHeader_ extends _MessageReplyHeader_ {
   }
 }
 
+/** Info about [the comment section of a channel post, or a simple message thread](https://core.telegram.org/api/threads) */
 export class MessageReplies_ extends _MessageReplies_ {
+  /** Whether this constructor contains information about the [comment section of a channel post, or a simple message thread](https://core.telegram.org/api/threads) */
   comments?: true;
+  /** Contains the total number of replies in this thread or comment section. */
   replies: number;
+  /** [PTS](https://core.telegram.org/api/updates) of the message that started this thread. */
   replies_pts: number;
+  /** For channel post comments, contains information about the last few comment posters for a specific thread, to show a small list of commenter profile pictures in client previews. */
   recent_repliers?: Array<enums.Peer>;
+  /** For channel post comments, contains the ID of the associated [discussion supergroup](https://core.telegram.org/api/discussion) */
   channel_id?: bigint;
+  /** ID of the latest message in this thread or comment section. */
   max_id?: number;
+  /** Contains the ID of the latest read message in this thread or comment section. */
   read_max_id?: number;
 
   protected get [id](): number {
@@ -38373,8 +42212,11 @@ export class MessageReplies_ extends _MessageReplies_ {
   }
 }
 
+/** Information about a blocked peer */
 export class PeerBlocked_ extends _PeerBlocked_ {
+  /** Peer ID */
   peer_id: enums.Peer;
+  /** When was the peer blocked */
   date: number;
 
   protected get [id](): number {
@@ -38406,8 +42248,11 @@ export class PeerBlocked_ extends _PeerBlocked_ {
   }
 }
 
+/** Message statistics */
 export class stats_MessageStats_ extends _stats_MessageStats_ {
+  /** Message view graph */
   views_graph: enums.StatsGraph;
+  /** A graph containing the number of reactions on stories categorized by emotion */
   reactions_by_emotion_graph: enums.StatsGraph;
 
   protected get [id](): number {
@@ -38439,9 +42284,13 @@ export class stats_MessageStats_ extends _stats_MessageStats_ {
   }
 }
 
+/** An ended group call */
 export class GroupCallDiscarded_ extends _GroupCall_ {
+  /** Group call ID */
   id: bigint;
+  /** Group call access hash */
   access_hash: bigint;
+  /** Group call duration */
   duration: number;
 
   protected get [id](): number {
@@ -38476,24 +42325,43 @@ export class GroupCallDiscarded_ extends _GroupCall_ {
   }
 }
 
+/** Info about a group call or livestream */
 export class GroupCall_ extends _GroupCall_ {
+  /** Whether the user should be muted upon joining the call */
   join_muted?: true;
+  /** Whether the current user can change the value of the `join_muted` flag using [phone.toggleGroupCallSettings](https://core.telegram.org/method/phone.toggleGroupCallSettings) */
   can_change_join_muted?: true;
+  /** Specifies the ordering to use when locally sorting by date and displaying in the UI group call participants. */
   join_date_asc?: true;
+  /** Whether we subscribed to the scheduled call */
   schedule_start_subscribed?: true;
+  /** Whether you can start streaming video into the call */
   can_start_video?: true;
+  /** Whether the group call is currently being recorded */
   record_video_active?: true;
+  /** Whether RTMP streams are allowed */
   rtmp_stream?: true;
+  /** Whether the listeners list is hidden and cannot be fetched using [phone.getGroupParticipants](https://core.telegram.org/method/phone.getGroupParticipants). The `phone.groupParticipants.count` and `groupCall.participants_count` counters will still include listeners. */
   listeners_hidden?: true;
+  /** Group call ID */
   id: bigint;
+  /** Group call access hash */
   access_hash: bigint;
+  /** Participant count */
   participants_count: number;
+  /** Group call title */
   title?: string;
+  /** DC ID to be used for livestream chunks */
   stream_dc_id?: number;
+  /** When was the recording started */
   record_start_date?: number;
+  /** When is the call scheduled to start */
   schedule_date?: number;
+  /** Number of people currently streaming video into the call */
   unmuted_video_count?: number;
+  /** Maximum number of people allowed to stream video into the call */
   unmuted_video_limit: number;
+  /** Version */
   version: number;
 
   protected get [id](): number {
@@ -38575,8 +42443,11 @@ export class GroupCall_ extends _GroupCall_ {
   }
 }
 
+/** Points to a specific group call */
 export class InputGroupCall_ extends _InputGroupCall_ {
+  /** Group call ID */
   id: bigint;
+  /** Group call access hash */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -38608,25 +42479,45 @@ export class InputGroupCall_ extends _InputGroupCall_ {
   }
 }
 
+/** Info about a group call participant */
 export class GroupCallParticipant_ extends _GroupCallParticipant_ {
+  /** Whether the participant is muted */
   muted?: true;
+  /** Whether the participant has left */
   left?: true;
+  /** Whether the participant can unmute themselves */
   can_self_unmute?: true;
+  /** Whether the participant has just joined */
   just_joined?: true;
+  /** If set, and [updateGroupCallParticipants](https://core.telegram.org/constructor/updateGroupCallParticipants).version < locally stored call.version, info about this participant should be ignored. If (...), and [updateGroupCallParticipants](https://core.telegram.org/constructor/updateGroupCallParticipants).version > call.version+1, the participant list should be refetched using [phone.getGroupParticipants](https://core.telegram.org/method/phone.getGroupParticipants). */
   versioned?: true;
+  /** If not set, the `volume` and `muted_by_you` fields can be safely used to overwrite locally cached information; otherwise, `volume` will contain valid information only if `volume_by_admin` is set both in the cache and in the received constructor. */
   min?: true;
+  /** Whether this participant was muted by the current user */
   muted_by_you?: true;
+  /** Whether our volume can only changed by an admin */
   volume_by_admin?: true;
+  /** Whether this participant is the current user */
   self?: true;
+  /** Whether this participant is currently broadcasting video */
   video_joined?: true;
+  /** Peer information */
   peer: enums.Peer;
+  /** When did this participant join the group call */
   date: number;
+  /** When was this participant last active in the group call */
   active_date?: number;
+  /** Source ID */
   source: number;
+  /** Volume, if not set the volume is set to 100%. */
   volume?: number;
+  /** Info about this participant */
   about?: string;
+  /** Specifies the UI visualization order of peers with raised hands: peers with a higher rating should be showed first in the list. */
   raise_hand_rating?: bigint;
+  /** Info about the video stream the participant is currently broadcasting */
   video?: enums.GroupCallParticipantVideo;
+  /** Info about the screen sharing stream the participant is currently broadcasting */
   presentation?: enums.GroupCallParticipantVideo;
 
   protected get [id](): number {
@@ -38711,11 +42602,17 @@ export class GroupCallParticipant_ extends _GroupCallParticipant_ {
   }
 }
 
+/** Contains info about a group call, and partial info about its participants. */
 export class phone_GroupCall_ extends _phone_GroupCall_ {
+  /** Info about the group call */
   call: enums.GroupCall;
+  /** A partial list of participants. */
   participants: Array<enums.GroupCallParticipant>;
+  /** Next offset to use when fetching the remaining participants using [phone.getGroupParticipants](https://core.telegram.org/method/phone.getGroupParticipants) */
   participants_next_offset: string;
+  /** Chats mentioned in the participants vector */
   chats: Array<enums.Chat>;
+  /** Users mentioned in the participants vector */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -38756,12 +42653,19 @@ export class phone_GroupCall_ extends _phone_GroupCall_ {
   }
 }
 
+/** Info about the participants of a group call or livestream */
 export class phone_GroupParticipants_ extends _phone_GroupParticipants_ {
+  /** Number of participants */
   count: number;
+  /** List of participants */
   participants: Array<enums.GroupCallParticipant>;
+  /** If not empty, the specified list of participants is partial, and more participants can be fetched specifying this parameter as `offset` in [phone.getGroupParticipants](https://core.telegram.org/method/phone.getGroupParticipants). */
   next_offset: string;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
+  /** Version info */
   version: number;
 
   protected get [id](): number {
@@ -38805,6 +42709,7 @@ export class phone_GroupParticipants_ extends _phone_GroupParticipants_ {
   }
 }
 
+/** Peer type: private chat with the bot itself */
 export class InlineQueryPeerTypeSameBotPM_ extends _InlineQueryPeerType_ {
   protected get [id](): number {
     return 0x3081ED9D;
@@ -38827,6 +42732,7 @@ export class InlineQueryPeerTypeSameBotPM_ extends _InlineQueryPeerType_ {
   }
 }
 
+/** Peer type: private chat */
 export class InlineQueryPeerTypePM_ extends _InlineQueryPeerType_ {
   protected get [id](): number {
     return 0x833C0FAC;
@@ -38849,6 +42755,7 @@ export class InlineQueryPeerTypePM_ extends _InlineQueryPeerType_ {
   }
 }
 
+/** Peer type: [chat](https://core.telegram.org/api/channel) */
 export class InlineQueryPeerTypeChat_ extends _InlineQueryPeerType_ {
   protected get [id](): number {
     return 0xD766C50A;
@@ -38871,6 +42778,7 @@ export class InlineQueryPeerTypeChat_ extends _InlineQueryPeerType_ {
   }
 }
 
+/** Peer type: [supergroup](https://core.telegram.org/api/channel) */
 export class InlineQueryPeerTypeMegagroup_ extends _InlineQueryPeerType_ {
   protected get [id](): number {
     return 0x5EC4BE43;
@@ -38893,6 +42801,7 @@ export class InlineQueryPeerTypeMegagroup_ extends _InlineQueryPeerType_ {
   }
 }
 
+/** Peer type: [channel](https://core.telegram.org/api/channel) */
 export class InlineQueryPeerTypeBroadcast_ extends _InlineQueryPeerType_ {
   protected get [id](): number {
     return 0x6334EE9A;
@@ -38915,6 +42824,7 @@ export class InlineQueryPeerTypeBroadcast_ extends _InlineQueryPeerType_ {
   }
 }
 
+/** Peer type: private chat with a bot. */
 export class InlineQueryPeerTypeBotPM_ extends _InlineQueryPeerType_ {
   protected get [id](): number {
     return 0x0E3B2D0C;
@@ -38937,7 +42847,9 @@ export class InlineQueryPeerTypeBotPM_ extends _InlineQueryPeerType_ {
   }
 }
 
+/** ID of a specific [chat import session, click here for more info »](https://core.telegram.org/api/import). */
 export class messages_HistoryImport_ extends _messages_HistoryImport_ {
+  /** [History import ID](https://core.telegram.org/api/import) */
   id: bigint;
 
   protected get [id](): number {
@@ -38966,9 +42878,14 @@ export class messages_HistoryImport_ extends _messages_HistoryImport_ {
   }
 }
 
+/** Contains information about a chat export file [generated by a foreign chat app, click here for more info](https://core.telegram.org/api/import).  
+If neither the `pm` or `group` flags are set, the specified chat export was generated from a chat of unknown type. */
 export class messages_HistoryImportParsed_ extends _messages_HistoryImportParsed_ {
+  /** The chat export file was generated from a private chat. */
   pm?: true;
+  /** The chat export file was generated from a group chat. */
   group?: true;
+  /** Title of the chat. */
   title?: string;
 
   protected get [id](): number {
@@ -39005,10 +42922,15 @@ export class messages_HistoryImportParsed_ extends _messages_HistoryImportParsed
   }
 }
 
+/** Messages found and affected by changes */
 export class messages_AffectedFoundMessages_ extends _messages_AffectedFoundMessages_ {
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
+  /** [Number of events that were generated](https://core.telegram.org/api/updates) */
   pts_count: number;
+  /** If bigger than zero, the request must be repeated to remove more messages */
   offset: number;
+  /** Affected message IDs */
   messages: Array<number>;
 
   protected get [id](): number {
@@ -39046,12 +42968,19 @@ export class messages_AffectedFoundMessages_ extends _messages_AffectedFoundMess
   }
 }
 
+/** When and which user joined the chat using a chat invite */
 export class ChatInviteImporter_ extends _ChatInviteImporter_ {
+  /** Whether this user currently has a pending [join request »](https://core.telegram.org/api/invites#join-requests) */
   requested?: true;
+  /** The participant joined by importing a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
   via_chatlist?: true;
+  /** The user */
   user_id: bigint;
+  /** When did the user join */
   date: number;
+  /** For users with pending requests, contains bio of the user that requested to join */
   about?: string;
+  /** The administrator that approved the [join request »](https://core.telegram.org/api/invites#join-requests) of the user */
   approved_by?: bigint;
 
   protected get [id](): number {
@@ -39097,9 +43026,13 @@ export class ChatInviteImporter_ extends _ChatInviteImporter_ {
   }
 }
 
+/** Info about chat invites exported by a certain admin. */
 export class messages_ExportedChatInvites_ extends _messages_ExportedChatInvites_ {
+  /** Number of invites exported by the admin */
   count: number;
+  /** Exported invites */
   invites: Array<enums.ExportedChatInvite>;
+  /** Info about the admin */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -39134,8 +43067,11 @@ export class messages_ExportedChatInvites_ extends _messages_ExportedChatInvites
   }
 }
 
+/** Info about a chat invite */
 export class messages_ExportedChatInvite_ extends _messages_ExportedChatInvite_ {
+  /** Info about the chat invite */
   invite: enums.ExportedChatInvite;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -39167,9 +43103,13 @@ export class messages_ExportedChatInvite_ extends _messages_ExportedChatInvite_ 
   }
 }
 
+/** The specified chat invite was replaced with another one */
 export class messages_ExportedChatInviteReplaced_ extends _messages_ExportedChatInvite_ {
+  /** The replaced chat invite */
   invite: enums.ExportedChatInvite;
+  /** The invite that replaces the previous invite */
   new_invite: enums.ExportedChatInvite;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -39204,9 +43144,13 @@ export class messages_ExportedChatInviteReplaced_ extends _messages_ExportedChat
   }
 }
 
+/** Info about the users that joined the chat using a specific chat invite */
 export class messages_ChatInviteImporters_ extends _messages_ChatInviteImporters_ {
+  /** Number of users that joined */
   count: number;
+  /** The users that joined */
   importers: Array<enums.ChatInviteImporter>;
+  /** The users that joined */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -39241,9 +43185,13 @@ export class messages_ChatInviteImporters_ extends _messages_ChatInviteImporters
   }
 }
 
+/** Info about chat invites generated by admins. */
 export class ChatAdminWithInvites_ extends _ChatAdminWithInvites_ {
+  /** The admin */
   admin_id: bigint;
+  /** Number of invites generated by the admin */
   invites_count: number;
+  /** Number of revoked invites */
   revoked_invites_count: number;
 
   protected get [id](): number {
@@ -39278,8 +43226,11 @@ export class ChatAdminWithInvites_ extends _ChatAdminWithInvites_ {
   }
 }
 
+/** Info about chat invites generated by admins. */
 export class messages_ChatAdminsWithInvites_ extends _messages_ChatAdminsWithInvites_ {
+  /** Info about chat invites generated by admins. */
   admins: Array<enums.ChatAdminWithInvites>;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -39311,7 +43262,9 @@ export class messages_ChatAdminsWithInvites_ extends _messages_ChatAdminsWithInv
   }
 }
 
+/** Contains a confirmation text to be shown to the user, upon [importing chat history, click here for more info »](https://core.telegram.org/api/import). */
 export class messages_CheckedHistoryImportPeer_ extends _messages_CheckedHistoryImportPeer_ {
+  /** A confirmation text to be shown to the user, upon [importing chat history »](https://core.telegram.org/api/import). */
   confirm_text: string;
 
   protected get [id](): number {
@@ -39340,9 +43293,13 @@ export class messages_CheckedHistoryImportPeer_ extends _messages_CheckedHistory
   }
 }
 
+/** A list of peers that can be used to join a group call, presenting yourself as a specific user/channel. */
 export class phone_JoinAsPeers_ extends _phone_JoinAsPeers_ {
+  /** Peers */
   peers: Array<enums.Peer>;
+  /** Chats mentioned in the peers vector */
   chats: Array<enums.Chat>;
+  /** Users mentioned in the peers vector */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -39377,7 +43334,9 @@ export class phone_JoinAsPeers_ extends _phone_JoinAsPeers_ {
   }
 }
 
+/** An invite to a group call or livestream */
 export class phone_ExportedGroupCallInvite_ extends _phone_ExportedGroupCallInvite_ {
+  /** Invite link */
   link: string;
 
   protected get [id](): number {
@@ -39406,8 +43365,11 @@ export class phone_ExportedGroupCallInvite_ extends _phone_ExportedGroupCallInvi
   }
 }
 
+/** Describes a group of video synchronization source identifiers */
 export class GroupCallParticipantVideoSourceGroup_ extends _GroupCallParticipantVideoSourceGroup_ {
+  /** SDP semantics */
   semantics: string;
+  /** Source IDs */
   sources: Array<number>;
 
   protected get [id](): number {
@@ -39439,10 +43401,15 @@ export class GroupCallParticipantVideoSourceGroup_ extends _GroupCallParticipant
   }
 }
 
+/** Info about a video stream */
 export class GroupCallParticipantVideo_ extends _GroupCallParticipantVideo_ {
+  /** Whether the stream is currently paused */
   paused?: true;
+  /** Endpoint */
   endpoint: string;
+  /** Source groups */
   source_groups: Array<enums.GroupCallParticipantVideoSourceGroup>;
+  /** Audio source ID */
   audio_source?: number;
 
   protected get [id](): number {
@@ -39482,7 +43449,9 @@ export class GroupCallParticipantVideo_ extends _GroupCallParticipantVideo_ {
   }
 }
 
+/** A suggested short name for a stickerpack */
 export class stickers_SuggestedShortName_ extends _stickers_SuggestedShortName_ {
+  /** Suggested short name */
   short_name: string;
 
   protected get [id](): number {
@@ -39511,6 +43480,7 @@ export class stickers_SuggestedShortName_ extends _stickers_SuggestedShortName_ 
   }
 }
 
+/** The commands will be valid in all dialogs */
 export class BotCommandScopeDefault_ extends _BotCommandScope_ {
   protected get [id](): number {
     return 0x2F6CB2AB;
@@ -39533,6 +43503,7 @@ export class BotCommandScopeDefault_ extends _BotCommandScope_ {
   }
 }
 
+/** The specified bot commands will only be valid in all private chats with users. */
 export class BotCommandScopeUsers_ extends _BotCommandScope_ {
   protected get [id](): number {
     return 0x3C4F04D8;
@@ -39555,6 +43526,7 @@ export class BotCommandScopeUsers_ extends _BotCommandScope_ {
   }
 }
 
+/** The specified bot commands will be valid in all [groups and supergroups](https://core.telegram.org/api/channel). */
 export class BotCommandScopeChats_ extends _BotCommandScope_ {
   protected get [id](): number {
     return 0x6FE1A881;
@@ -39577,6 +43549,7 @@ export class BotCommandScopeChats_ extends _BotCommandScope_ {
   }
 }
 
+/** The specified bot commands will be valid only for chat administrators, in all [groups and supergroups](https://core.telegram.org/api/channel). */
 export class BotCommandScopeChatAdmins_ extends _BotCommandScope_ {
   protected get [id](): number {
     return 0xB9AA606A;
@@ -39599,7 +43572,9 @@ export class BotCommandScopeChatAdmins_ extends _BotCommandScope_ {
   }
 }
 
+/** The specified bot commands will be valid only in a specific dialog. */
 export class BotCommandScopePeer_ extends _BotCommandScope_ {
+  /** The dialog */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -39628,7 +43603,9 @@ export class BotCommandScopePeer_ extends _BotCommandScope_ {
   }
 }
 
+/** The specified bot commands will be valid for all admins of the specified [group or supergroup](https://core.telegram.org/api/channel). */
 export class BotCommandScopePeerAdmins_ extends _BotCommandScope_ {
+  /** The chat */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -39657,8 +43634,11 @@ export class BotCommandScopePeerAdmins_ extends _BotCommandScope_ {
   }
 }
 
+/** The specified bot commands will be valid only for a specific user in the specified [group or supergroup](https://core.telegram.org/api/channel). */
 export class BotCommandScopePeerUser_ extends _BotCommandScope_ {
+  /** The chat */
   peer: enums.InputPeer;
+  /** The user */
   user_id: enums.InputUser;
 
   protected get [id](): number {
@@ -39690,7 +43670,9 @@ export class BotCommandScopePeerUser_ extends _BotCommandScope_ {
   }
 }
 
+/** You recently requested a password reset that was canceled, please wait until the specified date before requesting another reset. */
 export class account_ResetPasswordFailedWait_ extends _account_ResetPasswordResult_ {
+  /** Wait until this date before requesting another reset. */
   retry_date: number;
 
   protected get [id](): number {
@@ -39719,7 +43701,9 @@ export class account_ResetPasswordFailedWait_ extends _account_ResetPasswordResu
   }
 }
 
+/** You successfully requested a password reset, please wait until the specified date before finalizing the reset. */
 export class account_ResetPasswordRequestedWait_ extends _account_ResetPasswordResult_ {
+  /** Wait until this date before finalizing the reset. */
   until_date: number;
 
   protected get [id](): number {
@@ -39748,6 +43732,7 @@ export class account_ResetPasswordRequestedWait_ extends _account_ResetPasswordR
   }
 }
 
+/** The 2FA password was reset successfully. */
 export class account_ResetPasswordOk_ extends _account_ResetPasswordResult_ {
   protected get [id](): number {
     return 0xE926D63E;
@@ -39770,21 +43755,37 @@ export class account_ResetPasswordOk_ extends _account_ResetPasswordResult_ {
   }
 }
 
+/** A [sponsored message](https://core.telegram.org/api/sponsored-messages). */
 export class SponsoredMessage_ extends _SponsoredMessage_ {
+  /** Whether the message needs to be labeled as "recommended" instead of "sponsored" */
   recommended?: true;
+  /** Whether a profile photo bubble should be displayed for this message, like for messages sent in groups. The photo shown in the bubble is obtained either from the peer contained in `from_id`, or from `chat_invite`. */
   show_peer_photo?: true;
+  /** Message ID */
   random_id: Uint8Array;
+  /** ID of the sender of the message */
   from_id?: enums.Peer;
+  /** Information about the chat invite hash specified in `chat_invite_hash` */
   chat_invite?: enums.ChatInvite;
+  /** Chat invite */
   chat_invite_hash?: string;
+  /** Optional link to a channel post if `from_id` points to a channel */
   channel_post?: number;
+  /** Parameter for the bot start message if the sponsored chat is a chat with a bot. */
   start_param?: string;
+  /** Sponsored website */
   webpage?: enums.SponsoredWebPage;
+  /** [Mini App »](https://core.telegram.org/api/bots/webapps) to open when the sponsored message is clicked. */
   app?: enums.BotApp;
+  /** Sponsored message */
   message: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities?: Array<enums.MessageEntity>;
+  /** Text of the sponsored message button. */
   button_text?: string;
+  /** If set, contains additional information about the sponsor to be shown along with the message. */
   sponsor_info?: string;
+  /** If set, contains additional information about the sponsored message to be shown along with the message. */
   additional_info?: string;
 
   protected get [id](): number {
@@ -39857,10 +43858,15 @@ export class SponsoredMessage_ extends _SponsoredMessage_ {
   }
 }
 
+/** A set of sponsored messages associated to a channel */
 export class messages_SponsoredMessages_ extends _messages_SponsoredMessages_ {
+  /** If set, specifies the minimum number of messages between shown sponsored messages; otherwise, only one sponsored message must be shown after all ordinary messages. */
   posts_between?: number;
+  /** Sponsored messages */
   messages: Array<enums.SponsoredMessage>;
+  /** Chats mentioned in the sponsored messages */
   chats: Array<enums.Chat>;
+  /** Users mentioned in the sponsored messages */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -39900,6 +43906,7 @@ export class messages_SponsoredMessages_ extends _messages_SponsoredMessages_ {
   }
 }
 
+/** No sponsored messages are available. */
 export class messages_SponsoredMessagesEmpty_ extends _messages_SponsoredMessages_ {
   protected get [id](): number {
     return 0x1839490F;
@@ -39922,10 +43929,15 @@ export class messages_SponsoredMessagesEmpty_ extends _messages_SponsoredMessage
   }
 }
 
+/** Information about found messages sent on a specific day, used to split the `messages` in [messages.searchResultsCalendar](https://core.telegram.org/constructor/messages.searchResultsCalendar) constructors by days. */
 export class SearchResultsCalendarPeriod_ extends _SearchResultsCalendarPeriod_ {
+  /** The day this object is referring to. */
   date: number;
+  /** First message ID that was sent on this day. */
   min_msg_id: number;
+  /** Last message ID that was sent on this day. */
   max_msg_id: number;
+  /** All messages that were sent on this day. */
   count: number;
 
   protected get [id](): number {
@@ -39963,15 +43975,27 @@ export class SearchResultsCalendarPeriod_ extends _SearchResultsCalendarPeriod_ 
   }
 }
 
+/** Information about found messages sent on a specific day */
 export class messages_SearchResultsCalendar_ extends _messages_SearchResultsCalendar_ {
+  /** If set, indicates that the results may be inexact */
   inexact?: true;
+  /** Total number of results matching query */
   count: number;
+  /** Starting timestamp of attached messages */
   min_date: number;
+  /** Ending timestamp of attached messages */
   min_msg_id: number;
+  /** Indicates the absolute position of `messages[0]` within the total result set with count `count`.  
+  This is useful, for example, if we need to display a `progress/total` counter (like `photo 134 of 200`, for all media in a chat, we could simply use `photo ${offset_id_offset} of ${count}`. */
   offset_id_offset?: number;
+  /** Used to split the `messages` by days: multiple [SearchResultsCalendarPeriod](https://core.telegram.org/type/SearchResultsCalendarPeriod) constructors are returned, each containing information about the first, last and total number of messages matching the filter that were sent on a specific day.  
+  This information can be easily used to split the returned `messages` by day. */
   periods: Array<enums.SearchResultsCalendarPeriod>;
+  /** Messages */
   messages: Array<enums.Message>;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -40026,9 +44050,13 @@ export class messages_SearchResultsCalendar_ extends _messages_SearchResultsCale
   }
 }
 
+/** Information about a message in a specific position */
 export class SearchResultPosition_ extends _SearchResultsPosition_ {
+  /** Message ID */
   msg_id: number;
+  /** When was the message sent */
   date: number;
+  /** 0-based message position in the full list of suitable messages */
   offset: number;
 
   protected get [id](): number {
@@ -40063,8 +44091,11 @@ export class SearchResultPosition_ extends _SearchResultsPosition_ {
   }
 }
 
+/** Information about sparse positions of messages */
 export class messages_SearchResultsPositions_ extends _messages_SearchResultsPositions_ {
+  /** Total number of found messages */
   count: number;
+  /** List of message positions */
   positions: Array<enums.SearchResultsPosition>;
 
   protected get [id](): number {
@@ -40096,9 +44127,13 @@ export class messages_SearchResultsPositions_ extends _messages_SearchResultsPos
   }
 }
 
+/** A list of peers that can be used to send messages in a specific group */
 export class channels_SendAsPeers_ extends _channels_SendAsPeers_ {
+  /** Peers that can be used to send messages to the group */
   peers: Array<enums.SendAsPeer>;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -40133,9 +44168,13 @@ export class channels_SendAsPeers_ extends _channels_SendAsPeers_ {
   }
 }
 
+/** Full user information */
 export class users_UserFull_ extends _users_UserFull_ {
+  /** Full user information */
   full_user: enums.UserFull;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -40170,9 +44209,13 @@ export class users_UserFull_ extends _users_UserFull_ {
   }
 }
 
+/** Peer settings */
 export class messages_PeerSettings_ extends _messages_PeerSettings_ {
+  /** Peer settings */
   settings: enums.PeerSettings;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -40207,7 +44250,9 @@ export class messages_PeerSettings_ extends _messages_PeerSettings_ {
   }
 }
 
+/** [Future auth token »](https://core.telegram.org/api/auth#future-auth-tokens) to be used on subsequent authorizations */
 export class auth_LoggedOut_ extends _auth_LoggedOut_ {
+  /** [Future auth token »](https://core.telegram.org/api/auth#future-auth-tokens) to be used on subsequent authorizations */
   future_auth_token?: Uint8Array;
 
   protected get [id](): number {
@@ -40238,9 +44283,14 @@ export class auth_LoggedOut_ extends _auth_LoggedOut_ {
   }
 }
 
+/** Reactions */
 export class ReactionCount_ extends _ReactionCount_ {
+  /** If set, indicates that the current user also sent this reaction.  
+  The integer value indicates when was the reaction added: the bigger the value, the newer the reaction. */
   chosen_order?: number;
+  /** The reaction. */
   reaction: enums.Reaction;
+  /** Number of users that reacted with this emoji. */
   count: number;
 
   protected get [id](): number {
@@ -40277,11 +44327,16 @@ export class ReactionCount_ extends _ReactionCount_ {
   }
 }
 
+/** [Message reactions »](https://core.telegram.org/api/reactions) */
 export class MessageReactions_ extends _MessageReactions_ {
+  /** Similar to [min](https://core.telegram.org/api/min) objects, used for [message reaction »](https://core.telegram.org/api/reactions) constructors that are the same for all users so they don't have the reactions sent by the current user (you can use [messages.getMessagesReactions](https://core.telegram.org/method/messages.getMessagesReactions) to get the full reaction info). */
   min?: true;
+  /** Whether [messages.getMessageReactionsList](https://core.telegram.org/method/messages.getMessageReactionsList) can be used to see how each specific peer reacted to the message */
   can_see_list?: true;
   reactions_as_tags?: true;
+  /** Reactions */
   results: Array<enums.ReactionCount>;
+  /** List of recent peers and their reactions */
   recent_reactions?: Array<enums.MessagePeerReaction>;
 
   protected get [id](): number {
@@ -40324,11 +44379,17 @@ export class MessageReactions_ extends _MessageReactions_ {
   }
 }
 
+/** List of peers that reacted to a specific message */
 export class messages_MessageReactionsList_ extends _messages_MessageReactionsList_ {
+  /** Total number of reactions matching query */
   count: number;
+  /** List of peers that reacted to a specific message */
   reactions: Array<enums.MessagePeerReaction>;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
+  /** If set, indicates the next offset to use to load more results by invoking [messages.getMessageReactionsList](https://core.telegram.org/method/messages.getMessageReactionsList). */
   next_offset?: string;
 
   protected get [id](): number {
@@ -40371,17 +44432,29 @@ export class messages_MessageReactionsList_ extends _messages_MessageReactionsLi
   }
 }
 
+/** Animations associated with a message reaction */
 export class AvailableReaction_ extends _AvailableReaction_ {
+  /** If not set, the reaction can be added to new messages and enabled in chats. */
   inactive?: true;
+  /** Whether this reaction can only be used by Telegram Premium users */
   premium?: true;
+  /** Reaction emoji */
   reaction: string;
+  /** Reaction description */
   title: string;
+  /** Static icon for the reaction */
   static_icon: enums.Document;
+  /** The animated sticker to show when the user opens the reaction dropdown */
   appear_animation: enums.Document;
+  /** The animated sticker to show when the user hovers over the reaction */
   select_animation: enums.Document;
+  /** The animated sticker to show when the reaction is chosen and activated */
   activate_animation: enums.Document;
+  /** The background effect (still an animated sticker) to play under the `activate_animation`, when the reaction is chosen and activated */
   effect_animation: enums.Document;
+  /** The animation that plays around the button when you press an existing reaction (played together with `center_icon`). */
   around_animation?: enums.Document;
+  /** The animation of the emoji inside the button when you press an existing reaction (played together with `around_animation`). */
   center_icon?: enums.Document;
 
   protected get [id](): number {
@@ -40442,6 +44515,7 @@ export class AvailableReaction_ extends _AvailableReaction_ {
   }
 }
 
+/** No new reactions are available */
 export class messages_AvailableReactionsNotModified_ extends _messages_AvailableReactions_ {
   protected get [id](): number {
     return 0x9F071957;
@@ -40464,8 +44538,11 @@ export class messages_AvailableReactionsNotModified_ extends _messages_Available
   }
 }
 
+/** Animations and metadata associated with [message reactions »](https://core.telegram.org/api/reactions) */
 export class messages_AvailableReactions_ extends _messages_AvailableReactions_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
+  /** Animations and metadata associated with [message reactions »](https://core.telegram.org/api/reactions) */
   reactions: Array<enums.AvailableReaction>;
 
   protected get [id](): number {
@@ -40497,12 +44574,20 @@ export class messages_AvailableReactions_ extends _messages_AvailableReactions_ 
   }
 }
 
+/** How a certain peer reacted to the message */
 export class MessagePeerReaction_ extends _MessagePeerReaction_ {
+  /** Whether the specified [message reaction »](https://core.telegram.org/api/reactions) should elicit a bigger and longer reaction */
   big?: true;
+  /** Whether the reaction wasn't yet marked as read by the current user */
   unread?: true;
+  /** Starting from layer 159, [messages.sendReaction](https://core.telegram.org/method/messages.sendReaction) will send reactions from the peer (user or channel) specified using [messages.saveDefaultSendAs](https://core.telegram.org/method/messages.saveDefaultSendAs).  
+  If set, this flag indicates that this reaction was sent by us, even if the `peer` doesn't point to the current account. */
   my?: true;
+  /** Peer that reacted to the message */
   peer_id: enums.Peer;
+  /** When was this reaction added */
   date: number;
+  /** Reaction emoji */
   reaction: enums.Reaction;
 
   protected get [id](): number {
@@ -40548,9 +44633,13 @@ export class MessagePeerReaction_ extends _MessagePeerReaction_ {
   }
 }
 
+/** Info about an RTMP stream in a group call or livestream */
 export class GroupCallStreamChannel_ extends _GroupCallStreamChannel_ {
+  /** Channel ID */
   channel: number;
+  /** Specifies the duration of the video segment to fetch in milliseconds, by bitshifting `1000` to the right `scale` times: `duration_ms := 1000 >> scale`. */
   scale: number;
+  /** Last seen timestamp to easily start fetching livestream chunks using [inputGroupCallStream](https://core.telegram.org/constructor/inputGroupCallStream) */
   last_timestamp_ms: bigint;
 
   protected get [id](): number {
@@ -40585,7 +44674,9 @@ export class GroupCallStreamChannel_ extends _GroupCallStreamChannel_ {
   }
 }
 
+/** Info about RTMP streams in a group call or livestream */
 export class phone_GroupCallStreamChannels_ extends _phone_GroupCallStreamChannels_ {
+  /** RTMP streams */
   channels: Array<enums.GroupCallStreamChannel>;
 
   protected get [id](): number {
@@ -40614,8 +44705,11 @@ export class phone_GroupCallStreamChannels_ extends _phone_GroupCallStreamChanne
   }
 }
 
+/** RTMP URL and stream key to be used in streaming software */
 export class phone_GroupCallStreamRtmpUrl_ extends _phone_GroupCallStreamRtmpUrl_ {
+  /** RTMP URL */
   url: string;
+  /** Stream key */
   key: string;
 
   protected get [id](): number {
@@ -40647,8 +44741,15 @@ export class phone_GroupCallStreamRtmpUrl_ extends _phone_GroupCallStreamRtmpUrl
   }
 }
 
+/** Represents an attachment menu icon color for [bot mini apps »](https://core.telegram.org/api/bots/attach) */
 export class AttachMenuBotIconColor_ extends _AttachMenuBotIconColor_ {
+  /** One of the following values:  
+  `light_icon` - Color of the attachment menu icon (light mode)  
+  `light_text` - Color of the attachment menu label, once selected (light mode)  
+  `dark_icon` - Color of the attachment menu icon (dark mode)  
+  `dark_text` - Color of the attachment menu label, once selected (dark mode) */
   name: string;
+  /** Color in RGB24 format */
   color: number;
 
   protected get [id](): number {
@@ -40680,9 +44781,23 @@ export class AttachMenuBotIconColor_ extends _AttachMenuBotIconColor_ {
   }
 }
 
+/** Represents an attachment menu icon for [bot mini apps »](https://core.telegram.org/api/bots/attach) */
 export class AttachMenuBotIcon_ extends _AttachMenuBotIcon_ {
+  /** One of the following values: note that animated icons must be played when the user clicks on the button, activating the bot mini app.  
+    
+  `default_static` - Default attachment menu icon in SVG format  
+  `placeholder_static` - Default placeholder for opened Web Apps in SVG format  
+  `ios_static` - Attachment menu icon in SVG format for the official iOS app  
+  `ios_animated` - Animated attachment menu icon in TGS format for the official iOS app  
+  `android_animated` - Animated attachment menu icon in TGS format for the official Android app  
+  `macos_animated` - Animated attachment menu icon in TGS format for the official native Mac OS app  
+  `ios_side_menu_static` - Side menu icon in PNG format for the official iOS app  
+  `android_side_menu_static` - Side menu icon in SVG format for the official android app  
+  `macos_side_menu_static` - Side menu icon in PNG format for the official native Mac OS app */
   name: string;
+  /** The actual icon file. */
   icon: enums.Document;
+  /** Attachment menu icon colors. */
   colors?: Array<enums.AttachMenuBotIconColor>;
 
   protected get [id](): number {
@@ -40719,16 +44834,27 @@ export class AttachMenuBotIcon_ extends _AttachMenuBotIcon_ {
   }
 }
 
+/** Represents a [bot mini app that can be launched from the attachment/side menu »](https://core.telegram.org/api/bots/attach) */
 export class AttachMenuBot_ extends _AttachMenuBot_ {
+  /** If set, before launching the mini app the client should ask the user to add the mini app to the attachment/side menu, and only if the user accepts, after invoking [messages.toggleBotInAttachMenu](https://core.telegram.org/method/messages.toggleBotInAttachMenu) the app should be opened. */
   inactive?: true;
+  /** Deprecated flag, can be ignored. */
   has_settings?: true;
+  /** Whether the bot would like to send messages to the user. */
   request_write_access?: true;
+  /** Whether, when installed, an attachment menu entry should be shown for the Mini App. */
   show_in_attach_menu?: true;
+  /** Whether, when installed, an entry in the main view side menu should be shown for the Mini App. */
   show_in_side_menu?: true;
+  /** If `inactive` if set and the user hasn't previously accepted the third-party mini apps [Terms of Service](https://telegram.org/tos/mini-apps) for this bot, when showing the mini app installation prompt, an additional mandatory checkbox to accept the [mini apps TOS](https://telegram.org/tos/mini-apps) and a disclaimer indicating that this Mini App is not affiliated to Telegram should be shown. */
   side_menu_disclaimer_needed?: true;
+  /** Bot ID */
   bot_id: bigint;
+  /** Attachment menu item name */
   short_name: string;
+  /** List of dialog types where this attachment menu entry should be shown */
   peer_types?: Array<enums.AttachMenuPeerType>;
+  /** List of platform-specific static icons and animations to use for the attachment menu button */
   icons: Array<enums.AttachMenuBotIcon>;
 
   protected get [id](): number {
@@ -40786,6 +44912,7 @@ export class AttachMenuBot_ extends _AttachMenuBot_ {
   }
 }
 
+/** The list of bot mini apps hasn't changed */
 export class AttachMenuBotsNotModified_ extends _AttachMenuBots_ {
   protected get [id](): number {
     return 0xF1D88A5C;
@@ -40808,9 +44935,13 @@ export class AttachMenuBotsNotModified_ extends _AttachMenuBots_ {
   }
 }
 
+/** Represents a list of [bot mini apps that can be launched from the attachment menu »](https://core.telegram.org/api/bots/attach) */
 export class AttachMenuBots_ extends _AttachMenuBots_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** List of [bot mini apps that can be launched from the attachment menu »](https://core.telegram.org/api/bots/attach) */
   bots: Array<enums.AttachMenuBot>;
+  /** Info about related users/bots */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -40845,8 +44976,11 @@ export class AttachMenuBots_ extends _AttachMenuBots_ {
   }
 }
 
+/** Represents a [bot mini app that can be launched from the attachment menu »](https://core.telegram.org/api/bots/attach) */
 export class AttachMenuBotsBot_ extends _AttachMenuBotsBot_ {
+  /** Represents a [bot mini app that can be launched from the attachment menu »](https://core.telegram.org/api/bots/attach) */
   bot: enums.AttachMenuBot;
+  /** Info about related users and bots */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -40878,8 +45012,11 @@ export class AttachMenuBotsBot_ extends _AttachMenuBotsBot_ {
   }
 }
 
+/** Contains the webview URL with appropriate theme and user info parameters added */
 export class WebViewResultUrl_ extends _WebViewResult_ {
+  /** Webview session ID */
   query_id: bigint;
+  /** Webview URL to open */
   url: string;
 
   protected get [id](): number {
@@ -40911,7 +45048,9 @@ export class WebViewResultUrl_ extends _WebViewResult_ {
   }
 }
 
+/** Contains the webview URL with appropriate theme parameters added */
 export class SimpleWebViewResultUrl_ extends _SimpleWebViewResult_ {
+  /** URL */
   url: string;
 
   protected get [id](): number {
@@ -40940,7 +45079,9 @@ export class SimpleWebViewResultUrl_ extends _SimpleWebViewResult_ {
   }
 }
 
+/** Info about a sent inline webview message */
 export class WebViewMessageSent_ extends _WebViewMessageSent_ {
+  /** Message ID */
   msg_id?: enums.InputBotInlineMessageID;
 
   protected get [id](): number {
@@ -40971,6 +45112,7 @@ export class WebViewMessageSent_ extends _WebViewMessageSent_ {
   }
 }
 
+/** Placeholder [bot menu button](https://core.telegram.org/api/bots/menu) never returned to users: see [the docs for more info](https://core.telegram.org/api/bots/menu). */
 export class BotMenuButtonDefault_ extends _BotMenuButton_ {
   protected get [id](): number {
     return 0x7533A588;
@@ -40993,6 +45135,7 @@ export class BotMenuButtonDefault_ extends _BotMenuButton_ {
   }
 }
 
+/** [Bot menu button](https://core.telegram.org/api/bots/menu) that opens the bot command list when clicked. */
 export class BotMenuButtonCommands_ extends _BotMenuButton_ {
   protected get [id](): number {
     return 0x4258C205;
@@ -41015,8 +45158,11 @@ export class BotMenuButtonCommands_ extends _BotMenuButton_ {
   }
 }
 
+/** [Bot menu button](https://core.telegram.org/api/bots/menu) that opens a [web app](https://core.telegram.org/api/bots/webapps) when clicked. */
 export class BotMenuButton_ extends _BotMenuButton_ {
+  /** Title to be displayed on the menu button instead of 'Menu' */
   text: string;
+  /** URL of a [web app](https://core.telegram.org/api/bots/webapps) to open when the user clicks on the button */
   url: string;
 
   protected get [id](): number {
@@ -41048,6 +45194,7 @@ export class BotMenuButton_ extends _BotMenuButton_ {
   }
 }
 
+/** The notification sound list hasn't changed. */
 export class account_SavedRingtonesNotModified_ extends _account_SavedRingtones_ {
   protected get [id](): number {
     return 0xFBF6E8B1;
@@ -41070,8 +45217,11 @@ export class account_SavedRingtonesNotModified_ extends _account_SavedRingtones_
   }
 }
 
+/** A list of saved notification sounds */
 export class account_SavedRingtones_ extends _account_SavedRingtones_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** Saved notification sounds */
   ringtones: Array<enums.Document>;
 
   protected get [id](): number {
@@ -41103,6 +45253,7 @@ export class account_SavedRingtones_ extends _account_SavedRingtones_ {
   }
 }
 
+/** Indicates the default notification sound should be used */
 export class NotificationSoundDefault_ extends _NotificationSound_ {
   protected get [id](): number {
     return 0x97E8BEBE;
@@ -41125,6 +45276,7 @@ export class NotificationSoundDefault_ extends _NotificationSound_ {
   }
 }
 
+/** No notification sound should be used */
 export class NotificationSoundNone_ extends _NotificationSound_ {
   protected get [id](): number {
     return 0x6F0C34DF;
@@ -41147,8 +45299,11 @@ export class NotificationSoundNone_ extends _NotificationSound_ {
   }
 }
 
+/** Indicates a specific local notification sound should be used */
 export class NotificationSoundLocal_ extends _NotificationSound_ {
+  /** Notification sound title */
   title: string;
+  /** Notification sound identifier (arbitrary data used by the client to identify a specific local notification sound) */
   data: string;
 
   protected get [id](): number {
@@ -41180,7 +45335,9 @@ export class NotificationSoundLocal_ extends _NotificationSound_ {
   }
 }
 
+/** A specific previously uploaded notification sound should be used */
 export class NotificationSoundRingtone_ extends _NotificationSound_ {
+  /** Document ID of notification sound uploaded using [account.uploadRingtone](https://core.telegram.org/method/account.uploadRingtone) */
   id: bigint;
 
   protected get [id](): number {
@@ -41209,6 +45366,7 @@ export class NotificationSoundRingtone_ extends _NotificationSound_ {
   }
 }
 
+/** The notification sound was already in MP3 format and was saved without any modification */
 export class account_SavedRingtone_ extends _account_SavedRingtone_ {
   protected get [id](): number {
     return 0xB7263F6D;
@@ -41231,7 +45389,9 @@ export class account_SavedRingtone_ extends _account_SavedRingtone_ {
   }
 }
 
+/** The notification sound was not in MP3 format and was successfully converted and saved, use the returned [Document](https://core.telegram.org/type/Document) to refer to the notification sound from now on */
 export class account_SavedRingtoneConverted_ extends _account_SavedRingtone_ {
+  /** The converted notification sound */
   document: enums.Document;
 
   protected get [id](): number {
@@ -41260,6 +45420,7 @@ export class account_SavedRingtoneConverted_ extends _account_SavedRingtone_ {
   }
 }
 
+/** The bot attachment menu entry is available in the chat with the bot that offers it */
 export class AttachMenuPeerTypeSameBotPM_ extends _AttachMenuPeerType_ {
   protected get [id](): number {
     return 0x7D6BE90E;
@@ -41282,6 +45443,7 @@ export class AttachMenuPeerTypeSameBotPM_ extends _AttachMenuPeerType_ {
   }
 }
 
+/** The bot attachment menu entry is available in private chats with other bots (excluding the bot that offers the current attachment menu) */
 export class AttachMenuPeerTypeBotPM_ extends _AttachMenuPeerType_ {
   protected get [id](): number {
     return 0xC32BFA1A;
@@ -41304,6 +45466,7 @@ export class AttachMenuPeerTypeBotPM_ extends _AttachMenuPeerType_ {
   }
 }
 
+/** The bot attachment menu entry is available in private chats with other users (not bots) */
 export class AttachMenuPeerTypePM_ extends _AttachMenuPeerType_ {
   protected get [id](): number {
     return 0xF146D31F;
@@ -41326,6 +45489,7 @@ export class AttachMenuPeerTypePM_ extends _AttachMenuPeerType_ {
   }
 }
 
+/** The bot attachment menu entry is available in [groups and supergroups](https://core.telegram.org/api/channel) */
 export class AttachMenuPeerTypeChat_ extends _AttachMenuPeerType_ {
   protected get [id](): number {
     return 0x0509113F;
@@ -41348,6 +45512,7 @@ export class AttachMenuPeerTypeChat_ extends _AttachMenuPeerType_ {
   }
 }
 
+/** The bot attachment menu entry is available in channels */
 export class AttachMenuPeerTypeBroadcast_ extends _AttachMenuPeerType_ {
   protected get [id](): number {
     return 0x7BFBDEFC;
@@ -41370,8 +45535,11 @@ export class AttachMenuPeerTypeBroadcast_ extends _AttachMenuPeerType_ {
   }
 }
 
+/** An invoice contained in a [messageMediaInvoice](https://core.telegram.org/constructor/messageMediaInvoice) message. */
 export class InputInvoiceMessage_ extends _InputInvoice_ {
+  /** Chat where the invoice was sent */
   peer: enums.InputPeer;
+  /** Message ID */
   msg_id: number;
 
   protected get [id](): number {
@@ -41403,7 +45571,9 @@ export class InputInvoiceMessage_ extends _InputInvoice_ {
   }
 }
 
+/** An invoice slug taken from an [invoice deep link](https://core.telegram.org/api/links#invoice-links) or from the [`premium_invoice_slug` app config parameter »](https://core.telegram.org/api/config#premium-invoice-slug) */
 export class InputInvoiceSlug_ extends _InputInvoice_ {
+  /** The invoice slug */
   slug: string;
 
   protected get [id](): number {
@@ -41432,8 +45602,11 @@ export class InputInvoiceSlug_ extends _InputInvoice_ {
   }
 }
 
+/** Used if the user wishes to start a channel [giveaway](https://core.telegram.org/api/giveaways) or send some [giftcodes](https://core.telegram.org/api/giveaways) to members of a channel, in exchange for [boosts](https://core.telegram.org/api/boost). */
 export class InputInvoicePremiumGiftCode_ extends _InputInvoice_ {
+  /** Should be populated with [inputStorePaymentPremiumGiveaway](https://core.telegram.org/constructor/inputStorePaymentPremiumGiveaway) for [giveaways](https://core.telegram.org/api/giveaways) and [inputStorePaymentPremiumGiftCode](https://core.telegram.org/constructor/inputStorePaymentPremiumGiftCode) for [gifts](https://core.telegram.org/api/giveaways). */
   purpose: enums.InputStorePaymentPurpose;
+  /** Should be populated with one of the giveaway options returned by [payments.getPremiumGiftCodeOptions](https://core.telegram.org/method/payments.getPremiumGiftCodeOptions), see the [giveaways »](https://core.telegram.org/api/giveaways) documentation for more info. */
   option: enums.PremiumGiftCodeOption;
 
   protected get [id](): number {
@@ -41465,7 +45638,9 @@ export class InputInvoicePremiumGiftCode_ extends _InputInvoice_ {
   }
 }
 
+/** Exported [invoice deep link](https://core.telegram.org/api/links#invoice-links) */
 export class payments_ExportedInvoice_ extends _payments_ExportedInvoice_ {
+  /** Exported [invoice deep link](https://core.telegram.org/api/links#invoice-links) */
   url: string;
 
   protected get [id](): number {
@@ -41494,11 +45669,17 @@ export class payments_ExportedInvoice_ extends _payments_ExportedInvoice_ {
   }
 }
 
+/** [Transcribed text from a voice message »](https://core.telegram.org/api/transcribe) */
 export class messages_TranscribedAudio_ extends _messages_TranscribedAudio_ {
+  /** Whether the transcription is partial because audio transcription is still in progress, if set the user may receive further [updateTranscribedAudio](https://core.telegram.org/constructor/updateTranscribedAudio) updates with the updated transcription. */
   pending?: true;
+  /** Transcription ID */
   transcription_id: bigint;
+  /** Transcripted text */
   text: string;
+  /** For non-[Premium](https://core.telegram.org/api/premium) users, this flag will be set, indicating the remaining transcriptions in the free trial period. */
   trial_remains_num?: number;
+  /** For non-[Premium](https://core.telegram.org/api/premium) users, this flag will be set, indicating the date when the `trial_remains_num` counter will be reset to the maximum value of [transcribe\_audio\_trial\_weekly\_number](https://core.telegram.org/api/config#transcribe-audio-trial-weekly-number). */
   trial_remains_until_date?: number;
 
   protected get [id](): number {
@@ -41541,12 +45722,19 @@ export class messages_TranscribedAudio_ extends _messages_TranscribedAudio_ {
   }
 }
 
+/** Telegram Premium promotion information */
 export class help_PremiumPromo_ extends _help_PremiumPromo_ {
+  /** Description of the current state of the user's Telegram Premium subscription */
   status_text: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   status_entities: Array<enums.MessageEntity>;
+  /** A list of [premium feature identifiers »](https://core.telegram.org/api/premium), associated to each video */
   video_sections: Array<string>;
+  /** A list of videos */
   videos: Array<enums.Document>;
+  /** Telegram Premium subscription options */
   period_options: Array<enums.PremiumSubscriptionOption>;
+  /** Related user information */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -41590,8 +45778,11 @@ export class help_PremiumPromo_ extends _help_PremiumPromo_ {
   }
 }
 
+/** Info about a Telegram Premium purchase */
 export class InputStorePaymentPremiumSubscription_ extends _InputStorePaymentPurpose_ {
+  /** Pass true if this is a restore of a Telegram Premium purchase; only for the App Store */
   restore?: true;
+  /** Pass true if this is an upgrade from a monthly subscription to a yearly subscription; only for App Store */
   upgrade?: true;
 
   protected get [id](): number {
@@ -41625,9 +45816,13 @@ export class InputStorePaymentPremiumSubscription_ extends _InputStorePaymentPur
   }
 }
 
+/** Info about a gifted Telegram Premium purchase */
 export class InputStorePaymentGiftPremium_ extends _InputStorePaymentPurpose_ {
+  /** The user to which the Telegram Premium subscription was gifted */
   user_id: enums.InputUser;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   amount: bigint;
 
   protected get [id](): number {
@@ -41662,10 +45857,15 @@ export class InputStorePaymentGiftPremium_ extends _InputStorePaymentPurpose_ {
   }
 }
 
+/** Used to gift [Telegram Premium](https://core.telegram.org/api/premium) subscriptions only to some specific subscribers of a channel or to some of our contacts, see [here »](https://core.telegram.org/api/giveaways) for more info on giveaways and gifts. */
 export class InputStorePaymentPremiumGiftCode_ extends _InputStorePaymentPurpose_ {
+  /** The users that will receive the [Telegram Premium](https://core.telegram.org/api/premium) subscriptions. */
   users: Array<enums.InputUser>;
+  /** If set, the gifts will be sent on behalf of a channel we are an admin of, which will also assign some [boosts](https://core.telegram.org/api/boost) to it. Otherwise, the gift will be sent directly from the currently logged in users, and we will gain some extra [boost slots](https://core.telegram.org/api/boost). See [here »](https://core.telegram.org/api/giveaways) for more info on giveaways and gifts. */
   boost_peer?: enums.InputPeer;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Total price in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   amount: bigint;
 
   protected get [id](): number {
@@ -41705,16 +45905,27 @@ export class InputStorePaymentPremiumGiftCode_ extends _InputStorePaymentPurpose
   }
 }
 
+/** Used to pay for a [giveaway, see here »](https://core.telegram.org/api/giveaways) for more info. */
 export class InputStorePaymentPremiumGiveaway_ extends _InputStorePaymentPurpose_ {
+  /** If set, only new subscribers starting from the giveaway creation date will be able to participate to the giveaway. */
   only_new_subscribers?: true;
+  /** If set, giveaway winners are public and will be listed in a [messageMediaGiveawayResults](https://core.telegram.org/constructor/messageMediaGiveawayResults) message that will be automatically sent to the channel once the giveaway ends. */
   winners_are_visible?: true;
+  /** The channel starting the giveaway, that the user must join to participate, that will receive the giveaway [boosts](https://core.telegram.org/api/boost); see [here »](https://core.telegram.org/api/giveaways) for more info on giveaways. */
   boost_peer: enums.InputPeer;
+  /** Additional channels that the user must join to participate to the giveaway can be specified here. */
   additional_peers?: Array<enums.InputPeer>;
+  /** The set of users that can participate to the giveaway can be restricted by passing here an explicit whitelist of up to [giveaway\_countries\_max](https://core.telegram.org/api/config#giveaway-countries-max) countries, specified as two-letter ISO 3166-1 alpha-2 country codes. */
   countries_iso2?: Array<string>;
+  /** Can contain a textual description of additional giveaway prizes. */
   prize_description?: string;
+  /** Random ID to avoid resending the giveaway */
   random_id: bigint;
+  /** The end date of the giveaway, must be at most [giveaway\_period\_max](https://core.telegram.org/api/config#giveaway-period-max) seconds in the future; see [here »](https://core.telegram.org/api/giveaways) for more info on giveaways. */
   until_date: number;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Total price in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   amount: bigint;
 
   protected get [id](): number {
@@ -41772,11 +45983,17 @@ export class InputStorePaymentPremiumGiveaway_ extends _InputStorePaymentPurpose
   }
 }
 
+/** Telegram Premium gift option */
 export class PremiumGiftOption_ extends _PremiumGiftOption_ {
+  /** Duration of gifted Telegram Premium subscription */
   months: number;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   amount: bigint;
+  /** An [invoice deep link »](https://core.telegram.org/api/links#invoice-links) to an invoice for in-app payment, using the official Premium bot; may be empty if direct payment isn't available. */
   bot_url: string;
+  /** An identifier for the App Store/Play Store product associated with the Premium gift. */
   store_product?: string;
 
   protected get [id](): number {
@@ -41819,8 +46036,11 @@ export class PremiumGiftOption_ extends _PremiumGiftOption_ {
   }
 }
 
+/** Represents an additional payment method */
 export class PaymentFormMethod_ extends _PaymentFormMethod_ {
+  /** URL to open in a webview to process the payment */
   url: string;
+  /** Payment method description */
   title: string;
 
   protected get [id](): number {
@@ -41852,6 +46072,7 @@ export class PaymentFormMethod_ extends _PaymentFormMethod_ {
   }
 }
 
+/** No emoji status is set */
 export class EmojiStatusEmpty_ extends _EmojiStatus_ {
   protected get [id](): number {
     return 0x2DE11AAE;
@@ -41874,7 +46095,9 @@ export class EmojiStatusEmpty_ extends _EmojiStatus_ {
   }
 }
 
+/** An [emoji status](https://core.telegram.org/api/emoji-status) */
 export class EmojiStatus_ extends _EmojiStatus_ {
+  /** [Custom emoji document ID](https://core.telegram.org/api/custom-emoji) */
   document_id: bigint;
 
   protected get [id](): number {
@@ -41903,8 +46126,11 @@ export class EmojiStatus_ extends _EmojiStatus_ {
   }
 }
 
+/** An [emoji status](https://core.telegram.org/api/emoji-status) valid until the specified date */
 export class EmojiStatusUntil_ extends _EmojiStatus_ {
+  /** [Custom emoji document ID](https://core.telegram.org/api/custom-emoji) */
   document_id: bigint;
+  /** This status is valid until this date */
   until: number;
 
   protected get [id](): number {
@@ -41936,6 +46162,7 @@ export class EmojiStatusUntil_ extends _EmojiStatus_ {
   }
 }
 
+/** The server-side list of [emoji statuses](https://core.telegram.org/api/emoji-status) hasn't changed */
 export class account_EmojiStatusesNotModified_ extends _account_EmojiStatuses_ {
   protected get [id](): number {
     return 0xD08CE645;
@@ -41958,8 +46185,11 @@ export class account_EmojiStatusesNotModified_ extends _account_EmojiStatuses_ {
   }
 }
 
+/** A list of [emoji statuses](https://core.telegram.org/api/emoji-status) */
 export class account_EmojiStatuses_ extends _account_EmojiStatuses_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** [Emoji statuses](https://core.telegram.org/api/emoji-status) */
   statuses: Array<enums.EmojiStatus>;
 
   protected get [id](): number {
@@ -41991,6 +46221,7 @@ export class account_EmojiStatuses_ extends _account_EmojiStatuses_ {
   }
 }
 
+/** No reaction */
 export class ReactionEmpty_ extends _Reaction_ {
   protected get [id](): number {
     return 0x79F5D419;
@@ -42013,7 +46244,9 @@ export class ReactionEmpty_ extends _Reaction_ {
   }
 }
 
+/** Normal emoji message reaction */
 export class ReactionEmoji_ extends _Reaction_ {
+  /** Emoji */
   emoticon: string;
 
   protected get [id](): number {
@@ -42042,7 +46275,9 @@ export class ReactionEmoji_ extends _Reaction_ {
   }
 }
 
+/** [Custom emoji](https://core.telegram.org/api/custom-emoji) message reaction */
 export class ReactionCustomEmoji_ extends _Reaction_ {
+  /** [Custom emoji document ID](https://core.telegram.org/api/custom-emoji) */
   document_id: bigint;
 
   protected get [id](): number {
@@ -42071,6 +46306,7 @@ export class ReactionCustomEmoji_ extends _Reaction_ {
   }
 }
 
+/** No reactions are allowed */
 export class ChatReactionsNone_ extends _ChatReactions_ {
   protected get [id](): number {
     return 0xEAFC32BC;
@@ -42093,7 +46329,9 @@ export class ChatReactionsNone_ extends _ChatReactions_ {
   }
 }
 
+/** All reactions or all non-custom reactions are allowed */
 export class ChatReactionsAll_ extends _ChatReactions_ {
+  /** Whether to allow custom reactions */
   allow_custom?: true;
 
   protected get [id](): number {
@@ -42124,7 +46362,9 @@ export class ChatReactionsAll_ extends _ChatReactions_ {
   }
 }
 
+/** Some reactions are allowed */
 export class ChatReactionsSome_ extends _ChatReactions_ {
+  /** Allowed set of reactions: the [reactions\_in\_chat\_max](https://core.telegram.org/api/config#reactions-in-chat-max) configuration field indicates the maximum number of reactions that can be specified in this field. */
   reactions: Array<enums.Reaction>;
 
   protected get [id](): number {
@@ -42153,6 +46393,7 @@ export class ChatReactionsSome_ extends _ChatReactions_ {
   }
 }
 
+/** The server-side list of [message reactions](https://core.telegram.org/api/reactions) hasn't changed */
 export class messages_ReactionsNotModified_ extends _messages_Reactions_ {
   protected get [id](): number {
     return 0xB06FDBDF;
@@ -42175,8 +46416,11 @@ export class messages_ReactionsNotModified_ extends _messages_Reactions_ {
   }
 }
 
+/** List of [message reactions](https://core.telegram.org/api/reactions) */
 export class messages_Reactions_ extends _messages_Reactions_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** Reactions */
   reactions: Array<enums.Reaction>;
 
   protected get [id](): number {
@@ -42208,8 +46452,11 @@ export class messages_Reactions_ extends _messages_Reactions_ {
   }
 }
 
+/** Email verification purpose: setup login email */
 export class EmailVerifyPurposeLoginSetup_ extends _EmailVerifyPurpose_ {
+  /** Phone number */
   phone_number: string;
+  /** Phone code hash as specified by the [documentation](https://core.telegram.org/api/auth#email-verification) */
   phone_code_hash: string;
 
   protected get [id](): number {
@@ -42241,6 +46488,7 @@ export class EmailVerifyPurposeLoginSetup_ extends _EmailVerifyPurpose_ {
   }
 }
 
+/** Email verification purpose: change login email */
 export class EmailVerifyPurposeLoginChange_ extends _EmailVerifyPurpose_ {
   protected get [id](): number {
     return 0x527D22EB;
@@ -42263,6 +46511,7 @@ export class EmailVerifyPurposeLoginChange_ extends _EmailVerifyPurpose_ {
   }
 }
 
+/** Verify an email for use in [telegram passport](https://core.telegram.org/api/passport) */
 export class EmailVerifyPurposePassport_ extends _EmailVerifyPurpose_ {
   protected get [id](): number {
     return 0xBBF51685;
@@ -42285,7 +46534,9 @@ export class EmailVerifyPurposePassport_ extends _EmailVerifyPurpose_ {
   }
 }
 
+/** Email verification code */
 export class EmailVerificationCode_ extends _EmailVerification_ {
+  /** Received verification code */
   code: string;
 
   protected get [id](): number {
@@ -42314,7 +46565,9 @@ export class EmailVerificationCode_ extends _EmailVerification_ {
   }
 }
 
+/** Google ID email verification token */
 export class EmailVerificationGoogle_ extends _EmailVerification_ {
+  /** Token */
   token: string;
 
   protected get [id](): number {
@@ -42343,7 +46596,9 @@ export class EmailVerificationGoogle_ extends _EmailVerification_ {
   }
 }
 
+/** Apple ID email verification token */
 export class EmailVerificationApple_ extends _EmailVerification_ {
+  /** Token */
   token: string;
 
   protected get [id](): number {
@@ -42372,7 +46627,9 @@ export class EmailVerificationApple_ extends _EmailVerification_ {
   }
 }
 
+/** The email was verified correctly. */
 export class account_EmailVerified_ extends _account_EmailVerified_ {
+  /** The verified email address. */
   email: string;
 
   protected get [id](): number {
@@ -42401,8 +46658,11 @@ export class account_EmailVerified_ extends _account_EmailVerified_ {
   }
 }
 
+/** The email was verified correctly, and a login code was just sent to it. */
 export class account_EmailVerifiedLogin_ extends _account_EmailVerified_ {
+  /** The verified email address. */
   email: string;
+  /** Info about the sent [login code](https://core.telegram.org/api/auth) */
   sent_code: enums.auth.SentCode;
 
   protected get [id](): number {
@@ -42434,14 +46694,23 @@ export class account_EmailVerifiedLogin_ extends _account_EmailVerified_ {
   }
 }
 
+/** Describes a Telegram Premium subscription option */
 export class PremiumSubscriptionOption_ extends _PremiumSubscriptionOption_ {
+  /** Whether this subscription option is currently in use. */
   current?: true;
+  /** Whether this subscription option can be used to upgrade the existing Telegram Premium subscription. When upgrading Telegram Premium subscriptions bought through stores, make sure that the store transaction ID is equal to `transaction`, to avoid upgrading someone else's account, if the client is currently logged into multiple accounts. */
   can_purchase_upgrade?: true;
+  /** Identifier of the last in-store transaction for the currently used subscription on the current account. */
   transaction?: string;
+  /** Duration of subscription in months */
   months: number;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Total price in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   amount: bigint;
+  /** [Deep link](https://core.telegram.org/api/links) used to initiate payment */
   bot_url: string;
+  /** Store product ID, only for official apps */
   store_product?: string;
 
   protected get [id](): number {
@@ -42493,8 +46762,11 @@ export class PremiumSubscriptionOption_ extends _PremiumSubscriptionOption_ {
   }
 }
 
+/** Indicates a peer that can be used to send messages */
 export class SendAsPeer_ extends _SendAsPeer_ {
+  /** Whether a Telegram Premium account is required to send messages as this peer */
   premium_required?: true;
+  /** Peer */
   peer: enums.Peer;
 
   protected get [id](): number {
@@ -42528,10 +46800,15 @@ export class SendAsPeer_ extends _SendAsPeer_ {
   }
 }
 
+/** Extended media preview */
 export class MessageExtendedMediaPreview_ extends _MessageExtendedMedia_ {
+  /** Width */
   w?: number;
+  /** Height */
   h?: number;
+  /** Thumbnail */
   thumb?: enums.PhotoSize;
+  /** Video duration */
   video_duration?: number;
 
   protected get [id](): number {
@@ -42571,7 +46848,9 @@ export class MessageExtendedMediaPreview_ extends _MessageExtendedMedia_ {
   }
 }
 
+/** Extended media */
 export class MessageExtendedMedia_ extends _MessageExtendedMedia_ {
+  /** Media */
   media: enums.MessageMedia;
 
   protected get [id](): number {
@@ -42600,8 +46879,11 @@ export class MessageExtendedMedia_ extends _MessageExtendedMedia_ {
   }
 }
 
+/** Keywords for a certain sticker */
 export class StickerKeyword_ extends _StickerKeyword_ {
+  /** Sticker ID */
   document_id: bigint;
+  /** Keywords */
   keyword: Array<string>;
 
   protected get [id](): number {
@@ -42633,9 +46915,13 @@ export class StickerKeyword_ extends _StickerKeyword_ {
   }
 }
 
+/** Contains information about a username. */
 export class Username_ extends _Username_ {
+  /** Whether the username is editable, meaning it wasn't bought on [fragment](https://fragment.com). */
   editable?: true;
+  /** Whether the username is active. */
   active?: true;
+  /** The username. */
   username: string;
 
   protected get [id](): number {
@@ -42672,7 +46958,9 @@ export class Username_ extends _Username_ {
   }
 }
 
+/** Represents a deleted forum topic. */
 export class ForumTopicDeleted_ extends _ForumTopic_ {
+  /** The ID of the deleted forum topic. */
   id: number;
 
   protected get [id](): number {
@@ -42701,25 +46989,47 @@ export class ForumTopicDeleted_ extends _ForumTopic_ {
   }
 }
 
+/** Represents a [forum topic](https://core.telegram.org/api/forum#forum-topics). */
 export class ForumTopic_ extends _ForumTopic_ {
+  /** Whether the topic was created by the current user */
   my?: true;
+  /** Whether the topic is closed (no messages can be sent to it) */
   closed?: true;
+  /** Whether the topic is pinned */
   pinned?: true;
+  /** Whether this constructor is a reduced version of the full topic information.  
+  If set, only the `my`, `closed`, `id`, `date`, `title`, `icon_color`, `icon_emoji_id` and `from_id` parameters will contain valid information.  
+  Reduced info is usually only returned in topic-related [admin log events »](https://core.telegram.org/api/recent-actions) and in the [messages.channelMessages](https://core.telegram.org/constructor/messages.channelMessages) constructor: if needed, full information can be fetched using [channels.getForumTopicsByID](https://core.telegram.org/method/channels.getForumTopicsByID). */
   short?: true;
+  /** Whether the topic is hidden (only valid for the "General" topic, `id=1`) */
   hidden?: true;
+  /** [Topic ID](https://core.telegram.org/api/forum#forum-topics) */
   id: number;
+  /** Topic creation date */
   date: number;
+  /** Topic title */
   title: string;
+  /** If no custom emoji icon is specified, specifies the color of the fallback topic icon (RGB), one of `0x6FB9F0`, `0xFFD67E`, `0xCB86DB`, `0x8EEE98`, `0xFF93B2`, or `0xFB6F5F`. */
   icon_color: number;
+  /** ID of the [custom emoji](https://core.telegram.org/api/custom-emoji) used as topic icon. */
   icon_emoji_id?: bigint;
+  /** ID of the last message that was sent to this topic */
   top_message: number;
+  /** Position up to which all incoming messages are read. */
   read_inbox_max_id: number;
+  /** Position up to which all outgoing messages are read. */
   read_outbox_max_id: number;
+  /** Number of unread messages */
   unread_count: number;
+  /** Number of [unread mentions](https://core.telegram.org/api/mentions) */
   unread_mentions_count: number;
+  /** Number of unread reactions to messages you sent */
   unread_reactions_count: number;
+  /** ID of the peer that created the topic */
   from_id: enums.Peer;
+  /** Notification settings */
   notify_settings: enums.PeerNotifySettings;
+  /** Message [draft](https://core.telegram.org/api/drafts) */
   draft?: enums.DraftMessage;
 
   protected get [id](): number {
@@ -42804,13 +47114,21 @@ export class ForumTopic_ extends _ForumTopic_ {
   }
 }
 
+/** Contains information about multiple [forum topics](https://core.telegram.org/api/forum#forum-topics) */
 export class messages_ForumTopics_ extends _messages_ForumTopics_ {
+  /** Whether the returned topics are ordered by creation date; if set, pagination by `offset_date` should use [forumTopic](https://core.telegram.org/constructor/forumTopic).`date`; otherwise topics are ordered by the last message date, so paginate by the `date` of the [message](https://core.telegram.org/type/Message) referenced by [forumTopic](https://core.telegram.org/constructor/forumTopic).`top_message`. */
   order_by_create_date?: true;
+  /** Total number of topics matching query; may be more than the topics contained in `topics`, in which case [pagination](https://core.telegram.org/api/offsets) is required. */
   count: number;
+  /** Forum topics */
   topics: Array<enums.ForumTopic>;
+  /** Related messages (contains the messages mentioned by [forumTopic](https://core.telegram.org/constructor/forumTopic).`top_message`). */
   messages: Array<enums.Message>;
+  /** Related chats */
   chats: Array<enums.Chat>;
+  /** Related users */
   users: Array<enums.User>;
+  /** [Event count after generation](https://core.telegram.org/api/updates) */
   pts: number;
 
   protected get [id](): number {
@@ -42859,7 +47177,9 @@ export class messages_ForumTopics_ extends _messages_ForumTopics_ {
   }
 }
 
+/** Contains info about the default value of the Time-To-Live setting, applied to all new chats. */
 export class DefaultHistoryTTL_ extends _DefaultHistoryTTL_ {
+  /** Time-To-Live setting applied to all new chats. */
   period: number;
 
   protected get [id](): number {
@@ -42888,8 +47208,11 @@ export class DefaultHistoryTTL_ extends _DefaultHistoryTTL_ {
   }
 }
 
+/** Describes a [temporary profile link](https://core.telegram.org/api/links#temporary-profile-links). */
 export class ExportedContactToken_ extends _ExportedContactToken_ {
+  /** The [temporary profile link](https://core.telegram.org/api/links#temporary-profile-links). */
   url: string;
+  /** Its expiration date */
   expires: number;
 
   protected get [id](): number {
@@ -42921,8 +47244,11 @@ export class ExportedContactToken_ extends _ExportedContactToken_ {
   }
 }
 
+/** Choose a user. */
 export class RequestPeerTypeUser_ extends _RequestPeerType_ {
+  /** Whether to allow choosing only bots. */
   bot?: boolean;
+  /** Whether to allow choosing only [Premium](https://core.telegram.org/api/premium) users. */
   premium?: boolean;
 
   protected get [id](): number {
@@ -42956,12 +47282,19 @@ export class RequestPeerTypeUser_ extends _RequestPeerType_ {
   }
 }
 
+/** Choose a chat or supergroup */
 export class RequestPeerTypeChat_ extends _RequestPeerType_ {
+  /** Whether to allow only choosing chats or supergroups that were created by the current user. */
   creator?: true;
+  /** Whether to allow only choosing chats or supergroups where the bot is a participant. */
   bot_participant?: true;
+  /** If specified, allows only choosing channels with or without a username, according to the value of [Bool](https://core.telegram.org/type/Bool). */
   has_username?: boolean;
+  /** If specified, allows only choosing chats or supergroups that are or aren't [forums](https://core.telegram.org/api/forum), according to the value of [Bool](https://core.telegram.org/type/Bool). */
   forum?: boolean;
+  /** If specified, allows only choosing chats or supergroups where the current user is an admin with at least the specified admin rights. */
   user_admin_rights?: enums.ChatAdminRights;
+  /** If specified, allows only choosing chats or supergroups where the bot is an admin with at least the specified admin rights. */
   bot_admin_rights?: enums.ChatAdminRights;
 
   protected get [id](): number {
@@ -43007,10 +47340,15 @@ export class RequestPeerTypeChat_ extends _RequestPeerType_ {
   }
 }
 
+/** Choose a channel */
 export class RequestPeerTypeBroadcast_ extends _RequestPeerType_ {
+  /** Whether to allow only choosing channels that were created by the current user. */
   creator?: true;
+  /** If specified, allows only choosing channels with or without a username, according to the value of [Bool](https://core.telegram.org/type/Bool). */
   has_username?: boolean;
+  /** If specified, allows only choosing channels where the current user is an admin with at least the specified admin rights. */
   user_admin_rights?: enums.ChatAdminRights;
+  /** If specified, allows only choosing channels where the bot is an admin with at least the specified admin rights. */
   bot_admin_rights?: enums.ChatAdminRights;
 
   protected get [id](): number {
@@ -43050,6 +47388,7 @@ export class RequestPeerTypeBroadcast_ extends _RequestPeerType_ {
   }
 }
 
+/** The list of [custom emojis](https://core.telegram.org/api/custom-emoji) hasn't changed. */
 export class EmojiListNotModified_ extends _EmojiList_ {
   protected get [id](): number {
     return 0x481EADFA;
@@ -43072,8 +47411,11 @@ export class EmojiListNotModified_ extends _EmojiList_ {
   }
 }
 
+/** Represents a list of [custom emojis](https://core.telegram.org/api/custom-emoji). */
 export class EmojiList_ extends _EmojiList_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
+  /** Custom emoji IDs */
   document_id: Array<bigint>;
 
   protected get [id](): number {
@@ -43105,9 +47447,13 @@ export class EmojiList_ extends _EmojiList_ {
   }
 }
 
+/** Represents an [emoji category](https://core.telegram.org/api/custom-emoji#emoji-categories). */
 export class EmojiGroup_ extends _EmojiGroup_ {
+  /** Category name, i.e. "Animals", "Flags", "Faces" and so on... */
   title: string;
+  /** A single custom emoji used as preview for the category. */
   icon_emoji_id: bigint;
+  /** A list of UTF-8 emojis, matching the category. */
   emoticons: Array<string>;
 
   protected get [id](): number {
@@ -43142,6 +47488,7 @@ export class EmojiGroup_ extends _EmojiGroup_ {
   }
 }
 
+/** The list of [emoji categories](https://core.telegram.org/api/custom-emoji#emoji-categories) hasn't changed. */
 export class messages_EmojiGroupsNotModified_ extends _messages_EmojiGroups_ {
   protected get [id](): number {
     return 0x6FB4AD87;
@@ -43164,8 +47511,11 @@ export class messages_EmojiGroupsNotModified_ extends _messages_EmojiGroups_ {
   }
 }
 
+/** Represents a list of [emoji categories](https://core.telegram.org/api/custom-emoji#emoji-categories). */
 export class messages_EmojiGroups_ extends _messages_EmojiGroups_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
+  /** A list of [emoji categories](https://core.telegram.org/api/custom-emoji#emoji-categories). */
   groups: Array<enums.EmojiGroup>;
 
   protected get [id](): number {
@@ -43197,8 +47547,11 @@ export class messages_EmojiGroups_ extends _messages_EmojiGroups_ {
   }
 }
 
+/** Styled text with [message entities](https://core.telegram.org/api/entities) */
 export class TextWithEntities_ extends _TextWithEntities_ {
+  /** Text */
   text: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities: Array<enums.MessageEntity>;
 
   protected get [id](): number {
@@ -43230,7 +47583,9 @@ export class TextWithEntities_ extends _TextWithEntities_ {
   }
 }
 
+/** Translated text with [entities](https://core.telegram.org/api/entities) */
 export class messages_TranslateResult_ extends _messages_TranslatedText_ {
+  /** Text+[entities](https://core.telegram.org/api/entities), for each input message. */
   result: Array<enums.TextWithEntities>;
 
   protected get [id](): number {
@@ -43259,9 +47614,13 @@ export class messages_TranslateResult_ extends _messages_TranslatedText_ {
   }
 }
 
+/** Media autosave settings */
 export class AutoSaveSettings_ extends _AutoSaveSettings_ {
+  /** Whether photos should be autosaved to the gallery. */
   photos?: true;
+  /** Whether videos should be autosaved to the gallery. */
   videos?: true;
+  /** If set, specifies a size limit for autosavable videos */
   video_max_size?: bigint;
 
   protected get [id](): number {
@@ -43298,8 +47657,11 @@ export class AutoSaveSettings_ extends _AutoSaveSettings_ {
   }
 }
 
+/** Peer-specific media autosave settings */
 export class AutoSaveException_ extends _AutoSaveException_ {
+  /** The peer */
   peer: enums.Peer;
+  /** Media autosave settings */
   settings: enums.AutoSaveSettings;
 
   protected get [id](): number {
@@ -43331,12 +47693,19 @@ export class AutoSaveException_ extends _AutoSaveException_ {
   }
 }
 
+/** Contains media autosave settings */
 export class account_AutoSaveSettings_ extends _account_AutoSaveSettings_ {
+  /** Default media autosave settings for private chats */
   users_settings: enums.AutoSaveSettings;
+  /** Default media autosave settings for [groups and supergroups](https://core.telegram.org/api/channel) */
   chats_settings: enums.AutoSaveSettings;
+  /** Default media autosave settings for [channels](https://core.telegram.org/api/channel) */
   broadcasts_settings: enums.AutoSaveSettings;
+  /** Peer-specific granular autosave settings */
   exceptions: Array<enums.AutoSaveException>;
+  /** Chats mentioned in the peer-specific granular autosave settings */
   chats: Array<enums.Chat>;
+  /** Users mentioned in the peer-specific granular autosave settings */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -43380,6 +47749,7 @@ export class account_AutoSaveSettings_ extends _account_AutoSaveSettings_ {
   }
 }
 
+/** The client configuration parameters haven't changed */
 export class help_AppConfigNotModified_ extends _help_AppConfig_ {
   protected get [id](): number {
     return 0x7CDE641D;
@@ -43402,8 +47772,11 @@ export class help_AppConfigNotModified_ extends _help_AppConfig_ {
   }
 }
 
+/** Contains various [client configuration parameters](https://core.telegram.org/api/config#client-configuration) */
 export class help_AppConfig_ extends _help_AppConfig_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
+  /** [Client configuration parameters](https://core.telegram.org/api/config#client-configuration) */
   config: enums.JSONValue;
 
   protected get [id](): number {
@@ -43435,8 +47808,11 @@ export class help_AppConfig_ extends _help_AppConfig_ {
   }
 }
 
+/** Used to fetch information about a [direct link Mini App](https://core.telegram.org/api/bots/webapps#direct-link-mini-apps) by its ID */
 export class InputBotAppID_ extends _InputBotApp_ {
+  /** [direct link Mini App](https://core.telegram.org/api/bots/webapps#direct-link-mini-apps) ID. */
   id: bigint;
+  /** Access hash, obtained from the [botApp](https://core.telegram.org/constructor/botApp) constructor. */
   access_hash: bigint;
 
   protected get [id](): number {
@@ -43468,8 +47844,11 @@ export class InputBotAppID_ extends _InputBotApp_ {
   }
 }
 
+/** Used to fetch information about a [direct link Mini App](https://core.telegram.org/api/bots/webapps#direct-link-mini-apps) by its short name */
 export class InputBotAppShortName_ extends _InputBotApp_ {
+  /** ID of the bot that owns the bot mini app */
   bot_id: enums.InputUser;
+  /** Short name, obtained from a [Direct Mini App deep link](https://core.telegram.org/api/links#direct-mini-app-links) */
   short_name: string;
 
   protected get [id](): number {
@@ -43501,6 +47880,7 @@ export class InputBotAppShortName_ extends _InputBotApp_ {
   }
 }
 
+/** Bot app info hasn't changed. */
 export class BotAppNotModified_ extends _BotApp_ {
   protected get [id](): number {
     return 0x5DA674B7;
@@ -43523,14 +47903,23 @@ export class BotAppNotModified_ extends _BotApp_ {
   }
 }
 
+/** Contains information about a [direct link Mini App](https://core.telegram.org/api/bots/webapps#direct-link-mini-apps). */
 export class BotApp_ extends _BotApp_ {
+  /** bot mini app ID */
   id: bigint;
+  /** bot mini app access hash */
   access_hash: bigint;
+  /** bot mini app short name, used to generate [Direct Mini App deep links](https://core.telegram.org/api/links#direct-mini-app-links). */
   short_name: string;
+  /** bot mini app title. */
   title: string;
+  /** bot mini app description. */
   description: string;
+  /** bot mini app photo. */
   photo: enums.Photo;
+  /** bot mini app animation. */
   document?: enums.Document;
+  /** Hash to pass to [messages.getBotApp](https://core.telegram.org/method/messages.getBotApp), to avoid refetching bot app info if it hasn't changed. */
   hash: bigint;
 
   protected get [id](): number {
@@ -43582,10 +47971,15 @@ export class BotApp_ extends _BotApp_ {
   }
 }
 
+/** Contains information about a [direct link Mini App](https://core.telegram.org/api/bots/webapps#direct-link-mini-apps) */
 export class messages_BotApp_ extends _messages_BotApp_ {
+  /** Whether the web app was never used by the user, and confirmation must be asked from the user before opening it. */
   inactive?: true;
+  /** The bot is asking permission to send messages to the user: if the user agrees, set the `write_allowed` flag when invoking [messages.requestAppWebView](https://core.telegram.org/method/messages.requestAppWebView). */
   request_write_access?: true;
+  /** Deprecated flag, can be ignored. */
   has_settings?: true;
+  /** Bot app information */
   app: enums.BotApp;
 
   protected get [id](): number {
@@ -43625,7 +48019,9 @@ export class messages_BotApp_ extends _messages_BotApp_ {
   }
 }
 
+/** Contains the link that must be used to open a [direct link Mini App](https://core.telegram.org/api/bots/webapps#direct-link-mini-apps). */
 export class AppWebViewResultUrl_ extends _AppWebViewResult_ {
+  /** The URL to open */
   url: string;
 
   protected get [id](): number {
@@ -43654,8 +48050,11 @@ export class AppWebViewResultUrl_ extends _AppWebViewResult_ {
   }
 }
 
+/** Specifies an [inline mode mini app](https://core.telegram.org/api/bots/webapps#inline-mode-mini-apps) button, shown on top of the inline query results list. */
 export class InlineBotWebView_ extends _InlineBotWebView_ {
+  /** Text of the button */
   text: string;
+  /** Webapp URL */
   url: string;
 
   protected get [id](): number {
@@ -43687,8 +48086,11 @@ export class InlineBotWebView_ extends _InlineBotWebView_ {
   }
 }
 
+/** Contains info about when a certain participant has read a message */
 export class ReadParticipantDate_ extends _ReadParticipantDate_ {
+  /** User ID */
   user_id: bigint;
+  /** When the user read the message */
   date: number;
 
   protected get [id](): number {
@@ -43720,7 +48122,9 @@ export class ReadParticipantDate_ extends _ReadParticipantDate_ {
   }
 }
 
+/** Folder ID */
 export class InputChatlistDialogFilter_ extends _InputChatlist_ {
+  /** [Folder](https://core.telegram.org/api/folders) ID */
   filter_id: number;
 
   protected get [id](): number {
@@ -43749,9 +48153,13 @@ export class InputChatlistDialogFilter_ extends _InputChatlist_ {
   }
 }
 
+/** Exported [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
 export class ExportedChatlistInvite_ extends _ExportedChatlistInvite_ {
+  /** Name of the link */
   title: string;
+  /** The [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
   url: string;
+  /** Peers to import */
   peers: Array<enums.Peer>;
 
   protected get [id](): number {
@@ -43788,8 +48196,11 @@ export class ExportedChatlistInvite_ extends _ExportedChatlistInvite_ {
   }
 }
 
+/** Info about an exported [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
 export class chatlists_ExportedChatlistInvite_ extends _chatlists_ExportedChatlistInvite_ {
+  /** Folder ID */
   filter: enums.DialogFilter;
+  /** The exported [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
   invite: enums.ExportedChatlistInvite;
 
   protected get [id](): number {
@@ -43821,9 +48232,13 @@ export class chatlists_ExportedChatlistInvite_ extends _chatlists_ExportedChatli
   }
 }
 
+/** Info about multiple [chat folder deep links »](https://core.telegram.org/api/links#chat-folder-links). */
 export class chatlists_ExportedInvites_ extends _chatlists_ExportedInvites_ {
+  /** The [chat folder deep links »](https://core.telegram.org/api/links#chat-folder-links). */
   invites: Array<enums.ExportedChatlistInvite>;
+  /** Related chat information */
   chats: Array<enums.Chat>;
+  /** Related user information */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -43858,11 +48273,17 @@ export class chatlists_ExportedInvites_ extends _chatlists_ExportedInvites_ {
   }
 }
 
+/** Updated info about a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links) we already imported. */
 export class chatlists_ChatlistInviteAlready_ extends _chatlists_ChatlistInvite_ {
+  /** ID of the imported folder */
   filter_id: number;
+  /** New peers to be imported */
   missing_peers: Array<enums.Peer>;
+  /** Peers that were already imported */
   already_peers: Array<enums.Peer>;
+  /** Related chat information */
   chats: Array<enums.Chat>;
+  /** Related user information */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -43903,11 +48324,17 @@ export class chatlists_ChatlistInviteAlready_ extends _chatlists_ChatlistInvite_
   }
 }
 
+/** Info about a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
 export class chatlists_ChatlistInvite_ extends _chatlists_ChatlistInvite_ {
+  /** Name of the link */
   title: string;
+  /** Emoji to use as icon for the folder. */
   emoticon?: string;
+  /** Supergroups and channels to join */
   peers: Array<enums.Peer>;
+  /** Related chat information */
   chats: Array<enums.Chat>;
+  /** Related user information */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -43950,9 +48377,13 @@ export class chatlists_ChatlistInvite_ extends _chatlists_ChatlistInvite_ {
   }
 }
 
+/** Updated information about a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
 export class chatlists_ChatlistUpdates_ extends _chatlists_ChatlistUpdates_ {
+  /** New peers to join */
   missing_peers: Array<enums.Peer>;
+  /** Related chat information */
   chats: Array<enums.Chat>;
+  /** Related user information */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -43987,9 +48418,13 @@ export class chatlists_ChatlistUpdates_ extends _chatlists_ChatlistUpdates_ {
   }
 }
 
+/** Localized information about a bot. */
 export class bots_BotInfo_ extends _bots_BotInfo_ {
+  /** Bot name */
   name: string;
+  /** Bot about text */
   about: string;
+  /** Bot description */
   description: string;
 
   protected get [id](): number {
@@ -44024,9 +48459,13 @@ export class bots_BotInfo_ extends _bots_BotInfo_ {
   }
 }
 
+/** How a peer voted in a poll */
 export class MessagePeerVote_ extends _MessagePeerVote_ {
+  /** Peer ID */
   peer: enums.Peer;
+  /** The option chosen by the peer */
   option: Uint8Array;
+  /** When did the peer cast the vote */
   date: number;
 
   protected get [id](): number {
@@ -44061,8 +48500,11 @@ export class MessagePeerVote_ extends _MessagePeerVote_ {
   }
 }
 
+/** How a peer voted in a poll (reduced constructor, returned if an `option` was provided to [messages.getPollVotes](https://core.telegram.org/method/messages.getPollVotes)) */
 export class MessagePeerVoteInputOption_ extends _MessagePeerVote_ {
+  /** The peer that voted for the queried `option` */
   peer: enums.Peer;
+  /** When did the peer cast the vote */
   date: number;
 
   protected get [id](): number {
@@ -44094,9 +48536,13 @@ export class MessagePeerVoteInputOption_ extends _MessagePeerVote_ {
   }
 }
 
+/** How a peer voted in a multiple-choice poll */
 export class MessagePeerVoteMultiple_ extends _MessagePeerVote_ {
+  /** Peer ID */
   peer: enums.Peer;
+  /** Options chosen by the peer */
   options: Array<Uint8Array>;
+  /** When did the peer cast their votes */
   date: number;
 
   protected get [id](): number {
@@ -44131,9 +48577,13 @@ export class MessagePeerVoteMultiple_ extends _MessagePeerVote_ {
   }
 }
 
+/** Represents a sponsored website. */
 export class SponsoredWebPage_ extends _SponsoredWebPage_ {
+  /** Web page URL. */
   url: string;
+  /** Website name. */
   site_name: string;
+  /** Optional image preview. */
   photo?: enums.Photo;
 
   protected get [id](): number {
@@ -44170,12 +48620,19 @@ export class SponsoredWebPage_ extends _SponsoredWebPage_ {
   }
 }
 
+/** Aggregated view and reaction information of a [story](https://core.telegram.org/api/stories). */
 export class StoryViews_ extends _StoryViews_ {
+  /** If set, indicates that the viewers list is currently viewable, and was not yet deleted because the story has expired while the user didn't have a [Premium](https://core.telegram.org/api/premium) account. */
   has_viewers?: true;
+  /** View counter of the story */
   views_count: number;
+  /** Forward counter of the story */
   forwards_count?: number;
+  /** All reactions sent to this story */
   reactions?: Array<enums.ReactionCount>;
+  /** Number of reactions added to the story */
   reactions_count?: number;
+  /** User IDs of some recent viewers of the story */
   recent_viewers?: Array<bigint>;
 
   protected get [id](): number {
@@ -44221,7 +48678,9 @@ export class StoryViews_ extends _StoryViews_ {
   }
 }
 
+/** Represents a previously active story, that was deleted */
 export class StoryItemDeleted_ extends _StoryItem_ {
+  /** Story ID */
   id: number;
 
   protected get [id](): number {
@@ -44250,10 +48709,15 @@ export class StoryItemDeleted_ extends _StoryItem_ {
   }
 }
 
+/** Represents an active story, whose full information was omitted for space and performance reasons; use [stories.getStoriesByID](https://core.telegram.org/method/stories.getStoriesByID) to fetch full info about the skipped story when and if needed. */
 export class StoryItemSkipped_ extends _StoryItem_ {
+  /** Whether this story can only be viewed by [our close friends, see here »](https://core.telegram.org/api/privacy) for more info */
   close_friends?: true;
+  /** Story ID */
   id: number;
+  /** When was the story posted. */
   date: number;
+  /** When does the story expire. */
   expire_date: number;
 
   protected get [id](): number {
@@ -44293,27 +48757,48 @@ export class StoryItemSkipped_ extends _StoryItem_ {
   }
 }
 
+/** Represents a [story](https://core.telegram.org/api/stories). */
 export class StoryItem_ extends _StoryItem_ {
+  /** Whether this story is pinned on the user's profile */
   pinned?: true;
+  /** Whether this story is public and can be viewed by everyone */
   public?: true;
+  /** Whether this story can only be viewed by [our close friends, see here »](https://core.telegram.org/api/privacy) for more info */
   close_friends?: true;
+  /** Full information about this story was omitted for space and performance reasons; use [stories.getStoriesByID](https://core.telegram.org/method/stories.getStoriesByID) to fetch full info about this story when and if needed. */
   min?: true;
+  /** Whether this story is [protected](https://telegram.org/blog/protected-content-delete-by-date-and-more) and thus cannot be forwarded; clients should also prevent users from saving attached media (i.e. videos should only be streamed, photos should be kept in RAM, et cetera). */
   noforwards?: true;
+  /** Indicates whether the story was edited. */
   edited?: true;
+  /** Whether this story can only be viewed by our contacts */
   contacts?: true;
+  /** Whether this story can only be viewed by a select list of our contacts */
   selected_contacts?: true;
+  /** indicates whether we sent this story. */
   out?: true;
+  /** ID of the story. */
   id: number;
+  /** When was the story posted. */
   date: number;
   from_id?: enums.Peer;
+  /** For [reposted stories »](https://core.telegram.org/api/stories#reposting-stories), contains info about the original story. */
   fwd_from?: enums.StoryFwdHeader;
+  /** When does the story expire. */
   expire_date: number;
+  /** Story caption. */
   caption?: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities?: Array<enums.MessageEntity>;
+  /** Story media. */
   media: enums.MessageMedia;
+  /** List of media areas, see [here »](https://core.telegram.org/api/stories#media-areas) for more info on media areas. */
   media_areas?: Array<enums.MediaArea>;
+  /** [Privacy rules](https://core.telegram.org/api/privacy) indicating who can and can't view this story */
   privacy?: Array<enums.PrivacyRule>;
+  /** View date and reaction information */
   views?: enums.StoryViews;
+  /** The reaction we sent. */
   sent_reaction?: enums.Reaction;
 
   protected get [id](): number {
@@ -44404,8 +48889,11 @@ export class StoryItem_ extends _StoryItem_ {
   }
 }
 
+/** The list of active (or active and hidden) [stories](https://core.telegram.org/api/stories#watching-stories) has not changed. */
 export class stories_AllStoriesNotModified_ extends _stories_AllStories_ {
+  /** State to use to ask for updates */
   state: string;
+  /** Current [stealth mode](https://core.telegram.org/api/stories#stealth-mode) information */
   stealth_mode: enums.StoriesStealthMode;
 
   protected get [id](): number {
@@ -44439,13 +48927,21 @@ export class stories_AllStoriesNotModified_ extends _stories_AllStories_ {
   }
 }
 
+/** Full list of active (or active and hidden) [stories](https://core.telegram.org/api/stories#watching-stories). */
 export class stories_AllStories_ extends _stories_AllStories_ {
+  /** Whether more results can be fetched as [described here »](https://core.telegram.org/api/stories#watching-stories). */
   has_more?: true;
+  /** Total number of active (or active and hidden) stories */
   count: number;
+  /** State to use for pagination */
   state: string;
+  /** Stories */
   peer_stories: Array<enums.PeerStories>;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
+  /** Current [stealth mode](https://core.telegram.org/api/stories#stealth-mode) information */
   stealth_mode: enums.StoriesStealthMode;
 
   protected get [id](): number {
@@ -44494,10 +48990,15 @@ export class stories_AllStories_ extends _stories_AllStories_ {
   }
 }
 
+/** List of [stories](https://core.telegram.org/api/stories#pinned-or-archived-stories) */
 export class stories_Stories_ extends _stories_Stories_ {
+  /** Total number of stories that can be fetched */
   count: number;
+  /** Stories */
   stories: Array<enums.StoryItem>;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -44535,11 +49036,17 @@ export class stories_Stories_ extends _stories_Stories_ {
   }
 }
 
+/** [Story](https://core.telegram.org/api/stories) view date and reaction information */
 export class StoryView_ extends _StoryView_ {
+  /** Whether we have [completely blocked](https://core.telegram.org/api/block) this user, including from viewing more of our stories. */
   blocked?: true;
+  /** Whether we have [blocked](https://core.telegram.org/api/block) this user from viewing more of our stories. */
   blocked_my_stories_from?: true;
+  /** The user that viewed the story */
   user_id: bigint;
+  /** When did the user view the story */
   date: number;
+  /** If present, contains the reaction that the user left on the story */
   reaction?: enums.Reaction;
 
   protected get [id](): number {
@@ -44582,9 +49089,13 @@ export class StoryView_ extends _StoryView_ {
   }
 }
 
+/** A certain peer has forwarded the story as a message to a public chat or channel. */
 export class StoryViewPublicForward_ extends _StoryView_ {
+  /** Whether we have [completely blocked](https://core.telegram.org/api/block) this user, including from viewing more of our stories. */
   blocked?: true;
+  /** Whether we have [blocked](https://core.telegram.org/api/block) this user from viewing more of our stories. */
   blocked_my_stories_from?: true;
+  /** The message with the forwarded story. */
   message: enums.Message;
 
   protected get [id](): number {
@@ -44621,10 +49132,15 @@ export class StoryViewPublicForward_ extends _StoryView_ {
   }
 }
 
+/** A certain peer has reposted the story. */
 export class StoryViewPublicRepost_ extends _StoryView_ {
+  /** Whether we have [completely blocked](https://core.telegram.org/api/block) this user, including from viewing more of our stories. */
   blocked?: true;
+  /** Whether we have [blocked](https://core.telegram.org/api/block) this user from viewing more of our stories. */
   blocked_my_stories_from?: true;
+  /** The peer that reposted the story. */
   peer_id: enums.Peer;
+  /** The reposted story. */
   story: enums.StoryItem;
 
   protected get [id](): number {
@@ -44664,14 +49180,23 @@ export class StoryViewPublicRepost_ extends _StoryView_ {
   }
 }
 
+/** Reaction and view counters for a [story](https://core.telegram.org/api/stories) */
 export class stories_StoryViewsList_ extends _stories_StoryViewsList_ {
+  /** Total number of results that can be fetched */
   count: number;
+  /** Total number of story views */
   views_count: number;
+  /** Total number of story forwards/reposts */
   forwards_count: number;
+  /** Number of reactions that were added to the story */
   reactions_count: number;
+  /** Story view date and reaction information */
   views: Array<enums.StoryView>;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
+  /** Offset for pagination */
   next_offset?: string;
 
   protected get [id](): number {
@@ -44723,8 +49248,11 @@ export class stories_StoryViewsList_ extends _stories_StoryViewsList_ {
   }
 }
 
+/** Reaction and view counters for a list of [stories](https://core.telegram.org/api/stories) */
 export class stories_StoryViews_ extends _stories_StoryViews_ {
+  /** View date and reaction information of multiple stories */
   views: Array<enums.StoryViews>;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -44756,12 +49284,20 @@ export class stories_StoryViews_ extends _stories_StoryViews_ {
   }
 }
 
+/** Reply to a message. */
 export class InputReplyToMessage_ extends _InputReplyTo_ {
+  /** The message ID to reply to. */
   reply_to_msg_id: number;
+  /** This field must contain the topic ID **only** when replying to messages in forum topics different from the "General" topic (i.e. `reply_to_msg_id` is set and `reply_to_msg_id != topicID` and `topicID != 1`).  
+  If the replied-to message is deleted before the method finishes execution, the value in this field will be used to send the message to the correct topic, instead of the "General" topic. */
   top_msg_id?: number;
+  /** Used to reply to messages sent to another chat (specified here), can only be used for non-`protected` chats and messages. */
   reply_to_peer_id?: enums.InputPeer;
+  /** Used to quote-reply to only a certain section (specified here) of the original message. The maximum UTF-8 length for quotes is specified in the [quote\_length\_max](https://core.telegram.org/api/config#quote-length-max) config key. */
   quote_text?: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) from the `quote_text` field. */
   quote_entities?: Array<enums.MessageEntity>;
+  /** Offset of the message `quote_text` within the original message (in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length)). */
   quote_offset?: number;
 
   protected get [id](): number {
@@ -44807,8 +49343,10 @@ export class InputReplyToMessage_ extends _InputReplyTo_ {
   }
 }
 
+/** Reply to a story. */
 export class InputReplyToStory_ extends _InputReplyTo_ {
   peer: enums.InputPeer;
+  /** ID of the story to reply to. */
   story_id: number;
 
   protected get [id](): number {
@@ -44840,7 +49378,9 @@ export class InputReplyToStory_ extends _InputReplyTo_ {
   }
 }
 
+/** Represents a [story deep link](https://core.telegram.org/api/stories#story-links). */
 export class ExportedStoryLink_ extends _ExportedStoryLink_ {
+  /** The [story deep link](https://core.telegram.org/api/stories#story-links). */
   link: string;
 
   protected get [id](): number {
@@ -44869,8 +49409,11 @@ export class ExportedStoryLink_ extends _ExportedStoryLink_ {
   }
 }
 
+/** Information about the current [stealth mode](https://core.telegram.org/api/stories#stealth-mode) session. */
 export class StoriesStealthMode_ extends _StoriesStealthMode_ {
+  /** The date up to which stealth mode will be active. */
   active_until_date?: number;
+  /** The date starting from which the user will be allowed to re-enable stealth mode again. */
   cooldown_until_date?: number;
 
   protected get [id](): number {
@@ -44904,11 +49447,17 @@ export class StoriesStealthMode_ extends _StoriesStealthMode_ {
   }
 }
 
+/** Coordinates and size of a clicable rectangular area on top of a story. */
 export class MediaAreaCoordinates_ extends _MediaAreaCoordinates_ {
+  /** The abscissa of the rectangle's center, as a percentage of the media width (0-100). */
   x: number;
+  /** The ordinate of the rectangle's center, as a percentage of the media height (0-100). */
   y: number;
+  /** The width of the rectangle, as a percentage of the media width (0-100). */
   w: number;
+  /** The height of the rectangle, as a percentage of the media height (0-100). */
   h: number;
+  /** Clockwise rotation angle of the rectangle, in degrees (0-360). */
   rotation: number;
 
   protected get [id](): number {
@@ -44949,13 +49498,21 @@ export class MediaAreaCoordinates_ extends _MediaAreaCoordinates_ {
   }
 }
 
+/** Represents a location tag attached to a [story](https://core.telegram.org/api/stories), with additional venue information. */
 export class MediaAreaVenue_ extends _MediaArea_ {
+  /** The size and location of the media area corresponding to the location sticker on top of the story media. */
   coordinates: enums.MediaAreaCoordinates;
+  /** Coordinates of the venue */
   geo: enums.GeoPoint;
+  /** Venue name */
   title: string;
+  /** Address */
   address: string;
+  /** Venue provider: currently only "foursquare" needs to be supported. */
   provider: string;
+  /** Venue ID in the provider's database */
   venue_id: string;
+  /** Venue type in the provider's database */
   venue_type: string;
 
   protected get [id](): number {
@@ -45002,9 +49559,13 @@ export class MediaAreaVenue_ extends _MediaArea_ {
   }
 }
 
+/** Represents a [location tag](https://core.telegram.org/api/stories#media-areas) attached to a [story](https://core.telegram.org/api/stories), with additional venue information. */
 export class InputMediaAreaVenue_ extends _MediaArea_ {
+  /** The size and location of the media area corresponding to the location sticker on top of the story media. */
   coordinates: enums.MediaAreaCoordinates;
+  /** The `query_id` from [messages.botResults](https://core.telegram.org/constructor/messages.botResults), see [here »](https://core.telegram.org/api/stories#media-areas) for more info. */
   query_id: bigint;
+  /** The `id` of the chosen result, see [here »](https://core.telegram.org/api/stories#media-areas) for more info. */
   result_id: string;
 
   protected get [id](): number {
@@ -45039,8 +49600,11 @@ export class InputMediaAreaVenue_ extends _MediaArea_ {
   }
 }
 
+/** Represents a geolocation tag attached to a [story](https://core.telegram.org/api/stories). */
 export class MediaAreaGeoPoint_ extends _MediaArea_ {
+  /** The size and position of the media area corresponding to the location sticker on top of the story media. */
   coordinates: enums.MediaAreaCoordinates;
+  /** Coordinates of the geolocation tag. */
   geo: enums.GeoPoint;
 
   protected get [id](): number {
@@ -45072,10 +49636,15 @@ export class MediaAreaGeoPoint_ extends _MediaArea_ {
   }
 }
 
+/** Represents a reaction bubble. */
 export class MediaAreaSuggestedReaction_ extends _MediaArea_ {
+  /** Whether the reaction bubble has a dark background. */
   dark?: true;
+  /** Whether the reaction bubble is mirrored (see [here »](https://core.telegram.org/api/stories#reactions) for more info). */
   flipped?: true;
+  /** The coordinates of the media area corresponding to the reaction button. */
   coordinates: enums.MediaAreaCoordinates;
+  /** The reaction that should be sent when this area is clicked. */
   reaction: enums.Reaction;
 
   protected get [id](): number {
@@ -45115,9 +49684,13 @@ export class MediaAreaSuggestedReaction_ extends _MediaArea_ {
   }
 }
 
+/** Represents a channel post. */
 export class MediaAreaChannelPost_ extends _MediaArea_ {
+  /** The size and location of the media area corresponding to the location sticker on top of the story media. */
   coordinates: enums.MediaAreaCoordinates;
+  /** The channel that posted the message */
   channel_id: bigint;
+  /** ID of the channel message */
   msg_id: number;
 
   protected get [id](): number {
@@ -45152,9 +49725,13 @@ export class MediaAreaChannelPost_ extends _MediaArea_ {
   }
 }
 
+/** Represents a channel post */
 export class InputMediaAreaChannelPost_ extends _MediaArea_ {
+  /** The size and location of the media area corresponding to the location sticker on top of the story media. */
   coordinates: enums.MediaAreaCoordinates;
+  /** The channel that posted the message */
   channel: enums.InputChannel;
+  /** ID of the channel message */
   msg_id: number;
 
   protected get [id](): number {
@@ -45189,9 +49766,13 @@ export class InputMediaAreaChannelPost_ extends _MediaArea_ {
   }
 }
 
+/** [Stories](https://core.telegram.org/api/stories) associated to a peer */
 export class PeerStories_ extends _PeerStories_ {
+  /** The peer */
   peer: enums.Peer;
+  /** If set, contains the ID of the maximum read story */
   max_read_id?: number;
+  /** Stories */
   stories: Array<enums.StoryItem>;
 
   protected get [id](): number {
@@ -45228,9 +49809,13 @@ export class PeerStories_ extends _PeerStories_ {
   }
 }
 
+/** [Active story list](https://core.telegram.org/api/stories#watching-stories) of a specific peer. */
 export class stories_PeerStories_ extends _stories_PeerStories_ {
+  /** Stories */
   stories: enums.PeerStories;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -45265,9 +49850,13 @@ export class stories_PeerStories_ extends _stories_PeerStories_ {
   }
 }
 
+/** Represents an Instant View webpage. */
 export class messages_WebPage_ extends _messages_WebPage_ {
+  /** The instant view webpage. */
   webpage: enums.WebPage;
+  /** Chats mentioned in the webpage. */
   chats: Array<enums.Chat>;
+  /** Users mentioned in the webpage. */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -45302,12 +49891,19 @@ export class messages_WebPage_ extends _messages_WebPage_ {
   }
 }
 
+/** Contains info about a [giveaway/gift](https://core.telegram.org/api/giveaways) option. */
 export class PremiumGiftCodeOption_ extends _PremiumGiftCodeOption_ {
+  /** Number of users which will be able to activate the gift codes. */
   users: number;
+  /** Duration in months of each gifted [Telegram Premium](https://core.telegram.org/api/premium) subscription. */
   months: number;
+  /** Identifier of the store product associated with the option, official apps only. */
   store_product?: string;
+  /** Number of times the store product must be paid */
   store_quantity?: number;
+  /** Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code */
   currency: string;
+  /** Total price in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   amount: bigint;
 
   protected get [id](): number {
@@ -45353,15 +49949,25 @@ export class PremiumGiftCodeOption_ extends _PremiumGiftCodeOption_ {
   }
 }
 
+/** Contains info about a [Telegram Premium giftcode link](https://core.telegram.org/api/links#premium-giftcode-links). */
 export class payments_CheckedGiftCode_ extends _payments_CheckedGiftCode_ {
+  /** Whether this giftcode was created by a [giveaway](https://core.telegram.org/api/giveaways). */
   via_giveaway?: true;
+  /** The peer that created the gift code. */
   from_id?: enums.Peer;
+  /** Message ID of the giveaway in the channel specified in `from_id`. */
   giveaway_msg_id?: number;
+  /** The destination user of the gift. */
   to_id?: bigint;
+  /** Creation date of the gift code. */
   date: number;
+  /** Duration in months of the gifted [Telegram Premium](https://core.telegram.org/api/premium) subscription. */
   months: number;
+  /** When was the giftcode imported, if it was imported. */
   used_date?: number;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -45416,12 +50022,19 @@ export class payments_CheckedGiftCode_ extends _payments_CheckedGiftCode_ {
   }
 }
 
+/** Contains info about an ongoing [giveaway](https://core.telegram.org/api/giveaways). */
 export class payments_GiveawayInfo_ extends _payments_GiveawayInfo_ {
+  /** The current user is participating in the giveaway. */
   participating?: true;
+  /** If set, the giveaway has ended and the results are being prepared. */
   preparing_results?: true;
+  /** When was the giveaway started */
   start_date: number;
+  /** The current user can't participate in the giveaway, because they were already a member of the channel when the giveaway started, and the `only_new_subscribers` was set when starting the giveaway. */
   joined_too_early_date?: number;
+  /** If set, the current user can't participate in the giveaway, because they are an administrator in one of the channels (ID specified in this flag) that created the giveaway. */
   admin_disallowed_chat_id?: bigint;
+  /** If set, the current user can't participate in this giveaway, because their phone number is from the specified disallowed country (specified as a two-letter ISO 3166-1 alpha-2 country code). */
   disallowed_country?: string;
 
   protected get [id](): number {
@@ -45467,13 +50080,21 @@ export class payments_GiveawayInfo_ extends _payments_GiveawayInfo_ {
   }
 }
 
+/** A [giveaway](https://core.telegram.org/api/giveaways) has ended. */
 export class payments_GiveawayInfoResults_ extends _payments_GiveawayInfo_ {
+  /** Whether we're one of the winners of this giveaway. */
   winner?: true;
+  /** Whether the giveaway was canceled and was fully refunded. */
   refunded?: true;
+  /** Start date of the giveaway */
   start_date: number;
+  /** If we're one of the winners of this giveaway, contains the [Premium gift code](https://core.telegram.org/api/links#premium-giftcode-links), see [here »](https://core.telegram.org/api/giveaways) for more info on the full giveaway flow. */
   gift_code_slug?: string;
+  /** End date of the giveaway. May be bigger than the end date specified in parameters of the giveaway. */
   finish_date: number;
+  /** Number of winners in the giveaway */
   winners_count: number;
+  /** Number of winners, which activated their [gift codes](https://core.telegram.org/api/links#premium-giftcode-links). */
   activated_count: number;
 
   protected get [id](): number {
@@ -45522,10 +50143,15 @@ export class payments_GiveawayInfoResults_ extends _payments_GiveawayInfo_ {
   }
 }
 
+/** Contains info about a [prepaid giveaway »](https://core.telegram.org/api/giveaways). */
 export class PrepaidGiveaway_ extends _PrepaidGiveaway_ {
+  /** Prepaid giveaway ID. */
   id: bigint;
+  /** Duration in months of each gifted [Telegram Premium](https://core.telegram.org/api/premium) subscription. */
   months: number;
+  /** Number of given away [Telegram Premium](https://core.telegram.org/api/premium) subscriptions. */
   quantity: number;
+  /** Payment date. */
   date: number;
 
   protected get [id](): number {
@@ -45563,16 +50189,27 @@ export class PrepaidGiveaway_ extends _PrepaidGiveaway_ {
   }
 }
 
+/** Info about one or more [boosts](https://core.telegram.org/api/boost) applied by a specific user. */
 export class Boost_ extends _Boost_ {
+  /** Whether this boost was applied because the channel [directly gifted a subscription to the user](https://core.telegram.org/api/giveaways). */
   gift?: true;
+  /** Whether this boost was applied because the user was chosen in a [giveaway started by the channel](https://core.telegram.org/api/giveaways). */
   giveaway?: true;
+  /** If set, the user hasn't yet invoked [payments.applyGiftCode](https://core.telegram.org/method/payments.applyGiftCode) to claim a subscription gifted [directly or in a giveaway by the channel](https://core.telegram.org/api/giveaways). */
   unclaimed?: true;
+  /** Unique ID for this set of boosts. */
   id: string;
+  /** ID of the user that applied the boost. */
   user_id?: bigint;
+  /** The message ID of the [giveaway](https://core.telegram.org/api/giveaways) */
   giveaway_msg_id?: number;
+  /** When was the boost applied */
   date: number;
+  /** When does the boost expire */
   expires: number;
+  /** The created Telegram Premium gift code, only set if either `gift` or `giveaway` are set AND it is either a gift code for the currently logged in user or if it was already claimed. */
   used_gift_slug?: string;
+  /** If set, this boost counts as `multiplier` boosts, otherwise it counts as a single boost. */
   multiplier?: number;
 
   protected get [id](): number {
@@ -45630,10 +50267,15 @@ export class Boost_ extends _Boost_ {
   }
 }
 
+/** List of [boosts](https://core.telegram.org/api/boost) that were applied to a peer by multiple users. */
 export class premium_BoostsList_ extends _premium_BoostsList_ {
+  /** Total number of results */
   count: number;
+  /** [Boosts](https://core.telegram.org/api/boost) */
   boosts: Array<enums.Boost>;
+  /** Offset that can be used for [pagination](https://core.telegram.org/api/offsets). */
   next_offset?: string;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -45673,11 +50315,18 @@ export class premium_BoostsList_ extends _premium_BoostsList_ {
   }
 }
 
+/** Contains information about a single [boost slot »](https://core.telegram.org/api/boost). */
 export class MyBoost_ extends _MyBoost_ {
+  /** [Boost slot ID »](https://core.telegram.org/api/boost) */
   slot: number;
+  /** If set, indicates this slot is currently occupied, i.e. we are [boosting](https://core.telegram.org/api/boost) this peer.  
+  Note that we can assign multiple boost slots to the same peer. */
   peer?: enums.Peer;
+  /** When (unixtime) we started boosting the `peer`, `0` otherwise. */
   date: number;
+  /** Indicates the (unixtime) expiration date of the boost in `peer` (`0` if `peer` is not set). */
   expires: number;
+  /** If `peer` is set, indicates the (unixtime) date after which this boost can be reassigned to another channel. */
   cooldown_until_date?: number;
 
   protected get [id](): number {
@@ -45720,9 +50369,13 @@ export class MyBoost_ extends _MyBoost_ {
   }
 }
 
+/** A list of peers we are currently [boosting](https://core.telegram.org/api/boost), and how many [boost slots](https://core.telegram.org/api/boost) we have left. */
 export class premium_MyBoosts_ extends _premium_MyBoosts_ {
+  /** Info about boosted peers and remaining boost slots. */
   my_boosts: Array<enums.MyBoost>;
+  /** Referenced chats */
   chats: Array<enums.Chat>;
+  /** Referenced users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -45757,16 +50410,27 @@ export class premium_MyBoosts_ extends _premium_MyBoosts_ {
   }
 }
 
+/** Contains info about the current [boost status](https://core.telegram.org/api/boost) of a peer. */
 export class premium_BoostsStatus_ extends _premium_BoostsStatus_ {
+  /** Whether we're currently boosting this channel, `my_boost_slots` will also be set. */
   my_boost?: true;
+  /** The current boost level of the channel. */
   level: number;
+  /** The number of boosts acquired so far in the current level. */
   current_level_boosts: number;
+  /** Total number of boosts acquired so far. */
   boosts: number;
+  /** The number of boosts acquired from created Telegram Premium [gift codes](https://core.telegram.org/api/giveaways) and [giveaways](https://core.telegram.org/api/giveaways); only returned to channel admins. */
   gift_boosts?: number;
+  /** Total number of boosts needed to reach the next level; if absent, the next level isn't available. */
   next_level_boosts?: number;
+  /** Only returned to channel admins: contains the approximated number of Premium users subscribed to the channel, related to the total number of subscribers. */
   premium_audience?: enums.StatsPercentValue;
+  /** [Boost deep link »](https://core.telegram.org/api/links#boost-links) that can be used to boost the chat. */
   boost_url: string;
+  /** A list of prepaid [giveaways](https://core.telegram.org/api/giveaways) available for the chat; only returned to channel admins. */
   prepaid_giveaways?: Array<enums.PrepaidGiveaway>;
+  /** Indicates which of our [boost slots](https://core.telegram.org/api/boost) we've assigned to this peer (populated if `my_boost` is set). */
   my_boost_slots?: Array<number>;
 
   protected get [id](): number {
@@ -45824,10 +50488,15 @@ export class premium_BoostsStatus_ extends _premium_BoostsStatus_ {
   }
 }
 
+/** Contains info about the original poster of a reposted story. */
 export class StoryFwdHeader_ extends _StoryFwdHeader_ {
+  /** Whether the story media was modified before reposting it (for example by overlaying a round video with a reaction). */
   modified?: true;
+  /** Peer that originally posted the story; will be empty for stories forwarded from a user with forwards privacy enabled, in which case `from_name` will be set, instead. */
   from?: enums.Peer;
+  /** Will be set for stories forwarded from a user with forwards privacy enabled, in which case `from` will also be empty. */
   from_name?: string;
+  /** , contains the story ID */
   story_id?: number;
 
   protected get [id](): number {
@@ -45867,10 +50536,15 @@ export class StoryFwdHeader_ extends _StoryFwdHeader_ {
   }
 }
 
+/** Interaction counters for a message. */
 export class PostInteractionCountersMessage_ extends _PostInteractionCounters_ {
+  /** Message ID */
   msg_id: number;
+  /** Number of views */
   views: number;
+  /** Number of forwards to public channels */
   forwards: number;
+  /** Number of reactions */
   reactions: number;
 
   protected get [id](): number {
@@ -45908,10 +50582,15 @@ export class PostInteractionCountersMessage_ extends _PostInteractionCounters_ {
   }
 }
 
+/** Interaction counters for a story. */
 export class PostInteractionCountersStory_ extends _PostInteractionCounters_ {
+  /** Story ID */
   story_id: number;
+  /** Number of views */
   views: number;
+  /** Number of forwards and reposts to public chats and channels */
   forwards: number;
+  /** Number of reactions */
   reactions: number;
 
   protected get [id](): number {
@@ -45949,8 +50628,11 @@ export class PostInteractionCountersStory_ extends _PostInteractionCounters_ {
   }
 }
 
+/** Contains [statistics](https://core.telegram.org/api/stats) about a [story](https://core.telegram.org/api/stories). */
 export class stats_StoryStats_ extends _stats_StoryStats_ {
+  /** A graph containing the number of story views and shares */
   views_graph: enums.StatsGraph;
+  /** A bar graph containing the number of story reactions categorized by "emotion" (i.e. Positive, Negative, Other, etc...) */
   reactions_by_emotion_graph: enums.StatsGraph;
 
   protected get [id](): number {
@@ -45982,7 +50664,9 @@ export class stats_StoryStats_ extends _stats_StoryStats_ {
   }
 }
 
+/** Contains info about a forward of a [story](https://core.telegram.org/api/stories) as a message. */
 export class PublicForwardMessage_ extends _PublicForward_ {
+  /** Info about the message with the reposted story. */
   message: enums.Message;
 
   protected get [id](): number {
@@ -46011,8 +50695,11 @@ export class PublicForwardMessage_ extends _PublicForward_ {
   }
 }
 
+/** Contains info about a forward of a [story](https://core.telegram.org/api/stories) as a repost by a public channel. */
 export class PublicForwardStory_ extends _PublicForward_ {
+  /** The channel that reposted the story. */
   peer: enums.Peer;
+  /** The reposted story (may be different from the original story). */
   story: enums.StoryItem;
 
   protected get [id](): number {
@@ -46044,11 +50731,17 @@ export class PublicForwardStory_ extends _PublicForward_ {
   }
 }
 
+/** Contains info about the forwards of a [story](https://core.telegram.org/api/stories) as a message to public chats and reposts by public channels. */
 export class stats_PublicForwards_ extends _stats_PublicForwards_ {
+  /** Total number of results */
   count: number;
+  /** Info about the forwards of a story. */
   forwards: Array<enums.PublicForward>;
+  /** Offset used for [pagination](https://core.telegram.org/api/offsets). */
   next_offset?: string;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -46091,8 +50784,11 @@ export class stats_PublicForwards_ extends _stats_PublicForwards_ {
   }
 }
 
+/** Represents a [color palette »](https://core.telegram.org/api/colors). */
 export class PeerColor_ extends _PeerColor_ {
+  /** [Color palette ID, see here »](https://core.telegram.org/api/colors) for more info; if not set, the default palette should be used. */
   color?: number;
+  /** Optional [custom emoji ID](https://core.telegram.org/api/custom-emoji) used to generate the pattern. */
   background_emoji_id?: bigint;
 
   protected get [id](): number {
@@ -46126,7 +50822,9 @@ export class PeerColor_ extends _PeerColor_ {
   }
 }
 
+/** Represents a [color palette that can be used in message accents »](https://core.telegram.org/api/colors). */
 export class help_PeerColorSet_ extends _help_PeerColorSet_ {
+  /** A list of 1-3 colors in RGB format, describing the accent color. */
   colors: Array<number>;
 
   protected get [id](): number {
@@ -46155,9 +50853,13 @@ export class help_PeerColorSet_ extends _help_PeerColorSet_ {
   }
 }
 
+/** Represents a [color palette that can be used in profile pages »](https://core.telegram.org/api/colors). */
 export class help_PeerColorProfileSet_ extends _help_PeerColorSet_ {
+  /** A list of 1-2 colors in RGB format, shown in the color palette settings to describe the current palette. */
   palette_colors: Array<number>;
+  /** A list of 1-2 colors in RGB format describing the colors used to generate the actual background used in the profile page. */
   bg_colors: Array<number>;
+  /** A list of 2 colors in RGB format describing the colors of the gradient used for the unread active story indicator around the profile photo. */
   story_colors: Array<number>;
 
   protected get [id](): number {
@@ -46192,11 +50894,18 @@ export class help_PeerColorProfileSet_ extends _help_PeerColorSet_ {
   }
 }
 
+/** Contains info about a [color palette »](https://core.telegram.org/api/colors). */
 export class help_PeerColorOption_ extends _help_PeerColorOption_ {
+  /** Whether this palette should not be displayed as an option to the user when choosing a palette to apply to profile pages or message accents. */
   hidden?: true;
+  /** Palette ID. */
   color_id: number;
+  /** Light mode palette.  
+  Will be empty for IDs `0` to `6` inclusive, in which case a palette containing a single color from the following colors should be used: red, orange, violet, green, cyan, blue, pink for indexes 0 to 6. */
   colors?: enums.help.PeerColorSet;
+  /** Dark mode palette. Optional, defaults to the palette in `colors` (or the autogenerated palette for IDs `0` to `6`) if absent. */
   dark_colors?: enums.help.PeerColorSet;
+  /** Channels can use this palette only after reaching at least the [boost level](https://core.telegram.org/api/boost) specified in this field. */
   channel_min_level?: number;
   group_min_level?: number;
 
@@ -46243,6 +50952,7 @@ export class help_PeerColorOption_ extends _help_PeerColorOption_ {
   }
 }
 
+/** The list of color palettes has not changed. */
 export class help_PeerColorsNotModified_ extends _help_PeerColors_ {
   protected get [id](): number {
     return 0x2BA1F5CE;
@@ -46265,8 +50975,11 @@ export class help_PeerColorsNotModified_ extends _help_PeerColors_ {
   }
 }
 
+/** Contains info about multiple [color palettes »](https://core.telegram.org/api/colors). */
 export class help_PeerColors_ extends _help_PeerColors_ {
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
+  /** Usable [color palettes](https://core.telegram.org/api/colors). */
   colors: Array<enums.help.PeerColorOption>;
 
   protected get [id](): number {
@@ -46298,9 +51011,13 @@ export class help_PeerColors_ extends _help_PeerColors_ {
   }
 }
 
+/** How a certain peer reacted to a story */
 export class StoryReaction_ extends _StoryReaction_ {
+  /** The peer */
   peer_id: enums.Peer;
+  /** Reaction date */
   date: number;
+  /** The reaction */
   reaction: enums.Reaction;
 
   protected get [id](): number {
@@ -46335,7 +51052,9 @@ export class StoryReaction_ extends _StoryReaction_ {
   }
 }
 
+/** A certain peer has forwarded the story as a message to a public chat or channel. */
 export class StoryReactionPublicForward_ extends _StoryReaction_ {
+  /** The message with the forwarded story. */
   message: enums.Message;
 
   protected get [id](): number {
@@ -46364,8 +51083,11 @@ export class StoryReactionPublicForward_ extends _StoryReaction_ {
   }
 }
 
+/** A certain peer has reposted the story. */
 export class StoryReactionPublicRepost_ extends _StoryReaction_ {
+  /** The peer that reposted the story. */
   peer_id: enums.Peer;
+  /** The reposted story. */
   story: enums.StoryItem;
 
   protected get [id](): number {
@@ -46397,11 +51119,17 @@ export class StoryReactionPublicRepost_ extends _StoryReaction_ {
   }
 }
 
+/** List of peers that reacted to or intercated with a specific [story](https://core.telegram.org/api/stories) */
 export class stories_StoryReactionsList_ extends _stories_StoryReactionsList_ {
+  /** Total number of reactions matching query */
   count: number;
+  /** List of peers that reacted to or interacted with a specific story */
   reactions: Array<enums.StoryReaction>;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
+  /** If set, indicates the next offset to use to load more results by invoking [stories.getStoryReactionsList](https://core.telegram.org/method/stories.getStoryReactionsList). */
   next_offset?: string;
 
   protected get [id](): number {
@@ -46444,9 +51172,13 @@ export class stories_StoryReactionsList_ extends _stories_StoryReactionsList_ {
   }
 }
 
+/** Represents a [saved dialog »](https://core.telegram.org/api/saved-messages). */
 export class SavedDialog_ extends _SavedDialog_ {
+  /** Is the dialog pinned */
   pinned?: true;
+  /** The dialog */
   peer: enums.Peer;
+  /** The latest message ID */
   top_message: number;
 
   protected get [id](): number {
@@ -46483,10 +51215,15 @@ export class SavedDialog_ extends _SavedDialog_ {
   }
 }
 
+/** Represents some [saved message dialogs »](https://core.telegram.org/api/saved-messages). */
 export class messages_SavedDialogs_ extends _messages_SavedDialogs_ {
+  /** [Saved message dialogs »](https://core.telegram.org/api/saved-messages). */
   dialogs: Array<enums.SavedDialog>;
+  /** List of last messages from each saved dialog */
   messages: Array<enums.Message>;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -46524,11 +51261,17 @@ export class messages_SavedDialogs_ extends _messages_SavedDialogs_ {
   }
 }
 
+/** Incomplete list of [saved message dialogs »](https://core.telegram.org/api/saved-messages) with messages and auxiliary data. */
 export class messages_SavedDialogsSlice_ extends _messages_SavedDialogs_ {
+  /** Total number of saved message dialogs */
   count: number;
+  /** List of saved message dialogs */
   dialogs: Array<enums.SavedDialog>;
+  /** List of last messages from dialogs */
   messages: Array<enums.Message>;
+  /** Mentioned chats */
   chats: Array<enums.Chat>;
+  /** Mentioned users */
   users: Array<enums.User>;
 
   protected get [id](): number {
@@ -46569,7 +51312,9 @@ export class messages_SavedDialogsSlice_ extends _messages_SavedDialogs_ {
   }
 }
 
+/** The saved dialogs haven't changed */
 export class messages_SavedDialogsNotModified_ extends _messages_SavedDialogs_ {
+  /** Number of [saved dialogs](https://core.telegram.org/api/saved-messages) found server-side by the query */
   count: number;
 
   protected get [id](): number {
