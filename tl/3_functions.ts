@@ -301,9 +301,12 @@ export class destroy_auth_key_ extends Function_<enums.DestroyAuthKeyRes> {
   }
 }
 
+/** Invokes a query after successful completion of one of the previous queries. */
 export class invokeAfterMsg_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F: <T extends Function_<unknown>>(params: { msg_id: bigint; query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { msg_id: bigint; query: T }) => T["__R"];
+  /** Message identifier on which a current query depends */
   msg_id: bigint;
+  /** The query itself */
   query: T;
 
   protected get [id](): number {
@@ -335,9 +338,12 @@ export class invokeAfterMsg_<T extends Function_<unknown>> extends Function_<T["
   }
 }
 
+/** Invokes a query after a successful completion of previous queries */
 export class invokeAfterMsgs_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F: <T extends Function_<unknown>>(params: { msg_ids: Array<bigint>; query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { msg_ids: Array<bigint>; query: T }) => T["__R"];
+  /** List of messages on which a current query depends */
   msg_ids: Array<bigint>;
+  /** The query itself */
   query: T;
 
   protected get [id](): number {
@@ -369,17 +375,29 @@ export class invokeAfterMsgs_<T extends Function_<unknown>> extends Function_<T[
   }
 }
 
+/** Initialize connection */
 export class initConnection_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F: <T extends Function_<unknown>>(params: { api_id: number; device_model: string; system_version: string; app_version: string; system_lang_code: string; lang_pack: string; lang_code: string; proxy?: enums.InputClientProxy; params?: enums.JSONValue; query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { api_id: number; device_model: string; system_version: string; app_version: string; system_lang_code: string; lang_pack: string; lang_code: string; proxy?: enums.InputClientProxy; params?: enums.JSONValue; query: T }) => T["__R"];
+  /** Application identifier (see. [App configuration](https://core.telegram.org/myapp)) */
   api_id: number;
+  /** Device model */
   device_model: string;
+  /** Operation system version */
   system_version: string;
+  /** Application version */
   app_version: string;
+  /** Code for the language used on the device's OS, ISO 639-1 standard */
   system_lang_code: string;
+  /** Language pack to use */
   lang_pack: string;
+  /** Code for the language used on the client, ISO 639-1 standard */
   lang_code: string;
+  /** Info about an MTProto proxy */
   proxy?: enums.InputClientProxy;
+  /** Additional initConnection parameters.  
+  For now, only the `tz_offset` field is supported, for specifying timezone offset in seconds. */
   params?: enums.JSONValue;
+  /** The query itself */
   query: T;
 
   protected get [id](): number {
@@ -437,9 +455,12 @@ export class initConnection_<T extends Function_<unknown>> extends Function_<T["
   }
 }
 
+/** Invoke the specified query using the specified API [layer](https://core.telegram.org/api/invoking#layers) */
 export class invokeWithLayer_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F: <T extends Function_<unknown>>(params: { layer: number; query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { layer: number; query: T }) => T["__R"];
+  /** The layer to use */
   layer: number;
+  /** The query */
   query: T;
 
   protected get [id](): number {
@@ -471,8 +492,10 @@ export class invokeWithLayer_<T extends Function_<unknown>> extends Function_<T[
   }
 }
 
+/** Invoke a request without subscribing the used connection for [updates](https://core.telegram.org/api/updates) (this is enabled by default for [file queries](https://core.telegram.org/api/files)). */
 export class invokeWithoutUpdates_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F: <T extends Function_<unknown>>(params: { query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { query: T }) => T["__R"];
+  /** The query */
   query: T;
 
   protected get [id](): number {
@@ -501,9 +524,12 @@ export class invokeWithoutUpdates_<T extends Function_<unknown>> extends Functio
   }
 }
 
+/** Invoke with the given message range */
 export class invokeWithMessagesRange_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F: <T extends Function_<unknown>>(params: { range: enums.MessageRange; query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { range: enums.MessageRange; query: T }) => T["__R"];
+  /** Message range */
   range: enums.MessageRange;
+  /** Query */
   query: T;
 
   protected get [id](): number {
@@ -535,9 +561,12 @@ export class invokeWithMessagesRange_<T extends Function_<unknown>> extends Func
   }
 }
 
+/** Invoke a method within a [takeout session, see here » for more info](https://core.telegram.org/api/takeout). */
 export class invokeWithTakeout_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F: <T extends Function_<unknown>>(params: { takeout_id: bigint; query: T }) => T["__R"] = null as unknown as <T extends Function_<unknown>>(params: { takeout_id: bigint; query: T }) => T["__R"];
+  /** [Takeout session ID »](https://core.telegram.org/api/takeout) */
   takeout_id: bigint;
+  /** Query */
   query: T;
 
   protected get [id](): number {
@@ -569,11 +598,16 @@ export class invokeWithTakeout_<T extends Function_<unknown>> extends Function_<
   }
 }
 
+/** Send the verification code for login */
 export class auth_sendCode_ extends Function_<enums.auth.SentCode> {
   static __F: (params: { phone_number: string; api_id: number; api_hash: string; settings: enums.CodeSettings }) => enums.auth.SentCode = null as unknown as (params: { phone_number: string; api_id: number; api_hash: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
+  /** Phone number in international format */
   phone_number: string;
+  /** Application identifier (see [App configuration](https://core.telegram.org/myapp)) */
   api_id: number;
+  /** Application secret hash (see [App configuration](https://core.telegram.org/myapp)) */
   api_hash: string;
+  /** Settings for the code type to send */
   settings: enums.CodeSettings;
 
   protected get [id](): number {
@@ -611,12 +645,17 @@ export class auth_sendCode_ extends Function_<enums.auth.SentCode> {
   }
 }
 
+/** Registers a validated phone number in the system. */
 export class auth_signUp_ extends Function_<enums.auth.Authorization> {
   static __F: (params: { no_joined_notifications?: true; phone_number: string; phone_code_hash: string; first_name: string; last_name: string }) => enums.auth.Authorization = null as unknown as (params: { no_joined_notifications?: true; phone_number: string; phone_code_hash: string; first_name: string; last_name: string }) => enums.auth.Authorization;
   no_joined_notifications?: true;
+  /** Phone number in the international format */
   phone_number: string;
+  /** SMS-message ID */
   phone_code_hash: string;
+  /** New user first name */
   first_name: string;
+  /** New user last name */
   last_name: string;
 
   protected get [id](): number {
@@ -659,11 +698,16 @@ export class auth_signUp_ extends Function_<enums.auth.Authorization> {
   }
 }
 
+/** Signs in a user with a validated phone number. */
 export class auth_signIn_ extends Function_<enums.auth.Authorization> {
   static __F: (params: { phone_number: string; phone_code_hash: string; phone_code?: string; email_verification?: enums.EmailVerification }) => enums.auth.Authorization = null as unknown as (params: { phone_number: string; phone_code_hash: string; phone_code?: string; email_verification?: enums.EmailVerification }) => enums.auth.Authorization;
+  /** Phone number in the international format */
   phone_number: string;
+  /** SMS-message ID, obtained from [auth.sendCode](https://core.telegram.org/method/auth.sendCode) */
   phone_code_hash: string;
+  /** Valid numerical code from the SMS-message */
   phone_code?: string;
+  /** Email verification code or token */
   email_verification?: enums.EmailVerification;
 
   protected get [id](): number {
@@ -703,6 +747,7 @@ export class auth_signIn_ extends Function_<enums.auth.Authorization> {
   }
 }
 
+/** Logs out the user. */
 export class auth_logOut_ extends Function_<enums.auth.LoggedOut> {
   static __F: () => enums.auth.LoggedOut = null as unknown as () => enums.auth.LoggedOut;
   protected get [id](): number {
@@ -726,6 +771,7 @@ export class auth_logOut_ extends Function_<enums.auth.LoggedOut> {
   }
 }
 
+/** Terminates all user's authorized sessions except for the current one. */
 export class auth_resetAuthorizations_ extends Function_<boolean> {
   static __F: () => boolean = null as unknown as () => boolean;
   protected get [id](): number {
@@ -749,8 +795,10 @@ export class auth_resetAuthorizations_ extends Function_<boolean> {
   }
 }
 
+/** Returns data for copying authorization to another data-center. */
 export class auth_exportAuthorization_ extends Function_<enums.auth.ExportedAuthorization> {
   static __F: (params: { dc_id: number }) => enums.auth.ExportedAuthorization = null as unknown as (params: { dc_id: number }) => enums.auth.ExportedAuthorization;
+  /** Number of a target data-center */
   dc_id: number;
 
   protected get [id](): number {
@@ -779,9 +827,12 @@ export class auth_exportAuthorization_ extends Function_<enums.auth.ExportedAuth
   }
 }
 
+/** Logs in a user using a key transmitted from his native data-center. */
 export class auth_importAuthorization_ extends Function_<enums.auth.Authorization> {
   static __F: (params: { id: bigint; bytes: Uint8Array }) => enums.auth.Authorization = null as unknown as (params: { id: bigint; bytes: Uint8Array }) => enums.auth.Authorization;
+  /** User ID */
   id: bigint;
+  /** Authorization key */
   bytes: Uint8Array;
 
   protected get [id](): number {
@@ -813,11 +864,16 @@ export class auth_importAuthorization_ extends Function_<enums.auth.Authorizatio
   }
 }
 
+/** Binds a temporary authorization key `temp_auth_key_id` to the permanent authorization key `perm_auth_key_id`. Each permanent key may only be bound to one temporary key at a time, binding a new temporary key overwrites the previous one. */
 export class auth_bindTempAuthKey_ extends Function_<boolean> {
   static __F: (params: { perm_auth_key_id: bigint; nonce: bigint; expires_at: number; encrypted_message: Uint8Array }) => boolean = null as unknown as (params: { perm_auth_key_id: bigint; nonce: bigint; expires_at: number; encrypted_message: Uint8Array }) => boolean;
+  /** Permanent auth\_key\_id to bind to */
   perm_auth_key_id: bigint;
+  /** Random long from [Binding message contents](#binding-message-contents) */
   nonce: bigint;
+  /** Unix timestamp to invalidate temporary key, see [Binding message contents](#binding-message-contents) */
   expires_at: number;
+  /** See [Generating encrypted\_message](#generating-encrypted-message) */
   encrypted_message: Uint8Array;
 
   protected get [id](): number {
@@ -855,11 +911,16 @@ export class auth_bindTempAuthKey_ extends Function_<boolean> {
   }
 }
 
+/** Login as a bot */
 export class auth_importBotAuthorization_ extends Function_<enums.auth.Authorization> {
   static __F: (params: { flags: number; api_id: number; api_hash: string; bot_auth_token: string }) => enums.auth.Authorization = null as unknown as (params: { flags: number; api_id: number; api_hash: string; bot_auth_token: string }) => enums.auth.Authorization;
+  /** Reserved for future use */
   flags: number;
+  /** Application identifier (see. [App configuration](https://core.telegram.org/myapp)) */
   api_id: number;
+  /** Application identifier hash (see. [App configuration](https://core.telegram.org/myapp)) */
   api_hash: string;
+  /** Bot token (see [bots](https://core.telegram.org/bots)) */
   bot_auth_token: string;
 
   protected get [id](): number {
@@ -897,8 +958,10 @@ export class auth_importBotAuthorization_ extends Function_<enums.auth.Authoriza
   }
 }
 
+/** Try logging to an account protected by a [2FA password](https://core.telegram.org/api/srp). */
 export class auth_checkPassword_ extends Function_<enums.auth.Authorization> {
   static __F: (params: { password: enums.InputCheckPasswordSRP }) => enums.auth.Authorization = null as unknown as (params: { password: enums.InputCheckPasswordSRP }) => enums.auth.Authorization;
+  /** The account's password (see [SRP](https://core.telegram.org/api/srp)) */
   password: enums.InputCheckPasswordSRP;
 
   protected get [id](): number {
@@ -927,6 +990,7 @@ export class auth_checkPassword_ extends Function_<enums.auth.Authorization> {
   }
 }
 
+/** Request recovery code of a [2FA password](https://core.telegram.org/api/srp), only for accounts with a [recovery email configured](https://core.telegram.org/api/srp#email-verification). */
 export class auth_requestPasswordRecovery_ extends Function_<enums.auth.PasswordRecovery> {
   static __F: () => enums.auth.PasswordRecovery = null as unknown as () => enums.auth.PasswordRecovery;
   protected get [id](): number {
@@ -950,9 +1014,12 @@ export class auth_requestPasswordRecovery_ extends Function_<enums.auth.Password
   }
 }
 
+/** Reset the [2FA password](https://core.telegram.org/api/srp) using the recovery code sent using [auth.requestPasswordRecovery](https://core.telegram.org/method/auth.requestPasswordRecovery). */
 export class auth_recoverPassword_ extends Function_<enums.auth.Authorization> {
   static __F: (params: { code: string; new_settings?: enums.account.PasswordInputSettings }) => enums.auth.Authorization = null as unknown as (params: { code: string; new_settings?: enums.account.PasswordInputSettings }) => enums.auth.Authorization;
+  /** Code received via email */
   code: string;
+  /** New password */
   new_settings?: enums.account.PasswordInputSettings;
 
   protected get [id](): number {
@@ -986,9 +1053,12 @@ export class auth_recoverPassword_ extends Function_<enums.auth.Authorization> {
   }
 }
 
+/** Resend the login code via another medium, the phone code type is determined by the return value of the previous auth.sendCode/auth.resendCode: see [login](https://core.telegram.org/api/auth) for more info. */
 export class auth_resendCode_ extends Function_<enums.auth.SentCode> {
   static __F: (params: { phone_number: string; phone_code_hash: string }) => enums.auth.SentCode = null as unknown as (params: { phone_number: string; phone_code_hash: string }) => enums.auth.SentCode;
+  /** The phone number */
   phone_number: string;
+  /** The phone code hash obtained from [auth.sendCode](https://core.telegram.org/method/auth.sendCode) */
   phone_code_hash: string;
 
   protected get [id](): number {
@@ -1020,9 +1090,12 @@ export class auth_resendCode_ extends Function_<enums.auth.SentCode> {
   }
 }
 
+/** Cancel the login verification code */
 export class auth_cancelCode_ extends Function_<boolean> {
   static __F: (params: { phone_number: string; phone_code_hash: string }) => boolean = null as unknown as (params: { phone_number: string; phone_code_hash: string }) => boolean;
+  /** Phone number */
   phone_number: string;
+  /** Phone code hash from [auth.sendCode](https://core.telegram.org/method/auth.sendCode) */
   phone_code_hash: string;
 
   protected get [id](): number {
@@ -1054,8 +1127,10 @@ export class auth_cancelCode_ extends Function_<boolean> {
   }
 }
 
+/** Delete all temporary authorization keys **except for** the ones specified */
 export class auth_dropTempAuthKeys_ extends Function_<boolean> {
   static __F: (params: { except_auth_keys: Array<bigint> }) => boolean = null as unknown as (params: { except_auth_keys: Array<bigint> }) => boolean;
+  /** The auth keys that **shouldn't** be dropped. */
   except_auth_keys: Array<bigint>;
 
   protected get [id](): number {
@@ -1084,10 +1159,15 @@ export class auth_dropTempAuthKeys_ extends Function_<boolean> {
   }
 }
 
+/** Generate a login token, for [login via QR code](https://core.telegram.org/api/qr-login).  
+The generated login token should be encoded using base64url, then shown as a `tg://login?token=base64encodedtoken` [deep link »](https://core.telegram.org/api/links#qr-code-login-links) in the QR code. */
 export class auth_exportLoginToken_ extends Function_<enums.auth.LoginToken> {
   static __F: (params: { api_id: number; api_hash: string; except_ids: Array<bigint> }) => enums.auth.LoginToken = null as unknown as (params: { api_id: number; api_hash: string; except_ids: Array<bigint> }) => enums.auth.LoginToken;
+  /** Application identifier (see. [App configuration](https://core.telegram.org/myapp)) */
   api_id: number;
+  /** Application identifier hash (see. [App configuration](https://core.telegram.org/myapp)) */
   api_hash: string;
+  /** List of already logged-in user IDs, to prevent logging in twice with the same user */
   except_ids: Array<bigint>;
 
   protected get [id](): number {
@@ -1122,8 +1202,10 @@ export class auth_exportLoginToken_ extends Function_<enums.auth.LoginToken> {
   }
 }
 
+/** Login using a redirected login token, generated in case of DC mismatch during [QR code login](https://core.telegram.org/api/qr-login). */
 export class auth_importLoginToken_ extends Function_<enums.auth.LoginToken> {
   static __F: (params: { token: Uint8Array }) => enums.auth.LoginToken = null as unknown as (params: { token: Uint8Array }) => enums.auth.LoginToken;
+  /** Login token */
   token: Uint8Array;
 
   protected get [id](): number {
@@ -1152,8 +1234,10 @@ export class auth_importLoginToken_ extends Function_<enums.auth.LoginToken> {
   }
 }
 
+/** Accept QR code login token, logging in the app that generated it. */
 export class auth_acceptLoginToken_ extends Function_<enums.Authorization> {
   static __F: (params: { token: Uint8Array }) => enums.Authorization = null as unknown as (params: { token: Uint8Array }) => enums.Authorization;
+  /** Login token embedded in QR code, for more info, see [login via QR code](https://core.telegram.org/api/qr-login). */
   token: Uint8Array;
 
   protected get [id](): number {
@@ -1182,8 +1266,10 @@ export class auth_acceptLoginToken_ extends Function_<enums.Authorization> {
   }
 }
 
+/** Check if the [2FA recovery code](https://core.telegram.org/api/srp) sent using [auth.requestPasswordRecovery](https://core.telegram.org/method/auth.requestPasswordRecovery) is valid, before passing it to [auth.recoverPassword](https://core.telegram.org/method/auth.recoverPassword). */
 export class auth_checkRecoveryPassword_ extends Function_<boolean> {
   static __F: (params: { code: string }) => boolean = null as unknown as (params: { code: string }) => boolean;
+  /** Code received via email */
   code: string;
 
   protected get [id](): number {
@@ -1212,10 +1298,14 @@ export class auth_checkRecoveryPassword_ extends Function_<boolean> {
   }
 }
 
+/** Login by importing an authorization token */
 export class auth_importWebTokenAuthorization_ extends Function_<enums.auth.Authorization> {
   static __F: (params: { api_id: number; api_hash: string; web_auth_token: string }) => enums.auth.Authorization = null as unknown as (params: { api_id: number; api_hash: string; web_auth_token: string }) => enums.auth.Authorization;
+  /** [API ID](https://core.telegram.org/api/obtaining_api_id) */
   api_id: number;
+  /** [API hash](https://core.telegram.org/api/obtaining_api_id) */
   api_hash: string;
+  /** The authorization token */
   web_auth_token: string;
 
   protected get [id](): number {
@@ -1250,11 +1340,16 @@ export class auth_importWebTokenAuthorization_ extends Function_<enums.auth.Auth
   }
 }
 
+/** Request an SMS code via Firebase. */
 export class auth_requestFirebaseSms_ extends Function_<boolean> {
   static __F: (params: { phone_number: string; phone_code_hash: string; safety_net_token?: string; ios_push_secret?: string }) => boolean = null as unknown as (params: { phone_number: string; phone_code_hash: string; safety_net_token?: string; ios_push_secret?: string }) => boolean;
+  /** Phone number */
   phone_number: string;
+  /** Phone code hash returned by [auth.sendCode](https://core.telegram.org/method/auth.sendCode) */
   phone_code_hash: string;
+  /** On Android, a JWS object obtained as described in the [auth documentation »](https://core.telegram.org/api/auth) */
   safety_net_token?: string;
+  /** Secret token received via an apple push notification */
   ios_push_secret?: string;
 
   protected get [id](): number {
@@ -1294,9 +1389,12 @@ export class auth_requestFirebaseSms_ extends Function_<boolean> {
   }
 }
 
+/** Reset the [login email »](https://core.telegram.org/api/auth#email-verification). */
 export class auth_resetLoginEmail_ extends Function_<enums.auth.SentCode> {
   static __F: (params: { phone_number: string; phone_code_hash: string }) => enums.auth.SentCode = null as unknown as (params: { phone_number: string; phone_code_hash: string }) => enums.auth.SentCode;
+  /** Phone number of the account */
   phone_number: string;
+  /** Phone code hash, obtained as described in the [documentation »](https://core.telegram.org/api/auth) */
   phone_code_hash: string;
 
   protected get [id](): number {
@@ -1328,13 +1426,20 @@ export class auth_resetLoginEmail_ extends Function_<enums.auth.SentCode> {
   }
 }
 
+/** Register device to receive [PUSH notifications](https://core.telegram.org/api/push-updates) */
 export class account_registerDevice_ extends Function_<boolean> {
   static __F: (params: { no_muted?: true; token_type: number; token: string; app_sandbox: boolean; secret: Uint8Array; other_uids: Array<bigint> }) => boolean = null as unknown as (params: { no_muted?: true; token_type: number; token: string; app_sandbox: boolean; secret: Uint8Array; other_uids: Array<bigint> }) => boolean;
+  /** Avoid receiving (silent and invisible background) notifications. Useful to save battery. */
   no_muted?: true;
+  /** Device token type, see [PUSH updates](https://core.telegram.org/api/push-updates#subscribing-to-notifications) for the possible values. */
   token_type: number;
+  /** Device token, see [PUSH updates](https://core.telegram.org/api/push-updates#subscribing-to-notifications) for the possible values. */
   token: string;
+  /** If [(boolTrue)](https://core.telegram.org/constructor/boolTrue) is transmitted, a sandbox-certificate will be used during transmission. */
   app_sandbox: boolean;
+  /** For FCM and APNS VoIP, optional encryption key used to encrypt push notifications */
   secret: Uint8Array;
+  /** List of user identifiers of other users currently using the client */
   other_uids: Array<bigint>;
 
   protected get [id](): number {
@@ -1380,10 +1485,14 @@ export class account_registerDevice_ extends Function_<boolean> {
   }
 }
 
+/** Deletes a device by its token, stops sending PUSH-notifications to it. */
 export class account_unregisterDevice_ extends Function_<boolean> {
   static __F: (params: { token_type: number; token: string; other_uids: Array<bigint> }) => boolean = null as unknown as (params: { token_type: number; token: string; other_uids: Array<bigint> }) => boolean;
+  /** Device token type, see [PUSH updates](https://core.telegram.org/api/push-updates#subscribing-to-notifications) for the possible values. */
   token_type: number;
+  /** Device token, see [PUSH updates](https://core.telegram.org/api/push-updates#subscribing-to-notifications) for the possible values. */
   token: string;
+  /** List of user identifiers of other users currently using the client */
   other_uids: Array<bigint>;
 
   protected get [id](): number {
@@ -1418,9 +1527,12 @@ export class account_unregisterDevice_ extends Function_<boolean> {
   }
 }
 
+/** Edits notification settings from a given user/group, from all users/all groups. */
 export class account_updateNotifySettings_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputNotifyPeer; settings: enums.InputPeerNotifySettings }) => boolean = null as unknown as (params: { peer: enums.InputNotifyPeer; settings: enums.InputPeerNotifySettings }) => boolean;
+  /** Notification source */
   peer: enums.InputNotifyPeer;
+  /** Notification settings */
   settings: enums.InputPeerNotifySettings;
 
   protected get [id](): number {
@@ -1452,8 +1564,10 @@ export class account_updateNotifySettings_ extends Function_<boolean> {
   }
 }
 
+/** Gets current notification settings for a given user/group, from all users/all groups. */
 export class account_getNotifySettings_ extends Function_<enums.PeerNotifySettings> {
   static __F: (params: { peer: enums.InputNotifyPeer }) => enums.PeerNotifySettings = null as unknown as (params: { peer: enums.InputNotifyPeer }) => enums.PeerNotifySettings;
+  /** Notification source */
   peer: enums.InputNotifyPeer;
 
   protected get [id](): number {
@@ -1482,6 +1596,7 @@ export class account_getNotifySettings_ extends Function_<enums.PeerNotifySettin
   }
 }
 
+/** Resets all notification settings from users and groups. */
 export class account_resetNotifySettings_ extends Function_<boolean> {
   static __F: () => boolean = null as unknown as () => boolean;
   protected get [id](): number {
@@ -1505,10 +1620,14 @@ export class account_resetNotifySettings_ extends Function_<boolean> {
   }
 }
 
+/** Updates user profile. */
 export class account_updateProfile_ extends Function_<enums.User> {
   static __F: (params?: { first_name?: string; last_name?: string; about?: string }) => enums.User = null as unknown as (params?: { first_name?: string; last_name?: string; about?: string }) => enums.User;
+  /** New user first name */
   first_name?: string;
+  /** New user last name */
   last_name?: string;
+  /** New bio */
   about?: string;
 
   protected get [id](): number {
@@ -1545,8 +1664,10 @@ export class account_updateProfile_ extends Function_<enums.User> {
   }
 }
 
+/** Updates online user status. */
 export class account_updateStatus_ extends Function_<boolean> {
   static __F: (params: { offline: boolean }) => boolean = null as unknown as (params: { offline: boolean }) => boolean;
+  /** If [(boolTrue)](https://core.telegram.org/constructor/boolTrue) is transmitted, user status will change to [(userStatusOffline)](https://core.telegram.org/constructor/userStatusOffline). */
   offline: boolean;
 
   protected get [id](): number {
@@ -1575,8 +1696,10 @@ export class account_updateStatus_ extends Function_<boolean> {
   }
 }
 
+/** Returns a list of available [wallpapers](https://core.telegram.org/api/wallpapers). */
 export class account_getWallPapers_ extends Function_<enums.account.WallPapers> {
   static __F: (params: { hash: bigint }) => enums.account.WallPapers = null as unknown as (params: { hash: bigint }) => enums.account.WallPapers;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -1605,10 +1728,14 @@ export class account_getWallPapers_ extends Function_<enums.account.WallPapers> 
   }
 }
 
+/** Report a peer for violation of telegram's Terms of Service */
 export class account_reportPeer_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; reason: enums.ReportReason; message: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; reason: enums.ReportReason; message: string }) => boolean;
+  /** The peer to report */
   peer: enums.InputPeer;
+  /** The reason why this peer is being reported */
   reason: enums.ReportReason;
+  /** Comment for report moderation */
   message: string;
 
   protected get [id](): number {
@@ -1643,8 +1770,12 @@ export class account_reportPeer_ extends Function_<boolean> {
   }
 }
 
+/** Validates a username and checks availability. */
 export class account_checkUsername_ extends Function_<boolean> {
   static __F: (params: { username: string }) => boolean = null as unknown as (params: { username: string }) => boolean;
+  /** username  
+  Accepted characters: A-z (case-insensitive), 0-9 and underscores.  
+  Length: 5-32 characters. */
   username: string;
 
   protected get [id](): number {
@@ -1673,8 +1804,12 @@ export class account_checkUsername_ extends Function_<boolean> {
   }
 }
 
+/** Changes username for the current user. */
 export class account_updateUsername_ extends Function_<enums.User> {
   static __F: (params: { username: string }) => enums.User = null as unknown as (params: { username: string }) => enums.User;
+  /** username or empty string if username is to be removed  
+  Accepted characters: a-z (case-insensitive), 0-9 and underscores.  
+  Length: 5-32 characters. */
   username: string;
 
   protected get [id](): number {
@@ -1703,8 +1838,10 @@ export class account_updateUsername_ extends Function_<enums.User> {
   }
 }
 
+/** Get privacy settings of current account */
 export class account_getPrivacy_ extends Function_<enums.account.PrivacyRules> {
   static __F: (params: { key: enums.InputPrivacyKey }) => enums.account.PrivacyRules = null as unknown as (params: { key: enums.InputPrivacyKey }) => enums.account.PrivacyRules;
+  /** Peer category whose privacy settings should be fetched */
   key: enums.InputPrivacyKey;
 
   protected get [id](): number {
@@ -1733,9 +1870,12 @@ export class account_getPrivacy_ extends Function_<enums.account.PrivacyRules> {
   }
 }
 
+/** Change privacy settings of current account */
 export class account_setPrivacy_ extends Function_<enums.account.PrivacyRules> {
   static __F: (params: { key: enums.InputPrivacyKey; rules: Array<enums.InputPrivacyRule> }) => enums.account.PrivacyRules = null as unknown as (params: { key: enums.InputPrivacyKey; rules: Array<enums.InputPrivacyRule> }) => enums.account.PrivacyRules;
+  /** New privacy rule */
   key: enums.InputPrivacyKey;
+  /** Peers to which the privacy rule will apply. */
   rules: Array<enums.InputPrivacyRule>;
 
   protected get [id](): number {
@@ -1767,9 +1907,12 @@ export class account_setPrivacy_ extends Function_<enums.account.PrivacyRules> {
   }
 }
 
+/** Delete the user's account from the telegram servers. */
 export class account_deleteAccount_ extends Function_<boolean> {
   static __F: (params: { reason: string; password?: enums.InputCheckPasswordSRP }) => boolean = null as unknown as (params: { reason: string; password?: enums.InputCheckPasswordSRP }) => boolean;
+  /** Why is the account being deleted, can be empty */
   reason: string;
+  /** [2FA password](https://core.telegram.org/api/srp): this field can be omitted even for accounts with 2FA enabled: in this case account account deletion will be delayed by 7 days [as specified in the docs »](https://core.telegram.org/api/account-deletion) */
   password?: enums.InputCheckPasswordSRP;
 
   protected get [id](): number {
@@ -1803,6 +1946,7 @@ export class account_deleteAccount_ extends Function_<boolean> {
   }
 }
 
+/** Get days to live of account */
 export class account_getAccountTTL_ extends Function_<enums.AccountDaysTTL> {
   static __F: () => enums.AccountDaysTTL = null as unknown as () => enums.AccountDaysTTL;
   protected get [id](): number {
@@ -1826,8 +1970,10 @@ export class account_getAccountTTL_ extends Function_<enums.AccountDaysTTL> {
   }
 }
 
+/** Set account self-destruction period */
 export class account_setAccountTTL_ extends Function_<boolean> {
   static __F: (params: { ttl: enums.AccountDaysTTL }) => boolean = null as unknown as (params: { ttl: enums.AccountDaysTTL }) => boolean;
+  /** Time to live in days */
   ttl: enums.AccountDaysTTL;
 
   protected get [id](): number {
@@ -1856,9 +2002,12 @@ export class account_setAccountTTL_ extends Function_<boolean> {
   }
 }
 
+/** Verify a new phone number to associate to the current account */
 export class account_sendChangePhoneCode_ extends Function_<enums.auth.SentCode> {
   static __F: (params: { phone_number: string; settings: enums.CodeSettings }) => enums.auth.SentCode = null as unknown as (params: { phone_number: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
+  /** New phone number */
   phone_number: string;
+  /** Phone code settings */
   settings: enums.CodeSettings;
 
   protected get [id](): number {
@@ -1890,10 +2039,14 @@ export class account_sendChangePhoneCode_ extends Function_<enums.auth.SentCode>
   }
 }
 
+/** Change the phone number of the current account */
 export class account_changePhone_ extends Function_<enums.User> {
   static __F: (params: { phone_number: string; phone_code_hash: string; phone_code: string }) => enums.User = null as unknown as (params: { phone_number: string; phone_code_hash: string; phone_code: string }) => enums.User;
+  /** New phone number */
   phone_number: string;
+  /** Phone code hash received when calling [account.sendChangePhoneCode](https://core.telegram.org/method/account.sendChangePhoneCode) */
   phone_code_hash: string;
+  /** Phone code received when calling [account.sendChangePhoneCode](https://core.telegram.org/method/account.sendChangePhoneCode) */
   phone_code: string;
 
   protected get [id](): number {
@@ -1928,8 +2081,10 @@ export class account_changePhone_ extends Function_<enums.User> {
   }
 }
 
+/** When client-side passcode lock feature is enabled, will not show message texts in incoming [PUSH notifications](https://core.telegram.org/api/push-updates). */
 export class account_updateDeviceLocked_ extends Function_<boolean> {
   static __F: (params: { period: number }) => boolean = null as unknown as (params: { period: number }) => boolean;
+  /** Inactivity period after which to start hiding message texts in [PUSH notifications](https://core.telegram.org/api/push-updates). */
   period: number;
 
   protected get [id](): number {
@@ -1958,6 +2113,7 @@ export class account_updateDeviceLocked_ extends Function_<boolean> {
   }
 }
 
+/** Get logged-in sessions */
 export class account_getAuthorizations_ extends Function_<enums.account.Authorizations> {
   static __F: () => enums.account.Authorizations = null as unknown as () => enums.account.Authorizations;
   protected get [id](): number {
@@ -1981,8 +2137,10 @@ export class account_getAuthorizations_ extends Function_<enums.account.Authoriz
   }
 }
 
+/** Log out an active [authorized session](https://core.telegram.org/api/auth) by its hash */
 export class account_resetAuthorization_ extends Function_<boolean> {
   static __F: (params: { hash: bigint }) => boolean = null as unknown as (params: { hash: bigint }) => boolean;
+  /** Session hash */
   hash: bigint;
 
   protected get [id](): number {
@@ -2011,6 +2169,7 @@ export class account_resetAuthorization_ extends Function_<boolean> {
   }
 }
 
+/** Obtain configuration for two-factor authorization with password */
 export class account_getPassword_ extends Function_<enums.account.Password> {
   static __F: () => enums.account.Password = null as unknown as () => enums.account.Password;
   protected get [id](): number {
@@ -2034,8 +2193,10 @@ export class account_getPassword_ extends Function_<enums.account.Password> {
   }
 }
 
+/** Get private info associated to the password info (recovery email, telegram [passport](https://core.telegram.org/passport) info & so on) */
 export class account_getPasswordSettings_ extends Function_<enums.account.PasswordSettings> {
   static __F: (params: { password: enums.InputCheckPasswordSRP }) => enums.account.PasswordSettings = null as unknown as (params: { password: enums.InputCheckPasswordSRP }) => enums.account.PasswordSettings;
+  /** The password (see [SRP](https://core.telegram.org/api/srp)) */
   password: enums.InputCheckPasswordSRP;
 
   protected get [id](): number {
@@ -2064,9 +2225,12 @@ export class account_getPasswordSettings_ extends Function_<enums.account.Passwo
   }
 }
 
+/** Set a new 2FA password */
 export class account_updatePasswordSettings_ extends Function_<boolean> {
   static __F: (params: { password: enums.InputCheckPasswordSRP; new_settings: enums.account.PasswordInputSettings }) => boolean = null as unknown as (params: { password: enums.InputCheckPasswordSRP; new_settings: enums.account.PasswordInputSettings }) => boolean;
+  /** The old password (see [SRP](https://core.telegram.org/api/srp)) */
   password: enums.InputCheckPasswordSRP;
+  /** The new password (see [SRP](https://core.telegram.org/api/srp)) */
   new_settings: enums.account.PasswordInputSettings;
 
   protected get [id](): number {
@@ -2098,9 +2262,12 @@ export class account_updatePasswordSettings_ extends Function_<boolean> {
   }
 }
 
+/** Send confirmation code to cancel account deletion, for more info [click here »](https://core.telegram.org/api/account-deletion) */
 export class account_sendConfirmPhoneCode_ extends Function_<enums.auth.SentCode> {
   static __F: (params: { hash: string; settings: enums.CodeSettings }) => enums.auth.SentCode = null as unknown as (params: { hash: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
+  /** The hash from the service notification, for more info [click here »](https://core.telegram.org/api/account-deletion) */
   hash: string;
+  /** Phone code settings */
   settings: enums.CodeSettings;
 
   protected get [id](): number {
@@ -2132,9 +2299,12 @@ export class account_sendConfirmPhoneCode_ extends Function_<enums.auth.SentCode
   }
 }
 
+/** Confirm a phone number to cancel account deletion, for more info [click here »](https://core.telegram.org/api/account-deletion) */
 export class account_confirmPhone_ extends Function_<boolean> {
   static __F: (params: { phone_code_hash: string; phone_code: string }) => boolean = null as unknown as (params: { phone_code_hash: string; phone_code: string }) => boolean;
+  /** Phone code hash, for more info [click here »](https://core.telegram.org/api/account-deletion) */
   phone_code_hash: string;
+  /** SMS code, for more info [click here »](https://core.telegram.org/api/account-deletion) */
   phone_code: string;
 
   protected get [id](): number {
@@ -2166,9 +2336,12 @@ export class account_confirmPhone_ extends Function_<boolean> {
   }
 }
 
+/** Get temporary payment password */
 export class account_getTmpPassword_ extends Function_<enums.account.TmpPassword> {
   static __F: (params: { password: enums.InputCheckPasswordSRP; period: number }) => enums.account.TmpPassword = null as unknown as (params: { password: enums.InputCheckPasswordSRP; period: number }) => enums.account.TmpPassword;
+  /** SRP password parameters */
   password: enums.InputCheckPasswordSRP;
+  /** Time during which the temporary password will be valid, in seconds; should be between 60 and 86400 */
   period: number;
 
   protected get [id](): number {
@@ -2200,6 +2373,7 @@ export class account_getTmpPassword_ extends Function_<enums.account.TmpPassword
   }
 }
 
+/** Get web [login widget](https://core.telegram.org/widgets/login) authorizations */
 export class account_getWebAuthorizations_ extends Function_<enums.account.WebAuthorizations> {
   static __F: () => enums.account.WebAuthorizations = null as unknown as () => enums.account.WebAuthorizations;
   protected get [id](): number {
@@ -2223,8 +2397,10 @@ export class account_getWebAuthorizations_ extends Function_<enums.account.WebAu
   }
 }
 
+/** Log out an active web [telegram login](https://core.telegram.org/widgets/login) session */
 export class account_resetWebAuthorization_ extends Function_<boolean> {
   static __F: (params: { hash: bigint }) => boolean = null as unknown as (params: { hash: bigint }) => boolean;
+  /** [Session](https://core.telegram.org/constructor/webAuthorization) hash */
   hash: bigint;
 
   protected get [id](): number {
@@ -2253,6 +2429,7 @@ export class account_resetWebAuthorization_ extends Function_<boolean> {
   }
 }
 
+/** Reset all active web [telegram login](https://core.telegram.org/widgets/login) sessions */
 export class account_resetWebAuthorizations_ extends Function_<boolean> {
   static __F: () => boolean = null as unknown as () => boolean;
   protected get [id](): number {
@@ -2276,6 +2453,7 @@ export class account_resetWebAuthorizations_ extends Function_<boolean> {
   }
 }
 
+/** Get all saved [Telegram Passport](https://core.telegram.org/passport) documents, [for more info see the passport docs »](https://core.telegram.org/passport/encryption#encryption) */
 export class account_getAllSecureValues_ extends Function_<enums.SecureValue[]> {
   static __F: () => enums.SecureValue[] = null as unknown as () => enums.SecureValue[];
   protected get [id](): number {
@@ -2299,8 +2477,10 @@ export class account_getAllSecureValues_ extends Function_<enums.SecureValue[]> 
   }
 }
 
+/** Get saved [Telegram Passport](https://core.telegram.org/passport) document, [for more info see the passport docs »](https://core.telegram.org/passport/encryption#encryption) */
 export class account_getSecureValue_ extends Function_<enums.SecureValue[]> {
   static __F: (params: { types: Array<enums.SecureValueType> }) => enums.SecureValue[] = null as unknown as (params: { types: Array<enums.SecureValueType> }) => enums.SecureValue[];
+  /** Requested value types */
   types: Array<enums.SecureValueType>;
 
   protected get [id](): number {
@@ -2329,9 +2509,12 @@ export class account_getSecureValue_ extends Function_<enums.SecureValue[]> {
   }
 }
 
+/** Securely save [Telegram Passport](https://core.telegram.org/passport) document, [for more info see the passport docs »](https://core.telegram.org/passport/encryption#encryption) */
 export class account_saveSecureValue_ extends Function_<enums.SecureValue> {
   static __F: (params: { value: enums.InputSecureValue; secure_secret_id: bigint }) => enums.SecureValue = null as unknown as (params: { value: enums.InputSecureValue; secure_secret_id: bigint }) => enums.SecureValue;
+  /** Secure value, [for more info see the passport docs »](https://core.telegram.org/passport/encryption#encryption) */
   value: enums.InputSecureValue;
+  /** Passport secret hash, [for more info see the passport docs »](https://core.telegram.org/passport/encryption#encryption) */
   secure_secret_id: bigint;
 
   protected get [id](): number {
@@ -2363,8 +2546,10 @@ export class account_saveSecureValue_ extends Function_<enums.SecureValue> {
   }
 }
 
+/** Delete stored [Telegram Passport](https://core.telegram.org/passport) documents, [for more info see the passport docs »](https://core.telegram.org/passport/encryption#encryption) */
 export class account_deleteSecureValue_ extends Function_<boolean> {
   static __F: (params: { types: Array<enums.SecureValueType> }) => boolean = null as unknown as (params: { types: Array<enums.SecureValueType> }) => boolean;
+  /** Document types to delete */
   types: Array<enums.SecureValueType>;
 
   protected get [id](): number {
@@ -2393,10 +2578,14 @@ export class account_deleteSecureValue_ extends Function_<boolean> {
   }
 }
 
+/** Returns a Telegram Passport authorization form for sharing data with a service */
 export class account_getAuthorizationForm_ extends Function_<enums.account.AuthorizationForm> {
   static __F: (params: { bot_id: bigint; scope: string; public_key: string }) => enums.account.AuthorizationForm = null as unknown as (params: { bot_id: bigint; scope: string; public_key: string }) => enums.account.AuthorizationForm;
+  /** User identifier of the service's bot */
   bot_id: bigint;
+  /** Telegram Passport element types requested by the service */
   scope: string;
+  /** Service's public key */
   public_key: string;
 
   protected get [id](): number {
@@ -2431,12 +2620,18 @@ export class account_getAuthorizationForm_ extends Function_<enums.account.Autho
   }
 }
 
+/** Sends a Telegram Passport authorization form, effectively sharing data with the service */
 export class account_acceptAuthorization_ extends Function_<boolean> {
   static __F: (params: { bot_id: bigint; scope: string; public_key: string; value_hashes: Array<enums.SecureValueHash>; credentials: enums.SecureCredentialsEncrypted }) => boolean = null as unknown as (params: { bot_id: bigint; scope: string; public_key: string; value_hashes: Array<enums.SecureValueHash>; credentials: enums.SecureCredentialsEncrypted }) => boolean;
+  /** Bot ID */
   bot_id: bigint;
+  /** Telegram Passport element types requested by the service */
   scope: string;
+  /** Service's public key */
   public_key: string;
+  /** Types of values sent and their hashes */
   value_hashes: Array<enums.SecureValueHash>;
+  /** Encrypted values */
   credentials: enums.SecureCredentialsEncrypted;
 
   protected get [id](): number {
@@ -2477,9 +2672,12 @@ export class account_acceptAuthorization_ extends Function_<boolean> {
   }
 }
 
+/** Send the verification phone code for telegram [passport](https://core.telegram.org/passport). */
 export class account_sendVerifyPhoneCode_ extends Function_<enums.auth.SentCode> {
   static __F: (params: { phone_number: string; settings: enums.CodeSettings }) => enums.auth.SentCode = null as unknown as (params: { phone_number: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
+  /** The phone number to verify */
   phone_number: string;
+  /** Phone code settings */
   settings: enums.CodeSettings;
 
   protected get [id](): number {
@@ -2511,10 +2709,14 @@ export class account_sendVerifyPhoneCode_ extends Function_<enums.auth.SentCode>
   }
 }
 
+/** Verify a phone number for telegram [passport](https://core.telegram.org/passport). */
 export class account_verifyPhone_ extends Function_<boolean> {
   static __F: (params: { phone_number: string; phone_code_hash: string; phone_code: string }) => boolean = null as unknown as (params: { phone_number: string; phone_code_hash: string; phone_code: string }) => boolean;
+  /** Phone number */
   phone_number: string;
+  /** Phone code hash received from the call to [account.sendVerifyPhoneCode](https://core.telegram.org/method/account.sendVerifyPhoneCode) */
   phone_code_hash: string;
+  /** Code received after the call to [account.sendVerifyPhoneCode](https://core.telegram.org/method/account.sendVerifyPhoneCode) */
   phone_code: string;
 
   protected get [id](): number {
@@ -2549,9 +2751,12 @@ export class account_verifyPhone_ extends Function_<boolean> {
   }
 }
 
+/** Send an email verification code. */
 export class account_sendVerifyEmailCode_ extends Function_<enums.account.SentEmailCode> {
   static __F: (params: { purpose: enums.EmailVerifyPurpose; email: string }) => enums.account.SentEmailCode = null as unknown as (params: { purpose: enums.EmailVerifyPurpose; email: string }) => enums.account.SentEmailCode;
+  /** Verification purpose. */
   purpose: enums.EmailVerifyPurpose;
+  /** The email where to send the code. */
   email: string;
 
   protected get [id](): number {
@@ -2583,9 +2788,12 @@ export class account_sendVerifyEmailCode_ extends Function_<enums.account.SentEm
   }
 }
 
+/** Verify an email address. */
 export class account_verifyEmail_ extends Function_<enums.account.EmailVerified> {
   static __F: (params: { purpose: enums.EmailVerifyPurpose; verification: enums.EmailVerification }) => enums.account.EmailVerified = null as unknown as (params: { purpose: enums.EmailVerifyPurpose; verification: enums.EmailVerification }) => enums.account.EmailVerified;
+  /** Verification purpose */
   purpose: enums.EmailVerifyPurpose;
+  /** Email verification code or token */
   verification: enums.EmailVerification;
 
   protected get [id](): number {
@@ -2617,14 +2825,22 @@ export class account_verifyEmail_ extends Function_<enums.account.EmailVerified>
   }
 }
 
+/** Initialize a [takeout session, see here » for more info](https://core.telegram.org/api/takeout). */
 export class account_initTakeoutSession_ extends Function_<enums.account.Takeout> {
   static __F: (params?: { contacts?: true; message_users?: true; message_chats?: true; message_megagroups?: true; message_channels?: true; files?: true; file_max_size?: bigint }) => enums.account.Takeout = null as unknown as (params?: { contacts?: true; message_users?: true; message_chats?: true; message_megagroups?: true; message_channels?: true; files?: true; file_max_size?: bigint }) => enums.account.Takeout;
+  /** Whether to export contacts */
   contacts?: true;
+  /** Whether to export messages in private chats */
   message_users?: true;
+  /** Whether to export messages in [basic groups](https://core.telegram.org/api/channel#basic-groups) */
   message_chats?: true;
+  /** Whether to export messages in [supergroups](https://core.telegram.org/api/channel#supergroups) */
   message_megagroups?: true;
+  /** Whether to export messages in [channels](https://core.telegram.org/api/channel#channels) */
   message_channels?: true;
+  /** Whether to export files */
   files?: true;
+  /** Maximum size of files to export */
   file_max_size?: bigint;
 
   protected get [id](): number {
@@ -2673,8 +2889,10 @@ export class account_initTakeoutSession_ extends Function_<enums.account.Takeout
   }
 }
 
+/** Terminate a [takeout session, see here » for more info](https://core.telegram.org/api/takeout). */
 export class account_finishTakeoutSession_ extends Function_<boolean> {
   static __F: (params?: { success?: true }) => boolean = null as unknown as (params?: { success?: true }) => boolean;
+  /** Data exported successfully */
   success?: true;
 
   protected get [id](): number {
@@ -2705,8 +2923,10 @@ export class account_finishTakeoutSession_ extends Function_<boolean> {
   }
 }
 
+/** Verify an email to use as [2FA recovery method](https://core.telegram.org/api/srp). */
 export class account_confirmPasswordEmail_ extends Function_<boolean> {
   static __F: (params: { code: string }) => boolean = null as unknown as (params: { code: string }) => boolean;
+  /** The phone code that was received after [setting a recovery email](https://core.telegram.org/api/srp#email-verification) */
   code: string;
 
   protected get [id](): number {
@@ -2735,6 +2955,7 @@ export class account_confirmPasswordEmail_ extends Function_<boolean> {
   }
 }
 
+/** Resend the code to verify an email to use as [2FA recovery method](https://core.telegram.org/api/srp). */
 export class account_resendPasswordEmail_ extends Function_<boolean> {
   static __F: () => boolean = null as unknown as () => boolean;
   protected get [id](): number {
@@ -2758,6 +2979,7 @@ export class account_resendPasswordEmail_ extends Function_<boolean> {
   }
 }
 
+/** Cancel the code that was sent to verify an email to use as [2FA recovery method](https://core.telegram.org/api/srp). */
 export class account_cancelPasswordEmail_ extends Function_<boolean> {
   static __F: () => boolean = null as unknown as () => boolean;
   protected get [id](): number {
@@ -2781,6 +3003,7 @@ export class account_cancelPasswordEmail_ extends Function_<boolean> {
   }
 }
 
+/** Whether the user will receive notifications when contacts sign up */
 export class account_getContactSignUpNotification_ extends Function_<boolean> {
   static __F: () => boolean = null as unknown as () => boolean;
   protected get [id](): number {
@@ -2804,8 +3027,10 @@ export class account_getContactSignUpNotification_ extends Function_<boolean> {
   }
 }
 
+/** Toggle contact sign up notifications */
 export class account_setContactSignUpNotification_ extends Function_<boolean> {
   static __F: (params: { silent: boolean }) => boolean = null as unknown as (params: { silent: boolean }) => boolean;
+  /** Whether to disable contact sign up notifications */
   silent: boolean;
 
   protected get [id](): number {
@@ -2834,10 +3059,14 @@ export class account_setContactSignUpNotification_ extends Function_<boolean> {
   }
 }
 
+/** Returns list of chats with non-default notification settings */
 export class account_getNotifyExceptions_ extends Function_<enums.Updates> {
   static __F: (params?: { compare_sound?: true; compare_stories?: true; peer?: enums.InputNotifyPeer }) => enums.Updates = null as unknown as (params?: { compare_sound?: true; compare_stories?: true; peer?: enums.InputNotifyPeer }) => enums.Updates;
+  /** If set, chats with non-default sound will be returned */
   compare_sound?: true;
+  /** If set, chats with non-default notification settings for stories will be returned */
   compare_stories?: true;
+  /** If specified, only chats of the specified category will be returned */
   peer?: enums.InputNotifyPeer;
 
   protected get [id](): number {
@@ -2874,8 +3103,10 @@ export class account_getNotifyExceptions_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get info about a certain [wallpaper](https://core.telegram.org/api/wallpapers) */
 export class account_getWallPaper_ extends Function_<enums.WallPaper> {
   static __F: (params: { wallpaper: enums.InputWallPaper }) => enums.WallPaper = null as unknown as (params: { wallpaper: enums.InputWallPaper }) => enums.WallPaper;
+  /** The [wallpaper](https://core.telegram.org/api/wallpapers) to get info about */
   wallpaper: enums.InputWallPaper;
 
   protected get [id](): number {
@@ -2904,11 +3135,16 @@ export class account_getWallPaper_ extends Function_<enums.WallPaper> {
   }
 }
 
+/** Create and upload a new [wallpaper](https://core.telegram.org/api/wallpapers) */
 export class account_uploadWallPaper_ extends Function_<enums.WallPaper> {
   static __F: (params: { for_chat?: true; file: enums.InputFile; mime_type: string; settings: enums.WallPaperSettings }) => enums.WallPaper = null as unknown as (params: { for_chat?: true; file: enums.InputFile; mime_type: string; settings: enums.WallPaperSettings }) => enums.WallPaper;
+  /** Set this flag when uploading wallpapers to be passed to [messages.setChatWallPaper](https://core.telegram.org/method/messages.setChatWallPaper). */
   for_chat?: true;
+  /** The JPG/PNG wallpaper */
   file: enums.InputFile;
+  /** MIME type of uploaded wallpaper */
   mime_type: string;
+  /** Wallpaper settings */
   settings: enums.WallPaperSettings;
 
   protected get [id](): number {
@@ -2948,10 +3184,14 @@ export class account_uploadWallPaper_ extends Function_<enums.WallPaper> {
   }
 }
 
+/** Install/uninstall [wallpaper](https://core.telegram.org/api/wallpapers) */
 export class account_saveWallPaper_ extends Function_<boolean> {
   static __F: (params: { wallpaper: enums.InputWallPaper; unsave: boolean; settings: enums.WallPaperSettings }) => boolean = null as unknown as (params: { wallpaper: enums.InputWallPaper; unsave: boolean; settings: enums.WallPaperSettings }) => boolean;
+  /** [Wallpaper](https://core.telegram.org/api/wallpapers) to install or uninstall */
   wallpaper: enums.InputWallPaper;
+  /** Uninstall wallpaper? */
   unsave: boolean;
+  /** Wallpaper settings */
   settings: enums.WallPaperSettings;
 
   protected get [id](): number {
@@ -2986,9 +3226,12 @@ export class account_saveWallPaper_ extends Function_<boolean> {
   }
 }
 
+/** Install [wallpaper](https://core.telegram.org/api/wallpapers) */
 export class account_installWallPaper_ extends Function_<boolean> {
   static __F: (params: { wallpaper: enums.InputWallPaper; settings: enums.WallPaperSettings }) => boolean = null as unknown as (params: { wallpaper: enums.InputWallPaper; settings: enums.WallPaperSettings }) => boolean;
+  /** [Wallpaper](https://core.telegram.org/api/wallpapers) to install */
   wallpaper: enums.InputWallPaper;
+  /** [Wallpaper](https://core.telegram.org/api/wallpapers) settings */
   settings: enums.WallPaperSettings;
 
   protected get [id](): number {
@@ -3020,6 +3263,7 @@ export class account_installWallPaper_ extends Function_<boolean> {
   }
 }
 
+/** Delete all installed [wallpapers](https://core.telegram.org/api/wallpapers), reverting to the default wallpaper set. */
 export class account_resetWallPapers_ extends Function_<boolean> {
   static __F: () => boolean = null as unknown as () => boolean;
   protected get [id](): number {
@@ -3043,6 +3287,7 @@ export class account_resetWallPapers_ extends Function_<boolean> {
   }
 }
 
+/** Get media autodownload settings */
 export class account_getAutoDownloadSettings_ extends Function_<enums.account.AutoDownloadSettings> {
   static __F: () => enums.account.AutoDownloadSettings = null as unknown as () => enums.account.AutoDownloadSettings;
   protected get [id](): number {
@@ -3066,10 +3311,14 @@ export class account_getAutoDownloadSettings_ extends Function_<enums.account.Au
   }
 }
 
+/** Change media autodownload settings */
 export class account_saveAutoDownloadSettings_ extends Function_<boolean> {
   static __F: (params: { low?: true; high?: true; settings: enums.AutoDownloadSettings }) => boolean = null as unknown as (params: { low?: true; high?: true; settings: enums.AutoDownloadSettings }) => boolean;
+  /** Whether to save media in the low data usage preset */
   low?: true;
+  /** Whether to save media in the high data usage preset */
   high?: true;
+  /** Media autodownload settings */
   settings: enums.AutoDownloadSettings;
 
   protected get [id](): number {
@@ -3106,11 +3355,16 @@ export class account_saveAutoDownloadSettings_ extends Function_<boolean> {
   }
 }
 
+/** Upload theme */
 export class account_uploadTheme_ extends Function_<enums.Document> {
   static __F: (params: { file: enums.InputFile; thumb?: enums.InputFile; file_name: string; mime_type: string }) => enums.Document = null as unknown as (params: { file: enums.InputFile; thumb?: enums.InputFile; file_name: string; mime_type: string }) => enums.Document;
+  /** [Previously uploaded](https://core.telegram.org/api/themes#uploading-theme-files) theme file with platform-specific colors for UI components, can be left unset when creating themes that only modify the wallpaper or accent colors. */
   file: enums.InputFile;
+  /** Thumbnail */
   thumb?: enums.InputFile;
+  /** File name */
   file_name: string;
+  /** MIME type, must be `application/x-tgtheme-{format}`, where `format` depends on the client */
   mime_type: string;
 
   protected get [id](): number {
@@ -3150,11 +3404,16 @@ export class account_uploadTheme_ extends Function_<enums.Document> {
   }
 }
 
+/** Create a theme */
 export class account_createTheme_ extends Function_<enums.Theme> {
   static __F: (params: { slug: string; title: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) => enums.Theme = null as unknown as (params: { slug: string; title: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) => enums.Theme;
+  /** Unique theme ID used to generate [theme deep links](https://core.telegram.org/api/links#theme-links), can be empty to autogenerate a random ID. */
   slug: string;
+  /** Theme name */
   title: string;
+  /** Theme file */
   document?: enums.InputDocument;
+  /** Theme settings, multiple values can be provided for the different base themes (day/night mode, etc). */
   settings?: Array<enums.InputThemeSettings>;
 
   protected get [id](): number {
@@ -3194,13 +3453,20 @@ export class account_createTheme_ extends Function_<enums.Theme> {
   }
 }
 
+/** Update theme */
 export class account_updateTheme_ extends Function_<enums.Theme> {
   static __F: (params: { format: string; theme: enums.InputTheme; slug?: string; title?: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) => enums.Theme = null as unknown as (params: { format: string; theme: enums.InputTheme; slug?: string; title?: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) => enums.Theme;
+  /** Theme format, a string that identifies the theming engines supported by the client */
   format: string;
+  /** Theme to update */
   theme: enums.InputTheme;
+  /** Unique theme ID */
   slug?: string;
+  /** Theme name */
   title?: string;
+  /** Theme file */
   document?: enums.InputDocument;
+  /** Theme settings */
   settings?: Array<enums.InputThemeSettings>;
 
   protected get [id](): number {
@@ -3246,9 +3512,12 @@ export class account_updateTheme_ extends Function_<enums.Theme> {
   }
 }
 
+/** Save a theme */
 export class account_saveTheme_ extends Function_<boolean> {
   static __F: (params: { theme: enums.InputTheme; unsave: boolean }) => boolean = null as unknown as (params: { theme: enums.InputTheme; unsave: boolean }) => boolean;
+  /** Theme to save */
   theme: enums.InputTheme;
+  /** Unsave */
   unsave: boolean;
 
   protected get [id](): number {
@@ -3280,11 +3549,16 @@ export class account_saveTheme_ extends Function_<boolean> {
   }
 }
 
+/** Install a theme */
 export class account_installTheme_ extends Function_<boolean> {
   static __F: (params?: { dark?: true; theme?: enums.InputTheme; format?: string; base_theme?: enums.BaseTheme }) => boolean = null as unknown as (params?: { dark?: true; theme?: enums.InputTheme; format?: string; base_theme?: enums.BaseTheme }) => boolean;
+  /** Whether to install the dark version */
   dark?: true;
+  /** Theme to install */
   theme?: enums.InputTheme;
+  /** Theme format, a string that identifies the theming engines supported by the client */
   format?: string;
+  /** Indicates a basic theme provided by all clients */
   base_theme?: enums.BaseTheme;
 
   protected get [id](): number {
@@ -3324,9 +3598,12 @@ export class account_installTheme_ extends Function_<boolean> {
   }
 }
 
+/** Get theme information */
 export class account_getTheme_ extends Function_<enums.Theme> {
   static __F: (params: { format: string; theme: enums.InputTheme }) => enums.Theme = null as unknown as (params: { format: string; theme: enums.InputTheme }) => enums.Theme;
+  /** Theme format, a string that identifies the theming engines supported by the client */
   format: string;
+  /** Theme */
   theme: enums.InputTheme;
 
   protected get [id](): number {
@@ -3358,9 +3635,12 @@ export class account_getTheme_ extends Function_<enums.Theme> {
   }
 }
 
+/** Get installed themes */
 export class account_getThemes_ extends Function_<enums.account.Themes> {
   static __F: (params: { format: string; hash: bigint }) => enums.account.Themes = null as unknown as (params: { format: string; hash: bigint }) => enums.account.Themes;
+  /** Theme format, a string that identifies the theming engines supported by the client */
   format: string;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -3392,8 +3672,10 @@ export class account_getThemes_ extends Function_<enums.account.Themes> {
   }
 }
 
+/** Set sensitive content settings (for viewing or hiding NSFW content) */
 export class account_setContentSettings_ extends Function_<boolean> {
   static __F: (params?: { sensitive_enabled?: true }) => boolean = null as unknown as (params?: { sensitive_enabled?: true }) => boolean;
+  /** Enable NSFW content */
   sensitive_enabled?: true;
 
   protected get [id](): number {
@@ -3424,6 +3706,7 @@ export class account_setContentSettings_ extends Function_<boolean> {
   }
 }
 
+/** Get sensitive content settings */
 export class account_getContentSettings_ extends Function_<enums.account.ContentSettings> {
   static __F: () => enums.account.ContentSettings = null as unknown as () => enums.account.ContentSettings;
   protected get [id](): number {
@@ -3447,8 +3730,10 @@ export class account_getContentSettings_ extends Function_<enums.account.Content
   }
 }
 
+/** Get info about multiple [wallpapers](https://core.telegram.org/api/wallpapers) */
 export class account_getMultiWallPapers_ extends Function_<enums.WallPaper[]> {
   static __F: (params: { wallpapers: Array<enums.InputWallPaper> }) => enums.WallPaper[] = null as unknown as (params: { wallpapers: Array<enums.InputWallPaper> }) => enums.WallPaper[];
+  /** [Wallpapers](https://core.telegram.org/api/wallpapers) to fetch info about */
   wallpapers: Array<enums.InputWallPaper>;
 
   protected get [id](): number {
@@ -3477,6 +3762,7 @@ export class account_getMultiWallPapers_ extends Function_<enums.WallPaper[]> {
   }
 }
 
+/** Get global privacy settings */
 export class account_getGlobalPrivacySettings_ extends Function_<enums.GlobalPrivacySettings> {
   static __F: () => enums.GlobalPrivacySettings = null as unknown as () => enums.GlobalPrivacySettings;
   protected get [id](): number {
@@ -3500,8 +3786,10 @@ export class account_getGlobalPrivacySettings_ extends Function_<enums.GlobalPri
   }
 }
 
+/** Set global privacy settings */
 export class account_setGlobalPrivacySettings_ extends Function_<enums.GlobalPrivacySettings> {
   static __F: (params: { settings: enums.GlobalPrivacySettings }) => enums.GlobalPrivacySettings = null as unknown as (params: { settings: enums.GlobalPrivacySettings }) => enums.GlobalPrivacySettings;
+  /** Global privacy settings */
   settings: enums.GlobalPrivacySettings;
 
   protected get [id](): number {
@@ -3530,11 +3818,16 @@ export class account_setGlobalPrivacySettings_ extends Function_<enums.GlobalPri
   }
 }
 
+/** Report a profile photo of a dialog */
 export class account_reportProfilePhoto_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; photo_id: enums.InputPhoto; reason: enums.ReportReason; message: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; photo_id: enums.InputPhoto; reason: enums.ReportReason; message: string }) => boolean;
+  /** The dialog */
   peer: enums.InputPeer;
+  /** Dialog photo ID */
   photo_id: enums.InputPhoto;
+  /** Report reason */
   reason: enums.ReportReason;
+  /** Comment for report moderation */
   message: string;
 
   protected get [id](): number {
@@ -3572,6 +3865,7 @@ export class account_reportProfilePhoto_ extends Function_<boolean> {
   }
 }
 
+/** Initiate a 2FA password reset: can only be used if the user is already logged-in, [see here for more info »](https://core.telegram.org/api/srp#password-reset) */
 export class account_resetPassword_ extends Function_<enums.account.ResetPasswordResult> {
   static __F: () => enums.account.ResetPasswordResult = null as unknown as () => enums.account.ResetPasswordResult;
   protected get [id](): number {
@@ -3595,6 +3889,7 @@ export class account_resetPassword_ extends Function_<enums.account.ResetPasswor
   }
 }
 
+/** Abort a pending 2FA password reset, [see here for more info »](https://core.telegram.org/api/srp#password-reset) */
 export class account_declinePasswordReset_ extends Function_<boolean> {
   static __F: () => boolean = null as unknown as () => boolean;
   protected get [id](): number {
@@ -3618,8 +3913,10 @@ export class account_declinePasswordReset_ extends Function_<boolean> {
   }
 }
 
+/** Get all available chat [themes »](https://core.telegram.org/api/themes). */
 export class account_getChatThemes_ extends Function_<enums.account.Themes> {
   static __F: (params: { hash: bigint }) => enums.account.Themes = null as unknown as (params: { hash: bigint }) => enums.account.Themes;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -3648,8 +3945,10 @@ export class account_getChatThemes_ extends Function_<enums.account.Themes> {
   }
 }
 
+/** Set time-to-live of current session */
 export class account_setAuthorizationTTL_ extends Function_<boolean> {
   static __F: (params: { authorization_ttl_days: number }) => boolean = null as unknown as (params: { authorization_ttl_days: number }) => boolean;
+  /** Time-to-live of current session in days */
   authorization_ttl_days: number;
 
   protected get [id](): number {
@@ -3678,11 +3977,16 @@ export class account_setAuthorizationTTL_ extends Function_<boolean> {
   }
 }
 
+/** Change settings related to a session. */
 export class account_changeAuthorizationSettings_ extends Function_<boolean> {
   static __F: (params: { confirmed?: true; hash: bigint; encrypted_requests_disabled?: boolean; call_requests_disabled?: boolean }) => boolean = null as unknown as (params: { confirmed?: true; hash: bigint; encrypted_requests_disabled?: boolean; call_requests_disabled?: boolean }) => boolean;
+  /** If set, [confirms a newly logged in session »](https://core.telegram.org/api/auth#confirming-login). */
   confirmed?: true;
+  /** Session ID from the [authorization](https://core.telegram.org/constructor/authorization) constructor, fetchable using [account.getAuthorizations](https://core.telegram.org/method/account.getAuthorizations) */
   hash: bigint;
+  /** Whether to enable or disable receiving encrypted chats: if the flag is not set, the previous setting is not changed */
   encrypted_requests_disabled?: boolean;
+  /** Whether to enable or disable receiving calls: if the flag is not set, the previous setting is not changed */
   call_requests_disabled?: boolean;
 
   protected get [id](): number {
@@ -3722,8 +4026,10 @@ export class account_changeAuthorizationSettings_ extends Function_<boolean> {
   }
 }
 
+/** Fetch saved notification sounds */
 export class account_getSavedRingtones_ extends Function_<enums.account.SavedRingtones> {
   static __F: (params: { hash: bigint }) => enums.account.SavedRingtones = null as unknown as (params: { hash: bigint }) => enums.account.SavedRingtones;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -3752,9 +4058,12 @@ export class account_getSavedRingtones_ extends Function_<enums.account.SavedRin
   }
 }
 
+/** Save or remove saved notification sound. */
 export class account_saveRingtone_ extends Function_<enums.account.SavedRingtone> {
   static __F: (params: { id: enums.InputDocument; unsave: boolean }) => enums.account.SavedRingtone = null as unknown as (params: { id: enums.InputDocument; unsave: boolean }) => enums.account.SavedRingtone;
+  /** Notification sound uploaded using [account.uploadRingtone](https://core.telegram.org/method/account.uploadRingtone) */
   id: enums.InputDocument;
+  /** Whether to add or delete the notification sound */
   unsave: boolean;
 
   protected get [id](): number {
@@ -3786,10 +4095,14 @@ export class account_saveRingtone_ extends Function_<enums.account.SavedRingtone
   }
 }
 
+/** Upload notification sound, use [account.saveRingtone](https://core.telegram.org/method/account.saveRingtone) to convert it and add it to the list of saved notification sounds. */
 export class account_uploadRingtone_ extends Function_<enums.Document> {
   static __F: (params: { file: enums.InputFile; file_name: string; mime_type: string }) => enums.Document = null as unknown as (params: { file: enums.InputFile; file_name: string; mime_type: string }) => enums.Document;
+  /** Notification sound */
   file: enums.InputFile;
+  /** File name */
   file_name: string;
+  /** MIME type of file */
   mime_type: string;
 
   protected get [id](): number {
@@ -3824,8 +4137,10 @@ export class account_uploadRingtone_ extends Function_<enums.Document> {
   }
 }
 
+/** Set an [emoji status](https://core.telegram.org/api/emoji-status) */
 export class account_updateEmojiStatus_ extends Function_<boolean> {
   static __F: (params: { emoji_status: enums.EmojiStatus }) => boolean = null as unknown as (params: { emoji_status: enums.EmojiStatus }) => boolean;
+  /** [Emoji status](https://core.telegram.org/api/emoji-status) to set */
   emoji_status: enums.EmojiStatus;
 
   protected get [id](): number {
@@ -3854,8 +4169,10 @@ export class account_updateEmojiStatus_ extends Function_<boolean> {
   }
 }
 
+/** Get a list of default suggested [emoji statuses](https://core.telegram.org/api/emoji-status) */
 export class account_getDefaultEmojiStatuses_ extends Function_<enums.account.EmojiStatuses> {
   static __F: (params: { hash: bigint }) => enums.account.EmojiStatuses = null as unknown as (params: { hash: bigint }) => enums.account.EmojiStatuses;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -3884,8 +4201,10 @@ export class account_getDefaultEmojiStatuses_ extends Function_<enums.account.Em
   }
 }
 
+/** Get recently used [emoji statuses](https://core.telegram.org/api/emoji-status) */
 export class account_getRecentEmojiStatuses_ extends Function_<enums.account.EmojiStatuses> {
   static __F: (params: { hash: bigint }) => enums.account.EmojiStatuses = null as unknown as (params: { hash: bigint }) => enums.account.EmojiStatuses;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -3914,6 +4233,7 @@ export class account_getRecentEmojiStatuses_ extends Function_<enums.account.Emo
   }
 }
 
+/** Clears list of recently used [emoji statuses](https://core.telegram.org/api/emoji-status) */
 export class account_clearRecentEmojiStatuses_ extends Function_<boolean> {
   static __F: () => boolean = null as unknown as () => boolean;
   protected get [id](): number {
@@ -3937,8 +4257,10 @@ export class account_clearRecentEmojiStatuses_ extends Function_<boolean> {
   }
 }
 
+/** Reorder usernames associated with the currently logged-in user. */
 export class account_reorderUsernames_ extends Function_<boolean> {
   static __F: (params: { order: Array<string> }) => boolean = null as unknown as (params: { order: Array<string> }) => boolean;
+  /** The new order for active usernames. All active usernames must be specified. */
   order: Array<string>;
 
   protected get [id](): number {
@@ -3967,9 +4289,12 @@ export class account_reorderUsernames_ extends Function_<boolean> {
   }
 }
 
+/** Activate or deactivate a purchased [fragment.com](https://fragment.com) username associated to the currently logged-in user. */
 export class account_toggleUsername_ extends Function_<boolean> {
   static __F: (params: { username: string; active: boolean }) => boolean = null as unknown as (params: { username: string; active: boolean }) => boolean;
+  /** Username */
   username: string;
+  /** Whether to activate or deactivate it */
   active: boolean;
 
   protected get [id](): number {
@@ -4001,8 +4326,10 @@ export class account_toggleUsername_ extends Function_<boolean> {
   }
 }
 
+/** Get a set of suggested [custom emoji stickers](https://core.telegram.org/api/custom-emoji) that can be [used as profile picture](https://core.telegram.org/api/files#sticker-profile-pictures) */
 export class account_getDefaultProfilePhotoEmojis_ extends Function_<enums.EmojiList> {
   static __F: (params: { hash: bigint }) => enums.EmojiList = null as unknown as (params: { hash: bigint }) => enums.EmojiList;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -4031,8 +4358,10 @@ export class account_getDefaultProfilePhotoEmojis_ extends Function_<enums.Emoji
   }
 }
 
+/** Get a set of suggested [custom emoji stickers](https://core.telegram.org/api/custom-emoji) that can be [used as group picture](https://core.telegram.org/api/files#sticker-profile-pictures) */
 export class account_getDefaultGroupPhotoEmojis_ extends Function_<enums.EmojiList> {
   static __F: (params: { hash: bigint }) => enums.EmojiList = null as unknown as (params: { hash: bigint }) => enums.EmojiList;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -4061,6 +4390,7 @@ export class account_getDefaultGroupPhotoEmojis_ extends Function_<enums.EmojiLi
   }
 }
 
+/** Get autosave settings */
 export class account_getAutoSaveSettings_ extends Function_<enums.account.AutoSaveSettings> {
   static __F: () => enums.account.AutoSaveSettings = null as unknown as () => enums.account.AutoSaveSettings;
   protected get [id](): number {
@@ -4084,12 +4414,18 @@ export class account_getAutoSaveSettings_ extends Function_<enums.account.AutoSa
   }
 }
 
+/** Modify autosave settings */
 export class account_saveAutoSaveSettings_ extends Function_<boolean> {
   static __F: (params: { users?: true; chats?: true; broadcasts?: true; peer?: enums.InputPeer; settings: enums.AutoSaveSettings }) => boolean = null as unknown as (params: { users?: true; chats?: true; broadcasts?: true; peer?: enums.InputPeer; settings: enums.AutoSaveSettings }) => boolean;
+  /** Whether the new settings should affect all private chats */
   users?: true;
+  /** Whether the new settings should affect all groups */
   chats?: true;
+  /** Whether the new settings should affect all [channels](https://core.telegram.org/api/channel) */
   broadcasts?: true;
+  /** Whether the new settings should affect a specific peer */
   peer?: enums.InputPeer;
+  /** The new autosave settings */
   settings: enums.AutoSaveSettings;
 
   protected get [id](): number {
@@ -4132,6 +4468,7 @@ export class account_saveAutoSaveSettings_ extends Function_<boolean> {
   }
 }
 
+/** Clear all peer-specific autosave settings. */
 export class account_deleteAutoSaveExceptions_ extends Function_<boolean> {
   static __F: () => boolean = null as unknown as () => boolean;
   protected get [id](): number {
@@ -4155,8 +4492,10 @@ export class account_deleteAutoSaveExceptions_ extends Function_<boolean> {
   }
 }
 
+/** Invalidate the specified login codes, see [here »](https://core.telegram.org/api/auth#invalidating-login-codes) for more info. */
 export class account_invalidateSignInCodes_ extends Function_<boolean> {
   static __F: (params: { codes: Array<string> }) => boolean = null as unknown as (params: { codes: Array<string> }) => boolean;
+  /** The login codes to invalidate. */
   codes: Array<string>;
 
   protected get [id](): number {
@@ -4185,10 +4524,14 @@ export class account_invalidateSignInCodes_ extends Function_<boolean> {
   }
 }
 
+/** Update the [accent color and background custom emoji »](https://core.telegram.org/api/colors) of the current account. */
 export class account_updateColor_ extends Function_<boolean> {
   static __F: (params?: { for_profile?: true; color?: number; background_emoji_id?: bigint }) => boolean = null as unknown as (params?: { for_profile?: true; color?: number; background_emoji_id?: bigint }) => boolean;
+  /** Whether to change the accent color emoji pattern of the profile page; otherwise, the accent color and emoji pattern of messages will be changed. */
   for_profile?: true;
+  /** [ID of the accent color palette »](https://core.telegram.org/api/colors) to use (not RGB24, see [here »](https://core.telegram.org/api/colors) for more info). */
   color?: number;
+  /** Custom emoji ID used in the accent color pattern. */
   background_emoji_id?: bigint;
 
   protected get [id](): number {
@@ -4225,8 +4568,10 @@ export class account_updateColor_ extends Function_<boolean> {
   }
 }
 
+/** Get a set of suggested [custom emoji stickers](https://core.telegram.org/api/custom-emoji) that can be used in an [accent color pattern](https://core.telegram.org/api/colors). */
 export class account_getDefaultBackgroundEmojis_ extends Function_<enums.EmojiList> {
   static __F: (params: { hash: bigint }) => enums.EmojiList = null as unknown as (params: { hash: bigint }) => enums.EmojiList;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -4255,8 +4600,10 @@ export class account_getDefaultBackgroundEmojis_ extends Function_<enums.EmojiLi
   }
 }
 
+/** Get a list of default suggested [channel emoji statuses](https://core.telegram.org/api/emoji-status). */
 export class account_getChannelDefaultEmojiStatuses_ extends Function_<enums.account.EmojiStatuses> {
   static __F: (params: { hash: bigint }) => enums.account.EmojiStatuses = null as unknown as (params: { hash: bigint }) => enums.account.EmojiStatuses;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -4285,8 +4632,10 @@ export class account_getChannelDefaultEmojiStatuses_ extends Function_<enums.acc
   }
 }
 
+/** Returns fetch the full list of [custom emoji IDs »](https://core.telegram.org/api/custom-emoji) that cannot be used in [channel emoji statuses »](https://core.telegram.org/api/emoji-status). */
 export class account_getChannelRestrictedStatusEmojis_ extends Function_<enums.EmojiList> {
   static __F: (params: { hash: bigint }) => enums.EmojiList = null as unknown as (params: { hash: bigint }) => enums.EmojiList;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -4315,8 +4664,10 @@ export class account_getChannelRestrictedStatusEmojis_ extends Function_<enums.E
   }
 }
 
+/** Returns basic user info according to their identifiers. */
 export class users_getUsers_ extends Function_<enums.User[]> {
   static __F: (params: { id: Array<enums.InputUser> }) => enums.User[] = null as unknown as (params: { id: Array<enums.InputUser> }) => enums.User[];
+  /** List of user identifiers */
   id: Array<enums.InputUser>;
 
   protected get [id](): number {
@@ -4345,8 +4696,10 @@ export class users_getUsers_ extends Function_<enums.User[]> {
   }
 }
 
+/** Returns extended user info by ID. */
 export class users_getFullUser_ extends Function_<enums.users.UserFull> {
   static __F: (params: { id: enums.InputUser }) => enums.users.UserFull = null as unknown as (params: { id: enums.InputUser }) => enums.users.UserFull;
+  /** User ID */
   id: enums.InputUser;
 
   protected get [id](): number {
@@ -4375,9 +4728,12 @@ export class users_getFullUser_ extends Function_<enums.users.UserFull> {
   }
 }
 
+/** Notify the user that the sent [passport](https://core.telegram.org/passport) data contains some errors The user will not be able to re-submit their Passport data to you until the errors are fixed (the contents of the field for which you returned the error must change). */
 export class users_setSecureValueErrors_ extends Function_<boolean> {
   static __F: (params: { id: enums.InputUser; errors: Array<enums.SecureValueError> }) => boolean = null as unknown as (params: { id: enums.InputUser; errors: Array<enums.SecureValueError> }) => boolean;
+  /** The user */
   id: enums.InputUser;
+  /** Errors */
   errors: Array<enums.SecureValueError>;
 
   protected get [id](): number {
@@ -4439,8 +4795,11 @@ export class users_getIsPremiumRequiredToContact_ extends Function_<boolean[]> {
   }
 }
 
+/** Get the telegram IDs of all contacts.  
+Returns an array of Telegram user IDs for all contacts (0 if a contact does not have an associated Telegram account or have hidden their account using privacy settings). */
 export class contacts_getContactIDs_ extends Function_<number[]> {
   static __F: (params: { hash: bigint }) => number[] = null as unknown as (params: { hash: bigint }) => number[];
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -4469,6 +4828,7 @@ export class contacts_getContactIDs_ extends Function_<number[]> {
   }
 }
 
+/** Use this method to obtain the online statuses of all contacts with an accessible Telegram account. */
 export class contacts_getStatuses_ extends Function_<enums.ContactStatus[]> {
   static __F: () => enums.ContactStatus[] = null as unknown as () => enums.ContactStatus[];
   protected get [id](): number {
@@ -4492,8 +4852,10 @@ export class contacts_getStatuses_ extends Function_<enums.ContactStatus[]> {
   }
 }
 
+/** Returns the current user's contact list. */
 export class contacts_getContacts_ extends Function_<enums.contacts.Contacts> {
   static __F: (params: { hash: bigint }) => enums.contacts.Contacts = null as unknown as (params: { hash: bigint }) => enums.contacts.Contacts;
+  /** If there already is a full contact list on the client, a [hash](https://core.telegram.org/api/offsets#hash-generation) of a the list of contact IDs in ascending order may be passed in this parameter. If the contact set was not changed, [(contacts.contactsNotModified)](https://core.telegram.org/constructor/contacts.contactsNotModified) will be returned. */
   hash: bigint;
 
   protected get [id](): number {
@@ -4522,8 +4884,10 @@ export class contacts_getContacts_ extends Function_<enums.contacts.Contacts> {
   }
 }
 
+/** Imports contacts: saves a full list on the server, adds already registered contacts to the contact list, returns added contacts and their info. */
 export class contacts_importContacts_ extends Function_<enums.contacts.ImportedContacts> {
   static __F: (params: { contacts: Array<enums.InputContact> }) => enums.contacts.ImportedContacts = null as unknown as (params: { contacts: Array<enums.InputContact> }) => enums.contacts.ImportedContacts;
+  /** List of contacts to import */
   contacts: Array<enums.InputContact>;
 
   protected get [id](): number {
@@ -4552,8 +4916,10 @@ export class contacts_importContacts_ extends Function_<enums.contacts.ImportedC
   }
 }
 
+/** Deletes several contacts from the list. */
 export class contacts_deleteContacts_ extends Function_<enums.Updates> {
   static __F: (params: { id: Array<enums.InputUser> }) => enums.Updates = null as unknown as (params: { id: Array<enums.InputUser> }) => enums.Updates;
+  /** User ID list */
   id: Array<enums.InputUser>;
 
   protected get [id](): number {
@@ -4582,8 +4948,10 @@ export class contacts_deleteContacts_ extends Function_<enums.Updates> {
   }
 }
 
+/** Delete contacts by phone number */
 export class contacts_deleteByPhones_ extends Function_<boolean> {
   static __F: (params: { phones: Array<string> }) => boolean = null as unknown as (params: { phones: Array<string> }) => boolean;
+  /** Phone numbers */
   phones: Array<string>;
 
   protected get [id](): number {
@@ -4612,9 +4980,12 @@ export class contacts_deleteByPhones_ extends Function_<boolean> {
   }
 }
 
+/** Adds a peer to a blocklist, see [here »](https://core.telegram.org/api/block) for more info. */
 export class contacts_block_ extends Function_<boolean> {
   static __F: (params: { my_stories_from?: true; id: enums.InputPeer }) => boolean = null as unknown as (params: { my_stories_from?: true; id: enums.InputPeer }) => boolean;
+  /** Whether the peer should be added to the story blocklist; if not set, the peer will be added to the main blocklist, see [here »](https://core.telegram.org/api/block) for more info. */
   my_stories_from?: true;
+  /** Peer */
   id: enums.InputPeer;
 
   protected get [id](): number {
@@ -4648,9 +5019,12 @@ export class contacts_block_ extends Function_<boolean> {
   }
 }
 
+/** Deletes a peer from a blocklist, see [here »](https://core.telegram.org/api/block) for more info. */
 export class contacts_unblock_ extends Function_<boolean> {
   static __F: (params: { my_stories_from?: true; id: enums.InputPeer }) => boolean = null as unknown as (params: { my_stories_from?: true; id: enums.InputPeer }) => boolean;
+  /** Whether the peer should be removed from the story blocklist; if not set, the peer will be removed from the main blocklist, see [here »](https://core.telegram.org/api/block) for more info. */
   my_stories_from?: true;
+  /** Peer */
   id: enums.InputPeer;
 
   protected get [id](): number {
@@ -4684,10 +5058,14 @@ export class contacts_unblock_ extends Function_<boolean> {
   }
 }
 
+/** Returns the list of blocked users. */
 export class contacts_getBlocked_ extends Function_<enums.contacts.Blocked> {
   static __F: (params: { my_stories_from?: true; offset: number; limit: number }) => enums.contacts.Blocked = null as unknown as (params: { my_stories_from?: true; offset: number; limit: number }) => enums.contacts.Blocked;
+  /** Whether to fetch the story blocklist; if not set, will fetch the main blocklist. See [here »](https://core.telegram.org/api/block) for differences between the two. */
   my_stories_from?: true;
+  /** The number of list elements to be skipped */
   offset: number;
+  /** The number of list elements to be returned */
   limit: number;
 
   protected get [id](): number {
@@ -4724,9 +5102,12 @@ export class contacts_getBlocked_ extends Function_<enums.contacts.Blocked> {
   }
 }
 
+/** Returns users found by username substring. */
 export class contacts_search_ extends Function_<enums.contacts.Found> {
   static __F: (params: { q: string; limit: number }) => enums.contacts.Found = null as unknown as (params: { q: string; limit: number }) => enums.contacts.Found;
+  /** Target substring */
   q: string;
+  /** Maximum number of users to be returned */
   limit: number;
 
   protected get [id](): number {
@@ -4758,8 +5139,10 @@ export class contacts_search_ extends Function_<enums.contacts.Found> {
   }
 }
 
+/** Resolve a @username to get peer info */
 export class contacts_resolveUsername_ extends Function_<enums.contacts.ResolvedPeer> {
   static __F: (params: { username: string }) => enums.contacts.ResolvedPeer = null as unknown as (params: { username: string }) => enums.contacts.ResolvedPeer;
+  /** @username to resolve */
   username: string;
 
   protected get [id](): number {
@@ -4788,18 +5171,30 @@ export class contacts_resolveUsername_ extends Function_<enums.contacts.Resolved
   }
 }
 
+/** Get most used peers */
 export class contacts_getTopPeers_ extends Function_<enums.contacts.TopPeers> {
   static __F: (params: { correspondents?: true; bots_pm?: true; bots_inline?: true; phone_calls?: true; forward_users?: true; forward_chats?: true; groups?: true; channels?: true; offset: number; limit: number; hash: bigint }) => enums.contacts.TopPeers = null as unknown as (params: { correspondents?: true; bots_pm?: true; bots_inline?: true; phone_calls?: true; forward_users?: true; forward_chats?: true; groups?: true; channels?: true; offset: number; limit: number; hash: bigint }) => enums.contacts.TopPeers;
+  /** Users we've chatted most frequently with */
   correspondents?: true;
+  /** Most used bots */
   bots_pm?: true;
+  /** Most used inline bots */
   bots_inline?: true;
+  /** Most frequently called users */
   phone_calls?: true;
+  /** Users to which the users often forwards messages to */
   forward_users?: true;
+  /** Chats to which the users often forwards messages to */
   forward_chats?: true;
+  /** Often-opened groups and supergroups */
   groups?: true;
+  /** Most frequently visited channels */
   channels?: true;
+  /** Offset for [pagination](https://core.telegram.org/api/offsets) */
   offset: number;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -4860,9 +5255,12 @@ export class contacts_getTopPeers_ extends Function_<enums.contacts.TopPeers> {
   }
 }
 
+/** Reset [rating](https://core.telegram.org/api/top-rating) of top peer */
 export class contacts_resetTopPeerRating_ extends Function_<boolean> {
   static __F: (params: { category: enums.TopPeerCategory; peer: enums.InputPeer }) => boolean = null as unknown as (params: { category: enums.TopPeerCategory; peer: enums.InputPeer }) => boolean;
+  /** Top peer category */
   category: enums.TopPeerCategory;
+  /** Peer whose rating should be reset */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -4894,6 +5292,7 @@ export class contacts_resetTopPeerRating_ extends Function_<boolean> {
   }
 }
 
+/** Removes all contacts without an associated Telegram account. */
 export class contacts_resetSaved_ extends Function_<boolean> {
   static __F: () => boolean = null as unknown as () => boolean;
   protected get [id](): number {
@@ -4917,6 +5316,7 @@ export class contacts_resetSaved_ extends Function_<boolean> {
   }
 }
 
+/** Get all contacts, requires a [takeout session, see here » for more info](https://core.telegram.org/api/takeout). */
 export class contacts_getSaved_ extends Function_<enums.SavedContact[]> {
   static __F: () => enums.SavedContact[] = null as unknown as () => enums.SavedContact[];
   protected get [id](): number {
@@ -4940,8 +5340,10 @@ export class contacts_getSaved_ extends Function_<enums.SavedContact[]> {
   }
 }
 
+/** Enable/disable [top peers](https://core.telegram.org/api/top-rating) */
 export class contacts_toggleTopPeers_ extends Function_<boolean> {
   static __F: (params: { enabled: boolean }) => boolean = null as unknown as (params: { enabled: boolean }) => boolean;
+  /** Enable/disable */
   enabled: boolean;
 
   protected get [id](): number {
@@ -4970,12 +5372,18 @@ export class contacts_toggleTopPeers_ extends Function_<boolean> {
   }
 }
 
+/** Add an existing telegram user as contact. */
 export class contacts_addContact_ extends Function_<enums.Updates> {
   static __F: (params: { add_phone_privacy_exception?: true; id: enums.InputUser; first_name: string; last_name: string; phone: string }) => enums.Updates = null as unknown as (params: { add_phone_privacy_exception?: true; id: enums.InputUser; first_name: string; last_name: string; phone: string }) => enums.Updates;
+  /** Allow the other user to see our phone number? */
   add_phone_privacy_exception?: true;
+  /** Telegram ID of the other user */
   id: enums.InputUser;
+  /** First name */
   first_name: string;
+  /** Last name */
   last_name: string;
+  /** User's phone number, may be omitted to simply add the user to the contact list, without a phone number. */
   phone: string;
 
   protected get [id](): number {
@@ -5018,8 +5426,10 @@ export class contacts_addContact_ extends Function_<enums.Updates> {
   }
 }
 
+/** If the [add contact action bar is active](https://core.telegram.org/api/action-bar#add-contact), add that user as contact */
 export class contacts_acceptContact_ extends Function_<enums.Updates> {
   static __F: (params: { id: enums.InputUser }) => enums.Updates = null as unknown as (params: { id: enums.InputUser }) => enums.Updates;
+  /** The user to add as contact */
   id: enums.InputUser;
 
   protected get [id](): number {
@@ -5048,10 +5458,15 @@ export class contacts_acceptContact_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get users and geochats near you, see [here »](https://core.telegram.org/api/nearby) for more info. */
 export class contacts_getLocated_ extends Function_<enums.Updates> {
   static __F: (params: { background?: true; geo_point: enums.InputGeoPoint; self_expires?: number }) => enums.Updates = null as unknown as (params: { background?: true; geo_point: enums.InputGeoPoint; self_expires?: number }) => enums.Updates;
+  /** While the geolocation of the current user is public, clients should update it in the background every half-an-hour or so, while setting this flag.  
+  Do this only if the new location is more than 1 KM away from the previous one, or if the previous location is unknown. */
   background?: true;
+  /** Geolocation */
   geo_point: enums.InputGeoPoint;
+  /** If set, the geolocation of the current user will be public for the specified number of seconds; pass 0x7fffffff to disable expiry, 0 to make the current geolocation private; if the flag isn't set, no changes will be applied. */
   self_expires?: number;
 
   protected get [id](): number {
@@ -5088,11 +5503,16 @@ export class contacts_getLocated_ extends Function_<enums.Updates> {
   }
 }
 
+/** Stop getting notifications about [discussion replies](https://core.telegram.org/api/discussion) of a certain user in `@replies` */
 export class contacts_blockFromReplies_ extends Function_<enums.Updates> {
   static __F: (params: { delete_message?: true; delete_history?: true; report_spam?: true; msg_id: number }) => enums.Updates = null as unknown as (params: { delete_message?: true; delete_history?: true; report_spam?: true; msg_id: number }) => enums.Updates;
+  /** Whether to delete the specified message as well */
   delete_message?: true;
+  /** Whether to delete all `@replies` messages from this user as well */
   delete_history?: true;
+  /** Whether to also report this user for spam */
   report_spam?: true;
+  /** ID of the message in the [@replies](https://core.telegram.org/api/discussion#replies) chat */
   msg_id: number;
 
   protected get [id](): number {
@@ -5132,8 +5552,10 @@ export class contacts_blockFromReplies_ extends Function_<enums.Updates> {
   }
 }
 
+/** Resolve a phone number to get user info, if their privacy settings allow it. */
 export class contacts_resolvePhone_ extends Function_<enums.contacts.ResolvedPeer> {
   static __F: (params: { phone: string }) => enums.contacts.ResolvedPeer = null as unknown as (params: { phone: string }) => enums.contacts.ResolvedPeer;
+  /** Phone number in international format, possibly obtained from a [phone number deep link](https://core.telegram.org/api/links#phone-number-links). */
   phone: string;
 
   protected get [id](): number {
@@ -5162,6 +5584,7 @@ export class contacts_resolvePhone_ extends Function_<enums.contacts.ResolvedPee
   }
 }
 
+/** Generates a [temporary profile link](https://core.telegram.org/api/links#temporary-profile-links) for the currently logged-in user. */
 export class contacts_exportContactToken_ extends Function_<enums.ExportedContactToken> {
   static __F: () => enums.ExportedContactToken = null as unknown as () => enums.ExportedContactToken;
   protected get [id](): number {
@@ -5185,8 +5608,10 @@ export class contacts_exportContactToken_ extends Function_<enums.ExportedContac
   }
 }
 
+/** Obtain user info from a [temporary profile link](https://core.telegram.org/api/links#temporary-profile-links). */
 export class contacts_importContactToken_ extends Function_<enums.User> {
   static __F: (params: { token: string }) => enums.User = null as unknown as (params: { token: string }) => enums.User;
+  /** The token extracted from the [temporary profile link](https://core.telegram.org/api/links#temporary-profile-links). */
   token: string;
 
   protected get [id](): number {
@@ -5215,8 +5640,10 @@ export class contacts_importContactToken_ extends Function_<enums.User> {
   }
 }
 
+/** Edit the [close friends list, see here »](https://core.telegram.org/api/privacy) for more info. */
 export class contacts_editCloseFriends_ extends Function_<boolean> {
   static __F: (params: { id: Array<bigint> }) => boolean = null as unknown as (params: { id: Array<bigint> }) => boolean;
+  /** Full list of user IDs of close friends, see [here](https://core.telegram.org/api/privacy) for more info. */
   id: Array<bigint>;
 
   protected get [id](): number {
@@ -5245,10 +5672,14 @@ export class contacts_editCloseFriends_ extends Function_<boolean> {
   }
 }
 
+/** Replace the contents of an entire [blocklist, see here for more info »](https://core.telegram.org/api/block). */
 export class contacts_setBlocked_ extends Function_<boolean> {
   static __F: (params: { my_stories_from?: true; id: Array<enums.InputPeer>; limit: number }) => boolean = null as unknown as (params: { my_stories_from?: true; id: Array<enums.InputPeer>; limit: number }) => boolean;
+  /** Whether to edit the story blocklist; if not set, will edit the main blocklist. See [here »](https://core.telegram.org/api/block) for differences between the two. */
   my_stories_from?: true;
+  /** Full content of the blocklist. */
   id: Array<enums.InputPeer>;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -5285,8 +5716,10 @@ export class contacts_setBlocked_ extends Function_<boolean> {
   }
 }
 
+/** Returns the list of messages by their IDs. */
 export class messages_getMessages_ extends Function_<enums.messages.Messages> {
   static __F: (params: { id: Array<enums.InputMessage> }) => enums.messages.Messages = null as unknown as (params: { id: Array<enums.InputMessage> }) => enums.messages.Messages;
+  /** Message ID list */
   id: Array<enums.InputMessage>;
 
   protected get [id](): number {
@@ -5315,14 +5748,22 @@ export class messages_getMessages_ extends Function_<enums.messages.Messages> {
   }
 }
 
+/** Returns the current user dialog list. */
 export class messages_getDialogs_ extends Function_<enums.messages.Dialogs> {
   static __F: (params: { exclude_pinned?: true; folder_id?: number; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.Dialogs = null as unknown as (params: { exclude_pinned?: true; folder_id?: number; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.Dialogs;
+  /** Exclude pinned dialogs */
   exclude_pinned?: true;
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id?: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_date: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) (`top_message` ID used for pagination) */
   offset_id: number;
+  /** [Offset peer for pagination](https://core.telegram.org/api/offsets) */
   offset_peer: enums.InputPeer;
+  /** Number of list elements to be returned */
   limit: number;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -5371,15 +5812,24 @@ export class messages_getDialogs_ extends Function_<enums.messages.Dialogs> {
   }
 }
 
+/** Returns the conversation history with one interlocutor / within a chat */
 export class messages_getHistory_ extends Function_<enums.messages.Messages> {
   static __F: (params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
+  /** Target peer */
   peer: enums.InputPeer;
+  /** Only return messages starting from the specified message ID */
   offset_id: number;
+  /** Only return messages sent before the specified date */
   offset_date: number;
+  /** Number of list elements to be skipped, negative values are also accepted. */
   add_offset: number;
+  /** Number of results to return */
   limit: number;
+  /** If a positive value was transferred, the method will return only messages with IDs less than **max\_id** */
   max_id: number;
+  /** If a positive value was transferred, the method will return only messages with IDs more than **min\_id** */
   min_id: number;
+  /** [Result hash](https://core.telegram.org/api/offsets) */
   hash: bigint;
 
   protected get [id](): number {
@@ -5429,22 +5879,37 @@ export class messages_getHistory_ extends Function_<enums.messages.Messages> {
   }
 }
 
+/** Search for messages. */
 export class messages_search_ extends Function_<enums.messages.Messages> {
   static __F: (params: { peer: enums.InputPeer; q: string; from_id?: enums.InputPeer; saved_peer_id?: enums.InputPeer; saved_reaction?: Array<enums.Reaction>; top_msg_id?: number; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; q: string; from_id?: enums.InputPeer; saved_peer_id?: enums.InputPeer; saved_reaction?: Array<enums.Reaction>; top_msg_id?: number; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
+  /** User or chat, histories with which are searched, or [(inputPeerEmpty)](https://core.telegram.org/constructor/inputPeerEmpty) constructor to search in all private chats and [normal groups (not channels) »](https://core.telegram.org/api/channel). Use [messages.searchGlobal](https://core.telegram.org/method/messages.searchGlobal) to search globally in all chats, groups, supergroups and channels. */
   peer: enums.InputPeer;
+  /** Text search request */
   q: string;
+  /** Only return messages sent by the specified user ID */
   from_id?: enums.InputPeer;
+  /** Search within the [saved message dialog »](https://core.telegram.org/api/saved-messages) with this ID. */
   saved_peer_id?: enums.InputPeer;
   saved_reaction?: Array<enums.Reaction>;
+  /** [Thread ID](https://core.telegram.org/api/threads) */
   top_msg_id?: number;
+  /** Filter to return only specified message types */
   filter: enums.MessagesFilter;
+  /** If a positive value was transferred, only messages with a sending date bigger than the transferred one will be returned */
   min_date: number;
+  /** If a positive value was transferred, only messages with a sending date smaller than the transferred one will be returned */
   max_date: number;
+  /** Only return messages starting from the specified message ID */
   offset_id: number;
+  /** [Additional offset](https://core.telegram.org/api/offsets) */
   add_offset: number;
+  /** [Number of results to return](https://core.telegram.org/api/offsets) */
   limit: number;
+  /** [Maximum message ID to return](https://core.telegram.org/api/offsets) */
   max_id: number;
+  /** [Minimum message ID to return](https://core.telegram.org/api/offsets) */
   min_id: number;
+  /** [Hash](https://core.telegram.org/api/offsets) */
   hash: bigint;
 
   protected get [id](): number {
@@ -5517,9 +5982,12 @@ export class messages_search_ extends Function_<enums.messages.Messages> {
   }
 }
 
+/** Marks message history as read. */
 export class messages_readHistory_ extends Function_<enums.messages.AffectedMessages> {
   static __F: (params: { peer: enums.InputPeer; max_id: number }) => enums.messages.AffectedMessages = null as unknown as (params: { peer: enums.InputPeer; max_id: number }) => enums.messages.AffectedMessages;
+  /** Target user or group */
   peer: enums.InputPeer;
+  /** If a positive value is passed, only messages with identifiers less or equal than the given one will be read */
   max_id: number;
 
   protected get [id](): number {
@@ -5551,13 +6019,20 @@ export class messages_readHistory_ extends Function_<enums.messages.AffectedMess
   }
 }
 
+/** Deletes communication history. */
 export class messages_deleteHistory_ extends Function_<enums.messages.AffectedHistory> {
   static __F: (params: { just_clear?: true; revoke?: true; peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) => enums.messages.AffectedHistory = null as unknown as (params: { just_clear?: true; revoke?: true; peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) => enums.messages.AffectedHistory;
+  /** Just clear history for the current user, without actually removing messages for every chat user */
   just_clear?: true;
+  /** Whether to delete the message history for all chat participants */
   revoke?: true;
+  /** User or chat, communication history of which will be deleted */
   peer: enums.InputPeer;
+  /** Maximum ID of message to delete */
   max_id: number;
+  /** Delete all messages newer than this UNIX timestamp */
   min_date?: number;
+  /** Delete all messages older than this UNIX timestamp */
   max_date?: number;
 
   protected get [id](): number {
@@ -5603,9 +6078,12 @@ export class messages_deleteHistory_ extends Function_<enums.messages.AffectedHi
   }
 }
 
+/** Deletes messages by their identifiers. */
 export class messages_deleteMessages_ extends Function_<enums.messages.AffectedMessages> {
   static __F: (params: { revoke?: true; id: Array<number> }) => enums.messages.AffectedMessages = null as unknown as (params: { revoke?: true; id: Array<number> }) => enums.messages.AffectedMessages;
+  /** Whether to delete messages for all participants of the chat */
   revoke?: true;
+  /** Message ID list */
   id: Array<number>;
 
   protected get [id](): number {
@@ -5639,8 +6117,10 @@ export class messages_deleteMessages_ extends Function_<enums.messages.AffectedM
   }
 }
 
+/** Confirms receipt of messages by a client, cancels PUSH-notification sending. */
 export class messages_receivedMessages_ extends Function_<enums.ReceivedNotifyMessage[]> {
   static __F: (params: { max_id: number }) => enums.ReceivedNotifyMessage[] = null as unknown as (params: { max_id: number }) => enums.ReceivedNotifyMessage[];
+  /** Maximum message ID available in a client. */
   max_id: number;
 
   protected get [id](): number {
@@ -5669,10 +6149,14 @@ export class messages_receivedMessages_ extends Function_<enums.ReceivedNotifyMe
   }
 }
 
+/** Sends a current user typing event (see [SendMessageAction](https://core.telegram.org/type/SendMessageAction) for all event types) to a conversation partner or group. */
 export class messages_setTyping_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; top_msg_id?: number; action: enums.SendMessageAction }) => boolean = null as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; action: enums.SendMessageAction }) => boolean;
+  /** Target user or group */
   peer: enums.InputPeer;
+  /** [Topic ID](https://core.telegram.org/api/threads) */
   top_msg_id?: number;
+  /** Type of action */
   action: enums.SendMessageAction;
 
   protected get [id](): number {
@@ -5709,22 +6193,38 @@ export class messages_setTyping_ extends Function_<boolean> {
   }
 }
 
+/** Sends a message to a chat */
 export class messages_sendMessage_ extends Function_<enums.Updates> {
   static __F: (params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  /** Set this flag to disable generation of the webpage preview */
   no_webpage?: true;
+  /** Send this message silently (no notifications for the receivers) */
   silent?: true;
+  /** Send this message as background message */
   background?: true;
+  /** Clear the draft field */
   clear_draft?: true;
+  /** Only for bots, disallows forwarding and saving of the messages, even if the destination chat doesn't have [content protection](https://telegram.org/blog/protected-content-delete-by-date-and-more) enabled */
   noforwards?: true;
+  /** Whether to move used stickersets to top, [see here for more info on this flag »](https://core.telegram.org/api/stickers#recent-stickersets) */
   update_stickersets_order?: true;
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** The destination where the message will be sent */
   peer: enums.InputPeer;
+  /** If set, indicates that the message should be sent in reply to the specified message or story. */
   reply_to?: enums.InputReplyTo;
+  /** The message */
   message: string;
+  /** Unique client message ID required to prevent message resending */
   random_id: bigint;
+  /** Reply markup for sending bot buttons */
   reply_markup?: enums.ReplyMarkup;
+  /** Message [entities](https://core.telegram.org/api/entities) for sending styled text */
   entities?: Array<enums.MessageEntity>;
+  /** Scheduled message date for [scheduled messages](https://core.telegram.org/api/scheduled-messages) */
   schedule_date?: number;
+  /** Send this message as the specified peer */
   send_as?: enums.InputPeer;
 
   protected get [id](): number {
@@ -5797,22 +6297,38 @@ export class messages_sendMessage_ extends Function_<enums.Updates> {
   }
 }
 
+/** Send a media */
 export class messages_sendMedia_ extends Function_<enums.Updates> {
   static __F: (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; media: enums.InputMedia; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; media: enums.InputMedia; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  /** Send message silently (no notification should be triggered) */
   silent?: true;
+  /** Send message in background */
   background?: true;
+  /** Clear the draft */
   clear_draft?: true;
+  /** Only for bots, disallows forwarding and saving of the messages, even if the destination chat doesn't have [content protection](https://telegram.org/blog/protected-content-delete-by-date-and-more) enabled */
   noforwards?: true;
+  /** Whether to move used stickersets to top, [see here for more info on this flag »](https://core.telegram.org/api/stickers#recent-stickersets) */
   update_stickersets_order?: true;
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** Destination */
   peer: enums.InputPeer;
+  /** If set, indicates that the message should be sent in reply to the specified message or story. */
   reply_to?: enums.InputReplyTo;
+  /** Attached media */
   media: enums.InputMedia;
+  /** Caption */
   message: string;
+  /** Random ID to avoid resending the same message */
   random_id: bigint;
+  /** Reply markup for bot keyboards */
   reply_markup?: enums.ReplyMarkup;
+  /** Message [entities](https://core.telegram.org/api/entities) for styled text */
   entities?: Array<enums.MessageEntity>;
+  /** Scheduled message date for [scheduled messages](https://core.telegram.org/api/scheduled-messages) */
   schedule_date?: number;
+  /** Send this message as the specified peer */
   send_as?: enums.InputPeer;
 
   protected get [id](): number {
@@ -5885,20 +6401,34 @@ export class messages_sendMedia_ extends Function_<enums.Updates> {
   }
 }
 
+/** Forwards messages by their IDs. */
 export class messages_forwardMessages_ extends Function_<enums.Updates> {
   static __F: (params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: enums.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: enums.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: enums.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: enums.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  /** Whether to send messages silently (no notification will be triggered on the destination clients) */
   silent?: true;
+  /** Whether to send the message in background */
   background?: true;
+  /** When forwarding games, whether to include your score in the game */
   with_my_score?: true;
+  /** Whether to forward messages without quoting the original author */
   drop_author?: true;
+  /** Whether to strip captions from media */
   drop_media_captions?: true;
+  /** Only for bots, disallows further re-forwarding and saving of the messages, even if the destination chat doesn't have [content protection](https://telegram.org/blog/protected-content-delete-by-date-and-more) enabled */
   noforwards?: true;
+  /** Source of messages */
   from_peer: enums.InputPeer;
+  /** IDs of messages */
   id: Array<number>;
+  /** Random ID to prevent resending of messages */
   random_id: Array<bigint>;
+  /** Destination peer */
   to_peer: enums.InputPeer;
+  /** Destination [forum topic](https://core.telegram.org/api/forum#forum-topics) */
   top_msg_id?: number;
+  /** Scheduled message date for scheduled messages */
   schedule_date?: number;
+  /** Forward the messages as the specified peer */
   send_as?: enums.InputPeer;
 
   protected get [id](): number {
@@ -5965,8 +6495,10 @@ export class messages_forwardMessages_ extends Function_<enums.Updates> {
   }
 }
 
+/** Report a new incoming chat for spam, if the [peer settings](https://core.telegram.org/constructor/peerSettings) of the chat allow us to do that */
 export class messages_reportSpam_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer }) => boolean;
+  /** Peer to report */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -5995,8 +6527,10 @@ export class messages_reportSpam_ extends Function_<boolean> {
   }
 }
 
+/** Get peer settings */
 export class messages_getPeerSettings_ extends Function_<enums.messages.PeerSettings> {
   static __F: (params: { peer: enums.InputPeer }) => enums.messages.PeerSettings = null as unknown as (params: { peer: enums.InputPeer }) => enums.messages.PeerSettings;
+  /** The peer */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -6025,11 +6559,16 @@ export class messages_getPeerSettings_ extends Function_<enums.messages.PeerSett
   }
 }
 
+/** Report a message in a chat for violation of telegram's Terms of Service */
 export class messages_report_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) => boolean;
+  /** Peer */
   peer: enums.InputPeer;
+  /** IDs of messages to report */
   id: Array<number>;
+  /** Why are these messages being reported */
   reason: enums.ReportReason;
+  /** Comment for report moderation */
   message: string;
 
   protected get [id](): number {
@@ -6067,8 +6606,10 @@ export class messages_report_ extends Function_<boolean> {
   }
 }
 
+/** Returns chat basic info on their IDs. */
 export class messages_getChats_ extends Function_<enums.messages.Chats> {
   static __F: (params: { id: Array<bigint> }) => enums.messages.Chats = null as unknown as (params: { id: Array<bigint> }) => enums.messages.Chats;
+  /** List of chat IDs */
   id: Array<bigint>;
 
   protected get [id](): number {
@@ -6097,8 +6638,10 @@ export class messages_getChats_ extends Function_<enums.messages.Chats> {
   }
 }
 
+/** Get full info about a [basic group](https://core.telegram.org/api/channel#basic-groups). */
 export class messages_getFullChat_ extends Function_<enums.messages.ChatFull> {
   static __F: (params: { chat_id: bigint }) => enums.messages.ChatFull = null as unknown as (params: { chat_id: bigint }) => enums.messages.ChatFull;
+  /** [Basic group](https://core.telegram.org/api/channel#basic-groups) ID. */
   chat_id: bigint;
 
   protected get [id](): number {
@@ -6127,9 +6670,12 @@ export class messages_getFullChat_ extends Function_<enums.messages.ChatFull> {
   }
 }
 
+/** Changes chat name and sends a service message on it. */
 export class messages_editChatTitle_ extends Function_<enums.Updates> {
   static __F: (params: { chat_id: bigint; title: string }) => enums.Updates = null as unknown as (params: { chat_id: bigint; title: string }) => enums.Updates;
+  /** Chat ID */
   chat_id: bigint;
+  /** New chat name, different from the old one */
   title: string;
 
   protected get [id](): number {
@@ -6161,9 +6707,12 @@ export class messages_editChatTitle_ extends Function_<enums.Updates> {
   }
 }
 
+/** Changes chat photo and sends a service message on it */
 export class messages_editChatPhoto_ extends Function_<enums.Updates> {
   static __F: (params: { chat_id: bigint; photo: enums.InputChatPhoto }) => enums.Updates = null as unknown as (params: { chat_id: bigint; photo: enums.InputChatPhoto }) => enums.Updates;
+  /** Chat ID */
   chat_id: bigint;
+  /** Photo to be set */
   photo: enums.InputChatPhoto;
 
   protected get [id](): number {
@@ -6195,10 +6744,14 @@ export class messages_editChatPhoto_ extends Function_<enums.Updates> {
   }
 }
 
+/** Adds a user to a chat and sends a service message on it. */
 export class messages_addChatUser_ extends Function_<enums.Updates> {
   static __F: (params: { chat_id: bigint; user_id: enums.InputUser; fwd_limit: number }) => enums.Updates = null as unknown as (params: { chat_id: bigint; user_id: enums.InputUser; fwd_limit: number }) => enums.Updates;
+  /** Chat ID */
   chat_id: bigint;
+  /** User ID to be added */
   user_id: enums.InputUser;
+  /** Number of last messages to be forwarded */
   fwd_limit: number;
 
   protected get [id](): number {
@@ -6233,10 +6786,14 @@ export class messages_addChatUser_ extends Function_<enums.Updates> {
   }
 }
 
+/** Deletes a user from a chat and sends a service message on it. */
 export class messages_deleteChatUser_ extends Function_<enums.Updates> {
   static __F: (params: { revoke_history?: true; chat_id: bigint; user_id: enums.InputUser }) => enums.Updates = null as unknown as (params: { revoke_history?: true; chat_id: bigint; user_id: enums.InputUser }) => enums.Updates;
+  /** Remove the entire chat history of the specified user in this chat. */
   revoke_history?: true;
+  /** Chat ID */
   chat_id: bigint;
+  /** User ID to be deleted */
   user_id: enums.InputUser;
 
   protected get [id](): number {
@@ -6273,10 +6830,14 @@ export class messages_deleteChatUser_ extends Function_<enums.Updates> {
   }
 }
 
+/** Creates a new chat. */
 export class messages_createChat_ extends Function_<enums.Updates> {
   static __F: (params: { users: Array<enums.InputUser>; title: string; ttl_period?: number }) => enums.Updates = null as unknown as (params: { users: Array<enums.InputUser>; title: string; ttl_period?: number }) => enums.Updates;
+  /** List of user IDs to be invited */
   users: Array<enums.InputUser>;
+  /** Chat name */
   title: string;
+  /** Time-to-live of all messages that will be sent in the chat: once message.date+message.ttl\_period === time(), the message will be deleted on the server, and must be deleted locally as well. You can use [messages.setDefaultHistoryTTL](https://core.telegram.org/method/messages.setDefaultHistoryTTL) to edit this value later. */
   ttl_period?: number;
 
   protected get [id](): number {
@@ -6313,9 +6874,12 @@ export class messages_createChat_ extends Function_<enums.Updates> {
   }
 }
 
+/** Returns configuration parameters for Diffie-Hellman key generation. Can also return a random sequence of bytes of required length. */
 export class messages_getDhConfig_ extends Function_<enums.messages.DhConfig> {
   static __F: (params: { version: number; random_length: number }) => enums.messages.DhConfig = null as unknown as (params: { version: number; random_length: number }) => enums.messages.DhConfig;
+  /** Value of the **version** parameter from [messages.dhConfig](https://core.telegram.org/constructor/messages.dhConfig), available at the client */
   version: number;
+  /** Length of the required random sequence */
   random_length: number;
 
   protected get [id](): number {
@@ -6347,10 +6911,14 @@ export class messages_getDhConfig_ extends Function_<enums.messages.DhConfig> {
   }
 }
 
+/** Sends a request to start a secret chat to the user. */
 export class messages_requestEncryption_ extends Function_<enums.EncryptedChat> {
   static __F: (params: { user_id: enums.InputUser; random_id: number; g_a: Uint8Array }) => enums.EncryptedChat = null as unknown as (params: { user_id: enums.InputUser; random_id: number; g_a: Uint8Array }) => enums.EncryptedChat;
+  /** User ID */
   user_id: enums.InputUser;
+  /** Unique client request ID required to prevent resending. This also doubles as the chat ID. */
   random_id: number;
+  /** `A = g ^ a mod p`, see [Wikipedia](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange) */
   g_a: Uint8Array;
 
   protected get [id](): number {
@@ -6385,10 +6953,14 @@ export class messages_requestEncryption_ extends Function_<enums.EncryptedChat> 
   }
 }
 
+/** Confirms creation of a secret chat */
 export class messages_acceptEncryption_ extends Function_<enums.EncryptedChat> {
   static __F: (params: { peer: enums.InputEncryptedChat; g_b: Uint8Array; key_fingerprint: bigint }) => enums.EncryptedChat = null as unknown as (params: { peer: enums.InputEncryptedChat; g_b: Uint8Array; key_fingerprint: bigint }) => enums.EncryptedChat;
+  /** Secret chat ID */
   peer: enums.InputEncryptedChat;
+  /** `B = g ^ b mod p`, see [Wikipedia](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange) */
   g_b: Uint8Array;
+  /** 64-bit fingerprint of the received key */
   key_fingerprint: bigint;
 
   protected get [id](): number {
@@ -6423,9 +6995,12 @@ export class messages_acceptEncryption_ extends Function_<enums.EncryptedChat> {
   }
 }
 
+/** Cancels a request for creation and/or delete info on secret chat. */
 export class messages_discardEncryption_ extends Function_<boolean> {
   static __F: (params: { delete_history?: true; chat_id: number }) => boolean = null as unknown as (params: { delete_history?: true; chat_id: number }) => boolean;
+  /** Whether to delete the entire chat history for the other user as well */
   delete_history?: true;
+  /** Secret chat ID */
   chat_id: number;
 
   protected get [id](): number {
@@ -6459,9 +7034,15 @@ export class messages_discardEncryption_ extends Function_<boolean> {
   }
 }
 
+/** Send typing event by the current user to a secret chat. */
 export class messages_setEncryptedTyping_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputEncryptedChat; typing: boolean }) => boolean = null as unknown as (params: { peer: enums.InputEncryptedChat; typing: boolean }) => boolean;
+  /** Secret chat ID */
   peer: enums.InputEncryptedChat;
+  /** Typing.  
+  **Possible values**:  
+  [(boolTrue)](https://core.telegram.org/constructor/boolTrue), if the user started typing and more than **5 seconds** have passed since the last request  
+  [(boolFalse)](https://core.telegram.org/constructor/boolFalse), if the user stopped typing */
   typing: boolean;
 
   protected get [id](): number {
@@ -6493,9 +7074,12 @@ export class messages_setEncryptedTyping_ extends Function_<boolean> {
   }
 }
 
+/** Marks message history within a secret chat as read. */
 export class messages_readEncryptedHistory_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputEncryptedChat; max_date: number }) => boolean = null as unknown as (params: { peer: enums.InputEncryptedChat; max_date: number }) => boolean;
+  /** Secret chat ID */
   peer: enums.InputEncryptedChat;
+  /** Maximum date value for received messages in history */
   max_date: number;
 
   protected get [id](): number {
@@ -6527,11 +7111,16 @@ export class messages_readEncryptedHistory_ extends Function_<boolean> {
   }
 }
 
+/** Sends a text message to a secret chat. */
 export class messages_sendEncrypted_ extends Function_<enums.messages.SentEncryptedMessage> {
   static __F: (params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) => enums.messages.SentEncryptedMessage = null as unknown as (params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) => enums.messages.SentEncryptedMessage;
+  /** Send encrypted message without a notification */
   silent?: true;
+  /** Secret chat ID */
   peer: enums.InputEncryptedChat;
+  /** Unique client message ID, necessary to avoid message resending */
   random_id: bigint;
+  /** TL-serialization of [DecryptedMessage](https://core.telegram.org/type/DecryptedMessage) type, encrypted with a key that was created during chat initialization */
   data: Uint8Array;
 
   protected get [id](): number {
@@ -6571,12 +7160,18 @@ export class messages_sendEncrypted_ extends Function_<enums.messages.SentEncryp
   }
 }
 
+/** Sends a message with a file attachment to a secret chat */
 export class messages_sendEncryptedFile_ extends Function_<enums.messages.SentEncryptedMessage> {
   static __F: (params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array; file: enums.InputEncryptedFile }) => enums.messages.SentEncryptedMessage = null as unknown as (params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array; file: enums.InputEncryptedFile }) => enums.messages.SentEncryptedMessage;
+  /** Whether to send the file without triggering a notification */
   silent?: true;
+  /** Secret chat ID */
   peer: enums.InputEncryptedChat;
+  /** Unique client message ID necessary to prevent message resending */
   random_id: bigint;
+  /** TL-serialization of [DecryptedMessage](https://core.telegram.org/type/DecryptedMessage) type, encrypted with a key generated during chat initialization */
   data: Uint8Array;
+  /** File attachment for the secret chat */
   file: enums.InputEncryptedFile;
 
   protected get [id](): number {
@@ -6619,10 +7214,14 @@ export class messages_sendEncryptedFile_ extends Function_<enums.messages.SentEn
   }
 }
 
+/** Sends a service message to a secret chat. */
 export class messages_sendEncryptedService_ extends Function_<enums.messages.SentEncryptedMessage> {
   static __F: (params: { peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) => enums.messages.SentEncryptedMessage = null as unknown as (params: { peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) => enums.messages.SentEncryptedMessage;
+  /** Secret chat ID */
   peer: enums.InputEncryptedChat;
+  /** Unique client message ID required to prevent message resending */
   random_id: bigint;
+  /** TL-serialization of [DecryptedMessage](https://core.telegram.org/type/DecryptedMessage) type, encrypted with a key generated during chat initialization */
   data: Uint8Array;
 
   protected get [id](): number {
@@ -6657,8 +7256,11 @@ export class messages_sendEncryptedService_ extends Function_<enums.messages.Sen
   }
 }
 
+/** Confirms receipt of messages in a secret chat by client, cancels push notifications.  
+The method returns a list of **random\_id**s of messages for which push notifications were cancelled. */
 export class messages_receivedQueue_ extends Function_<bigint[]> {
   static __F: (params: { max_qts: number }) => bigint[] = null as unknown as (params: { max_qts: number }) => bigint[];
+  /** Maximum qts value available at the client */
   max_qts: number;
 
   protected get [id](): number {
@@ -6687,8 +7289,10 @@ export class messages_receivedQueue_ extends Function_<bigint[]> {
   }
 }
 
+/** Report a secret chat for spam */
 export class messages_reportEncryptedSpam_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputEncryptedChat }) => boolean = null as unknown as (params: { peer: enums.InputEncryptedChat }) => boolean;
+  /** The secret chat to report */
   peer: enums.InputEncryptedChat;
 
   protected get [id](): number {
@@ -6717,8 +7321,10 @@ export class messages_reportEncryptedSpam_ extends Function_<boolean> {
   }
 }
 
+/** Notifies the sender about the recipient having listened a voice message or watched a video. */
 export class messages_readMessageContents_ extends Function_<enums.messages.AffectedMessages> {
   static __F: (params: { id: Array<number> }) => enums.messages.AffectedMessages = null as unknown as (params: { id: Array<number> }) => enums.messages.AffectedMessages;
+  /** Message ID list */
   id: Array<number>;
 
   protected get [id](): number {
@@ -6747,9 +7353,12 @@ export class messages_readMessageContents_ extends Function_<enums.messages.Affe
   }
 }
 
+/** Get stickers by emoji */
 export class messages_getStickers_ extends Function_<enums.messages.Stickers> {
   static __F: (params: { emoticon: string; hash: bigint }) => enums.messages.Stickers = null as unknown as (params: { emoticon: string; hash: bigint }) => enums.messages.Stickers;
+  /** The emoji */
   emoticon: string;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -6781,8 +7390,10 @@ export class messages_getStickers_ extends Function_<enums.messages.Stickers> {
   }
 }
 
+/** Get all installed stickers */
 export class messages_getAllStickers_ extends Function_<enums.messages.AllStickers> {
   static __F: (params: { hash: bigint }) => enums.messages.AllStickers = null as unknown as (params: { hash: bigint }) => enums.messages.AllStickers;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -6811,9 +7422,12 @@ export class messages_getAllStickers_ extends Function_<enums.messages.AllSticke
   }
 }
 
+/** Get preview of webpage */
 export class messages_getWebPagePreview_ extends Function_<enums.MessageMedia> {
   static __F: (params: { message: string; entities?: Array<enums.MessageEntity> }) => enums.MessageMedia = null as unknown as (params: { message: string; entities?: Array<enums.MessageEntity> }) => enums.MessageMedia;
+  /** Message from which to extract the preview */
   message: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities?: Array<enums.MessageEntity>;
 
   protected get [id](): number {
@@ -6847,13 +7461,20 @@ export class messages_getWebPagePreview_ extends Function_<enums.MessageMedia> {
   }
 }
 
+/** Export an invite link for a chat */
 export class messages_exportChatInvite_ extends Function_<enums.ExportedChatInvite> {
   static __F: (params: { legacy_revoke_permanent?: true; request_needed?: true; peer: enums.InputPeer; expire_date?: number; usage_limit?: number; title?: string }) => enums.ExportedChatInvite = null as unknown as (params: { legacy_revoke_permanent?: true; request_needed?: true; peer: enums.InputPeer; expire_date?: number; usage_limit?: number; title?: string }) => enums.ExportedChatInvite;
+  /** Legacy flag, reproducing legacy behavior of this method: if set, revokes all previous links before creating a new one. Kept for bot API BC, should not be used by modern clients. */
   legacy_revoke_permanent?: true;
+  /** Whether admin confirmation is required before admitting each separate user into the chat */
   request_needed?: true;
+  /** Chat */
   peer: enums.InputPeer;
+  /** Expiration date */
   expire_date?: number;
+  /** Maximum number of users that can join using this link */
   usage_limit?: number;
+  /** Description of the invite link, visible only to administrators */
   title?: string;
 
   protected get [id](): number {
@@ -6899,8 +7520,10 @@ export class messages_exportChatInvite_ extends Function_<enums.ExportedChatInvi
   }
 }
 
+/** Check the validity of a chat invite link and get basic info about it */
 export class messages_checkChatInvite_ extends Function_<enums.ChatInvite> {
   static __F: (params: { hash: string }) => enums.ChatInvite = null as unknown as (params: { hash: string }) => enums.ChatInvite;
+  /** Invite hash from [chat invite deep link »](https://core.telegram.org/api/links#chat-invite-links). */
   hash: string;
 
   protected get [id](): number {
@@ -6929,8 +7552,10 @@ export class messages_checkChatInvite_ extends Function_<enums.ChatInvite> {
   }
 }
 
+/** Import a chat invite and join a private chat/supergroup/channel */
 export class messages_importChatInvite_ extends Function_<enums.Updates> {
   static __F: (params: { hash: string }) => enums.Updates = null as unknown as (params: { hash: string }) => enums.Updates;
+  /** `hash` from a [chat invite deep link](https://core.telegram.org/api/links#chat-invite-links) */
   hash: string;
 
   protected get [id](): number {
@@ -6959,9 +7584,12 @@ export class messages_importChatInvite_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get info about a stickerset */
 export class messages_getStickerSet_ extends Function_<enums.messages.StickerSet> {
   static __F: (params: { stickerset: enums.InputStickerSet; hash: number }) => enums.messages.StickerSet = null as unknown as (params: { stickerset: enums.InputStickerSet; hash: number }) => enums.messages.StickerSet;
+  /** Stickerset */
   stickerset: enums.InputStickerSet;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
 
   protected get [id](): number {
@@ -6993,9 +7621,12 @@ export class messages_getStickerSet_ extends Function_<enums.messages.StickerSet
   }
 }
 
+/** Install a stickerset */
 export class messages_installStickerSet_ extends Function_<enums.messages.StickerSetInstallResult> {
   static __F: (params: { stickerset: enums.InputStickerSet; archived: boolean }) => enums.messages.StickerSetInstallResult = null as unknown as (params: { stickerset: enums.InputStickerSet; archived: boolean }) => enums.messages.StickerSetInstallResult;
+  /** Stickerset to install */
   stickerset: enums.InputStickerSet;
+  /** Whether to archive stickerset */
   archived: boolean;
 
   protected get [id](): number {
@@ -7027,8 +7658,10 @@ export class messages_installStickerSet_ extends Function_<enums.messages.Sticke
   }
 }
 
+/** Uninstall a stickerset */
 export class messages_uninstallStickerSet_ extends Function_<boolean> {
   static __F: (params: { stickerset: enums.InputStickerSet }) => boolean = null as unknown as (params: { stickerset: enums.InputStickerSet }) => boolean;
+  /** The stickerset to uninstall */
   stickerset: enums.InputStickerSet;
 
   protected get [id](): number {
@@ -7057,11 +7690,16 @@ export class messages_uninstallStickerSet_ extends Function_<boolean> {
   }
 }
 
+/** Start a conversation with a bot using a [deep linking parameter](https://core.telegram.org/api/links#bot-links) */
 export class messages_startBot_ extends Function_<enums.Updates> {
   static __F: (params: { bot: enums.InputUser; peer: enums.InputPeer; random_id: bigint; start_param: string }) => enums.Updates = null as unknown as (params: { bot: enums.InputUser; peer: enums.InputPeer; random_id: bigint; start_param: string }) => enums.Updates;
+  /** The bot */
   bot: enums.InputUser;
+  /** The chat where to start the bot, can be the bot's private chat or a group */
   peer: enums.InputPeer;
+  /** Random ID to avoid resending the same message */
   random_id: bigint;
+  /** [Deep linking parameter](https://core.telegram.org/api/links#bot-links) */
   start_param: string;
 
   protected get [id](): number {
@@ -7099,10 +7737,14 @@ export class messages_startBot_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get and increase the view counter of a message sent or forwarded from a [channel](https://core.telegram.org/api/channel) */
 export class messages_getMessagesViews_ extends Function_<enums.messages.MessageViews> {
   static __F: (params: { peer: enums.InputPeer; id: Array<number>; increment: boolean }) => enums.messages.MessageViews = null as unknown as (params: { peer: enums.InputPeer; id: Array<number>; increment: boolean }) => enums.messages.MessageViews;
+  /** Peer where the message was found */
   peer: enums.InputPeer;
+  /** ID of message */
   id: Array<number>;
+  /** Whether to mark the message as viewed and increment the view counter */
   increment: boolean;
 
   protected get [id](): number {
@@ -7137,10 +7779,14 @@ export class messages_getMessagesViews_ extends Function_<enums.messages.Message
   }
 }
 
+/** Make a user admin in a [basic group](https://core.telegram.org/api/channel#basic-groups). */
 export class messages_editChatAdmin_ extends Function_<boolean> {
   static __F: (params: { chat_id: bigint; user_id: enums.InputUser; is_admin: boolean }) => boolean = null as unknown as (params: { chat_id: bigint; user_id: enums.InputUser; is_admin: boolean }) => boolean;
+  /** The ID of the group */
   chat_id: bigint;
+  /** The user to make admin */
   user_id: enums.InputUser;
+  /** Whether to make them admin */
   is_admin: boolean;
 
   protected get [id](): number {
@@ -7175,8 +7821,10 @@ export class messages_editChatAdmin_ extends Function_<boolean> {
   }
 }
 
+/** Turn a [basic group into a supergroup](https://core.telegram.org/api/channel#migration) */
 export class messages_migrateChat_ extends Function_<enums.Updates> {
   static __F: (params: { chat_id: bigint }) => enums.Updates = null as unknown as (params: { chat_id: bigint }) => enums.Updates;
+  /** [Basic group](https://core.telegram.org/api/channel#basic-groups) to migrate */
   chat_id: bigint;
 
   protected get [id](): number {
@@ -7205,16 +7853,26 @@ export class messages_migrateChat_ extends Function_<enums.Updates> {
   }
 }
 
+/** Search for messages and peers globally */
 export class messages_searchGlobal_ extends Function_<enums.messages.Messages> {
   static __F: (params: { folder_id?: number; q: string; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_rate: number; offset_peer: enums.InputPeer; offset_id: number; limit: number }) => enums.messages.Messages = null as unknown as (params: { folder_id?: number; q: string; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_rate: number; offset_peer: enums.InputPeer; offset_id: number; limit: number }) => enums.messages.Messages;
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id?: number;
+  /** Query */
   q: string;
+  /** Global search filter */
   filter: enums.MessagesFilter;
+  /** If a positive value was specified, the method will return only messages with date bigger than min\_date */
   min_date: number;
+  /** If a positive value was transferred, the method will return only messages with date smaller than max\_date */
   max_date: number;
+  /** Initially 0, then set to the [`next_rate` parameter of messages.messagesSlice](https://core.telegram.org/constructor/messages.messagesSlice) */
   offset_rate: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_peer: enums.InputPeer;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_id: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -7269,10 +7927,14 @@ export class messages_searchGlobal_ extends Function_<enums.messages.Messages> {
   }
 }
 
+/** Reorder installed stickersets */
 export class messages_reorderStickerSets_ extends Function_<boolean> {
   static __F: (params: { masks?: true; emojis?: true; order: Array<bigint> }) => boolean = null as unknown as (params: { masks?: true; emojis?: true; order: Array<bigint> }) => boolean;
+  /** Reorder mask stickersets */
   masks?: true;
+  /** Reorder [custom emoji stickersets](https://core.telegram.org/api/custom-emoji) */
   emojis?: true;
+  /** New stickerset order by stickerset IDs */
   order: Array<bigint>;
 
   protected get [id](): number {
@@ -7309,10 +7971,14 @@ export class messages_reorderStickerSets_ extends Function_<boolean> {
   }
 }
 
+/** Get a document by its SHA256 hash, mainly used for gifs */
 export class messages_getDocumentByHash_ extends Function_<enums.Document> {
   static __F: (params: { sha256: Uint8Array; size: bigint; mime_type: string }) => enums.Document = null as unknown as (params: { sha256: Uint8Array; size: bigint; mime_type: string }) => enums.Document;
+  /** SHA256 of file */
   sha256: Uint8Array;
+  /** Size of the file in bytes */
   size: bigint;
+  /** Mime type */
   mime_type: string;
 
   protected get [id](): number {
@@ -7347,8 +8013,10 @@ export class messages_getDocumentByHash_ extends Function_<enums.Document> {
   }
 }
 
+/** Get saved GIFs */
 export class messages_getSavedGifs_ extends Function_<enums.messages.SavedGifs> {
   static __F: (params: { hash: bigint }) => enums.messages.SavedGifs = null as unknown as (params: { hash: bigint }) => enums.messages.SavedGifs;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -7377,9 +8045,12 @@ export class messages_getSavedGifs_ extends Function_<enums.messages.SavedGifs> 
   }
 }
 
+/** Add GIF to saved gifs list */
 export class messages_saveGif_ extends Function_<boolean> {
   static __F: (params: { id: enums.InputDocument; unsave: boolean }) => boolean = null as unknown as (params: { id: enums.InputDocument; unsave: boolean }) => boolean;
+  /** GIF to save */
   id: enums.InputDocument;
+  /** Whether to remove GIF from saved gifs list */
   unsave: boolean;
 
   protected get [id](): number {
@@ -7411,12 +8082,18 @@ export class messages_saveGif_ extends Function_<boolean> {
   }
 }
 
+/** Query an inline bot */
 export class messages_getInlineBotResults_ extends Function_<enums.messages.BotResults> {
   static __F: (params: { bot: enums.InputUser; peer: enums.InputPeer; geo_point?: enums.InputGeoPoint; query: string; offset: string }) => enums.messages.BotResults = null as unknown as (params: { bot: enums.InputUser; peer: enums.InputPeer; geo_point?: enums.InputGeoPoint; query: string; offset: string }) => enums.messages.BotResults;
+  /** The bot to query */
   bot: enums.InputUser;
+  /** The currently opened chat */
   peer: enums.InputPeer;
+  /** The geolocation, if requested */
   geo_point?: enums.InputGeoPoint;
+  /** The query */
   query: string;
+  /** The offset within the results, will be passed directly as-is to the bot. */
   offset: string;
 
   protected get [id](): number {
@@ -7459,15 +8136,24 @@ export class messages_getInlineBotResults_ extends Function_<enums.messages.BotR
   }
 }
 
+/** Answer an inline query, for bots only */
 export class messages_setInlineBotResults_ extends Function_<boolean> {
   static __F: (params: { gallery?: true; private?: true; query_id: bigint; results: Array<enums.InputBotInlineResult>; cache_time: number; next_offset?: string; switch_pm?: enums.InlineBotSwitchPM; switch_webview?: enums.InlineBotWebView }) => boolean = null as unknown as (params: { gallery?: true; private?: true; query_id: bigint; results: Array<enums.InputBotInlineResult>; cache_time: number; next_offset?: string; switch_pm?: enums.InlineBotSwitchPM; switch_webview?: enums.InlineBotWebView }) => boolean;
+  /** Set this flag if the results are composed of media files */
   gallery?: true;
+  /** Set this flag if results may be cached on the server side only for the user that sent the query. By default, results may be returned to any user who sends the same query */
   private?: true;
+  /** Unique identifier for the answered query */
   query_id: bigint;
+  /** Vector of results for the inline query */
   results: Array<enums.InputBotInlineResult>;
+  /** The maximum amount of time in seconds that the result of the inline query may be cached on the server. Defaults to 300. */
   cache_time: number;
+  /** Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don't support pagination. Offset length can't exceed 64 bytes. */
   next_offset?: string;
+  /** If passed, clients will display a button on top of the remaining inline result list with the specified text, that switches the user to a private chat with the bot and sends the bot a start message with a certain parameter. */
   switch_pm?: enums.InlineBotSwitchPM;
+  /** If passed, clients will display a button on top of the remaining inline result list with the specified text, that switches the user to the specified [inline mode mini app](https://core.telegram.org/api/bots/webapps#inline-mode-mini-apps). */
   switch_webview?: enums.InlineBotWebView;
 
   protected get [id](): number {
@@ -7519,18 +8205,30 @@ export class messages_setInlineBotResults_ extends Function_<boolean> {
   }
 }
 
+/** Send a result obtained using [messages.getInlineBotResults](https://core.telegram.org/method/messages.getInlineBotResults). */
 export class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
   static __F: (params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  /** Whether to send the message silently (no notification will be triggered on the other client) */
   silent?: true;
+  /** Whether to send the message in background */
   background?: true;
+  /** Whether to clear the [draft](https://core.telegram.org/api/drafts) */
   clear_draft?: true;
+  /** Whether to hide the `via @botname` in the resulting message (only for bot usernames encountered in the [config](https://core.telegram.org/constructor/config)) */
   hide_via?: true;
+  /** Destination */
   peer: enums.InputPeer;
+  /** If set, indicates that the message should be sent in reply to the specified message or story. */
   reply_to?: enums.InputReplyTo;
+  /** Random ID to avoid resending the same query */
   random_id: bigint;
+  /** Query ID from [messages.getInlineBotResults](https://core.telegram.org/method/messages.getInlineBotResults) */
   query_id: bigint;
+  /** Result ID from [messages.getInlineBotResults](https://core.telegram.org/method/messages.getInlineBotResults) */
   id: string;
+  /** Scheduled message date for scheduled messages */
   schedule_date?: number;
+  /** Send this message as the specified peer */
   send_as?: enums.InputPeer;
 
   protected get [id](): number {
@@ -7591,9 +8289,12 @@ export class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
   }
 }
 
+/** Find out if a media message's caption can be edited */
 export class messages_getMessageEditData_ extends Function_<enums.messages.MessageEditData> {
   static __F: (params: { peer: enums.InputPeer; id: number }) => enums.messages.MessageEditData = null as unknown as (params: { peer: enums.InputPeer; id: number }) => enums.messages.MessageEditData;
+  /** Peer where the media was sent */
   peer: enums.InputPeer;
+  /** ID of message */
   id: number;
 
   protected get [id](): number {
@@ -7625,16 +8326,26 @@ export class messages_getMessageEditData_ extends Function_<enums.messages.Messa
   }
 }
 
+/** Edit message */
 export class messages_editMessage_ extends Function_<enums.Updates> {
   static __F: (params: { no_webpage?: true; invert_media?: true; peer: enums.InputPeer; id: number; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number }) => enums.Updates = null as unknown as (params: { no_webpage?: true; invert_media?: true; peer: enums.InputPeer; id: number; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number }) => enums.Updates;
+  /** Disable webpage preview */
   no_webpage?: true;
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** Where was the message sent */
   peer: enums.InputPeer;
+  /** ID of the message to edit */
   id: number;
+  /** New message */
   message?: string;
+  /** New attached media */
   media?: enums.InputMedia;
+  /** Reply markup for inline keyboards */
   reply_markup?: enums.ReplyMarkup;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities?: Array<enums.MessageEntity>;
+  /** Scheduled message date for [scheduled messages](https://core.telegram.org/api/scheduled-messages) */
   schedule_date?: number;
 
   protected get [id](): number {
@@ -7689,14 +8400,22 @@ export class messages_editMessage_ extends Function_<enums.Updates> {
   }
 }
 
+/** Edit an inline bot message */
 export class messages_editInlineBotMessage_ extends Function_<boolean> {
   static __F: (params: { no_webpage?: true; invert_media?: true; id: enums.InputBotInlineMessageID; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity> }) => boolean = null as unknown as (params: { no_webpage?: true; invert_media?: true; id: enums.InputBotInlineMessageID; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity> }) => boolean;
+  /** Disable webpage preview */
   no_webpage?: true;
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** Sent inline message ID */
   id: enums.InputBotInlineMessageID;
+  /** Message */
   message?: string;
+  /** Media */
   media?: enums.InputMedia;
+  /** Reply markup for inline keyboards */
   reply_markup?: enums.ReplyMarkup;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities?: Array<enums.MessageEntity>;
 
   protected get [id](): number {
@@ -7745,12 +8464,18 @@ export class messages_editInlineBotMessage_ extends Function_<boolean> {
   }
 }
 
+/** Press an inline callback button and get a callback answer from the bot */
 export class messages_getBotCallbackAnswer_ extends Function_<enums.messages.BotCallbackAnswer> {
   static __F: (params: { game?: true; peer: enums.InputPeer; msg_id: number; data?: Uint8Array; password?: enums.InputCheckPasswordSRP }) => enums.messages.BotCallbackAnswer = null as unknown as (params: { game?: true; peer: enums.InputPeer; msg_id: number; data?: Uint8Array; password?: enums.InputCheckPasswordSRP }) => enums.messages.BotCallbackAnswer;
+  /** Whether this is a "play game" button */
   game?: true;
+  /** Where was the inline keyboard sent */
   peer: enums.InputPeer;
+  /** ID of the Message with the inline keyboard */
   msg_id: number;
+  /** Callback data */
   data?: Uint8Array;
+  /** For buttons [requiring you to verify your identity with your 2FA password](https://core.telegram.org/constructor/keyboardButtonCallback), the SRP payload generated using [SRP](https://core.telegram.org/api/srp). */
   password?: enums.InputCheckPasswordSRP;
 
   protected get [id](): number {
@@ -7793,12 +8518,18 @@ export class messages_getBotCallbackAnswer_ extends Function_<enums.messages.Bot
   }
 }
 
+/** Set the callback answer to a user button press (bots only) */
 export class messages_setBotCallbackAnswer_ extends Function_<boolean> {
   static __F: (params: { alert?: true; query_id: bigint; message?: string; url?: string; cache_time: number }) => boolean = null as unknown as (params: { alert?: true; query_id: bigint; message?: string; url?: string; cache_time: number }) => boolean;
+  /** Whether to show the message as a popup instead of a toast notification */
   alert?: true;
+  /** Query ID */
   query_id: bigint;
+  /** Popup to show */
   message?: string;
+  /** URL to open */
   url?: string;
+  /** Cache validity */
   cache_time: number;
 
   protected get [id](): number {
@@ -7841,8 +8572,10 @@ export class messages_setBotCallbackAnswer_ extends Function_<boolean> {
   }
 }
 
+/** Get dialog info of specified peers */
 export class messages_getPeerDialogs_ extends Function_<enums.messages.PeerDialogs> {
   static __F: (params: { peers: Array<enums.InputDialogPeer> }) => enums.messages.PeerDialogs = null as unknown as (params: { peers: Array<enums.InputDialogPeer> }) => enums.messages.PeerDialogs;
+  /** Peers */
   peers: Array<enums.InputDialogPeer>;
 
   protected get [id](): number {
@@ -7871,14 +8604,22 @@ export class messages_getPeerDialogs_ extends Function_<enums.messages.PeerDialo
   }
 }
 
+/** Save a message [draft](https://core.telegram.org/api/drafts) associated to a chat. */
 export class messages_saveDraft_ extends Function_<boolean> {
   static __F: (params: { no_webpage?: true; invert_media?: true; reply_to?: enums.InputReplyTo; peer: enums.InputPeer; message: string; entities?: Array<enums.MessageEntity>; media?: enums.InputMedia }) => boolean = null as unknown as (params: { no_webpage?: true; invert_media?: true; reply_to?: enums.InputReplyTo; peer: enums.InputPeer; message: string; entities?: Array<enums.MessageEntity>; media?: enums.InputMedia }) => boolean;
+  /** Disable generation of the webpage preview */
   no_webpage?: true;
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** If set, indicates that the message should be sent in reply to the specified message or story. */
   reply_to?: enums.InputReplyTo;
+  /** Destination of the message that should be sent */
   peer: enums.InputPeer;
+  /** The draft */
   message: string;
+  /** Message [entities](https://core.telegram.org/api/entities) for styled text */
   entities?: Array<enums.MessageEntity>;
+  /** Attached media */
   media?: enums.InputMedia;
 
   protected get [id](): number {
@@ -7927,6 +8668,8 @@ export class messages_saveDraft_ extends Function_<boolean> {
   }
 }
 
+/** Return all message [drafts](https://core.telegram.org/api/drafts).  
+Returns all the latest [updateDraftMessage](https://core.telegram.org/constructor/updateDraftMessage) updates related to all chats with drafts. */
 export class messages_getAllDrafts_ extends Function_<enums.Updates> {
   static __F: () => enums.Updates = null as unknown as () => enums.Updates;
   protected get [id](): number {
@@ -7950,8 +8693,10 @@ export class messages_getAllDrafts_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get featured stickers */
 export class messages_getFeaturedStickers_ extends Function_<enums.messages.FeaturedStickers> {
   static __F: (params: { hash: bigint }) => enums.messages.FeaturedStickers = null as unknown as (params: { hash: bigint }) => enums.messages.FeaturedStickers;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -7980,8 +8725,10 @@ export class messages_getFeaturedStickers_ extends Function_<enums.messages.Feat
   }
 }
 
+/** Mark new featured stickers as read */
 export class messages_readFeaturedStickers_ extends Function_<boolean> {
   static __F: (params: { id: Array<bigint> }) => boolean = null as unknown as (params: { id: Array<bigint> }) => boolean;
+  /** IDs of stickersets to mark as read */
   id: Array<bigint>;
 
   protected get [id](): number {
@@ -8010,9 +8757,12 @@ export class messages_readFeaturedStickers_ extends Function_<boolean> {
   }
 }
 
+/** Get recent stickers */
 export class messages_getRecentStickers_ extends Function_<enums.messages.RecentStickers> {
   static __F: (params: { attached?: true; hash: bigint }) => enums.messages.RecentStickers = null as unknown as (params: { attached?: true; hash: bigint }) => enums.messages.RecentStickers;
+  /** Get stickers recently attached to photo or video files */
   attached?: true;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -8046,10 +8796,14 @@ export class messages_getRecentStickers_ extends Function_<enums.messages.Recent
   }
 }
 
+/** Add/remove sticker from recent stickers list */
 export class messages_saveRecentSticker_ extends Function_<boolean> {
   static __F: (params: { attached?: true; id: enums.InputDocument; unsave: boolean }) => boolean = null as unknown as (params: { attached?: true; id: enums.InputDocument; unsave: boolean }) => boolean;
+  /** Whether to add/remove stickers recently attached to photo or video files */
   attached?: true;
+  /** Sticker */
   id: enums.InputDocument;
+  /** Whether to save or unsave the sticker */
   unsave: boolean;
 
   protected get [id](): number {
@@ -8086,8 +8840,10 @@ export class messages_saveRecentSticker_ extends Function_<boolean> {
   }
 }
 
+/** Clear recent stickers */
 export class messages_clearRecentStickers_ extends Function_<boolean> {
   static __F: (params?: { attached?: true }) => boolean = null as unknown as (params?: { attached?: true }) => boolean;
+  /** Set this flag to clear the list of stickers recently attached to photo or video files */
   attached?: true;
 
   protected get [id](): number {
@@ -8118,11 +8874,16 @@ export class messages_clearRecentStickers_ extends Function_<boolean> {
   }
 }
 
+/** Get all archived stickers */
 export class messages_getArchivedStickers_ extends Function_<enums.messages.ArchivedStickers> {
   static __F: (params: { masks?: true; emojis?: true; offset_id: bigint; limit: number }) => enums.messages.ArchivedStickers = null as unknown as (params: { masks?: true; emojis?: true; offset_id: bigint; limit: number }) => enums.messages.ArchivedStickers;
+  /** Get [mask stickers](https://core.telegram.org/api/stickers#mask-stickers) */
   masks?: true;
+  /** Get [custom emoji stickers](https://core.telegram.org/api/custom-emoji) */
   emojis?: true;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_id: bigint;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -8162,8 +8923,10 @@ export class messages_getArchivedStickers_ extends Function_<enums.messages.Arch
   }
 }
 
+/** Get installed mask stickers */
 export class messages_getMaskStickers_ extends Function_<enums.messages.AllStickers> {
   static __F: (params: { hash: bigint }) => enums.messages.AllStickers = null as unknown as (params: { hash: bigint }) => enums.messages.AllStickers;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -8192,8 +8955,10 @@ export class messages_getMaskStickers_ extends Function_<enums.messages.AllStick
   }
 }
 
+/** Get stickers attached to a photo or video */
 export class messages_getAttachedStickers_ extends Function_<enums.StickerSetCovered[]> {
   static __F: (params: { media: enums.InputStickeredMedia }) => enums.StickerSetCovered[] = null as unknown as (params: { media: enums.InputStickeredMedia }) => enums.StickerSetCovered[];
+  /** Stickered media */
   media: enums.InputStickeredMedia;
 
   protected get [id](): number {
@@ -8222,13 +8987,20 @@ export class messages_getAttachedStickers_ extends Function_<enums.StickerSetCov
   }
 }
 
+/** Use this method to set the score of the specified user in a game sent as a normal message (bots only). */
 export class messages_setGameScore_ extends Function_<enums.Updates> {
   static __F: (params: { edit_message?: true; force?: true; peer: enums.InputPeer; id: number; user_id: enums.InputUser; score: number }) => enums.Updates = null as unknown as (params: { edit_message?: true; force?: true; peer: enums.InputPeer; id: number; user_id: enums.InputUser; score: number }) => enums.Updates;
+  /** Set this flag if the game message should be automatically edited to include the current scoreboard */
   edit_message?: true;
+  /** Set this flag if the high score is allowed to decrease. This can be useful when fixing mistakes or banning cheaters */
   force?: true;
+  /** Unique identifier of target chat */
   peer: enums.InputPeer;
+  /** Identifier of the sent message */
   id: number;
+  /** User identifier */
   user_id: enums.InputUser;
+  /** New score */
   score: number;
 
   protected get [id](): number {
@@ -8274,12 +9046,18 @@ export class messages_setGameScore_ extends Function_<enums.Updates> {
   }
 }
 
+/** Use this method to set the score of the specified user in a game sent as an inline message (bots only). */
 export class messages_setInlineGameScore_ extends Function_<boolean> {
   static __F: (params: { edit_message?: true; force?: true; id: enums.InputBotInlineMessageID; user_id: enums.InputUser; score: number }) => boolean = null as unknown as (params: { edit_message?: true; force?: true; id: enums.InputBotInlineMessageID; user_id: enums.InputUser; score: number }) => boolean;
+  /** Set this flag if the game message should be automatically edited to include the current scoreboard */
   edit_message?: true;
+  /** Set this flag if the high score is allowed to decrease. This can be useful when fixing mistakes or banning cheaters */
   force?: true;
+  /** ID of the inline message */
   id: enums.InputBotInlineMessageID;
+  /** User identifier */
   user_id: enums.InputUser;
+  /** New score */
   score: number;
 
   protected get [id](): number {
@@ -8322,10 +9100,14 @@ export class messages_setInlineGameScore_ extends Function_<boolean> {
   }
 }
 
+/** Get highscores of a game */
 export class messages_getGameHighScores_ extends Function_<enums.messages.HighScores> {
   static __F: (params: { peer: enums.InputPeer; id: number; user_id: enums.InputUser }) => enums.messages.HighScores = null as unknown as (params: { peer: enums.InputPeer; id: number; user_id: enums.InputUser }) => enums.messages.HighScores;
+  /** Where was the game sent */
   peer: enums.InputPeer;
+  /** ID of message with game media attachment */
   id: number;
+  /** Get high scores made by a certain user */
   user_id: enums.InputUser;
 
   protected get [id](): number {
@@ -8360,9 +9142,12 @@ export class messages_getGameHighScores_ extends Function_<enums.messages.HighSc
   }
 }
 
+/** Get highscores of a game sent using an inline bot */
 export class messages_getInlineGameHighScores_ extends Function_<enums.messages.HighScores> {
   static __F: (params: { id: enums.InputBotInlineMessageID; user_id: enums.InputUser }) => enums.messages.HighScores = null as unknown as (params: { id: enums.InputBotInlineMessageID; user_id: enums.InputUser }) => enums.messages.HighScores;
+  /** ID of inline message */
   id: enums.InputBotInlineMessageID;
+  /** Get high scores of a certain user */
   user_id: enums.InputUser;
 
   protected get [id](): number {
@@ -8394,10 +9179,14 @@ export class messages_getInlineGameHighScores_ extends Function_<enums.messages.
   }
 }
 
+/** Get chats in common with a user */
 export class messages_getCommonChats_ extends Function_<enums.messages.Chats> {
   static __F: (params: { user_id: enums.InputUser; max_id: bigint; limit: number }) => enums.messages.Chats = null as unknown as (params: { user_id: enums.InputUser; max_id: bigint; limit: number }) => enums.messages.Chats;
+  /** User ID */
   user_id: enums.InputUser;
+  /** Maximum ID of chat to return (see [pagination](https://core.telegram.org/api/offsets)) */
   max_id: bigint;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -8432,9 +9221,12 @@ export class messages_getCommonChats_ extends Function_<enums.messages.Chats> {
   }
 }
 
+/** Get [instant view](https://instantview.telegram.org) page */
 export class messages_getWebPage_ extends Function_<enums.messages.WebPage> {
   static __F: (params: { url: string; hash: number }) => enums.messages.WebPage = null as unknown as (params: { url: string; hash: number }) => enums.messages.WebPage;
+  /** URL of IV page to fetch */
   url: string;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
 
   protected get [id](): number {
@@ -8466,9 +9258,12 @@ export class messages_getWebPage_ extends Function_<enums.messages.WebPage> {
   }
 }
 
+/** Pin/unpin a dialog */
 export class messages_toggleDialogPin_ extends Function_<boolean> {
   static __F: (params: { pinned?: true; peer: enums.InputDialogPeer }) => boolean = null as unknown as (params: { pinned?: true; peer: enums.InputDialogPeer }) => boolean;
+  /** Whether to pin or unpin the dialog */
   pinned?: true;
+  /** The dialog to pin */
   peer: enums.InputDialogPeer;
 
   protected get [id](): number {
@@ -8502,10 +9297,14 @@ export class messages_toggleDialogPin_ extends Function_<boolean> {
   }
 }
 
+/** Reorder pinned dialogs */
 export class messages_reorderPinnedDialogs_ extends Function_<boolean> {
   static __F: (params: { force?: true; folder_id: number; order: Array<enums.InputDialogPeer> }) => boolean = null as unknown as (params: { force?: true; folder_id: number; order: Array<enums.InputDialogPeer> }) => boolean;
+  /** If set, dialogs pinned server-side but not present in the `order` field will be unpinned. */
   force?: true;
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id: number;
+  /** New dialog order */
   order: Array<enums.InputDialogPeer>;
 
   protected get [id](): number {
@@ -8542,8 +9341,10 @@ export class messages_reorderPinnedDialogs_ extends Function_<boolean> {
   }
 }
 
+/** Get pinned dialogs */
 export class messages_getPinnedDialogs_ extends Function_<enums.messages.PeerDialogs> {
   static __F: (params: { folder_id: number }) => enums.messages.PeerDialogs = null as unknown as (params: { folder_id: number }) => enums.messages.PeerDialogs;
+  /** [Peer folder ID, for more info click here](https://core.telegram.org/api/folders#peer-folders) */
   folder_id: number;
 
   protected get [id](): number {
@@ -8572,10 +9373,14 @@ export class messages_getPinnedDialogs_ extends Function_<enums.messages.PeerDia
   }
 }
 
+/** If you sent an invoice requesting a shipping address and the parameter is\_flexible was specified, the bot will receive an [updateBotShippingQuery](https://core.telegram.org/constructor/updateBotShippingQuery) update. Use this method to reply to shipping queries. */
 export class messages_setBotShippingResults_ extends Function_<boolean> {
   static __F: (params: { query_id: bigint; error?: string; shipping_options?: Array<enums.ShippingOption> }) => boolean = null as unknown as (params: { query_id: bigint; error?: string; shipping_options?: Array<enums.ShippingOption> }) => boolean;
+  /** Unique identifier for the query to be answered */
   query_id: bigint;
+  /** Error message in human readable form that explains why it is impossible to complete the order (e.g. "Sorry, delivery to your desired address is unavailable"). Telegram will display this message to the user. */
   error?: string;
+  /** A vector of available shipping options. */
   shipping_options?: Array<enums.ShippingOption>;
 
   protected get [id](): number {
@@ -8612,10 +9417,16 @@ export class messages_setBotShippingResults_ extends Function_<boolean> {
   }
 }
 
+/** Once the user has confirmed their payment and shipping details, the bot receives an [updateBotPrecheckoutQuery](https://core.telegram.org/constructor/updateBotPrecheckoutQuery) update.  
+Use this method to respond to such pre-checkout queries.  
+**Note**: Telegram must receive an answer within 10 seconds after the pre-checkout query was sent. */
 export class messages_setBotPrecheckoutResults_ extends Function_<boolean> {
   static __F: (params: { success?: true; query_id: bigint; error?: string }) => boolean = null as unknown as (params: { success?: true; query_id: bigint; error?: string }) => boolean;
+  /** Set this flag if everything is alright (goods are available, etc.) and the bot is ready to proceed with the order, otherwise do not set it, and set the `error` field, instead */
   success?: true;
+  /** Unique identifier for the query to be answered */
   query_id: bigint;
+  /** Required if the `success` isn't set. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. "Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!"). Telegram will display this message to the user. */
   error?: string;
 
   protected get [id](): number {
@@ -8652,9 +9463,12 @@ export class messages_setBotPrecheckoutResults_ extends Function_<boolean> {
   }
 }
 
+/** Upload a file and associate it to a chat (without actually sending it to the chat) */
 export class messages_uploadMedia_ extends Function_<enums.MessageMedia> {
   static __F: (params: { peer: enums.InputPeer; media: enums.InputMedia }) => enums.MessageMedia = null as unknown as (params: { peer: enums.InputPeer; media: enums.InputMedia }) => enums.MessageMedia;
+  /** The chat, can be [inputPeerEmpty](https://core.telegram.org/constructor/inputPeerEmpty) for bots and [inputPeerSelf](https://core.telegram.org/constructor/inputPeerSelf) for users. */
   peer: enums.InputPeer;
+  /** File uploaded in chunks as described in [files »](https://core.telegram.org/api/files) */
   media: enums.InputMedia;
 
   protected get [id](): number {
@@ -8686,10 +9500,14 @@ export class messages_uploadMedia_ extends Function_<enums.MessageMedia> {
   }
 }
 
+/** Notify the other user in a private chat that a screenshot of the chat was taken */
 export class messages_sendScreenshotNotification_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; reply_to: enums.InputReplyTo; random_id: bigint }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; reply_to: enums.InputReplyTo; random_id: bigint }) => enums.Updates;
+  /** Other user */
   peer: enums.InputPeer;
+  /** Indicates the message that was screenshotted (the specified message ID can also be `0` to avoid indicating any specific message). */
   reply_to: enums.InputReplyTo;
+  /** Random ID to avoid message resending */
   random_id: bigint;
 
   protected get [id](): number {
@@ -8724,8 +9542,10 @@ export class messages_sendScreenshotNotification_ extends Function_<enums.Update
   }
 }
 
+/** Get faved stickers */
 export class messages_getFavedStickers_ extends Function_<enums.messages.FavedStickers> {
   static __F: (params: { hash: bigint }) => enums.messages.FavedStickers = null as unknown as (params: { hash: bigint }) => enums.messages.FavedStickers;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -8754,9 +9574,12 @@ export class messages_getFavedStickers_ extends Function_<enums.messages.FavedSt
   }
 }
 
+/** Mark or unmark a sticker as favorite */
 export class messages_faveSticker_ extends Function_<boolean> {
   static __F: (params: { id: enums.InputDocument; unfave: boolean }) => boolean = null as unknown as (params: { id: enums.InputDocument; unfave: boolean }) => boolean;
+  /** Sticker in question */
   id: enums.InputDocument;
+  /** Whether to add or remove a sticker from favorites */
   unfave: boolean;
 
   protected get [id](): number {
@@ -8788,14 +9611,22 @@ export class messages_faveSticker_ extends Function_<boolean> {
   }
 }
 
+/** Get unread messages where we were mentioned */
 export class messages_getUnreadMentions_ extends Function_<enums.messages.Messages> {
   static __F: (params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) => enums.messages.Messages;
+  /** Peer where to look for mentions */
   peer: enums.InputPeer;
+  /** If set, considers only messages within the specified [forum topic](https://core.telegram.org/api/forum#forum-topics) */
   top_msg_id?: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_id: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   add_offset: number;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
+  /** Maximum message ID to return, [see pagination](https://core.telegram.org/api/offsets) */
   max_id: number;
+  /** Minimum message ID to return, [see pagination](https://core.telegram.org/api/offsets) */
   min_id: number;
 
   protected get [id](): number {
@@ -8844,9 +9675,12 @@ export class messages_getUnreadMentions_ extends Function_<enums.messages.Messag
   }
 }
 
+/** Mark mentions as read */
 export class messages_readMentions_ extends Function_<enums.messages.AffectedHistory> {
   static __F: (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory = null as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory;
+  /** Dialog */
   peer: enums.InputPeer;
+  /** Mark as read only mentions within the specified [forum topic](https://core.telegram.org/api/forum#forum-topics) */
   top_msg_id?: number;
 
   protected get [id](): number {
@@ -8880,10 +9714,14 @@ export class messages_readMentions_ extends Function_<enums.messages.AffectedHis
   }
 }
 
+/** Get live location history of a certain user */
 export class messages_getRecentLocations_ extends Function_<enums.messages.Messages> {
   static __F: (params: { peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.Messages;
+  /** User */
   peer: enums.InputPeer;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -8918,18 +9756,30 @@ export class messages_getRecentLocations_ extends Function_<enums.messages.Messa
   }
 }
 
+/** Send an [album or grouped media](https://core.telegram.org/api/files#albums-grouped-media) */
 export class messages_sendMultiMedia_ extends Function_<enums.Updates> {
   static __F: (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; multi_media: Array<enums.InputSingleMedia>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; multi_media: Array<enums.InputSingleMedia>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  /** Whether to send the album silently (no notification triggered) */
   silent?: true;
+  /** Send in background? */
   background?: true;
+  /** Whether to clear [drafts](https://core.telegram.org/api/drafts) */
   clear_draft?: true;
+  /** Only for bots, disallows forwarding and saving of the messages, even if the destination chat doesn't have [content protection](https://telegram.org/blog/protected-content-delete-by-date-and-more) enabled */
   noforwards?: true;
+  /** Whether to move used stickersets to top, [see here for more info on this flag »](https://core.telegram.org/api/stickers#recent-stickersets) */
   update_stickersets_order?: true;
+  /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  /** The destination chat */
   peer: enums.InputPeer;
+  /** If set, indicates that the message should be sent in reply to the specified message or story. */
   reply_to?: enums.InputReplyTo;
+  /** The medias to send: note that they must be separately uploaded using [messages.uploadMedia](https://core.telegram.org/method/messages.uploadMedia) first, using raw `inputMediaUploaded*` constructors is not supported. */
   multi_media: Array<enums.InputSingleMedia>;
+  /** Scheduled message date for scheduled messages */
   schedule_date?: number;
+  /** Send this message as the specified peer */
   send_as?: enums.InputPeer;
 
   protected get [id](): number {
@@ -8990,9 +9840,12 @@ export class messages_sendMultiMedia_ extends Function_<enums.Updates> {
   }
 }
 
+/** Upload encrypted file and associate it to a secret chat */
 export class messages_uploadEncryptedFile_ extends Function_<enums.EncryptedFile> {
   static __F: (params: { peer: enums.InputEncryptedChat; file: enums.InputEncryptedFile }) => enums.EncryptedFile = null as unknown as (params: { peer: enums.InputEncryptedChat; file: enums.InputEncryptedFile }) => enums.EncryptedFile;
+  /** The secret chat to associate the file to */
   peer: enums.InputEncryptedChat;
+  /** The file */
   file: enums.InputEncryptedFile;
 
   protected get [id](): number {
@@ -9024,10 +9877,14 @@ export class messages_uploadEncryptedFile_ extends Function_<enums.EncryptedFile
   }
 }
 
+/** Search for stickersets */
 export class messages_searchStickerSets_ extends Function_<enums.messages.FoundStickerSets> {
   static __F: (params: { exclude_featured?: true; q: string; hash: bigint }) => enums.messages.FoundStickerSets = null as unknown as (params: { exclude_featured?: true; q: string; hash: bigint }) => enums.messages.FoundStickerSets;
+  /** Exclude featured stickersets from results */
   exclude_featured?: true;
+  /** Query string */
   q: string;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -9064,6 +9921,7 @@ export class messages_searchStickerSets_ extends Function_<enums.messages.FoundS
   }
 }
 
+/** Get message ranges for saving the user's chat history */
 export class messages_getSplitRanges_ extends Function_<enums.MessageRange[]> {
   static __F: () => enums.MessageRange[] = null as unknown as () => enums.MessageRange[];
   protected get [id](): number {
@@ -9087,9 +9945,12 @@ export class messages_getSplitRanges_ extends Function_<enums.MessageRange[]> {
   }
 }
 
+/** Manually mark dialog as unread */
 export class messages_markDialogUnread_ extends Function_<boolean> {
   static __F: (params: { unread?: true; peer: enums.InputDialogPeer }) => boolean = null as unknown as (params: { unread?: true; peer: enums.InputDialogPeer }) => boolean;
+  /** Mark as unread/read */
   unread?: true;
+  /** Dialog */
   peer: enums.InputDialogPeer;
 
   protected get [id](): number {
@@ -9123,6 +9984,7 @@ export class messages_markDialogUnread_ extends Function_<boolean> {
   }
 }
 
+/** Get dialogs manually marked as unread */
 export class messages_getDialogUnreadMarks_ extends Function_<enums.DialogPeer[]> {
   static __F: () => enums.DialogPeer[] = null as unknown as () => enums.DialogPeer[];
   protected get [id](): number {
@@ -9146,6 +10008,7 @@ export class messages_getDialogUnreadMarks_ extends Function_<enums.DialogPeer[]
   }
 }
 
+/** Clear all [drafts](https://core.telegram.org/api/drafts). */
 export class messages_clearAllDrafts_ extends Function_<boolean> {
   static __F: () => boolean = null as unknown as () => boolean;
   protected get [id](): number {
@@ -9169,12 +10032,18 @@ export class messages_clearAllDrafts_ extends Function_<boolean> {
   }
 }
 
+/** Pin a message */
 export class messages_updatePinnedMessage_ extends Function_<enums.Updates> {
   static __F: (params: { silent?: true; unpin?: true; pm_oneside?: true; peer: enums.InputPeer; id: number }) => enums.Updates = null as unknown as (params: { silent?: true; unpin?: true; pm_oneside?: true; peer: enums.InputPeer; id: number }) => enums.Updates;
+  /** Pin the message silently, without triggering a notification */
   silent?: true;
+  /** Whether the message should unpinned or pinned */
   unpin?: true;
+  /** Whether the message should only be pinned on the local side of a one-to-one chat */
   pm_oneside?: true;
+  /** The peer where to pin the message */
   peer: enums.InputPeer;
+  /** The message to pin or unpin */
   id: number;
 
   protected get [id](): number {
@@ -9217,10 +10086,14 @@ export class messages_updatePinnedMessage_ extends Function_<enums.Updates> {
   }
 }
 
+/** Vote in a [poll](https://core.telegram.org/constructor/poll) */
 export class messages_sendVote_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; msg_id: number; options: Array<Uint8Array> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; msg_id: number; options: Array<Uint8Array> }) => enums.Updates;
+  /** The chat where the poll was sent */
   peer: enums.InputPeer;
+  /** The message ID of the poll */
   msg_id: number;
+  /** The options that were chosen */
   options: Array<Uint8Array>;
 
   protected get [id](): number {
@@ -9255,9 +10128,12 @@ export class messages_sendVote_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get poll results */
 export class messages_getPollResults_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; msg_id: number }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.Updates;
+  /** Peer where the poll was found */
   peer: enums.InputPeer;
+  /** Message ID of poll message */
   msg_id: number;
 
   protected get [id](): number {
@@ -9289,8 +10165,10 @@ export class messages_getPollResults_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get count of online users in a chat */
 export class messages_getOnlines_ extends Function_<enums.ChatOnlines> {
   static __F: (params: { peer: enums.InputPeer }) => enums.ChatOnlines = null as unknown as (params: { peer: enums.InputPeer }) => enums.ChatOnlines;
+  /** The chat */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -9319,9 +10197,12 @@ export class messages_getOnlines_ extends Function_<enums.ChatOnlines> {
   }
 }
 
+/** Edit the description of a [group/supergroup/channel](https://core.telegram.org/api/channel). */
 export class messages_editChatAbout_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; about: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; about: string }) => boolean;
+  /** The [group/supergroup/channel](https://core.telegram.org/api/channel). */
   peer: enums.InputPeer;
+  /** The new description */
   about: string;
 
   protected get [id](): number {
@@ -9353,9 +10234,12 @@ export class messages_editChatAbout_ extends Function_<boolean> {
   }
 }
 
+/** Edit the default banned rights of a [channel/supergroup/group](https://core.telegram.org/api/channel). */
 export class messages_editChatDefaultBannedRights_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; banned_rights: enums.ChatBannedRights }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; banned_rights: enums.ChatBannedRights }) => enums.Updates;
+  /** The peer */
   peer: enums.InputPeer;
+  /** The new global rights */
   banned_rights: enums.ChatBannedRights;
 
   protected get [id](): number {
@@ -9387,8 +10271,10 @@ export class messages_editChatDefaultBannedRights_ extends Function_<enums.Updat
   }
 }
 
+/** Get localized [emoji keywords »](https://core.telegram.org/api/custom-emoji#emoji-keywords). */
 export class messages_getEmojiKeywords_ extends Function_<enums.EmojiKeywordsDifference> {
   static __F: (params: { lang_code: string }) => enums.EmojiKeywordsDifference = null as unknown as (params: { lang_code: string }) => enums.EmojiKeywordsDifference;
+  /** Language code */
   lang_code: string;
 
   protected get [id](): number {
@@ -9417,9 +10303,12 @@ export class messages_getEmojiKeywords_ extends Function_<enums.EmojiKeywordsDif
   }
 }
 
+/** Get changed [emoji keywords »](https://core.telegram.org/api/custom-emoji#emoji-keywords). */
 export class messages_getEmojiKeywordsDifference_ extends Function_<enums.EmojiKeywordsDifference> {
   static __F: (params: { lang_code: string; from_version: number }) => enums.EmojiKeywordsDifference = null as unknown as (params: { lang_code: string; from_version: number }) => enums.EmojiKeywordsDifference;
+  /** Language code */
   lang_code: string;
+  /** Previous stored emoji keyword list `version` */
   from_version: number;
 
   protected get [id](): number {
@@ -9451,8 +10340,10 @@ export class messages_getEmojiKeywordsDifference_ extends Function_<enums.EmojiK
   }
 }
 
+/** Obtain a list of related languages that must be used when fetching [emoji keyword lists »](https://core.telegram.org/api/custom-emoji#emoji-keywords). */
 export class messages_getEmojiKeywordsLanguages_ extends Function_<enums.EmojiLanguage[]> {
   static __F: (params: { lang_codes: Array<string> }) => enums.EmojiLanguage[] = null as unknown as (params: { lang_codes: Array<string> }) => enums.EmojiLanguage[];
+  /** The user's language codes */
   lang_codes: Array<string>;
 
   protected get [id](): number {
@@ -9481,8 +10372,10 @@ export class messages_getEmojiKeywordsLanguages_ extends Function_<enums.EmojiLa
   }
 }
 
+/** Returns an HTTP URL which can be used to automatically log in into translation platform and suggest new [emoji keywords »](https://core.telegram.org/api/custom-emoji#emoji-keywords). The URL will be valid for 30 seconds after generation. */
 export class messages_getEmojiURL_ extends Function_<enums.EmojiURL> {
   static __F: (params: { lang_code: string }) => enums.EmojiURL = null as unknown as (params: { lang_code: string }) => enums.EmojiURL;
+  /** Language code for which the emoji keywords will be suggested */
   lang_code: string;
 
   protected get [id](): number {
@@ -9511,11 +10404,16 @@ export class messages_getEmojiURL_ extends Function_<enums.EmojiURL> {
   }
 }
 
+/** Get the number of results that would be found by a [messages.search](https://core.telegram.org/method/messages.search) call with the same parameters */
 export class messages_getSearchCounters_ extends Function_<enums.messages.SearchCounter[]> {
   static __F: (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; top_msg_id?: number; filters: Array<enums.MessagesFilter> }) => enums.messages.SearchCounter[] = null as unknown as (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; top_msg_id?: number; filters: Array<enums.MessagesFilter> }) => enums.messages.SearchCounter[];
+  /** Peer where to search */
   peer: enums.InputPeer;
+  /** Search within the [saved message dialog »](https://core.telegram.org/api/saved-messages) with this ID. */
   saved_peer_id?: enums.InputPeer;
+  /** If set, consider only messages within the specified [forum topic](https://core.telegram.org/api/forum#forum-topics) */
   top_msg_id?: number;
+  /** Search filters */
   filters: Array<enums.MessagesFilter>;
 
   protected get [id](): number {
@@ -9555,11 +10453,16 @@ export class messages_getSearchCounters_ extends Function_<enums.messages.Search
   }
 }
 
+/** Get more info about a Seamless Telegram Login authorization request, for more info [click here »](https://core.telegram.org/api/url-authorization) */
 export class messages_requestUrlAuth_ extends Function_<enums.UrlAuthResult> {
   static __F: (params?: { peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) => enums.UrlAuthResult = null as unknown as (params?: { peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) => enums.UrlAuthResult;
+  /** Peer where the message is located */
   peer?: enums.InputPeer;
+  /** The message */
   msg_id?: number;
+  /** The ID of the button with the authorization request */
   button_id?: number;
+  /** URL used for [link URL authorization, click here for more info »](https://core.telegram.org/api/url-authorization#link-url-authorization) */
   url?: string;
 
   protected get [id](): number {
@@ -9599,12 +10502,18 @@ export class messages_requestUrlAuth_ extends Function_<enums.UrlAuthResult> {
   }
 }
 
+/** Use this to accept a Seamless Telegram Login authorization request, for more info [click here »](https://core.telegram.org/api/url-authorization) */
 export class messages_acceptUrlAuth_ extends Function_<enums.UrlAuthResult> {
   static __F: (params?: { write_allowed?: true; peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) => enums.UrlAuthResult = null as unknown as (params?: { write_allowed?: true; peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) => enums.UrlAuthResult;
+  /** Set this flag to allow the bot to send messages to you (if requested) */
   write_allowed?: true;
+  /** The location of the message */
   peer?: enums.InputPeer;
+  /** Message ID of the message with the login button */
   msg_id?: number;
+  /** ID of the login button */
   button_id?: number;
+  /** URL used for [link URL authorization, click here for more info »](https://core.telegram.org/api/url-authorization#link-url-authorization) */
   url?: string;
 
   protected get [id](): number {
@@ -9647,8 +10556,10 @@ export class messages_acceptUrlAuth_ extends Function_<enums.UrlAuthResult> {
   }
 }
 
+/** Should be called after the user hides the [report spam/add as contact bar](https://core.telegram.org/api/action-bar) of a new chat, effectively prevents the user from executing the actions specified in the [action bar »](https://core.telegram.org/api/action-bar). */
 export class messages_hidePeerSettingsBar_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer }) => boolean;
+  /** Peer */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -9677,9 +10588,12 @@ export class messages_hidePeerSettingsBar_ extends Function_<boolean> {
   }
 }
 
+/** Get scheduled messages */
 export class messages_getScheduledHistory_ extends Function_<enums.messages.Messages> {
   static __F: (params: { peer: enums.InputPeer; hash: bigint }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; hash: bigint }) => enums.messages.Messages;
+  /** Peer */
   peer: enums.InputPeer;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -9711,9 +10625,12 @@ export class messages_getScheduledHistory_ extends Function_<enums.messages.Mess
   }
 }
 
+/** Get scheduled messages */
 export class messages_getScheduledMessages_ extends Function_<enums.messages.Messages> {
   static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.messages.Messages;
+  /** Peer */
   peer: enums.InputPeer;
+  /** IDs of scheduled messages */
   id: Array<number>;
 
   protected get [id](): number {
@@ -9745,9 +10662,12 @@ export class messages_getScheduledMessages_ extends Function_<enums.messages.Mes
   }
 }
 
+/** Send scheduled messages right away */
 export class messages_sendScheduledMessages_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
+  /** Peer */
   peer: enums.InputPeer;
+  /** Scheduled message IDs */
   id: Array<number>;
 
   protected get [id](): number {
@@ -9779,9 +10699,12 @@ export class messages_sendScheduledMessages_ extends Function_<enums.Updates> {
   }
 }
 
+/** Delete scheduled messages */
 export class messages_deleteScheduledMessages_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
+  /** Peer */
   peer: enums.InputPeer;
+  /** Scheduled message IDs */
   id: Array<number>;
 
   protected get [id](): number {
@@ -9813,12 +10736,19 @@ export class messages_deleteScheduledMessages_ extends Function_<enums.Updates> 
   }
 }
 
+/** Get poll results for non-anonymous polls */
 export class messages_getPollVotes_ extends Function_<enums.messages.VotesList> {
   static __F: (params: { peer: enums.InputPeer; id: number; option?: Uint8Array; offset?: string; limit: number }) => enums.messages.VotesList = null as unknown as (params: { peer: enums.InputPeer; id: number; option?: Uint8Array; offset?: string; limit: number }) => enums.messages.VotesList;
+  /** Chat where the poll was sent */
   peer: enums.InputPeer;
+  /** Message ID */
   id: number;
+  /** Get only results for the specified poll `option` */
   option?: Uint8Array;
+  /** Offset for results, taken from the `next_offset` field of [messages.votesList](https://core.telegram.org/constructor/messages.votesList), initially an empty string.  
+  Note: if no more results are available, the method call will return an empty `next_offset`; thus, avoid providing the `next_offset` returned in [messages.votesList](https://core.telegram.org/constructor/messages.votesList) if it is empty, to avoid an infinite loop. */
   offset?: string;
+  /** Number of results to return */
   limit: number;
 
   protected get [id](): number {
@@ -9861,11 +10791,16 @@ export class messages_getPollVotes_ extends Function_<enums.messages.VotesList> 
   }
 }
 
+/** Apply changes to multiple stickersets */
 export class messages_toggleStickerSets_ extends Function_<boolean> {
   static __F: (params: { uninstall?: true; archive?: true; unarchive?: true; stickersets: Array<enums.InputStickerSet> }) => boolean = null as unknown as (params: { uninstall?: true; archive?: true; unarchive?: true; stickersets: Array<enums.InputStickerSet> }) => boolean;
+  /** Uninstall the specified stickersets */
   uninstall?: true;
+  /** Archive the specified stickersets */
   archive?: true;
+  /** Unarchive the specified stickersets */
   unarchive?: true;
+  /** Stickersets to act upon */
   stickersets: Array<enums.InputStickerSet>;
 
   protected get [id](): number {
@@ -9905,6 +10840,7 @@ export class messages_toggleStickerSets_ extends Function_<boolean> {
   }
 }
 
+/** Get [folders](https://core.telegram.org/api/folders) */
 export class messages_getDialogFilters_ extends Function_<enums.DialogFilter[]> {
   static __F: () => enums.DialogFilter[] = null as unknown as () => enums.DialogFilter[];
   protected get [id](): number {
@@ -9928,6 +10864,7 @@ export class messages_getDialogFilters_ extends Function_<enums.DialogFilter[]> 
   }
 }
 
+/** Get [suggested folders](https://core.telegram.org/api/folders) */
 export class messages_getSuggestedDialogFilters_ extends Function_<enums.DialogFilterSuggested[]> {
   static __F: () => enums.DialogFilterSuggested[] = null as unknown as () => enums.DialogFilterSuggested[];
   protected get [id](): number {
@@ -9951,9 +10888,12 @@ export class messages_getSuggestedDialogFilters_ extends Function_<enums.DialogF
   }
 }
 
+/** Update [folder](https://core.telegram.org/api/folders) */
 export class messages_updateDialogFilter_ extends Function_<boolean> {
   static __F: (params: { id: number; filter?: enums.DialogFilter }) => boolean = null as unknown as (params: { id: number; filter?: enums.DialogFilter }) => boolean;
+  /** [Folder](https://core.telegram.org/api/folders) ID */
   id: number;
+  /** [Folder](https://core.telegram.org/api/folders) info */
   filter?: enums.DialogFilter;
 
   protected get [id](): number {
@@ -9987,8 +10927,10 @@ export class messages_updateDialogFilter_ extends Function_<boolean> {
   }
 }
 
+/** Reorder [folders](https://core.telegram.org/api/folders) */
 export class messages_updateDialogFiltersOrder_ extends Function_<boolean> {
   static __F: (params: { order: Array<number> }) => boolean = null as unknown as (params: { order: Array<number> }) => boolean;
+  /** New [folder](https://core.telegram.org/api/folders) order */
   order: Array<number>;
 
   protected get [id](): number {
@@ -10017,10 +10959,14 @@ export class messages_updateDialogFiltersOrder_ extends Function_<boolean> {
   }
 }
 
+/** Method for fetching previously featured stickers */
 export class messages_getOldFeaturedStickers_ extends Function_<enums.messages.FeaturedStickers> {
   static __F: (params: { offset: number; limit: number; hash: bigint }) => enums.messages.FeaturedStickers = null as unknown as (params: { offset: number; limit: number; hash: bigint }) => enums.messages.FeaturedStickers;
+  /** Offset */
   offset: number;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -10055,16 +11001,26 @@ export class messages_getOldFeaturedStickers_ extends Function_<enums.messages.F
   }
 }
 
+/** Get messages in a reply thread */
 export class messages_getReplies_ extends Function_<enums.messages.Messages> {
   static __F: (params: { peer: enums.InputPeer; msg_id: number; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; msg_id: number; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
+  /** Peer */
   peer: enums.InputPeer;
+  /** Message ID */
   msg_id: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_id: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_date: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   add_offset: number;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
+  /** If a positive value was transferred, the method will return only messages with ID smaller than max\_id */
   max_id: number;
+  /** If a positive value was transferred, the method will return only messages with ID bigger than min\_id */
   min_id: number;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -10117,9 +11073,12 @@ export class messages_getReplies_ extends Function_<enums.messages.Messages> {
   }
 }
 
+/** Get [discussion message](https://core.telegram.org/api/threads) from the [associated discussion group](https://core.telegram.org/api/discussion) of a channel to show it on top of the comment section, without actually joining the group */
 export class messages_getDiscussionMessage_ extends Function_<enums.messages.DiscussionMessage> {
   static __F: (params: { peer: enums.InputPeer; msg_id: number }) => enums.messages.DiscussionMessage = null as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.messages.DiscussionMessage;
+  /** [Channel ID](https://core.telegram.org/api/channel) */
   peer: enums.InputPeer;
+  /** Message ID */
   msg_id: number;
 
   protected get [id](): number {
@@ -10151,10 +11110,14 @@ export class messages_getDiscussionMessage_ extends Function_<enums.messages.Dis
   }
 }
 
+/** Mark a [thread](https://core.telegram.org/api/threads) as read */
 export class messages_readDiscussion_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; msg_id: number; read_max_id: number }) => boolean = null as unknown as (params: { peer: enums.InputPeer; msg_id: number; read_max_id: number }) => boolean;
+  /** Group ID */
   peer: enums.InputPeer;
+  /** ID of message that started the thread */
   msg_id: number;
+  /** ID up to which thread messages were read */
   read_max_id: number;
 
   protected get [id](): number {
@@ -10189,9 +11152,12 @@ export class messages_readDiscussion_ extends Function_<boolean> {
   }
 }
 
+/** [Unpin](https://core.telegram.org/api/pin) all pinned messages */
 export class messages_unpinAllMessages_ extends Function_<enums.messages.AffectedHistory> {
   static __F: (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory = null as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory;
+  /** Chat where to unpin */
   peer: enums.InputPeer;
+  /** [Forum topic](https://core.telegram.org/api/forum#forum-topics) where to unpin */
   top_msg_id?: number;
 
   protected get [id](): number {
@@ -10225,8 +11191,10 @@ export class messages_unpinAllMessages_ extends Function_<enums.messages.Affecte
   }
 }
 
+/** Delete a [chat](https://core.telegram.org/api/channel) */
 export class messages_deleteChat_ extends Function_<boolean> {
   static __F: (params: { chat_id: bigint }) => boolean = null as unknown as (params: { chat_id: bigint }) => boolean;
+  /** Chat ID */
   chat_id: bigint;
 
   protected get [id](): number {
@@ -10255,8 +11223,10 @@ export class messages_deleteChat_ extends Function_<boolean> {
   }
 }
 
+/** Delete the entire phone call history. */
 export class messages_deletePhoneCallHistory_ extends Function_<enums.messages.AffectedFoundMessages> {
   static __F: (params?: { revoke?: true }) => enums.messages.AffectedFoundMessages = null as unknown as (params?: { revoke?: true }) => enums.messages.AffectedFoundMessages;
+  /** Whether to remove phone call history for participants as well */
   revoke?: true;
 
   protected get [id](): number {
@@ -10287,8 +11257,10 @@ export class messages_deletePhoneCallHistory_ extends Function_<enums.messages.A
   }
 }
 
+/** Obtains information about a chat export file, generated by a foreign chat app, [click here for more info about imported chats »](https://core.telegram.org/api/import). */
 export class messages_checkHistoryImport_ extends Function_<enums.messages.HistoryImportParsed> {
   static __F: (params: { import_head: string }) => enums.messages.HistoryImportParsed = null as unknown as (params: { import_head: string }) => enums.messages.HistoryImportParsed;
+  /** Beginning of the message file; up to 100 lines. */
   import_head: string;
 
   protected get [id](): number {
@@ -10317,10 +11289,14 @@ export class messages_checkHistoryImport_ extends Function_<enums.messages.Histo
   }
 }
 
+/** Import chat history from a foreign chat app into a specific Telegram chat, [click here for more info about imported chats »](https://core.telegram.org/api/import). */
 export class messages_initHistoryImport_ extends Function_<enums.messages.HistoryImport> {
   static __F: (params: { peer: enums.InputPeer; file: enums.InputFile; media_count: number }) => enums.messages.HistoryImport = null as unknown as (params: { peer: enums.InputPeer; file: enums.InputFile; media_count: number }) => enums.messages.HistoryImport;
+  /** The Telegram chat where the [history should be imported](https://core.telegram.org/api/import). */
   peer: enums.InputPeer;
+  /** File with messages to import. */
   file: enums.InputFile;
+  /** Number of media files associated with the chat that will be uploaded using [messages.uploadImportedMedia](https://core.telegram.org/method/messages.uploadImportedMedia). */
   media_count: number;
 
   protected get [id](): number {
@@ -10355,11 +11331,16 @@ export class messages_initHistoryImport_ extends Function_<enums.messages.Histor
   }
 }
 
+/** Upload a media file associated with an [imported chat, click here for more info »](https://core.telegram.org/api/import). */
 export class messages_uploadImportedMedia_ extends Function_<enums.MessageMedia> {
   static __F: (params: { peer: enums.InputPeer; import_id: bigint; file_name: string; media: enums.InputMedia }) => enums.MessageMedia = null as unknown as (params: { peer: enums.InputPeer; import_id: bigint; file_name: string; media: enums.InputMedia }) => enums.MessageMedia;
+  /** The Telegram chat where the media will be imported */
   peer: enums.InputPeer;
+  /** Identifier of a [history import session](https://core.telegram.org/api/import), returned by [messages.initHistoryImport](https://core.telegram.org/method/messages.initHistoryImport) */
   import_id: bigint;
+  /** File name */
   file_name: string;
+  /** Media metadata */
   media: enums.InputMedia;
 
   protected get [id](): number {
@@ -10397,9 +11378,13 @@ export class messages_uploadImportedMedia_ extends Function_<enums.MessageMedia>
   }
 }
 
+/** Complete the [history import process](https://core.telegram.org/api/import), importing all messages into the chat.  
+To be called only after initializing the import with [messages.initHistoryImport](https://core.telegram.org/method/messages.initHistoryImport) and uploading all files using [messages.uploadImportedMedia](https://core.telegram.org/method/messages.uploadImportedMedia). */
 export class messages_startHistoryImport_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; import_id: bigint }) => boolean = null as unknown as (params: { peer: enums.InputPeer; import_id: bigint }) => boolean;
+  /** The Telegram chat where the messages should be [imported, click here for more info »](https://core.telegram.org/api/import) */
   peer: enums.InputPeer;
+  /** Identifier of a history import session, returned by [messages.initHistoryImport](https://core.telegram.org/method/messages.initHistoryImport). */
   import_id: bigint;
 
   protected get [id](): number {
@@ -10431,13 +11416,20 @@ export class messages_startHistoryImport_ extends Function_<boolean> {
   }
 }
 
+/** Get info about the chat invites of a specific chat */
 export class messages_getExportedChatInvites_ extends Function_<enums.messages.ExportedChatInvites> {
   static __F: (params: { revoked?: true; peer: enums.InputPeer; admin_id: enums.InputUser; offset_date?: number; offset_link?: string; limit: number }) => enums.messages.ExportedChatInvites = null as unknown as (params: { revoked?: true; peer: enums.InputPeer; admin_id: enums.InputUser; offset_date?: number; offset_link?: string; limit: number }) => enums.messages.ExportedChatInvites;
+  /** Whether to fetch revoked chat invites */
   revoked?: true;
+  /** Chat */
   peer: enums.InputPeer;
+  /** Whether to only fetch chat invites from this admin */
   admin_id: enums.InputUser;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_date?: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_link?: string;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -10483,9 +11475,12 @@ export class messages_getExportedChatInvites_ extends Function_<enums.messages.E
   }
 }
 
+/** Get info about a chat invite */
 export class messages_getExportedChatInvite_ extends Function_<enums.messages.ExportedChatInvite> {
   static __F: (params: { peer: enums.InputPeer; link: string }) => enums.messages.ExportedChatInvite = null as unknown as (params: { peer: enums.InputPeer; link: string }) => enums.messages.ExportedChatInvite;
+  /** Chat */
   peer: enums.InputPeer;
+  /** Invite link */
   link: string;
 
   protected get [id](): number {
@@ -10517,14 +11512,22 @@ export class messages_getExportedChatInvite_ extends Function_<enums.messages.Ex
   }
 }
 
+/** Edit an exported chat invite */
 export class messages_editExportedChatInvite_ extends Function_<enums.messages.ExportedChatInvite> {
   static __F: (params: { revoked?: true; peer: enums.InputPeer; link: string; expire_date?: number; usage_limit?: number; request_needed?: boolean; title?: string }) => enums.messages.ExportedChatInvite = null as unknown as (params: { revoked?: true; peer: enums.InputPeer; link: string; expire_date?: number; usage_limit?: number; request_needed?: boolean; title?: string }) => enums.messages.ExportedChatInvite;
+  /** Whether to revoke the chat invite */
   revoked?: true;
+  /** Chat */
   peer: enums.InputPeer;
+  /** Invite link */
   link: string;
+  /** New expiration date */
   expire_date?: number;
+  /** Maximum number of users that can join using this link */
   usage_limit?: number;
+  /** Whether admin confirmation is required before admitting each separate user into the chat */
   request_needed?: boolean;
+  /** Description of the invite link, visible only to administrators */
   title?: string;
 
   protected get [id](): number {
@@ -10573,9 +11576,12 @@ export class messages_editExportedChatInvite_ extends Function_<enums.messages.E
   }
 }
 
+/** Delete all revoked chat invites */
 export class messages_deleteRevokedExportedChatInvites_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; admin_id: enums.InputUser }) => boolean = null as unknown as (params: { peer: enums.InputPeer; admin_id: enums.InputUser }) => boolean;
+  /** Chat */
   peer: enums.InputPeer;
+  /** ID of the admin that originally generated the revoked chat invites */
   admin_id: enums.InputUser;
 
   protected get [id](): number {
@@ -10607,9 +11613,12 @@ export class messages_deleteRevokedExportedChatInvites_ extends Function_<boolea
   }
 }
 
+/** Delete a chat invite */
 export class messages_deleteExportedChatInvite_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; link: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; link: string }) => boolean;
+  /** Peer */
   peer: enums.InputPeer;
+  /** Invite link */
   link: string;
 
   protected get [id](): number {
@@ -10641,8 +11650,10 @@ export class messages_deleteExportedChatInvite_ extends Function_<boolean> {
   }
 }
 
+/** Get info about chat invites generated by admins. */
 export class messages_getAdminsWithInvites_ extends Function_<enums.messages.ChatAdminsWithInvites> {
   static __F: (params: { peer: enums.InputPeer }) => enums.messages.ChatAdminsWithInvites = null as unknown as (params: { peer: enums.InputPeer }) => enums.messages.ChatAdminsWithInvites;
+  /** Chat */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -10671,14 +11682,22 @@ export class messages_getAdminsWithInvites_ extends Function_<enums.messages.Cha
   }
 }
 
+/** Get info about the users that joined the chat using a specific chat invite */
 export class messages_getChatInviteImporters_ extends Function_<enums.messages.ChatInviteImporters> {
   static __F: (params: { requested?: true; peer: enums.InputPeer; link?: string; q?: string; offset_date: number; offset_user: enums.InputUser; limit: number }) => enums.messages.ChatInviteImporters = null as unknown as (params: { requested?: true; peer: enums.InputPeer; link?: string; q?: string; offset_date: number; offset_user: enums.InputUser; limit: number }) => enums.messages.ChatInviteImporters;
+  /** If set, only returns info about users with pending [join requests »](https://core.telegram.org/api/invites#join-requests) */
   requested?: true;
+  /** Chat */
   peer: enums.InputPeer;
+  /** Invite link */
   link?: string;
+  /** Search for a user in the pending [join requests »](https://core.telegram.org/api/invites#join-requests) list: only available when the `requested` flag is set, cannot be used together with a specific `link`. */
   q?: string;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_date: number;
+  /** User ID for [pagination](https://core.telegram.org/api/offsets): if set, `offset_date` must also be set. */
   offset_user: enums.InputUser;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -10727,9 +11746,12 @@ export class messages_getChatInviteImporters_ extends Function_<enums.messages.C
   }
 }
 
+/** Set maximum Time-To-Live of all messages in the specified chat */
 export class messages_setHistoryTTL_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; period: number }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; period: number }) => enums.Updates;
+  /** The dialog */
   peer: enums.InputPeer;
+  /** Automatically delete all messages sent in the chat after this many seconds */
   period: number;
 
   protected get [id](): number {
@@ -10761,8 +11783,10 @@ export class messages_setHistoryTTL_ extends Function_<enums.Updates> {
   }
 }
 
+/** Check whether chat history exported from another chat app can be [imported into a specific Telegram chat, click here for more info »](https://core.telegram.org/api/import). */
 export class messages_checkHistoryImportPeer_ extends Function_<enums.messages.CheckedHistoryImportPeer> {
   static __F: (params: { peer: enums.InputPeer }) => enums.messages.CheckedHistoryImportPeer = null as unknown as (params: { peer: enums.InputPeer }) => enums.messages.CheckedHistoryImportPeer;
+  /** The chat where we want to [import history »](https://core.telegram.org/api/import). */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -10791,9 +11815,12 @@ export class messages_checkHistoryImportPeer_ extends Function_<enums.messages.C
   }
 }
 
+/** Change the chat theme of a certain chat */
 export class messages_setChatTheme_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; emoticon: string }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; emoticon: string }) => enums.Updates;
+  /** Private chat where to change theme */
   peer: enums.InputPeer;
+  /** Emoji, identifying a specific chat theme; a list of chat themes can be fetched using [account.getChatThemes](https://core.telegram.org/method/account.getChatThemes) */
   emoticon: string;
 
   protected get [id](): number {
@@ -10825,9 +11852,12 @@ export class messages_setChatTheme_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get which users read a specific message: only available for groups and supergroups with less than [`chat_read_mark_size_threshold` members](https://core.telegram.org/api/config#chat-read-mark-size-threshold), read receipts will be stored for [`chat_read_mark_expire_period` seconds after the message was sent](https://core.telegram.org/api/config#chat-read-mark-expire-period), see [client configuration for more info »](https://core.telegram.org/api/config#client-configuration). */
 export class messages_getMessageReadParticipants_ extends Function_<enums.ReadParticipantDate[]> {
   static __F: (params: { peer: enums.InputPeer; msg_id: number }) => enums.ReadParticipantDate[] = null as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.ReadParticipantDate[];
+  /** Dialog */
   peer: enums.InputPeer;
+  /** Message ID */
   msg_id: number;
 
   protected get [id](): number {
@@ -10859,12 +11889,18 @@ export class messages_getMessageReadParticipants_ extends Function_<enums.ReadPa
   }
 }
 
+/** Returns information about the next messages of the specified type in the chat split by days. */
 export class messages_getSearchResultsCalendar_ extends Function_<enums.messages.SearchResultsCalendar> {
   static __F: (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; offset_date: number }) => enums.messages.SearchResultsCalendar = null as unknown as (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; offset_date: number }) => enums.messages.SearchResultsCalendar;
+  /** Peer where to search */
   peer: enums.InputPeer;
+  /** Search within the [saved message dialog »](https://core.telegram.org/api/saved-messages) with this ID. */
   saved_peer_id?: enums.InputPeer;
+  /** Message filter, [inputMessagesFilterEmpty](https://core.telegram.org/constructor/inputMessagesFilterEmpty), [inputMessagesFilterMyMentions](https://core.telegram.org/constructor/inputMessagesFilterMyMentions) filters are not supported by this method. */
   filter: enums.MessagesFilter;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_id: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_date: number;
 
   protected get [id](): number {
@@ -10907,12 +11943,18 @@ export class messages_getSearchResultsCalendar_ extends Function_<enums.messages
   }
 }
 
+/** Returns sparse positions of messages of the specified type in the chat to be used for shared media scroll implementation. */
 export class messages_getSearchResultsPositions_ extends Function_<enums.messages.SearchResultsPositions> {
   static __F: (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; limit: number }) => enums.messages.SearchResultsPositions = null as unknown as (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; limit: number }) => enums.messages.SearchResultsPositions;
+  /** Peer where to search */
   peer: enums.InputPeer;
+  /** Search within the [saved message dialog »](https://core.telegram.org/api/saved-messages) with this ID. */
   saved_peer_id?: enums.InputPeer;
+  /** Message filter, [inputMessagesFilterEmpty](https://core.telegram.org/constructor/inputMessagesFilterEmpty), [inputMessagesFilterMyMentions](https://core.telegram.org/constructor/inputMessagesFilterMyMentions) filters are not supported by this method. */
   filter: enums.MessagesFilter;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_id: number;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -10955,10 +11997,14 @@ export class messages_getSearchResultsPositions_ extends Function_<enums.message
   }
 }
 
+/** Dismiss or approve a chat [join request](https://core.telegram.org/api/invites#join-requests) related to a specific chat or channel. */
 export class messages_hideChatJoinRequest_ extends Function_<enums.Updates> {
   static __F: (params: { approved?: true; peer: enums.InputPeer; user_id: enums.InputUser }) => enums.Updates = null as unknown as (params: { approved?: true; peer: enums.InputPeer; user_id: enums.InputUser }) => enums.Updates;
+  /** Whether to dismiss or approve the chat [join request »](https://core.telegram.org/api/invites#join-requests) */
   approved?: true;
+  /** The chat or channel */
   peer: enums.InputPeer;
+  /** The user whose [join request »](https://core.telegram.org/api/invites#join-requests) should be dismissed or approved */
   user_id: enums.InputUser;
 
   protected get [id](): number {
@@ -10995,10 +12041,14 @@ export class messages_hideChatJoinRequest_ extends Function_<enums.Updates> {
   }
 }
 
+/** Dismiss or approve all [join requests](https://core.telegram.org/api/invites#join-requests) related to a specific chat or channel. */
 export class messages_hideAllChatJoinRequests_ extends Function_<enums.Updates> {
   static __F: (params: { approved?: true; peer: enums.InputPeer; link?: string }) => enums.Updates = null as unknown as (params: { approved?: true; peer: enums.InputPeer; link?: string }) => enums.Updates;
+  /** Whether to dismiss or approve all chat [join requests »](https://core.telegram.org/api/invites#join-requests) */
   approved?: true;
+  /** The chat or channel */
   peer: enums.InputPeer;
+  /** Only dismiss or approve [join requests »](https://core.telegram.org/api/invites#join-requests) initiated using this invite link */
   link?: string;
 
   protected get [id](): number {
@@ -11035,9 +12085,12 @@ export class messages_hideAllChatJoinRequests_ extends Function_<enums.Updates> 
   }
 }
 
+/** Enable or disable [content protection](https://telegram.org/blog/protected-content-delete-by-date-and-more) on a channel or chat */
 export class messages_toggleNoForwards_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; enabled: boolean }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; enabled: boolean }) => enums.Updates;
+  /** The chat or channel */
   peer: enums.InputPeer;
+  /** Enable or disable content protection */
   enabled: boolean;
 
   protected get [id](): number {
@@ -11069,9 +12122,12 @@ export class messages_toggleNoForwards_ extends Function_<enums.Updates> {
   }
 }
 
+/** Change the default peer that should be used when sending messages, reactions, poll votes to a specific group */
 export class messages_saveDefaultSendAs_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; send_as: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer; send_as: enums.InputPeer }) => boolean;
+  /** Group */
   peer: enums.InputPeer;
+  /** The default peer that should be used when sending messages to the group */
   send_as: enums.InputPeer;
 
   protected get [id](): number {
@@ -11103,12 +12159,18 @@ export class messages_saveDefaultSendAs_ extends Function_<boolean> {
   }
 }
 
+/** React to message. */
 export class messages_sendReaction_ extends Function_<enums.Updates> {
   static __F: (params: { big?: true; add_to_recent?: true; peer: enums.InputPeer; msg_id: number; reaction?: Array<enums.Reaction> }) => enums.Updates = null as unknown as (params: { big?: true; add_to_recent?: true; peer: enums.InputPeer; msg_id: number; reaction?: Array<enums.Reaction> }) => enums.Updates;
+  /** Whether a bigger and longer reaction should be shown */
   big?: true;
+  /** Whether to add this reaction to the [recent reactions list »](https://core.telegram.org/api/reactions#recent-reactions). */
   add_to_recent?: true;
+  /** Peer */
   peer: enums.InputPeer;
+  /** Message ID to react to */
   msg_id: number;
+  /** A list of reactions */
   reaction?: Array<enums.Reaction>;
 
   protected get [id](): number {
@@ -11151,9 +12213,12 @@ export class messages_sendReaction_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get [message reactions »](https://core.telegram.org/api/reactions) */
 export class messages_getMessagesReactions_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
+  /** Peer */
   peer: enums.InputPeer;
+  /** Message IDs */
   id: Array<number>;
 
   protected get [id](): number {
@@ -11185,12 +12250,18 @@ export class messages_getMessagesReactions_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get [message reaction](https://core.telegram.org/api/reactions) list, along with the sender of each reaction. */
 export class messages_getMessageReactionsList_ extends Function_<enums.messages.MessageReactionsList> {
   static __F: (params: { peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) => enums.messages.MessageReactionsList = null as unknown as (params: { peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) => enums.messages.MessageReactionsList;
+  /** Peer */
   peer: enums.InputPeer;
+  /** Message ID */
   id: number;
+  /** Get only reactions of this type */
   reaction?: enums.Reaction;
+  /** Offset for pagination (taken from the `next_offset` field of the returned [messages.MessageReactionsList](https://core.telegram.org/type/messages.MessageReactionsList)); empty in the first request. */
   offset?: string;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -11233,9 +12304,12 @@ export class messages_getMessageReactionsList_ extends Function_<enums.messages.
   }
 }
 
+/** Change the set of [message reactions »](https://core.telegram.org/api/reactions) that can be used in a certain group, supergroup or channel */
 export class messages_setChatAvailableReactions_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; available_reactions: enums.ChatReactions }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; available_reactions: enums.ChatReactions }) => enums.Updates;
+  /** Group where to apply changes */
   peer: enums.InputPeer;
+  /** Allowed reaction emojis */
   available_reactions: enums.ChatReactions;
 
   protected get [id](): number {
@@ -11267,8 +12341,10 @@ export class messages_setChatAvailableReactions_ extends Function_<enums.Updates
   }
 }
 
+/** Obtain available [message reactions »](https://core.telegram.org/api/reactions) */
 export class messages_getAvailableReactions_ extends Function_<enums.messages.AvailableReactions> {
   static __F: (params: { hash: number }) => enums.messages.AvailableReactions = null as unknown as (params: { hash: number }) => enums.messages.AvailableReactions;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
 
   protected get [id](): number {
@@ -11297,8 +12373,10 @@ export class messages_getAvailableReactions_ extends Function_<enums.messages.Av
   }
 }
 
+/** Change default emoji reaction to use in the quick reaction menu: the value is synced across devices and can be fetched using [help.getConfig, `reactions_default` field](https://core.telegram.org/method/help.getConfig). */
 export class messages_setDefaultReaction_ extends Function_<boolean> {
   static __F: (params: { reaction: enums.Reaction }) => boolean = null as unknown as (params: { reaction: enums.Reaction }) => boolean;
+  /** New emoji reaction */
   reaction: enums.Reaction;
 
   protected get [id](): number {
@@ -11327,11 +12405,16 @@ export class messages_setDefaultReaction_ extends Function_<boolean> {
   }
 }
 
+/** Translate a given text. */
 export class messages_translateText_ extends Function_<enums.messages.TranslatedText> {
   static __F: (params: { peer?: enums.InputPeer; id?: Array<number>; text?: Array<enums.TextWithEntities>; to_lang: string }) => enums.messages.TranslatedText = null as unknown as (params: { peer?: enums.InputPeer; id?: Array<number>; text?: Array<enums.TextWithEntities>; to_lang: string }) => enums.messages.TranslatedText;
+  /** If the text is a chat message, the peer ID */
   peer?: enums.InputPeer;
+  /** A list of message IDs to translate */
   id?: Array<number>;
+  /** A list of styled messages to translate */
   text?: Array<enums.TextWithEntities>;
+  /** Two-letter ISO 639-1 language code of the language to which the message is translated */
   to_lang: string;
 
   protected get [id](): number {
@@ -11371,14 +12454,22 @@ export class messages_translateText_ extends Function_<enums.messages.Translated
   }
 }
 
+/** Get unread reactions to messages you sent */
 export class messages_getUnreadReactions_ extends Function_<enums.messages.Messages> {
   static __F: (params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) => enums.messages.Messages;
+  /** Peer */
   peer: enums.InputPeer;
+  /** If set, considers only reactions to messages within the specified [forum topic](https://core.telegram.org/api/forum#forum-topics) */
   top_msg_id?: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_id: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   add_offset: number;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
+  /** Only return reactions for messages up until this message ID */
   max_id: number;
+  /** Only return reactions for messages starting from this message ID */
   min_id: number;
 
   protected get [id](): number {
@@ -11427,9 +12518,12 @@ export class messages_getUnreadReactions_ extends Function_<enums.messages.Messa
   }
 }
 
+/** Mark [message reactions »](https://core.telegram.org/api/reactions) as read */
 export class messages_readReactions_ extends Function_<enums.messages.AffectedHistory> {
   static __F: (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory = null as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory;
+  /** Peer */
   peer: enums.InputPeer;
+  /** Mark as read only reactions to messages within the specified [forum topic](https://core.telegram.org/api/forum#forum-topics) */
   top_msg_id?: number;
 
   protected get [id](): number {
@@ -11463,10 +12557,15 @@ export class messages_readReactions_ extends Function_<enums.messages.AffectedHi
   }
 }
 
+/** View and search recently sent media.  
+This method does not support pagination. */
 export class messages_searchSentMedia_ extends Function_<enums.messages.Messages> {
   static __F: (params: { q: string; filter: enums.MessagesFilter; limit: number }) => enums.messages.Messages = null as unknown as (params: { q: string; filter: enums.MessagesFilter; limit: number }) => enums.messages.Messages;
+  /** Optional search query */
   q: string;
+  /** Message filter */
   filter: enums.MessagesFilter;
+  /** Maximum number of results to return (max 100). */
   limit: number;
 
   protected get [id](): number {
@@ -11501,8 +12600,10 @@ export class messages_searchSentMedia_ extends Function_<enums.messages.Messages
   }
 }
 
+/** Returns installed attachment menu [bot mini apps »](https://core.telegram.org/api/bots/attach) */
 export class messages_getAttachMenuBots_ extends Function_<enums.AttachMenuBots> {
   static __F: (params: { hash: bigint }) => enums.AttachMenuBots = null as unknown as (params: { hash: bigint }) => enums.AttachMenuBots;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -11531,8 +12632,10 @@ export class messages_getAttachMenuBots_ extends Function_<enums.AttachMenuBots>
   }
 }
 
+/** Returns attachment menu entry for a [bot mini app that can be launched from the attachment menu »](https://core.telegram.org/api/bots/attach) */
 export class messages_getAttachMenuBot_ extends Function_<enums.AttachMenuBotsBot> {
   static __F: (params: { bot: enums.InputUser }) => enums.AttachMenuBotsBot = null as unknown as (params: { bot: enums.InputUser }) => enums.AttachMenuBotsBot;
+  /** Bot ID */
   bot: enums.InputUser;
 
   protected get [id](): number {
@@ -11561,10 +12664,14 @@ export class messages_getAttachMenuBot_ extends Function_<enums.AttachMenuBotsBo
   }
 }
 
+/** Enable or disable [web bot attachment menu »](https://core.telegram.org/api/bots/attach) */
 export class messages_toggleBotInAttachMenu_ extends Function_<boolean> {
   static __F: (params: { write_allowed?: true; bot: enums.InputUser; enabled: boolean }) => boolean = null as unknown as (params: { write_allowed?: true; bot: enums.InputUser; enabled: boolean }) => boolean;
+  /** Whether the user authorizes the bot to write messages to them, if requested by [attachMenuBot](https://core.telegram.org/constructor/attachMenuBot).`request_write_access` */
   write_allowed?: true;
+  /** Bot ID */
   bot: enums.InputUser;
+  /** Toggle */
   enabled: boolean;
 
   protected get [id](): number {
@@ -11601,17 +12708,28 @@ export class messages_toggleBotInAttachMenu_ extends Function_<boolean> {
   }
 }
 
+/** Open a [bot mini app](https://core.telegram.org/bots/webapps), sending over user information after user confirmation. */
 export class messages_requestWebView_ extends Function_<enums.WebViewResult> {
   static __F: (params: { from_bot_menu?: true; silent?: true; peer: enums.InputPeer; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) => enums.WebViewResult = null as unknown as (params: { from_bot_menu?: true; silent?: true; peer: enums.InputPeer; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) => enums.WebViewResult;
+  /** Whether the webview was opened by clicking on the bot's [menu button »](https://core.telegram.org/api/bots/menu). */
   from_bot_menu?: true;
+  /** Whether the inline message that will be sent by the bot on behalf of the user once the web app interaction is [terminated](https://core.telegram.org/method/messages.sendWebViewResultMessage) should be sent silently (no notifications for the receivers). */
   silent?: true;
+  /** Dialog where the web app is being opened, and where the resulting message will be sent (see the [docs for more info »](https://core.telegram.org/api/bots/webapps)). */
   peer: enums.InputPeer;
+  /** Bot that owns the [web app](https://core.telegram.org/api/bots/webapps) */
   bot: enums.InputUser;
+  /** [Web app URL](https://core.telegram.org/api/bots/webapps) */
   url?: string;
+  /** If the web app was opened from the attachment menu using a [attachment menu deep link](https://core.telegram.org/api/links#bot-attachment-or-side-menu-links), `start_param` should contain the `data` from the `startattach` parameter. */
   start_param?: string;
+  /** [Theme parameters »](https://core.telegram.org/api/bots/webapps#theme-parameters) */
   theme_params?: enums.DataJSON;
+  /** Short name of the application; 0-64 English letters, digits, and underscores */
   platform: string;
+  /** If set, indicates that the inline message that will be sent by the bot on behalf of the user once the web app interaction is [terminated](https://core.telegram.org/method/messages.sendWebViewResultMessage) should be sent in reply to the specified message or story. */
   reply_to?: enums.InputReplyTo;
+  /** Open the web app as the specified peer, sending the resulting the message as the specified peer. */
   send_as?: enums.InputPeer;
 
   protected get [id](): number {
@@ -11669,13 +12787,20 @@ export class messages_requestWebView_ extends Function_<enums.WebViewResult> {
   }
 }
 
+/** Indicate to the server (from the user side) that the user is still using a web app. */
 export class messages_prolongWebView_ extends Function_<boolean> {
   static __F: (params: { silent?: true; peer: enums.InputPeer; bot: enums.InputUser; query_id: bigint; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) => boolean = null as unknown as (params: { silent?: true; peer: enums.InputPeer; bot: enums.InputUser; query_id: bigint; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) => boolean;
+  /** Whether the inline message that will be sent by the bot on behalf of the user once the web app interaction is [terminated](https://core.telegram.org/method/messages.sendWebViewResultMessage) should be sent silently (no notifications for the receivers). */
   silent?: true;
+  /** Dialog where the web app was opened. */
   peer: enums.InputPeer;
+  /** Bot that owns the [web app](https://core.telegram.org/api/bots/webapps) */
   bot: enums.InputUser;
+  /** Web app interaction ID obtained from [messages.requestWebView](https://core.telegram.org/method/messages.requestWebView) */
   query_id: bigint;
+  /** If set, indicates that the inline message that will be sent by the bot on behalf of the user once the web app interaction is [terminated](https://core.telegram.org/method/messages.sendWebViewResultMessage) should be sent in reply to the specified message or story. */
   reply_to?: enums.InputReplyTo;
+  /** Open the web app as the specified peer */
   send_as?: enums.InputPeer;
 
   protected get [id](): number {
@@ -11721,14 +12846,22 @@ export class messages_prolongWebView_ extends Function_<boolean> {
   }
 }
 
+/** Open a [bot mini app](https://core.telegram.org/api/bots/webapps). */
 export class messages_requestSimpleWebView_ extends Function_<enums.SimpleWebViewResult> {
   static __F: (params: { from_switch_webview?: true; from_side_menu?: true; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string }) => enums.SimpleWebViewResult = null as unknown as (params: { from_switch_webview?: true; from_side_menu?: true; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string }) => enums.SimpleWebViewResult;
+  /** Whether the webapp was opened by clicking on the `switch_webview` button shown on top of the inline results list returned by [messages.getInlineBotResults](https://core.telegram.org/method/messages.getInlineBotResults). */
   from_switch_webview?: true;
+  /** Set this flag if opening the Mini App from the installed [side menu entry »](https://core.telegram.org/api/bots/attach) or from a [Mini App link »](https://core.telegram.org/api/links#mini-app-links). */
   from_side_menu?: true;
+  /** Bot that owns the mini app */
   bot: enums.InputUser;
+  /** Web app URL, if opening from a keyboard button or inline result */
   url?: string;
+  /** Start parameter, if opening from a [Mini App link »](https://core.telegram.org/api/links#mini-app-links). */
   start_param?: string;
+  /** [Theme parameters »](https://core.telegram.org/api/bots/webapps#theme-parameters) */
   theme_params?: enums.DataJSON;
+  /** Short name of the application; 0-64 English letters, digits, and underscores */
   platform: string;
 
   protected get [id](): number {
@@ -11777,9 +12910,12 @@ export class messages_requestSimpleWebView_ extends Function_<enums.SimpleWebVie
   }
 }
 
+/** Terminate webview interaction started with [messages.requestWebView](https://core.telegram.org/method/messages.requestWebView), sending the specified message to the chat on behalf of the user. */
 export class messages_sendWebViewResultMessage_ extends Function_<enums.WebViewMessageSent> {
   static __F: (params: { bot_query_id: string; result: enums.InputBotInlineResult }) => enums.WebViewMessageSent = null as unknown as (params: { bot_query_id: string; result: enums.InputBotInlineResult }) => enums.WebViewMessageSent;
+  /** Webview interaction ID obtained from [messages.requestWebView](https://core.telegram.org/method/messages.requestWebView) */
   bot_query_id: string;
+  /** Message to send */
   result: enums.InputBotInlineResult;
 
   protected get [id](): number {
@@ -11811,11 +12947,16 @@ export class messages_sendWebViewResultMessage_ extends Function_<enums.WebViewM
   }
 }
 
+/** Used by the user to relay data from an opened [reply keyboard bot mini app](https://core.telegram.org/api/bots/webapps) to the bot that owns it. */
 export class messages_sendWebViewData_ extends Function_<enums.Updates> {
   static __F: (params: { bot: enums.InputUser; random_id: bigint; button_text: string; data: string }) => enums.Updates = null as unknown as (params: { bot: enums.InputUser; random_id: bigint; button_text: string; data: string }) => enums.Updates;
+  /** Bot that owns the web app */
   bot: enums.InputUser;
+  /** Unique client message ID to prevent duplicate sending of the same event */
   random_id: bigint;
+  /** Text of the [keyboardButtonSimpleWebView](https://core.telegram.org/constructor/keyboardButtonSimpleWebView) that was pressed to open the web app. */
   button_text: string;
+  /** Data to relay to the bot, obtained from a [`web_app_data_send` JS event](https://core.telegram.org/api/web-events#web-app-data-send). */
   data: string;
 
   protected get [id](): number {
@@ -11853,9 +12994,12 @@ export class messages_sendWebViewData_ extends Function_<enums.Updates> {
   }
 }
 
+/** [Transcribe voice message](https://core.telegram.org/api/transcribe) */
 export class messages_transcribeAudio_ extends Function_<enums.messages.TranscribedAudio> {
   static __F: (params: { peer: enums.InputPeer; msg_id: number }) => enums.messages.TranscribedAudio = null as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.messages.TranscribedAudio;
+  /** Peer ID where the voice message was sent */
   peer: enums.InputPeer;
+  /** Voice message ID */
   msg_id: number;
 
   protected get [id](): number {
@@ -11887,11 +13031,16 @@ export class messages_transcribeAudio_ extends Function_<enums.messages.Transcri
   }
 }
 
+/** Rate [transcribed voice message](https://core.telegram.org/api/transcribe) */
 export class messages_rateTranscribedAudio_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; msg_id: number; transcription_id: bigint; good: boolean }) => boolean = null as unknown as (params: { peer: enums.InputPeer; msg_id: number; transcription_id: bigint; good: boolean }) => boolean;
+  /** Peer where the voice message was sent */
   peer: enums.InputPeer;
+  /** Message ID */
   msg_id: number;
+  /** Transcription ID */
   transcription_id: bigint;
+  /** Whether the transcription was correct */
   good: boolean;
 
   protected get [id](): number {
@@ -11929,8 +13078,10 @@ export class messages_rateTranscribedAudio_ extends Function_<boolean> {
   }
 }
 
+/** Fetch [custom emoji stickers »](https://core.telegram.org/api/custom-emoji). */
 export class messages_getCustomEmojiDocuments_ extends Function_<enums.Document[]> {
   static __F: (params: { document_id: Array<bigint> }) => enums.Document[] = null as unknown as (params: { document_id: Array<bigint> }) => enums.Document[];
+  /** [Custom emoji](https://core.telegram.org/api/custom-emoji) IDs from a [messageEntityCustomEmoji](https://core.telegram.org/constructor/messageEntityCustomEmoji). */
   document_id: Array<bigint>;
 
   protected get [id](): number {
@@ -11959,8 +13110,10 @@ export class messages_getCustomEmojiDocuments_ extends Function_<enums.Document[
   }
 }
 
+/** Gets the list of currently installed [custom emoji stickersets](https://core.telegram.org/api/custom-emoji). */
 export class messages_getEmojiStickers_ extends Function_<enums.messages.AllStickers> {
   static __F: (params: { hash: bigint }) => enums.messages.AllStickers = null as unknown as (params: { hash: bigint }) => enums.messages.AllStickers;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -11989,8 +13142,10 @@ export class messages_getEmojiStickers_ extends Function_<enums.messages.AllStic
   }
 }
 
+/** Gets featured custom emoji stickersets. */
 export class messages_getFeaturedEmojiStickers_ extends Function_<enums.messages.FeaturedStickers> {
   static __F: (params: { hash: bigint }) => enums.messages.FeaturedStickers = null as unknown as (params: { hash: bigint }) => enums.messages.FeaturedStickers;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -12019,10 +13174,14 @@ export class messages_getFeaturedEmojiStickers_ extends Function_<enums.messages
   }
 }
 
+/** Report a [message reaction](https://core.telegram.org/api/reactions) */
 export class messages_reportReaction_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; id: number; reaction_peer: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer; id: number; reaction_peer: enums.InputPeer }) => boolean;
+  /** Peer where the message was sent */
   peer: enums.InputPeer;
+  /** Message ID */
   id: number;
+  /** Peer that sent the reaction */
   reaction_peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -12057,9 +13216,12 @@ export class messages_reportReaction_ extends Function_<boolean> {
   }
 }
 
+/** Got popular [message reactions](https://core.telegram.org/api/reactions) */
 export class messages_getTopReactions_ extends Function_<enums.messages.Reactions> {
   static __F: (params: { limit: number; hash: bigint }) => enums.messages.Reactions = null as unknown as (params: { limit: number; hash: bigint }) => enums.messages.Reactions;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -12091,9 +13253,12 @@ export class messages_getTopReactions_ extends Function_<enums.messages.Reaction
   }
 }
 
+/** Get recently used [message reactions](https://core.telegram.org/api/reactions) */
 export class messages_getRecentReactions_ extends Function_<enums.messages.Reactions> {
   static __F: (params: { limit: number; hash: bigint }) => enums.messages.Reactions = null as unknown as (params: { limit: number; hash: bigint }) => enums.messages.Reactions;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -12125,6 +13290,7 @@ export class messages_getRecentReactions_ extends Function_<enums.messages.React
   }
 }
 
+/** Clear recently used [message reactions](https://core.telegram.org/api/reactions) */
 export class messages_clearRecentReactions_ extends Function_<boolean> {
   static __F: () => boolean = null as unknown as () => boolean;
   protected get [id](): number {
@@ -12148,9 +13314,12 @@ export class messages_clearRecentReactions_ extends Function_<boolean> {
   }
 }
 
+/** Get information about extended media */
 export class messages_getExtendedMedia_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
+  /** Peer */
   peer: enums.InputPeer;
+  /** Message IDs */
   id: Array<number>;
 
   protected get [id](): number {
@@ -12182,8 +13351,10 @@ export class messages_getExtendedMedia_ extends Function_<enums.Updates> {
   }
 }
 
+/** Changes the default value of the Time-To-Live setting, applied to all new chats. */
 export class messages_setDefaultHistoryTTL_ extends Function_<boolean> {
   static __F: (params: { period: number }) => boolean = null as unknown as (params: { period: number }) => boolean;
+  /** The new default Time-To-Live of all messages sent in new chats. */
   period: number;
 
   protected get [id](): number {
@@ -12212,6 +13383,7 @@ export class messages_setDefaultHistoryTTL_ extends Function_<boolean> {
   }
 }
 
+/** Gets the default value of the Time-To-Live setting, applied to all new chats. */
 export class messages_getDefaultHistoryTTL_ extends Function_<enums.DefaultHistoryTTL> {
   static __F: () => enums.DefaultHistoryTTL = null as unknown as () => enums.DefaultHistoryTTL;
   protected get [id](): number {
@@ -12235,11 +13407,16 @@ export class messages_getDefaultHistoryTTL_ extends Function_<enums.DefaultHisto
   }
 }
 
+/** Send one or more chosen peers, as requested by a [keyboardButtonRequestPeer](https://core.telegram.org/constructor/keyboardButtonRequestPeer) button. */
 export class messages_sendBotRequestedPeer_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; msg_id: number; button_id: number; requested_peers: Array<enums.InputPeer> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; msg_id: number; button_id: number; requested_peers: Array<enums.InputPeer> }) => enums.Updates;
+  /** The bot that sent the [keyboardButtonRequestPeer](https://core.telegram.org/constructor/keyboardButtonRequestPeer) button. */
   peer: enums.InputPeer;
+  /** ID of the message that contained the reply keyboard with the [keyboardButtonRequestPeer](https://core.telegram.org/constructor/keyboardButtonRequestPeer) button. */
   msg_id: number;
+  /** The `button_id` field from the [keyboardButtonRequestPeer](https://core.telegram.org/constructor/keyboardButtonRequestPeer) constructor. */
   button_id: number;
+  /** The chosen peers. */
   requested_peers: Array<enums.InputPeer>;
 
   protected get [id](): number {
@@ -12277,8 +13454,10 @@ export class messages_sendBotRequestedPeer_ extends Function_<enums.Updates> {
   }
 }
 
+/** Represents a list of [emoji categories](https://core.telegram.org/api/custom-emoji#emoji-categories), to be used when selecting [custom emojis](https://core.telegram.org/api/custom-emoji). */
 export class messages_getEmojiGroups_ extends Function_<enums.messages.EmojiGroups> {
   static __F: (params: { hash: number }) => enums.messages.EmojiGroups = null as unknown as (params: { hash: number }) => enums.messages.EmojiGroups;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
 
   protected get [id](): number {
@@ -12307,8 +13486,10 @@ export class messages_getEmojiGroups_ extends Function_<enums.messages.EmojiGrou
   }
 }
 
+/** Represents a list of [emoji categories](https://core.telegram.org/api/custom-emoji#emoji-categories), to be used when selecting custom emojis to set as [custom emoji status](https://core.telegram.org/api). */
 export class messages_getEmojiStatusGroups_ extends Function_<enums.messages.EmojiGroups> {
   static __F: (params: { hash: number }) => enums.messages.EmojiGroups = null as unknown as (params: { hash: number }) => enums.messages.EmojiGroups;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
 
   protected get [id](): number {
@@ -12337,8 +13518,10 @@ export class messages_getEmojiStatusGroups_ extends Function_<enums.messages.Emo
   }
 }
 
+/** Represents a list of [emoji categories](https://core.telegram.org/api/custom-emoji#emoji-categories), to be used when selecting custom emojis to set as [profile picture](https://core.telegram.org/api/files#sticker-profile-pictures). */
 export class messages_getEmojiProfilePhotoGroups_ extends Function_<enums.messages.EmojiGroups> {
   static __F: (params: { hash: number }) => enums.messages.EmojiGroups = null as unknown as (params: { hash: number }) => enums.messages.EmojiGroups;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
 
   protected get [id](): number {
@@ -12367,9 +13550,12 @@ export class messages_getEmojiProfilePhotoGroups_ extends Function_<enums.messag
   }
 }
 
+/** Look for [custom emojis](https://core.telegram.org/api/custom-emoji) associated to a UTF8 emoji */
 export class messages_searchCustomEmoji_ extends Function_<enums.EmojiList> {
   static __F: (params: { emoticon: string; hash: bigint }) => enums.EmojiList = null as unknown as (params: { emoticon: string; hash: bigint }) => enums.EmojiList;
+  /** The emoji */
   emoticon: string;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -12401,9 +13587,12 @@ export class messages_searchCustomEmoji_ extends Function_<enums.EmojiList> {
   }
 }
 
+/** Show or hide the [real-time chat translation popup](https://core.telegram.org/api/translation) for a certain chat */
 export class messages_togglePeerTranslations_ extends Function_<boolean> {
   static __F: (params: { disabled?: true; peer: enums.InputPeer }) => boolean = null as unknown as (params: { disabled?: true; peer: enums.InputPeer }) => boolean;
+  /** Whether to disable or enable the real-time chat translation popup */
   disabled?: true;
+  /** The peer */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -12437,9 +13626,12 @@ export class messages_togglePeerTranslations_ extends Function_<boolean> {
   }
 }
 
+/** Obtain information about a [direct link Mini App](https://core.telegram.org/api/bots/webapps#direct-link-mini-apps) */
 export class messages_getBotApp_ extends Function_<enums.messages.BotApp> {
   static __F: (params: { app: enums.InputBotApp; hash: bigint }) => enums.messages.BotApp = null as unknown as (params: { app: enums.InputBotApp; hash: bigint }) => enums.messages.BotApp;
+  /** Bot app information obtained from a [Direct Mini App deep link »](https://core.telegram.org/api/links#direct-mini-app-links). */
   app: enums.InputBotApp;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -12471,13 +13663,20 @@ export class messages_getBotApp_ extends Function_<enums.messages.BotApp> {
   }
 }
 
+/** Open a [bot mini app](https://core.telegram.org/bots/webapps) from a [direct Mini App deep link](https://core.telegram.org/api/links#direct-mini-app-links), sending over user information after user confirmation. */
 export class messages_requestAppWebView_ extends Function_<enums.AppWebViewResult> {
   static __F: (params: { write_allowed?: true; peer: enums.InputPeer; app: enums.InputBotApp; start_param?: string; theme_params?: enums.DataJSON; platform: string }) => enums.AppWebViewResult = null as unknown as (params: { write_allowed?: true; peer: enums.InputPeer; app: enums.InputBotApp; start_param?: string; theme_params?: enums.DataJSON; platform: string }) => enums.AppWebViewResult;
+  /** Set this flag if the bot is asking permission to send messages to the user as specified in the [direct Mini App deep link](https://core.telegram.org/api/links#direct-mini-app-links) docs, and the user agreed. */
   write_allowed?: true;
+  /** If the client has clicked on the link in a Telegram chat, pass the chat's peer information; otherwise pass the bot's peer information, instead. */
   peer: enums.InputPeer;
+  /** The app obtained by invoking [messages.getBotApp](https://core.telegram.org/method/messages.getBotApp) as specified in the [direct Mini App deep link](https://core.telegram.org/api/links#direct-mini-app-links) docs. */
   app: enums.InputBotApp;
+  /** If the `startapp` query string parameter is present in the [direct Mini App deep link](https://core.telegram.org/api/links#direct-mini-app-links), pass it to `start_param`. */
   start_param?: string;
+  /** [Theme parameters »](https://core.telegram.org/api/bots/webapps#theme-parameters) */
   theme_params?: enums.DataJSON;
+  /** Short name of the application; 0-64 English letters, digits, and underscores */
   platform: string;
 
   protected get [id](): number {
@@ -12523,13 +13722,20 @@ export class messages_requestAppWebView_ extends Function_<enums.AppWebViewResul
   }
 }
 
+/** Set a custom [wallpaper »](https://core.telegram.org/api/wallpapers) in a specific private chat with another user. */
 export class messages_setChatWallPaper_ extends Function_<enums.Updates> {
   static __F: (params: { for_both?: true; revert?: true; peer: enums.InputPeer; wallpaper?: enums.InputWallPaper; settings?: enums.WallPaperSettings; id?: number }) => enums.Updates = null as unknown as (params: { for_both?: true; revert?: true; peer: enums.InputPeer; wallpaper?: enums.InputWallPaper; settings?: enums.WallPaperSettings; id?: number }) => enums.Updates;
+  /** Only for [Premium](https://core.telegram.org/api/premium) users, sets the specified wallpaper for both users of the chat, without requiring confirmation from the other user. */
   for_both?: true;
+  /** If we don't like the new wallpaper the other user of the chat has chosen for us using the `for_both` flag, we can re-set our previous wallpaper just on our side using this flag. */
   revert?: true;
+  /** The private chat where the wallpaper will be set */
   peer: enums.InputPeer;
+  /** The [wallpaper »](https://core.telegram.org/api/wallpapers), obtained as described in the [wallpaper documentation »](https://core.telegram.org/api/wallpapers#uploading-wallpapers); must **not** be provided when installing a wallpaper obtained from a [messageActionSetChatWallPaper](https://core.telegram.org/constructor/messageActionSetChatWallPaper) service message (`id` must be provided, instead). */
   wallpaper?: enums.InputWallPaper;
+  /** Wallpaper settings, obtained as described in the [wallpaper documentation »](https://core.telegram.org/api/wallpapers#uploading-wallpapers) or from [messageActionSetChatWallPaper](https://core.telegram.org/constructor/messageActionSetChatWallPaper).`wallpaper`.`settings`. */
   settings?: enums.WallPaperSettings;
+  /** If the wallpaper was obtained from a [messageActionSetChatWallPaper](https://core.telegram.org/constructor/messageActionSetChatWallPaper) service message, must contain the ID of that message. */
   id?: number;
 
   protected get [id](): number {
@@ -12575,10 +13781,14 @@ export class messages_setChatWallPaper_ extends Function_<enums.Updates> {
   }
 }
 
+/** Search for [custom emoji stickersets »](https://core.telegram.org/api/custom-emoji) */
 export class messages_searchEmojiStickerSets_ extends Function_<enums.messages.FoundStickerSets> {
   static __F: (params: { exclude_featured?: true; q: string; hash: bigint }) => enums.messages.FoundStickerSets = null as unknown as (params: { exclude_featured?: true; q: string; hash: bigint }) => enums.messages.FoundStickerSets;
+  /** Exclude featured stickersets from results */
   exclude_featured?: true;
+  /** Query string */
   q: string;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -12615,13 +13825,20 @@ export class messages_searchEmojiStickerSets_ extends Function_<enums.messages.F
   }
 }
 
+/** Returns the current saved dialog list, see [here »](https://core.telegram.org/api/saved-messages) for more info. */
 export class messages_getSavedDialogs_ extends Function_<enums.messages.SavedDialogs> {
   static __F: (params: { exclude_pinned?: true; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.SavedDialogs = null as unknown as (params: { exclude_pinned?: true; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.SavedDialogs;
+  /** Exclude pinned dialogs */
   exclude_pinned?: true;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_date: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) (`top_message` ID used for pagination) */
   offset_id: number;
+  /** [Offset peer for pagination](https://core.telegram.org/api/offsets) */
   offset_peer: enums.InputPeer;
+  /** Number of list elements to be returned */
   limit: number;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: bigint;
 
   protected get [id](): number {
@@ -12667,15 +13884,24 @@ export class messages_getSavedDialogs_ extends Function_<enums.messages.SavedDia
   }
 }
 
+/** Returns [saved messages »](https://core.telegram.org/api/saved-messages) forwarded from a specific peer */
 export class messages_getSavedHistory_ extends Function_<enums.messages.Messages> {
   static __F: (params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages = null as unknown as (params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
+  /** Target peer */
   peer: enums.InputPeer;
+  /** Only return messages starting from the specified message ID */
   offset_id: number;
+  /** Only return messages sent before the specified date */
   offset_date: number;
+  /** Number of list elements to be skipped, negative values are also accepted. */
   add_offset: number;
+  /** Number of results to return */
   limit: number;
+  /** If a positive value was transferred, the method will return only messages with IDs less than **max\_id** */
   max_id: number;
+  /** If a positive value was transferred, the method will return only messages with IDs more than **min\_id** */
   min_id: number;
+  /** [Result hash](https://core.telegram.org/api/offsets) */
   hash: bigint;
 
   protected get [id](): number {
@@ -12725,11 +13951,16 @@ export class messages_getSavedHistory_ extends Function_<enums.messages.Messages
   }
 }
 
+/** Deletes messages forwarded from a specific peer to [saved messages »](https://core.telegram.org/api/saved-messages). */
 export class messages_deleteSavedHistory_ extends Function_<enums.messages.AffectedHistory> {
   static __F: (params: { peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) => enums.messages.AffectedHistory = null as unknown as (params: { peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) => enums.messages.AffectedHistory;
+  /** Peer, whose messages will be deleted from [saved messages »](https://core.telegram.org/api/saved-messages) */
   peer: enums.InputPeer;
+  /** Maximum ID of message to delete */
   max_id: number;
+  /** Delete all messages newer than this UNIX timestamp */
   min_date?: number;
+  /** Delete all messages older than this UNIX timestamp */
   max_date?: number;
 
   protected get [id](): number {
@@ -12769,6 +14000,7 @@ export class messages_deleteSavedHistory_ extends Function_<enums.messages.Affec
   }
 }
 
+/** Get pinned [saved dialogs, see here »](https://core.telegram.org/api/saved-messages) for more info. */
 export class messages_getPinnedSavedDialogs_ extends Function_<enums.messages.SavedDialogs> {
   static __F: () => enums.messages.SavedDialogs = null as unknown as () => enums.messages.SavedDialogs;
   protected get [id](): number {
@@ -12792,9 +14024,12 @@ export class messages_getPinnedSavedDialogs_ extends Function_<enums.messages.Sa
   }
 }
 
+/** Pin or unpin a [saved message dialog »](https://core.telegram.org/api/saved-messages). */
 export class messages_toggleSavedDialogPin_ extends Function_<boolean> {
   static __F: (params: { pinned?: true; peer: enums.InputDialogPeer }) => boolean = null as unknown as (params: { pinned?: true; peer: enums.InputDialogPeer }) => boolean;
+  /** Whether to pin or unpin the dialog */
   pinned?: true;
+  /** The dialog to pin */
   peer: enums.InputDialogPeer;
 
   protected get [id](): number {
@@ -12828,9 +14063,12 @@ export class messages_toggleSavedDialogPin_ extends Function_<boolean> {
   }
 }
 
+/** Reorder pinned [saved message dialogs »](https://core.telegram.org/api/saved-messages). */
 export class messages_reorderPinnedSavedDialogs_ extends Function_<boolean> {
   static __F: (params: { force?: true; order: Array<enums.InputDialogPeer> }) => boolean = null as unknown as (params: { force?: true; order: Array<enums.InputDialogPeer> }) => boolean;
+  /** If set, dialogs pinned server-side but not present in the `order` field will be unpinned. */
   force?: true;
+  /** New dialog order */
   order: Array<enums.InputDialogPeer>;
 
   protected get [id](): number {
@@ -13000,6 +14238,7 @@ export class messages_getOutboxReadDate_ extends Function_<enums.OutboxReadDate>
   }
 }
 
+/** Returns a current state of updates. */
 export class updates_getState_ extends Function_<enums.updates.State> {
   static __F: () => enums.updates.State = null as unknown as () => enums.updates.State;
   protected get [id](): number {
@@ -13023,13 +14262,22 @@ export class updates_getState_ extends Function_<enums.updates.State> {
   }
 }
 
+/** Get new [updates](https://core.telegram.org/api/updates). */
 export class updates_getDifference_ extends Function_<enums.updates.Difference> {
   static __F: (params: { pts: number; pts_limit?: number; pts_total_limit?: number; date: number; qts: number; qts_limit?: number }) => enums.updates.Difference = null as unknown as (params: { pts: number; pts_limit?: number; pts_total_limit?: number; date: number; qts: number; qts_limit?: number }) => enums.updates.Difference;
+  /** PTS, see [updates](https://core.telegram.org/api/updates). */
   pts: number;
+  /** PTS limit */
   pts_limit?: number;
+  /** For fast updating: if provided and `pts + pts_total_limit < remote pts`, [updates.differenceTooLong](https://core.telegram.org/constructor/updates.differenceTooLong) will be returned.  
+  Simply tells the server to not return the difference if it is bigger than `pts_total_limit`  
+  If the remote pts is too big (> ~4000000), this field will default to 1000000 */
   pts_total_limit?: number;
+  /** date, see [updates](https://core.telegram.org/api/updates). */
   date: number;
+  /** QTS, see [updates](https://core.telegram.org/api/updates). */
   qts: number;
+  /** QTS limit */
   qts_limit?: number;
 
   protected get [id](): number {
@@ -13075,12 +14323,19 @@ export class updates_getDifference_ extends Function_<enums.updates.Difference> 
   }
 }
 
+/** Returns the difference between the current state of updates of a certain channel and transmitted. */
 export class updates_getChannelDifference_ extends Function_<enums.updates.ChannelDifference> {
   static __F: (params: { force?: true; channel: enums.InputChannel; filter: enums.ChannelMessagesFilter; pts: number; limit: number }) => enums.updates.ChannelDifference = null as unknown as (params: { force?: true; channel: enums.InputChannel; filter: enums.ChannelMessagesFilter; pts: number; limit: number }) => enums.updates.ChannelDifference;
+  /** Set to true to skip some possibly unneeded updates and reduce server-side load */
   force?: true;
+  /** The channel */
   channel: enums.InputChannel;
+  /** Messsage filter */
   filter: enums.ChannelMessagesFilter;
+  /** Persistent timestamp (see [updates](https://core.telegram.org/api/updates)) */
   pts: number;
+  /** How many updates to fetch, max `100000`  
+  Ordinary (non-bot) users are supposed to pass `10-100` */
   limit: number;
 
   protected get [id](): number {
@@ -13123,10 +14378,14 @@ export class updates_getChannelDifference_ extends Function_<enums.updates.Chann
   }
 }
 
+/** Installs a previously uploaded photo as a profile photo. */
 export class photos_updateProfilePhoto_ extends Function_<enums.photos.Photo> {
   static __F: (params: { fallback?: true; bot?: enums.InputUser; id: enums.InputPhoto }) => enums.photos.Photo = null as unknown as (params: { fallback?: true; bot?: enums.InputUser; id: enums.InputPhoto }) => enums.photos.Photo;
+  /** If set, the chosen profile photo will be shown to users that can't display your main profile photo due to your privacy settings. */
   fallback?: true;
+  /** Can contain info of a bot we own, to change the profile photo of that bot, instead of the current user. */
   bot?: enums.InputUser;
+  /** Input photo */
   id: enums.InputPhoto;
 
   protected get [id](): number {
@@ -13163,13 +14422,20 @@ export class photos_updateProfilePhoto_ extends Function_<enums.photos.Photo> {
   }
 }
 
+/** Updates current user profile photo. */
 export class photos_uploadProfilePhoto_ extends Function_<enums.photos.Photo> {
   static __F: (params?: { fallback?: true; bot?: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) => enums.photos.Photo = null as unknown as (params?: { fallback?: true; bot?: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) => enums.photos.Photo;
+  /** If set, the chosen profile photo will be shown to users that can't display your main profile photo due to your privacy settings. */
   fallback?: true;
+  /** Can contain info of a bot we own, to change the profile photo of that bot, instead of the current user. */
   bot?: enums.InputUser;
+  /** Profile photo */
   file?: enums.InputFile;
+  /** [Animated profile picture](https://core.telegram.org/api/files#animated-profile-pictures) video */
   video?: enums.InputFile;
+  /** Floating point UNIX timestamp in seconds, indicating the frame of the video/sticker that should be used as static preview; can only be used if `video` or `video_emoji_markup` is set. */
   video_start_ts?: number;
+  /** Animated sticker profile picture, must contain either a [videoSizeEmojiMarkup](https://core.telegram.org/constructor/videoSizeEmojiMarkup) or a [videoSizeStickerMarkup](https://core.telegram.org/constructor/videoSizeStickerMarkup) constructor. */
   video_emoji_markup?: enums.VideoSize;
 
   protected get [id](): number {
@@ -13215,8 +14481,10 @@ export class photos_uploadProfilePhoto_ extends Function_<enums.photos.Photo> {
   }
 }
 
+/** Deletes profile photos. The method returns a list of successfully deleted photo IDs. */
 export class photos_deletePhotos_ extends Function_<bigint[]> {
   static __F: (params: { id: Array<enums.InputPhoto> }) => bigint[] = null as unknown as (params: { id: Array<enums.InputPhoto> }) => bigint[];
+  /** Input photos to delete */
   id: Array<enums.InputPhoto>;
 
   protected get [id](): number {
@@ -13245,11 +14513,16 @@ export class photos_deletePhotos_ extends Function_<bigint[]> {
   }
 }
 
+/** Returns the list of user photos. */
 export class photos_getUserPhotos_ extends Function_<enums.photos.Photos> {
   static __F: (params: { user_id: enums.InputUser; offset: number; max_id: bigint; limit: number }) => enums.photos.Photos = null as unknown as (params: { user_id: enums.InputUser; offset: number; max_id: bigint; limit: number }) => enums.photos.Photos;
+  /** User ID */
   user_id: enums.InputUser;
+  /** Number of list elements to be skipped */
   offset: number;
+  /** If a positive value was transferred, the method will return only photos with IDs less than the set one. This parameter is often useful when [refetching file references »](https://core.telegram.org/api/file_reference), as in conjuction with `limit=1` and `offset=-1` the [photo](https://core.telegram.org/constructor/photo) object with the `id` specified in `max_id` can be fetched. */
   max_id: bigint;
+  /** Number of list elements to be returned */
   limit: number;
 
   protected get [id](): number {
@@ -13287,14 +14560,22 @@ export class photos_getUserPhotos_ extends Function_<enums.photos.Photos> {
   }
 }
 
+/** Upload a custom profile picture for a contact, or suggest a new profile picture to a contact. */
 export class photos_uploadContactProfilePhoto_ extends Function_<enums.photos.Photo> {
   static __F: (params: { suggest?: true; save?: true; user_id: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) => enums.photos.Photo = null as unknown as (params: { suggest?: true; save?: true; user_id: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) => enums.photos.Photo;
+  /** If set, will send a [messageActionSuggestProfilePhoto](https://core.telegram.org/constructor/messageActionSuggestProfilePhoto) service message to `user_id`, suggesting them to use the specified profile picture; otherwise, will set a personal profile picture for the user (only visible to the current user). */
   suggest?: true;
+  /** If set, removes a previously set personal profile picture (does not affect suggested profile pictures, to remove them simply deleted the [messageActionSuggestProfilePhoto](https://core.telegram.org/constructor/messageActionSuggestProfilePhoto) service message with [messages.deleteMessages](https://core.telegram.org/method/messages.deleteMessages)). */
   save?: true;
+  /** The contact */
   user_id: enums.InputUser;
+  /** Profile photo */
   file?: enums.InputFile;
+  /** [Animated profile picture](https://core.telegram.org/api/files#animated-profile-pictures) video */
   video?: enums.InputFile;
+  /** Floating point UNIX timestamp in seconds, indicating the frame of the video/sticker that should be used as static preview; can only be used if `video` or `video_emoji_markup` is set. */
   video_start_ts?: number;
+  /** Animated sticker profile picture, must contain either a [videoSizeEmojiMarkup](https://core.telegram.org/constructor/videoSizeEmojiMarkup) or a [videoSizeStickerMarkup](https://core.telegram.org/constructor/videoSizeStickerMarkup) constructor. */
   video_emoji_markup?: enums.VideoSize;
 
   protected get [id](): number {
@@ -13343,10 +14624,14 @@ export class photos_uploadContactProfilePhoto_ extends Function_<enums.photos.Ph
   }
 }
 
+/** Saves a part of file for further sending to one of the methods. */
 export class upload_saveFilePart_ extends Function_<boolean> {
   static __F: (params: { file_id: bigint; file_part: number; bytes: Uint8Array }) => boolean = null as unknown as (params: { file_id: bigint; file_part: number; bytes: Uint8Array }) => boolean;
+  /** Random file identifier created by the client */
   file_id: bigint;
+  /** Numerical order of a part */
   file_part: number;
+  /** Binary data, content of a part */
   bytes: Uint8Array;
 
   protected get [id](): number {
@@ -13381,12 +14666,18 @@ export class upload_saveFilePart_ extends Function_<boolean> {
   }
 }
 
+/** Returns content of a whole file or its part. */
 export class upload_getFile_ extends Function_<enums.upload.File> {
   static __F: (params: { precise?: true; cdn_supported?: true; location: enums.InputFileLocation; offset: bigint; limit: number }) => enums.upload.File = null as unknown as (params: { precise?: true; cdn_supported?: true; location: enums.InputFileLocation; offset: bigint; limit: number }) => enums.upload.File;
+  /** Disable some checks on limit and offset values, useful for example to stream videos by keyframes */
   precise?: true;
+  /** Whether the current client supports [CDN downloads](https://core.telegram.org/cdn) */
   cdn_supported?: true;
+  /** File location */
   location: enums.InputFileLocation;
+  /** Number of bytes to be skipped */
   offset: bigint;
+  /** Number of bytes to be returned */
   limit: number;
 
   protected get [id](): number {
@@ -13429,11 +14720,16 @@ export class upload_getFile_ extends Function_<enums.upload.File> {
   }
 }
 
+/** Saves a part of a large file (over 10 MB in size) to be later passed to one of the methods. */
 export class upload_saveBigFilePart_ extends Function_<boolean> {
   static __F: (params: { file_id: bigint; file_part: number; file_total_parts: number; bytes: Uint8Array }) => boolean = null as unknown as (params: { file_id: bigint; file_part: number; file_total_parts: number; bytes: Uint8Array }) => boolean;
+  /** Random file id, created by the client */
   file_id: bigint;
+  /** Part sequence number */
   file_part: number;
+  /** Total number of parts */
   file_total_parts: number;
+  /** Binary data, part contents */
   bytes: Uint8Array;
 
   protected get [id](): number {
@@ -13471,10 +14767,14 @@ export class upload_saveBigFilePart_ extends Function_<boolean> {
   }
 }
 
+/** Returns content of a web file, by proxying the request through telegram, see the [webfile docs for more info](https://core.telegram.org/api/files#downloading-webfiles). */
 export class upload_getWebFile_ extends Function_<enums.upload.WebFile> {
   static __F: (params: { location: enums.InputWebFileLocation; offset: number; limit: number }) => enums.upload.WebFile = null as unknown as (params: { location: enums.InputWebFileLocation; offset: number; limit: number }) => enums.upload.WebFile;
+  /** The file to download */
   location: enums.InputWebFileLocation;
+  /** Number of bytes to be skipped */
   offset: number;
+  /** Number of bytes to be returned */
   limit: number;
 
   protected get [id](): number {
@@ -13509,10 +14809,14 @@ export class upload_getWebFile_ extends Function_<enums.upload.WebFile> {
   }
 }
 
+/** Download a [CDN](https://core.telegram.org/cdn) file. */
 export class upload_getCdnFile_ extends Function_<enums.upload.CdnFile> {
   static __F: (params: { file_token: Uint8Array; offset: bigint; limit: number }) => enums.upload.CdnFile = null as unknown as (params: { file_token: Uint8Array; offset: bigint; limit: number }) => enums.upload.CdnFile;
+  /** File token */
   file_token: Uint8Array;
+  /** Offset of chunk to download */
   offset: bigint;
+  /** Length of chunk to download */
   limit: number;
 
   protected get [id](): number {
@@ -13547,9 +14851,12 @@ export class upload_getCdnFile_ extends Function_<enums.upload.CdnFile> {
   }
 }
 
+/** Request a reupload of a certain file to a [CDN DC](https://core.telegram.org/cdn). */
 export class upload_reuploadCdnFile_ extends Function_<enums.FileHash[]> {
   static __F: (params: { file_token: Uint8Array; request_token: Uint8Array }) => enums.FileHash[] = null as unknown as (params: { file_token: Uint8Array; request_token: Uint8Array }) => enums.FileHash[];
+  /** File token */
   file_token: Uint8Array;
+  /** Request token */
   request_token: Uint8Array;
 
   protected get [id](): number {
@@ -13581,9 +14888,12 @@ export class upload_reuploadCdnFile_ extends Function_<enums.FileHash[]> {
   }
 }
 
+/** Get SHA256 hashes for verifying downloaded [CDN](https://core.telegram.org/cdn) files */
 export class upload_getCdnFileHashes_ extends Function_<enums.FileHash[]> {
   static __F: (params: { file_token: Uint8Array; offset: bigint }) => enums.FileHash[] = null as unknown as (params: { file_token: Uint8Array; offset: bigint }) => enums.FileHash[];
+  /** File */
   file_token: Uint8Array;
+  /** Offset from which to start getting hashes */
   offset: bigint;
 
   protected get [id](): number {
@@ -13615,9 +14925,12 @@ export class upload_getCdnFileHashes_ extends Function_<enums.FileHash[]> {
   }
 }
 
+/** Get SHA256 hashes for verifying downloaded files */
 export class upload_getFileHashes_ extends Function_<enums.FileHash[]> {
   static __F: (params: { location: enums.InputFileLocation; offset: bigint }) => enums.FileHash[] = null as unknown as (params: { location: enums.InputFileLocation; offset: bigint }) => enums.FileHash[];
+  /** File */
   location: enums.InputFileLocation;
+  /** Offset from which to get file hashes */
   offset: bigint;
 
   protected get [id](): number {
@@ -13649,6 +14962,7 @@ export class upload_getFileHashes_ extends Function_<enums.FileHash[]> {
   }
 }
 
+/** Returns current configuration, including data center configuration. */
 export class help_getConfig_ extends Function_<enums.Config> {
   static __F: () => enums.Config = null as unknown as () => enums.Config;
   protected get [id](): number {
@@ -13672,6 +14986,7 @@ export class help_getConfig_ extends Function_<enums.Config> {
   }
 }
 
+/** Returns info on data center nearest to the user. */
 export class help_getNearestDc_ extends Function_<enums.NearestDc> {
   static __F: () => enums.NearestDc = null as unknown as () => enums.NearestDc;
   protected get [id](): number {
@@ -13695,8 +15010,10 @@ export class help_getNearestDc_ extends Function_<enums.NearestDc> {
   }
 }
 
+/** Returns information on update availability for the current application. */
 export class help_getAppUpdate_ extends Function_<enums.help.AppUpdate> {
   static __F: (params: { source: string }) => enums.help.AppUpdate = null as unknown as (params: { source: string }) => enums.help.AppUpdate;
+  /** Source */
   source: string;
 
   protected get [id](): number {
@@ -13725,6 +15042,7 @@ export class help_getAppUpdate_ extends Function_<enums.help.AppUpdate> {
   }
 }
 
+/** Returns localized text of a text message with an invitation. */
 export class help_getInviteText_ extends Function_<enums.help.InviteText> {
   static __F: () => enums.help.InviteText = null as unknown as () => enums.help.InviteText;
   protected get [id](): number {
@@ -13748,6 +15066,7 @@ export class help_getInviteText_ extends Function_<enums.help.InviteText> {
   }
 }
 
+/** Returns the support user for the "ask a question" feature. */
 export class help_getSupport_ extends Function_<enums.help.Support> {
   static __F: () => enums.help.Support = null as unknown as () => enums.help.Support;
   protected get [id](): number {
@@ -13771,9 +15090,12 @@ export class help_getSupport_ extends Function_<enums.help.Support> {
   }
 }
 
+/** Informs the server about the number of pending bot updates if they haven't been processed for a long time; for bots only */
 export class help_setBotUpdatesStatus_ extends Function_<boolean> {
   static __F: (params: { pending_updates_count: number; message: string }) => boolean = null as unknown as (params: { pending_updates_count: number; message: string }) => boolean;
+  /** Number of pending updates */
   pending_updates_count: number;
+  /** Error message, if present */
   message: string;
 
   protected get [id](): number {
@@ -13805,6 +15127,7 @@ export class help_setBotUpdatesStatus_ extends Function_<boolean> {
   }
 }
 
+/** Get configuration for [CDN](https://core.telegram.org/cdn) file downloads. */
 export class help_getCdnConfig_ extends Function_<enums.CdnConfig> {
   static __F: () => enums.CdnConfig = null as unknown as () => enums.CdnConfig;
   protected get [id](): number {
@@ -13828,8 +15151,10 @@ export class help_getCdnConfig_ extends Function_<enums.CdnConfig> {
   }
 }
 
+/** Get recently used `t.me` links. */
 export class help_getRecentMeUrls_ extends Function_<enums.help.RecentMeUrls> {
   static __F: (params: { referer: string }) => enums.help.RecentMeUrls = null as unknown as (params: { referer: string }) => enums.help.RecentMeUrls;
+  /** Referrer */
   referer: string;
 
   protected get [id](): number {
@@ -13858,6 +15183,7 @@ export class help_getRecentMeUrls_ extends Function_<enums.help.RecentMeUrls> {
   }
 }
 
+/** Look for updates of telegram's terms of service */
 export class help_getTermsOfServiceUpdate_ extends Function_<enums.help.TermsOfServiceUpdate> {
   static __F: () => enums.help.TermsOfServiceUpdate = null as unknown as () => enums.help.TermsOfServiceUpdate;
   protected get [id](): number {
@@ -13881,8 +15207,10 @@ export class help_getTermsOfServiceUpdate_ extends Function_<enums.help.TermsOfS
   }
 }
 
+/** Accept the new terms of service */
 export class help_acceptTermsOfService_ extends Function_<boolean> {
   static __F: (params: { id: enums.DataJSON }) => boolean = null as unknown as (params: { id: enums.DataJSON }) => boolean;
+  /** ID of terms of service */
   id: enums.DataJSON;
 
   protected get [id](): number {
@@ -13911,8 +15239,10 @@ export class help_acceptTermsOfService_ extends Function_<boolean> {
   }
 }
 
+/** Get info about an unsupported deep link, see [here for more info »](https://core.telegram.org/api/links#unsupported-links). */
 export class help_getDeepLinkInfo_ extends Function_<enums.help.DeepLinkInfo> {
   static __F: (params: { path: string }) => enums.help.DeepLinkInfo = null as unknown as (params: { path: string }) => enums.help.DeepLinkInfo;
+  /** Path component of a `tg:` link */
   path: string;
 
   protected get [id](): number {
@@ -13941,8 +15271,10 @@ export class help_getDeepLinkInfo_ extends Function_<enums.help.DeepLinkInfo> {
   }
 }
 
+/** Get app-specific configuration, see [client configuration](https://core.telegram.org/api/config#client-configuration) for more info on the result. */
 export class help_getAppConfig_ extends Function_<enums.help.AppConfig> {
   static __F: (params: { hash: number }) => enums.help.AppConfig = null as unknown as (params: { hash: number }) => enums.help.AppConfig;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
 
   protected get [id](): number {
@@ -13971,8 +15303,10 @@ export class help_getAppConfig_ extends Function_<enums.help.AppConfig> {
   }
 }
 
+/** Saves logs of application on the server. */
 export class help_saveAppLog_ extends Function_<boolean> {
   static __F: (params: { events: Array<enums.InputAppEvent> }) => boolean = null as unknown as (params: { events: Array<enums.InputAppEvent> }) => boolean;
+  /** List of input events */
   events: Array<enums.InputAppEvent>;
 
   protected get [id](): number {
@@ -14001,8 +15335,10 @@ export class help_saveAppLog_ extends Function_<boolean> {
   }
 }
 
+/** Get [passport](https://core.telegram.org/passport) configuration */
 export class help_getPassportConfig_ extends Function_<enums.help.PassportConfig> {
   static __F: (params: { hash: number }) => enums.help.PassportConfig = null as unknown as (params: { hash: number }) => enums.help.PassportConfig;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
 
   protected get [id](): number {
@@ -14031,6 +15367,7 @@ export class help_getPassportConfig_ extends Function_<enums.help.PassportConfig
   }
 }
 
+/** Get localized name of the telegram support user */
 export class help_getSupportName_ extends Function_<enums.help.SupportName> {
   static __F: () => enums.help.SupportName = null as unknown as () => enums.help.SupportName;
   protected get [id](): number {
@@ -14054,8 +15391,10 @@ export class help_getSupportName_ extends Function_<enums.help.SupportName> {
   }
 }
 
+/** Can only be used by TSF members to obtain internal information. */
 export class help_getUserInfo_ extends Function_<enums.help.UserInfo> {
   static __F: (params: { user_id: enums.InputUser }) => enums.help.UserInfo = null as unknown as (params: { user_id: enums.InputUser }) => enums.help.UserInfo;
+  /** User ID */
   user_id: enums.InputUser;
 
   protected get [id](): number {
@@ -14084,10 +15423,14 @@ export class help_getUserInfo_ extends Function_<enums.help.UserInfo> {
   }
 }
 
+/** Internal use */
 export class help_editUserInfo_ extends Function_<enums.help.UserInfo> {
   static __F: (params: { user_id: enums.InputUser; message: string; entities: Array<enums.MessageEntity> }) => enums.help.UserInfo = null as unknown as (params: { user_id: enums.InputUser; message: string; entities: Array<enums.MessageEntity> }) => enums.help.UserInfo;
+  /** User */
   user_id: enums.InputUser;
+  /** Message */
   message: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities) */
   entities: Array<enums.MessageEntity>;
 
   protected get [id](): number {
@@ -14122,6 +15465,7 @@ export class help_editUserInfo_ extends Function_<enums.help.UserInfo> {
   }
 }
 
+/** Get MTProxy/Public Service Announcement information */
 export class help_getPromoData_ extends Function_<enums.help.PromoData> {
   static __F: () => enums.help.PromoData = null as unknown as () => enums.help.PromoData;
   protected get [id](): number {
@@ -14145,8 +15489,10 @@ export class help_getPromoData_ extends Function_<enums.help.PromoData> {
   }
 }
 
+/** Hide MTProxy/Public Service Announcement information */
 export class help_hidePromoData_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer }) => boolean;
+  /** Peer to hide */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -14175,9 +15521,12 @@ export class help_hidePromoData_ extends Function_<boolean> {
   }
 }
 
+/** Dismiss a [suggestion, see here for more info »](https://core.telegram.org/api/config#suggestions). */
 export class help_dismissSuggestion_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; suggestion: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; suggestion: string }) => boolean;
+  /** In the case of pending suggestions in [channels](https://core.telegram.org/constructor/channelFull), the channel ID. */
   peer: enums.InputPeer;
+  /** [Suggestion, see here for more info »](https://core.telegram.org/api/config#suggestions). */
   suggestion: string;
 
   protected get [id](): number {
@@ -14209,9 +15558,12 @@ export class help_dismissSuggestion_ extends Function_<boolean> {
   }
 }
 
+/** Get name, ISO code, localized name and phone codes/patterns of all available countries */
 export class help_getCountriesList_ extends Function_<enums.help.CountriesList> {
   static __F: (params: { lang_code: string; hash: number }) => enums.help.CountriesList = null as unknown as (params: { lang_code: string; hash: number }) => enums.help.CountriesList;
+  /** Language code of the current user */
   lang_code: string;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
 
   protected get [id](): number {
@@ -14243,6 +15595,7 @@ export class help_getCountriesList_ extends Function_<enums.help.CountriesList> 
   }
 }
 
+/** Get Telegram Premium promotion information */
 export class help_getPremiumPromo_ extends Function_<enums.help.PremiumPromo> {
   static __F: () => enums.help.PremiumPromo = null as unknown as () => enums.help.PremiumPromo;
   protected get [id](): number {
@@ -14266,8 +15619,10 @@ export class help_getPremiumPromo_ extends Function_<enums.help.PremiumPromo> {
   }
 }
 
+/** Get the set of [accent color palettes »](https://core.telegram.org/api/colors) that can be used for message accents. */
 export class help_getPeerColors_ extends Function_<enums.help.PeerColors> {
   static __F: (params: { hash: number }) => enums.help.PeerColors = null as unknown as (params: { hash: number }) => enums.help.PeerColors;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
 
   protected get [id](): number {
@@ -14296,8 +15651,10 @@ export class help_getPeerColors_ extends Function_<enums.help.PeerColors> {
   }
 }
 
+/** Get the set of [accent color palettes »](https://core.telegram.org/api/colors) that can be used in profile page backgrounds. */
 export class help_getPeerProfileColors_ extends Function_<enums.help.PeerColors> {
   static __F: (params: { hash: number }) => enums.help.PeerColors = null as unknown as (params: { hash: number }) => enums.help.PeerColors;
+  /** [Hash for pagination, for more info click here](https://core.telegram.org/api/offsets#hash-generation) */
   hash: number;
 
   protected get [id](): number {
@@ -14326,9 +15683,12 @@ export class help_getPeerProfileColors_ extends Function_<enums.help.PeerColors>
   }
 }
 
+/** Mark [channel/supergroup](https://core.telegram.org/api/channel) history as read */
 export class channels_readHistory_ extends Function_<boolean> {
   static __F: (params: { channel: enums.InputChannel; max_id: number }) => boolean = null as unknown as (params: { channel: enums.InputChannel; max_id: number }) => boolean;
+  /** [Channel/supergroup](https://core.telegram.org/api/channel) */
   channel: enums.InputChannel;
+  /** ID of message up to which messages should be marked as read */
   max_id: number;
 
   protected get [id](): number {
@@ -14360,9 +15720,12 @@ export class channels_readHistory_ extends Function_<boolean> {
   }
 }
 
+/** Delete messages in a [channel/supergroup](https://core.telegram.org/api/channel) */
 export class channels_deleteMessages_ extends Function_<enums.messages.AffectedMessages> {
   static __F: (params: { channel: enums.InputChannel; id: Array<number> }) => enums.messages.AffectedMessages = null as unknown as (params: { channel: enums.InputChannel; id: Array<number> }) => enums.messages.AffectedMessages;
+  /** [Channel/supergroup](https://core.telegram.org/api/channel) */
   channel: enums.InputChannel;
+  /** IDs of messages to delete */
   id: Array<number>;
 
   protected get [id](): number {
@@ -14394,10 +15757,14 @@ export class channels_deleteMessages_ extends Function_<enums.messages.AffectedM
   }
 }
 
+/** Reports some messages from a user in a supergroup as spam; requires administrator rights in the supergroup */
 export class channels_reportSpam_ extends Function_<boolean> {
   static __F: (params: { channel: enums.InputChannel; participant: enums.InputPeer; id: Array<number> }) => boolean = null as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer; id: Array<number> }) => boolean;
+  /** Supergroup */
   channel: enums.InputChannel;
+  /** Participant whose messages should be reported */
   participant: enums.InputPeer;
+  /** IDs of spam messages */
   id: Array<number>;
 
   protected get [id](): number {
@@ -14432,9 +15799,12 @@ export class channels_reportSpam_ extends Function_<boolean> {
   }
 }
 
+/** Get [channel/supergroup](https://core.telegram.org/api/channel) messages */
 export class channels_getMessages_ extends Function_<enums.messages.Messages> {
   static __F: (params: { channel: enums.InputChannel; id: Array<enums.InputMessage> }) => enums.messages.Messages = null as unknown as (params: { channel: enums.InputChannel; id: Array<enums.InputMessage> }) => enums.messages.Messages;
+  /** Channel/supergroup */
   channel: enums.InputChannel;
+  /** IDs of messages to get */
   id: Array<enums.InputMessage>;
 
   protected get [id](): number {
@@ -14466,12 +15836,18 @@ export class channels_getMessages_ extends Function_<enums.messages.Messages> {
   }
 }
 
+/** Get the participants of a [supergroup/channel](https://core.telegram.org/api/channel) */
 export class channels_getParticipants_ extends Function_<enums.channels.ChannelParticipants> {
   static __F: (params: { channel: enums.InputChannel; filter: enums.ChannelParticipantsFilter; offset: number; limit: number; hash: bigint }) => enums.channels.ChannelParticipants = null as unknown as (params: { channel: enums.InputChannel; filter: enums.ChannelParticipantsFilter; offset: number; limit: number; hash: bigint }) => enums.channels.ChannelParticipants;
+  /** Channel */
   channel: enums.InputChannel;
+  /** Which participant types to fetch */
   filter: enums.ChannelParticipantsFilter;
+  /** [Offset](https://core.telegram.org/api/offsets) */
   offset: number;
+  /** [Limit](https://core.telegram.org/api/offsets) */
   limit: number;
+  /** [Hash](https://core.telegram.org/api/offsets) */
   hash: bigint;
 
   protected get [id](): number {
@@ -14512,9 +15888,12 @@ export class channels_getParticipants_ extends Function_<enums.channels.ChannelP
   }
 }
 
+/** Get info about a [channel/supergroup](https://core.telegram.org/api/channel) participant */
 export class channels_getParticipant_ extends Function_<enums.channels.ChannelParticipant> {
   static __F: (params: { channel: enums.InputChannel; participant: enums.InputPeer }) => enums.channels.ChannelParticipant = null as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer }) => enums.channels.ChannelParticipant;
+  /** Channel/supergroup */
   channel: enums.InputChannel;
+  /** Participant to get info about */
   participant: enums.InputPeer;
 
   protected get [id](): number {
@@ -14546,8 +15925,10 @@ export class channels_getParticipant_ extends Function_<enums.channels.ChannelPa
   }
 }
 
+/** Get info about [channels/supergroups](https://core.telegram.org/api/channel) */
 export class channels_getChannels_ extends Function_<enums.messages.Chats> {
   static __F: (params: { id: Array<enums.InputChannel> }) => enums.messages.Chats = null as unknown as (params: { id: Array<enums.InputChannel> }) => enums.messages.Chats;
+  /** IDs of channels/supergroups to get info about */
   id: Array<enums.InputChannel>;
 
   protected get [id](): number {
@@ -14576,8 +15957,10 @@ export class channels_getChannels_ extends Function_<enums.messages.Chats> {
   }
 }
 
+/** Get full info about a [supergroup](https://core.telegram.org/api/channel#supergroups), [gigagroup](https://core.telegram.org/api/channel#gigagroups) or [channel](https://core.telegram.org/api/channel#channels) */
 export class channels_getFullChannel_ extends Function_<enums.messages.ChatFull> {
   static __F: (params: { channel: enums.InputChannel }) => enums.messages.ChatFull = null as unknown as (params: { channel: enums.InputChannel }) => enums.messages.ChatFull;
+  /** The [channel](https://core.telegram.org/api/channel#channels), [supergroup](https://core.telegram.org/api/channel#supergroups) or [gigagroup](https://core.telegram.org/api/channel#gigagroups) to get info about */
   channel: enums.InputChannel;
 
   protected get [id](): number {
@@ -14606,16 +15989,26 @@ export class channels_getFullChannel_ extends Function_<enums.messages.ChatFull>
   }
 }
 
+/** Create a [supergroup/channel](https://core.telegram.org/api/channel). */
 export class channels_createChannel_ extends Function_<enums.Updates> {
   static __F: (params: { broadcast?: true; megagroup?: true; for_import?: true; forum?: true; title: string; about: string; geo_point?: enums.InputGeoPoint; address?: string; ttl_period?: number }) => enums.Updates = null as unknown as (params: { broadcast?: true; megagroup?: true; for_import?: true; forum?: true; title: string; about: string; geo_point?: enums.InputGeoPoint; address?: string; ttl_period?: number }) => enums.Updates;
+  /** Whether to create a [channel](https://core.telegram.org/api/channel) */
   broadcast?: true;
+  /** Whether to create a [supergroup](https://core.telegram.org/api/channel) */
   megagroup?: true;
+  /** Whether the supergroup is being created to import messages from a foreign chat service using [messages.initHistoryImport](https://core.telegram.org/method/messages.initHistoryImport) */
   for_import?: true;
+  /** Whether to create a [forum](https://core.telegram.org/api/forum) */
   forum?: true;
+  /** Channel title */
   title: string;
+  /** Channel description */
   about: string;
+  /** Geogroup location, see [here »](https://core.telegram.org/api/nearby) for more info on geogroups. */
   geo_point?: enums.InputGeoPoint;
+  /** Geogroup address, see [here »](https://core.telegram.org/api/nearby) for more info on geogroups. */
   address?: string;
+  /** Time-to-live of all messages that will be sent in the supergroup: once message.date+message.ttl\_period === time(), the message will be deleted on the server, and must be deleted locally as well. You can use [messages.setDefaultHistoryTTL](https://core.telegram.org/method/messages.setDefaultHistoryTTL) to edit this value later. */
   ttl_period?: number;
 
   protected get [id](): number {
@@ -14670,11 +16063,16 @@ export class channels_createChannel_ extends Function_<enums.Updates> {
   }
 }
 
+/** Modify the admin rights of a user in a [supergroup/channel](https://core.telegram.org/api/channel). */
 export class channels_editAdmin_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; user_id: enums.InputUser; admin_rights: enums.ChatAdminRights; rank: string }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; user_id: enums.InputUser; admin_rights: enums.ChatAdminRights; rank: string }) => enums.Updates;
+  /** The [supergroup/channel](https://core.telegram.org/api/channel). */
   channel: enums.InputChannel;
+  /** The ID of the user whose admin rights should be modified */
   user_id: enums.InputUser;
+  /** The admin rights */
   admin_rights: enums.ChatAdminRights;
+  /** Indicates the role (rank) of the admin in the group: just an arbitrary string */
   rank: string;
 
   protected get [id](): number {
@@ -14712,9 +16110,12 @@ export class channels_editAdmin_ extends Function_<enums.Updates> {
   }
 }
 
+/** Edit the name of a [channel/supergroup](https://core.telegram.org/api/channel) */
 export class channels_editTitle_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; title: string }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; title: string }) => enums.Updates;
+  /** Channel/supergroup */
   channel: enums.InputChannel;
+  /** New name */
   title: string;
 
   protected get [id](): number {
@@ -14746,9 +16147,12 @@ export class channels_editTitle_ extends Function_<enums.Updates> {
   }
 }
 
+/** Change the photo of a [channel/supergroup](https://core.telegram.org/api/channel) */
 export class channels_editPhoto_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; photo: enums.InputChatPhoto }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; photo: enums.InputChatPhoto }) => enums.Updates;
+  /** Channel/supergroup whose photo should be edited */
   channel: enums.InputChannel;
+  /** New photo */
   photo: enums.InputChatPhoto;
 
   protected get [id](): number {
@@ -14780,9 +16184,12 @@ export class channels_editPhoto_ extends Function_<enums.Updates> {
   }
 }
 
+/** Check if a username is free and can be assigned to a channel/supergroup */
 export class channels_checkUsername_ extends Function_<boolean> {
   static __F: (params: { channel: enums.InputChannel; username: string }) => boolean = null as unknown as (params: { channel: enums.InputChannel; username: string }) => boolean;
+  /** The [channel/supergroup](https://core.telegram.org/api/channel) that will assigned the specified username */
   channel: enums.InputChannel;
+  /** The username to check */
   username: string;
 
   protected get [id](): number {
@@ -14814,9 +16221,12 @@ export class channels_checkUsername_ extends Function_<boolean> {
   }
 }
 
+/** Change or remove the username of a supergroup/channel */
 export class channels_updateUsername_ extends Function_<boolean> {
   static __F: (params: { channel: enums.InputChannel; username: string }) => boolean = null as unknown as (params: { channel: enums.InputChannel; username: string }) => boolean;
+  /** Channel */
   channel: enums.InputChannel;
+  /** New username, pass an empty string to remove the username */
   username: string;
 
   protected get [id](): number {
@@ -14848,8 +16258,10 @@ export class channels_updateUsername_ extends Function_<boolean> {
   }
 }
 
+/** Join a channel/supergroup */
 export class channels_joinChannel_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
+  /** Channel/supergroup to join */
   channel: enums.InputChannel;
 
   protected get [id](): number {
@@ -14878,8 +16290,10 @@ export class channels_joinChannel_ extends Function_<enums.Updates> {
   }
 }
 
+/** Leave a [channel/supergroup](https://core.telegram.org/api/channel) */
 export class channels_leaveChannel_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
+  /** [Channel/supergroup](https://core.telegram.org/api/channel) to leave */
   channel: enums.InputChannel;
 
   protected get [id](): number {
@@ -14908,9 +16322,12 @@ export class channels_leaveChannel_ extends Function_<enums.Updates> {
   }
 }
 
+/** Invite users to a channel/supergroup */
 export class channels_inviteToChannel_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; users: Array<enums.InputUser> }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; users: Array<enums.InputUser> }) => enums.Updates;
+  /** Channel/supergroup */
   channel: enums.InputChannel;
+  /** Users to invite */
   users: Array<enums.InputUser>;
 
   protected get [id](): number {
@@ -14942,8 +16359,10 @@ export class channels_inviteToChannel_ extends Function_<enums.Updates> {
   }
 }
 
+/** Delete a [channel/supergroup](https://core.telegram.org/api/channel) */
 export class channels_deleteChannel_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
+  /** [Channel/supergroup](https://core.telegram.org/api/channel) to delete */
   channel: enums.InputChannel;
 
   protected get [id](): number {
@@ -14972,11 +16391,16 @@ export class channels_deleteChannel_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get link and embed info of a message in a [channel/supergroup](https://core.telegram.org/api/channel) */
 export class channels_exportMessageLink_ extends Function_<enums.ExportedMessageLink> {
   static __F: (params: { grouped?: true; thread?: true; channel: enums.InputChannel; id: number }) => enums.ExportedMessageLink = null as unknown as (params: { grouped?: true; thread?: true; channel: enums.InputChannel; id: number }) => enums.ExportedMessageLink;
+  /** Whether to include other grouped media (for albums) */
   grouped?: true;
+  /** Whether to also include a thread ID, if available, inside of the link */
   thread?: true;
+  /** Channel */
   channel: enums.InputChannel;
+  /** Message ID */
   id: number;
 
   protected get [id](): number {
@@ -15016,9 +16440,12 @@ export class channels_exportMessageLink_ extends Function_<enums.ExportedMessage
   }
 }
 
+/** Enable/disable message signatures in channels */
 export class channels_toggleSignatures_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  /** Channel */
   channel: enums.InputChannel;
+  /** Value */
   enabled: boolean;
 
   protected get [id](): number {
@@ -15050,9 +16477,13 @@ export class channels_toggleSignatures_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get [channels/supergroups/geogroups](https://core.telegram.org/api/channel) we're admin in. Usually called when the user exceeds the [limit](https://core.telegram.org/constructor/config) for owned public [channels/supergroups/geogroups](https://core.telegram.org/api/channel), and the user is given the choice to remove one of his channels/supergroups/geogroups. */
 export class channels_getAdminedPublicChannels_ extends Function_<enums.messages.Chats> {
   static __F: (params?: { by_location?: true; check_limit?: true }) => enums.messages.Chats = null as unknown as (params?: { by_location?: true; check_limit?: true }) => enums.messages.Chats;
+  /** Get geogroups */
   by_location?: true;
+  /** If set and the user has reached the limit of owned public [channels/supergroups/geogroups](https://core.telegram.org/api/channel), instead of returning the channel list one of the specified [errors](#possible-errors) will be returned.  
+  Useful to check if a new public channel can indeed be created, even before asking the user to enter a channel username to use in [channels.checkUsername](https://core.telegram.org/method/channels.checkUsername)/[channels.updateUsername](https://core.telegram.org/method/channels.updateUsername). */
   check_limit?: true;
 
   protected get [id](): number {
@@ -15086,10 +16517,14 @@ export class channels_getAdminedPublicChannels_ extends Function_<enums.messages
   }
 }
 
+/** Ban/unban/kick a user in a [supergroup/channel](https://core.telegram.org/api/channel). */
 export class channels_editBanned_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; participant: enums.InputPeer; banned_rights: enums.ChatBannedRights }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer; banned_rights: enums.ChatBannedRights }) => enums.Updates;
+  /** The [supergroup/channel](https://core.telegram.org/api/channel). */
   channel: enums.InputChannel;
+  /** Participant to ban */
   participant: enums.InputPeer;
+  /** The banned rights */
   banned_rights: enums.ChatBannedRights;
 
   protected get [id](): number {
@@ -15124,14 +16559,22 @@ export class channels_editBanned_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get the admin log of a [channel/supergroup](https://core.telegram.org/api/channel) */
 export class channels_getAdminLog_ extends Function_<enums.channels.AdminLogResults> {
   static __F: (params: { channel: enums.InputChannel; q: string; events_filter?: enums.ChannelAdminLogEventsFilter; admins?: Array<enums.InputUser>; max_id: bigint; min_id: bigint; limit: number }) => enums.channels.AdminLogResults = null as unknown as (params: { channel: enums.InputChannel; q: string; events_filter?: enums.ChannelAdminLogEventsFilter; admins?: Array<enums.InputUser>; max_id: bigint; min_id: bigint; limit: number }) => enums.channels.AdminLogResults;
+  /** Channel */
   channel: enums.InputChannel;
+  /** Search query, can be empty */
   q: string;
+  /** Event filter */
   events_filter?: enums.ChannelAdminLogEventsFilter;
+  /** Only show events from these admins */
   admins?: Array<enums.InputUser>;
+  /** Maximum ID of message to return (see [pagination](https://core.telegram.org/api/offsets)) */
   max_id: bigint;
+  /** Minimum ID of message to return (see [pagination](https://core.telegram.org/api/offsets)) */
   min_id: bigint;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -15180,9 +16623,12 @@ export class channels_getAdminLog_ extends Function_<enums.channels.AdminLogResu
   }
 }
 
+/** Associate a stickerset to the supergroup */
 export class channels_setStickers_ extends Function_<boolean> {
   static __F: (params: { channel: enums.InputChannel; stickerset: enums.InputStickerSet }) => boolean = null as unknown as (params: { channel: enums.InputChannel; stickerset: enums.InputStickerSet }) => boolean;
+  /** Supergroup */
   channel: enums.InputChannel;
+  /** The stickerset to associate */
   stickerset: enums.InputStickerSet;
 
   protected get [id](): number {
@@ -15214,9 +16660,12 @@ export class channels_setStickers_ extends Function_<boolean> {
   }
 }
 
+/** Mark [channel/supergroup](https://core.telegram.org/api/channel) message contents as read */
 export class channels_readMessageContents_ extends Function_<boolean> {
   static __F: (params: { channel: enums.InputChannel; id: Array<number> }) => boolean = null as unknown as (params: { channel: enums.InputChannel; id: Array<number> }) => boolean;
+  /** [Channel/supergroup](https://core.telegram.org/api/channel) */
   channel: enums.InputChannel;
+  /** IDs of messages whose contents should be marked as read */
   id: Array<number>;
 
   protected get [id](): number {
@@ -15248,10 +16697,14 @@ export class channels_readMessageContents_ extends Function_<boolean> {
   }
 }
 
+/** Delete the history of a [supergroup](https://core.telegram.org/api/channel) */
 export class channels_deleteHistory_ extends Function_<enums.Updates> {
   static __F: (params: { for_everyone?: true; channel: enums.InputChannel; max_id: number }) => enums.Updates = null as unknown as (params: { for_everyone?: true; channel: enums.InputChannel; max_id: number }) => enums.Updates;
+  /** Whether the history should be deleted for everyone */
   for_everyone?: true;
+  /** [Supergroup](https://core.telegram.org/api/channel) whose history must be deleted */
   channel: enums.InputChannel;
+  /** ID of message **up to which** the history must be deleted */
   max_id: number;
 
   protected get [id](): number {
@@ -15288,9 +16741,12 @@ export class channels_deleteHistory_ extends Function_<enums.Updates> {
   }
 }
 
+/** Hide/unhide message history for new channel/supergroup users */
 export class channels_togglePreHistoryHidden_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  /** Channel/supergroup */
   channel: enums.InputChannel;
+  /** Hide/unhide */
   enabled: boolean;
 
   protected get [id](): number {
@@ -15322,8 +16778,10 @@ export class channels_togglePreHistoryHidden_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get a list of [channels/supergroups](https://core.telegram.org/api/channel) we left, requires a [takeout session, see here » for more info](https://core.telegram.org/api/takeout). */
 export class channels_getLeftChannels_ extends Function_<enums.messages.Chats> {
   static __F: (params: { offset: number }) => enums.messages.Chats = null as unknown as (params: { offset: number }) => enums.messages.Chats;
+  /** Offset for [pagination](https://core.telegram.org/api/offsets) */
   offset: number;
 
   protected get [id](): number {
@@ -15352,6 +16810,7 @@ export class channels_getLeftChannels_ extends Function_<enums.messages.Chats> {
   }
 }
 
+/** Get all groups that can be used as [discussion groups](https://core.telegram.org/api/discussion). */
 export class channels_getGroupsForDiscussion_ extends Function_<enums.messages.Chats> {
   static __F: () => enums.messages.Chats = null as unknown as () => enums.messages.Chats;
   protected get [id](): number {
@@ -15375,9 +16834,12 @@ export class channels_getGroupsForDiscussion_ extends Function_<enums.messages.C
   }
 }
 
+/** Associate a group to a channel as [discussion group](https://core.telegram.org/api/discussion) for that channel */
 export class channels_setDiscussionGroup_ extends Function_<boolean> {
   static __F: (params: { broadcast: enums.InputChannel; group: enums.InputChannel }) => boolean = null as unknown as (params: { broadcast: enums.InputChannel; group: enums.InputChannel }) => boolean;
+  /** Channel */
   broadcast: enums.InputChannel;
+  /** [Discussion group](https://core.telegram.org/api/discussion) to associate to the channel */
   group: enums.InputChannel;
 
   protected get [id](): number {
@@ -15409,10 +16871,14 @@ export class channels_setDiscussionGroup_ extends Function_<boolean> {
   }
 }
 
+/** Transfer channel ownership */
 export class channels_editCreator_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; user_id: enums.InputUser; password: enums.InputCheckPasswordSRP }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; user_id: enums.InputUser; password: enums.InputCheckPasswordSRP }) => enums.Updates;
+  /** Channel */
   channel: enums.InputChannel;
+  /** New channel owner */
   user_id: enums.InputUser;
+  /** [2FA password](https://core.telegram.org/api/srp) of account */
   password: enums.InputCheckPasswordSRP;
 
   protected get [id](): number {
@@ -15447,10 +16913,14 @@ export class channels_editCreator_ extends Function_<enums.Updates> {
   }
 }
 
+/** Edit location of geogroup, see [here »](https://core.telegram.org/api/nearby) for more info on geogroups. */
 export class channels_editLocation_ extends Function_<boolean> {
   static __F: (params: { channel: enums.InputChannel; geo_point: enums.InputGeoPoint; address: string }) => boolean = null as unknown as (params: { channel: enums.InputChannel; geo_point: enums.InputGeoPoint; address: string }) => boolean;
+  /** [Geogroup](https://core.telegram.org/api/channel) */
   channel: enums.InputChannel;
+  /** New geolocation */
   geo_point: enums.InputGeoPoint;
+  /** Address string */
   address: string;
 
   protected get [id](): number {
@@ -15485,9 +16955,12 @@ export class channels_editLocation_ extends Function_<boolean> {
   }
 }
 
+/** Toggle supergroup slow mode: if enabled, users will only be able to send one message every `seconds` seconds */
 export class channels_toggleSlowMode_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; seconds: number }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; seconds: number }) => enums.Updates;
+  /** The [supergroup](https://core.telegram.org/api/channel) */
   channel: enums.InputChannel;
+  /** Users will only be able to send one message every `seconds` seconds, `0` to disable the limitation */
   seconds: number;
 
   protected get [id](): number {
@@ -15519,6 +16992,7 @@ export class channels_toggleSlowMode_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get inactive channels and supergroups */
 export class channels_getInactiveChannels_ extends Function_<enums.messages.InactiveChats> {
   static __F: () => enums.messages.InactiveChats = null as unknown as () => enums.messages.InactiveChats;
   protected get [id](): number {
@@ -15542,8 +17016,10 @@ export class channels_getInactiveChannels_ extends Function_<enums.messages.Inac
   }
 }
 
+/** Convert a [supergroup](https://core.telegram.org/api/channel) to a [gigagroup](https://core.telegram.org/api/channel), when requested by [channel suggestions](https://core.telegram.org/api/config#channel-suggestions). */
 export class channels_convertToGigagroup_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
+  /** The [supergroup](https://core.telegram.org/api/channel) to convert */
   channel: enums.InputChannel;
 
   protected get [id](): number {
@@ -15572,9 +17048,12 @@ export class channels_convertToGigagroup_ extends Function_<enums.Updates> {
   }
 }
 
+/** Mark a specific sponsored message as read */
 export class channels_viewSponsoredMessage_ extends Function_<boolean> {
   static __F: (params: { channel: enums.InputChannel; random_id: Uint8Array }) => boolean = null as unknown as (params: { channel: enums.InputChannel; random_id: Uint8Array }) => boolean;
+  /** Peer */
   channel: enums.InputChannel;
+  /** Message ID */
   random_id: Uint8Array;
 
   protected get [id](): number {
@@ -15606,8 +17085,10 @@ export class channels_viewSponsoredMessage_ extends Function_<boolean> {
   }
 }
 
+/** Get a list of sponsored messages */
 export class channels_getSponsoredMessages_ extends Function_<enums.messages.SponsoredMessages> {
   static __F: (params: { channel: enums.InputChannel }) => enums.messages.SponsoredMessages = null as unknown as (params: { channel: enums.InputChannel }) => enums.messages.SponsoredMessages;
+  /** Peer */
   channel: enums.InputChannel;
 
   protected get [id](): number {
@@ -15636,8 +17117,10 @@ export class channels_getSponsoredMessages_ extends Function_<enums.messages.Spo
   }
 }
 
+/** Obtains a list of peers that can be used to send messages in a specific group */
 export class channels_getSendAs_ extends Function_<enums.channels.SendAsPeers> {
   static __F: (params: { peer: enums.InputPeer }) => enums.channels.SendAsPeers = null as unknown as (params: { peer: enums.InputPeer }) => enums.channels.SendAsPeers;
+  /** The group where we intend to send messages */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -15666,9 +17149,12 @@ export class channels_getSendAs_ extends Function_<enums.channels.SendAsPeers> {
   }
 }
 
+/** Delete all messages sent by a specific participant of a given supergroup */
 export class channels_deleteParticipantHistory_ extends Function_<enums.messages.AffectedHistory> {
   static __F: (params: { channel: enums.InputChannel; participant: enums.InputPeer }) => enums.messages.AffectedHistory = null as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer }) => enums.messages.AffectedHistory;
+  /** Supergroup */
   channel: enums.InputChannel;
+  /** The participant whose messages should be deleted */
   participant: enums.InputPeer;
 
   protected get [id](): number {
@@ -15700,9 +17186,12 @@ export class channels_deleteParticipantHistory_ extends Function_<enums.messages
   }
 }
 
+/** Set whether all users [should join a discussion group in order to comment on a post »](https://core.telegram.org/api/discussion#requiring-users-to-join-the-group) */
 export class channels_toggleJoinToSend_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  /** Discussion group */
   channel: enums.InputChannel;
+  /** Toggle */
   enabled: boolean;
 
   protected get [id](): number {
@@ -15734,9 +17223,12 @@ export class channels_toggleJoinToSend_ extends Function_<enums.Updates> {
   }
 }
 
+/** Set whether all users should [request admin approval to join the group »](https://core.telegram.org/api/invites#join-requests). */
 export class channels_toggleJoinRequest_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  /** Group */
   channel: enums.InputChannel;
+  /** Toggle */
   enabled: boolean;
 
   protected get [id](): number {
@@ -15768,9 +17260,12 @@ export class channels_toggleJoinRequest_ extends Function_<enums.Updates> {
   }
 }
 
+/** Reorder active usernames */
 export class channels_reorderUsernames_ extends Function_<boolean> {
   static __F: (params: { channel: enums.InputChannel; order: Array<string> }) => boolean = null as unknown as (params: { channel: enums.InputChannel; order: Array<string> }) => boolean;
+  /** The supergroup or channel */
   channel: enums.InputChannel;
+  /** The new order for active usernames. All active usernames must be specified. */
   order: Array<string>;
 
   protected get [id](): number {
@@ -15802,10 +17297,14 @@ export class channels_reorderUsernames_ extends Function_<boolean> {
   }
 }
 
+/** Activate or deactivate a purchased [fragment.com](https://fragment.com) username associated to a [supergroup or channel](https://core.telegram.org/api/channel) we own. */
 export class channels_toggleUsername_ extends Function_<boolean> {
   static __F: (params: { channel: enums.InputChannel; username: string; active: boolean }) => boolean = null as unknown as (params: { channel: enums.InputChannel; username: string; active: boolean }) => boolean;
+  /** [Supergroup or channel](https://core.telegram.org/api/channel) */
   channel: enums.InputChannel;
+  /** Username */
   username: string;
+  /** Whether to activate or deactivate the username */
   active: boolean;
 
   protected get [id](): number {
@@ -15840,8 +17339,10 @@ export class channels_toggleUsername_ extends Function_<boolean> {
   }
 }
 
+/** Disable all purchased usernames of a supergroup or channel */
 export class channels_deactivateAllUsernames_ extends Function_<boolean> {
   static __F: (params: { channel: enums.InputChannel }) => boolean = null as unknown as (params: { channel: enums.InputChannel }) => boolean;
+  /** Supergroup or channel */
   channel: enums.InputChannel;
 
   protected get [id](): number {
@@ -15870,9 +17371,12 @@ export class channels_deactivateAllUsernames_ extends Function_<boolean> {
   }
 }
 
+/** Enable or disable [forum functionality](https://core.telegram.org/api/forum) in a supergroup. */
 export class channels_toggleForum_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  /** Supergroup ID */
   channel: enums.InputChannel;
+  /** Enable or disable forum functionality */
   enabled: boolean;
 
   protected get [id](): number {
@@ -15904,13 +17408,20 @@ export class channels_toggleForum_ extends Function_<enums.Updates> {
   }
 }
 
+/** Create a [forum topic](https://core.telegram.org/api/forum); requires [`manage_topics` rights](https://core.telegram.org/api/rights). */
 export class channels_createForumTopic_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; title: string; icon_color?: number; icon_emoji_id?: bigint; random_id: bigint; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; title: string; icon_color?: number; icon_emoji_id?: bigint; random_id: bigint; send_as?: enums.InputPeer }) => enums.Updates;
+  /** [The forum](https://core.telegram.org/api/forum) */
   channel: enums.InputChannel;
+  /** Topic title (maximum UTF-8 length: 128) */
   title: string;
+  /** If no custom emoji icon is specified, specifies the color of the fallback topic icon (RGB), one of `0x6FB9F0`, `0xFFD67E`, `0xCB86DB`, `0x8EEE98`, `0xFF93B2`, or `0xFB6F5F`. */
   icon_color?: number;
+  /** ID of the [custom emoji](https://core.telegram.org/api/custom-emoji) used as topic icon. [Telegram Premium](https://core.telegram.org/api/premium) users can use any custom emoji, other users can only use the custom emojis contained in the [inputStickerSetEmojiDefaultTopicIcons](https://core.telegram.org/constructor/inputStickerSetEmojiDefaultTopicIcons) emoji pack. */
   icon_emoji_id?: bigint;
+  /** Unique client message ID to prevent duplicate sending of the same event */
   random_id: bigint;
+  /** Create the topic as the specified peer */
   send_as?: enums.InputPeer;
 
   protected get [id](): number {
@@ -15956,13 +17467,20 @@ export class channels_createForumTopic_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get [topics of a forum](https://core.telegram.org/api/forum) */
 export class channels_getForumTopics_ extends Function_<enums.messages.ForumTopics> {
   static __F: (params: { channel: enums.InputChannel; q?: string; offset_date: number; offset_id: number; offset_topic: number; limit: number }) => enums.messages.ForumTopics = null as unknown as (params: { channel: enums.InputChannel; q?: string; offset_date: number; offset_id: number; offset_topic: number; limit: number }) => enums.messages.ForumTopics;
+  /** Supergroup */
   channel: enums.InputChannel;
+  /** Search query */
   q?: string;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets), date of the last message of the last found topic. Use 0 or any date in the future to get results from the last topic. */
   offset_date: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets), ID of the last message of the last found topic (or initially `0`). */
   offset_id: number;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets), ID of the last found topic (or initially `0`). */
   offset_topic: number;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets). For optimal performance, the number of returned topics is chosen by the server and can be smaller than the specified limit. */
   limit: number;
 
   protected get [id](): number {
@@ -16008,9 +17526,12 @@ export class channels_getForumTopics_ extends Function_<enums.messages.ForumTopi
   }
 }
 
+/** Get forum topics by their ID */
 export class channels_getForumTopicsByID_ extends Function_<enums.messages.ForumTopics> {
   static __F: (params: { channel: enums.InputChannel; topics: Array<number> }) => enums.messages.ForumTopics = null as unknown as (params: { channel: enums.InputChannel; topics: Array<number> }) => enums.messages.ForumTopics;
+  /** Forum */
   channel: enums.InputChannel;
+  /** Topic IDs */
   topics: Array<number>;
 
   protected get [id](): number {
@@ -16042,13 +17563,20 @@ export class channels_getForumTopicsByID_ extends Function_<enums.messages.Forum
   }
 }
 
+/** Edit [forum topic](https://core.telegram.org/api/forum); requires [`manage_topics` rights](https://core.telegram.org/api/rights). */
 export class channels_editForumTopic_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; topic_id: number; title?: string; icon_emoji_id?: bigint; closed?: boolean; hidden?: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; topic_id: number; title?: string; icon_emoji_id?: bigint; closed?: boolean; hidden?: boolean }) => enums.Updates;
+  /** Supergroup */
   channel: enums.InputChannel;
+  /** Topic ID */
   topic_id: number;
+  /** If present, will update the topic title (maximum UTF-8 length: 128). */
   title?: string;
+  /** If present, updates the [custom emoji](https://core.telegram.org/api/custom-emoji) used as topic icon. [Telegram Premium](https://core.telegram.org/api/premium) users can use any custom emoji, other users can only use the custom emojis contained in the [inputStickerSetEmojiDefaultTopicIcons](https://core.telegram.org/constructor/inputStickerSetEmojiDefaultTopicIcons) emoji pack. Pass 0 to switch to the fallback topic icon. */
   icon_emoji_id?: bigint;
+  /** If present, will update the open/closed status of the topic. */
   closed?: boolean;
+  /** If present, will hide/unhide the topic (only valid for the "General" topic, `id=1`). */
   hidden?: boolean;
 
   protected get [id](): number {
@@ -16094,10 +17622,14 @@ export class channels_editForumTopic_ extends Function_<enums.Updates> {
   }
 }
 
+/** Pin or unpin [forum topics](https://core.telegram.org/api/forum) */
 export class channels_updatePinnedForumTopic_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; topic_id: number; pinned: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; topic_id: number; pinned: boolean }) => enums.Updates;
+  /** Supergroup ID */
   channel: enums.InputChannel;
+  /** [Forum topic ID](https://core.telegram.org/api/forum) */
   topic_id: number;
+  /** Whether to pin or unpin the topic */
   pinned: boolean;
 
   protected get [id](): number {
@@ -16132,9 +17664,12 @@ export class channels_updatePinnedForumTopic_ extends Function_<enums.Updates> {
   }
 }
 
+/** Delete message history of a [forum topic](https://core.telegram.org/api/forum) */
 export class channels_deleteTopicHistory_ extends Function_<enums.messages.AffectedHistory> {
   static __F: (params: { channel: enums.InputChannel; top_msg_id: number }) => enums.messages.AffectedHistory = null as unknown as (params: { channel: enums.InputChannel; top_msg_id: number }) => enums.messages.AffectedHistory;
+  /** Forum */
   channel: enums.InputChannel;
+  /** Topic ID */
   top_msg_id: number;
 
   protected get [id](): number {
@@ -16166,10 +17701,15 @@ export class channels_deleteTopicHistory_ extends Function_<enums.messages.Affec
   }
 }
 
+/** Reorder pinned forum topics */
 export class channels_reorderPinnedForumTopics_ extends Function_<enums.Updates> {
   static __F: (params: { force?: true; channel: enums.InputChannel; order: Array<number> }) => enums.Updates = null as unknown as (params: { force?: true; channel: enums.InputChannel; order: Array<number> }) => enums.Updates;
+  /** If not set, the order of only the topics present both server-side and in `order` will be changed (i.e. mentioning topics not pinned server-side in `order` will not pin them, and not mentioning topics pinned server-side will not unpin them).  
+  If set, the entire server-side pinned topic list will be replaced with `order` (i.e. mentioning topics not pinned server-side in `order` will pin them, and not mentioning topics pinned server-side will unpin them) */
   force?: true;
+  /** Supergroup ID */
   channel: enums.InputChannel;
+  /** [Topic IDs »](https://core.telegram.org/api/forum) */
   order: Array<number>;
 
   protected get [id](): number {
@@ -16206,9 +17746,12 @@ export class channels_reorderPinnedForumTopics_ extends Function_<enums.Updates>
   }
 }
 
+/** Enable or disable the [native antispam system](https://core.telegram.org/api/antispam). */
 export class channels_toggleAntiSpam_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  /** Supergroup ID. The specified supergroup must have at least `telegram_antispam_group_size_min` members to enable antispam functionality, as specified by the [client configuration parameters](https://core.telegram.org/api/config#client-configuration). */
   channel: enums.InputChannel;
+  /** Enable or disable the native antispam system. */
   enabled: boolean;
 
   protected get [id](): number {
@@ -16240,9 +17783,12 @@ export class channels_toggleAntiSpam_ extends Function_<enums.Updates> {
   }
 }
 
+/** Report a [native antispam](https://core.telegram.org/api/antispam) false positive */
 export class channels_reportAntiSpamFalsePositive_ extends Function_<boolean> {
   static __F: (params: { channel: enums.InputChannel; msg_id: number }) => boolean = null as unknown as (params: { channel: enums.InputChannel; msg_id: number }) => boolean;
+  /** Supergroup ID */
   channel: enums.InputChannel;
+  /** Message ID that was mistakenly deleted by the [native antispam](https://core.telegram.org/api/antispam) system, taken from the [admin log](https://core.telegram.org/api/recent-actions) */
   msg_id: number;
 
   protected get [id](): number {
@@ -16274,9 +17820,12 @@ export class channels_reportAntiSpamFalsePositive_ extends Function_<boolean> {
   }
 }
 
+/** Hide or display the participants list in a [supergroup](https://core.telegram.org/api/channel). */
 export class channels_toggleParticipantsHidden_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  /** Supergroup ID */
   channel: enums.InputChannel;
+  /** If true, will hide the participants list; otherwise will unhide it. */
   enabled: boolean;
 
   protected get [id](): number {
@@ -16308,9 +17857,12 @@ export class channels_toggleParticipantsHidden_ extends Function_<enums.Updates>
   }
 }
 
+/** Informs the server that the user has either: */
 export class channels_clickSponsoredMessage_ extends Function_<boolean> {
   static __F: (params: { channel: enums.InputChannel; random_id: Uint8Array }) => boolean = null as unknown as (params: { channel: enums.InputChannel; random_id: Uint8Array }) => boolean;
+  /** Channel where the sponsored message was posted */
   channel: enums.InputChannel;
+  /** Message ID */
   random_id: Uint8Array;
 
   protected get [id](): number {
@@ -16342,11 +17894,16 @@ export class channels_clickSponsoredMessage_ extends Function_<boolean> {
   }
 }
 
+/** Update the [accent color and background custom emoji »](https://core.telegram.org/api/colors) of a channel. */
 export class channels_updateColor_ extends Function_<enums.Updates> {
   static __F: (params: { for_profile?: true; channel: enums.InputChannel; color?: number; background_emoji_id?: bigint }) => enums.Updates = null as unknown as (params: { for_profile?: true; channel: enums.InputChannel; color?: number; background_emoji_id?: bigint }) => enums.Updates;
+  /** Whether to change the accent color emoji pattern of the profile page; otherwise, the accent color and emoji pattern of messages will be changed. */
   for_profile?: true;
+  /** Channel whose accent color should be changed. */
   channel: enums.InputChannel;
+  /** [ID of the accent color palette »](https://core.telegram.org/api/colors) to use (not RGB24, see [here »](https://core.telegram.org/api/colors) for more info); if not set, the default palette is used. */
   color?: number;
+  /** Custom emoji ID used in the accent color pattern. */
   background_emoji_id?: bigint;
 
   protected get [id](): number {
@@ -16386,9 +17943,12 @@ export class channels_updateColor_ extends Function_<enums.Updates> {
   }
 }
 
+/** Users may also choose to display messages from all topics of a [forum](https://core.telegram.org/api/forum) as if they were sent to a normal group, using a "View as messages" setting in the local client: this setting only affects the current account, and is synced to other logged in sessions using this method. */
 export class channels_toggleViewForumAsMessages_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
+  /** The forum */
   channel: enums.InputChannel;
+  /** The new value of the `view_forum_as_messages` flag. */
   enabled: boolean;
 
   protected get [id](): number {
@@ -16420,8 +17980,10 @@ export class channels_toggleViewForumAsMessages_ extends Function_<enums.Updates
   }
 }
 
+/** Obtain a list of similarly themed public channels, selected based on similarities in their **subscriber bases**. */
 export class channels_getChannelRecommendations_ extends Function_<enums.messages.Chats> {
   static __F: (params: { channel: enums.InputChannel }) => enums.messages.Chats = null as unknown as (params: { channel: enums.InputChannel }) => enums.messages.Chats;
+  /** The method will return channels related to the passed `channel`. */
   channel: enums.InputChannel;
 
   protected get [id](): number {
@@ -16450,9 +18012,12 @@ export class channels_getChannelRecommendations_ extends Function_<enums.message
   }
 }
 
+/** Set an [emoji status](https://core.telegram.org/api/emoji-status) for a channel. */
 export class channels_updateEmojiStatus_ extends Function_<enums.Updates> {
   static __F: (params: { channel: enums.InputChannel; emoji_status: enums.EmojiStatus }) => enums.Updates = null as unknown as (params: { channel: enums.InputChannel; emoji_status: enums.EmojiStatus }) => enums.Updates;
+  /** The channel, must have at least [`channel_emoji_status_level_min` boosts](https://core.telegram.org/api/config#channel-emoji-status-level-min). */
   channel: enums.InputChannel;
+  /** [Emoji status](https://core.telegram.org/api/emoji-status) to set */
   emoji_status: enums.EmojiStatus;
 
   protected get [id](): number {
@@ -16552,9 +18117,12 @@ export class channels_setEmojiStickers_ extends Function_<boolean> {
   }
 }
 
+/** Sends a custom request; for bots only */
 export class bots_sendCustomRequest_ extends Function_<enums.DataJSON> {
   static __F: (params: { custom_method: string; params: enums.DataJSON }) => enums.DataJSON = null as unknown as (params: { custom_method: string; params: enums.DataJSON }) => enums.DataJSON;
+  /** The method name */
   custom_method: string;
+  /** JSON-serialized method parameters */
   params: enums.DataJSON;
 
   protected get [id](): number {
@@ -16586,9 +18154,12 @@ export class bots_sendCustomRequest_ extends Function_<enums.DataJSON> {
   }
 }
 
+/** Answers a custom query; for bots only */
 export class bots_answerWebhookJSONQuery_ extends Function_<boolean> {
   static __F: (params: { query_id: bigint; data: enums.DataJSON }) => boolean = null as unknown as (params: { query_id: bigint; data: enums.DataJSON }) => boolean;
+  /** Identifier of a custom query */
   query_id: bigint;
+  /** JSON-serialized answer to the query */
   data: enums.DataJSON;
 
   protected get [id](): number {
@@ -16620,10 +18191,14 @@ export class bots_answerWebhookJSONQuery_ extends Function_<boolean> {
   }
 }
 
+/** Set bot command list */
 export class bots_setBotCommands_ extends Function_<boolean> {
   static __F: (params: { scope: enums.BotCommandScope; lang_code: string; commands: Array<enums.BotCommand> }) => boolean = null as unknown as (params: { scope: enums.BotCommandScope; lang_code: string; commands: Array<enums.BotCommand> }) => boolean;
+  /** Command scope */
   scope: enums.BotCommandScope;
+  /** Language code */
   lang_code: string;
+  /** Bot commands */
   commands: Array<enums.BotCommand>;
 
   protected get [id](): number {
@@ -16658,9 +18233,12 @@ export class bots_setBotCommands_ extends Function_<boolean> {
   }
 }
 
+/** Clear bot commands for the specified bot scope and language code */
 export class bots_resetBotCommands_ extends Function_<boolean> {
   static __F: (params: { scope: enums.BotCommandScope; lang_code: string }) => boolean = null as unknown as (params: { scope: enums.BotCommandScope; lang_code: string }) => boolean;
+  /** Command scope */
   scope: enums.BotCommandScope;
+  /** Language code */
   lang_code: string;
 
   protected get [id](): number {
@@ -16692,9 +18270,12 @@ export class bots_resetBotCommands_ extends Function_<boolean> {
   }
 }
 
+/** Obtain a list of bot commands for the specified bot scope and language code */
 export class bots_getBotCommands_ extends Function_<enums.BotCommand[]> {
   static __F: (params: { scope: enums.BotCommandScope; lang_code: string }) => enums.BotCommand[] = null as unknown as (params: { scope: enums.BotCommandScope; lang_code: string }) => enums.BotCommand[];
+  /** Command scope */
   scope: enums.BotCommandScope;
+  /** Language code */
   lang_code: string;
 
   protected get [id](): number {
@@ -16726,9 +18307,12 @@ export class bots_getBotCommands_ extends Function_<enums.BotCommand[]> {
   }
 }
 
+/** Sets the [menu button action »](https://core.telegram.org/api/bots/menu) for a given user or for all users */
 export class bots_setBotMenuButton_ extends Function_<boolean> {
   static __F: (params: { user_id: enums.InputUser; button: enums.BotMenuButton }) => boolean = null as unknown as (params: { user_id: enums.InputUser; button: enums.BotMenuButton }) => boolean;
+  /** User ID */
   user_id: enums.InputUser;
+  /** Bot menu button action */
   button: enums.BotMenuButton;
 
   protected get [id](): number {
@@ -16760,8 +18344,10 @@ export class bots_setBotMenuButton_ extends Function_<boolean> {
   }
 }
 
+/** Gets the menu button action for a given user or for all users, previously set using [bots.setBotMenuButton](https://core.telegram.org/method/bots.setBotMenuButton); users can see this information in the [botInfo](https://core.telegram.org/constructor/botInfo) constructor. */
 export class bots_getBotMenuButton_ extends Function_<enums.BotMenuButton> {
   static __F: (params: { user_id: enums.InputUser }) => enums.BotMenuButton = null as unknown as (params: { user_id: enums.InputUser }) => enums.BotMenuButton;
+  /** User ID or empty for the default menu button. */
   user_id: enums.InputUser;
 
   protected get [id](): number {
@@ -16790,8 +18376,10 @@ export class bots_getBotMenuButton_ extends Function_<enums.BotMenuButton> {
   }
 }
 
+/** Set the default [suggested admin rights](https://core.telegram.org/api/rights#suggested-bot-rights) for bots being added as admins to channels, see [here for more info on how to handle them »](https://core.telegram.org/api/rights#suggested-bot-rights). */
 export class bots_setBotBroadcastDefaultAdminRights_ extends Function_<boolean> {
   static __F: (params: { admin_rights: enums.ChatAdminRights }) => boolean = null as unknown as (params: { admin_rights: enums.ChatAdminRights }) => boolean;
+  /** Admin rights */
   admin_rights: enums.ChatAdminRights;
 
   protected get [id](): number {
@@ -16820,8 +18408,10 @@ export class bots_setBotBroadcastDefaultAdminRights_ extends Function_<boolean> 
   }
 }
 
+/** Set the default [suggested admin rights](https://core.telegram.org/api/rights#suggested-bot-rights) for bots being added as admins to groups, see [here for more info on how to handle them »](https://core.telegram.org/api/rights#suggested-bot-rights). */
 export class bots_setBotGroupDefaultAdminRights_ extends Function_<boolean> {
   static __F: (params: { admin_rights: enums.ChatAdminRights }) => boolean = null as unknown as (params: { admin_rights: enums.ChatAdminRights }) => boolean;
+  /** Admin rights */
   admin_rights: enums.ChatAdminRights;
 
   protected get [id](): number {
@@ -16850,12 +18440,18 @@ export class bots_setBotGroupDefaultAdminRights_ extends Function_<boolean> {
   }
 }
 
+/** Set localized name, about text and description of a bot (or of the current account, if called by a bot). */
 export class bots_setBotInfo_ extends Function_<boolean> {
   static __F: (params: { bot?: enums.InputUser; lang_code: string; name?: string; about?: string; description?: string }) => boolean = null as unknown as (params: { bot?: enums.InputUser; lang_code: string; name?: string; about?: string; description?: string }) => boolean;
+  /** If called by a user, **must** contain the peer of a bot we own. */
   bot?: enums.InputUser;
+  /** Language code, if left empty update the fallback about text and description */
   lang_code: string;
+  /** New bot name */
   name?: string;
+  /** New about text */
   about?: string;
+  /** New description */
   description?: string;
 
   protected get [id](): number {
@@ -16898,9 +18494,12 @@ export class bots_setBotInfo_ extends Function_<boolean> {
   }
 }
 
+/** Get localized name, about text and description of a bot (or of the current account, if called by a bot). */
 export class bots_getBotInfo_ extends Function_<enums.bots.BotInfo> {
   static __F: (params: { bot?: enums.InputUser; lang_code: string }) => enums.bots.BotInfo = null as unknown as (params: { bot?: enums.InputUser; lang_code: string }) => enums.bots.BotInfo;
+  /** If called by a user, **must** contain the peer of a bot we own. */
   bot?: enums.InputUser;
+  /** Language code, if left empty this method will return the fallback about text and description. */
   lang_code: string;
 
   protected get [id](): number {
@@ -16934,9 +18533,12 @@ export class bots_getBotInfo_ extends Function_<enums.bots.BotInfo> {
   }
 }
 
+/** Reorder usernames associated to a bot we own. */
 export class bots_reorderUsernames_ extends Function_<boolean> {
   static __F: (params: { bot: enums.InputUser; order: Array<string> }) => boolean = null as unknown as (params: { bot: enums.InputUser; order: Array<string> }) => boolean;
+  /** The bot */
   bot: enums.InputUser;
+  /** The new order for active usernames. All active usernames must be specified. */
   order: Array<string>;
 
   protected get [id](): number {
@@ -16968,10 +18570,14 @@ export class bots_reorderUsernames_ extends Function_<boolean> {
   }
 }
 
+/** Activate or deactivate a purchased [fragment.com](https://fragment.com) username associated to a bot we own. */
 export class bots_toggleUsername_ extends Function_<boolean> {
   static __F: (params: { bot: enums.InputUser; username: string; active: boolean }) => boolean = null as unknown as (params: { bot: enums.InputUser; username: string; active: boolean }) => boolean;
+  /** The bot */
   bot: enums.InputUser;
+  /** Username */
   username: string;
+  /** Whether to activate or deactivate it */
   active: boolean;
 
   protected get [id](): number {
@@ -17006,8 +18612,10 @@ export class bots_toggleUsername_ extends Function_<boolean> {
   }
 }
 
+/** Check whether the specified bot can send us messages */
 export class bots_canSendMessage_ extends Function_<boolean> {
   static __F: (params: { bot: enums.InputUser }) => boolean = null as unknown as (params: { bot: enums.InputUser }) => boolean;
+  /** The bot */
   bot: enums.InputUser;
 
   protected get [id](): number {
@@ -17036,8 +18644,10 @@ export class bots_canSendMessage_ extends Function_<boolean> {
   }
 }
 
+/** Allow the specified bot to send us messages */
 export class bots_allowSendMessage_ extends Function_<enums.Updates> {
   static __F: (params: { bot: enums.InputUser }) => enums.Updates = null as unknown as (params: { bot: enums.InputUser }) => enums.Updates;
+  /** The bot */
   bot: enums.InputUser;
 
   protected get [id](): number {
@@ -17066,10 +18676,14 @@ export class bots_allowSendMessage_ extends Function_<enums.Updates> {
   }
 }
 
+/** Send a custom request from a [mini bot app](https://core.telegram.org/api/bots/webapps), triggered by a [web\_app\_invoke\_custom\_method event »](https://core.telegram.org/api/web-events#web-app-invoke-custom-method). */
 export class bots_invokeWebViewCustomMethod_ extends Function_<enums.DataJSON> {
   static __F: (params: { bot: enums.InputUser; custom_method: string; params: enums.DataJSON }) => enums.DataJSON = null as unknown as (params: { bot: enums.InputUser; custom_method: string; params: enums.DataJSON }) => enums.DataJSON;
+  /** Identifier of the bot associated to the [mini bot app](https://core.telegram.org/api/bots/webapps) */
   bot: enums.InputUser;
+  /** Identifier of the custom method to invoke */
   custom_method: string;
+  /** Method parameters */
   params: enums.DataJSON;
 
   protected get [id](): number {
@@ -17104,9 +18718,18 @@ export class bots_invokeWebViewCustomMethod_ extends Function_<enums.DataJSON> {
   }
 }
 
+/** Get a payment form */
 export class payments_getPaymentForm_ extends Function_<enums.payments.PaymentForm> {
   static __F: (params: { invoice: enums.InputInvoice; theme_params?: enums.DataJSON }) => enums.payments.PaymentForm = null as unknown as (params: { invoice: enums.InputInvoice; theme_params?: enums.DataJSON }) => enums.payments.PaymentForm;
+  /** Invoice */
   invoice: enums.InputInvoice;
+  /** A JSON object with the following keys, containing color theme information (integers, RGB24) to pass to the payment provider, to apply in eventual verification pages:  
+  `bg_color` - Background color  
+  `text_color` - Text color  
+  `hint_color` - Hint text color  
+  `link_color` - Link color  
+  `button_color` - Button color  
+  `button_text_color` - Button text color */
   theme_params?: enums.DataJSON;
 
   protected get [id](): number {
@@ -17140,9 +18763,12 @@ export class payments_getPaymentForm_ extends Function_<enums.payments.PaymentFo
   }
 }
 
+/** Get payment receipt */
 export class payments_getPaymentReceipt_ extends Function_<enums.payments.PaymentReceipt> {
   static __F: (params: { peer: enums.InputPeer; msg_id: number }) => enums.payments.PaymentReceipt = null as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.payments.PaymentReceipt;
+  /** The peer where the payment receipt was sent */
   peer: enums.InputPeer;
+  /** Message ID of receipt */
   msg_id: number;
 
   protected get [id](): number {
@@ -17174,10 +18800,14 @@ export class payments_getPaymentReceipt_ extends Function_<enums.payments.Paymen
   }
 }
 
+/** Submit requested order information for validation */
 export class payments_validateRequestedInfo_ extends Function_<enums.payments.ValidatedRequestedInfo> {
   static __F: (params: { save?: true; invoice: enums.InputInvoice; info: enums.PaymentRequestedInfo }) => enums.payments.ValidatedRequestedInfo = null as unknown as (params: { save?: true; invoice: enums.InputInvoice; info: enums.PaymentRequestedInfo }) => enums.payments.ValidatedRequestedInfo;
+  /** Save order information to re-use it for future orders */
   save?: true;
+  /** Invoice */
   invoice: enums.InputInvoice;
+  /** Requested order information */
   info: enums.PaymentRequestedInfo;
 
   protected get [id](): number {
@@ -17214,13 +18844,20 @@ export class payments_validateRequestedInfo_ extends Function_<enums.payments.Va
   }
 }
 
+/** Send compiled payment form */
 export class payments_sendPaymentForm_ extends Function_<enums.payments.PaymentResult> {
   static __F: (params: { form_id: bigint; invoice: enums.InputInvoice; requested_info_id?: string; shipping_option_id?: string; credentials: enums.InputPaymentCredentials; tip_amount?: bigint }) => enums.payments.PaymentResult = null as unknown as (params: { form_id: bigint; invoice: enums.InputInvoice; requested_info_id?: string; shipping_option_id?: string; credentials: enums.InputPaymentCredentials; tip_amount?: bigint }) => enums.payments.PaymentResult;
+  /** Form ID */
   form_id: bigint;
+  /** Invoice */
   invoice: enums.InputInvoice;
+  /** ID of saved and validated [order info](https://core.telegram.org/constructor/payments.validatedRequestedInfo) */
   requested_info_id?: string;
+  /** Chosen shipping option ID */
   shipping_option_id?: string;
+  /** Payment credentials */
   credentials: enums.InputPaymentCredentials;
+  /** Tip, in the smallest units of the currency (integer, not float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the exp parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   tip_amount?: bigint;
 
   protected get [id](): number {
@@ -17266,6 +18903,7 @@ export class payments_sendPaymentForm_ extends Function_<enums.payments.PaymentR
   }
 }
 
+/** Get saved payment information */
 export class payments_getSavedInfo_ extends Function_<enums.payments.SavedInfo> {
   static __F: () => enums.payments.SavedInfo = null as unknown as () => enums.payments.SavedInfo;
   protected get [id](): number {
@@ -17289,9 +18927,12 @@ export class payments_getSavedInfo_ extends Function_<enums.payments.SavedInfo> 
   }
 }
 
+/** Clear saved payment information */
 export class payments_clearSavedInfo_ extends Function_<boolean> {
   static __F: (params?: { credentials?: true; info?: true }) => boolean = null as unknown as (params?: { credentials?: true; info?: true }) => boolean;
+  /** Remove saved payment credentials */
   credentials?: true;
+  /** Clear the last order settings saved by the user */
   info?: true;
 
   protected get [id](): number {
@@ -17325,8 +18966,10 @@ export class payments_clearSavedInfo_ extends Function_<boolean> {
   }
 }
 
+/** Get info about a credit card */
 export class payments_getBankCardData_ extends Function_<enums.payments.BankCardData> {
   static __F: (params: { number: string }) => enums.payments.BankCardData = null as unknown as (params: { number: string }) => enums.payments.BankCardData;
+  /** Credit card number */
   number: string;
 
   protected get [id](): number {
@@ -17355,8 +18998,10 @@ export class payments_getBankCardData_ extends Function_<enums.payments.BankCard
   }
 }
 
+/** Generate an [invoice deep link](https://core.telegram.org/api/links#invoice-links) */
 export class payments_exportInvoice_ extends Function_<enums.payments.ExportedInvoice> {
   static __F: (params: { invoice_media: enums.InputMedia }) => enums.payments.ExportedInvoice = null as unknown as (params: { invoice_media: enums.InputMedia }) => enums.payments.ExportedInvoice;
+  /** Invoice */
   invoice_media: enums.InputMedia;
 
   protected get [id](): number {
@@ -17385,9 +19030,12 @@ export class payments_exportInvoice_ extends Function_<enums.payments.ExportedIn
   }
 }
 
+/** Informs server about a purchase made through the App Store: for official applications only. */
 export class payments_assignAppStoreTransaction_ extends Function_<enums.Updates> {
   static __F: (params: { receipt: Uint8Array; purpose: enums.InputStorePaymentPurpose }) => enums.Updates = null as unknown as (params: { receipt: Uint8Array; purpose: enums.InputStorePaymentPurpose }) => enums.Updates;
+  /** Receipt */
   receipt: Uint8Array;
+  /** Payment purpose */
   purpose: enums.InputStorePaymentPurpose;
 
   protected get [id](): number {
@@ -17419,9 +19067,12 @@ export class payments_assignAppStoreTransaction_ extends Function_<enums.Updates
   }
 }
 
+/** Informs server about a purchase made through the Play Store: for official applications only. */
 export class payments_assignPlayMarketTransaction_ extends Function_<enums.Updates> {
   static __F: (params: { receipt: enums.DataJSON; purpose: enums.InputStorePaymentPurpose }) => enums.Updates = null as unknown as (params: { receipt: enums.DataJSON; purpose: enums.InputStorePaymentPurpose }) => enums.Updates;
+  /** Receipt */
   receipt: enums.DataJSON;
+  /** Payment purpose */
   purpose: enums.InputStorePaymentPurpose;
 
   protected get [id](): number {
@@ -17453,8 +19104,10 @@ export class payments_assignPlayMarketTransaction_ extends Function_<enums.Updat
   }
 }
 
+/** Checks whether Telegram Premium purchase is possible. Must be called before in-store Premium purchase, official apps only. */
 export class payments_canPurchasePremium_ extends Function_<boolean> {
   static __F: (params: { purpose: enums.InputStorePaymentPurpose }) => boolean = null as unknown as (params: { purpose: enums.InputStorePaymentPurpose }) => boolean;
+  /** Payment purpose */
   purpose: enums.InputStorePaymentPurpose;
 
   protected get [id](): number {
@@ -17483,8 +19136,10 @@ export class payments_canPurchasePremium_ extends Function_<boolean> {
   }
 }
 
+/** Obtain a list of Telegram Premium [giveaway/gift code »](https://core.telegram.org/api/giveaways) options. */
 export class payments_getPremiumGiftCodeOptions_ extends Function_<enums.PremiumGiftCodeOption[]> {
   static __F: (params?: { boost_peer?: enums.InputPeer }) => enums.PremiumGiftCodeOption[] = null as unknown as (params?: { boost_peer?: enums.InputPeer }) => enums.PremiumGiftCodeOption[];
+  /** The channel that will start the giveaway */
   boost_peer?: enums.InputPeer;
 
   protected get [id](): number {
@@ -17515,8 +19170,10 @@ export class payments_getPremiumGiftCodeOptions_ extends Function_<enums.Premium
   }
 }
 
+/** Obtain information about a [Telegram Premium giftcode »](https://core.telegram.org/api/giveaways) */
 export class payments_checkGiftCode_ extends Function_<enums.payments.CheckedGiftCode> {
   static __F: (params: { slug: string }) => enums.payments.CheckedGiftCode = null as unknown as (params: { slug: string }) => enums.payments.CheckedGiftCode;
+  /** The giftcode to check */
   slug: string;
 
   protected get [id](): number {
@@ -17545,8 +19202,10 @@ export class payments_checkGiftCode_ extends Function_<enums.payments.CheckedGif
   }
 }
 
+/** Apply a [Telegram Premium giftcode »](https://core.telegram.org/api/giveaways) */
 export class payments_applyGiftCode_ extends Function_<enums.Updates> {
   static __F: (params: { slug: string }) => enums.Updates = null as unknown as (params: { slug: string }) => enums.Updates;
+  /** The code to apply */
   slug: string;
 
   protected get [id](): number {
@@ -17575,9 +19234,12 @@ export class payments_applyGiftCode_ extends Function_<enums.Updates> {
   }
 }
 
+/** Obtain information about a [Telegram Premium giveaway »](https://core.telegram.org/api/giveaways). */
 export class payments_getGiveawayInfo_ extends Function_<enums.payments.GiveawayInfo> {
   static __F: (params: { peer: enums.InputPeer; msg_id: number }) => enums.payments.GiveawayInfo = null as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.payments.GiveawayInfo;
+  /** The peer where the giveaway was posted. */
   peer: enums.InputPeer;
+  /** Message ID of the [messageActionGiveawayLaunch](https://core.telegram.org/constructor/messageActionGiveawayLaunch) service message */
   msg_id: number;
 
   protected get [id](): number {
@@ -17609,10 +19271,14 @@ export class payments_getGiveawayInfo_ extends Function_<enums.payments.Giveaway
   }
 }
 
+/** Launch a [prepaid giveaway »](https://core.telegram.org/api/giveaways). */
 export class payments_launchPrepaidGiveaway_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; giveaway_id: bigint; purpose: enums.InputStorePaymentPurpose }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; giveaway_id: bigint; purpose: enums.InputStorePaymentPurpose }) => enums.Updates;
+  /** The peer where to launch the giveaway. */
   peer: enums.InputPeer;
+  /** The prepaid giveaway ID. */
   giveaway_id: bigint;
+  /** Giveway parameters */
   purpose: enums.InputStorePaymentPurpose;
 
   protected get [id](): number {
@@ -17647,18 +19313,30 @@ export class payments_launchPrepaidGiveaway_ extends Function_<enums.Updates> {
   }
 }
 
+/** Create a stickerset, bots only. */
 export class stickers_createStickerSet_ extends Function_<enums.messages.StickerSet> {
   static __F: (params: { masks?: true; animated?: true; videos?: true; emojis?: true; text_color?: true; user_id: enums.InputUser; title: string; short_name: string; thumb?: enums.InputDocument; stickers: Array<enums.InputStickerSetItem>; software?: string }) => enums.messages.StickerSet = null as unknown as (params: { masks?: true; animated?: true; videos?: true; emojis?: true; text_color?: true; user_id: enums.InputUser; title: string; short_name: string; thumb?: enums.InputDocument; stickers: Array<enums.InputStickerSetItem>; software?: string }) => enums.messages.StickerSet;
+  /** Whether this is a mask stickerset */
   masks?: true;
+  /** Whether this is an animated stickerset */
   animated?: true;
+  /** Whether this is a video stickerset */
   videos?: true;
+  /** Whether this is a [custom emoji](https://core.telegram.org/api/custom-emoji) stickerset. */
   emojis?: true;
+  /** Whether the color of TGS custom emojis contained in this set should be changed to the text color when used in messages, the accent color if used as emoji status, white on chat photos, or another appropriate color based on context. For custom emoji stickersets only. */
   text_color?: true;
+  /** Stickerset owner */
   user_id: enums.InputUser;
+  /** Stickerset name, `1-64` chars */
   title: string;
+  /** Short name of sticker set, to be used in [sticker deep links »](https://core.telegram.org/api/links#stickerset-links). Can contain only english letters, digits and underscores. Must begin with a letter, can't contain consecutive underscores and, **if called by a bot**, must end in `"_by_<bot_username>"`. `<bot_username>` is case insensitive. 1-64 characters. */
   short_name: string;
+  /** Thumbnail */
   thumb?: enums.InputDocument;
+  /** Stickers */
   stickers: Array<enums.InputStickerSetItem>;
+  /** Used when [importing stickers using the sticker import SDKs](https://core.telegram.org/import-stickers), specifies the name of the software that created the stickers */
   software?: string;
 
   protected get [id](): number {
@@ -17719,8 +19397,10 @@ export class stickers_createStickerSet_ extends Function_<enums.messages.Sticker
   }
 }
 
+/** Remove a sticker from the set where it belongs, bots only. The sticker set must have been created by the bot. */
 export class stickers_removeStickerFromSet_ extends Function_<enums.messages.StickerSet> {
   static __F: (params: { sticker: enums.InputDocument }) => enums.messages.StickerSet = null as unknown as (params: { sticker: enums.InputDocument }) => enums.messages.StickerSet;
+  /** The sticker to remove */
   sticker: enums.InputDocument;
 
   protected get [id](): number {
@@ -17749,9 +19429,12 @@ export class stickers_removeStickerFromSet_ extends Function_<enums.messages.Sti
   }
 }
 
+/** Changes the absolute position of a sticker in the set to which it belongs; for bots only. The sticker set must have been created by the bot */
 export class stickers_changeStickerPosition_ extends Function_<enums.messages.StickerSet> {
   static __F: (params: { sticker: enums.InputDocument; position: number }) => enums.messages.StickerSet = null as unknown as (params: { sticker: enums.InputDocument; position: number }) => enums.messages.StickerSet;
+  /** The sticker */
   sticker: enums.InputDocument;
+  /** The new position of the sticker, zero-based */
   position: number;
 
   protected get [id](): number {
@@ -17783,9 +19466,12 @@ export class stickers_changeStickerPosition_ extends Function_<enums.messages.St
   }
 }
 
+/** Add a sticker to a stickerset, bots only. The sticker set must have been created by the bot. */
 export class stickers_addStickerToSet_ extends Function_<enums.messages.StickerSet> {
   static __F: (params: { stickerset: enums.InputStickerSet; sticker: enums.InputStickerSetItem }) => enums.messages.StickerSet = null as unknown as (params: { stickerset: enums.InputStickerSet; sticker: enums.InputStickerSetItem }) => enums.messages.StickerSet;
+  /** The stickerset */
   stickerset: enums.InputStickerSet;
+  /** The sticker */
   sticker: enums.InputStickerSetItem;
 
   protected get [id](): number {
@@ -17817,10 +19503,14 @@ export class stickers_addStickerToSet_ extends Function_<enums.messages.StickerS
   }
 }
 
+/** Set stickerset thumbnail */
 export class stickers_setStickerSetThumb_ extends Function_<enums.messages.StickerSet> {
   static __F: (params: { stickerset: enums.InputStickerSet; thumb?: enums.InputDocument; thumb_document_id?: bigint }) => enums.messages.StickerSet = null as unknown as (params: { stickerset: enums.InputStickerSet; thumb?: enums.InputDocument; thumb_document_id?: bigint }) => enums.messages.StickerSet;
+  /** Stickerset */
   stickerset: enums.InputStickerSet;
+  /** Thumbnail (only for normal stickersets, not custom emoji stickersets). */
   thumb?: enums.InputDocument;
+  /** Only for [custom emoji stickersets](https://core.telegram.org/api/custom-emoji), ID of a custom emoji present in the set to use as thumbnail; pass 0 to fallback to the first custom emoji of the set. */
   thumb_document_id?: bigint;
 
   protected get [id](): number {
@@ -17857,8 +19547,10 @@ export class stickers_setStickerSetThumb_ extends Function_<enums.messages.Stick
   }
 }
 
+/** Check whether the given short name is available */
 export class stickers_checkShortName_ extends Function_<boolean> {
   static __F: (params: { short_name: string }) => boolean = null as unknown as (params: { short_name: string }) => boolean;
+  /** Short name */
   short_name: string;
 
   protected get [id](): number {
@@ -17887,8 +19579,10 @@ export class stickers_checkShortName_ extends Function_<boolean> {
   }
 }
 
+/** Suggests a short name for a given stickerpack name */
 export class stickers_suggestShortName_ extends Function_<enums.stickers.SuggestedShortName> {
   static __F: (params: { title: string }) => enums.stickers.SuggestedShortName = null as unknown as (params: { title: string }) => enums.stickers.SuggestedShortName;
+  /** Sticker pack name */
   title: string;
 
   protected get [id](): number {
@@ -17917,11 +19611,16 @@ export class stickers_suggestShortName_ extends Function_<enums.stickers.Suggest
   }
 }
 
+/** Update the keywords, emojis or [mask coordinates](https://core.telegram.org/api/stickers#mask-stickers) of a sticker, bots only. */
 export class stickers_changeSticker_ extends Function_<enums.messages.StickerSet> {
   static __F: (params: { sticker: enums.InputDocument; emoji?: string; mask_coords?: enums.MaskCoords; keywords?: string }) => enums.messages.StickerSet = null as unknown as (params: { sticker: enums.InputDocument; emoji?: string; mask_coords?: enums.MaskCoords; keywords?: string }) => enums.messages.StickerSet;
+  /** The sticker */
   sticker: enums.InputDocument;
+  /** If set, updates the emoji list associated to the sticker */
   emoji?: string;
+  /** If set, updates the [mask coordinates](https://core.telegram.org/api/stickers#mask-stickers) */
   mask_coords?: enums.MaskCoords;
+  /** If set, updates the sticker keywords (separated by commas). Can't be provided for mask stickers. */
   keywords?: string;
 
   protected get [id](): number {
@@ -17961,9 +19660,12 @@ export class stickers_changeSticker_ extends Function_<enums.messages.StickerSet
   }
 }
 
+/** Renames a stickerset, bots only. */
 export class stickers_renameStickerSet_ extends Function_<enums.messages.StickerSet> {
   static __F: (params: { stickerset: enums.InputStickerSet; title: string }) => enums.messages.StickerSet = null as unknown as (params: { stickerset: enums.InputStickerSet; title: string }) => enums.messages.StickerSet;
+  /** Stickerset to rename */
   stickerset: enums.InputStickerSet;
+  /** New stickerset title */
   title: string;
 
   protected get [id](): number {
@@ -17995,8 +19697,10 @@ export class stickers_renameStickerSet_ extends Function_<enums.messages.Sticker
   }
 }
 
+/** Deletes a stickerset we created, bots only. */
 export class stickers_deleteStickerSet_ extends Function_<boolean> {
   static __F: (params: { stickerset: enums.InputStickerSet }) => boolean = null as unknown as (params: { stickerset: enums.InputStickerSet }) => boolean;
+  /** Stickerset to delete */
   stickerset: enums.InputStickerSet;
 
   protected get [id](): number {
@@ -18025,6 +19729,7 @@ export class stickers_deleteStickerSet_ extends Function_<boolean> {
   }
 }
 
+/** Get phone call configuration to be passed to libtgvoip's shared config */
 export class phone_getCallConfig_ extends Function_<enums.DataJSON> {
   static __F: () => enums.DataJSON = null as unknown as () => enums.DataJSON;
   protected get [id](): number {
@@ -18048,12 +19753,18 @@ export class phone_getCallConfig_ extends Function_<enums.DataJSON> {
   }
 }
 
+/** Start a telegram phone call */
 export class phone_requestCall_ extends Function_<enums.phone.PhoneCall> {
   static __F: (params: { video?: true; user_id: enums.InputUser; random_id: number; g_a_hash: Uint8Array; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall = null as unknown as (params: { video?: true; user_id: enums.InputUser; random_id: number; g_a_hash: Uint8Array; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall;
+  /** Whether to start a video call */
   video?: true;
+  /** Destination of the phone call */
   user_id: enums.InputUser;
+  /** Random ID to avoid resending the same object */
   random_id: number;
+  /** [Parameter for E2E encryption key exchange »](https://core.telegram.org/api/end-to-end/voice-calls) */
   g_a_hash: Uint8Array;
+  /** Phone call settings */
   protocol: enums.PhoneCallProtocol;
 
   protected get [id](): number {
@@ -18096,10 +19807,14 @@ export class phone_requestCall_ extends Function_<enums.phone.PhoneCall> {
   }
 }
 
+/** Accept incoming call */
 export class phone_acceptCall_ extends Function_<enums.phone.PhoneCall> {
   static __F: (params: { peer: enums.InputPhoneCall; g_b: Uint8Array; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall = null as unknown as (params: { peer: enums.InputPhoneCall; g_b: Uint8Array; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall;
+  /** The call to accept */
   peer: enums.InputPhoneCall;
+  /** [Parameter for E2E encryption key exchange »](https://core.telegram.org/api/end-to-end/voice-calls) */
   g_b: Uint8Array;
+  /** Phone call settings */
   protocol: enums.PhoneCallProtocol;
 
   protected get [id](): number {
@@ -18134,11 +19849,16 @@ export class phone_acceptCall_ extends Function_<enums.phone.PhoneCall> {
   }
 }
 
+/** [Complete phone call E2E encryption key exchange »](https://core.telegram.org/api/end-to-end/voice-calls) */
 export class phone_confirmCall_ extends Function_<enums.phone.PhoneCall> {
   static __F: (params: { peer: enums.InputPhoneCall; g_a: Uint8Array; key_fingerprint: bigint; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall = null as unknown as (params: { peer: enums.InputPhoneCall; g_a: Uint8Array; key_fingerprint: bigint; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall;
+  /** The phone call */
   peer: enums.InputPhoneCall;
+  /** [Parameter for E2E encryption key exchange »](https://core.telegram.org/api/end-to-end/voice-calls) */
   g_a: Uint8Array;
+  /** Key fingerprint */
   key_fingerprint: bigint;
+  /** Phone call settings */
   protocol: enums.PhoneCallProtocol;
 
   protected get [id](): number {
@@ -18176,8 +19896,10 @@ export class phone_confirmCall_ extends Function_<enums.phone.PhoneCall> {
   }
 }
 
+/** Optional: notify the server that the user is currently busy in a call: this will automatically refuse all incoming phone calls until the current phone call is ended. */
 export class phone_receivedCall_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPhoneCall }) => boolean = null as unknown as (params: { peer: enums.InputPhoneCall }) => boolean;
+  /** The phone call we're currently in */
   peer: enums.InputPhoneCall;
 
   protected get [id](): number {
@@ -18206,12 +19928,18 @@ export class phone_receivedCall_ extends Function_<boolean> {
   }
 }
 
+/** Refuse or end running call */
 export class phone_discardCall_ extends Function_<enums.Updates> {
   static __F: (params: { video?: true; peer: enums.InputPhoneCall; duration: number; reason: enums.PhoneCallDiscardReason; connection_id: bigint }) => enums.Updates = null as unknown as (params: { video?: true; peer: enums.InputPhoneCall; duration: number; reason: enums.PhoneCallDiscardReason; connection_id: bigint }) => enums.Updates;
+  /** Whether this is a video call */
   video?: true;
+  /** The phone call */
   peer: enums.InputPhoneCall;
+  /** Call duration */
   duration: number;
+  /** Why was the call discarded */
   reason: enums.PhoneCallDiscardReason;
+  /** Preferred libtgvoip relay ID */
   connection_id: bigint;
 
   protected get [id](): number {
@@ -18254,11 +19982,16 @@ export class phone_discardCall_ extends Function_<enums.Updates> {
   }
 }
 
+/** Rate a call, returns info about the rating message sent to the official VoIP bot. */
 export class phone_setCallRating_ extends Function_<enums.Updates> {
   static __F: (params: { user_initiative?: true; peer: enums.InputPhoneCall; rating: number; comment: string }) => enums.Updates = null as unknown as (params: { user_initiative?: true; peer: enums.InputPhoneCall; rating: number; comment: string }) => enums.Updates;
+  /** Whether the user decided on their own initiative to rate the call */
   user_initiative?: true;
+  /** The call to rate */
   peer: enums.InputPhoneCall;
+  /** Rating in `1-5` stars */
   rating: number;
+  /** An additional comment */
   comment: string;
 
   protected get [id](): number {
@@ -18298,9 +20031,12 @@ export class phone_setCallRating_ extends Function_<enums.Updates> {
   }
 }
 
+/** Send phone call debug data to server */
 export class phone_saveCallDebug_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPhoneCall; debug: enums.DataJSON }) => boolean = null as unknown as (params: { peer: enums.InputPhoneCall; debug: enums.DataJSON }) => boolean;
+  /** Phone call */
   peer: enums.InputPhoneCall;
+  /** Debug statistics obtained from libtgvoip */
   debug: enums.DataJSON;
 
   protected get [id](): number {
@@ -18332,9 +20068,12 @@ export class phone_saveCallDebug_ extends Function_<boolean> {
   }
 }
 
+/** Send VoIP signaling data */
 export class phone_sendSignalingData_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPhoneCall; data: Uint8Array }) => boolean = null as unknown as (params: { peer: enums.InputPhoneCall; data: Uint8Array }) => boolean;
+  /** Phone call */
   peer: enums.InputPhoneCall;
+  /** Signaling payload */
   data: Uint8Array;
 
   protected get [id](): number {
@@ -18366,12 +20105,18 @@ export class phone_sendSignalingData_ extends Function_<boolean> {
   }
 }
 
+/** Create a group call or livestream */
 export class phone_createGroupCall_ extends Function_<enums.Updates> {
   static __F: (params: { rtmp_stream?: true; peer: enums.InputPeer; random_id: number; title?: string; schedule_date?: number }) => enums.Updates = null as unknown as (params: { rtmp_stream?: true; peer: enums.InputPeer; random_id: number; title?: string; schedule_date?: number }) => enums.Updates;
+  /** Whether RTMP stream support should be enabled: only the [group/supergroup/channel](https://core.telegram.org/api/channel) owner can use this flag. */
   rtmp_stream?: true;
+  /** Associate the group call or livestream to the provided [group/supergroup/channel](https://core.telegram.org/api/channel) */
   peer: enums.InputPeer;
+  /** Unique client message ID required to prevent creation of duplicate group calls */
   random_id: number;
+  /** Call title */
   title?: string;
+  /** For scheduled group call or livestreams, the absolute date when the group call will start */
   schedule_date?: number;
 
   protected get [id](): number {
@@ -18414,13 +20159,20 @@ export class phone_createGroupCall_ extends Function_<enums.Updates> {
   }
 }
 
+/** Join a group call */
 export class phone_joinGroupCall_ extends Function_<enums.Updates> {
   static __F: (params: { muted?: true; video_stopped?: true; call: enums.InputGroupCall; join_as: enums.InputPeer; invite_hash?: string; params: enums.DataJSON }) => enums.Updates = null as unknown as (params: { muted?: true; video_stopped?: true; call: enums.InputGroupCall; join_as: enums.InputPeer; invite_hash?: string; params: enums.DataJSON }) => enums.Updates;
+  /** If set, the user will be muted by default upon joining. */
   muted?: true;
+  /** If set, the user's video will be disabled by default upon joining. */
   video_stopped?: true;
+  /** The group call */
   call: enums.InputGroupCall;
+  /** Join the group call, presenting yourself as the specified user/channel */
   join_as: enums.InputPeer;
+  /** The invitation hash from the [invite link »](https://core.telegram.org/api/links#video-chat-livestream-links), if provided allows speaking in a livestream or muted group chat. */
   invite_hash?: string;
+  /** WebRTC parameters */
   params: enums.DataJSON;
 
   protected get [id](): number {
@@ -18466,9 +20218,12 @@ export class phone_joinGroupCall_ extends Function_<enums.Updates> {
   }
 }
 
+/** Leave a group call */
 export class phone_leaveGroupCall_ extends Function_<enums.Updates> {
   static __F: (params: { call: enums.InputGroupCall; source: number }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall; source: number }) => enums.Updates;
+  /** The group call */
   call: enums.InputGroupCall;
+  /** Your source ID */
   source: number;
 
   protected get [id](): number {
@@ -18500,9 +20255,12 @@ export class phone_leaveGroupCall_ extends Function_<enums.Updates> {
   }
 }
 
+/** Invite a set of users to a group call. */
 export class phone_inviteToGroupCall_ extends Function_<enums.Updates> {
   static __F: (params: { call: enums.InputGroupCall; users: Array<enums.InputUser> }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall; users: Array<enums.InputUser> }) => enums.Updates;
+  /** The group call */
   call: enums.InputGroupCall;
+  /** The users to invite. */
   users: Array<enums.InputUser>;
 
   protected get [id](): number {
@@ -18534,8 +20292,10 @@ export class phone_inviteToGroupCall_ extends Function_<enums.Updates> {
   }
 }
 
+/** Terminate a group call */
 export class phone_discardGroupCall_ extends Function_<enums.Updates> {
   static __F: (params: { call: enums.InputGroupCall }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall }) => enums.Updates;
+  /** The group call to terminate */
   call: enums.InputGroupCall;
 
   protected get [id](): number {
@@ -18564,10 +20324,14 @@ export class phone_discardGroupCall_ extends Function_<enums.Updates> {
   }
 }
 
+/** Change group call settings */
 export class phone_toggleGroupCallSettings_ extends Function_<enums.Updates> {
   static __F: (params: { reset_invite_hash?: true; call: enums.InputGroupCall; join_muted?: boolean }) => enums.Updates = null as unknown as (params: { reset_invite_hash?: true; call: enums.InputGroupCall; join_muted?: boolean }) => enums.Updates;
+  /** Invalidate existing invite links */
   reset_invite_hash?: true;
+  /** Group call */
   call: enums.InputGroupCall;
+  /** Whether all users will that join this group call are muted by default upon joining the group call */
   join_muted?: boolean;
 
   protected get [id](): number {
@@ -18604,9 +20368,12 @@ export class phone_toggleGroupCallSettings_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get info about a group call */
 export class phone_getGroupCall_ extends Function_<enums.phone.GroupCall> {
   static __F: (params: { call: enums.InputGroupCall; limit: number }) => enums.phone.GroupCall = null as unknown as (params: { call: enums.InputGroupCall; limit: number }) => enums.phone.GroupCall;
+  /** The group call */
   call: enums.InputGroupCall;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -18638,12 +20405,19 @@ export class phone_getGroupCall_ extends Function_<enums.phone.GroupCall> {
   }
 }
 
+/** Get group call participants */
 export class phone_getGroupParticipants_ extends Function_<enums.phone.GroupParticipants> {
   static __F: (params: { call: enums.InputGroupCall; ids: Array<enums.InputPeer>; sources: Array<number>; offset: string; limit: number }) => enums.phone.GroupParticipants = null as unknown as (params: { call: enums.InputGroupCall; ids: Array<enums.InputPeer>; sources: Array<number>; offset: string; limit: number }) => enums.phone.GroupParticipants;
+  /** Group call */
   call: enums.InputGroupCall;
+  /** If specified, will fetch group participant info about the specified peers */
   ids: Array<enums.InputPeer>;
+  /** If specified, will fetch group participant info about the specified WebRTC source IDs */
   sources: Array<number>;
+  /** Offset for results, taken from the `next_offset` field of [phone.groupParticipants](https://core.telegram.org/constructor/phone.groupParticipants), initially an empty string.  
+  Note: if no more results are available, the method call will return an empty `next_offset`; thus, avoid providing the `next_offset` returned in [phone.groupParticipants](https://core.telegram.org/constructor/phone.groupParticipants) if it is empty, to avoid an infinite loop. */
   offset: string;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -18684,9 +20458,13 @@ export class phone_getGroupParticipants_ extends Function_<enums.phone.GroupPart
   }
 }
 
+/** Check whether the group call Server Forwarding Unit is currently receiving the streams with the specified WebRTC source IDs.  
+Returns an intersection of the source IDs specified in `sources`, and the source IDs currently being forwarded by the SFU. */
 export class phone_checkGroupCall_ extends Function_<number[]> {
   static __F: (params: { call: enums.InputGroupCall; sources: Array<number> }) => number[] = null as unknown as (params: { call: enums.InputGroupCall; sources: Array<number> }) => number[];
+  /** Group call */
   call: enums.InputGroupCall;
+  /** Source IDs */
   sources: Array<number>;
 
   protected get [id](): number {
@@ -18718,12 +20496,18 @@ export class phone_checkGroupCall_ extends Function_<number[]> {
   }
 }
 
+/** Start or stop recording a group call: the recorded audio and video streams will be automatically sent to `Saved messages` (the chat with ourselves). */
 export class phone_toggleGroupCallRecord_ extends Function_<enums.Updates> {
   static __F: (params: { start?: true; video?: true; call: enums.InputGroupCall; title?: string; video_portrait?: boolean }) => enums.Updates = null as unknown as (params: { start?: true; video?: true; call: enums.InputGroupCall; title?: string; video_portrait?: boolean }) => enums.Updates;
+  /** Whether to start or stop recording */
   start?: true;
+  /** Whether to also record video streams */
   video?: true;
+  /** The group call or livestream */
   call: enums.InputGroupCall;
+  /** Recording title */
   title?: string;
+  /** If video stream recording is enabled, whether to record in portrait or landscape mode */
   video_portrait?: boolean;
 
   protected get [id](): number {
@@ -18766,15 +20550,24 @@ export class phone_toggleGroupCallRecord_ extends Function_<enums.Updates> {
   }
 }
 
+/** Edit information about a given group call participant */
 export class phone_editGroupCallParticipant_ extends Function_<enums.Updates> {
   static __F: (params: { call: enums.InputGroupCall; participant: enums.InputPeer; muted?: boolean; volume?: number; raise_hand?: boolean; video_stopped?: boolean; video_paused?: boolean; presentation_paused?: boolean }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall; participant: enums.InputPeer; muted?: boolean; volume?: number; raise_hand?: boolean; video_stopped?: boolean; video_paused?: boolean; presentation_paused?: boolean }) => enums.Updates;
+  /** The group call */
   call: enums.InputGroupCall;
+  /** The group call participant (can also be the user itself) */
   participant: enums.InputPeer;
+  /** Whether to mute or unmute the specified participant */
   muted?: boolean;
+  /** New volume */
   volume?: number;
+  /** Raise or lower hand */
   raise_hand?: boolean;
+  /** Start or stop the video stream */
   video_stopped?: boolean;
+  /** Pause or resume the video stream */
   video_paused?: boolean;
+  /** Pause or resume the screen sharing stream */
   presentation_paused?: boolean;
 
   protected get [id](): number {
@@ -18826,9 +20619,12 @@ export class phone_editGroupCallParticipant_ extends Function_<enums.Updates> {
   }
 }
 
+/** Edit the title of a group call or livestream */
 export class phone_editGroupCallTitle_ extends Function_<enums.Updates> {
   static __F: (params: { call: enums.InputGroupCall; title: string }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall; title: string }) => enums.Updates;
+  /** Group call */
   call: enums.InputGroupCall;
+  /** New title */
   title: string;
 
   protected get [id](): number {
@@ -18860,8 +20656,10 @@ export class phone_editGroupCallTitle_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get a list of peers that can be used to join a group call, presenting yourself as a specific user/channel. */
 export class phone_getGroupCallJoinAs_ extends Function_<enums.phone.JoinAsPeers> {
   static __F: (params: { peer: enums.InputPeer }) => enums.phone.JoinAsPeers = null as unknown as (params: { peer: enums.InputPeer }) => enums.phone.JoinAsPeers;
+  /** The dialog whose group call or livestream we're trying to join */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -18890,9 +20688,12 @@ export class phone_getGroupCallJoinAs_ extends Function_<enums.phone.JoinAsPeers
   }
 }
 
+/** Get an [invite link](https://core.telegram.org/api/links#video-chat-livestream-links) for a group call or livestream */
 export class phone_exportGroupCallInvite_ extends Function_<enums.phone.ExportedGroupCallInvite> {
   static __F: (params: { can_self_unmute?: true; call: enums.InputGroupCall }) => enums.phone.ExportedGroupCallInvite = null as unknown as (params: { can_self_unmute?: true; call: enums.InputGroupCall }) => enums.phone.ExportedGroupCallInvite;
+  /** For livestreams or muted group chats, if set, users that join using this link will be able to speak without explicitly requesting permission by (for example by raising their hand). */
   can_self_unmute?: true;
+  /** The group call */
   call: enums.InputGroupCall;
 
   protected get [id](): number {
@@ -18926,9 +20727,12 @@ export class phone_exportGroupCallInvite_ extends Function_<enums.phone.Exported
   }
 }
 
+/** Subscribe or unsubscribe to a scheduled group call */
 export class phone_toggleGroupCallStartSubscription_ extends Function_<enums.Updates> {
   static __F: (params: { call: enums.InputGroupCall; subscribed: boolean }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall; subscribed: boolean }) => enums.Updates;
+  /** Scheduled group call */
   call: enums.InputGroupCall;
+  /** Enable or disable subscription */
   subscribed: boolean;
 
   protected get [id](): number {
@@ -18960,8 +20764,10 @@ export class phone_toggleGroupCallStartSubscription_ extends Function_<enums.Upd
   }
 }
 
+/** Start a scheduled group call. */
 export class phone_startScheduledGroupCall_ extends Function_<enums.Updates> {
   static __F: (params: { call: enums.InputGroupCall }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall }) => enums.Updates;
+  /** The scheduled group call */
   call: enums.InputGroupCall;
 
   protected get [id](): number {
@@ -18990,9 +20796,12 @@ export class phone_startScheduledGroupCall_ extends Function_<enums.Updates> {
   }
 }
 
+/** Set the default peer that will be used to join a group call in a specific dialog. */
 export class phone_saveDefaultGroupCallJoinAs_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; join_as: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer; join_as: enums.InputPeer }) => boolean;
+  /** The dialog */
   peer: enums.InputPeer;
+  /** The default peer that will be used to join group calls in this dialog, presenting yourself as a specific user/channel. */
   join_as: enums.InputPeer;
 
   protected get [id](): number {
@@ -19024,9 +20833,12 @@ export class phone_saveDefaultGroupCallJoinAs_ extends Function_<boolean> {
   }
 }
 
+/** Start screen sharing in a call */
 export class phone_joinGroupCallPresentation_ extends Function_<enums.Updates> {
   static __F: (params: { call: enums.InputGroupCall; params: enums.DataJSON }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall; params: enums.DataJSON }) => enums.Updates;
+  /** The group call */
   call: enums.InputGroupCall;
+  /** WebRTC parameters */
   params: enums.DataJSON;
 
   protected get [id](): number {
@@ -19058,8 +20870,10 @@ export class phone_joinGroupCallPresentation_ extends Function_<enums.Updates> {
   }
 }
 
+/** Stop screen sharing in a group call */
 export class phone_leaveGroupCallPresentation_ extends Function_<enums.Updates> {
   static __F: (params: { call: enums.InputGroupCall }) => enums.Updates = null as unknown as (params: { call: enums.InputGroupCall }) => enums.Updates;
+  /** The group call */
   call: enums.InputGroupCall;
 
   protected get [id](): number {
@@ -19088,8 +20902,12 @@ export class phone_leaveGroupCallPresentation_ extends Function_<enums.Updates> 
   }
 }
 
+/** Get info about RTMP streams in a group call or livestream.  
+This method should be invoked to the same group/channel-related DC used for [downloading livestream chunks](https://core.telegram.org/api/files#downloading-files).  
+As usual, the media DC is preferred, if available. */
 export class phone_getGroupCallStreamChannels_ extends Function_<enums.phone.GroupCallStreamChannels> {
   static __F: (params: { call: enums.InputGroupCall }) => enums.phone.GroupCallStreamChannels = null as unknown as (params: { call: enums.InputGroupCall }) => enums.phone.GroupCallStreamChannels;
+  /** Group call or livestream */
   call: enums.InputGroupCall;
 
   protected get [id](): number {
@@ -19118,9 +20936,12 @@ export class phone_getGroupCallStreamChannels_ extends Function_<enums.phone.Gro
   }
 }
 
+/** Get RTMP URL and stream key for RTMP livestreams. Can be used even before creating the actual RTMP livestream with [phone.createGroupCall](https://core.telegram.org/method/phone.createGroupCall) (the `rtmp_stream` flag must be set). */
 export class phone_getGroupCallStreamRtmpUrl_ extends Function_<enums.phone.GroupCallStreamRtmpUrl> {
   static __F: (params: { peer: enums.InputPeer; revoke: boolean }) => enums.phone.GroupCallStreamRtmpUrl = null as unknown as (params: { peer: enums.InputPeer; revoke: boolean }) => enums.phone.GroupCallStreamRtmpUrl;
+  /** Peer to livestream into */
   peer: enums.InputPeer;
+  /** Whether to revoke the previous stream key or simply return the existing one */
   revoke: boolean;
 
   protected get [id](): number {
@@ -19152,9 +20973,12 @@ export class phone_getGroupCallStreamRtmpUrl_ extends Function_<enums.phone.Grou
   }
 }
 
+/** Save phone call debug information */
 export class phone_saveCallLog_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPhoneCall; file: enums.InputFile }) => boolean = null as unknown as (params: { peer: enums.InputPhoneCall; file: enums.InputFile }) => boolean;
+  /** Phone call */
   peer: enums.InputPhoneCall;
+  /** Logs */
   file: enums.InputFile;
 
   protected get [id](): number {
@@ -19186,9 +21010,12 @@ export class phone_saveCallLog_ extends Function_<boolean> {
   }
 }
 
+/** Get localization pack strings */
 export class langpack_getLangPack_ extends Function_<enums.LangPackDifference> {
   static __F: (params: { lang_pack: string; lang_code: string }) => enums.LangPackDifference = null as unknown as (params: { lang_pack: string; lang_code: string }) => enums.LangPackDifference;
+  /** Language pack name, usually obtained from a [language pack link](https://core.telegram.org/api/links#language-pack-links) */
   lang_pack: string;
+  /** Language code */
   lang_code: string;
 
   protected get [id](): number {
@@ -19220,10 +21047,14 @@ export class langpack_getLangPack_ extends Function_<enums.LangPackDifference> {
   }
 }
 
+/** Get strings from a language pack */
 export class langpack_getStrings_ extends Function_<enums.LangPackString[]> {
   static __F: (params: { lang_pack: string; lang_code: string; keys: Array<string> }) => enums.LangPackString[] = null as unknown as (params: { lang_pack: string; lang_code: string; keys: Array<string> }) => enums.LangPackString[];
+  /** Language pack name, usually obtained from a [language pack link](https://core.telegram.org/api/links#language-pack-links) */
   lang_pack: string;
+  /** Language code */
   lang_code: string;
+  /** Strings to get */
   keys: Array<string>;
 
   protected get [id](): number {
@@ -19258,10 +21089,14 @@ export class langpack_getStrings_ extends Function_<enums.LangPackString[]> {
   }
 }
 
+/** Get new strings in language pack */
 export class langpack_getDifference_ extends Function_<enums.LangPackDifference> {
   static __F: (params: { lang_pack: string; lang_code: string; from_version: number }) => enums.LangPackDifference = null as unknown as (params: { lang_pack: string; lang_code: string; from_version: number }) => enums.LangPackDifference;
+  /** Language pack */
   lang_pack: string;
+  /** Language code */
   lang_code: string;
+  /** Previous localization pack version */
   from_version: number;
 
   protected get [id](): number {
@@ -19296,8 +21131,10 @@ export class langpack_getDifference_ extends Function_<enums.LangPackDifference>
   }
 }
 
+/** Get information about all languages in a localization pack */
 export class langpack_getLanguages_ extends Function_<enums.LangPackLanguage[]> {
   static __F: (params: { lang_pack: string }) => enums.LangPackLanguage[] = null as unknown as (params: { lang_pack: string }) => enums.LangPackLanguage[];
+  /** Language pack */
   lang_pack: string;
 
   protected get [id](): number {
@@ -19326,9 +21163,12 @@ export class langpack_getLanguages_ extends Function_<enums.LangPackLanguage[]> 
   }
 }
 
+/** Get information about a language in a localization pack */
 export class langpack_getLanguage_ extends Function_<enums.LangPackLanguage> {
   static __F: (params: { lang_pack: string; lang_code: string }) => enums.LangPackLanguage = null as unknown as (params: { lang_pack: string; lang_code: string }) => enums.LangPackLanguage;
+  /** Language pack name, usually obtained from a [language pack link](https://core.telegram.org/api/links#language-pack-links) */
   lang_pack: string;
+  /** Language code */
   lang_code: string;
 
   protected get [id](): number {
@@ -19360,8 +21200,10 @@ export class langpack_getLanguage_ extends Function_<enums.LangPackLanguage> {
   }
 }
 
+/** Edit peers in [peer folder](https://core.telegram.org/api/folders#peer-folders) */
 export class folders_editPeerFolders_ extends Function_<enums.Updates> {
   static __F: (params: { folder_peers: Array<enums.InputFolderPeer> }) => enums.Updates = null as unknown as (params: { folder_peers: Array<enums.InputFolderPeer> }) => enums.Updates;
+  /** New peer list */
   folder_peers: Array<enums.InputFolderPeer>;
 
   protected get [id](): number {
@@ -19390,9 +21232,12 @@ export class folders_editPeerFolders_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get [channel statistics](https://core.telegram.org/api/stats) */
 export class stats_getBroadcastStats_ extends Function_<enums.stats.BroadcastStats> {
   static __F: (params: { dark?: true; channel: enums.InputChannel }) => enums.stats.BroadcastStats = null as unknown as (params: { dark?: true; channel: enums.InputChannel }) => enums.stats.BroadcastStats;
+  /** Whether to enable dark theme for graph colors */
   dark?: true;
+  /** The channel */
   channel: enums.InputChannel;
 
   protected get [id](): number {
@@ -19426,9 +21271,12 @@ export class stats_getBroadcastStats_ extends Function_<enums.stats.BroadcastSta
   }
 }
 
+/** Load [channel statistics graph](https://core.telegram.org/api/stats) asynchronously */
 export class stats_loadAsyncGraph_ extends Function_<enums.StatsGraph> {
   static __F: (params: { token: string; x?: bigint }) => enums.StatsGraph = null as unknown as (params: { token: string; x?: bigint }) => enums.StatsGraph;
+  /** Graph token from [statsGraphAsync](https://core.telegram.org/constructor/statsGraphAsync) constructor */
   token: string;
+  /** Zoom value, if required */
   x?: bigint;
 
   protected get [id](): number {
@@ -19462,9 +21310,12 @@ export class stats_loadAsyncGraph_ extends Function_<enums.StatsGraph> {
   }
 }
 
+/** Get [supergroup statistics](https://core.telegram.org/api/stats) */
 export class stats_getMegagroupStats_ extends Function_<enums.stats.MegagroupStats> {
   static __F: (params: { dark?: true; channel: enums.InputChannel }) => enums.stats.MegagroupStats = null as unknown as (params: { dark?: true; channel: enums.InputChannel }) => enums.stats.MegagroupStats;
+  /** Whether to enable dark theme for graph colors */
   dark?: true;
+  /** [Supergroup ID](https://core.telegram.org/api/channel) */
   channel: enums.InputChannel;
 
   protected get [id](): number {
@@ -19498,11 +21349,17 @@ export class stats_getMegagroupStats_ extends Function_<enums.stats.MegagroupSta
   }
 }
 
+/** Obtains a list of messages, indicating to which other public channels was a channel message forwarded.  
+Will return a list of [messages](https://core.telegram.org/constructor/message) with `peer_id` equal to the public channel to which this message was forwarded. */
 export class stats_getMessagePublicForwards_ extends Function_<enums.stats.PublicForwards> {
   static __F: (params: { channel: enums.InputChannel; msg_id: number; offset: string; limit: number }) => enums.stats.PublicForwards = null as unknown as (params: { channel: enums.InputChannel; msg_id: number; offset: string; limit: number }) => enums.stats.PublicForwards;
+  /** Source channel */
   channel: enums.InputChannel;
+  /** Source message ID */
   msg_id: number;
+  /** Offset for [pagination](https://core.telegram.org/api/offsets), empty string on first call, then use the `next_offset` field of the returned constructor (if present, otherwise no more results are available). */
   offset: string;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -19540,10 +21397,14 @@ export class stats_getMessagePublicForwards_ extends Function_<enums.stats.Publi
   }
 }
 
+/** Get [message statistics](https://core.telegram.org/api/stats) */
 export class stats_getMessageStats_ extends Function_<enums.stats.MessageStats> {
   static __F: (params: { dark?: true; channel: enums.InputChannel; msg_id: number }) => enums.stats.MessageStats = null as unknown as (params: { dark?: true; channel: enums.InputChannel; msg_id: number }) => enums.stats.MessageStats;
+  /** Whether to enable dark theme for graph colors */
   dark?: true;
+  /** Channel ID */
   channel: enums.InputChannel;
+  /** Message ID */
   msg_id: number;
 
   protected get [id](): number {
@@ -19580,10 +21441,14 @@ export class stats_getMessageStats_ extends Function_<enums.stats.MessageStats> 
   }
 }
 
+/** Get [statistics](https://core.telegram.org/api/stats) for a certain [story](https://core.telegram.org/api/stories). */
 export class stats_getStoryStats_ extends Function_<enums.stats.StoryStats> {
   static __F: (params: { dark?: true; peer: enums.InputPeer; id: number }) => enums.stats.StoryStats = null as unknown as (params: { dark?: true; peer: enums.InputPeer; id: number }) => enums.stats.StoryStats;
+  /** Whether to enable the dark theme for graph colors */
   dark?: true;
+  /** The peer that posted the story */
   peer: enums.InputPeer;
+  /** Story ID */
   id: number;
 
   protected get [id](): number {
@@ -19620,11 +21485,16 @@ export class stats_getStoryStats_ extends Function_<enums.stats.StoryStats> {
   }
 }
 
+/** Obtain forwards of a [story](https://core.telegram.org/api/stories) as a message to public chats and reposts by public channels. */
 export class stats_getStoryPublicForwards_ extends Function_<enums.stats.PublicForwards> {
   static __F: (params: { peer: enums.InputPeer; id: number; offset: string; limit: number }) => enums.stats.PublicForwards = null as unknown as (params: { peer: enums.InputPeer; id: number; offset: string; limit: number }) => enums.stats.PublicForwards;
+  /** Peer where the story was originally posted */
   peer: enums.InputPeer;
+  /** [Story](https://core.telegram.org/api/stories) ID */
   id: number;
+  /** Offset for pagination, from [stats.PublicForwards](https://core.telegram.org/constructor/stats.publicForwards).`next_offset`. */
   offset: string;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -19662,10 +21532,14 @@ export class stats_getStoryPublicForwards_ extends Function_<enums.stats.PublicF
   }
 }
 
+/** Export a [folder »](https://core.telegram.org/api/folders), creating a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
 export class chatlists_exportChatlistInvite_ extends Function_<enums.chatlists.ExportedChatlistInvite> {
   static __F: (params: { chatlist: enums.InputChatlist; title: string; peers: Array<enums.InputPeer> }) => enums.chatlists.ExportedChatlistInvite = null as unknown as (params: { chatlist: enums.InputChatlist; title: string; peers: Array<enums.InputPeer> }) => enums.chatlists.ExportedChatlistInvite;
+  /** The folder to export */
   chatlist: enums.InputChatlist;
+  /** An optional name for the link */
   title: string;
+  /** The list of channels, group and supergroups to share with the link. Basic groups will automatically be [converted to supergroups](https://core.telegram.org/api/channel#migration) when invoking the method. */
   peers: Array<enums.InputPeer>;
 
   protected get [id](): number {
@@ -19700,9 +21574,12 @@ export class chatlists_exportChatlistInvite_ extends Function_<enums.chatlists.E
   }
 }
 
+/** Delete a previously created [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
 export class chatlists_deleteExportedInvite_ extends Function_<boolean> {
   static __F: (params: { chatlist: enums.InputChatlist; slug: string }) => boolean = null as unknown as (params: { chatlist: enums.InputChatlist; slug: string }) => boolean;
+  /** The related folder */
   chatlist: enums.InputChatlist;
+  /** `slug` obtained from the [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
   slug: string;
 
   protected get [id](): number {
@@ -19734,11 +21611,16 @@ export class chatlists_deleteExportedInvite_ extends Function_<boolean> {
   }
 }
 
+/** Edit a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
 export class chatlists_editExportedInvite_ extends Function_<enums.ExportedChatlistInvite> {
   static __F: (params: { chatlist: enums.InputChatlist; slug: string; title?: string; peers?: Array<enums.InputPeer> }) => enums.ExportedChatlistInvite = null as unknown as (params: { chatlist: enums.InputChatlist; slug: string; title?: string; peers?: Array<enums.InputPeer> }) => enums.ExportedChatlistInvite;
+  /** Folder ID */
   chatlist: enums.InputChatlist;
+  /** `slug` obtained from the [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
   slug: string;
+  /** If set, sets a new name for the link */
   title?: string;
+  /** If set, changes the list of peers shared with the link */
   peers?: Array<enums.InputPeer>;
 
   protected get [id](): number {
@@ -19778,8 +21660,10 @@ export class chatlists_editExportedInvite_ extends Function_<enums.ExportedChatl
   }
 }
 
+/** List all [chat folder deep links »](https://core.telegram.org/api/links#chat-folder-links) associated to a folder */
 export class chatlists_getExportedInvites_ extends Function_<enums.chatlists.ExportedInvites> {
   static __F: (params: { chatlist: enums.InputChatlist }) => enums.chatlists.ExportedInvites = null as unknown as (params: { chatlist: enums.InputChatlist }) => enums.chatlists.ExportedInvites;
+  /** The folder */
   chatlist: enums.InputChatlist;
 
   protected get [id](): number {
@@ -19808,8 +21692,10 @@ export class chatlists_getExportedInvites_ extends Function_<enums.chatlists.Exp
   }
 }
 
+/** Obtain information about a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
 export class chatlists_checkChatlistInvite_ extends Function_<enums.chatlists.ChatlistInvite> {
   static __F: (params: { slug: string }) => enums.chatlists.ChatlistInvite = null as unknown as (params: { slug: string }) => enums.chatlists.ChatlistInvite;
+  /** `slug` obtained from the [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links) */
   slug: string;
 
   protected get [id](): number {
@@ -19838,9 +21724,12 @@ export class chatlists_checkChatlistInvite_ extends Function_<enums.chatlists.Ch
   }
 }
 
+/** Import a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links), joining some or all the chats in the folder. */
 export class chatlists_joinChatlistInvite_ extends Function_<enums.Updates> {
   static __F: (params: { slug: string; peers: Array<enums.InputPeer> }) => enums.Updates = null as unknown as (params: { slug: string; peers: Array<enums.InputPeer> }) => enums.Updates;
+  /** `slug` obtained from a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
   slug: string;
+  /** List of new chats to join, fetched using [chatlists.checkChatlistInvite](https://core.telegram.org/method/chatlists.checkChatlistInvite) and filtered as specified in the [documentation »](https://core.telegram.org/api/folders#shared-folders). */
   peers: Array<enums.InputPeer>;
 
   protected get [id](): number {
@@ -19872,8 +21761,10 @@ export class chatlists_joinChatlistInvite_ extends Function_<enums.Updates> {
   }
 }
 
+/** Fetch new chats associated with an imported [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). Must be invoked at most every `chatlist_update_period` seconds (as per the related [client configuration parameter »](https://core.telegram.org/api/config#chatlist-update-period)). */
 export class chatlists_getChatlistUpdates_ extends Function_<enums.chatlists.ChatlistUpdates> {
   static __F: (params: { chatlist: enums.InputChatlist }) => enums.chatlists.ChatlistUpdates = null as unknown as (params: { chatlist: enums.InputChatlist }) => enums.chatlists.ChatlistUpdates;
+  /** The folder */
   chatlist: enums.InputChatlist;
 
   protected get [id](): number {
@@ -19902,9 +21793,12 @@ export class chatlists_getChatlistUpdates_ extends Function_<enums.chatlists.Cha
   }
 }
 
+/** Join channels and supergroups recently added to a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
 export class chatlists_joinChatlistUpdates_ extends Function_<enums.Updates> {
   static __F: (params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) => enums.Updates = null as unknown as (params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) => enums.Updates;
+  /** The folder */
   chatlist: enums.InputChatlist;
+  /** List of new chats to join, fetched using [chatlists.getChatlistUpdates](https://core.telegram.org/method/chatlists.getChatlistUpdates) and filtered as specified in the [documentation »](https://core.telegram.org/api/folders#shared-folders). */
   peers: Array<enums.InputPeer>;
 
   protected get [id](): number {
@@ -19936,8 +21830,10 @@ export class chatlists_joinChatlistUpdates_ extends Function_<enums.Updates> {
   }
 }
 
+/** Dismiss new pending peers recently added to a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links). */
 export class chatlists_hideChatlistUpdates_ extends Function_<boolean> {
   static __F: (params: { chatlist: enums.InputChatlist }) => boolean = null as unknown as (params: { chatlist: enums.InputChatlist }) => boolean;
+  /** The folder */
   chatlist: enums.InputChatlist;
 
   protected get [id](): number {
@@ -19966,8 +21862,10 @@ export class chatlists_hideChatlistUpdates_ extends Function_<boolean> {
   }
 }
 
+/** Returns identifiers of pinned or always included chats from a chat folder imported using a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links), which are suggested to be left when the chat folder is deleted. */
 export class chatlists_getLeaveChatlistSuggestions_ extends Function_<enums.Peer[]> {
   static __F: (params: { chatlist: enums.InputChatlist }) => enums.Peer[] = null as unknown as (params: { chatlist: enums.InputChatlist }) => enums.Peer[];
+  /** Folder ID */
   chatlist: enums.InputChatlist;
 
   protected get [id](): number {
@@ -19996,9 +21894,12 @@ export class chatlists_getLeaveChatlistSuggestions_ extends Function_<enums.Peer
   }
 }
 
+/** Delete a folder imported using a [chat folder deep link »](https://core.telegram.org/api/links#chat-folder-links) */
 export class chatlists_leaveChatlist_ extends Function_<enums.Updates> {
   static __F: (params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) => enums.Updates = null as unknown as (params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) => enums.Updates;
+  /** Folder ID */
   chatlist: enums.InputChatlist;
+  /** Also leave the specified channels and groups */
   peers: Array<enums.InputPeer>;
 
   protected get [id](): number {
@@ -20030,8 +21931,10 @@ export class chatlists_leaveChatlist_ extends Function_<enums.Updates> {
   }
 }
 
+/** Check whether we can post stories as the specified peer. */
 export class stories_canSendStory_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer }) => boolean = null as unknown as (params: { peer: enums.InputPeer }) => boolean;
+  /** The peer from which we wish to post stories. */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -20060,20 +21963,34 @@ export class stories_canSendStory_ extends Function_<boolean> {
   }
 }
 
+/** Uploads a [Telegram Story](https://core.telegram.org/api/stories). */
 export class stories_sendStory_ extends Function_<enums.Updates> {
   static __F: (params: { pinned?: true; noforwards?: true; fwd_modified?: true; peer: enums.InputPeer; media: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules: Array<enums.InputPrivacyRule>; random_id: bigint; period?: number; fwd_from_id?: enums.InputPeer; fwd_from_story?: number }) => enums.Updates = null as unknown as (params: { pinned?: true; noforwards?: true; fwd_modified?: true; peer: enums.InputPeer; media: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules: Array<enums.InputPrivacyRule>; random_id: bigint; period?: number; fwd_from_id?: enums.InputPeer; fwd_from_story?: number }) => enums.Updates;
+  /** Whether to add the story to the profile automatically upon expiration. If not set, the story will only be added to the archive, see [here »](https://core.telegram.org/api/stories) for more info. */
   pinned?: true;
+  /** If set, disables forwards, screenshots, and downloads. */
   noforwards?: true;
+  /** Set this flag when reposting stories with `fwd_from_id`+`fwd_from_id`, if the `media` was modified before reposting. */
   fwd_modified?: true;
+  /** The peer to send the story as. */
   peer: enums.InputPeer;
+  /** The story media. */
   media: enums.InputMedia;
+  /** [Media areas](https://core.telegram.org/api/stories#media-areas) associated to the story, see [here »](https://core.telegram.org/api/stories#media-areas) for more info. */
   media_areas?: Array<enums.MediaArea>;
+  /** Story caption. */
   caption?: string;
+  /** [Message entities for styled text](https://core.telegram.org/api/entities), if allowed by the [`stories_entities` client configuration parameter »](https://core.telegram.org/api/config#stories-entities). */
   entities?: Array<enums.MessageEntity>;
+  /** [Privacy rules](https://core.telegram.org/api/privacy) for the story, indicating who can or can't view the story. */
   privacy_rules: Array<enums.InputPrivacyRule>;
+  /** Unique client message ID required to prevent message resending. */
   random_id: bigint;
+  /** Period after which the story is moved to archive (and to the profile if `pinned` is set), in seconds; must be one of `6 * 3600`, `12 * 3600`, `86400`, or `2 * 86400` for Telegram Premium users, and `86400` otherwise. */
   period?: number;
+  /** If set, indicates that this story is a repost of story with ID `fwd_from_story` posted by the peer in `fwd_from_id`. */
   fwd_from_id?: enums.InputPeer;
+  /** If set, indicates that this story is a repost of story with ID `fwd_from_story` posted by the peer in `fwd_from_id`. */
   fwd_from_story?: number;
 
   protected get [id](): number {
@@ -20140,14 +22057,22 @@ export class stories_sendStory_ extends Function_<enums.Updates> {
   }
 }
 
+/** Edit an uploaded [story](https://core.telegram.org/api/stories) */
 export class stories_editStory_ extends Function_<enums.Updates> {
   static __F: (params: { peer: enums.InputPeer; id: number; media?: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules?: Array<enums.InputPrivacyRule> }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; id: number; media?: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules?: Array<enums.InputPrivacyRule> }) => enums.Updates;
+  /** Peer where the story was posted. */
   peer: enums.InputPeer;
+  /** ID of story to edit. */
   id: number;
+  /** If specified, replaces the story media. */
   media?: enums.InputMedia;
+  /** [Media areas](https://core.telegram.org/api/stories#media-areas) associated to the story, see [here »](https://core.telegram.org/api/stories#media-areas) for more info. */
   media_areas?: Array<enums.MediaArea>;
+  /** If specified, replaces the story caption. */
   caption?: string;
+  /** [Message entities for styled text in the caption](https://core.telegram.org/api/entities), if allowed by the [`stories_entities` client configuration parameter »](https://core.telegram.org/api/config#stories-entities). */
   entities?: Array<enums.MessageEntity>;
+  /** If specified, alters the [privacy settings »](https://core.telegram.org/api/privacy) of the story, changing who can or can't view the story. */
   privacy_rules?: Array<enums.InputPrivacyRule>;
 
   protected get [id](): number {
@@ -20196,9 +22121,12 @@ export class stories_editStory_ extends Function_<enums.Updates> {
   }
 }
 
+/** Deletes some posted [stories](https://core.telegram.org/api/stories). */
 export class stories_deleteStories_ extends Function_<number[]> {
   static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => number[] = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => number[];
+  /** Channel/user from where to delete stories. */
   peer: enums.InputPeer;
+  /** IDs of stories to delete. */
   id: Array<number>;
 
   protected get [id](): number {
@@ -20230,10 +22158,14 @@ export class stories_deleteStories_ extends Function_<number[]> {
   }
 }
 
+/** Pin or unpin one or more stories */
 export class stories_togglePinned_ extends Function_<number[]> {
   static __F: (params: { peer: enums.InputPeer; id: Array<number>; pinned: boolean }) => number[] = null as unknown as (params: { peer: enums.InputPeer; id: Array<number>; pinned: boolean }) => number[];
+  /** Peer where to pin or unpin stories */
   peer: enums.InputPeer;
+  /** IDs of stories to pin or unpin */
   id: Array<number>;
+  /** Whether to pin or unpin the stories */
   pinned: boolean;
 
   protected get [id](): number {
@@ -20268,10 +22200,14 @@ export class stories_togglePinned_ extends Function_<number[]> {
   }
 }
 
+/** Fetch the List of active (or active and hidden) stories, see [here »](https://core.telegram.org/api/stories#watching-stories) for more info on watching stories. */
 export class stories_getAllStories_ extends Function_<enums.stories.AllStories> {
   static __F: (params?: { next?: true; hidden?: true; state?: string }) => enums.stories.AllStories = null as unknown as (params?: { next?: true; hidden?: true; state?: string }) => enums.stories.AllStories;
+  /** If `next` and `state` are both set, uses the passed `state` to paginate to the next results; if neither `state` nor `next` are set, fetches the initial page; if `state` is set and `next` is not set, check for changes in the active/hidden peerset, see [here »](https://core.telegram.org/api/stories#watching-stories) for more info on the full flow. */
   next?: true;
+  /** If set, fetches the hidden active story list, otherwise fetches the active story list, see [here »](https://core.telegram.org/api/stories#watching-stories) for more info on the full flow. */
   hidden?: true;
+  /** If `next` and `state` are both set, uses the passed `state` to paginate to the next results; if neither `state` nor `next` are set, fetches the initial page; if `state` is set and `next` is not set, check for changes in the active/hidden peerset, see [here »](https://core.telegram.org/api/stories#watching-stories) for more info on the full flow. */
   state?: string;
 
   protected get [id](): number {
@@ -20308,10 +22244,14 @@ export class stories_getAllStories_ extends Function_<enums.stories.AllStories> 
   }
 }
 
+/** Fetch the [stories](https://core.telegram.org/api/stories#pinned-or-archived-stories) pinned on a peer's profile. */
 export class stories_getPinnedStories_ extends Function_<enums.stories.Stories> {
   static __F: (params: { peer: enums.InputPeer; offset_id: number; limit: number }) => enums.stories.Stories = null as unknown as (params: { peer: enums.InputPeer; offset_id: number; limit: number }) => enums.stories.Stories;
+  /** Peer whose pinned stories should be fetched */
   peer: enums.InputPeer;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_id: number;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -20346,10 +22286,14 @@ export class stories_getPinnedStories_ extends Function_<enums.stories.Stories> 
   }
 }
 
+/** Fetch the [story archive »](https://core.telegram.org/api/stories#pinned-or-archived-stories) of a peer we control. */
 export class stories_getStoriesArchive_ extends Function_<enums.stories.Stories> {
   static __F: (params: { peer: enums.InputPeer; offset_id: number; limit: number }) => enums.stories.Stories = null as unknown as (params: { peer: enums.InputPeer; offset_id: number; limit: number }) => enums.stories.Stories;
+  /** Peer whose archived stories should be fetched */
   peer: enums.InputPeer;
+  /** [Offsets for pagination, for more info click here](https://core.telegram.org/api/offsets) */
   offset_id: number;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -20384,9 +22328,12 @@ export class stories_getStoriesArchive_ extends Function_<enums.stories.Stories>
   }
 }
 
+/** Obtain full info about a set of [stories](https://core.telegram.org/api/stories) by their IDs. */
 export class stories_getStoriesByID_ extends Function_<enums.stories.Stories> {
   static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.stories.Stories = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.stories.Stories;
+  /** Peer where the stories were posted */
   peer: enums.InputPeer;
+  /** Story IDs */
   id: Array<number>;
 
   protected get [id](): number {
@@ -20418,8 +22365,10 @@ export class stories_getStoriesByID_ extends Function_<enums.stories.Stories> {
   }
 }
 
+/** Hide the active stories of a specific peer, preventing them from being displayed on the action bar on the homescreen. */
 export class stories_toggleAllStoriesHidden_ extends Function_<boolean> {
   static __F: (params: { hidden: boolean }) => boolean = null as unknown as (params: { hidden: boolean }) => boolean;
+  /** Whether to hide or unhide all active stories of the peer */
   hidden: boolean;
 
   protected get [id](): number {
@@ -20448,9 +22397,12 @@ export class stories_toggleAllStoriesHidden_ extends Function_<boolean> {
   }
 }
 
+/** Mark all stories up to a certain ID as read, for a given peer; will emit an [updateReadStories](https://core.telegram.org/constructor/updateReadStories) update to all logged-in sessions. */
 export class stories_readStories_ extends Function_<number[]> {
   static __F: (params: { peer: enums.InputPeer; max_id: number }) => number[] = null as unknown as (params: { peer: enums.InputPeer; max_id: number }) => number[];
+  /** The peer whose stories should be marked as read. */
   peer: enums.InputPeer;
+  /** Mark all stories up to and including this ID as read */
   max_id: number;
 
   protected get [id](): number {
@@ -20482,9 +22434,12 @@ export class stories_readStories_ extends Function_<number[]> {
   }
 }
 
+/** Increment the view counter of one or more stories. */
 export class stories_incrementStoryViews_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => boolean = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => boolean;
+  /** Peer where the stories were posted. */
   peer: enums.InputPeer;
+  /** IDs of the stories (maximum 200 at a time). */
   id: Array<number>;
 
   protected get [id](): number {
@@ -20516,15 +22471,24 @@ export class stories_incrementStoryViews_ extends Function_<boolean> {
   }
 }
 
+/** Obtain the list of users that have viewed a specific [story we posted](https://core.telegram.org/api/stories) */
 export class stories_getStoryViewsList_ extends Function_<enums.stories.StoryViewsList> {
   static __F: (params: { just_contacts?: true; reactions_first?: true; forwards_first?: true; peer: enums.InputPeer; q?: string; id: number; offset: string; limit: number }) => enums.stories.StoryViewsList = null as unknown as (params: { just_contacts?: true; reactions_first?: true; forwards_first?: true; peer: enums.InputPeer; q?: string; id: number; offset: string; limit: number }) => enums.stories.StoryViewsList;
+  /** Whether to only fetch view reaction/views made by our [contacts](https://core.telegram.org/api/contacts) */
   just_contacts?: true;
+  /** Whether to return [storyView](https://core.telegram.org/constructor/storyView) info about users that reacted to the story (i.e. if set, the server will first sort results by view date as usual, and then also additionally sort the list by putting [storyView](https://core.telegram.org/constructor/storyView)s with an associated reaction first in the list). Ignored if `forwards_first` is set. */
   reactions_first?: true;
+  /** If set, returns forwards and reposts first, then reactions, then other views; otherwise returns interactions sorted just by interaction date. */
   forwards_first?: true;
+  /** Peer where the story was posted */
   peer: enums.InputPeer;
+  /** Search for specific peers */
   q?: string;
+  /** Story ID */
   id: number;
+  /** Offset for pagination, obtained from [stories.storyViewsList](https://core.telegram.org/constructor/stories.storyViewsList).`next_offset` */
   offset: string;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -20576,9 +22540,12 @@ export class stories_getStoryViewsList_ extends Function_<enums.stories.StoryVie
   }
 }
 
+/** Obtain info about the view count, forward count, reactions and recent viewers of one or more [stories](https://core.telegram.org/api/stories). */
 export class stories_getStoriesViews_ extends Function_<enums.stories.StoryViews> {
   static __F: (params: { peer: enums.InputPeer; id: Array<number> }) => enums.stories.StoryViews = null as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.stories.StoryViews;
+  /** Peer whose stories should be fetched */
   peer: enums.InputPeer;
+  /** Story IDs */
   id: Array<number>;
 
   protected get [id](): number {
@@ -20610,9 +22577,12 @@ export class stories_getStoriesViews_ extends Function_<enums.stories.StoryViews
   }
 }
 
+/** Generate a [story deep link](https://core.telegram.org/api/links#story-links) for a specific story */
 export class stories_exportStoryLink_ extends Function_<enums.ExportedStoryLink> {
   static __F: (params: { peer: enums.InputPeer; id: number }) => enums.ExportedStoryLink = null as unknown as (params: { peer: enums.InputPeer; id: number }) => enums.ExportedStoryLink;
+  /** Peer where the story was posted */
   peer: enums.InputPeer;
+  /** Story ID */
   id: number;
 
   protected get [id](): number {
@@ -20644,11 +22614,16 @@ export class stories_exportStoryLink_ extends Function_<enums.ExportedStoryLink>
   }
 }
 
+/** Report a story. */
 export class stories_report_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) => boolean = null as unknown as (params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) => boolean;
+  /** The peer that uploaded the story. */
   peer: enums.InputPeer;
+  /** IDs of the stories to report. */
   id: Array<number>;
+  /** Why are these storeis being reported. */
   reason: enums.ReportReason;
+  /** Comment for report moderation */
   message: string;
 
   protected get [id](): number {
@@ -20686,9 +22661,12 @@ export class stories_report_ extends Function_<boolean> {
   }
 }
 
+/** Activates [stories stealth mode](https://core.telegram.org/api/stories#stealth-mode), see [here »](https://core.telegram.org/api/stories#stealth-mode) for more info. */
 export class stories_activateStealthMode_ extends Function_<enums.Updates> {
   static __F: (params?: { past?: true; future?: true }) => enums.Updates = null as unknown as (params?: { past?: true; future?: true }) => enums.Updates;
+  /** Whether to erase views from any stories opened in the past [`stories_stealth_past_period` seconds »](https://core.telegram.org/api/config#stories-stealth-past-period), as specified by the [client configuration](https://core.telegram.org/api/config#client-configuration). */
   past?: true;
+  /** Whether to hide future story views for the next [`stories_stealth_future_period` seconds »](https://core.telegram.org/api/config#stories-stealth-future-period), as specified by the [client configuration](https://core.telegram.org/api/config#client-configuration). */
   future?: true;
 
   protected get [id](): number {
@@ -20722,11 +22700,16 @@ export class stories_activateStealthMode_ extends Function_<enums.Updates> {
   }
 }
 
+/** React to a story. */
 export class stories_sendReaction_ extends Function_<enums.Updates> {
   static __F: (params: { add_to_recent?: true; peer: enums.InputPeer; story_id: number; reaction: enums.Reaction }) => enums.Updates = null as unknown as (params: { add_to_recent?: true; peer: enums.InputPeer; story_id: number; reaction: enums.Reaction }) => enums.Updates;
+  /** Whether to add this reaction to the [recent reactions list »](https://core.telegram.org/api/reactions#recent-reactions). */
   add_to_recent?: true;
+  /** The peer that sent the story */
   peer: enums.InputPeer;
+  /** ID of the story to react to */
   story_id: number;
+  /** Reaction */
   reaction: enums.Reaction;
 
   protected get [id](): number {
@@ -20766,8 +22749,10 @@ export class stories_sendReaction_ extends Function_<enums.Updates> {
   }
 }
 
+/** Fetch the full active [story list](https://core.telegram.org/api/stories#watching-stories) of a specific peer. */
 export class stories_getPeerStories_ extends Function_<enums.stories.PeerStories> {
   static __F: (params: { peer: enums.InputPeer }) => enums.stories.PeerStories = null as unknown as (params: { peer: enums.InputPeer }) => enums.stories.PeerStories;
+  /** Peer whose stories should be fetched */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -20796,6 +22781,7 @@ export class stories_getPeerStories_ extends Function_<enums.stories.PeerStories
   }
 }
 
+/** Obtain the latest read story ID for all peers when first logging in, returned as a list of [updateReadStories](https://core.telegram.org/constructor/updateReadStories) updates, see [here »](https://core.telegram.org/api/stories#watching-stories) for more info. */
 export class stories_getAllReadPeerStories_ extends Function_<enums.Updates> {
   static __F: () => enums.Updates = null as unknown as () => enums.Updates;
   protected get [id](): number {
@@ -20819,8 +22805,10 @@ export class stories_getAllReadPeerStories_ extends Function_<enums.Updates> {
   }
 }
 
+/** Get the IDs of the maximum read stories for a set of peers. */
 export class stories_getPeerMaxIDs_ extends Function_<number[]> {
   static __F: (params: { id: Array<enums.InputPeer> }) => number[] = null as unknown as (params: { id: Array<enums.InputPeer> }) => number[];
+  /** Peers */
   id: Array<enums.InputPeer>;
 
   protected get [id](): number {
@@ -20849,6 +22837,7 @@ export class stories_getPeerMaxIDs_ extends Function_<number[]> {
   }
 }
 
+/** Obtain a list of channels where the user can post [stories](https://core.telegram.org/api/stories) */
 export class stories_getChatsToSend_ extends Function_<enums.messages.Chats> {
   static __F: () => enums.messages.Chats = null as unknown as () => enums.messages.Chats;
   protected get [id](): number {
@@ -20872,9 +22861,12 @@ export class stories_getChatsToSend_ extends Function_<enums.messages.Chats> {
   }
 }
 
+/** Hide the active stories of a user, preventing them from being displayed on the action bar on the homescreen, see [here »](https://core.telegram.org/api/stories#hiding-stories-of-other-users) for more info. */
 export class stories_togglePeerStoriesHidden_ extends Function_<boolean> {
   static __F: (params: { peer: enums.InputPeer; hidden: boolean }) => boolean = null as unknown as (params: { peer: enums.InputPeer; hidden: boolean }) => boolean;
+  /** Peer whose stories should be (un)hidden. */
   peer: enums.InputPeer;
+  /** Whether to hide or unhide stories. */
   hidden: boolean;
 
   protected get [id](): number {
@@ -20906,13 +22898,20 @@ export class stories_togglePeerStoriesHidden_ extends Function_<boolean> {
   }
 }
 
+/** Get the [reaction](https://core.telegram.org/api/reactions) and interaction list of a [story](https://core.telegram.org/api/stories) posted to a channel, along with the sender of each reaction. */
 export class stories_getStoryReactionsList_ extends Function_<enums.stories.StoryReactionsList> {
   static __F: (params: { forwards_first?: true; peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) => enums.stories.StoryReactionsList = null as unknown as (params: { forwards_first?: true; peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) => enums.stories.StoryReactionsList;
+  /** If set, returns forwards and reposts first, then reactions, then other views; otherwise returns interactions sorted just by interaction date. */
   forwards_first?: true;
+  /** Channel */
   peer: enums.InputPeer;
+  /** [Story](https://core.telegram.org/api/stories) ID */
   id: number;
+  /** Get only reactions of this type */
   reaction?: enums.Reaction;
+  /** Offset for pagination (taken from the `next_offset` field of the returned [stories.StoryReactionsList](https://core.telegram.org/type/stories.StoryReactionsList)); empty in the first request. */
   offset?: string;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -20958,11 +22957,16 @@ export class stories_getStoryReactionsList_ extends Function_<enums.stories.Stor
   }
 }
 
+/** Obtains info about the boosts that were applied to a certain channel (admins only) */
 export class premium_getBoostsList_ extends Function_<enums.premium.BoostsList> {
   static __F: (params: { gifts?: true; peer: enums.InputPeer; offset: string; limit: number }) => enums.premium.BoostsList = null as unknown as (params: { gifts?: true; peer: enums.InputPeer; offset: string; limit: number }) => enums.premium.BoostsList;
+  /** Whether to return only info about boosts received from [gift codes and giveaways created by the channel »](https://core.telegram.org/api/giveaways) */
   gifts?: true;
+  /** The channel */
   peer: enums.InputPeer;
+  /** Offset for pagination, obtained from [premium.boostsList](https://core.telegram.org/constructor/premium.boostsList).`next_offset` */
   offset: string;
+  /** Maximum number of results to return, [see pagination](https://core.telegram.org/api/offsets) */
   limit: number;
 
   protected get [id](): number {
@@ -21002,6 +23006,7 @@ export class premium_getBoostsList_ extends Function_<enums.premium.BoostsList> 
   }
 }
 
+/** Obtain which peers are we currently [boosting](https://core.telegram.org/api/boost), and how many [boost slots](https://core.telegram.org/api/boost) we have left. */
 export class premium_getMyBoosts_ extends Function_<enums.premium.MyBoosts> {
   static __F: () => enums.premium.MyBoosts = null as unknown as () => enums.premium.MyBoosts;
   protected get [id](): number {
@@ -21025,9 +23030,12 @@ export class premium_getMyBoosts_ extends Function_<enums.premium.MyBoosts> {
   }
 }
 
+/** Apply one or more [boosts »](https://core.telegram.org/api/boost) to a peer. */
 export class premium_applyBoost_ extends Function_<enums.premium.MyBoosts> {
   static __F: (params: { slots?: Array<number>; peer: enums.InputPeer }) => enums.premium.MyBoosts = null as unknown as (params: { slots?: Array<number>; peer: enums.InputPeer }) => enums.premium.MyBoosts;
+  /** Which [boost slots](https://core.telegram.org/api/boost) to assign to this peer. */
   slots?: Array<number>;
+  /** The peer to boost. */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -21061,8 +23069,10 @@ export class premium_applyBoost_ extends Function_<enums.premium.MyBoosts> {
   }
 }
 
+/** Gets the current [number of boosts](https://core.telegram.org/api/boost) of a channel. */
 export class premium_getBoostsStatus_ extends Function_<enums.premium.BoostsStatus> {
   static __F: (params: { peer: enums.InputPeer }) => enums.premium.BoostsStatus = null as unknown as (params: { peer: enums.InputPeer }) => enums.premium.BoostsStatus;
+  /** The peer. */
   peer: enums.InputPeer;
 
   protected get [id](): number {
@@ -21091,9 +23101,12 @@ export class premium_getBoostsStatus_ extends Function_<enums.premium.BoostsStat
   }
 }
 
+/** Returns the lists of boost that were applied to a channel by a specific user (admins only) */
 export class premium_getUserBoosts_ extends Function_<enums.premium.BoostsList> {
   static __F: (params: { peer: enums.InputPeer; user_id: enums.InputUser }) => enums.premium.BoostsList = null as unknown as (params: { peer: enums.InputPeer; user_id: enums.InputUser }) => enums.premium.BoostsList;
+  /** The channel */
   peer: enums.InputPeer;
+  /** The user */
   user_id: enums.InputUser;
 
   protected get [id](): number {
