@@ -98,7 +98,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
 
   on<Q extends FilterQuery>(
     filter: Q,
-    ...middleawre: Middleware<WithFilter<C, Q>>[]
+    ...middleware: Middleware<WithFilter<C, Q>>[]
   ): Composer<UpdateIntersection<WithFilter<C, Q>>> {
     return this.filter((ctx): ctx is UpdateIntersection<WithFilter<C, Q>> => {
       return match(filter, ctx);
