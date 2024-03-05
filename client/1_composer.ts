@@ -98,11 +98,11 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
 
   on<Q extends FilterQuery>(
     filter: Q,
-    ...middleawre: Middleware<WithFilter<C, Q>>[]
+    ...middleware: Middleware<WithFilter<C, Q>>[]
   ): Composer<UpdateIntersection<WithFilter<C, Q>>> {
     return this.filter((ctx): ctx is UpdateIntersection<WithFilter<C, Q>> => {
       return match(filter, ctx);
-    }, ...middleawre);
+    }, ...middleware);
   }
 
   command(
@@ -110,7 +110,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
       names: string | RegExp | (string | RegExp)[];
       prefixes: string | string[];
     },
-    ...middleawre: Middleware<WithFilter<C, "message:text">>[]
+    ...middleware: Middleware<WithFilter<C, "message:text">>[]
   ): Composer<WithFilter<C, "message:text">> {
     const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
     const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
@@ -151,6 +151,6 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
         }
       }
       return false;
-    }, ...middleawre);
+    }, ...middleware);
   }
 }
