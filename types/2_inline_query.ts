@@ -6,10 +6,15 @@ import { constructUser, User } from "./1_user.ts";
 
 /** An incoming inline query. */
 export interface InlineQuery {
+  /** Unique identifier for this query. */
   id: string;
+  /** Sender of this query/ */
   from: User;
+  /** Text of the query (up to 256 characters). */
   query: string;
+  /** Offset of the results to be returned. */
   offset: string;
+  /** Type of the chat from which the inline query was sent. */
   chatType?: "sender" | "private" | "group" | "supergroup" | "channel";
   location?: Location;
 }
