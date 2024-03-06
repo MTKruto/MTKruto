@@ -6,12 +6,19 @@ import { Message, MessageGetter } from "./4_message.ts";
 
 /** A received callback query. */
 export interface CallbackQuery {
+  /** Unique identifier for this query. */
   id: string;
+  /** Sender of the query. */
   from: User;
+  /** Message sent by the bot with the callback button that originated the query. */
   message?: Message;
+  /** Identifier of the message sent via the bot in inline mode, that originated the query. */
   inlineMessageId?: string;
+  /** Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. */
   chatInstance: string;
+  /** Data associated with the callback button. Be aware that the message originated the query can contain no callback buttons with this data. */
   data?: string;
+  /** Short name of a Game to be returned, serves as the unique identifier for the game. */
   gameShortName?: string;
 }
 

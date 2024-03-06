@@ -6,10 +6,15 @@ import { constructUser, User } from "./1_user.ts";
 
 /** A chosen inline result. */
 export interface ChosenInlineResult {
+  /** The unique identifier for the result that was chosen. */
   resultId: string;
+  /** The user that chose the result. */
   from: User;
+  /** Sender location, only for bots that require user location. */
   location?: Location;
+  /** Identifier of the sent inline message. */
   inlineMessageId?: string;
+  /** The query that was used to obtain the result. */
   query: string;
 }
 
