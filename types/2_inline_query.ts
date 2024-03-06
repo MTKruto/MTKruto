@@ -16,6 +16,7 @@ export interface InlineQuery {
   offset: string;
   /** Type of the chat from which the inline query was sent. */
   chatType?: "sender" | "private" | "group" | "supergroup" | "channel";
+  /** The location of the user who made the inline query. */
   location?: Location;
 }
 
