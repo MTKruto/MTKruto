@@ -6,6 +6,6 @@ export interface InlineQueryResultButton {
   text: string;
   /** Description of the Web App that will be launched when the user presses the button. */
   miniApp?: MiniAppInfo;
-  /**  */
+  /** Deep linking parameter for the /start message. */
   startParameter?: string;
 }
