@@ -10,15 +10,15 @@ export interface User {
   color: number;
   /** Whether this is a bot’s chat. */
   isBot: boolean;
-  /** User's or bot's first name. */
+  /** The first name of the user. */
   firstName: string;
-  /** User's or bot's last name. */
+  /** The last name of the user. */
   lastName?: string;
-  /** User's or bot's username. */
+  /** The user’s main username. */
   username?: string;
   /** Additional usernames. */
   also?: string[];
-  /** The user's photo. */
+  /** The photo of the user. */
   photo?: ChatPhotoUser;
   /** [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) of the user's language. */
   languageCode?: string;
