@@ -1,14 +1,6 @@
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, rleDecode, rleEncode, UNREACHABLE } from "../1_utilities.ts";
 import { TLReader, TLWriter } from "../2_tl.ts";
 
-export enum ThumbnailSource {
-  Legacy = 0,
-  Thumbnail = 1,
-  ChatPhotoSmall = 2,
-  ChatPhotoBig = 3,
-  StickerSetThumbnail = 4,
-}
-
 export enum FileUniqueType {
   Web = 0,
   Photo = 1,

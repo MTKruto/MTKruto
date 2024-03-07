@@ -1,6 +1,6 @@
 import { cleanObject } from "../1_utilities.ts";
 import { as, types } from "../2_tl.ts";
-import { FileID, FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
+import { FileType, FileUniqueID, FileUniqueType, serializeFileId } from "./0__file_id.ts";
 import { MessageEntity } from "./0_message_entity.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
@@ -27,11 +27,12 @@ export function constructGame(media_: types.MessageMediaGame): Game {
         document_,
         document_.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo)!,
         document_.attributes.find((v): v is types.DocumentAttributeFilename => v instanceof types.DocumentAttributeFilename)!,
-        new FileID(null, null, FileType.Animation, document_.dc_id, {
-          mediaId: document_.id,
-          accessHash: document_.access_hash,
+        serializeFileId({
+          type: FileType.Animation,
+          dcId: document_.dc_id,
           fileReference: document_.file_reference,
-        }).encode(),
+          location: { type: "common", id: document_.id, accessHash: document_.access_hash },
+        }),
         new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode(),
       )
       : undefined,
