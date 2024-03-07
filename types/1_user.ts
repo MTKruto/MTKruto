@@ -8,7 +8,7 @@ export interface User {
   id: number;
   /** Identifier of color that can be displayed instead of the user's photo. */
   color: number;
-  /** Whether this is a bot’s chat. */
+  /** Whether the user is a bot. */
   isBot: boolean;
   /** User's or bot's first name. */
   firstName: string;
