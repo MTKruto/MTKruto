@@ -1,258 +1,12 @@
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, rleDecode, rleEncode, UNREACHABLE } from "../1_utilities.ts";
 import { TLReader, TLWriter } from "../2_tl.ts";
 
-export enum FileType {
-  Thumbnail = 0,
-  ChatPhoto = 1,
-  Photo = 2,
-  Voice = 3,
-  Video = 4,
-  Document = 5,
-  Encrypted = 6,
-  Temp = 7,
-  Sticker = 8,
-  Audio = 9,
-  Animation = 10,
-  EncryptedThumbnail = 11,
-  Wallpaper = 12,
-  VideoNote = 13,
-  SecureRaw = 14,
-  Secure = 15,
-  Background = 16,
-  DocumentAsFile = 17,
-}
-
-const PHOTO_TYPES = [FileType.Thumbnail, FileType.ChatPhoto, FileType.Photo, FileType.EncryptedThumbnail];
-const DOCUMENT_TYPES: FileType[] = Object.keys(FileType).map(Number).filter((v) => !isNaN(v)).filter((v) => !PHOTO_TYPES.includes(v));
-
 export enum ThumbnailSource {
   Legacy = 0,
   Thumbnail = 1,
   ChatPhotoSmall = 2,
   ChatPhotoBig = 3,
   StickerSetThumbnail = 4,
-}
-
-interface FileIDParams {
-  fileReference?: Uint8Array;
-  url?: string;
-  mediaId?: bigint;
-  accessHash?: bigint;
-  volumeId?: bigint;
-  thumbnailSource?: ThumbnailSource;
-  thumbnailFileType?: FileType;
-  thumbnailSize?: string;
-  secret?: bigint;
-  localId?: number;
-  chatId?: number;
-  chatAccessHash?: bigint;
-  stickerSetId?: bigint;
-  stickerSetAccessHash?: bigint;
-}
-
-const WEB_LOCATION_FLAG = 1 << 24;
-const FILE_REFERENCE_FLAG = 1 << 25;
-
-export class FileID {
-  static MAJOR = 4;
-  static MINOR = 30;
-  public readonly major: number;
-  public readonly minor: number;
-
-  constructor(major: number | null = FileID.MAJOR, minor: number | null = FileID.MINOR, public readonly fileType: FileType, public readonly dcId: number, public readonly params: FileIDParams) {
-    if (major == null) {
-      this.major = FileID.MAJOR;
-    } else {
-      this.major = major;
-    }
-    if (minor == null) {
-      this.minor = FileID.MINOR;
-    } else {
-      this.minor = minor;
-    }
-    this.params.thumbnailSize ??= "";
-  }
-
-  static decode(fileId: string): FileID {
-    const decoded = rleDecode(base64DecodeUrlSafe(fileId));
-
-    const major = decoded[decoded.length - 1];
-    let minor: number;
-    let buffer: Uint8Array;
-
-    if (major < 4) {
-      minor = 0;
-      buffer = decoded.subarray(0, -1);
-    } else {
-      minor = decoded[decoded.length - 2];
-      buffer = decoded.subarray(0, -2);
-    }
-    const reader = new TLReader(buffer);
-
-    let fileType = reader.readInt32();
-    const dcId = reader.readInt32();
-
-    const hasWebLocation = Boolean(fileType & WEB_LOCATION_FLAG);
-    const hasFileReference = Boolean(fileType & FILE_REFERENCE_FLAG);
-
-    fileType &= ~WEB_LOCATION_FLAG;
-    fileType &= ~FILE_REFERENCE_FLAG;
-
-    if (hasWebLocation) {
-      const url = reader.readString();
-      const accessHash = reader.readInt64();
-
-      return new FileID(major, minor, fileType, dcId, { url, accessHash });
-    }
-
-    let fileReference = new Uint8Array();
-    if (hasFileReference) {
-      fileReference = reader.readBytes();
-    }
-    const mediaId = reader.readInt64();
-    const accessHash = reader.readInt64();
-
-    if (PHOTO_TYPES.includes(fileType)) {
-      const volumeId = reader.readInt64();
-      let thumbnailSource = 0 as ThumbnailSource;
-      if (major >= 4) {
-        thumbnailSource = reader.readInt32(false) as ThumbnailSource;
-      }
-
-      switch (thumbnailSource) {
-        case ThumbnailSource.Legacy: {
-          const secret = reader.readInt64();
-          const localId = reader.readInt32();
-
-          return new FileID(major, minor, fileType, dcId, { fileReference, mediaId, accessHash, volumeId, thumbnailSource, secret, localId });
-        }
-        case ThumbnailSource.Thumbnail: {
-          const thumbnailFileType = reader.readInt32();
-          const thumbnailSize = String.fromCharCode(reader.readInt32());
-          const localId = reader.readInt32();
-
-          return new FileID(major, minor, fileType, dcId, { fileReference, mediaId, accessHash, volumeId, thumbnailSource, thumbnailFileType, thumbnailSize, localId });
-        }
-        case ThumbnailSource.ChatPhotoSmall:
-        case ThumbnailSource.ChatPhotoBig: {
-          const chatId = Number(reader.readInt64());
-          const chatAccessHash = reader.readInt64();
-          const localId = reader.readInt32();
-
-          return new FileID(major, minor, fileType, dcId, { fileReference, mediaId, accessHash, volumeId, thumbnailSource, chatId: Number(chatId), chatAccessHash, localId });
-        }
-        case ThumbnailSource.StickerSetThumbnail: {
-          const stickerSetId = reader.readInt64();
-          const stickerSetAccessHash = reader.readInt64();
-          const localId = reader.readInt32();
-
-          return new FileID(major, minor, fileType, dcId, { fileReference, mediaId, accessHash, volumeId, thumbnailSource, stickerSetId, stickerSetAccessHash, localId });
-        }
-        default:
-          UNREACHABLE();
-      }
-    } else if (DOCUMENT_TYPES.includes(fileType)) {
-      return new FileID(minor, major, fileType, dcId, { fileReference, mediaId, accessHash });
-    } else {
-      UNREACHABLE();
-    }
-  }
-
-  encode(major?: number, minor?: number): string {
-    major ??= this.major;
-    minor ??= this.minor;
-
-    const writer = new TLWriter();
-    let fileType = this.fileType;
-
-    if (this.params.url) {
-      fileType |= WEB_LOCATION_FLAG;
-    }
-
-    if (this.params.fileReference) {
-      fileType |= FILE_REFERENCE_FLAG;
-    }
-
-    writer.writeInt32(fileType);
-    writer.writeInt32(this.dcId);
-
-    if (this.params.url) {
-      writer.writeString(this.params.url);
-    }
-
-    if (this.params.fileReference) {
-      writer.writeBytes(this.params.fileReference);
-    }
-
-    if (this.params.mediaId == undefined || this.params.accessHash == undefined) {
-      UNREACHABLE();
-    }
-
-    writer.writeInt64(this.params.mediaId);
-    writer.writeInt64(this.params.accessHash);
-
-    if (PHOTO_TYPES.includes(this.fileType)) {
-      if (this.params.volumeId == undefined || this.params.thumbnailSize == undefined || this.params.localId == undefined) {
-        UNREACHABLE();
-      }
-
-      writer.writeInt64(this.params.volumeId);
-
-      if (major >= 4) {
-        writer.writeInt32(Number(this.params.thumbnailSource));
-      }
-
-      switch (this.params.thumbnailSource) {
-        case ThumbnailSource.Legacy:
-          if (this.params.secret == undefined) {
-            UNREACHABLE();
-          }
-
-          writer.writeInt64(this.params.secret);
-          writer.writeInt32(this.params.localId);
-          break;
-        case ThumbnailSource.Thumbnail:
-          if (this.params.thumbnailFileType == undefined || this.params.thumbnailSize == undefined) {
-            UNREACHABLE();
-          }
-
-          writer.writeInt32(Number(this.params.thumbnailFileType));
-          writer.writeInt32(this.params.thumbnailSize.charCodeAt(0));
-          writer.writeInt32(this.params.localId);
-          break;
-        case ThumbnailSource.ChatPhotoSmall:
-        case ThumbnailSource.ChatPhotoBig:
-          if (this.params.chatId == undefined || this.params.chatAccessHash == undefined) {
-            UNREACHABLE();
-          }
-
-          writer.writeInt64(BigInt(this.params.chatId));
-          writer.writeInt64(this.params.chatAccessHash);
-          writer.writeInt32(this.params.localId);
-          break;
-        case ThumbnailSource.StickerSetThumbnail:
-          if (this.params.stickerSetId == undefined || this.params.stickerSetAccessHash == undefined) {
-            UNREACHABLE();
-          }
-
-          writer.writeInt64(this.params.stickerSetId);
-          writer.writeInt64(this.params.stickerSetAccessHash);
-          writer.writeInt32(this.params.localId);
-          break;
-        default:
-          UNREACHABLE();
-      }
-    } else if (DOCUMENT_TYPES.includes(this.fileType)) {
-      writer.writeInt32(minor);
-      writer.writeInt32(major);
-    } else {
-      UNREACHABLE();
-    }
-
-    writer.write(new Uint8Array([minor, major]));
-
-    return base64EncodeUrlSafe(rleEncode(writer.buffer));
-  }
 }
 
 export enum FileUniqueType {
@@ -333,4 +87,258 @@ export class FileUniqueID {
 
     return base64EncodeUrlSafe(rleEncode(writer.buffer));
   }
+}
+
+// start rerite
+
+const NEXT_VERSION = 53;
+const PERSISTENT_ID_VERSION = 4;
+const WEB_LOCATION_FLAG = 1 << 24;
+const FILE_REFERENCE_FLAG = 1 << 25;
+
+export enum FileType {
+  Thumbnail,
+  ProfilePhoto,
+  Photo,
+  VoiceNote,
+  Video,
+  Document,
+  Encrypted,
+  Temp,
+  Sticker,
+  Audio,
+  Animation,
+  EncryptedThumbnail,
+  Wallpaper,
+  VideoNote,
+  SecureDecrypted,
+  SecureEncrypted,
+  Background,
+  DocumentAsFile,
+  Ringtone,
+  CallLog,
+  PhotoStory,
+  VideoStory,
+  Size,
+  None,
+}
+
+enum FileTypeClass {
+  Photo,
+  Document,
+  Secure,
+  Encrypted,
+  Temp,
+}
+
+enum PhotoSourceType {
+  Legacy,
+  Thumbnail,
+  DialogPhotoSmall,
+  DialogPhotoBig,
+  StickerSetThumbnail,
+  FullLegacy,
+  DialogPhotoSmallLegacy,
+  DialogPhotoBigLegacy,
+  StickerSetThumbnailLegacy,
+  StickerSetThumbnailVersion,
+}
+
+type PhotoSource =
+  | { type: PhotoSourceType.Legacy; secret: bigint }
+  | { type: PhotoSourceType.Thumbnail; fileType: FileType; thumbnailType: number }
+  | { type: PhotoSourceType.DialogPhotoSmall; chatId: bigint; chatAccessHash: bigint }
+  | { type: PhotoSourceType.DialogPhotoBig; chatId: bigint; chatAccessHash: bigint }
+  | { type: PhotoSourceType.StickerSetThumbnail; stickerSetId: bigint; stickerSetAccessHash: bigint }
+  | { type: PhotoSourceType.FullLegacy; volumeId: bigint; localId: number; secret: bigint }
+  | { type: PhotoSourceType.DialogPhotoSmallLegacy; volumeId: bigint; localId: number }
+  | { type: PhotoSourceType.DialogPhotoBigLegacy; volumeId: bigint; localId: number }
+  | { type: PhotoSourceType.StickerSetThumbnailLegacy; volumeId: bigint; localId: number }
+  | { type: PhotoSourceType.StickerSetThumbnailVersion; version: number };
+function deserializePhotoSource(reader: TLReader): PhotoSource {
+  const type = reader.readInt32() as PhotoSourceType;
+  switch (type) {
+    case PhotoSourceType.Legacy:
+      return { type, secret: reader.readInt64() };
+    case PhotoSourceType.Thumbnail:
+      return { type, fileType: reader.readInt32(), thumbnailType: reader.readInt32() };
+    case PhotoSourceType.DialogPhotoSmall:
+    case PhotoSourceType.DialogPhotoBig: {
+      const chatId = reader.readInt64();
+      const chatAccessHash = reader.readInt64();
+      return { type, chatId, chatAccessHash };
+    }
+    case PhotoSourceType.StickerSetThumbnail: {
+      const stickerSetId = reader.readInt64();
+      const stickerSetAccessHash = reader.readInt64();
+      return { type, stickerSetId, stickerSetAccessHash };
+    }
+    case PhotoSourceType.FullLegacy: {
+      const volumeId = reader.readInt64();
+      const localId = reader.readInt32();
+      const secret = reader.readInt64();
+      return { type, volumeId, localId, secret };
+    }
+    case PhotoSourceType.DialogPhotoSmallLegacy:
+    case PhotoSourceType.DialogPhotoBigLegacy:
+    case PhotoSourceType.StickerSetThumbnailLegacy: {
+      const volumeId = reader.readInt64();
+      const localId = reader.readInt32();
+      return { type, volumeId, localId };
+    }
+    case PhotoSourceType.StickerSetThumbnailVersion:
+      return { type, version: reader.readInt32() };
+  }
+}
+function serializePhotoSource(photoSource: PhotoSource, writer: TLWriter) {
+  writer.writeInt32(photoSource.type);
+  switch (photoSource.type) {
+    case PhotoSourceType.Legacy:
+      writer.writeInt64(photoSource.secret);
+      break;
+    case PhotoSourceType.Thumbnail:
+      writer.writeInt32(photoSource.fileType);
+      writer.writeInt32(photoSource.thumbnailType);
+      break;
+    case PhotoSourceType.DialogPhotoSmall:
+    case PhotoSourceType.DialogPhotoBig:
+      writer.writeInt64(photoSource.chatId);
+      writer.writeInt64(photoSource.chatAccessHash);
+      break;
+    case PhotoSourceType.StickerSetThumbnail:
+      writer.writeInt64(photoSource.stickerSetId);
+      writer.writeInt64(photoSource.stickerSetAccessHash);
+      break;
+    case PhotoSourceType.FullLegacy:
+      writer.writeInt64(photoSource.volumeId);
+      writer.writeInt32(photoSource.localId);
+      writer.writeInt64(photoSource.secret);
+      break;
+    case PhotoSourceType.DialogPhotoSmallLegacy:
+    case PhotoSourceType.DialogPhotoBigLegacy:
+    case PhotoSourceType.StickerSetThumbnailLegacy:
+      writer.writeInt64(photoSource.volumeId);
+      writer.writeInt32(photoSource.localId);
+      break;
+    case PhotoSourceType.StickerSetThumbnailVersion:
+      writer.writeInt32(photoSource.version);
+      break;
+    default:
+      UNREACHABLE();
+  }
+}
+
+type FileLocation =
+  | { type: "web"; url: string; accessHash: bigint }
+  | { type: "photo"; id: bigint; accessHash: bigint; source: PhotoSource }
+  | { type: "common"; id: bigint; accessHash: bigint };
+
+interface FileId {
+  type: FileType;
+  dcId: number;
+  fileReference?: Uint8Array;
+  location: FileLocation;
+}
+
+function getFileTypeClass(fileType: FileType) {
+  switch (fileType) {
+    case FileType.Photo:
+    case FileType.ProfilePhoto:
+    case FileType.Thumbnail:
+    case FileType.EncryptedThumbnail:
+    case FileType.Wallpaper:
+    case FileType.PhotoStory:
+      return FileTypeClass.Photo;
+    case FileType.Video:
+    case FileType.VoiceNote:
+    case FileType.Document:
+    case FileType.Sticker:
+    case FileType.Audio:
+    case FileType.Animation:
+    case FileType.VideoNote:
+    case FileType.Background:
+    case FileType.DocumentAsFile:
+    case FileType.Ringtone:
+    case FileType.CallLog:
+    case FileType.VideoStory:
+      return FileTypeClass.Document;
+    case FileType.SecureDecrypted:
+    case FileType.SecureEncrypted:
+      return FileTypeClass.Secure;
+    case FileType.Encrypted:
+      return FileTypeClass.Encrypted;
+    case FileType.Temp:
+      return FileTypeClass.Temp;
+    case FileType.None:
+    case FileType.Size:
+    default:
+      UNREACHABLE();
+  }
+}
+
+function isWeb(fileType: FileType) {
+  return !!(fileType & WEB_LOCATION_FLAG);
+}
+
+function hasFileReference(fileType: FileType) {
+  return !!(fileType && FILE_REFERENCE_FLAG);
+}
+
+export function deserializeFileId(fileId: string): FileId | undefined {
+  const reader = new TLReader(rleDecode(base64DecodeUrlSafe(fileId)));
+  if (reader.buffer[reader.buffer.length - 1] != PERSISTENT_ID_VERSION) {
+    throw new Error("Unsupported version");
+  }
+  const originalType = reader.readInt32();
+  const type = ((originalType & ~WEB_LOCATION_FLAG) & ~FILE_REFERENCE_FLAG) as FileType;
+  const dcId = reader.readInt32();
+
+  if (isWeb(originalType)) {
+    const url = reader.readString();
+    const accessHash = reader.readInt64();
+    return { type, dcId, location: { type: "web", url, accessHash } };
+  }
+
+  const fileReference = hasFileReference(originalType) ? reader.readBytes() : undefined;
+  const id = reader.readInt64();
+  const accessHash = reader.readInt64();
+
+  if (getFileTypeClass(type) == FileTypeClass.Photo) {
+    const source = deserializePhotoSource(reader);
+    return { type, dcId, fileReference, location: { type: "photo", id, accessHash, source } };
+  } else {
+    return { type, dcId, fileReference, location: { type: "common", id, accessHash } };
+  }
+}
+
+export function serializeFileId(fileId: FileId) {
+  const writer = new TLWriter();
+  let type = fileId.type;
+  if (fileId.fileReference) {
+    type |= FILE_REFERENCE_FLAG;
+  }
+  if (fileId.location.type == "web") {
+    type |= WEB_LOCATION_FLAG;
+  }
+  writer.writeInt32(type);
+  writer.writeInt32(fileId.dcId);
+
+  if (fileId.location.type == "web") {
+    writer.writeString(fileId.location.url);
+    writer.writeInt64(fileId.location.accessHash);
+  } else {
+    if (fileId.fileReference) {
+      writer.writeBytes(fileId.fileReference);
+    }
+
+    writer.writeInt64(fileId.location.id);
+    writer.writeInt64(fileId.location.accessHash);
+
+    if (fileId.location.type == "photo") {
+      serializePhotoSource(fileId.location.source, writer);
+    }
+  }
+
+  writer.write(new Uint8Array([NEXT_VERSION - 1, PERSISTENT_ID_VERSION]));
+  return base64EncodeUrlSafe(rleEncode(writer.buffer));
 }
