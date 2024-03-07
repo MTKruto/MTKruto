@@ -1,6 +1,7 @@
 import { cleanObject, fromUnixTimestamp, getLogger, MaybePromise, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
 import { FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
+import { serializeFileId } from "./0__file_id.ts";
 import { constructContact, Contact } from "./0_contact.ts";
 import { constructDice, Dice } from "./0_dice.ts";
 import { constructLinkPreview, LinkPreview } from "./0_link_preview.ts";
@@ -24,7 +25,6 @@ import { constructVideoNote, VideoNote } from "./1_video_note.ts";
 import { constructVideo, Video } from "./1_video.ts";
 import { constructGame, Game } from "./2_game.ts";
 import { constructReplyMarkup, ReplyMarkup } from "./3_reply_markup.ts";
-import { serializeFileId } from "./0__file_id.ts";
 
 const L = getLogger("Message");
 
