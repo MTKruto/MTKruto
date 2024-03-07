@@ -1,5 +1,5 @@
 import { types } from "../2_tl.ts";
-import { FileType, FileUniqueID, FileUniqueType, PhotoSourceType, serializeFileId } from "./0__file_id.ts";
+import { FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "./0__file_id.ts";
 
 /** @unlisted */
 export interface _ChatPhotoBase {
@@ -30,18 +30,22 @@ export type ChatPhoto = ChatPhotoUser | ChatPhotoChat;
 export function constructChatPhoto(photo: types.ChatPhoto, chatId: number, chatAccessHash: bigint): ChatPhotoChat;
 export function constructChatPhoto(photo: types.UserProfilePhoto, chatId: number, chatAccessHash: bigint): ChatPhotoUser;
 export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto {
-  const smallFileId = serializeFileId({
+  const smallFileId_: FileId = {
     type: FileType.ProfilePhoto,
     dcId: photo.dc_id,
     location: { type: "photo", id: photo.photo_id, accessHash: 0n, source: { type: PhotoSourceType.ChatPhotoSmall, chatId: BigInt(chatId), chatAccessHash } },
-  });
-  const smallFileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: photo.photo_id }).encode();
-  const bigFileId = serializeFileId({
+  };
+  const smallFileId = serializeFileId(smallFileId_);
+  const smallFileUniqueId = toUniqueFileId(smallFileId_);
+
+  const bigFileId_: FileId = {
     type: FileType.ProfilePhoto,
     dcId: photo.dc_id,
     location: { type: "photo", id: photo.photo_id, accessHash: 0n, source: { type: PhotoSourceType.ChatPhotoBig, chatId: BigInt(chatId), chatAccessHash } },
-  });
-  const bigFileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: photo.photo_id }).encode();
+  };
+  const bigFileId = serializeFileId(bigFileId_);
+  const bigFileUniqueId = toUniqueFileId(bigFileId_);
+
   if (photo instanceof types.ChatPhoto) {
     return {
       smallFileId,

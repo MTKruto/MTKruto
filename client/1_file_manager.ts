@@ -1,7 +1,7 @@
 import { extension } from "../0_deps.ts";
 import { drop, getLogger, getRandomId, Logger, mod, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
-import { constructDocument, deserializeFileId, Document, FileType, FileUniqueID, FileUniqueType, PhotoSourceType, serializeFileId } from "../3_types.ts";
+import { constructDocument, deserializeFileId, Document, FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "../3_types.ts";
 import { FloodWait } from "../4_errors.ts";
 import { DownloadParams, UploadParams } from "./0_params.ts";
 import { C, ConnectionError } from "./0_types.ts";
@@ -199,13 +199,14 @@ export class FileManager {
       const maybeDocument = await this.#c.messageStorage.getCustomEmojiDocument(BigInt(id_));
       if (maybeDocument != null && Date.now() - maybeDocument[1].getTime() <= 30 * 60 * 1_000) {
         const document_ = maybeDocument[0];
-        const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode();
-        const fileId = serializeFileId({
+        const fileId_: FileId = {
           type: FileType.Document,
           dcId: document_.dc_id,
           fileReference: document_.file_reference,
           location: { type: "common", id: document_.id, accessHash: document_.access_hash },
-        });
+        };
+        const fileUniqueId = toUniqueFileId(fileId_);
+        const fileId = serializeFileId(fileId_);
         const document = constructDocument(document_, new types.DocumentAttributeFilename({ file_name: `${id[i] ?? "customEmoji"}.${extension(document_.mime_type)}` }), fileId, fileUniqueId);
         documents.push(document);
       } else {
@@ -219,13 +220,14 @@ export class FileManager {
     const documents_ = await this.#c.api.messages.getCustomEmojiDocuments({ document_id: id.map(BigInt) }).then((v) => v.map((v) => v[as](types.Document)));
     for (const [i, document_] of documents_.entries()) {
       await this.#c.messageStorage.setCustomEmojiDocument(document_.id, document_);
-      const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode();
-      const fileId = serializeFileId({
+      const fileId_: FileId = {
         type: FileType.Document,
         dcId: document_.dc_id,
         fileReference: document_.file_reference,
         location: { type: "common", id: document_.id, accessHash: document_.access_hash },
-      });
+      };
+      const fileUniqueId = toUniqueFileId(fileId_);
+      const fileId = serializeFileId(fileId_);
       const document = constructDocument(document_, new types.DocumentAttributeFilename({ file_name: `${id[i] ?? "customEmoji"}.${extension(document_.mime_type)}` }), fileId, fileUniqueId);
       documents.push(document);
     }

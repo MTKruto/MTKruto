@@ -1,6 +1,6 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
-import { FileType, FileUniqueID, FileUniqueType, serializeFileId } from "./0__file_id.ts";
+import { FileId, FileType, serializeFileId, toUniqueFileId } from "./0__file_id.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
 import { constructVideo, Video } from "./1_video.ts";
 
@@ -39,8 +39,9 @@ export function constructStoryContent(media: enums.MessageMedia): StoryContent {
     if (!video) {
       UNREACHABLE();
     }
-    const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document.id }).encode();
-    const fileId = serializeFileId({ type: FileType.Video, dcId: document.dc_id, fileReference: document.file_reference, location: { type: "common", id: document.id, accessHash: document.access_hash } });
+    const fileId_: FileId = { type: FileType.Video, dcId: document.dc_id, fileReference: document.file_reference, location: { type: "common", id: document.id, accessHash: document.access_hash } };
+    const fileUniqueId = toUniqueFileId(fileId_);
+    const fileId = serializeFileId(fileId_);
 
     const video_ = constructVideo(document, video, undefined, fileId, fileUniqueId);
     return { video: video_ };

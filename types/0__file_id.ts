@@ -1,88 +1,6 @@
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, rleDecode, rleEncode, UNREACHABLE } from "../1_utilities.ts";
 import { TLReader, TLWriter } from "../2_tl.ts";
 
-export enum FileUniqueType {
-  Web = 0,
-  Photo = 1,
-  Document = 2,
-  Secure = 3,
-  Encrypted = 4,
-  Temp = 5,
-}
-
-interface FileUniqueParams {
-  url?: string;
-  mediaId?: bigint;
-  volumeId?: bigint;
-  localId?: number;
-}
-
-export class FileUniqueID {
-  constructor(private readonly fileUniqueType: FileUniqueType, private readonly params: FileUniqueParams) {}
-
-  static decode(fileId: string): FileUniqueID {
-    const reader = new TLReader(rleDecode(base64DecodeUrlSafe(fileId)));
-    const fileUniqueType = reader.readInt32() as FileUniqueType;
-
-    switch (fileUniqueType) {
-      case FileUniqueType.Web: {
-        const url = reader.readString();
-
-        return new FileUniqueID(fileUniqueType, { url });
-      }
-      case FileUniqueType.Photo: {
-        const volumeId = reader.readInt64();
-        const localId = reader.readInt32();
-
-        return new FileUniqueID(fileUniqueType, { volumeId, localId });
-      }
-      case FileUniqueType.Document: {
-        const mediaId = reader.readInt64();
-
-        return new FileUniqueID(fileUniqueType, { mediaId });
-      }
-      default:
-        UNREACHABLE();
-    }
-  }
-
-  encode(): string {
-    const writer = new TLWriter();
-    writer.writeInt32(this.fileUniqueType);
-
-    switch (this.fileUniqueType) {
-      case FileUniqueType.Web:
-        if (this.params.url == undefined) {
-          UNREACHABLE();
-        }
-
-        writer.writeString(this.params.url);
-        break;
-      case FileUniqueType.Photo:
-        if (this.params.volumeId == undefined || this.params.localId == undefined) {
-          UNREACHABLE();
-        }
-
-        writer.writeInt64(this.params.volumeId);
-        writer.writeInt32(this.params.localId);
-        break;
-      case FileUniqueType.Document:
-        if (this.params.mediaId == undefined) {
-          UNREACHABLE();
-        }
-
-        writer.writeInt64(this.params.mediaId);
-        break;
-      default:
-        UNREACHABLE();
-    }
-
-    return base64EncodeUrlSafe(rleEncode(writer.buffer));
-  }
-}
-
-// start rerite
-
 const NEXT_VERSION = 53;
 const PERSISTENT_ID_VERSION = 4;
 const WEB_LOCATION_FLAG = 1 << 24;
@@ -219,6 +137,54 @@ function serializePhotoSource(photoSource: PhotoSource, writer: TLWriter) {
       UNREACHABLE();
   }
 }
+function getPhotoSourceCompareType(source: PhotoSource) {
+  switch (source.type) {
+    case PhotoSourceType.Legacy:
+      break;
+    case PhotoSourceType.Thumbnail: {
+      const type = source.thumbnailType;
+      if (!(0 <= type && type <= 127)) {
+        UNREACHABLE();
+      }
+      if (type == "a".charCodeAt(0)) {
+        return 0;
+      }
+      if (type == "c".charCodeAt(0)) {
+        return 1;
+      }
+      return type + 5;
+    }
+    case PhotoSourceType.ChatPhotoSmall:
+      return 0;
+    case PhotoSourceType.ChatPhotoBig:
+      return 1;
+    case PhotoSourceType.StickerSetThumbnail:
+      break;
+    case PhotoSourceType.FullLegacy:
+    case PhotoSourceType.ChatPhotoSmallLegacy:
+    case PhotoSourceType.ChatPhotoBigLegacy:
+    case PhotoSourceType.StickerSetThumbnailLegacy:
+      return 3;
+    case PhotoSourceType.StickerSetThumbnailVersion:
+      return 2;
+    default:
+      break;
+  }
+  UNREACHABLE();
+}
+function writePhotoSourceUniqueId(photoSource: PhotoSource, writer: TLWriter) {
+  const compareType = getPhotoSourceCompareType(photoSource);
+  if (compareType != 2 && compareType != 3) {
+    writer.write(new Uint8Array([compareType]));
+    return;
+  }
+
+  if (compareType == 2) {
+    writer.write(new Uint8Array([0x02]));
+  }
+  writer.writeInt64("volumeId" in photoSource ? photoSource.volumeId : "stickerSetId" in photoSource ? photoSource.stickerSetId : UNREACHABLE());
+  writer.writeInt32("localId" in photoSource ? photoSource.localId : "version" in photoSource ? photoSource.version : UNREACHABLE());
+}
 
 type FileLocation =
   | { type: "web"; url: string; accessHash: bigint }
@@ -332,5 +298,40 @@ export function serializeFileId(fileId: FileId) {
   }
 
   writer.write(new Uint8Array([NEXT_VERSION - 1, PERSISTENT_ID_VERSION]));
+  return base64EncodeUrlSafe(rleEncode(writer.buffer));
+}
+
+export function toUniqueFileId(fileId: FileId) {
+  const writer = new TLWriter();
+  const type = fileId.location.type == "web" ? 0 : (getFileTypeClass(fileId.type) + 1);
+  writer.writeInt32(type);
+  if (fileId.location.type == "web") {
+    writer.writeString(fileId.location.url);
+  } else if (fileId.location.type == "common") {
+    writer.writeInt64(fileId.location.id);
+  } else {
+    switch (fileId.location.source.type) {
+      case PhotoSourceType.Legacy:
+      case PhotoSourceType.StickerSetThumbnail:
+        UNREACHABLE();
+        /* falls through */
+      case PhotoSourceType.FullLegacy:
+      case PhotoSourceType.ChatPhotoSmallLegacy:
+      case PhotoSourceType.ChatPhotoBigLegacy:
+      case PhotoSourceType.StickerSetThumbnailLegacy:
+        writer.writeInt64(fileId.location.id);
+        writePhotoSourceUniqueId(fileId.location.source, writer);
+        break;
+      case PhotoSourceType.ChatPhotoSmall:
+      case PhotoSourceType.ChatPhotoBig:
+      case PhotoSourceType.Thumbnail:
+        writer.writeInt64(fileId.location.id);
+        writePhotoSourceUniqueId(fileId.location.source, writer);
+        break;
+      case PhotoSourceType.StickerSetThumbnailVersion:
+        writePhotoSourceUniqueId(fileId.location.source, writer);
+        break;
+    }
+  }
   return base64EncodeUrlSafe(rleEncode(writer.buffer));
 }

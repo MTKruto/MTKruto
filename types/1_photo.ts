@@ -1,6 +1,6 @@
 import { types } from "../2_tl.ts";
 import { PhotoSourceType } from "./0__file_id.ts";
-import { FileType, FileUniqueID, FileUniqueType, serializeFileId } from "./0__file_id.ts";
+import { FileId, FileType, serializeFileId, toUniqueFileId } from "./0__file_id.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 /** A photo. */
@@ -32,25 +32,25 @@ export function constructPhoto(photo: types.Photo): Photo {
 
   const largest = sizes.slice(-1)[0];
   const { dc_id: dcId, id, access_hash: accessHash, file_reference: fileReference } = photo;
-  const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: photo.id }).encode();
+  const fileId_: FileId = {
+    type: FileType.Photo,
+    dcId,
+    fileReference,
+    location: {
+      type: "photo",
+      id,
+      accessHash,
+      source: {
+        type: PhotoSourceType.Thumbnail,
+        fileType: FileType.Photo,
+        thumbnailType: largest.type.charCodeAt(0),
+      },
+    },
+  };
 
   return {
-    fileId: serializeFileId({
-      type: FileType.Photo,
-      dcId,
-      fileReference,
-      location: {
-        type: "photo",
-        id,
-        accessHash,
-        source: {
-          type: PhotoSourceType.Thumbnail,
-          fileType: FileType.Photo,
-          thumbnailType: largest.type.charCodeAt(0),
-        },
-      },
-    }),
-    fileUniqueId,
+    fileId: serializeFileId(fileId_),
+    fileUniqueId: toUniqueFileId(fileId_),
     width: largest.w,
     height: largest.h,
     fileSize: largest.size,
