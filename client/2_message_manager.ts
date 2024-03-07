@@ -589,13 +589,13 @@ export class MessageManager {
       this.#LresolveFileId.warning(err);
     }
     if (fileId != null) {
-      if (fileId.fileType != expectedFileType) {
+      if (fileId.type != expectedFileType) {
         UNREACHABLE();
       }
       return {
-        id: "id" in fileId.location ? fileId.location.params : UNREACHABLE(),
+        id: "id" in fileId.location ? fileId.location.id : UNREACHABLE(),
         access_hash: fileId.location.accessHash,
-        file_reference: fileId.params.fileReference ?? new Uint8Array(),
+        file_reference: fileId.fileReference ?? new Uint8Array(),
       };
     }
     return null;
