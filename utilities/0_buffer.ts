@@ -33,12 +33,12 @@ export function bufferFromBigInt(int: bigint | number, bytesNumber: number, litt
     throw new Error("Expected unsigned");
   }
 
-  const hex = int.toString(16).padStart(bytesNumber * 2, "0");
-  const buffer = bufferFromHexString(hex);
-
   if (signed && int < 0n) {
     int = 2n ** BigInt(bytes * 8) + int;
   }
+
+  const hex = int.toString(16).padStart(bytesNumber * 2, "0");
+  const buffer = bufferFromHexString(hex);
 
   if (little) {
     buffer.reverse();
