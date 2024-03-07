@@ -440,7 +440,7 @@ export class MessageManager {
   }
 
   async sendVoice(chatId: ID, voice: FileSource, params?: SendVoiceParams) {
-    const message = await this.#sendDocumentInner(chatId, voice, params, FileType.Voice, [
+    const message = await this.#sendDocumentInner(chatId, voice, params, FileType.VoiceNote, [
       new types.DocumentAttributeAudio({
         voice: true,
         duration: params?.duration ?? 0,
