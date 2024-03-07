@@ -15,35 +15,29 @@ export function concat(...buffers: [Uint8Array, Uint8Array, ...Uint8Array[]]) {
 }
 
 const bufferFromHexString = (hexString: string) => Uint8Array.from(hexString.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)));
-export function bufferFromBigInt(bigIntVar: bigint | number, bytesNumber: number, little = true, signed = false) {
-  bigIntVar = BigInt(typeof bigIntVar === "number" ? Math.ceil(bigIntVar) : bigIntVar);
-  const bitLength = bigIntVar.toString(2).length;
-
-  const bytes = Math.ceil(bitLength / 8);
+export function bufferFromBigInt(int: bigint | number, bytesNumber: number, little = true, signed = false) {
+  int = BigInt(typeof int === "number" ? Math.ceil(int) : int);
+  if (bytesNumber == 8) {
+    const buffer = new Uint8Array(bytesNumber);
+    const dv = new DataView(buffer.buffer);
+    signed ? dv.setBigInt64(0, int, little) : dv.setBigUint64(0, int, little);
+    return buffer;
+  }
+  const bytes = Math.ceil(int.toString(2).length / 8);
 
   if (bytesNumber < bytes) {
-    throw new Error("OverflowError: int too big to convert");
+    throw new Error("Int too big");
   }
 
-  if (!signed && bigIntVar < 0n) {
-    throw new Error("Cannot convert to unsigned");
+  if (!signed && int < 0n) {
+    throw new Error("Expected unsigned");
   }
 
-  let below = false;
-  if (bigIntVar < 0n) {
-    below = true;
-    bigIntVar = bigIntVar < 0 ? bigIntVar * -1n : bigIntVar;
-  }
-
-  const hex = bigIntVar.toString(16).padStart(bytesNumber * 2, "0");
+  const hex = int.toString(16).padStart(bytesNumber * 2, "0");
   const buffer = bufferFromHexString(hex);
 
-  if (signed && below) {
-    buffer[buffer.length - 1] = 256 -
-      buffer[buffer.length - 1];
-    for (let i = 0; i < buffer.length - 1; i++) {
-      buffer[i] = 255 - buffer[i];
-    }
+  if (signed && int < 0n) {
+    int = 2n ** BigInt(bytes * 8) + int;
   }
 
   if (little) {
