@@ -8,7 +8,7 @@ export interface User {
   id: number;
   /** Identifier of color that can be displayed instead of the user's photo. */
   color: number;
-  /** Whether this is a bot’s chat. */
+  /** Whether the user is a bot. */
   isBot: boolean;
   /** The first name of the user. */
   firstName: string;
@@ -32,7 +32,7 @@ export interface User {
   isVerified: boolean;
   /** Whether the user is official support. */
   isSupport: boolean;
-  /** Whether the user added the bot to the attachment menu. */
+  /** Whether the user is a bot that has been added to the attachment menu by the current user. */
   addedToAttachmentMenu: boolean;
 }
 
