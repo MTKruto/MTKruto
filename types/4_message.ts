@@ -1,6 +1,6 @@
 import { cleanObject, fromUnixTimestamp, getLogger, MaybePromise, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
-import { FileID, FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
+import { FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
 import { constructContact, Contact } from "./0_contact.ts";
 import { constructDice, Dice } from "./0_dice.ts";
 import { constructLinkPreview, LinkPreview } from "./0_link_preview.ts";
@@ -24,6 +24,7 @@ import { constructVideoNote, VideoNote } from "./1_video_note.ts";
 import { constructVideo, Video } from "./1_video.ts";
 import { constructGame, Game } from "./2_game.ts";
 import { constructReplyMarkup, ReplyMarkup } from "./3_reply_markup.ts";
+import { serializeFileId } from "./0__file_id.ts";
 
 const L = getLogger("Message");
 
@@ -897,11 +898,12 @@ export async function constructMessage(
     const { document } = message_.media;
     if (document instanceof types.Document) {
       const getFileId = (type: FileType) =>
-        new FileID(null, null, type, document.dc_id, {
-          mediaId: document.id,
-          accessHash: document.access_hash,
+        serializeFileId({
+          type,
+          dcId: document.dc_id,
           fileReference: document.file_reference,
-        }).encode();
+          location: { type: "common", id: document.id, accessHash: document.access_hash },
+        });
       const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document.id }).encode();
 
       const animated = document.attributes.find((v): v is types.DocumentAttributeAnimated => v instanceof types.DocumentAttributeAnimated);
@@ -923,7 +925,7 @@ export async function constructMessage(
         }
       } else if (audio) {
         if (audio.voice) {
-          const voice = constructVoice(document, audio, getFileId(FileType.Voice), fileUniqueId);
+          const voice = constructVoice(document, audio, getFileId(FileType.VoiceNote), fileUniqueId);
           m = { ...messageMedia, voice };
         } else {
           const audio_ = constructAudio(document, audio, getFileId(FileType.Audio), fileUniqueId);

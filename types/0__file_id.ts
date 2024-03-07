@@ -131,15 +131,15 @@ enum FileTypeClass {
   Temp,
 }
 
-enum PhotoSourceType {
+export enum PhotoSourceType {
   Legacy,
   Thumbnail,
-  DialogPhotoSmall,
-  DialogPhotoBig,
+  ChatPhotoSmall,
+  ChatPhotoBig,
   StickerSetThumbnail,
   FullLegacy,
-  DialogPhotoSmallLegacy,
-  DialogPhotoBigLegacy,
+  ChatPhotoSmallLegacy,
+  ChatPhotoBigLegacy,
   StickerSetThumbnailLegacy,
   StickerSetThumbnailVersion,
 }
@@ -147,12 +147,12 @@ enum PhotoSourceType {
 type PhotoSource =
   | { type: PhotoSourceType.Legacy; secret: bigint }
   | { type: PhotoSourceType.Thumbnail; fileType: FileType; thumbnailType: number }
-  | { type: PhotoSourceType.DialogPhotoSmall; chatId: bigint; chatAccessHash: bigint }
-  | { type: PhotoSourceType.DialogPhotoBig; chatId: bigint; chatAccessHash: bigint }
+  | { type: PhotoSourceType.ChatPhotoSmall; chatId: bigint; chatAccessHash: bigint }
+  | { type: PhotoSourceType.ChatPhotoBig; chatId: bigint; chatAccessHash: bigint }
   | { type: PhotoSourceType.StickerSetThumbnail; stickerSetId: bigint; stickerSetAccessHash: bigint }
   | { type: PhotoSourceType.FullLegacy; volumeId: bigint; localId: number; secret: bigint }
-  | { type: PhotoSourceType.DialogPhotoSmallLegacy; volumeId: bigint; localId: number }
-  | { type: PhotoSourceType.DialogPhotoBigLegacy; volumeId: bigint; localId: number }
+  | { type: PhotoSourceType.ChatPhotoSmallLegacy; volumeId: bigint; localId: number }
+  | { type: PhotoSourceType.ChatPhotoBigLegacy; volumeId: bigint; localId: number }
   | { type: PhotoSourceType.StickerSetThumbnailLegacy; volumeId: bigint; localId: number }
   | { type: PhotoSourceType.StickerSetThumbnailVersion; version: number };
 function deserializePhotoSource(reader: TLReader): PhotoSource {
@@ -162,8 +162,8 @@ function deserializePhotoSource(reader: TLReader): PhotoSource {
       return { type, secret: reader.readInt64() };
     case PhotoSourceType.Thumbnail:
       return { type, fileType: reader.readInt32(), thumbnailType: reader.readInt32() };
-    case PhotoSourceType.DialogPhotoSmall:
-    case PhotoSourceType.DialogPhotoBig: {
+    case PhotoSourceType.ChatPhotoSmall:
+    case PhotoSourceType.ChatPhotoBig: {
       const chatId = reader.readInt64();
       const chatAccessHash = reader.readInt64();
       return { type, chatId, chatAccessHash };
@@ -179,8 +179,8 @@ function deserializePhotoSource(reader: TLReader): PhotoSource {
       const secret = reader.readInt64();
       return { type, volumeId, localId, secret };
     }
-    case PhotoSourceType.DialogPhotoSmallLegacy:
-    case PhotoSourceType.DialogPhotoBigLegacy:
+    case PhotoSourceType.ChatPhotoSmallLegacy:
+    case PhotoSourceType.ChatPhotoBigLegacy:
     case PhotoSourceType.StickerSetThumbnailLegacy: {
       const volumeId = reader.readInt64();
       const localId = reader.readInt32();
@@ -200,8 +200,8 @@ function serializePhotoSource(photoSource: PhotoSource, writer: TLWriter) {
       writer.writeInt32(photoSource.fileType);
       writer.writeInt32(photoSource.thumbnailType);
       break;
-    case PhotoSourceType.DialogPhotoSmall:
-    case PhotoSourceType.DialogPhotoBig:
+    case PhotoSourceType.ChatPhotoSmall:
+    case PhotoSourceType.ChatPhotoBig:
       writer.writeInt64(photoSource.chatId);
       writer.writeInt64(photoSource.chatAccessHash);
       break;
@@ -214,8 +214,8 @@ function serializePhotoSource(photoSource: PhotoSource, writer: TLWriter) {
       writer.writeInt32(photoSource.localId);
       writer.writeInt64(photoSource.secret);
       break;
-    case PhotoSourceType.DialogPhotoSmallLegacy:
-    case PhotoSourceType.DialogPhotoBigLegacy:
+    case PhotoSourceType.ChatPhotoSmallLegacy:
+    case PhotoSourceType.ChatPhotoBigLegacy:
     case PhotoSourceType.StickerSetThumbnailLegacy:
       writer.writeInt64(photoSource.volumeId);
       writer.writeInt32(photoSource.localId);
@@ -284,7 +284,7 @@ function hasFileReference(fileType: FileType) {
   return !!(fileType && FILE_REFERENCE_FLAG);
 }
 
-export function deserializeFileId(fileId: string): FileId | undefined {
+export function deserializeFileId(fileId: string): FileId {
   const reader = new TLReader(rleDecode(base64DecodeUrlSafe(fileId)));
   if (reader.buffer[reader.buffer.length - 1] != PERSISTENT_ID_VERSION) {
     throw new Error("Unsupported version");
