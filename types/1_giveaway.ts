@@ -3,8 +3,11 @@ import { constructGiveawayParameters, GiveawayParameters } from "./0_giveaway_pa
 
 /** A giveaway. */
 export interface Giveaway {
+  /** Giveaway parameters. */
   parameters: GiveawayParameters;
+  /** Number of users which will receive Telegram Premium subscription gift codes. */
   winnerCount: number;
+  /** Number of months the Telegram Premium subscription will be active after code activation. */
   monthCount: number;
 }
 
