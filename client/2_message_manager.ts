@@ -1,8 +1,8 @@
 import { contentType } from "../0_deps.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
-import { constructChatMemberUpdated, constructInviteLink } from "../3_types.ts";
-import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
+import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId } from "../3_types.ts";
+import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
@@ -582,9 +582,9 @@ export class MessageManager {
   }
 
   resolveFileId(maybeFileId: string, expectedFileType: FileType) {
-    let fileId: FileID | null = null;
+    let fileId: FileId | null = null;
     try {
-      fileId = FileID.decode(maybeFileId);
+      fileId = deserializeFileId(maybeFileId);
     } catch (err) {
       this.#LresolveFileId.warning(err);
     }
@@ -592,13 +592,10 @@ export class MessageManager {
       if (fileId.fileType != expectedFileType) {
         UNREACHABLE();
       }
-      if (fileId.params.mediaId == undefined || fileId.params.accessHash == undefined || fileId.params.fileReference == undefined) {
-        UNREACHABLE();
-      }
       return {
-        id: fileId.params.mediaId,
-        access_hash: fileId.params.accessHash,
-        file_reference: fileId.params.fileReference,
+        id: "id" in fileId.location ? fileId.location.params : UNREACHABLE(),
+        access_hash: fileId.location.accessHash,
+        file_reference: fileId.params.fileReference ?? new Uint8Array(),
       };
     }
     return null;

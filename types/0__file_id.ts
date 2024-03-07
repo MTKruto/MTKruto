@@ -225,7 +225,7 @@ type FileLocation =
   | { type: "photo"; id: bigint; accessHash: bigint; source: PhotoSource }
   | { type: "common"; id: bigint; accessHash: bigint };
 
-interface FileId {
+export interface FileId {
   type: FileType;
   dcId: number;
   fileReference?: Uint8Array;
