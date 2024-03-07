@@ -220,11 +220,12 @@ export class FileManager {
     for (const [i, document_] of documents_.entries()) {
       await this.#c.messageStorage.setCustomEmojiDocument(document_.id, document_);
       const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode();
-      const fileId = new FileID(null, null, FileType.Document, document_.dc_id, {
-        mediaId: document_.id,
-        accessHash: document_.access_hash,
+      const fileId = serializeFileId({
+        type: FileType.Document,
+        dcId: document_.dc_id,
         fileReference: document_.file_reference,
-      }).encode();
+        location: { type: "common", id: document_.id, accessHash: document_.access_hash },
+      });
       const document = constructDocument(document_, new types.DocumentAttributeFilename({ file_name: `${id[i] ?? "customEmoji"}.${extension(document_.mime_type)}` }), fileId, fileUniqueId);
       documents.push(document);
     }

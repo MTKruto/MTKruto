@@ -1,5 +1,5 @@
 import { types } from "../2_tl.ts";
-import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "./0__file_id.ts";
+import { FileType, FileUniqueID, FileUniqueType, PhotoSourceType, serializeFileId } from "./0__file_id.ts";
 
 /** @unlisted */
 export interface _ChatPhotoBase {
@@ -30,25 +30,17 @@ export type ChatPhoto = ChatPhotoUser | ChatPhotoChat;
 export function constructChatPhoto(photo: types.ChatPhoto, chatId: number, chatAccessHash: bigint): ChatPhotoChat;
 export function constructChatPhoto(photo: types.UserProfilePhoto, chatId: number, chatAccessHash: bigint): ChatPhotoUser;
 export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto {
-  const smallFileId = new FileID(null, null, FileType.ChatPhoto, photo.dc_id, {
-    mediaId: photo.photo_id,
-    thumbnailSource: ThumbnailSource.ChatPhotoSmall,
-    chatId,
-    chatAccessHash,
-    accessHash: 0n,
-    volumeId: 0n,
-    localId: 0,
-  }).encode();
+  const smallFileId = serializeFileId({
+    type: FileType.ProfilePhoto,
+    dcId: photo.dc_id,
+    location: { type: "photo", id: photo.photo_id, accessHash: 0n, source: { type: PhotoSourceType.ChatPhotoSmall, chatId: BigInt(chatId), chatAccessHash } },
+  });
   const smallFileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: photo.photo_id }).encode();
-  const bigFileId = new FileID(null, null, FileType.ChatPhoto, photo.dc_id, {
-    mediaId: photo.photo_id,
-    thumbnailSource: ThumbnailSource.ChatPhotoBig,
-    chatId,
-    chatAccessHash,
-    accessHash: 0n,
-    volumeId: 0n,
-    localId: 0,
-  }).encode();
+  const bigFileId = serializeFileId({
+    type: FileType.ProfilePhoto,
+    dcId: photo.dc_id,
+    location: { type: "photo", id: photo.photo_id, accessHash: 0n, source: { type: PhotoSourceType.ChatPhotoBig, chatId: BigInt(chatId), chatAccessHash } },
+  });
   const bigFileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: photo.photo_id }).encode();
   if (photo instanceof types.ChatPhoto) {
     return {
