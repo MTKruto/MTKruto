@@ -7,12 +7,19 @@ import { constructUser, User } from "./1_user.ts";
 
 /** The reactions of a user to a messages in a group. */
 export interface MessageReactions {
+  /** The chat containing the message the user reacted to. */
   chat: ChatP;
+  /** Unique identifier of the message inside the chat. */
   messageId: number;
+  /** The user that changed the reaction, if the user isn't anonymous. */
   user?: User;
+  /** The chat on behalf of which the reaction was changed, if the user is anonymous. */
   actorChat?: ChatP;
+  /** Date of the change in Unix time. */
   date: Date;
+  /** Previous list of reaction types that were set by the user. */
   oldReactions: Reaction[];
+  /** New list of reaction types that have been set by the user. */
   newReactions: Reaction[];
 }
 

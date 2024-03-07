@@ -6,9 +6,13 @@ import { constructReactionCount, ReactionCount } from "./1_reaction_count.ts";
 
 /** Information on the reactions made to a channel post. */
 export interface MessageReactionCount {
+  /** The chat containing the message. */
   chat: ChatP;
+  /** Unique message identifier inside the chat. */
   messageId: number;
+  /** Date of the change in Unix time. */
   date: Date;
+  /** List of reactions that are present on the message. */
   reactions: ReactionCount[];
 }
 
