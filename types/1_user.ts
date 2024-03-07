@@ -32,7 +32,7 @@ export interface User {
   isVerified: boolean;
   /** Whether the user is official support. */
   isSupport: boolean;
-  /** Whether the user added the bot to the attachment menu. */
+  /** Whether the user is a bot that has been added to the attachment menu by the current user. */
   addedToAttachmentMenu: boolean;
 }
 
