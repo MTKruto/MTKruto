@@ -3,7 +3,7 @@ import { peerToChatId, types } from "../2_tl.ts";
 
 /** Giveaway parameters. */
 export interface GiveawayParameters {
-  /** Identifier of the supergroup or channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Premium subscription. */
+  /** The identifier of the chat that will be boosted for the duration of the given away Premium subscriptions. */
   boostedChatId: number;
   /** Identifiers of other supergroup or channel chats that must be subscribed by the users to be eligible for the giveaway. */
   additionalChatIds: number[];
