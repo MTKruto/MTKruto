@@ -17,7 +17,7 @@ export interface Game {
   text?: string;
   /** The text's entities. */
   textEntities?: MessageEntity[];
-  /** Animation that will be displayed in the game message in chats. */
+  /** An animation that is displayed when the game is shared. */
   animation?: Animation;
 }
 
