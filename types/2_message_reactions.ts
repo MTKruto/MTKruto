@@ -13,7 +13,7 @@ export interface MessageReactions {
   messageId: number;
   /** The user who changed their reactions to the message. Unset if done on behalf of a chat. */
   user?: User;
-  /** The chat on behalf of which the reaction was changed, if the user is anonymous. */
+  /** The chat that changed its reactions to the message. Unset if done on behalf of a user. */
   actorChat?: ChatP;
   /** Date of the change in Unix time. */
   date: Date;
