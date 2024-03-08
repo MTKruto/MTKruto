@@ -3,7 +3,9 @@ import { enums, types } from "../2_tl.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 
 export interface InactiveChat {
+  /** Date of the last activity in Unix time. */
   lastActivity: Date;
+  /** The chat. */
   chat: ChatP;
 }
 
