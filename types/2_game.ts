@@ -15,7 +15,7 @@ export interface Game {
   photo: Photo;
   /** A text that is displayed when the game is shared. */
   text?: string;
-  /** Special entities that appear in text, such as usernames, URLs, bot commands, etc. */
+  /** The text's entities. */
   textEntities?: MessageEntity[];
   /** Animation that will be displayed in the game message in chats. */
   animation?: Animation;
