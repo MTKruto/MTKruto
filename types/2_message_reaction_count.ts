@@ -12,7 +12,7 @@ export interface MessageReactionCount {
   messageId: number;
   /** This reaction state's point of time. */
   date: Date;
-  /** List of reactions that are present on the message. */
+  /** The reactions made to the post. */
   reactions: ReactionCount[];
 }
 
