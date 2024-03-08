@@ -8,7 +8,7 @@ import { constructUser, User } from "./1_user.ts";
 export interface InlineQuery {
   /** The identifier of the inline query. */
   id: string;
-  /** Sender of this query/ */
+  /** The user who made the inline query. */
   from: User;
   /** The query that was made. */
   query: string;
