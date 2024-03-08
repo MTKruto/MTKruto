@@ -25,7 +25,7 @@ export interface Poll {
   correctOptionIndex?: number;
   /** A text that is shown to the user when the poll is answered. */
   explanation?: string;
-  /** Special entities like usernames, URLs, bot commands, etc. that appear in the explanation. */
+  /** The explanation's entities. */
   explanationEntities?: MessageEntity[];
   /** Amount of time in seconds the poll will be active after creation. */
   openPeriod?: number;
