@@ -16,7 +16,7 @@ export interface User {
   lastName?: string;
   /** The user’s main username. */
   username?: string;
-  /** Additional usernames. */
+  /** The user's additional usernames. */
   also?: string[];
   /** The photo of the user. */
   photo?: ChatPhotoUser;
