@@ -16,7 +16,7 @@ export interface CallbackQuery {
   inlineMessageId?: string;
   /** A special identifier for the chat in which the callback was made from. Useful for inline result messages. */
   chatInstance: string;
-  /** Data associated with the callback button. Be aware that the message originated the query can contain no callback buttons with this data. */
+  /** The data associated with the button that was used to make the callback query. */
   data?: string;
   /** The short name of the game to be returned. */
   gameShortName?: string;
