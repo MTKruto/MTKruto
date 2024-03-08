@@ -7,7 +7,7 @@ import { constructPollOption, PollOption } from "./0_poll_option.ts";
 export interface Poll {
   /** Unique poll identifier. */
   id: string;
-  /** Poll question, 1-300 characters. */
+  /** The poll's question. */
   question: string;
   /** List of poll options. */
   options: PollOption[];
