@@ -8,8 +8,8 @@ export interface MessageInteractions {
   messageId: number;
   /** The reactions made to the message. */
   reactions: MessageReaction[];
-  /** Number of times the message was viewed. */
+  /** The number of times the message was viewed. */
   views: number;
-  /** Number of times the message was forwarded. */
+  /** The number of times the message was forwarded. */
   forwards: number;
 }
