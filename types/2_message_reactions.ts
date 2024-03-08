@@ -15,7 +15,7 @@ export interface MessageReactions {
   user?: User;
   /** The chat that changed its reactions to the message. Unset if done on behalf of a user. */
   actorChat?: ChatP;
-  /** Date of the change in Unix time. */
+  /** The point of time in which the change was made. */
   date: Date;
   /** Previous list of reaction types that were set by the user. */
   oldReactions: Reaction[];
