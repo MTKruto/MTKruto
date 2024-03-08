@@ -4,7 +4,7 @@ import { MessageReaction } from "./1_message_reaction.ts";
 export interface MessageInteractions {
   /** The identifier of the message's chat. */
   chatId: number;
-  /** Unique identifier of the message. */
+  /** The message's identifier. */
   messageId: number;
   /** The reactions made to the message. */
   reactions: MessageReaction[];
