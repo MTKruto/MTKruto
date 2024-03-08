@@ -21,7 +21,7 @@ export interface Poll {
   type: "regular" | "quiz";
   /** True, if the poll allows multiple answers. */
   allowMultipleAnswers?: boolean;
-  /** 0-based identifier of the correct answer option. */
+  /** Index of the correct option. */
   correctOptionIndex?: number;
   /** Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters. */
   explanation?: string;
