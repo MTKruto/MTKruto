@@ -12,7 +12,7 @@ export interface InlineQuery {
   from: User;
   /** The query that was made. */
   query: string;
-  /** Offset of the results to be returned. */
+  /** The offset parameter that was passed to the last [answerInlineQuery](/methods/answerInlineQuery) call. */
   offset: string;
   /** Type of the chat from which the inline query was sent. */
   chatType?: "sender" | "private" | "group" | "supergroup" | "channel";
