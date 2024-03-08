@@ -11,7 +11,7 @@ export interface Poll {
   question: string;
   /** The poll's options. */
   options: PollOption[];
-  /** Total number of users that voted in the poll. */
+  /** The number of users who have participated in the poll. */
   totalVoterCount: number;
   /** True, if the poll is closed. */
   isClosed: boolean;
