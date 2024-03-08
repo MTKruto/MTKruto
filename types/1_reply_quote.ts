@@ -5,7 +5,7 @@ import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 export interface ReplyQuote {
   /** The byte offset of the quoted text. */  
   offset: number;
-  /** Text of the quoted part of a message that is replied to by the given message. */
+  /** The quoted text. */
   text: string;
   /** Special entities that appear in the quote. */
   entities: MessageEntity[];
