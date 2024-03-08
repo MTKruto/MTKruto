@@ -27,7 +27,7 @@ export interface Poll {
   explanation?: string;
   /** The explanation's entities. */
   explanationEntities?: MessageEntity[];
-  /** Amount of time in seconds the poll will be active after creation. */
+  /** Duration of the poll in seconds. */
   openPeriod?: number;
   /** Point in time (Unix timestamp) when the poll will be automatically closed. */
   closeDate?: Date;
