@@ -26,7 +26,7 @@ export interface User {
   isScam: boolean;
   /** Whether the user has been identified as an impersonator. */
   isFake: boolean;
-  /** Whether the user is a Telegram Premium user. */
+  /** Whether the user is subscribed to Telegram Premium. */
   isPremium: boolean;
   /** Whether the user has been verified. */
   isVerified: boolean;
