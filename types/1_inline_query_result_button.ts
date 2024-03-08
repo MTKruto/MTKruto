@@ -4,7 +4,7 @@ import { MiniAppInfo } from "./0_mini_app_info.ts";
 export interface InlineQueryResultButton {
   /** Label text on the button. */
   text: string;
-  /** Description of the Web App that will be launched when the user presses the button. */
+  /** Description of the Mini App that will be launched when the user presses the button. */
   miniApp?: MiniAppInfo;
   /** Deep linking parameter for the /start message. */
   startParameter?: string;
