@@ -6,7 +6,7 @@ import { constructUser, User } from "./1_user.ts";
 
 /** A chosen inline result. */
 export interface ChosenInlineResult {
-  /** The unique identifier for the result that was chosen. */
+  /** The identifier of the inline result that was chosen. */
   resultId: string;
   /** The user who chose the result. */
   from: User;
