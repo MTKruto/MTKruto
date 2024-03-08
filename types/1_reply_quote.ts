@@ -7,7 +7,7 @@ export interface ReplyQuote {
   offset: number;
   /** The quoted text. */
   text: string;
-  /** Special entities that appear in the quote. */
+  /** The entities of the quoted text. */
   entities: MessageEntity[];
 }
 
