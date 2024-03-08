@@ -269,7 +269,7 @@ export function deserializeFileId(fileId: string): FileId {
   }
 }
 
-export function serializeFileId(fileId: FileId) {
+export function serializeFileId(fileId: FileId): string {
   const writer = new TLWriter();
   let type = fileId.type;
   if (fileId.fileReference) {
@@ -301,7 +301,7 @@ export function serializeFileId(fileId: FileId) {
   return base64EncodeUrlSafe(rleEncode(writer.buffer));
 }
 
-export function toUniqueFileId(fileId: FileId) {
+export function toUniqueFileId(fileId: FileId): string {
   const writer = new TLWriter();
   const type = fileId.location.type == "web" ? 0 : (getFileTypeClass(fileId.type) + 1);
   writer.writeInt32(type);
