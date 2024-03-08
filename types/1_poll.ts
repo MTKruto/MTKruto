@@ -13,13 +13,13 @@ export interface Poll {
   options: PollOption[];
   /** The number of users who have participated in the poll. */
   totalVoterCount: number;
-  /** True, if the poll is closed. */
+  /** Whether the poll is closed. */
   isClosed: boolean;
-  /** True, if the poll is anonymous. */
+  /** Whether the poll is anonymous. */
   isAnonymous: boolean;
   /** The type of the poll. */
   type: "regular" | "quiz";
-  /** True, if the poll allows multiple answers. */
+  /** Whether the poll allows multiple answers. */
   allowMultipleAnswers?: boolean;
   /** Index of the correct option. */
   correctOptionIndex?: number;
