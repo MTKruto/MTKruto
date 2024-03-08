@@ -29,7 +29,7 @@ export interface Poll {
   explanationEntities?: MessageEntity[];
   /** Duration of the poll in seconds. */
   openPeriod?: number;
-  /** Point in time (Unix timestamp) when the poll will be automatically closed. */
+  /** The time in which the poll will be closed. */
   closeDate?: Date;
 }
 
