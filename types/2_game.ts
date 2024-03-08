@@ -9,7 +9,7 @@ import { constructPhoto, Photo } from "./1_photo.ts";
 export interface Game {
   /** The title of the game. */
   title: string;
-  /** Description of the game. */
+  /** The description of the game. */
   description: string;
   /** Photo that will be displayed in the game message in chats. */
   photo: Photo;
