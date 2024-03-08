@@ -11,7 +11,7 @@ export interface MessageReactions {
   chat: ChatP;
   /** The message's identifier. */
   messageId: number;
-  /** The user that changed the reaction, if the user isn't anonymous. */
+  /** The user who changed their reactions to the message. Unset if done on behalf of a chat. */
   user?: User;
   /** The chat on behalf of which the reaction was changed, if the user is anonymous. */
   actorChat?: ChatP;
