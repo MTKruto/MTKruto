@@ -17,7 +17,7 @@ export interface Poll {
   isClosed: boolean;
   /** True, if the poll is anonymous. */
   isAnonymous: boolean;
-  /** Poll type, currently can be “regular” or “quiz”. */
+  /** The type of the poll. */
   type: "regular" | "quiz";
   /** True, if the poll allows multiple answers. */
   allowMultipleAnswers?: boolean;
