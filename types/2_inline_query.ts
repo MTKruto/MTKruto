@@ -6,7 +6,7 @@ import { constructUser, User } from "./1_user.ts";
 
 /** An incoming inline query. */
 export interface InlineQuery {
-  /** Unique identifier for this query. */
+  /** The identifier of the inline query. */
   id: string;
   /** Sender of this query/ */
   from: User;
