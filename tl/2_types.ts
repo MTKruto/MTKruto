@@ -1400,6 +1400,69 @@ export abstract class _messages_SavedReactionTags_ extends Type_ {
 export abstract class _OutboxReadDate_ extends Type_ {
 }
 
+export abstract class _smsjobs_EligibilityToJoin_ extends Type_ {
+}
+
+export abstract class _smsjobs_Status_ extends Type_ {
+}
+
+export abstract class _SmsJob_ extends Type_ {
+}
+
+export abstract class _BusinessWeeklyOpen_ extends Type_ {
+}
+
+export abstract class _BusinessWorkHours_ extends Type_ {
+}
+
+export abstract class _BusinessLocation_ extends Type_ {
+}
+
+export abstract class _InputBusinessRecipients_ extends Type_ {
+}
+
+export abstract class _BusinessRecipients_ extends Type_ {
+}
+
+export abstract class _BusinessAwayMessageSchedule_ extends Type_ {
+}
+
+export abstract class _InputBusinessGreetingMessage_ extends Type_ {
+}
+
+export abstract class _BusinessGreetingMessage_ extends Type_ {
+}
+
+export abstract class _InputBusinessAwayMessage_ extends Type_ {
+}
+
+export abstract class _BusinessAwayMessage_ extends Type_ {
+}
+
+export abstract class _Timezone_ extends Type_ {
+}
+
+export abstract class _help_TimezonesList_ extends Type_ {
+}
+
+export abstract class _QuickReply_ extends Type_ {
+}
+
+export abstract class _InputQuickReplyShortcut_ extends Type_ {
+}
+
+export abstract class _messages_QuickReplies_ extends Type_ {
+}
+
+export abstract class _ConnectedBot_ extends Type_ {
+}
+
+export abstract class _account_ConnectedBots_ extends Type_ {
+}
+
+export abstract class _messages_DialogFilters_ extends Type_ {
+}
+
 export class ResPQ_ extends _ResPQ_ {
   nonce: bigint;
   server_nonce: bigint;
@@ -6674,9 +6737,10 @@ export class Message_ extends _Message_ {
   restriction_reason?: Array<enums.RestrictionReason>;
   /** Time To Live of the message, once message.date+message.ttl\_period === time(), the message will be deleted on the server, and must be deleted locally as well. */
   ttl_period?: number;
+  quick_reply_shortcut_id?: number;
 
   protected get [id](): number {
-    return 0x1E4C8A69;
+    return 0xA66C7EFC;
   }
 
   static get [name](): string {
@@ -6719,6 +6783,7 @@ export class Message_ extends _Message_ {
       ["reactions", _MessageReactions_, "flags.20?MessageReactions"],
       ["restriction_reason", [_RestrictionReason_], "flags.22?Vector<RestrictionReason>"],
       ["ttl_period", "number", "flags.25?int"],
+      ["quick_reply_shortcut_id", "number", "flags.30?int"],
     ];
   }
 
@@ -6758,10 +6823,11 @@ export class Message_ extends _Message_ {
       [this.reactions ?? null, _MessageReactions_, "flags.20?MessageReactions"],
       [this.restriction_reason ?? null, [_RestrictionReason_], "flags.22?Vector<RestrictionReason>"],
       [this.ttl_period ?? null, "number", "flags.25?int"],
+      [this.quick_reply_shortcut_id ?? null, "number", "flags.30?int"],
     ];
   }
 
-  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; post?: true; from_scheduled?: true; legacy?: true; edit_hide?: true; pinned?: true; noforwards?: true; invert_media?: true; id: number; from_id?: enums.Peer; from_boosts_applied?: number; peer_id: enums.Peer; saved_peer_id?: enums.Peer; fwd_from?: enums.MessageFwdHeader; via_bot_id?: bigint; reply_to?: enums.MessageReplyHeader; date: number; message: string; media?: enums.MessageMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; views?: number; forwards?: number; replies?: enums.MessageReplies; edit_date?: number; post_author?: string; grouped_id?: bigint; reactions?: enums.MessageReactions; restriction_reason?: Array<enums.RestrictionReason>; ttl_period?: number }) {
+  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; post?: true; from_scheduled?: true; legacy?: true; edit_hide?: true; pinned?: true; noforwards?: true; invert_media?: true; id: number; from_id?: enums.Peer; from_boosts_applied?: number; peer_id: enums.Peer; saved_peer_id?: enums.Peer; fwd_from?: enums.MessageFwdHeader; via_bot_id?: bigint; reply_to?: enums.MessageReplyHeader; date: number; message: string; media?: enums.MessageMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; views?: number; forwards?: number; replies?: enums.MessageReplies; edit_date?: number; post_author?: string; grouped_id?: bigint; reactions?: enums.MessageReactions; restriction_reason?: Array<enums.RestrictionReason>; ttl_period?: number; quick_reply_shortcut_id?: number }) {
     super();
     this.out = params.out;
     this.mentioned = params.mentioned;
@@ -6796,6 +6862,7 @@ export class Message_ extends _Message_ {
     this.reactions = params.reactions;
     this.restriction_reason = params.restriction_reason;
     this.ttl_period = params.ttl_period;
+    this.quick_reply_shortcut_id = params.quick_reply_shortcut_id;
   }
 }
 
@@ -10741,9 +10808,13 @@ export class UserFull_ extends _UserFull_ {
   wallpaper?: enums.WallPaper;
   /** Active [stories »](https://core.telegram.org/api/stories) */
   stories?: enums.PeerStories;
+  business_work_hours?: enums.BusinessWorkHours;
+  business_location?: enums.BusinessLocation;
+  business_greeting_message?: enums.BusinessGreetingMessage;
+  business_away_message?: enums.BusinessAwayMessage;
 
   protected get [id](): number {
-    return 0xB9B12C6C;
+    return 0x22FF3E85;
   }
 
   static get [name](): string {
@@ -10766,6 +10837,7 @@ export class UserFull_ extends _UserFull_ {
       ["wallpaper_overridden", "true", "flags.28?true"],
       ["contact_require_premium", "true", "flags.29?true"],
       ["read_dates_private", "true", "flags.30?true"],
+      ["flags2", flags, "#"],
       ["id", "bigint", "long"],
       ["about", "string", "flags.1?string"],
       ["settings", _PeerSettings_, "PeerSettings"],
@@ -10785,6 +10857,10 @@ export class UserFull_ extends _UserFull_ {
       ["premium_gifts", [_PremiumGiftOption_], "flags.19?Vector<PremiumGiftOption>"],
       ["wallpaper", _WallPaper_, "flags.24?WallPaper"],
       ["stories", _PeerStories_, "flags.25?PeerStories"],
+      ["business_work_hours", _BusinessWorkHours_, "flags2.0?BusinessWorkHours"],
+      ["business_location", _BusinessLocation_, "flags2.1?BusinessLocation"],
+      ["business_greeting_message", _BusinessGreetingMessage_, "flags2.2?BusinessGreetingMessage"],
+      ["business_away_message", _BusinessAwayMessage_, "flags2.3?BusinessAwayMessage"],
     ];
   }
 
@@ -10804,6 +10880,7 @@ export class UserFull_ extends _UserFull_ {
       [this.wallpaper_overridden ?? null, "true", "flags.28?true"],
       [this.contact_require_premium ?? null, "true", "flags.29?true"],
       [this.read_dates_private ?? null, "true", "flags.30?true"],
+      ["flags2", flags, "#"],
       [this.id, "bigint", "long"],
       [this.about ?? null, "string", "flags.1?string"],
       [this.settings, _PeerSettings_, "PeerSettings"],
@@ -10823,10 +10900,14 @@ export class UserFull_ extends _UserFull_ {
       [this.premium_gifts ?? null, [_PremiumGiftOption_], "flags.19?Vector<PremiumGiftOption>"],
       [this.wallpaper ?? null, _WallPaper_, "flags.24?WallPaper"],
       [this.stories ?? null, _PeerStories_, "flags.25?PeerStories"],
+      [this.business_work_hours ?? null, _BusinessWorkHours_, "flags2.0?BusinessWorkHours"],
+      [this.business_location ?? null, _BusinessLocation_, "flags2.1?BusinessLocation"],
+      [this.business_greeting_message ?? null, _BusinessGreetingMessage_, "flags2.2?BusinessGreetingMessage"],
+      [this.business_away_message ?? null, _BusinessAwayMessage_, "flags2.3?BusinessAwayMessage"],
     ];
   }
 
-  constructor(params: { blocked?: true; phone_calls_available?: true; phone_calls_private?: true; can_pin_message?: true; has_scheduled?: true; video_calls_available?: true; voice_messages_forbidden?: true; translations_disabled?: true; stories_pinned_available?: true; blocked_my_stories_from?: true; wallpaper_overridden?: true; contact_require_premium?: true; read_dates_private?: true; id: bigint; about?: string; settings: enums.PeerSettings; personal_photo?: enums.Photo; profile_photo?: enums.Photo; fallback_photo?: enums.Photo; notify_settings: enums.PeerNotifySettings; bot_info?: enums.BotInfo; pinned_msg_id?: number; common_chats_count: number; folder_id?: number; ttl_period?: number; theme_emoticon?: string; private_forward_name?: string; bot_group_admin_rights?: enums.ChatAdminRights; bot_broadcast_admin_rights?: enums.ChatAdminRights; premium_gifts?: Array<enums.PremiumGiftOption>; wallpaper?: enums.WallPaper; stories?: enums.PeerStories }) {
+  constructor(params: { blocked?: true; phone_calls_available?: true; phone_calls_private?: true; can_pin_message?: true; has_scheduled?: true; video_calls_available?: true; voice_messages_forbidden?: true; translations_disabled?: true; stories_pinned_available?: true; blocked_my_stories_from?: true; wallpaper_overridden?: true; contact_require_premium?: true; read_dates_private?: true; id: bigint; about?: string; settings: enums.PeerSettings; personal_photo?: enums.Photo; profile_photo?: enums.Photo; fallback_photo?: enums.Photo; notify_settings: enums.PeerNotifySettings; bot_info?: enums.BotInfo; pinned_msg_id?: number; common_chats_count: number; folder_id?: number; ttl_period?: number; theme_emoticon?: string; private_forward_name?: string; bot_group_admin_rights?: enums.ChatAdminRights; bot_broadcast_admin_rights?: enums.ChatAdminRights; premium_gifts?: Array<enums.PremiumGiftOption>; wallpaper?: enums.WallPaper; stories?: enums.PeerStories; business_work_hours?: enums.BusinessWorkHours; business_location?: enums.BusinessLocation; business_greeting_message?: enums.BusinessGreetingMessage; business_away_message?: enums.BusinessAwayMessage }) {
     super();
     this.blocked = params.blocked;
     this.phone_calls_available = params.phone_calls_available;
@@ -10860,6 +10941,10 @@ export class UserFull_ extends _UserFull_ {
     this.premium_gifts = params.premium_gifts;
     this.wallpaper = params.wallpaper;
     this.stories = params.stories;
+    this.business_work_hours = params.business_work_hours;
+    this.business_location = params.business_location;
+    this.business_greeting_message = params.business_greeting_message;
+    this.business_away_message = params.business_away_message;
   }
 }
 
@@ -16961,6 +17046,184 @@ export class UpdateSavedReactionTags_ extends _Update_ {
 
   constructor() {
     super();
+  }
+}
+
+export class UpdateSmsJob_ extends _Update_ {
+  job_id: string;
+
+  protected get [id](): number {
+    return 0xF16269D4;
+  }
+
+  static get [name](): string {
+    return "updateSmsJob"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["job_id", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.job_id, "string", "string"],
+    ];
+  }
+
+  constructor(params: { job_id: string }) {
+    super();
+    this.job_id = params.job_id;
+  }
+}
+
+export class UpdateQuickReplies_ extends _Update_ {
+  quick_replies: Array<enums.QuickReply>;
+
+  protected get [id](): number {
+    return 0xF9470AB2;
+  }
+
+  static get [name](): string {
+    return "updateQuickReplies"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["quick_replies", [_QuickReply_], "Vector<QuickReply>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.quick_replies, [_QuickReply_], "Vector<QuickReply>"],
+    ];
+  }
+
+  constructor(params: { quick_replies: Array<enums.QuickReply> }) {
+    super();
+    this.quick_replies = params.quick_replies;
+  }
+}
+
+export class UpdateNewQuickReply_ extends _Update_ {
+  quick_reply: enums.QuickReply;
+
+  protected get [id](): number {
+    return 0xF53DA717;
+  }
+
+  static get [name](): string {
+    return "updateNewQuickReply"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["quick_reply", _QuickReply_, "QuickReply"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.quick_reply, _QuickReply_, "QuickReply"],
+    ];
+  }
+
+  constructor(params: { quick_reply: enums.QuickReply }) {
+    super();
+    this.quick_reply = params.quick_reply;
+  }
+}
+
+export class UpdateDeleteQuickReply_ extends _Update_ {
+  shortcut_id: number;
+
+  protected get [id](): number {
+    return 0x53E6F1EC;
+  }
+
+  static get [name](): string {
+    return "updateDeleteQuickReply"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["shortcut_id", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.shortcut_id, "number", "int"],
+    ];
+  }
+
+  constructor(params: { shortcut_id: number }) {
+    super();
+    this.shortcut_id = params.shortcut_id;
+  }
+}
+
+export class UpdateQuickReplyMessage_ extends _Update_ {
+  message: enums.Message;
+
+  protected get [id](): number {
+    return 0x3E050D0F;
+  }
+
+  static get [name](): string {
+    return "updateQuickReplyMessage"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["message", _Message_, "Message"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.message, _Message_, "Message"],
+    ];
+  }
+
+  constructor(params: { message: enums.Message }) {
+    super();
+    this.message = params.message;
+  }
+}
+
+export class UpdateDeleteQuickReplyMessages_ extends _Update_ {
+  shortcut_id: number;
+  messages: Array<number>;
+
+  protected get [id](): number {
+    return 0x566FE7CD;
+  }
+
+  static get [name](): string {
+    return "updateDeleteQuickReplyMessages"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["shortcut_id", "number", "int"],
+      ["messages", ["number"], "Vector<int>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.shortcut_id, "number", "int"],
+      [this.messages, ["number"], "Vector<int>"],
+    ];
+  }
+
+  constructor(params: { shortcut_id: number; messages: Array<number> }) {
+    super();
+    this.shortcut_id = params.shortcut_id;
+    this.messages = params.messages;
   }
 }
 
@@ -40678,6 +40941,7 @@ export class DialogFilter_ extends _DialogFilter_ {
   title: string;
   /** Emoji to use as icon for the folder. */
   emoticon?: string;
+  color?: number;
   /** Pinned chats, [folders](https://core.telegram.org/api/folders) can have unlimited pinned chats */
   pinned_peers: Array<enums.InputPeer>;
   /** Include the following chats in this [folder](https://core.telegram.org/api/folders) */
@@ -40686,7 +40950,7 @@ export class DialogFilter_ extends _DialogFilter_ {
   exclude_peers: Array<enums.InputPeer>;
 
   protected get [id](): number {
-    return 0x7438F7E8;
+    return 0x5FB5523B;
   }
 
   static get [name](): string {
@@ -40707,6 +40971,7 @@ export class DialogFilter_ extends _DialogFilter_ {
       ["id", "number", "int"],
       ["title", "string", "string"],
       ["emoticon", "string", "flags.25?string"],
+      ["color", "number", "flags.27?int"],
       ["pinned_peers", [_InputPeer_], "Vector<InputPeer>"],
       ["include_peers", [_InputPeer_], "Vector<InputPeer>"],
       ["exclude_peers", [_InputPeer_], "Vector<InputPeer>"],
@@ -40727,13 +40992,14 @@ export class DialogFilter_ extends _DialogFilter_ {
       [this.id, "number", "int"],
       [this.title, "string", "string"],
       [this.emoticon ?? null, "string", "flags.25?string"],
+      [this.color ?? null, "number", "flags.27?int"],
       [this.pinned_peers, [_InputPeer_], "Vector<InputPeer>"],
       [this.include_peers, [_InputPeer_], "Vector<InputPeer>"],
       [this.exclude_peers, [_InputPeer_], "Vector<InputPeer>"],
     ];
   }
 
-  constructor(params: { contacts?: true; non_contacts?: true; groups?: true; broadcasts?: true; bots?: true; exclude_muted?: true; exclude_read?: true; exclude_archived?: true; id: number; title: string; emoticon?: string; pinned_peers: Array<enums.InputPeer>; include_peers: Array<enums.InputPeer>; exclude_peers: Array<enums.InputPeer> }) {
+  constructor(params: { contacts?: true; non_contacts?: true; groups?: true; broadcasts?: true; bots?: true; exclude_muted?: true; exclude_read?: true; exclude_archived?: true; id: number; title: string; emoticon?: string; color?: number; pinned_peers: Array<enums.InputPeer>; include_peers: Array<enums.InputPeer>; exclude_peers: Array<enums.InputPeer> }) {
     super();
     this.contacts = params.contacts;
     this.non_contacts = params.non_contacts;
@@ -40746,6 +41012,7 @@ export class DialogFilter_ extends _DialogFilter_ {
     this.id = params.id;
     this.title = params.title;
     this.emoticon = params.emoticon;
+    this.color = params.color;
     this.pinned_peers = params.pinned_peers;
     this.include_peers = params.include_peers;
     this.exclude_peers = params.exclude_peers;
@@ -40785,13 +41052,14 @@ export class DialogFilterChatlist_ extends _DialogFilter_ {
   title: string;
   /** Emoji to use as icon for the folder. */
   emoticon?: string;
+  color?: number;
   /** Pinned chats, [folders](https://core.telegram.org/api/folders) can have unlimited pinned chats */
   pinned_peers: Array<enums.InputPeer>;
   /** Chats to include in the folder */
   include_peers: Array<enums.InputPeer>;
 
   protected get [id](): number {
-    return 0xD64A04A8;
+    return 0x9FE28EA4;
   }
 
   static get [name](): string {
@@ -40805,6 +41073,7 @@ export class DialogFilterChatlist_ extends _DialogFilter_ {
       ["id", "number", "int"],
       ["title", "string", "string"],
       ["emoticon", "string", "flags.25?string"],
+      ["color", "number", "flags.27?int"],
       ["pinned_peers", [_InputPeer_], "Vector<InputPeer>"],
       ["include_peers", [_InputPeer_], "Vector<InputPeer>"],
     ];
@@ -40817,17 +41086,19 @@ export class DialogFilterChatlist_ extends _DialogFilter_ {
       [this.id, "number", "int"],
       [this.title, "string", "string"],
       [this.emoticon ?? null, "string", "flags.25?string"],
+      [this.color ?? null, "number", "flags.27?int"],
       [this.pinned_peers, [_InputPeer_], "Vector<InputPeer>"],
       [this.include_peers, [_InputPeer_], "Vector<InputPeer>"],
     ];
   }
 
-  constructor(params: { has_my_invites?: true; id: number; title: string; emoticon?: string; pinned_peers: Array<enums.InputPeer>; include_peers: Array<enums.InputPeer> }) {
+  constructor(params: { has_my_invites?: true; id: number; title: string; emoticon?: string; color?: number; pinned_peers: Array<enums.InputPeer>; include_peers: Array<enums.InputPeer> }) {
     super();
     this.has_my_invites = params.has_my_invites;
     this.id = params.id;
     this.title = params.title;
     this.emoticon = params.emoticon;
+    this.color = params.color;
     this.pinned_peers = params.pinned_peers;
     this.include_peers = params.include_peers;
   }
@@ -51466,6 +51737,942 @@ export class OutboxReadDate_ extends _OutboxReadDate_ {
   }
 }
 
+export class smsjobs_EligibleToJoin_ extends _smsjobs_EligibilityToJoin_ {
+  terms_url: string;
+  monthly_sent_sms: number;
+
+  protected get [id](): number {
+    return 0xDC8B44CF;
+  }
+
+  static get [name](): string {
+    return "smsjobs.eligibleToJoin"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["terms_url", "string", "string"],
+      ["monthly_sent_sms", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.terms_url, "string", "string"],
+      [this.monthly_sent_sms, "number", "int"],
+    ];
+  }
+
+  constructor(params: { terms_url: string; monthly_sent_sms: number }) {
+    super();
+    this.terms_url = params.terms_url;
+    this.monthly_sent_sms = params.monthly_sent_sms;
+  }
+}
+
+export class smsjobs_Status_ extends _smsjobs_Status_ {
+  allow_international?: true;
+  recent_sent: number;
+  recent_since: number;
+  recent_remains: number;
+  total_sent: number;
+  total_since: number;
+  last_gift_slug?: string;
+  terms_url: string;
+
+  protected get [id](): number {
+    return 0x2AEE9191;
+  }
+
+  static get [name](): string {
+    return "smsjobs.status"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["allow_international", "true", "flags.0?true"],
+      ["recent_sent", "number", "int"],
+      ["recent_since", "number", "int"],
+      ["recent_remains", "number", "int"],
+      ["total_sent", "number", "int"],
+      ["total_since", "number", "int"],
+      ["last_gift_slug", "string", "flags.1?string"],
+      ["terms_url", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.allow_international ?? null, "true", "flags.0?true"],
+      [this.recent_sent, "number", "int"],
+      [this.recent_since, "number", "int"],
+      [this.recent_remains, "number", "int"],
+      [this.total_sent, "number", "int"],
+      [this.total_since, "number", "int"],
+      [this.last_gift_slug ?? null, "string", "flags.1?string"],
+      [this.terms_url, "string", "string"],
+    ];
+  }
+
+  constructor(params: { allow_international?: true; recent_sent: number; recent_since: number; recent_remains: number; total_sent: number; total_since: number; last_gift_slug?: string; terms_url: string }) {
+    super();
+    this.allow_international = params.allow_international;
+    this.recent_sent = params.recent_sent;
+    this.recent_since = params.recent_since;
+    this.recent_remains = params.recent_remains;
+    this.total_sent = params.total_sent;
+    this.total_since = params.total_since;
+    this.last_gift_slug = params.last_gift_slug;
+    this.terms_url = params.terms_url;
+  }
+}
+
+export class SmsJob_ extends _SmsJob_ {
+  job_id: string;
+  phone_number: string;
+  text: string;
+
+  protected get [id](): number {
+    return 0xE6A1EEB8;
+  }
+
+  static get [name](): string {
+    return "smsJob"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["job_id", "string", "string"],
+      ["phone_number", "string", "string"],
+      ["text", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.job_id, "string", "string"],
+      [this.phone_number, "string", "string"],
+      [this.text, "string", "string"],
+    ];
+  }
+
+  constructor(params: { job_id: string; phone_number: string; text: string }) {
+    super();
+    this.job_id = params.job_id;
+    this.phone_number = params.phone_number;
+    this.text = params.text;
+  }
+}
+
+export class BusinessWeeklyOpen_ extends _BusinessWeeklyOpen_ {
+  start_minute: number;
+  end_minute: number;
+
+  protected get [id](): number {
+    return 0x120B1AB9;
+  }
+
+  static get [name](): string {
+    return "businessWeeklyOpen"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["start_minute", "number", "int"],
+      ["end_minute", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.start_minute, "number", "int"],
+      [this.end_minute, "number", "int"],
+    ];
+  }
+
+  constructor(params: { start_minute: number; end_minute: number }) {
+    super();
+    this.start_minute = params.start_minute;
+    this.end_minute = params.end_minute;
+  }
+}
+
+export class BusinessWorkHours_ extends _BusinessWorkHours_ {
+  open_now?: true;
+  timezone_id: string;
+  weekly_open: Array<enums.BusinessWeeklyOpen>;
+
+  protected get [id](): number {
+    return 0x8C92B098;
+  }
+
+  static get [name](): string {
+    return "businessWorkHours"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["open_now", "true", "flags.0?true"],
+      ["timezone_id", "string", "string"],
+      ["weekly_open", [_BusinessWeeklyOpen_], "Vector<BusinessWeeklyOpen>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.open_now ?? null, "true", "flags.0?true"],
+      [this.timezone_id, "string", "string"],
+      [this.weekly_open, [_BusinessWeeklyOpen_], "Vector<BusinessWeeklyOpen>"],
+    ];
+  }
+
+  constructor(params: { open_now?: true; timezone_id: string; weekly_open: Array<enums.BusinessWeeklyOpen> }) {
+    super();
+    this.open_now = params.open_now;
+    this.timezone_id = params.timezone_id;
+    this.weekly_open = params.weekly_open;
+  }
+}
+
+export class BusinessLocation_ extends _BusinessLocation_ {
+  geo_point?: enums.GeoPoint;
+  address: string;
+
+  protected get [id](): number {
+    return 0xAC5C1AF7;
+  }
+
+  static get [name](): string {
+    return "businessLocation"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["geo_point", _GeoPoint_, "flags.0?GeoPoint"],
+      ["address", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.geo_point ?? null, _GeoPoint_, "flags.0?GeoPoint"],
+      [this.address, "string", "string"],
+    ];
+  }
+
+  constructor(params: { geo_point?: enums.GeoPoint; address: string }) {
+    super();
+    this.geo_point = params.geo_point;
+    this.address = params.address;
+  }
+}
+
+export class InputBusinessRecipients_ extends _InputBusinessRecipients_ {
+  existing_chats?: true;
+  new_chats?: true;
+  contacts?: true;
+  non_contacts?: true;
+  exclude_selected?: true;
+  users?: Array<enums.InputUser>;
+
+  protected get [id](): number {
+    return 0x6F8B32AA;
+  }
+
+  static get [name](): string {
+    return "inputBusinessRecipients"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["existing_chats", "true", "flags.0?true"],
+      ["new_chats", "true", "flags.1?true"],
+      ["contacts", "true", "flags.2?true"],
+      ["non_contacts", "true", "flags.3?true"],
+      ["exclude_selected", "true", "flags.5?true"],
+      ["users", [_InputUser_], "flags.4?Vector<InputUser>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.existing_chats ?? null, "true", "flags.0?true"],
+      [this.new_chats ?? null, "true", "flags.1?true"],
+      [this.contacts ?? null, "true", "flags.2?true"],
+      [this.non_contacts ?? null, "true", "flags.3?true"],
+      [this.exclude_selected ?? null, "true", "flags.5?true"],
+      [this.users ?? null, [_InputUser_], "flags.4?Vector<InputUser>"],
+    ];
+  }
+
+  constructor(params?: { existing_chats?: true; new_chats?: true; contacts?: true; non_contacts?: true; exclude_selected?: true; users?: Array<enums.InputUser> }) {
+    super();
+    this.existing_chats = params?.existing_chats;
+    this.new_chats = params?.new_chats;
+    this.contacts = params?.contacts;
+    this.non_contacts = params?.non_contacts;
+    this.exclude_selected = params?.exclude_selected;
+    this.users = params?.users;
+  }
+}
+
+export class BusinessRecipients_ extends _BusinessRecipients_ {
+  existing_chats?: true;
+  new_chats?: true;
+  contacts?: true;
+  non_contacts?: true;
+  exclude_selected?: true;
+  users?: Array<bigint>;
+
+  protected get [id](): number {
+    return 0x21108FF7;
+  }
+
+  static get [name](): string {
+    return "businessRecipients"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["existing_chats", "true", "flags.0?true"],
+      ["new_chats", "true", "flags.1?true"],
+      ["contacts", "true", "flags.2?true"],
+      ["non_contacts", "true", "flags.3?true"],
+      ["exclude_selected", "true", "flags.5?true"],
+      ["users", ["bigint"], "flags.4?Vector<long>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.existing_chats ?? null, "true", "flags.0?true"],
+      [this.new_chats ?? null, "true", "flags.1?true"],
+      [this.contacts ?? null, "true", "flags.2?true"],
+      [this.non_contacts ?? null, "true", "flags.3?true"],
+      [this.exclude_selected ?? null, "true", "flags.5?true"],
+      [this.users ?? null, ["bigint"], "flags.4?Vector<long>"],
+    ];
+  }
+
+  constructor(params?: { existing_chats?: true; new_chats?: true; contacts?: true; non_contacts?: true; exclude_selected?: true; users?: Array<bigint> }) {
+    super();
+    this.existing_chats = params?.existing_chats;
+    this.new_chats = params?.new_chats;
+    this.contacts = params?.contacts;
+    this.non_contacts = params?.non_contacts;
+    this.exclude_selected = params?.exclude_selected;
+    this.users = params?.users;
+  }
+}
+
+export class BusinessAwayMessageScheduleAlways_ extends _BusinessAwayMessageSchedule_ {
+  protected get [id](): number {
+    return 0xC9B9E2B9;
+  }
+
+  static get [name](): string {
+    return "businessAwayMessageScheduleAlways"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class BusinessAwayMessageScheduleOutsideWorkHours_ extends _BusinessAwayMessageSchedule_ {
+  protected get [id](): number {
+    return 0xC3F2F501;
+  }
+
+  static get [name](): string {
+    return "businessAwayMessageScheduleOutsideWorkHours"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class BusinessAwayMessageScheduleCustom_ extends _BusinessAwayMessageSchedule_ {
+  start_date: number;
+  end_date: number;
+
+  protected get [id](): number {
+    return 0xCC4D9ECC;
+  }
+
+  static get [name](): string {
+    return "businessAwayMessageScheduleCustom"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["start_date", "number", "int"],
+      ["end_date", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.start_date, "number", "int"],
+      [this.end_date, "number", "int"],
+    ];
+  }
+
+  constructor(params: { start_date: number; end_date: number }) {
+    super();
+    this.start_date = params.start_date;
+    this.end_date = params.end_date;
+  }
+}
+
+export class InputBusinessGreetingMessage_ extends _InputBusinessGreetingMessage_ {
+  shortcut_id: number;
+  recipients: enums.InputBusinessRecipients;
+  no_activity_days: number;
+
+  protected get [id](): number {
+    return 0x0194CB3B;
+  }
+
+  static get [name](): string {
+    return "inputBusinessGreetingMessage"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["shortcut_id", "number", "int"],
+      ["recipients", _InputBusinessRecipients_, "InputBusinessRecipients"],
+      ["no_activity_days", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.shortcut_id, "number", "int"],
+      [this.recipients, _InputBusinessRecipients_, "InputBusinessRecipients"],
+      [this.no_activity_days, "number", "int"],
+    ];
+  }
+
+  constructor(params: { shortcut_id: number; recipients: enums.InputBusinessRecipients; no_activity_days: number }) {
+    super();
+    this.shortcut_id = params.shortcut_id;
+    this.recipients = params.recipients;
+    this.no_activity_days = params.no_activity_days;
+  }
+}
+
+export class BusinessGreetingMessage_ extends _BusinessGreetingMessage_ {
+  shortcut_id: number;
+  recipients: enums.BusinessRecipients;
+  no_activity_days: number;
+
+  protected get [id](): number {
+    return 0xE519ABAB;
+  }
+
+  static get [name](): string {
+    return "businessGreetingMessage"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["shortcut_id", "number", "int"],
+      ["recipients", _BusinessRecipients_, "BusinessRecipients"],
+      ["no_activity_days", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.shortcut_id, "number", "int"],
+      [this.recipients, _BusinessRecipients_, "BusinessRecipients"],
+      [this.no_activity_days, "number", "int"],
+    ];
+  }
+
+  constructor(params: { shortcut_id: number; recipients: enums.BusinessRecipients; no_activity_days: number }) {
+    super();
+    this.shortcut_id = params.shortcut_id;
+    this.recipients = params.recipients;
+    this.no_activity_days = params.no_activity_days;
+  }
+}
+
+export class InputBusinessAwayMessage_ extends _InputBusinessAwayMessage_ {
+  offline_only?: true;
+  shortcut_id: number;
+  schedule: enums.BusinessAwayMessageSchedule;
+  recipients: enums.InputBusinessRecipients;
+
+  protected get [id](): number {
+    return 0x832175E0;
+  }
+
+  static get [name](): string {
+    return "inputBusinessAwayMessage"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["offline_only", "true", "flags.0?true"],
+      ["shortcut_id", "number", "int"],
+      ["schedule", _BusinessAwayMessageSchedule_, "BusinessAwayMessageSchedule"],
+      ["recipients", _InputBusinessRecipients_, "InputBusinessRecipients"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.offline_only ?? null, "true", "flags.0?true"],
+      [this.shortcut_id, "number", "int"],
+      [this.schedule, _BusinessAwayMessageSchedule_, "BusinessAwayMessageSchedule"],
+      [this.recipients, _InputBusinessRecipients_, "InputBusinessRecipients"],
+    ];
+  }
+
+  constructor(params: { offline_only?: true; shortcut_id: number; schedule: enums.BusinessAwayMessageSchedule; recipients: enums.InputBusinessRecipients }) {
+    super();
+    this.offline_only = params.offline_only;
+    this.shortcut_id = params.shortcut_id;
+    this.schedule = params.schedule;
+    this.recipients = params.recipients;
+  }
+}
+
+export class BusinessAwayMessage_ extends _BusinessAwayMessage_ {
+  offline_only?: true;
+  shortcut_id: number;
+  schedule: enums.BusinessAwayMessageSchedule;
+  recipients: enums.BusinessRecipients;
+
+  protected get [id](): number {
+    return 0xEF156A5C;
+  }
+
+  static get [name](): string {
+    return "businessAwayMessage"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["offline_only", "true", "flags.0?true"],
+      ["shortcut_id", "number", "int"],
+      ["schedule", _BusinessAwayMessageSchedule_, "BusinessAwayMessageSchedule"],
+      ["recipients", _BusinessRecipients_, "BusinessRecipients"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.offline_only ?? null, "true", "flags.0?true"],
+      [this.shortcut_id, "number", "int"],
+      [this.schedule, _BusinessAwayMessageSchedule_, "BusinessAwayMessageSchedule"],
+      [this.recipients, _BusinessRecipients_, "BusinessRecipients"],
+    ];
+  }
+
+  constructor(params: { offline_only?: true; shortcut_id: number; schedule: enums.BusinessAwayMessageSchedule; recipients: enums.BusinessRecipients }) {
+    super();
+    this.offline_only = params.offline_only;
+    this.shortcut_id = params.shortcut_id;
+    this.schedule = params.schedule;
+    this.recipients = params.recipients;
+  }
+}
+
+export class Timezone_ extends _Timezone_ {
+  id: string;
+  name: string;
+  utc_offset: number;
+
+  protected get [id](): number {
+    return 0xFF9289F5;
+  }
+
+  static get [name](): string {
+    return "timezone"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["id", "string", "string"],
+      ["name", "string", "string"],
+      ["utc_offset", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "string", "string"],
+      [this.name, "string", "string"],
+      [this.utc_offset, "number", "int"],
+    ];
+  }
+
+  constructor(params: { id: string; name: string; utc_offset: number }) {
+    super();
+    this.id = params.id;
+    this.name = params.name;
+    this.utc_offset = params.utc_offset;
+  }
+}
+
+export class help_TimezonesListNotModified_ extends _help_TimezonesList_ {
+  protected get [id](): number {
+    return 0x970708CC;
+  }
+
+  static get [name](): string {
+    return "help.timezonesListNotModified"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class help_TimezonesList_ extends _help_TimezonesList_ {
+  timezones: Array<enums.Timezone>;
+  hash: number;
+
+  protected get [id](): number {
+    return 0x7B74ED71;
+  }
+
+  static get [name](): string {
+    return "help.timezonesList"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["timezones", [_Timezone_], "Vector<Timezone>"],
+      ["hash", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.timezones, [_Timezone_], "Vector<Timezone>"],
+      [this.hash, "number", "int"],
+    ];
+  }
+
+  constructor(params: { timezones: Array<enums.Timezone>; hash: number }) {
+    super();
+    this.timezones = params.timezones;
+    this.hash = params.hash;
+  }
+}
+
+export class QuickReply_ extends _QuickReply_ {
+  shortcut_id: number;
+  shortcut: string;
+  top_message: number;
+  count: number;
+
+  protected get [id](): number {
+    return 0x0697102B;
+  }
+
+  static get [name](): string {
+    return "quickReply"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["shortcut_id", "number", "int"],
+      ["shortcut", "string", "string"],
+      ["top_message", "number", "int"],
+      ["count", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.shortcut_id, "number", "int"],
+      [this.shortcut, "string", "string"],
+      [this.top_message, "number", "int"],
+      [this.count, "number", "int"],
+    ];
+  }
+
+  constructor(params: { shortcut_id: number; shortcut: string; top_message: number; count: number }) {
+    super();
+    this.shortcut_id = params.shortcut_id;
+    this.shortcut = params.shortcut;
+    this.top_message = params.top_message;
+    this.count = params.count;
+  }
+}
+
+export class InputQuickReplyShortcut_ extends _InputQuickReplyShortcut_ {
+  shortcut: string;
+
+  protected get [id](): number {
+    return 0x24596D41;
+  }
+
+  static get [name](): string {
+    return "inputQuickReplyShortcut"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["shortcut", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.shortcut, "string", "string"],
+    ];
+  }
+
+  constructor(params: { shortcut: string }) {
+    super();
+    this.shortcut = params.shortcut;
+  }
+}
+
+export class InputQuickReplyShortcutId_ extends _InputQuickReplyShortcut_ {
+  shortcut_id: number;
+
+  protected get [id](): number {
+    return 0x01190CF1;
+  }
+
+  static get [name](): string {
+    return "inputQuickReplyShortcutId"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["shortcut_id", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.shortcut_id, "number", "int"],
+    ];
+  }
+
+  constructor(params: { shortcut_id: number }) {
+    super();
+    this.shortcut_id = params.shortcut_id;
+  }
+}
+
+export class messages_QuickReplies_ extends _messages_QuickReplies_ {
+  quick_replies: Array<enums.QuickReply>;
+  messages: Array<enums.Message>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
+
+  protected get [id](): number {
+    return 0xC68D6695;
+  }
+
+  static get [name](): string {
+    return "messages.quickReplies"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["quick_replies", [_QuickReply_], "Vector<QuickReply>"],
+      ["messages", [_Message_], "Vector<Message>"],
+      ["chats", [_Chat_], "Vector<Chat>"],
+      ["users", [_User_], "Vector<User>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.quick_replies, [_QuickReply_], "Vector<QuickReply>"],
+      [this.messages, [_Message_], "Vector<Message>"],
+      [this.chats, [_Chat_], "Vector<Chat>"],
+      [this.users, [_User_], "Vector<User>"],
+    ];
+  }
+
+  constructor(params: { quick_replies: Array<enums.QuickReply>; messages: Array<enums.Message>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
+    super();
+    this.quick_replies = params.quick_replies;
+    this.messages = params.messages;
+    this.chats = params.chats;
+    this.users = params.users;
+  }
+}
+
+export class messages_QuickRepliesNotModified_ extends _messages_QuickReplies_ {
+  protected get [id](): number {
+    return 0x5F91EB5B;
+  }
+
+  static get [name](): string {
+    return "messages.quickRepliesNotModified"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class ConnectedBot_ extends _ConnectedBot_ {
+  can_reply?: true;
+  bot_id: bigint;
+  recipients: enums.BusinessRecipients;
+
+  protected get [id](): number {
+    return 0xE7E999E7;
+  }
+
+  static get [name](): string {
+    return "connectedBot"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["can_reply", "true", "flags.0?true"],
+      ["bot_id", "bigint", "long"],
+      ["recipients", _BusinessRecipients_, "BusinessRecipients"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.can_reply ?? null, "true", "flags.0?true"],
+      [this.bot_id, "bigint", "long"],
+      [this.recipients, _BusinessRecipients_, "BusinessRecipients"],
+    ];
+  }
+
+  constructor(params: { can_reply?: true; bot_id: bigint; recipients: enums.BusinessRecipients }) {
+    super();
+    this.can_reply = params.can_reply;
+    this.bot_id = params.bot_id;
+    this.recipients = params.recipients;
+  }
+}
+
+export class account_ConnectedBots_ extends _account_ConnectedBots_ {
+  connected_bots: Array<enums.ConnectedBot>;
+  users: Array<enums.User>;
+
+  protected get [id](): number {
+    return 0x17D7F87B;
+  }
+
+  static get [name](): string {
+    return "account.connectedBots"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["connected_bots", [_ConnectedBot_], "Vector<ConnectedBot>"],
+      ["users", [_User_], "Vector<User>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.connected_bots, [_ConnectedBot_], "Vector<ConnectedBot>"],
+      [this.users, [_User_], "Vector<User>"],
+    ];
+  }
+
+  constructor(params: { connected_bots: Array<enums.ConnectedBot>; users: Array<enums.User> }) {
+    super();
+    this.connected_bots = params.connected_bots;
+    this.users = params.users;
+  }
+}
+
+export class messages_DialogFilters_ extends _messages_DialogFilters_ {
+  tags_enabled?: true;
+  filters: Array<enums.DialogFilter>;
+
+  protected get [id](): number {
+    return 0x2AD93719;
+  }
+
+  static get [name](): string {
+    return "messages.dialogFilters"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["tags_enabled", "true", "flags.0?true"],
+      ["filters", [_DialogFilter_], "Vector<DialogFilter>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.tags_enabled ?? null, "true", "flags.0?true"],
+      [this.filters, [_DialogFilter_], "Vector<DialogFilter>"],
+    ];
+  }
+
+  constructor(params: { tags_enabled?: true; filters: Array<enums.DialogFilter> }) {
+    super();
+    this.tags_enabled = params.tags_enabled;
+    this.filters = params.filters;
+  }
+}
+
 export const types = {
   Type: Type_,
   TypeX: TypeX_,
@@ -51932,6 +53139,27 @@ export const types = {
   _SavedReactionTag: _SavedReactionTag_,
   _messages_SavedReactionTags: _messages_SavedReactionTags_,
   _OutboxReadDate: _OutboxReadDate_,
+  _smsjobs_EligibilityToJoin: _smsjobs_EligibilityToJoin_,
+  _smsjobs_Status: _smsjobs_Status_,
+  _SmsJob: _SmsJob_,
+  _BusinessWeeklyOpen: _BusinessWeeklyOpen_,
+  _BusinessWorkHours: _BusinessWorkHours_,
+  _BusinessLocation: _BusinessLocation_,
+  _InputBusinessRecipients: _InputBusinessRecipients_,
+  _BusinessRecipients: _BusinessRecipients_,
+  _BusinessAwayMessageSchedule: _BusinessAwayMessageSchedule_,
+  _InputBusinessGreetingMessage: _InputBusinessGreetingMessage_,
+  _BusinessGreetingMessage: _BusinessGreetingMessage_,
+  _InputBusinessAwayMessage: _InputBusinessAwayMessage_,
+  _BusinessAwayMessage: _BusinessAwayMessage_,
+  _Timezone: _Timezone_,
+  _help_TimezonesList: _help_TimezonesList_,
+  _QuickReply: _QuickReply_,
+  _InputQuickReplyShortcut: _InputQuickReplyShortcut_,
+  _messages_QuickReplies: _messages_QuickReplies_,
+  _ConnectedBot: _ConnectedBot_,
+  _account_ConnectedBots: _account_ConnectedBots_,
+  _messages_DialogFilters: _messages_DialogFilters_,
   ResPQ: ResPQ_,
   P_q_inner_data_dc: P_q_inner_data_dc_,
   P_q_inner_data_temp_dc: P_q_inner_data_temp_dc_,
@@ -52283,6 +53511,12 @@ export const types = {
   UpdateSavedDialogPinned: UpdateSavedDialogPinned_,
   UpdatePinnedSavedDialogs: UpdatePinnedSavedDialogs_,
   UpdateSavedReactionTags: UpdateSavedReactionTags_,
+  UpdateSmsJob: UpdateSmsJob_,
+  UpdateQuickReplies: UpdateQuickReplies_,
+  UpdateNewQuickReply: UpdateNewQuickReply_,
+  UpdateDeleteQuickReply: UpdateDeleteQuickReply_,
+  UpdateQuickReplyMessage: UpdateQuickReplyMessage_,
+  UpdateDeleteQuickReplyMessages: UpdateDeleteQuickReplyMessages_,
   UpdatesTooLong: UpdatesTooLong_,
   UpdateShortMessage: UpdateShortMessage_,
   UpdateShortChatMessage: UpdateShortChatMessage_,
@@ -52938,6 +54172,24 @@ export const types = {
   SavedDialog: SavedDialog_,
   SavedReactionTag: SavedReactionTag_,
   OutboxReadDate: OutboxReadDate_,
+  SmsJob: SmsJob_,
+  BusinessWeeklyOpen: BusinessWeeklyOpen_,
+  BusinessWorkHours: BusinessWorkHours_,
+  BusinessLocation: BusinessLocation_,
+  InputBusinessRecipients: InputBusinessRecipients_,
+  BusinessRecipients: BusinessRecipients_,
+  BusinessAwayMessageScheduleAlways: BusinessAwayMessageScheduleAlways_,
+  BusinessAwayMessageScheduleOutsideWorkHours: BusinessAwayMessageScheduleOutsideWorkHours_,
+  BusinessAwayMessageScheduleCustom: BusinessAwayMessageScheduleCustom_,
+  InputBusinessGreetingMessage: InputBusinessGreetingMessage_,
+  BusinessGreetingMessage: BusinessGreetingMessage_,
+  InputBusinessAwayMessage: InputBusinessAwayMessage_,
+  BusinessAwayMessage: BusinessAwayMessage_,
+  Timezone: Timezone_,
+  QuickReply: QuickReply_,
+  InputQuickReplyShortcut: InputQuickReplyShortcut_,
+  InputQuickReplyShortcutId: InputQuickReplyShortcutId_,
+  ConnectedBot: ConnectedBot_,
   storage: {
     FileUnknown: storage_FileUnknown_,
     FilePartial: storage_FilePartial_,
@@ -53065,6 +54317,9 @@ export const types = {
     SavedDialogsNotModified: messages_SavedDialogsNotModified_,
     SavedReactionTagsNotModified: messages_SavedReactionTagsNotModified_,
     SavedReactionTags: messages_SavedReactionTags_,
+    QuickReplies: messages_QuickReplies_,
+    QuickRepliesNotModified: messages_QuickRepliesNotModified_,
+    DialogFilters: messages_DialogFilters_,
   },
   updates: {
     State: updates_State_,
@@ -53118,6 +54373,8 @@ export const types = {
     PeerColorOption: help_PeerColorOption_,
     PeerColorsNotModified: help_PeerColorsNotModified_,
     PeerColors: help_PeerColors_,
+    TimezonesListNotModified: help_TimezonesListNotModified_,
+    TimezonesList: help_TimezonesList_,
   },
   account: {
     PrivacyRules: account_PrivacyRules_,
@@ -53148,6 +54405,7 @@ export const types = {
     EmailVerified: account_EmailVerified_,
     EmailVerifiedLogin: account_EmailVerifiedLogin_,
     AutoSaveSettings: account_AutoSaveSettings_,
+    ConnectedBots: account_ConnectedBots_,
   },
   channels: {
     ChannelParticipants: channels_ChannelParticipants_,
@@ -53214,6 +54472,10 @@ export const types = {
     BoostsList: premium_BoostsList_,
     MyBoosts: premium_MyBoosts_,
     BoostsStatus: premium_BoostsStatus_,
+  },
+  smsjobs: {
+    EligibleToJoin: smsjobs_EligibleToJoin_,
+    Status: smsjobs_Status_,
   },
 };
 export declare namespace types {
@@ -53682,6 +54944,27 @@ export declare namespace types {
   type _SavedReactionTag = _SavedReactionTag_;
   type _messages_SavedReactionTags = _messages_SavedReactionTags_;
   type _OutboxReadDate = _OutboxReadDate_;
+  type _smsjobs_EligibilityToJoin = _smsjobs_EligibilityToJoin_;
+  type _smsjobs_Status = _smsjobs_Status_;
+  type _SmsJob = _SmsJob_;
+  type _BusinessWeeklyOpen = _BusinessWeeklyOpen_;
+  type _BusinessWorkHours = _BusinessWorkHours_;
+  type _BusinessLocation = _BusinessLocation_;
+  type _InputBusinessRecipients = _InputBusinessRecipients_;
+  type _BusinessRecipients = _BusinessRecipients_;
+  type _BusinessAwayMessageSchedule = _BusinessAwayMessageSchedule_;
+  type _InputBusinessGreetingMessage = _InputBusinessGreetingMessage_;
+  type _BusinessGreetingMessage = _BusinessGreetingMessage_;
+  type _InputBusinessAwayMessage = _InputBusinessAwayMessage_;
+  type _BusinessAwayMessage = _BusinessAwayMessage_;
+  type _Timezone = _Timezone_;
+  type _help_TimezonesList = _help_TimezonesList_;
+  type _QuickReply = _QuickReply_;
+  type _InputQuickReplyShortcut = _InputQuickReplyShortcut_;
+  type _messages_QuickReplies = _messages_QuickReplies_;
+  type _ConnectedBot = _ConnectedBot_;
+  type _account_ConnectedBots = _account_ConnectedBots_;
+  type _messages_DialogFilters = _messages_DialogFilters_;
   type ResPQ = ResPQ_;
   type P_q_inner_data_dc = P_q_inner_data_dc_;
   type P_q_inner_data_temp_dc = P_q_inner_data_temp_dc_;
@@ -54033,6 +55316,12 @@ export declare namespace types {
   type UpdateSavedDialogPinned = UpdateSavedDialogPinned_;
   type UpdatePinnedSavedDialogs = UpdatePinnedSavedDialogs_;
   type UpdateSavedReactionTags = UpdateSavedReactionTags_;
+  type UpdateSmsJob = UpdateSmsJob_;
+  type UpdateQuickReplies = UpdateQuickReplies_;
+  type UpdateNewQuickReply = UpdateNewQuickReply_;
+  type UpdateDeleteQuickReply = UpdateDeleteQuickReply_;
+  type UpdateQuickReplyMessage = UpdateQuickReplyMessage_;
+  type UpdateDeleteQuickReplyMessages = UpdateDeleteQuickReplyMessages_;
   type UpdatesTooLong = UpdatesTooLong_;
   type UpdateShortMessage = UpdateShortMessage_;
   type UpdateShortChatMessage = UpdateShortChatMessage_;
@@ -54688,6 +55977,24 @@ export declare namespace types {
   type SavedDialog = SavedDialog_;
   type SavedReactionTag = SavedReactionTag_;
   type OutboxReadDate = OutboxReadDate_;
+  type SmsJob = SmsJob_;
+  type BusinessWeeklyOpen = BusinessWeeklyOpen_;
+  type BusinessWorkHours = BusinessWorkHours_;
+  type BusinessLocation = BusinessLocation_;
+  type InputBusinessRecipients = InputBusinessRecipients_;
+  type BusinessRecipients = BusinessRecipients_;
+  type BusinessAwayMessageScheduleAlways = BusinessAwayMessageScheduleAlways_;
+  type BusinessAwayMessageScheduleOutsideWorkHours = BusinessAwayMessageScheduleOutsideWorkHours_;
+  type BusinessAwayMessageScheduleCustom = BusinessAwayMessageScheduleCustom_;
+  type InputBusinessGreetingMessage = InputBusinessGreetingMessage_;
+  type BusinessGreetingMessage = BusinessGreetingMessage_;
+  type InputBusinessAwayMessage = InputBusinessAwayMessage_;
+  type BusinessAwayMessage = BusinessAwayMessage_;
+  type Timezone = Timezone_;
+  type QuickReply = QuickReply_;
+  type InputQuickReplyShortcut = InputQuickReplyShortcut_;
+  type InputQuickReplyShortcutId = InputQuickReplyShortcutId_;
+  type ConnectedBot = ConnectedBot_;
   namespace storage {
     type FileUnknown = storage_FileUnknown_;
     type FilePartial = storage_FilePartial_;
@@ -54815,6 +56122,9 @@ export declare namespace types {
     type SavedDialogsNotModified = messages_SavedDialogsNotModified_;
     type SavedReactionTagsNotModified = messages_SavedReactionTagsNotModified_;
     type SavedReactionTags = messages_SavedReactionTags_;
+    type QuickReplies = messages_QuickReplies_;
+    type QuickRepliesNotModified = messages_QuickRepliesNotModified_;
+    type DialogFilters = messages_DialogFilters_;
   }
   namespace updates {
     type State = updates_State_;
@@ -54868,6 +56178,8 @@ export declare namespace types {
     type PeerColorOption = help_PeerColorOption_;
     type PeerColorsNotModified = help_PeerColorsNotModified_;
     type PeerColors = help_PeerColors_;
+    type TimezonesListNotModified = help_TimezonesListNotModified_;
+    type TimezonesList = help_TimezonesList_;
   }
   namespace account {
     type PrivacyRules = account_PrivacyRules_;
@@ -54898,6 +56210,7 @@ export declare namespace types {
     type EmailVerified = account_EmailVerified_;
     type EmailVerifiedLogin = account_EmailVerifiedLogin_;
     type AutoSaveSettings = account_AutoSaveSettings_;
+    type ConnectedBots = account_ConnectedBots_;
   }
   namespace channels {
     type ChannelParticipants = channels_ChannelParticipants_;
@@ -54964,6 +56277,10 @@ export declare namespace types {
     type BoostsList = premium_BoostsList_;
     type MyBoosts = premium_MyBoosts_;
     type BoostsStatus = premium_BoostsStatus_;
+  }
+  namespace smsjobs {
+    type EligibleToJoin = smsjobs_EligibleToJoin_;
+    type Status = smsjobs_Status_;
   }
 }
 export const map = new Map<number, TLObjectConstructor>([
@@ -55090,7 +56407,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x37C1011C, ChatPhotoEmpty_],
   [0x1C6E1C11, ChatPhoto_],
   [0x90A6CA84, MessageEmpty_],
-  [0x1E4C8A69, Message_],
+  [0xA66C7EFC, Message_],
   [0x2B085862, MessageService_],
   [0x3DED6320, MessageMediaEmpty_],
   [0x695150D7, MessageMediaPhoto_],
@@ -55187,7 +56504,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xF5DDD6E7, InputReportReasonFake_],
   [0x0A8EB2BE, InputReportReasonIllegalDrugs_],
   [0x9EC7863D, InputReportReasonPersonalDetails_],
-  [0xB9B12C6C, UserFull_],
+  [0x22FF3E85, UserFull_],
   [0x145ADE0B, Contact_],
   [0xC13E3C50, ImportedContact_],
   [0x16D9703B, ContactStatus_],
@@ -55349,6 +56666,12 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xAEAF9E74, UpdateSavedDialogPinned_],
   [0x686C85A6, UpdatePinnedSavedDialogs_],
   [0x39C67432, UpdateSavedReactionTags_],
+  [0xF16269D4, UpdateSmsJob_],
+  [0xF9470AB2, UpdateQuickReplies_],
+  [0xF53DA717, UpdateNewQuickReply_],
+  [0x53E6F1EC, UpdateDeleteQuickReply_],
+  [0x3E050D0F, UpdateQuickReplyMessage_],
+  [0x566FE7CD, UpdateDeleteQuickReplyMessages_],
   [0xA56C2A3E, updates_State_],
   [0x5D75A138, updates_DifferenceEmpty_],
   [0x00F49CA0, updates_Difference_],
@@ -55955,9 +57278,9 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x4899484E, messages_VotesList_],
   [0xF568028A, BankCardOpenUrl_],
   [0x3E24E573, payments_BankCardData_],
-  [0x7438F7E8, DialogFilter_],
+  [0x5FB5523B, DialogFilter_],
   [0x363293AE, DialogFilterDefault_],
-  [0xD64A04A8, DialogFilterChatlist_],
+  [0x9FE28EA4, DialogFilterChatlist_],
   [0x77744D4A, DialogFilterSuggested_],
   [0xB637EDAF, StatsDateRangeDays_],
   [0xCB43ACDE, StatsAbsValueAndPrev_],
@@ -56212,6 +57535,32 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x889B59EF, messages_SavedReactionTagsNotModified_],
   [0x3259950A, messages_SavedReactionTags_],
   [0x3BB842AC, OutboxReadDate_],
+  [0xDC8B44CF, smsjobs_EligibleToJoin_],
+  [0x2AEE9191, smsjobs_Status_],
+  [0xE6A1EEB8, SmsJob_],
+  [0x120B1AB9, BusinessWeeklyOpen_],
+  [0x8C92B098, BusinessWorkHours_],
+  [0xAC5C1AF7, BusinessLocation_],
+  [0x6F8B32AA, InputBusinessRecipients_],
+  [0x21108FF7, BusinessRecipients_],
+  [0xC9B9E2B9, BusinessAwayMessageScheduleAlways_],
+  [0xC3F2F501, BusinessAwayMessageScheduleOutsideWorkHours_],
+  [0xCC4D9ECC, BusinessAwayMessageScheduleCustom_],
+  [0x0194CB3B, InputBusinessGreetingMessage_],
+  [0xE519ABAB, BusinessGreetingMessage_],
+  [0x832175E0, InputBusinessAwayMessage_],
+  [0xEF156A5C, BusinessAwayMessage_],
+  [0xFF9289F5, Timezone_],
+  [0x970708CC, help_TimezonesListNotModified_],
+  [0x7B74ED71, help_TimezonesList_],
+  [0x0697102B, QuickReply_],
+  [0x24596D41, InputQuickReplyShortcut_],
+  [0x01190CF1, InputQuickReplyShortcutId_],
+  [0xC68D6695, messages_QuickReplies_],
+  [0x5F91EB5B, messages_QuickRepliesNotModified_],
+  [0xE7E999E7, ConnectedBot_],
+  [0x17D7F87B, account_ConnectedBots_],
+  [0x2AD93719, messages_DialogFilters_],
 // deno-lint-ignore no-explicit-any
 ] as const as any);
 export declare namespace enums {
@@ -56278,7 +57627,7 @@ export declare namespace enums {
   type ImportedContact = types.ImportedContact;
   type ContactStatus = types.ContactStatus;
   type MessagesFilter = types.InputMessagesFilterEmpty | types.InputMessagesFilterPhotos | types.InputMessagesFilterVideo | types.InputMessagesFilterPhotoVideo | types.InputMessagesFilterDocument | types.InputMessagesFilterUrl | types.InputMessagesFilterGif | types.InputMessagesFilterVoice | types.InputMessagesFilterMusic | types.InputMessagesFilterChatPhotos | types.InputMessagesFilterPhoneCalls | types.InputMessagesFilterRoundVoice | types.InputMessagesFilterRoundVideo | types.InputMessagesFilterMyMentions | types.InputMessagesFilterGeo | types.InputMessagesFilterContacts | types.InputMessagesFilterPinned;
-  type Update = types.UpdateNewMessage | types.UpdateMessageID | types.UpdateDeleteMessages | types.UpdateUserTyping | types.UpdateChatUserTyping | types.UpdateChatParticipants | types.UpdateUserStatus | types.UpdateUserName | types.UpdateNewAuthorization | types.UpdateNewEncryptedMessage | types.UpdateEncryptedChatTyping | types.UpdateEncryption | types.UpdateEncryptedMessagesRead | types.UpdateChatParticipantAdd | types.UpdateChatParticipantDelete | types.UpdateDcOptions | types.UpdateNotifySettings | types.UpdateServiceNotification | types.UpdatePrivacy | types.UpdateUserPhone | types.UpdateReadHistoryInbox | types.UpdateReadHistoryOutbox | types.UpdateWebPage | types.UpdateReadMessagesContents | types.UpdateChannelTooLong | types.UpdateChannel | types.UpdateNewChannelMessage | types.UpdateReadChannelInbox | types.UpdateDeleteChannelMessages | types.UpdateChannelMessageViews | types.UpdateChatParticipantAdmin | types.UpdateNewStickerSet | types.UpdateStickerSetsOrder | types.UpdateStickerSets | types.UpdateSavedGifs | types.UpdateBotInlineQuery | types.UpdateBotInlineSend | types.UpdateEditChannelMessage | types.UpdateBotCallbackQuery | types.UpdateEditMessage | types.UpdateInlineBotCallbackQuery | types.UpdateReadChannelOutbox | types.UpdateDraftMessage | types.UpdateReadFeaturedStickers | types.UpdateRecentStickers | types.UpdateConfig | types.UpdatePtsChanged | types.UpdateChannelWebPage | types.UpdateDialogPinned | types.UpdatePinnedDialogs | types.UpdateBotWebhookJSON | types.UpdateBotWebhookJSONQuery | types.UpdateBotShippingQuery | types.UpdateBotPrecheckoutQuery | types.UpdatePhoneCall | types.UpdateLangPackTooLong | types.UpdateLangPack | types.UpdateFavedStickers | types.UpdateChannelReadMessagesContents | types.UpdateContactsReset | types.UpdateChannelAvailableMessages | types.UpdateDialogUnreadMark | types.UpdateMessagePoll | types.UpdateChatDefaultBannedRights | types.UpdateFolderPeers | types.UpdatePeerSettings | types.UpdatePeerLocated | types.UpdateNewScheduledMessage | types.UpdateDeleteScheduledMessages | types.UpdateTheme | types.UpdateGeoLiveViewed | types.UpdateLoginToken | types.UpdateMessagePollVote | types.UpdateDialogFilter | types.UpdateDialogFilterOrder | types.UpdateDialogFilters | types.UpdatePhoneCallSignalingData | types.UpdateChannelMessageForwards | types.UpdateReadChannelDiscussionInbox | types.UpdateReadChannelDiscussionOutbox | types.UpdatePeerBlocked | types.UpdateChannelUserTyping | types.UpdatePinnedMessages | types.UpdatePinnedChannelMessages | types.UpdateChat | types.UpdateGroupCallParticipants | types.UpdateGroupCall | types.UpdatePeerHistoryTTL | types.UpdateChatParticipant | types.UpdateChannelParticipant | types.UpdateBotStopped | types.UpdateGroupCallConnection | types.UpdateBotCommands | types.UpdatePendingJoinRequests | types.UpdateBotChatInviteRequester | types.UpdateMessageReactions | types.UpdateAttachMenuBots | types.UpdateWebViewResultSent | types.UpdateBotMenuButton | types.UpdateSavedRingtones | types.UpdateTranscribedAudio | types.UpdateReadFeaturedEmojiStickers | types.UpdateUserEmojiStatus | types.UpdateRecentEmojiStatuses | types.UpdateRecentReactions | types.UpdateMoveStickerSetToTop | types.UpdateMessageExtendedMedia | types.UpdateChannelPinnedTopic | types.UpdateChannelPinnedTopics | types.UpdateUser | types.UpdateAutoSaveSettings | types.UpdateGroupInvitePrivacyForbidden | types.UpdateStory | types.UpdateReadStories | types.UpdateStoryID | types.UpdateStoriesStealthMode | types.UpdateSentStoryReaction | types.UpdateBotChatBoost | types.UpdateChannelViewForumAsMessages | types.UpdatePeerWallpaper | types.UpdateBotMessageReaction | types.UpdateBotMessageReactions | types.UpdateSavedDialogPinned | types.UpdatePinnedSavedDialogs | types.UpdateSavedReactionTags;
+  type Update = types.UpdateNewMessage | types.UpdateMessageID | types.UpdateDeleteMessages | types.UpdateUserTyping | types.UpdateChatUserTyping | types.UpdateChatParticipants | types.UpdateUserStatus | types.UpdateUserName | types.UpdateNewAuthorization | types.UpdateNewEncryptedMessage | types.UpdateEncryptedChatTyping | types.UpdateEncryption | types.UpdateEncryptedMessagesRead | types.UpdateChatParticipantAdd | types.UpdateChatParticipantDelete | types.UpdateDcOptions | types.UpdateNotifySettings | types.UpdateServiceNotification | types.UpdatePrivacy | types.UpdateUserPhone | types.UpdateReadHistoryInbox | types.UpdateReadHistoryOutbox | types.UpdateWebPage | types.UpdateReadMessagesContents | types.UpdateChannelTooLong | types.UpdateChannel | types.UpdateNewChannelMessage | types.UpdateReadChannelInbox | types.UpdateDeleteChannelMessages | types.UpdateChannelMessageViews | types.UpdateChatParticipantAdmin | types.UpdateNewStickerSet | types.UpdateStickerSetsOrder | types.UpdateStickerSets | types.UpdateSavedGifs | types.UpdateBotInlineQuery | types.UpdateBotInlineSend | types.UpdateEditChannelMessage | types.UpdateBotCallbackQuery | types.UpdateEditMessage | types.UpdateInlineBotCallbackQuery | types.UpdateReadChannelOutbox | types.UpdateDraftMessage | types.UpdateReadFeaturedStickers | types.UpdateRecentStickers | types.UpdateConfig | types.UpdatePtsChanged | types.UpdateChannelWebPage | types.UpdateDialogPinned | types.UpdatePinnedDialogs | types.UpdateBotWebhookJSON | types.UpdateBotWebhookJSONQuery | types.UpdateBotShippingQuery | types.UpdateBotPrecheckoutQuery | types.UpdatePhoneCall | types.UpdateLangPackTooLong | types.UpdateLangPack | types.UpdateFavedStickers | types.UpdateChannelReadMessagesContents | types.UpdateContactsReset | types.UpdateChannelAvailableMessages | types.UpdateDialogUnreadMark | types.UpdateMessagePoll | types.UpdateChatDefaultBannedRights | types.UpdateFolderPeers | types.UpdatePeerSettings | types.UpdatePeerLocated | types.UpdateNewScheduledMessage | types.UpdateDeleteScheduledMessages | types.UpdateTheme | types.UpdateGeoLiveViewed | types.UpdateLoginToken | types.UpdateMessagePollVote | types.UpdateDialogFilter | types.UpdateDialogFilterOrder | types.UpdateDialogFilters | types.UpdatePhoneCallSignalingData | types.UpdateChannelMessageForwards | types.UpdateReadChannelDiscussionInbox | types.UpdateReadChannelDiscussionOutbox | types.UpdatePeerBlocked | types.UpdateChannelUserTyping | types.UpdatePinnedMessages | types.UpdatePinnedChannelMessages | types.UpdateChat | types.UpdateGroupCallParticipants | types.UpdateGroupCall | types.UpdatePeerHistoryTTL | types.UpdateChatParticipant | types.UpdateChannelParticipant | types.UpdateBotStopped | types.UpdateGroupCallConnection | types.UpdateBotCommands | types.UpdatePendingJoinRequests | types.UpdateBotChatInviteRequester | types.UpdateMessageReactions | types.UpdateAttachMenuBots | types.UpdateWebViewResultSent | types.UpdateBotMenuButton | types.UpdateSavedRingtones | types.UpdateTranscribedAudio | types.UpdateReadFeaturedEmojiStickers | types.UpdateUserEmojiStatus | types.UpdateRecentEmojiStatuses | types.UpdateRecentReactions | types.UpdateMoveStickerSetToTop | types.UpdateMessageExtendedMedia | types.UpdateChannelPinnedTopic | types.UpdateChannelPinnedTopics | types.UpdateUser | types.UpdateAutoSaveSettings | types.UpdateGroupInvitePrivacyForbidden | types.UpdateStory | types.UpdateReadStories | types.UpdateStoryID | types.UpdateStoriesStealthMode | types.UpdateSentStoryReaction | types.UpdateBotChatBoost | types.UpdateChannelViewForumAsMessages | types.UpdatePeerWallpaper | types.UpdateBotMessageReaction | types.UpdateBotMessageReactions | types.UpdateSavedDialogPinned | types.UpdatePinnedSavedDialogs | types.UpdateSavedReactionTags | types.UpdateSmsJob | types.UpdateQuickReplies | types.UpdateNewQuickReply | types.UpdateDeleteQuickReply | types.UpdateQuickReplyMessage | types.UpdateDeleteQuickReplyMessages;
   type Updates = types.UpdatesTooLong | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShort | types.UpdatesCombined | types.Updates | types.UpdateShortSentMessage;
   type DcOption = types.DcOption;
   type Config = types.Config;
@@ -56524,6 +57873,21 @@ export declare namespace enums {
   type SavedDialog = types.SavedDialog;
   type SavedReactionTag = types.SavedReactionTag;
   type OutboxReadDate = types.OutboxReadDate;
+  type SmsJob = types.SmsJob;
+  type BusinessWeeklyOpen = types.BusinessWeeklyOpen;
+  type BusinessWorkHours = types.BusinessWorkHours;
+  type BusinessLocation = types.BusinessLocation;
+  type InputBusinessRecipients = types.InputBusinessRecipients;
+  type BusinessRecipients = types.BusinessRecipients;
+  type BusinessAwayMessageSchedule = types.BusinessAwayMessageScheduleAlways | types.BusinessAwayMessageScheduleOutsideWorkHours | types.BusinessAwayMessageScheduleCustom;
+  type InputBusinessGreetingMessage = types.InputBusinessGreetingMessage;
+  type BusinessGreetingMessage = types.BusinessGreetingMessage;
+  type InputBusinessAwayMessage = types.InputBusinessAwayMessage;
+  type BusinessAwayMessage = types.BusinessAwayMessage;
+  type Timezone = types.Timezone;
+  type QuickReply = types.QuickReply;
+  type InputQuickReplyShortcut = types.InputQuickReplyShortcut | types.InputQuickReplyShortcutId;
+  type ConnectedBot = types.ConnectedBot;
   namespace storage {
     type FileType = types.storage.FileUnknown | types.storage.FilePartial | types.storage.FileJpeg | types.storage.FileGif | types.storage.FilePng | types.storage.FilePdf | types.storage.FileMp3 | types.storage.FileMov | types.storage.FileMp4 | types.storage.FileWebp;
   }
@@ -56597,6 +57961,8 @@ export declare namespace enums {
     type WebPage = types.messages.WebPage;
     type SavedDialogs = types.messages.SavedDialogs | types.messages.SavedDialogsSlice | types.messages.SavedDialogsNotModified;
     type SavedReactionTags = types.messages.SavedReactionTagsNotModified | types.messages.SavedReactionTags;
+    type QuickReplies = types.messages.QuickReplies | types.messages.QuickRepliesNotModified;
+    type DialogFilters = types.messages.DialogFilters;
   }
   namespace updates {
     type State = types.updates.State;
@@ -56632,6 +57998,7 @@ export declare namespace enums {
     type PeerColorSet = types.help.PeerColorSet | types.help.PeerColorProfileSet;
     type PeerColorOption = types.help.PeerColorOption;
     type PeerColors = types.help.PeerColorsNotModified | types.help.PeerColors;
+    type TimezonesList = types.help.TimezonesListNotModified | types.help.TimezonesList;
   }
   namespace account {
     type PrivacyRules = types.account.PrivacyRules;
@@ -56654,6 +58021,7 @@ export declare namespace enums {
     type EmojiStatuses = types.account.EmojiStatusesNotModified | types.account.EmojiStatuses;
     type EmailVerified = types.account.EmailVerified | types.account.EmailVerifiedLogin;
     type AutoSaveSettings = types.account.AutoSaveSettings;
+    type ConnectedBots = types.account.ConnectedBots;
   }
   namespace channels {
     type ChannelParticipants = types.channels.ChannelParticipants | types.channels.ChannelParticipantsNotModified;
@@ -56715,5 +58083,9 @@ export declare namespace enums {
     type BoostsList = types.premium.BoostsList;
     type MyBoosts = types.premium.MyBoosts;
     type BoostsStatus = types.premium.BoostsStatus;
+  }
+  namespace smsjobs {
+    type EligibilityToJoin = types.smsjobs.EligibleToJoin;
+    type Status = types.smsjobs.Status;
   }
 }

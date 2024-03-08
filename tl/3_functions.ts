@@ -4664,6 +4664,205 @@ export class account_getChannelRestrictedStatusEmojis_ extends Function_<enums.E
   }
 }
 
+export class account_updateBusinessWorkHours_ extends Function_<boolean> {
+  static __F: (params?: { business_work_hours?: enums.BusinessWorkHours }) => boolean = null as unknown as (params?: { business_work_hours?: enums.BusinessWorkHours }) => boolean;
+  business_work_hours?: enums.BusinessWorkHours;
+
+  protected get [id](): number {
+    return 0x4B00E066;
+  }
+
+  static get [name](): string {
+    return "account.updateBusinessWorkHours"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["business_work_hours", types._BusinessWorkHours, "flags.0?BusinessWorkHours"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.business_work_hours ?? null, types._BusinessWorkHours, "flags.0?BusinessWorkHours"],
+    ];
+  }
+
+  constructor(params?: { business_work_hours?: enums.BusinessWorkHours }) {
+    super();
+    this.business_work_hours = params?.business_work_hours;
+  }
+}
+
+export class account_updateBusinessLocation_ extends Function_<boolean> {
+  static __F: (params?: { geo_point?: enums.InputGeoPoint; address?: string }) => boolean = null as unknown as (params?: { geo_point?: enums.InputGeoPoint; address?: string }) => boolean;
+  geo_point?: enums.InputGeoPoint;
+  address?: string;
+
+  protected get [id](): number {
+    return 0x9E6B131A;
+  }
+
+  static get [name](): string {
+    return "account.updateBusinessLocation"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["geo_point", types._InputGeoPoint, "flags.1?InputGeoPoint"],
+      ["address", "string", "flags.0?string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.geo_point ?? null, types._InputGeoPoint, "flags.1?InputGeoPoint"],
+      [this.address ?? null, "string", "flags.0?string"],
+    ];
+  }
+
+  constructor(params?: { geo_point?: enums.InputGeoPoint; address?: string }) {
+    super();
+    this.geo_point = params?.geo_point;
+    this.address = params?.address;
+  }
+}
+
+export class account_updateBusinessGreetingMessage_ extends Function_<boolean> {
+  static __F: (params?: { message?: enums.InputBusinessGreetingMessage }) => boolean = null as unknown as (params?: { message?: enums.InputBusinessGreetingMessage }) => boolean;
+  message?: enums.InputBusinessGreetingMessage;
+
+  protected get [id](): number {
+    return 0x66CDAFC4;
+  }
+
+  static get [name](): string {
+    return "account.updateBusinessGreetingMessage"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["message", types._InputBusinessGreetingMessage, "flags.0?InputBusinessGreetingMessage"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.message ?? null, types._InputBusinessGreetingMessage, "flags.0?InputBusinessGreetingMessage"],
+    ];
+  }
+
+  constructor(params?: { message?: enums.InputBusinessGreetingMessage }) {
+    super();
+    this.message = params?.message;
+  }
+}
+
+export class account_updateBusinessAwayMessage_ extends Function_<boolean> {
+  static __F: (params?: { message?: enums.InputBusinessAwayMessage }) => boolean = null as unknown as (params?: { message?: enums.InputBusinessAwayMessage }) => boolean;
+  message?: enums.InputBusinessAwayMessage;
+
+  protected get [id](): number {
+    return 0xA26A7FA5;
+  }
+
+  static get [name](): string {
+    return "account.updateBusinessAwayMessage"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["message", types._InputBusinessAwayMessage, "flags.0?InputBusinessAwayMessage"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.message ?? null, types._InputBusinessAwayMessage, "flags.0?InputBusinessAwayMessage"],
+    ];
+  }
+
+  constructor(params?: { message?: enums.InputBusinessAwayMessage }) {
+    super();
+    this.message = params?.message;
+  }
+}
+
+export class account_updateConnectedBot_ extends Function_<enums.Updates> {
+  static __F: (params: { can_reply?: true; deleted?: true; bot: enums.InputUser; recipients: enums.InputBusinessRecipients }) => enums.Updates = null as unknown as (params: { can_reply?: true; deleted?: true; bot: enums.InputUser; recipients: enums.InputBusinessRecipients }) => enums.Updates;
+  can_reply?: true;
+  deleted?: true;
+  bot: enums.InputUser;
+  recipients: enums.InputBusinessRecipients;
+
+  protected get [id](): number {
+    return 0x9C2D527D;
+  }
+
+  static get [name](): string {
+    return "account.updateConnectedBot"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["can_reply", "true", "flags.0?true"],
+      ["deleted", "true", "flags.1?true"],
+      ["bot", types._InputUser, "InputUser"],
+      ["recipients", types._InputBusinessRecipients, "InputBusinessRecipients"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.can_reply ?? null, "true", "flags.0?true"],
+      [this.deleted ?? null, "true", "flags.1?true"],
+      [this.bot, types._InputUser, "InputUser"],
+      [this.recipients, types._InputBusinessRecipients, "InputBusinessRecipients"],
+    ];
+  }
+
+  constructor(params: { can_reply?: true; deleted?: true; bot: enums.InputUser; recipients: enums.InputBusinessRecipients }) {
+    super();
+    this.can_reply = params.can_reply;
+    this.deleted = params.deleted;
+    this.bot = params.bot;
+    this.recipients = params.recipients;
+  }
+}
+
+export class account_getConnectedBots_ extends Function_<enums.account.ConnectedBots> {
+  static __F: () => enums.account.ConnectedBots = null as unknown as () => enums.account.ConnectedBots;
+  protected get [id](): number {
+    return 0x4EA4C80F;
+  }
+
+  static get [name](): string {
+    return "account.getConnectedBots"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
 /** Returns basic user info according to their identifiers. */
 export class users_getUsers_ extends Function_<enums.User[]> {
   static __F: (params: { id: Array<enums.InputUser> }) => enums.User[] = null as unknown as (params: { id: Array<enums.InputUser> }) => enums.User[];
@@ -6195,7 +6394,7 @@ export class messages_setTyping_ extends Function_<boolean> {
 
 /** Sends a message to a chat */
 export class messages_sendMessage_ extends Function_<enums.Updates> {
-  static __F: (params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  static __F: (params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) => enums.Updates = null as unknown as (params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) => enums.Updates;
   /** Set this flag to disable generation of the webpage preview */
   no_webpage?: true;
   /** Send this message silently (no notifications for the receivers) */
@@ -6226,9 +6425,10 @@ export class messages_sendMessage_ extends Function_<enums.Updates> {
   schedule_date?: number;
   /** Send this message as the specified peer */
   send_as?: enums.InputPeer;
+  quick_reply_shortcut?: enums.InputQuickReplyShortcut;
 
   protected get [id](): number {
-    return 0x280D096F;
+    return 0xDFF8042C;
   }
 
   static get [name](): string {
@@ -6253,6 +6453,7 @@ export class messages_sendMessage_ extends Function_<enums.Updates> {
       ["entities", [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
       ["schedule_date", "number", "flags.10?int"],
       ["send_as", types._InputPeer, "flags.13?InputPeer"],
+      ["quick_reply_shortcut", types._InputQuickReplyShortcut, "flags.17?InputQuickReplyShortcut"],
     ];
   }
 
@@ -6274,10 +6475,11 @@ export class messages_sendMessage_ extends Function_<enums.Updates> {
       [this.entities ?? null, [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
       [this.schedule_date ?? null, "number", "flags.10?int"],
       [this.send_as ?? null, types._InputPeer, "flags.13?InputPeer"],
+      [this.quick_reply_shortcut ?? null, types._InputQuickReplyShortcut, "flags.17?InputQuickReplyShortcut"],
     ];
   }
 
-  constructor(params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) {
+  constructor(params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) {
     super();
     this.no_webpage = params.no_webpage;
     this.silent = params.silent;
@@ -6294,12 +6496,13 @@ export class messages_sendMessage_ extends Function_<enums.Updates> {
     this.entities = params.entities;
     this.schedule_date = params.schedule_date;
     this.send_as = params.send_as;
+    this.quick_reply_shortcut = params.quick_reply_shortcut;
   }
 }
 
 /** Send a media */
 export class messages_sendMedia_ extends Function_<enums.Updates> {
-  static __F: (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; media: enums.InputMedia; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; media: enums.InputMedia; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  static __F: (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; media: enums.InputMedia; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; media: enums.InputMedia; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) => enums.Updates;
   /** Send message silently (no notification should be triggered) */
   silent?: true;
   /** Send message in background */
@@ -6330,9 +6533,10 @@ export class messages_sendMedia_ extends Function_<enums.Updates> {
   schedule_date?: number;
   /** Send this message as the specified peer */
   send_as?: enums.InputPeer;
+  quick_reply_shortcut?: enums.InputQuickReplyShortcut;
 
   protected get [id](): number {
-    return 0x72CCC23D;
+    return 0x7BD66041;
   }
 
   static get [name](): string {
@@ -6357,6 +6561,7 @@ export class messages_sendMedia_ extends Function_<enums.Updates> {
       ["entities", [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
       ["schedule_date", "number", "flags.10?int"],
       ["send_as", types._InputPeer, "flags.13?InputPeer"],
+      ["quick_reply_shortcut", types._InputQuickReplyShortcut, "flags.17?InputQuickReplyShortcut"],
     ];
   }
 
@@ -6378,10 +6583,11 @@ export class messages_sendMedia_ extends Function_<enums.Updates> {
       [this.entities ?? null, [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
       [this.schedule_date ?? null, "number", "flags.10?int"],
       [this.send_as ?? null, types._InputPeer, "flags.13?InputPeer"],
+      [this.quick_reply_shortcut ?? null, types._InputQuickReplyShortcut, "flags.17?InputQuickReplyShortcut"],
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; media: enums.InputMedia; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) {
+  constructor(params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; media: enums.InputMedia; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
@@ -6398,12 +6604,13 @@ export class messages_sendMedia_ extends Function_<enums.Updates> {
     this.entities = params.entities;
     this.schedule_date = params.schedule_date;
     this.send_as = params.send_as;
+    this.quick_reply_shortcut = params.quick_reply_shortcut;
   }
 }
 
 /** Forwards messages by their IDs. */
 export class messages_forwardMessages_ extends Function_<enums.Updates> {
-  static __F: (params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: enums.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: enums.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: enums.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: enums.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  static __F: (params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: enums.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: enums.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: enums.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: enums.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) => enums.Updates;
   /** Whether to send messages silently (no notification will be triggered on the destination clients) */
   silent?: true;
   /** Whether to send the message in background */
@@ -6430,9 +6637,10 @@ export class messages_forwardMessages_ extends Function_<enums.Updates> {
   schedule_date?: number;
   /** Forward the messages as the specified peer */
   send_as?: enums.InputPeer;
+  quick_reply_shortcut?: enums.InputQuickReplyShortcut;
 
   protected get [id](): number {
-    return 0xC661BBC4;
+    return 0xD5039208;
   }
 
   static get [name](): string {
@@ -6455,6 +6663,7 @@ export class messages_forwardMessages_ extends Function_<enums.Updates> {
       ["top_msg_id", "number", "flags.9?int"],
       ["schedule_date", "number", "flags.10?int"],
       ["send_as", types._InputPeer, "flags.13?InputPeer"],
+      ["quick_reply_shortcut", types._InputQuickReplyShortcut, "flags.17?InputQuickReplyShortcut"],
     ];
   }
 
@@ -6474,10 +6683,11 @@ export class messages_forwardMessages_ extends Function_<enums.Updates> {
       [this.top_msg_id ?? null, "number", "flags.9?int"],
       [this.schedule_date ?? null, "number", "flags.10?int"],
       [this.send_as ?? null, types._InputPeer, "flags.13?InputPeer"],
+      [this.quick_reply_shortcut ?? null, types._InputQuickReplyShortcut, "flags.17?InputQuickReplyShortcut"],
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: enums.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: enums.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: enums.InputPeer }) {
+  constructor(params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: enums.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: enums.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
@@ -6492,6 +6702,7 @@ export class messages_forwardMessages_ extends Function_<enums.Updates> {
     this.top_msg_id = params.top_msg_id;
     this.schedule_date = params.schedule_date;
     this.send_as = params.send_as;
+    this.quick_reply_shortcut = params.quick_reply_shortcut;
   }
 }
 
@@ -8207,7 +8418,7 @@ export class messages_setInlineBotResults_ extends Function_<boolean> {
 
 /** Send a result obtained using [messages.getInlineBotResults](https://core.telegram.org/method/messages.getInlineBotResults). */
 export class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
-  static __F: (params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  static __F: (params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) => enums.Updates;
   /** Whether to send the message silently (no notification will be triggered on the other client) */
   silent?: true;
   /** Whether to send the message in background */
@@ -8230,9 +8441,10 @@ export class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
   schedule_date?: number;
   /** Send this message as the specified peer */
   send_as?: enums.InputPeer;
+  quick_reply_shortcut?: enums.InputQuickReplyShortcut;
 
   protected get [id](): number {
-    return 0xF7BC68BA;
+    return 0x3EBEE86A;
   }
 
   static get [name](): string {
@@ -8253,6 +8465,7 @@ export class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
       ["id", "string", "string"],
       ["schedule_date", "number", "flags.10?int"],
       ["send_as", types._InputPeer, "flags.13?InputPeer"],
+      ["quick_reply_shortcut", types._InputQuickReplyShortcut, "flags.17?InputQuickReplyShortcut"],
     ];
   }
 
@@ -8270,10 +8483,11 @@ export class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
       [this.id, "string", "string"],
       [this.schedule_date ?? null, "number", "flags.10?int"],
       [this.send_as ?? null, types._InputPeer, "flags.13?InputPeer"],
+      [this.quick_reply_shortcut ?? null, types._InputQuickReplyShortcut, "flags.17?InputQuickReplyShortcut"],
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: enums.InputPeer }) {
+  constructor(params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
@@ -8286,6 +8500,7 @@ export class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
     this.id = params.id;
     this.schedule_date = params.schedule_date;
     this.send_as = params.send_as;
+    this.quick_reply_shortcut = params.quick_reply_shortcut;
   }
 }
 
@@ -8328,7 +8543,7 @@ export class messages_getMessageEditData_ extends Function_<enums.messages.Messa
 
 /** Edit message */
 export class messages_editMessage_ extends Function_<enums.Updates> {
-  static __F: (params: { no_webpage?: true; invert_media?: true; peer: enums.InputPeer; id: number; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number }) => enums.Updates = null as unknown as (params: { no_webpage?: true; invert_media?: true; peer: enums.InputPeer; id: number; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number }) => enums.Updates;
+  static __F: (params: { no_webpage?: true; invert_media?: true; peer: enums.InputPeer; id: number; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; quick_reply_shortcut_id?: number }) => enums.Updates = null as unknown as (params: { no_webpage?: true; invert_media?: true; peer: enums.InputPeer; id: number; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; quick_reply_shortcut_id?: number }) => enums.Updates;
   /** Disable webpage preview */
   no_webpage?: true;
   /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
@@ -8347,9 +8562,10 @@ export class messages_editMessage_ extends Function_<enums.Updates> {
   entities?: Array<enums.MessageEntity>;
   /** Scheduled message date for [scheduled messages](https://core.telegram.org/api/scheduled-messages) */
   schedule_date?: number;
+  quick_reply_shortcut_id?: number;
 
   protected get [id](): number {
-    return 0x48F71778;
+    return 0xDFD14005;
   }
 
   static get [name](): string {
@@ -8368,6 +8584,7 @@ export class messages_editMessage_ extends Function_<enums.Updates> {
       ["reply_markup", types._ReplyMarkup, "flags.2?ReplyMarkup"],
       ["entities", [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
       ["schedule_date", "number", "flags.15?int"],
+      ["quick_reply_shortcut_id", "number", "flags.17?int"],
     ];
   }
 
@@ -8383,10 +8600,11 @@ export class messages_editMessage_ extends Function_<enums.Updates> {
       [this.reply_markup ?? null, types._ReplyMarkup, "flags.2?ReplyMarkup"],
       [this.entities ?? null, [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
       [this.schedule_date ?? null, "number", "flags.15?int"],
+      [this.quick_reply_shortcut_id ?? null, "number", "flags.17?int"],
     ];
   }
 
-  constructor(params: { no_webpage?: true; invert_media?: true; peer: enums.InputPeer; id: number; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number }) {
+  constructor(params: { no_webpage?: true; invert_media?: true; peer: enums.InputPeer; id: number; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; quick_reply_shortcut_id?: number }) {
     super();
     this.no_webpage = params.no_webpage;
     this.invert_media = params.invert_media;
@@ -8397,6 +8615,7 @@ export class messages_editMessage_ extends Function_<enums.Updates> {
     this.reply_markup = params.reply_markup;
     this.entities = params.entities;
     this.schedule_date = params.schedule_date;
+    this.quick_reply_shortcut_id = params.quick_reply_shortcut_id;
   }
 }
 
@@ -9758,7 +9977,7 @@ export class messages_getRecentLocations_ extends Function_<enums.messages.Messa
 
 /** Send an [album or grouped media](https://core.telegram.org/api/files#albums-grouped-media) */
 export class messages_sendMultiMedia_ extends Function_<enums.Updates> {
-  static __F: (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; multi_media: Array<enums.InputSingleMedia>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; multi_media: Array<enums.InputSingleMedia>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
+  static __F: (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; multi_media: Array<enums.InputSingleMedia>; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) => enums.Updates = null as unknown as (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; multi_media: Array<enums.InputSingleMedia>; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) => enums.Updates;
   /** Whether to send the album silently (no notification triggered) */
   silent?: true;
   /** Send in background? */
@@ -9781,9 +10000,10 @@ export class messages_sendMultiMedia_ extends Function_<enums.Updates> {
   schedule_date?: number;
   /** Send this message as the specified peer */
   send_as?: enums.InputPeer;
+  quick_reply_shortcut?: enums.InputQuickReplyShortcut;
 
   protected get [id](): number {
-    return 0x456E8987;
+    return 0x0C964709;
   }
 
   static get [name](): string {
@@ -9804,6 +10024,7 @@ export class messages_sendMultiMedia_ extends Function_<enums.Updates> {
       ["multi_media", [types._InputSingleMedia], "Vector<InputSingleMedia>"],
       ["schedule_date", "number", "flags.10?int"],
       ["send_as", types._InputPeer, "flags.13?InputPeer"],
+      ["quick_reply_shortcut", types._InputQuickReplyShortcut, "flags.17?InputQuickReplyShortcut"],
     ];
   }
 
@@ -9821,10 +10042,11 @@ export class messages_sendMultiMedia_ extends Function_<enums.Updates> {
       [this.multi_media, [types._InputSingleMedia], "Vector<InputSingleMedia>"],
       [this.schedule_date ?? null, "number", "flags.10?int"],
       [this.send_as ?? null, types._InputPeer, "flags.13?InputPeer"],
+      [this.quick_reply_shortcut ?? null, types._InputQuickReplyShortcut, "flags.17?InputQuickReplyShortcut"],
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; multi_media: Array<enums.InputSingleMedia>; schedule_date?: number; send_as?: enums.InputPeer }) {
+  constructor(params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; multi_media: Array<enums.InputSingleMedia>; schedule_date?: number; send_as?: enums.InputPeer; quick_reply_shortcut?: enums.InputQuickReplyShortcut }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
@@ -9837,6 +10059,7 @@ export class messages_sendMultiMedia_ extends Function_<enums.Updates> {
     this.multi_media = params.multi_media;
     this.schedule_date = params.schedule_date;
     this.send_as = params.send_as;
+    this.quick_reply_shortcut = params.quick_reply_shortcut;
   }
 }
 
@@ -10841,10 +11064,10 @@ export class messages_toggleStickerSets_ extends Function_<boolean> {
 }
 
 /** Get [folders](https://core.telegram.org/api/folders) */
-export class messages_getDialogFilters_ extends Function_<enums.DialogFilter[]> {
-  static __F: () => enums.DialogFilter[] = null as unknown as () => enums.DialogFilter[];
+export class messages_getDialogFilters_ extends Function_<enums.messages.DialogFilters> {
+  static __F: () => enums.messages.DialogFilters = null as unknown as () => enums.messages.DialogFilters;
   protected get [id](): number {
-    return 0xF19ED96D;
+    return 0xEFD48C89;
   }
 
   static get [name](): string {
@@ -14238,6 +14461,298 @@ export class messages_getOutboxReadDate_ extends Function_<enums.OutboxReadDate>
   }
 }
 
+export class messages_getQuickReplies_ extends Function_<enums.messages.QuickReplies> {
+  static __F: (params: { hash: bigint }) => enums.messages.QuickReplies = null as unknown as (params: { hash: bigint }) => enums.messages.QuickReplies;
+  hash: bigint;
+
+  protected get [id](): number {
+    return 0xD483F2A8;
+  }
+
+  static get [name](): string {
+    return "messages.getQuickReplies"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["hash", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.hash, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { hash: bigint }) {
+    super();
+    this.hash = params.hash;
+  }
+}
+
+export class messages_reorderQuickReplies_ extends Function_<boolean> {
+  static __F: (params: { order: Array<number> }) => boolean = null as unknown as (params: { order: Array<number> }) => boolean;
+  order: Array<number>;
+
+  protected get [id](): number {
+    return 0x60331907;
+  }
+
+  static get [name](): string {
+    return "messages.reorderQuickReplies"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["order", ["number"], "Vector<int>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.order, ["number"], "Vector<int>"],
+    ];
+  }
+
+  constructor(params: { order: Array<number> }) {
+    super();
+    this.order = params.order;
+  }
+}
+
+export class messages_checkQuickReplyShortcut_ extends Function_<boolean> {
+  static __F: (params: { shortcut: string }) => boolean = null as unknown as (params: { shortcut: string }) => boolean;
+  shortcut: string;
+
+  protected get [id](): number {
+    return 0xF1D0FBD3;
+  }
+
+  static get [name](): string {
+    return "messages.checkQuickReplyShortcut"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["shortcut", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.shortcut, "string", "string"],
+    ];
+  }
+
+  constructor(params: { shortcut: string }) {
+    super();
+    this.shortcut = params.shortcut;
+  }
+}
+
+export class messages_editQuickReplyShortcut_ extends Function_<boolean> {
+  static __F: (params: { shortcut_id: number; shortcut: string }) => boolean = null as unknown as (params: { shortcut_id: number; shortcut: string }) => boolean;
+  shortcut_id: number;
+  shortcut: string;
+
+  protected get [id](): number {
+    return 0x5C003CEF;
+  }
+
+  static get [name](): string {
+    return "messages.editQuickReplyShortcut"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["shortcut_id", "number", "int"],
+      ["shortcut", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.shortcut_id, "number", "int"],
+      [this.shortcut, "string", "string"],
+    ];
+  }
+
+  constructor(params: { shortcut_id: number; shortcut: string }) {
+    super();
+    this.shortcut_id = params.shortcut_id;
+    this.shortcut = params.shortcut;
+  }
+}
+
+export class messages_deleteQuickReplyShortcut_ extends Function_<boolean> {
+  static __F: (params: { shortcut_id: number }) => boolean = null as unknown as (params: { shortcut_id: number }) => boolean;
+  shortcut_id: number;
+
+  protected get [id](): number {
+    return 0x3CC04740;
+  }
+
+  static get [name](): string {
+    return "messages.deleteQuickReplyShortcut"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["shortcut_id", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.shortcut_id, "number", "int"],
+    ];
+  }
+
+  constructor(params: { shortcut_id: number }) {
+    super();
+    this.shortcut_id = params.shortcut_id;
+  }
+}
+
+export class messages_getQuickReplyMessages_ extends Function_<enums.messages.Messages> {
+  static __F: (params: { shortcut_id: number; id?: Array<number>; hash: bigint }) => enums.messages.Messages = null as unknown as (params: { shortcut_id: number; id?: Array<number>; hash: bigint }) => enums.messages.Messages;
+  shortcut_id: number;
+  id?: Array<number>;
+  hash: bigint;
+
+  protected get [id](): number {
+    return 0x94A495C3;
+  }
+
+  static get [name](): string {
+    return "messages.getQuickReplyMessages"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["shortcut_id", "number", "int"],
+      ["id", ["number"], "flags.0?Vector<int>"],
+      ["hash", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.shortcut_id, "number", "int"],
+      [this.id ?? null, ["number"], "flags.0?Vector<int>"],
+      [this.hash, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { shortcut_id: number; id?: Array<number>; hash: bigint }) {
+    super();
+    this.shortcut_id = params.shortcut_id;
+    this.id = params.id;
+    this.hash = params.hash;
+  }
+}
+
+export class messages_sendQuickReplyMessages_ extends Function_<enums.Updates> {
+  static __F: (params: { peer: enums.InputPeer; shortcut_id: number }) => enums.Updates = null as unknown as (params: { peer: enums.InputPeer; shortcut_id: number }) => enums.Updates;
+  peer: enums.InputPeer;
+  shortcut_id: number;
+
+  protected get [id](): number {
+    return 0x33153AD4;
+  }
+
+  static get [name](): string {
+    return "messages.sendQuickReplyMessages"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["peer", types._InputPeer, "InputPeer"],
+      ["shortcut_id", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.shortcut_id, "number", "int"],
+    ];
+  }
+
+  constructor(params: { peer: enums.InputPeer; shortcut_id: number }) {
+    super();
+    this.peer = params.peer;
+    this.shortcut_id = params.shortcut_id;
+  }
+}
+
+export class messages_deleteQuickReplyMessages_ extends Function_<enums.Updates> {
+  static __F: (params: { shortcut_id: number; id: Array<number> }) => enums.Updates = null as unknown as (params: { shortcut_id: number; id: Array<number> }) => enums.Updates;
+  shortcut_id: number;
+  id: Array<number>;
+
+  protected get [id](): number {
+    return 0xE105E910;
+  }
+
+  static get [name](): string {
+    return "messages.deleteQuickReplyMessages"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["shortcut_id", "number", "int"],
+      ["id", ["number"], "Vector<int>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.shortcut_id, "number", "int"],
+      [this.id, ["number"], "Vector<int>"],
+    ];
+  }
+
+  constructor(params: { shortcut_id: number; id: Array<number> }) {
+    super();
+    this.shortcut_id = params.shortcut_id;
+    this.id = params.id;
+  }
+}
+
+export class messages_toggleDialogFilterTags_ extends Function_<boolean> {
+  static __F: (params: { enabled: boolean }) => boolean = null as unknown as (params: { enabled: boolean }) => boolean;
+  enabled: boolean;
+
+  protected get [id](): number {
+    return 0xFD2DDA49;
+  }
+
+  static get [name](): string {
+    return "messages.toggleDialogFilterTags"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["enabled", "boolean", "Bool"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.enabled, "boolean", "Bool"],
+    ];
+  }
+
+  constructor(params: { enabled: boolean }) {
+    super();
+    this.enabled = params.enabled;
+  }
+}
+
 /** Returns a current state of updates. */
 export class updates_getState_ extends Function_<enums.updates.State> {
   static __F: () => enums.updates.State = null as unknown as () => enums.updates.State;
@@ -15663,6 +16178,36 @@ export class help_getPeerProfileColors_ extends Function_<enums.help.PeerColors>
 
   static get [name](): string {
     return "help.getPeerProfileColors"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["hash", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.hash, "number", "int"],
+    ];
+  }
+
+  constructor(params: { hash: number }) {
+    super();
+    this.hash = params.hash;
+  }
+}
+
+export class help_getTimezonesList_ extends Function_<enums.help.TimezonesList> {
+  static __F: (params: { hash: number }) => enums.help.TimezonesList = null as unknown as (params: { hash: number }) => enums.help.TimezonesList;
+  hash: number;
+
+  protected get [id](): number {
+    return 0x49B30240;
+  }
+
+  static get [name](): string {
+    return "help.getTimezonesList"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23138,6 +23683,196 @@ export class premium_getUserBoosts_ extends Function_<enums.premium.BoostsList> 
   }
 }
 
+export class smsjobs_isEligibleToJoin_ extends Function_<enums.smsjobs.EligibilityToJoin> {
+  static __F: () => enums.smsjobs.EligibilityToJoin = null as unknown as () => enums.smsjobs.EligibilityToJoin;
+  protected get [id](): number {
+    return 0x0EDC39D0;
+  }
+
+  static get [name](): string {
+    return "smsjobs.isEligibleToJoin"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class smsjobs_join_ extends Function_<boolean> {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
+    return 0xA74ECE2D;
+  }
+
+  static get [name](): string {
+    return "smsjobs.join"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class smsjobs_leave_ extends Function_<boolean> {
+  static __F: () => boolean = null as unknown as () => boolean;
+  protected get [id](): number {
+    return 0x9898AD73;
+  }
+
+  static get [name](): string {
+    return "smsjobs.leave"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class smsjobs_updateSettings_ extends Function_<boolean> {
+  static __F: (params?: { allow_international?: true }) => boolean = null as unknown as (params?: { allow_international?: true }) => boolean;
+  allow_international?: true;
+
+  protected get [id](): number {
+    return 0x093FA0BF;
+  }
+
+  static get [name](): string {
+    return "smsjobs.updateSettings"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["allow_international", "true", "flags.0?true"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.allow_international ?? null, "true", "flags.0?true"],
+    ];
+  }
+
+  constructor(params?: { allow_international?: true }) {
+    super();
+    this.allow_international = params?.allow_international;
+  }
+}
+
+export class smsjobs_getStatus_ extends Function_<enums.smsjobs.Status> {
+  static __F: () => enums.smsjobs.Status = null as unknown as () => enums.smsjobs.Status;
+  protected get [id](): number {
+    return 0x10A698E8;
+  }
+
+  static get [name](): string {
+    return "smsjobs.getStatus"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class smsjobs_getSmsJob_ extends Function_<enums.SmsJob> {
+  static __F: (params: { job_id: string }) => enums.SmsJob = null as unknown as (params: { job_id: string }) => enums.SmsJob;
+  job_id: string;
+
+  protected get [id](): number {
+    return 0x778D902F;
+  }
+
+  static get [name](): string {
+    return "smsjobs.getSmsJob"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["job_id", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.job_id, "string", "string"],
+    ];
+  }
+
+  constructor(params: { job_id: string }) {
+    super();
+    this.job_id = params.job_id;
+  }
+}
+
+export class smsjobs_finishJob_ extends Function_<boolean> {
+  static __F: (params: { job_id: string; error?: string }) => boolean = null as unknown as (params: { job_id: string; error?: string }) => boolean;
+  job_id: string;
+  error?: string;
+
+  protected get [id](): number {
+    return 0x4F1EBF24;
+  }
+
+  static get [name](): string {
+    return "smsjobs.finishJob"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["job_id", "string", "string"],
+      ["error", "string", "flags.0?string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.job_id, "string", "string"],
+      [this.error ?? null, "string", "flags.0?string"],
+    ];
+  }
+
+  constructor(params: { job_id: string; error?: string }) {
+    super();
+    this.job_id = params.job_id;
+    this.error = params.error;
+  }
+}
+
 export const functions = {
   Function: Function_,
   req_pq_multi: req_pq_multi_,
@@ -23273,6 +24008,12 @@ export const functions = {
     getDefaultBackgroundEmojis: account_getDefaultBackgroundEmojis_,
     getChannelDefaultEmojiStatuses: account_getChannelDefaultEmojiStatuses_,
     getChannelRestrictedStatusEmojis: account_getChannelRestrictedStatusEmojis_,
+    updateBusinessWorkHours: account_updateBusinessWorkHours_,
+    updateBusinessLocation: account_updateBusinessLocation_,
+    updateBusinessGreetingMessage: account_updateBusinessGreetingMessage_,
+    updateBusinessAwayMessage: account_updateBusinessAwayMessage_,
+    updateConnectedBot: account_updateConnectedBot_,
+    getConnectedBots: account_getConnectedBots_,
   },
   users: {
     getUsers: users_getUsers_,
@@ -23506,6 +24247,15 @@ export const functions = {
     updateSavedReactionTag: messages_updateSavedReactionTag_,
     getDefaultTagReactions: messages_getDefaultTagReactions_,
     getOutboxReadDate: messages_getOutboxReadDate_,
+    getQuickReplies: messages_getQuickReplies_,
+    reorderQuickReplies: messages_reorderQuickReplies_,
+    checkQuickReplyShortcut: messages_checkQuickReplyShortcut_,
+    editQuickReplyShortcut: messages_editQuickReplyShortcut_,
+    deleteQuickReplyShortcut: messages_deleteQuickReplyShortcut_,
+    getQuickReplyMessages: messages_getQuickReplyMessages_,
+    sendQuickReplyMessages: messages_sendQuickReplyMessages_,
+    deleteQuickReplyMessages: messages_deleteQuickReplyMessages_,
+    toggleDialogFilterTags: messages_toggleDialogFilterTags_,
   },
   updates: {
     getState: updates_getState_,
@@ -23554,6 +24304,7 @@ export const functions = {
     getPremiumPromo: help_getPremiumPromo_,
     getPeerColors: help_getPeerColors_,
     getPeerProfileColors: help_getPeerProfileColors_,
+    getTimezonesList: help_getTimezonesList_,
   },
   channels: {
     readHistory: channels_readHistory_,
@@ -23765,6 +24516,15 @@ export const functions = {
     getBoostsStatus: premium_getBoostsStatus_,
     getUserBoosts: premium_getUserBoosts_,
   },
+  smsjobs: {
+    isEligibleToJoin: smsjobs_isEligibleToJoin_,
+    join: smsjobs_join_,
+    leave: smsjobs_leave_,
+    updateSettings: smsjobs_updateSettings_,
+    getStatus: smsjobs_getStatus_,
+    getSmsJob: smsjobs_getSmsJob_,
+    finishJob: smsjobs_finishJob_,
+  },
 };
 export declare namespace functions {
   type Function<T> = Function_<T>;
@@ -23901,6 +24661,12 @@ export declare namespace functions {
     type getDefaultBackgroundEmojis = account_getDefaultBackgroundEmojis_;
     type getChannelDefaultEmojiStatuses = account_getChannelDefaultEmojiStatuses_;
     type getChannelRestrictedStatusEmojis = account_getChannelRestrictedStatusEmojis_;
+    type updateBusinessWorkHours = account_updateBusinessWorkHours_;
+    type updateBusinessLocation = account_updateBusinessLocation_;
+    type updateBusinessGreetingMessage = account_updateBusinessGreetingMessage_;
+    type updateBusinessAwayMessage = account_updateBusinessAwayMessage_;
+    type updateConnectedBot = account_updateConnectedBot_;
+    type getConnectedBots = account_getConnectedBots_;
   }
   namespace users {
     type getUsers = users_getUsers_;
@@ -24134,6 +24900,15 @@ export declare namespace functions {
     type updateSavedReactionTag = messages_updateSavedReactionTag_;
     type getDefaultTagReactions = messages_getDefaultTagReactions_;
     type getOutboxReadDate = messages_getOutboxReadDate_;
+    type getQuickReplies = messages_getQuickReplies_;
+    type reorderQuickReplies = messages_reorderQuickReplies_;
+    type checkQuickReplyShortcut = messages_checkQuickReplyShortcut_;
+    type editQuickReplyShortcut = messages_editQuickReplyShortcut_;
+    type deleteQuickReplyShortcut = messages_deleteQuickReplyShortcut_;
+    type getQuickReplyMessages = messages_getQuickReplyMessages_;
+    type sendQuickReplyMessages = messages_sendQuickReplyMessages_;
+    type deleteQuickReplyMessages = messages_deleteQuickReplyMessages_;
+    type toggleDialogFilterTags = messages_toggleDialogFilterTags_;
   }
   namespace updates {
     type getState = updates_getState_;
@@ -24182,6 +24957,7 @@ export declare namespace functions {
     type getPremiumPromo = help_getPremiumPromo_;
     type getPeerColors = help_getPeerColors_;
     type getPeerProfileColors = help_getPeerProfileColors_;
+    type getTimezonesList = help_getTimezonesList_;
   }
   namespace channels {
     type readHistory = channels_readHistory_;
@@ -24392,5 +25168,14 @@ export declare namespace functions {
     type applyBoost = premium_applyBoost_;
     type getBoostsStatus = premium_getBoostsStatus_;
     type getUserBoosts = premium_getUserBoosts_;
+  }
+  namespace smsjobs {
+    type isEligibleToJoin = smsjobs_isEligibleToJoin_;
+    type join = smsjobs_join_;
+    type leave = smsjobs_leave_;
+    type updateSettings = smsjobs_updateSettings_;
+    type getStatus = smsjobs_getStatus_;
+    type getSmsJob = smsjobs_getSmsJob_;
+    type finishJob = smsjobs_finishJob_;
   }
 }
