@@ -5,7 +5,7 @@ import { peerToChatId, types } from "../2_tl.ts";
 export interface GiveawayParameters {
   /** The identifier of the chat that will be boosted for the duration of the given away Premium subscriptions. */
   boostedChatId: number;
-  /** Identifiers of other supergroup or channel chats that must be subscribed by the users to be eligible for the giveaway. */
+  /** The identifiers of additional chats that the user must subscribe to in order to be eligible for the prizes. */
   additionalChatIds: number[];
   /** Point in time (Unix timestamp) when the giveaway is expected to be performed. */
   winnerSelectionDate: Date;
