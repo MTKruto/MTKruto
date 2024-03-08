@@ -12,7 +12,7 @@ export interface CallbackQuery {
   from: User;
   /** The message from which the callback query was made. Unset if made from an inline result message. */
   message?: Message;
-  /** Identifier of the message sent via the bot in inline mode, that originated the query. */
+  /** The identifier of the inline result message from which the callback query was made. Unset if made from a message not originating from an inline query result. */
   inlineMessageId?: string;
   /** Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. */
   chatInstance: string;
