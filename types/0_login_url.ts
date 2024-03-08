@@ -2,7 +2,7 @@
 export interface LoginUrl {
   /** The login URL. */
   url: string;
-  /** New text of the button in forwarded messages. */
+  /** A different text for the login button that will be shown when the message is forwarded. */
   forwardText?: string;
   /** Username of a bot, which will be used for user authorization. */
   botUsername?: string;
