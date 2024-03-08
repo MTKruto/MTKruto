@@ -3,7 +3,7 @@ import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 
 /** A reference to a specific part of a message that is being replied to. */
 export interface ReplyQuote {
-  /** Offset of the replied message from the start of the chat session, in bytes. */  
+  /** The byte offset of the quoted text. */  
   offset: number;
   /** Text of the quoted part of a message that is replied to by the given message. */
   text: string;
