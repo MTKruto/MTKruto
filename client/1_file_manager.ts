@@ -1,7 +1,7 @@
 import { extension } from "../0_deps.ts";
 import { drop, getLogger, getRandomId, Logger, mod, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
-import { constructDocument, Document, FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "../3_types.ts";
+import { constructDocument, deserializeFileId, Document, FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "../3_types.ts";
 import { FloodWait } from "../4_errors.ts";
 import { DownloadParams, UploadParams } from "./0_params.ts";
 import { C, ConnectionError } from "./0_types.ts";
@@ -145,55 +145,46 @@ export class FileManager {
   }
 
   async *download(fileId: string, params?: DownloadParams) {
-    const fileId_ = FileID.decode(fileId);
-    switch (fileId_.fileType) {
-      case FileType.ChatPhoto: {
-        const big = fileId_.params.thumbnailSource == ThumbnailSource.ChatPhotoBig;
-        const peer = await this.#c.getInputPeer(fileId_.params.chatId!);
-        const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photo_id: fileId_.params.mediaId! });
-        for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
-          yield chunk;
+    const fileId_ = deserializeFileId(fileId);
+    if (fileId_.location.type == "photo") {
+      switch (fileId_.type) {
+        case FileType.ProfilePhoto: {
+          if (fileId_.location.source.type != PhotoSourceType.ChatPhotoBig && fileId_.location.source.type != PhotoSourceType.ChatPhotoSmall) {
+            UNREACHABLE();
+          }
+          const big = fileId_.location.source.type == PhotoSourceType.ChatPhotoBig;
+          const peer = await this.#c.getInputPeer(Number(fileId_.location.source.chatId)); // TODO: use access hash from source?
+          const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photo_id: fileId_.location.id });
+          for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
+            yield chunk;
+          }
+          break;
         }
-        break;
+        case FileType.Photo: {
+          const location = new types.InputPhotoFileLocation({
+            id: fileId_.location.id,
+            access_hash: fileId_.location.accessHash,
+            file_reference: fileId_.fileReference ?? new Uint8Array(),
+            thumb_size: "thumbnailType" in fileId_.location.source ? String.fromCharCode(fileId_.location.source.thumbnailType) : "",
+          });
+          for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
+            yield chunk;
+          }
+          break;
+        }
       }
-      case FileType.Photo: {
-        if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
-          UNREACHABLE();
-        }
-        const location = new types.InputPhotoFileLocation({
-          id: fileId_.params.mediaId,
-          access_hash: fileId_.params.accessHash,
-          file_reference: fileId_.params.fileReference,
-          thumb_size: fileId_.params.thumbnailSize,
-        });
-        for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
-          yield chunk;
-        }
-        break;
+    } else if (fileId_.location.type == "common") {
+      const location = new types.InputDocumentFileLocation({
+        id: fileId_.location.id,
+        access_hash: fileId_.location.accessHash,
+        file_reference: fileId_.fileReference ?? new Uint8Array(),
+        thumb_size: "", // TODO?
+      });
+      for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
+        yield chunk;
       }
-      case FileType.Document:
-      case FileType.Sticker:
-      case FileType.VideoNote:
-      case FileType.Video:
-      case FileType.Audio:
-      case FileType.Voice:
-      case FileType.Animation: {
-        if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
-          UNREACHABLE();
-        }
-        const location = new types.InputDocumentFileLocation({
-          id: fileId_.params.mediaId,
-          access_hash: fileId_.params.accessHash,
-          file_reference: fileId_.params.fileReference,
-          thumb_size: fileId_.params.thumbnailSize,
-        });
-        for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
-          yield chunk;
-        }
-        break;
-      }
-      default:
-        UNREACHABLE();
+    } else {
+      UNREACHABLE();
     }
   }
 
@@ -208,12 +199,14 @@ export class FileManager {
       const maybeDocument = await this.#c.messageStorage.getCustomEmojiDocument(BigInt(id_));
       if (maybeDocument != null && Date.now() - maybeDocument[1].getTime() <= 30 * 60 * 1_000) {
         const document_ = maybeDocument[0];
-        const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode();
-        const fileId = new FileID(null, null, FileType.Document, document_.dc_id, {
-          mediaId: document_.id,
-          accessHash: document_.access_hash,
+        const fileId_: FileId = {
+          type: FileType.Document,
+          dcId: document_.dc_id,
           fileReference: document_.file_reference,
-        }).encode();
+          location: { type: "common", id: document_.id, accessHash: document_.access_hash },
+        };
+        const fileUniqueId = toUniqueFileId(fileId_);
+        const fileId = serializeFileId(fileId_);
         const document = constructDocument(document_, new types.DocumentAttributeFilename({ file_name: `${id[i] ?? "customEmoji"}.${extension(document_.mime_type)}` }), fileId, fileUniqueId);
         documents.push(document);
       } else {
@@ -227,12 +220,14 @@ export class FileManager {
     const documents_ = await this.#c.api.messages.getCustomEmojiDocuments({ document_id: id.map(BigInt) }).then((v) => v.map((v) => v[as](types.Document)));
     for (const [i, document_] of documents_.entries()) {
       await this.#c.messageStorage.setCustomEmojiDocument(document_.id, document_);
-      const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode();
-      const fileId = new FileID(null, null, FileType.Document, document_.dc_id, {
-        mediaId: document_.id,
-        accessHash: document_.access_hash,
+      const fileId_: FileId = {
+        type: FileType.Document,
+        dcId: document_.dc_id,
         fileReference: document_.file_reference,
-      }).encode();
+        location: { type: "common", id: document_.id, accessHash: document_.access_hash },
+      };
+      const fileUniqueId = toUniqueFileId(fileId_);
+      const fileId = serializeFileId(fileId_);
       const document = constructDocument(document_, new types.DocumentAttributeFilename({ file_name: `${id[i] ?? "customEmoji"}.${extension(document_.mime_type)}` }), fileId, fileUniqueId);
       documents.push(document);
     }

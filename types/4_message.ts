@@ -1,6 +1,7 @@
 import { cleanObject, fromUnixTimestamp, getLogger, MaybePromise, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
-import { FileID, FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
+import { FileId, FileType, toUniqueFileId } from "./0__file_id.ts";
+import { serializeFileId } from "./0__file_id.ts";
 import { constructContact, Contact } from "./0_contact.ts";
 import { constructDice, Dice } from "./0_dice.ts";
 import { constructLinkPreview, LinkPreview } from "./0_link_preview.ts";
@@ -896,13 +897,14 @@ export async function constructMessage(
   } else if (message_.media instanceof types.MessageMediaDocument) {
     const { document } = message_.media;
     if (document instanceof types.Document) {
-      const getFileId = (type: FileType) =>
-        new FileID(null, null, type, document.dc_id, {
-          mediaId: document.id,
-          accessHash: document.access_hash,
+      const getFileId = (type: FileType): FileId => (
+        {
+          type,
+          dcId: document.dc_id,
           fileReference: document.file_reference,
-        }).encode();
-      const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document.id }).encode();
+          location: { type: "common", id: document.id, accessHash: document.access_hash },
+        }
+      );
 
       const animated = document.attributes.find((v): v is types.DocumentAttributeAnimated => v instanceof types.DocumentAttributeAnimated);
       const audio = document.attributes.find((v): v is types.DocumentAttributeAudio => v instanceof types.DocumentAttributeAudio);
@@ -911,32 +913,36 @@ export async function constructMessage(
       const video = document.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo);
 
       if (animated) {
-        const animation = constructAnimation(document, video, fileName, getFileId(FileType.Animation), fileUniqueId);
+        const fileId = getFileId(FileType.Animation);
+        const animation = constructAnimation(document, video, fileName, serializeFileId(fileId), toUniqueFileId(fileId));
         m = { ...messageMedia, animation };
       } else if (video) {
         if (video.round_message) {
-          const videoNote = constructVideoNote(document, video, getFileId(FileType.VideoNote), fileUniqueId);
+          const fileId = getFileId(FileType.VideoNote);
+          const videoNote = constructVideoNote(document, video, serializeFileId(fileId), toUniqueFileId(fileId));
           m = { ...message, videoNote };
         } else {
-          const video_ = constructVideo(document, video, fileName?.file_name, getFileId(FileType.Video), fileUniqueId);
+          const fileId = getFileId(FileType.Video);
+          const video_ = constructVideo(document, video, fileName?.file_name, serializeFileId(fileId), toUniqueFileId(fileId));
           m = { ...messageMedia, video: video_ };
         }
       } else if (audio) {
         if (audio.voice) {
-          const voice = constructVoice(document, audio, getFileId(FileType.Voice), fileUniqueId);
+          const fileId = getFileId(FileType.VoiceNote);
+          const voice = constructVoice(document, audio, serializeFileId(fileId), toUniqueFileId(fileId));
           m = { ...messageMedia, voice };
         } else {
-          const audio_ = constructAudio(document, audio, getFileId(FileType.Audio), fileUniqueId);
+          const fileId = getFileId(FileType.Audio);
+          const audio_ = constructAudio(document, audio, serializeFileId(fileId), toUniqueFileId(fileId));
           m = { ...messageMedia, audio: audio_ };
         }
       } else if (sticker) {
-        const sticker = await constructSticker(document, getFileId(FileType.Sticker), fileUniqueId, getStickerSetName);
+        const fileId = getFileId(FileType.Sticker);
+        const sticker = await constructSticker(document, serializeFileId(fileId), toUniqueFileId(fileId), getStickerSetName);
         m = { ...message, sticker };
-      } else if (fileName) {
-        const document_ = constructDocument(document, fileName, getFileId(FileType.Document), fileUniqueId);
-        m = { ...messageMedia, document: document_ };
       } else {
-        const document_ = constructDocument(document, new types.DocumentAttributeFilename({ file_name: "Unknown" }), getFileId(FileType.Document), fileUniqueId);
+        const fileId = getFileId(FileType.Document);
+        const document_ = constructDocument(document, fileName ?? new types.DocumentAttributeFilename({ file_name: "Unknown" }), serializeFileId(fileId), toUniqueFileId(fileId));
         m = { ...messageMedia, document: document_ };
       }
     }

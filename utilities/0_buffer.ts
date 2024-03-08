@@ -15,38 +15,38 @@ export function concat(...buffers: [Uint8Array, Uint8Array, ...Uint8Array[]]) {
 }
 
 const bufferFromHexString = (hexString: string) => Uint8Array.from(hexString.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)));
-export function bufferFromBigInt(bigIntVar: bigint | number, bytesNumber: number, little = true, signed = false) {
-  bigIntVar = BigInt(typeof bigIntVar === "number" ? Math.ceil(bigIntVar) : bigIntVar);
-  const bitLength = bigIntVar.toString(2).length;
-
-  const bytes = Math.ceil(bitLength / 8);
-
-  if (bytesNumber < bytes) {
-    throw new Error("OverflowError: int too big to convert");
+export function bufferFromBigInt(int: bigint | number, byteCount: number, littleEndian = true, signed = false) {
+  const actualByteCount = Math.ceil(int.toString(2).length / 8);
+  if (byteCount < actualByteCount) {
+    throw new Error("Int too big");
   }
 
-  if (!signed && bigIntVar < 0n) {
-    throw new Error("Cannot convert to unsigned");
+  if (byteCount == 4 || byteCount == 2) { // fast path
+    const buffer = new Uint8Array(byteCount);
+    const dataView = new DataView(buffer.buffer);
+    (byteCount == 2 ? signed ? dataView.setInt16 : dataView.setUint16 : signed ? dataView.setInt32 : dataView.setUint32).call(dataView, 0, Number(int), littleEndian);
+    return buffer;
   }
 
-  let below = false;
-  if (bigIntVar < 0n) {
-    below = true;
-    bigIntVar = bigIntVar < 0 ? bigIntVar * -1n : bigIntVar;
+  int = BigInt(typeof int === "number" ? Math.ceil(int) : int);
+  if (byteCount == 8) { // fast path
+    const buffer = new Uint8Array(byteCount);
+    const dataView = new DataView(buffer.buffer);
+    (signed ? dataView.setBigInt64 : dataView.setBigUint64).call(dataView, 0, int, littleEndian);
+    return buffer;
+  }
+  if (!signed && int < 0n) {
+    throw new Error("Got unexpected signed int");
   }
 
-  const hex = bigIntVar.toString(16).padStart(bytesNumber * 2, "0");
+  if (signed && int < 0n) {
+    int = 2n ** BigInt(byteCount * 8) + int;
+  }
+
+  const hex = int.toString(16).padStart(byteCount * 2, "0");
   const buffer = bufferFromHexString(hex);
 
-  if (signed && below) {
-    buffer[buffer.length - 1] = 256 -
-      buffer[buffer.length - 1];
-    for (let i = 0; i < buffer.length - 1; i++) {
-      buffer[i] = 255 - buffer[i];
-    }
-  }
-
-  if (little) {
+  if (littleEndian) {
     buffer.reverse();
   }
 
