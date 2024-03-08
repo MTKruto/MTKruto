@@ -17,7 +17,7 @@ export interface MessageReactions {
   actorChat?: ChatP;
   /** The point of time in which the change was made. */
   date: Date;
-  /** Previous list of reaction types that were set by the user. */
+  /** The previous reactions. */
   oldReactions: Reaction[];
   /** New list of reaction types that have been set by the user. */
   newReactions: Reaction[];
