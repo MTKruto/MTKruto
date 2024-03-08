@@ -6,6 +6,6 @@ export interface LoginUrl {
   forwardText?: string;
   /** The username of the bot that performs the authorization. */
   botUsername?: string;
-  /** Pass True to request the permission for your bot to send messages to the user. */
+  /** Whether logging in will allow the bot to privately message the user. */
   requestWriteAccess?: boolean;
 }
