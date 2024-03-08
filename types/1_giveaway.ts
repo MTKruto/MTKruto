@@ -6,7 +6,7 @@ export interface Giveaway {
   parameters: GiveawayParameters;
   /** The quantity of the Telegram Premium subscriptions that will be given away.. */
   winnerCount: number;
-  /** Number of months the Telegram Premium subscription will be active after code activation. */
+  /** The duration of each Telegram Premium subscription that is to be given away in months. */
   monthCount: number;
 }
 
