@@ -18,7 +18,7 @@ export interface CallbackQuery {
   chatInstance: string;
   /** Data associated with the callback button. Be aware that the message originated the query can contain no callback buttons with this data. */
   data?: string;
-  /** Short name of a Game to be returned, serves as the unique identifier for the game. */
+  /** The short name of the game to be returned. */
   gameShortName?: string;
 }
 
