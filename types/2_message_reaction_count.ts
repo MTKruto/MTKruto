@@ -10,7 +10,7 @@ export interface MessageReactionCount {
   chat: ChatP;
   /** Unique message identifier inside the chat. */
   messageId: number;
-  /** Date of the change in Unix time. */
+  /** This reaction state's point of time. */
   date: Date;
   /** List of reactions that are present on the message. */
   reactions: ReactionCount[];
