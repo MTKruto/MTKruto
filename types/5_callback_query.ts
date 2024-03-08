@@ -10,7 +10,7 @@ export interface CallbackQuery {
   id: string;
   /** The user who made the callback query. */
   from: User;
-  /** Message sent by the bot with the callback button that originated the query. */
+  /** The message from which the callback query was made. Unset if made from an inline result message. */
   message?: Message;
   /** Identifier of the message sent via the bot in inline mode, that originated the query. */
   inlineMessageId?: string;
