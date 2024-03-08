@@ -10,7 +10,7 @@ export interface InlineQuery {
   id: string;
   /** Sender of this query/ */
   from: User;
-  /** Text of the query (up to 256 characters). */
+  /** The query that was made. */
   query: string;
   /** Offset of the results to be returned. */
   offset: string;
