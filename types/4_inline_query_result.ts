@@ -1,6 +1,6 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
-import { FileID } from "./0__file_id.ts";
+import { deserializeFileId } from "./0__file_id.ts";
 import { MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
 import { UsernameResolver } from "./1__getters.ts";
@@ -419,16 +419,16 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       }),
     });
   } else if (fileId_ != null) {
-    const fileId = FileID.decode(fileId_);
+    const fileId = deserializeFileId(fileId_);
     return new types.InputBotInlineResultDocument({
       id,
       type: type == "document" ? "file" : type,
       title,
       description,
       document: new types.InputDocument({
-        id: fileId.params.mediaId!,
-        access_hash: fileId.params.accessHash!,
-        file_reference: fileId.params.fileReference!,
+        id: "id" in fileId.location ? fileId.location.id : UNREACHABLE(), // TODO: Remove UNREACHABLE()?
+        access_hash: fileId.location.accessHash,
+        file_reference: fileId.fileReference ?? new Uint8Array(),
       }),
       send_message: sendMessage,
     });
