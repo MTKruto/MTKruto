@@ -19,7 +19,7 @@ export interface MessageReactions {
   date: Date;
   /** The previous reactions. */
   oldReactions: Reaction[];
-  /** New list of reaction types that have been set by the user. */
+  /** The current reactions. */
   newReactions: Reaction[];
 }
 
