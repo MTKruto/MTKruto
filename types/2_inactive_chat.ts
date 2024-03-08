@@ -4,7 +4,7 @@ import { ChatP, constructChatP } from "./1_chat_p.ts";
 
 /** An inactive chat. */
 export interface InactiveChat {
-  /** Date of the last activity in Unix time. */
+  /** The point of time in which the chat was last active. */
   lastActivity: Date;
   /** The chat. */
   chat: ChatP;
