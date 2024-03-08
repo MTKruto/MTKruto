@@ -13,7 +13,7 @@ export interface Game {
   description: string;
   /** A photo that is displayed when the game is shared. */
   photo: Photo;
-  /** Brief description of the game or high scores included in the game message. */
+  /** A text that is displayed when the game is shared. */
   text?: string;
   /** Special entities that appear in text, such as usernames, URLs, bot commands, etc. */
   textEntities?: MessageEntity[];
