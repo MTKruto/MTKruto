@@ -20,13 +20,12 @@ jobs:
 
       - run: deno vendor mod.ts
 
-      - run: deno run -A https://esm.sh/gh/mtkruto/tools@4ca0c02076/pre_jsr.ts ${{ github.ref_name }}
+      - run: deno run -A https://esm.sh/gh/mtkruto/tools@4ca0c02076/pre_jsr.ts ${{ github.ref_name }} && git add -A && git -c user.name=CI -c user.email="" commit -am JSR
 
       - run: deno publish --allow-slow-types
  
   publish-npm:
     name: Publish to npm
-    needs: publish-jsr
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
