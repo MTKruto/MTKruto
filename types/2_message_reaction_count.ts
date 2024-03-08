@@ -8,7 +8,7 @@ import { constructReactionCount, ReactionCount } from "./1_reaction_count.ts";
 export interface MessageReactionCount {
   /** The chat containing the message. */
   chat: ChatP;
-  /** Unique message identifier inside the chat. */
+  /** The message's identifier. */
   messageId: number;
   /** This reaction state's point of time. */
   date: Date;
