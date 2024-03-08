@@ -2,7 +2,7 @@ import { MessageReaction } from "./1_message_reaction.ts";
 
 /** The interactions made with a message. */
 export interface MessageInteractions {
-  /** ID of the chat where the message was sent. */
+  /** The identifier of the message's chat. */
   chatId: number;
   /** Unique identifier of the message. */
   messageId: number;
