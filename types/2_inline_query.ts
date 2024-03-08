@@ -6,11 +6,17 @@ import { constructUser, User } from "./1_user.ts";
 
 /** An incoming inline query. */
 export interface InlineQuery {
+  /** The identifier of the inline query. */
   id: string;
+  /** The user who made the inline query. */
   from: User;
+  /** The query that was made. */
   query: string;
+  /** The offset parameter that was passed to the last [answerInlineQuery](/methods/answerInlineQuery) call. */
   offset: string;
+  /** The type of the chat from which the inline query was made. */
   chatType?: "sender" | "private" | "group" | "supergroup" | "channel";
+  /** The location of the user who made the inline query. */
   location?: Location;
 }
 
