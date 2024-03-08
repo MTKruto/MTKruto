@@ -2,6 +2,7 @@ import { fromUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 
+/** An inactive chat. */
 export interface InactiveChat {
   /** Date of the last activity in Unix time. */
   lastActivity: Date;
