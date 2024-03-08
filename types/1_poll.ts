@@ -23,7 +23,7 @@ export interface Poll {
   allowMultipleAnswers?: boolean;
   /** Index of the correct option. */
   correctOptionIndex?: number;
-  /** Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters. */
+  /** A text that is shown to the user when the poll is answered. */
   explanation?: string;
   /** Special entities like usernames, URLs, bot commands, etc. that appear in the explanation. */
   explanationEntities?: MessageEntity[];
