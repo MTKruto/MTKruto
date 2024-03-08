@@ -7,7 +7,7 @@ import { constructPhoto, Photo } from "./1_photo.ts";
 
 /** A game. */
 export interface Game {
-  /** Title of the game. */
+  /** The title of the game. */
   title: string;
   /** Description of the game. */
   description: string;
