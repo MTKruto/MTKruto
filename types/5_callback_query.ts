@@ -14,7 +14,7 @@ export interface CallbackQuery {
   message?: Message;
   /** The identifier of the inline result message from which the callback query was made. Unset if made from a message not originating from an inline query result. */
   inlineMessageId?: string;
-  /** Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. */
+  /** A special identifier for the chat in which the callback was made from. Useful for inline result messages. */
   chatInstance: string;
   /** Data associated with the callback button. Be aware that the message originated the query can contain no callback buttons with this data. */
   data?: string;
