@@ -9,7 +9,7 @@ export interface GiveawayParameters {
   additionalChatIds: number[];
   /** The point of time in which the winners will be chosen. */
   winnerSelectionDate: Date;
-  /** Whether the new members of the chats will be eligible for the giveaway. */
+  /** Whether only new members of the chats will be eligible for the prizes. */
   onlyNewMembers: boolean;
   /** The list of two-letter ISO 3166-1 alpha-2 codes of countries, users from which will be eligible for the giveaway. */
   countries: string[];
