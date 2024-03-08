@@ -7,11 +7,17 @@ import { constructPhoto, Photo } from "./1_photo.ts";
 
 /** A game. */
 export interface Game {
+  /** The title of the game. */
   title: string;
+  /** The description of the game. */
   description: string;
+  /** A photo that is displayed when the game is shared. */
   photo: Photo;
+  /** A text that is displayed when the game is shared. */
   text?: string;
+  /** The text's entities. */
   textEntities?: MessageEntity[];
+  /** An animation that is displayed when the game is shared. */
   animation?: Animation;
 }
 

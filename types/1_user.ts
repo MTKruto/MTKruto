@@ -8,31 +8,31 @@ export interface User {
   id: number;
   /** Identifier of color that can be displayed instead of the user's photo. */
   color: number;
-  /** True, if this user is a bot */
+  /** Whether the user is a bot. */
   isBot: boolean;
-  /** User's or bot's first name */
+  /** The first name of the user. */
   firstName: string;
-  /** User's or bot's last name */
+  /** The last name of the user. */
   lastName?: string;
-  /** User's or bot's username */
+  /** The user’s main username. */
   username?: string;
-  /** Additional usernames */
+  /** The user's additional usernames. */
   also?: string[];
-  /** The user's photo. */
+  /** The user's profile photo. */
   photo?: ChatPhotoUser;
-  /** [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) of the user's language */
+  /** The user's [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag). */
   languageCode?: string;
-  /** True, if the user is a scam user */
+  /** Whether the user has been identified as scam. */
   isScam: boolean;
-  /** True, if this user was reported by many users as a fake or scam user: be careful when interacting with them. */
+  /** Whether the user has been identified as an impersonator. */
   isFake: boolean;
-  /** True, if this user is a Telegram Premium user */
+  /** Whether the user is subscribed to Telegram Premium. */
   isPremium: boolean;
-  /** True, if the user is verified */
+  /** Whether the user has been verified. */
   isVerified: boolean;
-  /** True, if the user is an official support user */
+  /** Whether the user is official support. */
   isSupport: boolean;
-  /** True, if this user added the bot to the attachment menu */
+  /** Whether the user is a bot that has been added to the attachment menu by the current user. */
   addedToAttachmentMenu: boolean;
 }
 
