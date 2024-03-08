@@ -20,7 +20,7 @@ export interface User {
   also?: string[];
   /** The user's profile photo. */
   photo?: ChatPhotoUser;
-  /** [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) of the user's language. */
+  /** The user's [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag). */
   languageCode?: string;
   /** Whether the user has been identified as scam. */
   isScam: boolean;
