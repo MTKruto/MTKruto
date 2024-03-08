@@ -8,7 +8,7 @@ import { Message, MessageGetter } from "./4_message.ts";
 export interface CallbackQuery {
   /** The identifier of the callback query. */
   id: string;
-  /** Sender of the query. */
+  /** The user who made the callback query. */
   from: User;
   /** Message sent by the bot with the callback button that originated the query. */
   message?: Message;
