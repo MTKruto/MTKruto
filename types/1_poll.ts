@@ -9,7 +9,7 @@ export interface Poll {
   id: string;
   /** The poll's question. */
   question: string;
-  /** List of poll options. */
+  /** The poll's options. */
   options: PollOption[];
   /** Total number of users that voted in the poll. */
   totalVoterCount: number;
