@@ -11,7 +11,7 @@ export interface Game {
   title: string;
   /** The description of the game. */
   description: string;
-  /** Photo that will be displayed in the game message in chats. */
+  /** A photo that is displayed when the game is shared. */
   photo: Photo;
   /** Brief description of the game or high scores included in the game message. */
   text?: string;
