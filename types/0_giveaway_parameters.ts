@@ -11,7 +11,7 @@ export interface GiveawayParameters {
   winnerSelectionDate: Date;
   /** Whether only new members of the chats will be eligible for the prizes. */
   onlyNewMembers: boolean;
-  /** The list of two-letter ISO 3166-1 alpha-2 codes of countries, users from which will be eligible for the giveaway. */
+  /** A list of countries that are eligible for the prizes. */
   countries: string[];
 }
 
