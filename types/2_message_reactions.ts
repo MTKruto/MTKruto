@@ -9,7 +9,7 @@ import { constructUser, User } from "./1_user.ts";
 export interface MessageReactions {
   /** The chat containing the message the user reacted to. */
   chat: ChatP;
-  /** Unique identifier of the message inside the chat. */
+  /** The message's identifier. */
   messageId: number;
   /** The user that changed the reaction, if the user isn't anonymous. */
   user?: User;
