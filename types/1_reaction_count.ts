@@ -3,7 +3,7 @@ import { constructReaction, Reaction } from "./0_reaction.ts";
 
 /** The count of a specific reaction. */
 export interface ReactionCount {
-  /** Type of the reaction. */
+  /** The type of the reaction. */
   reaction: Reaction;
   /** Number of times the reaction was added. */
   count: number;
