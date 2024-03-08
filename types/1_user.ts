@@ -18,7 +18,7 @@ export interface User {
   username?: string;
   /** The user's additional usernames. */
   also?: string[];
-  /** The photo of the user. */
+  /** The user's profile photo. */
   photo?: ChatPhotoUser;
   /** [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) of the user's language. */
   languageCode?: string;
