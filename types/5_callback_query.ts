@@ -6,7 +6,7 @@ import { Message, MessageGetter } from "./4_message.ts";
 
 /** A received callback query. */
 export interface CallbackQuery {
-  /** Unique identifier for this query. */
+  /** The identifier of the callback query. */
   id: string;
   /** Sender of the query. */
   from: User;
