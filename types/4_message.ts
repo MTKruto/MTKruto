@@ -634,9 +634,10 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
 
   Object.assign(message, await getSender(message_, getEntity));
 
-  if (message_.action instanceof types.MessageActionChatAddUser) {
+  if (message_.action instanceof types.MessageActionChatAddUser || message_.action instanceof types.MessageActionChatJoinedByLink || message_.action instanceof types.MessageActionChatJoinedByRequest) {
     const newChatMembers = new Array<User>();
-    for (const user_ of message_.action.users) {
+    const users = "users" in message_.action ? message_.action.users : [message_.from_id && "user_id" in message_.from_id ? message_.from_id.user_id : UNREACHABLE()];
+    for (const user_ of users) {
       const entity = await getEntity(new types.PeerUser({ user_id: user_ }));
       if (entity) {
         const user = constructUser(entity);
