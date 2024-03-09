@@ -3,9 +3,10 @@ import { as, enums, peerToChatId, types } from "../2_tl.ts";
 import { Chat, constructChat, constructChat2, constructChat3, constructChat4, getChatOrder, ID } from "../3_types.ts";
 import { C as C_ } from "./0_types.ts";
 import { getChatListId, getUsername } from "./0_utilities.ts";
+import { FileManager } from "./1_file_manager.ts";
 import { MessageManager } from "./2_message_manager.ts";
 
-type C = C_ & { messageManager: MessageManager };
+type C = C_ & { fileManager: FileManager; messageManager: MessageManager };
 
 type ChatListManagerUpdate =
   | types.UpdateNewMessage
@@ -337,7 +338,7 @@ export class ChatListManager {
     }
     const chats = this.#getChatList(listId);
     for (const dialog of dialogs.dialogs) {
-      const chat = await constructChat(dialog, dialogs, pinnedChats, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.messageManager.getStickerSetName.bind(this.#c.messageManager));
+      const chat = await constructChat(dialog, dialogs, pinnedChats, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.messageManager));
       chats.set(chat.id, chat);
       await this.#c.storage.setChat(listId, chat.id, chat.pinned, chat.lastMessage?.id ?? 0, chat.lastMessage?.date ?? new Date(0));
     }
