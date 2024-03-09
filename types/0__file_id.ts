@@ -239,7 +239,7 @@ function isWeb(fileType: FileType) {
 }
 
 function hasFileReference(fileType: FileType) {
-  return !!(fileType && FILE_REFERENCE_FLAG);
+  return !!(fileType & FILE_REFERENCE_FLAG);
 }
 
 export function deserializeFileId(fileId: string): FileId {
