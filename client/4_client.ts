@@ -2611,4 +2611,15 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async unblockUser(userId: ID): Promise<void> {
     await this.#messageManager.unblockUser(userId);
   }
+
+  /**
+   * Get information on a user's chat membership.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat that includes the user.
+   * @param userId The identifier of the user.
+   */
+  async getChatMember(chatId: ID, userId: ID): Promise<ChatMember> {
+    return await this.#messageManager.getChatMember(chatId, userId);
+  }
 }

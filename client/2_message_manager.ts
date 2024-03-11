@@ -1178,4 +1178,23 @@ export class MessageManager {
     }
     await this.#c.api.contacts.unblock({ id });
   }
+
+  async getChatMember(chatId: ID, userId: ID) {
+    const peer = await this.#c.getInputPeer(chatId);
+
+    if (peer instanceof types.InputPeerChannel) {
+      const { participant } = await this.#c.api.channels.getParticipant({
+        channel: new types.InputChannel(peer),
+        participant: await this.#c.getInputPeer(userId),
+      });
+      return await constructChatMember(participant, this.#c.getEntity);
+    } else if (peer instanceof types.InputPeerChat) {
+      const user = await this.#c.getInputUser(userId);
+      const fullChat = await this.#c.api.messages.getFullChat(peer).then((v) => v.full_chat[as](types.ChatFull));
+      const participant = fullChat.participants[as](types.ChatParticipants).participants.find((v) => v.user_id == user.user_id)!;
+      return await constructChatMember(participant, this.#c.getEntity);
+    } else {
+      throw new Error("Invalid chat ID");
+    }
+  }
 }
