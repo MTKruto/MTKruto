@@ -172,6 +172,18 @@ export class FileManager {
           }
           break;
         }
+        case FileType.Thumbnail: {
+          const location = new types.InputDocumentFileLocation({
+            id: fileId_.location.id,
+            access_hash: fileId_.location.accessHash,
+            file_reference: fileId_.fileReference ?? new Uint8Array(),
+            thumb_size: "thumbnailType" in fileId_.location.source ? String.fromCharCode(fileId_.location.source.thumbnailType) : UNREACHABLE(),
+          });
+          for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
+            yield chunk;
+          }
+          break;
+        }
       }
     } else if (fileId_.location.type == "common") {
       const location = new types.InputDocumentFileLocation({
