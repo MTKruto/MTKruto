@@ -1197,4 +1197,14 @@ export class MessageManager {
       throw new Error("Invalid chat ID");
     }
   }
+
+  async setChatStickerSet(chatId: ID, setName: string) {
+    const channel = await this.#c.getInputChannel(chatId);
+    await this.#c.api.channels.setStickers({ channel, stickerset: new types.InputStickerSetShortName({ short_name: setName }) });
+  }
+
+  async deleteChatStickerSet(chatId: ID) {
+    const channel = await this.#c.getInputChannel(chatId);
+    await this.#c.api.channels.setStickers({ channel, stickerset: new types.InputStickerSetEmpty() });
+  }
 }
