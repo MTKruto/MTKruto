@@ -2622,4 +2622,25 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async getChatMember(chatId: ID, userId: ID): Promise<ChatMember> {
     return await this.#messageManager.getChatMember(chatId, userId);
   }
+
+  /**
+   * Set a chat's sticker set.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat. Must be a supergroup.
+   * @param setName The name of the set.
+   */
+  async setChatStickerSet(chatId: ID, setName: string) {
+    await this.#messageManager.setChatStickerSet(chatId, setName);
+  }
+
+  /**
+   * Delete a chat's sticker set.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat. Must be a supergroup.
+   */
+  async deleteChatStickerSet(chatId: ID) {
+    await this.#messageManager.deleteChatStickerSet(chatId);
+  }
 }
