@@ -1,10 +1,10 @@
-export * from "https://deno.land/std@0.218.0/assert/mod.ts";
+export * from "https://deno.land/std@0.219.0/assert/mod.ts";
 
-export * as path from "https://deno.land/std@0.218.0/path/mod.ts";
+export * as path from "https://deno.land/std@0.219.0/path/mod.ts";
 
-export { decodeBase64, encodeBase64 } from "https://deno.land/std@0.218.0/encoding/base64.ts";
+export { decodeBase64, encodeBase64 } from "https://deno.land/std@0.219.0/encoding/base64.ts";
 
-import { contentType as contentType_ } from "https://deno.land/std@0.218.0/media_types/content_type.ts";
+import { contentType as contentType_ } from "https://deno.land/std@0.219.0/media_types/content_type.ts";
 export const contentType: typeof contentType_ = (extentionOrType) => {
   if (extentionOrType == "tgs") {
     return "application/x-tgsticker";
@@ -12,7 +12,7 @@ export const contentType: typeof contentType_ = (extentionOrType) => {
     return contentType_(extentionOrType);
   }
 };
-import { extension as extension_ } from "https://deno.land/std@0.218.0/media_types/extension.ts";
+import { extension as extension_ } from "https://deno.land/std@0.219.0/media_types/extension.ts";
 export function extension(mimeType: string) {
   if (mimeType == "application/x-tgsticker") {
     return "tgs";
