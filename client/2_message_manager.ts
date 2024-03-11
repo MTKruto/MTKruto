@@ -3,7 +3,6 @@ import { getLogger, getRandomId, Logger, toUnixTimestamp, UNREACHABLE } from "..
 import { as, enums, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
 import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId } from "../3_types.ts";
 import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
-import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
@@ -132,20 +131,8 @@ export class MessageManager {
     return messages;
   }
 
-  async getStickerSetName(inputStickerSet: types.InputStickerSetID, hash = 0) {
-    const maybeStickerSetName = await this.#c.messageStorage.getStickerSetName(inputStickerSet.id, inputStickerSet.access_hash);
-    if (maybeStickerSetName != null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
-      return maybeStickerSetName[0];
-    } else {
-      const stickerSet = await this.#c.api.messages.getStickerSet({ stickerset: inputStickerSet, hash });
-      const name = stickerSet[as](types.messages.StickerSet).set.short_name;
-      await this.#c.messageStorage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
-      return name;
-    }
-  }
-
   async constructMessage(message_: enums.Message, r?: boolean) {
-    return await constructMessage_(message_, this.#c.getEntity, this.getMessage.bind(this), this.getStickerSetName.bind(this), r);
+    return await constructMessage_(message_, this.#c.getEntity, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r);
   }
 
   async forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams) {

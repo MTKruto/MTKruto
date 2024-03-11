@@ -40,28 +40,28 @@ export interface Sticker {
 /** @unlisted */
 export type StickerSetNameGetter = (inputStickerSet: types.InputStickerSetID) => MaybePromise<string>;
 
-export async function constructSticker(document: types.Document, fileId: string, fileUniqueId: string, getStickerSetName: StickerSetNameGetter): Promise<Sticker> {
+export async function constructSticker(document: types.Document, fileId: string, fileUniqueId: string, getStickerSetName: StickerSetNameGetter, customEmojiId = ""): Promise<Sticker> {
   const stickerAttribute = document.attributes.find((v): v is types.DocumentAttributeSticker => v instanceof types.DocumentAttributeSticker)!;
   const imageSizeAttribute = document.attributes.find((v): v is types.DocumentAttributeImageSize => v instanceof types.DocumentAttributeImageSize)!;
+  const customEmojiAttribute = document.attributes.find((v): v is types.DocumentAttributeCustomEmoji => v instanceof types.DocumentAttributeCustomEmoji);
   const videoAttribute = document.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo)!;
   const setName = stickerAttribute.stickerset instanceof types.InputStickerSetID ? await getStickerSetName(stickerAttribute.stickerset) : undefined;
 
   return cleanObject({
     fileId,
     fileUniqueId,
-    // TODO: custom emoji type?
-    type: stickerAttribute.mask ? "mask" : "regular",
+    type: customEmojiAttribute ? "customEmoji" : stickerAttribute.mask ? "mask" : "regular",
     width: imageSizeAttribute ? imageSizeAttribute.w : videoAttribute ? videoAttribute.w : 512,
     height: imageSizeAttribute ? imageSizeAttribute.h : videoAttribute ? videoAttribute.h : 512,
     isAnimated: document.mime_type == "application/x-tgsticker",
     isVideo: document.mime_type == "video/webm",
     thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
-    emoji: stickerAttribute.alt || undefined,
+    emoji: (customEmojiAttribute ? customEmojiAttribute.alt : stickerAttribute.alt) || undefined,
     setName,
     premiumAnimation: undefined, // TODO
     maskPosition: stickerAttribute.mask_coords ? constructMaskPosition(stickerAttribute.mask_coords) : undefined,
-    customEmojiId: undefined, // TODO
-    needsRepainting: undefined, // TODO
+    customEmojiId: customEmojiAttribute ? customEmojiId : undefined, // TODO
+    needsRepainting: customEmojiAttribute ? Boolean(customEmojiAttribute.text_color) : undefined, // TODO
     fileSize: Number(document.size),
   });
 }

@@ -1,7 +1,7 @@
-import { extension } from "../0_deps.ts";
 import { drop, getLogger, getRandomId, Logger, mod, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
-import { constructDocument, deserializeFileId, Document, FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "../3_types.ts";
+import { constructSticker, deserializeFileId, FileId, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
+import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { FloodWait } from "../4_errors.ts";
 import { DownloadParams, UploadParams } from "./0_params.ts";
 import { C, ConnectionError } from "./0_types.ts";
@@ -188,14 +188,26 @@ export class FileManager {
     }
   }
 
-  async getCustomEmojiDocuments(id: string | string[]) {
+  async getStickerSetName(inputStickerSet: types.InputStickerSetID, hash = 0) {
+    const maybeStickerSetName = await this.#c.messageStorage.getStickerSetName(inputStickerSet.id, inputStickerSet.access_hash);
+    if (maybeStickerSetName != null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
+      return maybeStickerSetName[0];
+    } else {
+      const stickerSet = await this.#c.api.messages.getStickerSet({ stickerset: inputStickerSet, hash });
+      const name = stickerSet[as](types.messages.StickerSet).set.short_name;
+      await this.#c.messageStorage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
+      return name;
+    }
+  }
+
+  async getCustomEmojiStickers(id: string | string[]) {
     id = Array.isArray(id) ? id : [id];
     if (!id.length) {
       throw new Error("No custom emoji ID provided");
     }
-    const documents = new Array<Document>();
+    const stickers = new Array<Sticker>();
     let shouldFetch = false;
-    for (const [i, id_] of id.entries()) {
+    for (const id_ of id) {
       const maybeDocument = await this.#c.messageStorage.getCustomEmojiDocument(BigInt(id_));
       if (maybeDocument != null && Date.now() - maybeDocument[1].getTime() <= 30 * 60 * 1_000) {
         const document_ = maybeDocument[0];
@@ -207,15 +219,15 @@ export class FileManager {
         };
         const fileUniqueId = toUniqueFileId(fileId_);
         const fileId = serializeFileId(fileId_);
-        const document = constructDocument(document_, new types.DocumentAttributeFilename({ file_name: `${id[i] ?? "customEmoji"}.${extension(document_.mime_type)}` }), fileId, fileUniqueId);
-        documents.push(document);
+        const sticker = await constructSticker(document_, fileId, fileUniqueId, this.getStickerSetName.bind(this), id_);
+        stickers.push(sticker);
       } else {
         shouldFetch = true;
         break;
       }
     }
     if (!shouldFetch) {
-      return documents;
+      return stickers;
     }
     const documents_ = await this.#c.api.messages.getCustomEmojiDocuments({ document_id: id.map(BigInt) }).then((v) => v.map((v) => v[as](types.Document)));
     for (const [i, document_] of documents_.entries()) {
@@ -228,9 +240,9 @@ export class FileManager {
       };
       const fileUniqueId = toUniqueFileId(fileId_);
       const fileId = serializeFileId(fileId_);
-      const document = constructDocument(document_, new types.DocumentAttributeFilename({ file_name: `${id[i] ?? "customEmoji"}.${extension(document_.mime_type)}` }), fileId, fileUniqueId);
-      documents.push(document);
+      const sticker = await constructSticker(document_, fileId, fileUniqueId, this.getStickerSetName.bind(this), id[i]);
+      stickers.push(sticker);
     }
-    return documents;
+    return stickers;
   }
 }

@@ -3,8 +3,7 @@ import { bigIntFromBuffer, cleanObject, drop, getLogger, getRandomBigInt, getRan
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { InactiveChat } from "../3_types.ts";
-import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, InputStoryContent, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Story, Update, UpdateIntersection, User } from "../3_types.ts";
+import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryResult, InputStoryContent, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Sticker, Story, Update, UpdateIntersection, User } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -365,7 +364,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager: this.#messageManager });
     this.#storyManager = new StoryManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
     this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager: this.#messageManager });
-    this.#chatListManager = new ChatListManager({ ...c, messageManager: this.#messageManager });
+    this.#chatListManager = new ChatListManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
     this.#accountManager = new AccountManager(c);
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
 
@@ -2181,8 +2180,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param id Identifier of one or more of custom emojis.
    * @returns The custom emoji documents.
    */
-  async getCustomEmojiDocuments(id: string | string[]): Promise<Document[]> {
-    return await this.#fileManager.getCustomEmojiDocuments(id);
+  async getCustomEmojiStickers(id: string | string[]): Promise<Sticker[]> {
+    return await this.#fileManager.getCustomEmojiStickers(id);
   }
 
   /**
