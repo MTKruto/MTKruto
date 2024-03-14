@@ -1720,7 +1720,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Edit an inline message's text.
+   * Edit an inline message's text. Bot-only.
    *
    * @method ms
    * @param inlineMessageId The inline message's identifier.
@@ -1747,7 +1747,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Edit an inline message's reply markup.
+   * Edit an inline message's reply markup. Bot-only.
    *
    * @method ms
    * @param inlineMessageId The inline message's identifier.
@@ -2187,7 +2187,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Set a chat's available reactions.
+   * Set a chat's available reactions. User-only.
    *
    * @method ch
    * @param chatId The identifier of the chat.
@@ -2255,7 +2255,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Delete all messages sent by a specific member of a chat.
+   * Delete all messages sent by a specific member of a chat. User-only.
    *
    * @method ms
    * @param chatId The identifier of the chat. Must be a supergroup.
@@ -2531,7 +2531,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Search the messages of a chat.
+   * Search the messages of a chat. User-only.
    *
    * @method ms
    * @param chatId The identifier of the chat to search the messages in.
@@ -2542,7 +2542,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Set the number of boosts required to circument a chat's default restrictions.
+   * Set the number of boosts required to circument a chat's default restrictions. User-only.
    *
    * @method ch
    * @param chatId The identifier of the chat.
