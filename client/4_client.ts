@@ -52,115 +52,117 @@ export interface Context {
   from?: User;
   /** Resolves to `msg?.senderChat`. */
   senderChat?: ChatP;
-  /** Reply the received message with a text message. */
+  /** Context-aware alias for `client.sendMessage()`. */
   reply: (text: string, params?: Omit<SendMessageParams, "replyToMessageId"> & ReplyParams) => Promise<MessageText>;
-  /** Reply the received message with a poll. */
+  /** Context-aware alias for `client.sendPoll()`. */
   replyPoll: (question: string, options: [string, string, ...string[]], params?: Omit<SendPollParams, "replyToMessageId"> & ReplyParams) => Promise<MessagePoll>;
-  /** Reply the received message with a photo. */
+  /** Context-aware alias for `client.sendPhoto()`. */
   replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyToMessageId"> & ReplyParams) => Promise<MessagePhoto>;
-  /** Reply the received message with a document. */
+  /** Context-aware alias for `client.sendDocument()`. */
   replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyToMessageId"> & ReplyParams) => Promise<MessageDocument>;
-  /** Reply the received message with a location. */
+  /** Context-aware alias for `client.sendLocation()`. */
   replyLocation: (latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyToMessageId"> & ReplyParams) => Promise<MessageLocation>;
-  /** Reply the received message with a dice. */
+  /** Context-aware alias for `client.sendDice()`. */
   replyDice: (params?: Omit<SendDiceParams, "replyToMessageId"> & ReplyParams) => Promise<MessageDice>;
-  /** Reply the received message with a venue. */
+  /** Context-aware alias for `client.sendVenue()`. */
   replyVenue: (latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyToMessageId"> & ReplyParams) => Promise<MessageVenue>;
-  /** Reply the received message with a contact. */
+  /** Context-aware alias for `client.sendContact()`. */
   replyContact: (firstName: string, number: string, params?: Omit<SendContactParams, "replyToMessageId"> & ReplyParams) => Promise<MessageContact>;
-  /** Reply the received message with a video. */
+  /** Context-aware alias for `client.sendVideo()`. */
   replyVideo: (video: FileSource, params?: Omit<SendVideoParams, "replyToMessageId"> & ReplyParams) => Promise<MessageVideo>;
-  /** Reply the received message with an animation. */
+  /** Context-aware alias for `client.sendAnimation()`. */
   replyAnimation: (animation: FileSource, params?: Omit<SendAnimationParams, "replyToMessageId"> & ReplyParams) => Promise<MessageAnimation>;
-  /** Reply the received message with a voice message. */
+  /** Context-aware alias for `client.sendVoice()`. */
   replyVoice: (voice: FileSource, params?: Omit<SendVoiceParams, "replyToMessageId"> & ReplyParams) => Promise<MessageVoice>;
-  /** Reply the received message with an audio file. */
+  /** Context-aware alias for `client.sendAudio()`. */
   replyAudio: (audio: FileSource, params?: Omit<SendAudioParams, "replyToMessageId"> & ReplyParams) => Promise<MessageAudio>;
-  /** Reply the received message with a video note. */
+  /** Context-aware alias for `client.sendPoll()`. */
   replyVideoNote: (videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyToMessageId"> & ReplyParams) => Promise<MessageVideoNote>;
-  /** Delete the received message. */
+  /** Context-aware alias for `client.deleteMessage()`. */
   delete: () => Promise<void>;
-  /** Forward the received message. */
+  /** Context-aware alias for `client.forwardMessage()`. */
   forward: (to: ID, params?: ForwardMessagesParams) => Promise<this["msg"]>;
-  /** Pin the received message. */
+  /** Context-aware alias for `client.pinMessage()`. */
   pin: (params?: PinMessageParams) => Promise<void>;
-  /** Unpin the received message. */
+  /** Context-aware alias for `client.unpinMessage()`. */
   unpin: (params?: PinMessageParams) => Promise<void>;
-  /** Ban the sender of the received message. */
+  /** Context-aware alias for `client.banChatMember()`. */
   banSender: (params?: BanChatMemberParams) => Promise<void>;
-  /** Kick the sender of the received message. */
+  /** Context-aware alias for `client.kickChatMember()`. */
   kickSender: () => Promise<void>;
-  /** Set the rights of the received message. */
+  /** Context-aware alias for `client.setChatMemberRights()`. */
   setSenderRights: (params?: SetChatMemberRightsParams) => Promise<void>;
-  /** Get the administrators of the chat which the message was received from. */
+  /** Context-aware alias for `client.getChatAdministrators()`. */
   getChatAdministrators: () => Promise<ChatMember[]>;
-  /** Change the reactions made to the received message. */
+  /** Context-aware alias for `client.setReactions()`. */
   react: (reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
-  /** Send a chat action to the chat which the message was received from. */
+  /** Context-aware alias for `client.sendChatAction()`. */
   sendChatAction: (action: ChatAction, params?: { messageThreadId?: number }) => Promise<void>;
+  /** Context-aware alias for `client.editInlineMessageText()`. */
   editInlineMessageText: (text: string, params?: EditMessageParams) => Promise<void>;
+  /** Context-aware alias for `client.editInlineMessageReplyMarkup()`. */
   editInlineMessageReplyMarkup: (params?: EditMessageReplyMarkupParams) => Promise<void>;
-  /** Edit a message in the chat which the message was received from. */
+  /** Context-aware alias for `client.editMessageText()`. */
   editMessageText: (messageId: number, text: string, params?: EditMessageParams) => Promise<MessageText>;
-  /** Edit the reply markup of a message in the chat which the message was received from. */
+  /** Context-aware alias for `client.editMessageReplyMarkup()`. */
   editMessageReplyMarkup: (messageId: number, params?: EditMessageReplyMarkupParams) => Promise<Message>;
-  /** Answer the received callback query. Bot-only. */
+  /** Context-aware alias for `client.answerCallbackQuery()`. */
   answerCallbackQuery: (params?: AnswerCallbackQueryParams) => Promise<void>;
-  /** Answer the received inline query. Bot-only */
+  /** Context-aware alias for `client.answerInlineQuery()`. */
   answerInlineQuery: (results: InlineQueryResult[], params?: AnswerInlineQueryParams) => Promise<void>;
-  /** Retrieve a single message of the chat which the message was received from. */
+  /** Context-aware alias for `client.getMessage()`. */
   getMessage: (messageId: number) => Promise<Message | null>;
-  /** Retrieve multiple messages of the chat which the message was received from. */
+  /** Context-aware alias for `client.getMessages()`. */
   getMessages: (messageIds: number[]) => Promise<Message[]>;
-  /** Forward a message of the chat which the message was received from. */
+  /** Context-aware alias for `client.forwardMessage()`. */
   forwardMessage: (to: ID, messageId: number, params?: ForwardMessagesParams) => Promise<Message>;
-  /** Forward multiple messages of the chat which the message was received from. */
+  /** Context-aware alias for `client.forwardMessages()`. */
   forwardMessages: (to: ID, messageIds: number[], params?: ForwardMessagesParams) => Promise<Message[]>;
-  /** Delete a message in the chat which the message was received from. */
+  /** Context-aware alias for `client.deleteMessage()`. */
   deleteMessage: (messageId: number, params?: DeleteMessagesParams) => Promise<void>;
-  /** Delete multiple messages in the chat which the message was received from. */
+  /** Context-aware alias for `client.deleteMessages()`. */
   deleteMessages: (messageIds: number[], params?: DeleteMessagesParams) => Promise<void>;
-  /** Pin a message in the chat which the message was received from. */
+  /** Context-aware alias for `client.pinMessage()`. */
   pinMessage: (messageId: number, params?: PinMessageParams) => Promise<void>;
-  /** Unpin a message in the chat which the message was received from. */
+  /** Context-aware alias for `client.unpinMessage()`. */
   unpinMessage: (messageId: number) => Promise<void>;
-  /** Unpin the pinned messages in the chat which the message was received from. */
-  unpinMessages: (messageId: number) => Promise<void>;
-  /** Set the available reactions of the chat which the message was received from. */
+  /** Context-aware alias for `client.unpinMessages()`. */
+  unpinMessages: () => Promise<void>;
+  /** Context-aware alias for `client.setAvailableReactions()`. */
   setAvailableReactions: (availableReactions: "none" | "all" | Reaction[]) => Promise<void>;
-  /** Add a reaction to a message of the chat which the message was received from. */
+  /** Context-aware alias for `client.addReaction()`. */
   addReaction: (messageId: number, reaction: Reaction, params?: AddReactionParams) => Promise<void>;
-  /** Remove a reaction from a message of the chat which the message was received from. */
+  /** Context-aware alias for `client.removeReaction()`. */
   removeReaction: (messageId: number, reaction: Reaction) => Promise<void>;
-  /** Change the reactions made to a message of the chat which the message was received from. */
+  /** Context-aware alias for `client.setReactions()`. */
   setReactions: (messageId: number, reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
-  /** Set the photo of the chat which the message was received from. */
+  /** Context-aware alias for `client.setChatPhoto()`. */
   setChatPhoto: (photo: FileSource, params?: SetChatPhotoParams) => Promise<void>;
-  /** Delete the photo of the chat which the message was received from. */
+  /** Context-aware alias for `client.deleteChatPhoto()`. */
   deleteChatPhoto: () => Promise<void>;
-  /** Ban a member from the chat which the message was received from. */
+  /** Context-aware alias for `client.banChatMember()`. */
   banChatMember: (memberId: ID, params?: BanChatMemberParams) => Promise<void>;
-  /** Unban a member from the chat which the message was received from. */
+  /** Context-aware alias for `client.unbanChatMember()`. */
   unbanChatMember: (memberId: ID) => Promise<void>;
-  /** Kick a member from the chat which the message was received from. */
+  /** Context-aware alias for `client.kickChatMember()`. */
   kickChatMember: (memberId: ID) => Promise<void>;
-  /** Set the rights of a member of the chat which the message was received from. */
+  /** Context-aware alias for `client.setChatMemberRights()`. */
   setChatMemberRights: (memberId: ID, params?: SetChatMemberRightsParams) => Promise<void>;
-  /** Delete all messages sent by a specific member of the chat which the message was received from. */
+  /** Context-aware alias for `client.deleteChatMemberMessages()`. */
   deleteChatMemberMessages: (userId: ID) => Promise<void>;
-  /** Search the messages of the chat which the message was received from. */
+  /** Context-aware alias for `client.searchMessages()`. */
   searchMessages: (query: string, params?: SearchMessagesParams) => Promise<Message[]>;
-  /** Set the number of boosts required to circument the chat's default restrictions. */
+  /** Context-aware alias for `client.setBoostsRequiredToCircumventRestrictions()`. */
   setBoostsRequiredToCircumventRestrictions: (boosts: number) => Promise<void>;
-  /** Create an invite link for the chat which the message was received from. */
+  /** Context-aware alias for `client.createInviteLink()`. */
   createInviteLink: (params?: CreateInviteLinkParams) => Promise<InviteLink>;
-  /** Get the invite links that were created for the chat which the message was received from. */
+  /** Context-aware alias for `client.getCreatedInviteLinks()`. */
   getCreatedInviteLinks: (params?: GetCreatedInviteLinksParams) => Promise<InviteLink[]>;
-  /** Leave the chat which the message was received from. */
+  /** Context-aware alias for `client.leaveChat()`. */
   leave: () => Promise<void>;
-  /** Block the user who sent the message. User-only. */
+  /** Context-aware alias for `client.blockUser()`. */
   block: () => Promise<void>;
-  /** Unblock the user who sent the message. */
+  /** Context-aware alias for `client.unblockUser()`. */
   unblock: () => Promise<void>;
   toJSON: () => Update;
 }
