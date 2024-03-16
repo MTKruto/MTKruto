@@ -3,7 +3,7 @@ import { ReadObject, TLReader } from "./3_tl_reader.ts";
 import { RPCResult } from "./4_rpc_result.ts";
 import { TLWriter } from "./4_tl_writer.ts";
 
-export function calculateLength(object: ReadObject): number {
+export function calculateLength(object: Message_ | ReadObject): number {
   let length = 0;
   if (Array.isArray(object)) {
     length += 32 / 8; // vector constructor
@@ -27,7 +27,7 @@ export class Message_ {
   ) {
   }
 
-  serialize(): Uint8Array {
+  [serialize](): Uint8Array {
     if (this.body instanceof RPCResult) {
       throw new Error("Not applicable");
     }

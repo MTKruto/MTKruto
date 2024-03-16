@@ -1,7 +1,5 @@
 import { DC } from "./3_transport.ts";
 
-export const ACK_THRESHOLD = 10;
-
 export type PublicKeys = readonly [bigint, [bigint, bigint]][];
 
 export const PUBLIC_KEYS: PublicKeys = Object.freeze([

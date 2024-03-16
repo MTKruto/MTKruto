@@ -1,10 +1,10 @@
 import { gunzip } from "../0_deps.ts";
-import { bigIntFromBuffer, cleanObject, drop, getLogger, getRandomBigInt, getRandomId, Logger, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { bigIntFromBuffer, CacheMap, cleanObject, drop, getLogger, getRandomBigInt, getRandomId, Logger, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryResult, InputStoryContent, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Sticker, Story, Update, UpdateIntersection, User } from "../3_types.ts";
-import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
+import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { FilterQuery, match, WithFilter } from "./0_filters.ts";
@@ -213,7 +213,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #auth: { key: Uint8Array; id: bigint } | null = null;
   #sessionId = getRandomBigInt(8, true, false);
   #state = { salt: 0n, seqNo: 0 };
-  #promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject | Error) => void; call: TLObject }>();
+  #promises = new Map<bigint, { container?: bigint; message: Message_; resolve?: (obj: ReadObject) => void; reject?: (err: ReadObject | Error) => void; call: TLObject }>();
+  #recentAcks = new CacheMap<bigint, { container?: bigint; message: Message_ }>(20);
   #toAcknowledge = new Set<bigint>();
   #guaranteeUpdateDelivery: boolean;
   #updateManager: UpdateManager;
@@ -1144,11 +1145,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
     while (this.connected) {
       try {
-        if (this.#toAcknowledge.size >= ACK_THRESHOLD) {
-          await this.send(new types.Msgs_ack({ msg_ids: [...this.#toAcknowledge] }));
-          this.#toAcknowledge.clear();
-        }
-
         const buffer = await this.transport.transport.receive();
         this.#L.inBin(buffer);
 
@@ -1202,9 +1198,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             const resolvePromise = () => {
               if (promise) {
                 if (result instanceof types.Rpc_error) {
-                  promise.reject(upgradeInstance(result, promise.call));
+                  promise.reject?.(upgradeInstance(result, promise.call));
                 } else {
-                  promise.resolve(result);
+                  promise.resolve?.(result);
                 }
                 this.#promises.delete(messageId);
               }
@@ -1218,7 +1214,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           } else if (message.body instanceof types.Pong) {
             const promise = this.#promises.get(message.body.msg_id);
             if (promise) {
-              promise.resolve(message.body);
+              promise.resolve?.(message.body);
               this.#promises.delete(message.body.msg_id);
             }
           } else if (message.body instanceof types.Bad_server_salt) {
@@ -1226,9 +1222,22 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             this.#state.salt = message.body.new_server_salt;
             await this.storage.setServerSalt(this.#state.salt);
             const promise = this.#promises.get(message.body.bad_msg_id);
+            const ack = this.#recentAcks.get(message.body.bad_msg_id);
             if (promise) {
-              promise.resolve(message.body);
-              this.#promises.delete(message.body.bad_msg_id);
+              drop(this.#sendMessage(promise.message));
+            } else if (ack) {
+              drop(this.#sendMessage(ack.message));
+            } else {
+              for (const promise of this.#promises.values()) {
+                if (promise.container && promise.container == message.body.bad_msg_id) {
+                  drop(this.#sendMessage(promise.message));
+                }
+              }
+              for (const ack of this.#recentAcks.values()) {
+                if (ack.container && ack.container == message.body.bad_msg_id) {
+                  drop(this.#sendMessage(ack.message));
+                }
+              }
             }
           }
 
@@ -1247,8 +1256,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
 
     if (!this.connected) {
-      for (const { reject } of this.#promises.values()) {
-        reject(new ConnectionError("Connection was closed"));
+      for (const [key, { reject }] of this.#promises.entries()) {
+        reject?.(new ConnectionError("Connection was closed"));
+        this.#promises.delete(key);
       }
     } else {
       UNREACHABLE();
@@ -1286,6 +1296,32 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
+  #nextSeqNo(contentRelated: boolean) {
+    let seqNo = this.#state.seqNo * 2;
+    if (contentRelated) {
+      seqNo++;
+      this.#state.seqNo++;
+    }
+    return seqNo;
+  }
+
+  #nextMessageId() {
+    return this.#lastMsgId = getMessageId(this.#lastMsgId);
+  }
+
+  async #sendMessage(message: Message_ | MessageContainer) {
+    const payload = await encryptMessage(
+      message,
+      this.#auth!.key,
+      this.#auth!.id,
+      this.#state.salt,
+      this.#sessionId,
+    );
+    await this.transport!.transport.send(payload);
+    this.#L.out(message);
+    this.#L.outBin(payload);
+  }
+
   #pingLoopStarted = false;
   #autoStarted = false;
   #lastMsgId = 0n;
@@ -1306,34 +1342,27 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           UNREACHABLE();
         }
 
-        let seqNo = this.#state.seqNo * 2;
-        if (!(function_ instanceof functions.ping) && !(function_ instanceof types.Msgs_ack)) {
-          seqNo++;
-          this.#state.seqNo++;
+        const message_ = new Message_(this.#nextMessageId(), this.#nextSeqNo(true), function_);
+
+        let ack: Message_ | undefined = undefined;
+        let container: bigint | undefined = undefined;
+        let message: Message_ | MessageContainer;
+        if (this.#toAcknowledge.size) {
+          ack = new Message_(this.#nextMessageId(), this.#nextSeqNo(false), new types.Msgs_ack({ msg_ids: [...this.#toAcknowledge] }));
+          message = new MessageContainer(container = this.#nextMessageId(), this.#nextSeqNo(false), [message_, ack]);
+        } else {
+          message = message_;
+        }
+        await this.#sendMessage(message);
+        this.#Linvoke.debug("invoked", function_[name]);
+        if (ack) {
+          this.#recentAcks.set(ack.id, { container, message: ack });
         }
 
-        const messageId = this.#lastMsgId = getMessageId(this.#lastMsgId);
-        const message = new Message_(messageId, seqNo, function_);
-        const payload = await encryptMessage(
-          message,
-          this.#auth.key,
-          this.#auth.id,
-          this.#state.salt,
-          this.#sessionId,
-        );
-        await this.transport.transport.send(payload);
-        this.#L.out(message);
-        this.#L.outBin(payload);
-        this.#Linvoke.debug("invoked", function_[name]);
-
         if (noWait) {
-          this.#promises.set(message.id, {
-            resolve: (result) => {
-              if (result instanceof types.Bad_server_salt) {
-                drop(this.invoke(function_, true));
-              }
-            },
-            reject: () => {},
+          this.#promises.set(message_.id, {
+            container,
+            message: message_,
             call: function_,
           });
           return;
@@ -1343,7 +1372,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
         try {
           result = await new Promise<ReadObject>((resolve, reject) => {
-            this.#promises.set(message.id, { resolve, reject, call: function_ });
+            this.#promises.set(message_.id, { container, message: message_, resolve, reject, call: function_ });
           });
         } catch (err) {
           if (err instanceof AuthKeyUnregistered) {
@@ -1352,15 +1381,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           throw err;
         }
 
-        if (result instanceof types.Bad_server_salt) {
-          return await this.invoke(function_) as T;
-        } else {
-          if (!this.#pingLoopStarted) {
-            drop(this.#pingLoop());
-            this.#pingLoopStarted = true;
-          }
-          return result as T;
+        if (!this.#pingLoopStarted) {
+          drop(this.#pingLoop());
+          this.#pingLoopStarted = true;
         }
+        return result as T;
       } catch (err) {
         if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
           continue;
