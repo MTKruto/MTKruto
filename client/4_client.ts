@@ -164,6 +164,12 @@ export interface Context {
   block: () => Promise<void>;
   /** Context-aware alias for `client.unblockUser()`. */
   unblock: () => Promise<void>;
+  /** Context-aware alias for `client.getChatMember()`. */
+  getChatMember: (userId: ID) => Promise<ChatMember>;
+  /** Context-aware alias for `client.setChatStickerSet()`. */
+  setChatStickerSet: (setName: string) => Promise<void>;
+  /** Context-aware alias for `client.deleteChatStickerSet()`. */
+  deleteChatStickerSet: () => Promise<void>;
   toJSON: () => Update;
 }
 
@@ -773,6 +779,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       },
       unblock: () => {
         return this.unblockUser(mustGetUserId());
+      },
+      getChatMember: (userId) => {
+        const { chatId } = mustGetMsg();
+        return this.getChatMember(chatId, userId);
+      },
+      setChatStickerSet: (setName) => {
+        const { chatId } = mustGetMsg();
+        return this.setChatStickerSet(chatId, setName);
+      },
+      deleteChatStickerSet: () => {
+        const { chatId } = mustGetMsg();
+        return this.deleteChatStickerSet(chatId);
       },
     };
 
@@ -2632,7 +2650,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The identifier of the chat. Must be a supergroup.
    * @param setName The name of the set.
    */
-  async setChatStickerSet(chatId: ID, setName: string) {
+  async setChatStickerSet(chatId: ID, setName: string): Promise<void> {
     await this.#messageManager.setChatStickerSet(chatId, setName);
   }
 
@@ -2642,7 +2660,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method ch
    * @param chatId The identifier of the chat. Must be a supergroup.
    */
-  async deleteChatStickerSet(chatId: ID) {
+  async deleteChatStickerSet(chatId: ID): Promise<void> {
     await this.#messageManager.deleteChatStickerSet(chatId);
   }
 }
