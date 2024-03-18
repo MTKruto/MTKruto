@@ -17,7 +17,7 @@ export interface ClientPlainParams extends ClientAbstractParams {
 
 export class ClientPlain extends ClientAbstract {
   readonly #publicKeys: PublicKeys;
-  #lastMsgId = 0n;
+  #lastMsgId = 0n; // TODO: refactor
 
   constructor(params?: ClientPlainParams) {
     super(params);

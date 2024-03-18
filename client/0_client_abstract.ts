@@ -19,9 +19,9 @@ export interface ClientAbstractParams {
 }
 
 export abstract class ClientAbstract {
-  protected readonly initialDc: DC;
-  protected transportProvider: TransportProvider;
-  protected readonly cdn: boolean;
+  public readonly initialDc: DC;
+  public transportProvider: TransportProvider;
+  public readonly cdn: boolean;
 
   protected transport?: ReturnType<TransportProvider>;
   #dc?: DC;
@@ -33,6 +33,10 @@ export abstract class ClientAbstract {
   }
 
   protected stateChangeHandler?: (connected: boolean) => void;
+
+  get dc() {
+    return this.#dc ?? this.initialDc;
+  }
 
   get dcId(): number {
     if (!this.transport) {
@@ -72,5 +76,9 @@ export abstract class ClientAbstract {
     }
     await this.transport.transport.deinitialize();
     await this.transport.connection.close();
+  }
+
+  get disconnected() {
+    return !this.transport?.transport.initialized;
   }
 }
