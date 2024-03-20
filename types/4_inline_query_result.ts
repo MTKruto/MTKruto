@@ -49,7 +49,7 @@ export interface _InlineQueryResultThumbnailCommon {
 }
 
 /** @unlisted */
-export interface InlineQueryResultArticle extends _InlineQueryResultBase {
+export interface InlineQueryResultArticle extends _InlineQueryResultBase, _InlineQueryResultThumbnailCommon {
   type: "article";
   title: string;
   inputMessageContent: InputMessageContent;
