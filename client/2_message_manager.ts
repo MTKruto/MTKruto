@@ -515,7 +515,7 @@ export class MessageManager {
     const spoiler = params?.hasSpoiler ? true : undefined;
 
     if (typeof photo === "string") {
-      const fileId = this.resolveFileId(photo, FileType.Photo);
+      const fileId = this.resolveFileId(photo, [FileType.Photo, FileType.ProfilePhoto]);
       if (fileId != null) {
         media = new types.InputMediaPhoto({
           id: new types.InputPhoto(fileId),
@@ -568,7 +568,8 @@ export class MessageManager {
     return await this.#updatesToMessages(chatId, result).then((v) => v[0]);
   }
 
-  resolveFileId(maybeFileId: string, expectedFileType: FileType) {
+  resolveFileId(maybeFileId: string, expectedFileType: FileType | FileType[]) {
+    expectedFileType = Array.isArray(expectedFileType) ? expectedFileType : [expectedFileType];
     let fileId: FileId | null = null;
     try {
       fileId = deserializeFileId(maybeFileId);
@@ -576,7 +577,7 @@ export class MessageManager {
       this.#LresolveFileId.warning(err);
     }
     if (fileId != null) {
-      if (fileId.type != expectedFileType) {
+      if (!expectedFileType.includes(fileId.type)) {
         UNREACHABLE();
       }
       return {
