@@ -438,6 +438,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       type,
       title,
       description,
+      thumb: thumb == null ? undefined : thumb,
       send_message: new types.InputBotInlineMessageMediaGeo({
         geo_point: new types.InputGeoPoint({
           lat: result_.latitude,
@@ -456,6 +457,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       type,
       title,
       description,
+      thumb: thumb == null ? undefined : thumb,
       send_message: new types.InputBotInlineMessageGame({
         reply_markup: replyMarkup,
       }),
@@ -496,6 +498,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       type,
       title,
       description,
+      thumb: thumb == null ? undefined : thumb,
       send_message: sendMessage,
     });
   } else if (result_.type == "venue") {
@@ -507,6 +510,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       type,
       title,
       description,
+      thumb: thumb == null ? undefined : thumb,
       send_message: new types.InputBotInlineMessageMediaVenue({
         geo_point: new types.InputGeoPoint({ long: result_.longitude, lat: result_.latitude }),
         address: result_.address,
