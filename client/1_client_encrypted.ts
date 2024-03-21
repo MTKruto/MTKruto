@@ -106,7 +106,8 @@ export class ClientEncrypted extends ClientAbstract {
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
-    const message__ = new Message_(this.#nextMessageId(), this.#nextSeqNo(true), function_);
+    const messageId = this.#nextMessageId();
+    const message__ = new Message_(messageId, this.#nextSeqNo(true), function_);
 
     let message_: Message_ | MessageContainer;
     let container: bigint | undefined = undefined;
@@ -123,7 +124,7 @@ export class ClientEncrypted extends ClientAbstract {
     this.#Linvoke.debug("invoked", function_[name]);
 
     if (noWait) {
-      this.#promises.set(message_.id, {
+      this.#promises.set(messageId, {
         container,
         message: message__,
         call: function_,
@@ -132,7 +133,7 @@ export class ClientEncrypted extends ClientAbstract {
     }
 
     return await new Promise<ReadObject>((resolve, reject) => {
-      this.#promises.set(message_.id, { container, message: message__, resolve, reject, call: function_ });
+      this.#promises.set(messageId, { container, message: message__, resolve, reject, call: function_ });
     }).then((v) => v as T);
   }
 
