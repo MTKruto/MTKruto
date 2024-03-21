@@ -1,43 +1,28 @@
-import { gunzip } from "../0_deps.ts";
-import { bigIntFromBuffer, CacheMap, cleanObject, drop, getLogger, getRandomBigInt, getRandomId, Logger, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
+import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, mustPrompt, mustPromptOneOf, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, name, peerToChatId, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryResult, InputStoryContent, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Sticker, Story, Update, UpdateIntersection, User } from "../3_types.ts";
+import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryResult, InputStoryContent, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Sticker, Story, Update, User } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
-import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
-import { ClientAbstract } from "./0_client_abstract.ts";
-import { FilterQuery, match, WithFilter } from "./0_filters.ts";
-import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
+import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded } from "../4_errors.ts";
 import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
-import { Api, ConnectionError } from "./0_types.ts";
+import { Api } from "./0_types.ts";
 import { getUsername, resolve } from "./0_utilities.ts";
 import { AccountManager } from "./1_account_manager.ts";
 import { BotInfoManager } from "./1_bot_info_manager.ts";
-import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
+import { ClientEncrypted } from "./1_client_encrypted.ts";
+import { ClientPlain, ClientPlainParams } from "./1_client_plain.ts";
+import { Composer as Composer_, NextFunction } from "./1_composer.ts";
 import { FileManager } from "./1_file_manager.ts";
 import { NetworkStatisticsManager } from "./1_network_statistics_manager.ts";
 import { ReactionManager } from "./1_reaction_manager.ts";
 import { UpdateManager } from "./1_update_manager.ts";
-import { ClientPlain, ClientPlainParams } from "./2_client_plain.ts";
 import { MessageManager } from "./2_message_manager.ts";
 import { CallbackQueryManager } from "./3_callback_query_manager.ts";
 import { ChatListManager } from "./3_chat_list_manager.ts";
 import { InlineQueryManager } from "./3_inline_query_manager.ts";
 import { StoryManager } from "./3_story_manager.ts";
-
-export type NextFn<T = void> = () => Promise<T>;
-export interface InvokeErrorHandler<C> {
-  (ctx: { client: C; error: unknown; function: types.Type | functions.Function<unknown>; n: number }, next: NextFn<boolean>): MaybePromise<boolean>;
-}
-
-let id = 0;
-
-const getEntity = Symbol();
-export const handleMigrationError = Symbol("handleMigrationError");
-
-const functionNamespaces = Object.entries(functions).filter(([, v]) => !(v instanceof Function)).map(([k]) => k);
 
 export interface Context {
   /** The client that received the update. */
@@ -173,11 +158,24 @@ export interface Context {
   toJSON: () => Update;
 }
 
-export function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
+export class Composer<C extends Context = Context> extends Composer_<C> {
+}
+
+function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
   return (_ctx, next) => next();
+}
+export interface InvokeErrorHandler<C> {
+  (ctx: { client: C; error: unknown; function: types.Type | functions.Function<unknown>; n: number }, next: NextFunction<boolean>): MaybePromise<boolean>;
 }
 
 export const restartAuth = Symbol("restartAuth");
+export const handleMigrationError = Symbol("handleMigrationError");
+
+// global Client ID counter for logs
+let id = 0;
+
+const getEntity = Symbol();
+const functionNamespaces = Object.entries(functions).filter(([, v]) => !(v instanceof Function)).map(([k]) => k);
 
 export interface ClientParams extends ClientPlainParams {
   /** A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defauls to `ParseMode.None`. */
@@ -194,8 +192,6 @@ export interface ClientParams extends ClientPlainParams {
   systemLangCode?: string;
   /** The system_version parameter to be passed to initConnection when calling `authorize`. The default varies by the current runtime. */
   systemVersion?: string;
-  /** Whether to automatically call `start` with no parameters in the first `invoke` call. Defaults to `true`. */
-  autoStart?: boolean;
   /** Whether to use default handlers. Defaults to `true`. */
   defaultHandlers?: boolean;
   /** Whether to ignore outgoing messages. Defaults to `true` for bots, and `false` for users. */
@@ -209,13 +205,11 @@ export interface ClientParams extends ClientPlainParams {
   /** Whether to store messages. Defaults to `false`. */
   storeMessages?: boolean;
 }
-export class Client<C extends Context = Context> extends ClientAbstract {
-  #auth: { key: Uint8Array; id: bigint } | null = null;
-  #sessionId = getRandomBigInt(8, true, false);
-  #state = { salt: 0n, seqNo: 0 };
-  #promises = new Map<bigint, { container?: bigint; message: Message_; resolve?: (obj: ReadObject) => void; reject?: (err: ReadObject | Error) => void; call: TLObject }>();
-  #recentAcks = new CacheMap<bigint, { container?: bigint; message: Message_ }>(20);
-  #toAcknowledge = new Set<bigint>();
+/**
+ * An MTKruto client.
+ */
+export class Client<C extends Context = Context> extends Composer<C> {
+  #client: ClientEncrypted;
   #guaranteeUpdateDelivery: boolean;
   #updateManager: UpdateManager;
   #networkStatisticsManager: NetworkStatisticsManager;
@@ -240,17 +234,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   public readonly systemLangCode: string;
   public readonly systemVersion: string;
   readonly #publicKeys?: PublicKeys;
-  readonly #autoStart: boolean;
   readonly #ignoreOutgoing: boolean | null;
-  readonly #prefixes?: string | string[];
   #storeMessages: boolean;
 
-  #id: number;
   #L: Logger;
   #Lauthorize: Logger;
-  #LreceiveLoop: Logger;
   #LpingLoop: Logger;
-  #Linvoke: Logger;
   #LhandleMigrationError: Logger;
   #L$initConncetion: Logger;
 
@@ -267,7 +256,36 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     public readonly apiHash: string | null = "",
     params?: ClientParams,
   ) {
-    super(params);
+    super();
+    this.#client = new ClientEncrypted(params);
+    this.#client.handlers = {
+      serverSaltReassigned: async (newServerSalt) => {
+        await this.storage.setServerSalt(newServerSalt);
+      },
+      updates: (updates, call, callback) => {
+        this.#updateManager.processUpdates(updates, true, call, callback);
+      },
+      result: async (result, callback) => {
+        await this.#updateManager.processResult(result);
+        callback();
+      },
+      error: async (_err, source) => {
+        switch (source) {
+          case "deserialization":
+            await this.#updateManager.recoverUpdateGap(source);
+            break;
+          case "decryption":
+            try {
+              await this.disconnect();
+            } catch {
+              //
+            }
+            await this.connect();
+            await this.#updateManager.recoverUpdateGap(source);
+            break;
+        }
+      },
+    };
 
     this.storage = typeof storage === "string" ? new StorageMemory(storage) : storage ?? new StorageMemory();
     this.#storeMessages = params?.storeMessages ?? false;
@@ -285,17 +303,15 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
     this.#publicKeys = params?.publicKeys;
-    this.#autoStart = params?.autoStart ?? true;
     this.#ignoreOutgoing = params?.ignoreOutgoing ?? null;
-    this.#prefixes = params?.prefixes;
+    if (params?.prefixes) {
+      this.prefixes = params?.prefixes;
+    }
     this.#guaranteeUpdateDelivery = params?.guaranteeUpdateDelivery ?? false;
-    this.#id = id++;
 
-    const L = this.#L = getLogger("Client").client(this.#id);
+    const L = this.#L = getLogger("Client").client(id++);
     this.#Lauthorize = L.branch("authorize");
-    this.#LreceiveLoop = L.branch("receiveLoop");
     this.#LpingLoop = L.branch("pingLoop");
-    this.#Linvoke = L.branch("invoke");
     this.#LhandleMigrationError = L.branch("[handleMigrationError]");
     this.#L$initConncetion = L.branch("#initConnection");
 
@@ -315,8 +331,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
       apiFactory: (dcId?: number) => {
-        const client = new Client((!dcId || dcId == this.dcId) ? this.storage : this.storage.branch(`download_client_${dcId}`), this.apiId, this.apiHash, {
-          transportProvider: this.transportProvider,
+        const client = new Client((!dcId || dcId == this.#client.dcId) ? this.storage : this.storage.branch(`download_client_${dcId}`), this.apiId, this.apiHash, {
+          transportProvider: this.#client.transportProvider,
           appVersion: this.appVersion,
           deviceModel: this.deviceModel,
           langCode: this.langCode,
@@ -326,7 +342,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           cdn: true,
         });
 
-        client.#state.salt = this.#state.salt;
+        client.#client.serverSalt = this.#client.serverSalt;
 
         client.invoke.use(async (ctx, next) => {
           if (ctx.error instanceof AuthKeyUnregistered && dcId) {
@@ -347,9 +363,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           connect: async () => {
             await client.connect();
 
-            if (dcId && dcId != this.dcId) {
+            if (dcId && dcId != this.#client.dcId) {
               let dc = String(dcId);
-              if (this.dcId < 0) {
+              if (this.#client.dcId < 0) {
                 dc += "-test";
               }
               await client.setDc(dc as DC);
@@ -377,8 +393,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#accountManager = new AccountManager(c);
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
 
-    const transportProvider = this.transportProvider;
-    this.transportProvider = (params) => {
+    const transportProvider = this.#client.transportProvider;
+    this.#client.transportProvider = (params) => {
       const transport = transportProvider(params);
       transport.connection.callback = this.#networkStatisticsManager.getTransportReadWriteCallback();
       return transport;
@@ -388,7 +404,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       this.on("connectionState", ({ connectionState }, next) => {
         drop((async (): Promise<void> => {
           if (connectionState == "notConnected") {
-            if (!this.transport?.transport.initialized) {
+            if (this.disconnected) {
               L.debug("not reconnecting");
               return;
             }
@@ -423,6 +439,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
       });
     }
+  }
+
+  // direct ClientEncrypted property proxies
+  get connected(): boolean {
+    return this.#client.connected;
+  }
+  get disconnected(): boolean {
+    return this.#client.disconnected;
   }
 
   #namespaceProxies = (() => {
@@ -813,16 +837,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   #lastPropagatedConnectionState: ConnectionState | null = null;
   protected stateChangeHandler: (connected: boolean) => void = ((connected: boolean) => {
-    this.#connectMutex.lock().then((unlock) => {
-      try {
-        const connectionState = connected ? "ready" : "notConnected";
-        if (this.connected == connected && this.#lastPropagatedConnectionState != connectionState) {
-          this.#propagateConnectionState(connectionState);
-        }
-      } finally {
-        unlock();
-      }
-    });
+    const connectionState = connected ? "ready" : "notConnected";
+    if (this.connected == connected && this.#lastPropagatedConnectionState != connectionState) {
+      this.#propagateConnectionState(connectionState);
+    }
   }).bind(this);
 
   /**
@@ -838,13 +856,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       await this.storage.setAuthKey(null);
       await this.storage.getAuthKey();
     }
-    super.setDc(dc);
-  }
-
-  async #setAuth(key: Uint8Array) {
-    const hash = await sha1(key);
-    const id = bigIntFromBuffer(hash.slice(-8), true, false);
-    this.#auth = { key, id };
+    this.#client.setDc(dc);
   }
 
   #storageInited = false;
@@ -858,60 +870,44 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  #connectMutex = new Mutex();
   /**
    * Loads the session if `setDc` was not called, initializes and connnects
    * a `ClientPlain` to generate auth key if there was none, and connects the client.
    * Before establishing the connection, the session is saved.
    */
   async connect() {
-    if (this.connected) {
-      return;
-    }
-    const unlock = await this.#connectMutex.lock();
-    try {
-      await this.#initStorage();
-      const authKey = await this.storage.getAuthKey();
-      if (authKey == null) {
-        const plain = new ClientPlain({ initialDc: this.initialDc, transportProvider: this.transportProvider, cdn: this.cdn, publicKeys: this.#publicKeys });
-        const dc = await this.storage.getDc();
-        if (dc != null) {
-          plain.setDc(dc);
-        }
-        await plain.connect();
-        const [authKey, salt] = await plain.createAuthKey();
-        await plain.disconnect();
-        await this.storage.setAuthKey(authKey);
-        await this.#setAuth(authKey);
-        this.#state.salt = salt;
-        await this.storage.setServerSalt(salt);
-      } else {
-        if (this.#state.salt == 0n) {
-          this.#state.salt = await this.storage.getServerSalt() ?? 0n;
-        }
-        await this.#setAuth(authKey);
+    await this.#initStorage();
+    const [authKey, dc] = await Promise.all([this.storage.getAuthKey(), this.storage.getDc()]);
+    if (authKey != null && dc != null) {
+      await this.#client.setAuthKey(authKey);
+      await this.#client.setDc(dc); // TODO: remove await
+      if (this.#client.serverSalt == 0n) {
+        this.#client.serverSalt = await this.storage.getServerSalt() ?? 0n;
       }
+    } else {
+      const plain = new ClientPlain({ initialDc: this.#client.initialDc, transportProvider: this.#client.transportProvider, cdn: this.#client.cdn, publicKeys: this.#publicKeys });
       const dc = await this.storage.getDc();
       if (dc != null) {
-        await this.setDc(dc);
+        plain.setDc(dc);
+        this.#client.setDc(dc);
       }
-      await super.connect();
-      if (dc == null) {
-        await this.storage.setDc(this.initialDc);
-      }
-      this.#L.debug("connected");
-      drop(this.#receiveLoop());
-      if (this.#pingLoopStarted) {
-        drop(this.#pingLoop());
-      }
-    } finally {
-      unlock();
+      await plain.connect();
+      const [authKey, serverSalt] = await plain.createAuthKey();
+      drop(plain.disconnect());
+      await this.#client.setAuthKey(authKey);
+      this.#client.serverSalt = serverSalt;
     }
+    await this.#client.connect();
+    await Promise.all([this.storage.setAuthKey(this.#client.authKey), this.storage.setDc(this.#client.dc), this.storage.setServerSalt(this.#client.serverSalt)]);
+  }
+
+  reconnect(dc: DC): Promise<void> {
+    return this.#client.reconnect(dc);
   }
 
   async [handleMigrationError](err: Migrate) {
     let newDc = String(err.dc);
-    if (Math.abs(this.dcId) >= 10_000) {
+    if (Math.abs(this.#client.dcId) >= 10_000) {
       newDc += "-test";
     }
     await this.reconnect(newDc as DC);
@@ -921,7 +917,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #connectionInited = false;
   async disconnect() {
     this.#connectionInited = false;
-    await super.disconnect();
+    await this.#client.disconnect();
     this.#pingLoopAbortController?.abort();
   }
   async #initConnection() {
@@ -947,7 +943,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #lastPropagatedAuthorizationState: boolean | null = null;
   async #propagateAuthorizationState(authorized: boolean) {
     if (this.#lastPropagatedAuthorizationState != authorized) {
-      await this.#handle(await this.#constructContext({ authorizationState: { authorized } }), resolve);
+      await this.middleware()(await this.#constructContext({ authorizationState: { authorized } }), resolve);
       this.#lastPropagatedAuthorizationState = authorized;
     }
   }
@@ -1144,136 +1140,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     await this.authorize(params);
   }
 
-  async #receiveLoop() {
-    if (!this.#auth || !this.transport) {
-      throw new ConnectionError("Not connected");
-    }
-
-    while (this.connected) {
-      try {
-        const buffer = await this.transport.transport.receive();
-        this.#L.inBin(buffer);
-
-        let decrypted;
-        try {
-          decrypted = await (decryptMessage(
-            buffer,
-            this.#auth.key,
-            this.#auth.id,
-            this.#sessionId,
-          ));
-          this.#L.in(decrypted);
-        } catch (err) {
-          this.#LreceiveLoop.error("failed to decrypt message:", err);
-          drop((async () => {
-            try {
-              await this.disconnect();
-            } catch {
-              //
-            }
-            await this.connect();
-            await this.#updateManager.recoverUpdateGap("decryption");
-          })());
-          continue;
-        }
-        const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
-
-        for (const message of messages) {
-          let body = message.body;
-          if (body instanceof types.Gzip_packed) {
-            body = new TLReader(gunzip(body.packed_data)).readObject();
-          }
-          this.#LreceiveLoop.debug("received", (typeof body === "object" && name in body) ? body[name] : body.constructor.name);
-          if (body instanceof types._Updates || body instanceof types._Update) {
-            this.#updateManager.processUpdates(body as types.Updates | enums.Update, true);
-          } else if (body instanceof types.New_session_created) {
-            this.#state.salt = body.server_salt;
-            await this.storage.setServerSalt(this.#state.salt);
-          } else if (message.body instanceof RPCResult) {
-            let result = message.body.result;
-            if (result instanceof types.Gzip_packed) {
-              result = new TLReader(gunzip(result.packed_data)).readObject();
-            }
-            if (result instanceof types.Rpc_error) {
-              this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
-            } else {
-              this.#LreceiveLoop.debug("RPCResult:", (typeof result === "object" && name in result) ? result[name] : result.constructor.name);
-            }
-            const messageId = message.body.messageId;
-            const promise = this.#promises.get(messageId);
-            const resolvePromise = () => {
-              if (promise) {
-                if (result instanceof types.Rpc_error) {
-                  promise.reject?.(upgradeInstance(result, promise.call));
-                } else {
-                  promise.resolve?.(result);
-                }
-                this.#promises.delete(messageId);
-              }
-            };
-            if (result instanceof types._Updates || result instanceof types._Update) {
-              this.#updateManager.processUpdates(result as enums.Updates | enums.Update, true, promise?.call, resolvePromise);
-            } else {
-              await this.#updateManager.processResult(result);
-              resolvePromise();
-            }
-          } else if (message.body instanceof types.Pong) {
-            const promise = this.#promises.get(message.body.msg_id);
-            if (promise) {
-              promise.resolve?.(message.body);
-              this.#promises.delete(message.body.msg_id);
-            }
-          } else if (message.body instanceof types.Bad_server_salt) {
-            this.#LreceiveLoop.debug("server salt reassigned");
-            this.#state.salt = message.body.new_server_salt;
-            await this.storage.setServerSalt(this.#state.salt);
-            const promise = this.#promises.get(message.body.bad_msg_id);
-            const ack = this.#recentAcks.get(message.body.bad_msg_id);
-            if (promise) {
-              drop(this.#sendMessage(promise.message));
-            } else if (ack) {
-              drop(this.#sendMessage(ack.message));
-            } else {
-              for (const promise of this.#promises.values()) {
-                if (promise.container && promise.container == message.body.bad_msg_id) {
-                  drop(this.#sendMessage(promise.message));
-                }
-              }
-              for (const ack of this.#recentAcks.values()) {
-                if (ack.container && ack.container == message.body.bad_msg_id) {
-                  drop(this.#sendMessage(ack.message));
-                }
-              }
-            }
-          }
-
-          this.#toAcknowledge.add(message.id);
-        }
-      } catch (err) {
-        if (!this.connected) {
-          break;
-        } else if (err instanceof TLError) {
-          this.#LreceiveLoop.error("failed to deserialize:", err);
-          drop(this.#updateManager.recoverUpdateGap("deserialize"));
-        } else {
-          this.#LreceiveLoop.error("unexpected error:", err);
-        }
-      }
-    }
-
-    if (!this.connected) {
-      for (const [key, { reject }] of this.#promises.entries()) {
-        reject?.(new ConnectionError("Connection was closed"));
-        this.#promises.delete(key);
-      }
-    } else {
-      UNREACHABLE();
-    }
-  }
-
+  #pingLoopStarted = false;
   #pingLoopAbortController: AbortController | null = null;
   #pingInterval = 60 * 1_000; // 60 seconds
   #lastUpdates = new Date();
+  #startPingLoop() {
+    drop(this.#pingLoop());
+  }
   async #pingLoop() {
     this.#pingLoopAbortController = new AbortController();
     while (this.connected) {
@@ -1302,101 +1175,22 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  #nextSeqNo(contentRelated: boolean) {
-    let seqNo = this.#state.seqNo * 2;
-    if (contentRelated) {
-      seqNo++;
-      this.#state.seqNo++;
-    }
-    return seqNo;
-  }
-
-  #nextMessageId() {
-    return this.#lastMsgId = getMessageId(this.#lastMsgId);
-  }
-
-  async #sendMessage(message: Message_ | MessageContainer) {
-    const payload = await encryptMessage(
-      message,
-      this.#auth!.key,
-      this.#auth!.id,
-      this.#state.salt,
-      this.#sessionId,
-    );
-    await this.transport!.transport.send(payload);
-    this.#L.out(message);
-    this.#L.outBin(payload);
-  }
-
-  #pingLoopStarted = false;
-  #autoStarted = false;
-  #lastMsgId = 0n;
   async #invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
   async #invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
   async #invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
     let n = 1;
     while (true) {
       try {
-        if (!this.#auth || !this.transport) {
-          if (this.#autoStart && !this.#autoStarted) {
-            await this.start();
-          } else {
-            throw new ConnectionError("Not connected");
-          }
-        }
-        if (!this.#auth || !this.transport) {
-          UNREACHABLE();
-        }
-
-        const message_ = new Message_(this.#nextMessageId(), this.#nextSeqNo(true), function_);
-
-        let ack: Message_ | undefined = undefined;
-        let container: bigint | undefined = undefined;
-        let message: Message_ | MessageContainer;
-        if (this.#toAcknowledge.size) {
-          ack = new Message_(this.#nextMessageId(), this.#nextSeqNo(false), new types.Msgs_ack({ msg_ids: [...this.#toAcknowledge] }));
-          message = new MessageContainer(container = this.#nextMessageId(), this.#nextSeqNo(false), [message_, ack]);
-        } else {
-          message = message_;
-        }
-        await this.#sendMessage(message);
-        this.#Linvoke.debug("invoked", function_[name]);
-        if (ack) {
-          this.#recentAcks.set(ack.id, { container, message: ack });
-        }
-
-        if (noWait) {
-          this.#promises.set(message_.id, {
-            container,
-            message: message_,
-            call: function_,
-          });
-          return;
-        }
-
-        let result;
-
-        try {
-          result = await new Promise<ReadObject>((resolve, reject) => {
-            this.#promises.set(message_.id, { container, message: message_, resolve, reject, call: function_ });
-          });
-        } catch (err) {
-          if (err instanceof AuthKeyUnregistered) {
-            await this.#propagateAuthorizationState(false);
-          }
-          throw err;
-        }
-
-        if (!this.#pingLoopStarted) {
-          drop(this.#pingLoop());
-          this.#pingLoopStarted = true;
-        }
-        return result as T;
+        return await this.#client.invoke(function_, noWait);
       } catch (err) {
         if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
           continue;
         } else {
           throw err;
+        }
+      } finally {
+        if (!this.#pingLoopStarted) {
+          this.#startPingLoop();
         }
       }
     }
@@ -1575,7 +1369,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   async #handleCtxUpdate(update: Update) {
-    await this.#handle(await this.#constructContext(update), resolve);
+    await this.middleware()(await this.#constructContext(update), resolve);
   }
 
   #queueHandleCtxUpdate(update: Update) {
@@ -1655,103 +1449,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       return user;
     }
   }
-
-  //#region Composer
-  #handle: MiddlewareFn<C> = skip;
-
-  use(...middleware: Middleware<UpdateIntersection<C>>[]): Composer<C> {
-    const composer = new Composer(...middleware);
-    this.#handle = concat(this.#handle, flatten(composer));
-    return composer;
-  }
-
-  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>): Composer<C> {
-    const trueHandler = flatten(trueHandler_);
-    const falseHandler = flatten(falseHandler_);
-    return this.use(async (upd, next) => {
-      if (await predicate(upd)) {
-        await trueHandler(upd, next);
-      } else {
-        await falseHandler(upd, next);
-      }
-    });
-  }
-
-  filter<D extends C>(
-    predicate: (ctx: UpdateIntersection<C>) => ctx is D,
-    ...middleware: Middleware<D>[]
-  ): Composer<D>;
-  filter(
-    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
-    ...middleware: Middleware<UpdateIntersection<C>>[]
-  ): Composer<C>;
-  filter(
-    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
-    ...middleware: Middleware<UpdateIntersection<C>>[]
-  ) {
-    const composer = new Composer(...middleware);
-    this.branch(predicate, composer, skip);
-    return composer;
-  }
-
-  on<Q extends FilterQuery>(
-    filter: Q,
-    ...middleware: Middleware<WithFilter<C, Q>>[]
-  ): Composer<UpdateIntersection<WithFilter<C, Q>>> {
-    return this.filter((ctx): ctx is UpdateIntersection<WithFilter<C, Q>> => {
-      return match(filter, ctx);
-    }, ...middleware);
-  }
-
-  command(
-    commands: string | RegExp | (string | RegExp)[] | {
-      names: string | RegExp | (string | RegExp)[];
-      prefixes: string | string[];
-    },
-    ...middleware: Middleware<WithFilter<C, "message:text">>[]
-  ): Composer<WithFilter<C, "message:text">> {
-    const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
-    const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
-    const prefixes_ = typeof commands === "object" && "prefixes" in commands ? commands.prefixes : (this.#prefixes ?? []);
-    const prefixes = Array.isArray(prefixes_) ? prefixes_ : [prefixes_];
-    for (const left of prefixes) {
-      for (const right of prefixes) {
-        if (left == right) {
-          continue;
-        }
-        if (left.startsWith(right) || right.startsWith(left)) {
-          throw new Error("Intersecting prefixes");
-        }
-      }
-    }
-    return this.on("message:text").filter((ctx) => {
-      const prefixes_ = prefixes.length == 0 ? [!ctx.me?.isBot ? "\\" : "/"] : prefixes;
-      if (prefixes_.length == 0) {
-        return false;
-      }
-      const cmd = ctx.message.text.split(/\s/, 1)[0];
-      const prefix = prefixes_.find((v) => cmd.startsWith(v));
-      if (prefix === undefined) {
-        return false;
-      }
-      if (cmd.includes("@")) {
-        const username = cmd.split("@", 2)[1];
-        if (username.toLowerCase() !== ctx.me!.username?.toLowerCase()) {
-          return false;
-        }
-      }
-      const command_ = cmd.split("@", 1)[0].split(prefix, 2)[1].toLowerCase();
-      for (const command of commands_) {
-        if (typeof command === "string" && (command.toLowerCase() == command_)) {
-          return true;
-        } else if (command instanceof RegExp && command.test(command_)) {
-          return true;
-        }
-      }
-      return false;
-    }, ...middleware);
-  }
-  //#endregion
 
   /**
    * Send a text message.
