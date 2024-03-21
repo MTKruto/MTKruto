@@ -475,6 +475,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     },
   });
 
+  async #getApiId() {
+    const apiId = this.apiId || await this.storage.getApiId();
+    if (!apiId) {
+      throw new Error("apiId not set");
+    }
+    return apiId;
+  }
+
   #constructContext = async (update: Update) => {
     const msg = "message" in update ? update.message : "editedMessage" in update ? update.editedMessage : "callbackQuery" in update ? update.callbackQuery.message : undefined;
     const reactions = "messageInteractions" in update ? update.messageInteractions : undefined;
@@ -919,7 +927,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async #initConnection() {
     if (!this.#connectionInited) {
       await this.api.initConnection({
-        api_id: this.apiId!,
+        api_id: await this.#getApiId(),
         app_version: this.appVersion,
         device_model: this.deviceModel,
         lang_code: this.langCode,
@@ -970,13 +978,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * [2]: https://core.telegram.org/method/updates.getState
    */
   async authorize(params?: string | types.auth.ExportedAuthorization | AuthorizeUserParams) {
-    if (!this.apiId) {
-      throw new Error("apiId not set");
-    }
-    if (!this.apiHash) {
-      throw new Error("apiHash not set");
-    }
-
     await this.#initConnection();
 
     try {
@@ -989,6 +990,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       if (!(err instanceof AuthKeyUnregistered)) {
         throw err;
       }
+    }
+
+    const apiId = await this.#getApiId();
+    if (!this.apiHash) {
+      throw new Error("apiHash not set");
     }
 
     if (typeof params === "undefined") {
@@ -1005,7 +1011,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (typeof params === "string") {
       while (true) {
         try {
-          const auth = await this.api.auth.importBotAuthorization({ api_id: this.apiId, api_hash: this.apiHash, bot_auth_token: params, flags: 0 });
+          const auth = await this.api.auth.importBotAuthorization({ api_id: apiId, api_hash: this.apiHash, bot_auth_token: params, flags: 0 });
           this.#selfId = Number(auth[as](types.auth.Authorization).user.id);
           await this.storage.setAccountType("bot");
           break;
@@ -1434,7 +1440,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   exportAuthString(): Promise<string> {
-    return this.storage.exportAuthString();
+    return this.storage.exportAuthString(this.apiId);
   }
 
   async importAuthString(authString: string): Promise<void> {
