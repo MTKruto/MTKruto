@@ -4,6 +4,10 @@ import { DC } from "../3_transport.ts";
 
 // key parts
 export const K = {
+  connection: {
+    P: (string: string): string => `connection.${string}`,
+    apiId: (): StorageKeyPart[] => [K.connection.P("apiId")],
+  },
   session: {
     P: (string: string): string => `session.${string}`,
     serverSalt: (): StorageKeyPart[] => [K.session.P("serverSalt")],
@@ -104,14 +108,20 @@ export abstract class Storage {
     return this.#authKeyId;
   }
 
-  async exportAuthString(): Promise<string> {
-    const [dc, authKey] = await Promise.all([this.getDc(), this.getAuthKey()]);
+  async exportAuthString(apiId_?: number | null): Promise<string> {
+    if (typeof apiId_ === "number") {
+      await this.setApiId(apiId_);
+    }
+    const [dc, authKey, apiId] = await Promise.all([this.getDc(), this.getAuthKey(), this.getApiId()]);
     if (dc == null || authKey == null) {
       throw new Error("Not authorized");
     }
     const writer = new TLWriter();
     writer.writeString(dc);
     writer.writeBytes(authKey);
+    if (apiId) {
+      writer.writeInt32(apiId);
+    }
     const data = rleEncode(writer.buffer);
     return base64EncodeUrlSafe(data);
   }
@@ -121,6 +131,10 @@ export abstract class Storage {
     const reader = new TLReader(data);
     const dc = reader.readString();
     const authKey = reader.readBytes();
+    if (reader.buffer.length) {
+      const apiId = reader.readInt32();
+      await this.setApiId(apiId);
+    }
     await this.setDc(dc as DC);
     await this.setAuthKey(authKey);
   }
@@ -473,5 +487,13 @@ export abstract class Storage {
       this.deletePeers(),
       this.deleteUsernames(),
     ]);
+  }
+
+  async setApiId(apiId: number) {
+    await this.set(K.connection.apiId(), apiId);
+  }
+
+  async getApiId() {
+    return await this.get<number>(K.connection.apiId());
   }
 }
