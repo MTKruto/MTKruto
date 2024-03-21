@@ -257,7 +257,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Constructs the client.
    *
-   * @param storage The storage provider to use. Defaults to memory storage. Passing a string constructs a memory storage with the string being the string session.
+   * @param storage The storage provider to use. Defaults to memory storage. Passing a string constructs a memory storage with the string being the auth string.
    * @param apiId App's API ID from [my.telegram.org](https://my.telegram.org/apps). Defaults to 0 (unset).
    * @param apiHash App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Defaults to empty string (unset).
    */
@@ -1466,6 +1466,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return channel?.access_hash ?? 0n;
   }
 
+  /**
+   * Get a chat's inputPeer. Useful when calling API functions directly.
+   *
+   * @param id The identifier of the chat.
+   */
   async getInputPeer(id: ID): Promise<enums.InputPeer> {
     if (id === "me") {
       return new types.InputPeerSelf();
@@ -1481,6 +1486,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return inputPeer;
   }
 
+  /**
+   * Get a channel or a supergroup's inputChannel. Useful when calling API functions directly.
+   *
+   * @param id The identifier of the channel or the supergroup.
+   */
   async getInputChannel(id: ID): Promise<types.InputChannel> {
     const inputPeer = await this.getInputPeer(id);
     if (!(inputPeer instanceof types.InputPeerChannel)) {
@@ -1489,6 +1499,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return new types.InputChannel(inputPeer);
   }
 
+  /**
+   * Get a user's inputUser. Useful when calling API functions directly.
+   *
+   * @param id The identifier of the user.
+   */
   async getInputUser(id: ID): Promise<types.InputUser> {
     const inputPeer = await this.getInputPeer(id);
     if (!(inputPeer instanceof types.InputPeerUser)) {
