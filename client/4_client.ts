@@ -205,6 +205,9 @@ export interface ClientParams extends ClientPlainParams {
   /** Whether to store messages. Defaults to `false`. */
   storeMessages?: boolean;
 }
+/**
+ * An MTKruto client.
+ */
 export class Client<C extends Context = Context> extends Composer<C> {
   #client: ClientEncrypted;
   #guaranteeUpdateDelivery: boolean;

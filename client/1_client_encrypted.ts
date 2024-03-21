@@ -19,6 +19,17 @@ export interface Handlers {
   error?: (err: unknown, source: ErrorSource) => void;
 }
 
+/**
+ * An MTProto client for making encrypted connections. Most users won't need to interact with this. Used internally by `Client`.
+ *
+ * There are a few things to note:
+ *
+ * - This is a bare client and it stores nothing.
+ * - It expects an authorization key to be present before invoking any method.
+ * - Authorization must be set using `setAuthKey`.
+ * - Incoming packets that aren't a reply to a specific call are passed to the assigned handlers.
+ * - It doesn't uncompress compressed packets.
+ */
 export class ClientEncrypted extends ClientAbstract {
   #authKey = new Uint8Array();
   #authKeyId = 0n;
