@@ -50,6 +50,7 @@ export function getRandomBigInt(byteLength: number, little?: boolean, signed?: b
   return bigIntFromBuffer(randomBytes, little, signed);
 }
 
+/** Get a random ID. Useful when calling API functions directly. */
 export function getRandomId(): bigint {
   return getRandomBigInt(8, true, true);
 }
