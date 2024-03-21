@@ -13,7 +13,7 @@ import { AccountManager } from "./1_account_manager.ts";
 import { BotInfoManager } from "./1_bot_info_manager.ts";
 import { ClientEncrypted } from "./1_client_encrypted.ts";
 import { ClientPlain, ClientPlainParams } from "./1_client_plain.ts";
-import { Composer } from "./1_composer.ts";
+import { Composer as Composer_, NextFunction } from "./1_composer.ts";
 import { FileManager } from "./1_file_manager.ts";
 import { NetworkStatisticsManager } from "./1_network_statistics_manager.ts";
 import { ReactionManager } from "./1_reaction_manager.ts";
@@ -23,18 +23,6 @@ import { CallbackQueryManager } from "./3_callback_query_manager.ts";
 import { ChatListManager } from "./3_chat_list_manager.ts";
 import { InlineQueryManager } from "./3_inline_query_manager.ts";
 import { StoryManager } from "./3_story_manager.ts";
-
-export type NextFn<T = void> = () => Promise<T>;
-export interface InvokeErrorHandler<C> {
-  (ctx: { client: C; error: unknown; function: types.Type | functions.Function<unknown>; n: number }, next: NextFn<boolean>): MaybePromise<boolean>;
-}
-
-let id = 0;
-
-const getEntity = Symbol();
-export const handleMigrationError = Symbol("handleMigrationError");
-
-const functionNamespaces = Object.entries(functions).filter(([, v]) => !(v instanceof Function)).map(([k]) => k);
 
 export interface Context {
   /** The client that received the update. */
@@ -170,11 +158,24 @@ export interface Context {
   toJSON: () => Update;
 }
 
-export function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
+export class Composer<C extends Context = Context> extends Composer_<C> {
+}
+
+function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
   return (_ctx, next) => next();
+}
+export interface InvokeErrorHandler<C> {
+  (ctx: { client: C; error: unknown; function: types.Type | functions.Function<unknown>; n: number }, next: NextFunction<boolean>): MaybePromise<boolean>;
 }
 
 export const restartAuth = Symbol("restartAuth");
+export const handleMigrationError = Symbol("handleMigrationError");
+
+// global Client ID counter for logs
+let id = 0;
+
+const getEntity = Symbol();
+const functionNamespaces = Object.entries(functions).filter(([, v]) => !(v instanceof Function)).map(([k]) => k);
 
 export interface ClientParams extends ClientPlainParams {
   /** A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defauls to `ParseMode.None`. */
