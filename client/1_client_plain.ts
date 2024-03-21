@@ -16,11 +16,11 @@ export interface ClientPlainParams extends ClientAbstractParams {
 }
 
 /**
- * An MTProto client for making plain connections. Most users won't need to interact with this. Used internally for creating auth keys.
+ * An MTProto client for making plain connections. Most users won't need to interact with this. Used internally for creating authorization keys.
  */
 export class ClientPlain extends ClientAbstract {
   readonly #publicKeys: PublicKeys;
-  #lastMsgId = 0n;
+  #lastMsgId = 0n; // TODO: refactor
 
   constructor(params?: ClientPlainParams) {
     super(params);

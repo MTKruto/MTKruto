@@ -1,9 +1,8 @@
+import { MaybePromise } from "../1_utilities.ts";
 import { Update, UpdateIntersection, User } from "../3_types.ts";
 import { FilterQuery, match, WithFilter } from "./0_filters.ts";
 
-type MaybePromise<T> = T | Promise<T>;
-
-export type NextFunction = () => Promise<void>;
+export type NextFunction<T = void> = () => Promise<T>;
 
 export type MiddlewareFn<C> = (
   ctx: C,
