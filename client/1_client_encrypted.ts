@@ -66,7 +66,7 @@ export class ClientEncrypted extends ClientAbstract {
     this.#authKey = key;
   }
 
-  get authKey() {
+  get authKey(): Uint8Array {
     return this.#authKey;
   }
 
@@ -74,7 +74,7 @@ export class ClientEncrypted extends ClientAbstract {
     this.#state.serverSalt = serverSalt;
   }
 
-  get serverSalt() {
+  get serverSalt(): bigint {
     return this.#state.serverSalt;
   }
 

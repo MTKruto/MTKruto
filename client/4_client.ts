@@ -442,10 +442,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   // direct ClientEncrypted property proxies
-  get connected() {
+  get connected(): boolean {
     return this.#client.connected;
   }
-  get disconnected() {
+  get disconnected(): boolean {
     return this.#client.disconnected;
   }
 
@@ -901,7 +901,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await Promise.all([this.storage.setAuthKey(this.#client.authKey), this.storage.setDc(this.#client.dc), this.storage.setServerSalt(this.#client.serverSalt)]);
   }
 
-  reconnect(dc: DC) {
+  reconnect(dc: DC): Promise<void> {
     return this.#client.reconnect(dc);
   }
 
