@@ -34,7 +34,7 @@ export abstract class ClientAbstract {
 
   protected stateChangeHandler?: (connected: boolean) => void;
 
-  get dc() {
+  get dc(): DC {
     return this.#dc ?? this.initialDc;
   }
 
@@ -78,7 +78,7 @@ export abstract class ClientAbstract {
     await this.transport.connection.close();
   }
 
-  get disconnected() {
+  get disconnected(): boolean {
     return !this.transport?.transport.initialized;
   }
 }
