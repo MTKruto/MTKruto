@@ -493,7 +493,7 @@ export abstract class Storage {
     await this.set(K.connection.apiId(), apiId);
   }
 
-  async getApiId() {
+  async getApiId(): Promise<number | null> {
     return await this.get<number>(K.connection.apiId());
   }
 }
