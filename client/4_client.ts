@@ -265,6 +265,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       },
       updates: (updates, call, callback) => {
         this.#updateManager.processUpdates(updates, true, call, callback);
+        this.#lastUpdates = new Date();
       },
       result: async (result, callback) => {
         await this.#updateManager.processResult(result);
@@ -1192,6 +1193,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       } finally {
         if (!this.#pingLoopStarted) {
           this.#startPingLoop();
+          this.#pingLoopStarted = true;
         }
       }
     }
