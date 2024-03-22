@@ -258,6 +258,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   ) {
     super();
     this.#client = new ClientEncrypted(params);
+    this.#client.stateChangeHandler = this.#stateChangeHandler.bind(this);
     this.#client.handlers = {
       serverSaltReassigned: async (newServerSalt) => {
         await this.storage.setServerSalt(newServerSalt);
@@ -322,7 +323,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       messageStorage: this.messageStorage,
       guaranteeUpdateDelivery: this.#guaranteeUpdateDelivery,
       setConnectionState: this.#propagateConnectionState.bind(this),
-      resetConnectionState: () => this.stateChangeHandler(this.connected),
+      resetConnectionState: () => this.#stateChangeHandler(this.connected),
       getSelfId: this.#getSelfId.bind(this),
       getInputPeer: this.getInputPeer.bind(this),
       getInputChannel: this.getInputChannel.bind(this),
@@ -836,7 +837,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   #lastPropagatedConnectionState: ConnectionState | null = null;
-  protected stateChangeHandler: (connected: boolean) => void = ((connected: boolean) => {
+  #stateChangeHandler: (connected: boolean) => void = ((connected: boolean) => {
     const connectionState = connected ? "ready" : "notConnected";
     if (this.connected == connected && this.#lastPropagatedConnectionState != connectionState) {
       this.#propagateConnectionState(connectionState);

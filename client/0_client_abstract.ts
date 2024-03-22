@@ -32,7 +32,7 @@ export abstract class ClientAbstract {
     this.cdn = params?.cdn ?? false;
   }
 
-  protected stateChangeHandler?: (connected: boolean) => void;
+  stateChangeHandler?: (connected: boolean) => void;
 
   get dc(): DC {
     return this.#dc ?? this.initialDc;
