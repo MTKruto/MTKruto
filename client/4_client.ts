@@ -1605,6 +1605,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       UNREACHABLE();
     }
     const user = constructUser(users[0][as](types.User));
+    await this.storage.setAccountType(user.isBot ? "bot" : "user");
     this.#lastGetMe = user;
     return user;
   }
