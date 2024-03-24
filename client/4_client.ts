@@ -237,7 +237,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
   readonly #ignoreOutgoing: boolean | null;
   #storeMessages: boolean;
 
-  #L: Logger;
   #Lauthorize: Logger;
   #LpingLoop: Logger;
   #LhandleMigrationError: Logger;
@@ -311,7 +310,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
     this.#guaranteeUpdateDelivery = params?.guaranteeUpdateDelivery ?? false;
 
-    const L = this.#L = getLogger("Client").client(id++);
+    const L = getLogger("Client").client(id++);
     this.#Lauthorize = L.branch("authorize");
     this.#LpingLoop = L.branch("pingLoop");
     this.#LhandleMigrationError = L.branch("[handleMigrationError]");
@@ -950,12 +949,12 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
-  #selfId: number | null = null;
   async #getSelfId() {
-    if (this.#selfId == null) {
-      this.#selfId = await this.getMe().then((v) => v.id);
+    const id =  await this.storage.getAccountId()
+    if (id == null) {
+      throw new Error("Unauthorized")
     }
-    return this.#selfId!;
+    return id;
   }
 
   /**

@@ -16,6 +16,7 @@ export const K = {
     P: (string: string): string => `auth.${string}`,
     dc: (): StorageKeyPart[] => [K.auth.P("dc")],
     key: (): StorageKeyPart[] => [K.auth.P("key")],
+    accountId: (): StorageKeyPart[] => [K.auth.P("accountId")],
     accountType: (): StorageKeyPart[] => [K.auth.P("accountType")],
   },
   updates: {
@@ -112,16 +113,16 @@ export abstract class Storage {
     if (typeof apiId_ === "number") {
       await this.setApiId(apiId_);
     }
-    const [dc, authKey, apiId] = await Promise.all([this.getDc(), this.getAuthKey(), this.getApiId()]);
-    if (dc == null || authKey == null) {
+    const [dc, authKey, apiId, accountId, accountType] = await Promise.all([this.getDc(), this.getAuthKey(), this.getApiId(), this.getAccountId(), this.getAccountType()]);
+    if (dc == null || authKey == null || apiId == null || accountId == null || accountType == null) {
       throw new Error("Not authorized");
     }
     const writer = new TLWriter();
     writer.writeString(dc);
     writer.writeBytes(authKey);
-    if (apiId) {
-      writer.writeInt32(apiId);
-    }
+    writer.writeInt32(apiId);
+    writer.write(new Uint8Array([accountType == "bot" ? 1 : 0]));
+    writer.writeInt64(BigInt(accountId));
     const data = rleEncode(writer.buffer);
     return base64EncodeUrlSafe(data);
   }
@@ -131,10 +132,12 @@ export abstract class Storage {
     const reader = new TLReader(data);
     const dc = reader.readString();
     const authKey = reader.readBytes();
-    if (reader.buffer.length) {
-      const apiId = reader.readInt32();
-      await this.setApiId(apiId);
-    }
+    const apiId = reader.readInt32();
+    const isBot = reader.read(1)[0];
+    const accountId = Number(reader.readInt64());
+    await this.setAccountId(accountId);
+    await this.setAccountType(isBot ? "bot" : "user");
+    await this.setApiId(apiId);
     await this.setDc(dc as DC);
     await this.setAuthKey(authKey);
   }
@@ -253,6 +256,19 @@ export abstract class Storage {
       return await this.getTlObject(obj_);
     } else {
       return null;
+    }
+  }
+
+  async setAccountId(accountId: number) {
+    await this.set(K.auth.accountId(), accountId);
+  }
+
+  #accountId: number | null = null;
+  async getAccountId() {
+    if (this.#accountId != null) {
+      return this.#accountId;
+    } else {
+      return (this.#accountId = await this.get<number>(K.auth.accountId()));
     }
   }
 
