@@ -264,7 +264,7 @@ export abstract class Storage {
   }
 
   #accountId: number | null = null;
-  async getAccountId() {
+  async getAccountId(): Promise<number | null> {
     if (this.#accountId != null) {
       return this.#accountId;
     } else {
