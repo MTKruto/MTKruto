@@ -950,9 +950,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #getSelfId() {
-    const id =  await this.storage.getAccountId()
+    const id = await this.storage.getAccountId();
     if (id == null) {
-      throw new Error("Unauthorized")
+      throw new Error("Unauthorized");
     }
     return id;
   }
@@ -1009,7 +1009,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       while (true) {
         try {
           const auth = await this.api.auth.importBotAuthorization({ api_id: apiId, api_hash: this.apiHash, bot_auth_token: params, flags: 0 });
-          this.#selfId = Number(auth[as](types.auth.Authorization).user.id);
+          await this.storage.setAccountId(Number(auth[as](types.auth.Authorization).user.id));
           await this.storage.setAccountType("bot");
           break;
         } catch (err) {
@@ -1079,7 +1079,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
               phone_code: code,
               phone_code_hash: sentCode.phone_code_hash,
             });
-            this.#selfId = Number(auth[as](types.auth.Authorization).user.id);
+            await this.storage.setAccountId(Number(auth[as](types.auth.Authorization).user.id));
             await this.storage.setAccountType("user");
             this.#Lauthorize.debug("authorized as user");
             await this.#propagateAuthorizationState(true);
@@ -1109,7 +1109,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
             const input = await checkPassword(password, ap);
 
             const auth = await this.api.auth.checkPassword({ password: input });
-            this.#selfId = Number(auth[as](types.auth.Authorization).user.id);
+            await this.storage.setAccountId(Number(auth[as](types.auth.Authorization).user.id));
             await this.storage.setAccountType("user");
             this.#Lauthorize.debug("authorized as user");
             await this.#propagateAuthorizationState(true);
@@ -1268,7 +1268,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param id The identifier of the chat.
    */
   async getInputPeer(id: ID): Promise<enums.InputPeer> {
-    if (id === "me") {
+    if (id === "me" || id == await this.#getSelfId()) {
       return new types.InputPeerSelf();
     }
     const inputPeer = await this.#getInputPeerInner(id);
@@ -1599,12 +1599,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @method ac
    */
   async getMe(): Promise<User> {
-    const users = await this.api.users.getUsers({ id: [new types.InputUserSelf()] });
-    if (users.length < 1) {
-      UNREACHABLE();
+    let user_ = await this[getEntity](new types.PeerUser({ user_id: BigInt(await this.#getSelfId()) }));
+    if (user_ == null) {
+      const users = await this.api.users.getUsers({ id: [new types.InputUserSelf()] });
+      user_ = users[0][as](types.User);
+      await this.messageStorage.setEntity(user_);
     }
-    const user = constructUser(users[0][as](types.User));
-    await this.storage.setAccountType(user.isBot ? "bot" : "user");
+    const user = constructUser(user_);
     this.#lastGetMe = user;
     return user;
   }
