@@ -4,7 +4,7 @@ import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryResult, InputStoryContent, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Sticker, Story, Update, User } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
-import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded } from "../4_errors.ts";
+import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded } from "../4_errors.ts";
 import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { Api } from "./0_types.ts";
@@ -371,8 +371,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
               }
               await client.setDc(dc as DC);
             }
-
-            await client.#initConnection();
           },
           disconnect: client.disconnect.bind(client),
         };
@@ -921,25 +919,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.#client.disconnect();
     this.#pingLoopAbortController?.abort();
   }
-  async #initConnection() {
-    if (!this.#connectionInited) {
-      await this.api.initConnection({
-        api_id: await this.#getApiId(),
-        app_version: this.appVersion,
-        device_model: this.deviceModel,
-        lang_code: this.langCode,
-        lang_pack: this.langPack,
-        query: new functions.invokeWithLayer({
-          layer: LAYER,
-          query: new functions.help.getConfig(),
-        }),
-        system_lang_code: this.systemLangCode,
-        system_version: this.systemVersion,
-      });
-      this.#connectionInited = true;
-      this.#L$initConncetion.debug("connection inited");
-    }
-  }
 
   #lastPropagatedAuthorizationState: boolean | null = null;
   async #propagateAuthorizationState(authorized: boolean) {
@@ -975,8 +954,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * [2]: https://core.telegram.org/method/updates.getState
    */
   async authorize(params?: string | types.auth.ExportedAuthorization | AuthorizeUserParams) {
-    await this.#initConnection();
-
     try {
       await this.#updateManager.fetchState("authorize");
       await this.#propagateAuthorizationState(true);
@@ -1015,7 +992,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
         } catch (err) {
           if (err instanceof Migrate) {
             await this[handleMigrationError](err);
-            await this.#initConnection();
             continue;
           } else {
             throw err;
@@ -1053,7 +1029,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
             } catch (err) {
               if (err instanceof Migrate) {
                 await this[handleMigrationError](err);
-                await this.#initConnection();
                 sentCode = await sendCode();
               } else {
                 throw err;
@@ -1182,9 +1157,34 @@ export class Client<C extends Context = Context> extends Composer<C> {
     let n = 1;
     while (true) {
       try {
-        return await this.#client.invoke(function_, noWait);
+        if (function_ instanceof functions.Function && !this.#connectionInited) {
+          const result = await this.#client.invoke(
+            new functions.initConnection({
+              api_id: await this.#getApiId(),
+              app_version: this.appVersion,
+              device_model: this.deviceModel,
+              lang_code: this.langCode,
+              lang_pack: this.langPack,
+              query: new functions.invokeWithLayer({
+                layer: LAYER,
+                query: function_,
+              }),
+              system_lang_code: this.systemLangCode,
+              system_version: this.systemVersion,
+            }),
+            noWait,
+          );
+          this.#connectionInited = true;
+          this.#L$initConncetion.debug("connection inited");
+          return result as T | void;
+        } else {
+          return await this.#client.invoke(function_, noWait);
+        }
       } catch (err) {
-        if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
+        if (err instanceof ConnectionNotInited) {
+          this.#connectionInited = false;
+          continue;
+        } else if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
           continue;
         } else {
           throw err;
