@@ -100,6 +100,8 @@ export class ClientEncrypted extends ClientAbstract {
       this.#sessionId,
     );
     await this.transport!.transport.send(payload);
+    this.#L.out(message);
+    this.#L.outBin(payload);
   }
 
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
