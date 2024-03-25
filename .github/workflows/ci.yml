@@ -69,6 +69,17 @@ jobs:
   transform-browser:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.PAT_TOKEN }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: "MTKruto",
+              repo: "browser-canary",
+              workflow_id: "update.yml",
+              ref: "main",
+            });
+
       - uses: actions/checkout@v4
 
       - uses: denoland/setup-deno@v1
@@ -87,6 +98,17 @@ jobs:
   transform-node:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.PAT_TOKEN }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: "MTKruto",
+              repo: "node-canary",
+              workflow_id: "update.yml",
+              ref: "main",
+            });
+
       - uses: actions/checkout@v4
 
       - uses: denoland/setup-deno@v1
@@ -121,4 +143,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: test `cat $(find . -type f | grep ".ts$") | grep "console." | wc -l` -eq 15
+      - run: test `cat $(find . -type f | grep ".ts$") | grep "console." | wc -l` -eq 17
