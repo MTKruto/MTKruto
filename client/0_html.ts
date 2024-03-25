@@ -79,13 +79,6 @@ export function parseHtml(html: string) {
 
   parser.write(html);
   parser.end();
-  text = text.trimEnd();
-
-  for (const entity of entities) {
-    while (text[entity.offset + (entity.length - 1)] === undefined) {
-      --entity.length;
-    }
-  }
 
   return [text, entities] as const;
 }
