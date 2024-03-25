@@ -5,6 +5,7 @@ import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, Fil
 import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
+import { parseMarkdown } from "./0_markdown.ts";
 import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
@@ -86,9 +87,7 @@ export class MessageManager {
     return messages[0] ?? null;
   }
 
-  async parseText(text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
-    const entities_ = params?.entities ?? [];
-    const parseMode = params?.parseMode ?? this.#c.parseMode;
+  static parseText(text: string, entities: MessageEntity[], parseMode: ParseMode): [string, MessageEntity[]] {
     switch (parseMode) {
       case null:
         break;
@@ -96,13 +95,34 @@ export class MessageManager {
         const [newText, entitiesToPush] = parseHtml(text);
         text = newText;
         for (const entity of entitiesToPush) {
-          entities_.push(entity);
+          entities.push(entity);
+        }
+        break;
+      }
+      case "Markdown": {
+        const [newText, entitiesToPush] = parseMarkdown(text);
+        text = newText;
+        for (const entity of entitiesToPush) {
+          entities.push(entity);
         }
         break;
       }
       default:
         UNREACHABLE();
     }
+
+    text = text.trimEnd();
+    for (const entity of entities) {
+      while (text[entity.offset + (entity.length - 1)] === undefined) {
+        --entity.length;
+      }
+    }
+
+    return [text, entities];
+  }
+
+  async parseText(text_: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
+    const [text, entities_] = MessageManager.parseText(text_, params?.entities ?? [], params?.parseMode ?? this.#c.parseMode);
     const entities = entities_?.length > 0 ? await Promise.all(entities_.map((v) => messageEntityToTlObject(v, this.#c.getEntity))) : undefined;
     return [text, entities] as const;
   }

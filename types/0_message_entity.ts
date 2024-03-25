@@ -264,3 +264,38 @@ export async function messageEntityToTlObject(entity: MessageEntity, getEntity: 
       return new types.MessageEntityCustomEmoji({ offset, length, document_id: BigInt(entity.customEmojiId) });
   }
 }
+
+const priorities: Record<MessageEntityType, number> = {
+  "mention": 50,
+  "hashtag": 50,
+  "botCommand": 50,
+  "url": 50,
+  "email": 50,
+  "bold": 90,
+  "italic": 91,
+  "code": 20,
+  "pre": 11,
+  "textLink": 49,
+  "textMention": 49,
+  "cashtag": 50,
+  "phoneNumber": 50,
+  "underline": 92,
+  "strikethrough": 93,
+  "blockquote": 0,
+  "bankCard": 50,
+  "spoiler": 94,
+  "customEmoji": 99,
+};
+export function sortMessageEntities(entities: MessageEntity[]): MessageEntity[] {
+  return entities.sort(({ offset, type, length }, other) => {
+    if (offset !== other.offset) {
+      return offset < other.offset ? -1 : 1;
+    }
+    if (length !== other.length) {
+      return length > other.length ? -1 : 1;
+    }
+    const priority = priorities[type];
+    const otherPriority = priorities[other.type];
+    return priority < otherPriority ? -1 : 1;
+  });
+}
