@@ -11,6 +11,9 @@ import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
 
+const FALLBACK_MIME_TYPE = "application/octet-stream";
+const STICKER_MIME_TYPES = ["image/webp", "video/webp", "application/x-tgsticker"];
+
 interface C extends C_ {
   fileManager: FileManager;
 }
@@ -504,10 +507,13 @@ export class MessageManager {
         media = new types.InputMediaDocumentExternal({ url: document, spoiler });
       } else {
         const [contents, fileName_] = await getFileContents(document);
-        const fileName = params?.fileName ?? fileName_;
-        const mimeType = params?.mimeType ?? contentType(fileName.split(".").slice(-1)[0]) ?? "application/octet-stream";
+        let fileName = params?.fileName ?? fileName_;
+        const mimeType = params?.mimeType ?? contentType(fileName.split(".").slice(-1)[0]) ?? FALLBACK_MIME_TYPE;
         if (expectedMimeTypes && !expectedMimeTypes.includes(mimeType)) {
           UNREACHABLE();
+        }
+        if (fileName.endsWith(".tgs") && fileType == FileType.Document) {
+          fileName += "-";
         }
         const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
         let thumb: enums.InputFile | undefined = undefined;
@@ -521,6 +527,7 @@ export class MessageManager {
           spoiler,
           attributes: [new types.DocumentAttributeFilename({ file_name: fileName }), ...otherAttribs],
           mime_type: mimeType,
+          force_file: fileType == FileType.Document ? true : undefined,
         });
       }
     }
@@ -534,8 +541,8 @@ export class MessageManager {
     return assertMessageType(message, "document");
   }
 
-  async sendSticker(chatId: ID, document: FileSource, params?: SendStickerParams) {
-    const message = await this.#sendDocumentInner(chatId, document, params, FileType.Sticker, [new types.DocumentAttributeSticker({ alt: params?.emoji || "", stickerset: new types.InputStickerSetEmpty() })], undefined, ["image/webm", "video/webm", "application/x-tgsticker"]);
+  async sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams) {
+    const message = await this.#sendDocumentInner(chatId, sticker, params, FileType.Sticker, [new types.DocumentAttributeSticker({ alt: params?.emoji || "", stickerset: new types.InputStickerSetEmpty() })], undefined, STICKER_MIME_TYPES);
     return assertMessageType(message, "sticker");
   }
 
