@@ -172,6 +172,10 @@ export interface _ThumbnailCommon {
 export interface SendDocumentParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon {
 }
 
+export interface SendStickerParams extends _UploadCommon, _SendCommon {
+  emoji?: string;
+}
+
 export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon {
   /** The duration of the video in seconds. */
   duration?: number;
