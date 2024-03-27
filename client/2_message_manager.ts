@@ -6,7 +6,7 @@ import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, 
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
+import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
@@ -481,7 +481,7 @@ export class MessageManager {
     return assertMessageType(message, "video");
   }
 
-  async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams | undefined, fileType: FileType, otherAttribs: enums.DocumentAttribute[], urlSupported = false) {
+  async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams | undefined, fileType: FileType, otherAttribs: enums.DocumentAttribute[], urlSupported = false, expectedMimeTypes?: string[]) {
     let media: enums.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
 
@@ -491,6 +491,7 @@ export class MessageManager {
         media = new types.InputMediaDocument({
           id: new types.InputDocument(fileId),
           spoiler,
+          query: otherAttribs.find((v): v is types.DocumentAttributeSticker => v instanceof types.DocumentAttributeSticker)?.alt || undefined,
         });
       }
     }
@@ -505,6 +506,9 @@ export class MessageManager {
         const [contents, fileName_] = await getFileContents(document);
         const fileName = params?.fileName ?? fileName_;
         const mimeType = params?.mimeType ?? contentType(fileName.split(".").slice(-1)[0]) ?? "application/octet-stream";
+        if (expectedMimeTypes && !expectedMimeTypes.includes(mimeType)) {
+          UNREACHABLE();
+        }
         const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
         let thumb: enums.InputFile | undefined = undefined;
         if (params?.thumbnail) {
@@ -528,6 +532,11 @@ export class MessageManager {
   async sendDocument(chatId: ID, document: FileSource, params?: SendDocumentParams) {
     const message = await this.#sendDocumentInner(chatId, document, params, FileType.Document, []);
     return assertMessageType(message, "document");
+  }
+
+  async sendSticker(chatId: ID, document: FileSource, params?: SendStickerParams) {
+    const message = await this.#sendDocumentInner(chatId, document, params, FileType.Sticker, [new types.DocumentAttributeSticker({ alt: params?.emoji || "", stickerset: new types.InputStickerSetEmpty() })], undefined, ["image/webm", "video/webm", "application/x-tgsticker"]);
+    return assertMessageType(message, "sticker");
   }
 
   async sendPhoto(chatId: ID, photo: FileSource, params?: SendPhotoParams) {
