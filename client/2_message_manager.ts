@@ -6,7 +6,7 @@ import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, 
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
+import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
@@ -1243,5 +1243,28 @@ export class MessageManager {
   async deleteChatStickerSet(chatId: ID) {
     const channel = await this.#c.getInputChannel(chatId);
     await this.#c.api.channels.setStickers({ channel, stickerset: new types.InputStickerSetEmpty() });
+  }
+
+  async stopPoll(chatId: ID, messageId: number, params?: StopPollParams) {
+    const message = await this.getMessage(chatId, messageId);
+    if (message && "poll" in message && !message.poll.isClosed) {
+      const result = await this.#c.api.messages.editMessage({
+        peer: await this.#c.getInputPeer(chatId),
+        id: messageId,
+        media: new types.InputMediaPoll({
+          poll: new types.Poll({
+            id: BigInt(message.poll.id),
+            closed: true,
+            question: "",
+            answers: [],
+          }),
+        }),
+        reply_markup: await this.#constructReplyMarkup(params),
+      });
+
+      const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+      return assertMessageType(message_, "poll").poll;
+    }
+    UNREACHABLE();
   }
 }
