@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-empty-interface
 import { MaybePromise } from "../1_utilities.ts";
 import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, Message, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, ReplyQuote, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
 
