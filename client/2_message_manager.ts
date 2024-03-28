@@ -6,7 +6,7 @@ import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, 
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
+import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
@@ -1266,5 +1266,47 @@ export class MessageManager {
       return assertMessageType(message_, "poll").poll;
     }
     UNREACHABLE();
+  }
+
+  async editMessageLiveLocation(chatId: ID, messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {
+    const message = await this.getMessage(chatId, messageId);
+    if (message && "location" in message && message.location.livePeriod) {
+      const result = await this.#c.api.messages.editMessage({
+        peer: await this.#c.getInputPeer(chatId),
+        id: messageId,
+        media: new types.InputMediaGeoLive({
+          geo_point: new types.InputGeoPoint({
+            lat: latitude,
+            long: longitude,
+            accuracy_radius: params?.horizontalAccuracy,
+          }),
+          heading: params?.heading,
+          proximity_notification_radius: params?.proximityAlertRadius,
+        }),
+        reply_markup: await this.#constructReplyMarkup(params),
+      });
+
+      const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+      return assertMessageType(message, "location");
+    }
+    UNREACHABLE();
+  }
+
+  async editInlineMessageLiveLocation(inlineMessageId: string, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {
+    await this.#c.storage.assertBot("editInlineMessageLiveLocation");
+    const id = deserializeInlineMessageId(inlineMessageId);
+    await this.#c.api.messages.editInlineBotMessage({
+      id,
+      media: new types.InputMediaGeoLive({
+        geo_point: new types.InputGeoPoint({
+          lat: latitude,
+          long: longitude,
+          accuracy_radius: params?.horizontalAccuracy,
+        }),
+        heading: params?.heading,
+        proximity_notification_radius: params?.proximityAlertRadius,
+      }),
+      reply_markup: await this.#constructReplyMarkup(params),
+    });
   }
 }
