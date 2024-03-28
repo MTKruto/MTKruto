@@ -354,3 +354,10 @@ export interface GetCreatedInviteLinksParams {
 export interface StopPollParams {
   replyMarkup?: ReplyMarkup;
 }
+
+export interface EditMessageLiveLocationParams {
+  horizontalAccuracy?: number;
+  heading?: number;
+  proximityAlertRadius?: number;
+  replyMarkup?: ReplyMarkup;
+}
