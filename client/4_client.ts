@@ -919,8 +919,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await Promise.all([this.storage.setAuthKey(this.#client.authKey), this.storage.setDc(this.#client.dc), this.storage.setServerSalt(this.#client.serverSalt)]);
   }
 
-  reconnect(dc: DC) {
-    return this.#client.reconnect(dc);
+  async reconnect(dc: DC) {
+    await this.#client.reconnect(dc);
   }
 
   async [handleMigrationError](err: Migrate) {
@@ -1250,7 +1250,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   /**
    * Alias for `invoke` with its second parameter being `true`.
    */
-  send<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T) {
+  send<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<void> {
     return this.invoke(function_, true);
   }
 
