@@ -12,7 +12,7 @@ import { getFileContents, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
 
 const FALLBACK_MIME_TYPE = "application/octet-stream";
-const STICKER_MIME_TYPES = ["image/webp", "video/webp", "application/x-tgsticker"];
+const STICKER_MIME_TYPES = ["image/webp", "video/webm", "application/x-tgsticker"];
 
 interface C extends C_ {
   fileManager: FileManager;
