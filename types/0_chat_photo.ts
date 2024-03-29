@@ -1,3 +1,4 @@
+import { cleanObject } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 import { FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "./0__file_id.ts";
 
@@ -13,6 +14,7 @@ export interface _ChatPhotoBase {
   bigFileUniqueId: string;
   /** Whether the chat photo is animated. */
   hasVideo: boolean;
+  strippedThumbnail?: Uint8Array;
 }
 
 /** @unlisted */
@@ -47,21 +49,23 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
   const bigFileUniqueId = toUniqueFileId(bigFileId_);
 
   if (photo instanceof types.ChatPhoto) {
-    return {
+    return cleanObject({
       smallFileId,
       smallFileUniqueId,
       bigFileId,
       bigFileUniqueId,
       hasVideo: photo.has_video || false,
-    };
+      strippedThumbnail: photo.stripped_thumb,
+    });
   } else {
-    return {
+    return cleanObject({
       personal: photo.personal ? true : undefined,
       smallFileId,
       smallFileUniqueId,
       bigFileId,
       bigFileUniqueId,
       hasVideo: photo.has_video || false,
-    };
+      strippedThumbnail: photo.stripped_thumb,
+    });
   }
 }
