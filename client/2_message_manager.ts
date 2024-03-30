@@ -1,4 +1,5 @@
 import { contentType } from "../0_deps.ts";
+import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
 import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId } from "../3_types.ts";
@@ -502,7 +503,7 @@ export class MessageManager {
     if (media == null) {
       if (typeof document === "string" && isHttpUrl(document)) {
         if (!urlSupported) {
-          throw new Error("URL not supported");
+          throw new InputError("URL not supported.");
         }
         media = new types.InputMediaDocumentExternal({ url: document, spoiler });
       } else {
@@ -776,12 +777,9 @@ export class MessageManager {
   }
 
   async deleteChatMemberMessages(chatId: ID, memberId: ID) {
-    const channel = await this.#c.getInputPeer(chatId);
-    if (!(channel instanceof types.InputPeerChannel)) {
-      throw new Error("Invalid chat ID");
-    }
+    const channel = await this.#c.getInputChannel(chatId);
     const participant = await this.#c.getInputPeer(memberId);
-    await this.#c.api.channels.deleteParticipantHistory({ channel: new types.InputChannel(channel), participant });
+    await this.#c.api.channels.deleteParticipantHistory({ channel, participant });
   }
 
   async pinMessage(chatId: ID, messageId: number, params?: PinMessageParams) {
@@ -964,7 +962,7 @@ export class MessageManager {
         action_ = new types.SendMessageUploadRoundAction({ progress: 0 });
         break;
       default:
-        throw new Error("Invalid chat action: " + action);
+        throw new InputError(`Invalid chat action: ${action}`);
     }
     await this.#c.api.messages.setTyping({ peer: await this.#c.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId });
   }
@@ -1002,7 +1000,7 @@ export class MessageManager {
   async banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams) {
     const chat = await this.#c.getInputPeer(chatId);
     if (!(chat instanceof types.InputPeerChannel) && !(chat instanceof types.InputPeerChat)) {
-      throw new Error("Invalid chat ID");
+      throw new InputError("Expected a channel, supergroup, or group ID.");
     }
     const member = await this.#c.getInputPeer(memberId);
     if (chat instanceof types.InputPeerChannel) {
@@ -1030,7 +1028,7 @@ export class MessageManager {
       });
     } else if (chat instanceof types.InputPeerChat) {
       if (!(member instanceof types.InputPeerUser)) {
-        throw new Error("Invalid user ID");
+        throw new InputError(`Invalid user ID: ${memberId}`);
       }
       await this.#c.api.messages.deleteChatUser({
         chat_id: chat.chat_id,
@@ -1041,26 +1039,20 @@ export class MessageManager {
   }
 
   async unbanChatMember(chatId: ID, memberId: ID) {
-    const chat = await this.#c.getInputPeer(chatId);
-    if (!(chat instanceof types.InputPeerChannel)) {
-      throw new Error("Invalid chat ID");
-    }
+    const channel = await this.#c.getInputChannel(chatId);
     const member = await this.#c.getInputPeer(memberId);
     await this.#c.api.channels.editBanned({
-      channel: new types.InputChannel(chat),
+      channel,
       participant: member,
       banned_rights: new types.ChatBannedRights({ until_date: 0 }),
     });
   }
 
   async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams) {
-    const chat = await this.#c.getInputPeer(chatId);
-    if (!(chat instanceof types.InputPeerChannel)) {
-      throw new Error("Invalid chat ID");
-    }
+    const channel = await this.#c.getInputChannel(chatId);
     const member = await this.#c.getInputPeer(memberId);
     await this.#c.api.channels.editBanned({
-      channel: new types.InputChannel(chat),
+      channel,
       participant: member,
       banned_rights: chatMemberRightsToTlObject(params?.rights, params?.untilDate),
     });
@@ -1146,7 +1138,7 @@ export class MessageManager {
 
   async createInviteLink(chatId: ID, params?: CreateInviteLinkParams) {
     if (params?.requireApproval && params?.limit) {
-      throw new Error("createInviteLink: requireApproval cannot be true while limit is specified");
+      throw new InputError("requireApproval cannot be true while limit is specified.");
     }
     const result = await this.#c.api.messages.exportChatInvite({
       peer: await this.#c.getInputPeer(chatId),
@@ -1175,7 +1167,7 @@ export class MessageManager {
     await this.#c.storage.assertUser("joinChat");
     const peer = await this.#c.getInputPeer(chatId);
     if (peer instanceof types.InputPeerUser) {
-      throw new Error("joinChat: cannot join private chats");
+      throw new InputError("Cannot join private chats.");
     } else if (peer instanceof types.InputPeerChannel) {
       await this.#c.api.channels.joinChannel({ channel: new types.InputChannel(peer) });
     } else if (peer instanceof types.InputPeerChat) {
@@ -1188,7 +1180,7 @@ export class MessageManager {
   async leaveChat(chatId: ID) {
     const peer = await this.#c.getInputPeer(chatId);
     if (peer instanceof types.InputPeerUser) {
-      throw new Error("leaveChat: cannot leave private chats");
+      throw new InputError("Cannot leave private chats.");
     } else if (peer instanceof types.InputPeerChannel) {
       await this.#c.api.channels.leaveChannel({ channel: new types.InputChannel(peer) });
     } else if (peer instanceof types.InputPeerChat) {
@@ -1202,7 +1194,7 @@ export class MessageManager {
     await this.#c.storage.assertUser("blockUser");
     const id = await this.#c.getInputPeer(userId);
     if (!(id instanceof types.User)) {
-      throw new Error("blockUser: only users can be blocked or unblocked");
+      throw new InputError("Only users can be blocked or unblocked.");
     }
     await this.#c.api.contacts.block({ id });
   }
@@ -1211,7 +1203,7 @@ export class MessageManager {
     await this.#c.storage.assertUser("unblockUser");
     const id = await this.#c.getInputPeer(userId);
     if (!(id instanceof types.User)) {
-      throw new Error("unblockUser: only users can be blocked or unblocked");
+      throw new InputError("Only users can be blocked or unblocked.");
     }
     await this.#c.api.contacts.unblock({ id });
   }
@@ -1231,7 +1223,7 @@ export class MessageManager {
       const participant = fullChat.participants[as](types.ChatParticipants).participants.find((v) => v.user_id == user.user_id)!;
       return await constructChatMember(participant, this.#c.getEntity);
     } else {
-      throw new Error("Invalid chat ID");
+      throw new InputError("Expected a channel, supergroup, or group ID. Got a user ID instead.");
     }
   }
 
@@ -1247,25 +1239,32 @@ export class MessageManager {
 
   async stopPoll(chatId: ID, messageId: number, params?: StopPollParams) {
     const message = await this.getMessage(chatId, messageId);
-    if (message && "poll" in message && !message.poll.isClosed) {
-      const result = await this.#c.api.messages.editMessage({
-        peer: await this.#c.getInputPeer(chatId),
-        id: messageId,
-        media: new types.InputMediaPoll({
-          poll: new types.Poll({
-            id: BigInt(message.poll.id),
-            closed: true,
-            question: "",
-            answers: [],
-          }),
-        }),
-        reply_markup: await this.#constructReplyMarkup(params),
-      });
-
-      const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
-      return assertMessageType(message_, "poll").poll;
+    if (!message) {
+      throw new InputError("Message not found.");
     }
-    UNREACHABLE();
+    if (!("poll" in message)) {
+      throw new InputError("Message is not a poll.");
+    }
+    if (message.poll.isClosed) {
+      throw new InputError("Poll is already stopped.");
+    }
+
+    const result = await this.#c.api.messages.editMessage({
+      peer: await this.#c.getInputPeer(chatId),
+      id: messageId,
+      media: new types.InputMediaPoll({
+        poll: new types.Poll({
+          id: BigInt(message.poll.id),
+          closed: true,
+          question: "",
+          answers: [],
+        }),
+      }),
+      reply_markup: await this.#constructReplyMarkup(params),
+    });
+
+    const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return assertMessageType(message_, "poll").poll;
   }
 
   async editMessageLiveLocation(chatId: ID, messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {

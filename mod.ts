@@ -1,3 +1,4 @@
+export * from "./0_errors.ts";
 export { getColorFromPeerId, getColorName, getRandomId, setLogVerbosity } from "./1_utilities.ts";
 export { checkPassword } from "./client/0_password.ts";
 

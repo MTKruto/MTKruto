@@ -1,11 +1,11 @@
 import { gunzip } from "../0_deps.ts";
+import { ConnectionError } from "../0_errors.ts";
 import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, Logger, sha1, UNREACHABLE } from "../1_utilities.ts";
 import { enums, functions, Message_, MessageContainer, name, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
-import { ConnectionError } from "./0_types.ts";
 
 // global ClientEncrypted ID counter for logs
 let id = 0;

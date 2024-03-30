@@ -1,4 +1,5 @@
 import { path } from "../0_deps.ts";
+import { InputError } from "../0_errors.ts";
 import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
 import { FileSource } from "../3_types.ts";
@@ -95,7 +96,7 @@ function isDigit(string: string) {
   const c = string.charCodeAt(0);
   return "0".charCodeAt(0) <= c && c <= "9".charCodeAt(0);
 }
-const errInvalidUsername = (u: string) => new Error("Invalid username: " + u);
+const errInvalidUsername = (u: string) => new InputError(`Invalid username: ${u}`);
 function validateUsername(string: string, ignoreAt = false) {
   string = string.trim();
   if (ignoreAt && string.startsWith("@")) {

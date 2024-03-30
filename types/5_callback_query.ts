@@ -1,3 +1,4 @@
+import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, cleanObject, UNREACHABLE } from "../1_utilities.ts";
 import { enums, peerToChatId, serialize, TLReader, types } from "../2_tl.ts";
 import { EntityGetter } from "./1__getters.ts";
@@ -22,7 +23,7 @@ export interface CallbackQuery {
   gameShortName?: string;
 }
 
-const ERR_INVALID_INLINE_MESSAGE_ID = new Error("Invalid inline message ID");
+const ERR_INVALID_INLINE_MESSAGE_ID = new InputError("Invalid inline message ID");
 export function deserializeInlineMessageId(inlineMessageId: string): enums.InputBotInlineMessageID {
   try {
     const buffer = base64DecodeUrlSafe(inlineMessageId);

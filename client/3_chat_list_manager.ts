@@ -1,3 +1,4 @@
+import { InputError } from "../0_errors.ts";
 import { getLogger, Logger, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, peerToChatId, types } from "../2_tl.ts";
 import { Chat, constructChat, constructChat2, constructChat3, constructChat4, getChatOrder, ID } from "../3_types.ts";
@@ -143,7 +144,7 @@ export class ChatListManager {
       case 1:
         return this.#archivedChats;
       default:
-        throw new Error("Invalid chat list: " + listId);
+        throw new Error(`Invalid chat list: ${listId}`);
     }
   }
 
@@ -350,7 +351,7 @@ export class ChatListManager {
       await this.#loadChatsFromStorage();
     }
     if (after && !this.#chats.get(after.id)) {
-      throw new Error("Invalid after");
+      throw new InputError("Invalid after");
     }
     if (limit <= 0 || limit > 100) {
       limit = 100;
