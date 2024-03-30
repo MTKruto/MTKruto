@@ -84,6 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
+        if: github.ref == 'refs/heads/main'
         with:
           github-token: ${{ secrets.PAT_TOKEN }}
           script: |
@@ -129,6 +130,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
+        if: github.ref == 'refs/heads/main'
         with:
           github-token: ${{ secrets.PAT_TOKEN }}
           script: |

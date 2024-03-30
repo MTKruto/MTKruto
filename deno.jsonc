@@ -4,6 +4,6 @@
   "fmt": { "lineWidth": 1000 },
   "compilerOptions": { "lib": ["dom", "esnext", "deno.unstable"] },
   "tasks": {
-    "flc": "deno fmt && deno lint && deno check mod.ts && deno run --allow-read=. --allow-write=. https://raw.githubusercontent.com/MTKruto/tools/main/sort_imports.ts"
+    "flc": "deno fmt && deno run --allow-read=. --allow-write=. https://raw.githubusercontent.com/MTKruto/tools/main/sort_imports.ts && deno lint && deno check mod.ts"
   }
 }
