@@ -1,3 +1,4 @@
+import { AccessError, InputError } from "../0_errors.ts";
 import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, mustPrompt, mustPromptOneOf, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, name, peerToChatId, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
@@ -356,6 +357,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
             try {
               const exportedAuth = await this.api.auth.exportAuthorization({ dc_id: dcId });
               await client.authorize(exportedAuth);
+              // throw 1;
               return true;
             } catch (err) {
               throw err;
@@ -1301,6 +1303,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
       } else {
         inputPeer.access_hash = await this.#getUserAccessHash(inputPeer.user_id);
       }
+    } else {
+      throw new AccessError(`Cannot access the chat ${id} because there is no access hash for it.`);
     }
     return inputPeer;
   }
@@ -1313,7 +1317,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async getInputChannel(id: ID): Promise<types.InputChannel> {
     const inputPeer = await this.getInputPeer(id);
     if (!(inputPeer instanceof types.InputPeerChannel)) {
-      UNREACHABLE();
+      throw new TypeError(`The chat ${id} is not a channel neither a supergroup.`);
     }
     return new types.InputChannel(inputPeer);
   }
@@ -1326,7 +1330,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async getInputUser(id: ID): Promise<types.InputUser> {
     const inputPeer = await this.getInputPeer(id);
     if (!(inputPeer instanceof types.InputPeerUser)) {
-      UNREACHABLE();
+      throw new TypeError(`The chat ${id} is not a private chat.`);
     }
     return new types.InputUser(inputPeer);
   }
@@ -1374,7 +1378,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       const accessHash = await this.messageStorage.getChannelAccessHash(id);
       return new types.InputPeerChannel({ channel_id: chatIdToPeerId(id), access_hash: accessHash ?? 0n });
     } else {
-      throw new Error("ID format unknown or not implemented");
+      throw new InputError("The ID is of an format unknown.");
     }
   }
 

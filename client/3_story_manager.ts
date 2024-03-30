@@ -1,4 +1,5 @@
 import { contentType } from "../0_deps.ts";
+import { InputError } from "../0_errors.ts";
 import { getRandomId, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, inputPeerToPeer, peerToChatId, types } from "../2_tl.ts";
 import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, Update } from "../3_types.ts";
@@ -46,7 +47,7 @@ export class StoryManager {
 
     if (media == null) {
       if (typeof source === "string" && isHttpUrl(source)) {
-        throw new Error("URL not supported");
+        throw new InputError("URL not supported.");
       } else {
         const [contents, fileName_] = await getFileContents(source);
         const fileName = params?.fileName ?? fileName_;

@@ -1,3 +1,4 @@
+import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, rleDecode, rleEncode, UNREACHABLE } from "../1_utilities.ts";
 import { TLReader, TLWriter } from "../2_tl.ts";
 
@@ -245,7 +246,7 @@ function hasFileReference(fileType: FileType) {
 export function deserializeFileId(fileId: string): FileId {
   const reader = new TLReader(rleDecode(base64DecodeUrlSafe(fileId)));
   if (reader.buffer[reader.buffer.length - 1] != PERSISTENT_ID_VERSION) {
-    throw new Error("Unsupported version");
+    throw new InputError("Unsupported file ID format");
   }
   const originalType = reader.readInt32();
   const type = ((originalType & ~WEB_LOCATION_FLAG) & ~FILE_REFERENCE_FLAG) as FileType;

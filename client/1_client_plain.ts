@@ -1,4 +1,5 @@
 import { assertEquals, assertInstanceOf, factorize, ige256Decrypt, ige256Encrypt } from "../0_deps.ts";
+import { ConnectionError, TransportError } from "../0_errors.ts";
 import { bigIntFromBuffer, bufferFromBigInt, concat, getLogger, getRandomBigInt, modExp, rsaPad, sha1, UNREACHABLE } from "../1_utilities.ts";
 import { functions, serialize, TLReader, types } from "../2_tl.ts";
 import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
@@ -29,7 +30,7 @@ export class ClientPlain extends ClientAbstract {
 
   async invoke<T extends functions.Function<unknown>>(function_: T): Promise<T["__R"]> {
     if (!this.transport) {
-      throw new Error("Not connected");
+      throw new ConnectionError("Not connected.");
     }
     const msgId = this.#lastMsgId = getMessageId(this.#lastMsgId);
 
@@ -42,9 +43,7 @@ export class ClientPlain extends ClientAbstract {
     L.inBin(payload);
     if (buffer.length == 4) {
       const int = bigIntFromBuffer(buffer, true, true);
-      if (int == -404n) {
-        throw new Error("-404");
-      }
+      throw new TransportError(Number(int));
     }
     const { message } = unpackUnencryptedMessage(buffer);
     const reader = new TLReader(message);

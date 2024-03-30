@@ -1,10 +1,11 @@
+import { ConnectionError, InputError } from "../0_errors.ts";
 import { drop, getLogger, getRandomId, Logger, mod, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
 import { constructSticker, deserializeFileId, FileId, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { FloodWait } from "../4_errors.ts";
 import { DownloadParams, UploadParams } from "./0_params.ts";
-import { C, ConnectionError } from "./0_types.ts";
+import { C } from "./0_types.ts";
 
 export class FileManager {
   #c: C;
@@ -22,7 +23,7 @@ export class FileManager {
 
     const chunkSize = params?.chunkSize ?? 512 * 1024;
     if (mod(chunkSize, 1024) != 0) {
-      throw new Error("chunkSize must be divisible by 1024");
+      throw new InputError("chunkSize must be divisible by 1024.");
     }
 
     const signal = params?.signal;
@@ -107,7 +108,7 @@ export class FileManager {
 
     const chunkSize = params?.chunkSize ?? 1024 * 1024;
     if (mod(chunkSize, 1024) != 0) {
-      throw new Error("chunkSize must be divisible by 1024");
+      throw new InputError("chunkSize must be divisible by 1024.");
     }
 
     const { api, connect, disconnect } = this.#c.apiFactory(dcId);
@@ -215,7 +216,7 @@ export class FileManager {
   async getCustomEmojiStickers(id: string | string[]) {
     id = Array.isArray(id) ? id : [id];
     if (!id.length) {
-      throw new Error("No custom emoji ID provided");
+      return [];
     }
     const stickers = new Array<Sticker>();
     let shouldFetch = false;

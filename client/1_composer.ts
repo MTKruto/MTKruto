@@ -1,3 +1,4 @@
+import { InputError } from "../0_errors.ts";
 import { MaybePromise } from "../1_utilities.ts";
 import { Update, UpdateIntersection, User } from "../3_types.ts";
 import { FilterQuery, match, WithFilter } from "./0_filters.ts";
@@ -47,7 +48,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
 
   set prefixes(value: string | string[]) {
     if (this.#prefixes !== undefined) {
-      throw new Error("Prefixes already set");
+      throw new InputError("Prefixes already set");
     }
     this.#prefixes = value;
   }
@@ -121,7 +122,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
           continue;
         }
         if (left.startsWith(right) || right.startsWith(left)) {
-          throw new Error("Intersecting prefixes");
+          throw new InputError("Intersecting prefixes");
         }
       }
     }

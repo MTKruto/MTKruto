@@ -1,4 +1,5 @@
 import { initTgCrypto } from "../0_deps.ts";
+import { ConnectionError } from "../0_errors.ts";
 import { MaybePromise } from "../1_utilities.ts";
 import { DC, TransportProvider, transportProviderWebSocket } from "../3_transport.ts";
 import { INITIAL_DC } from "../4_constants.ts";
@@ -40,7 +41,7 @@ export abstract class ClientAbstract {
 
   get dcId(): number {
     if (!this.transport) {
-      throw new Error("Not connected");
+      throw new ConnectionError("Not connected.");
     }
     return this.transport.dcId;
   }
@@ -72,7 +73,7 @@ export abstract class ClientAbstract {
 
   async disconnect() {
     if (!this.transport) {
-      throw new Error("Not connected");
+      throw new ConnectionError("Not connected.");
     }
     await this.transport.transport.deinitialize();
     await this.transport.connection.close();
