@@ -919,8 +919,12 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await Promise.all([this.storage.setAuthKey(this.#client.authKey), this.storage.setDc(this.#client.dc), this.storage.setServerSalt(this.#client.serverSalt)]);
   }
 
-  async reconnect(dc: DC) {
-    await this.#client.reconnect(dc);
+  async reconnect(dc?: DC) {
+    await this.disconnect();
+    if (dc) {
+      await this.setDc(dc);
+    }
+    await this.connect();
   }
 
   async [handleMigrationError](err: Migrate) {
