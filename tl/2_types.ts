@@ -89,7 +89,16 @@ export abstract class _True_ extends Type_ {
 export abstract class _Error_ extends Type_ {
 }
 
-export abstract class _Null_ extends Type_ {
+export abstract class _IpPort_ extends Type_ {
+}
+
+export abstract class _AccessPointRule_ extends Type_ {
+}
+
+export abstract class _help_ConfigSimple_ extends Type_ {
+}
+
+export abstract class _InputFileLocation_ extends Type_ {
 }
 
 export abstract class _InputPeer_ extends Type_ {
@@ -114,9 +123,6 @@ export abstract class _InputGeoPoint_ extends Type_ {
 }
 
 export abstract class _InputPhoto_ extends Type_ {
-}
-
-export abstract class _InputFileLocation_ extends Type_ {
 }
 
 export abstract class _Peer_ extends Type_ {
@@ -1463,6 +1469,78 @@ export abstract class _account_ConnectedBots_ extends Type_ {
 export abstract class _messages_DialogFilters_ extends Type_ {
 }
 
+export abstract class _Birthday_ extends Type_ {
+}
+
+export abstract class _BotBusinessConnection_ extends Type_ {
+}
+
+export abstract class _InputBusinessIntro_ extends Type_ {
+}
+
+export abstract class _BusinessIntro_ extends Type_ {
+}
+
+export abstract class _messages_MyStickers_ extends Type_ {
+}
+
+export abstract class _InputCollectible_ extends Type_ {
+}
+
+export abstract class _fragment_CollectibleInfo_ extends Type_ {
+}
+
+export abstract class _InputBusinessBotRecipients_ extends Type_ {
+}
+
+export abstract class _BusinessBotRecipients_ extends Type_ {
+}
+
+export abstract class _ContactBirthday_ extends Type_ {
+}
+
+export abstract class _contacts_ContactBirthdays_ extends Type_ {
+}
+
+export abstract class _MissingInvitee_ extends Type_ {
+}
+
+export abstract class _messages_InvitedUsers_ extends Type_ {
+}
+
+export abstract class _InputBusinessChatLink_ extends Type_ {
+}
+
+export abstract class _BusinessChatLink_ extends Type_ {
+}
+
+export abstract class _account_BusinessChatLinks_ extends Type_ {
+}
+
+export abstract class _account_ResolvedBusinessChatLinks_ extends Type_ {
+}
+
+export abstract class _RequestedPeer_ extends Type_ {
+}
+
+export abstract class _SponsoredMessageReportOption_ extends Type_ {
+}
+
+export abstract class _channels_SponsoredMessageReportResult_ extends Type_ {
+}
+
+export abstract class _stats_BroadcastRevenueStats_ extends Type_ {
+}
+
+export abstract class _stats_BroadcastRevenueWithdrawalUrl_ extends Type_ {
+}
+
+export abstract class _BroadcastRevenueTransaction_ extends Type_ {
+}
+
+export abstract class _stats_BroadcastRevenueTransactions_ extends Type_ {
+}
+
 export class ResPQ_ extends _ResPQ_ {
   nonce: bigint;
   server_nonce: bigint;
@@ -2713,26 +2791,227 @@ export class Error_ extends _Error_ {
   }
 }
 
-/** Corresponds to an arbitrary empty object. */
-export class Null_ extends _Null_ {
+export class IpPort_ extends _IpPort_ {
+  ipv4: number;
+  port: number;
+
   protected get [id](): number {
-    return 0x56730BCC;
+    return 0xD433AD73;
   }
 
   static get [name](): string {
-    return "null"
+    return "ipPort"
   }
 
   static get [paramDesc](): ParamDesc {
-    return [];
+    return [
+      ["ipv4", "number", "int"],
+      ["port", "number", "int"],
+    ];
   }
 
   protected get [params](): Params {
-    return [];
+    return [
+      [this.ipv4, "number", "int"],
+      [this.port, "number", "int"],
+    ];
   }
 
-  constructor() {
+  constructor(params: { ipv4: number; port: number }) {
     super();
+    this.ipv4 = params.ipv4;
+    this.port = params.port;
+  }
+}
+
+export class IpPortSecret_ extends _IpPort_ {
+  ipv4: number;
+  port: number;
+  secret: Uint8Array;
+
+  protected get [id](): number {
+    return 0x37982646;
+  }
+
+  static get [name](): string {
+    return "ipPortSecret"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["ipv4", "number", "int"],
+      ["port", "number", "int"],
+      ["secret", Uint8Array, "bytes"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.ipv4, "number", "int"],
+      [this.port, "number", "int"],
+      [this.secret, Uint8Array, "bytes"],
+    ];
+  }
+
+  constructor(params: { ipv4: number; port: number; secret: Uint8Array }) {
+    super();
+    this.ipv4 = params.ipv4;
+    this.port = params.port;
+    this.secret = params.secret;
+  }
+}
+
+export class AccessPointRule_ extends _AccessPointRule_ {
+  phone_prefix_rules: string;
+  dc_id: number;
+  ips: Array<enums.IpPort>;
+
+  protected get [id](): number {
+    return 0x4679B65F;
+  }
+
+  static get [name](): string {
+    return "accessPointRule"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["phone_prefix_rules", "string", "string"],
+      ["dc_id", "number", "int"],
+      ["ips", [_IpPort_], "vector<IpPort>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.phone_prefix_rules, "string", "string"],
+      [this.dc_id, "number", "int"],
+      [this.ips, [_IpPort_], "vector<IpPort>"],
+    ];
+  }
+
+  constructor(params: { phone_prefix_rules: string; dc_id: number; ips: Array<enums.IpPort> }) {
+    super();
+    this.phone_prefix_rules = params.phone_prefix_rules;
+    this.dc_id = params.dc_id;
+    this.ips = params.ips;
+  }
+}
+
+export class help_ConfigSimple_ extends _help_ConfigSimple_ {
+  date: number;
+  expires: number;
+  rules: Array<enums.AccessPointRule>;
+
+  protected get [id](): number {
+    return 0x5A592A6C;
+  }
+
+  static get [name](): string {
+    return "help.configSimple"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["date", "number", "int"],
+      ["expires", "number", "int"],
+      ["rules", [_AccessPointRule_], "vector<AccessPointRule>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.date, "number", "int"],
+      [this.expires, "number", "int"],
+      [this.rules, [_AccessPointRule_], "vector<AccessPointRule>"],
+    ];
+  }
+
+  constructor(params: { date: number; expires: number; rules: Array<enums.AccessPointRule> }) {
+    super();
+    this.date = params.date;
+    this.expires = params.expires;
+    this.rules = params.rules;
+  }
+}
+
+export class InputPeerPhotoFileLocationLegacy_ extends _InputFileLocation_ {
+  big?: true;
+  peer: enums.InputPeer;
+  volume_id: bigint;
+  local_id: number;
+
+  protected get [id](): number {
+    return 0x27D69997;
+  }
+
+  static get [name](): string {
+    return "inputPeerPhotoFileLocationLegacy"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["big", "true", "flags.0?true"],
+      ["peer", _InputPeer_, "InputPeer"],
+      ["volume_id", "bigint", "long"],
+      ["local_id", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.big ?? null, "true", "flags.0?true"],
+      [this.peer, _InputPeer_, "InputPeer"],
+      [this.volume_id, "bigint", "long"],
+      [this.local_id, "number", "int"],
+    ];
+  }
+
+  constructor(params: { big?: true; peer: enums.InputPeer; volume_id: bigint; local_id: number }) {
+    super();
+    this.big = params.big;
+    this.peer = params.peer;
+    this.volume_id = params.volume_id;
+    this.local_id = params.local_id;
+  }
+}
+
+export class InputStickerSetThumbLegacy_ extends _InputFileLocation_ {
+  stickerset: enums.InputStickerSet;
+  volume_id: bigint;
+  local_id: number;
+
+  protected get [id](): number {
+    return 0x0DBAEAE9;
+  }
+
+  static get [name](): string {
+    return "inputStickerSetThumbLegacy"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["stickerset", _InputStickerSet_, "InputStickerSet"],
+      ["volume_id", "bigint", "long"],
+      ["local_id", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.stickerset, _InputStickerSet_, "InputStickerSet"],
+      [this.volume_id, "bigint", "long"],
+      [this.local_id, "number", "int"],
+    ];
+  }
+
+  constructor(params: { stickerset: enums.InputStickerSet; volume_id: bigint; local_id: number }) {
+    super();
+    this.stickerset = params.stickerset;
+    this.volume_id = params.volume_id;
+    this.local_id = params.local_id;
   }
 }
 
@@ -5051,6 +5330,7 @@ export class User_ extends _User_ {
   /** No stories from this user are visible. */
   stories_unavailable?: true;
   contact_require_premium?: true;
+  bot_business?: true;
   /** ID of the user */
   id: bigint;
   /** Access hash of the user */
@@ -5121,6 +5401,7 @@ export class User_ extends _User_ {
       ["stories_hidden", "true", "flags2.3?true"],
       ["stories_unavailable", "true", "flags2.4?true"],
       ["contact_require_premium", "true", "flags2.10?true"],
+      ["bot_business", "true", "flags2.11?true"],
       ["id", "bigint", "long"],
       ["access_hash", "bigint", "flags.0?long"],
       ["first_name", "string", "flags.1?string"],
@@ -5168,6 +5449,7 @@ export class User_ extends _User_ {
       [this.stories_hidden ?? null, "true", "flags2.3?true"],
       [this.stories_unavailable ?? null, "true", "flags2.4?true"],
       [this.contact_require_premium ?? null, "true", "flags2.10?true"],
+      [this.bot_business ?? null, "true", "flags2.11?true"],
       [this.id, "bigint", "long"],
       [this.access_hash ?? null, "bigint", "flags.0?long"],
       [this.first_name ?? null, "string", "flags.1?string"],
@@ -5188,7 +5470,7 @@ export class User_ extends _User_ {
     ];
   }
 
-  constructor(params: { self?: true; contact?: true; mutual_contact?: true; deleted?: true; bot?: true; bot_chat_history?: true; bot_nochats?: true; verified?: true; restricted?: true; min?: true; bot_inline_geo?: true; support?: true; scam?: true; apply_min_photo?: true; fake?: true; bot_attach_menu?: true; premium?: true; attach_menu_enabled?: true; bot_can_edit?: true; close_friend?: true; stories_hidden?: true; stories_unavailable?: true; contact_require_premium?: true; id: bigint; access_hash?: bigint; first_name?: string; last_name?: string; username?: string; phone?: string; photo?: enums.UserProfilePhoto; status?: enums.UserStatus; bot_info_version?: number; restriction_reason?: Array<enums.RestrictionReason>; bot_inline_placeholder?: string; lang_code?: string; emoji_status?: enums.EmojiStatus; usernames?: Array<enums.Username>; stories_max_id?: number; color?: enums.PeerColor; profile_color?: enums.PeerColor }) {
+  constructor(params: { self?: true; contact?: true; mutual_contact?: true; deleted?: true; bot?: true; bot_chat_history?: true; bot_nochats?: true; verified?: true; restricted?: true; min?: true; bot_inline_geo?: true; support?: true; scam?: true; apply_min_photo?: true; fake?: true; bot_attach_menu?: true; premium?: true; attach_menu_enabled?: true; bot_can_edit?: true; close_friend?: true; stories_hidden?: true; stories_unavailable?: true; contact_require_premium?: true; bot_business?: true; id: bigint; access_hash?: bigint; first_name?: string; last_name?: string; username?: string; phone?: string; photo?: enums.UserProfilePhoto; status?: enums.UserStatus; bot_info_version?: number; restriction_reason?: Array<enums.RestrictionReason>; bot_inline_placeholder?: string; lang_code?: string; emoji_status?: enums.EmojiStatus; usernames?: Array<enums.Username>; stories_max_id?: number; color?: enums.PeerColor; profile_color?: enums.PeerColor }) {
     super();
     this.self = params.self;
     this.contact = params.contact;
@@ -5213,6 +5495,7 @@ export class User_ extends _User_ {
     this.stories_hidden = params.stories_hidden;
     this.stories_unavailable = params.stories_unavailable;
     this.contact_require_premium = params.contact_require_premium;
+    this.bot_business = params.bot_business;
     this.id = params.id;
     this.access_hash = params.access_hash;
     this.first_name = params.first_name;
@@ -6102,6 +6385,8 @@ export class ChannelFull_ extends _ChatFull_ {
   /** Users may also choose to display messages from all topics of a [forum](https://core.telegram.org/api/forum) as if they were sent to a normal group, using a "View as messages" setting in the local client.  
   This setting only affects the current account, and is synced to other logged in sessions using the [channels.toggleViewForumAsMessages](https://core.telegram.org/method/channels.toggleViewForumAsMessages) method; invoking this method will update the value of this flag. */
   view_forum_as_messages?: true;
+  restricted_sponsored?: true;
+  can_view_revenue?: true;
   /** ID of the channel */
   id: bigint;
   /** Info about the channel */
@@ -6206,6 +6491,8 @@ export class ChannelFull_ extends _ChatFull_ {
       ["translations_disabled", "true", "flags2.3?true"],
       ["stories_pinned_available", "true", "flags2.5?true"],
       ["view_forum_as_messages", "true", "flags2.6?true"],
+      ["restricted_sponsored", "true", "flags2.11?true"],
+      ["can_view_revenue", "true", "flags2.12?true"],
       ["id", "bigint", "long"],
       ["about", "string", "string"],
       ["participants_count", "number", "flags.0?int"],
@@ -6267,6 +6554,8 @@ export class ChannelFull_ extends _ChatFull_ {
       [this.translations_disabled ?? null, "true", "flags2.3?true"],
       [this.stories_pinned_available ?? null, "true", "flags2.5?true"],
       [this.view_forum_as_messages ?? null, "true", "flags2.6?true"],
+      [this.restricted_sponsored ?? null, "true", "flags2.11?true"],
+      [this.can_view_revenue ?? null, "true", "flags2.12?true"],
       [this.id, "bigint", "long"],
       [this.about, "string", "string"],
       [this.participants_count ?? null, "number", "flags.0?int"],
@@ -6310,7 +6599,7 @@ export class ChannelFull_ extends _ChatFull_ {
     ];
   }
 
-  constructor(params: { can_view_participants?: true; can_set_username?: true; can_set_stickers?: true; hidden_prehistory?: true; can_set_location?: true; has_scheduled?: true; can_view_stats?: true; blocked?: true; can_delete_channel?: true; antispam?: true; participants_hidden?: true; translations_disabled?: true; stories_pinned_available?: true; view_forum_as_messages?: true; id: bigint; about: string; participants_count?: number; admins_count?: number; kicked_count?: number; banned_count?: number; online_count?: number; read_inbox_max_id: number; read_outbox_max_id: number; unread_count: number; chat_photo: enums.Photo; notify_settings: enums.PeerNotifySettings; exported_invite?: enums.ExportedChatInvite; bot_info: Array<enums.BotInfo>; migrated_from_chat_id?: bigint; migrated_from_max_id?: number; pinned_msg_id?: number; stickerset?: enums.StickerSet; available_min_id?: number; folder_id?: number; linked_chat_id?: bigint; location?: enums.ChannelLocation; slowmode_seconds?: number; slowmode_next_send_date?: number; stats_dc?: number; pts: number; call?: enums.InputGroupCall; ttl_period?: number; pending_suggestions?: Array<string>; groupcall_default_join_as?: enums.Peer; theme_emoticon?: string; requests_pending?: number; recent_requesters?: Array<bigint>; default_send_as?: enums.Peer; available_reactions?: enums.ChatReactions; stories?: enums.PeerStories; wallpaper?: enums.WallPaper; boosts_applied?: number; boosts_unrestrict?: number; emojiset?: enums.StickerSet }) {
+  constructor(params: { can_view_participants?: true; can_set_username?: true; can_set_stickers?: true; hidden_prehistory?: true; can_set_location?: true; has_scheduled?: true; can_view_stats?: true; blocked?: true; can_delete_channel?: true; antispam?: true; participants_hidden?: true; translations_disabled?: true; stories_pinned_available?: true; view_forum_as_messages?: true; restricted_sponsored?: true; can_view_revenue?: true; id: bigint; about: string; participants_count?: number; admins_count?: number; kicked_count?: number; banned_count?: number; online_count?: number; read_inbox_max_id: number; read_outbox_max_id: number; unread_count: number; chat_photo: enums.Photo; notify_settings: enums.PeerNotifySettings; exported_invite?: enums.ExportedChatInvite; bot_info: Array<enums.BotInfo>; migrated_from_chat_id?: bigint; migrated_from_max_id?: number; pinned_msg_id?: number; stickerset?: enums.StickerSet; available_min_id?: number; folder_id?: number; linked_chat_id?: bigint; location?: enums.ChannelLocation; slowmode_seconds?: number; slowmode_next_send_date?: number; stats_dc?: number; pts: number; call?: enums.InputGroupCall; ttl_period?: number; pending_suggestions?: Array<string>; groupcall_default_join_as?: enums.Peer; theme_emoticon?: string; requests_pending?: number; recent_requesters?: Array<bigint>; default_send_as?: enums.Peer; available_reactions?: enums.ChatReactions; stories?: enums.PeerStories; wallpaper?: enums.WallPaper; boosts_applied?: number; boosts_unrestrict?: number; emojiset?: enums.StickerSet }) {
     super();
     this.can_view_participants = params.can_view_participants;
     this.can_set_username = params.can_set_username;
@@ -6326,6 +6615,8 @@ export class ChannelFull_ extends _ChatFull_ {
     this.translations_disabled = params.translations_disabled;
     this.stories_pinned_available = params.stories_pinned_available;
     this.view_forum_as_messages = params.view_forum_as_messages;
+    this.restricted_sponsored = params.restricted_sponsored;
+    this.can_view_revenue = params.can_view_revenue;
     this.id = params.id;
     this.about = params.about;
     this.participants_count = params.participants_count;
@@ -6694,6 +6985,7 @@ export class Message_ extends _Message_ {
   noforwards?: true;
   /** If set, any eventual webpage preview will be shown on top of the message instead of at the bottom. */
   invert_media?: true;
+  offline?: true;
   /** ID of the message */
   id: number;
   /** ID of the sender of the message */
@@ -6707,6 +6999,7 @@ export class Message_ extends _Message_ {
   fwd_from?: enums.MessageFwdHeader;
   /** ID of the inline bot that generated the message */
   via_bot_id?: bigint;
+  via_business_bot_id?: bigint;
   /** Reply information */
   reply_to?: enums.MessageReplyHeader;
   /** Date of the message */
@@ -6740,7 +7033,7 @@ export class Message_ extends _Message_ {
   quick_reply_shortcut_id?: number;
 
   protected get [id](): number {
-    return 0xA66C7EFC;
+    return 0x2357BF25;
   }
 
   static get [name](): string {
@@ -6761,6 +7054,8 @@ export class Message_ extends _Message_ {
       ["pinned", "true", "flags.24?true"],
       ["noforwards", "true", "flags.26?true"],
       ["invert_media", "true", "flags.27?true"],
+      ["flags2", flags, "#"],
+      ["offline", "true", "flags2.1?true"],
       ["id", "number", "int"],
       ["from_id", _Peer_, "flags.8?Peer"],
       ["from_boosts_applied", "number", "flags.29?int"],
@@ -6768,6 +7063,7 @@ export class Message_ extends _Message_ {
       ["saved_peer_id", _Peer_, "flags.28?Peer"],
       ["fwd_from", _MessageFwdHeader_, "flags.2?MessageFwdHeader"],
       ["via_bot_id", "bigint", "flags.11?long"],
+      ["via_business_bot_id", "bigint", "flags2.0?long"],
       ["reply_to", _MessageReplyHeader_, "flags.3?MessageReplyHeader"],
       ["date", "number", "int"],
       ["message", "string", "string"],
@@ -6801,6 +7097,8 @@ export class Message_ extends _Message_ {
       [this.pinned ?? null, "true", "flags.24?true"],
       [this.noforwards ?? null, "true", "flags.26?true"],
       [this.invert_media ?? null, "true", "flags.27?true"],
+      ["flags2", flags, "#"],
+      [this.offline ?? null, "true", "flags2.1?true"],
       [this.id, "number", "int"],
       [this.from_id ?? null, _Peer_, "flags.8?Peer"],
       [this.from_boosts_applied ?? null, "number", "flags.29?int"],
@@ -6808,6 +7106,7 @@ export class Message_ extends _Message_ {
       [this.saved_peer_id ?? null, _Peer_, "flags.28?Peer"],
       [this.fwd_from ?? null, _MessageFwdHeader_, "flags.2?MessageFwdHeader"],
       [this.via_bot_id ?? null, "bigint", "flags.11?long"],
+      [this.via_business_bot_id ?? null, "bigint", "flags2.0?long"],
       [this.reply_to ?? null, _MessageReplyHeader_, "flags.3?MessageReplyHeader"],
       [this.date, "number", "int"],
       [this.message, "string", "string"],
@@ -6827,7 +7126,7 @@ export class Message_ extends _Message_ {
     ];
   }
 
-  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; post?: true; from_scheduled?: true; legacy?: true; edit_hide?: true; pinned?: true; noforwards?: true; invert_media?: true; id: number; from_id?: enums.Peer; from_boosts_applied?: number; peer_id: enums.Peer; saved_peer_id?: enums.Peer; fwd_from?: enums.MessageFwdHeader; via_bot_id?: bigint; reply_to?: enums.MessageReplyHeader; date: number; message: string; media?: enums.MessageMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; views?: number; forwards?: number; replies?: enums.MessageReplies; edit_date?: number; post_author?: string; grouped_id?: bigint; reactions?: enums.MessageReactions; restriction_reason?: Array<enums.RestrictionReason>; ttl_period?: number; quick_reply_shortcut_id?: number }) {
+  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; post?: true; from_scheduled?: true; legacy?: true; edit_hide?: true; pinned?: true; noforwards?: true; invert_media?: true; offline?: true; id: number; from_id?: enums.Peer; from_boosts_applied?: number; peer_id: enums.Peer; saved_peer_id?: enums.Peer; fwd_from?: enums.MessageFwdHeader; via_bot_id?: bigint; via_business_bot_id?: bigint; reply_to?: enums.MessageReplyHeader; date: number; message: string; media?: enums.MessageMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; views?: number; forwards?: number; replies?: enums.MessageReplies; edit_date?: number; post_author?: string; grouped_id?: bigint; reactions?: enums.MessageReactions; restriction_reason?: Array<enums.RestrictionReason>; ttl_period?: number; quick_reply_shortcut_id?: number }) {
     super();
     this.out = params.out;
     this.mentioned = params.mentioned;
@@ -6840,6 +7139,7 @@ export class Message_ extends _Message_ {
     this.pinned = params.pinned;
     this.noforwards = params.noforwards;
     this.invert_media = params.invert_media;
+    this.offline = params.offline;
     this.id = params.id;
     this.from_id = params.from_id;
     this.from_boosts_applied = params.from_boosts_applied;
@@ -6847,6 +7147,7 @@ export class Message_ extends _Message_ {
     this.saved_peer_id = params.saved_peer_id;
     this.fwd_from = params.fwd_from;
     this.via_bot_id = params.via_bot_id;
+    this.via_business_bot_id = params.via_business_bot_id;
     this.reply_to = params.reply_to;
     this.date = params.date;
     this.message = params.message;
@@ -9239,6 +9540,39 @@ export class MessageActionBoostApply_ extends _MessageAction_ {
   }
 }
 
+export class MessageActionRequestedPeerSentMe_ extends _MessageAction_ {
+  button_id: number;
+  peers: Array<enums.RequestedPeer>;
+
+  protected get [id](): number {
+    return 0x93B31848;
+  }
+
+  static get [name](): string {
+    return "messageActionRequestedPeerSentMe"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["button_id", "number", "int"],
+      ["peers", [_RequestedPeer_], "Vector<RequestedPeer>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.button_id, "number", "int"],
+      [this.peers, [_RequestedPeer_], "Vector<RequestedPeer>"],
+    ];
+  }
+
+  constructor(params: { button_id: number; peers: Array<enums.RequestedPeer> }) {
+    super();
+    this.button_id = params.button_id;
+    this.peers = params.peers;
+  }
+}
+
 /** Chat */
 export class Dialog_ extends _Dialog_ {
   /** Is the dialog pinned */
@@ -10325,15 +10659,19 @@ export class PeerSettings_ extends _PeerSettings_ {
   invite_members?: true;
   /** This flag is set if `request_chat_title` and `request_chat_date` fields are set and the [join request »](https://core.telegram.org/api/invites#join-requests) is related to a channel (otherwise if only the request fields are set, the [join request »](https://core.telegram.org/api/invites#join-requests) is related to a chat). */
   request_chat_broadcast?: true;
+  business_bot_paused?: true;
+  business_bot_can_reply?: true;
   /** Distance in meters between us and this peer */
   geo_distance?: number;
   /** If set, this is a private chat with an administrator of a chat or channel to which the user sent a join request, and this field contains the chat/channel's title. */
   request_chat_title?: string;
   /** If set, this is a private chat with an administrator of a chat or channel to which the user sent a join request, and this field contains the timestamp when the [join request »](https://core.telegram.org/api/invites#join-requests) was sent. */
   request_chat_date?: number;
+  business_bot_id?: bigint;
+  business_bot_manage_url?: string;
 
   protected get [id](): number {
-    return 0xA518110D;
+    return 0xACD66C5E;
   }
 
   static get [name](): string {
@@ -10352,9 +10690,13 @@ export class PeerSettings_ extends _PeerSettings_ {
       ["autoarchived", "true", "flags.7?true"],
       ["invite_members", "true", "flags.8?true"],
       ["request_chat_broadcast", "true", "flags.10?true"],
+      ["business_bot_paused", "true", "flags.11?true"],
+      ["business_bot_can_reply", "true", "flags.12?true"],
       ["geo_distance", "number", "flags.6?int"],
       ["request_chat_title", "string", "flags.9?string"],
       ["request_chat_date", "number", "flags.9?int"],
+      ["business_bot_id", "bigint", "flags.13?long"],
+      ["business_bot_manage_url", "string", "flags.13?string"],
     ];
   }
 
@@ -10370,13 +10712,17 @@ export class PeerSettings_ extends _PeerSettings_ {
       [this.autoarchived ?? null, "true", "flags.7?true"],
       [this.invite_members ?? null, "true", "flags.8?true"],
       [this.request_chat_broadcast ?? null, "true", "flags.10?true"],
+      [this.business_bot_paused ?? null, "true", "flags.11?true"],
+      [this.business_bot_can_reply ?? null, "true", "flags.12?true"],
       [this.geo_distance ?? null, "number", "flags.6?int"],
       [this.request_chat_title ?? null, "string", "flags.9?string"],
       [this.request_chat_date ?? null, "number", "flags.9?int"],
+      [this.business_bot_id ?? null, "bigint", "flags.13?long"],
+      [this.business_bot_manage_url ?? null, "string", "flags.13?string"],
     ];
   }
 
-  constructor(params?: { report_spam?: true; add_contact?: true; block_contact?: true; share_contact?: true; need_contacts_exception?: true; report_geo?: true; autoarchived?: true; invite_members?: true; request_chat_broadcast?: true; geo_distance?: number; request_chat_title?: string; request_chat_date?: number }) {
+  constructor(params?: { report_spam?: true; add_contact?: true; block_contact?: true; share_contact?: true; need_contacts_exception?: true; report_geo?: true; autoarchived?: true; invite_members?: true; request_chat_broadcast?: true; business_bot_paused?: true; business_bot_can_reply?: true; geo_distance?: number; request_chat_title?: string; request_chat_date?: number; business_bot_id?: bigint; business_bot_manage_url?: string }) {
     super();
     this.report_spam = params?.report_spam;
     this.add_contact = params?.add_contact;
@@ -10387,9 +10733,13 @@ export class PeerSettings_ extends _PeerSettings_ {
     this.autoarchived = params?.autoarchived;
     this.invite_members = params?.invite_members;
     this.request_chat_broadcast = params?.request_chat_broadcast;
+    this.business_bot_paused = params?.business_bot_paused;
+    this.business_bot_can_reply = params?.business_bot_can_reply;
     this.geo_distance = params?.geo_distance;
     this.request_chat_title = params?.request_chat_title;
     this.request_chat_date = params?.request_chat_date;
+    this.business_bot_id = params?.business_bot_id;
+    this.business_bot_manage_url = params?.business_bot_manage_url;
   }
 }
 
@@ -10812,9 +11162,13 @@ export class UserFull_ extends _UserFull_ {
   business_location?: enums.BusinessLocation;
   business_greeting_message?: enums.BusinessGreetingMessage;
   business_away_message?: enums.BusinessAwayMessage;
+  business_intro?: enums.BusinessIntro;
+  birthday?: enums.Birthday;
+  personal_channel_id?: bigint;
+  personal_channel_message?: number;
 
   protected get [id](): number {
-    return 0x22FF3E85;
+    return 0xCC997720;
   }
 
   static get [name](): string {
@@ -10861,6 +11215,10 @@ export class UserFull_ extends _UserFull_ {
       ["business_location", _BusinessLocation_, "flags2.1?BusinessLocation"],
       ["business_greeting_message", _BusinessGreetingMessage_, "flags2.2?BusinessGreetingMessage"],
       ["business_away_message", _BusinessAwayMessage_, "flags2.3?BusinessAwayMessage"],
+      ["business_intro", _BusinessIntro_, "flags2.4?BusinessIntro"],
+      ["birthday", _Birthday_, "flags2.5?Birthday"],
+      ["personal_channel_id", "bigint", "flags2.6?long"],
+      ["personal_channel_message", "number", "flags2.6?int"],
     ];
   }
 
@@ -10904,10 +11262,14 @@ export class UserFull_ extends _UserFull_ {
       [this.business_location ?? null, _BusinessLocation_, "flags2.1?BusinessLocation"],
       [this.business_greeting_message ?? null, _BusinessGreetingMessage_, "flags2.2?BusinessGreetingMessage"],
       [this.business_away_message ?? null, _BusinessAwayMessage_, "flags2.3?BusinessAwayMessage"],
+      [this.business_intro ?? null, _BusinessIntro_, "flags2.4?BusinessIntro"],
+      [this.birthday ?? null, _Birthday_, "flags2.5?Birthday"],
+      [this.personal_channel_id ?? null, "bigint", "flags2.6?long"],
+      [this.personal_channel_message ?? null, "number", "flags2.6?int"],
     ];
   }
 
-  constructor(params: { blocked?: true; phone_calls_available?: true; phone_calls_private?: true; can_pin_message?: true; has_scheduled?: true; video_calls_available?: true; voice_messages_forbidden?: true; translations_disabled?: true; stories_pinned_available?: true; blocked_my_stories_from?: true; wallpaper_overridden?: true; contact_require_premium?: true; read_dates_private?: true; id: bigint; about?: string; settings: enums.PeerSettings; personal_photo?: enums.Photo; profile_photo?: enums.Photo; fallback_photo?: enums.Photo; notify_settings: enums.PeerNotifySettings; bot_info?: enums.BotInfo; pinned_msg_id?: number; common_chats_count: number; folder_id?: number; ttl_period?: number; theme_emoticon?: string; private_forward_name?: string; bot_group_admin_rights?: enums.ChatAdminRights; bot_broadcast_admin_rights?: enums.ChatAdminRights; premium_gifts?: Array<enums.PremiumGiftOption>; wallpaper?: enums.WallPaper; stories?: enums.PeerStories; business_work_hours?: enums.BusinessWorkHours; business_location?: enums.BusinessLocation; business_greeting_message?: enums.BusinessGreetingMessage; business_away_message?: enums.BusinessAwayMessage }) {
+  constructor(params: { blocked?: true; phone_calls_available?: true; phone_calls_private?: true; can_pin_message?: true; has_scheduled?: true; video_calls_available?: true; voice_messages_forbidden?: true; translations_disabled?: true; stories_pinned_available?: true; blocked_my_stories_from?: true; wallpaper_overridden?: true; contact_require_premium?: true; read_dates_private?: true; id: bigint; about?: string; settings: enums.PeerSettings; personal_photo?: enums.Photo; profile_photo?: enums.Photo; fallback_photo?: enums.Photo; notify_settings: enums.PeerNotifySettings; bot_info?: enums.BotInfo; pinned_msg_id?: number; common_chats_count: number; folder_id?: number; ttl_period?: number; theme_emoticon?: string; private_forward_name?: string; bot_group_admin_rights?: enums.ChatAdminRights; bot_broadcast_admin_rights?: enums.ChatAdminRights; premium_gifts?: Array<enums.PremiumGiftOption>; wallpaper?: enums.WallPaper; stories?: enums.PeerStories; business_work_hours?: enums.BusinessWorkHours; business_location?: enums.BusinessLocation; business_greeting_message?: enums.BusinessGreetingMessage; business_away_message?: enums.BusinessAwayMessage; business_intro?: enums.BusinessIntro; birthday?: enums.Birthday; personal_channel_id?: bigint; personal_channel_message?: number }) {
     super();
     this.blocked = params.blocked;
     this.phone_calls_available = params.phone_calls_available;
@@ -10945,6 +11307,10 @@ export class UserFull_ extends _UserFull_ {
     this.business_location = params.business_location;
     this.business_greeting_message = params.business_greeting_message;
     this.business_away_message = params.business_away_message;
+    this.business_intro = params.business_intro;
+    this.birthday = params.birthday;
+    this.personal_channel_id = params.personal_channel_id;
+    this.personal_channel_message = params.personal_channel_message;
   }
 }
 
@@ -16512,37 +16878,6 @@ export class UpdateAutoSaveSettings_ extends _Update_ {
   }
 }
 
-/** 0-N updates of this type may be returned only when invoking [messages.addChatUser](https://core.telegram.org/method/messages.addChatUser), [channels.inviteToChannel](https://core.telegram.org/method/channels.inviteToChannel) or [messages.createChat](https://core.telegram.org/method/messages.createChat): it indicates we couldn't add a user to a chat because of their privacy settings; if required, an [invite link](https://core.telegram.org/api/invites) can be shared with the user, instead. */
-export class UpdateGroupInvitePrivacyForbidden_ extends _Update_ {
-  /** ID of the user we couldn't add. */
-  user_id: bigint;
-
-  protected get [id](): number {
-    return 0xCCF08AD6;
-  }
-
-  static get [name](): string {
-    return "updateGroupInvitePrivacyForbidden"
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["user_id", "bigint", "long"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.user_id, "bigint", "long"],
-    ];
-  }
-
-  constructor(params: { user_id: bigint }) {
-    super();
-    this.user_id = params.user_id;
-  }
-}
-
 /** A new story was posted. */
 export class UpdateStory_ extends _Update_ {
   /** ID of the poster. */
@@ -17224,6 +17559,166 @@ export class UpdateDeleteQuickReplyMessages_ extends _Update_ {
     super();
     this.shortcut_id = params.shortcut_id;
     this.messages = params.messages;
+  }
+}
+
+export class UpdateBotBusinessConnect_ extends _Update_ {
+  connection: enums.BotBusinessConnection;
+  qts: number;
+
+  protected get [id](): number {
+    return 0x8AE5C97A;
+  }
+
+  static get [name](): string {
+    return "updateBotBusinessConnect"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["connection", _BotBusinessConnection_, "BotBusinessConnection"],
+      ["qts", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.connection, _BotBusinessConnection_, "BotBusinessConnection"],
+      [this.qts, "number", "int"],
+    ];
+  }
+
+  constructor(params: { connection: enums.BotBusinessConnection; qts: number }) {
+    super();
+    this.connection = params.connection;
+    this.qts = params.qts;
+  }
+}
+
+export class UpdateBotNewBusinessMessage_ extends _Update_ {
+  connection_id: string;
+  message: enums.Message;
+  reply_to_message?: enums.Message;
+  qts: number;
+
+  protected get [id](): number {
+    return 0x9DDB347C;
+  }
+
+  static get [name](): string {
+    return "updateBotNewBusinessMessage"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["connection_id", "string", "string"],
+      ["message", _Message_, "Message"],
+      ["reply_to_message", _Message_, "flags.0?Message"],
+      ["qts", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.connection_id, "string", "string"],
+      [this.message, _Message_, "Message"],
+      [this.reply_to_message ?? null, _Message_, "flags.0?Message"],
+      [this.qts, "number", "int"],
+    ];
+  }
+
+  constructor(params: { connection_id: string; message: enums.Message; reply_to_message?: enums.Message; qts: number }) {
+    super();
+    this.connection_id = params.connection_id;
+    this.message = params.message;
+    this.reply_to_message = params.reply_to_message;
+    this.qts = params.qts;
+  }
+}
+
+export class UpdateBotEditBusinessMessage_ extends _Update_ {
+  connection_id: string;
+  message: enums.Message;
+  reply_to_message?: enums.Message;
+  qts: number;
+
+  protected get [id](): number {
+    return 0x07DF587C;
+  }
+
+  static get [name](): string {
+    return "updateBotEditBusinessMessage"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["connection_id", "string", "string"],
+      ["message", _Message_, "Message"],
+      ["reply_to_message", _Message_, "flags.0?Message"],
+      ["qts", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.connection_id, "string", "string"],
+      [this.message, _Message_, "Message"],
+      [this.reply_to_message ?? null, _Message_, "flags.0?Message"],
+      [this.qts, "number", "int"],
+    ];
+  }
+
+  constructor(params: { connection_id: string; message: enums.Message; reply_to_message?: enums.Message; qts: number }) {
+    super();
+    this.connection_id = params.connection_id;
+    this.message = params.message;
+    this.reply_to_message = params.reply_to_message;
+    this.qts = params.qts;
+  }
+}
+
+export class UpdateBotDeleteBusinessMessage_ extends _Update_ {
+  connection_id: string;
+  peer: enums.Peer;
+  messages: Array<number>;
+  qts: number;
+
+  protected get [id](): number {
+    return 0xA02A982E;
+  }
+
+  static get [name](): string {
+    return "updateBotDeleteBusinessMessage"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["connection_id", "string", "string"],
+      ["peer", _Peer_, "Peer"],
+      ["messages", ["number"], "Vector<int>"],
+      ["qts", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.connection_id, "string", "string"],
+      [this.peer, _Peer_, "Peer"],
+      [this.messages, ["number"], "Vector<int>"],
+      [this.qts, "number", "int"],
+    ];
+  }
+
+  constructor(params: { connection_id: string; peer: enums.Peer; messages: Array<number>; qts: number }) {
+    super();
+    this.connection_id = params.connection_id;
+    this.peer = params.peer;
+    this.messages = params.messages;
+    this.qts = params.qts;
   }
 }
 
@@ -20463,6 +20958,28 @@ export class InputPrivacyKeyAbout_ extends _InputPrivacyKey_ {
   }
 }
 
+export class InputPrivacyKeyBirthday_ extends _InputPrivacyKey_ {
+  protected get [id](): number {
+    return 0xD65A11CC;
+  }
+
+  static get [name](): string {
+    return "inputPrivacyKeyBirthday"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
 /** Whether we can see the last online timestamp of this user */
 export class PrivacyKeyStatusTimestamp_ extends _PrivacyKey_ {
   protected get [id](): number {
@@ -20678,6 +21195,28 @@ export class PrivacyKeyAbout_ extends _PrivacyKey_ {
 
   static get [name](): string {
     return "privacyKeyAbout"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class PrivacyKeyBirthday_ extends _PrivacyKey_ {
+  protected get [id](): number {
+    return 0x2000A518;
+  }
+
+  static get [name](): string {
+    return "privacyKeyBirthday"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20932,6 +21471,28 @@ export class InputPrivacyValueAllowCloseFriends_ extends _InputPrivacyRule_ {
   }
 }
 
+export class InputPrivacyValueAllowPremium_ extends _InputPrivacyRule_ {
+  protected get [id](): number {
+    return 0x77CDC9F1;
+  }
+
+  static get [name](): string {
+    return "inputPrivacyValueAllowPremium"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
 /** Allow all contacts */
 export class PrivacyValueAllowContacts_ extends _PrivacyRule_ {
   protected get [id](): number {
@@ -21156,6 +21717,28 @@ export class PrivacyValueAllowCloseFriends_ extends _PrivacyRule_ {
 
   static get [name](): string {
     return "privacyValueAllowCloseFriends"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class PrivacyValueAllowPremium_ extends _PrivacyRule_ {
+  protected get [id](): number {
+    return 0xECE9814B;
+  }
+
+  static get [name](): string {
+    return "privacyValueAllowPremium"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22968,16 +23551,13 @@ export class StickerSet_ extends _StickerSet_ {
   official?: true;
   /** Is this a mask stickerset */
   masks?: true;
-  /** Is this an animated stickerpack */
-  animated?: true;
-  /** Is this a video stickerpack */
-  videos?: true;
   /** This is a custom emoji stickerset */
   emojis?: true;
   /** Whether the color of this TGS custom emoji stickerset should be changed to the text color when used in messages, the accent color if used as emoji status, white on chat photos, or another appropriate color based on context. */
   text_color?: true;
   /** If set, this custom emoji stickerset can be used in [channel emoji statuses](https://core.telegram.org/api/emoji-status). */
   channel_emoji_status?: true;
+  creator?: true;
   /** When was this stickerset installed */
   installed_date?: number;
   /** ID of the stickerset */
@@ -23015,11 +23595,10 @@ export class StickerSet_ extends _StickerSet_ {
       ["archived", "true", "flags.1?true"],
       ["official", "true", "flags.2?true"],
       ["masks", "true", "flags.3?true"],
-      ["animated", "true", "flags.5?true"],
-      ["videos", "true", "flags.6?true"],
       ["emojis", "true", "flags.7?true"],
       ["text_color", "true", "flags.9?true"],
       ["channel_emoji_status", "true", "flags.10?true"],
+      ["creator", "true", "flags.11?true"],
       ["installed_date", "number", "flags.0?int"],
       ["id", "bigint", "long"],
       ["access_hash", "bigint", "long"],
@@ -23040,11 +23619,10 @@ export class StickerSet_ extends _StickerSet_ {
       [this.archived ?? null, "true", "flags.1?true"],
       [this.official ?? null, "true", "flags.2?true"],
       [this.masks ?? null, "true", "flags.3?true"],
-      [this.animated ?? null, "true", "flags.5?true"],
-      [this.videos ?? null, "true", "flags.6?true"],
       [this.emojis ?? null, "true", "flags.7?true"],
       [this.text_color ?? null, "true", "flags.9?true"],
       [this.channel_emoji_status ?? null, "true", "flags.10?true"],
+      [this.creator ?? null, "true", "flags.11?true"],
       [this.installed_date ?? null, "number", "flags.0?int"],
       [this.id, "bigint", "long"],
       [this.access_hash, "bigint", "long"],
@@ -23059,16 +23637,15 @@ export class StickerSet_ extends _StickerSet_ {
     ];
   }
 
-  constructor(params: { archived?: true; official?: true; masks?: true; animated?: true; videos?: true; emojis?: true; text_color?: true; channel_emoji_status?: true; installed_date?: number; id: bigint; access_hash: bigint; title: string; short_name: string; thumbs?: Array<enums.PhotoSize>; thumb_dc_id?: number; thumb_version?: number; thumb_document_id?: bigint; count: number; hash: number }) {
+  constructor(params: { archived?: true; official?: true; masks?: true; emojis?: true; text_color?: true; channel_emoji_status?: true; creator?: true; installed_date?: number; id: bigint; access_hash: bigint; title: string; short_name: string; thumbs?: Array<enums.PhotoSize>; thumb_dc_id?: number; thumb_version?: number; thumb_document_id?: bigint; count: number; hash: number }) {
     super();
     this.archived = params.archived;
     this.official = params.official;
     this.masks = params.masks;
-    this.animated = params.animated;
-    this.videos = params.videos;
     this.emojis = params.emojis;
     this.text_color = params.text_color;
     this.channel_emoji_status = params.channel_emoji_status;
+    this.creator = params.creator;
     this.installed_date = params.installed_date;
     this.id = params.id;
     this.access_hash = params.access_hash;
@@ -23854,6 +24431,61 @@ export class KeyboardButtonRequestPeer_ extends _KeyboardButton_ {
 
   constructor(params: { text: string; button_id: number; peer_type: enums.RequestPeerType; max_quantity: number }) {
     super();
+    this.text = params.text;
+    this.button_id = params.button_id;
+    this.peer_type = params.peer_type;
+    this.max_quantity = params.max_quantity;
+  }
+}
+
+export class InputKeyboardButtonRequestPeer_ extends _KeyboardButton_ {
+  name_requested?: true;
+  username_requested?: true;
+  photo_requested?: true;
+  text: string;
+  button_id: number;
+  peer_type: enums.RequestPeerType;
+  max_quantity: number;
+
+  protected get [id](): number {
+    return 0xC9662D05;
+  }
+
+  static get [name](): string {
+    return "inputKeyboardButtonRequestPeer"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["name_requested", "true", "flags.0?true"],
+      ["username_requested", "true", "flags.1?true"],
+      ["photo_requested", "true", "flags.2?true"],
+      ["text", "string", "string"],
+      ["button_id", "number", "int"],
+      ["peer_type", _RequestPeerType_, "RequestPeerType"],
+      ["max_quantity", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.name_requested ?? null, "true", "flags.0?true"],
+      [this.username_requested ?? null, "true", "flags.1?true"],
+      [this.photo_requested ?? null, "true", "flags.2?true"],
+      [this.text, "string", "string"],
+      [this.button_id, "number", "int"],
+      [this.peer_type, _RequestPeerType_, "RequestPeerType"],
+      [this.max_quantity, "number", "int"],
+    ];
+  }
+
+  constructor(params: { name_requested?: true; username_requested?: true; photo_requested?: true; text: string; button_id: number; peer_type: enums.RequestPeerType; max_quantity: number }) {
+    super();
+    this.name_requested = params.name_requested;
+    this.username_requested = params.username_requested;
+    this.photo_requested = params.photo_requested;
     this.text = params.text;
     this.button_id = params.button_id;
     this.peer_type = params.peer_type;
@@ -32521,9 +33153,10 @@ export class PhoneCall_ extends _PhoneCall_ {
   connections: Array<enums.PhoneConnection>;
   /** When was the call actually started */
   start_date: number;
+  custom_parameters?: enums.DataJSON;
 
   protected get [id](): number {
-    return 0x967F7C67;
+    return 0x30535AF5;
   }
 
   static get [name](): string {
@@ -32545,6 +33178,7 @@ export class PhoneCall_ extends _PhoneCall_ {
       ["protocol", _PhoneCallProtocol_, "PhoneCallProtocol"],
       ["connections", [_PhoneConnection_], "Vector<PhoneConnection>"],
       ["start_date", "number", "int"],
+      ["custom_parameters", _DataJSON_, "flags.7?DataJSON"],
     ];
   }
 
@@ -32563,10 +33197,11 @@ export class PhoneCall_ extends _PhoneCall_ {
       [this.protocol, _PhoneCallProtocol_, "PhoneCallProtocol"],
       [this.connections, [_PhoneConnection_], "Vector<PhoneConnection>"],
       [this.start_date, "number", "int"],
+      [this.custom_parameters ?? null, _DataJSON_, "flags.7?DataJSON"],
     ];
   }
 
-  constructor(params: { p2p_allowed?: true; video?: true; id: bigint; access_hash: bigint; date: number; admin_id: bigint; participant_id: bigint; g_a_or_b: Uint8Array; key_fingerprint: bigint; protocol: enums.PhoneCallProtocol; connections: Array<enums.PhoneConnection>; start_date: number }) {
+  constructor(params: { p2p_allowed?: true; video?: true; id: bigint; access_hash: bigint; date: number; admin_id: bigint; participant_id: bigint; g_a_or_b: Uint8Array; key_fingerprint: bigint; protocol: enums.PhoneCallProtocol; connections: Array<enums.PhoneConnection>; start_date: number; custom_parameters?: enums.DataJSON }) {
     super();
     this.p2p_allowed = params.p2p_allowed;
     this.video = params.video;
@@ -32580,6 +33215,7 @@ export class PhoneCall_ extends _PhoneCall_ {
     this.protocol = params.protocol;
     this.connections = params.connections;
     this.start_date = params.start_date;
+    this.custom_parameters = params.custom_parameters;
   }
 }
 
@@ -44032,6 +44668,7 @@ export class SponsoredMessage_ extends _SponsoredMessage_ {
   recommended?: true;
   /** Whether a profile photo bubble should be displayed for this message, like for messages sent in groups. The photo shown in the bubble is obtained either from the peer contained in `from_id`, or from `chat_invite`. */
   show_peer_photo?: true;
+  can_report?: true;
   /** Message ID */
   random_id: Uint8Array;
   /** ID of the sender of the message */
@@ -44072,6 +44709,7 @@ export class SponsoredMessage_ extends _SponsoredMessage_ {
       ["flags", flags, "#"],
       ["recommended", "true", "flags.5?true"],
       ["show_peer_photo", "true", "flags.6?true"],
+      ["can_report", "true", "flags.12?true"],
       ["random_id", Uint8Array, "bytes"],
       ["from_id", _Peer_, "flags.3?Peer"],
       ["chat_invite", _ChatInvite_, "flags.4?ChatInvite"],
@@ -44093,6 +44731,7 @@ export class SponsoredMessage_ extends _SponsoredMessage_ {
       ["flags", flags, "#"],
       [this.recommended ?? null, "true", "flags.5?true"],
       [this.show_peer_photo ?? null, "true", "flags.6?true"],
+      [this.can_report ?? null, "true", "flags.12?true"],
       [this.random_id, Uint8Array, "bytes"],
       [this.from_id ?? null, _Peer_, "flags.3?Peer"],
       [this.chat_invite ?? null, _ChatInvite_, "flags.4?ChatInvite"],
@@ -44109,10 +44748,11 @@ export class SponsoredMessage_ extends _SponsoredMessage_ {
     ];
   }
 
-  constructor(params: { recommended?: true; show_peer_photo?: true; random_id: Uint8Array; from_id?: enums.Peer; chat_invite?: enums.ChatInvite; chat_invite_hash?: string; channel_post?: number; start_param?: string; webpage?: enums.SponsoredWebPage; app?: enums.BotApp; message: string; entities?: Array<enums.MessageEntity>; button_text?: string; sponsor_info?: string; additional_info?: string }) {
+  constructor(params: { recommended?: true; show_peer_photo?: true; can_report?: true; random_id: Uint8Array; from_id?: enums.Peer; chat_invite?: enums.ChatInvite; chat_invite_hash?: string; channel_post?: number; start_param?: string; webpage?: enums.SponsoredWebPage; app?: enums.BotApp; message: string; entities?: Array<enums.MessageEntity>; button_text?: string; sponsor_info?: string; additional_info?: string }) {
     super();
     this.recommended = params.recommended;
     this.show_peer_photo = params.show_peer_photo;
+    this.can_report = params.can_report;
     this.random_id = params.random_id;
     this.from_id = params.from_id;
     this.chat_invite = params.chat_invite;
@@ -52569,10 +53209,10 @@ export class messages_QuickRepliesNotModified_ extends _messages_QuickReplies_ {
 export class ConnectedBot_ extends _ConnectedBot_ {
   can_reply?: true;
   bot_id: bigint;
-  recipients: enums.BusinessRecipients;
+  recipients: enums.BusinessBotRecipients;
 
   protected get [id](): number {
-    return 0xE7E999E7;
+    return 0xBD068601;
   }
 
   static get [name](): string {
@@ -52584,7 +53224,7 @@ export class ConnectedBot_ extends _ConnectedBot_ {
       ["flags", flags, "#"],
       ["can_reply", "true", "flags.0?true"],
       ["bot_id", "bigint", "long"],
-      ["recipients", _BusinessRecipients_, "BusinessRecipients"],
+      ["recipients", _BusinessBotRecipients_, "BusinessBotRecipients"],
     ];
   }
 
@@ -52593,11 +53233,11 @@ export class ConnectedBot_ extends _ConnectedBot_ {
       ["flags", flags, "#"],
       [this.can_reply ?? null, "true", "flags.0?true"],
       [this.bot_id, "bigint", "long"],
-      [this.recipients, _BusinessRecipients_, "BusinessRecipients"],
+      [this.recipients, _BusinessBotRecipients_, "BusinessBotRecipients"],
     ];
   }
 
-  constructor(params: { can_reply?: true; bot_id: bigint; recipients: enums.BusinessRecipients }) {
+  constructor(params: { can_reply?: true; bot_id: bigint; recipients: enums.BusinessBotRecipients }) {
     super();
     this.can_reply = params.can_reply;
     this.bot_id = params.bot_id;
@@ -52673,6 +53313,1211 @@ export class messages_DialogFilters_ extends _messages_DialogFilters_ {
   }
 }
 
+export class Birthday_ extends _Birthday_ {
+  day: number;
+  month: number;
+  year?: number;
+
+  protected get [id](): number {
+    return 0x6C8E1E06;
+  }
+
+  static get [name](): string {
+    return "birthday"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["day", "number", "int"],
+      ["month", "number", "int"],
+      ["year", "number", "flags.0?int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.day, "number", "int"],
+      [this.month, "number", "int"],
+      [this.year ?? null, "number", "flags.0?int"],
+    ];
+  }
+
+  constructor(params: { day: number; month: number; year?: number }) {
+    super();
+    this.day = params.day;
+    this.month = params.month;
+    this.year = params.year;
+  }
+}
+
+export class BotBusinessConnection_ extends _BotBusinessConnection_ {
+  can_reply?: true;
+  disabled?: true;
+  connection_id: string;
+  user_id: bigint;
+  dc_id: number;
+  date: number;
+
+  protected get [id](): number {
+    return 0x896433B4;
+  }
+
+  static get [name](): string {
+    return "botBusinessConnection"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["can_reply", "true", "flags.0?true"],
+      ["disabled", "true", "flags.1?true"],
+      ["connection_id", "string", "string"],
+      ["user_id", "bigint", "long"],
+      ["dc_id", "number", "int"],
+      ["date", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.can_reply ?? null, "true", "flags.0?true"],
+      [this.disabled ?? null, "true", "flags.1?true"],
+      [this.connection_id, "string", "string"],
+      [this.user_id, "bigint", "long"],
+      [this.dc_id, "number", "int"],
+      [this.date, "number", "int"],
+    ];
+  }
+
+  constructor(params: { can_reply?: true; disabled?: true; connection_id: string; user_id: bigint; dc_id: number; date: number }) {
+    super();
+    this.can_reply = params.can_reply;
+    this.disabled = params.disabled;
+    this.connection_id = params.connection_id;
+    this.user_id = params.user_id;
+    this.dc_id = params.dc_id;
+    this.date = params.date;
+  }
+}
+
+export class InputBusinessIntro_ extends _InputBusinessIntro_ {
+  title: string;
+  description: string;
+  sticker?: enums.InputDocument;
+
+  protected get [id](): number {
+    return 0x09C469CD;
+  }
+
+  static get [name](): string {
+    return "inputBusinessIntro"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["title", "string", "string"],
+      ["description", "string", "string"],
+      ["sticker", _InputDocument_, "flags.0?InputDocument"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.title, "string", "string"],
+      [this.description, "string", "string"],
+      [this.sticker ?? null, _InputDocument_, "flags.0?InputDocument"],
+    ];
+  }
+
+  constructor(params: { title: string; description: string; sticker?: enums.InputDocument }) {
+    super();
+    this.title = params.title;
+    this.description = params.description;
+    this.sticker = params.sticker;
+  }
+}
+
+export class BusinessIntro_ extends _BusinessIntro_ {
+  title: string;
+  description: string;
+  sticker?: enums.Document;
+
+  protected get [id](): number {
+    return 0x5A0A066D;
+  }
+
+  static get [name](): string {
+    return "businessIntro"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["title", "string", "string"],
+      ["description", "string", "string"],
+      ["sticker", _Document_, "flags.0?Document"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.title, "string", "string"],
+      [this.description, "string", "string"],
+      [this.sticker ?? null, _Document_, "flags.0?Document"],
+    ];
+  }
+
+  constructor(params: { title: string; description: string; sticker?: enums.Document }) {
+    super();
+    this.title = params.title;
+    this.description = params.description;
+    this.sticker = params.sticker;
+  }
+}
+
+export class messages_MyStickers_ extends _messages_MyStickers_ {
+  count: number;
+  sets: Array<enums.StickerSetCovered>;
+
+  protected get [id](): number {
+    return 0xFAFF629D;
+  }
+
+  static get [name](): string {
+    return "messages.myStickers"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["count", "number", "int"],
+      ["sets", [_StickerSetCovered_], "Vector<StickerSetCovered>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.count, "number", "int"],
+      [this.sets, [_StickerSetCovered_], "Vector<StickerSetCovered>"],
+    ];
+  }
+
+  constructor(params: { count: number; sets: Array<enums.StickerSetCovered> }) {
+    super();
+    this.count = params.count;
+    this.sets = params.sets;
+  }
+}
+
+export class InputCollectibleUsername_ extends _InputCollectible_ {
+  username: string;
+
+  protected get [id](): number {
+    return 0xE39460A9;
+  }
+
+  static get [name](): string {
+    return "inputCollectibleUsername"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["username", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.username, "string", "string"],
+    ];
+  }
+
+  constructor(params: { username: string }) {
+    super();
+    this.username = params.username;
+  }
+}
+
+export class InputCollectiblePhone_ extends _InputCollectible_ {
+  phone: string;
+
+  protected get [id](): number {
+    return 0xA2E214A4;
+  }
+
+  static get [name](): string {
+    return "inputCollectiblePhone"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["phone", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.phone, "string", "string"],
+    ];
+  }
+
+  constructor(params: { phone: string }) {
+    super();
+    this.phone = params.phone;
+  }
+}
+
+export class fragment_CollectibleInfo_ extends _fragment_CollectibleInfo_ {
+  purchase_date: number;
+  currency: string;
+  amount: bigint;
+  crypto_currency: string;
+  crypto_amount: bigint;
+  url: string;
+
+  protected get [id](): number {
+    return 0x6EBDFF91;
+  }
+
+  static get [name](): string {
+    return "fragment.collectibleInfo"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["purchase_date", "number", "int"],
+      ["currency", "string", "string"],
+      ["amount", "bigint", "long"],
+      ["crypto_currency", "string", "string"],
+      ["crypto_amount", "bigint", "long"],
+      ["url", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.purchase_date, "number", "int"],
+      [this.currency, "string", "string"],
+      [this.amount, "bigint", "long"],
+      [this.crypto_currency, "string", "string"],
+      [this.crypto_amount, "bigint", "long"],
+      [this.url, "string", "string"],
+    ];
+  }
+
+  constructor(params: { purchase_date: number; currency: string; amount: bigint; crypto_currency: string; crypto_amount: bigint; url: string }) {
+    super();
+    this.purchase_date = params.purchase_date;
+    this.currency = params.currency;
+    this.amount = params.amount;
+    this.crypto_currency = params.crypto_currency;
+    this.crypto_amount = params.crypto_amount;
+    this.url = params.url;
+  }
+}
+
+export class InputBusinessBotRecipients_ extends _InputBusinessBotRecipients_ {
+  existing_chats?: true;
+  new_chats?: true;
+  contacts?: true;
+  non_contacts?: true;
+  exclude_selected?: true;
+  users?: Array<enums.InputUser>;
+  exclude_users?: Array<enums.InputUser>;
+
+  protected get [id](): number {
+    return 0xC4E5921E;
+  }
+
+  static get [name](): string {
+    return "inputBusinessBotRecipients"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["existing_chats", "true", "flags.0?true"],
+      ["new_chats", "true", "flags.1?true"],
+      ["contacts", "true", "flags.2?true"],
+      ["non_contacts", "true", "flags.3?true"],
+      ["exclude_selected", "true", "flags.5?true"],
+      ["users", [_InputUser_], "flags.4?Vector<InputUser>"],
+      ["exclude_users", [_InputUser_], "flags.6?Vector<InputUser>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.existing_chats ?? null, "true", "flags.0?true"],
+      [this.new_chats ?? null, "true", "flags.1?true"],
+      [this.contacts ?? null, "true", "flags.2?true"],
+      [this.non_contacts ?? null, "true", "flags.3?true"],
+      [this.exclude_selected ?? null, "true", "flags.5?true"],
+      [this.users ?? null, [_InputUser_], "flags.4?Vector<InputUser>"],
+      [this.exclude_users ?? null, [_InputUser_], "flags.6?Vector<InputUser>"],
+    ];
+  }
+
+  constructor(params?: { existing_chats?: true; new_chats?: true; contacts?: true; non_contacts?: true; exclude_selected?: true; users?: Array<enums.InputUser>; exclude_users?: Array<enums.InputUser> }) {
+    super();
+    this.existing_chats = params?.existing_chats;
+    this.new_chats = params?.new_chats;
+    this.contacts = params?.contacts;
+    this.non_contacts = params?.non_contacts;
+    this.exclude_selected = params?.exclude_selected;
+    this.users = params?.users;
+    this.exclude_users = params?.exclude_users;
+  }
+}
+
+export class BusinessBotRecipients_ extends _BusinessBotRecipients_ {
+  existing_chats?: true;
+  new_chats?: true;
+  contacts?: true;
+  non_contacts?: true;
+  exclude_selected?: true;
+  users?: Array<bigint>;
+  exclude_users?: Array<bigint>;
+
+  protected get [id](): number {
+    return 0xB88CF373;
+  }
+
+  static get [name](): string {
+    return "businessBotRecipients"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["existing_chats", "true", "flags.0?true"],
+      ["new_chats", "true", "flags.1?true"],
+      ["contacts", "true", "flags.2?true"],
+      ["non_contacts", "true", "flags.3?true"],
+      ["exclude_selected", "true", "flags.5?true"],
+      ["users", ["bigint"], "flags.4?Vector<long>"],
+      ["exclude_users", ["bigint"], "flags.6?Vector<long>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.existing_chats ?? null, "true", "flags.0?true"],
+      [this.new_chats ?? null, "true", "flags.1?true"],
+      [this.contacts ?? null, "true", "flags.2?true"],
+      [this.non_contacts ?? null, "true", "flags.3?true"],
+      [this.exclude_selected ?? null, "true", "flags.5?true"],
+      [this.users ?? null, ["bigint"], "flags.4?Vector<long>"],
+      [this.exclude_users ?? null, ["bigint"], "flags.6?Vector<long>"],
+    ];
+  }
+
+  constructor(params?: { existing_chats?: true; new_chats?: true; contacts?: true; non_contacts?: true; exclude_selected?: true; users?: Array<bigint>; exclude_users?: Array<bigint> }) {
+    super();
+    this.existing_chats = params?.existing_chats;
+    this.new_chats = params?.new_chats;
+    this.contacts = params?.contacts;
+    this.non_contacts = params?.non_contacts;
+    this.exclude_selected = params?.exclude_selected;
+    this.users = params?.users;
+    this.exclude_users = params?.exclude_users;
+  }
+}
+
+export class ContactBirthday_ extends _ContactBirthday_ {
+  contact_id: bigint;
+  birthday: enums.Birthday;
+
+  protected get [id](): number {
+    return 0x1D998733;
+  }
+
+  static get [name](): string {
+    return "contactBirthday"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["contact_id", "bigint", "long"],
+      ["birthday", _Birthday_, "Birthday"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.contact_id, "bigint", "long"],
+      [this.birthday, _Birthday_, "Birthday"],
+    ];
+  }
+
+  constructor(params: { contact_id: bigint; birthday: enums.Birthday }) {
+    super();
+    this.contact_id = params.contact_id;
+    this.birthday = params.birthday;
+  }
+}
+
+export class contacts_ContactBirthdays_ extends _contacts_ContactBirthdays_ {
+  contacts: Array<enums.ContactBirthday>;
+  users: Array<enums.User>;
+
+  protected get [id](): number {
+    return 0x114FF30D;
+  }
+
+  static get [name](): string {
+    return "contacts.contactBirthdays"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["contacts", [_ContactBirthday_], "Vector<ContactBirthday>"],
+      ["users", [_User_], "Vector<User>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.contacts, [_ContactBirthday_], "Vector<ContactBirthday>"],
+      [this.users, [_User_], "Vector<User>"],
+    ];
+  }
+
+  constructor(params: { contacts: Array<enums.ContactBirthday>; users: Array<enums.User> }) {
+    super();
+    this.contacts = params.contacts;
+    this.users = params.users;
+  }
+}
+
+export class MissingInvitee_ extends _MissingInvitee_ {
+  premium_would_allow_invite?: true;
+  premium_required_for_pm?: true;
+  user_id: bigint;
+
+  protected get [id](): number {
+    return 0x628C9224;
+  }
+
+  static get [name](): string {
+    return "missingInvitee"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["premium_would_allow_invite", "true", "flags.0?true"],
+      ["premium_required_for_pm", "true", "flags.1?true"],
+      ["user_id", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.premium_would_allow_invite ?? null, "true", "flags.0?true"],
+      [this.premium_required_for_pm ?? null, "true", "flags.1?true"],
+      [this.user_id, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { premium_would_allow_invite?: true; premium_required_for_pm?: true; user_id: bigint }) {
+    super();
+    this.premium_would_allow_invite = params.premium_would_allow_invite;
+    this.premium_required_for_pm = params.premium_required_for_pm;
+    this.user_id = params.user_id;
+  }
+}
+
+export class messages_InvitedUsers_ extends _messages_InvitedUsers_ {
+  updates: enums.Updates;
+  missing_invitees: Array<enums.MissingInvitee>;
+
+  protected get [id](): number {
+    return 0x7F5DEFA6;
+  }
+
+  static get [name](): string {
+    return "messages.invitedUsers"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["updates", _Updates_, "Updates"],
+      ["missing_invitees", [_MissingInvitee_], "Vector<MissingInvitee>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.updates, _Updates_, "Updates"],
+      [this.missing_invitees, [_MissingInvitee_], "Vector<MissingInvitee>"],
+    ];
+  }
+
+  constructor(params: { updates: enums.Updates; missing_invitees: Array<enums.MissingInvitee> }) {
+    super();
+    this.updates = params.updates;
+    this.missing_invitees = params.missing_invitees;
+  }
+}
+
+export class InputBusinessChatLink_ extends _InputBusinessChatLink_ {
+  message: string;
+  entities?: Array<enums.MessageEntity>;
+  title?: string;
+
+  protected get [id](): number {
+    return 0x11679FA7;
+  }
+
+  static get [name](): string {
+    return "inputBusinessChatLink"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["message", "string", "string"],
+      ["entities", [_MessageEntity_], "flags.0?Vector<MessageEntity>"],
+      ["title", "string", "flags.1?string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.message, "string", "string"],
+      [this.entities ?? null, [_MessageEntity_], "flags.0?Vector<MessageEntity>"],
+      [this.title ?? null, "string", "flags.1?string"],
+    ];
+  }
+
+  constructor(params: { message: string; entities?: Array<enums.MessageEntity>; title?: string }) {
+    super();
+    this.message = params.message;
+    this.entities = params.entities;
+    this.title = params.title;
+  }
+}
+
+export class BusinessChatLink_ extends _BusinessChatLink_ {
+  link: string;
+  message: string;
+  entities?: Array<enums.MessageEntity>;
+  title?: string;
+  views: number;
+
+  protected get [id](): number {
+    return 0xB4AE666F;
+  }
+
+  static get [name](): string {
+    return "businessChatLink"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["link", "string", "string"],
+      ["message", "string", "string"],
+      ["entities", [_MessageEntity_], "flags.0?Vector<MessageEntity>"],
+      ["title", "string", "flags.1?string"],
+      ["views", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.link, "string", "string"],
+      [this.message, "string", "string"],
+      [this.entities ?? null, [_MessageEntity_], "flags.0?Vector<MessageEntity>"],
+      [this.title ?? null, "string", "flags.1?string"],
+      [this.views, "number", "int"],
+    ];
+  }
+
+  constructor(params: { link: string; message: string; entities?: Array<enums.MessageEntity>; title?: string; views: number }) {
+    super();
+    this.link = params.link;
+    this.message = params.message;
+    this.entities = params.entities;
+    this.title = params.title;
+    this.views = params.views;
+  }
+}
+
+export class account_BusinessChatLinks_ extends _account_BusinessChatLinks_ {
+  links: Array<enums.BusinessChatLink>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
+
+  protected get [id](): number {
+    return 0xEC43A2D1;
+  }
+
+  static get [name](): string {
+    return "account.businessChatLinks"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["links", [_BusinessChatLink_], "Vector<BusinessChatLink>"],
+      ["chats", [_Chat_], "Vector<Chat>"],
+      ["users", [_User_], "Vector<User>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.links, [_BusinessChatLink_], "Vector<BusinessChatLink>"],
+      [this.chats, [_Chat_], "Vector<Chat>"],
+      [this.users, [_User_], "Vector<User>"],
+    ];
+  }
+
+  constructor(params: { links: Array<enums.BusinessChatLink>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
+    super();
+    this.links = params.links;
+    this.chats = params.chats;
+    this.users = params.users;
+  }
+}
+
+export class account_ResolvedBusinessChatLinks_ extends _account_ResolvedBusinessChatLinks_ {
+  peer: enums.Peer;
+  message: string;
+  entities?: Array<enums.MessageEntity>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
+
+  protected get [id](): number {
+    return 0x9A23AF21;
+  }
+
+  static get [name](): string {
+    return "account.resolvedBusinessChatLinks"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["peer", _Peer_, "Peer"],
+      ["message", "string", "string"],
+      ["entities", [_MessageEntity_], "flags.0?Vector<MessageEntity>"],
+      ["chats", [_Chat_], "Vector<Chat>"],
+      ["users", [_User_], "Vector<User>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.peer, _Peer_, "Peer"],
+      [this.message, "string", "string"],
+      [this.entities ?? null, [_MessageEntity_], "flags.0?Vector<MessageEntity>"],
+      [this.chats, [_Chat_], "Vector<Chat>"],
+      [this.users, [_User_], "Vector<User>"],
+    ];
+  }
+
+  constructor(params: { peer: enums.Peer; message: string; entities?: Array<enums.MessageEntity>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
+    super();
+    this.peer = params.peer;
+    this.message = params.message;
+    this.entities = params.entities;
+    this.chats = params.chats;
+    this.users = params.users;
+  }
+}
+
+export class RequestedPeerUser_ extends _RequestedPeer_ {
+  user_id: bigint;
+  first_name?: string;
+  last_name?: string;
+  username?: string;
+  photo?: enums.Photo;
+
+  protected get [id](): number {
+    return 0xD62FF46A;
+  }
+
+  static get [name](): string {
+    return "requestedPeerUser"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["user_id", "bigint", "long"],
+      ["first_name", "string", "flags.0?string"],
+      ["last_name", "string", "flags.0?string"],
+      ["username", "string", "flags.1?string"],
+      ["photo", _Photo_, "flags.2?Photo"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.user_id, "bigint", "long"],
+      [this.first_name ?? null, "string", "flags.0?string"],
+      [this.last_name ?? null, "string", "flags.0?string"],
+      [this.username ?? null, "string", "flags.1?string"],
+      [this.photo ?? null, _Photo_, "flags.2?Photo"],
+    ];
+  }
+
+  constructor(params: { user_id: bigint; first_name?: string; last_name?: string; username?: string; photo?: enums.Photo }) {
+    super();
+    this.user_id = params.user_id;
+    this.first_name = params.first_name;
+    this.last_name = params.last_name;
+    this.username = params.username;
+    this.photo = params.photo;
+  }
+}
+
+export class RequestedPeerChat_ extends _RequestedPeer_ {
+  chat_id: bigint;
+  title?: string;
+  photo?: enums.Photo;
+
+  protected get [id](): number {
+    return 0x7307544F;
+  }
+
+  static get [name](): string {
+    return "requestedPeerChat"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["chat_id", "bigint", "long"],
+      ["title", "string", "flags.0?string"],
+      ["photo", _Photo_, "flags.2?Photo"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.chat_id, "bigint", "long"],
+      [this.title ?? null, "string", "flags.0?string"],
+      [this.photo ?? null, _Photo_, "flags.2?Photo"],
+    ];
+  }
+
+  constructor(params: { chat_id: bigint; title?: string; photo?: enums.Photo }) {
+    super();
+    this.chat_id = params.chat_id;
+    this.title = params.title;
+    this.photo = params.photo;
+  }
+}
+
+export class RequestedPeerChannel_ extends _RequestedPeer_ {
+  channel_id: bigint;
+  title?: string;
+  username?: string;
+  photo?: enums.Photo;
+
+  protected get [id](): number {
+    return 0x8BA403E4;
+  }
+
+  static get [name](): string {
+    return "requestedPeerChannel"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["channel_id", "bigint", "long"],
+      ["title", "string", "flags.0?string"],
+      ["username", "string", "flags.1?string"],
+      ["photo", _Photo_, "flags.2?Photo"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.channel_id, "bigint", "long"],
+      [this.title ?? null, "string", "flags.0?string"],
+      [this.username ?? null, "string", "flags.1?string"],
+      [this.photo ?? null, _Photo_, "flags.2?Photo"],
+    ];
+  }
+
+  constructor(params: { channel_id: bigint; title?: string; username?: string; photo?: enums.Photo }) {
+    super();
+    this.channel_id = params.channel_id;
+    this.title = params.title;
+    this.username = params.username;
+    this.photo = params.photo;
+  }
+}
+
+export class SponsoredMessageReportOption_ extends _SponsoredMessageReportOption_ {
+  text: string;
+  option: Uint8Array;
+
+  protected get [id](): number {
+    return 0x430D3150;
+  }
+
+  static get [name](): string {
+    return "sponsoredMessageReportOption"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["text", "string", "string"],
+      ["option", Uint8Array, "bytes"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, "string", "string"],
+      [this.option, Uint8Array, "bytes"],
+    ];
+  }
+
+  constructor(params: { text: string; option: Uint8Array }) {
+    super();
+    this.text = params.text;
+    this.option = params.option;
+  }
+}
+
+export class channels_SponsoredMessageReportResultChooseOption_ extends _channels_SponsoredMessageReportResult_ {
+  title: string;
+  options: Array<enums.SponsoredMessageReportOption>;
+
+  protected get [id](): number {
+    return 0x846F9E42;
+  }
+
+  static get [name](): string {
+    return "channels.sponsoredMessageReportResultChooseOption"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["title", "string", "string"],
+      ["options", [_SponsoredMessageReportOption_], "Vector<SponsoredMessageReportOption>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.title, "string", "string"],
+      [this.options, [_SponsoredMessageReportOption_], "Vector<SponsoredMessageReportOption>"],
+    ];
+  }
+
+  constructor(params: { title: string; options: Array<enums.SponsoredMessageReportOption> }) {
+    super();
+    this.title = params.title;
+    this.options = params.options;
+  }
+}
+
+export class channels_SponsoredMessageReportResultAdsHidden_ extends _channels_SponsoredMessageReportResult_ {
+  protected get [id](): number {
+    return 0x3E3BCF2F;
+  }
+
+  static get [name](): string {
+    return "channels.sponsoredMessageReportResultAdsHidden"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class channels_SponsoredMessageReportResultReported_ extends _channels_SponsoredMessageReportResult_ {
+  protected get [id](): number {
+    return 0xAD798849;
+  }
+
+  static get [name](): string {
+    return "channels.sponsoredMessageReportResultReported"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class stats_BroadcastRevenueStats_ extends _stats_BroadcastRevenueStats_ {
+  top_hours_graph: enums.StatsGraph;
+  revenue_graph: enums.StatsGraph;
+  current_balance: bigint;
+  available_balance: bigint;
+  overall_revenue: bigint;
+  usd_rate: number;
+
+  protected get [id](): number {
+    return 0xD07B4BAD;
+  }
+
+  static get [name](): string {
+    return "stats.broadcastRevenueStats"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["top_hours_graph", _StatsGraph_, "StatsGraph"],
+      ["revenue_graph", _StatsGraph_, "StatsGraph"],
+      ["current_balance", "bigint", "long"],
+      ["available_balance", "bigint", "long"],
+      ["overall_revenue", "bigint", "long"],
+      ["usd_rate", "number", "double"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.top_hours_graph, _StatsGraph_, "StatsGraph"],
+      [this.revenue_graph, _StatsGraph_, "StatsGraph"],
+      [this.current_balance, "bigint", "long"],
+      [this.available_balance, "bigint", "long"],
+      [this.overall_revenue, "bigint", "long"],
+      [this.usd_rate, "number", "double"],
+    ];
+  }
+
+  constructor(params: { top_hours_graph: enums.StatsGraph; revenue_graph: enums.StatsGraph; current_balance: bigint; available_balance: bigint; overall_revenue: bigint; usd_rate: number }) {
+    super();
+    this.top_hours_graph = params.top_hours_graph;
+    this.revenue_graph = params.revenue_graph;
+    this.current_balance = params.current_balance;
+    this.available_balance = params.available_balance;
+    this.overall_revenue = params.overall_revenue;
+    this.usd_rate = params.usd_rate;
+  }
+}
+
+export class stats_BroadcastRevenueWithdrawalUrl_ extends _stats_BroadcastRevenueWithdrawalUrl_ {
+  url: string;
+
+  protected get [id](): number {
+    return 0xEC659737;
+  }
+
+  static get [name](): string {
+    return "stats.broadcastRevenueWithdrawalUrl"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["url", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.url, "string", "string"],
+    ];
+  }
+
+  constructor(params: { url: string }) {
+    super();
+    this.url = params.url;
+  }
+}
+
+export class BroadcastRevenueTransactionProceeds_ extends _BroadcastRevenueTransaction_ {
+  amount: bigint;
+  from_date: number;
+  to_date: number;
+
+  protected get [id](): number {
+    return 0x557E2CC4;
+  }
+
+  static get [name](): string {
+    return "broadcastRevenueTransactionProceeds"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["amount", "bigint", "long"],
+      ["from_date", "number", "int"],
+      ["to_date", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.amount, "bigint", "long"],
+      [this.from_date, "number", "int"],
+      [this.to_date, "number", "int"],
+    ];
+  }
+
+  constructor(params: { amount: bigint; from_date: number; to_date: number }) {
+    super();
+    this.amount = params.amount;
+    this.from_date = params.from_date;
+    this.to_date = params.to_date;
+  }
+}
+
+export class BroadcastRevenueTransactionWithdrawal_ extends _BroadcastRevenueTransaction_ {
+  pending?: true;
+  failed?: true;
+  amount: bigint;
+  date: number;
+  provider: string;
+  transaction_date?: number;
+  transaction_url?: string;
+
+  protected get [id](): number {
+    return 0x5A590978;
+  }
+
+  static get [name](): string {
+    return "broadcastRevenueTransactionWithdrawal"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["pending", "true", "flags.0?true"],
+      ["failed", "true", "flags.2?true"],
+      ["amount", "bigint", "long"],
+      ["date", "number", "int"],
+      ["provider", "string", "string"],
+      ["transaction_date", "number", "flags.1?int"],
+      ["transaction_url", "string", "flags.1?string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.pending ?? null, "true", "flags.0?true"],
+      [this.failed ?? null, "true", "flags.2?true"],
+      [this.amount, "bigint", "long"],
+      [this.date, "number", "int"],
+      [this.provider, "string", "string"],
+      [this.transaction_date ?? null, "number", "flags.1?int"],
+      [this.transaction_url ?? null, "string", "flags.1?string"],
+    ];
+  }
+
+  constructor(params: { pending?: true; failed?: true; amount: bigint; date: number; provider: string; transaction_date?: number; transaction_url?: string }) {
+    super();
+    this.pending = params.pending;
+    this.failed = params.failed;
+    this.amount = params.amount;
+    this.date = params.date;
+    this.provider = params.provider;
+    this.transaction_date = params.transaction_date;
+    this.transaction_url = params.transaction_url;
+  }
+}
+
+export class BroadcastRevenueTransactionRefund_ extends _BroadcastRevenueTransaction_ {
+  amount: bigint;
+  date: number;
+  provider: string;
+
+  protected get [id](): number {
+    return 0x42D30D2E;
+  }
+
+  static get [name](): string {
+    return "broadcastRevenueTransactionRefund"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["amount", "bigint", "long"],
+      ["date", "number", "int"],
+      ["provider", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.amount, "bigint", "long"],
+      [this.date, "number", "int"],
+      [this.provider, "string", "string"],
+    ];
+  }
+
+  constructor(params: { amount: bigint; date: number; provider: string }) {
+    super();
+    this.amount = params.amount;
+    this.date = params.date;
+    this.provider = params.provider;
+  }
+}
+
+export class stats_BroadcastRevenueTransactions_ extends _stats_BroadcastRevenueTransactions_ {
+  count: number;
+  transactions: Array<enums.BroadcastRevenueTransaction>;
+
+  protected get [id](): number {
+    return 0x87158466;
+  }
+
+  static get [name](): string {
+    return "stats.broadcastRevenueTransactions"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["count", "number", "int"],
+      ["transactions", [_BroadcastRevenueTransaction_], "Vector<BroadcastRevenueTransaction>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.count, "number", "int"],
+      [this.transactions, [_BroadcastRevenueTransaction_], "Vector<BroadcastRevenueTransaction>"],
+    ];
+  }
+
+  constructor(params: { count: number; transactions: Array<enums.BroadcastRevenueTransaction> }) {
+    super();
+    this.count = params.count;
+    this.transactions = params.transactions;
+  }
+}
+
 export const types = {
   Type: Type_,
   TypeX: TypeX_,
@@ -52702,7 +54547,10 @@ export const types = {
   _HttpWait: _HttpWait_,
   _True: _True_,
   _Error: _Error_,
-  _Null: _Null_,
+  _IpPort: _IpPort_,
+  _AccessPointRule: _AccessPointRule_,
+  _help_ConfigSimple: _help_ConfigSimple_,
+  _InputFileLocation: _InputFileLocation_,
   _InputPeer: _InputPeer_,
   _InputUser: _InputUser_,
   _InputContact: _InputContact_,
@@ -52711,7 +54559,6 @@ export const types = {
   _InputChatPhoto: _InputChatPhoto_,
   _InputGeoPoint: _InputGeoPoint_,
   _InputPhoto: _InputPhoto_,
-  _InputFileLocation: _InputFileLocation_,
   _Peer: _Peer_,
   _storage_FileType: _storage_FileType_,
   _User: _User_,
@@ -53160,6 +55007,30 @@ export const types = {
   _ConnectedBot: _ConnectedBot_,
   _account_ConnectedBots: _account_ConnectedBots_,
   _messages_DialogFilters: _messages_DialogFilters_,
+  _Birthday: _Birthday_,
+  _BotBusinessConnection: _BotBusinessConnection_,
+  _InputBusinessIntro: _InputBusinessIntro_,
+  _BusinessIntro: _BusinessIntro_,
+  _messages_MyStickers: _messages_MyStickers_,
+  _InputCollectible: _InputCollectible_,
+  _fragment_CollectibleInfo: _fragment_CollectibleInfo_,
+  _InputBusinessBotRecipients: _InputBusinessBotRecipients_,
+  _BusinessBotRecipients: _BusinessBotRecipients_,
+  _ContactBirthday: _ContactBirthday_,
+  _contacts_ContactBirthdays: _contacts_ContactBirthdays_,
+  _MissingInvitee: _MissingInvitee_,
+  _messages_InvitedUsers: _messages_InvitedUsers_,
+  _InputBusinessChatLink: _InputBusinessChatLink_,
+  _BusinessChatLink: _BusinessChatLink_,
+  _account_BusinessChatLinks: _account_BusinessChatLinks_,
+  _account_ResolvedBusinessChatLinks: _account_ResolvedBusinessChatLinks_,
+  _RequestedPeer: _RequestedPeer_,
+  _SponsoredMessageReportOption: _SponsoredMessageReportOption_,
+  _channels_SponsoredMessageReportResult: _channels_SponsoredMessageReportResult_,
+  _stats_BroadcastRevenueStats: _stats_BroadcastRevenueStats_,
+  _stats_BroadcastRevenueWithdrawalUrl: _stats_BroadcastRevenueWithdrawalUrl_,
+  _BroadcastRevenueTransaction: _BroadcastRevenueTransaction_,
+  _stats_BroadcastRevenueTransactions: _stats_BroadcastRevenueTransactions_,
   ResPQ: ResPQ_,
   P_q_inner_data_dc: P_q_inner_data_dc_,
   P_q_inner_data_temp_dc: P_q_inner_data_temp_dc_,
@@ -53196,7 +55067,11 @@ export const types = {
   Http_wait: Http_wait_,
   True: True_,
   Error: Error_,
-  Null: Null_,
+  IpPort: IpPort_,
+  IpPortSecret: IpPortSecret_,
+  AccessPointRule: AccessPointRule_,
+  InputPeerPhotoFileLocationLegacy: InputPeerPhotoFileLocationLegacy_,
+  InputStickerSetThumbLegacy: InputStickerSetThumbLegacy_,
   InputPeerEmpty: InputPeerEmpty_,
   InputPeerSelf: InputPeerSelf_,
   InputPeerChat: InputPeerChat_,
@@ -53333,6 +55208,7 @@ export const types = {
   MessageActionGiveawayLaunch: MessageActionGiveawayLaunch_,
   MessageActionGiveawayResults: MessageActionGiveawayResults_,
   MessageActionBoostApply: MessageActionBoostApply_,
+  MessageActionRequestedPeerSentMe: MessageActionRequestedPeerSentMe_,
   Dialog: Dialog_,
   DialogFolder: DialogFolder_,
   PhotoEmpty: PhotoEmpty_,
@@ -53497,7 +55373,6 @@ export const types = {
   UpdateChannelPinnedTopics: UpdateChannelPinnedTopics_,
   UpdateUser: UpdateUser_,
   UpdateAutoSaveSettings: UpdateAutoSaveSettings_,
-  UpdateGroupInvitePrivacyForbidden: UpdateGroupInvitePrivacyForbidden_,
   UpdateStory: UpdateStory_,
   UpdateReadStories: UpdateReadStories_,
   UpdateStoryID: UpdateStoryID_,
@@ -53517,6 +55392,10 @@ export const types = {
   UpdateDeleteQuickReply: UpdateDeleteQuickReply_,
   UpdateQuickReplyMessage: UpdateQuickReplyMessage_,
   UpdateDeleteQuickReplyMessages: UpdateDeleteQuickReplyMessages_,
+  UpdateBotBusinessConnect: UpdateBotBusinessConnect_,
+  UpdateBotNewBusinessMessage: UpdateBotNewBusinessMessage_,
+  UpdateBotEditBusinessMessage: UpdateBotEditBusinessMessage_,
+  UpdateBotDeleteBusinessMessage: UpdateBotDeleteBusinessMessage_,
   UpdatesTooLong: UpdatesTooLong_,
   UpdateShortMessage: UpdateShortMessage_,
   UpdateShortChatMessage: UpdateShortChatMessage_,
@@ -53578,6 +55457,7 @@ export const types = {
   InputPrivacyKeyAddedByPhone: InputPrivacyKeyAddedByPhone_,
   InputPrivacyKeyVoiceMessages: InputPrivacyKeyVoiceMessages_,
   InputPrivacyKeyAbout: InputPrivacyKeyAbout_,
+  InputPrivacyKeyBirthday: InputPrivacyKeyBirthday_,
   PrivacyKeyStatusTimestamp: PrivacyKeyStatusTimestamp_,
   PrivacyKeyChatInvite: PrivacyKeyChatInvite_,
   PrivacyKeyPhoneCall: PrivacyKeyPhoneCall_,
@@ -53588,6 +55468,7 @@ export const types = {
   PrivacyKeyAddedByPhone: PrivacyKeyAddedByPhone_,
   PrivacyKeyVoiceMessages: PrivacyKeyVoiceMessages_,
   PrivacyKeyAbout: PrivacyKeyAbout_,
+  PrivacyKeyBirthday: PrivacyKeyBirthday_,
   InputPrivacyValueAllowContacts: InputPrivacyValueAllowContacts_,
   InputPrivacyValueAllowAll: InputPrivacyValueAllowAll_,
   InputPrivacyValueAllowUsers: InputPrivacyValueAllowUsers_,
@@ -53597,6 +55478,7 @@ export const types = {
   InputPrivacyValueAllowChatParticipants: InputPrivacyValueAllowChatParticipants_,
   InputPrivacyValueDisallowChatParticipants: InputPrivacyValueDisallowChatParticipants_,
   InputPrivacyValueAllowCloseFriends: InputPrivacyValueAllowCloseFriends_,
+  InputPrivacyValueAllowPremium: InputPrivacyValueAllowPremium_,
   PrivacyValueAllowContacts: PrivacyValueAllowContacts_,
   PrivacyValueAllowAll: PrivacyValueAllowAll_,
   PrivacyValueAllowUsers: PrivacyValueAllowUsers_,
@@ -53606,6 +55488,7 @@ export const types = {
   PrivacyValueAllowChatParticipants: PrivacyValueAllowChatParticipants_,
   PrivacyValueDisallowChatParticipants: PrivacyValueDisallowChatParticipants_,
   PrivacyValueAllowCloseFriends: PrivacyValueAllowCloseFriends_,
+  PrivacyValueAllowPremium: PrivacyValueAllowPremium_,
   AccountDaysTTL: AccountDaysTTL_,
   DocumentAttributeImageSize: DocumentAttributeImageSize_,
   DocumentAttributeAnimated: DocumentAttributeAnimated_,
@@ -53657,6 +55540,7 @@ export const types = {
   KeyboardButtonWebView: KeyboardButtonWebView_,
   KeyboardButtonSimpleWebView: KeyboardButtonSimpleWebView_,
   KeyboardButtonRequestPeer: KeyboardButtonRequestPeer_,
+  InputKeyboardButtonRequestPeer: InputKeyboardButtonRequestPeer_,
   KeyboardButtonRow: KeyboardButtonRow_,
   ReplyKeyboardHide: ReplyKeyboardHide_,
   ReplyKeyboardForceReply: ReplyKeyboardForceReply_,
@@ -54190,6 +56074,59 @@ export const types = {
   InputQuickReplyShortcut: InputQuickReplyShortcut_,
   InputQuickReplyShortcutId: InputQuickReplyShortcutId_,
   ConnectedBot: ConnectedBot_,
+  Birthday: Birthday_,
+  BotBusinessConnection: BotBusinessConnection_,
+  InputBusinessIntro: InputBusinessIntro_,
+  BusinessIntro: BusinessIntro_,
+  InputCollectibleUsername: InputCollectibleUsername_,
+  InputCollectiblePhone: InputCollectiblePhone_,
+  InputBusinessBotRecipients: InputBusinessBotRecipients_,
+  BusinessBotRecipients: BusinessBotRecipients_,
+  ContactBirthday: ContactBirthday_,
+  MissingInvitee: MissingInvitee_,
+  InputBusinessChatLink: InputBusinessChatLink_,
+  BusinessChatLink: BusinessChatLink_,
+  RequestedPeerUser: RequestedPeerUser_,
+  RequestedPeerChat: RequestedPeerChat_,
+  RequestedPeerChannel: RequestedPeerChannel_,
+  SponsoredMessageReportOption: SponsoredMessageReportOption_,
+  BroadcastRevenueTransactionProceeds: BroadcastRevenueTransactionProceeds_,
+  BroadcastRevenueTransactionWithdrawal: BroadcastRevenueTransactionWithdrawal_,
+  BroadcastRevenueTransactionRefund: BroadcastRevenueTransactionRefund_,
+  help: {
+    ConfigSimple: help_ConfigSimple_,
+    AppUpdate: help_AppUpdate_,
+    NoAppUpdate: help_NoAppUpdate_,
+    InviteText: help_InviteText_,
+    Support: help_Support_,
+    TermsOfService: help_TermsOfService_,
+    RecentMeUrls: help_RecentMeUrls_,
+    TermsOfServiceUpdateEmpty: help_TermsOfServiceUpdateEmpty_,
+    TermsOfServiceUpdate: help_TermsOfServiceUpdate_,
+    DeepLinkInfoEmpty: help_DeepLinkInfoEmpty_,
+    DeepLinkInfo: help_DeepLinkInfo_,
+    PassportConfigNotModified: help_PassportConfigNotModified_,
+    PassportConfig: help_PassportConfig_,
+    SupportName: help_SupportName_,
+    UserInfoEmpty: help_UserInfoEmpty_,
+    UserInfo: help_UserInfo_,
+    PromoDataEmpty: help_PromoDataEmpty_,
+    PromoData: help_PromoData_,
+    CountryCode: help_CountryCode_,
+    Country: help_Country_,
+    CountriesListNotModified: help_CountriesListNotModified_,
+    CountriesList: help_CountriesList_,
+    PremiumPromo: help_PremiumPromo_,
+    AppConfigNotModified: help_AppConfigNotModified_,
+    AppConfig: help_AppConfig_,
+    PeerColorSet: help_PeerColorSet_,
+    PeerColorProfileSet: help_PeerColorProfileSet_,
+    PeerColorOption: help_PeerColorOption_,
+    PeerColorsNotModified: help_PeerColorsNotModified_,
+    PeerColors: help_PeerColors_,
+    TimezonesListNotModified: help_TimezonesListNotModified_,
+    TimezonesList: help_TimezonesList_,
+  },
   storage: {
     FileUnknown: storage_FileUnknown_,
     FilePartial: storage_FilePartial_,
@@ -54239,6 +56176,7 @@ export const types = {
     TopPeersNotModified: contacts_TopPeersNotModified_,
     TopPeers: contacts_TopPeers_,
     TopPeersDisabled: contacts_TopPeersDisabled_,
+    ContactBirthdays: contacts_ContactBirthdays_,
   },
   messages: {
     Dialogs: messages_Dialogs_,
@@ -54320,6 +56258,8 @@ export const types = {
     QuickReplies: messages_QuickReplies_,
     QuickRepliesNotModified: messages_QuickRepliesNotModified_,
     DialogFilters: messages_DialogFilters_,
+    MyStickers: messages_MyStickers_,
+    InvitedUsers: messages_InvitedUsers_,
   },
   updates: {
     State: updates_State_,
@@ -54342,39 +56282,6 @@ export const types = {
     WebFile: upload_WebFile_,
     CdnFileReuploadNeeded: upload_CdnFileReuploadNeeded_,
     CdnFile: upload_CdnFile_,
-  },
-  help: {
-    AppUpdate: help_AppUpdate_,
-    NoAppUpdate: help_NoAppUpdate_,
-    InviteText: help_InviteText_,
-    Support: help_Support_,
-    TermsOfService: help_TermsOfService_,
-    RecentMeUrls: help_RecentMeUrls_,
-    TermsOfServiceUpdateEmpty: help_TermsOfServiceUpdateEmpty_,
-    TermsOfServiceUpdate: help_TermsOfServiceUpdate_,
-    DeepLinkInfoEmpty: help_DeepLinkInfoEmpty_,
-    DeepLinkInfo: help_DeepLinkInfo_,
-    PassportConfigNotModified: help_PassportConfigNotModified_,
-    PassportConfig: help_PassportConfig_,
-    SupportName: help_SupportName_,
-    UserInfoEmpty: help_UserInfoEmpty_,
-    UserInfo: help_UserInfo_,
-    PromoDataEmpty: help_PromoDataEmpty_,
-    PromoData: help_PromoData_,
-    CountryCode: help_CountryCode_,
-    Country: help_Country_,
-    CountriesListNotModified: help_CountriesListNotModified_,
-    CountriesList: help_CountriesList_,
-    PremiumPromo: help_PremiumPromo_,
-    AppConfigNotModified: help_AppConfigNotModified_,
-    AppConfig: help_AppConfig_,
-    PeerColorSet: help_PeerColorSet_,
-    PeerColorProfileSet: help_PeerColorProfileSet_,
-    PeerColorOption: help_PeerColorOption_,
-    PeerColorsNotModified: help_PeerColorsNotModified_,
-    PeerColors: help_PeerColors_,
-    TimezonesListNotModified: help_TimezonesListNotModified_,
-    TimezonesList: help_TimezonesList_,
   },
   account: {
     PrivacyRules: account_PrivacyRules_,
@@ -54406,6 +56313,8 @@ export const types = {
     EmailVerifiedLogin: account_EmailVerifiedLogin_,
     AutoSaveSettings: account_AutoSaveSettings_,
     ConnectedBots: account_ConnectedBots_,
+    BusinessChatLinks: account_BusinessChatLinks_,
+    ResolvedBusinessChatLinks: account_ResolvedBusinessChatLinks_,
   },
   channels: {
     ChannelParticipants: channels_ChannelParticipants_,
@@ -54413,6 +56322,9 @@ export const types = {
     ChannelParticipant: channels_ChannelParticipant_,
     AdminLogResults: channels_AdminLogResults_,
     SendAsPeers: channels_SendAsPeers_,
+    SponsoredMessageReportResultChooseOption: channels_SponsoredMessageReportResultChooseOption_,
+    SponsoredMessageReportResultAdsHidden: channels_SponsoredMessageReportResultAdsHidden_,
+    SponsoredMessageReportResultReported: channels_SponsoredMessageReportResultReported_,
   },
   payments: {
     PaymentForm: payments_PaymentForm_,
@@ -54442,6 +56354,9 @@ export const types = {
     MessageStats: stats_MessageStats_,
     StoryStats: stats_StoryStats_,
     PublicForwards: stats_PublicForwards_,
+    BroadcastRevenueStats: stats_BroadcastRevenueStats_,
+    BroadcastRevenueWithdrawalUrl: stats_BroadcastRevenueWithdrawalUrl_,
+    BroadcastRevenueTransactions: stats_BroadcastRevenueTransactions_,
   },
   stickers: {
     SuggestedShortName: stickers_SuggestedShortName_,
@@ -54477,6 +56392,9 @@ export const types = {
     EligibleToJoin: smsjobs_EligibleToJoin_,
     Status: smsjobs_Status_,
   },
+  fragment: {
+    CollectibleInfo: fragment_CollectibleInfo_,
+  },
 };
 export declare namespace types {
   type Type = Type_;
@@ -54507,7 +56425,10 @@ export declare namespace types {
   type _HttpWait = _HttpWait_;
   type _True = _True_;
   type _Error = _Error_;
-  type _Null = _Null_;
+  type _IpPort = _IpPort_;
+  type _AccessPointRule = _AccessPointRule_;
+  type _help_ConfigSimple = _help_ConfigSimple_;
+  type _InputFileLocation = _InputFileLocation_;
   type _InputPeer = _InputPeer_;
   type _InputUser = _InputUser_;
   type _InputContact = _InputContact_;
@@ -54516,7 +56437,6 @@ export declare namespace types {
   type _InputChatPhoto = _InputChatPhoto_;
   type _InputGeoPoint = _InputGeoPoint_;
   type _InputPhoto = _InputPhoto_;
-  type _InputFileLocation = _InputFileLocation_;
   type _Peer = _Peer_;
   type _storage_FileType = _storage_FileType_;
   type _User = _User_;
@@ -54965,6 +56885,30 @@ export declare namespace types {
   type _ConnectedBot = _ConnectedBot_;
   type _account_ConnectedBots = _account_ConnectedBots_;
   type _messages_DialogFilters = _messages_DialogFilters_;
+  type _Birthday = _Birthday_;
+  type _BotBusinessConnection = _BotBusinessConnection_;
+  type _InputBusinessIntro = _InputBusinessIntro_;
+  type _BusinessIntro = _BusinessIntro_;
+  type _messages_MyStickers = _messages_MyStickers_;
+  type _InputCollectible = _InputCollectible_;
+  type _fragment_CollectibleInfo = _fragment_CollectibleInfo_;
+  type _InputBusinessBotRecipients = _InputBusinessBotRecipients_;
+  type _BusinessBotRecipients = _BusinessBotRecipients_;
+  type _ContactBirthday = _ContactBirthday_;
+  type _contacts_ContactBirthdays = _contacts_ContactBirthdays_;
+  type _MissingInvitee = _MissingInvitee_;
+  type _messages_InvitedUsers = _messages_InvitedUsers_;
+  type _InputBusinessChatLink = _InputBusinessChatLink_;
+  type _BusinessChatLink = _BusinessChatLink_;
+  type _account_BusinessChatLinks = _account_BusinessChatLinks_;
+  type _account_ResolvedBusinessChatLinks = _account_ResolvedBusinessChatLinks_;
+  type _RequestedPeer = _RequestedPeer_;
+  type _SponsoredMessageReportOption = _SponsoredMessageReportOption_;
+  type _channels_SponsoredMessageReportResult = _channels_SponsoredMessageReportResult_;
+  type _stats_BroadcastRevenueStats = _stats_BroadcastRevenueStats_;
+  type _stats_BroadcastRevenueWithdrawalUrl = _stats_BroadcastRevenueWithdrawalUrl_;
+  type _BroadcastRevenueTransaction = _BroadcastRevenueTransaction_;
+  type _stats_BroadcastRevenueTransactions = _stats_BroadcastRevenueTransactions_;
   type ResPQ = ResPQ_;
   type P_q_inner_data_dc = P_q_inner_data_dc_;
   type P_q_inner_data_temp_dc = P_q_inner_data_temp_dc_;
@@ -55001,7 +56945,11 @@ export declare namespace types {
   type Http_wait = Http_wait_;
   type True = True_;
   type Error = Error_;
-  type Null = Null_;
+  type IpPort = IpPort_;
+  type IpPortSecret = IpPortSecret_;
+  type AccessPointRule = AccessPointRule_;
+  type InputPeerPhotoFileLocationLegacy = InputPeerPhotoFileLocationLegacy_;
+  type InputStickerSetThumbLegacy = InputStickerSetThumbLegacy_;
   type InputPeerEmpty = InputPeerEmpty_;
   type InputPeerSelf = InputPeerSelf_;
   type InputPeerChat = InputPeerChat_;
@@ -55138,6 +57086,7 @@ export declare namespace types {
   type MessageActionGiveawayLaunch = MessageActionGiveawayLaunch_;
   type MessageActionGiveawayResults = MessageActionGiveawayResults_;
   type MessageActionBoostApply = MessageActionBoostApply_;
+  type MessageActionRequestedPeerSentMe = MessageActionRequestedPeerSentMe_;
   type Dialog = Dialog_;
   type DialogFolder = DialogFolder_;
   type PhotoEmpty = PhotoEmpty_;
@@ -55302,7 +57251,6 @@ export declare namespace types {
   type UpdateChannelPinnedTopics = UpdateChannelPinnedTopics_;
   type UpdateUser = UpdateUser_;
   type UpdateAutoSaveSettings = UpdateAutoSaveSettings_;
-  type UpdateGroupInvitePrivacyForbidden = UpdateGroupInvitePrivacyForbidden_;
   type UpdateStory = UpdateStory_;
   type UpdateReadStories = UpdateReadStories_;
   type UpdateStoryID = UpdateStoryID_;
@@ -55322,6 +57270,10 @@ export declare namespace types {
   type UpdateDeleteQuickReply = UpdateDeleteQuickReply_;
   type UpdateQuickReplyMessage = UpdateQuickReplyMessage_;
   type UpdateDeleteQuickReplyMessages = UpdateDeleteQuickReplyMessages_;
+  type UpdateBotBusinessConnect = UpdateBotBusinessConnect_;
+  type UpdateBotNewBusinessMessage = UpdateBotNewBusinessMessage_;
+  type UpdateBotEditBusinessMessage = UpdateBotEditBusinessMessage_;
+  type UpdateBotDeleteBusinessMessage = UpdateBotDeleteBusinessMessage_;
   type UpdatesTooLong = UpdatesTooLong_;
   type UpdateShortMessage = UpdateShortMessage_;
   type UpdateShortChatMessage = UpdateShortChatMessage_;
@@ -55383,6 +57335,7 @@ export declare namespace types {
   type InputPrivacyKeyAddedByPhone = InputPrivacyKeyAddedByPhone_;
   type InputPrivacyKeyVoiceMessages = InputPrivacyKeyVoiceMessages_;
   type InputPrivacyKeyAbout = InputPrivacyKeyAbout_;
+  type InputPrivacyKeyBirthday = InputPrivacyKeyBirthday_;
   type PrivacyKeyStatusTimestamp = PrivacyKeyStatusTimestamp_;
   type PrivacyKeyChatInvite = PrivacyKeyChatInvite_;
   type PrivacyKeyPhoneCall = PrivacyKeyPhoneCall_;
@@ -55393,6 +57346,7 @@ export declare namespace types {
   type PrivacyKeyAddedByPhone = PrivacyKeyAddedByPhone_;
   type PrivacyKeyVoiceMessages = PrivacyKeyVoiceMessages_;
   type PrivacyKeyAbout = PrivacyKeyAbout_;
+  type PrivacyKeyBirthday = PrivacyKeyBirthday_;
   type InputPrivacyValueAllowContacts = InputPrivacyValueAllowContacts_;
   type InputPrivacyValueAllowAll = InputPrivacyValueAllowAll_;
   type InputPrivacyValueAllowUsers = InputPrivacyValueAllowUsers_;
@@ -55402,6 +57356,7 @@ export declare namespace types {
   type InputPrivacyValueAllowChatParticipants = InputPrivacyValueAllowChatParticipants_;
   type InputPrivacyValueDisallowChatParticipants = InputPrivacyValueDisallowChatParticipants_;
   type InputPrivacyValueAllowCloseFriends = InputPrivacyValueAllowCloseFriends_;
+  type InputPrivacyValueAllowPremium = InputPrivacyValueAllowPremium_;
   type PrivacyValueAllowContacts = PrivacyValueAllowContacts_;
   type PrivacyValueAllowAll = PrivacyValueAllowAll_;
   type PrivacyValueAllowUsers = PrivacyValueAllowUsers_;
@@ -55411,6 +57366,7 @@ export declare namespace types {
   type PrivacyValueAllowChatParticipants = PrivacyValueAllowChatParticipants_;
   type PrivacyValueDisallowChatParticipants = PrivacyValueDisallowChatParticipants_;
   type PrivacyValueAllowCloseFriends = PrivacyValueAllowCloseFriends_;
+  type PrivacyValueAllowPremium = PrivacyValueAllowPremium_;
   type AccountDaysTTL = AccountDaysTTL_;
   type DocumentAttributeImageSize = DocumentAttributeImageSize_;
   type DocumentAttributeAnimated = DocumentAttributeAnimated_;
@@ -55462,6 +57418,7 @@ export declare namespace types {
   type KeyboardButtonWebView = KeyboardButtonWebView_;
   type KeyboardButtonSimpleWebView = KeyboardButtonSimpleWebView_;
   type KeyboardButtonRequestPeer = KeyboardButtonRequestPeer_;
+  type InputKeyboardButtonRequestPeer = InputKeyboardButtonRequestPeer_;
   type KeyboardButtonRow = KeyboardButtonRow_;
   type ReplyKeyboardHide = ReplyKeyboardHide_;
   type ReplyKeyboardForceReply = ReplyKeyboardForceReply_;
@@ -55995,6 +57952,59 @@ export declare namespace types {
   type InputQuickReplyShortcut = InputQuickReplyShortcut_;
   type InputQuickReplyShortcutId = InputQuickReplyShortcutId_;
   type ConnectedBot = ConnectedBot_;
+  type Birthday = Birthday_;
+  type BotBusinessConnection = BotBusinessConnection_;
+  type InputBusinessIntro = InputBusinessIntro_;
+  type BusinessIntro = BusinessIntro_;
+  type InputCollectibleUsername = InputCollectibleUsername_;
+  type InputCollectiblePhone = InputCollectiblePhone_;
+  type InputBusinessBotRecipients = InputBusinessBotRecipients_;
+  type BusinessBotRecipients = BusinessBotRecipients_;
+  type ContactBirthday = ContactBirthday_;
+  type MissingInvitee = MissingInvitee_;
+  type InputBusinessChatLink = InputBusinessChatLink_;
+  type BusinessChatLink = BusinessChatLink_;
+  type RequestedPeerUser = RequestedPeerUser_;
+  type RequestedPeerChat = RequestedPeerChat_;
+  type RequestedPeerChannel = RequestedPeerChannel_;
+  type SponsoredMessageReportOption = SponsoredMessageReportOption_;
+  type BroadcastRevenueTransactionProceeds = BroadcastRevenueTransactionProceeds_;
+  type BroadcastRevenueTransactionWithdrawal = BroadcastRevenueTransactionWithdrawal_;
+  type BroadcastRevenueTransactionRefund = BroadcastRevenueTransactionRefund_;
+  namespace help {
+    type ConfigSimple = help_ConfigSimple_;
+    type AppUpdate = help_AppUpdate_;
+    type NoAppUpdate = help_NoAppUpdate_;
+    type InviteText = help_InviteText_;
+    type Support = help_Support_;
+    type TermsOfService = help_TermsOfService_;
+    type RecentMeUrls = help_RecentMeUrls_;
+    type TermsOfServiceUpdateEmpty = help_TermsOfServiceUpdateEmpty_;
+    type TermsOfServiceUpdate = help_TermsOfServiceUpdate_;
+    type DeepLinkInfoEmpty = help_DeepLinkInfoEmpty_;
+    type DeepLinkInfo = help_DeepLinkInfo_;
+    type PassportConfigNotModified = help_PassportConfigNotModified_;
+    type PassportConfig = help_PassportConfig_;
+    type SupportName = help_SupportName_;
+    type UserInfoEmpty = help_UserInfoEmpty_;
+    type UserInfo = help_UserInfo_;
+    type PromoDataEmpty = help_PromoDataEmpty_;
+    type PromoData = help_PromoData_;
+    type CountryCode = help_CountryCode_;
+    type Country = help_Country_;
+    type CountriesListNotModified = help_CountriesListNotModified_;
+    type CountriesList = help_CountriesList_;
+    type PremiumPromo = help_PremiumPromo_;
+    type AppConfigNotModified = help_AppConfigNotModified_;
+    type AppConfig = help_AppConfig_;
+    type PeerColorSet = help_PeerColorSet_;
+    type PeerColorProfileSet = help_PeerColorProfileSet_;
+    type PeerColorOption = help_PeerColorOption_;
+    type PeerColorsNotModified = help_PeerColorsNotModified_;
+    type PeerColors = help_PeerColors_;
+    type TimezonesListNotModified = help_TimezonesListNotModified_;
+    type TimezonesList = help_TimezonesList_;
+  }
   namespace storage {
     type FileUnknown = storage_FileUnknown_;
     type FilePartial = storage_FilePartial_;
@@ -56044,6 +58054,7 @@ export declare namespace types {
     type TopPeersNotModified = contacts_TopPeersNotModified_;
     type TopPeers = contacts_TopPeers_;
     type TopPeersDisabled = contacts_TopPeersDisabled_;
+    type ContactBirthdays = contacts_ContactBirthdays_;
   }
   namespace messages {
     type Dialogs = messages_Dialogs_;
@@ -56125,6 +58136,8 @@ export declare namespace types {
     type QuickReplies = messages_QuickReplies_;
     type QuickRepliesNotModified = messages_QuickRepliesNotModified_;
     type DialogFilters = messages_DialogFilters_;
+    type MyStickers = messages_MyStickers_;
+    type InvitedUsers = messages_InvitedUsers_;
   }
   namespace updates {
     type State = updates_State_;
@@ -56147,39 +58160,6 @@ export declare namespace types {
     type WebFile = upload_WebFile_;
     type CdnFileReuploadNeeded = upload_CdnFileReuploadNeeded_;
     type CdnFile = upload_CdnFile_;
-  }
-  namespace help {
-    type AppUpdate = help_AppUpdate_;
-    type NoAppUpdate = help_NoAppUpdate_;
-    type InviteText = help_InviteText_;
-    type Support = help_Support_;
-    type TermsOfService = help_TermsOfService_;
-    type RecentMeUrls = help_RecentMeUrls_;
-    type TermsOfServiceUpdateEmpty = help_TermsOfServiceUpdateEmpty_;
-    type TermsOfServiceUpdate = help_TermsOfServiceUpdate_;
-    type DeepLinkInfoEmpty = help_DeepLinkInfoEmpty_;
-    type DeepLinkInfo = help_DeepLinkInfo_;
-    type PassportConfigNotModified = help_PassportConfigNotModified_;
-    type PassportConfig = help_PassportConfig_;
-    type SupportName = help_SupportName_;
-    type UserInfoEmpty = help_UserInfoEmpty_;
-    type UserInfo = help_UserInfo_;
-    type PromoDataEmpty = help_PromoDataEmpty_;
-    type PromoData = help_PromoData_;
-    type CountryCode = help_CountryCode_;
-    type Country = help_Country_;
-    type CountriesListNotModified = help_CountriesListNotModified_;
-    type CountriesList = help_CountriesList_;
-    type PremiumPromo = help_PremiumPromo_;
-    type AppConfigNotModified = help_AppConfigNotModified_;
-    type AppConfig = help_AppConfig_;
-    type PeerColorSet = help_PeerColorSet_;
-    type PeerColorProfileSet = help_PeerColorProfileSet_;
-    type PeerColorOption = help_PeerColorOption_;
-    type PeerColorsNotModified = help_PeerColorsNotModified_;
-    type PeerColors = help_PeerColors_;
-    type TimezonesListNotModified = help_TimezonesListNotModified_;
-    type TimezonesList = help_TimezonesList_;
   }
   namespace account {
     type PrivacyRules = account_PrivacyRules_;
@@ -56211,6 +58191,8 @@ export declare namespace types {
     type EmailVerifiedLogin = account_EmailVerifiedLogin_;
     type AutoSaveSettings = account_AutoSaveSettings_;
     type ConnectedBots = account_ConnectedBots_;
+    type BusinessChatLinks = account_BusinessChatLinks_;
+    type ResolvedBusinessChatLinks = account_ResolvedBusinessChatLinks_;
   }
   namespace channels {
     type ChannelParticipants = channels_ChannelParticipants_;
@@ -56218,6 +58200,9 @@ export declare namespace types {
     type ChannelParticipant = channels_ChannelParticipant_;
     type AdminLogResults = channels_AdminLogResults_;
     type SendAsPeers = channels_SendAsPeers_;
+    type SponsoredMessageReportResultChooseOption = channels_SponsoredMessageReportResultChooseOption_;
+    type SponsoredMessageReportResultAdsHidden = channels_SponsoredMessageReportResultAdsHidden_;
+    type SponsoredMessageReportResultReported = channels_SponsoredMessageReportResultReported_;
   }
   namespace payments {
     type PaymentForm = payments_PaymentForm_;
@@ -56247,6 +58232,9 @@ export declare namespace types {
     type MessageStats = stats_MessageStats_;
     type StoryStats = stats_StoryStats_;
     type PublicForwards = stats_PublicForwards_;
+    type BroadcastRevenueStats = stats_BroadcastRevenueStats_;
+    type BroadcastRevenueWithdrawalUrl = stats_BroadcastRevenueWithdrawalUrl_;
+    type BroadcastRevenueTransactions = stats_BroadcastRevenueTransactions_;
   }
   namespace stickers {
     type SuggestedShortName = stickers_SuggestedShortName_;
@@ -56281,6 +58269,9 @@ export declare namespace types {
   namespace smsjobs {
     type EligibleToJoin = smsjobs_EligibleToJoin_;
     type Status = smsjobs_Status_;
+  }
+  namespace fragment {
+    type CollectibleInfo = fragment_CollectibleInfo_;
   }
 }
 export const map = new Map<number, TLObjectConstructor>([
@@ -56320,7 +58311,12 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x9299359F, Http_wait_],
   [0x3FEDD339, True_],
   [0xC4B9F9BB, Error_],
-  [0x56730BCC, Null_],
+  [0xD433AD73, IpPort_],
+  [0x37982646, IpPortSecret_],
+  [0x4679B65F, AccessPointRule_],
+  [0x5A592A6C, help_ConfigSimple_],
+  [0x27D69997, InputPeerPhotoFileLocationLegacy_],
+  [0x0DBAEAE9, InputStickerSetThumbLegacy_],
   [0x7F3B18EA, InputPeerEmpty_],
   [0x7DA07EC9, InputPeerSelf_],
   [0x35A95CB9, InputPeerChat_],
@@ -56407,7 +58403,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x37C1011C, ChatPhotoEmpty_],
   [0x1C6E1C11, ChatPhoto_],
   [0x90A6CA84, MessageEmpty_],
-  [0xA66C7EFC, Message_],
+  [0x2357BF25, Message_],
   [0x2B085862, MessageService_],
   [0x3DED6320, MessageMediaEmpty_],
   [0x695150D7, MessageMediaPhoto_],
@@ -56467,6 +58463,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x332BA9ED, MessageActionGiveawayLaunch_],
   [0x2A9FADC5, MessageActionGiveawayResults_],
   [0xCC02AA6D, MessageActionBoostApply_],
+  [0x93B31848, MessageActionRequestedPeerSentMe_],
   [0xD58A08C6, Dialog_],
   [0x71BD134C, DialogFolder_],
   [0x2331B22D, PhotoEmpty_],
@@ -56491,7 +58488,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x5C467992, InputNotifyForumTopic_],
   [0xCACB6AE2, InputPeerNotifySettings_],
   [0x99622C0C, PeerNotifySettings_],
-  [0xA518110D, PeerSettings_],
+  [0xACD66C5E, PeerSettings_],
   [0xA437C3ED, WallPaper_],
   [0xE0804116, WallPaperNoFile_],
   [0x58DBCAB8, InputReportReasonSpam_],
@@ -56504,7 +58501,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xF5DDD6E7, InputReportReasonFake_],
   [0x0A8EB2BE, InputReportReasonIllegalDrugs_],
   [0x9EC7863D, InputReportReasonPersonalDetails_],
-  [0x22FF3E85, UserFull_],
+  [0xCC997720, UserFull_],
   [0x145ADE0B, Contact_],
   [0xC13E3C50, ImportedContact_],
   [0x16D9703B, ContactStatus_],
@@ -56652,7 +58649,6 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xFE198602, UpdateChannelPinnedTopics_],
   [0x20529438, UpdateUser_],
   [0xEC05B097, UpdateAutoSaveSettings_],
-  [0xCCF08AD6, UpdateGroupInvitePrivacyForbidden_],
   [0x75B3B798, UpdateStory_],
   [0xF74E932B, UpdateReadStories_],
   [0x1BF335B9, UpdateStoryID_],
@@ -56672,6 +58668,10 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x53E6F1EC, UpdateDeleteQuickReply_],
   [0x3E050D0F, UpdateQuickReplyMessage_],
   [0x566FE7CD, UpdateDeleteQuickReplyMessages_],
+  [0x8AE5C97A, UpdateBotBusinessConnect_],
+  [0x9DDB347C, UpdateBotNewBusinessMessage_],
+  [0x07DF587C, UpdateBotEditBusinessMessage_],
+  [0xA02A982E, UpdateBotDeleteBusinessMessage_],
   [0xA56C2A3E, updates_State_],
   [0x5D75A138, updates_DifferenceEmpty_],
   [0x00F49CA0, updates_Difference_],
@@ -56752,6 +58752,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xD1219BDD, InputPrivacyKeyAddedByPhone_],
   [0xAEE69D68, InputPrivacyKeyVoiceMessages_],
   [0x3823CC40, InputPrivacyKeyAbout_],
+  [0xD65A11CC, InputPrivacyKeyBirthday_],
   [0xBC2EAB30, PrivacyKeyStatusTimestamp_],
   [0x500E6DFA, PrivacyKeyChatInvite_],
   [0x3D662B7B, PrivacyKeyPhoneCall_],
@@ -56762,6 +58763,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x42FFD42B, PrivacyKeyAddedByPhone_],
   [0x0697F414, PrivacyKeyVoiceMessages_],
   [0xA486B761, PrivacyKeyAbout_],
+  [0x2000A518, PrivacyKeyBirthday_],
   [0x0D09E07B, InputPrivacyValueAllowContacts_],
   [0x184B35CE, InputPrivacyValueAllowAll_],
   [0x131CC67F, InputPrivacyValueAllowUsers_],
@@ -56771,6 +58773,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x840649CF, InputPrivacyValueAllowChatParticipants_],
   [0xE94F0F86, InputPrivacyValueDisallowChatParticipants_],
   [0x2F453E49, InputPrivacyValueAllowCloseFriends_],
+  [0x77CDC9F1, InputPrivacyValueAllowPremium_],
   [0xFFFE1BAC, PrivacyValueAllowContacts_],
   [0x65427B82, PrivacyValueAllowAll_],
   [0xB8905FB2, PrivacyValueAllowUsers_],
@@ -56780,6 +58783,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x6B134E8E, PrivacyValueAllowChatParticipants_],
   [0x41C87565, PrivacyValueDisallowChatParticipants_],
   [0xF7E8D89B, PrivacyValueAllowCloseFriends_],
+  [0xECE9814B, PrivacyValueAllowPremium_],
   [0x50A04E45, account_PrivacyRules_],
   [0xB8D0AFDF, AccountDaysTTL_],
   [0x6C37C15C, DocumentAttributeImageSize_],
@@ -56844,6 +58848,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x13767230, KeyboardButtonWebView_],
   [0xA0C0505C, KeyboardButtonSimpleWebView_],
   [0x53D7BFD8, KeyboardButtonRequestPeer_],
+  [0xC9662D05, InputKeyboardButtonRequestPeer_],
   [0x77608B83, KeyboardButtonRow_],
   [0xA03E5B85, ReplyKeyboardHide_],
   [0x86B40B08, ReplyKeyboardForceReply_],
@@ -57059,7 +59064,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xC5226F17, PhoneCallWaiting_],
   [0x14B0ED0C, PhoneCallRequested_],
   [0x3660C311, PhoneCallAccepted_],
-  [0x967F7C67, PhoneCall_],
+  [0x30535AF5, PhoneCall_],
   [0x50CA4DE1, PhoneCallDiscarded_],
   [0x9CC123C7, PhoneConnection_],
   [0x635FE375, PhoneConnectionWebrtc_],
@@ -57558,9 +59563,40 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x01190CF1, InputQuickReplyShortcutId_],
   [0xC68D6695, messages_QuickReplies_],
   [0x5F91EB5B, messages_QuickRepliesNotModified_],
-  [0xE7E999E7, ConnectedBot_],
+  [0xBD068601, ConnectedBot_],
   [0x17D7F87B, account_ConnectedBots_],
   [0x2AD93719, messages_DialogFilters_],
+  [0x6C8E1E06, Birthday_],
+  [0x896433B4, BotBusinessConnection_],
+  [0x09C469CD, InputBusinessIntro_],
+  [0x5A0A066D, BusinessIntro_],
+  [0xFAFF629D, messages_MyStickers_],
+  [0xE39460A9, InputCollectibleUsername_],
+  [0xA2E214A4, InputCollectiblePhone_],
+  [0x6EBDFF91, fragment_CollectibleInfo_],
+  [0xC4E5921E, InputBusinessBotRecipients_],
+  [0xB88CF373, BusinessBotRecipients_],
+  [0x1D998733, ContactBirthday_],
+  [0x114FF30D, contacts_ContactBirthdays_],
+  [0x628C9224, MissingInvitee_],
+  [0x7F5DEFA6, messages_InvitedUsers_],
+  [0x11679FA7, InputBusinessChatLink_],
+  [0xB4AE666F, BusinessChatLink_],
+  [0xEC43A2D1, account_BusinessChatLinks_],
+  [0x9A23AF21, account_ResolvedBusinessChatLinks_],
+  [0xD62FF46A, RequestedPeerUser_],
+  [0x7307544F, RequestedPeerChat_],
+  [0x8BA403E4, RequestedPeerChannel_],
+  [0x430D3150, SponsoredMessageReportOption_],
+  [0x846F9E42, channels_SponsoredMessageReportResultChooseOption_],
+  [0x3E3BCF2F, channels_SponsoredMessageReportResultAdsHidden_],
+  [0xAD798849, channels_SponsoredMessageReportResultReported_],
+  [0xD07B4BAD, stats_BroadcastRevenueStats_],
+  [0xEC659737, stats_BroadcastRevenueWithdrawalUrl_],
+  [0x557E2CC4, BroadcastRevenueTransactionProceeds_],
+  [0x5A590978, BroadcastRevenueTransactionWithdrawal_],
+  [0x42D30D2E, BroadcastRevenueTransactionRefund_],
+  [0x87158466, stats_BroadcastRevenueTransactions_],
 // deno-lint-ignore no-explicit-any
 ] as const as any);
 export declare namespace enums {
@@ -57590,7 +59626,9 @@ export declare namespace enums {
   type HttpWait = types.Http_wait;
   type True = types.True;
   type Error = types.Error;
-  type Null = types.Null;
+  type IpPort = types.IpPort | types.IpPortSecret;
+  type AccessPointRule = types.AccessPointRule;
+  type InputFileLocation = types.InputPeerPhotoFileLocationLegacy | types.InputStickerSetThumbLegacy | types.InputFileLocation | types.InputEncryptedFileLocation | types.InputDocumentFileLocation | types.InputSecureFileLocation | types.InputTakeoutFileLocation | types.InputPhotoFileLocation | types.InputPhotoLegacyFileLocation | types.InputPeerPhotoFileLocation | types.InputStickerSetThumb | types.InputGroupCallStream;
   type InputPeer = types.InputPeerEmpty | types.InputPeerSelf | types.InputPeerChat | types.InputPeerUser | types.InputPeerChannel | types.InputPeerUserFromMessage | types.InputPeerChannelFromMessage;
   type InputUser = types.InputUserEmpty | types.InputUserSelf | types.InputUser | types.InputUserFromMessage;
   type InputContact = types.InputPhoneContact;
@@ -57599,7 +59637,6 @@ export declare namespace enums {
   type InputChatPhoto = types.InputChatPhotoEmpty | types.InputChatUploadedPhoto | types.InputChatPhoto;
   type InputGeoPoint = types.InputGeoPointEmpty | types.InputGeoPoint;
   type InputPhoto = types.InputPhotoEmpty | types.InputPhoto;
-  type InputFileLocation = types.InputFileLocation | types.InputEncryptedFileLocation | types.InputDocumentFileLocation | types.InputSecureFileLocation | types.InputTakeoutFileLocation | types.InputPhotoFileLocation | types.InputPhotoLegacyFileLocation | types.InputPeerPhotoFileLocation | types.InputStickerSetThumb | types.InputGroupCallStream;
   type Peer = types.PeerUser | types.PeerChat | types.PeerChannel;
   type User = types.UserEmpty | types.User;
   type UserProfilePhoto = types.UserProfilePhotoEmpty | types.UserProfilePhoto;
@@ -57611,7 +59648,7 @@ export declare namespace enums {
   type ChatPhoto = types.ChatPhotoEmpty | types.ChatPhoto;
   type Message = types.MessageEmpty | types.Message | types.MessageService;
   type MessageMedia = types.MessageMediaEmpty | types.MessageMediaPhoto | types.MessageMediaGeo | types.MessageMediaContact | types.MessageMediaUnsupported | types.MessageMediaDocument | types.MessageMediaWebPage | types.MessageMediaVenue | types.MessageMediaGame | types.MessageMediaInvoice | types.MessageMediaGeoLive | types.MessageMediaPoll | types.MessageMediaDice | types.MessageMediaStory | types.MessageMediaGiveaway | types.MessageMediaGiveawayResults;
-  type MessageAction = types.MessageActionEmpty | types.MessageActionChatCreate | types.MessageActionChatEditTitle | types.MessageActionChatEditPhoto | types.MessageActionChatDeletePhoto | types.MessageActionChatAddUser | types.MessageActionChatDeleteUser | types.MessageActionChatJoinedByLink | types.MessageActionChannelCreate | types.MessageActionChatMigrateTo | types.MessageActionChannelMigrateFrom | types.MessageActionPinMessage | types.MessageActionHistoryClear | types.MessageActionGameScore | types.MessageActionPaymentSentMe | types.MessageActionPaymentSent | types.MessageActionPhoneCall | types.MessageActionScreenshotTaken | types.MessageActionCustomAction | types.MessageActionBotAllowed | types.MessageActionSecureValuesSentMe | types.MessageActionSecureValuesSent | types.MessageActionContactSignUp | types.MessageActionGeoProximityReached | types.MessageActionGroupCall | types.MessageActionInviteToGroupCall | types.MessageActionSetMessagesTTL | types.MessageActionGroupCallScheduled | types.MessageActionSetChatTheme | types.MessageActionChatJoinedByRequest | types.MessageActionWebViewDataSentMe | types.MessageActionWebViewDataSent | types.MessageActionGiftPremium | types.MessageActionTopicCreate | types.MessageActionTopicEdit | types.MessageActionSuggestProfilePhoto | types.MessageActionRequestedPeer | types.MessageActionSetChatWallPaper | types.MessageActionGiftCode | types.MessageActionGiveawayLaunch | types.MessageActionGiveawayResults | types.MessageActionBoostApply;
+  type MessageAction = types.MessageActionEmpty | types.MessageActionChatCreate | types.MessageActionChatEditTitle | types.MessageActionChatEditPhoto | types.MessageActionChatDeletePhoto | types.MessageActionChatAddUser | types.MessageActionChatDeleteUser | types.MessageActionChatJoinedByLink | types.MessageActionChannelCreate | types.MessageActionChatMigrateTo | types.MessageActionChannelMigrateFrom | types.MessageActionPinMessage | types.MessageActionHistoryClear | types.MessageActionGameScore | types.MessageActionPaymentSentMe | types.MessageActionPaymentSent | types.MessageActionPhoneCall | types.MessageActionScreenshotTaken | types.MessageActionCustomAction | types.MessageActionBotAllowed | types.MessageActionSecureValuesSentMe | types.MessageActionSecureValuesSent | types.MessageActionContactSignUp | types.MessageActionGeoProximityReached | types.MessageActionGroupCall | types.MessageActionInviteToGroupCall | types.MessageActionSetMessagesTTL | types.MessageActionGroupCallScheduled | types.MessageActionSetChatTheme | types.MessageActionChatJoinedByRequest | types.MessageActionWebViewDataSentMe | types.MessageActionWebViewDataSent | types.MessageActionGiftPremium | types.MessageActionTopicCreate | types.MessageActionTopicEdit | types.MessageActionSuggestProfilePhoto | types.MessageActionRequestedPeer | types.MessageActionSetChatWallPaper | types.MessageActionGiftCode | types.MessageActionGiveawayLaunch | types.MessageActionGiveawayResults | types.MessageActionBoostApply | types.MessageActionRequestedPeerSentMe;
   type Dialog = types.Dialog | types.DialogFolder;
   type Photo = types.PhotoEmpty | types.Photo;
   type PhotoSize = types.PhotoSizeEmpty | types.PhotoSize | types.PhotoCachedSize | types.PhotoStrippedSize | types.PhotoSizeProgressive | types.PhotoPathSize;
@@ -57627,7 +59664,7 @@ export declare namespace enums {
   type ImportedContact = types.ImportedContact;
   type ContactStatus = types.ContactStatus;
   type MessagesFilter = types.InputMessagesFilterEmpty | types.InputMessagesFilterPhotos | types.InputMessagesFilterVideo | types.InputMessagesFilterPhotoVideo | types.InputMessagesFilterDocument | types.InputMessagesFilterUrl | types.InputMessagesFilterGif | types.InputMessagesFilterVoice | types.InputMessagesFilterMusic | types.InputMessagesFilterChatPhotos | types.InputMessagesFilterPhoneCalls | types.InputMessagesFilterRoundVoice | types.InputMessagesFilterRoundVideo | types.InputMessagesFilterMyMentions | types.InputMessagesFilterGeo | types.InputMessagesFilterContacts | types.InputMessagesFilterPinned;
-  type Update = types.UpdateNewMessage | types.UpdateMessageID | types.UpdateDeleteMessages | types.UpdateUserTyping | types.UpdateChatUserTyping | types.UpdateChatParticipants | types.UpdateUserStatus | types.UpdateUserName | types.UpdateNewAuthorization | types.UpdateNewEncryptedMessage | types.UpdateEncryptedChatTyping | types.UpdateEncryption | types.UpdateEncryptedMessagesRead | types.UpdateChatParticipantAdd | types.UpdateChatParticipantDelete | types.UpdateDcOptions | types.UpdateNotifySettings | types.UpdateServiceNotification | types.UpdatePrivacy | types.UpdateUserPhone | types.UpdateReadHistoryInbox | types.UpdateReadHistoryOutbox | types.UpdateWebPage | types.UpdateReadMessagesContents | types.UpdateChannelTooLong | types.UpdateChannel | types.UpdateNewChannelMessage | types.UpdateReadChannelInbox | types.UpdateDeleteChannelMessages | types.UpdateChannelMessageViews | types.UpdateChatParticipantAdmin | types.UpdateNewStickerSet | types.UpdateStickerSetsOrder | types.UpdateStickerSets | types.UpdateSavedGifs | types.UpdateBotInlineQuery | types.UpdateBotInlineSend | types.UpdateEditChannelMessage | types.UpdateBotCallbackQuery | types.UpdateEditMessage | types.UpdateInlineBotCallbackQuery | types.UpdateReadChannelOutbox | types.UpdateDraftMessage | types.UpdateReadFeaturedStickers | types.UpdateRecentStickers | types.UpdateConfig | types.UpdatePtsChanged | types.UpdateChannelWebPage | types.UpdateDialogPinned | types.UpdatePinnedDialogs | types.UpdateBotWebhookJSON | types.UpdateBotWebhookJSONQuery | types.UpdateBotShippingQuery | types.UpdateBotPrecheckoutQuery | types.UpdatePhoneCall | types.UpdateLangPackTooLong | types.UpdateLangPack | types.UpdateFavedStickers | types.UpdateChannelReadMessagesContents | types.UpdateContactsReset | types.UpdateChannelAvailableMessages | types.UpdateDialogUnreadMark | types.UpdateMessagePoll | types.UpdateChatDefaultBannedRights | types.UpdateFolderPeers | types.UpdatePeerSettings | types.UpdatePeerLocated | types.UpdateNewScheduledMessage | types.UpdateDeleteScheduledMessages | types.UpdateTheme | types.UpdateGeoLiveViewed | types.UpdateLoginToken | types.UpdateMessagePollVote | types.UpdateDialogFilter | types.UpdateDialogFilterOrder | types.UpdateDialogFilters | types.UpdatePhoneCallSignalingData | types.UpdateChannelMessageForwards | types.UpdateReadChannelDiscussionInbox | types.UpdateReadChannelDiscussionOutbox | types.UpdatePeerBlocked | types.UpdateChannelUserTyping | types.UpdatePinnedMessages | types.UpdatePinnedChannelMessages | types.UpdateChat | types.UpdateGroupCallParticipants | types.UpdateGroupCall | types.UpdatePeerHistoryTTL | types.UpdateChatParticipant | types.UpdateChannelParticipant | types.UpdateBotStopped | types.UpdateGroupCallConnection | types.UpdateBotCommands | types.UpdatePendingJoinRequests | types.UpdateBotChatInviteRequester | types.UpdateMessageReactions | types.UpdateAttachMenuBots | types.UpdateWebViewResultSent | types.UpdateBotMenuButton | types.UpdateSavedRingtones | types.UpdateTranscribedAudio | types.UpdateReadFeaturedEmojiStickers | types.UpdateUserEmojiStatus | types.UpdateRecentEmojiStatuses | types.UpdateRecentReactions | types.UpdateMoveStickerSetToTop | types.UpdateMessageExtendedMedia | types.UpdateChannelPinnedTopic | types.UpdateChannelPinnedTopics | types.UpdateUser | types.UpdateAutoSaveSettings | types.UpdateGroupInvitePrivacyForbidden | types.UpdateStory | types.UpdateReadStories | types.UpdateStoryID | types.UpdateStoriesStealthMode | types.UpdateSentStoryReaction | types.UpdateBotChatBoost | types.UpdateChannelViewForumAsMessages | types.UpdatePeerWallpaper | types.UpdateBotMessageReaction | types.UpdateBotMessageReactions | types.UpdateSavedDialogPinned | types.UpdatePinnedSavedDialogs | types.UpdateSavedReactionTags | types.UpdateSmsJob | types.UpdateQuickReplies | types.UpdateNewQuickReply | types.UpdateDeleteQuickReply | types.UpdateQuickReplyMessage | types.UpdateDeleteQuickReplyMessages;
+  type Update = types.UpdateNewMessage | types.UpdateMessageID | types.UpdateDeleteMessages | types.UpdateUserTyping | types.UpdateChatUserTyping | types.UpdateChatParticipants | types.UpdateUserStatus | types.UpdateUserName | types.UpdateNewAuthorization | types.UpdateNewEncryptedMessage | types.UpdateEncryptedChatTyping | types.UpdateEncryption | types.UpdateEncryptedMessagesRead | types.UpdateChatParticipantAdd | types.UpdateChatParticipantDelete | types.UpdateDcOptions | types.UpdateNotifySettings | types.UpdateServiceNotification | types.UpdatePrivacy | types.UpdateUserPhone | types.UpdateReadHistoryInbox | types.UpdateReadHistoryOutbox | types.UpdateWebPage | types.UpdateReadMessagesContents | types.UpdateChannelTooLong | types.UpdateChannel | types.UpdateNewChannelMessage | types.UpdateReadChannelInbox | types.UpdateDeleteChannelMessages | types.UpdateChannelMessageViews | types.UpdateChatParticipantAdmin | types.UpdateNewStickerSet | types.UpdateStickerSetsOrder | types.UpdateStickerSets | types.UpdateSavedGifs | types.UpdateBotInlineQuery | types.UpdateBotInlineSend | types.UpdateEditChannelMessage | types.UpdateBotCallbackQuery | types.UpdateEditMessage | types.UpdateInlineBotCallbackQuery | types.UpdateReadChannelOutbox | types.UpdateDraftMessage | types.UpdateReadFeaturedStickers | types.UpdateRecentStickers | types.UpdateConfig | types.UpdatePtsChanged | types.UpdateChannelWebPage | types.UpdateDialogPinned | types.UpdatePinnedDialogs | types.UpdateBotWebhookJSON | types.UpdateBotWebhookJSONQuery | types.UpdateBotShippingQuery | types.UpdateBotPrecheckoutQuery | types.UpdatePhoneCall | types.UpdateLangPackTooLong | types.UpdateLangPack | types.UpdateFavedStickers | types.UpdateChannelReadMessagesContents | types.UpdateContactsReset | types.UpdateChannelAvailableMessages | types.UpdateDialogUnreadMark | types.UpdateMessagePoll | types.UpdateChatDefaultBannedRights | types.UpdateFolderPeers | types.UpdatePeerSettings | types.UpdatePeerLocated | types.UpdateNewScheduledMessage | types.UpdateDeleteScheduledMessages | types.UpdateTheme | types.UpdateGeoLiveViewed | types.UpdateLoginToken | types.UpdateMessagePollVote | types.UpdateDialogFilter | types.UpdateDialogFilterOrder | types.UpdateDialogFilters | types.UpdatePhoneCallSignalingData | types.UpdateChannelMessageForwards | types.UpdateReadChannelDiscussionInbox | types.UpdateReadChannelDiscussionOutbox | types.UpdatePeerBlocked | types.UpdateChannelUserTyping | types.UpdatePinnedMessages | types.UpdatePinnedChannelMessages | types.UpdateChat | types.UpdateGroupCallParticipants | types.UpdateGroupCall | types.UpdatePeerHistoryTTL | types.UpdateChatParticipant | types.UpdateChannelParticipant | types.UpdateBotStopped | types.UpdateGroupCallConnection | types.UpdateBotCommands | types.UpdatePendingJoinRequests | types.UpdateBotChatInviteRequester | types.UpdateMessageReactions | types.UpdateAttachMenuBots | types.UpdateWebViewResultSent | types.UpdateBotMenuButton | types.UpdateSavedRingtones | types.UpdateTranscribedAudio | types.UpdateReadFeaturedEmojiStickers | types.UpdateUserEmojiStatus | types.UpdateRecentEmojiStatuses | types.UpdateRecentReactions | types.UpdateMoveStickerSetToTop | types.UpdateMessageExtendedMedia | types.UpdateChannelPinnedTopic | types.UpdateChannelPinnedTopics | types.UpdateUser | types.UpdateAutoSaveSettings | types.UpdateStory | types.UpdateReadStories | types.UpdateStoryID | types.UpdateStoriesStealthMode | types.UpdateSentStoryReaction | types.UpdateBotChatBoost | types.UpdateChannelViewForumAsMessages | types.UpdatePeerWallpaper | types.UpdateBotMessageReaction | types.UpdateBotMessageReactions | types.UpdateSavedDialogPinned | types.UpdatePinnedSavedDialogs | types.UpdateSavedReactionTags | types.UpdateSmsJob | types.UpdateQuickReplies | types.UpdateNewQuickReply | types.UpdateDeleteQuickReply | types.UpdateQuickReplyMessage | types.UpdateDeleteQuickReplyMessages | types.UpdateBotBusinessConnect | types.UpdateBotNewBusinessMessage | types.UpdateBotEditBusinessMessage | types.UpdateBotDeleteBusinessMessage;
   type Updates = types.UpdatesTooLong | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShort | types.UpdatesCombined | types.Updates | types.UpdateShortSentMessage;
   type DcOption = types.DcOption;
   type Config = types.Config;
@@ -57641,10 +59678,10 @@ export declare namespace enums {
   type Document = types.DocumentEmpty | types.Document;
   type NotifyPeer = types.NotifyPeer | types.NotifyUsers | types.NotifyChats | types.NotifyBroadcasts | types.NotifyForumTopic;
   type SendMessageAction = types.SendMessageTypingAction | types.SendMessageCancelAction | types.SendMessageRecordVideoAction | types.SendMessageUploadVideoAction | types.SendMessageRecordAudioAction | types.SendMessageUploadAudioAction | types.SendMessageUploadPhotoAction | types.SendMessageUploadDocumentAction | types.SendMessageGeoLocationAction | types.SendMessageChooseContactAction | types.SendMessageGamePlayAction | types.SendMessageRecordRoundAction | types.SendMessageUploadRoundAction | types.SpeakingInGroupCallAction | types.SendMessageHistoryImportAction | types.SendMessageChooseStickerAction | types.SendMessageEmojiInteraction | types.SendMessageEmojiInteractionSeen;
-  type InputPrivacyKey = types.InputPrivacyKeyStatusTimestamp | types.InputPrivacyKeyChatInvite | types.InputPrivacyKeyPhoneCall | types.InputPrivacyKeyPhoneP2P | types.InputPrivacyKeyForwards | types.InputPrivacyKeyProfilePhoto | types.InputPrivacyKeyPhoneNumber | types.InputPrivacyKeyAddedByPhone | types.InputPrivacyKeyVoiceMessages | types.InputPrivacyKeyAbout;
-  type PrivacyKey = types.PrivacyKeyStatusTimestamp | types.PrivacyKeyChatInvite | types.PrivacyKeyPhoneCall | types.PrivacyKeyPhoneP2P | types.PrivacyKeyForwards | types.PrivacyKeyProfilePhoto | types.PrivacyKeyPhoneNumber | types.PrivacyKeyAddedByPhone | types.PrivacyKeyVoiceMessages | types.PrivacyKeyAbout;
-  type InputPrivacyRule = types.InputPrivacyValueAllowContacts | types.InputPrivacyValueAllowAll | types.InputPrivacyValueAllowUsers | types.InputPrivacyValueDisallowContacts | types.InputPrivacyValueDisallowAll | types.InputPrivacyValueDisallowUsers | types.InputPrivacyValueAllowChatParticipants | types.InputPrivacyValueDisallowChatParticipants | types.InputPrivacyValueAllowCloseFriends;
-  type PrivacyRule = types.PrivacyValueAllowContacts | types.PrivacyValueAllowAll | types.PrivacyValueAllowUsers | types.PrivacyValueDisallowContacts | types.PrivacyValueDisallowAll | types.PrivacyValueDisallowUsers | types.PrivacyValueAllowChatParticipants | types.PrivacyValueDisallowChatParticipants | types.PrivacyValueAllowCloseFriends;
+  type InputPrivacyKey = types.InputPrivacyKeyStatusTimestamp | types.InputPrivacyKeyChatInvite | types.InputPrivacyKeyPhoneCall | types.InputPrivacyKeyPhoneP2P | types.InputPrivacyKeyForwards | types.InputPrivacyKeyProfilePhoto | types.InputPrivacyKeyPhoneNumber | types.InputPrivacyKeyAddedByPhone | types.InputPrivacyKeyVoiceMessages | types.InputPrivacyKeyAbout | types.InputPrivacyKeyBirthday;
+  type PrivacyKey = types.PrivacyKeyStatusTimestamp | types.PrivacyKeyChatInvite | types.PrivacyKeyPhoneCall | types.PrivacyKeyPhoneP2P | types.PrivacyKeyForwards | types.PrivacyKeyProfilePhoto | types.PrivacyKeyPhoneNumber | types.PrivacyKeyAddedByPhone | types.PrivacyKeyVoiceMessages | types.PrivacyKeyAbout | types.PrivacyKeyBirthday;
+  type InputPrivacyRule = types.InputPrivacyValueAllowContacts | types.InputPrivacyValueAllowAll | types.InputPrivacyValueAllowUsers | types.InputPrivacyValueDisallowContacts | types.InputPrivacyValueDisallowAll | types.InputPrivacyValueDisallowUsers | types.InputPrivacyValueAllowChatParticipants | types.InputPrivacyValueDisallowChatParticipants | types.InputPrivacyValueAllowCloseFriends | types.InputPrivacyValueAllowPremium;
+  type PrivacyRule = types.PrivacyValueAllowContacts | types.PrivacyValueAllowAll | types.PrivacyValueAllowUsers | types.PrivacyValueDisallowContacts | types.PrivacyValueDisallowAll | types.PrivacyValueDisallowUsers | types.PrivacyValueAllowChatParticipants | types.PrivacyValueDisallowChatParticipants | types.PrivacyValueAllowCloseFriends | types.PrivacyValueAllowPremium;
   type AccountDaysTTL = types.AccountDaysTTL;
   type DocumentAttribute = types.DocumentAttributeImageSize | types.DocumentAttributeAnimated | types.DocumentAttributeSticker | types.DocumentAttributeVideo | types.DocumentAttributeAudio | types.DocumentAttributeFilename | types.DocumentAttributeHasStickers | types.DocumentAttributeCustomEmoji;
   type StickerPack = types.StickerPack;
@@ -57657,7 +59694,7 @@ export declare namespace enums {
   type StickerSet = types.StickerSet;
   type BotCommand = types.BotCommand;
   type BotInfo = types.BotInfo;
-  type KeyboardButton = types.KeyboardButton | types.KeyboardButtonUrl | types.KeyboardButtonCallback | types.KeyboardButtonRequestPhone | types.KeyboardButtonRequestGeoLocation | types.KeyboardButtonSwitchInline | types.KeyboardButtonGame | types.KeyboardButtonBuy | types.KeyboardButtonUrlAuth | types.InputKeyboardButtonUrlAuth | types.KeyboardButtonRequestPoll | types.InputKeyboardButtonUserProfile | types.KeyboardButtonUserProfile | types.KeyboardButtonWebView | types.KeyboardButtonSimpleWebView | types.KeyboardButtonRequestPeer;
+  type KeyboardButton = types.KeyboardButton | types.KeyboardButtonUrl | types.KeyboardButtonCallback | types.KeyboardButtonRequestPhone | types.KeyboardButtonRequestGeoLocation | types.KeyboardButtonSwitchInline | types.KeyboardButtonGame | types.KeyboardButtonBuy | types.KeyboardButtonUrlAuth | types.InputKeyboardButtonUrlAuth | types.KeyboardButtonRequestPoll | types.InputKeyboardButtonUserProfile | types.KeyboardButtonUserProfile | types.KeyboardButtonWebView | types.KeyboardButtonSimpleWebView | types.KeyboardButtonRequestPeer | types.InputKeyboardButtonRequestPeer;
   type KeyboardButtonRow = types.KeyboardButtonRow;
   type ReplyMarkup = types.ReplyKeyboardHide | types.ReplyKeyboardForceReply | types.ReplyKeyboardMarkup | types.ReplyInlineMarkup;
   type MessageEntity = types.MessageEntityUnknown | types.MessageEntityMention | types.MessageEntityHashtag | types.MessageEntityBotCommand | types.MessageEntityUrl | types.MessageEntityEmail | types.MessageEntityBold | types.MessageEntityItalic | types.MessageEntityCode | types.MessageEntityPre | types.MessageEntityTextUrl | types.MessageEntityMentionName | types.InputMessageEntityMentionName | types.MessageEntityPhone | types.MessageEntityCashtag | types.MessageEntityUnderline | types.MessageEntityStrike | types.MessageEntityBankCard | types.MessageEntitySpoiler | types.MessageEntityCustomEmoji | types.MessageEntityBlockquote;
@@ -57888,6 +59925,43 @@ export declare namespace enums {
   type QuickReply = types.QuickReply;
   type InputQuickReplyShortcut = types.InputQuickReplyShortcut | types.InputQuickReplyShortcutId;
   type ConnectedBot = types.ConnectedBot;
+  type Birthday = types.Birthday;
+  type BotBusinessConnection = types.BotBusinessConnection;
+  type InputBusinessIntro = types.InputBusinessIntro;
+  type BusinessIntro = types.BusinessIntro;
+  type InputCollectible = types.InputCollectibleUsername | types.InputCollectiblePhone;
+  type InputBusinessBotRecipients = types.InputBusinessBotRecipients;
+  type BusinessBotRecipients = types.BusinessBotRecipients;
+  type ContactBirthday = types.ContactBirthday;
+  type MissingInvitee = types.MissingInvitee;
+  type InputBusinessChatLink = types.InputBusinessChatLink;
+  type BusinessChatLink = types.BusinessChatLink;
+  type RequestedPeer = types.RequestedPeerUser | types.RequestedPeerChat | types.RequestedPeerChannel;
+  type SponsoredMessageReportOption = types.SponsoredMessageReportOption;
+  type BroadcastRevenueTransaction = types.BroadcastRevenueTransactionProceeds | types.BroadcastRevenueTransactionWithdrawal | types.BroadcastRevenueTransactionRefund;
+  namespace help {
+    type ConfigSimple = types.help.ConfigSimple;
+    type AppUpdate = types.help.AppUpdate | types.help.NoAppUpdate;
+    type InviteText = types.help.InviteText;
+    type Support = types.help.Support;
+    type TermsOfService = types.help.TermsOfService;
+    type RecentMeUrls = types.help.RecentMeUrls;
+    type TermsOfServiceUpdate = types.help.TermsOfServiceUpdateEmpty | types.help.TermsOfServiceUpdate;
+    type DeepLinkInfo = types.help.DeepLinkInfoEmpty | types.help.DeepLinkInfo;
+    type PassportConfig = types.help.PassportConfigNotModified | types.help.PassportConfig;
+    type SupportName = types.help.SupportName;
+    type UserInfo = types.help.UserInfoEmpty | types.help.UserInfo;
+    type PromoData = types.help.PromoDataEmpty | types.help.PromoData;
+    type CountryCode = types.help.CountryCode;
+    type Country = types.help.Country;
+    type CountriesList = types.help.CountriesListNotModified | types.help.CountriesList;
+    type PremiumPromo = types.help.PremiumPromo;
+    type AppConfig = types.help.AppConfigNotModified | types.help.AppConfig;
+    type PeerColorSet = types.help.PeerColorSet | types.help.PeerColorProfileSet;
+    type PeerColorOption = types.help.PeerColorOption;
+    type PeerColors = types.help.PeerColorsNotModified | types.help.PeerColors;
+    type TimezonesList = types.help.TimezonesListNotModified | types.help.TimezonesList;
+  }
   namespace storage {
     type FileType = types.storage.FileUnknown | types.storage.FilePartial | types.storage.FileJpeg | types.storage.FileGif | types.storage.FilePng | types.storage.FilePdf | types.storage.FileMp3 | types.storage.FileMov | types.storage.FileMp4 | types.storage.FileWebp;
   }
@@ -57908,6 +59982,7 @@ export declare namespace enums {
     type Found = types.contacts.Found;
     type ResolvedPeer = types.contacts.ResolvedPeer;
     type TopPeers = types.contacts.TopPeersNotModified | types.contacts.TopPeers | types.contacts.TopPeersDisabled;
+    type ContactBirthdays = types.contacts.ContactBirthdays;
   }
   namespace messages {
     type Dialogs = types.messages.Dialogs | types.messages.DialogsSlice | types.messages.DialogsNotModified;
@@ -57963,6 +60038,8 @@ export declare namespace enums {
     type SavedReactionTags = types.messages.SavedReactionTagsNotModified | types.messages.SavedReactionTags;
     type QuickReplies = types.messages.QuickReplies | types.messages.QuickRepliesNotModified;
     type DialogFilters = types.messages.DialogFilters;
+    type MyStickers = types.messages.MyStickers;
+    type InvitedUsers = types.messages.InvitedUsers;
   }
   namespace updates {
     type State = types.updates.State;
@@ -57977,28 +60054,6 @@ export declare namespace enums {
     type File = types.upload.File | types.upload.FileCdnRedirect;
     type WebFile = types.upload.WebFile;
     type CdnFile = types.upload.CdnFileReuploadNeeded | types.upload.CdnFile;
-  }
-  namespace help {
-    type AppUpdate = types.help.AppUpdate | types.help.NoAppUpdate;
-    type InviteText = types.help.InviteText;
-    type Support = types.help.Support;
-    type TermsOfService = types.help.TermsOfService;
-    type RecentMeUrls = types.help.RecentMeUrls;
-    type TermsOfServiceUpdate = types.help.TermsOfServiceUpdateEmpty | types.help.TermsOfServiceUpdate;
-    type DeepLinkInfo = types.help.DeepLinkInfoEmpty | types.help.DeepLinkInfo;
-    type PassportConfig = types.help.PassportConfigNotModified | types.help.PassportConfig;
-    type SupportName = types.help.SupportName;
-    type UserInfo = types.help.UserInfoEmpty | types.help.UserInfo;
-    type PromoData = types.help.PromoDataEmpty | types.help.PromoData;
-    type CountryCode = types.help.CountryCode;
-    type Country = types.help.Country;
-    type CountriesList = types.help.CountriesListNotModified | types.help.CountriesList;
-    type PremiumPromo = types.help.PremiumPromo;
-    type AppConfig = types.help.AppConfigNotModified | types.help.AppConfig;
-    type PeerColorSet = types.help.PeerColorSet | types.help.PeerColorProfileSet;
-    type PeerColorOption = types.help.PeerColorOption;
-    type PeerColors = types.help.PeerColorsNotModified | types.help.PeerColors;
-    type TimezonesList = types.help.TimezonesListNotModified | types.help.TimezonesList;
   }
   namespace account {
     type PrivacyRules = types.account.PrivacyRules;
@@ -58022,12 +60077,15 @@ export declare namespace enums {
     type EmailVerified = types.account.EmailVerified | types.account.EmailVerifiedLogin;
     type AutoSaveSettings = types.account.AutoSaveSettings;
     type ConnectedBots = types.account.ConnectedBots;
+    type BusinessChatLinks = types.account.BusinessChatLinks;
+    type ResolvedBusinessChatLinks = types.account.ResolvedBusinessChatLinks;
   }
   namespace channels {
     type ChannelParticipants = types.channels.ChannelParticipants | types.channels.ChannelParticipantsNotModified;
     type ChannelParticipant = types.channels.ChannelParticipant;
     type AdminLogResults = types.channels.AdminLogResults;
     type SendAsPeers = types.channels.SendAsPeers;
+    type SponsoredMessageReportResult = types.channels.SponsoredMessageReportResultChooseOption | types.channels.SponsoredMessageReportResultAdsHidden | types.channels.SponsoredMessageReportResultReported;
   }
   namespace payments {
     type PaymentForm = types.payments.PaymentForm;
@@ -58055,6 +60113,9 @@ export declare namespace enums {
     type MessageStats = types.stats.MessageStats;
     type StoryStats = types.stats.StoryStats;
     type PublicForwards = types.stats.PublicForwards;
+    type BroadcastRevenueStats = types.stats.BroadcastRevenueStats;
+    type BroadcastRevenueWithdrawalUrl = types.stats.BroadcastRevenueWithdrawalUrl;
+    type BroadcastRevenueTransactions = types.stats.BroadcastRevenueTransactions;
   }
   namespace stickers {
     type SuggestedShortName = types.stickers.SuggestedShortName;
@@ -58087,5 +60148,8 @@ export declare namespace enums {
   namespace smsjobs {
     type EligibilityToJoin = types.smsjobs.EligibleToJoin;
     type Status = types.smsjobs.Status;
+  }
+  namespace fragment {
+    type CollectibleInfo = types.fragment.CollectibleInfo;
   }
 }
