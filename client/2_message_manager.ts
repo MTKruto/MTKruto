@@ -1,13 +1,13 @@
 import { contentType } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
-import { as, enums, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
+import { as, enums, functions, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
 import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId } from "../3_types.ts";
 import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
+import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
@@ -24,6 +24,8 @@ type MessageManagerUpdate =
   | types.UpdateNewChannelMessage
   | types.UpdateEditMessage
   | types.UpdateEditChannelMessage
+  | types.UpdateBotNewBusinessMessage
+  | types.UpdateBotEditBusinessMessage
   | types.UpdateDeleteMessages
   | types.UpdateDeleteChannelMessages
   | types.UpdateChannelParticipant
@@ -131,7 +133,7 @@ export class MessageManager {
     return [text, entities] as const;
   }
 
-  async #updatesToMessages(chatId: ID, updates: enums.Updates) {
+  async #updatesToMessages(chatId: ID, updates: enums.Updates, businessConnectionId?: string) {
     const messages = new Array<Message>();
 
     if (updates instanceof types.Updates) {
@@ -143,6 +145,10 @@ export class MessageManager {
           messages.push(await this.constructMessage(update.message));
         } else if (update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage) {
           messages.push(await this.constructMessage(update.message));
+        } else if (update instanceof types.UpdateBotNewBusinessMessage) {
+          messages.push(await this.constructMessage(update.message, false, { connectionId: businessConnectionId ?? update.connection_id, replyToMessage: update.reply_to_message }));
+        } else if (update instanceof types.UpdateBotEditBusinessMessage) {
+          messages.push(await this.constructMessage(update.message, false, { connectionId: businessConnectionId ?? update.connection_id, replyToMessage: update.reply_to_message }));
         }
       }
     } else if (updates instanceof types.UpdateShortSentMessage) {
@@ -155,8 +161,8 @@ export class MessageManager {
     return messages;
   }
 
-  async constructMessage(message_: enums.Message, r?: boolean) {
-    return await constructMessage_(message_, this.#c.getEntity, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r);
+  async constructMessage(message_: enums.Message, r?: boolean, business?: { connectionId: string; replyToMessage?: enums.Message }) {
+    return await constructMessage_(message_, this.#c.getEntity, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r, business);
   }
 
   async forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams) {
@@ -253,41 +259,47 @@ export class MessageManager {
 
     let result: enums.Updates;
     if (!noWebpage && params?.linkPreview?.url) {
-      result = await this.#c.api.messages.sendMedia({
-        peer,
-        random_id: randomId,
-        media: new types.InputMediaWebPage({
-          url: params.linkPreview.url,
-          force_large_media: params.linkPreview.largeMedia ? true : undefined,
-          force_small_media: params.linkPreview.smallMedia ? true : undefined,
-          optional: message.length ? undefined : true,
+      result = await this.#c.invoke(
+        new functions.messages.sendMedia({
+          peer,
+          random_id: randomId,
+          media: new types.InputMediaWebPage({
+            url: params.linkPreview.url,
+            force_large_media: params.linkPreview.largeMedia ? true : undefined,
+            force_small_media: params.linkPreview.smallMedia ? true : undefined,
+            optional: message.length ? undefined : true,
+          }),
+          message,
+          invert_media: invertMedia,
+          silent,
+          noforwards,
+          reply_to: await this.#constructReplyTo(params),
+          send_as: sendAs,
+          entities,
+          reply_markup: replyMarkup,
         }),
-        message,
-        invert_media: invertMedia,
-        silent,
-        noforwards,
-        reply_to: await this.#constructReplyTo(params),
-        send_as: sendAs,
-        entities,
-        reply_markup: replyMarkup,
-      });
+        params?.businessConnectionId,
+      );
     } else {
-      result = await this.#c.api.messages.sendMessage({
-        peer,
-        random_id: randomId,
-        message,
-        no_webpage: noWebpage,
-        invert_media: invertMedia,
-        silent,
-        noforwards,
-        reply_to: await this.#constructReplyTo(params),
-        send_as: sendAs,
-        entities,
-        reply_markup: replyMarkup,
-      });
+      result = await this.#c.invoke(
+        new functions.messages.sendMessage({
+          peer,
+          random_id: randomId,
+          message,
+          no_webpage: noWebpage,
+          invert_media: invertMedia,
+          silent,
+          noforwards,
+          reply_to: await this.#constructReplyTo(params),
+          send_as: sendAs,
+          entities,
+          reply_markup: replyMarkup,
+        }),
+        params?.businessConnectionId,
+      );
     }
 
-    const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    const message_ = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
     return assertMessageType(message_, "text");
   }
 
@@ -305,29 +317,32 @@ export class MessageManager {
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
     const replyMarkup = await this.#constructReplyMarkup(params);
 
-    const result = await this.#c.api.messages.sendMedia({
-      peer,
-      random_id: randomId,
-      silent,
-      noforwards,
-      reply_to: await this.#constructReplyTo(params),
-      send_as: sendAs,
-      reply_markup: replyMarkup,
-      media: new types.InputMediaVenue({
-        geo_point: new types.InputGeoPoint({
-          lat: latitude,
-          long: longitude,
+    const result = await this.#c.invoke(
+      new functions.messages.sendMedia({
+        peer,
+        random_id: randomId,
+        silent,
+        noforwards,
+        reply_to: await this.#constructReplyTo(params),
+        send_as: sendAs,
+        reply_markup: replyMarkup,
+        media: new types.InputMediaVenue({
+          geo_point: new types.InputGeoPoint({
+            lat: latitude,
+            long: longitude,
+          }),
+          title,
+          address,
+          venue_id: params?.foursquareId ?? "",
+          venue_type: params?.foursquareType ?? "",
+          provider: "foursquare",
         }),
-        title,
-        address,
-        venue_id: params?.foursquareId ?? "",
-        venue_type: params?.foursquareType ?? "",
-        provider: "foursquare",
+        message: "",
       }),
-      message: "",
-    });
+      params?.businessConnectionId,
+    );
 
-    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    const message = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
     return assertMessageType(message, "venue");
   }
 
@@ -339,24 +354,27 @@ export class MessageManager {
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
     const replyMarkup = await this.#constructReplyMarkup(params);
 
-    const result = await this.#c.api.messages.sendMedia({
-      peer,
-      random_id: randomId,
-      silent,
-      noforwards,
-      reply_to: await this.#constructReplyTo(params),
-      send_as: sendAs,
-      reply_markup: replyMarkup,
-      media: new types.InputMediaContact({
-        phone_number: number,
-        first_name: firstName,
-        last_name: params?.lastName ?? "",
-        vcard: params?.vcard ?? "",
+    const result = await this.#c.invoke(
+      new functions.messages.sendMedia({
+        peer,
+        random_id: randomId,
+        silent,
+        noforwards,
+        reply_to: await this.#constructReplyTo(params),
+        send_as: sendAs,
+        reply_markup: replyMarkup,
+        media: new types.InputMediaContact({
+          phone_number: number,
+          first_name: firstName,
+          last_name: params?.lastName ?? "",
+          vcard: params?.vcard ?? "",
+        }),
+        message: "",
       }),
-      message: "",
-    });
+      params?.businessConnectionId,
+    );
 
-    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    const message = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
     return assertMessageType(message, "contact");
   }
 
@@ -368,21 +386,24 @@ export class MessageManager {
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
     const replyMarkup = await this.#constructReplyMarkup(params);
 
-    const result = await this.#c.api.messages.sendMedia({
-      peer,
-      random_id: randomId,
-      silent,
-      noforwards,
-      reply_to: await this.#constructReplyTo(params),
-      send_as: sendAs,
-      reply_markup: replyMarkup,
-      media: new types.InputMediaDice({
-        emoticon: params?.emoji ?? "🎲",
+    const result = await this.#c.invoke(
+      new functions.messages.sendMedia({
+        peer,
+        random_id: randomId,
+        silent,
+        noforwards,
+        reply_to: await this.#constructReplyTo(params),
+        send_as: sendAs,
+        reply_markup: replyMarkup,
+        media: new types.InputMediaDice({
+          emoticon: params?.emoji ?? "🎲",
+        }),
+        message: "",
       }),
-      message: "",
-    });
+      params?.businessConnectionId,
+    );
 
-    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    const message = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
     return assertMessageType(message, "dice");
   }
 
@@ -394,36 +415,39 @@ export class MessageManager {
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
     const replyMarkup = await this.#constructReplyMarkup(params);
 
-    const result = await this.#c.api.messages.sendMedia({
-      peer,
-      random_id: randomId,
-      silent,
-      noforwards,
-      reply_to: await this.#constructReplyTo(params),
-      send_as: sendAs,
-      reply_markup: replyMarkup,
-      media: params?.livePeriod !== undefined
-        ? new types.InputMediaGeoLive({
-          geo_point: new types.InputGeoPoint({
-            lat: latitude,
-            long: longitude,
-            accuracy_radius: params?.horizontalAccuracy,
+    const result = await this.#c.invoke(
+      new functions.messages.sendMedia({
+        peer,
+        random_id: randomId,
+        silent,
+        noforwards,
+        reply_to: await this.#constructReplyTo(params),
+        send_as: sendAs,
+        reply_markup: replyMarkup,
+        media: params?.livePeriod !== undefined
+          ? new types.InputMediaGeoLive({
+            geo_point: new types.InputGeoPoint({
+              lat: latitude,
+              long: longitude,
+              accuracy_radius: params?.horizontalAccuracy,
+            }),
+            heading: params?.heading,
+            period: params.livePeriod,
+            proximity_notification_radius: params?.proximityAlertRadius,
+          })
+          : new types.InputMediaGeoPoint({
+            geo_point: new types.InputGeoPoint({
+              lat: latitude,
+              long: longitude,
+              accuracy_radius: params?.horizontalAccuracy,
+            }),
           }),
-          heading: params?.heading,
-          period: params.livePeriod,
-          proximity_notification_radius: params?.proximityAlertRadius,
-        })
-        : new types.InputMediaGeoPoint({
-          geo_point: new types.InputGeoPoint({
-            lat: latitude,
-            long: longitude,
-            accuracy_radius: params?.horizontalAccuracy,
-          }),
-        }),
-      message: "",
-    });
+        message: "",
+      }),
+      params?.businessConnectionId,
+    );
 
-    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    const message = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
     return assertMessageType(message, "location");
   }
 
@@ -589,20 +613,23 @@ export class MessageManager {
     const caption = parseResult === undefined ? undefined : parseResult[0];
     const captionEntities = parseResult === undefined ? undefined : parseResult[1];
 
-    const result = await this.#c.api.messages.sendMedia({
-      peer,
-      random_id: randomId,
-      silent,
-      noforwards,
-      reply_markup: replyMarkup,
-      reply_to: await this.#constructReplyTo(params),
-      send_as: sendAs,
-      media,
-      message: caption ?? "",
-      entities: captionEntities,
-    });
+    const result = await this.#c.invoke(
+      new functions.messages.sendMedia({
+        peer,
+        random_id: randomId,
+        silent,
+        noforwards,
+        reply_markup: replyMarkup,
+        reply_to: await this.#constructReplyTo(params),
+        send_as: sendAs,
+        media,
+        message: caption ?? "",
+        entities: captionEntities,
+      }),
+      params?.businessConnectionId,
+    );
 
-    return await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
   }
 
   resolveFileId(maybeFileId: string, expectedFileType: FileType | FileType[]) {
@@ -661,19 +688,22 @@ export class MessageManager {
       solution_entities: solutionEntities,
     });
 
-    const result = await this.#c.api.messages.sendMedia({
-      peer,
-      random_id: randomId,
-      silent,
-      noforwards,
-      reply_markup: replyMarkup,
-      reply_to: await this.#constructReplyTo(params),
-      send_as: sendAs,
-      media,
-      message: "",
-    });
+    const result = await this.#c.invoke(
+      new functions.messages.sendMedia({
+        peer,
+        random_id: randomId,
+        silent,
+        noforwards,
+        reply_markup: replyMarkup,
+        reply_to: await this.#constructReplyTo(params),
+        send_as: sendAs,
+        media,
+        message: "",
+      }),
+      params?.businessConnectionId,
+    );
 
-    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    const message = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
     return assertMessageType(message, "poll");
   }
 
@@ -852,6 +882,8 @@ export class MessageManager {
       update instanceof types.UpdateNewChannelMessage ||
       update instanceof types.UpdateEditMessage ||
       update instanceof types.UpdateEditChannelMessage ||
+      update instanceof types.UpdateBotNewBusinessMessage ||
+      update instanceof types.UpdateBotEditBusinessMessage ||
       update instanceof types.UpdateDeleteMessages ||
       update instanceof types.UpdateDeleteChannelMessages ||
       update instanceof types.UpdateChannelParticipant ||
@@ -870,7 +902,9 @@ export class MessageManager {
       update instanceof types.UpdateNewMessage ||
       update instanceof types.UpdateNewChannelMessage ||
       update instanceof types.UpdateEditMessage ||
-      update instanceof types.UpdateEditChannelMessage
+      update instanceof types.UpdateEditChannelMessage ||
+      update instanceof types.UpdateBotNewBusinessMessage ||
+      update instanceof types.UpdateBotEditBusinessMessage
     ) {
       if (!(update.message instanceof types.MessageEmpty)) {
         const isOutgoing = update.message.out;
@@ -879,8 +913,9 @@ export class MessageManager {
           shouldIgnore = this.#c.ignoreOutgoing;
         }
         if (!shouldIgnore) {
-          const message = await this.constructMessage(update.message);
-          if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage) {
+          const business = "connection_id" in update ? { connectionId: update.connection_id, replyToMessage: update.reply_to_message } : undefined;
+          const message = await this.constructMessage(update.message, undefined, business);
+          if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateBotNewBusinessMessage) {
             return ({ message });
           } else {
             return ({ editedMessage: message });
@@ -925,7 +960,7 @@ export class MessageManager {
     return null;
   }
 
-  async sendChatAction(chatId: ID, action: ChatAction, params?: { messageThreadId?: number }) {
+  async sendChatAction(chatId: ID, action: ChatAction, params?: SendChatActionParams) {
     let action_: enums.SendMessageAction;
     switch (action) {
       case "type":
@@ -964,7 +999,7 @@ export class MessageManager {
       default:
         throw new InputError(`Invalid chat action: ${action}`);
     }
-    await this.#c.api.messages.setTyping({ peer: await this.#c.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId });
+    await this.#c.invoke(new functions.messages.setTyping({ peer: await this.#c.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId }), params?.businessConnectionId);
   }
 
   async deleteChatPhoto(chatId: number) {

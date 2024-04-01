@@ -89,6 +89,7 @@ export interface _MessageBase {
   forwards?: number;
   /** The message's reply markup. */
   replyMarkup?: ReplyMarkup;
+  businessConnectionId?: string;
 }
 
 /**
@@ -750,6 +751,7 @@ export async function constructMessage(
   getMessage: Message_MessageGetter,
   getStickerSetName: StickerSetNameGetter,
   getReply_ = true,
+  business?: { connectionId: string; replyToMessage?: enums.Message },
 ): Promise<Message> {
   if (!(message_ instanceof types.Message) && !(message_ instanceof types.MessageService)) {
     UNREACHABLE();
@@ -810,7 +812,13 @@ export async function constructMessage(
     }
     message.replyToMessageId = message_.reply_to.reply_to_msg_id;
   }
-  if (getReply_) {
+  if (business) {
+    message.businessConnectionId = business.connectionId;
+    if (business.replyToMessage) {
+      message.replyToMessageId = business.replyToMessage.id;
+      message.replyToMessage = await constructMessage(business.replyToMessage, getEntity, getMessage, getStickerSetName, false, { connectionId: business.connectionId });
+    }
+  } else if (getReply_) {
     Object.assign(message, await getReply(message_, chat_, getMessage));
   }
   Object.assign(message, await getSender(message_, getEntity));
