@@ -2,9 +2,42 @@ import { getLogger, Logger, Queue, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_uti
 import { as, enums, functions, inputPeerToPeer, peerToChatId, ReadObject, TLObject, types } from "../2_tl.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
 import { C } from "./0_types.ts";
-import { ChannelPtsUpdate, isChannelPtsUpdate, isPtsUpdate, isQtsUpdate, PtsUpdate, QtsUpdate } from "./0_utilities.ts";
 
 type UpdateHandler = (update: enums.Update) => Promise<(() => Promise<unknown>)>;
+
+export type PtsUpdate =
+  | types.UpdateNewMessage
+  | types.UpdateDeleteMessages
+  | types.UpdateReadHistoryInbox
+  | types.UpdateReadHistoryOutbox
+  | types.UpdatePinnedChannelMessages
+  | types.UpdatePinnedMessages
+  | types.UpdateFolderPeers
+  | types.UpdateChannelWebPage
+  | types.UpdateEditMessage
+  | types.UpdateReadMessagesContents
+  | types.UpdateWebPage;
+
+export type ChannelPtsUpdate =
+  | types.UpdateNewChannelMessage
+  | types.UpdateEditChannelMessage
+  | types.UpdateDeleteChannelMessages
+  | types.UpdateChannelTooLong;
+
+export type QtsUpdate =
+  | types.UpdateNewEncryptedMessage
+  | types.UpdateMessagePollVote
+  | types.UpdateBotStopped
+  | types.UpdateChatParticipant
+  | types.UpdateChannelParticipant
+  | types.UpdateBotChatInviteRequester
+  | types.UpdateBotChatBoost
+  | types.UpdateBotMessageReaction
+  | types.UpdateBotMessageReactions
+  | types.UpdateBotBusinessConnect
+  | types.UpdateBotNewBusinessMessage
+  | types.UpdateBotEditBusinessMessage
+  | types.UpdateBotDeleteBusinessMessage;
 
 export class UpdateManager {
   static readonly QTS_COUNT = 1;
@@ -29,6 +62,43 @@ export class UpdateManager {
     this.#L$handleUpdate = L.branch("#handleUpdate");
     this.#L$processUpdates = L.branch("#processUpdates");
     this.#LfetchState = L.branch("fetchState");
+  }
+
+  static isPtsUpdate(v: enums.Update): v is PtsUpdate {
+    return v instanceof types.UpdateNewMessage ||
+      v instanceof types.UpdateDeleteMessages ||
+      v instanceof types.UpdateReadHistoryInbox ||
+      v instanceof types.UpdateReadHistoryOutbox ||
+      v instanceof types.UpdatePinnedChannelMessages ||
+      v instanceof types.UpdatePinnedMessages ||
+      v instanceof types.UpdateFolderPeers ||
+      v instanceof types.UpdateChannelWebPage ||
+      v instanceof types.UpdateEditMessage ||
+      v instanceof types.UpdateReadMessagesContents ||
+      v instanceof types.UpdateWebPage;
+  }
+
+  static isQtsUpdate(v: enums.Update): v is QtsUpdate {
+    return v instanceof types.UpdateNewEncryptedMessage ||
+      v instanceof types.UpdateMessagePollVote ||
+      v instanceof types.UpdateBotStopped ||
+      v instanceof types.UpdateChatParticipant ||
+      v instanceof types.UpdateChannelParticipant ||
+      v instanceof types.UpdateBotChatInviteRequester ||
+      v instanceof types.UpdateBotChatBoost ||
+      v instanceof types.UpdateBotMessageReaction ||
+      v instanceof types.UpdateBotMessageReactions ||
+      v instanceof types.UpdateBotBusinessConnect ||
+      v instanceof types.UpdateBotNewBusinessMessage ||
+      v instanceof types.UpdateBotEditBusinessMessage ||
+      v instanceof types.UpdateBotDeleteBusinessMessage;
+  }
+
+  static isChannelPtsUpdate(v: enums.Update | enums.Updates): v is ChannelPtsUpdate {
+    return v instanceof types.UpdateNewChannelMessage ||
+      v instanceof types.UpdateEditChannelMessage ||
+      v instanceof types.UpdateDeleteChannelMessages ||
+      v instanceof types.UpdateChannelTooLong;
   }
 
   #defaultDropPendingUpdates: boolean | null = null;
@@ -504,11 +574,11 @@ export class UpdateManager {
         } else {
           UNREACHABLE();
         }
-      } else if (isPtsUpdate(update)) {
+      } else if (UpdateManager.isPtsUpdate(update)) {
         this.#processPtsUpdate(update, checkGap);
-      } else if (isChannelPtsUpdate(update)) {
+      } else if (UpdateManager.isChannelPtsUpdate(update)) {
         this.#processChannelPtsUpdate(update, checkGap);
-      } else if (isQtsUpdate(update)) {
+      } else if (UpdateManager.isQtsUpdate(update)) {
         this.#processQtsUpdate(update, checkGap);
       } else {
         this.#queueUpdate(update, 0n, false);

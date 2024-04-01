@@ -1,78 +1,9 @@
 import { path } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { UNREACHABLE } from "../1_utilities.ts";
-import { enums, types } from "../2_tl.ts";
 import { FileSource } from "../3_types.ts";
 
 export const resolve = () => Promise.resolve();
-
-export type PtsUpdate =
-  | types.UpdateNewMessage
-  | types.UpdateDeleteMessages
-  | types.UpdateReadHistoryInbox
-  | types.UpdateReadHistoryOutbox
-  | types.UpdatePinnedChannelMessages
-  | types.UpdatePinnedMessages
-  | types.UpdateFolderPeers
-  | types.UpdateChannelWebPage
-  | types.UpdateEditMessage
-  | types.UpdateReadMessagesContents
-  | types.UpdateWebPage;
-export function isPtsUpdate(v: enums.Update): v is PtsUpdate {
-  return v instanceof types.UpdateNewMessage ||
-    v instanceof types.UpdateDeleteMessages ||
-    v instanceof types.UpdateReadHistoryInbox ||
-    v instanceof types.UpdateReadHistoryOutbox ||
-    v instanceof types.UpdatePinnedChannelMessages ||
-    v instanceof types.UpdatePinnedMessages ||
-    v instanceof types.UpdateFolderPeers ||
-    v instanceof types.UpdateChannelWebPage ||
-    v instanceof types.UpdateEditMessage ||
-    v instanceof types.UpdateReadMessagesContents ||
-    v instanceof types.UpdateWebPage;
-}
-
-export type ChannelPtsUpdate =
-  | types.UpdateNewChannelMessage
-  | types.UpdateEditChannelMessage
-  | types.UpdateDeleteChannelMessages
-  | types.UpdateChannelTooLong;
-export function isChannelPtsUpdate(v: enums.Update | enums.Updates): v is ChannelPtsUpdate {
-  return v instanceof types.UpdateNewChannelMessage ||
-    v instanceof types.UpdateEditChannelMessage ||
-    v instanceof types.UpdateDeleteChannelMessages ||
-    v instanceof types.UpdateChannelTooLong;
-}
-
-export type QtsUpdate =
-  | types.UpdateNewEncryptedMessage
-  | types.UpdateMessagePollVote
-  | types.UpdateBotStopped
-  | types.UpdateChatParticipant
-  | types.UpdateChannelParticipant
-  | types.UpdateBotChatInviteRequester
-  | types.UpdateBotChatBoost
-  | types.UpdateBotMessageReaction
-  | types.UpdateBotMessageReactions
-  | types.UpdateBotBusinessConnect
-  | types.UpdateBotNewBusinessMessage
-  | types.UpdateBotEditBusinessMessage
-  | types.UpdateBotDeleteBusinessMessage;
-export function isQtsUpdate(v: enums.Update): v is QtsUpdate {
-  return v instanceof types.UpdateNewEncryptedMessage ||
-    v instanceof types.UpdateMessagePollVote ||
-    v instanceof types.UpdateBotStopped ||
-    v instanceof types.UpdateChatParticipant ||
-    v instanceof types.UpdateChannelParticipant ||
-    v instanceof types.UpdateBotChatInviteRequester ||
-    v instanceof types.UpdateBotChatBoost ||
-    v instanceof types.UpdateBotMessageReaction ||
-    v instanceof types.UpdateBotMessageReactions ||
-    v instanceof types.UpdateBotBusinessConnect ||
-    v instanceof types.UpdateBotNewBusinessMessage ||
-    v instanceof types.UpdateBotEditBusinessMessage ||
-    v instanceof types.UpdateBotDeleteBusinessMessage;
-}
 
 export async function getFileContents(source: FileSource, fileName = "") {
   fileName = fileName.trim() || "file";
