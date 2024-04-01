@@ -2,11 +2,12 @@ import { getLogger, Logger, Queue, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_uti
 import { as, enums, functions, inputPeerToPeer, peerToChatId, ReadObject, TLObject, types } from "../2_tl.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
 import { C } from "./0_types.ts";
-import { isChannelPtsUpdate, isPtsUpdate } from "./0_utilities.ts";
+import { ChannelPtsUpdate, isChannelPtsUpdate, isPtsUpdate, isQtsUpdate, PtsUpdate, QtsUpdate } from "./0_utilities.ts";
 
 type UpdateHandler = (update: enums.Update) => Promise<(() => Promise<unknown>)>;
 
 export class UpdateManager {
+  static readonly QTS_COUNT = 1;
   static readonly MAIN_BOX_ID = 0n;
 
   #c: C;
@@ -61,7 +62,13 @@ export class UpdateManager {
   }
 
   async fetchState(source: string) {
-    const state = await this.#c.api.updates.getState();
+    let state = await this.#c.api.updates.getState();
+    const difference = await this.#c.api.updates.getDifference(state);
+    if (difference instanceof types.updates.Difference) {
+      state = difference.state;
+    } else if (difference instanceof types.updates.DifferenceSlice) {
+      state = difference.intermediate_state;
+    }
     this.#updateState = state;
     this.#LfetchState.debug(`state fetched [${source}]`);
     if (await this.#mustDropPendingUpdates()) {
@@ -226,7 +233,13 @@ export class UpdateManager {
   async #checkGap(pts: number, ptsCount: number) {
     const localState = await this.#getLocalState();
     if (localState.pts + ptsCount < pts) {
-      await this.recoverUpdateGap("processUpdates");
+      await this.recoverUpdateGap("processUpdates[pts]");
+    }
+  }
+  async #checkGapQts(qts: number) {
+    const localState = await this.#getLocalState();
+    if (localState.qts + UpdateManager.QTS_COUNT < qts) {
+      await this.recoverUpdateGap("processUpdates[qts]");
     }
   }
   async #checkChannelGap(channelId: bigint, pts: number, ptsCount: number) {
@@ -281,7 +294,7 @@ export class UpdateManager {
     });
   }
 
-  #processChannelPtsUpdate(update: types.UpdateNewChannelMessage | types.UpdateEditChannelMessage | types.UpdateDeleteChannelMessages | types.UpdateChannelTooLong, checkGap: boolean) {
+  #processChannelPtsUpdate(update: ChannelPtsUpdate, checkGap: boolean) {
     const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peer_id[as](types.PeerChannel).channel_id : update.channel_id;
     let queue = this.#channelUpdateQueues.get(channelId);
     if (queue == undefined) {
@@ -293,7 +306,7 @@ export class UpdateManager {
     });
   }
 
-  async #processPtsUpdateInner(update: types.UpdateNewMessage | types.UpdateDeleteMessages | types.UpdateReadHistoryInbox | types.UpdateReadHistoryOutbox | types.UpdatePinnedChannelMessages | types.UpdatePinnedMessages | types.UpdateFolderPeers | types.UpdateChannelWebPage | types.UpdateEditMessage | types.UpdateReadMessagesContents | types.UpdateWebPage, checkGap: boolean) {
+  async #processPtsUpdateInner(update: PtsUpdate, checkGap: boolean) {
     const localState = await this.#getLocalState();
     if (update.pts != 0) {
       if (checkGap) {
@@ -310,13 +323,40 @@ export class UpdateManager {
     if (update.pts != 0) {
       await this.#setUpdatePts(update.pts);
     }
-    this.#queueUpdate(update, 0n, true);
+    this.#queueUpdate(update, 1n, false);
   }
 
   #ptsUpdateQueue = new Queue("ptsUpdate");
-  #processPtsUpdate(update: types.UpdateNewMessage | types.UpdateDeleteMessages | types.UpdateReadHistoryInbox | types.UpdateReadHistoryOutbox | types.UpdatePinnedChannelMessages | types.UpdatePinnedMessages | types.UpdateFolderPeers | types.UpdateChannelWebPage | types.UpdateEditMessage | types.UpdateReadMessagesContents | types.UpdateWebPage, checkGap: boolean) {
+  #processPtsUpdate(update: PtsUpdate, checkGap: boolean) {
     this.#ptsUpdateQueue.add(async () => {
       await this.#processPtsUpdateInner(update, checkGap);
+    });
+  }
+
+  async #processQtsUpdateInner(update: QtsUpdate, checkGap: boolean) {
+    const localState = await this.#getLocalState();
+    if (update.qts != 0) {
+      if (checkGap) {
+        await this.#checkGapQts(update.qts);
+      }
+      if (localState.qts + UpdateManager.QTS_COUNT > update.qts) {
+        return;
+      }
+    }
+
+    if (this.#c.guaranteeUpdateDelivery) {
+      await this.#c.storage.setUpdate(UpdateManager.MAIN_BOX_ID, update);
+    }
+    if (update.qts != 0) {
+      await this.#setUpdateQts(update.qts);
+    }
+    this.#queueUpdate(update, 0n, true);
+  }
+
+  #qtsUpdateQueue = new Queue("qtsUpdate");
+  #processQtsUpdate(update: QtsUpdate, checkGap: boolean) {
+    this.#qtsUpdateQueue.add(async () => {
+      await this.#processQtsUpdateInner(update, checkGap);
     });
   }
 
@@ -468,6 +508,8 @@ export class UpdateManager {
         this.#processPtsUpdate(update, checkGap);
       } else if (isChannelPtsUpdate(update)) {
         this.#processChannelPtsUpdate(update, checkGap);
+      } else if (isQtsUpdate(update)) {
+        this.#processQtsUpdate(update, checkGap);
       } else {
         this.#queueUpdate(update, 0n, false);
       }
@@ -483,6 +525,11 @@ export class UpdateManager {
   async #setUpdatePts(pts: number) {
     const localState = await this.#getLocalState();
     localState.pts = pts;
+    await this.#setState(localState);
+  }
+  async #setUpdateQts(qts: number) {
+    const localState = await this.#getLocalState();
+    localState.qts = qts;
     await this.#setState(localState);
   }
 

@@ -6,7 +6,7 @@ import { FileSource } from "../3_types.ts";
 
 export const resolve = () => Promise.resolve();
 
-export function isPtsUpdate(v: enums.Update): v is
+export type PtsUpdate =
   | types.UpdateNewMessage
   | types.UpdateDeleteMessages
   | types.UpdateReadHistoryInbox
@@ -17,7 +17,8 @@ export function isPtsUpdate(v: enums.Update): v is
   | types.UpdateChannelWebPage
   | types.UpdateEditMessage
   | types.UpdateReadMessagesContents
-  | types.UpdateWebPage {
+  | types.UpdateWebPage;
+export function isPtsUpdate(v: enums.Update): v is PtsUpdate {
   return v instanceof types.UpdateNewMessage ||
     v instanceof types.UpdateDeleteMessages ||
     v instanceof types.UpdateReadHistoryInbox ||
@@ -31,15 +32,46 @@ export function isPtsUpdate(v: enums.Update): v is
     v instanceof types.UpdateWebPage;
 }
 
-export function isChannelPtsUpdate(v: enums.Update | enums.Updates): v is
+export type ChannelPtsUpdate =
   | types.UpdateNewChannelMessage
   | types.UpdateEditChannelMessage
   | types.UpdateDeleteChannelMessages
-  | types.UpdateChannelTooLong {
+  | types.UpdateChannelTooLong;
+export function isChannelPtsUpdate(v: enums.Update | enums.Updates): v is ChannelPtsUpdate {
   return v instanceof types.UpdateNewChannelMessage ||
     v instanceof types.UpdateEditChannelMessage ||
     v instanceof types.UpdateDeleteChannelMessages ||
     v instanceof types.UpdateChannelTooLong;
+}
+
+export type QtsUpdate =
+  | types.UpdateNewEncryptedMessage
+  | types.UpdateMessagePollVote
+  | types.UpdateBotStopped
+  | types.UpdateChatParticipant
+  | types.UpdateChannelParticipant
+  | types.UpdateBotChatInviteRequester
+  | types.UpdateBotChatBoost
+  | types.UpdateBotMessageReaction
+  | types.UpdateBotMessageReactions
+  | types.UpdateBotBusinessConnect
+  | types.UpdateBotNewBusinessMessage
+  | types.UpdateBotEditBusinessMessage
+  | types.UpdateBotDeleteBusinessMessage;
+export function isQtsUpdate(v: enums.Update): v is QtsUpdate {
+  return v instanceof types.UpdateNewEncryptedMessage ||
+    v instanceof types.UpdateMessagePollVote ||
+    v instanceof types.UpdateBotStopped ||
+    v instanceof types.UpdateChatParticipant ||
+    v instanceof types.UpdateChannelParticipant ||
+    v instanceof types.UpdateBotChatInviteRequester ||
+    v instanceof types.UpdateBotChatBoost ||
+    v instanceof types.UpdateBotMessageReaction ||
+    v instanceof types.UpdateBotMessageReactions ||
+    v instanceof types.UpdateBotBusinessConnect ||
+    v instanceof types.UpdateBotNewBusinessMessage ||
+    v instanceof types.UpdateBotEditBusinessMessage ||
+    v instanceof types.UpdateBotDeleteBusinessMessage;
 }
 
 export async function getFileContents(source: FileSource, fileName = "") {
