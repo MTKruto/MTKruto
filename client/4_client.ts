@@ -326,6 +326,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
     const c = {
       id,
       api: this.api,
+      invoke: async <T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>, R = T extends functions.Function<unknown> ? T["__R"] : void>(function_: T, businessConnectionId: string | undefined): Promise<R> => {
+        if (businessConnectionId) {
+          return await this.api.invokeWithBusinessConnection({ connection_id: businessConnectionId, query: function_ as functions.Function<unknown> }) as R;
+        } else {
+          return await this.invoke(function_) as R;
+        }
+      },
       storage: this.storage,
       messageStorage: this.messageStorage,
       guaranteeUpdateDelivery: this.#guaranteeUpdateDelivery,

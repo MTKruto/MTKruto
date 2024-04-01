@@ -18,7 +18,10 @@ export interface AuthorizeUserParams<S = string> {
   password: S | ((hint: string | null) => MaybePromise<S>);
 }
 
-export interface _SendCommon {
+export interface _BusinessConnectionIdCommon {
+  businessConnectionId?: string;
+}
+export interface _SendCommon extends _BusinessConnectionIdCommon {
   /** Whether to send the message in a silent way without making a sound on the recipients' clients. */
   disableNotification?: boolean;
   /** Whether to protect the contents of the message from copying and forwarding. */
@@ -41,6 +44,10 @@ export interface SendMessageParams extends _SendCommon {
   entities?: MessageEntity[];
   /** The message's link preview. */
   linkPreview?: LinkPreview;
+}
+
+export interface SendChatActionParams extends _BusinessConnectionIdCommon {
+  messageThreadId?: number;
 }
 
 export interface EditMessageParams {
