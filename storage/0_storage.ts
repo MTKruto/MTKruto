@@ -414,8 +414,8 @@ export abstract class Storage {
       return null;
     }
   }
-  async setBusinessConnection(id: string, connection: types.BotBusinessConnection) {
-    await this.set(K.cache.businessConnection(id), this.isMemoryStorage ? connection : rleEncode(connection[serialize]()));
+  async setBusinessConnection(id: string, connection: types.BotBusinessConnection | null) {
+    await this.set(K.cache.businessConnection(id), connection == null ? null : this.isMemoryStorage ? connection : rleEncode(connection[serialize]()));
   }
 
   async getBusinessConnection(id: string): Promise<types.BotBusinessConnection | null> {

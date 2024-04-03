@@ -2,6 +2,7 @@ import { AuthorizationState } from "./0_authorization_state.ts";
 import { ConnectionState } from "./0_connection_state.ts";
 import { MessageReference } from "./0_message_reference.ts";
 import { StoryReference } from "./0_story_reference.ts";
+import { BusinessConnection } from "./2_business_connection.ts";
 import { ChosenInlineResult } from "./2_chosen_inline_result.ts";
 import { InlineQuery } from "./2_inline_query.ts";
 import { MessageInteractions } from "./2_message_interactions.ts";
@@ -231,6 +232,14 @@ export interface UpdateNewStory {
   story: Story;
 }
 
+/**
+ * A business connection was added, modified, or removed.
+ * @unlisted
+ */
+export interface UpdateBusinessConnection {
+  businessConnection: BusinessConnection;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -251,6 +260,7 @@ export interface UpdateMap {
   myChatMember: UpdateMyChatMember;
   deletedStory: UpdateDeletedStory;
   story: UpdateNewStory;
+  businessConnection: UpdateBusinessConnection;
 }
 
 /** @unlisted */
@@ -275,6 +285,7 @@ export type UpdateIntersection<T> =
     & UpdateMyChatMember
     & UpdateDeletedStory
     & UpdateNewStory
+    & UpdateBusinessConnection
   >;
 
 /** An incoming update. */
@@ -296,4 +307,5 @@ export type Update =
   | UpdateChatMember
   | UpdateMyChatMember
   | UpdateDeletedStory
-  | UpdateNewStory;
+  | UpdateNewStory
+  | UpdateBusinessConnection;

@@ -1,5 +1,5 @@
 import { as, enums, types } from "../2_tl.ts";
-import { constructBusinessConnection } from "../3_types.ts";
+import { constructBusinessConnection, Update } from "../3_types.ts";
 import { C } from "./0_types.ts";
 
 export type BusinessConnectionManagerUpdate = types.UpdateBotBusinessConnect;
@@ -28,7 +28,13 @@ export class BusinessConnectionManager {
     return update instanceof types.UpdateBotBusinessConnect;
   }
 
-  async handleUpdate(update: BusinessConnectionManagerUpdate) {
-    await this.#c.messageStorage.setBusinessConnection(update.connection.connection_id, update.connection);
+  async handleUpdate(update: BusinessConnectionManagerUpdate): Promise<Update> {
+    if (update.connection.disabled) {
+      await this.#c.messageStorage.setBusinessConnection(update.connection.connection_id, null);
+    } else {
+      await this.#c.messageStorage.setBusinessConnection(update.connection.connection_id, update.connection);
+    }
+    const businessConnection = await constructBusinessConnection(update.connection, this.#c.getEntity);
+    return { businessConnection };
   }
 }
