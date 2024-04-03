@@ -1737,18 +1737,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Upload a file.
-   *
-   * @method fs
-   * @param contents The contents of the file.
-   * @returns The uploaded file.
-   */
-  // deno-lint-ignore no-explicit-any
-  async upload(contents: Uint8Array, params?: UploadParams): Promise<any> { // TODO: return type
-    return await this.#fileManager.upload(contents, params);
-  }
-
-  /**
    * Set the bot's commands in the given scope and/or language. Bot-only.
    *
    * @method bs
