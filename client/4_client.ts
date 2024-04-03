@@ -3,7 +3,7 @@ import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, mustPr
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, name, peerToChatId, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryResult, InputStoryContent, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, Reaction, Sticker, Story, Update, User } from "../3_types.ts";
+import { BotCommand, BusinessConnection, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryResult, InputStoryContent, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, Reaction, Sticker, Story, Update, User } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded } from "../4_errors.ts";
 import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageLiveLocationParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, StopPollParams, UploadParams } from "./0_params.ts";
@@ -12,6 +12,7 @@ import { Api } from "./0_types.ts";
 import { getUsername, resolve } from "./0_utilities.ts";
 import { AccountManager } from "./1_account_manager.ts";
 import { BotInfoManager } from "./1_bot_info_manager.ts";
+import { BusinessConnectionManager } from "./1_business_connection_manager.ts";
 import { ClientEncrypted } from "./1_client_encrypted.ts";
 import { ClientPlain, ClientPlainParams } from "./1_client_plain.ts";
 import { Composer as Composer_, NextFunction } from "./1_composer.ts";
@@ -223,6 +224,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #botInfoManager: BotInfoManager;
   #fileManager: FileManager;
   #reactionManager: ReactionManager;
+  #businessConnectionManager: BusinessConnectionManager;
   #messageManager: MessageManager;
   #storyManager: StoryManager;
   #callbackQueryManager: CallbackQueryManager;
@@ -399,6 +401,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#botInfoManager = new BotInfoManager(c);
     this.#fileManager = new FileManager(c);
     this.#reactionManager = new ReactionManager(c);
+    this.#businessConnectionManager = new BusinessConnectionManager(c);
     this.#messageManager = new MessageManager({ ...c, fileManager: this.#fileManager });
     this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager: this.#messageManager });
     this.#storyManager = new StoryManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
@@ -2505,5 +2508,15 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async deleteChatStickerSet(chatId: ID) {
     await this.#messageManager.deleteChatStickerSet(chatId);
+  }
+
+  /**
+   * Get a business connection.
+   *
+   * @method ac
+   * @param id The identifier of the business connection.
+   */
+  async getBusinessConnection(id: string): Promise<BusinessConnection> {
+    return await this.#businessConnectionManager.getBusinessConnection(id);
   }
 }
