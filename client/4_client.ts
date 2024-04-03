@@ -1475,6 +1475,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
       }
     }
 
+    if (BusinessConnectionManager.canHandleUpdate(update)) {
+      await this.#businessConnectionManager.handleUpdate(update);
+    }
+
     return () => Promise.all(promises);
   }
 
