@@ -41,6 +41,8 @@ export const K = {
     filePart: (fileId: bigint, n: number): StorageKeyPart[] => [...K.cache.fileParts(), fileId, n],
     customEmojiDocuments: (): StorageKeyPart[] => [K.cache.P("customEmojiDocuments")],
     customEmojiDocument: (id: bigint): StorageKeyPart[] => [...K.cache.customEmojiDocuments(), id],
+    businessConnections: (): StorageKeyPart[] => [K.cache.P("businessConnections")],
+    businessConnection: (id: string): StorageKeyPart[] => [...K.cache.businessConnections(), id],
   },
   messages: {
     P: (string: string): string => `messages.${string}`,
@@ -412,6 +414,18 @@ export abstract class Storage {
       return null;
     }
   }
+  async setBusinessConnection(id: string, connection: types.BotBusinessConnection) {
+    await this.set(K.cache.businessConnection(id), this.isMemoryStorage ? connection : rleEncode(connection[serialize]()));
+  }
+
+  async getBusinessConnection(id: string): Promise<types.BotBusinessConnection | null> {
+    const v = await this.get<Uint8Array>(K.cache.businessConnection(id));
+    if (v != null) {
+      return await this.getTlObject(v) as types.BotBusinessConnection;
+    } else {
+      return null;
+    }
+  }
 
   #getUpdateId(update: enums.Update) {
     let id = BigInt(Date.now()) << 32n;
@@ -473,6 +487,12 @@ export abstract class Storage {
     }
   }
 
+  async deleteBusinessConnections() {
+    for await (const [key] of await this.getMany({ prefix: K.cache.businessConnections() })) {
+      await this.set(key, null);
+    }
+  }
+
   async deleteStickerSetNames() {
     for await (const [key] of await this.getMany({ prefix: K.cache.stickerSetNames() })) {
       await this.set(key, null);
@@ -499,6 +519,7 @@ export abstract class Storage {
       this.deleteUpdates(),
       this.deleteFiles(),
       this.deleteCustomEmojiDocuments(),
+      this.deleteBusinessConnections(),
       this.deleteStickerSetNames(),
       this.deletePeers(),
       this.deleteUsernames(),

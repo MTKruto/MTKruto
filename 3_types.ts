@@ -54,6 +54,7 @@ export * from "./types/1_story_reaction.ts";
 export * from "./types/1_user.ts";
 export * from "./types/1_video_note.ts";
 export * from "./types/1_video.ts";
+export * from "./types/2_business_connection.ts";
 export * from "./types/2_chat_member.ts";
 export * from "./types/2_chosen_inline_result.ts";
 export * from "./types/2_game.ts";
