@@ -39,6 +39,7 @@ export interface Context {
   from?: User;
   /** Resolves to `msg?.senderChat`. */
   senderChat?: ChatP;
+  toJSON: () => Update;
   /** Context-aware alias for `client.sendMessage()`. */
   reply: (text: string, params?: Omit<SendMessageParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageText>;
   /** Context-aware alias for `client.sendPoll()`. */
@@ -163,7 +164,8 @@ export interface Context {
   setChatStickerSet: (setName: string) => Promise<void>;
   /** Context-aware alias for `client.deleteChatStickerSet()`. */
   deleteChatStickerSet: () => Promise<void>;
-  toJSON: () => Update;
+  /** Context-aware alias for `client.getBusinessConnection()`. */
+  getBusinessConnection: () => Promise<BusinessConnection>;
 }
 
 export class Composer<C extends Context = Context> extends Composer_<C> {
@@ -854,6 +856,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
       deleteChatStickerSet: () => {
         const { chatId } = mustGetMsg();
         return this.deleteChatStickerSet(chatId);
+      },
+      getBusinessConnection: () => {
+        const { businessConnectionId } = mustGetMsg();
+        if (!businessConnectionId) {
+          UNREACHABLE();
+        }
+        return this.getBusinessConnection(businessConnectionId);
       },
     };
 
