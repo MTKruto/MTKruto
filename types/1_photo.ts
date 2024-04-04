@@ -1,6 +1,6 @@
 import { types } from "../2_tl.ts";
-import { PhotoSourceType } from "./0__file_id.ts";
-import { FileId, FileType, serializeFileId, toUniqueFileId } from "./0__file_id.ts";
+import { PhotoSourceType } from "./_file_id.ts";
+import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 /** A photo. */

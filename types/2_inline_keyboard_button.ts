@@ -1,8 +1,8 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
+import { UsernameResolver } from "./_getters.ts";
 import { LoginUrl } from "./0_login_url.ts";
 import { constructMiniAppInfo, MiniAppInfo } from "./0_mini_app_info.ts";
-import { UsernameResolver } from "./1__getters.ts";
 
 /** @unlisted */
 export interface _InlineKeyboardButtonBase {

@@ -1,7 +1,7 @@
 import { cleanObject, UNREACHABLE } from "../1_utilities.ts";
 import { chatIdToPeer, enums, peerToChatId, types } from "../2_tl.ts";
+import { EntityGetter } from "./_getters.ts";
 import { ChatPhoto, ChatPhotoChat, ChatPhotoUser, constructChatPhoto } from "./0_chat_photo.ts";
-import { EntityGetter } from "./1__getters.ts";
 import { ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, constructChatP } from "./1_chat_p.ts";
 import { StickerSetNameGetter } from "./1_sticker.ts";
 import { constructMessage, Message, MessageGetter } from "./4_message.ts";

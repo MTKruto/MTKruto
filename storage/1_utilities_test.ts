@@ -1,5 +1,5 @@
 import { assertEquals, assertNotEquals } from "../0_deps.ts";
-import { fixKey, fromString, toString } from "./0_utilities.ts";
+import { fixKey, fromString, toString } from "./1_utilities.ts";
 
 function eq(v: unknown) {
   assertEquals(fromString(toString(v)), v);

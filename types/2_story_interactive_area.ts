@@ -1,11 +1,11 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { chatIdToPeer, enums, peerToChatId, types } from "../2_tl.ts";
+import { EntityGetter } from "./_getters.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { MessageReference } from "./0_message_reference.ts";
 import { constructReaction, reactionToTlObject } from "./0_reaction.ts";
 import { Reaction } from "./0_reaction.ts";
-import { constructVenue, Venue } from "./0_venue.ts";
-import { EntityGetter } from "./1__getters.ts";
+import { constructVenue, Venue } from "./1_venue.ts";
 
 /** @unlisted */
 export interface StoryInteractiveAreaPosition {

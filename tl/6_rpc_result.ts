@@ -1,5 +1,5 @@
 import { id, name } from "./1_tl_object.ts";
-import { ReadObject, TLReader } from "./3_tl_reader.ts";
+import { ReadObject, TLReader } from "./4_tl_reader.ts";
 
 export class RPCResult {
   static get [id](): number {

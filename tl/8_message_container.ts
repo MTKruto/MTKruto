@@ -1,7 +1,7 @@
 import { id, name, serialize } from "./1_tl_object.ts";
-import { TLReader } from "./3_tl_reader.ts";
-import { TLWriter } from "./4_tl_writer.ts";
-import { calculateLength, Message_ } from "./6_message.ts";
+import { TLReader } from "./4_tl_reader.ts";
+import { TLWriter } from "./5_tl_writer.ts";
+import { calculateLength, Message_ } from "./7_message.ts";
 
 export class MessageContainer {
   static get [id](): number {

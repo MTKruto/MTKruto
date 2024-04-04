@@ -1,7 +1,7 @@
 import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, cleanObject, UNREACHABLE } from "../1_utilities.ts";
 import { enums, peerToChatId, serialize, TLReader, types } from "../2_tl.ts";
-import { EntityGetter } from "./1__getters.ts";
+import { EntityGetter } from "./_getters.ts";
 import { constructUser, User } from "./1_user.ts";
 import { Message, MessageGetter } from "./4_message.ts";
 

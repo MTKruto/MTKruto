@@ -1,6 +1,6 @@
 import { assertEquals } from "../0_deps.ts";
 import { types } from "../2_tl.ts";
-import { calculateLength } from "./6_message.ts";
+import { calculateLength } from "./7_message.ts";
 
 Deno.test("calculateLength", () => {
   const resPq = new types.ResPQ({ // 4 cid

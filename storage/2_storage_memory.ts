@@ -1,6 +1,6 @@
 import { MaybePromise } from "../1_utilities.ts";
 import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
-import { fromString, isInRange, toString } from "./0_utilities.ts";
+import { fromString, isInRange, toString } from "./1_utilities.ts";
 
 export class StorageMemory extends Storage implements Storage {
   protected map: Map<string, unknown> = new Map<string, unknown>();

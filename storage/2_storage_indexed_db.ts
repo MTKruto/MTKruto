@@ -1,5 +1,5 @@
 import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
-import { fixKey, getPrefixKeyRange, restoreKey } from "./0_utilities.ts";
+import { fixKey, getPrefixKeyRange, restoreKey } from "./1_utilities.ts";
 
 const VERSION = 1;
 const KV_OBJECT_STORE = "kv";

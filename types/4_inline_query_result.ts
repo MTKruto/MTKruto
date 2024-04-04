@@ -1,9 +1,9 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
-import { deserializeFileId } from "./0__file_id.ts";
+import { deserializeFileId } from "./_file_id.ts";
+import { UsernameResolver } from "./_getters.ts";
 import { MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
-import { UsernameResolver } from "./1__getters.ts";
 import { InputMessageContent } from "./1_input_message_content.ts";
 import { ReplyMarkupInlineKeyboard, replyMarkupToTlObject } from "./3_reply_markup.ts";
 

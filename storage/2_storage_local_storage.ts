@@ -1,12 +1,11 @@
-import { MaybePromise } from "../1_utilities.ts";
 import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
-import { fromString, isInRange, toString, WEB_STORAGE_PREFIX_EXP } from "./0_utilities.ts";
+import { fromString, isInRange, toString, WEB_STORAGE_PREFIX_EXP } from "./1_utilities.ts";
 
-export class StorageSessionStorage extends Storage implements Storage {
+export class StorageLocalStorage extends Storage implements Storage {
   readonly #prefix: string;
 
   constructor(prefix: string) {
-    if (typeof sessionStorage === "undefined") {
+    if (typeof localStorage === "undefined") {
       throw new Error("Unavailable in current environment");
     }
     if (prefix.length <= 0) {
@@ -22,8 +21,8 @@ export class StorageSessionStorage extends Storage implements Storage {
     return this.#prefix;
   }
 
-  branch(id: string): StorageSessionStorage {
-    return new StorageSessionStorage(this.prefix + "S__" + id);
+  branch(id: string): StorageLocalStorage {
+    return new StorageLocalStorage(this.prefix + "S__" + id);
   }
 
   initialize() {
@@ -35,7 +34,7 @@ export class StorageSessionStorage extends Storage implements Storage {
 
   get<T>(key_: readonly StorageKeyPart[]): T | null {
     const key = this.prefix + toString(key_);
-    const value = sessionStorage.getItem(key);
+    const value = localStorage.getItem(key);
     if (value != null) {
       return fromString<T>(value);
     } else {
@@ -44,7 +43,7 @@ export class StorageSessionStorage extends Storage implements Storage {
   }
 
   *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }): Generator<[readonly StorageKeyPart[], T]> {
-    let entries = Object.entries(sessionStorage).sort(([a], [b]) => a.localeCompare(b));
+    let entries = Object.entries(localStorage).sort(([a], [b]) => a.localeCompare(b));
     if (params?.reverse) {
       entries.reverse();
     }
@@ -74,12 +73,12 @@ export class StorageSessionStorage extends Storage implements Storage {
     }
   }
 
-  set(key_: readonly StorageKeyPart[], value: unknown): MaybePromise<void> {
+  set(key_: readonly StorageKeyPart[], value: unknown) {
     const key = this.prefix + toString(key_);
     if (value != null) {
-      sessionStorage.setItem(key, toString(value));
+      localStorage.setItem(key, toString(value));
     } else {
-      sessionStorage.removeItem(key);
+      localStorage.removeItem(key);
     }
   }
 

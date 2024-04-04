@@ -1,4 +1,3 @@
-export * from "./utilities/1_base64.ts";
 export * from "./utilities/0_bigint.ts";
 export * from "./utilities/0_buffer.ts";
 export * from "./utilities/0_cache_map.ts";
@@ -12,5 +11,6 @@ export * from "./utilities/0_object.ts";
 export * from "./utilities/0_rle.ts";
 export * from "./utilities/0_types.ts";
 export * from "./utilities/1_auth.ts";
+export * from "./utilities/1_base64.ts";
 export * from "./utilities/1_misc.ts";
 export * from "./utilities/1_queue.ts";

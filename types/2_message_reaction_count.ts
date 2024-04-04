@@ -1,6 +1,6 @@
 import { fromUnixTimestamp } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
-import { EntityGetter } from "./1__getters.ts";
+import { EntityGetter } from "./_getters.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructReactionCount, ReactionCount } from "./1_reaction_count.ts";
 

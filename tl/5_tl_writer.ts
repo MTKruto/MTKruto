@@ -1,7 +1,7 @@
 import { VECTOR_CONSTRUCTOR } from "../1_utilities.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
 import { serialize } from "./1_tl_object.ts";
-import { ReadObject } from "./3_tl_reader.ts";
+import { ReadObject } from "./4_tl_reader.ts";
 
 export class TLWriter extends TLRawWriter {
   writeObject(object: ReadObject): typeof this {

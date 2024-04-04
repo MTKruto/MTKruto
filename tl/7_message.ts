@@ -1,7 +1,7 @@
 import { id, serialize } from "./1_tl_object.ts";
-import { ReadObject, TLReader } from "./3_tl_reader.ts";
-import { RPCResult } from "./4_rpc_result.ts";
-import { TLWriter } from "./4_tl_writer.ts";
+import { ReadObject, TLReader } from "./4_tl_reader.ts";
+import { TLWriter } from "./5_tl_writer.ts";
+import { RPCResult } from "./6_rpc_result.ts";
 
 export function calculateLength(object: Message_ | ReadObject): number {
   let length = 0;

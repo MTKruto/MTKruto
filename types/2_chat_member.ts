@@ -1,8 +1,8 @@
 import { cleanObject, fromUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
+import { EntityGetter } from "./_getters.ts";
 import { ChatAdministratorRights, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
 import { ChatMemberRights, constructChatMemberRights } from "./0_chat_member_rights.ts";
-import { EntityGetter } from "./1__getters.ts";
 import { constructUser, User } from "./1_user.ts";
 
 /** @unlisted */

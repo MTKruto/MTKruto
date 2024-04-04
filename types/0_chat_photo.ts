@@ -1,6 +1,6 @@
 import { cleanObject } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
-import { FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "./0__file_id.ts";
+import { FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 
 /** @unlisted */
 export interface _ChatPhotoBase {

@@ -1,7 +1,7 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
+import { InputPeerGetter } from "./_getters.ts";
 import { ID } from "./0_id.ts";
-import { InputPeerGetter } from "./1__getters.ts";
 
 /** @unlisted */
 export interface BotCommandScopeDefault {

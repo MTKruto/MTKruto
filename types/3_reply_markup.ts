@@ -1,6 +1,6 @@
 import { cleanObject, UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
-import { UsernameResolver } from "./1__getters.ts";
+import { UsernameResolver } from "./_getters.ts";
 import { constructKeyboardButton, KeyboardButton, keyboardButtonToTlObject } from "./1_keyboard_button.ts";
 import { constructInlineKeyboardButton, InlineKeyboardButton, inlineKeyboardButtonToTlObject } from "./2_inline_keyboard_button.ts";
 

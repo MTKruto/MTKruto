@@ -1,6 +1,6 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
-import { EntityGetter } from "./1__getters.ts";
+import { EntityGetter } from "./_getters.ts";
 
 /** @unlisted */
 export interface StoryPrivacyEveryone {
