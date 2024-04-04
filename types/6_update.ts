@@ -106,6 +106,7 @@ export interface UpdateEditedMessage {
 export interface UpdateDeletedMessages {
   /** The deleted messages. */
   deletedMessages: MessageReference[];
+  businessConnectionId?: string;
 }
 
 /**

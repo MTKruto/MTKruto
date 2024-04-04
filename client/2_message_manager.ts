@@ -26,6 +26,7 @@ type MessageManagerUpdate =
   | types.UpdateEditChannelMessage
   | types.UpdateBotNewBusinessMessage
   | types.UpdateBotEditBusinessMessage
+  | types.UpdateBotDeleteBusinessMessage
   | types.UpdateDeleteMessages
   | types.UpdateDeleteChannelMessages
   | types.UpdateChannelParticipant
@@ -884,6 +885,7 @@ export class MessageManager {
       update instanceof types.UpdateEditChannelMessage ||
       update instanceof types.UpdateBotNewBusinessMessage ||
       update instanceof types.UpdateBotEditBusinessMessage ||
+      update instanceof types.UpdateBotDeleteBusinessMessage ||
       update instanceof types.UpdateDeleteMessages ||
       update instanceof types.UpdateDeleteChannelMessages ||
       update instanceof types.UpdateChannelParticipant ||
@@ -945,6 +947,10 @@ export class MessageManager {
         }
       }
       return { deletedMessages };
+    } else if (update instanceof types.UpdateBotDeleteBusinessMessage) {
+      const chatId = peerToChatId(update.peer);
+      const deletedMessages = update.messages.map((v) => ({ chatId, messageId: v }));
+      return { deletedMessages, businessConnectionId: update.connection_id };
     }
 
     if (update instanceof types.UpdateChannelParticipant || update instanceof types.UpdateChatParticipant) {
