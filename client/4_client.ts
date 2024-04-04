@@ -980,23 +980,20 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Calls [initConnection](1) and authorizes the client with one of the following:
+   * Authorizes the client with one of the following:
    *
    * - Bot token (`string`)
-   * - Exported authorization (`types.AuthExportedAuthorization`)
    * - User authorization handlers (`AuthorizeUserParams`)
    *
-   * if the current auth key doesn't throw AUTH_KEY_UNREGISTERED when calling [updates.getState](2).
+   * if the current auth key doesn't throw AUTH_KEY_UNREGISTERED when calling [updates.getState](1).
    *
    * Notes:
    * 1. Requires the `apiId` and `apiHash` paramters to be passed when constructing the client.
    * 2. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
-   * 3. The parameters passed to the [initConnection][1] call can be configured with the last parameter of the constructor.
    *
-   * [1]: https://core.telegram.org/method/initConnection
-   * [2]: https://core.telegram.org/method/updates.getState
+   * [1]: https://core.telegram.org/method/updates.getState
    */
-  async authorize(params?: string | types.auth.ExportedAuthorization | AuthorizeUserParams) {
+  async authorize(params?: string | AuthorizeUserParams) {
     try {
       await this.#updateManager.fetchState("authorize");
       await this.#propagateAuthorizationState(true);
@@ -1044,12 +1041,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
       this.#Lauthorize.debug("authorized as bot");
       await this.#propagateAuthorizationState(true);
       await this.#updateManager.fetchState("authorize");
-      return;
-    }
-
-    if (params instanceof types.auth.ExportedAuthorization) {
-      await this.api.auth.importAuthorization({ id: params.id, bytes: params.bytes });
-      this.#Lauthorize.debug("authorization imported");
       return;
     }
 
@@ -1154,7 +1145,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   /**
    * Same as calling `.connect()` followed by `.authorize(params)`.
    */
-  async start(params?: string | types.auth.ExportedAuthorization | AuthorizeUserParams) {
+  async start(params?: string | AuthorizeUserParams) {
     await this.connect();
     await this.authorize(params);
   }
