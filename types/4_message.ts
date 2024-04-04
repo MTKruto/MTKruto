@@ -90,6 +90,8 @@ export interface _MessageBase {
   /** The message's reply markup. */
   replyMarkup?: ReplyMarkup;
   businessConnectionId?: string;
+  senderBoostCount?: number;
+  viaBusinessBot?: User;
 }
 
 /**
@@ -799,6 +801,7 @@ export async function constructMessage(
     forwards: message_.forwards,
     isTopicMessage: false,
     hasProtectedContent: message_.noforwards || false,
+    senderBoostCount: message_.from_boosts_applied,
   };
 
   if (message_.reactions) {
@@ -831,6 +834,14 @@ export async function constructMessage(
     const viaBot = await getEntity(new types.PeerUser({ user_id: message_.via_bot_id }));
     if (viaBot) {
       message.viaBot = constructUser(viaBot);
+    } else {
+      UNREACHABLE();
+    }
+  }
+  if (message_.via_business_bot_id != undefined) {
+    const viaBusinessBot = await getEntity(new types.PeerUser({ user_id: message_.via_business_bot_id }));
+    if (viaBusinessBot) {
+      message.viaBusinessBot = constructUser(viaBusinessBot);
     } else {
       UNREACHABLE();
     }
