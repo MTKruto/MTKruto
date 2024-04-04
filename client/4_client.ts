@@ -6,7 +6,7 @@ import { DC } from "../3_transport.ts";
 import { BotCommand, BusinessConnection, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryResult, InputStoryContent, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, Reaction, Sticker, Story, Update, User } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded } from "../4_errors.ts";
-import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageLiveLocationParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, StopPollParams, UploadParams } from "./0_params.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageLiveLocationParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { Api } from "./0_types.ts";
 import { getUsername, resolve } from "./0_utilities.ts";
@@ -1502,184 +1502,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
-  /**
-   * Send a text message.
-   *
-   * @method ms
-   * @param chatId The chat to send the message to.
-   * @param text The message's text.
-   * @returns The sent text message.
-   */
-  async sendMessage(chatId: ID, text: string, params?: SendMessageParams): Promise<MessageText> {
-    return await this.#messageManager.sendMessage(chatId, text, params);
-  }
-
-  /**
-   * Edit a message's text.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat that contains the message.
-   * @param messageId The message's identifier.
-   * @param text The new text of the message.
-   * @returns The edited text message.
-   */
-  async editMessageText(
-    chatId: ID,
-    messageId: number,
-    text: string,
-    params?: EditMessageParams,
-  ): Promise<MessageText> {
-    return await this.#messageManager.editMessageText(chatId, messageId, text, params);
-  }
-
-  /**
-   * Edit an inline message's text. Bot-only.
-   *
-   * @method ms
-   * @param inlineMessageId The inline message's identifier.
-   * @param text The new text of the message.
-   */
-  async editInlineMessageText(inlineMessageId: string, text: string, params?: EditMessageParams) {
-    await this.#messageManager.editInlineMessageText(inlineMessageId, text, params);
-  }
-
-  /**
-   * Edit a message's reply markup.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat that contains the message.
-   * @param messageId The message's identifier.
-   * @returns The edited message.
-   */
-  async editMessageReplyMarkup(
-    chatId: ID,
-    messageId: number,
-    params?: EditMessageReplyMarkupParams,
-  ): Promise<Message> {
-    return await this.#messageManager.editMessageReplyMarkup(chatId, messageId, params);
-  }
-
-  /**
-   * Edit an inline message's reply markup. Bot-only.
-   *
-   * @method ms
-   * @param inlineMessageId The inline message's identifier.
-   */
-  async editInlineMessageReplyMarkup(inlineMessageId: string, params?: EditMessageReplyMarkupParams) {
-    await this.#messageManager.editInlineMessageReplyMarkup(inlineMessageId, params);
-  }
-
-  /**
-   * Edit a message's live location.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat that contains the messages.
-   * @param messageId The message's identifier.
-   * @param latitude The new latitude.
-   * @param longitude The new longitude.
-   * @returns The edited location message.
-   */
-  async editMessageLiveLocation(
-    chatId: ID,
-    messageId: number,
-    latitude: number,
-    longitude: number,
-    params?: EditMessageLiveLocationParams,
-  ): Promise<MessageLocation> {
-    return await this.#messageManager.editMessageLiveLocation(chatId, messageId, latitude, longitude, params);
-  }
-
-  /**
-   * Edit an inline message's live location. Bot-only.
-   *
-   * @method ms
-   * @param inlineMessageId The inline message's identifier.
-   * @param latitude The new latitude.
-   * @param longitude The new longitude.
-   * @returns The edited location message.
-   */
-  async editInlineMessageLiveLocation(
-    inlineMessageId: string,
-    latitude: number,
-    longitude: number,
-    params?: EditMessageLiveLocationParams,
-  ) {
-    await this.#messageManager.editInlineMessageLiveLocation(inlineMessageId, latitude, longitude, params);
-  }
-
-  /**
-   * Retrieve multiple messages.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat to retrieve the messages from.
-   * @param messageIds The identifiers of the messages to retrieve.
-   * @example ```ts
-   * const message = await client.getMessages("@MTKruto", [210, 212]);
-   * ```
-   * @returns The retrieved messages.
-   */
-  async getMessages(chatId: ID, messageIds: number[]): Promise<Message[]> {
-    return await this.#messageManager.getMessages(chatId, messageIds);
-  }
-
-  /**
-   * Retrieve a single message.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat to retrieve the message from.
-   * @param messageId The identifier of the message to retrieve.
-   * @example ```ts
-   * const message = await client.getMessage("@MTKruto", 212);
-   * ```
-   * @returns The retrieved message.
-   */
-  async getMessage(chatId: ID, messageId: number): Promise<Message | null> {
-    return await this.#messageManager.getMessage(chatId, messageId);
-  }
-
-  /**
-   * Download a file.
-   *
-   * @method fs
-   * @param fileId The identifier of the file to download.
-   * @example ```ts
-   * for await (const chunk of client.download(fileId, { chunkSize: 256 * 1024 })) {
-   *   await outFile.write(chunk);
-   * }
-   * ```
-   * @returns A generator yielding the contents of the file.
-   */
-  async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown> {
-    for await (const chunk of this.#fileManager.download(fileId, params)) {
-      yield chunk;
-    }
-  }
-
-  /**
-   * Forward multiple messages.
-   *
-   * @method ms
-   * @param from The identifier of the chat to forward the messages from.
-   * @param to The identifier of the chat to forward the messages to.
-   * @param messageIds The identifiers of the messages to forward.
-   * @returns The forwarded messages.
-   */
-  async forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams): Promise<Message[]> {
-    return await this.#messageManager.forwardMessages(from, to, messageIds, params);
-  }
-
-  /**
-   * Forward a single message.
-   *
-   * @method ms
-   * @param from The identifier of the chat to forward the message from.
-   * @param to The identifier of the chat to forward the message to.
-   * @param messageId The identifier of the message to forward.
-   * @returns The forwarded message.
-   */
-  async forwardMessage(from: ID, to: ID, messageId: number, params?: ForwardMessagesParams): Promise<Message> {
-    return await this.forwardMessages(from, to, [messageId], params).then((v) => v[0]);
-  }
+  //
+  // ========================= ACCOUNT ========================= //
+  //
 
   /**
    * Get information on the currently authorized user.
@@ -1699,160 +1524,73 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Answer a callback query. Bot-only.
+   * Show a username in the current account, a bot account, sa upergroup, or a channel's profile. User-only.
    *
-   * @method cq
-   * @param id ID of the callback query to answer.
+   * @method ac
+   * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
+   * @param username The username to show.
    */
-  async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
-    await this.#callbackQueryManager.answerCallbackQuery(id, params);
+  async showUsername(id: ID, username: string) {
+    await this.#accountManager.showUsername(id, username);
   }
 
   /**
-   * Send a poll.
+   * Hide a username from the current account, a bot account, a supergroup, or a channel's profile. User-only.
+   *
+   * @method ac
+   * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
+   * @param username The username to hide.
+   */
+  async hideUsername(id: ID, username: string) {
+    await this.#accountManager.hideUsername(id, username);
+  }
+
+  /**
+   * Reorder the usernames of the current account, a bot account, a supergroup, or a channel's profile. User-only.
+   *
+   * @method ac
+   * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
+   * @param order The new order to use.
+   * @returns Whether the order was changed.
+   */
+  async reorderUsernames(id: ID, order: string[]): Promise<boolean> {
+    return await this.#accountManager.reorderUsernames(id, order);
+  }
+
+  /**
+   * Hide all usernames from the a supergroup or a channel's profile. User-only.
+   *
+   * @method ac
+   * @param id A supergroup ID or a channel ID.
+   */
+  async hideUsernames(id: ID): Promise<boolean> {
+    return await this.#accountManager.hideUsernames(id);
+  }
+
+  /**
+   * Get a business connection. Bot-only.
+   *
+   * @method ac
+   * @param id The identifier of the business connection.
+   */
+  async getBusinessConnection(id: string): Promise<BusinessConnection> {
+    return await this.#businessConnectionManager.getBusinessConnection(id);
+  }
+
+  //
+  // ========================= MESSAGES ========================= //
+  //
+
+  /**
+   * Send a text message.
    *
    * @method ms
-   * @param chatId The chat to send the poll to.
-   * @param question The poll's question.
-   * @param options The poll's options.
-   * @returns The sent poll.
+   * @param chatId The chat to send the message to.
+   * @param text The message's text.
+   * @returns The sent text message.
    */
-  async sendPoll(chatId: ID, question: string, options: [string, string, ...string[]], params?: SendPollParams): Promise<MessagePoll> {
-    return await this.#messageManager.sendPoll(chatId, question, options, params);
-  }
-
-  /**
-   * Stop a poll.
-   *
-   * @method ms
-   * @param chatId The chat that includes the poll.
-   * @param messageId The idenfifier of the poll's message.
-   * @returns The new state of the poll.
-   */
-  async stopPoll(chatId: ID, messageId: number, params?: StopPollParams): Promise<Poll> {
-    return await this.#messageManager.stopPoll(chatId, messageId, params);
-  }
-
-  /**
-   * Send a chat action.
-   *
-   * @method ms
-   * @param chatId The chat to send the chat action to.
-   * @param action The chat action.
-   * @param messageThreadId The thread to send the chat action to.
-   */
-  async sendChatAction(chatId: ID, action: ChatAction, params?: { messageThreadId?: number }) {
-    await this.#messageManager.sendChatAction(chatId, action, params);
-  }
-
-  /**
-   * Set the bot's commands in the given scope and/or language. Bot-only.
-   *
-   * @method bs
-   * @param commands The commands to set.
-   */
-  async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
-    await this.#botInfoManager.setMyCommands(commands, params);
-  }
-
-  /**
-   * Get the bot's commands in the given scope and/or language. Bot-only.
-   *
-   * @method bs
-   * @returns The current bot's commands in the specified language.
-   */
-  async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
-    return await this.#botInfoManager.getMyCommands(params);
-  }
-
-  /**
-   * Answer an inline query. Bot-only.
-   *
-   * @method iq
-   * @param id The ID of the inline query to answer.
-   * @param results The results to answer with.
-   */
-  async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
-    await this.#inlineQueryManager.answerInlineQuery(id, results, params);
-  }
-
-  /**
-   * Set the bot's description in the given language. Bot-only.
-   *
-   * @method bs
-   */
-  async setMyDescription(params?: { description?: string; languageCode?: string }) {
-    await this.#botInfoManager.setMyDescription(params);
-  }
-
-  /**
-   * Set the bot's name in the given language. Bot-only.
-   *
-   * @method bs
-   */
-  async setMyName(params?: { name?: string; languageCode?: string }) {
-    await this.#botInfoManager.setMyName(params);
-  }
-
-  /**
-   * Set the bot's short description in the given language. Bot-only.
-   *
-   * @method bs
-   */
-  async setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }) {
-    await this.#botInfoManager.setMyShortDescription(params);
-  }
-
-  /**
-   * Get the bot's description in the given language. Bot-only.
-   *
-   * @method bs
-   * @returns The current bot's description in the specified language.
-   */
-  async getMyDescription(params?: { languageCode?: string }): Promise<string> {
-    return await this.#botInfoManager.getMyDescription(params);
-  }
-
-  /**
-   * Get the bot's name in the given language. Bot-only.
-   *
-   * @method bs
-   * @returns The current bot's name in the specified language.
-   */
-  async getMyName(params?: { languageCode?: string }): Promise<string> {
-    return await this.#botInfoManager.getMyName(params);
-  }
-
-  /**
-   * Get the bot's short description in the given language. Bot-only.
-   *
-   * @method bs
-   * @returns The current bot's short description in the specified language.
-   */
-  async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
-    return await this.#botInfoManager.getMyShortDescription(params);
-  }
-
-  /**
-   * Delete multiple messages.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat that contains the messages.
-   * @param messageIds The identifiers of the messages to delete.
-   */
-  async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams) {
-    await this.#messageManager.deleteMessages(chatId, messageIds, params);
-  }
-
-  /**
-   * Delete a single message.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat that contains the message.
-   * @param messageId The identifier of the message to delete.
-   */
-  async deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams) {
-    await this.#messageManager.deleteMessages(chatId, [messageId], params);
+  async sendMessage(chatId: ID, text: string, params?: SendMessageParams): Promise<MessageText> {
+    return await this.#messageManager.sendMessage(chatId, text, params);
   }
 
   /**
@@ -2004,119 +1742,161 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Get network statistics. This might not always be available.
+   * Send a poll.
    *
-   * @method mc
+   * @method ms
+   * @param chatId The chat to send the poll to.
+   * @param question The poll's question.
+   * @param options The poll's options.
+   * @returns The sent poll.
    */
-  async getNetworkStatistics(): Promise<NetworkStatistics> {
-    return await this.#networkStatisticsManager.getNetworkStatistics();
+  async sendPoll(chatId: ID, question: string, options: [string, string, ...string[]], params?: SendPollParams): Promise<MessagePoll> {
+    return await this.#messageManager.sendPoll(chatId, question, options, params);
   }
 
   /**
-   * Get chats from a chat list. User-only.
+   * Edit a message's text.
    *
-   * @method ch
+   * @method ms
+   * @param chatId The identifier of the chat that contains the message.
+   * @param messageId The message's identifier.
+   * @param text The new text of the message.
+   * @returns The edited text message.
    */
-  async getChats(params?: GetChatsParams): Promise<Chat[]> {
-    return await this.#chatListManager.getChats(params?.from, params?.after, params?.limit);
+  async editMessageText(
+    chatId: ID,
+    messageId: number,
+    text: string,
+    params?: EditMessageParams,
+  ): Promise<MessageText> {
+    return await this.#messageManager.editMessageText(chatId, messageId, text, params);
   }
 
   /**
-   * Get a chat.
+   * Edit an inline message's text. Bot-only.
    *
-   * @method ch
+   * @method ms
+   * @param inlineMessageId The inline message's identifier.
+   * @param text The new text of the message.
    */
-  async getChat(chatId: ID): Promise<Chat> {
-    return await this.#chatListManager.getChat(chatId);
+  async editInlineMessageText(inlineMessageId: string, text: string, params?: EditMessageParams) {
+    await this.#messageManager.editInlineMessageText(inlineMessageId, text, params);
   }
 
   /**
-   * Get chat history. User-only.
+   * Edit a message's reply markup.
    *
-   * @method ch
-   * @param chatId The identifier of the chat to get its history.
+   * @method ms
+   * @param chatId The identifier of the chat that contains the message.
+   * @param messageId The message's identifier.
+   * @returns The edited message.
    */
-  async getHistory(chatId: ID, params?: GetHistoryParams): Promise<Message[]> {
-    return await this.#messageManager.getHistory(chatId, params);
+  async editMessageReplyMarkup(
+    chatId: ID,
+    messageId: number,
+    params?: EditMessageReplyMarkupParams,
+  ): Promise<Message> {
+    return await this.#messageManager.editMessageReplyMarkup(chatId, messageId, params);
   }
 
   /**
-   * Get custom emoji documents for download.
+   * Edit an inline message's reply markup. Bot-only.
    *
-   * @method fs
-   * @param id Identifier of one or more of custom emojis.
-   * @returns The custom emoji documents.
+   * @method ms
+   * @param inlineMessageId The inline message's identifier.
    */
-  async getCustomEmojiStickers(id: string | string[]): Promise<Sticker[]> {
-    return await this.#fileManager.getCustomEmojiStickers(id);
+  async editInlineMessageReplyMarkup(inlineMessageId: string, params?: EditMessageReplyMarkupParams) {
+    await this.#messageManager.editInlineMessageReplyMarkup(inlineMessageId, params);
   }
 
   /**
-   * Set a chat's available reactions. User-only.
+   * Edit a message's live location.
    *
-   * @method ch
-   * @param chatId The identifier of the chat.
-   * @param availableReactions The new available reactions.
+   * @method ms
+   * @param chatId The identifier of the chat that contains the messages.
+   * @param messageId The message's identifier.
+   * @param latitude The new latitude.
+   * @param longitude The new longitude.
+   * @returns The edited location message.
    */
-  async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]) {
-    await this.#messageManager.setAvailableReactions(chatId, availableReactions);
+  async editMessageLiveLocation(
+    chatId: ID,
+    messageId: number,
+    latitude: number,
+    longitude: number,
+    params?: EditMessageLiveLocationParams,
+  ): Promise<MessageLocation> {
+    return await this.#messageManager.editMessageLiveLocation(chatId, messageId, latitude, longitude, params);
   }
 
   /**
-   * Change reactions made to a message.
+   * Edit an inline message's live location. Bot-only.
    *
-   * @method re
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message to add the reaction to.
-   * @param reactions The new reactions.
+   * @method ms
+   * @param inlineMessageId The inline message's identifier.
+   * @param latitude The new latitude.
+   * @param longitude The new longitude.
+   * @returns The edited location message.
    */
-  async setReactions(chatId: number, messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
-    await this.#messageManager.setReactions(chatId, messageId, reactions, params);
+  async editInlineMessageLiveLocation(
+    inlineMessageId: string,
+    latitude: number,
+    longitude: number,
+    params?: EditMessageLiveLocationParams,
+  ) {
+    await this.#messageManager.editInlineMessageLiveLocation(inlineMessageId, latitude, longitude, params);
   }
 
   /**
-   * Make a reaction to a message.
+   * Retrieve multiple messages.
    *
-   * @method re
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message to add the reaction to.
-   * @param reaction The reaction to add.
+   * @method ms
+   * @param chatId The identifier of the chat to retrieve the messages from.
+   * @param messageIds The identifiers of the messages to retrieve.
+   * @example ```ts
+   * const message = await client.getMessages("@MTKruto", [210, 212]);
+   * ```
+   * @returns The retrieved messages.
    */
-  async addReaction(chatId: number, messageId: number, reaction: Reaction, params?: AddReactionParams) {
-    await this.#messageManager.addReaction(chatId, messageId, reaction, params);
+  async getMessages(chatId: ID, messageIds: number[]): Promise<Message[]> {
+    return await this.#messageManager.getMessages(chatId, messageIds);
   }
 
   /**
-   * Undo a reaction made to a message.
+   * Retrieve a single message.
    *
-   * @method re
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message which the reaction was made to.
-   * @param reaction The reaction to remove.
+   * @method ms
+   * @param chatId The identifier of the chat to retrieve the message from.
+   * @param messageId The identifier of the message to retrieve.
+   * @example ```ts
+   * const message = await client.getMessage("@MTKruto", 212);
+   * ```
+   * @returns The retrieved message.
    */
-  async removeReaction(chatId: number, messageId: number, reaction: Reaction) {
-    await this.#messageManager.removeReaction(chatId, messageId, reaction);
+  async getMessage(chatId: ID, messageId: number): Promise<Message | null> {
+    return await this.#messageManager.getMessage(chatId, messageId);
   }
 
   /**
-   * Set a chat's photo.
+   * Delete multiple messages.
    *
-   * @method ch
-   * @param chatId The identifier of the chat.
-   * @param photo A photo to set as the chat's photo.
+   * @method ms
+   * @param chatId The identifier of the chat that contains the messages.
+   * @param messageIds The identifiers of the messages to delete.
    */
-  async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams) {
-    await this.#messageManager.setChatPhoto(chatId, photo, params);
+  async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams) {
+    await this.#messageManager.deleteMessages(chatId, messageIds, params);
   }
 
   /**
-   * Delete a chat's photo.
+   * Delete a single message.
    *
-   * @method ch
-   * @param chatId The identifier of the chat.
+   * @method ms
+   * @param chatId The identifier of the chat that contains the message.
+   * @param messageId The identifier of the message to delete.
    */
-  async deleteChatPhoto(chatId: number) {
-    await this.#messageManager.deleteChatPhoto(chatId);
+  async deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams) {
+    await this.#messageManager.deleteMessages(chatId, [messageId], params);
   }
 
   /**
@@ -2160,6 +1940,164 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async unpinMessages(chatId: ID) {
     await this.#messageManager.unpinMessages(chatId);
+  }
+
+  /**
+   * Forward multiple messages.
+   *
+   * @method ms
+   * @param from The identifier of the chat to forward the messages from.
+   * @param to The identifier of the chat to forward the messages to.
+   * @param messageIds The identifiers of the messages to forward.
+   * @returns The forwarded messages.
+   */
+  async forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams): Promise<Message[]> {
+    return await this.#messageManager.forwardMessages(from, to, messageIds, params);
+  }
+
+  /**
+   * Forward a single message.
+   *
+   * @method ms
+   * @param from The identifier of the chat to forward the message from.
+   * @param to The identifier of the chat to forward the message to.
+   * @param messageId The identifier of the message to forward.
+   * @returns The forwarded message.
+   */
+  async forwardMessage(from: ID, to: ID, messageId: number, params?: ForwardMessagesParams): Promise<Message> {
+    return await this.forwardMessages(from, to, [messageId], params).then((v) => v[0]);
+  }
+
+  /**
+   * Stop a poll.
+   *
+   * @method ms
+   * @param chatId The chat that includes the poll.
+   * @param messageId The idenfifier of the poll's message.
+   * @returns The new state of the poll.
+   */
+  async stopPoll(chatId: ID, messageId: number, params?: StopPollParams): Promise<Poll> {
+    return await this.#messageManager.stopPoll(chatId, messageId, params);
+  }
+
+  /**
+   * Send a chat action.
+   *
+   * @method ms
+   * @param chatId The chat to send the chat action to.
+   * @param action The chat action.
+   * @param messageThreadId The thread to send the chat action to.
+   */
+  async sendChatAction(chatId: ID, action: ChatAction, params?: { messageThreadId?: number }) {
+    await this.#messageManager.sendChatAction(chatId, action, params);
+  }
+
+  /**
+   * Search the messages of a chat. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat to search the messages in.
+   * @param query The message search query.
+   */
+  async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams): Promise<Message[]> {
+    return await this.#messageManager.searchMessages(chatId, query, params);
+  }
+
+  //
+  // ========================= FILES ========================= //
+  //
+
+  /**
+   * Download a file.
+   *
+   * @method fs
+   * @param fileId The identifier of the file to download.
+   * @example ```ts
+   * for await (const chunk of client.download(fileId, { chunkSize: 256 * 1024 })) {
+   *   await outFile.write(chunk);
+   * }
+   * ```
+   * @returns A generator yielding the contents of the file.
+   */
+  async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown> {
+    for await (const chunk of this.#fileManager.download(fileId, params)) {
+      yield chunk;
+    }
+  }
+
+  /**
+   * Get custom emoji documents for download.
+   *
+   * @method fs
+   * @param id Identifier of one or more of custom emojis.
+   * @returns The custom emoji documents.
+   */
+  async getCustomEmojiStickers(id: string | string[]): Promise<Sticker[]> {
+    return await this.#fileManager.getCustomEmojiStickers(id);
+  }
+
+  //
+  // ========================= CHATS ========================= //
+  //
+
+  /**
+   * Get chats from a chat list. User-only.
+   *
+   * @method ch
+   */
+  async getChats(params?: GetChatsParams): Promise<Chat[]> {
+    return await this.#chatListManager.getChats(params?.from, params?.after, params?.limit);
+  }
+
+  /**
+   * Get a chat.
+   *
+   * @method ch
+   */
+  async getChat(chatId: ID): Promise<Chat> {
+    return await this.#chatListManager.getChat(chatId);
+  }
+
+  /**
+   * Get chat history. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat to get its history.
+   */
+  async getHistory(chatId: ID, params?: GetHistoryParams): Promise<Message[]> {
+    return await this.#messageManager.getHistory(chatId, params);
+  }
+
+  /**
+   * Set a chat's available reactions. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @param availableReactions The new available reactions.
+   */
+  async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]) {
+    await this.#messageManager.setAvailableReactions(chatId, availableReactions);
+  }
+
+  /**
+   * Set a chat's photo.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @param photo A photo to set as the chat's photo.
+   */
+  async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams) {
+    await this.#messageManager.setChatPhoto(chatId, photo, params);
+  }
+
+  /**
+   * Delete a chat's photo.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   */
+  async deleteChatPhoto(chatId: number) {
+    await this.#messageManager.deleteChatPhoto(chatId);
   }
 
   /**
@@ -2217,6 +2155,275 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async getChatAdministrators(chatId: ID): Promise<ChatMember[]> {
     return await this.#messageManager.getChatAdministrators(chatId);
   }
+
+  /**
+   * Enable join requests in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat. Must be a channel or a supergroup.
+   */
+  async enableJoinRequests(chatId: ID) {
+    await this.#messageManager.enableJoinRequests(chatId);
+  }
+
+  /**
+   * Disable join requests in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat. Must be a channel or a supergroup.
+   */
+  async disableJoinRequests(chatId: ID) {
+    await this.#messageManager.disableJoinRequests(chatId);
+  }
+
+  /**
+   * Get inactive chats. User-only.
+   *
+   * @method ch
+   * @retuns A list of inactive chats the current user is member of.
+   */
+  async getInactiveChats(): Promise<InactiveChat[]> {
+    return await this.#accountManager.getInactiveChats();
+  }
+
+  /**
+   * Get the invite links created for a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @returns The invite links created for the chat. This might be a subset of the results if they were less than `limit`. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
+   */
+  async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]> {
+    return await this.#messageManager.getCreatedInviteLinks(chatId, params);
+  }
+
+  /**
+   * Join a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat to join.
+   */
+  async joinChat(chatId: ID) {
+    await this.#messageManager.joinChat(chatId);
+  }
+
+  /**
+   * Leave a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat to leave.
+   */
+  async leaveChat(chatId: ID) {
+    await this.#messageManager.leaveChat(chatId);
+  }
+
+  /**
+   * Get information on a user's chat membership.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat that includes the user.
+   * @param userId The identifier of the user.
+   */
+  async getChatMember(chatId: ID, userId: ID): Promise<ChatMember> {
+    return await this.#messageManager.getChatMember(chatId, userId);
+  }
+
+  /**
+   * Set a chat's sticker set.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat. Must be a supergroup.
+   * @param setName The name of the set.
+   */
+  async setChatStickerSet(chatId: ID, setName: string) {
+    await this.#messageManager.setChatStickerSet(chatId, setName);
+  }
+
+  /**
+   * Delete a chat's sticker set.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat. Must be a supergroup.
+   */
+  async deleteChatStickerSet(chatId: ID) {
+    await this.#messageManager.deleteChatStickerSet(chatId);
+  }
+
+  /**
+   * Set the number of boosts required to circument a chat's default restrictions. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @param boosts The number of boosts required to circumvent its restrictions.
+   */
+  async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number) {
+    await this.#messageManager.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
+  }
+
+  /**
+   * Create an invite link.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat to create the invite link for.
+   * @returns The newly created invite link.
+   */
+  async createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink> {
+    return await this.#messageManager.createInviteLink(chatId, params);
+  }
+
+  //
+  // ========================= CALLBACK QUERIES ========================= //
+  //
+
+  /**
+   * Answer a callback query. Bot-only.
+   *
+   * @method cq
+   * @param id ID of the callback query to answer.
+   */
+  async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
+    await this.#callbackQueryManager.answerCallbackQuery(id, params);
+  }
+
+  //
+  // ========================= INLINE QUERIES ========================= //
+  //
+
+  /**
+   * Answer an inline query. Bot-only.
+   *
+   * @method iq
+   * @param id The ID of the inline query to answer.
+   * @param results The results to answer with.
+   */
+  async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
+    await this.#inlineQueryManager.answerInlineQuery(id, results, params);
+  }
+
+  //
+  // ========================= BOTS ========================= //
+  //
+
+  /**
+   * Set the bot's description in the given language. Bot-only.
+   *
+   * @method bs
+   */
+  async setMyDescription(params?: { description?: string; languageCode?: string }) {
+    await this.#botInfoManager.setMyDescription(params);
+  }
+
+  /**
+   * Set the bot's name in the given language. Bot-only.
+   *
+   * @method bs
+   */
+  async setMyName(params?: { name?: string; languageCode?: string }) {
+    await this.#botInfoManager.setMyName(params);
+  }
+
+  /**
+   * Set the bot's short description in the given language. Bot-only.
+   *
+   * @method bs
+   */
+  async setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }) {
+    await this.#botInfoManager.setMyShortDescription(params);
+  }
+
+  /**
+   * Get the bot's description in the given language. Bot-only.
+   *
+   * @method bs
+   * @returns The current bot's description in the specified language.
+   */
+  async getMyDescription(params?: { languageCode?: string }): Promise<string> {
+    return await this.#botInfoManager.getMyDescription(params);
+  }
+
+  /**
+   * Get the bot's name in the given language. Bot-only.
+   *
+   * @method bs
+   * @returns The current bot's name in the specified language.
+   */
+  async getMyName(params?: { languageCode?: string }): Promise<string> {
+    return await this.#botInfoManager.getMyName(params);
+  }
+
+  /**
+   * Get the bot's short description in the given language. Bot-only.
+   *
+   * @method bs
+   * @returns The current bot's short description in the specified language.
+   */
+  async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
+    return await this.#botInfoManager.getMyShortDescription(params);
+  }
+
+  /**
+   * Set the bot's commands in the given scope and/or language. Bot-only.
+   *
+   * @method bs
+   * @param commands The commands to set.
+   */
+  async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
+    await this.#botInfoManager.setMyCommands(commands, params);
+  }
+
+  /**
+   * Get the bot's commands in the given scope and/or language. Bot-only.
+   *
+   * @method bs
+   * @returns The current bot's commands in the specified language.
+   */
+  async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
+    return await this.#botInfoManager.getMyCommands(params);
+  }
+
+  //
+  // ========================= REACTIONS ========================= //
+  //
+
+  /**
+   * Change reactions made to a message.
+   *
+   * @method re
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message to add the reaction to.
+   * @param reactions The new reactions.
+   */
+  async setReactions(chatId: number, messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
+    await this.#messageManager.setReactions(chatId, messageId, reactions, params);
+  }
+
+  /**
+   * Make a reaction to a message.
+   *
+   * @method re
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message to add the reaction to.
+   * @param reaction The reaction to add.
+   */
+  async addReaction(chatId: number, messageId: number, reaction: Reaction, params?: AddReactionParams) {
+    await this.#messageManager.addReaction(chatId, messageId, reaction, params);
+  }
+
+  /**
+   * Undo a reaction made to a message.
+   *
+   * @method re
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message which the reaction was made to.
+   * @param reaction The reaction to remove.
+   */
+  async removeReaction(chatId: number, messageId: number, reaction: Reaction) {
+    await this.#messageManager.removeReaction(chatId, messageId, reaction);
+  }
+
+  //
+  // ========================= STORIES ========================= //
+  //
 
   /**
    * Create a story. User-only.
@@ -2321,142 +2528,17 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.#storyManager.removeStoryFromHighlights(chatId, storyId);
   }
 
-  /**
-   * Enable join requests in a chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the chat. Must be a channel or a supergroup.
-   */
-  async enableJoinRequests(chatId: ID) {
-    await this.#messageManager.enableJoinRequests(chatId);
-  }
+  //
+  // ========================= MISC ========================= //
+  //
 
   /**
-   * Disable join requests in a chat. User-only.
+   * Get network statistics. This might not always be available.
    *
-   * @method ch
-   * @param chatId The identifier of the chat. Must be a channel or a supergroup.
+   * @method mc
    */
-  async disableJoinRequests(chatId: ID) {
-    await this.#messageManager.disableJoinRequests(chatId);
-  }
-
-  /**
-   * Show a username in the current account, a bot account, sa upergroup, or a channel's profile. User-only.
-   *
-   * @method ac
-   * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
-   * @param username The username to show.
-   */
-  async showUsername(id: ID, username: string) {
-    await this.#accountManager.showUsername(id, username);
-  }
-
-  /**
-   * Hide a username from the current account, a bot account, a supergroup, or a channel's profile. User-only.
-   *
-   * @method ac
-   * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
-   * @param username The username to hide.
-   */
-  async hideUsername(id: ID, username: string) {
-    await this.#accountManager.hideUsername(id, username);
-  }
-
-  /**
-   * Reorder the usernames of the current account, a bot account, a supergroup, or a channel's profile. User-only.
-   *
-   * @method ac
-   * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
-   * @param order The new order to use.
-   * @returns Whether the order was changed.
-   */
-  async reorderUsernames(id: ID, order: string[]): Promise<boolean> {
-    return await this.#accountManager.reorderUsernames(id, order);
-  }
-
-  /**
-   * Hide all usernames from the a supergroup or a channel's profile. User-only.
-   *
-   * @method ac
-   * @param id A supergroup ID or a channel ID.
-   */
-  async hideUsernames(id: ID): Promise<boolean> {
-    return await this.#accountManager.hideUsernames(id);
-  }
-
-  /**
-   * Get inactive chats. User-only.
-   *
-   * @method ch
-   * @retuns A list of inactive chats the current user is member of.
-   */
-  async getInactiveChats(): Promise<InactiveChat[]> {
-    return await this.#accountManager.getInactiveChats();
-  }
-
-  /**
-   * Search the messages of a chat. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat to search the messages in.
-   * @param query The message search query.
-   */
-  async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams): Promise<Message[]> {
-    return await this.#messageManager.searchMessages(chatId, query, params);
-  }
-
-  /**
-   * Set the number of boosts required to circument a chat's default restrictions. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the chat.
-   * @param boosts The number of boosts required to circumvent its restrictions.
-   */
-  async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number) {
-    await this.#messageManager.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
-  }
-
-  /**
-   * Create an invite link.
-   *
-   * @method ch
-   * @param chatId The identifier of the chat to create the invite link for.
-   * @returns The newly created invite link.
-   */
-  async createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink> {
-    return await this.#messageManager.createInviteLink(chatId, params);
-  }
-
-  /**
-   * Get the invite links created for a chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the chat.
-   * @returns The invite links created for the chat. This might be a subset of the results if they were less than `limit`. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
-   */
-  async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]> {
-    return await this.#messageManager.getCreatedInviteLinks(chatId, params);
-  }
-
-  /**
-   * Join a chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the chat to join.
-   */
-  async joinChat(chatId: ID) {
-    await this.#messageManager.joinChat(chatId);
-  }
-
-  /**
-   * Leave a chat.
-   *
-   * @method ch
-   * @param chatId The identifier of the chat to leave.
-   */
-  async leaveChat(chatId: ID) {
-    await this.#messageManager.leaveChat(chatId);
+  async getNetworkStatistics(): Promise<NetworkStatistics> {
+    return await this.#networkStatisticsManager.getNetworkStatistics();
   }
 
   /**
@@ -2477,47 +2559,5 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async unblockUser(userId: ID) {
     await this.#messageManager.unblockUser(userId);
-  }
-
-  /**
-   * Get information on a user's chat membership.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat that includes the user.
-   * @param userId The identifier of the user.
-   */
-  async getChatMember(chatId: ID, userId: ID): Promise<ChatMember> {
-    return await this.#messageManager.getChatMember(chatId, userId);
-  }
-
-  /**
-   * Set a chat's sticker set.
-   *
-   * @method ch
-   * @param chatId The identifier of the chat. Must be a supergroup.
-   * @param setName The name of the set.
-   */
-  async setChatStickerSet(chatId: ID, setName: string) {
-    await this.#messageManager.setChatStickerSet(chatId, setName);
-  }
-
-  /**
-   * Delete a chat's sticker set.
-   *
-   * @method ch
-   * @param chatId The identifier of the chat. Must be a supergroup.
-   */
-  async deleteChatStickerSet(chatId: ID) {
-    await this.#messageManager.deleteChatStickerSet(chatId);
-  }
-
-  /**
-   * Get a business connection.
-   *
-   * @method ac
-   * @param id The identifier of the business connection.
-   */
-  async getBusinessConnection(id: string): Promise<BusinessConnection> {
-    return await this.#businessConnectionManager.getBusinessConnection(id);
   }
 }
