@@ -368,7 +368,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
             try {
               const exportedAuth = await this.api.auth.exportAuthorization({ dc_id: dcId });
               await client.authorize(exportedAuth);
-              // throw 1;
               return true;
             } catch (err) {
               throw err;
@@ -1322,7 +1321,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
       } else {
         inputPeer.access_hash = await this.#getUserAccessHash(inputPeer.user_id);
       }
-    } else {
+    }
+    if ((inputPeer instanceof types.InputPeerUser || inputPeer instanceof types.InputPeerChannel && inputPeer.access_hash == 0n) && await this.storage.getAccountType() == "user") {
       throw new AccessError(`Cannot access the chat ${id} because there is no access hash for it.`);
     }
     return inputPeer;
