@@ -1,4 +1,5 @@
-import { concat, getLogger, Mutex, UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
+import { concat, getLogger, Mutex } from "../1_utilities.ts";
 import { ConnectionUnframed } from "./0_connection.ts";
 
 const L = getLogger("ConnectionWebSocket");
@@ -31,7 +32,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
         return;
       }
       const unlock = await mutex.lock();
-      const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob || v instanceof Uint8Array ? v : v instanceof ArrayBuffer ? v : UNREACHABLE())).arrayBuffer());
+      const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob || v instanceof Uint8Array ? v : v instanceof ArrayBuffer ? v : unreachable())).arrayBuffer());
 
       this.#buffer = concat(this.#buffer, data);
 

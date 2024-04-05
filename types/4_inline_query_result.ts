@@ -1,5 +1,4 @@
 import { unreachable } from "../0_deps.ts";
-import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
 import { deserializeFileId } from "./_file_id.ts";
 import { UsernameResolver } from "./_getters.ts";
@@ -427,7 +426,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       title,
       description,
       document: new types.InputDocument({
-        id: "id" in fileId.location ? fileId.location.id : UNREACHABLE(), // TODO: Remove UNREACHABLE()?
+        id: "id" in fileId.location ? fileId.location.id : unreachable(), // TODO: Remove UNREACHABLE()?
         access_hash: fileId.location.accessHash,
         file_reference: fileId.fileReference ?? new Uint8Array(),
       }),

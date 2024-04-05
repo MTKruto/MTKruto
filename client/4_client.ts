@@ -1411,7 +1411,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async #handleCtxUpdate(update: Update) {
     await this.middleware()(await this.#constructContext(update), resolve);
   }
-  protected handleUpdate: (update: Update) => Promise<void> = this.#handleCtxUpdate;
 
   #queueHandleCtxUpdate(update: Update) {
     this.#updateManager.getHandleUpdateQueue(UpdateManager.MAIN_BOX_ID).add(async () => {

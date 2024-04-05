@@ -1,5 +1,5 @@
 import { unreachable } from "../0_deps.ts";
-import { cleanObject, fromUnixTimestamp, getLogger, MaybePromise, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { cleanObject, fromUnixTimestamp, getLogger, MaybePromise, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
 import { FileId, FileType, toUniqueFileId } from "./_file_id.ts";
 import { serializeFileId } from "./_file_id.ts";
@@ -640,7 +640,7 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
 
   if (message_.action instanceof types.MessageActionChatAddUser || message_.action instanceof types.MessageActionChatJoinedByLink || message_.action instanceof types.MessageActionChatJoinedByRequest) {
     const newChatMembers = new Array<User>();
-    const users = "users" in message_.action ? message_.action.users : [message_.from_id && "user_id" in message_.from_id ? message_.from_id.user_id : UNREACHABLE()];
+    const users = "users" in message_.action ? message_.action.users : [message_.from_id && "user_id" in message_.from_id ? message_.from_id.user_id : unreachable()];
     for (const user_ of users) {
       const entity = await getEntity(new types.PeerUser({ user_id: user_ }));
       if (entity) {
@@ -987,7 +987,7 @@ export async function constructMessage(
     if (message_.message) {
       m = { ...messageText, linkPreview };
     } else {
-      m = { ...message, linkPreview: { ...linkPreview, url: linkPreview.url ? linkPreview.url : UNREACHABLE() } };
+      m = { ...message, linkPreview: { ...linkPreview, url: linkPreview.url ? linkPreview.url : unreachable() } };
     }
   } else if (message_.media instanceof types.MessageMediaGiveaway) {
     const giveaway = constructGiveaway(message_.media);

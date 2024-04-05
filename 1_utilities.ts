@@ -2,7 +2,6 @@ export * from "./utilities/0_bigint.ts";
 export * from "./utilities/0_buffer.ts";
 export * from "./utilities/0_cache_map.ts";
 export * from "./utilities/0_color.ts";
-export * from "./utilities/0_control.ts";
 export * from "./utilities/0_crypto.ts";
 export * from "./utilities/0_hash.ts";
 export * from "./utilities/0_logger.ts";
