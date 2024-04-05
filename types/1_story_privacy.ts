@@ -1,4 +1,4 @@
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { enums, types } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 
@@ -34,7 +34,7 @@ async function resolveUsers(ids: number[], getEntity: EntityGetter) {
   for (const id of ids) {
     const entity = await getEntity(new types.PeerUser({ user_id: BigInt(id) }));
     if (!(entity instanceof types.User)) {
-      UNREACHABLE();
+      unreachable();
     } else {
       users.push(new types.InputUser({ user_id: entity.id, access_hash: entity.access_hash ?? 0n }));
     }
@@ -60,7 +60,7 @@ export async function storyPrivacyToTlObject(privacy: StoryPrivacy, getEntity: E
     rules.push(new types.InputPrivacyValueAllowCloseFriends());
   } else if ("only" in privacy) {
     if (!privacy.only.length) {
-      UNREACHABLE();
+      unreachable();
     }
     const users = await resolveUsers(privacy.only, getEntity);
     rules.push(new types.InputPrivacyValueAllowUsers({ users }));

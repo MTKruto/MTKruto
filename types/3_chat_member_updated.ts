@@ -1,12 +1,12 @@
-import { cleanObject, fromUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
+import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructChatP } from "./1_chat_p.ts";
 import { ChatP } from "./1_chat_p.ts";
 import { constructUser, User } from "./1_user.ts";
 import { ChatMember, constructChatMember } from "./2_chat_member.ts";
-import { constructInviteLink } from "./2_invite_link.ts";
-import { InviteLink } from "./2_invite_link.ts";
+import { constructInviteLink, InviteLink } from "./2_invite_link.ts";
 
 /** Changes made to a chat member. */
 export interface ChatMemberUpdated {
@@ -28,12 +28,12 @@ export interface ChatMemberUpdated {
 
 export async function constructChatMemberUpdated(update: types.UpdateChannelParticipant | types.UpdateChatParticipant, getEntity: EntityGetter): Promise<ChatMemberUpdated> {
   if (!update.prev_participant && !update.new_participant) {
-    UNREACHABLE();
+    unreachable();
   }
   const chat_ = await getEntity("channel_id" in update ? new types.PeerChannel(update) : new types.PeerChat(update));
   const from_ = await getEntity(new types.PeerUser({ user_id: update.actor_id }));
   if (!chat_ || !from_) {
-    UNREACHABLE();
+    unreachable();
   }
   const userPeer = new types.PeerUser(update);
   const chat = constructChatP(chat_);

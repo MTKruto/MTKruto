@@ -1,4 +1,5 @@
-import { getLogger, Logger, Queue, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
+import { getLogger, Logger, Queue, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, functions, inputPeerToPeer, peerToChatId, ReadObject, TLObject, types } from "../2_tl.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
 import { C } from "./0_types.ts";
@@ -522,7 +523,7 @@ export class UpdateManager {
       ];
     } else if (updates_ instanceof types.UpdateShortSentMessage) {
       if (!(call instanceof functions.messages.sendMessage)) {
-        UNREACHABLE();
+        unreachable();
       }
       updates = [
         new types.UpdateNewMessage({
@@ -549,7 +550,7 @@ export class UpdateManager {
     } else if (updates_ instanceof types._Update) {
       updates = [updates_];
     } else {
-      UNREACHABLE();
+      unreachable();
     }
 
     /// We process the updates when we are sure there is no gap.
@@ -572,7 +573,7 @@ export class UpdateManager {
         if (this.#updateState) {
           await this.#setState(this.#updateState);
         } else {
-          UNREACHABLE();
+          unreachable();
         }
       } else if (UpdateManager.isPtsUpdate(update)) {
         this.#processPtsUpdate(update, checkGap);
@@ -615,7 +616,7 @@ export class UpdateManager {
           localState = this.#updateState;
           await this.#setState(localState);
         } else {
-          UNREACHABLE();
+          unreachable();
         }
       }
     }
@@ -645,7 +646,7 @@ export class UpdateManager {
           } else if (difference instanceof types.updates.DifferenceSlice) {
             state = difference.intermediate_state;
           } else {
-            UNREACHABLE();
+            unreachable();
           }
         } else if (difference instanceof types.updates.DifferenceTooLong) {
           await this.#c.messageStorage.deleteMessages();
@@ -658,7 +659,7 @@ export class UpdateManager {
           this.#LrecoverUpdateGap.debug("there was no update gap");
           break;
         } else {
-          UNREACHABLE();
+          unreachable();
         }
       }
     } finally {
@@ -702,7 +703,7 @@ export class UpdateManager {
         if (pts_ != undefined) {
           pts = pts_;
         } else {
-          UNREACHABLE();
+          unreachable();
         }
         this.#LrecoverChannelUpdateGap.debug("processed channelDifferenceTooLong");
       } else if (difference instanceof types.updates.ChannelDifferenceEmpty) {

@@ -1,4 +1,4 @@
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { enums, types } from "../2_tl.ts";
 
 /** @unlisted */
@@ -22,7 +22,7 @@ export function constructReaction(reaction: enums.Reaction): Reaction {
   } else if (reaction instanceof types.ReactionCustomEmoji) {
     return { type: "customEmoji", id: String(reaction.document_id) };
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }
 

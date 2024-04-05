@@ -1,4 +1,4 @@
-import { UNREACHABLE } from "./0_control.ts";
+import { unreachable } from "../0_deps.ts";
 
 export function drop<T>(promise: Promise<T>) {
   promise.catch(() => {});
@@ -7,7 +7,7 @@ export function drop<T>(promise: Promise<T>) {
 export function mustPrompt(message: string) {
   const result = prompt(message);
   if (result == null) {
-    throw UNREACHABLE();
+    throw unreachable();
   } else {
     return result;
   }

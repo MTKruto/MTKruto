@@ -1,5 +1,6 @@
+import { unreachable } from "../0_deps.ts";
 import { ConnectionError, InputError } from "../0_errors.ts";
-import { drop, getLogger, getRandomId, Logger, mod, UNREACHABLE } from "../1_utilities.ts";
+import { drop, getLogger, getRandomId, Logger, mod } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
 import { constructSticker, deserializeFileId, FileId, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
@@ -137,7 +138,7 @@ export class FileManager {
             offset += BigInt(file.bytes.length);
           }
         } else {
-          UNREACHABLE();
+          unreachable();
         }
       }
     } finally {
@@ -151,7 +152,7 @@ export class FileManager {
       switch (fileId_.type) {
         case FileType.ProfilePhoto: {
           if (fileId_.location.source.type != PhotoSourceType.ChatPhotoBig && fileId_.location.source.type != PhotoSourceType.ChatPhotoSmall) {
-            UNREACHABLE();
+            unreachable();
           }
           const big = fileId_.location.source.type == PhotoSourceType.ChatPhotoBig;
           const peer = await this.#c.getInputPeer(Number(fileId_.location.source.chatId)); // TODO: use access hash from source?
@@ -178,7 +179,7 @@ export class FileManager {
             id: fileId_.location.id,
             access_hash: fileId_.location.accessHash,
             file_reference: fileId_.fileReference ?? new Uint8Array(),
-            thumb_size: "thumbnailType" in fileId_.location.source ? String.fromCharCode(fileId_.location.source.thumbnailType) : UNREACHABLE(),
+            thumb_size: "thumbnailType" in fileId_.location.source ? String.fromCharCode(fileId_.location.source.thumbnailType) : unreachable(),
           });
           for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
             yield chunk;
@@ -197,7 +198,7 @@ export class FileManager {
         yield chunk;
       }
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 

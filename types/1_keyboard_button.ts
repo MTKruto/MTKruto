@@ -1,4 +1,4 @@
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { enums, types } from "../2_tl.ts";
 import { ChatAdministratorRights, chatAdministratorRightsToTlObject, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
 import { KeyboardButtonPollType } from "./0_keyboard_button_poll_type.ts";
@@ -112,7 +112,7 @@ export function constructKeyboardButton(button_: enums.KeyboardButton): Keyboard
       }
       return button;
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   } else if (button_ instanceof types.KeyboardButtonRequestPhone) {
     return { text: button_.text, requestContact: true };
@@ -129,7 +129,7 @@ export function constructKeyboardButton(button_: enums.KeyboardButton): Keyboard
   } else if (button_ instanceof types.KeyboardButtonWebView || button_ instanceof types.KeyboardButtonSimpleWebView) {
     return { text: button_.text, miniApp: { url: button_.url } };
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }
 

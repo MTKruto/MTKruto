@@ -1,4 +1,4 @@
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { enums, types } from "../2_tl.ts";
 import { UsernameResolver } from "./_getters.ts";
 import { LoginUrl } from "./0_login_url.ts";
@@ -80,7 +80,7 @@ export function constructInlineKeyboardButton(button_: enums.KeyboardButton): In
   } else if (button_ instanceof types.KeyboardButtonGame) {
     return { text: button_.text, callbackGame: {} };
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }
 
@@ -106,6 +106,6 @@ export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButto
   } else if ("pay" in button) {
     return new types.KeyboardButtonBuy({ text: button.text });
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }

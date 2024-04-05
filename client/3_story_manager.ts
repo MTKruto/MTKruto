@@ -1,6 +1,6 @@
-import { contentType } from "../0_deps.ts";
+import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { getRandomId, UNREACHABLE } from "../1_utilities.ts";
+import { getRandomId } from "../1_utilities.ts";
 import { as, enums, inputPeerToPeer, peerToChatId, types } from "../2_tl.ts";
 import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, Update } from "../3_types.ts";
 import { InputStoryContent } from "../types/1_input_story_content.ts";
@@ -28,13 +28,13 @@ export class StoryManager {
         return await constructStory(updateStory.story, updateStory.peer, this.#c.getEntity);
       }
     }
-    UNREACHABLE();
+    unreachable();
   }
 
   async createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams) {
     await this.#c.storage.assertUser("createStory");
     let media: enums.InputMedia | null = null;
-    const source = "video" in content ? content.video : "photo" in content ? content.photo : UNREACHABLE();
+    const source = "video" in content ? content.video : "photo" in content ? content.photo : unreachable();
 
     if (typeof source === "string") {
       const fileId = this.#c.messageManager.resolveFileId(source, FileType.Photo);

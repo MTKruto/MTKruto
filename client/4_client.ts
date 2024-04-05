@@ -1,5 +1,6 @@
+import { unreachable } from "../0_deps.ts";
 import { AccessError, InputError } from "../0_errors.ts";
-import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, mustPrompt, mustPromptOneOf, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, mustPrompt, mustPromptOneOf, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, name, peerToChatId, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
@@ -485,7 +486,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
                 return this.invoke(new func(params));
               };
             } else {
-              UNREACHABLE();
+              unreachable();
             }
           }
         },
@@ -534,7 +535,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       } else if (reactions !== undefined) {
         return { chatId: reactions.chatId, messageId: reactions.messageId };
       } else {
-        UNREACHABLE();
+        unreachable();
       }
     };
     const mustGetUserId = () => {
@@ -545,7 +546,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       } else if ("chosenInlineResult" in update) {
         return update.chosenInlineResult.from.id;
       } else {
-        UNREACHABLE();
+        unreachable();
       }
     };
     const mustGetInlineMsgId = () => {
@@ -558,7 +559,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
           return update.callbackQuery.inlineMessageId;
         }
       }
-      UNREACHABLE();
+      unreachable();
     };
     const chat_ = "messageReactions" in update ? update.messageReactions.chat : "messageReactionCount" in update ? update.messageReactionCount.chat : undefined;
     const chat = chat_ ?? msg?.chat;
@@ -672,21 +673,21 @@ export class Client<C extends Context = Context> extends Composer<C> {
       banSender: (params) => {
         const { chatId, senderId } = mustGetMsg();
         if (!senderId) {
-          UNREACHABLE();
+          unreachable();
         }
         return this.banChatMember(chatId, senderId, params);
       },
       kickSender: () => {
         const { chatId, senderId } = mustGetMsg();
         if (!senderId) {
-          UNREACHABLE();
+          unreachable();
         }
         return this.kickChatMember(chatId, senderId);
       },
       setSenderRights: (params) => {
         const { chatId, senderId } = mustGetMsg();
         if (!senderId) {
-          UNREACHABLE();
+          unreachable();
         }
         return this.setChatMemberRights(chatId, senderId, params);
       },
@@ -700,13 +701,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
       },
       answerCallbackQuery: (params) => {
         if (!("callbackQuery" in update)) {
-          UNREACHABLE();
+          unreachable();
         }
         return this.answerCallbackQuery(update.callbackQuery.id, params);
       },
       answerInlineQuery: (results, params) => {
         if (!("inlineQuery" in update)) {
-          UNREACHABLE();
+          unreachable();
         }
         return this.answerInlineQuery(update.inlineQuery.id, results, params);
       },
@@ -859,7 +860,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       getBusinessConnection: () => {
         const { businessConnectionId } = mustGetMsg();
         if (!businessConnectionId) {
-          UNREACHABLE();
+          unreachable();
         }
         return this.getBusinessConnection(businessConnectionId);
       },
@@ -1366,7 +1367,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         } else if (resolved.peer instanceof types.PeerChannel) {
           resolvedId = peerToChatId(resolved.peer);
         } else {
-          UNREACHABLE();
+          unreachable();
         }
       }
       const resolvedIdType = getChatIdPeerType(resolvedId);
@@ -1377,7 +1378,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         const accessHash = await this.messageStorage.getChannelAccessHash(resolvedId);
         return new types.InputPeerChannel({ channel_id: chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n });
       } else {
-        UNREACHABLE();
+        unreachable();
       }
     } else if (id > 0) {
       const accessHash = await this.messageStorage.getUserAccessHash(id);

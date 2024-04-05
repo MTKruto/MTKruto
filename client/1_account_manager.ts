@@ -1,4 +1,4 @@
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { types } from "../2_tl.ts";
 import { constructInactiveChat, ID } from "../3_types.ts";
 import { C } from "./0_types.ts";
@@ -19,7 +19,7 @@ export class AccountManager {
     } else if (peer instanceof types.InputPeerChannel) {
       await this.#c.api.channels.toggleUsername({ channel: new types.InputChannel(peer), username, active });
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 
@@ -43,7 +43,7 @@ export class AccountManager {
     } else if (peer instanceof types.InputPeerChannel) {
       return await this.#c.api.channels.reorderUsernames({ channel: new types.InputChannel(peer), order });
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 
@@ -53,7 +53,7 @@ export class AccountManager {
     if (peer instanceof types.InputPeerChannel) {
       return await this.#c.api.channels.deactivateAllUsernames({ channel: new types.InputChannel(peer) });
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 

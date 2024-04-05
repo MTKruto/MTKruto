@@ -1,3 +1,4 @@
+import { unreachable } from "../0_deps.ts";
 import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
 import { deserializeFileId } from "./_file_id.ts";
@@ -464,7 +465,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     });
   } else if (result_.type == "article") {
     if (!("messageText" in result_.inputMessageContent)) {
-      UNREACHABLE();
+      unreachable();
     }
     const [message, entities] = await parseText(result_.inputMessageContent.messageText, { entities: result_.inputMessageContent.entities, parseMode: result_.inputMessageContent.parseMode });
     const noWebpage = result_.inputMessageContent?.linkPreview?.disable ? true : undefined;
@@ -503,7 +504,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     });
   } else if (result_.type == "venue") {
     if (!result_.fourSquareId || !result_.foursquareType) {
-      UNREACHABLE();
+      unreachable();
     }
     return new types.InputBotInlineResult({
       id,
@@ -522,6 +523,6 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       }),
     });
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }

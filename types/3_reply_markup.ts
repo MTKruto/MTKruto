@@ -1,4 +1,5 @@
-import { cleanObject, UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
 import { UsernameResolver } from "./_getters.ts";
 import { constructKeyboardButton, KeyboardButton, keyboardButtonToTlObject } from "./1_keyboard_button.ts";
@@ -153,7 +154,7 @@ export function constructReplyMarkup(replyMarkup: enums.ReplyMarkup): ReplyMarku
   } else if (replyMarkup instanceof types.ReplyKeyboardForceReply) {
     return constructForceReply(replyMarkup);
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }
 
@@ -167,6 +168,6 @@ export async function replyMarkupToTlObject(replyMarkup: ReplyMarkup, usernameRe
   } else if ("forceReply" in replyMarkup) {
     return forceReplyToTlObject(replyMarkup);
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }

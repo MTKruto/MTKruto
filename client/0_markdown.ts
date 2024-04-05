@@ -2,7 +2,7 @@
  * Copyright (c) 2023 Dunkan
  * Copyright (c) 2024 Roj
  */
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { MessageEntity, MessageEntityType, sortMessageEntities } from "../3_types.ts";
 import { InputError } from "../0_errors.ts";
 
@@ -150,7 +150,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
           case "customEmoji":
             return c === CODEPOINTS["]"];
           default:
-            UNREACHABLE();
+            unreachable();
         }
       })();
     }
@@ -301,7 +301,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
           break;
         }
         default:
-          UNREACHABLE();
+          unreachable();
       }
 
       if (!skipEntity) {

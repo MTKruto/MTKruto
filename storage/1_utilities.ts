@@ -1,5 +1,5 @@
 import { decodeBase64, encodeBase64 } from "../0_deps.ts";
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { StorageKeyPart } from "./0_storage.ts";
 
 export enum ValueType {
@@ -38,7 +38,7 @@ export function toString(value: unknown): string {
     });
     return `${ValueType.Array}${items.join("\n")}`;
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }
 

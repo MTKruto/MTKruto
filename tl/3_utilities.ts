@@ -1,4 +1,5 @@
-import { UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
+import { ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { enums, types } from "./2_types.ts";
 
 export function getChannelChatId(channelId: bigint): number {
@@ -16,7 +17,7 @@ export function peerToChatId(peer: enums.Peer | enums.InputPeer | AnyEntity | { 
   } else if (peer instanceof types.PeerChannel || peer instanceof types.InputPeerChannel || peer instanceof types.Channel || peer instanceof types.ChannelForbidden || "channel_id" in peer) {
     return getChannelChatId("id" in peer ? peer.id : peer.channel_id);
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }
 
@@ -39,7 +40,7 @@ export function chatIdToPeerId(chatId: number): bigint {
   } else if ("channel_id" in peer) {
     return peer.channel_id;
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }
 
@@ -61,6 +62,6 @@ export function inputPeerToPeer(inputPeer: enums.InputPeer): enums.Peer {
   } else if ("channel_id" in inputPeer) {
     return new types.PeerChannel(inputPeer);
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }

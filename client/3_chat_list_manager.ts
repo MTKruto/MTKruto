@@ -1,5 +1,6 @@
+import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { getLogger, Logger, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
+import { getLogger, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { as, enums, peerToChatId, types } from "../2_tl.ts";
 import { Chat, constructChat, constructChat2, constructChat3, constructChat4, getChatOrder, ID } from "../3_types.ts";
 import { C as C_ } from "./0_types.ts";
@@ -64,7 +65,7 @@ export class ChatListManager {
         const pinnedChats = await this.#getPinnedChats(listId);
         const chat = await constructChat3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getEntity);
         if (chat == null) {
-          UNREACHABLE();
+          unreachable();
         }
         this.#chats.set(chatId, chat);
         await this.#c.storage.setChat(listId, chatId, chat.pinned, chat.lastMessage?.id ?? 0, chat.lastMessage?.date ?? new Date(0));
@@ -85,7 +86,7 @@ export class ChatListManager {
         const pinnedChats = await this.#getPinnedChats(listId);
         const chat = await constructChat3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getEntity);
         if (chat == null) {
-          UNREACHABLE();
+          unreachable();
         }
         this.#chats.set(chatId, chat);
       }
@@ -211,7 +212,7 @@ export class ChatListManager {
       await this.#c.storage.setPinnedChats(1, this.#pinnedArchiveChats);
     }
     if (listId != null && listId != 0 && listId != 1) {
-      UNREACHABLE();
+      unreachable();
     }
   }
   async #getPinnedChats(listId: number) {
@@ -227,7 +228,7 @@ export class ChatListManager {
       case 1:
         return this.#pinnedArchiveChats;
       default:
-        UNREACHABLE();
+        unreachable();
     }
   }
   async #updateOrAddChat(chatId: number) {
@@ -332,7 +333,7 @@ export class ChatListManager {
     });
     const pinnedChats = await this.#getPinnedChats(listId);
     if (!(dialogs instanceof types.messages.Dialogs) && !(dialogs instanceof types.messages.DialogsSlice)) {
-      UNREACHABLE();
+      unreachable();
     }
     if (dialogs.dialogs.length < limit) {
       await this.#c.storage.setHasAllChats(listId, true);
@@ -394,7 +395,7 @@ export class ChatListManager {
     } else if (update instanceof types.UpdateUser || update instanceof types.UpdateUserName) {
       await this.#handleUpdateUser(update);
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 
@@ -406,7 +407,7 @@ export class ChatListManager {
       } else if (typeof chatId === "string") {
         maybeChatId = this.#tryGetChatId(getUsername(chatId));
       } else {
-        UNREACHABLE();
+        unreachable();
       }
       if (maybeChatId != null) {
         const [chat] = this.#getChatAnywhere(maybeChatId);
@@ -436,25 +437,25 @@ export class ChatListManager {
       const chats = await this.#c.api.messages.getChats({ id: [inputPeer.chat_id] }).then((v) => v[as](types.messages.Chats));
       const chat = chats.chats[0];
       if (chat instanceof types.ChatEmpty) {
-        UNREACHABLE();
+        unreachable();
       }
       return constructChat2(chat, -1, undefined);
     } else if (inputPeer instanceof types.InputPeerChannel) {
       const channels = await this.#c.api.channels.getChannels({ id: [new types.InputChannel(inputPeer)] });
       const channel = channels.chats[0];
       if (channel instanceof types.ChatEmpty) {
-        UNREACHABLE();
+        unreachable();
       }
       return constructChat2(channel, -1, undefined);
     } else if (inputPeer instanceof types.InputPeerUser) {
       const users = await this.#c.api.users.getUsers({ id: [new types.InputUser(inputPeer)] });
       const user = users[0];
       if (user instanceof types.UserEmpty) {
-        UNREACHABLE();
+        unreachable();
       }
       return constructChat2(user, -1, undefined);
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 }

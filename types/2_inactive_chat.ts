@@ -1,4 +1,5 @@
-import { fromUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
+import { fromUnixTimestamp } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 
@@ -12,7 +13,7 @@ export interface InactiveChat {
 
 export function constructInactiveChat(chat_: enums.Chat, lastActivity: number): InactiveChat {
   if (chat_ instanceof types.ChatEmpty) {
-    UNREACHABLE();
+    unreachable();
   }
   const chat = constructChatP(chat_);
   return {

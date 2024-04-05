@@ -1,4 +1,4 @@
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { enums, types } from "../2_tl.ts";
 import { constructChosenInlineResult, constructInlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Update } from "../3_types.ts";
 import { AnswerInlineQueryParams } from "./0_params.ts";
@@ -42,7 +42,7 @@ export class InlineQueryManager {
     } else if (update instanceof types.UpdateBotInlineSend) {
       return { chosenInlineResult: await constructChosenInlineResult(update, this.#c.getEntity) };
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 }

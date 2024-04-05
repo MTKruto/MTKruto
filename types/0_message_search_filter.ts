@@ -1,4 +1,4 @@
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { enums, types } from "../2_tl.ts";
 
 export type MessageSearchFilter =
@@ -48,6 +48,6 @@ export function messageSearchFilterToTlObject(filter: MessageSearchFilter): enum
     case "pinned":
       return new types.InputMessagesFilterPinned();
     default:
-      UNREACHABLE();
+      unreachable();
   }
 }

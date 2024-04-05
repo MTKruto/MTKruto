@@ -1,6 +1,6 @@
-import { gunzip } from "../0_deps.ts";
+import { gunzip, unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
-import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, Logger, sha1, UNREACHABLE } from "../1_utilities.ts";
+import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, Logger, sha1 } from "../1_utilities.ts";
 import { enums, functions, Message_, MessageContainer, name, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -141,7 +141,7 @@ export class ClientEncrypted extends ClientAbstract {
 
   async #receiveLoop() {
     if (!this.transport) {
-      UNREACHABLE();
+      unreachable();
     }
     while (this.connected) {
       try {
@@ -252,7 +252,7 @@ export class ClientEncrypted extends ClientAbstract {
         this.#promises.delete(key);
       }
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 }

@@ -1,6 +1,6 @@
-import { contentType } from "../0_deps.ts";
+import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { getLogger, getRandomId, Logger, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
+import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { as, enums, functions, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
 import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId } from "../3_types.ts";
 import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
@@ -118,7 +118,7 @@ export class MessageManager {
         break;
       }
       default:
-        UNREACHABLE();
+        unreachable();
     }
 
     text = text.trimEnd();
@@ -220,7 +220,7 @@ export class MessageManager {
     });
 
     if (!("messages" in result)) {
-      UNREACHABLE();
+      unreachable();
     }
     for (const message_ of result.messages) {
       const message = await this.constructMessage(message_, false);
@@ -544,7 +544,7 @@ export class MessageManager {
         let fileName = params?.fileName ?? fileName_;
         const mimeType = params?.mimeType ?? contentType(fileName.split(".").slice(-1)[0]) ?? FALLBACK_MIME_TYPE;
         if (expectedMimeTypes && !expectedMimeTypes.includes(mimeType)) {
-          UNREACHABLE();
+          unreachable();
         }
         if (fileName.endsWith(".tgs") && fileType == FileType.Document) {
           fileName += "-";
@@ -651,10 +651,10 @@ export class MessageManager {
     }
     if (fileId != null) {
       if (!expectedFileType.includes(fileId.type)) {
-        UNREACHABLE();
+        unreachable();
       }
       return {
-        id: "id" in fileId.location ? fileId.location.id : UNREACHABLE(),
+        id: "id" in fileId.location ? fileId.location.id : unreachable(),
         access_hash: fileId.location.accessHash,
         file_reference: fileId.fileReference ?? new Uint8Array(),
       };
@@ -854,7 +854,7 @@ export class MessageManager {
     // TODO: sync with storage
     await this.#c.api.messages.setChatAvailableReactions({
       peer: await this.#c.getInputPeer(chatId),
-      available_reactions: availableReactions == "none" ? new types.ChatReactionsNone() : availableReactions == "all" ? new types.ChatReactionsAll() : Array.isArray(availableReactions) ? new types.ChatReactionsSome({ reactions: availableReactions.map((v) => v.type == "emoji" ? new types.ReactionEmoji({ emoticon: v.emoji }) : new types.ReactionCustomEmoji({ document_id: BigInt(v.id) })) }) : UNREACHABLE(),
+      available_reactions: availableReactions == "none" ? new types.ChatReactionsNone() : availableReactions == "all" ? new types.ChatReactionsAll() : Array.isArray(availableReactions) ? new types.ChatReactionsSome({ reactions: availableReactions.map((v) => v.type == "emoji" ? new types.ReactionEmoji({ emoticon: v.emoji }) : new types.ReactionCustomEmoji({ document_id: BigInt(v.id) })) }) : unreachable(),
     });
   }
 
@@ -1035,7 +1035,7 @@ export class MessageManager {
   async deleteChatPhoto(chatId: number) {
     const peer = await this.#c.getInputPeer(chatId);
     if (!(peer instanceof types.InputPeerChannel) && !(peer instanceof types.InputPeerChat)) {
-      UNREACHABLE();
+      unreachable();
     }
 
     if (peer instanceof types.InputPeerChannel) {
@@ -1048,7 +1048,7 @@ export class MessageManager {
   async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
     const peer = await this.#c.getInputPeer(chatId);
     if (!(peer instanceof types.InputPeerChannel) && !(peer instanceof types.InputPeerChat)) {
-      UNREACHABLE();
+      unreachable();
     }
 
     const [contents, fileName] = await getFileContents(photo);
@@ -1135,7 +1135,7 @@ export class MessageManager {
         hash: 0n,
       });
       if (participants instanceof types.channels.ChannelParticipantsNotModified) {
-        UNREACHABLE();
+        unreachable();
       }
       const chatMembers = new Array<ChatMember>();
       for (const p of participants.participants) {
@@ -1145,7 +1145,7 @@ export class MessageManager {
     } else if (peer instanceof types.InputPeerChat) {
       const fullChat = await this.#c.api.messages.getFullChat(peer); // TODO: full chat cache
       if (!(fullChat.full_chat instanceof types.ChatFull) || !(fullChat.full_chat.participants instanceof types.ChatParticipants)) {
-        UNREACHABLE();
+        unreachable();
       }
       const chatMembers = new Array<ChatMember>();
       for (const p of fullChat.full_chat.participants.participants) {
@@ -1153,7 +1153,7 @@ export class MessageManager {
       }
       return chatMembers;
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 
@@ -1186,7 +1186,7 @@ export class MessageManager {
       from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined,
     });
     if (!("messages" in result)) {
-      UNREACHABLE();
+      unreachable();
     }
     const messages = new Array<Message>();
     for (const message_ of result.messages) {
@@ -1238,7 +1238,7 @@ export class MessageManager {
     } else if (peer instanceof types.InputPeerChat) {
       await this.#c.api.messages.addChatUser({ chat_id: peer.chat_id, user_id: new types.InputUserSelf(), fwd_limit: 0 }); // TODO: use potential high-level method for adding participants to chats
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 
@@ -1251,7 +1251,7 @@ export class MessageManager {
     } else if (peer instanceof types.InputPeerChat) {
       await this.#c.api.messages.deleteChatUser({ chat_id: peer.chat_id, user_id: new types.InputUserSelf() }); // TODO: use potential high-level method for adding participants to chats
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 
@@ -1353,7 +1353,7 @@ export class MessageManager {
       const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
       return assertMessageType(message, "location");
     }
-    UNREACHABLE();
+    unreachable();
   }
 
   async editInlineMessageLiveLocation(inlineMessageId: string, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {

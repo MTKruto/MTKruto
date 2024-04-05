@@ -1,4 +1,5 @@
-import { base64EncodeUrlSafe, cleanObject, UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
+import { base64EncodeUrlSafe, cleanObject } from "../1_utilities.ts";
 import { serialize, types } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructLocation, Location } from "./0_location.ts";
@@ -21,7 +22,7 @@ export interface ChosenInlineResult {
 export async function constructChosenInlineResult(ubis: types.UpdateBotInlineSend, getEntity: EntityGetter): Promise<ChosenInlineResult> {
   const entity = await getEntity(new types.PeerUser(ubis));
   if (!entity || !(entity instanceof types.User)) {
-    UNREACHABLE();
+    unreachable();
   }
   return cleanObject({
     resultId: ubis.id,

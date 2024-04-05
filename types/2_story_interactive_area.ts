@@ -1,4 +1,4 @@
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { chatIdToPeer, enums, peerToChatId, types } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructLocation, Location } from "./0_location.ts";
@@ -64,7 +64,7 @@ export function constructStoryInteractiveArea(area: enums.MediaArea): StoryInter
   const position = constructStoryInteractiveAreaPosition(area.coordinates);
   if (area instanceof types.MediaAreaGeoPoint) {
     if (area.geo instanceof types.GeoPointEmpty) {
-      UNREACHABLE(); // will this ever be empty?
+      unreachable(); // will this ever be empty?
     }
     const location = constructLocation(area.geo);
     return { position, location };
@@ -89,7 +89,7 @@ export function constructStoryInteractiveArea(area: enums.MediaArea): StoryInter
       },
     };
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }
 
@@ -129,11 +129,11 @@ export async function storyInteractiveAreaToTlObject(area: StoryInteractiveArea,
   } else if ("messageReference" in area) {
     const entity = await getEntity(chatIdToPeer(area.messageReference.chatId));
     if (!(entity instanceof types.Channel)) {
-      UNREACHABLE();
+      unreachable();
     }
     const channel = new types.InputChannel({ channel_id: entity.id, access_hash: entity.access_hash ?? 0n });
     return new types.InputMediaAreaChannelPost({ coordinates, channel, msg_id: area.messageReference.messageId });
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }

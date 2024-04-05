@@ -1,4 +1,5 @@
-import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
+import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { AnyEntity, enums, peerToChatId, ReadObject, serialize, TLObject, TLReader, TLWriter, types } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
 
@@ -148,7 +149,7 @@ export abstract class Storage {
     const channel = await this.getEntity(id);
     if (channel) {
       if (!(channel instanceof types.Channel) && !(channel instanceof types.ChannelForbidden)) {
-        UNREACHABLE();
+        unreachable();
       }
       return typeof channel.access_hash === "bigint" ? channel.access_hash : null;
     } else {
@@ -160,7 +161,7 @@ export abstract class Storage {
     const user = await this.getEntity(id);
     if (user) {
       if (!(user instanceof types.User)) {
-        UNREACHABLE();
+        unreachable();
       }
       return typeof user.access_hash === "bigint" ? user.access_hash : null;
     } else {
@@ -277,7 +278,7 @@ export abstract class Storage {
   async setAccountType(type: "user" | "bot") {
     try {
       await this.getAccountType();
-      UNREACHABLE();
+      unreachable();
     } catch (err) {
       if (!(err instanceof Error) || !(err.message == "Unreachable")) {
         throw err;

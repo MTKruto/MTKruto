@@ -1,5 +1,6 @@
+import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { base64DecodeUrlSafe, base64EncodeUrlSafe, cleanObject, UNREACHABLE } from "../1_utilities.ts";
+import { base64DecodeUrlSafe, base64EncodeUrlSafe, cleanObject } from "../1_utilities.ts";
 import { enums, peerToChatId, serialize, TLReader, types } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructUser, User } from "./1_user.ts";
@@ -42,7 +43,7 @@ export function deserializeInlineMessageId(inlineMessageId: string): enums.Input
 export async function constructCallbackQuery(callbackQuery: types.UpdateBotCallbackQuery | types.UpdateInlineBotCallbackQuery, getEntity: EntityGetter, getMessage: MessageGetter): Promise<CallbackQuery> {
   const user_ = await getEntity(new types.PeerUser({ user_id: callbackQuery.user_id }));
   if (!user_) {
-    UNREACHABLE();
+    unreachable();
   }
   const user = constructUser(user_);
   const id = String(callbackQuery.query_id);
@@ -52,7 +53,7 @@ export async function constructCallbackQuery(callbackQuery: types.UpdateBotCallb
   if (callbackQuery instanceof types.UpdateBotCallbackQuery) {
     const message = await getMessage(peerToChatId(callbackQuery.peer), Number(callbackQuery.msg_id));
     if (message == null) {
-      UNREACHABLE();
+      unreachable();
     }
     return cleanObject({ id, from: user, message, chatInstance, data, gameShortName });
   } else {

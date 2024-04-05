@@ -1,3 +1,4 @@
+import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
@@ -56,8 +57,8 @@ export interface ChatMemberBanned extends ChatMemberBase {
 export type ChatMember = ChatMemberCreator | ChatMemberAdministrator | ChatMemberMember | ChatMemberRestricted | ChatMemberLeft | ChatMemberBanned;
 
 export async function constructChatMember(participant: enums.ChannelParticipant | enums.ChatParticipant, getEntity: EntityGetter): Promise<ChatMember> {
-  const user_ = "user_id" in participant ? await getEntity(new types.PeerUser(participant)) : "peer" in participant ? participant.peer instanceof types.PeerUser ? await getEntity(participant.peer) : UNREACHABLE() : UNREACHABLE(); // TODO: support other peer types
-  if (user_ == null) UNREACHABLE();
+  const user_ = "user_id" in participant ? await getEntity(new types.PeerUser(participant)) : "peer" in participant ? participant.peer instanceof types.PeerUser ? await getEntity(participant.peer) : UNREACHABLE() : unreachable(); // TODO: support other peer types
+  if (user_ == null) unreachable();
   const user = constructUser(user_);
   if (participant instanceof types.ChannelParticipant || participant instanceof types.ChatParticipant) {
     return {
@@ -98,7 +99,7 @@ export async function constructChatMember(participant: enums.ChannelParticipant 
       untilDate,
     });
   } else if (participant instanceof types.ChannelParticipantSelf) {
-    UNREACHABLE(); // TODO: implement
+    unreachable(); // TODO: implement
   } else if (participant instanceof types.ChannelParticipantLeft) {
     return { status: "left", user };
   } else if (participant instanceof types.ChatParticipantAdmin) {
@@ -127,6 +128,6 @@ export async function constructChatMember(participant: enums.ChannelParticipant 
       isAnonymous: false,
     });
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }

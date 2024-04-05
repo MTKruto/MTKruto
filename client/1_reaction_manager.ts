@@ -1,4 +1,4 @@
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { enums, peerToChatId, types } from "../2_tl.ts";
 import { constructMessageReaction, constructMessageReactionCount, constructMessageReactions, Update } from "../3_types.ts";
 import { C } from "./0_types.ts";
@@ -69,7 +69,7 @@ export class ReactionManager {
         return null;
       }
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 }

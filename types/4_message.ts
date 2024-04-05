@@ -1,3 +1,4 @@
+import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp, getLogger, MaybePromise, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
 import { FileId, FileType, toUniqueFileId } from "./_file_id.ts";
@@ -536,7 +537,7 @@ const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
 export function assertMessageType<T extends keyof MessageTypes>(message: Message, type: T): MessageTypes[T] {
   for (const key of keys[type]) {
     if (!(key in message) || message[key as keyof typeof message] === undefined) {
-      UNREACHABLE();
+      unreachable();
     }
   }
   return message as MessageTypes[T];
@@ -597,14 +598,14 @@ async function getSender(message_: types.Message | types.MessageService, getEnti
     if (entity) {
       return { from: constructUser(entity) };
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   } else if (message_.from_id instanceof types.PeerChannel) {
     const entity = await getEntity(message_.from_id);
     if (entity) {
       return { senderChat: constructChatP(entity) };
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 }
@@ -646,7 +647,7 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
         const user = constructUser(entity);
         newChatMembers.push(user);
       } else {
-        UNREACHABLE();
+        unreachable();
       }
     }
     return { ...message, newChatMembers };
@@ -685,7 +686,7 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
       const supergroupCreated = true;
       return { ...message, supergroupCreated };
     } else {
-      // UNREACHABLE();
+      // unreachable();
     }
   } else if (message_.action instanceof types.MessageActionChatMigrateTo) {
     const chatMigratedTo = ZERO_CHANNEL_ID + Number(-message_.action.channel_id);
@@ -756,7 +757,7 @@ export async function constructMessage(
   business?: { connectionId: string; replyToMessage?: enums.Message },
 ): Promise<Message> {
   if (!(message_ instanceof types.Message) && !(message_ instanceof types.MessageService)) {
-    UNREACHABLE();
+    unreachable();
   }
 
   let link: string | undefined;
@@ -766,14 +767,14 @@ export async function constructMessage(
     if (entity) {
       chat_ = constructChatP(entity);
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   } else if (message_.peer_id instanceof types.PeerChat) {
     const entity = await getEntity(message_.peer_id);
     if (entity) {
       chat_ = constructChatP(entity);
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   } else if (message_.peer_id instanceof types.PeerChannel) {
     link = `https://t.me/c/${message_.peer_id.channel_id}/${message_.id}`;
@@ -781,10 +782,10 @@ export async function constructMessage(
     if (entity) {
       chat_ = constructChatP(entity);
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 
   if (message_ instanceof types.MessageService) {
@@ -835,7 +836,7 @@ export async function constructMessage(
     if (viaBot) {
       message.viaBot = constructUser(viaBot);
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
   if (message_.via_business_bot_id != undefined) {
@@ -843,7 +844,7 @@ export async function constructMessage(
     if (viaBusinessBot) {
       message.viaBusinessBot = constructUser(viaBusinessBot);
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 
@@ -907,7 +908,7 @@ export async function constructMessage(
 
   if (message_.media instanceof types.MessageMediaPhoto) {
     if (!message_.media.photo) {
-      UNREACHABLE();
+      unreachable();
     }
     const photo = constructPhoto(message_.media.photo[as](types.Photo));
     m = { ...messageMedia, photo };

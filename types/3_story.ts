@@ -1,12 +1,12 @@
-import { cleanObject, fromUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
+import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructStoryPrivacy } from "./1_story_privacy.ts";
 import { StoryPrivacy } from "./1_story_privacy.ts";
-import { StoryContent } from "./2_story_content.ts";
-import { constructStoryContent } from "./2_story_content.ts";
+import { constructStoryContent, StoryContent } from "./2_story_content.ts";
 import { constructStoryInteractions, StoryInteractions } from "./2_story_interactions.ts";
 import { constructStoryInteractiveArea, StoryInteractiveArea } from "./2_story_interactive_area.ts";
 
@@ -30,7 +30,7 @@ export async function constructStory(story: types.StoryItem, peer: types.PeerUse
   const id = story.id;
   const entity = await getEntity(peer);
   if (!entity) {
-    UNREACHABLE();
+    unreachable();
   }
   const chat = constructChatP(entity);
   const date = fromUnixTimestamp(story.date);

@@ -1,4 +1,4 @@
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { types } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructLocation, Location } from "./0_location.ts";
@@ -23,7 +23,7 @@ export interface InlineQuery {
 export async function constructInlineQuery(query_: types.UpdateBotInlineQuery, getEntity: EntityGetter): Promise<InlineQuery> {
   const user_ = await getEntity(new types.PeerUser({ user_id: query_.user_id }));
   if (user_ == null) {
-    UNREACHABLE();
+    unreachable();
   }
 
   const user = constructUser(user_);
@@ -41,7 +41,7 @@ export async function constructInlineQuery(query_: types.UpdateBotInlineQuery, g
     } else if (query_.peer_type instanceof types.InlineQueryPeerTypeBroadcast) {
       chatType = "channel";
     } else {
-      UNREACHABLE();
+      unreachable();
     }
   }
 

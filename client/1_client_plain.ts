@@ -1,6 +1,6 @@
-import { assertEquals, assertInstanceOf, factorize, ige256Decrypt, ige256Encrypt } from "../0_deps.ts";
+import { assertEquals, assertInstanceOf, factorize, ige256Decrypt, ige256Encrypt, unreachable } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
-import { bigIntFromBuffer, bufferFromBigInt, concat, getLogger, getRandomBigInt, modExp, rsaPad, sha1, UNREACHABLE } from "../1_utilities.ts";
+import { bigIntFromBuffer, bufferFromBigInt, concat, getLogger, getRandomBigInt, modExp, rsaPad, sha1 } from "../1_utilities.ts";
 import { functions, serialize, TLReader, types } from "../2_tl.ts";
 import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
 import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
@@ -71,7 +71,7 @@ export class ClientPlain extends ClientAbstract {
       }
     }
     if (!resPq) {
-      UNREACHABLE();
+      unreachable();
     }
 
     const pq_ = bigIntFromBuffer(resPq.pq, false, false);

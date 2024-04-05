@@ -1,4 +1,5 @@
-import { cleanObject, getColorFromPeerId, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
+import { cleanObject, getColorFromPeerId, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 import { constructRestrictionReason, RestrictionReason } from "./0_restriction_reason.ts";
 
@@ -180,6 +181,6 @@ export function constructChatP(chat: types.User | types.Chat | types.ChatForbidd
 
     return cleanObject(chat_);
   } else {
-    UNREACHABLE();
+    unreachable();
   }
 }

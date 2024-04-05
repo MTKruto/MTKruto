@@ -1,4 +1,4 @@
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { enums, types } from "../2_tl.ts";
 import { InputPeerGetter } from "./_getters.ts";
 import { ID } from "./0_id.ts";
@@ -62,11 +62,11 @@ export async function botCommandScopeToTlObject(scope: BotCommandScope, getInput
     case "chatMember": {
       const user = await getInputPeer(scope.userId);
       if (!(user instanceof types.InputPeerUser)) {
-        UNREACHABLE();
+        unreachable();
       }
       return new types.BotCommandScopePeerUser({ peer: await getInputPeer(scope.chatId), user_id: new types.InputUser({ user_id: user.user_id, access_hash: user.access_hash }) });
     }
     default:
-      UNREACHABLE();
+      unreachable();
   }
 }

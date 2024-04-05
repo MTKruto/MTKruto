@@ -1,4 +1,4 @@
-import { UNREACHABLE } from "../1_utilities.ts";
+import { unreachable } from "../0_deps.ts";
 import { Connection } from "../2_connection.ts";
 import { Transport } from "./0_transport.ts";
 
@@ -24,7 +24,7 @@ export function getDcIps(dc: DC, version: "ipv4" | "ipv6"): [string, ...string[]
         case "3-test":
           return ["149.154.175.117"];
         default:
-          UNREACHABLE();
+          unreachable();
       }
       break;
     case "ipv6":
@@ -46,11 +46,11 @@ export function getDcIps(dc: DC, version: "ipv4" | "ipv6"): [string, ...string[]
         case "3-test":
           return ["2001:b28:f23d:f003::e"];
         default:
-          UNREACHABLE();
+          unreachable();
       }
       break;
     default:
-      UNREACHABLE();
+      unreachable();
   }
 }
 
