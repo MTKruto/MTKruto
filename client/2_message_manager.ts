@@ -9,6 +9,8 @@ import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
 import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
+import { checkMessageId } from "./0_utilities.ts";
+import { checkArray } from "./0_utilities.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
 
@@ -44,6 +46,7 @@ export class MessageManager {
   }
 
   async getMessages(chatId: ID, messageIds: number[]) {
+    checkArray(messageIds, checkMessageId);
     const peer = await this.#c.getInputPeer(chatId);
     let messages_ = new Array<enums.Message>();
     const chatId_ = peerToChatId(peer);
@@ -125,6 +128,10 @@ export class MessageManager {
       }
     }
 
+    if (!text.length) {
+      throw new InputError("Text must not be empty.");
+    }
+
     return [text, entities];
   }
 
@@ -167,6 +174,7 @@ export class MessageManager {
   }
 
   async forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams) {
+    checkArray(messageIds, checkMessageId);
     const result = await this.#c.api.messages.forwardMessages({
       from_peer: await this.#c.getInputPeer(from),
       to_peer: await this.#c.getInputPeer(to),
@@ -655,6 +663,13 @@ export class MessageManager {
   }
 
   async sendPoll(chatId: ID, question: string, options: [string, string, ...string[]], params?: SendPollParams) {
+    question = question?.trim();
+    if (!question) {
+      throw new Error("Question must not be empty.");
+    }
+    if (!Array.isArray(options) || options.length < 2) {
+      throw new Error("There must be at least two options.");
+    }
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
@@ -714,7 +729,7 @@ export class MessageManager {
     params?: EditMessageReplyMarkupParams,
   ) {
     const result = await this.#c.api.messages.editMessage({
-      id: messageId,
+      id: checkMessageId(messageId),
       peer: await this.#c.getInputPeer(chatId),
       reply_markup: await this.#constructReplyMarkup(params),
     });
@@ -756,7 +771,7 @@ export class MessageManager {
     }
 
     const result = await this.#c.api.messages.editMessage({
-      id: messageId,
+      id: checkMessageId(messageId),
       peer: await this.#c.getInputPeer(chatId),
       entities,
       message,
@@ -799,6 +814,7 @@ export class MessageManager {
   }
 
   async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams) {
+    checkArray(messageIds, checkMessageId);
     const peer = await this.#c.getInputPeer(chatId);
     if (peer instanceof types.InputPeerChannel) {
       await this.#c.api.channels.deleteMessages({ channel: new types.InputChannel(peer), id: messageIds });
@@ -816,7 +832,7 @@ export class MessageManager {
   async pinMessage(chatId: ID, messageId: number, params?: PinMessageParams) {
     await this.#c.api.messages.updatePinnedMessage({
       peer: await this.#c.getInputPeer(chatId),
-      id: messageId,
+      id: checkMessageId(messageId),
       silent: params?.disableNotification ? true : undefined,
       pm_oneside: params?.bothSides ? undefined : true,
     });
@@ -825,7 +841,7 @@ export class MessageManager {
   async unpinMessage(chatId: ID, messageId: number) {
     await this.#c.api.messages.updatePinnedMessage({
       peer: await this.#c.getInputPeer(chatId),
-      id: messageId,
+      id: checkMessageId(messageId),
       unpin: true,
     });
   }
@@ -845,7 +861,7 @@ export class MessageManager {
   async #sendReaction(chatId: number, messageId: number, reactions: Reaction[], params?: AddReactionParams) {
     await this.#c.api.messages.sendReaction({
       peer: await this.#c.getInputPeer(chatId),
-      msg_id: messageId,
+      msg_id: checkMessageId(messageId),
       reaction: reactions.map((v) => reactionToTlObject(v)),
       big: params?.big ? true : undefined,
       add_to_recent: params?.addToRecents ? true : undefined,
@@ -857,7 +873,11 @@ export class MessageManager {
   }
 
   async addReaction(chatId: number, messageId: number, reaction: Reaction, params?: AddReactionParams) {
-    const chosenReactions = await this.getMessage(chatId, messageId).then((v) => v?.reactions ?? []).then((v) => v.filter((v) => v.chosen));
+    const message = await this.getMessage(chatId, messageId);
+    if (!message) {
+      throw new InputError("Message not found.");
+    }
+    const chosenReactions = (message.reactions ?? []).filter((v) => v.chosen);
     for (const r of chosenReactions) {
       if (reactionEqual(r.reaction, reaction)) {
         return;
@@ -868,7 +888,11 @@ export class MessageManager {
   }
 
   async removeReaction(chatId: number, messageId: number, reaction: Reaction) {
-    const chosenReactions = await this.getMessage(chatId, messageId).then((v) => v?.reactions ?? []).then((v) => v.filter((v) => v.chosen));
+    const message = await this.getMessage(chatId, messageId);
+    if (!message) {
+      throw new InputError("Message not found.");
+    }
+    const chosenReactions = (message.reactions ?? []).filter((v) => v.chosen);
     for (const r of chosenReactions) {
       if (reactionEqual(r.reaction, reaction)) {
         const reactions = chosenReactions.filter((v) => v != r).map((v) => v.reaction);

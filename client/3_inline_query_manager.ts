@@ -3,6 +3,7 @@ import { enums, types } from "../2_tl.ts";
 import { constructChosenInlineResult, constructInlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Update } from "../3_types.ts";
 import { AnswerInlineQueryParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
+import { checkInlineQueryId } from "./0_utilities.ts";
 import { MessageManager } from "./2_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };
@@ -18,6 +19,7 @@ export class InlineQueryManager {
 
   async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
     await this.#c.storage.assertBot("answerInlineQuery");
+    checkInlineQueryId(id);
     await this.#c.api.messages.setInlineBotResults({
       query_id: BigInt(id),
       results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.#c.messageManager.parseText.bind(this.#c.messageManager), this.#c.messageManager.usernameResolver.bind(this.#c.messageManager)))),

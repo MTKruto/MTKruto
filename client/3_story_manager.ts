@@ -6,7 +6,7 @@ import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, st
 import { InputStoryContent } from "../types/1_input_story_content.ts";
 import { CreateStoryParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
-import { getFileContents, isHttpUrl } from "./0_utilities.ts";
+import { checkArray, checkStoryId, getFileContents, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
 import { MessageManager } from "./2_message_manager.ts";
 
@@ -98,6 +98,7 @@ export class StoryManager {
 
   async getStories(chatId: ID, storyIds: number[]) {
     await this.#c.storage.assertUser("getStories");
+    checkArray(storyIds, checkStoryId);
     const peer = await this.#c.getInputPeer(chatId);
     const stories_ = await this.#c.api.stories.getStoriesByID({ peer, id: storyIds });
     const stories = new Array<Story>();
@@ -124,6 +125,7 @@ export class StoryManager {
   }
 
   async #togglePinned(chatId: ID, storyIds: number[], pinned: boolean) {
+    checkArray(storyIds, checkStoryId);
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.api.stories.togglePinned({ peer, id: storyIds, pinned });
   }

@@ -2,6 +2,7 @@ import { enums, types } from "../2_tl.ts";
 import { constructCallbackQuery, Update } from "../3_types.ts";
 import { AnswerCallbackQueryParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
+import { checkCallbackQueryId } from "./0_utilities.ts";
 import { MessageManager } from "./2_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };
@@ -17,6 +18,7 @@ export class CallbackQueryManager {
 
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
     await this.#c.storage.assertBot("answerCallbackQuery");
+    checkCallbackQueryId(id);
     await this.#c.api.messages.setBotCallbackAnswer({
       query_id: BigInt(id),
       cache_time: params?.cacheTime ?? 0,

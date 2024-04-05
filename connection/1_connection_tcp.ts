@@ -1,4 +1,4 @@
-import { Mutex } from "../0_deps.ts";
+import { Mutex } from "../1_utilities.ts";
 import { ConnectionUnframed } from "./0_connection.ts";
 
 export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnframed {
