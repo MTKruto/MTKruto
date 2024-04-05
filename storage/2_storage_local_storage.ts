@@ -1,5 +1,5 @@
 import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
-import { fromString, isInRange, toString, WEB_STORAGE_PREFIX_EXP } from "./1_utilities.ts";
+import { fromString, isInRange, toString } from "./1_utilities.ts";
 
 export class StorageLocalStorage extends Storage implements Storage {
   readonly #prefix: string;
@@ -10,8 +10,6 @@ export class StorageLocalStorage extends Storage implements Storage {
     }
     if (prefix.length <= 0) {
       throw new Error("Empty prefix");
-    } else if (!WEB_STORAGE_PREFIX_EXP.test(prefix)) {
-      throw new Error("Unallowed prefix");
     }
     super();
     this.#prefix = prefix;
