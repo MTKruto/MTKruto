@@ -3,6 +3,19 @@ let verbosity = Number("LOG_VERBOSITY" in globalThis ? (globalThis as any).LOG_V
 export function setLogVerbosity(verbosity_: number) {
   verbosity = verbosity_;
 }
+let provider: LoggingProvider = console;
+
+export interface LoggingProvider {
+  error(...args: any[]): void;
+  warn(...args: any[]): void;
+  info(...args: any[]): void;
+  debug(...args: any[]): void;
+  log(...args: any[]): void;
+}
+
+export function setLoggingProvider(provider_: LoggingProvider) {
+  provider = provider_;
+}
 
 export const ERROR = 1;
 export const WARNING = 2;
@@ -68,22 +81,22 @@ export function getLogger(scope: string) {
       if (verbosity < verbosity_) {
         return;
       }
-      let fn: typeof console["log"];
+      let fn: typeof provider["log"];
       switch (verbosity_) {
         case ERROR:
-          fn = console.error;
+          fn = provider.error;
           break;
         case WARNING:
-          fn = console.warn;
+          fn = provider.warn;
           break;
         case INFO:
-          fn = console.info;
+          fn = provider.info;
           break;
         case DEBUG:
-          fn = console.debug;
+          fn = provider.debug;
           break;
         default:
-          fn = console.log;
+          fn = provider.log;
       }
       fn(`[${verbosity_} ${scope}]`, ...args);
     },
