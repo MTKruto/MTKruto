@@ -11,5 +11,6 @@ export * from "./utilities/0_rle.ts";
 export * from "./utilities/0_types.ts";
 export * from "./utilities/1_auth.ts";
 export * from "./utilities/1_base64.ts";
+export * from "./utilities/1_math.ts";
 export * from "./utilities/1_misc.ts";
 export * from "./utilities/1_queue.ts";

@@ -1,6 +1,6 @@
-import { assertEquals, assertInstanceOf, factorize, ige256Decrypt, ige256Encrypt, unreachable } from "../0_deps.ts";
+import { assertEquals, assertInstanceOf, ige256Decrypt, ige256Encrypt, unreachable } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
-import { bigIntFromBuffer, bufferFromBigInt, concat, getLogger, getRandomBigInt, modExp, rsaPad, sha1 } from "../1_utilities.ts";
+import { bigIntFromBuffer, bufferFromBigInt, concat, factorize, getLogger, getRandomBigInt, modExp, rsaPad, sha1 } from "../1_utilities.ts";
 import { functions, serialize, TLReader, types } from "../2_tl.ts";
 import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
 import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
