@@ -1,5 +1,6 @@
 import { path, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
+import { functions } from "../2_tl.ts";
 import { FileSource } from "../3_types.ts";
 
 export const resolve = () => Promise.resolve();
@@ -160,4 +161,16 @@ export function checkInlineQueryId(id: string) {
   if (typeof id !== "string" || !id.trim()) {
     throw new InputError("Invalid inline query ID.");
   }
+}
+
+export function isMtprotoFunction(value: unknown) {
+  return value instanceof functions.ping ||
+    value instanceof functions.ping_delay_disconnect ||
+    value instanceof functions.req_pq_multi ||
+    value instanceof functions.rpc_drop_answer ||
+    value instanceof functions.get_future_salts ||
+    value instanceof functions.destroy_session ||
+    value instanceof functions.destroy_auth_key ||
+    value instanceof functions.req_DH_params ||
+    value instanceof functions.set_client_DH_params;
 }

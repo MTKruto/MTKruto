@@ -10,7 +10,7 @@ import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordH
 import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageLiveLocationParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { Api } from "./0_types.ts";
-import { getUsername, resolve } from "./0_utilities.ts";
+import { getUsername, isMtprotoFunction, resolve } from "./0_utilities.ts";
 import { AccountManager } from "./1_account_manager.ts";
 import { BotInfoManager } from "./1_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./1_business_connection_manager.ts";
@@ -1192,7 +1192,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     let n = 1;
     while (true) {
       try {
-        if (function_ instanceof functions.Function && !this.#connectionInited) {
+        if (function_ instanceof functions.Function && !this.#connectionInited && !isMtprotoFunction(function_)) {
           const result = await this.#client.invoke(
             new functions.initConnection({
               api_id: await this.#getApiId(),
