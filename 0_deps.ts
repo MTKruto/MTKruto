@@ -22,7 +22,7 @@ export function extension(mimeType: string) {
   }
 }
 
-export { ctr256, factorize, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "https://deno.land/x/tgcrypto@0.3.3/mod.ts";
+export { ctr256, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "https://deno.land/x/tgcrypto@0.4.0/mod.ts";
 
 export { gunzip, gzip } from "https://raw.githubusercontent.com/MTKruto/compress/main/mod.ts";
 
