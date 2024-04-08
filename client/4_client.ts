@@ -1314,7 +1314,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         inputPeer.access_hash = await this.#getUserAccessHash(inputPeer.user_id);
       }
     }
-    if ((inputPeer instanceof types.InputPeerUser || inputPeer instanceof types.InputPeerChannel && inputPeer.access_hash == 0n) && await this.storage.getAccountType() == "user") {
+    if ((inputPeer instanceof types.InputPeerUser || inputPeer instanceof types.InputPeerChannel) && inputPeer.access_hash == 0n && await this.storage.getAccountType() == "user") {
       throw new AccessError(`Cannot access the chat ${id} because there is no access hash for it.`);
     }
     return inputPeer;
