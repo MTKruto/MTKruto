@@ -47,7 +47,7 @@ jobs:
         with:
           version: 8
 
-      - run: pnpm dlx madge --circular mod.ts
+      - run: pnpm dlx dpdm --exit-code circular:1 mod.ts
 
       - run: deno run --allow-read https://raw.githubusercontent.com/MTKruto/tools/main/check_import_levels.ts
 
@@ -124,7 +124,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Transform
-        run: deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_browser.ts 0.0.0 ./mod.ts
+        run: deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform_browser.ts 0.0.0 ./mod.ts
 
   transform-node:
     runs-on: ubuntu-latest
@@ -170,7 +170,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Transform
-        run: deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_node.ts 0.0.0 ./mod.ts
+        run: deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform_node.ts 0.0.0 ./mod.ts
 
   doc:
     runs-on: ubuntu-latest

@@ -74,4 +74,4 @@ console.debug(pong);
 
 ## License
 
-MTKruto is made open-source under the GNU Lesser General Public License version 3, or at your option, any later version. Refer to [LICENSE](./LICENSE) for more.
+MTKruto is made open-source under the GNU Lesser General Public License version 3, or at your option, any later version. Refer to [COPYING](./COPYING) and [COPYING.LESSER](./COPYING.LESSER) for more.
