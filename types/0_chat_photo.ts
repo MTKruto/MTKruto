@@ -34,7 +34,6 @@ export interface _ChatPhotoBase {
   bigFileUniqueId: string;
   /** Whether the chat photo is animated. */
   hasVideo: boolean;
-  strippedThumbnail?: Uint8Array;
 }
 
 /** @unlisted */
@@ -75,7 +74,6 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
       bigFileId,
       bigFileUniqueId,
       hasVideo: photo.has_video || false,
-      strippedThumbnail: photo.stripped_thumb,
     });
   } else {
     return cleanObject({
@@ -85,7 +83,6 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
       bigFileId,
       bigFileUniqueId,
       hasVideo: photo.has_video || false,
-      strippedThumbnail: photo.stripped_thumb,
     });
   }
 }
