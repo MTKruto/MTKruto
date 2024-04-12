@@ -47,35 +47,23 @@ jobs:
         run: |
           cd MTKruto
           echo "<https://github.com/MTKruto/MTKruto>" > README.md
-          deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_browser.ts ${{ github.ref_name }} ./mod.ts
-          cd dist
-          npm publish --access public
-          cd ..
           deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_node.ts ${{ github.ref_name }} ./mod.ts
           cd dist
-          npm publish --access public
+          ls script/deps/deno.land
+          echo
+          echo
+          echo
+          ls script/deps/deno.land/x
+          echo
+          echo
+          echo
+          echo
+          echo
+          echo
+          echo
+          cat .npmignore
+          echo
+          echo
+          echo
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-  create-release:
-    name: Create Release
-    needs: publish-npm
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: softprops/action-gh-release@v1
-        with:
-          prerelease: true
-          generate_release_notes: true
-
-      - uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.PAT_TOKEN }}
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: "MTKruto",
-              repo: "website",
-              workflow_id: "doc.yml",
-              ref: "main",
-            });
