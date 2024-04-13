@@ -22,12 +22,12 @@ import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { as, enums, functions, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
-import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId } from "../3_types.ts";
+import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId, InputMedia } from "../3_types.ts";
 import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
+import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { checkMessageId } from "./0_utilities.ts";
 import { checkArray } from "./0_utilities.ts";
@@ -618,7 +618,8 @@ export class MessageManager {
       if (typeof photo === "string" && isHttpUrl(photo)) {
         media = new types.InputMediaPhotoExternal({ url: photo, spoiler });
       } else {
-        const [contents, fileName] = await getFileContents(photo);
+        const [contents, fileName_] = await getFileContents(photo);
+        const fileName = params?.fileName ?? fileName_;
         const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
         media = new types.InputMediaUploadedPhoto({ file, spoiler });
       }
@@ -829,6 +830,143 @@ export class MessageManager {
       media,
       no_webpage: noWebpage,
       invert_media: invertMedia,
+      reply_markup: await this.#constructReplyMarkup(params),
+    });
+  }
+
+  async #resolveInputMediaInner(document: FileSource, media: InputMedia, fileType: FileType, otherAttribs: enums.DocumentAttribute[]) {
+    let media_: enums.InputMedia | null = null;
+    const spoiler = "hasSpoiler" in media && media.hasSpoiler ? true : undefined;
+
+    if (typeof document === "string") {
+      const fileId = this.resolveFileId(document, fileType);
+      if (fileId != null) {
+        media_ = new types.InputMediaDocument({
+          id: new types.InputDocument(fileId),
+          spoiler,
+          query: otherAttribs.find((v): v is types.DocumentAttributeSticker => v instanceof types.DocumentAttributeSticker)?.alt || undefined,
+        });
+      }
+    }
+
+    if (media_ == null) {
+      if (typeof document === "string" && isHttpUrl(document)) {
+        media_ = new types.InputMediaDocumentExternal({ url: document, spoiler });
+      } else {
+        const [contents, fileName_] = await getFileContents(document);
+        let fileName = media?.fileName ?? fileName_;
+        const mimeType = media?.mimeType ?? contentType(fileName.split(".").slice(-1)[0]) ?? FALLBACK_MIME_TYPE;
+        if (fileName.endsWith(".tgs") && fileType == FileType.Document) {
+          fileName += "-";
+        }
+        const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: media?.chunkSize, signal: media?.signal });
+        let thumb: enums.InputFile | undefined = undefined;
+        if ("thumbnail" in media && media.thumbnail) {
+          const [thumbContents, fileName__] = await getFileContents(media.thumbnail);
+          thumb = await this.#c.fileManager.upload(thumbContents, { fileName: fileName__, chunkSize: media?.chunkSize, signal: media?.signal });
+        }
+        media_ = new types.InputMediaUploadedDocument({
+          file,
+          thumb,
+          spoiler,
+          attributes: [new types.DocumentAttributeFilename({ file_name: fileName }), ...otherAttribs],
+          mime_type: mimeType,
+          force_file: fileType == FileType.Document ? true : undefined,
+        });
+      }
+    }
+
+    return media_;
+  }
+  async #resolveInputMedia(media: InputMedia) {
+    if ("animation" in media) {
+      return await this.#resolveInputMediaInner(media.animation, media, FileType.Animation, [
+        new types.DocumentAttributeAnimated(),
+        new types.DocumentAttributeVideo({
+          supports_streaming: true,
+          w: media?.width ?? 0,
+          h: media?.height ?? 0,
+          duration: media?.duration ?? 0,
+        }),
+      ]);
+    } else if ("audio" in media) {
+      return await this.#resolveInputMediaInner(media.audio, media, FileType.Audio, [
+        new types.DocumentAttributeAudio({
+          duration: media?.duration ?? 0,
+          performer: media?.performer,
+          title: media?.title,
+        }),
+      ]);
+    } else if ("document" in media) {
+      return await this.#resolveInputMediaInner(media.document, media, FileType.Document, []);
+    } else if ("photo" in media) {
+      let media_: enums.InputMedia | null = null;
+      const spoiler = media.hasSpoiler ? true : undefined;
+
+      if (typeof media.photo === "string") {
+        const fileId = this.resolveFileId(media.photo, [FileType.Photo, FileType.ProfilePhoto]);
+        if (fileId != null) {
+          media_ = new types.InputMediaPhoto({
+            id: new types.InputPhoto(fileId),
+            spoiler,
+          });
+        }
+      }
+
+      if (media_ == null) {
+        if (typeof media.photo === "string" && isHttpUrl(media.photo)) {
+          media_ = new types.InputMediaPhotoExternal({ url: media.photo, spoiler });
+        } else {
+          const [contents, fileName] = await getFileContents(media.photo);
+          const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: media?.chunkSize, signal: media?.signal });
+          media_ = new types.InputMediaUploadedPhoto({ file, spoiler });
+        }
+      }
+
+      return media_;
+    } else if ("video" in media) {
+      return await this.#resolveInputMediaInner(media.video, media, FileType.Video, [
+        new types.DocumentAttributeVideo({
+          supports_streaming: media?.supportsStreaming ? true : undefined,
+          w: media?.width ?? 0,
+          h: media?.height ?? 0,
+          duration: media?.duration ?? 0,
+        }),
+      ]);
+    } else {
+      unreachable();
+    }
+  }
+  async editMessageMedia(
+    chatId: ID,
+    messageId: number,
+    media: InputMedia,
+    params?: EditMessageMediaParams,
+  ) {
+    const message = await this.getMessage(chatId, messageId);
+    if (!message) {
+      throw new InputError("Message not found.");
+    }
+    if (!("animation" in message) && !("audio" in message) && !("document" in message) && !("photo" in message) && !("video" in message)) {
+      throw new InputError("Unexpected message type.");
+    }
+    const result = await this.#c.api.messages.editMessage({
+      peer: await this.#c.getInputPeer(chatId),
+      id: messageId,
+      media: await this.#resolveInputMedia(media),
+      reply_markup: await this.#constructReplyMarkup(params),
+    });
+
+    const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return message_;
+  }
+
+  async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditMessageMediaParams) {
+    await this.#c.storage.assertBot("editInlineMessageMedia");
+    const id = deserializeInlineMessageId(inlineMessageId);
+    await this.#c.api.messages.editInlineBotMessage({
+      id,
+      media: await this.#resolveInputMedia(media),
       reply_markup: await this.#constructReplyMarkup(params),
     });
   }

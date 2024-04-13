@@ -57,6 +57,7 @@ export * from "./types/1_chat_p.ts";
 export * from "./types/1_document.ts";
 export * from "./types/1_giveaway.ts";
 export * from "./types/1_inline_query_result_button.ts";
+export * from "./types/1_input_media.ts";
 export * from "./types/1_input_message_content.ts";
 export * from "./types/1_input_story_content.ts";
 export * from "./types/1_keyboard_button.ts";
