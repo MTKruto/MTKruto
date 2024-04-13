@@ -1,5 +1,6 @@
 import { FileSource } from "./0_file_source.ts";
 
+/** @unlisted */
 export interface _InputMediaCommon {
   /** The file name to assign if applicable. */
   fileName?: string;
