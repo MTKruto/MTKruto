@@ -39,5 +39,11 @@ export abstract class Transport {
   abstract initialize(): MaybePromise<void>;
   abstract receive(): MaybePromise<Uint8Array>;
   abstract send(buffer: Uint8Array): MaybePromise<void>;
-  abstract deinitialize(): MaybePromise<void>;
+  deinitialize(): MaybePromise<void> {
+    if (this.obfuscationParameters) {
+      this.obfuscationParameters.encryptionCTR.destroy();
+      this.obfuscationParameters.decryptionCTR.destroy();
+      this.obfuscationParameters = null;
+    }
+  }
 }

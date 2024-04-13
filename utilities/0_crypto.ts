@@ -18,15 +18,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ctr256 } from "../0_deps.ts";
+import { createCtr256State, ctr256, Ctr256State, destroyCtr256State } from "../0_deps.ts";
 
 export class CTR {
-  state: Uint8Array = new Uint8Array(1);
+  #key: Uint8Array;
+  #state: Ctr256State;
 
-  constructor(public readonly key: Uint8Array, public iv: Uint8Array) {
+  constructor(key: Uint8Array, iv: Uint8Array) {
+    this.#state = createCtr256State(iv);
+    this.#key = key;
   }
 
+  /** This must not be called after destroying. */
   call(data: Uint8Array) {
-    ctr256(data, this.key, this.iv, this.state);
+    ctr256(data, this.#key, this.#state);
+  }
+
+  destroy() {
+    destroyCtr256State(this.#state);
   }
 }

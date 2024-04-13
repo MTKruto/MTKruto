@@ -91,6 +91,7 @@ export class TransportAbridged extends Transport implements Transport {
   }
 
   deinitialize() {
+    super.deinitialize();
     this.#initialized = false;
   }
 

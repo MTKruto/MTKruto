@@ -19,13 +19,13 @@
  */
 
 // connection/1_connection_tcp.ts must be updated too when updating std.
-export * from "https://deno.land/std@0.221.0/assert/mod.ts";
+export * from "https://deno.land/std@0.222.1/assert/mod.ts";
 
-export * as path from "https://deno.land/std@0.221.0/path/mod.ts";
+export * as path from "https://deno.land/std@0.222.1/path/mod.ts";
 
-export { decodeBase64, encodeBase64 } from "https://deno.land/std@0.221.0/encoding/base64.ts";
+export { decodeBase64, encodeBase64 } from "https://deno.land/std@0.222.1/encoding/base64.ts";
 
-import { contentType as contentType_ } from "https://deno.land/std@0.221.0/media_types/content_type.ts";
+import { contentType as contentType_ } from "https://deno.land/std@0.222.1/media_types/content_type.ts";
 export const contentType: typeof contentType_ = (extentionOrType) => {
   if (extentionOrType == "tgs") {
     return "application/x-tgsticker";
@@ -33,7 +33,7 @@ export const contentType: typeof contentType_ = (extentionOrType) => {
     return contentType_(extentionOrType);
   }
 };
-import { extension as extension_ } from "https://deno.land/std@0.221.0/media_types/extension.ts";
+import { extension as extension_ } from "https://deno.land/std@0.222.1/media_types/extension.ts";
 export function extension(mimeType: string) {
   if (mimeType == "application/x-tgsticker") {
     return "tgs";
@@ -42,7 +42,7 @@ export function extension(mimeType: string) {
   }
 }
 
-export { ctr256, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "https://deno.land/x/tgcrypto@0.4.0/mod.ts";
+export { createCtr256State, ctr256, type Ctr256State, destroyCtr256State, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "https://deno.land/x/tgcrypto@0.4.1/mod.ts";
 
 export { gunzip, gzip } from "https://raw.githubusercontent.com/MTKruto/compress/main/mod.ts";
 

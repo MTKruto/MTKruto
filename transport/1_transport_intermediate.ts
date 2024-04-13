@@ -77,6 +77,7 @@ export class TransportIntermediate extends Transport implements Transport {
   }
 
   deinitialize() {
+    super.deinitialize();
     this.#initialized = false;
   }
 
