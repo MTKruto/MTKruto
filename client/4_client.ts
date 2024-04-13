@@ -1797,6 +1797,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @method ms
    * @param inlineMessageId The inline message's identifier.
+   * @param media The new media of the message.
    */
   async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditMessageMediaParams): Promise<void> {
     await this.#messageManager.editInlineMessageMedia(inlineMessageId, media, params);
