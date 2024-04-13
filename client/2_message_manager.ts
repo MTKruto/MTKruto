@@ -618,7 +618,8 @@ export class MessageManager {
       if (typeof photo === "string" && isHttpUrl(photo)) {
         media = new types.InputMediaPhotoExternal({ url: photo, spoiler });
       } else {
-        const [contents, fileName] = await getFileContents(photo);
+        const [contents, fileName_] = await getFileContents(photo);
+        const fileName = params?.fileName ?? fileName_;
         const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
         media = new types.InputMediaUploadedPhoto({ file, spoiler });
       }
