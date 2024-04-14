@@ -618,7 +618,7 @@ export class MessageManager {
       if (typeof photo === "string" && isHttpUrl(photo)) {
         media = new types.InputMediaPhotoExternal({ url: photo, spoiler });
       } else {
-        const file = await this.#c.fileManager.upload(photo, params);
+        const file = await this.#c.fileManager.upload(photo, params, null, false);
         media = new types.InputMediaUploadedPhoto({ file, spoiler });
       }
     }
@@ -915,7 +915,7 @@ export class MessageManager {
         if (typeof media.photo === "string" && isHttpUrl(media.photo)) {
           media_ = new types.InputMediaPhotoExternal({ url: media.photo, spoiler });
         } else {
-          const file = await this.#c.fileManager.upload(media.photo, media);
+          const file = await this.#c.fileManager.upload(media.photo, media, null, false);
           media_ = new types.InputMediaUploadedPhoto({ file, spoiler });
         }
       }

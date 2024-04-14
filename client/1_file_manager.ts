@@ -42,8 +42,8 @@ export class FileManager {
     this.#Lupload = L.branch("upload");
   }
 
-  async upload(file: FileSource, params?: UploadParams, checkName?: (name: string) => string) {
-    let { size, name, contents } = await FileManager.#getFileContents(file, params);
+  async upload(file: FileSource, params?: UploadParams, checkName?: null | ((name: string) => string), allowStream = true) {
+    let { size, name, contents } = await FileManager.#getFileContents(file, params, allowStream);
     if (checkName) {
       name = checkName(name);
     }
@@ -164,7 +164,7 @@ export class FileManager {
     }
   }
 
-  static async #getFileContents(source: FileSource, params: UploadParams | undefined) {
+  static async #getFileContents(source: FileSource, params: UploadParams | undefined, allowStream: boolean) {
     let name = params?.fileName?.trim() || "file";
     let contents: Uint8Array | ReadableStreamDefaultReader<Uint8Array>;
     let size = -1;
@@ -172,8 +172,14 @@ export class FileManager {
       contents = source;
       size = source.byteLength;
     } else if (source instanceof ReadableStream) {
+      if (!allowStream) {
+        throw new InputError("Streamed upload not allowed.");
+      }
       contents = source.getReader();
     } else if (typeof source === "object" && source != null && (Symbol.iterator in source || Symbol.asyncIterator in source)) {
+      if (!allowStream) {
+        throw new InputError("Streamed upload not allowed.");
+      }
       contents = new ReadableStream({
         pull: Symbol.asyncIterator in source
           ? async (controller) => {
@@ -226,7 +232,11 @@ export class FileManager {
       if (!isNaN(contentLength)) {
         size = contentLength;
       }
-      contents = response.body.getReader();
+      if (allowStream) {
+        contents = response.body.getReader();
+      } else {
+        contents = new Uint8Array(await response.arrayBuffer());
+      }
     }
     return { size: params?.fileSize ? params.fileSize : size, name, contents };
   }
