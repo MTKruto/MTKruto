@@ -47,6 +47,7 @@ export * from "./types/0_poll_option.ts";
 export * from "./types/0_price_tag.ts";
 export * from "./types/0_reaction.ts";
 export * from "./types/0_restriction_reason.ts";
+export * from "./types/0_self_destruct_option.ts";
 export * from "./types/0_story_reference.ts";
 export * from "./types/0_thumbnail.ts";
 export * from "./types/0_voice.ts";
