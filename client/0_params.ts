@@ -141,6 +141,7 @@ export interface _UploadCommon {
 export interface UploadParams {
   /** The file name to assign. */
   fileName?: string;
+  fileSize?: number;
   /** Size of each upload chunk in bytes. */
   chunkSize?: number;
   /** Upload abort signal. */
