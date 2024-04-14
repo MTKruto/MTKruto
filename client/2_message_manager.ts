@@ -31,7 +31,7 @@ import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkPa
 import { C as C_ } from "./0_types.ts";
 import { checkMessageId } from "./0_utilities.ts";
 import { checkArray } from "./0_utilities.ts";
-import { getFileContents, isHttpUrl } from "./0_utilities.ts";
+import { isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
 
 const FALLBACK_MIME_TYPE = "application/octet-stream";
@@ -560,27 +560,27 @@ export class MessageManager {
         }
         media = new types.InputMediaDocumentExternal({ url: document, spoiler });
       } else {
-        const [contents, fileName_] = await getFileContents(document);
-        let fileName = params?.fileName ?? fileName_;
-        const mimeType = params?.mimeType ?? contentType(fileName.split(".").slice(-1)[0]) ?? FALLBACK_MIME_TYPE;
-        if (expectedMimeTypes && !expectedMimeTypes.includes(mimeType)) {
-          unreachable();
-        }
-        if (fileName.endsWith(".tgs") && fileType == FileType.Document) {
-          fileName += "-";
-        }
-        const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+        let mimeType: string;
+        const file = await this.#c.fileManager.upload(document, params, (name) => {
+          mimeType = params?.mimeType ?? contentType(name.split(".").slice(-1)[0]) ?? FALLBACK_MIME_TYPE;
+          if (expectedMimeTypes && !expectedMimeTypes.includes(mimeType)) {
+            unreachable();
+          }
+          if (name.endsWith(".tgs") && fileType == FileType.Document) {
+            name += "-";
+          }
+          return name;
+        });
         let thumb: enums.InputFile | undefined = undefined;
         if (params?.thumbnail) {
-          const [thumbContents, fileName__] = await getFileContents(params.thumbnail);
-          thumb = await this.#c.fileManager.upload(thumbContents, { fileName: fileName__, chunkSize: params?.chunkSize, signal: params?.signal });
+          thumb = await this.#c.fileManager.upload(params.thumbnail, { chunkSize: params?.chunkSize, signal: params?.signal });
         }
         media = new types.InputMediaUploadedDocument({
           file,
           thumb,
           spoiler,
-          attributes: [new types.DocumentAttributeFilename({ file_name: fileName }), ...otherAttribs],
-          mime_type: mimeType,
+          attributes: [new types.DocumentAttributeFilename({ file_name: file.name }), ...otherAttribs],
+          mime_type: mimeType!,
           force_file: fileType == FileType.Document ? true : undefined,
         });
       }
@@ -618,9 +618,7 @@ export class MessageManager {
       if (typeof photo === "string" && isHttpUrl(photo)) {
         media = new types.InputMediaPhotoExternal({ url: photo, spoiler });
       } else {
-        const [contents, fileName_] = await getFileContents(photo);
-        const fileName = params?.fileName ?? fileName_;
-        const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+        const file = await this.#c.fileManager.upload(photo, params, null, false);
         media = new types.InputMediaUploadedPhoto({ file, spoiler });
       }
     }
@@ -853,24 +851,24 @@ export class MessageManager {
       if (typeof document === "string" && isHttpUrl(document)) {
         media_ = new types.InputMediaDocumentExternal({ url: document, spoiler });
       } else {
-        const [contents, fileName_] = await getFileContents(document);
-        let fileName = media?.fileName ?? fileName_;
-        const mimeType = media?.mimeType ?? contentType(fileName.split(".").slice(-1)[0]) ?? FALLBACK_MIME_TYPE;
-        if (fileName.endsWith(".tgs") && fileType == FileType.Document) {
-          fileName += "-";
-        }
-        const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: media?.chunkSize, signal: media?.signal });
+        let mimeType: string;
+        const file = await this.#c.fileManager.upload(document, media, (name) => {
+          mimeType = media?.mimeType ?? contentType(name.split(".").slice(-1)[0]) ?? FALLBACK_MIME_TYPE;
+          if (name.endsWith(".tgs") && fileType == FileType.Document) {
+            name += "-";
+          }
+          return name;
+        });
         let thumb: enums.InputFile | undefined = undefined;
         if ("thumbnail" in media && media.thumbnail) {
-          const [thumbContents, fileName__] = await getFileContents(media.thumbnail);
-          thumb = await this.#c.fileManager.upload(thumbContents, { fileName: fileName__, chunkSize: media?.chunkSize, signal: media?.signal });
+          thumb = await this.#c.fileManager.upload(media.thumbnail, { chunkSize: media?.chunkSize, signal: media?.signal });
         }
         media_ = new types.InputMediaUploadedDocument({
           file,
           thumb,
           spoiler,
-          attributes: [new types.DocumentAttributeFilename({ file_name: fileName }), ...otherAttribs],
-          mime_type: mimeType,
+          attributes: [new types.DocumentAttributeFilename({ file_name: file.name }), ...otherAttribs],
+          mime_type: mimeType!,
           force_file: fileType == FileType.Document ? true : undefined,
         });
       }
@@ -917,9 +915,7 @@ export class MessageManager {
         if (typeof media.photo === "string" && isHttpUrl(media.photo)) {
           media_ = new types.InputMediaPhotoExternal({ url: media.photo, spoiler });
         } else {
-          const [contents, fileName_] = await getFileContents(media.photo);
-          const fileName = media?.fileName ?? fileName_;
-          const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: media?.chunkSize, signal: media?.signal });
+          const file = await this.#c.fileManager.upload(media.photo, media, null, false);
           media_ = new types.InputMediaUploadedPhoto({ file, spoiler });
         }
       }
@@ -1210,8 +1206,7 @@ export class MessageManager {
       unreachable();
     }
 
-    const [contents, fileName] = await getFileContents(photo);
-    const file = await this.#c.fileManager.upload(contents, { fileName: params?.fileName ?? fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+    const file = await this.#c.fileManager.upload(photo, params);
     const photo_ = new types.InputChatUploadedPhoto({ file });
 
     if (peer instanceof types.InputPeerChannel) {
