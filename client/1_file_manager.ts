@@ -18,11 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { extension, path } from "../0_deps.ts";
 import { unreachable } from "../0_deps.ts";
 import { ConnectionError, InputError } from "../0_errors.ts";
-import { drop, getLogger, getRandomId, Logger, mod } from "../1_utilities.ts";
+import { concat, drop, getLogger, getRandomId, kilobyte, Logger, megabyte, mod } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
-import { constructSticker, deserializeFileId, FileId, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
+import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { FloodWait } from "../4_errors.ts";
 import { DownloadParams, UploadParams } from "./0_params.ts";
@@ -31,6 +32,8 @@ import { C } from "./0_types.ts";
 export class FileManager {
   #c: C;
   #Lupload: Logger;
+  static #MAX_CHUNK_SIZE = 512 * kilobyte;
+  static #BIG_FILE_THRESHOLD = 10 * megabyte;
 
   constructor(c: C) {
     this.#c = c;
@@ -39,26 +42,37 @@ export class FileManager {
     this.#Lupload = L.branch("upload");
   }
 
-  async upload(contents: Uint8Array, params?: UploadParams) {
-    const isBig = contents.length > 1048576; // 10 MB
+  async upload(file: FileSource, params?: UploadParams, checkName?: (name: string) => string) {
+    let { size, name, contents } = await FileManager.#getFileContents(file, params);
+    if (checkName) {
+      name = checkName(name);
+    }
+    if (size == 0 || size < -1) {
+      throw new InputError("Invalid file size.");
+    }
+    let isBig = size == -1 || size > FileManager.#BIG_FILE_THRESHOLD;
 
-    const chunkSize = params?.chunkSize ?? 512 * 1024;
+    const chunkSize = params?.chunkSize ?? FileManager.#MAX_CHUNK_SIZE;
+    if (chunkSize > FileManager.#MAX_CHUNK_SIZE) {
+      throw new InputError("chunkSize is too big.");
+    }
     if (mod(chunkSize, 1024) != 0) {
       throw new InputError("chunkSize must be divisible by 1024.");
     }
 
     const signal = params?.signal;
 
-    this.#Lupload.debug("uploading " + (isBig ? "big " : "") + "file of size " + contents.length + " with chunk size of " + chunkSize);
+    this.#Lupload.debug("uploading " + (size == -1 ? "" : isBig ? "big " : "") + "file of size " + (size == -1 ? "unknown" : size) + " with chunk size of " + chunkSize);
 
     const fileId = getRandomId();
-    const name = params?.fileName ?? fileId.toString();
 
     const { api, disconnect, connect } = this.#c.apiFactory();
     signal?.addEventListener("abort", () => drop(disconnect()));
     await connect();
     let part = 0;
-    const partCount = Math.ceil(contents.length / chunkSize);
+    let totalParts = size == -1 ? -1 : Math.ceil(size / chunkSize);
+    let partCount = size == -1 ? 1 : totalParts;
+    const contentStream = contents instanceof Uint8Array ? contents : FileManager.iterateChunks(contents, chunkSize);
 
     try {
       main: for (; part < partCount; part++) {
@@ -66,12 +80,29 @@ export class FileManager {
           try {
             const start = part * chunkSize;
             const end = start + chunkSize;
-            const bytes = contents.subarray(start, end);
+            let bytes: Uint8Array;
+            if (contentStream instanceof Uint8Array) {
+              bytes = contentStream.subarray(start, end);
+            } else {
+              const result = await contentStream.next();
+              if (result.value) {
+                bytes = result.value.bytes;
+                if (result.value.isSmall) {
+                  isBig = false;
+                }
+                if (result.value.totalParts == -1) {
+                  ++partCount;
+                }
+                totalParts = result.value.totalParts;
+              } else {
+                break main;
+              }
+            }
             if (bytes.length == 0) {
               continue main;
             }
             if (isBig) {
-              await api.upload.saveBigFilePart({ file_id: fileId, file_part: part, bytes, file_total_parts: partCount });
+              await api.upload.saveBigFilePart({ file_id: fileId, file_part: part, bytes, file_total_parts: totalParts });
             } else {
               await api.upload.saveFilePart({ file_id: fileId, bytes, file_part: part });
             }
@@ -108,10 +139,96 @@ export class FileManager {
     this.#Lupload.debug("uploaded all " + partCount + " chunk(s)");
 
     if (isBig) {
-      return new types.InputFileBig({ id: fileId, parts: contents.length / chunkSize, name });
+      return new types.InputFileBig({ id: fileId, parts: partCount, name });
     } else {
       return new types.InputFile({ id: fileId, name, parts: part, md5_checksum: "" });
     }
+  }
+
+  static async *iterateChunks(reader: ReadableStreamDefaultReader<Uint8Array>, chunkSize: number) {
+    let buffer = new Uint8Array();
+    let totalRead = 0;
+    while (true) {
+      const result = await reader.read();
+      if (result.value) {
+        buffer = concat(buffer, result.value);
+        totalRead += result.value.byteLength;
+      }
+      if (result.done || buffer.byteLength >= chunkSize) {
+        yield { isSmall: totalRead < chunkSize, totalParts: result.done ? Math.ceil(totalRead / chunkSize) : -1, bytes: buffer.slice(0, chunkSize) };
+        buffer = buffer.slice(chunkSize);
+      }
+      if (result.done) {
+        break;
+      }
+    }
+  }
+
+  static async #getFileContents(source: FileSource, params: UploadParams | undefined) {
+    let name = params?.fileName?.trim() || "file";
+    let contents: Uint8Array | ReadableStreamDefaultReader<Uint8Array>;
+    let size = -1;
+    if (source instanceof Uint8Array) {
+      contents = source;
+      size = source.byteLength;
+    } else if (source instanceof ReadableStream) {
+      contents = source.getReader();
+    } else if (typeof source === "object" && source != null && (Symbol.iterator in source || Symbol.asyncIterator in source)) {
+      contents = new ReadableStream({
+        pull: Symbol.asyncIterator in source
+          ? async (controller) => {
+            const { value, done } = await (source as AsyncIterableIterator<Uint8Array>).next();
+            done ? controller.close() : controller.enqueue(value);
+          }
+          : (controller) => {
+            const { value, done } = (source as IterableIterator<Uint8Array>).next();
+            done ? controller.close() : controller.enqueue(value);
+          },
+      }).getReader();
+    } else {
+      let url: string;
+      try {
+        url = new URL(source).toString();
+      } catch {
+        let path_: string;
+        if (typeof source === "string") {
+          if (path.isAbsolute(source)) {
+            path_ = source;
+          } else {
+            // @ts-ignore: lib
+            path_ = path.join(Deno.cwd(), source);
+          }
+          url = path.toFileUrl(path_).toString();
+          name = path.basename(path_);
+        } else {
+          unreachable();
+        }
+      }
+      const response = await fetch(url);
+      if (response.body == null) {
+        throw new InputError("Invalid response");
+      }
+      if (name == "file") {
+        const contentType = response.headers.get("content-type")?.split(";")[0].trim();
+        if (contentType) {
+          name += extension(contentType);
+        } else {
+          const maybeFileName = new URL(response.url).pathname.split("/")
+            .filter((v) => v)
+            .slice(-1)[0]
+            .trim();
+          if (maybeFileName) {
+            name += extension(path.extname(maybeFileName));
+          }
+        }
+      }
+      const contentLength = Number(response.headers.get("content-length"));
+      if (!isNaN(contentLength)) {
+        size = contentLength;
+      }
+      contents = response.body.getReader();
+    }
+    return { size: params?.fileSize ? params.fileSize : size, name, contents };
   }
 
   async *#downloadInner(location: enums.InputFileLocation, dcId: number, params?: { chunkSize?: number; offset?: number }) {

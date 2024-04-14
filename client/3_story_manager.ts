@@ -26,7 +26,7 @@ import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, st
 import { InputStoryContent } from "../types/1_input_story_content.ts";
 import { CreateStoryParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
-import { checkArray, checkStoryId, getFileContents, isHttpUrl } from "./0_utilities.ts";
+import { checkArray, checkStoryId, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
 import { MessageManager } from "./2_message_manager.ts";
 
@@ -69,14 +69,12 @@ export class StoryManager {
       if (typeof source === "string" && isHttpUrl(source)) {
         throw new InputError("URL not supported.");
       } else {
-        const [contents, fileName_] = await getFileContents(source);
-        const fileName = params?.fileName ?? fileName_;
-        const mimeType = contentType(fileName.split(".").slice(-1)[0]) ?? "application/octet-stream";
-        const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+        const file = await this.#c.fileManager.upload(source, params);
+        const mimeType = contentType(file.name.split(".").slice(-1)[0]) ?? "application/octet-stream";
         if ("video" in content) {
           media = new types.InputMediaUploadedDocument({
             file,
-            attributes: [new types.DocumentAttributeFilename({ file_name: fileName }), new types.DocumentAttributeVideo({ w: 720, h: 1280, duration: content.duration })],
+            attributes: [new types.DocumentAttributeFilename({ file_name: file.name }), new types.DocumentAttributeVideo({ w: 720, h: 1280, duration: content.duration })],
             mime_type: mimeType,
           });
         } else {
