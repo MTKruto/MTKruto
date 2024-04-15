@@ -18,22 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export function concat(...buffers: [Uint8Array, Uint8Array, ...Uint8Array[]]) {
-  let length = 0;
-  for (const b of buffers) {
-    length += b.length;
-  }
-
-  const buffer = new Uint8Array(length);
-  let offset = 0;
-  for (const b of buffers) {
-    buffer.set(b, offset);
-    offset += b.length;
-  }
-
-  return buffer;
-}
-
 const bufferFromHexString = (hexString: string) => Uint8Array.from(hexString.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)));
 export function bufferFromBigInt(int: bigint | number, byteCount: number, littleEndian = true, signed = false) {
   const actualByteCount = Math.ceil(int.toString(2).length / 8);

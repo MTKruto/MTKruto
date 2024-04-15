@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals, assertInstanceOf, ige256Decrypt, ige256Encrypt, unreachable } from "../0_deps.ts";
+import { assertEquals, assertInstanceOf, concat, ige256Decrypt, ige256Encrypt, unreachable } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
-import { bigIntFromBuffer, bufferFromBigInt, concat, factorize, getLogger, getRandomBigInt, modExp, rsaPad, sha1 } from "../1_utilities.ts";
+import { bigIntFromBuffer, bufferFromBigInt, factorize, getLogger, getRandomBigInt, modExp, rsaPad, sha1 } from "../1_utilities.ts";
 import { functions, serialize, TLReader, types } from "../2_tl.ts";
 import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
 import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
@@ -151,8 +151,8 @@ export class ClientPlain extends ClientAbstract {
 
     const newNonce_ = bufferFromBigInt(newNonce, 32, true, true);
     const serverNonce_ = bufferFromBigInt(serverNonce, 16, true, true);
-    const tmpAesKey = concat(await sha1(concat(newNonce_, serverNonce_)), (await sha1(concat(serverNonce_, newNonce_))).subarray(0, 0 + 12));
-    const tmpAesIv = concat((await sha1(concat(serverNonce_, newNonce_))).subarray(12, 12 + 8), await sha1(concat(newNonce_, newNonce_)), newNonce_.subarray(0, 0 + 4));
+    const tmpAesKey = concat([await sha1(concat([newNonce_, serverNonce_])), (await sha1(concat([serverNonce_, newNonce_]))).subarray(0, 0 + 12)]);
+    const tmpAesIv = concat([(await sha1(concat([serverNonce_, newNonce_]))).subarray(12, 12 + 8), await sha1(concat([newNonce_, newNonce_])), newNonce_.subarray(0, 0 + 4)]);
     const answerWithHash = ige256Decrypt(dhParams.encrypted_answer, tmpAesKey, tmpAesIv);
 
     const dhInnerData = new TLReader(answerWithHash.slice(20)).readObject();
@@ -171,10 +171,10 @@ export class ClientPlain extends ClientAbstract {
       g_b: bufferFromBigInt(gB, 256, false, false),
     })[serialize]();
 
-    let dataWithHash = concat(await sha1(data), data);
+    let dataWithHash = concat([await sha1(data), data]);
 
     while (dataWithHash.length % 16 != 0) {
-      dataWithHash = concat(dataWithHash, new Uint8Array(1));
+      dataWithHash = concat([dataWithHash, new Uint8Array(1)]);
     }
 
     encryptedData = ige256Encrypt(dataWithHash, tmpAesKey, tmpAesIv);

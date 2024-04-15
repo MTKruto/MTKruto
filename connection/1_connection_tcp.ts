@@ -19,7 +19,8 @@
  */
 
 import { iterateReader } from "https://deno.land/std@0.222.1/io/iterate_reader.ts";
-import { concat, getLogger, Mutex } from "../1_utilities.ts";
+import { concat } from "../0_deps.ts";
+import { getLogger, Mutex } from "../1_utilities.ts";
 import { ConnectionUnframed } from "./0_connection.ts";
 
 const L = getLogger("ConnectionTCP");
@@ -66,7 +67,7 @@ export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnfra
         try {
           for await (const chunk of iterateReader(connection)) {
             this.callback?.read(chunk.length);
-            this.#buffer = concat(this.#buffer, chunk);
+            this.#buffer = concat([this.#buffer, chunk]);
 
             if (
               this.#nextResolve != null && this.#buffer.length >= this.#nextResolve[0]

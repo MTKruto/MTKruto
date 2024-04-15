@@ -18,14 +18,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { bufferFromBigInt, concat, CTR } from "../1_utilities.ts";
+import { concat } from "../0_deps.ts";
+import { bufferFromBigInt, CTR } from "../1_utilities.ts";
 import { Connection } from "../2_connection.ts";
 
 export async function getObfuscationParameters(protocol: number, connection: Connection) {
   let init: Uint8Array;
 
   while (true) {
-    init = concat(crypto.getRandomValues(new Uint8Array(56)), bufferFromBigInt(protocol, 4, false), crypto.getRandomValues(new Uint8Array(4)));
+    init = concat([crypto.getRandomValues(new Uint8Array(56)), bufferFromBigInt(protocol, 4, false), crypto.getRandomValues(new Uint8Array(4))]);
 
     if (init[0] == 0xEF) {
       continue;
@@ -57,7 +58,7 @@ export async function getObfuscationParameters(protocol: number, connection: Con
   const decryptIv = initRev.slice(40, 40 + 16);
   const decryptionCTR = new CTR(decryptKey, decryptIv);
 
-  await connection.write(concat(init.subarray(0, 56), encryptedInit.subarray(56, 56 + 8)));
+  await connection.write(concat([init.subarray(0, 56), encryptedInit.subarray(56, 56 + 8)]));
 
   return { encryptionCTR, decryptionCTR };
 }

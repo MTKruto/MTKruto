@@ -18,8 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
-import { concat, getLogger, Mutex } from "../1_utilities.ts";
+import { concat, unreachable } from "../0_deps.ts";
+import { getLogger, Mutex } from "../1_utilities.ts";
 import { ConnectionUnframed } from "./0_connection.ts";
 
 const L = getLogger("ConnectionWebSocket");
@@ -54,7 +54,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
       const unlock = await mutex.lock();
       const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob || v instanceof Uint8Array ? v : v instanceof ArrayBuffer ? v : unreachable())).arrayBuffer());
 
-      this.#buffer = concat(this.#buffer, data);
+      this.#buffer = concat([this.#buffer, data]);
 
       if (
         this.#nextResolve != null && this.#buffer.length >= this.#nextResolve[0]

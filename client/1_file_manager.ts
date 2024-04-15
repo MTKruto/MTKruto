@@ -18,10 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { extension, path } from "../0_deps.ts";
+import { concat, extension, path } from "../0_deps.ts";
 import { unreachable } from "../0_deps.ts";
 import { ConnectionError, InputError } from "../0_errors.ts";
-import { concat, drop, getLogger, getRandomId, kilobyte, Logger, megabyte, minute, mod } from "../1_utilities.ts";
+import { drop, getLogger, getRandomId, kilobyte, Logger, megabyte, minute, mod } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
 import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
@@ -151,7 +151,7 @@ export class FileManager {
     while (true) {
       const result = await reader.read();
       if (result.value) {
-        buffer = concat(buffer, result.value);
+        buffer = concat([buffer, result.value]);
         totalRead += result.value.byteLength;
       }
       if (result.done || buffer.byteLength >= chunkSize) {

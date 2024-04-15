@@ -23,6 +23,8 @@ export * from "https://deno.land/std@0.222.1/assert/mod.ts";
 
 export * as path from "https://deno.land/std@0.222.1/path/mod.ts";
 
+export { concat } from "https://deno.land/std@0.222.1/bytes/concat.ts";
+
 export { decodeBase64, encodeBase64 } from "https://deno.land/std@0.222.1/encoding/base64.ts";
 
 import { contentType as contentType_ } from "https://deno.land/std@0.222.1/media_types/content_type.ts";

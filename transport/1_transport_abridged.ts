@@ -18,7 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { bufferFromBigInt, concat } from "../1_utilities.ts";
+import { concat } from "../0_deps.ts";
+import { bufferFromBigInt } from "../1_utilities.ts";
 import { Connection } from "../2_connection.ts";
 import { getObfuscationParameters } from "./0_obfuscation.ts";
 import { Transport } from "./0_transport.ts";
@@ -84,7 +85,7 @@ export class TransportAbridged extends Transport implements Transport {
 
     const header = new Uint8Array([bufferLength >= 0x7F ? 0x7F : bufferLength]);
     const length = bufferLength >= 0x7F ? bufferFromBigInt(bufferLength, 3) : new Uint8Array();
-    const data = concat(header, length, buffer);
+    const data = concat([header, length, buffer]);
     this.encrypt(data);
 
     await this.#connection.write(data);
