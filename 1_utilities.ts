@@ -27,6 +27,7 @@ export * from "./utilities/0_hash.ts";
 export * from "./utilities/0_logger.ts";
 export * from "./utilities/0_mutex.ts";
 export * from "./utilities/0_object.ts";
+export * from "./utilities/0_part_stream.ts";
 export * from "./utilities/0_rle.ts";
 export * from "./utilities/0_types.ts";
 export * from "./utilities/0_units.ts";

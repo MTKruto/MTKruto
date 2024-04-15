@@ -2,7 +2,7 @@
   "lock": false,
   "exclude": [".github/"],
   "fmt": { "lineWidth": 1000 },
-  "compilerOptions": { "lib": ["dom", "esnext", "deno.unstable"] },
+  "compilerOptions": { "lib": ["dom", "dom.asynciterable", "esnext", "deno.unstable"] },
   "tasks": {
     "flc": "deno fmt && deno run --allow-read=. --allow-write=. https://raw.githubusercontent.com/MTKruto/tools/main/sort_imports.ts && deno run --allow-read=. https://raw.githubusercontent.com/MTKruto/tools/main/check_import_levels.ts && deno lint && deno check mod.ts"
   }
