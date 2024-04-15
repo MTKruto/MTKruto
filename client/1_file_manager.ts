@@ -21,7 +21,7 @@
 import { extension, path } from "../0_deps.ts";
 import { unreachable } from "../0_deps.ts";
 import { ConnectionError, InputError } from "../0_errors.ts";
-import { concat, drop, getLogger, getRandomId, kilobyte, Logger, megabyte, mod } from "../1_utilities.ts";
+import { concat, drop, getLogger, getRandomId, kilobyte, Logger, megabyte, minute, mod } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
 import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
@@ -361,6 +361,7 @@ export class FileManager {
     }
   }
 
+  static #CUSTOM_EMOJI_TTL = 30 * minute;
   async getCustomEmojiStickers(id: string | string[]) {
     id = Array.isArray(id) ? id : [id];
     if (!id.length) {
@@ -370,7 +371,7 @@ export class FileManager {
     let shouldFetch = false;
     for (const id_ of id) {
       const maybeDocument = await this.#c.messageStorage.getCustomEmojiDocument(BigInt(id_));
-      if (maybeDocument != null && Date.now() - maybeDocument[1].getTime() <= 30 * 60 * 1_000) {
+      if (maybeDocument != null && Date.now() - maybeDocument[1].getTime() <= FileManager.#CUSTOM_EMOJI_TTL) {
         const document_ = maybeDocument[0];
         const fileId_: FileId = {
           type: FileType.Document,

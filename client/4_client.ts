@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { AccessError, InputError } from "../0_errors.ts";
-import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, mustPrompt, mustPromptOneOf, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, minute, mustPrompt, mustPromptOneOf, second, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, name, peerToChatId, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
@@ -458,7 +458,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
               } catch (err) {
                 L.debug(`failed to reconnect, retrying in ${delay}:`, err);
               }
-              await new Promise((r) => setTimeout(r, delay * 1_000));
+              await new Promise((r) => setTimeout(r, delay * second));
               if (delay < 15) {
                 delay += 5;
               }
@@ -1173,7 +1173,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   #pingLoopStarted = false;
   #pingLoopAbortController: AbortController | null = null;
-  #pingInterval = 60 * 1_000; // 60 seconds
+  #pingInterval = 1 * minute;
   #lastUpdates = new Date();
   #startPingLoop() {
     drop(this.#pingLoop());
@@ -1193,8 +1193,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
           continue;
         }
         this.#pingLoopAbortController.signal.throwIfAborted();
-        await this.api.ping_delay_disconnect({ ping_id: getRandomId(), disconnect_delay: this.#pingInterval / 1_000 + 15 });
-        if (Date.now() - this.#lastUpdates.getTime() >= 15 * 60 * 1_000) {
+        await this.api.ping_delay_disconnect({ ping_id: getRandomId(), disconnect_delay: this.#pingInterval / second + 15 });
+        if (Date.now() - this.#lastUpdates.getTime() >= 15 * minute) {
           drop(this.#updateManager.recoverUpdateGap("lastUpdates"));
         }
       } catch (err) {
