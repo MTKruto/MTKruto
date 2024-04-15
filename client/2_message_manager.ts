@@ -22,7 +22,7 @@ import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { as, enums, functions, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
-import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId, InputMedia } from "../3_types.ts";
+import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId, InputMedia, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
 import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
@@ -541,6 +541,7 @@ export class MessageManager {
   async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams | undefined, fileType: FileType, otherAttribs: enums.DocumentAttribute[], urlSupported = false, expectedMimeTypes?: string[]) {
     let media: enums.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
+    const ttl_seconds = params && "selfDestruct" in params && typeof params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct as SelfDestructOption) : undefined;
 
     if (typeof document === "string") {
       const fileId = this.resolveFileId(document, fileType);
@@ -549,6 +550,7 @@ export class MessageManager {
           id: new types.InputDocument(fileId),
           spoiler,
           query: otherAttribs.find((v): v is types.DocumentAttributeSticker => v instanceof types.DocumentAttributeSticker)?.alt || undefined,
+          ttl_seconds,
         });
       }
     }
@@ -558,7 +560,7 @@ export class MessageManager {
         if (!urlSupported) {
           throw new InputError("URL not supported.");
         }
-        media = new types.InputMediaDocumentExternal({ url: document, spoiler });
+        media = new types.InputMediaDocumentExternal({ url: document, spoiler, ttl_seconds });
       } else {
         let mimeType: string;
         const file = await this.#c.fileManager.upload(document, params, (name) => {
@@ -582,6 +584,7 @@ export class MessageManager {
           attributes: [new types.DocumentAttributeFilename({ file_name: file.name }), ...otherAttribs],
           mime_type: mimeType!,
           force_file: fileType == FileType.Document ? true : undefined,
+          ttl_seconds,
         });
       }
     }
@@ -603,6 +606,7 @@ export class MessageManager {
   async sendPhoto(chatId: ID, photo: FileSource, params?: SendPhotoParams) {
     let media: enums.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
+    const ttl_seconds = params && "selfDestruct" in params && params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct) : undefined;
 
     if (typeof photo === "string") {
       const fileId = this.resolveFileId(photo, [FileType.Photo, FileType.ProfilePhoto]);
@@ -610,16 +614,25 @@ export class MessageManager {
         media = new types.InputMediaPhoto({
           id: new types.InputPhoto(fileId),
           spoiler,
+          ttl_seconds,
         });
       }
     }
 
     if (media == null) {
       if (typeof photo === "string" && isHttpUrl(photo)) {
-        media = new types.InputMediaPhotoExternal({ url: photo, spoiler });
+        media = new types.InputMediaPhotoExternal({
+          url: photo,
+          spoiler,
+          ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined,
+        });
       } else {
         const file = await this.#c.fileManager.upload(photo, params, null, false);
-        media = new types.InputMediaUploadedPhoto({ file, spoiler });
+        media = new types.InputMediaUploadedPhoto({
+          file,
+          spoiler,
+          ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined,
+        });
       }
     }
 
@@ -900,6 +913,7 @@ export class MessageManager {
     } else if ("photo" in media) {
       let media_: enums.InputMedia | null = null;
       const spoiler = media.hasSpoiler ? true : undefined;
+      const ttl_seconds = "selfDestruct" in media && media.selfDestruct !== undefined ? selfDestructOptionToInt(media.selfDestruct) : undefined;
 
       if (typeof media.photo === "string") {
         const fileId = this.resolveFileId(media.photo, [FileType.Photo, FileType.ProfilePhoto]);
@@ -907,6 +921,7 @@ export class MessageManager {
           media_ = new types.InputMediaPhoto({
             id: new types.InputPhoto(fileId),
             spoiler,
+            ttl_seconds,
           });
         }
       }
@@ -916,13 +931,14 @@ export class MessageManager {
           media_ = new types.InputMediaPhotoExternal({ url: media.photo, spoiler });
         } else {
           const file = await this.#c.fileManager.upload(media.photo, media, null, false);
-          media_ = new types.InputMediaUploadedPhoto({ file, spoiler });
+          media_ = new types.InputMediaUploadedPhoto({ file, spoiler, ttl_seconds });
         }
       }
 
       return media_;
     } else if ("video" in media) {
-      return await this.#resolveInputMediaInner(media.video, media, FileType.Video, [
+      const ttl_seconds = "selfDestruct" in media && media.selfDestruct !== undefined ? selfDestructOptionToInt(media.selfDestruct) : undefined;
+      const media_ = await this.#resolveInputMediaInner(media.video, media, FileType.Video, [
         new types.DocumentAttributeVideo({
           supports_streaming: media?.supportsStreaming ? true : undefined,
           w: media?.width ?? 0,
@@ -930,6 +946,8 @@ export class MessageManager {
           duration: media?.duration ?? 0,
         }),
       ]);
+      media_.ttl_seconds = ttl_seconds;
+      return media_;
     } else {
       unreachable();
     }

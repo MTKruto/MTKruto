@@ -19,7 +19,7 @@
  */
 
 import { MaybePromise } from "../1_utilities.ts";
-import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, Message, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, ReplyQuote, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
+import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, Message, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, ReplyQuote, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
 
 export interface AnswerCallbackQueryParams {
   /** A text to be shown to the user. */
@@ -192,6 +192,7 @@ export interface _SpoilCommon {
   hasSpoiler?: boolean;
 }
 export interface SendPhotoParams extends _CaptionCommon, _SpoilCommon, _UploadCommon, _SendCommon {
+  selfDestruct?: SelfDestructOption;
 }
 
 export interface SetChatPhotoParams extends _UploadCommon {
@@ -217,6 +218,7 @@ export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _Spoi
   height?: number;
   /** Whether the video is suitable for streaming. */
   supportsStreaming?: boolean;
+  selfDestruct?: SelfDestructOption;
 }
 
 export interface SendAnimationParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon {
