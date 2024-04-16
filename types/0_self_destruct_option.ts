@@ -28,7 +28,7 @@ export type SelfDestructAfterSeconds = number;
 
 export type SelfDestructOption = SelfDestructAfterOpen | SelfDestructAfterSeconds;
 
-export function selfDestructOptionToInt(option: SelfDestructOption) {
+export function selfDestructOptionToInt(option: SelfDestructOption): number {
   if (option == "afterOpen") {
     return 2147483647;
   } else if (typeof option === "number") {
