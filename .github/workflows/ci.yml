@@ -31,6 +31,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: denoland/setup-deno@v1
+        with:
+          deno-version: canary
 
       - uses: actions/cache@v4
         with:
