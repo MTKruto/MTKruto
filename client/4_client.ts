@@ -370,50 +370,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
       getEntity: this[getEntity].bind(this),
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
-      apiFactory: (dcId?: number) => {
-        const client = new Client((!dcId || dcId == this.#client.dcId) ? this.storage : this.storage.branch(`download_client_${dcId}`), this.apiId, this.apiHash, {
-          transportProvider: this.#client.transportProvider,
-          appVersion: this.appVersion,
-          deviceModel: this.deviceModel,
-          langCode: this.langCode,
-          langPack: this.langPack,
-          systemLangCode: this.systemLangCode,
-          systemVersion: this.systemVersion,
-          cdn: true,
-        });
-
-        client.#client.serverSalt = this.#client.serverSalt;
-
-        client.invoke.use(async (ctx, next) => {
-          if (ctx.error instanceof AuthKeyUnregistered && dcId) {
-            try {
-              const exportedAuth = await this.api.auth.exportAuthorization({ dc_id: dcId });
-              await client.api.auth.importAuthorization(exportedAuth);
-              return true;
-            } catch (err) {
-              throw err;
-            }
-          } else {
-            return await next();
-          }
-        });
-
-        return {
-          api: client.api,
-          connect: async () => {
-            await client.connect();
-
-            if (dcId && dcId != this.#client.dcId) {
-              let dc = String(dcId);
-              if (this.#client.dcId < 0) {
-                dc += "-test";
-              }
-              await client.setDc(dc as DC);
-            }
-          },
-          disconnect: client.disconnect.bind(client),
-        };
-      },
+      getCdnConnection: this.#getCdnConnection.bind(this),
+      getCdnConnectionPool: this.#getCdnConnectionPool.bind(this),
       cdn: params?.cdn ?? false,
       ignoreOutgoing: this.#ignoreOutgoing,
       dropPendingUpdates: params?.dropPendingUpdates,
@@ -544,6 +502,77 @@ export class Client<C extends Context = Context> extends Composer<C> {
       throw new Error("apiId not set");
     }
     return apiId;
+  }
+
+  #getCdnConnectionPool(connectionCount: number, dcId?: number) {
+    const connections = new Array<{ api: Api; connect: () => Promise<void>; disconnect: () => Promise<void> }>();
+    for (let i = 0; i < connectionCount; ++i) {
+      connections.push(this.#getCdnConnection(dcId));
+    }
+    let prev = 0;
+    return {
+      size: connectionCount,
+      api: () => {
+        if (prev + 1 > connections.length) prev = 0;
+        const connection = connections[prev++];
+        return connection.api;
+      },
+      connect: async () => {
+        for await (const connection of connections) {
+          await connection.connect();
+        }
+      },
+      disconnect: async () => {
+        for await (const connection of connections) {
+          await connection.disconnect();
+        }
+      },
+    };
+  }
+
+  #getCdnConnection(dcId?: number) {
+    const client = new Client((!dcId || dcId == this.#client.dcId) ? this.storage : this.storage.branch(`download_client_${dcId}`), this.apiId, this.apiHash, {
+      transportProvider: this.#client.transportProvider,
+      appVersion: this.appVersion,
+      deviceModel: this.deviceModel,
+      langCode: this.langCode,
+      langPack: this.langPack,
+      systemLangCode: this.systemLangCode,
+      systemVersion: this.systemVersion,
+      cdn: true,
+    });
+
+    client.#client.serverSalt = this.#client.serverSalt;
+
+    client.invoke.use(async (ctx, next) => {
+      if (ctx.error instanceof AuthKeyUnregistered && dcId) {
+        try {
+          const exportedAuth = await this.api.auth.exportAuthorization({ dc_id: dcId });
+          await client.api.auth.importAuthorization(exportedAuth);
+          return true;
+        } catch (err) {
+          throw err;
+        }
+      } else {
+        return await next();
+      }
+    });
+
+    return {
+      api: client.api,
+      connect: async () => {
+        await client.connect();
+
+        if (dcId && dcId != this.#client.dcId) {
+          let dc = String(dcId);
+          if (this.#client.dcId < 0) {
+            dc += "-test";
+          }
+          await client.setDc(dc as DC);
+        }
+      },
+      disconnect: client.disconnect.bind(client),
+    };
   }
 
   #constructContext = async (update: Update) => {
