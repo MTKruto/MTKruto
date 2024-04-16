@@ -29,8 +29,23 @@ type AnyFunc = (...args: any) => any;
 type Promisify<T extends AnyFunc> = (...args: Parameters<T>) => Promise<ReturnType<T>>;
 export type Api = { [K in Keys]: Functions[K] extends { __F: AnyFunc } ? Promisify<Functions[K]["__F"]> : { [K_ in keyof Functions[K]]: Functions[K][K_] extends { __F: AnyFunc } ? Promisify<Functions[K][K_]["__F"]> : Functions[K][K_] } };
 
-interface ApiFactory {
-  (dcId?: number): { api: Api; connect: () => Promise<void>; disconnect: () => Promise<void> };
+interface Connection {
+  api: Api;
+  connect: () => Promise<void>;
+  disconnect: () => Promise<void>;
+}
+export interface ConnectionPool extends Omit<Connection, "api"> {
+  size: number;
+  api: () => Api;
+  connect: () => Promise<void>;
+  disconnect: () => Promise<void>;
+}
+
+interface GetCdnConnection {
+  (dcId?: number): Connection;
+}
+interface GetCdnConnectionPool {
+  (size: number, dcId?: number): ConnectionPool;
 }
 
 export interface C {
@@ -48,7 +63,8 @@ export interface C {
   getEntity: EntityGetter;
   handleUpdate: (update: Update) => void;
   parseMode: ParseMode;
-  apiFactory: ApiFactory;
+  getCdnConnection: GetCdnConnection;
+  getCdnConnectionPool: GetCdnConnectionPool;
   ignoreOutgoing: boolean | null;
   cdn: boolean;
   dropPendingUpdates?: boolean;

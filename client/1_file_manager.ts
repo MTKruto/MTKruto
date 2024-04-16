@@ -18,8 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { extension, path } from "../0_deps.ts";
-import { unreachable } from "../0_deps.ts";
+import { assert, extension, path, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { drop, getLogger, getRandomId, kilobyte, Logger, megabyte, minute, mod, Part, PartStream } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
@@ -27,13 +26,15 @@ import { constructSticker, deserializeFileId, FileId, FileSource, FileType, Phot
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { FloodWait } from "../4_errors.ts";
 import { DownloadParams, UploadParams } from "./0_params.ts";
-import { C } from "./0_types.ts";
+import { C, ConnectionPool } from "./0_types.ts";
 
 export class FileManager {
   #c: C;
   #Lupload: Logger;
-  static #MAX_CHUNK_SIZE = 512 * kilobyte;
+  static #UPLOAD_MAX_CHUNK_SIZE = 512 * kilobyte;
+  static #DOWNLOAD_MAX_CHUNK_SIZE = 1 * megabyte;
   static #BIG_FILE_THRESHOLD = 10 * megabyte;
+  static #UPLOAD_REQUEST_PER_CONNECTION = 2;
 
   constructor(c: C) {
     this.#c = c;
@@ -51,32 +52,32 @@ export class FileManager {
       throw new InputError("Invalid file size.");
     }
 
-    const chunkSize = params?.chunkSize ?? FileManager.#MAX_CHUNK_SIZE;
-    if (chunkSize > FileManager.#MAX_CHUNK_SIZE) {
-      throw new InputError("chunkSize is too big.");
-    }
-    if (mod(chunkSize, 1024) != 0) {
-      throw new InputError("chunkSize must be divisible by 1024.");
-    }
+    const chunkSize = params?.chunkSize ?? FileManager.#UPLOAD_MAX_CHUNK_SIZE;
+    FileManager.validateChunkSize(chunkSize, FileManager.#UPLOAD_MAX_CHUNK_SIZE);
 
     const fileId = getRandomId();
 
-    const client = this.#c.apiFactory();
-    params?.signal?.addEventListener("abort", () => drop(client.disconnect()));
-    await client.connect();
+    const isBig = contents instanceof Uint8Array ? contents.length > FileManager.#BIG_FILE_THRESHOLD : true;
+    const poolSize = contents instanceof Uint8Array ? isBig ? 3 : 1 : 3;
+    const pool = this.#c.getCdnConnectionPool(poolSize);
+
+    const whatIsUploaded = contents instanceof Uint8Array ? (isBig ? "big file" : "file") + " of size " + size : "stream";
+    this.#Lupload.debug("uploading " + whatIsUploaded + " with chunk size of " + chunkSize + " and pool size of " + poolSize + " and file ID of " + fileId);
+    params?.signal?.addEventListener("abort", () => drop(pool.disconnect()));
+    await pool.connect();
 
     let result: { small: boolean; parts: number };
     try {
       if (contents instanceof Uint8Array) {
-        result = await this.#uploadBuffer(contents, fileId, chunkSize, params?.signal, client);
+        result = await this.#uploadBuffer(contents, fileId, chunkSize, params?.signal, pool);
       } else {
-        result = await this.#uploadStream(contents, fileId, chunkSize, params?.signal, client);
+        result = await this.#uploadStream(contents, fileId, chunkSize, params?.signal, pool);
       }
     } finally {
-      drop(client.disconnect());
+      drop(pool.disconnect());
     }
 
-    this.#Lupload.debug("uploaded all " + result.parts + " part(s)");
+    this.#Lupload.debug(`[${fileId}] uploaded ` + result.parts + " part(s)");
 
     if (result.small) {
       return new types.InputFile({ id: fileId, name, parts: result.parts, md5_checksum: "" });
@@ -85,54 +86,83 @@ export class FileManager {
     }
   }
 
-  async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, chunkSize: number, signal: AbortSignal | null | undefined, client: ReturnType<C["apiFactory"]>) {
+  async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, chunkSize: number, signal: AbortSignal | null | undefined, pool: ConnectionPool) {
     let part: Part;
+    let promises = new Array<Promise<void>>();
+    let api = pool.api();
+    let apiPromiseCount = 0;
     for await (part of stream.pipeThrough(new PartStream(chunkSize))) {
-      part: while (true) {
-        try {
-          if (part.small) {
-            await client.api.upload.saveFilePart({ file_id: fileId, bytes: part.bytes, file_part: part.part });
-            return { small: true, parts: part.totalParts };
-          } else {
-            await client.api.upload.saveBigFilePart({ file_id: fileId, file_part: part.part, bytes: part.bytes, file_total_parts: part.totalParts });
+      promises.push(
+        Promise.resolve().then(async () => {
+          while (true) {
+            try {
+              if (part.small) {
+                await api.upload.saveFilePart({ file_id: fileId, bytes: part.bytes, file_part: part.part });
+              } else {
+                await api.upload.saveBigFilePart({ file_id: fileId, file_part: part.part, bytes: part.bytes, file_total_parts: part.totalParts });
+              }
+              this.#Lupload.debug(`[${fileId}] uploaded part ` + (part.part + 1));
+              break;
+            } catch (err) {
+              signal?.throwIfAborted();
+              this.#Lupload.debug(`[${fileId}] failed to upload part ` + (part.part + 1));
+              await this.#handleUploadError(err);
+            }
           }
-          this.#Lupload.debug((part.part + 1) + " parts have been uploaded so far");
-          break part;
-        } catch (err) {
-          signal?.throwIfAborted();
-          await this.#handleUploadError(err);
-        }
+        }),
+      );
+      if (++apiPromiseCount >= FileManager.#UPLOAD_REQUEST_PER_CONNECTION) {
+        api = pool.api();
+        apiPromiseCount = 0;
+      }
+      if (promises.length == pool.size * FileManager.#UPLOAD_REQUEST_PER_CONNECTION) {
+        await Promise.all(promises);
+        promises = [];
       }
     }
-    return { small: false, parts: part!.totalParts };
+    await Promise.all(promises);
+    return { small: part!.small, parts: part!.totalParts };
   }
 
-  async #uploadBuffer(buffer: Uint8Array, fileId: bigint, chunkSize: number, signal: AbortSignal | null | undefined, client: ReturnType<C["apiFactory"]>) {
+  async #uploadBuffer(buffer: Uint8Array, fileId: bigint, chunkSize: number, signal: AbortSignal | null | undefined, pool: ConnectionPool) {
     const isBig = buffer.byteLength > FileManager.#BIG_FILE_THRESHOLD;
     const partCount = Math.ceil(buffer.byteLength / chunkSize);
-    main: for (let part = 0; part < partCount; ++part) {
-      part: while (true) {
-        try {
-          signal?.throwIfAborted();
+    let promises = new Array<Promise<void>>();
+    for (let part = 0; part < partCount;) {
+      for (let i = 0; i < pool.size; ++i) {
+        const api = pool.api();
+        for (let i = 0; i < FileManager.#UPLOAD_REQUEST_PER_CONNECTION; ++i) {
           const start = part * chunkSize;
           const end = start + chunkSize;
           const bytes = buffer.subarray(start, end);
-          if (bytes.length == 0) {
-            continue main;
-          }
-          if (isBig) {
-            await client.api.upload.saveBigFilePart({ file_id: fileId, file_part: part, bytes, file_total_parts: partCount });
-          } else {
-            await client.api.upload.saveFilePart({ file_id: fileId, bytes, file_part: part });
-          }
-          this.#Lupload.debug((part + 1) + " out of " + partCount + " parts have been uploaded so far");
-          break part;
-        } catch (err) {
-          signal?.throwIfAborted();
-          await this.#handleUploadError(err);
+          assert(bytes.length != 0);
+          const thisPart = part++; // `thisPart` must be used instead of `part` in the promise body
+          promises.push(
+            Promise.resolve().then(async () => {
+              while (true) {
+                try {
+                  signal?.throwIfAborted();
+                  if (isBig) {
+                    await api.upload.saveBigFilePart({ file_id: fileId, file_part: thisPart, bytes, file_total_parts: partCount });
+                  } else {
+                    await api.upload.saveFilePart({ file_id: fileId, bytes, file_part: thisPart });
+                  }
+                  this.#Lupload.debug(`[${fileId}] uploaded part ` + (thisPart + 1) + " / " + partCount);
+                  break;
+                } catch (err) {
+                  signal?.throwIfAborted();
+                  this.#Lupload.debug(`[${fileId}] failed to upload part ` + (thisPart + 1) + " / " + partCount);
+                  await this.#handleUploadError(err);
+                }
+              }
+            }),
+          );
         }
       }
+      await Promise.all(promises);
+      promises = [];
     }
+    await Promise.all(promises);
     return { small: !isBig, parts: partCount };
   }
 
@@ -224,24 +254,20 @@ export class FileManager {
 
   async *#downloadInner(location: enums.InputFileLocation, dcId: number, params?: { chunkSize?: number; offset?: number }) {
     const id = "id" in location ? location.id : "photo_id" in location ? location.photo_id : null;
-    if (id != null) {
+    if (id != null && this.#c.storage.supportsFiles) {
       const file = await this.#c.storage.getFile(id);
       const partOffset = file == null ? 0 : params?.offset ? Math.ceil(10 / file[1]) - 1 : 0;
       if (file != null && file[0] > 0) {
-        for await (const part of this.#c.storage.iterFileParts(id, file[0], partOffset)) {
-          yield part;
-        }
+        yield* this.#c.storage.iterFileParts(id, file[0], partOffset);
         return;
       }
     }
 
-    const chunkSize = params?.chunkSize ?? 1024 * 1024;
-    if (mod(chunkSize, 1024) != 0) {
-      throw new InputError("chunkSize must be divisible by 1024.");
-    }
+    const chunkSize = params?.chunkSize ?? FileManager.#DOWNLOAD_MAX_CHUNK_SIZE;
+    FileManager.validateChunkSize(chunkSize, FileManager.#DOWNLOAD_MAX_CHUNK_SIZE);
 
-    const { api, connect, disconnect } = this.#c.apiFactory(dcId);
-    await connect();
+    const connection = this.#c.getCdnConnection(dcId);
+    await connection.connect();
 
     const limit = chunkSize;
     let offset = params?.offset ? BigInt(params.offset) : 0n;
@@ -249,7 +275,7 @@ export class FileManager {
 
     try {
       while (true) {
-        const file = await api.upload.getFile({ location, offset, limit });
+        const file = await connection.api.upload.getFile({ location, offset, limit });
 
         if (file instanceof types.upload.File) {
           yield file.bytes;
@@ -270,7 +296,22 @@ export class FileManager {
         }
       }
     } finally {
-      drop(disconnect());
+      drop(connection.disconnect());
+    }
+  }
+
+  static validateChunkSize(chunkSize: number, max: number) {
+    if (chunkSize <= 0) {
+      throw new InputError("chunkSize must be bigger than zero.");
+    }
+    if (chunkSize % 1 != 0) {
+      throw new InputError("chunkSize must be a whole number.");
+    }
+    if (chunkSize > max) {
+      throw new InputError("chunkSize is too big.");
+    }
+    if (mod(chunkSize, 1024) != 0) {
+      throw new InputError("chunkSize must be divisible by 1024.");
     }
   }
 
@@ -285,9 +326,7 @@ export class FileManager {
           const big = fileId_.location.source.type == PhotoSourceType.ChatPhotoBig;
           const peer = await this.#c.getInputPeer(Number(fileId_.location.source.chatId)); // TODO: use access hash from source?
           const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photo_id: fileId_.location.id });
-          for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
-            yield chunk;
-          }
+          yield* this.#downloadInner(location, fileId_.dcId, params);
           break;
         }
         case FileType.Photo: {
@@ -297,9 +336,7 @@ export class FileManager {
             file_reference: fileId_.fileReference ?? new Uint8Array(),
             thumb_size: "thumbnailType" in fileId_.location.source ? String.fromCharCode(fileId_.location.source.thumbnailType) : "",
           });
-          for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
-            yield chunk;
-          }
+          yield* this.#downloadInner(location, fileId_.dcId, params);
           break;
         }
         case FileType.Thumbnail: {
@@ -309,9 +346,7 @@ export class FileManager {
             file_reference: fileId_.fileReference ?? new Uint8Array(),
             thumb_size: "thumbnailType" in fileId_.location.source ? String.fromCharCode(fileId_.location.source.thumbnailType) : unreachable(),
           });
-          for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
-            yield chunk;
-          }
+          yield* this.#downloadInner(location, fileId_.dcId, params);
           break;
         }
       }
@@ -320,11 +355,9 @@ export class FileManager {
         id: fileId_.location.id,
         access_hash: fileId_.location.accessHash,
         file_reference: fileId_.fileReference ?? new Uint8Array(),
-        thumb_size: "", // TODO?
+        thumb_size: "",
       });
-      for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
-        yield chunk;
-      }
+      yield* this.#downloadInner(location, fileId_.dcId, params);
     } else {
       unreachable();
     }
