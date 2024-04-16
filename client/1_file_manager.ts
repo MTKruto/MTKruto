@@ -20,7 +20,7 @@
 
 import { assert, extension, path, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { drop, getLogger, getRandomId, kilobyte, Logger, megabyte, minute, mod, Part, PartStream } from "../1_utilities.ts";
+import { drop, getLogger, getRandomId, iterateReadableStream, kilobyte, Logger, megabyte, minute, mod, Part, PartStream } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
 import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
@@ -91,7 +91,7 @@ export class FileManager {
     let promises = new Array<Promise<void>>();
     let api = pool.api();
     let apiPromiseCount = 0;
-    for await (part of stream.pipeThrough(new PartStream(chunkSize))) {
+    for await (part of iterateReadableStream(stream.pipeThrough(new PartStream(chunkSize)))) {
       promises.push(
         Promise.resolve().then(async () => {
           while (true) {

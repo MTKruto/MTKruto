@@ -62,3 +62,16 @@ export function toUnixTimestamp(date: Date) {
 export function fromUnixTimestamp(date: number) {
   return new Date(date * second);
 }
+
+export async function* iterateReadableStream(stream: ReadableStream) {
+  const reader = stream.getReader();
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) return;
+      yield value;
+    }
+  } finally {
+    reader.releaseLock();
+  }
+}
