@@ -25,6 +25,10 @@ import { ConnectionUnframed } from "./0_connection.ts";
 
 const L = getLogger("ConnectionTCP");
 
+export interface TcpConnector {
+  connect: typeof Deno.connect;
+}
+
 export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnframed {
   #hostname: string;
   #port: number;
@@ -35,11 +39,13 @@ export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnfra
   #nextResolve: [number, { resolve: () => void; reject: (err: unknown) => void }] | null = null;
   #canRead = false;
   #canWrite = false;
+  #connector: TcpConnector;
 
-  constructor(hostname: string, port: number) {
+  constructor(hostname: string, port: number, connector: TcpConnector = Deno) {
     super();
     this.#hostname = hostname;
     this.#port = port;
+    this.#connector = connector;
   }
 
   get connected(): boolean {
@@ -56,7 +62,7 @@ export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnfra
     if (this.connected) {
       throw new Error("Connection already open");
     }
-    const connection = await Deno.connect({
+    const connection = await this.#connector.connect({
       hostname: this.#hostname,
       port: this.#port,
     });
