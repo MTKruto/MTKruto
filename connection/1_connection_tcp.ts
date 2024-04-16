@@ -35,11 +35,13 @@ export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnfra
   #nextResolve: [number, { resolve: () => void; reject: (err: unknown) => void }] | null = null;
   #canRead = false;
   #canWrite = false;
+  #connect: typeof Deno.connect;
 
-  constructor(hostname: string, port: number) {
+  constructor(hostname: string, port: number, connect: typeof Deno.connect = Deno.connect) {
     super();
     this.#hostname = hostname;
     this.#port = port;
+    this.#connect = connect;
   }
 
   get connected(): boolean {
@@ -56,7 +58,7 @@ export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnfra
     if (this.connected) {
       throw new Error("Connection already open");
     }
-    const connection = await Deno.connect({
+    const connection = await this.#connect({
       hostname: this.#hostname,
       port: this.#port,
     });
