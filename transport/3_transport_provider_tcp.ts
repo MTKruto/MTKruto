@@ -19,7 +19,7 @@
  */
 
 import { Client as SocksClient, ClientConfig as SocksClientConfig } from "https://deno.land/x/socks5/client.ts";
-import { ConnectionTCP, ConnectTcp } from "../connection/1_connection_tcp.ts";
+import { ConnectionTCP, ConnectTCP } from "../connection/1_connection_tcp.ts";
 import { TransportAbridged } from "./1_transport_abridged.ts";
 import { getDcId, getDcIps, TransportProvider } from "./2_transport_provider.ts";
 
