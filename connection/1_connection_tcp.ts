@@ -24,7 +24,7 @@ import { getLogger, Mutex } from "../1_utilities.ts";
 import { ConnectionUnframed } from "./0_connection.ts";
 
 const L = getLogger("ConnectionTCP");
-
+export type ConnectTcp = (opts: Deno.ConnectOptions) => Promise<Deno.TcpConn>;
 export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnframed {
   #hostname: string;
   #port: number;
@@ -35,9 +35,9 @@ export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnfra
   #nextResolve: [number, { resolve: () => void; reject: (err: unknown) => void }] | null = null;
   #canRead = false;
   #canWrite = false;
-  #connect: typeof Deno.connect;
+  #connect: ConnectTcp;
 
-  constructor(hostname: string, port: number, connect: typeof Deno.connect = Deno.connect) {
+  constructor(hostname: string, port: number, connect: ConnectTcp = Deno.connect) {
     super();
     this.#hostname = hostname;
     this.#port = port;

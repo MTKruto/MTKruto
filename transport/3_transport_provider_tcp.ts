@@ -18,12 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ConnectionTCP } from "../connection/1_connection_tcp.ts";
+import { ConnectionTCP, ConnectTcp } from "../connection/1_connection_tcp.ts";
 import { TransportAbridged } from "./1_transport_abridged.ts";
 import { getDcId, getDcIps, TransportProvider } from "./2_transport_provider.ts";
 
 export function transportProviderTcp(
-  params?: { ipv6?: boolean; obfuscated?: boolean; connect?: typeof Deno.connect },
+  params?: { ipv6?: boolean; obfuscated?: boolean; connect?: ConnectTcp },
 ): TransportProvider {
   return ({ dc, cdn }) => {
     const connection = new ConnectionTCP(
