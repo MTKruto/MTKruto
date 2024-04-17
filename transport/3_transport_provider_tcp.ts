@@ -18,20 +18,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { Client as SocksClient, ClientConfig as SocksClientConfig } from "https://deno.land/x/socks5/client.ts";
 import { ConnectionTCP, ConnectTcp } from "../connection/1_connection_tcp.ts";
 import { TransportAbridged } from "./1_transport_abridged.ts";
 import { getDcId, getDcIps, TransportProvider } from "./2_transport_provider.ts";
 
-export function transportProviderTcp(
-  params?: { ipv6?: boolean; obfuscated?: boolean; connect?: ConnectTcp },
-): TransportProvider {
+export function transportProviderTcp(params?: {
+  ipv6?: boolean;
+  obfuscated?: boolean;
+  socksProxy?: SocksClientConfig;
+}): TransportProvider {
   return ({ dc, cdn }) => {
     const connection = new ConnectionTCP(
       getDcIps(dc, params?.ipv6 ? "ipv6" : "ipv4")[0],
       80,
-      params?.connect,
+      getConnect(params?.socksProxy),
     );
     const transport = new TransportAbridged(connection, params?.obfuscated);
     return { connection, transport, dcId: getDcId(dc, cdn) };
   };
+}
+
+function getConnect(socksOptions?: SocksClientConfig) {
+  if (socksOptions) {
+    const socksClient = new SocksClient(socksOptions);
+    return socksClient.connect;
+  } else {
+    return Deno.connect;
+  }
 }
