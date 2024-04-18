@@ -19,7 +19,7 @@
  */
 
 import { Client as SocksClient, ClientConfig as SocksClientConfig } from "https://deno.land/x/socks5/client.ts";
-import { ConnectionTCP } from "../connection/1_connection_tcp.ts";
+import { ConnectionTCP, ConnectTCP } from "../connection/1_connection_tcp.ts";
 import { TransportAbridged } from "./1_transport_abridged.ts";
 import { getDcId, getDcIps, TransportProvider } from "./2_transport_provider.ts";
 
@@ -39,10 +39,10 @@ export function transportProviderTcp(params?: {
   };
 }
 
-function getConnect(socksOptions?: SocksClientConfig) {
+function getConnect(socksOptions?: SocksClientConfig): ConnectTCP {
   if (socksOptions) {
     const socksClient = new SocksClient(socksOptions);
-    return socksClient.connect;
+    return (opts) => socksClient.connect(opts);
   } else {
     return Deno.connect;
   }
