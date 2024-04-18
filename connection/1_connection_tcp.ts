@@ -25,8 +25,6 @@ import { ConnectionUnframed } from "./0_connection.ts";
 
 const L = getLogger("ConnectionTCP");
 
-export type ConnectTCP = (opts: Deno.ConnectOptions) => Promise<Deno.TcpConn>;
-
 export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnframed {
   #hostname: string;
   #port: number;
