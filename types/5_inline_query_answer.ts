@@ -8,8 +8,6 @@ export interface InlineQueryAnswer {
   id: string;
   /** The inline query results. */
   results: InlineQueryResult[];
-  /** TTL of the caches of the results in seconds. */
-  cacheTime: number;
   /** A parameter that can be passed to next queries with the same text to yield more results. */
   nextOffset?: string;
 }
@@ -18,7 +16,6 @@ export function constructInlineQueryAnswer(results: types.messages.BotResults): 
   return cleanObject({
     id: results.query_id + "",
     results: results.results.map(constructInlineQueryResult),
-    cacheTime: results.cache_time,
     nextOffset: results.next_offset,
   });
 }
