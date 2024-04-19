@@ -18,12 +18,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { enums, types } from "../2_tl.ts";
-import { constructCallbackQuery, Update } from "../3_types.ts";
+import { enums, peerToChatId, types } from "../2_tl.ts";
+import { CallbackQueryQuestion, constructCallbackQuery, constructCallbackQueryAnswer, ID, Update, validateCallbackQueryQuestion } from "../3_types.ts";
 import { AnswerCallbackQueryParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
-import { checkCallbackQueryId } from "./0_utilities.ts";
+import { checkCallbackQueryId, checkMessageId } from "./0_utilities.ts";
 import { MessageManager } from "./2_message_manager.ts";
+import { checkPassword } from "./0_password.ts";
 
 type C = C_ & { messageManager: MessageManager };
 
@@ -45,6 +46,37 @@ export class CallbackQueryManager {
       message: params?.text,
       alert: params?.alert ? true : undefined,
     });
+  }
+
+  static #enc = new TextEncoder();
+  async sendCallbackQuery(chatId: ID, messageId: number, question: CallbackQueryQuestion) {
+    checkMessageId(messageId);
+    validateCallbackQueryQuestion(question);
+    const peer = await this.#c.getInputPeer(chatId), peerId = peerToChatId(peer), questionKey = JSON.stringify(question);
+    const maybeAnswer = await this.#c.messageStorage.getCallbackQueryAnswer(peerId, messageId, questionKey);
+    if (maybeAnswer != null && !CallbackQueryManager.#isExpired(maybeAnswer[1], maybeAnswer[0].cache_time)) {
+      return constructCallbackQueryAnswer(maybeAnswer[0]);
+    }
+    const answer = await this.#c.api.messages.getBotCallbackAnswer({
+      peer,
+      msg_id: messageId,
+      data: "data" in question ? CallbackQueryManager.#enc.encode(question.data) : undefined,
+      game: question.type == "game" ? true : undefined,
+      password: question.type == "password" ? await this.#getPasswordCheck(question.password) : undefined,
+    });
+    if (answer.cache_time >= 0) {
+      await this.#c.messageStorage.setCallbackQueryAnswer(peerId, messageId, questionKey, answer);
+    }
+    return constructCallbackQueryAnswer(answer);
+  }
+
+  static #isExpired(date: Date, cacheTime: number) {
+    return (Date.now() - date.getTime()) / 1000 > cacheTime;
+  }
+
+  async #getPasswordCheck(password: string) {
+    const ap = await this.#c.api.account.getPassword();
+    return await checkPassword(password, ap);
   }
 
   static canHandleUpdate(update: enums.Update): update is CallbackQueryManagerUpdate {
