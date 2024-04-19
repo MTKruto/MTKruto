@@ -17,11 +17,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import { types } from "../2_tl.ts";
 
+/** An answer to a callback query. */
 export interface CallbackQueryAnswer {
+  /** Whether the answer should be shown as an alert. */
   alert: boolean;
+  /** The text of the answer. */
   text: string;
+  /** A potential URL that is to be opened. */
   url: string;
 }
 

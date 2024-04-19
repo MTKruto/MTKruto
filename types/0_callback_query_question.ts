@@ -17,26 +17,40 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import { InputError } from "../0_errors.ts";
 
-/** @unlisted */
+/**
+ * A reference to a button for opening the bot's game.
+ * @unlisted
+ */
 export interface CallbackQueryQuestionGame {
   type: "game";
 }
 
-/** @unlisted */
+/**
+ * A reference to a password confirmation button.
+ * @unlisted
+ */
 export interface CallbackQueryQuestionPassword {
   type: "password";
-  password: string;
+  /** The target button's callback data. */
   data: string;
+  /** The account's password. */
+  password: string;
 }
 
-/** @unlisted */
+/**
+ * A reference to a usual button.
+ * @unlisted
+ */
 export interface CallbackQueryQuestionButton {
   type: "button";
+  /** The target button's callback data. */
   data: string;
 }
 
+/** A reference to a button that is to be clicked by a user. */
 export type CallbackQueryQuestion = CallbackQueryQuestionGame | CallbackQueryQuestionPassword | CallbackQueryQuestionButton;
 
 export function validateCallbackQueryQuestion(q: CallbackQueryQuestion) {
