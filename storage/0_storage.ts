@@ -64,8 +64,8 @@ export const K = {
     customEmojiDocument: (id: bigint): StorageKeyPart[] => [...K.cache.customEmojiDocuments(), id],
     businessConnections: (): StorageKeyPart[] => [K.cache.P("businessConnections")],
     businessConnection: (id: string): StorageKeyPart[] => [...K.cache.businessConnections(), id],
-    allInlineQueryResults: (): StorageKeyPart[] => [K.cache.P("inlineQueryResults")],
-    inlineQueryResults: (userId: number, chatId: number, query: string, offset: string): StorageKeyPart[] => [...K.cache.allInlineQueryResults(), userId, chatId, query, offset],
+    inlineQueryAnswers: (): StorageKeyPart[] => [K.cache.P("inlineQueryResults")],
+    inlineQueryAnswer: (userId: number, chatId: number, query: string, offset: string): StorageKeyPart[] => [...K.cache.inlineQueryAnswers(), userId, chatId, query, offset],
   },
   messages: {
     P: (string: string): string => `messages.${string}`,
@@ -451,12 +451,12 @@ export abstract class Storage {
     }
   }
 
-  async setInlineQueryResults(userId: number, chatId: number, query: string, offset: string, results: types.messages.BotResults, date: Date) {
-    await this.set(K.cache.inlineQueryResults(userId, chatId, query, offset), [this.isMemoryStorage ? results : rleEncode(results[serialize]()), date]);
+  async setInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string, results: types.messages.BotResults, date: Date) {
+    await this.set(K.cache.inlineQueryAnswer(userId, chatId, query, offset), [this.isMemoryStorage ? results : rleEncode(results[serialize]()), date]);
   }
 
-  async getInlineQueryResults(userId: number, chatId: number, query: string, offset: string): Promise<[types.messages.BotResults, Date] | null> {
-    const peer_ = await this.get<[Uint8Array, Date]>(K.cache.inlineQueryResults(userId, chatId, query, offset));
+  async getInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string): Promise<[types.messages.BotResults, Date] | null> {
+    const peer_ = await this.get<[Uint8Array, Date]>(K.cache.inlineQueryAnswer(userId, chatId, query, offset));
     if (peer_ != null) {
       const [obj_, date] = peer_;
       return [await this.getTlObject(obj_) as types.messages.BotResults, date];
@@ -531,8 +531,8 @@ export abstract class Storage {
     }
   }
 
-  async deleteInlineQueryResults() {
-    for await (const [key] of await this.getMany({ prefix: K.cache.allInlineQueryResults() })) {
+  async deleteInlineQueryAnswers() {
+    for await (const [key] of await this.getMany({ prefix: K.cache.inlineQueryAnswers() })) {
       await this.set(key, null);
     }
   }
@@ -564,7 +564,7 @@ export abstract class Storage {
       this.deleteFiles(),
       this.deleteCustomEmojiDocuments(),
       this.deleteBusinessConnections(),
-      this.deleteInlineQueryResults(),
+      this.deleteInlineQueryAnswers(),
       this.deleteStickerSetNames(),
       this.deletePeers(),
       this.deleteUsernames(),
