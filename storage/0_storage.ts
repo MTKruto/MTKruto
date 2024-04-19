@@ -64,8 +64,8 @@ export const K = {
     customEmojiDocument: (id: bigint): StorageKeyPart[] => [...K.cache.customEmojiDocuments(), id],
     businessConnections: (): StorageKeyPart[] => [K.cache.P("businessConnections")],
     businessConnection: (id: string): StorageKeyPart[] => [...K.cache.businessConnections(), id],
-    allInlineQueryResults: () => [K.cache.P("inlineQueryResults")],
-    inlineQueryResults: (userId: number, chatId: number, query: string, offset: string) => [...K.cache.allInlineQueryResults(), userId, chatId, query, offset],
+    allInlineQueryResults: (): StorageKeyPart[] => [K.cache.P("inlineQueryResults")],
+    inlineQueryResults: (userId: number, chatId: number, query: string, offset: string): StorageKeyPart[] => [...K.cache.allInlineQueryResults(), userId, chatId, query, offset],
   },
   messages: {
     P: (string: string): string => `messages.${string}`,
