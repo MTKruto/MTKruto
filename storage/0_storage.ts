@@ -64,7 +64,8 @@ export const K = {
     customEmojiDocument: (id: bigint): StorageKeyPart[] => [...K.cache.customEmojiDocuments(), id],
     businessConnections: (): StorageKeyPart[] => [K.cache.P("businessConnections")],
     businessConnection: (id: string): StorageKeyPart[] => [...K.cache.businessConnections(), id],
-    inlineQueryResults: (userId: number, chatId: number, query: string, offset: string) => [K.cache.P("inlineQueryResults"), userId, chatId, query, offset],
+    allInlineQueryResults: () => [K.cache.P("inlineQueryResults")],
+    inlineQueryResults: (userId: number, chatId: number, query: string, offset: string) => [...K.cache.allInlineQueryResults(), userId, chatId, query, offset],
   },
   messages: {
     P: (string: string): string => `messages.${string}`,
@@ -530,6 +531,12 @@ export abstract class Storage {
     }
   }
 
+  async deleteInlineQueryResults() {
+    for await (const [key] of await this.getMany({ prefix: K.cache.allInlineQueryResults() })) {
+      await this.set(key, null);
+    }
+  }
+
   async deleteStickerSetNames() {
     for await (const [key] of await this.getMany({ prefix: K.cache.stickerSetNames() })) {
       await this.set(key, null);
@@ -557,6 +564,7 @@ export abstract class Storage {
       this.deleteFiles(),
       this.deleteCustomEmojiDocuments(),
       this.deleteBusinessConnections(),
+      this.deleteInlineQueryResults(),
       this.deleteStickerSetNames(),
       this.deletePeers(),
       this.deleteUsernames(),
