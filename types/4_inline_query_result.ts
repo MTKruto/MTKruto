@@ -28,6 +28,7 @@ import { ParseMode } from "./0_parse_mode.ts";
 import { getPhotoSizes } from "./1_photo.ts";
 import { MessageContent } from "./1_message_content.ts";
 import { constructReplyMarkup, ReplyMarkupInlineKeyboard, replyMarkupToTlObject } from "./3_reply_markup.ts";
+import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 /** @unlisted */
 type InlineQueryResultType =
@@ -121,6 +122,7 @@ export interface InlineQueryResultCachedMpeg4Gif extends _InlineQueryResultBase,
 export interface InlineQueryResultCachedPhoto extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "photo";
   fileId: string;
+  thumbnails?: Thumbnail[];
   title?: string;
   description?: string;
 }
@@ -314,12 +316,14 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
   } else if (result.send_message instanceof types.BotInlineMessageMediaAuto) {
     let ref: { url: string } | { fileId: string };
     let attributes: enums.DocumentAttribute[] | undefined;
-    const thumbnailUrl =  'thumb' in result ? result.thumb?.url : undefined;
+    const thumbnailUrl = "thumb" in result ? result.thumb?.url : undefined;
+    let photoSizes: ReturnType<typeof getPhotoSizes> | undefined;
+    let photo: types.Photo | undefined;
     if (result instanceof types.BotInlineMediaResult) {
       if (result.photo) {
-        const photo = result.photo[as](types.Photo);
+        photo = result.photo[as](types.Photo);
         ref = { fileId: getPhotoFileId(photo).fileId };
-        const { largest } = getPhotoSizes(photo);
+        const { largest } = photoSizes = getPhotoSizes(photo);
         attributes = [new types.DocumentAttributeImageSize({ w: largest.w, h: largest.h })];
       } else if (result.document) {
         const document = result.document[as](types.Document);
@@ -368,18 +372,20 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
       case "gif":
       case "mpeg4Gif": {
         const a = attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo);
-        return cleanObject({
-          id,
-          type,
-          title,
-          ...ref,
-          messageContent,
-          replyMarkup,
-          thumbnailUrl,
-          width: a?.w,
-          height: a?.h,
-          duration: a?.duration,
-        } as InlineQueryResultGif | InlineQueryResultMpeg4Gif);
+        return cleanObject(
+          {
+            id,
+            type,
+            title,
+            ...ref,
+            messageContent,
+            replyMarkup,
+            thumbnailUrl,
+            width: a?.w,
+            height: a?.h,
+            duration: a?.duration,
+          } as InlineQueryResultGif | InlineQueryResultMpeg4Gif,
+        );
       }
       case "photo": {
         const a = attributes.find((v): v is types.DocumentAttributeImageSize => v instanceof types.DocumentAttributeImageSize);
@@ -392,6 +398,7 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
           messageContent,
           replyMarkup,
           thumbnailUrl: thumbnailUrl!,
+          thumbnails: photo ? photoSizes?.sizes.slice(0, -1).map((v) => constructThumbnail(v, photo)) : undefined,
           width: a?.w,
           height: a?.h,
         });
