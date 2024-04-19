@@ -22,6 +22,8 @@ export * from "./types/_file_id.ts";
 export * from "./types/_getters.ts";
 export * from "./types/0_authorization_state.ts";
 export * from "./types/0_bot_command.ts";
+export * from "./types/0_callback_query_answer.ts";
+export * from "./types/0_callback_query_question.ts";
 export * from "./types/0_chat_action.ts";
 export * from "./types/0_chat_administrator_rights.ts";
 export * from "./types/0_chat_member_rights.ts";

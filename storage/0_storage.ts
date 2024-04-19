@@ -66,6 +66,8 @@ export const K = {
     businessConnection: (id: string): StorageKeyPart[] => [...K.cache.businessConnections(), id],
     inlineQueryAnswers: (): StorageKeyPart[] => [K.cache.P("inlineQueryResults")],
     inlineQueryAnswer: (userId: number, chatId: number, query: string, offset: string): StorageKeyPart[] => [...K.cache.inlineQueryAnswers(), userId, chatId, query, offset],
+    callbackQueryAnswers: (): StorageKeyPart[] => [K.cache.P("callbackQueryAnswers")],
+    callbackQueryAnswer: (chatId: number, messageId: number, question: string): StorageKeyPart[] => [...K.cache.callbackQueryAnswers(), chatId, messageId, question],
   },
   messages: {
     P: (string: string): string => `messages.${string}`,
@@ -465,6 +467,20 @@ export abstract class Storage {
     }
   }
 
+  async setCallbackQueryAnswer(chatId: number, messageId: number, question: string, answer: types.messages.BotCallbackAnswer) {
+    await this.set(K.cache.callbackQueryAnswer(chatId, messageId, question), [this.isMemoryStorage ? answer : rleEncode(answer[serialize]()), new Date()]);
+  }
+
+  async getCallbackQueryAnswer(chatId: number, messageId: number, question: string): Promise<[types.messages.BotCallbackAnswer, Date] | null> {
+    const peer_ = await this.get<[Uint8Array, Date]>(K.cache.callbackQueryAnswer(chatId, messageId, question));
+    if (peer_ != null) {
+      const [obj_, date] = peer_;
+      return [await this.getTlObject(obj_) as types.messages.BotCallbackAnswer, date];
+    } else {
+      return null;
+    }
+  }
+
   #getUpdateId(update: enums.Update) {
     let id = BigInt(Date.now()) << 32n;
     if ("pts" in update && update.pts) {
@@ -536,6 +552,11 @@ export abstract class Storage {
       await this.set(key, null);
     }
   }
+  async deleteCallbackQueryAnswers() {
+    for await (const [key] of await this.getMany({ prefix: K.cache.callbackQueryAnswers() })) {
+      await this.set(key, null);
+    }
+  }
 
   async deleteStickerSetNames() {
     for await (const [key] of await this.getMany({ prefix: K.cache.stickerSetNames() })) {
@@ -565,6 +586,7 @@ export abstract class Storage {
       this.deleteCustomEmojiDocuments(),
       this.deleteBusinessConnections(),
       this.deleteInlineQueryAnswers(),
+      this.deleteCallbackQueryAnswers(),
       this.deleteStickerSetNames(),
       this.deletePeers(),
       this.deleteUsernames(),
