@@ -76,9 +76,11 @@ export class InlineQueryManager {
     if (maybeResults != null && !InlineQueryManager.#isExpired(maybeResults[1], maybeResults[0].cache_time)) {
       return constructInlineQueryAnswer(maybeResults[0]);
     }
-    const then = Date.now();
+    const then = new Date();
     const results = await this.#c.api.messages.getInlineBotResults({ bot, peer, query, offset });
-    await this.#c.messageStorage.setInlineQueryResults(botId, peerId, query, offset, results, new Date(Date.now() - then));
+    if (results.cache_time > 0) {
+      await this.#c.messageStorage.setInlineQueryResults(botId, peerId, query, offset, results, then);
+    }
     return constructInlineQueryAnswer(results);
   }
 
