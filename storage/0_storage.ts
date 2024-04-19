@@ -64,6 +64,7 @@ export const K = {
     customEmojiDocument: (id: bigint): StorageKeyPart[] => [...K.cache.customEmojiDocuments(), id],
     businessConnections: (): StorageKeyPart[] => [K.cache.P("businessConnections")],
     businessConnection: (id: string): StorageKeyPart[] => [...K.cache.businessConnections(), id],
+    inlineQueryResults: (userId: number, chatId: number, query: string, offset: string) => [K.cache.P('inlineQueryResults'), userId, chatId, query, offset]
   },
   messages: {
     P: (string: string): string => `messages.${string}`,
@@ -435,6 +436,7 @@ export abstract class Storage {
       return null;
     }
   }
+
   async setBusinessConnection(id: string, connection: types.BotBusinessConnection | null) {
     await this.set(K.cache.businessConnection(id), connection == null ? null : this.isMemoryStorage ? connection : rleEncode(connection[serialize]()));
   }
@@ -447,6 +449,26 @@ export abstract class Storage {
       return null;
     }
   }
+
+  async setInlineQueryResults(userId: number, chatId: number, query: string, offset:string, results:types.messages.BotResults){
+    const peer_ = await this.get<[Uint8Array, Date]>(K.cache.inlineQueryResults(userId, chatId, query, offset));
+    if (peer_ != null) {
+      const [obj_,date] = peer_;
+      return [await this.getTlObject(obj_) as types.messages.BotResults, date];
+    } else {
+      return null;
+    }
+  }
+  async getInlineQueryResults(userId: number, chatId: number, query: string, offset:string): Promise<[types.messages.BotResults, Date] | null> {
+    const peer_ = await this.get<[Uint8Array, Date]>(K.cache.inlineQueryResults(userId, chatId, query, offset));
+    if (peer_ != null) {
+      const [obj_,date] = peer_;
+      return [await this.getTlObject(obj_) as types.messages.BotResults, date];
+    } else {
+      return null;
+    }
+  }
+
 
   #getUpdateId(update: enums.Update) {
     let id = BigInt(Date.now()) << 32n;
