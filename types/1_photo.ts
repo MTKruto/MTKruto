@@ -19,8 +19,7 @@
  */
 
 import { types } from "../2_tl.ts";
-import { PhotoSourceType } from "./_file_id.ts";
-import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
+import { getPhotoFileId } from "./_file_id.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 /** A photo. */
@@ -39,6 +38,17 @@ export interface Photo {
 }
 
 export function constructPhoto(photo: types.Photo): Photo {
+  const { sizes, largest } = getPhotoSizes(photo);
+  return {
+    ...getPhotoFileId(photo),
+    width: largest.w,
+    height: largest.h,
+    fileSize: largest.size,
+    thumbnails: sizes.slice(0, -1).map((v) => constructThumbnail(v, photo)),
+  };
+}
+
+export function getPhotoSizes(photo: types.Photo): { sizes: types.PhotoSize[]; largest: types.PhotoSize } {
   const sizes = photo.sizes
     .map((v) => {
       if (v instanceof types.PhotoSizeProgressive) {
@@ -49,31 +59,6 @@ export function constructPhoto(photo: types.Photo): Photo {
     })
     .filter((v): v is types.PhotoSize => v instanceof types.PhotoSize)
     .sort((a, b) => a.size - b.size);
-
   const largest = sizes.slice(-1)[0];
-  const { dc_id: dcId, id, access_hash: accessHash, file_reference: fileReference } = photo;
-  const fileId_: FileId = {
-    type: FileType.Photo,
-    dcId,
-    fileReference,
-    location: {
-      type: "photo",
-      id,
-      accessHash,
-      source: {
-        type: PhotoSourceType.Thumbnail,
-        fileType: FileType.Photo,
-        thumbnailType: largest.type.charCodeAt(0),
-      },
-    },
-  };
-
-  return {
-    fileId: serializeFileId(fileId_),
-    fileUniqueId: toUniqueFileId(fileId_),
-    width: largest.w,
-    height: largest.h,
-    fileSize: largest.size,
-    thumbnails: sizes.slice(0, -1).map((v) => constructThumbnail(v, photo)),
-  };
+  return { sizes, largest };
 }
