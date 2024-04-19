@@ -275,7 +275,7 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
   const id = result.id, title = result.title ?? "", type = result.type, description = result.description;
   if (result.send_message instanceof types.BotInlineMessageMediaGeo) {
     const geoPoint = result.send_message.geo as types.GeoPoint;
-    return {
+    return cleanObject({
       type: "location",
       id,
       title,
@@ -285,10 +285,10 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
       livePeriod: result.send_message.period,
       heading: result.send_message.heading,
       proximityAlertRadius: result.send_message.proximity_notification_radius,
-    };
+    });
   } else if (result.send_message instanceof types.BotInlineMessageMediaVenue) {
     const geoPoint = result.send_message.geo as types.GeoPoint;
-    return {
+    return cleanObject({
       type: "venue",
       id,
       title,
@@ -297,7 +297,7 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
       address: result.send_message.address,
       foursquareId: result.send_message.venue_id,
       foursquareType: result.send_message.venue_type,
-    };
+    });
   } else if (result.send_message instanceof types.BotInlineMessageMediaWebPage || result.send_message instanceof types.BotInlineMessageText) {
     return cleanObject({
       type: "article",
@@ -314,6 +314,7 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
   } else if (result.send_message instanceof types.BotInlineMessageMediaAuto) {
     let ref: { url: string } | { fileId: string };
     let attributes: enums.DocumentAttribute[] | undefined;
+    const thumbnailUrl =  'thumb' in result ? result.thumb?.url : undefined;
     if (result instanceof types.BotInlineMediaResult) {
       if (result.photo) {
         const photo = result.photo[as](types.Photo);
@@ -342,8 +343,6 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
     } else {
       unreachable();
     }
-    // const url = result.content.url;
-    // const ref = result instanceof .content ? {url: result.content.url} : {result}
     const messageContent = result.send_message.message
       ? {
         messageText: result.send_message.message,
@@ -355,7 +354,7 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
     switch (type) {
       case "audio": {
         const a = attributes?.find((v): v is types.DocumentAttributeAudio => v instanceof types.DocumentAttributeAudio);
-        return {
+        return cleanObject({
           id,
           type,
           title,
@@ -364,27 +363,27 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
           replyMarkup,
           performer: a?.performer,
           audioDuration: a?.duration,
-        };
+        });
       }
       case "gif":
       case "mpeg4Gif": {
         const a = attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo);
-        return {
+        return cleanObject({
           id,
           type,
           title,
           ...ref,
           messageContent,
           replyMarkup,
+          thumbnailUrl,
           width: a?.w,
           height: a?.h,
           duration: a?.duration,
-          // TODO: thumb
-        } as InlineQueryResultGif | InlineQueryResultMpeg4Gif;
+        } as InlineQueryResultGif | InlineQueryResultMpeg4Gif);
       }
       case "photo": {
         const a = attributes.find((v): v is types.DocumentAttributeImageSize => v instanceof types.DocumentAttributeImageSize);
-        return {
+        return cleanObject({
           id,
           type,
           title,
@@ -392,14 +391,14 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
           ...ref,
           messageContent,
           replyMarkup,
-          thumbnailUrl: "", // TODO
+          thumbnailUrl: thumbnailUrl!,
           width: a?.w,
           height: a?.h,
-        };
+        });
       }
       case "video": {
         const a = attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo);
-        return {
+        return cleanObject({
           id,
           type,
           title,
@@ -408,34 +407,36 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
           messageContent,
           replyMarkup,
           mimeType: "content" in result && result.content ? result.content.mime_type : "video/mp4", // TODO
-          thumbnailUrl: "", // TODO
+          thumbnailUrl: thumbnailUrl!,
           width: a?.w,
           height: a?.h,
           videoDuration: a?.duration,
-        };
+        });
       }
       case "voice": {
         const a = attributes.find((v): v is types.DocumentAttributeAudio => v instanceof types.DocumentAttributeAudio);
-        return {
+        return cleanObject({
           id,
           type,
           title,
           ...ref,
           messageContent,
           replyMarkup,
+          thumbnailUrl,
           voiceDuration: a?.duration,
-        };
+        });
       }
       case "document":
       case "file": // Does it really return this?
-        return {
+        return cleanObject({
           type: "document",
           id,
           title: result.title ?? "",
           ...ref,
           messageContent,
           replyMarkup,
-        };
+          thumbnailUrl,
+        });
     }
   }
 

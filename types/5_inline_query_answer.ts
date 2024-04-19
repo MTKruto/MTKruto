@@ -1,3 +1,4 @@
+import { cleanObject } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 import { constructInlineQueryResult, InlineQueryResult } from "./4_inline_query_result.ts";
 
@@ -14,10 +15,10 @@ export interface InlineQueryAnswer {
 }
 
 export function constructInlineQueryAnswer(results: types.messages.BotResults): InlineQueryAnswer {
-  return {
+  return cleanObject({
     id: results.query_id + "",
     results: results.results.map(constructInlineQueryResult),
     cacheTime: results.cache_time,
     nextOffset: results.next_offset,
-  };
+  });
 }
