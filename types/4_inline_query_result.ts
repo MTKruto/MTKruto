@@ -396,7 +396,7 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
           messageContent,
           replyMarkup,
           thumbnailUrl: thumbnailUrl!,
-          thumbnails: photo ? photoSizes?.sizes.slice(0, -1).map((v) => constructThumbnail(v, photo)) : undefined,
+          thumbnails: photo ? photoSizes?.sizes.slice(0, -1).map((v) => constructThumbnail(v, photo!)) : undefined,
           width: a?.w,
           height: a?.h,
         });
