@@ -372,20 +372,18 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
       case "gif":
       case "mpeg4Gif": {
         const a = attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo);
-        return cleanObject(
-          {
-            id,
-            type,
-            title,
-            ...ref,
-            messageContent,
-            replyMarkup,
-            thumbnailUrl,
-            width: a?.w,
-            height: a?.h,
-            duration: a?.duration,
-          } as InlineQueryResultGif | InlineQueryResultMpeg4Gif,
-        );
+        return cleanObject({
+          id,
+          type,
+          title,
+          ...ref,
+          messageContent,
+          replyMarkup,
+          thumbnailUrl,
+          width: a?.w,
+          height: a?.h,
+          duration: a?.duration,
+        }) as InlineQueryResultGif | InlineQueryResultMpeg4Gif;
       }
       case "photo": {
         const a = attributes.find((v): v is types.DocumentAttributeImageSize => v instanceof types.DocumentAttributeImageSize);
