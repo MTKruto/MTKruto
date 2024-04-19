@@ -399,3 +399,8 @@ export interface EditMessageLiveLocationParams {
   /** The reply markup of the message. Bot-only. */
   replyMarkup?: ReplyMarkup;
 }
+
+export interface SendInlineQueryParams {
+  query?: string;
+  offset?: string;
+}

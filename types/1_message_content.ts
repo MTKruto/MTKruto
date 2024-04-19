@@ -27,7 +27,7 @@ import { PriceTag } from "./0_price_tag.ts";
  * A message content that shares a contact.
  * @unlisted
  */
-export interface InputMessageContentContact {
+export interface MessageContentContact {
   /** The contact's phone number. */
   phoneNumber: string;
   /** The contact's first name. */
@@ -42,7 +42,7 @@ export interface InputMessageContentContact {
  * A message content that shares a location.
  * @unlisted
  */
-export interface InputMessageContentLocation {
+export interface MessageContentLocation {
   /** The latitude of the location. */
   latitude: number;
   /** The longitude of the location. */
@@ -61,7 +61,7 @@ export interface InputMessageContentLocation {
  * A message content that shares a venue.
  * @unlisted
  */
-export interface InputMessageContentVenue {
+export interface MessageContentVenue {
   /** The latitude of the venue. */
   latitude: number;
   /** The longitude of the venue. */
@@ -81,7 +81,7 @@ export interface InputMessageContentVenue {
 }
 
 /** @unlisted */
-export interface InputMessageContentText {
+export interface MessageContentText {
   /** The message's text. */
   messageText: string;
   /** The parse mode to use. If not provided, the default parse mode will be used. */
@@ -93,7 +93,7 @@ export interface InputMessageContentText {
 }
 
 /** @unlisted */
-export interface InputMessageContentInvoice {
+export interface MessageContentInvoice {
   title: string;
   description: string;
   payload: string;
@@ -117,4 +117,4 @@ export interface InputMessageContentInvoice {
 }
 
 /** The content of a message to be returned as an inline query result. */
-export type InputMessageContent = InputMessageContentText | InputMessageContentLocation | InputMessageContentVenue | InputMessageContentContact | InputMessageContentInvoice;
+export type MessageContent = MessageContentText | MessageContentLocation | MessageContentVenue | MessageContentContact | MessageContentInvoice;

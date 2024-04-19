@@ -20,8 +20,8 @@
 
 import { unreachable } from "../0_deps.ts";
 import { enums, types } from "../2_tl.ts";
-import { constructChosenInlineResult, constructInlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Update } from "../3_types.ts";
-import { AnswerInlineQueryParams } from "./0_params.ts";
+import { constructChosenInlineResult, constructInlineQuery, constructInlineQueryAnswer, ID, InlineQueryResult, inlineQueryResultToTlObject, Update } from "../3_types.ts";
+import { AnswerInlineQueryParams, SendInlineQueryParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { checkInlineQueryId } from "./0_utilities.ts";
 import { MessageManager } from "./2_message_manager.ts";
@@ -64,5 +64,15 @@ export class InlineQueryManager {
     } else {
       unreachable();
     }
+  }
+
+  async sendInlineQuery(userId: ID, chatId: ID, params?: SendInlineQueryParams) {
+    const results = await this.#c.api.messages.getInlineBotResults({
+      bot: await this.#c.getInputUser(userId),
+      peer: await this.#c.getInputPeer(chatId),
+      query: params?.query ?? "",
+      offset: params?.offset ?? "",
+    });
+    return constructInlineQueryAnswer(results);
   }
 }
