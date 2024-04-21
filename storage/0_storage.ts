@@ -19,6 +19,7 @@
  */
 
 import { AssertionError, unreachable } from "../0_deps.ts";
+import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { AnyEntity, enums, peerToChatId, ReadObject, serialize, TLObject, TLReader, TLWriter, types } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
@@ -511,13 +512,13 @@ export abstract class Storage {
 
   async assertUser(source: string) {
     if (await this.getAccountType() != "user") {
-      throw new Error(`${source}: not user a client`);
+      throw new InputError(`${source}: not user a client`);
     }
   }
 
   async assertBot(source: string) {
     if (await this.getAccountType() != "bot") {
-      throw new Error(`${source}: not a bot client`);
+      throw new InputError(`${source}: not a bot client`);
     }
   }
 

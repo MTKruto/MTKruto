@@ -50,6 +50,7 @@ export class CallbackQueryManager {
 
   static #enc = new TextEncoder();
   async sendCallbackQuery(chatId: ID, messageId: number, question: CallbackQueryQuestion) {
+    await this.#c.storage.assertUser("sendCallbackQuery");
     checkMessageId(messageId);
     validateCallbackQueryQuestion(question);
     const peer = await this.#c.getInputPeer(chatId), peerId = peerToChatId(peer), questionKey = JSON.stringify(question);

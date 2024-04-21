@@ -67,6 +67,7 @@ export class InlineQueryManager {
   }
 
   async sendInlineQuery(userId: ID, chatId: ID, params?: SendInlineQueryParams) {
+    await this.#c.storage.assertUser("sendInlineQuery");
     const bot = await this.#c.getInputUser(userId),
       peer = await this.#c.getInputPeer(chatId),
       query = params?.query ?? "",
