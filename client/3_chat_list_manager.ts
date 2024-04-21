@@ -21,10 +21,10 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, Logger, toUnixTimestamp } from "../1_utilities.ts";
-import { as, enums, peerToChatId, types } from "../2_tl.ts";
-import { Chat, constructChat, constructChat2, constructChat3, constructChat4, getChatOrder, ID } from "../3_types.ts";
+import { enums, peerToChatId, types } from "../2_tl.ts";
+import { ChatListItem, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, getChatListItemOrder, ID } from "../3_types.ts";
 import { C as C_ } from "./0_types.ts";
-import { getChatListId, getUsername } from "./0_utilities.ts";
+import { getChatListId } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
 import { MessageManager } from "./2_message_manager.ts";
 
@@ -78,12 +78,12 @@ export class ChatListManager {
     if (message_ != null) {
       const message = await this.#c.messageManager.constructMessage(message_);
       if (chat) {
-        chat.order = getChatOrder(message, chat.pinned);
+        chat.order = getChatListItemOrder(message, chat.pinned);
         chat.lastMessage = message;
         await this.#c.storage.setChat(listId, chatId, chat.pinned, message.id, message.date);
       } else {
         const pinnedChats = await this.#getPinnedChats(listId);
-        const chat = await constructChat3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getEntity);
+        const chat = await constructChatListItem3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getEntity);
         if (chat == null) {
           unreachable();
         }
@@ -99,12 +99,12 @@ export class ChatListManager {
     const message = await this.#c.messageManager.getHistory(chatId, { limit: 1 }).then((v) => v[0]);
     if (message) {
       if (chat) {
-        chat.order = getChatOrder(message, chat.pinned);
+        chat.order = getChatListItemOrder(message, chat.pinned);
         chat.lastMessage = message;
         await this.#c.storage.setChat(listId, chatId, chat.pinned, message.id, message.date);
       } else {
         const pinnedChats = await this.#getPinnedChats(listId);
-        const chat = await constructChat3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getEntity);
+        const chat = await constructChatListItem3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getEntity);
         if (chat == null) {
           unreachable();
         }
@@ -117,7 +117,7 @@ export class ChatListManager {
     }
 
     if (chat) {
-      chat.order = getChatOrder(undefined, chat.pinned);
+      chat.order = getChatListItemOrder(undefined, chat.pinned);
       chat.lastMessage = undefined;
       if (sendUpdate) {
         return () => this.#sendChatUpdate(chatId, false);
@@ -126,28 +126,38 @@ export class ChatListManager {
 
     return () => Promise.resolve();
   }
-  #chats = new Map<number, Chat>();
-  #archivedChats = new Map<number, Chat>();
+  #chats = new Map<number, ChatListItem>();
+  #archivedChats = new Map<number, ChatListItem>();
   #chatsLoadedFromStorage = false;
   #tryGetChatId(username: string) {
     username = username.toLowerCase();
     for (const chat of this.#chats.values()) {
       if ("username" in chat) {
-        if (chat.username === username || chat.also?.some((v) => v.toLowerCase() === username)) {
-          return chat.id;
+        if (
+          chat.username === username
+          //     TODO
+          //     ||
+          //     chat.chat.also?.some((v) => v.toLowerCase() === username)
+        ) {
+          return chat.chat.id;
         }
       }
     }
     for (const chat of this.#archivedChats.values()) {
       if ("username" in chat) {
-        if (chat.username === username || chat.also?.some((v) => v.toLowerCase() === username)) {
-          return chat.id;
+        if (
+          chat.username === username
+          //    TODO
+          //    ||
+          //   chat.also?.some((v) => v.toLowerCase() === username)
+        ) {
+          return chat.chat.id;
         }
       }
     }
     return null;
   }
-  #getChatAnywhere(chatId: number): [Chat | undefined, number] {
+  #getChatAnywhere(chatId: number): [ChatListItem | undefined, number] {
     let chat = this.#chats.get(chatId);
     if (chat) {
       return [chat, 0];
@@ -173,30 +183,30 @@ export class ChatListManager {
     const chats = await this.#c.storage.getChats(0);
     const archivedChats = await this.#c.storage.getChats(1);
     for (const { chatId, pinned, topMessageId } of chats) {
-      const chat = await constructChat4(chatId, pinned, topMessageId, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
+      const chat = await constructChatListItem(chatId, pinned, topMessageId, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
       if (chat == null) {
         continue;
       }
-      this.#chats.set(chat.id, chat);
+      this.#chats.set(chat.chat.id, chat);
     }
     for (const { chatId, pinned, topMessageId } of archivedChats) {
-      const chat = await constructChat4(chatId, pinned, topMessageId, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
+      const chat = await constructChatListItem(chatId, pinned, topMessageId, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
       if (chat == null) {
         continue;
       }
-      this.#archivedChats.set(chat.id, chat);
+      this.#archivedChats.set(chat.chat.id, chat);
     }
     this.#chatsLoadedFromStorage = true;
   }
   #getLoadedChats(listId: number) {
     const chats_ = this.#getChatList(listId);
 
-    const chats = new Array<Chat>();
+    const chats = new Array<ChatListItem>();
     for (const chat of chats_.values()) {
       chats.push(chat);
     }
     return chats
-      .sort((a, b) => b.id - a.id)
+      .sort((a, b) => b.chat.id - a.chat.id)
       .sort((a, b) => b.order.localeCompare(a.order));
   }
   #pinnedChats = new Array<number>();
@@ -254,13 +264,13 @@ export class ChatListManager {
   async #updateOrAddChat(chatId: number) {
     const [chat, listId] = this.#getChatAnywhere(chatId);
     if (chat !== undefined) {
-      const newChat = await constructChat3(chatId, chat.pinned, chat.lastMessage, this.#c.getEntity);
+      const newChat = await constructChatListItem3(chatId, chat.pinned, chat.lastMessage, this.#c.getEntity);
       if (newChat != null) {
         this.#getChatList(listId).set(chatId, newChat);
         await this.#sendChatUpdate(chatId, false);
       }
     } else {
-      const chat = await constructChat4(chatId, -1, -1, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
+      const chat = await constructChatListItem(chatId, -1, -1, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
       if (chat != null) {
         this.#getChatList(0).set(chatId, chat);
         await this.reassignChatLastMessage(chatId, false, false);
@@ -295,16 +305,16 @@ export class ChatListManager {
     for (const [i, chatId] of pinnedChats.entries()) {
       const chat = chats.get(chatId);
       if (chat !== undefined) {
-        chat.order = getChatOrder(chat.lastMessage, i);
+        chat.order = getChatListItemOrder(chat.lastMessage, i);
         chat.pinned = i;
         await this.#sendChatUpdate(chatId, false);
       }
     }
     for (const chat of chats.values()) {
-      if (chat.pinned != -1 && pinnedChats.indexOf(chat.id) == -1) {
-        chat.order = getChatOrder(chat.lastMessage, -1);
+      if (chat.pinned != -1 && pinnedChats.indexOf(chat.chat.id) == -1) {
+        chat.order = getChatListItemOrder(chat.lastMessage, -1);
         chat.pinned = -1;
-        await this.#sendChatUpdate(chat.id, false);
+        await this.#sendChatUpdate(chat.chat.id, false);
       }
     }
     await this.#c.storage.setPinnedChats(listId, await this.#getPinnedChats(listId));
@@ -348,12 +358,12 @@ export class ChatListManager {
     }
   }
 
-  async #fetchChats(listId: number, limit: number, after?: Chat) {
+  async #fetchChats(listId: number, limit: number, after?: ChatListItem) {
     const dialogs = await this.#c.api.messages.getDialogs({
       limit,
       offset_id: after?.lastMessage?.id ?? 0,
       offset_date: after?.lastMessage?.date ? toUnixTimestamp(after.lastMessage.date) : 0,
-      offset_peer: after ? await this.#c.getInputPeer(after.id) : new types.InputPeerEmpty(),
+      offset_peer: after ? await this.#c.getInputPeer(after.chat.id) : new types.InputPeerEmpty(),
       hash: 0n,
       folder_id: listId,
     });
@@ -366,18 +376,18 @@ export class ChatListManager {
     }
     const chats = this.#getChatList(listId);
     for (const dialog of dialogs.dialogs) {
-      const chat = await constructChat(dialog, dialogs, pinnedChats, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.messageManager));
-      chats.set(chat.id, chat);
-      await this.#c.storage.setChat(listId, chat.id, chat.pinned, chat.lastMessage?.id ?? 0, chat.lastMessage?.date ?? new Date(0));
+      const chat = await constructChatListItem4(dialog, dialogs, pinnedChats, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.messageManager));
+      chats.set(chat.chat.id, chat);
+      await this.#c.storage.setChat(listId, chat.chat.id, chat.pinned, chat.lastMessage?.id ?? 0, chat.lastMessage?.date ?? new Date(0));
     }
   }
 
-  async getChats(from: "archived" | "main" = "main", after?: Chat, limit = 100): Promise<Chat[]> {
+  async getChats(from: "archived" | "main" = "main", after?: ChatListItem, limit = 100): Promise<ChatListItem[]> {
     await this.#c.storage.assertUser("getChats");
     if (!this.#chatsLoadedFromStorage) {
       await this.#loadChatsFromStorage();
     }
-    if (after && !this.#chats.get(after.id)) {
+    if (after && !this.#chats.get(after.chat.id)) {
       throw new InputError("Invalid after");
     }
     if (limit <= 0 || limit > 100) {
@@ -433,73 +443,21 @@ export class ChatListManager {
       return fullChat;
     }
     if (inputPeer instanceof types.InputPeerUser) {
-      fullChat = await this.#c.api.users.getFullUser({ id: new types.InputUser(inputPeer) });
+      fullChat = await this.#c.api.users.getFullUser({ id: new types.InputUser(inputPeer) }).then((v) => v.full_user);
     } else if (inputPeer instanceof types.InputPeerChat) {
-      fullChat = await this.#c.api.messages.getFullChat(inputPeer);
+      fullChat = await this.#c.api.messages.getFullChat(inputPeer).then((v) => v.full_chat);
     } else if (inputPeer instanceof types.InputPeerChannel) {
-      fullChat = await this.#c.api.channels.getFullChannel({ channel: new types.InputChannel(inputPeer) });
+      fullChat = await this.#c.api.channels.getFullChannel({ channel: new types.InputChannel(inputPeer) }).then((v) => v.full_chat);
     }
     await this.#c.storage.setFullChat(chatId_, fullChat);
     return fullChat;
   }
 
   async getChat(chatId: ID) {
-    if (await this.#c.storage.getAccountType() == "user") {
-      let maybeChatId: number | null = null;
-      if (typeof chatId === "number") {
-        maybeChatId = chatId;
-      } else if (typeof chatId === "string") {
-        maybeChatId = this.#tryGetChatId(getUsername(chatId));
-      } else {
-        unreachable();
-      }
-      if (maybeChatId != null) {
-        const [chat] = this.#getChatAnywhere(maybeChatId);
-        if (chat !== undefined) {
-          return chat;
-        }
-      }
+    const fullChat = await this.#getFullChat(chatId);
+    if (fullChat == null) {
+      throw new InputError("Chat not found.");
     }
-    let inputPeer: enums.InputPeer | null = null;
-    if (typeof chatId === "number") {
-      const chat = await constructChat3(chatId, -1, undefined, this.#c.getEntity);
-      if (chat != null) {
-        return chat;
-      }
-    } else {
-      inputPeer = await this.#c.getInputPeer(chatId);
-      const chatId_ = peerToChatId(inputPeer);
-      const chat = await constructChat3(chatId_, -1, undefined, this.#c.getEntity);
-      if (chat != null) {
-        return chat;
-      }
-    }
-    if (inputPeer == null) {
-      inputPeer = await this.#c.getInputPeer(chatId);
-    }
-    if (inputPeer instanceof types.InputPeerChat) {
-      const chats = await this.#c.api.messages.getChats({ id: [inputPeer.chat_id] }).then((v) => v[as](types.messages.Chats));
-      const chat = chats.chats[0];
-      if (chat instanceof types.ChatEmpty) {
-        unreachable();
-      }
-      return constructChat2(chat, -1, undefined);
-    } else if (inputPeer instanceof types.InputPeerChannel) {
-      const channels = await this.#c.api.channels.getChannels({ id: [new types.InputChannel(inputPeer)] });
-      const channel = channels.chats[0];
-      if (channel instanceof types.ChatEmpty) {
-        unreachable();
-      }
-      return constructChat2(channel, -1, undefined);
-    } else if (inputPeer instanceof types.InputPeerUser) {
-      const users = await this.#c.api.users.getUsers({ id: [new types.InputUser(inputPeer)] });
-      const user = users[0];
-      if (user instanceof types.UserEmpty) {
-        unreachable();
-      }
-      return constructChat2(user, -1, undefined);
-    } else {
-      unreachable();
-    }
+    return await constructChat(fullChat, this.#c.getEntity);
   }
 }

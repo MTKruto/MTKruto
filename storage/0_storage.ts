@@ -484,12 +484,12 @@ export abstract class Storage {
     }
   }
 
-  async setFullChat(chatId: number, fullChat: types.users.UserFull | types.ChannelFull | types.messages.ChatFull | null) {
+  async setFullChat(chatId: number, fullChat: types.UserFull | types.ChannelFull | types.ChatFull | null) {
     await this.setTlObject(K.cache.fullChat(chatId), fullChat);
   }
 
-  async getFullChat(chatId: number): Promise<types.users.UserFull | types.ChannelFull | types.messages.ChatFull | null> {
-    return await this.getTlObject(K.cache.fullChat(chatId)) as types.users.UserFull | types.ChannelFull | types.messages.ChatFull | null;
+  async getFullChat(chatId: number): Promise<types.UserFull | types.ChannelFull | types.ChatFull | null> {
+    return await this.getTlObject(K.cache.fullChat(chatId)) as types.UserFull | types.ChannelFull | types.ChatFull | null;
   }
 
   #getUpdateId(update: enums.Update) {

@@ -19,7 +19,7 @@
  */
 
 import { MaybePromise } from "../1_utilities.ts";
-import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, Message, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, ReplyQuote, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
+import { BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, Message, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, ReplyQuote, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
 
 export interface AnswerCallbackQueryParams {
   /** A text to be shown to the user. */
@@ -311,7 +311,7 @@ export interface GetChatsParams {
   /** The chat list to get the chats from. Defaults to main. */
   from?: "main" | "archived";
   /** The last chat to get chats after. */
-  after?: Chat;
+  after?: ChatListItem;
   /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
   limit?: number;
 }

@@ -29,12 +29,12 @@ export function getChannelChatId(channelId: bigint): number {
 // convenience types
 export type AnyEntity = types.User | types.Channel | types.ChannelForbidden | types.Chat | types.ChatForbidden;
 
-export function peerToChatId(peer: enums.Peer | enums.InputPeer | AnyEntity | { channel_id: bigint } | { user_id: bigint } | { chat_id: bigint }): number {
-  if (peer instanceof types.PeerUser || peer instanceof types.InputPeerUser || peer instanceof types.User || "user_id" in peer) {
+export function peerToChatId(peer: enums.Peer | enums.InputPeer | AnyEntity | types.ChannelFull | types.UserFull | types.ChatFull | { channel_id: bigint } | { user_id: bigint } | { chat_id: bigint }): number {
+  if (peer instanceof types.PeerUser || peer instanceof types.InputPeerUser || peer instanceof types.User || peer instanceof types.UserFull || "user_id" in peer) {
     return Number("id" in peer ? peer.id : peer.user_id);
-  } else if (peer instanceof types.PeerChat || peer instanceof types.InputPeerChat || peer instanceof types.Chat || peer instanceof types.ChatForbidden || "chat_id" in peer) {
+  } else if (peer instanceof types.PeerChat || peer instanceof types.InputPeerChat || peer instanceof types.Chat || peer instanceof types.ChatForbidden || peer instanceof types.ChatFull || "chat_id" in peer) {
     return -Number("id" in peer ? peer.id : peer.chat_id);
-  } else if (peer instanceof types.PeerChannel || peer instanceof types.InputPeerChannel || peer instanceof types.Channel || peer instanceof types.ChannelForbidden || "channel_id" in peer) {
+  } else if (peer instanceof types.PeerChannel || peer instanceof types.InputPeerChannel || peer instanceof types.Channel || peer instanceof types.ChannelForbidden || peer instanceof types.ChannelFull || "channel_id" in peer) {
     return getChannelChatId("id" in peer ? peer.id : peer.channel_id);
   } else {
     unreachable();

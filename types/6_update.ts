@@ -32,7 +32,7 @@ import { ChatMemberUpdated } from "./3_chat_member_updated.ts";
 import { Story } from "./3_story.ts";
 import { Message } from "./4_message.ts";
 import { CallbackQuery } from "./5_callback_query.ts";
-import { Chat } from "./5_chat.ts";
+import { ChatListItem } from "./5_chat_list_item.ts";
 
 /**
  * A client's connection state was changed.
@@ -175,7 +175,7 @@ export interface UpdateChosenInlineResult {
  */
 export interface UpdateNewChat {
   /** The newly added chat. */
-  newChat: Chat;
+  newChat: ChatListItem;
 }
 
 /**
@@ -183,7 +183,7 @@ export interface UpdateNewChat {
  * @unlisted
  */
 export interface UpdateEditedChat {
-  editedChat: Chat;
+  editedChat: ChatListItem;
 }
 
 /**
