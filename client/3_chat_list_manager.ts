@@ -313,32 +313,38 @@ export class ChatListManager {
   async #handleUpdateChannel(update: types.UpdateChannel) {
     const peer = new types.PeerChannel(update);
     const channel = await this.#c.getEntity(peer);
+    const chatId = peerToChatId(peer);
+    await this.#c.storage.setFullChat(chatId, null);
     if (channel != null && "left" in channel && channel.left) {
-      await this.#removeChat(peerToChatId(peer));
+      await this.#removeChat(chatId);
     } else if (channel instanceof types.ChannelForbidden) {
-      await this.#removeChat(peerToChatId(peer));
+      await this.#removeChat(chatId);
     } else if (channel instanceof types.Channel) {
-      await this.#updateOrAddChat(peerToChatId(peer));
+      await this.#updateOrAddChat(chatId);
     }
   }
 
   async #handleUpdateChat(update: types.UpdateChat) { // TODO: handle deactivated (migration)
     const peer = new types.PeerChat(update);
     const chat = await this.#c.getEntity(peer);
+    const chatId = peerToChatId(peer);
+    await this.#c.storage.setFullChat(chatId, null);
     if (chat != null && "left" in chat && chat.left) {
-      await this.#removeChat(peerToChatId(peer));
+      await this.#removeChat(chatId);
     } else if (chat instanceof types.ChatForbidden) {
-      await this.#removeChat(peerToChatId(peer));
+      await this.#removeChat(chatId);
     } else if (chat instanceof types.Chat) {
-      await this.#updateOrAddChat(peerToChatId(peer));
+      await this.#updateOrAddChat(chatId);
     }
   }
 
   async #handleUpdateUser(update: types.UpdateUser | types.UpdateUserName) {
     const peer = new types.PeerUser(update);
     const chat = await this.#c.getEntity(peer);
+    const chatId = peerToChatId(peer);
+    await this.#c.storage.setFullChat(chatId, null);
     if (chat != null) {
-      await this.#updateOrAddChat(peerToChatId(peer));
+      await this.#updateOrAddChat(chatId);
     }
   }
 
@@ -417,6 +423,24 @@ export class ChatListManager {
     } else {
       unreachable();
     }
+  }
+
+  async #getFullChat(chatId: ID) {
+    const inputPeer = await this.#c.getInputPeer(chatId);
+    const chatId_ = peerToChatId(inputPeer);
+    let fullChat = await this.#c.storage.getFullChat(chatId_);
+    if (fullChat != null) {
+      return fullChat;
+    }
+    if (inputPeer instanceof types.InputPeerUser) {
+      fullChat = await this.#c.api.users.getFullUser({ id: new types.InputUser(inputPeer) });
+    } else if (inputPeer instanceof types.InputPeerChat) {
+      fullChat = await this.#c.api.messages.getFullChat(inputPeer);
+    } else if (inputPeer instanceof types.InputPeerChannel) {
+      fullChat = await this.#c.api.channels.getFullChannel({ channel: new types.InputChannel(inputPeer) });
+    }
+    await this.#c.storage.setFullChat(chatId_, fullChat);
+    return fullChat;
   }
 
   async getChat(chatId: ID) {

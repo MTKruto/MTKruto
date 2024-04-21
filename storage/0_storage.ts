@@ -69,6 +69,8 @@ export const K = {
     inlineQueryAnswer: (userId: number, chatId: number, query: string, offset: string): StorageKeyPart[] => [...K.cache.inlineQueryAnswers(), userId, chatId, query, offset],
     callbackQueryAnswers: (): StorageKeyPart[] => [K.cache.P("callbackQueryAnswers")],
     callbackQueryAnswer: (chatId: number, messageId: number, question: string): StorageKeyPart[] => [...K.cache.callbackQueryAnswers(), chatId, messageId, question],
+    fullChats: (): StorageKeyPart[] => [K.cache.P("fullChats")],
+    fullChat: (chatId: number): StorageKeyPart[] => [...K.cache.fullChats(), chatId],
   },
   messages: {
     P: (string: string): string => `messages.${string}`,
@@ -482,6 +484,14 @@ export abstract class Storage {
     }
   }
 
+  async setFullChat(chatId: number, fullChat: types.users.UserFull | types.ChannelFull | types.messages.ChatFull | null) {
+    await this.setTlObject(K.cache.fullChat(chatId), fullChat);
+  }
+
+  async getFullChat(chatId: number): Promise<types.users.UserFull | types.ChannelFull | types.messages.ChatFull | null> {
+    return await this.getTlObject(K.cache.fullChat(chatId)) as types.users.UserFull | types.ChannelFull | types.messages.ChatFull | null;
+  }
+
   #getUpdateId(update: enums.Update) {
     let id = BigInt(Date.now()) << 32n;
     if ("pts" in update && update.pts) {
@@ -553,8 +563,15 @@ export abstract class Storage {
       await this.set(key, null);
     }
   }
+
   async deleteCallbackQueryAnswers() {
     for await (const [key] of await this.getMany({ prefix: K.cache.callbackQueryAnswers() })) {
+      await this.set(key, null);
+    }
+  }
+
+  async deleteFullChats() {
+    for await (const [key] of await this.getMany({ prefix: K.cache.fullChats() })) {
       await this.set(key, null);
     }
   }
@@ -588,6 +605,7 @@ export abstract class Storage {
       this.deleteBusinessConnections(),
       this.deleteInlineQueryAnswers(),
       this.deleteCallbackQueryAnswers(),
+      this.deleteFullChats(),
       this.deleteStickerSetNames(),
       this.deletePeers(),
       this.deleteUsernames(),
