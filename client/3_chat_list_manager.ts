@@ -450,6 +450,9 @@ export class ChatListManager {
       fullChat = await this.#c.api.channels.getFullChannel({ channel: new types.InputChannel(inputPeer) }).then((v) => v.full_chat);
     }
     await this.#c.storage.setFullChat(chatId_, fullChat);
+    if (fullChat != null && "call" in fullChat && fullChat.call) {
+      await this.#c.storage.setGroupCallAccessHash(fullChat.call.id, fullChat.call.access_hash);
+    }
     return fullChat;
   }
 
