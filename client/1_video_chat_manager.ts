@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { getRandomId, toUnixTimestamp } from "../1_utilities.ts";
+import { getRandomId, toUnixTimestamp, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
 import { constructVideoChat, ID, Update, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
@@ -121,13 +121,29 @@ export class VideoChatManager {
     return update instanceof types.UpdateGroupCall;
   }
 
-  async handleUpdate(update: VideoChatManagerUpdate): Promise<Update | null> {
+  async handleUpdate(update: VideoChatManagerUpdate): Promise<Update> {
+    let chatId = Number(-update.chat_id);
+    const fullChat = await this.#c.storage.getFullChat(chatId).then((v) => v == null ? this.#c.storage.getFullChat(chatId = ZERO_CHANNEL_ID - Number(update.chat_id)) : v) as types.ChannelFull | types.ChatFull | null;
+    let updateFullChat = false;
     if (update.call instanceof types.GroupCallDiscarded) {
       await this.#c.storage.setGroupCall(update.call.id, null);
       await this.#c.storage.setGroupCallAccessHash(update.call.id, null);
+      if (fullChat != null) {
+        fullChat.call = undefined;
+        updateFullChat = true;
+      }
     } else {
       await this.#c.storage.setGroupCall(update.call.id, update.call);
       await this.#c.storage.setGroupCallAccessHash(update.call.id, update.call.access_hash);
+      if (fullChat != null) {
+        if (!("call" in fullChat) || !fullChat.call || fullChat.call.id != update.call.id) {
+          fullChat.call = new types.InputGroupCall(update.call);
+          updateFullChat = true;
+        }
+      }
+    }
+    if (updateFullChat) {
+      await this.#c.storage.setFullChat(chatId, fullChat);
     }
     return { videoChat: constructVideoChat(update.call) };
   }
