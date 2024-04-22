@@ -30,6 +30,7 @@ export interface _VideoChatCommon {
 export interface _VideoChatNotEndedCommon {
   title: string;
   liveStream: boolean;
+  participantCount: number;
 }
 
 /** @unlisted */
@@ -59,12 +60,14 @@ export function constructVideoChat(call: enums.GroupCall): VideoChat {
   } else {
     const title = call.title ?? "";
     const liveStream = call.rtmp_stream ? true : false;
+    const participantCount = call.participants_count;
     if (call.schedule_date) {
       return {
         id,
         title,
         scheduledFor: fromUnixTimestamp(call.schedule_date),
         liveStream,
+        participantCount
       };
     } else {
       return {
@@ -72,6 +75,7 @@ export function constructVideoChat(call: enums.GroupCall): VideoChat {
         title,
         liveStream,
         recording: call.record_video_active ? true : false,
+        participantCount
       };
     }
   }
