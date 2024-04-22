@@ -52,7 +52,7 @@ export interface _SendCommon extends _BusinessConnectionIdCommon {
   replyQuote?: ReplyQuote;
   /** The identifier of a thread to send the message to. */
   messageThreadId?: number;
-  /** The identifier of the chat to send the message on behalf of. User-only. */
+  /** The identifier of a chat to send the message on behalf of. User-only. */
   sendAs?: ID;
   /** The reply markup of the message. Bot-only. */
   replyMarkup?: ReplyMarkup;
@@ -406,7 +406,9 @@ export interface SendInlineQueryParams {
 }
 
 export interface StartVideoChatParams {
+  /** The video chat's title. */
   title?: string;
+  /** Whether this is going to be a live stream. */
   liveStream?: boolean;
 }
 
@@ -414,12 +416,17 @@ export interface ScheduleVideoChatParams extends StartVideoChatParams {
 }
 
 export interface JoinVideoChatParams {
+  /** The identifier of a chat to join the video chat on behalf of. */
   joinAs?: ID;
+  /** Invite hash. */
   inviteHash?: string;
+  /** Whether to enable audio. Enabled by default. */
   audio?: boolean;
+  /** Whether to enable video. Enabled by default. */
   video?: boolean;
 }
 
 export interface DownloadLiveStreamChunkParams {
+  /** Video quality. */
   quality?: "low" | "medium" | "high";
 }
