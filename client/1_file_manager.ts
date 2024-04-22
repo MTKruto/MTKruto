@@ -252,7 +252,7 @@ export class FileManager {
     return { size: params?.fileSize ? params.fileSize : size, name, contents };
   }
 
-  async *#downloadInner(location: enums.InputFileLocation, dcId: number, params?: { chunkSize?: number; offset?: number }) {
+  async *downloadInner(location: enums.InputFileLocation, dcId: number, params?: { chunkSize?: number; offset?: number }) {
     const id = "id" in location ? location.id : "photo_id" in location ? location.photo_id : null;
     if (id != null && this.#c.storage.supportsFiles) {
       const file = await this.#c.storage.getFile(id);
@@ -326,7 +326,7 @@ export class FileManager {
           const big = fileId_.location.source.type == PhotoSourceType.ChatPhotoBig;
           const peer = await this.#c.getInputPeer(Number(fileId_.location.source.chatId)); // TODO: use access hash from source?
           const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photo_id: fileId_.location.id });
-          yield* this.#downloadInner(location, fileId_.dcId, params);
+          yield* this.downloadInner(location, fileId_.dcId, params);
           break;
         }
         case FileType.Photo: {
@@ -336,7 +336,7 @@ export class FileManager {
             file_reference: fileId_.fileReference ?? new Uint8Array(),
             thumb_size: "thumbnailType" in fileId_.location.source ? String.fromCharCode(fileId_.location.source.thumbnailType) : "",
           });
-          yield* this.#downloadInner(location, fileId_.dcId, params);
+          yield* this.downloadInner(location, fileId_.dcId, params);
           break;
         }
         case FileType.Thumbnail: {
@@ -346,7 +346,7 @@ export class FileManager {
             file_reference: fileId_.fileReference ?? new Uint8Array(),
             thumb_size: "thumbnailType" in fileId_.location.source ? String.fromCharCode(fileId_.location.source.thumbnailType) : unreachable(),
           });
-          yield* this.#downloadInner(location, fileId_.dcId, params);
+          yield* this.downloadInner(location, fileId_.dcId, params);
           break;
         }
       }
@@ -357,7 +357,7 @@ export class FileManager {
         file_reference: fileId_.fileReference ?? new Uint8Array(),
         thumb_size: "",
       });
-      yield* this.#downloadInner(location, fileId_.dcId, params);
+      yield* this.downloadInner(location, fileId_.dcId, params);
     } else {
       unreachable();
     }

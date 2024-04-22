@@ -37,6 +37,7 @@ export * from "./types/0_giveaway_parameters.ts";
 export * from "./types/0_id.ts";
 export * from "./types/0_keyboard_button_poll_type.ts";
 export * from "./types/0_link_preview.ts";
+export * from "./types/0_live_stream_channel.ts";
 export * from "./types/0_location.ts";
 export * from "./types/0_login_url.ts";
 export * from "./types/0_mask_position.ts";

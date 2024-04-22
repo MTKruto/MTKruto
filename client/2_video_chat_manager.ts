@@ -22,9 +22,14 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getRandomId, toUnixTimestamp, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
-import { constructVideoChat, ID, Update, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
-import { JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
-import { C } from "./0_types.ts";
+import { constructLiveStreamChannel, constructVideoChat, ID, Update, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
+import { DownloadLiveStreamChunkParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
+import { C as C_ } from "./0_types.ts";
+import { FileManager } from "./1_file_manager.ts";
+
+interface C extends C_ {
+  fileManager: FileManager;
+}
 
 type VideoChatManagerUpdate = types.UpdateGroupCall;
 
@@ -112,14 +117,17 @@ export class VideoChatManager {
     if (!updateGroupCall) unreachable();
   }
 
-  async getVideoChat(id: string) {
-    await this.#c.storage.assertUser("getVideoChat");
+  async #getCall(id: string) {
     let groupCall: enums.GroupCall | null = await this.#c.storage.getGroupCall(BigInt(id));
     if (groupCall == null) {
       const call = await this.#getInputGroupCall(id);
       groupCall = await this.#c.api.phone.getGroupCall({ call, limit: 1 }).then((v) => v.call);
     }
-    return constructVideoChat(groupCall!);
+    return groupCall!;
+  }
+  async getVideoChat(id: string) {
+    await this.#c.storage.assertUser("getVideoChat");
+    return constructVideoChat(await this.#getCall(id));
   }
 
   static canHandleUpdate(update: enums.Update): update is VideoChatManagerUpdate {
@@ -151,5 +159,40 @@ export class VideoChatManager {
       await this.#c.storage.setFullChat(chatId, fullChat);
     }
     return { videoChat: constructVideoChat(update.call) };
+  }
+
+  async getLiveStreamChannels(id: string) {
+    await this.#c.storage.assertUser("getLiveStreamChannels");
+    const call = await this.#getCall(id);
+    if (!(call instanceof types.GroupCall) || !call.rtmp_stream) {
+      throw new InputError("Not a live stream.");
+    }
+    const client = this.#c.getCdnConnection(call.stream_dc_id);
+    await client.connect();
+    try {
+      const streams = await client.api.phone.getGroupCallStreamChannels({ call: await this.#getInputGroupCall(id) });
+      return streams.channels.map(constructLiveStreamChannel);
+    } finally {
+      await client.disconnect();
+    }
+  }
+
+  async *downloadLiveStreamChunk(id: string, channel: number, scale: number, timestamp: number, params?: DownloadLiveStreamChunkParams) {
+    await this.#c.storage.assertUser("downloadLiveStreamChunk");
+    const call = await this.#getCall(id);
+    if (!(call instanceof types.GroupCall) || !call.rtmp_stream) {
+      throw new InputError("Not a live stream.");
+    }
+    const quality = params?.quality ?? "low";
+    const location = new types.InputGroupCallStream({
+      call: new types.InputGroupCall(call),
+      scale,
+      time_ms: BigInt(timestamp),
+      video_channel: channel,
+      video_quality: quality == "low" ? 0 : quality == "medium" ? 1 : quality == "high" ? 2 : (() => {
+        throw new InputError("Got invalid quality.");
+      })(),
+    });
+    yield* this.#c.fileManager.downloadInner(location, call.stream_dc_id ?? unreachable());
   }
 }

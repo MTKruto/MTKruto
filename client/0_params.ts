@@ -419,3 +419,7 @@ export interface JoinVideoChatParams {
   audio?: boolean;
   video?: boolean;
 }
+
+export interface DownloadLiveStreamChunkParams {
+  quality?: "low" | "medium" | "high";
+}

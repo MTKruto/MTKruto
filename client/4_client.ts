@@ -24,10 +24,58 @@ import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, minute
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, name, peerToChatId, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, Reaction, Sticker, Story, Update, User, VideoChat, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
+import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, Reaction, Sticker, Story, Update, User, VideoChat, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded } from "../4_errors.ts";
-import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, StartVideoChatParams, StopPollParams } from "./0_params.ts";
+import {
+  _SendCommon,
+  AddReactionParams,
+  AnswerCallbackQueryParams,
+  AnswerInlineQueryParams,
+  AuthorizeUserParams,
+  BanChatMemberParams,
+  CreateInviteLinkParams,
+  CreateStoryParams,
+  DeleteMessageParams,
+  DeleteMessagesParams,
+  DownloadLiveStreamChunkParams,
+  DownloadParams,
+  EditMessageLiveLocationParams,
+  EditMessageMediaParams,
+  EditMessageParams,
+  EditMessageReplyMarkupParams,
+  ForwardMessagesParams,
+  GetChatsParams,
+  GetCreatedInviteLinksParams,
+  GetHistoryParams,
+  GetMyCommandsParams,
+  JoinVideoChatParams,
+  PinMessageParams,
+  ReplyParams,
+  ScheduleVideoChatParams,
+  SearchMessagesParams,
+  SendAnimationParams,
+  SendAudioParams,
+  SendContactParams,
+  SendDiceParams,
+  SendDocumentParams,
+  SendInlineQueryParams,
+  SendLocationParams,
+  SendMessageParams,
+  SendPhotoParams,
+  SendPollParams,
+  SendStickerParams,
+  SendVenueParams,
+  SendVideoNoteParams,
+  SendVideoParams,
+  SendVoiceParams,
+  SetChatMemberRightsParams,
+  SetChatPhotoParams,
+  SetMyCommandsParams,
+  SetReactionsParams,
+  StartVideoChatParams,
+  StopPollParams,
+} from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { Api } from "./0_types.ts";
 import { getUsername, isMtprotoFunction, resolve } from "./0_utilities.ts";
@@ -46,7 +94,7 @@ import { CallbackQueryManager } from "./3_callback_query_manager.ts";
 import { ChatListManager } from "./3_chat_list_manager.ts";
 import { InlineQueryManager } from "./3_inline_query_manager.ts";
 import { StoryManager } from "./3_story_manager.ts";
-import { VideoChatManager } from "./1_video_chat_manager.ts";
+import { VideoChatManager } from "./2_video_chat_manager.ts";
 
 export interface Context {
   /** The client that received the update. */
@@ -383,8 +431,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#botInfoManager = new BotInfoManager(c);
     this.#fileManager = new FileManager(c);
     this.#reactionManager = new ReactionManager(c);
-    this.#videoChatManager = new VideoChatManager(c);
     this.#businessConnectionManager = new BusinessConnectionManager(c);
+    this.#videoChatManager = new VideoChatManager({ ...c, fileManager: this.#fileManager });
     this.#messageManager = new MessageManager({ ...c, fileManager: this.#fileManager });
     this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager: this.#messageManager });
     this.#storyManager = new StoryManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
@@ -2684,7 +2732,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Join a video chat. User-only.
    *
    * @method vc
-   * @param id The identifier of the video chat to join as retrieved from getChat.
+   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
    * @param params_ WebRTC connection parameters.
    * @returns Parameters to be passed to the used WebRTC library.
    */
@@ -2693,22 +2741,45 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Join a live stream. An alternative for joinVideoChat with no WebRTC involved. User-only.
+   * Join a live stream. User-only.
    *
    * @method vc
-   * @param id The identifier of the video chat to join as retrieved from getChat.
+   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
    */
   async joinLiveStream(id: string): Promise<void> {
     return await this.#videoChatManager.joinLiveStream(id);
   }
 
   /**
-   * Get information on a video chat. User-only.
+   * Get a video chat. User-only.
    *
    * @method vc
-   * @param id The identifier of the video chat to join as retrieved from getChat.
+   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
    */
   async getVideoChat(id: string): Promise<VideoChat> {
     return await this.#videoChatManager.getVideoChat(id);
+  }
+
+  /**
+   * Get live stream channels. User-only.
+   *
+   * @method vc
+   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
+   */
+  async getLiveStreamChannels(id: string): Promise<LiveStreamChannel[]> {
+    return await this.#videoChatManager.getLiveStreamChannels(id);
+  }
+
+  /**
+   * Download a live stream chunk. User-only.
+   *
+   * @method vc
+   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
+   * @param channelId Stream channel ID.
+   * @param scale Stream channel scale.
+   * @param timestamp Millisecond timestamp of the chunk to download.
+   */
+  async *downloadLiveStreamChunk(id: string, channelId: number, scale: number, timestamp: number, params?: DownloadLiveStreamChunkParams): AsyncGenerator<Uint8Array, void, unknown> {
+    yield* this.#videoChatManager.downloadLiveStreamChunk(id, channelId, scale, timestamp, params);
   }
 }
