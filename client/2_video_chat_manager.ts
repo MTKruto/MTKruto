@@ -96,6 +96,11 @@ export class VideoChatManager {
     return updateGroupCall.params.data;
   }
 
+  async leaveVideoChat(id: string) {
+    await this.#c.storage.assertUser("leaveVideoChat");
+    await this.#c.api.phone.leaveGroupCall({ call: await this.#getInputGroupCall(id), source: 0 });
+  }
+
   async joinLiveStream(id: string) {
     await this.#c.storage.assertUser("joinLiveStream");
     const call = await this.#getInputGroupCall(id);

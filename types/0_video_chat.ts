@@ -67,7 +67,7 @@ export function constructVideoChat(call: enums.GroupCall): VideoChat {
         title,
         scheduledFor: fromUnixTimestamp(call.schedule_date),
         liveStream,
-        participantCount
+        participantCount,
       };
     } else {
       return {
@@ -75,7 +75,7 @@ export function constructVideoChat(call: enums.GroupCall): VideoChat {
         title,
         liveStream,
         recording: call.record_video_active ? true : false,
-        participantCount
+        participantCount,
       };
     }
   }

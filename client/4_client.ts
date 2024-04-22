@@ -2741,6 +2741,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
+   * Leave a video chat. User-only.
+   *
+   * @method vc
+   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
+   */
+  async leaveVideoChat(id: string): Promise<void> {
+    return await this.#videoChatManager.leaveVideoChat(id);
+  }
+
+  /**
    * Join a live stream. User-only.
    *
    * @method vc
