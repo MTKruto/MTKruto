@@ -29,22 +29,27 @@ import { constructLocation, Location } from "./0_location.ts";
 import { Birthday, constructBirthday } from "./0_birthday.ts";
 import { cleanObject } from "../1_utilities.ts";
 
+/** @unlisted */
 export interface ChatBase {
+  /** The chat's photo. */
   photo?: Photo;
 }
 
 /** @unlisted */
 export interface ChatChannel extends ChatBase, ChatPChannel {
+  /** The channel's video chat ID. */
   videoChatId?: string;
 }
 
 /** @unlisted */
 export interface ChatSupergroup extends ChatBase, ChatPSupergroup {
+  /** The chat's video chat ID. */
   videoChatId?: string;
 }
 
 /** @unlisted */
 export interface ChatGroup extends ChatBase, ChatPGroup {
+  /** The chat's video chat ID. */
   videoChatId?: string;
 }
 

@@ -64,7 +64,7 @@ export interface _MessageBase {
   from?: User;
   /** The chat which the message was sent on behalf of. */
   senderChat?: ChatP;
-  /** The point of time in which the message was sent. */
+  /** The point in time in which the message was sent. */
   date: Date;
   /** The chat where the message was sent to. */
   chat: ChatP;
@@ -80,7 +80,7 @@ export interface _MessageBase {
   forwardSignature?: string;
   /** The name of the original sender of the message. */
   forwardSenderName?: string;
-  /** The point of time in which the original message was sent. */
+  /** The point in time in which the original message was sent. */
   forwardDate?: Date;
   /** Whether the message was sent in a topic thread. */
   isTopicMessage: boolean;
@@ -96,7 +96,7 @@ export interface _MessageBase {
   replyQuote?: ReplyQuote;
   /** The inline bot that was used to send this message. */
   viaBot?: User;
-  /** The point of time in which the message's last edit was made. */
+  /** The point in time in which the message's last edit was made. */
   editDate?: Date;
   /** Whether the contents of the message is protected. */
   hasProtectedContent?: boolean;

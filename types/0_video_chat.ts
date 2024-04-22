@@ -23,28 +23,44 @@ import { enums, types } from "../2_tl.ts";
 
 /** @unlisted */
 export interface _VideoChatCommon {
+  /** The video chat's unique identifier. */
   id: string;
 }
 
 /** @unlisted */
 export interface _VideoChatNotEndedCommon {
+  /** The video chat's title. */
   title: string;
+  /** Whether it is a live stream. */
   liveStream: boolean;
+  /** The number of current participants. */
   participantCount: number;
 }
 
-/** @unlisted */
+/**
+ * An ongoing video chat.
+ * @unlisted
+ */
 export interface VideoChatActive extends _VideoChatCommon, _VideoChatNotEndedCommon {
+  /** Whether the video chat is being recorded. */
   recording: boolean;
 }
 
-/** @unlisted */
+/**
+ * A scheduled video chat.
+ * @unlisted
+ */
 export interface VideoChatScheduled extends _VideoChatCommon, _VideoChatNotEndedCommon {
+  /** The point in time in which the video chat will be started. */
   scheduledFor: Date;
 }
 
-/** @unlisted */
+/**
+ * An ended video chat.
+ * @unlisted
+ */
 export interface VideoChatEnded extends _VideoChatCommon {
+  /** The duration of the video chat in seconds. */
   duration: number;
 }
 

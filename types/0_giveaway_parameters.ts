@@ -27,7 +27,7 @@ export interface GiveawayParameters {
   boostedChatId: number;
   /** The identifiers of additional chats that the user must subscribe to in order to be eligible for the prizes. */
   additionalChatIds: number[];
-  /** The point of time in which the winners will be chosen. */
+  /** A point in time within the future in which the winners will be selected. */
   winnerSelectionDate: Date;
   /** Whether only new members of the chats will be eligible for the prizes. */
   onlyNewMembers: boolean;

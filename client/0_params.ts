@@ -324,7 +324,7 @@ export interface PinMessageParams {
 }
 
 export interface BanChatMemberParams {
-  /** A point of time in the future to automatically withdraw the ban. */
+  /** A point in time within the future in which the ban will be reverted. */
   untilDate?: Date;
   /** Whether to delete all of the user's messages. */
   deleteMessages?: boolean;
@@ -333,7 +333,7 @@ export interface BanChatMemberParams {
 export interface SetChatMemberRightsParams {
   /** The member's new rights. All fields default to `true` if the chat's default member rights allow. This means that this method is the same as unbanChatMember if this parameter is not provided or all of its fields are `true`. */
   rights?: ChatMemberRights;
-  /** A point of time in the future to automatically withdraw the restrictions. */
+  /** A point in time within the future in which the restriction will be reverted. */
   untilDate?: Date;
 }
 
@@ -366,7 +366,7 @@ export interface SearchMessagesParams {
 export interface CreateInviteLinkParams {
   /** An optional title to be attached to the link that can only be seen by admins. */
   title?: string;
-  /** The point of time in which the invite link must no longer work. */
+  /** A point in time within the future in which the invite link will be invalidated. */
   expireAt?: Date;
   /** The times the invite link can be used. Cannot be specified while `requireApproval` is `true`. */
   limit?: number;

@@ -23,11 +23,17 @@ import { types } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructUser, User } from "./1_user.ts";
 
+/** A business connection. */
 export interface BusinessConnection {
+  /** The business connection's unique identifier. */
   id: string;
+  /** The business account that the connection is made with. */
   user: User;
+  /** The point in time in which the connection was recently updated. */
   date: Date;
+  /** Whether the bot can reply to older chats. */
   canReply: boolean;
+  /** Whether the connection is active. */
   isEnabled: boolean;
 }
 

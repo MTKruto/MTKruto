@@ -37,7 +37,7 @@ export interface InviteLink {
   revoked: boolean;
   /** An optional title. */
   title?: string;
-  /** The point of time in which the invite link is expired at. */
+  /** A point in time within the future in which the ban will be reverted. */
   expiresAt?: Date;
   /** The times the invite link can be used. */
   limit?: number;
