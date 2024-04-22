@@ -71,8 +71,14 @@ export function getRandomBigInt(byteLength: number, little?: boolean, signed?: b
 }
 
 /** Get a random ID. Useful when calling API functions directly. */
-export function getRandomId(): bigint {
-  return getRandomBigInt(8, true, true);
+export function getRandomId(number: true): number;
+export function getRandomId(): bigint;
+export function getRandomId(number?: boolean): bigint | number {
+  if (number) {
+    return Number(getRandomBigInt(4, true, true));
+  } else {
+    return getRandomBigInt(8, true, true);
+  }
 }
 
 export function gcd(a: bigint, b: bigint) {

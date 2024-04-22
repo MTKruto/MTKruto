@@ -54,6 +54,7 @@ export * from "./types/0_restriction_reason.ts";
 export * from "./types/0_self_destruct_option.ts";
 export * from "./types/0_story_reference.ts";
 export * from "./types/0_thumbnail.ts";
+export * from "./types/0_video_chat.ts";
 export * from "./types/0_voice.ts";
 export * from "./types/1_animation.ts";
 export * from "./types/1_audio.ts";

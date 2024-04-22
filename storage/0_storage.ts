@@ -71,6 +71,10 @@ export const K = {
     callbackQueryAnswer: (chatId: number, messageId: number, question: string): StorageKeyPart[] => [...K.cache.callbackQueryAnswers(), chatId, messageId, question],
     fullChats: (): StorageKeyPart[] => [K.cache.P("fullChats")],
     fullChat: (chatId: number): StorageKeyPart[] => [...K.cache.fullChats(), chatId],
+    groupCalls: (): StorageKeyPart[] => [K.cache.P("groupCalls")],
+    groupCall: (id: bigint): StorageKeyPart[] => [...K.cache.groupCalls(), id],
+    groupCallAccessHashes: (): StorageKeyPart[] => [K.cache.P("groupCallAccessHashes")],
+    groupCallAccessHash: (id: bigint): StorageKeyPart[] => [...K.cache.groupCallAccessHashes(), id],
   },
   messages: {
     P: (string: string): string => `messages.${string}`,
@@ -492,6 +496,22 @@ export abstract class Storage {
     return await this.getTlObject(K.cache.fullChat(chatId)) as types.UserFull | types.ChannelFull | types.ChatFull | null;
   }
 
+  async setGroupCall(id: bigint, groupCall: types.GroupCall | null) {
+    await this.setTlObject(K.cache.groupCall(id), groupCall);
+  }
+
+  async getGroupCall(id: bigint): Promise<types.GroupCall | null> {
+    return await this.getTlObject(K.cache.groupCall(id)) as types.GroupCall | null;
+  }
+
+  async setGroupCallAccessHash(id: bigint, accessHash: bigint | null) {
+    await this.set(K.cache.groupCallAccessHash(id), accessHash);
+  }
+
+  async getGroupCallAccessHash(id: bigint): Promise<bigint | null> {
+    return await this.get(K.cache.groupCallAccessHash(id));
+  }
+
   #getUpdateId(update: enums.Update) {
     let id = BigInt(Date.now()) << 32n;
     if ("pts" in update && update.pts) {
@@ -576,6 +596,12 @@ export abstract class Storage {
     }
   }
 
+  async deleteGroupCalls() {
+    for await (const [key] of await this.getMany({ prefix: K.cache.groupCalls() })) {
+      await this.set(key, null);
+    }
+  }
+
   async deleteStickerSetNames() {
     for await (const [key] of await this.getMany({ prefix: K.cache.stickerSetNames() })) {
       await this.set(key, null);
@@ -606,6 +632,7 @@ export abstract class Storage {
       this.deleteInlineQueryAnswers(),
       this.deleteCallbackQueryAnswers(),
       this.deleteFullChats(),
+      this.deleteGroupCalls(),
       this.deleteStickerSetNames(),
       this.deletePeers(),
       this.deleteUsernames(),

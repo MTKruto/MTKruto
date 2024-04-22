@@ -24,10 +24,10 @@ import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, minute
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, name, peerToChatId, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, Reaction, Sticker, Story, Update, User } from "../3_types.ts";
+import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, Reaction, Sticker, Story, Update, User, VideoChat, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded } from "../4_errors.ts";
-import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, StartVideoChatParams, StopPollParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { Api } from "./0_types.ts";
 import { getUsername, isMtprotoFunction, resolve } from "./0_utilities.ts";
@@ -46,6 +46,7 @@ import { CallbackQueryManager } from "./3_callback_query_manager.ts";
 import { ChatListManager } from "./3_chat_list_manager.ts";
 import { InlineQueryManager } from "./3_inline_query_manager.ts";
 import { StoryManager } from "./3_story_manager.ts";
+import { VideoChatManager } from "./1_video_chat_manager.ts";
 
 export interface Context {
   /** The client that received the update. */
@@ -247,6 +248,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #botInfoManager: BotInfoManager;
   #fileManager: FileManager;
   #reactionManager: ReactionManager;
+  #videoChatManager: VideoChatManager;
   #businessConnectionManager: BusinessConnectionManager;
   #messageManager: MessageManager;
   #storyManager: StoryManager;
@@ -381,6 +383,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#botInfoManager = new BotInfoManager(c);
     this.#fileManager = new FileManager(c);
     this.#reactionManager = new ReactionManager(c);
+    this.#videoChatManager = new VideoChatManager(c);
     this.#businessConnectionManager = new BusinessConnectionManager(c);
     this.#messageManager = new MessageManager({ ...c, fileManager: this.#fileManager });
     this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager: this.#messageManager });
@@ -2644,5 +2647,64 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async unblockUser(userId: ID) {
     await this.#messageManager.unblockUser(userId);
+  }
+
+  //
+  // ========================= VIDEO CHATS ========================= //
+  //
+
+  /**
+   * Start a video chat.
+   *
+   * @method vc
+   * @param chatId The chat to start the video chat in.
+   * @returns The started video chat.
+   */
+  async startVideoChat(chatId: ID, params?: StartVideoChatParams): Promise<VideoChatActive> {
+    return await this.#videoChatManager.startVideoChat(chatId, params);
+  }
+
+  /**
+   * Schedule a video chat.
+   *
+   * @method vc
+   * @param chatId The chat to schedule the video chat in.
+   * @param startAt The point of time in which the video chat should be started.
+   * @returns The scheduled video chat.
+   */
+  async scheduleVideoChat(chatId: ID, startAt: Date, params?: ScheduleVideoChatParams): Promise<VideoChatScheduled> {
+    return await this.#videoChatManager.scheduleVideoChat(chatId, startAt, params);
+  }
+
+  /**
+   * Join a video chat.
+   *
+   * @method vc
+   * @param id The identifier of the video chat to join as retrieved from getChat.
+   * @param params_ WebRTC connection parameters.
+   * @returns Parameters to be passed to the used WebRTC library.
+   */
+  async joinVideoChat(id: string, params_: string, params?: JoinVideoChatParams) {
+    return await this.#videoChatManager.joinVideoChat(id, params_, params);
+  }
+
+  /**
+   * Join a live stream. An alternative for joinVideoChat with no WebRTC involved.
+   *
+   * @method vc
+   * @param id The identifier of the video chat to join as retrieved from getChat.
+   */
+  async joinLiveStream(id: string): Promise<void> {
+    return await this.#videoChatManager.joinLiveStream(id);
+  }
+
+  /**
+   * Get information on a video chat.
+   *
+   * @method vc
+   * @param id The identifier of the video chat to join as retrieved from getChat.
+   */
+  async getVideoChat(id: string): Promise<VideoChat> {
+    return await this.#videoChatManager.getVideoChat(id);
   }
 }

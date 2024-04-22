@@ -404,3 +404,18 @@ export interface SendInlineQueryParams {
   query?: string;
   offset?: string;
 }
+
+export interface StartVideoChatParams {
+  title?: string;
+  liveStream?: boolean;
+}
+
+export interface ScheduleVideoChatParams extends StartVideoChatParams {
+}
+
+export interface JoinVideoChatParams {
+  joinAs?: ID;
+  inviteHash?: string;
+  audio?: boolean;
+  video?: boolean;
+}
