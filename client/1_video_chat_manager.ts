@@ -93,7 +93,15 @@ export class VideoChatManager {
     const { updates } = await this.#c.api.phone.joinGroupCall({
       call,
       join_as: new types.InputPeerSelf(),
-      params: new types.DataJSON({ data: JSON.stringify({ ssrc: 0 }) }), // TODO: fallback params
+      params: new types.DataJSON({
+        data: JSON.stringify({
+          fingerprints: [],
+          pwd: "",
+          ssrc: getRandomId(true),
+          "ssrc-groups": [],
+          ufrag: "",
+        }),
+      }),
     }).then((v) => v[as](types.Updates));
     const updateGroupCall = updates
       .find((v): v is types.UpdateGroupCallConnection => v instanceof types.UpdateGroupCallConnection);
