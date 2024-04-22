@@ -56,10 +56,12 @@ export class VideoChatManager {
   }
 
   async startVideoChat(chatId: ID, params?: StartVideoChatParams) {
+    await this.#c.storage.assertUser("startVideoChat");
     return await this.#createGroupCall(chatId, params?.title, params?.liveStream || undefined) as VideoChatActive;
   }
 
   async scheduleVideoChat(chatId: ID, startAt: Date, params?: StartVideoChatParams) {
+    await this.#c.storage.assertUser("scheduleVideoChat");
     return await this.#createGroupCall(chatId, params?.title, params?.liveStream || undefined, startAt) as VideoChatScheduled;
   }
 
@@ -73,6 +75,7 @@ export class VideoChatManager {
   }
 
   async joinVideoChat(id: string, params: string, params_?: JoinVideoChatParams) {
+    await this.#c.storage.assertUser("joinVideoChat");
     const call = await this.#getInputGroupCall(id);
     const { updates } = await this.#c.api.phone.joinGroupCall({
       call,
@@ -89,6 +92,7 @@ export class VideoChatManager {
   }
 
   async joinLiveStream(id: string) {
+    await this.#c.storage.assertUser("joinLiveStream");
     const call = await this.#getInputGroupCall(id);
     const { updates } = await this.#c.api.phone.joinGroupCall({
       call,
@@ -109,6 +113,7 @@ export class VideoChatManager {
   }
 
   async getVideoChat(id: string) {
+    await this.#c.storage.assertUser("getVideoChat");
     let groupCall: enums.GroupCall | null = await this.#c.storage.getGroupCall(BigInt(id));
     if (groupCall == null) {
       const call = await this.#getInputGroupCall(id);

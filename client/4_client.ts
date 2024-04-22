@@ -2658,7 +2658,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   //
 
   /**
-   * Start a video chat.
+   * Start a video chat. User-only.
    *
    * @method vc
    * @param chatId The chat to start the video chat in.
@@ -2669,7 +2669,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Schedule a video chat.
+   * Schedule a video chat. User-only.
    *
    * @method vc
    * @param chatId The chat to schedule the video chat in.
@@ -2681,7 +2681,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Join a video chat.
+   * Join a video chat. User-only.
    *
    * @method vc
    * @param id The identifier of the video chat to join as retrieved from getChat.
@@ -2693,7 +2693,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Join a live stream. An alternative for joinVideoChat with no WebRTC involved.
+   * Join a live stream. An alternative for joinVideoChat with no WebRTC involved. User-only.
    *
    * @method vc
    * @param id The identifier of the video chat to join as retrieved from getChat.
@@ -2703,7 +2703,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Get information on a video chat.
+   * Get information on a video chat. User-only.
    *
    * @method vc
    * @param id The identifier of the video chat to join as retrieved from getChat.
