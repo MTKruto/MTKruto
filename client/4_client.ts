@@ -2684,7 +2684,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param params_ WebRTC connection parameters.
    * @returns Parameters to be passed to the used WebRTC library.
    */
-  async joinVideoChat(id: string, params_: string, params?: JoinVideoChatParams) {
+  async joinVideoChat(id: string, params_: string, params?: JoinVideoChatParams): Promise<string> {
     return await this.#videoChatManager.joinVideoChat(id, params_, params);
   }
 
