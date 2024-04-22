@@ -35,13 +35,11 @@ export interface ChatBase {
 
 /** @unlisted */
 export interface ChatChannel extends ChatBase, ChatPChannel {
-  also?: string[];
   videoChatId?: string;
 }
 
 /** @unlisted */
 export interface ChatSupergroup extends ChatBase, ChatPSupergroup {
-  also?: string[];
   videoChatId?: string;
 }
 
@@ -52,7 +50,6 @@ export interface ChatGroup extends ChatBase, ChatPGroup {
 
 /** @unlisted */
 export interface ChatPrivate extends ChatBase, ChatPPrivate {
-  also?: string[];
   /** The user's birthday. */
   birthday?: Birthday;
   /** The written address of the business. */
