@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assert, extension, path, unreachable } from "../0_deps.ts";
+import { extension, path, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { drop, getLogger, getRandomId, iterateReadableStream, kilobyte, Logger, megabyte, minute, mod, Part, PartStream } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
@@ -128,14 +128,16 @@ export class FileManager {
     const isBig = buffer.byteLength > FileManager.#BIG_FILE_THRESHOLD;
     const partCount = Math.ceil(buffer.byteLength / chunkSize);
     let promises = new Array<Promise<void>>();
-    for (let part = 0; part < partCount;) {
+    main: for (let part = 0; part < partCount;) {
       for (let i = 0; i < pool.size; ++i) {
         const api = pool.api();
         for (let i = 0; i < FileManager.#UPLOAD_REQUEST_PER_CONNECTION; ++i) {
           const start = part * chunkSize;
           const end = start + chunkSize;
           const bytes = buffer.subarray(start, end);
-          assert(bytes.length != 0);
+          if (!bytes.length) {
+            break main;
+          }
           const thisPart = part++; // `thisPart` must be used instead of `part` in the promise body
           promises.push(
             Promise.resolve().then(async () => {
