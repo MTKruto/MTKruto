@@ -258,7 +258,7 @@ const getEntity = Symbol();
 const functionNamespaces = Object.entries(functions).filter(([, v]) => !(v instanceof Function)).map(([k]) => k);
 
 export interface ClientParams extends ClientPlainParams {
-    /** A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defaults to `ParseMode.None`. */
+  /** A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defaults to `ParseMode.None`. */
   parseMode?: ParseMode;
   /** The app_version parameter to be passed to initConnection when calling `authorize`. It is recommended that this parameter is changed if users are authorized. Defaults to _MTKruto_. */
   appVersion?: string;
@@ -305,7 +305,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #chatListManager: ChatListManager;
   #accountManager: AccountManager;
 
-    public readonly storage: Storage;
+  public readonly storage: Storage;
   public readonly messageStorage: Storage;
   #parseMode: ParseMode;
 
@@ -338,7 +338,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     params?: ClientParams,
   ) {
     super();
-        this.#client = new ClientEncrypted(params);
+    this.#client = new ClientEncrypted(params);
     this.#client.stateChangeHandler = this.#stateChangeHandler.bind(this);
     this.#client.handlers = {
       serverSaltReassigned: async (newServerSalt) => {
@@ -663,7 +663,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     };
     const chat_ = "messageReactions" in update ? update.messageReactions.chat : "messageReactionCount" in update ? update.messageReactionCount.chat : "chatMember" in update ? update.chatMember.chat : undefined;
     const chat = chat_ ?? msg?.chat;
-    const from = "callbackQuery" in update ? update.callbackQuery.from : "inlineQuery" in update ? update.inlineQuery.from : "message" in update ? update.message.from : "editedMessage" in update ? update.editedMessage?.from : undefined;
+    const from = "callbackQuery" in update ? update.callbackQuery.from : "inlineQuery" in update ? update.inlineQuery.from : "message" in update ? update.message.from : "editedMessage" in update ? update.editedMessage?.from : "chatMember" in update ? update.chatMember.from : "messageReactions" in update ? update.messageReactions.user : undefined;
     const senderChat = msg?.senderChat;
     const getReplyToMessageId = (quote: boolean | undefined, chatId: number, messageId: number) => {
       const isPrivate = chatId > 0;
