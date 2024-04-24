@@ -20,7 +20,7 @@
 
 import { assertEquals } from "../0_deps.ts";
 import { MessageEntity } from "../3_types.ts";
-import { MessageManager } from "./2_message_manager.ts";
+import { MessageManager } from "./3_message_manager.ts";
 
 Deno.test("parseText() trims trailing whitespaces", async (t) => {
   const code = `console.log("Hello, world!");`;

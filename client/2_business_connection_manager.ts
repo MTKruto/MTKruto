@@ -20,7 +20,7 @@
 
 import { as, enums, types } from "../2_tl.ts";
 import { constructBusinessConnection, Update } from "../3_types.ts";
-import { C } from "./0_types.ts";
+import { C } from "./1_types.ts";
 
 export type BusinessConnectionManagerUpdate = types.UpdateBotBusinessConnect;
 

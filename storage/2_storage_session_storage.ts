@@ -22,7 +22,7 @@ import { MaybePromise } from "../1_utilities.ts";
 import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 import { fromString, isInRange, toString } from "./1_utilities.ts";
 
-export class StorageSessionStorage extends Storage implements Storage {
+export class StorageSessionStorage implements Storage {
   readonly #prefix: string;
 
   constructor(prefix: string) {
@@ -32,8 +32,11 @@ export class StorageSessionStorage extends Storage implements Storage {
     if (prefix.length <= 0) {
       throw new Error("Empty prefix");
     }
-    super();
     this.#prefix = prefix;
+  }
+
+  get mustSerialize() {
+    return true;
   }
 
   get prefix(): string {

@@ -23,10 +23,10 @@ import { InputError } from "../0_errors.ts";
 import { getLogger, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { enums, peerToChatId, types } from "../2_tl.ts";
 import { ChatListItem, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, getChatListItemOrder, ID } from "../3_types.ts";
-import { C as C_ } from "./0_types.ts";
+import { C as C_ } from "./1_types.ts";
 import { getChatListId } from "./0_utilities.ts";
-import { FileManager } from "./1_file_manager.ts";
-import { MessageManager } from "./2_message_manager.ts";
+import { FileManager } from "./2_file_manager.ts";
+import { MessageManager } from "./3_message_manager.ts";
 
 type C = C_ & { fileManager: FileManager; messageManager: MessageManager };
 

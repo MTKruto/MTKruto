@@ -1,0 +1,670 @@
+/**
+ * MTKruto - Cross-runtime JavaScript library for building Telegram clients
+ * Copyright (C) 2023-2024 Roj <https://roj.im/>
+ *
+ * This file is part of MTKruto.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+import { AssertionError, unreachable } from "../0_deps.ts";
+import { InputError } from "../0_errors.ts";
+import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { AnyEntity, enums, peerToChatId, ReadObject, serialize, TLObject, TLReader, TLWriter, types } from "../2_tl.ts";
+import { DC } from "../3_transport.ts";
+import { Storage, StorageKeyPart } from "../2_storage.ts";
+
+// key parts
+export const K = {
+  connection: {
+    P: (string: string): string => `connection.${string}`,
+    apiId: (): StorageKeyPart[] => [K.connection.P("apiId")],
+  },
+  session: {
+    P: (string: string): string => `session.${string}`,
+    serverSalt: (): StorageKeyPart[] => [K.session.P("serverSalt")],
+  },
+  auth: {
+    P: (string: string): string => `auth.${string}`,
+    dc: (): StorageKeyPart[] => [K.auth.P("dc")],
+    key: (): StorageKeyPart[] => [K.auth.P("key")],
+    accountId: (): StorageKeyPart[] => [K.auth.P("accountId")],
+    accountType: (): StorageKeyPart[] => [K.auth.P("accountType")],
+  },
+  updates: {
+    P: (string: string): string => `updates.${string}`,
+    state: (): StorageKeyPart[] => [K.updates.P("state")],
+    all: (): StorageKeyPart[] => [K.updates.P("updates")],
+    updates: (boxId: bigint): StorageKeyPart[] => [...K.updates.all(), boxId],
+    update: (boxId: bigint, id: bigint): StorageKeyPart[] => [...K.updates.updates(boxId), id],
+    channelPts: (channelId: bigint): StorageKeyPart[] => [K.updates.P("channelPts"), channelId],
+  },
+  cache: {
+    P: (string: string): string => `cache.${string}`,
+    usernames: (): StorageKeyPart[] => [K.cache.P("username")],
+    username: (v: string): StorageKeyPart[] => [...K.cache.usernames(), v],
+    peers: (): StorageKeyPart[] => [K.cache.P("peer")],
+    peer: (id: number): StorageKeyPart[] => [...K.cache.peers(), id],
+    stickerSetNames: (): StorageKeyPart[] => [K.cache.P("stickerSetNames")],
+    stickerSetName: (id: bigint, accessHash: bigint): StorageKeyPart[] => [...K.cache.stickerSetNames(), id, accessHash],
+    files: (): StorageKeyPart[] => [K.cache.P("files")],
+    file: (fileId: bigint): StorageKeyPart[] => [...K.cache.files(), fileId],
+    fileParts: (): StorageKeyPart[] => [K.cache.P("fileParts")],
+    filePart: (fileId: bigint, n: number): StorageKeyPart[] => [...K.cache.fileParts(), fileId, n],
+    customEmojiDocuments: (): StorageKeyPart[] => [K.cache.P("customEmojiDocuments")],
+    customEmojiDocument: (id: bigint): StorageKeyPart[] => [...K.cache.customEmojiDocuments(), id],
+    businessConnections: (): StorageKeyPart[] => [K.cache.P("businessConnections")],
+    businessConnection: (id: string): StorageKeyPart[] => [...K.cache.businessConnections(), id],
+    inlineQueryAnswers: (): StorageKeyPart[] => [K.cache.P("inlineQueryResults")],
+    inlineQueryAnswer: (userId: number, chatId: number, query: string, offset: string): StorageKeyPart[] => [...K.cache.inlineQueryAnswers(), userId, chatId, query, offset],
+    callbackQueryAnswers: (): StorageKeyPart[] => [K.cache.P("callbackQueryAnswers")],
+    callbackQueryAnswer: (chatId: number, messageId: number, question: string): StorageKeyPart[] => [...K.cache.callbackQueryAnswers(), chatId, messageId, question],
+    fullChats: (): StorageKeyPart[] => [K.cache.P("fullChats")],
+    fullChat: (chatId: number): StorageKeyPart[] => [...K.cache.fullChats(), chatId],
+    groupCalls: (): StorageKeyPart[] => [K.cache.P("groupCalls")],
+    groupCall: (id: bigint): StorageKeyPart[] => [...K.cache.groupCalls(), id],
+    groupCallAccessHashes: (): StorageKeyPart[] => [K.cache.P("groupCallAccessHashes")],
+    groupCallAccessHash: (id: bigint): StorageKeyPart[] => [...K.cache.groupCallAccessHashes(), id],
+  },
+  messages: {
+    P: (string: string): string => `messages.${string}`,
+    messages: (chatId: number): StorageKeyPart[] => [K.messages.P("messages"), chatId],
+    message: (chatId: number, messageId: number): StorageKeyPart[] => [...K.messages.messages(chatId), messageId],
+    allMessageRefs: (): StorageKeyPart[] => [K.messages.P("messageRefs")],
+    messageRef: (messageId: number): StorageKeyPart[] => [...K.messages.allMessageRefs(), messageId],
+  },
+  chatlists: {
+    P: (string: string): string => `chatlists.${string}`,
+    hasAllChats: (listId: number): StorageKeyPart[] => [K.chatlists.P("hasAllChats"), listId],
+    chats: (listId: number): StorageKeyPart[] => [K.chatlists.P("chats"), listId],
+    chat: (listId: number, chatId: number): StorageKeyPart[] => [...K.chatlists.chats(listId), chatId],
+    pinnedChats: (listId: number): StorageKeyPart[] => [K.chatlists.P("pinnedChats"), listId],
+  },
+};
+
+export class StorageOperations {
+  #storage: Storage;
+  #supportsFiles: boolean;
+  #mustSerialize: boolean;
+  #authKeyId: bigint | null = null;
+
+  constructor(storage: Storage) {
+    this.#storage = storage;
+    this.#supportsFiles = storage.supportsFiles;
+    this.#mustSerialize = storage.mustSerialize;
+  }
+
+  get provider(): Storage {
+    return this.#storage;
+  }
+
+  get supportsFiles(): boolean {
+    return this.#storage.supportsFiles;
+  }
+
+  async initialize() {
+    await this.#storage.initialize();
+  }
+
+  set(...args: Parameters<Storage["set"]>): ReturnType<Storage["set"]> {
+    return this.#storage.set(...args);
+  }
+
+  incr(...args: Parameters<Storage["incr"]>): ReturnType<Storage["incr"]> {
+    return this.#storage.incr(...args);
+  }
+
+  get<T>(...args: Parameters<Storage["get"]>): ReturnType<Storage["get"]> {
+    return this.#storage.get<T>(...args);
+  }
+
+  getMany<T>(...args: Parameters<Storage["getMany"]>): ReturnType<Storage["getMany"]> {
+    return this.#storage.getMany<T>(...args);
+  }
+
+  async setDc(dc: DC | null) {
+    await this.#storage.set(K.auth.dc(), dc);
+  }
+
+  getDc(): MaybePromise<DC | null> {
+    return this.#storage.get<DC>(K.auth.dc());
+  }
+
+  async #resetAuthKeyId(authKey: Uint8Array | null) {
+    if (authKey != null) {
+      this.#authKeyId = await sha1(authKey).then((hash) => bigIntFromBuffer(hash.subarray(-8), true, false));
+    } else {
+      this.#authKeyId = null;
+    }
+  }
+
+  async getAuthKey(): Promise<Uint8Array | null> {
+    const authKey = await this.#storage.get<Uint8Array>(K.auth.key());
+    await this.#resetAuthKeyId(authKey);
+    return authKey;
+  }
+
+  async setAuthKey(authKey: Uint8Array | null) {
+    await this.#storage.set(K.auth.key(), authKey);
+    await this.#resetAuthKeyId(authKey);
+  }
+
+  get authKeyId(): bigint | null {
+    return this.#authKeyId;
+  }
+
+  async exportAuthString(apiId_?: number | null): Promise<string> {
+    if (typeof apiId_ === "number") {
+      await this.setApiId(apiId_);
+    }
+    const [dc, authKey, apiId, accountId, accountType] = await Promise.all([this.getDc(), this.getAuthKey(), this.getApiId(), this.getAccountId(), this.getAccountType()]);
+    if (dc == null || authKey == null || apiId == null || accountId == null || accountType == null) {
+      throw new Error("Not authorized");
+    }
+    const writer = new TLWriter();
+    writer.writeString(dc);
+    writer.writeBytes(authKey);
+    writer.writeInt32(apiId);
+    writer.write(new Uint8Array([accountType == "bot" ? 1 : 0]));
+    writer.writeInt64(BigInt(accountId));
+    const data = rleEncode(writer.buffer);
+    return base64EncodeUrlSafe(data);
+  }
+
+  async importAuthString(string: string) {
+    const data = rleDecode(base64DecodeUrlSafe(string));
+    const reader = new TLReader(data);
+    const dc = reader.readString();
+    const authKey = reader.readBytes();
+    const apiId = reader.readInt32();
+    const isBot = reader.read(1)[0];
+    const accountId = Number(reader.readInt64());
+    await this.setAccountId(accountId);
+    await this.setAccountType(isBot ? "bot" : "user");
+    await this.setApiId(apiId);
+    await this.setDc(dc as DC);
+    await this.setAuthKey(authKey);
+  }
+
+  async getChannelAccessHash(id: number): Promise<bigint | null> {
+    const channel = await this.getEntity(id);
+    if (channel) {
+      if (!(channel instanceof types.Channel) && !(channel instanceof types.ChannelForbidden)) {
+        unreachable();
+      }
+      return typeof channel.access_hash === "bigint" ? channel.access_hash : null;
+    } else {
+      return null;
+    }
+  }
+
+  async getUserAccessHash(id: number): Promise<bigint | null> {
+    const user = await this.getEntity(id);
+    if (user) {
+      if (!(user instanceof types.User)) {
+        unreachable();
+      }
+      return typeof user.access_hash === "bigint" ? user.access_hash : null;
+    } else {
+      return null;
+    }
+  }
+
+  async updateUsernames(id: number, usernames: string[]) {
+    for (let username of usernames) {
+      username = username.toLowerCase();
+      await this.#storage.set(K.cache.username(username), [id, new Date()]);
+    }
+  }
+
+  async getUsername(username: string): Promise<[number, Date] | null> {
+    username = username.toLowerCase();
+    return await this.#storage.get<[number, Date]>(K.cache.username(username));
+  }
+
+  async setTlObject(key: readonly StorageKeyPart[], value: TLObject | null) {
+    if (value == null) {
+      await this.#storage.set(key, null);
+    } else {
+      await this.#storage.set(key, this.#mustSerialize ? rleEncode(value[serialize]()) : value);
+    }
+  }
+
+  async getTlObject(keyOrBuffer: TLObject | Uint8Array | readonly StorageKeyPart[]): Promise<ReadObject | null> {
+    const buffer = (keyOrBuffer instanceof Uint8Array || keyOrBuffer instanceof TLObject) ? keyOrBuffer : await this.#storage.get<Uint8Array>(keyOrBuffer);
+    if (buffer != null) {
+      if (buffer instanceof Uint8Array) {
+        return new TLReader(rleDecode(buffer)).readObject();
+      } else {
+        return buffer;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  async setState(state: enums.updates.State) {
+    await this.setTlObject(K.updates.state(), state);
+  }
+
+  async getState(): Promise<enums.updates.State | null> {
+    return await this.getTlObject(K.updates.state()) as enums.updates.State | null;
+  }
+
+  async setMessage(chatId: number, messageId: number, message: enums.Message | null) {
+    if (chatId > ZERO_CHANNEL_ID) {
+      await this.#storage.set(K.messages.messageRef(messageId), message == null ? null : chatId);
+    }
+    await this.setTlObject(K.messages.message(chatId, messageId), message);
+  }
+
+  async deleteMessages() {
+    const maybePromises = new Array<MaybePromise<void>>();
+    for await (const [k, o] of await this.#storage.getMany({ prefix: K.messages.allMessageRefs() })) {
+      maybePromises.push(Promise.all<void>([this.#storage.set(k, null), o == null ? Promise.resolve() : this.#storage.set(K.messages.message(o as number, k[1] as number), null)]).then(() => {}));
+    }
+    await Promise.all(maybePromises.filter((v) => v instanceof Promise));
+  }
+
+  getMessageChat(messageId: number): MaybePromise<number | null> {
+    return this.#storage.get<number>(K.messages.messageRef(messageId));
+  }
+
+  async getMessage(chatId: number, messageId: number): Promise<enums.Message | null> {
+    return await this.getTlObject(K.messages.message(chatId, messageId)) as enums.Message | null;
+  }
+
+  async getLastMessage(chatId: number): Promise<enums.Message | null> {
+    for await (const [_, buffer] of await this.#storage.getMany<Uint8Array>({ prefix: K.messages.messages(chatId) }, { limit: 1, reverse: true })) {
+      return await this.getTlObject(buffer) as enums.Message;
+    }
+    return null;
+  }
+
+  async setChannelPts(channelId: bigint, pts: number) {
+    await this.#storage.set(K.updates.channelPts(channelId), pts);
+  }
+
+  getChannelPts(channelId: bigint): MaybePromise<number | null> {
+    return this.#storage.get<number>(K.updates.channelPts(channelId));
+  }
+
+  async setEntity(entity: AnyEntity) {
+    await this.#storage.set(K.cache.peer(peerToChatId(entity)), [this.#mustSerialize ? rleEncode(entity[serialize]()) : entity, new Date()]);
+  }
+
+  async getEntity(key: number): Promise<ReadObject | null> {
+    const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.peer(key));
+    if (peer_ != null) {
+      const [obj_] = peer_;
+      return await this.getTlObject(obj_);
+    } else {
+      return null;
+    }
+  }
+
+  async setAccountId(accountId: number) {
+    await this.#storage.set(K.auth.accountId(), accountId);
+  }
+
+  #accountId: number | null = null;
+  async getAccountId(): Promise<number | null> {
+    if (this.#accountId != null) {
+      return this.#accountId;
+    } else {
+      return (this.#accountId = await this.#storage.get<number>(K.auth.accountId()));
+    }
+  }
+
+  async setAccountType(type: "user" | "bot") {
+    try {
+      await this.getAccountType();
+      unreachable();
+    } catch (err) {
+      if (!(err instanceof AssertionError)) {
+        throw err;
+      } else {
+        await this.#storage.set(K.auth.accountType(), type);
+      }
+    }
+  }
+
+  #accountType: "user" | "bot" | null = null;
+  async getAccountType(): Promise<"user" | "bot" | null> {
+    if (this.#accountType != null) {
+      return this.#accountType;
+    } else {
+      return this.#accountType = await this.#storage.get<"user" | "bot">(K.auth.accountType());
+    }
+  }
+
+  async updateStickerSetName(id: bigint, accessHash: bigint, name: string) {
+    await this.#storage.set(K.cache.stickerSetName(id, accessHash), [name, new Date()]);
+  }
+
+  getStickerSetName(id: bigint, accessHash: bigint): MaybePromise<[string, Date] | null> {
+    return this.#storage.get<[string, Date]>(K.cache.stickerSetName(id, accessHash));
+  }
+
+  async setServerSalt(serverSalt: bigint) {
+    await this.#storage.set(K.session.serverSalt(), serverSalt);
+  }
+
+  getServerSalt(): MaybePromise<bigint | null> {
+    return this.#storage.get<bigint>(K.session.serverSalt());
+  }
+
+  async setChat(listId: number, chatId: number, pinned: number, topMessageId: number, topMessageDate: Date) {
+    await this.#storage.set(K.chatlists.chat(listId, chatId), [pinned, topMessageId, topMessageDate]);
+  }
+
+  async getChats(listId: number): Promise<{ chatId: number; pinned: number; topMessageId: number; topMessageDate: Date }[]> {
+    const chats = new Array<{ chatId: number; pinned: number; topMessageId: number; topMessageDate: Date }>();
+    for await (const [key, value] of await this.#storage.getMany<[number, number, Date]>({ prefix: K.chatlists.chats(listId) })) {
+      if (key.length != 3 || typeof key[2] !== "number") {
+        continue;
+      }
+      chats.push({ chatId: key[2], pinned: value[0], topMessageId: value[1], topMessageDate: value[2] });
+    }
+    return chats;
+  }
+
+  async removeChats(listId: number) {
+    for await (const [key] of await this.#storage.getMany({ prefix: K.chatlists.chats(listId) })) {
+      await this.#storage.set(key, null);
+    }
+    await this.setHasAllChats(listId, false);
+    await this.setPinnedChats(listId, null);
+  }
+
+  async setHasAllChats(listId: number, hasAllChats: boolean) {
+    await this.#storage.set(K.chatlists.hasAllChats(listId), hasAllChats);
+  }
+
+  async hasAllChats(listId: number): Promise<boolean> {
+    const v = await this.#storage.get<boolean>(K.chatlists.hasAllChats(listId));
+    return v == true;
+  }
+
+  async setPinnedChats(listId: number, chatIds: number[] | null) {
+    await this.#storage.set(K.chatlists.pinnedChats(listId), chatIds);
+  }
+
+  async getPinnedChats(listId: number): Promise<number[] | null> {
+    return await this.#storage.get<number[]>(K.chatlists.pinnedChats(listId));
+  }
+
+  async getHistory(chatId: number, offsetId: number, limit: number): Promise<enums.Message[]> {
+    if (offsetId == 0) {
+      offsetId = Infinity;
+    }
+    ++limit;
+    const messages = new Array<enums.Message>();
+    for await (const [_, buffer] of await this.#storage.getMany<Uint8Array>({ start: K.messages.message(chatId, 0), end: K.messages.message(chatId, offsetId) }, { limit, reverse: true })) {
+      const message = await this.getTlObject(buffer) as enums.Message;
+      if ("id" in message && message.id == offsetId) {
+        continue;
+      }
+      messages.push(message);
+    }
+    return messages;
+  }
+
+  async getFile(id: bigint): Promise<[number, number] | null> {
+    if (!this.#supportsFiles) {
+      return null;
+    }
+    return await this.#storage.get<[number, number]>(K.cache.file(id));
+  }
+
+  async *iterFileParts(id: bigint, partCount: number, offset: number): AsyncGenerator<Uint8Array> {
+    if (!this.#supportsFiles) {
+      return;
+    }
+    for (let i = offset; i < partCount; i++) {
+      const part = await this.#storage.get<Uint8Array>(K.cache.filePart(id, i));
+      if (part == null) {
+        continue;
+      }
+      yield part;
+    }
+  }
+
+  async saveFilePart(id: bigint, index: number, bytes: Uint8Array) {
+    if (!this.#supportsFiles) {
+      return;
+    }
+    await this.#storage.set(K.cache.filePart(id, index), bytes);
+  }
+
+  async setFilePartCount(id: bigint, partCount: number, chunkSize: number) {
+    if (!this.#supportsFiles) {
+      return;
+    }
+    await this.#storage.set(K.cache.file(id), [partCount, chunkSize]);
+  }
+
+  async setCustomEmojiDocument(id: bigint, document: types.Document) {
+    await this.#storage.set(K.cache.customEmojiDocument(id), [this.#mustSerialize ? rleEncode(document[serialize]()) : document, new Date()]);
+  }
+
+  async getCustomEmojiDocument(id: bigint): Promise<[types.Document, Date] | null> {
+    const v = await this.#storage.get<[Uint8Array, Date]>(K.cache.customEmojiDocument(id));
+    if (v != null) {
+      return [await this.getTlObject(v[0]), v[1]] as [types.Document, Date];
+    } else {
+      return null;
+    }
+  }
+
+  async setBusinessConnection(id: string, connection: types.BotBusinessConnection | null) {
+    await this.#storage.set(K.cache.businessConnection(id), connection == null ? null : this.#mustSerialize ? rleEncode(connection[serialize]()) : connection);
+  }
+
+  async getBusinessConnection(id: string): Promise<types.BotBusinessConnection | null> {
+    const v = await this.#storage.get<Uint8Array>(K.cache.businessConnection(id));
+    if (v != null) {
+      return await this.getTlObject(v) as types.BotBusinessConnection;
+    } else {
+      return null;
+    }
+  }
+
+  async setInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string, results: types.messages.BotResults, date: Date) {
+    await this.#storage.set(K.cache.inlineQueryAnswer(userId, chatId, query, offset), [this.#mustSerialize ? rleEncode(results[serialize]()) : results, date]);
+  }
+
+  async getInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string): Promise<[types.messages.BotResults, Date] | null> {
+    const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.inlineQueryAnswer(userId, chatId, query, offset));
+    if (peer_ != null) {
+      const [obj_, date] = peer_;
+      return [await this.getTlObject(obj_) as types.messages.BotResults, date];
+    } else {
+      return null;
+    }
+  }
+
+  async setCallbackQueryAnswer(chatId: number, messageId: number, question: string, answer: types.messages.BotCallbackAnswer) {
+    await this.#storage.set(K.cache.callbackQueryAnswer(chatId, messageId, question), [this.#mustSerialize ? rleEncode(answer[serialize]()) : answer, new Date()]);
+  }
+
+  async getCallbackQueryAnswer(chatId: number, messageId: number, question: string): Promise<[types.messages.BotCallbackAnswer, Date] | null> {
+    const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.callbackQueryAnswer(chatId, messageId, question));
+    if (peer_ != null) {
+      const [obj_, date] = peer_;
+      return [await this.getTlObject(obj_) as types.messages.BotCallbackAnswer, date];
+    } else {
+      return null;
+    }
+  }
+
+  async setFullChat(chatId: number, fullChat: types.UserFull | types.ChannelFull | types.ChatFull | null) {
+    await this.setTlObject(K.cache.fullChat(chatId), fullChat);
+  }
+
+  async getFullChat(chatId: number): Promise<types.UserFull | types.ChannelFull | types.ChatFull | null> {
+    return await this.getTlObject(K.cache.fullChat(chatId)) as types.UserFull | types.ChannelFull | types.ChatFull | null;
+  }
+
+  async setGroupCall(id: bigint, groupCall: types.GroupCall | null) {
+    await this.setTlObject(K.cache.groupCall(id), groupCall);
+  }
+
+  async getGroupCall(id: bigint): Promise<types.GroupCall | null> {
+    return await this.getTlObject(K.cache.groupCall(id)) as types.GroupCall | null;
+  }
+
+  async setGroupCallAccessHash(id: bigint, accessHash: bigint | null) {
+    await this.#storage.set(K.cache.groupCallAccessHash(id), accessHash);
+  }
+
+  async getGroupCallAccessHash(id: bigint): Promise<bigint | null> {
+    return await this.#storage.get(K.cache.groupCallAccessHash(id));
+  }
+
+  #getUpdateId(update: enums.Update) {
+    let id = BigInt(Date.now()) << 32n;
+    if ("pts" in update && update.pts) {
+      id |= BigInt(update.pts);
+    } else {
+      id |= BigInt(0xFFFFFFFFn);
+    }
+    return id;
+  }
+  async setUpdate(boxId: bigint, update: enums.Update) {
+    await this.setTlObject(K.updates.update(boxId, this.#getUpdateId(update)), update);
+  }
+
+  async deleteUpdates() {
+    const maybePromises = new Array<MaybePromise<void>>();
+    for await (const [k] of await this.#storage.getMany({ prefix: K.updates.all() })) {
+      maybePromises.push(this.#storage.set(k, null));
+    }
+    await Promise.all(maybePromises.filter((v) => v instanceof Promise));
+  }
+
+  async getFirstUpdate(boxId: bigint): Promise<[readonly StorageKeyPart[], enums.Update] | null> {
+    for await (const [key, update] of await this.#storage.getMany<Uint8Array>({ prefix: K.updates.updates(boxId) }, { limit: 1 })) {
+      return [key, await this.getTlObject(update).then((v) => v as enums.Update)];
+    }
+    return null;
+  }
+
+  async assertUser(source: string) {
+    if (await this.getAccountType() != "user") {
+      throw new InputError(`${source}: not user a client`);
+    }
+  }
+
+  async assertBot(source: string) {
+    if (await this.getAccountType() != "bot") {
+      throw new InputError(`${source}: not a bot client`);
+    }
+  }
+
+  async deleteFiles() {
+    if (!this.#supportsFiles) {
+      return;
+    }
+
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.fileParts() })) {
+      await this.#storage.set(key, null);
+    }
+
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.files() })) {
+      await this.#storage.set(key, null);
+    }
+  }
+
+  async deleteCustomEmojiDocuments() {
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.customEmojiDocuments() })) {
+      await this.#storage.set(key, null);
+    }
+  }
+
+  async deleteBusinessConnections() {
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.businessConnections() })) {
+      await this.#storage.set(key, null);
+    }
+  }
+
+  async deleteInlineQueryAnswers() {
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.inlineQueryAnswers() })) {
+      await this.#storage.set(key, null);
+    }
+  }
+
+  async deleteCallbackQueryAnswers() {
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.callbackQueryAnswers() })) {
+      await this.#storage.set(key, null);
+    }
+  }
+
+  async deleteFullChats() {
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.fullChats() })) {
+      await this.#storage.set(key, null);
+    }
+  }
+
+  async deleteGroupCalls() {
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.groupCalls() })) {
+      await this.#storage.set(key, null);
+    }
+  }
+
+  async deleteStickerSetNames() {
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.stickerSetNames() })) {
+      await this.#storage.set(key, null);
+    }
+  }
+
+  async deletePeers() {
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.peers() })) {
+      await this.#storage.set(key, null);
+    }
+  }
+
+  async deleteUsernames() {
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.usernames() })) {
+      await this.#storage.set(key, null);
+    }
+  }
+
+  async clear() {
+    await Promise.all([
+      this.deleteMessages(),
+      this.removeChats(0),
+      this.removeChats(1),
+      this.deleteUpdates(),
+      this.deleteFiles(),
+      this.deleteCustomEmojiDocuments(),
+      this.deleteBusinessConnections(),
+      this.deleteInlineQueryAnswers(),
+      this.deleteCallbackQueryAnswers(),
+      this.deleteFullChats(),
+      this.deleteGroupCalls(),
+      this.deleteStickerSetNames(),
+      this.deletePeers(),
+      this.deleteUsernames(),
+    ]);
+  }
+
+  async setApiId(apiId: number) {
+    await this.#storage.set(K.connection.apiId(), apiId);
+  }
+
+  async getApiId(): Promise<number | null> {
+    return await this.#storage.get<number>(K.connection.apiId());
+  }
+}

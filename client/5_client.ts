@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { AccessError, InputError } from "../0_errors.ts";
 import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, minute, mustPrompt, mustPromptOneOf, second, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, name, peerToChatId, types } from "../2_tl.ts";
-import { Storage, StorageMemory } from "../3_storage.ts";
+import { Storage, StorageMemory } from "../2_storage.ts";
 import { DC } from "../3_transport.ts";
 import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, Reaction, Sticker, Story, Update, User, VideoChat, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
@@ -77,24 +77,25 @@ import {
   StopPollParams,
 } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
-import { Api } from "./0_types.ts";
+import { Api } from "./1_types.ts";
 import { getUsername, isMtprotoFunction, resolve } from "./0_utilities.ts";
-import { AccountManager } from "./1_account_manager.ts";
-import { BotInfoManager } from "./1_bot_info_manager.ts";
-import { BusinessConnectionManager } from "./1_business_connection_manager.ts";
+import { AccountManager } from "./2_account_manager.ts";
+import { BotInfoManager } from "./2_bot_info_manager.ts";
+import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
 import { ClientEncrypted } from "./1_client_encrypted.ts";
 import { ClientPlain, ClientPlainParams } from "./1_client_plain.ts";
 import { Composer as Composer_, NextFunction } from "./1_composer.ts";
-import { FileManager } from "./1_file_manager.ts";
-import { NetworkStatisticsManager } from "./1_network_statistics_manager.ts";
-import { ReactionManager } from "./1_reaction_manager.ts";
-import { UpdateManager } from "./1_update_manager.ts";
-import { MessageManager } from "./2_message_manager.ts";
-import { CallbackQueryManager } from "./3_callback_query_manager.ts";
-import { ChatListManager } from "./3_chat_list_manager.ts";
-import { InlineQueryManager } from "./3_inline_query_manager.ts";
-import { StoryManager } from "./3_story_manager.ts";
-import { VideoChatManager } from "./2_video_chat_manager.ts";
+import { FileManager } from "./2_file_manager.ts";
+import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
+import { ReactionManager } from "./2_reaction_manager.ts";
+import { UpdateManager } from "./2_update_manager.ts";
+import { MessageManager } from "./3_message_manager.ts";
+import { CallbackQueryManager } from "./4_callback_query_manager.ts";
+import { ChatListManager } from "./4_chat_list_manager.ts";
+import { InlineQueryManager } from "./4_inline_query_manager.ts";
+import { StoryManager } from "./4_story_manager.ts";
+import { VideoChatManager } from "./3_video_chat_manager.ts";
+import { StorageOperations } from "./0_storage_operations.ts";
 
 export interface Context {
   /** The client that received the update. */
@@ -305,8 +306,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #chatListManager: ChatListManager;
   #accountManager: AccountManager;
 
-  public readonly storage: Storage;
-  public readonly messageStorage: Storage;
+  #storage_: Storage;
+  #messageStorage_: Storage;
+  public readonly storage: StorageOperations;
+  public readonly messageStorage: StorageOperations;
   #parseMode: ParseMode;
 
   public readonly appVersion: string;
@@ -332,7 +335,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param apiHash App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Defaults to empty string (unset).
    */
   constructor(
-    storage?: Storage | string | null,
+    storage?: Storage | null,
     public readonly apiId: number | null = 0,
     public readonly apiHash: string | null = "",
     params?: ClientParams,
@@ -370,13 +373,15 @@ export class Client<C extends Context = Context> extends Composer<C> {
       },
     };
 
-    this.storage = typeof storage === "string" ? new StorageMemory(storage) : storage ?? new StorageMemory();
+    this.#storage_ = storage || new StorageMemory();
     this.#storeMessages = params?.storeMessages ?? false;
     if (!this.#storeMessages) {
-      this.messageStorage = new StorageMemory();
+      this.#messageStorage_ = new StorageMemory();
     } else {
-      this.messageStorage = this.storage;
+      this.#messageStorage_ = this.#storage_;
     }
+    this.storage = new StorageOperations(this.#storage_);
+    this.messageStorage = new StorageOperations(this.#messageStorage_);
     this.#parseMode = params?.parseMode ?? null;
 
     this.appVersion = params?.appVersion ?? APP_VERSION;
@@ -582,7 +587,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   #getCdnConnection(dcId?: number) {
-    const client = new Client((!dcId || dcId == this.#client.dcId) ? this.storage : this.storage.branch(`download_client_${dcId}`), this.apiId, this.apiHash, {
+    const provider = this.storage.provider;
+    const client = new Client((!dcId || dcId == this.#client.dcId) ? provider : provider.branch(`download_client_${dcId}`), this.apiId, this.apiHash, {
       transportProvider: this.#client.transportProvider,
       appVersion: this.appVersion,
       deviceModel: this.deviceModel,

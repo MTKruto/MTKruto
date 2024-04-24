@@ -24,8 +24,8 @@ import { getRandomId, toUnixTimestamp, ZERO_CHANNEL_ID } from "../1_utilities.ts
 import { as, enums, types } from "../2_tl.ts";
 import { constructLiveStreamChannel, constructVideoChat, ID, Update, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { DownloadLiveStreamChunkParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
-import { C as C_ } from "./0_types.ts";
-import { FileManager } from "./1_file_manager.ts";
+import { C as C_ } from "./1_types.ts";
+import { FileManager } from "./2_file_manager.ts";
 
 interface C extends C_ {
   fileManager: FileManager;

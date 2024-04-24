@@ -21,7 +21,7 @@
 import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 import { fromString, isInRange, toString } from "./1_utilities.ts";
 
-export class StorageLocalStorage extends Storage implements Storage {
+export class StorageLocalStorage implements Storage {
   readonly #prefix: string;
 
   constructor(prefix: string) {
@@ -31,7 +31,6 @@ export class StorageLocalStorage extends Storage implements Storage {
     if (prefix.length <= 0) {
       throw new Error("Empty prefix");
     }
-    super();
     this.#prefix = prefix;
   }
 
@@ -39,7 +38,7 @@ export class StorageLocalStorage extends Storage implements Storage {
     return this.#prefix;
   }
 
-  branch(id: string): StorageLocalStorage {
+  branch(id: string): Storage {
     return new StorageLocalStorage(this.prefix + "S__" + id);
   }
 
@@ -48,6 +47,10 @@ export class StorageLocalStorage extends Storage implements Storage {
 
   get supportsFiles(): boolean {
     return false;
+  }
+
+  get mustSerialize(): boolean {
+    return true;
   }
 
   get<T>(key_: readonly StorageKeyPart[]): T | null {

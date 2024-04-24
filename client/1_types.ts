@@ -19,7 +19,7 @@
  */
 
 import { enums, functions, types } from "../2_tl.ts";
-import { Storage } from "../3_storage.ts";
+import { StorageOperations } from "./0_storage_operations.ts";
 import { ConnectionState, EntityGetter, ID, ParseMode, Update } from "../3_types.ts";
 
 type Functions = typeof functions;
@@ -51,8 +51,8 @@ interface GetCdnConnectionPool {
 export interface C {
   id: number;
   api: Api;
-  storage: Storage;
-  messageStorage: Storage;
+  storage: StorageOperations;
+  messageStorage: StorageOperations;
   guaranteeUpdateDelivery: boolean;
   setConnectionState: (connectionState: ConnectionState) => void;
   resetConnectionState: () => void;

@@ -19,7 +19,7 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
-import { K } from "./0_storage.ts";
+import { K } from "./0_storage_operations.ts";
 
 Deno.test("key parts", () => {
   // session

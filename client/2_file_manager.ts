@@ -26,7 +26,7 @@ import { constructSticker, deserializeFileId, FileId, FileSource, FileType, Phot
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { FloodWait } from "../4_errors.ts";
 import { DownloadParams, UploadParams } from "./0_params.ts";
-import { C, ConnectionPool } from "./0_types.ts";
+import { C, ConnectionPool } from "./1_types.ts";
 
 export class FileManager {
   #c: C;

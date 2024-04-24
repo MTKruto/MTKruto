@@ -27,13 +27,12 @@ function assertInitialized(kv: Deno.Kv | null | undefined) {
   return kv;
 }
 
-export class StorageDenoKV extends Storage implements Storage {
+export class StorageDenoKV implements Storage {
   kv: Deno.Kv | null = null;
   #id: string | null = null;
   #path?: string;
 
   constructor(path?: string) {
-    super();
     this.#path = path;
   }
 
@@ -47,6 +46,10 @@ export class StorageDenoKV extends Storage implements Storage {
 
   get supportsFiles() {
     return false;
+  }
+
+  get mustSerialize() {
+    return true;
   }
 
   branch(id: string) {

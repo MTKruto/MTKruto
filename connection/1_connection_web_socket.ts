@@ -20,20 +20,20 @@
 
 import { concat, unreachable } from "../0_deps.ts";
 import { getLogger, Mutex } from "../1_utilities.ts";
-import { ConnectionUnframed } from "./0_connection.ts";
+import { Connection } from "./0_connection.ts";
 
 const L = getLogger("ConnectionWebSocket");
 const errConnectionNotOpen = new Error("Connection not open");
 
-export class ConnectionWebSocket extends ConnectionUnframed implements ConnectionUnframed {
+export class ConnectionWebSocket implements Connection {
   #webSocket: WebSocket;
   #rMutex = new Mutex();
   #wMutex = new Mutex();
   #buffer = new Uint8Array();
   #nextResolve: [number, { resolve: () => void; reject: (err: unknown) => void }] | null = null;
+  stateChangeHandler?: Connection["stateChangeHandler"];
 
   constructor(private readonly url: string | URL) {
-    super();
     this.#webSocket = this.#initWs();
   }
 

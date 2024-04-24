@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { getLogger, Logger, Queue, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, functions, inputPeerToPeer, peerToChatId, ReadObject, TLObject, types } from "../2_tl.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
-import { C } from "./0_types.ts";
+import { C } from "./1_types.ts";
 
 type UpdateHandler = (update: enums.Update) => Promise<(() => Promise<unknown>)>;
 

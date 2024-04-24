@@ -21,11 +21,11 @@
 import { iterateReader } from "https://deno.land/std@0.223.0/io/iterate_reader.ts";
 import { concat } from "../0_deps.ts";
 import { getLogger, Mutex } from "../1_utilities.ts";
-import { ConnectionUnframed } from "./0_connection.ts";
+import { Connection } from "./0_connection.ts";
 
 const L = getLogger("ConnectionTCP");
 
-export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnframed {
+export class ConnectionTCP implements Connection {
   #hostname: string;
   #port: number;
   #connection?: Deno.Conn;
@@ -36,9 +36,9 @@ export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnfra
   #canRead = false;
   #canWrite = false;
   connect: typeof Deno.connect = Deno.connect;
+  stateChangeHandler?: Connection["stateChangeHandler"];
 
   constructor(hostname: string, port: number) {
-    super();
     this.#hostname = hostname;
     this.#port = port;
   }

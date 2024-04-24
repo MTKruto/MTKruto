@@ -20,7 +20,7 @@
 
 import { assertThrows } from "../0_deps.ts";
 import { kilobyte, megabyte } from "../1_utilities.ts";
-import { FileManager } from "./1_file_manager.ts";
+import { FileManager } from "./2_file_manager.ts";
 
 Deno.test("validateChunkSize", async (t) => {
   const MAX = 512 * kilobyte;

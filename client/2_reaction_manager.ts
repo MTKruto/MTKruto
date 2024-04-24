@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { enums, peerToChatId, types } from "../2_tl.ts";
 import { constructMessageReaction, constructMessageReactionCount, constructMessageReactions, Update } from "../3_types.ts";
-import { C } from "./0_types.ts";
+import { C } from "./1_types.ts";
 
 type ReactionManagerUpdate =
   | types.UpdateBotMessageReactions

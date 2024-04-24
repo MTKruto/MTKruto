@@ -22,24 +22,18 @@ import { MaybePromise } from "../1_utilities.ts";
 import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 import { fromString, isInRange, toString } from "./1_utilities.ts";
 
-export class StorageMemory extends Storage implements Storage {
+export class StorageMemory implements Storage {
   protected map: Map<string, unknown> = new Map<string, unknown>();
   #id: string | null = null;
-  #authString?: string;
 
-  constructor(authString?: string) {
-    super();
-    this.#authString = authString;
+  constructor() {
   }
 
-  get isMemoryStorage(): boolean {
-    return true;
+  get mustSerialize(): boolean {
+    return false;
   }
 
-  async initialize() {
-    if (this.#authString) {
-      await this.importAuthString(this.#authString);
-    }
+  initialize() {
   }
 
   #fixKey(key: readonly StorageKeyPart[]) {

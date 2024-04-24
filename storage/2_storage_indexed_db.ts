@@ -26,10 +26,10 @@ const KV_OBJECT_STORE = "kv";
 
 export interface StorageIndexedDBParams {
   /** Whether to store files. Defaults to true. */
-  fileStorage?: boolean;
+  storeFiles?: boolean;
 }
 
-export class StorageIndexedDB extends Storage {
+export class StorageIndexedDB implements Storage {
   database: IDBDatabase | null = null;
   readonly #name: string;
   #id: string | null = null;
@@ -39,9 +39,8 @@ export class StorageIndexedDB extends Storage {
     if (typeof indexedDB == "undefined") {
       throw new Error("Unavailable in current environment");
     }
-    super();
     this.#name = name;
-    this.#supportsFiles = params?.fileStorage ?? true;
+    this.#supportsFiles = params?.storeFiles ?? true;
   }
 
   get name(): string {
@@ -49,7 +48,7 @@ export class StorageIndexedDB extends Storage {
   }
 
   branch(id: string): StorageIndexedDB {
-    const storage = new StorageIndexedDB(this.name);
+    const storage = new StorageIndexedDB(this.name, { storeFiles: this.#supportsFiles });
     storage.#id = id;
     return storage;
   }
@@ -71,6 +70,10 @@ export class StorageIndexedDB extends Storage {
 
   get supportsFiles(): boolean {
     return this.#supportsFiles;
+  }
+
+  get mustSerialize(): boolean {
+    return true;
   }
 
   #fixKey(key: readonly StorageKeyPart[]) {
