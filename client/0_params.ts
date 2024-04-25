@@ -32,11 +32,17 @@ export interface AnswerCallbackQueryParams {
   cacheTime?: number;
 }
 
-export interface AuthorizeUserParams<S = string> {
+export interface SignInParamsUser<S = string> {
   phone: S | (() => MaybePromise<S>);
   code: S | (() => MaybePromise<S>);
   password: S | ((hint: string | null) => MaybePromise<S>);
 }
+
+export interface SignInParamsBot {
+  botToken: string;
+}
+
+export type SignInParams = SignInParamsUser | SignInParamsBot;
 
 export interface _BusinessConnectionIdCommon {
   businessConnectionId?: string;

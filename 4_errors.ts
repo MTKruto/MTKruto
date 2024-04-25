@@ -80,10 +80,8 @@ export function upgradeInstance(error: types.Rpc_error, call: TLObject): types.R
       return new v({ ...error, call });
     }
   }
-  for (const [k, v] of Object.entries(map)) {
-    if (error.error_message == k) {
-      return new v({ ...error, call });
-    }
+  if (error.error_message in map) {
+    return new map[error.error_message as keyof typeof map]({ ...error, call });
   }
   return error;
 }

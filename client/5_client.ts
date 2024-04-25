@@ -27,55 +27,7 @@ import { DC } from "../3_transport.ts";
 import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ConnectionState, constructUser, FileSource, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, Reaction, Sticker, Story, Update, User, VideoChat, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded } from "../4_errors.ts";
-import {
-  _SendCommon,
-  AddReactionParams,
-  AnswerCallbackQueryParams,
-  AnswerInlineQueryParams,
-  AuthorizeUserParams,
-  BanChatMemberParams,
-  CreateInviteLinkParams,
-  CreateStoryParams,
-  DeleteMessageParams,
-  DeleteMessagesParams,
-  DownloadLiveStreamChunkParams,
-  DownloadParams,
-  EditMessageLiveLocationParams,
-  EditMessageMediaParams,
-  EditMessageParams,
-  EditMessageReplyMarkupParams,
-  ForwardMessagesParams,
-  GetChatsParams,
-  GetCreatedInviteLinksParams,
-  GetHistoryParams,
-  GetMyCommandsParams,
-  JoinVideoChatParams,
-  PinMessageParams,
-  ReplyParams,
-  ScheduleVideoChatParams,
-  SearchMessagesParams,
-  SendAnimationParams,
-  SendAudioParams,
-  SendContactParams,
-  SendDiceParams,
-  SendDocumentParams,
-  SendInlineQueryParams,
-  SendLocationParams,
-  SendMessageParams,
-  SendPhotoParams,
-  SendPollParams,
-  SendStickerParams,
-  SendVenueParams,
-  SendVideoNoteParams,
-  SendVideoParams,
-  SendVoiceParams,
-  SetChatMemberRightsParams,
-  SetChatPhotoParams,
-  SetMyCommandsParams,
-  SetReactionsParams,
-  StartVideoChatParams,
-  StopPollParams,
-} from "./0_params.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, SignInParams, StartVideoChatParams, StopPollParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { Api } from "./1_types.ts";
 import { getUsername, isMtprotoFunction, resolve } from "./0_utilities.ts";
@@ -96,11 +48,12 @@ import { InlineQueryManager } from "./4_inline_query_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
 import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
+import { PhoneCodeInvalid } from "../4_errors.ts";
 
 export interface Context {
   /** The client that received the update. */
   client: Client;
-  /** The currently authorized user. */
+  /** The currently signed in user. */
   me?: User;
   /** Resolves to `message`, `editedMessage`, or the `message` field of `callbackQuery`. */
   msg?: Message;
@@ -267,17 +220,17 @@ export interface ClientParams extends ClientPlainParams {
   apiHash?: string;
   /** A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defaults to `ParseMode.None`. */
   parseMode?: ParseMode;
-  /** The app_version parameter to be passed to initConnection when calling `authorize`. It is recommended that this parameter is changed if users are authorized. Defaults to _MTKruto_. */
+  /** The app_version parameter to be passed to initConnection. It is recommended that this parameter is changed if users are authorized. Defaults to _MTKruto_. */
   appVersion?: string;
-  /** The device_version parameter to be passed to initConnection when calling `authorize`. The default varies by the current runtime. */
+  /** The device_version parameter to be passed to initConnection. The default varies by the current runtime. */
   deviceModel?: string;
-  /** The lang_code parameter to be passed to initConnection when calling `authorize`. Defaults to the runtime's language or `"en"`. */
+  /** The lang_code parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
   langCode?: string;
-  /** The lang_pack parameter to be passed to initConnection when calling `authorize`. Defaults to an empty string. */
+  /** The lang_pack parameter to be passed to initConnection. Defaults to an empty string. */
   langPack?: string;
-  /** The system_lang_cde parameter to be passed to initConnection when calling `authorize`. Defaults to the runtime's language or `"en"`. */
+  /** The system_lang_cde parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
   systemLangCode?: string;
-  /** The system_version parameter to be passed to initConnection when calling `authorize`. The default varies by the current runtime. */
+  /** The system_version parameter to be passed to initConnection. The default varies by the current runtime. */
   systemVersion?: string;
   /** Whether to use default handlers. Defaults to `true`. */
   defaultHandlers?: boolean;
@@ -341,7 +294,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   readonly #ignoreOutgoing: boolean | null;
   #persistCache: boolean;
 
-  #Lauthorize: Logger;
+  #LsignIn: Logger;
   #LpingLoop: Logger;
   #LhandleMigrationError: Logger;
   #L$initConncetion: Logger;
@@ -414,7 +367,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#guaranteeUpdateDelivery = params?.guaranteeUpdateDelivery ?? false;
 
     const L = getLogger("Client").client(id++);
-    this.#Lauthorize = L.branch("authorize");
+    this.#LsignIn = L.branch("signIn");
     this.#LpingLoop = L.branch("pingLoop");
     this.#LhandleMigrationError = L.branch("[handleMigrationError]");
     this.#L$initConncetion = L.branch("#initConnection");
@@ -1106,25 +1059,19 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Authorizes the client with one of the following:
-   *
-   * - Bot token (`string`)
-   * - User authorization handlers (`AuthorizeUserParams`)
-   *
-   * if the current auth key doesn't throw AUTH_KEY_UNREGISTERED when calling [updates.getState](1).
+   * Signs in using the provided parameters if not already signed in.
+   * If no parameters are provided, the credentials will be prompted in runtime.
    *
    * Notes:
    * 1. Requires the `apiId` and `apiHash` paramters to be passed when constructing the client.
-   * 2. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
-   *
-   * [1]: https://core.telegram.org/method/updates.getState
+   * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
    */
-  async authorize(params?: string | AuthorizeUserParams) {
+  async signIn(params?: SignInParams) {
     try {
-      await this.#updateManager.fetchState("authorize");
+      await this.#updateManager.fetchState("signIn");
       await this.#propagateAuthorizationState(true);
-      drop(this.#updateManager.recoverUpdateGap("authorize"));
-      this.#Lauthorize.debug("already authorized");
+      drop(this.#updateManager.recoverUpdateGap("signIn"));
+      this.#LsignIn.debug("already signed in");
       return;
     } catch (err) {
       if (!(err instanceof AuthKeyUnregistered)) {
@@ -1140,18 +1087,18 @@ export class Client<C extends Context = Context> extends Composer<C> {
     if (typeof params === "undefined") {
       const loginType = mustPromptOneOf("Do you want to login as bot [b] or user [u]?", ["b", "u"] as const);
       if (loginType == "b") {
-        params = mustPrompt("Bot token:");
+        params = { botToken: mustPrompt("Bot token:") };
       } else {
         params = { phone: () => mustPrompt("Phone number:"), code: () => mustPrompt("Verification code:"), password: () => mustPrompt("Password:") };
       }
     }
 
-    this.#Lauthorize.debug("authorizing with", typeof params === "string" ? "bot token" : params instanceof types.auth.ExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
+    this.#LsignIn.debug("authorizing with", typeof params === "string" ? "bot token" : params instanceof types.auth.ExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
 
-    if (typeof params === "string") {
+    if (params && "botToken" in params) {
       while (true) {
         try {
-          const auth = await this.api.auth.importBotAuthorization({ api_id: apiId, api_hash: this.#apiHash, bot_auth_token: params, flags: 0 });
+          const auth = await this.api.auth.importBotAuthorization({ api_id: apiId, api_hash: this.#apiHash, bot_auth_token: params.botToken, flags: 0 });
           await this.storage.setAccountId(Number(auth[as](types.auth.Authorization).user.id));
           await this.storage.setAccountType("bot");
           break;
@@ -1164,7 +1111,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
           }
         }
       }
-      this.#Lauthorize.debug("authorized as bot");
+      this.#LsignIn.debug("authorized as bot");
       await this.#propagateAuthorizationState(true);
       await this.#updateManager.fetchState("authorize");
       return;
@@ -1203,7 +1150,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
             }
           }
         }
-        this.#Lauthorize.debug("verification code sent");
+        this.#LsignIn.debug("verification code sent");
 
         let err: unknown;
         code: while (true) {
@@ -1216,12 +1163,12 @@ export class Client<C extends Context = Context> extends Composer<C> {
             });
             await this.storage.setAccountId(Number(auth[as](types.auth.Authorization).user.id));
             await this.storage.setAccountType("user");
-            this.#Lauthorize.debug("authorized as user");
+            this.#LsignIn.debug("signed in as user");
             await this.#propagateAuthorizationState(true);
-            await this.#updateManager.fetchState("authorize");
+            await this.#updateManager.fetchState("signIn");
             return;
           } catch (err_) {
-            if (err_ instanceof types.Rpc_error && err_.error_message == "PHONE_CODE_INVALID") {
+            if (err_ instanceof PhoneCodeInvalid) {
               continue code;
             } else {
               err = err_;
@@ -1246,9 +1193,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
             const auth = await this.api.auth.checkPassword({ password: input });
             await this.storage.setAccountId(Number(auth[as](types.auth.Authorization).user.id));
             await this.storage.setAccountType("user");
-            this.#Lauthorize.debug("authorized as user");
+            this.#LsignIn.debug("signed in as user");
             await this.#propagateAuthorizationState(true);
-            await this.#updateManager.fetchState("authorize");
+            await this.#updateManager.fetchState("signIn");
             return;
           } catch (err) {
             if (err instanceof PasswordHashInvalid) {
@@ -1269,11 +1216,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Same as calling `.connect()` followed by `.authorize(params)`.
+   * Same as calling `.connect()` followed by `.signIn(params)`.
    */
-  async start(params?: string | AuthorizeUserParams) {
+  async start(params?: SignInParams) {
     await this.connect();
-    await this.authorize(params);
+    await this.signIn(params);
   }
 
   #pingLoopStarted = false;
