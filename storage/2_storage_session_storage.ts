@@ -35,7 +35,7 @@ export class StorageSessionStorage implements Storage {
     this.#prefix = prefix;
   }
 
-  get mustSerialize() {
+  get mustSerialize(): boolean {
     return true;
   }
 

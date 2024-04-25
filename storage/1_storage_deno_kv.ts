@@ -36,23 +36,23 @@ export class StorageDenoKV implements Storage {
     this.#path = path;
   }
 
-  get path() {
+  get path(): string | undefined {
     return this.#path;
   }
 
-  get id() {
+  get id(): string | null {
     return this.#id;
   }
 
-  get supportsFiles() {
+  get supportsFiles(): boolean {
     return false;
   }
 
-  get mustSerialize() {
+  get mustSerialize(): boolean {
     return true;
   }
 
-  branch(id: string) {
+  branch(id: string): Storage {
     const storage = new StorageDenoKV(this.path);
     storage.#id = id;
     return storage;
@@ -70,7 +70,7 @@ export class StorageDenoKV implements Storage {
     this.kv = await Deno.openKv(this.path);
   }
 
-  async get<T>(key: readonly StorageKeyPart[]) {
+  async get<T>(key: readonly StorageKeyPart[]): Promise<T | null> {
     key = this.#fixKey(key);
     const kv = assertInitialized(this.kv);
 
@@ -82,7 +82,7 @@ export class StorageDenoKV implements Storage {
     }
   }
 
-  async *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }) {
+  async *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }): AsyncGenerator<[readonly StorageKeyPart[], T], void, unknown> {
     if ("prefix" in filter && this.#id !== null) {
       filter.prefix = this.#fixKey(filter.prefix);
     }
