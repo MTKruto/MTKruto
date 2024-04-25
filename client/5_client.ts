@@ -283,9 +283,20 @@ export interface ClientParams extends ClientPlainParams {
   guaranteeUpdateDelivery?: boolean;
   /** Whether to not handle updates received when the client was not running. Defaults to `true` for bots, and `false` for users. */
   dropPendingUpdates?: boolean;
-  /** Whether to store messages. Defaults to `false`. */
-  storeMessages?: boolean;
+  /**
+   * Whether to persist cache to the provided storage, and not memory. Defaults to `false`.
+   *
+   * Explicitly setting this option to `true` is highly recommended if:
+   *
+   * - User accounts are authorized.
+   * - Less memory usage is demanded.
+   * - The client does not usually have a large uptime.
+   *
+   * When the provided storage takes advantage of memory, nothing changes, even if set to `true`.
+   */
+  persistCache?: boolean;
 }
+
 /**
  * An MTKruto client.
  */
@@ -320,7 +331,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   public readonly systemVersion: string;
   readonly #publicKeys?: PublicKeys;
   readonly #ignoreOutgoing: boolean | null;
-  #storeMessages: boolean;
+  #persistCache: boolean;
 
   #Lauthorize: Logger;
   #LpingLoop: Logger;
@@ -374,8 +385,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
     };
 
     this.#storage_ = storage || new StorageMemory();
-    this.#storeMessages = params?.storeMessages ?? false;
-    if (!this.#storeMessages) {
+    this.#persistCache = params?.persistCache ?? false;
+    if (!this.#persistCache) {
       this.#messageStorage_ = new StorageMemory();
     } else {
       this.#messageStorage_ = this.#storage_;
