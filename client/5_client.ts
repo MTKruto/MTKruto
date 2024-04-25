@@ -259,6 +259,12 @@ const getEntity = Symbol();
 const functionNamespaces = Object.entries(functions).filter(([, v]) => !(v instanceof Function)).map(([k]) => k);
 
 export interface ClientParams extends ClientPlainParams {
+  /** The storage provider to use. Defaults to memory storage. Passing a string constructs a memory storage with the string being the auth string. */
+  storage?: Storage | null;
+  /** App's API ID from [my.telegram.org/apps](https://my.telegram.org/apps). Required if no account was previously authorized. */
+  apiId?: number;
+  /** App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Required if no account was previously authorized. */
+  apiHash?: string;
   /** A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defaults to `ParseMode.None`. */
   parseMode?: ParseMode;
   /** The app_version parameter to be passed to initConnection when calling `authorize`. It is recommended that this parameter is changed if users are authorized. Defaults to _MTKruto_. */
@@ -323,6 +329,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
   public readonly messageStorage: StorageOperations;
   #parseMode: ParseMode;
 
+  #apiId: number;
+  #apiHash: string;
   public readonly appVersion: string;
   public readonly deviceModel: string;
   public readonly langCode: string;
@@ -345,12 +353,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param apiId App's API ID from [my.telegram.org](https://my.telegram.org/apps). Defaults to 0 (unset).
    * @param apiHash App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Defaults to empty string (unset).
    */
-  constructor(
-    storage?: Storage | null,
-    public readonly apiId: number | null = 0,
-    public readonly apiHash: string | null = "",
-    params?: ClientParams,
-  ) {
+  constructor(params?: ClientParams) {
     super();
     this.#client = new ClientEncrypted(params);
     this.#client.stateChangeHandler = this.#stateChangeHandler.bind(this);
@@ -384,7 +387,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
       },
     };
 
-    this.#storage_ = storage || new StorageMemory();
+    this.#apiId = params?.apiId ?? 0;
+    this.#apiHash = params?.apiHash ?? "";
+    this.#storage_ = params?.storage || new StorageMemory();
     this.#persistCache = params?.persistCache ?? false;
     if (!this.#persistCache) {
       this.#messageStorage_ = new StorageMemory();
@@ -564,9 +569,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
   });
 
   async #getApiId() {
-    const apiId = this.apiId || await this.storage.getApiId();
+    const apiId = this.#apiId || await this.storage.getApiId();
     if (!apiId) {
-      throw new Error("apiId not set");
+      throw new InputError("apiId not set");
     }
     return apiId;
   }
@@ -599,7 +604,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   #getCdnConnection(dcId?: number) {
     const provider = this.storage.provider;
-    const client = new Client((!dcId || dcId == this.#client.dcId) ? provider : provider.branch(`download_client_${dcId}`), this.apiId, this.apiHash, {
+    const client = new Client({
+      storage: (!dcId || dcId == this.#client.dcId) ? provider : provider.branch(`download_client_${dcId}`),
+      apiId: this.#apiId,
+      apiHash: this.#apiHash,
       transportProvider: this.#client.transportProvider,
       appVersion: this.appVersion,
       deviceModel: this.deviceModel,
@@ -1125,8 +1133,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
 
     const apiId = await this.#getApiId();
-    if (!this.apiHash) {
-      throw new Error("apiHash not set");
+    if (!this.#apiHash) {
+      throw new InputError("apiHash not set");
     }
 
     if (typeof params === "undefined") {
@@ -1143,7 +1151,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     if (typeof params === "string") {
       while (true) {
         try {
-          const auth = await this.api.auth.importBotAuthorization({ api_id: apiId, api_hash: this.apiHash, bot_auth_token: params, flags: 0 });
+          const auth = await this.api.auth.importBotAuthorization({ api_id: apiId, api_hash: this.#apiHash, bot_auth_token: params, flags: 0 });
           await this.storage.setAccountId(Number(auth[as](types.auth.Authorization).user.id));
           await this.storage.setAccountType("bot");
           break;
@@ -1172,8 +1180,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
             const sendCode = () =>
               this.api.auth.sendCode({
                 phone_number: phone,
-                api_id: this.apiId!,
-                api_hash: this.apiHash!,
+                api_id: this.#apiId,
+                api_hash: this.#apiHash,
                 settings: new types.CodeSettings(),
               }).then((v) => v[as](types.auth.SentCode));
             try {
@@ -1388,7 +1396,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   exportAuthString(): Promise<string> {
-    return this.storage.exportAuthString(this.apiId);
+    return this.storage.exportAuthString(this.#apiId);
   }
 
   async importAuthString(authString: string) {
