@@ -173,4 +173,32 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
       return false;
     }, ...middleware);
   }
+
+  callbackQuery(data: string | RegExp | (string | RegExp)[]): Composer<WithFilter<C, "callbackQuery:data">> {
+    const data_ = Array.isArray(data) ? data : [data];
+    return this.on("callbackQuery:data").filter((ctx) => {
+      for (const data of data_) {
+        if (typeof data === "string" && data == ctx.callbackQuery.data) {
+          return true;
+        } else if (data instanceof RegExp && data.test(ctx.callbackQuery.data)) {
+          return true;
+        }
+      }
+      return false;
+    });
+  }
+
+  inlineQuery(queries: string | RegExp | (string | RegExp)[]): Composer<WithFilter<C, "inlineQuery">> {
+    const queries_ = Array.isArray(queries) ? queries : [queries];
+    return this.on("inlineQuery").filter((ctx) => {
+      for (const query of queries_) {
+        if (typeof query === "string" && query == ctx.inlineQuery.query) {
+          return true;
+        } else if (query instanceof RegExp && query.test(ctx.inlineQuery.query)) {
+          return true;
+        }
+      }
+      return false;
+    });
+  }
 }
