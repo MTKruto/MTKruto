@@ -213,7 +213,7 @@ const functionNamespaces = Object.entries(functions).filter(([, v]) => !(v insta
 
 export interface ClientParams extends ClientPlainParams {
   /** The storage provider to use. Defaults to memory storage. Passing a string constructs a memory storage with the string being the auth string. */
-  storage?: Storage | null;
+  storage?: Storage;
   /** App's API ID from [my.telegram.org/apps](https://my.telegram.org/apps). Required if no account was previously authorized. */
   apiId?: number;
   /** App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Required if no account was previously authorized. */
