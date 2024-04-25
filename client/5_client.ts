@@ -1215,6 +1215,20 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
+  async signOut() {
+    try {
+      await Promise.all([
+        this.storage.reset(),
+        this.api.auth.logOut().then(() => {
+          this.#propagateAuthorizationState(false);
+        }),
+      ]);
+    } finally {
+      this.#lastGetMe = null;
+      await this.reconnect();
+    }
+  }
+
   /**
    * Same as calling `.connect()` followed by `.signIn(params)`.
    */

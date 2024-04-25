@@ -667,4 +667,10 @@ export class StorageOperations {
   async getApiId(): Promise<number | null> {
     return await this.#storage.get<number>(K.connection.apiId());
   }
+
+  async reset() {
+    for await (const [key] of await this.#storage.getMany({ prefix: [] })) {
+      await this.#storage.set(key, null);
+    }
+  }
 }
