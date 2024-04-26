@@ -132,7 +132,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Transform
-        run: deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform_browser.ts 0.0.0 ./mod.ts
+        run: deno run -A https://raw.githubusercontent.com/MTKruto/npm/b4a7ccb16a9ea1b1d30e26b27fcf1f591ee5ca0b/transform_browser.ts 0.0.0 ./mod.ts
 
   transform-node:
     runs-on: ubuntu-latest
@@ -178,7 +178,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Transform
-        run: deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform_node.ts 0.0.0 ./mod.ts
+        run: deno run -A https://raw.githubusercontent.com/MTKruto/npm/b4a7ccb16a9ea1b1d30e26b27fcf1f591ee5ca0b/transform_node.ts 0.0.0 ./mod.ts
 
   doc:
     runs-on: ubuntu-latest
