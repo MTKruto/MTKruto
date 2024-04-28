@@ -47,11 +47,11 @@ jobs:
         run: |
           cd MTKruto
           echo "<https://github.com/MTKruto/MTKruto>" > README.md
-          deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_browser.ts ${{ github.ref_name }} ./mod.ts
+          deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform_browser.ts ${{ github.ref_name }} ./mod.ts
           cd dist
           npm publish --access public
           cd ..
-          deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_node.ts ${{ github.ref_name }} ./mod.ts
+          deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform_browser.ts ${{ github.ref_name }} ./mod.ts
           cd dist
           npm publish --access public
         env:
