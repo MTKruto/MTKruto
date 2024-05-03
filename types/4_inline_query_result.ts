@@ -31,7 +31,7 @@ import { constructReplyMarkup, ReplyMarkupInlineKeyboard, replyMarkupToTlObject 
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 /** @unlisted */
-type InlineQueryResultType =
+export type InlineQueryResultType =
   | "article"
   | "audio"
   | "document"
