@@ -644,7 +644,7 @@ async function getReply(message_: types.Message | types.MessageService, chat: Ch
     }
   }
 
-  return { replyToMessage: undefined, threadId: undefined, isTopicMessage: undefined };
+  return { replyToMessage: undefined, threadId: undefined, isTopicMessage: false };
 }
 
 async function constructServiceMessage(message_: types.MessageService, chat: ChatP, getEntity: EntityGetter, getMessage: Message_MessageGetter): Promise<Message> {
@@ -820,7 +820,7 @@ export async function constructMessage(
     date: fromUnixTimestamp(message_.date),
     views: message_.views,
     forwards: message_.forwards,
-    isTopicMessage: false,
+    isTopicMessage: message_.reply_to && message_.reply_to instanceof types.MessageReplyHeader && message_.reply_to.reply_to_top_id ? true : false,
     hasProtectedContent: message_.noforwards || false,
     senderBoostCount: message_.from_boosts_applied,
   };
