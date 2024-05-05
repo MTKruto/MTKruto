@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { iterateReader } from "https://deno.land/std@0.223.0/io/iterate_reader.ts";
+import { iterateReader } from "https://deno.land/std@0.224.0/io/iterate_reader.ts";
 import { concat } from "../0_deps.ts";
 import { getLogger, Mutex } from "../1_utilities.ts";
 import { Connection } from "./0_connection.ts";
