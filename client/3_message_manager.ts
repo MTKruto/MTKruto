@@ -1031,7 +1031,7 @@ export class MessageManager {
     });
   }
 
-  async #sendReaction(chatId: number, messageId: number, reactions: Reaction[], params?: AddReactionParams) {
+  async #sendReaction(chatId: ID, messageId: number, reactions: Reaction[], params?: AddReactionParams) {
     await this.#c.api.messages.sendReaction({
       peer: await this.#c.getInputPeer(chatId),
       msg_id: checkMessageId(messageId),
@@ -1041,11 +1041,11 @@ export class MessageManager {
     });
   }
 
-  async setReactions(chatId: number, messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
+  async setReactions(chatId: ID, messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
     await this.#sendReaction(chatId, messageId, reactions, params);
   }
 
-  async addReaction(chatId: number, messageId: number, reaction: Reaction, params?: AddReactionParams) {
+  async addReaction(chatId: ID, messageId: number, reaction: Reaction, params?: AddReactionParams) {
     const message = await this.getMessage(chatId, messageId);
     if (!message) {
       throw new InputError("Message not found.");
@@ -1060,7 +1060,7 @@ export class MessageManager {
     await this.setReactions(chatId, messageId, reactions, params);
   }
 
-  async removeReaction(chatId: number, messageId: number, reaction: Reaction) {
+  async removeReaction(chatId: ID, messageId: number, reaction: Reaction) {
     const message = await this.getMessage(chatId, messageId);
     if (!message) {
       throw new InputError("Message not found.");
