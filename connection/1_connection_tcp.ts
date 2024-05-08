@@ -37,6 +37,7 @@ export class ConnectionTCP implements Connection {
   #canWrite = false;
   connect: typeof Deno.connect = Deno.connect;
   stateChangeHandler?: Connection["stateChangeHandler"];
+  callback?: Connection["callback"];
 
   constructor(hostname: string, port: number) {
     this.#hostname = hostname;
