@@ -30,32 +30,32 @@ import { constructUser, User } from "./1_user.ts";
 export type ChatMemberStatus = "creator" | "administrator" | "member" | "restricted" | "left" | "banned";
 
 /** @unlisted */
-export interface ChatMemberBase {
+export interface _ChatMemberBase {
   status: ChatMemberStatus;
   user: User;
 }
 
 /** @unlisted */
-export interface ChatMemberCreator extends ChatMemberBase {
+export interface ChatMemberCreator extends _ChatMemberBase {
   status: "creator";
   isAnonymous: boolean;
   title?: string;
 }
 
 /** @unlisted */
-export interface ChatMemberAdministrator extends ChatMemberBase {
+export interface ChatMemberAdministrator extends _ChatMemberBase {
   status: "administrator";
   rights: ChatAdministratorRights;
   title?: string;
 }
 
 /** @unlisted */
-export interface ChatMemberMember extends ChatMemberBase {
+export interface ChatMemberMember extends _ChatMemberBase {
   status: "member";
 }
 
 /** @unlisted */
-export interface ChatMemberRestricted extends ChatMemberBase {
+export interface ChatMemberRestricted extends _ChatMemberBase {
   status: "restricted";
   isMember: boolean;
   rights: ChatMemberRights;
@@ -63,12 +63,12 @@ export interface ChatMemberRestricted extends ChatMemberBase {
 }
 
 /** @unlisted */
-export interface ChatMemberLeft extends ChatMemberBase {
+export interface ChatMemberLeft extends _ChatMemberBase {
   status: "left";
 }
 
 /** @unlisted */
-export interface ChatMemberBanned extends ChatMemberBase {
+export interface ChatMemberBanned extends _ChatMemberBase {
   status: "banned";
   untilDate?: Date;
 }

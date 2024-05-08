@@ -28,6 +28,7 @@ import { PriceTag } from "./0_price_tag.ts";
  * @unlisted
  */
 export interface MessageContentContact {
+  type: "contact";
   /** The contact's phone number. */
   phoneNumber: string;
   /** The contact's first name. */
@@ -43,6 +44,7 @@ export interface MessageContentContact {
  * @unlisted
  */
 export interface MessageContentLocation {
+  type: "text";
   /** The latitude of the location. */
   latitude: number;
   /** The longitude of the location. */
@@ -62,6 +64,7 @@ export interface MessageContentLocation {
  * @unlisted
  */
 export interface MessageContentVenue {
+  type: "venue";
   /** The latitude of the venue. */
   latitude: number;
   /** The longitude of the venue. */
@@ -82,8 +85,9 @@ export interface MessageContentVenue {
 
 /** @unlisted */
 export interface MessageContentText {
+  type: "text";
   /** The message's text. */
-  messageText: string;
+  text: string;
   /** The parse mode to use. If not provided, the default parse mode will be used. */
   parseMode?: ParseMode;
   /** The message's entities. */
@@ -94,6 +98,7 @@ export interface MessageContentText {
 
 /** @unlisted */
 export interface MessageContentInvoice {
+  type: "invoice";
   title: string;
   description: string;
   payload: string;

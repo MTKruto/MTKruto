@@ -53,41 +53,49 @@ export interface _MessageEntityBase {
 
 /** @unlisted */
 export interface MessageEntityMention extends _MessageEntityBase {
+  /** @discriminator */
   type: "mention";
 }
 
 /** @unlisted */
 export interface MessageEntityHashtag extends _MessageEntityBase {
+  /** @discriminator */
   type: "hashtag";
 }
 
 /** @unlisted */
 export interface MessageEntityBotCommand extends _MessageEntityBase {
+  /** @discriminator */
   type: "botCommand";
 }
 
 /** @unlisted */
 export interface MessageEntityURL extends _MessageEntityBase {
+  /** @discriminator */
   type: "url";
 }
 
 /** @unlisted */
 export interface MessageEntityEmailAddress extends _MessageEntityBase {
+  /** @discriminator */
   type: "email";
 }
 
 /** @unlisted */
 export interface MessageEntityBold extends _MessageEntityBase {
+  /** @discriminator */
   type: "bold";
 }
 
 /** @unlisted */
 export interface MessageEntityItalic extends _MessageEntityBase {
+  /** @discriminator */
   type: "italic";
 }
 
 /** @unlisted */
 export interface MessageEntityPre extends _MessageEntityBase {
+  /** @discriminator */
   type: "pre";
   /** The language identifier of the code. */
   language: string;
@@ -95,11 +103,13 @@ export interface MessageEntityPre extends _MessageEntityBase {
 
 /** @unlisted */
 export interface MessageEntityCode extends _MessageEntityBase {
+  /** @discriminator */
   type: "code";
 }
 
 /** @unlisted */
 export interface MessageEntityTextLink extends _MessageEntityBase {
+  /** @discriminator */
   type: "textLink";
   /** A URL that will be opened after the text is tapped. */
   url: string;
@@ -107,6 +117,7 @@ export interface MessageEntityTextLink extends _MessageEntityBase {
 
 /** @unlisted */
 export interface MessageEntityTextMention extends _MessageEntityBase {
+  /** @discriminator */
   type: "textMention";
   /** The identifier of the user to mention. */
   userId: number;
@@ -114,41 +125,49 @@ export interface MessageEntityTextMention extends _MessageEntityBase {
 
 /** @unlisted */
 export interface MessageEntityCashtag extends _MessageEntityBase {
+  /** @discriminator */
   type: "cashtag";
 }
 
 /** @unlisted */
 export interface MessageEntityPhoneNumber extends _MessageEntityBase {
+  /** @discriminator */
   type: "phoneNumber";
 }
 
 /** @unlisted */
 export interface MessageEntityUnderline extends _MessageEntityBase {
+  /** @discriminator */
   type: "underline";
 }
 
 /** @unlisted */
 export interface MessageEntityStrikethrough extends _MessageEntityBase {
+  /** @discriminator */
   type: "strikethrough";
 }
 
 /** @unlisted */
 export interface MessageEntityBlockquote extends _MessageEntityBase {
+  /** @discriminator */
   type: "blockquote";
 }
 
 /** @unlisted */
 export interface MessageEntityBankCard extends _MessageEntityBase {
+  /** @discriminator */
   type: "bankCard";
 }
 
 /** @unlisted */
 export interface MessageEntitySpoiler extends _MessageEntityBase {
+  /** @discriminator */
   type: "spoiler";
 }
 
 /** @unlisted */
 export interface MessageEntityCustomEmoji extends _MessageEntityBase {
+  /** @discriminator */
   type: "customEmoji";
   /** The identifier of the custom emoji. */
   customEmojiId: string;

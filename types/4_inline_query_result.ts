@@ -73,6 +73,7 @@ export interface _InlineQueryResultThumbnailCommon {
 
 /** @unlisted */
 export interface InlineQueryResultArticle extends _InlineQueryResultBase, _InlineQueryResultThumbnailCommon {
+  /** @discriminator */
   type: "article";
   title: string;
   messageContent: MessageContent;
@@ -84,6 +85,8 @@ export interface InlineQueryResultArticle extends _InlineQueryResultBase, _Inlin
 
 /** @unlisted */
 export interface InlineQueryResultAudio extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
+
   type: "audio";
   title: string;
   url: string;
@@ -93,34 +96,44 @@ export interface InlineQueryResultAudio extends _InlineQueryResultBase, _InlineQ
 
 /** @unlisted */
 export interface InlineQueryResultCachedAudio extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
   type: "audio";
+  /** @discriminator */
   fileId: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultCachedDocument extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
   type: "document";
+  /** @discriminator */
   fileId: string;
   description?: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultCachedGif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
   type: "gif";
+  /** @discriminator */
   fileId: string;
   title?: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultCachedMpeg4Gif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
   type: "mpeg4Gif";
+  /** @discriminator */
   fileId: string;
   title?: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultCachedPhoto extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
   type: "photo";
+  /** @discriminator */
   fileId: string;
   thumbnails?: Thumbnail[];
   title?: string;
@@ -129,27 +142,36 @@ export interface InlineQueryResultCachedPhoto extends _InlineQueryResultBase, _I
 
 /** @unlisted */
 export interface InlineQueryResultCachedSticker extends _InlineQueryResultBase, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
   type: "sticker";
+  /** @discriminator */
   fileId: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultCachedVideo extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
   type: "video";
   title: string;
+  /** @discriminator */
+
   fileId: string;
   description?: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultCachedVoice extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
   type: "voice";
   title: string;
+  /** @discriminator */
+
   fileId: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultContact extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
+  /** @discriminator */
   type: "game";
   phoneNumber: string;
   firstName: string;
@@ -159,13 +181,16 @@ export interface InlineQueryResultContact extends _InlineQueryResultBase, _Inlin
 
 /** @unlisted */
 export interface InlineQueryResultDocument extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
+  /** @discriminator */
   type: "document";
   title: string;
+  /** @discriminator */
   url: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultGame extends _InlineQueryResultBase {
+  /** @discriminator */
   type: "game";
   gameShortName: string;
   replyMarkup?: ReplyMarkupInlineKeyboard;
@@ -173,8 +198,10 @@ export interface InlineQueryResultGame extends _InlineQueryResultBase {
 
 /** @unlisted */
 export interface InlineQueryResultGif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
   type: "gif";
   title?: string;
+  /** @discriminator */
   url: string;
   width?: number;
   height?: number;
@@ -185,6 +212,7 @@ export interface InlineQueryResultGif extends _InlineQueryResultBase, _InlineQue
 
 /** @unlisted */
 export interface InlineQueryResultLocation extends _InlineQueryResultBase, _InlineQueryResultMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
+  /** @discriminator */
   type: "location";
   title: string;
   latitude: number;
@@ -197,7 +225,9 @@ export interface InlineQueryResultLocation extends _InlineQueryResultBase, _Inli
 
 /** @unlisted */
 export interface InlineQueryResultMpeg4Gif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
   type: "mpeg4Gif";
+  /** @discriminator */
   url: string;
   title?: string;
   width?: number;
@@ -209,7 +239,9 @@ export interface InlineQueryResultMpeg4Gif extends _InlineQueryResultBase, _Inli
 
 /** @unlisted */
 export interface InlineQueryResultPhoto extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
   type: "photo";
+  /** @discriminator */
   url: string;
   thumbnailUrl: string;
   title?: string;
@@ -220,6 +252,7 @@ export interface InlineQueryResultPhoto extends _InlineQueryResultBase, _InlineQ
 
 /** @unlisted */
 export interface InlineQueryResultVenue extends _InlineQueryResultBase, _InlineQueryResultMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
+  /** @discriminator */
   type: "venue";
   title: string;
   latitude: number;
@@ -231,9 +264,11 @@ export interface InlineQueryResultVenue extends _InlineQueryResultBase, _InlineQ
 
 /** @unlisted */
 export interface InlineQueryResultVideo extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
   type: "video";
   title: string;
   description?: string;
+  /** @discriminator */
   url: string;
   mimeType: string;
   thumbnailUrl: string;
@@ -244,8 +279,10 @@ export interface InlineQueryResultVideo extends _InlineQueryResultBase, _InlineQ
 
 /** @unlisted */
 export interface InlineQueryResultVoice extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
+  /** @discriminator */
   type: "voice";
   title: string;
+  /** @discriminator */
   url: string;
   voiceDuration?: number;
 }
@@ -307,7 +344,8 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
       title,
       description,
       messageContent: cleanObject({
-        messageText: result.send_message.message,
+        type: "text",
+        text: result.send_message.message,
         entities: (result.send_message.entities ?? []).map(constructMessageEntity).filter((v) => v != null) as MessageEntity[],
         linkPreview: result.send_message instanceof types.InputBotInlineMessageMediaWebPage ? { url: result.send_message.url, smallMedia: result.send_message.force_small_media, largeMedia: result.send_message.force_large_media, aboveText: result.send_message.invert_media } : undefined,
       }),
@@ -349,9 +387,10 @@ export function constructInlineQueryResult(result: types.BotInlineResult | types
     }
     const messageContent = result.send_message.message
       ? {
-        messageText: result.send_message.message,
+        type: "text",
+        text: result.send_message.message,
         entities: (result.send_message.entities ?? []).map(constructMessageEntity).filter((v) => v != null) as MessageEntity[],
-      }
+      } as MessageContent
       : undefined;
     const replyMarkup = result.send_message.reply_markup ? constructReplyMarkup(result.send_message.reply_markup) as ReplyMarkupInlineKeyboard : undefined;
 
@@ -662,10 +701,10 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       }),
     });
   } else if (result_.type == "article") {
-    if (!("messageText" in result_.messageContent)) {
+    if (!("text" in result_.messageContent)) {
       unreachable();
     }
-    const [message, entities] = await parseText(result_.messageContent.messageText, { entities: result_.messageContent.entities, parseMode: result_.messageContent.parseMode });
+    const [message, entities] = await parseText(result_.messageContent.text, { entities: result_.messageContent.entities, parseMode: result_.messageContent.parseMode });
     const noWebpage = result_.messageContent?.linkPreview?.disable ? true : undefined;
     const invertMedia = result_.messageContent?.linkPreview?.aboveText ? true : undefined;
 

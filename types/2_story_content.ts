@@ -26,16 +26,19 @@ import { constructVideo, Video } from "./1_video.ts";
 
 /** @unlisted */
 export interface StoryContentPhoto {
+  /** @discriminator */
   photo: Photo;
 }
 
 /** @unlisted */
 export interface StoryContentVideo {
+  /** @discriminator */
   video: Video;
 }
 
 /** @unlisted */
 export interface StoryContentUnsupported {
+  /** @discriminator */
   unsupported: true;
 }
 

@@ -42,6 +42,7 @@ export interface _ChatPBase {
 
 /** @unlisted */
 export interface ChatPPrivate extends _ChatPBase {
+  /** @discriminator */
   type: "private";
   /** Whether this is a bot's chat. */
   isBot?: boolean;
@@ -69,6 +70,7 @@ export interface ChatPPrivate extends _ChatPBase {
 
 /** @unlisted */
 export interface ChatPGroup extends _ChatPBase {
+  /** @discriminator */
   type: "group";
   /** The title of the chat. */
   title: string;
@@ -98,11 +100,13 @@ export interface ChatPChannelBase extends _ChatPBase {
 
 /** @unlisted */
 export interface ChatPChannel extends ChatPChannelBase {
+  /** @discriminator */
   type: "channel";
 }
 
 /** @unlisted */
 export interface ChatPSupergroup extends ChatPChannelBase {
+  /** @discriminator */
   type: "supergroup";
   /** Whether the chat is a forum. */
   isForum: boolean;

@@ -31,41 +31,49 @@ export interface _InlineKeyboardButtonBase {
 
 /** @unlisted */
 export interface InlineKeyboardButtonURL extends _InlineKeyboardButtonBase {
+  /** @discriminator */
   url: string;
 }
 
 /** @unlisted */
 export interface InlineKeyboardButtonCallback extends _InlineKeyboardButtonBase {
+  /** @discriminator */
   callbackData: string;
 }
 
 /** @unlisted */
 export interface InlineKeyboardButtonMiniApp extends _InlineKeyboardButtonBase {
+  /** @discriminator */
   miniApp: MiniAppInfo;
 }
 
 /** @unlisted */
 export interface InlineKeyboardButtonLogin extends _InlineKeyboardButtonBase {
+  /** @discriminator */
   loginUrl: LoginUrl;
 }
 
 /** @unlisted */
 export interface InlineKeyboardButtonSwitchInline extends _InlineKeyboardButtonBase {
+  /** @discriminator */
   switchInlineQuery: string;
 }
 
 /** @unlisted */
 export interface InlineKeyboardButtonSwitchInlineCurrent extends _InlineKeyboardButtonBase {
+  /** @discriminator */
   switchInlineQueryCurrentChat: string;
 }
 
 /** @unlisted */
 export interface InlineKeyboardButtonGame extends _InlineKeyboardButtonBase {
+  /** @discriminator */
   callbackGame: Record<never, never>;
 }
 
 /** @unlisted */
 export interface InlineKeyboardButtonPay extends _InlineKeyboardButtonBase {
+  /** @discriminator */
   pay: boolean;
 }
 

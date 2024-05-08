@@ -20,7 +20,7 @@
 
 import { cleanObject, getColorFromPeerId } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
-import { ChatPhotoUser, constructChatPhoto } from "./0_chat_photo.ts";
+import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 
 /** A user. */
 export interface User {
@@ -39,7 +39,7 @@ export interface User {
   /** The user's additional usernames. */
   also?: string[];
   /** The user's profile photo. */
-  photo?: ChatPhotoUser;
+  photo?: ChatPhoto;
   /** The user's [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag). */
   languageCode?: string;
   /** Whether the user has been identified as scam. */

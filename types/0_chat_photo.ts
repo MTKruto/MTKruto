@@ -22,8 +22,8 @@ import { cleanObject } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 import { FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 
-/** @unlisted */
-export interface _ChatPhotoBase {
+/** A chat photo. */
+export interface ChatPhoto {
   /** A file identifier that can be used to download or reuse the small version of the chat photo (160x160). */
   smallFileId: string;
   /** A file identifier that can be used to identify the small version of the chat photo (160x160). */
@@ -34,22 +34,10 @@ export interface _ChatPhotoBase {
   bigFileUniqueId: string;
   /** Whether the chat photo is animated. */
   hasVideo: boolean;
-}
-
-/** @unlisted */
-export interface ChatPhotoUser extends _ChatPhotoBase {
   /** Differentiates between user profile photos. */
-  personal: true;
+  personal: boolean;
 }
 
-/** @unlisted */
-export type ChatPhotoChat = _ChatPhotoBase;
-
-/** A chat photo. */
-export type ChatPhoto = ChatPhotoUser | ChatPhotoChat;
-
-export function constructChatPhoto(photo: types.ChatPhoto, chatId: number, chatAccessHash: bigint): ChatPhotoChat;
-export function constructChatPhoto(photo: types.UserProfilePhoto, chatId: number, chatAccessHash: bigint): ChatPhotoUser;
 export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto {
   const smallFileId_: FileId = {
     type: FileType.ProfilePhoto,
@@ -74,15 +62,16 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
       bigFileId,
       bigFileUniqueId,
       hasVideo: photo.has_video || false,
+      personal: false,
     });
   } else {
     return cleanObject({
-      personal: photo.personal ? true : undefined,
       smallFileId,
       smallFileUniqueId,
       bigFileId,
       bigFileUniqueId,
       hasVideo: photo.has_video || false,
+      personal: photo.personal ? true : false,
     });
   }
 }

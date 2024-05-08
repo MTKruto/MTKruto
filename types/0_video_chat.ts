@@ -42,6 +42,7 @@ export interface _VideoChatNotEndedCommon {
  * @unlisted
  */
 export interface VideoChatActive extends _VideoChatCommon, _VideoChatNotEndedCommon {
+  type: "active";
   /** Whether the video chat is being recorded. */
   recording: boolean;
 }
@@ -51,6 +52,7 @@ export interface VideoChatActive extends _VideoChatCommon, _VideoChatNotEndedCom
  * @unlisted
  */
 export interface VideoChatScheduled extends _VideoChatCommon, _VideoChatNotEndedCommon {
+  type: "scheduled";
   /** The point in time in which the video chat will be started. */
   scheduledFor: Date;
 }
@@ -60,6 +62,7 @@ export interface VideoChatScheduled extends _VideoChatCommon, _VideoChatNotEnded
  * @unlisted
  */
 export interface VideoChatEnded extends _VideoChatCommon {
+  type: "ended";
   /** The duration of the video chat in seconds. */
   duration: number;
 }
@@ -70,6 +73,7 @@ export function constructVideoChat(call: enums.GroupCall): VideoChat {
   const id = String(call.id);
   if (call instanceof types.GroupCallDiscarded) {
     return {
+      type: "ended",
       id,
       duration: call.duration,
     };
@@ -79,6 +83,7 @@ export function constructVideoChat(call: enums.GroupCall): VideoChat {
     const participantCount = call.participants_count;
     if (call.schedule_date) {
       return {
+        type: "scheduled",
         id,
         title,
         scheduledFor: fromUnixTimestamp(call.schedule_date),
@@ -87,6 +92,7 @@ export function constructVideoChat(call: enums.GroupCall): VideoChat {
       };
     } else {
       return {
+        type: "active",
         id,
         title,
         liveStream,
