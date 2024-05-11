@@ -179,7 +179,7 @@ export class ClientEncrypted extends ClientAbstract {
           this.#L.in(decrypted);
         } catch (err) {
           this.#LreceiveLoop.error("failed to decrypt message:", err);
-          this.handlers.error?.(err, "decryption");
+          drop(this.handlers.error?.(err, "decryption"));
           continue;
         }
         const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
@@ -191,10 +191,10 @@ export class ClientEncrypted extends ClientAbstract {
           }
           this.#LreceiveLoop.debug("received", (typeof body === "object" && name in body) ? body[name] : body.constructor.name);
           if (body instanceof types._Updates || body instanceof types._Update) {
-            this.handlers.updates?.(body as enums.Updates | enums.Update, null);
+            drop(this.handlers.updates?.(body as enums.Updates | enums.Update, null));
           } else if (body instanceof types.New_session_created) {
             this.serverSalt = body.server_salt;
-            this.handlers.serverSaltReassigned?.(this.serverSalt);
+            drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
           } else if (message.body instanceof RPCResult) {
             let result = message.body.result;
             if (result instanceof types.Gzip_packed) {
@@ -218,9 +218,9 @@ export class ClientEncrypted extends ClientAbstract {
               }
             };
             if (result instanceof types._Updates || result instanceof types._Update) {
-              this.handlers.updates?.(result as enums.Updates | enums.Update, promise?.call ?? null, resolvePromise);
+              drop(this.handlers.updates?.(result as enums.Updates | enums.Update, promise?.call ?? null, resolvePromise));
             } else {
-              this.handlers.result?.(result, resolvePromise);
+              drop(this.handlers.result?.(result, resolvePromise));
             }
           } else if (message.body instanceof types.Pong) {
             const promise = this.#promises.get(message.body.msg_id);
@@ -231,7 +231,7 @@ export class ClientEncrypted extends ClientAbstract {
           } else if (message.body instanceof types.Bad_server_salt) {
             this.#LreceiveLoop.debug("server salt reassigned");
             this.serverSalt = message.body.new_server_salt;
-            this.handlers.serverSaltReassigned?.(this.serverSalt);
+            drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
             const promise = this.#promises.get(message.body.bad_msg_id);
             const ack = this.#recentAcks.get(message.body.bad_msg_id);
             if (promise) {
@@ -251,7 +251,6 @@ export class ClientEncrypted extends ClientAbstract {
               }
             }
           }
-
           this.#toAcknowledge.add(message.id);
         }
       } catch (err) {
@@ -259,7 +258,7 @@ export class ClientEncrypted extends ClientAbstract {
           break;
         } else if (err instanceof TLError) {
           this.#LreceiveLoop.error("failed to deserialize:", err);
-          this.handlers.error?.(err, "deserialization");
+          drop(this.handlers.error?.(err, "deserialization"));
         } else {
           this.#LreceiveLoop.error("unexpected error:", err);
         }

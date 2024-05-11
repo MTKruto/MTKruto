@@ -419,6 +419,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     };
 
     if (params?.defaultHandlers ?? true) {
+      let lastReconnection: Date | null = null;
       this.on("connectionState", ({ connectionState }, next) => {
         drop((async () => {
           if (connectionState == "notConnected") {
@@ -427,20 +428,24 @@ export class Client<C extends Context = Context> extends Composer<C> {
               return;
             }
             let delay = 5;
+            if (lastReconnection != null && Date.now() - lastReconnection.getTime() <= 10 * second) {
+              await new Promise((r) => setTimeout(r, delay * second));
+            }
             while (!this.connected) {
               L.debug("reconnecting");
               try {
                 await this.connect();
+                lastReconnection = new Date();
                 L.debug("reconnected");
                 drop(this.#updateManager.recoverUpdateGap("reconnect"));
                 break;
               } catch (err) {
+                if (delay < 15) {
+                  delay += 5;
+                }
                 L.debug(`failed to reconnect, retrying in ${delay}:`, err);
               }
               await new Promise((r) => setTimeout(r, delay * second));
-              if (delay < 15) {
-                delay += 5;
-              }
             }
           }
         })());

@@ -21,8 +21,10 @@
 import { unreachable } from "../0_deps.ts";
 import { second } from "./0_units.ts";
 
-export function drop<T>(promise: Promise<T>) {
-  promise.catch(() => {});
+export function drop(maybePromise: unknown) {
+  if (maybePromise !== undefined && maybePromise != null && typeof maybePromise === "object" && maybePromise instanceof Promise) {
+    maybePromise.catch(() => {});
+  }
 }
 
 export function mustPrompt(message: string) {
