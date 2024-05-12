@@ -267,6 +267,9 @@ export class FileManager {
 
     const chunkSize = params?.chunkSize ?? FileManager.#DOWNLOAD_MAX_CHUNK_SIZE;
     FileManager.validateChunkSize(chunkSize, FileManager.#DOWNLOAD_MAX_CHUNK_SIZE);
+    if (params?.offset !== undefined) {
+      FileManager.validateOffset(params.offset);
+    }
 
     const connection = this.#c.getCdnConnection(dcId);
     await connection.connect();
@@ -314,6 +317,18 @@ export class FileManager {
     }
     if (mod(chunkSize, 1024) != 0) {
       throw new InputError("chunkSize must be divisible by 1024.");
+    }
+  }
+
+  static validateOffset(offset: number) {
+    if (offset < 0) {
+      throw new InputError("offset must not be smaller than zero.");
+    }
+    if (offset % 1 != 0) {
+      throw new InputError("offset must be a whole number.");
+    }
+    if (mod(offset, 1024) != 0) {
+      throw new InputError("offset must be divisible by 1024.");
     }
   }
 
