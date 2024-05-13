@@ -208,7 +208,7 @@ export interface _ThumbnailCommon {
   /** A thumbnail to assign. Cannot be a URL. */
   thumbnail?: FileSource;
 }
-export interface SendDocumentParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon {
+export interface SendDocumentParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
 }
 
 export interface SendStickerParams extends _UploadCommon, _SendCommon {

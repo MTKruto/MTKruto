@@ -27,7 +27,7 @@ import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, 
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _SendCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
+import { _SendCommon, _SpoilCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
 import { C as C_ } from "./1_types.ts";
 import { checkMessageId } from "./0_utilities.ts";
 import { checkArray } from "./0_utilities.ts";
@@ -538,7 +538,7 @@ export class MessageManager {
     return assertMessageType(message, "video");
   }
 
-  async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams | undefined, fileType: FileType, otherAttribs: enums.DocumentAttribute[], urlSupported = true, expectedMimeTypes?: string[]) {
+  async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams & _SpoilCommon | undefined, fileType: FileType, otherAttribs: enums.DocumentAttribute[], urlSupported = true, expectedMimeTypes?: string[]) {
     let media: enums.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
     const ttl_seconds = params && "selfDestruct" in params && typeof params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct as SelfDestructOption) : undefined;
