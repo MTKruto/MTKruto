@@ -717,6 +717,13 @@ async function getSender(message_: types.Message | types.MessageService, getEnti
     } else {
       unreachable();
     }
+  } else if (message_.peer_id instanceof types.PeerUser) {
+    const entity = await getEntity(message_.peer_id);
+    if (entity) {
+      return { from: constructUser(entity) };
+    } else {
+      unreachable();
+    }
   }
 }
 
