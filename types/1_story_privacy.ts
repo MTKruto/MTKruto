@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { enums, types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 
 /** @unlisted */
@@ -54,54 +54,54 @@ export type StoryPrivacy =
   | StoryPrivacyOnly;
 
 async function resolveUsers(ids: number[], getEntity: EntityGetter) {
-  const users = new Array<types.InputUser>();
+  const users = new Array<Api.inputUser>();
   for (const id of ids) {
-    const entity = await getEntity(new types.PeerUser({ user_id: BigInt(id) }));
-    if (!(entity instanceof types.User)) {
+    const entity = await getEntity({ _: "peerUser", user_id: BigInt(id) });
+    if (!(is("user", entity))) {
       unreachable();
     } else {
-      users.push(new types.InputUser({ user_id: entity.id, access_hash: entity.access_hash ?? 0n }));
+      users.push({ _: "inputUser", user_id: entity.id, access_hash: entity.access_hash ?? 0n });
     }
   }
   return users;
 }
-async function restrict(users_: number[], rules: enums.InputPrivacyRule[], getEntity: EntityGetter) {
+async function restrict(users_: number[], rules: Api.InputPrivacyRule[], getEntity: EntityGetter) {
   if (users_.length) {
     const users = await resolveUsers(users_, getEntity);
-    rules.push(new types.InputPrivacyValueDisallowUsers({ users }));
+    rules.push({ _: "inputPrivacyValueDisallowUsers", users });
   }
 }
 
-export async function storyPrivacyToTlObject(privacy: StoryPrivacy, getEntity: EntityGetter): Promise<enums.InputPrivacyRule[]> {
-  const rules = new Array<enums.InputPrivacyRule>();
+export async function storyPrivacyToTlObject(privacy: StoryPrivacy, getEntity: EntityGetter): Promise<Api.InputPrivacyRule[]> {
+  const rules = new Array<Api.InputPrivacyRule>();
   if ("everyoneExcept" in privacy) {
     await restrict(privacy.everyoneExcept, rules, getEntity);
-    rules.push(new types.InputPrivacyValueAllowAll());
+    rules.push({ _: "inputPrivacyValueAllowAll" });
   } else if ("contactsExcept" in privacy) {
     await restrict(privacy.contactsExcept, rules, getEntity);
-    rules.push(new types.InputPrivacyValueAllowContacts());
+    rules.push({ _: "inputPrivacyValueAllowContacts" });
   } else if ("closeFriends" in privacy) {
-    rules.push(new types.InputPrivacyValueAllowCloseFriends());
+    rules.push({ _: "inputPrivacyValueAllowCloseFriends" });
   } else if ("only" in privacy) {
     if (!privacy.only.length) {
       unreachable();
     }
     const users = await resolveUsers(privacy.only, getEntity);
-    rules.push(new types.InputPrivacyValueAllowUsers({ users }));
+    rules.push({ _: "inputPrivacyValueAllowUsers", users });
   }
   return rules;
 }
 
-export function constructStoryPrivacy(privacy: enums.PrivacyRule[]): StoryPrivacy {
-  const except = privacy.find((v): v is types.PrivacyValueDisallowUsers => v instanceof types.PrivacyValueDisallowUsers)?.users?.map(Number) ?? [];
-  if (privacy.some((v) => v instanceof types.PrivacyValueAllowAll)) {
+export function constructStoryPrivacy(privacy: Api.PrivacyRule[]): StoryPrivacy {
+  const except = privacy.find((v): v is Api.privacyValueDisallowUsers => is("privacyValueDisallowUsers", v))?.users?.map(Number) ?? [];
+  if (privacy.some((v) => is("privacyValueAllowAll", v))) {
     return { everyoneExcept: except };
-  } else if (privacy.some((v) => v instanceof types.PrivacyValueAllowContacts)) {
+  } else if (privacy.some((v) => is("privacyValueAllowContacts", v))) {
     return { contactsExcept: except };
-  } else if (privacy.some((v) => v instanceof types.PrivacyValueAllowCloseFriends)) {
+  } else if (privacy.some((v) => is("privacyValueAllowCloseFriends", v))) {
     return { closeFriends: true };
   }
 
-  const only = privacy.find((v): v is types.PrivacyValueAllowUsers => v instanceof types.PrivacyValueAllowUsers)?.users?.map(Number) ?? [];
+  const only = privacy.find((v): v is Api.privacyValueAllowUsers => is("privacyValueAllowUsers", v))?.users?.map(Number) ?? [];
   return { only };
 }

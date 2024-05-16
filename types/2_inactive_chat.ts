@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { fromUnixTimestamp } from "../1_utilities.ts";
-import { enums, types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 
 /** An inactive chat. */
@@ -31,8 +31,8 @@ export interface InactiveChat {
   chat: ChatP;
 }
 
-export function constructInactiveChat(chat_: enums.Chat, lastActivity: number): InactiveChat {
-  if (chat_ instanceof types.ChatEmpty) {
+export function constructInactiveChat(chat_: Api.Chat, lastActivity: number): InactiveChat {
+  if (is("chatEmpty", chat_)) {
     unreachable();
   }
   const chat = constructChatP(chat_);

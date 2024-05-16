@@ -19,16 +19,16 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { enums, peerToChatId, types } from "../2_tl.ts";
+import { Api, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { constructMessageReaction, constructMessageReactionCount, constructMessageReactions, Update } from "../3_types.ts";
 import { C } from "./1_types.ts";
 
 type ReactionManagerUpdate =
-  | types.UpdateBotMessageReactions
-  | types.UpdateBotMessageReaction
-  | types.UpdateMessageReactions
-  | types.UpdateChannelMessageViews
-  | types.UpdateChannelMessageForwards;
+  | Api.updateBotMessageReactions
+  | Api.updateBotMessageReaction
+  | Api.updateMessageReactions
+  | Api.updateChannelMessageViews
+  | Api.updateChannelMessageForwards;
 
 export class ReactionManager {
   #c: C;
@@ -37,43 +37,49 @@ export class ReactionManager {
     this.#c = c;
   }
 
-  static canHandleUpdate(update: enums.Update): update is ReactionManagerUpdate {
-    return update instanceof types.UpdateBotMessageReactions || update instanceof types.UpdateBotMessageReaction || update instanceof types.UpdateMessageReactions || update instanceof types.UpdateChannelMessageViews || update instanceof types.UpdateChannelMessageForwards;
+  static canHandleUpdate(update: Api.Update): update is ReactionManagerUpdate {
+    return isOneOf([
+      "updateBotMessageReactions",
+      "updateBotMessageReaction",
+      "updateMessageReactions",
+      "updateChannelMessageViews",
+      "updateChannelMessageForwards",
+    ], update);
   }
 
   async handleUpdate(update: ReactionManagerUpdate): Promise<Update | null> {
-    if (update instanceof types.UpdateBotMessageReactions) {
+    if (is("updateBotMessageReactions", update)) {
       const messageReactionCount = await constructMessageReactionCount(update, this.#c.getEntity);
       if (messageReactionCount) {
         return { messageReactionCount };
       } else {
         return null;
       }
-    } else if (update instanceof types.UpdateBotMessageReaction) {
+    } else if (is("updateBotMessageReaction", update)) {
       const messageReactions = await constructMessageReactions(update, this.#c.getEntity);
       if (messageReactions) {
         return { messageReactions };
       } else {
         return null;
       }
-    } else if (update instanceof types.UpdateMessageReactions) {
+    } else if (is("updateMessageReactions", update)) {
       const chatId = peerToChatId(update.peer);
       const message = await this.#c.messageStorage.getMessage(chatId, update.msg_id);
-      if (message instanceof types.Message) {
+      if (is("message", message)) {
         message.reactions = update.reactions;
         await this.#c.messageStorage.setMessage(chatId, update.msg_id, message);
         const views = message.views ?? 0;
         const forwards = message.forwards ?? 0;
         const recentReactions = update.reactions.recent_reactions ?? [];
         const reactions = update.reactions.results.map((v) => constructMessageReaction(v, recentReactions));
-        return ({ messageInteractions: { chatId, messageId: update.msg_id, reactions, views, forwards } });
+        return { messageInteractions: { chatId, messageId: update.msg_id, reactions, views, forwards } };
       } else {
         return null;
       }
-    } else if (update instanceof types.UpdateChannelMessageViews || update instanceof types.UpdateChannelMessageForwards) {
-      const chatId = peerToChatId(new types.PeerChannel(update));
+    } else if (isOneOf(["updateChannelMessageViews", "updateChannelMessageForwards"], update)) {
+      const chatId = peerToChatId({ ...update, _: "peerChannel" });
       const message = await this.#c.messageStorage.getMessage(chatId, update.id);
-      if (message instanceof types.Message) {
+      if (is("message", message)) {
         if ("views" in update) {
           message.views = update.views;
         }

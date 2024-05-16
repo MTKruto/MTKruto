@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructUser, User } from "./1_user.ts";
 
@@ -45,8 +45,8 @@ export interface InviteLink {
   pendingJoinRequestCount?: number;
 }
 
-export async function constructInviteLink(inviteLink_: types.ChatInviteExported, getEntity: EntityGetter): Promise<InviteLink> {
-  const entity = await getEntity(new types.PeerUser({ user_id: inviteLink_.admin_id }));
+export async function constructInviteLink(inviteLink_: Api.chatInviteExported, getEntity: EntityGetter): Promise<InviteLink> {
+  const entity = await getEntity({ _: "peerUser", user_id: inviteLink_.admin_id });
   if (!entity) {
     unreachable();
   }

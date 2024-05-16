@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructOpeningHours, OpeningHours } from "./0_opening_hours.ts";
 import { ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, constructChatP } from "./1_chat_p.ts";
@@ -70,35 +70,35 @@ export interface ChatPrivate extends ChatBase, ChatPPrivate {
  */
 export type Chat = ChatChannel | ChatSupergroup | ChatGroup | ChatPrivate;
 
-export async function constructChat(fullChat: types.UserFull | types.ChatFull | types.ChannelFull, getEntity: EntityGetter): Promise<Chat> {
-  if (fullChat instanceof types.UserFull) {
-    const user = await getEntity(new types.PeerUser({ user_id: fullChat.id }));
+export async function constructChat(fullChat: Api.userFull | Api.chatFull | Api.channelFull, getEntity: EntityGetter): Promise<Chat> {
+  if (is("userFull", fullChat)) {
+    const user = await getEntity({ _: "peerUser", user_id: fullChat.id });
     if (user == null) unreachable();
     const chatP = constructChatP(user);
     return cleanObject({
       ...chatP,
       birthday: fullChat.birthday ? constructBirthday(fullChat.birthday) : undefined,
-      photo: fullChat.profile_photo && fullChat.profile_photo instanceof types.Photo ? constructPhoto(fullChat.profile_photo) : undefined,
+      photo: fullChat.profile_photo && is("photo", fullChat.profile_photo) ? constructPhoto(fullChat.profile_photo) : undefined,
       address: fullChat.business_location?.address,
-      location: fullChat.business_location?.geo_point && fullChat.business_location.geo_point instanceof types.GeoPoint ? constructLocation(fullChat.business_location.geo_point) : undefined,
+      location: fullChat.business_location?.geo_point && is("geoPoint", fullChat.business_location.geo_point) ? constructLocation(fullChat.business_location.geo_point) : undefined,
       openingHours: fullChat.business_work_hours ? constructOpeningHours(fullChat.business_work_hours) : undefined,
     });
-  } else if (fullChat instanceof types.ChatFull) {
-    const chat = await getEntity(new types.PeerChat({ chat_id: fullChat.id }));
+  } else if (is("chatFull", fullChat)) {
+    const chat = await getEntity({ _: "peerChat", chat_id: fullChat.id });
     if (chat == null) unreachable();
     const chatP = constructChatP(chat);
     return cleanObject({
       ...chatP,
-      photo: fullChat.chat_photo && fullChat.chat_photo instanceof types.Photo ? constructPhoto(fullChat.chat_photo) : undefined,
+      photo: fullChat.chat_photo && is("photo", fullChat.chat_photo) ? constructPhoto(fullChat.chat_photo) : undefined,
       videoChatId: fullChat.call ? String(fullChat.call.id) : undefined,
     });
-  } else if (fullChat instanceof types.ChannelFull) {
-    const chat = await getEntity(new types.PeerChannel({ channel_id: fullChat.id }));
+  } else if (is("channelFull", fullChat)) {
+    const chat = await getEntity({ _: "peerChannel", channel_id: fullChat.id });
     if (chat == null) unreachable();
     const chatP = constructChatP(chat);
     return cleanObject({
       ...chatP,
-      photo: fullChat.chat_photo && fullChat.chat_photo instanceof types.Photo ? constructPhoto(fullChat.chat_photo) : undefined,
+      photo: fullChat.chat_photo && is("photo", fullChat.chat_photo) ? constructPhoto(fullChat.chat_photo) : undefined,
       videoChatId: fullChat.call ? String(fullChat.call.id) : undefined,
     });
   }

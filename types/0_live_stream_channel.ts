@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** A live stream channel. */
 export interface LiveStreamChannel {
@@ -30,7 +30,7 @@ export interface LiveStreamChannel {
   timestamp: number;
 }
 
-export function constructLiveStreamChannel(channel: types.GroupCallStreamChannel): LiveStreamChannel {
+export function constructLiveStreamChannel(channel: Api.groupCallStreamChannel): LiveStreamChannel {
   return {
     id: channel.channel,
     scale: channel.scale,

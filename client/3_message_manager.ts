@@ -21,7 +21,7 @@
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
-import { as, enums, functions, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
+import { Api, as, getChannelChatId, is, peerToChatId } from "../2_tl.ts";
 import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId, InputMedia, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
 import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
@@ -42,17 +42,17 @@ interface C extends C_ {
 }
 
 type MessageManagerUpdate =
-  | types.UpdateNewMessage
-  | types.UpdateNewChannelMessage
-  | types.UpdateEditMessage
-  | types.UpdateEditChannelMessage
-  | types.UpdateBotNewBusinessMessage
-  | types.UpdateBotEditBusinessMessage
-  | types.UpdateBotDeleteBusinessMessage
-  | types.UpdateDeleteMessages
-  | types.UpdateDeleteChannelMessages
-  | types.UpdateChannelParticipant
-  | types.UpdateChatParticipant;
+  | Api.updateNewMessage
+  | Api.updateNewChannelMessage
+  | Api.updateEditMessage
+  | Api.updateEditChannelMessage
+  | Api.updateBotNewBusinessMessage
+  | Api.updateBotEditBusinessMessage
+  | Api.updateBotDeleteBusinessMessage
+  | Api.updateDeleteMessages
+  | Api.updateDeleteChannelMessages
+  | Api.updateChannelParticipant
+  | Api.updateChatParticipant;
 
 export class MessageManager {
   #c: C;
@@ -68,7 +68,7 @@ export class MessageManager {
   async getMessages(chatId: ID, messageIds: number[]) {
     checkArray(messageIds, checkMessageId);
     const peer = await this.#c.getInputPeer(chatId);
-    let messages_ = new Array<enums.Message>();
+    let messages_ = new Array<Api.Message>();
     const chatId_ = peerToChatId(peer);
     let shouldFetch = false;
     for (const messageId of messageIds) {
@@ -82,20 +82,18 @@ export class MessageManager {
       }
     }
     if (shouldFetch) {
-      if (peer instanceof types.InputPeerChannel) {
-        messages_ = await this.#c.api.channels.getMessages({
-          channel: new types.InputChannel(peer),
-          id: messageIds.map((v) => new types.InputMessageID({ id: v })),
-        }).then((v) => v[as](types.messages.ChannelMessages).messages);
+      if (is("inputPeerChannel", peer)) {
+        messages_ = await this.#c.invoke({ _: "channels.getMessages", channel: ({ ...peer, _: "inputChannel" }), id: messageIds.map((v) => ({ _: "inputMessageID", id: v })) }).then((v) => as("messages.channelMessages", v).messages);
       } else {
-        messages_ = await this.#c.api.messages.getMessages({
-          id: messageIds.map((v) => new types.InputMessageID({ id: v })),
-        }).then((v) => v[as](types.messages.Messages).messages);
+        messages_ = await this.#c.invoke({
+          _: "messages.getMessages",
+          id: messageIds.map((v) => ({ _: "inputMessageID", id: v })),
+        }).then((v) => as("messages.messages", v).messages);
       }
     }
     const messages = new Array<Message>();
     for (const message_ of messages_) {
-      if (message_ instanceof types.MessageEmpty) {
+      if (is("messageEmpty", message_)) {
         continue;
       }
       const message = await this.constructMessage(message_);
@@ -161,25 +159,25 @@ export class MessageManager {
     return [text, entities] as const;
   }
 
-  async #updatesToMessages(chatId: ID, updates: enums.Updates, businessConnectionId?: string) {
+  async #updatesToMessages(chatId: ID, updates: Api.Updates, businessConnectionId?: string) {
     const messages = new Array<Message>();
 
-    if (updates instanceof types.Updates) {
+    if (is("updates", updates)) {
       for (const update of updates.updates) {
-        if ("message" in update && update.message instanceof types.MessageEmpty) {
+        if ("message" in update && is("messageEmpty", update.message)) {
           continue;
         }
-        if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateEditMessage) {
+        if (is("updateNewMessage", update) || is("updateEditMessage", update)) {
           messages.push(await this.constructMessage(update.message));
-        } else if (update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage) {
+        } else if (is("updateNewChannelMessage", update) || is("updateEditChannelMessage", update)) {
           messages.push(await this.constructMessage(update.message));
-        } else if (update instanceof types.UpdateBotNewBusinessMessage) {
+        } else if (is("updateBotNewBusinessMessage", update)) {
           messages.push(await this.constructMessage(update.message, false, { connectionId: businessConnectionId ?? update.connection_id, replyToMessage: update.reply_to_message }));
-        } else if (update instanceof types.UpdateBotEditBusinessMessage) {
+        } else if (is("updateBotEditBusinessMessage", update)) {
           messages.push(await this.constructMessage(update.message, false, { connectionId: businessConnectionId ?? update.connection_id, replyToMessage: update.reply_to_message }));
         }
       }
-    } else if (updates instanceof types.UpdateShortSentMessage) {
+    } else if (is("updateShortSentMessage", updates)) {
       const message = await this.getMessage(chatId, updates.id);
       if (message != null) {
         messages.push(message);
@@ -189,24 +187,13 @@ export class MessageManager {
     return messages;
   }
 
-  async constructMessage(message_: enums.Message, r?: boolean, business?: { connectionId: string; replyToMessage?: enums.Message }) {
+  async constructMessage(message_: Api.Message, r?: boolean, business?: { connectionId: string; replyToMessage?: Api.Message }) {
     return await constructMessage_(message_, this.#c.getEntity, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r, business);
   }
 
   async forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams) {
     checkArray(messageIds, checkMessageId);
-    const result = await this.#c.api.messages.forwardMessages({
-      from_peer: await this.#c.getInputPeer(from),
-      to_peer: await this.#c.getInputPeer(to),
-      id: messageIds,
-      random_id: messageIds.map(() => getRandomId()),
-      silent: params?.disableNotification || undefined,
-      top_msg_id: params?.messageThreadId,
-      noforwards: params?.disableNotification || undefined,
-      send_as: params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined,
-      drop_author: params?.dropSenderName || undefined,
-      drop_media_captions: params?.dropCaption || undefined,
-    });
+    const result = await this.#c.invoke({ _: "messages.forwardMessages", from_peer: await this.#c.getInputPeer(from), to_peer: await this.#c.getInputPeer(to), id: messageIds, random_id: messageIds.map(() => getRandomId()), silent: params?.disableNotification || undefined, top_msg_id: params?.messageThreadId, noforwards: params?.disableNotification || undefined, send_as: params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined, drop_author: params?.dropSenderName || undefined, drop_media_captions: params?.dropCaption || undefined });
 
     return await this.#updatesToMessages(to, result);
   }
@@ -228,16 +215,7 @@ export class MessageManager {
     if (messages.length > 0) {
       offsetId = messages[messages.length - 1].id; // TODO: track id of oldest message and don't send requests for it
     }
-    const result = await this.#c.api.messages.getHistory({
-      peer: peer,
-      offset_id: offsetId,
-      offset_date: 0,
-      add_offset: 0,
-      limit,
-      max_id: 0,
-      min_id: 0,
-      hash: 0n,
-    });
+    const result = await this.#c.invoke({ _: "messages.getHistory", peer: peer, offset_id: offsetId, offset_date: 0, add_offset: 0, limit, max_id: 0, min_id: 0, hash: 0n });
 
     if (!("messages" in result)) {
       unreachable();
@@ -250,8 +228,8 @@ export class MessageManager {
   }
 
   usernameResolver: UsernameResolver = async (v) => {
-    const inputPeer = await this.#c.getInputPeer(v).then((v) => v[as](types.InputPeerUser));
-    return new types.InputUser(inputPeer);
+    const inputPeer = await this.#c.getInputPeer(v).then((v) => as("inputPeerUser", v));
+    return { ...inputPeer, _: "inputUser" };
   };
 
   async #constructReplyMarkup(params?: Pick<SendMessageParams, "replyMarkup">) {
@@ -286,32 +264,32 @@ export class MessageManager {
     const noforwards = params?.protectContent ? true : undefined;
     const sendAs = await this.#resolveSendAs(params);
 
-    let result: enums.Updates;
+    let result: Api.Updates;
     if (!noWebpage && params?.linkPreview?.url) {
-      result = await this.#c.invoke(
-        new functions.messages.sendMedia({
-          peer,
-          random_id: randomId,
-          media: new types.InputMediaWebPage({
-            url: params.linkPreview.url,
-            force_large_media: params.linkPreview.largeMedia ? true : undefined,
-            force_small_media: params.linkPreview.smallMedia ? true : undefined,
-            optional: message.length ? undefined : true,
-          }),
-          message,
-          invert_media: invertMedia,
-          silent,
-          noforwards,
-          reply_to: await this.#constructReplyTo(params),
-          send_as: sendAs,
-          entities,
-          reply_markup: replyMarkup,
+      result = await this.#c.invoke({
+        _: "messages.sendMedia",
+        peer,
+        random_id: randomId,
+        media: ({
+          _: "inputMediaWebPage",
+          url: params.linkPreview.url,
+          force_large_media: params.linkPreview.largeMedia ? true : undefined,
+          force_small_media: params.linkPreview.smallMedia ? true : undefined,
+          optional: message.length ? undefined : true,
         }),
-        params?.businessConnectionId,
-      );
+        message,
+        invert_media: invertMedia,
+        silent,
+        noforwards,
+        reply_to: await this.#constructReplyTo(params),
+        send_as: sendAs,
+        entities,
+        reply_markup: replyMarkup,
+      }, params?.businessConnectionId);
     } else {
       result = await this.#c.invoke(
-        new functions.messages.sendMessage({
+        {
+          _: "messages.sendMessage",
           peer,
           random_id: randomId,
           message,
@@ -323,7 +301,7 @@ export class MessageManager {
           send_as: sendAs,
           entities,
           reply_markup: replyMarkup,
-        }),
+        },
         params?.businessConnectionId,
       );
     }
@@ -335,7 +313,7 @@ export class MessageManager {
   async #constructReplyTo(params?: _SendCommon) {
     const topMsgId = params?.messageThreadId;
     const replyToMsgId = params?.replyToMessageId;
-    return replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId, quote_text: params?.replyQuote?.text, quote_entities: await Promise.all(params?.replyQuote?.entities.map((v) => messageEntityToTlObject(v, this.#c.getEntity)) ?? []), quote_offset: params?.replyQuote?.offset }) : undefined;
+    return replyToMsgId !== undefined ? ({ _: "inputReplyToMessage", reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId, quote_text: params?.replyQuote?.text, quote_entities: await Promise.all(params?.replyQuote?.entities.map((v) => messageEntityToTlObject(v, this.#c.getEntity)) ?? []), quote_offset: params?.replyQuote?.offset }) as Api.inputReplyToMessage : undefined;
   }
 
   async sendVenue(chatId: ID, latitude: number, longitude: number, title: string, address: string, params?: SendVenueParams) {
@@ -346,30 +324,30 @@ export class MessageManager {
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
     const replyMarkup = await this.#constructReplyMarkup(params);
 
-    const result = await this.#c.invoke(
-      new functions.messages.sendMedia({
-        peer,
-        random_id: randomId,
-        silent,
-        noforwards,
-        reply_to: await this.#constructReplyTo(params),
-        send_as: sendAs,
-        reply_markup: replyMarkup,
-        media: new types.InputMediaVenue({
-          geo_point: new types.InputGeoPoint({
-            lat: latitude,
-            long: longitude,
-          }),
-          title,
-          address,
-          venue_id: params?.foursquareId ?? "",
-          venue_type: params?.foursquareType ?? "",
-          provider: "foursquare",
+    const result = await this.#c.invoke({
+      _: "messages.sendMedia",
+      peer,
+      random_id: randomId,
+      silent,
+      noforwards,
+      reply_to: await this.#constructReplyTo(params),
+      send_as: sendAs,
+      reply_markup: replyMarkup,
+      media: ({
+        _: "inputMediaVenue",
+        geo_point: ({
+          _: "inputGeoPoint",
+          lat: latitude,
+          long: longitude,
         }),
-        message: "",
+        title,
+        address,
+        venue_id: params?.foursquareId ?? "",
+        venue_type: params?.foursquareType ?? "",
+        provider: "foursquare",
       }),
-      params?.businessConnectionId,
-    );
+      message: "",
+    }, params?.businessConnectionId);
 
     const message = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
     return assertMessageType(message, "venue");
@@ -384,7 +362,8 @@ export class MessageManager {
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const result = await this.#c.invoke(
-      new functions.messages.sendMedia({
+      {
+        _: "messages.sendMedia",
         peer,
         random_id: randomId,
         silent,
@@ -392,14 +371,15 @@ export class MessageManager {
         reply_to: await this.#constructReplyTo(params),
         send_as: sendAs,
         reply_markup: replyMarkup,
-        media: new types.InputMediaContact({
+        media: ({
+          _: "inputMediaContact",
           phone_number: number,
           first_name: firstName,
           last_name: params?.lastName ?? "",
           vcard: params?.vcard ?? "",
         }),
         message: "",
-      }),
+      },
       params?.businessConnectionId,
     );
 
@@ -415,22 +395,21 @@ export class MessageManager {
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
     const replyMarkup = await this.#constructReplyMarkup(params);
 
-    const result = await this.#c.invoke(
-      new functions.messages.sendMedia({
-        peer,
-        random_id: randomId,
-        silent,
-        noforwards,
-        reply_to: await this.#constructReplyTo(params),
-        send_as: sendAs,
-        reply_markup: replyMarkup,
-        media: new types.InputMediaDice({
-          emoticon: params?.emoji ?? "🎲",
-        }),
-        message: "",
+    const result = await this.#c.invoke({
+      _: "messages.sendMedia",
+      peer,
+      random_id: randomId,
+      silent,
+      noforwards,
+      reply_to: await this.#constructReplyTo(params),
+      send_as: sendAs,
+      reply_markup: replyMarkup,
+      media: ({
+        _: "inputMediaDice",
+        emoticon: params?.emoji ?? "🎲",
       }),
-      params?.businessConnectionId,
-    );
+      message: "",
+    }, params?.businessConnectionId);
 
     const message = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
     return assertMessageType(message, "dice");
@@ -445,7 +424,8 @@ export class MessageManager {
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const result = await this.#c.invoke(
-      new functions.messages.sendMedia({
+      {
+        _: "messages.sendMedia",
         peer,
         random_id: randomId,
         silent,
@@ -454,8 +434,10 @@ export class MessageManager {
         send_as: sendAs,
         reply_markup: replyMarkup,
         media: params?.livePeriod !== undefined
-          ? new types.InputMediaGeoLive({
-            geo_point: new types.InputGeoPoint({
+          ? ({
+            _: "inputMediaGeoLive",
+            geo_point: ({
+              _: "inputGeoPoint",
               lat: latitude,
               long: longitude,
               accuracy_radius: params?.horizontalAccuracy,
@@ -464,15 +446,17 @@ export class MessageManager {
             period: params.livePeriod,
             proximity_notification_radius: params?.proximityAlertRadius,
           })
-          : new types.InputMediaGeoPoint({
-            geo_point: new types.InputGeoPoint({
+          : ({
+            _: "inputMediaGeoPoint",
+            geo_point: ({
+              _: "inputGeoPoint",
               lat: latitude,
               long: longitude,
               accuracy_radius: params?.horizontalAccuracy,
             }),
           }),
         message: "",
-      }),
+      },
       params?.businessConnectionId,
     );
 
@@ -482,76 +466,49 @@ export class MessageManager {
 
   async sendVideoNote(chatId: ID, audio: FileSource, params?: SendVideoNoteParams) {
     const message = await this.#sendDocumentInner(chatId, audio, params, FileType.VideoNote, [
-      new types.DocumentAttributeVideo({
-        round_message: true,
-        w: params?.length ?? 0,
-        h: params?.length ?? 0,
-        duration: params?.duration ?? 0,
-      }),
+      { _: "documentAttributeVideo", round_message: true, w: params?.length ?? 0, h: params?.length ?? 0, duration: params?.duration ?? 0 },
     ], false);
     return assertMessageType(message, "videoNote");
   }
 
   async sendAudio(chatId: ID, audio: FileSource, params?: SendAudioParams) {
     const message = await this.#sendDocumentInner(chatId, audio, params, FileType.Audio, [
-      new types.DocumentAttributeAudio({
-        duration: params?.duration ?? 0,
-        performer: params?.performer,
-        title: params?.title,
-      }),
+      { _: "documentAttributeAudio", duration: params?.duration ?? 0, performer: params?.performer, title: params?.title },
     ]);
     return assertMessageType(message, "audio");
   }
 
   async sendVoice(chatId: ID, voice: FileSource, params?: SendVoiceParams) {
     const message = await this.#sendDocumentInner(chatId, voice, params, FileType.VoiceNote, [
-      new types.DocumentAttributeAudio({
-        voice: true,
-        duration: params?.duration ?? 0,
-      }),
+      { _: "documentAttributeAudio", voice: true, duration: params?.duration ?? 0 },
     ]);
     return assertMessageType(message, "voice");
   }
 
   async sendAnimation(chatId: ID, animation: FileSource, params?: SendAnimationParams) {
     const message = await this.#sendDocumentInner(chatId, animation, params, FileType.Animation, [
-      new types.DocumentAttributeAnimated(),
-      new types.DocumentAttributeVideo({
-        supports_streaming: true,
-        w: params?.width ?? 0,
-        h: params?.height ?? 0,
-        duration: params?.duration ?? 0,
-      }),
+      { _: "documentAttributeAnimated" },
+      { _: "documentAttributeVideo", supports_streaming: true, w: params?.width ?? 0, h: params?.height ?? 0, duration: params?.duration ?? 0 },
     ]);
     return assertMessageType(message, "animation");
   }
 
   async sendVideo(chatId: ID, video: FileSource, params?: SendVideoParams) {
     const message = await this.#sendDocumentInner(chatId, video, params, FileType.Video, [
-      new types.DocumentAttributeVideo({
-        supports_streaming: params?.supportsStreaming ? true : undefined,
-        w: params?.width ?? 0,
-        h: params?.height ?? 0,
-        duration: params?.duration ?? 0,
-      }),
+      { _: "documentAttributeVideo", supports_streaming: params?.supportsStreaming ? true : undefined, w: params?.width ?? 0, h: params?.height ?? 0, duration: params?.duration ?? 0 },
     ]);
     return assertMessageType(message, "video");
   }
 
-  async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams & _SpoilCommon | undefined, fileType: FileType, otherAttribs: enums.DocumentAttribute[], urlSupported = true, expectedMimeTypes?: string[]) {
-    let media: enums.InputMedia | null = null;
+  async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams & _SpoilCommon | undefined, fileType: FileType, otherAttribs: Api.DocumentAttribute[], urlSupported = true, expectedMimeTypes?: string[]) {
+    let media: Api.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
     const ttl_seconds = params && "selfDestruct" in params && typeof params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct as SelfDestructOption) : undefined;
 
     if (typeof document === "string") {
       const fileId = this.resolveFileId(document, fileType);
       if (fileId != null) {
-        media = new types.InputMediaDocument({
-          id: new types.InputDocument(fileId),
-          spoiler,
-          query: otherAttribs.find((v): v is types.DocumentAttributeSticker => v instanceof types.DocumentAttributeSticker)?.alt || undefined,
-          ttl_seconds,
-        });
+        media = { _: "inputMediaDocument", id: { ...fileId, _: "inputDocument" }, spoiler, query: otherAttribs.find((v): v is Api.documentAttributeSticker => is("documentAttributeSticker", v))?.alt || undefined, ttl_seconds };
       }
     }
 
@@ -560,7 +517,7 @@ export class MessageManager {
         if (!urlSupported) {
           throw new InputError("URL not supported.");
         }
-        media = new types.InputMediaDocumentExternal({ url: document, spoiler, ttl_seconds });
+        media = { _: "inputMediaDocumentExternal", url: document, spoiler, ttl_seconds };
       } else {
         let mimeType: string;
         const file = await this.#c.fileManager.upload(document, params, (name) => {
@@ -573,19 +530,11 @@ export class MessageManager {
           }
           return name;
         });
-        let thumb: enums.InputFile | undefined = undefined;
+        let thumb: Api.InputFile | undefined = undefined;
         if (params?.thumbnail) {
           thumb = await this.#c.fileManager.upload(params.thumbnail, { chunkSize: params?.chunkSize, signal: params?.signal });
         }
-        media = new types.InputMediaUploadedDocument({
-          file,
-          thumb,
-          spoiler,
-          attributes: [new types.DocumentAttributeFilename({ file_name: file.name }), ...otherAttribs],
-          mime_type: mimeType!,
-          force_file: fileType == FileType.Document ? true : undefined,
-          ttl_seconds,
-        });
+        media = { _: "inputMediaUploadedDocument", file, thumb, spoiler, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, ...otherAttribs], mime_type: mimeType!, force_file: fileType == FileType.Document ? true : undefined, ttl_seconds };
       }
     }
 
@@ -599,40 +548,28 @@ export class MessageManager {
   }
 
   async sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams) {
-    const message = await this.#sendDocumentInner(chatId, sticker, params, FileType.Sticker, [new types.DocumentAttributeSticker({ alt: params?.emoji || "", stickerset: new types.InputStickerSetEmpty() })], undefined, STICKER_MIME_TYPES);
+    const message = await this.#sendDocumentInner(chatId, sticker, params, FileType.Sticker, [{ _: "documentAttributeSticker", alt: params?.emoji || "", stickerset: { _: "inputStickerSetEmpty" } }], undefined, STICKER_MIME_TYPES);
     return assertMessageType(message, "sticker");
   }
 
   async sendPhoto(chatId: ID, photo: FileSource, params?: SendPhotoParams) {
-    let media: enums.InputMedia | null = null;
+    let media: Api.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
     const ttl_seconds = params && "selfDestruct" in params && params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct) : undefined;
 
     if (typeof photo === "string") {
       const fileId = this.resolveFileId(photo, [FileType.Photo, FileType.ProfilePhoto]);
       if (fileId != null) {
-        media = new types.InputMediaPhoto({
-          id: new types.InputPhoto(fileId),
-          spoiler,
-          ttl_seconds,
-        });
+        media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" }, spoiler, ttl_seconds };
       }
     }
 
     if (media == null) {
       if (typeof photo === "string" && isHttpUrl(photo)) {
-        media = new types.InputMediaPhotoExternal({
-          url: photo,
-          spoiler,
-          ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined,
-        });
+        media = { _: "inputMediaPhotoExternal", url: photo, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined };
       } else {
         const file = await this.#c.fileManager.upload(photo, params, null, false);
-        media = new types.InputMediaUploadedPhoto({
-          file,
-          spoiler,
-          ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined,
-        });
+        media = { _: "inputMediaUploadedPhoto", file, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined };
       }
     }
 
@@ -640,7 +577,7 @@ export class MessageManager {
     return assertMessageType(message, "photo");
   }
 
-  async #sendMedia(chatId: ID, media: enums.InputMedia, params: SendPhotoParams | undefined) {
+  async #sendMedia(chatId: ID, media: Api.InputMedia, params: SendPhotoParams | undefined) {
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
@@ -655,7 +592,8 @@ export class MessageManager {
     const captionEntities = parseResult === undefined ? undefined : parseResult[1];
 
     const result = await this.#c.invoke(
-      new functions.messages.sendMedia({
+      {
+        _: "messages.sendMedia",
         peer,
         random_id: randomId,
         silent,
@@ -666,7 +604,7 @@ export class MessageManager {
         media,
         message: caption ?? "",
         entities: captionEntities,
-      }),
+      },
       params?.businessConnectionId,
     );
 
@@ -715,29 +653,15 @@ export class MessageManager {
     const solution = parseResult === undefined ? undefined : parseResult[0];
     const solutionEntities = parseResult === undefined ? undefined : parseResult[1];
 
-    const answers = options.map((v, i) => new types.PollAnswer({ option: new Uint8Array([i]), text: v }));
+    const answers: Api.pollAnswer[] = options.map((v, i) => ({ _: "pollAnswer", option: new Uint8Array([i]), text: v }));
 
-    const poll = new types.Poll({
-      id: getRandomId(),
-      answers,
-      question,
-      closed: params?.isClosed ? true : undefined,
-      close_date: params?.closeDate ? toUnixTimestamp(params.closeDate) : undefined,
-      close_period: params?.openPeriod ? params.openPeriod : undefined,
-      multiple_choice: params?.allowMultipleAnswers ? true : undefined,
-      public_voters: params?.isAnonymous === false ? true : undefined,
-      quiz: params?.type == "quiz" ? true : undefined,
-    });
+    const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate ? toUnixTimestamp(params.closeDate) : undefined, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type == "quiz" ? true : undefined };
 
-    const media = new types.InputMediaPoll({
-      poll,
-      correct_answers: params?.correctOptionIndex ? [new Uint8Array([params.correctOptionIndex])] : undefined,
-      solution,
-      solution_entities: solutionEntities,
-    });
+    const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndex ? [new Uint8Array([params.correctOptionIndex])] : undefined, solution, solution_entities: solutionEntities };
 
     const result = await this.#c.invoke(
-      new functions.messages.sendMedia({
+      {
+        _: "messages.sendMedia",
         peer,
         random_id: randomId,
         silent,
@@ -747,7 +671,7 @@ export class MessageManager {
         send_as: sendAs,
         media,
         message: "",
-      }),
+      },
       params?.businessConnectionId,
     );
 
@@ -760,11 +684,7 @@ export class MessageManager {
     messageId: number,
     params?: EditMessageReplyMarkupParams,
   ) {
-    const result = await this.#c.api.messages.editMessage({
-      id: checkMessageId(messageId),
-      peer: await this.#c.getInputPeer(chatId),
-      reply_markup: await this.#constructReplyMarkup(params),
-    });
+    const result = await this.#c.invoke({ _: "messages.editMessage", id: checkMessageId(messageId), peer: await this.#c.getInputPeer(chatId), reply_markup: await this.#constructReplyMarkup(params) });
 
     const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return message_;
@@ -776,10 +696,7 @@ export class MessageManager {
   ) {
     const id = deserializeInlineMessageId(inlineMessageId);
 
-    await this.#c.api.messages.editInlineBotMessage({
-      id,
-      reply_markup: await this.#constructReplyMarkup(params),
-    });
+    await this.#c.invoke({ _: "messages.editInlineBotMessage", id, reply_markup: await this.#constructReplyMarkup(params) });
   }
 
   async editMessageText(
@@ -792,26 +709,12 @@ export class MessageManager {
     const noWebpage = params?.linkPreview?.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
 
-    let media: enums.InputMedia | undefined = undefined;
+    let media: Api.InputMedia | undefined = undefined;
     if (!noWebpage && params?.linkPreview?.url) {
-      media = new types.InputMediaWebPage({
-        url: params.linkPreview.url,
-        force_large_media: params.linkPreview.largeMedia ? true : undefined,
-        force_small_media: params.linkPreview.smallMedia ? true : undefined,
-        optional: message.length ? undefined : true,
-      });
+      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.largeMedia ? true : undefined, force_small_media: params.linkPreview.smallMedia ? true : undefined, optional: message.length ? undefined : true };
     }
 
-    const result = await this.#c.api.messages.editMessage({
-      id: checkMessageId(messageId),
-      peer: await this.#c.getInputPeer(chatId),
-      entities,
-      message,
-      media,
-      no_webpage: noWebpage,
-      invert_media: invertMedia,
-      reply_markup: await this.#constructReplyMarkup(params),
-    });
+    const result = await this.#c.invoke({ _: "messages.editMessage", id: checkMessageId(messageId), peer: await this.#c.getInputPeer(chatId), entities, message, media, no_webpage: noWebpage, invert_media: invertMedia, reply_markup: await this.#constructReplyMarkup(params) });
 
     const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return assertMessageType(message_, "text");
@@ -824,45 +727,28 @@ export class MessageManager {
     const noWebpage = params?.linkPreview?.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
 
-    let media: enums.InputMedia | undefined = undefined;
+    let media: Api.InputMedia | undefined = undefined;
     if (!noWebpage && params?.linkPreview?.url) {
-      media = new types.InputMediaWebPage({
-        url: params.linkPreview.url,
-        force_large_media: params.linkPreview.largeMedia ? true : undefined,
-        force_small_media: params.linkPreview.smallMedia ? true : undefined,
-        optional: message.length ? undefined : true,
-      });
+      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.largeMedia ? true : undefined, force_small_media: params.linkPreview.smallMedia ? true : undefined, optional: message.length ? undefined : true };
     }
 
-    await this.#c.api.messages.editInlineBotMessage({
-      id,
-      entities,
-      message,
-      media,
-      no_webpage: noWebpage,
-      invert_media: invertMedia,
-      reply_markup: await this.#constructReplyMarkup(params),
-    });
+    await this.#c.invoke({ _: "messages.editInlineBotMessage", id, entities, message, media, no_webpage: noWebpage, invert_media: invertMedia, reply_markup: await this.#constructReplyMarkup(params) });
   }
 
-  async #resolveInputMediaInner(document: FileSource, media: InputMedia, fileType: FileType, otherAttribs: enums.DocumentAttribute[]) {
-    let media_: enums.InputMedia | null = null;
+  async #resolveInputMediaInner(document: FileSource, media: InputMedia, fileType: FileType, otherAttribs: Api.DocumentAttribute[]) {
+    let media_: Exclude<Api.InputMedia, Api.inputMediaEmpty> | null = null;
     const spoiler = "hasSpoiler" in media && media.hasSpoiler ? true : undefined;
 
     if (typeof document === "string") {
       const fileId = this.resolveFileId(document, fileType);
       if (fileId != null) {
-        media_ = new types.InputMediaDocument({
-          id: new types.InputDocument(fileId),
-          spoiler,
-          query: otherAttribs.find((v): v is types.DocumentAttributeSticker => v instanceof types.DocumentAttributeSticker)?.alt || undefined,
-        });
+        media_ = { _: "inputMediaDocument", id: { ...fileId, _: "inputDocument" }, spoiler, query: otherAttribs.find((v): v is Api.documentAttributeSticker => is("documentAttributeSticker", v))?.alt || undefined };
       }
     }
 
     if (media_ == null) {
       if (typeof document === "string" && isHttpUrl(document)) {
-        media_ = new types.InputMediaDocumentExternal({ url: document, spoiler });
+        media_ = { _: "inputMediaDocumentExternal", url: document, spoiler };
       } else {
         let mimeType: string;
         const file = await this.#c.fileManager.upload(document, media, (name) => {
@@ -872,18 +758,11 @@ export class MessageManager {
           }
           return name;
         });
-        let thumb: enums.InputFile | undefined = undefined;
+        let thumb: Api.InputFile | undefined = undefined;
         if ("thumbnail" in media && media.thumbnail) {
           thumb = await this.#c.fileManager.upload(media.thumbnail, { chunkSize: media?.chunkSize, signal: media?.signal });
         }
-        media_ = new types.InputMediaUploadedDocument({
-          file,
-          thumb,
-          spoiler,
-          attributes: [new types.DocumentAttributeFilename({ file_name: file.name }), ...otherAttribs],
-          mime_type: mimeType!,
-          force_file: fileType == FileType.Document ? true : undefined,
-        });
+        media_ = { _: "inputMediaUploadedDocument", file, thumb, spoiler, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, ...otherAttribs], mime_type: mimeType!, force_file: fileType == FileType.Document ? true : undefined };
       }
     }
 
@@ -892,46 +771,33 @@ export class MessageManager {
   async #resolveInputMedia(media: InputMedia) {
     if ("animation" in media) {
       return await this.#resolveInputMediaInner(media.animation, media, FileType.Animation, [
-        new types.DocumentAttributeAnimated(),
-        new types.DocumentAttributeVideo({
-          supports_streaming: true,
-          w: media?.width ?? 0,
-          h: media?.height ?? 0,
-          duration: media?.duration ?? 0,
-        }),
+        { _: "documentAttributeAnimated" },
+        { _: "documentAttributeVideo", supports_streaming: true, w: media?.width ?? 0, h: media?.height ?? 0, duration: media?.duration ?? 0 },
       ]);
     } else if ("audio" in media) {
       return await this.#resolveInputMediaInner(media.audio, media, FileType.Audio, [
-        new types.DocumentAttributeAudio({
-          duration: media?.duration ?? 0,
-          performer: media?.performer,
-          title: media?.title,
-        }),
+        { _: "documentAttributeAudio", duration: media?.duration ?? 0, performer: media?.performer, title: media?.title },
       ]);
     } else if ("document" in media) {
       return await this.#resolveInputMediaInner(media.document, media, FileType.Document, []);
     } else if ("photo" in media) {
-      let media_: enums.InputMedia | null = null;
+      let media_: Api.InputMedia | null = null;
       const spoiler = media.hasSpoiler ? true : undefined;
       const ttl_seconds = "selfDestruct" in media && media.selfDestruct !== undefined ? selfDestructOptionToInt(media.selfDestruct) : undefined;
 
       if (typeof media.photo === "string") {
         const fileId = this.resolveFileId(media.photo, [FileType.Photo, FileType.ProfilePhoto]);
         if (fileId != null) {
-          media_ = new types.InputMediaPhoto({
-            id: new types.InputPhoto(fileId),
-            spoiler,
-            ttl_seconds,
-          });
+          media_ = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" }, spoiler, ttl_seconds };
         }
       }
 
       if (media_ == null) {
         if (typeof media.photo === "string" && isHttpUrl(media.photo)) {
-          media_ = new types.InputMediaPhotoExternal({ url: media.photo, spoiler });
+          media_ = { _: "inputMediaPhotoExternal", url: media.photo, spoiler };
         } else {
           const file = await this.#c.fileManager.upload(media.photo, media, null, false);
-          media_ = new types.InputMediaUploadedPhoto({ file, spoiler, ttl_seconds });
+          media_ = { _: "inputMediaUploadedPhoto", file, spoiler, ttl_seconds };
         }
       }
 
@@ -939,12 +805,7 @@ export class MessageManager {
     } else if ("video" in media) {
       const ttl_seconds = "selfDestruct" in media && media.selfDestruct !== undefined ? selfDestructOptionToInt(media.selfDestruct) : undefined;
       const media_ = await this.#resolveInputMediaInner(media.video, media, FileType.Video, [
-        new types.DocumentAttributeVideo({
-          supports_streaming: media?.supportsStreaming ? true : undefined,
-          w: media?.width ?? 0,
-          h: media?.height ?? 0,
-          duration: media?.duration ?? 0,
-        }),
+        { _: "documentAttributeVideo", supports_streaming: media?.supportsStreaming ? true : undefined, w: media?.width ?? 0, h: media?.height ?? 0, duration: media?.duration ?? 0 },
       ]);
       media_.ttl_seconds = ttl_seconds;
       return media_;
@@ -965,12 +826,7 @@ export class MessageManager {
     if (!("animation" in message) && !("audio" in message) && !("document" in message) && !("photo" in message) && !("video" in message)) {
       throw new InputError("Unexpected message type.");
     }
-    const result = await this.#c.api.messages.editMessage({
-      peer: await this.#c.getInputPeer(chatId),
-      id: messageId,
-      media: await this.#resolveInputMedia(media),
-      reply_markup: await this.#constructReplyMarkup(params),
-    });
+    const result = await this.#c.invoke({ _: "messages.editMessage", peer: await this.#c.getInputPeer(chatId), id: messageId, media: await this.#resolveInputMedia(media), reply_markup: await this.#constructReplyMarkup(params) });
 
     const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return message_;
@@ -979,66 +835,44 @@ export class MessageManager {
   async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditMessageMediaParams) {
     await this.#c.storage.assertBot("editInlineMessageMedia");
     const id = deserializeInlineMessageId(inlineMessageId);
-    await this.#c.api.messages.editInlineBotMessage({
-      id,
-      media: await this.#resolveInputMedia(media),
-      reply_markup: await this.#constructReplyMarkup(params),
-    });
+    await this.#c.invoke({ _: "messages.editInlineBotMessage", id, media: await this.#resolveInputMedia(media), reply_markup: await this.#constructReplyMarkup(params) });
   }
 
   async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams) {
     checkArray(messageIds, checkMessageId);
     const peer = await this.#c.getInputPeer(chatId);
-    if (peer instanceof types.InputPeerChannel) {
-      await this.#c.api.channels.deleteMessages({ channel: new types.InputChannel(peer), id: messageIds });
+    if (is("inputPeerChannel", peer)) {
+      await this.#c.invoke({ _: "channels.deleteMessages", channel: { ...peer, _: "inputChannel" }, id: messageIds });
     } else {
-      await this.#c.api.messages.deleteMessages({ id: messageIds, revoke: params?.onlyForMe ? undefined : true });
+      await this.#c.invoke({ _: "messages.deleteMessages", id: messageIds, revoke: params?.onlyForMe ? undefined : true });
     }
   }
 
   async deleteChatMemberMessages(chatId: ID, memberId: ID) {
     const channel = await this.#c.getInputChannel(chatId);
     const participant = await this.#c.getInputPeer(memberId);
-    await this.#c.api.channels.deleteParticipantHistory({ channel, participant });
+    await this.#c.invoke({ _: "channels.deleteParticipantHistory", channel, participant });
   }
 
   async pinMessage(chatId: ID, messageId: number, params?: PinMessageParams) {
-    await this.#c.api.messages.updatePinnedMessage({
-      peer: await this.#c.getInputPeer(chatId),
-      id: checkMessageId(messageId),
-      silent: params?.disableNotification ? true : undefined,
-      pm_oneside: params?.bothSides ? undefined : true,
-    });
+    await this.#c.invoke({ _: "messages.updatePinnedMessage", peer: await this.#c.getInputPeer(chatId), id: checkMessageId(messageId), silent: params?.disableNotification ? true : undefined, pm_oneside: params?.bothSides ? undefined : true });
   }
 
   async unpinMessage(chatId: ID, messageId: number) {
-    await this.#c.api.messages.updatePinnedMessage({
-      peer: await this.#c.getInputPeer(chatId),
-      id: checkMessageId(messageId),
-      unpin: true,
-    });
+    await this.#c.invoke({ _: "messages.updatePinnedMessage", peer: await this.#c.getInputPeer(chatId), id: checkMessageId(messageId), unpin: true });
   }
 
   async unpinMessages(chatId: ID) {
-    await this.#c.api.messages.unpinAllMessages({ peer: await this.#c.getInputPeer(chatId) });
+    await this.#c.invoke({ _: "messages.unpinAllMessages", peer: await this.#c.getInputPeer(chatId) });
   }
 
   async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]) {
     // TODO: sync with storage
-    await this.#c.api.messages.setChatAvailableReactions({
-      peer: await this.#c.getInputPeer(chatId),
-      available_reactions: availableReactions == "none" ? new types.ChatReactionsNone() : availableReactions == "all" ? new types.ChatReactionsAll() : Array.isArray(availableReactions) ? new types.ChatReactionsSome({ reactions: availableReactions.map((v) => v.type == "emoji" ? new types.ReactionEmoji({ emoticon: v.emoji }) : new types.ReactionCustomEmoji({ document_id: BigInt(v.id) })) }) : unreachable(),
-    });
+    await this.#c.invoke({ _: "messages.setChatAvailableReactions", peer: await this.#c.getInputPeer(chatId), available_reactions: availableReactions == "none" ? { _: "chatReactionsNone" } : availableReactions == "all" ? { _: "chatReactionsAll" } : Array.isArray(availableReactions) ? ({ _: "chatReactionsSome", reactions: availableReactions.map((v) => v.type == "emoji" ? ({ _: "reactionEmoji", emoticon: v.emoji }) : ({ _: "reactionCustomEmoji", document_id: BigInt(v.id) })) }) : unreachable() });
   }
 
   async #sendReaction(chatId: ID, messageId: number, reactions: Reaction[], params?: AddReactionParams) {
-    await this.#c.api.messages.sendReaction({
-      peer: await this.#c.getInputPeer(chatId),
-      msg_id: checkMessageId(messageId),
-      reaction: reactions.map((v) => reactionToTlObject(v)),
-      big: params?.big ? true : undefined,
-      add_to_recent: params?.addToRecents ? true : undefined,
-    });
+    await this.#c.invoke({ _: "messages.sendReaction", peer: await this.#c.getInputPeer(chatId), msg_id: checkMessageId(messageId), reaction: reactions.map((v) => reactionToTlObject(v)), big: params?.big ? true : undefined, add_to_recent: params?.addToRecents ? true : undefined });
   }
 
   async setReactions(chatId: ID, messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
@@ -1075,37 +909,37 @@ export class MessageManager {
     }
   }
 
-  static canHandleUpdate(update: enums.Update): update is MessageManagerUpdate {
-    return update instanceof types.UpdateNewMessage ||
-      update instanceof types.UpdateNewChannelMessage ||
-      update instanceof types.UpdateEditMessage ||
-      update instanceof types.UpdateEditChannelMessage ||
-      update instanceof types.UpdateBotNewBusinessMessage ||
-      update instanceof types.UpdateBotEditBusinessMessage ||
-      update instanceof types.UpdateBotDeleteBusinessMessage ||
-      update instanceof types.UpdateDeleteMessages ||
-      update instanceof types.UpdateDeleteChannelMessages ||
-      update instanceof types.UpdateChannelParticipant ||
-      update instanceof types.UpdateChatParticipant;
+  static canHandleUpdate(update: Api.Update): update is MessageManagerUpdate {
+    return is("updateNewMessage", update) ||
+      is("updateNewChannelMessage", update) ||
+      is("updateEditMessage", update) ||
+      is("updateEditChannelMessage", update) ||
+      is("updateBotNewBusinessMessage", update) ||
+      is("updateBotEditBusinessMessage", update) ||
+      is("updateBotDeleteBusinessMessage", update) ||
+      is("updateDeleteMessages", update) ||
+      is("updateDeleteChannelMessages", update) ||
+      is("updateChannelParticipant", update) ||
+      is("updateChatParticipant", update);
   }
 
   async handleUpdate(update: MessageManagerUpdate): Promise<Update | null> {
-    if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
-      if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
+    if (is("updateNewMessage", update) || is("updateNewChannelMessage", update) || is("updateEditMessage", update) || is("updateEditChannelMessage", update)) {
+      if (is("message", update.message) || is("messageService", update.message)) {
         const chatId = peerToChatId(update.message.peer_id);
         await this.#c.messageStorage.setMessage(chatId, update.message.id, update.message);
       }
     }
 
     if (
-      update instanceof types.UpdateNewMessage ||
-      update instanceof types.UpdateNewChannelMessage ||
-      update instanceof types.UpdateEditMessage ||
-      update instanceof types.UpdateEditChannelMessage ||
-      update instanceof types.UpdateBotNewBusinessMessage ||
-      update instanceof types.UpdateBotEditBusinessMessage
+      is("updateNewMessage", update) ||
+      is("updateNewChannelMessage", update) ||
+      is("updateEditMessage", update) ||
+      is("updateEditChannelMessage", update) ||
+      is("updateBotNewBusinessMessage", update) ||
+      is("updateBotEditBusinessMessage", update)
     ) {
-      if (!(update.message instanceof types.MessageEmpty)) {
+      if (!(is("messageEmpty", update.message))) {
         const isOutgoing = update.message.out;
         let shouldIgnore = isOutgoing ? (await this.#c.storage.getAccountType()) == "user" ? false : true : false;
         if (this.#c.ignoreOutgoing != null && isOutgoing) {
@@ -1114,16 +948,16 @@ export class MessageManager {
         if (!shouldIgnore) {
           const business = "connection_id" in update ? { connectionId: update.connection_id, replyToMessage: update.reply_to_message } : undefined;
           const message = await this.constructMessage(update.message, undefined, business);
-          if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateBotNewBusinessMessage) {
-            return ({ message });
+          if (is("updateNewMessage", update) || is("updateNewChannelMessage", update) || is("updateBotNewBusinessMessage", update)) {
+            return { message };
           } else {
-            return ({ editedMessage: message });
+            return { editedMessage: message };
           }
         }
       }
     }
 
-    if (update instanceof types.UpdateDeleteMessages) {
+    if (is("updateDeleteMessages", update)) {
       const deletedMessages = new Array<{ chatId: number; messageId: number }>();
       for (const messageId of update.messages) {
         const chatId = await this.#c.messageStorage.getMessageChat(messageId);
@@ -1134,7 +968,7 @@ export class MessageManager {
       if (deletedMessages.length > 0) {
         return { deletedMessages };
       }
-    } else if (update instanceof types.UpdateDeleteChannelMessages) {
+    } else if (is("updateDeleteChannelMessages", update)) {
       const chatId = getChannelChatId(update.channel_id);
       const deletedMessages = new Array<{ chatId: number; messageId: number }>();
       for (const messageId of update.messages) {
@@ -1144,13 +978,13 @@ export class MessageManager {
         }
       }
       return { deletedMessages };
-    } else if (update instanceof types.UpdateBotDeleteBusinessMessage) {
+    } else if (is("updateBotDeleteBusinessMessage", update)) {
       const chatId = peerToChatId(update.peer);
       const deletedMessages = update.messages.map((v) => ({ chatId, messageId: v }));
       return { deletedMessages, businessConnectionId: update.connection_id };
     }
 
-    if (update instanceof types.UpdateChannelParticipant || update instanceof types.UpdateChatParticipant) {
+    if (is("updateChannelParticipant", update) || is("updateChatParticipant", update)) {
       const chatMember = await constructChatMemberUpdated(update, this.#c.getEntity);
       const selfId = await this.#c.getSelfId();
       if (chatMember.oldChatMember.user.id == selfId) {
@@ -1164,83 +998,83 @@ export class MessageManager {
   }
 
   async sendChatAction(chatId: ID, action: ChatAction, params?: SendChatActionParams) {
-    let action_: enums.SendMessageAction;
+    let action_: Api.SendMessageAction;
     switch (action) {
       case "type":
-        action_ = new types.SendMessageTypingAction();
+        action_ = { _: "sendMessageTypingAction" };
         break;
       case "uploadPhoto":
-        action_ = new types.SendMessageUploadPhotoAction({ progress: 0 });
+        action_ = { _: "sendMessageUploadPhotoAction", progress: 0 };
         break;
       case "recordVideo":
-        action_ = new types.SendMessageRecordVideoAction();
+        action_ = { _: "sendMessageRecordVideoAction" };
         break;
       case "uploadVideo":
-        action_ = new types.SendMessageRecordVideoAction();
+        action_ = { _: "sendMessageRecordVideoAction" };
         break;
       case "recordVoice":
-        action_ = new types.SendMessageRecordAudioAction();
+        action_ = { _: "sendMessageRecordAudioAction" };
         break;
       case "uploadAudio":
-        action_ = new types.SendMessageUploadAudioAction({ progress: 0 });
+        action_ = { _: "sendMessageUploadAudioAction", progress: 0 };
         break;
       case "uploadDocument":
-        action_ = new types.SendMessageUploadDocumentAction({ progress: 0 });
+        action_ = { _: "sendMessageUploadDocumentAction", progress: 0 };
         break;
       case "chooseSticker":
-        action_ = new types.SendMessageChooseStickerAction();
+        action_ = { _: "sendMessageChooseStickerAction" };
         break;
       case "findLocation":
-        action_ = new types.SendMessageGeoLocationAction();
+        action_ = { _: "sendMessageGeoLocationAction" };
         break;
       case "recordVideoNote":
-        action_ = new types.SendMessageRecordRoundAction();
+        action_ = { _: "sendMessageRecordRoundAction" };
         break;
       case "uploadVideoNote":
-        action_ = new types.SendMessageUploadRoundAction({ progress: 0 });
+        action_ = { _: "sendMessageUploadRoundAction", progress: 0 };
         break;
       default:
         throw new InputError(`Invalid chat action: ${action}`);
     }
-    await this.#c.invoke(new functions.messages.setTyping({ peer: await this.#c.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId }), params?.businessConnectionId);
+    await this.#c.invoke({ _: "messages.setTyping", peer: await this.#c.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId }, params?.businessConnectionId);
   }
 
   async deleteChatPhoto(chatId: number) {
     const peer = await this.#c.getInputPeer(chatId);
-    if (!(peer instanceof types.InputPeerChannel) && !(peer instanceof types.InputPeerChat)) {
+    if (!(is("inputPeerChannel", peer)) && !(is("inputPeerChat", peer))) {
       unreachable();
     }
 
-    if (peer instanceof types.InputPeerChannel) {
-      await this.#c.api.channels.editPhoto({ channel: new types.InputChannel(peer), photo: new types.InputChatPhotoEmpty() });
-    } else if (peer instanceof types.InputPeerChat) {
-      await this.#c.api.messages.editChatPhoto({ chat_id: peer.chat_id, photo: new types.InputChatPhotoEmpty() });
+    if (is("inputPeerChannel", peer)) {
+      await this.#c.invoke({ _: "channels.editPhoto", channel: { ...peer, _: "inputChannel" }, photo: { _: "inputChatPhotoEmpty" } });
+    } else if (is("inputPeerChat", peer)) {
+      await this.#c.invoke({ _: "messages.editChatPhoto", chat_id: peer.chat_id, photo: { _: "inputChatPhotoEmpty" } });
     }
   }
 
   async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
     const peer = await this.#c.getInputPeer(chatId);
-    if (!(peer instanceof types.InputPeerChannel) && !(peer instanceof types.InputPeerChat)) {
+    if (!(is("inputPeerChannel", peer)) && !(is("inputPeerChat", peer))) {
       unreachable();
     }
 
     const file = await this.#c.fileManager.upload(photo, params);
-    const photo_ = new types.InputChatUploadedPhoto({ file });
+    const photo_: Api.inputChatUploadedPhoto = { _: "inputChatUploadedPhoto", file };
 
-    if (peer instanceof types.InputPeerChannel) {
-      await this.#c.api.channels.editPhoto({ channel: new types.InputChannel(peer), photo: photo_ });
-    } else if (peer instanceof types.InputPeerChat) {
-      await this.#c.api.messages.editChatPhoto({ chat_id: peer.chat_id, photo: photo_ });
+    if (is("inputPeerChannel", peer)) {
+      await this.#c.invoke({ _: "channels.editPhoto", channel: { ...peer, _: "inputChannel" }, photo: photo_ });
+    } else if (is("inputPeerChat", peer)) {
+      await this.#c.invoke({ _: "messages.editChatPhoto", chat_id: peer.chat_id, photo: photo_ });
     }
   }
 
   async banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams) {
     const chat = await this.#c.getInputPeer(chatId);
-    if (!(chat instanceof types.InputPeerChannel) && !(chat instanceof types.InputPeerChat)) {
+    if (!(is("inputPeerChannel", chat)) && !(is("inputPeerChat", chat))) {
       throw new InputError("Expected a channel, supergroup, or group ID.");
     }
     const member = await this.#c.getInputPeer(memberId);
-    if (chat instanceof types.InputPeerChannel) {
+    if (is("inputPeerChannel", chat)) {
       if (params?.deleteMessages) {
         try {
           await this.deleteChatMemberMessages(chatId, memberId);
@@ -1248,10 +1082,12 @@ export class MessageManager {
           //
         }
       }
-      await this.#c.api.channels.editBanned({
-        channel: new types.InputChannel(chat),
+      await this.#c.invoke({
+        _: "channels.editBanned",
+        channel: { ...chat, _: "inputChannel" },
         participant: member,
-        banned_rights: new types.ChatBannedRights({
+        banned_rights: ({
+          _: "chatBannedRights",
           until_date: params?.untilDate ? toUnixTimestamp(params.untilDate) : 0, // todo
           view_messages: true,
           send_messages: true,
@@ -1263,50 +1099,32 @@ export class MessageManager {
           embed_links: true,
         }),
       });
-    } else if (chat instanceof types.InputPeerChat) {
-      if (!(member instanceof types.InputPeerUser)) {
+    } else if (is("inputPeerChat", chat)) {
+      if (!(is("inputPeerUser", member))) {
         throw new InputError(`Invalid user ID: ${memberId}`);
       }
-      await this.#c.api.messages.deleteChatUser({
-        chat_id: chat.chat_id,
-        user_id: new types.InputUser(member),
-        revoke_history: params?.deleteMessages ? true : undefined,
-      });
+      await this.#c.invoke({ _: "messages.deleteChatUser", chat_id: chat.chat_id, user_id: { ...member, _: "inputUser" }, revoke_history: params?.deleteMessages ? true : undefined });
     }
   }
 
   async unbanChatMember(chatId: ID, memberId: ID) {
     const channel = await this.#c.getInputChannel(chatId);
     const member = await this.#c.getInputPeer(memberId);
-    await this.#c.api.channels.editBanned({
-      channel,
-      participant: member,
-      banned_rights: new types.ChatBannedRights({ until_date: 0 }),
-    });
+    await this.#c.invoke({ _: "channels.editBanned", channel, participant: member, banned_rights: ({ _: "chatBannedRights", until_date: 0 }) });
   }
 
   async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams) {
     const channel = await this.#c.getInputChannel(chatId);
     const member = await this.#c.getInputPeer(memberId);
-    await this.#c.api.channels.editBanned({
-      channel,
-      participant: member,
-      banned_rights: chatMemberRightsToTlObject(params?.rights, params?.untilDate),
-    });
+    await this.#c.invoke({ _: "channels.editBanned", channel, participant: member, banned_rights: chatMemberRightsToTlObject(params?.rights, params?.untilDate) });
   }
 
   async getChatAdministrators(chatId: ID) {
     const peer = await this.#c.getInputPeer(chatId);
-    if (peer instanceof types.InputPeerChannel) {
-      const channel = new types.InputChannel(peer);
-      const participants = await this.#c.api.channels.getParticipants({
-        channel,
-        filter: new types.ChannelParticipantsAdmins(),
-        offset: 0,
-        limit: 100,
-        hash: 0n,
-      });
-      if (participants instanceof types.channels.ChannelParticipantsNotModified) {
+    if (is("inputPeerChannel", peer)) {
+      const channel: Api.inputChannel = { ...peer, _: "inputChannel" };
+      const participants = await this.#c.invoke({ _: "channels.getParticipants", channel, filter: { _: "channelParticipantsAdmins" }, offset: 0, limit: 100, hash: 0n });
+      if (is("channels.channelParticipantsNotModified", participants)) {
         unreachable();
       }
       const chatMembers = new Array<ChatMember>();
@@ -1314,9 +1132,9 @@ export class MessageManager {
         chatMembers.push(await constructChatMember(p, this.#c.getEntity));
       }
       return chatMembers;
-    } else if (peer instanceof types.InputPeerChat) {
-      const fullChat = await this.#c.api.messages.getFullChat(peer); // TODO: full chat cache
-      if (!(fullChat.full_chat instanceof types.ChatFull) || !(fullChat.full_chat.participants instanceof types.ChatParticipants)) {
+    } else if (is("inputPeerChat", peer)) {
+      const fullChat = await this.#c.invoke({ ...peer, _: "messages.getFullChat" }); // TODO: full chat cache
+      if (!(is("chatFull", fullChat.full_chat)) || !(is("chatParticipants", fullChat.full_chat.participants))) {
         unreachable();
       }
       const chatMembers = new Array<ChatMember>();
@@ -1331,7 +1149,7 @@ export class MessageManager {
 
   async #toggleJoinRequests(chatId: ID, enabled: boolean) {
     const channel = await this.#c.getInputChannel(chatId);
-    await this.#c.api.channels.toggleJoinRequest({ channel, enabled });
+    await this.#c.invoke({ _: "channels.toggleJoinRequest", channel, enabled });
   }
   async enableJoinRequests(chatId: ID) {
     await this.#c.storage.assertUser("enableJoinRequests");
@@ -1343,20 +1161,7 @@ export class MessageManager {
   }
 
   async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams) {
-    const result = await this.#c.api.messages.search({
-      peer: await this.#c.getInputPeer(chatId),
-      q: query,
-      add_offset: 0,
-      filter: messageSearchFilterToTlObject(params?.filter ?? "empty"),
-      hash: 0n,
-      limit: params?.limit ?? 100,
-      max_date: 0,
-      max_id: 0,
-      min_date: 0,
-      min_id: 0,
-      offset_id: params?.after ? params.after : 0,
-      from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined,
-    });
+    const result = await this.#c.invoke({ _: "messages.search", peer: await this.#c.getInputPeer(chatId), q: query, add_offset: 0, filter: messageSearchFilterToTlObject(params?.filter ?? "empty"), hash: 0n, limit: params?.limit ?? 100, max_date: 0, max_id: 0, min_date: 0, min_id: 0, offset_id: params?.after ? params.after : 0, from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined });
     if (!("messages" in result)) {
       unreachable();
     }
@@ -1370,45 +1175,32 @@ export class MessageManager {
 
   async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number) {
     const channel = await this.#c.getInputChannel(chatId);
-    await this.#c.api.channels.setBoostsToUnblockRestrictions({ channel, boosts });
+    await this.#c.invoke({ _: "channels.setBoostsToUnblockRestrictions", channel, boosts });
   }
 
   async createInviteLink(chatId: ID, params?: CreateInviteLinkParams) {
     if (params?.requireApproval && params?.limit) {
       throw new InputError("requireApproval cannot be true while limit is specified.");
     }
-    const result = await this.#c.api.messages.exportChatInvite({
-      peer: await this.#c.getInputPeer(chatId),
-      title: params?.title,
-      expire_date: params?.expireAt ? toUnixTimestamp(params.expireAt) : undefined,
-      request_needed: params?.requireApproval ? true : undefined,
-      usage_limit: params?.limit,
-    });
-    return await constructInviteLink(result[as](types.ChatInviteExported), this.#c.getEntity);
+    const result = await this.#c.invoke({ _: "messages.exportChatInvite", peer: await this.#c.getInputPeer(chatId), title: params?.title, expire_date: params?.expireAt ? toUnixTimestamp(params.expireAt) : undefined, request_needed: params?.requireApproval ? true : undefined, usage_limit: params?.limit });
+    return await constructInviteLink(as("chatInviteExported", result), this.#c.getEntity);
   }
 
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams) {
     await this.#c.storage.assertUser("getCreatedInviteLinks");
-    const { invites } = await this.#c.api.messages.getExportedChatInvites({
-      peer: await this.#c.getInputPeer(chatId),
-      revoked: params?.revoked ? true : undefined,
-      admin_id: params?.by ? await this.#c.getInputUser(params.by) : new types.InputUserEmpty(),
-      limit: params?.limit ?? 100,
-      offset_date: params?.afterDate ? toUnixTimestamp(params.afterDate) : undefined,
-      offset_link: params?.afterInviteLink,
-    });
-    return await Promise.all(invites.map((v) => v[as](types.ChatInviteExported)).map((v) => constructInviteLink(v, this.#c.getEntity)));
+    const { invites } = await this.#c.invoke({ _: "messages.getExportedChatInvites", peer: await this.#c.getInputPeer(chatId), revoked: params?.revoked ? true : undefined, admin_id: params?.by ? await this.#c.getInputUser(params.by) : { _: "inputUserEmpty" }, limit: params?.limit ?? 100, offset_date: params?.afterDate ? toUnixTimestamp(params.afterDate) : undefined, offset_link: params?.afterInviteLink });
+    return await Promise.all(invites.map((v) => as("chatInviteExported", v)).map((v) => constructInviteLink(v, this.#c.getEntity)));
   }
 
   async joinChat(chatId: ID) {
     await this.#c.storage.assertUser("joinChat");
     const peer = await this.#c.getInputPeer(chatId);
-    if (peer instanceof types.InputPeerUser) {
+    if (is("inputPeerUser", peer)) {
       throw new InputError("Cannot join private chats.");
-    } else if (peer instanceof types.InputPeerChannel) {
-      await this.#c.api.channels.joinChannel({ channel: new types.InputChannel(peer) });
-    } else if (peer instanceof types.InputPeerChat) {
-      await this.#c.api.messages.addChatUser({ chat_id: peer.chat_id, user_id: new types.InputUserSelf(), fwd_limit: 0 }); // TODO: use potential high-level method for adding participants to chats
+    } else if (is("inputPeerChannel", peer)) {
+      await this.#c.invoke({ _: "channels.joinChannel", channel: { ...peer, _: "inputChannel" } });
+    } else if (is("inputPeerChat", peer)) {
+      await this.#c.invoke({ _: "messages.addChatUser", chat_id: peer.chat_id, user_id: { _: "inputUserSelf" }, fwd_limit: 0 }); // TODO: use potential high-level method for adding participants to chats
     } else {
       unreachable();
     }
@@ -1416,12 +1208,12 @@ export class MessageManager {
 
   async leaveChat(chatId: ID) {
     const peer = await this.#c.getInputPeer(chatId);
-    if (peer instanceof types.InputPeerUser) {
+    if (is("inputPeerUser", peer)) {
       throw new InputError("Cannot leave private chats.");
-    } else if (peer instanceof types.InputPeerChannel) {
-      await this.#c.api.channels.leaveChannel({ channel: new types.InputChannel(peer) });
-    } else if (peer instanceof types.InputPeerChat) {
-      await this.#c.api.messages.deleteChatUser({ chat_id: peer.chat_id, user_id: new types.InputUserSelf() }); // TODO: use potential high-level method for adding participants to chats
+    } else if (is("inputPeerChannel", peer)) {
+      await this.#c.invoke({ _: "channels.leaveChannel", channel: { ...peer, _: "inputChannel" } });
+    } else if (is("inputPeerChat", peer)) {
+      await this.#c.invoke({ _: "messages.deleteChatUser", chat_id: peer.chat_id, user_id: { _: "inputUserSelf" } }); // TODO: use potential high-level method for adding participants to chats
     } else {
       unreachable();
     }
@@ -1430,34 +1222,31 @@ export class MessageManager {
   async blockUser(userId: ID) {
     await this.#c.storage.assertUser("blockUser");
     const id = await this.#c.getInputPeer(userId);
-    if (!(id instanceof types.User)) {
+    if (!(is("user", id))) {
       throw new InputError("Only users can be blocked or unblocked.");
     }
-    await this.#c.api.contacts.block({ id });
+    await this.#c.invoke({ _: "contacts.block", id });
   }
 
   async unblockUser(userId: ID) {
     await this.#c.storage.assertUser("unblockUser");
     const id = await this.#c.getInputPeer(userId);
-    if (!(id instanceof types.User)) {
+    if (!(is("user", id))) {
       throw new InputError("Only users can be blocked or unblocked.");
     }
-    await this.#c.api.contacts.unblock({ id });
+    await this.#c.invoke({ _: "contacts.unblock", id });
   }
 
   async getChatMember(chatId: ID, userId: ID) {
     const peer = await this.#c.getInputPeer(chatId);
 
-    if (peer instanceof types.InputPeerChannel) {
-      const { participant } = await this.#c.api.channels.getParticipant({
-        channel: new types.InputChannel(peer),
-        participant: await this.#c.getInputPeer(userId),
-      });
+    if (is("inputPeerChannel", peer)) {
+      const { participant } = await this.#c.invoke({ _: "channels.getParticipant", channel: { ...peer, _: "inputChannel" }, participant: await this.#c.getInputPeer(userId) });
       return await constructChatMember(participant, this.#c.getEntity);
-    } else if (peer instanceof types.InputPeerChat) {
+    } else if (is("inputPeerChat", peer)) {
       const user = await this.#c.getInputUser(userId);
-      const fullChat = await this.#c.api.messages.getFullChat(peer).then((v) => v.full_chat[as](types.ChatFull));
-      const participant = fullChat.participants[as](types.ChatParticipants).participants.find((v) => v.user_id == user.user_id)!;
+      const fullChat = await this.#c.invoke({ ...peer, _: "messages.getFullChat" }).then((v) => as("chatFull", v.full_chat));
+      const participant = as("chatParticipants", fullChat.participants).participants.find((v) => v.user_id == user.user_id)!;
       return await constructChatMember(participant, this.#c.getEntity);
     } else {
       throw new InputError("Expected a channel, supergroup, or group ID. Got a user ID instead.");
@@ -1466,12 +1255,12 @@ export class MessageManager {
 
   async setChatStickerSet(chatId: ID, setName: string) {
     const channel = await this.#c.getInputChannel(chatId);
-    await this.#c.api.channels.setStickers({ channel, stickerset: new types.InputStickerSetShortName({ short_name: setName }) });
+    await this.#c.invoke({ _: "channels.setStickers", channel, stickerset: { _: "inputStickerSetShortName", short_name: setName } });
   }
 
   async deleteChatStickerSet(chatId: ID) {
     const channel = await this.#c.getInputChannel(chatId);
-    await this.#c.api.channels.setStickers({ channel, stickerset: new types.InputStickerSetEmpty() });
+    await this.#c.invoke({ _: "channels.setStickers", channel, stickerset: { _: "inputStickerSetEmpty" } });
   }
 
   async stopPoll(chatId: ID, messageId: number, params?: StopPollParams) {
@@ -1486,19 +1275,7 @@ export class MessageManager {
       throw new InputError("Poll is already stopped.");
     }
 
-    const result = await this.#c.api.messages.editMessage({
-      peer: await this.#c.getInputPeer(chatId),
-      id: messageId,
-      media: new types.InputMediaPoll({
-        poll: new types.Poll({
-          id: BigInt(message.poll.id),
-          closed: true,
-          question: "",
-          answers: [],
-        }),
-      }),
-      reply_markup: await this.#constructReplyMarkup(params),
-    });
+    const result = await this.#c.invoke({ _: "messages.editMessage", peer: await this.#c.getInputPeer(chatId), id: messageId, media: ({ _: "inputMediaPoll", poll: ({ _: "poll", id: BigInt(message.poll.id), closed: true, question: "", answers: [] }) }), reply_markup: await this.#constructReplyMarkup(params) });
 
     const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return assertMessageType(message_, "poll").poll;
@@ -1507,20 +1284,7 @@ export class MessageManager {
   async editMessageLiveLocation(chatId: ID, messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {
     const message = await this.getMessage(chatId, messageId);
     if (message && "location" in message && message.location.livePeriod) {
-      const result = await this.#c.api.messages.editMessage({
-        peer: await this.#c.getInputPeer(chatId),
-        id: messageId,
-        media: new types.InputMediaGeoLive({
-          geo_point: new types.InputGeoPoint({
-            lat: latitude,
-            long: longitude,
-            accuracy_radius: params?.horizontalAccuracy,
-          }),
-          heading: params?.heading,
-          proximity_notification_radius: params?.proximityAlertRadius,
-        }),
-        reply_markup: await this.#constructReplyMarkup(params),
-      });
+      const result = await this.#c.invoke({ _: "messages.editMessage", peer: await this.#c.getInputPeer(chatId), id: messageId, media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }), reply_markup: await this.#constructReplyMarkup(params) });
 
       const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
       return assertMessageType(message, "location");
@@ -1531,18 +1295,6 @@ export class MessageManager {
   async editInlineMessageLiveLocation(inlineMessageId: string, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {
     await this.#c.storage.assertBot("editInlineMessageLiveLocation");
     const id = deserializeInlineMessageId(inlineMessageId);
-    await this.#c.api.messages.editInlineBotMessage({
-      id,
-      media: new types.InputMediaGeoLive({
-        geo_point: new types.InputGeoPoint({
-          lat: latitude,
-          long: longitude,
-          accuracy_radius: params?.horizontalAccuracy,
-        }),
-        heading: params?.heading,
-        proximity_notification_radius: params?.proximityAlertRadius,
-      }),
-      reply_markup: await this.#constructReplyMarkup(params),
-    });
+    await this.#c.invoke({ _: "messages.editInlineBotMessage", id, media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }), reply_markup: await this.#constructReplyMarkup(params) });
   }
 }

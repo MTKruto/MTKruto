@@ -19,23 +19,23 @@
  */
 
 import { MaybePromise } from "../1_utilities.ts";
-import { enums, types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { ID } from "./0_id.ts";
 
 /** @unlisted */
 export interface EntityGetter {
-  (peer: types.PeerUser): MaybePromise<types.User | null>;
-  (peer: types.PeerChat): MaybePromise<types.Chat | types.ChatForbidden | null>;
-  (peer: types.PeerChannel): MaybePromise<types.Channel | types.ChannelForbidden | null>;
-  (peer: types.PeerUser | types.PeerChat | types.PeerChannel): MaybePromise<types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden | null>;
+  (peer: Api.peerUser): MaybePromise<Api.user | null>;
+  (peer: Api.peerChat): MaybePromise<Api.chat | Api.chatForbidden | null>;
+  (peer: Api.peerChannel): MaybePromise<Api.channel | Api.channelForbidden | null>;
+  (peer: Api.peerUser | Api.peerChat | Api.peerChannel): MaybePromise<Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden | null>;
 }
 
 /** @unlisted */
 export interface InputPeerGetter {
-  (id: ID): Promise<enums.InputPeer>;
+  (id: ID): Promise<Api.InputPeer>;
 }
 
 /** @unlisted */
 export interface UsernameResolver {
-  (username: string): MaybePromise<types.InputUser>;
+  (username: string): MaybePromise<Api.inputUser>;
 }

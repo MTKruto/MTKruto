@@ -18,11 +18,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals, assertInstanceOf } from "../0_deps.ts";
+import { assertEquals } from "../0_deps.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
-import { paramDesc, serialize } from "./1_tl_object.ts";
-import { map, types } from "./2_types.ts";
-import { deserialize } from "./3_deserialize.ts";
+import { serialize } from "./2_serialize.ts";
+import { getType, getTypeName } from "./0_api.ts";
+import { deserialize } from "./2_deserialize.ts";
 
 Deno.test("deserialize", () => {
   // deno-fmt-ignore
@@ -93,10 +93,10 @@ Deno.test("deserialize", () => {
   const reader = new TLRawReader(buffer);
 
   const constructorId = reader.readInt32(false);
-  const constructor = map.get(constructorId)!;
+  const constructor = getTypeName(constructorId)!;
 
-  const config = deserialize(reader, constructor[paramDesc], constructor);
+  const config = deserialize(reader, getType(constructor)![1], constructor);
 
-  assertEquals(config[serialize](), buffer);
-  assertInstanceOf(config, types.Config);
+  assertEquals(serialize(config), buffer);
+  assertEquals(config._, "config");
 });

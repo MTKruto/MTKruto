@@ -55,6 +55,7 @@ jobs:
           cd dist
           npm publish --access public
         env:
+          __TYPE_MAP: 1
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   create-release:

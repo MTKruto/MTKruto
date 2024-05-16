@@ -19,7 +19,7 @@
  */
 
 import { toUnixTimestamp } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** The rights of a chat member. */
 export interface ChatMemberRights {
@@ -59,7 +59,7 @@ export interface ChatMemberRights {
   canManageTopics?: boolean;
 }
 
-export function constructChatMemberRights(rights: types.ChatBannedRights): ChatMemberRights {
+export function constructChatMemberRights(rights: Api.chatBannedRights): ChatMemberRights {
   return {
     canSendMessages: rights.send_messages ? true : false,
     canSendAudio: rights.send_audios ? true : false,
@@ -81,8 +81,9 @@ export function constructChatMemberRights(rights: types.ChatBannedRights): ChatM
   };
 }
 
-export function chatMemberRightsToTlObject(rights?: ChatMemberRights, untilDate?: Date): types.ChatBannedRights {
-  return new types.ChatBannedRights({
+export function chatMemberRightsToTlObject(rights?: ChatMemberRights, untilDate?: Date): Api.chatBannedRights {
+  return {
+    _: "chatBannedRights",
     until_date: untilDate ? toUnixTimestamp(untilDate) : 0,
     send_messages: rights?.canSendMessages ? true : undefined,
     send_audios: rights?.canSendAudio ? true : undefined,
@@ -101,5 +102,5 @@ export function chatMemberRightsToTlObject(rights?: ChatMemberRights, untilDate?
     invite_users: rights?.canInviteUsers ? true : undefined,
     pin_messages: rights?.canPinMessages ? true : undefined,
     manage_topics: rights?.canManageTopics ? true : undefined,
-  });
+  };
 }

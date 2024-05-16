@@ -19,7 +19,7 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 
 /** A chat photo. */
@@ -38,7 +38,7 @@ export interface ChatPhoto {
   personal: boolean;
 }
 
-export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto {
+export function constructChatPhoto(photo: Api.userProfilePhoto | Api.chatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto {
   const smallFileId_: FileId = {
     type: FileType.ProfilePhoto,
     dcId: photo.dc_id,
@@ -55,7 +55,7 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
   const bigFileId = serializeFileId(bigFileId_);
   const bigFileUniqueId = toUniqueFileId(bigFileId_);
 
-  if (photo instanceof types.ChatPhoto) {
+  if (is("chatPhoto", photo)) {
     return cleanObject({
       smallFileId,
       smallFileUniqueId,

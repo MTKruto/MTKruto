@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { enums, types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 export type MessageSearchFilter =
   | "empty"
@@ -37,36 +37,36 @@ export type MessageSearchFilter =
   | "mentions"
   | "pinned";
 
-export function messageSearchFilterToTlObject(filter: MessageSearchFilter): enums.MessagesFilter {
+export function messageSearchFilterToTlObject(filter: MessageSearchFilter): Api.MessagesFilter {
   switch (filter) {
     case "empty":
-      return new types.InputMessagesFilterEmpty();
+      return { _: "inputMessagesFilterEmpty" };
     case "animations":
-      return new types.InputMessagesFilterGif();
+      return { _: "inputMessagesFilterGif" };
     case "audios":
-      return new types.InputMessagesFilterMusic();
+      return { _: "inputMessagesFilterMusic" };
     case "documents":
-      return new types.InputMessagesFilterDocument();
+      return { _: "inputMessagesFilterDocument" };
     case "photos":
-      return new types.InputMessagesFilterPhotos();
+      return { _: "inputMessagesFilterPhotos" };
     case "videos":
-      return new types.InputMessagesFilterVideo();
+      return { _: "inputMessagesFilterVideo" };
     case "voiceMessages":
-      return new types.InputMessagesFilterVoice();
+      return { _: "inputMessagesFilterVoice" };
     case "photosAndVideos":
-      return new types.InputMessagesFilterPhotoVideo();
+      return { _: "inputMessagesFilterPhotoVideo" };
     case "links":
-      return new types.InputMessagesFilterUrl();
+      return { _: "inputMessagesFilterUrl" };
     case "chatPhotos":
-      return new types.InputMessagesFilterChatPhotos();
+      return { _: "inputMessagesFilterChatPhotos" };
     case "videoNotes":
-      return new types.InputMessagesFilterRoundVideo();
+      return { _: "inputMessagesFilterRoundVideo" };
     case "voiceMessagesAndVideoNotes":
-      return new types.InputMessagesFilterRoundVoice();
+      return { _: "inputMessagesFilterRoundVoice" };
     case "mentions":
-      return new types.InputMessagesFilterMyMentions();
+      return { _: "inputMessagesFilterMyMentions" };
     case "pinned":
-      return new types.InputMessagesFilterPinned();
+      return { _: "inputMessagesFilterPinned" };
     default:
       unreachable();
   }

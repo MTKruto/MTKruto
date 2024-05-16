@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructGiveawayParameters, GiveawayParameters } from "./0_giveaway_parameters.ts";
 
 /** A giveaway. */
@@ -30,7 +30,7 @@ export interface Giveaway {
   monthCount: number;
 }
 
-export function constructGiveaway(g: types.MessageMediaGiveaway): Giveaway {
+export function constructGiveaway(g: Api.messageMediaGiveaway): Giveaway {
   const winnerCount = g.quantity;
   const monthCount = g.months;
   const parameters = constructGiveawayParameters(g);

@@ -19,7 +19,7 @@
  */
 
 import { fromUnixTimestamp } from "../1_utilities.ts";
-import { enums, types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 
 /** @unlisted */
 export interface _VideoChatCommon {
@@ -69,9 +69,9 @@ export interface VideoChatEnded extends _VideoChatCommon {
 
 export type VideoChat = VideoChatActive | VideoChatScheduled | VideoChatEnded;
 
-export function constructVideoChat(call: enums.GroupCall): VideoChat {
+export function constructVideoChat(call: Api.GroupCall): VideoChat {
   const id = String(call.id);
-  if (call instanceof types.GroupCallDiscarded) {
+  if (is("groupCallDiscarded", call)) {
     return {
       type: "ended",
       id,

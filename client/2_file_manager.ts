@@ -21,7 +21,7 @@
 import { extension, path, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { drop, getLogger, getRandomId, iterateReadableStream, kilobyte, Logger, megabyte, minute, mod, Part, PartStream } from "../1_utilities.ts";
-import { as, enums, types } from "../2_tl.ts";
+import { Api, as, is } from "../2_tl.ts";
 import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { FloodWait } from "../4_errors.ts";
@@ -43,7 +43,7 @@ export class FileManager {
     this.#Lupload = L.branch("upload");
   }
 
-  async upload(file: FileSource, params?: UploadParams, checkName?: null | ((name: string) => string), allowStream = true) {
+  async upload(file: FileSource, params?: UploadParams, checkName?: null | ((name: string) => string), allowStream = true): Promise<Api.InputFile> {
     let { size, name, contents } = await FileManager.#getFileContents(file, params, allowStream);
     if (checkName) {
       name = checkName(name);
@@ -80,16 +80,16 @@ export class FileManager {
     this.#Lupload.debug(`[${fileId}] uploaded ` + result.parts + " part(s)");
 
     if (result.small) {
-      return new types.InputFile({ id: fileId, name, parts: result.parts, md5_checksum: "" });
+      return { _: "inputFile", id: fileId, name, parts: result.parts, md5_checksum: "" };
     } else {
-      return new types.InputFileBig({ id: fileId, parts: result.parts, name });
+      return { _: "inputFileBig", id: fileId, name, parts: result.parts };
     }
   }
 
   async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, chunkSize: number, signal: AbortSignal | null | undefined, pool: ConnectionPool) {
     let part: Part;
     let promises = new Array<Promise<void>>();
-    let api = pool.api();
+    let invoke = pool.invoke();
     let apiPromiseCount = 0;
     for await (part of iterateReadableStream(stream.pipeThrough(new PartStream(chunkSize)))) {
       promises.push(
@@ -97,9 +97,9 @@ export class FileManager {
           while (true) {
             try {
               if (part.small) {
-                await api.upload.saveFilePart({ file_id: fileId, bytes: part.bytes, file_part: part.part });
+                await invoke({ _: "upload.saveFilePart", file_id: fileId, bytes: part.bytes, file_part: part.part });
               } else {
-                await api.upload.saveBigFilePart({ file_id: fileId, file_part: part.part, bytes: part.bytes, file_total_parts: part.totalParts });
+                await invoke({ _: "upload.saveBigFilePart", file_id: fileId, file_part: part.part, bytes: part.bytes, file_total_parts: part.totalParts });
               }
               this.#Lupload.debug(`[${fileId}] uploaded part ` + (part.part + 1));
               break;
@@ -112,7 +112,7 @@ export class FileManager {
         }),
       );
       if (++apiPromiseCount >= FileManager.#UPLOAD_REQUEST_PER_CONNECTION) {
-        api = pool.api();
+        invoke = pool.invoke();
         apiPromiseCount = 0;
       }
       if (promises.length == pool.size * FileManager.#UPLOAD_REQUEST_PER_CONNECTION) {
@@ -130,7 +130,7 @@ export class FileManager {
     let promises = new Array<Promise<void>>();
     main: for (let part = 0; part < partCount;) {
       for (let i = 0; i < pool.size; ++i) {
-        const api = pool.api();
+        const invoke = pool.invoke();
         for (let i = 0; i < FileManager.#UPLOAD_REQUEST_PER_CONNECTION; ++i) {
           const start = part * chunkSize;
           const end = start + chunkSize;
@@ -145,9 +145,9 @@ export class FileManager {
                 try {
                   signal?.throwIfAborted();
                   if (isBig) {
-                    await api.upload.saveBigFilePart({ file_id: fileId, file_part: thisPart, bytes, file_total_parts: partCount });
+                    await invoke({ _: "upload.saveBigFilePart", file_id: fileId, file_part: thisPart, bytes, file_total_parts: partCount });
                   } else {
-                    await api.upload.saveFilePart({ file_id: fileId, bytes, file_part: thisPart });
+                    await invoke({ _: "upload.saveFilePart", file_id: fileId, bytes, file_part: thisPart });
                   }
                   this.#Lupload.debug(`[${fileId}] uploaded part ` + (thisPart + 1) + " / " + partCount);
                   break;
@@ -254,7 +254,7 @@ export class FileManager {
     return { size: params?.fileSize ? params.fileSize : size, name, contents };
   }
 
-  async *downloadInner(location: enums.InputFileLocation, dcId: number, params?: { chunkSize?: number; offset?: number }) {
+  async *downloadInner(location: Api.InputFileLocation, dcId: number, params?: { chunkSize?: number; offset?: number }) {
     const id = "id" in location ? location.id : "photo_id" in location ? location.photo_id : null;
     if (id != null && this.#c.storage.supportsFiles) {
       const file = await this.#c.storage.getFile(id);
@@ -280,9 +280,9 @@ export class FileManager {
 
     try {
       while (true) {
-        const file = await connection.api.upload.getFile({ location, offset, limit });
+        const file = await connection.invoke({ _: "upload.getFile", location, offset, limit });
 
-        if (file instanceof types.upload.File) {
+        if (is("upload.file", file)) {
           yield file.bytes;
           if (id != null) {
             await this.#c.storage.saveFilePart(id, part, file.bytes);
@@ -342,51 +342,54 @@ export class FileManager {
           }
           const big = fileId_.location.source.type == PhotoSourceType.ChatPhotoBig;
           const peer = await this.#c.getInputPeer(Number(fileId_.location.source.chatId)); // TODO: use access hash from source?
-          const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photo_id: fileId_.location.id });
+          const location: Api.inputPeerPhotoFileLocation = { _: "inputPeerPhotoFileLocation", big: big ? true : undefined, peer, photo_id: fileId_.location.id };
           yield* this.downloadInner(location, fileId_.dcId, params);
           break;
         }
         case FileType.Photo: {
-          const location = new types.InputPhotoFileLocation({
+          const location: Api.inputPhotoFileLocation = {
+            _: "inputPhotoFileLocation",
             id: fileId_.location.id,
             access_hash: fileId_.location.accessHash,
             file_reference: fileId_.fileReference ?? new Uint8Array(),
             thumb_size: "thumbnailType" in fileId_.location.source ? String.fromCharCode(fileId_.location.source.thumbnailType) : "",
-          });
+          };
           yield* this.downloadInner(location, fileId_.dcId, params);
           break;
         }
         case FileType.Thumbnail: {
-          const location = new types.InputDocumentFileLocation({
+          const location: Api.inputDocumentFileLocation = {
+            _: "inputDocumentFileLocation",
             id: fileId_.location.id,
             access_hash: fileId_.location.accessHash,
             file_reference: fileId_.fileReference ?? new Uint8Array(),
             thumb_size: "thumbnailType" in fileId_.location.source ? String.fromCharCode(fileId_.location.source.thumbnailType) : unreachable(),
-          });
+          };
           yield* this.downloadInner(location, fileId_.dcId, params);
           break;
         }
       }
     } else if (fileId_.location.type == "common") {
-      const location = new types.InputDocumentFileLocation({
+      const location: Api.inputDocumentFileLocation = {
+        _: "inputDocumentFileLocation",
         id: fileId_.location.id,
         access_hash: fileId_.location.accessHash,
         file_reference: fileId_.fileReference ?? new Uint8Array(),
         thumb_size: "",
-      });
+      };
       yield* this.downloadInner(location, fileId_.dcId, params);
     } else {
       unreachable();
     }
   }
 
-  async getStickerSetName(inputStickerSet: types.InputStickerSetID, hash = 0) {
+  async getStickerSetName(inputStickerSet: Api.inputStickerSetID, hash = 0) {
     const maybeStickerSetName = await this.#c.messageStorage.getStickerSetName(inputStickerSet.id, inputStickerSet.access_hash);
     if (maybeStickerSetName != null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
       return maybeStickerSetName[0];
     } else {
-      const stickerSet = await this.#c.api.messages.getStickerSet({ stickerset: inputStickerSet, hash });
-      const name = stickerSet[as](types.messages.StickerSet).set.short_name;
+      const stickerSet = await this.#c.invoke({ _: "messages.getStickerSet", stickerset: inputStickerSet, hash });
+      const name = as("messages.stickerSet", stickerSet).set.short_name;
       await this.#c.messageStorage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
       return name;
     }
@@ -422,7 +425,7 @@ export class FileManager {
     if (!shouldFetch) {
       return stickers;
     }
-    const documents_ = await this.#c.api.messages.getCustomEmojiDocuments({ document_id: id.map(BigInt) }).then((v) => v.map((v) => v[as](types.Document)));
+    const documents_ = await this.#c.invoke({ _: "messages.getCustomEmojiDocuments", document_id: id.map(BigInt) }).then((v) => v.map((v) => as("document", v)));
     for (const [i, document_] of documents_.entries()) {
       await this.#c.messageStorage.setCustomEmojiDocument(document_.id, document_);
       const fileId_: FileId = {

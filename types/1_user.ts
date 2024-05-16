@@ -19,7 +19,7 @@
  */
 
 import { cleanObject, getColorFromPeerId } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 
 /** A user. */
@@ -56,7 +56,7 @@ export interface User {
   addedToAttachmentMenu: boolean;
 }
 
-export function constructUser(user_: types.User): User {
+export function constructUser(user_: Api.user): User {
   const id = Number(user_.id);
   const usernames = user_.usernames?.map((v) => v.username);
   const username = user_.username ?? usernames?.shift();
@@ -76,7 +76,7 @@ export function constructUser(user_: types.User): User {
     isSupport: user_.support || false,
     addedToAttachmentMenu: user_.attach_menu_enabled || false,
   };
-  if (user_.photo instanceof types.UserProfilePhoto) {
+  if (is("userProfilePhoto", user_.photo)) {
     user.photo = constructChatPhoto(user_.photo, user.id, user_.access_hash ?? 0n);
   }
 

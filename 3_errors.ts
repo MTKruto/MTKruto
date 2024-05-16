@@ -18,2056 +18,2057 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { TLObject, types } from "./2_tl.ts";
+import { Api } from "./2_tl.ts";
+import { MtkrutoError } from "./0_errors.ts";
 
-export interface ErrorWithCallParams {
+export interface TelegramErrorParams {
   error_code: number;
   error_message: string;
-  call: TLObject;
+  call: Api.AnyObject;
 }
 
-export class ErrorWithCall extends types.Rpc_error {
-  call: TLObject;
+export class TelegramError extends MtkrutoError {
+  call: Api.AnyObject;
 
-  constructor(params: ErrorWithCallParams) {
-    super(params);
+  constructor(params: TelegramErrorParams) {
+    super();
     this.call = params.call;
   }
 }
 
-export class AboutTooLong extends ErrorWithCall {
+export class AboutTooLong extends TelegramError {
   //
 }
 
-export class AccessTokenExpired extends ErrorWithCall {
+export class AccessTokenExpired extends TelegramError {
   //
 }
 
-export class AccessTokenInvalid extends ErrorWithCall {
+export class AccessTokenInvalid extends TelegramError {
   //
 }
 
-export class ActiveUserRequired extends ErrorWithCall {
+export class ActiveUserRequired extends TelegramError {
   //
 }
 
-export class AdminsTooMuch extends ErrorWithCall {
+export class AdminsTooMuch extends TelegramError {
   //
 }
 
-export class AdminIdInvalid extends ErrorWithCall {
+export class AdminIdInvalid extends TelegramError {
   //
 }
 
-export class AdminRankEmojiNotAllowed extends ErrorWithCall {
+export class AdminRankEmojiNotAllowed extends TelegramError {
   //
 }
 
-export class AdminRankInvalid extends ErrorWithCall {
+export class AdminRankInvalid extends TelegramError {
   //
 }
 
-export class AlbumPhotosTooMany extends ErrorWithCall {
+export class AlbumPhotosTooMany extends TelegramError {
   //
 }
 
-export class ApiIdInvalid extends ErrorWithCall {
+export class ApiIdInvalid extends TelegramError {
   //
 }
 
-export class ApiIdPublishedFlood extends ErrorWithCall {
+export class ApiIdPublishedFlood extends TelegramError {
   //
 }
 
-export class ArticleTitleEmpty extends ErrorWithCall {
+export class ArticleTitleEmpty extends TelegramError {
   //
 }
 
-export class AudioContentUrlEmpty extends ErrorWithCall {
+export class AudioContentUrlEmpty extends TelegramError {
   //
 }
 
-export class AudioTitleEmpty extends ErrorWithCall {
+export class AudioTitleEmpty extends TelegramError {
   //
 }
 
-export class AuthBytesInvalid extends ErrorWithCall {
+export class AuthBytesInvalid extends TelegramError {
   //
 }
 
-export class AuthKeyDuplicated extends ErrorWithCall {
+export class AuthKeyDuplicated extends TelegramError {
   //
 }
 
-export class AuthKeyInvalid extends ErrorWithCall {
+export class AuthKeyInvalid extends TelegramError {
   //
 }
 
-export class AuthKeyPermEmpty extends ErrorWithCall {
+export class AuthKeyPermEmpty extends TelegramError {
   //
 }
 
-export class AuthKeyUnregistered extends ErrorWithCall {
+export class AuthKeyUnregistered extends TelegramError {
   //
 }
 
-export class AuthRestart extends ErrorWithCall {
+export class AuthRestart extends TelegramError {
   //
 }
 
-export class AuthTokenAlreadyAccepted extends ErrorWithCall {
+export class AuthTokenAlreadyAccepted extends TelegramError {
   //
 }
 
-export class AuthTokenException extends ErrorWithCall {
+export class AuthTokenException extends TelegramError {
   //
 }
 
-export class AuthTokenExpired extends ErrorWithCall {
+export class AuthTokenExpired extends TelegramError {
   //
 }
 
-export class AuthTokenInvalid extends ErrorWithCall {
+export class AuthTokenInvalid extends TelegramError {
   //
 }
 
-export class AutoarchiveNotAvailable extends ErrorWithCall {
+export class AutoarchiveNotAvailable extends TelegramError {
   //
 }
 
-export class BankCardNumberInvalid extends ErrorWithCall {
+export class BankCardNumberInvalid extends TelegramError {
   //
 }
 
-export class BannedRightsInvalid extends ErrorWithCall {
+export class BannedRightsInvalid extends TelegramError {
   //
 }
 
-export class BasePortLocInvalid extends ErrorWithCall {
+export class BasePortLocInvalid extends TelegramError {
   //
 }
 
-export class BotsTooMuch extends ErrorWithCall {
+export class BotsTooMuch extends TelegramError {
   //
 }
 
-export class BotChannelsNa extends ErrorWithCall {
+export class BotChannelsNa extends TelegramError {
   //
 }
 
-export class BotCommandDescriptionInvalid extends ErrorWithCall {
+export class BotCommandDescriptionInvalid extends TelegramError {
   //
 }
 
-export class BotCommandInvalid extends ErrorWithCall {
+export class BotCommandInvalid extends TelegramError {
   //
 }
 
-export class BotDomainInvalid extends ErrorWithCall {
+export class BotDomainInvalid extends TelegramError {
   //
 }
 
-export class BotGamesDisabled extends ErrorWithCall {
+export class BotGamesDisabled extends TelegramError {
   //
 }
 
-export class BotGroupsBlocked extends ErrorWithCall {
+export class BotGroupsBlocked extends TelegramError {
   //
 }
 
-export class BotInlineDisabled extends ErrorWithCall {
+export class BotInlineDisabled extends TelegramError {
   //
 }
 
-export class BotInvalid extends ErrorWithCall {
+export class BotInvalid extends TelegramError {
   //
 }
 
-export class BotMethodInvalid extends ErrorWithCall {
+export class BotMethodInvalid extends TelegramError {
   //
 }
 
-export class BotMissing extends ErrorWithCall {
+export class BotMissing extends TelegramError {
   //
 }
 
-export class BotOnesideNotAvail extends ErrorWithCall {
+export class BotOnesideNotAvail extends TelegramError {
   //
 }
 
-export class BotPaymentsDisabled extends ErrorWithCall {
+export class BotPaymentsDisabled extends TelegramError {
   //
 }
 
-export class BotPollsDisabled extends ErrorWithCall {
+export class BotPollsDisabled extends TelegramError {
   //
 }
 
-export class BotResponseTimeout extends ErrorWithCall {
+export class BotResponseTimeout extends TelegramError {
   //
 }
 
-export class BotScoreNotModified extends ErrorWithCall {
+export class BotScoreNotModified extends TelegramError {
   //
 }
 
-export class BroadcastCallsDisabled extends ErrorWithCall {
+export class BroadcastCallsDisabled extends TelegramError {
   //
 }
 
-export class BroadcastForbidden extends ErrorWithCall {
+export class BroadcastForbidden extends TelegramError {
   //
 }
 
-export class BroadcastIdInvalid extends ErrorWithCall {
+export class BroadcastIdInvalid extends TelegramError {
   //
 }
 
-export class BroadcastPublicVotersForbidden extends ErrorWithCall {
+export class BroadcastPublicVotersForbidden extends TelegramError {
   //
 }
 
-export class BroadcastRequired extends ErrorWithCall {
+export class BroadcastRequired extends TelegramError {
   //
 }
 
-export class ButtonDataInvalid extends ErrorWithCall {
+export class ButtonDataInvalid extends TelegramError {
   //
 }
 
-export class ButtonTextInvalid extends ErrorWithCall {
+export class ButtonTextInvalid extends TelegramError {
   //
 }
 
-export class ButtonTypeInvalid extends ErrorWithCall {
+export class ButtonTypeInvalid extends TelegramError {
   //
 }
 
-export class ButtonUrlInvalid extends ErrorWithCall {
+export class ButtonUrlInvalid extends TelegramError {
   //
 }
 
-export class ButtonUserPrivacyRestricted extends ErrorWithCall {
+export class ButtonUserPrivacyRestricted extends TelegramError {
   //
 }
 
-export class CallAlreadyAccepted extends ErrorWithCall {
+export class CallAlreadyAccepted extends TelegramError {
   //
 }
 
-export class CallAlreadyDeclined extends ErrorWithCall {
+export class CallAlreadyDeclined extends TelegramError {
   //
 }
 
-export class CallOccupyFailed extends ErrorWithCall {
+export class CallOccupyFailed extends TelegramError {
   //
 }
 
-export class CallPeerInvalid extends ErrorWithCall {
+export class CallPeerInvalid extends TelegramError {
   //
 }
 
-export class CallProtocolFlagsInvalid extends ErrorWithCall {
+export class CallProtocolFlagsInvalid extends TelegramError {
   //
 }
 
-export class CdnMethodInvalid extends ErrorWithCall {
+export class CdnMethodInvalid extends TelegramError {
   //
 }
 
-export class CdnUploadTimeout extends ErrorWithCall {
+export class CdnUploadTimeout extends TelegramError {
   //
 }
 
-export class ChannelsAdminLocatedTooMuch extends ErrorWithCall {
+export class ChannelsAdminLocatedTooMuch extends TelegramError {
   //
 }
 
-export class ChannelsAdminPublicTooMuch extends ErrorWithCall {
+export class ChannelsAdminPublicTooMuch extends TelegramError {
   //
 }
 
-export class ChannelsTooMuch extends ErrorWithCall {
+export class ChannelsTooMuch extends TelegramError {
   //
 }
 
-export class ChannelBanned extends ErrorWithCall {
+export class ChannelBanned extends TelegramError {
   //
 }
 
-export class ChannelForumMissing extends ErrorWithCall {
+export class ChannelForumMissing extends TelegramError {
   //
 }
 
-export class ChannelIdInvalid extends ErrorWithCall {
+export class ChannelIdInvalid extends TelegramError {
   //
 }
 
-export class ChannelInvalid extends ErrorWithCall {
+export class ChannelInvalid extends TelegramError {
   //
 }
 
-export class ChannelParicipantMissing extends ErrorWithCall {
+export class ChannelParicipantMissing extends TelegramError {
   //
 }
 
-export class ChannelPrivate extends ErrorWithCall {
+export class ChannelPrivate extends TelegramError {
   //
 }
 
-export class ChannelPublicGroupNa extends ErrorWithCall {
+export class ChannelPublicGroupNa extends TelegramError {
   //
 }
 
-export class ChannelTooBig extends ErrorWithCall {
+export class ChannelTooBig extends TelegramError {
   //
 }
 
-export class ChannelTooLarge extends ErrorWithCall {
+export class ChannelTooLarge extends TelegramError {
   //
 }
 
-export class ChatAboutNotModified extends ErrorWithCall {
+export class ChatAboutNotModified extends TelegramError {
   //
 }
 
-export class ChatAboutTooLong extends ErrorWithCall {
+export class ChatAboutTooLong extends TelegramError {
   //
 }
 
-export class ChatAdminInviteRequired extends ErrorWithCall {
+export class ChatAdminInviteRequired extends TelegramError {
   //
 }
 
-export class ChatAdminRequired extends ErrorWithCall {
+export class ChatAdminRequired extends TelegramError {
   //
 }
 
-export class ChatDiscussionUnallowed extends ErrorWithCall {
+export class ChatDiscussionUnallowed extends TelegramError {
   //
 }
 
-export class ChatForbidden extends ErrorWithCall {
+export class ChatForbidden extends TelegramError {
   //
 }
 
-export class ChatForwardsRestricted extends ErrorWithCall {
+export class ChatForwardsRestricted extends TelegramError {
   //
 }
 
-export class ChatGetFailed extends ErrorWithCall {
+export class ChatGetFailed extends TelegramError {
   //
 }
 
-export class ChatGuestSendForbidden extends ErrorWithCall {
+export class ChatGuestSendForbidden extends TelegramError {
   //
 }
 
-export class ChatIdEmpty extends ErrorWithCall {
+export class ChatIdEmpty extends TelegramError {
   //
 }
 
-export class ChatIdGenerateFailed extends ErrorWithCall {
+export class ChatIdGenerateFailed extends TelegramError {
   //
 }
 
-export class ChatIdInvalid extends ErrorWithCall {
+export class ChatIdInvalid extends TelegramError {
   //
 }
 
-export class ChatInvalid extends ErrorWithCall {
+export class ChatInvalid extends TelegramError {
   //
 }
 
-export class ChatInvitePermanent extends ErrorWithCall {
+export class ChatInvitePermanent extends TelegramError {
   //
 }
 
-export class ChatLinkExists extends ErrorWithCall {
+export class ChatLinkExists extends TelegramError {
   //
 }
 
-export class ChatNotModified extends ErrorWithCall {
+export class ChatNotModified extends TelegramError {
   //
 }
 
-export class ChatRestricted extends ErrorWithCall {
+export class ChatRestricted extends TelegramError {
   //
 }
 
-export class ChatRevokeDateUnsupported extends ErrorWithCall {
+export class ChatRevokeDateUnsupported extends TelegramError {
   //
 }
 
-export class ChatSendGameForbidden extends ErrorWithCall {
+export class ChatSendGameForbidden extends TelegramError {
   //
 }
 
-export class ChatSendGifsForbidden extends ErrorWithCall {
+export class ChatSendGifsForbidden extends TelegramError {
   //
 }
 
-export class ChatSendInlineForbidden extends ErrorWithCall {
+export class ChatSendInlineForbidden extends TelegramError {
   //
 }
 
-export class ChatSendMediaForbidden extends ErrorWithCall {
+export class ChatSendMediaForbidden extends TelegramError {
   //
 }
 
-export class ChatSendPollForbidden extends ErrorWithCall {
+export class ChatSendPollForbidden extends TelegramError {
   //
 }
 
-export class ChatSendStickersForbidden extends ErrorWithCall {
+export class ChatSendStickersForbidden extends TelegramError {
   //
 }
 
-export class ChatTitleEmpty extends ErrorWithCall {
+export class ChatTitleEmpty extends TelegramError {
   //
 }
 
-export class ChatTooBig extends ErrorWithCall {
+export class ChatTooBig extends TelegramError {
   //
 }
 
-export class ChatWriteForbidden extends ErrorWithCall {
+export class ChatWriteForbidden extends TelegramError {
   //
 }
 
-export class ChpCallFail extends ErrorWithCall {
+export class ChpCallFail extends TelegramError {
   //
 }
 
-export class CodeEmpty extends ErrorWithCall {
+export class CodeEmpty extends TelegramError {
   //
 }
 
-export class CodeHashInvalid extends ErrorWithCall {
+export class CodeHashInvalid extends TelegramError {
   //
 }
 
-export class CodeInvalid extends ErrorWithCall {
+export class CodeInvalid extends TelegramError {
   //
 }
 
-export class ConnectionApiIdInvalid extends ErrorWithCall {
+export class ConnectionApiIdInvalid extends TelegramError {
   //
 }
 
-export class ConnectionAppVersionEmpty extends ErrorWithCall {
+export class ConnectionAppVersionEmpty extends TelegramError {
   //
 }
 
-export class ConnectionDeviceModelEmpty extends ErrorWithCall {
+export class ConnectionDeviceModelEmpty extends TelegramError {
   //
 }
 
-export class ConnectionLangPackInvalid extends ErrorWithCall {
+export class ConnectionLangPackInvalid extends TelegramError {
   //
 }
 
-export class ConnectionLayerInvalid extends ErrorWithCall {
+export class ConnectionLayerInvalid extends TelegramError {
   //
 }
 
-export class ConnectionNotInited extends ErrorWithCall {
+export class ConnectionNotInited extends TelegramError {
   //
 }
 
-export class ConnectionSystemEmpty extends ErrorWithCall {
+export class ConnectionSystemEmpty extends TelegramError {
   //
 }
 
-export class ConnectionSystemLangCodeEmpty extends ErrorWithCall {
+export class ConnectionSystemLangCodeEmpty extends TelegramError {
   //
 }
 
-export class ContactAddMissing extends ErrorWithCall {
+export class ContactAddMissing extends TelegramError {
   //
 }
 
-export class ContactIdInvalid extends ErrorWithCall {
+export class ContactIdInvalid extends TelegramError {
   //
 }
 
-export class ContactNameEmpty extends ErrorWithCall {
+export class ContactNameEmpty extends TelegramError {
   //
 }
 
-export class ContactReqMissing extends ErrorWithCall {
+export class ContactReqMissing extends TelegramError {
   //
 }
 
-export class CreateCallFailed extends ErrorWithCall {
+export class CreateCallFailed extends TelegramError {
   //
 }
 
-export class CurrencyTotalAmountInvalid extends ErrorWithCall {
+export class CurrencyTotalAmountInvalid extends TelegramError {
   //
 }
 
-export class DataInvalid extends ErrorWithCall {
+export class DataInvalid extends TelegramError {
   //
 }
 
-export class DataJsonInvalid extends ErrorWithCall {
+export class DataJsonInvalid extends TelegramError {
   //
 }
 
-export class DataTooLong extends ErrorWithCall {
+export class DataTooLong extends TelegramError {
   //
 }
 
-export class DateEmpty extends ErrorWithCall {
+export class DateEmpty extends TelegramError {
   //
 }
 
-export class DcIdInvalid extends ErrorWithCall {
+export class DcIdInvalid extends TelegramError {
   //
 }
 
-export class DhGAInvalid extends ErrorWithCall {
+export class DhGAInvalid extends TelegramError {
   //
 }
 
-export class DocumentInvalid extends ErrorWithCall {
+export class DocumentInvalid extends TelegramError {
   //
 }
 
-export class EditBotInviteForbidden extends ErrorWithCall {
+export class EditBotInviteForbidden extends TelegramError {
   //
 }
 
-export class EmailHashExpired extends ErrorWithCall {
+export class EmailHashExpired extends TelegramError {
   //
 }
 
-export class EmailInvalid extends ErrorWithCall {
+export class EmailInvalid extends TelegramError {
   //
 }
 
-export class EmailUnconfirmed extends ErrorWithCall {
+export class EmailUnconfirmed extends TelegramError {
   //
 }
 
-export class EmailVerifyExpired extends ErrorWithCall {
+export class EmailVerifyExpired extends TelegramError {
   //
 }
 
-export class EmojiInvalid extends ErrorWithCall {
+export class EmojiInvalid extends TelegramError {
   //
 }
 
-export class EmojiNotModified extends ErrorWithCall {
+export class EmojiNotModified extends TelegramError {
   //
 }
 
-export class EmoticonEmpty extends ErrorWithCall {
+export class EmoticonEmpty extends TelegramError {
   //
 }
 
-export class EmoticonInvalid extends ErrorWithCall {
+export class EmoticonInvalid extends TelegramError {
   //
 }
 
-export class EmoticonStickerpackMissing extends ErrorWithCall {
+export class EmoticonStickerpackMissing extends TelegramError {
   //
 }
 
-export class EncryptedMessageInvalid extends ErrorWithCall {
+export class EncryptedMessageInvalid extends TelegramError {
   //
 }
 
-export class EncryptionAlreadyAccepted extends ErrorWithCall {
+export class EncryptionAlreadyAccepted extends TelegramError {
   //
 }
 
-export class EncryptionAlreadyDeclined extends ErrorWithCall {
+export class EncryptionAlreadyDeclined extends TelegramError {
   //
 }
 
-export class EncryptionDeclined extends ErrorWithCall {
+export class EncryptionDeclined extends TelegramError {
   //
 }
 
-export class EncryptionIdInvalid extends ErrorWithCall {
+export class EncryptionIdInvalid extends TelegramError {
   //
 }
 
-export class EncryptionOccupyFailed extends ErrorWithCall {
+export class EncryptionOccupyFailed extends TelegramError {
   //
 }
 
-export class EntitiesTooLong extends ErrorWithCall {
+export class EntitiesTooLong extends TelegramError {
   //
 }
 
-export class EntityBoundsInvalid extends ErrorWithCall {
+export class EntityBoundsInvalid extends TelegramError {
   //
 }
 
-export class EntityMentionUserInvalid extends ErrorWithCall {
+export class EntityMentionUserInvalid extends TelegramError {
   //
 }
 
-export class ErrorTextEmpty extends ErrorWithCall {
+export class ErrorTextEmpty extends TelegramError {
   //
 }
 
-export class ExpireDateInvalid extends ErrorWithCall {
+export class ExpireDateInvalid extends TelegramError {
   //
 }
 
-export class ExpireForbidden extends ErrorWithCall {
+export class ExpireForbidden extends TelegramError {
   //
 }
 
-export class ExportCardInvalid extends ErrorWithCall {
+export class ExportCardInvalid extends TelegramError {
   //
 }
 
-export class ExternalUrlInvalid extends ErrorWithCall {
+export class ExternalUrlInvalid extends TelegramError {
   //
 }
 
-export class FieldNameEmpty extends ErrorWithCall {
+export class FieldNameEmpty extends TelegramError {
   //
 }
 
-export class FieldNameInvalid extends ErrorWithCall {
+export class FieldNameInvalid extends TelegramError {
   //
 }
 
-export class FilerefUpgradeNeeded extends ErrorWithCall {
+export class FilerefUpgradeNeeded extends TelegramError {
   //
 }
 
-export class FileContentTypeInvalid extends ErrorWithCall {
+export class FileContentTypeInvalid extends TelegramError {
   //
 }
 
-export class FileEmtpy extends ErrorWithCall {
+export class FileEmtpy extends TelegramError {
   //
 }
 
-export class FileIdInvalid extends ErrorWithCall {
+export class FileIdInvalid extends TelegramError {
   //
 }
 
-export class FilePartsInvalid extends ErrorWithCall {
+export class FilePartsInvalid extends TelegramError {
   //
 }
 
-export class FilePart_0Missing extends ErrorWithCall {
+export class FilePart_0Missing extends TelegramError {
   //
 }
 
-export class FilePartEmpty extends ErrorWithCall {
+export class FilePartEmpty extends TelegramError {
   //
 }
 
-export class FilePartInvalid extends ErrorWithCall {
+export class FilePartInvalid extends TelegramError {
   //
 }
 
-export class FilePartLengthInvalid extends ErrorWithCall {
+export class FilePartLengthInvalid extends TelegramError {
   //
 }
 
-export class FilePartSizeChanged extends ErrorWithCall {
+export class FilePartSizeChanged extends TelegramError {
   //
 }
 
-export class FilePartSizeInvalid extends ErrorWithCall {
+export class FilePartSizeInvalid extends TelegramError {
   //
 }
 
-export class FilePartTooBig extends ErrorWithCall {
+export class FilePartTooBig extends TelegramError {
   //
 }
 
-export class FilePartXMissing extends ErrorWithCall {
+export class FilePartXMissing extends TelegramError {
   //
 }
 
-export class FileReferenceEmpty extends ErrorWithCall {
+export class FileReferenceEmpty extends TelegramError {
   //
 }
 
-export class FileReferenceExpired extends ErrorWithCall {
+export class FileReferenceExpired extends TelegramError {
   //
 }
 
-export class FileReferenceInvalid extends ErrorWithCall {
+export class FileReferenceInvalid extends TelegramError {
   //
 }
 
-export class FileTitleEmpty extends ErrorWithCall {
+export class FileTitleEmpty extends TelegramError {
   //
 }
 
-export class FilterIdInvalid extends ErrorWithCall {
+export class FilterIdInvalid extends TelegramError {
   //
 }
 
-export class FilterIncludeEmpty extends ErrorWithCall {
+export class FilterIncludeEmpty extends TelegramError {
   //
 }
 
-export class FilterNotSupported extends ErrorWithCall {
+export class FilterNotSupported extends TelegramError {
   //
 }
 
-export class FilterTitleEmpty extends ErrorWithCall {
+export class FilterTitleEmpty extends TelegramError {
   //
 }
 
-export class FirstnameInvalid extends ErrorWithCall {
+export class FirstnameInvalid extends TelegramError {
   //
 }
 
-export class FolderIdEmpty extends ErrorWithCall {
+export class FolderIdEmpty extends TelegramError {
   //
 }
 
-export class FolderIdInvalid extends ErrorWithCall {
+export class FolderIdInvalid extends TelegramError {
   //
 }
 
-export class FreshChangeAdminsForbidden extends ErrorWithCall {
+export class FreshChangeAdminsForbidden extends TelegramError {
   //
 }
 
-export class FreshChangePhoneForbidden extends ErrorWithCall {
+export class FreshChangePhoneForbidden extends TelegramError {
   //
 }
 
-export class FreshResetAuthorisationForbidden extends ErrorWithCall {
+export class FreshResetAuthorisationForbidden extends TelegramError {
   //
 }
 
-export class FromMessageBotDisabled extends ErrorWithCall {
+export class FromMessageBotDisabled extends TelegramError {
   //
 }
 
-export class FromPeerInvalid extends ErrorWithCall {
+export class FromPeerInvalid extends TelegramError {
   //
 }
 
-export class GameBotInvalid extends ErrorWithCall {
+export class GameBotInvalid extends TelegramError {
   //
 }
 
-export class GeoPointInvalid extends ErrorWithCall {
+export class GeoPointInvalid extends TelegramError {
   //
 }
 
-export class GifContentTypeInvalid extends ErrorWithCall {
+export class GifContentTypeInvalid extends TelegramError {
   //
 }
 
-export class GifIdInvalid extends ErrorWithCall {
+export class GifIdInvalid extends TelegramError {
   //
 }
 
-export class GraphExpiredReload extends ErrorWithCall {
+export class GraphExpiredReload extends TelegramError {
   //
 }
 
-export class GraphInvalidReload extends ErrorWithCall {
+export class GraphInvalidReload extends TelegramError {
   //
 }
 
-export class GraphOutdatedReload extends ErrorWithCall {
+export class GraphOutdatedReload extends TelegramError {
   //
 }
 
-export class GroupcallAddParticipantsFailed extends ErrorWithCall {
+export class GroupcallAddParticipantsFailed extends TelegramError {
   //
 }
 
-export class GroupcallAlreadyDiscarded extends ErrorWithCall {
+export class GroupcallAlreadyDiscarded extends TelegramError {
   //
 }
 
-export class GroupcallAlreadyStarted extends ErrorWithCall {
+export class GroupcallAlreadyStarted extends TelegramError {
   //
 }
 
-export class GroupcallForbidden extends ErrorWithCall {
+export class GroupcallForbidden extends TelegramError {
   //
 }
 
-export class GroupcallInvalid extends ErrorWithCall {
+export class GroupcallInvalid extends TelegramError {
   //
 }
 
-export class GroupcallJoinMissing extends ErrorWithCall {
+export class GroupcallJoinMissing extends TelegramError {
   //
 }
 
-export class GroupcallNotModified extends ErrorWithCall {
+export class GroupcallNotModified extends TelegramError {
   //
 }
 
-export class GroupcallSsrcDuplicateMuch extends ErrorWithCall {
+export class GroupcallSsrcDuplicateMuch extends TelegramError {
   //
 }
 
-export class GroupedMediaInvalid extends ErrorWithCall {
+export class GroupedMediaInvalid extends TelegramError {
   //
 }
 
-export class GroupCallInvalid extends ErrorWithCall {
+export class GroupCallInvalid extends TelegramError {
   //
 }
 
-export class HashInvalid extends ErrorWithCall {
+export class HashInvalid extends TelegramError {
   //
 }
 
-export class HideRequesterMissing extends ErrorWithCall {
+export class HideRequesterMissing extends TelegramError {
   //
 }
 
-export class HistoryGetFailed extends ErrorWithCall {
+export class HistoryGetFailed extends TelegramError {
   //
 }
 
-export class ImageProcessFailed extends ErrorWithCall {
+export class ImageProcessFailed extends TelegramError {
   //
 }
 
-export class ImportFileInvalid extends ErrorWithCall {
+export class ImportFileInvalid extends TelegramError {
   //
 }
 
-export class ImportFormatUnrecognized extends ErrorWithCall {
+export class ImportFormatUnrecognized extends TelegramError {
   //
 }
 
-export class ImportIdInvalid extends ErrorWithCall {
+export class ImportIdInvalid extends TelegramError {
   //
 }
 
-export class InlineBotRequired extends ErrorWithCall {
+export class InlineBotRequired extends TelegramError {
   //
 }
 
-export class InlineResultExpired extends ErrorWithCall {
+export class InlineResultExpired extends TelegramError {
   //
 }
 
-export class InputConstructorInvalid extends ErrorWithCall {
+export class InputConstructorInvalid extends TelegramError {
   //
 }
 
-export class InputFetchError extends ErrorWithCall {
+export class InputFetchError extends TelegramError {
   //
 }
 
-export class InputFetchFail extends ErrorWithCall {
+export class InputFetchFail extends TelegramError {
   //
 }
 
-export class InputFilterInvalid extends ErrorWithCall {
+export class InputFilterInvalid extends TelegramError {
   //
 }
 
-export class InputLayerInvalid extends ErrorWithCall {
+export class InputLayerInvalid extends TelegramError {
   //
 }
 
-export class InputMethodInvalid extends ErrorWithCall {
+export class InputMethodInvalid extends TelegramError {
   //
 }
 
-export class InputRequestTooLong extends ErrorWithCall {
+export class InputRequestTooLong extends TelegramError {
   //
 }
 
-export class InputTextEmpty extends ErrorWithCall {
+export class InputTextEmpty extends TelegramError {
   //
 }
 
-export class InputUserDeactivated extends ErrorWithCall {
+export class InputUserDeactivated extends TelegramError {
   //
 }
 
-export class InterdcXCallError extends ErrorWithCall {
+export class InterdcXCallError extends TelegramError {
   //
 }
 
-export class InterdcXCallRichError extends ErrorWithCall {
+export class InterdcXCallRichError extends TelegramError {
   //
 }
 
-export class InviteForbiddenWithJoinas extends ErrorWithCall {
+export class InviteForbiddenWithJoinas extends TelegramError {
   //
 }
 
-export class InviteHashEmpty extends ErrorWithCall {
+export class InviteHashEmpty extends TelegramError {
   //
 }
 
-export class InviteHashExpired extends ErrorWithCall {
+export class InviteHashExpired extends TelegramError {
   //
 }
 
-export class InviteHashInvalid extends ErrorWithCall {
+export class InviteHashInvalid extends TelegramError {
   //
 }
 
-export class InviteRequestSent extends ErrorWithCall {
+export class InviteRequestSent extends TelegramError {
   //
 }
 
-export class InviteRevokedMissing extends ErrorWithCall {
+export class InviteRevokedMissing extends TelegramError {
   //
 }
 
-export class InvoicePayloadInvalid extends ErrorWithCall {
+export class InvoicePayloadInvalid extends TelegramError {
   //
 }
 
-export class JoinAsPeerInvalid extends ErrorWithCall {
+export class JoinAsPeerInvalid extends TelegramError {
   //
 }
 
-export class LangCodeInvalid extends ErrorWithCall {
+export class LangCodeInvalid extends TelegramError {
   //
 }
 
-export class LangCodeNotSupported extends ErrorWithCall {
+export class LangCodeNotSupported extends TelegramError {
   //
 }
 
-export class LangPackInvalid extends ErrorWithCall {
+export class LangPackInvalid extends TelegramError {
   //
 }
 
-export class LastnameInvalid extends ErrorWithCall {
+export class LastnameInvalid extends TelegramError {
   //
 }
 
-export class LimitInvalid extends ErrorWithCall {
+export class LimitInvalid extends TelegramError {
   //
 }
 
-export class LinkNotModified extends ErrorWithCall {
+export class LinkNotModified extends TelegramError {
   //
 }
 
-export class LocationInvalid extends ErrorWithCall {
+export class LocationInvalid extends TelegramError {
   //
 }
 
-export class MaxDateInvalid extends ErrorWithCall {
+export class MaxDateInvalid extends TelegramError {
   //
 }
 
-export class MaxIdInvalid extends ErrorWithCall {
+export class MaxIdInvalid extends TelegramError {
   //
 }
 
-export class MaxQtsInvalid extends ErrorWithCall {
+export class MaxQtsInvalid extends TelegramError {
   //
 }
 
-export class Md5ChecksumInvalid extends ErrorWithCall {
+export class Md5ChecksumInvalid extends TelegramError {
   //
 }
 
-export class MediaCaptionTooLong extends ErrorWithCall {
+export class MediaCaptionTooLong extends TelegramError {
   //
 }
 
-export class MediaEmpty extends ErrorWithCall {
+export class MediaEmpty extends TelegramError {
   //
 }
 
-export class MediaGroupedInvalid extends ErrorWithCall {
+export class MediaGroupedInvalid extends TelegramError {
   //
 }
 
-export class MediaInvalid extends ErrorWithCall {
+export class MediaInvalid extends TelegramError {
   //
 }
 
-export class MediaNewInvalid extends ErrorWithCall {
+export class MediaNewInvalid extends TelegramError {
   //
 }
 
-export class MediaPrevInvalid extends ErrorWithCall {
+export class MediaPrevInvalid extends TelegramError {
   //
 }
 
-export class MediaTtlInvalid extends ErrorWithCall {
+export class MediaTtlInvalid extends TelegramError {
   //
 }
 
-export class MegagroupIdInvalid extends ErrorWithCall {
+export class MegagroupIdInvalid extends TelegramError {
   //
 }
 
-export class MegagroupPrehistoryHidden extends ErrorWithCall {
+export class MegagroupPrehistoryHidden extends TelegramError {
   //
 }
 
-export class MegagroupRequired extends ErrorWithCall {
+export class MegagroupRequired extends TelegramError {
   //
 }
 
-export class MemberNoLocation extends ErrorWithCall {
+export class MemberNoLocation extends TelegramError {
   //
 }
 
-export class MemberOccupyPrimaryLocFailed extends ErrorWithCall {
+export class MemberOccupyPrimaryLocFailed extends TelegramError {
   //
 }
 
-export class MessageAuthorRequired extends ErrorWithCall {
+export class MessageAuthorRequired extends TelegramError {
   //
 }
 
-export class MessageDeleteForbidden extends ErrorWithCall {
+export class MessageDeleteForbidden extends TelegramError {
   //
 }
 
-export class MessageEditTimeExpired extends ErrorWithCall {
+export class MessageEditTimeExpired extends TelegramError {
   //
 }
 
-export class MessageEmpty extends ErrorWithCall {
+export class MessageEmpty extends TelegramError {
   //
 }
 
-export class MessageIdsEmpty extends ErrorWithCall {
+export class MessageIdsEmpty extends TelegramError {
   //
 }
 
-export class MessageIdInvalid extends ErrorWithCall {
+export class MessageIdInvalid extends TelegramError {
   //
 }
 
-export class MessageNotModified extends ErrorWithCall {
+export class MessageNotModified extends TelegramError {
   //
 }
 
-export class MessagePollClosed extends ErrorWithCall {
+export class MessagePollClosed extends TelegramError {
   //
 }
 
-export class MessageTooLong extends ErrorWithCall {
+export class MessageTooLong extends TelegramError {
   //
 }
 
-export class MethodInvalid extends ErrorWithCall {
+export class MethodInvalid extends TelegramError {
   //
 }
 
-export class MinDateInvalid extends ErrorWithCall {
+export class MinDateInvalid extends TelegramError {
   //
 }
 
-export class MsgidDecreaseRetry extends ErrorWithCall {
+export class MsgidDecreaseRetry extends TelegramError {
   //
 }
 
-export class MsgIdInvalid extends ErrorWithCall {
+export class MsgIdInvalid extends TelegramError {
   //
 }
 
-export class MsgTooOld extends ErrorWithCall {
+export class MsgTooOld extends TelegramError {
   //
 }
 
-export class MsgWaitFailed extends ErrorWithCall {
+export class MsgWaitFailed extends TelegramError {
   //
 }
 
-export class MtSendQueueTooLong extends ErrorWithCall {
+export class MtSendQueueTooLong extends TelegramError {
   //
 }
 
-export class MultiMediaTooLong extends ErrorWithCall {
+export class MultiMediaTooLong extends TelegramError {
   //
 }
 
-export class NeedChatInvalid extends ErrorWithCall {
+export class NeedChatInvalid extends TelegramError {
   //
 }
 
-export class NeedMemberInvalid extends ErrorWithCall {
+export class NeedMemberInvalid extends TelegramError {
   //
 }
 
-export class NewSaltInvalid extends ErrorWithCall {
+export class NewSaltInvalid extends TelegramError {
   //
 }
 
-export class NewSettingsEmpty extends ErrorWithCall {
+export class NewSettingsEmpty extends TelegramError {
   //
 }
 
-export class NewSettingsInvalid extends ErrorWithCall {
+export class NewSettingsInvalid extends TelegramError {
   //
 }
 
-export class NextOffsetInvalid extends ErrorWithCall {
+export class NextOffsetInvalid extends TelegramError {
   //
 }
 
-export class NotAllowed extends ErrorWithCall {
+export class NotAllowed extends TelegramError {
   //
 }
 
-export class OffsetInvalid extends ErrorWithCall {
+export class OffsetInvalid extends TelegramError {
   //
 }
 
-export class OffsetPeerIdInvalid extends ErrorWithCall {
+export class OffsetPeerIdInvalid extends TelegramError {
   //
 }
 
-export class OptionsTooMuch extends ErrorWithCall {
+export class OptionsTooMuch extends TelegramError {
   //
 }
 
-export class OptionInvalid extends ErrorWithCall {
+export class OptionInvalid extends TelegramError {
   //
 }
 
-export class PackShortNameInvalid extends ErrorWithCall {
+export class PackShortNameInvalid extends TelegramError {
   //
 }
 
-export class PackShortNameOccupied extends ErrorWithCall {
+export class PackShortNameOccupied extends TelegramError {
   //
 }
 
-export class PackTitleInvalid extends ErrorWithCall {
+export class PackTitleInvalid extends TelegramError {
   //
 }
 
-export class ParticipantsTooFew extends ErrorWithCall {
+export class ParticipantsTooFew extends TelegramError {
   //
 }
 
-export class ParticipantCallFailed extends ErrorWithCall {
+export class ParticipantCallFailed extends TelegramError {
   //
 }
 
-export class ParticipantIdInvalid extends ErrorWithCall {
+export class ParticipantIdInvalid extends TelegramError {
   //
 }
 
-export class ParticipantJoinMissing extends ErrorWithCall {
+export class ParticipantJoinMissing extends TelegramError {
   //
 }
 
-export class ParticipantVersionOutdated extends ErrorWithCall {
+export class ParticipantVersionOutdated extends TelegramError {
   //
 }
 
-export class PasswordEmpty extends ErrorWithCall {
+export class PasswordEmpty extends TelegramError {
   //
 }
 
-export class PasswordHashInvalid extends ErrorWithCall {
+export class PasswordHashInvalid extends TelegramError {
   //
 }
 
-export class PasswordMissing extends ErrorWithCall {
+export class PasswordMissing extends TelegramError {
   //
 }
 
-export class PasswordRecoveryExpired extends ErrorWithCall {
+export class PasswordRecoveryExpired extends TelegramError {
   //
 }
 
-export class PasswordRecoveryNa extends ErrorWithCall {
+export class PasswordRecoveryNa extends TelegramError {
   //
 }
 
-export class PasswordRequired extends ErrorWithCall {
+export class PasswordRequired extends TelegramError {
   //
 }
 
-export class PaymentProviderInvalid extends ErrorWithCall {
+export class PaymentProviderInvalid extends TelegramError {
   //
 }
 
-export class PeerFlood extends ErrorWithCall {
+export class PeerFlood extends TelegramError {
   //
 }
 
-export class PeerHistoryEmpty extends ErrorWithCall {
+export class PeerHistoryEmpty extends TelegramError {
   //
 }
 
-export class PeerIdInvalid extends ErrorWithCall {
+export class PeerIdInvalid extends TelegramError {
   //
 }
 
-export class PeerIdNotSupported extends ErrorWithCall {
+export class PeerIdNotSupported extends TelegramError {
   //
 }
 
-export class PersistentTimestampEmpty extends ErrorWithCall {
+export class PersistentTimestampEmpty extends TelegramError {
   //
 }
 
-export class PersistentTimestampInvalid extends ErrorWithCall {
+export class PersistentTimestampInvalid extends TelegramError {
   //
 }
 
-export class PersistentTimestampOutdated extends ErrorWithCall {
+export class PersistentTimestampOutdated extends TelegramError {
   //
 }
 
-export class PhoneCodeEmpty extends ErrorWithCall {
+export class PhoneCodeEmpty extends TelegramError {
   //
 }
 
-export class PhoneCodeExpired extends ErrorWithCall {
+export class PhoneCodeExpired extends TelegramError {
   //
 }
 
-export class PhoneCodeHashEmpty extends ErrorWithCall {
+export class PhoneCodeHashEmpty extends TelegramError {
   //
 }
 
-export class PhoneCodeInvalid extends ErrorWithCall {
+export class PhoneCodeInvalid extends TelegramError {
   //
 }
 
-export class PhoneHashExpired extends ErrorWithCall {
+export class PhoneHashExpired extends TelegramError {
   //
 }
 
-export class PhoneNotOccupied extends ErrorWithCall {
+export class PhoneNotOccupied extends TelegramError {
   //
 }
 
-export class PhoneNumberAppSignupForbidden extends ErrorWithCall {
+export class PhoneNumberAppSignupForbidden extends TelegramError {
   //
 }
 
-export class PhoneNumberBanned extends ErrorWithCall {
+export class PhoneNumberBanned extends TelegramError {
   //
 }
 
-export class PhoneNumberFlood extends ErrorWithCall {
+export class PhoneNumberFlood extends TelegramError {
   //
 }
 
-export class PhoneNumberInvalid extends ErrorWithCall {
+export class PhoneNumberInvalid extends TelegramError {
   //
 }
 
-export class PhoneNumberOccupied extends ErrorWithCall {
+export class PhoneNumberOccupied extends TelegramError {
   //
 }
 
-export class PhoneNumberUnoccupied extends ErrorWithCall {
+export class PhoneNumberUnoccupied extends TelegramError {
   //
 }
 
-export class PhonePasswordFlood extends ErrorWithCall {
+export class PhonePasswordFlood extends TelegramError {
   //
 }
 
-export class PhonePasswordProtected extends ErrorWithCall {
+export class PhonePasswordProtected extends TelegramError {
   //
 }
 
-export class PhotoContentTypeInvalid extends ErrorWithCall {
+export class PhotoContentTypeInvalid extends TelegramError {
   //
 }
 
-export class PhotoContentUrlEmpty extends ErrorWithCall {
+export class PhotoContentUrlEmpty extends TelegramError {
   //
 }
 
-export class PhotoCropFileMissing extends ErrorWithCall {
+export class PhotoCropFileMissing extends TelegramError {
   //
 }
 
-export class PhotoCropSizeSmall extends ErrorWithCall {
+export class PhotoCropSizeSmall extends TelegramError {
   //
 }
 
-export class PhotoExtInvalid extends ErrorWithCall {
+export class PhotoExtInvalid extends TelegramError {
   //
 }
 
-export class PhotoFileMissing extends ErrorWithCall {
+export class PhotoFileMissing extends TelegramError {
   //
 }
 
-export class PhotoIdInvalid extends ErrorWithCall {
+export class PhotoIdInvalid extends TelegramError {
   //
 }
 
-export class PhotoInvalid extends ErrorWithCall {
+export class PhotoInvalid extends TelegramError {
   //
 }
 
-export class PhotoInvalidDimensions extends ErrorWithCall {
+export class PhotoInvalidDimensions extends TelegramError {
   //
 }
 
-export class PhotoSaveFileInvalid extends ErrorWithCall {
+export class PhotoSaveFileInvalid extends TelegramError {
   //
 }
 
-export class PhotoThumbUrlEmpty extends ErrorWithCall {
+export class PhotoThumbUrlEmpty extends TelegramError {
   //
 }
 
-export class PinnedDialogsTooMuch extends ErrorWithCall {
+export class PinnedDialogsTooMuch extends TelegramError {
   //
 }
 
-export class PinRestricted extends ErrorWithCall {
+export class PinRestricted extends TelegramError {
   //
 }
 
-export class PollAnswersInvalid extends ErrorWithCall {
+export class PollAnswersInvalid extends TelegramError {
   //
 }
 
-export class PollAnswerInvalid extends ErrorWithCall {
+export class PollAnswerInvalid extends TelegramError {
   //
 }
 
-export class PollOptionDuplicate extends ErrorWithCall {
+export class PollOptionDuplicate extends TelegramError {
   //
 }
 
-export class PollOptionInvalid extends ErrorWithCall {
+export class PollOptionInvalid extends TelegramError {
   //
 }
 
-export class PollQuestionInvalid extends ErrorWithCall {
+export class PollQuestionInvalid extends TelegramError {
   //
 }
 
-export class PollUnsupported extends ErrorWithCall {
+export class PollUnsupported extends TelegramError {
   //
 }
 
-export class PollVoteRequired extends ErrorWithCall {
+export class PollVoteRequired extends TelegramError {
   //
 }
 
-export class PostponedTimeout extends ErrorWithCall {
+export class PostponedTimeout extends TelegramError {
   //
 }
 
-export class PremiumAccountRequired extends ErrorWithCall {
+export class PremiumAccountRequired extends TelegramError {
   //
 }
 
-export class PremiumCurrentlyUnavailable extends ErrorWithCall {
+export class PremiumCurrentlyUnavailable extends TelegramError {
   //
 }
 
-export class PreviousChatImportActiveWaitXmin extends ErrorWithCall {
+export class PreviousChatImportActiveWaitXmin extends TelegramError {
   //
 }
 
-export class PrivacyKeyInvalid extends ErrorWithCall {
+export class PrivacyKeyInvalid extends TelegramError {
   //
 }
 
-export class PrivacyTooLong extends ErrorWithCall {
+export class PrivacyTooLong extends TelegramError {
   //
 }
 
-export class PrivacyValueInvalid extends ErrorWithCall {
+export class PrivacyValueInvalid extends TelegramError {
   //
 }
 
-export class PtsChangeEmpty extends ErrorWithCall {
+export class PtsChangeEmpty extends TelegramError {
   //
 }
 
-export class PublicChannelMissing extends ErrorWithCall {
+export class PublicChannelMissing extends TelegramError {
   //
 }
 
-export class PublicKeyRequired extends ErrorWithCall {
+export class PublicKeyRequired extends TelegramError {
   //
 }
 
-export class QueryIdEmpty extends ErrorWithCall {
+export class QueryIdEmpty extends TelegramError {
   //
 }
 
-export class QueryIdInvalid extends ErrorWithCall {
+export class QueryIdInvalid extends TelegramError {
   //
 }
 
-export class QueryTooShort extends ErrorWithCall {
+export class QueryTooShort extends TelegramError {
   //
 }
 
-export class QuizAnswerMissing extends ErrorWithCall {
+export class QuizAnswerMissing extends TelegramError {
   //
 }
 
-export class QuizCorrectAnswersEmpty extends ErrorWithCall {
+export class QuizCorrectAnswersEmpty extends TelegramError {
   //
 }
 
-export class QuizCorrectAnswersTooMuch extends ErrorWithCall {
+export class QuizCorrectAnswersTooMuch extends TelegramError {
   //
 }
 
-export class QuizCorrectAnswerInvalid extends ErrorWithCall {
+export class QuizCorrectAnswerInvalid extends TelegramError {
   //
 }
 
-export class QuizMultipleInvalid extends ErrorWithCall {
+export class QuizMultipleInvalid extends TelegramError {
   //
 }
 
-export class RandomIdDuplicate extends ErrorWithCall {
+export class RandomIdDuplicate extends TelegramError {
   //
 }
 
-export class RandomIdEmpty extends ErrorWithCall {
+export class RandomIdEmpty extends TelegramError {
   //
 }
 
-export class RandomIdInvalid extends ErrorWithCall {
+export class RandomIdInvalid extends TelegramError {
   //
 }
 
-export class RandomLengthInvalid extends ErrorWithCall {
+export class RandomLengthInvalid extends TelegramError {
   //
 }
 
-export class RangesInvalid extends ErrorWithCall {
+export class RangesInvalid extends TelegramError {
   //
 }
 
-export class ReactionsTooMany extends ErrorWithCall {
+export class ReactionsTooMany extends TelegramError {
   //
 }
 
-export class ReactionEmpty extends ErrorWithCall {
+export class ReactionEmpty extends TelegramError {
   //
 }
 
-export class ReactionInvalid extends ErrorWithCall {
+export class ReactionInvalid extends TelegramError {
   //
 }
 
-export class ReflectorNotAvailable extends ErrorWithCall {
+export class ReflectorNotAvailable extends TelegramError {
   //
 }
 
-export class RegIdGenerateFailed extends ErrorWithCall {
+export class RegIdGenerateFailed extends TelegramError {
   //
 }
 
-export class ReplyMarkupBuyEmpty extends ErrorWithCall {
+export class ReplyMarkupBuyEmpty extends TelegramError {
   //
 }
 
-export class ReplyMarkupGameEmpty extends ErrorWithCall {
+export class ReplyMarkupGameEmpty extends TelegramError {
   //
 }
 
-export class ReplyMarkupInvalid extends ErrorWithCall {
+export class ReplyMarkupInvalid extends TelegramError {
   //
 }
 
-export class ReplyMarkupTooLong extends ErrorWithCall {
+export class ReplyMarkupTooLong extends TelegramError {
   //
 }
 
-export class ResetRequestMissing extends ErrorWithCall {
+export class ResetRequestMissing extends TelegramError {
   //
 }
 
-export class ResultsTooMuch extends ErrorWithCall {
+export class ResultsTooMuch extends TelegramError {
   //
 }
 
-export class ResultIdDuplicate extends ErrorWithCall {
+export class ResultIdDuplicate extends TelegramError {
   //
 }
 
-export class ResultIdEmpty extends ErrorWithCall {
+export class ResultIdEmpty extends TelegramError {
   //
 }
 
-export class ResultIdInvalid extends ErrorWithCall {
+export class ResultIdInvalid extends TelegramError {
   //
 }
 
-export class ResultTypeInvalid extends ErrorWithCall {
+export class ResultTypeInvalid extends TelegramError {
   //
 }
 
-export class RevoteNotAllowed extends ErrorWithCall {
+export class RevoteNotAllowed extends TelegramError {
   //
 }
 
-export class RightsNotModified extends ErrorWithCall {
+export class RightsNotModified extends TelegramError {
   //
 }
 
-export class RightForbidden extends ErrorWithCall {
+export class RightForbidden extends TelegramError {
   //
 }
 
-export class RpcCallFail extends ErrorWithCall {
+export class RpcCallFail extends TelegramError {
   //
 }
 
-export class RpcMcgetFail extends ErrorWithCall {
+export class RpcMcgetFail extends TelegramError {
   //
 }
 
-export class RsaDecryptFailed extends ErrorWithCall {
+export class RsaDecryptFailed extends TelegramError {
   //
 }
 
-export class ScheduleBotNotAllowed extends ErrorWithCall {
+export class ScheduleBotNotAllowed extends TelegramError {
   //
 }
 
-export class ScheduleDateInvalid extends ErrorWithCall {
+export class ScheduleDateInvalid extends TelegramError {
   //
 }
 
-export class ScheduleDateTooLate extends ErrorWithCall {
+export class ScheduleDateTooLate extends TelegramError {
   //
 }
 
-export class ScheduleStatusPrivate extends ErrorWithCall {
+export class ScheduleStatusPrivate extends TelegramError {
   //
 }
 
-export class ScheduleTooMuch extends ErrorWithCall {
+export class ScheduleTooMuch extends TelegramError {
   //
 }
 
-export class ScoreInvalid extends ErrorWithCall {
+export class ScoreInvalid extends TelegramError {
   //
 }
 
-export class SearchQueryEmpty extends ErrorWithCall {
+export class SearchQueryEmpty extends TelegramError {
   //
 }
 
-export class SearchWithLinkNotSupported extends ErrorWithCall {
+export class SearchWithLinkNotSupported extends TelegramError {
   //
 }
 
-export class SecondsInvalid extends ErrorWithCall {
+export class SecondsInvalid extends TelegramError {
   //
 }
 
-export class SendAsPeerInvalid extends ErrorWithCall {
+export class SendAsPeerInvalid extends TelegramError {
   //
 }
 
-export class SendCodeUnavailable extends ErrorWithCall {
+export class SendCodeUnavailable extends TelegramError {
   //
 }
 
-export class SendMessageMediaInvalid extends ErrorWithCall {
+export class SendMessageMediaInvalid extends TelegramError {
   //
 }
 
-export class SendMessageTypeInvalid extends ErrorWithCall {
+export class SendMessageTypeInvalid extends TelegramError {
   //
 }
 
-export class SensitiveChangeForbidden extends ErrorWithCall {
+export class SensitiveChangeForbidden extends TelegramError {
   //
 }
 
-export class SessionExpired extends ErrorWithCall {
+export class SessionExpired extends TelegramError {
   //
 }
 
-export class SessionPasswordNeeded extends ErrorWithCall {
+export class SessionPasswordNeeded extends TelegramError {
   //
 }
 
-export class SessionRevoked extends ErrorWithCall {
+export class SessionRevoked extends TelegramError {
   //
 }
 
-export class SettingsInvalid extends ErrorWithCall {
+export class SettingsInvalid extends TelegramError {
   //
 }
 
-export class Sha256HashInvalid extends ErrorWithCall {
+export class Sha256HashInvalid extends TelegramError {
   //
 }
 
-export class ShortnameOccupyFailed extends ErrorWithCall {
+export class ShortnameOccupyFailed extends TelegramError {
   //
 }
 
-export class ShortNameInvalid extends ErrorWithCall {
+export class ShortNameInvalid extends TelegramError {
   //
 }
 
-export class ShortNameOccupied extends ErrorWithCall {
+export class ShortNameOccupied extends TelegramError {
   //
 }
 
-export class SignInFailed extends ErrorWithCall {
+export class SignInFailed extends TelegramError {
   //
 }
 
-export class SlowmodeMultiMsgsDisabled extends ErrorWithCall {
+export class SlowmodeMultiMsgsDisabled extends TelegramError {
   //
 }
 
-export class SmsCodeCreateFailed extends ErrorWithCall {
+export class SmsCodeCreateFailed extends TelegramError {
   //
 }
 
-export class SrpIdInvalid extends ErrorWithCall {
+export class SrpIdInvalid extends TelegramError {
   //
 }
 
-export class SrpPasswordChanged extends ErrorWithCall {
+export class SrpPasswordChanged extends TelegramError {
   //
 }
 
-export class StartParamEmpty extends ErrorWithCall {
+export class StartParamEmpty extends TelegramError {
   //
 }
 
-export class StartParamInvalid extends ErrorWithCall {
+export class StartParamInvalid extends TelegramError {
   //
 }
 
-export class StartParamTooLong extends ErrorWithCall {
+export class StartParamTooLong extends TelegramError {
   //
 }
 
-export class StickerpackStickersTooMuch extends ErrorWithCall {
+export class StickerpackStickersTooMuch extends TelegramError {
   //
 }
 
-export class StickersetInvalid extends ErrorWithCall {
+export class StickersetInvalid extends TelegramError {
   //
 }
 
-export class StickersetOwnerAnonymous extends ErrorWithCall {
+export class StickersetOwnerAnonymous extends TelegramError {
   //
 }
 
-export class StickersEmpty extends ErrorWithCall {
+export class StickersEmpty extends TelegramError {
   //
 }
 
-export class StickersTooMuch extends ErrorWithCall {
+export class StickersTooMuch extends TelegramError {
   //
 }
 
-export class StickerDocumentInvalid extends ErrorWithCall {
+export class StickerDocumentInvalid extends TelegramError {
   //
 }
 
-export class StickerEmojiInvalid extends ErrorWithCall {
+export class StickerEmojiInvalid extends TelegramError {
   //
 }
 
-export class StickerFileInvalid extends ErrorWithCall {
+export class StickerFileInvalid extends TelegramError {
   //
 }
 
-export class StickerGifDimensions extends ErrorWithCall {
+export class StickerGifDimensions extends TelegramError {
   //
 }
 
-export class StickerIdInvalid extends ErrorWithCall {
+export class StickerIdInvalid extends TelegramError {
   //
 }
 
-export class StickerInvalid extends ErrorWithCall {
+export class StickerInvalid extends TelegramError {
   //
 }
 
-export class StickerMimeInvalid extends ErrorWithCall {
+export class StickerMimeInvalid extends TelegramError {
   //
 }
 
-export class StickerPngDimensions extends ErrorWithCall {
+export class StickerPngDimensions extends TelegramError {
   //
 }
 
-export class StickerPngNopng extends ErrorWithCall {
+export class StickerPngNopng extends TelegramError {
   //
 }
 
-export class StickerTgsNodoc extends ErrorWithCall {
+export class StickerTgsNodoc extends TelegramError {
   //
 }
 
-export class StickerTgsNotgs extends ErrorWithCall {
+export class StickerTgsNotgs extends TelegramError {
   //
 }
 
-export class StickerThumbPngNopng extends ErrorWithCall {
+export class StickerThumbPngNopng extends TelegramError {
   //
 }
 
-export class StickerThumbTgsNotgs extends ErrorWithCall {
+export class StickerThumbTgsNotgs extends TelegramError {
   //
 }
 
-export class StickerVideoBig extends ErrorWithCall {
+export class StickerVideoBig extends TelegramError {
   //
 }
 
-export class StickerVideoNodoc extends ErrorWithCall {
+export class StickerVideoNodoc extends TelegramError {
   //
 }
 
-export class StickerVideoNowebm extends ErrorWithCall {
+export class StickerVideoNowebm extends TelegramError {
   //
 }
 
-export class StorageCheckFailed extends ErrorWithCall {
+export class StorageCheckFailed extends TelegramError {
   //
 }
 
-export class StoreInvalidScalarType extends ErrorWithCall {
+export class StoreInvalidScalarType extends TelegramError {
   //
 }
 
-export class SwitchPmTextEmpty extends ErrorWithCall {
+export class SwitchPmTextEmpty extends TelegramError {
   //
 }
 
-export class TakeoutInvalid extends ErrorWithCall {
+export class TakeoutInvalid extends TelegramError {
   //
 }
 
-export class TakeoutRequired extends ErrorWithCall {
+export class TakeoutRequired extends TelegramError {
   //
 }
 
-export class TempAuthKeyAlreadyBound extends ErrorWithCall {
+export class TempAuthKeyAlreadyBound extends TelegramError {
   //
 }
 
-export class TempAuthKeyEmpty extends ErrorWithCall {
+export class TempAuthKeyEmpty extends TelegramError {
   //
 }
 
-export class ThemeFileInvalid extends ErrorWithCall {
+export class ThemeFileInvalid extends TelegramError {
   //
 }
 
-export class ThemeFormatInvalid extends ErrorWithCall {
+export class ThemeFormatInvalid extends TelegramError {
   //
 }
 
-export class ThemeInvalid extends ErrorWithCall {
+export class ThemeInvalid extends TelegramError {
   //
 }
 
-export class ThemeMimeInvalid extends ErrorWithCall {
+export class ThemeMimeInvalid extends TelegramError {
   //
 }
 
-export class ThemeTitleInvalid extends ErrorWithCall {
+export class ThemeTitleInvalid extends TelegramError {
   //
 }
 
-export class Timeout extends ErrorWithCall {
+export class Timeout extends TelegramError {
   //
 }
 
-export class TitleInvalid extends ErrorWithCall {
+export class TitleInvalid extends TelegramError {
   //
 }
 
-export class TmpPasswordDisabled extends ErrorWithCall {
+export class TmpPasswordDisabled extends TelegramError {
   //
 }
 
-export class TmpPasswordInvalid extends ErrorWithCall {
+export class TmpPasswordInvalid extends TelegramError {
   //
 }
 
-export class TokenInvalid extends ErrorWithCall {
+export class TokenInvalid extends TelegramError {
   //
 }
 
-export class TopicDeleted extends ErrorWithCall {
+export class TopicDeleted extends TelegramError {
   //
 }
 
-export class ToLangInvalid extends ErrorWithCall {
+export class ToLangInvalid extends TelegramError {
   //
 }
 
-export class TtlDaysInvalid extends ErrorWithCall {
+export class TtlDaysInvalid extends TelegramError {
   //
 }
 
-export class TtlMediaInvalid extends ErrorWithCall {
+export class TtlMediaInvalid extends TelegramError {
   //
 }
 
-export class TtlPeriodInvalid extends ErrorWithCall {
+export class TtlPeriodInvalid extends TelegramError {
   //
 }
 
-export class TypesEmpty extends ErrorWithCall {
+export class TypesEmpty extends TelegramError {
   //
 }
 
-export class TypeConstructorInvalid extends ErrorWithCall {
+export class TypeConstructorInvalid extends TelegramError {
   //
 }
 
-export class Timedout extends ErrorWithCall {
+export class Timedout extends TelegramError {
   //
 }
 
-export class UnknownError extends ErrorWithCall {
+export class UnknownError extends TelegramError {
   //
 }
 
-export class UnknownMethod extends ErrorWithCall {
+export class UnknownMethod extends TelegramError {
   //
 }
 
-export class UntilDateInvalid extends ErrorWithCall {
+export class UntilDateInvalid extends TelegramError {
   //
 }
 
-export class UpdateAppToLogin extends ErrorWithCall {
+export class UpdateAppToLogin extends TelegramError {
   //
 }
 
-export class UrlInvalid extends ErrorWithCall {
+export class UrlInvalid extends TelegramError {
   //
 }
 
-export class UsageLimitInvalid extends ErrorWithCall {
+export class UsageLimitInvalid extends TelegramError {
   //
 }
 
-export class UsernameInvalid extends ErrorWithCall {
+export class UsernameInvalid extends TelegramError {
   //
 }
 
-export class UsernameNotModified extends ErrorWithCall {
+export class UsernameNotModified extends TelegramError {
   //
 }
 
-export class UsernameNotOccupied extends ErrorWithCall {
+export class UsernameNotOccupied extends TelegramError {
   //
 }
 
-export class UsernameOccupied extends ErrorWithCall {
+export class UsernameOccupied extends TelegramError {
   //
 }
 
-export class UsernamePurchaseAvailable extends ErrorWithCall {
+export class UsernamePurchaseAvailable extends TelegramError {
   //
 }
 
-export class UserpicPrivacyRequired extends ErrorWithCall {
+export class UserpicPrivacyRequired extends TelegramError {
   //
 }
 
-export class UserpicUploadRequired extends ErrorWithCall {
+export class UserpicUploadRequired extends TelegramError {
   //
 }
 
-export class UsersTooFew extends ErrorWithCall {
+export class UsersTooFew extends TelegramError {
   //
 }
 
-export class UsersTooMuch extends ErrorWithCall {
+export class UsersTooMuch extends TelegramError {
   //
 }
 
-export class UserAdminInvalid extends ErrorWithCall {
+export class UserAdminInvalid extends TelegramError {
   //
 }
 
-export class UserAlreadyInvited extends ErrorWithCall {
+export class UserAlreadyInvited extends TelegramError {
   //
 }
 
-export class UserAlreadyParticipant extends ErrorWithCall {
+export class UserAlreadyParticipant extends TelegramError {
   //
 }
 
-export class UserBannedInChannel extends ErrorWithCall {
+export class UserBannedInChannel extends TelegramError {
   //
 }
 
-export class UserBlocked extends ErrorWithCall {
+export class UserBlocked extends TelegramError {
   //
 }
 
-export class UserBot extends ErrorWithCall {
+export class UserBot extends TelegramError {
   //
 }
 
-export class UserBotInvalid extends ErrorWithCall {
+export class UserBotInvalid extends TelegramError {
   //
 }
 
-export class UserBotRequired extends ErrorWithCall {
+export class UserBotRequired extends TelegramError {
   //
 }
 
-export class UserChannelsTooMuch extends ErrorWithCall {
+export class UserChannelsTooMuch extends TelegramError {
   //
 }
 
-export class UserCreator extends ErrorWithCall {
+export class UserCreator extends TelegramError {
   //
 }
 
-export class UserDeactivated extends ErrorWithCall {
+export class UserDeactivated extends TelegramError {
   //
 }
 
-export class UserDeactivatedBan extends ErrorWithCall {
+export class UserDeactivatedBan extends TelegramError {
   //
 }
 
-export class UserDeleted extends ErrorWithCall {
+export class UserDeleted extends TelegramError {
   //
 }
 
-export class UserIdInvalid extends ErrorWithCall {
+export class UserIdInvalid extends TelegramError {
   //
 }
 
-export class UserInvalid extends ErrorWithCall {
+export class UserInvalid extends TelegramError {
   //
 }
 
-export class UserIsBlocked extends ErrorWithCall {
+export class UserIsBlocked extends TelegramError {
   //
 }
 
-export class UserIsBot extends ErrorWithCall {
+export class UserIsBot extends TelegramError {
   //
 }
 
-export class UserKicked extends ErrorWithCall {
+export class UserKicked extends TelegramError {
   //
 }
 
-export class UserNotMutualContact extends ErrorWithCall {
+export class UserNotMutualContact extends TelegramError {
   //
 }
 
-export class UserNotParticipant extends ErrorWithCall {
+export class UserNotParticipant extends TelegramError {
   //
 }
 
-export class UserPrivacyRestricted extends ErrorWithCall {
+export class UserPrivacyRestricted extends TelegramError {
   //
 }
 
-export class UserRestricted extends ErrorWithCall {
+export class UserRestricted extends TelegramError {
   //
 }
 
-export class UserVolumeInvalid extends ErrorWithCall {
+export class UserVolumeInvalid extends TelegramError {
   //
 }
 
-export class VideoContentTypeInvalid extends ErrorWithCall {
+export class VideoContentTypeInvalid extends TelegramError {
   //
 }
 
-export class VideoFileInvalid extends ErrorWithCall {
+export class VideoFileInvalid extends TelegramError {
   //
 }
 
-export class VideoTitleEmpty extends ErrorWithCall {
+export class VideoTitleEmpty extends TelegramError {
   //
 }
 
-export class VoiceMessagesForbidden extends ErrorWithCall {
+export class VoiceMessagesForbidden extends TelegramError {
   //
 }
 
-export class WallpaperFileInvalid extends ErrorWithCall {
+export class WallpaperFileInvalid extends TelegramError {
   //
 }
 
-export class WallpaperInvalid extends ErrorWithCall {
+export class WallpaperInvalid extends TelegramError {
   //
 }
 
-export class WallpaperMimeInvalid extends ErrorWithCall {
+export class WallpaperMimeInvalid extends TelegramError {
   //
 }
 
-export class WcConvertUrlInvalid extends ErrorWithCall {
+export class WcConvertUrlInvalid extends TelegramError {
   //
 }
 
-export class WebdocumentInvalid extends ErrorWithCall {
+export class WebdocumentInvalid extends TelegramError {
   //
 }
 
-export class WebdocumentMimeInvalid extends ErrorWithCall {
+export class WebdocumentMimeInvalid extends TelegramError {
   //
 }
 
-export class WebdocumentSizeTooBig extends ErrorWithCall {
+export class WebdocumentSizeTooBig extends TelegramError {
   //
 }
 
-export class WebdocumentUrlInvalid extends ErrorWithCall {
+export class WebdocumentUrlInvalid extends TelegramError {
   //
 }
 
-export class WebpageCurlFailed extends ErrorWithCall {
+export class WebpageCurlFailed extends TelegramError {
   //
 }
 
-export class WebpageMediaEmpty extends ErrorWithCall {
+export class WebpageMediaEmpty extends TelegramError {
   //
 }
 
-export class WebpushAuthInvalid extends ErrorWithCall {
+export class WebpushAuthInvalid extends TelegramError {
   //
 }
 
-export class WebpushKeyInvalid extends ErrorWithCall {
+export class WebpushKeyInvalid extends TelegramError {
   //
 }
 
-export class WebpushTokenInvalid extends ErrorWithCall {
+export class WebpushTokenInvalid extends TelegramError {
   //
 }
 
-export class WorkerBusyTooLongRetry extends ErrorWithCall {
+export class WorkerBusyTooLongRetry extends TelegramError {
   //
 }
 
-export class YouBlockedUser extends ErrorWithCall {
+export class YouBlockedUser extends TelegramError {
   //
 }
 

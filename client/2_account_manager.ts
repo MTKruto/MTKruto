@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { types } from "../2_tl.ts";
+import { is } from "../2_tl.ts";
 import { constructInactiveChat, ID } from "../3_types.ts";
 import { C } from "./1_types.ts";
 
@@ -32,12 +32,12 @@ export class AccountManager {
 
   async #toggleUsername(id: ID, username: string, active: boolean) {
     const peer = await this.#c.getInputPeer(id);
-    if (peer instanceof types.InputPeerSelf) {
-      await this.#c.api.account.toggleUsername({ username, active });
-    } else if (peer instanceof types.InputPeerUser) {
-      await this.#c.api.bots.toggleUsername({ bot: new types.InputUser(peer), username, active });
-    } else if (peer instanceof types.InputPeerChannel) {
-      await this.#c.api.channels.toggleUsername({ channel: new types.InputChannel(peer), username, active });
+    if (is("inputPeerSelf", peer)) {
+      await this.#c.invoke({ _: "account.toggleUsername", username, active });
+    } else if (is("inputPeerUser", peer)) {
+      await this.#c.invoke({ _: "bots.toggleUsername", bot: { ...peer, _: "inputUser" }, username, active });
+    } else if (is("inputPeerChannel", peer)) {
+      await this.#c.invoke({ _: "channels.toggleUsername", channel: { ...peer, _: "inputChannel" }, username, active });
     } else {
       unreachable();
     }
@@ -56,12 +56,12 @@ export class AccountManager {
   async reorderUsernames(id: ID, order: string[]) {
     await this.#c.storage.assertUser("reorderUsernames");
     const peer = await this.#c.getInputPeer(id);
-    if (peer instanceof types.InputPeerSelf) {
-      return await this.#c.api.account.reorderUsernames({ order });
-    } else if (peer instanceof types.InputPeerUser) {
-      return await this.#c.api.bots.reorderUsernames({ bot: new types.InputUser(peer), order });
-    } else if (peer instanceof types.InputPeerChannel) {
-      return await this.#c.api.channels.reorderUsernames({ channel: new types.InputChannel(peer), order });
+    if (is("inputPeerSelf", peer)) {
+      return await this.#c.invoke({ _: "account.reorderUsernames", order });
+    } else if (is("inputPeerUser", peer)) {
+      return await this.#c.invoke({ _: "bots.reorderUsernames", bot: { ...peer, _: "inputUser" }, order });
+    } else if (is("inputPeerChannel", peer)) {
+      return await this.#c.invoke({ _: "channels.reorderUsernames", channel: { ...peer, _: "inputChannel" }, order });
     } else {
       unreachable();
     }
@@ -70,8 +70,8 @@ export class AccountManager {
   async hideUsernames(id: ID) {
     await this.#c.storage.assertUser("hideUsernames");
     const peer = await this.#c.getInputPeer(id);
-    if (peer instanceof types.InputPeerChannel) {
-      return await this.#c.api.channels.deactivateAllUsernames({ channel: new types.InputChannel(peer) });
+    if (is("inputPeerChannel", peer)) {
+      return await this.#c.invoke({ _: "channels.deactivateAllUsernames", channel: { ...peer, _: "inputChannel" } });
     } else {
       unreachable();
     }
@@ -79,7 +79,7 @@ export class AccountManager {
 
   async getInactiveChats() {
     await this.#c.storage.assertUser("getInactiveChats");
-    const { chats, dates } = await this.#c.api.channels.getInactiveChannels();
+    const { chats, dates } = await this.#c.invoke({ _: "channels.getInactiveChannels" });
     return chats.map((v, i) => constructInactiveChat(v, dates[i]));
   }
 }

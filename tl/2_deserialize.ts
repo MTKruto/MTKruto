@@ -13,41 +13,22 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+// deno-lint-ignore-file no-explicit-any
 
 import { assertEquals } from "../0_deps.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
-import { analyzeOptionalParam, flags, isOptionalParam, isTLObjectConstructor, Param, ParamDesc, paramDesc, TLObject, TLObjectConstructor } from "./1_tl_object.ts";
-import { map } from "./2_types.ts";
+import { analyzeOptionalParam, isOptionalParam } from "./1_utilities.ts";
+import { AnyType, flags, getType, getTypeName } from "./0_api.ts";
 
 function deserializeSingleParam(
   reader: TLRawReader,
-  type:
-    | typeof TLObject
-    | typeof Uint8Array
-    | "string"
-    | "number"
-    | "bigint"
-    | "boolean"
-    | "true",
+  type: unknown,
   ntype: string,
-) {
-  if (isTLObjectConstructor(type)) {
-    const cid = reader.readInt32(false);
-    const constructor = map.get(cid);
-    if (!constructor) {
-      throw new Error(`Constructor with ID ${cid.toString(16)} not found`);
-    }
-    return deserialize(
-      reader,
-      constructor[paramDesc],
-      constructor,
-    );
-  }
-
+): any {
   if (type == Uint8Array) {
     return reader.readBytes();
   } else {
@@ -72,17 +53,28 @@ function deserializeSingleParam(
         return reader.readString();
       case "true":
         return true;
-      default:
-        throw new Error(`Unexpected type ${type}`);
+      default: {
+        const cid = reader.readInt32(false);
+        const name = getTypeName(cid);
+        if (!name) {
+          throw new Error(`Constructor with ID 0x${cid.toString(16).toUpperCase()} not found`);
+        }
+
+        return deserialize(
+          reader,
+          getType(name)![1],
+          name,
+        );
+      }
     }
   }
 }
-export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
+export function deserialize(
   reader: TLRawReader,
-  paramDesc: ParamDesc,
-  constructor: T,
-): InstanceType<T> {
-  const params: Record<string, Param> = {};
+  paramDesc: [string, unknown, string][],
+  name: string,
+): AnyType {
+  const type_: Record<string, any> = { _: name };
   const flagFields: Record<string, number> = {};
   for (const [name, type, ntype] of paramDesc) {
     if (isOptionalParam(ntype)) {
@@ -107,15 +99,15 @@ export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
       for (let i = 0; i < count; i++) {
         items.push(deserializeSingleParam(reader, type[0], ntype)!);
       }
-      params[name] = items;
+      type_[name] = items;
       continue;
     }
 
     const value = deserializeSingleParam(reader, type, ntype);
     if (typeof value !== "boolean" || value) {
-      params[name] = value;
+      type_[name] = value;
     }
   }
 
-  return new constructor(params);
+  return type_ as AnyType;
 }

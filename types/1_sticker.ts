@@ -19,7 +19,7 @@
  */
 
 import { cleanObject, MaybePromise } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { constructMaskPosition, MaskPosition } from "./0_mask_position.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
@@ -58,14 +58,14 @@ export interface Sticker {
 }
 
 /** @unlisted */
-export type StickerSetNameGetter = (inputStickerSet: types.InputStickerSetID) => MaybePromise<string>;
+export type StickerSetNameGetter = (inputStickerSet: Api.inputStickerSetID) => MaybePromise<string>;
 
-export async function constructSticker(document: types.Document, fileId: string, fileUniqueId: string, getStickerSetName: StickerSetNameGetter, customEmojiId = ""): Promise<Sticker> {
-  const stickerAttribute = document.attributes.find((v): v is types.DocumentAttributeSticker => v instanceof types.DocumentAttributeSticker)!;
-  const imageSizeAttribute = document.attributes.find((v): v is types.DocumentAttributeImageSize => v instanceof types.DocumentAttributeImageSize)!;
-  const customEmojiAttribute = document.attributes.find((v): v is types.DocumentAttributeCustomEmoji => v instanceof types.DocumentAttributeCustomEmoji);
-  const videoAttribute = document.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo)!;
-  const setName = stickerAttribute.stickerset instanceof types.InputStickerSetID ? await getStickerSetName(stickerAttribute.stickerset) : undefined;
+export async function constructSticker(document: Api.document, fileId: string, fileUniqueId: string, getStickerSetName: StickerSetNameGetter, customEmojiId = ""): Promise<Sticker> {
+  const stickerAttribute = document.attributes.find((v): v is Api.documentAttributeSticker => is("documentAttributeSticker", v))!;
+  const imageSizeAttribute = document.attributes.find((v): v is Api.documentAttributeImageSize => is("documentAttributeImageSize", v))!;
+  const customEmojiAttribute = document.attributes.find((v): v is Api.documentAttributeCustomEmoji => is("documentAttributeCustomEmoji", v));
+  const videoAttribute = document.attributes.find((v): v is Api.documentAttributeVideo => is("documentAttributeVideo", v))!;
+  const setName = is("inputStickerSetID", stickerAttribute.stickerset) ? await getStickerSetName(stickerAttribute.stickerset) : undefined;
 
   return cleanObject({
     fileId,
@@ -75,7 +75,7 @@ export async function constructSticker(document: types.Document, fileId: string,
     height: imageSizeAttribute ? imageSizeAttribute.h : videoAttribute ? videoAttribute.h : 512,
     isAnimated: document.mime_type == "application/x-tgsticker",
     isVideo: document.mime_type == "video/webm",
-    thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
+    thumbnails: document.thumbs ? document.thumbs.map((v) => is("photoSize", v) ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
     emoji: (customEmojiAttribute ? customEmojiAttribute.alt : stickerAttribute.alt) || undefined,
     setName,
     premiumAnimation: undefined, // TODO

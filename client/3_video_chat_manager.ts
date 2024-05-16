@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getRandomId, toUnixTimestamp, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { as, enums, types } from "../2_tl.ts";
+import { Api, as, is } from "../2_tl.ts";
 import { constructLiveStreamChannel, constructVideoChat, ID, Update, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { DownloadLiveStreamChunkParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
 import { C as C_ } from "./1_types.ts";
@@ -31,7 +31,7 @@ interface C extends C_ {
   fileManager: FileManager;
 }
 
-type VideoChatManagerUpdate = types.UpdateGroupCall;
+type VideoChatManagerUpdate = Api.updateGroupCall;
 
 export class VideoChatManager {
   #c: C;
@@ -42,18 +42,12 @@ export class VideoChatManager {
 
   async #createGroupCall(chatId: ID, title?: string, liveStream?: true, scheduleDate?: Date) {
     const peer = await this.#c.getInputPeer(chatId);
-    if (peer instanceof types.InputPeerUser) {
+    if (is("inputPeerUser", peer)) {
       throw new InputError("Video chats are only available for groups and channels.");
     }
-    const { updates } = await this.#c.api.phone.createGroupCall({
-      peer,
-      random_id: getRandomId(true),
-      title,
-      rtmp_stream: liveStream,
-      schedule_date: scheduleDate ? toUnixTimestamp(scheduleDate) : undefined,
-    }).then((v) => v[as](types.Updates));
+    const { updates } = await this.#c.invoke({ _: "phone.createGroupCall", peer, random_id: getRandomId(true), title, rtmp_stream: liveStream, schedule_date: scheduleDate ? toUnixTimestamp(scheduleDate) : undefined }).then((v) => as("updates", v));
     const updateGroupCall = updates
-      .find((v): v is types.UpdateGroupCall => v instanceof types.UpdateGroupCall);
+      .find((v): v is Api.updateGroupCall => is("updateGroupCall", v));
     if (!updateGroupCall) {
       unreachable();
     }
@@ -70,44 +64,39 @@ export class VideoChatManager {
     return await this.#createGroupCall(chatId, params?.title, params?.liveStream || undefined, startAt) as VideoChatScheduled;
   }
 
-  async #getInputGroupCall(id_: string) {
+  async #getInputGroupCall(id_: string): Promise<Api.inputGroupCall> {
     const id = BigInt(id_);
     const accessHash = await this.#c.storage.getGroupCallAccessHash(id);
     if (accessHash == null) {
       throw new InputError("Video chat not found.");
     }
-    return new types.InputGroupCall({ id, access_hash: accessHash });
+    return { _: "inputGroupCall", id, access_hash: accessHash };
   }
 
   async joinVideoChat(id: string, params: string, params_?: JoinVideoChatParams) {
     await this.#c.storage.assertUser("joinVideoChat");
     const call = await this.#getInputGroupCall(id);
-    const { updates } = await this.#c.api.phone.joinGroupCall({
-      call,
-      join_as: params_?.joinAs ? await this.#c.getInputPeer(params_.joinAs) : new types.InputPeerSelf(),
-      params: new types.DataJSON({ data: params }),
-      invite_hash: params_?.inviteHash,
-      muted: params_?.audio ? undefined : true,
-      video_stopped: params_?.video ? undefined : true,
-    }).then((v) => v[as](types.Updates));
+    const { updates } = await this.#c.invoke({ _: "phone.joinGroupCall", call, join_as: params_?.joinAs ? await this.#c.getInputPeer(params_.joinAs) : { _: "inputPeerSelf" }, params: ({ _: "dataJSON", data: params }), invite_hash: params_?.inviteHash, muted: params_?.audio ? undefined : true, video_stopped: params_?.video ? undefined : true }).then((v) => as("updates", v));
     const updateGroupCall = updates
-      .find((v): v is types.UpdateGroupCallConnection => v instanceof types.UpdateGroupCallConnection);
+      .find((v): v is Api.updateGroupCallConnection => is("updateGroupCallConnection", v));
     if (!updateGroupCall) unreachable();
     return updateGroupCall.params.data;
   }
 
   async leaveVideoChat(id: string) {
     await this.#c.storage.assertUser("leaveVideoChat");
-    await this.#c.api.phone.leaveGroupCall({ call: await this.#getInputGroupCall(id), source: 0 });
+    await this.#c.invoke({ _: "phone.leaveGroupCall", call: await this.#getInputGroupCall(id), source: 0 });
   }
 
   async joinLiveStream(id: string) {
     await this.#c.storage.assertUser("joinLiveStream");
     const call = await this.#getInputGroupCall(id);
-    const { updates } = await this.#c.api.phone.joinGroupCall({
+    const { updates } = await this.#c.invoke({
+      _: "phone.joinGroupCall",
       call,
-      join_as: new types.InputPeerSelf(),
-      params: new types.DataJSON({
+      join_as: { _: "inputPeerSelf" },
+      params: ({
+        _: "dataJSON",
         data: JSON.stringify({
           fingerprints: [],
           pwd: "",
@@ -116,17 +105,17 @@ export class VideoChatManager {
           ufrag: "",
         }),
       }),
-    }).then((v) => v[as](types.Updates));
+    }).then((v) => as("updates", v));
     const updateGroupCall = updates
-      .find((v): v is types.UpdateGroupCallConnection => v instanceof types.UpdateGroupCallConnection);
+      .find((v): v is Api.updateGroupCallConnection => is("updateGroupCallConnection", v));
     if (!updateGroupCall) unreachable();
   }
 
   async #getCall(id: string) {
-    let groupCall: enums.GroupCall | null = await this.#c.storage.getGroupCall(BigInt(id));
+    let groupCall: Api.GroupCall | null = await this.#c.storage.getGroupCall(BigInt(id));
     if (groupCall == null) {
       const call = await this.#getInputGroupCall(id);
-      groupCall = await this.#c.api.phone.getGroupCall({ call, limit: 1 }).then((v) => v.call);
+      groupCall = await this.#c.invoke({ _: "phone.getGroupCall", call, limit: 1 }).then((v) => v.call);
     }
     return groupCall!;
   }
@@ -135,15 +124,15 @@ export class VideoChatManager {
     return constructVideoChat(await this.#getCall(id));
   }
 
-  static canHandleUpdate(update: enums.Update): update is VideoChatManagerUpdate {
-    return update instanceof types.UpdateGroupCall;
+  static canHandleUpdate(update: Api.Update): update is VideoChatManagerUpdate {
+    return is("updateGroupCall", update);
   }
 
   async handleUpdate(update: VideoChatManagerUpdate): Promise<Update> {
     let chatId = Number(-update.chat_id);
-    const fullChat = await this.#c.storage.getFullChat(chatId).then((v) => v == null ? this.#c.storage.getFullChat(chatId = ZERO_CHANNEL_ID - Number(update.chat_id)) : v) as types.ChannelFull | types.ChatFull | null;
+    const fullChat = await this.#c.storage.getFullChat(chatId).then((v) => v == null ? this.#c.storage.getFullChat(chatId = ZERO_CHANNEL_ID - Number(update.chat_id)) : v) as Api.channelFull | Api.chatFull | null;
     let updateFullChat = false;
-    if (update.call instanceof types.GroupCallDiscarded) {
+    if (is("groupCallDiscarded", update.call)) {
       await this.#c.storage.setGroupCall(update.call.id, null);
       await this.#c.storage.setGroupCallAccessHash(update.call.id, null);
       if (fullChat != null) {
@@ -155,7 +144,7 @@ export class VideoChatManager {
       await this.#c.storage.setGroupCallAccessHash(update.call.id, update.call.access_hash);
       if (fullChat != null) {
         if (!("call" in fullChat) || !fullChat.call || fullChat.call.id != update.call.id) {
-          fullChat.call = new types.InputGroupCall(update.call);
+          fullChat.call = { ...update.call, _: "inputGroupCall" };
           updateFullChat = true;
         }
       }
@@ -169,13 +158,13 @@ export class VideoChatManager {
   async getLiveStreamChannels(id: string) {
     await this.#c.storage.assertUser("getLiveStreamChannels");
     const call = await this.#getCall(id);
-    if (!(call instanceof types.GroupCall) || !call.rtmp_stream) {
+    if (!(is("groupCall", call)) || !call.rtmp_stream) {
       throw new InputError("Not a live stream.");
     }
     const client = this.#c.getCdnConnection(call.stream_dc_id);
     await client.connect();
     try {
-      const streams = await client.api.phone.getGroupCallStreamChannels({ call: await this.#getInputGroupCall(id) });
+      const streams = await client.invoke({ _: "phone.getGroupCallStreamChannels", call: await this.#getInputGroupCall(id) });
       return streams.channels.map(constructLiveStreamChannel);
     } finally {
       await client.disconnect();
@@ -185,19 +174,20 @@ export class VideoChatManager {
   async *downloadLiveStreamChunk(id: string, channel: number, scale: number, timestamp: number, params?: DownloadLiveStreamChunkParams) {
     await this.#c.storage.assertUser("downloadLiveStreamChunk");
     const call = await this.#getCall(id);
-    if (!(call instanceof types.GroupCall) || !call.rtmp_stream) {
+    if (!(is("groupCall", call)) || !call.rtmp_stream) {
       throw new InputError("Not a live stream.");
     }
     const quality = params?.quality ?? "low";
-    const location = new types.InputGroupCallStream({
-      call: new types.InputGroupCall(call),
+    const location: Api.inputGroupCallStream = {
+      _: "inputGroupCallStream",
+      call: { ...call, _: "inputGroupCall" },
       scale,
       time_ms: BigInt(timestamp),
       video_channel: channel,
       video_quality: quality == "low" ? 0 : quality == "medium" ? 1 : quality == "high" ? 2 : (() => {
         throw new InputError("Got invalid quality.");
       })(),
-    });
+    };
     yield* this.#c.fileManager.downloadInner(location, call.stream_dc_id ?? unreachable());
   }
 }

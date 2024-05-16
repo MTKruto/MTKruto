@@ -21,7 +21,7 @@
 import { AssertionError, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { AnyEntity, enums, peerToChatId, ReadObject, serialize, TLObject, TLReader, TLWriter, types } from "../2_tl.ts";
+import { AnyEntity, Api, as, is, isValidType, peerToChatId, ReadObject, serialize, TLReader, TLWriter } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
 import { Storage, StorageKeyPart } from "../2_storage.ts";
 
@@ -200,7 +200,7 @@ export class StorageOperations {
   async getChannelAccessHash(id: number): Promise<bigint | null> {
     const channel = await this.getEntity(id);
     if (channel) {
-      if (!(channel instanceof types.Channel) && !(channel instanceof types.ChannelForbidden)) {
+      if (!(is("channel", channel)) && !is("channelForbidden", channel)) {
         unreachable();
       }
       return typeof channel.access_hash === "bigint" ? channel.access_hash : null;
@@ -212,7 +212,7 @@ export class StorageOperations {
   async getUserAccessHash(id: number): Promise<bigint | null> {
     const user = await this.getEntity(id);
     if (user) {
-      if (!(user instanceof types.User)) {
+      if (!is("user", user)) {
         unreachable();
       }
       return typeof user.access_hash === "bigint" ? user.access_hash : null;
@@ -233,16 +233,17 @@ export class StorageOperations {
     return await this.#storage.get<[number, Date]>(K.cache.username(username));
   }
 
-  async setTlObject(key: readonly StorageKeyPart[], value: TLObject | null) {
+  async setTlObject(key: readonly StorageKeyPart[], value: Api.AnyType | null) {
     if (value == null) {
       await this.#storage.set(key, null);
     } else {
-      await this.#storage.set(key, this.#mustSerialize ? rleEncode(value[serialize]()) : value);
+      await this.#storage.set(key, this.#mustSerialize ? serialize(value) : (value as unknown));
     }
   }
 
-  async getTlObject(keyOrBuffer: TLObject | Uint8Array | readonly StorageKeyPart[]): Promise<ReadObject | null> {
-    const buffer = (keyOrBuffer instanceof Uint8Array || keyOrBuffer instanceof TLObject) ? keyOrBuffer : await this.#storage.get<Uint8Array>(keyOrBuffer);
+  async getTlObject(keyOrBuffer: Api.AnyType | Uint8Array | readonly StorageKeyPart[]): Promise<ReadObject | null> {
+    // @ts-ignore: TBD
+    const buffer = (keyOrBuffer instanceof Uint8Array || isValidType(keyOrBuffer)) ? keyOrBuffer : await this.#storage.get<Uint8Array>(keyOrBuffer);
     if (buffer != null) {
       if (buffer instanceof Uint8Array) {
         return new TLReader(rleDecode(buffer)).readObject();
@@ -254,15 +255,15 @@ export class StorageOperations {
     }
   }
 
-  async setState(state: enums.updates.State) {
+  async setState(state: Api.updates_State) {
     await this.setTlObject(K.updates.state(), state);
   }
 
-  async getState(): Promise<enums.updates.State | null> {
-    return await this.getTlObject(K.updates.state()) as enums.updates.State | null;
+  async getState(): Promise<Api.updates_State | null> {
+    return await this.getTlObject(K.updates.state()) as Api.updates_State | null;
   }
 
-  async setMessage(chatId: number, messageId: number, message: enums.Message | null) {
+  async setMessage(chatId: number, messageId: number, message: Api.Message | null) {
     if (chatId > ZERO_CHANNEL_ID) {
       await this.#storage.set(K.messages.messageRef(messageId), message == null ? null : chatId);
     }
@@ -281,13 +282,13 @@ export class StorageOperations {
     return this.#storage.get<number>(K.messages.messageRef(messageId));
   }
 
-  async getMessage(chatId: number, messageId: number): Promise<enums.Message | null> {
-    return await this.getTlObject(K.messages.message(chatId, messageId)) as enums.Message | null;
+  async getMessage(chatId: number, messageId: number): Promise<Api.Message | null> {
+    return await this.getTlObject(K.messages.message(chatId, messageId)) as Api.Message | null;
   }
 
-  async getLastMessage(chatId: number): Promise<enums.Message | null> {
+  async getLastMessage(chatId: number): Promise<Api.Message | null> {
     for await (const [_, buffer] of await this.#storage.getMany<Uint8Array>({ prefix: K.messages.messages(chatId) }, { limit: 1, reverse: true })) {
-      return await this.getTlObject(buffer) as enums.Message;
+      return await this.getTlObject(buffer) as Api.Message;
     }
     return null;
   }
@@ -301,7 +302,7 @@ export class StorageOperations {
   }
 
   async setEntity(entity: AnyEntity) {
-    await this.#storage.set(K.cache.peer(peerToChatId(entity)), [this.#mustSerialize ? rleEncode(entity[serialize]()) : entity, new Date()]);
+    await this.#storage.set(K.cache.peer(peerToChatId(entity)), [this.#mustSerialize ? rleEncode(serialize(entity)) : entity, new Date()]);
   }
 
   async getEntity(key: number): Promise<ReadObject | null> {
@@ -405,14 +406,14 @@ export class StorageOperations {
     return await this.#storage.get<number[]>(K.chatlists.pinnedChats(listId));
   }
 
-  async getHistory(chatId: number, offsetId: number, limit: number): Promise<enums.Message[]> {
+  async getHistory(chatId: number, offsetId: number, limit: number): Promise<Api.Message[]> {
     if (offsetId == 0) {
       offsetId = Infinity;
     }
     ++limit;
-    const messages = new Array<enums.Message>();
+    const messages = new Array<Api.Message>();
     for await (const [_, buffer] of await this.#storage.getMany<Uint8Array>({ start: K.messages.message(chatId, 0), end: K.messages.message(chatId, offsetId) }, { limit, reverse: true })) {
-      const message = await this.getTlObject(buffer) as enums.Message;
+      const message = await this.getTlObject(buffer) as Api.Message;
       if ("id" in message && message.id == offsetId) {
         continue;
       }
@@ -455,74 +456,74 @@ export class StorageOperations {
     await this.#storage.set(K.cache.file(id), [partCount, chunkSize]);
   }
 
-  async setCustomEmojiDocument(id: bigint, document: types.Document) {
-    await this.#storage.set(K.cache.customEmojiDocument(id), [this.#mustSerialize ? rleEncode(document[serialize]()) : document, new Date()]);
+  async setCustomEmojiDocument(id: bigint, document: Api.document) {
+    await this.#storage.set(K.cache.customEmojiDocument(id), [this.#mustSerialize ? rleEncode(serialize(document)) : document, new Date()]);
   }
 
-  async getCustomEmojiDocument(id: bigint): Promise<[types.Document, Date] | null> {
+  async getCustomEmojiDocument(id: bigint): Promise<[Api.document, Date] | null> {
     const v = await this.#storage.get<[Uint8Array, Date]>(K.cache.customEmojiDocument(id));
     if (v != null) {
-      return [await this.getTlObject(v[0]), v[1]] as [types.Document, Date];
+      return [await this.getTlObject(v[0]), v[1]] as [Api.document, Date];
     } else {
       return null;
     }
   }
 
-  async setBusinessConnection(id: string, connection: types.BotBusinessConnection | null) {
-    await this.#storage.set(K.cache.businessConnection(id), connection == null ? null : this.#mustSerialize ? rleEncode(connection[serialize]()) : connection);
+  async setBusinessConnection(id: string, connection: Api.botBusinessConnection | null) {
+    await this.#storage.set(K.cache.businessConnection(id), connection == null ? null : this.#mustSerialize ? rleEncode(serialize(connection)) : connection);
   }
 
-  async getBusinessConnection(id: string): Promise<types.BotBusinessConnection | null> {
+  async getBusinessConnection(id: string): Promise<Api.botBusinessConnection | null> {
     const v = await this.#storage.get<Uint8Array>(K.cache.businessConnection(id));
     if (v != null) {
-      return await this.getTlObject(v) as types.BotBusinessConnection;
+      return await this.getTlObject(v) as Api.botBusinessConnection;
     } else {
       return null;
     }
   }
 
-  async setInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string, results: types.messages.BotResults, date: Date) {
-    await this.#storage.set(K.cache.inlineQueryAnswer(userId, chatId, query, offset), [this.#mustSerialize ? rleEncode(results[serialize]()) : results, date]);
+  async setInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string, results: Api.messages_botResults, date: Date) {
+    await this.#storage.set(K.cache.inlineQueryAnswer(userId, chatId, query, offset), [this.#mustSerialize ? rleEncode(serialize(results)) : results, date]);
   }
 
-  async getInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string): Promise<[types.messages.BotResults, Date] | null> {
+  async getInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string): Promise<[Api.messages_botResults, Date] | null> {
     const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.inlineQueryAnswer(userId, chatId, query, offset));
     if (peer_ != null) {
       const [obj_, date] = peer_;
-      return [await this.getTlObject(obj_) as types.messages.BotResults, date];
+      return [as("messages.botResults", await this.getTlObject(obj_)), date];
     } else {
       return null;
     }
   }
 
-  async setCallbackQueryAnswer(chatId: number, messageId: number, question: string, answer: types.messages.BotCallbackAnswer) {
-    await this.#storage.set(K.cache.callbackQueryAnswer(chatId, messageId, question), [this.#mustSerialize ? rleEncode(answer[serialize]()) : answer, new Date()]);
+  async setCallbackQueryAnswer(chatId: number, messageId: number, question: string, answer: Api.messages_botCallbackAnswer) {
+    await this.#storage.set(K.cache.callbackQueryAnswer(chatId, messageId, question), [this.#mustSerialize ? rleEncode(serialize(answer)) : answer, new Date()]);
   }
 
-  async getCallbackQueryAnswer(chatId: number, messageId: number, question: string): Promise<[types.messages.BotCallbackAnswer, Date] | null> {
+  async getCallbackQueryAnswer(chatId: number, messageId: number, question: string): Promise<[Api.messages_botCallbackAnswer, Date] | null> {
     const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.callbackQueryAnswer(chatId, messageId, question));
     if (peer_ != null) {
       const [obj_, date] = peer_;
-      return [await this.getTlObject(obj_) as types.messages.BotCallbackAnswer, date];
+      return [as("messages.botCallbackAnswer", await this.getTlObject(obj_)), date];
     } else {
       return null;
     }
   }
 
-  async setFullChat(chatId: number, fullChat: types.UserFull | types.ChannelFull | types.ChatFull | null) {
+  async setFullChat(chatId: number, fullChat: Api.userFull | Api.channelFull | Api.chatFull | null) {
     await this.setTlObject(K.cache.fullChat(chatId), fullChat);
   }
 
-  async getFullChat(chatId: number): Promise<types.UserFull | types.ChannelFull | types.ChatFull | null> {
-    return await this.getTlObject(K.cache.fullChat(chatId)) as types.UserFull | types.ChannelFull | types.ChatFull | null;
+  async getFullChat(chatId: number): Promise<Api.userFull | Api.channelFull | Api.chatFull | null> {
+    return await this.getTlObject(K.cache.fullChat(chatId)) as Api.userFull | Api.channelFull | Api.chatFull | null;
   }
 
-  async setGroupCall(id: bigint, groupCall: types.GroupCall | null) {
+  async setGroupCall(id: bigint, groupCall: Api.groupCall | null) {
     await this.setTlObject(K.cache.groupCall(id), groupCall);
   }
 
-  async getGroupCall(id: bigint): Promise<types.GroupCall | null> {
-    return await this.getTlObject(K.cache.groupCall(id)) as types.GroupCall | null;
+  async getGroupCall(id: bigint): Promise<Api.groupCall | null> {
+    return await this.getTlObject(K.cache.groupCall(id)) as Api.groupCall | null;
   }
 
   async setGroupCallAccessHash(id: bigint, accessHash: bigint | null) {
@@ -533,7 +534,7 @@ export class StorageOperations {
     return await this.#storage.get(K.cache.groupCallAccessHash(id));
   }
 
-  #getUpdateId(update: enums.Update) {
+  #getUpdateId(update: Api.Update) {
     let id = BigInt(Date.now()) << 32n;
     if ("pts" in update && update.pts) {
       id |= BigInt(update.pts);
@@ -542,7 +543,7 @@ export class StorageOperations {
     }
     return id;
   }
-  async setUpdate(boxId: bigint, update: enums.Update) {
+  async setUpdate(boxId: bigint, update: Api.Update) {
     await this.setTlObject(K.updates.update(boxId, this.#getUpdateId(update)), update);
   }
 
@@ -554,9 +555,9 @@ export class StorageOperations {
     await Promise.all(maybePromises.filter((v) => v instanceof Promise));
   }
 
-  async getFirstUpdate(boxId: bigint): Promise<[readonly StorageKeyPart[], enums.Update] | null> {
+  async getFirstUpdate(boxId: bigint): Promise<[readonly StorageKeyPart[], Api.Update] | null> {
     for await (const [key, update] of await this.#storage.getMany<Uint8Array>({ prefix: K.updates.updates(boxId) }, { limit: 1 })) {
-      return [key, await this.getTlObject(update).then((v) => v as enums.Update)];
+      return [key, await this.getTlObject(update).then((v) => v as Api.Update)];
     }
     return null;
   }

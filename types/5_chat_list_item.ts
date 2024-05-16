@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { chatIdToPeer, enums, peerToChatId, types } from "../2_tl.ts";
+import { Api, chatIdToPeer, is, peerToChatId } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { StickerSetNameGetter } from "./1_sticker.ts";
@@ -57,7 +57,7 @@ export async function constructChatListItem(chatId: number, pinned: number, last
   };
 }
 
-export function constructChatListItem2(entity: types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden, pinned: number, lastMessage: Omit<Message, "replyToMessage"> | undefined): ChatListItem {
+export function constructChatListItem2(entity: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden, pinned: number, lastMessage: Omit<Message, "replyToMessage"> | undefined): ChatListItem {
   return {
     chat: constructChatP(entity),
     order: getChatListItemOrder(lastMessage, pinned),
@@ -79,7 +79,7 @@ export async function constructChatListItem3(chatId: number, pinned: number, las
   };
 }
 
-export async function constructChatListItem4(dialog: enums.Dialog, dialogs: types.messages.Dialogs | types.messages.DialogsSlice, pinnedChats: number[], getEntity: EntityGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<ChatListItem> {
+export async function constructChatListItem4(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice, pinnedChats: number[], getEntity: EntityGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<ChatListItem> {
   const topMessage_ = dialogs.messages.find((v) => "id" in v && v.id == dialog.top_message);
   if (!topMessage_) {
     unreachable();
@@ -90,12 +90,12 @@ export async function constructChatListItem4(dialog: enums.Dialog, dialogs: type
   const userId = "user_id" in dialog.peer ? dialog.peer.user_id : null;
   const chatId = "chat_id" in dialog.peer ? dialog.peer.chat_id : null;
   const channelId = "channel_id" in dialog.peer ? dialog.peer.channel_id : null;
-  const chat__ = chatId != null ? dialogs.chats.find((v) => v instanceof types.Chat && v.id == chatId) : channelId != null ? dialogs.chats.find((v) => v instanceof types.Channel && v.id == channelId) : userId != null ? dialogs.users.find((v) => v instanceof types.User && v.id == userId) : unreachable();
+  const chat__ = chatId != null ? dialogs.chats.find((v) => is("chat", v) && v.id == chatId) : channelId != null ? dialogs.chats.find((v) => is("channel", v) && v.id == channelId) : userId != null ? dialogs.users.find((v) => is("user", v) && v.id == userId) : unreachable();
   if (!chat__) {
     unreachable();
   }
   return {
-    chat: constructChatP(chat__ as types.User | types.Channel | types.Chat),
+    chat: constructChatP(chat__ as Api.user | Api.channel | Api.chat),
     order,
     lastMessage,
     pinned,

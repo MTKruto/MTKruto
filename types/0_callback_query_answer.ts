@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** An answer to a callback query. */
 export interface CallbackQueryAnswer {
@@ -30,7 +30,7 @@ export interface CallbackQueryAnswer {
   url: string;
 }
 
-export function constructCallbackQueryAnswer(answer: types.messages.BotCallbackAnswer): CallbackQueryAnswer {
+export function constructCallbackQueryAnswer(answer: Api.messages_botCallbackAnswer): CallbackQueryAnswer {
   return {
     alert: !!answer.alert,
     text: answer.message ?? "",

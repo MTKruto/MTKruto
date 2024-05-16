@@ -20,52 +20,52 @@
 
 import { unreachable } from "../0_deps.ts";
 import { getLogger, Logger, Queue, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { as, enums, functions, inputPeerToPeer, peerToChatId, ReadObject, TLObject, types } from "../2_tl.ts";
+import { Api, as, inputPeerToPeer, is, isOfEnum, isOneOf, peerToChatId, ReadObject } from "../2_tl.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
 import { C } from "./1_types.ts";
 
-type UpdateHandler = (update: enums.Update) => Promise<(() => Promise<unknown>)>;
+type UpdateHandler = (update: Api.Update) => Promise<(() => Promise<unknown>)>;
 
 export type PtsUpdate =
-  | types.UpdateNewMessage
-  | types.UpdateDeleteMessages
-  | types.UpdateReadHistoryInbox
-  | types.UpdateReadHistoryOutbox
-  | types.UpdatePinnedChannelMessages
-  | types.UpdatePinnedMessages
-  | types.UpdateFolderPeers
-  | types.UpdateChannelWebPage
-  | types.UpdateEditMessage
-  | types.UpdateReadMessagesContents
-  | types.UpdateWebPage;
+  | Api.updateNewMessage
+  | Api.updateDeleteMessages
+  | Api.updateReadHistoryInbox
+  | Api.updateReadHistoryOutbox
+  | Api.updatePinnedChannelMessages
+  | Api.updatePinnedMessages
+  | Api.updateFolderPeers
+  | Api.updateChannelWebPage
+  | Api.updateEditMessage
+  | Api.updateReadMessagesContents
+  | Api.updateWebPage;
 
 export type ChannelPtsUpdate =
-  | types.UpdateNewChannelMessage
-  | types.UpdateEditChannelMessage
-  | types.UpdateDeleteChannelMessages
-  | types.UpdateChannelTooLong;
+  | Api.updateNewChannelMessage
+  | Api.updateEditChannelMessage
+  | Api.updateDeleteChannelMessages
+  | Api.updateChannelTooLong;
 
 export type QtsUpdate =
-  | types.UpdateNewEncryptedMessage
-  | types.UpdateMessagePollVote
-  | types.UpdateBotStopped
-  | types.UpdateChatParticipant
-  | types.UpdateChannelParticipant
-  | types.UpdateBotChatInviteRequester
-  | types.UpdateBotChatBoost
-  | types.UpdateBotMessageReaction
-  | types.UpdateBotMessageReactions
-  | types.UpdateBotBusinessConnect
-  | types.UpdateBotNewBusinessMessage
-  | types.UpdateBotEditBusinessMessage
-  | types.UpdateBotDeleteBusinessMessage;
+  | Api.updateNewEncryptedMessage
+  | Api.updateMessagePollVote
+  | Api.updateBotStopped
+  | Api.updateChatParticipant
+  | Api.updateChannelParticipant
+  | Api.updateBotChatInviteRequester
+  | Api.updateBotChatBoost
+  | Api.updateBotMessageReaction
+  | Api.updateBotMessageReactions
+  | Api.updateBotBusinessConnect
+  | Api.updateBotNewBusinessMessage
+  | Api.updateBotEditBusinessMessage
+  | Api.updateBotDeleteBusinessMessage;
 
 export class UpdateManager {
   static readonly QTS_COUNT = 1;
   static readonly MAIN_BOX_ID = 0n;
 
   #c: C;
-  #updateState?: types.updates.State;
+  #updateState?: Api.updates_State;
   #updateHandler?: UpdateHandler;
 
   #LrecoverUpdateGap: Logger;
@@ -85,41 +85,21 @@ export class UpdateManager {
     this.#LfetchState = L.branch("fetchState");
   }
 
-  static isPtsUpdate(v: enums.Update): v is PtsUpdate {
-    return v instanceof types.UpdateNewMessage ||
-      v instanceof types.UpdateDeleteMessages ||
-      v instanceof types.UpdateReadHistoryInbox ||
-      v instanceof types.UpdateReadHistoryOutbox ||
-      v instanceof types.UpdatePinnedChannelMessages ||
-      v instanceof types.UpdatePinnedMessages ||
-      v instanceof types.UpdateFolderPeers ||
-      v instanceof types.UpdateChannelWebPage ||
-      v instanceof types.UpdateEditMessage ||
-      v instanceof types.UpdateReadMessagesContents ||
-      v instanceof types.UpdateWebPage;
+  static isPtsUpdate(v: Api.Update): v is PtsUpdate {
+    return isOneOf(["updateNewMessage", "updateDeleteMessages", "updateReadHistoryInbox", "updateReadHistoryOutbox", "updatePinnedChannelMessages", "updatePinnedMessages", "updateFolderPeers", "updateChannelWebPage", "updateEditMessage", "updateReadMessagesContents", "updateWebPage"], v);
   }
 
-  static isQtsUpdate(v: enums.Update): v is QtsUpdate {
-    return v instanceof types.UpdateNewEncryptedMessage ||
-      v instanceof types.UpdateMessagePollVote ||
-      v instanceof types.UpdateBotStopped ||
-      v instanceof types.UpdateChatParticipant ||
-      v instanceof types.UpdateChannelParticipant ||
-      v instanceof types.UpdateBotChatInviteRequester ||
-      v instanceof types.UpdateBotChatBoost ||
-      v instanceof types.UpdateBotMessageReaction ||
-      v instanceof types.UpdateBotMessageReactions ||
-      v instanceof types.UpdateBotBusinessConnect ||
-      v instanceof types.UpdateBotNewBusinessMessage ||
-      v instanceof types.UpdateBotEditBusinessMessage ||
-      v instanceof types.UpdateBotDeleteBusinessMessage;
+  static isQtsUpdate(v: Api.Update): v is QtsUpdate {
+    return isOneOf(["updateNewEncryptedMessage", "updateMessagePollVote", "updateBotStopped", "updateChatParticipant", "updateChannelParticipant", "updateBotChatInviteRequester", "updateBotChatBoost", "updateBotMessageReaction", "updateBotMessageReactions", "updateBotBusinessConnect", "updateBotNewBusinessMessage", "updateBotEditBusinessMessage", "updateBotDeleteBusinessMessage"], v);
   }
 
-  static isChannelPtsUpdate(v: enums.Update | enums.Updates): v is ChannelPtsUpdate {
-    return v instanceof types.UpdateNewChannelMessage ||
-      v instanceof types.UpdateEditChannelMessage ||
-      v instanceof types.UpdateDeleteChannelMessages ||
-      v instanceof types.UpdateChannelTooLong;
+  static isChannelPtsUpdate(v: Api.Update | Api.Updates): v is ChannelPtsUpdate {
+    return isOneOf([
+      "updateNewChannelMessage",
+      "updateEditChannelMessage",
+      "updateDeleteChannelMessages",
+      "updateChannelTooLong",
+    ], v);
   }
 
   #defaultDropPendingUpdates: boolean | null = null;
@@ -133,7 +113,7 @@ export class UpdateManager {
     return this.#defaultDropPendingUpdates;
   }
 
-  #state: types.updates.State | null | undefined = undefined;
+  #state: Api.updates_State | null | undefined = undefined;
   async #getState() {
     if (await this.#mustDropPendingUpdates()) {
       return this.#state ?? null;
@@ -145,7 +125,7 @@ export class UpdateManager {
     return this.#state = state;
   }
 
-  async #setState(state: types.updates.State) {
+  async #setState(state: Api.updates_State) {
     this.#state = state;
     if (!await this.#mustDropPendingUpdates()) {
       await this.#c.storage.setState(state);
@@ -153,11 +133,11 @@ export class UpdateManager {
   }
 
   async fetchState(source: string) {
-    let state = await this.#c.api.updates.getState();
-    const difference = await this.#c.api.updates.getDifference(state);
-    if (difference instanceof types.updates.Difference) {
+    let state = await this.#c.invoke({ _: "updates.getState" });
+    const difference = await this.#c.invoke({ ...state, _: "updates.getDifference" });
+    if (is("updates.difference", difference)) {
       state = difference.state;
-    } else if (difference instanceof types.updates.DifferenceSlice) {
+    } else if (is("updates.differenceSlice", difference)) {
       state = difference.intermediate_state;
     }
     this.#updateState = state;
@@ -167,9 +147,9 @@ export class UpdateManager {
     }
   }
 
-  async processChats(chats: enums.Chat[]) {
+  async processChats(chats: Api.Chat[]) {
     for (const chat of chats) {
-      if (chat instanceof types.Channel || chat instanceof types.ChannelForbidden) {
+      if (isOneOf(["channel", "channelForbidden"], chat)) {
         await this.#c.messageStorage.setEntity(chat);
         if ("username" in chat && chat.username) {
           await this.#c.messageStorage.updateUsernames(peerToChatId(chat), [chat.username]);
@@ -177,7 +157,7 @@ export class UpdateManager {
         if ("usernames" in chat && chat.usernames) {
           await this.#c.messageStorage.updateUsernames(peerToChatId(chat), chat.usernames.map((v) => v.username));
         }
-      } else if (chat instanceof types.Chat || chat instanceof types.ChatForbidden) {
+      } else if (isOneOf(["chat", "chatForbidden"], chat)) {
         await this.#c.messageStorage.setEntity(chat);
       }
     }
@@ -185,76 +165,78 @@ export class UpdateManager {
 
   async processResult(result: ReadObject) {
     if (
-      result instanceof types.account.AuthorizationForm ||
-      result instanceof types.account.AutoSaveSettings ||
-      result instanceof types.account.PrivacyRules ||
-      result instanceof types.account.WebAuthorizations ||
-      result instanceof types.AttachMenuBots ||
-      result instanceof types.AttachMenuBotsBot ||
-      result instanceof types.channels.AdminLogResults ||
-      result instanceof types.channels.ChannelParticipant ||
-      result instanceof types.channels.ChannelParticipants ||
-      result instanceof types.channels.SendAsPeers ||
-      result instanceof types.ChatInvite ||
-      result instanceof types.chatlists.ChatlistInvite ||
-      result instanceof types.chatlists.ChatlistInviteAlready ||
-      result instanceof types.chatlists.ChatlistUpdates ||
-      result instanceof types.chatlists.ExportedInvites ||
-      result instanceof types.contacts.Blocked ||
-      result instanceof types.contacts.BlockedSlice ||
-      result instanceof types.contacts.Contacts ||
-      result instanceof types.contacts.Found ||
-      result instanceof types.contacts.ImportedContacts ||
-      result instanceof types.contacts.ResolvedPeer ||
-      result instanceof types.contacts.TopPeers ||
-      result instanceof types.help.PromoData ||
-      result instanceof types.help.RecentMeUrls ||
-      result instanceof types.messages.BotResults ||
-      result instanceof types.messages.ChannelMessages ||
-      result instanceof types.messages.ChatAdminsWithInvites ||
-      result instanceof types.messages.ChatFull ||
-      result instanceof types.messages.ChatInviteImporters ||
-      result instanceof types.messages.Chats ||
-      result instanceof types.messages.ChatsSlice ||
-      result instanceof types.messages.Dialogs ||
-      result instanceof types.messages.DialogsSlice ||
-      result instanceof types.messages.DiscussionMessage ||
-      result instanceof types.messages.ExportedChatInvite ||
-      result instanceof types.messages.ExportedChatInviteReplaced ||
-      result instanceof types.messages.ExportedChatInvites ||
-      result instanceof types.messages.ForumTopics ||
-      result instanceof types.messages.HighScores ||
-      result instanceof types.messages.InactiveChats ||
-      result instanceof types.messages.MessageReactionsList ||
-      result instanceof types.messages.Messages ||
-      result instanceof types.messages.MessagesSlice ||
-      result instanceof types.messages.MessageViews ||
-      result instanceof types.messages.PeerDialogs ||
-      result instanceof types.messages.PeerSettings ||
-      result instanceof types.messages.SearchResultsCalendar ||
-      result instanceof types.messages.SponsoredMessages ||
-      result instanceof types.messages.VotesList ||
-      result instanceof types.messages.WebPage ||
-      result instanceof types.payments.CheckedGiftCode ||
-      result instanceof types.payments.PaymentForm ||
-      result instanceof types.payments.PaymentReceipt ||
-      result instanceof types.phone.GroupCall ||
-      result instanceof types.phone.GroupParticipants ||
-      result instanceof types.phone.JoinAsPeers ||
-      result instanceof types.phone.PhoneCall ||
-      result instanceof types.photos.Photo ||
-      result instanceof types.photos.Photos ||
-      result instanceof types.photos.PhotosSlice ||
-      result instanceof types.premium.BoostsList ||
-      result instanceof types.premium.MyBoosts ||
-      result instanceof types.stats.MegagroupStats ||
-      result instanceof types.stats.PublicForwards ||
-      result instanceof types.stories.AllStories ||
-      result instanceof types.stories.PeerStories ||
-      result instanceof types.stories.Stories ||
-      result instanceof types.stories.StoryViews ||
-      result instanceof types.stories.StoryViewsList ||
-      result instanceof types.users.UserFull
+      isOneOf([
+        "account.authorizationForm",
+        "account.autoSaveSettings",
+        "account.privacyRules",
+        "account.webAuthorizations",
+        "attachMenuBots",
+        "attachMenuBotsBot",
+        "channels.adminLogResults",
+        "channels.channelParticipant",
+        "channels.channelParticipants",
+        "channels.sendAsPeers",
+        "chatInvite",
+        "chatlists.chatlistInvite",
+        "chatlists.chatlistInviteAlready",
+        "chatlists.chatlistUpdates",
+        "chatlists.exportedInvites",
+        "contacts.blocked",
+        "contacts.blockedSlice",
+        "contacts.contacts",
+        "contacts.found",
+        "contacts.importedContacts",
+        "contacts.resolvedPeer",
+        "contacts.topPeers",
+        "help.promoData",
+        "help.recentMeUrls",
+        "messages.botResults",
+        "messages.channelMessages",
+        "messages.chatAdminsWithInvites",
+        "messages.chatFull",
+        "messages.chatInviteImporters",
+        "messages.chats",
+        "messages.chatsSlice",
+        "messages.dialogs",
+        "messages.dialogsSlice",
+        "messages.discussionMessage",
+        "messages.exportedChatInvite",
+        "messages.exportedChatInviteReplaced",
+        "messages.exportedChatInvites",
+        "messages.forumTopics",
+        "messages.highScores",
+        "messages.inactiveChats",
+        "messages.messageReactionsList",
+        "messages.messages",
+        "messages.messagesSlice",
+        "messages.messageViews",
+        "messages.peerDialogs",
+        "messages.peerSettings",
+        "messages.searchResultsCalendar",
+        "messages.sponsoredMessages",
+        "messages.votesList",
+        "messages.webPage",
+        "payments.checkedGiftCode",
+        "payments.paymentForm",
+        "payments.paymentReceipt",
+        "phone.groupCall",
+        "phone.groupParticipants",
+        "phone.joinAsPeers",
+        "phone.phoneCall",
+        "photos.photo",
+        "photos.photos",
+        "photos.photosSlice",
+        "premium.boostsList",
+        "premium.myBoosts",
+        "stats.megagroupStats",
+        "stats.publicForwards",
+        "stories.allStories",
+        "stories.peerStories",
+        "stories.stories",
+        "stories.storyViews",
+        "stories.storyViewsList",
+        "users.userFull",
+      ], result)
     ) {
       if ("chats" in result) {
         await this.processChats(result.chats);
@@ -266,25 +248,25 @@ export class UpdateManager {
 
       if ("messages" in result && Array.isArray(result.messages)) {
         for (const message of result.messages as unknown[]) {
-          if (message instanceof types.Message || message instanceof types.MessageService) {
+          if (is("message", message) || is("messageService", message)) {
             await this.#c.messageStorage.setMessage(peerToChatId(message.peer_id), message.id, message);
           }
         }
       }
     }
 
-    if (result instanceof types.messages.Messages) {
+    if (is("messages.messages", result)) {
       for (const message of result.messages) {
-        if (message instanceof types.Message || message instanceof types.MessageService) {
+        if (is("message", message) || is("messageService", message)) {
           await this.#c.messageStorage.setMessage(peerToChatId(message.peer_id), message.id, message);
         }
       }
     }
   }
 
-  async processUsers(users: enums.User[]) {
+  async processUsers(users: Api.User[]) {
     for (const user of users) {
-      if (user instanceof types.User && user.access_hash) {
+      if (is("user", user) && user.access_hash) {
         await this.#c.messageStorage.setEntity(user);
         if (user.username) {
           await this.#c.messageStorage.updateUsernames(peerToChatId(user), [user.username]);
@@ -345,9 +327,9 @@ export class UpdateManager {
 
   #channelUpdateQueues = new Map<bigint, Queue>();
 
-  async #processChannelPtsUpdateInner(update: types.UpdateNewChannelMessage | types.UpdateEditChannelMessage | types.UpdateDeleteChannelMessages | types.UpdateChannelTooLong, checkGap: boolean) {
-    const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peer_id[as](types.PeerChannel).channel_id : update.channel_id;
-    if (update instanceof types.UpdateChannelTooLong) {
+  async #processChannelPtsUpdateInner(update: Api.updateNewChannelMessage | Api.updateEditChannelMessage | Api.updateDeleteChannelMessages | Api.updateChannelTooLong, checkGap: boolean) {
+    const channelId = is("updateNewChannelMessage", update) || is("updateEditChannelMessage", update) ? as("peerChannel", (update.message as Api.message | Api.messageService).peer_id).channel_id : update.channel_id;
+    if (is("updateChannelTooLong", update)) {
       if (update.pts != undefined) {
         await this.#c.storage.setChannelPts(channelId, update.pts);
       }
@@ -375,7 +357,7 @@ export class UpdateManager {
     this.#queueUpdate(update, channelId, true);
   }
 
-  #queueUpdate(update: enums.Update, boxId: bigint, pts: boolean) {
+  #queueUpdate(update: Api.Update, boxId: bigint, pts: boolean) {
     this.getHandleUpdateQueue(boxId).add(async () => {
       if (this.#c.guaranteeUpdateDelivery && pts) {
         await this.#handleStoredUpdates(boxId);
@@ -386,7 +368,7 @@ export class UpdateManager {
   }
 
   #processChannelPtsUpdate(update: ChannelPtsUpdate, checkGap: boolean) {
-    const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peer_id[as](types.PeerChannel).channel_id : update.channel_id;
+    const channelId = is("updateNewChannelMessage", update) || is("updateEditChannelMessage", update) ? as("peerChannel", (update.message as Api.message | Api.messageService).peer_id).channel_id : update.channel_id;
     let queue = this.#channelUpdateQueues.get(channelId);
     if (queue == undefined) {
       queue = new Queue(`channelUpdates-${channelId}`);
@@ -452,11 +434,11 @@ export class UpdateManager {
   }
 
   #processUpdatesQueue = new Queue("UpdateManager/processUpdates");
-  processUpdates(updates: enums.Update | enums.Updates, checkGap: boolean, call: TLObject | null = null, callback?: () => void) {
+  processUpdates(updates: Api.Update | Api.Updates, checkGap: boolean, call: Api.AnyObject | null = null, callback?: () => void) {
     this.#processUpdatesQueue.add(() => this.#processUpdates(updates, checkGap, call).then(callback));
   }
 
-  async #processUpdates(updates_: enums.Update | enums.Updates, checkGap: boolean, call: TLObject | null = null) {
+  async #processUpdates(updates_: Api.Update | Api.Updates, checkGap: boolean, call: Api.AnyObject | null = null) {
     /// First, individual updates (Update[1]) are extracted from Updates.[2]
     ///
     /// If an updatesTooLong[3] was received, an update gap recovery is initiated and no further action will be taken.
@@ -464,8 +446,8 @@ export class UpdateManager {
     /// [1]: https://core.telegram.org/type/Update
     /// [2]: https://core.telegram.org/type/Updates
     /// [3]: https://core.telegram.org/constructor/updatesTooLong
-    let updates: enums.Update[];
-    if (updates_ instanceof types.UpdatesCombined || updates_ instanceof types.Updates) {
+    let updates: Api.Update[];
+    if (is("updatesCombined", updates_) || is("updates", updates_)) {
       updates = updates_.updates;
       const seq = updates_.seq;
       const seqStart = "seq_start" in updates_ ? updates_.seq_start : updates_.seq;
@@ -493,19 +475,21 @@ export class UpdateManager {
           }
         }
       }
-    } else if (updates_ instanceof types.UpdateShort) {
+    } else if (is("updateShort", updates_)) {
       updates = [updates_.update];
-    } else if (updates_ instanceof types.UpdateShortMessage) {
+    } else if (is("updateShortMessage", updates_)) {
       updates = [
-        new types.UpdateNewMessage({
-          message: new types.Message({
+        {
+          _: "updateNewMessage",
+          message: ({
+            _: "message",
             out: updates_.out,
             mentioned: updates_.mentioned,
             media_unread: updates_.media_unread,
             silent: updates_.silent,
             id: updates_.id,
-            from_id: updates_.out ? new types.PeerUser({ user_id: await this.#c.getSelfId().then(BigInt) }) : new types.PeerUser({ user_id: updates_.user_id }),
-            peer_id: new types.PeerUser({ user_id: updates_.user_id }),
+            from_id: updates_.out ? ({ _: "peerUser", user_id: await this.#c.getSelfId().then(BigInt) }) : ({ _: "peerUser", user_id: updates_.user_id }),
+            peer_id: ({ _: "peerUser", user_id: updates_.user_id }),
             message: updates_.message,
             date: updates_.date,
             fwd_from: updates_.fwd_from,
@@ -516,19 +500,20 @@ export class UpdateManager {
           }),
           pts: updates_.pts,
           pts_count: updates_.pts_count,
-        }),
+        },
       ];
-    } else if (updates_ instanceof types.UpdateShortChatMessage) {
+    } else if (is("updateShortChatMessage", updates_)) {
       updates = [
-        new types.UpdateNewMessage({
-          message: new types.Message({
-            out: updates_.out,
+        {
+          _: "updateNewMessage",
+          message: ({
+            _: "message",
             mentioned: updates_.mentioned,
             media_unread: updates_.media_unread,
             silent: updates_.silent,
             id: updates_.id,
-            from_id: new types.PeerUser({ user_id: updates_.from_id }),
-            peer_id: new types.PeerChat({ chat_id: updates_.chat_id }),
+            from_id: { _: "peerUser", user_id: updates_.from_id },
+            peer_id: { _: "peerChat", chat_id: updates_.chat_id },
             fwd_from: updates_.fwd_from,
             via_bot_id: updates_.via_bot_id,
             reply_to: updates_.reply_to,
@@ -539,56 +524,56 @@ export class UpdateManager {
           }),
           pts: updates_.pts,
           pts_count: updates_.pts_count,
-        }),
+        },
       ];
-    } else if (updates_ instanceof types.UpdateShortSentMessage) {
-      if (!(call instanceof functions.messages.sendMessage)) {
+    } else if (is("updateShortSentMessage", updates_)) {
+      if (!is("messages.sendMessage", call)) {
         unreachable();
       }
-      updates = [
-        new types.UpdateNewMessage({
-          message: new types.Message({
-            out: updates_.out,
-            silent: call.silent,
-            id: updates_.id,
-            from_id: new types.PeerUser({ user_id: await this.#c.getSelfId().then(BigInt) }),
-            peer_id: inputPeerToPeer(call.peer),
-            message: call.message,
-            media: updates_.media,
-            date: updates_.date,
-            // reply_to: call.reply_to, // TODO?
-            entities: updates_.entities,
-            ttl_period: updates_.ttl_period,
-          }),
-          pts: updates_.pts,
-          pts_count: updates_.pts_count,
+      updates = [{
+        _: "updateNewMessage",
+        message: ({
+          _: "message",
+          out: updates_.out,
+          silent: call.silent,
+          id: updates_.id,
+          from_id: { _: "peerUser", user_id: await this.#c.getSelfId().then(BigInt) },
+          peer_id: inputPeerToPeer(call.peer),
+          message: call.message,
+          media: updates_.media,
+          date: updates_.date,
+          // reply_to: call.reply_to, // TODO?
+          entities: updates_.entities,
+          ttl_period: updates_.ttl_period,
         }),
-      ];
-    } else if (updates_ instanceof types.UpdatesTooLong) {
+        pts: updates_.pts,
+        pts_count: updates_.pts_count,
+      }];
+    } else if (is("updatesTooLong", updates_)) {
       await this.recoverUpdateGap("updatesTooLong");
       return;
-    } else if (updates_ instanceof types._Update) {
+    } else if (isOfEnum("Update", updates_)) {
       updates = [updates_];
     } else {
       unreachable();
     }
 
     /// We process the updates when we are sure there is no gap.
-    if (updates_ instanceof types.Updates || updates_ instanceof types.UpdatesCombined) {
+    if (is("updates", updates_) || is("updatesCombined", updates_)) {
       await this.processChats(updates_.chats);
       await this.processUsers(updates_.users);
       await this.#setUpdateStateDate(updates_.date);
     } else if (
-      updates_ instanceof types.UpdateShort ||
-      updates_ instanceof types.UpdateShortMessage ||
-      updates_ instanceof types.UpdateShortChatMessage ||
-      updates_ instanceof types.UpdateShortSentMessage
+      is("updateShort", updates_) ||
+      is("updateShortMessage", updates_) ||
+      is("updateShortChatMessage", updates_) ||
+      is("updateShortSentMessage", updates_)
     ) {
       await this.#setUpdateStateDate(updates_.date);
     }
 
     for (const update of updates) {
-      if (update instanceof types.UpdatePtsChanged) {
+      if (is("updatePtsChanged", update)) {
         await this.fetchState("updatePtsChanged");
         if (this.#updateState) {
           await this.#setState(this.#updateState);
@@ -649,32 +634,32 @@ export class UpdateManager {
     try {
       let state = await this.#getLocalState();
       while (true) {
-        const difference = await this.#c.api.updates.getDifference({ pts: state.pts, date: state.date, qts: state.qts ?? 0 });
-        if (difference instanceof types.updates.Difference || difference instanceof types.updates.DifferenceSlice) {
+        const difference = await this.#c.invoke({ _: "updates.getDifference", pts: state.pts, date: state.date, qts: state.qts ?? 0 });
+        if (is("updates.difference", difference) || is("updates.differenceSlice", difference)) {
           await this.processChats(difference.chats);
           await this.processUsers(difference.users);
           for (const message of difference.new_messages) {
-            await this.#processUpdates(new types.UpdateNewMessage({ message, pts: 0, pts_count: 0 }), false);
+            await this.#processUpdates({ _: "updateNewMessage", message, pts: 0, pts_count: 0 }, false);
           }
           for (const update of difference.other_updates) {
             await this.#processUpdates(update, false);
           }
-          if (difference instanceof types.updates.Difference) {
+          if (is("updates.difference", difference)) {
             await this.#setState(difference.state);
             this.#LrecoverUpdateGap.debug("recovered from update gap");
             break;
-          } else if (difference instanceof types.updates.DifferenceSlice) {
+          } else if (is("updates.differenceSlice", difference)) {
             state = difference.intermediate_state;
           } else {
             unreachable();
           }
-        } else if (difference instanceof types.updates.DifferenceTooLong) {
+        } else if (is("updates.differenceTooLong", difference)) {
           await this.#c.messageStorage.deleteMessages();
           await this.#c.storage.removeChats(0);
           await this.#c.storage.removeChats(1);
           state.pts = difference.pts;
           this.#LrecoverUpdateGap.debug("received differenceTooLong");
-        } else if (difference instanceof types.updates.DifferenceEmpty) {
+        } else if (is("updates.differenceEmpty", difference)) {
           await this.#setUpdateStateDate(difference.date);
           this.#LrecoverUpdateGap.debug("there was no update gap");
           break;
@@ -692,18 +677,19 @@ export class UpdateManager {
     const pts_ = await this.#c.storage.getChannelPts(channelId);
     let pts = pts_ == null ? 1 : pts_;
     while (true) {
-      const { access_hash } = await this.#c.getInputPeer(ZERO_CHANNEL_ID + -Number(channelId)).then((v) => v[as](types.InputPeerChannel));
-      const difference = await this.#c.api.updates.getChannelDifference({
+      const { access_hash } = await this.#c.getInputPeer(ZERO_CHANNEL_ID + -Number(channelId)).then((v) => as("inputPeerChannel", v));
+      const difference = await this.#c.invoke({
+        _: "updates.getChannelDifference",
         pts,
-        channel: new types.InputChannel({ channel_id: channelId, access_hash }),
-        filter: new types.ChannelMessagesFilterEmpty(),
+        channel: { _: "inputChannel", channel_id: channelId, access_hash },
+        filter: { _: "channelMessagesFilterEmpty" },
         limit: await this.#c.storage.getAccountType() == "user" ? CHANNEL_DIFFERENCE_LIMIT_USER : CHANNEL_DIFFERENCE_LIMIT_BOT,
       });
-      if (difference instanceof types.updates.ChannelDifference) {
+      if (is("updates.channelDifference", difference)) {
         await this.processChats(difference.chats);
         await this.processUsers(difference.users);
         for (const message of difference.new_messages) {
-          await this.#processUpdates(new types.UpdateNewChannelMessage({ message, pts: 0, pts_count: 0 }), false);
+          await this.#processUpdates({ _: "updateNewChannelMessage", message, pts: 0, pts_count: 0 }, false);
         }
         for (const update of difference.other_updates) {
           await this.#processUpdates(update, false);
@@ -711,22 +697,22 @@ export class UpdateManager {
         await this.#c.storage.setChannelPts(channelId, difference.pts);
         this.#LrecoverChannelUpdateGap.debug(`recovered from update gap [${channelId}, ${source}]`, channelId, source);
         break;
-      } else if (difference instanceof types.updates.ChannelDifferenceTooLong) {
+      } else if (is("updates.channelDifferenceTooLong", difference)) {
         // TODO: invalidate messages
         this.#LrecoverChannelUpdateGap.debug("received channelDifferenceTooLong");
         await this.processChats(difference.chats);
         await this.processUsers(difference.users);
         for (const message of difference.messages) {
-          await this.#processUpdates(new types.UpdateNewChannelMessage({ message, pts: 0, pts_count: 0 }), false);
+          await this.#processUpdates({ _: "updateNewChannelMessage", message, pts: 0, pts_count: 0 }, false);
         }
-        const pts_ = difference.dialog[as](types.Dialog).pts;
+        const pts_ = as("dialog", difference.dialog).pts;
         if (pts_ != undefined) {
           pts = pts_;
         } else {
           unreachable();
         }
         this.#LrecoverChannelUpdateGap.debug("processed channelDifferenceTooLong");
-      } else if (difference instanceof types.updates.ChannelDifferenceEmpty) {
+      } else if (is("updates.channelDifferenceEmpty", difference)) {
         this.#LrecoverChannelUpdateGap.debug("there was no update gap");
         break;
       }
@@ -766,7 +752,7 @@ export class UpdateManager {
     this.#handleUpdatesSet.delete(boxId);
   }
 
-  async #handleUpdate(update: enums.Update) {
+  async #handleUpdate(update: Api.Update) {
     const handler = this.#updateHandler;
     if (handler) {
       return await handler(update);

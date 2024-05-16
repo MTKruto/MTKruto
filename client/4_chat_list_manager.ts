@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, Logger, toUnixTimestamp } from "../1_utilities.ts";
-import { enums, peerToChatId, types } from "../2_tl.ts";
+import { Api, is, peerToChatId } from "../2_tl.ts";
 import { ChatListItem, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, getChatListItemOrder, ID } from "../3_types.ts";
 import { C as C_ } from "./1_types.ts";
 import { getChatListId } from "./0_utilities.ts";
@@ -31,14 +31,14 @@ import { MessageManager } from "./3_message_manager.ts";
 type C = C_ & { fileManager: FileManager; messageManager: MessageManager };
 
 type ChatListManagerUpdate =
-  | types.UpdateNewMessage
-  | types.UpdateNewChannelMessage
-  | types.UpdatePinnedDialogs
-  | types.UpdateFolderPeers
-  | types.UpdateChannel
-  | types.UpdateChat
-  | types.UpdateUser
-  | types.UpdateUserName;
+  | Api.updateNewMessage
+  | Api.updateNewChannelMessage
+  | Api.updatePinnedDialogs
+  | Api.updateFolderPeers
+  | Api.updateChannel
+  | Api.updateChat
+  | Api.updateUser
+  | Api.updateUserName;
 
 export class ChatListManager {
   #c: C;
@@ -224,7 +224,7 @@ export class ChatListManager {
   }
   async #fetchPinnedChats(listId: number | null = null) {
     if (listId == null || listId == 0) {
-      const dialogs = await this.#c.api.messages.getPinnedDialogs({ folder_id: 0 });
+      const dialogs = await this.#c.invoke({ _: "messages.getPinnedDialogs", folder_id: 0 });
       const pinnedChats = new Array<number>();
       for (const dialog of dialogs.dialogs) {
         pinnedChats.push(peerToChatId(dialog.peer));
@@ -233,7 +233,7 @@ export class ChatListManager {
       await this.#c.storage.setPinnedChats(0, this.#pinnedChats);
     }
     if (listId == null || listId == 1) {
-      const dialogs = await this.#c.api.messages.getPinnedDialogs({ folder_id: 1 });
+      const dialogs = await this.#c.invoke({ _: "messages.getPinnedDialogs", folder_id: 1 });
       const pinnedArchiveChats = new Array<number>();
       for (const dialog of dialogs.dialogs) {
         pinnedArchiveChats.push(peerToChatId(dialog.peer));
@@ -286,7 +286,7 @@ export class ChatListManager {
       await this.#sendChatUpdate(chatId, false);
     }
   }
-  async #handleUpdateFolderPeers(update: types.UpdateFolderPeers) {
+  async #handleUpdateFolderPeers(update: Api.updateFolderPeers) {
     for (const { peer, folder_id: listId } of update.folder_peers) {
       const chatId = peerToChatId(peer);
       const [chat, currentListId] = this.#getChatAnywhere(chatId);
@@ -297,7 +297,7 @@ export class ChatListManager {
       }
     }
   }
-  async #handleUpdatePinnedDialogs(update: types.UpdatePinnedDialogs) {
+  async #handleUpdatePinnedDialogs(update: Api.updatePinnedDialogs) {
     const listId = update.folder_id ?? 0;
     await this.#fetchPinnedChats(update.folder_id);
     const chats = this.#getChatList(listId);
@@ -320,36 +320,36 @@ export class ChatListManager {
     await this.#c.storage.setPinnedChats(listId, await this.#getPinnedChats(listId));
   }
 
-  async #handleUpdateChannel(update: types.UpdateChannel) {
-    const peer = new types.PeerChannel(update);
+  async #handleUpdateChannel(update: Api.updateChannel) {
+    const peer: Api.peerChannel = { ...update, _: "peerChannel" };
     const channel = await this.#c.getEntity(peer);
     const chatId = peerToChatId(peer);
     await this.#c.storage.setFullChat(chatId, null);
     if (channel != null && "left" in channel && channel.left) {
       await this.#removeChat(chatId);
-    } else if (channel instanceof types.ChannelForbidden) {
+    } else if (is("channelForbidden", channel)) {
       await this.#removeChat(chatId);
-    } else if (channel instanceof types.Channel) {
+    } else if (is("channel", channel)) {
       await this.#updateOrAddChat(chatId);
     }
   }
 
-  async #handleUpdateChat(update: types.UpdateChat) { // TODO: handle deactivated (migration)
-    const peer = new types.PeerChat(update);
+  async #handleUpdateChat(update: Api.updateChat) { // TODO: handle deactivated (migration)
+    const peer: Api.peerChat = { ...update, _: "peerChat" };
     const chat = await this.#c.getEntity(peer);
     const chatId = peerToChatId(peer);
     await this.#c.storage.setFullChat(chatId, null);
     if (chat != null && "left" in chat && chat.left) {
       await this.#removeChat(chatId);
-    } else if (chat instanceof types.ChatForbidden) {
+    } else if (is("chatForbidden", chat)) {
       await this.#removeChat(chatId);
-    } else if (chat instanceof types.Chat) {
+    } else if (is("chat", chat)) {
       await this.#updateOrAddChat(chatId);
     }
   }
 
-  async #handleUpdateUser(update: types.UpdateUser | types.UpdateUserName) {
-    const peer = new types.PeerUser(update);
+  async #handleUpdateUser(update: Api.updateUser | Api.updateUserName) {
+    const peer: Api.peerUser = { ...update, _: "peerUser" };
     const chat = await this.#c.getEntity(peer);
     const chatId = peerToChatId(peer);
     await this.#c.storage.setFullChat(chatId, null);
@@ -359,16 +359,9 @@ export class ChatListManager {
   }
 
   async #fetchChats(listId: number, limit: number, after?: ChatListItem) {
-    const dialogs = await this.#c.api.messages.getDialogs({
-      limit,
-      offset_id: after?.lastMessage?.id ?? 0,
-      offset_date: after?.lastMessage?.date ? toUnixTimestamp(after.lastMessage.date) : 0,
-      offset_peer: after ? await this.#c.getInputPeer(after.chat.id) : new types.InputPeerEmpty(),
-      hash: 0n,
-      folder_id: listId,
-    });
+    const dialogs = await this.#c.invoke({ _: "messages.getDialogs", limit, offset_id: after?.lastMessage?.id ?? 0, offset_date: after?.lastMessage?.date ? toUnixTimestamp(after.lastMessage.date) : 0, offset_peer: after ? await this.#c.getInputPeer(after.chat.id) : { _: "inputPeerEmpty" }, hash: 0n, folder_id: listId });
     const pinnedChats = await this.#getPinnedChats(listId);
-    if (!(dialogs instanceof types.messages.Dialogs) && !(dialogs instanceof types.messages.DialogsSlice)) {
+    if (!(is("messages.dialogs", dialogs)) && !(is("messages.dialogsSlice", dialogs))) {
       unreachable();
     }
     if (dialogs.dialogs.length < limit) {
@@ -410,25 +403,25 @@ export class ChatListManager {
     return chats;
   }
 
-  static canHandleUpdate(update: enums.Update): update is ChatListManagerUpdate {
-    return update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdatePinnedDialogs || update instanceof types.UpdateFolderPeers || update instanceof types.UpdateChannel || update instanceof types.UpdateChat || update instanceof types.UpdateUser || update instanceof types.UpdateUserName;
+  static canHandleUpdate(update: Api.Update): update is ChatListManagerUpdate {
+    return is("updateNewMessage", update) || is("updateNewChannelMessage", update) || is("updatePinnedDialogs", update) || is("updateFolderPeers", update) || is("updateChannel", update) || is("updateChat", update) || is("updateUser", update) || is("updateUserName", update);
   }
 
   async handleUpdate(update: ChatListManagerUpdate) {
-    if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
-      if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
+    if (is("updateNewMessage", update) || is("updateNewChannelMessage", update) || is("updateEditMessage", update) || is("updateEditChannelMessage", update)) {
+      if (is("message", update.message) || is("messageService", update.message)) {
         const chatId = peerToChatId(update.message.peer_id);
         await this.reassignChatLastMessage(chatId);
       }
-    } else if (update instanceof types.UpdatePinnedDialogs) {
+    } else if (is("updatePinnedDialogs", update)) {
       await this.#handleUpdatePinnedDialogs(update);
-    } else if (update instanceof types.UpdateFolderPeers) {
+    } else if (is("updateFolderPeers", update)) {
       await this.#handleUpdateFolderPeers(update);
-    } else if (update instanceof types.UpdateChannel) {
+    } else if (is("updateChannel", update)) {
       await this.#handleUpdateChannel(update);
-    } else if (update instanceof types.UpdateChat) {
+    } else if (is("updateChat", update)) {
       await this.#handleUpdateChat(update);
-    } else if (update instanceof types.UpdateUser || update instanceof types.UpdateUserName) {
+    } else if (is("updateUser", update) || is("updateUserName", update)) {
       await this.#handleUpdateUser(update);
     } else {
       unreachable();
@@ -442,12 +435,12 @@ export class ChatListManager {
     if (fullChat != null) {
       return fullChat;
     }
-    if (inputPeer instanceof types.InputPeerUser) {
-      fullChat = await this.#c.api.users.getFullUser({ id: new types.InputUser(inputPeer) }).then((v) => v.full_user);
-    } else if (inputPeer instanceof types.InputPeerChat) {
-      fullChat = await this.#c.api.messages.getFullChat(inputPeer).then((v) => v.full_chat);
-    } else if (inputPeer instanceof types.InputPeerChannel) {
-      fullChat = await this.#c.api.channels.getFullChannel({ channel: new types.InputChannel(inputPeer) }).then((v) => v.full_chat);
+    if (is("inputPeerUser", inputPeer)) {
+      fullChat = await this.#c.invoke({ _: "users.getFullUser", id: { ...inputPeer, _: "inputUser" } }).then((v) => v.full_user);
+    } else if (is("inputPeerChat", inputPeer)) {
+      fullChat = await this.#c.invoke({ ...inputPeer, _: "messages.getFullChat" }).then((v) => v.full_chat);
+    } else if (is("inputPeerChannel", inputPeer)) {
+      fullChat = await this.#c.invoke({ _: "channels.getFullChannel", channel: { ...inputPeer, _: "inputChannel" } }).then((v) => v.full_chat);
     }
     await this.#c.storage.setFullChat(chatId_, fullChat);
     if (fullChat != null && "call" in fullChat && fullChat.call) {

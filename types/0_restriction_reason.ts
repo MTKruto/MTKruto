@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { enums } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** The reason for restricting an entity. */
 export interface RestrictionReason {
@@ -27,6 +27,6 @@ export interface RestrictionReason {
   text: string;
 }
 
-export function constructRestrictionReason(rr: enums.RestrictionReason): RestrictionReason {
+export function constructRestrictionReason(rr: Api.RestrictionReason): RestrictionReason {
   return { platform: rr.platform, reason: rr.reason, text: rr.text };
 }

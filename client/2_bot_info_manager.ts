@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { functions, types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { BotCommand, botCommandScopeToTlObject } from "../3_types.ts";
 import { GetMyCommandsParams, SetMyCommandsParams } from "./0_params.ts";
 import { C } from "./1_types.ts";
@@ -30,8 +30,8 @@ export class BotInfoManager {
     this.#c = c;
   }
 
-  async #setMyInfo(info: Omit<ConstructorParameters<typeof functions.bots.setBotInfo>[0], "bot">) {
-    await this.#c.api.bots.setBotInfo({ bot: new types.InputUserSelf(), ...info });
+  async #setMyInfo(info: Omit<Api.bots_setBotInfo, "_" | "bot">) {
+    await this.#c.invoke({ _: "bots.setBotInfo", bot: { _: "inputUserSelf" }, ...info });
   }
 
   async setMyDescription(params?: { description?: string; languageCode?: string }) {
@@ -50,7 +50,7 @@ export class BotInfoManager {
   }
 
   #getMyInfo(languageCode?: string | undefined) {
-    return this.#c.api.bots.getBotInfo({ bot: new types.InputUserSelf(), lang_code: languageCode ?? "" });
+    return this.#c.invoke({ _: "bots.getBotInfo", bot: { _: "inputUserSelf" }, lang_code: languageCode ?? "" });
   }
 
   async getMyDescription(params?: { languageCode?: string }): Promise<string> {
@@ -70,7 +70,8 @@ export class BotInfoManager {
 
   async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
     await this.#c.storage.assertBot("getMyCommands");
-    const commands_ = await this.#c.api.bots.getBotCommands({
+    const commands_ = await this.#c.invoke({
+      _: "bots.getBotCommands",
       lang_code: params?.languageCode ?? "",
       scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.#c.getInputPeer),
     });
@@ -79,8 +80,9 @@ export class BotInfoManager {
 
   async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
     await this.#c.storage.assertBot("setMyCommands");
-    await this.#c.api.bots.setBotCommands({
-      commands: commands.map((v) => new types.BotCommand(v)),
+    await this.#c.invoke({
+      _: "bots.setBotCommands",
+      commands: commands.map((v) => ({ ...v, _: "botCommand" })),
       lang_code: params?.languageCode ?? "",
       scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.#c.getInputPeer),
     });

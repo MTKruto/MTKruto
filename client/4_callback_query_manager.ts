@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { enums, peerToChatId, types } from "../2_tl.ts";
+import { Api, isOneOf, peerToChatId } from "../2_tl.ts";
 import { CallbackQueryQuestion, constructCallbackQuery, constructCallbackQueryAnswer, ID, Update, validateCallbackQueryQuestion } from "../3_types.ts";
 import { AnswerCallbackQueryParams } from "./0_params.ts";
 import { C as C_ } from "./1_types.ts";
@@ -28,7 +28,7 @@ import { checkPassword } from "./0_password.ts";
 
 type C = C_ & { messageManager: MessageManager };
 
-type CallbackQueryManagerUpdate = types.UpdateBotCallbackQuery | types.UpdateInlineBotCallbackQuery;
+type CallbackQueryManagerUpdate = Api.updateBotCallbackQuery | Api.updateInlineBotCallbackQuery;
 
 export class CallbackQueryManager {
   #c: C;
@@ -40,12 +40,7 @@ export class CallbackQueryManager {
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
     await this.#c.storage.assertBot("answerCallbackQuery");
     checkCallbackQueryId(id);
-    await this.#c.api.messages.setBotCallbackAnswer({
-      query_id: BigInt(id),
-      cache_time: params?.cacheTime ?? 0,
-      message: params?.text,
-      alert: params?.alert ? true : undefined,
-    });
+    await this.#c.invoke({ _: "messages.setBotCallbackAnswer", query_id: BigInt(id), cache_time: params?.cacheTime ?? 0, message: params?.text, alert: params?.alert ? true : undefined });
   }
 
   static #enc = new TextEncoder();
@@ -58,13 +53,7 @@ export class CallbackQueryManager {
     if (maybeAnswer != null && !CallbackQueryManager.#isExpired(maybeAnswer[1], maybeAnswer[0].cache_time)) {
       return constructCallbackQueryAnswer(maybeAnswer[0]);
     }
-    const answer = await this.#c.api.messages.getBotCallbackAnswer({
-      peer,
-      msg_id: messageId,
-      data: "data" in question ? CallbackQueryManager.#enc.encode(question.data) : undefined,
-      game: question.type == "game" ? true : undefined,
-      password: question.type == "password" ? await this.#getPasswordCheck(question.password) : undefined,
-    });
+    const answer = await this.#c.invoke({ _: "messages.getBotCallbackAnswer", peer, msg_id: messageId, data: "data" in question ? CallbackQueryManager.#enc.encode(question.data) : undefined, game: question.type == "game" ? true : undefined, password: question.type == "password" ? await this.#getPasswordCheck(question.password) : undefined });
     if (answer.cache_time >= 0) {
       await this.#c.messageStorage.setCallbackQueryAnswer(peerId, messageId, questionKey, answer);
     }
@@ -76,12 +65,12 @@ export class CallbackQueryManager {
   }
 
   async #getPasswordCheck(password: string) {
-    const ap = await this.#c.api.account.getPassword();
+    const ap = await this.#c.invoke({ _: "account.getPassword" });
     return await checkPassword(password, ap);
   }
 
-  static canHandleUpdate(update: enums.Update): update is CallbackQueryManagerUpdate {
-    return update instanceof types.UpdateBotCallbackQuery || update instanceof types.UpdateInlineBotCallbackQuery;
+  static canHandleUpdate(update: Api.Update): update is CallbackQueryManagerUpdate {
+    return isOneOf(["updateBotCallbackQuery", "updateInlineBotCallbackQuery"], update);
   }
 
   async handleUpdate(update: CallbackQueryManagerUpdate): Promise<Update> {
