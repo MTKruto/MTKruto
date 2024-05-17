@@ -25,38 +25,45 @@ import { ID } from "./0_id.ts";
 
 /** @unlisted */
 export interface BotCommandScopeDefault {
+  /** @discriminator */
   type: "default";
 }
 
 /** @unlisted */
 export interface BotCommandScopeAllPrivateChats {
+  /** @discriminator */
   type: "allPrivateChats";
 }
 
 /** @unlisted */
 export interface BotCommandScopeAllGroupChats {
+  /** @discriminator */
   type: "allGroupChats";
 }
 
 /** @unlisted */
 export interface BotCommandScopeAllChatAdministrators {
+  /** @discriminator */
   type: "allChatAdministrators";
 }
 
 /** @unlisted */
 export interface BotCommandScopeChat {
+  /** @discriminator */
   type: "chat";
   chatId: ID;
 }
 
 /** @unlisted */
 export interface BotCommandScopeChatAdministrators {
+  /** @discriminator */
   type: "chatAdministrators";
   chatId: ID;
 }
 
 /** @unlisted */
 export interface BotCommandScopeChatMember {
+  /** @discriminator */
   type: "chatMember";
   chatId: ID;
   userId: number;
