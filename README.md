@@ -29,7 +29,7 @@ const { Client, getRandomId } = require("@mtkruto/node"); // npm install @mtkrut
 const client = new Client();
 await client.connect();
 
-const pong = await client.api.ping({ ping_id: getRandomId() });
+const pong = await client.invoke({ _: "ping", ping_id: getRandomId() });
 console.debug(pong);
 ```
 
@@ -41,7 +41,7 @@ import { Client, getRandomId } from "https://deno.land/x/mtkruto/mod.ts";
 const client = new Client();
 await client.connect();
 
-const pong = await client.api.ping({ ping_id: getRandomId() });
+const pong = await client.invoke({ _: "ping", ping_id: getRandomId() });
 console.debug(pong);
 ```
 
@@ -54,7 +54,7 @@ console.debug(pong);
     const client = new Client();
     await client.connect();
 
-    const pong = await client.api.ping({ ping_id: getRandomId() });
+    const pong = await client.invoke({ _: "ping", ping_id: getRandomId() });
     console.debug(pong);
 </script>
 ```
@@ -69,7 +69,7 @@ import { Client, getRandomId } from "@mtkruto/mtkruto"; // bunx jsr i @mtkruto/m
 const client = new Client();
 await client.connect();
 
-const pong = await client.api.ping({ ping_id: getRandomId() });
+const pong = await client.invoke({ _: "ping", ping_id: getRandomId() });
 console.debug(pong);
 ```
 
