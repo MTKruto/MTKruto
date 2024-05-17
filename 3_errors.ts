@@ -21,6 +21,8 @@
 import { Api } from "./2_tl.ts";
 import { MtkrutoError } from "./0_errors.ts";
 
+export * from "./0_errors.ts";
+
 export interface TelegramErrorParams {
   error_code: number;
   error_message: string;
