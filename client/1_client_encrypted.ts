@@ -21,8 +21,8 @@
 import { gunzip, unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, Logger, sha1 } from "../1_utilities.ts";
-import { enums, functions, Message_, MessageContainer, name, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
-import { upgradeInstance } from "../4_errors.ts";
+import { Api, is, isOfEnum, message, ReadObject, TLError, TLReader } from "../2_tl.ts";
+import { constructTelegramError } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
@@ -34,7 +34,7 @@ export type ErrorSource = "deserialization" | "decryption" | "unknown";
 
 export interface Handlers {
   serverSaltReassigned?: (newServerSalt: bigint) => void;
-  updates?: (updates: enums.Updates | enums.Update, call: TLObject | null, callback?: () => void) => void;
+  updates?: (updates: Api.Updates | Api.Update, call: Api.AnyType | null, callback?: () => void) => void;
   result?: (result: ReadObject, callback: () => void) => void;
   error?: (err: unknown, source: ErrorSource) => void;
 }
@@ -56,8 +56,8 @@ export class ClientEncrypted extends ClientAbstract {
   #sessionId = getRandomBigInt(8, true, false);
   #state = { serverSalt: 0n, seqNo: 0, messageId: 0n };
   #toAcknowledge = new Set<bigint>();
-  #recentAcks = new CacheMap<bigint, { container?: bigint; message: Message_ }>(20);
-  #promises = new Map<bigint, { container?: bigint; message: Message_; resolve?: (obj: ReadObject) => void; reject?: (err: ReadObject | Error) => void; call: TLObject }>();
+  #recentAcks = new CacheMap<bigint, { container?: bigint; message: message }>(20);
+  #promises = new Map<bigint, { container?: bigint; message: message; resolve?: (obj: ReadObject) => void; reject?: (err: ReadObject | Error) => void; call: Api.AnyObject }>();
 
   // loggers
   #L: Logger;
@@ -111,7 +111,7 @@ export class ClientEncrypted extends ClientAbstract {
     return seqNo;
   }
 
-  async #sendMessage(message: Message_ | MessageContainer) {
+  async #sendMessage(message: message) {
     const payload = await encryptMessage(
       message,
       this.#authKey,
@@ -124,31 +124,44 @@ export class ClientEncrypted extends ClientAbstract {
     this.#L.outBin(payload);
   }
 
-  async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
-  async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
-  async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void>;
-  async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
+  async invoke<T extends Api.AnyObject<P>, P extends Api.Function, R extends unknown = Promise<T["_"] extends keyof Api.Functions ? Api.ReturnType<Api.Functions[T["_"]]> : never>>(function_: T, noWait?: boolean): Promise<R | void> {
     const messageId = this.#nextMessageId();
-    const message__ = new Message_(messageId, this.#nextSeqNo(true), function_);
+    let message_: message = {
+      _: "message",
+      msg_id: messageId,
+      seqno: this.#nextSeqNo(true),
+      body: function_,
+    };
+    const message__ = message_;
 
-    let message_: Message_ | MessageContainer;
     let container: bigint | undefined = undefined;
 
     if (this.#toAcknowledge.size) {
-      const ack = new Message_(this.#nextMessageId(), this.#nextSeqNo(false), new types.Msgs_ack({ msg_ids: [...this.#toAcknowledge] }));
-      this.#recentAcks.set(ack.id, { container, message: ack });
-      message_ = new MessageContainer(container = this.#nextMessageId(), this.#nextSeqNo(false), [message__, ack]);
-    } else {
-      message_ = message__;
+      const ack: message = {
+        _: "message",
+        msg_id: this.#nextMessageId(),
+        seqno: this.#nextSeqNo(false),
+        body: { _: "msgs_ack", msg_ids: [...this.#toAcknowledge] },
+      };
+      this.#recentAcks.set(ack.msg_id, { container, message: ack });
+      message_ = {
+        _: "message",
+        msg_id: container = this.#nextMessageId(),
+        seqno: this.#nextSeqNo(false),
+        body: {
+          _: "msg_container",
+          messages: [message_, ack],
+        },
+      };
     }
 
     await this.#sendMessage(message_);
-    this.#Linvoke.debug("invoked", function_[name]);
+    this.#Linvoke.debug("invoked", function_._);
 
     if (noWait) {
       this.#promises.set(messageId, {
         container,
-        message: message__,
+        message: message_,
         call: function_,
       });
       return;
@@ -156,7 +169,7 @@ export class ClientEncrypted extends ClientAbstract {
 
     return await new Promise<ReadObject>((resolve, reject) => {
       this.#promises.set(messageId, { container, message: message__, resolve, reject, call: function_ });
-    }).then((v) => v as T);
+    }).then((v) => v as R);
   }
 
   async #receiveLoop() {
@@ -182,53 +195,54 @@ export class ClientEncrypted extends ClientAbstract {
           drop(this.handlers.error?.(err, "decryption"));
           continue;
         }
-        const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
+        const messages = decrypted.body._ == "msg_container" ? decrypted.body.messages : [decrypted];
 
         for (const message of messages) {
           let body = message.body;
-          if (body instanceof types.Gzip_packed) {
-            body = new TLReader(gunzip(body.packed_data)).readObject();
+          if (is("gzip_packed", body)) {
+            body = new TLReader(gunzip(body.packed_data)).readObject() as Api.AnyType;
           }
-          this.#LreceiveLoop.debug("received", (typeof body === "object" && name in body) ? body[name] : body.constructor.name);
-          if (body instanceof types._Updates || body instanceof types._Update) {
-            drop(this.handlers.updates?.(body as enums.Updates | enums.Update, null));
-          } else if (body instanceof types.New_session_created) {
+          this.#LreceiveLoop.debug("received", body._);
+          if (isOfEnum("Updates", body) || isOfEnum("Update", body)) {
+            drop(this.handlers.updates?.(body as Api.Updates | Api.Update, null));
+          } else if (is("new_session_created", body)) {
             this.serverSalt = body.server_salt;
             drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
-          } else if (message.body instanceof RPCResult) {
+          } else if (message.body._ == "rpc_result") {
             let result = message.body.result;
-            if (result instanceof types.Gzip_packed) {
-              result = new TLReader(gunzip(result.packed_data)).readObject();
+            if (is("gzip_packed", result)) {
+              result = new TLReader(gunzip(result.packed_data)).readObject() as Api.AnyType;
             }
-            if (result instanceof types.Rpc_error) {
+            if (is("rpc_error", result)) {
               this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
             } else {
-              this.#LreceiveLoop.debug("RPCResult:", (typeof result === "object" && name in result) ? result[name] : result.constructor.name);
+              this.#LreceiveLoop.debug("RPCResult:", result._);
             }
-            const messageId = message.body.messageId;
+            const messageId = message.body.req_msg_id;
             const promise = this.#promises.get(messageId);
             const resolvePromise = () => {
               if (promise) {
-                if (result instanceof types.Rpc_error) {
-                  promise.reject?.(upgradeInstance(result, promise.call));
+                if (is("rpc_error", result)) {
+                  promise.reject?.(constructTelegramError(result, promise.call));
                 } else {
                   promise.resolve?.(result);
                 }
                 this.#promises.delete(messageId);
               }
             };
-            if (result instanceof types._Updates || result instanceof types._Update) {
-              drop(this.handlers.updates?.(result as enums.Updates | enums.Update, promise?.call ?? null, resolvePromise));
+            if (isOfEnum("Updates", result) || isOfEnum("Update", result)) {
+              // @ts-ignore tbd
+              drop(this.handlers.updates?.(result, promise?.call ?? null, resolvePromise));
             } else {
               drop(this.handlers.result?.(result, resolvePromise));
             }
-          } else if (message.body instanceof types.Pong) {
+          } else if (is("pong", message.body)) {
             const promise = this.#promises.get(message.body.msg_id);
             if (promise) {
               promise.resolve?.(message.body);
               this.#promises.delete(message.body.msg_id);
             }
-          } else if (message.body instanceof types.Bad_server_salt) {
+          } else if (is("bad_server_salt", message.body)) {
             this.#LreceiveLoop.debug("server salt reassigned");
             this.serverSalt = message.body.new_server_salt;
             drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
@@ -251,7 +265,7 @@ export class ClientEncrypted extends ClientAbstract {
               }
             }
           }
-          this.#toAcknowledge.add(message.id);
+          this.#toAcknowledge.add(message.msg_id);
         }
       } catch (err) {
         if (!this.connected) {

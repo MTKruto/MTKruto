@@ -19,7 +19,7 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructInlineQueryResult, InlineQueryResult } from "./4_inline_query_result.ts";
 
 /** An answer to an inline query. */
@@ -32,7 +32,7 @@ export interface InlineQueryAnswer {
   nextOffset?: string;
 }
 
-export function constructInlineQueryAnswer(results: types.messages.BotResults): InlineQueryAnswer {
+export function constructInlineQueryAnswer(results: Api.messages_BotResults): InlineQueryAnswer {
   return cleanObject({
     id: results.query_id + "",
     results: results.results.map(constructInlineQueryResult),

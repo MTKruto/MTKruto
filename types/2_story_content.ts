@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { as, enums, types } from "../2_tl.ts";
+import { Api, as, is } from "../2_tl.ts";
 import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
 import { constructVideo, Video } from "./1_video.ts";
@@ -45,20 +45,20 @@ export interface StoryContentUnsupported {
 /** A story content. */
 export type StoryContent = StoryContentPhoto | StoryContentVideo | StoryContentUnsupported;
 
-export function constructStoryContent(media: enums.MessageMedia): StoryContent {
-  if (media instanceof types.MessageMediaPhoto) {
+export function constructStoryContent(media: Api.MessageMedia): StoryContent {
+  if (is("messageMediaPhoto", media)) {
     if (!media.photo) {
       unreachable();
     }
-    const photo = constructPhoto(media.photo[as](types.Photo));
+    const photo = constructPhoto(as("photo", media.photo));
     return { photo };
-  } else if (media instanceof types.MessageMediaDocument) {
+  } else if (is("messageMediaDocument", media)) {
     const document = media.document;
-    if (!(document instanceof types.Document)) {
+    if (!(is("document", document))) {
       unreachable();
     }
 
-    const video = document.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo);
+    const video = document.attributes.find((v): v is Api.documentAttributeVideo => is("documentAttributeVideo", v));
     if (!video) {
       unreachable();
     }

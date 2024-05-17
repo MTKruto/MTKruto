@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { enums } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** A poll option. */
 export interface PollOption {
@@ -28,7 +28,7 @@ export interface PollOption {
   voterCount: number;
 }
 
-export function constructPollOption(option: enums.PollAnswer, results: Array<enums.PollAnswerVoters>): PollOption {
+export function constructPollOption(option: Api.PollAnswer, results: Array<Api.PollAnswerVoters>): PollOption {
   return {
     text: option.text,
     voterCount: results.find((v) => v.option.every((v, i) => option.option[i] == v))?.voters ?? 0,

@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 /** A document. */
@@ -37,11 +37,11 @@ export interface Document {
   fileSize: number;
 }
 
-export function constructDocument(document: types.Document, fileNameAttribute: types.DocumentAttributeFilename, fileId: string, fileUniqueId: string): Document {
+export function constructDocument(document: Api.document, fileNameAttribute: Api.documentAttributeFilename, fileId: string, fileUniqueId: string): Document {
   return {
     fileId,
     fileUniqueId,
-    thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
+    thumbnails: document.thumbs ? document.thumbs.map((v) => is("photoSize", v) ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
     fileName: fileNameAttribute.file_name,
     mimeType: document.mime_type,
     fileSize: Number(document.size),

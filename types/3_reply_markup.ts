@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
-import { enums, types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { UsernameResolver } from "./_getters.ts";
 import { constructKeyboardButton, KeyboardButton, keyboardButtonToTlObject } from "./1_keyboard_button.ts";
 import { constructInlineKeyboardButton, InlineKeyboardButton, inlineKeyboardButtonToTlObject } from "./2_inline_keyboard_button.ts";
@@ -33,7 +33,7 @@ export interface ReplyMarkupInlineKeyboard {
   inlineKeyboard: InlineKeyboardButton[][];
 }
 
-function constructInlineKeyboardMarkup(keyboard_: types.ReplyInlineMarkup): ReplyMarkupInlineKeyboard {
+function constructInlineKeyboardMarkup(keyboard_: Api.replyInlineMarkup): ReplyMarkupInlineKeyboard {
   const rows = new Array<InlineKeyboardButton[]>();
   for (const row_ of keyboard_.rows) {
     const row = new Array<InlineKeyboardButton>();
@@ -45,16 +45,16 @@ function constructInlineKeyboardMarkup(keyboard_: types.ReplyInlineMarkup): Repl
   return { inlineKeyboard: rows };
 }
 
-async function inlineKeyboardMarkupToTlObject(keyboard: ReplyMarkupInlineKeyboard, usernameResolver: UsernameResolver) {
-  const rows_ = new Array<types.KeyboardButtonRow>();
+async function inlineKeyboardMarkupToTlObject(keyboard: ReplyMarkupInlineKeyboard, usernameResolver: UsernameResolver): Promise<Api.replyInlineMarkup> {
+  const rows_ = new Array<Api.keyboardButtonRow>();
   for (const row of keyboard.inlineKeyboard) {
-    const row_ = new Array<enums.KeyboardButton>();
+    const row_ = new Array<Api.KeyboardButton>();
     for (const button of row) {
       row_.push(await inlineKeyboardButtonToTlObject(button, usernameResolver));
     }
-    rows_.push(new types.KeyboardButtonRow({ buttons: row_ }));
+    rows_.push({ _: "keyboardButtonRow", buttons: row_ });
   }
-  return new types.ReplyInlineMarkup({ rows: rows_ });
+  return { _: "replyInlineMarkup", rows: rows_ };
 }
 
 //
@@ -70,7 +70,7 @@ export interface ReplyMarkupKeyboard {
   selective?: boolean;
 }
 
-function constructReplyKeyboardMarkup(keyboard_: types.ReplyKeyboardMarkup): ReplyMarkupKeyboard {
+function constructReplyKeyboardMarkup(keyboard_: Api.replyKeyboardMarkup): ReplyMarkupKeyboard {
   const rows = new Array<KeyboardButton[]>();
   for (const row_ of keyboard_.rows) {
     const row = new Array<KeyboardButton>();
@@ -88,23 +88,16 @@ function constructReplyKeyboardMarkup(keyboard_: types.ReplyKeyboardMarkup): Rep
   };
 }
 
-function replyKeyboardMarkupToTlObject(replyMarkup: ReplyMarkupKeyboard) {
-  const rows_ = new Array<types.KeyboardButtonRow>();
+function replyKeyboardMarkupToTlObject(replyMarkup: ReplyMarkupKeyboard): Api.replyKeyboardMarkup {
+  const rows_ = new Array<Api.keyboardButtonRow>();
   for (const row of replyMarkup.keyboard) {
-    const row_ = new Array<enums.KeyboardButton>();
+    const row_ = new Array<Api.KeyboardButton>();
     for (const button of row) {
       row_.push(keyboardButtonToTlObject(button));
     }
-    rows_.push(new types.KeyboardButtonRow({ buttons: row_ }));
+    rows_.push({ _: "keyboardButtonRow", buttons: row_ });
   }
-  return new types.ReplyKeyboardMarkup({
-    resize: replyMarkup.resizeKeyboard || undefined,
-    single_use: replyMarkup.oneTimeKeyboard || undefined,
-    selective: replyMarkup.selective || undefined,
-    persistent: replyMarkup.isPersistent || undefined,
-    rows: rows_,
-    placeholder: replyMarkup.inputFieldPlaceholder,
-  });
+  return { _: "replyKeyboardMarkup", resize: replyMarkup.resizeKeyboard || undefined, single_use: replyMarkup.oneTimeKeyboard || undefined, selective: replyMarkup.selective || undefined, persistent: replyMarkup.isPersistent || undefined, rows: rows_, placeholder: replyMarkup.inputFieldPlaceholder };
 }
 
 //
@@ -123,12 +116,12 @@ export interface ReplyMarkupRemoveKeyboard {
   selective?: boolean;
 }
 
-function constructReplyKeyboardRemove(replyMarkup_: types.ReplyKeyboardHide): ReplyMarkupRemoveKeyboard {
+function constructReplyKeyboardRemove(replyMarkup_: Api.replyKeyboardHide): ReplyMarkupRemoveKeyboard {
   return cleanObject({ removeKeyboard: true, selective: replyMarkup_.selective });
 }
 
-function replyKeyboardRemoveToTlObject(replyMarkup: ReplyMarkupRemoveKeyboard) {
-  return new types.ReplyKeyboardHide({ selective: replyMarkup.selective || undefined });
+function replyKeyboardRemoveToTlObject(replyMarkup: ReplyMarkupRemoveKeyboard): Api.replyKeyboardHide {
+  return { _: "replyKeyboardHide", selective: replyMarkup.selective || undefined };
 }
 
 //
@@ -149,7 +142,7 @@ export interface ReplyMarkupForceReply {
   selective?: boolean;
 }
 
-function constructForceReply(replyMarkup_: types.ReplyKeyboardForceReply) {
+function constructForceReply(replyMarkup_: Api.replyKeyboardForceReply) {
   const replyMarkup: ReplyMarkupForceReply = { forceReply: true };
   if (replyMarkup_.placeholder) {
     replyMarkup.inputFieldPlaceholder = replyMarkup_.placeholder;
@@ -160,11 +153,8 @@ function constructForceReply(replyMarkup_: types.ReplyKeyboardForceReply) {
   return replyMarkup;
 }
 
-function forceReplyToTlObject(replyMarkup: ReplyMarkupForceReply) {
-  return new types.ReplyKeyboardForceReply({
-    selective: replyMarkup.selective || undefined,
-    placeholder: replyMarkup.inputFieldPlaceholder,
-  });
+function forceReplyToTlObject(replyMarkup: ReplyMarkupForceReply): Api.replyKeyboardForceReply {
+  return { _: "replyKeyboardForceReply", selective: replyMarkup.selective || undefined, placeholder: replyMarkup.inputFieldPlaceholder };
 }
 
 //
@@ -172,21 +162,21 @@ function forceReplyToTlObject(replyMarkup: ReplyMarkupForceReply) {
 /** A message's reply markup. */
 export type ReplyMarkup = ReplyMarkupInlineKeyboard | ReplyMarkupKeyboard | ReplyMarkupRemoveKeyboard | ReplyMarkupForceReply;
 
-export function constructReplyMarkup(replyMarkup: enums.ReplyMarkup): ReplyMarkup {
-  if (replyMarkup instanceof types.ReplyKeyboardMarkup) {
+export function constructReplyMarkup(replyMarkup: Api.ReplyMarkup): ReplyMarkup {
+  if (is("replyKeyboardMarkup", replyMarkup)) {
     return constructReplyKeyboardMarkup(replyMarkup);
-  } else if (replyMarkup instanceof types.ReplyInlineMarkup) {
+  } else if (is("replyInlineMarkup", replyMarkup)) {
     return constructInlineKeyboardMarkup(replyMarkup);
-  } else if (replyMarkup instanceof types.ReplyKeyboardHide) {
+  } else if (is("replyKeyboardHide", replyMarkup)) {
     return constructReplyKeyboardRemove(replyMarkup);
-  } else if (replyMarkup instanceof types.ReplyKeyboardForceReply) {
+  } else if (is("replyKeyboardForceReply", replyMarkup)) {
     return constructForceReply(replyMarkup);
   } else {
     unreachable();
   }
 }
 
-export async function replyMarkupToTlObject(replyMarkup: ReplyMarkup, usernameResolver: UsernameResolver): Promise<enums.ReplyMarkup> {
+export async function replyMarkupToTlObject(replyMarkup: ReplyMarkup, usernameResolver: UsernameResolver): Promise<Api.ReplyMarkup> {
   if ("inlineKeyboard" in replyMarkup) {
     return await inlineKeyboardMarkupToTlObject(replyMarkup, usernameResolver);
   } else if ("keyboard" in replyMarkup) {

@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { enums, types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 
 /** @unlisted */
 export interface ReactionEmoji {
@@ -36,18 +36,18 @@ export interface ReactionCustomEmoji {
 /** A reaction type. */
 export type Reaction = ReactionEmoji | ReactionCustomEmoji;
 
-export function constructReaction(reaction: enums.Reaction): Reaction {
-  if (reaction instanceof types.ReactionEmoji) {
+export function constructReaction(reaction: Api.Reaction): Reaction {
+  if (is("reactionEmoji", reaction)) {
     return { type: "emoji", emoji: reaction.emoticon };
-  } else if (reaction instanceof types.ReactionCustomEmoji) {
+  } else if (is("reactionCustomEmoji", reaction)) {
     return { type: "customEmoji", id: String(reaction.document_id) };
   } else {
     unreachable();
   }
 }
 
-export function reactionToTlObject(reaction: Reaction): enums.Reaction {
-  return reaction.type == "emoji" ? new types.ReactionEmoji({ emoticon: reaction.emoji }) : new types.ReactionCustomEmoji({ document_id: BigInt(reaction.id) });
+export function reactionToTlObject(reaction: Reaction): Api.Reaction {
+  return reaction.type == "emoji" ? ({ _: "reactionEmoji", emoticon: reaction.emoji }) : ({ _: "reactionCustomEmoji", document_id: BigInt(reaction.id) });
 }
 
 export function reactionEqual(left: Reaction, right: Reaction): boolean {

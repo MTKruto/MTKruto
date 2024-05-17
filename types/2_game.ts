@@ -19,7 +19,7 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import { as, types } from "../2_tl.ts";
+import { Api, as, is } from "../2_tl.ts";
 import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import { MessageEntity } from "./0_message_entity.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
@@ -41,9 +41,9 @@ export interface Game {
   animation?: Animation;
 }
 
-export function constructGame(media_: types.MessageMediaGame): Game {
+export function constructGame(media_: Api.messageMediaGame): Game {
   const game_ = media_.game;
-  const document_ = game_.document ? game_.document[as](types.Document) : undefined;
+  const document_ = game_.document ? as("document", game_.document) : undefined;
   const fileId_: FileId | undefined = document_
     ? {
       type: FileType.Animation,
@@ -56,12 +56,12 @@ export function constructGame(media_: types.MessageMediaGame): Game {
   return cleanObject({
     title: game_.title,
     description: media_.game.description,
-    photo: constructPhoto(game_.photo[as](types.Photo)),
+    photo: constructPhoto(as("photo", game_.photo)),
     animation: fileId_ && document_
       ? constructAnimation(
         document_,
-        document_.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo)!,
-        document_.attributes.find((v): v is types.DocumentAttributeFilename => v instanceof types.DocumentAttributeFilename)!,
+        document_.attributes.find((v): v is Api.documentAttributeVideo => is("documentAttributeVideo", v))!,
+        document_.attributes.find((v): v is Api.documentAttributeFilename => is("documentAttributeFilename", v))!,
         serializeFileId(fileId_),
         toUniqueFileId(fileId_),
       )

@@ -18,28 +18,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { id, name } from "./1_tl_object.ts";
-import { ReadObject, TLReader } from "./4_tl_reader.ts";
+import { TLReader } from "./3_tl_reader.ts";
 
-export class RPCResult {
-  static get [id](): number {
-    return 0xF35C6D01;
-  }
+// rpc_result#f35c6d01 req_msg_id:long result:Object = RpcResult;
 
-  get [name](): string {
-    return "rpc_result";
-  }
+export const RPC_RESULT_ID = 0xF35C6D01;
 
-  constructor(
-    public readonly messageId: bigint,
-    public readonly result: ReadObject,
-  ) {
-  }
+export interface rpc_result {
+  _: "rpc_result";
+  req_msg_id: bigint;
+  // deno-lint-ignore no-explicit-any
+  result: any;
+}
 
-  static deserialize(buffer: Uint8Array): RPCResult {
-    const reader = new TLReader(buffer);
-    const messageId = reader.readInt64();
-    const result = reader.readObject();
-    return new RPCResult(messageId, result);
-  }
+export function deserializeRpcResult(buffer: Uint8Array): rpc_result {
+  const reader = new TLReader(buffer);
+  const messageId = reader.readInt64();
+  const result = reader.readObject();
+  return { _: "rpc_result", req_msg_id: messageId, result };
 }

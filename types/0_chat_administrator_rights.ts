@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { enums, types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** The rights of a chat administrator. */
 export interface ChatAdministratorRights {
@@ -48,7 +48,7 @@ export interface ChatAdministratorRights {
   canManageTopics?: boolean;
 }
 
-export function constructChatAdministratorRights(rights_: enums.ChatAdminRights): ChatAdministratorRights {
+export function constructChatAdministratorRights(rights_: Api.ChatAdminRights): ChatAdministratorRights {
   const rights: ChatAdministratorRights = {
     isAnonymous: rights_.anonymous || false,
     canManageChat: rights_.other || false,
@@ -76,15 +76,6 @@ export function constructChatAdministratorRights(rights_: enums.ChatAdminRights)
   return rights;
 }
 
-export function chatAdministratorRightsToTlObject(rights: ChatAdministratorRights): types.ChatAdminRights {
-  return new types.ChatAdminRights({
-    anonymous: rights.isAnonymous || undefined,
-    other: rights.canManageChat || undefined,
-    delete_messages: rights.canDeleteMessages || undefined,
-    manage_call: rights.canManageChat || undefined,
-    ban_users: rights.canRestrictMembers || undefined,
-    add_admins: rights.canPromoteMembers || undefined,
-    change_info: rights.canChangeInfo || undefined,
-    invite_users: rights.canInviteUsers || undefined,
-  });
+export function chatAdministratorRightsToTlObject(rights: ChatAdministratorRights): Api.chatAdminRights {
+  return { _: "chatAdminRights", anonymous: rights.isAnonymous || undefined, other: rights.canManageChat || undefined, delete_messages: rights.canDeleteMessages || undefined, manage_call: rights.canManageChat || undefined, ban_users: rights.canRestrictMembers || undefined, add_admins: rights.canPromoteMembers || undefined, change_info: rights.canChangeInfo || undefined, invite_users: rights.canInviteUsers || undefined };
 }

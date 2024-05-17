@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** A voice note. */
 export interface Voice {
@@ -34,7 +34,7 @@ export interface Voice {
   fileSize: number;
 }
 
-export function constructVoice(document: types.Document, audioAttributes: types.DocumentAttributeAudio, fileId: string, fileUniqueId: string): Voice {
+export function constructVoice(document: Api.document, audioAttributes: Api.documentAttributeAudio, fileId: string, fileUniqueId: string): Voice {
   return {
     fileId,
     fileUniqueId,

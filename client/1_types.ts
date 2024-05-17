@@ -18,25 +18,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { enums, functions, types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { ConnectionState, EntityGetter, ID, ParseMode, Update } from "../3_types.ts";
 
-type Functions = typeof functions;
-type Keys = keyof Functions;
-// deno-lint-ignore no-explicit-any
-type AnyFunc = (...args: any) => any;
-type Promisify<T extends AnyFunc> = (...args: Parameters<T>) => Promise<ReturnType<T>>;
-export type Api = { [K in Keys]: Functions[K] extends { __F: AnyFunc } ? Promisify<Functions[K]["__F"]> : { [K_ in keyof Functions[K]]: Functions[K][K_] extends { __F: AnyFunc } ? Promisify<Functions[K][K_]["__F"]> : Functions[K][K_] } };
+export type Invoke = <T extends Api.AnyFunction<P>, P extends Api.Function, R extends unknown = Api.ReturnType<Api.Functions[T["_"]]>>(function_: T, businessConnectionId?: string) => Promise<R>;
 
 interface Connection {
-  api: Api;
+  invoke: Invoke;
   connect: () => Promise<void>;
   disconnect: () => Promise<void>;
 }
-export interface ConnectionPool extends Omit<Connection, "api"> {
+export interface ConnectionPool extends Omit<Connection, "invoke"> {
   size: number;
-  api: () => Api;
+  invoke: () => Invoke;
   connect: () => Promise<void>;
   disconnect: () => Promise<void>;
 }
@@ -50,16 +45,15 @@ interface GetCdnConnectionPool {
 
 export interface C {
   id: number;
-  api: Api;
   storage: StorageOperations;
   messageStorage: StorageOperations;
   guaranteeUpdateDelivery: boolean;
   setConnectionState: (connectionState: ConnectionState) => void;
   resetConnectionState: () => void;
   getSelfId: () => Promise<number>;
-  getInputPeer: (id: ID) => Promise<enums.InputPeer>;
-  getInputChannel: (id: ID) => Promise<types.InputChannel>;
-  getInputUser: (id: ID) => Promise<types.InputUser>;
+  getInputPeer: (id: ID) => Promise<Api.InputPeer>;
+  getInputChannel: (id: ID) => Promise<Api.inputChannel>;
+  getInputUser: (id: ID) => Promise<Api.inputUser>;
   getEntity: EntityGetter;
   handleUpdate: (update: Update) => void;
   parseMode: ParseMode;
@@ -68,5 +62,5 @@ export interface C {
   ignoreOutgoing: boolean | null;
   cdn: boolean;
   dropPendingUpdates?: boolean;
-  invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, businessConnectionId: string | undefined): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
+  invoke: Invoke;
 }

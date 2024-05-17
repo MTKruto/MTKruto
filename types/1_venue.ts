@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { as, types } from "../2_tl.ts";
+import { Api, as } from "../2_tl.ts";
 import { Location } from "./0_location.ts";
 
 /** A shared venue. */
@@ -35,8 +35,8 @@ export interface Venue {
   foursquareType?: string;
 }
 
-export function constructVenue(media_: types.MessageMediaVenue | types.MediaAreaVenue): Venue {
-  const geo = media_.geo[as](types.GeoPoint);
+export function constructVenue(media_: Api.messageMediaVenue | Api.mediaAreaVenue): Venue {
+  const geo = as("geoPoint", media_.geo);
   return {
     location: {
       latitude: geo.lat,

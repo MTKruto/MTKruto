@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { functions } from "../2_tl.ts";
+import { Api, isOneOf } from "../2_tl.ts";
 
 export const resolve = () => Promise.resolve();
 
@@ -144,14 +144,17 @@ export function checkInlineQueryId(id: string) {
   }
 }
 
+const MTPROTO_FUNCTIONS = [
+  "ping",
+  "ping_delay_disconnect",
+  "req_pq_multi",
+  "rpc_drop_answer",
+  "get_future_salts",
+  "destroy_session",
+  "destroy_auth_key",
+  "req_DH_params",
+  "set_client_DH_params",
+] as (keyof Api.Functions)[];
 export function isMtprotoFunction(value: unknown) {
-  return value instanceof functions.ping ||
-    value instanceof functions.ping_delay_disconnect ||
-    value instanceof functions.req_pq_multi ||
-    value instanceof functions.rpc_drop_answer ||
-    value instanceof functions.get_future_salts ||
-    value instanceof functions.destroy_session ||
-    value instanceof functions.destroy_auth_key ||
-    value instanceof functions.req_DH_params ||
-    value instanceof functions.set_client_DH_params;
+  return isOneOf(MTPROTO_FUNCTIONS, value);
 }

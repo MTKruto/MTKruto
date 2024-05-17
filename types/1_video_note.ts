@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 /** A video note. */
@@ -39,13 +39,13 @@ export interface VideoNote {
   fileSize: number;
 }
 
-export function constructVideoNote(document: types.Document, videoAttribute: types.DocumentAttributeVideo, fileId: string, fileUniqueId: string): VideoNote {
+export function constructVideoNote(document: Api.document, videoAttribute: Api.documentAttributeVideo, fileId: string, fileUniqueId: string): VideoNote {
   return {
     fileId,
     fileUniqueId,
     length: videoAttribute.w,
     duration: videoAttribute.duration,
-    thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
+    thumbnails: document.thumbs ? document.thumbs.map((v) => is("photoSize", v) ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
     fileSize: Number(document.size),
   };
 }

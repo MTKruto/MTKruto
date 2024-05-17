@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { enums } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** A mask position. */
 export interface MaskPosition {
@@ -28,7 +28,7 @@ export interface MaskPosition {
   scale: number;
 }
 
-export function constructMaskPosition({ n, x, y, zoom }: enums.MaskCoords): MaskPosition {
+export function constructMaskPosition({ n, x, y, zoom }: Api.MaskCoords): MaskPosition {
   return {
     point: n == 0 ? "forehead" : n == 1 ? "eyes" : n == 2 ? "mouth" : "chin",
     xShift: x,

@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructReaction, Reaction } from "./0_reaction.ts";
 
 /** The count of a specific reaction. */
@@ -29,7 +29,7 @@ export interface ReactionCount {
   count: number;
 }
 
-export function constructReactionCount(reaction_: types.ReactionCount): ReactionCount {
+export function constructReactionCount(reaction_: Api.reactionCount): ReactionCount {
   const reaction = constructReaction(reaction_.reaction);
   const count = reaction_.count;
   return { reaction, count };

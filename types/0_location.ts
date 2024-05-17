@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { as, types } from "../2_tl.ts";
+import { Api, as, is } from "../2_tl.ts";
 
 /** A shared location. */
 export interface Location {
@@ -36,17 +36,17 @@ export interface Location {
   proximityAlertRadius?: number;
 }
 
-export function constructLocation(geo_: types.MessageMediaGeo | types.MessageMediaGeoLive | types.GeoPoint): Location {
-  if (geo_ instanceof types.MessageMediaGeo) {
-    const geo = geo_.geo[as](types.GeoPoint);
+export function constructLocation(geo_: Api.messageMediaGeo | Api.messageMediaGeoLive | Api.geoPoint): Location {
+  if (is("messageMediaGeo", geo_)) {
+    const geo = as("geoPoint", geo_.geo);
     return {
       latitude: geo.lat,
       longitude: geo.long,
       horizontalAccuracy: geo.accuracy_radius,
     };
-  } else if (geo_ instanceof types.MessageMediaGeoLive) {
+  } else if (is("messageMediaGeoLive", geo_)) {
     const media = geo_;
-    const geo = media.geo[as](types.GeoPoint);
+    const geo = as("geoPoint", media.geo);
     return {
       latitude: geo.lat,
       longitude: geo.long,

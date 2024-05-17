@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructReaction, Reaction } from "./0_reaction.ts";
 
 /** Represents a type of reaction made to a story. */
@@ -31,7 +31,7 @@ export interface StoryReaction {
   chosen: boolean;
 }
 
-export function constructStoryReaction(reaction_: types.ReactionCount): StoryReaction {
+export function constructStoryReaction(reaction_: Api.reactionCount): StoryReaction {
   const reaction = constructReaction(reaction_.reaction);
   const count = reaction_.count;
   const chosen = reaction_.chosen_order !== undefined ? true : false;

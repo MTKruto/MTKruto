@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
@@ -46,7 +46,7 @@ export interface Story {
   captionEntities?: MessageEntity[];
 }
 
-export async function constructStory(story: types.StoryItem, peer: types.PeerUser | types.PeerChat | types.PeerChannel, getEntity: EntityGetter): Promise<Story> {
+export async function constructStory(story: Api.storyItem, peer: Api.peerUser | Api.peerChat | Api.peerChannel, getEntity: EntityGetter): Promise<Story> {
   const id = story.id;
   const entity = await getEntity(peer);
   if (!entity) {

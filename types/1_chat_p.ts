@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, getColorFromPeerId, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { constructRestrictionReason, RestrictionReason } from "./0_restriction_reason.ts";
 
 /** @unlisted */
@@ -117,12 +117,12 @@ export interface ChatPSupergroup extends ChatPChannelBase {
  */
 export type ChatP = ChatPPrivate | ChatPGroup | ChatPSupergroup | ChatPChannel;
 
-export function constructChatP(chat: types.User): ChatPPrivate;
-export function constructChatP(chat: types.Chat | types.ChatForbidden): ChatPGroup;
-export function constructChatP(chat: types.Channel | types.ChannelForbidden): ChatPSupergroup | ChatPChannel;
-export function constructChatP(chat: types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden): ChatP;
-export function constructChatP(chat: types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden): ChatP {
-  if (chat instanceof types.User) {
+export function constructChatP(chat: Api.user): ChatPPrivate;
+export function constructChatP(chat: Api.chat | Api.chatForbidden): ChatPGroup;
+export function constructChatP(chat: Api.channel | Api.channelForbidden): ChatPSupergroup | ChatPChannel;
+export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden): ChatP;
+export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden): ChatP {
+  if (is("user", chat)) {
     const id = Number(chat.id);
     const chat_: ChatPPrivate = {
       id,
@@ -143,7 +143,7 @@ export function constructChatP(chat: types.User | types.Chat | types.ChatForbidd
     }
 
     return cleanObject(chat_);
-  } else if (chat instanceof types.Chat || chat instanceof types.ChatForbidden) {
+  } else if (is("chat", chat) || is("chatForbidden", chat)) {
     const id = Number(-chat.id);
     const chat_: ChatPGroup = {
       id,
@@ -153,15 +153,15 @@ export function constructChatP(chat: types.User | types.Chat | types.ChatForbidd
       isCreator: false,
     };
 
-    if (chat instanceof types.Chat) {
+    if (is("chat", chat)) {
       chat_.isCreator = chat.creator || false;
     }
 
     return cleanObject(chat_);
-  } else if (chat instanceof types.Channel || chat instanceof types.ChannelForbidden) {
+  } else if (is("channel", chat) || is("channelForbidden", chat)) {
     let chat_: ChatPSupergroup | ChatPChannel;
     const id = ZERO_CHANNEL_ID + -Number(chat.id);
-    if (chat instanceof types.ChannelForbidden) {
+    if (is("channelForbidden", chat)) {
       const { title } = chat;
       if (chat.megagroup) {
         return { id, color: getColorFromPeerId(id), title, type: "supergroup", isScam: false, isFake: false, isVerified: false, isRestricted: false, isForum: false };

@@ -19,7 +19,7 @@
  */
 
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructReaction, Reaction } from "./0_reaction.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
@@ -43,7 +43,7 @@ export interface MessageReactions {
   newReactions: Reaction[];
 }
 
-export async function constructMessageReactions(update: types.UpdateBotMessageReaction, getEntity: EntityGetter): Promise<MessageReactions | null> {
+export async function constructMessageReactions(update: Api.updateBotMessageReaction, getEntity: EntityGetter): Promise<MessageReactions | null> {
   const date = fromUnixTimestamp(update.date);
   const oldReactions = update.old_reactions.map((v) => constructReaction(v));
   const newReactions = update.new_reactions.map((v) => constructReaction(v));
@@ -62,7 +62,7 @@ export async function constructMessageReactions(update: types.UpdateBotMessageRe
   if (!entity) {
     return null;
   }
-  if (entity instanceof types.User) {
+  if (is("user", entity)) {
     user = constructUser(entity);
   } else {
     actorChat = constructChatP(entity);

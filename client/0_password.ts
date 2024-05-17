@@ -20,7 +20,7 @@
 
 import { concat } from "../0_deps.ts";
 import { bigIntFromBuffer, bufferFromBigInt, getRandomBigInt, mod, modExp, sha256 } from "../1_utilities.ts";
-import { enums, types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 
 export function isSafePrime(primeBytes: Uint8Array, g: number) {
   // deno-fmt-ignore
@@ -100,12 +100,11 @@ export function pad(bigint: number | bigint | Uint8Array) {
   }
 }
 
-export async function checkPassword(password_: string, ap: enums.account.Password): Promise<types.InputCheckPasswordSRP> {
+export async function checkPassword(password_: string, ap: Api.account_Password): Promise<Api.inputCheckPasswordSRP> {
   const password = new TextEncoder().encode(password_);
   const algo = ap.current_algo;
   if (
-    !(algo instanceof
-      types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow)
+    !(is("passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow", algo))
   ) {
     throw new Error("Unexpected algorithm");
   }
@@ -189,9 +188,5 @@ export async function checkPassword(password_: string, ap: enums.account.Passwor
     kA,
   ]));
 
-  return new types.InputCheckPasswordSRP({
-    srp_id: srpId,
-    A: pad(gA),
-    M1: m1,
-  });
+  return { _: "inputCheckPasswordSRP", srp_id: srpId, A: pad(gA), M1: m1 };
 }

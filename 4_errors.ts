@@ -19,15 +19,15 @@
  */
 
 import { unreachable } from "./0_deps.ts";
-import { ErrorWithCall, ErrorWithCallParams, map } from "./3_errors.ts";
-import { TLObject, types } from "./2_tl.ts";
+import { map, TelegramError, TelegramErrorParams } from "./3_errors.ts";
+import { Api } from "./2_tl.ts";
 
 export * from "./3_errors.ts";
 
-export class FloodWait extends ErrorWithCall {
+export class FloodWait extends TelegramError {
   seconds: number;
 
-  constructor(params: ErrorWithCallParams) {
+  constructor(params: TelegramErrorParams) {
     super(params);
     const p = params.error_message.split("_");
     this.seconds = Number(p[p.length - 1]);
@@ -37,10 +37,10 @@ export class FloodWait extends ErrorWithCall {
   }
 }
 
-export class Migrate extends ErrorWithCall {
+export class Migrate extends TelegramError {
   dc: number;
 
-  constructor(params: ErrorWithCallParams) {
+  constructor(params: TelegramErrorParams) {
     super(params);
     const p = params.error_message.split("_");
     this.dc = Number(p[p.length - 1]);
@@ -74,7 +74,7 @@ const prefixMap = {
   "FLOOD_WAIT_": FloodWait,
 };
 
-export function upgradeInstance(error: types.Rpc_error, call: TLObject): types.Rpc_error {
+export function constructTelegramError(error: Api.rpc_error, call: Api.AnyObject): TelegramError {
   for (const [k, v] of Object.entries(prefixMap)) {
     if (error.error_message.startsWith(k)) {
       return new v({ ...error, call });
@@ -83,5 +83,5 @@ export function upgradeInstance(error: types.Rpc_error, call: TLObject): types.R
   if (error.error_message in map) {
     return new map[error.error_message as keyof typeof map]({ ...error, call });
   }
-  return error;
+  return new TelegramError({ ...error, call });
 }

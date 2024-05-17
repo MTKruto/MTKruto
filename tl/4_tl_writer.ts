@@ -18,12 +18,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assert } from "../0_deps.ts";
-import { TLObject } from "./1_tl_object.ts";
-import { functions } from "./3_functions.ts";
+import { VECTOR_CONSTRUCTOR } from "../1_utilities.ts";
+import { TLRawWriter } from "./0_tl_raw_writer.ts";
+import { serialize } from "./2_serialize.ts";
+import { ReadObject } from "./3_tl_reader.ts";
 
-Deno.test("instanceof", () => {
-  const ping = new functions.ping({ ping_id: 0xFFn });
-  assert(ping instanceof TLObject);
-  assert(ping instanceof functions.Function);
-});
+export class TLWriter extends TLRawWriter {
+  writeObject(object: ReadObject): typeof this {
+    if (Array.isArray(object)) {
+      this.writeInt32(VECTOR_CONSTRUCTOR, false);
+      this.writeInt32(object.length);
+      for (const item of object) {
+        this.writeObject(item);
+      }
+    } else if (typeof object === "boolean") {
+      if (object) {
+        this.writeInt32(0x997275B5, false);
+      } else {
+        this.writeInt32(0xBC799737, false);
+      }
+    } else {
+      this.write(serialize(object));
+    }
+    return this;
+  }
+}

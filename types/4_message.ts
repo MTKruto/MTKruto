@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp, getLogger, MaybePromise, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { as, enums, types } from "../2_tl.ts";
+import { Api, as, is } from "../2_tl.ts";
 import { FileId, FileType, toUniqueFileId } from "./_file_id.ts";
 import { serializeFileId } from "./_file_id.ts";
 import { EntityGetter } from "./_getters.ts";
@@ -702,22 +702,22 @@ export interface MessageGetter {
 
 type Message_MessageGetter = MessageGetter | null;
 
-async function getSender(message_: types.Message | types.MessageService, getEntity: EntityGetter) {
-  if (message_.from_id instanceof types.PeerUser) {
+async function getSender(message_: Api.message | Api.messageService, getEntity: EntityGetter) {
+  if (is("peerUser", message_.from_id)) {
     const entity = await getEntity(message_.from_id);
     if (entity) {
       return { from: constructUser(entity) };
     } else {
       unreachable();
     }
-  } else if (message_.from_id instanceof types.PeerChannel) {
+  } else if (is("peerChannel", message_.from_id)) {
     const entity = await getEntity(message_.from_id);
     if (entity) {
       return { senderChat: constructChatP(entity) };
     } else {
       unreachable();
     }
-  } else if (message_.peer_id instanceof types.PeerUser) {
+  } else if (is("peerUser", message_.peer_id)) {
     const entity = await getEntity(message_.peer_id);
     if (entity) {
       return { from: constructUser(entity) };
@@ -727,8 +727,8 @@ async function getSender(message_: types.Message | types.MessageService, getEnti
   }
 }
 
-async function getReply(message_: types.Message | types.MessageService, chat: ChatP, getMessage: Message_MessageGetter) {
-  if (getMessage && message_.reply_to instanceof types.MessageReplyHeader && message_.reply_to.reply_to_msg_id) {
+async function getReply(message_: Api.message | Api.messageService, chat: ChatP, getMessage: Message_MessageGetter) {
+  if (getMessage && is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_msg_id) {
     let isTopicMessage = false;
     if (message_.reply_to.forum_topic) {
       isTopicMessage = true;
@@ -744,7 +744,7 @@ async function getReply(message_: types.Message | types.MessageService, chat: Ch
   return { replyToMessage: undefined, threadId: undefined, isTopicMessage: false };
 }
 
-async function constructServiceMessage(message_: types.MessageService, chat: ChatP, getEntity: EntityGetter, getMessage: Message_MessageGetter): Promise<Message> {
+async function constructServiceMessage(message_: Api.messageService, chat: ChatP, getEntity: EntityGetter, getMessage: Message_MessageGetter): Promise<Message> {
   const message: _MessageBase = {
     out: message_.out ?? false,
     id: message_.id,
@@ -755,11 +755,11 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
 
   Object.assign(message, await getSender(message_, getEntity));
 
-  if (message_.action instanceof types.MessageActionChatAddUser || message_.action instanceof types.MessageActionChatJoinedByLink || message_.action instanceof types.MessageActionChatJoinedByRequest) {
+  if (is("messageActionChatAddUser", message_.action) || is("messageActionChatJoinedByLink", message_.action) || is("messageActionChatJoinedByRequest", message_.action)) {
     const newChatMembers = new Array<User>();
     const users = "users" in message_.action ? message_.action.users : [message_.from_id && "user_id" in message_.from_id ? message_.from_id.user_id : unreachable()];
     for (const user_ of users) {
-      const entity = await getEntity(new types.PeerUser({ user_id: user_ }));
+      const entity = await getEntity({ _: "peerUser", user_id: user_ });
       if (entity) {
         const user = constructUser(entity);
         newChatMembers.push(user);
@@ -768,34 +768,34 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
       }
     }
     return { ...message, newChatMembers };
-  } else if (message_.action instanceof types.MessageActionChatDeleteUser) {
-    const entity = await getEntity(new types.PeerUser({ user_id: message_.action.user_id }));
+  } else if (is("messageActionChatDeleteUser", message_.action)) {
+    const entity = await getEntity({ _: "peerUser", user_id: message_.action.user_id });
     if (entity) {
       const user = constructUser(entity);
       const leftChatMember = user;
       return { ...message, leftChatMember };
     }
-  } else if (message_.action instanceof types.MessageActionChatEditTitle) {
+  } else if (is("messageActionChatEditTitle", message_.action)) {
     const newChatTitle = message_.action.title;
     return { ...message, newChatTitle };
-  } else if (message_.action instanceof types.MessageActionChatEditPhoto) {
-    const newChatPhoto = constructPhoto(message_.action.photo[as](types.Photo));
+  } else if (is("messageActionChatEditPhoto", message_.action)) {
+    const newChatPhoto = constructPhoto(as("photo", message_.action.photo));
     return { ...message, newChatPhoto };
-  } else if (message_.action instanceof types.MessageActionChatDeletePhoto) {
+  } else if (is("messageActionChatDeletePhoto", message_.action)) {
     const deletedChatPhoto = true;
     return { ...message, deletedChatPhoto };
-  } else if (message_.action instanceof types.MessageActionChatCreate) {
+  } else if (is("messageActionChatCreate", message_.action)) {
     const groupCreated = true;
     const newChatMembers = new Array<User>();
     for (const user_ of message_.action.users) {
-      const entity = await getEntity(new types.PeerUser({ user_id: user_ }));
+      const entity = await getEntity({ _: "peerUser", user_id: user_ });
       if (entity) {
         const user = constructUser(entity);
         newChatMembers.push(user);
       }
     }
     return { ...message, groupCreated, newChatMembers };
-  } else if (message_.action instanceof types.MessageActionChannelCreate) {
+  } else if (is("messageActionChannelCreate", message_.action)) {
     if (message.chat.type == "channel") {
       const channelCreated = true;
       return { ...message, channelCreated };
@@ -805,34 +805,34 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
     } else {
       // unreachable();
     }
-  } else if (message_.action instanceof types.MessageActionChatMigrateTo) {
+  } else if (is("messageActionChatMigrateTo", message_.action)) {
     const chatMigratedTo = ZERO_CHANNEL_ID + Number(-message_.action.channel_id);
     return { ...message, chatMigratedTo };
-  } else if (message_.action instanceof types.MessageActionChannelMigrateFrom) {
+  } else if (is("messageActionChannelMigrateFrom", message_.action)) {
     const chatMigratedFrom = Number(-message_.action.chat_id);
     return { ...message, chatMigratedFrom };
-  } else if (message_.action instanceof types.MessageActionPinMessage) {
+  } else if (is("messageActionPinMessage", message_.action)) {
     const { replyToMessage } = await getReply(message_, chat, getMessage);
     if (replyToMessage) {
       const pinnedMessage = replyToMessage;
       return { ...message, pinnedMessage };
     }
-  } else if (message_.action instanceof types.MessageActionRequestedPeer) {
-    const user = message_.action.peers[0][as](types.PeerUser);
+  } else if (is("messageActionRequestedPeer", message_.action)) {
+    const user = as("peerUser", message_.action.peers[0]);
     const userShared = { requestId: message_.action.button_id, userId: Number(user.user_id) };
     return { ...message, userShared };
-  } else if (message_.action instanceof types.MessageActionBotAllowed) {
-    const miniAppName = message_.action.app ? message_.action.app[as](types.BotApp).title : undefined;
+  } else if (is("messageActionBotAllowed", message_.action)) {
+    const miniAppName = message_.action.app ? as("botApp", message_.action.app).title : undefined;
     const writeAccessAllowed = { miniAppName };
     return { ...message, writeAccessAllowed };
-  } else if (message_.action instanceof types.MessageActionTopicCreate) {
+  } else if (is("messageActionTopicCreate", message_.action)) {
     const forumTopicCreated = {
       name: message_.action.title,
       iconColor: "#" + message_.action.icon_color.toString(16).padStart(6, "0"),
       iconCutsomEmojiId: message_.action.icon_emoji_id ? String(message_.action.icon_emoji_id) : undefined,
     };
     return { ...message, forumTopicCreated };
-  } else if (message_.action instanceof types.MessageActionTopicEdit) {
+  } else if (is("messageActionTopicEdit", message_.action)) {
     if (message_.action.closed) {
       const forumTopicClosed = true;
       return { ...message, forumTopicClosed };
@@ -846,10 +846,10 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
       const forumTopicReopened = true;
       return { ...message, forumTopicReopened };
     }
-  } else if (message_.action instanceof types.MessageActionGroupCallScheduled) {
+  } else if (is("messageActionGroupCallScheduled", message_.action)) {
     const videoChatScheduled = { startDate: new Date(message_.action.schedule_date * 1000) };
     return { ...message, videoChatScheduled };
-  } else if (message_.action instanceof types.MessageActionGroupCall) {
+  } else if (is("messageActionGroupCall", message_.action)) {
     if (message_.action.duration) {
       const videoChatEnded = { duration: message_.action.duration };
 
@@ -858,7 +858,7 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
       const videoChatStarted = true;
       return { ...message, videoChatStarted };
     }
-  } else if (message_.action instanceof types.MessageActionSetMessagesTTL) {
+  } else if (is("messageActionSetMessagesTTL", message_.action)) {
     const newAutoDeleteTime = message_.action.period || 0;
     return { ...message, newAutoDeleteTime };
   }
@@ -866,34 +866,34 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
 }
 
 export async function constructMessage(
-  message_: enums.Message,
+  message_: Api.Message,
   getEntity: EntityGetter,
   getMessage: Message_MessageGetter,
   getStickerSetName: StickerSetNameGetter,
   getReply_ = true,
-  business?: { connectionId: string; replyToMessage?: enums.Message },
+  business?: { connectionId: string; replyToMessage?: Api.Message },
 ): Promise<Message> {
-  if (!(message_ instanceof types.Message) && !(message_ instanceof types.MessageService)) {
+  if (!(is("message", message_)) && !(is("messageService", message_))) {
     unreachable();
   }
 
   let link: string | undefined;
   let chat_: ChatP | null = null;
-  if (message_.peer_id instanceof types.PeerUser) {
+  if (is("peerUser", message_.peer_id)) {
     const entity = await getEntity(message_.peer_id);
     if (entity) {
       chat_ = constructChatP(entity);
     } else {
       unreachable();
     }
-  } else if (message_.peer_id instanceof types.PeerChat) {
+  } else if (is("peerChat", message_.peer_id)) {
     const entity = await getEntity(message_.peer_id);
     if (entity) {
       chat_ = constructChatP(entity);
     } else {
       unreachable();
     }
-  } else if (message_.peer_id instanceof types.PeerChannel) {
+  } else if (is("peerChannel", message_.peer_id)) {
     link = `https://t.me/c/${message_.peer_id.channel_id}/${message_.id}`;
     const entity = await getEntity(message_.peer_id);
     if (entity) {
@@ -905,7 +905,7 @@ export async function constructMessage(
     unreachable();
   }
 
-  if (message_ instanceof types.MessageService) {
+  if (is("messageService", message_)) {
     return await constructServiceMessage(message_, chat_, getEntity, getMessage);
   }
 
@@ -917,7 +917,7 @@ export async function constructMessage(
     date: fromUnixTimestamp(message_.date),
     views: message_.views,
     forwards: message_.forwards,
-    isTopicMessage: message_.reply_to && message_.reply_to instanceof types.MessageReplyHeader && message_.reply_to.reply_to_top_id ? true : false,
+    isTopicMessage: message_.reply_to && is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_top_id ? true : false,
     hasProtectedContent: message_.noforwards || false,
     senderBoostCount: message_.from_boosts_applied,
   };
@@ -927,7 +927,7 @@ export async function constructMessage(
     message.reactions = message_.reactions.results.map((v) => constructMessageReaction(v, recentReactions));
   }
 
-  if (message_.reply_to instanceof types.MessageReplyHeader && message_.reply_to.reply_to_msg_id) {
+  if (is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_msg_id) {
     if (message_.reply_to.quote) {
       message.replyQuote = constructReplyQuote(message_.reply_to.quote_text, message_.reply_to.quote_offset, message_.reply_to.quote_entities);
     }
@@ -949,7 +949,7 @@ export async function constructMessage(
   }
 
   if (message_.via_bot_id != undefined) {
-    const viaBot = await getEntity(new types.PeerUser({ user_id: message_.via_bot_id }));
+    const viaBot = await getEntity({ _: "peerUser", user_id: message_.via_bot_id });
     if (viaBot) {
       message.viaBot = constructUser(viaBot);
     } else {
@@ -957,7 +957,7 @@ export async function constructMessage(
     }
   }
   if (message_.via_business_bot_id != undefined) {
-    const viaBusinessBot = await getEntity(new types.PeerUser({ user_id: message_.via_business_bot_id }));
+    const viaBusinessBot = await getEntity({ _: "peerUser", user_id: message_.via_business_bot_id });
     if (viaBusinessBot) {
       message.viaBusinessBot = constructUser(viaBusinessBot);
     } else {
@@ -969,23 +969,23 @@ export async function constructMessage(
     message.authorSignature = message_.post_author;
   }
 
-  if (message_.fwd_from instanceof types.MessageFwdHeader) {
+  if (is("messageFwdHeader", message_.fwd_from)) {
     message.isAutomaticForward = message_.fwd_from.saved_from_peer != undefined && message_.fwd_from.saved_from_msg_id != undefined;
     message.forwardSenderName = message_.fwd_from.from_name;
     message.forwardId = message_.fwd_from.channel_post;
     message.forwardSignature = message_.fwd_from.post_author;
     message.forwardDate = fromUnixTimestamp(message_.fwd_from.date);
-    if (message_.fwd_from.from_id instanceof types.PeerUser) {
+    if (is("peerUser", message_.fwd_from.from_id)) {
       const entity = await getEntity(message_.fwd_from.from_id);
       if (entity) {
         message.forwardFrom = constructUser(entity);
       }
-    } else if (message_.fwd_from.from_id instanceof types.PeerChat) {
+    } else if (is("peerChat", message_.fwd_from.from_id)) {
       const entity = await getEntity(message_.fwd_from.from_id);
       if (entity) {
         message.forwardFromChat = constructChatP(entity);
       }
-    } else if (message_.fwd_from.from_id instanceof types.PeerChannel) {
+    } else if (is("peerChannel", message_.fwd_from.from_id)) {
       const entity = await getEntity(message_.fwd_from.from_id);
       if (entity) {
         message.forwardFromChat = constructChatP(entity);
@@ -1017,24 +1017,24 @@ export async function constructMessage(
     captionEntities: message_.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v) ?? [],
   };
 
-  if (message_.media instanceof types.MessageMediaPhoto || message_.media instanceof types.MessageMediaDocument) {
+  if (is("messageMediaPhoto", message_.media) || is("messageMediaDocument", message_.media)) {
     messageMedia.hasMediaSpoiler = message_.media.spoiler || false;
   }
 
   let m: Message | null = null;
 
-  if (message_.media instanceof types.MessageMediaPhoto) {
+  if (is("messageMediaPhoto", message_.media)) {
     if (!message_.media.photo) {
       unreachable();
     }
-    const photo = constructPhoto(message_.media.photo[as](types.Photo));
+    const photo = constructPhoto(as("photo", message_.media.photo));
     m = { ...messageMedia, photo };
-  } else if (message_.media instanceof types.MessageMediaDice) {
+  } else if (is("messageMediaDice", message_.media)) {
     const dice = constructDice(message_.media);
     m = { ...message, dice };
-  } else if (message_.media instanceof types.MessageMediaDocument) {
+  } else if (is("messageMediaDocument", message_.media)) {
     const { document } = message_.media;
-    if (document instanceof types.Document) {
+    if (is("document", document)) {
       const getFileId = (type: FileType): FileId => (
         {
           type,
@@ -1044,11 +1044,11 @@ export async function constructMessage(
         }
       );
 
-      const animated = document.attributes.find((v): v is types.DocumentAttributeAnimated => v instanceof types.DocumentAttributeAnimated);
-      const audio = document.attributes.find((v): v is types.DocumentAttributeAudio => v instanceof types.DocumentAttributeAudio);
-      const fileName = document.attributes.find((v): v is types.DocumentAttributeFilename => v instanceof types.DocumentAttributeFilename);
-      const sticker = document.attributes.find((v): v is types.DocumentAttributeSticker => v instanceof types.DocumentAttributeSticker);
-      const video = document.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo);
+      const animated = document.attributes.find((v): v is Api.documentAttributeAnimated => is("documentAttributeAnimated", v));
+      const audio = document.attributes.find((v): v is Api.documentAttributeAudio => is("documentAttributeAudio", v));
+      const fileName = document.attributes.find((v): v is Api.documentAttributeFilename => is("documentAttributeFilename", v));
+      const sticker = document.attributes.find((v): v is Api.documentAttributeSticker => is("documentAttributeSticker", v));
+      const video = document.attributes.find((v): v is Api.documentAttributeVideo => is("documentAttributeVideo", v));
 
       if (animated) {
         const fileId = getFileId(FileType.Animation);
@@ -1080,33 +1080,33 @@ export async function constructMessage(
         m = { ...message, sticker };
       } else {
         const fileId = getFileId(FileType.Document);
-        const document_ = constructDocument(document, fileName ?? new types.DocumentAttributeFilename({ file_name: "Unknown" }), serializeFileId(fileId), toUniqueFileId(fileId));
+        const document_ = constructDocument(document, fileName ?? ({ _: "documentAttributeFilename", file_name: "Unknown" }), serializeFileId(fileId), toUniqueFileId(fileId));
         m = { ...messageMedia, document: document_ };
       }
     }
-  } else if (message_.media instanceof types.MessageMediaContact) {
+  } else if (is("messageMediaContact", message_.media)) {
     const contact = constructContact(message_.media);
     m = { ...messageMedia, contact };
-  } else if (message_.media instanceof types.MessageMediaGame) {
+  } else if (is("messageMediaGame", message_.media)) {
     const game = constructGame(message_.media);
     m = { ...message, game };
-  } else if (message_.media instanceof types.MessageMediaPoll) {
+  } else if (is("messageMediaPoll", message_.media)) {
     const poll = constructPoll(message_.media);
     m = { ...message, poll };
-  } else if (message_.media instanceof types.MessageMediaVenue) {
+  } else if (is("messageMediaVenue", message_.media)) {
     const venue = constructVenue(message_.media);
     m = { ...message, venue };
-  } else if (message_.media instanceof types.MessageMediaGeo || message_.media instanceof types.MessageMediaGeoLive) {
+  } else if (is("messageMediaGeo", message_.media) || is("messageMediaGeoLive", message_.media)) {
     const location = constructLocation(message_.media);
     m = { ...message, location };
-  } else if (message_.media instanceof types.MessageMediaWebPage) {
+  } else if (is("messageMediaWebPage", message_.media)) {
     const linkPreview = constructLinkPreview(message_.media, message_.invert_media);
     if (message_.message) {
       m = { ...messageText, linkPreview };
     } else {
       m = { ...message, linkPreview: { ...linkPreview, url: linkPreview.url ? linkPreview.url : unreachable() } };
     }
-  } else if (message_.media instanceof types.MessageMediaGiveaway) {
+  } else if (is("messageMediaGiveaway", message_.media)) {
     const giveaway = constructGiveaway(message_.media);
     m = { ...message, giveaway };
   }

@@ -19,7 +19,7 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { constructPollOption, PollOption } from "./0_poll_option.ts";
 
@@ -53,7 +53,7 @@ export interface Poll {
   closeDate?: Date;
 }
 
-export function constructPoll(media_: types.MessageMediaPoll): Poll {
+export function constructPoll(media_: Api.messageMediaPoll): Poll {
   const poll = media_.poll;
   const correctOption = media_.results.results?.find((v) => v.correct)?.option;
   const correctOptionId = correctOption !== undefined ? poll.answers.findIndex((v) => v.option.every((v, i) => correctOption[i] == v)) : undefined;

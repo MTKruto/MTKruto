@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { enums, types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { InputPeerGetter } from "./_getters.ts";
 import { ID } from "./0_id.ts";
 
@@ -65,26 +65,26 @@ export interface BotCommandScopeChatMember {
 /** A type specifying where bot commads are available. */
 export type BotCommandScope = BotCommandScopeDefault | BotCommandScopeAllPrivateChats | BotCommandScopeAllGroupChats | BotCommandScopeAllChatAdministrators | BotCommandScopeChat | BotCommandScopeChatAdministrators | BotCommandScopeChatMember;
 
-export async function botCommandScopeToTlObject(scope: BotCommandScope, getInputPeer: InputPeerGetter): Promise<enums.BotCommandScope> {
+export async function botCommandScopeToTlObject(scope: BotCommandScope, getInputPeer: InputPeerGetter): Promise<Api.BotCommandScope> {
   switch (scope.type) {
     case "default":
-      return new types.BotCommandScopeDefault();
+      return { _: "botCommandScopeDefault" };
     case "allPrivateChats":
-      return new types.BotCommandScopeUsers();
+      return { _: "botCommandScopeUsers" };
     case "allGroupChats":
-      return new types.BotCommandScopeChats();
+      return { _: "botCommandScopeChats" };
     case "allChatAdministrators":
-      return new types.BotCommandScopeChatAdmins();
+      return { _: "botCommandScopeChatAdmins" };
     case "chat":
-      return new types.BotCommandScopePeer({ peer: await getInputPeer(scope.chatId) });
+      return { _: "botCommandScopePeer", peer: await getInputPeer(scope.chatId) };
     case "chatAdministrators":
-      return new types.BotCommandScopePeerAdmins({ peer: await getInputPeer(scope.chatId) });
+      return { _: "botCommandScopePeerAdmins", peer: await getInputPeer(scope.chatId) };
     case "chatMember": {
       const user = await getInputPeer(scope.userId);
-      if (!(user instanceof types.InputPeerUser)) {
+      if (!(is("inputPeerUser", user))) {
         unreachable();
       }
-      return new types.BotCommandScopePeerUser({ peer: await getInputPeer(scope.chatId), user_id: new types.InputUser({ user_id: user.user_id, access_hash: user.access_hash }) });
+      return { _: "botCommandScopePeerUser", peer: await getInputPeer(scope.chatId), user_id: ({ _: "inputUser", user_id: user.user_id, access_hash: user.access_hash }) };
     }
     default:
       unreachable();

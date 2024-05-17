@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { enums, types } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { UsernameResolver } from "./_getters.ts";
 import { LoginUrl } from "./0_login_url.ts";
 import { constructMiniAppInfo, MiniAppInfo } from "./0_mini_app_info.ts";
@@ -88,51 +88,45 @@ export type InlineKeyboardButton =
   | InlineKeyboardButtonGame
   | InlineKeyboardButtonPay;
 
-export function constructInlineKeyboardButton(button_: enums.KeyboardButton): InlineKeyboardButton {
-  if (button_ instanceof types.KeyboardButtonUrl) {
+export function constructInlineKeyboardButton(button_: Api.KeyboardButton): InlineKeyboardButton {
+  if (is("keyboardButtonUrl", button_)) {
     return { text: button_.text, url: button_.url };
-  } else if (button_ instanceof types.KeyboardButtonCallback) {
+  } else if (is("keyboardButtonCallback", button_)) {
     return { text: button_.text, callbackData: new TextDecoder().decode(button_.data) };
-  } else if (button_ instanceof types.KeyboardButtonWebView || button_ instanceof types.KeyboardButtonSimpleWebView) {
+  } else if (is("keyboardButtonWebView", button_) || is("keyboardButtonSimpleWebView", button_)) {
     return { text: button_.text, miniApp: constructMiniAppInfo(button_.url) };
-  } else if (button_ instanceof types.KeyboardButtonUrlAuth) {
+  } else if (is("keyboardButtonUrlAuth", button_)) {
     return { text: button_.text, loginUrl: { url: button_.url, forwardText: button_.fwd_text } };
-  } else if (button_ instanceof types.KeyboardButtonSwitchInline) {
+  } else if (is("keyboardButtonSwitchInline", button_)) {
     if (button_.same_peer) {
       return { text: button_.text, switchInlineQueryCurrentChat: button_.query };
     } else {
       return { text: button_.text, switchInlineQuery: button_.query };
     }
-  } else if (button_ instanceof types.KeyboardButtonBuy) {
+  } else if (is("keyboardButtonBuy", button_)) {
     return { text: button_.text, pay: true };
-  } else if (button_ instanceof types.KeyboardButtonGame) {
+  } else if (is("keyboardButtonGame", button_)) {
     return { text: button_.text, callbackGame: {} };
   } else {
     unreachable();
   }
 }
 
-export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButton, usernameResolver: UsernameResolver): Promise<enums.KeyboardButton> {
+export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButton, usernameResolver: UsernameResolver): Promise<Api.KeyboardButton> {
   if ("url" in button) {
-    return new types.KeyboardButtonUrl({ text: button.text, url: button.url });
+    return { _: "keyboardButtonUrl", text: button.text, url: button.url };
   } else if ("callbackData" in button) {
-    return new types.KeyboardButtonCallback({ text: button.text, data: new TextEncoder().encode(button.callbackData) });
+    return { _: "keyboardButtonCallback", text: button.text, data: new TextEncoder().encode(button.callbackData) };
   } else if ("miniApp" in button) {
-    return new types.KeyboardButtonWebView({ text: button.text, url: button.miniApp.url });
+    return { _: "keyboardButtonWebView", text: button.text, url: button.miniApp.url };
   } else if ("loginUrl" in button) {
-    return new types.InputKeyboardButtonUrlAuth({
-      text: button.text,
-      url: button.loginUrl.url,
-      fwd_text: button.loginUrl.forwardText,
-      bot: button.loginUrl.botUsername ? await usernameResolver(button.loginUrl.botUsername) : new types.InputUserSelf(),
-      request_write_access: button.loginUrl.requestWriteAccess || undefined,
-    });
+    return { _: "inputKeyboardButtonUrlAuth", text: button.text, url: button.loginUrl.url, fwd_text: button.loginUrl.forwardText, bot: button.loginUrl.botUsername ? await usernameResolver(button.loginUrl.botUsername) : { _: "inputUserSelf" }, request_write_access: button.loginUrl.requestWriteAccess || undefined };
   } else if ("switchInlineQuery" in button) {
-    return new types.KeyboardButtonSwitchInline({ text: button.text, query: button.switchInlineQuery });
+    return { _: "keyboardButtonSwitchInline", text: button.text, query: button.switchInlineQuery };
   } else if ("switchInlineQueryCurrentChat" in button) {
-    return new types.KeyboardButtonSwitchInline({ text: button.text, query: button.switchInlineQueryCurrentChat, same_peer: true });
+    return { _: "keyboardButtonSwitchInline", text: button.text, query: button.switchInlineQueryCurrentChat, same_peer: true };
   } else if ("pay" in button) {
-    return new types.KeyboardButtonBuy({ text: button.text });
+    return { _: "keyboardButtonBuy", text: button.text };
   } else {
     unreachable();
   }

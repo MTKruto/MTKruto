@@ -17,13 +17,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+// deno-lint-ignore-file no-explicit-any
 
 import { TLError, TLRawReader } from "./0_tl_raw_reader.ts";
-import { paramDesc, TLObject } from "./1_tl_object.ts";
-import { map } from "./2_types.ts";
-import { deserialize } from "./3_deserialize.ts";
+import { AnyObject, getType, getTypeName } from "./0_api.ts";
+import { deserialize } from "./2_deserialize.ts";
 
-export type ReadObject = boolean | TLObject | Array<ReadObject | TLObject>;
+export type ReadObject = boolean | AnyObject | Array<ReadObject>;
 
 export class TLReader extends TLRawReader {
   readObject(id?: number): ReadObject {
@@ -32,7 +32,7 @@ export class TLReader extends TLRawReader {
     }
     if (id == 0x1CB5C415) {
       const count = this.readInt32();
-      const items = new Array<ReadObject>();
+      const items = new Array<any>();
       for (let i = 0; i < count; i++) {
         items.push(this.readObject());
       }
@@ -42,9 +42,9 @@ export class TLReader extends TLRawReader {
     } else if (id == 0xbc799737) {
       return false;
     }
-    const constructor = map.get(id);
+    const constructor = getTypeName(id);
     if (constructor) {
-      return deserialize(this, constructor[paramDesc], constructor);
+      return deserialize(this, getType(constructor)![1], constructor);
     }
     throw new TLError(`Unknown constructor ${id.toString(16)}`);
   }

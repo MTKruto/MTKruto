@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** A rolled dice. */
 export interface Dice {
@@ -28,6 +28,6 @@ export interface Dice {
   value: number;
 }
 
-export function constructDice(dice_: types.MessageMediaDice): Dice {
+export function constructDice(dice_: Api.messageMediaDice): Dice {
   return { emoji: dice_.emoticon, value: dice_.value };
 }

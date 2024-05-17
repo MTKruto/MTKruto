@@ -21,7 +21,7 @@
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getRandomId } from "../1_utilities.ts";
-import { as, enums, inputPeerToPeer, peerToChatId, types } from "../2_tl.ts";
+import { Api, as, inputPeerToPeer, is, peerToChatId } from "../2_tl.ts";
 import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, Update } from "../3_types.ts";
 import { InputStoryContent } from "../types/1_input_story_content.ts";
 import { CreateStoryParams } from "./0_params.ts";
@@ -32,7 +32,7 @@ import { MessageManager } from "./3_message_manager.ts";
 
 type C = C_ & { fileManager: FileManager; messageManager: MessageManager };
 
-type StoryManagerUpdate = types.UpdateStory;
+type StoryManagerUpdate = Api.updateStory;
 
 export class StoryManager {
   #c: C;
@@ -41,10 +41,10 @@ export class StoryManager {
     this.#c = c;
   }
 
-  async #updatesToStory(updates: enums.Updates) {
-    if (updates instanceof types.Updates) {
-      const updateStory = updates.updates.find((v): v is types.UpdateStory => v instanceof types.UpdateStory);
-      if (updateStory && updateStory.story instanceof types.StoryItem) {
+  async #updatesToStory(updates: Api.Updates) {
+    if (is("updates", updates)) {
+      const updateStory = updates.updates.find((v): v is Api.updateStory => is("updateStory", v));
+      if (updateStory && is("storyItem", updateStory.story)) {
         return await constructStory(updateStory.story, updateStory.peer, this.#c.getEntity);
       }
     }
@@ -53,15 +53,13 @@ export class StoryManager {
 
   async createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams) {
     await this.#c.storage.assertUser("createStory");
-    let media: enums.InputMedia | null = null;
+    let media: Api.InputMedia | null = null;
     const source = "video" in content ? content.video : "photo" in content ? content.photo : unreachable();
 
     if (typeof source === "string") {
       const fileId = this.#c.messageManager.resolveFileId(source, FileType.Photo);
       if (fileId != null) {
-        media = new types.InputMediaPhoto({
-          id: new types.InputPhoto(fileId),
-        });
+        media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" } };
       }
     }
 
@@ -72,13 +70,9 @@ export class StoryManager {
         const file = await this.#c.fileManager.upload(source, params, null, "video" in content);
         const mimeType = contentType(file.name.split(".").slice(-1)[0]) ?? "application/octet-stream";
         if ("video" in content) {
-          media = new types.InputMediaUploadedDocument({
-            file,
-            attributes: [new types.DocumentAttributeFilename({ file_name: file.name }), new types.DocumentAttributeVideo({ w: 720, h: 1280, duration: content.duration })],
-            mime_type: mimeType,
-          });
+          media = { _: "inputMediaUploadedDocument", file, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: content.duration }], mime_type: mimeType };
         } else {
-          media = new types.InputMediaUploadedPhoto({ file });
+          media = { _: "inputMediaUploadedPhoto", file };
         }
       }
     }
@@ -91,7 +85,7 @@ export class StoryManager {
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
     const privacyRules = await storyPrivacyToTlObject(params?.privacy ?? { everyoneExcept: [] }, this.#c.getEntity);
-    const mediaAreas = new Array<enums.MediaArea>();
+    const mediaAreas = new Array<Api.MediaArea>();
 
     if (params?.interactiveAreas?.length) {
       for (const area of params.interactiveAreas) {
@@ -99,18 +93,7 @@ export class StoryManager {
       }
     }
 
-    const updates = await this.#c.api.stories.sendStory({
-      peer,
-      random_id: randomId,
-      media,
-      privacy_rules: privacyRules,
-      caption,
-      entities,
-      noforwards: params?.protectContent ? true : undefined,
-      period: params?.activeFor,
-      pinned: params?.highlight ? true : undefined,
-      media_areas: mediaAreas,
-    });
+    const updates = await this.#c.invoke({ _: "stories.sendStory", peer, random_id: randomId, media, privacy_rules: privacyRules, caption, entities, noforwards: params?.protectContent ? true : undefined, period: params?.activeFor, pinned: params?.highlight ? true : undefined, media_areas: mediaAreas });
     return await this.#updatesToStory(updates);
   }
 
@@ -118,10 +101,10 @@ export class StoryManager {
     await this.#c.storage.assertUser("getStories");
     checkArray(storyIds, checkStoryId);
     const peer = await this.#c.getInputPeer(chatId);
-    const stories_ = await this.#c.api.stories.getStoriesByID({ peer, id: storyIds });
+    const stories_ = await this.#c.invoke({ _: "stories.getStoriesByID", peer, id: storyIds });
     const stories = new Array<Story>();
     for (const story of stories_.stories) {
-      stories.push(await constructStory(story[as](types.StoryItem), inputPeerToPeer(peer), this.#c.getEntity));
+      stories.push(await constructStory(as("storyItem", story), inputPeerToPeer(peer), this.#c.getEntity));
     }
     return stories;
   }
@@ -134,7 +117,7 @@ export class StoryManager {
   async deleteStories(chatId: ID, storyIds: number[]) {
     await this.#c.storage.assertUser("deleteStories");
     const peer = await this.#c.getInputPeer(chatId);
-    await this.#c.api.stories.deleteStories({ peer, id: storyIds });
+    await this.#c.invoke({ _: "stories.deleteStories", peer, id: storyIds });
   }
 
   async deleteStory(chatId: ID, storyId: number) {
@@ -145,7 +128,7 @@ export class StoryManager {
   async #togglePinned(chatId: ID, storyIds: number[], pinned: boolean) {
     checkArray(storyIds, checkStoryId);
     const peer = await this.#c.getInputPeer(chatId);
-    await this.#c.api.stories.togglePinned({ peer, id: storyIds, pinned });
+    await this.#c.invoke({ _: "stories.togglePinned", peer, id: storyIds, pinned });
   }
 
   async addStoriesToHighlights(chatId: ID, storyIds: number[]) {
@@ -168,16 +151,16 @@ export class StoryManager {
     await this.removeStoriesFromHighlights(chatId, [storyId]);
   }
 
-  static canHandleUpdate(update: enums.Update): update is StoryManagerUpdate {
-    return update instanceof types.UpdateStory;
+  static canHandleUpdate(update: Api.Update): update is StoryManagerUpdate {
+    return is("updateStory", update);
   }
 
   async handleUpdate(update: StoryManagerUpdate): Promise<Update | null> {
-    if (update.story instanceof types.StoryItemDeleted) {
+    if (is("storyItemDeleted", update.story)) {
       const chatId = peerToChatId(update.peer);
       const storyId = update.story.id;
       return { deletedStory: { chatId, storyId } };
-    } else if (update.story instanceof types.StoryItem) {
+    } else if (is("storyItem", update.story)) {
       const story = await constructStory(update.story, update.peer, this.#c.getEntity);
       return { story };
     } else {

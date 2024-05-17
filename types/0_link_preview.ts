@@ -19,7 +19,7 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** A link preview. */
 export interface LinkPreview {
@@ -35,7 +35,7 @@ export interface LinkPreview {
   aboveText?: boolean;
 }
 
-export function constructLinkPreview(media: types.MessageMediaWebPage, invert?: boolean): LinkPreview {
+export function constructLinkPreview(media: Api.messageMediaWebPage, invert?: boolean): LinkPreview {
   return cleanObject({
     url: "url" in media.webpage ? media.webpage.url : undefined,
     smallMedia: media.force_small_media ? true : undefined,

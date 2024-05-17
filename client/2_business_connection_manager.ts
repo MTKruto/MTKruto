@@ -18,11 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { as, enums, types } from "../2_tl.ts";
+import { is } from "../2_tl.ts";
+import { Api, as } from "../2_tl.ts";
 import { constructBusinessConnection, Update } from "../3_types.ts";
 import { C } from "./1_types.ts";
 
-export type BusinessConnectionManagerUpdate = types.UpdateBotBusinessConnect;
+export type BusinessConnectionManagerUpdate = Api.updateBotBusinessConnect;
 
 export class BusinessConnectionManager {
   #c: C;
@@ -34,9 +35,9 @@ export class BusinessConnectionManager {
   async getBusinessConnection(id: string) {
     const connection_ = await this.#c.messageStorage.getBusinessConnection(id);
     if (!connection_) {
-      const connection_ = await this.#c.api.account.getBotBusinessConnection({ connection_id: id })
-        .then((v) => v[as](types.Updates))
-        .then((v) => v.updates[0][as](types.UpdateBotBusinessConnect).connection);
+      const connection_ = await this.#c.invoke({ _: "account.getBotBusinessConnection", connection_id: id })
+        .then((v) => as("updates", v))
+        .then((v) => as("updateBotBusinessConnect", v.updates[0]).connection);
       await this.#c.messageStorage.setBusinessConnection(id, connection_);
       return await constructBusinessConnection(connection_, this.#c.getEntity);
     } else {
@@ -44,8 +45,8 @@ export class BusinessConnectionManager {
     }
   }
 
-  static canHandleUpdate(update: enums.Update): update is BusinessConnectionManagerUpdate {
-    return update instanceof types.UpdateBotBusinessConnect;
+  static canHandleUpdate(update: Api.Update): update is BusinessConnectionManagerUpdate {
+    return is("updateBotBusinessConnect", update);
   }
 
   async handleUpdate(update: BusinessConnectionManagerUpdate): Promise<Update> {
