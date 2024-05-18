@@ -946,7 +946,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     const [authKey, dc] = await Promise.all([this.storage.getAuthKey(), this.storage.getDc()]);
     if (authKey != null && dc != null) {
       await this.#client.setAuthKey(authKey);
-      await this.#client.setDc(dc); // TODO: remove await
+      this.#client.setDc(dc);
       if (this.#client.serverSalt == 0n) {
         this.#client.serverSalt = await this.storage.getServerSalt() ?? 0n;
       }

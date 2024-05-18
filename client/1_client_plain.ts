@@ -41,7 +41,7 @@ export interface ClientPlainParams extends ClientAbstractParams {
  */
 export class ClientPlain extends ClientAbstract {
   readonly #publicKeys: PublicKeys;
-  #lastMsgId = 0n; // TODO: refactor
+  #lastMessageId = 0n;
 
   constructor(params?: ClientPlainParams) {
     super(params);
@@ -52,9 +52,9 @@ export class ClientPlain extends ClientAbstract {
     if (!this.transport) {
       throw new ConnectionError("Not connected.");
     }
-    const msgId = this.#lastMsgId = getMessageId(this.#lastMsgId);
+    const messageId = this.#lastMessageId = getMessageId(this.#lastMessageId);
 
-    const payload = packUnencryptedMessage(serialize(function_), msgId);
+    const payload = packUnencryptedMessage(serialize(function_), messageId);
     await this.transport.transport.send(payload);
     L.out(function_);
     L.outBin(payload);

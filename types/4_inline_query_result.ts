@@ -450,7 +450,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
           ...ref,
           messageContent,
           replyMarkup,
-          mimeType: "content" in result && result.content ? result.content.mime_type : "video/mp4", // TODO
+          mimeType: "content" in result && result.content ? result.content.mime_type : "video/mp4",
           thumbnailUrl: thumbnailUrl!,
           width: a?.w,
           height: a?.h,
@@ -619,7 +619,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       description,
       document: ({
         _: "inputDocument",
-        id: "id" in fileId.location ? fileId.location.id : unreachable(), // TODO: Remove UNREACHABLE()?
+        id: "id" in fileId.location ? fileId.location.id : unreachable(),
         access_hash: fileId.location.accessHash,
         file_reference: fileId.fileReference ?? new Uint8Array(),
       }),

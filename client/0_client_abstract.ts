@@ -20,7 +20,6 @@
 
 import { initTgCrypto } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
-import { MaybePromise } from "../1_utilities.ts";
 import { DC, TransportProvider, transportProviderWebSocket } from "../3_transport.ts";
 import { INITIAL_DC } from "../4_constants.ts";
 
@@ -66,8 +65,7 @@ export abstract class ClientAbstract {
     return this.transport.dcId;
   }
 
-  // MaybePromise since `Client` has to deal with `Storage.set()`
-  setDc(dc: DC): MaybePromise<void> {
+  setDc(dc: DC) {
     this.#dc = dc;
   }
 

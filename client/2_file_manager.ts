@@ -341,7 +341,7 @@ export class FileManager {
             unreachable();
           }
           const big = fileId_.location.source.type == PhotoSourceType.ChatPhotoBig;
-          const peer = await this.#c.getInputPeer(Number(fileId_.location.source.chatId)); // TODO: use access hash from source?
+          const peer = await this.#c.getInputPeer(Number(fileId_.location.source.chatId));
           const location: Api.inputPeerPhotoFileLocation = { _: "inputPeerPhotoFileLocation", big: big ? true : undefined, peer, photo_id: fileId_.location.id };
           yield* this.downloadInner(location, fileId_.dcId, params);
           break;

@@ -321,7 +321,7 @@ export class MessageManager {
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
-    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const result = await this.#c.invoke({
@@ -358,7 +358,7 @@ export class MessageManager {
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
-    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const result = await this.#c.invoke(
@@ -392,7 +392,7 @@ export class MessageManager {
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
-    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const result = await this.#c.invoke({
@@ -420,7 +420,7 @@ export class MessageManager {
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
-    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const result = await this.#c.invoke(
@@ -582,7 +582,7 @@ export class MessageManager {
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
-    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const caption_ = params?.caption;
@@ -644,7 +644,7 @@ export class MessageManager {
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
-    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const explanation = params?.explanation;
@@ -867,7 +867,6 @@ export class MessageManager {
   }
 
   async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]) {
-    // TODO: sync with storage
     await this.#c.invoke({ _: "messages.setChatAvailableReactions", peer: await this.#c.getInputPeer(chatId), available_reactions: availableReactions == "none" ? { _: "chatReactionsNone" } : availableReactions == "all" ? { _: "chatReactionsAll" } : Array.isArray(availableReactions) ? ({ _: "chatReactionsSome", reactions: availableReactions.map((v) => v.type == "emoji" ? ({ _: "reactionEmoji", emoticon: v.emoji }) : ({ _: "reactionCustomEmoji", document_id: BigInt(v.id) })) }) : unreachable() });
   }
 
@@ -1088,7 +1087,7 @@ export class MessageManager {
         participant: member,
         banned_rights: ({
           _: "chatBannedRights",
-          until_date: params?.untilDate ? toUnixTimestamp(params.untilDate) : 0, // todo
+          until_date: params?.untilDate ? toUnixTimestamp(params.untilDate) : 0,
           view_messages: true,
           send_messages: true,
           send_media: true,

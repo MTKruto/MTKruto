@@ -80,8 +80,8 @@ export async function constructSticker(document: Api.document, fileId: string, f
     setName,
     premiumAnimation: undefined, // TODO
     maskPosition: stickerAttribute.mask_coords ? constructMaskPosition(stickerAttribute.mask_coords) : undefined,
-    customEmojiId: customEmojiAttribute ? customEmojiId : undefined, // TODO
-    needsRepainting: customEmojiAttribute ? Boolean(customEmojiAttribute.text_color) : undefined, // TODO
+    customEmojiId: customEmojiAttribute ? customEmojiId : undefined,
+    needsRepainting: customEmojiAttribute ? Boolean(customEmojiAttribute.text_color) : undefined,
     fileSize: Number(document.size),
   });
 }
