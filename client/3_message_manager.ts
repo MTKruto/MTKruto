@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, getChannelChatId, is, peerToChatId } from "../2_tl.ts";
 import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId, InputMedia, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
-import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
+import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
@@ -1116,34 +1116,6 @@ export class MessageManager {
     const channel = await this.#c.getInputChannel(chatId);
     const member = await this.#c.getInputPeer(memberId);
     await this.#c.invoke({ _: "channels.editBanned", channel, participant: member, banned_rights: chatMemberRightsToTlObject(params?.rights, params?.untilDate) });
-  }
-
-  async getChatAdministrators(chatId: ID) {
-    const peer = await this.#c.getInputPeer(chatId);
-    if (is("inputPeerChannel", peer)) {
-      const channel: Api.inputChannel = { ...peer, _: "inputChannel" };
-      const participants = await this.#c.invoke({ _: "channels.getParticipants", channel, filter: { _: "channelParticipantsAdmins" }, offset: 0, limit: 100, hash: 0n });
-      if (is("channels.channelParticipantsNotModified", participants)) {
-        unreachable();
-      }
-      const chatMembers = new Array<ChatMember>();
-      for (const p of participants.participants) {
-        chatMembers.push(await constructChatMember(p, this.#c.getEntity));
-      }
-      return chatMembers;
-    } else if (is("inputPeerChat", peer)) {
-      const fullChat = await this.#c.invoke({ ...peer, _: "messages.getFullChat" }); // TODO: full chat cache
-      if (!(is("chatFull", fullChat.full_chat)) || !(is("chatParticipants", fullChat.full_chat.participants))) {
-        unreachable();
-      }
-      const chatMembers = new Array<ChatMember>();
-      for (const p of fullChat.full_chat.participants.participants) {
-        chatMembers.push(await constructChatMember(p, this.#c.getEntity));
-      }
-      return chatMembers;
-    } else {
-      unreachable();
-    }
   }
 
   async #toggleJoinRequests(chatId: ID, enabled: boolean) {

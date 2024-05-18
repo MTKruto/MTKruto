@@ -2204,7 +2204,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @returns The chat's administrators.
    */
   async getChatAdministrators(chatId: ID): Promise<ChatMember[]> {
-    return await this.#messageManager.getChatAdministrators(chatId);
+    return await this.#chatListManager.getChatAdministrators(chatId);
   }
 
   /**

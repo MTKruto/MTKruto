@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, is, peerToChatId } from "../2_tl.ts";
-import { ChatListItem, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, getChatListItemOrder, ID } from "../3_types.ts";
+import { ChatListItem, ChatMember, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, getChatListItemOrder, ID } from "../3_types.ts";
 import { C as C_ } from "./1_types.ts";
 import { getChatListId } from "./0_utilities.ts";
 import { FileManager } from "./2_file_manager.ts";
@@ -455,5 +455,33 @@ export class ChatListManager {
       throw new InputError("Chat not found.");
     }
     return await constructChat(fullChat, this.#c.getEntity);
+  }
+
+  async getChatAdministrators(chatId: ID) {
+    const peer = await this.#c.getInputPeer(chatId);
+    if (is("inputPeerChannel", peer)) {
+      const channel: Api.inputChannel = { ...peer, _: "inputChannel" };
+      const participants = await this.#c.invoke({ _: "channels.getParticipants", channel, filter: { _: "channelParticipantsAdmins" }, offset: 0, limit: 100, hash: 0n });
+      if (is("channels.channelParticipantsNotModified", participants)) {
+        unreachable();
+      }
+      const chatMembers = new Array<ChatMember>();
+      for (const p of participants.participants) {
+        chatMembers.push(await constructChatMember(p, this.#c.getEntity));
+      }
+      return chatMembers;
+    } else if (is("inputPeerChat", peer)) {
+      const fullChat = await this.#getFullChat(chatId);
+      if (!fullChat || !("participants" in fullChat) || !is("chatParticipants", fullChat.participants)) {
+        unreachable();
+      }
+      const chatMembers = new Array<ChatMember>();
+      for (const p of fullChat.participants.participants) {
+        chatMembers.push(await constructChatMember(p, this.#c.getEntity));
+      }
+      return chatMembers;
+    } else {
+      unreachable();
+    }
   }
 }
