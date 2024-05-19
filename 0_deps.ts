@@ -18,12 +18,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// connection/1_connection_tcp.ts must be updated too when updating std.
 export * from "https://deno.land/std@0.224.0/assert/mod.ts";
 
 export * as path from "https://deno.land/std@0.224.0/path/mod.ts";
 
 export { concat } from "https://deno.land/std@0.224.0/bytes/concat.ts";
+
+export { iterateReader } from "https://deno.land/std@0.224.0/io/iterate_reader.ts";
 
 export { decodeBase64, encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 

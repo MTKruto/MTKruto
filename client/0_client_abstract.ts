@@ -20,8 +20,11 @@
 
 import { initTgCrypto } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
-import { DC, TransportProvider, transportProviderWebSocket } from "../3_transport.ts";
+import { DC, TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
 import { INITIAL_DC } from "../4_constants.ts";
+
+// @ts-ignore: lib
+const defaultTransportProvider = typeof Deno === "undefined" ? transportProviderWebSocket : transportProviderTcp;
 
 export interface ClientAbstractParams {
   /**
@@ -48,7 +51,7 @@ export abstract class ClientAbstract {
 
   constructor(params?: ClientAbstractParams) {
     this.initialDc = params?.initialDc ?? INITIAL_DC;
-    this.transportProvider = params?.transportProvider ?? transportProviderWebSocket();
+    this.transportProvider = params?.transportProvider ?? defaultTransportProvider();
     this.cdn = params?.cdn ?? false;
   }
 
