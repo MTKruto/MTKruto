@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Client as SocksClient, ClientConfig as SocksClientConfig } from "https://deno.land/x/socks5@v0.0.2/client.ts";
+import { SocksClient } from "../0_deps.ts";
 import { ConnectionTCP } from "../connection/1_connection_tcp.ts";
 import { TransportAbridged } from "./1_transport_abridged.ts";
 import { getDcId, getDcIps, TransportProvider } from "./2_transport_provider.ts";
@@ -34,7 +34,7 @@ export interface Socks5 {
 export function transportProviderTcp(params?: {
   ipv6?: boolean;
   obfuscated?: boolean;
-  proxy?: SocksClientConfig;
+  proxy?: Socks5;
 }): TransportProvider {
   return ({ dc, cdn }) => {
     const connection = new ConnectionTCP(getDcIps(dc, params?.ipv6 ? "ipv6" : "ipv4")[0], 80);
