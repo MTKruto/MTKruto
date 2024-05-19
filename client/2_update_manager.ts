@@ -21,6 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { getLogger, Logger, Queue, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api, as, inputPeerToPeer, is, isOfEnum, isOneOf, peerToChatId, ReadObject } from "../2_tl.ts";
+import { PersistentTimestampEmpty, PersistentTimestampInvalid } from "../3_errors.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
 import { C } from "./1_types.ts";
 
@@ -632,9 +633,22 @@ export class UpdateManager {
 
     this.#c.setConnectionState("updating");
     try {
+      let tries = 0;
       let state = await this.#getLocalState();
       while (true) {
-        const difference = await this.#c.invoke({ _: "updates.getDifference", pts: state.pts, date: state.date, qts: state.qts ?? 0 });
+        let difference: Api.updates_Difference;
+        try {
+          difference = await this.#c.invoke({ _: "updates.getDifference", pts: state.pts, date: state.date, qts: state.qts ?? 0 });
+        } catch (err) {
+          if (err instanceof PersistentTimestampEmpty || err instanceof PersistentTimestampInvalid && tries <= 5) {
+            await this.fetchState(err.errorMessage);
+            state = await this.#getLocalState();
+            ++tries;
+            continue;
+          } else {
+            throw err;
+          }
+        }
         if (is("updates.difference", difference) || is("updates.differenceSlice", difference)) {
           await this.processChats(difference.chats);
           await this.processUsers(difference.users);
