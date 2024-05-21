@@ -19,8 +19,9 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { getLogger, Logger, Queue, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { getLogger, Logger, Queue, second, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api, as, inputPeerToPeer, is, isOfEnum, isOneOf, peerToChatId, ReadObject } from "../2_tl.ts";
+import { PersistentTimestampInvalid } from "../3_errors.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
 import { C } from "./1_types.ts";
 
@@ -632,9 +633,24 @@ export class UpdateManager {
 
     this.#c.setConnectionState("updating");
     try {
+      let delay = 5;
       let state = await this.#getLocalState();
       while (true) {
-        const difference = await this.#c.invoke({ _: "updates.getDifference", pts: state.pts, date: state.date, qts: state.qts ?? 0 });
+        let difference: Api.updates_Difference;
+        try {
+          difference = await this.#c.invoke({ _: "updates.getDifference", pts: state.pts, date: state.date, qts: state.qts ?? 0 });
+        } catch (err) {
+          if (err instanceof PersistentTimestampInvalid) {
+            await new Promise((r) => setTimeout(r, delay * second));
+            ++delay;
+            if (delay > 60) {
+              delay = 60;
+            }
+            continue;
+          } else {
+            throw err;
+          }
+        }
         if (is("updates.difference", difference) || is("updates.differenceSlice", difference)) {
           await this.processChats(difference.chats);
           await this.processUsers(difference.users);
@@ -676,15 +692,30 @@ export class UpdateManager {
     this.#LrecoverChannelUpdateGap.debug(`recovering channel update gap [${channelId}, ${source}]`);
     const pts_ = await this.#c.storage.getChannelPts(channelId);
     let pts = pts_ == null ? 1 : pts_;
+    let delay = 5;
     while (true) {
       const { access_hash } = await this.#c.getInputPeer(ZERO_CHANNEL_ID + -Number(channelId)).then((v) => as("inputPeerChannel", v));
-      const difference = await this.#c.invoke({
-        _: "updates.getChannelDifference",
-        pts,
-        channel: { _: "inputChannel", channel_id: channelId, access_hash },
-        filter: { _: "channelMessagesFilterEmpty" },
-        limit: await this.#c.storage.getAccountType() == "user" ? CHANNEL_DIFFERENCE_LIMIT_USER : CHANNEL_DIFFERENCE_LIMIT_BOT,
-      });
+      let difference: Api.updates_ChannelDifference;
+      try {
+        difference = await this.#c.invoke({
+          _: "updates.getChannelDifference",
+          pts,
+          channel: { _: "inputChannel", channel_id: channelId, access_hash },
+          filter: { _: "channelMessagesFilterEmpty" },
+          limit: await this.#c.storage.getAccountType() == "user" ? CHANNEL_DIFFERENCE_LIMIT_USER : CHANNEL_DIFFERENCE_LIMIT_BOT,
+        });
+      } catch (err) {
+        if (err instanceof PersistentTimestampInvalid) {
+          await new Promise((r) => setTimeout(r, delay * second));
+          delay += 5;
+          if (delay > 60) {
+            delay = 60;
+          }
+          continue;
+        } else {
+          throw err;
+        }
+      }
       if (is("updates.channelDifference", difference)) {
         await this.processChats(difference.chats);
         await this.processUsers(difference.users);
