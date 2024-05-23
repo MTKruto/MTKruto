@@ -88,6 +88,7 @@ export class ConnectionTCP implements Connection {
           }
         }
       } while (this.connected);
+      this.stateChangeHandler?.(false);
     });
     this.#connection = connection;
   }
