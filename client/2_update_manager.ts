@@ -134,6 +134,9 @@ export class UpdateManager {
   }
 
   async fetchState(source: string) {
+    if (this.#c.cdn) {
+      return;
+    }
     let state = await this.#c.invoke({ _: "updates.getState" });
     const difference = await this.#c.invoke({ ...state, _: "updates.getDifference" });
     if (is("updates.difference", difference)) {
@@ -436,6 +439,9 @@ export class UpdateManager {
 
   #processUpdatesQueue = new Queue("UpdateManager/processUpdates");
   processUpdates(updates: Api.Update | Api.Updates, checkGap: boolean, call: Api.AnyObject | null = null, callback?: () => void) {
+    if (this.#c.cdn) {
+      return;
+    }
     this.#processUpdatesQueue.add(() => this.#processUpdates(updates, checkGap, call).then(callback));
   }
 
@@ -629,6 +635,9 @@ export class UpdateManager {
     return localState;
   }
   async recoverUpdateGap(source: string) {
+    if (this.#c.cdn) {
+      return;
+    }
     this.#LrecoverUpdateGap.debug(`recovering from update gap [${source}]`);
 
     this.#c.setConnectionState("updating");
@@ -793,6 +802,9 @@ export class UpdateManager {
   }
 
   setUpdateHandler(handler: UpdateHandler) {
+    if (this.#c.cdn) {
+      return;
+    }
     this.#updateHandler = handler;
   }
 }

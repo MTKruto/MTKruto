@@ -80,12 +80,10 @@ export class ConnectionTCP implements Connection {
           this.#canRead = false;
           break;
         } catch (err) {
-          if (!this.connected) {
-            this.stateChangeHandler?.(false);
-            this.#rejectRead();
-          } else {
-            L.error(err);
-          }
+          this.#canRead = false;
+          this.stateChangeHandler?.(false);
+          this.#rejectRead();
+          L.error(err);
         }
       } while (this.connected);
       this.stateChangeHandler?.(false);

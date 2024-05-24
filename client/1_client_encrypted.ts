@@ -176,6 +176,12 @@ export class ClientEncrypted extends ClientAbstract {
     if (!this.transport) {
       unreachable();
     }
+
+    for (const [key, { reject }] of this.#promises.entries()) {
+      reject?.(new ConnectionError("Connection was closed"));
+      this.#promises.delete(key);
+    }
+
     while (this.connected) {
       try {
         const buffer = await this.transport.transport.receive();
@@ -216,7 +222,7 @@ export class ClientEncrypted extends ClientAbstract {
             if (is("rpc_error", result)) {
               this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
             } else {
-              this.#LreceiveLoop.debug("RPCResult:", result._);
+              this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
             }
             const messageId = message.body.req_msg_id;
             const promise = this.#promises.get(messageId);

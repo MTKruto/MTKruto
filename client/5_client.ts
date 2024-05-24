@@ -293,6 +293,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   readonly #ignoreOutgoing: boolean | null;
   #persistCache: boolean;
 
+  #cdn: boolean;
   #LsignIn: Logger;
   #LpingLoop: Logger;
   #LhandleMigrationError: Logger;
@@ -366,6 +367,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#LpingLoop = L.branch("pingLoop");
     this.#LhandleMigrationError = L.branch("[handleMigrationError]");
     this.#L$initConncetion = L.branch("#initConnection");
+    this.#cdn = params?.cdn ?? false;
 
     const c = {
       id,
@@ -390,7 +392,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       parseMode: this.#parseMode,
       getCdnConnection: this.#getCdnConnection.bind(this),
       getCdnConnectionPool: this.#getCdnConnectionPool.bind(this),
-      cdn: params?.cdn ?? false,
+      cdn: this.#cdn,
       ignoreOutgoing: this.#ignoreOutgoing,
       dropPendingUpdates: params?.dropPendingUpdates,
     };
@@ -417,14 +419,22 @@ export class Client<C extends Context = Context> extends Composer<C> {
     };
 
     if (params?.defaultHandlers ?? true) {
+      let reconnecting = false;
       let lastReconnection: Date | null = null;
       this.on("connectionState", ({ connectionState }, next) => {
+        if (connectionState != "notConnected") {
+          return;
+        }
+        if (this.disconnected) {
+          L.debug("not reconnecting");
+          return;
+        }
+        if (reconnecting) {
+          return;
+        }
+        reconnecting = true;
         drop((async () => {
-          if (connectionState == "notConnected") {
-            if (this.disconnected) {
-              L.debug("not reconnecting");
-              return;
-            }
+          try {
             let delay = 5;
             if (lastReconnection != null && Date.now() - lastReconnection.getTime() <= 10 * second) {
               await new Promise((r) => setTimeout(r, delay * second));
@@ -445,6 +455,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
               }
               await new Promise((r) => setTimeout(r, delay * second));
             }
+          } finally {
+            reconnecting = false;
           }
         })());
         return next();
@@ -537,7 +549,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     });
 
     return {
-      invoke: client.invoke,
+      invoke: client.invoke.bind(client),
       connect: async () => {
         await client.connect();
 
@@ -904,7 +916,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #lastPropagatedConnectionState: ConnectionState | null = null;
   #stateChangeHandler: (connected: boolean) => void = ((connected: boolean) => {
     const connectionState = connected ? "ready" : "notConnected";
-    if (this.connected == connected && this.#lastPropagatedConnectionState != connectionState) {
+    if (this.#lastPropagatedConnectionState != connectionState) {
       this.#propagateConnectionState(connectionState);
     }
   }).bind(this);
@@ -1196,6 +1208,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
     drop(this.#pingLoop());
   }
   async #pingLoop() {
+    if (this.#cdn) {
+      return;
+    }
     this.#pingLoopAbortController = new AbortController();
     while (this.connected) {
       try {
@@ -1230,6 +1245,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     while (true) {
       try {
         if (!this.#connectionInited && !isMtprotoFunction(function_)) {
+          this.#connectionInited = true;
           const result = await this.#client.invoke({
             _: "initConnection",
             api_id: await this.#getApiId(),
@@ -1245,7 +1261,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
             system_lang_code: this.systemLangCode,
             system_version: this.systemVersion,
           }, noWait);
-          this.#connectionInited = true;
           this.#L$initConncetion.debug("connection inited");
           return result as R | void;
         } else {
