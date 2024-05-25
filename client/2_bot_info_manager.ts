@@ -31,7 +31,7 @@ export class BotInfoManager {
   }
 
   async #setMyInfo(info: Omit<Api.bots_setBotInfo, "_" | "bot">) {
-    await this.#c.invoke({ _: "bots.setBotInfo", bot: { _: "inputUserSelf" }, ...info });
+    await this.#c.invoke({ _: "bots.setBotInfo", ...info });
   }
 
   async setMyDescription(params?: { description?: string; languageCode?: string }) {
