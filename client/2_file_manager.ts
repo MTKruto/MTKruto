@@ -92,7 +92,7 @@ export class FileManager {
     let apiPromiseCount = 0;
     for await (part of iterateReadableStream(stream.pipeThrough(new PartStream(chunkSize)))) {
       promises.push(
-        Promise.resolve().then(async () => {
+        (async () => {
           let retryIn = 1;
           let errorCount = 0;
           while (true) {
@@ -120,7 +120,7 @@ export class FileManager {
               }
             }
           }
-        }),
+        })(),
       );
       if (++apiPromiseCount >= FileManager.#UPLOAD_REQUEST_PER_CONNECTION) {
         invoke = pool.invoke();
@@ -159,7 +159,7 @@ export class FileManager {
             delay = Math.max(delay * .8, 0.003);
           }
           promises.push(
-            Promise.resolve().then(async () => {
+            (async () => {
               let retryIn = 1;
               let errorCount = 0;
               while (true) {
@@ -187,7 +187,7 @@ export class FileManager {
                   }
                 }
               }
-            }),
+            })(),
           );
         }
       }
@@ -472,7 +472,7 @@ export class FileManager {
     if (!shouldFetch) {
       return stickers;
     }
-    const documents_ = await this.#c.invoke({ _: "messages.getCustomEmojiDocuments", document_id: id.map(BigInt) }).then((v) => v.map((v) => as("document", v)));
+    const documents_ = (await this.#c.invoke({ _: "messages.getCustomEmojiDocuments", document_id: id.map(BigInt) })).map((v) => as("document", v));
     for (const [i, document_] of documents_.entries()) {
       await this.#c.messageStorage.setCustomEmojiDocument(document_.id, document_);
       const fileId_: FileId = {

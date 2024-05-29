@@ -2031,7 +2031,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @returns The forwarded message.
    */
   async forwardMessage(from: ID, to: ID, messageId: number, params?: ForwardMessagesParams): Promise<Message> {
-    return await this.forwardMessages(from, to, [messageId], params).then((v) => v[0]);
+    return (await this.forwardMessages(from, to, [messageId], params))[0];
   }
 
   /**

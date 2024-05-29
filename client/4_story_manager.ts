@@ -111,7 +111,7 @@ export class StoryManager {
 
   async getStory(chatId: ID, storyId: number) {
     await this.#c.storage.assertUser("getStory");
-    return await this.getStories(chatId, [storyId]).then((v) => v[0] ?? null);
+    return (await this.getStories(chatId, [storyId]))[0] ?? null;
   }
 
   async deleteStories(chatId: ID, storyIds: number[]) {

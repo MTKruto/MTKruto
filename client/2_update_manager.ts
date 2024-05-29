@@ -251,7 +251,7 @@ export class UpdateManager {
       }
 
       if ("messages" in result && Array.isArray(result.messages)) {
-        for (const message of result.messages as unknown[]) {
+        for (const message of result.messages) {
           if (is("message", message) || is("messageService", message)) {
             await this.#c.messageStorage.setMessage(peerToChatId(message.peer_id), message.id, message);
           }
@@ -495,7 +495,7 @@ export class UpdateManager {
             media_unread: updates_.media_unread,
             silent: updates_.silent,
             id: updates_.id,
-            from_id: updates_.out ? ({ _: "peerUser", user_id: await this.#c.getSelfId().then(BigInt) }) : ({ _: "peerUser", user_id: updates_.user_id }),
+            from_id: updates_.out ? ({ _: "peerUser", user_id: BigInt(await this.#c.getSelfId()) }) : ({ _: "peerUser", user_id: updates_.user_id }),
             peer_id: ({ _: "peerUser", user_id: updates_.user_id }),
             message: updates_.message,
             date: updates_.date,
@@ -544,7 +544,7 @@ export class UpdateManager {
           out: updates_.out,
           silent: call.silent,
           id: updates_.id,
-          from_id: { _: "peerUser", user_id: await this.#c.getSelfId().then(BigInt) },
+          from_id: { _: "peerUser", user_id: BigInt(await this.#c.getSelfId()) },
           peer_id: inputPeerToPeer(call.peer),
           message: call.message,
           media: updates_.media,

@@ -115,7 +115,7 @@ export class VideoChatManager {
     let groupCall: Api.GroupCall | null = await this.#c.storage.getGroupCall(BigInt(id));
     if (groupCall == null) {
       const call = await this.#getInputGroupCall(id);
-      groupCall = await this.#c.invoke({ _: "phone.getGroupCall", call, limit: 1 }).then((v) => v.call);
+      groupCall = (await this.#c.invoke({ _: "phone.getGroupCall", call, limit: 1 })).call;
     }
     return groupCall!;
   }

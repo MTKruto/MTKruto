@@ -306,7 +306,7 @@ export class MessageManager {
       );
     }
 
-    const message_ = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
+    const message_ = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message_, "text");
   }
 
@@ -349,7 +349,7 @@ export class MessageManager {
       message: "",
     }, params?.businessConnectionId);
 
-    const message = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
+    const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "venue");
   }
 
@@ -383,7 +383,7 @@ export class MessageManager {
       params?.businessConnectionId,
     );
 
-    const message = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
+    const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "contact");
   }
 
@@ -411,7 +411,7 @@ export class MessageManager {
       message: "",
     }, params?.businessConnectionId);
 
-    const message = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
+    const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "dice");
   }
 
@@ -460,7 +460,7 @@ export class MessageManager {
       params?.businessConnectionId,
     );
 
-    const message = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
+    const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "location");
   }
 
@@ -608,7 +608,7 @@ export class MessageManager {
       params?.businessConnectionId,
     );
 
-    return await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
+    return (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
   }
 
   resolveFileId(maybeFileId: string, expectedFileType: FileType | FileType[]) {
@@ -675,7 +675,7 @@ export class MessageManager {
       params?.businessConnectionId,
     );
 
-    const message = await this.#updatesToMessages(chatId, result, params?.businessConnectionId).then((v) => v[0]);
+    const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "poll");
   }
 
@@ -686,7 +686,7 @@ export class MessageManager {
   ) {
     const result = await this.#c.invoke({ _: "messages.editMessage", id: checkMessageId(messageId), peer: await this.#c.getInputPeer(chatId), reply_markup: await this.#constructReplyMarkup(params) });
 
-    const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    const message_ = (await this.#updatesToMessages(chatId, result))[0];
     return message_;
   }
 
@@ -716,7 +716,7 @@ export class MessageManager {
 
     const result = await this.#c.invoke({ _: "messages.editMessage", id: checkMessageId(messageId), peer: await this.#c.getInputPeer(chatId), entities, message, media, no_webpage: noWebpage, invert_media: invertMedia, reply_markup: await this.#constructReplyMarkup(params) });
 
-    const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    const message_ = (await this.#updatesToMessages(chatId, result))[0];
     return assertMessageType(message_, "text");
   }
 
@@ -828,7 +828,7 @@ export class MessageManager {
     }
     const result = await this.#c.invoke({ _: "messages.editMessage", peer: await this.#c.getInputPeer(chatId), id: messageId, media: await this.#resolveInputMedia(media), reply_markup: await this.#constructReplyMarkup(params) });
 
-    const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    const message_ = (await this.#updatesToMessages(chatId, result))[0];
     return message_;
   }
 
@@ -1248,7 +1248,7 @@ export class MessageManager {
 
     const result = await this.#c.invoke({ _: "messages.editMessage", peer: await this.#c.getInputPeer(chatId), id: messageId, media: ({ _: "inputMediaPoll", poll: ({ _: "poll", id: BigInt(message.poll.id), closed: true, question: "", answers: [] }) }), reply_markup: await this.#constructReplyMarkup(params) });
 
-    const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    const message_ = (await this.#updatesToMessages(chatId, result))[0];
     return assertMessageType(message_, "poll").poll;
   }
 
@@ -1257,7 +1257,7 @@ export class MessageManager {
     if (message && "location" in message && message.location.livePeriod) {
       const result = await this.#c.invoke({ _: "messages.editMessage", peer: await this.#c.getInputPeer(chatId), id: messageId, media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }), reply_markup: await this.#constructReplyMarkup(params) });
 
-      const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+      const message = (await this.#updatesToMessages(chatId, result))[0];
       return assertMessageType(message, "location");
     }
     unreachable();

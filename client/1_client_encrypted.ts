@@ -167,9 +167,9 @@ export class ClientEncrypted extends ClientAbstract {
       return;
     }
 
-    return await new Promise<ReadObject>((resolve, reject) => {
+    return (await new Promise<ReadObject>((resolve, reject) => {
       this.#promises.set(messageId, { container, message: message__, resolve, reject, call: function_ });
-    }).then((v) => v as R);
+    })) as R;
   }
 
   async #receiveLoop() {

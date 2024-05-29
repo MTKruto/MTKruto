@@ -143,7 +143,7 @@ export class StorageOperations {
 
   async #resetAuthKeyId(authKey: Uint8Array | null) {
     if (authKey != null) {
-      this.#authKeyId = await sha1(authKey).then((hash) => bigIntFromBuffer(hash.subarray(-8), true, false));
+      this.#authKeyId = bigIntFromBuffer((await sha1(authKey)).subarray(-8), true, false);
     } else {
       this.#authKeyId = null;
     }
@@ -271,9 +271,9 @@ export class StorageOperations {
   }
 
   async deleteMessages() {
-    const maybePromises = new Array<MaybePromise<void>>();
+    const maybePromises = new Array<MaybePromise<unknown>>();
     for await (const [k, o] of await this.#storage.getMany({ prefix: K.messages.allMessageRefs() })) {
-      maybePromises.push(Promise.all<void>([this.#storage.set(k, null), o == null ? Promise.resolve() : this.#storage.set(K.messages.message(o as number, k[1] as number), null)]).then(() => {}));
+      maybePromises.push(Promise.all([this.#storage.set(k, null), o == null ? Promise.resolve() : this.#storage.set(K.messages.message(o as number, k[1] as number), null)]));
     }
     await Promise.all(maybePromises.filter((v) => v instanceof Promise));
   }
@@ -557,7 +557,7 @@ export class StorageOperations {
 
   async getFirstUpdate(boxId: bigint): Promise<[readonly StorageKeyPart[], Api.Update] | null> {
     for await (const [key, update] of await this.#storage.getMany<Uint8Array>({ prefix: K.updates.updates(boxId) }, { limit: 1 })) {
-      return [key, await this.getTlObject(update).then((v) => v as Api.Update)];
+      return [key, (await this.getTlObject(update)) as Api.Update];
     }
     return null;
   }

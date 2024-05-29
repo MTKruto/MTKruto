@@ -96,7 +96,7 @@ export class ChatListManager {
       return () => Promise.resolve();
     }
 
-    const message = await this.#c.messageManager.getHistory(chatId, { limit: 1 }).then((v) => v[0]);
+    const message = (await this.#c.messageManager.getHistory(chatId, { limit: 1 }))[0];
     if (message) {
       if (chat) {
         chat.order = getChatListItemOrder(message, chat.pinned);
@@ -436,11 +436,11 @@ export class ChatListManager {
       return fullChat;
     }
     if (is("inputPeerUser", inputPeer)) {
-      fullChat = await this.#c.invoke({ _: "users.getFullUser", id: { ...inputPeer, _: "inputUser" } }).then((v) => v.full_user);
+      fullChat = (await this.#c.invoke({ _: "users.getFullUser", id: { ...inputPeer, _: "inputUser" } })).full_user;
     } else if (is("inputPeerChat", inputPeer)) {
-      fullChat = await this.#c.invoke({ ...inputPeer, _: "messages.getFullChat" }).then((v) => v.full_chat);
+      fullChat = (await this.#c.invoke({ ...inputPeer, _: "messages.getFullChat" })).full_chat;
     } else if (is("inputPeerChannel", inputPeer)) {
-      fullChat = await this.#c.invoke({ _: "channels.getFullChannel", channel: { ...inputPeer, _: "inputChannel" } }).then((v) => v.full_chat);
+      fullChat = (await this.#c.invoke({ _: "channels.getFullChannel", channel: { ...inputPeer, _: "inputChannel" } })).full_chat;
     }
     await this.#c.storage.setFullChat(chatId_, fullChat);
     if (fullChat != null && "call" in fullChat && fullChat.call) {

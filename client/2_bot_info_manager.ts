@@ -55,17 +55,17 @@ export class BotInfoManager {
 
   async getMyDescription(params?: { languageCode?: string }): Promise<string> {
     await this.#c.storage.assertBot("getMyDescription");
-    return await this.#getMyInfo(params?.languageCode).then((v) => v.description);
+    return (await this.#getMyInfo(params?.languageCode)).description;
   }
 
   async getMyName(params?: { languageCode?: string }): Promise<string> {
     await this.#c.storage.assertBot("getMyName");
-    return await this.#getMyInfo(params?.languageCode).then((v) => v.description);
+    return (await this.#getMyInfo(params?.languageCode)).description;
   }
 
   async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
     await this.#c.storage.assertBot("getMyShortDescription");
-    return await this.#getMyInfo(params?.languageCode).then((v) => v.about);
+    return (await this.#getMyInfo(params?.languageCode)).about;
   }
 
   async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
