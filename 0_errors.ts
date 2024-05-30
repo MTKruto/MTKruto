@@ -22,16 +22,29 @@ export class MtkrutoError extends Error {
 }
 
 export class ConnectionError extends MtkrutoError {
+  constructor(...args: ConstructorParameters<typeof Error>) {
+    super(...args);
+    this.name = "ConnectionError";
+  }
 }
 
 export class AccessError extends MtkrutoError {
+  constructor(...args: ConstructorParameters<typeof Error>) {
+    super(...args);
+    this.name = "AccessError";
+  }
 }
 
 export class InputError extends MtkrutoError {
+  constructor(...args: ConstructorParameters<typeof Error>) {
+    super(...args);
+    this.name = "InputError";
+  }
 }
 
 export class TransportError extends MtkrutoError {
   constructor(public readonly code: number) {
     super(`Transport error: ${code}`);
+    this.name = "TransportError";
   }
 }

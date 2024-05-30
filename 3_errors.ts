@@ -30,15 +30,15 @@ export interface TelegramErrorParams {
 }
 
 export class TelegramError extends MtkrutoError {
-  call: Api.AnyObject;
   errorCode: number;
   errorMessage: string;
 
   constructor(params: TelegramErrorParams) {
     super(`${params.error_code}: ${params.error_message} (${params.call._})`);
+    this.name = "TelegramError";
     this.errorCode = params.error_code;
     this.errorMessage = params.error_message;
-    this.call = params.call;
+    this.cause = params.call;
   }
 }
 
