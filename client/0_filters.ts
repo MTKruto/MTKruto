@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { CallbackQuery, ChatP, ChosenInlineResult, MessageTypes, UpdateMap, User } from "../3_types.ts";
+import { CallbackQuery, ChosenInlineResult, MessageTypes, UpdateIntersection, UpdateMap } from "../3_types.ts";
 
 type AnyLevel1 = keyof UpdateMap;
 type GetLevel1Type<L1 extends AnyLevel1> = UpdateMap[L1];
@@ -46,13 +46,28 @@ type AnyLevelX = AnyLevel1 | AnyLevel2;
 
 type FilterCore<Q extends AnyLevelX = AnyLevelX> = Q extends AnyLevel1 ? GetLevel1Type<Q> : Q extends `${infer L1}:${infer L2}` ? GetLevel2Type<L1, L2> : 1;
 
-type Chat<T> = "msg" extends keyof T ? T & { chat: ChatP } : "messageReactions" extends keyof T ? T & { chat: ChatP } : "messageReactionCount" extends keyof T ? T & { chat: ChatP } : T;
-type Msg<T> = "message" extends keyof T ? T & { msg: NonNullable<T["message"]> } : "editedMessage" extends keyof T ? T & { msg: NonNullable<T["editedMessage"]> } : "callbackQuery" extends keyof T ? "message" extends keyof T["callbackQuery"] ? T & { msg: T["callbackQuery"]["message"] } : T : T;
-type From<T> = "callbackQuery" extends keyof T ? T & { from: User } : "inlineQuery" extends keyof T ? T & { from: User } : "message" extends keyof T ? T & { from?: User } : "editedMessage" extends keyof T ? T & { from?: User } : T;
-type SenderChat<T> = "message" extends keyof T ? T & { senderChat?: ChatP } : "editedMessage" extends keyof T ? T & { senderChat?: ChatP } : T;
-type Shortcuts<T> = SenderChat<From<Chat<Msg<T>>>>;
+interface Shortcuts<T extends UpdateIntersection> {
+  msg: T["message"] extends object ? T["message"]
+    : T["editedMessage"] extends object ? T["editedMessage"]
+    : T["callbackQuery"] extends object ? T["callbackQuery"]["message"]
+    : undefined;
+  chat: T["callbackQuery"] extends object ? NonNullable<T["callbackQuery"]["message"]>["chat"] | undefined
+    : Shortcuts<T>["msg"] extends object ? Shortcuts<T>["msg"]["chat"]
+    : T["messageReactions"] extends object ? T["messageReactions"]["chat"]
+    : T["messageReactionCount"] extends object ? T["messageReactionCount"]["chat"]
+    : T["myChatMember"] extends object ? T["myChatMember"]["chat"]
+    : T["chatMember"] extends object ? T["chatMember"]["chat"]
+    : undefined;
+  from: T["callbackQuery"] extends object ? T["callbackQuery"]["from"]
+    : T["inlineQuery"] extends object ? T["inlineQuery"]["from"]
+    : T["chosenInlineResult"] extends object ? T["chosenInlineResult"]["from"]
+    : T["message"] extends object ? T["message"]["from"]
+    : T["editedMessage"] extends object ? T["editedMessage"]["from"]
+    : undefined;
+  senderChat: Shortcuts<T>["msg"] extends object ? Shortcuts<T>["msg"]["senderChat"] : undefined;
+}
 
-type Filter<Q extends AnyLevelX> = Shortcuts<FilterCore<Q>>;
+type Filter<Q extends AnyLevelX> = FilterCore<Q> & Shortcuts<FilterCore<Q>>;
 export type FilterQuery = AnyLevelX;
 export type WithFilter<T, Q extends FilterQuery> = T & Filter<Q>;
 
