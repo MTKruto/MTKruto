@@ -81,13 +81,13 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
     return this.#handle;
   }
 
-  use(...middleware: Middleware<UpdateIntersection<C>>[]): Composer<C> {
+  use(...middleware: Middleware<C & UpdateIntersection>[]): Composer<C> {
     const composer = new Composer(...middleware);
     this.#handle = concat(this.#handle, flatten(composer));
     return composer;
   }
 
-  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>): Composer<C> {
+  branch(predicate: (ctx: C & UpdateIntersection) => MaybePromise<boolean>, trueHandler_: Middleware<C & UpdateIntersection>, falseHandler_: Middleware<C & UpdateIntersection>): Composer<C> {
     const trueHandler = flatten(trueHandler_);
     const falseHandler = flatten(falseHandler_);
     return this.use(async (upd, next) => {
@@ -100,16 +100,16 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
   }
 
   filter<D extends C>(
-    predicate: (ctx: UpdateIntersection<C>) => ctx is D,
+    predicate: (ctx: C & UpdateIntersection) => ctx is D,
     ...middleware: Middleware<D>[]
   ): Composer<D>;
   filter(
-    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
-    ...middleware: Middleware<UpdateIntersection<C>>[]
+    predicate: (ctx: C & UpdateIntersection) => MaybePromise<boolean>,
+    ...middleware: Middleware<C & UpdateIntersection>[]
   ): Composer<C>;
   filter(
-    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
-    ...middleware: Middleware<UpdateIntersection<C>>[]
+    predicate: (ctx: C & UpdateIntersection) => MaybePromise<boolean>,
+    ...middleware: Middleware<C & UpdateIntersection>[]
   ) {
     const composer = new Composer(...middleware);
     this.branch(predicate, composer, skip);
@@ -119,8 +119,8 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
   on<Q extends FilterQuery>(
     filter: Q,
     ...middleware: Middleware<WithFilter<C, Q>>[]
-  ): Composer<UpdateIntersection<WithFilter<C, Q>>> {
-    return this.filter((ctx): ctx is UpdateIntersection<WithFilter<C, Q>> => {
+  ): Composer<WithFilter<C, Q> & UpdateIntersection> {
+    return this.filter((ctx): ctx is WithFilter<C, Q> & UpdateIntersection => {
       return match(filter, ctx);
     }, ...middleware);
   }

@@ -57,7 +57,7 @@ export interface Context {
   me?: User;
   /** Resolves to `message`, `editedMessage`, or the `message` field of `callbackQuery`. */
   msg?: Message;
-  /** Resolves to `msg?.chat`. TODO */
+  /** Resolves to `msg?.chat`. */
   chat?: ChatP;
   /** Resolves to the `from` field of `message`, `editedMessage`, `callbackQuery`, or `inlineQuery`. */
   from?: User;
