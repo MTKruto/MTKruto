@@ -19,6 +19,7 @@
  */
 
 import { concat } from "../0_deps.ts";
+import { ConnectionError } from "../0_errors.ts";
 import { bufferFromBigInt } from "../1_utilities.ts";
 import { Connection } from "../2_connection.ts";
 import { getObfuscationParameters } from "./0_obfuscation.ts";
@@ -43,8 +44,6 @@ export class TransportAbridged extends Transport implements Transport {
         await this.#connection.write(new Uint8Array([0xEF]));
       }
       this.#initialized = true;
-    } else {
-      throw new Error("Transport already initialized");
     }
   }
 
@@ -78,7 +77,7 @@ export class TransportAbridged extends Transport implements Transport {
 
   async send(buffer: Uint8Array) {
     if (!this.initialized) {
-      throw new Error("Transport not initialized");
+      throw new ConnectionError("Transport not initialized");
     }
 
     const bufferLength = buffer.length / 4;

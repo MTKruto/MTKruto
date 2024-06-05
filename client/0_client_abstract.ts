@@ -82,25 +82,29 @@ export abstract class ClientAbstract {
     await initTgCrypto();
     await this.transport.connection.open();
     await this.transport.transport.initialize();
+    this.#disconnected = false;
   }
 
   async reconnect(dc?: DC) {
-    await this.disconnect();
+    await this.transport?.transport.deinitialize();
+    await this.transport?.connection.close();
     if (dc) {
-      await this.setDc(dc);
+      this.setDc(dc);
     }
     await this.connect();
   }
 
+  #disconnected = false;
   async disconnect() {
     if (!this.transport) {
       throw new ConnectionError("Not connected.");
     }
     await this.transport.transport.deinitialize();
     await this.transport.connection.close();
+    this.#disconnected = true;
   }
 
   get disconnected(): boolean {
-    return !this.transport?.transport.initialized;
+    return this.#disconnected;
   }
 }

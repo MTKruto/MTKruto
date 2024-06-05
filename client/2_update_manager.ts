@@ -692,6 +692,8 @@ export class UpdateManager {
           unreachable();
         }
       }
+    } catch (err) {
+      this.#LrecoverUpdateGap.error(err);
     } finally {
       this.#c.resetConnectionState();
     }

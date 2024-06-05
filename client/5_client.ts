@@ -19,8 +19,8 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { AccessError, InputError } from "../0_errors.ts";
-import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, minute, mustPrompt, mustPromptOneOf, second, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
+import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, minute, mustPrompt, mustPromptOneOf, Mutex, second, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api, as, chatIdToPeerId, getChatIdPeerType, is, peerToChatId } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { DC } from "../3_transport.ts";
@@ -324,12 +324,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
             await this.#updateManager.recoverUpdateGap(source);
             break;
           case "decryption":
-            try {
-              await this.disconnect();
-            } catch {
-              //
-            }
-            await this.connect();
+            await this.reconnect();
             await this.#updateManager.recoverUpdateGap(source);
             break;
         }
@@ -418,50 +413,63 @@ export class Client<C extends Context = Context> extends Composer<C> {
       return transport;
     };
 
-    if (params?.defaultHandlers ?? true) {
-      let reconnecting = false;
-      let lastReconnection: Date | null = null;
-      this.on("connectionState", ({ connectionState }, next) => {
-        if (connectionState != "notConnected") {
-          return;
-        }
-        if (this.disconnected) {
-          L.debug("not reconnecting");
-          return;
-        }
-        if (reconnecting) {
-          return;
-        }
-        reconnecting = true;
-        drop((async () => {
-          try {
-            let delay = 5;
-            if (lastReconnection != null && Date.now() - lastReconnection.getTime() <= 10 * second) {
-              await new Promise((r) => setTimeout(r, delay * second));
-            }
-            while (!this.connected) {
-              L.debug("reconnecting");
-              try {
-                await this.connect();
-                lastReconnection = new Date();
-                L.debug("reconnected");
-                drop(this.#updateManager.recoverUpdateGap("reconnect"));
-                break;
-              } catch (err) {
-                if (delay < 15) {
-                  delay += 5;
-                }
-                L.debug(`failed to reconnect, retrying in ${delay}:`, err);
-              }
-              await new Promise((r) => setTimeout(r, delay * second));
-            }
-          } finally {
-            reconnecting = false;
+    this.invoke.use(async ({ error }, next) => {
+      if (error instanceof ConnectionError) {
+        while (!this.connected) {
+          if (this.disconnected) {
+            return next();
           }
-        })());
+          try {
+            await this.connect();
+          } catch {
+            //
+          }
+        }
+        return true;
+      } else {
         return next();
-      });
+      }
+    });
 
+    let reconnecting = false;
+    this.on("connectionState", ({ connectionState }, next) => {
+      if (connectionState != "notConnected") {
+        return next();
+      }
+      if (this.disconnected) {
+        L.debug("not reconnecting");
+        return next();
+      }
+      if (reconnecting) {
+        return next();
+      }
+      reconnecting = true;
+      drop((async () => {
+        try {
+          let delay = 5;
+          while (!this.connected) {
+            L.debug("reconnecting");
+            try {
+              await this.connect();
+              L.debug("reconnected");
+              drop(this.#updateManager.recoverUpdateGap("reconnect"));
+              break;
+            } catch (err) {
+              if (delay < 15) {
+                delay += 5;
+              }
+              L.debug(`failed to reconnect, retrying in ${delay}:`, err);
+            }
+            await new Promise((r) => setTimeout(r, delay * second));
+          }
+        } finally {
+          reconnecting = false;
+        }
+      })());
+      return next();
+    });
+
+    if (params?.defaultHandlers ?? true) {
       this.invoke.use(async ({ error }, next) => {
         if (error instanceof FloodWait && error.seconds <= 10) {
           L.warning("sleeping for", error.seconds, "because of:", error);
@@ -948,43 +956,56 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
+  #connectMutex = new Mutex();
+  #lastConnect: Date | null = null;
   /**
    * Loads the session if `setDc` was not called, initializes and connnects
    * a `ClientPlain` to generate auth key if there was none, and connects the client.
    * Before establishing the connection, the session is saved.
    */
   async connect() {
-    await this.#initStorage();
-    const [authKey, dc] = await Promise.all([this.storage.getAuthKey(), this.storage.getDc()]);
-    if (authKey != null && dc != null) {
-      await this.#client.setAuthKey(authKey);
-      this.#client.setDc(dc);
-      if (this.#client.serverSalt == 0n) {
-        this.#client.serverSalt = await this.storage.getServerSalt() ?? 0n;
-      }
-    } else {
-      const plain = new ClientPlain({ initialDc: this.#client.initialDc, transportProvider: this.#client.transportProvider, cdn: this.#client.cdn, publicKeys: this.#publicKeys });
-      const dc = await this.storage.getDc();
-      if (dc != null) {
-        plain.setDc(dc);
-        this.#client.setDc(dc);
-      }
-      await plain.connect();
-      const [authKey, serverSalt] = await plain.createAuthKey();
-      drop(plain.disconnect());
-      await this.#client.setAuthKey(authKey);
-      this.#client.serverSalt = serverSalt;
+    const unlock = await this.#connectMutex.lock();
+    if (this.connected) {
+      return;
     }
-    await this.#client.connect();
-    await Promise.all([this.storage.setAuthKey(this.#client.authKey), this.storage.setDc(this.#client.dc), this.storage.setServerSalt(this.#client.serverSalt)]);
+    if (this.#lastConnect != null && Date.now() - this.#lastConnect.getTime() <= 10 * second) {
+      await new Promise((r) => setTimeout(r, 3 * second));
+    }
+    try {
+      await this.#initStorage();
+      const [authKey, dc] = await Promise.all([this.storage.getAuthKey(), this.storage.getDc()]);
+      if (authKey != null && dc != null) {
+        await this.#client.setAuthKey(authKey);
+        this.#client.setDc(dc);
+        if (this.#client.serverSalt == 0n) {
+          this.#client.serverSalt = await this.storage.getServerSalt() ?? 0n;
+        }
+      } else {
+        const plain = new ClientPlain({ initialDc: this.#client.initialDc, transportProvider: this.#client.transportProvider, cdn: this.#client.cdn, publicKeys: this.#publicKeys });
+        const dc = await this.storage.getDc();
+        if (dc != null) {
+          plain.setDc(dc);
+          this.#client.setDc(dc);
+        }
+        await plain.connect();
+        const [authKey, serverSalt] = await plain.createAuthKey();
+        drop(plain.disconnect());
+        await this.#client.setAuthKey(authKey);
+        this.#client.serverSalt = serverSalt;
+      }
+      await this.#client.connect();
+      this.#lastConnect = new Date();
+      await Promise.all([this.storage.setAuthKey(this.#client.authKey), this.storage.setDc(this.#client.dc), this.storage.setServerSalt(this.#client.serverSalt)]);
+    } finally {
+      unlock();
+    }
   }
 
   async reconnect(dc?: DC) {
-    await this.disconnect();
     if (dc) {
       await this.setDc(dc);
     }
-    await this.connect();
+    await this.#client.reconnect();
   }
 
   async [handleMigrationError](err: Migrate) {
