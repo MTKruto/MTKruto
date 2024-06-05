@@ -61,6 +61,8 @@ export class ConnectionTCP implements Connection {
       hostname: this.#hostname,
       port: this.#port,
     });
+    connection.setNoDelay(true);
+    connection.setKeepAlive(true);
     this.#canRead = this.#canWrite = true;
     this.stateChangeHandler?.(true);
     Promise.resolve().then(async () => {
@@ -126,7 +128,7 @@ export class ConnectionTCP implements Connection {
           this.callback?.write(wrote);
           written += wrote;
         } catch (err) {
-          if (err instanceof Deno.errors.BrokenPipe) {
+          if (err instanceof Deno.errors.BrokenPipe || err instanceof Deno.errors.ConnectionReset) {
             this.#canWrite = false;
           }
           if (!this.connected) {
