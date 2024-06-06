@@ -128,7 +128,7 @@ export class ConnectionTCP implements Connection {
           this.callback?.write(wrote);
           written += wrote;
         } catch (err) {
-          if (err instanceof Deno.errors.BrokenPipe || err instanceof Deno.errors.ConnectionReset) {
+          if (err instanceof Deno.errors.BrokenPipe || err instanceof Deno.errors.ConnectionReset || (err instanceof Error && "code" in err && err.code == "EAGAIN" || err.code == "ECONNRESET")) {
             this.#canWrite = false;
           }
           if (!this.connected) {
