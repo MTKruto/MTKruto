@@ -135,8 +135,9 @@ export class ConnectionTCP implements Connection {
           if (!this.connected) {
             this.stateChangeHandler?.(false);
             throw new ConnectionError("Connection was closed");
+          } else {
+            throw err;
           }
-          throw err;
         }
       }
     } finally {

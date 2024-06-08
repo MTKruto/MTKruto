@@ -24,7 +24,7 @@ import { getLogger, Mutex } from "../1_utilities.ts";
 import { Connection } from "./0_connection.ts";
 
 const L = getLogger("ConnectionWebSocket");
-const errConnectionNotOpen = new Error("Connection not open");
+const errConnectionNotOpen = new ConnectionError("Connection not open");
 
 export class ConnectionWebSocket implements Connection {
   #url: string;
