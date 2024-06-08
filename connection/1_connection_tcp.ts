@@ -19,6 +19,7 @@
  */
 
 import { concat, iterateReader } from "../0_deps.ts";
+import { ConnectionError } from "../0_errors.ts";
 import { getLogger, Mutex } from "../1_utilities.ts";
 import { Connection } from "./0_connection.ts";
 
@@ -49,7 +50,7 @@ export class ConnectionTCP implements Connection {
 
   #assertConnected() {
     if (!this.connected) {
-      throw new Error("Connection not open");
+      throw new ConnectionError("Connection not open");
     }
   }
 
@@ -95,7 +96,7 @@ export class ConnectionTCP implements Connection {
 
   #rejectRead() {
     if (this.#nextResolve != null) {
-      this.#nextResolve[1].reject(new Error("Connection was closed"));
+      this.#nextResolve[1].reject(new ConnectionError("Connection was closed"));
       this.#nextResolve = null;
     }
   }
@@ -133,6 +134,7 @@ export class ConnectionTCP implements Connection {
           }
           if (!this.connected) {
             this.stateChangeHandler?.(false);
+            throw new ConnectionError("Connection was closed");
           }
           throw err;
         }

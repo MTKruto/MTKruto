@@ -965,13 +965,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async connect() {
     const unlock = await this.#connectMutex.lock();
-    if (this.connected) {
-      return;
-    }
-    if (this.#lastConnect != null && Date.now() - this.#lastConnect.getTime() <= 10 * second) {
-      await new Promise((r) => setTimeout(r, 3 * second));
-    }
     try {
+      if (this.connected) {
+        return;
+      }
+      if (this.#lastConnect != null && Date.now() - this.#lastConnect.getTime() <= 10 * second) {
+        await new Promise((r) => setTimeout(r, 3 * second));
+      }
       await this.#initStorage();
       const [authKey, dc] = await Promise.all([this.storage.getAuthKey(), this.storage.getDc()]);
       if (authKey != null && dc != null) {

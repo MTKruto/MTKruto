@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { getLogger, Logger, Queue, second, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { getLogger, Logger, Mutex, Queue, second, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api, as, inputPeerToPeer, is, isOfEnum, isOneOf, peerToChatId, ReadObject } from "../2_tl.ts";
 import { PersistentTimestampInvalid } from "../3_errors.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
@@ -634,10 +634,21 @@ export class UpdateManager {
     }
     return localState;
   }
+
+  #recoveringUpdateGap = false;
+  #recoverUpdateGapMutex = new Mutex();
   async recoverUpdateGap(source: string) {
     if (this.#c.cdn) {
       return;
     }
+    const wasRecoveringUpdateGap = this.#recoveringUpdateGap;
+    const unlock = await this.#recoverUpdateGapMutex.lock();
+    if (wasRecoveringUpdateGap) {
+      this.#LrecoverUpdateGap.debug(`update gap was just recovered [${source}]`);
+      unlock();
+      return;
+    }
+    this.#recoveringUpdateGap = true;
     this.#LrecoverUpdateGap.debug(`recovering from update gap [${source}]`);
 
     this.#c.setConnectionState("updating");
@@ -695,7 +706,9 @@ export class UpdateManager {
     } catch (err) {
       this.#LrecoverUpdateGap.error(err);
     } finally {
+      unlock();
       this.#c.resetConnectionState();
+      this.#recoveringUpdateGap = false;
     }
   }
 
