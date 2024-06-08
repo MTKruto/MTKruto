@@ -22,7 +22,7 @@ import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, getChannelChatId, is, peerToChatId } from "../2_tl.ts";
-import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId, InputMedia, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
+import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId, InputMedia, PollOption, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
 import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
@@ -632,7 +632,7 @@ export class MessageManager {
     return null;
   }
 
-  async sendPoll(chatId: ID, question: string, options: [string, string, ...string[]], params?: SendPollParams) {
+  async sendPoll(chatId: ID, question: string, options: [string | PollOption, string | PollOption, ...(string | PollOption)[]], params?: SendPollParams) {
     question = question?.trim();
     if (!question) {
       throw new Error("Question must not be empty.");
@@ -653,7 +653,12 @@ export class MessageManager {
     const solution = parseResult === undefined ? undefined : parseResult[0];
     const solutionEntities = parseResult === undefined ? undefined : parseResult[1];
 
-    const answers: Api.pollAnswer[] = options.map((v, i) => ({ _: "pollAnswer", option: new Uint8Array([i]), text: { _: "textWithEntities", text: v, entities: [] } }));
+    const answers: Api.pollAnswer[] = await Promise.all(options.map(async (v, i) => {
+      const text = typeof v === "string" ? v : v.text;
+      const entities = typeof v === "string" ? [] : v.entities;
+      const parseResult = await this.parseText(text, { parseMode: params?.optionParseMode, entities: entities });
+      return ({ _: "pollAnswer", option: new Uint8Array([i]), text: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } });
+    }));
 
     const questionParseResult = await this.parseText(question, { parseMode: params?.questionParseMode, entities: params?.questionEntities });
     const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate ? toUnixTimestamp(params.closeDate) : undefined, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type == "quiz" ? true : undefined };
