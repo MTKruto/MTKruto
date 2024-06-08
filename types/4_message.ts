@@ -26,6 +26,7 @@ import { serializeFileId } from "./_file_id.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructContact, Contact } from "./0_contact.ts";
 import { constructDice, Dice } from "./0_dice.ts";
+import { constructInvoice, Invoice } from "./0_invoice.ts";
 import { constructLinkPreview, LinkPreview } from "./0_link_preview.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
@@ -293,6 +294,18 @@ export interface MessagePoll extends _MessageBase {
    * @discriminator
    */
   poll: Poll;
+}
+
+/**
+ * An invoice message.
+ * @unlisted
+ */
+export interface MessageInvoice extends _MessageBase {
+  /**
+   * The invoice included in the message
+   * @discriminator
+   */
+  invoice: Invoice;
 }
 
 /**
@@ -576,6 +589,7 @@ export interface MessageTypes {
   contact: MessageContact;
   game: MessageGame;
   poll: MessagePoll;
+  invoice: MessageInvoice;
   venue: MessageVenue;
   location: MessageLocation;
   newChatMembers: MessageNewChatMembers;
@@ -618,6 +632,7 @@ const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
   contact: ["contact"],
   game: ["game"],
   poll: ["poll"],
+  invoice: ["invoice"],
   venue: ["venue"],
   location: ["location"],
   newChatMembers: ["newChatMembers"],
@@ -669,6 +684,7 @@ export type Message =
   | MessageContact
   | MessageGame
   | MessagePoll
+  | MessageInvoice
   | MessageVenue
   | MessageLocation
   | MessageNewChatMembers
@@ -1109,6 +1125,9 @@ export async function constructMessage(
   } else if (is("messageMediaGiveaway", message_.media)) {
     const giveaway = constructGiveaway(message_.media);
     m = { ...message, giveaway };
+  } else if (is("messageMediaInvoice", message_.media)) {
+    const invoice = constructInvoice(message_.media);
+    m = { ...message, invoice };
   }
 
   if (m == null) {

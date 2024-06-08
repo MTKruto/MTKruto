@@ -22,12 +22,12 @@ import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, getChannelChatId, is, peerToChatId } from "../2_tl.ts";
-import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId, InputMedia, PollOption, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
+import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId, InputMedia, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
 import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _SendCommon, _SpoilCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
+import { _SendCommon, _SpoilCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
 import { C as C_ } from "./1_types.ts";
 import { checkMessageId } from "./0_utilities.ts";
 import { checkArray } from "./0_utilities.ts";
@@ -1273,5 +1273,63 @@ export class MessageManager {
     await this.#c.storage.assertBot("editInlineMessageLiveLocation");
     const id = deserializeInlineMessageId(inlineMessageId);
     await this.#c.invoke({ _: "messages.editInlineBotMessage", id, media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }), reply_markup: await this.#constructReplyMarkup(params) });
+  }
+
+  async sendInvoice(chatId: ID, title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: SendInvoiceParams) {
+    if (title.length < 1) {
+      throw new InputError("Invoice title cannot be empty.");
+    }
+    if (description.length < 1) {
+      throw new InputError("Invoice description cannot be empty.");
+    }
+    if (title.length > 32) {
+      throw new InputError("Invoice title is too long.");
+    }
+    if (description.length > 255) {
+      throw new InputError("Invoice description is too long.");
+    }
+    const invoice: Api.invoice = {
+      _: "invoice",
+      currency,
+      prices: prices.map((v) => ({ _: "labeledPrice", label: v.label, amount: BigInt(v.amount) })),
+      max_tip_amount: params?.maxTipAmount ? BigInt(params.maxTipAmount) : undefined,
+      suggested_tip_amounts: params?.suggestedTipAmounts?.map(BigInt),
+      name_requested: params?.needName || undefined,
+      phone_requested: params?.needPhoneNumber || undefined,
+      email_requested: params?.needEmail || undefined,
+      shipping_address_requested: params?.needShippingAddress || undefined,
+      email_to_provider: params?.sendEmailToProvider || undefined,
+      phone_to_provider: params?.sendPhoneNumberToProvider || undefined,
+      flexible: params?.flexible || undefined,
+    };
+
+    const message = await this.#sendMedia(
+      chatId,
+      {
+        _: "inputMediaInvoice",
+        title,
+        description,
+        invoice,
+        start_param: params?.startParameter,
+        payload: new TextEncoder().encode(payload),
+        provider_data: { _: "dataJSON", data: params?.providerData ?? "null" },
+        provider: params?.providerToken ?? "",
+        photo: params?.photoUrl
+          ? {
+            _: "inputWebDocument",
+            url: params.photoUrl,
+            size: params.photoSize ?? 0,
+            mime_type: "image/jpeg", // TODO: guess from URL
+            attributes: [{
+              _: "documentAttributeImageSize",
+              w: params?.photoWidth ?? 0,
+              h: params?.photoHeight ?? 0,
+            }],
+          }
+          : undefined,
+      },
+      params,
+    );
+    return assertMessageType(message, "invoice");
   }
 }

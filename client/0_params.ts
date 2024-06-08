@@ -133,6 +133,25 @@ export interface SendPollParams extends _SendCommon {
   isClosed?: boolean;
 }
 
+export interface SendInvoiceParams extends _SendCommon {
+  providerToken?: string;
+  maxTipAmount?: number;
+  suggestedTipAmounts?: number[];
+  startParameter: string;
+  providerData?: string;
+  photoUrl?: string;
+  photoSize?: number;
+  photoWidth?: number;
+  photoHeight?: number;
+  needName?: boolean;
+  needPhoneNumber?: boolean;
+  needEmail?: boolean;
+  needShippingAddress?: boolean;
+  sendPhoneNumberToProvider?: boolean;
+  sendEmailToProvider?: boolean;
+  flexible?: boolean;
+}
+
 export interface DownloadParams {
   /** Size of each download chunk in bytes. */
   chunkSize?: number;
