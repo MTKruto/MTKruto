@@ -653,9 +653,10 @@ export class MessageManager {
     const solution = parseResult === undefined ? undefined : parseResult[0];
     const solutionEntities = parseResult === undefined ? undefined : parseResult[1];
 
-    const answers: Api.pollAnswer[] = options.map((v, i) => ({ _: "pollAnswer", option: new Uint8Array([i]), text: v }));
+    const answers: Api.pollAnswer[] = options.map((v, i) => ({ _: "pollAnswer", option: new Uint8Array([i]), text: { _: "textWithEntities", text: v, entities: [] } }));
 
-    const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate ? toUnixTimestamp(params.closeDate) : undefined, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type == "quiz" ? true : undefined };
+    const questionParseResult = await this.parseText(question, { parseMode: params?.questionParseMode, entities: params?.questionEntities });
+    const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate ? toUnixTimestamp(params.closeDate) : undefined, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type == "quiz" ? true : undefined };
 
     const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndex ? [new Uint8Array([params.correctOptionIndex])] : undefined, solution, solution_entities: solutionEntities };
 
@@ -1246,7 +1247,7 @@ export class MessageManager {
       throw new InputError("Poll is already stopped.");
     }
 
-    const result = await this.#c.invoke({ _: "messages.editMessage", peer: await this.#c.getInputPeer(chatId), id: messageId, media: ({ _: "inputMediaPoll", poll: ({ _: "poll", id: BigInt(message.poll.id), closed: true, question: "", answers: [] }) }), reply_markup: await this.#constructReplyMarkup(params) });
+    const result = await this.#c.invoke({ _: "messages.editMessage", peer: await this.#c.getInputPeer(chatId), id: messageId, media: ({ _: "inputMediaPoll", poll: ({ _: "poll", id: BigInt(message.poll.id), closed: true, question: { _: "textWithEntities", text: "", entities: [] }, answers: [] }) }), reply_markup: await this.#constructReplyMarkup(params) });
 
     const message_ = (await this.#updatesToMessages(chatId, result))[0];
     return assertMessageType(message_, "poll").poll;

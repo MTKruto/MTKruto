@@ -19,18 +19,22 @@
  */
 
 import { Api } from "../2_tl.ts";
+import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 
 /** A poll option. */
 export interface PollOption {
   /** The option's text (1-100 characters). */
   text: string;
+  /** The entities of the option's text. */
+  entities: MessageEntity[];
   /** Number of users that voted this option. */
   voterCount: number;
 }
 
 export function constructPollOption(option: Api.PollAnswer, results: Array<Api.PollAnswerVoters>): PollOption {
   return {
-    text: option.text,
+    text: option.text.text,
+    entities: option.text.entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v != null),
     voterCount: results.find((v) => v.option.every((v, i) => option.option[i] == v))?.voters ?? 0,
   };
 }

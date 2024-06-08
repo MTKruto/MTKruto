@@ -37,7 +37,6 @@ import { constructDocument, Document } from "./1_document.ts";
 import { constructGiveaway, Giveaway } from "./1_giveaway.ts";
 import { constructMessageReaction, MessageReaction } from "./1_message_reaction.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
-import { constructPoll, Poll } from "./1_poll.ts";
 import { constructReplyQuote, ReplyQuote } from "./1_reply_quote.ts";
 import { constructSticker, Sticker, StickerSetNameGetter } from "./1_sticker.ts";
 import { constructUser, User } from "./1_user.ts";
@@ -45,6 +44,7 @@ import { constructVenue, Venue } from "./1_venue.ts";
 import { constructVideoNote, VideoNote } from "./1_video_note.ts";
 import { constructVideo, Video } from "./1_video.ts";
 import { constructGame, Game } from "./2_game.ts";
+import { constructPoll, Poll } from "./2_poll.ts";
 import { constructReplyMarkup, ReplyMarkup } from "./3_reply_markup.ts";
 
 const L = getLogger("Message");

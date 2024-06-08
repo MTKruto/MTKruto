@@ -21,7 +21,7 @@
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
-import { constructPollOption, PollOption } from "./0_poll_option.ts";
+import { constructPollOption, PollOption } from "./1_poll_option.ts";
 
 /** A poll. */
 export interface Poll {
@@ -29,6 +29,8 @@ export interface Poll {
   id: string;
   /** The poll's question. */
   question: string;
+  /** The entities of the poll's question. */
+  questionEntities: MessageEntity[];
   /** The poll's options. */
   options: PollOption[];
   /** The number of users who have participated in the poll. */
@@ -60,7 +62,8 @@ export function constructPoll(media_: Api.messageMediaPoll): Poll {
 
   return cleanObject({
     id: String(poll.id),
-    question: poll.question,
+    question: poll.question.text,
+    questionEntities: poll.question.entities.map(constructMessageEntity).filter((v): v is MessageEntity => v != null),
     options: poll.answers.map((v) => constructPollOption(v, media_.results.results ?? [])),
     totalVoterCount: media_.results.total_voters ?? 0,
     isClosed: poll.closed || false,
