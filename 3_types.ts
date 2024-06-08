@@ -35,6 +35,7 @@ export * from "./types/0_dice.ts";
 export * from "./types/0_file_source.ts";
 export * from "./types/0_giveaway_parameters.ts";
 export * from "./types/0_id.ts";
+export * from "./types/0_invoice.ts";
 export * from "./types/0_keyboard_button_poll_type.ts";
 export * from "./types/0_link_preview.ts";
 export * from "./types/0_live_stream_channel.ts";
