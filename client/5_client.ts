@@ -485,6 +485,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       if (connectionState != "notConnected") {
         return next();
       }
+      this.#pingLoopAbortController?.abort();
       if (this.disconnected) {
         L.debug("not reconnecting");
         return next();
@@ -1045,6 +1046,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       await this.#client.connect();
       this.#lastConnect = new Date();
       await Promise.all([this.storage.setAuthKey(this.#client.authKey), this.storage.setDc(this.#client.dc), this.storage.setServerSalt(this.#client.serverSalt)]);
+      this.#startPingLoop();
     } finally {
       unlock();
     }
@@ -1070,7 +1072,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async disconnect() {
     this.#connectionInited = false;
     await this.#client.disconnect();
-    this.#pingLoopAbortController?.abort();
   }
 
   #lastPropagatedAuthorizationState: boolean | null = null;
@@ -1270,7 +1271,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.signIn(params);
   }
 
-  #pingLoopStarted = false;
   #pingLoopAbortController: AbortController | null = null;
   #pingInterval = 1 * minute;
   #lastUpdates = new Date();
@@ -1294,8 +1294,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
         if (!this.connected) {
           continue;
         }
-        this.#pingLoopAbortController.signal.throwIfAborted();
         await this.invoke({ _: "ping_delay_disconnect", ping_id: getRandomId(), disconnect_delay: this.#pingInterval / second + 15 });
+        this.#pingLoopAbortController.signal.throwIfAborted();
         if (Date.now() - this.#lastUpdates.getTime() >= 15 * minute) {
           drop(this.#updateManager.recoverUpdateGap("lastUpdates"));
         }
@@ -1344,11 +1344,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
           continue;
         } else {
           throw err;
-        }
-      } finally {
-        if (!this.#pingLoopStarted) {
-          this.#startPingLoop();
-          this.#pingLoopStarted = true;
         }
       }
     }
