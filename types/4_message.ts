@@ -914,6 +914,9 @@ export async function constructMessage(
     const entity = await getEntity(message_.peer_id);
     if (entity) {
       chat_ = constructChatP(entity);
+      if (chat_.username) {
+        link = link.replace(`/c/${message_.peer_id.channel_id}/`, `/${chat_.username}/`);
+      }
     } else {
       unreachable();
     }
