@@ -50,6 +50,7 @@ export class ConnectionWebSocket implements Connection {
       webSocket.addEventListener("open", () => {
         this.stateChangeHandler?.(true);
         resolve(webSocket);
+        L.debug("connected to", this.#url);
       });
       webSocket.addEventListener("message", async (e) => {
         if (typeof e.data === "string") {

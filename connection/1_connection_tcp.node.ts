@@ -1,8 +1,9 @@
 import { Socket } from "node:net";
-import { Mutex } from "../1_utilities.ts";
 import { ConnectionError } from "../0_errors.ts";
+import { getLogger, Mutex } from "../1_utilities.ts";
 import { Connection } from "./0_connection.ts";
 
+const L = getLogger("ConnectionTCP");
 const errConnectionNotOpen = new ConnectionError("Connection not open");
 
 export class ConnectionTCP implements Connection {
@@ -63,6 +64,7 @@ export class ConnectionTCP implements Connection {
           this.#socket!.off("error", reject);
           resolve();
           this.stateChangeHandler?.(true);
+          L.debug("connected to", this.#hostname, "port", this.#port);
         },
       );
     });

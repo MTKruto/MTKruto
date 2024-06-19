@@ -66,6 +66,7 @@ export class ConnectionTCP implements Connection {
     connection.setKeepAlive(true);
     this.#canRead = this.#canWrite = true;
     this.stateChangeHandler?.(true);
+    L.debug("connected to", this.#hostname, "port", this.#port);
     Promise.resolve().then(async () => {
       do {
         try {
