@@ -1297,7 +1297,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
         await this.invoke({ _: "ping_delay_disconnect", ping_id: getRandomId(), disconnect_delay: this.#pingInterval / second + 15 });
         this.#pingLoopAbortController.signal.throwIfAborted();
         if (Date.now() - this.#lastUpdates.getTime() >= 15 * minute) {
-          drop(this.#updateManager.recoverUpdateGap("lastUpdates"));
+          drop(
+            this.#updateManager.recoverUpdateGap("lastUpdates").then(() => {
+              this.#lastUpdates = new Date();
+            }),
+          );
         }
       } catch (err) {
         if (!this.connected) {
