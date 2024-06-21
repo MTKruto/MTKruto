@@ -47,6 +47,7 @@ import { constructVideo, Video } from "./1_video.ts";
 import { constructGame, Game } from "./2_game.ts";
 import { constructPoll, Poll } from "./2_poll.ts";
 import { constructReplyMarkup, ReplyMarkup } from "./3_reply_markup.ts";
+import { constructSuccessfulPayment, SuccessfulPayment } from "./2_successful_payment.ts";
 
 const L = getLogger("Message");
 
@@ -571,6 +572,15 @@ export interface MessageUnsupported extends _MessageBase {
   unsupported: true;
 }
 
+/**
+ * A payment was successfully received. Bot-only.
+ * @unlisted
+ */
+export interface MessageSuccessfulPayment extends _MessageBase {
+  /** @discriminator */
+  successfulPayment: SuccessfulPayment;
+}
+
 // message type map
 
 /** @unlisted */
@@ -615,6 +625,7 @@ export interface MessageTypes {
   videoChatEnded: MessageVideoChatEnded;
   giveaway: MessageGiveaway;
   unsupported: MessageUnsupported;
+  successfulPayment: MessageSuccessfulPayment;
 }
 
 const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
@@ -658,6 +669,7 @@ const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
   videoChatEnded: ["videoChatEnded"],
   giveaway: ["giveaway"],
   unsupported: ["unsupported"],
+  successfulPayment: ["successfulPayment"],
 };
 export function assertMessageType<T extends keyof MessageTypes>(message: Message, type: T): MessageTypes[T] {
   for (const key of keys[type]) {
@@ -709,7 +721,8 @@ export type Message =
   | MessageVideoChatStarted
   | MessageVideoChatEnded
   | MessageGiveaway
-  | MessageUnsupported;
+  | MessageUnsupported
+  | MessageSuccessfulPayment;
 
 /** @unlisted */
 export interface MessageGetter {
@@ -877,6 +890,9 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
   } else if (is("messageActionSetMessagesTTL", message_.action)) {
     const newAutoDeleteTime = message_.action.period || 0;
     return { ...message, newAutoDeleteTime };
+  } else if (is("messageActionPaymentSentMe", message_.action)) {
+    const successfulPayment = constructSuccessfulPayment(message_.action);
+    return { ...message, successfulPayment };
   }
   return { ...message, unsupported: true };
 }
