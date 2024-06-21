@@ -459,3 +459,7 @@ export interface DownloadLiveStreamChunkParams {
   /** Video quality. */
   quality?: "low" | "medium" | "high";
 }
+
+export interface AnswerPreCheckoutQueryParams {
+  error?: string;
+}

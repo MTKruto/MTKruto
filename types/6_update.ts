@@ -34,6 +34,7 @@ import { Message } from "./4_message.ts";
 import { CallbackQuery } from "./5_callback_query.ts";
 import { ChatListItem } from "./5_chat_list_item.ts";
 import { VideoChat } from "./0_video_chat.ts";
+import { PreCheckoutQuery } from "./2_pre_checkout_query.ts";
 
 /**
  * A client's connection state was changed.
@@ -314,6 +315,12 @@ export interface UpdateVideoChat {
 }
 
 /** @unlisted */
+export interface UpdatePreCheckoutQuery {
+  /** @discriminator */
+  preCheckoutQuery: PreCheckoutQuery;
+}
+
+/** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
   editedMessage: UpdateEditedMessage;
@@ -335,6 +342,7 @@ export interface UpdateMap {
   story: UpdateNewStory;
   businessConnection: UpdateBusinessConnection;
   videoChat: UpdateVideoChat;
+  preCheckoutQuery: UpdatePreCheckoutQuery;
 }
 
 /** @unlisted */
@@ -359,6 +367,7 @@ export type UpdateIntersection = Partial<
   & UpdateNewStory
   & UpdateBusinessConnection
   & UpdateVideoChat
+  & UpdatePreCheckoutQuery
 >;
 
 /** An incoming update. */
@@ -382,4 +391,5 @@ export type Update =
   | UpdateDeletedStory
   | UpdateNewStory
   | UpdateBusinessConnection
-  | UpdateVideoChat;
+  | UpdateVideoChat
+  | UpdatePreCheckoutQuery;

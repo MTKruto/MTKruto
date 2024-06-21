@@ -63,6 +63,7 @@ interface Shortcuts<T extends UpdateIntersection> {
     : T["chosenInlineResult"] extends object ? T["chosenInlineResult"]["from"]
     : T["message"] extends object ? T["message"]["from"]
     : T["editedMessage"] extends object ? T["editedMessage"]["from"]
+    : T["preCheckoutQuery"] extends object ? T["preCheckoutQuery"]["from"]
     : undefined;
   senderChat: Shortcuts<T>["msg"] extends object ? Shortcuts<T>["msg"]["senderChat"] : undefined;
 }
