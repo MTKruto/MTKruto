@@ -76,7 +76,7 @@ export interface SendChatActionParams extends _BusinessConnectionIdCommon {
   messageThreadId?: number;
 }
 
-export interface EditMessageParams {
+export interface EditMessageParams extends _BusinessConnectionIdCommon {
   /** The parse mode to use. If not provided, the default parse mode will be used. */
   parseMode?: ParseMode;
   /** The message's entities. */
@@ -87,12 +87,12 @@ export interface EditMessageParams {
   replyMarkup?: ReplyMarkup;
 }
 
-export interface EditMessageReplyMarkupParams {
+export interface EditMessageReplyMarkupParams extends _BusinessConnectionIdCommon {
   /** The reply markup of the message. Bot-only. */
   replyMarkup?: ReplyMarkup;
 }
 
-export interface EditMessageMediaParams {
+export interface EditMessageMediaParams extends _BusinessConnectionIdCommon {
   /** The reply markup of the message. Bot-only. */
   replyMarkup?: ReplyMarkup;
 }
@@ -414,11 +414,11 @@ export interface GetCreatedInviteLinksParams {
   afterInviteLink?: string;
 }
 
-export interface StopPollParams {
+export interface StopPollParams extends _BusinessConnectionIdCommon {
   replyMarkup?: ReplyMarkup;
 }
 
-export interface EditMessageLiveLocationParams {
+export interface EditMessageLiveLocationParams extends _BusinessConnectionIdCommon {
   /** The accuracy radius of the location in meters. Must be in the range of 0-1500. */
   horizontalAccuracy?: number;
   /** The direction which the user is moving towards. Must be in the range of 1-350. */
