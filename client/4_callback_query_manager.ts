@@ -28,7 +28,12 @@ import { checkPassword } from "./0_password.ts";
 
 type C = C_ & { messageManager: MessageManager };
 
-type CallbackQueryManagerUpdate = Api.updateBotCallbackQuery | Api.updateInlineBotCallbackQuery;
+const callbackQueryManagerUpdates = [
+  "updateBotCallbackQuery",
+  "updateInlineBotCallbackQuery",
+] as const;
+
+type CallbackQueryManagerUpdate = Api.Types[(typeof callbackQueryManagerUpdates)[number]];
 
 export class CallbackQueryManager {
   #c: C;
@@ -70,7 +75,7 @@ export class CallbackQueryManager {
   }
 
   static canHandleUpdate(update: Api.Update): update is CallbackQueryManagerUpdate {
-    return isOneOf(["updateBotCallbackQuery", "updateInlineBotCallbackQuery"], update);
+    return isOneOf(callbackQueryManagerUpdates, update);
   }
 
   async handleUpdate(update: CallbackQueryManagerUpdate): Promise<Update> {

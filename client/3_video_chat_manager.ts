@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getRandomId, toUnixTimestamp, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { Api, as, is } from "../2_tl.ts";
+import { Api, as, is, isOneOf } from "../2_tl.ts";
 import { constructLiveStreamChannel, constructVideoChat, ID, Update, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { DownloadLiveStreamChunkParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
 import { C as C_ } from "./1_types.ts";
@@ -31,7 +31,11 @@ interface C extends C_ {
   fileManager: FileManager;
 }
 
-type VideoChatManagerUpdate = Api.updateGroupCall;
+const videoChatManagerUpdates = [
+  "updateGroupCall",
+] as const;
+
+type VideoChatManagerUpdate = Api.Types[(typeof videoChatManagerUpdates)[number]];
 
 export class VideoChatManager {
   #c: C;
@@ -125,7 +129,7 @@ export class VideoChatManager {
   }
 
   static canHandleUpdate(update: Api.Update): update is VideoChatManagerUpdate {
-    return is("updateGroupCall", update);
+    return isOneOf(videoChatManagerUpdates, update);
   }
 
   async handleUpdate(update: VideoChatManagerUpdate): Promise<Update> {

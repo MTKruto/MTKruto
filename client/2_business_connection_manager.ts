@@ -18,12 +18,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { is } from "../2_tl.ts";
-import { Api, as } from "../2_tl.ts";
+import { Api, as, isOneOf } from "../2_tl.ts";
 import { constructBusinessConnection, Update } from "../3_types.ts";
 import { C } from "./1_types.ts";
 
-export type BusinessConnectionManagerUpdate = Api.updateBotBusinessConnect;
+const businessConnectionManagerUpdates = [
+  "updateBotBusinessConnect",
+] as const;
+
+type BusinessConnectionManagerUpdate = Api.Types[(typeof businessConnectionManagerUpdates)[number]];
 
 export class BusinessConnectionManager {
   #c: C;
@@ -46,7 +49,7 @@ export class BusinessConnectionManager {
   }
 
   static canHandleUpdate(update: Api.Update): update is BusinessConnectionManagerUpdate {
-    return is("updateBotBusinessConnect", update);
+    return isOneOf(businessConnectionManagerUpdates, update);
   }
 
   async handleUpdate(update: BusinessConnectionManagerUpdate): Promise<Update> {

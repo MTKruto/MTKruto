@@ -55,7 +55,7 @@ export function is<S extends keyof (Types & Functions)>(typeName: S, value: unkn
     return value._ === typeName;
   }
 }
-export function isOneOf<S extends keyof (Types & Functions)>(typeNames: S[], value: unknown): value is S extends keyof Types ? Types[S] : S extends keyof Functions ? Functions[S] : never {
+export function isOneOf<S extends keyof (Types & Functions)>(typeNames: S[] | readonly S[], value: unknown): value is S extends keyof Types ? Types[S] : S extends keyof Functions ? Functions[S] : never {
   return typeNames.some((v) => is(v, value));
 }
 export function isOfEnum<S extends keyof Enums>(enumName: S, value: unknown): value is Enums[S] {

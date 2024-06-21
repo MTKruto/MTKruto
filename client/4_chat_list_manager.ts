@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, Logger, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, is, peerToChatId } from "../2_tl.ts";
+import { Api, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { ChatListItem, ChatMember, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, getChatListItemOrder, ID } from "../3_types.ts";
 import { C as C_ } from "./1_types.ts";
 import { getChatListId } from "./0_utilities.ts";
@@ -30,15 +30,18 @@ import { MessageManager } from "./3_message_manager.ts";
 
 type C = C_ & { fileManager: FileManager; messageManager: MessageManager };
 
-type ChatListManagerUpdate =
-  | Api.updateNewMessage
-  | Api.updateNewChannelMessage
-  | Api.updatePinnedDialogs
-  | Api.updateFolderPeers
-  | Api.updateChannel
-  | Api.updateChat
-  | Api.updateUser
-  | Api.updateUserName;
+const chatListManagerUpdates = [
+  "updateNewMessage",
+  "updateNewChannelMessage",
+  "updatePinnedDialogs",
+  "updateFolderPeers",
+  "updateChannel",
+  "updateChat",
+  "updateUser",
+  "updateUserName",
+] as const;
+
+type ChatListManagerUpdate = Api.Types[(typeof chatListManagerUpdates)[number]];
 
 export class ChatListManager {
   #c: C;
@@ -404,7 +407,7 @@ export class ChatListManager {
   }
 
   static canHandleUpdate(update: Api.Update): update is ChatListManagerUpdate {
-    return is("updateNewMessage", update) || is("updateNewChannelMessage", update) || is("updatePinnedDialogs", update) || is("updateFolderPeers", update) || is("updateChannel", update) || is("updateChat", update) || is("updateUser", update) || is("updateUserName", update);
+    return isOneOf(chatListManagerUpdates, update);
   }
 
   async handleUpdate(update: ChatListManagerUpdate) {

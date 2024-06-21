@@ -21,7 +21,7 @@
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, as, getChannelChatId, is, peerToChatId } from "../2_tl.ts";
+import { Api, as, getChannelChatId, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { constructChatMemberUpdated, constructInviteLink, constructPreCheckoutQuery, deserializeFileId, FileId, InputMedia, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
 import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
@@ -41,19 +41,22 @@ interface C extends C_ {
   fileManager: FileManager;
 }
 
-type MessageManagerUpdate =
-  | Api.updateNewMessage
-  | Api.updateNewChannelMessage
-  | Api.updateEditMessage
-  | Api.updateEditChannelMessage
-  | Api.updateBotNewBusinessMessage
-  | Api.updateBotEditBusinessMessage
-  | Api.updateBotDeleteBusinessMessage
-  | Api.updateDeleteMessages
-  | Api.updateDeleteChannelMessages
-  | Api.updateChannelParticipant
-  | Api.updateChatParticipant
-  | Api.updateBotPrecheckoutQuery;
+const messageManagerUpdates = [
+  "updateNewMessage",
+  "updateNewChannelMessage",
+  "updateEditMessage",
+  "updateEditChannelMessage",
+  "updateBotNewBusinessMessage",
+  "updateBotEditBusinessMessage",
+  "updateBotDeleteBusinessMessage",
+  "updateDeleteMessages",
+  "updateDeleteChannelMessages",
+  "updateChannelParticipant",
+  "updateChatParticipant",
+  "updateBotPrecheckoutQuery",
+] as const;
+
+type MessageManagerUpdate = Api.Types[(typeof messageManagerUpdates)[number]];
 
 export class MessageManager {
   #c: C;
@@ -916,18 +919,7 @@ export class MessageManager {
   }
 
   static canHandleUpdate(update: Api.Update): update is MessageManagerUpdate {
-    return is("updateNewMessage", update) ||
-      is("updateNewChannelMessage", update) ||
-      is("updateEditMessage", update) ||
-      is("updateEditChannelMessage", update) ||
-      is("updateBotNewBusinessMessage", update) ||
-      is("updateBotEditBusinessMessage", update) ||
-      is("updateBotDeleteBusinessMessage", update) ||
-      is("updateDeleteMessages", update) ||
-      is("updateDeleteChannelMessages", update) ||
-      is("updateChannelParticipant", update) ||
-      is("updateChatParticipant", update) ||
-      is("updateBotPrecheckoutQuery", update);
+    return isOneOf(messageManagerUpdates, update);
   }
 
   async handleUpdate(update: MessageManagerUpdate): Promise<Update | null> {

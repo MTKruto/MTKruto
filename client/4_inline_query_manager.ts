@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Api, is, peerToChatId } from "../2_tl.ts";
+import { Api, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { constructChosenInlineResult, constructInlineQuery, constructInlineQueryAnswer, ID, InlineQueryResult, inlineQueryResultToTlObject, Update } from "../3_types.ts";
 import { AnswerInlineQueryParams, SendInlineQueryParams } from "./0_params.ts";
 import { C as C_ } from "./1_types.ts";
@@ -28,7 +28,12 @@ import { MessageManager } from "./3_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };
 
-type InlineQueryManagerUpdate = Api.updateBotInlineQuery | Api.updateBotInlineSend;
+const inlineQueryManagerUpdates = [
+  "updateBotInlineQuery",
+  "updateBotInlineSend",
+] as const;
+
+type InlineQueryManagerUpdate = Api.Types[(typeof inlineQueryManagerUpdates)[number]];
 
 export class InlineQueryManager {
   #c: C;
@@ -44,7 +49,7 @@ export class InlineQueryManager {
   }
 
   static canHandleUpdate(update: Api.Update): update is InlineQueryManagerUpdate {
-    return is("updateBotInlineQuery", update) || is("updateBotInlineSend", update);
+    return isOneOf(inlineQueryManagerUpdates, update);
   }
 
   async handleUpdate(update: InlineQueryManagerUpdate): Promise<Update> {

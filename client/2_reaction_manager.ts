@@ -23,12 +23,15 @@ import { Api, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { constructMessageReaction, constructMessageReactionCount, constructMessageReactions, Update } from "../3_types.ts";
 import { C } from "./1_types.ts";
 
-type ReactionManagerUpdate =
-  | Api.updateBotMessageReactions
-  | Api.updateBotMessageReaction
-  | Api.updateMessageReactions
-  | Api.updateChannelMessageViews
-  | Api.updateChannelMessageForwards;
+const reactionManagerUpdates = [
+  "updateBotMessageReactions",
+  "updateBotMessageReaction",
+  "updateMessageReactions",
+  "updateChannelMessageViews",
+  "updateChannelMessageForwards",
+] as const;
+
+type ReactionManagerUpdate = Api.Types[(typeof reactionManagerUpdates)[number]];
 
 export class ReactionManager {
   #c: C;
@@ -38,13 +41,7 @@ export class ReactionManager {
   }
 
   static canHandleUpdate(update: Api.Update): update is ReactionManagerUpdate {
-    return isOneOf([
-      "updateBotMessageReactions",
-      "updateBotMessageReaction",
-      "updateMessageReactions",
-      "updateChannelMessageViews",
-      "updateChannelMessageForwards",
-    ], update);
+    return isOneOf(reactionManagerUpdates, update);
   }
 
   async handleUpdate(update: ReactionManagerUpdate): Promise<Update | null> {

@@ -21,7 +21,7 @@
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getRandomId } from "../1_utilities.ts";
-import { Api, as, inputPeerToPeer, is, peerToChatId } from "../2_tl.ts";
+import { Api, as, inputPeerToPeer, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, Update } from "../3_types.ts";
 import { InputStoryContent } from "../types/1_input_story_content.ts";
 import { CreateStoryParams } from "./0_params.ts";
@@ -32,7 +32,11 @@ import { MessageManager } from "./3_message_manager.ts";
 
 type C = C_ & { fileManager: FileManager; messageManager: MessageManager };
 
-type StoryManagerUpdate = Api.updateStory;
+const storyManagerUpdates = [
+  "updateStory",
+] as const;
+
+type StoryManagerUpdate = Api.Types[(typeof storyManagerUpdates)[number]];
 
 export class StoryManager {
   #c: C;
@@ -152,7 +156,7 @@ export class StoryManager {
   }
 
   static canHandleUpdate(update: Api.Update): update is StoryManagerUpdate {
-    return is("updateStory", update);
+    return isOneOf(storyManagerUpdates, update);
   }
 
   async handleUpdate(update: StoryManagerUpdate): Promise<Update | null> {
