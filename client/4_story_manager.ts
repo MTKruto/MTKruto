@@ -25,8 +25,8 @@ import { Api, as, inputPeerToPeer, is, isOneOf, peerToChatId } from "../2_tl.ts"
 import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, Update } from "../3_types.ts";
 import { InputStoryContent } from "../types/1_input_story_content.ts";
 import { CreateStoryParams } from "./0_params.ts";
-import { C as C_ } from "./1_types.ts";
 import { checkArray, checkStoryId, isHttpUrl } from "./0_utilities.ts";
+import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
 import { MessageManager } from "./3_message_manager.ts";
 

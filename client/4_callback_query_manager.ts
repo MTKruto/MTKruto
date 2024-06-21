@@ -21,10 +21,10 @@
 import { Api, isOneOf, peerToChatId } from "../2_tl.ts";
 import { CallbackQueryQuestion, constructCallbackQuery, constructCallbackQueryAnswer, ID, Update, validateCallbackQueryQuestion } from "../3_types.ts";
 import { AnswerCallbackQueryParams } from "./0_params.ts";
-import { C as C_ } from "./1_types.ts";
-import { checkCallbackQueryId, checkMessageId } from "./0_utilities.ts";
-import { MessageManager } from "./3_message_manager.ts";
 import { checkPassword } from "./0_password.ts";
+import { checkCallbackQueryId, checkMessageId } from "./0_utilities.ts";
+import { C as C_ } from "./1_types.ts";
+import { MessageManager } from "./3_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };
 

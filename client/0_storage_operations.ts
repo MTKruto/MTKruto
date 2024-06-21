@@ -21,9 +21,9 @@
 import { AssertionError, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { Storage, StorageKeyPart } from "../2_storage.ts";
 import { AnyEntity, Api, as, is, isValidType, peerToChatId, ReadObject, serialize, TLReader, TLWriter } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
-import { Storage, StorageKeyPart } from "../2_storage.ts";
 
 // key parts
 export const K = {

@@ -19,10 +19,10 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
-import { TLRawReader } from "./0_tl_raw_reader.ts";
-import { serialize } from "./2_serialize.ts";
 import { getType, getTypeName } from "./0_api.ts";
+import { TLRawReader } from "./0_tl_raw_reader.ts";
 import { deserialize } from "./2_deserialize.ts";
+import { serialize } from "./2_serialize.ts";
 
 Deno.test("deserialize", () => {
   // deno-fmt-ignore

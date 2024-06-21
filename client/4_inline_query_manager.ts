@@ -22,8 +22,8 @@ import { unreachable } from "../0_deps.ts";
 import { Api, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { constructChosenInlineResult, constructInlineQuery, constructInlineQueryAnswer, ID, InlineQueryResult, inlineQueryResultToTlObject, Update } from "../3_types.ts";
 import { AnswerInlineQueryParams, SendInlineQueryParams } from "./0_params.ts";
-import { C as C_ } from "./1_types.ts";
 import { checkInlineQueryId } from "./0_utilities.ts";
+import { C as C_ } from "./1_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };

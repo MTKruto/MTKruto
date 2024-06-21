@@ -18,11 +18,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { TLReader } from "./3_tl_reader.ts";
-import { TLWriter } from "./4_tl_writer.ts";
-import { deserializeRpcResult, rpc_result, RPC_RESULT_ID } from "./4_rpc_result.ts";
-import { serialize } from "./2_serialize.ts";
 import { AnyObject } from "./0_api.ts";
+import { serialize } from "./2_serialize.ts";
+import { TLReader } from "./3_tl_reader.ts";
+import { deserializeRpcResult, rpc_result, RPC_RESULT_ID } from "./4_rpc_result.ts";
+import { TLWriter } from "./4_tl_writer.ts";
 
 // message msg_id:long seqno:int bytes:int body:Object = Message;
 

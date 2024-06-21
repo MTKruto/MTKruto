@@ -19,8 +19,8 @@
  */
 
 import { Api } from "../2_tl.ts";
-import { StorageOperations } from "./0_storage_operations.ts";
 import { ConnectionState, EntityGetter, ID, ParseMode, Update } from "../3_types.ts";
+import { StorageOperations } from "./0_storage_operations.ts";
 
 export type Invoke = <T extends Api.AnyFunction<P>, P extends Api.Function, R extends unknown = Api.ReturnType<Api.Functions[T["_"]]>>(function_: T, businessConnectionId?: string) => Promise<R>;
 

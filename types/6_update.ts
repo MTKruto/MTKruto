@@ -22,19 +22,19 @@ import { AuthorizationState } from "./0_authorization_state.ts";
 import { ConnectionState } from "./0_connection_state.ts";
 import { MessageReference } from "./0_message_reference.ts";
 import { StoryReference } from "./0_story_reference.ts";
+import { VideoChat } from "./0_video_chat.ts";
 import { BusinessConnection } from "./2_business_connection.ts";
 import { ChosenInlineResult } from "./2_chosen_inline_result.ts";
 import { InlineQuery } from "./2_inline_query.ts";
 import { MessageInteractions } from "./2_message_interactions.ts";
 import { MessageReactionCount } from "./2_message_reaction_count.ts";
 import { MessageReactions } from "./2_message_reactions.ts";
+import { PreCheckoutQuery } from "./2_pre_checkout_query.ts";
 import { ChatMemberUpdated } from "./3_chat_member_updated.ts";
 import { Story } from "./3_story.ts";
 import { Message } from "./4_message.ts";
 import { CallbackQuery } from "./5_callback_query.ts";
 import { ChatListItem } from "./5_chat_list_item.ts";
-import { VideoChat } from "./0_video_chat.ts";
-import { PreCheckoutQuery } from "./2_pre_checkout_query.ts";
 
 /**
  * A client's connection state was changed.

@@ -19,16 +19,16 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Api, as, is } from "../2_tl.ts";
 import { cleanObject } from "../1_utilities.ts";
+import { Api, as, is } from "../2_tl.ts";
 import { deserializeFileId, FileType, getPhotoFileId, serializeFileId } from "./_file_id.ts";
 import { UsernameResolver } from "./_getters.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
-import { getPhotoSizes } from "./1_photo.ts";
-import { MessageContent } from "./1_message_content.ts";
-import { constructReplyMarkup, ReplyMarkupInlineKeyboard, replyMarkupToTlObject } from "./3_reply_markup.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
+import { MessageContent } from "./1_message_content.ts";
+import { getPhotoSizes } from "./1_photo.ts";
+import { constructReplyMarkup, ReplyMarkupInlineKeyboard, replyMarkupToTlObject } from "./3_reply_markup.ts";
 
 /** @unlisted */
 export type InlineQueryResultType =
