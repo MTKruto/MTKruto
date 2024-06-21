@@ -475,6 +475,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
           }
         }
         return true;
+      } else if (is("bad_msg_notification", error)) {
+        return true;
       } else {
         return next();
       }

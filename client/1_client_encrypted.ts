@@ -20,7 +20,7 @@
 
 import { gunzip, unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
-import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, Logger, sha1 } from "../1_utilities.ts";
+import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, is, isOfEnum, message, ReadObject, TLError, TLReader } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -53,8 +53,9 @@ export interface Handlers {
 export class ClientEncrypted extends ClientAbstract {
   #authKey = new Uint8Array();
   #authKeyId = 0n;
-  #sessionId = getRandomBigInt(8, true, false);
+  #sessionId = 0n;
   #state = { serverSalt: 0n, seqNo: 0, messageId: 0n };
+  #shouldInvalidateSession = true;
   #toAcknowledge = new Set<bigint>();
   #recentAcks = new CacheMap<bigint, { container?: bigint; message: message }>(20);
   #promises = new Map<bigint, { container?: bigint; message: message; resolve?: (obj: ReadObject) => void; reject?: (err: ReadObject | Error) => void; call: Api.AnyObject }>();
@@ -77,6 +78,11 @@ export class ClientEncrypted extends ClientAbstract {
 
   async connect(): Promise<void> {
     await super.connect();
+    if (this.#shouldInvalidateSession) {
+      this.#sessionId = getRandomBigInt(8, true, false);
+      this.#state = { serverSalt: 0n, seqNo: 0, messageId: 0n };
+      this.#shouldInvalidateSession = false;
+    }
     drop(this.#receiveLoop()); // TODO: ability to join this promise
   }
 
@@ -98,8 +104,9 @@ export class ClientEncrypted extends ClientAbstract {
     return this.#state.serverSalt;
   }
 
+  #timeDifference = 0;
   #nextMessageId() {
-    return this.#state.messageId = getMessageId(this.#state.messageId);
+    return this.#state.messageId = getMessageId(this.#state.messageId, this.#timeDifference);
   }
 
   #nextSeqNo(contentRelated: boolean) {
@@ -109,6 +116,12 @@ export class ClientEncrypted extends ClientAbstract {
       this.#state.seqNo++;
     }
     return seqNo;
+  }
+
+  async #invalidateSession() {
+    await this.transport?.transport.deinitialize();
+    await this.transport?.connection.close();
+    this.#shouldInvalidateSession = true;
   }
 
   async #sendMessage(message: message) {
@@ -182,7 +195,7 @@ export class ClientEncrypted extends ClientAbstract {
       this.#promises.delete(key);
     }
 
-    while (this.connected) {
+    loop: while (this.connected) {
       try {
         const buffer = await this.transport.transport.receive();
         this.#L.inBin(buffer);
@@ -214,6 +227,7 @@ export class ClientEncrypted extends ClientAbstract {
           } else if (is("new_session_created", body)) {
             this.serverSalt = body.server_salt;
             drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
+            this.#LreceiveLoop.debug("new session created with ID", body.unique_id);
           } else if (message.body._ == "rpc_result") {
             let result = message.body.result;
             if (is("gzip_packed", result)) {
@@ -269,6 +283,52 @@ export class ClientEncrypted extends ClientAbstract {
                   drop(this.#sendMessage(ack.message));
                 }
               }
+            }
+          } else if (is("bad_msg_notification", message.body)) {
+            let low = false;
+            let unreachable_ = false;
+            switch (message.body.error_code) {
+              case 16: // message ID too low
+                low = true;
+                /* falls through */
+              case 17: // message ID too high
+                this.#timeDifference = Math.abs(toUnixTimestamp(new Date()) - Number(message.msg_id >> 32n));
+                if (!low) {
+                  this.#timeDifference = -this.#timeDifference;
+                  this.#LreceiveLoop.debug("message ID too high, invalidating session");
+                  await this.#invalidateSession();
+                  break loop;
+                } else {
+                  this.#LreceiveLoop.debug("message ID too low, resending message");
+                }
+                break;
+              case 18: // message ID not divisible by 4
+              case 19: // duplicate message ID
+              case 20: // message ID too old
+              case 32: // seqNo too low
+              case 33: // seqNo too high
+              case 34: // invalid seqNo
+              case 35: // invalid seqNo
+                unreachable_ = true;
+                this.#LreceiveLoop.error("unexpected bad_msg_notification:", message.body.error_code);
+                break;
+              case 48: // bad server salt
+                // resend
+                this.#LreceiveLoop.debug("resending message that caused bad_server_salt");
+                break;
+              case 64: // invalid container
+                unreachable_ = true;
+                this.#LreceiveLoop.error("unexpected bad_msg_notification:", message.body.error_code);
+                break;
+              default:
+                await this.#invalidateSession();
+                this.#LreceiveLoop.debug("invalidating session because of unknown bad_msg_notification:", message.body.error_code);
+                break loop;
+            }
+            const promise = this.#promises.get(message.body.bad_msg_id);
+            if (promise) {
+              promise.reject?.(unreachable_ ? unreachable() : message.body);
+              this.#promises.delete(message.body.bad_msg_id);
             }
           }
           this.#toAcknowledge.add(message.msg_id);

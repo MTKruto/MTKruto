@@ -52,7 +52,7 @@ export class ClientPlain extends ClientAbstract {
     if (!this.transport) {
       throw new ConnectionError("Not connected.");
     }
-    const messageId = this.#lastMessageId = getMessageId(this.#lastMessageId);
+    const messageId = this.#lastMessageId = getMessageId(this.#lastMessageId, 0);
 
     const payload = packUnencryptedMessage(serialize(function_), messageId);
     await this.transport.transport.send(payload);
