@@ -28,6 +28,7 @@ import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuest
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
+import { AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, SignInParams, StartVideoChatParams, StopPollParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { getUsername, isMtprotoFunction, resolve } from "./0_utilities.ts";
@@ -40,6 +41,7 @@ import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
 import { FileManager } from "./2_file_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
+import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
 import { UpdateManager } from "./2_update_manager.ts";
 import { MessageManager } from "./3_message_manager.ts";
@@ -48,56 +50,6 @@ import { CallbackQueryManager } from "./4_callback_query_manager.ts";
 import { ChatListManager } from "./4_chat_list_manager.ts";
 import { InlineQueryManager } from "./4_inline_query_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
-import {
-  AddReactionParams,
-  AnswerCallbackQueryParams,
-  AnswerInlineQueryParams,
-  AnswerPreCheckoutQueryParams,
-  BanChatMemberParams,
-  CreateInviteLinkParams,
-  CreateStoryParams,
-  DeleteMessageParams,
-  DeleteMessagesParams,
-  DownloadLiveStreamChunkParams,
-  DownloadParams,
-  EditMessageLiveLocationParams,
-  EditMessageMediaParams,
-  EditMessageParams,
-  EditMessageReplyMarkupParams,
-  ForwardMessagesParams,
-  GetChatsParams,
-  GetCreatedInviteLinksParams,
-  GetHistoryParams,
-  GetMyCommandsParams,
-  JoinVideoChatParams,
-  PinMessageParams,
-  ReplyParams,
-  ScheduleVideoChatParams,
-  SearchMessagesParams,
-  SendAnimationParams,
-  SendAudioParams,
-  SendContactParams,
-  SendDiceParams,
-  SendDocumentParams,
-  SendInlineQueryParams,
-  SendInvoiceParams,
-  SendLocationParams,
-  SendMessageParams,
-  SendPhotoParams,
-  SendPollParams,
-  SendStickerParams,
-  SendVenueParams,
-  SendVideoNoteParams,
-  SendVideoParams,
-  SendVoiceParams,
-  SetChatMemberRightsParams,
-  SetChatPhotoParams,
-  SetMyCommandsParams,
-  SetReactionsParams,
-  SignInParams,
-  StartVideoChatParams,
-  StopPollParams,
-} from "./0_params.ts";
 
 export interface Context {
   /** The client that received the update. */
@@ -325,6 +277,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #inlineQueryManager: InlineQueryManager;
   #chatListManager: ChatListManager;
   #accountManager: AccountManager;
+  #paymentManager: PaymentManager;
 
   #storage_: Storage;
   #messageStorage_: Storage;
@@ -455,6 +408,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager: this.#messageManager });
     this.#chatListManager = new ChatListManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
     this.#accountManager = new AccountManager(c);
+    this.#paymentManager = new PaymentManager(c);
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
 
     const transportProvider = this.#client.transportProvider;
@@ -2747,17 +2701,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.#messageManager.unblockUser(userId);
   }
 
-  /**
-   * Answer a pre-checkout query. Bot-only.
-   *
-   * @method vc
-   * @param preCheckoutQueryId The identifier of the pre-checkout query.
-   * @param ok Whether the checkout is going to be processed.
-   */
-  async answerPreCheckoutQuery(preCheckoutQueryId: string, ok: boolean, params?: AnswerPreCheckoutQueryParams): Promise<void> {
-    await this.#messageManager.answerPreCheckoutQuery(preCheckoutQueryId, ok, params);
-  }
-
   //
   // ========================= VIDEO CHATS ========================= //
   //
@@ -2848,5 +2791,31 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async *downloadLiveStreamChunk(id: string, channelId: number, scale: number, timestamp: number, params?: DownloadLiveStreamChunkParams): AsyncGenerator<Uint8Array, void, unknown> {
     yield* this.#videoChatManager.downloadLiveStreamChunk(id, channelId, scale, timestamp, params);
+  }
+
+  //
+  // ========================= PAYMENTS ========================= //
+  //
+
+  /**
+   * Answer a pre-checkout query. Bot-only.
+   *
+   * @method pa
+   * @param preCheckoutQueryId The identifier of the pre-checkout query.
+   * @param ok Whether the checkout is going to be processed.
+   */
+  async answerPreCheckoutQuery(preCheckoutQueryId: string, ok: boolean, params?: AnswerPreCheckoutQueryParams): Promise<void> {
+    await this.#paymentManager.answerPreCheckoutQuery(preCheckoutQueryId, ok, params);
+  }
+
+  /**
+   * Answer a pre-checkout query. Bot-only.
+   *
+   * @method pa
+   * @param userId The identifier of the user that was charged.
+   * @param telegramPaymentChargeId The identifier of the charge.
+   */
+  async refundStarPayment(userId: ID, telegramPaymentChargeId: string): Promise<void> {
+    await this.#paymentManager.refundStarPayment(userId, telegramPaymentChargeId);
   }
 }
