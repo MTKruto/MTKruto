@@ -197,7 +197,7 @@ jobs:
             await github.rest.actions.createWorkflowDispatch({
               owner: "MTKruto",
               repo: "website",
-              workflow_id: "doc.yml",
+              workflow_id: "build.yml",
               ref: "main",
             });
 
