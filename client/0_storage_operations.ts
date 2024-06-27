@@ -237,7 +237,7 @@ export class StorageOperations {
     if (value == null) {
       await this.#storage.set(key, null);
     } else {
-      await this.#storage.set(key, this.#mustSerialize ? serialize(value) : (value as unknown));
+      await this.#storage.set(key, this.#mustSerialize ? rleEncode(serialize(value)) : (value as unknown));
     }
   }
 
