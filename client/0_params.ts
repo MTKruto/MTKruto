@@ -463,3 +463,13 @@ export interface DownloadLiveStreamChunkParams {
 export interface AnswerPreCheckoutQueryParams {
   error?: string;
 }
+
+export interface ApproveJoinRequestsParams {
+  /** If specified, only join requests initiated from this invite link will be approved. */
+  inviteLink?: string;
+}
+
+export interface DeclineJoinRequestsParams {
+  /** If specified, only join requests initiated from this invite link will be declined. */
+  inviteLink?: string;
+}
