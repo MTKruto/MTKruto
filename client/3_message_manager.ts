@@ -22,7 +22,7 @@ import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, getChannelChatId, is, isOneOf, peerToChatId } from "../2_tl.ts";
-import { constructChatMemberUpdated, constructInviteLink, deserializeFileId, FileId, InputMedia, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
+import { constructChatMemberUpdated, constructInviteLink, constructJoinRequest, deserializeFileId, FileId, InputMedia, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
 import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
@@ -53,6 +53,7 @@ const messageManagerUpdates = [
   "updateDeleteChannelMessages",
   "updateChannelParticipant",
   "updateChatParticipant",
+  "updateBotChatInviteRequester",
 ] as const;
 
 type MessageManagerUpdate = Api.Types[(typeof messageManagerUpdates)[number]];
@@ -990,6 +991,11 @@ export class MessageManager {
       } else {
         return { chatMember };
       }
+    }
+
+    if (is("updateBotChatInviteRequester", update)) {
+      const joinRequest = await constructJoinRequest(update, this.#c.getEntity);
+      return { joinRequest };
     }
 
     return null;
