@@ -27,7 +27,7 @@ import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructCha
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _SendCommon, _SpoilCommon, AddReactionParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
+import { _SendCommon, _SpoilCommon, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
 import { checkMessageId } from "./0_utilities.ts";
 import { checkArray } from "./0_utilities.ts";
 import { isHttpUrl } from "./0_utilities.ts";
@@ -1128,6 +1128,40 @@ export class MessageManager {
   async disableJoinRequests(chatId: ID) {
     await this.#c.storage.assertUser("disableJoinRequests");
     await this.#toggleJoinRequests(chatId, false);
+  }
+
+  async approveJoinRequest(chatId: ID, userId: ID) {
+    await this.#c.invoke({
+      _: "messages.hideChatJoinRequest",
+      peer: await this.#c.getInputPeer(chatId),
+      user_id: await this.#c.getInputUser(userId),
+      approved: true,
+    });
+  }
+  async declineJoinRequest(chatId: ID, userId: ID) {
+    await this.#c.invoke({
+      _: "messages.hideChatJoinRequest",
+      peer: await this.#c.getInputPeer(chatId),
+      user_id: await this.#c.getInputUser(userId),
+    });
+  }
+
+  async approveJoinRequests(chatId: ID, params?: ApproveJoinRequestsParams) {
+    await this.#c.storage.assertUser("approveJoinRequests");
+    await this.#c.invoke({
+      _: "messages.hideAllChatJoinRequests",
+      peer: await this.#c.getInputPeer(chatId),
+      approved: true,
+      link: params?.inviteLink,
+    });
+  }
+  async declineJoinRequests(chatId: ID, params?: DeclineJoinRequestsParams) {
+    await this.#c.storage.assertUser("declineJoinRequests");
+    await this.#c.invoke({
+      _: "messages.hideAllChatJoinRequests",
+      peer: await this.#c.getInputPeer(chatId),
+      link: params?.inviteLink,
+    });
   }
 
   async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams) {

@@ -28,7 +28,7 @@ import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuest
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
-import { AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, SignInParams, StartVideoChatParams, StopPollParams } from "./0_params.ts";
+import { AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, SignInParams, StartVideoChatParams, StopPollParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { getUsername, isMtprotoFunction, resolve } from "./0_utilities.ts";
@@ -2384,6 +2384,48 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink> {
     return await this.#messageManager.createInviteLink(chatId, params);
+  }
+
+  /**
+   * Approve a join request.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat that contains the join request.
+   * @param userId The user who made the join request.
+   */
+  async approveJoinRequest(chatId: ID, userId: ID): Promise<void> {
+    await this.#messageManager.approveJoinRequest(chatId, userId);
+  }
+
+  /**
+   * Decline a join request.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat that contains the join request.
+   * @param userId The user who made the join request.
+   */
+  async declineJoinRequest(chatId: ID, userId: ID): Promise<void> {
+    await this.#messageManager.declineJoinRequest(chatId, userId);
+  }
+
+  /**
+   * Approve all join requests. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat that contains the join requests.
+   */
+  async approveJoinRequests(chatId: ID, params?: ApproveJoinRequestsParams): Promise<void> {
+    await this.#messageManager.approveJoinRequests(chatId, params);
+  }
+
+  /**
+   * Decline all join requests. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat that contains the join requests.
+   */
+  async declineJoinRequests(chatId: ID, params?: DeclineJoinRequestsParams): Promise<void> {
+    await this.#messageManager.declineJoinRequests(chatId, params);
   }
 
   //
