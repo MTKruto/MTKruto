@@ -35,6 +35,7 @@ import { Story } from "./3_story.ts";
 import { Message } from "./4_message.ts";
 import { CallbackQuery } from "./5_callback_query.ts";
 import { ChatListItem } from "./5_chat_list_item.ts";
+import { JoinRequest } from "./3_join_request.ts";
 
 /**
  * A client's connection state was changed.
@@ -320,6 +321,15 @@ export interface UpdatePreCheckoutQuery {
   preCheckoutQuery: PreCheckoutQuery;
 }
 
+/**
+ * A user requested to join a chat. Bot-only.
+ * @unlisted
+ */
+export interface UpdateJoinRequest {
+  /** @discriminator */
+  joinRequest: JoinRequest;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -343,6 +353,7 @@ export interface UpdateMap {
   businessConnection: UpdateBusinessConnection;
   videoChat: UpdateVideoChat;
   preCheckoutQuery: UpdatePreCheckoutQuery;
+  joinRequest: UpdateJoinRequest;
 }
 
 /** @unlisted */
@@ -368,6 +379,7 @@ export type UpdateIntersection = Partial<
   & UpdateBusinessConnection
   & UpdateVideoChat
   & UpdatePreCheckoutQuery
+  & UpdateJoinRequest
 >;
 
 /** An incoming update. */
@@ -392,4 +404,5 @@ export type Update =
   | UpdateNewStory
   | UpdateBusinessConnection
   | UpdateVideoChat
-  | UpdatePreCheckoutQuery;
+  | UpdatePreCheckoutQuery
+  | UpdateJoinRequest;

@@ -102,6 +102,7 @@ export * from "./types/2_story_interactions.ts";
 export * from "./types/2_story_interactive_area.ts";
 export * from "./types/2_successful_payment.ts";
 export * from "./types/3_chat_member_updated.ts";
+export * from "./types/3_join_request.ts";
 export * from "./types/3_reply_markup.ts";
 export * from "./types/3_story.ts";
 export * from "./types/4_inline_query_result.ts";
