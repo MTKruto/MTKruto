@@ -286,7 +286,6 @@ export class ClientEncrypted extends ClientAbstract {
             }
           } else if (is("bad_msg_notification", message.body)) {
             let low = false;
-            let unreachable_ = false;
             switch (message.body.error_code) {
               case 16: // message ID too low
                 low = true;
@@ -302,32 +301,18 @@ export class ClientEncrypted extends ClientAbstract {
                   this.#LreceiveLoop.debug("message ID too low, resending message");
                 }
                 break;
-              case 18: // message ID not divisible by 4
-              case 19: // duplicate message ID
-              case 20: // message ID too old
-              case 32: // seqNo too low
-              case 33: // seqNo too high
-              case 34: // invalid seqNo
-              case 35: // invalid seqNo
-                unreachable_ = true;
-                this.#LreceiveLoop.error("unexpected bad_msg_notification:", message.body.error_code);
-                break;
               case 48: // bad server salt
                 // resend
                 this.#LreceiveLoop.debug("resending message that caused bad_server_salt");
                 break;
-              case 64: // invalid container
-                unreachable_ = true;
-                this.#LreceiveLoop.error("unexpected bad_msg_notification:", message.body.error_code);
-                break;
               default:
                 await this.#invalidateSession();
-                this.#LreceiveLoop.debug("invalidating session because of unknown bad_msg_notification:", message.body.error_code);
+                this.#LreceiveLoop.debug("invalidating session because of unexpected bad_msg_notification:", message.body.error_code);
                 break loop;
             }
             const promise = this.#promises.get(message.body.bad_msg_id);
             if (promise) {
-              promise.reject?.(unreachable_ ? unreachable() : message.body);
+              promise.reject?.(message.body);
               this.#promises.delete(message.body.bad_msg_id);
             }
           }
