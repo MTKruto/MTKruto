@@ -19,7 +19,7 @@
  */
 
 import { MaybePromise } from "../1_utilities.ts";
-import { BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, Message, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, ReplyQuote, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
+import { BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, ReplyQuote, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
 
 export interface AnswerCallbackQueryParams {
   /** A text to be shown to the user. */
