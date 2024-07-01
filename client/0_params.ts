@@ -47,6 +47,12 @@ export type SignInParams = SignInParamsUser | SignInParamsBot;
 export interface _BusinessConnectionIdCommon {
   businessConnectionId?: string;
 }
+
+export interface _ReplyMarkupCommon {
+  /** The reply markup of the message. Bot-only. */
+  replyMarkup?: ReplyMarkup;
+}
+
 export interface _SendCommon extends _BusinessConnectionIdCommon {
   /** Whether to send the message in a silent way without making a sound on the recipients' clients. */
   disableNotification?: boolean;
@@ -60,11 +66,9 @@ export interface _SendCommon extends _BusinessConnectionIdCommon {
   messageThreadId?: number;
   /** The identifier of a chat to send the message on behalf of. User-only. */
   sendAs?: ID;
-  /** The reply markup of the message. Bot-only. */
-  replyMarkup?: ReplyMarkup;
   messageEffectId?: number;
 }
-export interface SendMessageParams extends _SendCommon {
+export interface SendMessageParams extends _SendCommon, _ReplyMarkupCommon {
   /** The parse mode to use. If not provided, the default parse mode will be used. */
   parseMode?: ParseMode;
   /** The message's entities. */
@@ -105,7 +109,7 @@ export interface ForwardMessagesParams extends Omit<_SendCommon, "replyToMessage
   dropCaption?: boolean;
 }
 
-export interface SendPollParams extends _SendCommon {
+export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   /** The entities of the poll's question. */
   questionEntities?: MessageEntity[];
   /** The parse mode to use for the poll's question. If not provided, the default parse mode will be used. */
@@ -134,7 +138,7 @@ export interface SendPollParams extends _SendCommon {
   isClosed?: boolean;
 }
 
-export interface SendInvoiceParams extends _SendCommon {
+export interface SendInvoiceParams extends _SendCommon, _ReplyMarkupCommon {
   providerToken?: string;
   maxTipAmount?: number;
   suggestedTipAmounts?: number[];
@@ -223,7 +227,7 @@ export interface _SpoilCommon {
   /** Whether to mark the media as a spoiler. */
   hasSpoiler?: boolean;
 }
-export interface SendPhotoParams extends _CaptionCommon, _SpoilCommon, _UploadCommon, _SendCommon {
+export interface SendPhotoParams extends _CaptionCommon, _SpoilCommon, _UploadCommon, _SendCommon, _ReplyMarkupCommon {
   selfDestruct?: SelfDestructOption;
 }
 
@@ -283,7 +287,10 @@ export interface SendVideoNoteParams extends _CaptionCommon, _ThumbnailCommon, _
   length?: number;
 }
 
-export interface SendLocationParams extends _SendCommon {
+export interface SendMediaGroupParams extends _UploadCommon, _SendCommon {
+}
+
+export interface SendLocationParams extends _SendCommon, _ReplyMarkupCommon {
   /** The accuracy radius of the location in meters. Must be in the range of 0-1500. */
   horizontalAccuracy?: number;
   /** The duration in which the location can be updated in seconds. Must be in the range of 80-864,000. */
@@ -294,21 +301,21 @@ export interface SendLocationParams extends _SendCommon {
   proximityAlertRadius?: number;
 }
 
-export interface SendVenueParams extends _SendCommon {
+export interface SendVenueParams extends _SendCommon, _ReplyMarkupCommon {
   /** Foursquare identifier of the venue. */
   foursquareId?: string;
   /** Foursquare type of the venue, if known. For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream". */
   foursquareType?: string;
 }
 
-export interface SendContactParams extends _SendCommon {
+export interface SendContactParams extends _SendCommon, _ReplyMarkupCommon {
   /** The contact's last name. */
   lastName?: string;
   /** Additional information in the vCard format. */
   vcard?: string;
 }
 
-export interface SendDiceParams extends _SendCommon {
+export interface SendDiceParams extends _SendCommon, _ReplyMarkupCommon {
   /** The type of the dice. Can be 🎲, 🎯, 🏀, ⚽, 🎳, 🎰. Defaults to 🎲. */
   emoji?: "🎲" | "🎯" | "🏀" | "⚽" | "🎳" | "🎰";
 }
