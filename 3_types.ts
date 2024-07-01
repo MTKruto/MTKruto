@@ -32,6 +32,7 @@ export * from "./types/0_chat_photo.ts";
 export * from "./types/0_connection_state.ts";
 export * from "./types/0_contact.ts";
 export * from "./types/0_dice.ts";
+export * from "./types/0_failed_invitation.ts";
 export * from "./types/0_file_source.ts";
 export * from "./types/0_giveaway_parameters.ts";
 export * from "./types/0_id.ts";
