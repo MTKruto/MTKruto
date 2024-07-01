@@ -35,11 +35,14 @@ export interface _InputMediaCommon {
 
 /** @unlisted */
 export interface InputMediaAnimation extends _InputMediaCommon {
-  /** The new animation. */
+  /**
+   * The animation.
+   * @discriminator
+   */
   animation: FileSource;
   /** A thumbnail to assign. Cannot be a URL. */
   thumbnail?: FileSource;
-  /** The new caption of the message. */
+  /** The caption of the media. */
   caption?: string;
   /** The duration of the animation in seconds. */
   duration?: number;
@@ -53,11 +56,14 @@ export interface InputMediaAnimation extends _InputMediaCommon {
 
 /** @unlisted */
 export interface InputMediaAudio extends _InputMediaCommon {
-  /** The new audio. */
+  /**
+   * The audio.
+   * @discriminator
+   */
   audio: FileSource;
   /** A thumbnail to assign. Cannot be a URL. */
   thumbnail?: FileSource;
-  /** The new caption of the message. */
+  /** The caption of the media. */
   caption?: string;
   /** The duration of the audio file in seconds. */
   duration?: number;
@@ -69,23 +75,29 @@ export interface InputMediaAudio extends _InputMediaCommon {
 
 /** @unlisted */
 export interface InputMediaDocument extends _InputMediaCommon {
-  /** The new document. */
+  /**
+   * The document.
+   * @discriminator
+   */
   document: FileSource;
   /** A thumbnail to assign. Cannot be a URL. */
   thumbnail?: FileSource;
-  /** The new caption of the message. */
+  /** The caption of the media. */
   caption?: string;
 }
 
 /** @unlisted */
 export interface InputMediaPhoto extends _InputMediaCommon {
-  /** The new photo. */
+  /**
+   * The photo.
+   * @discriminator
+   */
   photo: FileSource;
   /** The width of the photo in pixels. */
   width?: number;
   /** The height of the photo in pixels. */
   height?: number;
-  /** The new caption of the message. */
+  /** The caption of the media. */
   caption?: string;
   /** Whether to mark the media as a spoiler. */
   hasSpoiler?: boolean;
@@ -94,7 +106,10 @@ export interface InputMediaPhoto extends _InputMediaCommon {
 
 /** @unlisted */
 export interface InputMediaVideo extends _InputMediaCommon {
-  /** The new video. */
+  /**
+   * The video.
+   * @discriminator
+   */
   video: FileSource;
   /** A thumbnail to assign. Cannot be a URL. */
   thumbnail?: FileSource;
@@ -106,7 +121,7 @@ export interface InputMediaVideo extends _InputMediaCommon {
   height?: number;
   /** Whether the video is suitable for streaming. */
   supportsStreaming?: boolean;
-  /** The new caption of the message. */
+  /** The caption of the media. */
   caption?: string;
   /** Whether to mark the media as a spoiler. */
   hasSpoiler?: boolean;
