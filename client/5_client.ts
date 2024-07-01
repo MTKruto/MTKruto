@@ -1236,7 +1236,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   #pingLoopAbortController: AbortController | null = null;
-  #pingInterval = 1 * minute;
+  #pingInterval = 56 * second;
   #lastUpdates = new Date();
   #startPingLoop() {
     drop(this.#pingLoop());
@@ -1258,6 +1258,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         if (!this.connected) {
           continue;
         }
+        this.#pingLoopAbortController.signal.throwIfAborted();
         await this.invoke({ _: "ping_delay_disconnect", ping_id: getRandomId(), disconnect_delay: this.#pingInterval / second + 15 });
         this.#pingLoopAbortController.signal.throwIfAborted();
         if (Date.now() - this.#lastUpdates.getTime() >= 15 * minute) {
@@ -1268,6 +1269,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
           );
         }
       } catch (err) {
+        if (err instanceof DOMException && err.name == "AbortError") {
+          this.#pingLoopAbortController = new AbortController();
+        }
         if (!this.connected) {
           continue;
         }
