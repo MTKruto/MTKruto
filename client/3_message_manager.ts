@@ -267,6 +267,7 @@ export class MessageManager {
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
     const sendAs = await this.#resolveSendAs(params);
+    const effect = params?.messageEffectId ? BigInt(params.messageEffectId) : undefined;
 
     let result: Api.Updates;
     if (!noWebpage && params?.linkPreview?.url) {
@@ -289,6 +290,7 @@ export class MessageManager {
         send_as: sendAs,
         entities,
         reply_markup: replyMarkup,
+        effect,
       }, params?.businessConnectionId);
     } else {
       result = await this.#c.invoke(
@@ -305,6 +307,7 @@ export class MessageManager {
           send_as: sendAs,
           entities,
           reply_markup: replyMarkup,
+          effect,
         },
         params?.businessConnectionId,
       );
@@ -351,6 +354,7 @@ export class MessageManager {
         provider: "foursquare",
       }),
       message: "",
+      effect: params?.messageEffectId ? BigInt(params.messageEffectId) : undefined,
     }, params?.businessConnectionId);
 
     const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -383,6 +387,7 @@ export class MessageManager {
           vcard: params?.vcard ?? "",
         }),
         message: "",
+        effect: params?.messageEffectId ? BigInt(params.messageEffectId) : undefined,
       },
       params?.businessConnectionId,
     );
@@ -413,6 +418,7 @@ export class MessageManager {
         emoticon: params?.emoji ?? "🎲",
       }),
       message: "",
+      effect: params?.messageEffectId ? BigInt(params.messageEffectId) : undefined,
     }, params?.businessConnectionId);
 
     const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -460,6 +466,7 @@ export class MessageManager {
             }),
           }),
         message: "",
+        effect: params?.messageEffectId ? BigInt(params.messageEffectId) : undefined,
       },
       params?.businessConnectionId,
     );
@@ -608,6 +615,7 @@ export class MessageManager {
         media,
         message: caption ?? "",
         entities: captionEntities,
+        effect: params?.messageEffectId ? BigInt(params.messageEffectId) : undefined,
       },
       params?.businessConnectionId,
     );
@@ -681,6 +689,7 @@ export class MessageManager {
         send_as: sendAs,
         media,
         message: "",
+        effect: params?.messageEffectId ? BigInt(params.messageEffectId) : undefined,
       },
       params?.businessConnectionId,
     );

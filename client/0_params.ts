@@ -62,6 +62,7 @@ export interface _SendCommon extends _BusinessConnectionIdCommon {
   sendAs?: ID;
   /** The reply markup of the message. Bot-only. */
   replyMarkup?: ReplyMarkup;
+  messageEffectId?: number;
 }
 export interface SendMessageParams extends _SendCommon {
   /** The parse mode to use. If not provided, the default parse mode will be used. */
