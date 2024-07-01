@@ -473,3 +473,7 @@ export interface DeclineJoinRequestsParams {
   /** If specified, only join requests initiated from this invite link will be declined. */
   inviteLink?: string;
 }
+
+export interface AddChatMemberParams {
+  historyLimit?: number;
+}
