@@ -27,7 +27,7 @@ import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructCha
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _SendCommon, _SpoilCommon, AddChatMemberParams, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
+import { _SendCommon, _SpoilCommon, AddChatMemberParams, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams } from "./0_params.ts";
 import { checkMessageId } from "./0_utilities.ts";
 import { checkArray } from "./0_utilities.ts";
 import { isHttpUrl } from "./0_utilities.ts";
@@ -1407,5 +1407,66 @@ export class MessageManager {
       return result.missing_invitees.map(constructFailedInvitation);
     }
     unreachable();
+  }
+
+  async sendMediaGroup(chatId: ID, media: InputMedia[], params?: SendMediaGroupParams) {
+    {
+      if (!Array.isArray(media) || !media.length) {
+        throw new InputError("Media group must not be empty.");
+      }
+      // deno-lint-ignore no-explicit-any
+      const firstMedia = (media as any)?.[0];
+      const firstMediaType = firstMedia?.animation !== undefined ? "animation" : firstMedia?.audio !== undefined ? "audio" : firstMedia?.photo !== undefined ? "photo" : firstMedia?.video !== undefined ? "video" : "document";
+      for (const media_ of media) {
+        // deno-lint-ignore no-explicit-any
+        const thisMediaType = (media_ as any)?.animation !== undefined ? "animation" : (media_ as any)?.audio !== undefined ? "audio" : (media_ as any)?.photo !== undefined ? "photo" : (media_ as any)?.video !== undefined ? "video" : "document";
+        if (thisMediaType == "animation") {
+          throw new InputError("Media groups cannot consist of animations.");
+        }
+        if ((firstMediaType == "video" || firstMediaType == "photo") && (thisMediaType != "video" && thisMediaType != "photo")) {
+          throw new InputError(`Media of the type ${firstMediaType} cannot be mixed with those of the type ${thisMediaType}.`);
+        }
+        if (firstMediaType != "video" && firstMediaType != "photo" && firstMediaType != thisMediaType) {
+          throw new InputError(`Media of the type ${firstMediaType} cannot be mixed with other types.`);
+        }
+      }
+    }
+
+    const multiMedia: Api.inputSingleMedia[] = new Array<Api.InputSingleMedia>();
+    for (const v of media) {
+      const randomId = getRandomId();
+      const [message, entities] = v.caption ? await this.parseText(v.caption || "", { entities: v.captionEntities, parseMode: v.parseMode }) : ["", []];
+      multiMedia.push({ _: "inputSingleMedia", message, entities, random_id: randomId, media: await this.#resolveInputMedia(v) });
+    }
+
+    const peer = await this.#c.getInputPeer(chatId);
+    for (const [i, media_] of multiMedia.entries()) {
+      if (is("inputMediaUploadedPhoto", media_.media)) {
+        const result = as("messageMediaPhoto", await this.#c.invoke({ _: "messages.uploadMedia", media: media_.media, peer }));
+        const photo = as("photo", result.photo);
+        multiMedia[i] = { ...media_, media: { _: "inputMediaPhoto", id: { ...photo, _: "inputPhoto" } } };
+      } else if (is("inputMediaUploadedDocument", media_.media)) {
+        const result = as("messageMediaDocument", await this.#c.invoke({ _: "messages.uploadMedia", media: media_.media, peer }));
+        const document = as("document", result.document);
+        multiMedia[i] = { ...media_, media: { _: "inputMediaDocument", id: { ...document, _: "inputDocument" } } };
+      }
+    }
+
+    const silent = params?.disableNotification ? true : undefined;
+    const noforwards = params?.protectContent ? true : undefined;
+    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
+
+    const result = await this.#c.invoke({
+      _: "messages.sendMultiMedia",
+      peer,
+      multi_media: multiMedia,
+      effect: params?.messageEffectId ? BigInt(params.messageEffectId) : undefined,
+      noforwards,
+      silent,
+      send_as: sendAs,
+      reply_to: await this.#constructReplyTo(params),
+    });
+
+    return await this.#updatesToMessages(chatId, result);
   }
 }

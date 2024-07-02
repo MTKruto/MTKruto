@@ -18,7 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals } from "../0_deps.ts";
+import { assertEquals, assertInstanceOf } from "../0_deps.ts";
+import { InputError } from "../0_errors.ts";
 import { MessageEntity } from "../3_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
 
@@ -53,4 +54,39 @@ ${code}
 \`\`\``; // important blank line
     assertEquals(MessageManager.parseText(text, [], "Markdown"), expected);
   });
+});
+
+Deno.test("sendMediaGroup() disallows invalid media type combination", async () => {
+  // deno-lint-ignore ban-ts-comment
+  // @ts-ignore
+  const messageManager = new MessageManager({ id: "" });
+  const chatId = -1;
+
+  try {
+    await messageManager.sendMediaGroup(chatId, [{ animation: "" }]);
+  } catch (err) {
+    assertInstanceOf(err, InputError);
+    assertEquals(err.message, "Media groups cannot consist of animations.");
+  }
+
+  try {
+    await messageManager.sendMediaGroup(chatId, [{ document: "" }, { video: "" }]);
+  } catch (err) {
+    assertInstanceOf(err, InputError);
+    assertEquals(err.message, "Media of the type document cannot be mixed with other types.");
+  }
+
+  try {
+    await messageManager.sendMediaGroup(chatId, [{ video: "" }, { document: "" }]);
+  } catch (err) {
+    assertInstanceOf(err, InputError);
+    assertEquals(err.message, "Media of the type video cannot be mixed with those of the type document.");
+  }
+
+  try {
+    await messageManager.sendMediaGroup(chatId, [{ photo: "" }, { document: "" }]);
+  } catch (err) {
+    assertInstanceOf(err, InputError);
+    assertEquals(err.message, "Media of the type photo cannot be mixed with those of the type document.");
+  }
 });
