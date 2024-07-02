@@ -845,7 +845,16 @@ export class MessageManager {
     if (!("animation" in message) && !("audio" in message) && !("document" in message) && !("photo" in message) && !("video" in message)) {
       throw new InputError("Unexpected message type.");
     }
-    const result = await this.#c.invoke({ _: "messages.editMessage", peer: await this.#c.getInputPeer(chatId), id: messageId, media: await this.#resolveInputMedia(media), reply_markup: await this.#constructReplyMarkup(params) });
+    const [text, entities] = media.caption !== undefined ? await this.parseText(media.caption, { entities: media.captionEntities, parseMode: media.parseMode }) : ["", []];
+    const result = await this.#c.invoke({
+      _: "messages.editMessage",
+      peer: await this.#c.getInputPeer(chatId),
+      id: messageId,
+      media: await this.#resolveInputMedia(media),
+      reply_markup: await this.#constructReplyMarkup(params),
+      message: text,
+      entities,
+    });
 
     const message_ = (await this.#updatesToMessages(chatId, result))[0];
     return message_;
@@ -1435,7 +1444,7 @@ export class MessageManager {
     const multiMedia: Api.inputSingleMedia[] = new Array<Api.InputSingleMedia>();
     for (const v of media) {
       const randomId = getRandomId();
-      const [message, entities] = v.caption ? await this.parseText(v.caption || "", { entities: v.captionEntities, parseMode: v.parseMode }) : ["", []];
+      const [message, entities] = v.caption !== undefined ? await this.parseText(v.caption, { entities: v.captionEntities, parseMode: v.parseMode }) : ["", []];
       multiMedia.push({ _: "inputSingleMedia", message, entities, random_id: randomId, media: await this.#resolveInputMedia(v) });
     }
 
