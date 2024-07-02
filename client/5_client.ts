@@ -2463,8 +2463,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param chatId The identifier of the channel or supergroup to add the users to.
    * @param userId The identifiers of the users to add to the channel or supergroup.
    */
-  async addChatMembers(chatId: ID, userId: ID, params?: AddChatMemberParams): Promise<void> {
-    await this.#messageManager.addChatMember(chatId, userId, params);
+  async addChatMembers(chatId: ID, userIds: ID[]): Promise<FailedInvitation[]> {
+    return await this.#messageManager.addChatMembers(chatId, userIds);
   }
 
   //
