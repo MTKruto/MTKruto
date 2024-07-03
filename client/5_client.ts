@@ -71,6 +71,10 @@ export interface Context {
   replyPoll: (question: string, options: [string, string, ...string[]], params?: Omit<SendPollParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessagePoll>;
   /** Context-aware alias for `client.sendPhoto()`. */
   replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessagePhoto>;
+  /** Context-aware alias for `client.sendMediaGroup()`. */
+  replyMediaGroup: (media: InputMedia[], params?: Omit<SendMediaGroupParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<Message[]>;
+  /** Context-aware alias for `client.sendInvoice()`. */
+  replyInvoice: (title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: Omit<SendInvoiceParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageInvoice>;
   /** Context-aware alias for `client.sendDocument()`. */
   replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageDocument>;
   /** Context-aware alias for `client.sendSticker()`. */
@@ -193,6 +197,10 @@ export interface Context {
   getBusinessConnection: () => Promise<BusinessConnection>;
   /** Context-aware alias for `client.answerPreCheckoutQuery()`. */
   answerPreCheckoutQuery: (ok: boolean, params?: AnswerPreCheckoutQueryParams) => Promise<void>;
+  /** Context-aware alias for `client.approveJoinRequest()`. */
+  approveJoinRequest: () => Promise<void>;
+  /** Context-aware alias for `client.declineJoinRequest()`. */
+  declineJoinRequest: () => Promise<void>;
 }
 
 export class Composer<C extends Context = Context> extends Composer_<C> {
@@ -584,7 +592,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     const reactions = "messageInteractions" in update ? update.messageInteractions : undefined;
     const mustGetMsg = () => {
       if (msg !== undefined) {
-        return { chatId: msg.chat.id, messageId: msg.id, businessConnectionId: msg.businessConnectionId, senderId: (msg.from ?? msg.senderChat)?.id };
+        return { chatId: msg.chat.id, messageId: msg.id, businessConnectionId: msg.businessConnectionId, senderId: (msg.from ?? msg.senderChat)?.id, userId: msg.from?.id };
       } else if (reactions !== undefined) {
         return { chatId: reactions.chatId, messageId: reactions.messageId };
       } else {
@@ -651,6 +659,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
         const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
         return this.sendPhoto(chatId, photo, { ...params, replyToMessageId, businessConnectionId });
+      },
+      replyMediaGroup: (media, params) => {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendMediaGroup(chatId, media, { ...params, replyToMessageId, businessConnectionId });
+      },
+      replyInvoice: (title, description, payload, currency, prices, params) => {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendInvoice(chatId, title, description, payload, currency, prices, { ...params, replyToMessageId, businessConnectionId });
       },
       replyDocument: (document, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
@@ -922,6 +940,20 @@ export class Client<C extends Context = Context> extends Composer<C> {
           unreachable();
         }
         return this.answerPreCheckoutQuery(update.preCheckoutQuery.id, ok, params);
+      },
+      approveJoinRequest: () => {
+        const { chatId, userId } = mustGetMsg();
+        if (!userId) {
+          unreachable();
+        }
+        return this.approveJoinRequest(chatId, userId);
+      },
+      declineJoinRequest: () => {
+        const { chatId, userId } = mustGetMsg();
+        if (!userId) {
+          unreachable();
+        }
+        return this.declineJoinRequest(chatId, userId);
       },
     };
 
