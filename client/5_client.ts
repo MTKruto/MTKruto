@@ -298,6 +298,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #persistCache: boolean;
 
   #cdn: boolean;
+  #L: Logger;
   #LsignIn: Logger;
   #LpingLoop: Logger;
   #LhandleMigrationError: Logger;
@@ -361,7 +362,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
     this.#guaranteeUpdateDelivery = params?.guaranteeUpdateDelivery ?? false;
 
-    const L = getLogger("Client").client(id++);
+    const L = this.#L = getLogger("Client").client(id++);
     this.#LsignIn = L.branch("signIn");
     this.#LpingLoop = L.branch("pingLoop");
     this.#LhandleMigrationError = L.branch("[handleMigrationError]");
@@ -438,45 +439,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
       }
     });
 
-    let reconnecting = false;
-    this.on("connectionState", ({ connectionState }, next) => {
-      if (connectionState != "notConnected") {
-        return next();
-      }
-      this.#pingLoopAbortController?.abort();
-      if (this.disconnected) {
-        L.debug("not reconnecting");
-        return next();
-      }
-      if (reconnecting) {
-        return next();
-      }
-      reconnecting = true;
-      drop((async () => {
-        try {
-          let delay = 5;
-          while (!this.connected) {
-            L.debug("reconnecting");
-            try {
-              await this.connect();
-              L.debug("reconnected");
-              drop(this.#updateManager.recoverUpdateGap("reconnect"));
-              break;
-            } catch (err) {
-              if (delay < 15) {
-                delay += 5;
-              }
-              L.debug(`failed to reconnect, retrying in ${delay}:`, err);
-            }
-            await new Promise((r) => setTimeout(r, delay * second));
-          }
-        } finally {
-          reconnecting = false;
-        }
-      })());
-      return next();
-    });
-
     if (params?.defaultHandlers ?? true) {
       this.invoke.use(async ({ error }, next) => {
         if (error instanceof FloodWait && error.seconds <= 10) {
@@ -487,6 +449,42 @@ export class Client<C extends Context = Context> extends Composer<C> {
           return next();
         }
       });
+    }
+  }
+
+  #reconnecting = false;
+  async #reconnect() {
+    if (this.connected) {
+      return;
+    }
+    if (this.disconnected) {
+      this.#L.debug("not reconnecting");
+      return;
+    }
+    if (this.#reconnecting) {
+      return;
+    }
+    this.#reconnecting = true;
+    try {
+      let delay = 5;
+      while (!this.connected) {
+        this.#L.debug("reconnecting");
+        this.#pingLoopAbortController?.abort();
+        try {
+          await this.connect();
+          this.#L.debug("reconnected");
+          drop(this.#updateManager.recoverUpdateGap("reconnect"));
+          break;
+        } catch (err) {
+          if (delay < 15) {
+            delay += 5;
+          }
+          this.#L.debug(`failed to reconnect, retrying in ${delay}:`, err);
+        }
+        await new Promise((r) => setTimeout(r, delay * second));
+      }
+    } finally {
+      this.#reconnecting = false;
     }
   }
 
@@ -937,6 +935,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   #lastPropagatedConnectionState: ConnectionState | null = null;
   #stateChangeHandler: (connected: boolean) => void = ((connected: boolean) => {
+    drop(this.#reconnect());
     const connectionState = connected ? "ready" : "notConnected";
     if (this.#lastPropagatedConnectionState != connectionState) {
       this.#propagateConnectionState(connectionState);
@@ -1010,6 +1009,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       await this.#client.connect();
       this.#lastConnect = new Date();
       await Promise.all([this.storage.setAuthKey(this.#client.authKey), this.storage.setDc(this.#client.dc), this.storage.setServerSalt(this.#client.serverSalt)]);
+      this.#startConnectionInsuranceLoop();
       this.#startPingLoop();
     } finally {
       unlock();
@@ -1036,6 +1036,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async disconnect() {
     this.#connectionInited = false;
     await this.#client.disconnect();
+    this.#pingLoopAbortController?.abort();
+    this.#connectionInsuranceLoopAbortController?.abort();
   }
 
   #lastPropagatedAuthorizationState: boolean | null = null;
@@ -1235,6 +1237,36 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.signIn(params);
   }
 
+  #connectionInsuranceLoopStarted = false;
+  #connectionInsuranceLoopAbortController: AbortController | null = null;
+  #startConnectionInsuranceLoop() {
+    drop(this.#connectionInsuranceLoop());
+  }
+  async #connectionInsuranceLoop() {
+    if (this.#connectionInsuranceLoopStarted) {
+      return;
+    }
+    this.#connectionInsuranceLoopAbortController = new AbortController();
+    this.#connectionInsuranceLoopStarted = true;
+    while (!this.disconnected) {
+      try {
+        await new Promise((resolve, reject) => {
+          const timeout = setTimeout(resolve, 10 * second);
+          this.#connectionInsuranceLoopAbortController!.signal.onabort = () => {
+            reject(this.#connectionInsuranceLoopAbortController?.signal.reason);
+            clearTimeout(timeout);
+          };
+        });
+      } catch {
+        break;
+      }
+      if (!this.connected) {
+        drop(this.#reconnect());
+      }
+    }
+    this.#connectionInsuranceLoopStarted = false;
+  }
+
   #pingLoopAbortController: AbortController | null = null;
   #pingInterval = 56 * second;
   #lastUpdates = new Date();
@@ -1246,10 +1278,12 @@ export class Client<C extends Context = Context> extends Composer<C> {
       return;
     }
     this.#pingLoopAbortController = new AbortController();
+    let timeElapsed = 0;
     while (this.connected) {
+      const then = Date.now();
       try {
         await new Promise((resolve, reject) => {
-          const timeout = setTimeout(resolve, this.#pingInterval);
+          const timeout = setTimeout(resolve, this.#pingInterval - timeElapsed);
           this.#pingLoopAbortController!.signal.onabort = () => {
             reject(this.#pingLoopAbortController?.signal.reason);
             clearTimeout(timeout);
@@ -1276,6 +1310,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
           continue;
         }
         this.#LpingLoop.error(err);
+      } finally {
+        timeElapsed = Date.now() - then;
       }
     }
   }
