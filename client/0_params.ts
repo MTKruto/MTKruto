@@ -287,7 +287,7 @@ export interface SendVideoNoteParams extends _CaptionCommon, _ThumbnailCommon, _
   length?: number;
 }
 
-export interface SendMediaGroupParams extends _UploadCommon, _SendCommon {
+export interface SendMediaGroupParams extends _SendCommon {
 }
 
 export interface SendLocationParams extends _SendCommon, _ReplyMarkupCommon {
