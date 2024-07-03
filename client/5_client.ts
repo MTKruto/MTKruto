@@ -1037,7 +1037,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#connectionInited = false;
     await this.#client.disconnect();
     this.#pingLoopAbortController?.abort();
-    this.#connectionInsuranceLoop?.abort();
+    this.#connectionInsuranceLoopAbortController?.abort();
   }
 
   #lastPropagatedAuthorizationState: boolean | null = null;
