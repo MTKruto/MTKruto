@@ -21,7 +21,7 @@
 import { gunzip, unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, is, isOfEnum, message, ReadObject, TLError, TLReader } from "../2_tl.ts";
+import { Api, is, isOfEnum, isOneOf, message, ReadObject, TLError, TLReader } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";
@@ -217,6 +217,7 @@ export class ClientEncrypted extends ClientAbstract {
         const messages = decrypted.body._ == "msg_container" ? decrypted.body.messages : [decrypted];
 
         for (const message of messages) {
+          let sendAck = true;
           let body = message.body;
           if (is("gzip_packed", body)) {
             body = new TLReader(gunzip(body.packed_data)).readObject() as Api.AnyType;
@@ -228,8 +229,8 @@ export class ClientEncrypted extends ClientAbstract {
             this.serverSalt = body.server_salt;
             drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
             this.#LreceiveLoop.debug("new session created with ID", body.unique_id);
-          } else if (message.body._ == "rpc_result") {
-            let result = message.body.result;
+          } else if (body._ == "rpc_result") {
+            let result = body.result;
             if (is("gzip_packed", result)) {
               result = new TLReader(gunzip(result.packed_data)).readObject() as Api.AnyType;
             }
@@ -238,7 +239,7 @@ export class ClientEncrypted extends ClientAbstract {
             } else {
               this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
             }
-            const messageId = message.body.req_msg_id;
+            const messageId = body.req_msg_id;
             const promise = this.#promises.get(messageId);
             const resolvePromise = () => {
               if (promise) {
@@ -256,37 +257,39 @@ export class ClientEncrypted extends ClientAbstract {
             } else {
               drop(this.handlers.result?.(result, resolvePromise));
             }
-          } else if (is("pong", message.body)) {
-            const promise = this.#promises.get(message.body.msg_id);
+          } else if (is("pong", body)) {
+            const promise = this.#promises.get(body.msg_id);
             if (promise) {
-              promise.resolve?.(message.body);
-              this.#promises.delete(message.body.msg_id);
+              promise.resolve?.(body);
+              this.#promises.delete(body.msg_id);
             }
-          } else if (is("bad_server_salt", message.body)) {
+          } else if (is("bad_server_salt", body)) {
+            sendAck = false;
             this.#LreceiveLoop.debug("server salt reassigned");
-            this.serverSalt = message.body.new_server_salt;
+            this.serverSalt = body.new_server_salt;
             drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
-            const promise = this.#promises.get(message.body.bad_msg_id);
-            const ack = this.#recentAcks.get(message.body.bad_msg_id);
+            const promise = this.#promises.get(body.bad_msg_id);
+            const ack = this.#recentAcks.get(body.bad_msg_id);
             if (promise) {
               drop(this.#sendMessage(promise.message));
             } else if (ack) {
               drop(this.#sendMessage(ack.message));
             } else {
               for (const promise of this.#promises.values()) {
-                if (promise.container && promise.container == message.body.bad_msg_id) {
+                if (promise.container && promise.container == body.bad_msg_id) {
                   drop(this.#sendMessage(promise.message));
                 }
               }
               for (const ack of this.#recentAcks.values()) {
-                if (ack.container && ack.container == message.body.bad_msg_id) {
+                if (ack.container && ack.container == body.bad_msg_id) {
                   drop(this.#sendMessage(ack.message));
                 }
               }
             }
-          } else if (is("bad_msg_notification", message.body)) {
+          } else if (is("bad_msg_notification", body)) {
+            sendAck = false;
             let low = false;
-            switch (message.body.error_code) {
+            switch (body.error_code) {
               case 16: // message ID too low
                 low = true;
                 /* falls through */
@@ -307,16 +310,21 @@ export class ClientEncrypted extends ClientAbstract {
                 break;
               default:
                 await this.#invalidateSession();
-                this.#LreceiveLoop.debug("invalidating session because of unexpected bad_msg_notification:", message.body.error_code);
+                this.#LreceiveLoop.debug("invalidating session because of unexpected bad_msg_notification:", body.error_code);
                 break loop;
             }
-            const promise = this.#promises.get(message.body.bad_msg_id);
+            const promise = this.#promises.get(body.bad_msg_id);
             if (promise) {
-              promise.reject?.(message.body);
-              this.#promises.delete(message.body.bad_msg_id);
+              promise.reject?.(body);
+              this.#promises.delete(body.bad_msg_id);
             }
+          } else if (isOneOf(["msg_detailed_info", "msg_new_detailed_info"], body)) {
+            sendAck = false;
+            this.#toAcknowledge.add(body.answer_msg_id);
           }
-          this.#toAcknowledge.add(message.msg_id);
+          if (sendAck) {
+            this.#toAcknowledge.add(message.msg_id);
+          }
         }
       } catch (err) {
         if (!this.connected) {
