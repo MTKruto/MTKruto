@@ -56,7 +56,7 @@ export class ClientEncrypted extends ClientAbstract {
   #sessionId = 0n;
   #state = { serverSalt: 0n, seqNo: 0, messageId: 0n };
   #shouldInvalidateSession = true;
-  #toAcknowledge = new Set<bigint>();
+  #toAcknowledge = new Array<bigint>();
   #recentAcks = new CacheMap<bigint, { container?: bigint; message: message }>(20);
   #promises = new Map<bigint, { container?: bigint; message: message; resolve?: (obj: ReadObject) => void; reject?: (err: ReadObject | Error) => void; call: Api.AnyObject }>();
 
@@ -149,12 +149,12 @@ export class ClientEncrypted extends ClientAbstract {
 
     let container: bigint | undefined = undefined;
 
-    if (this.#toAcknowledge.size) {
+    if (this.#toAcknowledge.length) {
       const ack: message = {
         _: "message",
         msg_id: this.#nextMessageId(),
         seqno: this.#nextSeqNo(false),
-        body: { _: "msgs_ack", msg_ids: [...this.#toAcknowledge] },
+        body: { _: "msgs_ack", msg_ids: this.#toAcknowledge.splice(0, 8192) },
       };
       this.#recentAcks.set(ack.msg_id, { container, message: ack });
       message_ = {
@@ -320,10 +320,10 @@ export class ClientEncrypted extends ClientAbstract {
             }
           } else if (isOneOf(["msg_detailed_info", "msg_new_detailed_info"], body)) {
             sendAck = false;
-            this.#toAcknowledge.add(body.answer_msg_id);
+            this.#toAcknowledge.push(body.answer_msg_id);
           }
           if (sendAck) {
-            this.#toAcknowledge.add(message.msg_id);
+            this.#toAcknowledge.push(message.msg_id);
           }
         }
       } catch (err) {
