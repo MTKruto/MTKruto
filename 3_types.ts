@@ -98,6 +98,7 @@ export * from "./types/2_message_reaction_count.ts";
 export * from "./types/2_message_reactions.ts";
 export * from "./types/2_poll.ts";
 export * from "./types/2_pre_checkout_query.ts";
+export * from "./types/2_reply_to.ts";
 export * from "./types/2_story_content.ts";
 export * from "./types/2_story_interactions.ts";
 export * from "./types/2_story_interactive_area.ts";

@@ -19,7 +19,8 @@
  */
 
 import { MaybePromise } from "../1_utilities.ts";
-import { BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, ReplyQuote, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
+import { BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
+import { ReplyTo } from "../types/2_reply_to.ts";
 
 export interface AnswerCallbackQueryParams {
   /** A text to be shown to the user. */
@@ -58,10 +59,8 @@ export interface _SendCommon extends _BusinessConnectionIdCommon {
   disableNotification?: boolean;
   /** Whether to protect the contents of the message from copying and forwarding. */
   protectContent?: boolean;
-  /** The identifier of a message to reply to. */
-  replyToMessageId?: number;
-  /** A specific part of the replying message's text to quote. */
-  replyQuote?: ReplyQuote;
+  /** Information on what the message is replying to. */
+  replyTo?: ReplyTo;
   /** The identifier of a thread to send the message to. */
   messageThreadId?: number;
   /** The identifier of a chat to send the message on behalf of. User-only. */

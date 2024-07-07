@@ -24,7 +24,7 @@ import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, minute
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, as, chatIdToPeerId, getChatIdPeerType, is, peerToChatId } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ConnectionState, constructUser, FailedInvitation, FileSource, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, Sticker, Story, Update, User, VideoChat, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
+import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ConnectionState, constructUser, FailedInvitation, FileSource, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, Sticker, Story, Update, User, VideoChat, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
@@ -66,37 +66,37 @@ export interface Context {
   senderChat?: ChatP;
   toJSON: () => Update;
   /** Context-aware alias for `client.sendMessage()`. */
-  reply: (text: string, params?: Omit<SendMessageParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageText>;
+  reply: (text: string, params?: Omit<SendMessageParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageText>;
   /** Context-aware alias for `client.sendPoll()`. */
-  replyPoll: (question: string, options: [string, string, ...string[]], params?: Omit<SendPollParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessagePoll>;
+  replyPoll: (question: string, options: [string, string, ...string[]], params?: Omit<SendPollParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessagePoll>;
   /** Context-aware alias for `client.sendPhoto()`. */
-  replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessagePhoto>;
+  replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessagePhoto>;
   /** Context-aware alias for `client.sendMediaGroup()`. */
-  replyMediaGroup: (media: InputMedia[], params?: Omit<SendMediaGroupParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<Message[]>;
+  replyMediaGroup: (media: InputMedia[], params?: Omit<SendMediaGroupParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<Message[]>;
   /** Context-aware alias for `client.sendInvoice()`. */
-  replyInvoice: (title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: Omit<SendInvoiceParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageInvoice>;
+  replyInvoice: (title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: Omit<SendInvoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageInvoice>;
   /** Context-aware alias for `client.sendDocument()`. */
-  replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageDocument>;
+  replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageDocument>;
   /** Context-aware alias for `client.sendSticker()`. */
-  replySticker: (sticker: FileSource, params?: Omit<SendStickerParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageSticker>;
+  replySticker: (sticker: FileSource, params?: Omit<SendStickerParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageSticker>;
   /** Context-aware alias for `client.sendLocation()`. */
-  replyLocation: (latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageLocation>;
+  replyLocation: (latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageLocation>;
   /** Context-aware alias for `client.sendDice()`. */
-  replyDice: (params?: Omit<SendDiceParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageDice>;
+  replyDice: (params?: Omit<SendDiceParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageDice>;
   /** Context-aware alias for `client.sendVenue()`. */
-  replyVenue: (latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageVenue>;
+  replyVenue: (latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageVenue>;
   /** Context-aware alias for `client.sendContact()`. */
-  replyContact: (firstName: string, number: string, params?: Omit<SendContactParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageContact>;
+  replyContact: (firstName: string, number: string, params?: Omit<SendContactParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageContact>;
   /** Context-aware alias for `client.sendVideo()`. */
-  replyVideo: (video: FileSource, params?: Omit<SendVideoParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageVideo>;
+  replyVideo: (video: FileSource, params?: Omit<SendVideoParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageVideo>;
   /** Context-aware alias for `client.sendAnimation()`. */
-  replyAnimation: (animation: FileSource, params?: Omit<SendAnimationParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageAnimation>;
+  replyAnimation: (animation: FileSource, params?: Omit<SendAnimationParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageAnimation>;
   /** Context-aware alias for `client.sendVoice()`. */
-  replyVoice: (voice: FileSource, params?: Omit<SendVoiceParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageVoice>;
+  replyVoice: (voice: FileSource, params?: Omit<SendVoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageVoice>;
   /** Context-aware alias for `client.sendAudio()`. */
-  replyAudio: (audio: FileSource, params?: Omit<SendAudioParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageAudio>;
+  replyAudio: (audio: FileSource, params?: Omit<SendAudioParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageAudio>;
   /** Context-aware alias for `client.sendPoll()`. */
-  replyVideoNote: (videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyToMessageId" | "businessConnectionId"> & ReplyParams) => Promise<MessageVideoNote>;
+  replyVideoNote: (videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageVideoNote>;
   /** Context-aware alias for `client.deleteMessage()`. */
   delete: () => Promise<void>;
   /** Context-aware alias for `client.forwardMessage()`. */
@@ -626,11 +626,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
     const chat = chat_ ?? msg?.chat;
     const from = "callbackQuery" in update ? update.callbackQuery.from : "inlineQuery" in update ? update.inlineQuery.from : "message" in update ? update.message.from : "editedMessage" in update ? update.editedMessage?.from : "chatMember" in update ? update.chatMember.from : "messageReactions" in update ? update.messageReactions.user : "preCheckoutQuery" in update ? update.preCheckoutQuery.from : "joinRequest" in update ? update.joinRequest.user : undefined;
     const senderChat = msg?.senderChat;
-    const getReplyToMessageId = (quote: boolean | undefined, chatId: number, messageId: number) => {
+    const getReplyTo = (quote: boolean | undefined, chatId: number, messageId: number): ReplyTo | undefined => {
+      if ("story" in update) {
+        return { chatId: update.story.chat.id, storyId: update.story.id };
+      }
       const isPrivate = chatId > 0;
       const shouldQuote = quote === undefined ? !isPrivate : quote;
-      const replyToMessageId = shouldQuote ? messageId : undefined;
-      return replyToMessageId;
+      return shouldQuote ? { messageId } : undefined;
     };
     const me = "connectionState" in update ? this.#lastGetMe : ("authorizationState" in update && !update.authorizationState.authorized) ? this.#lastGetMe : await this.#getMe();
 
@@ -647,83 +649,83 @@ export class Client<C extends Context = Context> extends Composer<C> {
       },
       reply: (text, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendMessage(chatId, text, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendMessage(chatId, text, { ...params, replyTo, businessConnectionId });
       },
       replyPoll: (question, options, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendPoll(chatId, question, options, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendPoll(chatId, question, options, { ...params, replyTo, businessConnectionId });
       },
       replyPhoto: (photo, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendPhoto(chatId, photo, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendPhoto(chatId, photo, { ...params, replyTo, businessConnectionId });
       },
       replyMediaGroup: (media, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendMediaGroup(chatId, media, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendMediaGroup(chatId, media, { ...params, replyTo, businessConnectionId });
       },
       replyInvoice: (title, description, payload, currency, prices, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendInvoice(chatId, title, description, payload, currency, prices, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendInvoice(chatId, title, description, payload, currency, prices, { ...params, replyTo, businessConnectionId });
       },
       replyDocument: (document, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendDocument(chatId, document, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendDocument(chatId, document, { ...params, replyTo, businessConnectionId });
       },
       replySticker: (sticker, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendSticker(chatId, sticker, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendSticker(chatId, sticker, { ...params, replyTo, businessConnectionId });
       },
       replyContact: (firstName, number, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendContact(chatId, firstName, number, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendContact(chatId, firstName, number, { ...params, replyTo, businessConnectionId });
       },
       replyLocation: (latitude, longitude, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendLocation(chatId, latitude, longitude, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendLocation(chatId, latitude, longitude, { ...params, replyTo, businessConnectionId });
       },
       replyDice: (params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendDice(chatId, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendDice(chatId, { ...params, replyTo, businessConnectionId });
       },
       replyVenue: (latitude, longitude, title, address, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendVenue(chatId, latitude, longitude, title, address, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendVenue(chatId, latitude, longitude, title, address, { ...params, replyTo, businessConnectionId });
       },
       replyVideo: (video, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendVideo(chatId, video, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendVideo(chatId, video, { ...params, replyTo, businessConnectionId });
       },
       replyAnimation: (document, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendAnimation(chatId, document, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendAnimation(chatId, document, { ...params, replyTo, businessConnectionId });
       },
       replyVoice: (document, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendVoice(chatId, document, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendVoice(chatId, document, { ...params, replyTo, businessConnectionId });
       },
       replyAudio: (document, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendAudio(chatId, document, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendAudio(chatId, document, { ...params, replyTo, businessConnectionId });
       },
       replyVideoNote: (videoNote, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
-        return this.sendVideoNote(chatId, videoNote, { ...params, replyToMessageId, businessConnectionId });
+        const replyTo = getReplyTo(params?.quote, chatId, messageId);
+        return this.sendVideoNote(chatId, videoNote, { ...params, replyTo, businessConnectionId });
       },
       delete: () => {
         const { chatId, messageId } = mustGetMsg();

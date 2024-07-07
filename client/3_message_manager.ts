@@ -319,8 +319,18 @@ export class MessageManager {
 
   async #constructReplyTo(params?: _SendCommon) {
     const topMsgId = params?.messageThreadId;
-    const replyToMsgId = params?.replyToMessageId;
-    return replyToMsgId !== undefined ? ({ _: "inputReplyToMessage", reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId, quote_text: params?.replyQuote?.text, quote_entities: await Promise.all(params?.replyQuote?.entities.map((v) => messageEntityToTlObject(v, this.#c.getEntity)) ?? []), quote_offset: params?.replyQuote?.offset }) as Api.inputReplyToMessage : undefined;
+    if (!params?.replyTo) {
+      if (topMsgId) {
+        return { _: "inputReplyToMessage", reply_to_msg_id: topMsgId } as Api.inputReplyToMessage;
+      } else {
+        return undefined;
+      }
+    }
+    if ("messageId" in params.replyTo) {
+      return { _: "inputReplyToMessage", reply_to_msg_id: params.replyTo.messageId, top_msg_id: topMsgId, quote_text: params.replyTo.quote?.text, quote_entities: await Promise.all(params.replyTo.quote?.entities.map((v) => messageEntityToTlObject(v, this.#c.getEntity)) ?? []), quote_offset: params.replyTo.quote?.offset } as Api.inputReplyToMessage;
+    } else {
+      return { _: "inputReplyToStory", peer: await this.#c.getInputPeer(params.replyTo.chatId), story_id: params.replyTo.storyId } as Api.inputReplyToStory;
+    }
   }
 
   async sendVenue(chatId: ID, latitude: number, longitude: number, title: string, address: string, params?: SendVenueParams) {
