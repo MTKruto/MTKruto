@@ -20,7 +20,7 @@
 
 import { Parser } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { MessageEntity } from "../3_types.ts";
+import { MessageEntity, MessageEntityBlockquote } from "../3_types.ts";
 
 export function parseHtml(html: string) {
   html = html.trim();
@@ -79,6 +79,9 @@ export function parseHtml(html: string) {
           break;
         case "blockquote":
           stack.push({ type: "blockquote", offset: text.length, length: 0 });
+          if (attribs.collapsible) {
+            (stack[stack.length - 1] as MessageEntityBlockquote).collapsible = true;
+          }
       }
     },
     ontext(data) {

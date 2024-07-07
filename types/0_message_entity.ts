@@ -19,6 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api, is } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 
@@ -151,6 +152,7 @@ export interface MessageEntityStrikethrough extends _MessageEntityBase {
 export interface MessageEntityBlockquote extends _MessageEntityBase {
   /** @discriminator */
   type: "blockquote";
+  collapsible?: true;
 }
 
 /** @unlisted */
@@ -227,7 +229,7 @@ export function constructMessageEntity(obj: Api.MessageEntity): MessageEntity | 
   } else if (is("messageEntityStrike", obj)) {
     return { type: "strikethrough", offset: obj.offset, length: obj.length };
   } else if (is("messageEntityBlockquote", obj)) {
-    return { type: "blockquote", offset: obj.offset, length: obj.length };
+    return cleanObject({ type: "blockquote", offset: obj.offset, length: obj.length, collapsible: obj.collapsed ? true : undefined } as const);
   } else if (is("messageEntityBankCard", obj)) {
     return { type: "bankCard", offset: obj.offset, length: obj.length };
   } else if (is("messageEntitySpoiler", obj)) {
@@ -294,7 +296,7 @@ export async function messageEntityToTlObject(entity: MessageEntity, getEntity: 
     case "strikethrough":
       return { _: "messageEntityStrike", offset, length };
     case "blockquote":
-      return { _: "messageEntityBlockquote", offset, length };
+      return { _: "messageEntityBlockquote", offset, length, collapsed: entity.collapsible };
     case "bankCard":
       return { _: "messageEntityBankCard", offset, length };
     case "spoiler":
