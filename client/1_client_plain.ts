@@ -48,7 +48,7 @@ export class ClientPlain extends ClientAbstract {
     this.#publicKeys = params?.publicKeys ?? PUBLIC_KEYS;
   }
 
-  async invoke<T extends Api.AnyObject<P>, P extends Api.Function>(function_: T): Promise<T["_"] extends keyof Api.Functions ? Api.ReturnType<Api.Functions[T["_"]]> : never> {
+  async invoke<T extends Api.AnyObject, R = T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T): Promise<R> {
     if (!this.transport) {
       throw new ConnectionError("Not connected.");
     }
@@ -69,7 +69,7 @@ export class ClientPlain extends ClientAbstract {
     const reader = new TLReader(message);
     const result = reader.readObject();
     L.in(result);
-    return result as T["_"] extends keyof Api.Functions ? Api.ReturnType<Api.Functions[T["_"]]> : never;
+    return result as R;
   }
 
   async createAuthKey(): Promise<[Uint8Array, bigint]> {
