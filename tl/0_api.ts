@@ -906,6 +906,7 @@ export interface channelFull {
   restricted_sponsored?: true;
   can_view_revenue?: true;
   paid_media_allowed?: true;
+  can_view_stars_revenue?: true;
   id: bigint;
   about: string;
   participants_count?: number;
@@ -1453,6 +1454,15 @@ export interface messageActionRequestedPeerSentMe {
   _: "messageActionRequestedPeerSentMe";
   button_id: number;
   peers: Array<RequestedPeer>;
+}
+
+export interface messageActionPaymentRefunded {
+  _: "messageActionPaymentRefunded";
+  peer: Peer;
+  currency: string;
+  total_amount: bigint;
+  payload?: Uint8Array;
+  charge: PaymentCharge;
 }
 
 export interface dialog {
@@ -9503,21 +9513,21 @@ export interface invokeWithApnsSecretPrefix {
   [R]?: Error;
 }
 
-export interface invokeAfterMsg<T extends Function> {
+export interface invokeAfterMsg<T> {
   _: "invokeAfterMsg";
   msg_id: bigint;
   query: T;
   [R]?: ReturnType<T>;
 }
 
-export interface invokeAfterMsgs<T extends Function> {
+export interface invokeAfterMsgs<T> {
   _: "invokeAfterMsgs";
   msg_ids: Array<bigint>;
   query: T;
   [R]?: ReturnType<T>;
 }
 
-export interface initConnection<T extends Function> {
+export interface initConnection<T> {
   _: "initConnection";
   api_id: number;
   device_model: string;
@@ -9532,41 +9542,41 @@ export interface initConnection<T extends Function> {
   [R]?: ReturnType<T>;
 }
 
-export interface invokeWithLayer<T extends Function> {
+export interface invokeWithLayer<T> {
   _: "invokeWithLayer";
   layer: number;
   query: T;
   [R]?: ReturnType<T>;
 }
 
-export interface invokeWithoutUpdates<T extends Function> {
+export interface invokeWithoutUpdates<T> {
   _: "invokeWithoutUpdates";
   query: T;
   [R]?: ReturnType<T>;
 }
 
-export interface invokeWithMessagesRange<T extends Function> {
+export interface invokeWithMessagesRange<T> {
   _: "invokeWithMessagesRange";
   range: MessageRange;
   query: T;
   [R]?: ReturnType<T>;
 }
 
-export interface invokeWithTakeout<T extends Function> {
+export interface invokeWithTakeout<T> {
   _: "invokeWithTakeout";
   takeout_id: bigint;
   query: T;
   [R]?: ReturnType<T>;
 }
 
-export interface invokeWithBusinessConnection<T extends Function> {
+export interface invokeWithBusinessConnection<T> {
   _: "invokeWithBusinessConnection";
   connection_id: string;
   query: T;
   [R]?: ReturnType<T>;
 }
 
-export interface invokeWithGooglePlayIntegrity<T extends Function> {
+export interface invokeWithGooglePlayIntegrity<T> {
   _: "invokeWithGooglePlayIntegrity";
   nonce: string;
   token: string;
@@ -9574,7 +9584,7 @@ export interface invokeWithGooglePlayIntegrity<T extends Function> {
   [R]?: ReturnType<T>;
 }
 
-export interface invokeWithApnsSecret<T extends Function> {
+export interface invokeWithApnsSecret<T> {
   _: "invokeWithApnsSecret";
   nonce: string;
   secret: string;
@@ -14462,6 +14472,7 @@ export interface Types {
   "messageActionGiveawayResults": messageActionGiveawayResults;
   "messageActionBoostApply": messageActionBoostApply;
   "messageActionRequestedPeerSentMe": messageActionRequestedPeerSentMe;
+  "messageActionPaymentRefunded": messageActionPaymentRefunded;
   "dialog": dialog;
   "dialogFolder": dialogFolder;
   "photoEmpty": photoEmpty;
@@ -15635,7 +15646,7 @@ export interface Types {
   "inputStarsTransaction": inputStarsTransaction;
 }
 
-export interface Functions<T extends Function = Function> {
+export interface Functions<T = Function> {
   "req_pq_multi": req_pq_multi;
   "req_DH_params": req_DH_params;
   "set_client_DH_params": set_client_DH_params;
@@ -16823,9 +16834,9 @@ export interface Enums {
 
 export type AnyType = Types[keyof Types];
 
-export type AnyFunction<T extends Function = Function> = Functions<T>[keyof Functions<T>];
+export type AnyFunction<T = Function> = Functions<T>[keyof Functions<T>];
 
-export type AnyObject<T extends Function = Function> = AnyType | AnyFunction<T>;
+export type AnyObject<T = Function> = AnyType | AnyFunction<T>;
 
 export type ResPQ = resPQ;
 
@@ -16927,7 +16938,7 @@ export type Message = messageEmpty | message | messageService;
 
 export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia;
 
-export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe;
+export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded;
 
 export type Dialog = dialog | dialogFolder;
 
@@ -18256,6 +18267,7 @@ const map: Map<number, string> = new Map([
   [0x2A9FADC5, "messageActionGiveawayResults"],
   [0xCC02AA6D, "messageActionBoostApply"],
   [0x93B31848, "messageActionRequestedPeerSentMe"],
+  [0x41B3E202, "messageActionPaymentRefunded"],
   [0xD58A08C6, "dialog"],
   [0x71BD134C, "dialogFolder"],
   [0x2331B22D, "photoEmpty"],
@@ -19486,7 +19498,7 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["ChatPhoto", ["chatPhotoEmpty", "chatPhoto"]],
   ["Message", ["messageEmpty", "message", "messageService"]],
   ["MessageMedia", ["messageMediaEmpty", "messageMediaPhoto", "messageMediaGeo", "messageMediaContact", "messageMediaUnsupported", "messageMediaDocument", "messageMediaWebPage", "messageMediaVenue", "messageMediaGame", "messageMediaInvoice", "messageMediaGeoLive", "messageMediaPoll", "messageMediaDice", "messageMediaStory", "messageMediaGiveaway", "messageMediaGiveawayResults", "messageMediaPaidMedia"]],
-  ["MessageAction", ["messageActionEmpty", "messageActionChatCreate", "messageActionChatEditTitle", "messageActionChatEditPhoto", "messageActionChatDeletePhoto", "messageActionChatAddUser", "messageActionChatDeleteUser", "messageActionChatJoinedByLink", "messageActionChannelCreate", "messageActionChatMigrateTo", "messageActionChannelMigrateFrom", "messageActionPinMessage", "messageActionHistoryClear", "messageActionGameScore", "messageActionPaymentSentMe", "messageActionPaymentSent", "messageActionPhoneCall", "messageActionScreenshotTaken", "messageActionCustomAction", "messageActionBotAllowed", "messageActionSecureValuesSentMe", "messageActionSecureValuesSent", "messageActionContactSignUp", "messageActionGeoProximityReached", "messageActionGroupCall", "messageActionInviteToGroupCall", "messageActionSetMessagesTTL", "messageActionGroupCallScheduled", "messageActionSetChatTheme", "messageActionChatJoinedByRequest", "messageActionWebViewDataSentMe", "messageActionWebViewDataSent", "messageActionGiftPremium", "messageActionTopicCreate", "messageActionTopicEdit", "messageActionSuggestProfilePhoto", "messageActionRequestedPeer", "messageActionSetChatWallPaper", "messageActionGiftCode", "messageActionGiveawayLaunch", "messageActionGiveawayResults", "messageActionBoostApply", "messageActionRequestedPeerSentMe"]],
+  ["MessageAction", ["messageActionEmpty", "messageActionChatCreate", "messageActionChatEditTitle", "messageActionChatEditPhoto", "messageActionChatDeletePhoto", "messageActionChatAddUser", "messageActionChatDeleteUser", "messageActionChatJoinedByLink", "messageActionChannelCreate", "messageActionChatMigrateTo", "messageActionChannelMigrateFrom", "messageActionPinMessage", "messageActionHistoryClear", "messageActionGameScore", "messageActionPaymentSentMe", "messageActionPaymentSent", "messageActionPhoneCall", "messageActionScreenshotTaken", "messageActionCustomAction", "messageActionBotAllowed", "messageActionSecureValuesSentMe", "messageActionSecureValuesSent", "messageActionContactSignUp", "messageActionGeoProximityReached", "messageActionGroupCall", "messageActionInviteToGroupCall", "messageActionSetMessagesTTL", "messageActionGroupCallScheduled", "messageActionSetChatTheme", "messageActionChatJoinedByRequest", "messageActionWebViewDataSentMe", "messageActionWebViewDataSent", "messageActionGiftPremium", "messageActionTopicCreate", "messageActionTopicEdit", "messageActionSuggestProfilePhoto", "messageActionRequestedPeer", "messageActionSetChatWallPaper", "messageActionGiftCode", "messageActionGiveawayLaunch", "messageActionGiveawayResults", "messageActionBoostApply", "messageActionRequestedPeerSentMe", "messageActionPaymentRefunded"]],
   ["Dialog", ["dialog", "dialogFolder"]],
   ["Photo", ["photoEmpty", "photo"]],
   ["PhotoSize", ["photoSizeEmpty", "photoSize", "photoCachedSize", "photoStrippedSize", "photoSizeProgressive", "photoPathSize"]],
@@ -21519,6 +21531,7 @@ const types: Map<string, Parameters> = new Map([
         ["restricted_sponsored", "true", "flags2.11?true"],
         ["can_view_revenue", "true", "flags2.12?true"],
         ["paid_media_allowed", "true", "flags2.14?true"],
+        ["can_view_stars_revenue", "true", "flags2.15?true"],
         ["id", "bigint", "long"],
         ["about", "string", "string"],
         ["participants_count", "number", "flags.0?int"],
@@ -22360,6 +22373,20 @@ const types: Map<string, Parameters> = new Map([
       [
         ["button_id", "number", "int"],
         ["peers", ["RequestedPeer"], "Vector<RequestedPeer>"],
+      ],
+    ],
+  ],
+  [
+    "messageActionPaymentRefunded",
+    [
+      0x41B3E202,
+      [
+        ["flags", flags, "#"],
+        ["peer", "Peer", "Peer"],
+        ["currency", "string", "string"],
+        ["total_amount", "bigint", "long"],
+        ["payload", Uint8Array, "flags.0?bytes"],
+        ["charge", "PaymentCharge", "PaymentCharge"],
       ],
     ],
   ],
