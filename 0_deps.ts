@@ -18,17 +18,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "https://deno.land/std@0.224.0/assert/mod.ts";
+export * from "jsr:@std/assert@1";
 
-export * as path from "https://deno.land/std@0.224.0/path/mod.ts";
+export * as path from "jsr:@std/path@1";
 
-export { concat } from "https://deno.land/std@0.224.0/bytes/concat.ts";
+export { concat } from "jsr:@std/bytes@1/concat";
 
-export { iterateReader } from "https://deno.land/std@0.224.0/io/iterate_reader.ts";
+export { iterateReader } from "jsr:@std/io@0/iterate-reader";
 
-export { decodeBase64, encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
+export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1/base64";
 
-import { contentType as contentType_ } from "https://deno.land/std@0.224.0/media_types/content_type.ts";
+import { contentType as contentType_ } from "jsr:@std/media-types@1/content-type";
 export const contentType: typeof contentType_ = (extentionOrType) => {
   if (extentionOrType == "tgs") {
     return "application/x-tgsticker";
@@ -36,7 +36,7 @@ export const contentType: typeof contentType_ = (extentionOrType) => {
     return contentType_(extentionOrType);
   }
 };
-import { extension as extension_ } from "https://deno.land/std@0.224.0/media_types/extension.ts";
+import { extension as extension_ } from "jsr:@std/media-types@1/extension";
 export function extension(mimeType: string) {
   if (mimeType == "application/x-tgsticker") {
     return "tgs";
