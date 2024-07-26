@@ -137,7 +137,7 @@ export class ClientEncrypted extends ClientAbstract {
     this.#L.outBin(payload);
   }
 
-  async invoke<T extends Api.AnyObject, R = T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
+  async invoke<T extends Api.AnyObject, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
     const messageId = this.#nextMessageId();
     let message_: message = {
       _: "message",
