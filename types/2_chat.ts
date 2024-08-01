@@ -63,6 +63,7 @@ export interface ChatPrivate extends ChatBase, ChatPPrivate {
   location?: Location;
   /** The opening hours of the business. */
   openingHours?: OpeningHours;
+  hasMainMiniApp?: boolean;
 }
 
 /**
@@ -75,6 +76,7 @@ export async function constructChat(fullChat: Api.userFull | Api.chatFull | Api.
     const user = await getEntity({ _: "peerUser", user_id: fullChat.id });
     if (user == null) unreachable();
     const chatP = constructChatP(user);
+
     return cleanObject({
       ...chatP,
       birthday: fullChat.birthday ? constructBirthday(fullChat.birthday) : undefined,
@@ -82,6 +84,7 @@ export async function constructChat(fullChat: Api.userFull | Api.chatFull | Api.
       address: fullChat.business_location?.address,
       location: fullChat.business_location?.geo_point && is("geoPoint", fullChat.business_location.geo_point) ? constructLocation(fullChat.business_location.geo_point) : undefined,
       openingHours: fullChat.business_work_hours ? constructOpeningHours(fullChat.business_work_hours) : undefined,
+      hasMainMiniApp: user.bot ? user.bot_has_main_app : undefined,
     });
   } else if (is("chatFull", fullChat)) {
     const chat = await getEntity({ _: "peerChat", chat_id: fullChat.id });
