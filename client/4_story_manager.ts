@@ -72,6 +72,9 @@ export class StoryManager {
         throw new InputError("URL not supported.");
       } else {
         const file = await this.#c.fileManager.upload(source, params, null, "video" in content);
+        if (is("inputFileStoryDocument", file)) {
+          unreachable();
+        }
         const mimeType = contentType(file.name.split(".").slice(-1)[0]) ?? "application/octet-stream";
         if ("video" in content) {
           media = { _: "inputMediaUploadedDocument", file, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: content.duration }], mime_type: mimeType };
