@@ -551,6 +551,9 @@ export class MessageManager {
           }
           return name;
         });
+        if (is("inputFileStoryDocument", file)) {
+          unreachable();
+        }
         let thumb: Api.InputFile | undefined = undefined;
         if (params?.thumbnail) {
           thumb = await this.#c.fileManager.upload(params.thumbnail, { chunkSize: params?.chunkSize, signal: params?.signal });
@@ -787,6 +790,9 @@ export class MessageManager {
           }
           return name;
         });
+        if (is("inputFileStoryDocument", file)) {
+          unreachable();
+        }
         let thumb: Api.InputFile | undefined = undefined;
         if ("thumbnail" in media && media.thumbnail) {
           thumb = await this.#c.fileManager.upload(media.thumbnail, { chunkSize: media?.chunkSize, signal: media?.signal });

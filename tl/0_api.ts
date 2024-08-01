@@ -384,6 +384,11 @@ export interface inputFileBig {
   name: string;
 }
 
+export interface inputFileStoryDocument {
+  _: "inputFileStoryDocument";
+  id: InputDocument;
+}
+
 export interface inputMediaEmpty {
   _: "inputMediaEmpty";
 }
@@ -718,6 +723,7 @@ export interface user {
   stories_unavailable?: true;
   contact_require_premium?: true;
   bot_business?: true;
+  bot_has_main_app?: true;
   id: bigint;
   access_hash?: bigint;
   first_name?: string;
@@ -735,6 +741,7 @@ export interface user {
   stories_max_id?: number;
   color?: PeerColor;
   profile_color?: PeerColor;
+  bot_active_users?: number;
 }
 
 export interface userProfilePhotoEmpty {
@@ -1463,6 +1470,16 @@ export interface messageActionPaymentRefunded {
   total_amount: bigint;
   payload?: Uint8Array;
   charge: PaymentCharge;
+}
+
+export interface messageActionGiftStars {
+  _: "messageActionGiftStars";
+  currency: string;
+  amount: bigint;
+  stars: bigint;
+  crypto_currency?: string;
+  crypto_amount?: bigint;
+  transaction_id?: string;
 }
 
 export interface dialog {
@@ -3634,6 +3651,7 @@ export interface documentAttributeVideo {
   w: number;
   h: number;
   preload_prefix_size?: number;
+  video_start_ts?: number;
 }
 
 export interface documentAttributeAudio {
@@ -3945,6 +3963,7 @@ export interface botCommand {
 
 export interface botInfo {
   _: "botInfo";
+  has_preview_medias?: true;
   user_id?: bigint;
   description?: string;
   description_photo?: Photo;
@@ -4830,6 +4849,10 @@ export interface topPeerCategoryForwardUsers {
 
 export interface topPeerCategoryForwardChats {
   _: "topPeerCategoryForwardChats";
+}
+
+export interface topPeerCategoryBotsApp {
+  _: "topPeerCategoryBotsApp";
 }
 
 export interface topPeerCategoryPeers {
@@ -7850,7 +7873,7 @@ export interface inputInvoicePremiumGiftCode {
 
 export interface inputInvoiceStars {
   _: "inputInvoiceStars";
-  option: StarsTopupOption;
+  purpose: InputStorePaymentPurpose;
 }
 
 export interface payments_exportedInvoice {
@@ -7912,8 +7935,16 @@ export interface inputStorePaymentPremiumGiveaway {
   amount: bigint;
 }
 
-export interface inputStorePaymentStars {
-  _: "inputStorePaymentStars";
+export interface inputStorePaymentStarsTopup {
+  _: "inputStorePaymentStarsTopup";
+  stars: bigint;
+  currency: string;
+  amount: bigint;
+}
+
+export interface inputStorePaymentStarsGift {
+  _: "inputStorePaymentStarsGift";
+  user_id: InputUser;
   stars: bigint;
   currency: string;
   amount: bigint;
@@ -8568,6 +8599,14 @@ export interface mediaAreaUrl {
   _: "mediaAreaUrl";
   coordinates: MediaAreaCoordinates;
   url: string;
+}
+
+export interface mediaAreaWeather {
+  _: "mediaAreaWeather";
+  coordinates: MediaAreaCoordinates;
+  emoji: string;
+  temperature_c: number;
+  color: number;
 }
 
 export interface peerStories {
@@ -9354,6 +9393,7 @@ export interface starsTransaction {
   refund?: true;
   pending?: true;
   failed?: true;
+  gift?: true;
   id: string;
   stars: bigint;
   date: number;
@@ -9430,6 +9470,33 @@ export interface inputStarsTransaction {
   _: "inputStarsTransaction";
   refund?: true;
   id: string;
+}
+
+export interface starsGiftOption {
+  _: "starsGiftOption";
+  extended?: true;
+  stars: bigint;
+  store_product?: string;
+  currency: string;
+  amount: bigint;
+}
+
+export interface bots_popularAppBots {
+  _: "bots.popularAppBots";
+  next_offset?: string;
+  users: Array<User>;
+}
+
+export interface botPreviewMedia {
+  _: "botPreviewMedia";
+  date: number;
+  media: MessageMedia;
+}
+
+export interface bots_previewInfo {
+  _: "bots.previewInfo";
+  media: Array<BotPreviewMedia>;
+  lang_codes: Array<string>;
 }
 
 export interface req_pq_multi {
@@ -10602,6 +10669,7 @@ export interface contacts_getTopPeers {
   forward_chats?: true;
   groups?: true;
   channels?: true;
+  bots_app?: true;
   offset: number;
   limit: number;
   hash: bigint;
@@ -12419,6 +12487,17 @@ export interface messages_getFactCheck {
   [R]?: Array<FactCheck>;
 }
 
+export interface messages_requestMainWebView {
+  _: "messages.requestMainWebView";
+  compact?: true;
+  peer: InputPeer;
+  bot: InputUser;
+  start_param?: string;
+  theme_params?: DataJSON;
+  platform: string;
+  [R]?: WebViewResult;
+}
+
 export interface updates_getState {
   _: "updates.getState";
   [R]?: updates_State;
@@ -13300,6 +13379,59 @@ export interface bots_invokeWebViewCustomMethod {
   [R]?: DataJSON;
 }
 
+export interface bots_getPopularAppBots {
+  _: "bots.getPopularAppBots";
+  offset: string;
+  limit: number;
+  [R]?: bots_PopularAppBots;
+}
+
+export interface bots_addPreviewMedia {
+  _: "bots.addPreviewMedia";
+  bot: InputUser;
+  lang_code: string;
+  media: InputMedia;
+  [R]?: BotPreviewMedia;
+}
+
+export interface bots_editPreviewMedia {
+  _: "bots.editPreviewMedia";
+  bot: InputUser;
+  lang_code: string;
+  media: InputMedia;
+  new_media: InputMedia;
+  [R]?: BotPreviewMedia;
+}
+
+export interface bots_deletePreviewMedia {
+  _: "bots.deletePreviewMedia";
+  bot: InputUser;
+  lang_code: string;
+  media: Array<InputMedia>;
+  [R]?: boolean;
+}
+
+export interface bots_reorderPreviewMedias {
+  _: "bots.reorderPreviewMedias";
+  bot: InputUser;
+  lang_code: string;
+  order: Array<InputMedia>;
+  [R]?: boolean;
+}
+
+export interface bots_getPreviewInfo {
+  _: "bots.getPreviewInfo";
+  bot: InputUser;
+  lang_code: string;
+  [R]?: bots_PreviewInfo;
+}
+
+export interface bots_getPreviewMedias {
+  _: "bots.getPreviewMedias";
+  bot: InputUser;
+  [R]?: Array<BotPreviewMedia>;
+}
+
 export interface payments_getPaymentForm {
   _: "payments.getPaymentForm";
   invoice: InputInvoice;
@@ -13472,6 +13604,12 @@ export interface payments_getStarsTransactionsByID {
   peer: InputPeer;
   id: Array<InputStarsTransaction>;
   [R]?: payments_StarsStatus;
+}
+
+export interface payments_getStarsGiftOptions {
+  _: "payments.getStarsGiftOptions";
+  user_id?: InputUser;
+  [R]?: Array<StarsGiftOption>;
 }
 
 export interface stickers_createStickerSet {
@@ -14337,6 +14475,7 @@ export interface Types {
   "inputPhoneContact": inputPhoneContact;
   "inputFile": inputFile;
   "inputFileBig": inputFileBig;
+  "inputFileStoryDocument": inputFileStoryDocument;
   "inputMediaEmpty": inputMediaEmpty;
   "inputMediaUploadedPhoto": inputMediaUploadedPhoto;
   "inputMediaPhoto": inputMediaPhoto;
@@ -14473,6 +14612,7 @@ export interface Types {
   "messageActionBoostApply": messageActionBoostApply;
   "messageActionRequestedPeerSentMe": messageActionRequestedPeerSentMe;
   "messageActionPaymentRefunded": messageActionPaymentRefunded;
+  "messageActionGiftStars": messageActionGiftStars;
   "dialog": dialog;
   "dialogFolder": dialogFolder;
   "photoEmpty": photoEmpty;
@@ -14974,6 +15114,7 @@ export interface Types {
   "topPeerCategoryPhoneCalls": topPeerCategoryPhoneCalls;
   "topPeerCategoryForwardUsers": topPeerCategoryForwardUsers;
   "topPeerCategoryForwardChats": topPeerCategoryForwardChats;
+  "topPeerCategoryBotsApp": topPeerCategoryBotsApp;
   "topPeerCategoryPeers": topPeerCategoryPeers;
   "contacts.topPeersNotModified": contacts_topPeersNotModified;
   "contacts.topPeers": contacts_topPeers;
@@ -15429,7 +15570,8 @@ export interface Types {
   "inputStorePaymentGiftPremium": inputStorePaymentGiftPremium;
   "inputStorePaymentPremiumGiftCode": inputStorePaymentPremiumGiftCode;
   "inputStorePaymentPremiumGiveaway": inputStorePaymentPremiumGiveaway;
-  "inputStorePaymentStars": inputStorePaymentStars;
+  "inputStorePaymentStarsTopup": inputStorePaymentStarsTopup;
+  "inputStorePaymentStarsGift": inputStorePaymentStarsGift;
   "premiumGiftOption": premiumGiftOption;
   "paymentFormMethod": paymentFormMethod;
   "emojiStatusEmpty": emojiStatusEmpty;
@@ -15523,6 +15665,7 @@ export interface Types {
   "mediaAreaChannelPost": mediaAreaChannelPost;
   "inputMediaAreaChannelPost": inputMediaAreaChannelPost;
   "mediaAreaUrl": mediaAreaUrl;
+  "mediaAreaWeather": mediaAreaWeather;
   "peerStories": peerStories;
   "stories.peerStories": stories_peerStories;
   "messages.webPage": messages_webPage;
@@ -15644,6 +15787,10 @@ export interface Types {
   "payments.starsRevenueWithdrawalUrl": payments_starsRevenueWithdrawalUrl;
   "payments.starsRevenueAdsAccountUrl": payments_starsRevenueAdsAccountUrl;
   "inputStarsTransaction": inputStarsTransaction;
+  "starsGiftOption": starsGiftOption;
+  "bots.popularAppBots": bots_popularAppBots;
+  "botPreviewMedia": botPreviewMedia;
+  "bots.previewInfo": bots_previewInfo;
 }
 
 export interface Functions<T = Function> {
@@ -16047,6 +16194,7 @@ export interface Functions<T = Function> {
   "messages.editFactCheck": messages_editFactCheck;
   "messages.deleteFactCheck": messages_deleteFactCheck;
   "messages.getFactCheck": messages_getFactCheck;
+  "messages.requestMainWebView": messages_requestMainWebView;
   "updates.getState": updates_getState;
   "updates.getDifference": updates_getDifference;
   "updates.getChannelDifference": updates_getChannelDifference;
@@ -16169,6 +16317,13 @@ export interface Functions<T = Function> {
   "bots.canSendMessage": bots_canSendMessage;
   "bots.allowSendMessage": bots_allowSendMessage;
   "bots.invokeWebViewCustomMethod": bots_invokeWebViewCustomMethod;
+  "bots.getPopularAppBots": bots_getPopularAppBots;
+  "bots.addPreviewMedia": bots_addPreviewMedia;
+  "bots.editPreviewMedia": bots_editPreviewMedia;
+  "bots.deletePreviewMedia": bots_deletePreviewMedia;
+  "bots.reorderPreviewMedias": bots_reorderPreviewMedias;
+  "bots.getPreviewInfo": bots_getPreviewInfo;
+  "bots.getPreviewMedias": bots_getPreviewMedias;
   "payments.getPaymentForm": payments_getPaymentForm;
   "payments.getPaymentReceipt": payments_getPaymentReceipt;
   "payments.validateRequestedInfo": payments_validateRequestedInfo;
@@ -16194,6 +16349,7 @@ export interface Functions<T = Function> {
   "payments.getStarsRevenueWithdrawalUrl": payments_getStarsRevenueWithdrawalUrl;
   "payments.getStarsRevenueAdsAccountUrl": payments_getStarsRevenueAdsAccountUrl;
   "payments.getStarsTransactionsByID": payments_getStarsTransactionsByID;
+  "payments.getStarsGiftOptions": payments_getStarsGiftOptions;
   "stickers.createStickerSet": stickers_createStickerSet;
   "stickers.removeStickerFromSet": stickers_removeStickerFromSet;
   "stickers.changeStickerPosition": stickers_changeStickerPosition;
@@ -16830,6 +16986,10 @@ export interface Enums {
   "payments.StarsRevenueWithdrawalUrl": payments_StarsRevenueWithdrawalUrl;
   "payments.StarsRevenueAdsAccountUrl": payments_StarsRevenueAdsAccountUrl;
   "InputStarsTransaction": InputStarsTransaction;
+  "StarsGiftOption": StarsGiftOption;
+  "bots.PopularAppBots": bots_PopularAppBots;
+  "BotPreviewMedia": BotPreviewMedia;
+  "bots.PreviewInfo": bots_PreviewInfo;
 }
 
 export type AnyType = Types[keyof Types];
@@ -16906,7 +17066,7 @@ export type InputUser = inputUserEmpty | inputUserSelf | inputUser | inputUserFr
 
 export type InputContact = inputPhoneContact;
 
-export type InputFile = inputFile | inputFileBig;
+export type InputFile = inputFile | inputFileBig | inputFileStoryDocument;
 
 export type InputMedia = inputMediaEmpty | inputMediaUploadedPhoto | inputMediaPhoto | inputMediaGeoPoint | inputMediaContact | inputMediaUploadedDocument | inputMediaDocument | inputMediaVenue | inputMediaPhotoExternal | inputMediaDocumentExternal | inputMediaGame | inputMediaInvoice | inputMediaGeoLive | inputMediaPoll | inputMediaDice | inputMediaStory | inputMediaWebPage | inputMediaPaidMedia;
 
@@ -16940,7 +17100,7 @@ export type Message = messageEmpty | message | messageService;
 
 export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia;
 
-export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded;
+export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars;
 
 export type Dialog = dialog | dialogFolder;
 
@@ -17295,7 +17455,7 @@ export type messages_PeerDialogs = messages_peerDialogs;
 
 export type TopPeer = topPeer;
 
-export type TopPeerCategory = topPeerCategoryBotsPM | topPeerCategoryBotsInline | topPeerCategoryCorrespondents | topPeerCategoryGroups | topPeerCategoryChannels | topPeerCategoryPhoneCalls | topPeerCategoryForwardUsers | topPeerCategoryForwardChats;
+export type TopPeerCategory = topPeerCategoryBotsPM | topPeerCategoryBotsInline | topPeerCategoryCorrespondents | topPeerCategoryGroups | topPeerCategoryChannels | topPeerCategoryPhoneCalls | topPeerCategoryForwardUsers | topPeerCategoryForwardChats | topPeerCategoryBotsApp;
 
 export type TopPeerCategoryPeers = topPeerCategoryPeers;
 
@@ -17785,7 +17945,7 @@ export type messages_TranscribedAudio = messages_transcribedAudio;
 
 export type help_PremiumPromo = help_premiumPromo;
 
-export type InputStorePaymentPurpose = inputStorePaymentPremiumSubscription | inputStorePaymentGiftPremium | inputStorePaymentPremiumGiftCode | inputStorePaymentPremiumGiveaway | inputStorePaymentStars;
+export type InputStorePaymentPurpose = inputStorePaymentPremiumSubscription | inputStorePaymentGiftPremium | inputStorePaymentPremiumGiftCode | inputStorePaymentPremiumGiveaway | inputStorePaymentStarsTopup | inputStorePaymentStarsGift;
 
 export type PremiumGiftOption = premiumGiftOption;
 
@@ -17893,7 +18053,7 @@ export type StoriesStealthMode = storiesStealthMode;
 
 export type MediaAreaCoordinates = mediaAreaCoordinates;
 
-export type MediaArea = mediaAreaVenue | inputMediaAreaVenue | mediaAreaGeoPoint | mediaAreaSuggestedReaction | mediaAreaChannelPost | inputMediaAreaChannelPost | mediaAreaUrl;
+export type MediaArea = mediaAreaVenue | inputMediaAreaVenue | mediaAreaGeoPoint | mediaAreaSuggestedReaction | mediaAreaChannelPost | inputMediaAreaChannelPost | mediaAreaUrl | mediaAreaWeather;
 
 export type PeerStories = peerStories;
 
@@ -18077,6 +18237,14 @@ export type payments_StarsRevenueAdsAccountUrl = payments_starsRevenueAdsAccount
 
 export type InputStarsTransaction = inputStarsTransaction;
 
+export type StarsGiftOption = starsGiftOption;
+
+export type bots_PopularAppBots = bots_popularAppBots;
+
+export type BotPreviewMedia = botPreviewMedia;
+
+export type bots_PreviewInfo = bots_previewInfo;
+
 const map: Map<number, string> = new Map([
   [0x05162463, "resPQ"],
   [0xA9F55F95, "p_q_inner_data_dc"],
@@ -18134,6 +18302,7 @@ const map: Map<number, string> = new Map([
   [0xF392B7F4, "inputPhoneContact"],
   [0xF52FF27F, "inputFile"],
   [0xFA4F0BB5, "inputFileBig"],
+  [0x62DC8B48, "inputFileStoryDocument"],
   [0x9664F57F, "inputMediaEmpty"],
   [0x1E287D04, "inputMediaUploadedPhoto"],
   [0xB3BA0635, "inputMediaPhoto"],
@@ -18183,7 +18352,7 @@ const map: Map<number, string> = new Map([
   [0xB3CEA0E4, "storage.fileMp4"],
   [0x1081464C, "storage.fileWebp"],
   [0xD3BC4B7A, "userEmpty"],
-  [0x215C4438, "user"],
+  [0x83314FCA, "user"],
   [0x4F11BAE1, "userProfilePhotoEmpty"],
   [0x82D1F706, "userProfilePhoto"],
   [0x09D05049, "userStatusEmpty"],
@@ -18270,6 +18439,7 @@ const map: Map<number, string> = new Map([
   [0xCC02AA6D, "messageActionBoostApply"],
   [0x93B31848, "messageActionRequestedPeerSentMe"],
   [0x41B3E202, "messageActionPaymentRefunded"],
+  [0x45D5B021, "messageActionGiftStars"],
   [0xD58A08C6, "dialog"],
   [0x71BD134C, "dialogFolder"],
   [0x2331B22D, "photoEmpty"],
@@ -18600,7 +18770,7 @@ const map: Map<number, string> = new Map([
   [0x6C37C15C, "documentAttributeImageSize"],
   [0x11B58939, "documentAttributeAnimated"],
   [0x6319D612, "documentAttributeSticker"],
-  [0xD38FF1C2, "documentAttributeVideo"],
+  [0x17399FAD, "documentAttributeVideo"],
   [0x9852F9C6, "documentAttributeAudio"],
   [0x15590068, "documentAttributeFilename"],
   [0x9801D2F7, "documentAttributeHasStickers"],
@@ -18771,6 +18941,7 @@ const map: Map<number, string> = new Map([
   [0x1E76A78C, "topPeerCategoryPhoneCalls"],
   [0xA8406CA9, "topPeerCategoryForwardUsers"],
   [0xFBEEC0F0, "topPeerCategoryForwardChats"],
+  [0xFD9E7BEC, "topPeerCategoryBotsApp"],
   [0xFB834291, "topPeerCategoryPeers"],
   [0xDE266EF5, "contacts.topPeersNotModified"],
   [0x70B772A8, "contacts.topPeers"],
@@ -19218,7 +19389,7 @@ const map: Map<number, string> = new Map([
   [0xC5B56859, "inputInvoiceMessage"],
   [0xC326CAEF, "inputInvoiceSlug"],
   [0x98986C0D, "inputInvoicePremiumGiftCode"],
-  [0x1DA33AD8, "inputInvoiceStars"],
+  [0x65F00CE3, "inputInvoiceStars"],
   [0xAED0CBD9, "payments.exportedInvoice"],
   [0xCFB9D957, "messages.transcribedAudio"],
   [0x5334759C, "help.premiumPromo"],
@@ -19226,7 +19397,8 @@ const map: Map<number, string> = new Map([
   [0x616F7FE8, "inputStorePaymentGiftPremium"],
   [0xA3805F3F, "inputStorePaymentPremiumGiftCode"],
   [0x160544CA, "inputStorePaymentPremiumGiveaway"],
-  [0x4F0EE8DF, "inputStorePaymentStars"],
+  [0xDDDD0F56, "inputStorePaymentStarsTopup"],
+  [0x1D741EF7, "inputStorePaymentStarsGift"],
   [0x74C34319, "premiumGiftOption"],
   [0x88F8F21B, "paymentFormMethod"],
   [0x2DE11AAE, "emojiStatusEmpty"],
@@ -19320,6 +19492,7 @@ const map: Map<number, string> = new Map([
   [0x770416AF, "mediaAreaChannelPost"],
   [0x2271F2BF, "inputMediaAreaChannelPost"],
   [0x37381085, "mediaAreaUrl"],
+  [0x49A6549C, "mediaAreaWeather"],
   [0x9A35E999, "peerStories"],
   [0xCAE68768, "stories.peerStories"],
   [0xFD5E12BD, "messages.webPage"],
@@ -19441,6 +19614,10 @@ const map: Map<number, string> = new Map([
   [0x1DAB80B7, "payments.starsRevenueWithdrawalUrl"],
   [0x394E7F21, "payments.starsRevenueAdsAccountUrl"],
   [0x206AE6D1, "inputStarsTransaction"],
+  [0x5E0589F1, "starsGiftOption"],
+  [0x1991B13B, "bots.popularAppBots"],
+  [0x23E91BA3, "botPreviewMedia"],
+  [0x0CA71D64, "bots.previewInfo"],
 ]);
 
 export const getTypeName: (id: number) => string | undefined = map.get.bind(map);
@@ -19483,7 +19660,7 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["InputPeer", ["inputPeerEmpty", "inputPeerSelf", "inputPeerChat", "inputPeerUser", "inputPeerChannel", "inputPeerUserFromMessage", "inputPeerChannelFromMessage"]],
   ["InputUser", ["inputUserEmpty", "inputUserSelf", "inputUser", "inputUserFromMessage"]],
   ["InputContact", ["inputPhoneContact"]],
-  ["InputFile", ["inputFile", "inputFileBig"]],
+  ["InputFile", ["inputFile", "inputFileBig", "inputFileStoryDocument"]],
   ["InputMedia", ["inputMediaEmpty", "inputMediaUploadedPhoto", "inputMediaPhoto", "inputMediaGeoPoint", "inputMediaContact", "inputMediaUploadedDocument", "inputMediaDocument", "inputMediaVenue", "inputMediaPhotoExternal", "inputMediaDocumentExternal", "inputMediaGame", "inputMediaInvoice", "inputMediaGeoLive", "inputMediaPoll", "inputMediaDice", "inputMediaStory", "inputMediaWebPage", "inputMediaPaidMedia"]],
   ["InputChatPhoto", ["inputChatPhotoEmpty", "inputChatUploadedPhoto", "inputChatPhoto"]],
   ["InputGeoPoint", ["inputGeoPointEmpty", "inputGeoPoint"]],
@@ -19500,7 +19677,7 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["ChatPhoto", ["chatPhotoEmpty", "chatPhoto"]],
   ["Message", ["messageEmpty", "message", "messageService"]],
   ["MessageMedia", ["messageMediaEmpty", "messageMediaPhoto", "messageMediaGeo", "messageMediaContact", "messageMediaUnsupported", "messageMediaDocument", "messageMediaWebPage", "messageMediaVenue", "messageMediaGame", "messageMediaInvoice", "messageMediaGeoLive", "messageMediaPoll", "messageMediaDice", "messageMediaStory", "messageMediaGiveaway", "messageMediaGiveawayResults", "messageMediaPaidMedia"]],
-  ["MessageAction", ["messageActionEmpty", "messageActionChatCreate", "messageActionChatEditTitle", "messageActionChatEditPhoto", "messageActionChatDeletePhoto", "messageActionChatAddUser", "messageActionChatDeleteUser", "messageActionChatJoinedByLink", "messageActionChannelCreate", "messageActionChatMigrateTo", "messageActionChannelMigrateFrom", "messageActionPinMessage", "messageActionHistoryClear", "messageActionGameScore", "messageActionPaymentSentMe", "messageActionPaymentSent", "messageActionPhoneCall", "messageActionScreenshotTaken", "messageActionCustomAction", "messageActionBotAllowed", "messageActionSecureValuesSentMe", "messageActionSecureValuesSent", "messageActionContactSignUp", "messageActionGeoProximityReached", "messageActionGroupCall", "messageActionInviteToGroupCall", "messageActionSetMessagesTTL", "messageActionGroupCallScheduled", "messageActionSetChatTheme", "messageActionChatJoinedByRequest", "messageActionWebViewDataSentMe", "messageActionWebViewDataSent", "messageActionGiftPremium", "messageActionTopicCreate", "messageActionTopicEdit", "messageActionSuggestProfilePhoto", "messageActionRequestedPeer", "messageActionSetChatWallPaper", "messageActionGiftCode", "messageActionGiveawayLaunch", "messageActionGiveawayResults", "messageActionBoostApply", "messageActionRequestedPeerSentMe", "messageActionPaymentRefunded"]],
+  ["MessageAction", ["messageActionEmpty", "messageActionChatCreate", "messageActionChatEditTitle", "messageActionChatEditPhoto", "messageActionChatDeletePhoto", "messageActionChatAddUser", "messageActionChatDeleteUser", "messageActionChatJoinedByLink", "messageActionChannelCreate", "messageActionChatMigrateTo", "messageActionChannelMigrateFrom", "messageActionPinMessage", "messageActionHistoryClear", "messageActionGameScore", "messageActionPaymentSentMe", "messageActionPaymentSent", "messageActionPhoneCall", "messageActionScreenshotTaken", "messageActionCustomAction", "messageActionBotAllowed", "messageActionSecureValuesSentMe", "messageActionSecureValuesSent", "messageActionContactSignUp", "messageActionGeoProximityReached", "messageActionGroupCall", "messageActionInviteToGroupCall", "messageActionSetMessagesTTL", "messageActionGroupCallScheduled", "messageActionSetChatTheme", "messageActionChatJoinedByRequest", "messageActionWebViewDataSentMe", "messageActionWebViewDataSent", "messageActionGiftPremium", "messageActionTopicCreate", "messageActionTopicEdit", "messageActionSuggestProfilePhoto", "messageActionRequestedPeer", "messageActionSetChatWallPaper", "messageActionGiftCode", "messageActionGiveawayLaunch", "messageActionGiveawayResults", "messageActionBoostApply", "messageActionRequestedPeerSentMe", "messageActionPaymentRefunded", "messageActionGiftStars"]],
   ["Dialog", ["dialog", "dialogFolder"]],
   ["Photo", ["photoEmpty", "photo"]],
   ["PhotoSize", ["photoSizeEmpty", "photoSize", "photoCachedSize", "photoStrippedSize", "photoSizeProgressive", "photoPathSize"]],
@@ -19748,7 +19925,7 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["InlineBotSwitchPM", ["inlineBotSwitchPM"]],
   ["messages.PeerDialogs", ["messages.peerDialogs"]],
   ["TopPeer", ["topPeer"]],
-  ["TopPeerCategory", ["topPeerCategoryBotsPM", "topPeerCategoryBotsInline", "topPeerCategoryCorrespondents", "topPeerCategoryGroups", "topPeerCategoryChannels", "topPeerCategoryPhoneCalls", "topPeerCategoryForwardUsers", "topPeerCategoryForwardChats"]],
+  ["TopPeerCategory", ["topPeerCategoryBotsPM", "topPeerCategoryBotsInline", "topPeerCategoryCorrespondents", "topPeerCategoryGroups", "topPeerCategoryChannels", "topPeerCategoryPhoneCalls", "topPeerCategoryForwardUsers", "topPeerCategoryForwardChats", "topPeerCategoryBotsApp"]],
   ["TopPeerCategoryPeers", ["topPeerCategoryPeers"]],
   ["contacts.TopPeers", ["contacts.topPeersNotModified", "contacts.topPeers", "contacts.topPeersDisabled"]],
   ["DraftMessage", ["draftMessageEmpty", "draftMessage"]],
@@ -20018,7 +20195,7 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["payments.ExportedInvoice", ["payments.exportedInvoice"]],
   ["messages.TranscribedAudio", ["messages.transcribedAudio"]],
   ["help.PremiumPromo", ["help.premiumPromo"]],
-  ["InputStorePaymentPurpose", ["inputStorePaymentPremiumSubscription", "inputStorePaymentGiftPremium", "inputStorePaymentPremiumGiftCode", "inputStorePaymentPremiumGiveaway", "inputStorePaymentStars"]],
+  ["InputStorePaymentPurpose", ["inputStorePaymentPremiumSubscription", "inputStorePaymentGiftPremium", "inputStorePaymentPremiumGiftCode", "inputStorePaymentPremiumGiveaway", "inputStorePaymentStarsTopup", "inputStorePaymentStarsGift"]],
   ["PremiumGiftOption", ["premiumGiftOption"]],
   ["PaymentFormMethod", ["paymentFormMethod"]],
   ["EmojiStatus", ["emojiStatusEmpty", "emojiStatus", "emojiStatusUntil"]],
@@ -20072,7 +20249,7 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["ExportedStoryLink", ["exportedStoryLink"]],
   ["StoriesStealthMode", ["storiesStealthMode"]],
   ["MediaAreaCoordinates", ["mediaAreaCoordinates"]],
-  ["MediaArea", ["mediaAreaVenue", "inputMediaAreaVenue", "mediaAreaGeoPoint", "mediaAreaSuggestedReaction", "mediaAreaChannelPost", "inputMediaAreaChannelPost", "mediaAreaUrl"]],
+  ["MediaArea", ["mediaAreaVenue", "inputMediaAreaVenue", "mediaAreaGeoPoint", "mediaAreaSuggestedReaction", "mediaAreaChannelPost", "inputMediaAreaChannelPost", "mediaAreaUrl", "mediaAreaWeather"]],
   ["PeerStories", ["peerStories"]],
   ["stories.PeerStories", ["stories.peerStories"]],
   ["messages.WebPage", ["messages.webPage"]],
@@ -20164,6 +20341,10 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["payments.StarsRevenueWithdrawalUrl", ["payments.starsRevenueWithdrawalUrl"]],
   ["payments.StarsRevenueAdsAccountUrl", ["payments.starsRevenueAdsAccountUrl"]],
   ["InputStarsTransaction", ["inputStarsTransaction"]],
+  ["StarsGiftOption", ["starsGiftOption"]],
+  ["bots.PopularAppBots", ["bots.popularAppBots"]],
+  ["BotPreviewMedia", ["botPreviewMedia"]],
+  ["bots.PreviewInfo", ["bots.previewInfo"]],
 ]);
 
 const types: Map<string, Parameters> = new Map([
@@ -20743,6 +20924,15 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "inputFileStoryDocument",
+    [
+      0x62DC8B48,
+      [
+        ["id", "InputDocument", "InputDocument"],
+      ],
+    ],
+  ],
+  [
     "inputMediaEmpty",
     [
       0x9664F57F,
@@ -21248,7 +21438,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "user",
     [
-      0x215C4438,
+      0x83314FCA,
       [
         ["flags", flags, "#"],
         ["self", "true", "flags.10?true"],
@@ -21276,6 +21466,7 @@ const types: Map<string, Parameters> = new Map([
         ["stories_unavailable", "true", "flags2.4?true"],
         ["contact_require_premium", "true", "flags2.10?true"],
         ["bot_business", "true", "flags2.11?true"],
+        ["bot_has_main_app", "true", "flags2.13?true"],
         ["id", "bigint", "long"],
         ["access_hash", "bigint", "flags.0?long"],
         ["first_name", "string", "flags.1?string"],
@@ -21293,6 +21484,7 @@ const types: Map<string, Parameters> = new Map([
         ["stories_max_id", "number", "flags2.5?int"],
         ["color", "PeerColor", "flags2.8?PeerColor"],
         ["profile_color", "PeerColor", "flags2.9?PeerColor"],
+        ["bot_active_users", "number", "flags2.12?int"],
       ],
     ],
   ],
@@ -22389,6 +22581,21 @@ const types: Map<string, Parameters> = new Map([
         ["total_amount", "bigint", "long"],
         ["payload", Uint8Array, "flags.0?bytes"],
         ["charge", "PaymentCharge", "PaymentCharge"],
+      ],
+    ],
+  ],
+  [
+    "messageActionGiftStars",
+    [
+      0x45D5B021,
+      [
+        ["flags", flags, "#"],
+        ["currency", "string", "string"],
+        ["amount", "bigint", "long"],
+        ["stars", "bigint", "long"],
+        ["crypto_currency", "string", "flags.0?string"],
+        ["crypto_amount", "bigint", "flags.0?long"],
+        ["transaction_id", "string", "flags.1?string"],
       ],
     ],
   ],
@@ -25842,7 +26049,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "documentAttributeVideo",
     [
-      0xD38FF1C2,
+      0x17399FAD,
       [
         ["flags", flags, "#"],
         ["round_message", "true", "flags.0?true"],
@@ -25852,6 +26059,7 @@ const types: Map<string, Parameters> = new Map([
         ["w", "number", "int"],
         ["h", "number", "int"],
         ["preload_prefix_size", "number", "flags.2?int"],
+        ["video_start_ts", "number", "flags.4?double"],
       ],
     ],
   ],
@@ -26332,6 +26540,7 @@ const types: Map<string, Parameters> = new Map([
       0x8F300B57,
       [
         ["flags", flags, "#"],
+        ["has_preview_medias", "true", "flags.6?true"],
         ["user_id", "bigint", "flags.0?long"],
         ["description", "string", "flags.1?string"],
         ["description_photo", "Photo", "flags.4?Photo"],
@@ -27757,6 +27966,13 @@ const types: Map<string, Parameters> = new Map([
     "topPeerCategoryForwardChats",
     [
       0xFBEEC0F0,
+      [],
+    ],
+  ],
+  [
+    "topPeerCategoryBotsApp",
+    [
+      0xFD9E7BEC,
       [],
     ],
   ],
@@ -32585,9 +32801,9 @@ const types: Map<string, Parameters> = new Map([
   [
     "inputInvoiceStars",
     [
-      0x1DA33AD8,
+      0x65F00CE3,
       [
-        ["option", "StarsTopupOption", "StarsTopupOption"],
+        ["purpose", "InputStorePaymentPurpose", "InputStorePaymentPurpose"],
       ],
     ],
   ],
@@ -32683,11 +32899,22 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
-    "inputStorePaymentStars",
+    "inputStorePaymentStarsTopup",
     [
-      0x4F0EE8DF,
+      0xDDDD0F56,
       [
-        ["flags", flags, "#"],
+        ["stars", "bigint", "long"],
+        ["currency", "string", "string"],
+        ["amount", "bigint", "long"],
+      ],
+    ],
+  ],
+  [
+    "inputStorePaymentStarsGift",
+    [
+      0x1D741EF7,
+      [
+        ["user_id", "InputUser", "InputUser"],
         ["stars", "bigint", "long"],
         ["currency", "string", "string"],
         ["amount", "bigint", "long"],
@@ -33734,6 +33961,18 @@ const types: Map<string, Parameters> = new Map([
       [
         ["coordinates", "MediaAreaCoordinates", "MediaAreaCoordinates"],
         ["url", "string", "string"],
+      ],
+    ],
+  ],
+  [
+    "mediaAreaWeather",
+    [
+      0x49A6549C,
+      [
+        ["coordinates", "MediaAreaCoordinates", "MediaAreaCoordinates"],
+        ["emoji", "string", "string"],
+        ["temperature_c", "number", "double"],
+        ["color", "number", "int"],
       ],
     ],
   ],
@@ -34995,6 +35234,7 @@ const types: Map<string, Parameters> = new Map([
         ["refund", "true", "flags.3?true"],
         ["pending", "true", "flags.4?true"],
         ["failed", "true", "flags.6?true"],
+        ["gift", "true", "flags.10?true"],
         ["id", "string", "string"],
         ["stars", "bigint", "long"],
         ["date", "number", "int"],
@@ -35112,6 +35352,51 @@ const types: Map<string, Parameters> = new Map([
         ["flags", flags, "#"],
         ["refund", "true", "flags.0?true"],
         ["id", "string", "string"],
+      ],
+    ],
+  ],
+  [
+    "starsGiftOption",
+    [
+      0x5E0589F1,
+      [
+        ["flags", flags, "#"],
+        ["extended", "true", "flags.1?true"],
+        ["stars", "bigint", "long"],
+        ["store_product", "string", "flags.0?string"],
+        ["currency", "string", "string"],
+        ["amount", "bigint", "long"],
+      ],
+    ],
+  ],
+  [
+    "bots.popularAppBots",
+    [
+      0x1991B13B,
+      [
+        ["flags", flags, "#"],
+        ["next_offset", "string", "flags.0?string"],
+        ["users", ["User"], "Vector<User>"],
+      ],
+    ],
+  ],
+  [
+    "botPreviewMedia",
+    [
+      0x23E91BA3,
+      [
+        ["date", "number", "int"],
+        ["media", "MessageMedia", "MessageMedia"],
+      ],
+    ],
+  ],
+  [
+    "bots.previewInfo",
+    [
+      0x0CA71D64,
+      [
+        ["media", ["BotPreviewMedia"], "Vector<BotPreviewMedia>"],
+        ["lang_codes", ["string"], "Vector<string>"],
       ],
     ],
   ],
@@ -36810,6 +37095,7 @@ const types: Map<string, Parameters> = new Map([
         ["forward_chats", "true", "flags.5?true"],
         ["groups", "true", "flags.10?true"],
         ["channels", "true", "flags.15?true"],
+        ["bots_app", "true", "flags.16?true"],
         ["offset", "number", "int"],
         ["limit", "number", "int"],
         ["hash", "bigint", "long"],
@@ -39378,6 +39664,21 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "messages.requestMainWebView",
+    [
+      0xC9E01E7B,
+      [
+        ["flags", flags, "#"],
+        ["compact", "true", "flags.7?true"],
+        ["peer", "InputPeer", "InputPeer"],
+        ["bot", "InputUser", "InputUser"],
+        ["start_param", "string", "flags.1?string"],
+        ["theme_params", "DataJSON", "flags.0?DataJSON"],
+        ["platform", "string", "string"],
+      ],
+    ],
+  ],
+  [
     "updates.getState",
     [
       0xEDD4882A,
@@ -40632,6 +40933,80 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "bots.getPopularAppBots",
+    [
+      0xC2510192,
+      [
+        ["offset", "string", "string"],
+        ["limit", "number", "int"],
+      ],
+    ],
+  ],
+  [
+    "bots.addPreviewMedia",
+    [
+      0x17AEB75A,
+      [
+        ["bot", "InputUser", "InputUser"],
+        ["lang_code", "string", "string"],
+        ["media", "InputMedia", "InputMedia"],
+      ],
+    ],
+  ],
+  [
+    "bots.editPreviewMedia",
+    [
+      0x8525606F,
+      [
+        ["bot", "InputUser", "InputUser"],
+        ["lang_code", "string", "string"],
+        ["media", "InputMedia", "InputMedia"],
+        ["new_media", "InputMedia", "InputMedia"],
+      ],
+    ],
+  ],
+  [
+    "bots.deletePreviewMedia",
+    [
+      0x2D0135B3,
+      [
+        ["bot", "InputUser", "InputUser"],
+        ["lang_code", "string", "string"],
+        ["media", ["InputMedia"], "Vector<InputMedia>"],
+      ],
+    ],
+  ],
+  [
+    "bots.reorderPreviewMedias",
+    [
+      0xB627F3AA,
+      [
+        ["bot", "InputUser", "InputUser"],
+        ["lang_code", "string", "string"],
+        ["order", ["InputMedia"], "Vector<InputMedia>"],
+      ],
+    ],
+  ],
+  [
+    "bots.getPreviewInfo",
+    [
+      0x423AB3AD,
+      [
+        ["bot", "InputUser", "InputUser"],
+        ["lang_code", "string", "string"],
+      ],
+    ],
+  ],
+  [
+    "bots.getPreviewMedias",
+    [
+      0xA2A5594D,
+      [
+        ["bot", "InputUser", "InputUser"],
+      ],
+    ],
+  ],
+  [
     "payments.getPaymentForm",
     [
       0x37148DBB,
@@ -40883,6 +41258,16 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer", "InputPeer"],
         ["id", ["InputStarsTransaction"], "Vector<InputStarsTransaction>"],
+      ],
+    ],
+  ],
+  [
+    "payments.getStarsGiftOptions",
+    [
+      0xD3C96BC8,
+      [
+        ["flags", flags, "#"],
+        ["user_id", "InputUser", "flags.0?InputUser"],
       ],
     ],
   ],
