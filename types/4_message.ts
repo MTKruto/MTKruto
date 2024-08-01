@@ -48,6 +48,7 @@ import { constructGame, Game } from "./2_game.ts";
 import { constructPoll, Poll } from "./2_poll.ts";
 import { constructReplyMarkup, ReplyMarkup } from "./3_reply_markup.ts";
 import { constructSuccessfulPayment, SuccessfulPayment } from "./2_successful_payment.ts";
+import { constructRefundedPayment, RefundedPayment } from "./0_refunded_payment.ts";
 
 const L = getLogger("Message");
 
@@ -581,6 +582,15 @@ export interface MessageSuccessfulPayment extends _MessageBase {
   successfulPayment: SuccessfulPayment;
 }
 
+/**
+ * A payment was successfully refunded. Bot-only.
+ * @unlisted
+ */
+export interface MessageRefundedPayment extends _MessageBase {
+  /** @discriminator */
+  refundedPayment: RefundedPayment;
+}
+
 // message type map
 
 /** @unlisted */
@@ -626,6 +636,7 @@ export interface MessageTypes {
   giveaway: MessageGiveaway;
   unsupported: MessageUnsupported;
   successfulPayment: MessageSuccessfulPayment;
+  refundedPayment: MessageRefundedPayment;
 }
 
 const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
@@ -670,6 +681,7 @@ const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
   giveaway: ["giveaway"],
   unsupported: ["unsupported"],
   successfulPayment: ["successfulPayment"],
+  refundedPayment: ["refundedPayment"],
 };
 export function assertMessageType<T extends keyof MessageTypes>(message: Message, type: T): MessageTypes[T] {
   for (const key of keys[type]) {
@@ -722,7 +734,8 @@ export type Message =
   | MessageVideoChatEnded
   | MessageGiveaway
   | MessageUnsupported
-  | MessageSuccessfulPayment;
+  | MessageSuccessfulPayment
+  | MessageRefundedPayment;
 
 /** @unlisted */
 export interface MessageGetter {
@@ -893,6 +906,9 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
   } else if (is("messageActionPaymentSentMe", message_.action)) {
     const successfulPayment = constructSuccessfulPayment(message_.action);
     return { ...message, successfulPayment };
+  } else if (is("messageActionPaymentRefunded", message_.action)) {
+    const refundedPayment = constructRefundedPayment(message_.action);
+    return { ...message, refundedPayment };
   }
   return { ...message, unsupported: true };
 }
