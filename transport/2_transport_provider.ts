@@ -84,3 +84,12 @@ export type TransportProvider = (params: TransportProviderParams) => { connectio
 export function getDcId(dc: DC, cdn: boolean): number {
   return Number(dc[0]) + (dc.endsWith("-test") ? 10_000 : 0) * (cdn ? -1 : 1);
 }
+
+export function getDc(dcId: number): DC {
+  dcId = Math.abs(dcId);
+  const test = dcId >= 10_000;
+  if (dcId >= 10_000) {
+    dcId -= 10_000;
+  }
+  return `${dcId}${test ? "-test" : ""}` as DC;
+}

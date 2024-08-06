@@ -23,7 +23,7 @@ import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
 import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, minute, mustPrompt, mustPromptOneOf, Mutex, second, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, as, chatIdToPeerId, getChatIdPeerType, is, peerToChatId } from "../2_tl.ts";
-import { DC } from "../3_transport.ts";
+import { DC, getDc } from "../3_transport.ts";
 import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ConnectionState, constructUser, FailedInvitation, FileSource, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, Sticker, Story, Update, User, VideoChat, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded } from "../4_errors.ts";
@@ -552,6 +552,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       systemLangCode: this.systemLangCode,
       systemVersion: this.systemVersion,
       cdn: true,
+      initialDc: getDc(dcId || this.#client.dcId),
     });
 
     client.#client.serverSalt = this.#client.serverSalt;
@@ -1358,6 +1359,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       try {
         if (!this.#connectionInited && !isMtprotoFunction(function_)) {
           this.#connectionInited = true;
+          this.#L.debug("init");
           const result = await this.#client.invoke({
             _: "initConnection",
             api_id: await this.#getApiId(),
