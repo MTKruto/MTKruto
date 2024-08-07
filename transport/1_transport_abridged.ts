@@ -20,7 +20,7 @@
 
 import { concat } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
-import { bufferFromBigInt } from "../1_utilities.ts";
+import { bigIntFromBuffer, bufferFromBigInt } from "../1_utilities.ts";
 import { Connection } from "../2_connection.ts";
 import { getObfuscationParameters } from "./0_obfuscation.ts";
 import { Transport } from "./0_transport.ts";
@@ -61,8 +61,7 @@ export class TransportAbridged extends Transport implements Transport {
         const buffer = new Uint8Array(3);
         await this.#connection.read(buffer);
         this.decrypt(buffer);
-        const dataView = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-        length = dataView.getUint16(0, true);
+        length = Number(bigIntFromBuffer(buffer, true, true));
       }
     }
 
