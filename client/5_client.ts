@@ -28,7 +28,7 @@ import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuest
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
-import { AddChatMemberParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, SignInParams, StartVideoChatParams, StopPollParams } from "./0_params.ts";
+import { AddChatMemberParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, SignInParams, StartVideoChatParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { getUsername, isMtprotoFunction, resolve } from "./0_utilities.ts";
@@ -737,12 +737,12 @@ export class Client<C extends Context = Context> extends Composer<C> {
         return this.forwardMessage(chatId, to, messageId, params) as unknown as ReturnType<C["forward"]>;
       },
       pin: (params) => {
-        const { chatId, messageId } = mustGetMsg();
-        return this.pinMessage(chatId, messageId, params);
+        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+        return this.pinMessage(chatId, messageId, { ...params, businessConnectionId });
       },
       unpin: () => {
-        const { chatId, messageId } = mustGetMsg();
-        return this.unpinMessage(chatId, messageId);
+        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+        return this.unpinMessage(chatId, messageId, { businessConnectionId });
       },
       banSender: (params) => {
         const { chatId, senderId } = mustGetMsg();
@@ -2131,8 +2131,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param chatId The identifier of the chat that contains the message.
    * @param messageId The message's identifier.
    */
-  async unpinMessage(chatId: ID, messageId: number) {
-    await this.#messageManager.unpinMessage(chatId, messageId);
+  async unpinMessage(chatId: ID, messageId: number, params?: UnpinMessageParams) {
+    await this.#messageManager.unpinMessage(chatId, messageId, params);
   }
 
   /**

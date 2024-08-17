@@ -352,11 +352,14 @@ export interface GetChatsParams {
   limit?: number;
 }
 
-export interface PinMessageParams {
+export interface PinMessageParams extends _BusinessConnectionIdCommon {
   /** Whether to pin the message for both sides. For private chats only. */
   bothSides?: boolean;
   /** Whether to silently pin the message. */
   disableNotification?: boolean;
+}
+
+export interface UnpinMessageParams extends _BusinessConnectionIdCommon {
 }
 
 export interface BanChatMemberParams {
