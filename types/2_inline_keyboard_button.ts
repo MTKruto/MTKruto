@@ -19,6 +19,8 @@
  */
 
 import { unreachable } from "../0_deps.ts";
+import { InputError } from "../0_errors.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api, is } from "../2_tl.ts";
 import { UsernameResolver } from "./_getters.ts";
 import { LoginUrl } from "./0_login_url.ts";
@@ -66,6 +68,18 @@ export interface InlineKeyboardButtonSwitchInlineCurrent extends _InlineKeyboard
 }
 
 /** @unlisted */
+export interface InlineKeyboardButtonSwitchInlineChosen extends _InlineKeyboardButtonBase {
+  /** @discriminator */
+  switchInlineQueryChosenChats: {
+    query: string;
+    allowUsers?: boolean;
+    allowBots?: boolean;
+    allowGroups?: boolean;
+    allowChannels?: boolean;
+  };
+}
+
+/** @unlisted */
 export interface InlineKeyboardButtonGame extends _InlineKeyboardButtonBase {
   /** @discriminator */
   callbackGame: Record<never, never>;
@@ -85,6 +99,7 @@ export type InlineKeyboardButton =
   | InlineKeyboardButtonLogin
   | InlineKeyboardButtonSwitchInline
   | InlineKeyboardButtonSwitchInlineCurrent
+  | InlineKeyboardButtonSwitchInlineChosen
   | InlineKeyboardButtonGame
   | InlineKeyboardButtonPay;
 
@@ -100,6 +115,12 @@ export function constructInlineKeyboardButton(button_: Api.KeyboardButton): Inli
   } else if (is("keyboardButtonSwitchInline", button_)) {
     if (button_.same_peer) {
       return { text: button_.text, switchInlineQueryCurrentChat: button_.query };
+    } else if (button_.peer_types && button_.peer_types.length) {
+      const allowUsers = button_.peer_types.some((v) => v._ == "inlineQueryPeerTypeBotPM") || undefined;
+      const allowBots = button_.peer_types.some((v) => v._ == "inlineQueryPeerTypeSameBotPM" || v._ == "inlineQueryPeerTypeBotPM") || undefined;
+      const allowGroups = button_.peer_types.some((v) => v._ == "inlineQueryPeerTypeChat" || v._ == "inlineQueryPeerTypeMegagroup") || undefined;
+      const allowChannels = button_.peer_types.some((v) => v._ == "inlineQueryPeerTypeBroadcast") || undefined;
+      return cleanObject({ text: button_.text, switchInlineQueryChosenChats: { query: button_.query, allowUsers, allowBots, allowGroups, allowChannels } });
     } else {
       return { text: button_.text, switchInlineQuery: button_.query };
     }
@@ -107,6 +128,8 @@ export function constructInlineKeyboardButton(button_: Api.KeyboardButton): Inli
     return { text: button_.text, pay: true };
   } else if (is("keyboardButtonGame", button_)) {
     return { text: button_.text, callbackGame: {} };
+  } else if (is("keyboardButtonRequestPeer", button_)) {
+    unreachable();
   } else {
     unreachable();
   }
@@ -125,6 +148,25 @@ export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButto
     return { _: "keyboardButtonSwitchInline", text: button.text, query: button.switchInlineQuery };
   } else if ("switchInlineQueryCurrentChat" in button) {
     return { _: "keyboardButtonSwitchInline", text: button.text, query: button.switchInlineQueryCurrentChat, same_peer: true };
+  } else if ("switchInlineQueryChosenChats" in button) {
+    const peerTypes = new Array<Api.InlineQueryPeerType>();
+    const { allowUsers, allowBots, allowGroups, allowChannels } = button.switchInlineQueryChosenChats;
+    if (!allowUsers && !allowBots && !allowGroups && !allowChannels) {
+      throw new InputError("switchInlineQueryChosenChats: At least one chat type must be allowed");
+    }
+    if (allowUsers) {
+      peerTypes.push({ _: "inlineQueryPeerTypeBotPM" });
+    }
+    if (allowBots) {
+      peerTypes.push({ _: "inlineQueryPeerTypeSameBotPM" }, { _: "inlineQueryPeerTypeBotPM" });
+    }
+    if (allowGroups) {
+      peerTypes.push({ _: "inlineQueryPeerTypeChat" }, { _: "inlineQueryPeerTypeMegagroup" });
+    }
+    if (allowChannels) {
+      peerTypes.push({ _: "inlineQueryPeerTypeBroadcast" });
+    }
+    return { _: "keyboardButtonSwitchInline", text: button.text, query: button.switchInlineQueryChosenChats.query, peer_types: peerTypes };
   } else if ("pay" in button) {
     return { _: "keyboardButtonBuy", text: button.text };
   } else {
