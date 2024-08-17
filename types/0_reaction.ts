@@ -33,21 +33,28 @@ export interface ReactionCustomEmoji {
   id: string;
 }
 
+/** @unlisted */
+export interface ReactionPaid {
+  type: "paid";
+}
+
 /** A reaction type. */
-export type Reaction = ReactionEmoji | ReactionCustomEmoji;
+export type Reaction = ReactionEmoji | ReactionCustomEmoji | ReactionPaid;
 
 export function constructReaction(reaction: Api.Reaction): Reaction {
   if (is("reactionEmoji", reaction)) {
     return { type: "emoji", emoji: reaction.emoticon };
   } else if (is("reactionCustomEmoji", reaction)) {
     return { type: "customEmoji", id: String(reaction.document_id) };
+  } else if (is("reactionPaid", reaction)) {
+    return { type: "paid" };
   } else {
     unreachable();
   }
 }
 
 export function reactionToTlObject(reaction: Reaction): Api.Reaction {
-  return reaction.type == "emoji" ? ({ _: "reactionEmoji", emoticon: reaction.emoji }) : ({ _: "reactionCustomEmoji", document_id: BigInt(reaction.id) });
+  return reaction.type == "emoji" ? ({ _: "reactionEmoji", emoticon: reaction.emoji }) : reaction.type == "customEmoji" ? ({ _: "reactionCustomEmoji", document_id: BigInt(reaction.id) }) : { _: "reactionPaid" };
 }
 
 export function reactionEqual(left: Reaction, right: Reaction): boolean {

@@ -911,7 +911,7 @@ export class MessageManager {
   }
 
   async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]) {
-    await this.#c.invoke({ _: "messages.setChatAvailableReactions", peer: await this.#c.getInputPeer(chatId), available_reactions: availableReactions == "none" ? { _: "chatReactionsNone" } : availableReactions == "all" ? { _: "chatReactionsAll" } : Array.isArray(availableReactions) ? ({ _: "chatReactionsSome", reactions: availableReactions.map((v) => v.type == "emoji" ? ({ _: "reactionEmoji", emoticon: v.emoji }) : ({ _: "reactionCustomEmoji", document_id: BigInt(v.id) })) }) : unreachable() });
+    await this.#c.invoke({ _: "messages.setChatAvailableReactions", peer: await this.#c.getInputPeer(chatId), available_reactions: availableReactions == "none" ? { _: "chatReactionsNone" } : availableReactions == "all" ? { _: "chatReactionsAll" } : Array.isArray(availableReactions) ? ({ _: "chatReactionsSome", reactions: availableReactions.map((v) => reactionToTlObject(v)) }) : unreachable() });
   }
 
   async #sendReaction(chatId: ID, messageId: number, reactions: Reaction[], params?: AddReactionParams) {
