@@ -1078,7 +1078,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #lastPropagatedAuthorizationState: boolean | null = null;
   async #propagateAuthorizationState(authorized: boolean) {
     if (this.#lastPropagatedAuthorizationState != authorized) {
-      await this.middleware()(await this.#constructContext({ authorizationState: { authorized } }), resolve);
+      await this.#handleCtxUpdate({ authorizationState: { authorized } });
       this.#lastPropagatedAuthorizationState = authorized;
     }
   }
@@ -1569,7 +1569,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #handleCtxUpdate(update: Update) {
-    await this.middleware()(await this.#constructContext(update), resolve);
+    try {
+      await this.middleware()(await this.#constructContext(update), resolve);
+    } catch (err) {
+      this.#L.error("Failed to handle update:", err);
+    }
   }
 
   #queueHandleCtxUpdate(update: Update) {
