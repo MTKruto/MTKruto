@@ -31,7 +31,7 @@ import { PhoneCodeInvalid } from "../4_errors.ts";
 import { AddChatMemberParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, SignInParams, StartVideoChatParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
-import { getUsername, isMtprotoFunction, resolve } from "./0_utilities.ts";
+import { getUsername, isCdnFunction, isMtprotoFunction, resolve } from "./0_utilities.ts";
 import { ClientEncrypted } from "./1_client_encrypted.ts";
 import { ClientPlain, ClientPlainParams } from "./1_client_plain.ts";
 import { Composer as Composer_, NextFunction } from "./1_composer.ts";
@@ -264,6 +264,8 @@ export interface ClientParams extends ClientPlainParams {
    * When the provided storage takes advantage of memory, nothing changes, even if set to `true`.
    */
   persistCache?: boolean;
+  /** Whether to disable receiving updates. UpdateConnectionState and UpdatesAuthorizationState will always be received. Defaults to `false`. */
+  disableUpdates?: boolean;
 }
 
 /**
@@ -304,6 +306,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   readonly #publicKeys?: PublicKeys;
   readonly #ignoreOutgoing: boolean | null;
   #persistCache: boolean;
+  #disableUpdates: boolean;
 
   #cdn: boolean;
   #L: Logger;
@@ -356,6 +359,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.storage = new StorageOperations(this.#storage_);
     this.messageStorage = new StorageOperations(this.#messageStorage_);
     this.#parseMode = params?.parseMode ?? null;
+    this.#disableUpdates = params?.disableUpdates ?? false;
 
     this.appVersion = params?.appVersion ?? APP_VERSION;
     this.deviceModel = params?.deviceModel ?? DEVICE_MODEL;
@@ -1357,6 +1361,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
     let n = 1;
     while (true) {
       try {
+        if (this.#disableUpdates && !isMtprotoFunction(function_) && !isCdnFunction(function_)) {
+          function_ = { _: "invokeWithoutUpdates", query: function_ } as unknown as T;
+        }
         if (!this.#connectionInited && !isMtprotoFunction(function_)) {
           this.#connectionInited = true;
           this.#L.debug("init");
@@ -1569,6 +1576,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #handleCtxUpdate(update: Update) {
+    if (this.#disableUpdates && !("authorizationState" in update) && !("connectionState" in update)) {
+      return;
+    }
     try {
       await this.middleware()(await this.#constructContext(update), resolve);
     } catch (err) {

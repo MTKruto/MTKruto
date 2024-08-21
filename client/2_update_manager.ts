@@ -534,7 +534,7 @@ export class UpdateManager {
         },
       ];
     } else if (is("updateShortSentMessage", updates_)) {
-      if (!is("messages.sendMessage", call)) {
+      if (!is("messages.sendMessage", call, true)) {
         unreachable();
       }
       updates = [{
