@@ -266,6 +266,8 @@ export interface ClientParams extends ClientPlainParams {
   persistCache?: boolean;
   /** Whether to disable receiving updates. UpdateConnectionState and UpdatesAuthorizationState will always be received. Defaults to `false`. */
   disableUpdates?: boolean;
+  /** An auth string to automatically import. Can be overriden by a later importAuthString call. */
+  authString?: string;
 }
 
 /**
@@ -307,6 +309,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   readonly #ignoreOutgoing: boolean | null;
   #persistCache: boolean;
   #disableUpdates: boolean;
+  #authString?: string;
 
   #cdn: boolean;
   #L: Logger;
@@ -360,6 +363,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.messageStorage = new StorageOperations(this.#messageStorage_);
     this.#parseMode = params?.parseMode ?? null;
     this.#disableUpdates = params?.disableUpdates ?? false;
+    this.#authString = params?.authString;
 
     this.appVersion = params?.appVersion ?? APP_VERSION;
     this.deviceModel = params?.deviceModel ?? DEVICE_MODEL;
@@ -1025,6 +1029,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
         await new Promise((r) => setTimeout(r, 3 * second));
       }
       await this.#initStorage();
+      if (this.#authString && !this.#authStringImported) {
+        await this.importAuthString(this.#authString);
+      }
       const [authKey, dc] = await Promise.all([this.storage.getAuthKey(), this.storage.getDc()]);
       if (authKey != null && dc != null) {
         await this.#client.setAuthKey(authKey);
@@ -1441,9 +1448,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return this.storage.exportAuthString(this.#apiId);
   }
 
+  #authStringImported = false;
   async importAuthString(authString: string) {
     await this.#initStorage();
     await this.storage.importAuthString(authString);
+    this.#authStringImported = true;
   }
 
   async #getUserAccessHash(userId: bigint) {

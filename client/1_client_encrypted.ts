@@ -132,6 +132,9 @@ export class ClientEncrypted extends ClientAbstract {
       this.#state.serverSalt,
       this.#sessionId,
     );
+    if (!this.transport) {
+      throw new ConnectionError("Not connected.");
+    }
     await this.transport!.transport.send(payload);
     this.#L.out(message);
     this.#L.outBin(payload);
