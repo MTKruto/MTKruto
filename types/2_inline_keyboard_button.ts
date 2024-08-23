@@ -28,46 +28,87 @@ import { constructMiniAppInfo, MiniAppInfo } from "./0_mini_app_info.ts";
 
 /** @unlisted */
 export interface _InlineKeyboardButtonBase {
+  /** The text of the button. */
   text: string;
 }
 
-/** @unlisted */
+/**
+ * An inline keyboard button that, when pressed, opens the specified URL.
+ * @unlisted
+ */
 export interface InlineKeyboardButtonURL extends _InlineKeyboardButtonBase {
-  /** @discriminator */
+  /**
+   * The URL to open.
+   * @discriminator
+   */
   url: string;
 }
 
-/** @unlisted */
+/**
+ * An inline keyboard button that, when pressed, sends back the specified callback data.
+ * @unlisted
+ */
 export interface InlineKeyboardButtonCallback extends _InlineKeyboardButtonBase {
-  /** @discriminator */
+  /**
+   * The callback data to send back.
+   * @discriminator
+   */
   callbackData: string;
 }
 
+/**
+ * An inline keyboard button that, when pressed, launches the specified mini app.
+ * @unlisted
+ */
 /** @unlisted */
 export interface InlineKeyboardButtonMiniApp extends _InlineKeyboardButtonBase {
-  /** @discriminator */
+  /**
+   * The mini app to launch.
+   * @discriminator
+   */
   miniApp: MiniAppInfo;
 }
 
-/** @unlisted */
+/**
+ * An inline keyboard button that, when pressed, logs the user into the specified URL.
+ * @unlisted
+ */
 export interface InlineKeyboardButtonLogin extends _InlineKeyboardButtonBase {
-  /** @discriminator */
+  /**
+   * The URL to log into.
+   * @discriminator
+   */
   loginUrl: LoginUrl;
 }
 
-/** @unlisted */
+/**
+ * An inline keyboard button that, when pressed, switches to inline mode in a chat chosen by the user.
+ * @unlisted
+ */
 export interface InlineKeyboardButtonSwitchInline extends _InlineKeyboardButtonBase {
-  /** @discriminator */
+  /**
+   * The query to type into the user's message box once switched to inline.
+   * @discriminator
+   */
   switchInlineQuery: string;
 }
 
-/** @unlisted */
+/**
+ * An inline keyboard button that, when pressed, switches to inline mode in the current chat.
+ * @unlisted
+ */
 export interface InlineKeyboardButtonSwitchInlineCurrent extends _InlineKeyboardButtonBase {
-  /** @discriminator */
+  /**
+   * The query to type into the user's message box once switched to inline.
+   * @discriminator
+   */
   switchInlineQueryCurrentChat: string;
 }
 
-/** @unlisted */
+/**
+ * An inline keyboard button that, when pressed, switches to inline mode in a chat chosen by the user from a limited subset of chats.
+ * @unlisted
+ */
 export interface InlineKeyboardButtonSwitchInlineChosen extends _InlineKeyboardButtonBase {
   /** @discriminator */
   switchInlineQueryChosenChats: {
@@ -79,13 +120,19 @@ export interface InlineKeyboardButtonSwitchInlineChosen extends _InlineKeyboardB
   };
 }
 
-/** @unlisted */
+/**
+ * An inline keyboard button that, when pressed, launches the bot's game.
+ * @unlisted
+ */
 export interface InlineKeyboardButtonGame extends _InlineKeyboardButtonBase {
   /** @discriminator */
   callbackGame: Record<never, never>;
 }
 
-/** @unlisted */
+/**
+ * An inline keyboard that, when pressed, initiates a payment.
+ * @unlisted
+ */
 export interface InlineKeyboardButtonPay extends _InlineKeyboardButtonBase {
   /** @discriminator */
   pay: boolean;

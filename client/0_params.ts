@@ -50,7 +50,7 @@ export interface SignInParamsBot {
 export type SignInParams = SignInParamsUser | SignInParamsBot;
 
 export interface _BusinessConnectionIdCommon {
-  /** The identifier of an active business connection ID to perform the action on. */
+  /** The identifier of a business connection ID to perform the action on. */
   businessConnectionId?: string;
 }
 

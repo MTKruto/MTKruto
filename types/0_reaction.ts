@@ -21,19 +21,28 @@
 import { unreachable } from "../0_deps.ts";
 import { Api, is } from "../2_tl.ts";
 
-/** @unlisted */
+/**
+ * A regular reaction.
+ * @unlisted
+ */
 export interface ReactionEmoji {
   type: "emoji";
   emoji: string;
 }
 
-/** @unlisted */
+/**
+ * A custom reaction.
+ * @unlisted
+ */
 export interface ReactionCustom {
   type: "custom";
   id: string;
 }
 
-/** @unlisted */
+/**
+ * A paid (star) reaction.
+ * @unlisted
+ */
 export interface ReactionPaid {
   type: "paid";
 }

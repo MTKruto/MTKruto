@@ -113,10 +113,13 @@ export interface _MessageBase {
   forwards?: number;
   /** The message's reply markup. */
   replyMarkup?: ReplyMarkup;
+  /** The identifier of a business conection that the message was sent in. */
   businessConnectionId?: string;
+  /** The number of the boosts made by the sender of the message. */
   senderBoostCount?: number;
+  /** The identifier of the business connection in which the message was sent.*/
   viaBusinessBot?: User;
-  /** The identifier of a message effect to be attached to the message. */
+  /** The identifier of the message effect that has been attached to the message. */
   effectId?: string;
 }
 

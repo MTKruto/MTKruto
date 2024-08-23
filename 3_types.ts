@@ -57,6 +57,7 @@ export * from "./types/0_restriction_reason.ts";
 export * from "./types/0_self_destruct_option.ts";
 export * from "./types/0_shipping_address.ts";
 export * from "./types/0_story_reference.ts";
+export * from "./types/0_switch_inline_query_chosen_chats.ts";
 export * from "./types/0_thumbnail.ts";
 export * from "./types/0_video_chat.ts";
 export * from "./types/0_voice.ts";

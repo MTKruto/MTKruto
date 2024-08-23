@@ -21,11 +21,17 @@
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 
+/** Information on a refunded payment. */
 export interface RefundedPayment {
+  /** The payment's currency. */
   currency: string;
+  /** The payment's total amount. */
   totalAmount: number;
+  /** The payload of the payment's invoice. */
   invoicePayload: string;
+  /** Telegram identifier of the payment. */
   telegramPaymentChargeId: string;
+  /** Payment provider identifier of the payment. */
   providerPaymentChargeId?: string;
 }
 
