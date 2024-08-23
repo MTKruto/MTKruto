@@ -34,18 +34,23 @@ export interface AnswerCallbackQueryParams {
 }
 
 export interface SignInParamsUser<S = string> {
+  /** A user phone number or a function that returns it. */
   phone: S | (() => MaybePromise<S>);
+  /** A verification code or a function that returns it. */
   code: S | (() => MaybePromise<S>);
+  /** An account password or a function that returns it. */
   password: S | ((hint: string | null) => MaybePromise<S>);
 }
 
 export interface SignInParamsBot {
+  /** A bot token. */
   botToken: string;
 }
 
 export type SignInParams = SignInParamsUser | SignInParamsBot;
 
 export interface _BusinessConnectionIdCommon {
+  /** The identifier of an active business connection ID to perform the action on. */
   businessConnectionId?: string;
 }
 
@@ -176,6 +181,7 @@ export interface _UploadCommon {
 export interface UploadParams {
   /** The file name to assign. */
   fileName?: string;
+  /** The file's size. */
   fileSize?: number;
   /** Size of each upload chunk in bytes. */
   chunkSize?: number;
@@ -227,6 +233,7 @@ export interface _SpoilCommon {
   hasSpoiler?: boolean;
 }
 export interface SendPhotoParams extends _CaptionCommon, _SpoilCommon, _UploadCommon, _SendCommon, _ReplyMarkupCommon {
+  /** The photo's self-destruct preference. */
   selfDestruct?: SelfDestructOption;
 }
 
@@ -241,6 +248,7 @@ export interface SendDocumentParams extends _CaptionCommon, _ThumbnailCommon, _U
 }
 
 export interface SendStickerParams extends _UploadCommon, _SendCommon {
+  /** Emoji to bind to the sticker. */
   emoji?: string;
 }
 
@@ -253,6 +261,7 @@ export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _Spoi
   height?: number;
   /** Whether the video is suitable for streaming. */
   supportsStreaming?: boolean;
+  /** The video's self-destruct preference. */
   selfDestruct?: SelfDestructOption;
 }
 
@@ -420,12 +429,13 @@ export interface GetCreatedInviteLinksParams {
   limit?: number;
   /** Whether only revoked invite links must be returned. */
   revoked?: boolean;
+  /** Only get the invite links created after a specific date. */
   afterDate?: Date;
+  /** Only get the invite links created after a specific invite link. */
   afterInviteLink?: string;
 }
 
-export interface StopPollParams extends _BusinessConnectionIdCommon {
-  replyMarkup?: ReplyMarkup;
+export interface StopPollParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
 }
 
 export interface EditMessageLiveLocationParams extends _BusinessConnectionIdCommon {
@@ -440,7 +450,9 @@ export interface EditMessageLiveLocationParams extends _BusinessConnectionIdComm
 }
 
 export interface SendInlineQueryParams {
+  /** The inline query's text. Defaults to empty string. */
   query?: string;
+  /** Bot-provided pagination offset. */
   offset?: string;
 }
 
@@ -485,5 +497,6 @@ export interface DeclineJoinRequestsParams {
 }
 
 export interface AddChatMemberParams {
+  /** The number of current messages to make visible to the user that is about to be added. */
   historyLimit?: number;
 }
