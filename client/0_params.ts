@@ -70,7 +70,8 @@ export interface _SendCommon extends _BusinessConnectionIdCommon {
   messageThreadId?: number;
   /** The identifier of a chat to send the message on behalf of. User-only. */
   sendAs?: ID;
-  messageEffectId?: number;
+  /** The identifier of a message effect to be attached to the message. */
+  effectId?: number;
 }
 export interface SendMessageParams extends _SendCommon, _ReplyMarkupCommon {
   /** The parse mode to use. If not provided, the default parse mode will be used. */
