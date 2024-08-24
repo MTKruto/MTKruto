@@ -59,7 +59,7 @@ export interface UpdateConnectionState {
  * A client's authorization state was changed.
  *
  * ```
- * client.on("authorizationState", (ctx) => {
+ * client.on("authorizationState", async (ctx) => {
  *   if (ctx.authorizationState.authorized) {
  *     const me = await ctx.client.getMe();
  *     console.log("The client is now authorized as", me.firstName);
@@ -281,6 +281,12 @@ export interface UpdateMyChatMember {
 
 /**
  * A story was deleted.
+ *
+ * ```
+ * client.on("deletedStory", (ctx) => {
+ *   console.log("The story", ctx.deletedStory, "was deleted");
+ * });
+ * ```
  * @unlisted
  */
 export interface UpdateDeletedStory {
@@ -290,6 +296,13 @@ export interface UpdateDeletedStory {
 
 /**
  * A story was posted.
+ *
+ * ```
+ * client.on("story", (ctx) => {
+ *   console.log("title" in ctx.chat ? ctx.chat.title : ctx.chat.firstName, "posted a story");
+ *   console.log(ctx.story);
+ * });
+ * ```
  * @unlisted
  */
 export interface UpdateNewStory {
@@ -299,6 +312,13 @@ export interface UpdateNewStory {
 
 /**
  * A business connection was added, modified, or removed.
+ *
+ * ```
+ * client.on("businessConnection", (ctx) => {
+ *   console.log("Business connection with", ctx.from.id, ctx.businessConnection.isEnabled ? "created" : "lost");
+ *   console.log(ctx.businessConnection);
+ * });
+ * ```
  * @unlisted
  */
 export interface UpdateBusinessConnection {
@@ -308,6 +328,13 @@ export interface UpdateBusinessConnection {
 
 /**
  * A video chat was started, scheduled, or ended.
+ *
+ * ```
+ * client.on("videoChat", (ctx) => {
+ *   console.log("Video chat", ctx.videoChat.type);
+ *   console.log(ctx.videoChat);
+ * });
+ * ```
  * @unlisted
  */
 export interface UpdateVideoChat {
