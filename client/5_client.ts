@@ -1450,6 +1450,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   #authStringImported = false;
   async importAuthString(authString: string) {
+    if (this.connected) {
+      throw new Error("Cannot import auth string while the client is connected");
+    }
     await this.#initStorage();
     await this.storage.importAuthString(authString);
     this.#authStringImported = true;
