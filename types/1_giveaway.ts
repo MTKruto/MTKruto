@@ -19,6 +19,7 @@
  */
 
 import { Api } from "../2_tl.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { constructGiveawayParameters, GiveawayParameters } from "./0_giveaway_parameters.ts";
 
 /** A giveaway. */
@@ -27,12 +28,15 @@ export interface Giveaway {
   /** The quantity of the Telegram Premium subscriptions that will be given away.. */
   winnerCount: number;
   /** The duration of each Telegram Premium subscription that is to be given away in months. */
-  monthCount: number;
+  premiumMonthCount?: number;
+  /** The amount of Telegram Stars that is to be given away to each user. */
+  starCount?: number;
 }
 
 export function constructGiveaway(g: Api.messageMediaGiveaway): Giveaway {
   const winnerCount = g.quantity;
-  const monthCount = g.months;
+  const premiumMonthCount = g.months;
+  const starCount = g.stars;
   const parameters = constructGiveawayParameters(g);
-  return { parameters, winnerCount, monthCount };
+  return cleanObject({ parameters, winnerCount, premiumMonthCount, starCount: starCount ? Number(starCount) : undefined });
 }
