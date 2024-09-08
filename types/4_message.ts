@@ -30,6 +30,7 @@ import { constructInvoice, Invoice } from "./0_invoice.ts";
 import { constructLinkPreview, LinkPreview } from "./0_link_preview.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
+import { constructRefundedPayment, RefundedPayment } from "./0_refunded_payment.ts";
 import { constructVoice, Voice } from "./0_voice.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
 import { Audio, constructAudio } from "./1_audio.ts";
@@ -46,9 +47,8 @@ import { constructVideoNote, VideoNote } from "./1_video_note.ts";
 import { constructVideo, Video } from "./1_video.ts";
 import { constructGame, Game } from "./2_game.ts";
 import { constructPoll, Poll } from "./2_poll.ts";
-import { constructReplyMarkup, ReplyMarkup } from "./3_reply_markup.ts";
 import { constructSuccessfulPayment, SuccessfulPayment } from "./2_successful_payment.ts";
-import { constructRefundedPayment, RefundedPayment } from "./0_refunded_payment.ts";
+import { constructReplyMarkup, ReplyMarkup } from "./3_reply_markup.ts";
 
 const L = getLogger("Message");
 
