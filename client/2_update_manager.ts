@@ -366,7 +366,7 @@ export class UpdateManager {
       if (this.#c.guaranteeUpdateDelivery && pts) {
         await this.#handleStoredUpdates(boxId);
       } else {
-        await this.#handleUpdate(update);
+        await (await this.#handleUpdate(update))();
       }
     });
   }
@@ -807,12 +807,12 @@ export class UpdateManager {
     this.#handleUpdatesSet.delete(boxId);
   }
 
-  async #handleUpdate(update: Api.Update) {
+  #handleUpdate(update: Api.Update) {
     const handler = this.#updateHandler;
     if (handler) {
-      return await handler(update);
+      return handler(update);
     } else {
-      return () => Promise.resolve();
+      return Promise.resolve(() => Promise.resolve());
     }
   }
 
