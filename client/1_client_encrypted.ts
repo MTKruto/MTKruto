@@ -21,7 +21,7 @@
 import { gunzip, unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, is, isOfEnum, isOneOf, message, ReadObject, TLError, TLReader } from "../2_tl.ts";
+import { Api, is, isGenericFunction, isOfEnum, isOneOf, message, ReadObject, TLError, TLReader } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";
@@ -255,8 +255,12 @@ export class ClientEncrypted extends ClientAbstract {
               }
             };
             if (isOfEnum("Updates", result) || isOfEnum("Update", result)) {
-              // @ts-ignore tbd
-              drop(this.handlers.updates?.(result, promise?.call ?? null, resolvePromise));
+              // @ts-ignore: tbd
+              let call = promise?.call ?? null;
+              if (isGenericFunction(call)) {
+                call = call.query;
+              }
+              drop(this.handlers.updates?.(result, call, resolvePromise));
             } else {
               drop(this.handlers.result?.(result, resolvePromise));
             }

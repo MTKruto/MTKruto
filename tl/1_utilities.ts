@@ -48,19 +48,7 @@ export function assertIsValidType(object: any) {
   }
 }
 
-const GENERIC_FUNCTIONS = [
-  "invokeAfterMsg",
-  "invokeAfterMsgs",
-  "initConnection",
-  "invokeWithLayer",
-  "invokeWithoutUpdates",
-  "invokeWithMessagesRange",
-  "invokeWithTakeout",
-] as const;
-export function is<S extends keyof (Types & Functions)>(typeName: S, value: unknown, deep = false): value is S extends keyof Types ? Types[S] : S extends keyof Functions ? Functions[S] : never {
-  if (deep && isOneOf(GENERIC_FUNCTIONS, value)) {
-    value = value.query;
-  }
+export function is<S extends keyof (Types & Functions)>(typeName: S, value: unknown): value is S extends keyof Types ? Types[S] : S extends keyof Functions ? Functions[S] : never {
   if (!isValidType(value)) {
     return false;
   } else {
@@ -79,4 +67,17 @@ export function as<S extends keyof Types>(typeName: S, value: unknown): Types[S]
   } else {
     unreachable();
   }
+}
+
+const GENERIC_FUNCTIONS = [
+  "invokeAfterMsg",
+  "invokeAfterMsgs",
+  "initConnection",
+  "invokeWithLayer",
+  "invokeWithoutUpdates",
+  "invokeWithMessagesRange",
+  "invokeWithTakeout",
+] as const;
+export function isGenericFunction(value: unknown) {
+  return isOneOf(GENERIC_FUNCTIONS, value);
 }
