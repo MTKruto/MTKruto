@@ -45,6 +45,7 @@ import { constructUser, User } from "./1_user.ts";
 import { constructVenue, Venue } from "./1_venue.ts";
 import { constructVideoNote, VideoNote } from "./1_video_note.ts";
 import { constructVideo, Video } from "./1_video.ts";
+import { constructForwardHeader, ForwardHeader } from "./2_forward_header.ts";
 import { constructGame, Game } from "./2_game.ts";
 import { constructPoll, Poll } from "./2_poll.ts";
 import { constructSuccessfulPayment, SuccessfulPayment } from "./2_successful_payment.ts";
@@ -73,18 +74,8 @@ export interface _MessageBase {
   chat: ChatP;
   /** A link to the message. */
   link?: string;
-  /** The original sender of the message. */
-  forwardFrom?: User;
-  /** The original chat of the message. */
-  forwardFromChat?: ChatP;
-  /** The original identifier of the message. */
-  forwardId?: number;
-  /** The original signature of the message. */
-  forwardSignature?: string;
-  /** The name of the original sender of the message. */
-  forwardSenderName?: string;
-  /** The point in time in which the original message was sent. */
-  forwardDate?: Date;
+  /** Information on the original message. */
+  forwardFrom?: ForwardHeader;
   /** Whether the message was sent in a topic thread. */
   isTopicMessage: boolean;
   /** Whether the message is an automatic forward. */
@@ -1028,26 +1019,7 @@ export async function constructMessage(
 
   if (is("messageFwdHeader", message_.fwd_from)) {
     message.isAutomaticForward = message_.fwd_from.saved_from_peer != undefined && message_.fwd_from.saved_from_msg_id != undefined;
-    message.forwardSenderName = message_.fwd_from.from_name;
-    message.forwardId = message_.fwd_from.channel_post;
-    message.forwardSignature = message_.fwd_from.post_author;
-    message.forwardDate = fromUnixTimestamp(message_.fwd_from.date);
-    if (is("peerUser", message_.fwd_from.from_id)) {
-      const entity = await getEntity(message_.fwd_from.from_id);
-      if (entity) {
-        message.forwardFrom = constructUser(entity);
-      }
-    } else if (is("peerChat", message_.fwd_from.from_id)) {
-      const entity = await getEntity(message_.fwd_from.from_id);
-      if (entity) {
-        message.forwardFromChat = constructChatP(entity);
-      }
-    } else if (is("peerChannel", message_.fwd_from.from_id)) {
-      const entity = await getEntity(message_.fwd_from.from_id);
-      if (entity) {
-        message.forwardFromChat = constructChatP(entity);
-      }
-    }
+    message.forwardFrom = await constructForwardHeader(message_.fwd_from, getEntity);
   }
 
   if (message_.grouped_id != undefined) {
@@ -1065,7 +1037,7 @@ export async function constructMessage(
   };
 
   if (message_.message && message_.media === undefined) {
-    return messageText;
+    return cleanObject(messageText);
   }
 
   const messageMedia: _MessageMediaBase = {
