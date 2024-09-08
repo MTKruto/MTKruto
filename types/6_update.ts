@@ -31,11 +31,11 @@ import { MessageReactionCount } from "./2_message_reaction_count.ts";
 import { MessageReactions } from "./2_message_reactions.ts";
 import { PreCheckoutQuery } from "./2_pre_checkout_query.ts";
 import { ChatMemberUpdated } from "./3_chat_member_updated.ts";
+import { JoinRequest } from "./3_join_request.ts";
 import { Story } from "./3_story.ts";
 import { Message } from "./4_message.ts";
 import { CallbackQuery } from "./5_callback_query.ts";
 import { ChatListItem } from "./5_chat_list_item.ts";
-import { JoinRequest } from "./3_join_request.ts";
 
 /**
  * A client's connection state was changed.

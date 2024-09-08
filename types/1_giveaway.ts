@@ -18,8 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api } from "../2_tl.ts";
 import { cleanObject } from "../1_utilities.ts";
+import { Api } from "../2_tl.ts";
 import { constructGiveawayParameters, GiveawayParameters } from "./0_giveaway_parameters.ts";
 
 /** A giveaway. */
