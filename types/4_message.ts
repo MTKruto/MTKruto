@@ -1037,7 +1037,7 @@ export async function constructMessage(
   };
 
   if (message_.message && message_.media === undefined) {
-    return messageText;
+    return cleanObject(messageText);
   }
 
   const messageMedia: _MessageMediaBase = {
