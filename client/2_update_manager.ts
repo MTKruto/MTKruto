@@ -271,7 +271,9 @@ export class UpdateManager {
   async processUsers(users: Api.User[]) {
     for (const user of users) {
       if (is("user", user) && user.access_hash) {
-        await this.#c.messageStorage.setEntity(user);
+        if (!user.min || user.min && await this.#c.messageStorage.getEntity(Number(user.id)) == null) {
+          await this.#c.messageStorage.setEntity(user);
+        }
         if (user.username) {
           await this.#c.messageStorage.updateUsernames(peerToChatId(user), [user.username]);
         }
