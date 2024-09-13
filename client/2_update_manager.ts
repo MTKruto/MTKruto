@@ -154,7 +154,9 @@ export class UpdateManager {
   async processChats(chats: Api.Chat[]) {
     for (const chat of chats) {
       if (isOneOf(["channel", "channelForbidden"], chat)) {
-        await this.#c.messageStorage.setEntity(chat);
+        if (!is("channel", chat) || !chat.min || chat.min && await this.#c.messageStorage.getEntity(peerToChatId(chat)) == null) {
+          await this.#c.messageStorage.setEntity(chat);
+        }
         if ("username" in chat && chat.username) {
           await this.#c.messageStorage.updateUsernames(peerToChatId(chat), [chat.username]);
         }
@@ -271,7 +273,9 @@ export class UpdateManager {
   async processUsers(users: Api.User[]) {
     for (const user of users) {
       if (is("user", user) && user.access_hash) {
-        await this.#c.messageStorage.setEntity(user);
+        if (!user.min || user.min && await this.#c.messageStorage.getEntity(peerToChatId(user)) == null) {
+          await this.#c.messageStorage.setEntity(user);
+        }
         if (user.username) {
           await this.#c.messageStorage.updateUsernames(peerToChatId(user), [user.username]);
         }
