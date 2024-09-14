@@ -411,6 +411,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       cdn: this.#cdn,
       ignoreOutgoing: this.#ignoreOutgoing,
       dropPendingUpdates: params?.dropPendingUpdates,
+      disconnected: () => this.disconnected,
     };
     this.#updateManager = new UpdateManager(c);
     this.#networkStatisticsManager = new NetworkStatisticsManager(c);
@@ -1082,6 +1083,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async disconnect() {
     this.#connectionInited = false;
     await this.#client.disconnect();
+    this.#updateManager.closeAllChats();
     this.#pingLoopAbortController?.abort();
     this.#connectionInsuranceLoopAbortController?.abort();
   }
@@ -2568,6 +2570,26 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async addChatMembers(chatId: ID, userIds: ID[]): Promise<FailedInvitation[]> {
     return await this.#messageManager.addChatMembers(chatId, userIds);
+  }
+
+  /**
+   * Open a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The chat to open.
+   */
+  async openChat(chatId: ID): Promise<void> {
+    await this.#updateManager.openChat(chatId);
+  }
+
+  /**
+   * Close a chat previously opened by openChat. User-only.
+   *
+   * @method ch
+   * @param chatId The chat to close.
+   */
+  async closeChat(chatId: ID): Promise<void> {
+    await this.#updateManager.closeChat(chatId);
   }
 
   //

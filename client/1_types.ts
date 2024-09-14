@@ -63,4 +63,5 @@ export interface C {
   cdn: boolean;
   dropPendingUpdates?: boolean;
   invoke: Invoke;
+  disconnected: () => boolean;
 }

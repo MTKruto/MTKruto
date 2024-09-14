@@ -19,9 +19,11 @@
  */
 
 import { unreachable } from "../0_deps.ts";
+import { InputError } from "../0_errors.ts";
 import { getLogger, Logger, Mutex, Queue, second, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api, as, inputPeerToPeer, is, isOfEnum, isOneOf, peerToChatId, ReadObject } from "../2_tl.ts";
 import { PersistentTimestampInvalid } from "../3_errors.ts";
+import { ID } from "../3_types.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
 import { C } from "./1_types.ts";
 
@@ -74,6 +76,7 @@ export class UpdateManager {
   #L$handleUpdate: Logger;
   #L$processUpdates: Logger;
   #LfetchState: Logger;
+  #LopenChat: Logger;
 
   constructor(c: C) {
     this.#c = c;
@@ -84,6 +87,7 @@ export class UpdateManager {
     this.#L$handleUpdate = L.branch("#handleUpdate");
     this.#L$processUpdates = L.branch("#processUpdates");
     this.#LfetchState = L.branch("fetchState");
+    this.#LopenChat = L.branch("openChat");
   }
 
   static isPtsUpdate(v: Api.Update): v is PtsUpdate {
@@ -717,6 +721,7 @@ export class UpdateManager {
   }
 
   async #recoverChannelUpdateGap(channelId: bigint, source: string) {
+    let lastTimeout = 1;
     this.#LrecoverChannelUpdateGap.debug(`recovering channel update gap [${channelId}, ${source}]`);
     const pts_ = await this.#c.storage.getChannelPts(channelId);
     let pts = pts_ == null ? 1 : pts_;
@@ -732,6 +737,7 @@ export class UpdateManager {
           filter: { _: "channelMessagesFilterEmpty" },
           limit: await this.#c.storage.getAccountType() == "user" ? CHANNEL_DIFFERENCE_LIMIT_USER : CHANNEL_DIFFERENCE_LIMIT_BOT,
         });
+        lastTimeout = difference.timeout ?? 1;
       } catch (err) {
         if (err instanceof PersistentTimestampInvalid) {
           await new Promise((r) => setTimeout(r, delay * second));
@@ -776,6 +782,7 @@ export class UpdateManager {
         break;
       }
     }
+    return lastTimeout;
   }
 
   #handleUpdatesSet = new Set<bigint>();
@@ -825,5 +832,76 @@ export class UpdateManager {
       return;
     }
     this.#updateHandler = handler;
+  }
+
+  #openChats = new Map<bigint, { controller: AbortController; promise: Promise<void> }>();
+  async openChat(chatId: ID) {
+    await this.#c.storage.assertUser("openChat");
+    const channel = await this.#c.getInputChannel(chatId);
+    const channelId = channel.channel_id;
+    if (this.#openChats.has(channelId)) {
+      return;
+    }
+    const controller = new AbortController();
+    const promise = Promise.resolve().then(async () => {
+      const logger = this.#LopenChat.branch(peerToChatId(channel) + "");
+      while (true) {
+        if (this.#c.disconnected()) {
+          logger.debug("disconnected, stopping the loop");
+          this.#openChats.delete(channelId);
+          break;
+        }
+        if (!this.#openChats.has(channelId)) {
+          const aborted = controller.signal.aborted;
+          logger.debug(`closed${(aborted ? " (aborted)" : "")}, stopping the loop`);
+          break;
+        }
+        try {
+          const Ti = Date.now();
+          const timeout = await this.#recoverChannelUpdateGap(channelId, "openChat");
+          const dT = Date.now() - Ti;
+          const delay = Math.max(timeout * 1_000 - dT, 0);
+          logger.debug("timeout=", timeout, "delay=", delay, "dT=", dT);
+          if (delay) {
+            await new Promise<void>((r) => {
+              const resolve = () => {
+                r();
+                controller.signal.removeEventListener("abort", resolve);
+                if (controller.signal.aborted) {
+                  clearTimeout(timeout);
+                }
+              };
+              controller.signal.addEventListener("abort", resolve);
+              const timeout = setTimeout(resolve, delay);
+            });
+          }
+        } catch (err) {
+          if (this.#c.disconnected()) {
+            continue; // breaks the loop
+          }
+          this.#LopenChat.error("An unexpected error occurred:", err);
+        }
+      }
+    });
+    this.#openChats.set(channelId, { controller, promise });
+  }
+
+  async closeChat(chatId: ID) {
+    await this.#c.storage.assertUser("closeChat");
+    const { channel_id } = await this.#c.getInputChannel(chatId);
+    const openChat = this.#openChats.get(channel_id);
+    if (openChat) {
+      this.#openChats.delete(channel_id);
+      openChat.controller.abort();
+    } else {
+      throw new InputError("Chat not open");
+    }
+  }
+
+  closeAllChats() {
+    for (const [channelId, openChat] of this.#openChats.entries()) {
+      this.#openChats.delete(channelId);
+      openChat.controller.abort();
+    }
   }
 }
