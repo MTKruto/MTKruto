@@ -90,6 +90,7 @@ export * from "./types/2_business_connection.ts";
 export * from "./types/2_chat.ts";
 export * from "./types/2_chat_member.ts";
 export * from "./types/2_chosen_inline_result.ts";
+export * from "./types/2_forward_header.ts";
 export * from "./types/2_game.ts";
 export * from "./types/2_inactive_chat.ts";
 export * from "./types/2_inline_keyboard_button.ts";
