@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export { getColorFromPeerId, getColorName, getRandomId, type LoggingProvider, setLoggingProvider, setLogVerbosity } from "./1_utilities.ts";
+export { getColorFromPeerId, getColorName, getRandomId, type LoggingProvider, setLogFilter, setLoggingProvider, setLogVerbosity } from "./1_utilities.ts";
 export { checkPassword } from "./client/0_password.ts";
 
 export * from "./2_connection.ts";

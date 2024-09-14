@@ -17,11 +17,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 // deno-lint-ignore-file no-explicit-any
-let verbosity = Number("LOG_VERBOSITY" in globalThis ? (globalThis as any).LOG_VERBOSITY : "Deno" in globalThis ? (globalThis as any).Deno.env.get("LOG_VERBOSITY") : "process" in globalThis ? (globalThis as any).process.env.LOG : "") || 0;
+
+import { getNumber, getString } from "./0_env.ts";
+
+let verbosity = getNumber("LOG_VERBOSITY") || 0;
 export function setLogVerbosity(verbosity_: number) {
   verbosity = verbosity_;
+}
+const LOG_FILTER = getString("LOG_FILTER");
+let filter: RegExp | null = LOG_FILTER == null ? null : new RegExp(LOG_FILTER);
+export function setLogFilter(filter_: RegExp | null) {
+  filter = filter_;
 }
 let provider: LoggingProvider = console;
 
@@ -99,6 +106,9 @@ export function getLogger(scope: string) {
     },
     log(verbosity_: number, ...args: any[]) {
       if (verbosity < verbosity_) {
+        return;
+      }
+      if (filter != null && !filter.test(scope)) {
         return;
       }
       let fn: typeof provider["log"];
