@@ -1,9 +1,8 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { constructChatP } from "../3_types.ts";
 import { EntityGetter } from "./_getters.ts";
-import { ChatPChannel, ChatPSupergroup } from "./1_chat_p.ts";
+import { ChatPChannel, ChatPSupergroup, constructChatP } from "./1_chat_p.ts";
 import { constructUser, User } from "./1_user.ts";
 
 /** @unlisted */

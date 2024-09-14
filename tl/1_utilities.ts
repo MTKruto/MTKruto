@@ -78,6 +78,6 @@ const GENERIC_FUNCTIONS = [
   "invokeWithMessagesRange",
   "invokeWithTakeout",
 ] as const;
-export function isGenericFunction(value: unknown) {
+export function isGenericFunction(value: unknown): boolean {
   return isOneOf(GENERIC_FUNCTIONS, value);
 }

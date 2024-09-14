@@ -34,7 +34,10 @@ export class CacheMap<K, V> extends Map<K, V> {
   set(key: K, value: V): typeof this {
     super.set(key, value);
     if (this.size > this.#limit) {
-      this.delete(this.keys().next().value);
+      const k = this.keys().next().value;
+      if (k !== undefined) {
+        this.delete(k);
+      }
     }
     return this;
   }
