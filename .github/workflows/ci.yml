@@ -36,7 +36,7 @@ jobs:
 
       - uses: denoland/setup-deno@v1
         with:
-          deno-version: 1.46.3
+          deno-version: 1.45.0
 
       - uses: actions/cache@v4
         with:
