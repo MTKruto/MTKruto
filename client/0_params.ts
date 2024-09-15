@@ -88,25 +88,19 @@ export interface SendChatActionParams extends _BusinessConnectionIdCommon {
   messageThreadId?: number;
 }
 
-export interface EditMessageParams extends _BusinessConnectionIdCommon {
+export interface EditMessageParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
   /** The parse mode to use. If not provided, the default parse mode will be used. */
   parseMode?: ParseMode;
   /** The message's entities. */
   entities?: MessageEntity[];
   /** The message's link preview. */
   linkPreview?: LinkPreview;
-  /** The reply markup of the message. Bot-only. */
-  replyMarkup?: ReplyMarkup;
 }
 
-export interface EditMessageReplyMarkupParams extends _BusinessConnectionIdCommon {
-  /** The reply markup of the message. Bot-only. */
-  replyMarkup?: ReplyMarkup;
+export interface EditMessageReplyMarkupParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
 }
 
-export interface EditMessageMediaParams extends _BusinessConnectionIdCommon {
-  /** The reply markup of the message. Bot-only. */
-  replyMarkup?: ReplyMarkup;
+export interface EditMessageMediaParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
 }
 
 export interface ForwardMessagesParams extends Omit<_SendCommon, "replyToMessageId" | "replyMarkup"> {
@@ -441,15 +435,13 @@ export interface GetCreatedInviteLinksParams {
 export interface StopPollParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
 }
 
-export interface EditMessageLiveLocationParams extends _BusinessConnectionIdCommon {
+export interface EditMessageLiveLocationParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
   /** The accuracy radius of the location in meters. Must be in the range of 0-1500. */
   horizontalAccuracy?: number;
   /** The direction which the user is moving towards. Must be in the range of 1-350. */
   heading?: number;
   /** The maximum distance for proximity alerts on approaching another chat member in meters. Must be in the range 1-100,000. */
   proximityAlertRadius?: number;
-  /** The reply markup of the message. Bot-only. */
-  replyMarkup?: ReplyMarkup;
 }
 
 export interface SendInlineQueryParams {

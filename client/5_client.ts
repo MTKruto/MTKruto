@@ -1956,7 +1956,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Send an invoice.
+   * Send an invoice. Bot-only.
    *
    * @method ms
    * @param chatId The chat to send the invoice to.
@@ -2165,7 +2165,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param messageId The identifier of the scheduled message to delete.
    */
   async deleteScheduledMessage(chatId: ID, messageId: number) {
-    await this.#messageManager.deleteScheduledMessages(chatId, [messageId]);
+    await this.#messageManager.deleteScheduledMessage(chatId, messageId);
   }
 
   /**
@@ -2187,7 +2187,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param messageId The identifier of the scheduled message to send.
    */
   async sendScheduledMessage(chatId: ID, messageId: number): Promise<Message> {
-    return (await this.#messageManager.sendScheduledMessages(chatId, [messageId]))[0];
+    return await this.#messageManager.sendScheduledMessage(chatId, messageId);
   }
 
   /**

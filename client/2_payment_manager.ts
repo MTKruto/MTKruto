@@ -63,6 +63,7 @@ export class PaymentManager {
   }
 
   async refundStarPayment(userId: ID, telegramPaymentChargeId: string) {
+    this.#c.storage.assertBot("refundStarPayment");
     await this.#c.invoke({ _: "payments.refundStarsCharge", user_id: await this.#c.getInputUser(userId), charge_id: telegramPaymentChargeId });
   }
 }

@@ -27,7 +27,7 @@ import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructCha
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _SendCommon, _SpoilCommon, AddChatMemberParams, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import { checkMessageId } from "./0_utilities.ts";
 import { checkArray } from "./0_utilities.ts";
 import { isHttpUrl } from "./0_utilities.ts";
@@ -159,6 +159,21 @@ export class MessageManager {
     return [text, entities];
   }
 
+  #checkParams(params?: _BusinessConnectionIdCommon | _SendCommon | _ReplyMarkupCommon) {
+    if (params && "replyMarkup" in params && params.replyMarkup !== undefined) {
+      this.#c.storage.assertBot("replyMarkup");
+    }
+    if (params && "businessConnectionId" in params && params.businessConnectionId !== undefined) {
+      this.#c.storage.assertBot("businessConnectionId");
+    }
+    if (params && "sendAs" in params && params.sendAs !== undefined) {
+      this.#c.storage.assertUser("sendAs");
+    }
+    if (params && "sendAt" in params && params.sendAt !== undefined) {
+      this.#c.storage.assertUser("businessConsendAtnectionId");
+    }
+  }
+
   async parseText(text_: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
     const [text, entities_] = MessageManager.parseText(text_, params?.entities ?? [], params?.parseMode ?? this.#c.parseMode);
     const entities = entities_?.length > 0 ? await Promise.all(entities_.map((v) => messageEntityToTlObject(v, this.#c.getEntity))) : undefined;
@@ -262,6 +277,7 @@ export class MessageManager {
     text: string,
     params?: SendMessageParams,
   ) {
+    this.#checkParams(params);
     const [message, entities] = await this.parseText(text, params);
 
     const replyMarkup = await this.#constructReplyMarkup(params);
@@ -343,6 +359,7 @@ export class MessageManager {
   }
 
   async sendVenue(chatId: ID, latitude: number, longitude: number, title: string, address: string, params?: SendVenueParams) {
+    this.#checkParams(params);
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
@@ -382,6 +399,7 @@ export class MessageManager {
   }
 
   async sendContact(chatId: ID, firstName: string, number: string, params?: SendContactParams) {
+    this.#checkParams(params);
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
@@ -418,6 +436,7 @@ export class MessageManager {
   }
 
   async sendDice(chatId: ID, params?: SendDiceParams) {
+    this.#checkParams(params);
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
@@ -448,6 +467,7 @@ export class MessageManager {
   }
 
   async sendLocation(chatId: ID, latitude: number, longitude: number, params?: SendLocationParams) {
+    this.#checkParams(params);
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
@@ -499,6 +519,7 @@ export class MessageManager {
   }
 
   async sendVideoNote(chatId: ID, audio: FileSource, params?: SendVideoNoteParams) {
+    this.#checkParams(params);
     const message = await this.#sendDocumentInner(chatId, audio, params, FileType.VideoNote, [
       { _: "documentAttributeVideo", round_message: true, w: params?.length ?? 0, h: params?.length ?? 0, duration: params?.duration ?? 0 },
     ], false);
@@ -506,6 +527,7 @@ export class MessageManager {
   }
 
   async sendAudio(chatId: ID, audio: FileSource, params?: SendAudioParams) {
+    this.#checkParams(params);
     const message = await this.#sendDocumentInner(chatId, audio, params, FileType.Audio, [
       { _: "documentAttributeAudio", duration: params?.duration ?? 0, performer: params?.performer, title: params?.title },
     ]);
@@ -513,6 +535,7 @@ export class MessageManager {
   }
 
   async sendVoice(chatId: ID, voice: FileSource, params?: SendVoiceParams) {
+    this.#checkParams(params);
     const message = await this.#sendDocumentInner(chatId, voice, params, FileType.VoiceNote, [
       { _: "documentAttributeAudio", voice: true, duration: params?.duration ?? 0 },
     ]);
@@ -520,6 +543,7 @@ export class MessageManager {
   }
 
   async sendAnimation(chatId: ID, animation: FileSource, params?: SendAnimationParams) {
+    this.#checkParams(params);
     const message = await this.#sendDocumentInner(chatId, animation, params, FileType.Animation, [
       { _: "documentAttributeAnimated" },
       { _: "documentAttributeVideo", supports_streaming: true, w: params?.width ?? 0, h: params?.height ?? 0, duration: params?.duration ?? 0 },
@@ -528,6 +552,7 @@ export class MessageManager {
   }
 
   async sendVideo(chatId: ID, video: FileSource, params?: SendVideoParams) {
+    this.#checkParams(params);
     const message = await this.#sendDocumentInner(chatId, video, params, FileType.Video, [
       { _: "documentAttributeVideo", supports_streaming: params?.supportsStreaming ? true : undefined, w: params?.width ?? 0, h: params?.height ?? 0, duration: params?.duration ?? 0 },
     ]);
@@ -580,16 +605,19 @@ export class MessageManager {
   }
 
   async sendDocument(chatId: ID, document: FileSource, params?: SendDocumentParams) {
+    this.#checkParams(params);
     const message = await this.#sendDocumentInner(chatId, document, params, FileType.Document, []);
     return assertMessageType(message, "document");
   }
 
   async sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams) {
+    this.#checkParams(params);
     const message = await this.#sendDocumentInner(chatId, sticker, params, FileType.Sticker, [{ _: "documentAttributeSticker", alt: params?.emoji || "", stickerset: { _: "inputStickerSetEmpty" } }], undefined, STICKER_MIME_TYPES);
     return assertMessageType(message, "sticker");
   }
 
   async sendPhoto(chatId: ID, photo: FileSource, params?: SendPhotoParams) {
+    this.#checkParams(params);
     let media: Api.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
     const ttl_seconds = params && "selfDestruct" in params && params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct) : undefined;
@@ -672,6 +700,7 @@ export class MessageManager {
   }
 
   async sendPoll(chatId: ID, question: string, options: [string | PollOption, string | PollOption, ...(string | PollOption)[]], params?: SendPollParams) {
+    this.#checkParams(params);
     question = question?.trim();
     if (!question) {
       throw new Error("Question must not be empty.");
@@ -731,6 +760,7 @@ export class MessageManager {
     messageId: number,
     params?: EditMessageReplyMarkupParams,
   ) {
+    this.#checkParams(params);
     const result = await this.#c.invoke({ _: "messages.editMessage", id: checkMessageId(messageId), peer: await this.#c.getInputPeer(chatId), reply_markup: await this.#constructReplyMarkup(params) });
 
     const message_ = (await this.#updatesToMessages(chatId, result))[0];
@@ -752,6 +782,7 @@ export class MessageManager {
     text: string,
     params?: EditMessageParams,
   ) {
+    this.#checkParams(params);
     const [message, entities] = await this.parseText(text, params);
     const noWebpage = params?.linkPreview?.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
@@ -768,6 +799,7 @@ export class MessageManager {
   }
 
   async editInlineMessageText(inlineMessageId: string, text: string, params?: EditMessageParams) {
+    this.#checkParams(params);
     const [message, entities] = await this.parseText(text, params);
 
     const id = deserializeInlineMessageId(inlineMessageId);
@@ -869,6 +901,7 @@ export class MessageManager {
     media: InputMedia,
     params?: EditMessageMediaParams,
   ) {
+    this.#checkParams(params);
     const message = await this.getMessage(chatId, messageId);
     if (!message) {
       throw new InputError("Message not found.");
@@ -892,6 +925,7 @@ export class MessageManager {
   }
 
   async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditMessageMediaParams) {
+    this.#checkParams(params);
     this.#c.storage.assertBot("editInlineMessageMedia");
     const id = deserializeInlineMessageId(inlineMessageId);
     await this.#c.invoke({ _: "messages.editInlineBotMessage", id, media: await this.#resolveInputMedia(media), reply_markup: await this.#constructReplyMarkup(params) });
@@ -908,29 +942,44 @@ export class MessageManager {
   }
 
   async deleteScheduledMessages(chatId: ID, messageIds: number[]) {
+    this.#c.storage.assertUser("sendScheduledMessage");
     checkArray(messageIds, checkMessageId);
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({ _: "messages.deleteScheduledMessages", peer, id: messageIds });
   }
 
+  async deleteScheduledMessage(chatId: ID, messageId: number) {
+    this.#c.storage.assertUser("deleteScheduledMessage");
+    return await this.deleteScheduledMessages(chatId, [messageId]);
+  }
+
   async sendScheduledMessages(chatId: ID, messageIds: number[]) {
+    this.#c.storage.assertUser("sendScheduledMessages");
     checkArray(messageIds, checkMessageId);
     const peer = await this.#c.getInputPeer(chatId);
     const result = await this.#c.invoke({ _: "messages.sendScheduledMessages", peer, id: messageIds });
     return await this.#updatesToMessages(chatId, result);
   }
 
+  async sendScheduledMessage(chatId: ID, messageId: number) {
+    this.#c.storage.assertUser("sendScheduledMessage");
+    return (await this.sendScheduledMessages(chatId, [messageId]))[0];
+  }
+
   async deleteChatMemberMessages(chatId: ID, memberId: ID) {
+    this.#c.storage.assertUser("deleteChatMemberMessages");
     const channel = await this.#c.getInputChannel(chatId);
     const participant = await this.#c.getInputPeer(memberId);
     await this.#c.invoke({ _: "channels.deleteParticipantHistory", channel, participant });
   }
 
   async pinMessage(chatId: ID, messageId: number, params?: PinMessageParams) {
+    this.#checkParams(params);
     await this.#c.invoke({ _: "messages.updatePinnedMessage", peer: await this.#c.getInputPeer(chatId), id: checkMessageId(messageId), silent: params?.disableNotification ? true : undefined, pm_oneside: params?.bothSides ? undefined : true });
   }
 
   async unpinMessage(chatId: ID, messageId: number, params?: UnpinMessageParams) {
+    this.#checkParams(params);
     await this.#c.invoke({ _: "messages.updatePinnedMessage", peer: await this.#c.getInputPeer(chatId), id: checkMessageId(messageId), unpin: true }, params?.businessConnectionId);
   }
 
@@ -1072,6 +1121,7 @@ export class MessageManager {
   }
 
   async sendChatAction(chatId: ID, action: ChatAction, params?: SendChatActionParams) {
+    this.#checkParams(params);
     let action_: Api.SendMessageAction;
     switch (action) {
       case "type":
@@ -1241,6 +1291,7 @@ export class MessageManager {
   }
 
   async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams) {
+    this.#c.storage.assertUser("searchMessages");
     const result = await this.#c.invoke({ _: "messages.search", peer: await this.#c.getInputPeer(chatId), q: query, add_offset: 0, filter: messageSearchFilterToTlObject(params?.filter ?? "empty"), hash: 0n, limit: params?.limit ?? 100, max_date: 0, max_id: 0, min_date: 0, min_id: 0, offset_id: params?.after ? params.after : 0, from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined });
     if (!("messages" in result)) {
       unreachable();
@@ -1254,6 +1305,7 @@ export class MessageManager {
   }
 
   async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number) {
+    await this.#c.storage.assertUser("setBoostsRequiredToCircumventRestrictions");
     const channel = await this.#c.getInputChannel(chatId);
     await this.#c.invoke({ _: "channels.setBoostsToUnblockRestrictions", channel, boosts });
   }
@@ -1344,6 +1396,7 @@ export class MessageManager {
   }
 
   async stopPoll(chatId: ID, messageId: number, params?: StopPollParams) {
+    this.#checkParams(params);
     const message = await this.getMessage(chatId, messageId);
     if (!message) {
       throw new InputError("Message not found.");
@@ -1362,6 +1415,7 @@ export class MessageManager {
   }
 
   async editMessageLiveLocation(chatId: ID, messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {
+    this.#checkParams(params);
     const message = await this.getMessage(chatId, messageId);
     if (message && "location" in message && message.location.livePeriod) {
       const result = await this.#c.invoke({ _: "messages.editMessage", peer: await this.#c.getInputPeer(chatId), id: messageId, media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }), reply_markup: await this.#constructReplyMarkup(params) });
@@ -1373,12 +1427,15 @@ export class MessageManager {
   }
 
   async editInlineMessageLiveLocation(inlineMessageId: string, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {
+    this.#checkParams(params);
     this.#c.storage.assertBot("editInlineMessageLiveLocation");
     const id = deserializeInlineMessageId(inlineMessageId);
     await this.#c.invoke({ _: "messages.editInlineBotMessage", id, media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }), reply_markup: await this.#constructReplyMarkup(params) });
   }
 
   async sendInvoice(chatId: ID, title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: SendInvoiceParams) {
+    this.#c.storage.assertBot("sendInvoice");
+    this.#checkParams(params);
     if (title.length < 1) {
       throw new InputError("Invoice title cannot be empty.");
     }
@@ -1437,6 +1494,7 @@ export class MessageManager {
   }
 
   async addChatMember(chatId: ID, userId: ID, params?: AddChatMemberParams) {
+    this.#c.storage.assertUser("addChatMember");
     const chat = await this.#c.getInputPeer(chatId);
     if (isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
       throw new InputError("Cannot add members to private chats");
@@ -1453,6 +1511,7 @@ export class MessageManager {
   }
 
   async addChatMembers(chatId: ID, userIds: ID[]) {
+    this.#c.storage.assertUser("addChatMembers");
     const chat = await this.#c.getInputPeer(chatId);
     if (isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
       throw new InputError("Cannot add members to private chats");
@@ -1471,6 +1530,7 @@ export class MessageManager {
   }
 
   async sendMediaGroup(chatId: ID, media: InputMedia[], params?: SendMediaGroupParams) {
+    this.#checkParams(params);
     {
       if (!Array.isArray(media) || !media.length) {
         throw new InputError("Media group must not be empty.");
