@@ -2147,6 +2147,28 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
+   * Delete multiple scheduled messages.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat that contains the scheduled messages.
+   * @param messageIds The identifiers of the scheduled messages to delete.
+   */
+  async deleteScheduledMessages(chatId: ID, messageIds: number[]) {
+    await this.#messageManager.deleteScheduledMessages(chatId, messageIds);
+  }
+
+  /**
+   * Delete a single scheduled message.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat that contains the scheduled message.
+   * @param messageId The identifier of the scheduled message to delete.
+   */
+  async deleteScheduledMessage(chatId: ID, messageId: number) {
+    await this.#messageManager.deleteScheduledMessages(chatId, [messageId]);
+  }
+
+  /**
    * Pin a message in a chat.
    *
    * @method ms

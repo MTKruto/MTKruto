@@ -907,6 +907,12 @@ export class MessageManager {
     }
   }
 
+  async deleteScheduledMessages(chatId: ID, messageIds: number[]) {
+    checkArray(messageIds, checkMessageId);
+    const peer = await this.#c.getInputPeer(chatId);
+    await this.#c.invoke({ _: "messages.deleteScheduledMessages", peer, id: messageIds });
+  }
+
   async deleteChatMemberMessages(chatId: ID, memberId: ID) {
     const channel = await this.#c.getInputChannel(chatId);
     const participant = await this.#c.getInputPeer(memberId);
