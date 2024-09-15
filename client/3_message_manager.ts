@@ -274,6 +274,7 @@ export class MessageManager {
     const noforwards = params?.protectContent ? true : undefined;
     const sendAs = await this.#resolveSendAs(params);
     const effect = params?.effectId ? BigInt(params.effectId) : undefined;
+    const schedule_date = params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined;
 
     let result: Api.Updates;
     if (!noWebpage && params?.linkPreview?.url) {
@@ -297,6 +298,7 @@ export class MessageManager {
         entities,
         reply_markup: replyMarkup,
         effect,
+        schedule_date,
       }, params?.businessConnectionId);
     } else {
       result = await this.#c.invoke(
@@ -314,6 +316,7 @@ export class MessageManager {
           entities,
           reply_markup: replyMarkup,
           effect,
+          schedule_date,
         },
         params?.businessConnectionId,
       );
@@ -371,6 +374,7 @@ export class MessageManager {
       }),
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
+      schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
     }, params?.businessConnectionId);
 
     const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -404,6 +408,7 @@ export class MessageManager {
         }),
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
+        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
       },
       params?.businessConnectionId,
     );
@@ -435,6 +440,7 @@ export class MessageManager {
       }),
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
+      schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
     }, params?.businessConnectionId);
 
     const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -483,6 +489,7 @@ export class MessageManager {
           }),
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
+        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
       },
       params?.businessConnectionId,
     );
@@ -635,6 +642,7 @@ export class MessageManager {
         message: caption ?? "",
         entities: captionEntities,
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
+        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
       },
       params?.businessConnectionId,
     );
@@ -709,6 +717,7 @@ export class MessageManager {
         media,
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
+        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
       },
       params?.businessConnectionId,
     );

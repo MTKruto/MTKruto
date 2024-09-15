@@ -72,6 +72,8 @@ export interface _SendCommon extends _BusinessConnectionIdCommon {
   sendAs?: ID;
   /** The identifier of a message effect to be attached to the message. */
   effectId?: number;
+  /** If specified, the message will be scheduled to be sent at that date. */
+  sendAt?: Date;
 }
 export interface SendMessageParams extends _SendCommon, _ReplyMarkupCommon {
   /** The parse mode to use. If not provided, the default parse mode will be used. */
