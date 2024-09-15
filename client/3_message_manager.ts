@@ -45,12 +45,14 @@ const messageManagerUpdates = [
   "updateNewMessage",
   "updateNewChannelMessage",
   "updateEditMessage",
+  "updateNewScheduledMessage",
   "updateEditChannelMessage",
   "updateBotNewBusinessMessage",
   "updateBotEditBusinessMessage",
   "updateBotDeleteBusinessMessage",
   "updateDeleteMessages",
   "updateDeleteChannelMessages",
+  "updateDeleteScheduledMessages",
   "updateChannelParticipant",
   "updateChatParticipant",
   "updateBotChatInviteRequester",
@@ -171,8 +173,12 @@ export class MessageManager {
         if ("message" in update && is("messageEmpty", update.message)) {
           continue;
         }
-        if (is("updateNewMessage", update) || is("updateEditMessage", update)) {
-          messages.push(await this.constructMessage(update.message));
+        if (is("updateNewMessage", update) || is("updateEditMessage", update) || is("updateNewScheduledMessage", update)) {
+          const message = await this.constructMessage(update.message);
+          if (is("updateNewScheduledMessage", update)) {
+            message.scheduled = true;
+          }
+          messages.push(message);
         } else if (is("updateNewChannelMessage", update) || is("updateEditChannelMessage", update)) {
           messages.push(await this.constructMessage(update.message));
         } else if (is("updateBotNewBusinessMessage", update)) {
@@ -268,6 +274,7 @@ export class MessageManager {
     const noforwards = params?.protectContent ? true : undefined;
     const sendAs = await this.#resolveSendAs(params);
     const effect = params?.effectId ? BigInt(params.effectId) : undefined;
+    const schedule_date = params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined;
 
     let result: Api.Updates;
     if (!noWebpage && params?.linkPreview?.url) {
@@ -291,6 +298,7 @@ export class MessageManager {
         entities,
         reply_markup: replyMarkup,
         effect,
+        schedule_date,
       }, params?.businessConnectionId);
     } else {
       result = await this.#c.invoke(
@@ -308,6 +316,7 @@ export class MessageManager {
           entities,
           reply_markup: replyMarkup,
           effect,
+          schedule_date,
         },
         params?.businessConnectionId,
       );
@@ -365,6 +374,7 @@ export class MessageManager {
       }),
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
+      schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
     }, params?.businessConnectionId);
 
     const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -398,6 +408,7 @@ export class MessageManager {
         }),
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
+        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
       },
       params?.businessConnectionId,
     );
@@ -429,6 +440,7 @@ export class MessageManager {
       }),
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
+      schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
     }, params?.businessConnectionId);
 
     const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -477,6 +489,7 @@ export class MessageManager {
           }),
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
+        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
       },
       params?.businessConnectionId,
     );
@@ -629,6 +642,7 @@ export class MessageManager {
         message: caption ?? "",
         entities: captionEntities,
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
+        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
       },
       params?.businessConnectionId,
     );
@@ -703,6 +717,7 @@ export class MessageManager {
         media,
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
+        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
       },
       params?.businessConnectionId,
     );
@@ -892,6 +907,19 @@ export class MessageManager {
     }
   }
 
+  async deleteScheduledMessages(chatId: ID, messageIds: number[]) {
+    checkArray(messageIds, checkMessageId);
+    const peer = await this.#c.getInputPeer(chatId);
+    await this.#c.invoke({ _: "messages.deleteScheduledMessages", peer, id: messageIds });
+  }
+
+  async sendScheduledMessages(chatId: ID, messageIds: number[]) {
+    checkArray(messageIds, checkMessageId);
+    const peer = await this.#c.getInputPeer(chatId);
+    const result = await this.#c.invoke({ _: "messages.sendScheduledMessages", peer, id: messageIds });
+    return await this.#updatesToMessages(chatId, result);
+  }
+
   async deleteChatMemberMessages(chatId: ID, memberId: ID) {
     const channel = await this.#c.getInputChannel(chatId);
     const participant = await this.#c.getInputPeer(memberId);
@@ -970,7 +998,8 @@ export class MessageManager {
       is("updateEditMessage", update) ||
       is("updateEditChannelMessage", update) ||
       is("updateBotNewBusinessMessage", update) ||
-      is("updateBotEditBusinessMessage", update)
+      is("updateBotEditBusinessMessage", update) ||
+      is("updateNewScheduledMessage", update)
     ) {
       if (!(is("messageEmpty", update.message))) {
         const isOutgoing = update.message.out;
@@ -983,6 +1012,9 @@ export class MessageManager {
           const message = await this.constructMessage(update.message, undefined, business);
           if (is("updateNewMessage", update) || is("updateNewChannelMessage", update) || is("updateBotNewBusinessMessage", update)) {
             return { message };
+          } else if (is("updateNewScheduledMessage", update)) {
+            message.scheduled = true;
+            return { scheduledMessage: message };
           } else {
             return { editedMessage: message };
           }
@@ -1011,6 +1043,10 @@ export class MessageManager {
         }
       }
       return { deletedMessages };
+    } else if (is("updateDeleteScheduledMessages", update)) {
+      const chatId = peerToChatId(update.peer);
+      const deletedMessages = update.messages.map((v) => ({ chatId, messageId: v }));
+      return { deletedMessages, scheduled: true };
     } else if (is("updateBotDeleteBusinessMessage", update)) {
       const chatId = peerToChatId(update.peer);
       const deletedMessages = update.messages.map((v) => ({ chatId, messageId: v }));

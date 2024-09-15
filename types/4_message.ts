@@ -112,6 +112,8 @@ export interface _MessageBase {
   viaBusinessBot?: User;
   /** The identifier of the message effect that has been attached to the message. */
   effectId?: string;
+  /** Whether the message is scheduled. */
+  scheduled?: boolean;
 }
 
 /**
@@ -968,6 +970,7 @@ export async function constructMessage(
     hasProtectedContent: message_.noforwards || false,
     senderBoostCount: message_.from_boosts_applied,
     effectId: message_.effect ? String(message_.effect) : undefined,
+    scheduled: message_.from_scheduled ? true : undefined,
   };
 
   if (message_.reactions) {
