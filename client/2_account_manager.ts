@@ -44,17 +44,17 @@ export class AccountManager {
   }
 
   async showUsername(id: ID, username: string) {
-    await this.#c.storage.assertUser("showUsername");
+    this.#c.storage.assertUser("showUsername");
     await this.#toggleUsername(id, username, true);
   }
 
   async hideUsername(id: ID, username: string) {
-    await this.#c.storage.assertUser("hideUsername");
+    this.#c.storage.assertUser("hideUsername");
     await this.#toggleUsername(id, username, false);
   }
 
   async reorderUsernames(id: ID, order: string[]) {
-    await this.#c.storage.assertUser("reorderUsernames");
+    this.#c.storage.assertUser("reorderUsernames");
     const peer = await this.#c.getInputPeer(id);
     if (is("inputPeerSelf", peer)) {
       return await this.#c.invoke({ _: "account.reorderUsernames", order });
@@ -68,7 +68,7 @@ export class AccountManager {
   }
 
   async hideUsernames(id: ID) {
-    await this.#c.storage.assertUser("hideUsernames");
+    this.#c.storage.assertUser("hideUsernames");
     const peer = await this.#c.getInputPeer(id);
     if (is("inputPeerChannel", peer)) {
       return await this.#c.invoke({ _: "channels.deactivateAllUsernames", channel: { ...peer, _: "inputChannel" } });
@@ -78,7 +78,7 @@ export class AccountManager {
   }
 
   async getInactiveChats() {
-    await this.#c.storage.assertUser("getInactiveChats");
+    this.#c.storage.assertUser("getInactiveChats");
     const { chats, dates } = await this.#c.invoke({ _: "channels.getInactiveChannels" });
     return chats.map((v, i) => constructInactiveChat(v, dates[i]));
   }

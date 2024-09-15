@@ -379,7 +379,7 @@ export class ChatListManager {
   }
 
   async getChats(from: "archived" | "main" = "main", after?: ChatListItem, limit = 100): Promise<ChatListItem[]> {
-    await this.#c.storage.assertUser("getChats");
+    this.#c.storage.assertUser("getChats");
     if (!this.#chatsLoadedFromStorage) {
       await this.#loadChatsFromStorage();
     }

@@ -59,12 +59,12 @@ export class VideoChatManager {
   }
 
   async startVideoChat(chatId: ID, params?: StartVideoChatParams) {
-    await this.#c.storage.assertUser("startVideoChat");
+    this.#c.storage.assertUser("startVideoChat");
     return await this.#createGroupCall(chatId, params?.title, params?.liveStream || undefined) as VideoChatActive;
   }
 
   async scheduleVideoChat(chatId: ID, startAt: Date, params?: StartVideoChatParams) {
-    await this.#c.storage.assertUser("scheduleVideoChat");
+    this.#c.storage.assertUser("scheduleVideoChat");
     return await this.#createGroupCall(chatId, params?.title, params?.liveStream || undefined, startAt) as VideoChatScheduled;
   }
 
@@ -78,7 +78,7 @@ export class VideoChatManager {
   }
 
   async joinVideoChat(id: string, params: string, params_?: JoinVideoChatParams) {
-    await this.#c.storage.assertUser("joinVideoChat");
+    this.#c.storage.assertUser("joinVideoChat");
     const call = await this.#getInputGroupCall(id);
     const { updates } = await this.#c.invoke({ _: "phone.joinGroupCall", call, join_as: params_?.joinAs ? await this.#c.getInputPeer(params_.joinAs) : { _: "inputPeerSelf" }, params: ({ _: "dataJSON", data: params }), invite_hash: params_?.inviteHash, muted: params_?.audio ? undefined : true, video_stopped: params_?.video ? undefined : true }).then((v) => as("updates", v));
     const updateGroupCall = updates
@@ -88,12 +88,12 @@ export class VideoChatManager {
   }
 
   async leaveVideoChat(id: string) {
-    await this.#c.storage.assertUser("leaveVideoChat");
+    this.#c.storage.assertUser("leaveVideoChat");
     await this.#c.invoke({ _: "phone.leaveGroupCall", call: await this.#getInputGroupCall(id), source: 0 });
   }
 
   async joinLiveStream(id: string) {
-    await this.#c.storage.assertUser("joinLiveStream");
+    this.#c.storage.assertUser("joinLiveStream");
     const call = await this.#getInputGroupCall(id);
     const { updates } = await this.#c.invoke({
       _: "phone.joinGroupCall",
@@ -124,7 +124,7 @@ export class VideoChatManager {
     return groupCall!;
   }
   async getVideoChat(id: string) {
-    await this.#c.storage.assertUser("getVideoChat");
+    this.#c.storage.assertUser("getVideoChat");
     return constructVideoChat(await this.#getCall(id));
   }
 
@@ -160,7 +160,7 @@ export class VideoChatManager {
   }
 
   async getLiveStreamChannels(id: string) {
-    await this.#c.storage.assertUser("getLiveStreamChannels");
+    this.#c.storage.assertUser("getLiveStreamChannels");
     const call = await this.#getCall(id);
     if (!(is("groupCall", call)) || !call.rtmp_stream) {
       throw new InputError("Not a live stream.");
@@ -176,7 +176,7 @@ export class VideoChatManager {
   }
 
   async *downloadLiveStreamChunk(id: string, channel: number, scale: number, timestamp: number, params?: DownloadLiveStreamChunkParams) {
-    await this.#c.storage.assertUser("downloadLiveStreamChunk");
+    this.#c.storage.assertUser("downloadLiveStreamChunk");
     const call = await this.#getCall(id);
     if (!(is("groupCall", call)) || !call.rtmp_stream) {
       throw new InputError("Not a live stream.");

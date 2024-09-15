@@ -43,14 +43,14 @@ export class CallbackQueryManager {
   }
 
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
-    await this.#c.storage.assertBot("answerCallbackQuery");
+    this.#c.storage.assertBot("answerCallbackQuery");
     checkCallbackQueryId(id);
     await this.#c.invoke({ _: "messages.setBotCallbackAnswer", query_id: BigInt(id), cache_time: params?.cacheTime ?? 0, message: params?.text, alert: params?.alert ? true : undefined });
   }
 
   static #enc = new TextEncoder();
   async sendCallbackQuery(chatId: ID, messageId: number, question: CallbackQueryQuestion) {
-    await this.#c.storage.assertUser("sendCallbackQuery");
+    this.#c.storage.assertUser("sendCallbackQuery");
     checkMessageId(messageId);
     validateCallbackQueryQuestion(question);
     const peer = await this.#c.getInputPeer(chatId), peerId = peerToChatId(peer), questionKey = JSON.stringify(question);

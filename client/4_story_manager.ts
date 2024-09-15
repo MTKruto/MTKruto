@@ -56,7 +56,7 @@ export class StoryManager {
   }
 
   async createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams) {
-    await this.#c.storage.assertUser("createStory");
+    this.#c.storage.assertUser("createStory");
     let media: Api.InputMedia | null = null;
     const source = "video" in content ? content.video : "photo" in content ? content.photo : unreachable();
 
@@ -105,7 +105,7 @@ export class StoryManager {
   }
 
   async getStories(chatId: ID, storyIds: number[]) {
-    await this.#c.storage.assertUser("getStories");
+    this.#c.storage.assertUser("getStories");
     checkArray(storyIds, checkStoryId);
     const peer = await this.#c.getInputPeer(chatId);
     const stories_ = await this.#c.invoke({ _: "stories.getStoriesByID", peer, id: storyIds });
@@ -117,18 +117,18 @@ export class StoryManager {
   }
 
   async getStory(chatId: ID, storyId: number) {
-    await this.#c.storage.assertUser("getStory");
+    this.#c.storage.assertUser("getStory");
     return (await this.getStories(chatId, [storyId]))[0] ?? null;
   }
 
   async deleteStories(chatId: ID, storyIds: number[]) {
-    await this.#c.storage.assertUser("deleteStories");
+    this.#c.storage.assertUser("deleteStories");
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({ _: "stories.deleteStories", peer, id: storyIds });
   }
 
   async deleteStory(chatId: ID, storyId: number) {
-    await this.#c.storage.assertUser("deleteStory");
+    this.#c.storage.assertUser("deleteStory");
     await this.deleteStories(chatId, [storyId]);
   }
 
@@ -139,22 +139,22 @@ export class StoryManager {
   }
 
   async addStoriesToHighlights(chatId: ID, storyIds: number[]) {
-    await this.#c.storage.assertUser("addStoriesToHighlights");
+    this.#c.storage.assertUser("addStoriesToHighlights");
     await this.#togglePinned(chatId, storyIds, true);
   }
 
   async addStoryToHighlights(chatId: ID, storyId: number) {
-    await this.#c.storage.assertUser("addStoryToHighlights");
+    this.#c.storage.assertUser("addStoryToHighlights");
     await this.addStoriesToHighlights(chatId, [storyId]);
   }
 
   async removeStoriesFromHighlights(chatId: ID, storyIds: number[]) {
-    await this.#c.storage.assertUser("removeStoriesFromHighlights");
+    this.#c.storage.assertUser("removeStoriesFromHighlights");
     await this.#togglePinned(chatId, storyIds, false);
   }
 
   async removeStoryFromHighlights(chatId: ID, storyId: number) {
-    await this.#c.storage.assertUser("removeStoryFromHighlights");
+    this.#c.storage.assertUser("removeStoryFromHighlights");
     await this.removeStoriesFromHighlights(chatId, [storyId]);
   }
 

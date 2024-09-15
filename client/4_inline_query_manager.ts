@@ -43,7 +43,7 @@ export class InlineQueryManager {
   }
 
   async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
-    await this.#c.storage.assertBot("answerInlineQuery");
+    this.#c.storage.assertBot("answerInlineQuery");
     checkInlineQueryId(id);
     await this.#c.invoke({ _: "messages.setInlineBotResults", query_id: BigInt(id), results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.#c.messageManager.parseText.bind(this.#c.messageManager), this.#c.messageManager.usernameResolver.bind(this.#c.messageManager)))), cache_time: params?.cacheTime ?? 300, private: params?.isPersonal ? true : undefined, switch_webview: params?.button && params.button.miniApp ? ({ _: "inlineBotWebView", text: params.button.text, url: params.button.miniApp.url }) : undefined, switch_pm: params?.button && params.button.startParameter ? ({ _: "inlineBotSwitchPM", text: params.button.text, start_param: params.button.startParameter }) : undefined, gallery: params?.isGallery ? true : undefined, next_offset: params?.nextOffset });
   }
@@ -63,7 +63,7 @@ export class InlineQueryManager {
   }
 
   async sendInlineQuery(userId: ID, chatId: ID, params?: SendInlineQueryParams) {
-    await this.#c.storage.assertUser("sendInlineQuery");
+    this.#c.storage.assertUser("sendInlineQuery");
     const bot = await this.#c.getInputUser(userId),
       peer = await this.#c.getInputPeer(chatId),
       query = params?.query ?? "",

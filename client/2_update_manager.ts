@@ -836,7 +836,7 @@ export class UpdateManager {
 
   #openChats = new Map<bigint, { controller: AbortController; promise: Promise<void> }>();
   async openChat(chatId: ID) {
-    await this.#c.storage.assertUser("openChat");
+    this.#c.storage.assertUser("openChat");
     const channel = await this.#c.getInputChannel(chatId);
     const channelId = channel.channel_id;
     if (this.#openChats.has(channelId)) {
@@ -887,7 +887,7 @@ export class UpdateManager {
   }
 
   async closeChat(chatId: ID) {
-    await this.#c.storage.assertUser("closeChat");
+    this.#c.storage.assertUser("closeChat");
     const { channel_id } = await this.#c.getInputChannel(chatId);
     const openChat = this.#openChats.get(channel_id);
     if (openChat) {

@@ -50,7 +50,7 @@ export interface SignInParamsBot {
 export type SignInParams = SignInParamsUser | SignInParamsBot;
 
 export interface _BusinessConnectionIdCommon {
-  /** The identifier of a business connection ID to perform the action on. */
+  /** The identifier of a business connection ID to perform the action on. Bot-only. */
   businessConnectionId?: string;
 }
 
@@ -72,7 +72,7 @@ export interface _SendCommon extends _BusinessConnectionIdCommon {
   sendAs?: ID;
   /** The identifier of a message effect to be attached to the message. */
   effectId?: number;
-  /** If specified, the message will be scheduled to be sent at that date. */
+  /** If specified, the message will be scheduled to be sent at that date. User-only. */
   sendAt?: Date;
 }
 export interface SendMessageParams extends _SendCommon, _ReplyMarkupCommon {

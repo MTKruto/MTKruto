@@ -115,6 +115,7 @@ export class StorageOperations {
 
   async initialize() {
     await this.#storage.initialize();
+    await this.getAccountType();
   }
 
   set(...args: Parameters<Storage["set"]>): ReturnType<Storage["set"]> {
@@ -350,6 +351,13 @@ export class StorageOperations {
     }
   }
 
+  get accountType() {
+    if (this.#accountType == null) {
+      unreachable();
+    }
+    return this.#accountType;
+  }
+
   async updateStickerSetName(id: bigint, accessHash: bigint, name: string) {
     await this.#storage.set(K.cache.stickerSetName(id, accessHash), [name, new Date()]);
   }
@@ -562,14 +570,14 @@ export class StorageOperations {
     return null;
   }
 
-  async assertUser(source: string) {
-    if (await this.getAccountType() != "user") {
+  assertUser(source: string) {
+    if (this.accountType != "user") {
       throw new InputError(`${source}: not user a client`);
     }
   }
 
-  async assertBot(source: string) {
-    if (await this.getAccountType() != "bot") {
+  assertBot(source: string) {
+    if (this.accountType != "bot") {
       throw new InputError(`${source}: not a bot client`);
     }
   }

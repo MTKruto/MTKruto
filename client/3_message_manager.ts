@@ -209,7 +209,7 @@ export class MessageManager {
   }
 
   async getHistory(chatId: ID, params?: GetHistoryParams) { // TODO: get from database properly
-    await this.#c.storage.assertUser("getHistory");
+    this.#c.storage.assertUser("getHistory");
     let limit = params?.limit ?? 100;
     if (limit <= 0) {
       limit = 1;
@@ -244,15 +244,15 @@ export class MessageManager {
 
   async #constructReplyMarkup(params?: Pick<SendMessageParams, "replyMarkup">) {
     if (params?.replyMarkup) {
-      await this.#c.storage.assertBot("replyMarkup");
-      return replyMarkupToTlObject(params.replyMarkup, this.usernameResolver.bind(this));
+      this.#c.storage.assertBot("replyMarkup");
+      return await replyMarkupToTlObject(params.replyMarkup, this.usernameResolver.bind(this));
     }
   }
 
   async #resolveSendAs(params?: Pick<SendMessageParams, "sendAs">) {
     const sendAs = params?.sendAs;
     if (sendAs !== undefined) {
-      await this.#c.storage.assertUser("sendAs");
+      this.#c.storage.assertUser("sendAs");
       return sendAs ? await this.#c.getInputPeer(sendAs) : undefined;
     }
   }
@@ -892,7 +892,7 @@ export class MessageManager {
   }
 
   async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditMessageMediaParams) {
-    await this.#c.storage.assertBot("editInlineMessageMedia");
+    this.#c.storage.assertBot("editInlineMessageMedia");
     const id = deserializeInlineMessageId(inlineMessageId);
     await this.#c.invoke({ _: "messages.editInlineBotMessage", id, media: await this.#resolveInputMedia(media), reply_markup: await this.#constructReplyMarkup(params) });
   }
@@ -1198,11 +1198,11 @@ export class MessageManager {
     await this.#c.invoke({ _: "channels.toggleJoinRequest", channel, enabled });
   }
   async enableJoinRequests(chatId: ID) {
-    await this.#c.storage.assertUser("enableJoinRequests");
+    this.#c.storage.assertUser("enableJoinRequests");
     await this.#toggleJoinRequests(chatId, true);
   }
   async disableJoinRequests(chatId: ID) {
-    await this.#c.storage.assertUser("disableJoinRequests");
+    this.#c.storage.assertUser("disableJoinRequests");
     await this.#toggleJoinRequests(chatId, false);
   }
 
@@ -1223,7 +1223,7 @@ export class MessageManager {
   }
 
   async approveJoinRequests(chatId: ID, params?: ApproveJoinRequestsParams) {
-    await this.#c.storage.assertUser("approveJoinRequests");
+    this.#c.storage.assertUser("approveJoinRequests");
     await this.#c.invoke({
       _: "messages.hideAllChatJoinRequests",
       peer: await this.#c.getInputPeer(chatId),
@@ -1232,7 +1232,7 @@ export class MessageManager {
     });
   }
   async declineJoinRequests(chatId: ID, params?: DeclineJoinRequestsParams) {
-    await this.#c.storage.assertUser("declineJoinRequests");
+    this.#c.storage.assertUser("declineJoinRequests");
     await this.#c.invoke({
       _: "messages.hideAllChatJoinRequests",
       peer: await this.#c.getInputPeer(chatId),
@@ -1267,13 +1267,13 @@ export class MessageManager {
   }
 
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams) {
-    await this.#c.storage.assertUser("getCreatedInviteLinks");
+    this.#c.storage.assertUser("getCreatedInviteLinks");
     const { invites } = await this.#c.invoke({ _: "messages.getExportedChatInvites", peer: await this.#c.getInputPeer(chatId), revoked: params?.revoked ? true : undefined, admin_id: params?.by ? await this.#c.getInputUser(params.by) : { _: "inputUserEmpty" }, limit: params?.limit ?? 100, offset_date: params?.afterDate ? toUnixTimestamp(params.afterDate) : undefined, offset_link: params?.afterInviteLink });
     return await Promise.all(invites.map((v) => as("chatInviteExported", v)).map((v) => constructInviteLink(v, this.#c.getEntity)));
   }
 
   async joinChat(chatId: ID) {
-    await this.#c.storage.assertUser("joinChat");
+    this.#c.storage.assertUser("joinChat");
     const peer = await this.#c.getInputPeer(chatId);
     if (is("inputPeerUser", peer)) {
       throw new InputError("Cannot join private chats.");
@@ -1300,7 +1300,7 @@ export class MessageManager {
   }
 
   async blockUser(userId: ID) {
-    await this.#c.storage.assertUser("blockUser");
+    this.#c.storage.assertUser("blockUser");
     const id = await this.#c.getInputPeer(userId);
     if (!(is("user", id))) {
       throw new InputError("Only users can be blocked or unblocked.");
@@ -1309,7 +1309,7 @@ export class MessageManager {
   }
 
   async unblockUser(userId: ID) {
-    await this.#c.storage.assertUser("unblockUser");
+    this.#c.storage.assertUser("unblockUser");
     const id = await this.#c.getInputPeer(userId);
     if (!(is("user", id))) {
       throw new InputError("Only users can be blocked or unblocked.");
@@ -1373,7 +1373,7 @@ export class MessageManager {
   }
 
   async editInlineMessageLiveLocation(inlineMessageId: string, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {
-    await this.#c.storage.assertBot("editInlineMessageLiveLocation");
+    this.#c.storage.assertBot("editInlineMessageLiveLocation");
     const id = deserializeInlineMessageId(inlineMessageId);
     await this.#c.invoke({ _: "messages.editInlineBotMessage", id, media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }), reply_markup: await this.#constructReplyMarkup(params) });
   }

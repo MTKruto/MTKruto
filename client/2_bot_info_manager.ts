@@ -35,17 +35,17 @@ export class BotInfoManager {
   }
 
   async setMyDescription(params?: { description?: string; languageCode?: string }) {
-    await this.#c.storage.assertBot("setMyDescription");
+    this.#c.storage.assertBot("setMyDescription");
     await this.#setMyInfo({ description: params?.description, lang_code: params?.languageCode ?? "" });
   }
 
   async setMyName(params?: { name?: string; languageCode?: string }) {
-    await this.#c.storage.assertBot("setMyName");
+    this.#c.storage.assertBot("setMyName");
     await this.#setMyInfo({ name: params?.name, lang_code: params?.languageCode ?? "" });
   }
 
   async setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }) {
-    await this.#c.storage.assertBot("setMyShortDescription");
+    this.#c.storage.assertBot("setMyShortDescription");
     await this.#setMyInfo({ about: params?.shortDescription, lang_code: params?.languageCode ?? "" });
   }
 
@@ -54,22 +54,22 @@ export class BotInfoManager {
   }
 
   async getMyDescription(params?: { languageCode?: string }): Promise<string> {
-    await this.#c.storage.assertBot("getMyDescription");
+    this.#c.storage.assertBot("getMyDescription");
     return (await this.#getMyInfo(params?.languageCode)).description;
   }
 
   async getMyName(params?: { languageCode?: string }): Promise<string> {
-    await this.#c.storage.assertBot("getMyName");
+    this.#c.storage.assertBot("getMyName");
     return (await this.#getMyInfo(params?.languageCode)).description;
   }
 
   async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
-    await this.#c.storage.assertBot("getMyShortDescription");
+    this.#c.storage.assertBot("getMyShortDescription");
     return (await this.#getMyInfo(params?.languageCode)).about;
   }
 
   async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
-    await this.#c.storage.assertBot("getMyCommands");
+    this.#c.storage.assertBot("getMyCommands");
     const commands_ = await this.#c.invoke({
       _: "bots.getBotCommands",
       lang_code: params?.languageCode ?? "",
@@ -79,7 +79,7 @@ export class BotInfoManager {
   }
 
   async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
-    await this.#c.storage.assertBot("setMyCommands");
+    this.#c.storage.assertBot("setMyCommands");
     await this.#c.invoke({
       _: "bots.setBotCommands",
       commands: commands.map((v) => ({ ...v, _: "botCommand" })),
