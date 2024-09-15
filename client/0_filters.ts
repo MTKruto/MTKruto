@@ -26,6 +26,7 @@ type GetLevel1Type<L1 extends AnyLevel1> = UpdateMap[L1];
 interface Level2Map {
   "message": keyof MessageTypes;
   "editedMessage": keyof MessageTypes;
+  "scheduledMessage": keyof MessageTypes;
   "callbackQuery": "message" | "inlineMessageId" | "data" | "gameShortName";
   "chosenInlineResult": "inlineMessageId";
 }
@@ -36,9 +37,9 @@ interface Level2TypeMap {
 }
 
 type GetAnyLevel2<L1 extends AnyLevel1> = L1 extends keyof Level2Map ? Level2Map[L1] : never;
-type AnyLevel2<L1 extends AnyLevel1 = AnyLevel1> = L1 extends unknown ? `${L1 extends "message" | "editedMessage" ? L1 | "" : L1}:${GetAnyLevel2<L1>}`
+type AnyLevel2<L1 extends AnyLevel1 = AnyLevel1> = L1 extends unknown ? `${L1 extends "message" | "editedMessage" | "scheduledMessage" ? L1 | "" : L1}:${GetAnyLevel2<L1>}`
   : never;
-type GetLevel2Type<L1 extends string, L2 extends string> = L2 extends keyof MessageTypes ? L1 extends "" ? { [P in "message" | "editedMessage"]?: MessageTypes[L2] } : L1 extends "message" | "editedMessage" ? { [P in L1]: MessageTypes[L2] } : never
+type GetLevel2Type<L1 extends string, L2 extends string> = L2 extends keyof MessageTypes ? L1 extends "" ? { [P in "message" | "editedMessage" | "scheduledMessage"]?: MessageTypes[L2] } : L1 extends "message" | "editedMessage" | "scheduledMessage" ? { [P in L1]: MessageTypes[L2] } : never
   : L1 extends keyof Level2TypeMap ? L2 extends Level2Map[L1] ? { [P in L1]: Level2TypeMap[P] & { [P in L2]-?: P extends keyof Level2TypeMap[L1] ? NonNullable<Level2TypeMap[L1][P]> : never } } : never
   : never;
 
@@ -49,6 +50,7 @@ type FilterCore<Q extends AnyLevelX = AnyLevelX> = Q extends AnyLevel1 ? GetLeve
 interface Shortcuts<T extends UpdateIntersection> {
   msg: T["message"] extends object ? T["message"]
     : T["editedMessage"] extends object ? T["editedMessage"]
+    : T["scheduledMessage"] extends object ? T["scheduledMessage"]
     : T["callbackQuery"] extends object ? T["callbackQuery"]["message"]
     : undefined;
   chat: T["callbackQuery"] extends object ? NonNullable<T["callbackQuery"]["message"]>["chat"] | undefined
@@ -63,6 +65,7 @@ interface Shortcuts<T extends UpdateIntersection> {
     : T["chosenInlineResult"] extends object ? T["chosenInlineResult"]["from"]
     : T["message"] extends object ? T["message"]["from"]
     : T["editedMessage"] extends object ? T["editedMessage"]["from"]
+    : T["scheduledMessage"] extends object ? T["scheduledMessage"]["from"]
     : T["preCheckoutQuery"] extends object ? T["preCheckoutQuery"]["from"]
     : undefined;
   senderChat: Shortcuts<T>["msg"] extends object ? Shortcuts<T>["msg"]["senderChat"] : undefined;
@@ -85,6 +88,8 @@ export function match<Q extends FilterQuery, T extends object>(filter: Q, value:
       type = "message";
     } else if ("editedMessage" in value) {
       type = "editedMessage";
+    } else if ("scheduledMessage" in value) {
+      type = "scheduledMessage";
     } else {
       return false;
     }

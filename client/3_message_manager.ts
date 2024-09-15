@@ -45,12 +45,14 @@ const messageManagerUpdates = [
   "updateNewMessage",
   "updateNewChannelMessage",
   "updateEditMessage",
+  "updateNewScheduledMessage",
   "updateEditChannelMessage",
   "updateBotNewBusinessMessage",
   "updateBotEditBusinessMessage",
   "updateBotDeleteBusinessMessage",
   "updateDeleteMessages",
   "updateDeleteChannelMessages",
+  "updateDeleteScheduledMessages",
   "updateChannelParticipant",
   "updateChatParticipant",
   "updateBotChatInviteRequester",
@@ -171,8 +173,12 @@ export class MessageManager {
         if ("message" in update && is("messageEmpty", update.message)) {
           continue;
         }
-        if (is("updateNewMessage", update) || is("updateEditMessage", update)) {
-          messages.push(await this.constructMessage(update.message));
+        if (is("updateNewMessage", update) || is("updateEditMessage", update) || is("updateNewScheduledMessage", update)) {
+          const message = await this.constructMessage(update.message);
+          if (is("updateNewScheduledMessage", update)) {
+            message.scheduled = true;
+          }
+          messages.push(message);
         } else if (is("updateNewChannelMessage", update) || is("updateEditChannelMessage", update)) {
           messages.push(await this.constructMessage(update.message));
         } else if (is("updateBotNewBusinessMessage", update)) {
@@ -970,7 +976,8 @@ export class MessageManager {
       is("updateEditMessage", update) ||
       is("updateEditChannelMessage", update) ||
       is("updateBotNewBusinessMessage", update) ||
-      is("updateBotEditBusinessMessage", update)
+      is("updateBotEditBusinessMessage", update) ||
+      is("updateNewScheduledMessage", update)
     ) {
       if (!(is("messageEmpty", update.message))) {
         const isOutgoing = update.message.out;
@@ -983,6 +990,9 @@ export class MessageManager {
           const message = await this.constructMessage(update.message, undefined, business);
           if (is("updateNewMessage", update) || is("updateNewChannelMessage", update) || is("updateBotNewBusinessMessage", update)) {
             return { message };
+          } else if (is("updateNewScheduledMessage", update)) {
+            message.scheduled = true;
+            return { scheduledMessage: message };
           } else {
             return { editedMessage: message };
           }
@@ -1011,6 +1021,10 @@ export class MessageManager {
         }
       }
       return { deletedMessages };
+    } else if (is("updateDeleteScheduledMessages", update)) {
+      const chatId = peerToChatId(update.peer);
+      const deletedMessages = update.messages.map((v) => ({ chatId, messageId: v }));
+      return { deletedMessages, scheduled: true };
     } else if (is("updateBotDeleteBusinessMessage", update)) {
       const chatId = peerToChatId(update.peer);
       const deletedMessages = update.messages.map((v) => ({ chatId, messageId: v }));
