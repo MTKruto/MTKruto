@@ -2158,7 +2158,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Delete a single scheduled message.
+   * Delete a scheduled message.
    *
    * @method ms
    * @param chatId The identifier of the chat that contains the scheduled message.
@@ -2166,6 +2166,28 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async deleteScheduledMessage(chatId: ID, messageId: number) {
     await this.#messageManager.deleteScheduledMessages(chatId, [messageId]);
+  }
+
+  /**
+   * Send multiple scheduled messages before their schedule.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat that contains the scheduled messages.
+   * @param messageIds The identifiers of the scheduled messages to send.
+   */
+  async sendScheduledMessages(chatId: ID, messageIds: number[]): Promise<Message[]> {
+    return await this.#messageManager.sendScheduledMessages(chatId, messageIds);
+  }
+
+  /**
+   * Send a scheduled message before its schedule.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat that contains the scheduled message.
+   * @param messageId The identifier of the scheduled message to send.
+   */
+  async sendScheduledMessage(chatId: ID, messageId: number): Promise<Message> {
+    return (await this.#messageManager.sendScheduledMessages(chatId, [messageId]))[0];
   }
 
   /**

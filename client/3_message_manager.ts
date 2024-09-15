@@ -913,6 +913,13 @@ export class MessageManager {
     await this.#c.invoke({ _: "messages.deleteScheduledMessages", peer, id: messageIds });
   }
 
+  async sendScheduledMessages(chatId: ID, messageIds: number[]) {
+    checkArray(messageIds, checkMessageId);
+    const peer = await this.#c.getInputPeer(chatId);
+    const result = await this.#c.invoke({ _: "messages.sendScheduledMessages", peer, id: messageIds });
+    return await this.#updatesToMessages(chatId, result);
+  }
+
   async deleteChatMemberMessages(chatId: ID, memberId: ID) {
     const channel = await this.#c.getInputChannel(chatId);
     const participant = await this.#c.getInputPeer(memberId);
