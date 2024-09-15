@@ -351,7 +351,7 @@ export class StorageOperations {
     }
   }
 
-  get accountType() {
+  get accountType(): "user" | "bot" {
     if (this.#accountType == null) {
       unreachable();
     }
