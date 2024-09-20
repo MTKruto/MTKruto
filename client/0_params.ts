@@ -491,3 +491,8 @@ export interface AddChatMemberParams {
   /** The number of current messages to make visible to the user that is about to be added. */
   historyLimit?: number;
 }
+
+export interface GetChatMembersParams {
+  offset?: number;
+  limit?: number;
+}
