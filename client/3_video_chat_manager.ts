@@ -192,6 +192,6 @@ export class VideoChatManager {
         throw new InputError("Got invalid quality.");
       })(),
     };
-    yield* this.#c.fileManager.downloadInner(location, call.stream_dc_id ?? unreachable());
+    yield* this.#c.fileManager.downloadInner(location, call.stream_dc_id ?? unreachable(), params);
   }
 }

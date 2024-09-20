@@ -437,11 +437,12 @@ export class StorageOperations {
     return await this.#storage.get<[number, number]>(K.cache.file(id));
   }
 
-  async *iterFileParts(id: bigint, partCount: number, offset: number): AsyncGenerator<Uint8Array> {
+  async *iterFileParts(id: bigint, partCount: number, offset: number, signal: AbortSignal | undefined): AsyncGenerator<Uint8Array> {
     if (!this.#supportsFiles) {
       return;
     }
     for (let i = offset; i < partCount; i++) {
+      signal?.throwIfAborted();
       const part = await this.#storage.get<Uint8Array>(K.cache.filePart(id, i));
       if (part == null) {
         continue;

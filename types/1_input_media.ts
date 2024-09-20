@@ -32,7 +32,7 @@ export interface _InputMediaCommon {
   /** Size of each upload chunk in bytes. */
   chunkSize?: number;
   /** Upload abort signal. */
-  signal?: AbortSignal | null;
+  signal?: AbortSignal;
   /** The caption of the media. */
   caption?: string;
   /** The entities of media's caption. */

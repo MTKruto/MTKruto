@@ -24,7 +24,7 @@ import { drop, getLogger, getRandomId, iterateReadableStream, kilobyte, Logger, 
 import { Api, as, is } from "../2_tl.ts";
 import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
-import { DownloadParams, UploadParams } from "./0_params.ts";
+import { _UploadCommon, DownloadParams } from "./0_params.ts";
 import { C, ConnectionPool } from "./1_types.ts";
 
 export class FileManager {
@@ -42,7 +42,7 @@ export class FileManager {
     this.#Lupload = L.branch("upload");
   }
 
-  async upload(file: FileSource, params?: UploadParams, checkName?: null | ((name: string) => string), allowStream = true): Promise<Api.InputFile> {
+  async upload(file: FileSource, params?: _UploadCommon, checkName?: null | ((name: string) => string), allowStream = true): Promise<Api.InputFile> {
     let { size, name, contents } = await FileManager.#getFileContents(file, params, allowStream);
     if (checkName) {
       name = checkName(name);
@@ -85,7 +85,7 @@ export class FileManager {
     }
   }
 
-  async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, chunkSize: number, signal: AbortSignal | null | undefined, pool: ConnectionPool) {
+  async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, chunkSize: number, signal: AbortSignal | undefined, pool: ConnectionPool) {
     let part: Part;
     let promises = new Array<Promise<void>>();
     let invoke = pool.invoke();
@@ -135,7 +135,7 @@ export class FileManager {
     return { small: part!.small, parts: part!.totalParts };
   }
 
-  async #uploadBuffer(buffer: Uint8Array, fileId: bigint, chunkSize: number, signal: AbortSignal | null | undefined, pool: ConnectionPool) {
+  async #uploadBuffer(buffer: Uint8Array, fileId: bigint, chunkSize: number, signal: AbortSignal | undefined, pool: ConnectionPool) {
     const isBig = buffer.byteLength > FileManager.#BIG_FILE_THRESHOLD;
     const partCount = Math.ceil(buffer.byteLength / chunkSize);
     let promises = new Array<Promise<void>>();
@@ -207,7 +207,7 @@ export class FileManager {
     }
   }
 
-  static async #getFileContents(source: FileSource, params: UploadParams | undefined, allowStream: boolean) {
+  static async #getFileContents(source: FileSource, params: _UploadCommon | undefined, allowStream: boolean) {
     let name = params?.fileName?.trim() || "file";
     let contents: Uint8Array | ReadableStream<Uint8Array>;
     let size = -1;
@@ -284,13 +284,15 @@ export class FileManager {
     return { size: params?.fileSize ? params.fileSize : size, name, contents };
   }
 
-  async *downloadInner(location: Api.InputFileLocation, dcId: number, params?: { chunkSize?: number; offset?: number }) {
+  async *downloadInner(location: Api.InputFileLocation, dcId: number, params: DownloadParams | undefined) {
+    const signal = params?.signal;
+    signal?.throwIfAborted();
     const id = "id" in location ? location.id : "photo_id" in location ? location.photo_id : null;
     if (id != null && this.#c.storage.supportsFiles) {
       const file = await this.#c.storage.getFile(id);
       const partOffset = file == null ? 0 : params?.offset ? Math.ceil(10 / file[1]) - 1 : 0;
       if (file != null && file[0] > 0) {
-        yield* this.#c.storage.iterFileParts(id, file[0], partOffset);
+        yield* this.#c.storage.iterFileParts(id, file[0], partOffset, signal);
         return;
       }
     }
@@ -303,6 +305,7 @@ export class FileManager {
 
     const connection = this.#c.getCdnConnection(dcId);
     await connection.connect();
+    signal?.throwIfAborted();
 
     const limit = chunkSize;
     let offset = params?.offset ? BigInt(params.offset) : 0n;
@@ -310,20 +313,24 @@ export class FileManager {
 
     try {
       while (true) {
+        signal?.throwIfAborted();
         let retryIn = 1;
         let errorCount = 0;
         try {
           const file = await connection.invoke({ _: "upload.getFile", location, offset, limit });
+          signal?.throwIfAborted();
 
           if (is("upload.file", file)) {
             yield file.bytes;
             if (id != null) {
               await this.#c.storage.saveFilePart(id, part, file.bytes);
+              signal?.throwIfAborted();
             }
             ++part;
             if (file.bytes.length < limit) {
               if (id != null) {
                 await this.#c.storage.setFilePartCount(id, part + 1, chunkSize);
+                signal?.throwIfAborted();
               }
               break;
             } else {
@@ -341,6 +348,7 @@ export class FileManager {
             retryIn = 0;
           }
           await this.#handleError(err, retryIn, `[${id}-${part + 1}]`);
+          signal?.throwIfAborted();
           retryIn += 2;
           if (retryIn > 11) {
             retryIn = 11;

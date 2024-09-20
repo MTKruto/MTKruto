@@ -163,27 +163,21 @@ export interface DownloadParams {
   chunkSize?: number;
   /** Download offset in bytes. */
   offset?: number;
+  /** Download abort signal. */
+  signal?: AbortSignal;
 }
 
 export interface _UploadCommon {
   /** The file name to assign if applicable. */
   fileName?: string;
+  /** The file's size. */
+  fileSize?: number;
   /** The mime type to assign if applicable. */
   mimeType?: string;
   /** Size of each upload chunk in bytes. */
   chunkSize?: number;
   /** Upload abort signal. */
-  signal?: AbortSignal | null;
-}
-export interface UploadParams {
-  /** The file name to assign. */
-  fileName?: string;
-  /** The file's size. */
-  fileSize?: number;
-  /** Size of each upload chunk in bytes. */
-  chunkSize?: number;
-  /** Upload abort signal. */
-  signal?: AbortSignal | null;
+  signal?: AbortSignal;
 }
 
 export interface AnswerInlineQueryParams {
@@ -475,6 +469,8 @@ export interface JoinVideoChatParams {
 export interface DownloadLiveStreamChunkParams {
   /** Video quality. */
   quality?: "low" | "medium" | "high";
+  /** Download abort signal. */
+  signal?: AbortSignal;
 }
 
 export interface AnswerPreCheckoutQueryParams {
