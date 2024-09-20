@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, getChannelChatId, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { constructChatMemberUpdated, constructFailedInvitation, constructInviteLink, constructJoinRequest, deserializeFileId, FileId, InputMedia, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
-import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
+import { assertMessageType, ChatAction, chatMemberRightsToTlObject,  constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
@@ -1367,22 +1367,6 @@ export class MessageManager {
       throw new InputError("Only users can be blocked or unblocked.");
     }
     await this.#c.invoke({ _: "contacts.unblock", id });
-  }
-
-  async getChatMember(chatId: ID, userId: ID) {
-    const peer = await this.#c.getInputPeer(chatId);
-
-    if (is("inputPeerChannel", peer)) {
-      const { participant } = await this.#c.invoke({ _: "channels.getParticipant", channel: { ...peer, _: "inputChannel" }, participant: await this.#c.getInputPeer(userId) });
-      return await constructChatMember(participant, this.#c.getEntity);
-    } else if (is("inputPeerChat", peer)) {
-      const user = await this.#c.getInputUser(userId);
-      const fullChat = await this.#c.invoke({ ...peer, _: "messages.getFullChat" }).then((v) => as("chatFull", v.full_chat));
-      const participant = as("chatParticipants", fullChat.participants).participants.find((v) => v.user_id == user.user_id)!;
-      return await constructChatMember(participant, this.#c.getEntity);
-    } else {
-      throw new InputError("Expected a channel, supergroup, or group ID. Got a user ID instead.");
-    }
   }
 
   async setChatStickerSet(chatId: ID, setName: string) {
