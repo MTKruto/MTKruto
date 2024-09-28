@@ -30,11 +30,11 @@ export function getChannelChatId(channelId: bigint): number {
 export type AnyEntity = Api.user | Api.channel | Api.channelForbidden | Api.chat | Api.chatForbidden;
 
 export function peerToChatId(peer: Api.Peer | Api.InputPeer | AnyEntity | Api.channelFull | Api.UserFull | Api.chatFull | { channel_id: bigint } | { user_id: bigint } | { chat_id: bigint }): number {
-  if (("_" in peer && (peer._ == "peerUser" || peer._ == "inputPeerUser" || peer._ == "user" || peer._ == "userFull")) || "user_id" in peer) {
+  if (("_" in peer && (peer._ == "peerUser" || peer._ == "inputPeerUser" || peer._ == "inputPeerUserFromMessage" || peer._ == "user" || peer._ == "userFull")) || "user_id" in peer) {
     return Number("user_id" in peer ? peer.user_id : peer.id);
   } else if (("_" in peer && (peer._ == "peerChat" || peer._ == "inputPeerChat" || peer._ == "chat" || peer._ == "chatForbidden" || peer._ == "chatFull")) || "chat_id" in peer) {
     return -Number("chat_id" in peer ? peer.chat_id : peer.id);
-  } else if (("_" in peer && (peer._ == "peerChannel" || peer._ == "inputPeerChannel" || peer._ == "channel" || peer._ == "channelForbidden" || peer._ == "channelFull")) || "channel_id" in peer) {
+  } else if (("_" in peer && (peer._ == "peerChannel" || peer._ == "inputPeerChannel" || peer._ == "inputPeerChannelFromMessage" || peer._ == "channel" || peer._ == "channelForbidden" || peer._ == "channelFull")) || "channel_id" in peer) {
     return getChannelChatId("channel_id" in peer ? peer.channel_id : peer.id);
   } else {
     unreachable();

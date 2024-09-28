@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
 import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, minute, mustPrompt, mustPromptOneOf, Mutex, second, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageMemory } from "../2_storage.ts";
-import { Api, as, chatIdToPeerId, getChatIdPeerType, is, peerToChatId } from "../2_tl.ts";
+import { Api, as, chatIdToPeerId, getChatIdPeerType, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { DC, getDc } from "../3_transport.ts";
 import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ConnectionState, constructUser, FailedInvitation, FileSource, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, Sticker, Story, Update, User, VideoChat, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
@@ -319,6 +319,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #LpingLoop: Logger;
   #LhandleMigrationError: Logger;
   #L$initConncetion: Logger;
+  #Lmin: Logger;
 
   /**
    * Constructs the client.
@@ -385,6 +386,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#LpingLoop = L.branch("pingLoop");
     this.#LhandleMigrationError = L.branch("[handleMigrationError]");
     this.#L$initConncetion = L.branch("#initConnection");
+    this.#Lmin = L.branch("min");
     this.#cdn = params?.cdn ?? false;
 
     const c = {
@@ -1538,6 +1540,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
     if (!isNaN(idn)) {
       id = idn;
     }
+    this.#Lmin.debug("gipi A", id);
+    let peer: Api.InputPeer;
     if (typeof id === "string") {
       id = getUsername(id);
       let resolvedId = 0;
@@ -1547,8 +1551,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
         resolvedId = id;
       } else {
         const resolved = await this.invoke({ _: "contacts.resolveUsername", username: id });
-        await this.#updateManager.processChats(resolved.chats);
-        await this.#updateManager.processUsers(resolved.users);
+        await this.#updateManager.processChats(resolved.chats, resolved);
+        await this.#updateManager.processUsers(resolved.users, resolved);
         if (is("peerUser", resolved.peer)) {
           resolvedId = peerToChatId(resolved.peer);
         } else if (is("peerChannel", resolved.peer)) {
@@ -1558,25 +1562,55 @@ export class Client<C extends Context = Context> extends Composer<C> {
         }
       }
       const resolvedIdType = getChatIdPeerType(resolvedId);
+      this.#Lmin.debug({ resolvedId });
       if (resolvedIdType == "user") {
         const accessHash = await this.messageStorage.getUserAccessHash(resolvedId);
-        return { _: "inputPeerUser", user_id: chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n } as Api.inputPeerUser;
+
+        peer = { _: "inputPeerUser", user_id: chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n } as Api.inputPeerUser;
       } else if (resolvedIdType == "channel") {
         const accessHash = await this.messageStorage.getChannelAccessHash(resolvedId);
-        return { _: "inputPeerChannel", channel_id: chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n } as Api.inputPeerChannel;
+        peer = { _: "inputPeerChannel", channel_id: chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n } as Api.inputPeerChannel;
       } else {
         unreachable();
       }
     } else if (id > 0) {
       const accessHash = await this.messageStorage.getUserAccessHash(id);
-      return { _: "inputPeerUser", user_id: chatIdToPeerId(id), access_hash: accessHash ?? 0n } as Api.inputPeerUser;
+      peer = { _: "inputPeerUser", user_id: chatIdToPeerId(id), access_hash: accessHash ?? 0n } as Api.inputPeerUser;
     } else if (-MAX_CHAT_ID <= id) {
-      return { _: "inputPeerChat", chat_id: BigInt(Math.abs(id)) } as Api.inputPeerChat;
+      peer = { _: "inputPeerChat", chat_id: BigInt(Math.abs(id)) } as Api.inputPeerChat;
     } else if (ZERO_CHANNEL_ID - MAX_CHANNEL_ID <= id && id != ZERO_CHANNEL_ID) {
       const accessHash = await this.messageStorage.getChannelAccessHash(id);
-      return { _: "inputPeerChannel", channel_id: chatIdToPeerId(id), access_hash: accessHash ?? 0n } as Api.inputPeerChannel;
+      peer = { _: "inputPeerChannel", channel_id: chatIdToPeerId(id), access_hash: accessHash ?? 0n } as Api.inputPeerChannel;
     } else {
       throw new InputError("The ID is of an format unknown.");
+    }
+
+    if (!is("inputPeerChat", peer) && !peer.access_hash) {
+      const chatId = peerToChatId(peer);
+      const minPeerReference = await this.messageStorage.getLastMinPeerReference(chatId);
+      if (minPeerReference) {
+        const minInputPeer = await this.#getMinInputPeer(is("inputPeerChannel", peer) ? "channel" : "user", { ...minPeerReference, senderId: chatId });
+        if (minInputPeer) {
+          this.#Lmin.debug("resolved input min peer", minInputPeer);
+          peer = minInputPeer;
+        }
+      }
+    }
+
+    return peer;
+  }
+
+  async #getMinInputPeer(type: "user" | "channel", reference: { chatId: number; senderId: number; messageId: number }): Promise<Api.inputPeerUserFromMessage | Api.inputPeerChannelFromMessage | null> {
+    const entity = await this.messageStorage.getEntity(reference.chatId);
+    if (isOneOf(["channel", "channelForbidden"], entity) && entity.access_hash) {
+      const peer: Api.inputPeerChannel = { _: "inputPeerChannel", channel_id: entity.id, access_hash: entity.access_hash };
+      if (type == "user") {
+        return { _: "inputPeerUserFromMessage", peer, msg_id: reference.messageId, user_id: chatIdToPeerId(reference.senderId) };
+      } else {
+        return { _: "inputPeerChannelFromMessage", peer, msg_id: reference.messageId, channel_id: chatIdToPeerId(reference.senderId) };
+      }
+    } else {
+      return null;
     }
   }
 

@@ -435,16 +435,29 @@ export class ChatListManager {
   async #getFullChat(chatId: ID) {
     const inputPeer = await this.#c.getInputPeer(chatId);
     const chatId_ = peerToChatId(inputPeer);
+    console.log({ chatId, chatId_ });
     let fullChat = await this.#c.storage.getFullChat(chatId_);
     if (fullChat != null) {
       return fullChat;
     }
-    if (is("inputPeerUser", inputPeer)) {
-      fullChat = (await this.#c.invoke({ _: "users.getFullUser", id: { ...inputPeer, _: "inputUser" } })).full_user;
+    if (is("inputPeerUser", inputPeer) || is("inputPeerUserFromMessage", inputPeer)) {
+      let id: Api.InputUser;
+      if (is("inputPeerUser", inputPeer)) {
+        id = { ...inputPeer, _: "inputUser" };
+      } else {
+        id = { ...inputPeer, _: "inputUserFromMessage" };
+      }
+      fullChat = (await this.#c.invoke({ _: "users.getFullUser", id })).full_user;
     } else if (is("inputPeerChat", inputPeer)) {
       fullChat = (await this.#c.invoke({ ...inputPeer, _: "messages.getFullChat" })).full_chat;
-    } else if (is("inputPeerChannel", inputPeer)) {
-      fullChat = (await this.#c.invoke({ _: "channels.getFullChannel", channel: { ...inputPeer, _: "inputChannel" } })).full_chat;
+    } else if (is("inputPeerChannel", inputPeer) || is("inputPeerChannelFromMessage", inputPeer)) {
+      let channel: Api.InputChannel;
+      if (is("inputPeerChannel", inputPeer)) {
+        channel = { ...inputPeer, _: "inputChannel" };
+      } else {
+        channel = { ...inputPeer, _: "inputChannelFromMessage" };
+      }
+      fullChat = (await this.#c.invoke({ _: "channels.getFullChannel", channel })).full_chat;
     }
     await this.#c.storage.setFullChat(chatId_, fullChat);
     if (fullChat != null && "call" in fullChat && fullChat.call) {

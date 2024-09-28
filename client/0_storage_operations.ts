@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AssertionError, unreachable } from "../0_deps.ts";
+import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageKeyPart } from "../2_storage.ts";
@@ -76,6 +76,9 @@ export const K = {
     groupCall: (id: bigint): StorageKeyPart[] => [...K.cache.groupCalls(), id],
     groupCallAccessHashes: (): StorageKeyPart[] => [K.cache.P("groupCallAccessHashes")],
     groupCallAccessHash: (id: bigint): StorageKeyPart[] => [...K.cache.groupCallAccessHashes(), id],
+    minPeerReferences: (): StorageKeyPart[] => ["minPeerReferences"],
+    minPeerReference: (senderId: number, chatId: number) => [...K.cache.minPeerReferences(), senderId, chatId],
+    minPeerReferenceSender: (senderId: number) => [...K.cache.minPeerReferences(), senderId],
   },
   messages: {
     P: (string: string): string => `messages.${string}`,
@@ -192,6 +195,7 @@ export class StorageOperations {
     const isBot = reader.read(1)[0];
     const accountId = Number(reader.readInt64());
     await this.setAccountId(accountId);
+    console.log("sat");
     await this.setAccountType(isBot ? "bot" : "user");
     await this.setApiId(apiId);
     await this.setDc(dc as DC);
@@ -204,6 +208,9 @@ export class StorageOperations {
       if (!(is("channel", channel)) && !is("channelForbidden", channel)) {
         unreachable();
       }
+      if (is("channel", channel) && channel.min) {
+        return null;
+      }
       return typeof channel.access_hash === "bigint" ? channel.access_hash : null;
     } else {
       return null;
@@ -215,6 +222,9 @@ export class StorageOperations {
     if (user) {
       if (!is("user", user)) {
         unreachable();
+      }
+      if (user.min) {
+        return null;
       }
       return typeof user.access_hash === "bigint" ? user.access_hash : null;
     } else {
@@ -330,16 +340,8 @@ export class StorageOperations {
   }
 
   async setAccountType(type: "user" | "bot") {
-    try {
-      await this.getAccountType();
-      unreachable();
-    } catch (err) {
-      if (!(err instanceof AssertionError)) {
-        throw err;
-      } else {
-        await this.#storage.set(K.auth.accountType(), type);
-      }
-    }
+    await this.#storage.set(K.auth.accountType(), type);
+    await this.getAccountType();
   }
 
   #accountType: "user" | "bot" | null = null;
@@ -682,5 +684,17 @@ export class StorageOperations {
     for await (const [key] of await this.#storage.getMany({ prefix: [] })) {
       await this.#storage.set(key, null);
     }
+  }
+
+  async setMinPeerReference(chatId: number, senderId: number, messageId: number) {
+    await this.#storage.set(K.cache.minPeerReference(senderId, chatId), [{ chatId, messageId }, new Date()]);
+  }
+
+  async getLastMinPeerReference(senderId: number): Promise<{ chatId: number; messageId: number } | null> {
+    const references = new Array<[{ chatId: number; messageId: number }, Date]>();
+    for await (const [, reference] of await this.#storage.getMany<[{ chatId: number; messageId: number }, Date]>({ prefix: K.cache.minPeerReferenceSender(senderId) })) {
+      references.push(reference);
+    }
+    return references.sort((a, b) => b[1].getTime() - a[1].getTime())[0]?.[0] ?? null;
   }
 }
