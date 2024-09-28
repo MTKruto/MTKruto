@@ -435,7 +435,6 @@ export class ChatListManager {
   async #getFullChat(chatId: ID) {
     const inputPeer = await this.#c.getInputPeer(chatId);
     const chatId_ = peerToChatId(inputPeer);
-    console.log({ chatId, chatId_ });
     let fullChat = await this.#c.storage.getFullChat(chatId_);
     if (fullChat != null) {
       return fullChat;
