@@ -400,7 +400,7 @@ export interface SearchMessagesParams {
   /** A message identifier to start searching after. */
   after?: number;
   /** The identifier of a message thread to search in. */
-  messageThreadId?: number;
+  threadId?: number;
   /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
   limit?: number;
 }
