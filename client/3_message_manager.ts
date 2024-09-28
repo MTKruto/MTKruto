@@ -1067,9 +1067,18 @@ export class MessageManager {
     ) {
       if (!(is("messageEmpty", update.message))) {
         const isOutgoing = update.message.out;
-        let shouldIgnore = isOutgoing ? (await this.#c.storage.getAccountType()) == "user" ? false : true : false;
-        if (this.#c.ignoreOutgoing != null && isOutgoing) {
-          shouldIgnore = this.#c.ignoreOutgoing;
+        let shouldIgnore = false;
+        if (isOutgoing) {
+          if (this.#c.outgoingMessages == null) {
+            this.#c.outgoingMessages = this.#c.storage.accountType == "user" ? "all" : "business";
+          }
+          if (this.#c.outgoingMessages == "none") {
+            shouldIgnore = true;
+          } else if (this.#c.outgoingMessages == "business") {
+            if (!is("updateBotNewBusinessMessage", update) && !is("updateBotEditBusinessMessage", update)) {
+              shouldIgnore = true;
+            }
+          }
         }
         if (!shouldIgnore) {
           const business = "connection_id" in update ? { connectionId: update.connection_id, replyToMessage: update.reply_to_message } : undefined;

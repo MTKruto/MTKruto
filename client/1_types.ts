@@ -59,7 +59,7 @@ export interface C {
   parseMode: ParseMode;
   getCdnConnection: GetCdnConnection;
   getCdnConnectionPool: GetCdnConnectionPool;
-  ignoreOutgoing: boolean | null;
+  outgoingMessages: "none" | "business" | "all" | null;
   cdn: boolean;
   dropPendingUpdates?: boolean;
   invoke: Invoke;

@@ -246,8 +246,8 @@ export interface ClientParams extends ClientPlainParams {
   systemVersion?: string;
   /** Whether to use default handlers. Defaults to `true`. */
   defaultHandlers?: boolean;
-  /** Whether to ignore outgoing messages. Defaults to `true` for bots, and `false` for users. */
-  ignoreOutgoing?: boolean;
+  /** What types of outgoing messages should be received. `business` is only valid for bots. Defaults to `business` for bots, and `all` for users. */
+  outgoingMessages?: "none" | "business" | "all";
   /** Default command prefixes. Defaults to `"/"` for bots and `"\"` for users. This option must be set separately for nested composers. */
   prefixes?: string | string[];
   /** Whether to guarantee that order-sensitive updates are delivered at least once before delivering next ones. Useful mainly for clients providing a user interface à la Telegram Desktop. Defaults to `false`. */
@@ -308,7 +308,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   public readonly systemLangCode: string;
   public readonly systemVersion: string;
   readonly #publicKeys?: PublicKeys;
-  readonly #ignoreOutgoing: boolean | null;
+  readonly #outgoingMessages: NonNullable<ClientParams["outgoingMessages"]> | null;
   #persistCache: boolean;
   #disableUpdates: boolean;
   #authString?: string;
@@ -374,7 +374,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
     this.#publicKeys = params?.publicKeys;
-    this.#ignoreOutgoing = params?.ignoreOutgoing ?? null;
+    this.#outgoingMessages = params?.outgoingMessages ?? null;
     if (params?.prefixes) {
       this.prefixes = params?.prefixes;
     }
@@ -411,7 +411,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       getCdnConnection: this.#getCdnConnection.bind(this),
       getCdnConnectionPool: this.#getCdnConnectionPool.bind(this),
       cdn: this.#cdn,
-      ignoreOutgoing: this.#ignoreOutgoing,
+      outgoingMessages: this.#outgoingMessages,
       dropPendingUpdates: params?.dropPendingUpdates,
       disconnected: () => this.disconnected,
     };
