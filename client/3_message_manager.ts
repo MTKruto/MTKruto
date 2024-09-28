@@ -27,7 +27,7 @@ import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructMes
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageMediaParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import { checkMessageId } from "./0_utilities.ts";
 import { checkArray } from "./0_utilities.ts";
 import { isHttpUrl } from "./0_utilities.ts";
@@ -761,7 +761,12 @@ export class MessageManager {
     params?: EditMessageReplyMarkupParams,
   ) {
     this.#checkParams(params);
-    const result = await this.#c.invoke({ _: "messages.editMessage", id: checkMessageId(messageId), peer: await this.#c.getInputPeer(chatId), reply_markup: await this.#constructReplyMarkup(params) });
+    const result = await this.#c.invoke({
+      _: "messages.editMessage",
+      id: checkMessageId(messageId),
+      peer: await this.#c.getInputPeer(chatId),
+      reply_markup: await this.#constructReplyMarkup(params),
+    }, params?.businessConnectionId);
 
     const message_ = (await this.#updatesToMessages(chatId, result))[0];
     return message_;
@@ -792,7 +797,17 @@ export class MessageManager {
       media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.largeMedia ? true : undefined, force_small_media: params.linkPreview.smallMedia ? true : undefined, optional: message.length ? undefined : true };
     }
 
-    const result = await this.#c.invoke({ _: "messages.editMessage", id: checkMessageId(messageId), peer: await this.#c.getInputPeer(chatId), entities, message, media, no_webpage: noWebpage, invert_media: invertMedia, reply_markup: await this.#constructReplyMarkup(params) });
+    const result = await this.#c.invoke({
+      _: "messages.editMessage",
+      id: checkMessageId(messageId),
+      peer: await this.#c.getInputPeer(chatId),
+      entities,
+      message,
+      media,
+      no_webpage: noWebpage,
+      invert_media: invertMedia,
+      reply_markup: await this.#constructReplyMarkup(params),
+    }, params?.businessConnectionId);
 
     const message_ = (await this.#updatesToMessages(chatId, result))[0];
     return assertMessageType(message_, "text");
@@ -918,13 +933,13 @@ export class MessageManager {
       reply_markup: await this.#constructReplyMarkup(params),
       message: text,
       entities,
-    });
+    }, params?.businessConnectionId);
 
     const message_ = (await this.#updatesToMessages(chatId, result))[0];
     return message_;
   }
 
-  async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditMessageMediaParams) {
+  async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditInlineMessageMediaParams) {
     this.#checkParams(params);
     this.#c.storage.assertBot("editInlineMessageMedia");
     const id = deserializeInlineMessageId(inlineMessageId);
@@ -1392,7 +1407,13 @@ export class MessageManager {
       throw new InputError("Poll is already stopped.");
     }
 
-    const result = await this.#c.invoke({ _: "messages.editMessage", peer: await this.#c.getInputPeer(chatId), id: messageId, media: ({ _: "inputMediaPoll", poll: ({ _: "poll", id: BigInt(message.poll.id), closed: true, question: { _: "textWithEntities", text: "", entities: [] }, answers: [] }) }), reply_markup: await this.#constructReplyMarkup(params) });
+    const result = await this.#c.invoke({
+      _: "messages.editMessage",
+      peer: await this.#c.getInputPeer(chatId),
+      id: messageId,
+      media: ({ _: "inputMediaPoll", poll: ({ _: "poll", id: BigInt(message.poll.id), closed: true, question: { _: "textWithEntities", text: "", entities: [] }, answers: [] }) }),
+      reply_markup: await this.#constructReplyMarkup(params),
+    }, params?.businessConnectionId);
 
     const message_ = (await this.#updatesToMessages(chatId, result))[0];
     return assertMessageType(message_, "poll").poll;
@@ -1402,7 +1423,13 @@ export class MessageManager {
     this.#checkParams(params);
     const message = await this.getMessage(chatId, messageId);
     if (message && "location" in message && message.location.livePeriod) {
-      const result = await this.#c.invoke({ _: "messages.editMessage", peer: await this.#c.getInputPeer(chatId), id: messageId, media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }), reply_markup: await this.#constructReplyMarkup(params) });
+      const result = await this.#c.invoke({
+        _: "messages.editMessage",
+        peer: await this.#c.getInputPeer(chatId),
+        id: messageId,
+        media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }),
+        reply_markup: await this.#constructReplyMarkup(params),
+      }, params?.businessConnectionId);
 
       const message = (await this.#updatesToMessages(chatId, result))[0];
       return assertMessageType(message, "location");

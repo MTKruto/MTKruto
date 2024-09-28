@@ -103,6 +103,9 @@ export interface EditMessageReplyMarkupParams extends _BusinessConnectionIdCommo
 export interface EditMessageMediaParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
 }
 
+export interface EditInlineMessageMediaParams extends _ReplyMarkupCommon {
+}
+
 export interface ForwardMessagesParams extends Omit<_SendCommon, "replyToMessageId" | "replyMarkup"> {
   /** Whether to not include the original sender of the message that is going to be forwarded. */
   dropSenderName?: boolean;
