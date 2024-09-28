@@ -18,13 +18,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "jsr:@std/assert@1.0.5";
+export * from "jsr:@std/assert@1.0.6";
 
 export * as path from "jsr:@std/path@1.0.6";
 
-export { concat } from "jsr:@std/bytes@0.224.0/concat";
+export { concat } from "jsr:@std/bytes@1.0.2/concat";
 
-export { iterateReader } from "jsr:@std/io@0.224.8/iterate-reader";
+export { iterateReader } from "jsr:@std/io@0.224.9/iterate-reader";
 
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.5/base64";
 
