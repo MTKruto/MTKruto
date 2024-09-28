@@ -24,6 +24,7 @@ import { getRandomId, toUnixTimestamp, ZERO_CHANNEL_ID } from "../1_utilities.ts
 import { Api, as, is, isOneOf } from "../2_tl.ts";
 import { constructLiveStreamChannel, constructVideoChat, ID, Update, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { DownloadLiveStreamChunkParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
+import { canBeInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
 
@@ -46,7 +47,7 @@ export class VideoChatManager {
 
   async #createGroupCall(chatId: ID, title?: string, liveStream?: true, scheduleDate?: Date) {
     const peer = await this.#c.getInputPeer(chatId);
-    if (is("inputPeerUser", peer)) {
+    if (canBeInputUser(peer)) {
       throw new InputError("Video chats are only available for groups and channels.");
     }
     const { updates } = await this.#c.invoke({ _: "phone.createGroupCall", peer, random_id: getRandomId(true), title, rtmp_stream: liveStream, schedule_date: scheduleDate ? toUnixTimestamp(scheduleDate) : undefined }).then((v) => as("updates", v));

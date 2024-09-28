@@ -31,7 +31,7 @@ import { PhoneCodeInvalid } from "../4_errors.ts";
 import { AddChatMemberParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageMediaParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, SignInParams, StartVideoChatParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
-import { getUsername, isCdnFunction, isMtprotoFunction, resolve } from "./0_utilities.ts";
+import { canBeInputChannel, canBeInputUser, getUsername, isCdnFunction, isMtprotoFunction, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { ClientEncrypted } from "./1_client_encrypted.ts";
 import { ClientPlain, ClientPlainParams } from "./1_client_plain.ts";
 import { Composer as Composer_, NextFunction } from "./1_composer.ts";
@@ -1514,12 +1514,12 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @param id The identifier of the channel or the supergroup.
    */
-  async getInputChannel(id: ID): Promise<Api.inputChannel> {
+  async getInputChannel(id: ID): Promise<Api.inputChannel | Api.inputChannelFromMessage> {
     const inputPeer = await this.getInputPeer(id);
-    if (!(is("inputPeerChannel", inputPeer))) {
+    if (!canBeInputChannel(inputPeer)) {
       throw new TypeError(`The chat ${id} is not a channel neither a supergroup.`);
     }
-    return { ...inputPeer, _: "inputChannel" };
+    return toInputChannel(inputPeer);
   }
 
   /**
@@ -1527,12 +1527,12 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @param id The identifier of the user.
    */
-  async getInputUser(id: ID): Promise<Api.inputUser> {
+  async getInputUser(id: ID): Promise<Api.inputUser | Api.inputUserFromMessage> {
     const inputPeer = await this.getInputPeer(id);
-    if (!(is("inputPeerUser", inputPeer))) {
+    if (!canBeInputUser(inputPeer)) {
       throw new TypeError(`The chat ${id} is not a private chat.`);
     }
-    return { ...inputPeer, _: "inputUser" };
+    return toInputUser(inputPeer);
   }
 
   async #getInputPeerInner(id: ID) {
@@ -1589,7 +1589,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       const chatId = peerToChatId(peer);
       const minPeerReference = await this.messageStorage.getLastMinPeerReference(chatId);
       if (minPeerReference) {
-        const minInputPeer = await this.#getMinInputPeer(is("inputPeerChannel", peer) ? "channel" : "user", { ...minPeerReference, senderId: chatId });
+        const minInputPeer = await this.#getMinInputPeer(canBeInputChannel(peer) ? "channel" : "user", { ...minPeerReference, senderId: chatId });
         if (minInputPeer) {
           this.#Lmin.debug("resolved input min peer", minInputPeer);
           peer = minInputPeer;

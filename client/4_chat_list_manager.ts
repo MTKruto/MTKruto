@@ -24,7 +24,7 @@ import { getLogger, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { ChatListItem, ChatMember, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, getChatListItemOrder, ID } from "../3_types.ts";
 import { GetChatMembersParams } from "./0_params.ts";
-import { getChatListId } from "./0_utilities.ts";
+import { canBeInputChannel, canBeInputUser, getChatListId, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
 import { MessageManager } from "./3_message_manager.ts";
@@ -440,24 +440,12 @@ export class ChatListManager {
     if (fullChat != null) {
       return fullChat;
     }
-    if (is("inputPeerUser", inputPeer) || is("inputPeerUserFromMessage", inputPeer)) {
-      let id: Api.InputUser;
-      if (is("inputPeerUser", inputPeer)) {
-        id = { ...inputPeer, _: "inputUser" };
-      } else {
-        id = { ...inputPeer, _: "inputUserFromMessage" };
-      }
-      fullChat = (await this.#c.invoke({ _: "users.getFullUser", id })).full_user;
+    if (canBeInputUser(inputPeer)) {
+      fullChat = (await this.#c.invoke({ _: "users.getFullUser", id: toInputUser(inputPeer) })).full_user;
     } else if (is("inputPeerChat", inputPeer)) {
       fullChat = (await this.#c.invoke({ ...inputPeer, _: "messages.getFullChat" })).full_chat;
-    } else if (is("inputPeerChannel", inputPeer) || is("inputPeerChannelFromMessage", inputPeer)) {
-      let channel: Api.InputChannel;
-      if (is("inputPeerChannel", inputPeer)) {
-        channel = { ...inputPeer, _: "inputChannel" };
-      } else {
-        channel = { ...inputPeer, _: "inputChannelFromMessage" };
-      }
-      fullChat = (await this.#c.invoke({ _: "channels.getFullChannel", channel })).full_chat;
+    } else if (canBeInputChannel(inputPeer)) {
+      fullChat = (await this.#c.invoke({ _: "channels.getFullChannel", channel: toInputChannel(inputPeer) })).full_chat;
     }
     await this.#c.storage.setFullChat(chatId_, fullChat);
     if (fullChat != null && "call" in fullChat && fullChat.call) {
@@ -476,8 +464,8 @@ export class ChatListManager {
 
   async getChatAdministrators(chatId: ID) {
     const peer = await this.#c.getInputPeer(chatId);
-    if (is("inputPeerChannel", peer)) {
-      const channel: Api.inputChannel = { ...peer, _: "inputChannel" };
+    if (canBeInputChannel(peer)) {
+      const channel: Api.inputChannel | Api.inputChannelFromMessage = toInputChannel(peer);
       const participants = await this.#c.invoke({ _: "channels.getParticipants", channel, filter: { _: "channelParticipantsAdmins" }, offset: 0, limit: 100, hash: 0n });
       if (is("channels.channelParticipantsNotModified", participants)) {
         unreachable();
@@ -505,8 +493,8 @@ export class ChatListManager {
   async getChatMember(chatId: ID, userId: ID) {
     const peer = await this.#c.getInputPeer(chatId);
 
-    if (is("inputPeerChannel", peer)) {
-      const { participant } = await this.#c.invoke({ _: "channels.getParticipant", channel: { ...peer, _: "inputChannel" }, participant: await this.#c.getInputPeer(userId) });
+    if (canBeInputChannel(peer)) {
+      const { participant } = await this.#c.invoke({ _: "channels.getParticipant", channel: toInputChannel(peer), participant: await this.#c.getInputPeer(userId) });
       return await constructChatMember(participant, this.#c.getEntity);
     } else if (is("inputPeerChat", peer)) {
       const user = await this.#c.getInputUser(userId);
@@ -520,8 +508,8 @@ export class ChatListManager {
 
   async getChatMembers(chatId: ID, params?: GetChatMembersParams) {
     const peer = await this.#c.getInputPeer(chatId);
-    if (is("inputPeerChannel", peer)) {
-      const channel: Api.inputChannel = { ...peer, _: "inputChannel" };
+    if (canBeInputChannel(peer)) {
+      const channel: Api.inputChannel | Api.inputChannelFromMessage = toInputChannel(peer);
       const participants = await this.#c.invoke({ _: "channels.getParticipants", channel, filter: { _: "channelParticipantsRecent" }, offset: params?.offset ?? 0, limit: params?.limit ?? 100, hash: 0n });
       if (is("channels.channelParticipantsNotModified", participants)) {
         unreachable();

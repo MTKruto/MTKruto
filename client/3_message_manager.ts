@@ -28,9 +28,7 @@ import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
 import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageMediaParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
-import { checkMessageId } from "./0_utilities.ts";
-import { checkArray } from "./0_utilities.ts";
-import { isHttpUrl } from "./0_utilities.ts";
+import { canBeInputChannel, canBeInputUser, checkArray, checkMessageId, isHttpUrl, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
 
@@ -88,8 +86,8 @@ export class MessageManager {
       }
     }
     if (shouldFetch) {
-      if (is("inputPeerChannel", peer)) {
-        messages_ = await this.#c.invoke({ _: "channels.getMessages", channel: ({ ...peer, _: "inputChannel" }), id: messageIds.map((v) => ({ _: "inputMessageID", id: v })) }).then((v) => as("messages.channelMessages", v).messages);
+      if (canBeInputChannel(peer)) {
+        messages_ = await this.#c.invoke({ _: "channels.getMessages", channel: toInputChannel(peer), id: messageIds.map((v) => ({ _: "inputMessageID", id: v })) }).then((v) => as("messages.channelMessages", v).messages);
       } else {
         messages_ = await this.#c.invoke({
           _: "messages.getMessages",
@@ -949,8 +947,8 @@ export class MessageManager {
   async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams) {
     checkArray(messageIds, checkMessageId);
     const peer = await this.#c.getInputPeer(chatId);
-    if (is("inputPeerChannel", peer)) {
-      await this.#c.invoke({ _: "channels.deleteMessages", channel: { ...peer, _: "inputChannel" }, id: messageIds });
+    if (canBeInputChannel(peer)) {
+      await this.#c.invoke({ _: "channels.deleteMessages", channel: toInputChannel(peer), id: messageIds });
     } else {
       await this.#c.invoke({ _: "messages.deleteMessages", id: messageIds, revoke: params?.onlyForMe ? undefined : true });
     }
@@ -1189,12 +1187,12 @@ export class MessageManager {
 
   async deleteChatPhoto(chatId: number) {
     const peer = await this.#c.getInputPeer(chatId);
-    if (!(is("inputPeerChannel", peer)) && !(is("inputPeerChat", peer))) {
+    if (!(canBeInputChannel(peer)) && !(is("inputPeerChat", peer))) {
       unreachable();
     }
 
-    if (is("inputPeerChannel", peer)) {
-      await this.#c.invoke({ _: "channels.editPhoto", channel: { ...peer, _: "inputChannel" }, photo: { _: "inputChatPhotoEmpty" } });
+    if (canBeInputChannel(peer)) {
+      await this.#c.invoke({ _: "channels.editPhoto", channel: toInputChannel(peer), photo: { _: "inputChatPhotoEmpty" } });
     } else if (is("inputPeerChat", peer)) {
       await this.#c.invoke({ _: "messages.editChatPhoto", chat_id: peer.chat_id, photo: { _: "inputChatPhotoEmpty" } });
     }
@@ -1202,15 +1200,15 @@ export class MessageManager {
 
   async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
     const peer = await this.#c.getInputPeer(chatId);
-    if (!(is("inputPeerChannel", peer)) && !(is("inputPeerChat", peer))) {
+    if (!(canBeInputChannel(peer)) && !(is("inputPeerChat", peer))) {
       unreachable();
     }
 
     const file = await this.#c.fileManager.upload(photo, params);
     const photo_: Api.inputChatUploadedPhoto = { _: "inputChatUploadedPhoto", file };
 
-    if (is("inputPeerChannel", peer)) {
-      await this.#c.invoke({ _: "channels.editPhoto", channel: { ...peer, _: "inputChannel" }, photo: photo_ });
+    if (canBeInputChannel(peer)) {
+      await this.#c.invoke({ _: "channels.editPhoto", channel: toInputChannel(peer), photo: photo_ });
     } else if (is("inputPeerChat", peer)) {
       await this.#c.invoke({ _: "messages.editChatPhoto", chat_id: peer.chat_id, photo: photo_ });
     }
@@ -1248,10 +1246,10 @@ export class MessageManager {
         }),
       });
     } else if (is("inputPeerChat", chat)) {
-      if (!(is("inputPeerUser", member))) {
+      if (!canBeInputUser(member)) {
         throw new InputError(`Invalid user ID: ${memberId}`);
       }
-      await this.#c.invoke({ _: "messages.deleteChatUser", chat_id: chat.chat_id, user_id: { ...member, _: "inputUser" }, revoke_history: params?.deleteMessages ? true : undefined });
+      await this.#c.invoke({ _: "messages.deleteChatUser", chat_id: chat.chat_id, user_id: toInputUser(member), revoke_history: params?.deleteMessages ? true : undefined });
     }
   }
 
@@ -1351,10 +1349,10 @@ export class MessageManager {
   async joinChat(chatId: ID) {
     this.#c.storage.assertUser("joinChat");
     const peer = await this.#c.getInputPeer(chatId);
-    if (is("inputPeerUser", peer)) {
+    if (canBeInputUser(peer)) {
       throw new InputError("Cannot join private chats.");
-    } else if (is("inputPeerChannel", peer)) {
-      await this.#c.invoke({ _: "channels.joinChannel", channel: { ...peer, _: "inputChannel" } });
+    } else if (canBeInputChannel(peer)) {
+      await this.#c.invoke({ _: "channels.joinChannel", channel: toInputChannel(peer) });
     } else if (is("inputPeerChat", peer)) {
       await this.#c.invoke({ _: "messages.addChatUser", chat_id: peer.chat_id, user_id: { _: "inputUserSelf" }, fwd_limit: 0 }); // TODO: use potential high-level method for adding participants to chats
     } else {
@@ -1364,10 +1362,10 @@ export class MessageManager {
 
   async leaveChat(chatId: ID) {
     const peer = await this.#c.getInputPeer(chatId);
-    if (is("inputPeerUser", peer)) {
+    if (canBeInputUser(peer)) {
       throw new InputError("Cannot leave private chats.");
-    } else if (is("inputPeerChannel", peer)) {
-      await this.#c.invoke({ _: "channels.leaveChannel", channel: { ...peer, _: "inputChannel" } });
+    } else if (canBeInputChannel(peer)) {
+      await this.#c.invoke({ _: "channels.leaveChannel", channel: toInputChannel(peer) });
     } else if (is("inputPeerChat", peer)) {
       await this.#c.invoke({ _: "messages.deleteChatUser", chat_id: peer.chat_id, user_id: { _: "inputUserSelf" } }); // TODO: use potential high-level method for adding participants to chats
     } else {
@@ -1536,14 +1534,14 @@ export class MessageManager {
     if (isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
       throw new InputError("Cannot add members to private chats");
     }
-    const users = new Array<Api.inputUser>();
+    const users = new Array<Api.inputUser | Api.inputUserFromMessage>();
     for (const userId of userIds) {
       users.push(await this.#c.getInputUser(userId));
     }
     if (is("inputPeerChat", chat)) {
       throw new InputError("addChatMembers cannot be used with basic groups");
-    } else if (is("inputPeerChannel", chat)) {
-      const result = await this.#c.invoke({ _: "channels.inviteToChannel", channel: { ...chat, _: "inputChannel" }, users });
+    } else if (canBeInputChannel(chat)) {
+      const result = await this.#c.invoke({ _: "channels.inviteToChannel", channel: toInputChannel(chat), users });
       return result.missing_invitees.map(constructFailedInvitation);
     }
     unreachable();

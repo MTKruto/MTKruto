@@ -21,6 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { is } from "../2_tl.ts";
 import { constructInactiveChat, ID } from "../3_types.ts";
+import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C } from "./1_types.ts";
 
 export class AccountManager {
@@ -34,10 +35,10 @@ export class AccountManager {
     const peer = await this.#c.getInputPeer(id);
     if (is("inputPeerSelf", peer)) {
       await this.#c.invoke({ _: "account.toggleUsername", username, active });
-    } else if (is("inputPeerUser", peer)) {
-      await this.#c.invoke({ _: "bots.toggleUsername", bot: { ...peer, _: "inputUser" }, username, active });
-    } else if (is("inputPeerChannel", peer)) {
-      await this.#c.invoke({ _: "channels.toggleUsername", channel: { ...peer, _: "inputChannel" }, username, active });
+    } else if (canBeInputUser(peer)) {
+      await this.#c.invoke({ _: "bots.toggleUsername", bot: toInputUser(peer), username, active });
+    } else if (canBeInputChannel(peer)) {
+      await this.#c.invoke({ _: "channels.toggleUsername", channel: toInputChannel(peer), username, active });
     } else {
       unreachable();
     }
@@ -58,10 +59,10 @@ export class AccountManager {
     const peer = await this.#c.getInputPeer(id);
     if (is("inputPeerSelf", peer)) {
       return await this.#c.invoke({ _: "account.reorderUsernames", order });
-    } else if (is("inputPeerUser", peer)) {
-      return await this.#c.invoke({ _: "bots.reorderUsernames", bot: { ...peer, _: "inputUser" }, order });
-    } else if (is("inputPeerChannel", peer)) {
-      return await this.#c.invoke({ _: "channels.reorderUsernames", channel: { ...peer, _: "inputChannel" }, order });
+    } else if (canBeInputUser(peer)) {
+      return await this.#c.invoke({ _: "bots.reorderUsernames", bot: toInputUser(peer), order });
+    } else if (canBeInputChannel(peer)) {
+      return await this.#c.invoke({ _: "channels.reorderUsernames", channel: toInputChannel(peer), order });
     } else {
       unreachable();
     }
@@ -70,8 +71,8 @@ export class AccountManager {
   async hideUsernames(id: ID) {
     this.#c.storage.assertUser("hideUsernames");
     const peer = await this.#c.getInputPeer(id);
-    if (is("inputPeerChannel", peer)) {
-      return await this.#c.invoke({ _: "channels.deactivateAllUsernames", channel: { ...peer, _: "inputChannel" } });
+    if (canBeInputChannel(peer)) {
+      return await this.#c.invoke({ _: "channels.deactivateAllUsernames", channel: toInputChannel(peer) });
     } else {
       unreachable();
     }
