@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { Api, isOneOf } from "../2_tl.ts";
+import { Api, is, isOneOf } from "../2_tl.ts";
 
 export const resolve = () => Promise.resolve();
 
@@ -171,4 +171,34 @@ const CDN_FUNCTIONS = [
 ] as (keyof Api.Functions)[];
 export function isCdnFunction(value: unknown) {
   return isOneOf(CDN_FUNCTIONS, value);
+}
+
+export function canBeInputUser(inputPeer: Api.InputPeer) {
+  return isOneOf(["inputUser", "inputUserFromMessage"], inputPeer);
+}
+export function toInputUser(inputPeer: Api.InputPeer) {
+  let id: Api.InputUser;
+  if (is("inputPeerUser", inputPeer)) {
+    id = { ...inputPeer, _: "inputUser" };
+  } else if (is("inputPeerUserFromMessage", inputPeer)) {
+    id = { ...inputPeer, _: "inputUserFromMessage" };
+  } else {
+    unreachable();
+  }
+  return id;
+}
+
+export function canBeInputChannel(inputPeer: Api.InputPeer) {
+  return isOneOf(["inputChannel", "inputChannelFromMessage"], inputPeer);
+}
+export function toInputChannel(inputPeer: Api.InputPeer) {
+  let id: Api.InputChannel;
+  if (is("inputPeerChannel", inputPeer)) {
+    id = { ...inputPeer, _: "inputChannel" };
+  } else if (is("inputPeerChannelFromMessage", inputPeer)) {
+    id = { ...inputPeer, _: "inputChannelFromMessage" };
+  } else {
+    unreachable();
+  }
+  return id;
 }

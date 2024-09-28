@@ -52,8 +52,8 @@ export interface C {
   resetConnectionState: () => void;
   getSelfId: () => Promise<number>;
   getInputPeer: (id: ID) => Promise<Api.InputPeer>;
-  getInputChannel: (id: ID) => Promise<Api.inputChannel>;
-  getInputUser: (id: ID) => Promise<Api.inputUser>;
+  getInputChannel: (id: ID) => Promise<Api.inputChannel | Api.inputChannelFromMessage>;
+  getInputUser: (id: ID) => Promise<Api.inputUser | Api.inputUserFromMessage>;
   getEntity: EntityGetter;
   handleUpdate: (update: Update) => void;
   parseMode: ParseMode;

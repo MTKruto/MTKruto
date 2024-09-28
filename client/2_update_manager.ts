@@ -77,6 +77,7 @@ export class UpdateManager {
   #L$processUpdates: Logger;
   #LfetchState: Logger;
   #LopenChat: Logger;
+  #Lmin: Logger;
 
   constructor(c: C) {
     this.#c = c;
@@ -88,6 +89,7 @@ export class UpdateManager {
     this.#L$processUpdates = L.branch("#processUpdates");
     this.#LfetchState = L.branch("fetchState");
     this.#LopenChat = L.branch("openChat");
+    this.#Lmin = L.branch("min");
   }
 
   static isPtsUpdate(v: Api.Update): v is PtsUpdate {
@@ -155,11 +157,75 @@ export class UpdateManager {
     }
   }
 
-  async processChats(chats: Api.Chat[]) {
+  #extractMessages(context: ReadObject) {
+    const messages = new Array<Api.message>();
+    if (Array.isArray(context)) {
+      this.#Lmin.debug("em A");
+      for (const item of context) {
+        messages.push(...this.#extractMessages(item));
+      }
+    } else if (isOneOf(["updates", "updatesCombined"], context)) {
+      this.#Lmin.debug("em B");
+      messages.push(...this.#extractMessages(context.updates));
+    } else if (isOneOf(["updates.difference", "updates.differenceSlice", "updates.channelDifference"], context)) {
+      this.#Lmin.debug("em C");
+      for (const message of context.new_messages) {
+        if (is("message", message)) {
+          messages.push(message);
+        }
+      }
+      messages.push(...this.#extractMessages(context.other_updates));
+    } else if (isOneOf(["updateNewMessage", "updateNewChannelMessage", "updateEditMessage", "updateEditChannelMessage", "updateBotNewBusinessMessage", "updateBotNewBusinessMessage"], context)) {
+      this.#Lmin.debug("em D");
+      if (is("message", context.message)) {
+        messages.push(context.message);
+      }
+    } else if (is("message", context)) {
+      this.#Lmin.debug("em E");
+      messages.push(context);
+    } else if (context != null && typeof context === "object" && "messages" in context && Array.isArray(context.messages)) {
+      this.#Lmin.debug("em F");
+      for (const message of context.messages) {
+        if (is("message", message)) {
+          messages.push(message);
+        }
+      }
+    }
+    return messages;
+  }
+
+  #extractMinPeerReferences(context: ReadObject) {
+    this.#Lmin.debug("empr A");
+    const minPeerReferences = new Array<{ chatId: number; senderId: number; messageId: number }>();
+    const messages = this.#extractMessages(context);
+    this.#Lmin.debug("empr B", messages.length, context != null && typeof context == "object" && "_" in context ? context._ : typeof context);
+    for (const message of messages) {
+      this.#Lmin.debug("empr C");
+      if (!message.from_id) {
+        continue;
+      }
+      minPeerReferences.push({ chatId: peerToChatId(message.peer_id), senderId: peerToChatId(message.from_id), messageId: message.id });
+    }
+    return minPeerReferences;
+  }
+
+  async processChats(chats: Api.Chat[], context: ReadObject) {
     for (const chat of chats) {
       if (isOneOf(["channel", "channelForbidden"], chat)) {
         if (!is("channel", chat) || !chat.min || chat.min && await this.#c.messageStorage.getEntity(peerToChatId(chat)) == null) {
           await this.#c.messageStorage.setEntity(chat);
+        }
+        if (is("channel", chat) && chat.min) {
+          const entity = await this.#c.messageStorage.getEntity(peerToChatId(chat));
+          const senderChatId = peerToChatId(chat);
+          if (is("channel", entity) && entity.min) {
+            for (const { chatId, senderId, messageId } of this.#extractMinPeerReferences(context)) {
+              if (senderId == senderChatId) {
+                await this.#c.messageStorage.setMinPeerReference(chatId, senderId, messageId);
+                this.#Lmin.debug("channel min peer reference stored", chatId, senderId, messageId);
+              }
+            }
+          }
         }
         if ("username" in chat && chat.username) {
           await this.#c.messageStorage.updateUsernames(peerToChatId(chat), [chat.username]);
@@ -249,11 +315,11 @@ export class UpdateManager {
       ], result)
     ) {
       if ("chats" in result) {
-        await this.processChats(result.chats);
+        await this.processChats(result.chats, result);
       }
 
       if ("users" in result) {
-        await this.processUsers(result.users);
+        await this.processUsers(result.users, result);
       }
 
       if ("messages" in result && Array.isArray(result.messages)) {
@@ -274,11 +340,30 @@ export class UpdateManager {
     }
   }
 
-  async processUsers(users: Api.User[]) {
+  async processUsers(users: Api.User[], context: ReadObject) {
     for (const user of users) {
       if (is("user", user) && user.access_hash) {
         if (!user.min || user.min && await this.#c.messageStorage.getEntity(peerToChatId(user)) == null) {
           await this.#c.messageStorage.setEntity(user);
+        }
+        if (user.min) {
+          this.#Lmin.debug("encountered min user");
+        }
+        if (is("user", user) && user.min) {
+          this.#Lmin.debug("emu A");
+          const entity = await this.#c.messageStorage.getEntity(peerToChatId(user));
+          const userId = peerToChatId(user);
+          if (is("user", entity) && entity.min) {
+            this.#Lmin.debug("emu B");
+            for (const { chatId, senderId, messageId } of this.#extractMinPeerReferences(context)) {
+              this.#Lmin.debug("emu C", { chatId, senderId, messageId }, "=", userId);
+              if (senderId == userId) {
+                this.#Lmin.debug("emu X");
+                await this.#c.messageStorage.setMinPeerReference(chatId, senderId, messageId);
+                this.#Lmin.debug("user min peer reference stored", chatId, senderId, messageId);
+              }
+            }
+          }
         }
         if (user.username) {
           await this.#c.messageStorage.updateUsernames(peerToChatId(user), [user.username]);
@@ -575,8 +660,8 @@ export class UpdateManager {
 
     /// We process the updates when we are sure there is no gap.
     if (is("updates", updates_) || is("updatesCombined", updates_)) {
-      await this.processChats(updates_.chats);
-      await this.processUsers(updates_.users);
+      await this.processChats(updates_.chats, updates_);
+      await this.processUsers(updates_.users, updates_);
       await this.#setUpdateStateDate(updates_.date);
     } else if (
       is("updateShort", updates_) ||
@@ -680,8 +765,8 @@ export class UpdateManager {
           }
         }
         if (is("updates.difference", difference) || is("updates.differenceSlice", difference)) {
-          await this.processChats(difference.chats);
-          await this.processUsers(difference.users);
+          await this.processChats(difference.chats, difference);
+          await this.processUsers(difference.users, difference);
           for (const message of difference.new_messages) {
             await this.#processUpdates({ _: "updateNewMessage", message, pts: 0, pts_count: 0 }, false);
           }
@@ -751,8 +836,8 @@ export class UpdateManager {
         }
       }
       if (is("updates.channelDifference", difference)) {
-        await this.processChats(difference.chats);
-        await this.processUsers(difference.users);
+        await this.processChats(difference.chats, difference);
+        await this.processUsers(difference.users, difference);
         for (const message of difference.new_messages) {
           await this.#processUpdates({ _: "updateNewChannelMessage", message, pts: 0, pts_count: 0 }, false);
         }
@@ -765,8 +850,8 @@ export class UpdateManager {
       } else if (is("updates.channelDifferenceTooLong", difference)) {
         // TODO: invalidate messages
         this.#LrecoverChannelUpdateGap.debug("received channelDifferenceTooLong");
-        await this.processChats(difference.chats);
-        await this.processUsers(difference.users);
+        await this.processChats(difference.chats, difference);
+        await this.processUsers(difference.users, difference);
         for (const message of difference.messages) {
           await this.#processUpdates({ _: "updateNewChannelMessage", message, pts: 0, pts_count: 0 }, false);
         }
