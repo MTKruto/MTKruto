@@ -195,7 +195,6 @@ export class StorageOperations {
     const isBot = reader.read(1)[0];
     const accountId = Number(reader.readInt64());
     await this.setAccountId(accountId);
-    console.log("sat");
     await this.setAccountType(isBot ? "bot" : "user");
     await this.setApiId(apiId);
     await this.setDc(dc as DC);
