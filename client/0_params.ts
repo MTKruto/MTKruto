@@ -226,7 +226,11 @@ export interface _SpoilCommon {
   /** Whether to mark the media as a spoiler. */
   hasSpoiler?: boolean;
 }
-export interface SendPhotoParams extends _CaptionCommon, _SpoilCommon, _UploadCommon, _SendCommon, _ReplyMarkupCommon {
+export interface _StarCount {
+  /** The amount of stars that will be required to unlock the media. */
+  starCount?: number;
+}
+export interface SendPhotoParams extends _CaptionCommon, _SpoilCommon, _UploadCommon, _SendCommon, _ReplyMarkupCommon, _StarCount {
   /** The photo's self-destruct preference. */
   selfDestruct?: SelfDestructOption;
 }
@@ -246,7 +250,7 @@ export interface SendStickerParams extends _UploadCommon, _SendCommon {
   emoji?: string;
 }
 
-export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon {
+export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon, _StarCount {
   /** The duration of the video in seconds. */
   duration?: number;
   /** The width of the photo in pixels. */
