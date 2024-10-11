@@ -227,7 +227,7 @@ export interface _SpoilCommon {
   hasSpoiler?: boolean;
 }
 export interface _StarCount {
-  /** The number of stars required to be paid to unlock the media. */
+  /** The amount of stars that will be required to unlock the media. */
   starCount?: number;
 }
 export interface SendPhotoParams extends _CaptionCommon, _SpoilCommon, _UploadCommon, _SendCommon, _ReplyMarkupCommon, _StarCount {
