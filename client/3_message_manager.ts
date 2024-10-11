@@ -641,6 +641,12 @@ export class MessageManager {
   }
 
   async #sendMedia(chatId: ID, media: Api.InputMedia, params: SendPhotoParams | undefined) {
+    if (params?.starCount !== undefined) {
+      if (params.starCount <= 0) {
+        throw new InputError("starCount cannot be zero or negative");
+      }
+      media = { _: "inputMediaPaidMedia", stars_amount: BigInt(params.starCount), extended_media: [media] };
+    }
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
