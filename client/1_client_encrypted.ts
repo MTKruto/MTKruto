@@ -76,7 +76,7 @@ export class ClientEncrypted extends ClientAbstract {
     this.#Linvoke = L.branch("invoke");
   }
 
-  async connect(): Promise<void> {
+  override async connect(): Promise<void> {
     await super.connect();
     if (this.#shouldInvalidateSession) {
       this.#sessionId = getRandomBigInt(8, true, false);

@@ -89,7 +89,7 @@ export class TransportAbridged extends Transport implements Transport {
     await this.#connection.write(data);
   }
 
-  deinitialize() {
+  override deinitialize() {
     super.deinitialize();
     this.#initialized = false;
   }

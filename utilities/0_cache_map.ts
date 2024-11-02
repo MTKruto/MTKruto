@@ -31,7 +31,7 @@ export class CacheMap<K, V> extends Map<K, V> {
     this.#limit = limit;
   }
 
-  set(key: K, value: V): typeof this {
+  override set(key: K, value: V): typeof this {
     super.set(key, value);
     if (this.size > this.#limit) {
       const k = this.keys().next().value;
