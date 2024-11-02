@@ -49,13 +49,13 @@ console.debug(pong);
 
 ```html
 <script type="module">
-    import { Client, getRandomId } from "https://esm.sh/@mtkruto/browser";
+  import { Client, getRandomId } from "https://esm.sh/@mtkruto/browser";
 
-    const client = new Client();
-    await client.connect();
+  const client = new Client();
+  await client.connect();
 
-    const pong = await client.invoke({ _: "ping", ping_id: getRandomId() });
-    console.debug(pong);
+  const pong = await client.invoke({ _: "ping", ping_id: getRandomId() });
+  console.debug(pong);
 </script>
 ```
 
