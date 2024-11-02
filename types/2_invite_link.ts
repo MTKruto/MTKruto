@@ -37,12 +37,16 @@ export interface InviteLink {
   revoked: boolean;
   /** An optional title. */
   title?: string;
-  /** A point in time within the future in which the ban will be reverted. */
+  /** A point in time within the future in which the invite link will be revoked. */
   expiresAt?: Date;
   /** The times the invite link can be used. */
   limit?: number;
   /** The number of pending join requests originating from this invite link. */
   pendingJoinRequestCount?: number;
+  /** The amount of stars required to renew the subscription. */
+  subscriptionPrice?: number;
+  /** A point in time within the future in which the subscription will expire. */
+  subscriptionExpiresAt?: number;
 }
 
 export async function constructInviteLink(inviteLink_: Api.chatInviteExported, getEntity: EntityGetter): Promise<InviteLink> {
@@ -67,5 +71,7 @@ export async function constructInviteLink(inviteLink_: Api.chatInviteExported, g
     expiresAt,
     limit,
     pendingJoinRequestCount,
+    subcriptionPrice: inviteLink_.subscription_pricing || undefined,
+    subscriptionExpiresAt: inviteLink_.subscription_expired || undefined,
   });
 }
