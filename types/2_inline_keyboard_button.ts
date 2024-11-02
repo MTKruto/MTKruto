@@ -138,6 +138,15 @@ export interface InlineKeyboardButtonPay extends _InlineKeyboardButtonBase {
   pay: boolean;
 }
 
+/**
+ * An inline keyboard that, when pressed, copies the text inside its `copy` field.
+ * @unlisted
+ */
+export interface InlineKeyboardButtonCopy extends _InlineKeyboardButtonBase {
+  /** @discriminator */
+  copy: string;
+}
+
 /** A button of an inline keyboard. */
 export type InlineKeyboardButton =
   | InlineKeyboardButtonURL
@@ -148,7 +157,8 @@ export type InlineKeyboardButton =
   | InlineKeyboardButtonSwitchInlineCurrent
   | InlineKeyboardButtonSwitchInlineChosen
   | InlineKeyboardButtonGame
-  | InlineKeyboardButtonPay;
+  | InlineKeyboardButtonPay
+  | InlineKeyboardButtonCopy;
 
 export function constructInlineKeyboardButton(button_: Api.KeyboardButton): InlineKeyboardButton {
   if (is("keyboardButtonUrl", button_)) {
@@ -175,6 +185,8 @@ export function constructInlineKeyboardButton(button_: Api.KeyboardButton): Inli
     return { text: button_.text, pay: true };
   } else if (is("keyboardButtonGame", button_)) {
     return { text: button_.text, callbackGame: {} };
+  } else if (is("keyboardButtonCopy", button_)) {
+    return { text: button_.text, copy: button_.copy_text };
   } else if (is("keyboardButtonRequestPeer", button_)) {
     unreachable();
   } else {
@@ -216,6 +228,8 @@ export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButto
     return { _: "keyboardButtonSwitchInline", text: button.text, query: button.switchInlineQueryChosenChats.query, peer_types: peerTypes };
   } else if ("pay" in button) {
     return { _: "keyboardButtonBuy", text: button.text };
+  } else if ("copy" in button) {
+    return { _: "keyboardButtonCopy", text: button.text, copy_text: button.copy };
   } else {
     unreachable();
   }
