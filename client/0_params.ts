@@ -59,7 +59,11 @@ export interface _ReplyMarkupCommon {
   replyMarkup?: ReplyMarkup;
 }
 
-export interface _SendCommon extends _BusinessConnectionIdCommon {
+export interface _PaidBroadcastCommon {
+  paidBroadcast?: boolean;
+}
+
+export interface _SendCommon extends _BusinessConnectionIdCommon, _PaidBroadcastCommon {
   /** Whether to send the message in a silent way without making a sound on the recipients' clients. */
   disableNotification?: boolean;
   /** Whether to protect the contents of the message from copying and forwarding. */
