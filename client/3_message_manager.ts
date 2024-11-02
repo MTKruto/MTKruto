@@ -289,6 +289,7 @@ export class MessageManager {
     const sendAs = await this.#resolveSendAs(params);
     const effect = params?.effectId ? BigInt(params.effectId) : undefined;
     const schedule_date = params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined;
+    const allow_paid_floodskip = params?.paidBroadcast ? true : undefined;
 
     let result: Api.Updates;
     if (!noWebpage && params?.linkPreview?.url) {
@@ -313,6 +314,7 @@ export class MessageManager {
         reply_markup: replyMarkup,
         effect,
         schedule_date,
+        allow_paid_floodskip,
       }, params?.businessConnectionId);
     } else {
       result = await this.#c.invoke(
@@ -331,6 +333,7 @@ export class MessageManager {
           reply_markup: replyMarkup,
           effect,
           schedule_date,
+          allow_paid_floodskip,
         },
         params?.businessConnectionId,
       );
@@ -390,6 +393,7 @@ export class MessageManager {
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
       schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+      allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
     }, params?.businessConnectionId);
 
     const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -425,6 +429,7 @@ export class MessageManager {
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
         schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+        allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
       params?.businessConnectionId,
     );
@@ -458,6 +463,7 @@ export class MessageManager {
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
       schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+      allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
     }, params?.businessConnectionId);
 
     const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -508,6 +514,7 @@ export class MessageManager {
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
         schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+        allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
       params?.businessConnectionId,
     );
@@ -675,6 +682,7 @@ export class MessageManager {
         entities: captionEntities,
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
         schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+        allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
       params?.businessConnectionId,
     );
@@ -751,6 +759,7 @@ export class MessageManager {
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
         schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+        allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
       params?.businessConnectionId,
     );
@@ -1610,6 +1619,7 @@ export class MessageManager {
       silent,
       send_as: sendAs,
       reply_to: await this.#constructReplyTo(params),
+      allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
     });
 
     return await this.#updatesToMessages(chatId, result);
