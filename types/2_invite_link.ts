@@ -45,8 +45,8 @@ export interface InviteLink {
   pendingJoinRequestCount?: number;
   /** The amount of stars required to renew the subscription. */
   subscriptionPrice?: number;
-  /** A point in time within the future in which the subscription will expire. */
-  subscriptionExpiresAt?: number;
+  /** The remaining duration (in seconds) until the subscription expires. */
+  subscriptionExpiresIn?: number;
 }
 
 export async function constructInviteLink(inviteLink_: Api.chatInviteExported, getEntity: EntityGetter): Promise<InviteLink> {
