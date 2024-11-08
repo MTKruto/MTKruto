@@ -530,3 +530,10 @@ export interface CreateChannelParams {
   /** Time to live of the messages of the channel that is to be created. */
   messageTtl?: number;
 }
+
+export interface StartBotParams {
+  /** A deeplink to follow. */
+  deeplink?: string;
+  /** If specified, the bot will be started in that chat instead of its own private chat. */
+  chatId?: ID;
+}

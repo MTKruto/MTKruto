@@ -27,7 +27,7 @@ import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructMes
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageMediaParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageMediaParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import { canBeInputChannel, canBeInputUser, checkArray, checkMessageId, isHttpUrl, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
@@ -1630,5 +1630,20 @@ export class MessageManager {
     const peer = await this.#c.getInputPeer(chatId);
     const max_id = untilMessageId;
     await this.#c.invoke({ _: "messages.readHistory", peer, max_id });
+  }
+
+  async startBot(botId: ID, params?: StartBotParams) {
+    this.#c.storage.assertUser("startBot");
+    const start_param = params?.deeplink?.trim() || "";
+    if (params?.chatId !== undefined && !start_param) {
+      throw new InputError("deeplink cannot be unspecified while chatId is specified.");
+    }
+    if (!params?.deeplink) {
+      return await this.sendMessage(botId, "/start");
+    }
+    const bot = await this.#c.getInputUser(botId);
+    const peer = await this.#c.getInputPeer(params?.chatId || botId);
+    const result = await this.#c.invoke({ _: "messages.startBot", bot, peer, random_id: getRandomId(), start_param });
+    return (await this.#updatesToMessages(botId, result))[0];
   }
 }
