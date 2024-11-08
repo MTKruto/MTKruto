@@ -159,6 +159,8 @@ export interface Context {
   removeReaction: (messageId: number, reaction: Reaction) => Promise<void>;
   /** Context-aware alias for `client.setReactions()`. */
   setReactions: (messageId: number, reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
+  /** Context-aware alias for `client.readMessages()`. */
+  read(): Promise<void>;
   /** Context-aware alias for `client.setChatPhoto()`. */
   setChatPhoto: (photo: FileSource, params?: SetChatPhotoParams) => Promise<void>;
   /** Context-aware alias for `client.deleteChatPhoto()`. */
@@ -878,6 +880,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
       setReactions: (messageId, reactions, params) => {
         const { chatId } = mustGetMsg();
         return this.setReactions(chatId, messageId, reactions, params);
+      },
+      read: () => {
+        const { chatId, messageId } = mustGetMsg();
+        return this.readMessages(chatId, messageId);
       },
       setChatPhoto: (photo, params) => {
         const { chatId } = mustGetMsg();
@@ -2332,6 +2338,17 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams): Promise<Message[]> {
     return await this.#messageManager.searchMessages(chatId, query, params);
+  }
+
+  /**
+   * Mark messages as read. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat that includes the messages.
+   * @param untilMessageId The identifier of a message that will be marked as read, along with any other unread messages before it.
+   */
+  async readMessages(chatId: number, untilMessageId: number): Promise<void> {
+    return await this.#messageManager.readMessages(chatId, untilMessageId);
   }
 
   //
