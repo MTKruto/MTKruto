@@ -34,7 +34,7 @@ import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, getUsername, isCdnFunction, isMtprotoFunction, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { ClientEncrypted } from "./1_client_encrypted.ts";
 import { ClientPlain, ClientPlainParams } from "./1_client_plain.ts";
-import { Composer as Composer_, NextFunction } from "./1_composer.ts";
+import { Composer as Composer_, Middleware, MiddlewareFn, MiddlewareObj, NextFunction } from "./1_composer.ts";
 import { Invoke } from "./1_types.ts";
 import { AccountManager } from "./2_account_manager.ts";
 import { BotInfoManager } from "./2_bot_info_manager.ts";
@@ -207,6 +207,7 @@ export interface Context {
 
 export class Composer<C extends Context = Context> extends Composer_<C> {
 }
+export { type Middleware, type MiddlewareFn, type MiddlewareObj, type NextFunction };
 
 function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
   return (_ctx, next) => next();
