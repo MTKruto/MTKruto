@@ -1841,7 +1841,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param online The new online status.
    */
   async setOnline(online: boolean): Promise<void> {
-    return await this.#accountManager.setOnline(online);
+    await this.#accountManager.setOnline(online);
   }
 
   //
@@ -2369,7 +2369,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param untilMessageId The identifier of a message that will be marked as read, along with any other unread messages before it.
    */
   async readMessages(chatId: number, untilMessageId: number): Promise<void> {
-    return await this.#messageManager.readMessages(chatId, untilMessageId);
+    await this.#messageManager.readMessages(chatId, untilMessageId);
   }
 
   //
@@ -2740,6 +2740,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @method ch
    * @param title The title of the group.
+   * @returns The created group.
    */
   async createGroup(title: string, params?: CreateGroupParams): Promise<ChatPGroup> {
     return await this.#chatListManager.createGroup(title, params);
@@ -2750,6 +2751,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @method ch
    * @param title The title of the supergroup.
+   * @returns The created supergroup.
    */
   async createSupergroup(title: string, params?: CreateSupergroupParams): Promise<ChatPSupergroup> {
     return await this.#chatListManager.createSupergroup(title, params);
@@ -2760,6 +2762,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @method ch
    * @param title The title of the channel.
+   * @returns The created channel.
    */
   async createChannel(title: string, params?: CreateChannelParams): Promise<ChatPChannel> {
     return await this.#chatListManager.createChannel(title, params);
@@ -2773,7 +2776,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param messageTtl The time to live of the messages.
    */
   async setMessageTtl(chatId: ID, messageTtl: number): Promise<void> {
-    return await this.#chatListManager.setMessageTtl(chatId, messageTtl);
+    await this.#chatListManager.setMessageTtl(chatId, messageTtl);
   }
 
   //
@@ -3137,7 +3140,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
    */
   async leaveVideoChat(id: string): Promise<void> {
-    return await this.#videoChatManager.leaveVideoChat(id);
+    await this.#videoChatManager.leaveVideoChat(id);
   }
 
   /**
@@ -3147,7 +3150,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
    */
   async joinLiveStream(id: string): Promise<void> {
-    return await this.#videoChatManager.joinLiveStream(id);
+    await this.#videoChatManager.joinLiveStream(id);
   }
 
   /**
