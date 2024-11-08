@@ -516,7 +516,7 @@ export interface CreateGroupParams {
 }
 
 export interface CreateSupergroupParams {
-  /** The description of the supergroup that is about to be created. */
+  /** The description of the supergroup that is to be created. */
   description?: string;
   /** Whether a forum should be created. */
   forum?: boolean;
@@ -525,7 +525,7 @@ export interface CreateSupergroupParams {
 }
 
 export interface CreateChannelParams {
-  /** The description of the channel that is about to be created. */
+  /** The description of the channel that is to be created. */
   description?: string;
   /** Time to live of the messages of the channel that is to be created. */
   messageTtl?: number;
