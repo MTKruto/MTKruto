@@ -2765,6 +2765,17 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return await this.#chatListManager.createChannel(title, params);
   }
 
+  /**
+   * Set the time to live of the messages of a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @param messageTtl The time to live of the messages.
+   */
+  async setMessageTtl(chatId: ID, messageTtl: number): Promise<void> {
+    return await this.#chatListManager.setMessageTtl(chatId, messageTtl);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //

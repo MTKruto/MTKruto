@@ -590,4 +590,11 @@ export class ChatListManager {
     this.#c.storage.assertUser("createChannel");
     return (await this.#createChannel("channel", title, params)) as ChatPChannel;
   }
+
+  async setMessageTtl(chatId: ID, messageTtl: number) {
+    this.#c.storage.assertUser("setMessageTtl");
+    const peer = await this.#c.getInputPeer(chatId);
+    const period = messageTtl;
+    await this.#c.invoke({ _: "messages.setHistoryTTL", peer, period });
+  }
 }
