@@ -1812,7 +1812,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @method ac
    * @param online The new online status.
    */
-  async setOnline(online: boolean) {
+  async setOnline(online: boolean): Promise<void> {
     return await this.#accountManager.setOnline(online);
   }
 
