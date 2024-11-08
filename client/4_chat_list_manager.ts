@@ -536,7 +536,7 @@ export class ChatListManager {
   #checkChatTitle(title: string) {
     title = title.trim();
     if (!title) {
-      throw new InputError("Title cannot be empty");
+      throw new InputError("Title cannot be empty.");
     }
     return title;
   }
