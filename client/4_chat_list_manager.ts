@@ -56,9 +56,9 @@ export class ChatListManager {
     this.#LgetChats = L.branch("getChats");
   }
 
-  async #sendChatUpdate(chatId: number, added: boolean) {
+  #sendChatUpdate(chatId: number, added: boolean) {
     try {
-      await this.#c.storage.assertUser("");
+      this.#c.storage.assertUser("");
     } catch {
       return;
     }
@@ -69,7 +69,7 @@ export class ChatListManager {
 
   async reassignChatLastMessage(chatId: number, add = false, sendUpdate = true) {
     try {
-      await this.#c.storage.assertUser("");
+      this.#c.storage.assertUser("");
     } catch {
       return () => Promise.resolve();
     }
@@ -271,33 +271,33 @@ export class ChatListManager {
       const newChat = await constructChatListItem3(chatId, chat.pinned, chat.lastMessage, this.#c.getEntity);
       if (newChat != null) {
         this.#getChatList(listId).set(chatId, newChat);
-        await this.#sendChatUpdate(chatId, false);
+        this.#sendChatUpdate(chatId, false);
       }
     } else {
       const chat = await constructChatListItem(chatId, -1, -1, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
       if (chat != null) {
         this.#getChatList(0).set(chatId, chat);
         await this.reassignChatLastMessage(chatId, false, false);
-        await this.#sendChatUpdate(chatId, true);
+        this.#sendChatUpdate(chatId, true);
       }
     }
   }
 
-  async #removeChat(chatId: number) {
+  #removeChat(chatId: number) {
     const [chat, listId] = this.#getChatAnywhere(chatId);
     if (chat !== undefined) {
       this.#getChatList(listId).delete(chatId);
-      await this.#sendChatUpdate(chatId, false);
+      this.#sendChatUpdate(chatId, false);
     }
   }
-  async #handleUpdateFolderPeers(update: Api.updateFolderPeers) {
+  #handleUpdateFolderPeers(update: Api.updateFolderPeers) {
     for (const { peer, folder_id: listId } of update.folder_peers) {
       const chatId = peerToChatId(peer);
       const [chat, currentListId] = this.#getChatAnywhere(chatId);
       if (chat !== undefined && listId != currentListId) {
         this.#getChatList(currentListId).delete(chatId);
         this.#getChatList(listId).set(chatId, chat);
-        await this.#sendChatUpdate(chatId, true);
+        this.#sendChatUpdate(chatId, true);
       }
     }
   }
@@ -330,9 +330,9 @@ export class ChatListManager {
     const chatId = peerToChatId(peer);
     await this.#c.storage.setFullChat(chatId, null);
     if (channel != null && "left" in channel && channel.left) {
-      await this.#removeChat(chatId);
+      this.#removeChat(chatId);
     } else if (is("channelForbidden", channel)) {
-      await this.#removeChat(chatId);
+      this.#removeChat(chatId);
     } else if (is("channel", channel)) {
       await this.#updateOrAddChat(chatId);
     }
@@ -420,7 +420,7 @@ export class ChatListManager {
     } else if (is("updatePinnedDialogs", update)) {
       await this.#handleUpdatePinnedDialogs(update);
     } else if (is("updateFolderPeers", update)) {
-      await this.#handleUpdateFolderPeers(update);
+      this.#handleUpdateFolderPeers(update);
     } else if (is("updateChannel", update)) {
       await this.#handleUpdateChannel(update);
     } else if (is("updateChat", update)) {
