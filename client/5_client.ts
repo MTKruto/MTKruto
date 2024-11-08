@@ -295,6 +295,27 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #chatListManager: ChatListManager;
   #accountManager: AccountManager;
   #paymentManager: PaymentManager;
+  // deno-lint-ignore no-explicit-any
+  #managers?: Record<string, any>;
+  // deno-lint-ignore no-explicit-any
+  get managers(): Record<string, any> {
+    return this.#managers ?? (this.#managers ??= {
+      updateManager: this.#updateManager,
+      networkStatisticsManager: this.#networkStatisticsManager,
+      botInfoManager: this.#botInfoManager,
+      fileManager: this.#fileManager,
+      reactionManager: this.#reactionManager,
+      videoChatManager: this.#videoChatManager,
+      businessConnectionManager: this.#businessConnectionManager,
+      messageManager: this.#messageManager,
+      storyManager: this.#storyManager,
+      callbackQueryManager: this.#callbackQueryManager,
+      inlineQueryManager: this.#inlineQueryManager,
+      chatListManager: this.#chatListManager,
+      accountManager: this.#accountManager,
+      paymentManager: this.#paymentManager,
+    });
+  }
 
   #storage_: Storage;
   #messageStorage_: Storage;
