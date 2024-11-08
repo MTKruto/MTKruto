@@ -83,4 +83,9 @@ export class AccountManager {
     const { chats, dates } = await this.#c.invoke({ _: "channels.getInactiveChannels" });
     return chats.map((v, i) => constructInactiveChat(v, dates[i]));
   }
+
+  async setOnline(online: boolean) {
+    this.#c.storage.assertUser("setOnline");
+    await this.#c.invoke({ _: "account.updateStatus", offline: !online });
+  }
 }

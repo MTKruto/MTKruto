@@ -1806,6 +1806,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return await this.#businessConnectionManager.getBusinessConnection(id);
   }
 
+  /**
+   * Set the current account's online status. User-only.
+   *
+   * @method ac
+   * @param online The new online status.
+   */
+  async setOnline(online: boolean) {
+    return await this.#accountManager.setOnline(online);
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //
