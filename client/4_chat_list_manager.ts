@@ -22,8 +22,8 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, is, isOneOf, peerToChatId } from "../2_tl.ts";
-import { ChatListItem, ChatMember, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, getChatListItemOrder, ID } from "../3_types.ts";
-import { GetChatMembersParams } from "./0_params.ts";
+import { ChatListItem, ChatMember, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, constructChatP, getChatListItemOrder, ID } from "../3_types.ts";
+import { type CreateChannelParams, type CreateGroupParams, type CreateSupergroupParams, GetChatMembersParams } from "./0_params.ts";
 import { canBeInputChannel, canBeInputUser, getChatListId, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
@@ -531,5 +531,63 @@ export class ChatListManager {
     } else {
       unreachable();
     }
+  }
+
+  #checkChatTitle(title: string) {
+    title = title.trim();
+    if (!title) {
+      throw new InputError("Title cannot be empty");
+    }
+    return title;
+  }
+
+  async createGroup(title: string, params?: CreateGroupParams) {
+    this.#c.storage.assertUser("createGroup");
+    title = this.#checkChatTitle(title);
+    const { updates } = await this.#c.invoke({
+      _: "messages.createChat",
+      title,
+      users: await Promise.all((params?.users ?? []).map((v) => this.#c.getInputUser(v))),
+      ttl_period: params?.messageTtl || undefined,
+    });
+    if (!("chats" in updates) || updates.chats.length < 1) {
+      unreachable();
+    }
+    const chat = updates.chats[0];
+    if (chat._ != "chat") {
+      unreachable();
+    }
+    return constructChatP(chat);
+  }
+
+  async #createChannel(type: "channel" | "supergroup", title: string, params?: CreateSupergroupParams | CreateChannelParams) {
+    title = this.#checkChatTitle(title);
+    const updates = await this.#c.invoke({
+      _: "channels.createChannel",
+      broadcast: type == "channel" ? true : undefined,
+      megagroup: type == "supergroup" ? true : undefined,
+      forum: params && ("forum" in params) && params.forum ? true : undefined,
+      title,
+      about: params?.description || "",
+      ttl_period: params?.messageTtl || undefined,
+    });
+    if (!("chats" in updates) || updates.chats.length < 1) {
+      unreachable();
+    }
+    const chat = updates.chats[0];
+    if (chat._ != "channel") {
+      unreachable();
+    }
+    return constructChatP(chat);
+  }
+
+  async createSupergroup(title: string, params?: CreateSupergroupParams) {
+    this.#c.storage.assertUser("createSupergroup");
+    return (await this.#createChannel("supergroup", title, params)) as ChatPSupergroup;
+  }
+
+  async createChannel(title: string, params?: CreateChannelParams) {
+    this.#c.storage.assertUser("createChannel");
+    return (await this.#createChannel("channel", title, params)) as ChatPChannel;
   }
 }
