@@ -1624,4 +1624,11 @@ export class MessageManager {
 
     return await this.#updatesToMessages(chatId, result);
   }
+
+  async readMessages(chatId: ID, untilMessageId: number) {
+    this.#c.storage.assertUser("readMessages");
+    const peer = await this.#c.getInputPeer(chatId);
+    const max_id = untilMessageId;
+    await this.#c.invoke({ _: "messages.readHistory", peer, max_id });
+  }
 }
