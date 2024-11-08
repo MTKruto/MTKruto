@@ -507,3 +507,26 @@ export interface GetChatMembersParams {
   offset?: number;
   limit?: number;
 }
+
+export interface CreateGroupParams {
+  /** Users to invite after creating the group. */
+  users?: ID[];
+  /** Time to live of the messages of the group that is to be created. */
+  messageTtl?: number;
+}
+
+export interface CreateSupergroupParams {
+  /** The description of the supergroup that is to be created. */
+  description?: string;
+  /** Whether a forum should be created. */
+  forum?: boolean;
+  /** Time to live of the messages of the supergroup that is to be created. */
+  messageTtl?: number;
+}
+
+export interface CreateChannelParams {
+  /** The description of the channel that is to be created. */
+  description?: string;
+  /** Time to live of the messages of the channel that is to be created. */
+  messageTtl?: number;
+}
