@@ -20,7 +20,11 @@
 
 export * from "jsr:@std/assert@1.0.8";
 
-export * as path from "jsr:@std/path@1.0.8";
+export { basename } from "jsr:@std/path@1.0.8/basename";
+export { extname } from "jsr:@std/path@1.0.8/extname";
+export { isAbsolute } from "jsr:@std/path@1.0.8/is-absolute";
+export { join } from "jsr:@std/path@1.0.8/join";
+export { toFileUrl } from "jsr:@std/path@1.0.8/to-file-url";
 
 export { concat } from "jsr:@std/bytes@1.0.4/concat";
 

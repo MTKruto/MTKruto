@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AssertionError, extension, path, unreachable } from "../0_deps.ts";
+import { AssertionError, basename, extension, extname, isAbsolute, toFileUrl, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { drop, getLogger, getRandomId, iterateReadableStream, kilobyte, Logger, megabyte, minute, mod, Part, PartStream, second } from "../1_utilities.ts";
 import { Api, as, is } from "../2_tl.ts";
@@ -241,14 +241,14 @@ export class FileManager {
       } catch {
         let path_: string;
         if (typeof source === "string") {
-          if (path.isAbsolute(source)) {
+          if (isAbsolute(source)) {
             path_ = source;
           } else {
             // @ts-ignore: lib
-            path_ = path.join(Deno.cwd(), source);
+            path_ = join(Deno.cwd(), source);
           }
-          url = path.toFileUrl(path_).toString();
-          name = path.basename(path_);
+          url = toFileUrl(path_).toString();
+          name = basename(path_);
         } else {
           unreachable();
         }
@@ -267,7 +267,7 @@ export class FileManager {
             .slice(-1)[0]
             .trim();
           if (maybeFileName) {
-            name += extension(path.extname(maybeFileName));
+            name += extension(extname(maybeFileName));
           }
         }
       }
