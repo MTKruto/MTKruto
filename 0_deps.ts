@@ -18,11 +18,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "jsr:@std/assert@1.0.7";
+export * from "jsr:@std/assert@1.0.8";
 
 export * as path from "jsr:@std/path@1.0.8";
 
-export { concat } from "jsr:@std/bytes@1.0.3/concat";
+export { concat } from "jsr:@std/bytes@1.0.4/concat";
 
 export { toArrayBuffer } from "jsr:@std/streams@1.0.8/to-array-buffer";
 
@@ -30,7 +30,7 @@ export { iterateReader } from "jsr:@std/io@0.225.0/iterate-reader";
 
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.5/base64";
 
-import { contentType as contentType_ } from "jsr:@std/media-types@1.0.3/content-type";
+import { contentType as contentType_ } from "jsr:@std/media-types@1.1.0/content-type";
 export const contentType: typeof contentType_ = (extentionOrType) => {
   if (extentionOrType == "tgs") {
     return "application/x-tgsticker";
@@ -38,7 +38,7 @@ export const contentType: typeof contentType_ = (extentionOrType) => {
     return contentType_(extentionOrType);
   }
 };
-import { extension as extension_ } from "jsr:@std/media-types@1.0.3/extension";
+import { extension as extension_ } from "jsr:@std/media-types@1.1.0/extension";
 export function extension(mimeType: string) {
   if (mimeType == "application/x-tgsticker") {
     return "tgs";
@@ -47,10 +47,8 @@ export function extension(mimeType: string) {
   }
 }
 
-export { createCtr256State, ctr256, type Ctr256State, destroyCtr256State, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "https://deno.land/x/tgcrypto@0.4.1/mod.ts";
+export { createCtr256State, ctr256, type Ctr256State, destroyCtr256State, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "jsr:@roj/tgcrypto@0.4.1";
 
 export { gunzip, gzip } from "https://raw.githubusercontent.com/MTKruto/compress/main/mod.ts";
 
-export { Client as SocksClient } from "https://raw.githubusercontent.com/MTKruto/socks5/main/client.ts";
-
-export { Parser } from "https://deno.land/x/html_parser@v0.1.3/src/mod.ts";
+export { Parser } from "npm:htmlparser2@9.1.0";
