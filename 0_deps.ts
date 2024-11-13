@@ -24,6 +24,8 @@ export * as path from "jsr:@std/path@1.0.8";
 
 export { concat } from "jsr:@std/bytes@1.0.3/concat";
 
+export { toArrayBuffer } from "jsr:@std/streams@1.0.8/to-array-buffer";
+
 export { iterateReader } from "jsr:@std/io@0.225.0/iterate-reader";
 
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.5/base64";
