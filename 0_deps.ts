@@ -45,8 +45,8 @@ export function extension(mimeType: string) {
   }
 }
 
-export { createCtr256State, ctr256, type Ctr256State, destroyCtr256State, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "https://deno.land/x/tgcrypto@0.4.1/mod.ts";
+export { createCtr256State, ctr256, type Ctr256State, destroyCtr256State, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "jsr:@roj/tgcrypto@0.4.1";
 
 export { gunzip, gzip } from "https://raw.githubusercontent.com/MTKruto/compress/main/mod.ts";
 
-export { Parser } from "https://deno.land/x/html_parser@v0.1.3/src/mod.ts";
+export { Parser } from "npm:htmlparser2@9.1.0";
