@@ -49,6 +49,4 @@ export { createCtr256State, ctr256, type Ctr256State, destroyCtr256State, ige256
 
 export { gunzip, gzip } from "https://raw.githubusercontent.com/MTKruto/compress/main/mod.ts";
 
-export { Client as SocksClient } from "https://raw.githubusercontent.com/MTKruto/socks5/main/client.ts";
-
 export { Parser } from "https://deno.land/x/html_parser@v0.1.3/src/mod.ts";
