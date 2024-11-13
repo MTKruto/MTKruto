@@ -223,9 +223,7 @@ export class ClientEncrypted extends ClientAbstract {
           let sendAck = true;
           let body = message.body;
           if (is("gzip_packed", body)) {
-            console.log("unzipping", body._);
             body = new TLReader(await gunzip(body.packed_data)).readObject() as Api.AnyType;
-            console.log("unzipped, got", body._);
           }
           this.#LreceiveLoop.debug("received", body._);
           if (isOfEnum("Updates", body) || isOfEnum("Update", body)) {
@@ -237,9 +235,7 @@ export class ClientEncrypted extends ClientAbstract {
           } else if (body._ == "rpc_result") {
             let result = body.result;
             if (is("gzip_packed", result)) {
-              console.log("unzipping 2", result._);
               result = new TLReader(await gunzip(result.packed_data)).readObject() as Api.AnyType;
-              console.log("unzipped 2", result._);
             }
             if (is("rpc_error", result)) {
               this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
