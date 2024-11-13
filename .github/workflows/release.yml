@@ -20,8 +20,6 @@ jobs:
         with:
           deno-version: 1.45.0
 
-      - run: deno vendor mod.ts
-
       - run: deno run -A https://raw.githubusercontent.com/MTKruto/tools/main/pre_jsr.ts ${{ github.ref_name }} && git add -A && git -c user.name=CI -c user.email="" commit -am JSR
 
       - run: deno publish
