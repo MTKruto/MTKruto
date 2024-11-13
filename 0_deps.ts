@@ -18,17 +18,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "jsr:@std/assert@1.0.7";
+export * from "jsr:@std/assert@1.0.8";
 
 export * as path from "jsr:@std/path@1.0.8";
 
-export { concat } from "jsr:@std/bytes@1.0.3/concat";
+export { concat } from "jsr:@std/bytes@1.0.4/concat";
 
 export { iterateReader } from "jsr:@std/io@0.225.0/iterate-reader";
 
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.5/base64";
 
-import { contentType as contentType_ } from "jsr:@std/media-types@1.0.3/content-type";
+import { contentType as contentType_ } from "jsr:@std/media-types@1.1.0/content-type";
 export const contentType: typeof contentType_ = (extentionOrType) => {
   if (extentionOrType == "tgs") {
     return "application/x-tgsticker";
@@ -36,7 +36,7 @@ export const contentType: typeof contentType_ = (extentionOrType) => {
     return contentType_(extentionOrType);
   }
 };
-import { extension as extension_ } from "jsr:@std/media-types@1.0.3/extension";
+import { extension as extension_ } from "jsr:@std/media-types@1.1.0/extension";
 export function extension(mimeType: string) {
   if (mimeType == "application/x-tgsticker") {
     return "tgs";
