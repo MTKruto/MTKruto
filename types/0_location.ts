@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { cleanObject } from "../1_utilities.ts";
 import { Api, as, is } from "../2_tl.ts";
 
 /** A shared location. */
@@ -39,27 +40,27 @@ export interface Location {
 export function constructLocation(geo_: Api.messageMediaGeo | Api.messageMediaGeoLive | Api.geoPoint): Location {
   if (is("messageMediaGeo", geo_)) {
     const geo = as("geoPoint", geo_.geo);
-    return {
+    return cleanObject({
       latitude: geo.lat,
       longitude: geo.long,
       horizontalAccuracy: geo.accuracy_radius,
-    };
+    });
   } else if (is("messageMediaGeoLive", geo_)) {
     const media = geo_;
     const geo = as("geoPoint", media.geo);
-    return {
+    return cleanObject({
       latitude: geo.lat,
       longitude: geo.long,
       horizontalAccuracy: geo.accuracy_radius,
       livePeriod: media.period,
       heading: media.heading,
       proximityAlertRadius: media.proximity_notification_radius,
-    };
+    });
   } else {
-    return {
+    return cleanObject({
       latitude: geo_.lat,
       longitude: geo_.long,
       horizontalAccuracy: geo_.accuracy_radius,
-    };
+    });
   }
 }

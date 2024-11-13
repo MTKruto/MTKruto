@@ -2784,7 +2784,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @method ch
    * @param chatId The identifier of the chat.
-   * @param messageTtl The time to live of the messages.
+   * @param messageTtl The time to live of the messages in seconds.
    */
   async setMessageTtl(chatId: ID, messageTtl: number): Promise<void> {
     await this.#chatListManager.setMessageTtl(chatId, messageTtl);

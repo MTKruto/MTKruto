@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { cleanObject } from "../1_utilities.ts";
 import { Api, is } from "../2_tl.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
@@ -42,7 +43,7 @@ export interface Audio {
 }
 
 export function constructAudio(document: Api.document, audioAttribute: Api.documentAttributeAudio | undefined, fileId: string, fileUniqueId: string): Audio {
-  return {
+  return cleanObject({
     fileId,
     fileUniqueId,
     duration: audioAttribute?.duration ?? 0,
@@ -51,5 +52,5 @@ export function constructAudio(document: Api.document, audioAttribute: Api.docum
     mimeType: document.mime_type,
     fileSize: Number(document.size),
     thumbnails: document.thumbs ? document.thumbs.map((v) => is("photoSize", v) ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
-  };
+  });
 }

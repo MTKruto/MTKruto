@@ -19,7 +19,7 @@
  */
 
 import { Api, as } from "../2_tl.ts";
-import { Location } from "./0_location.ts";
+import { constructLocation, Location } from "./0_location.ts";
 
 /** A shared venue. */
 export interface Venue {
@@ -38,11 +38,7 @@ export interface Venue {
 export function constructVenue(media_: Api.messageMediaVenue | Api.mediaAreaVenue): Venue {
   const geo = as("geoPoint", media_.geo);
   return {
-    location: {
-      latitude: geo.lat,
-      longitude: geo.long,
-      horizontalAccuracy: geo.accuracy_radius,
-    },
+    location: constructLocation(geo),
     title: media_.title,
     address: media_.address,
     foursquareId: media_.venue_id,

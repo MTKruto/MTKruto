@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { cleanObject } from "../1_utilities.ts";
 import { Api, is } from "../2_tl.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
@@ -44,7 +45,7 @@ export interface Animation {
 }
 
 export function constructAnimation(document: Api.document, videoAttribute: Api.documentAttributeVideo | undefined, fileAttribute: Api.documentAttributeFilename | undefined, fileId: string, fileUniqueId: string): Animation {
-  return {
+  return cleanObject({
     fileId,
     fileUniqueId,
     width: videoAttribute?.w ?? 0,
@@ -54,5 +55,5 @@ export function constructAnimation(document: Api.document, videoAttribute: Api.d
     fileName: fileAttribute?.file_name,
     mimeType: document.mime_type,
     fileSize: Number(document.size),
-  };
+  });
 }

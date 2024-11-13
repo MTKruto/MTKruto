@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { constructStoryReaction, StoryReaction } from "./1_story_reaction.ts";
 
@@ -34,5 +35,5 @@ export function constructStoryInteractions(views_: Api.storyViews): StoryInterac
   const forwards = views_.forwards_count ?? 0;
   const reactionCount = views_.reactions_count;
   const reactions = views_.reactions ? views_.reactions.map(constructStoryReaction) : undefined;
-  return { reactions, reactionCount, views, forwards };
+  return cleanObject({ reactions, reactionCount, views, forwards });
 }

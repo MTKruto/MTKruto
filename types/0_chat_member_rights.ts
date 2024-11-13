@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { toUnixTimestamp } from "../1_utilities.ts";
+import { cleanObject, toUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 
 /** The rights of a chat member. */
@@ -60,7 +60,7 @@ export interface ChatMemberRights {
 }
 
 export function constructChatMemberRights(rights: Api.chatBannedRights): ChatMemberRights {
-  return {
+  return cleanObject({
     canSendMessages: rights.send_messages ? true : false,
     canSendAudio: rights.send_audios ? true : false,
     canSendDocuments: rights.send_docs ? true : false,
@@ -78,7 +78,7 @@ export function constructChatMemberRights(rights: Api.chatBannedRights): ChatMem
     canInviteUsers: rights.invite_users ? true : undefined,
     canPinMessages: rights.pin_messages ? true : undefined,
     canManageTopics: rights.manage_topics ? true : undefined,
-  };
+  });
 }
 
 export function chatMemberRightsToTlObject(rights?: ChatMemberRights, untilDate?: Date): Api.chatBannedRights {
