@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { gunzip, unreachable } from "../0_deps.ts";
+import { unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
-import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
+import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, gunzip, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, is, isGenericFunction, isOfEnum, isOneOf, message, ReadObject, TLError, TLReader } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -223,7 +223,7 @@ export class ClientEncrypted extends ClientAbstract {
           let sendAck = true;
           let body = message.body;
           if (is("gzip_packed", body)) {
-            body = new TLReader(gunzip(body.packed_data)).readObject() as Api.AnyType;
+            body = new TLReader(await gunzip(body.packed_data)).readObject() as Api.AnyType;
           }
           this.#LreceiveLoop.debug("received", body._);
           if (isOfEnum("Updates", body) || isOfEnum("Update", body)) {
@@ -235,7 +235,7 @@ export class ClientEncrypted extends ClientAbstract {
           } else if (body._ == "rpc_result") {
             let result = body.result;
             if (is("gzip_packed", result)) {
-              result = new TLReader(gunzip(result.packed_data)).readObject() as Api.AnyType;
+              result = new TLReader(await gunzip(result.packed_data)).readObject() as Api.AnyType;
             }
             if (is("rpc_error", result)) {
               this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);

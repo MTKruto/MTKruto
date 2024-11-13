@@ -28,6 +28,8 @@ export { toFileUrl } from "jsr:@std/path@1.0.8/to-file-url";
 
 export { concat } from "jsr:@std/bytes@1.0.4/concat";
 
+export { toArrayBuffer } from "jsr:@std/streams@1.0.8/to-array-buffer";
+
 export { iterateReader } from "jsr:@std/io@0.225.0/iterate-reader";
 
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.5/base64";
@@ -50,7 +52,5 @@ export function extension(mimeType: string) {
 }
 
 export { createCtr256State, ctr256, type Ctr256State, destroyCtr256State, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "jsr:@roj/tgcrypto@0.4.1";
-
-export { gunzip, gzip } from "https://raw.githubusercontent.com/MTKruto/compress/main/mod.ts";
 
 export { Parser } from "npm:htmlparser2@9.1.0";
