@@ -130,7 +130,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Transform
-        run: deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform_node.ts 0.0.0 ./mod.ts
+        run: deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform.ts 0.0.0 ./mod.ts
         env:
           __TYPE_MAP: 1
 

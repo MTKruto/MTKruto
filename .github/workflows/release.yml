@@ -41,7 +41,7 @@ jobs:
 
       - name: Transform and Publish
         run: |
-          deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform_node.ts ${{ github.ref_name }} ./mod.ts
+          deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform.ts ${{ github.ref_name }} ./mod.ts
           cd dist
           npm publish --access public
         env:
