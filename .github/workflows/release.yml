@@ -27,8 +27,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: MTKruto
 
       - uses: denoland/setup-deno@v2
 
@@ -43,12 +41,6 @@ jobs:
 
       - name: Transform and Publish
         run: |
-          cd MTKruto
-          echo "<https://github.com/MTKruto/MTKruto>" > README.md
-          deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform_browser.ts ${{ github.ref_name }} ./mod.ts
-          cd dist
-          npm publish --access public
-          cd ..
           deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform_node.ts ${{ github.ref_name }} ./mod.ts
           cd dist
           npm publish --access public

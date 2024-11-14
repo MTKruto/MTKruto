@@ -86,55 +86,7 @@ jobs:
         env:
           __TYPE_MAP: 1
 
-  transform-browser:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/github-script@v6
-        if: github.ref == 'refs/heads/main'
-        with:
-          github-token: ${{ secrets.PAT_TOKEN }}
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: "MTKruto",
-              repo: "browser-canary",
-              workflow_id: "update.yml",
-              ref: "main",
-            });
-
-      - uses: actions/checkout@v4
-
-      - uses: denoland/setup-deno@v2
-
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cache/deno/deps
-          key: ${{ hashFiles('0_deps.ts') }}
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20.x
-
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 8
-
-      - shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - uses: actions/cache@v4
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('0_deps.ts') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Transform
-        run: deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform_browser.ts 0.0.0 ./mod.ts
-        env:
-          __TYPE_MAP: 1
-
-  transform-node:
+  transform:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6

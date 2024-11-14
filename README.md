@@ -49,7 +49,7 @@ console.debug(pong);
 
 ```html
 <script type="module">
-  import { Client, getRandomId } from "https://esm.sh/@mtkruto/browser";
+  import { Client, getRandomId } from "https://esm.sh/jsr/@mtkruto/mtkruto";
 
   const client = new Client();
   await client.connect();
@@ -58,8 +58,6 @@ console.debug(pong);
   console.debug(pong);
 </script>
 ```
-
-> The [@mtkruto/browser](https://npm.im/@mtkruto/browser) package can also be used with front end frameworks and bundlers.
 
 ### Bun
 
