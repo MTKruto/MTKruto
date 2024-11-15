@@ -52,17 +52,17 @@ export class TransportIntermediate extends Transport implements Transport {
     let length: number;
 
     {
-      const buffer = new Uint8Array(4);
+      let buffer = new Uint8Array(4);
       await this.#connection.read(buffer);
-      this.decrypt(buffer);
+      buffer = await this.decrypt(buffer);
       const dataView = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
       length = dataView.getUint32(0, true);
     }
 
     const buffer = new Uint8Array(length);
     await this.#connection.read(buffer);
-    this.decrypt(buffer);
-    return buffer;
+
+    return await this.decrypt(buffer);
   }
 
   async send(buffer: Uint8Array) {
@@ -72,9 +72,8 @@ export class TransportIntermediate extends Transport implements Transport {
 
     const length = bufferFromBigInt(buffer.length, 4);
     const data = concat([length, buffer]);
-    this.encrypt(data);
 
-    await this.#connection.write(data);
+    await this.#connection.write(await this.encrypt(data));
   }
 
   override deinitialize() {

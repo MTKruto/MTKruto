@@ -23,15 +23,19 @@ import { CTR, MaybePromise } from "../1_utilities.ts";
 export abstract class Transport {
   protected obfuscationParameters: { encryptionCTR: CTR; decryptionCTR: CTR } | null = null;
 
-  protected encrypt(buffer: Uint8Array) {
+  protected async encrypt(buffer: Uint8Array) {
     if (this.obfuscationParameters) {
-      this.obfuscationParameters.encryptionCTR.call(buffer);
+      return await this.obfuscationParameters.encryptionCTR.call(buffer);
+    } else {
+      return buffer;
     }
   }
 
-  protected decrypt(buffer: Uint8Array) {
+  protected async decrypt(buffer: Uint8Array) {
     if (this.obfuscationParameters) {
-      this.obfuscationParameters.decryptionCTR.call(buffer);
+      return await this.obfuscationParameters.decryptionCTR.call(buffer);
+    } else {
+      return buffer;
     }
   }
 
@@ -41,8 +45,6 @@ export abstract class Transport {
   abstract send(buffer: Uint8Array): MaybePromise<void>;
   deinitialize(): MaybePromise<void> {
     if (this.obfuscationParameters) {
-      this.obfuscationParameters.encryptionCTR.destroy();
-      this.obfuscationParameters.decryptionCTR.destroy();
       this.obfuscationParameters = null;
     }
   }

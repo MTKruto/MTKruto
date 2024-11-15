@@ -51,16 +51,16 @@ export class TransportAbridged extends Transport implements Transport {
     let length: number;
 
     {
-      const buffer = new Uint8Array(1);
+      let buffer = new Uint8Array(1);
       await this.#connection.read(buffer);
-      this.decrypt(buffer);
+      buffer = await this.decrypt(buffer);
 
       if (buffer[0] < 0x7F) {
         length = buffer[0];
       } else {
-        const buffer = new Uint8Array(3);
+        let buffer = new Uint8Array(3);
         await this.#connection.read(buffer);
-        this.decrypt(buffer);
+        buffer = await this.decrypt(buffer);
         length = Number(bigIntFromBuffer(buffer, true, true));
       }
     }
@@ -69,9 +69,8 @@ export class TransportAbridged extends Transport implements Transport {
 
     const buffer = new Uint8Array(length);
     await this.#connection.read(buffer);
-    this.decrypt(buffer);
 
-    return buffer;
+    return await this.decrypt(buffer);
   }
 
   async send(buffer: Uint8Array) {
@@ -84,9 +83,8 @@ export class TransportAbridged extends Transport implements Transport {
     const header = new Uint8Array([bufferLength >= 0x7F ? 0x7F : bufferLength]);
     const length = bufferLength >= 0x7F ? bufferFromBigInt(bufferLength, 3) : new Uint8Array();
     const data = concat([header, length, buffer]);
-    this.encrypt(data);
 
-    await this.#connection.write(data);
+    await this.#connection.write(await this.encrypt(data));
   }
 
   override deinitialize() {
