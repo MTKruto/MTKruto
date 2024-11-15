@@ -18,11 +18,35 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { createCtr256State, ctr256, Ctr256State, destroyCtr256State } from "../0_deps.ts";
+import { assertEquals } from "../0_deps.ts";
+import { CTR } from "./1_crypto.ts";
+import { __getCtr256StateValues, createCtr256State, ctr256, type Ctr256State, destroyCtr256State, init as initTgCrypto } from "jsr:@roj/tgcrypto@0.4.1";
 
-export class CTR {
+const key = new Uint8Array(32);
+const iv = new Uint8Array(16);
+const payload = new Uint8Array(3);
+
+Deno.test("equality", async () => {
+  await initTgCrypto();
+  const ctr = new CTR(await CTR.importKey(key), iv);
+  const ctrOld = new CTROld(key, iv);
+
+  for (let i = 0; i < 20_000; ++i) {
+    await ctr.call(payload);
+    ctrOld.call(new Uint8Array(payload));
+
+    const ctrOld_state = __getCtr256StateValues(ctrOld.state);
+    assertEquals(ctr._state.iv, ctrOld_state.iv);
+  }
+});
+
+class CTROld {
   #key: Uint8Array;
   #state: Ctr256State;
+
+  get state() {
+    return this.#state;
+  }
 
   constructor(key: Uint8Array, iv: Uint8Array) {
     this.#state = createCtr256State(iv);
