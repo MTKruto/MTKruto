@@ -27,7 +27,7 @@ const iv = new Uint8Array(16);
 const payload = new Uint8Array(3);
 
 Deno.test("equality", async () => {
-  await initTgCrypto();  
+  await initTgCrypto();
   const ctr = new CTR(await CTR.importKey(key), iv);
   const ctrOld = new CTROld(key, iv);
 
