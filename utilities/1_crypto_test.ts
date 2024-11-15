@@ -22,13 +22,12 @@ import { assertEquals } from "../0_deps.ts";
 import { CTR } from "./1_crypto.ts";
 import { __getCtr256StateValues, createCtr256State, ctr256, type Ctr256State, destroyCtr256State, init as initTgCrypto } from "jsr:@roj/tgcrypto@0.4.1";
 
-await initTgCrypto();
-
 const key = new Uint8Array(32);
 const iv = new Uint8Array(16);
 const payload = new Uint8Array(3);
 
 Deno.test("equality", async () => {
+  await initTgCrypto();  
   const ctr = new CTR(await CTR.importKey(key), iv);
   const ctrOld = new CTROld(key, iv);
 
