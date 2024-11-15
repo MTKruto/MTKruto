@@ -26,7 +26,7 @@ export class CTR {
   #iv: Uint8Array;
   #incrementPending = 0;
 
-  get _state() {
+  get _state(): { iv: Uint8Array; state: number } {
     return { iv: new Uint8Array(this.#iv), state: this.#incrementPending };
   }
 
@@ -35,11 +35,11 @@ export class CTR {
     this.#iv = iv;
   }
 
-  static async importKey(key: Uint8Array) {
+  static async importKey(key: Uint8Array): Promise<CryptoKey> {
     return await crypto.subtle.importKey("raw", key, "AES-CTR", false, ["encrypt"]);
   }
 
-  async call(data: Uint8Array) {
+  async call(data: Uint8Array): Promise<Uint8Array> {
     const promise = crypto.subtle.encrypt(
       {
         name: "AES-CTR",
