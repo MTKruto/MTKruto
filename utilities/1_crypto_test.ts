@@ -36,9 +36,8 @@ Deno.test("equality", async () => {
     await ctr.call(payload);
     ctrOld.call(new Uint8Array(payload));
 
-    const { iv } = __getCtr256StateValues(ctrOld.state);
-
-    assertEquals(ctr.iv, iv);
+    const ctrOld_state = __getCtr256StateValues(ctrOld.state);
+    assertEquals(ctr._state.iv, ctrOld_state.iv);
   }
 });
 

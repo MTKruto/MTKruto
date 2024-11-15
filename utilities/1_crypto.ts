@@ -26,13 +26,10 @@ export class CTR {
   #iv: Uint8Array;
   #incrementPending = 0;
 
-  get pending() {
-    return this.#incrementPending;
+  get _state() {
+    return { iv: new Uint8Array(this.#iv), state: this.#incrementPending };
   }
 
-  get iv() {
-    return this.#iv;
-  }
   constructor(key: CryptoKey, iv: Uint8Array) {
     this.#key = key;
     this.#iv = iv;
