@@ -1292,6 +1292,7 @@ export interface messageActionPaymentSentMe {
   info?: PaymentRequestedInfo;
   shipping_option_id?: string;
   charge: PaymentCharge;
+  subscription_until_date?: number;
 }
 
 export interface messageActionPaymentSent {
@@ -1301,6 +1302,7 @@ export interface messageActionPaymentSent {
   currency: string;
   total_amount: bigint;
   invoice_slug?: string;
+  subscription_until_date?: number;
 }
 
 export interface messageActionPhoneCall {
@@ -1509,7 +1511,7 @@ export interface messageActionStarGift {
   converted?: true;
   gift: StarGift;
   message?: TextWithEntities;
-  convert_stars: bigint;
+  convert_stars?: bigint;
 }
 
 export interface dialog {
@@ -1793,6 +1795,7 @@ export interface userFull {
   read_dates_private?: true;
   sponsored_enabled?: true;
   can_view_revenue?: true;
+  bot_can_manage_emoji_status?: true;
   id: bigint;
   about?: string;
   settings: PeerSettings;
@@ -3525,6 +3528,10 @@ export interface inputPrivacyKeyBirthday {
   _: "inputPrivacyKeyBirthday";
 }
 
+export interface inputPrivacyKeyStarGiftsAutoSave {
+  _: "inputPrivacyKeyStarGiftsAutoSave";
+}
+
 export interface privacyKeyStatusTimestamp {
   _: "privacyKeyStatusTimestamp";
 }
@@ -3567,6 +3574,10 @@ export interface privacyKeyAbout {
 
 export interface privacyKeyBirthday {
   _: "privacyKeyBirthday";
+}
+
+export interface privacyKeyStarGiftsAutoSave {
+  _: "privacyKeyStarGiftsAutoSave";
 }
 
 export interface inputPrivacyValueAllowContacts {
@@ -3613,6 +3624,14 @@ export interface inputPrivacyValueAllowPremium {
   _: "inputPrivacyValueAllowPremium";
 }
 
+export interface inputPrivacyValueAllowBots {
+  _: "inputPrivacyValueAllowBots";
+}
+
+export interface inputPrivacyValueDisallowBots {
+  _: "inputPrivacyValueDisallowBots";
+}
+
 export interface privacyValueAllowContacts {
   _: "privacyValueAllowContacts";
 }
@@ -3655,6 +3674,14 @@ export interface privacyValueAllowCloseFriends {
 
 export interface privacyValueAllowPremium {
   _: "privacyValueAllowPremium";
+}
+
+export interface privacyValueAllowBots {
+  _: "privacyValueAllowBots";
+}
+
+export interface privacyValueDisallowBots {
+  _: "privacyValueDisallowBots";
 }
 
 export interface account_privacyRules {
@@ -4022,6 +4049,7 @@ export interface botInfo {
   commands?: Array<BotCommand>;
   menu_button?: BotMenuButton;
   privacy_policy_url?: string;
+  app_settings?: BotAppSettings;
 }
 
 export interface keyboardButton {
@@ -5382,6 +5410,7 @@ export interface invoice {
   max_tip_amount?: bigint;
   suggested_tip_amounts?: Array<bigint>;
   terms_url?: string;
+  subscription_period?: number;
 }
 
 export interface paymentCharge {
@@ -7853,6 +7882,7 @@ export interface attachMenuBotsBot {
 export interface webViewResultUrl {
   _: "webViewResultUrl";
   fullsize?: true;
+  fullscreen?: true;
   query_id?: bigint;
   url: string;
 }
@@ -9648,11 +9678,15 @@ export interface starsSubscription {
   canceled?: true;
   can_refulfill?: true;
   missing_balance?: true;
+  bot_canceled?: true;
   id: string;
   peer: Peer;
   until_date: number;
   pricing: StarsSubscriptionPricing;
   chat_invite_hash?: string;
+  title?: string;
+  photo?: WebDocument;
+  invoice_slug?: string;
 }
 
 export interface messageReactor {
@@ -9687,6 +9721,7 @@ export interface starGift {
   _: "starGift";
   limited?: true;
   sold_out?: true;
+  birthday?: true;
   id: bigint;
   sticker: Document;
   stars: bigint;
@@ -9747,6 +9782,30 @@ export interface reportResultAddComment {
 
 export interface reportResultReported {
   _: "reportResultReported";
+}
+
+export interface messages_botPreparedInlineMessage {
+  _: "messages.botPreparedInlineMessage";
+  id: string;
+  expire_date: number;
+}
+
+export interface messages_preparedInlineMessage {
+  _: "messages.preparedInlineMessage";
+  query_id: bigint;
+  result: BotInlineResult;
+  peer_types: Array<InlineQueryPeerType>;
+  cache_time: number;
+  users: Array<User>;
+}
+
+export interface botAppSettings {
+  _: "botAppSettings";
+  placeholder_path?: Uint8Array;
+  background_color?: number;
+  background_dark_color?: number;
+  header_color?: number;
+  header_dark_color?: number;
 }
 
 export interface req_pq_multi {
@@ -12354,6 +12413,7 @@ export interface messages_requestWebView {
   from_bot_menu?: true;
   silent?: true;
   compact?: true;
+  fullscreen?: true;
   peer: InputPeer;
   bot: InputUser;
   url?: string;
@@ -12381,6 +12441,7 @@ export interface messages_requestSimpleWebView {
   from_switch_webview?: true;
   from_side_menu?: true;
   compact?: true;
+  fullscreen?: true;
   bot: InputUser;
   url?: string;
   start_param?: string;
@@ -12536,6 +12597,7 @@ export interface messages_requestAppWebView {
   _: "messages.requestAppWebView";
   write_allowed?: true;
   compact?: true;
+  fullscreen?: true;
   peer: InputPeer;
   app: InputBotApp;
   start_param?: string;
@@ -12747,6 +12809,7 @@ export interface messages_getFactCheck {
 export interface messages_requestMainWebView {
   _: "messages.requestMainWebView";
   compact?: true;
+  fullscreen?: true;
   peer: InputPeer;
   bot: InputUser;
   start_param?: string;
@@ -12806,6 +12869,21 @@ export interface messages_getSponsoredMessages {
   _: "messages.getSponsoredMessages";
   peer: InputPeer;
   [R]?: messages_SponsoredMessages;
+}
+
+export interface messages_savePreparedInlineMessage {
+  _: "messages.savePreparedInlineMessage";
+  result: InputBotInlineResult;
+  user_id: InputUser;
+  peer_types?: Array<InlineQueryPeerType>;
+  [R]?: messages_BotPreparedInlineMessage;
+}
+
+export interface messages_getPreparedInlineMessage {
+  _: "messages.getPreparedInlineMessage";
+  bot: InputUser;
+  id: string;
+  [R]?: messages_PreparedInlineMessage;
 }
 
 export interface updates_getState {
@@ -13715,6 +13793,28 @@ export interface bots_getPreviewMedias {
   [R]?: Array<BotPreviewMedia>;
 }
 
+export interface bots_updateUserEmojiStatus {
+  _: "bots.updateUserEmojiStatus";
+  user_id: InputUser;
+  emoji_status: EmojiStatus;
+  [R]?: boolean;
+}
+
+export interface bots_toggleUserEmojiStatusPermission {
+  _: "bots.toggleUserEmojiStatusPermission";
+  bot: InputUser;
+  enabled: boolean;
+  [R]?: boolean;
+}
+
+export interface bots_checkDownloadFileParams {
+  _: "bots.checkDownloadFileParams";
+  bot: InputUser;
+  file_name: string;
+  url: string;
+  [R]?: boolean;
+}
+
 export interface payments_getPaymentForm {
   _: "payments.getPaymentForm";
   invoice: InputInvoice;
@@ -13950,6 +14050,14 @@ export interface payments_convertStarGift {
   _: "payments.convertStarGift";
   user_id: InputUser;
   msg_id: number;
+  [R]?: boolean;
+}
+
+export interface payments_botCancelStarsSubscription {
+  _: "payments.botCancelStarsSubscription";
+  restore?: true;
+  user_id: InputUser;
+  charge_id: string;
   [R]?: boolean;
 }
 
@@ -15253,6 +15361,7 @@ export interface Types {
   "inputPrivacyKeyVoiceMessages": inputPrivacyKeyVoiceMessages;
   "inputPrivacyKeyAbout": inputPrivacyKeyAbout;
   "inputPrivacyKeyBirthday": inputPrivacyKeyBirthday;
+  "inputPrivacyKeyStarGiftsAutoSave": inputPrivacyKeyStarGiftsAutoSave;
   "privacyKeyStatusTimestamp": privacyKeyStatusTimestamp;
   "privacyKeyChatInvite": privacyKeyChatInvite;
   "privacyKeyPhoneCall": privacyKeyPhoneCall;
@@ -15264,6 +15373,7 @@ export interface Types {
   "privacyKeyVoiceMessages": privacyKeyVoiceMessages;
   "privacyKeyAbout": privacyKeyAbout;
   "privacyKeyBirthday": privacyKeyBirthday;
+  "privacyKeyStarGiftsAutoSave": privacyKeyStarGiftsAutoSave;
   "inputPrivacyValueAllowContacts": inputPrivacyValueAllowContacts;
   "inputPrivacyValueAllowAll": inputPrivacyValueAllowAll;
   "inputPrivacyValueAllowUsers": inputPrivacyValueAllowUsers;
@@ -15274,6 +15384,8 @@ export interface Types {
   "inputPrivacyValueDisallowChatParticipants": inputPrivacyValueDisallowChatParticipants;
   "inputPrivacyValueAllowCloseFriends": inputPrivacyValueAllowCloseFriends;
   "inputPrivacyValueAllowPremium": inputPrivacyValueAllowPremium;
+  "inputPrivacyValueAllowBots": inputPrivacyValueAllowBots;
+  "inputPrivacyValueDisallowBots": inputPrivacyValueDisallowBots;
   "privacyValueAllowContacts": privacyValueAllowContacts;
   "privacyValueAllowAll": privacyValueAllowAll;
   "privacyValueAllowUsers": privacyValueAllowUsers;
@@ -15284,6 +15396,8 @@ export interface Types {
   "privacyValueDisallowChatParticipants": privacyValueDisallowChatParticipants;
   "privacyValueAllowCloseFriends": privacyValueAllowCloseFriends;
   "privacyValueAllowPremium": privacyValueAllowPremium;
+  "privacyValueAllowBots": privacyValueAllowBots;
+  "privacyValueDisallowBots": privacyValueDisallowBots;
   "account.privacyRules": account_privacyRules;
   "accountDaysTTL": accountDaysTTL;
   "documentAttributeImageSize": documentAttributeImageSize;
@@ -16161,6 +16275,9 @@ export interface Types {
   "reportResultChooseOption": reportResultChooseOption;
   "reportResultAddComment": reportResultAddComment;
   "reportResultReported": reportResultReported;
+  "messages.botPreparedInlineMessage": messages_botPreparedInlineMessage;
+  "messages.preparedInlineMessage": messages_preparedInlineMessage;
+  "botAppSettings": botAppSettings;
 }
 
 export interface Functions<T = Function> {
@@ -16572,6 +16689,8 @@ export interface Functions<T = Function> {
   "messages.clickSponsoredMessage": messages_clickSponsoredMessage;
   "messages.reportSponsoredMessage": messages_reportSponsoredMessage;
   "messages.getSponsoredMessages": messages_getSponsoredMessages;
+  "messages.savePreparedInlineMessage": messages_savePreparedInlineMessage;
+  "messages.getPreparedInlineMessage": messages_getPreparedInlineMessage;
   "updates.getState": updates_getState;
   "updates.getDifference": updates_getDifference;
   "updates.getChannelDifference": updates_getChannelDifference;
@@ -16697,6 +16816,9 @@ export interface Functions<T = Function> {
   "bots.reorderPreviewMedias": bots_reorderPreviewMedias;
   "bots.getPreviewInfo": bots_getPreviewInfo;
   "bots.getPreviewMedias": bots_getPreviewMedias;
+  "bots.updateUserEmojiStatus": bots_updateUserEmojiStatus;
+  "bots.toggleUserEmojiStatusPermission": bots_toggleUserEmojiStatusPermission;
+  "bots.checkDownloadFileParams": bots_checkDownloadFileParams;
   "payments.getPaymentForm": payments_getPaymentForm;
   "payments.getPaymentReceipt": payments_getPaymentReceipt;
   "payments.validateRequestedInfo": payments_validateRequestedInfo;
@@ -16731,6 +16853,7 @@ export interface Functions<T = Function> {
   "payments.getUserStarGifts": payments_getUserStarGifts;
   "payments.saveStarGift": payments_saveStarGift;
   "payments.convertStarGift": payments_convertStarGift;
+  "payments.botCancelStarsSubscription": payments_botCancelStarsSubscription;
   "stickers.createStickerSet": stickers_createStickerSet;
   "stickers.removeStickerFromSet": stickers_removeStickerFromSet;
   "stickers.changeStickerPosition": stickers_changeStickerPosition;
@@ -17382,6 +17505,9 @@ export interface Enums {
   "payments.UserStarGifts": payments_UserStarGifts;
   "MessageReportOption": MessageReportOption;
   "ReportResult": ReportResult;
+  "messages.BotPreparedInlineMessage": messages_BotPreparedInlineMessage;
+  "messages.PreparedInlineMessage": messages_PreparedInlineMessage;
+  "BotAppSettings": BotAppSettings;
 }
 
 export type AnyType = Types[keyof Types];
@@ -17737,13 +17863,13 @@ export type SendMessageAction = sendMessageTypingAction | sendMessageCancelActio
 
 export type contacts_Found = contacts_found;
 
-export type InputPrivacyKey = inputPrivacyKeyStatusTimestamp | inputPrivacyKeyChatInvite | inputPrivacyKeyPhoneCall | inputPrivacyKeyPhoneP2P | inputPrivacyKeyForwards | inputPrivacyKeyProfilePhoto | inputPrivacyKeyPhoneNumber | inputPrivacyKeyAddedByPhone | inputPrivacyKeyVoiceMessages | inputPrivacyKeyAbout | inputPrivacyKeyBirthday;
+export type InputPrivacyKey = inputPrivacyKeyStatusTimestamp | inputPrivacyKeyChatInvite | inputPrivacyKeyPhoneCall | inputPrivacyKeyPhoneP2P | inputPrivacyKeyForwards | inputPrivacyKeyProfilePhoto | inputPrivacyKeyPhoneNumber | inputPrivacyKeyAddedByPhone | inputPrivacyKeyVoiceMessages | inputPrivacyKeyAbout | inputPrivacyKeyBirthday | inputPrivacyKeyStarGiftsAutoSave;
 
-export type PrivacyKey = privacyKeyStatusTimestamp | privacyKeyChatInvite | privacyKeyPhoneCall | privacyKeyPhoneP2P | privacyKeyForwards | privacyKeyProfilePhoto | privacyKeyPhoneNumber | privacyKeyAddedByPhone | privacyKeyVoiceMessages | privacyKeyAbout | privacyKeyBirthday;
+export type PrivacyKey = privacyKeyStatusTimestamp | privacyKeyChatInvite | privacyKeyPhoneCall | privacyKeyPhoneP2P | privacyKeyForwards | privacyKeyProfilePhoto | privacyKeyPhoneNumber | privacyKeyAddedByPhone | privacyKeyVoiceMessages | privacyKeyAbout | privacyKeyBirthday | privacyKeyStarGiftsAutoSave;
 
-export type InputPrivacyRule = inputPrivacyValueAllowContacts | inputPrivacyValueAllowAll | inputPrivacyValueAllowUsers | inputPrivacyValueDisallowContacts | inputPrivacyValueDisallowAll | inputPrivacyValueDisallowUsers | inputPrivacyValueAllowChatParticipants | inputPrivacyValueDisallowChatParticipants | inputPrivacyValueAllowCloseFriends | inputPrivacyValueAllowPremium;
+export type InputPrivacyRule = inputPrivacyValueAllowContacts | inputPrivacyValueAllowAll | inputPrivacyValueAllowUsers | inputPrivacyValueDisallowContacts | inputPrivacyValueDisallowAll | inputPrivacyValueDisallowUsers | inputPrivacyValueAllowChatParticipants | inputPrivacyValueDisallowChatParticipants | inputPrivacyValueAllowCloseFriends | inputPrivacyValueAllowPremium | inputPrivacyValueAllowBots | inputPrivacyValueDisallowBots;
 
-export type PrivacyRule = privacyValueAllowContacts | privacyValueAllowAll | privacyValueAllowUsers | privacyValueDisallowContacts | privacyValueDisallowAll | privacyValueDisallowUsers | privacyValueAllowChatParticipants | privacyValueDisallowChatParticipants | privacyValueAllowCloseFriends | privacyValueAllowPremium;
+export type PrivacyRule = privacyValueAllowContacts | privacyValueAllowAll | privacyValueAllowUsers | privacyValueDisallowContacts | privacyValueDisallowAll | privacyValueDisallowUsers | privacyValueAllowChatParticipants | privacyValueDisallowChatParticipants | privacyValueAllowCloseFriends | privacyValueAllowPremium | privacyValueAllowBots | privacyValueDisallowBots;
 
 export type account_PrivacyRules = account_privacyRules;
 
@@ -18663,6 +18789,12 @@ export type MessageReportOption = messageReportOption;
 
 export type ReportResult = reportResultChooseOption | reportResultAddComment | reportResultReported;
 
+export type messages_BotPreparedInlineMessage = messages_botPreparedInlineMessage;
+
+export type messages_PreparedInlineMessage = messages_preparedInlineMessage;
+
+export type BotAppSettings = botAppSettings;
+
 const map: Map<number, string> = new Map([
   [0x05162463, "resPQ"],
   [0xA9F55F95, "p_q_inner_data_dc"],
@@ -18827,8 +18959,8 @@ const map: Map<number, string> = new Map([
   [0x94BD38ED, "messageActionPinMessage"],
   [0x9FBAB604, "messageActionHistoryClear"],
   [0x92A72876, "messageActionGameScore"],
-  [0x8F31B327, "messageActionPaymentSentMe"],
-  [0x96163F56, "messageActionPaymentSent"],
+  [0xFFA00CCC, "messageActionPaymentSentMe"],
+  [0xC624B16E, "messageActionPaymentSent"],
   [0x80E11A7F, "messageActionPhoneCall"],
   [0x4792929B, "messageActionScreenshotTaken"],
   [0xFAE69F56, "messageActionCustomAction"],
@@ -18859,7 +18991,7 @@ const map: Map<number, string> = new Map([
   [0x41B3E202, "messageActionPaymentRefunded"],
   [0x45D5B021, "messageActionGiftStars"],
   [0xB00C47A2, "messageActionPrizeStars"],
-  [0x9BB3EF44, "messageActionStarGift"],
+  [0x08557637, "messageActionStarGift"],
   [0xD58A08C6, "dialog"],
   [0x71BD134C, "dialogFolder"],
   [0x2331B22D, "photoEmpty"],
@@ -19156,6 +19288,7 @@ const map: Map<number, string> = new Map([
   [0xAEE69D68, "inputPrivacyKeyVoiceMessages"],
   [0x3823CC40, "inputPrivacyKeyAbout"],
   [0xD65A11CC, "inputPrivacyKeyBirthday"],
+  [0xE1732341, "inputPrivacyKeyStarGiftsAutoSave"],
   [0xBC2EAB30, "privacyKeyStatusTimestamp"],
   [0x500E6DFA, "privacyKeyChatInvite"],
   [0x3D662B7B, "privacyKeyPhoneCall"],
@@ -19167,6 +19300,7 @@ const map: Map<number, string> = new Map([
   [0x0697F414, "privacyKeyVoiceMessages"],
   [0xA486B761, "privacyKeyAbout"],
   [0x2000A518, "privacyKeyBirthday"],
+  [0x2CA4FDF8, "privacyKeyStarGiftsAutoSave"],
   [0x0D09E07B, "inputPrivacyValueAllowContacts"],
   [0x184B35CE, "inputPrivacyValueAllowAll"],
   [0x131CC67F, "inputPrivacyValueAllowUsers"],
@@ -19177,6 +19311,8 @@ const map: Map<number, string> = new Map([
   [0xE94F0F86, "inputPrivacyValueDisallowChatParticipants"],
   [0x2F453E49, "inputPrivacyValueAllowCloseFriends"],
   [0x77CDC9F1, "inputPrivacyValueAllowPremium"],
+  [0x5A4FCCE5, "inputPrivacyValueAllowBots"],
+  [0xC4E57915, "inputPrivacyValueDisallowBots"],
   [0xFFFE1BAC, "privacyValueAllowContacts"],
   [0x65427B82, "privacyValueAllowAll"],
   [0xB8905FB2, "privacyValueAllowUsers"],
@@ -19187,6 +19323,8 @@ const map: Map<number, string> = new Map([
   [0x41C87565, "privacyValueDisallowChatParticipants"],
   [0xF7E8D89B, "privacyValueAllowCloseFriends"],
   [0xECE9814B, "privacyValueAllowPremium"],
+  [0x21461B5D, "privacyValueAllowBots"],
+  [0xF6A5F82F, "privacyValueDisallowBots"],
   [0x50A04E45, "account.privacyRules"],
   [0xB8D0AFDF, "accountDaysTTL"],
   [0x6C37C15C, "documentAttributeImageSize"],
@@ -19234,7 +19372,7 @@ const map: Map<number, string> = new Map([
   [0x6E153F16, "messages.stickerSet"],
   [0xD3F924EB, "messages.stickerSetNotModified"],
   [0xC27AC8C7, "botCommand"],
-  [0x82437E74, "botInfo"],
+  [0x36607333, "botInfo"],
   [0xA2FA4880, "keyboardButton"],
   [0x258AFF05, "keyboardButtonUrl"],
   [0x35BBDB6B, "keyboardButtonCallback"],
@@ -19441,7 +19579,7 @@ const map: Map<number, string> = new Map([
   [0xFAF7E8C9, "phoneCallDiscardReasonBusy"],
   [0x7D748D04, "dataJSON"],
   [0xCB296BF8, "labeledPrice"],
-  [0x5DB95A15, "invoice"],
+  [0x049EE584, "invoice"],
   [0xEA02C27E, "paymentCharge"],
   [0x1E8CAAEB, "postAddress"],
   [0x909C3F94, "paymentRequestedInfo"],
@@ -20051,7 +20189,7 @@ const map: Map<number, string> = new Map([
   [0x23E91BA3, "botPreviewMedia"],
   [0x0CA71D64, "bots.previewInfo"],
   [0x05416D58, "starsSubscriptionPricing"],
-  [0x538ECF18, "starsSubscription"],
+  [0x2E6EAB1A, "starsSubscription"],
   [0x4BA3A95A, "messageReactor"],
   [0x94CE852A, "starsGiveawayOption"],
   [0x54236209, "starsGiveawayWinnersOption"],
@@ -20064,6 +20202,9 @@ const map: Map<number, string> = new Map([
   [0xF0E4E0B6, "reportResultChooseOption"],
   [0x6F09AC31, "reportResultAddComment"],
   [0x8DB33C4B, "reportResultReported"],
+  [0x8ECF0511, "messages.botPreparedInlineMessage"],
+  [0xFF57708D, "messages.preparedInlineMessage"],
+  [0xC99B1950, "botAppSettings"],
 ]);
 
 export const getTypeName: (id: number) => string | undefined = map.get.bind(map);
@@ -20317,10 +20458,10 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["NotifyPeer", ["notifyPeer", "notifyUsers", "notifyChats", "notifyBroadcasts", "notifyForumTopic"]],
   ["SendMessageAction", ["sendMessageTypingAction", "sendMessageCancelAction", "sendMessageRecordVideoAction", "sendMessageUploadVideoAction", "sendMessageRecordAudioAction", "sendMessageUploadAudioAction", "sendMessageUploadPhotoAction", "sendMessageUploadDocumentAction", "sendMessageGeoLocationAction", "sendMessageChooseContactAction", "sendMessageGamePlayAction", "sendMessageRecordRoundAction", "sendMessageUploadRoundAction", "speakingInGroupCallAction", "sendMessageHistoryImportAction", "sendMessageChooseStickerAction", "sendMessageEmojiInteraction", "sendMessageEmojiInteractionSeen"]],
   ["contacts.Found", ["contacts.found"]],
-  ["InputPrivacyKey", ["inputPrivacyKeyStatusTimestamp", "inputPrivacyKeyChatInvite", "inputPrivacyKeyPhoneCall", "inputPrivacyKeyPhoneP2P", "inputPrivacyKeyForwards", "inputPrivacyKeyProfilePhoto", "inputPrivacyKeyPhoneNumber", "inputPrivacyKeyAddedByPhone", "inputPrivacyKeyVoiceMessages", "inputPrivacyKeyAbout", "inputPrivacyKeyBirthday"]],
-  ["PrivacyKey", ["privacyKeyStatusTimestamp", "privacyKeyChatInvite", "privacyKeyPhoneCall", "privacyKeyPhoneP2P", "privacyKeyForwards", "privacyKeyProfilePhoto", "privacyKeyPhoneNumber", "privacyKeyAddedByPhone", "privacyKeyVoiceMessages", "privacyKeyAbout", "privacyKeyBirthday"]],
-  ["InputPrivacyRule", ["inputPrivacyValueAllowContacts", "inputPrivacyValueAllowAll", "inputPrivacyValueAllowUsers", "inputPrivacyValueDisallowContacts", "inputPrivacyValueDisallowAll", "inputPrivacyValueDisallowUsers", "inputPrivacyValueAllowChatParticipants", "inputPrivacyValueDisallowChatParticipants", "inputPrivacyValueAllowCloseFriends", "inputPrivacyValueAllowPremium"]],
-  ["PrivacyRule", ["privacyValueAllowContacts", "privacyValueAllowAll", "privacyValueAllowUsers", "privacyValueDisallowContacts", "privacyValueDisallowAll", "privacyValueDisallowUsers", "privacyValueAllowChatParticipants", "privacyValueDisallowChatParticipants", "privacyValueAllowCloseFriends", "privacyValueAllowPremium"]],
+  ["InputPrivacyKey", ["inputPrivacyKeyStatusTimestamp", "inputPrivacyKeyChatInvite", "inputPrivacyKeyPhoneCall", "inputPrivacyKeyPhoneP2P", "inputPrivacyKeyForwards", "inputPrivacyKeyProfilePhoto", "inputPrivacyKeyPhoneNumber", "inputPrivacyKeyAddedByPhone", "inputPrivacyKeyVoiceMessages", "inputPrivacyKeyAbout", "inputPrivacyKeyBirthday", "inputPrivacyKeyStarGiftsAutoSave"]],
+  ["PrivacyKey", ["privacyKeyStatusTimestamp", "privacyKeyChatInvite", "privacyKeyPhoneCall", "privacyKeyPhoneP2P", "privacyKeyForwards", "privacyKeyProfilePhoto", "privacyKeyPhoneNumber", "privacyKeyAddedByPhone", "privacyKeyVoiceMessages", "privacyKeyAbout", "privacyKeyBirthday", "privacyKeyStarGiftsAutoSave"]],
+  ["InputPrivacyRule", ["inputPrivacyValueAllowContacts", "inputPrivacyValueAllowAll", "inputPrivacyValueAllowUsers", "inputPrivacyValueDisallowContacts", "inputPrivacyValueDisallowAll", "inputPrivacyValueDisallowUsers", "inputPrivacyValueAllowChatParticipants", "inputPrivacyValueDisallowChatParticipants", "inputPrivacyValueAllowCloseFriends", "inputPrivacyValueAllowPremium", "inputPrivacyValueAllowBots", "inputPrivacyValueDisallowBots"]],
+  ["PrivacyRule", ["privacyValueAllowContacts", "privacyValueAllowAll", "privacyValueAllowUsers", "privacyValueDisallowContacts", "privacyValueDisallowAll", "privacyValueDisallowUsers", "privacyValueAllowChatParticipants", "privacyValueDisallowChatParticipants", "privacyValueAllowCloseFriends", "privacyValueAllowPremium", "privacyValueAllowBots", "privacyValueDisallowBots"]],
   ["account.PrivacyRules", ["account.privacyRules"]],
   ["AccountDaysTTL", ["accountDaysTTL"]],
   ["DocumentAttribute", ["documentAttributeImageSize", "documentAttributeAnimated", "documentAttributeSticker", "documentAttributeVideo", "documentAttributeAudio", "documentAttributeFilename", "documentAttributeHasStickers", "documentAttributeCustomEmoji"]],
@@ -20806,6 +20947,9 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["payments.UserStarGifts", ["payments.userStarGifts"]],
   ["MessageReportOption", ["messageReportOption"]],
   ["ReportResult", ["reportResultChooseOption", "reportResultAddComment", "reportResultReported"]],
+  ["messages.BotPreparedInlineMessage", ["messages.botPreparedInlineMessage"]],
+  ["messages.PreparedInlineMessage", ["messages.preparedInlineMessage"]],
+  ["BotAppSettings", ["botAppSettings"]],
 ]);
 
 const types: Map<string, Parameters> = new Map([
@@ -22731,7 +22875,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "messageActionPaymentSentMe",
     [
-      0x8F31B327,
+      0xFFA00CCC,
       [
         ["flags", flags, "#"],
         ["recurring_init", "true", "flags.2?true"],
@@ -22742,13 +22886,14 @@ const types: Map<string, Parameters> = new Map([
         ["info", "PaymentRequestedInfo", "flags.0?PaymentRequestedInfo"],
         ["shipping_option_id", "string", "flags.1?string"],
         ["charge", "PaymentCharge", "PaymentCharge"],
+        ["subscription_until_date", "number", "flags.4?int"],
       ],
     ],
   ],
   [
     "messageActionPaymentSent",
     [
-      0x96163F56,
+      0xC624B16E,
       [
         ["flags", flags, "#"],
         ["recurring_init", "true", "flags.2?true"],
@@ -22756,6 +22901,7 @@ const types: Map<string, Parameters> = new Map([
         ["currency", "string", "string"],
         ["total_amount", "bigint", "long"],
         ["invoice_slug", "string", "flags.0?string"],
+        ["subscription_until_date", "number", "flags.4?int"],
       ],
     ],
   ],
@@ -23092,7 +23238,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "messageActionStarGift",
     [
-      0x9BB3EF44,
+      0x08557637,
       [
         ["flags", flags, "#"],
         ["name_hidden", "true", "flags.0?true"],
@@ -23100,7 +23246,7 @@ const types: Map<string, Parameters> = new Map([
         ["converted", "true", "flags.3?true"],
         ["gift", "StarGift", "StarGift"],
         ["message", "TextWithEntities", "flags.1?TextWithEntities"],
-        ["convert_stars", "bigint", "long"],
+        ["convert_stars", "bigint", "flags.4?long"],
       ],
     ],
   ],
@@ -23536,6 +23682,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags2", flags, "#"],
         ["sponsored_enabled", "true", "flags2.7?true"],
         ["can_view_revenue", "true", "flags2.9?true"],
+        ["bot_can_manage_emoji_status", "true", "flags2.10?true"],
         ["id", "bigint", "long"],
         ["about", "string", "flags.1?string"],
         ["settings", "PeerSettings", "PeerSettings"],
@@ -26293,6 +26440,13 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "inputPrivacyKeyStarGiftsAutoSave",
+    [
+      0xE1732341,
+      [],
+    ],
+  ],
+  [
     "privacyKeyStatusTimestamp",
     [
       0xBC2EAB30,
@@ -26366,6 +26520,13 @@ const types: Map<string, Parameters> = new Map([
     "privacyKeyBirthday",
     [
       0x2000A518,
+      [],
+    ],
+  ],
+  [
+    "privacyKeyStarGiftsAutoSave",
+    [
+      0x2CA4FDF8,
       [],
     ],
   ],
@@ -26448,6 +26609,20 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "inputPrivacyValueAllowBots",
+    [
+      0x5A4FCCE5,
+      [],
+    ],
+  ],
+  [
+    "inputPrivacyValueDisallowBots",
+    [
+      0xC4E57915,
+      [],
+    ],
+  ],
+  [
     "privacyValueAllowContacts",
     [
       0xFFFE1BAC,
@@ -26522,6 +26697,20 @@ const types: Map<string, Parameters> = new Map([
     "privacyValueAllowPremium",
     [
       0xECE9814B,
+      [],
+    ],
+  ],
+  [
+    "privacyValueAllowBots",
+    [
+      0x21461B5D,
+      [],
+    ],
+  ],
+  [
+    "privacyValueDisallowBots",
+    [
+      0xF6A5F82F,
       [],
     ],
   ],
@@ -27072,7 +27261,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "botInfo",
     [
-      0x82437E74,
+      0x36607333,
       [
         ["flags", flags, "#"],
         ["has_preview_medias", "true", "flags.6?true"],
@@ -27083,6 +27272,7 @@ const types: Map<string, Parameters> = new Map([
         ["commands", ["BotCommand"], "flags.2?Vector<BotCommand>"],
         ["menu_button", "BotMenuButton", "flags.3?BotMenuButton"],
         ["privacy_policy_url", "string", "flags.7?string"],
+        ["app_settings", "BotAppSettings", "flags.8?BotAppSettings"],
       ],
     ],
   ],
@@ -29281,7 +29471,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "invoice",
     [
-      0x5DB95A15,
+      0x049EE584,
       [
         ["flags", flags, "#"],
         ["test", "true", "flags.0?true"],
@@ -29298,6 +29488,7 @@ const types: Map<string, Parameters> = new Map([
         ["max_tip_amount", "bigint", "flags.8?long"],
         ["suggested_tip_amounts", ["bigint"], "flags.8?Vector<long>"],
         ["terms_url", "string", "flags.10?string"],
+        ["subscription_period", "number", "flags.11?int"],
       ],
     ],
   ],
@@ -33210,6 +33401,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["flags", flags, "#"],
         ["fullsize", "true", "flags.1?true"],
+        ["fullscreen", "true", "flags.2?true"],
         ["query_id", "bigint", "flags.0?long"],
         ["url", "string", "string"],
       ],
@@ -36077,17 +36269,21 @@ const types: Map<string, Parameters> = new Map([
   [
     "starsSubscription",
     [
-      0x538ECF18,
+      0x2E6EAB1A,
       [
         ["flags", flags, "#"],
         ["canceled", "true", "flags.0?true"],
         ["can_refulfill", "true", "flags.1?true"],
         ["missing_balance", "true", "flags.2?true"],
+        ["bot_canceled", "true", "flags.7?true"],
         ["id", "string", "string"],
         ["peer", "Peer", "Peer"],
         ["until_date", "number", "int"],
         ["pricing", "StarsSubscriptionPricing", "StarsSubscriptionPricing"],
         ["chat_invite_hash", "string", "flags.3?string"],
+        ["title", "string", "flags.4?string"],
+        ["photo", "WebDocument", "flags.5?WebDocument"],
+        ["invoice_slug", "string", "flags.6?string"],
       ],
     ],
   ],
@@ -36142,6 +36338,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", flags, "#"],
         ["limited", "true", "flags.0?true"],
         ["sold_out", "true", "flags.1?true"],
+        ["birthday", "true", "flags.2?true"],
         ["id", "bigint", "long"],
         ["sticker", "Document", "Document"],
         ["stars", "bigint", "long"],
@@ -36236,6 +36433,43 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8DB33C4B,
       [],
+    ],
+  ],
+  [
+    "messages.botPreparedInlineMessage",
+    [
+      0x8ECF0511,
+      [
+        ["id", "string", "string"],
+        ["expire_date", "number", "int"],
+      ],
+    ],
+  ],
+  [
+    "messages.preparedInlineMessage",
+    [
+      0xFF57708D,
+      [
+        ["query_id", "bigint", "long"],
+        ["result", "BotInlineResult", "BotInlineResult"],
+        ["peer_types", ["InlineQueryPeerType"], "Vector<InlineQueryPeerType>"],
+        ["cache_time", "number", "int"],
+        ["users", ["User"], "Vector<User>"],
+      ],
+    ],
+  ],
+  [
+    "botAppSettings",
+    [
+      0xC99B1950,
+      [
+        ["flags", flags, "#"],
+        ["placeholder_path", Uint8Array, "flags.0?bytes"],
+        ["background_color", "number", "flags.1?int"],
+        ["background_dark_color", "number", "flags.2?int"],
+        ["header_color", "number", "flags.3?int"],
+        ["header_dark_color", "number", "flags.4?int"],
+      ],
     ],
   ],
   [
@@ -39955,6 +40189,7 @@ const types: Map<string, Parameters> = new Map([
         ["from_bot_menu", "true", "flags.4?true"],
         ["silent", "true", "flags.5?true"],
         ["compact", "true", "flags.7?true"],
+        ["fullscreen", "true", "flags.8?true"],
         ["peer", "InputPeer", "InputPeer"],
         ["bot", "InputUser", "InputUser"],
         ["url", "string", "flags.1?string"],
@@ -39990,6 +40225,7 @@ const types: Map<string, Parameters> = new Map([
         ["from_switch_webview", "true", "flags.1?true"],
         ["from_side_menu", "true", "flags.2?true"],
         ["compact", "true", "flags.7?true"],
+        ["fullscreen", "true", "flags.8?true"],
         ["bot", "InputUser", "InputUser"],
         ["url", "string", "flags.3?string"],
         ["start_param", "string", "flags.4?string"],
@@ -40211,6 +40447,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", flags, "#"],
         ["write_allowed", "true", "flags.0?true"],
         ["compact", "true", "flags.7?true"],
+        ["fullscreen", "true", "flags.8?true"],
         ["peer", "InputPeer", "InputPeer"],
         ["app", "InputBotApp", "InputBotApp"],
         ["start_param", "string", "flags.1?string"],
@@ -40515,6 +40752,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["flags", flags, "#"],
         ["compact", "true", "flags.7?true"],
+        ["fullscreen", "true", "flags.8?true"],
         ["peer", "InputPeer", "InputPeer"],
         ["bot", "InputUser", "InputUser"],
         ["start_param", "string", "flags.1?string"],
@@ -40595,6 +40833,28 @@ const types: Map<string, Parameters> = new Map([
       0x9BD2F439,
       [
         ["peer", "InputPeer", "InputPeer"],
+      ],
+    ],
+  ],
+  [
+    "messages.savePreparedInlineMessage",
+    [
+      0xF21F7F2F,
+      [
+        ["flags", flags, "#"],
+        ["result", "InputBotInlineResult", "InputBotInlineResult"],
+        ["user_id", "InputUser", "InputUser"],
+        ["peer_types", ["InlineQueryPeerType"], "flags.0?Vector<InlineQueryPeerType>"],
+      ],
+    ],
+  ],
+  [
+    "messages.getPreparedInlineMessage",
+    [
+      0x857EBDB8,
+      [
+        ["bot", "InputUser", "InputUser"],
+        ["id", "string", "string"],
       ],
     ],
   ],
@@ -41889,6 +42149,37 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "bots.updateUserEmojiStatus",
+    [
+      0xED9F30C5,
+      [
+        ["user_id", "InputUser", "InputUser"],
+        ["emoji_status", "EmojiStatus", "EmojiStatus"],
+      ],
+    ],
+  ],
+  [
+    "bots.toggleUserEmojiStatusPermission",
+    [
+      0x06DE6392,
+      [
+        ["bot", "InputUser", "InputUser"],
+        ["enabled", "boolean", "Bool"],
+      ],
+    ],
+  ],
+  [
+    "bots.checkDownloadFileParams",
+    [
+      0x50077589,
+      [
+        ["bot", "InputUser", "InputUser"],
+        ["file_name", "string", "string"],
+        ["url", "string", "string"],
+      ],
+    ],
+  ],
+  [
     "payments.getPaymentForm",
     [
       0x37148DBB,
@@ -42233,6 +42524,18 @@ const types: Map<string, Parameters> = new Map([
       [
         ["user_id", "InputUser", "InputUser"],
         ["msg_id", "number", "int"],
+      ],
+    ],
+  ],
+  [
+    "payments.botCancelStarsSubscription",
+    [
+      0x6DFA0622,
+      [
+        ["flags", flags, "#"],
+        ["restore", "true", "flags.0?true"],
+        ["user_id", "InputUser", "InputUser"],
+        ["charge_id", "string", "string"],
       ],
     ],
   ],
