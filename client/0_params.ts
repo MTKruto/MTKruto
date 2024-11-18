@@ -537,3 +537,8 @@ export interface StartBotParams {
   /** If specified, the bot will be started in that chat instead of its own private chat. */
   chatId?: ID;
 }
+
+export interface SetEmojiStatusParams {
+  /** If specified, the emoji status will be unset in that date. */
+  until?: Date;
+}
