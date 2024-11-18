@@ -76,9 +76,10 @@ export function deserialize(
 ): AnyType {
   const type_: Record<string, any> = { _: name };
   const flagFields: Record<string, number> = {};
-  for (const [name, type, ntype] of paramDesc) {
+  for (let [name, type, ntype] of paramDesc) {
     if (isOptionalParam(ntype)) {
-      const { flagField, bitIndex } = analyzeOptionalParam(ntype);
+      const { flagField, ntype: ntype_, bitIndex } = analyzeOptionalParam(ntype);
+      ntype = ntype_;
       const bits = flagFields[flagField];
       if ((bits & (1 << bitIndex)) == 0) {
         continue;

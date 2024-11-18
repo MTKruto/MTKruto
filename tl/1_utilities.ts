@@ -19,13 +19,13 @@
  */
 // deno-lint-ignore-file no-explicit-any
 
-import { assertEquals, assertFalse, unreachable } from "../0_deps.ts";
+import { assert, assertEquals, assertFalse, unreachable } from "../0_deps.ts";
 import { AnyType, Enums, Functions, getEnum, getType, Types } from "./0_api.ts";
 
 export function isOptionalParam(ntype: string): boolean {
   return ntype.includes("?");
 }
-export function analyzeOptionalParam(ntype: string): { flagField: string; bitIndex: number } {
+export function analyzeOptionalParam(ntype: string): { flagField: string; ntype: string; bitIndex: number } {
   if (!isOptionalParam(ntype)) {
     throw new Error("Parameter not optional");
   }
@@ -33,10 +33,14 @@ export function analyzeOptionalParam(ntype: string): { flagField: string; bitInd
   const flagField = ntype.split(".")[0];
   assertEquals(typeof flagField, "string");
 
-  const bitIndex = Number(ntype.split("?")[0].split(".")[1]);
+  const parts = ntype.split("?");
+  const bitIndex = Number(parts[0].split(".")[1]);
   assertFalse(isNaN(bitIndex));
 
-  return { flagField, bitIndex };
+  const ntype_ = parts[1];
+  assert(ntype_);
+
+  return { flagField, ntype: ntype_, bitIndex };
 }
 
 export function isValidType(object: any): object is AnyType {
