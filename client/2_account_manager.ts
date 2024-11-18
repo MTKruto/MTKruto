@@ -19,8 +19,10 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { is } from "../2_tl.ts";
+import { toUnixTimestamp } from "../1_utilities.ts";
+import { Api, is } from "../2_tl.ts";
 import { constructInactiveChat, ID } from "../3_types.ts";
+import { SetEmojiStatusParams } from "./0_params.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C } from "./1_types.ts";
 
@@ -87,5 +89,39 @@ export class AccountManager {
   async setOnline(online: boolean) {
     this.#c.storage.assertUser("setOnline");
     await this.#c.invoke({ _: "account.updateStatus", offline: !online });
+  }
+
+  async setEmojiStatus(id: string, params?: SetEmojiStatusParams) {
+    this.#c.storage.assertUser("setEmojiStatus");
+    const document_id = BigInt(id);
+    let emoji_status: Api.EmojiStatus;
+    if (params?.until) {
+      const until = toUnixTimestamp(params.until);
+      emoji_status = { _: "emojiStatusUntil", document_id, until };
+    } else {
+      emoji_status = { _: "emojiStatus", document_id };
+    }
+    await this.#c.invoke({ _: "account.updateEmojiStatus", emoji_status });
+  }
+
+  async setUserEmojiStatus(userId: ID, id: string, params?: SetEmojiStatusParams) {
+    this.#c.storage.assertBot("setUserEmojiStatus");
+    const user_id = await this.#c.getInputUser(userId);
+    const document_id = BigInt(id);
+    let emoji_status: Api.EmojiStatus;
+    if (params?.until) {
+      const until = toUnixTimestamp(params.until);
+      emoji_status = { _: "emojiStatusUntil", document_id, until };
+    } else {
+      emoji_status = { _: "emojiStatus", document_id };
+    }
+    await this.#c.invoke({ _: "bots.updateUserEmojiStatus", user_id, emoji_status });
+  }
+
+  async setBotCanSetEmojiStatus(botId: ID, canSetEmojiStatus: boolean) {
+    this.#c.storage.assertUser("setBotCanSetEmojiStatus");
+    const bot = await this.#c.getInputUser(botId);
+    const enabled = canSetEmojiStatus;
+    await this.#c.invoke({ _: "bots.toggleUserEmojiStatusPermission", bot, enabled });
   }
 }
