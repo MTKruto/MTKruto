@@ -21,7 +21,7 @@
 
 import { assertEquals } from "../0_deps.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
-import { analyzeOptionalParam, isOptionalParam } from "./1_utilities.ts";
+import { analyzeOptionalParam, getOptionalParamInnerType, isOptionalParam } from "./1_utilities.ts";
 import { AnyType, flags, getType, getTypeName } from "./0_api.ts";
 
 function deserializeSingleParam(
@@ -29,6 +29,9 @@ function deserializeSingleParam(
   type: unknown,
   ntype: string,
 ): any {
+  if (isOptionalParam(ntype)) {
+    ntype = getOptionalParamInnerType(ntype);
+  }
   if (type == Uint8Array) {
     return reader.readBytes();
   } else {

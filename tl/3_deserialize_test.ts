@@ -100,3 +100,35 @@ Deno.test("deserialize", () => {
   assertEquals(serialize(config), buffer);
   assertEquals(config._, "config");
 });
+
+Deno.test("optional double", () => {
+  // deno-fmt-ignore
+  const buffer = new Uint8Array([
+    0x94, 0xb0, 0x33, 0xde,
+    0x01, 0x00, 0x00, 0x00,
+    0x01, 0x75, 0x00, 0x00,
+    0x20, 0x03, 0x00, 0x00,
+    0x20, 0x03, 0x00, 0x00,
+    0x88, 0xfc, 0x03, 0x00,
+    0xe5, 0x46, 0x91, 0xb5,
+    0x86, 0x72, 0x02, 0x40
+  ]);
+
+  const expected = {
+    _: "videoSize",
+    type: "u",
+    w: 800,
+    h: 800,
+    size: 261256,
+    video_start_ts: 2.305921,
+    // deno-lint-ignore no-explicit-any
+  } as any;
+
+  const reader = new TLRawReader(buffer);
+
+  const constructorId = reader.readInt32(false);
+  const constructor = getTypeName(constructorId)!;
+
+  const actual = deserialize(reader, getType(constructor)![1], constructor);
+  assertEquals(actual, expected);
+});

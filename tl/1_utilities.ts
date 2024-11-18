@@ -25,6 +25,9 @@ import { AnyType, Enums, Functions, getEnum, getType, Types } from "./0_api.ts";
 export function isOptionalParam(ntype: string): boolean {
   return ntype.includes("?");
 }
+export function getOptionalParamInnerType(ntype: string): string {
+  return ntype.split("?")[1];
+}
 export function analyzeOptionalParam(ntype: string): { flagField: string; bitIndex: number } {
   if (!isOptionalParam(ntype)) {
     throw new Error("Parameter not optional");

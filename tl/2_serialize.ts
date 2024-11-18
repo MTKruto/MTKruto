@@ -20,7 +20,7 @@
 // deno-lint-ignore-file no-explicit-any
 import { AnyObject, flags, getType } from "./0_api.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
-import { analyzeOptionalParam, assertIsValidType, isOptionalParam } from "./1_utilities.ts";
+import { analyzeOptionalParam, assertIsValidType, getOptionalParamInnerType, isOptionalParam } from "./1_utilities.ts";
 
 function serializeSingleParam(
   writer: TLRawWriter,
@@ -29,6 +29,9 @@ function serializeSingleParam(
   ntype: string,
   debugInfo: string,
 ) {
+  if (isOptionalParam(ntype)) {
+    ntype = getOptionalParamInnerType(ntype);
+  }
   const valueRepr = value == null ? null : (typeof value === "object" && "_" in value) ? value._ : value.constructor.name;
 
   if (type == Uint8Array) {
