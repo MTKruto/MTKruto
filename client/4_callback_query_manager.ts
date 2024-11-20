@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api, isOneOf, peerToChatId } from "../2_tl.ts";
+import { Api, isOneOf } from "../2_tl.ts";
 import { CallbackQueryQuestion, constructCallbackQuery, constructCallbackQueryAnswer, ID, Update, validateCallbackQueryQuestion } from "../3_types.ts";
 import { AnswerCallbackQueryParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
@@ -53,7 +53,7 @@ export class CallbackQueryManager {
     this.#c.storage.assertUser("sendCallbackQuery");
     checkMessageId(messageId);
     validateCallbackQueryQuestion(question);
-    const peer = await this.#c.getInputPeer(chatId), peerId = peerToChatId(peer), questionKey = JSON.stringify(question);
+    const peer = await this.#c.getInputPeer(chatId), peerId = await this.#c.getInputPeerChatId(peer), questionKey = JSON.stringify(question);
     const maybeAnswer = await this.#c.messageStorage.getCallbackQueryAnswer(peerId, messageId, questionKey);
     if (maybeAnswer != null && !CallbackQueryManager.#isExpired(maybeAnswer[1], maybeAnswer[0].cache_time)) {
       return constructCallbackQueryAnswer(maybeAnswer[0]);

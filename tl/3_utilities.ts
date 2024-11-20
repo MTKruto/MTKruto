@@ -21,6 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import * as Api from "./0_api.ts";
+import { isOneOf } from "./1_utilities.ts";
 
 export function getChannelChatId(channelId: bigint): number {
   return ZERO_CHANNEL_ID + -Number(channelId);
@@ -29,12 +30,16 @@ export function getChannelChatId(channelId: bigint): number {
 // convenience types
 export type AnyEntity = Api.user | Api.channel | Api.channelForbidden | Api.chat | Api.chatForbidden;
 
-export function peerToChatId(peer: Api.Peer | Api.InputPeer | AnyEntity | Api.channelFull | Api.UserFull | Api.chatFull | { channel_id: bigint } | { user_id: bigint } | { chat_id: bigint }): number {
-  if (("_" in peer && (peer._ == "peerUser" || peer._ == "inputPeerUser" || peer._ == "inputPeerUserFromMessage" || peer._ == "user" || peer._ == "userFull")) || "user_id" in peer) {
+export type InputPeerWithIdentifier = Api.inputPeerChat | Api.inputPeerUser | Api.inputPeerChannel | Api.inputPeerUserFromMessage | Api.inputPeerChannelFromMessage;
+
+export type IdentifierContainer = { user_id: bigint } | { chat_id: bigint } | { channel_id: bigint };
+
+export function peerToChatId(peer: AnyEntity | InputPeerWithIdentifier | Api.Peer | IdentifierContainer): number {
+  if (isOneOf(["peerUser", "inputPeerUser", "inputPeerUserFromMessage", "user", "userFull"], peer) || "user_id" in peer) {
     return Number("user_id" in peer ? peer.user_id : peer.id);
-  } else if (("_" in peer && (peer._ == "peerChat" || peer._ == "inputPeerChat" || peer._ == "chat" || peer._ == "chatForbidden" || peer._ == "chatFull")) || "chat_id" in peer) {
+  } else if ("chat_id" in peer || isOneOf(["peerChat", "inputPeerChat", "chat", "chatForbidden", "chatFull"], peer)) {
     return -Number("chat_id" in peer ? peer.chat_id : peer.id);
-  } else if (("_" in peer && (peer._ == "peerChannel" || peer._ == "inputPeerChannel" || peer._ == "inputPeerChannelFromMessage" || peer._ == "channel" || peer._ == "channelForbidden" || peer._ == "channelFull")) || "channel_id" in peer) {
+  } else if ("channel_id" in peer || isOneOf(["peerChannel", "inputPeerChannel", "inputPeerChannelFromMessage", "channel", "channelForbidden", "channelFull"], peer)) {
     return getChannelChatId("channel_id" in peer ? peer.channel_id : peer.id);
   } else {
     unreachable();

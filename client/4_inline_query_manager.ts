@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Api, is, isOneOf, peerToChatId } from "../2_tl.ts";
+import { Api, is, isOneOf } from "../2_tl.ts";
 import { constructChosenInlineResult, constructInlineQuery, constructInlineQueryAnswer, ID, InlineQueryResult, inlineQueryResultToTlObject, Update } from "../3_types.ts";
 import { AnswerInlineQueryParams, SendInlineQueryParams } from "./0_params.ts";
 import { checkInlineQueryId } from "./0_utilities.ts";
@@ -68,7 +68,7 @@ export class InlineQueryManager {
       peer = await this.#c.getInputPeer(chatId),
       query = params?.query ?? "",
       offset = params?.offset ?? "";
-    const botId = peerToChatId(bot), peerId = peerToChatId(peer);
+    const botId = await this.#c.getInputPeerChatId(bot), peerId = await this.#c.getInputPeerChatId(peer);
     const maybeResults = await this.#c.messageStorage.getInlineQueryAnswer(botId, peerId, query, offset);
     if (maybeResults != null && !InlineQueryManager.#isExpired(maybeResults[1], maybeResults[0].cache_time)) {
       return constructInlineQueryAnswer(maybeResults[0]);

@@ -73,7 +73,7 @@ export class MessageManager {
     checkArray(messageIds, checkMessageId);
     const peer = await this.#c.getInputPeer(chatId);
     let messages_ = new Array<Api.Message>();
-    const chatId_ = peerToChatId(peer);
+    const chatId_ = await this.#c.getInputPeerChatId(peer);
     let shouldFetch = false;
     for (const messageId of messageIds) {
       const message = await this.#c.messageStorage.getMessage(chatId_, messageId);
@@ -1549,7 +1549,7 @@ export class MessageManager {
     if (isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
       throw new InputError("Cannot add members to private chats");
     }
-    const users = new Array<Api.inputUser | Api.inputUserFromMessage>();
+    const users = new Array<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage>();
     for (const userId of userIds) {
       users.push(await this.#c.getInputUser(userId));
     }

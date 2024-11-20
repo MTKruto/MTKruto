@@ -431,6 +431,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       getInputPeer: this.getInputPeer.bind(this),
       getInputChannel: this.getInputChannel.bind(this),
       getInputUser: this.getInputUser.bind(this),
+      getInputPeerChatId: this.#getInputPeerChatId.bind(this),
       getEntity: this[getEntity].bind(this),
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
@@ -1537,6 +1538,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return inputPeer;
   }
 
+  async #getInputPeerChatId(inputPeer: Api.InputPeer | Api.InputUser | Api.InputChannel) {
+    if (isOneOf(["inputPeerSelf", "inputUserSelf"], inputPeer)) {
+      return await this.#getSelfId();
+    } else if (isOneOf(["inputPeerEmpty", "inputUserEmpty", "inputChannelEmpty"], inputPeer)) {
+      unreachable();
+    } else {
+      return peerToChatId(inputPeer);
+    }
+  }
+
   /**
    * Get a channel or a supergroup's inputChannel. Useful when calling API functions directly.
    *
@@ -1555,7 +1566,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @param id The identifier of the user.
    */
-  async getInputUser(id: ID): Promise<Api.inputUser | Api.inputUserFromMessage> {
+  async getInputUser(id: ID): Promise<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage> {
     const inputPeer = await this.getInputPeer(id);
     if (!canBeInputUser(inputPeer)) {
       throw new TypeError(`The chat ${id} is not a private chat.`);

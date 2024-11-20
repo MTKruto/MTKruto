@@ -434,7 +434,7 @@ export class ChatListManager {
 
   async #getFullChat(chatId: ID) {
     const inputPeer = await this.#c.getInputPeer(chatId);
-    const chatId_ = peerToChatId(inputPeer);
+    const chatId_ = await this.#c.getInputPeerChatId(inputPeer);
     let fullChat = await this.#c.storage.getFullChat(chatId_);
     if (fullChat != null) {
       return fullChat;
@@ -497,8 +497,9 @@ export class ChatListManager {
       return await constructChatMember(participant, this.#c.getEntity);
     } else if (is("inputPeerChat", peer)) {
       const user = await this.#c.getInputUser(userId);
+      const userId_ = BigInt(await this.#c.getInputPeerChatId(user));
       const fullChat = await this.#c.invoke({ ...peer, _: "messages.getFullChat" }).then((v) => as("chatFull", v.full_chat));
-      const participant = as("chatParticipants", fullChat.participants).participants.find((v) => v.user_id == user.user_id)!;
+      const participant = as("chatParticipants", fullChat.participants).participants.find((v) => v.user_id == userId_)!;
       return await constructChatMember(participant, this.#c.getEntity);
     } else {
       throw new InputError("Expected a channel, supergroup, or group ID. Got a user ID instead.");

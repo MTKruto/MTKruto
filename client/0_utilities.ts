@@ -182,6 +182,8 @@ export function toInputUser(inputPeer: Api.InputPeer) {
     id = { ...inputPeer, _: "inputUser" };
   } else if (is("inputPeerUserFromMessage", inputPeer)) {
     id = { ...inputPeer, _: "inputUserFromMessage" };
+  } else if (is("inputPeerSelf", inputPeer)) {
+    id = { _: "inputUserSelf" };
   } else {
     unreachable();
   }

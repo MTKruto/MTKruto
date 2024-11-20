@@ -53,7 +53,8 @@ export interface C {
   getSelfId: () => Promise<number>;
   getInputPeer: (id: ID) => Promise<Api.InputPeer>;
   getInputChannel: (id: ID) => Promise<Api.inputChannel | Api.inputChannelFromMessage>;
-  getInputUser: (id: ID) => Promise<Api.inputUser | Api.inputUserFromMessage>;
+  getInputUser: (id: ID) => Promise<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage>;
+  getInputPeerChatId: (inputPeer: Api.InputPeer | Api.InputUser | Api.InputChannel) => Promise<number>;
   getEntity: EntityGetter;
   handleUpdate: (update: Update) => void;
   parseMode: ParseMode;
