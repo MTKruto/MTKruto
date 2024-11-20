@@ -160,15 +160,12 @@ export class UpdateManager {
   #extractMessages(context: ReadObject) {
     const messages = new Array<Api.message>();
     if (Array.isArray(context)) {
-      this.#Lmin.debug("em A");
       for (const item of context) {
         messages.push(...this.#extractMessages(item));
       }
     } else if (isOneOf(["updates", "updatesCombined"], context)) {
-      this.#Lmin.debug("em B");
       messages.push(...this.#extractMessages(context.updates));
     } else if (isOneOf(["updates.difference", "updates.differenceSlice", "updates.channelDifference"], context)) {
-      this.#Lmin.debug("em C");
       for (const message of context.new_messages) {
         if (is("message", message)) {
           messages.push(message);
@@ -176,15 +173,12 @@ export class UpdateManager {
       }
       messages.push(...this.#extractMessages(context.other_updates));
     } else if (isOneOf(["updateNewMessage", "updateNewChannelMessage", "updateEditMessage", "updateEditChannelMessage", "updateBotNewBusinessMessage", "updateBotNewBusinessMessage"], context)) {
-      this.#Lmin.debug("em D");
       if (is("message", context.message)) {
         messages.push(context.message);
       }
     } else if (is("message", context)) {
-      this.#Lmin.debug("em E");
       messages.push(context);
     } else if (context != null && typeof context === "object" && "messages" in context && Array.isArray(context.messages)) {
-      this.#Lmin.debug("em F");
       for (const message of context.messages) {
         if (is("message", message)) {
           messages.push(message);
@@ -195,12 +189,9 @@ export class UpdateManager {
   }
 
   #extractMinPeerReferences(context: ReadObject) {
-    this.#Lmin.debug("empr A");
     const minPeerReferences = new Array<{ chatId: number; senderId: number; messageId: number }>();
     const messages = this.#extractMessages(context);
-    this.#Lmin.debug("empr B", messages.length, context != null && typeof context == "object" && "_" in context ? context._ : typeof context);
     for (const message of messages) {
-      this.#Lmin.debug("empr C");
       if (!message.from_id) {
         continue;
       }
@@ -350,15 +341,11 @@ export class UpdateManager {
           this.#Lmin.debug("encountered min user");
         }
         if (is("user", user) && user.min) {
-          this.#Lmin.debug("emu A");
           const entity = await this.#c.messageStorage.getEntity(peerToChatId(user));
           const userId = peerToChatId(user);
           if (is("user", entity) && entity.min) {
-            this.#Lmin.debug("emu B");
             for (const { chatId, senderId, messageId } of this.#extractMinPeerReferences(context)) {
-              this.#Lmin.debug("emu C", { chatId, senderId, messageId }, "=", userId);
               if (senderId == userId) {
-                this.#Lmin.debug("emu X");
                 await this.#c.messageStorage.setMinPeerReference(chatId, senderId, messageId);
                 this.#Lmin.debug("user min peer reference stored", chatId, senderId, messageId);
               }

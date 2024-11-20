@@ -1579,7 +1579,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     if (!isNaN(idn)) {
       id = idn;
     }
-    this.#Lmin.debug("gipi A", id);
     let peer: Api.InputPeer;
     if (typeof id === "string") {
       id = getUsername(id);
@@ -1601,7 +1600,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
         }
       }
       const resolvedIdType = getChatIdPeerType(resolvedId);
-      this.#Lmin.debug({ resolvedId });
       if (resolvedIdType == "user") {
         const accessHash = await this.messageStorage.getUserAccessHash(resolvedId);
 
