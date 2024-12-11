@@ -20,9 +20,9 @@
 
 import { unreachable } from "../0_deps.ts";
 import { toUnixTimestamp } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
-import { constructInactiveChat, ID } from "../3_types.ts";
-import { SetEmojiStatusParams } from "./0_params.ts";
+import { Api, inputPeerToPeer, is } from "../2_tl.ts";
+import { constructInactiveChat, constructUser, ID } from "../3_types.ts";
+import { AddContactParams, SetEmojiStatusParams } from "./0_params.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C } from "./1_types.ts";
 
@@ -123,5 +123,42 @@ export class AccountManager {
     const bot = await this.#c.getInputUser(botId);
     const enabled = canSetEmojiStatus;
     await this.#c.invoke({ _: "bots.toggleUserEmojiStatusPermission", bot, enabled });
+  }
+
+  async getContacts() {
+    this.#c.storage.assertUser("getContacts");
+    const result = await this.#c.invoke({ _: "contacts.getContacts", hash: 0n });
+    if (!is("contacts.contacts", result)) {
+      unreachable();
+    }
+    return result.users.map((v) => is("user", v) ? constructUser(v) : null).filter((v) => v != null);
+  }
+
+  async deleteContacts(userIds: ID[]) {
+    this.#c.storage.assertUser("deleteContacts");
+    const id = await Promise.all(userIds.map((v) => this.#c.getInputUser(v)));
+    await this.#c.invoke({ _: "contacts.deleteContacts", id });
+  }
+
+  async deleteContact(userId: ID) {
+    this.#c.storage.assertUser("deleteContact");
+    await this.deleteContacts([userId]);
+  }
+
+  async addContact(userId: ID, params?: AddContactParams) {
+    this.#c.storage.assertUser("addContact");
+    const id = await this.#c.getInputUser(userId);
+    if (!is("inputPeerUser", id)) {
+      unreachable();
+    }
+    const user = await this.#c.getEntity(inputPeerToPeer(id));
+    if (!user || !("first_name" in user)) {
+      unreachable();
+    }
+    const first_name = params?.firstName ?? user.first_name ?? "";
+    const last_name = params?.lastName ?? user.last_name ?? "";
+    const phone = "";
+    const add_phone_privacy_exception = params?.sharePhoneNumber ? true : undefined;
+    await this.#c.invoke({ _: "contacts.addContact", add_phone_privacy_exception, id, first_name, last_name, phone });
   }
 }

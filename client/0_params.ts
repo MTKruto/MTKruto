@@ -542,3 +542,9 @@ export interface SetEmojiStatusParams {
   /** If specified, the emoji status will be unset in that date. */
   until?: Date;
 }
+
+export interface AddContactParams {
+  firstName?: string;
+  lastName?: string;
+  sharePhoneNumber?: boolean;
+}
