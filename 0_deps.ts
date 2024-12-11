@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "jsr:@std/assert@1.0.8";
+export * from "jsr:@std/assert@1.0.9";
 
 export { basename } from "jsr:@std/path@1.0.8/basename";
 export { extname } from "jsr:@std/path@1.0.8/extname";
