@@ -205,7 +205,7 @@ export class AccountManager {
       params.bio = userFull.about;
     }
     if (!params?.firstName && !params?.lastName && !params?.bio) {
-      throw new InputError("At least one parameter must be provided.");
+      throw new InputError("At least one parameter must be specified.");
     }
     await this.#c.invoke({ _: "account.updateProfile", first_name: params.firstName, last_name: params.lastName, about: params.bio });
   }
