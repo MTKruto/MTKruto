@@ -2821,7 +2821,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Archive multiple chats.
+   * Archive multiple chats. User-only.
    *
    * @method ch
    * @param chatIds The identifiers of the chats to archive.
@@ -2831,7 +2831,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Archive a single chat.
+   * Archive a single chat. User-only.
    *
    * @method ch
    * @param chatId The identifier of the chat to archive.
@@ -2841,7 +2841,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Unarchive multiple chats.
+   * Unarchive multiple chats. User-only.
    *
    * @method ch
    * @param chatIds The identifiers of the chats to unarchive.
@@ -2851,7 +2851,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Unarchive a single chat.
+   * Unarchive a single chat. User-only.
    *
    * @method ch
    * @param chatId The identifier of the chat to unarchive.
