@@ -19,10 +19,11 @@
  */
 
 import { unreachable } from "../0_deps.ts";
+import { InputError } from "../0_errors.ts";
 import { toUnixTimestamp } from "../1_utilities.ts";
-import { Api, inputPeerToPeer, is } from "../2_tl.ts";
+import { Api, chatIdToPeer, inputPeerToPeer, is } from "../2_tl.ts";
 import { constructInactiveChat, constructUser, ID } from "../3_types.ts";
-import { AddContactParams, SetEmojiStatusParams } from "./0_params.ts";
+import { AddContactParams, SetEmojiStatusParams, UpdateProfileParams } from "./0_params.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C } from "./1_types.ts";
 
@@ -160,5 +161,52 @@ export class AccountManager {
     const phone = "";
     const add_phone_privacy_exception = params?.sharePhoneNumber ? true : undefined;
     await this.#c.invoke({ _: "contacts.addContact", add_phone_privacy_exception, id, first_name, last_name, phone });
+  }
+
+  async #getUserFull(chatId: ID): Promise<Api.userFull> {
+    const inputPeer = await this.#c.getInputPeer(chatId);
+    const chatId_ = await this.#c.getInputPeerChatId(inputPeer);
+    let fullChat = await this.#c.storage.getFullChat(chatId_);
+    if (fullChat != null) {
+      if (!is("userFull", fullChat)) {
+        unreachable();
+      }
+      return fullChat;
+    }
+    if (canBeInputUser(inputPeer)) {
+      fullChat = (await this.#c.invoke({ _: "users.getFullUser", id: toInputUser(inputPeer) })).full_user;
+    } else {
+      unreachable();
+    }
+    return fullChat;
+  }
+  async updateProfile(params?: UpdateProfileParams) {
+    this.#c.storage.assertUser("updateProfile");
+    const selfId = await this.#c.getSelfId();
+    const userFull = await this.#getUserFull(selfId);
+    const entity = await this.#c.getEntity(chatIdToPeer(selfId));
+    if (!is("user", entity)) {
+      unreachable();
+    }
+    params ??= {};
+    if (params?.firstName) {
+      params.firstName = params.firstName.trim();
+    } else {
+      params.firstName = entity.first_name;
+    }
+    if (params?.lastName) {
+      params.lastName = params.lastName.trim();
+    } else {
+      params.lastName = entity.last_name;
+    }
+    if (params?.bio) {
+      params.bio = params.bio.trim();
+    } else {
+      params.bio = userFull.about;
+    }
+    if (!params?.firstName && !params?.lastName && !params?.bio) {
+      throw new InputError("At least one parameter must be provided.");
+    }
+    await this.#c.invoke({ _: "account.updateProfile", first_name: params.firstName, last_name: params.lastName, about: params.bio });
   }
 }
