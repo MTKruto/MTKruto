@@ -504,7 +504,9 @@ export interface AddChatMemberParams {
 }
 
 export interface GetChatMembersParams {
+  /** The number of results to skip. */
   offset?: number;
+  /** The maximum number of results to return. */
   limit?: number;
 }
 
@@ -544,7 +546,10 @@ export interface SetEmojiStatusParams {
 }
 
 export interface AddContactParams {
+  /** A custom ame for the contact. */
   firstName?: string;
+  /** A custom last name for the contact. */
   lastName?: string;
+  /** Whether the phone number of the current user should be shared with the contact. */
   sharePhoneNumber?: boolean;
 }
