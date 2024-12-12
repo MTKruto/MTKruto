@@ -2820,6 +2820,46 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.#chatListManager.setMessageTtl(chatId, messageTtl);
   }
 
+  /**
+   * Archive multiple chats.
+   *
+   * @method ch
+   * @param chatIds The identifiers of the chats to archive.
+   */
+  async archiveChats(chatIds: ID[]): Promise<void> {
+    await this.#chatListManager.archiveChats(chatIds);
+  }
+
+  /**
+   * Archive a single chat.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat to archive.
+   */
+  async archiveChat(chatId: ID): Promise<void> {
+    await this.#chatListManager.archiveChat(chatId);
+  }
+
+  /**
+   * Unarchive multiple chats.
+   *
+   * @method ch
+   * @param chatIds The identifiers of the chats to unarchive.
+   */
+  async unarchiveChats(chatIds: ID[]): Promise<void> {
+    await this.#chatListManager.unarchiveChats(chatIds);
+  }
+
+  /**
+   * Unarchive a single chat.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat to unarchive.
+   */
+  async unarchiveChat(chatId: ID): Promise<void> {
+    await this.#chatListManager.unarchiveChat(chatId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
