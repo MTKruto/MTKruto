@@ -598,4 +598,30 @@ export class ChatListManager {
     const period = messageTtl;
     await this.#c.invoke({ _: "messages.setHistoryTTL", peer, period });
   }
+
+  async #moveChatsToFolder(chatIds: ID[], folderId: number) {
+    const peers = await Promise.all(chatIds.map((v) => this.#c.getInputPeer(v)));
+    const inputFolderPeers: Api.inputFolderPeer[] = peers.map((v) => ({ _: "inputFolderPeer", peer: v, folder_id: folderId }));
+    await this.#c.invoke({ _: "folders.editPeerFolders", folder_peers: inputFolderPeers });
+  }
+
+  async archiveChats(chatIds: ID[]) {
+    this.#c.storage.assertUser("archiveChats");
+    await this.#moveChatsToFolder(chatIds, 1);
+  }
+
+  async archiveChat(chatId: ID) {
+    this.#c.storage.assertUser("archiveChat");
+    await this.archiveChats([chatId]);
+  }
+
+  async unarchiveChats(chatIds: ID[]) {
+    this.#c.storage.assertUser("unarchiveChats");
+    await this.#moveChatsToFolder(chatIds, 0);
+  }
+
+  async unarchiveChat(chatId: ID) {
+    this.#c.storage.assertUser("unarchiveChat");
+    await this.unarchiveChats([chatId]);
+  }
 }
