@@ -21,7 +21,7 @@
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, as, getChannelChatId, is, isOneOf, peerToChatId } from "../2_tl.ts";
+import { Api, as, getChannelChatId, IdentifierContainer, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { constructChatMemberUpdated, constructFailedInvitation, constructInviteLink, constructJoinRequest, deserializeFileId, FileId, InputMedia, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
 import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
@@ -1645,5 +1645,38 @@ export class MessageManager {
     const peer = await this.#c.getInputPeer(params?.chatId || botId);
     const result = await this.#c.invoke({ _: "messages.startBot", bot, peer, random_id: getRandomId(), start_param });
     return (await this.#updatesToMessages(botId, result))[0];
+  }
+
+  async vote(chatId: ID, messageId: number, optionIndexes: number[]) {
+    this.#c.storage.assertUser("vote");
+    if (!optionIndexes.length) {
+      throw new InputError("No options provided.");
+    }
+    const message = await this.getMessage(chatId, messageId);
+    if (!("poll" in message)) {
+      throw new InputError("Message not a poll.");
+    }
+    if (!message.poll.allowMultipleAnswers && optionIndexes.length > 1) {
+      throw new InputError("Cannot cast multiple options for this vote.");
+    }
+    for (const optionIndex of optionIndexes) {
+      if (optionIndex + 1 > message.poll.options.length) {
+        throw new InputError("Got invalid option index.");
+      }
+    }
+    const peer = await this.#c.getInputPeer(chatId);
+    const chatId_ = peerToChatId(peer as IdentifierContainer);
+    const message_ = await this.#c.messageStorage.getMessage(chatId_, messageId);
+    if (!is("message", message_)) {
+      unreachable();
+    }
+    const media = message_.media;
+    if (!is("messageMediaPoll", media)) {
+      unreachable();
+    }
+    const poll = media.poll;
+    optionIndexes = Array.from(new Set(optionIndexes));
+    const options = optionIndexes.map((_, i) => poll.answers[i].option);
+    await this.#c.invoke({ _: "messages.sendVote", peer, msg_id: messageId, options });
   }
 }
