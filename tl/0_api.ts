@@ -1824,6 +1824,7 @@ export interface userFull {
   personal_channel_id?: bigint;
   personal_channel_message?: number;
   stargifts_count?: number;
+  starref_program?: StarRefProgram;
 }
 
 export interface contact {
@@ -2928,7 +2929,7 @@ export interface updateBroadcastRevenueTransactions {
 
 export interface updateStarsBalance {
   _: "updateStarsBalance";
-  balance: bigint;
+  balance: StarsAmount;
 }
 
 export interface updateBusinessBotCallbackQuery {
@@ -9556,7 +9557,7 @@ export interface starsTransaction {
   gift?: true;
   reaction?: true;
   id: string;
-  stars: bigint;
+  stars: StarsAmount;
   date: number;
   peer: StarsTransactionPeer;
   title?: string;
@@ -9571,11 +9572,14 @@ export interface starsTransaction {
   giveaway_post_id?: number;
   stargift?: StarGift;
   floodskip_number?: number;
+  starref_commission_permille?: number;
+  starref_peer?: Peer;
+  starref_amount?: StarsAmount;
 }
 
 export interface payments_starsStatus {
   _: "payments.starsStatus";
-  balance: bigint;
+  balance: StarsAmount;
   subscriptions?: Array<StarsSubscription>;
   subscriptions_next_offset?: string;
   subscriptions_missing_balance?: bigint;
@@ -9611,9 +9615,9 @@ export interface geoPointAddress {
 export interface starsRevenueStatus {
   _: "starsRevenueStatus";
   withdrawal_enabled?: true;
-  current_balance: bigint;
-  available_balance: bigint;
-  overall_revenue: bigint;
+  current_balance: StarsAmount;
+  available_balance: StarsAmount;
+  overall_revenue: StarsAmount;
   next_withdrawal_at?: number;
 }
 
@@ -9806,6 +9810,60 @@ export interface botAppSettings {
   background_dark_color?: number;
   header_color?: number;
   header_dark_color?: number;
+}
+
+export interface starRefProgram {
+  _: "starRefProgram";
+  bot_id: bigint;
+  commission_permille: number;
+  duration_months?: number;
+  end_date?: number;
+  daily_revenue_per_user?: StarsAmount;
+}
+
+export interface connectedBotStarRef {
+  _: "connectedBotStarRef";
+  revoked?: true;
+  url: string;
+  date: number;
+  bot_id: bigint;
+  commission_permille: number;
+  duration_months?: number;
+  participants: bigint;
+  revenue: bigint;
+}
+
+export interface payments_connectedStarRefBots {
+  _: "payments.connectedStarRefBots";
+  count: number;
+  connected_bots: Array<ConnectedBotStarRef>;
+  users: Array<User>;
+}
+
+export interface payments_suggestedStarRefBots {
+  _: "payments.suggestedStarRefBots";
+  count: number;
+  suggested_bots: Array<StarRefProgram>;
+  users: Array<User>;
+  next_offset?: string;
+}
+
+export interface starsAmount {
+  _: "starsAmount";
+  amount: bigint;
+  nanos: number;
+}
+
+export interface messages_foundStickersNotModified {
+  _: "messages.foundStickersNotModified";
+  next_offset?: number;
+}
+
+export interface messages_foundStickers {
+  _: "messages.foundStickers";
+  next_offset?: number;
+  hash: bigint;
+  stickers: Array<Document>;
 }
 
 export interface req_pq_multi {
@@ -10965,6 +11023,7 @@ export interface contacts_search {
 export interface contacts_resolveUsername {
   _: "contacts.resolveUsername";
   username: string;
+  referer?: string;
   [R]?: contacts_ResolvedPeer;
 }
 
@@ -12886,6 +12945,18 @@ export interface messages_getPreparedInlineMessage {
   [R]?: messages_PreparedInlineMessage;
 }
 
+export interface messages_searchStickers {
+  _: "messages.searchStickers";
+  emojis?: true;
+  q: string;
+  emoticon: string;
+  lang_code: Array<string>;
+  offset: number;
+  limit: number;
+  hash: bigint;
+  [R]?: messages_FoundStickers;
+}
+
 export interface updates_getState {
   _: "updates.getState";
   [R]?: updates_State;
@@ -13815,6 +13886,19 @@ export interface bots_checkDownloadFileParams {
   [R]?: boolean;
 }
 
+export interface bots_getAdminedBots {
+  _: "bots.getAdminedBots";
+  [R]?: Array<User>;
+}
+
+export interface bots_updateStarRefProgram {
+  _: "bots.updateStarRefProgram";
+  bot: InputUser;
+  commission_permille: number;
+  duration_months?: number;
+  [R]?: StarRefProgram;
+}
+
 export interface payments_getPaymentForm {
   _: "payments.getPaymentForm";
   invoice: InputInvoice;
@@ -14059,6 +14143,47 @@ export interface payments_botCancelStarsSubscription {
   user_id: InputUser;
   charge_id: string;
   [R]?: boolean;
+}
+
+export interface payments_getConnectedStarRefBots {
+  _: "payments.getConnectedStarRefBots";
+  peer: InputPeer;
+  offset_date?: number;
+  offset_link?: string;
+  limit: number;
+  [R]?: payments_ConnectedStarRefBots;
+}
+
+export interface payments_getConnectedStarRefBot {
+  _: "payments.getConnectedStarRefBot";
+  peer: InputPeer;
+  bot: InputUser;
+  [R]?: payments_ConnectedStarRefBots;
+}
+
+export interface payments_getSuggestedStarRefBots {
+  _: "payments.getSuggestedStarRefBots";
+  order_by_revenue?: true;
+  order_by_date?: true;
+  peer: InputPeer;
+  offset: string;
+  limit: number;
+  [R]?: payments_SuggestedStarRefBots;
+}
+
+export interface payments_connectStarRefBot {
+  _: "payments.connectStarRefBot";
+  peer: InputPeer;
+  bot: InputUser;
+  [R]?: payments_ConnectedStarRefBots;
+}
+
+export interface payments_editConnectedStarRefBot {
+  _: "payments.editConnectedStarRefBot";
+  revoked?: true;
+  peer: InputPeer;
+  link: string;
+  [R]?: payments_ConnectedStarRefBots;
 }
 
 export interface stickers_createStickerSet {
@@ -16278,6 +16403,13 @@ export interface Types {
   "messages.botPreparedInlineMessage": messages_botPreparedInlineMessage;
   "messages.preparedInlineMessage": messages_preparedInlineMessage;
   "botAppSettings": botAppSettings;
+  "starRefProgram": starRefProgram;
+  "connectedBotStarRef": connectedBotStarRef;
+  "payments.connectedStarRefBots": payments_connectedStarRefBots;
+  "payments.suggestedStarRefBots": payments_suggestedStarRefBots;
+  "starsAmount": starsAmount;
+  "messages.foundStickersNotModified": messages_foundStickersNotModified;
+  "messages.foundStickers": messages_foundStickers;
 }
 
 export interface Functions<T = Function> {
@@ -16691,6 +16823,7 @@ export interface Functions<T = Function> {
   "messages.getSponsoredMessages": messages_getSponsoredMessages;
   "messages.savePreparedInlineMessage": messages_savePreparedInlineMessage;
   "messages.getPreparedInlineMessage": messages_getPreparedInlineMessage;
+  "messages.searchStickers": messages_searchStickers;
   "updates.getState": updates_getState;
   "updates.getDifference": updates_getDifference;
   "updates.getChannelDifference": updates_getChannelDifference;
@@ -16819,6 +16952,8 @@ export interface Functions<T = Function> {
   "bots.updateUserEmojiStatus": bots_updateUserEmojiStatus;
   "bots.toggleUserEmojiStatusPermission": bots_toggleUserEmojiStatusPermission;
   "bots.checkDownloadFileParams": bots_checkDownloadFileParams;
+  "bots.getAdminedBots": bots_getAdminedBots;
+  "bots.updateStarRefProgram": bots_updateStarRefProgram;
   "payments.getPaymentForm": payments_getPaymentForm;
   "payments.getPaymentReceipt": payments_getPaymentReceipt;
   "payments.validateRequestedInfo": payments_validateRequestedInfo;
@@ -16854,6 +16989,11 @@ export interface Functions<T = Function> {
   "payments.saveStarGift": payments_saveStarGift;
   "payments.convertStarGift": payments_convertStarGift;
   "payments.botCancelStarsSubscription": payments_botCancelStarsSubscription;
+  "payments.getConnectedStarRefBots": payments_getConnectedStarRefBots;
+  "payments.getConnectedStarRefBot": payments_getConnectedStarRefBot;
+  "payments.getSuggestedStarRefBots": payments_getSuggestedStarRefBots;
+  "payments.connectStarRefBot": payments_connectStarRefBot;
+  "payments.editConnectedStarRefBot": payments_editConnectedStarRefBot;
   "stickers.createStickerSet": stickers_createStickerSet;
   "stickers.removeStickerFromSet": stickers_removeStickerFromSet;
   "stickers.changeStickerPosition": stickers_changeStickerPosition;
@@ -17508,6 +17648,12 @@ export interface Enums {
   "messages.BotPreparedInlineMessage": messages_BotPreparedInlineMessage;
   "messages.PreparedInlineMessage": messages_PreparedInlineMessage;
   "BotAppSettings": BotAppSettings;
+  "StarRefProgram": StarRefProgram;
+  "ConnectedBotStarRef": ConnectedBotStarRef;
+  "payments.ConnectedStarRefBots": payments_ConnectedStarRefBots;
+  "payments.SuggestedStarRefBots": payments_SuggestedStarRefBots;
+  "StarsAmount": StarsAmount;
+  "messages.FoundStickers": messages_FoundStickers;
 }
 
 export type AnyType = Types[keyof Types];
@@ -18795,6 +18941,18 @@ export type messages_PreparedInlineMessage = messages_preparedInlineMessage;
 
 export type BotAppSettings = botAppSettings;
 
+export type StarRefProgram = starRefProgram;
+
+export type ConnectedBotStarRef = connectedBotStarRef;
+
+export type payments_ConnectedStarRefBots = payments_connectedStarRefBots;
+
+export type payments_SuggestedStarRefBots = payments_suggestedStarRefBots;
+
+export type StarsAmount = starsAmount;
+
+export type messages_FoundStickers = messages_foundStickersNotModified | messages_foundStickers;
+
 const map: Map<number, string> = new Map([
   [0x05162463, "resPQ"],
   [0xA9F55F95, "p_q_inner_data_dc"],
@@ -19029,7 +19187,7 @@ const map: Map<number, string> = new Map([
   [0xF5DDD6E7, "inputReportReasonFake"],
   [0x0A8EB2BE, "inputReportReasonIllegalDrugs"],
   [0x9EC7863D, "inputReportReasonPersonalDetails"],
-  [0x1F58E369, "userFull"],
+  [0x979D2376, "userFull"],
   [0x145ADE0B, "contact"],
   [0xC13E3C50, "importedContact"],
   [0x16D9703B, "contactStatus"],
@@ -19202,7 +19360,7 @@ const map: Map<number, string> = new Map([
   [0xA02A982E, "updateBotDeleteBusinessMessage"],
   [0x1824E40B, "updateNewStoryReaction"],
   [0xDFD961F5, "updateBroadcastRevenueTransactions"],
-  [0x0FB85198, "updateStarsBalance"],
+  [0x4E80A379, "updateStarsBalance"],
   [0x1EA2FDA7, "updateBusinessBotCallbackQuery"],
   [0xA584B019, "updateStarsRevenueStatus"],
   [0x283BD312, "updateBotPurchasedPaidMedia"],
@@ -20174,12 +20332,12 @@ const map: Map<number, string> = new Map([
   [0x60682812, "starsTransactionPeerAds"],
   [0xF9677AAD, "starsTransactionPeerAPI"],
   [0x0BD915C0, "starsTopupOption"],
-  [0x35D4F276, "starsTransaction"],
-  [0xBBFA316C, "payments.starsStatus"],
+  [0x64DFC926, "starsTransaction"],
+  [0x6C9CE8ED, "payments.starsStatus"],
   [0xE87ACBC0, "foundStory"],
   [0xE2DE7737, "stories.foundStories"],
   [0xDE4C5D93, "geoPointAddress"],
-  [0x79342946, "starsRevenueStatus"],
+  [0xFEBE5491, "starsRevenueStatus"],
   [0xC92BB73B, "payments.starsRevenueStats"],
   [0x1DAB80B7, "payments.starsRevenueWithdrawalUrl"],
   [0x394E7F21, "payments.starsRevenueAdsAccountUrl"],
@@ -20205,6 +20363,13 @@ const map: Map<number, string> = new Map([
   [0x8ECF0511, "messages.botPreparedInlineMessage"],
   [0xFF57708D, "messages.preparedInlineMessage"],
   [0xC99B1950, "botAppSettings"],
+  [0xDD0C66F2, "starRefProgram"],
+  [0x19A13F71, "connectedBotStarRef"],
+  [0x98D5EA1D, "payments.connectedStarRefBots"],
+  [0xB4D5D859, "payments.suggestedStarRefBots"],
+  [0xBBB6B4A3, "starsAmount"],
+  [0x6010C534, "messages.foundStickersNotModified"],
+  [0x82C9E290, "messages.foundStickers"],
 ]);
 
 export const getTypeName: (id: number) => string | undefined = map.get.bind(map);
@@ -20950,6 +21115,12 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["messages.BotPreparedInlineMessage", ["messages.botPreparedInlineMessage"]],
   ["messages.PreparedInlineMessage", ["messages.preparedInlineMessage"]],
   ["BotAppSettings", ["botAppSettings"]],
+  ["StarRefProgram", ["starRefProgram"]],
+  ["ConnectedBotStarRef", ["connectedBotStarRef"]],
+  ["payments.ConnectedStarRefBots", ["payments.connectedStarRefBots"]],
+  ["payments.SuggestedStarRefBots", ["payments.suggestedStarRefBots"]],
+  ["StarsAmount", ["starsAmount"]],
+  ["messages.FoundStickers", ["messages.foundStickersNotModified", "messages.foundStickers"]],
 ]);
 
 const types: Map<string, Parameters> = new Map([
@@ -23663,7 +23834,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "userFull",
     [
-      0x1F58E369,
+      0x979D2376,
       [
         ["flags", flags, "#"],
         ["blocked", "true", "flags.0?true"],
@@ -23711,6 +23882,7 @@ const types: Map<string, Parameters> = new Map([
         ["personal_channel_id", "bigint", "flags2.6?long"],
         ["personal_channel_message", "number", "flags2.6?int"],
         ["stargifts_count", "number", "flags2.8?int"],
+        ["starref_program", "StarRefProgram", "flags2.11?StarRefProgram"],
       ],
     ],
   ],
@@ -25515,9 +25687,9 @@ const types: Map<string, Parameters> = new Map([
   [
     "updateStarsBalance",
     [
-      0x0FB85198,
+      0x4E80A379,
       [
-        ["balance", "bigint", "long"],
+        ["balance", "StarsAmount", "StarsAmount"],
       ],
     ],
   ],
@@ -36076,7 +36248,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "starsTransaction",
     [
-      0x35D4F276,
+      0x64DFC926,
       [
         ["flags", flags, "#"],
         ["refund", "true", "flags.3?true"],
@@ -36085,7 +36257,7 @@ const types: Map<string, Parameters> = new Map([
         ["gift", "true", "flags.10?true"],
         ["reaction", "true", "flags.11?true"],
         ["id", "string", "string"],
-        ["stars", "bigint", "long"],
+        ["stars", "StarsAmount", "StarsAmount"],
         ["date", "number", "int"],
         ["peer", "StarsTransactionPeer", "StarsTransactionPeer"],
         ["title", "string", "flags.0?string"],
@@ -36100,16 +36272,19 @@ const types: Map<string, Parameters> = new Map([
         ["giveaway_post_id", "number", "flags.13?int"],
         ["stargift", "StarGift", "flags.14?StarGift"],
         ["floodskip_number", "number", "flags.15?int"],
+        ["starref_commission_permille", "number", "flags.16?int"],
+        ["starref_peer", "Peer", "flags.17?Peer"],
+        ["starref_amount", "StarsAmount", "flags.17?StarsAmount"],
       ],
     ],
   ],
   [
     "payments.starsStatus",
     [
-      0xBBFA316C,
+      0x6C9CE8ED,
       [
         ["flags", flags, "#"],
-        ["balance", "bigint", "long"],
+        ["balance", "StarsAmount", "StarsAmount"],
         ["subscriptions", ["StarsSubscription"], "flags.1?Vector<StarsSubscription>"],
         ["subscriptions_next_offset", "string", "flags.2?string"],
         ["subscriptions_missing_balance", "bigint", "flags.4?long"],
@@ -36160,13 +36335,13 @@ const types: Map<string, Parameters> = new Map([
   [
     "starsRevenueStatus",
     [
-      0x79342946,
+      0xFEBE5491,
       [
         ["flags", flags, "#"],
         ["withdrawal_enabled", "true", "flags.0?true"],
-        ["current_balance", "bigint", "long"],
-        ["available_balance", "bigint", "long"],
-        ["overall_revenue", "bigint", "long"],
+        ["current_balance", "StarsAmount", "StarsAmount"],
+        ["available_balance", "StarsAmount", "StarsAmount"],
+        ["overall_revenue", "StarsAmount", "StarsAmount"],
         ["next_withdrawal_at", "number", "flags.1?int"],
       ],
     ],
@@ -36469,6 +36644,93 @@ const types: Map<string, Parameters> = new Map([
         ["background_dark_color", "number", "flags.2?int"],
         ["header_color", "number", "flags.3?int"],
         ["header_dark_color", "number", "flags.4?int"],
+      ],
+    ],
+  ],
+  [
+    "starRefProgram",
+    [
+      0xDD0C66F2,
+      [
+        ["flags", flags, "#"],
+        ["bot_id", "bigint", "long"],
+        ["commission_permille", "number", "int"],
+        ["duration_months", "number", "flags.0?int"],
+        ["end_date", "number", "flags.1?int"],
+        ["daily_revenue_per_user", "StarsAmount", "flags.2?StarsAmount"],
+      ],
+    ],
+  ],
+  [
+    "connectedBotStarRef",
+    [
+      0x19A13F71,
+      [
+        ["flags", flags, "#"],
+        ["revoked", "true", "flags.1?true"],
+        ["url", "string", "string"],
+        ["date", "number", "int"],
+        ["bot_id", "bigint", "long"],
+        ["commission_permille", "number", "int"],
+        ["duration_months", "number", "flags.0?int"],
+        ["participants", "bigint", "long"],
+        ["revenue", "bigint", "long"],
+      ],
+    ],
+  ],
+  [
+    "payments.connectedStarRefBots",
+    [
+      0x98D5EA1D,
+      [
+        ["count", "number", "int"],
+        ["connected_bots", ["ConnectedBotStarRef"], "Vector<ConnectedBotStarRef>"],
+        ["users", ["User"], "Vector<User>"],
+      ],
+    ],
+  ],
+  [
+    "payments.suggestedStarRefBots",
+    [
+      0xB4D5D859,
+      [
+        ["flags", flags, "#"],
+        ["count", "number", "int"],
+        ["suggested_bots", ["StarRefProgram"], "Vector<StarRefProgram>"],
+        ["users", ["User"], "Vector<User>"],
+        ["next_offset", "string", "flags.0?string"],
+      ],
+    ],
+  ],
+  [
+    "starsAmount",
+    [
+      0xBBB6B4A3,
+      [
+        ["amount", "bigint", "long"],
+        ["nanos", "number", "int"],
+      ],
+    ],
+  ],
+  [
+    "messages.foundStickersNotModified",
+    [
+      0x6010C534,
+      [
+        ["flags", flags, "#"],
+        ["next_offset", "number", "flags.0?int"],
+      ],
+    ],
+  ],
+  [
+    "messages.foundStickers",
+    [
+      0x82C9E290,
+      [
+        ["flags", flags, "#"],
+        ["next_offset", "number", "flags.0?int"],
+        ["hash", "bigint", "long"],
+        ["stickers", ["Document"], "Vector<Document>"],
       ],
     ],
   ],
@@ -38147,9 +38409,11 @@ const types: Map<string, Parameters> = new Map([
   [
     "contacts.resolveUsername",
     [
-      0xF93CCBA3,
+      0x725AFBBC,
       [
+        ["flags", flags, "#"],
         ["username", "string", "string"],
+        ["referer", "string", "flags.0?string"],
       ],
     ],
   ],
@@ -40859,6 +41123,22 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "messages.searchStickers",
+    [
+      0x29B1C66A,
+      [
+        ["flags", flags, "#"],
+        ["emojis", "true", "flags.0?true"],
+        ["q", "string", "string"],
+        ["emoticon", "string", "string"],
+        ["lang_code", ["string"], "Vector<string>"],
+        ["offset", "number", "int"],
+        ["limit", "number", "int"],
+        ["hash", "bigint", "long"],
+      ],
+    ],
+  ],
+  [
     "updates.getState",
     [
       0xEDD4882A,
@@ -42180,6 +42460,25 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "bots.getAdminedBots",
+    [
+      0xB0711D83,
+      [],
+    ],
+  ],
+  [
+    "bots.updateStarRefProgram",
+    [
+      0x778B5AB3,
+      [
+        ["flags", flags, "#"],
+        ["bot", "InputUser", "InputUser"],
+        ["commission_permille", "number", "int"],
+        ["duration_months", "number", "flags.0?int"],
+      ],
+    ],
+  ],
+  [
     "payments.getPaymentForm",
     [
       0x37148DBB,
@@ -42536,6 +42835,65 @@ const types: Map<string, Parameters> = new Map([
         ["restore", "true", "flags.0?true"],
         ["user_id", "InputUser", "InputUser"],
         ["charge_id", "string", "string"],
+      ],
+    ],
+  ],
+  [
+    "payments.getConnectedStarRefBots",
+    [
+      0x5869A553,
+      [
+        ["flags", flags, "#"],
+        ["peer", "InputPeer", "InputPeer"],
+        ["offset_date", "number", "flags.2?int"],
+        ["offset_link", "string", "flags.2?string"],
+        ["limit", "number", "int"],
+      ],
+    ],
+  ],
+  [
+    "payments.getConnectedStarRefBot",
+    [
+      0xB7D998F0,
+      [
+        ["peer", "InputPeer", "InputPeer"],
+        ["bot", "InputUser", "InputUser"],
+      ],
+    ],
+  ],
+  [
+    "payments.getSuggestedStarRefBots",
+    [
+      0x0D6B48F7,
+      [
+        ["flags", flags, "#"],
+        ["order_by_revenue", "true", "flags.0?true"],
+        ["order_by_date", "true", "flags.1?true"],
+        ["peer", "InputPeer", "InputPeer"],
+        ["offset", "string", "string"],
+        ["limit", "number", "int"],
+      ],
+    ],
+  ],
+  [
+    "payments.connectStarRefBot",
+    [
+      0x7ED5348A,
+      [
+        ["peer", "InputPeer", "InputPeer"],
+        ["bot", "InputUser", "InputUser"],
+      ],
+    ],
+  ],
+  [
+    "payments.editConnectedStarRefBot",
+    [
+      0xE4FCA4A3,
+      [
+        ["flags", flags, "#"],
+        ["revoked", "true", "flags.0?true"],
+        ["peer", "InputPeer", "InputPeer"],
+        ["link", "string", "string"],
       ],
     ],
   ],
