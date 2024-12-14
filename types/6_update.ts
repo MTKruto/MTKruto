@@ -391,13 +391,15 @@ export interface UpdateJoinRequest {
  * @unlisted
  */
 export interface UpdateTranslations {
-  platform: string;
-  language: string;
   /**
    * The new translations.
    * @discriminator
    */
   translations: Translation[];
+  /** The platform of the translations that were updated. */
+  platform: string;
+  /** The language of the translations that were updated. */
+  language: string;
 }
 
 /** @unlisted */
