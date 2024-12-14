@@ -3,6 +3,8 @@ import { Api, is, isOneOf } from "../2_tl.ts";
 import { unreachable } from "../0_deps.ts";
 import { Queue } from "../1_utilities.ts";
 import { constructTranslation, Translation, Update } from "../3_types.ts";
+import { GetTranslationsParams } from "./0_params.ts";
+import { InputError } from "../0_errors.ts";
 
 const translationsManagerUpdates = [
   "updateLangPackTooLong",
@@ -22,7 +24,16 @@ export class TranslationsManager {
     return isOneOf(translationsManagerUpdates, update);
   }
 
-  async getTranslations(platform: string, language: string) {
+  async getTranslations(params?: GetTranslationsParams) {
+    this.#c.storage.assertUser("getTranslations");
+    const platform = params?.platform ?? this.#c.langPack;
+    if (!platform) {
+      throw new InputError("No platform specified.");
+    }
+    const language = params?.language ?? this.#c.langCode;
+    if (!language) {
+      throw new InputError("No language specified.");
+    }
     return await this.#getTranslationsInner(platform, language);
   }
 
