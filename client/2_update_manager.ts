@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
+import { SECOND, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { getLogger, Logger, Mutex, Queue, second, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { getLogger, Logger, Mutex, Queue, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api, as, inputPeerToPeer, is, isOfEnum, isOneOf, peerToChatId, ReadObject } from "../2_tl.ts";
 import { PersistentTimestampInvalid } from "../3_errors.ts";
 import { ID } from "../3_types.ts";
@@ -741,7 +741,7 @@ export class UpdateManager {
           difference = await this.#c.invoke({ _: "updates.getDifference", pts: state.pts, date: state.date, qts: state.qts ?? 0 });
         } catch (err) {
           if (err instanceof PersistentTimestampInvalid) {
-            await new Promise((r) => setTimeout(r, delay * second));
+            await new Promise((r) => setTimeout(r, delay * SECOND));
             ++delay;
             if (delay > 60) {
               delay = 60;
@@ -812,7 +812,7 @@ export class UpdateManager {
         lastTimeout = difference.timeout ?? 1;
       } catch (err) {
         if (err instanceof PersistentTimestampInvalid) {
-          await new Promise((r) => setTimeout(r, delay * second));
+          await new Promise((r) => setTimeout(r, delay * SECOND));
           delay += 5;
           if (delay > 60) {
             delay = 60;

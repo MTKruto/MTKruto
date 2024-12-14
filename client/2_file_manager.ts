@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AssertionError, basename, extension, extname, isAbsolute, toFileUrl, unreachable } from "../0_deps.ts";
+import { AssertionError, basename, extension, extname, isAbsolute, MINUTE, SECOND, toFileUrl, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { drop, getLogger, getRandomId, iterateReadableStream, kilobyte, Logger, megabyte, minute, mod, Part, PartStream, second } from "../1_utilities.ts";
+import { drop, getLogger, getRandomId, iterateReadableStream, kilobyte, Logger, megabyte, mod, Part, PartStream } from "../1_utilities.ts";
 import { Api, as, is } from "../2_tl.ts";
 import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
@@ -201,7 +201,7 @@ export class FileManager {
   async #handleError(err: unknown, retryIn: number, logPrefix: string) {
     if (retryIn > 0) {
       this.#Lupload.warning(`${logPrefix} retrying in ${retryIn} seconds`);
-      await new Promise((r) => setTimeout(r, retryIn * second));
+      await new Promise((r) => setTimeout(r, retryIn * SECOND));
     } else {
       throw err;
     }
@@ -450,7 +450,7 @@ export class FileManager {
     }
   }
 
-  static #CUSTOM_EMOJI_TTL = 30 * minute;
+  static #CUSTOM_EMOJI_TTL = 30 * MINUTE;
   async getCustomEmojiStickers(id: string | string[]) {
     id = Array.isArray(id) ? id : [id];
     if (!id.length) {

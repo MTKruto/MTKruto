@@ -28,6 +28,8 @@ export { toFileUrl } from "jsr:@std/path@1.0.8/to-file-url";
 
 export { concat } from "jsr:@std/bytes@1.0.4/concat";
 
+export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.2/constants";
+
 export { toArrayBuffer } from "jsr:@std/streams@1.0.8/to-array-buffer";
 
 export { iterateReader } from "jsr:@std/io@0.225.0/iterate-reader";
