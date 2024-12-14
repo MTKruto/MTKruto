@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
+import { MINUTE, SECOND, unreachable } from "../0_deps.ts";
 import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
-import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, minute, mustPrompt, mustPromptOneOf, Mutex, second, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, as, chatIdToPeerId, getChatIdPeerType, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { DC, getDc } from "../3_transport.ts";
@@ -527,7 +527,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
           }
           this.#L.debug(`failed to reconnect, retrying in ${delay}:`, err);
         }
-        await new Promise((r) => setTimeout(r, delay * second));
+        await new Promise((r) => setTimeout(r, delay * SECOND));
       }
     } finally {
       this.#reconnecting = false;
@@ -1063,8 +1063,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
       if (this.connected) {
         return;
       }
-      if (this.#lastConnect != null && Date.now() - this.#lastConnect.getTime() <= 10 * second) {
-        await new Promise((r) => setTimeout(r, 3 * second));
+      if (this.#lastConnect != null && Date.now() - this.#lastConnect.getTime() <= 10 * SECOND) {
+        await new Promise((r) => setTimeout(r, 3 * SECOND));
       }
       await this.#initStorage();
       if (this.#authString && !this.#authStringImported) {
@@ -1336,7 +1336,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     while (!this.disconnected) {
       try {
         await new Promise((resolve, reject) => {
-          const timeout = setTimeout(resolve, 10 * second);
+          const timeout = setTimeout(resolve, 10 * SECOND);
           this.#connectionInsuranceLoopAbortController!.signal.onabort = () => {
             reject(this.#connectionInsuranceLoopAbortController?.signal.reason);
             clearTimeout(timeout);
@@ -1353,7 +1353,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   #pingLoopAbortController: AbortController | null = null;
-  #pingInterval = 56 * second;
+  #pingInterval = 56 * SECOND;
   #lastUpdates = new Date();
   #startPingLoop() {
     drop(this.#pingLoop());
@@ -1378,9 +1378,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
           continue;
         }
         this.#pingLoopAbortController.signal.throwIfAborted();
-        await this.invoke({ _: "ping_delay_disconnect", ping_id: getRandomId(), disconnect_delay: this.#pingInterval / second + 15 });
+        await this.invoke({ _: "ping_delay_disconnect", ping_id: getRandomId(), disconnect_delay: this.#pingInterval / SECOND + 15 });
         this.#pingLoopAbortController.signal.throwIfAborted();
-        if (Date.now() - this.#lastUpdates.getTime() >= 15 * minute) {
+        if (Date.now() - this.#lastUpdates.getTime() >= 15 * MINUTE) {
           drop(
             this.#updateManager.recoverUpdateGap("lastUpdates").then(() => {
               this.#lastUpdates = new Date();
