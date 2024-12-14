@@ -239,11 +239,11 @@ export interface ClientParams extends ClientPlainParams {
   appVersion?: string;
   /** The device_version parameter to be passed to initConnection. The default varies by the current runtime. */
   deviceModel?: string;
-  /** The lang_code parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
-  langCode?: string;
-  /** The lang_pack parameter to be passed to initConnection. Defaults to an empty string. */
-  langPack?: string;
-  /** The system_lang_cde parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
+  /** The client's language to be used for fetching translations. Defaults to the runtime's language or `"en"`. */
+  language?: string;
+  /** The client's platform to be used for fetching translations. Defaults to an empty string. */
+  platform?: string;
+  /** The system_lang_code parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
   systemLangCode?: string;
   /** The system_version parameter to be passed to initConnection. The default varies by the current runtime. */
   systemVersion?: string;
@@ -327,8 +327,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #apiHash: string;
   public readonly appVersion: string;
   public readonly deviceModel: string;
-  public readonly langCode: string;
-  public readonly langPack: string;
+  public readonly language: string;
+  public readonly platform: string;
   public readonly systemLangCode: string;
   public readonly systemVersion: string;
   readonly #publicKeys?: PublicKeys;
@@ -394,8 +394,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
     this.appVersion = params?.appVersion ?? APP_VERSION;
     this.deviceModel = params?.deviceModel ?? DEVICE_MODEL;
-    this.langCode = params?.langCode ?? LANG_CODE;
-    this.langPack = params?.langPack ?? LANG_PACK;
+    this.language = params?.language ?? LANG_CODE;
+    this.platform = params?.platform ?? LANG_PACK;
     this.systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
     this.#publicKeys = params?.publicKeys;
@@ -441,6 +441,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
       outgoingMessages: this.#outgoingMessages,
       dropPendingUpdates: params?.dropPendingUpdates,
       disconnected: () => this.disconnected,
+      langPack: this.platform,
+      langCode: this.language,
     };
     this.#updateManager = new UpdateManager(c);
     this.#networkStatisticsManager = new NetworkStatisticsManager(c);
@@ -585,8 +587,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
       transportProvider: this.#client.transportProvider,
       appVersion: this.appVersion,
       deviceModel: this.deviceModel,
-      langCode: this.langCode,
-      langPack: this.langPack,
+      langCode: this.language,
+      langPack: this.platform,
       systemLangCode: this.systemLangCode,
       systemVersion: this.systemVersion,
       cdn: true,
@@ -1418,8 +1420,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
             api_id: await this.#getApiId(),
             app_version: this.appVersion,
             device_model: this.deviceModel,
-            lang_code: this.langCode,
-            lang_pack: this.langPack,
+            lang_code: this.language,
+            lang_pack: this.platform,
             query: {
               _: "invokeWithLayer",
               layer: LAYER,
