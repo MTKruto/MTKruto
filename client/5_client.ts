@@ -3359,7 +3359,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get translations. User-only.
    *
    * @method ta
-   * @param userId The identifier of a user to add as contact.
    */
   async getTranslations(params?: GetTranslationsParams): Promise<void> {
     await this.#translationsManager.getTranslations(params);
