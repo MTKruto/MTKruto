@@ -24,7 +24,7 @@ import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromis
 import { Storage, StorageKeyPart } from "../2_storage.ts";
 import { AnyEntity, Api, as, is, isValidType, peerToChatId, ReadObject, serialize, TLReader, TLWriter } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
-import { Translation } from "../types/0_translation.ts";
+import { Translation } from "../3_types.ts";
 
 // key parts
 export const K = {

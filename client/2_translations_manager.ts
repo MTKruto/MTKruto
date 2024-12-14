@@ -1,9 +1,8 @@
 import { C } from "./1_types.ts";
 import { Api, is, isOneOf } from "../2_tl.ts";
-import { constructTranslation, Translation } from "../types/0_translation.ts";
 import { unreachable } from "../0_deps.ts";
-import { day, minute, Queue } from "../1_utilities.ts";
-import { Update } from "../3_types.ts";
+import { Queue } from "../1_utilities.ts";
+import { constructTranslation, Translation, Update } from "../3_types.ts";
 
 const translationsManagerUpdates = [
   "updateLangPackTooLong",
