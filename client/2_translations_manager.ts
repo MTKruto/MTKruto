@@ -1,10 +1,10 @@
-import { C } from "./1_types.ts";
-import { Api, is, isOneOf } from "../2_tl.ts";
 import { unreachable } from "../0_deps.ts";
+import { InputError } from "../0_errors.ts";
 import { Queue } from "../1_utilities.ts";
+import { Api, is, isOneOf } from "../2_tl.ts";
 import { constructTranslation, Translation, Update } from "../3_types.ts";
 import { GetTranslationsParams } from "./0_params.ts";
-import { InputError } from "../0_errors.ts";
+import { C } from "./1_types.ts";
 
 const translationsManagerUpdates = [
   "updateLangPackTooLong",
