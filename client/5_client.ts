@@ -28,7 +28,7 @@ import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuest
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
-import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageMediaParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetMyCommandsParams, SetReactionsParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageMediaParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetMyCommandsParams, SetReactionsParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, getUsername, isCdnFunction, isMtprotoFunction, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -43,6 +43,7 @@ import { FileManager } from "./2_file_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
+import { TranslationsManager } from "./2_translations_manager.ts";
 import { UpdateManager } from "./2_update_manager.ts";
 import { MessageManager } from "./3_message_manager.ts";
 import { VideoChatManager } from "./3_video_chat_manager.ts";
@@ -239,11 +240,11 @@ export interface ClientParams extends ClientPlainParams {
   appVersion?: string;
   /** The device_version parameter to be passed to initConnection. The default varies by the current runtime. */
   deviceModel?: string;
-  /** The lang_code parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
-  langCode?: string;
-  /** The lang_pack parameter to be passed to initConnection. Defaults to an empty string. */
-  langPack?: string;
-  /** The system_lang_cde parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
+  /** The client's language to be used for fetching translations. Defaults to the runtime's language or `"en"`. */
+  language?: string;
+  /** The client's platform to be used for fetching translations. Defaults to an empty string. */
+  platform?: string;
+  /** The system_lang_code parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
   systemLangCode?: string;
   /** The system_version parameter to be passed to initConnection. The default varies by the current runtime. */
   systemVersion?: string;
@@ -295,6 +296,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #chatListManager: ChatListManager;
   #accountManager: AccountManager;
   #paymentManager: PaymentManager;
+  #translationsManager: TranslationsManager;
   // deno-lint-ignore no-explicit-any
   #managers?: Record<string, any>;
   // deno-lint-ignore no-explicit-any
@@ -314,6 +316,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       chatListManager: this.#chatListManager,
       accountManager: this.#accountManager,
       paymentManager: this.#paymentManager,
+      translationsManager: this.#translationsManager,
     });
   }
 
@@ -327,8 +330,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #apiHash: string;
   public readonly appVersion: string;
   public readonly deviceModel: string;
-  public readonly langCode: string;
-  public readonly langPack: string;
+  public readonly language: string;
+  public readonly platform: string;
   public readonly systemLangCode: string;
   public readonly systemVersion: string;
   readonly #publicKeys?: PublicKeys;
@@ -394,8 +397,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
     this.appVersion = params?.appVersion ?? APP_VERSION;
     this.deviceModel = params?.deviceModel ?? DEVICE_MODEL;
-    this.langCode = params?.langCode ?? LANG_CODE;
-    this.langPack = params?.langPack ?? LANG_PACK;
+    this.language = params?.language ?? LANG_CODE;
+    this.platform = params?.platform ?? LANG_PACK;
     this.systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
     this.#publicKeys = params?.publicKeys;
@@ -441,6 +444,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
       outgoingMessages: this.#outgoingMessages,
       dropPendingUpdates: params?.dropPendingUpdates,
       disconnected: () => this.disconnected,
+      langPack: this.platform,
+      langCode: this.language,
     };
     this.#updateManager = new UpdateManager(c);
     this.#networkStatisticsManager = new NetworkStatisticsManager(c);
@@ -456,6 +461,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#chatListManager = new ChatListManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
     this.#accountManager = new AccountManager(c);
     this.#paymentManager = new PaymentManager(c);
+    this.#translationsManager = new TranslationsManager(c);
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
 
     const transportProvider = this.#client.transportProvider;
@@ -585,8 +591,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
       transportProvider: this.#client.transportProvider,
       appVersion: this.appVersion,
       deviceModel: this.deviceModel,
-      langCode: this.langCode,
-      langPack: this.langPack,
+      language: this.language,
+      platform: this.platform,
       systemLangCode: this.systemLangCode,
       systemVersion: this.systemVersion,
       cdn: true,
@@ -1418,8 +1424,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
             api_id: await this.#getApiId(),
             app_version: this.appVersion,
             device_model: this.deviceModel,
-            lang_code: this.langCode,
-            lang_pack: this.langPack,
+            lang_code: this.language,
+            lang_pack: this.platform,
             query: {
               _: "invokeWithLayer",
               layer: LAYER,
@@ -3343,5 +3349,19 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async addContact(userId: ID, params?: AddContactParams): Promise<void> {
     await this.#accountManager.addContact(userId, params);
+  }
+
+  //
+  // ========================= TRANSLATIONS ========================= //
+  //
+
+  /**
+   * Get translations. User-only.
+   *
+   * @method ta
+   * @param userId The identifier of a user to add as contact.
+   */
+  async getTranslations(params?: GetTranslationsParams): Promise<void> {
+    await this.#translationsManager.getTranslations(params);
   }
 }

@@ -65,4 +65,6 @@ export interface C {
   dropPendingUpdates?: boolean;
   invoke: Invoke;
   disconnected: () => boolean;
+  langPack?: string;
+  langCode?: string;
 }

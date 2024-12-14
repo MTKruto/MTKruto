@@ -24,6 +24,7 @@ import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromis
 import { Storage, StorageKeyPart } from "../2_storage.ts";
 import { AnyEntity, Api, as, is, isValidType, peerToChatId, ReadObject, serialize, TLReader, TLWriter } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
+import { Translation } from "../3_types.ts";
 
 // key parts
 export const K = {
@@ -79,6 +80,9 @@ export const K = {
     minPeerReferences: (): StorageKeyPart[] => ["minPeerReferences"],
     minPeerReference: (senderId: number, chatId: number) => [...K.cache.minPeerReferences(), senderId, chatId],
     minPeerReferenceSender: (senderId: number) => [...K.cache.minPeerReferences(), senderId],
+    allTranslations: () => ["translations"],
+    platformTranslations: (platform: string) => [...K.cache.allTranslations(), platform],
+    translations: (platform: string, language: string) => [...K.cache.platformTranslations(platform), language],
   },
   messages: {
     P: (string: string): string => `messages.${string}`,
@@ -668,6 +672,7 @@ export class StorageOperations {
       this.deleteStickerSetNames(),
       this.deletePeers(),
       this.deleteUsernames(),
+      this.deleteTranslations(),
     ]);
   }
 
@@ -695,5 +700,21 @@ export class StorageOperations {
       references.push(reference);
     }
     return references.sort((a, b) => b[1].getTime() - a[1].getTime())[0]?.[0] ?? null;
+  }
+
+  async deleteTranslations() {
+    const maybePromises = new Array<MaybePromise<unknown>>();
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.allTranslations() })) {
+      maybePromises.push(this.#storage.set(key, null));
+    }
+    await Promise.all(maybePromises);
+  }
+
+  async getTranslations(platform: string, language: string): Promise<[number, Translation[], Date] | null> {
+    return await this.#storage.get<[number, Translation[], Date]>(K.cache.translations(platform, language));
+  }
+
+  async setTranslations(platform: string, language: string, version: number, translations: Translation[]) {
+    await this.#storage.set(K.cache.translations(platform, language), [version, translations, new Date()]);
   }
 }

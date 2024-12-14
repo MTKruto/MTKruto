@@ -562,3 +562,10 @@ export interface UpdateProfileParams {
   /** New account bio. */
   bio?: string;
 }
+
+export interface GetTranslationsParams {
+  /** The platform to get translations for. Defaults to the client's platform. */
+  platform?: string;
+  /** The language to get translations for. Defaults to the client's language. */
+  language?: string;
+}
