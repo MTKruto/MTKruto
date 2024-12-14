@@ -710,11 +710,11 @@ export class StorageOperations {
     await Promise.all(maybePromises);
   }
 
-  async getTranslations(platform: string, language: string) {
+  async getTranslations(platform: string, language: string): Promise<[number, Translation[], Date] | null> {
     return await this.#storage.get<[number, Translation[], Date]>(K.cache.translations(platform, language));
   }
 
   async setTranslations(platform: string, language: string, version: number, translations: Translation[]) {
-    return await this.#storage.set(K.cache.translations(platform, language), [version, translations, new Date()]);
+    await this.#storage.set(K.cache.translations(platform, language), [version, translations, new Date()]);
   }
 }
