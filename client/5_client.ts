@@ -1830,7 +1830,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Hide all usernames from the a supergroup or a channel's profile. User-only.
+   * Hide all usernames from a supergroup or a channel's profile. User-only.
    *
    * @method ac
    * @param id A supergroup ID or a channel ID.
