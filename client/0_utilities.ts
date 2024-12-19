@@ -174,7 +174,7 @@ export function isCdnFunction(value: unknown) {
 }
 
 export function canBeInputUser(inputPeer: Api.InputPeer) {
-  return isOneOf(["inputPeerUser", "inputPeerUserFromMessage"], inputPeer);
+  return isOneOf(["inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], inputPeer);
 }
 export function toInputUser(inputPeer: Api.InputPeer) {
   let id: Api.InputUser;
