@@ -30,6 +30,7 @@ export enum ValueType {
   Date,
   Uint8Array,
   Array,
+  Map,
 }
 
 export function toString(value: unknown): string {
@@ -55,6 +56,8 @@ export function toString(value: unknown): string {
       }
     });
     return `${ValueType.Array}${items.join("\n")}`;
+  } else if (typeof value === "object" && value != null && Object.getPrototypeOf(value) == Object.prototype) {
+    return `${ValueType.Map}${toString(Object.entries(value)).slice(1)}`;
   } else {
     unreachable();
   }
@@ -101,6 +104,9 @@ export function fromString<T>(string: string): T {
       }
       return arr as T;
     }
+    case ValueType.Map:
+      //deno-lint-ignore no-explicit-any
+      return Object.fromEntries(fromString(`${ValueType.Array}${value}`) as [string, any]) as T;
   }
 }
 
