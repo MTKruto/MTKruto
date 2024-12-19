@@ -69,7 +69,7 @@ export interface Context {
   /** Context-aware alias for `client.sendMessage()`. */
   reply: (text: string, params?: Omit<SendMessageParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageText>;
   /** Context-aware alias for `client.sendPoll()`. */
-  replyPoll: (question: string, options: [string, string, ...string[]], params?: Omit<SendPollParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessagePoll>;
+  replyPoll: (question: string, options: string[], params?: Omit<SendPollParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessagePoll>;
   /** Context-aware alias for `client.sendPhoto()`. */
   replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessagePhoto>;
   /** Context-aware alias for `client.sendMediaGroup()`. */
@@ -2074,7 +2074,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param options The poll's options.
    * @returns The sent poll.
    */
-  async sendPoll(chatId: ID, question: string, options: [string, string, ...string[]], params?: SendPollParams): Promise<MessagePoll> {
+  async sendPoll(chatId: ID, question: string, options: string[], params?: SendPollParams): Promise<MessagePoll> {
     return await this.#messageManager.sendPoll(chatId, question, options, params);
   }
 
