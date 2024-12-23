@@ -38,7 +38,8 @@ export class TranslationsManager {
   }
 
   async #getTranslationsInner(platform: string, language: string, assert = false): Promise<Translation[]> {
-    const maybeTranslations = await this.#c.messageStorage.getTranslations(platform, language);
+    const canFetchFromCache = platform == this.#c.langPack && language == this.#c.langCode;
+    const maybeTranslations = canFetchFromCache ? await this.#c.messageStorage.getTranslations(platform, language) : null;
     if (maybeTranslations != null) {
       return maybeTranslations[1];
     } else if (assert) {
