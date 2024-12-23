@@ -569,3 +569,10 @@ export interface GetTranslationsParams {
   /** The language to get translations for. Defaults to the client's language. */
   language?: string;
 }
+
+export interface GetCommonChatsParams {
+  /** The identifier of a chat. If specified, the list of common chats will be fetched from that chat. */
+  fromChatId?: ID;
+  /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
+  limit?: number;
+}

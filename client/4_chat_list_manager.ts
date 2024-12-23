@@ -21,9 +21,9 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, Logger, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, as, is, isOneOf, peerToChatId } from "../2_tl.ts";
-import { ChatListItem, ChatMember, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, constructChatP, getChatListItemOrder, ID } from "../3_types.ts";
-import { type CreateChannelParams, type CreateGroupParams, type CreateSupergroupParams, GetChatMembersParams } from "./0_params.ts";
+import { Api, as, chatIdToPeerId, is, isOneOf, peerToChatId } from "../2_tl.ts";
+import { ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, constructChatP, getChatListItemOrder, ID } from "../3_types.ts";
+import { type CreateChannelParams, type CreateGroupParams, type CreateSupergroupParams, GetChatMembersParams, GetCommonChatsParams } from "./0_params.ts";
 import { canBeInputChannel, canBeInputUser, getChatListId, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
@@ -623,5 +623,29 @@ export class ChatListManager {
   async unarchiveChat(chatId: ID) {
     this.#c.storage.assertUser("unarchiveChat");
     await this.unarchiveChats([chatId]);
+  }
+
+  async getCommonChats(userId: ID, params?: GetCommonChatsParams) {
+    this.#c.storage.assertUser("getCommonChats");
+    const max_id = params?.fromChatId ? await this.#c.getInputPeerChatId(await this.#c.getInputPeer(params.fromChatId)) : 0;
+    if (max_id < 0) {
+      throw new InputError("fromChatId must be a chat identifier.");
+    }
+    const user_id = await this.#c.getInputUser(userId);
+    let limit = params?.limit ?? 100;
+    if (limit <= 0) {
+      limit = 1;
+    }
+    if (limit > 100) {
+      limit = 100;
+    }
+    const result = await this.#c.invoke({ _: "messages.getCommonChats", user_id, max_id: chatIdToPeerId(max_id), limit });
+    const chats = new Array<ChatP>();
+    for (const chat of result.chats) {
+      if (!is("chatEmpty", chat)) {
+        chats.push(constructChatP(chat));
+      }
+    }
+    return chats;
   }
 }
