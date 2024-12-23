@@ -628,7 +628,7 @@ export class ChatListManager {
   async getCommonChats(userId: ID, params?: GetCommonChatsParams) {
     this.#c.storage.assertUser("getCommonChats");
     const max_id = params?.fromChatId ? await this.#c.getInputPeerChatId(await this.#c.getInputPeer(params.fromChatId)) : 0;
-    if (max_id && max_id < 0) {
+    if (max_id < 0) {
       throw new InputError("fromChatId must be a chat identifier.");
     }
     const user_id = await this.#c.getInputUser(userId);
