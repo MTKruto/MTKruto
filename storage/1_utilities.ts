@@ -196,6 +196,9 @@ export function isInRange(key: StorageKeyPart[], start: readonly StorageKeyPart[
   for (const [i, part] of key.entries()) {
     const left = start[i];
     const right = end[i];
+    if (!left || !right) {
+      continue;
+    }
     if (left === undefined || right === undefined) {
       return false;
     }

@@ -28,7 +28,7 @@ import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuest
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
-import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageMediaParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetMyCommandsParams, SetReactionsParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageMediaParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetMyCommandsParams, SetReactionsParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, getUsername, isCdnFunction, isMtprotoFunction, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -2873,6 +2873,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async unarchiveChat(chatId: ID): Promise<void> {
     await this.#chatListManager.unarchiveChat(chatId);
+  }
+
+  /**
+   * Get common chats between a user and the current one. User-only.
+   *
+   * @method ch
+   * @param userId The identifier of the user to get the common chats with them.
+   */
+  async getCommonChats(userId: ID, params?: GetCommonChatsParams): Promise<void> {
+    await this.#chatListManager.getCommonChats(userId, params);
   }
 
   //

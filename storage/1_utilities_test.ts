@@ -18,8 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals, assertNotEquals } from "../0_deps.ts";
-import { fixKey, fromString, toString } from "./1_utilities.ts";
+import { assert, assertEquals, assertNotEquals } from "../0_deps.ts";
+import { fixKey, fromString, isInRange, toString } from "./1_utilities.ts";
 
 function eq(v: unknown) {
   assertEquals(fromString(toString(v)), v);
@@ -72,4 +72,10 @@ Deno.test("fixKey uniqueness", () => {
   assertNotEquals(fixKey(["a", "1234"]), fixKey(["a", 1234n]));
   assertNotEquals(fixKey(["a", 1234]), fixKey(["a", 1234n]));
   assertNotEquals(fixKey(["a", "1234"]), fixKey(["a", 1234]));
+});
+
+Deno.test("isInRange", () => {
+  assert(isInRange(["items", "B"], ["items", "A"], ["items", "T"]));
+  assert(isInRange(["items", "B", 0], ["items", "A"], ["items", "T"]));
+  assert(!isInRange(["items", "Z"], ["items", "A"], ["items", "T"]));
 });
