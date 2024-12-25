@@ -711,7 +711,7 @@ export class MessageManager {
     return null;
   }
 
-  async sendPoll(chatId: ID, question: string, options: [string | PollOption, string | PollOption, ...(string | PollOption)[]], params?: SendPollParams) {
+  async sendPoll(chatId: ID, question: string, options: (string | PollOption)[], params?: SendPollParams) {
     this.#checkParams(params);
     question = question?.trim();
     if (!question) {

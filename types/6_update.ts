@@ -22,6 +22,7 @@ import { AuthorizationState } from "./0_authorization_state.ts";
 import { ConnectionState } from "./0_connection_state.ts";
 import { MessageReference } from "./0_message_reference.ts";
 import { StoryReference } from "./0_story_reference.ts";
+import { Translation } from "./0_translation.ts";
 import { VideoChat } from "./0_video_chat.ts";
 import { BusinessConnection } from "./2_business_connection.ts";
 import { ChosenInlineResult } from "./2_chosen_inline_result.ts";
@@ -378,6 +379,29 @@ export interface UpdateJoinRequest {
   joinRequest: JoinRequest;
 }
 
+/**
+ * Translations were updated.
+ *
+ * ```
+ * client.on("translations", (ctx) => {
+ *   console.log("Translations were just updated.");
+ *   // ctx.translations
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateTranslations {
+  /**
+   * The new translations.
+   * @discriminator
+   */
+  translations: Translation[];
+  /** The platform of the translations that were updated. */
+  platform: string;
+  /** The language of the translations that were updated. */
+  language: string;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -403,6 +427,7 @@ export interface UpdateMap {
   videoChat: UpdateVideoChat;
   preCheckoutQuery: UpdatePreCheckoutQuery;
   joinRequest: UpdateJoinRequest;
+  translations: UpdateTranslations;
 }
 
 /** @unlisted */
@@ -430,6 +455,7 @@ export type UpdateIntersection = Partial<
   & UpdateVideoChat
   & UpdatePreCheckoutQuery
   & UpdateJoinRequest
+  & UpdateTranslations
 >;
 
 /** An incoming update. */
@@ -456,4 +482,5 @@ export type Update =
   | UpdateBusinessConnection
   | UpdateVideoChat
   | UpdatePreCheckoutQuery
-  | UpdateJoinRequest;
+  | UpdateJoinRequest
+  | UpdateTranslations;

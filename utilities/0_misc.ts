@@ -18,8 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
-import { second } from "./0_units.ts";
+import { SECOND, unreachable } from "../0_deps.ts";
 
 export function drop(maybePromise: unknown) {
   if (maybePromise !== undefined && maybePromise != null && typeof maybePromise === "object" && maybePromise instanceof Promise) {
@@ -58,11 +57,11 @@ export const ZERO_CHANNEL_ID = -1000000000000;
 export const VECTOR_CONSTRUCTOR = 0x1CB5C415;
 
 export function toUnixTimestamp(date: Date) {
-  return Math.floor(date.getTime() / second);
+  return Math.floor(date.getTime() / SECOND);
 }
 
 export function fromUnixTimestamp(date: number) {
-  return new Date(date * second);
+  return new Date(date * SECOND);
 }
 
 export async function* iterateReadableStream(stream: ReadableStream) {

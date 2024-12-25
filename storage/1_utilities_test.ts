@@ -60,7 +60,11 @@ Deno.test("fromString(toString)", async (t) => {
   });
 
   await t.step("Array", () => {
-    eq([1, 2, 3, 4, "Hello", 12n, true, false, [new Uint8Array(1024)]]);
+    eq([1, 2, 3, 4, "Hello\na\nb", 12n, true, false, [new Uint8Array(1024)]]);
+  });
+
+  await t.step("Map", () => {
+    eq({ a: 1, "b\na\n": 2, 1: 1 });
   });
 });
 

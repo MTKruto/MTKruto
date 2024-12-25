@@ -35,5 +35,5 @@ export * from "./utilities/1_base64.ts";
 export * from "./utilities/1_crypto.ts";
 export * from "./utilities/1_logger.ts";
 export * from "./utilities/1_math.ts";
-export * from "./utilities/1_misc.ts";
+export * from "./utilities/0_misc.ts";
 export * from "./utilities/2_queue.ts";

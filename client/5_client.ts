@@ -18,17 +18,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
+import { MINUTE, SECOND, unreachable } from "../0_deps.ts";
 import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
-import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, minute, mustPrompt, mustPromptOneOf, Mutex, second, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, as, chatIdToPeerId, getChatIdPeerType, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { DC, getDc } from "../3_transport.ts";
-import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ConnectionState, constructUser, FailedInvitation, FileSource, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, Sticker, Story, Update, User, VideoChat, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
+import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ConnectionState, constructUser, FailedInvitation, FileSource, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, Sticker, Story, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
-import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageMediaParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetMyCommandsParams, SetReactionsParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageMediaParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetMyCommandsParams, SetReactionsParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, getUsername, isCdnFunction, isMtprotoFunction, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -43,6 +43,7 @@ import { FileManager } from "./2_file_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
+import { TranslationsManager } from "./2_translations_manager.ts";
 import { UpdateManager } from "./2_update_manager.ts";
 import { MessageManager } from "./3_message_manager.ts";
 import { VideoChatManager } from "./3_video_chat_manager.ts";
@@ -68,7 +69,7 @@ export interface Context {
   /** Context-aware alias for `client.sendMessage()`. */
   reply: (text: string, params?: Omit<SendMessageParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageText>;
   /** Context-aware alias for `client.sendPoll()`. */
-  replyPoll: (question: string, options: [string, string, ...string[]], params?: Omit<SendPollParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessagePoll>;
+  replyPoll: (question: string, options: string[], params?: Omit<SendPollParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessagePoll>;
   /** Context-aware alias for `client.sendPhoto()`. */
   replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessagePhoto>;
   /** Context-aware alias for `client.sendMediaGroup()`. */
@@ -239,11 +240,11 @@ export interface ClientParams extends ClientPlainParams {
   appVersion?: string;
   /** The device_version parameter to be passed to initConnection. The default varies by the current runtime. */
   deviceModel?: string;
-  /** The lang_code parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
-  langCode?: string;
-  /** The lang_pack parameter to be passed to initConnection. Defaults to an empty string. */
-  langPack?: string;
-  /** The system_lang_cde parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
+  /** The client's language to be used for fetching translations. Defaults to the runtime's language or `"en"`. */
+  language?: string;
+  /** The client's platform to be used for fetching translations. Defaults to an empty string. */
+  platform?: string;
+  /** The system_lang_code parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
   systemLangCode?: string;
   /** The system_version parameter to be passed to initConnection. The default varies by the current runtime. */
   systemVersion?: string;
@@ -295,6 +296,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #chatListManager: ChatListManager;
   #accountManager: AccountManager;
   #paymentManager: PaymentManager;
+  #translationsManager: TranslationsManager;
   // deno-lint-ignore no-explicit-any
   #managers?: Record<string, any>;
   // deno-lint-ignore no-explicit-any
@@ -314,6 +316,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       chatListManager: this.#chatListManager,
       accountManager: this.#accountManager,
       paymentManager: this.#paymentManager,
+      translationsManager: this.#translationsManager,
     });
   }
 
@@ -327,8 +330,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #apiHash: string;
   public readonly appVersion: string;
   public readonly deviceModel: string;
-  public readonly langCode: string;
-  public readonly langPack: string;
+  public readonly language: string;
+  public readonly platform: string;
   public readonly systemLangCode: string;
   public readonly systemVersion: string;
   readonly #publicKeys?: PublicKeys;
@@ -394,8 +397,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
     this.appVersion = params?.appVersion ?? APP_VERSION;
     this.deviceModel = params?.deviceModel ?? DEVICE_MODEL;
-    this.langCode = params?.langCode ?? LANG_CODE;
-    this.langPack = params?.langPack ?? LANG_PACK;
+    this.language = params?.language ?? LANG_CODE;
+    this.platform = params?.platform ?? LANG_PACK;
     this.systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
     this.#publicKeys = params?.publicKeys;
@@ -441,6 +444,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
       outgoingMessages: this.#outgoingMessages,
       dropPendingUpdates: params?.dropPendingUpdates,
       disconnected: () => this.disconnected,
+      langPack: this.platform,
+      langCode: this.language,
     };
     this.#updateManager = new UpdateManager(c);
     this.#networkStatisticsManager = new NetworkStatisticsManager(c);
@@ -456,6 +461,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#chatListManager = new ChatListManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
     this.#accountManager = new AccountManager(c);
     this.#paymentManager = new PaymentManager(c);
+    this.#translationsManager = new TranslationsManager(c);
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
 
     const transportProvider = this.#client.transportProvider;
@@ -527,7 +533,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
           }
           this.#L.debug(`failed to reconnect, retrying in ${delay}:`, err);
         }
-        await new Promise((r) => setTimeout(r, delay * second));
+        await new Promise((r) => setTimeout(r, delay * SECOND));
       }
     } finally {
       this.#reconnecting = false;
@@ -585,8 +591,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
       transportProvider: this.#client.transportProvider,
       appVersion: this.appVersion,
       deviceModel: this.deviceModel,
-      langCode: this.langCode,
-      langPack: this.langPack,
+      language: this.language,
+      platform: this.platform,
       systemLangCode: this.systemLangCode,
       systemVersion: this.systemVersion,
       cdn: true,
@@ -1063,8 +1069,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
       if (this.connected) {
         return;
       }
-      if (this.#lastConnect != null && Date.now() - this.#lastConnect.getTime() <= 10 * second) {
-        await new Promise((r) => setTimeout(r, 3 * second));
+      if (this.#lastConnect != null && Date.now() - this.#lastConnect.getTime() <= 10 * SECOND) {
+        await new Promise((r) => setTimeout(r, 3 * SECOND));
       }
       await this.#initStorage();
       if (this.#authString && !this.#authStringImported) {
@@ -1336,7 +1342,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     while (!this.disconnected) {
       try {
         await new Promise((resolve, reject) => {
-          const timeout = setTimeout(resolve, 10 * second);
+          const timeout = setTimeout(resolve, 10 * SECOND);
           this.#connectionInsuranceLoopAbortController!.signal.onabort = () => {
             reject(this.#connectionInsuranceLoopAbortController?.signal.reason);
             clearTimeout(timeout);
@@ -1353,7 +1359,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   #pingLoopAbortController: AbortController | null = null;
-  #pingInterval = 56 * second;
+  #pingInterval = 56 * SECOND;
   #lastUpdates = new Date();
   #startPingLoop() {
     drop(this.#pingLoop());
@@ -1378,9 +1384,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
           continue;
         }
         this.#pingLoopAbortController.signal.throwIfAborted();
-        await this.invoke({ _: "ping_delay_disconnect", ping_id: getRandomId(), disconnect_delay: this.#pingInterval / second + 15 });
+        await this.invoke({ _: "ping_delay_disconnect", ping_id: getRandomId(), disconnect_delay: this.#pingInterval / SECOND + 15 });
         this.#pingLoopAbortController.signal.throwIfAborted();
-        if (Date.now() - this.#lastUpdates.getTime() >= 15 * minute) {
+        if (Date.now() - this.#lastUpdates.getTime() >= 15 * MINUTE) {
           drop(
             this.#updateManager.recoverUpdateGap("lastUpdates").then(() => {
               this.#lastUpdates = new Date();
@@ -1418,8 +1424,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
             api_id: await this.#getApiId(),
             app_version: this.appVersion,
             device_model: this.deviceModel,
-            lang_code: this.langCode,
-            lang_pack: this.langPack,
+            lang_code: this.language,
+            lang_pack: this.platform,
             query: {
               _: "invokeWithLayer",
               layer: LAYER,
@@ -1824,7 +1830,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Hide all usernames from the a supergroup or a channel's profile. User-only.
+   * Hide all usernames from a supergroup or a channel's profile. User-only.
    *
    * @method ac
    * @param id A supergroup ID or a channel ID.
@@ -1872,6 +1878,15 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async setUserEmojiStatus(userId: ID, id: string, params?: SetEmojiStatusParams) {
     await this.#accountManager.setUserEmojiStatus(userId, id, params);
+  }
+
+  /**
+   * Update the profile of the current user. At least one parameter must be specified. User-only.
+   *
+   * @method ac
+   */
+  async updateProfile(params?: UpdateProfileParams): Promise<void> {
+    await this.#accountManager.updateProfile(params);
   }
 
   //
@@ -2059,7 +2074,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param options The poll's options.
    * @returns The sent poll.
    */
-  async sendPoll(chatId: ID, question: string, options: [string, string, ...string[]], params?: SendPollParams): Promise<MessagePoll> {
+  async sendPoll(chatId: ID, question: string, options: string[], params?: SendPollParams): Promise<MessagePoll> {
     return await this.#messageManager.sendPoll(chatId, question, options, params);
   }
 
@@ -2821,7 +2836,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Archive multiple chats.
+   * Archive multiple chats. User-only.
    *
    * @method ch
    * @param chatIds The identifiers of the chats to archive.
@@ -2831,7 +2846,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Archive a single chat.
+   * Archive a single chat. User-only.
    *
    * @method ch
    * @param chatId The identifier of the chat to archive.
@@ -2841,7 +2856,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Unarchive multiple chats.
+   * Unarchive multiple chats. User-only.
    *
    * @method ch
    * @param chatIds The identifiers of the chats to unarchive.
@@ -2851,7 +2866,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Unarchive a single chat.
+   * Unarchive a single chat. User-only.
    *
    * @method ch
    * @param chatId The identifier of the chat to unarchive.
@@ -3334,5 +3349,18 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async addContact(userId: ID, params?: AddContactParams): Promise<void> {
     await this.#accountManager.addContact(userId, params);
+  }
+
+  //
+  // ========================= TRANSLATIONS ========================= //
+  //
+
+  /**
+   * Get translations. User-only.
+   *
+   * @method ta
+   */
+  async getTranslations(params?: GetTranslationsParams): Promise<Translation[]> {
+    return await this.#translationsManager.getTranslations(params);
   }
 }

@@ -553,3 +553,19 @@ export interface AddContactParams {
   /** Whether the phone number of the current user should be shared with the contact. */
   sharePhoneNumber?: boolean;
 }
+
+export interface UpdateProfileParams {
+  /** New account first name. */
+  firstName?: string;
+  /** New account last name. */
+  lastName?: string;
+  /** New account bio. */
+  bio?: string;
+}
+
+export interface GetTranslationsParams {
+  /** The platform to get translations for. Defaults to the client's platform. */
+  platform?: string;
+  /** The language to get translations for. Defaults to the client's language. */
+  language?: string;
+}

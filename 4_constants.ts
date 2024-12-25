@@ -76,7 +76,7 @@ export const PUBLIC_KEYS: PublicKeys = Object.freeze([
 
 export const INITIAL_DC: DC = "2";
 
-export const LAYER = 194;
+export const LAYER = 195;
 
 export const APP_VERSION = "MTKruto";
 
