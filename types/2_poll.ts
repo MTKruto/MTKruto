@@ -59,7 +59,6 @@ export function constructPoll(media_: Api.messageMediaPoll): Poll {
   const poll = media_.poll;
   const correctOption = media_.results.results?.find((v) => v.correct)?.option;
   const correctOptionId = correctOption !== undefined ? poll.answers.findIndex((v) => v.option.every((v, i) => correctOption[i] == v)) : undefined;
-
   return cleanObject({
     id: String(poll.id),
     question: poll.question.text,

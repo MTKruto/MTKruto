@@ -211,7 +211,21 @@ export class MessageManager {
   }
 
   async constructMessage(message_: Api.Message, r?: boolean, business?: { connectionId: string; replyToMessage?: Api.Message }) {
-    return await constructMessage_(message_, this.#c.getEntity, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r, business);
+    const mediaPoll = "media" in message_ && is("messageMediaPoll", message_.media) ? message_.media : null;
+    const pollId = mediaPoll?.poll.id;
+    let poll: Api.poll | null = null;
+    let pollResults: Api.pollResults | null = null;
+    if (pollId) {
+      [poll, pollResults] = await Promise.all([this.#c.messageStorage.getPoll(pollId), this.#c.messageStorage.getPollResults(pollId)]);
+    }
+    const message = await constructMessage_(message_, this.#c.getEntity, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r, business, poll ?? undefined, pollResults ?? undefined);
+    if (!poll && mediaPoll) {
+      await this.#c.storage.setPoll(mediaPoll.poll.id, mediaPoll.poll);
+    }
+    if (!pollResults && mediaPoll) {
+      await this.#c.storage.setPollResults(mediaPoll.poll.id, mediaPoll.results);
+    }
+    return message;
   }
 
   async forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams) {

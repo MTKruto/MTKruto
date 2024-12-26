@@ -30,6 +30,7 @@ import { InlineQuery } from "./2_inline_query.ts";
 import { MessageInteractions } from "./2_message_interactions.ts";
 import { MessageReactionCount } from "./2_message_reaction_count.ts";
 import { MessageReactions } from "./2_message_reactions.ts";
+import { Poll } from "./2_poll.ts";
 import { PreCheckoutQuery } from "./2_pre_checkout_query.ts";
 import { ChatMemberUpdated } from "./3_chat_member_updated.ts";
 import { JoinRequest } from "./3_join_request.ts";
@@ -402,6 +403,25 @@ export interface UpdateTranslations {
   language: string;
 }
 
+/**
+ * A poll was updated.
+ *
+ * ```
+ * client.on("poll", (ctx) => {
+ *   console.log("A poll just changed.");
+ *   // ctx.poll
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdatePoll {
+  /**
+   * The poll with its new state.
+   * @discriminator
+   */
+  poll: Poll;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -428,6 +448,7 @@ export interface UpdateMap {
   preCheckoutQuery: UpdatePreCheckoutQuery;
   joinRequest: UpdateJoinRequest;
   translations: UpdateTranslations;
+  poll: UpdatePoll;
 }
 
 /** @unlisted */
@@ -456,6 +477,7 @@ export type UpdateIntersection = Partial<
   & UpdatePreCheckoutQuery
   & UpdateJoinRequest
   & UpdateTranslations
+  & UpdatePoll
 >;
 
 /** An incoming update. */
@@ -483,4 +505,5 @@ export type Update =
   | UpdateVideoChat
   | UpdatePreCheckoutQuery
   | UpdateJoinRequest
-  | UpdateTranslations;
+  | UpdateTranslations
+  | UpdatePoll;

@@ -83,6 +83,10 @@ export const K = {
     allTranslations: () => ["translations"],
     platformTranslations: (platform: string) => [...K.cache.allTranslations(), platform],
     translations: (platform: string, language: string) => [...K.cache.platformTranslations(platform), language],
+    pollResults: () => ["pollResults"],
+    pollResult: (pollId: bigint) => [...K.cache.pollResults(), pollId],
+    polls: () => ["polls"],
+    poll: (pollId: bigint) => [...K.cache.polls(), pollId],
   },
   messages: {
     P: (string: string): string => `messages.${string}`,
@@ -716,5 +720,21 @@ export class StorageOperations {
 
   async setTranslations(platform: string, language: string, version: number, translations: Translation[]) {
     await this.#storage.set(K.cache.translations(platform, language), [version, translations, new Date()]);
+  }
+
+  async setPollResults(pollId: bigint, pollResults: Api.pollResults) {
+    await this.setTlObject(K.cache.pollResult(pollId), pollResults);
+  }
+
+  async getPollResults(pollId: bigint): Promise<Api.pollResults | null> {
+    return await this.getTlObject(K.cache.pollResult(pollId)) as Api.pollResults | null;
+  }
+
+  async setPoll(pollId: bigint, poll: Api.poll) {
+    await this.setTlObject(K.cache.poll(pollId), poll);
+  }
+
+  async getPoll(pollId: bigint): Promise<Api.poll | null> {
+    return await this.getTlObject(K.cache.poll(pollId)) as Api.poll | null;
   }
 }
