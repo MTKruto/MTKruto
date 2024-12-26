@@ -677,6 +677,8 @@ export class StorageOperations {
       this.deletePeers(),
       this.deleteUsernames(),
       this.deleteTranslations(),
+      this.deletePollResults(),
+      this.deletePolls(),
     ]);
   }
 
@@ -730,11 +732,27 @@ export class StorageOperations {
     return await this.getTlObject(K.cache.pollResult(pollId)) as Api.pollResults | null;
   }
 
+  async deletePollResults() {
+    const maybePromises = new Array<MaybePromise<unknown>>();
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.pollResults() })) {
+      maybePromises.push(this.#storage.set(key, null));
+    }
+    await Promise.all(maybePromises);
+  }
+
   async setPoll(pollId: bigint, poll: Api.poll) {
     await this.setTlObject(K.cache.poll(pollId), poll);
   }
 
   async getPoll(pollId: bigint): Promise<Api.poll | null> {
     return await this.getTlObject(K.cache.poll(pollId)) as Api.poll | null;
+  }
+
+  async deletePolls() {
+    const maybePromises = new Array<MaybePromise<unknown>>();
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.polls() })) {
+      maybePromises.push(this.#storage.set(key, null));
+    }
+    await Promise.all(maybePromises);
   }
 }
