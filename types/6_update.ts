@@ -405,7 +405,7 @@ export interface UpdateTranslations {
 
 /**
  * A poll was updated.
- * 
+ *
  * ```
  * client.on("poll", (ctx) => {
  *   console.log("A poll just changed.");
