@@ -50,6 +50,7 @@ import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { CallbackQueryManager } from "./4_callback_query_manager.ts";
 import { ChatListManager } from "./4_chat_list_manager.ts";
 import { InlineQueryManager } from "./4_inline_query_manager.ts";
+import { PollManager } from "./4_poll_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
 
 export interface Context {
@@ -291,6 +292,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #businessConnectionManager: BusinessConnectionManager;
   #messageManager: MessageManager;
   #storyManager: StoryManager;
+  #pollManager: PollManager;
   #callbackQueryManager: CallbackQueryManager;
   #inlineQueryManager: InlineQueryManager;
   #chatListManager: ChatListManager;
@@ -456,6 +458,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#videoChatManager = new VideoChatManager({ ...c, fileManager: this.#fileManager });
     this.#messageManager = new MessageManager({ ...c, fileManager: this.#fileManager });
     this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager: this.#messageManager });
+    this.#pollManager = new PollManager({ ...c, messageManager: this.#messageManager });
     this.#storyManager = new StoryManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
     this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager: this.#messageManager });
     this.#chatListManager = new ChatListManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
@@ -2428,8 +2431,31 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return await this.#messageManager.startBot(botId, params);
   }
 
+  //
+  // ========================= POLLS ========================= //
+  //
+
+  /**
+   * Cast a vote. User-only.
+   *
+   * @method pl
+   * @param chatId The identifier of the chat that includes the poll.
+   * @param messageId The identifier of the message that includes the poll.
+   * @param optionIndexes The indexes of the options to cast for.
+   */
   async vote(chatId: ID, messageId: number, optionIndexes: number[]) {
-    await this.#messageManager.vote(chatId, messageId, optionIndexes);
+    await this.#pollManager.vote(chatId, messageId, optionIndexes);
+  }
+
+  /**
+   * Retract a vote. User-only.
+   *
+   * @method pl
+   * @param chatId The identifier of the chat that includes the poll.
+   * @param messageId The identifier of the message that includes the poll.
+   */
+  async retractVote(chatId: ID, messageId: number) {
+    await this.#pollManager.retractVote(chatId, messageId);
   }
 
   //

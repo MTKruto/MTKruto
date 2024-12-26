@@ -29,12 +29,16 @@ export interface PollOption {
   entities: MessageEntity[];
   /** Number of users that voted this option. */
   voterCount: number;
+  /** Whether this option has been chosen. */
+  chosen: boolean;
 }
 
 export function constructPollOption(option: Api.PollAnswer, results: Array<Api.PollAnswerVoters>): PollOption {
+  const result = results.find((v) => v.option.every((v, i) => option.option[i] == v));
   return {
     text: option.text.text,
     entities: option.text.entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v != null),
-    voterCount: results.find((v) => v.option.every((v, i) => option.option[i] == v))?.voters ?? 0,
+    voterCount: result?.voters ?? 0,
+    chosen: result?.chosen ?? false,
   };
 }

@@ -918,6 +918,8 @@ export async function constructMessage(
   getStickerSetName: StickerSetNameGetter,
   getReply_ = true,
   business?: { connectionId: string; replyToMessage?: Api.Message },
+  poll?: Api.poll,
+  pollResults?: Api.pollResults,
 ): Promise<Message> {
   if (!(is("message", message_)) && !(is("messageService", message_))) {
     unreachable();
@@ -1123,8 +1125,14 @@ export async function constructMessage(
     const game = constructGame(message_.media);
     m = { ...message, game };
   } else if (is("messageMediaPoll", message_.media)) {
-    const poll = constructPoll(message_.media);
-    m = { ...message, poll };
+    if (poll) {
+      message_.media.poll = poll;
+    }
+    if (pollResults) {
+      message_.media.results = pollResults;
+    }
+    const poll_ = constructPoll(message_.media);
+    m = { ...message, poll: poll_ };
   } else if (is("messageMediaVenue", message_.media)) {
     const venue = constructVenue(message_.media);
     m = { ...message, venue };
