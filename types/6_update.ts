@@ -403,7 +403,22 @@ export interface UpdateTranslations {
   language: string;
 }
 
+/**
+ * A poll was updated.
+ * 
+ * ```
+ * client.on("poll", (ctx) => {
+ *   console.log("A poll just changed.");
+ *   // ctx.poll
+ * });
+ * ```
+ * @unlisted
+ */
 export interface UpdatePoll {
+  /**
+   * The poll with its new state.
+   * @discriminator
+   */
   poll: Poll;
 }
 
