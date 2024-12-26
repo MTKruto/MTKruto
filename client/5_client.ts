@@ -2429,7 +2429,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async vote(chatId: ID, messageId: number, optionIndexes: number[]) {
-    await this.#messageManager.vote(chatId, messageId, optionIndexes)
+    await this.#messageManager.vote(chatId, messageId, optionIndexes);
   }
 
   //
