@@ -2428,6 +2428,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return await this.#messageManager.startBot(botId, params);
   }
 
+  async vote(chatId: ID, messageId: number, optionIndexes: number[]) {
+    await this.#messageManager.vote(chatId, messageId, optionIndexes)
+  }
+
   //
   // ========================= FILES ========================= //
   //
@@ -2881,8 +2885,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @method ch
    * @param userId The identifier of the user to get the common chats with them.
    */
-  async getCommonChats(userId: ID, params?: GetCommonChatsParams): Promise<void> {
-    await this.#chatListManager.getCommonChats(userId, params);
+  async getCommonChats(userId: ID, params?: GetCommonChatsParams): Promise<ChatP[]> {
+    return await this.#chatListManager.getCommonChats(userId, params);
   }
 
   //
