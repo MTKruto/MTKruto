@@ -1725,6 +1725,15 @@ export class Client<C extends Context = Context> extends Composer<C> {
       });
     }
 
+    if (PollManager.canHandleUpdate(update)) {
+      promises.push(async () => {
+        const ctxUpdate = await this.#pollManager.handleUpdate(update);
+        if (ctxUpdate) {
+          await this.#handleCtxUpdate(ctxUpdate);
+        }
+      });
+    }
+
     if (VideoChatManager.canHandleUpdate(update)) {
       promises.push(async () => this.#handleCtxUpdate(await this.#videoChatManager.handleUpdate(update)));
     }
