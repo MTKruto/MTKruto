@@ -681,13 +681,19 @@ const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
   successfulPayment: ["successfulPayment"],
   refundedPayment: ["refundedPayment"],
 };
-export function assertMessageType<T extends keyof MessageTypes>(message: Message, type: T): MessageTypes[T] {
+export function isMessageType<T extends keyof MessageTypes>(message: Message, type: T): message is MessageTypes[T] {
   for (const key of keys[type]) {
     if (!(key in message) || message[key as keyof typeof message] === undefined) {
-      unreachable();
+      return false;
     }
   }
-  return message as MessageTypes[T];
+  return true;
+}
+export function assertMessageType<T extends keyof MessageTypes>(message: Message, type: T): MessageTypes[T] {
+  if (!isMessageType(message, type)) {
+    unreachable();
+  }
+  return message;
 }
 
 /** Any type of message. */

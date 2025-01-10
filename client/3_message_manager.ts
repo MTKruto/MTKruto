@@ -22,7 +22,7 @@ import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, getChannelChatId, is, isOneOf, peerToChatId } from "../2_tl.ts";
-import { constructChatMemberUpdated, constructFailedInvitation, constructInviteLink, constructJoinRequest, deserializeFileId, FileId, InputMedia, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
+import { constructChatMemberUpdated, constructFailedInvitation, constructInviteLink, constructJoinRequest, deserializeFileId, FileId, InputMedia, isMessageType, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
 import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
@@ -815,6 +815,12 @@ export class MessageManager {
     params?: EditMessageParams,
   ) {
     this.#checkParams(params);
+    {
+      const message = await this.getMessage(chatId, messageId);
+      if (!isMessageType(message, "link") && !isMessageType(message, "text")) {
+        throw new InputError("The referenced message is not a text message.");
+      }
+    }
     const [message, entities] = await this.parseText(text, params);
     const noWebpage = params?.linkPreview?.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
