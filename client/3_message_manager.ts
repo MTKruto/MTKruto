@@ -27,7 +27,7 @@ import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructMes
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageMediaParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageMediaParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import { canBeInputChannel, canBeInputUser, checkArray, checkMessageId, isHttpUrl, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
@@ -817,6 +817,9 @@ export class MessageManager {
     this.#checkParams(params);
     {
       const message = await this.getMessage(chatId, messageId);
+      if (!message) {
+        throw new InputError("Message not found.");
+      }
       if (!isMessageType(message, "link") && !isMessageType(message, "text")) {
         throw new InputError("The referenced message is not a text message.");
       }
@@ -844,6 +847,36 @@ export class MessageManager {
 
     const message_ = (await this.#updatesToMessages(chatId, result))[0];
     return assertMessageType(message_, "text");
+  }
+
+  static #CAPTIONABLE_MESSAGE_TYPES = ["photo", "document", "video", "animation", "voice", "audio", "video"] as const;
+  async editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams) {
+    let canHaveCaption = false;
+    const message_ = await this.getMessage(chatId, messageId);
+    if (!message_) {
+      throw new InputError("Message not found.");
+    }
+    for (const type of MessageManager.#CAPTIONABLE_MESSAGE_TYPES) {
+      if (isMessageType(message_, type)) {
+        canHaveCaption = true;
+      }
+    }
+    if (!canHaveCaption) {
+      throw new InputError("The referenced message cannot have a caption.");
+    }
+
+    const [message, entities] = await this.parseText(params?.caption ?? "", params);
+
+    const result = await this.#c.invoke({
+      _: "messages.editMessage",
+      id: checkMessageId(messageId),
+      peer: await this.#c.getInputPeer(chatId),
+      entities: message ? entities : [],
+      message,
+      reply_markup: await this.#constructReplyMarkup(params),
+    }, params?.businessConnectionId);
+
+    return (await this.#updatesToMessages(chatId, result))[0];
   }
 
   async editInlineMessageText(inlineMessageId: string, text: string, params?: EditMessageParams) {
