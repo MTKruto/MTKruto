@@ -9962,5168 +9962,5168 @@ export interface users_usersSlice {
 }
 
 export interface req_pq_multi {
-    _: "req_pq_multi"
-    nonce: bigint;
-    [R]?: ResPQ;
+  _: "req_pq_multi";
+  nonce: bigint;
+  [R]?: ResPQ;
 }
 
 export interface req_DH_params {
-    _: "req_DH_params"
-    nonce: bigint;
-    server_nonce: bigint;
-    p: Uint8Array;
-    q: Uint8Array;
-    public_key_fingerprint: bigint;
-    encrypted_data: Uint8Array;
-    [R]?: Server_DH_Params;
+  _: "req_DH_params";
+  nonce: bigint;
+  server_nonce: bigint;
+  p: Uint8Array;
+  q: Uint8Array;
+  public_key_fingerprint: bigint;
+  encrypted_data: Uint8Array;
+  [R]?: Server_DH_Params;
 }
 
 export interface set_client_DH_params {
-    _: "set_client_DH_params"
-    nonce: bigint;
-    server_nonce: bigint;
-    encrypted_data: Uint8Array;
-    [R]?: Set_client_DH_params_answer;
+  _: "set_client_DH_params";
+  nonce: bigint;
+  server_nonce: bigint;
+  encrypted_data: Uint8Array;
+  [R]?: Set_client_DH_params_answer;
 }
 
 export interface rpc_drop_answer {
-    _: "rpc_drop_answer"
-    req_msg_id: bigint;
-    [R]?: RpcDropAnswer;
+  _: "rpc_drop_answer";
+  req_msg_id: bigint;
+  [R]?: RpcDropAnswer;
 }
 
 export interface get_future_salts {
-    _: "get_future_salts"
-    num: number;
-    [R]?: FutureSalts;
+  _: "get_future_salts";
+  num: number;
+  [R]?: FutureSalts;
 }
 
 export interface ping {
-    _: "ping"
-    ping_id: bigint;
-    [R]?: Pong;
+  _: "ping";
+  ping_id: bigint;
+  [R]?: Pong;
 }
 
 export interface ping_delay_disconnect {
-    _: "ping_delay_disconnect"
-    ping_id: bigint;
-    disconnect_delay: number;
-    [R]?: Pong;
+  _: "ping_delay_disconnect";
+  ping_id: bigint;
+  disconnect_delay: number;
+  [R]?: Pong;
 }
 
 export interface destroy_session {
-    _: "destroy_session"
-    session_id: bigint;
-    [R]?: DestroySessionRes;
+  _: "destroy_session";
+  session_id: bigint;
+  [R]?: DestroySessionRes;
 }
 
 export interface destroy_auth_key {
-    _: "destroy_auth_key"
-    [R]?: DestroyAuthKeyRes;
+  _: "destroy_auth_key";
+  [R]?: DestroyAuthKeyRes;
 }
 
 export interface invokeAfterMsg<T> {
-    _: "invokeAfterMsg"
-    msg_id: bigint;
-    query: T;
-    [R]?: ReturnType<T>;
+  _: "invokeAfterMsg";
+  msg_id: bigint;
+  query: T;
+  [R]?: ReturnType<T>;
 }
 
 export interface invokeAfterMsgs<T> {
-    _: "invokeAfterMsgs"
-    msg_ids: Array<bigint>;
-    query: T;
-    [R]?: ReturnType<T>;
+  _: "invokeAfterMsgs";
+  msg_ids: Array<bigint>;
+  query: T;
+  [R]?: ReturnType<T>;
 }
 
 export interface initConnection<T> {
-    _: "initConnection"
-    api_id: number;
-    device_model: string;
-    system_version: string;
-    app_version: string;
-    system_lang_code: string;
-    lang_pack: string;
-    lang_code: string;
-    proxy?: InputClientProxy;
-    params?: JSONValue;
-    query: T;
-    [R]?: ReturnType<T>;
+  _: "initConnection";
+  api_id: number;
+  device_model: string;
+  system_version: string;
+  app_version: string;
+  system_lang_code: string;
+  lang_pack: string;
+  lang_code: string;
+  proxy?: InputClientProxy;
+  params?: JSONValue;
+  query: T;
+  [R]?: ReturnType<T>;
 }
 
 export interface invokeWithLayer<T> {
-    _: "invokeWithLayer"
-    layer: number;
-    query: T;
-    [R]?: ReturnType<T>;
+  _: "invokeWithLayer";
+  layer: number;
+  query: T;
+  [R]?: ReturnType<T>;
 }
 
 export interface invokeWithoutUpdates<T> {
-    _: "invokeWithoutUpdates"
-    query: T;
-    [R]?: ReturnType<T>;
+  _: "invokeWithoutUpdates";
+  query: T;
+  [R]?: ReturnType<T>;
 }
 
 export interface invokeWithMessagesRange<T> {
-    _: "invokeWithMessagesRange"
-    range: MessageRange;
-    query: T;
-    [R]?: ReturnType<T>;
+  _: "invokeWithMessagesRange";
+  range: MessageRange;
+  query: T;
+  [R]?: ReturnType<T>;
 }
 
 export interface invokeWithTakeout<T> {
-    _: "invokeWithTakeout"
-    takeout_id: bigint;
-    query: T;
-    [R]?: ReturnType<T>;
+  _: "invokeWithTakeout";
+  takeout_id: bigint;
+  query: T;
+  [R]?: ReturnType<T>;
 }
 
 export interface invokeWithBusinessConnection<T> {
-    _: "invokeWithBusinessConnection"
-    connection_id: string;
-    query: T;
-    [R]?: ReturnType<T>;
+  _: "invokeWithBusinessConnection";
+  connection_id: string;
+  query: T;
+  [R]?: ReturnType<T>;
 }
 
 export interface invokeWithGooglePlayIntegrity<T> {
-    _: "invokeWithGooglePlayIntegrity"
-    nonce: string;
-    token: string;
-    query: T;
-    [R]?: ReturnType<T>;
+  _: "invokeWithGooglePlayIntegrity";
+  nonce: string;
+  token: string;
+  query: T;
+  [R]?: ReturnType<T>;
 }
 
 export interface invokeWithApnsSecret<T> {
-    _: "invokeWithApnsSecret"
-    nonce: string;
-    secret: string;
-    query: T;
-    [R]?: ReturnType<T>;
+  _: "invokeWithApnsSecret";
+  nonce: string;
+  secret: string;
+  query: T;
+  [R]?: ReturnType<T>;
 }
 
 export interface auth_sendCode {
-    _: "auth.sendCode"
-    phone_number: string;
-    api_id: number;
-    api_hash: string;
-    settings: CodeSettings;
-    [R]?: auth_SentCode;
+  _: "auth.sendCode";
+  phone_number: string;
+  api_id: number;
+  api_hash: string;
+  settings: CodeSettings;
+  [R]?: auth_SentCode;
 }
 
 export interface auth_signUp {
-    _: "auth.signUp"
-    no_joined_notifications?: true;
-    phone_number: string;
-    phone_code_hash: string;
-    first_name: string;
-    last_name: string;
-    [R]?: auth_Authorization;
+  _: "auth.signUp";
+  no_joined_notifications?: true;
+  phone_number: string;
+  phone_code_hash: string;
+  first_name: string;
+  last_name: string;
+  [R]?: auth_Authorization;
 }
 
 export interface auth_signIn {
-    _: "auth.signIn"
-    phone_number: string;
-    phone_code_hash: string;
-    phone_code?: string;
-    email_verification?: EmailVerification;
-    [R]?: auth_Authorization;
+  _: "auth.signIn";
+  phone_number: string;
+  phone_code_hash: string;
+  phone_code?: string;
+  email_verification?: EmailVerification;
+  [R]?: auth_Authorization;
 }
 
 export interface auth_logOut {
-    _: "auth.logOut"
-    [R]?: auth_LoggedOut;
+  _: "auth.logOut";
+  [R]?: auth_LoggedOut;
 }
 
 export interface auth_resetAuthorizations {
-    _: "auth.resetAuthorizations"
-    [R]?: boolean;
+  _: "auth.resetAuthorizations";
+  [R]?: boolean;
 }
 
 export interface auth_exportAuthorization {
-    _: "auth.exportAuthorization"
-    dc_id: number;
-    [R]?: auth_ExportedAuthorization;
+  _: "auth.exportAuthorization";
+  dc_id: number;
+  [R]?: auth_ExportedAuthorization;
 }
 
 export interface auth_importAuthorization {
-    _: "auth.importAuthorization"
-    id: bigint;
-    bytes: Uint8Array;
-    [R]?: auth_Authorization;
+  _: "auth.importAuthorization";
+  id: bigint;
+  bytes: Uint8Array;
+  [R]?: auth_Authorization;
 }
 
 export interface auth_bindTempAuthKey {
-    _: "auth.bindTempAuthKey"
-    perm_auth_key_id: bigint;
-    nonce: bigint;
-    expires_at: number;
-    encrypted_message: Uint8Array;
-    [R]?: boolean;
+  _: "auth.bindTempAuthKey";
+  perm_auth_key_id: bigint;
+  nonce: bigint;
+  expires_at: number;
+  encrypted_message: Uint8Array;
+  [R]?: boolean;
 }
 
 export interface auth_importBotAuthorization {
-    _: "auth.importBotAuthorization"
-    flags: number;
-    api_id: number;
-    api_hash: string;
-    bot_auth_token: string;
-    [R]?: auth_Authorization;
+  _: "auth.importBotAuthorization";
+  flags: number;
+  api_id: number;
+  api_hash: string;
+  bot_auth_token: string;
+  [R]?: auth_Authorization;
 }
 
 export interface auth_checkPassword {
-    _: "auth.checkPassword"
-    password: InputCheckPasswordSRP;
-    [R]?: auth_Authorization;
+  _: "auth.checkPassword";
+  password: InputCheckPasswordSRP;
+  [R]?: auth_Authorization;
 }
 
 export interface auth_requestPasswordRecovery {
-    _: "auth.requestPasswordRecovery"
-    [R]?: auth_PasswordRecovery;
+  _: "auth.requestPasswordRecovery";
+  [R]?: auth_PasswordRecovery;
 }
 
 export interface auth_recoverPassword {
-    _: "auth.recoverPassword"
-    code: string;
-    new_settings?: account_PasswordInputSettings;
-    [R]?: auth_Authorization;
+  _: "auth.recoverPassword";
+  code: string;
+  new_settings?: account_PasswordInputSettings;
+  [R]?: auth_Authorization;
 }
 
 export interface auth_resendCode {
-    _: "auth.resendCode"
-    phone_number: string;
-    phone_code_hash: string;
-    reason?: string;
-    [R]?: auth_SentCode;
+  _: "auth.resendCode";
+  phone_number: string;
+  phone_code_hash: string;
+  reason?: string;
+  [R]?: auth_SentCode;
 }
 
 export interface auth_cancelCode {
-    _: "auth.cancelCode"
-    phone_number: string;
-    phone_code_hash: string;
-    [R]?: boolean;
+  _: "auth.cancelCode";
+  phone_number: string;
+  phone_code_hash: string;
+  [R]?: boolean;
 }
 
 export interface auth_dropTempAuthKeys {
-    _: "auth.dropTempAuthKeys"
-    except_auth_keys: Array<bigint>;
-    [R]?: boolean;
+  _: "auth.dropTempAuthKeys";
+  except_auth_keys: Array<bigint>;
+  [R]?: boolean;
 }
 
 export interface auth_exportLoginToken {
-    _: "auth.exportLoginToken"
-    api_id: number;
-    api_hash: string;
-    except_ids: Array<bigint>;
-    [R]?: auth_LoginToken;
+  _: "auth.exportLoginToken";
+  api_id: number;
+  api_hash: string;
+  except_ids: Array<bigint>;
+  [R]?: auth_LoginToken;
 }
 
 export interface auth_importLoginToken {
-    _: "auth.importLoginToken"
-    token: Uint8Array;
-    [R]?: auth_LoginToken;
+  _: "auth.importLoginToken";
+  token: Uint8Array;
+  [R]?: auth_LoginToken;
 }
 
 export interface auth_acceptLoginToken {
-    _: "auth.acceptLoginToken"
-    token: Uint8Array;
-    [R]?: Authorization;
+  _: "auth.acceptLoginToken";
+  token: Uint8Array;
+  [R]?: Authorization;
 }
 
 export interface auth_checkRecoveryPassword {
-    _: "auth.checkRecoveryPassword"
-    code: string;
-    [R]?: boolean;
+  _: "auth.checkRecoveryPassword";
+  code: string;
+  [R]?: boolean;
 }
 
 export interface auth_importWebTokenAuthorization {
-    _: "auth.importWebTokenAuthorization"
-    api_id: number;
-    api_hash: string;
-    web_auth_token: string;
-    [R]?: auth_Authorization;
+  _: "auth.importWebTokenAuthorization";
+  api_id: number;
+  api_hash: string;
+  web_auth_token: string;
+  [R]?: auth_Authorization;
 }
 
 export interface auth_requestFirebaseSms {
-    _: "auth.requestFirebaseSms"
-    phone_number: string;
-    phone_code_hash: string;
-    safety_net_token?: string;
-    play_integrity_token?: string;
-    ios_push_secret?: string;
-    [R]?: boolean;
+  _: "auth.requestFirebaseSms";
+  phone_number: string;
+  phone_code_hash: string;
+  safety_net_token?: string;
+  play_integrity_token?: string;
+  ios_push_secret?: string;
+  [R]?: boolean;
 }
 
 export interface auth_resetLoginEmail {
-    _: "auth.resetLoginEmail"
-    phone_number: string;
-    phone_code_hash: string;
-    [R]?: auth_SentCode;
+  _: "auth.resetLoginEmail";
+  phone_number: string;
+  phone_code_hash: string;
+  [R]?: auth_SentCode;
 }
 
 export interface auth_reportMissingCode {
-    _: "auth.reportMissingCode"
-    phone_number: string;
-    phone_code_hash: string;
-    mnc: string;
-    [R]?: boolean;
+  _: "auth.reportMissingCode";
+  phone_number: string;
+  phone_code_hash: string;
+  mnc: string;
+  [R]?: boolean;
 }
 
 export interface account_registerDevice {
-    _: "account.registerDevice"
-    no_muted?: true;
-    token_type: number;
-    token: string;
-    app_sandbox: boolean;
-    secret: Uint8Array;
-    other_uids: Array<bigint>;
-    [R]?: boolean;
+  _: "account.registerDevice";
+  no_muted?: true;
+  token_type: number;
+  token: string;
+  app_sandbox: boolean;
+  secret: Uint8Array;
+  other_uids: Array<bigint>;
+  [R]?: boolean;
 }
 
 export interface account_unregisterDevice {
-    _: "account.unregisterDevice"
-    token_type: number;
-    token: string;
-    other_uids: Array<bigint>;
-    [R]?: boolean;
+  _: "account.unregisterDevice";
+  token_type: number;
+  token: string;
+  other_uids: Array<bigint>;
+  [R]?: boolean;
 }
 
 export interface account_updateNotifySettings {
-    _: "account.updateNotifySettings"
-    peer: InputNotifyPeer;
-    settings: InputPeerNotifySettings;
-    [R]?: boolean;
+  _: "account.updateNotifySettings";
+  peer: InputNotifyPeer;
+  settings: InputPeerNotifySettings;
+  [R]?: boolean;
 }
 
 export interface account_getNotifySettings {
-    _: "account.getNotifySettings"
-    peer: InputNotifyPeer;
-    [R]?: PeerNotifySettings;
+  _: "account.getNotifySettings";
+  peer: InputNotifyPeer;
+  [R]?: PeerNotifySettings;
 }
 
 export interface account_resetNotifySettings {
-    _: "account.resetNotifySettings"
-    [R]?: boolean;
+  _: "account.resetNotifySettings";
+  [R]?: boolean;
 }
 
 export interface account_updateProfile {
-    _: "account.updateProfile"
-    first_name?: string;
-    last_name?: string;
-    about?: string;
-    [R]?: User;
+  _: "account.updateProfile";
+  first_name?: string;
+  last_name?: string;
+  about?: string;
+  [R]?: User;
 }
 
 export interface account_updateStatus {
-    _: "account.updateStatus"
-    offline: boolean;
-    [R]?: boolean;
+  _: "account.updateStatus";
+  offline: boolean;
+  [R]?: boolean;
 }
 
 export interface account_getWallPapers {
-    _: "account.getWallPapers"
-    hash: bigint;
-    [R]?: account_WallPapers;
+  _: "account.getWallPapers";
+  hash: bigint;
+  [R]?: account_WallPapers;
 }
 
 export interface account_reportPeer {
-    _: "account.reportPeer"
-    peer: InputPeer;
-    reason: ReportReason;
-    message: string;
-    [R]?: boolean;
+  _: "account.reportPeer";
+  peer: InputPeer;
+  reason: ReportReason;
+  message: string;
+  [R]?: boolean;
 }
 
 export interface account_checkUsername {
-    _: "account.checkUsername"
-    username: string;
-    [R]?: boolean;
+  _: "account.checkUsername";
+  username: string;
+  [R]?: boolean;
 }
 
 export interface account_updateUsername {
-    _: "account.updateUsername"
-    username: string;
-    [R]?: User;
+  _: "account.updateUsername";
+  username: string;
+  [R]?: User;
 }
 
 export interface account_getPrivacy {
-    _: "account.getPrivacy"
-    key: InputPrivacyKey;
-    [R]?: account_PrivacyRules;
+  _: "account.getPrivacy";
+  key: InputPrivacyKey;
+  [R]?: account_PrivacyRules;
 }
 
 export interface account_setPrivacy {
-    _: "account.setPrivacy"
-    key: InputPrivacyKey;
-    rules: Array<InputPrivacyRule>;
-    [R]?: account_PrivacyRules;
+  _: "account.setPrivacy";
+  key: InputPrivacyKey;
+  rules: Array<InputPrivacyRule>;
+  [R]?: account_PrivacyRules;
 }
 
 export interface account_deleteAccount {
-    _: "account.deleteAccount"
-    reason: string;
-    password?: InputCheckPasswordSRP;
-    [R]?: boolean;
+  _: "account.deleteAccount";
+  reason: string;
+  password?: InputCheckPasswordSRP;
+  [R]?: boolean;
 }
 
 export interface account_getAccountTTL {
-    _: "account.getAccountTTL"
-    [R]?: AccountDaysTTL;
+  _: "account.getAccountTTL";
+  [R]?: AccountDaysTTL;
 }
 
 export interface account_setAccountTTL {
-    _: "account.setAccountTTL"
-    ttl: AccountDaysTTL;
-    [R]?: boolean;
+  _: "account.setAccountTTL";
+  ttl: AccountDaysTTL;
+  [R]?: boolean;
 }
 
 export interface account_sendChangePhoneCode {
-    _: "account.sendChangePhoneCode"
-    phone_number: string;
-    settings: CodeSettings;
-    [R]?: auth_SentCode;
+  _: "account.sendChangePhoneCode";
+  phone_number: string;
+  settings: CodeSettings;
+  [R]?: auth_SentCode;
 }
 
 export interface account_changePhone {
-    _: "account.changePhone"
-    phone_number: string;
-    phone_code_hash: string;
-    phone_code: string;
-    [R]?: User;
+  _: "account.changePhone";
+  phone_number: string;
+  phone_code_hash: string;
+  phone_code: string;
+  [R]?: User;
 }
 
 export interface account_updateDeviceLocked {
-    _: "account.updateDeviceLocked"
-    period: number;
-    [R]?: boolean;
+  _: "account.updateDeviceLocked";
+  period: number;
+  [R]?: boolean;
 }
 
 export interface account_getAuthorizations {
-    _: "account.getAuthorizations"
-    [R]?: account_Authorizations;
+  _: "account.getAuthorizations";
+  [R]?: account_Authorizations;
 }
 
 export interface account_resetAuthorization {
-    _: "account.resetAuthorization"
-    hash: bigint;
-    [R]?: boolean;
+  _: "account.resetAuthorization";
+  hash: bigint;
+  [R]?: boolean;
 }
 
 export interface account_getPassword {
-    _: "account.getPassword"
-    [R]?: account_Password;
+  _: "account.getPassword";
+  [R]?: account_Password;
 }
 
 export interface account_getPasswordSettings {
-    _: "account.getPasswordSettings"
-    password: InputCheckPasswordSRP;
-    [R]?: account_PasswordSettings;
+  _: "account.getPasswordSettings";
+  password: InputCheckPasswordSRP;
+  [R]?: account_PasswordSettings;
 }
 
 export interface account_updatePasswordSettings {
-    _: "account.updatePasswordSettings"
-    password: InputCheckPasswordSRP;
-    new_settings: account_PasswordInputSettings;
-    [R]?: boolean;
+  _: "account.updatePasswordSettings";
+  password: InputCheckPasswordSRP;
+  new_settings: account_PasswordInputSettings;
+  [R]?: boolean;
 }
 
 export interface account_sendConfirmPhoneCode {
-    _: "account.sendConfirmPhoneCode"
-    hash: string;
-    settings: CodeSettings;
-    [R]?: auth_SentCode;
+  _: "account.sendConfirmPhoneCode";
+  hash: string;
+  settings: CodeSettings;
+  [R]?: auth_SentCode;
 }
 
 export interface account_confirmPhone {
-    _: "account.confirmPhone"
-    phone_code_hash: string;
-    phone_code: string;
-    [R]?: boolean;
+  _: "account.confirmPhone";
+  phone_code_hash: string;
+  phone_code: string;
+  [R]?: boolean;
 }
 
 export interface account_getTmpPassword {
-    _: "account.getTmpPassword"
-    password: InputCheckPasswordSRP;
-    period: number;
-    [R]?: account_TmpPassword;
+  _: "account.getTmpPassword";
+  password: InputCheckPasswordSRP;
+  period: number;
+  [R]?: account_TmpPassword;
 }
 
 export interface account_getWebAuthorizations {
-    _: "account.getWebAuthorizations"
-    [R]?: account_WebAuthorizations;
+  _: "account.getWebAuthorizations";
+  [R]?: account_WebAuthorizations;
 }
 
 export interface account_resetWebAuthorization {
-    _: "account.resetWebAuthorization"
-    hash: bigint;
-    [R]?: boolean;
+  _: "account.resetWebAuthorization";
+  hash: bigint;
+  [R]?: boolean;
 }
 
 export interface account_resetWebAuthorizations {
-    _: "account.resetWebAuthorizations"
-    [R]?: boolean;
+  _: "account.resetWebAuthorizations";
+  [R]?: boolean;
 }
 
 export interface account_getAllSecureValues {
-    _: "account.getAllSecureValues"
-    [R]?: Array<SecureValue>;
+  _: "account.getAllSecureValues";
+  [R]?: Array<SecureValue>;
 }
 
 export interface account_getSecureValue {
-    _: "account.getSecureValue"
-    types: Array<SecureValueType>;
-    [R]?: Array<SecureValue>;
+  _: "account.getSecureValue";
+  types: Array<SecureValueType>;
+  [R]?: Array<SecureValue>;
 }
 
 export interface account_saveSecureValue {
-    _: "account.saveSecureValue"
-    value: InputSecureValue;
-    secure_secret_id: bigint;
-    [R]?: SecureValue;
+  _: "account.saveSecureValue";
+  value: InputSecureValue;
+  secure_secret_id: bigint;
+  [R]?: SecureValue;
 }
 
 export interface account_deleteSecureValue {
-    _: "account.deleteSecureValue"
-    types: Array<SecureValueType>;
-    [R]?: boolean;
+  _: "account.deleteSecureValue";
+  types: Array<SecureValueType>;
+  [R]?: boolean;
 }
 
 export interface account_getAuthorizationForm {
-    _: "account.getAuthorizationForm"
-    bot_id: bigint;
-    scope: string;
-    public_key: string;
-    [R]?: account_AuthorizationForm;
+  _: "account.getAuthorizationForm";
+  bot_id: bigint;
+  scope: string;
+  public_key: string;
+  [R]?: account_AuthorizationForm;
 }
 
 export interface account_acceptAuthorization {
-    _: "account.acceptAuthorization"
-    bot_id: bigint;
-    scope: string;
-    public_key: string;
-    value_hashes: Array<SecureValueHash>;
-    credentials: SecureCredentialsEncrypted;
-    [R]?: boolean;
+  _: "account.acceptAuthorization";
+  bot_id: bigint;
+  scope: string;
+  public_key: string;
+  value_hashes: Array<SecureValueHash>;
+  credentials: SecureCredentialsEncrypted;
+  [R]?: boolean;
 }
 
 export interface account_sendVerifyPhoneCode {
-    _: "account.sendVerifyPhoneCode"
-    phone_number: string;
-    settings: CodeSettings;
-    [R]?: auth_SentCode;
+  _: "account.sendVerifyPhoneCode";
+  phone_number: string;
+  settings: CodeSettings;
+  [R]?: auth_SentCode;
 }
 
 export interface account_verifyPhone {
-    _: "account.verifyPhone"
-    phone_number: string;
-    phone_code_hash: string;
-    phone_code: string;
-    [R]?: boolean;
+  _: "account.verifyPhone";
+  phone_number: string;
+  phone_code_hash: string;
+  phone_code: string;
+  [R]?: boolean;
 }
 
 export interface account_sendVerifyEmailCode {
-    _: "account.sendVerifyEmailCode"
-    purpose: EmailVerifyPurpose;
-    email: string;
-    [R]?: account_SentEmailCode;
+  _: "account.sendVerifyEmailCode";
+  purpose: EmailVerifyPurpose;
+  email: string;
+  [R]?: account_SentEmailCode;
 }
 
 export interface account_verifyEmail {
-    _: "account.verifyEmail"
-    purpose: EmailVerifyPurpose;
-    verification: EmailVerification;
-    [R]?: account_EmailVerified;
+  _: "account.verifyEmail";
+  purpose: EmailVerifyPurpose;
+  verification: EmailVerification;
+  [R]?: account_EmailVerified;
 }
 
 export interface account_initTakeoutSession {
-    _: "account.initTakeoutSession"
-    contacts?: true;
-    message_users?: true;
-    message_chats?: true;
-    message_megagroups?: true;
-    message_channels?: true;
-    files?: true;
-    file_max_size?: bigint;
-    [R]?: account_Takeout;
+  _: "account.initTakeoutSession";
+  contacts?: true;
+  message_users?: true;
+  message_chats?: true;
+  message_megagroups?: true;
+  message_channels?: true;
+  files?: true;
+  file_max_size?: bigint;
+  [R]?: account_Takeout;
 }
 
 export interface account_finishTakeoutSession {
-    _: "account.finishTakeoutSession"
-    success?: true;
-    [R]?: boolean;
+  _: "account.finishTakeoutSession";
+  success?: true;
+  [R]?: boolean;
 }
 
 export interface account_confirmPasswordEmail {
-    _: "account.confirmPasswordEmail"
-    code: string;
-    [R]?: boolean;
+  _: "account.confirmPasswordEmail";
+  code: string;
+  [R]?: boolean;
 }
 
 export interface account_resendPasswordEmail {
-    _: "account.resendPasswordEmail"
-    [R]?: boolean;
+  _: "account.resendPasswordEmail";
+  [R]?: boolean;
 }
 
 export interface account_cancelPasswordEmail {
-    _: "account.cancelPasswordEmail"
-    [R]?: boolean;
+  _: "account.cancelPasswordEmail";
+  [R]?: boolean;
 }
 
 export interface account_getContactSignUpNotification {
-    _: "account.getContactSignUpNotification"
-    [R]?: boolean;
+  _: "account.getContactSignUpNotification";
+  [R]?: boolean;
 }
 
 export interface account_setContactSignUpNotification {
-    _: "account.setContactSignUpNotification"
-    silent: boolean;
-    [R]?: boolean;
+  _: "account.setContactSignUpNotification";
+  silent: boolean;
+  [R]?: boolean;
 }
 
 export interface account_getNotifyExceptions {
-    _: "account.getNotifyExceptions"
-    compare_sound?: true;
-    compare_stories?: true;
-    peer?: InputNotifyPeer;
-    [R]?: Updates;
+  _: "account.getNotifyExceptions";
+  compare_sound?: true;
+  compare_stories?: true;
+  peer?: InputNotifyPeer;
+  [R]?: Updates;
 }
 
 export interface account_getWallPaper {
-    _: "account.getWallPaper"
-    wallpaper: InputWallPaper;
-    [R]?: WallPaper;
+  _: "account.getWallPaper";
+  wallpaper: InputWallPaper;
+  [R]?: WallPaper;
 }
 
 export interface account_uploadWallPaper {
-    _: "account.uploadWallPaper"
-    for_chat?: true;
-    file: InputFile;
-    mime_type: string;
-    settings: WallPaperSettings;
-    [R]?: WallPaper;
+  _: "account.uploadWallPaper";
+  for_chat?: true;
+  file: InputFile;
+  mime_type: string;
+  settings: WallPaperSettings;
+  [R]?: WallPaper;
 }
 
 export interface account_saveWallPaper {
-    _: "account.saveWallPaper"
-    wallpaper: InputWallPaper;
-    unsave: boolean;
-    settings: WallPaperSettings;
-    [R]?: boolean;
+  _: "account.saveWallPaper";
+  wallpaper: InputWallPaper;
+  unsave: boolean;
+  settings: WallPaperSettings;
+  [R]?: boolean;
 }
 
 export interface account_installWallPaper {
-    _: "account.installWallPaper"
-    wallpaper: InputWallPaper;
-    settings: WallPaperSettings;
-    [R]?: boolean;
+  _: "account.installWallPaper";
+  wallpaper: InputWallPaper;
+  settings: WallPaperSettings;
+  [R]?: boolean;
 }
 
 export interface account_resetWallPapers {
-    _: "account.resetWallPapers"
-    [R]?: boolean;
+  _: "account.resetWallPapers";
+  [R]?: boolean;
 }
 
 export interface account_getAutoDownloadSettings {
-    _: "account.getAutoDownloadSettings"
-    [R]?: account_AutoDownloadSettings;
+  _: "account.getAutoDownloadSettings";
+  [R]?: account_AutoDownloadSettings;
 }
 
 export interface account_saveAutoDownloadSettings {
-    _: "account.saveAutoDownloadSettings"
-    low?: true;
-    high?: true;
-    settings: AutoDownloadSettings;
-    [R]?: boolean;
+  _: "account.saveAutoDownloadSettings";
+  low?: true;
+  high?: true;
+  settings: AutoDownloadSettings;
+  [R]?: boolean;
 }
 
 export interface account_uploadTheme {
-    _: "account.uploadTheme"
-    file: InputFile;
-    thumb?: InputFile;
-    file_name: string;
-    mime_type: string;
-    [R]?: Document;
+  _: "account.uploadTheme";
+  file: InputFile;
+  thumb?: InputFile;
+  file_name: string;
+  mime_type: string;
+  [R]?: Document;
 }
 
 export interface account_createTheme {
-    _: "account.createTheme"
-    slug: string;
-    title: string;
-    document?: InputDocument;
-    settings?: Array<InputThemeSettings>;
-    [R]?: Theme;
+  _: "account.createTheme";
+  slug: string;
+  title: string;
+  document?: InputDocument;
+  settings?: Array<InputThemeSettings>;
+  [R]?: Theme;
 }
 
 export interface account_updateTheme {
-    _: "account.updateTheme"
-    format: string;
-    theme: InputTheme;
-    slug?: string;
-    title?: string;
-    document?: InputDocument;
-    settings?: Array<InputThemeSettings>;
-    [R]?: Theme;
+  _: "account.updateTheme";
+  format: string;
+  theme: InputTheme;
+  slug?: string;
+  title?: string;
+  document?: InputDocument;
+  settings?: Array<InputThemeSettings>;
+  [R]?: Theme;
 }
 
 export interface account_saveTheme {
-    _: "account.saveTheme"
-    theme: InputTheme;
-    unsave: boolean;
-    [R]?: boolean;
+  _: "account.saveTheme";
+  theme: InputTheme;
+  unsave: boolean;
+  [R]?: boolean;
 }
 
 export interface account_installTheme {
-    _: "account.installTheme"
-    dark?: true;
-    theme?: InputTheme;
-    format?: string;
-    base_theme?: BaseTheme;
-    [R]?: boolean;
+  _: "account.installTheme";
+  dark?: true;
+  theme?: InputTheme;
+  format?: string;
+  base_theme?: BaseTheme;
+  [R]?: boolean;
 }
 
 export interface account_getTheme {
-    _: "account.getTheme"
-    format: string;
-    theme: InputTheme;
-    [R]?: Theme;
+  _: "account.getTheme";
+  format: string;
+  theme: InputTheme;
+  [R]?: Theme;
 }
 
 export interface account_getThemes {
-    _: "account.getThemes"
-    format: string;
-    hash: bigint;
-    [R]?: account_Themes;
+  _: "account.getThemes";
+  format: string;
+  hash: bigint;
+  [R]?: account_Themes;
 }
 
 export interface account_setContentSettings {
-    _: "account.setContentSettings"
-    sensitive_enabled?: true;
-    [R]?: boolean;
+  _: "account.setContentSettings";
+  sensitive_enabled?: true;
+  [R]?: boolean;
 }
 
 export interface account_getContentSettings {
-    _: "account.getContentSettings"
-    [R]?: account_ContentSettings;
+  _: "account.getContentSettings";
+  [R]?: account_ContentSettings;
 }
 
 export interface account_getMultiWallPapers {
-    _: "account.getMultiWallPapers"
-    wallpapers: Array<InputWallPaper>;
-    [R]?: Array<WallPaper>;
+  _: "account.getMultiWallPapers";
+  wallpapers: Array<InputWallPaper>;
+  [R]?: Array<WallPaper>;
 }
 
 export interface account_getGlobalPrivacySettings {
-    _: "account.getGlobalPrivacySettings"
-    [R]?: GlobalPrivacySettings;
+  _: "account.getGlobalPrivacySettings";
+  [R]?: GlobalPrivacySettings;
 }
 
 export interface account_setGlobalPrivacySettings {
-    _: "account.setGlobalPrivacySettings"
-    settings: GlobalPrivacySettings;
-    [R]?: GlobalPrivacySettings;
+  _: "account.setGlobalPrivacySettings";
+  settings: GlobalPrivacySettings;
+  [R]?: GlobalPrivacySettings;
 }
 
 export interface account_reportProfilePhoto {
-    _: "account.reportProfilePhoto"
-    peer: InputPeer;
-    photo_id: InputPhoto;
-    reason: ReportReason;
-    message: string;
-    [R]?: boolean;
+  _: "account.reportProfilePhoto";
+  peer: InputPeer;
+  photo_id: InputPhoto;
+  reason: ReportReason;
+  message: string;
+  [R]?: boolean;
 }
 
 export interface account_resetPassword {
-    _: "account.resetPassword"
-    [R]?: account_ResetPasswordResult;
+  _: "account.resetPassword";
+  [R]?: account_ResetPasswordResult;
 }
 
 export interface account_declinePasswordReset {
-    _: "account.declinePasswordReset"
-    [R]?: boolean;
+  _: "account.declinePasswordReset";
+  [R]?: boolean;
 }
 
 export interface account_getChatThemes {
-    _: "account.getChatThemes"
-    hash: bigint;
-    [R]?: account_Themes;
+  _: "account.getChatThemes";
+  hash: bigint;
+  [R]?: account_Themes;
 }
 
 export interface account_setAuthorizationTTL {
-    _: "account.setAuthorizationTTL"
-    authorization_ttl_days: number;
-    [R]?: boolean;
+  _: "account.setAuthorizationTTL";
+  authorization_ttl_days: number;
+  [R]?: boolean;
 }
 
 export interface account_changeAuthorizationSettings {
-    _: "account.changeAuthorizationSettings"
-    confirmed?: true;
-    hash: bigint;
-    encrypted_requests_disabled?: boolean;
-    call_requests_disabled?: boolean;
-    [R]?: boolean;
+  _: "account.changeAuthorizationSettings";
+  confirmed?: true;
+  hash: bigint;
+  encrypted_requests_disabled?: boolean;
+  call_requests_disabled?: boolean;
+  [R]?: boolean;
 }
 
 export interface account_getSavedRingtones {
-    _: "account.getSavedRingtones"
-    hash: bigint;
-    [R]?: account_SavedRingtones;
+  _: "account.getSavedRingtones";
+  hash: bigint;
+  [R]?: account_SavedRingtones;
 }
 
 export interface account_saveRingtone {
-    _: "account.saveRingtone"
-    id: InputDocument;
-    unsave: boolean;
-    [R]?: account_SavedRingtone;
+  _: "account.saveRingtone";
+  id: InputDocument;
+  unsave: boolean;
+  [R]?: account_SavedRingtone;
 }
 
 export interface account_uploadRingtone {
-    _: "account.uploadRingtone"
-    file: InputFile;
-    file_name: string;
-    mime_type: string;
-    [R]?: Document;
+  _: "account.uploadRingtone";
+  file: InputFile;
+  file_name: string;
+  mime_type: string;
+  [R]?: Document;
 }
 
 export interface account_updateEmojiStatus {
-    _: "account.updateEmojiStatus"
-    emoji_status: EmojiStatus;
-    [R]?: boolean;
+  _: "account.updateEmojiStatus";
+  emoji_status: EmojiStatus;
+  [R]?: boolean;
 }
 
 export interface account_getDefaultEmojiStatuses {
-    _: "account.getDefaultEmojiStatuses"
-    hash: bigint;
-    [R]?: account_EmojiStatuses;
+  _: "account.getDefaultEmojiStatuses";
+  hash: bigint;
+  [R]?: account_EmojiStatuses;
 }
 
 export interface account_getRecentEmojiStatuses {
-    _: "account.getRecentEmojiStatuses"
-    hash: bigint;
-    [R]?: account_EmojiStatuses;
+  _: "account.getRecentEmojiStatuses";
+  hash: bigint;
+  [R]?: account_EmojiStatuses;
 }
 
 export interface account_clearRecentEmojiStatuses {
-    _: "account.clearRecentEmojiStatuses"
-    [R]?: boolean;
+  _: "account.clearRecentEmojiStatuses";
+  [R]?: boolean;
 }
 
 export interface account_reorderUsernames {
-    _: "account.reorderUsernames"
-    order: Array<string>;
-    [R]?: boolean;
+  _: "account.reorderUsernames";
+  order: Array<string>;
+  [R]?: boolean;
 }
 
 export interface account_toggleUsername {
-    _: "account.toggleUsername"
-    username: string;
-    active: boolean;
-    [R]?: boolean;
+  _: "account.toggleUsername";
+  username: string;
+  active: boolean;
+  [R]?: boolean;
 }
 
 export interface account_getDefaultProfilePhotoEmojis {
-    _: "account.getDefaultProfilePhotoEmojis"
-    hash: bigint;
-    [R]?: EmojiList;
+  _: "account.getDefaultProfilePhotoEmojis";
+  hash: bigint;
+  [R]?: EmojiList;
 }
 
 export interface account_getDefaultGroupPhotoEmojis {
-    _: "account.getDefaultGroupPhotoEmojis"
-    hash: bigint;
-    [R]?: EmojiList;
+  _: "account.getDefaultGroupPhotoEmojis";
+  hash: bigint;
+  [R]?: EmojiList;
 }
 
 export interface account_getAutoSaveSettings {
-    _: "account.getAutoSaveSettings"
-    [R]?: account_AutoSaveSettings;
+  _: "account.getAutoSaveSettings";
+  [R]?: account_AutoSaveSettings;
 }
 
 export interface account_saveAutoSaveSettings {
-    _: "account.saveAutoSaveSettings"
-    users?: true;
-    chats?: true;
-    broadcasts?: true;
-    peer?: InputPeer;
-    settings: AutoSaveSettings;
-    [R]?: boolean;
+  _: "account.saveAutoSaveSettings";
+  users?: true;
+  chats?: true;
+  broadcasts?: true;
+  peer?: InputPeer;
+  settings: AutoSaveSettings;
+  [R]?: boolean;
 }
 
 export interface account_deleteAutoSaveExceptions {
-    _: "account.deleteAutoSaveExceptions"
-    [R]?: boolean;
+  _: "account.deleteAutoSaveExceptions";
+  [R]?: boolean;
 }
 
 export interface account_invalidateSignInCodes {
-    _: "account.invalidateSignInCodes"
-    codes: Array<string>;
-    [R]?: boolean;
+  _: "account.invalidateSignInCodes";
+  codes: Array<string>;
+  [R]?: boolean;
 }
 
 export interface account_updateColor {
-    _: "account.updateColor"
-    for_profile?: true;
-    color?: number;
-    background_emoji_id?: bigint;
-    [R]?: boolean;
+  _: "account.updateColor";
+  for_profile?: true;
+  color?: number;
+  background_emoji_id?: bigint;
+  [R]?: boolean;
 }
 
 export interface account_getDefaultBackgroundEmojis {
-    _: "account.getDefaultBackgroundEmojis"
-    hash: bigint;
-    [R]?: EmojiList;
+  _: "account.getDefaultBackgroundEmojis";
+  hash: bigint;
+  [R]?: EmojiList;
 }
 
 export interface account_getChannelDefaultEmojiStatuses {
-    _: "account.getChannelDefaultEmojiStatuses"
-    hash: bigint;
-    [R]?: account_EmojiStatuses;
+  _: "account.getChannelDefaultEmojiStatuses";
+  hash: bigint;
+  [R]?: account_EmojiStatuses;
 }
 
 export interface account_getChannelRestrictedStatusEmojis {
-    _: "account.getChannelRestrictedStatusEmojis"
-    hash: bigint;
-    [R]?: EmojiList;
+  _: "account.getChannelRestrictedStatusEmojis";
+  hash: bigint;
+  [R]?: EmojiList;
 }
 
 export interface account_updateBusinessWorkHours {
-    _: "account.updateBusinessWorkHours"
-    business_work_hours?: BusinessWorkHours;
-    [R]?: boolean;
+  _: "account.updateBusinessWorkHours";
+  business_work_hours?: BusinessWorkHours;
+  [R]?: boolean;
 }
 
 export interface account_updateBusinessLocation {
-    _: "account.updateBusinessLocation"
-    geo_point?: InputGeoPoint;
-    address?: string;
-    [R]?: boolean;
+  _: "account.updateBusinessLocation";
+  geo_point?: InputGeoPoint;
+  address?: string;
+  [R]?: boolean;
 }
 
 export interface account_updateBusinessGreetingMessage {
-    _: "account.updateBusinessGreetingMessage"
-    message?: InputBusinessGreetingMessage;
-    [R]?: boolean;
+  _: "account.updateBusinessGreetingMessage";
+  message?: InputBusinessGreetingMessage;
+  [R]?: boolean;
 }
 
 export interface account_updateBusinessAwayMessage {
-    _: "account.updateBusinessAwayMessage"
-    message?: InputBusinessAwayMessage;
-    [R]?: boolean;
+  _: "account.updateBusinessAwayMessage";
+  message?: InputBusinessAwayMessage;
+  [R]?: boolean;
 }
 
 export interface account_updateConnectedBot {
-    _: "account.updateConnectedBot"
-    can_reply?: true;
-    deleted?: true;
-    bot: InputUser;
-    recipients: InputBusinessBotRecipients;
-    [R]?: Updates;
+  _: "account.updateConnectedBot";
+  can_reply?: true;
+  deleted?: true;
+  bot: InputUser;
+  recipients: InputBusinessBotRecipients;
+  [R]?: Updates;
 }
 
 export interface account_getConnectedBots {
-    _: "account.getConnectedBots"
-    [R]?: account_ConnectedBots;
+  _: "account.getConnectedBots";
+  [R]?: account_ConnectedBots;
 }
 
 export interface account_getBotBusinessConnection {
-    _: "account.getBotBusinessConnection"
-    connection_id: string;
-    [R]?: Updates;
+  _: "account.getBotBusinessConnection";
+  connection_id: string;
+  [R]?: Updates;
 }
 
 export interface account_updateBusinessIntro {
-    _: "account.updateBusinessIntro"
-    intro?: InputBusinessIntro;
-    [R]?: boolean;
+  _: "account.updateBusinessIntro";
+  intro?: InputBusinessIntro;
+  [R]?: boolean;
 }
 
 export interface account_toggleConnectedBotPaused {
-    _: "account.toggleConnectedBotPaused"
-    peer: InputPeer;
-    paused: boolean;
-    [R]?: boolean;
+  _: "account.toggleConnectedBotPaused";
+  peer: InputPeer;
+  paused: boolean;
+  [R]?: boolean;
 }
 
 export interface account_disablePeerConnectedBot {
-    _: "account.disablePeerConnectedBot"
-    peer: InputPeer;
-    [R]?: boolean;
+  _: "account.disablePeerConnectedBot";
+  peer: InputPeer;
+  [R]?: boolean;
 }
 
 export interface account_updateBirthday {
-    _: "account.updateBirthday"
-    birthday?: Birthday;
-    [R]?: boolean;
+  _: "account.updateBirthday";
+  birthday?: Birthday;
+  [R]?: boolean;
 }
 
 export interface account_createBusinessChatLink {
-    _: "account.createBusinessChatLink"
-    link: InputBusinessChatLink;
-    [R]?: BusinessChatLink;
+  _: "account.createBusinessChatLink";
+  link: InputBusinessChatLink;
+  [R]?: BusinessChatLink;
 }
 
 export interface account_editBusinessChatLink {
-    _: "account.editBusinessChatLink"
-    slug: string;
-    link: InputBusinessChatLink;
-    [R]?: BusinessChatLink;
+  _: "account.editBusinessChatLink";
+  slug: string;
+  link: InputBusinessChatLink;
+  [R]?: BusinessChatLink;
 }
 
 export interface account_deleteBusinessChatLink {
-    _: "account.deleteBusinessChatLink"
-    slug: string;
-    [R]?: boolean;
+  _: "account.deleteBusinessChatLink";
+  slug: string;
+  [R]?: boolean;
 }
 
 export interface account_getBusinessChatLinks {
-    _: "account.getBusinessChatLinks"
-    [R]?: account_BusinessChatLinks;
+  _: "account.getBusinessChatLinks";
+  [R]?: account_BusinessChatLinks;
 }
 
 export interface account_resolveBusinessChatLink {
-    _: "account.resolveBusinessChatLink"
-    slug: string;
-    [R]?: account_ResolvedBusinessChatLinks;
+  _: "account.resolveBusinessChatLink";
+  slug: string;
+  [R]?: account_ResolvedBusinessChatLinks;
 }
 
 export interface account_updatePersonalChannel {
-    _: "account.updatePersonalChannel"
-    channel: InputChannel;
-    [R]?: boolean;
+  _: "account.updatePersonalChannel";
+  channel: InputChannel;
+  [R]?: boolean;
 }
 
 export interface account_toggleSponsoredMessages {
-    _: "account.toggleSponsoredMessages"
-    enabled: boolean;
-    [R]?: boolean;
+  _: "account.toggleSponsoredMessages";
+  enabled: boolean;
+  [R]?: boolean;
 }
 
 export interface account_getReactionsNotifySettings {
-    _: "account.getReactionsNotifySettings"
-    [R]?: ReactionsNotifySettings;
+  _: "account.getReactionsNotifySettings";
+  [R]?: ReactionsNotifySettings;
 }
 
 export interface account_setReactionsNotifySettings {
-    _: "account.setReactionsNotifySettings"
-    settings: ReactionsNotifySettings;
-    [R]?: ReactionsNotifySettings;
+  _: "account.setReactionsNotifySettings";
+  settings: ReactionsNotifySettings;
+  [R]?: ReactionsNotifySettings;
 }
 
 export interface users_getUsers {
-    _: "users.getUsers"
-    id: Array<InputUser>;
-    [R]?: Array<User>;
+  _: "users.getUsers";
+  id: Array<InputUser>;
+  [R]?: Array<User>;
 }
 
 export interface users_getFullUser {
-    _: "users.getFullUser"
-    id: InputUser;
-    [R]?: users_UserFull;
+  _: "users.getFullUser";
+  id: InputUser;
+  [R]?: users_UserFull;
 }
 
 export interface users_setSecureValueErrors {
-    _: "users.setSecureValueErrors"
-    id: InputUser;
-    errors: Array<SecureValueError>;
-    [R]?: boolean;
+  _: "users.setSecureValueErrors";
+  id: InputUser;
+  errors: Array<SecureValueError>;
+  [R]?: boolean;
 }
 
 export interface users_getIsPremiumRequiredToContact {
-    _: "users.getIsPremiumRequiredToContact"
-    id: Array<InputUser>;
-    [R]?: Array<boolean>;
+  _: "users.getIsPremiumRequiredToContact";
+  id: Array<InputUser>;
+  [R]?: Array<boolean>;
 }
 
 export interface contacts_getContactIDs {
-    _: "contacts.getContactIDs"
-    hash: bigint;
-    [R]?: Array<number>;
+  _: "contacts.getContactIDs";
+  hash: bigint;
+  [R]?: Array<number>;
 }
 
 export interface contacts_getStatuses {
-    _: "contacts.getStatuses"
-    [R]?: Array<ContactStatus>;
+  _: "contacts.getStatuses";
+  [R]?: Array<ContactStatus>;
 }
 
 export interface contacts_getContacts {
-    _: "contacts.getContacts"
-    hash: bigint;
-    [R]?: contacts_Contacts;
+  _: "contacts.getContacts";
+  hash: bigint;
+  [R]?: contacts_Contacts;
 }
 
 export interface contacts_importContacts {
-    _: "contacts.importContacts"
-    contacts: Array<InputContact>;
-    [R]?: contacts_ImportedContacts;
+  _: "contacts.importContacts";
+  contacts: Array<InputContact>;
+  [R]?: contacts_ImportedContacts;
 }
 
 export interface contacts_deleteContacts {
-    _: "contacts.deleteContacts"
-    id: Array<InputUser>;
-    [R]?: Updates;
+  _: "contacts.deleteContacts";
+  id: Array<InputUser>;
+  [R]?: Updates;
 }
 
 export interface contacts_deleteByPhones {
-    _: "contacts.deleteByPhones"
-    phones: Array<string>;
-    [R]?: boolean;
+  _: "contacts.deleteByPhones";
+  phones: Array<string>;
+  [R]?: boolean;
 }
 
 export interface contacts_block {
-    _: "contacts.block"
-    my_stories_from?: true;
-    id: InputPeer;
-    [R]?: boolean;
+  _: "contacts.block";
+  my_stories_from?: true;
+  id: InputPeer;
+  [R]?: boolean;
 }
 
 export interface contacts_unblock {
-    _: "contacts.unblock"
-    my_stories_from?: true;
-    id: InputPeer;
-    [R]?: boolean;
+  _: "contacts.unblock";
+  my_stories_from?: true;
+  id: InputPeer;
+  [R]?: boolean;
 }
 
 export interface contacts_getBlocked {
-    _: "contacts.getBlocked"
-    my_stories_from?: true;
-    offset: number;
-    limit: number;
-    [R]?: contacts_Blocked;
+  _: "contacts.getBlocked";
+  my_stories_from?: true;
+  offset: number;
+  limit: number;
+  [R]?: contacts_Blocked;
 }
 
 export interface contacts_search {
-    _: "contacts.search"
-    q: string;
-    limit: number;
-    [R]?: contacts_Found;
+  _: "contacts.search";
+  q: string;
+  limit: number;
+  [R]?: contacts_Found;
 }
 
 export interface contacts_resolveUsername {
-    _: "contacts.resolveUsername"
-    username: string;
-    referer?: string;
-    [R]?: contacts_ResolvedPeer;
+  _: "contacts.resolveUsername";
+  username: string;
+  referer?: string;
+  [R]?: contacts_ResolvedPeer;
 }
 
 export interface contacts_getTopPeers {
-    _: "contacts.getTopPeers"
-    correspondents?: true;
-    bots_pm?: true;
-    bots_inline?: true;
-    phone_calls?: true;
-    forward_users?: true;
-    forward_chats?: true;
-    groups?: true;
-    channels?: true;
-    bots_app?: true;
-    offset: number;
-    limit: number;
-    hash: bigint;
-    [R]?: contacts_TopPeers;
+  _: "contacts.getTopPeers";
+  correspondents?: true;
+  bots_pm?: true;
+  bots_inline?: true;
+  phone_calls?: true;
+  forward_users?: true;
+  forward_chats?: true;
+  groups?: true;
+  channels?: true;
+  bots_app?: true;
+  offset: number;
+  limit: number;
+  hash: bigint;
+  [R]?: contacts_TopPeers;
 }
 
 export interface contacts_resetTopPeerRating {
-    _: "contacts.resetTopPeerRating"
-    category: TopPeerCategory;
-    peer: InputPeer;
-    [R]?: boolean;
+  _: "contacts.resetTopPeerRating";
+  category: TopPeerCategory;
+  peer: InputPeer;
+  [R]?: boolean;
 }
 
 export interface contacts_resetSaved {
-    _: "contacts.resetSaved"
-    [R]?: boolean;
+  _: "contacts.resetSaved";
+  [R]?: boolean;
 }
 
 export interface contacts_getSaved {
-    _: "contacts.getSaved"
-    [R]?: Array<SavedContact>;
+  _: "contacts.getSaved";
+  [R]?: Array<SavedContact>;
 }
 
 export interface contacts_toggleTopPeers {
-    _: "contacts.toggleTopPeers"
-    enabled: boolean;
-    [R]?: boolean;
+  _: "contacts.toggleTopPeers";
+  enabled: boolean;
+  [R]?: boolean;
 }
 
 export interface contacts_addContact {
-    _: "contacts.addContact"
-    add_phone_privacy_exception?: true;
-    id: InputUser;
-    first_name: string;
-    last_name: string;
-    phone: string;
-    [R]?: Updates;
+  _: "contacts.addContact";
+  add_phone_privacy_exception?: true;
+  id: InputUser;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  [R]?: Updates;
 }
 
 export interface contacts_acceptContact {
-    _: "contacts.acceptContact"
-    id: InputUser;
-    [R]?: Updates;
+  _: "contacts.acceptContact";
+  id: InputUser;
+  [R]?: Updates;
 }
 
 export interface contacts_getLocated {
-    _: "contacts.getLocated"
-    background?: true;
-    geo_point: InputGeoPoint;
-    self_expires?: number;
-    [R]?: Updates;
+  _: "contacts.getLocated";
+  background?: true;
+  geo_point: InputGeoPoint;
+  self_expires?: number;
+  [R]?: Updates;
 }
 
 export interface contacts_blockFromReplies {
-    _: "contacts.blockFromReplies"
-    delete_message?: true;
-    delete_history?: true;
-    report_spam?: true;
-    msg_id: number;
-    [R]?: Updates;
+  _: "contacts.blockFromReplies";
+  delete_message?: true;
+  delete_history?: true;
+  report_spam?: true;
+  msg_id: number;
+  [R]?: Updates;
 }
 
 export interface contacts_resolvePhone {
-    _: "contacts.resolvePhone"
-    phone: string;
-    [R]?: contacts_ResolvedPeer;
+  _: "contacts.resolvePhone";
+  phone: string;
+  [R]?: contacts_ResolvedPeer;
 }
 
 export interface contacts_exportContactToken {
-    _: "contacts.exportContactToken"
-    [R]?: ExportedContactToken;
+  _: "contacts.exportContactToken";
+  [R]?: ExportedContactToken;
 }
 
 export interface contacts_importContactToken {
-    _: "contacts.importContactToken"
-    token: string;
-    [R]?: User;
+  _: "contacts.importContactToken";
+  token: string;
+  [R]?: User;
 }
 
 export interface contacts_editCloseFriends {
-    _: "contacts.editCloseFriends"
-    id: Array<bigint>;
-    [R]?: boolean;
+  _: "contacts.editCloseFriends";
+  id: Array<bigint>;
+  [R]?: boolean;
 }
 
 export interface contacts_setBlocked {
-    _: "contacts.setBlocked"
-    my_stories_from?: true;
-    id: Array<InputPeer>;
-    limit: number;
-    [R]?: boolean;
+  _: "contacts.setBlocked";
+  my_stories_from?: true;
+  id: Array<InputPeer>;
+  limit: number;
+  [R]?: boolean;
 }
 
 export interface contacts_getBirthdays {
-    _: "contacts.getBirthdays"
-    [R]?: contacts_ContactBirthdays;
+  _: "contacts.getBirthdays";
+  [R]?: contacts_ContactBirthdays;
 }
 
 export interface messages_getMessages {
-    _: "messages.getMessages"
-    id: Array<InputMessage>;
-    [R]?: messages_Messages;
+  _: "messages.getMessages";
+  id: Array<InputMessage>;
+  [R]?: messages_Messages;
 }
 
 export interface messages_getDialogs {
-    _: "messages.getDialogs"
-    exclude_pinned?: true;
-    folder_id?: number;
-    offset_date: number;
-    offset_id: number;
-    offset_peer: InputPeer;
-    limit: number;
-    hash: bigint;
-    [R]?: messages_Dialogs;
+  _: "messages.getDialogs";
+  exclude_pinned?: true;
+  folder_id?: number;
+  offset_date: number;
+  offset_id: number;
+  offset_peer: InputPeer;
+  limit: number;
+  hash: bigint;
+  [R]?: messages_Dialogs;
 }
 
 export interface messages_getHistory {
-    _: "messages.getHistory"
-    peer: InputPeer;
-    offset_id: number;
-    offset_date: number;
-    add_offset: number;
-    limit: number;
-    max_id: number;
-    min_id: number;
-    hash: bigint;
-    [R]?: messages_Messages;
+  _: "messages.getHistory";
+  peer: InputPeer;
+  offset_id: number;
+  offset_date: number;
+  add_offset: number;
+  limit: number;
+  max_id: number;
+  min_id: number;
+  hash: bigint;
+  [R]?: messages_Messages;
 }
 
 export interface messages_search {
-    _: "messages.search"
-    peer: InputPeer;
-    q: string;
-    from_id?: InputPeer;
-    saved_peer_id?: InputPeer;
-    saved_reaction?: Array<Reaction>;
-    top_msg_id?: number;
-    filter: MessagesFilter;
-    min_date: number;
-    max_date: number;
-    offset_id: number;
-    add_offset: number;
-    limit: number;
-    max_id: number;
-    min_id: number;
-    hash: bigint;
-    [R]?: messages_Messages;
+  _: "messages.search";
+  peer: InputPeer;
+  q: string;
+  from_id?: InputPeer;
+  saved_peer_id?: InputPeer;
+  saved_reaction?: Array<Reaction>;
+  top_msg_id?: number;
+  filter: MessagesFilter;
+  min_date: number;
+  max_date: number;
+  offset_id: number;
+  add_offset: number;
+  limit: number;
+  max_id: number;
+  min_id: number;
+  hash: bigint;
+  [R]?: messages_Messages;
 }
 
 export interface messages_readHistory {
-    _: "messages.readHistory"
-    peer: InputPeer;
-    max_id: number;
-    [R]?: messages_AffectedMessages;
+  _: "messages.readHistory";
+  peer: InputPeer;
+  max_id: number;
+  [R]?: messages_AffectedMessages;
 }
 
 export interface messages_deleteHistory {
-    _: "messages.deleteHistory"
-    just_clear?: true;
-    revoke?: true;
-    peer: InputPeer;
-    max_id: number;
-    min_date?: number;
-    max_date?: number;
-    [R]?: messages_AffectedHistory;
+  _: "messages.deleteHistory";
+  just_clear?: true;
+  revoke?: true;
+  peer: InputPeer;
+  max_id: number;
+  min_date?: number;
+  max_date?: number;
+  [R]?: messages_AffectedHistory;
 }
 
 export interface messages_deleteMessages {
-    _: "messages.deleteMessages"
-    revoke?: true;
-    id: Array<number>;
-    [R]?: messages_AffectedMessages;
+  _: "messages.deleteMessages";
+  revoke?: true;
+  id: Array<number>;
+  [R]?: messages_AffectedMessages;
 }
 
 export interface messages_receivedMessages {
-    _: "messages.receivedMessages"
-    max_id: number;
-    [R]?: Array<ReceivedNotifyMessage>;
+  _: "messages.receivedMessages";
+  max_id: number;
+  [R]?: Array<ReceivedNotifyMessage>;
 }
 
 export interface messages_setTyping {
-    _: "messages.setTyping"
-    peer: InputPeer;
-    top_msg_id?: number;
-    action: SendMessageAction;
-    [R]?: boolean;
+  _: "messages.setTyping";
+  peer: InputPeer;
+  top_msg_id?: number;
+  action: SendMessageAction;
+  [R]?: boolean;
 }
 
 export interface messages_sendMessage {
-    _: "messages.sendMessage"
-    no_webpage?: true;
-    silent?: true;
-    background?: true;
-    clear_draft?: true;
-    noforwards?: true;
-    update_stickersets_order?: true;
-    invert_media?: true;
-    allow_paid_floodskip?: true;
-    peer: InputPeer;
-    reply_to?: InputReplyTo;
-    message: string;
-    random_id: bigint;
-    reply_markup?: ReplyMarkup;
-    entities?: Array<MessageEntity>;
-    schedule_date?: number;
-    send_as?: InputPeer;
-    quick_reply_shortcut?: InputQuickReplyShortcut;
-    effect?: bigint;
-    [R]?: Updates;
+  _: "messages.sendMessage";
+  no_webpage?: true;
+  silent?: true;
+  background?: true;
+  clear_draft?: true;
+  noforwards?: true;
+  update_stickersets_order?: true;
+  invert_media?: true;
+  allow_paid_floodskip?: true;
+  peer: InputPeer;
+  reply_to?: InputReplyTo;
+  message: string;
+  random_id: bigint;
+  reply_markup?: ReplyMarkup;
+  entities?: Array<MessageEntity>;
+  schedule_date?: number;
+  send_as?: InputPeer;
+  quick_reply_shortcut?: InputQuickReplyShortcut;
+  effect?: bigint;
+  [R]?: Updates;
 }
 
 export interface messages_sendMedia {
-    _: "messages.sendMedia"
-    silent?: true;
-    background?: true;
-    clear_draft?: true;
-    noforwards?: true;
-    update_stickersets_order?: true;
-    invert_media?: true;
-    allow_paid_floodskip?: true;
-    peer: InputPeer;
-    reply_to?: InputReplyTo;
-    media: InputMedia;
-    message: string;
-    random_id: bigint;
-    reply_markup?: ReplyMarkup;
-    entities?: Array<MessageEntity>;
-    schedule_date?: number;
-    send_as?: InputPeer;
-    quick_reply_shortcut?: InputQuickReplyShortcut;
-    effect?: bigint;
-    [R]?: Updates;
+  _: "messages.sendMedia";
+  silent?: true;
+  background?: true;
+  clear_draft?: true;
+  noforwards?: true;
+  update_stickersets_order?: true;
+  invert_media?: true;
+  allow_paid_floodskip?: true;
+  peer: InputPeer;
+  reply_to?: InputReplyTo;
+  media: InputMedia;
+  message: string;
+  random_id: bigint;
+  reply_markup?: ReplyMarkup;
+  entities?: Array<MessageEntity>;
+  schedule_date?: number;
+  send_as?: InputPeer;
+  quick_reply_shortcut?: InputQuickReplyShortcut;
+  effect?: bigint;
+  [R]?: Updates;
 }
 
 export interface messages_forwardMessages {
-    _: "messages.forwardMessages"
-    silent?: true;
-    background?: true;
-    with_my_score?: true;
-    drop_author?: true;
-    drop_media_captions?: true;
-    noforwards?: true;
-    allow_paid_floodskip?: true;
-    from_peer: InputPeer;
-    id: Array<number>;
-    random_id: Array<bigint>;
-    to_peer: InputPeer;
-    top_msg_id?: number;
-    schedule_date?: number;
-    send_as?: InputPeer;
-    quick_reply_shortcut?: InputQuickReplyShortcut;
-    [R]?: Updates;
+  _: "messages.forwardMessages";
+  silent?: true;
+  background?: true;
+  with_my_score?: true;
+  drop_author?: true;
+  drop_media_captions?: true;
+  noforwards?: true;
+  allow_paid_floodskip?: true;
+  from_peer: InputPeer;
+  id: Array<number>;
+  random_id: Array<bigint>;
+  to_peer: InputPeer;
+  top_msg_id?: number;
+  schedule_date?: number;
+  send_as?: InputPeer;
+  quick_reply_shortcut?: InputQuickReplyShortcut;
+  [R]?: Updates;
 }
 
 export interface messages_reportSpam {
-    _: "messages.reportSpam"
-    peer: InputPeer;
-    [R]?: boolean;
+  _: "messages.reportSpam";
+  peer: InputPeer;
+  [R]?: boolean;
 }
 
 export interface messages_getPeerSettings {
-    _: "messages.getPeerSettings"
-    peer: InputPeer;
-    [R]?: messages_PeerSettings;
+  _: "messages.getPeerSettings";
+  peer: InputPeer;
+  [R]?: messages_PeerSettings;
 }
 
 export interface messages_report {
-    _: "messages.report"
-    peer: InputPeer;
-    id: Array<number>;
-    option: Uint8Array;
-    message: string;
-    [R]?: ReportResult;
+  _: "messages.report";
+  peer: InputPeer;
+  id: Array<number>;
+  option: Uint8Array;
+  message: string;
+  [R]?: ReportResult;
 }
 
 export interface messages_getChats {
-    _: "messages.getChats"
-    id: Array<bigint>;
-    [R]?: messages_Chats;
+  _: "messages.getChats";
+  id: Array<bigint>;
+  [R]?: messages_Chats;
 }
 
 export interface messages_getFullChat {
-    _: "messages.getFullChat"
-    chat_id: bigint;
-    [R]?: messages_ChatFull;
+  _: "messages.getFullChat";
+  chat_id: bigint;
+  [R]?: messages_ChatFull;
 }
 
 export interface messages_editChatTitle {
-    _: "messages.editChatTitle"
-    chat_id: bigint;
-    title: string;
-    [R]?: Updates;
+  _: "messages.editChatTitle";
+  chat_id: bigint;
+  title: string;
+  [R]?: Updates;
 }
 
 export interface messages_editChatPhoto {
-    _: "messages.editChatPhoto"
-    chat_id: bigint;
-    photo: InputChatPhoto;
-    [R]?: Updates;
+  _: "messages.editChatPhoto";
+  chat_id: bigint;
+  photo: InputChatPhoto;
+  [R]?: Updates;
 }
 
 export interface messages_addChatUser {
-    _: "messages.addChatUser"
-    chat_id: bigint;
-    user_id: InputUser;
-    fwd_limit: number;
-    [R]?: messages_InvitedUsers;
+  _: "messages.addChatUser";
+  chat_id: bigint;
+  user_id: InputUser;
+  fwd_limit: number;
+  [R]?: messages_InvitedUsers;
 }
 
 export interface messages_deleteChatUser {
-    _: "messages.deleteChatUser"
-    revoke_history?: true;
-    chat_id: bigint;
-    user_id: InputUser;
-    [R]?: Updates;
+  _: "messages.deleteChatUser";
+  revoke_history?: true;
+  chat_id: bigint;
+  user_id: InputUser;
+  [R]?: Updates;
 }
 
 export interface messages_createChat {
-    _: "messages.createChat"
-    users: Array<InputUser>;
-    title: string;
-    ttl_period?: number;
-    [R]?: messages_InvitedUsers;
+  _: "messages.createChat";
+  users: Array<InputUser>;
+  title: string;
+  ttl_period?: number;
+  [R]?: messages_InvitedUsers;
 }
 
 export interface messages_getDhConfig {
-    _: "messages.getDhConfig"
-    version: number;
-    random_length: number;
-    [R]?: messages_DhConfig;
+  _: "messages.getDhConfig";
+  version: number;
+  random_length: number;
+  [R]?: messages_DhConfig;
 }
 
 export interface messages_requestEncryption {
-    _: "messages.requestEncryption"
-    user_id: InputUser;
-    random_id: number;
-    g_a: Uint8Array;
-    [R]?: EncryptedChat;
+  _: "messages.requestEncryption";
+  user_id: InputUser;
+  random_id: number;
+  g_a: Uint8Array;
+  [R]?: EncryptedChat;
 }
 
 export interface messages_acceptEncryption {
-    _: "messages.acceptEncryption"
-    peer: InputEncryptedChat;
-    g_b: Uint8Array;
-    key_fingerprint: bigint;
-    [R]?: EncryptedChat;
+  _: "messages.acceptEncryption";
+  peer: InputEncryptedChat;
+  g_b: Uint8Array;
+  key_fingerprint: bigint;
+  [R]?: EncryptedChat;
 }
 
 export interface messages_discardEncryption {
-    _: "messages.discardEncryption"
-    delete_history?: true;
-    chat_id: number;
-    [R]?: boolean;
+  _: "messages.discardEncryption";
+  delete_history?: true;
+  chat_id: number;
+  [R]?: boolean;
 }
 
 export interface messages_setEncryptedTyping {
-    _: "messages.setEncryptedTyping"
-    peer: InputEncryptedChat;
-    typing: boolean;
-    [R]?: boolean;
+  _: "messages.setEncryptedTyping";
+  peer: InputEncryptedChat;
+  typing: boolean;
+  [R]?: boolean;
 }
 
 export interface messages_readEncryptedHistory {
-    _: "messages.readEncryptedHistory"
-    peer: InputEncryptedChat;
-    max_date: number;
-    [R]?: boolean;
+  _: "messages.readEncryptedHistory";
+  peer: InputEncryptedChat;
+  max_date: number;
+  [R]?: boolean;
 }
 
 export interface messages_sendEncrypted {
-    _: "messages.sendEncrypted"
-    silent?: true;
-    peer: InputEncryptedChat;
-    random_id: bigint;
-    data: Uint8Array;
-    [R]?: messages_SentEncryptedMessage;
+  _: "messages.sendEncrypted";
+  silent?: true;
+  peer: InputEncryptedChat;
+  random_id: bigint;
+  data: Uint8Array;
+  [R]?: messages_SentEncryptedMessage;
 }
 
 export interface messages_sendEncryptedFile {
-    _: "messages.sendEncryptedFile"
-    silent?: true;
-    peer: InputEncryptedChat;
-    random_id: bigint;
-    data: Uint8Array;
-    file: InputEncryptedFile;
-    [R]?: messages_SentEncryptedMessage;
+  _: "messages.sendEncryptedFile";
+  silent?: true;
+  peer: InputEncryptedChat;
+  random_id: bigint;
+  data: Uint8Array;
+  file: InputEncryptedFile;
+  [R]?: messages_SentEncryptedMessage;
 }
 
 export interface messages_sendEncryptedService {
-    _: "messages.sendEncryptedService"
-    peer: InputEncryptedChat;
-    random_id: bigint;
-    data: Uint8Array;
-    [R]?: messages_SentEncryptedMessage;
+  _: "messages.sendEncryptedService";
+  peer: InputEncryptedChat;
+  random_id: bigint;
+  data: Uint8Array;
+  [R]?: messages_SentEncryptedMessage;
 }
 
 export interface messages_receivedQueue {
-    _: "messages.receivedQueue"
-    max_qts: number;
-    [R]?: Array<bigint>;
+  _: "messages.receivedQueue";
+  max_qts: number;
+  [R]?: Array<bigint>;
 }
 
 export interface messages_reportEncryptedSpam {
-    _: "messages.reportEncryptedSpam"
-    peer: InputEncryptedChat;
-    [R]?: boolean;
+  _: "messages.reportEncryptedSpam";
+  peer: InputEncryptedChat;
+  [R]?: boolean;
 }
 
 export interface messages_readMessageContents {
-    _: "messages.readMessageContents"
-    id: Array<number>;
-    [R]?: messages_AffectedMessages;
+  _: "messages.readMessageContents";
+  id: Array<number>;
+  [R]?: messages_AffectedMessages;
 }
 
 export interface messages_getStickers {
-    _: "messages.getStickers"
-    emoticon: string;
-    hash: bigint;
-    [R]?: messages_Stickers;
+  _: "messages.getStickers";
+  emoticon: string;
+  hash: bigint;
+  [R]?: messages_Stickers;
 }
 
 export interface messages_getAllStickers {
-    _: "messages.getAllStickers"
-    hash: bigint;
-    [R]?: messages_AllStickers;
+  _: "messages.getAllStickers";
+  hash: bigint;
+  [R]?: messages_AllStickers;
 }
 
 export interface messages_getWebPagePreview {
-    _: "messages.getWebPagePreview"
-    message: string;
-    entities?: Array<MessageEntity>;
-    [R]?: MessageMedia;
+  _: "messages.getWebPagePreview";
+  message: string;
+  entities?: Array<MessageEntity>;
+  [R]?: MessageMedia;
 }
 
 export interface messages_exportChatInvite {
-    _: "messages.exportChatInvite"
-    legacy_revoke_permanent?: true;
-    request_needed?: true;
-    peer: InputPeer;
-    expire_date?: number;
-    usage_limit?: number;
-    title?: string;
-    subscription_pricing?: StarsSubscriptionPricing;
-    [R]?: ExportedChatInvite;
+  _: "messages.exportChatInvite";
+  legacy_revoke_permanent?: true;
+  request_needed?: true;
+  peer: InputPeer;
+  expire_date?: number;
+  usage_limit?: number;
+  title?: string;
+  subscription_pricing?: StarsSubscriptionPricing;
+  [R]?: ExportedChatInvite;
 }
 
 export interface messages_checkChatInvite {
-    _: "messages.checkChatInvite"
-    hash: string;
-    [R]?: ChatInvite;
+  _: "messages.checkChatInvite";
+  hash: string;
+  [R]?: ChatInvite;
 }
 
 export interface messages_importChatInvite {
-    _: "messages.importChatInvite"
-    hash: string;
-    [R]?: Updates;
+  _: "messages.importChatInvite";
+  hash: string;
+  [R]?: Updates;
 }
 
 export interface messages_getStickerSet {
-    _: "messages.getStickerSet"
-    stickerset: InputStickerSet;
-    hash: number;
-    [R]?: messages_StickerSet;
+  _: "messages.getStickerSet";
+  stickerset: InputStickerSet;
+  hash: number;
+  [R]?: messages_StickerSet;
 }
 
 export interface messages_installStickerSet {
-    _: "messages.installStickerSet"
-    stickerset: InputStickerSet;
-    archived: boolean;
-    [R]?: messages_StickerSetInstallResult;
+  _: "messages.installStickerSet";
+  stickerset: InputStickerSet;
+  archived: boolean;
+  [R]?: messages_StickerSetInstallResult;
 }
 
 export interface messages_uninstallStickerSet {
-    _: "messages.uninstallStickerSet"
-    stickerset: InputStickerSet;
-    [R]?: boolean;
+  _: "messages.uninstallStickerSet";
+  stickerset: InputStickerSet;
+  [R]?: boolean;
 }
 
 export interface messages_startBot {
-    _: "messages.startBot"
-    bot: InputUser;
-    peer: InputPeer;
-    random_id: bigint;
-    start_param: string;
-    [R]?: Updates;
+  _: "messages.startBot";
+  bot: InputUser;
+  peer: InputPeer;
+  random_id: bigint;
+  start_param: string;
+  [R]?: Updates;
 }
 
 export interface messages_getMessagesViews {
-    _: "messages.getMessagesViews"
-    peer: InputPeer;
-    id: Array<number>;
-    increment: boolean;
-    [R]?: messages_MessageViews;
+  _: "messages.getMessagesViews";
+  peer: InputPeer;
+  id: Array<number>;
+  increment: boolean;
+  [R]?: messages_MessageViews;
 }
 
 export interface messages_editChatAdmin {
-    _: "messages.editChatAdmin"
-    chat_id: bigint;
-    user_id: InputUser;
-    is_admin: boolean;
-    [R]?: boolean;
+  _: "messages.editChatAdmin";
+  chat_id: bigint;
+  user_id: InputUser;
+  is_admin: boolean;
+  [R]?: boolean;
 }
 
 export interface messages_migrateChat {
-    _: "messages.migrateChat"
-    chat_id: bigint;
-    [R]?: Updates;
+  _: "messages.migrateChat";
+  chat_id: bigint;
+  [R]?: Updates;
 }
 
 export interface messages_searchGlobal {
-    _: "messages.searchGlobal"
-    broadcasts_only?: true;
-    groups_only?: true;
-    users_only?: true;
-    folder_id?: number;
-    q: string;
-    filter: MessagesFilter;
-    min_date: number;
-    max_date: number;
-    offset_rate: number;
-    offset_peer: InputPeer;
-    offset_id: number;
-    limit: number;
-    [R]?: messages_Messages;
+  _: "messages.searchGlobal";
+  broadcasts_only?: true;
+  groups_only?: true;
+  users_only?: true;
+  folder_id?: number;
+  q: string;
+  filter: MessagesFilter;
+  min_date: number;
+  max_date: number;
+  offset_rate: number;
+  offset_peer: InputPeer;
+  offset_id: number;
+  limit: number;
+  [R]?: messages_Messages;
 }
 
 export interface messages_reorderStickerSets {
-    _: "messages.reorderStickerSets"
-    masks?: true;
-    emojis?: true;
-    order: Array<bigint>;
-    [R]?: boolean;
+  _: "messages.reorderStickerSets";
+  masks?: true;
+  emojis?: true;
+  order: Array<bigint>;
+  [R]?: boolean;
 }
 
 export interface messages_getDocumentByHash {
-    _: "messages.getDocumentByHash"
-    sha256: Uint8Array;
-    size: bigint;
-    mime_type: string;
-    [R]?: Document;
+  _: "messages.getDocumentByHash";
+  sha256: Uint8Array;
+  size: bigint;
+  mime_type: string;
+  [R]?: Document;
 }
 
 export interface messages_getSavedGifs {
-    _: "messages.getSavedGifs"
-    hash: bigint;
-    [R]?: messages_SavedGifs;
+  _: "messages.getSavedGifs";
+  hash: bigint;
+  [R]?: messages_SavedGifs;
 }
 
 export interface messages_saveGif {
-    _: "messages.saveGif"
-    id: InputDocument;
-    unsave: boolean;
-    [R]?: boolean;
+  _: "messages.saveGif";
+  id: InputDocument;
+  unsave: boolean;
+  [R]?: boolean;
 }
 
 export interface messages_getInlineBotResults {
-    _: "messages.getInlineBotResults"
-    bot: InputUser;
-    peer: InputPeer;
-    geo_point?: InputGeoPoint;
-    query: string;
-    offset: string;
-    [R]?: messages_BotResults;
+  _: "messages.getInlineBotResults";
+  bot: InputUser;
+  peer: InputPeer;
+  geo_point?: InputGeoPoint;
+  query: string;
+  offset: string;
+  [R]?: messages_BotResults;
 }
 
 export interface messages_setInlineBotResults {
-    _: "messages.setInlineBotResults"
-    gallery?: true;
-    private?: true;
-    query_id: bigint;
-    results: Array<InputBotInlineResult>;
-    cache_time: number;
-    next_offset?: string;
-    switch_pm?: InlineBotSwitchPM;
-    switch_webview?: InlineBotWebView;
-    [R]?: boolean;
+  _: "messages.setInlineBotResults";
+  gallery?: true;
+  private?: true;
+  query_id: bigint;
+  results: Array<InputBotInlineResult>;
+  cache_time: number;
+  next_offset?: string;
+  switch_pm?: InlineBotSwitchPM;
+  switch_webview?: InlineBotWebView;
+  [R]?: boolean;
 }
 
 export interface messages_sendInlineBotResult {
-    _: "messages.sendInlineBotResult"
-    silent?: true;
-    background?: true;
-    clear_draft?: true;
-    hide_via?: true;
-    peer: InputPeer;
-    reply_to?: InputReplyTo;
-    random_id: bigint;
-    query_id: bigint;
-    id: string;
-    schedule_date?: number;
-    send_as?: InputPeer;
-    quick_reply_shortcut?: InputQuickReplyShortcut;
-    [R]?: Updates;
+  _: "messages.sendInlineBotResult";
+  silent?: true;
+  background?: true;
+  clear_draft?: true;
+  hide_via?: true;
+  peer: InputPeer;
+  reply_to?: InputReplyTo;
+  random_id: bigint;
+  query_id: bigint;
+  id: string;
+  schedule_date?: number;
+  send_as?: InputPeer;
+  quick_reply_shortcut?: InputQuickReplyShortcut;
+  [R]?: Updates;
 }
 
 export interface messages_getMessageEditData {
-    _: "messages.getMessageEditData"
-    peer: InputPeer;
-    id: number;
-    [R]?: messages_MessageEditData;
+  _: "messages.getMessageEditData";
+  peer: InputPeer;
+  id: number;
+  [R]?: messages_MessageEditData;
 }
 
 export interface messages_editMessage {
-    _: "messages.editMessage"
-    no_webpage?: true;
-    invert_media?: true;
-    peer: InputPeer;
-    id: number;
-    message?: string;
-    media?: InputMedia;
-    reply_markup?: ReplyMarkup;
-    entities?: Array<MessageEntity>;
-    schedule_date?: number;
-    quick_reply_shortcut_id?: number;
-    [R]?: Updates;
+  _: "messages.editMessage";
+  no_webpage?: true;
+  invert_media?: true;
+  peer: InputPeer;
+  id: number;
+  message?: string;
+  media?: InputMedia;
+  reply_markup?: ReplyMarkup;
+  entities?: Array<MessageEntity>;
+  schedule_date?: number;
+  quick_reply_shortcut_id?: number;
+  [R]?: Updates;
 }
 
 export interface messages_editInlineBotMessage {
-    _: "messages.editInlineBotMessage"
-    no_webpage?: true;
-    invert_media?: true;
-    id: InputBotInlineMessageID;
-    message?: string;
-    media?: InputMedia;
-    reply_markup?: ReplyMarkup;
-    entities?: Array<MessageEntity>;
-    [R]?: boolean;
+  _: "messages.editInlineBotMessage";
+  no_webpage?: true;
+  invert_media?: true;
+  id: InputBotInlineMessageID;
+  message?: string;
+  media?: InputMedia;
+  reply_markup?: ReplyMarkup;
+  entities?: Array<MessageEntity>;
+  [R]?: boolean;
 }
 
 export interface messages_getBotCallbackAnswer {
-    _: "messages.getBotCallbackAnswer"
-    game?: true;
-    peer: InputPeer;
-    msg_id: number;
-    data?: Uint8Array;
-    password?: InputCheckPasswordSRP;
-    [R]?: messages_BotCallbackAnswer;
+  _: "messages.getBotCallbackAnswer";
+  game?: true;
+  peer: InputPeer;
+  msg_id: number;
+  data?: Uint8Array;
+  password?: InputCheckPasswordSRP;
+  [R]?: messages_BotCallbackAnswer;
 }
 
 export interface messages_setBotCallbackAnswer {
-    _: "messages.setBotCallbackAnswer"
-    alert?: true;
-    query_id: bigint;
-    message?: string;
-    url?: string;
-    cache_time: number;
-    [R]?: boolean;
+  _: "messages.setBotCallbackAnswer";
+  alert?: true;
+  query_id: bigint;
+  message?: string;
+  url?: string;
+  cache_time: number;
+  [R]?: boolean;
 }
 
 export interface messages_getPeerDialogs {
-    _: "messages.getPeerDialogs"
-    peers: Array<InputDialogPeer>;
-    [R]?: messages_PeerDialogs;
+  _: "messages.getPeerDialogs";
+  peers: Array<InputDialogPeer>;
+  [R]?: messages_PeerDialogs;
 }
 
 export interface messages_saveDraft {
-    _: "messages.saveDraft"
-    no_webpage?: true;
-    invert_media?: true;
-    reply_to?: InputReplyTo;
-    peer: InputPeer;
-    message: string;
-    entities?: Array<MessageEntity>;
-    media?: InputMedia;
-    effect?: bigint;
-    [R]?: boolean;
+  _: "messages.saveDraft";
+  no_webpage?: true;
+  invert_media?: true;
+  reply_to?: InputReplyTo;
+  peer: InputPeer;
+  message: string;
+  entities?: Array<MessageEntity>;
+  media?: InputMedia;
+  effect?: bigint;
+  [R]?: boolean;
 }
 
 export interface messages_getAllDrafts {
-    _: "messages.getAllDrafts"
-    [R]?: Updates;
+  _: "messages.getAllDrafts";
+  [R]?: Updates;
 }
 
 export interface messages_getFeaturedStickers {
-    _: "messages.getFeaturedStickers"
-    hash: bigint;
-    [R]?: messages_FeaturedStickers;
+  _: "messages.getFeaturedStickers";
+  hash: bigint;
+  [R]?: messages_FeaturedStickers;
 }
 
 export interface messages_readFeaturedStickers {
-    _: "messages.readFeaturedStickers"
-    id: Array<bigint>;
-    [R]?: boolean;
+  _: "messages.readFeaturedStickers";
+  id: Array<bigint>;
+  [R]?: boolean;
 }
 
 export interface messages_getRecentStickers {
-    _: "messages.getRecentStickers"
-    attached?: true;
-    hash: bigint;
-    [R]?: messages_RecentStickers;
+  _: "messages.getRecentStickers";
+  attached?: true;
+  hash: bigint;
+  [R]?: messages_RecentStickers;
 }
 
 export interface messages_saveRecentSticker {
-    _: "messages.saveRecentSticker"
-    attached?: true;
-    id: InputDocument;
-    unsave: boolean;
-    [R]?: boolean;
+  _: "messages.saveRecentSticker";
+  attached?: true;
+  id: InputDocument;
+  unsave: boolean;
+  [R]?: boolean;
 }
 
 export interface messages_clearRecentStickers {
-    _: "messages.clearRecentStickers"
-    attached?: true;
-    [R]?: boolean;
+  _: "messages.clearRecentStickers";
+  attached?: true;
+  [R]?: boolean;
 }
 
 export interface messages_getArchivedStickers {
-    _: "messages.getArchivedStickers"
-    masks?: true;
-    emojis?: true;
-    offset_id: bigint;
-    limit: number;
-    [R]?: messages_ArchivedStickers;
+  _: "messages.getArchivedStickers";
+  masks?: true;
+  emojis?: true;
+  offset_id: bigint;
+  limit: number;
+  [R]?: messages_ArchivedStickers;
 }
 
 export interface messages_getMaskStickers {
-    _: "messages.getMaskStickers"
-    hash: bigint;
-    [R]?: messages_AllStickers;
+  _: "messages.getMaskStickers";
+  hash: bigint;
+  [R]?: messages_AllStickers;
 }
 
 export interface messages_getAttachedStickers {
-    _: "messages.getAttachedStickers"
-    media: InputStickeredMedia;
-    [R]?: Array<StickerSetCovered>;
+  _: "messages.getAttachedStickers";
+  media: InputStickeredMedia;
+  [R]?: Array<StickerSetCovered>;
 }
 
 export interface messages_setGameScore {
-    _: "messages.setGameScore"
-    edit_message?: true;
-    force?: true;
-    peer: InputPeer;
-    id: number;
-    user_id: InputUser;
-    score: number;
-    [R]?: Updates;
+  _: "messages.setGameScore";
+  edit_message?: true;
+  force?: true;
+  peer: InputPeer;
+  id: number;
+  user_id: InputUser;
+  score: number;
+  [R]?: Updates;
 }
 
 export interface messages_setInlineGameScore {
-    _: "messages.setInlineGameScore"
-    edit_message?: true;
-    force?: true;
-    id: InputBotInlineMessageID;
-    user_id: InputUser;
-    score: number;
-    [R]?: boolean;
+  _: "messages.setInlineGameScore";
+  edit_message?: true;
+  force?: true;
+  id: InputBotInlineMessageID;
+  user_id: InputUser;
+  score: number;
+  [R]?: boolean;
 }
 
 export interface messages_getGameHighScores {
-    _: "messages.getGameHighScores"
-    peer: InputPeer;
-    id: number;
-    user_id: InputUser;
-    [R]?: messages_HighScores;
+  _: "messages.getGameHighScores";
+  peer: InputPeer;
+  id: number;
+  user_id: InputUser;
+  [R]?: messages_HighScores;
 }
 
 export interface messages_getInlineGameHighScores {
-    _: "messages.getInlineGameHighScores"
-    id: InputBotInlineMessageID;
-    user_id: InputUser;
-    [R]?: messages_HighScores;
+  _: "messages.getInlineGameHighScores";
+  id: InputBotInlineMessageID;
+  user_id: InputUser;
+  [R]?: messages_HighScores;
 }
 
 export interface messages_getCommonChats {
-    _: "messages.getCommonChats"
-    user_id: InputUser;
-    max_id: bigint;
-    limit: number;
-    [R]?: messages_Chats;
+  _: "messages.getCommonChats";
+  user_id: InputUser;
+  max_id: bigint;
+  limit: number;
+  [R]?: messages_Chats;
 }
 
 export interface messages_getWebPage {
-    _: "messages.getWebPage"
-    url: string;
-    hash: number;
-    [R]?: messages_WebPage;
+  _: "messages.getWebPage";
+  url: string;
+  hash: number;
+  [R]?: messages_WebPage;
 }
 
 export interface messages_toggleDialogPin {
-    _: "messages.toggleDialogPin"
-    pinned?: true;
-    peer: InputDialogPeer;
-    [R]?: boolean;
+  _: "messages.toggleDialogPin";
+  pinned?: true;
+  peer: InputDialogPeer;
+  [R]?: boolean;
 }
 
 export interface messages_reorderPinnedDialogs {
-    _: "messages.reorderPinnedDialogs"
-    force?: true;
-    folder_id: number;
-    order: Array<InputDialogPeer>;
-    [R]?: boolean;
+  _: "messages.reorderPinnedDialogs";
+  force?: true;
+  folder_id: number;
+  order: Array<InputDialogPeer>;
+  [R]?: boolean;
 }
 
 export interface messages_getPinnedDialogs {
-    _: "messages.getPinnedDialogs"
-    folder_id: number;
-    [R]?: messages_PeerDialogs;
+  _: "messages.getPinnedDialogs";
+  folder_id: number;
+  [R]?: messages_PeerDialogs;
 }
 
 export interface messages_setBotShippingResults {
-    _: "messages.setBotShippingResults"
-    query_id: bigint;
-    error?: string;
-    shipping_options?: Array<ShippingOption>;
-    [R]?: boolean;
+  _: "messages.setBotShippingResults";
+  query_id: bigint;
+  error?: string;
+  shipping_options?: Array<ShippingOption>;
+  [R]?: boolean;
 }
 
 export interface messages_setBotPrecheckoutResults {
-    _: "messages.setBotPrecheckoutResults"
-    success?: true;
-    query_id: bigint;
-    error?: string;
-    [R]?: boolean;
+  _: "messages.setBotPrecheckoutResults";
+  success?: true;
+  query_id: bigint;
+  error?: string;
+  [R]?: boolean;
 }
 
 export interface messages_uploadMedia {
-    _: "messages.uploadMedia"
-    business_connection_id?: string;
-    peer: InputPeer;
-    media: InputMedia;
-    [R]?: MessageMedia;
+  _: "messages.uploadMedia";
+  business_connection_id?: string;
+  peer: InputPeer;
+  media: InputMedia;
+  [R]?: MessageMedia;
 }
 
 export interface messages_sendScreenshotNotification {
-    _: "messages.sendScreenshotNotification"
-    peer: InputPeer;
-    reply_to: InputReplyTo;
-    random_id: bigint;
-    [R]?: Updates;
+  _: "messages.sendScreenshotNotification";
+  peer: InputPeer;
+  reply_to: InputReplyTo;
+  random_id: bigint;
+  [R]?: Updates;
 }
 
 export interface messages_getFavedStickers {
-    _: "messages.getFavedStickers"
-    hash: bigint;
-    [R]?: messages_FavedStickers;
+  _: "messages.getFavedStickers";
+  hash: bigint;
+  [R]?: messages_FavedStickers;
 }
 
 export interface messages_faveSticker {
-    _: "messages.faveSticker"
-    id: InputDocument;
-    unfave: boolean;
-    [R]?: boolean;
+  _: "messages.faveSticker";
+  id: InputDocument;
+  unfave: boolean;
+  [R]?: boolean;
 }
 
 export interface messages_getUnreadMentions {
-    _: "messages.getUnreadMentions"
-    peer: InputPeer;
-    top_msg_id?: number;
-    offset_id: number;
-    add_offset: number;
-    limit: number;
-    max_id: number;
-    min_id: number;
-    [R]?: messages_Messages;
+  _: "messages.getUnreadMentions";
+  peer: InputPeer;
+  top_msg_id?: number;
+  offset_id: number;
+  add_offset: number;
+  limit: number;
+  max_id: number;
+  min_id: number;
+  [R]?: messages_Messages;
 }
 
 export interface messages_readMentions {
-    _: "messages.readMentions"
-    peer: InputPeer;
-    top_msg_id?: number;
-    [R]?: messages_AffectedHistory;
+  _: "messages.readMentions";
+  peer: InputPeer;
+  top_msg_id?: number;
+  [R]?: messages_AffectedHistory;
 }
 
 export interface messages_getRecentLocations {
-    _: "messages.getRecentLocations"
-    peer: InputPeer;
-    limit: number;
-    hash: bigint;
-    [R]?: messages_Messages;
+  _: "messages.getRecentLocations";
+  peer: InputPeer;
+  limit: number;
+  hash: bigint;
+  [R]?: messages_Messages;
 }
 
 export interface messages_sendMultiMedia {
-    _: "messages.sendMultiMedia"
-    silent?: true;
-    background?: true;
-    clear_draft?: true;
-    noforwards?: true;
-    update_stickersets_order?: true;
-    invert_media?: true;
-    allow_paid_floodskip?: true;
-    peer: InputPeer;
-    reply_to?: InputReplyTo;
-    multi_media: Array<InputSingleMedia>;
-    schedule_date?: number;
-    send_as?: InputPeer;
-    quick_reply_shortcut?: InputQuickReplyShortcut;
-    effect?: bigint;
-    [R]?: Updates;
+  _: "messages.sendMultiMedia";
+  silent?: true;
+  background?: true;
+  clear_draft?: true;
+  noforwards?: true;
+  update_stickersets_order?: true;
+  invert_media?: true;
+  allow_paid_floodskip?: true;
+  peer: InputPeer;
+  reply_to?: InputReplyTo;
+  multi_media: Array<InputSingleMedia>;
+  schedule_date?: number;
+  send_as?: InputPeer;
+  quick_reply_shortcut?: InputQuickReplyShortcut;
+  effect?: bigint;
+  [R]?: Updates;
 }
 
 export interface messages_uploadEncryptedFile {
-    _: "messages.uploadEncryptedFile"
-    peer: InputEncryptedChat;
-    file: InputEncryptedFile;
-    [R]?: EncryptedFile;
+  _: "messages.uploadEncryptedFile";
+  peer: InputEncryptedChat;
+  file: InputEncryptedFile;
+  [R]?: EncryptedFile;
 }
 
 export interface messages_searchStickerSets {
-    _: "messages.searchStickerSets"
-    exclude_featured?: true;
-    q: string;
-    hash: bigint;
-    [R]?: messages_FoundStickerSets;
+  _: "messages.searchStickerSets";
+  exclude_featured?: true;
+  q: string;
+  hash: bigint;
+  [R]?: messages_FoundStickerSets;
 }
 
 export interface messages_getSplitRanges {
-    _: "messages.getSplitRanges"
-    [R]?: Array<MessageRange>;
+  _: "messages.getSplitRanges";
+  [R]?: Array<MessageRange>;
 }
 
 export interface messages_markDialogUnread {
-    _: "messages.markDialogUnread"
-    unread?: true;
-    peer: InputDialogPeer;
-    [R]?: boolean;
+  _: "messages.markDialogUnread";
+  unread?: true;
+  peer: InputDialogPeer;
+  [R]?: boolean;
 }
 
 export interface messages_getDialogUnreadMarks {
-    _: "messages.getDialogUnreadMarks"
-    [R]?: Array<DialogPeer>;
+  _: "messages.getDialogUnreadMarks";
+  [R]?: Array<DialogPeer>;
 }
 
 export interface messages_clearAllDrafts {
-    _: "messages.clearAllDrafts"
-    [R]?: boolean;
+  _: "messages.clearAllDrafts";
+  [R]?: boolean;
 }
 
 export interface messages_updatePinnedMessage {
-    _: "messages.updatePinnedMessage"
-    silent?: true;
-    unpin?: true;
-    pm_oneside?: true;
-    peer: InputPeer;
-    id: number;
-    [R]?: Updates;
+  _: "messages.updatePinnedMessage";
+  silent?: true;
+  unpin?: true;
+  pm_oneside?: true;
+  peer: InputPeer;
+  id: number;
+  [R]?: Updates;
 }
 
 export interface messages_sendVote {
-    _: "messages.sendVote"
-    peer: InputPeer;
-    msg_id: number;
-    options: Array<Uint8Array>;
-    [R]?: Updates;
+  _: "messages.sendVote";
+  peer: InputPeer;
+  msg_id: number;
+  options: Array<Uint8Array>;
+  [R]?: Updates;
 }
 
 export interface messages_getPollResults {
-    _: "messages.getPollResults"
-    peer: InputPeer;
-    msg_id: number;
-    [R]?: Updates;
+  _: "messages.getPollResults";
+  peer: InputPeer;
+  msg_id: number;
+  [R]?: Updates;
 }
 
 export interface messages_getOnlines {
-    _: "messages.getOnlines"
-    peer: InputPeer;
-    [R]?: ChatOnlines;
+  _: "messages.getOnlines";
+  peer: InputPeer;
+  [R]?: ChatOnlines;
 }
 
 export interface messages_editChatAbout {
-    _: "messages.editChatAbout"
-    peer: InputPeer;
-    about: string;
-    [R]?: boolean;
+  _: "messages.editChatAbout";
+  peer: InputPeer;
+  about: string;
+  [R]?: boolean;
 }
 
 export interface messages_editChatDefaultBannedRights {
-    _: "messages.editChatDefaultBannedRights"
-    peer: InputPeer;
-    banned_rights: ChatBannedRights;
-    [R]?: Updates;
+  _: "messages.editChatDefaultBannedRights";
+  peer: InputPeer;
+  banned_rights: ChatBannedRights;
+  [R]?: Updates;
 }
 
 export interface messages_getEmojiKeywords {
-    _: "messages.getEmojiKeywords"
-    lang_code: string;
-    [R]?: EmojiKeywordsDifference;
+  _: "messages.getEmojiKeywords";
+  lang_code: string;
+  [R]?: EmojiKeywordsDifference;
 }
 
 export interface messages_getEmojiKeywordsDifference {
-    _: "messages.getEmojiKeywordsDifference"
-    lang_code: string;
-    from_version: number;
-    [R]?: EmojiKeywordsDifference;
+  _: "messages.getEmojiKeywordsDifference";
+  lang_code: string;
+  from_version: number;
+  [R]?: EmojiKeywordsDifference;
 }
 
 export interface messages_getEmojiKeywordsLanguages {
-    _: "messages.getEmojiKeywordsLanguages"
-    lang_codes: Array<string>;
-    [R]?: Array<EmojiLanguage>;
+  _: "messages.getEmojiKeywordsLanguages";
+  lang_codes: Array<string>;
+  [R]?: Array<EmojiLanguage>;
 }
 
 export interface messages_getEmojiURL {
-    _: "messages.getEmojiURL"
-    lang_code: string;
-    [R]?: EmojiURL;
+  _: "messages.getEmojiURL";
+  lang_code: string;
+  [R]?: EmojiURL;
 }
 
 export interface messages_getSearchCounters {
-    _: "messages.getSearchCounters"
-    peer: InputPeer;
-    saved_peer_id?: InputPeer;
-    top_msg_id?: number;
-    filters: Array<MessagesFilter>;
-    [R]?: Array<messages_SearchCounter>;
+  _: "messages.getSearchCounters";
+  peer: InputPeer;
+  saved_peer_id?: InputPeer;
+  top_msg_id?: number;
+  filters: Array<MessagesFilter>;
+  [R]?: Array<messages_SearchCounter>;
 }
 
 export interface messages_requestUrlAuth {
-    _: "messages.requestUrlAuth"
-    peer?: InputPeer;
-    msg_id?: number;
-    button_id?: number;
-    url?: string;
-    [R]?: UrlAuthResult;
+  _: "messages.requestUrlAuth";
+  peer?: InputPeer;
+  msg_id?: number;
+  button_id?: number;
+  url?: string;
+  [R]?: UrlAuthResult;
 }
 
 export interface messages_acceptUrlAuth {
-    _: "messages.acceptUrlAuth"
-    write_allowed?: true;
-    peer?: InputPeer;
-    msg_id?: number;
-    button_id?: number;
-    url?: string;
-    [R]?: UrlAuthResult;
+  _: "messages.acceptUrlAuth";
+  write_allowed?: true;
+  peer?: InputPeer;
+  msg_id?: number;
+  button_id?: number;
+  url?: string;
+  [R]?: UrlAuthResult;
 }
 
 export interface messages_hidePeerSettingsBar {
-    _: "messages.hidePeerSettingsBar"
-    peer: InputPeer;
-    [R]?: boolean;
+  _: "messages.hidePeerSettingsBar";
+  peer: InputPeer;
+  [R]?: boolean;
 }
 
 export interface messages_getScheduledHistory {
-    _: "messages.getScheduledHistory"
-    peer: InputPeer;
-    hash: bigint;
-    [R]?: messages_Messages;
+  _: "messages.getScheduledHistory";
+  peer: InputPeer;
+  hash: bigint;
+  [R]?: messages_Messages;
 }
 
 export interface messages_getScheduledMessages {
-    _: "messages.getScheduledMessages"
-    peer: InputPeer;
-    id: Array<number>;
-    [R]?: messages_Messages;
+  _: "messages.getScheduledMessages";
+  peer: InputPeer;
+  id: Array<number>;
+  [R]?: messages_Messages;
 }
 
 export interface messages_sendScheduledMessages {
-    _: "messages.sendScheduledMessages"
-    peer: InputPeer;
-    id: Array<number>;
-    [R]?: Updates;
+  _: "messages.sendScheduledMessages";
+  peer: InputPeer;
+  id: Array<number>;
+  [R]?: Updates;
 }
 
 export interface messages_deleteScheduledMessages {
-    _: "messages.deleteScheduledMessages"
-    peer: InputPeer;
-    id: Array<number>;
-    [R]?: Updates;
+  _: "messages.deleteScheduledMessages";
+  peer: InputPeer;
+  id: Array<number>;
+  [R]?: Updates;
 }
 
 export interface messages_getPollVotes {
-    _: "messages.getPollVotes"
-    peer: InputPeer;
-    id: number;
-    option?: Uint8Array;
-    offset?: string;
-    limit: number;
-    [R]?: messages_VotesList;
+  _: "messages.getPollVotes";
+  peer: InputPeer;
+  id: number;
+  option?: Uint8Array;
+  offset?: string;
+  limit: number;
+  [R]?: messages_VotesList;
 }
 
 export interface messages_toggleStickerSets {
-    _: "messages.toggleStickerSets"
-    uninstall?: true;
-    archive?: true;
-    unarchive?: true;
-    stickersets: Array<InputStickerSet>;
-    [R]?: boolean;
+  _: "messages.toggleStickerSets";
+  uninstall?: true;
+  archive?: true;
+  unarchive?: true;
+  stickersets: Array<InputStickerSet>;
+  [R]?: boolean;
 }
 
 export interface messages_getDialogFilters {
-    _: "messages.getDialogFilters"
-    [R]?: messages_DialogFilters;
+  _: "messages.getDialogFilters";
+  [R]?: messages_DialogFilters;
 }
 
 export interface messages_getSuggestedDialogFilters {
-    _: "messages.getSuggestedDialogFilters"
-    [R]?: Array<DialogFilterSuggested>;
+  _: "messages.getSuggestedDialogFilters";
+  [R]?: Array<DialogFilterSuggested>;
 }
 
 export interface messages_updateDialogFilter {
-    _: "messages.updateDialogFilter"
-    id: number;
-    filter?: DialogFilter;
-    [R]?: boolean;
+  _: "messages.updateDialogFilter";
+  id: number;
+  filter?: DialogFilter;
+  [R]?: boolean;
 }
 
 export interface messages_updateDialogFiltersOrder {
-    _: "messages.updateDialogFiltersOrder"
-    order: Array<number>;
-    [R]?: boolean;
+  _: "messages.updateDialogFiltersOrder";
+  order: Array<number>;
+  [R]?: boolean;
 }
 
 export interface messages_getOldFeaturedStickers {
-    _: "messages.getOldFeaturedStickers"
-    offset: number;
-    limit: number;
-    hash: bigint;
-    [R]?: messages_FeaturedStickers;
+  _: "messages.getOldFeaturedStickers";
+  offset: number;
+  limit: number;
+  hash: bigint;
+  [R]?: messages_FeaturedStickers;
 }
 
 export interface messages_getReplies {
-    _: "messages.getReplies"
-    peer: InputPeer;
-    msg_id: number;
-    offset_id: number;
-    offset_date: number;
-    add_offset: number;
-    limit: number;
-    max_id: number;
-    min_id: number;
-    hash: bigint;
-    [R]?: messages_Messages;
+  _: "messages.getReplies";
+  peer: InputPeer;
+  msg_id: number;
+  offset_id: number;
+  offset_date: number;
+  add_offset: number;
+  limit: number;
+  max_id: number;
+  min_id: number;
+  hash: bigint;
+  [R]?: messages_Messages;
 }
 
 export interface messages_getDiscussionMessage {
-    _: "messages.getDiscussionMessage"
-    peer: InputPeer;
-    msg_id: number;
-    [R]?: messages_DiscussionMessage;
+  _: "messages.getDiscussionMessage";
+  peer: InputPeer;
+  msg_id: number;
+  [R]?: messages_DiscussionMessage;
 }
 
 export interface messages_readDiscussion {
-    _: "messages.readDiscussion"
-    peer: InputPeer;
-    msg_id: number;
-    read_max_id: number;
-    [R]?: boolean;
+  _: "messages.readDiscussion";
+  peer: InputPeer;
+  msg_id: number;
+  read_max_id: number;
+  [R]?: boolean;
 }
 
 export interface messages_unpinAllMessages {
-    _: "messages.unpinAllMessages"
-    peer: InputPeer;
-    top_msg_id?: number;
-    [R]?: messages_AffectedHistory;
+  _: "messages.unpinAllMessages";
+  peer: InputPeer;
+  top_msg_id?: number;
+  [R]?: messages_AffectedHistory;
 }
 
 export interface messages_deleteChat {
-    _: "messages.deleteChat"
-    chat_id: bigint;
-    [R]?: boolean;
+  _: "messages.deleteChat";
+  chat_id: bigint;
+  [R]?: boolean;
 }
 
 export interface messages_deletePhoneCallHistory {
-    _: "messages.deletePhoneCallHistory"
-    revoke?: true;
-    [R]?: messages_AffectedFoundMessages;
+  _: "messages.deletePhoneCallHistory";
+  revoke?: true;
+  [R]?: messages_AffectedFoundMessages;
 }
 
 export interface messages_checkHistoryImport {
-    _: "messages.checkHistoryImport"
-    import_head: string;
-    [R]?: messages_HistoryImportParsed;
+  _: "messages.checkHistoryImport";
+  import_head: string;
+  [R]?: messages_HistoryImportParsed;
 }
 
 export interface messages_initHistoryImport {
-    _: "messages.initHistoryImport"
-    peer: InputPeer;
-    file: InputFile;
-    media_count: number;
-    [R]?: messages_HistoryImport;
+  _: "messages.initHistoryImport";
+  peer: InputPeer;
+  file: InputFile;
+  media_count: number;
+  [R]?: messages_HistoryImport;
 }
 
 export interface messages_uploadImportedMedia {
-    _: "messages.uploadImportedMedia"
-    peer: InputPeer;
-    import_id: bigint;
-    file_name: string;
-    media: InputMedia;
-    [R]?: MessageMedia;
+  _: "messages.uploadImportedMedia";
+  peer: InputPeer;
+  import_id: bigint;
+  file_name: string;
+  media: InputMedia;
+  [R]?: MessageMedia;
 }
 
 export interface messages_startHistoryImport {
-    _: "messages.startHistoryImport"
-    peer: InputPeer;
-    import_id: bigint;
-    [R]?: boolean;
+  _: "messages.startHistoryImport";
+  peer: InputPeer;
+  import_id: bigint;
+  [R]?: boolean;
 }
 
 export interface messages_getExportedChatInvites {
-    _: "messages.getExportedChatInvites"
-    revoked?: true;
-    peer: InputPeer;
-    admin_id: InputUser;
-    offset_date?: number;
-    offset_link?: string;
-    limit: number;
-    [R]?: messages_ExportedChatInvites;
+  _: "messages.getExportedChatInvites";
+  revoked?: true;
+  peer: InputPeer;
+  admin_id: InputUser;
+  offset_date?: number;
+  offset_link?: string;
+  limit: number;
+  [R]?: messages_ExportedChatInvites;
 }
 
 export interface messages_getExportedChatInvite {
-    _: "messages.getExportedChatInvite"
-    peer: InputPeer;
-    link: string;
-    [R]?: messages_ExportedChatInvite;
+  _: "messages.getExportedChatInvite";
+  peer: InputPeer;
+  link: string;
+  [R]?: messages_ExportedChatInvite;
 }
 
 export interface messages_editExportedChatInvite {
-    _: "messages.editExportedChatInvite"
-    revoked?: true;
-    peer: InputPeer;
-    link: string;
-    expire_date?: number;
-    usage_limit?: number;
-    request_needed?: boolean;
-    title?: string;
-    [R]?: messages_ExportedChatInvite;
+  _: "messages.editExportedChatInvite";
+  revoked?: true;
+  peer: InputPeer;
+  link: string;
+  expire_date?: number;
+  usage_limit?: number;
+  request_needed?: boolean;
+  title?: string;
+  [R]?: messages_ExportedChatInvite;
 }
 
 export interface messages_deleteRevokedExportedChatInvites {
-    _: "messages.deleteRevokedExportedChatInvites"
-    peer: InputPeer;
-    admin_id: InputUser;
-    [R]?: boolean;
+  _: "messages.deleteRevokedExportedChatInvites";
+  peer: InputPeer;
+  admin_id: InputUser;
+  [R]?: boolean;
 }
 
 export interface messages_deleteExportedChatInvite {
-    _: "messages.deleteExportedChatInvite"
-    peer: InputPeer;
-    link: string;
-    [R]?: boolean;
+  _: "messages.deleteExportedChatInvite";
+  peer: InputPeer;
+  link: string;
+  [R]?: boolean;
 }
 
 export interface messages_getAdminsWithInvites {
-    _: "messages.getAdminsWithInvites"
-    peer: InputPeer;
-    [R]?: messages_ChatAdminsWithInvites;
+  _: "messages.getAdminsWithInvites";
+  peer: InputPeer;
+  [R]?: messages_ChatAdminsWithInvites;
 }
 
 export interface messages_getChatInviteImporters {
-    _: "messages.getChatInviteImporters"
-    requested?: true;
-    subscription_expired?: true;
-    peer: InputPeer;
-    link?: string;
-    q?: string;
-    offset_date: number;
-    offset_user: InputUser;
-    limit: number;
-    [R]?: messages_ChatInviteImporters;
+  _: "messages.getChatInviteImporters";
+  requested?: true;
+  subscription_expired?: true;
+  peer: InputPeer;
+  link?: string;
+  q?: string;
+  offset_date: number;
+  offset_user: InputUser;
+  limit: number;
+  [R]?: messages_ChatInviteImporters;
 }
 
 export interface messages_setHistoryTTL {
-    _: "messages.setHistoryTTL"
-    peer: InputPeer;
-    period: number;
-    [R]?: Updates;
+  _: "messages.setHistoryTTL";
+  peer: InputPeer;
+  period: number;
+  [R]?: Updates;
 }
 
 export interface messages_checkHistoryImportPeer {
-    _: "messages.checkHistoryImportPeer"
-    peer: InputPeer;
-    [R]?: messages_CheckedHistoryImportPeer;
+  _: "messages.checkHistoryImportPeer";
+  peer: InputPeer;
+  [R]?: messages_CheckedHistoryImportPeer;
 }
 
 export interface messages_setChatTheme {
-    _: "messages.setChatTheme"
-    peer: InputPeer;
-    emoticon: string;
-    [R]?: Updates;
+  _: "messages.setChatTheme";
+  peer: InputPeer;
+  emoticon: string;
+  [R]?: Updates;
 }
 
 export interface messages_getMessageReadParticipants {
-    _: "messages.getMessageReadParticipants"
-    peer: InputPeer;
-    msg_id: number;
-    [R]?: Array<ReadParticipantDate>;
+  _: "messages.getMessageReadParticipants";
+  peer: InputPeer;
+  msg_id: number;
+  [R]?: Array<ReadParticipantDate>;
 }
 
 export interface messages_getSearchResultsCalendar {
-    _: "messages.getSearchResultsCalendar"
-    peer: InputPeer;
-    saved_peer_id?: InputPeer;
-    filter: MessagesFilter;
-    offset_id: number;
-    offset_date: number;
-    [R]?: messages_SearchResultsCalendar;
+  _: "messages.getSearchResultsCalendar";
+  peer: InputPeer;
+  saved_peer_id?: InputPeer;
+  filter: MessagesFilter;
+  offset_id: number;
+  offset_date: number;
+  [R]?: messages_SearchResultsCalendar;
 }
 
 export interface messages_getSearchResultsPositions {
-    _: "messages.getSearchResultsPositions"
-    peer: InputPeer;
-    saved_peer_id?: InputPeer;
-    filter: MessagesFilter;
-    offset_id: number;
-    limit: number;
-    [R]?: messages_SearchResultsPositions;
+  _: "messages.getSearchResultsPositions";
+  peer: InputPeer;
+  saved_peer_id?: InputPeer;
+  filter: MessagesFilter;
+  offset_id: number;
+  limit: number;
+  [R]?: messages_SearchResultsPositions;
 }
 
 export interface messages_hideChatJoinRequest {
-    _: "messages.hideChatJoinRequest"
-    approved?: true;
-    peer: InputPeer;
-    user_id: InputUser;
-    [R]?: Updates;
+  _: "messages.hideChatJoinRequest";
+  approved?: true;
+  peer: InputPeer;
+  user_id: InputUser;
+  [R]?: Updates;
 }
 
 export interface messages_hideAllChatJoinRequests {
-    _: "messages.hideAllChatJoinRequests"
-    approved?: true;
-    peer: InputPeer;
-    link?: string;
-    [R]?: Updates;
+  _: "messages.hideAllChatJoinRequests";
+  approved?: true;
+  peer: InputPeer;
+  link?: string;
+  [R]?: Updates;
 }
 
 export interface messages_toggleNoForwards {
-    _: "messages.toggleNoForwards"
-    peer: InputPeer;
-    enabled: boolean;
-    [R]?: Updates;
+  _: "messages.toggleNoForwards";
+  peer: InputPeer;
+  enabled: boolean;
+  [R]?: Updates;
 }
 
 export interface messages_saveDefaultSendAs {
-    _: "messages.saveDefaultSendAs"
-    peer: InputPeer;
-    send_as: InputPeer;
-    [R]?: boolean;
+  _: "messages.saveDefaultSendAs";
+  peer: InputPeer;
+  send_as: InputPeer;
+  [R]?: boolean;
 }
 
 export interface messages_sendReaction {
-    _: "messages.sendReaction"
-    big?: true;
-    add_to_recent?: true;
-    peer: InputPeer;
-    msg_id: number;
-    reaction?: Array<Reaction>;
-    [R]?: Updates;
+  _: "messages.sendReaction";
+  big?: true;
+  add_to_recent?: true;
+  peer: InputPeer;
+  msg_id: number;
+  reaction?: Array<Reaction>;
+  [R]?: Updates;
 }
 
 export interface messages_getMessagesReactions {
-    _: "messages.getMessagesReactions"
-    peer: InputPeer;
-    id: Array<number>;
-    [R]?: Updates;
+  _: "messages.getMessagesReactions";
+  peer: InputPeer;
+  id: Array<number>;
+  [R]?: Updates;
 }
 
 export interface messages_getMessageReactionsList {
-    _: "messages.getMessageReactionsList"
-    peer: InputPeer;
-    id: number;
-    reaction?: Reaction;
-    offset?: string;
-    limit: number;
-    [R]?: messages_MessageReactionsList;
+  _: "messages.getMessageReactionsList";
+  peer: InputPeer;
+  id: number;
+  reaction?: Reaction;
+  offset?: string;
+  limit: number;
+  [R]?: messages_MessageReactionsList;
 }
 
 export interface messages_setChatAvailableReactions {
-    _: "messages.setChatAvailableReactions"
-    peer: InputPeer;
-    available_reactions: ChatReactions;
-    reactions_limit?: number;
-    paid_enabled?: boolean;
-    [R]?: Updates;
+  _: "messages.setChatAvailableReactions";
+  peer: InputPeer;
+  available_reactions: ChatReactions;
+  reactions_limit?: number;
+  paid_enabled?: boolean;
+  [R]?: Updates;
 }
 
 export interface messages_getAvailableReactions {
-    _: "messages.getAvailableReactions"
-    hash: number;
-    [R]?: messages_AvailableReactions;
+  _: "messages.getAvailableReactions";
+  hash: number;
+  [R]?: messages_AvailableReactions;
 }
 
 export interface messages_setDefaultReaction {
-    _: "messages.setDefaultReaction"
-    reaction: Reaction;
-    [R]?: boolean;
+  _: "messages.setDefaultReaction";
+  reaction: Reaction;
+  [R]?: boolean;
 }
 
 export interface messages_translateText {
-    _: "messages.translateText"
-    peer?: InputPeer;
-    id?: Array<number>;
-    text?: Array<TextWithEntities>;
-    to_lang: string;
-    [R]?: messages_TranslatedText;
+  _: "messages.translateText";
+  peer?: InputPeer;
+  id?: Array<number>;
+  text?: Array<TextWithEntities>;
+  to_lang: string;
+  [R]?: messages_TranslatedText;
 }
 
 export interface messages_getUnreadReactions {
-    _: "messages.getUnreadReactions"
-    peer: InputPeer;
-    top_msg_id?: number;
-    offset_id: number;
-    add_offset: number;
-    limit: number;
-    max_id: number;
-    min_id: number;
-    [R]?: messages_Messages;
+  _: "messages.getUnreadReactions";
+  peer: InputPeer;
+  top_msg_id?: number;
+  offset_id: number;
+  add_offset: number;
+  limit: number;
+  max_id: number;
+  min_id: number;
+  [R]?: messages_Messages;
 }
 
 export interface messages_readReactions {
-    _: "messages.readReactions"
-    peer: InputPeer;
-    top_msg_id?: number;
-    [R]?: messages_AffectedHistory;
+  _: "messages.readReactions";
+  peer: InputPeer;
+  top_msg_id?: number;
+  [R]?: messages_AffectedHistory;
 }
 
 export interface messages_searchSentMedia {
-    _: "messages.searchSentMedia"
-    q: string;
-    filter: MessagesFilter;
-    limit: number;
-    [R]?: messages_Messages;
+  _: "messages.searchSentMedia";
+  q: string;
+  filter: MessagesFilter;
+  limit: number;
+  [R]?: messages_Messages;
 }
 
 export interface messages_getAttachMenuBots {
-    _: "messages.getAttachMenuBots"
-    hash: bigint;
-    [R]?: AttachMenuBots;
+  _: "messages.getAttachMenuBots";
+  hash: bigint;
+  [R]?: AttachMenuBots;
 }
 
 export interface messages_getAttachMenuBot {
-    _: "messages.getAttachMenuBot"
-    bot: InputUser;
-    [R]?: AttachMenuBotsBot;
+  _: "messages.getAttachMenuBot";
+  bot: InputUser;
+  [R]?: AttachMenuBotsBot;
 }
 
 export interface messages_toggleBotInAttachMenu {
-    _: "messages.toggleBotInAttachMenu"
-    write_allowed?: true;
-    bot: InputUser;
-    enabled: boolean;
-    [R]?: boolean;
+  _: "messages.toggleBotInAttachMenu";
+  write_allowed?: true;
+  bot: InputUser;
+  enabled: boolean;
+  [R]?: boolean;
 }
 
 export interface messages_requestWebView {
-    _: "messages.requestWebView"
-    from_bot_menu?: true;
-    silent?: true;
-    compact?: true;
-    fullscreen?: true;
-    peer: InputPeer;
-    bot: InputUser;
-    url?: string;
-    start_param?: string;
-    theme_params?: DataJSON;
-    platform: string;
-    reply_to?: InputReplyTo;
-    send_as?: InputPeer;
-    [R]?: WebViewResult;
+  _: "messages.requestWebView";
+  from_bot_menu?: true;
+  silent?: true;
+  compact?: true;
+  fullscreen?: true;
+  peer: InputPeer;
+  bot: InputUser;
+  url?: string;
+  start_param?: string;
+  theme_params?: DataJSON;
+  platform: string;
+  reply_to?: InputReplyTo;
+  send_as?: InputPeer;
+  [R]?: WebViewResult;
 }
 
 export interface messages_prolongWebView {
-    _: "messages.prolongWebView"
-    silent?: true;
-    peer: InputPeer;
-    bot: InputUser;
-    query_id: bigint;
-    reply_to?: InputReplyTo;
-    send_as?: InputPeer;
-    [R]?: boolean;
+  _: "messages.prolongWebView";
+  silent?: true;
+  peer: InputPeer;
+  bot: InputUser;
+  query_id: bigint;
+  reply_to?: InputReplyTo;
+  send_as?: InputPeer;
+  [R]?: boolean;
 }
 
 export interface messages_requestSimpleWebView {
-    _: "messages.requestSimpleWebView"
-    from_switch_webview?: true;
-    from_side_menu?: true;
-    compact?: true;
-    fullscreen?: true;
-    bot: InputUser;
-    url?: string;
-    start_param?: string;
-    theme_params?: DataJSON;
-    platform: string;
-    [R]?: WebViewResult;
+  _: "messages.requestSimpleWebView";
+  from_switch_webview?: true;
+  from_side_menu?: true;
+  compact?: true;
+  fullscreen?: true;
+  bot: InputUser;
+  url?: string;
+  start_param?: string;
+  theme_params?: DataJSON;
+  platform: string;
+  [R]?: WebViewResult;
 }
 
 export interface messages_sendWebViewResultMessage {
-    _: "messages.sendWebViewResultMessage"
-    bot_query_id: string;
-    result: InputBotInlineResult;
-    [R]?: WebViewMessageSent;
+  _: "messages.sendWebViewResultMessage";
+  bot_query_id: string;
+  result: InputBotInlineResult;
+  [R]?: WebViewMessageSent;
 }
 
 export interface messages_sendWebViewData {
-    _: "messages.sendWebViewData"
-    bot: InputUser;
-    random_id: bigint;
-    button_text: string;
-    data: string;
-    [R]?: Updates;
+  _: "messages.sendWebViewData";
+  bot: InputUser;
+  random_id: bigint;
+  button_text: string;
+  data: string;
+  [R]?: Updates;
 }
 
 export interface messages_transcribeAudio {
-    _: "messages.transcribeAudio"
-    peer: InputPeer;
-    msg_id: number;
-    [R]?: messages_TranscribedAudio;
+  _: "messages.transcribeAudio";
+  peer: InputPeer;
+  msg_id: number;
+  [R]?: messages_TranscribedAudio;
 }
 
 export interface messages_rateTranscribedAudio {
-    _: "messages.rateTranscribedAudio"
-    peer: InputPeer;
-    msg_id: number;
-    transcription_id: bigint;
-    good: boolean;
-    [R]?: boolean;
+  _: "messages.rateTranscribedAudio";
+  peer: InputPeer;
+  msg_id: number;
+  transcription_id: bigint;
+  good: boolean;
+  [R]?: boolean;
 }
 
 export interface messages_getCustomEmojiDocuments {
-    _: "messages.getCustomEmojiDocuments"
-    document_id: Array<bigint>;
-    [R]?: Array<Document>;
+  _: "messages.getCustomEmojiDocuments";
+  document_id: Array<bigint>;
+  [R]?: Array<Document>;
 }
 
 export interface messages_getEmojiStickers {
-    _: "messages.getEmojiStickers"
-    hash: bigint;
-    [R]?: messages_AllStickers;
+  _: "messages.getEmojiStickers";
+  hash: bigint;
+  [R]?: messages_AllStickers;
 }
 
 export interface messages_getFeaturedEmojiStickers {
-    _: "messages.getFeaturedEmojiStickers"
-    hash: bigint;
-    [R]?: messages_FeaturedStickers;
+  _: "messages.getFeaturedEmojiStickers";
+  hash: bigint;
+  [R]?: messages_FeaturedStickers;
 }
 
 export interface messages_reportReaction {
-    _: "messages.reportReaction"
-    peer: InputPeer;
-    id: number;
-    reaction_peer: InputPeer;
-    [R]?: boolean;
+  _: "messages.reportReaction";
+  peer: InputPeer;
+  id: number;
+  reaction_peer: InputPeer;
+  [R]?: boolean;
 }
 
 export interface messages_getTopReactions {
-    _: "messages.getTopReactions"
-    limit: number;
-    hash: bigint;
-    [R]?: messages_Reactions;
+  _: "messages.getTopReactions";
+  limit: number;
+  hash: bigint;
+  [R]?: messages_Reactions;
 }
 
 export interface messages_getRecentReactions {
-    _: "messages.getRecentReactions"
-    limit: number;
-    hash: bigint;
-    [R]?: messages_Reactions;
+  _: "messages.getRecentReactions";
+  limit: number;
+  hash: bigint;
+  [R]?: messages_Reactions;
 }
 
 export interface messages_clearRecentReactions {
-    _: "messages.clearRecentReactions"
-    [R]?: boolean;
+  _: "messages.clearRecentReactions";
+  [R]?: boolean;
 }
 
 export interface messages_getExtendedMedia {
-    _: "messages.getExtendedMedia"
-    peer: InputPeer;
-    id: Array<number>;
-    [R]?: Updates;
+  _: "messages.getExtendedMedia";
+  peer: InputPeer;
+  id: Array<number>;
+  [R]?: Updates;
 }
 
 export interface messages_setDefaultHistoryTTL {
-    _: "messages.setDefaultHistoryTTL"
-    period: number;
-    [R]?: boolean;
+  _: "messages.setDefaultHistoryTTL";
+  period: number;
+  [R]?: boolean;
 }
 
 export interface messages_getDefaultHistoryTTL {
-    _: "messages.getDefaultHistoryTTL"
-    [R]?: DefaultHistoryTTL;
+  _: "messages.getDefaultHistoryTTL";
+  [R]?: DefaultHistoryTTL;
 }
 
 export interface messages_sendBotRequestedPeer {
-    _: "messages.sendBotRequestedPeer"
-    peer: InputPeer;
-    msg_id: number;
-    button_id: number;
-    requested_peers: Array<InputPeer>;
-    [R]?: Updates;
+  _: "messages.sendBotRequestedPeer";
+  peer: InputPeer;
+  msg_id: number;
+  button_id: number;
+  requested_peers: Array<InputPeer>;
+  [R]?: Updates;
 }
 
 export interface messages_getEmojiGroups {
-    _: "messages.getEmojiGroups"
-    hash: number;
-    [R]?: messages_EmojiGroups;
+  _: "messages.getEmojiGroups";
+  hash: number;
+  [R]?: messages_EmojiGroups;
 }
 
 export interface messages_getEmojiStatusGroups {
-    _: "messages.getEmojiStatusGroups"
-    hash: number;
-    [R]?: messages_EmojiGroups;
+  _: "messages.getEmojiStatusGroups";
+  hash: number;
+  [R]?: messages_EmojiGroups;
 }
 
 export interface messages_getEmojiProfilePhotoGroups {
-    _: "messages.getEmojiProfilePhotoGroups"
-    hash: number;
-    [R]?: messages_EmojiGroups;
+  _: "messages.getEmojiProfilePhotoGroups";
+  hash: number;
+  [R]?: messages_EmojiGroups;
 }
 
 export interface messages_searchCustomEmoji {
-    _: "messages.searchCustomEmoji"
-    emoticon: string;
-    hash: bigint;
-    [R]?: EmojiList;
+  _: "messages.searchCustomEmoji";
+  emoticon: string;
+  hash: bigint;
+  [R]?: EmojiList;
 }
 
 export interface messages_togglePeerTranslations {
-    _: "messages.togglePeerTranslations"
-    disabled?: true;
-    peer: InputPeer;
-    [R]?: boolean;
+  _: "messages.togglePeerTranslations";
+  disabled?: true;
+  peer: InputPeer;
+  [R]?: boolean;
 }
 
 export interface messages_getBotApp {
-    _: "messages.getBotApp"
-    app: InputBotApp;
-    hash: bigint;
-    [R]?: messages_BotApp;
+  _: "messages.getBotApp";
+  app: InputBotApp;
+  hash: bigint;
+  [R]?: messages_BotApp;
 }
 
 export interface messages_requestAppWebView {
-    _: "messages.requestAppWebView"
-    write_allowed?: true;
-    compact?: true;
-    fullscreen?: true;
-    peer: InputPeer;
-    app: InputBotApp;
-    start_param?: string;
-    theme_params?: DataJSON;
-    platform: string;
-    [R]?: WebViewResult;
+  _: "messages.requestAppWebView";
+  write_allowed?: true;
+  compact?: true;
+  fullscreen?: true;
+  peer: InputPeer;
+  app: InputBotApp;
+  start_param?: string;
+  theme_params?: DataJSON;
+  platform: string;
+  [R]?: WebViewResult;
 }
 
 export interface messages_setChatWallPaper {
-    _: "messages.setChatWallPaper"
-    for_both?: true;
-    revert?: true;
-    peer: InputPeer;
-    wallpaper?: InputWallPaper;
-    settings?: WallPaperSettings;
-    id?: number;
-    [R]?: Updates;
+  _: "messages.setChatWallPaper";
+  for_both?: true;
+  revert?: true;
+  peer: InputPeer;
+  wallpaper?: InputWallPaper;
+  settings?: WallPaperSettings;
+  id?: number;
+  [R]?: Updates;
 }
 
 export interface messages_searchEmojiStickerSets {
-    _: "messages.searchEmojiStickerSets"
-    exclude_featured?: true;
-    q: string;
-    hash: bigint;
-    [R]?: messages_FoundStickerSets;
+  _: "messages.searchEmojiStickerSets";
+  exclude_featured?: true;
+  q: string;
+  hash: bigint;
+  [R]?: messages_FoundStickerSets;
 }
 
 export interface messages_getSavedDialogs {
-    _: "messages.getSavedDialogs"
-    exclude_pinned?: true;
-    offset_date: number;
-    offset_id: number;
-    offset_peer: InputPeer;
-    limit: number;
-    hash: bigint;
-    [R]?: messages_SavedDialogs;
+  _: "messages.getSavedDialogs";
+  exclude_pinned?: true;
+  offset_date: number;
+  offset_id: number;
+  offset_peer: InputPeer;
+  limit: number;
+  hash: bigint;
+  [R]?: messages_SavedDialogs;
 }
 
 export interface messages_getSavedHistory {
-    _: "messages.getSavedHistory"
-    peer: InputPeer;
-    offset_id: number;
-    offset_date: number;
-    add_offset: number;
-    limit: number;
-    max_id: number;
-    min_id: number;
-    hash: bigint;
-    [R]?: messages_Messages;
+  _: "messages.getSavedHistory";
+  peer: InputPeer;
+  offset_id: number;
+  offset_date: number;
+  add_offset: number;
+  limit: number;
+  max_id: number;
+  min_id: number;
+  hash: bigint;
+  [R]?: messages_Messages;
 }
 
 export interface messages_deleteSavedHistory {
-    _: "messages.deleteSavedHistory"
-    peer: InputPeer;
-    max_id: number;
-    min_date?: number;
-    max_date?: number;
-    [R]?: messages_AffectedHistory;
+  _: "messages.deleteSavedHistory";
+  peer: InputPeer;
+  max_id: number;
+  min_date?: number;
+  max_date?: number;
+  [R]?: messages_AffectedHistory;
 }
 
 export interface messages_getPinnedSavedDialogs {
-    _: "messages.getPinnedSavedDialogs"
-    [R]?: messages_SavedDialogs;
+  _: "messages.getPinnedSavedDialogs";
+  [R]?: messages_SavedDialogs;
 }
 
 export interface messages_toggleSavedDialogPin {
-    _: "messages.toggleSavedDialogPin"
-    pinned?: true;
-    peer: InputDialogPeer;
-    [R]?: boolean;
+  _: "messages.toggleSavedDialogPin";
+  pinned?: true;
+  peer: InputDialogPeer;
+  [R]?: boolean;
 }
 
 export interface messages_reorderPinnedSavedDialogs {
-    _: "messages.reorderPinnedSavedDialogs"
-    force?: true;
-    order: Array<InputDialogPeer>;
-    [R]?: boolean;
+  _: "messages.reorderPinnedSavedDialogs";
+  force?: true;
+  order: Array<InputDialogPeer>;
+  [R]?: boolean;
 }
 
 export interface messages_getSavedReactionTags {
-    _: "messages.getSavedReactionTags"
-    peer?: InputPeer;
-    hash: bigint;
-    [R]?: messages_SavedReactionTags;
+  _: "messages.getSavedReactionTags";
+  peer?: InputPeer;
+  hash: bigint;
+  [R]?: messages_SavedReactionTags;
 }
 
 export interface messages_updateSavedReactionTag {
-    _: "messages.updateSavedReactionTag"
-    reaction: Reaction;
-    title?: string;
-    [R]?: boolean;
+  _: "messages.updateSavedReactionTag";
+  reaction: Reaction;
+  title?: string;
+  [R]?: boolean;
 }
 
 export interface messages_getDefaultTagReactions {
-    _: "messages.getDefaultTagReactions"
-    hash: bigint;
-    [R]?: messages_Reactions;
+  _: "messages.getDefaultTagReactions";
+  hash: bigint;
+  [R]?: messages_Reactions;
 }
 
 export interface messages_getOutboxReadDate {
-    _: "messages.getOutboxReadDate"
-    peer: InputPeer;
-    msg_id: number;
-    [R]?: OutboxReadDate;
+  _: "messages.getOutboxReadDate";
+  peer: InputPeer;
+  msg_id: number;
+  [R]?: OutboxReadDate;
 }
 
 export interface messages_getQuickReplies {
-    _: "messages.getQuickReplies"
-    hash: bigint;
-    [R]?: messages_QuickReplies;
+  _: "messages.getQuickReplies";
+  hash: bigint;
+  [R]?: messages_QuickReplies;
 }
 
 export interface messages_reorderQuickReplies {
-    _: "messages.reorderQuickReplies"
-    order: Array<number>;
-    [R]?: boolean;
+  _: "messages.reorderQuickReplies";
+  order: Array<number>;
+  [R]?: boolean;
 }
 
 export interface messages_checkQuickReplyShortcut {
-    _: "messages.checkQuickReplyShortcut"
-    shortcut: string;
-    [R]?: boolean;
+  _: "messages.checkQuickReplyShortcut";
+  shortcut: string;
+  [R]?: boolean;
 }
 
 export interface messages_editQuickReplyShortcut {
-    _: "messages.editQuickReplyShortcut"
-    shortcut_id: number;
-    shortcut: string;
-    [R]?: boolean;
+  _: "messages.editQuickReplyShortcut";
+  shortcut_id: number;
+  shortcut: string;
+  [R]?: boolean;
 }
 
 export interface messages_deleteQuickReplyShortcut {
-    _: "messages.deleteQuickReplyShortcut"
-    shortcut_id: number;
-    [R]?: boolean;
+  _: "messages.deleteQuickReplyShortcut";
+  shortcut_id: number;
+  [R]?: boolean;
 }
 
 export interface messages_getQuickReplyMessages {
-    _: "messages.getQuickReplyMessages"
-    shortcut_id: number;
-    id?: Array<number>;
-    hash: bigint;
-    [R]?: messages_Messages;
+  _: "messages.getQuickReplyMessages";
+  shortcut_id: number;
+  id?: Array<number>;
+  hash: bigint;
+  [R]?: messages_Messages;
 }
 
 export interface messages_sendQuickReplyMessages {
-    _: "messages.sendQuickReplyMessages"
-    peer: InputPeer;
-    shortcut_id: number;
-    id: Array<number>;
-    random_id: Array<bigint>;
-    [R]?: Updates;
+  _: "messages.sendQuickReplyMessages";
+  peer: InputPeer;
+  shortcut_id: number;
+  id: Array<number>;
+  random_id: Array<bigint>;
+  [R]?: Updates;
 }
 
 export interface messages_deleteQuickReplyMessages {
-    _: "messages.deleteQuickReplyMessages"
-    shortcut_id: number;
-    id: Array<number>;
-    [R]?: Updates;
+  _: "messages.deleteQuickReplyMessages";
+  shortcut_id: number;
+  id: Array<number>;
+  [R]?: Updates;
 }
 
 export interface messages_toggleDialogFilterTags {
-    _: "messages.toggleDialogFilterTags"
-    enabled: boolean;
-    [R]?: boolean;
+  _: "messages.toggleDialogFilterTags";
+  enabled: boolean;
+  [R]?: boolean;
 }
 
 export interface messages_getMyStickers {
-    _: "messages.getMyStickers"
-    offset_id: bigint;
-    limit: number;
-    [R]?: messages_MyStickers;
+  _: "messages.getMyStickers";
+  offset_id: bigint;
+  limit: number;
+  [R]?: messages_MyStickers;
 }
 
 export interface messages_getEmojiStickerGroups {
-    _: "messages.getEmojiStickerGroups"
-    hash: number;
-    [R]?: messages_EmojiGroups;
+  _: "messages.getEmojiStickerGroups";
+  hash: number;
+  [R]?: messages_EmojiGroups;
 }
 
 export interface messages_getAvailableEffects {
-    _: "messages.getAvailableEffects"
-    hash: number;
-    [R]?: messages_AvailableEffects;
+  _: "messages.getAvailableEffects";
+  hash: number;
+  [R]?: messages_AvailableEffects;
 }
 
 export interface messages_editFactCheck {
-    _: "messages.editFactCheck"
-    peer: InputPeer;
-    msg_id: number;
-    text: TextWithEntities;
-    [R]?: Updates;
+  _: "messages.editFactCheck";
+  peer: InputPeer;
+  msg_id: number;
+  text: TextWithEntities;
+  [R]?: Updates;
 }
 
 export interface messages_deleteFactCheck {
-    _: "messages.deleteFactCheck"
-    peer: InputPeer;
-    msg_id: number;
-    [R]?: Updates;
+  _: "messages.deleteFactCheck";
+  peer: InputPeer;
+  msg_id: number;
+  [R]?: Updates;
 }
 
 export interface messages_getFactCheck {
-    _: "messages.getFactCheck"
-    peer: InputPeer;
-    msg_id: Array<number>;
-    [R]?: Array<FactCheck>;
+  _: "messages.getFactCheck";
+  peer: InputPeer;
+  msg_id: Array<number>;
+  [R]?: Array<FactCheck>;
 }
 
 export interface messages_requestMainWebView {
-    _: "messages.requestMainWebView"
-    compact?: true;
-    fullscreen?: true;
-    peer: InputPeer;
-    bot: InputUser;
-    start_param?: string;
-    theme_params?: DataJSON;
-    platform: string;
-    [R]?: WebViewResult;
+  _: "messages.requestMainWebView";
+  compact?: true;
+  fullscreen?: true;
+  peer: InputPeer;
+  bot: InputUser;
+  start_param?: string;
+  theme_params?: DataJSON;
+  platform: string;
+  [R]?: WebViewResult;
 }
 
 export interface messages_sendPaidReaction {
-    _: "messages.sendPaidReaction"
-    peer: InputPeer;
-    msg_id: number;
-    count: number;
-    random_id: bigint;
-    private?: boolean;
-    [R]?: Updates;
+  _: "messages.sendPaidReaction";
+  peer: InputPeer;
+  msg_id: number;
+  count: number;
+  random_id: bigint;
+  private?: boolean;
+  [R]?: Updates;
 }
 
 export interface messages_togglePaidReactionPrivacy {
-    _: "messages.togglePaidReactionPrivacy"
-    peer: InputPeer;
-    msg_id: number;
-    private: boolean;
-    [R]?: boolean;
+  _: "messages.togglePaidReactionPrivacy";
+  peer: InputPeer;
+  msg_id: number;
+  private: boolean;
+  [R]?: boolean;
 }
 
 export interface messages_getPaidReactionPrivacy {
-    _: "messages.getPaidReactionPrivacy"
-    [R]?: Updates;
+  _: "messages.getPaidReactionPrivacy";
+  [R]?: Updates;
 }
 
 export interface messages_viewSponsoredMessage {
-    _: "messages.viewSponsoredMessage"
-    peer: InputPeer;
-    random_id: Uint8Array;
-    [R]?: boolean;
+  _: "messages.viewSponsoredMessage";
+  peer: InputPeer;
+  random_id: Uint8Array;
+  [R]?: boolean;
 }
 
 export interface messages_clickSponsoredMessage {
-    _: "messages.clickSponsoredMessage"
-    media?: true;
-    fullscreen?: true;
-    peer: InputPeer;
-    random_id: Uint8Array;
-    [R]?: boolean;
+  _: "messages.clickSponsoredMessage";
+  media?: true;
+  fullscreen?: true;
+  peer: InputPeer;
+  random_id: Uint8Array;
+  [R]?: boolean;
 }
 
 export interface messages_reportSponsoredMessage {
-    _: "messages.reportSponsoredMessage"
-    peer: InputPeer;
-    random_id: Uint8Array;
-    option: Uint8Array;
-    [R]?: channels_SponsoredMessageReportResult;
+  _: "messages.reportSponsoredMessage";
+  peer: InputPeer;
+  random_id: Uint8Array;
+  option: Uint8Array;
+  [R]?: channels_SponsoredMessageReportResult;
 }
 
 export interface messages_getSponsoredMessages {
-    _: "messages.getSponsoredMessages"
-    peer: InputPeer;
-    [R]?: messages_SponsoredMessages;
+  _: "messages.getSponsoredMessages";
+  peer: InputPeer;
+  [R]?: messages_SponsoredMessages;
 }
 
 export interface messages_savePreparedInlineMessage {
-    _: "messages.savePreparedInlineMessage"
-    result: InputBotInlineResult;
-    user_id: InputUser;
-    peer_types?: Array<InlineQueryPeerType>;
-    [R]?: messages_BotPreparedInlineMessage;
+  _: "messages.savePreparedInlineMessage";
+  result: InputBotInlineResult;
+  user_id: InputUser;
+  peer_types?: Array<InlineQueryPeerType>;
+  [R]?: messages_BotPreparedInlineMessage;
 }
 
 export interface messages_getPreparedInlineMessage {
-    _: "messages.getPreparedInlineMessage"
-    bot: InputUser;
-    id: string;
-    [R]?: messages_PreparedInlineMessage;
+  _: "messages.getPreparedInlineMessage";
+  bot: InputUser;
+  id: string;
+  [R]?: messages_PreparedInlineMessage;
 }
 
 export interface messages_searchStickers {
-    _: "messages.searchStickers"
-    emojis?: true;
-    q: string;
-    emoticon: string;
-    lang_code: Array<string>;
-    offset: number;
-    limit: number;
-    hash: bigint;
-    [R]?: messages_FoundStickers;
+  _: "messages.searchStickers";
+  emojis?: true;
+  q: string;
+  emoticon: string;
+  lang_code: Array<string>;
+  offset: number;
+  limit: number;
+  hash: bigint;
+  [R]?: messages_FoundStickers;
 }
 
 export interface messages_reportMessagesDelivery {
-    _: "messages.reportMessagesDelivery"
-    push?: true;
-    peer: InputPeer;
-    id: Array<number>;
-    [R]?: boolean;
+  _: "messages.reportMessagesDelivery";
+  push?: true;
+  peer: InputPeer;
+  id: Array<number>;
+  [R]?: boolean;
 }
 
 export interface updates_getState {
-    _: "updates.getState"
-    [R]?: updates_State;
+  _: "updates.getState";
+  [R]?: updates_State;
 }
 
 export interface updates_getDifference {
-    _: "updates.getDifference"
-    pts: number;
-    pts_limit?: number;
-    pts_total_limit?: number;
-    date: number;
-    qts: number;
-    qts_limit?: number;
-    [R]?: updates_Difference;
+  _: "updates.getDifference";
+  pts: number;
+  pts_limit?: number;
+  pts_total_limit?: number;
+  date: number;
+  qts: number;
+  qts_limit?: number;
+  [R]?: updates_Difference;
 }
 
 export interface updates_getChannelDifference {
-    _: "updates.getChannelDifference"
-    force?: true;
-    channel: InputChannel;
-    filter: ChannelMessagesFilter;
-    pts: number;
-    limit: number;
-    [R]?: updates_ChannelDifference;
+  _: "updates.getChannelDifference";
+  force?: true;
+  channel: InputChannel;
+  filter: ChannelMessagesFilter;
+  pts: number;
+  limit: number;
+  [R]?: updates_ChannelDifference;
 }
 
 export interface photos_updateProfilePhoto {
-    _: "photos.updateProfilePhoto"
-    fallback?: true;
-    bot?: InputUser;
-    id: InputPhoto;
-    [R]?: photos_Photo;
+  _: "photos.updateProfilePhoto";
+  fallback?: true;
+  bot?: InputUser;
+  id: InputPhoto;
+  [R]?: photos_Photo;
 }
 
 export interface photos_uploadProfilePhoto {
-    _: "photos.uploadProfilePhoto"
-    fallback?: true;
-    bot?: InputUser;
-    file?: InputFile;
-    video?: InputFile;
-    video_start_ts?: number;
-    video_emoji_markup?: VideoSize;
-    [R]?: photos_Photo;
+  _: "photos.uploadProfilePhoto";
+  fallback?: true;
+  bot?: InputUser;
+  file?: InputFile;
+  video?: InputFile;
+  video_start_ts?: number;
+  video_emoji_markup?: VideoSize;
+  [R]?: photos_Photo;
 }
 
 export interface photos_deletePhotos {
-    _: "photos.deletePhotos"
-    id: Array<InputPhoto>;
-    [R]?: Array<bigint>;
+  _: "photos.deletePhotos";
+  id: Array<InputPhoto>;
+  [R]?: Array<bigint>;
 }
 
 export interface photos_getUserPhotos {
-    _: "photos.getUserPhotos"
-    user_id: InputUser;
-    offset: number;
-    max_id: bigint;
-    limit: number;
-    [R]?: photos_Photos;
+  _: "photos.getUserPhotos";
+  user_id: InputUser;
+  offset: number;
+  max_id: bigint;
+  limit: number;
+  [R]?: photos_Photos;
 }
 
 export interface photos_uploadContactProfilePhoto {
-    _: "photos.uploadContactProfilePhoto"
-    suggest?: true;
-    save?: true;
-    user_id: InputUser;
-    file?: InputFile;
-    video?: InputFile;
-    video_start_ts?: number;
-    video_emoji_markup?: VideoSize;
-    [R]?: photos_Photo;
+  _: "photos.uploadContactProfilePhoto";
+  suggest?: true;
+  save?: true;
+  user_id: InputUser;
+  file?: InputFile;
+  video?: InputFile;
+  video_start_ts?: number;
+  video_emoji_markup?: VideoSize;
+  [R]?: photos_Photo;
 }
 
 export interface upload_saveFilePart {
-    _: "upload.saveFilePart"
-    file_id: bigint;
-    file_part: number;
-    bytes: Uint8Array;
-    [R]?: boolean;
+  _: "upload.saveFilePart";
+  file_id: bigint;
+  file_part: number;
+  bytes: Uint8Array;
+  [R]?: boolean;
 }
 
 export interface upload_getFile {
-    _: "upload.getFile"
-    precise?: true;
-    cdn_supported?: true;
-    location: InputFileLocation;
-    offset: bigint;
-    limit: number;
-    [R]?: upload_File;
+  _: "upload.getFile";
+  precise?: true;
+  cdn_supported?: true;
+  location: InputFileLocation;
+  offset: bigint;
+  limit: number;
+  [R]?: upload_File;
 }
 
 export interface upload_saveBigFilePart {
-    _: "upload.saveBigFilePart"
-    file_id: bigint;
-    file_part: number;
-    file_total_parts: number;
-    bytes: Uint8Array;
-    [R]?: boolean;
+  _: "upload.saveBigFilePart";
+  file_id: bigint;
+  file_part: number;
+  file_total_parts: number;
+  bytes: Uint8Array;
+  [R]?: boolean;
 }
 
 export interface upload_getWebFile {
-    _: "upload.getWebFile"
-    location: InputWebFileLocation;
-    offset: number;
-    limit: number;
-    [R]?: upload_WebFile;
+  _: "upload.getWebFile";
+  location: InputWebFileLocation;
+  offset: number;
+  limit: number;
+  [R]?: upload_WebFile;
 }
 
 export interface upload_getCdnFile {
-    _: "upload.getCdnFile"
-    file_token: Uint8Array;
-    offset: bigint;
-    limit: number;
-    [R]?: upload_CdnFile;
+  _: "upload.getCdnFile";
+  file_token: Uint8Array;
+  offset: bigint;
+  limit: number;
+  [R]?: upload_CdnFile;
 }
 
 export interface upload_reuploadCdnFile {
-    _: "upload.reuploadCdnFile"
-    file_token: Uint8Array;
-    request_token: Uint8Array;
-    [R]?: Array<FileHash>;
+  _: "upload.reuploadCdnFile";
+  file_token: Uint8Array;
+  request_token: Uint8Array;
+  [R]?: Array<FileHash>;
 }
 
 export interface upload_getCdnFileHashes {
-    _: "upload.getCdnFileHashes"
-    file_token: Uint8Array;
-    offset: bigint;
-    [R]?: Array<FileHash>;
+  _: "upload.getCdnFileHashes";
+  file_token: Uint8Array;
+  offset: bigint;
+  [R]?: Array<FileHash>;
 }
 
 export interface upload_getFileHashes {
-    _: "upload.getFileHashes"
-    location: InputFileLocation;
-    offset: bigint;
-    [R]?: Array<FileHash>;
+  _: "upload.getFileHashes";
+  location: InputFileLocation;
+  offset: bigint;
+  [R]?: Array<FileHash>;
 }
 
 export interface help_getConfig {
-    _: "help.getConfig"
-    [R]?: Config;
+  _: "help.getConfig";
+  [R]?: Config;
 }
 
 export interface help_getNearestDc {
-    _: "help.getNearestDc"
-    [R]?: NearestDc;
+  _: "help.getNearestDc";
+  [R]?: NearestDc;
 }
 
 export interface help_getAppUpdate {
-    _: "help.getAppUpdate"
-    source: string;
-    [R]?: help_AppUpdate;
+  _: "help.getAppUpdate";
+  source: string;
+  [R]?: help_AppUpdate;
 }
 
 export interface help_getInviteText {
-    _: "help.getInviteText"
-    [R]?: help_InviteText;
+  _: "help.getInviteText";
+  [R]?: help_InviteText;
 }
 
 export interface help_getSupport {
-    _: "help.getSupport"
-    [R]?: help_Support;
+  _: "help.getSupport";
+  [R]?: help_Support;
 }
 
 export interface help_setBotUpdatesStatus {
-    _: "help.setBotUpdatesStatus"
-    pending_updates_count: number;
-    message: string;
-    [R]?: boolean;
+  _: "help.setBotUpdatesStatus";
+  pending_updates_count: number;
+  message: string;
+  [R]?: boolean;
 }
 
 export interface help_getCdnConfig {
-    _: "help.getCdnConfig"
-    [R]?: CdnConfig;
+  _: "help.getCdnConfig";
+  [R]?: CdnConfig;
 }
 
 export interface help_getRecentMeUrls {
-    _: "help.getRecentMeUrls"
-    referer: string;
-    [R]?: help_RecentMeUrls;
+  _: "help.getRecentMeUrls";
+  referer: string;
+  [R]?: help_RecentMeUrls;
 }
 
 export interface help_getTermsOfServiceUpdate {
-    _: "help.getTermsOfServiceUpdate"
-    [R]?: help_TermsOfServiceUpdate;
+  _: "help.getTermsOfServiceUpdate";
+  [R]?: help_TermsOfServiceUpdate;
 }
 
 export interface help_acceptTermsOfService {
-    _: "help.acceptTermsOfService"
-    id: DataJSON;
-    [R]?: boolean;
+  _: "help.acceptTermsOfService";
+  id: DataJSON;
+  [R]?: boolean;
 }
 
 export interface help_getDeepLinkInfo {
-    _: "help.getDeepLinkInfo"
-    path: string;
-    [R]?: help_DeepLinkInfo;
+  _: "help.getDeepLinkInfo";
+  path: string;
+  [R]?: help_DeepLinkInfo;
 }
 
 export interface help_getAppConfig {
-    _: "help.getAppConfig"
-    hash: number;
-    [R]?: help_AppConfig;
+  _: "help.getAppConfig";
+  hash: number;
+  [R]?: help_AppConfig;
 }
 
 export interface help_saveAppLog {
-    _: "help.saveAppLog"
-    events: Array<InputAppEvent>;
-    [R]?: boolean;
+  _: "help.saveAppLog";
+  events: Array<InputAppEvent>;
+  [R]?: boolean;
 }
 
 export interface help_getPassportConfig {
-    _: "help.getPassportConfig"
-    hash: number;
-    [R]?: help_PassportConfig;
+  _: "help.getPassportConfig";
+  hash: number;
+  [R]?: help_PassportConfig;
 }
 
 export interface help_getSupportName {
-    _: "help.getSupportName"
-    [R]?: help_SupportName;
+  _: "help.getSupportName";
+  [R]?: help_SupportName;
 }
 
 export interface help_getUserInfo {
-    _: "help.getUserInfo"
-    user_id: InputUser;
-    [R]?: help_UserInfo;
+  _: "help.getUserInfo";
+  user_id: InputUser;
+  [R]?: help_UserInfo;
 }
 
 export interface help_editUserInfo {
-    _: "help.editUserInfo"
-    user_id: InputUser;
-    message: string;
-    entities: Array<MessageEntity>;
-    [R]?: help_UserInfo;
+  _: "help.editUserInfo";
+  user_id: InputUser;
+  message: string;
+  entities: Array<MessageEntity>;
+  [R]?: help_UserInfo;
 }
 
 export interface help_getPromoData {
-    _: "help.getPromoData"
-    [R]?: help_PromoData;
+  _: "help.getPromoData";
+  [R]?: help_PromoData;
 }
 
 export interface help_hidePromoData {
-    _: "help.hidePromoData"
-    peer: InputPeer;
-    [R]?: boolean;
+  _: "help.hidePromoData";
+  peer: InputPeer;
+  [R]?: boolean;
 }
 
 export interface help_dismissSuggestion {
-    _: "help.dismissSuggestion"
-    peer: InputPeer;
-    suggestion: string;
-    [R]?: boolean;
+  _: "help.dismissSuggestion";
+  peer: InputPeer;
+  suggestion: string;
+  [R]?: boolean;
 }
 
 export interface help_getCountriesList {
-    _: "help.getCountriesList"
-    lang_code: string;
-    hash: number;
-    [R]?: help_CountriesList;
+  _: "help.getCountriesList";
+  lang_code: string;
+  hash: number;
+  [R]?: help_CountriesList;
 }
 
 export interface help_getPremiumPromo {
-    _: "help.getPremiumPromo"
-    [R]?: help_PremiumPromo;
+  _: "help.getPremiumPromo";
+  [R]?: help_PremiumPromo;
 }
 
 export interface help_getPeerColors {
-    _: "help.getPeerColors"
-    hash: number;
-    [R]?: help_PeerColors;
+  _: "help.getPeerColors";
+  hash: number;
+  [R]?: help_PeerColors;
 }
 
 export interface help_getPeerProfileColors {
-    _: "help.getPeerProfileColors"
-    hash: number;
-    [R]?: help_PeerColors;
+  _: "help.getPeerProfileColors";
+  hash: number;
+  [R]?: help_PeerColors;
 }
 
 export interface help_getTimezonesList {
-    _: "help.getTimezonesList"
-    hash: number;
-    [R]?: help_TimezonesList;
+  _: "help.getTimezonesList";
+  hash: number;
+  [R]?: help_TimezonesList;
 }
 
 export interface channels_readHistory {
-    _: "channels.readHistory"
-    channel: InputChannel;
-    max_id: number;
-    [R]?: boolean;
+  _: "channels.readHistory";
+  channel: InputChannel;
+  max_id: number;
+  [R]?: boolean;
 }
 
 export interface channels_deleteMessages {
-    _: "channels.deleteMessages"
-    channel: InputChannel;
-    id: Array<number>;
-    [R]?: messages_AffectedMessages;
+  _: "channels.deleteMessages";
+  channel: InputChannel;
+  id: Array<number>;
+  [R]?: messages_AffectedMessages;
 }
 
 export interface channels_reportSpam {
-    _: "channels.reportSpam"
-    channel: InputChannel;
-    participant: InputPeer;
-    id: Array<number>;
-    [R]?: boolean;
+  _: "channels.reportSpam";
+  channel: InputChannel;
+  participant: InputPeer;
+  id: Array<number>;
+  [R]?: boolean;
 }
 
 export interface channels_getMessages {
-    _: "channels.getMessages"
-    channel: InputChannel;
-    id: Array<InputMessage>;
-    [R]?: messages_Messages;
+  _: "channels.getMessages";
+  channel: InputChannel;
+  id: Array<InputMessage>;
+  [R]?: messages_Messages;
 }
 
 export interface channels_getParticipants {
-    _: "channels.getParticipants"
-    channel: InputChannel;
-    filter: ChannelParticipantsFilter;
-    offset: number;
-    limit: number;
-    hash: bigint;
-    [R]?: channels_ChannelParticipants;
+  _: "channels.getParticipants";
+  channel: InputChannel;
+  filter: ChannelParticipantsFilter;
+  offset: number;
+  limit: number;
+  hash: bigint;
+  [R]?: channels_ChannelParticipants;
 }
 
 export interface channels_getParticipant {
-    _: "channels.getParticipant"
-    channel: InputChannel;
-    participant: InputPeer;
-    [R]?: channels_ChannelParticipant;
+  _: "channels.getParticipant";
+  channel: InputChannel;
+  participant: InputPeer;
+  [R]?: channels_ChannelParticipant;
 }
 
 export interface channels_getChannels {
-    _: "channels.getChannels"
-    id: Array<InputChannel>;
-    [R]?: messages_Chats;
+  _: "channels.getChannels";
+  id: Array<InputChannel>;
+  [R]?: messages_Chats;
 }
 
 export interface channels_getFullChannel {
-    _: "channels.getFullChannel"
-    channel: InputChannel;
-    [R]?: messages_ChatFull;
+  _: "channels.getFullChannel";
+  channel: InputChannel;
+  [R]?: messages_ChatFull;
 }
 
 export interface channels_createChannel {
-    _: "channels.createChannel"
-    broadcast?: true;
-    megagroup?: true;
-    for_import?: true;
-    forum?: true;
-    title: string;
-    about: string;
-    geo_point?: InputGeoPoint;
-    address?: string;
-    ttl_period?: number;
-    [R]?: Updates;
+  _: "channels.createChannel";
+  broadcast?: true;
+  megagroup?: true;
+  for_import?: true;
+  forum?: true;
+  title: string;
+  about: string;
+  geo_point?: InputGeoPoint;
+  address?: string;
+  ttl_period?: number;
+  [R]?: Updates;
 }
 
 export interface channels_editAdmin {
-    _: "channels.editAdmin"
-    channel: InputChannel;
-    user_id: InputUser;
-    admin_rights: ChatAdminRights;
-    rank: string;
-    [R]?: Updates;
+  _: "channels.editAdmin";
+  channel: InputChannel;
+  user_id: InputUser;
+  admin_rights: ChatAdminRights;
+  rank: string;
+  [R]?: Updates;
 }
 
 export interface channels_editTitle {
-    _: "channels.editTitle"
-    channel: InputChannel;
-    title: string;
-    [R]?: Updates;
+  _: "channels.editTitle";
+  channel: InputChannel;
+  title: string;
+  [R]?: Updates;
 }
 
 export interface channels_editPhoto {
-    _: "channels.editPhoto"
-    channel: InputChannel;
-    photo: InputChatPhoto;
-    [R]?: Updates;
+  _: "channels.editPhoto";
+  channel: InputChannel;
+  photo: InputChatPhoto;
+  [R]?: Updates;
 }
 
 export interface channels_checkUsername {
-    _: "channels.checkUsername"
-    channel: InputChannel;
-    username: string;
-    [R]?: boolean;
+  _: "channels.checkUsername";
+  channel: InputChannel;
+  username: string;
+  [R]?: boolean;
 }
 
 export interface channels_updateUsername {
-    _: "channels.updateUsername"
-    channel: InputChannel;
-    username: string;
-    [R]?: boolean;
+  _: "channels.updateUsername";
+  channel: InputChannel;
+  username: string;
+  [R]?: boolean;
 }
 
 export interface channels_joinChannel {
-    _: "channels.joinChannel"
-    channel: InputChannel;
-    [R]?: Updates;
+  _: "channels.joinChannel";
+  channel: InputChannel;
+  [R]?: Updates;
 }
 
 export interface channels_leaveChannel {
-    _: "channels.leaveChannel"
-    channel: InputChannel;
-    [R]?: Updates;
+  _: "channels.leaveChannel";
+  channel: InputChannel;
+  [R]?: Updates;
 }
 
 export interface channels_inviteToChannel {
-    _: "channels.inviteToChannel"
-    channel: InputChannel;
-    users: Array<InputUser>;
-    [R]?: messages_InvitedUsers;
+  _: "channels.inviteToChannel";
+  channel: InputChannel;
+  users: Array<InputUser>;
+  [R]?: messages_InvitedUsers;
 }
 
 export interface channels_deleteChannel {
-    _: "channels.deleteChannel"
-    channel: InputChannel;
-    [R]?: Updates;
+  _: "channels.deleteChannel";
+  channel: InputChannel;
+  [R]?: Updates;
 }
 
 export interface channels_exportMessageLink {
-    _: "channels.exportMessageLink"
-    grouped?: true;
-    thread?: true;
-    channel: InputChannel;
-    id: number;
-    [R]?: ExportedMessageLink;
+  _: "channels.exportMessageLink";
+  grouped?: true;
+  thread?: true;
+  channel: InputChannel;
+  id: number;
+  [R]?: ExportedMessageLink;
 }
 
 export interface channels_toggleSignatures {
-    _: "channels.toggleSignatures"
-    signatures_enabled?: true;
-    profiles_enabled?: true;
-    channel: InputChannel;
-    [R]?: Updates;
+  _: "channels.toggleSignatures";
+  signatures_enabled?: true;
+  profiles_enabled?: true;
+  channel: InputChannel;
+  [R]?: Updates;
 }
 
 export interface channels_getAdminedPublicChannels {
-    _: "channels.getAdminedPublicChannels"
-    by_location?: true;
-    check_limit?: true;
-    for_personal?: true;
-    [R]?: messages_Chats;
+  _: "channels.getAdminedPublicChannels";
+  by_location?: true;
+  check_limit?: true;
+  for_personal?: true;
+  [R]?: messages_Chats;
 }
 
 export interface channels_editBanned {
-    _: "channels.editBanned"
-    channel: InputChannel;
-    participant: InputPeer;
-    banned_rights: ChatBannedRights;
-    [R]?: Updates;
+  _: "channels.editBanned";
+  channel: InputChannel;
+  participant: InputPeer;
+  banned_rights: ChatBannedRights;
+  [R]?: Updates;
 }
 
 export interface channels_getAdminLog {
-    _: "channels.getAdminLog"
-    channel: InputChannel;
-    q: string;
-    events_filter?: ChannelAdminLogEventsFilter;
-    admins?: Array<InputUser>;
-    max_id: bigint;
-    min_id: bigint;
-    limit: number;
-    [R]?: channels_AdminLogResults;
+  _: "channels.getAdminLog";
+  channel: InputChannel;
+  q: string;
+  events_filter?: ChannelAdminLogEventsFilter;
+  admins?: Array<InputUser>;
+  max_id: bigint;
+  min_id: bigint;
+  limit: number;
+  [R]?: channels_AdminLogResults;
 }
 
 export interface channels_setStickers {
-    _: "channels.setStickers"
-    channel: InputChannel;
-    stickerset: InputStickerSet;
-    [R]?: boolean;
+  _: "channels.setStickers";
+  channel: InputChannel;
+  stickerset: InputStickerSet;
+  [R]?: boolean;
 }
 
 export interface channels_readMessageContents {
-    _: "channels.readMessageContents"
-    channel: InputChannel;
-    id: Array<number>;
-    [R]?: boolean;
+  _: "channels.readMessageContents";
+  channel: InputChannel;
+  id: Array<number>;
+  [R]?: boolean;
 }
 
 export interface channels_deleteHistory {
-    _: "channels.deleteHistory"
-    for_everyone?: true;
-    channel: InputChannel;
-    max_id: number;
-    [R]?: Updates;
+  _: "channels.deleteHistory";
+  for_everyone?: true;
+  channel: InputChannel;
+  max_id: number;
+  [R]?: Updates;
 }
 
 export interface channels_togglePreHistoryHidden {
-    _: "channels.togglePreHistoryHidden"
-    channel: InputChannel;
-    enabled: boolean;
-    [R]?: Updates;
+  _: "channels.togglePreHistoryHidden";
+  channel: InputChannel;
+  enabled: boolean;
+  [R]?: Updates;
 }
 
 export interface channels_getLeftChannels {
-    _: "channels.getLeftChannels"
-    offset: number;
-    [R]?: messages_Chats;
+  _: "channels.getLeftChannels";
+  offset: number;
+  [R]?: messages_Chats;
 }
 
 export interface channels_getGroupsForDiscussion {
-    _: "channels.getGroupsForDiscussion"
-    [R]?: messages_Chats;
+  _: "channels.getGroupsForDiscussion";
+  [R]?: messages_Chats;
 }
 
 export interface channels_setDiscussionGroup {
-    _: "channels.setDiscussionGroup"
-    broadcast: InputChannel;
-    group: InputChannel;
-    [R]?: boolean;
+  _: "channels.setDiscussionGroup";
+  broadcast: InputChannel;
+  group: InputChannel;
+  [R]?: boolean;
 }
 
 export interface channels_editCreator {
-    _: "channels.editCreator"
-    channel: InputChannel;
-    user_id: InputUser;
-    password: InputCheckPasswordSRP;
-    [R]?: Updates;
+  _: "channels.editCreator";
+  channel: InputChannel;
+  user_id: InputUser;
+  password: InputCheckPasswordSRP;
+  [R]?: Updates;
 }
 
 export interface channels_editLocation {
-    _: "channels.editLocation"
-    channel: InputChannel;
-    geo_point: InputGeoPoint;
-    address: string;
-    [R]?: boolean;
+  _: "channels.editLocation";
+  channel: InputChannel;
+  geo_point: InputGeoPoint;
+  address: string;
+  [R]?: boolean;
 }
 
 export interface channels_toggleSlowMode {
-    _: "channels.toggleSlowMode"
-    channel: InputChannel;
-    seconds: number;
-    [R]?: Updates;
+  _: "channels.toggleSlowMode";
+  channel: InputChannel;
+  seconds: number;
+  [R]?: Updates;
 }
 
 export interface channels_getInactiveChannels {
-    _: "channels.getInactiveChannels"
-    [R]?: messages_InactiveChats;
+  _: "channels.getInactiveChannels";
+  [R]?: messages_InactiveChats;
 }
 
 export interface channels_convertToGigagroup {
-    _: "channels.convertToGigagroup"
-    channel: InputChannel;
-    [R]?: Updates;
+  _: "channels.convertToGigagroup";
+  channel: InputChannel;
+  [R]?: Updates;
 }
 
 export interface channels_getSendAs {
-    _: "channels.getSendAs"
-    peer: InputPeer;
-    [R]?: channels_SendAsPeers;
+  _: "channels.getSendAs";
+  peer: InputPeer;
+  [R]?: channels_SendAsPeers;
 }
 
 export interface channels_deleteParticipantHistory {
-    _: "channels.deleteParticipantHistory"
-    channel: InputChannel;
-    participant: InputPeer;
-    [R]?: messages_AffectedHistory;
+  _: "channels.deleteParticipantHistory";
+  channel: InputChannel;
+  participant: InputPeer;
+  [R]?: messages_AffectedHistory;
 }
 
 export interface channels_toggleJoinToSend {
-    _: "channels.toggleJoinToSend"
-    channel: InputChannel;
-    enabled: boolean;
-    [R]?: Updates;
+  _: "channels.toggleJoinToSend";
+  channel: InputChannel;
+  enabled: boolean;
+  [R]?: Updates;
 }
 
 export interface channels_toggleJoinRequest {
-    _: "channels.toggleJoinRequest"
-    channel: InputChannel;
-    enabled: boolean;
-    [R]?: Updates;
+  _: "channels.toggleJoinRequest";
+  channel: InputChannel;
+  enabled: boolean;
+  [R]?: Updates;
 }
 
 export interface channels_reorderUsernames {
-    _: "channels.reorderUsernames"
-    channel: InputChannel;
-    order: Array<string>;
-    [R]?: boolean;
+  _: "channels.reorderUsernames";
+  channel: InputChannel;
+  order: Array<string>;
+  [R]?: boolean;
 }
 
 export interface channels_toggleUsername {
-    _: "channels.toggleUsername"
-    channel: InputChannel;
-    username: string;
-    active: boolean;
-    [R]?: boolean;
+  _: "channels.toggleUsername";
+  channel: InputChannel;
+  username: string;
+  active: boolean;
+  [R]?: boolean;
 }
 
 export interface channels_deactivateAllUsernames {
-    _: "channels.deactivateAllUsernames"
-    channel: InputChannel;
-    [R]?: boolean;
+  _: "channels.deactivateAllUsernames";
+  channel: InputChannel;
+  [R]?: boolean;
 }
 
 export interface channels_toggleForum {
-    _: "channels.toggleForum"
-    channel: InputChannel;
-    enabled: boolean;
-    [R]?: Updates;
+  _: "channels.toggleForum";
+  channel: InputChannel;
+  enabled: boolean;
+  [R]?: Updates;
 }
 
 export interface channels_createForumTopic {
-    _: "channels.createForumTopic"
-    channel: InputChannel;
-    title: string;
-    icon_color?: number;
-    icon_emoji_id?: bigint;
-    random_id: bigint;
-    send_as?: InputPeer;
-    [R]?: Updates;
+  _: "channels.createForumTopic";
+  channel: InputChannel;
+  title: string;
+  icon_color?: number;
+  icon_emoji_id?: bigint;
+  random_id: bigint;
+  send_as?: InputPeer;
+  [R]?: Updates;
 }
 
 export interface channels_getForumTopics {
-    _: "channels.getForumTopics"
-    channel: InputChannel;
-    q?: string;
-    offset_date: number;
-    offset_id: number;
-    offset_topic: number;
-    limit: number;
-    [R]?: messages_ForumTopics;
+  _: "channels.getForumTopics";
+  channel: InputChannel;
+  q?: string;
+  offset_date: number;
+  offset_id: number;
+  offset_topic: number;
+  limit: number;
+  [R]?: messages_ForumTopics;
 }
 
 export interface channels_getForumTopicsByID {
-    _: "channels.getForumTopicsByID"
-    channel: InputChannel;
-    topics: Array<number>;
-    [R]?: messages_ForumTopics;
+  _: "channels.getForumTopicsByID";
+  channel: InputChannel;
+  topics: Array<number>;
+  [R]?: messages_ForumTopics;
 }
 
 export interface channels_editForumTopic {
-    _: "channels.editForumTopic"
-    channel: InputChannel;
-    topic_id: number;
-    title?: string;
-    icon_emoji_id?: bigint;
-    closed?: boolean;
-    hidden?: boolean;
-    [R]?: Updates;
+  _: "channels.editForumTopic";
+  channel: InputChannel;
+  topic_id: number;
+  title?: string;
+  icon_emoji_id?: bigint;
+  closed?: boolean;
+  hidden?: boolean;
+  [R]?: Updates;
 }
 
 export interface channels_updatePinnedForumTopic {
-    _: "channels.updatePinnedForumTopic"
-    channel: InputChannel;
-    topic_id: number;
-    pinned: boolean;
-    [R]?: Updates;
+  _: "channels.updatePinnedForumTopic";
+  channel: InputChannel;
+  topic_id: number;
+  pinned: boolean;
+  [R]?: Updates;
 }
 
 export interface channels_deleteTopicHistory {
-    _: "channels.deleteTopicHistory"
-    channel: InputChannel;
-    top_msg_id: number;
-    [R]?: messages_AffectedHistory;
+  _: "channels.deleteTopicHistory";
+  channel: InputChannel;
+  top_msg_id: number;
+  [R]?: messages_AffectedHistory;
 }
 
 export interface channels_reorderPinnedForumTopics {
-    _: "channels.reorderPinnedForumTopics"
-    force?: true;
-    channel: InputChannel;
-    order: Array<number>;
-    [R]?: Updates;
+  _: "channels.reorderPinnedForumTopics";
+  force?: true;
+  channel: InputChannel;
+  order: Array<number>;
+  [R]?: Updates;
 }
 
 export interface channels_toggleAntiSpam {
-    _: "channels.toggleAntiSpam"
-    channel: InputChannel;
-    enabled: boolean;
-    [R]?: Updates;
+  _: "channels.toggleAntiSpam";
+  channel: InputChannel;
+  enabled: boolean;
+  [R]?: Updates;
 }
 
 export interface channels_reportAntiSpamFalsePositive {
-    _: "channels.reportAntiSpamFalsePositive"
-    channel: InputChannel;
-    msg_id: number;
-    [R]?: boolean;
+  _: "channels.reportAntiSpamFalsePositive";
+  channel: InputChannel;
+  msg_id: number;
+  [R]?: boolean;
 }
 
 export interface channels_toggleParticipantsHidden {
-    _: "channels.toggleParticipantsHidden"
-    channel: InputChannel;
-    enabled: boolean;
-    [R]?: Updates;
+  _: "channels.toggleParticipantsHidden";
+  channel: InputChannel;
+  enabled: boolean;
+  [R]?: Updates;
 }
 
 export interface channels_updateColor {
-    _: "channels.updateColor"
-    for_profile?: true;
-    channel: InputChannel;
-    color?: number;
-    background_emoji_id?: bigint;
-    [R]?: Updates;
+  _: "channels.updateColor";
+  for_profile?: true;
+  channel: InputChannel;
+  color?: number;
+  background_emoji_id?: bigint;
+  [R]?: Updates;
 }
 
 export interface channels_toggleViewForumAsMessages {
-    _: "channels.toggleViewForumAsMessages"
-    channel: InputChannel;
-    enabled: boolean;
-    [R]?: Updates;
+  _: "channels.toggleViewForumAsMessages";
+  channel: InputChannel;
+  enabled: boolean;
+  [R]?: Updates;
 }
 
 export interface channels_getChannelRecommendations {
-    _: "channels.getChannelRecommendations"
-    channel?: InputChannel;
-    [R]?: messages_Chats;
+  _: "channels.getChannelRecommendations";
+  channel?: InputChannel;
+  [R]?: messages_Chats;
 }
 
 export interface channels_updateEmojiStatus {
-    _: "channels.updateEmojiStatus"
-    channel: InputChannel;
-    emoji_status: EmojiStatus;
-    [R]?: Updates;
+  _: "channels.updateEmojiStatus";
+  channel: InputChannel;
+  emoji_status: EmojiStatus;
+  [R]?: Updates;
 }
 
 export interface channels_setBoostsToUnblockRestrictions {
-    _: "channels.setBoostsToUnblockRestrictions"
-    channel: InputChannel;
-    boosts: number;
-    [R]?: Updates;
+  _: "channels.setBoostsToUnblockRestrictions";
+  channel: InputChannel;
+  boosts: number;
+  [R]?: Updates;
 }
 
 export interface channels_setEmojiStickers {
-    _: "channels.setEmojiStickers"
-    channel: InputChannel;
-    stickerset: InputStickerSet;
-    [R]?: boolean;
+  _: "channels.setEmojiStickers";
+  channel: InputChannel;
+  stickerset: InputStickerSet;
+  [R]?: boolean;
 }
 
 export interface channels_restrictSponsoredMessages {
-    _: "channels.restrictSponsoredMessages"
-    channel: InputChannel;
-    restricted: boolean;
-    [R]?: Updates;
+  _: "channels.restrictSponsoredMessages";
+  channel: InputChannel;
+  restricted: boolean;
+  [R]?: Updates;
 }
 
 export interface channels_searchPosts {
-    _: "channels.searchPosts"
-    hashtag: string;
-    offset_rate: number;
-    offset_peer: InputPeer;
-    offset_id: number;
-    limit: number;
-    [R]?: messages_Messages;
+  _: "channels.searchPosts";
+  hashtag: string;
+  offset_rate: number;
+  offset_peer: InputPeer;
+  offset_id: number;
+  limit: number;
+  [R]?: messages_Messages;
 }
 
 export interface bots_sendCustomRequest {
-    _: "bots.sendCustomRequest"
-    custom_method: string;
-    params: DataJSON;
-    [R]?: DataJSON;
+  _: "bots.sendCustomRequest";
+  custom_method: string;
+  params: DataJSON;
+  [R]?: DataJSON;
 }
 
 export interface bots_answerWebhookJSONQuery {
-    _: "bots.answerWebhookJSONQuery"
-    query_id: bigint;
-    data: DataJSON;
-    [R]?: boolean;
+  _: "bots.answerWebhookJSONQuery";
+  query_id: bigint;
+  data: DataJSON;
+  [R]?: boolean;
 }
 
 export interface bots_setBotCommands {
-    _: "bots.setBotCommands"
-    scope: BotCommandScope;
-    lang_code: string;
-    commands: Array<BotCommand>;
-    [R]?: boolean;
+  _: "bots.setBotCommands";
+  scope: BotCommandScope;
+  lang_code: string;
+  commands: Array<BotCommand>;
+  [R]?: boolean;
 }
 
 export interface bots_resetBotCommands {
-    _: "bots.resetBotCommands"
-    scope: BotCommandScope;
-    lang_code: string;
-    [R]?: boolean;
+  _: "bots.resetBotCommands";
+  scope: BotCommandScope;
+  lang_code: string;
+  [R]?: boolean;
 }
 
 export interface bots_getBotCommands {
-    _: "bots.getBotCommands"
-    scope: BotCommandScope;
-    lang_code: string;
-    [R]?: Array<BotCommand>;
+  _: "bots.getBotCommands";
+  scope: BotCommandScope;
+  lang_code: string;
+  [R]?: Array<BotCommand>;
 }
 
 export interface bots_setBotMenuButton {
-    _: "bots.setBotMenuButton"
-    user_id: InputUser;
-    button: BotMenuButton;
-    [R]?: boolean;
+  _: "bots.setBotMenuButton";
+  user_id: InputUser;
+  button: BotMenuButton;
+  [R]?: boolean;
 }
 
 export interface bots_getBotMenuButton {
-    _: "bots.getBotMenuButton"
-    user_id: InputUser;
-    [R]?: BotMenuButton;
+  _: "bots.getBotMenuButton";
+  user_id: InputUser;
+  [R]?: BotMenuButton;
 }
 
 export interface bots_setBotBroadcastDefaultAdminRights {
-    _: "bots.setBotBroadcastDefaultAdminRights"
-    admin_rights: ChatAdminRights;
-    [R]?: boolean;
+  _: "bots.setBotBroadcastDefaultAdminRights";
+  admin_rights: ChatAdminRights;
+  [R]?: boolean;
 }
 
 export interface bots_setBotGroupDefaultAdminRights {
-    _: "bots.setBotGroupDefaultAdminRights"
-    admin_rights: ChatAdminRights;
-    [R]?: boolean;
+  _: "bots.setBotGroupDefaultAdminRights";
+  admin_rights: ChatAdminRights;
+  [R]?: boolean;
 }
 
 export interface bots_setBotInfo {
-    _: "bots.setBotInfo"
-    bot?: InputUser;
-    lang_code: string;
-    name?: string;
-    about?: string;
-    description?: string;
-    [R]?: boolean;
+  _: "bots.setBotInfo";
+  bot?: InputUser;
+  lang_code: string;
+  name?: string;
+  about?: string;
+  description?: string;
+  [R]?: boolean;
 }
 
 export interface bots_getBotInfo {
-    _: "bots.getBotInfo"
-    bot?: InputUser;
-    lang_code: string;
-    [R]?: bots_BotInfo;
+  _: "bots.getBotInfo";
+  bot?: InputUser;
+  lang_code: string;
+  [R]?: bots_BotInfo;
 }
 
 export interface bots_reorderUsernames {
-    _: "bots.reorderUsernames"
-    bot: InputUser;
-    order: Array<string>;
-    [R]?: boolean;
+  _: "bots.reorderUsernames";
+  bot: InputUser;
+  order: Array<string>;
+  [R]?: boolean;
 }
 
 export interface bots_toggleUsername {
-    _: "bots.toggleUsername"
-    bot: InputUser;
-    username: string;
-    active: boolean;
-    [R]?: boolean;
+  _: "bots.toggleUsername";
+  bot: InputUser;
+  username: string;
+  active: boolean;
+  [R]?: boolean;
 }
 
 export interface bots_canSendMessage {
-    _: "bots.canSendMessage"
-    bot: InputUser;
-    [R]?: boolean;
+  _: "bots.canSendMessage";
+  bot: InputUser;
+  [R]?: boolean;
 }
 
 export interface bots_allowSendMessage {
-    _: "bots.allowSendMessage"
-    bot: InputUser;
-    [R]?: Updates;
+  _: "bots.allowSendMessage";
+  bot: InputUser;
+  [R]?: Updates;
 }
 
 export interface bots_invokeWebViewCustomMethod {
-    _: "bots.invokeWebViewCustomMethod"
-    bot: InputUser;
-    custom_method: string;
-    params: DataJSON;
-    [R]?: DataJSON;
+  _: "bots.invokeWebViewCustomMethod";
+  bot: InputUser;
+  custom_method: string;
+  params: DataJSON;
+  [R]?: DataJSON;
 }
 
 export interface bots_getPopularAppBots {
-    _: "bots.getPopularAppBots"
-    offset: string;
-    limit: number;
-    [R]?: bots_PopularAppBots;
+  _: "bots.getPopularAppBots";
+  offset: string;
+  limit: number;
+  [R]?: bots_PopularAppBots;
 }
 
 export interface bots_addPreviewMedia {
-    _: "bots.addPreviewMedia"
-    bot: InputUser;
-    lang_code: string;
-    media: InputMedia;
-    [R]?: BotPreviewMedia;
+  _: "bots.addPreviewMedia";
+  bot: InputUser;
+  lang_code: string;
+  media: InputMedia;
+  [R]?: BotPreviewMedia;
 }
 
 export interface bots_editPreviewMedia {
-    _: "bots.editPreviewMedia"
-    bot: InputUser;
-    lang_code: string;
-    media: InputMedia;
-    new_media: InputMedia;
-    [R]?: BotPreviewMedia;
+  _: "bots.editPreviewMedia";
+  bot: InputUser;
+  lang_code: string;
+  media: InputMedia;
+  new_media: InputMedia;
+  [R]?: BotPreviewMedia;
 }
 
 export interface bots_deletePreviewMedia {
-    _: "bots.deletePreviewMedia"
-    bot: InputUser;
-    lang_code: string;
-    media: Array<InputMedia>;
-    [R]?: boolean;
+  _: "bots.deletePreviewMedia";
+  bot: InputUser;
+  lang_code: string;
+  media: Array<InputMedia>;
+  [R]?: boolean;
 }
 
 export interface bots_reorderPreviewMedias {
-    _: "bots.reorderPreviewMedias"
-    bot: InputUser;
-    lang_code: string;
-    order: Array<InputMedia>;
-    [R]?: boolean;
+  _: "bots.reorderPreviewMedias";
+  bot: InputUser;
+  lang_code: string;
+  order: Array<InputMedia>;
+  [R]?: boolean;
 }
 
 export interface bots_getPreviewInfo {
-    _: "bots.getPreviewInfo"
-    bot: InputUser;
-    lang_code: string;
-    [R]?: bots_PreviewInfo;
+  _: "bots.getPreviewInfo";
+  bot: InputUser;
+  lang_code: string;
+  [R]?: bots_PreviewInfo;
 }
 
 export interface bots_getPreviewMedias {
-    _: "bots.getPreviewMedias"
-    bot: InputUser;
-    [R]?: Array<BotPreviewMedia>;
+  _: "bots.getPreviewMedias";
+  bot: InputUser;
+  [R]?: Array<BotPreviewMedia>;
 }
 
 export interface bots_updateUserEmojiStatus {
-    _: "bots.updateUserEmojiStatus"
-    user_id: InputUser;
-    emoji_status: EmojiStatus;
-    [R]?: boolean;
+  _: "bots.updateUserEmojiStatus";
+  user_id: InputUser;
+  emoji_status: EmojiStatus;
+  [R]?: boolean;
 }
 
 export interface bots_toggleUserEmojiStatusPermission {
-    _: "bots.toggleUserEmojiStatusPermission"
-    bot: InputUser;
-    enabled: boolean;
-    [R]?: boolean;
+  _: "bots.toggleUserEmojiStatusPermission";
+  bot: InputUser;
+  enabled: boolean;
+  [R]?: boolean;
 }
 
 export interface bots_checkDownloadFileParams {
-    _: "bots.checkDownloadFileParams"
-    bot: InputUser;
-    file_name: string;
-    url: string;
-    [R]?: boolean;
+  _: "bots.checkDownloadFileParams";
+  bot: InputUser;
+  file_name: string;
+  url: string;
+  [R]?: boolean;
 }
 
 export interface bots_getAdminedBots {
-    _: "bots.getAdminedBots"
-    [R]?: Array<User>;
+  _: "bots.getAdminedBots";
+  [R]?: Array<User>;
 }
 
 export interface bots_updateStarRefProgram {
-    _: "bots.updateStarRefProgram"
-    bot: InputUser;
-    commission_permille: number;
-    duration_months?: number;
-    [R]?: StarRefProgram;
+  _: "bots.updateStarRefProgram";
+  bot: InputUser;
+  commission_permille: number;
+  duration_months?: number;
+  [R]?: StarRefProgram;
 }
 
 export interface bots_setCustomVerification {
-    _: "bots.setCustomVerification"
-    enabled?: true;
-    bot?: InputUser;
-    peer: InputPeer;
-    custom_description?: string;
-    [R]?: boolean;
+  _: "bots.setCustomVerification";
+  enabled?: true;
+  bot?: InputUser;
+  peer: InputPeer;
+  custom_description?: string;
+  [R]?: boolean;
 }
 
 export interface bots_getBotRecommendations {
-    _: "bots.getBotRecommendations"
-    bot: InputUser;
-    [R]?: users_Users;
+  _: "bots.getBotRecommendations";
+  bot: InputUser;
+  [R]?: users_Users;
 }
 
 export interface payments_getPaymentForm {
-    _: "payments.getPaymentForm"
-    invoice: InputInvoice;
-    theme_params?: DataJSON;
-    [R]?: payments_PaymentForm;
+  _: "payments.getPaymentForm";
+  invoice: InputInvoice;
+  theme_params?: DataJSON;
+  [R]?: payments_PaymentForm;
 }
 
 export interface payments_getPaymentReceipt {
-    _: "payments.getPaymentReceipt"
-    peer: InputPeer;
-    msg_id: number;
-    [R]?: payments_PaymentReceipt;
+  _: "payments.getPaymentReceipt";
+  peer: InputPeer;
+  msg_id: number;
+  [R]?: payments_PaymentReceipt;
 }
 
 export interface payments_validateRequestedInfo {
-    _: "payments.validateRequestedInfo"
-    save?: true;
-    invoice: InputInvoice;
-    info: PaymentRequestedInfo;
-    [R]?: payments_ValidatedRequestedInfo;
+  _: "payments.validateRequestedInfo";
+  save?: true;
+  invoice: InputInvoice;
+  info: PaymentRequestedInfo;
+  [R]?: payments_ValidatedRequestedInfo;
 }
 
 export interface payments_sendPaymentForm {
-    _: "payments.sendPaymentForm"
-    form_id: bigint;
-    invoice: InputInvoice;
-    requested_info_id?: string;
-    shipping_option_id?: string;
-    credentials: InputPaymentCredentials;
-    tip_amount?: bigint;
-    [R]?: payments_PaymentResult;
+  _: "payments.sendPaymentForm";
+  form_id: bigint;
+  invoice: InputInvoice;
+  requested_info_id?: string;
+  shipping_option_id?: string;
+  credentials: InputPaymentCredentials;
+  tip_amount?: bigint;
+  [R]?: payments_PaymentResult;
 }
 
 export interface payments_getSavedInfo {
-    _: "payments.getSavedInfo"
-    [R]?: payments_SavedInfo;
+  _: "payments.getSavedInfo";
+  [R]?: payments_SavedInfo;
 }
 
 export interface payments_clearSavedInfo {
-    _: "payments.clearSavedInfo"
-    credentials?: true;
-    info?: true;
-    [R]?: boolean;
+  _: "payments.clearSavedInfo";
+  credentials?: true;
+  info?: true;
+  [R]?: boolean;
 }
 
 export interface payments_getBankCardData {
-    _: "payments.getBankCardData"
-    number: string;
-    [R]?: payments_BankCardData;
+  _: "payments.getBankCardData";
+  number: string;
+  [R]?: payments_BankCardData;
 }
 
 export interface payments_exportInvoice {
-    _: "payments.exportInvoice"
-    invoice_media: InputMedia;
-    [R]?: payments_ExportedInvoice;
+  _: "payments.exportInvoice";
+  invoice_media: InputMedia;
+  [R]?: payments_ExportedInvoice;
 }
 
 export interface payments_assignAppStoreTransaction {
-    _: "payments.assignAppStoreTransaction"
-    receipt: Uint8Array;
-    purpose: InputStorePaymentPurpose;
-    [R]?: Updates;
+  _: "payments.assignAppStoreTransaction";
+  receipt: Uint8Array;
+  purpose: InputStorePaymentPurpose;
+  [R]?: Updates;
 }
 
 export interface payments_assignPlayMarketTransaction {
-    _: "payments.assignPlayMarketTransaction"
-    receipt: DataJSON;
-    purpose: InputStorePaymentPurpose;
-    [R]?: Updates;
+  _: "payments.assignPlayMarketTransaction";
+  receipt: DataJSON;
+  purpose: InputStorePaymentPurpose;
+  [R]?: Updates;
 }
 
 export interface payments_canPurchasePremium {
-    _: "payments.canPurchasePremium"
-    purpose: InputStorePaymentPurpose;
-    [R]?: boolean;
+  _: "payments.canPurchasePremium";
+  purpose: InputStorePaymentPurpose;
+  [R]?: boolean;
 }
 
 export interface payments_getPremiumGiftCodeOptions {
-    _: "payments.getPremiumGiftCodeOptions"
-    boost_peer?: InputPeer;
-    [R]?: Array<PremiumGiftCodeOption>;
+  _: "payments.getPremiumGiftCodeOptions";
+  boost_peer?: InputPeer;
+  [R]?: Array<PremiumGiftCodeOption>;
 }
 
 export interface payments_checkGiftCode {
-    _: "payments.checkGiftCode"
-    slug: string;
-    [R]?: payments_CheckedGiftCode;
+  _: "payments.checkGiftCode";
+  slug: string;
+  [R]?: payments_CheckedGiftCode;
 }
 
 export interface payments_applyGiftCode {
-    _: "payments.applyGiftCode"
-    slug: string;
-    [R]?: Updates;
+  _: "payments.applyGiftCode";
+  slug: string;
+  [R]?: Updates;
 }
 
 export interface payments_getGiveawayInfo {
-    _: "payments.getGiveawayInfo"
-    peer: InputPeer;
-    msg_id: number;
-    [R]?: payments_GiveawayInfo;
+  _: "payments.getGiveawayInfo";
+  peer: InputPeer;
+  msg_id: number;
+  [R]?: payments_GiveawayInfo;
 }
 
 export interface payments_launchPrepaidGiveaway {
-    _: "payments.launchPrepaidGiveaway"
-    peer: InputPeer;
-    giveaway_id: bigint;
-    purpose: InputStorePaymentPurpose;
-    [R]?: Updates;
+  _: "payments.launchPrepaidGiveaway";
+  peer: InputPeer;
+  giveaway_id: bigint;
+  purpose: InputStorePaymentPurpose;
+  [R]?: Updates;
 }
 
 export interface payments_getStarsTopupOptions {
-    _: "payments.getStarsTopupOptions"
-    [R]?: Array<StarsTopupOption>;
+  _: "payments.getStarsTopupOptions";
+  [R]?: Array<StarsTopupOption>;
 }
 
 export interface payments_getStarsStatus {
-    _: "payments.getStarsStatus"
-    peer: InputPeer;
-    [R]?: payments_StarsStatus;
+  _: "payments.getStarsStatus";
+  peer: InputPeer;
+  [R]?: payments_StarsStatus;
 }
 
 export interface payments_getStarsTransactions {
-    _: "payments.getStarsTransactions"
-    inbound?: true;
-    outbound?: true;
-    ascending?: true;
-    subscription_id?: string;
-    peer: InputPeer;
-    offset: string;
-    limit: number;
-    [R]?: payments_StarsStatus;
+  _: "payments.getStarsTransactions";
+  inbound?: true;
+  outbound?: true;
+  ascending?: true;
+  subscription_id?: string;
+  peer: InputPeer;
+  offset: string;
+  limit: number;
+  [R]?: payments_StarsStatus;
 }
 
 export interface payments_sendStarsForm {
-    _: "payments.sendStarsForm"
-    form_id: bigint;
-    invoice: InputInvoice;
-    [R]?: payments_PaymentResult;
+  _: "payments.sendStarsForm";
+  form_id: bigint;
+  invoice: InputInvoice;
+  [R]?: payments_PaymentResult;
 }
 
 export interface payments_refundStarsCharge {
-    _: "payments.refundStarsCharge"
-    user_id: InputUser;
-    charge_id: string;
-    [R]?: Updates;
+  _: "payments.refundStarsCharge";
+  user_id: InputUser;
+  charge_id: string;
+  [R]?: Updates;
 }
 
 export interface payments_getStarsRevenueStats {
-    _: "payments.getStarsRevenueStats"
-    dark?: true;
-    peer: InputPeer;
-    [R]?: payments_StarsRevenueStats;
+  _: "payments.getStarsRevenueStats";
+  dark?: true;
+  peer: InputPeer;
+  [R]?: payments_StarsRevenueStats;
 }
 
 export interface payments_getStarsRevenueWithdrawalUrl {
-    _: "payments.getStarsRevenueWithdrawalUrl"
-    peer: InputPeer;
-    stars: bigint;
-    password: InputCheckPasswordSRP;
-    [R]?: payments_StarsRevenueWithdrawalUrl;
+  _: "payments.getStarsRevenueWithdrawalUrl";
+  peer: InputPeer;
+  stars: bigint;
+  password: InputCheckPasswordSRP;
+  [R]?: payments_StarsRevenueWithdrawalUrl;
 }
 
 export interface payments_getStarsRevenueAdsAccountUrl {
-    _: "payments.getStarsRevenueAdsAccountUrl"
-    peer: InputPeer;
-    [R]?: payments_StarsRevenueAdsAccountUrl;
+  _: "payments.getStarsRevenueAdsAccountUrl";
+  peer: InputPeer;
+  [R]?: payments_StarsRevenueAdsAccountUrl;
 }
 
 export interface payments_getStarsTransactionsByID {
-    _: "payments.getStarsTransactionsByID"
-    peer: InputPeer;
-    id: Array<InputStarsTransaction>;
-    [R]?: payments_StarsStatus;
+  _: "payments.getStarsTransactionsByID";
+  peer: InputPeer;
+  id: Array<InputStarsTransaction>;
+  [R]?: payments_StarsStatus;
 }
 
 export interface payments_getStarsGiftOptions {
-    _: "payments.getStarsGiftOptions"
-    user_id?: InputUser;
-    [R]?: Array<StarsGiftOption>;
+  _: "payments.getStarsGiftOptions";
+  user_id?: InputUser;
+  [R]?: Array<StarsGiftOption>;
 }
 
 export interface payments_getStarsSubscriptions {
-    _: "payments.getStarsSubscriptions"
-    missing_balance?: true;
-    peer: InputPeer;
-    offset: string;
-    [R]?: payments_StarsStatus;
+  _: "payments.getStarsSubscriptions";
+  missing_balance?: true;
+  peer: InputPeer;
+  offset: string;
+  [R]?: payments_StarsStatus;
 }
 
 export interface payments_changeStarsSubscription {
-    _: "payments.changeStarsSubscription"
-    peer: InputPeer;
-    subscription_id: string;
-    canceled?: boolean;
-    [R]?: boolean;
+  _: "payments.changeStarsSubscription";
+  peer: InputPeer;
+  subscription_id: string;
+  canceled?: boolean;
+  [R]?: boolean;
 }
 
 export interface payments_fulfillStarsSubscription {
-    _: "payments.fulfillStarsSubscription"
-    peer: InputPeer;
-    subscription_id: string;
-    [R]?: boolean;
+  _: "payments.fulfillStarsSubscription";
+  peer: InputPeer;
+  subscription_id: string;
+  [R]?: boolean;
 }
 
 export interface payments_getStarsGiveawayOptions {
-    _: "payments.getStarsGiveawayOptions"
-    [R]?: Array<StarsGiveawayOption>;
+  _: "payments.getStarsGiveawayOptions";
+  [R]?: Array<StarsGiveawayOption>;
 }
 
 export interface payments_getStarGifts {
-    _: "payments.getStarGifts"
-    hash: number;
-    [R]?: payments_StarGifts;
+  _: "payments.getStarGifts";
+  hash: number;
+  [R]?: payments_StarGifts;
 }
 
 export interface payments_getUserStarGifts {
-    _: "payments.getUserStarGifts"
-    user_id: InputUser;
-    offset: string;
-    limit: number;
-    [R]?: payments_UserStarGifts;
+  _: "payments.getUserStarGifts";
+  user_id: InputUser;
+  offset: string;
+  limit: number;
+  [R]?: payments_UserStarGifts;
 }
 
 export interface payments_saveStarGift {
-    _: "payments.saveStarGift"
-    unsave?: true;
-    msg_id: number;
-    [R]?: boolean;
+  _: "payments.saveStarGift";
+  unsave?: true;
+  msg_id: number;
+  [R]?: boolean;
 }
 
 export interface payments_convertStarGift {
-    _: "payments.convertStarGift"
-    msg_id: number;
-    [R]?: boolean;
+  _: "payments.convertStarGift";
+  msg_id: number;
+  [R]?: boolean;
 }
 
 export interface payments_botCancelStarsSubscription {
-    _: "payments.botCancelStarsSubscription"
-    restore?: true;
-    user_id: InputUser;
-    charge_id: string;
-    [R]?: boolean;
+  _: "payments.botCancelStarsSubscription";
+  restore?: true;
+  user_id: InputUser;
+  charge_id: string;
+  [R]?: boolean;
 }
 
 export interface payments_getConnectedStarRefBots {
-    _: "payments.getConnectedStarRefBots"
-    peer: InputPeer;
-    offset_date?: number;
-    offset_link?: string;
-    limit: number;
-    [R]?: payments_ConnectedStarRefBots;
+  _: "payments.getConnectedStarRefBots";
+  peer: InputPeer;
+  offset_date?: number;
+  offset_link?: string;
+  limit: number;
+  [R]?: payments_ConnectedStarRefBots;
 }
 
 export interface payments_getConnectedStarRefBot {
-    _: "payments.getConnectedStarRefBot"
-    peer: InputPeer;
-    bot: InputUser;
-    [R]?: payments_ConnectedStarRefBots;
+  _: "payments.getConnectedStarRefBot";
+  peer: InputPeer;
+  bot: InputUser;
+  [R]?: payments_ConnectedStarRefBots;
 }
 
 export interface payments_getSuggestedStarRefBots {
-    _: "payments.getSuggestedStarRefBots"
-    order_by_revenue?: true;
-    order_by_date?: true;
-    peer: InputPeer;
-    offset: string;
-    limit: number;
-    [R]?: payments_SuggestedStarRefBots;
+  _: "payments.getSuggestedStarRefBots";
+  order_by_revenue?: true;
+  order_by_date?: true;
+  peer: InputPeer;
+  offset: string;
+  limit: number;
+  [R]?: payments_SuggestedStarRefBots;
 }
 
 export interface payments_connectStarRefBot {
-    _: "payments.connectStarRefBot"
-    peer: InputPeer;
-    bot: InputUser;
-    [R]?: payments_ConnectedStarRefBots;
+  _: "payments.connectStarRefBot";
+  peer: InputPeer;
+  bot: InputUser;
+  [R]?: payments_ConnectedStarRefBots;
 }
 
 export interface payments_editConnectedStarRefBot {
-    _: "payments.editConnectedStarRefBot"
-    revoked?: true;
-    peer: InputPeer;
-    link: string;
-    [R]?: payments_ConnectedStarRefBots;
+  _: "payments.editConnectedStarRefBot";
+  revoked?: true;
+  peer: InputPeer;
+  link: string;
+  [R]?: payments_ConnectedStarRefBots;
 }
 
 export interface payments_getStarGiftUpgradePreview {
-    _: "payments.getStarGiftUpgradePreview"
-    gift_id: bigint;
-    [R]?: payments_StarGiftUpgradePreview;
+  _: "payments.getStarGiftUpgradePreview";
+  gift_id: bigint;
+  [R]?: payments_StarGiftUpgradePreview;
 }
 
 export interface payments_upgradeStarGift {
-    _: "payments.upgradeStarGift"
-    keep_original_details?: true;
-    msg_id: number;
-    [R]?: Updates;
+  _: "payments.upgradeStarGift";
+  keep_original_details?: true;
+  msg_id: number;
+  [R]?: Updates;
 }
 
 export interface payments_transferStarGift {
-    _: "payments.transferStarGift"
-    msg_id: number;
-    to_id: InputUser;
-    [R]?: Updates;
+  _: "payments.transferStarGift";
+  msg_id: number;
+  to_id: InputUser;
+  [R]?: Updates;
 }
 
 export interface payments_getUserStarGift {
-    _: "payments.getUserStarGift"
-    msg_id: Array<number>;
-    [R]?: payments_UserStarGifts;
+  _: "payments.getUserStarGift";
+  msg_id: Array<number>;
+  [R]?: payments_UserStarGifts;
 }
 
 export interface stickers_createStickerSet {
-    _: "stickers.createStickerSet"
-    masks?: true;
-    emojis?: true;
-    text_color?: true;
-    user_id: InputUser;
-    title: string;
-    short_name: string;
-    thumb?: InputDocument;
-    stickers: Array<InputStickerSetItem>;
-    software?: string;
-    [R]?: messages_StickerSet;
+  _: "stickers.createStickerSet";
+  masks?: true;
+  emojis?: true;
+  text_color?: true;
+  user_id: InputUser;
+  title: string;
+  short_name: string;
+  thumb?: InputDocument;
+  stickers: Array<InputStickerSetItem>;
+  software?: string;
+  [R]?: messages_StickerSet;
 }
 
 export interface stickers_removeStickerFromSet {
-    _: "stickers.removeStickerFromSet"
-    sticker: InputDocument;
-    [R]?: messages_StickerSet;
+  _: "stickers.removeStickerFromSet";
+  sticker: InputDocument;
+  [R]?: messages_StickerSet;
 }
 
 export interface stickers_changeStickerPosition {
-    _: "stickers.changeStickerPosition"
-    sticker: InputDocument;
-    position: number;
-    [R]?: messages_StickerSet;
+  _: "stickers.changeStickerPosition";
+  sticker: InputDocument;
+  position: number;
+  [R]?: messages_StickerSet;
 }
 
 export interface stickers_addStickerToSet {
-    _: "stickers.addStickerToSet"
-    stickerset: InputStickerSet;
-    sticker: InputStickerSetItem;
-    [R]?: messages_StickerSet;
+  _: "stickers.addStickerToSet";
+  stickerset: InputStickerSet;
+  sticker: InputStickerSetItem;
+  [R]?: messages_StickerSet;
 }
 
 export interface stickers_setStickerSetThumb {
-    _: "stickers.setStickerSetThumb"
-    stickerset: InputStickerSet;
-    thumb?: InputDocument;
-    thumb_document_id?: bigint;
-    [R]?: messages_StickerSet;
+  _: "stickers.setStickerSetThumb";
+  stickerset: InputStickerSet;
+  thumb?: InputDocument;
+  thumb_document_id?: bigint;
+  [R]?: messages_StickerSet;
 }
 
 export interface stickers_checkShortName {
-    _: "stickers.checkShortName"
-    short_name: string;
-    [R]?: boolean;
+  _: "stickers.checkShortName";
+  short_name: string;
+  [R]?: boolean;
 }
 
 export interface stickers_suggestShortName {
-    _: "stickers.suggestShortName"
-    title: string;
-    [R]?: stickers_SuggestedShortName;
+  _: "stickers.suggestShortName";
+  title: string;
+  [R]?: stickers_SuggestedShortName;
 }
 
 export interface stickers_changeSticker {
-    _: "stickers.changeSticker"
-    sticker: InputDocument;
-    emoji?: string;
-    mask_coords?: MaskCoords;
-    keywords?: string;
-    [R]?: messages_StickerSet;
+  _: "stickers.changeSticker";
+  sticker: InputDocument;
+  emoji?: string;
+  mask_coords?: MaskCoords;
+  keywords?: string;
+  [R]?: messages_StickerSet;
 }
 
 export interface stickers_renameStickerSet {
-    _: "stickers.renameStickerSet"
-    stickerset: InputStickerSet;
-    title: string;
-    [R]?: messages_StickerSet;
+  _: "stickers.renameStickerSet";
+  stickerset: InputStickerSet;
+  title: string;
+  [R]?: messages_StickerSet;
 }
 
 export interface stickers_deleteStickerSet {
-    _: "stickers.deleteStickerSet"
-    stickerset: InputStickerSet;
-    [R]?: boolean;
+  _: "stickers.deleteStickerSet";
+  stickerset: InputStickerSet;
+  [R]?: boolean;
 }
 
 export interface stickers_replaceSticker {
-    _: "stickers.replaceSticker"
-    sticker: InputDocument;
-    new_sticker: InputStickerSetItem;
-    [R]?: messages_StickerSet;
+  _: "stickers.replaceSticker";
+  sticker: InputDocument;
+  new_sticker: InputStickerSetItem;
+  [R]?: messages_StickerSet;
 }
 
 export interface phone_getCallConfig {
-    _: "phone.getCallConfig"
-    [R]?: DataJSON;
+  _: "phone.getCallConfig";
+  [R]?: DataJSON;
 }
 
 export interface phone_requestCall {
-    _: "phone.requestCall"
-    video?: true;
-    user_id: InputUser;
-    conference_call?: InputGroupCall;
-    random_id: number;
-    g_a_hash: Uint8Array;
-    protocol: PhoneCallProtocol;
-    [R]?: phone_PhoneCall;
+  _: "phone.requestCall";
+  video?: true;
+  user_id: InputUser;
+  conference_call?: InputGroupCall;
+  random_id: number;
+  g_a_hash: Uint8Array;
+  protocol: PhoneCallProtocol;
+  [R]?: phone_PhoneCall;
 }
 
 export interface phone_acceptCall {
-    _: "phone.acceptCall"
-    peer: InputPhoneCall;
-    g_b: Uint8Array;
-    protocol: PhoneCallProtocol;
-    [R]?: phone_PhoneCall;
+  _: "phone.acceptCall";
+  peer: InputPhoneCall;
+  g_b: Uint8Array;
+  protocol: PhoneCallProtocol;
+  [R]?: phone_PhoneCall;
 }
 
 export interface phone_confirmCall {
-    _: "phone.confirmCall"
-    peer: InputPhoneCall;
-    g_a: Uint8Array;
-    key_fingerprint: bigint;
-    protocol: PhoneCallProtocol;
-    [R]?: phone_PhoneCall;
+  _: "phone.confirmCall";
+  peer: InputPhoneCall;
+  g_a: Uint8Array;
+  key_fingerprint: bigint;
+  protocol: PhoneCallProtocol;
+  [R]?: phone_PhoneCall;
 }
 
 export interface phone_receivedCall {
-    _: "phone.receivedCall"
-    peer: InputPhoneCall;
-    [R]?: boolean;
+  _: "phone.receivedCall";
+  peer: InputPhoneCall;
+  [R]?: boolean;
 }
 
 export interface phone_discardCall {
-    _: "phone.discardCall"
-    video?: true;
-    peer: InputPhoneCall;
-    duration: number;
-    reason: PhoneCallDiscardReason;
-    connection_id: bigint;
-    [R]?: Updates;
+  _: "phone.discardCall";
+  video?: true;
+  peer: InputPhoneCall;
+  duration: number;
+  reason: PhoneCallDiscardReason;
+  connection_id: bigint;
+  [R]?: Updates;
 }
 
 export interface phone_setCallRating {
-    _: "phone.setCallRating"
-    user_initiative?: true;
-    peer: InputPhoneCall;
-    rating: number;
-    comment: string;
-    [R]?: Updates;
+  _: "phone.setCallRating";
+  user_initiative?: true;
+  peer: InputPhoneCall;
+  rating: number;
+  comment: string;
+  [R]?: Updates;
 }
 
 export interface phone_saveCallDebug {
-    _: "phone.saveCallDebug"
-    peer: InputPhoneCall;
-    debug: DataJSON;
-    [R]?: boolean;
+  _: "phone.saveCallDebug";
+  peer: InputPhoneCall;
+  debug: DataJSON;
+  [R]?: boolean;
 }
 
 export interface phone_sendSignalingData {
-    _: "phone.sendSignalingData"
-    peer: InputPhoneCall;
-    data: Uint8Array;
-    [R]?: boolean;
+  _: "phone.sendSignalingData";
+  peer: InputPhoneCall;
+  data: Uint8Array;
+  [R]?: boolean;
 }
 
 export interface phone_createGroupCall {
-    _: "phone.createGroupCall"
-    rtmp_stream?: true;
-    peer: InputPeer;
-    random_id: number;
-    title?: string;
-    schedule_date?: number;
-    [R]?: Updates;
+  _: "phone.createGroupCall";
+  rtmp_stream?: true;
+  peer: InputPeer;
+  random_id: number;
+  title?: string;
+  schedule_date?: number;
+  [R]?: Updates;
 }
 
 export interface phone_joinGroupCall {
-    _: "phone.joinGroupCall"
-    muted?: true;
-    video_stopped?: true;
-    call: InputGroupCall;
-    join_as: InputPeer;
-    invite_hash?: string;
-    key_fingerprint?: bigint;
-    params: DataJSON;
-    [R]?: Updates;
+  _: "phone.joinGroupCall";
+  muted?: true;
+  video_stopped?: true;
+  call: InputGroupCall;
+  join_as: InputPeer;
+  invite_hash?: string;
+  key_fingerprint?: bigint;
+  params: DataJSON;
+  [R]?: Updates;
 }
 
 export interface phone_leaveGroupCall {
-    _: "phone.leaveGroupCall"
-    call: InputGroupCall;
-    source: number;
-    [R]?: Updates;
+  _: "phone.leaveGroupCall";
+  call: InputGroupCall;
+  source: number;
+  [R]?: Updates;
 }
 
 export interface phone_inviteToGroupCall {
-    _: "phone.inviteToGroupCall"
-    call: InputGroupCall;
-    users: Array<InputUser>;
-    [R]?: Updates;
+  _: "phone.inviteToGroupCall";
+  call: InputGroupCall;
+  users: Array<InputUser>;
+  [R]?: Updates;
 }
 
 export interface phone_discardGroupCall {
-    _: "phone.discardGroupCall"
-    call: InputGroupCall;
-    [R]?: Updates;
+  _: "phone.discardGroupCall";
+  call: InputGroupCall;
+  [R]?: Updates;
 }
 
 export interface phone_toggleGroupCallSettings {
-    _: "phone.toggleGroupCallSettings"
-    reset_invite_hash?: true;
-    call: InputGroupCall;
-    join_muted?: boolean;
-    [R]?: Updates;
+  _: "phone.toggleGroupCallSettings";
+  reset_invite_hash?: true;
+  call: InputGroupCall;
+  join_muted?: boolean;
+  [R]?: Updates;
 }
 
 export interface phone_getGroupCall {
-    _: "phone.getGroupCall"
-    call: InputGroupCall;
-    limit: number;
-    [R]?: phone_GroupCall;
+  _: "phone.getGroupCall";
+  call: InputGroupCall;
+  limit: number;
+  [R]?: phone_GroupCall;
 }
 
 export interface phone_getGroupParticipants {
-    _: "phone.getGroupParticipants"
-    call: InputGroupCall;
-    ids: Array<InputPeer>;
-    sources: Array<number>;
-    offset: string;
-    limit: number;
-    [R]?: phone_GroupParticipants;
+  _: "phone.getGroupParticipants";
+  call: InputGroupCall;
+  ids: Array<InputPeer>;
+  sources: Array<number>;
+  offset: string;
+  limit: number;
+  [R]?: phone_GroupParticipants;
 }
 
 export interface phone_checkGroupCall {
-    _: "phone.checkGroupCall"
-    call: InputGroupCall;
-    sources: Array<number>;
-    [R]?: Array<number>;
+  _: "phone.checkGroupCall";
+  call: InputGroupCall;
+  sources: Array<number>;
+  [R]?: Array<number>;
 }
 
 export interface phone_toggleGroupCallRecord {
-    _: "phone.toggleGroupCallRecord"
-    start?: true;
-    video?: true;
-    call: InputGroupCall;
-    title?: string;
-    video_portrait?: boolean;
-    [R]?: Updates;
+  _: "phone.toggleGroupCallRecord";
+  start?: true;
+  video?: true;
+  call: InputGroupCall;
+  title?: string;
+  video_portrait?: boolean;
+  [R]?: Updates;
 }
 
 export interface phone_editGroupCallParticipant {
-    _: "phone.editGroupCallParticipant"
-    call: InputGroupCall;
-    participant: InputPeer;
-    muted?: boolean;
-    volume?: number;
-    raise_hand?: boolean;
-    video_stopped?: boolean;
-    video_paused?: boolean;
-    presentation_paused?: boolean;
-    [R]?: Updates;
+  _: "phone.editGroupCallParticipant";
+  call: InputGroupCall;
+  participant: InputPeer;
+  muted?: boolean;
+  volume?: number;
+  raise_hand?: boolean;
+  video_stopped?: boolean;
+  video_paused?: boolean;
+  presentation_paused?: boolean;
+  [R]?: Updates;
 }
 
 export interface phone_editGroupCallTitle {
-    _: "phone.editGroupCallTitle"
-    call: InputGroupCall;
-    title: string;
-    [R]?: Updates;
+  _: "phone.editGroupCallTitle";
+  call: InputGroupCall;
+  title: string;
+  [R]?: Updates;
 }
 
 export interface phone_getGroupCallJoinAs {
-    _: "phone.getGroupCallJoinAs"
-    peer: InputPeer;
-    [R]?: phone_JoinAsPeers;
+  _: "phone.getGroupCallJoinAs";
+  peer: InputPeer;
+  [R]?: phone_JoinAsPeers;
 }
 
 export interface phone_exportGroupCallInvite {
-    _: "phone.exportGroupCallInvite"
-    can_self_unmute?: true;
-    call: InputGroupCall;
-    [R]?: phone_ExportedGroupCallInvite;
+  _: "phone.exportGroupCallInvite";
+  can_self_unmute?: true;
+  call: InputGroupCall;
+  [R]?: phone_ExportedGroupCallInvite;
 }
 
 export interface phone_toggleGroupCallStartSubscription {
-    _: "phone.toggleGroupCallStartSubscription"
-    call: InputGroupCall;
-    subscribed: boolean;
-    [R]?: Updates;
+  _: "phone.toggleGroupCallStartSubscription";
+  call: InputGroupCall;
+  subscribed: boolean;
+  [R]?: Updates;
 }
 
 export interface phone_startScheduledGroupCall {
-    _: "phone.startScheduledGroupCall"
-    call: InputGroupCall;
-    [R]?: Updates;
+  _: "phone.startScheduledGroupCall";
+  call: InputGroupCall;
+  [R]?: Updates;
 }
 
 export interface phone_saveDefaultGroupCallJoinAs {
-    _: "phone.saveDefaultGroupCallJoinAs"
-    peer: InputPeer;
-    join_as: InputPeer;
-    [R]?: boolean;
+  _: "phone.saveDefaultGroupCallJoinAs";
+  peer: InputPeer;
+  join_as: InputPeer;
+  [R]?: boolean;
 }
 
 export interface phone_joinGroupCallPresentation {
-    _: "phone.joinGroupCallPresentation"
-    call: InputGroupCall;
-    params: DataJSON;
-    [R]?: Updates;
+  _: "phone.joinGroupCallPresentation";
+  call: InputGroupCall;
+  params: DataJSON;
+  [R]?: Updates;
 }
 
 export interface phone_leaveGroupCallPresentation {
-    _: "phone.leaveGroupCallPresentation"
-    call: InputGroupCall;
-    [R]?: Updates;
+  _: "phone.leaveGroupCallPresentation";
+  call: InputGroupCall;
+  [R]?: Updates;
 }
 
 export interface phone_getGroupCallStreamChannels {
-    _: "phone.getGroupCallStreamChannels"
-    call: InputGroupCall;
-    [R]?: phone_GroupCallStreamChannels;
+  _: "phone.getGroupCallStreamChannels";
+  call: InputGroupCall;
+  [R]?: phone_GroupCallStreamChannels;
 }
 
 export interface phone_getGroupCallStreamRtmpUrl {
-    _: "phone.getGroupCallStreamRtmpUrl"
-    peer: InputPeer;
-    revoke: boolean;
-    [R]?: phone_GroupCallStreamRtmpUrl;
+  _: "phone.getGroupCallStreamRtmpUrl";
+  peer: InputPeer;
+  revoke: boolean;
+  [R]?: phone_GroupCallStreamRtmpUrl;
 }
 
 export interface phone_saveCallLog {
-    _: "phone.saveCallLog"
-    peer: InputPhoneCall;
-    file: InputFile;
-    [R]?: boolean;
+  _: "phone.saveCallLog";
+  peer: InputPhoneCall;
+  file: InputFile;
+  [R]?: boolean;
 }
 
 export interface phone_createConferenceCall {
-    _: "phone.createConferenceCall"
-    peer: InputPhoneCall;
-    key_fingerprint: bigint;
-    [R]?: phone_PhoneCall;
+  _: "phone.createConferenceCall";
+  peer: InputPhoneCall;
+  key_fingerprint: bigint;
+  [R]?: phone_PhoneCall;
 }
 
 export interface langpack_getLangPack {
-    _: "langpack.getLangPack"
-    lang_pack: string;
-    lang_code: string;
-    [R]?: LangPackDifference;
+  _: "langpack.getLangPack";
+  lang_pack: string;
+  lang_code: string;
+  [R]?: LangPackDifference;
 }
 
 export interface langpack_getStrings {
-    _: "langpack.getStrings"
-    lang_pack: string;
-    lang_code: string;
-    keys: Array<string>;
-    [R]?: Array<LangPackString>;
+  _: "langpack.getStrings";
+  lang_pack: string;
+  lang_code: string;
+  keys: Array<string>;
+  [R]?: Array<LangPackString>;
 }
 
 export interface langpack_getDifference {
-    _: "langpack.getDifference"
-    lang_pack: string;
-    lang_code: string;
-    from_version: number;
-    [R]?: LangPackDifference;
+  _: "langpack.getDifference";
+  lang_pack: string;
+  lang_code: string;
+  from_version: number;
+  [R]?: LangPackDifference;
 }
 
 export interface langpack_getLanguages {
-    _: "langpack.getLanguages"
-    lang_pack: string;
-    [R]?: Array<LangPackLanguage>;
+  _: "langpack.getLanguages";
+  lang_pack: string;
+  [R]?: Array<LangPackLanguage>;
 }
 
 export interface langpack_getLanguage {
-    _: "langpack.getLanguage"
-    lang_pack: string;
-    lang_code: string;
-    [R]?: LangPackLanguage;
+  _: "langpack.getLanguage";
+  lang_pack: string;
+  lang_code: string;
+  [R]?: LangPackLanguage;
 }
 
 export interface folders_editPeerFolders {
-    _: "folders.editPeerFolders"
-    folder_peers: Array<InputFolderPeer>;
-    [R]?: Updates;
+  _: "folders.editPeerFolders";
+  folder_peers: Array<InputFolderPeer>;
+  [R]?: Updates;
 }
 
 export interface stats_getBroadcastStats {
-    _: "stats.getBroadcastStats"
-    dark?: true;
-    channel: InputChannel;
-    [R]?: stats_BroadcastStats;
+  _: "stats.getBroadcastStats";
+  dark?: true;
+  channel: InputChannel;
+  [R]?: stats_BroadcastStats;
 }
 
 export interface stats_loadAsyncGraph {
-    _: "stats.loadAsyncGraph"
-    token: string;
-    x?: bigint;
-    [R]?: StatsGraph;
+  _: "stats.loadAsyncGraph";
+  token: string;
+  x?: bigint;
+  [R]?: StatsGraph;
 }
 
 export interface stats_getMegagroupStats {
-    _: "stats.getMegagroupStats"
-    dark?: true;
-    channel: InputChannel;
-    [R]?: stats_MegagroupStats;
+  _: "stats.getMegagroupStats";
+  dark?: true;
+  channel: InputChannel;
+  [R]?: stats_MegagroupStats;
 }
 
 export interface stats_getMessagePublicForwards {
-    _: "stats.getMessagePublicForwards"
-    channel: InputChannel;
-    msg_id: number;
-    offset: string;
-    limit: number;
-    [R]?: stats_PublicForwards;
+  _: "stats.getMessagePublicForwards";
+  channel: InputChannel;
+  msg_id: number;
+  offset: string;
+  limit: number;
+  [R]?: stats_PublicForwards;
 }
 
 export interface stats_getMessageStats {
-    _: "stats.getMessageStats"
-    dark?: true;
-    channel: InputChannel;
-    msg_id: number;
-    [R]?: stats_MessageStats;
+  _: "stats.getMessageStats";
+  dark?: true;
+  channel: InputChannel;
+  msg_id: number;
+  [R]?: stats_MessageStats;
 }
 
 export interface stats_getStoryStats {
-    _: "stats.getStoryStats"
-    dark?: true;
-    peer: InputPeer;
-    id: number;
-    [R]?: stats_StoryStats;
+  _: "stats.getStoryStats";
+  dark?: true;
+  peer: InputPeer;
+  id: number;
+  [R]?: stats_StoryStats;
 }
 
 export interface stats_getStoryPublicForwards {
-    _: "stats.getStoryPublicForwards"
-    peer: InputPeer;
-    id: number;
-    offset: string;
-    limit: number;
-    [R]?: stats_PublicForwards;
+  _: "stats.getStoryPublicForwards";
+  peer: InputPeer;
+  id: number;
+  offset: string;
+  limit: number;
+  [R]?: stats_PublicForwards;
 }
 
 export interface stats_getBroadcastRevenueStats {
-    _: "stats.getBroadcastRevenueStats"
-    dark?: true;
-    peer: InputPeer;
-    [R]?: stats_BroadcastRevenueStats;
+  _: "stats.getBroadcastRevenueStats";
+  dark?: true;
+  peer: InputPeer;
+  [R]?: stats_BroadcastRevenueStats;
 }
 
 export interface stats_getBroadcastRevenueWithdrawalUrl {
-    _: "stats.getBroadcastRevenueWithdrawalUrl"
-    peer: InputPeer;
-    password: InputCheckPasswordSRP;
-    [R]?: stats_BroadcastRevenueWithdrawalUrl;
+  _: "stats.getBroadcastRevenueWithdrawalUrl";
+  peer: InputPeer;
+  password: InputCheckPasswordSRP;
+  [R]?: stats_BroadcastRevenueWithdrawalUrl;
 }
 
 export interface stats_getBroadcastRevenueTransactions {
-    _: "stats.getBroadcastRevenueTransactions"
-    peer: InputPeer;
-    offset: number;
-    limit: number;
-    [R]?: stats_BroadcastRevenueTransactions;
+  _: "stats.getBroadcastRevenueTransactions";
+  peer: InputPeer;
+  offset: number;
+  limit: number;
+  [R]?: stats_BroadcastRevenueTransactions;
 }
 
 export interface chatlists_exportChatlistInvite {
-    _: "chatlists.exportChatlistInvite"
-    chatlist: InputChatlist;
-    title: string;
-    peers: Array<InputPeer>;
-    [R]?: chatlists_ExportedChatlistInvite;
+  _: "chatlists.exportChatlistInvite";
+  chatlist: InputChatlist;
+  title: string;
+  peers: Array<InputPeer>;
+  [R]?: chatlists_ExportedChatlistInvite;
 }
 
 export interface chatlists_deleteExportedInvite {
-    _: "chatlists.deleteExportedInvite"
-    chatlist: InputChatlist;
-    slug: string;
-    [R]?: boolean;
+  _: "chatlists.deleteExportedInvite";
+  chatlist: InputChatlist;
+  slug: string;
+  [R]?: boolean;
 }
 
 export interface chatlists_editExportedInvite {
-    _: "chatlists.editExportedInvite"
-    chatlist: InputChatlist;
-    slug: string;
-    title?: string;
-    peers?: Array<InputPeer>;
-    [R]?: ExportedChatlistInvite;
+  _: "chatlists.editExportedInvite";
+  chatlist: InputChatlist;
+  slug: string;
+  title?: string;
+  peers?: Array<InputPeer>;
+  [R]?: ExportedChatlistInvite;
 }
 
 export interface chatlists_getExportedInvites {
-    _: "chatlists.getExportedInvites"
-    chatlist: InputChatlist;
-    [R]?: chatlists_ExportedInvites;
+  _: "chatlists.getExportedInvites";
+  chatlist: InputChatlist;
+  [R]?: chatlists_ExportedInvites;
 }
 
 export interface chatlists_checkChatlistInvite {
-    _: "chatlists.checkChatlistInvite"
-    slug: string;
-    [R]?: chatlists_ChatlistInvite;
+  _: "chatlists.checkChatlistInvite";
+  slug: string;
+  [R]?: chatlists_ChatlistInvite;
 }
 
 export interface chatlists_joinChatlistInvite {
-    _: "chatlists.joinChatlistInvite"
-    slug: string;
-    peers: Array<InputPeer>;
-    [R]?: Updates;
+  _: "chatlists.joinChatlistInvite";
+  slug: string;
+  peers: Array<InputPeer>;
+  [R]?: Updates;
 }
 
 export interface chatlists_getChatlistUpdates {
-    _: "chatlists.getChatlistUpdates"
-    chatlist: InputChatlist;
-    [R]?: chatlists_ChatlistUpdates;
+  _: "chatlists.getChatlistUpdates";
+  chatlist: InputChatlist;
+  [R]?: chatlists_ChatlistUpdates;
 }
 
 export interface chatlists_joinChatlistUpdates {
-    _: "chatlists.joinChatlistUpdates"
-    chatlist: InputChatlist;
-    peers: Array<InputPeer>;
-    [R]?: Updates;
+  _: "chatlists.joinChatlistUpdates";
+  chatlist: InputChatlist;
+  peers: Array<InputPeer>;
+  [R]?: Updates;
 }
 
 export interface chatlists_hideChatlistUpdates {
-    _: "chatlists.hideChatlistUpdates"
-    chatlist: InputChatlist;
-    [R]?: boolean;
+  _: "chatlists.hideChatlistUpdates";
+  chatlist: InputChatlist;
+  [R]?: boolean;
 }
 
 export interface chatlists_getLeaveChatlistSuggestions {
-    _: "chatlists.getLeaveChatlistSuggestions"
-    chatlist: InputChatlist;
-    [R]?: Array<Peer>;
+  _: "chatlists.getLeaveChatlistSuggestions";
+  chatlist: InputChatlist;
+  [R]?: Array<Peer>;
 }
 
 export interface chatlists_leaveChatlist {
-    _: "chatlists.leaveChatlist"
-    chatlist: InputChatlist;
-    peers: Array<InputPeer>;
-    [R]?: Updates;
+  _: "chatlists.leaveChatlist";
+  chatlist: InputChatlist;
+  peers: Array<InputPeer>;
+  [R]?: Updates;
 }
 
 export interface stories_canSendStory {
-    _: "stories.canSendStory"
-    peer: InputPeer;
-    [R]?: boolean;
+  _: "stories.canSendStory";
+  peer: InputPeer;
+  [R]?: boolean;
 }
 
 export interface stories_sendStory {
-    _: "stories.sendStory"
-    pinned?: true;
-    noforwards?: true;
-    fwd_modified?: true;
-    peer: InputPeer;
-    media: InputMedia;
-    media_areas?: Array<MediaArea>;
-    caption?: string;
-    entities?: Array<MessageEntity>;
-    privacy_rules: Array<InputPrivacyRule>;
-    random_id: bigint;
-    period?: number;
-    fwd_from_id?: InputPeer;
-    fwd_from_story?: number;
-    [R]?: Updates;
+  _: "stories.sendStory";
+  pinned?: true;
+  noforwards?: true;
+  fwd_modified?: true;
+  peer: InputPeer;
+  media: InputMedia;
+  media_areas?: Array<MediaArea>;
+  caption?: string;
+  entities?: Array<MessageEntity>;
+  privacy_rules: Array<InputPrivacyRule>;
+  random_id: bigint;
+  period?: number;
+  fwd_from_id?: InputPeer;
+  fwd_from_story?: number;
+  [R]?: Updates;
 }
 
 export interface stories_editStory {
-    _: "stories.editStory"
-    peer: InputPeer;
-    id: number;
-    media?: InputMedia;
-    media_areas?: Array<MediaArea>;
-    caption?: string;
-    entities?: Array<MessageEntity>;
-    privacy_rules?: Array<InputPrivacyRule>;
-    [R]?: Updates;
+  _: "stories.editStory";
+  peer: InputPeer;
+  id: number;
+  media?: InputMedia;
+  media_areas?: Array<MediaArea>;
+  caption?: string;
+  entities?: Array<MessageEntity>;
+  privacy_rules?: Array<InputPrivacyRule>;
+  [R]?: Updates;
 }
 
 export interface stories_deleteStories {
-    _: "stories.deleteStories"
-    peer: InputPeer;
-    id: Array<number>;
-    [R]?: Array<number>;
+  _: "stories.deleteStories";
+  peer: InputPeer;
+  id: Array<number>;
+  [R]?: Array<number>;
 }
 
 export interface stories_togglePinned {
-    _: "stories.togglePinned"
-    peer: InputPeer;
-    id: Array<number>;
-    pinned: boolean;
-    [R]?: Array<number>;
+  _: "stories.togglePinned";
+  peer: InputPeer;
+  id: Array<number>;
+  pinned: boolean;
+  [R]?: Array<number>;
 }
 
 export interface stories_getAllStories {
-    _: "stories.getAllStories"
-    next?: true;
-    hidden?: true;
-    state?: string;
-    [R]?: stories_AllStories;
+  _: "stories.getAllStories";
+  next?: true;
+  hidden?: true;
+  state?: string;
+  [R]?: stories_AllStories;
 }
 
 export interface stories_getPinnedStories {
-    _: "stories.getPinnedStories"
-    peer: InputPeer;
-    offset_id: number;
-    limit: number;
-    [R]?: stories_Stories;
+  _: "stories.getPinnedStories";
+  peer: InputPeer;
+  offset_id: number;
+  limit: number;
+  [R]?: stories_Stories;
 }
 
 export interface stories_getStoriesArchive {
-    _: "stories.getStoriesArchive"
-    peer: InputPeer;
-    offset_id: number;
-    limit: number;
-    [R]?: stories_Stories;
+  _: "stories.getStoriesArchive";
+  peer: InputPeer;
+  offset_id: number;
+  limit: number;
+  [R]?: stories_Stories;
 }
 
 export interface stories_getStoriesByID {
-    _: "stories.getStoriesByID"
-    peer: InputPeer;
-    id: Array<number>;
-    [R]?: stories_Stories;
+  _: "stories.getStoriesByID";
+  peer: InputPeer;
+  id: Array<number>;
+  [R]?: stories_Stories;
 }
 
 export interface stories_toggleAllStoriesHidden {
-    _: "stories.toggleAllStoriesHidden"
-    hidden: boolean;
-    [R]?: boolean;
+  _: "stories.toggleAllStoriesHidden";
+  hidden: boolean;
+  [R]?: boolean;
 }
 
 export interface stories_readStories {
-    _: "stories.readStories"
-    peer: InputPeer;
-    max_id: number;
-    [R]?: Array<number>;
+  _: "stories.readStories";
+  peer: InputPeer;
+  max_id: number;
+  [R]?: Array<number>;
 }
 
 export interface stories_incrementStoryViews {
-    _: "stories.incrementStoryViews"
-    peer: InputPeer;
-    id: Array<number>;
-    [R]?: boolean;
+  _: "stories.incrementStoryViews";
+  peer: InputPeer;
+  id: Array<number>;
+  [R]?: boolean;
 }
 
 export interface stories_getStoryViewsList {
-    _: "stories.getStoryViewsList"
-    just_contacts?: true;
-    reactions_first?: true;
-    forwards_first?: true;
-    peer: InputPeer;
-    q?: string;
-    id: number;
-    offset: string;
-    limit: number;
-    [R]?: stories_StoryViewsList;
+  _: "stories.getStoryViewsList";
+  just_contacts?: true;
+  reactions_first?: true;
+  forwards_first?: true;
+  peer: InputPeer;
+  q?: string;
+  id: number;
+  offset: string;
+  limit: number;
+  [R]?: stories_StoryViewsList;
 }
 
 export interface stories_getStoriesViews {
-    _: "stories.getStoriesViews"
-    peer: InputPeer;
-    id: Array<number>;
-    [R]?: stories_StoryViews;
+  _: "stories.getStoriesViews";
+  peer: InputPeer;
+  id: Array<number>;
+  [R]?: stories_StoryViews;
 }
 
 export interface stories_exportStoryLink {
-    _: "stories.exportStoryLink"
-    peer: InputPeer;
-    id: number;
-    [R]?: ExportedStoryLink;
+  _: "stories.exportStoryLink";
+  peer: InputPeer;
+  id: number;
+  [R]?: ExportedStoryLink;
 }
 
 export interface stories_report {
-    _: "stories.report"
-    peer: InputPeer;
-    id: Array<number>;
-    option: Uint8Array;
-    message: string;
-    [R]?: ReportResult;
+  _: "stories.report";
+  peer: InputPeer;
+  id: Array<number>;
+  option: Uint8Array;
+  message: string;
+  [R]?: ReportResult;
 }
 
 export interface stories_activateStealthMode {
-    _: "stories.activateStealthMode"
-    past?: true;
-    future?: true;
-    [R]?: Updates;
+  _: "stories.activateStealthMode";
+  past?: true;
+  future?: true;
+  [R]?: Updates;
 }
 
 export interface stories_sendReaction {
-    _: "stories.sendReaction"
-    add_to_recent?: true;
-    peer: InputPeer;
-    story_id: number;
-    reaction: Reaction;
-    [R]?: Updates;
+  _: "stories.sendReaction";
+  add_to_recent?: true;
+  peer: InputPeer;
+  story_id: number;
+  reaction: Reaction;
+  [R]?: Updates;
 }
 
 export interface stories_getPeerStories {
-    _: "stories.getPeerStories"
-    peer: InputPeer;
-    [R]?: stories_PeerStories;
+  _: "stories.getPeerStories";
+  peer: InputPeer;
+  [R]?: stories_PeerStories;
 }
 
 export interface stories_getAllReadPeerStories {
-    _: "stories.getAllReadPeerStories"
-    [R]?: Updates;
+  _: "stories.getAllReadPeerStories";
+  [R]?: Updates;
 }
 
 export interface stories_getPeerMaxIDs {
-    _: "stories.getPeerMaxIDs"
-    id: Array<InputPeer>;
-    [R]?: Array<number>;
+  _: "stories.getPeerMaxIDs";
+  id: Array<InputPeer>;
+  [R]?: Array<number>;
 }
 
 export interface stories_getChatsToSend {
-    _: "stories.getChatsToSend"
-    [R]?: messages_Chats;
+  _: "stories.getChatsToSend";
+  [R]?: messages_Chats;
 }
 
 export interface stories_togglePeerStoriesHidden {
-    _: "stories.togglePeerStoriesHidden"
-    peer: InputPeer;
-    hidden: boolean;
-    [R]?: boolean;
+  _: "stories.togglePeerStoriesHidden";
+  peer: InputPeer;
+  hidden: boolean;
+  [R]?: boolean;
 }
 
 export interface stories_getStoryReactionsList {
-    _: "stories.getStoryReactionsList"
-    forwards_first?: true;
-    peer: InputPeer;
-    id: number;
-    reaction?: Reaction;
-    offset?: string;
-    limit: number;
-    [R]?: stories_StoryReactionsList;
+  _: "stories.getStoryReactionsList";
+  forwards_first?: true;
+  peer: InputPeer;
+  id: number;
+  reaction?: Reaction;
+  offset?: string;
+  limit: number;
+  [R]?: stories_StoryReactionsList;
 }
 
 export interface stories_togglePinnedToTop {
-    _: "stories.togglePinnedToTop"
-    peer: InputPeer;
-    id: Array<number>;
-    [R]?: boolean;
+  _: "stories.togglePinnedToTop";
+  peer: InputPeer;
+  id: Array<number>;
+  [R]?: boolean;
 }
 
 export interface stories_searchPosts {
-    _: "stories.searchPosts"
-    hashtag?: string;
-    area?: MediaArea;
-    peer?: InputPeer;
-    offset: string;
-    limit: number;
-    [R]?: stories_FoundStories;
+  _: "stories.searchPosts";
+  hashtag?: string;
+  area?: MediaArea;
+  peer?: InputPeer;
+  offset: string;
+  limit: number;
+  [R]?: stories_FoundStories;
 }
 
 export interface premium_getBoostsList {
-    _: "premium.getBoostsList"
-    gifts?: true;
-    peer: InputPeer;
-    offset: string;
-    limit: number;
-    [R]?: premium_BoostsList;
+  _: "premium.getBoostsList";
+  gifts?: true;
+  peer: InputPeer;
+  offset: string;
+  limit: number;
+  [R]?: premium_BoostsList;
 }
 
 export interface premium_getMyBoosts {
-    _: "premium.getMyBoosts"
-    [R]?: premium_MyBoosts;
+  _: "premium.getMyBoosts";
+  [R]?: premium_MyBoosts;
 }
 
 export interface premium_applyBoost {
-    _: "premium.applyBoost"
-    slots?: Array<number>;
-    peer: InputPeer;
-    [R]?: premium_MyBoosts;
+  _: "premium.applyBoost";
+  slots?: Array<number>;
+  peer: InputPeer;
+  [R]?: premium_MyBoosts;
 }
 
 export interface premium_getBoostsStatus {
-    _: "premium.getBoostsStatus"
-    peer: InputPeer;
-    [R]?: premium_BoostsStatus;
+  _: "premium.getBoostsStatus";
+  peer: InputPeer;
+  [R]?: premium_BoostsStatus;
 }
 
 export interface premium_getUserBoosts {
-    _: "premium.getUserBoosts"
-    peer: InputPeer;
-    user_id: InputUser;
-    [R]?: premium_BoostsList;
+  _: "premium.getUserBoosts";
+  peer: InputPeer;
+  user_id: InputUser;
+  [R]?: premium_BoostsList;
 }
 
 export interface smsjobs_isEligibleToJoin {
-    _: "smsjobs.isEligibleToJoin"
-    [R]?: smsjobs_EligibilityToJoin;
+  _: "smsjobs.isEligibleToJoin";
+  [R]?: smsjobs_EligibilityToJoin;
 }
 
 export interface smsjobs_join {
-    _: "smsjobs.join"
-    [R]?: boolean;
+  _: "smsjobs.join";
+  [R]?: boolean;
 }
 
 export interface smsjobs_leave {
-    _: "smsjobs.leave"
-    [R]?: boolean;
+  _: "smsjobs.leave";
+  [R]?: boolean;
 }
 
 export interface smsjobs_updateSettings {
-    _: "smsjobs.updateSettings"
-    allow_international?: true;
-    [R]?: boolean;
+  _: "smsjobs.updateSettings";
+  allow_international?: true;
+  [R]?: boolean;
 }
 
 export interface smsjobs_getStatus {
-    _: "smsjobs.getStatus"
-    [R]?: smsjobs_Status;
+  _: "smsjobs.getStatus";
+  [R]?: smsjobs_Status;
 }
 
 export interface smsjobs_getSmsJob {
-    _: "smsjobs.getSmsJob"
-    job_id: string;
-    [R]?: SmsJob;
+  _: "smsjobs.getSmsJob";
+  job_id: string;
+  [R]?: SmsJob;
 }
 
 export interface smsjobs_finishJob {
-    _: "smsjobs.finishJob"
-    job_id: string;
-    error?: string;
-    [R]?: boolean;
+  _: "smsjobs.finishJob";
+  job_id: string;
+  error?: string;
+  [R]?: boolean;
 }
 
 export interface fragment_getCollectibleInfo {
-    _: "fragment.getCollectibleInfo"
-    collectible: InputCollectible;
-    [R]?: fragment_CollectibleInfo;
+  _: "fragment.getCollectibleInfo";
+  collectible: InputCollectible;
+  [R]?: fragment_CollectibleInfo;
 }
 
 export interface Types {
@@ -17810,7 +17810,7 @@ export type AnyType = Types[keyof Types];
 
 export type AnyFunction<T = Function> = Functions<T>[keyof Functions<T>];
 
-export type AnyGenericFunction<T> = invokeAfterMsg<T> | invokeAfterMsgs<T> | initConnection<T> | invokeWithLayer<T> | invokeWithoutUpdates<T> | invokeWithMessagesRange<T> | invokeWithTakeout<T> | invokeWithBusinessConnection<T> | invokeWithGooglePlayIntegrity<T> | invokeWithApnsSecret<T>
+export type AnyGenericFunction<T> = invokeAfterMsg<T> | invokeAfterMsgs<T> | initConnection<T> | invokeWithLayer<T> | invokeWithoutUpdates<T> | invokeWithMessagesRange<T> | invokeWithTakeout<T> | invokeWithBusinessConnection<T> | invokeWithGooglePlayIntegrity<T> | invokeWithApnsSecret<T>;
 
 export type AnyObject<T = Function> = AnyType | AnyFunction<T>;
 
@@ -17964,7 +17964,148 @@ export type messages_AffectedHistory = messages_affectedHistory;
 
 export type MessagesFilter = inputMessagesFilterEmpty | inputMessagesFilterPhotos | inputMessagesFilterVideo | inputMessagesFilterPhotoVideo | inputMessagesFilterDocument | inputMessagesFilterUrl | inputMessagesFilterGif | inputMessagesFilterVoice | inputMessagesFilterMusic | inputMessagesFilterChatPhotos | inputMessagesFilterPhoneCalls | inputMessagesFilterRoundVoice | inputMessagesFilterRoundVideo | inputMessagesFilterMyMentions | inputMessagesFilterGeo | inputMessagesFilterContacts | inputMessagesFilterPinned;
 
-export type Update = updateNewMessage | updateMessageID | updateDeleteMessages | updateUserTyping | updateChatUserTyping | updateChatParticipants | updateUserStatus | updateUserName | updateNewAuthorization | updateNewEncryptedMessage | updateEncryptedChatTyping | updateEncryption | updateEncryptedMessagesRead | updateChatParticipantAdd | updateChatParticipantDelete | updateDcOptions | updateNotifySettings | updateServiceNotification | updatePrivacy | updateUserPhone | updateReadHistoryInbox | updateReadHistoryOutbox | updateWebPage | updateReadMessagesContents | updateChannelTooLong | updateChannel | updateNewChannelMessage | updateReadChannelInbox | updateDeleteChannelMessages | updateChannelMessageViews | updateChatParticipantAdmin | updateNewStickerSet | updateStickerSetsOrder | updateStickerSets | updateSavedGifs | updateBotInlineQuery | updateBotInlineSend | updateEditChannelMessage | updateBotCallbackQuery | updateEditMessage | updateInlineBotCallbackQuery | updateReadChannelOutbox | updateDraftMessage | updateReadFeaturedStickers | updateRecentStickers | updateConfig | updatePtsChanged | updateChannelWebPage | updateDialogPinned | updatePinnedDialogs | updateBotWebhookJSON | updateBotWebhookJSONQuery | updateBotShippingQuery | updateBotPrecheckoutQuery | updatePhoneCall | updateLangPackTooLong | updateLangPack | updateFavedStickers | updateChannelReadMessagesContents | updateContactsReset | updateChannelAvailableMessages | updateDialogUnreadMark | updateMessagePoll | updateChatDefaultBannedRights | updateFolderPeers | updatePeerSettings | updatePeerLocated | updateNewScheduledMessage | updateDeleteScheduledMessages | updateTheme | updateGeoLiveViewed | updateLoginToken | updateMessagePollVote | updateDialogFilter | updateDialogFilterOrder | updateDialogFilters | updatePhoneCallSignalingData | updateChannelMessageForwards | updateReadChannelDiscussionInbox | updateReadChannelDiscussionOutbox | updatePeerBlocked | updateChannelUserTyping | updatePinnedMessages | updatePinnedChannelMessages | updateChat | updateGroupCallParticipants | updateGroupCall | updatePeerHistoryTTL | updateChatParticipant | updateChannelParticipant | updateBotStopped | updateGroupCallConnection | updateBotCommands | updatePendingJoinRequests | updateBotChatInviteRequester | updateMessageReactions | updateAttachMenuBots | updateWebViewResultSent | updateBotMenuButton | updateSavedRingtones | updateTranscribedAudio | updateReadFeaturedEmojiStickers | updateUserEmojiStatus | updateRecentEmojiStatuses | updateRecentReactions | updateMoveStickerSetToTop | updateMessageExtendedMedia | updateChannelPinnedTopic | updateChannelPinnedTopics | updateUser | updateAutoSaveSettings | updateStory | updateReadStories | updateStoryID | updateStoriesStealthMode | updateSentStoryReaction | updateBotChatBoost | updateChannelViewForumAsMessages | updatePeerWallpaper | updateBotMessageReaction | updateBotMessageReactions | updateSavedDialogPinned | updatePinnedSavedDialogs | updateSavedReactionTags | updateSmsJob | updateQuickReplies | updateNewQuickReply | updateDeleteQuickReply | updateQuickReplyMessage | updateDeleteQuickReplyMessages | updateBotBusinessConnect | updateBotNewBusinessMessage | updateBotEditBusinessMessage | updateBotDeleteBusinessMessage | updateNewStoryReaction | updateBroadcastRevenueTransactions | updateStarsBalance | updateBusinessBotCallbackQuery | updateStarsRevenueStatus | updateBotPurchasedPaidMedia | updatePaidReactionPrivacy;
+export type Update =
+  | updateNewMessage
+  | updateMessageID
+  | updateDeleteMessages
+  | updateUserTyping
+  | updateChatUserTyping
+  | updateChatParticipants
+  | updateUserStatus
+  | updateUserName
+  | updateNewAuthorization
+  | updateNewEncryptedMessage
+  | updateEncryptedChatTyping
+  | updateEncryption
+  | updateEncryptedMessagesRead
+  | updateChatParticipantAdd
+  | updateChatParticipantDelete
+  | updateDcOptions
+  | updateNotifySettings
+  | updateServiceNotification
+  | updatePrivacy
+  | updateUserPhone
+  | updateReadHistoryInbox
+  | updateReadHistoryOutbox
+  | updateWebPage
+  | updateReadMessagesContents
+  | updateChannelTooLong
+  | updateChannel
+  | updateNewChannelMessage
+  | updateReadChannelInbox
+  | updateDeleteChannelMessages
+  | updateChannelMessageViews
+  | updateChatParticipantAdmin
+  | updateNewStickerSet
+  | updateStickerSetsOrder
+  | updateStickerSets
+  | updateSavedGifs
+  | updateBotInlineQuery
+  | updateBotInlineSend
+  | updateEditChannelMessage
+  | updateBotCallbackQuery
+  | updateEditMessage
+  | updateInlineBotCallbackQuery
+  | updateReadChannelOutbox
+  | updateDraftMessage
+  | updateReadFeaturedStickers
+  | updateRecentStickers
+  | updateConfig
+  | updatePtsChanged
+  | updateChannelWebPage
+  | updateDialogPinned
+  | updatePinnedDialogs
+  | updateBotWebhookJSON
+  | updateBotWebhookJSONQuery
+  | updateBotShippingQuery
+  | updateBotPrecheckoutQuery
+  | updatePhoneCall
+  | updateLangPackTooLong
+  | updateLangPack
+  | updateFavedStickers
+  | updateChannelReadMessagesContents
+  | updateContactsReset
+  | updateChannelAvailableMessages
+  | updateDialogUnreadMark
+  | updateMessagePoll
+  | updateChatDefaultBannedRights
+  | updateFolderPeers
+  | updatePeerSettings
+  | updatePeerLocated
+  | updateNewScheduledMessage
+  | updateDeleteScheduledMessages
+  | updateTheme
+  | updateGeoLiveViewed
+  | updateLoginToken
+  | updateMessagePollVote
+  | updateDialogFilter
+  | updateDialogFilterOrder
+  | updateDialogFilters
+  | updatePhoneCallSignalingData
+  | updateChannelMessageForwards
+  | updateReadChannelDiscussionInbox
+  | updateReadChannelDiscussionOutbox
+  | updatePeerBlocked
+  | updateChannelUserTyping
+  | updatePinnedMessages
+  | updatePinnedChannelMessages
+  | updateChat
+  | updateGroupCallParticipants
+  | updateGroupCall
+  | updatePeerHistoryTTL
+  | updateChatParticipant
+  | updateChannelParticipant
+  | updateBotStopped
+  | updateGroupCallConnection
+  | updateBotCommands
+  | updatePendingJoinRequests
+  | updateBotChatInviteRequester
+  | updateMessageReactions
+  | updateAttachMenuBots
+  | updateWebViewResultSent
+  | updateBotMenuButton
+  | updateSavedRingtones
+  | updateTranscribedAudio
+  | updateReadFeaturedEmojiStickers
+  | updateUserEmojiStatus
+  | updateRecentEmojiStatuses
+  | updateRecentReactions
+  | updateMoveStickerSetToTop
+  | updateMessageExtendedMedia
+  | updateChannelPinnedTopic
+  | updateChannelPinnedTopics
+  | updateUser
+  | updateAutoSaveSettings
+  | updateStory
+  | updateReadStories
+  | updateStoryID
+  | updateStoriesStealthMode
+  | updateSentStoryReaction
+  | updateBotChatBoost
+  | updateChannelViewForumAsMessages
+  | updatePeerWallpaper
+  | updateBotMessageReaction
+  | updateBotMessageReactions
+  | updateSavedDialogPinned
+  | updatePinnedSavedDialogs
+  | updateSavedReactionTags
+  | updateSmsJob
+  | updateQuickReplies
+  | updateNewQuickReply
+  | updateDeleteQuickReply
+  | updateQuickReplyMessage
+  | updateDeleteQuickReplyMessages
+  | updateBotBusinessConnect
+  | updateBotNewBusinessMessage
+  | updateBotEditBusinessMessage
+  | updateBotDeleteBusinessMessage
+  | updateNewStoryReaction
+  | updateBroadcastRevenueTransactions
+  | updateStarsBalance
+  | updateBusinessBotCallbackQuery
+  | updateStarsRevenueStatus
+  | updateBotPurchasedPaidMedia
+  | updatePaidReactionPrivacy;
 
 export type updates_State = updates_state;
 
@@ -18224,7 +18365,57 @@ export type LangPackDifference = langPackDifference;
 
 export type LangPackLanguage = langPackLanguage;
 
-export type ChannelAdminLogEventAction = channelAdminLogEventActionChangeTitle | channelAdminLogEventActionChangeAbout | channelAdminLogEventActionChangeUsername | channelAdminLogEventActionChangePhoto | channelAdminLogEventActionToggleInvites | channelAdminLogEventActionToggleSignatures | channelAdminLogEventActionUpdatePinned | channelAdminLogEventActionEditMessage | channelAdminLogEventActionDeleteMessage | channelAdminLogEventActionParticipantJoin | channelAdminLogEventActionParticipantLeave | channelAdminLogEventActionParticipantInvite | channelAdminLogEventActionParticipantToggleBan | channelAdminLogEventActionParticipantToggleAdmin | channelAdminLogEventActionChangeStickerSet | channelAdminLogEventActionTogglePreHistoryHidden | channelAdminLogEventActionDefaultBannedRights | channelAdminLogEventActionStopPoll | channelAdminLogEventActionChangeLinkedChat | channelAdminLogEventActionChangeLocation | channelAdminLogEventActionToggleSlowMode | channelAdminLogEventActionStartGroupCall | channelAdminLogEventActionDiscardGroupCall | channelAdminLogEventActionParticipantMute | channelAdminLogEventActionParticipantUnmute | channelAdminLogEventActionToggleGroupCallSetting | channelAdminLogEventActionParticipantJoinByInvite | channelAdminLogEventActionExportedInviteDelete | channelAdminLogEventActionExportedInviteRevoke | channelAdminLogEventActionExportedInviteEdit | channelAdminLogEventActionParticipantVolume | channelAdminLogEventActionChangeHistoryTTL | channelAdminLogEventActionParticipantJoinByRequest | channelAdminLogEventActionToggleNoForwards | channelAdminLogEventActionSendMessage | channelAdminLogEventActionChangeAvailableReactions | channelAdminLogEventActionChangeUsernames | channelAdminLogEventActionToggleForum | channelAdminLogEventActionCreateTopic | channelAdminLogEventActionEditTopic | channelAdminLogEventActionDeleteTopic | channelAdminLogEventActionPinTopic | channelAdminLogEventActionToggleAntiSpam | channelAdminLogEventActionChangePeerColor | channelAdminLogEventActionChangeProfilePeerColor | channelAdminLogEventActionChangeWallpaper | channelAdminLogEventActionChangeEmojiStatus | channelAdminLogEventActionChangeEmojiStickerSet | channelAdminLogEventActionToggleSignatureProfiles | channelAdminLogEventActionParticipantSubExtend;
+export type ChannelAdminLogEventAction =
+  | channelAdminLogEventActionChangeTitle
+  | channelAdminLogEventActionChangeAbout
+  | channelAdminLogEventActionChangeUsername
+  | channelAdminLogEventActionChangePhoto
+  | channelAdminLogEventActionToggleInvites
+  | channelAdminLogEventActionToggleSignatures
+  | channelAdminLogEventActionUpdatePinned
+  | channelAdminLogEventActionEditMessage
+  | channelAdminLogEventActionDeleteMessage
+  | channelAdminLogEventActionParticipantJoin
+  | channelAdminLogEventActionParticipantLeave
+  | channelAdminLogEventActionParticipantInvite
+  | channelAdminLogEventActionParticipantToggleBan
+  | channelAdminLogEventActionParticipantToggleAdmin
+  | channelAdminLogEventActionChangeStickerSet
+  | channelAdminLogEventActionTogglePreHistoryHidden
+  | channelAdminLogEventActionDefaultBannedRights
+  | channelAdminLogEventActionStopPoll
+  | channelAdminLogEventActionChangeLinkedChat
+  | channelAdminLogEventActionChangeLocation
+  | channelAdminLogEventActionToggleSlowMode
+  | channelAdminLogEventActionStartGroupCall
+  | channelAdminLogEventActionDiscardGroupCall
+  | channelAdminLogEventActionParticipantMute
+  | channelAdminLogEventActionParticipantUnmute
+  | channelAdminLogEventActionToggleGroupCallSetting
+  | channelAdminLogEventActionParticipantJoinByInvite
+  | channelAdminLogEventActionExportedInviteDelete
+  | channelAdminLogEventActionExportedInviteRevoke
+  | channelAdminLogEventActionExportedInviteEdit
+  | channelAdminLogEventActionParticipantVolume
+  | channelAdminLogEventActionChangeHistoryTTL
+  | channelAdminLogEventActionParticipantJoinByRequest
+  | channelAdminLogEventActionToggleNoForwards
+  | channelAdminLogEventActionSendMessage
+  | channelAdminLogEventActionChangeAvailableReactions
+  | channelAdminLogEventActionChangeUsernames
+  | channelAdminLogEventActionToggleForum
+  | channelAdminLogEventActionCreateTopic
+  | channelAdminLogEventActionEditTopic
+  | channelAdminLogEventActionDeleteTopic
+  | channelAdminLogEventActionPinTopic
+  | channelAdminLogEventActionToggleAntiSpam
+  | channelAdminLogEventActionChangePeerColor
+  | channelAdminLogEventActionChangeProfilePeerColor
+  | channelAdminLogEventActionChangeWallpaper
+  | channelAdminLogEventActionChangeEmojiStatus
+  | channelAdminLogEventActionChangeEmojiStickerSet
+  | channelAdminLogEventActionToggleSignatureProfiles
+  | channelAdminLogEventActionParticipantSubExtend;
 
 export type ChannelAdminLogEvent = channelAdminLogEvent;
 
@@ -20428,7 +20619,149 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["messages.ChatFull", ["messages.chatFull"]],
   ["messages.AffectedHistory", ["messages.affectedHistory"]],
   ["MessagesFilter", ["inputMessagesFilterEmpty", "inputMessagesFilterPhotos", "inputMessagesFilterVideo", "inputMessagesFilterPhotoVideo", "inputMessagesFilterDocument", "inputMessagesFilterUrl", "inputMessagesFilterGif", "inputMessagesFilterVoice", "inputMessagesFilterMusic", "inputMessagesFilterChatPhotos", "inputMessagesFilterPhoneCalls", "inputMessagesFilterRoundVoice", "inputMessagesFilterRoundVideo", "inputMessagesFilterMyMentions", "inputMessagesFilterGeo", "inputMessagesFilterContacts", "inputMessagesFilterPinned"]],
-  ["Update", ["updateNewMessage", "updateMessageID", "updateDeleteMessages", "updateUserTyping", "updateChatUserTyping", "updateChatParticipants", "updateUserStatus", "updateUserName", "updateNewAuthorization", "updateNewEncryptedMessage", "updateEncryptedChatTyping", "updateEncryption", "updateEncryptedMessagesRead", "updateChatParticipantAdd", "updateChatParticipantDelete", "updateDcOptions", "updateNotifySettings", "updateServiceNotification", "updatePrivacy", "updateUserPhone", "updateReadHistoryInbox", "updateReadHistoryOutbox", "updateWebPage", "updateReadMessagesContents", "updateChannelTooLong", "updateChannel", "updateNewChannelMessage", "updateReadChannelInbox", "updateDeleteChannelMessages", "updateChannelMessageViews", "updateChatParticipantAdmin", "updateNewStickerSet", "updateStickerSetsOrder", "updateStickerSets", "updateSavedGifs", "updateBotInlineQuery", "updateBotInlineSend", "updateEditChannelMessage", "updateBotCallbackQuery", "updateEditMessage", "updateInlineBotCallbackQuery", "updateReadChannelOutbox", "updateDraftMessage", "updateReadFeaturedStickers", "updateRecentStickers", "updateConfig", "updatePtsChanged", "updateChannelWebPage", "updateDialogPinned", "updatePinnedDialogs", "updateBotWebhookJSON", "updateBotWebhookJSONQuery", "updateBotShippingQuery", "updateBotPrecheckoutQuery", "updatePhoneCall", "updateLangPackTooLong", "updateLangPack", "updateFavedStickers", "updateChannelReadMessagesContents", "updateContactsReset", "updateChannelAvailableMessages", "updateDialogUnreadMark", "updateMessagePoll", "updateChatDefaultBannedRights", "updateFolderPeers", "updatePeerSettings", "updatePeerLocated", "updateNewScheduledMessage", "updateDeleteScheduledMessages", "updateTheme", "updateGeoLiveViewed", "updateLoginToken", "updateMessagePollVote", "updateDialogFilter", "updateDialogFilterOrder", "updateDialogFilters", "updatePhoneCallSignalingData", "updateChannelMessageForwards", "updateReadChannelDiscussionInbox", "updateReadChannelDiscussionOutbox", "updatePeerBlocked", "updateChannelUserTyping", "updatePinnedMessages", "updatePinnedChannelMessages", "updateChat", "updateGroupCallParticipants", "updateGroupCall", "updatePeerHistoryTTL", "updateChatParticipant", "updateChannelParticipant", "updateBotStopped", "updateGroupCallConnection", "updateBotCommands", "updatePendingJoinRequests", "updateBotChatInviteRequester", "updateMessageReactions", "updateAttachMenuBots", "updateWebViewResultSent", "updateBotMenuButton", "updateSavedRingtones", "updateTranscribedAudio", "updateReadFeaturedEmojiStickers", "updateUserEmojiStatus", "updateRecentEmojiStatuses", "updateRecentReactions", "updateMoveStickerSetToTop", "updateMessageExtendedMedia", "updateChannelPinnedTopic", "updateChannelPinnedTopics", "updateUser", "updateAutoSaveSettings", "updateStory", "updateReadStories", "updateStoryID", "updateStoriesStealthMode", "updateSentStoryReaction", "updateBotChatBoost", "updateChannelViewForumAsMessages", "updatePeerWallpaper", "updateBotMessageReaction", "updateBotMessageReactions", "updateSavedDialogPinned", "updatePinnedSavedDialogs", "updateSavedReactionTags", "updateSmsJob", "updateQuickReplies", "updateNewQuickReply", "updateDeleteQuickReply", "updateQuickReplyMessage", "updateDeleteQuickReplyMessages", "updateBotBusinessConnect", "updateBotNewBusinessMessage", "updateBotEditBusinessMessage", "updateBotDeleteBusinessMessage", "updateNewStoryReaction", "updateBroadcastRevenueTransactions", "updateStarsBalance", "updateBusinessBotCallbackQuery", "updateStarsRevenueStatus", "updateBotPurchasedPaidMedia", "updatePaidReactionPrivacy"]],
+  ["Update", [
+    "updateNewMessage",
+    "updateMessageID",
+    "updateDeleteMessages",
+    "updateUserTyping",
+    "updateChatUserTyping",
+    "updateChatParticipants",
+    "updateUserStatus",
+    "updateUserName",
+    "updateNewAuthorization",
+    "updateNewEncryptedMessage",
+    "updateEncryptedChatTyping",
+    "updateEncryption",
+    "updateEncryptedMessagesRead",
+    "updateChatParticipantAdd",
+    "updateChatParticipantDelete",
+    "updateDcOptions",
+    "updateNotifySettings",
+    "updateServiceNotification",
+    "updatePrivacy",
+    "updateUserPhone",
+    "updateReadHistoryInbox",
+    "updateReadHistoryOutbox",
+    "updateWebPage",
+    "updateReadMessagesContents",
+    "updateChannelTooLong",
+    "updateChannel",
+    "updateNewChannelMessage",
+    "updateReadChannelInbox",
+    "updateDeleteChannelMessages",
+    "updateChannelMessageViews",
+    "updateChatParticipantAdmin",
+    "updateNewStickerSet",
+    "updateStickerSetsOrder",
+    "updateStickerSets",
+    "updateSavedGifs",
+    "updateBotInlineQuery",
+    "updateBotInlineSend",
+    "updateEditChannelMessage",
+    "updateBotCallbackQuery",
+    "updateEditMessage",
+    "updateInlineBotCallbackQuery",
+    "updateReadChannelOutbox",
+    "updateDraftMessage",
+    "updateReadFeaturedStickers",
+    "updateRecentStickers",
+    "updateConfig",
+    "updatePtsChanged",
+    "updateChannelWebPage",
+    "updateDialogPinned",
+    "updatePinnedDialogs",
+    "updateBotWebhookJSON",
+    "updateBotWebhookJSONQuery",
+    "updateBotShippingQuery",
+    "updateBotPrecheckoutQuery",
+    "updatePhoneCall",
+    "updateLangPackTooLong",
+    "updateLangPack",
+    "updateFavedStickers",
+    "updateChannelReadMessagesContents",
+    "updateContactsReset",
+    "updateChannelAvailableMessages",
+    "updateDialogUnreadMark",
+    "updateMessagePoll",
+    "updateChatDefaultBannedRights",
+    "updateFolderPeers",
+    "updatePeerSettings",
+    "updatePeerLocated",
+    "updateNewScheduledMessage",
+    "updateDeleteScheduledMessages",
+    "updateTheme",
+    "updateGeoLiveViewed",
+    "updateLoginToken",
+    "updateMessagePollVote",
+    "updateDialogFilter",
+    "updateDialogFilterOrder",
+    "updateDialogFilters",
+    "updatePhoneCallSignalingData",
+    "updateChannelMessageForwards",
+    "updateReadChannelDiscussionInbox",
+    "updateReadChannelDiscussionOutbox",
+    "updatePeerBlocked",
+    "updateChannelUserTyping",
+    "updatePinnedMessages",
+    "updatePinnedChannelMessages",
+    "updateChat",
+    "updateGroupCallParticipants",
+    "updateGroupCall",
+    "updatePeerHistoryTTL",
+    "updateChatParticipant",
+    "updateChannelParticipant",
+    "updateBotStopped",
+    "updateGroupCallConnection",
+    "updateBotCommands",
+    "updatePendingJoinRequests",
+    "updateBotChatInviteRequester",
+    "updateMessageReactions",
+    "updateAttachMenuBots",
+    "updateWebViewResultSent",
+    "updateBotMenuButton",
+    "updateSavedRingtones",
+    "updateTranscribedAudio",
+    "updateReadFeaturedEmojiStickers",
+    "updateUserEmojiStatus",
+    "updateRecentEmojiStatuses",
+    "updateRecentReactions",
+    "updateMoveStickerSetToTop",
+    "updateMessageExtendedMedia",
+    "updateChannelPinnedTopic",
+    "updateChannelPinnedTopics",
+    "updateUser",
+    "updateAutoSaveSettings",
+    "updateStory",
+    "updateReadStories",
+    "updateStoryID",
+    "updateStoriesStealthMode",
+    "updateSentStoryReaction",
+    "updateBotChatBoost",
+    "updateChannelViewForumAsMessages",
+    "updatePeerWallpaper",
+    "updateBotMessageReaction",
+    "updateBotMessageReactions",
+    "updateSavedDialogPinned",
+    "updatePinnedSavedDialogs",
+    "updateSavedReactionTags",
+    "updateSmsJob",
+    "updateQuickReplies",
+    "updateNewQuickReply",
+    "updateDeleteQuickReply",
+    "updateQuickReplyMessage",
+    "updateDeleteQuickReplyMessages",
+    "updateBotBusinessConnect",
+    "updateBotNewBusinessMessage",
+    "updateBotEditBusinessMessage",
+    "updateBotDeleteBusinessMessage",
+    "updateNewStoryReaction",
+    "updateBroadcastRevenueTransactions",
+    "updateStarsBalance",
+    "updateBusinessBotCallbackQuery",
+    "updateStarsRevenueStatus",
+    "updateBotPurchasedPaidMedia",
+    "updatePaidReactionPrivacy",
+  ]],
   ["updates.State", ["updates.state"]],
   ["updates.Difference", ["updates.differenceEmpty", "updates.difference", "updates.differenceSlice", "updates.differenceTooLong"]],
   ["Updates", ["updatesTooLong", "updateShortMessage", "updateShortChatMessage", "updateShort", "updatesCombined", "updates", "updateShortSentMessage"]],
@@ -20558,7 +20891,58 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["LangPackString", ["langPackString", "langPackStringPluralized", "langPackStringDeleted"]],
   ["LangPackDifference", ["langPackDifference"]],
   ["LangPackLanguage", ["langPackLanguage"]],
-  ["ChannelAdminLogEventAction", ["channelAdminLogEventActionChangeTitle", "channelAdminLogEventActionChangeAbout", "channelAdminLogEventActionChangeUsername", "channelAdminLogEventActionChangePhoto", "channelAdminLogEventActionToggleInvites", "channelAdminLogEventActionToggleSignatures", "channelAdminLogEventActionUpdatePinned", "channelAdminLogEventActionEditMessage", "channelAdminLogEventActionDeleteMessage", "channelAdminLogEventActionParticipantJoin", "channelAdminLogEventActionParticipantLeave", "channelAdminLogEventActionParticipantInvite", "channelAdminLogEventActionParticipantToggleBan", "channelAdminLogEventActionParticipantToggleAdmin", "channelAdminLogEventActionChangeStickerSet", "channelAdminLogEventActionTogglePreHistoryHidden", "channelAdminLogEventActionDefaultBannedRights", "channelAdminLogEventActionStopPoll", "channelAdminLogEventActionChangeLinkedChat", "channelAdminLogEventActionChangeLocation", "channelAdminLogEventActionToggleSlowMode", "channelAdminLogEventActionStartGroupCall", "channelAdminLogEventActionDiscardGroupCall", "channelAdminLogEventActionParticipantMute", "channelAdminLogEventActionParticipantUnmute", "channelAdminLogEventActionToggleGroupCallSetting", "channelAdminLogEventActionParticipantJoinByInvite", "channelAdminLogEventActionExportedInviteDelete", "channelAdminLogEventActionExportedInviteRevoke", "channelAdminLogEventActionExportedInviteEdit", "channelAdminLogEventActionParticipantVolume", "channelAdminLogEventActionChangeHistoryTTL", "channelAdminLogEventActionParticipantJoinByRequest", "channelAdminLogEventActionToggleNoForwards", "channelAdminLogEventActionSendMessage", "channelAdminLogEventActionChangeAvailableReactions", "channelAdminLogEventActionChangeUsernames", "channelAdminLogEventActionToggleForum", "channelAdminLogEventActionCreateTopic", "channelAdminLogEventActionEditTopic", "channelAdminLogEventActionDeleteTopic", "channelAdminLogEventActionPinTopic", "channelAdminLogEventActionToggleAntiSpam", "channelAdminLogEventActionChangePeerColor", "channelAdminLogEventActionChangeProfilePeerColor", "channelAdminLogEventActionChangeWallpaper", "channelAdminLogEventActionChangeEmojiStatus", "channelAdminLogEventActionChangeEmojiStickerSet", "channelAdminLogEventActionToggleSignatureProfiles", "channelAdminLogEventActionParticipantSubExtend"]],
+  ["ChannelAdminLogEventAction", [
+    "channelAdminLogEventActionChangeTitle",
+    "channelAdminLogEventActionChangeAbout",
+    "channelAdminLogEventActionChangeUsername",
+    "channelAdminLogEventActionChangePhoto",
+    "channelAdminLogEventActionToggleInvites",
+    "channelAdminLogEventActionToggleSignatures",
+    "channelAdminLogEventActionUpdatePinned",
+    "channelAdminLogEventActionEditMessage",
+    "channelAdminLogEventActionDeleteMessage",
+    "channelAdminLogEventActionParticipantJoin",
+    "channelAdminLogEventActionParticipantLeave",
+    "channelAdminLogEventActionParticipantInvite",
+    "channelAdminLogEventActionParticipantToggleBan",
+    "channelAdminLogEventActionParticipantToggleAdmin",
+    "channelAdminLogEventActionChangeStickerSet",
+    "channelAdminLogEventActionTogglePreHistoryHidden",
+    "channelAdminLogEventActionDefaultBannedRights",
+    "channelAdminLogEventActionStopPoll",
+    "channelAdminLogEventActionChangeLinkedChat",
+    "channelAdminLogEventActionChangeLocation",
+    "channelAdminLogEventActionToggleSlowMode",
+    "channelAdminLogEventActionStartGroupCall",
+    "channelAdminLogEventActionDiscardGroupCall",
+    "channelAdminLogEventActionParticipantMute",
+    "channelAdminLogEventActionParticipantUnmute",
+    "channelAdminLogEventActionToggleGroupCallSetting",
+    "channelAdminLogEventActionParticipantJoinByInvite",
+    "channelAdminLogEventActionExportedInviteDelete",
+    "channelAdminLogEventActionExportedInviteRevoke",
+    "channelAdminLogEventActionExportedInviteEdit",
+    "channelAdminLogEventActionParticipantVolume",
+    "channelAdminLogEventActionChangeHistoryTTL",
+    "channelAdminLogEventActionParticipantJoinByRequest",
+    "channelAdminLogEventActionToggleNoForwards",
+    "channelAdminLogEventActionSendMessage",
+    "channelAdminLogEventActionChangeAvailableReactions",
+    "channelAdminLogEventActionChangeUsernames",
+    "channelAdminLogEventActionToggleForum",
+    "channelAdminLogEventActionCreateTopic",
+    "channelAdminLogEventActionEditTopic",
+    "channelAdminLogEventActionDeleteTopic",
+    "channelAdminLogEventActionPinTopic",
+    "channelAdminLogEventActionToggleAntiSpam",
+    "channelAdminLogEventActionChangePeerColor",
+    "channelAdminLogEventActionChangeProfilePeerColor",
+    "channelAdminLogEventActionChangeWallpaper",
+    "channelAdminLogEventActionChangeEmojiStatus",
+    "channelAdminLogEventActionChangeEmojiStickerSet",
+    "channelAdminLogEventActionToggleSignatureProfiles",
+    "channelAdminLogEventActionParticipantSubExtend",
+  ]],
   ["ChannelAdminLogEvent", ["channelAdminLogEvent"]],
   ["channels.AdminLogResults", ["channels.adminLogResults"]],
   ["ChannelAdminLogEventsFilter", ["channelAdminLogEventsFilter"]],
@@ -21048,16 +21432,14 @@ const types: Map<string, Parameters> = new Map([
     "rpc_answer_unknown",
     [
       0x5E2AD36E,
-      [
-      ],
+      [],
     ],
   ],
   [
     "rpc_answer_dropped_running",
     [
       0xCD78E586,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -21238,24 +21620,21 @@ const types: Map<string, Parameters> = new Map([
     "destroy_auth_key_ok",
     [
       0xF660E1D4,
-      [
-      ],
+      [],
     ],
   ],
   [
     "destroy_auth_key_none",
     [
       0x0A9F2259,
-      [
-      ],
+      [],
     ],
   ],
   [
     "destroy_auth_key_fail",
     [
       0xEA109B13,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -21273,8 +21652,7 @@ const types: Map<string, Parameters> = new Map([
     "true",
     [
       0x3FEDD339,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -21291,24 +21669,21 @@ const types: Map<string, Parameters> = new Map([
     "null",
     [
       0x56730BCC,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPeerEmpty",
     [
       0x7F3B18EA,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPeerSelf",
     [
       0x7DA07EC9,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -21366,16 +21741,14 @@ const types: Map<string, Parameters> = new Map([
     "inputUserEmpty",
     [
       0xB98886CF,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputUserSelf",
     [
       0xF7C1B13F,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -21447,8 +21820,7 @@ const types: Map<string, Parameters> = new Map([
     "inputMediaEmpty",
     [
       0x9664F57F,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -21668,8 +22040,7 @@ const types: Map<string, Parameters> = new Map([
     "inputChatPhotoEmpty",
     [
       0x1CA48F57,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -21698,8 +22069,7 @@ const types: Map<string, Parameters> = new Map([
     "inputGeoPointEmpty",
     [
       0xE4C123D6,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -21718,8 +22088,7 @@ const types: Map<string, Parameters> = new Map([
     "inputPhotoEmpty",
     [
       0x1CD7BF0D,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -21781,8 +22150,7 @@ const types: Map<string, Parameters> = new Map([
     "inputTakeoutFileLocation",
     [
       0x29BE5899,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -21878,80 +22246,70 @@ const types: Map<string, Parameters> = new Map([
     "storage.fileUnknown",
     [
       0xAA963B05,
-      [
-      ],
+      [],
     ],
   ],
   [
     "storage.filePartial",
     [
       0x40BC6F52,
-      [
-      ],
+      [],
     ],
   ],
   [
     "storage.fileJpeg",
     [
       0x007EFE0E,
-      [
-      ],
+      [],
     ],
   ],
   [
     "storage.fileGif",
     [
       0xCAE1AADF,
-      [
-      ],
+      [],
     ],
   ],
   [
     "storage.filePng",
     [
       0x0A4F63C0,
-      [
-      ],
+      [],
     ],
   ],
   [
     "storage.filePdf",
     [
       0xAE1E508D,
-      [
-      ],
+      [],
     ],
   ],
   [
     "storage.fileMp3",
     [
       0x528A0677,
-      [
-      ],
+      [],
     ],
   ],
   [
     "storage.fileMov",
     [
       0x4B09EBBC,
-      [
-      ],
+      [],
     ],
   ],
   [
     "storage.fileMp4",
     [
       0xB3CEA0E4,
-      [
-      ],
+      [],
     ],
   ],
   [
     "storage.fileWebp",
     [
       0x1081464C,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -22021,8 +22379,7 @@ const types: Map<string, Parameters> = new Map([
     "userProfilePhotoEmpty",
     [
       0x4F11BAE1,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -22043,8 +22400,7 @@ const types: Map<string, Parameters> = new Map([
     "userStatusEmpty",
     [
       0x09D05049,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -22363,8 +22719,7 @@ const types: Map<string, Parameters> = new Map([
     "chatPhotoEmpty",
     [
       0x37C1011C,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -22469,8 +22824,7 @@ const types: Map<string, Parameters> = new Map([
     "messageMediaEmpty",
     [
       0x3DED6320,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -22511,8 +22865,7 @@ const types: Map<string, Parameters> = new Map([
     "messageMediaUnsupported",
     [
       0x9F84F49E,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -22687,8 +23040,7 @@ const types: Map<string, Parameters> = new Map([
     "messageActionEmpty",
     [
       0xB6AEF7B0,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -22723,8 +23075,7 @@ const types: Map<string, Parameters> = new Map([
     "messageActionChatDeletePhoto",
     [
       0x95E3FBEF,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -22786,16 +23137,14 @@ const types: Map<string, Parameters> = new Map([
     "messageActionPinMessage",
     [
       0x94BD38ED,
-      [
-      ],
+      [],
     ],
   ],
   [
     "messageActionHistoryClear",
     [
       0x9FBAB604,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -22858,8 +23207,7 @@ const types: Map<string, Parameters> = new Map([
     "messageActionScreenshotTaken",
     [
       0x4792929B,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -22907,8 +23255,7 @@ const types: Map<string, Parameters> = new Map([
     "messageActionContactSignUp",
     [
       0xF3F25F76,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -22977,8 +23324,7 @@ const types: Map<string, Parameters> = new Map([
     "messageActionChatJoinedByRequest",
     [
       0xEBBCA3CB,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -23346,8 +23692,7 @@ const types: Map<string, Parameters> = new Map([
     "geoPointEmpty",
     [
       0x1117DD5F,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -23432,24 +23777,21 @@ const types: Map<string, Parameters> = new Map([
     "inputNotifyUsers",
     [
       0x193B4417,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputNotifyChats",
     [
       0x4A95E84E,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputNotifyBroadcasts",
     [
       0xB1DB7C7E,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -23558,80 +23900,70 @@ const types: Map<string, Parameters> = new Map([
     "inputReportReasonSpam",
     [
       0x58DBCAB8,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputReportReasonViolence",
     [
       0x1E22C78D,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputReportReasonPornography",
     [
       0x2E59D922,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputReportReasonChildAbuse",
     [
       0xADF44EE3,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputReportReasonOther",
     [
       0xC1E4A2B1,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputReportReasonCopyright",
     [
       0x9B89F93A,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputReportReasonGeoIrrelevant",
     [
       0xDBD4FEED,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputReportReasonFake",
     [
       0xF5DDD6E7,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputReportReasonIllegalDrugs",
     [
       0x0A8EB2BE,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputReportReasonPersonalDetails",
     [
       0x9EC7863D,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -23724,8 +24056,7 @@ const types: Map<string, Parameters> = new Map([
     "contacts.contactsNotModified",
     [
       0xB74BA9D2,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -23906,80 +24237,70 @@ const types: Map<string, Parameters> = new Map([
     "inputMessagesFilterEmpty",
     [
       0x57E2F66C,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterPhotos",
     [
       0x9609A51C,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterVideo",
     [
       0x9FC00E65,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterPhotoVideo",
     [
       0x56E9F0E4,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterDocument",
     [
       0x9EDDF188,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterUrl",
     [
       0x7EF0DD87,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterGif",
     [
       0xFFC86587,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterVoice",
     [
       0x50F5C392,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterMusic",
     [
       0x3751B49E,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterChatPhotos",
     [
       0x3A20ECB8,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -23996,48 +24317,42 @@ const types: Map<string, Parameters> = new Map([
     "inputMessagesFilterRoundVoice",
     [
       0x7A7C17A4,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterRoundVideo",
     [
       0xB549DA53,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterMyMentions",
     [
       0xC1F8E69A,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterGeo",
     [
       0xE7026D0D,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterContacts",
     [
       0xE062DB83,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputMessagesFilterPinned",
     [
       0x1BB00451,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -24424,8 +24739,7 @@ const types: Map<string, Parameters> = new Map([
     "updateSavedGifs",
     [
       0x9375341E,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -24536,32 +24850,28 @@ const types: Map<string, Parameters> = new Map([
     "updateReadFeaturedStickers",
     [
       0x571D2742,
-      [
-      ],
+      [],
     ],
   ],
   [
     "updateRecentStickers",
     [
       0x9A422C20,
-      [
-      ],
+      [],
     ],
   ],
   [
     "updateConfig",
     [
       0xA229DD06,
-      [
-      ],
+      [],
     ],
   ],
   [
     "updatePtsChanged",
     [
       0x3354678F,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -24678,8 +24988,7 @@ const types: Map<string, Parameters> = new Map([
     "updateFavedStickers",
     [
       0xE511996D,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -24698,8 +25007,7 @@ const types: Map<string, Parameters> = new Map([
     "updateContactsReset",
     [
       0x7084A7BE,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -24820,8 +25128,7 @@ const types: Map<string, Parameters> = new Map([
     "updateLoginToken",
     [
       0x564FE691,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -24860,8 +25167,7 @@ const types: Map<string, Parameters> = new Map([
     "updateDialogFilters",
     [
       0x3504914F,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -25116,8 +25422,7 @@ const types: Map<string, Parameters> = new Map([
     "updateAttachMenuBots",
     [
       0x17B7A20B,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -25143,8 +25448,7 @@ const types: Map<string, Parameters> = new Map([
     "updateSavedRingtones",
     [
       0x74D8BE99,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -25165,8 +25469,7 @@ const types: Map<string, Parameters> = new Map([
     "updateReadFeaturedEmojiStickers",
     [
       0xFB4C496C,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -25183,16 +25486,14 @@ const types: Map<string, Parameters> = new Map([
     "updateRecentEmojiStatuses",
     [
       0x30F443DB,
-      [
-      ],
+      [],
     ],
   ],
   [
     "updateRecentReactions",
     [
       0x6F7863F4,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -25254,8 +25555,7 @@ const types: Map<string, Parameters> = new Map([
     "updateAutoSaveSettings",
     [
       0xEC05B097,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -25394,8 +25694,7 @@ const types: Map<string, Parameters> = new Map([
     "updateSavedReactionTags",
     [
       0x39C67432,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -25641,8 +25940,7 @@ const types: Map<string, Parameters> = new Map([
     "updatesTooLong",
     [
       0xE317AF7E,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -25910,8 +26208,7 @@ const types: Map<string, Parameters> = new Map([
     "help.noAppUpdate",
     [
       0xC45A6536,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26001,8 +26298,7 @@ const types: Map<string, Parameters> = new Map([
     "encryptedFileEmpty",
     [
       0xC21F497E,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26022,8 +26318,7 @@ const types: Map<string, Parameters> = new Map([
     "inputEncryptedFileEmpty",
     [
       0x1837C364,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26128,8 +26423,7 @@ const types: Map<string, Parameters> = new Map([
     "inputDocumentEmpty",
     [
       0x72F0EAAE,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26194,24 +26488,21 @@ const types: Map<string, Parameters> = new Map([
     "notifyUsers",
     [
       0xB4C83B4C,
-      [
-      ],
+      [],
     ],
   ],
   [
     "notifyChats",
     [
       0xC007CEC3,
-      [
-      ],
+      [],
     ],
   ],
   [
     "notifyBroadcasts",
     [
       0xD612E8EF,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26228,24 +26519,21 @@ const types: Map<string, Parameters> = new Map([
     "sendMessageTypingAction",
     [
       0x16BF744E,
-      [
-      ],
+      [],
     ],
   ],
   [
     "sendMessageCancelAction",
     [
       0xFD5EC8F5,
-      [
-      ],
+      [],
     ],
   ],
   [
     "sendMessageRecordVideoAction",
     [
       0xA187D66F,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26261,8 +26549,7 @@ const types: Map<string, Parameters> = new Map([
     "sendMessageRecordAudioAction",
     [
       0xD52F73F7,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26296,32 +26583,28 @@ const types: Map<string, Parameters> = new Map([
     "sendMessageGeoLocationAction",
     [
       0x176F8BA1,
-      [
-      ],
+      [],
     ],
   ],
   [
     "sendMessageChooseContactAction",
     [
       0x628CBC6F,
-      [
-      ],
+      [],
     ],
   ],
   [
     "sendMessageGamePlayAction",
     [
       0xDD6A8F48,
-      [
-      ],
+      [],
     ],
   ],
   [
     "sendMessageRecordRoundAction",
     [
       0x88F27FBC,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26337,8 +26620,7 @@ const types: Map<string, Parameters> = new Map([
     "speakingInGroupCallAction",
     [
       0xD92C2285,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26354,8 +26636,7 @@ const types: Map<string, Parameters> = new Map([
     "sendMessageChooseStickerAction",
     [
       0xB05AC6B1,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26394,208 +26675,182 @@ const types: Map<string, Parameters> = new Map([
     "inputPrivacyKeyStatusTimestamp",
     [
       0x4F96CB18,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyKeyChatInvite",
     [
       0xBDFB0426,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyKeyPhoneCall",
     [
       0xFABADC5F,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyKeyPhoneP2P",
     [
       0xDB9E70D2,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyKeyForwards",
     [
       0xA4DD4C08,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyKeyProfilePhoto",
     [
       0x5719BACC,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyKeyPhoneNumber",
     [
       0x0352DAFA,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyKeyAddedByPhone",
     [
       0xD1219BDD,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyKeyVoiceMessages",
     [
       0xAEE69D68,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyKeyAbout",
     [
       0x3823CC40,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyKeyBirthday",
     [
       0xD65A11CC,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyKeyStarGiftsAutoSave",
     [
       0xE1732341,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyKeyStatusTimestamp",
     [
       0xBC2EAB30,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyKeyChatInvite",
     [
       0x500E6DFA,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyKeyPhoneCall",
     [
       0x3D662B7B,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyKeyPhoneP2P",
     [
       0x39491CC8,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyKeyForwards",
     [
       0x69EC56A3,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyKeyProfilePhoto",
     [
       0x96151FED,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyKeyPhoneNumber",
     [
       0xD19AE46D,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyKeyAddedByPhone",
     [
       0x42FFD42B,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyKeyVoiceMessages",
     [
       0x0697F414,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyKeyAbout",
     [
       0xA486B761,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyKeyBirthday",
     [
       0x2000A518,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyKeyStarGiftsAutoSave",
     [
       0x2CA4FDF8,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyValueAllowContacts",
     [
       0x0D09E07B,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyValueAllowAll",
     [
       0x184B35CE,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26611,16 +26866,14 @@ const types: Map<string, Parameters> = new Map([
     "inputPrivacyValueDisallowContacts",
     [
       0x0BA52007,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyValueDisallowAll",
     [
       0xD66B66C9,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26654,48 +26907,42 @@ const types: Map<string, Parameters> = new Map([
     "inputPrivacyValueAllowCloseFriends",
     [
       0x2F453E49,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyValueAllowPremium",
     [
       0x77CDC9F1,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyValueAllowBots",
     [
       0x5A4FCCE5,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputPrivacyValueDisallowBots",
     [
       0xC4E57915,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyValueAllowContacts",
     [
       0xFFFE1BAC,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyValueAllowAll",
     [
       0x65427B82,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26711,16 +26958,14 @@ const types: Map<string, Parameters> = new Map([
     "privacyValueDisallowContacts",
     [
       0xF888FA1A,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyValueDisallowAll",
     [
       0x8B73E763,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26754,32 +26999,28 @@ const types: Map<string, Parameters> = new Map([
     "privacyValueAllowCloseFriends",
     [
       0xF7E8D89B,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyValueAllowPremium",
     [
       0xECE9814B,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyValueAllowBots",
     [
       0x21461B5D,
-      [
-      ],
+      [],
     ],
   ],
   [
     "privacyValueDisallowBots",
     [
       0xF6A5F82F,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26816,8 +27057,7 @@ const types: Map<string, Parameters> = new Map([
     "documentAttributeAnimated",
     [
       0x11B58939,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26878,8 +27118,7 @@ const types: Map<string, Parameters> = new Map([
     "documentAttributeHasStickers",
     [
       0x9801D2F7,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26899,8 +27138,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.stickersNotModified",
     [
       0xF1749A22,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -26927,8 +27165,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.allStickersNotModified",
     [
       0xE86602C3,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -27142,8 +27379,7 @@ const types: Map<string, Parameters> = new Map([
     "chatInvitePublicJoinRequests",
     [
       0xED107AB7,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -27196,8 +27432,7 @@ const types: Map<string, Parameters> = new Map([
     "inputStickerSetEmpty",
     [
       0xFFB62B95,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -27223,8 +27458,7 @@ const types: Map<string, Parameters> = new Map([
     "inputStickerSetAnimatedEmoji",
     [
       0x028703C8,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -27240,48 +27474,42 @@ const types: Map<string, Parameters> = new Map([
     "inputStickerSetAnimatedEmojiAnimations",
     [
       0x0CDE3739,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputStickerSetPremiumGifts",
     [
       0xC88B3B02,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputStickerSetEmojiGenericAnimations",
     [
       0x04C4D4CE,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputStickerSetEmojiDefaultStatuses",
     [
       0x29D0F5EE,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputStickerSetEmojiDefaultTopicIcons",
     [
       0x44C1F8E9,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inputStickerSetEmojiChannelDefaultStatuses",
     [
       0x49748553,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -27327,8 +27555,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.stickerSetNotModified",
     [
       0xD3F924EB,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -27832,8 +28059,7 @@ const types: Map<string, Parameters> = new Map([
     "inputChannelEmpty",
     [
       0xEE8C1E86,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -27925,8 +28151,7 @@ const types: Map<string, Parameters> = new Map([
     "channelMessagesFilterEmpty",
     [
       0x94D42EE7,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -28022,16 +28247,14 @@ const types: Map<string, Parameters> = new Map([
     "channelParticipantsRecent",
     [
       0xDE3F3C79,
-      [
-      ],
+      [],
     ],
   ],
   [
     "channelParticipantsAdmins",
     [
       0xB4608969,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -28047,8 +28270,7 @@ const types: Map<string, Parameters> = new Map([
     "channelParticipantsBots",
     [
       0xB0D1865B,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -28105,8 +28327,7 @@ const types: Map<string, Parameters> = new Map([
     "channels.channelParticipantsNotModified",
     [
       0xF0173FE9,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -28138,8 +28359,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.savedGifsNotModified",
     [
       0xE8025CA2,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -28514,40 +28734,35 @@ const types: Map<string, Parameters> = new Map([
     "auth.codeTypeSms",
     [
       0x72A3158C,
-      [
-      ],
+      [],
     ],
   ],
   [
     "auth.codeTypeCall",
     [
       0x741CD3E3,
-      [
-      ],
+      [],
     ],
   ],
   [
     "auth.codeTypeFlashCall",
     [
       0x226CCEFB,
-      [
-      ],
+      [],
     ],
   ],
   [
     "auth.codeTypeMissedCall",
     [
       0xD61AD6EE,
-      [
-      ],
+      [],
     ],
   ],
   [
     "auth.codeTypeFragmentSms",
     [
       0x06ED998C,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -28752,72 +28967,63 @@ const types: Map<string, Parameters> = new Map([
     "topPeerCategoryBotsPM",
     [
       0xAB661B5B,
-      [
-      ],
+      [],
     ],
   ],
   [
     "topPeerCategoryBotsInline",
     [
       0x148677E2,
-      [
-      ],
+      [],
     ],
   ],
   [
     "topPeerCategoryCorrespondents",
     [
       0x0637B7ED,
-      [
-      ],
+      [],
     ],
   ],
   [
     "topPeerCategoryGroups",
     [
       0xBD17A14A,
-      [
-      ],
+      [],
     ],
   ],
   [
     "topPeerCategoryChannels",
     [
       0x161D9628,
-      [
-      ],
+      [],
     ],
   ],
   [
     "topPeerCategoryPhoneCalls",
     [
       0x1E76A78C,
-      [
-      ],
+      [],
     ],
   ],
   [
     "topPeerCategoryForwardUsers",
     [
       0xA8406CA9,
-      [
-      ],
+      [],
     ],
   ],
   [
     "topPeerCategoryForwardChats",
     [
       0xFBEEC0F0,
-      [
-      ],
+      [],
     ],
   ],
   [
     "topPeerCategoryBotsApp",
     [
       0xFD9E7BEC,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -28835,8 +29041,7 @@ const types: Map<string, Parameters> = new Map([
     "contacts.topPeersNotModified",
     [
       0xDE266EF5,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -28854,8 +29059,7 @@ const types: Map<string, Parameters> = new Map([
     "contacts.topPeersDisabled",
     [
       0xB52C939D,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -28912,8 +29116,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.recentStickersNotModified",
     [
       0x0B17F890,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -28942,8 +29145,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.stickerSetInstallResultSuccess",
     [
       0x38641628,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -29087,8 +29289,7 @@ const types: Map<string, Parameters> = new Map([
     "textEmpty",
     [
       0xDC3D824F,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -29237,8 +29438,7 @@ const types: Map<string, Parameters> = new Map([
     "pageBlockUnsupported",
     [
       0x13567E8A,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -29319,8 +29519,7 @@ const types: Map<string, Parameters> = new Map([
     "pageBlockDivider",
     [
       0xDB20B188,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -29537,32 +29736,28 @@ const types: Map<string, Parameters> = new Map([
     "phoneCallDiscardReasonMissed",
     [
       0x85E42301,
-      [
-      ],
+      [],
     ],
   ],
   [
     "phoneCallDiscardReasonDisconnect",
     [
       0xE095C1A0,
-      [
-      ],
+      [],
     ],
   ],
   [
     "phoneCallDiscardReasonHangup",
     [
       0x57ADC690,
-      [
-      ],
+      [],
     ],
   ],
   [
     "phoneCallDiscardReasonBusy",
     [
       0xFAF7E8C9,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -30319,16 +30514,14 @@ const types: Map<string, Parameters> = new Map([
     "channelAdminLogEventActionParticipantJoin",
     [
       0x183040D3,
-      [
-      ],
+      [],
     ],
   ],
   [
     "channelAdminLogEventActionParticipantLeave",
     [
       0xF89777F2,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -30770,8 +30963,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.favedStickersNotModified",
     [
       0x9E8FA6D3,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -30907,8 +31099,7 @@ const types: Map<string, Parameters> = new Map([
     "inputMessagePinned",
     [
       0x86872538,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -30961,8 +31152,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.foundStickerSetsNotModified",
     [
       0x0D54B65D,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -31042,8 +31232,7 @@ const types: Map<string, Parameters> = new Map([
     "secureFileEmpty",
     [
       0x64199744,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -31094,104 +31283,91 @@ const types: Map<string, Parameters> = new Map([
     "secureValueTypePersonalDetails",
     [
       0x9D2A81E3,
-      [
-      ],
+      [],
     ],
   ],
   [
     "secureValueTypePassport",
     [
       0x3DAC6A00,
-      [
-      ],
+      [],
     ],
   ],
   [
     "secureValueTypeDriverLicense",
     [
       0x06E425C4,
-      [
-      ],
+      [],
     ],
   ],
   [
     "secureValueTypeIdentityCard",
     [
       0xA0D0744B,
-      [
-      ],
+      [],
     ],
   ],
   [
     "secureValueTypeInternalPassport",
     [
       0x99A48F23,
-      [
-      ],
+      [],
     ],
   ],
   [
     "secureValueTypeAddress",
     [
       0xCBE31E26,
-      [
-      ],
+      [],
     ],
   ],
   [
     "secureValueTypeUtilityBill",
     [
       0xFC36954E,
-      [
-      ],
+      [],
     ],
   ],
   [
     "secureValueTypeBankStatement",
     [
       0x89137C0D,
-      [
-      ],
+      [],
     ],
   ],
   [
     "secureValueTypeRentalAgreement",
     [
       0x8B883488,
-      [
-      ],
+      [],
     ],
   ],
   [
     "secureValueTypePassportRegistration",
     [
       0x99E3806A,
-      [
-      ],
+      [],
     ],
   ],
   [
     "secureValueTypeTemporaryRegistration",
     [
       0xEA02EC33,
-      [
-      ],
+      [],
     ],
   ],
   [
     "secureValueTypePhone",
     [
       0xB320AADB,
-      [
-      ],
+      [],
     ],
   ],
   [
     "secureValueTypeEmail",
     [
       0x8E3CA7EE,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -31378,8 +31554,7 @@ const types: Map<string, Parameters> = new Map([
     "help.deepLinkInfoEmpty",
     [
       0x66AFA166,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -31419,8 +31594,7 @@ const types: Map<string, Parameters> = new Map([
     "passwordKdfAlgoUnknown",
     [
       0xD45AB096,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -31439,8 +31613,7 @@ const types: Map<string, Parameters> = new Map([
     "securePasswordKdfAlgoUnknown",
     [
       0x004A8537,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -31476,8 +31649,7 @@ const types: Map<string, Parameters> = new Map([
     "inputCheckPasswordEmpty",
     [
       0x9880F658,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -31517,8 +31689,7 @@ const types: Map<string, Parameters> = new Map([
     "help.passportConfigNotModified",
     [
       0xBFB9F457,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -31557,8 +31728,7 @@ const types: Map<string, Parameters> = new Map([
     "jsonNull",
     [
       0x3F6D7B68,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -31726,8 +31896,7 @@ const types: Map<string, Parameters> = new Map([
     "help.userInfoEmpty",
     [
       0xF3AE2EED,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -31902,8 +32071,7 @@ const types: Map<string, Parameters> = new Map([
     "account.wallPapersNotModified",
     [
       0x1C199183,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -32105,16 +32273,14 @@ const types: Map<string, Parameters> = new Map([
     "urlAuthResultDefault",
     [
       0xA9D6DB1F,
-      [
-      ],
+      [],
     ],
   ],
   [
     "channelLocationEmpty",
     [
       0xBFB5AD8B,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -32201,8 +32367,7 @@ const types: Map<string, Parameters> = new Map([
     "account.themesNotModified",
     [
       0xF41EB622,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -32270,40 +32435,35 @@ const types: Map<string, Parameters> = new Map([
     "baseThemeClassic",
     [
       0xC3A12462,
-      [
-      ],
+      [],
     ],
   ],
   [
     "baseThemeDay",
     [
       0xFBD81688,
-      [
-      ],
+      [],
     ],
   ],
   [
     "baseThemeNight",
     [
       0xB7B31EA8,
-      [
-      ],
+      [],
     ],
   ],
   [
     "baseThemeTinted",
     [
       0x6D5F77EE,
-      [
-      ],
+      [],
     ],
   ],
   [
     "baseThemeArctic",
     [
       0x5B11125A,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -32435,8 +32595,7 @@ const types: Map<string, Parameters> = new Map([
     "dialogFilterDefault",
     [
       0x363293AE,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -32717,8 +32876,7 @@ const types: Map<string, Parameters> = new Map([
     "help.countriesListNotModified",
     [
       0x93CC1F32,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -32944,48 +33102,42 @@ const types: Map<string, Parameters> = new Map([
     "inlineQueryPeerTypeSameBotPM",
     [
       0x3081ED9D,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inlineQueryPeerTypePM",
     [
       0x833C0FAC,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inlineQueryPeerTypeChat",
     [
       0xD766C50A,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inlineQueryPeerTypeMegagroup",
     [
       0x5EC4BE43,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inlineQueryPeerTypeBroadcast",
     [
       0x6334EE9A,
-      [
-      ],
+      [],
     ],
   ],
   [
     "inlineQueryPeerTypeBotPM",
     [
       0x0E3B2D0C,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -33165,32 +33317,28 @@ const types: Map<string, Parameters> = new Map([
     "botCommandScopeDefault",
     [
       0x2F6CB2AB,
-      [
-      ],
+      [],
     ],
   ],
   [
     "botCommandScopeUsers",
     [
       0x3C4F04D8,
-      [
-      ],
+      [],
     ],
   ],
   [
     "botCommandScopeChats",
     [
       0x6FE1A881,
-      [
-      ],
+      [],
     ],
   ],
   [
     "botCommandScopeChatAdmins",
     [
       0xB9AA606A,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -33243,8 +33391,7 @@ const types: Map<string, Parameters> = new Map([
     "account.resetPasswordOk",
     [
       0xE926D63E,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -33286,8 +33433,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.sponsoredMessagesEmpty",
     [
       0x1839490F,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -33449,8 +33595,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.availableReactionsNotModified",
     [
       0x9F071957,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -33553,8 +33698,7 @@ const types: Map<string, Parameters> = new Map([
     "attachMenuBotsNotModified",
     [
       0xF1D88A5C,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -33605,16 +33749,14 @@ const types: Map<string, Parameters> = new Map([
     "botMenuButtonDefault",
     [
       0x7533A588,
-      [
-      ],
+      [],
     ],
   ],
   [
     "botMenuButtonCommands",
     [
       0x4258C205,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -33631,8 +33773,7 @@ const types: Map<string, Parameters> = new Map([
     "account.savedRingtonesNotModified",
     [
       0xFBF6E8B1,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -33649,16 +33790,14 @@ const types: Map<string, Parameters> = new Map([
     "notificationSoundDefault",
     [
       0x97E8BEBE,
-      [
-      ],
+      [],
     ],
   ],
   [
     "notificationSoundNone",
     [
       0x6F0C34DF,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -33684,8 +33823,7 @@ const types: Map<string, Parameters> = new Map([
     "account.savedRingtone",
     [
       0xB7263F6D,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -33701,40 +33839,35 @@ const types: Map<string, Parameters> = new Map([
     "attachMenuPeerTypeSameBotPM",
     [
       0x7D6BE90E,
-      [
-      ],
+      [],
     ],
   ],
   [
     "attachMenuPeerTypeBotPM",
     [
       0xC32BFA1A,
-      [
-      ],
+      [],
     ],
   ],
   [
     "attachMenuPeerTypePM",
     [
       0xF146D31F,
-      [
-      ],
+      [],
     ],
   ],
   [
     "attachMenuPeerTypeChat",
     [
       0x0509113F,
-      [
-      ],
+      [],
     ],
   ],
   [
     "attachMenuPeerTypeBroadcast",
     [
       0x7BFBDEFC,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -33983,8 +34116,7 @@ const types: Map<string, Parameters> = new Map([
     "emojiStatusEmpty",
     [
       0x2DE11AAE,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -34010,8 +34142,7 @@ const types: Map<string, Parameters> = new Map([
     "account.emojiStatusesNotModified",
     [
       0xD08CE645,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -34028,8 +34159,7 @@ const types: Map<string, Parameters> = new Map([
     "reactionEmpty",
     [
       0x79F5D419,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -34054,16 +34184,14 @@ const types: Map<string, Parameters> = new Map([
     "reactionPaid",
     [
       0x523DA4EB,
-      [
-      ],
+      [],
     ],
   ],
   [
     "chatReactionsNone",
     [
       0xEAFC32BC,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -34089,8 +34217,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.reactionsNotModified",
     [
       0xB06FDBDF,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -34117,16 +34244,14 @@ const types: Map<string, Parameters> = new Map([
     "emailVerifyPurposeLoginChange",
     [
       0x527D22EB,
-      [
-      ],
+      [],
     ],
   ],
   [
     "emailVerifyPurposePassport",
     [
       0xBBF51685,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -34362,8 +34487,7 @@ const types: Map<string, Parameters> = new Map([
     "emojiListNotModified",
     [
       0x481EADFA,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -34412,8 +34536,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.emojiGroupsNotModified",
     [
       0x6FB4AD87,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -34485,8 +34608,7 @@ const types: Map<string, Parameters> = new Map([
     "help.appConfigNotModified",
     [
       0x7CDE641D,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -34523,8 +34645,7 @@ const types: Map<string, Parameters> = new Map([
     "botAppNotModified",
     [
       0x5DA674B7,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -35361,8 +35482,7 @@ const types: Map<string, Parameters> = new Map([
     "help.peerColorsNotModified",
     [
       0x2BA1F5CE,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -35481,8 +35601,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.savedReactionTagsNotModified",
     [
       0x889B59EF,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -35609,16 +35728,14 @@ const types: Map<string, Parameters> = new Map([
     "businessAwayMessageScheduleAlways",
     [
       0xC9B9E2B9,
-      [
-      ],
+      [],
     ],
   ],
   [
     "businessAwayMessageScheduleOutsideWorkHours",
     [
       0xC3F2F501,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -35694,8 +35811,7 @@ const types: Map<string, Parameters> = new Map([
     "help.timezonesListNotModified",
     [
       0x970708CC,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -35754,8 +35870,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.quickRepliesNotModified",
     [
       0x5F91EB5B,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -36072,16 +36187,14 @@ const types: Map<string, Parameters> = new Map([
     "channels.sponsoredMessageReportResultAdsHidden",
     [
       0x3E3BCF2F,
-      [
-      ],
+      [],
     ],
   ],
   [
     "channels.sponsoredMessageReportResultReported",
     [
       0xAD798849,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -36157,16 +36270,14 @@ const types: Map<string, Parameters> = new Map([
     "reactionNotificationsFromContacts",
     [
       0xBAC3A61A,
-      [
-      ],
+      [],
     ],
   ],
   [
     "reactionNotificationsFromAll",
     [
       0x4B9E22A0,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -36214,8 +36325,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.availableEffectsNotModified",
     [
       0xD1ED9A5B,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -36246,40 +36356,35 @@ const types: Map<string, Parameters> = new Map([
     "starsTransactionPeerUnsupported",
     [
       0x95F2BFE4,
-      [
-      ],
+      [],
     ],
   ],
   [
     "starsTransactionPeerAppStore",
     [
       0xB457B375,
-      [
-      ],
+      [],
     ],
   ],
   [
     "starsTransactionPeerPlayMarket",
     [
       0x7B560A0B,
-      [
-      ],
+      [],
     ],
   ],
   [
     "starsTransactionPeerPremiumBot",
     [
       0x250DBAF8,
-      [
-      ],
+      [],
     ],
   ],
   [
     "starsTransactionPeerFragment",
     [
       0xE92FD902,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -36295,16 +36400,14 @@ const types: Map<string, Parameters> = new Map([
     "starsTransactionPeerAds",
     [
       0x60682812,
-      [
-      ],
+      [],
     ],
   ],
   [
     "starsTransactionPeerAPI",
     [
       0xF9677AAD,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -36622,8 +36725,7 @@ const types: Map<string, Parameters> = new Map([
     "payments.starGiftsNotModified",
     [
       0xA388A368,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -36706,8 +36808,7 @@ const types: Map<string, Parameters> = new Map([
     "reportResultReported",
     [
       0x8DB33C4B,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -37019,8 +37120,7 @@ const types: Map<string, Parameters> = new Map([
     "destroy_auth_key",
     [
       0xD1435160,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -37176,16 +37276,14 @@ const types: Map<string, Parameters> = new Map([
     "auth.logOut",
     [
       0x3E72BA19,
-      [
-      ],
+      [],
     ],
   ],
   [
     "auth.resetAuthorizations",
     [
       0x9FAB0D1A,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -37244,8 +37342,7 @@ const types: Map<string, Parameters> = new Map([
     "auth.requestPasswordRecovery",
     [
       0xD897BC66,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -37423,8 +37520,7 @@ const types: Map<string, Parameters> = new Map([
     "account.resetNotifySettings",
     [
       0xDB7E1747,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -37520,8 +37616,7 @@ const types: Map<string, Parameters> = new Map([
     "account.getAccountTTL",
     [
       0x08FC711D,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -37567,8 +37662,7 @@ const types: Map<string, Parameters> = new Map([
     "account.getAuthorizations",
     [
       0xE320C158,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -37584,8 +37678,7 @@ const types: Map<string, Parameters> = new Map([
     "account.getPassword",
     [
       0x548A30F5,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -37641,8 +37734,7 @@ const types: Map<string, Parameters> = new Map([
     "account.getWebAuthorizations",
     [
       0x182E6D6F,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -37658,16 +37750,14 @@ const types: Map<string, Parameters> = new Map([
     "account.resetWebAuthorizations",
     [
       0x682D2594,
-      [
-      ],
+      [],
     ],
   ],
   [
     "account.getAllSecureValues",
     [
       0xB288BC7D,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -37802,24 +37892,21 @@ const types: Map<string, Parameters> = new Map([
     "account.resendPasswordEmail",
     [
       0x7A7F2A15,
-      [
-      ],
+      [],
     ],
   ],
   [
     "account.cancelPasswordEmail",
     [
       0xC1CBD5B6,
-      [
-      ],
+      [],
     ],
   ],
   [
     "account.getContactSignUpNotification",
     [
       0x9F07C728,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -37890,16 +37977,14 @@ const types: Map<string, Parameters> = new Map([
     "account.resetWallPapers",
     [
       0xBB3B9804,
-      [
-      ],
+      [],
     ],
   ],
   [
     "account.getAutoDownloadSettings",
     [
       0x56DA0B3F,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -38012,8 +38097,7 @@ const types: Map<string, Parameters> = new Map([
     "account.getContentSettings",
     [
       0x8B9B4DAE,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -38029,8 +38113,7 @@ const types: Map<string, Parameters> = new Map([
     "account.getGlobalPrivacySettings",
     [
       0xEB2B4CF6,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -38058,16 +38141,14 @@ const types: Map<string, Parameters> = new Map([
     "account.resetPassword",
     [
       0x9308CE1B,
-      [
-      ],
+      [],
     ],
   ],
   [
     "account.declinePasswordReset",
     [
       0x4C9409F6,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -38162,8 +38243,7 @@ const types: Map<string, Parameters> = new Map([
     "account.clearRecentEmojiStatuses",
     [
       0x18201AAE,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -38207,8 +38287,7 @@ const types: Map<string, Parameters> = new Map([
     "account.getAutoSaveSettings",
     [
       0xADCBBCDA,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -38229,8 +38308,7 @@ const types: Map<string, Parameters> = new Map([
     "account.deleteAutoSaveExceptions",
     [
       0x53BC0020,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -38339,8 +38417,7 @@ const types: Map<string, Parameters> = new Map([
     "account.getConnectedBots",
     [
       0x4EA4C80F,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -38423,8 +38500,7 @@ const types: Map<string, Parameters> = new Map([
     "account.getBusinessChatLinks",
     [
       0x6F70DDE1,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -38458,8 +38534,7 @@ const types: Map<string, Parameters> = new Map([
     "account.getReactionsNotifySettings",
     [
       0x06DD654C,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -38521,8 +38596,7 @@ const types: Map<string, Parameters> = new Map([
     "contacts.getStatuses",
     [
       0xC4A353EE,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -38651,16 +38725,14 @@ const types: Map<string, Parameters> = new Map([
     "contacts.resetSaved",
     [
       0x879537F1,
-      [
-      ],
+      [],
     ],
   ],
   [
     "contacts.getSaved",
     [
       0x82F1E39F,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -38733,8 +38805,7 @@ const types: Map<string, Parameters> = new Map([
     "contacts.exportContactToken",
     [
       0xF8654027,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -38771,8 +38842,7 @@ const types: Map<string, Parameters> = new Map([
     "contacts.getBirthdays",
     [
       0xDAEDA864,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -39560,8 +39630,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.getAllDrafts",
     [
       0x6A3F8D65,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -39902,8 +39971,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.getSplitRanges",
     [
       0x1CFF7E08,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -39921,16 +39989,14 @@ const types: Map<string, Parameters> = new Map([
     "messages.getDialogUnreadMarks",
     [
       0x22E24E22,
-      [
-      ],
+      [],
     ],
   ],
   [
     "messages.clearAllDrafts",
     [
       0x7E58EE9C,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -40154,16 +40220,14 @@ const types: Map<string, Parameters> = new Map([
     "messages.getDialogFilters",
     [
       0xEFD48C89,
-      [
-      ],
+      [],
     ],
   ],
   [
     "messages.getSuggestedDialogFilters",
     [
       0xA29CD42C,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -40815,8 +40879,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.clearRecentReactions",
     [
       0x9DFEEFB4,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -40842,8 +40905,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.getDefaultHistoryTTL",
     [
       0x658B7188,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -41008,8 +41070,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.getPinnedSavedDialogs",
     [
       0xD63D94E0,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -41268,8 +41329,7 @@ const types: Map<string, Parameters> = new Map([
     "messages.getPaidReactionPrivacy",
     [
       0x472455AA,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -41369,8 +41429,7 @@ const types: Map<string, Parameters> = new Map([
     "updates.getState",
     [
       0xEDD4882A,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -41559,16 +41618,14 @@ const types: Map<string, Parameters> = new Map([
     "help.getConfig",
     [
       0xC4F9186B,
-      [
-      ],
+      [],
     ],
   ],
   [
     "help.getNearestDc",
     [
       0x1FB33026,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -41584,16 +41641,14 @@ const types: Map<string, Parameters> = new Map([
     "help.getInviteText",
     [
       0x4D392343,
-      [
-      ],
+      [],
     ],
   ],
   [
     "help.getSupport",
     [
       0x9CDF08CD,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -41610,8 +41665,7 @@ const types: Map<string, Parameters> = new Map([
     "help.getCdnConfig",
     [
       0x52029342,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -41627,8 +41681,7 @@ const types: Map<string, Parameters> = new Map([
     "help.getTermsOfServiceUpdate",
     [
       0x2CA51FD1,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -41680,8 +41733,7 @@ const types: Map<string, Parameters> = new Map([
     "help.getSupportName",
     [
       0xD360E72C,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -41708,8 +41760,7 @@ const types: Map<string, Parameters> = new Map([
     "help.getPromoData",
     [
       0xC0977421,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -41745,8 +41796,7 @@ const types: Map<string, Parameters> = new Map([
     "help.getPremiumPromo",
     [
       0xB81B93D4,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -42084,8 +42134,7 @@ const types: Map<string, Parameters> = new Map([
     "channels.getGroupsForDiscussion",
     [
       0xF5DAD378,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -42134,8 +42183,7 @@ const types: Map<string, Parameters> = new Map([
     "channels.getInactiveChannels",
     [
       0x11E831EE,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -42702,8 +42750,7 @@ const types: Map<string, Parameters> = new Map([
     "bots.getAdminedBots",
     [
       0xB0711D83,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -42793,8 +42840,7 @@ const types: Map<string, Parameters> = new Map([
     "payments.getSavedInfo",
     [
       0x227D824B,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -42908,8 +42954,7 @@ const types: Map<string, Parameters> = new Map([
     "payments.getStarsTopupOptions",
     [
       0xC00EC7D3,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -43046,8 +43091,7 @@ const types: Map<string, Parameters> = new Map([
     "payments.getStarsGiveawayOptions",
     [
       0xBD1EFD3E,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -43323,8 +43367,7 @@ const types: Map<string, Parameters> = new Map([
     "phone.getCallConfig",
     [
       0x55451FA9,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -44182,8 +44225,7 @@ const types: Map<string, Parameters> = new Map([
     "stories.getAllReadPeerStories",
     [
       0x9B5AE7F9,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -44199,8 +44241,7 @@ const types: Map<string, Parameters> = new Map([
     "stories.getChatsToSend",
     [
       0xA56A8B60,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -44269,8 +44310,7 @@ const types: Map<string, Parameters> = new Map([
     "premium.getMyBoosts",
     [
       0x0BE77B4A,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -44307,24 +44347,21 @@ const types: Map<string, Parameters> = new Map([
     "smsjobs.isEligibleToJoin",
     [
       0x0EDC39D0,
-      [
-      ],
+      [],
     ],
   ],
   [
     "smsjobs.join",
     [
       0xA74ECE2D,
-      [
-      ],
+      [],
     ],
   ],
   [
     "smsjobs.leave",
     [
       0x9898AD73,
-      [
-      ],
+      [],
     ],
   ],
   [
@@ -44341,8 +44378,7 @@ const types: Map<string, Parameters> = new Map([
     "smsjobs.getStatus",
     [
       0x10A698E8,
-      [
-      ],
+      [],
     ],
   ],
   [
