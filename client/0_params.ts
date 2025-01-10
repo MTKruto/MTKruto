@@ -104,7 +104,7 @@ export interface EditMessageParams extends _BusinessConnectionIdCommon, _ReplyMa
 export interface EditMessageCaptionParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
   /** The message's new caption. If omitted, the caption will be removed.  */
   caption?: string;
-  /** The parse mode to use. If not provided, the default parse mode will be used. */
+  /** The parse mode to use. If omitted, the default parse mode will be used. */
   parseMode?: ParseMode;
   /** The caption's entities. */
   entities?: MessageEntity[];
