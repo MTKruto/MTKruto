@@ -80,7 +80,7 @@ export interface _SendCommon extends _BusinessConnectionIdCommon, _PaidBroadcast
   sendAt?: Date;
 }
 export interface SendMessageParams extends _SendCommon, _ReplyMarkupCommon {
-  /** The parse mode to use. If not provided, the default parse mode will be used. */
+  /** The parse mode to use. if omitted, the default parse mode will be used. */
   parseMode?: ParseMode;
   /** The message's entities. */
   entities?: MessageEntity[];
@@ -93,7 +93,7 @@ export interface SendChatActionParams extends _BusinessConnectionIdCommon {
 }
 
 export interface EditMessageParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
-  /** The parse mode to use. If not provided, the default parse mode will be used. */
+  /** The parse mode to use. if omitted, the default parse mode will be used. */
   parseMode?: ParseMode;
   /** The message's entities. */
   entities?: MessageEntity[];
@@ -120,9 +120,9 @@ export interface ForwardMessagesParams extends Omit<_SendCommon, "replyToMessage
 export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   /** The entities of the poll's question. */
   questionEntities?: MessageEntity[];
-  /** The parse mode to use for the poll's question. If not provided, the default parse mode will be used. */
+  /** The parse mode to use for the poll's question. if omitted, the default parse mode will be used. */
   questionParseMode?: ParseMode;
-  /** The parse mode to use for the poll's options. If not provided, the default parse mode will be used. */
+  /** The parse mode to use for the poll's options. if omitted, the default parse mode will be used. */
   optionParseMode?: ParseMode;
   /** Whether the poll should be anonymous. */
   isAnonymous?: boolean;
@@ -134,7 +134,7 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   correctOptionIndex?: number;
   /** A text that will be shown to the user when the poll is answered. Only valid for quiz polls. */
   explanation?: string;
-  /** The parse mode to use for the explanation. If not provided, the default parse mode will be used. */
+  /** The parse mode to use for the explanation. if omitted, the default parse mode will be used. */
   explanationParseMode?: ParseMode;
   /** The explanation's entities. */
   explanationEntities?: MessageEntity[];
@@ -200,7 +200,7 @@ export interface AnswerInlineQueryParams {
 }
 
 export interface SetMyCommandsParams {
-  /** A two-letter ISO 639-1 language code. If not set, the command details will be updated for users having an unsupported language. */
+  /** A two-letter ISO 639-1 language code. If omitted, the command details will be updated for users having an unsupported language. */
   languageCode?: string;
   /** The scope in which the commands are available. */
   scope?: BotCommandScope;
@@ -223,7 +223,7 @@ export interface _CaptionCommon {
   caption?: string;
   /** The caption's entities. */
   captionEntities?: MessageEntity[];
-  /** The parse mode to use for the caption. If not provided, the default parse mode will be used. */
+  /** The parse mode to use for the caption. if omitted, the default parse mode will be used. */
   parseMode?: ParseMode;
 }
 export interface _SpoilCommon {
