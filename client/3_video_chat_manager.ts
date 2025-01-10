@@ -133,7 +133,10 @@ export class VideoChatManager {
     return isOneOf(videoChatManagerUpdates, update);
   }
 
-  async handleUpdate(update: VideoChatManagerUpdate): Promise<Update> {
+  async handleUpdate(update: VideoChatManagerUpdate): Promise<Update | null> {
+    if (!update.chat_id) {
+      return null; // TODO: handle updates with unspecified chat_id
+    }
     let chatId = Number(-update.chat_id);
     const fullChat = await this.#c.storage.getFullChat(chatId).then((v) => v == null ? this.#c.storage.getFullChat(chatId = ZERO_CHANNEL_ID - Number(update.chat_id)) : v) as Api.channelFull | Api.chatFull | null;
     let updateFullChat = false;

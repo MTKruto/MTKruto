@@ -259,46 +259,8 @@ export interface error {
   text: string;
 }
 
-export interface ipPort {
-  _: "ipPort";
-  ipv4: number;
-  port: number;
-}
-
-export interface ipPortSecret {
-  _: "ipPortSecret";
-  ipv4: number;
-  port: number;
-  secret: Uint8Array;
-}
-
-export interface accessPointRule {
-  _: "accessPointRule";
-  phone_prefix_rules: string;
-  dc_id: number;
-  ips: Array<IpPort>;
-}
-
-export interface help_configSimple {
-  _: "help.configSimple";
-  date: number;
-  expires: number;
-  rules: Array<AccessPointRule>;
-}
-
-export interface inputPeerPhotoFileLocationLegacy {
-  _: "inputPeerPhotoFileLocationLegacy";
-  big?: true;
-  peer: InputPeer;
-  volume_id: bigint;
-  local_id: number;
-}
-
-export interface inputStickerSetThumbLegacy {
-  _: "inputStickerSetThumbLegacy";
-  stickerset: InputStickerSet;
-  volume_id: bigint;
-  local_id: number;
+export interface null_ {
+  _: "null";
 }
 
 export interface inputPeerEmpty {
@@ -743,6 +705,7 @@ export interface user {
   color?: PeerColor;
   profile_color?: PeerColor;
   bot_active_users?: number;
+  bot_verification_icon?: bigint;
 }
 
 export interface userProfilePhotoEmpty {
@@ -861,6 +824,7 @@ export interface channel {
   emoji_status?: EmojiStatus;
   level?: number;
   subscription_until_date?: number;
+  bot_verification_icon?: bigint;
 }
 
 export interface channelForbidden {
@@ -959,6 +923,7 @@ export interface channelFull {
   boosts_applied?: number;
   boosts_unrestrict?: number;
   emojiset?: StickerSet;
+  bot_verification?: BotVerification;
 }
 
 export interface chatParticipant {
@@ -1052,6 +1017,7 @@ export interface message {
   quick_reply_shortcut_id?: number;
   effect?: bigint;
   factcheck?: FactCheck;
+  report_delivery_until_date?: number;
 }
 
 export interface messageService {
@@ -1059,6 +1025,7 @@ export interface messageService {
   out?: true;
   mentioned?: true;
   media_unread?: true;
+  reactions_are_possible?: true;
   silent?: true;
   post?: true;
   legacy?: true;
@@ -1068,6 +1035,7 @@ export interface messageService {
   reply_to?: MessageReplyHeader;
   date: number;
   action: MessageAction;
+  reactions?: MessageReactions;
   ttl_period?: number;
 }
 
@@ -1509,9 +1477,25 @@ export interface messageActionStarGift {
   name_hidden?: true;
   saved?: true;
   converted?: true;
+  upgraded?: true;
+  refunded?: true;
+  can_upgrade?: true;
   gift: StarGift;
   message?: TextWithEntities;
   convert_stars?: bigint;
+  upgrade_msg_id?: number;
+  upgrade_stars?: bigint;
+}
+
+export interface messageActionStarGiftUnique {
+  _: "messageActionStarGiftUnique";
+  upgrade?: true;
+  transferred?: true;
+  saved?: true;
+  refunded?: true;
+  gift: StarGift;
+  can_export_at?: number;
+  transfer_stars?: bigint;
 }
 
 export interface dialog {
@@ -1825,6 +1809,7 @@ export interface userFull {
   personal_channel_message?: number;
   stargifts_count?: number;
   starref_program?: StarRefProgram;
+  bot_verification?: BotVerification;
 }
 
 export interface contact {
@@ -2605,7 +2590,7 @@ export interface updateGroupCallParticipants {
 
 export interface updateGroupCall {
   _: "updateGroupCall";
-  chat_id: bigint;
+  chat_id?: bigint;
   call: GroupCall;
 }
 
@@ -3944,6 +3929,7 @@ export interface chatInvite {
   color: number;
   subscription_pricing?: StarsSubscriptionPricing;
   subscription_form_id?: bigint;
+  bot_verification?: BotVerification;
 }
 
 export interface chatInvitePeek {
@@ -4051,6 +4037,7 @@ export interface botInfo {
   menu_button?: BotMenuButton;
   privacy_policy_url?: string;
   app_settings?: BotAppSettings;
+  verifier_settings?: BotVerifierSettings;
 }
 
 export interface keyboardButton {
@@ -5384,6 +5371,11 @@ export interface phoneCallDiscardReasonBusy {
   _: "phoneCallDiscardReasonBusy";
 }
 
+export interface phoneCallDiscardReasonAllowGroupCall {
+  _: "phoneCallDiscardReasonAllowGroupCall";
+  encrypted_key: Uint8Array;
+}
+
 export interface dataJSON {
   _: "dataJSON";
   data: string;
@@ -5657,6 +5649,7 @@ export interface phoneCallWaiting {
   participant_id: bigint;
   protocol: PhoneCallProtocol;
   receive_date?: number;
+  conference_call?: InputGroupCall;
 }
 
 export interface phoneCallRequested {
@@ -5669,6 +5662,7 @@ export interface phoneCallRequested {
   participant_id: bigint;
   g_a_hash: Uint8Array;
   protocol: PhoneCallProtocol;
+  conference_call?: InputGroupCall;
 }
 
 export interface phoneCallAccepted {
@@ -5681,6 +5675,7 @@ export interface phoneCallAccepted {
   participant_id: bigint;
   g_b: Uint8Array;
   protocol: PhoneCallProtocol;
+  conference_call?: InputGroupCall;
 }
 
 export interface phoneCall {
@@ -5698,6 +5693,7 @@ export interface phoneCall {
   connections: Array<PhoneConnection>;
   start_date: number;
   custom_parameters?: DataJSON;
+  conference_call?: InputGroupCall;
 }
 
 export interface phoneCallDiscarded {
@@ -5708,6 +5704,7 @@ export interface phoneCallDiscarded {
   id: bigint;
   reason?: PhoneCallDiscardReason;
   duration?: number;
+  conference_call?: InputGroupCall;
 }
 
 export interface phoneConnection {
@@ -7141,8 +7138,9 @@ export interface dialogFilter {
   exclude_muted?: true;
   exclude_read?: true;
   exclude_archived?: true;
+  title_noanimate?: true;
   id: number;
-  title: string;
+  title: TextWithEntities;
   emoticon?: string;
   color?: number;
   pinned_peers: Array<InputPeer>;
@@ -7157,8 +7155,9 @@ export interface dialogFilterDefault {
 export interface dialogFilterChatlist {
   _: "dialogFilterChatlist";
   has_my_invites?: true;
+  title_noanimate?: true;
   id: number;
-  title: string;
+  title: TextWithEntities;
   emoticon?: string;
   color?: number;
   pinned_peers: Array<InputPeer>;
@@ -7442,6 +7441,7 @@ export interface groupCall {
   unmuted_video_count?: number;
   unmuted_video_limit: number;
   version: number;
+  conference_from_call?: bigint;
 }
 
 export interface inputGroupCall {
@@ -7995,9 +7995,22 @@ export interface inputInvoiceChatInviteSubscription {
 export interface inputInvoiceStarGift {
   _: "inputInvoiceStarGift";
   hide_name?: true;
+  include_upgrade?: true;
   user_id: InputUser;
   gift_id: bigint;
   message?: TextWithEntities;
+}
+
+export interface inputInvoiceStarGiftUpgrade {
+  _: "inputInvoiceStarGiftUpgrade";
+  keep_original_details?: true;
+  msg_id: number;
+}
+
+export interface inputInvoiceStarGiftTransfer {
+  _: "inputInvoiceStarGiftTransfer";
+  msg_id: number;
+  to_id: InputUser;
 }
 
 export interface payments_exportedInvoice {
@@ -8499,7 +8512,8 @@ export interface chatlists_chatlistInviteAlready {
 
 export interface chatlists_chatlistInvite {
   _: "chatlists.chatlistInvite";
-  title: string;
+  title_noanimate?: true;
+  title: TextWithEntities;
   emoticon?: string;
   peers: Array<Peer>;
   chats: Array<Chat>;
@@ -9556,6 +9570,7 @@ export interface starsTransaction {
   failed?: true;
   gift?: true;
   reaction?: true;
+  stargift_upgrade?: true;
   id: string;
   stars: StarsAmount;
   date: number;
@@ -9734,6 +9749,18 @@ export interface starGift {
   convert_stars: bigint;
   first_sale_date?: number;
   last_sale_date?: number;
+  upgrade_stars?: bigint;
+}
+
+export interface starGiftUnique {
+  _: "starGiftUnique";
+  id: bigint;
+  title: string;
+  num: number;
+  owner_id: bigint;
+  attributes: Array<StarGiftAttribute>;
+  availability_issued: number;
+  availability_total: number;
 }
 
 export interface payments_starGiftsNotModified {
@@ -9750,12 +9777,17 @@ export interface userStarGift {
   _: "userStarGift";
   name_hidden?: true;
   unsaved?: true;
+  refunded?: true;
+  can_upgrade?: true;
   from_id?: bigint;
   date: number;
   gift: StarGift;
   message?: TextWithEntities;
   msg_id?: number;
   convert_stars?: bigint;
+  upgrade_stars?: bigint;
+  can_export_at?: number;
+  transfer_stars?: bigint;
 }
 
 export interface payments_userStarGifts {
@@ -9866,6 +9898,69 @@ export interface messages_foundStickers {
   stickers: Array<Document>;
 }
 
+export interface botVerifierSettings {
+  _: "botVerifierSettings";
+  can_modify_custom_description?: true;
+  icon: bigint;
+  company: string;
+  custom_description?: string;
+}
+
+export interface botVerification {
+  _: "botVerification";
+  bot_id: bigint;
+  icon: bigint;
+  description: string;
+}
+
+export interface starGiftAttributeModel {
+  _: "starGiftAttributeModel";
+  name: string;
+  document: Document;
+  rarity_permille: number;
+}
+
+export interface starGiftAttributePattern {
+  _: "starGiftAttributePattern";
+  name: string;
+  document: Document;
+  rarity_permille: number;
+}
+
+export interface starGiftAttributeBackdrop {
+  _: "starGiftAttributeBackdrop";
+  name: string;
+  center_color: number;
+  edge_color: number;
+  pattern_color: number;
+  text_color: number;
+  rarity_permille: number;
+}
+
+export interface starGiftAttributeOriginalDetails {
+  _: "starGiftAttributeOriginalDetails";
+  sender_id?: bigint;
+  recipient_id: bigint;
+  date: number;
+  message?: TextWithEntities;
+}
+
+export interface payments_starGiftUpgradePreview {
+  _: "payments.starGiftUpgradePreview";
+  sample_attributes: Array<StarGiftAttribute>;
+}
+
+export interface users_users {
+  _: "users.users";
+  users: Array<User>;
+}
+
+export interface users_usersSlice {
+  _: "users.usersSlice";
+  count: number;
+  users: Array<User>;
+}
+
 export interface req_pq_multi {
   _: "req_pq_multi";
   nonce: bigint;
@@ -9925,26 +10020,6 @@ export interface destroy_session {
 export interface destroy_auth_key {
   _: "destroy_auth_key";
   [R]?: DestroyAuthKeyRes;
-}
-
-export interface invokeWithBusinessConnectionPrefix {
-  _: "invokeWithBusinessConnectionPrefix";
-  connection_id: string;
-  [R]?: Error;
-}
-
-export interface invokeWithGooglePlayIntegrityPrefix {
-  _: "invokeWithGooglePlayIntegrityPrefix";
-  nonce: string;
-  token: string;
-  [R]?: Error;
-}
-
-export interface invokeWithApnsSecretPrefix {
-  _: "invokeWithApnsSecretPrefix";
-  nonce: string;
-  secret: string;
-  [R]?: Error;
 }
 
 export interface invokeAfterMsg<T> {
@@ -11550,6 +11625,8 @@ export interface messages_migrateChat {
 export interface messages_searchGlobal {
   _: "messages.searchGlobal";
   broadcasts_only?: true;
+  groups_only?: true;
+  users_only?: true;
   folder_id?: number;
   q: string;
   filter: MessagesFilter;
@@ -12957,6 +13034,14 @@ export interface messages_searchStickers {
   [R]?: messages_FoundStickers;
 }
 
+export interface messages_reportMessagesDelivery {
+  _: "messages.reportMessagesDelivery";
+  push?: true;
+  peer: InputPeer;
+  id: Array<number>;
+  [R]?: boolean;
+}
+
 export interface updates_getState {
   _: "updates.getState";
   [R]?: updates_State;
@@ -13899,6 +13984,21 @@ export interface bots_updateStarRefProgram {
   [R]?: StarRefProgram;
 }
 
+export interface bots_setCustomVerification {
+  _: "bots.setCustomVerification";
+  enabled?: true;
+  bot?: InputUser;
+  peer: InputPeer;
+  custom_description?: string;
+  [R]?: boolean;
+}
+
+export interface bots_getBotRecommendations {
+  _: "bots.getBotRecommendations";
+  bot: InputUser;
+  [R]?: users_Users;
+}
+
 export interface payments_getPaymentForm {
   _: "payments.getPaymentForm";
   invoice: InputInvoice;
@@ -14125,14 +14225,12 @@ export interface payments_getUserStarGifts {
 export interface payments_saveStarGift {
   _: "payments.saveStarGift";
   unsave?: true;
-  user_id: InputUser;
   msg_id: number;
   [R]?: boolean;
 }
 
 export interface payments_convertStarGift {
   _: "payments.convertStarGift";
-  user_id: InputUser;
   msg_id: number;
   [R]?: boolean;
 }
@@ -14184,6 +14282,32 @@ export interface payments_editConnectedStarRefBot {
   peer: InputPeer;
   link: string;
   [R]?: payments_ConnectedStarRefBots;
+}
+
+export interface payments_getStarGiftUpgradePreview {
+  _: "payments.getStarGiftUpgradePreview";
+  gift_id: bigint;
+  [R]?: payments_StarGiftUpgradePreview;
+}
+
+export interface payments_upgradeStarGift {
+  _: "payments.upgradeStarGift";
+  keep_original_details?: true;
+  msg_id: number;
+  [R]?: Updates;
+}
+
+export interface payments_transferStarGift {
+  _: "payments.transferStarGift";
+  msg_id: number;
+  to_id: InputUser;
+  [R]?: Updates;
+}
+
+export interface payments_getUserStarGift {
+  _: "payments.getUserStarGift";
+  msg_id: Array<number>;
+  [R]?: payments_UserStarGifts;
 }
 
 export interface stickers_createStickerSet {
@@ -14278,6 +14402,7 @@ export interface phone_requestCall {
   _: "phone.requestCall";
   video?: true;
   user_id: InputUser;
+  conference_call?: InputGroupCall;
   random_id: number;
   g_a_hash: Uint8Array;
   protocol: PhoneCallProtocol;
@@ -14357,6 +14482,7 @@ export interface phone_joinGroupCall {
   call: InputGroupCall;
   join_as: InputPeer;
   invite_hash?: string;
+  key_fingerprint?: bigint;
   params: DataJSON;
   [R]?: Updates;
 }
@@ -14507,6 +14633,13 @@ export interface phone_saveCallLog {
   peer: InputPhoneCall;
   file: InputFile;
   [R]?: boolean;
+}
+
+export interface phone_createConferenceCall {
+  _: "phone.createConferenceCall";
+  peer: InputPhoneCall;
+  key_fingerprint: bigint;
+  [R]?: phone_PhoneCall;
 }
 
 export interface langpack_getLangPack {
@@ -15030,12 +15163,7 @@ export interface Types {
   "http_wait": http_wait;
   "true": true_;
   "error": error;
-  "ipPort": ipPort;
-  "ipPortSecret": ipPortSecret;
-  "accessPointRule": accessPointRule;
-  "help.configSimple": help_configSimple;
-  "inputPeerPhotoFileLocationLegacy": inputPeerPhotoFileLocationLegacy;
-  "inputStickerSetThumbLegacy": inputStickerSetThumbLegacy;
+  "null": null_;
   "inputPeerEmpty": inputPeerEmpty;
   "inputPeerSelf": inputPeerSelf;
   "inputPeerChat": inputPeerChat;
@@ -15190,6 +15318,7 @@ export interface Types {
   "messageActionGiftStars": messageActionGiftStars;
   "messageActionPrizeStars": messageActionPrizeStars;
   "messageActionStarGift": messageActionStarGift;
+  "messageActionStarGiftUnique": messageActionStarGiftUnique;
   "dialog": dialog;
   "dialogFolder": dialogFolder;
   "photoEmpty": photoEmpty;
@@ -15775,6 +15904,7 @@ export interface Types {
   "phoneCallDiscardReasonDisconnect": phoneCallDiscardReasonDisconnect;
   "phoneCallDiscardReasonHangup": phoneCallDiscardReasonHangup;
   "phoneCallDiscardReasonBusy": phoneCallDiscardReasonBusy;
+  "phoneCallDiscardReasonAllowGroupCall": phoneCallDiscardReasonAllowGroupCall;
   "dataJSON": dataJSON;
   "labeledPrice": labeledPrice;
   "invoice": invoice;
@@ -16154,6 +16284,8 @@ export interface Types {
   "inputInvoiceStars": inputInvoiceStars;
   "inputInvoiceChatInviteSubscription": inputInvoiceChatInviteSubscription;
   "inputInvoiceStarGift": inputInvoiceStarGift;
+  "inputInvoiceStarGiftUpgrade": inputInvoiceStarGiftUpgrade;
+  "inputInvoiceStarGiftTransfer": inputInvoiceStarGiftTransfer;
   "payments.exportedInvoice": payments_exportedInvoice;
   "messages.transcribedAudio": messages_transcribedAudio;
   "help.premiumPromo": help_premiumPromo;
@@ -16392,6 +16524,7 @@ export interface Types {
   "starsGiveawayOption": starsGiveawayOption;
   "starsGiveawayWinnersOption": starsGiveawayWinnersOption;
   "starGift": starGift;
+  "starGiftUnique": starGiftUnique;
   "payments.starGiftsNotModified": payments_starGiftsNotModified;
   "payments.starGifts": payments_starGifts;
   "userStarGift": userStarGift;
@@ -16410,6 +16543,15 @@ export interface Types {
   "starsAmount": starsAmount;
   "messages.foundStickersNotModified": messages_foundStickersNotModified;
   "messages.foundStickers": messages_foundStickers;
+  "botVerifierSettings": botVerifierSettings;
+  "botVerification": botVerification;
+  "starGiftAttributeModel": starGiftAttributeModel;
+  "starGiftAttributePattern": starGiftAttributePattern;
+  "starGiftAttributeBackdrop": starGiftAttributeBackdrop;
+  "starGiftAttributeOriginalDetails": starGiftAttributeOriginalDetails;
+  "payments.starGiftUpgradePreview": payments_starGiftUpgradePreview;
+  "users.users": users_users;
+  "users.usersSlice": users_usersSlice;
 }
 
 export interface Functions<T = Function> {
@@ -16422,9 +16564,6 @@ export interface Functions<T = Function> {
   "ping_delay_disconnect": ping_delay_disconnect;
   "destroy_session": destroy_session;
   "destroy_auth_key": destroy_auth_key;
-  "invokeWithBusinessConnectionPrefix": invokeWithBusinessConnectionPrefix;
-  "invokeWithGooglePlayIntegrityPrefix": invokeWithGooglePlayIntegrityPrefix;
-  "invokeWithApnsSecretPrefix": invokeWithApnsSecretPrefix;
   "invokeAfterMsg": invokeAfterMsg<T>;
   "invokeAfterMsgs": invokeAfterMsgs<T>;
   "initConnection": initConnection<T>;
@@ -16824,6 +16963,7 @@ export interface Functions<T = Function> {
   "messages.savePreparedInlineMessage": messages_savePreparedInlineMessage;
   "messages.getPreparedInlineMessage": messages_getPreparedInlineMessage;
   "messages.searchStickers": messages_searchStickers;
+  "messages.reportMessagesDelivery": messages_reportMessagesDelivery;
   "updates.getState": updates_getState;
   "updates.getDifference": updates_getDifference;
   "updates.getChannelDifference": updates_getChannelDifference;
@@ -16954,6 +17094,8 @@ export interface Functions<T = Function> {
   "bots.checkDownloadFileParams": bots_checkDownloadFileParams;
   "bots.getAdminedBots": bots_getAdminedBots;
   "bots.updateStarRefProgram": bots_updateStarRefProgram;
+  "bots.setCustomVerification": bots_setCustomVerification;
+  "bots.getBotRecommendations": bots_getBotRecommendations;
   "payments.getPaymentForm": payments_getPaymentForm;
   "payments.getPaymentReceipt": payments_getPaymentReceipt;
   "payments.validateRequestedInfo": payments_validateRequestedInfo;
@@ -16994,6 +17136,10 @@ export interface Functions<T = Function> {
   "payments.getSuggestedStarRefBots": payments_getSuggestedStarRefBots;
   "payments.connectStarRefBot": payments_connectStarRefBot;
   "payments.editConnectedStarRefBot": payments_editConnectedStarRefBot;
+  "payments.getStarGiftUpgradePreview": payments_getStarGiftUpgradePreview;
+  "payments.upgradeStarGift": payments_upgradeStarGift;
+  "payments.transferStarGift": payments_transferStarGift;
+  "payments.getUserStarGift": payments_getUserStarGift;
   "stickers.createStickerSet": stickers_createStickerSet;
   "stickers.removeStickerFromSet": stickers_removeStickerFromSet;
   "stickers.changeStickerPosition": stickers_changeStickerPosition;
@@ -17036,6 +17182,7 @@ export interface Functions<T = Function> {
   "phone.getGroupCallStreamChannels": phone_getGroupCallStreamChannels;
   "phone.getGroupCallStreamRtmpUrl": phone_getGroupCallStreamRtmpUrl;
   "phone.saveCallLog": phone_saveCallLog;
+  "phone.createConferenceCall": phone_createConferenceCall;
   "langpack.getLangPack": langpack_getLangPack;
   "langpack.getStrings": langpack_getStrings;
   "langpack.getDifference": langpack_getDifference;
@@ -17131,10 +17278,7 @@ export interface Enums {
   "HttpWait": HttpWait;
   "True": True;
   "Error": Error;
-  "IpPort": IpPort;
-  "AccessPointRule": AccessPointRule;
-  "help.ConfigSimple": help_ConfigSimple;
-  "InputFileLocation": InputFileLocation;
+  "Null": Null;
   "InputPeer": InputPeer;
   "InputUser": InputUser;
   "InputContact": InputContact;
@@ -17143,6 +17287,7 @@ export interface Enums {
   "InputChatPhoto": InputChatPhoto;
   "InputGeoPoint": InputGeoPoint;
   "InputPhoto": InputPhoto;
+  "InputFileLocation": InputFileLocation;
   "Peer": Peer;
   "storage.FileType": storage_FileType;
   "User": User;
@@ -17654,6 +17799,11 @@ export interface Enums {
   "payments.SuggestedStarRefBots": payments_SuggestedStarRefBots;
   "StarsAmount": StarsAmount;
   "messages.FoundStickers": messages_FoundStickers;
+  "BotVerifierSettings": BotVerifierSettings;
+  "BotVerification": BotVerification;
+  "StarGiftAttribute": StarGiftAttribute;
+  "payments.StarGiftUpgradePreview": payments_StarGiftUpgradePreview;
+  "users.Users": users_Users;
 }
 
 export type AnyType = Types[keyof Types];
@@ -17716,13 +17866,7 @@ export type True = true_;
 
 export type Error = error;
 
-export type IpPort = ipPort | ipPortSecret;
-
-export type AccessPointRule = accessPointRule;
-
-export type help_ConfigSimple = help_configSimple;
-
-export type InputFileLocation = inputPeerPhotoFileLocationLegacy | inputStickerSetThumbLegacy | inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
+export type Null = null_;
 
 export type InputPeer = inputPeerEmpty | inputPeerSelf | inputPeerChat | inputPeerUser | inputPeerChannel | inputPeerUserFromMessage | inputPeerChannelFromMessage;
 
@@ -17739,6 +17883,8 @@ export type InputChatPhoto = inputChatPhotoEmpty | inputChatUploadedPhoto | inpu
 export type InputGeoPoint = inputGeoPointEmpty | inputGeoPoint;
 
 export type InputPhoto = inputPhotoEmpty | inputPhoto;
+
+export type InputFileLocation = inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
 
 export type Peer = peerUser | peerChat | peerChannel;
 
@@ -17764,7 +17910,7 @@ export type Message = messageEmpty | message | messageService;
 
 export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia;
 
-export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift;
+export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique;
 
 export type Dialog = dialog | dialogFolder;
 
@@ -18155,7 +18301,7 @@ export type RichText = textEmpty | textPlain | textBold | textItalic | textUnder
 
 export type PageBlock = pageBlockUnsupported | pageBlockTitle | pageBlockSubtitle | pageBlockAuthorDate | pageBlockHeader | pageBlockSubheader | pageBlockParagraph | pageBlockPreformatted | pageBlockFooter | pageBlockDivider | pageBlockAnchor | pageBlockList | pageBlockBlockquote | pageBlockPullquote | pageBlockPhoto | pageBlockVideo | pageBlockCover | pageBlockEmbed | pageBlockEmbedPost | pageBlockCollage | pageBlockSlideshow | pageBlockChannel | pageBlockAudio | pageBlockKicker | pageBlockTable | pageBlockOrderedList | pageBlockDetails | pageBlockRelatedArticles | pageBlockMap;
 
-export type PhoneCallDiscardReason = phoneCallDiscardReasonMissed | phoneCallDiscardReasonDisconnect | phoneCallDiscardReasonHangup | phoneCallDiscardReasonBusy;
+export type PhoneCallDiscardReason = phoneCallDiscardReasonMissed | phoneCallDiscardReasonDisconnect | phoneCallDiscardReasonHangup | phoneCallDiscardReasonBusy | phoneCallDiscardReasonAllowGroupCall;
 
 export type DataJSON = dataJSON;
 
@@ -18605,7 +18751,7 @@ export type account_SavedRingtone = account_savedRingtone | account_savedRington
 
 export type AttachMenuPeerType = attachMenuPeerTypeSameBotPM | attachMenuPeerTypeBotPM | attachMenuPeerTypePM | attachMenuPeerTypeChat | attachMenuPeerTypeBroadcast;
 
-export type InputInvoice = inputInvoiceMessage | inputInvoiceSlug | inputInvoicePremiumGiftCode | inputInvoiceStars | inputInvoiceChatInviteSubscription | inputInvoiceStarGift;
+export type InputInvoice = inputInvoiceMessage | inputInvoiceSlug | inputInvoicePremiumGiftCode | inputInvoiceStars | inputInvoiceChatInviteSubscription | inputInvoiceStarGift | inputInvoiceStarGiftUpgrade | inputInvoiceStarGiftTransfer;
 
 export type payments_ExportedInvoice = payments_exportedInvoice;
 
@@ -18923,7 +19069,7 @@ export type StarsGiveawayOption = starsGiveawayOption;
 
 export type StarsGiveawayWinnersOption = starsGiveawayWinnersOption;
 
-export type StarGift = starGift;
+export type StarGift = starGift | starGiftUnique;
 
 export type payments_StarGifts = payments_starGiftsNotModified | payments_starGifts;
 
@@ -18952,6 +19098,16 @@ export type payments_SuggestedStarRefBots = payments_suggestedStarRefBots;
 export type StarsAmount = starsAmount;
 
 export type messages_FoundStickers = messages_foundStickersNotModified | messages_foundStickers;
+
+export type BotVerifierSettings = botVerifierSettings;
+
+export type BotVerification = botVerification;
+
+export type StarGiftAttribute = starGiftAttributeModel | starGiftAttributePattern | starGiftAttributeBackdrop | starGiftAttributeOriginalDetails;
+
+export type payments_StarGiftUpgradePreview = payments_starGiftUpgradePreview;
+
+export type users_Users = users_users | users_usersSlice;
 
 const map: Map<number, string> = new Map([
   [0x05162463, "resPQ"],
@@ -18990,12 +19146,7 @@ const map: Map<number, string> = new Map([
   [0x9299359F, "http_wait"],
   [0x3FEDD339, "true"],
   [0xC4B9F9BB, "error"],
-  [0xD433AD73, "ipPort"],
-  [0x37982646, "ipPortSecret"],
-  [0x4679B65F, "accessPointRule"],
-  [0x5A592A6C, "help.configSimple"],
-  [0x27D69997, "inputPeerPhotoFileLocationLegacy"],
-  [0x0DBAEAE9, "inputStickerSetThumbLegacy"],
+  [0x56730BCC, "null"],
   [0x7F3B18EA, "inputPeerEmpty"],
   [0x7DA07EC9, "inputPeerSelf"],
   [0x35A95CB9, "inputPeerChat"],
@@ -19060,7 +19211,7 @@ const map: Map<number, string> = new Map([
   [0xB3CEA0E4, "storage.fileMp4"],
   [0x1081464C, "storage.fileWebp"],
   [0xD3BC4B7A, "userEmpty"],
-  [0x83314FCA, "user"],
+  [0x4B46C37E, "user"],
   [0x4F11BAE1, "userProfilePhotoEmpty"],
   [0x82D1F706, "userProfilePhoto"],
   [0x09D05049, "userStatusEmpty"],
@@ -19072,10 +19223,10 @@ const map: Map<number, string> = new Map([
   [0x29562865, "chatEmpty"],
   [0x41CBF256, "chat"],
   [0x6592A1A7, "chatForbidden"],
-  [0xFE4478BD, "channel"],
+  [0xE00998B7, "channel"],
   [0x17D493D5, "channelForbidden"],
   [0x2633421B, "chatFull"],
-  [0xBBAB348D, "channelFull"],
+  [0x9FF3B858, "channelFull"],
   [0xC02D4007, "chatParticipant"],
   [0xE46BCEE4, "chatParticipantCreator"],
   [0xA0933F5B, "chatParticipantAdmin"],
@@ -19084,8 +19235,8 @@ const map: Map<number, string> = new Map([
   [0x37C1011C, "chatPhotoEmpty"],
   [0x1C6E1C11, "chatPhoto"],
   [0x90A6CA84, "messageEmpty"],
-  [0x94345242, "message"],
-  [0x2B085862, "messageService"],
+  [0x96FDBBE9, "message"],
+  [0xD3D28540, "messageService"],
   [0x3DED6320, "messageMediaEmpty"],
   [0x695150D7, "messageMediaPhoto"],
   [0x56E0D474, "messageMediaGeo"],
@@ -19149,7 +19300,8 @@ const map: Map<number, string> = new Map([
   [0x41B3E202, "messageActionPaymentRefunded"],
   [0x45D5B021, "messageActionGiftStars"],
   [0xB00C47A2, "messageActionPrizeStars"],
-  [0x08557637, "messageActionStarGift"],
+  [0xD8F4F0A7, "messageActionStarGift"],
+  [0x26077B99, "messageActionStarGiftUnique"],
   [0xD58A08C6, "dialog"],
   [0x71BD134C, "dialogFolder"],
   [0x2331B22D, "photoEmpty"],
@@ -19187,7 +19339,7 @@ const map: Map<number, string> = new Map([
   [0xF5DDD6E7, "inputReportReasonFake"],
   [0x0A8EB2BE, "inputReportReasonIllegalDrugs"],
   [0x9EC7863D, "inputReportReasonPersonalDetails"],
-  [0x979D2376, "userFull"],
+  [0x4D975BBC, "userFull"],
   [0x145ADE0B, "contact"],
   [0xC13E3C50, "importedContact"],
   [0x16D9703B, "contactStatus"],
@@ -19310,7 +19462,7 @@ const map: Map<number, string> = new Map([
   [0x5BB98608, "updatePinnedChannelMessages"],
   [0xF89A6A4E, "updateChat"],
   [0xF2EBDB4E, "updateGroupCallParticipants"],
-  [0x14B24500, "updateGroupCall"],
+  [0x97D64341, "updateGroupCall"],
   [0xBB9BB9A5, "updatePeerHistoryTTL"],
   [0xD087663A, "updateChatParticipant"],
   [0x985D3ABB, "updateChannelParticipant"],
@@ -19513,7 +19665,7 @@ const map: Map<number, string> = new Map([
   [0xA22CBD96, "chatInviteExported"],
   [0xED107AB7, "chatInvitePublicJoinRequests"],
   [0x5A686D7C, "chatInviteAlready"],
-  [0xFE65389D, "chatInvite"],
+  [0x5C9D3702, "chatInvite"],
   [0x61695CB0, "chatInvitePeek"],
   [0xFFB62B95, "inputStickerSetEmpty"],
   [0x9DE7A269, "inputStickerSetID"],
@@ -19530,7 +19682,7 @@ const map: Map<number, string> = new Map([
   [0x6E153F16, "messages.stickerSet"],
   [0xD3F924EB, "messages.stickerSetNotModified"],
   [0xC27AC8C7, "botCommand"],
-  [0x36607333, "botInfo"],
+  [0x4D8A0299, "botInfo"],
   [0xA2FA4880, "keyboardButton"],
   [0x258AFF05, "keyboardButtonUrl"],
   [0x35BBDB6B, "keyboardButtonCallback"],
@@ -19735,6 +19887,7 @@ const map: Map<number, string> = new Map([
   [0xE095C1A0, "phoneCallDiscardReasonDisconnect"],
   [0x57ADC690, "phoneCallDiscardReasonHangup"],
   [0xFAF7E8C9, "phoneCallDiscardReasonBusy"],
+  [0xAFE2B839, "phoneCallDiscardReasonAllowGroupCall"],
   [0x7D748D04, "dataJSON"],
   [0xCB296BF8, "labeledPrice"],
   [0x049EE584, "invoice"],
@@ -19767,11 +19920,11 @@ const map: Map<number, string> = new Map([
   [0x32DA9E9C, "inputStickerSetItem"],
   [0x1E36FDED, "inputPhoneCall"],
   [0x5366C915, "phoneCallEmpty"],
-  [0xC5226F17, "phoneCallWaiting"],
-  [0x14B0ED0C, "phoneCallRequested"],
-  [0x3660C311, "phoneCallAccepted"],
-  [0x30535AF5, "phoneCall"],
-  [0x50CA4DE1, "phoneCallDiscarded"],
+  [0xEED42858, "phoneCallWaiting"],
+  [0x45361C63, "phoneCallRequested"],
+  [0x22FD7181, "phoneCallAccepted"],
+  [0x3BA5940C, "phoneCall"],
+  [0xF9D25503, "phoneCallDiscarded"],
   [0x9CC123C7, "phoneConnection"],
   [0x635FE375, "phoneConnectionWebrtc"],
   [0xFC878FC8, "phoneCallProtocol"],
@@ -19992,9 +20145,9 @@ const map: Map<number, string> = new Map([
   [0x4899484E, "messages.votesList"],
   [0xF568028A, "bankCardOpenUrl"],
   [0x3E24E573, "payments.bankCardData"],
-  [0x5FB5523B, "dialogFilter"],
+  [0xAA472651, "dialogFilter"],
   [0x363293AE, "dialogFilterDefault"],
-  [0x9FE28EA4, "dialogFilterChatlist"],
+  [0x96537BD7, "dialogFilterChatlist"],
   [0x77744D4A, "dialogFilterSuggested"],
   [0xB637EDAF, "statsDateRangeDays"],
   [0xCB43ACDE, "statsAbsValueAndPrev"],
@@ -20026,7 +20179,7 @@ const map: Map<number, string> = new Map([
   [0xE8FD8014, "peerBlocked"],
   [0x7FE91C14, "stats.messageStats"],
   [0x7780BCB4, "groupCallDiscarded"],
-  [0xD597650C, "groupCall"],
+  [0xCDF8D3E3, "groupCall"],
   [0xD8AA840F, "inputGroupCall"],
   [0xEBA636FE, "groupCallParticipant"],
   [0x9E727AAD, "phone.groupCall"],
@@ -20114,6 +20267,8 @@ const map: Map<number, string> = new Map([
   [0x65F00CE3, "inputInvoiceStars"],
   [0x34E793F1, "inputInvoiceChatInviteSubscription"],
   [0x25D8C1D8, "inputInvoiceStarGift"],
+  [0x5EBE7262, "inputInvoiceStarGiftUpgrade"],
+  [0xAE3BA9ED, "inputInvoiceStarGiftTransfer"],
   [0xAED0CBD9, "payments.exportedInvoice"],
   [0xCFB9D957, "messages.transcribedAudio"],
   [0x5334759C, "help.premiumPromo"],
@@ -20188,7 +20343,7 @@ const map: Map<number, string> = new Map([
   [0x10E6E3A6, "chatlists.exportedChatlistInvite"],
   [0x10AB6DC7, "chatlists.exportedInvites"],
   [0xFA87F659, "chatlists.chatlistInviteAlready"],
-  [0x1DCD839D, "chatlists.chatlistInvite"],
+  [0xF10ECE2F, "chatlists.chatlistInvite"],
   [0x93BD878D, "chatlists.chatlistUpdates"],
   [0xE8A775B0, "bots.botInfo"],
   [0xB6CC2D5C, "messagePeerVote"],
@@ -20351,10 +20506,11 @@ const map: Map<number, string> = new Map([
   [0x4BA3A95A, "messageReactor"],
   [0x94CE852A, "starsGiveawayOption"],
   [0x54236209, "starsGiveawayWinnersOption"],
-  [0x49C577CD, "starGift"],
+  [0x02CC73C8, "starGift"],
+  [0x6A1407CD, "starGiftUnique"],
   [0xA388A368, "payments.starGiftsNotModified"],
   [0x901689EA, "payments.starGifts"],
-  [0xEEA49A6E, "userStarGift"],
+  [0x325835E1, "userStarGift"],
   [0x6B65B517, "payments.userStarGifts"],
   [0x7903E3D9, "messageReportOption"],
   [0xF0E4E0B6, "reportResultChooseOption"],
@@ -20370,6 +20526,15 @@ const map: Map<number, string> = new Map([
   [0xBBB6B4A3, "starsAmount"],
   [0x6010C534, "messages.foundStickersNotModified"],
   [0x82C9E290, "messages.foundStickers"],
+  [0xB0CD6617, "botVerifierSettings"],
+  [0xF93CD45C, "botVerification"],
+  [0x39D99013, "starGiftAttributeModel"],
+  [0x13ACFF19, "starGiftAttributePattern"],
+  [0x94271762, "starGiftAttributeBackdrop"],
+  [0xC02C4F4B, "starGiftAttributeOriginalDetails"],
+  [0x167BD90B, "payments.starGiftUpgradePreview"],
+  [0x62D706B8, "users.users"],
+  [0x315A4974, "users.usersSlice"],
 ]);
 
 export const getTypeName: (id: number) => string | undefined = map.get.bind(map);
@@ -20405,10 +20570,7 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["HttpWait", ["http_wait"]],
   ["True", ["true"]],
   ["Error", ["error"]],
-  ["IpPort", ["ipPort", "ipPortSecret"]],
-  ["AccessPointRule", ["accessPointRule"]],
-  ["help.ConfigSimple", ["help.configSimple"]],
-  ["InputFileLocation", ["inputPeerPhotoFileLocationLegacy", "inputStickerSetThumbLegacy", "inputFileLocation", "inputEncryptedFileLocation", "inputDocumentFileLocation", "inputSecureFileLocation", "inputTakeoutFileLocation", "inputPhotoFileLocation", "inputPhotoLegacyFileLocation", "inputPeerPhotoFileLocation", "inputStickerSetThumb", "inputGroupCallStream"]],
+  ["Null", ["null"]],
   ["InputPeer", ["inputPeerEmpty", "inputPeerSelf", "inputPeerChat", "inputPeerUser", "inputPeerChannel", "inputPeerUserFromMessage", "inputPeerChannelFromMessage"]],
   ["InputUser", ["inputUserEmpty", "inputUserSelf", "inputUser", "inputUserFromMessage"]],
   ["InputContact", ["inputPhoneContact"]],
@@ -20417,6 +20579,7 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["InputChatPhoto", ["inputChatPhotoEmpty", "inputChatUploadedPhoto", "inputChatPhoto"]],
   ["InputGeoPoint", ["inputGeoPointEmpty", "inputGeoPoint"]],
   ["InputPhoto", ["inputPhotoEmpty", "inputPhoto"]],
+  ["InputFileLocation", ["inputFileLocation", "inputEncryptedFileLocation", "inputDocumentFileLocation", "inputSecureFileLocation", "inputTakeoutFileLocation", "inputPhotoFileLocation", "inputPhotoLegacyFileLocation", "inputPeerPhotoFileLocation", "inputStickerSetThumb", "inputGroupCallStream"]],
   ["Peer", ["peerUser", "peerChat", "peerChannel"]],
   ["storage.FileType", ["storage.fileUnknown", "storage.filePartial", "storage.fileJpeg", "storage.fileGif", "storage.filePng", "storage.filePdf", "storage.fileMp3", "storage.fileMov", "storage.fileMp4", "storage.fileWebp"]],
   ["User", ["userEmpty", "user"]],
@@ -20429,7 +20592,7 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["ChatPhoto", ["chatPhotoEmpty", "chatPhoto"]],
   ["Message", ["messageEmpty", "message", "messageService"]],
   ["MessageMedia", ["messageMediaEmpty", "messageMediaPhoto", "messageMediaGeo", "messageMediaContact", "messageMediaUnsupported", "messageMediaDocument", "messageMediaWebPage", "messageMediaVenue", "messageMediaGame", "messageMediaInvoice", "messageMediaGeoLive", "messageMediaPoll", "messageMediaDice", "messageMediaStory", "messageMediaGiveaway", "messageMediaGiveawayResults", "messageMediaPaidMedia"]],
-  ["MessageAction", ["messageActionEmpty", "messageActionChatCreate", "messageActionChatEditTitle", "messageActionChatEditPhoto", "messageActionChatDeletePhoto", "messageActionChatAddUser", "messageActionChatDeleteUser", "messageActionChatJoinedByLink", "messageActionChannelCreate", "messageActionChatMigrateTo", "messageActionChannelMigrateFrom", "messageActionPinMessage", "messageActionHistoryClear", "messageActionGameScore", "messageActionPaymentSentMe", "messageActionPaymentSent", "messageActionPhoneCall", "messageActionScreenshotTaken", "messageActionCustomAction", "messageActionBotAllowed", "messageActionSecureValuesSentMe", "messageActionSecureValuesSent", "messageActionContactSignUp", "messageActionGeoProximityReached", "messageActionGroupCall", "messageActionInviteToGroupCall", "messageActionSetMessagesTTL", "messageActionGroupCallScheduled", "messageActionSetChatTheme", "messageActionChatJoinedByRequest", "messageActionWebViewDataSentMe", "messageActionWebViewDataSent", "messageActionGiftPremium", "messageActionTopicCreate", "messageActionTopicEdit", "messageActionSuggestProfilePhoto", "messageActionRequestedPeer", "messageActionSetChatWallPaper", "messageActionGiftCode", "messageActionGiveawayLaunch", "messageActionGiveawayResults", "messageActionBoostApply", "messageActionRequestedPeerSentMe", "messageActionPaymentRefunded", "messageActionGiftStars", "messageActionPrizeStars", "messageActionStarGift"]],
+  ["MessageAction", ["messageActionEmpty", "messageActionChatCreate", "messageActionChatEditTitle", "messageActionChatEditPhoto", "messageActionChatDeletePhoto", "messageActionChatAddUser", "messageActionChatDeleteUser", "messageActionChatJoinedByLink", "messageActionChannelCreate", "messageActionChatMigrateTo", "messageActionChannelMigrateFrom", "messageActionPinMessage", "messageActionHistoryClear", "messageActionGameScore", "messageActionPaymentSentMe", "messageActionPaymentSent", "messageActionPhoneCall", "messageActionScreenshotTaken", "messageActionCustomAction", "messageActionBotAllowed", "messageActionSecureValuesSentMe", "messageActionSecureValuesSent", "messageActionContactSignUp", "messageActionGeoProximityReached", "messageActionGroupCall", "messageActionInviteToGroupCall", "messageActionSetMessagesTTL", "messageActionGroupCallScheduled", "messageActionSetChatTheme", "messageActionChatJoinedByRequest", "messageActionWebViewDataSentMe", "messageActionWebViewDataSent", "messageActionGiftPremium", "messageActionTopicCreate", "messageActionTopicEdit", "messageActionSuggestProfilePhoto", "messageActionRequestedPeer", "messageActionSetChatWallPaper", "messageActionGiftCode", "messageActionGiveawayLaunch", "messageActionGiveawayResults", "messageActionBoostApply", "messageActionRequestedPeerSentMe", "messageActionPaymentRefunded", "messageActionGiftStars", "messageActionPrizeStars", "messageActionStarGift", "messageActionStarGiftUnique"]],
   ["Dialog", ["dialog", "dialogFolder"]],
   ["Photo", ["photoEmpty", "photo"]],
   ["PhotoSize", ["photoSizeEmpty", "photoSize", "photoCachedSize", "photoStrippedSize", "photoSizeProgressive", "photoPathSize"]],
@@ -20696,7 +20859,7 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["messages.HighScores", ["messages.highScores"]],
   ["RichText", ["textEmpty", "textPlain", "textBold", "textItalic", "textUnderline", "textStrike", "textFixed", "textUrl", "textEmail", "textConcat", "textSubscript", "textSuperscript", "textMarked", "textPhone", "textImage", "textAnchor"]],
   ["PageBlock", ["pageBlockUnsupported", "pageBlockTitle", "pageBlockSubtitle", "pageBlockAuthorDate", "pageBlockHeader", "pageBlockSubheader", "pageBlockParagraph", "pageBlockPreformatted", "pageBlockFooter", "pageBlockDivider", "pageBlockAnchor", "pageBlockList", "pageBlockBlockquote", "pageBlockPullquote", "pageBlockPhoto", "pageBlockVideo", "pageBlockCover", "pageBlockEmbed", "pageBlockEmbedPost", "pageBlockCollage", "pageBlockSlideshow", "pageBlockChannel", "pageBlockAudio", "pageBlockKicker", "pageBlockTable", "pageBlockOrderedList", "pageBlockDetails", "pageBlockRelatedArticles", "pageBlockMap"]],
-  ["PhoneCallDiscardReason", ["phoneCallDiscardReasonMissed", "phoneCallDiscardReasonDisconnect", "phoneCallDiscardReasonHangup", "phoneCallDiscardReasonBusy"]],
+  ["PhoneCallDiscardReason", ["phoneCallDiscardReasonMissed", "phoneCallDiscardReasonDisconnect", "phoneCallDiscardReasonHangup", "phoneCallDiscardReasonBusy", "phoneCallDiscardReasonAllowGroupCall"]],
   ["DataJSON", ["dataJSON"]],
   ["LabeledPrice", ["labeledPrice"]],
   ["Invoice", ["invoice"]],
@@ -20947,7 +21110,7 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["NotificationSound", ["notificationSoundDefault", "notificationSoundNone", "notificationSoundLocal", "notificationSoundRingtone"]],
   ["account.SavedRingtone", ["account.savedRingtone", "account.savedRingtoneConverted"]],
   ["AttachMenuPeerType", ["attachMenuPeerTypeSameBotPM", "attachMenuPeerTypeBotPM", "attachMenuPeerTypePM", "attachMenuPeerTypeChat", "attachMenuPeerTypeBroadcast"]],
-  ["InputInvoice", ["inputInvoiceMessage", "inputInvoiceSlug", "inputInvoicePremiumGiftCode", "inputInvoiceStars", "inputInvoiceChatInviteSubscription", "inputInvoiceStarGift"]],
+  ["InputInvoice", ["inputInvoiceMessage", "inputInvoiceSlug", "inputInvoicePremiumGiftCode", "inputInvoiceStars", "inputInvoiceChatInviteSubscription", "inputInvoiceStarGift", "inputInvoiceStarGiftUpgrade", "inputInvoiceStarGiftTransfer"]],
   ["payments.ExportedInvoice", ["payments.exportedInvoice"]],
   ["messages.TranscribedAudio", ["messages.transcribedAudio"]],
   ["help.PremiumPromo", ["help.premiumPromo"]],
@@ -21106,7 +21269,7 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["MessageReactor", ["messageReactor"]],
   ["StarsGiveawayOption", ["starsGiveawayOption"]],
   ["StarsGiveawayWinnersOption", ["starsGiveawayWinnersOption"]],
-  ["StarGift", ["starGift"]],
+  ["StarGift", ["starGift", "starGiftUnique"]],
   ["payments.StarGifts", ["payments.starGiftsNotModified", "payments.starGifts"]],
   ["UserStarGift", ["userStarGift"]],
   ["payments.UserStarGifts", ["payments.userStarGifts"]],
@@ -21121,6 +21284,11 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["payments.SuggestedStarRefBots", ["payments.suggestedStarRefBots"]],
   ["StarsAmount", ["starsAmount"]],
   ["messages.FoundStickers", ["messages.foundStickersNotModified", "messages.foundStickers"]],
+  ["BotVerifierSettings", ["botVerifierSettings"]],
+  ["BotVerification", ["botVerification"]],
+  ["StarGiftAttribute", ["starGiftAttributeModel", "starGiftAttributePattern", "starGiftAttributeBackdrop", "starGiftAttributeOriginalDetails"]],
+  ["payments.StarGiftUpgradePreview", ["payments.starGiftUpgradePreview"]],
+  ["users.Users", ["users.users", "users.usersSlice"]],
 ]);
 
 const types: Map<string, Parameters> = new Map([
@@ -21498,70 +21666,10 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
-    "ipPort",
+    "null",
     [
-      0xD433AD73,
-      [
-        ["ipv4", "number", "int"],
-        ["port", "number", "int"],
-      ],
-    ],
-  ],
-  [
-    "ipPortSecret",
-    [
-      0x37982646,
-      [
-        ["ipv4", "number", "int"],
-        ["port", "number", "int"],
-        ["secret", Uint8Array, "bytes"],
-      ],
-    ],
-  ],
-  [
-    "accessPointRule",
-    [
-      0x4679B65F,
-      [
-        ["phone_prefix_rules", "string", "string"],
-        ["dc_id", "number", "int"],
-        ["ips", ["IpPort"], "vector<IpPort>"],
-      ],
-    ],
-  ],
-  [
-    "help.configSimple",
-    [
-      0x5A592A6C,
-      [
-        ["date", "number", "int"],
-        ["expires", "number", "int"],
-        ["rules", ["AccessPointRule"], "vector<AccessPointRule>"],
-      ],
-    ],
-  ],
-  [
-    "inputPeerPhotoFileLocationLegacy",
-    [
-      0x27D69997,
-      [
-        ["flags", flags, "#"],
-        ["big", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["volume_id", "bigint", "long"],
-        ["local_id", "number", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputStickerSetThumbLegacy",
-    [
-      0x0DBAEAE9,
-      [
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
-        ["volume_id", "bigint", "long"],
-        ["local_id", "number", "int"],
-      ],
+      0x56730BCC,
+      [],
     ],
   ],
   [
@@ -22216,7 +22324,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "user",
     [
-      0x83314FCA,
+      0x4B46C37E,
       [
         ["flags", flags, "#"],
         ["self", "true", "flags.10?true"],
@@ -22263,6 +22371,7 @@ const types: Map<string, Parameters> = new Map([
         ["color", "PeerColor", "flags2.8?PeerColor"],
         ["profile_color", "PeerColor", "flags2.9?PeerColor"],
         ["bot_active_users", "number", "flags2.12?int"],
+        ["bot_verification_icon", "bigint", "flags2.14?long"],
       ],
     ],
   ],
@@ -22388,7 +22497,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "channel",
     [
-      0xFE4478BD,
+      0xE00998B7,
       [
         ["flags", flags, "#"],
         ["creator", "true", "flags.0?true"],
@@ -22434,6 +22543,7 @@ const types: Map<string, Parameters> = new Map([
         ["emoji_status", "EmojiStatus", "flags2.9?EmojiStatus"],
         ["level", "number", "flags2.10?int"],
         ["subscription_until_date", "number", "flags2.11?int"],
+        ["bot_verification_icon", "bigint", "flags2.13?long"],
       ],
     ],
   ],
@@ -22484,7 +22594,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "channelFull",
     [
-      0xBBAB348D,
+      0x9FF3B858,
       [
         ["flags", flags, "#"],
         ["can_view_participants", "true", "flags.3?true"],
@@ -22548,6 +22658,7 @@ const types: Map<string, Parameters> = new Map([
         ["boosts_applied", "number", "flags2.8?int"],
         ["boosts_unrestrict", "number", "flags2.9?int"],
         ["emojiset", "StickerSet", "flags2.10?StickerSet"],
+        ["bot_verification", "BotVerification", "flags2.17?BotVerification"],
       ],
     ],
   ],
@@ -22638,7 +22749,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "message",
     [
-      0x94345242,
+      0x96FDBBE9,
       [
         ["flags", flags, "#"],
         ["out", "true", "flags.1?true"],
@@ -22681,18 +22792,20 @@ const types: Map<string, Parameters> = new Map([
         ["quick_reply_shortcut_id", "number", "flags.30?int"],
         ["effect", "bigint", "flags2.2?long"],
         ["factcheck", "FactCheck", "flags2.3?FactCheck"],
+        ["report_delivery_until_date", "number", "flags2.5?int"],
       ],
     ],
   ],
   [
     "messageService",
     [
-      0x2B085862,
+      0xD3D28540,
       [
         ["flags", flags, "#"],
         ["out", "true", "flags.1?true"],
         ["mentioned", "true", "flags.4?true"],
         ["media_unread", "true", "flags.5?true"],
+        ["reactions_are_possible", "true", "flags.9?true"],
         ["silent", "true", "flags.13?true"],
         ["post", "true", "flags.14?true"],
         ["legacy", "true", "flags.19?true"],
@@ -22702,6 +22815,7 @@ const types: Map<string, Parameters> = new Map([
         ["reply_to", "MessageReplyHeader", "flags.3?MessageReplyHeader"],
         ["date", "number", "int"],
         ["action", "MessageAction", "MessageAction"],
+        ["reactions", "MessageReactions", "flags.20?MessageReactions"],
         ["ttl_period", "number", "flags.25?int"],
       ],
     ],
@@ -23409,15 +23523,36 @@ const types: Map<string, Parameters> = new Map([
   [
     "messageActionStarGift",
     [
-      0x08557637,
+      0xD8F4F0A7,
       [
         ["flags", flags, "#"],
         ["name_hidden", "true", "flags.0?true"],
         ["saved", "true", "flags.2?true"],
         ["converted", "true", "flags.3?true"],
+        ["upgraded", "true", "flags.5?true"],
+        ["refunded", "true", "flags.9?true"],
+        ["can_upgrade", "true", "flags.10?true"],
         ["gift", "StarGift", "StarGift"],
         ["message", "TextWithEntities", "flags.1?TextWithEntities"],
         ["convert_stars", "bigint", "flags.4?long"],
+        ["upgrade_msg_id", "number", "flags.5?int"],
+        ["upgrade_stars", "bigint", "flags.8?long"],
+      ],
+    ],
+  ],
+  [
+    "messageActionStarGiftUnique",
+    [
+      0x26077B99,
+      [
+        ["flags", flags, "#"],
+        ["upgrade", "true", "flags.0?true"],
+        ["transferred", "true", "flags.1?true"],
+        ["saved", "true", "flags.2?true"],
+        ["refunded", "true", "flags.5?true"],
+        ["gift", "StarGift", "StarGift"],
+        ["can_export_at", "number", "flags.3?int"],
+        ["transfer_stars", "bigint", "flags.4?long"],
       ],
     ],
   ],
@@ -23834,7 +23969,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "userFull",
     [
-      0x979D2376,
+      0x4D975BBC,
       [
         ["flags", flags, "#"],
         ["blocked", "true", "flags.0?true"],
@@ -23883,6 +24018,7 @@ const types: Map<string, Parameters> = new Map([
         ["personal_channel_message", "number", "flags2.6?int"],
         ["stargifts_count", "number", "flags2.8?int"],
         ["starref_program", "StarRefProgram", "flags2.11?StarRefProgram"],
+        ["bot_verification", "BotVerification", "flags2.12?BotVerification"],
       ],
     ],
   ],
@@ -25156,9 +25292,10 @@ const types: Map<string, Parameters> = new Map([
   [
     "updateGroupCall",
     [
-      0x14B24500,
+      0x97D64341,
       [
-        ["chat_id", "bigint", "long"],
+        ["flags", flags, "#"],
+        ["chat_id", "bigint", "flags.0?long"],
         ["call", "GroupCall", "GroupCall"],
       ],
     ],
@@ -27257,7 +27394,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "chatInvite",
     [
-      0xFE65389D,
+      0x5C9D3702,
       [
         ["flags", flags, "#"],
         ["channel", "true", "flags.0?true"],
@@ -27277,6 +27414,7 @@ const types: Map<string, Parameters> = new Map([
         ["color", "number", "int"],
         ["subscription_pricing", "StarsSubscriptionPricing", "flags.10?StarsSubscriptionPricing"],
         ["subscription_form_id", "bigint", "flags.12?long"],
+        ["bot_verification", "BotVerification", "flags.13?BotVerification"],
       ],
     ],
   ],
@@ -27433,7 +27571,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "botInfo",
     [
-      0x36607333,
+      0x4D8A0299,
       [
         ["flags", flags, "#"],
         ["has_preview_medias", "true", "flags.6?true"],
@@ -27445,6 +27583,7 @@ const types: Map<string, Parameters> = new Map([
         ["menu_button", "BotMenuButton", "flags.3?BotMenuButton"],
         ["privacy_policy_url", "string", "flags.7?string"],
         ["app_settings", "BotAppSettings", "flags.8?BotAppSettings"],
+        ["verifier_settings", "BotVerifierSettings", "flags.9?BotVerifierSettings"],
       ],
     ],
   ],
@@ -29622,6 +29761,15 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "phoneCallDiscardReasonAllowGroupCall",
+    [
+      0xAFE2B839,
+      [
+        ["encrypted_key", Uint8Array, "bytes"],
+      ],
+    ],
+  ],
+  [
     "dataJSON",
     [
       0x7D748D04,
@@ -30026,7 +30174,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "phoneCallWaiting",
     [
-      0xC5226F17,
+      0xEED42858,
       [
         ["flags", flags, "#"],
         ["video", "true", "flags.6?true"],
@@ -30037,13 +30185,14 @@ const types: Map<string, Parameters> = new Map([
         ["participant_id", "bigint", "long"],
         ["protocol", "PhoneCallProtocol", "PhoneCallProtocol"],
         ["receive_date", "number", "flags.0?int"],
+        ["conference_call", "InputGroupCall", "flags.8?InputGroupCall"],
       ],
     ],
   ],
   [
     "phoneCallRequested",
     [
-      0x14B0ED0C,
+      0x45361C63,
       [
         ["flags", flags, "#"],
         ["video", "true", "flags.6?true"],
@@ -30054,13 +30203,14 @@ const types: Map<string, Parameters> = new Map([
         ["participant_id", "bigint", "long"],
         ["g_a_hash", Uint8Array, "bytes"],
         ["protocol", "PhoneCallProtocol", "PhoneCallProtocol"],
+        ["conference_call", "InputGroupCall", "flags.8?InputGroupCall"],
       ],
     ],
   ],
   [
     "phoneCallAccepted",
     [
-      0x3660C311,
+      0x22FD7181,
       [
         ["flags", flags, "#"],
         ["video", "true", "flags.6?true"],
@@ -30071,13 +30221,14 @@ const types: Map<string, Parameters> = new Map([
         ["participant_id", "bigint", "long"],
         ["g_b", Uint8Array, "bytes"],
         ["protocol", "PhoneCallProtocol", "PhoneCallProtocol"],
+        ["conference_call", "InputGroupCall", "flags.8?InputGroupCall"],
       ],
     ],
   ],
   [
     "phoneCall",
     [
-      0x30535AF5,
+      0x3BA5940C,
       [
         ["flags", flags, "#"],
         ["p2p_allowed", "true", "flags.5?true"],
@@ -30093,13 +30244,14 @@ const types: Map<string, Parameters> = new Map([
         ["connections", ["PhoneConnection"], "Vector<PhoneConnection>"],
         ["start_date", "number", "int"],
         ["custom_parameters", "DataJSON", "flags.7?DataJSON"],
+        ["conference_call", "InputGroupCall", "flags.8?InputGroupCall"],
       ],
     ],
   ],
   [
     "phoneCallDiscarded",
     [
-      0x50CA4DE1,
+      0xF9D25503,
       [
         ["flags", flags, "#"],
         ["need_rating", "true", "flags.2?true"],
@@ -30108,6 +30260,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "bigint", "long"],
         ["reason", "PhoneCallDiscardReason", "flags.0?PhoneCallDiscardReason"],
         ["duration", "number", "flags.1?int"],
+        ["conference_call", "InputGroupCall", "flags.8?InputGroupCall"],
       ],
     ],
   ],
@@ -32416,7 +32569,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "dialogFilter",
     [
-      0x5FB5523B,
+      0xAA472651,
       [
         ["flags", flags, "#"],
         ["contacts", "true", "flags.0?true"],
@@ -32427,8 +32580,9 @@ const types: Map<string, Parameters> = new Map([
         ["exclude_muted", "true", "flags.11?true"],
         ["exclude_read", "true", "flags.12?true"],
         ["exclude_archived", "true", "flags.13?true"],
+        ["title_noanimate", "true", "flags.28?true"],
         ["id", "number", "int"],
-        ["title", "string", "string"],
+        ["title", "TextWithEntities", "TextWithEntities"],
         ["emoticon", "string", "flags.25?string"],
         ["color", "number", "flags.27?int"],
         ["pinned_peers", ["InputPeer"], "Vector<InputPeer>"],
@@ -32447,12 +32601,13 @@ const types: Map<string, Parameters> = new Map([
   [
     "dialogFilterChatlist",
     [
-      0x9FE28EA4,
+      0x96537BD7,
       [
         ["flags", flags, "#"],
         ["has_my_invites", "true", "flags.26?true"],
+        ["title_noanimate", "true", "flags.28?true"],
         ["id", "number", "int"],
-        ["title", "string", "string"],
+        ["title", "TextWithEntities", "TextWithEntities"],
         ["emoticon", "string", "flags.25?string"],
         ["color", "number", "flags.27?int"],
         ["pinned_peers", ["InputPeer"], "Vector<InputPeer>"],
@@ -32853,7 +33008,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "groupCall",
     [
-      0xD597650C,
+      0xCDF8D3E3,
       [
         ["flags", flags, "#"],
         ["join_muted", "true", "flags.1?true"],
@@ -32874,6 +33029,7 @@ const types: Map<string, Parameters> = new Map([
         ["unmuted_video_count", "number", "flags.10?int"],
         ["unmuted_video_limit", "number", "int"],
         ["version", "number", "int"],
+        ["conference_from_call", "bigint", "flags.14?long"],
       ],
     ],
   ],
@@ -33768,9 +33924,31 @@ const types: Map<string, Parameters> = new Map([
       [
         ["flags", flags, "#"],
         ["hide_name", "true", "flags.0?true"],
+        ["include_upgrade", "true", "flags.2?true"],
         ["user_id", "InputUser", "InputUser"],
         ["gift_id", "bigint", "long"],
         ["message", "TextWithEntities", "flags.1?TextWithEntities"],
+      ],
+    ],
+  ],
+  [
+    "inputInvoiceStarGiftUpgrade",
+    [
+      0x5EBE7262,
+      [
+        ["flags", flags, "#"],
+        ["keep_original_details", "true", "flags.0?true"],
+        ["msg_id", "number", "int"],
+      ],
+    ],
+  ],
+  [
+    "inputInvoiceStarGiftTransfer",
+    [
+      0xAE3BA9ED,
+      [
+        ["msg_id", "number", "int"],
+        ["to_id", "InputUser", "InputUser"],
       ],
     ],
   ],
@@ -34578,10 +34756,11 @@ const types: Map<string, Parameters> = new Map([
   [
     "chatlists.chatlistInvite",
     [
-      0x1DCD839D,
+      0xF10ECE2F,
       [
         ["flags", flags, "#"],
-        ["title", "string", "string"],
+        ["title_noanimate", "true", "flags.1?true"],
+        ["title", "TextWithEntities", "TextWithEntities"],
         ["emoticon", "string", "flags.0?string"],
         ["peers", ["Peer"], "Vector<Peer>"],
         ["chats", ["Chat"], "Vector<Chat>"],
@@ -36256,6 +36435,7 @@ const types: Map<string, Parameters> = new Map([
         ["failed", "true", "flags.6?true"],
         ["gift", "true", "flags.10?true"],
         ["reaction", "true", "flags.11?true"],
+        ["stargift_upgrade", "true", "flags.18?true"],
         ["id", "string", "string"],
         ["stars", "StarsAmount", "StarsAmount"],
         ["date", "number", "int"],
@@ -36508,7 +36688,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "starGift",
     [
-      0x49C577CD,
+      0x02CC73C8,
       [
         ["flags", flags, "#"],
         ["limited", "true", "flags.0?true"],
@@ -36522,6 +36702,22 @@ const types: Map<string, Parameters> = new Map([
         ["convert_stars", "bigint", "long"],
         ["first_sale_date", "number", "flags.1?int"],
         ["last_sale_date", "number", "flags.1?int"],
+        ["upgrade_stars", "bigint", "flags.3?long"],
+      ],
+    ],
+  ],
+  [
+    "starGiftUnique",
+    [
+      0x6A1407CD,
+      [
+        ["id", "bigint", "long"],
+        ["title", "string", "string"],
+        ["num", "number", "int"],
+        ["owner_id", "bigint", "long"],
+        ["attributes", ["StarGiftAttribute"], "Vector<StarGiftAttribute>"],
+        ["availability_issued", "number", "int"],
+        ["availability_total", "number", "int"],
       ],
     ],
   ],
@@ -36545,17 +36741,22 @@ const types: Map<string, Parameters> = new Map([
   [
     "userStarGift",
     [
-      0xEEA49A6E,
+      0x325835E1,
       [
         ["flags", flags, "#"],
         ["name_hidden", "true", "flags.0?true"],
         ["unsaved", "true", "flags.5?true"],
+        ["refunded", "true", "flags.9?true"],
+        ["can_upgrade", "true", "flags.10?true"],
         ["from_id", "bigint", "flags.1?long"],
         ["date", "number", "int"],
         ["gift", "StarGift", "StarGift"],
         ["message", "TextWithEntities", "flags.2?TextWithEntities"],
         ["msg_id", "number", "flags.3?int"],
         ["convert_stars", "bigint", "flags.4?long"],
+        ["upgrade_stars", "bigint", "flags.6?long"],
+        ["can_export_at", "number", "flags.7?int"],
+        ["transfer_stars", "bigint", "flags.8?long"],
       ],
     ],
   ],
@@ -36735,6 +36936,107 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "botVerifierSettings",
+    [
+      0xB0CD6617,
+      [
+        ["flags", flags, "#"],
+        ["can_modify_custom_description", "true", "flags.1?true"],
+        ["icon", "bigint", "long"],
+        ["company", "string", "string"],
+        ["custom_description", "string", "flags.0?string"],
+      ],
+    ],
+  ],
+  [
+    "botVerification",
+    [
+      0xF93CD45C,
+      [
+        ["bot_id", "bigint", "long"],
+        ["icon", "bigint", "long"],
+        ["description", "string", "string"],
+      ],
+    ],
+  ],
+  [
+    "starGiftAttributeModel",
+    [
+      0x39D99013,
+      [
+        ["name", "string", "string"],
+        ["document", "Document", "Document"],
+        ["rarity_permille", "number", "int"],
+      ],
+    ],
+  ],
+  [
+    "starGiftAttributePattern",
+    [
+      0x13ACFF19,
+      [
+        ["name", "string", "string"],
+        ["document", "Document", "Document"],
+        ["rarity_permille", "number", "int"],
+      ],
+    ],
+  ],
+  [
+    "starGiftAttributeBackdrop",
+    [
+      0x94271762,
+      [
+        ["name", "string", "string"],
+        ["center_color", "number", "int"],
+        ["edge_color", "number", "int"],
+        ["pattern_color", "number", "int"],
+        ["text_color", "number", "int"],
+        ["rarity_permille", "number", "int"],
+      ],
+    ],
+  ],
+  [
+    "starGiftAttributeOriginalDetails",
+    [
+      0xC02C4F4B,
+      [
+        ["flags", flags, "#"],
+        ["sender_id", "bigint", "flags.0?long"],
+        ["recipient_id", "bigint", "long"],
+        ["date", "number", "int"],
+        ["message", "TextWithEntities", "flags.1?TextWithEntities"],
+      ],
+    ],
+  ],
+  [
+    "payments.starGiftUpgradePreview",
+    [
+      0x167BD90B,
+      [
+        ["sample_attributes", ["StarGiftAttribute"], "Vector<StarGiftAttribute>"],
+      ],
+    ],
+  ],
+  [
+    "users.users",
+    [
+      0x62D706B8,
+      [
+        ["users", ["User"], "Vector<User>"],
+      ],
+    ],
+  ],
+  [
+    "users.usersSlice",
+    [
+      0x315A4974,
+      [
+        ["count", "number", "int"],
+        ["users", ["User"], "Vector<User>"],
+      ],
+    ],
+  ],
+  [
     "req_pq_multi",
     [
       0xBE7E8EF1,
@@ -36819,35 +37121,6 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD1435160,
       [],
-    ],
-  ],
-  [
-    "invokeWithBusinessConnectionPrefix",
-    [
-      0xDD289F8E,
-      [
-        ["connection_id", "string", "string"],
-      ],
-    ],
-  ],
-  [
-    "invokeWithGooglePlayIntegrityPrefix",
-    [
-      0x1DF92984,
-      [
-        ["nonce", "string", "string"],
-        ["token", "string", "string"],
-      ],
-    ],
-  ],
-  [
-    "invokeWithApnsSecretPrefix",
-    [
-      0x0DAE54F8,
-      [
-        ["nonce", "string", "string"],
-        ["secret", "string", "string"],
-      ],
     ],
   ],
   [
@@ -39146,6 +39419,8 @@ const types: Map<string, Parameters> = new Map([
       [
         ["flags", flags, "#"],
         ["broadcasts_only", "true", "flags.1?true"],
+        ["groups_only", "true", "flags.2?true"],
+        ["users_only", "true", "flags.3?true"],
         ["folder_id", "number", "flags.0?int"],
         ["q", "string", "string"],
         ["filter", "MessagesFilter", "MessagesFilter"],
@@ -41139,6 +41414,18 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "messages.reportMessagesDelivery",
+    [
+      0x5A6D7395,
+      [
+        ["flags", flags, "#"],
+        ["push", "true", "flags.0?true"],
+        ["peer", "InputPeer", "InputPeer"],
+        ["id", ["number"], "Vector<int>"],
+      ],
+    ],
+  ],
+  [
     "updates.getState",
     [
       0xEDD4882A,
@@ -42479,6 +42766,29 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "bots.setCustomVerification",
+    [
+      0x8B89DFBD,
+      [
+        ["flags", flags, "#"],
+        ["enabled", "true", "flags.1?true"],
+        ["bot", "InputUser", "flags.0?InputUser"],
+        ["peer", "InputPeer", "InputPeer"],
+        ["custom_description", "string", "flags.2?string"],
+      ],
+    ],
+  ],
+  [
+    "bots.getBotRecommendations",
+    [
+      0x2855BE61,
+      [
+        ["flags", flags, "#"],
+        ["bot", "InputUser", "InputUser"],
+      ],
+    ],
+  ],
+  [
     "payments.getPaymentForm",
     [
       0x37148DBB,
@@ -42807,11 +43117,10 @@ const types: Map<string, Parameters> = new Map([
   [
     "payments.saveStarGift",
     [
-      0x87ACF08E,
+      0x92FD2AAE,
       [
         ["flags", flags, "#"],
         ["unsave", "true", "flags.0?true"],
-        ["user_id", "InputUser", "InputUser"],
         ["msg_id", "number", "int"],
       ],
     ],
@@ -42819,9 +43128,8 @@ const types: Map<string, Parameters> = new Map([
   [
     "payments.convertStarGift",
     [
-      0x0421E027,
+      0x72770C83,
       [
-        ["user_id", "InputUser", "InputUser"],
         ["msg_id", "number", "int"],
       ],
     ],
@@ -42894,6 +43202,45 @@ const types: Map<string, Parameters> = new Map([
         ["revoked", "true", "flags.0?true"],
         ["peer", "InputPeer", "InputPeer"],
         ["link", "string", "string"],
+      ],
+    ],
+  ],
+  [
+    "payments.getStarGiftUpgradePreview",
+    [
+      0x9C9ABCB1,
+      [
+        ["gift_id", "bigint", "long"],
+      ],
+    ],
+  ],
+  [
+    "payments.upgradeStarGift",
+    [
+      0xCF4F0781,
+      [
+        ["flags", flags, "#"],
+        ["keep_original_details", "true", "flags.0?true"],
+        ["msg_id", "number", "int"],
+      ],
+    ],
+  ],
+  [
+    "payments.transferStarGift",
+    [
+      0x333FB526,
+      [
+        ["msg_id", "number", "int"],
+        ["to_id", "InputUser", "InputUser"],
+      ],
+    ],
+  ],
+  [
+    "payments.getUserStarGift",
+    [
+      0xB502E4A5,
+      [
+        ["msg_id", ["number"], "Vector<int>"],
       ],
     ],
   ],
@@ -43026,11 +43373,12 @@ const types: Map<string, Parameters> = new Map([
   [
     "phone.requestCall",
     [
-      0x42FF96ED,
+      0xA6C4600C,
       [
         ["flags", flags, "#"],
         ["video", "true", "flags.0?true"],
         ["user_id", "InputUser", "InputUser"],
+        ["conference_call", "InputGroupCall", "flags.1?InputGroupCall"],
         ["random_id", "number", "int"],
         ["g_a_hash", Uint8Array, "bytes"],
         ["protocol", "PhoneCallProtocol", "PhoneCallProtocol"],
@@ -43133,7 +43481,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "phone.joinGroupCall",
     [
-      0xB132FF7B,
+      0xD61E1DF3,
       [
         ["flags", flags, "#"],
         ["muted", "true", "flags.0?true"],
@@ -43141,6 +43489,7 @@ const types: Map<string, Parameters> = new Map([
         ["call", "InputGroupCall", "InputGroupCall"],
         ["join_as", "InputPeer", "InputPeer"],
         ["invite_hash", "string", "flags.1?string"],
+        ["key_fingerprint", "bigint", "flags.3?long"],
         ["params", "DataJSON", "DataJSON"],
       ],
     ],
@@ -43354,6 +43703,16 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPhoneCall", "InputPhoneCall"],
         ["file", "InputFile", "InputFile"],
+      ],
+    ],
+  ],
+  [
+    "phone.createConferenceCall",
+    [
+      0xDFC909AB,
+      [
+        ["peer", "InputPhoneCall", "InputPhoneCall"],
+        ["key_fingerprint", "bigint", "long"],
       ],
     ],
   ],
