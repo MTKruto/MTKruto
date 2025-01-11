@@ -28,7 +28,7 @@ import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuest
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
-import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageMediaParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetMyCommandsParams, SetReactionsParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetMyCommandsParams, SetReactionsParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, getUsername, isCdnFunction, isMtprotoFunction, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -120,13 +120,13 @@ export interface Context {
   /** Context-aware alias for `client.sendChatAction()`. */
   sendChatAction: (action: ChatAction, params?: { messageThreadId?: number }) => Promise<void>;
   /** Context-aware alias for `client.editInlineMessageText()`. */
-  editInlineMessageText: (text: string, params?: EditMessageParams) => Promise<void>;
+  editInlineMessageText: (text: string, params?: EditMessageTextParams) => Promise<void>;
   /** Context-aware alias for `client.editInlineMessageLiveLocation()`. */
   editInlineMessageLiveLocation: (latitude: number, longitude: number, params?: EditMessageLiveLocationParams) => Promise<void>;
   /** Context-aware alias for `client.editInlineMessageReplyMarkup()`. */
   editInlineMessageReplyMarkup: (params?: EditMessageReplyMarkupParams) => Promise<void>;
   /** Context-aware alias for `client.editMessageText()`. */
-  editMessageText: (messageId: number, text: string, params?: EditMessageParams) => Promise<MessageText>;
+  editMessageText: (messageId: number, text: string, params?: EditMessageTextParams) => Promise<MessageText>;
   /** Context-aware alias for `client.editMessageLiveLocation()`. */
   editMessageLiveLocation: (messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) => Promise<MessageLocation>;
   /** Context-aware alias for `client.editMessageReplyMarkup()`. */
@@ -2120,7 +2120,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param text The new text of the message.
    * @returns The edited text message.
    */
-  async editMessageText(chatId: ID, messageId: number, text: string, params?: EditMessageParams): Promise<MessageText> {
+  async editMessageText(chatId: ID, messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText> {
     return await this.#messageManager.editMessageText(chatId, messageId, text, params);
   }
 
@@ -2168,8 +2168,18 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param inlineMessageId The inline message's identifier.
    * @param text The new text of the message.
    */
-  async editInlineMessageText(inlineMessageId: string, text: string, params?: EditMessageParams): Promise<void> {
+  async editInlineMessageText(inlineMessageId: string, text: string, params?: EditInlineMessageTextParams): Promise<void> {
     await this.#messageManager.editInlineMessageText(inlineMessageId, text, params);
+  }
+
+  /**
+   * Edit an inline message's caption. Bot-only.
+   *
+   * @method ms
+   * @param inlineMessageId The inline message's identifier.
+   */
+  async editInlineMessageCaption(inlineMessageId: string, params?: EditInlineMessageCaptionParams): Promise<void> {
+    await this.#messageManager.editInlineMessageCaption(inlineMessageId, params);
   }
 
   /**

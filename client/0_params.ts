@@ -92,7 +92,7 @@ export interface SendChatActionParams extends _BusinessConnectionIdCommon {
   messageThreadId?: number;
 }
 
-export interface EditMessageParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
+export interface _EditMessageTextCommon extends _ReplyMarkupCommon {
   /** The parse mode to use. if omitted, the default parse mode will be used. */
   parseMode?: ParseMode;
   /** The message's entities. */
@@ -101,13 +101,25 @@ export interface EditMessageParams extends _BusinessConnectionIdCommon, _ReplyMa
   linkPreview?: LinkPreview;
 }
 
-export interface EditMessageCaptionParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
+export interface EditMessageTextParams extends _BusinessConnectionIdCommon, _EditMessageTextCommon {
+}
+
+export interface EditInlineMessageTextParams extends _EditMessageTextCommon {
+}
+
+export interface _EditMessageCaptionCommon extends _ReplyMarkupCommon {
   /** The message's new caption. If omitted, the caption will be removed.  */
   caption?: string;
   /** The parse mode to use. If omitted, the default parse mode will be used. */
   parseMode?: ParseMode;
   /** The caption's entities. */
   entities?: MessageEntity[];
+}
+
+export interface EditMessageCaptionParams extends _BusinessConnectionIdCommon, _EditMessageCaptionCommon {
+}
+
+export interface EditInlineMessageCaptionParams extends _EditMessageCaptionCommon {
 }
 
 export interface EditMessageReplyMarkupParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {

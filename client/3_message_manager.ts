@@ -27,7 +27,7 @@ import { assertMessageType, ChatAction, chatMemberRightsToTlObject, constructMes
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageMediaParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, AddReactionParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetCreatedInviteLinksParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import { canBeInputChannel, canBeInputUser, checkArray, checkMessageId, isHttpUrl, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
@@ -812,7 +812,7 @@ export class MessageManager {
     chatId: ID,
     messageId: number,
     text: string,
-    params?: EditMessageParams,
+    params?: EditMessageTextParams,
   ) {
     this.#checkParams(params);
     {
@@ -825,6 +825,9 @@ export class MessageManager {
       }
     }
     const [message, entities] = await this.parseText(text, params);
+    if (!message) {
+      throw new InputError("Message text cannot be empty.");
+    }
     const noWebpage = params?.linkPreview?.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
 
@@ -879,9 +882,12 @@ export class MessageManager {
     return (await this.#updatesToMessages(chatId, result))[0];
   }
 
-  async editInlineMessageText(inlineMessageId: string, text: string, params?: EditMessageParams) {
+  async #editInlineMessageTextInner(inlineMessageId: string, text: string, params?: EditMessageTextParams, allowEmpty = true) {
     this.#checkParams(params);
     const [message, entities] = await this.parseText(text, params);
+    if (!allowEmpty && !message) {
+      throw new InputError("Message text cannot be empty.");
+    }
 
     const id = deserializeInlineMessageId(inlineMessageId);
     const noWebpage = params?.linkPreview?.disable ? true : undefined;
@@ -893,6 +899,14 @@ export class MessageManager {
     }
 
     await this.#c.invoke({ _: "messages.editInlineBotMessage", id, entities, message, media, no_webpage: noWebpage, invert_media: invertMedia, reply_markup: await this.#constructReplyMarkup(params) });
+  }
+
+  async editInlineMessageText(inlineMessageId: string, text: string, params?: EditInlineMessageTextParams) {
+    await this.#editInlineMessageTextInner(inlineMessageId, text, params, false);
+  }
+
+  async editInlineMessageCaption(inlineMessageId: string, params?: EditInlineMessageCaptionParams) {
+    await this.#editInlineMessageTextInner(inlineMessageId, params?.caption ?? "", params);
   }
 
   async #resolveInputMediaInner(document: FileSource, media: InputMedia, fileType: FileType, otherAttribs: Api.DocumentAttribute[]) {
