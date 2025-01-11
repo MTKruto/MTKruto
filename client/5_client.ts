@@ -120,13 +120,21 @@ export interface Context {
   /** Context-aware alias for `client.sendChatAction()`. */
   sendChatAction: (action: ChatAction, params?: { messageThreadId?: number }) => Promise<void>;
   /** Context-aware alias for `client.editInlineMessageText()`. */
-  editInlineMessageText: (text: string, params?: EditMessageTextParams) => Promise<void>;
+  editInlineMessageText: (text: string, params?: EditInlineMessageTextParams) => Promise<void>;
+  /** Context-aware alias for `client.editInlineMessageCaption()`. */
+  editInlineMessageCaption: (params?: EditInlineMessageCaptionParams) => Promise<void>;
+  /** Context-aware alias for `client.editInlineMessageMedia()`. */
+  editInlineMessageMedia: (media: InputMedia, params?: EditInlineMessageMediaParams) => Promise<void>;
   /** Context-aware alias for `client.editInlineMessageLiveLocation()`. */
   editInlineMessageLiveLocation: (latitude: number, longitude: number, params?: EditMessageLiveLocationParams) => Promise<void>;
   /** Context-aware alias for `client.editInlineMessageReplyMarkup()`. */
   editInlineMessageReplyMarkup: (params?: EditMessageReplyMarkupParams) => Promise<void>;
   /** Context-aware alias for `client.editMessageText()`. */
   editMessageText: (messageId: number, text: string, params?: EditMessageTextParams) => Promise<MessageText>;
+  /** Context-aware alias for `client.editMessageCaption()`. */
+  editMessageCaption: (messageId: number, params?: EditMessageCaptionParams) => Promise<Message>;
+  /** Context-aware alias for `client.editMessageMedia()`. */
+  editMessageMedia: (messageId: number, media: InputMedia, params?: EditMessageMediaParams) => Promise<Message>;
   /** Context-aware alias for `client.editMessageLiveLocation()`. */
   editMessageLiveLocation: (messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) => Promise<MessageLocation>;
   /** Context-aware alias for `client.editMessageReplyMarkup()`. */
@@ -840,6 +848,14 @@ export class Client<C extends Context = Context> extends Composer<C> {
         const inlineMessageId = mustGetInlineMsgId();
         return this.editInlineMessageText(inlineMessageId, text, params);
       },
+      editInlineMessageMedia: (media, params) => {
+        const inlineMessageId = mustGetInlineMsgId();
+        return this.editInlineMessageMedia(inlineMessageId, media, params);
+      },
+      editInlineMessageCaption: (params) => {
+        const inlineMessageId = mustGetInlineMsgId();
+        return this.editInlineMessageCaption(inlineMessageId, params);
+      },
       editInlineMessageLiveLocation: (latitude, longitude, params) => {
         const inlineMessageId = mustGetInlineMsgId();
         return this.editInlineMessageLiveLocation(inlineMessageId, latitude, longitude, params);
@@ -851,6 +867,14 @@ export class Client<C extends Context = Context> extends Composer<C> {
       editMessageText: (messageId, text, params) => {
         const { chatId } = mustGetMsg();
         return this.editMessageText(chatId, messageId, text, params);
+      },
+      editMessageCaption: (messageId, params) => {
+        const { chatId } = mustGetMsg();
+        return this.editMessageCaption(chatId, messageId, params);
+      },
+      editMessageMedia: (messageId, media, params) => {
+        const { chatId } = mustGetMsg();
+        return this.editMessageMedia(chatId, messageId, media, params);
       },
       editMessageLiveLocation: (messageId, latitude, longitude, params) => {
         const { chatId } = mustGetMsg();
