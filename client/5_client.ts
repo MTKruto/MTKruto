@@ -49,6 +49,7 @@ import { MessageManager } from "./3_message_manager.ts";
 import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { CallbackQueryManager } from "./4_callback_query_manager.ts";
 import { ChatListManager } from "./4_chat_list_manager.ts";
+import { ChatManager } from "./4_chat_manager.ts";
 import { InlineQueryManager } from "./4_inline_query_manager.ts";
 import { PollManager } from "./4_poll_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
@@ -299,6 +300,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #videoChatManager: VideoChatManager;
   #businessConnectionManager: BusinessConnectionManager;
   #messageManager: MessageManager;
+  #chatManager: ChatManager;
   #storyManager: StoryManager;
   #pollManager: PollManager;
   #callbackQueryManager: CallbackQueryManager;
@@ -465,6 +467,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#businessConnectionManager = new BusinessConnectionManager(c);
     this.#videoChatManager = new VideoChatManager({ ...c, fileManager: this.#fileManager });
     this.#messageManager = new MessageManager({ ...c, fileManager: this.#fileManager });
+    this.#chatManager = new ChatManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
     this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager: this.#messageManager });
     this.#pollManager = new PollManager({ ...c, messageManager: this.#messageManager });
     this.#storyManager = new StoryManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
@@ -2592,7 +2595,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param availableReactions The new available reactions.
    */
   async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]) {
-    await this.#messageManager.setAvailableReactions(chatId, availableReactions);
+    await this.#chatManager.setAvailableReactions(chatId, availableReactions);
   }
 
   /**
@@ -2603,7 +2606,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param photo A photo to set as the chat's photo.
    */
   async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams) {
-    await this.#messageManager.setChatPhoto(chatId, photo, params);
+    await this.#chatManager.setChatPhoto(chatId, photo, params);
   }
 
   /**
@@ -2613,7 +2616,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param chatId The identifier of the chat.
    */
   async deleteChatPhoto(chatId: number) {
-    await this.#messageManager.deleteChatPhoto(chatId);
+    await this.#chatManager.deleteChatPhoto(chatId);
   }
 
   /**
@@ -2624,7 +2627,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param memberId The identifier of the member.
    */
   async banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams) {
-    await this.#messageManager.banChatMember(chatId, memberId, params);
+    await this.#chatManager.banChatMember(chatId, memberId, params);
   }
 
   /**
@@ -2635,7 +2638,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param memberId The identifier of the member.
    */
   async unbanChatMember(chatId: ID, memberId: ID) {
-    await this.#messageManager.unbanChatMember(chatId, memberId);
+    await this.#chatManager.unbanChatMember(chatId, memberId);
   }
 
   /**
@@ -2646,8 +2649,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param memberId The identifier of the member.
    */
   async kickChatMember(chatId: ID, memberId: ID) {
-    await this.#messageManager.banChatMember(chatId, memberId);
-    await this.#messageManager.unbanChatMember(chatId, memberId);
+    await this.#chatManager.banChatMember(chatId, memberId);
+    await this.#chatManager.unbanChatMember(chatId, memberId);
   }
 
   /**
@@ -2658,7 +2661,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param memberId The identifier of a member.
    */
   async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams) {
-    await this.#messageManager.setChatMemberRights(chatId, memberId, params);
+    await this.#chatManager.setChatMemberRights(chatId, memberId, params);
   }
 
   /**
@@ -2679,7 +2682,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param chatId The identifier of the chat. Must be a channel or a supergroup.
    */
   async enableJoinRequests(chatId: ID) {
-    await this.#messageManager.enableJoinRequests(chatId);
+    await this.#chatManager.enableJoinRequests(chatId);
   }
 
   /**
@@ -2689,7 +2692,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param chatId The identifier of the chat. Must be a channel or a supergroup.
    */
   async disableJoinRequests(chatId: ID) {
-    await this.#messageManager.disableJoinRequests(chatId);
+    await this.#chatManager.disableJoinRequests(chatId);
   }
 
   /**
@@ -2710,7 +2713,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @returns The invite links created for the chat. This might be a subset of the results if they were less than `limit`. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
    */
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]> {
-    return await this.#messageManager.getCreatedInviteLinks(chatId, params);
+    return await this.#chatManager.getCreatedInviteLinks(chatId, params);
   }
 
   /**
@@ -2720,7 +2723,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param chatId The identifier of the chat to join.
    */
   async joinChat(chatId: ID) {
-    await this.#messageManager.joinChat(chatId);
+    await this.#chatManager.joinChat(chatId);
   }
 
   /**
@@ -2730,7 +2733,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param chatId The identifier of the chat to leave.
    */
   async leaveChat(chatId: ID) {
-    await this.#messageManager.leaveChat(chatId);
+    await this.#chatManager.leaveChat(chatId);
   }
 
   /**
@@ -2783,7 +2786,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param boosts The number of boosts required to circumvent its restrictions.
    */
   async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number) {
-    await this.#messageManager.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
+    await this.#chatManager.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
   }
 
   /**
@@ -2794,7 +2797,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @returns The newly created invite link.
    */
   async createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink> {
-    return await this.#messageManager.createInviteLink(chatId, params);
+    return await this.#chatManager.createInviteLink(chatId, params);
   }
 
   /**
@@ -2805,7 +2808,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param userId The user who made the join request.
    */
   async approveJoinRequest(chatId: ID, userId: ID): Promise<void> {
-    await this.#messageManager.approveJoinRequest(chatId, userId);
+    await this.#chatManager.approveJoinRequest(chatId, userId);
   }
 
   /**
@@ -2816,7 +2819,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param userId The user who made the join request.
    */
   async declineJoinRequest(chatId: ID, userId: ID): Promise<void> {
-    await this.#messageManager.declineJoinRequest(chatId, userId);
+    await this.#chatManager.declineJoinRequest(chatId, userId);
   }
 
   /**
@@ -2826,7 +2829,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param chatId The identifier of the chat that contains the join requests.
    */
   async approveJoinRequests(chatId: ID, params?: ApproveJoinRequestsParams): Promise<void> {
-    await this.#messageManager.approveJoinRequests(chatId, params);
+    await this.#chatManager.approveJoinRequests(chatId, params);
   }
 
   /**
@@ -2836,7 +2839,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param chatId The identifier of the chat that contains the join requests.
    */
   async declineJoinRequests(chatId: ID, params?: DeclineJoinRequestsParams): Promise<void> {
-    await this.#messageManager.declineJoinRequests(chatId, params);
+    await this.#chatManager.declineJoinRequests(chatId, params);
   }
 
   /**
@@ -2848,7 +2851,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @returns An array of FailedInvitation that has at most a length of 1. If empty, it means that the user was added.
    */
   async addChatMember(chatId: ID, userId: ID, params?: AddChatMemberParams): Promise<FailedInvitation[]> {
-    return await this.#messageManager.addChatMember(chatId, userId, params);
+    return await this.#chatManager.addChatMember(chatId, userId, params);
   }
 
   /**
@@ -2859,7 +2862,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param userId The identifiers of the users to add to the channel or supergroup.
    */
   async addChatMembers(chatId: ID, userIds: ID[]): Promise<FailedInvitation[]> {
-    return await this.#messageManager.addChatMembers(chatId, userIds);
+    return await this.#chatManager.addChatMembers(chatId, userIds);
   }
 
   /**
