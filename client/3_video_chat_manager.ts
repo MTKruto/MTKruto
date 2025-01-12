@@ -24,6 +24,7 @@ import { getRandomId, toUnixTimestamp, ZERO_CHANNEL_ID } from "../1_utilities.ts
 import { Api, as, is, isOneOf } from "../2_tl.ts";
 import { constructLiveStreamChannel, constructVideoChat, ID, Update, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { DownloadLiveStreamChunkParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
+import { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
@@ -38,7 +39,7 @@ const videoChatManagerUpdates = [
 
 type VideoChatManagerUpdate = Api.Types[(typeof videoChatManagerUpdates)[number]];
 
-export class VideoChatManager {
+export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate> {
   #c: C;
 
   constructor(c: C) {
@@ -129,7 +130,7 @@ export class VideoChatManager {
     return constructVideoChat(await this.#getCall(id));
   }
 
-  static canHandleUpdate(update: Api.Update): update is VideoChatManagerUpdate {
+  canHandleUpdate(update: Api.Update): update is VideoChatManagerUpdate {
     return isOneOf(videoChatManagerUpdates, update);
   }
 

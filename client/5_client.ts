@@ -292,43 +292,50 @@ export interface ClientParams extends ClientPlainParams {
 export class Client<C extends Context = Context> extends Composer<C> {
   #client: ClientEncrypted;
   #guaranteeUpdateDelivery: boolean;
-  #updateManager: UpdateManager;
-  #networkStatisticsManager: NetworkStatisticsManager;
-  #botInfoManager: BotInfoManager;
-  #fileManager: FileManager;
-  #reactionManager: ReactionManager;
-  #videoChatManager: VideoChatManager;
-  #businessConnectionManager: BusinessConnectionManager;
-  #messageManager: MessageManager;
-  #chatManager: ChatManager;
-  #storyManager: StoryManager;
-  #pollManager: PollManager;
-  #callbackQueryManager: CallbackQueryManager;
-  #inlineQueryManager: InlineQueryManager;
-  #chatListManager: ChatListManager;
+  // 2_
   #accountManager: AccountManager;
+  #botInfoManager: BotInfoManager;
+  #businessConnectionManager: BusinessConnectionManager;
+  #fileManager: FileManager;
+  #networkStatisticsManager: NetworkStatisticsManager;
   #paymentManager: PaymentManager;
+  #reactionManager: ReactionManager;
   #translationsManager: TranslationsManager;
+  #updateManager: UpdateManager;
+  // 3_
+  #messageManager: MessageManager;
+  #videoChatManager: VideoChatManager;
+  // 4_
+  #callbackQueryManager: CallbackQueryManager;
+  #chatListManager: ChatListManager;
+  #chatManager: ChatManager;
+  #inlineQueryManager: InlineQueryManager;
+  #pollManager: PollManager;
+  #storyManager: StoryManager;
+
   // deno-lint-ignore no-explicit-any
   #managers?: Record<string, any>;
   // deno-lint-ignore no-explicit-any
   get managers(): Record<string, any> {
     return this.#managers ?? (this.#managers ??= {
-      updateManager: this.#updateManager,
-      networkStatisticsManager: this.#networkStatisticsManager,
-      botInfoManager: this.#botInfoManager,
-      fileManager: this.#fileManager,
-      reactionManager: this.#reactionManager,
-      videoChatManager: this.#videoChatManager,
-      businessConnectionManager: this.#businessConnectionManager,
-      messageManager: this.#messageManager,
-      storyManager: this.#storyManager,
-      callbackQueryManager: this.#callbackQueryManager,
-      inlineQueryManager: this.#inlineQueryManager,
-      chatListManager: this.#chatListManager,
+      // 2_
       accountManager: this.#accountManager,
+      botInfoManager: this.#botInfoManager,
+      businessConnectionManager: this.#businessConnectionManager,
+      fileManager: this.#fileManager,
+      networkStatisticsManager: this.#networkStatisticsManager,
       paymentManager: this.#paymentManager,
+      reactionManager: this.#reactionManager,
       translationsManager: this.#translationsManager,
+      updateManager: this.#updateManager,
+      // 3_
+      messageManager: this.#messageManager,
+      videoChatManager: this.#videoChatManager,
+      // 4_
+      callbackQueryManager: this.#callbackQueryManager,
+      chatListManager: this.#chatListManager,
+      inlineQueryManager: this.#inlineQueryManager,
+      storyManager: this.#storyManager,
     });
   }
 
@@ -459,23 +466,28 @@ export class Client<C extends Context = Context> extends Composer<C> {
       langPack: this.platform,
       langCode: this.language,
     };
-    this.#updateManager = new UpdateManager(c);
-    this.#networkStatisticsManager = new NetworkStatisticsManager(c);
-    this.#botInfoManager = new BotInfoManager(c);
-    this.#fileManager = new FileManager(c);
-    this.#reactionManager = new ReactionManager(c);
-    this.#businessConnectionManager = new BusinessConnectionManager(c);
-    this.#videoChatManager = new VideoChatManager({ ...c, fileManager: this.#fileManager });
-    this.#messageManager = new MessageManager({ ...c, fileManager: this.#fileManager });
-    this.#chatManager = new ChatManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
-    this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager: this.#messageManager });
-    this.#pollManager = new PollManager({ ...c, messageManager: this.#messageManager });
-    this.#storyManager = new StoryManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
-    this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager: this.#messageManager });
-    this.#chatListManager = new ChatListManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
+
+    // 2_
     this.#accountManager = new AccountManager(c);
+    this.#botInfoManager = new BotInfoManager(c);
+    this.#businessConnectionManager = new BusinessConnectionManager(c);
+    const fileManager = this.#fileManager = new FileManager(c);
+    this.#networkStatisticsManager = new NetworkStatisticsManager(c);
     this.#paymentManager = new PaymentManager(c);
+    this.#reactionManager = new ReactionManager(c);
     this.#translationsManager = new TranslationsManager(c);
+    this.#updateManager = new UpdateManager(c);
+    // 3_
+    const messageManager = this.#messageManager = new MessageManager({ ...c, fileManager });
+    this.#videoChatManager = new VideoChatManager({ ...c, fileManager });
+    // 4_
+    this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager });
+    this.#chatListManager = new ChatListManager({ ...c, fileManager, messageManager });
+    this.#chatManager = new ChatManager({ ...c, fileManager, messageManager });
+    this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager });
+    this.#pollManager = new PollManager({ ...c, messageManager });
+    this.#storyManager = new StoryManager({ ...c, fileManager, messageManager });
+
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
 
     const transportProvider = this.#client.transportProvider;
@@ -1733,17 +1745,17 @@ export class Client<C extends Context = Context> extends Composer<C> {
       }
     }
 
-    if (MessageManager.canHandleUpdate(update)) {
+    if (this.#messageManager.canHandleUpdate(update)) {
       promises.push(async () => {
-        const update_ = await this.#messageManager.handleUpdate(update);
-        if (!update_) {
+        const ctxUpdate = await this.#messageManager.handleUpdate(update);
+        if (!ctxUpdate) {
           return;
         }
         try {
-          await this.#handleCtxUpdate(update_);
+          await this.#handleCtxUpdate(ctxUpdate);
         } finally {
-          if ("deletedMessages" in update_) {
-            for (const { chatId, messageId } of update_.deletedMessages) {
+          if ("deletedMessages" in ctxUpdate) {
+            for (const { chatId, messageId } of ctxUpdate.deletedMessages) {
               await this.messageStorage.setMessage(chatId, messageId, null);
               await this.#chatListManager.reassignChatLastMessage(chatId);
             }
@@ -1752,7 +1764,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
       });
     }
 
-    if (PollManager.canHandleUpdate(update)) {
+    if (this.#chatManager.canHandleUpdate(update)) {
+      promises.push(async () => {
+        const ctxUpdate = await this.#chatManager.handleUpdate(update);
+        if (ctxUpdate) {
+          await this.#handleCtxUpdate(ctxUpdate);
+        }
+      });
+    }
+
+    if (this.#pollManager.canHandleUpdate(update)) {
       promises.push(async () => {
         const ctxUpdate = await this.#pollManager.handleUpdate(update);
         if (ctxUpdate) {
@@ -1761,7 +1782,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       });
     }
 
-    if (VideoChatManager.canHandleUpdate(update)) {
+    if (this.#videoChatManager.canHandleUpdate(update)) {
       promises.push(async () => {
         const ctxUpdate = await this.#videoChatManager.handleUpdate(update);
         if (ctxUpdate) {
@@ -1770,15 +1791,15 @@ export class Client<C extends Context = Context> extends Composer<C> {
       });
     }
 
-    if (CallbackQueryManager.canHandleUpdate(update)) {
+    if (this.#callbackQueryManager.canHandleUpdate(update)) {
       promises.push(async () => this.#handleCtxUpdate(await this.#callbackQueryManager.handleUpdate(update)));
     }
 
-    if (InlineQueryManager.canHandleUpdate(update)) {
+    if (this.#inlineQueryManager.canHandleUpdate(update)) {
       promises.push(async () => this.#handleCtxUpdate(await this.#inlineQueryManager.handleUpdate(update)));
     }
 
-    if (ReactionManager.canHandleUpdate(update)) {
+    if (this.#reactionManager.canHandleUpdate(update)) {
       promises.push(async () => {
         const upd = await this.#reactionManager.handleUpdate(update);
         if (upd) {
@@ -1787,21 +1808,48 @@ export class Client<C extends Context = Context> extends Composer<C> {
       });
     }
 
-    if (ChatListManager.canHandleUpdate(update)) {
+    if (this.#chatListManager.canHandleUpdate(update)) {
       promises.push(() => this.#chatListManager.handleUpdate(update));
     }
 
-    if (StoryManager.canHandleUpdate(update)) {
+    if (this.#storyManager.canHandleUpdate(update)) {
       promises.push(async () => {
-        const upd = await this.#storyManager.handleUpdate(update);
-        if (upd) {
-          await this.#handleCtxUpdate(upd);
+        const ctxUpdate = await this.#storyManager.handleUpdate(update);
+        if (ctxUpdate) {
+          await this.#handleCtxUpdate(ctxUpdate);
         }
       });
     }
 
-    if (BusinessConnectionManager.canHandleUpdate(update)) {
+    if (this.#businessConnectionManager.canHandleUpdate(update)) {
       promises.push(async () => this.#handleCtxUpdate(await this.#businessConnectionManager.handleUpdate(update)));
+    }
+
+    if (this.#storyManager.canHandleUpdate(update)) {
+      promises.push(async () => {
+        const ctxUpdate = await this.#storyManager.handleUpdate(update);
+        if (ctxUpdate) {
+          await this.#handleCtxUpdate(ctxUpdate);
+        }
+      });
+    }
+
+    if (this.#paymentManager.canHandleUpdate(update)) {
+      promises.push(async () => {
+        const ctxUpdate = await this.#paymentManager.handleUpdate(update);
+        if (ctxUpdate) {
+          await this.#handleCtxUpdate(ctxUpdate);
+        }
+      });
+    }
+
+    if (this.#translationsManager.canHandleUpdate(update)) {
+      promises.push(async () => {
+        const ctxUpdate = await this.#translationsManager.handleUpdate(update);
+        if (ctxUpdate) {
+          await this.#handleCtxUpdate(ctxUpdate);
+        }
+      });
     }
 
     return () => Promise.all(promises.map((v) => v()));

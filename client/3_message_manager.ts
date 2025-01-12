@@ -28,6 +28,7 @@ import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
 import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
@@ -55,7 +56,7 @@ const messageManagerUpdates = [
 
 type MessageManagerUpdate = Api.Types[(typeof messageManagerUpdates)[number]];
 
-export class MessageManager {
+export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   #c: C;
   #LresolveFileId: Logger;
 
@@ -1117,7 +1118,7 @@ export class MessageManager {
     }
   }
 
-  static canHandleUpdate(update: Api.Update): update is MessageManagerUpdate {
+  canHandleUpdate(update: Api.Update): update is MessageManagerUpdate {
     return isOneOf(messageManagerUpdates, update);
   }
 

@@ -20,6 +20,7 @@
 
 import { Api, as, isOneOf } from "../2_tl.ts";
 import { constructBusinessConnection, Update } from "../3_types.ts";
+import { UpdateProcessor } from "./0_update_processor.ts";
 import { C } from "./1_types.ts";
 
 const businessConnectionManagerUpdates = [
@@ -28,7 +29,7 @@ const businessConnectionManagerUpdates = [
 
 type BusinessConnectionManagerUpdate = Api.Types[(typeof businessConnectionManagerUpdates)[number]];
 
-export class BusinessConnectionManager {
+export class BusinessConnectionManager implements UpdateProcessor<BusinessConnectionManagerUpdate> {
   #c: C;
 
   constructor(c: C) {
@@ -48,7 +49,7 @@ export class BusinessConnectionManager {
     }
   }
 
-  static canHandleUpdate(update: Api.Update): update is BusinessConnectionManagerUpdate {
+  canHandleUpdate(update: Api.Update): update is BusinessConnectionManagerUpdate {
     return isOneOf(businessConnectionManagerUpdates, update);
   }
 

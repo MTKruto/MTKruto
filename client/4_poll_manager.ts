@@ -22,6 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api, IdentifierContainer, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { constructPoll, ID, Update } from "../3_types.ts";
+import { UpdateProcessor } from "./0_update_processor.ts";
 import { C as C_ } from "./1_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
 
@@ -33,7 +34,7 @@ const pollManagerUpdates = [
 
 type PollManagerUpdate = Api.Types[(typeof pollManagerUpdates)[number]];
 
-export class PollManager {
+export class PollManager implements UpdateProcessor<PollManagerUpdate> {
   #c: C;
 
   constructor(c: C) {
@@ -88,7 +89,7 @@ export class PollManager {
     await this.#c.invoke({ _: "messages.sendVote", peer, msg_id: messageId, options });
   }
 
-  static canHandleUpdate(update: Api.Update): update is PollManagerUpdate {
+  canHandleUpdate(update: Api.Update): update is PollManagerUpdate {
     return isOneOf(pollManagerUpdates, update);
   }
 

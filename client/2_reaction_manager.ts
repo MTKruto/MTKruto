@@ -21,6 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { Api, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { constructMessageReaction, constructMessageReactionCount, constructMessageReactions, Update } from "../3_types.ts";
+import { UpdateProcessor } from "./0_update_processor.ts";
 import { C } from "./1_types.ts";
 
 const reactionManagerUpdates = [
@@ -33,14 +34,14 @@ const reactionManagerUpdates = [
 
 type ReactionManagerUpdate = Api.Types[(typeof reactionManagerUpdates)[number]];
 
-export class ReactionManager {
+export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate> {
   #c: C;
 
   constructor(c: C) {
     this.#c = c;
   }
 
-  static canHandleUpdate(update: Api.Update): update is ReactionManagerUpdate {
+  canHandleUpdate(update: Api.Update): update is ReactionManagerUpdate {
     return isOneOf(reactionManagerUpdates, update);
   }
 

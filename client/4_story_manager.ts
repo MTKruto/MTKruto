@@ -25,6 +25,7 @@ import { Api, as, inputPeerToPeer, is, isOneOf, peerToChatId } from "../2_tl.ts"
 import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, Update } from "../3_types.ts";
 import { InputStoryContent } from "../types/1_input_story_content.ts";
 import { CreateStoryParams } from "./0_params.ts";
+import { UpdateProcessor } from "./0_update_processor.ts";
 import { checkArray, checkStoryId, isHttpUrl } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
@@ -38,7 +39,7 @@ const storyManagerUpdates = [
 
 type StoryManagerUpdate = Api.Types[(typeof storyManagerUpdates)[number]];
 
-export class StoryManager {
+export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
   #c: C;
 
   constructor(c: C) {
@@ -158,7 +159,7 @@ export class StoryManager {
     await this.removeStoriesFromHighlights(chatId, [storyId]);
   }
 
-  static canHandleUpdate(update: Api.Update): update is StoryManagerUpdate {
+  canHandleUpdate(update: Api.Update): update is StoryManagerUpdate {
     return isOneOf(storyManagerUpdates, update);
   }
 

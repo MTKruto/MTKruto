@@ -22,6 +22,7 @@ import { Api, isOneOf } from "../2_tl.ts";
 import { CallbackQueryQuestion, constructCallbackQuery, constructCallbackQueryAnswer, ID, Update, validateCallbackQueryQuestion } from "../3_types.ts";
 import { AnswerCallbackQueryParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
+import { UpdateProcessor } from "./0_update_processor.ts";
 import { checkCallbackQueryId, checkMessageId } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
@@ -35,7 +36,7 @@ const callbackQueryManagerUpdates = [
 
 type CallbackQueryManagerUpdate = Api.Types[(typeof callbackQueryManagerUpdates)[number]];
 
-export class CallbackQueryManager {
+export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManagerUpdate> {
   #c: C;
 
   constructor(c: C) {
@@ -74,7 +75,7 @@ export class CallbackQueryManager {
     return await checkPassword(password, ap);
   }
 
-  static canHandleUpdate(update: Api.Update): update is CallbackQueryManagerUpdate {
+  canHandleUpdate(update: Api.Update): update is CallbackQueryManagerUpdate {
     return isOneOf(callbackQueryManagerUpdates, update);
   }
 

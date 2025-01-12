@@ -22,6 +22,7 @@ import { InputError } from "../0_errors.ts";
 import { Api, is, isOneOf } from "../2_tl.ts";
 import { constructPreCheckoutQuery, ID, Update } from "../3_types.ts";
 import { AnswerPreCheckoutQueryParams } from "./0_params.ts";
+import { UpdateProcessor } from "./0_update_processor.ts";
 import { C } from "./1_types.ts";
 
 const paymentManagerUpdates = [
@@ -30,14 +31,14 @@ const paymentManagerUpdates = [
 
 type PaymentManagerUpdate = Api.Types[(typeof paymentManagerUpdates)[number]];
 
-export class PaymentManager {
+export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
   #c: C;
 
   constructor(c: C) {
     this.#c = c;
   }
 
-  static canHandleUpdate(update: Api.Update): update is PaymentManagerUpdate {
+  canHandleUpdate(update: Api.Update): update is PaymentManagerUpdate {
     return isOneOf(paymentManagerUpdates, update);
   }
 

@@ -25,6 +25,7 @@ import { Api, as, is, isOneOf } from "../2_tl.ts";
 import { constructChatMemberUpdated, constructFailedInvitation, constructInviteLink, constructJoinRequest } from "../3_types.ts";
 import { chatMemberRightsToTlObject, FileSource, ID, Reaction, reactionToTlObject, Update } from "../3_types.ts";
 import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, SetChatMemberRightsParams, SetChatPhotoParams } from "./0_params.ts";
+import { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
@@ -43,14 +44,14 @@ const chatManagerUpdates = [
 
 type ChatManagerUpdate = Api.Types[(typeof chatManagerUpdates)[number]];
 
-export class ChatManager {
+export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   #c: C;
 
   constructor(c: C) {
     this.#c = c;
   }
 
-  static canHandleUpdate(update: Api.Update): update is ChatManagerUpdate {
+  canHandleUpdate(update: Api.Update): update is ChatManagerUpdate {
     return isOneOf(chatManagerUpdates, update);
   }
 

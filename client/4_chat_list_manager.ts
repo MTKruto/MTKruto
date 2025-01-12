@@ -24,6 +24,7 @@ import { getLogger, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, chatIdToPeerId, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, constructChatP, getChatListItemOrder, ID } from "../3_types.ts";
 import { type CreateChannelParams, type CreateGroupParams, type CreateSupergroupParams, GetChatMembersParams, GetCommonChatsParams } from "./0_params.ts";
+import { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, getChatListId, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
@@ -44,7 +45,7 @@ const chatListManagerUpdates = [
 
 type ChatListManagerUpdate = Api.Types[(typeof chatListManagerUpdates)[number]];
 
-export class ChatListManager {
+export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
   #c: C;
 
   #LgetChats: Logger;
@@ -407,7 +408,7 @@ export class ChatListManager {
     return chats;
   }
 
-  static canHandleUpdate(update: Api.Update): update is ChatListManagerUpdate {
+  canHandleUpdate(update: Api.Update): update is ChatListManagerUpdate {
     return isOneOf(chatListManagerUpdates, update);
   }
 
@@ -430,6 +431,7 @@ export class ChatListManager {
     } else {
       unreachable();
     }
+    return null;
   }
 
   async #getFullChat(chatId: ID) {

@@ -22,6 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { Api, is, isOneOf } from "../2_tl.ts";
 import { constructChosenInlineResult, constructInlineQuery, constructInlineQueryAnswer, ID, InlineQueryResult, inlineQueryResultToTlObject, Update } from "../3_types.ts";
 import { AnswerInlineQueryParams, SendInlineQueryParams } from "./0_params.ts";
+import { UpdateProcessor } from "./0_update_processor.ts";
 import { checkInlineQueryId } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
@@ -35,7 +36,7 @@ const inlineQueryManagerUpdates = [
 
 type InlineQueryManagerUpdate = Api.Types[(typeof inlineQueryManagerUpdates)[number]];
 
-export class InlineQueryManager {
+export class InlineQueryManager implements UpdateProcessor<InlineQueryManagerUpdate> {
   #c: C;
 
   constructor(c: C) {
@@ -48,7 +49,7 @@ export class InlineQueryManager {
     await this.#c.invoke({ _: "messages.setInlineBotResults", query_id: BigInt(id), results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.#c.messageManager.parseText.bind(this.#c.messageManager), this.#c.messageManager.usernameResolver.bind(this.#c.messageManager)))), cache_time: params?.cacheTime ?? 300, private: params?.isPersonal ? true : undefined, switch_webview: params?.button && params.button.miniApp ? ({ _: "inlineBotWebView", text: params.button.text, url: params.button.miniApp.url }) : undefined, switch_pm: params?.button && params.button.startParameter ? ({ _: "inlineBotSwitchPM", text: params.button.text, start_param: params.button.startParameter }) : undefined, gallery: params?.isGallery ? true : undefined, next_offset: params?.nextOffset });
   }
 
-  static canHandleUpdate(update: Api.Update): update is InlineQueryManagerUpdate {
+  canHandleUpdate(update: Api.Update): update is InlineQueryManagerUpdate {
     return isOneOf(inlineQueryManagerUpdates, update);
   }
 
