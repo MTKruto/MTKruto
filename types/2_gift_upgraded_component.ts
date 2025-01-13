@@ -37,8 +37,8 @@ export interface GiftUpgradedComponentModel {
   name: string;
   /** The sticker belonging to the model. */
   sticker: Sticker;
-  /** A floating point number determining how rare this type of model is. */
-  rarityPercentage: number;
+  /** A number determining how rare this type of model is out of a thousand of others. */
+  rarityLevel: number;
 }
 
 /**
@@ -53,8 +53,8 @@ export interface GiftUpgradedComponentPattern {
   name: string;
   /** The sticker belonging to the pattern. */
   sticker: Sticker;
-  /** A floating point number determining how rare this type of pattern is. */
-  rarityPercentage: number;
+  /** A number determining how rare this type of pattern is out of a thousand of others. */
+  rarityLevel: number;
 }
 
 /**
@@ -75,8 +75,8 @@ export interface GiftUpgradedComponentBackdrop {
   patternColor: number;
   /** The text color of the backdrop. */
   textColor: number;
-  /** A floating point number determining how rare this type of pattern is. */
-  rarityPercentage: number;
+  /** A number determining how rare this type of backdrop is out of a thousand of others. */
+  rarityLevel: number;
 }
 
 /**
@@ -103,7 +103,7 @@ export type GiftUpgradedComponent = GiftUpgradedComponentModel | GiftUpgradedCom
 
 export function constructGiftUpgradedComponent(attribute: Api.StarGiftAttribute): GiftUpgradedComponent {
   const name = "name" in attribute ? attribute.name : "";
-  const rarityPercentage = "rarity_permille" in attribute ? rarityPerMilleToPercentage(attribute.rarity_permille) : 0;
+  const rarityLevel = "rarity_permille" in attribute ? attribute.rarity_permille : 0;
 
   switch (attribute._) {
     case "starGiftAttributeModel": {
@@ -121,7 +121,7 @@ export function constructGiftUpgradedComponent(attribute: Api.StarGiftAttribute)
         type: "model",
         name,
         sticker,
-        rarityPercentage,
+        rarityLevel,
       };
     }
     case "starGiftAttributePattern": {
@@ -139,7 +139,7 @@ export function constructGiftUpgradedComponent(attribute: Api.StarGiftAttribute)
         type: "pattern",
         name,
         sticker,
-        rarityPercentage,
+        rarityLevel,
       };
     }
     case "starGiftAttributeBackdrop":
@@ -150,7 +150,7 @@ export function constructGiftUpgradedComponent(attribute: Api.StarGiftAttribute)
         edgeColor: attribute.edge_color,
         patternColor: attribute.pattern_color,
         textColor: attribute.text_color,
-        rarityPercentage,
+        rarityLevel,
       };
     case "starGiftAttributeOriginalDetails":
       return cleanObject({
@@ -164,8 +164,4 @@ export function constructGiftUpgradedComponent(attribute: Api.StarGiftAttribute)
     default:
       unreachable();
   }
-}
-
-function rarityPerMilleToPercentage(perMille: number) {
-  return perMille / 1_000;
 }
