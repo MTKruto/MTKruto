@@ -55,6 +55,8 @@ export interface GiftNonUpgraded {
   firstSaleDate?: Date;
   /** The date of the last sale of the gift if sold out. */
   lastSaleDate?: Date;
+  /** The amount of stars required to upgrade the gift. */
+  upgradePrice?: number;
 }
 
 /**
@@ -131,6 +133,7 @@ export function constructGiftNonUpgraded(gift: Api.starGift): Gift {
   const conversionPrice = Number(gift.convert_stars);
   const firstSaleDate = limited ? gift.first_sale_date ? fromUnixTimestamp(gift.first_sale_date) : undefined : undefined;
   const lastSaleDate = limited ? gift.last_sale_date ? fromUnixTimestamp(gift.last_sale_date) : undefined : undefined;
+  const upgradePrice = gift.upgrade_stars ? Number(gift.upgrade_stars) : undefined;
   return cleanObject({
     type: "nonupgraded",
     id,
@@ -144,5 +147,6 @@ export function constructGiftNonUpgraded(gift: Api.starGift): Gift {
     conversionPrice,
     firstSaleDate,
     lastSaleDate,
+    upgradePrice,
   });
 }
