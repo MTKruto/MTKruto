@@ -62,10 +62,16 @@ export type StickerSetNameGetter = (inputStickerSet: Api.inputStickerSetID) => M
 
 export async function constructSticker(document: Api.document, fileId: string, fileUniqueId: string, getStickerSetName: StickerSetNameGetter, customEmojiId = ""): Promise<Sticker> {
   const stickerAttribute = document.attributes.find((v): v is Api.documentAttributeSticker => is("documentAttributeSticker", v))!;
+  const setName = is("inputStickerSetID", stickerAttribute.stickerset) ? await getStickerSetName(stickerAttribute.stickerset) : undefined;
+
+  return constructSticker2(document, fileId, fileUniqueId, setName, customEmojiId);
+}
+
+export function constructSticker2(document: Api.document, fileId: string, fileUniqueId: string, setName: string | undefined, customEmojiId = ""): Sticker {
+  const stickerAttribute = document.attributes.find((v): v is Api.documentAttributeSticker => is("documentAttributeSticker", v))!;
   const imageSizeAttribute = document.attributes.find((v): v is Api.documentAttributeImageSize => is("documentAttributeImageSize", v))!;
   const customEmojiAttribute = document.attributes.find((v): v is Api.documentAttributeCustomEmoji => is("documentAttributeCustomEmoji", v));
   const videoAttribute = document.attributes.find((v): v is Api.documentAttributeVideo => is("documentAttributeVideo", v))!;
-  const setName = is("inputStickerSetID", stickerAttribute.stickerset) ? await getStickerSetName(stickerAttribute.stickerset) : undefined;
 
   return cleanObject({
     fileId,
@@ -79,7 +85,7 @@ export async function constructSticker(document: Api.document, fileId: string, f
     emoji: (customEmojiAttribute ? customEmojiAttribute.alt : stickerAttribute.alt) || undefined,
     setName,
     premiumAnimation: undefined, // TODO
-    maskPosition: stickerAttribute.mask_coords ? constructMaskPosition(stickerAttribute.mask_coords) : undefined,
+    maskPosition: stickerAttribute ? stickerAttribute.mask_coords ? constructMaskPosition(stickerAttribute.mask_coords) : undefined : undefined,
     customEmojiId: customEmojiAttribute ? customEmojiId : undefined,
     needsRepainting: customEmojiAttribute ? Boolean(customEmojiAttribute.text_color) : undefined,
     fileSize: Number(document.size),

@@ -24,7 +24,7 @@ import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, mustPr
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, as, chatIdToPeerId, getChatIdPeerType, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { DC, getDc } from "../3_transport.ts";
-import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ConnectionState, constructUser, FailedInvitation, FileSource, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, Sticker, Story, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
+import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, Sticker, Story, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
@@ -40,6 +40,7 @@ import { AccountManager } from "./2_account_manager.ts";
 import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
 import { FileManager } from "./2_file_manager.ts";
+import { GiftManager } from "./2_gift_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
@@ -297,6 +298,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #botInfoManager: BotInfoManager;
   #businessConnectionManager: BusinessConnectionManager;
   #fileManager: FileManager;
+  #giftManager: GiftManager;
   #networkStatisticsManager: NetworkStatisticsManager;
   #paymentManager: PaymentManager;
   #reactionManager: ReactionManager;
@@ -323,6 +325,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       botInfoManager: this.#botInfoManager,
       businessConnectionManager: this.#businessConnectionManager,
       fileManager: this.#fileManager,
+      giftManager: this.#giftManager,
       networkStatisticsManager: this.#networkStatisticsManager,
       paymentManager: this.#paymentManager,
       reactionManager: this.#reactionManager,
@@ -472,6 +475,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#botInfoManager = new BotInfoManager(c);
     this.#businessConnectionManager = new BusinessConnectionManager(c);
     const fileManager = this.#fileManager = new FileManager(c);
+    this.#giftManager = new GiftManager(c);
     this.#networkStatisticsManager = new NetworkStatisticsManager(c);
     this.#paymentManager = new PaymentManager(c);
     this.#reactionManager = new ReactionManager(c);
@@ -3514,5 +3518,18 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async getTranslations(params?: GetTranslationsParams): Promise<Translation[]> {
     return await this.#translationsManager.getTranslations(params);
+  }
+
+  //
+  // ========================= GIFTS ========================= //
+  //
+
+  /**
+   * Get available gifts.
+   *
+   * @method gf
+   */
+  async getGifts(): Promise<Gift[]> {
+    return await this.#giftManager.getGifts();
   }
 }
