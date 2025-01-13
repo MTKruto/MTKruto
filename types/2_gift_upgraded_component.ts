@@ -166,6 +166,6 @@ export function constructGiftUpgradedComponent(attribute: Api.StarGiftAttribute)
   }
 }
 
-export function rarityPerMilleToPercentage(perMille: number) {
+function rarityPerMilleToPercentage(perMille: number) {
   return perMille / 1_000;
 }
