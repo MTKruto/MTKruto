@@ -3534,7 +3534,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Get gifts claimed by a specific user.
+   * Get gifts claimed by a specific user. User-only.
    *
    * @method gf
    */

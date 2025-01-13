@@ -40,6 +40,7 @@ export class GiftManager {
   }
 
   async getUserGifts(userId: ID, params?: GetUserGiftsParams) {
+    this.#c.storage.assertUser("getUserGifts");
     const offset = params?.offset ?? "";
     let limit = params?.limit ?? 100;
     if (limit > 100) {
