@@ -597,3 +597,10 @@ export interface GetCommonChatsParams {
   /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
   limit?: number;
 }
+
+export interface GetUserGiftsParams {
+  /** An offset key returned by a previous result. */
+  offset?: string;
+  /** The maximum number of results to return. */
+  limit?: number;
+}
