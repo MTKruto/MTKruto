@@ -20,7 +20,8 @@
 
 import { unreachable } from "../0_deps.ts";
 import { is } from "../2_tl.ts";
-import { constructGift } from "../3_types.ts";
+import { constructGift, constructUserGifts, ID } from "../3_types.ts";
+import { GetUserGiftsParams } from "./0_params.ts";
 import { C } from "./1_types.ts";
 
 export class GiftManager {
@@ -36,5 +37,19 @@ export class GiftManager {
       unreachable();
     }
     return gifts.gifts.map(constructGift);
+  }
+
+  async getUserGifts(userId: ID, params?: GetUserGiftsParams) {
+    const offset = params?.offset ?? "";
+    let limit = params?.limit ?? 100;
+    if (limit > 100) {
+      limit = 100;
+    }
+    if (limit < 1) {
+      limit = 1;
+    }
+    const user_id = await this.#c.getInputUser(userId);
+    const result = await this.#c.invoke({ _: "payments.getUserStarGifts", user_id, offset, limit });
+    return constructUserGifts(result);
   }
 }
