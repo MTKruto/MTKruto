@@ -85,7 +85,7 @@ export function constructSticker2(document: Api.document, fileId: string, fileUn
     emoji: (customEmojiAttribute ? customEmojiAttribute.alt : stickerAttribute.alt) || undefined,
     setName,
     premiumAnimation: undefined, // TODO
-    maskPosition: stickerAttribute.mask_coords ? constructMaskPosition(stickerAttribute.mask_coords) : undefined,
+    maskPosition: stickerAttribute ? stickerAttribute.mask_coords ? constructMaskPosition(stickerAttribute.mask_coords) : undefined : undefined,
     customEmojiId: customEmojiAttribute ? customEmojiId : undefined,
     needsRepainting: customEmojiAttribute ? Boolean(customEmojiAttribute.text_color) : undefined,
     fileSize: Number(document.size),

@@ -31,6 +31,8 @@ import { constructGiftUpgradedComponent, GiftUpgradedComponent } from "./2_gift_
  * @unlisted
  */
 export interface GiftNonUpgraded {
+  /** @discriminator */
+  type: "nonupgraded";
   /** The identifier of the gift. */
   id: string;
   /** The sticker that represents the gift. */
@@ -61,6 +63,8 @@ export interface GiftNonUpgraded {
  * @unlisted
  */
 export interface GiftUpgraded {
+  /** @discriminator */
+  type: "upgraded";
   /** The identifier of the gift. */
   id: string;
   /** The title of the gift. */
@@ -96,6 +100,7 @@ export function constructGiftUpgraded(gift: Api.starGiftUnique): GiftUpgraded {
   const maxUpgrades = gift.availability_total;
   const components = gift.attributes.map(constructGiftUpgradedComponent);
   return {
+    type: "upgraded",
     id,
     title,
     index,
@@ -127,6 +132,7 @@ export function constructGiftNonUpgraded(gift: Api.starGift): Gift {
   const firstSaleDate = limited ? gift.first_sale_date ? fromUnixTimestamp(gift.first_sale_date) : undefined : undefined;
   const lastSaleDate = limited ? gift.last_sale_date ? fromUnixTimestamp(gift.last_sale_date) : undefined : undefined;
   return cleanObject({
+    type: "nonupgraded",
     id,
     sticker,
     price,
