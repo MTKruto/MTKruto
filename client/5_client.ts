@@ -3552,7 +3552,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param userId The identifier of user to send the gift to.
    * @param giftId The identifier of the gift to send.
    */
-  async sendGift(userId: ID, giftId: string, params?: SendGiftParams) {
+  async sendGift(userId: ID, giftId: string, params?: SendGiftParams): Promise<void> {
     await this.#giftManager.sendGift(userId, giftId, params);
   }
 }
