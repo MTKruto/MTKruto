@@ -604,3 +604,16 @@ export interface GetUserGiftsParams {
   /** The maximum number of results to return. */
   limit?: number;
 }
+
+export interface SendGiftParams {
+  /** A message to send along with the gift. */
+  message?: string;
+  /** The parse mode to use for the message. */
+  parseMode?: ParseMode;
+  /** The entities of the message. */
+  entities?: MessageEntity[];
+  /** If true, only the receiver of the gift will know the name of the sender. */
+  private?: boolean;
+  /** Whether the gift should be upgraded before sending it. */
+  upgrade?: boolean;
+}

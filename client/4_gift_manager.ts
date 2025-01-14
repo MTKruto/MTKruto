@@ -19,10 +19,15 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { is } from "../2_tl.ts";
+import { Api, is } from "../2_tl.ts";
 import { constructGift, constructUserGifts, ID } from "../3_types.ts";
-import { GetUserGiftsParams } from "./0_params.ts";
-import { C } from "./1_types.ts";
+import { GetUserGiftsParams, SendGiftParams } from "./0_params.ts";
+import { C as C_ } from "./1_types.ts";
+import { MessageManager } from "./3_message_manager.ts";
+
+interface C extends C_ {
+  messageManager: MessageManager;
+}
 
 export class GiftManager {
   #c: C;
@@ -52,5 +57,20 @@ export class GiftManager {
     const user_id = await this.#c.getInputUser(userId);
     const result = await this.#c.invoke({ _: "payments.getUserStarGifts", user_id, offset, limit });
     return constructUserGifts(result);
+  }
+
+  async sendGift(userId: ID, giftId: string, params?: SendGiftParams) {
+    const hide_name = params?.private ? true : undefined;
+    const include_upgrade = params?.upgrade ? true : undefined;
+    const user_id = await this.#c.getInputUser(userId);
+    const gift_id = BigInt(giftId);
+    let message: Api.textWithEntities | undefined;
+    if (params?.message) {
+      const parsedText = await this.#c.messageManager.parseText(params.message, params);
+      message = { _: "textWithEntities", text: parsedText[0], entities: parsedText[1] ?? [] };
+    }
+    const invoice: Api.inputInvoiceStarGift = { _: "inputInvoiceStarGift", hide_name, include_upgrade, user_id, gift_id, message };
+    const paymentForm = await this.#c.invoke({ _: "payments.getPaymentForm", invoice });
+    await this.#c.invoke({ _: "payments.sendStarsForm", form_id: paymentForm.form_id, invoice });
   }
 }

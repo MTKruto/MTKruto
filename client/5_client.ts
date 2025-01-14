@@ -28,7 +28,7 @@ import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuest
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
-import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, GetUserGiftsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetMyCommandsParams, SetReactionsParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, GetUserGiftsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetMyCommandsParams, SetReactionsParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, getUsername, isCdnFunction, isMtprotoFunction, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -40,7 +40,6 @@ import { AccountManager } from "./2_account_manager.ts";
 import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
 import { FileManager } from "./2_file_manager.ts";
-import { GiftManager } from "./2_gift_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
@@ -51,6 +50,7 @@ import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { CallbackQueryManager } from "./4_callback_query_manager.ts";
 import { ChatListManager } from "./4_chat_list_manager.ts";
 import { ChatManager } from "./4_chat_manager.ts";
+import { GiftManager } from "./4_gift_manager.ts";
 import { InlineQueryManager } from "./4_inline_query_manager.ts";
 import { PollManager } from "./4_poll_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
@@ -298,7 +298,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #botInfoManager: BotInfoManager;
   #businessConnectionManager: BusinessConnectionManager;
   #fileManager: FileManager;
-  #giftManager: GiftManager;
   #networkStatisticsManager: NetworkStatisticsManager;
   #paymentManager: PaymentManager;
   #reactionManager: ReactionManager;
@@ -311,6 +310,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #callbackQueryManager: CallbackQueryManager;
   #chatListManager: ChatListManager;
   #chatManager: ChatManager;
+  #giftManager: GiftManager;
   #inlineQueryManager: InlineQueryManager;
   #pollManager: PollManager;
   #storyManager: StoryManager;
@@ -325,7 +325,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
       botInfoManager: this.#botInfoManager,
       businessConnectionManager: this.#businessConnectionManager,
       fileManager: this.#fileManager,
-      giftManager: this.#giftManager,
       networkStatisticsManager: this.#networkStatisticsManager,
       paymentManager: this.#paymentManager,
       reactionManager: this.#reactionManager,
@@ -337,7 +336,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
       // 4_
       callbackQueryManager: this.#callbackQueryManager,
       chatListManager: this.#chatListManager,
+      chatManager: this.#chatManager,
+      giftManager: this.#giftManager,
       inlineQueryManager: this.#inlineQueryManager,
+      pollManager: this.#pollManager,
       storyManager: this.#storyManager,
     });
   }
@@ -475,7 +477,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#botInfoManager = new BotInfoManager(c);
     this.#businessConnectionManager = new BusinessConnectionManager(c);
     const fileManager = this.#fileManager = new FileManager(c);
-    this.#giftManager = new GiftManager(c);
     this.#networkStatisticsManager = new NetworkStatisticsManager(c);
     this.#paymentManager = new PaymentManager(c);
     this.#reactionManager = new ReactionManager(c);
@@ -488,6 +489,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager });
     this.#chatListManager = new ChatListManager({ ...c, fileManager, messageManager });
     this.#chatManager = new ChatManager({ ...c, fileManager, messageManager });
+    this.#giftManager = new GiftManager({ ...c, messageManager });
     this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager });
     this.#pollManager = new PollManager({ ...c, messageManager });
     this.#storyManager = new StoryManager({ ...c, fileManager, messageManager });
@@ -3540,5 +3542,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async getUserGifts(userId: ID, params?: GetUserGiftsParams): Promise<UserGifts> {
     return await this.#giftManager.getUserGifts(userId, params);
+  }
+
+  /**
+   * Send a gift.
+   *
+   * @method gf
+   * @param userId The identifier of user to send the gift to.
+   * @param giftId The identifier of the gift to send.
+   */
+  async sendGift(userId: ID, giftId: string, params?: SendGiftParams) {
+    await this.#giftManager.sendGift(userId, giftId, params);
   }
 }
