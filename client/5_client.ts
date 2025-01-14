@@ -3539,6 +3539,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get gifts claimed by a specific user. User-only.
    *
    * @method gf
+   * @param userId The identifier of the user to get gifts for.
    */
   async getUserGifts(userId: ID, params?: GetUserGiftsParams): Promise<UserGifts> {
     return await this.#giftManager.getUserGifts(userId, params);
