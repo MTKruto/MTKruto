@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "jsr:@std/assert@1.0.9";
+export * from "jsr:@std/assert@1.0.10";
 
 export { basename } from "jsr:@std/path@1.0.8/basename";
 export { extname } from "jsr:@std/path@1.0.8/extname";
@@ -34,7 +34,7 @@ export { toArrayBuffer } from "jsr:@std/streams@1.0.8/to-array-buffer";
 
 export { iterateReader } from "jsr:@std/io@0.225.0/iterate-reader";
 
-export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.5/base64";
+export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.6/base64";
 
 import { contentType as contentType_ } from "jsr:@std/media-types@1.1.0/content-type";
 export const contentType: typeof contentType_ = (extentionOrType) => {
