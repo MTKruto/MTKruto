@@ -19,6 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
+import { InputError } from "../0_errors.ts";
 import { Api, is } from "../2_tl.ts";
 import { constructGift, constructUserGifts, ID } from "../3_types.ts";
 import { GetUserGiftsParams, SendGiftParams } from "./0_params.ts";
@@ -72,5 +73,13 @@ export class GiftManager {
     const invoice: Api.inputInvoiceStarGift = { _: "inputInvoiceStarGift", hide_name, include_upgrade, user_id, gift_id, message };
     const paymentForm = await this.#c.invoke({ _: "payments.getPaymentForm", invoice });
     await this.#c.invoke({ _: "payments.sendStarsForm", form_id: paymentForm.form_id, invoice });
+  }
+
+  async sellGift(userId: ID, messageId: number) {
+    const message = await this.#c.messageManager.getMessage(userId, messageId);
+    if (message == null) {
+      throw new InputError("Message not found.");
+    }
+    await this.#c.invoke({ _: "payments.convertStarGift", msg_id: message.id });
   }
 }
