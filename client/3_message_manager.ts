@@ -99,7 +99,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         continue;
       }
       const message = await this.constructMessage(message_);
-      messages.push(message);
+      if (message.chat.id == chatId_) {
+        messages.push(message);
+      }
     }
     return messages;
   }
