@@ -22,7 +22,7 @@ import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, getChannelChatId, is, isOneOf, peerToChatId } from "../2_tl.ts";
-import { deserializeFileId, FileId, InputMedia, isMessageType, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt } from "../3_types.ts";
+import { constructVoiceTranscription, deserializeFileId, FileId, InputMedia, isMessageType, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt, VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
@@ -52,6 +52,7 @@ const messageManagerUpdates = [
   "updateDeleteMessages",
   "updateDeleteChannelMessages",
   "updateDeleteScheduledMessages",
+  "updateTranscribedAudio",
 ] as const;
 
 type MessageManagerUpdate = Api.Types[(typeof messageManagerUpdates)[number]];
@@ -1202,6 +1203,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       return { deletedMessages, businessConnectionId: update.connection_id };
     }
 
+    if (is("updateTranscribedAudio", update)) {
+      const voiceTranscription = constructVoiceTranscription(update);
+      await this.#c.messageStorage.setVoiceTranscription(voiceTranscription);
+      return { voiceTranscription };
+    }
+
     return null;
   }
 
@@ -1483,5 +1490,41 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     const peer = await this.#c.getInputPeer(params?.chatId || botId);
     const result = await this.#c.invoke({ _: "messages.startBot", bot, peer, random_id: getRandomId(), start_param });
     return (await this.#updatesToMessages(botId, result))[0];
+  }
+
+  async transcribeVoice(chatId: ID, messageId: number) {
+    this.#c.storage.assertUser("transcribeVoice");
+    const message = await this.getMessage(chatId, messageId);
+    if (message == null) {
+      throw new InputError("Message not found.");
+    }
+    if (!isMessageType(message, "voice")) {
+      throw new InputError("Message not voice.");
+    }
+    const cachedTranscription = await this.#getCachedVoiceTranscription(message);
+    if (cachedTranscription) {
+      return cachedTranscription;
+    }
+    const peer = await this.#c.getInputPeer(chatId);
+    const result = await this.#c.invoke({ _: "messages.transcribeAudio", peer, msg_id: messageId });
+    return await this.#cacheVoiceTranscription(message, constructVoiceTranscription(result));
+  }
+
+  async #getCachedVoiceTranscription(message: Message) {
+    const reference = await this.#c.messageStorage.getVoiceTranscriptionReference(message.chat.id, message.id, message.editDate ?? message.date);
+    if (!reference) {
+      return null;
+    }
+    const voiceTranscription = await this.#c.messageStorage.getVoiceTranscription(reference);
+    if (!voiceTranscription || !voiceTranscription.done) {
+      return null;
+    }
+    return voiceTranscription;
+  }
+
+  async #cacheVoiceTranscription(message: Message, voiceTranscription: VoiceTranscription) {
+    await this.#c.messageStorage.setVoiceTranscriptionReference(message.chat.id, message.id, message.editDate ?? message.date, BigInt(voiceTranscription.id));
+    await this.#c.messageStorage.setVoiceTranscription(voiceTranscription);
+    return voiceTranscription;
   }
 }

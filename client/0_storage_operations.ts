@@ -24,7 +24,7 @@ import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromis
 import { Storage, StorageKeyPart } from "../2_storage.ts";
 import { AnyEntity, Api, as, is, isValidType, peerToChatId, ReadObject, serialize, TLReader, TLWriter } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
-import { Translation } from "../3_types.ts";
+import { Translation, VoiceTranscription } from "../3_types.ts";
 
 // key parts
 export const K = {
@@ -87,6 +87,10 @@ export const K = {
     pollResult: (pollId: bigint) => [...K.cache.pollResults(), pollId],
     polls: () => [K.cache.P("polls")],
     poll: (pollId: bigint) => [...K.cache.polls(), pollId],
+    voiceTranscriptions: () => [K.cache.P("voiceTranscriptions")],
+    voiceTranscription: (transcriptionId: bigint) => [...K.cache.voiceTranscriptions(), transcriptionId],
+    voiceTranscriptionReferences: () => [K.cache.P("voiceTranscriptions")],
+    voiceTranscriptionReference: (chatId: number, messageId: number, messageEditDate: number) => [...K.cache.voiceTranscriptionReferences(), chatId, messageId, messageEditDate],
   },
   messages: {
     P: (string: string): string => `messages.${string}`,
@@ -679,6 +683,8 @@ export class StorageOperations {
       this.deleteTranslations(),
       this.deletePollResults(),
       this.deletePolls(),
+      this.deleteVoiceTranscriptions(),
+      this.deleteVoiceTranscriptionReferences(),
     ]);
   }
 
@@ -751,6 +757,38 @@ export class StorageOperations {
   async deletePolls() {
     const maybePromises = new Array<MaybePromise<unknown>>();
     for await (const [key] of await this.#storage.getMany({ prefix: K.cache.polls() })) {
+      maybePromises.push(this.#storage.set(key, null));
+    }
+    await Promise.all(maybePromises);
+  }
+
+  async setVoiceTranscription(voiceTranscription: VoiceTranscription) {
+    await this.set(K.cache.voiceTranscription(BigInt(voiceTranscription.id)), voiceTranscription);
+  }
+
+  async getVoiceTranscription(transcriptionId: bigint): Promise<VoiceTranscription | null> {
+    return await this.get(K.cache.voiceTranscription(transcriptionId)) as Promise<VoiceTranscription | null>;
+  }
+
+  async deleteVoiceTranscriptions() {
+    const maybePromises = new Array<MaybePromise<unknown>>();
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.voiceTranscriptions() })) {
+      maybePromises.push(this.#storage.set(key, null));
+    }
+    await Promise.all(maybePromises);
+  }
+
+  async setVoiceTranscriptionReference(chatId: number, messageId: number, messageEditDate: Date, transcriptionId: bigint) {
+    await this.set(K.cache.voiceTranscriptionReference(chatId, messageId, messageEditDate.getTime()), transcriptionId);
+  }
+
+  async getVoiceTranscriptionReference(chatId: number, messageId: number, messageEditDate: Date): Promise<bigint | null> {
+    return await this.get(K.cache.voiceTranscriptionReference(chatId, messageId, messageEditDate.getTime())) as Promise<bigint | null>;
+  }
+
+  async deleteVoiceTranscriptionReferences() {
+    const maybePromises = new Array<MaybePromise<unknown>>();
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.voiceTranscriptions() })) {
       maybePromises.push(this.#storage.set(key, null));
     }
     await Promise.all(maybePromises);
