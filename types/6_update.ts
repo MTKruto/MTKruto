@@ -24,6 +24,7 @@ import { MessageReference } from "./0_message_reference.ts";
 import { StoryReference } from "./0_story_reference.ts";
 import { Translation } from "./0_translation.ts";
 import { VideoChat } from "./0_video_chat.ts";
+import { VoiceTranscription } from "./0_voice_transcription.ts";
 import { BusinessConnection } from "./2_business_connection.ts";
 import { ChosenInlineResult } from "./2_chosen_inline_result.ts";
 import { InlineQuery } from "./2_inline_query.ts";
@@ -422,6 +423,24 @@ export interface UpdatePoll {
   poll: Poll;
 }
 
+/**
+ * A voice transcription was updated.
+ *
+ * ```
+ * client.on("voiceTranscription", (ctx) => {
+ *   // ctx.voiceTranscription
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateVoiceTranscription {
+  /**
+   * The new voice transcription.
+   * @discriminator
+   */
+  voiceTranscription: VoiceTranscription;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -449,6 +468,7 @@ export interface UpdateMap {
   joinRequest: UpdateJoinRequest;
   translations: UpdateTranslations;
   poll: UpdatePoll;
+  voiceTranscription: UpdateVoiceTranscription;
 }
 
 /** @unlisted */
@@ -478,6 +498,7 @@ export type UpdateIntersection = Partial<
   & UpdateJoinRequest
   & UpdateTranslations
   & UpdatePoll
+  & UpdateVoiceTranscription
 >;
 
 /** An incoming update. */
@@ -506,4 +527,5 @@ export type Update =
   | UpdatePreCheckoutQuery
   | UpdateJoinRequest
   | UpdateTranslations
-  | UpdatePoll;
+  | UpdatePoll
+  | UpdateVoiceTranscription;
