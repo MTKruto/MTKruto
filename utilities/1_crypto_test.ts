@@ -32,8 +32,10 @@ Deno.test("equality", async () => {
   const ctrOld = new CTROld(key, iv);
 
   for (let i = 0; i < 20_000; ++i) {
-    await ctr.call(payload);
-    ctrOld.call(new Uint8Array(payload));
+    const ctrResult = await ctr.call(payload);
+    const ctrOldResult = new Uint8Array(payload);
+    ctrOld.call(ctrOldResult);
+    assertEquals(ctrResult, ctrOldResult);
 
     const ctrOld_state = __getCtr256StateValues(ctrOld.state);
     assertEquals(ctr._state.iv, ctrOld_state.iv);
