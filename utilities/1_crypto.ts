@@ -18,16 +18,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { concat } from "../0_deps.ts";
 import { bigIntFromBuffer } from "./0_bigint.ts";
 import { bufferFromBigInt } from "./0_buffer.ts";
 
 export class CTR {
   #key: CryptoKey;
   #iv: Uint8Array;
-  #incrementPending = 0;
+  #bytesUntilNextBlock = 0;
+  #promise?: Promise<Uint8Array>;
 
   get _state(): { iv: Uint8Array; state: number } {
-    return { iv: new Uint8Array(this.#iv), state: this.#incrementPending };
+    return { iv: new Uint8Array(this.#iv), state: this.#bytesUntilNextBlock };
   }
 
   constructor(key: CryptoKey, iv: Uint8Array) {
@@ -40,26 +42,53 @@ export class CTR {
   }
 
   async call(data: Uint8Array): Promise<Uint8Array> {
-    const promise = crypto.subtle.encrypt(
-      {
-        name: "AES-CTR",
-        counter: new Uint8Array(this.#iv),
-        length: this.#iv.length * 8,
-      },
-      this.#key,
-      data,
-    );
-    const incrementPending = data.length % this.#iv.length;
-    let incrementBy = (data.length - incrementPending) / this.#iv.length;
-    this.#incrementPending += incrementPending;
-    while (this.#incrementPending >= this.#iv.length) {
-      this.#incrementPending -= this.#iv.length;
-      incrementBy += 1;
+    if (this.#promise) {
+      await Promise.allSettled([this.#promise]);
     }
+    return await (this.#promise = this.#call(data));
+  }
 
-    if (incrementBy) {
-      this.#iv = bufferFromBigInt(bigIntFromBuffer(this.#iv, false, false) + BigInt(incrementBy), 16, false, false);
+  async #call(data: Uint8Array) {
+    let header: Uint8Array | undefined;
+    if (this.#bytesUntilNextBlock) {
+      const headerLength = Math.min(data.length, this.#iv.length - this.#bytesUntilNextBlock);
+      const encrypted = await this.#encrypt(concat([new Uint8Array(this.#bytesUntilNextBlock), data.subarray(0, headerLength)]));
+      header = encrypted.subarray(this.#bytesUntilNextBlock);
+      data = data.subarray(headerLength);
+      if (encrypted.length === this.#iv.length) {
+        this.#increaseIv(1);
+        this.#bytesUntilNextBlock = 0;
+      } else {
+        this.#bytesUntilNextBlock += headerLength;
+      }
     }
-    return new Uint8Array(await promise);
+    if (!data.length && header) {
+      return header;
+    }
+    const encrypted = await this.#encrypt(data);
+    this.#bytesUntilNextBlock = encrypted.length % this.#iv.length;
+    this.#increaseIv((encrypted.length - this.#bytesUntilNextBlock) / this.#iv.length);
+    return header ? concat([header, encrypted]) : encrypted;
+  }
+
+  async #encrypt(data: Uint8Array) {
+    return new Uint8Array(
+      await crypto.subtle.encrypt(
+        {
+          name: "AES-CTR",
+          counter: new Uint8Array(this.#iv),
+          length: this.#iv.length * 8,
+        },
+        this.#key,
+        data,
+      ),
+    );
+  }
+
+  #increaseIv(amount: number) {
+    if (amount < 1) {
+      return;
+    }
+    this.#iv = bufferFromBigInt(bigIntFromBuffer(this.#iv, false, false) + BigInt(amount), this.#iv.length, false, false);
   }
 }

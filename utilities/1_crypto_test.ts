@@ -24,14 +24,14 @@ import { __getCtr256StateValues, createCtr256State, ctr256, type Ctr256State, de
 
 const key = new Uint8Array(32);
 const iv = new Uint8Array(16);
-const payload = new Uint8Array(3);
 
 Deno.test("equality", async () => {
   await initTgCrypto();
   const ctr = new CTR(await CTR.importKey(key), iv);
   const ctrOld = new CTROld(key, iv);
 
-  for (let i = 0; i < 20_000; ++i) {
+  for (let i = 0; i < 10_000; ++i) {
+    const payload = new Uint8Array(i + 1);
     const ctrResult = await ctr.call(payload);
     const ctrOldResult = new Uint8Array(payload);
     ctrOld.call(ctrOldResult);
