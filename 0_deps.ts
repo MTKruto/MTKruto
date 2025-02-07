@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "jsr:@std/assert@1.0.10";
+export * from "jsr:@std/assert@1.0.11";
 
 export { basename } from "jsr:@std/path@1.0.8/basename";
 export { extname } from "jsr:@std/path@1.0.8/extname";
@@ -26,15 +26,15 @@ export { isAbsolute } from "jsr:@std/path@1.0.8/is-absolute";
 export { join } from "jsr:@std/path@1.0.8/join";
 export { toFileUrl } from "jsr:@std/path@1.0.8/to-file-url";
 
-export { concat } from "jsr:@std/bytes@1.0.4/concat";
+export { concat } from "jsr:@std/bytes@1.0.5/concat";
 
-export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.2/constants";
+export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.3/constants";
 
-export { toArrayBuffer } from "jsr:@std/streams@1.0.8/to-array-buffer";
+export { toArrayBuffer } from "jsr:@std/streams@1.0.9/to-array-buffer";
 
-export { iterateReader } from "jsr:@std/io@0.225.0/iterate-reader";
+export { iterateReader } from "jsr:@std/io@0.225.2/iterate-reader";
 
-export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.6/base64";
+export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.7/base64";
 
 import { contentType as contentType_ } from "jsr:@std/media-types@1.1.0/content-type";
 export const contentType: typeof contentType_ = (extentionOrType) => {
@@ -55,4 +55,4 @@ export function extension(mimeType: string) {
 
 export { ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "jsr:@roj/tgcrypto@1.0.0";
 
-export { Parser } from "npm:htmlparser2@9.1.0";
+export { Parser } from "npm:htmlparser2@10.0.0";
