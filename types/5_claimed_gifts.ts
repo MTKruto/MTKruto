@@ -20,22 +20,33 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import { Api, is } from "../2_tl.ts";
-import { constructUserGift, UserGift } from "./4_user_gift.ts";
+import { ClaimedGift, constructClaimedGift } from "./4_claimed_gift.ts";
 
-/** Gifts claimed by a user. */
-export interface UserGifts {
+/** Gifts claimed by a user or a channel. */
+export interface ClaimedGifts {
   /** The number of all gifts claimed by the user. */
   all: number;
   /** Offset of the results. */
   offset?: string;
   /** Gifts claimed by the user. */
-  gifts: UserGift[];
+  gifts: ClaimedGift[];
 }
 
-export function constructUserGifts(userGifts: Api.payments_UserStarGifts): UserGifts {
+export function constructClaimedGifts(savedStarGifts: Api.payments_SavedStarGifts): ClaimedGifts {
   return cleanObject({
-    all: userGifts.count,
-    offset: userGifts.next_offset,
-    gifts: userGifts.gifts.map((v) => [v, v.from_id ? userGifts.users.find((u) => is("user", u) && u.id == v.from_id) : undefined] as [Api.UserStarGift, Api.user | undefined]).map((v) => constructUserGift(v[0], v[1])),
+    all: savedStarGifts.count,
+    offset: savedStarGifts.next_offset,
+    gifts: savedStarGifts.gifts.map((v): [Api.SavedStarGift, Api.User | Api.Chat | undefined] => {
+      const fromId = v.from_id;
+      if (is("peerUser", fromId)) {
+        return [v, savedStarGifts.users.find((u) => is("user", u) && u.id == fromId.user_id)];
+      } else if (is("peerChat", fromId)) {
+        return [v, savedStarGifts.chats.find((u) => is("chat", u) && u.id == fromId.chat_id)];
+      } else if (fromId) {
+        return [v, savedStarGifts.chats.find((u) => is("channel", u) && u.id == fromId.channel_id)];
+      } else {
+        return [v, undefined];
+      }
+    }).map((v) => constructClaimedGift(v[0], v[1])),
   });
 }
