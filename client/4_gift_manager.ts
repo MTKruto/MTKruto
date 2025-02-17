@@ -21,8 +21,8 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api, is } from "../2_tl.ts";
-import { constructGift, constructUserGifts, ID } from "../3_types.ts";
-import { GetUserGiftsParams, SendGiftParams } from "./0_params.ts";
+import { constructClaimedGifts, constructGift, ID } from "../3_types.ts";
+import { GetClaimedGiftsParams, SendGiftParams } from "./0_params.ts";
 import { C as C_ } from "./1_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
 
@@ -45,8 +45,8 @@ export class GiftManager {
     return gifts.gifts.map(constructGift);
   }
 
-  async getUserGifts(userId: ID, params?: GetUserGiftsParams) {
-    this.#c.storage.assertUser("getUserGifts");
+  async getClaimedGifts(chatId: ID, params?: GetClaimedGiftsParams) {
+    this.#c.storage.assertUser("getClaimedGifts");
     const offset = params?.offset ?? "";
     let limit = params?.limit ?? 100;
     if (limit > 100) {
@@ -55,22 +55,22 @@ export class GiftManager {
     if (limit < 1) {
       limit = 1;
     }
-    const user_id = await this.#c.getInputUser(userId);
-    const result = await this.#c.invoke({ _: "payments.getUserStarGifts", user_id, offset, limit });
-    return constructUserGifts(result);
+    const peer = await this.#c.getInputPeer(chatId);
+    const result = await this.#c.invoke({ _: "payments.getSavedStarGifts", peer, offset, limit });
+    return constructClaimedGifts(result);
   }
 
-  async sendGift(userId: ID, giftId: string, params?: SendGiftParams) {
+  async sendGift(chatId: ID, giftId: string, params?: SendGiftParams) {
     const hide_name = params?.private ? true : undefined;
     const include_upgrade = params?.upgrade ? true : undefined;
-    const user_id = await this.#c.getInputUser(userId);
+    const peer = await this.#c.getInputPeer(chatId);
     const gift_id = BigInt(giftId);
     let message: Api.textWithEntities | undefined;
     if (params?.message) {
       const parsedText = await this.#c.messageManager.parseText(params.message, params);
       message = { _: "textWithEntities", text: parsedText[0], entities: parsedText[1] ?? [] };
     }
-    const invoice: Api.inputInvoiceStarGift = { _: "inputInvoiceStarGift", hide_name, include_upgrade, user_id, gift_id, message };
+    const invoice: Api.inputInvoiceStarGift = { _: "inputInvoiceStarGift", hide_name, include_upgrade, peer, gift_id, message };
     const paymentForm = await this.#c.invoke({ _: "payments.getPaymentForm", invoice });
     await this.#c.invoke({ _: "payments.sendStarsForm", form_id: paymentForm.form_id, invoice });
   }
@@ -80,6 +80,6 @@ export class GiftManager {
     if (message == null) {
       throw new InputError("Message not found.");
     }
-    await this.#c.invoke({ _: "payments.convertStarGift", msg_id: message.id });
+    await this.#c.invoke({ _: "payments.convertStarGift", stargift: { _: "inputSavedStarGiftUser", msg_id: message.id } });
   }
 }

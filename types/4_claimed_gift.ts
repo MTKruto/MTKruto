@@ -18,22 +18,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
+import { Api, isOneOf } from "../2_tl.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
-import { constructUser, User } from "./1_user.ts";
+import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructGift, Gift } from "./3_gift.ts";
 
-/** A gift claimed by a user. */
-export interface UserGift {
+/** A gift claimed by a user or a channel. */
+export interface ClaimedGift {
   /** The time when the gift was claimed. */
   date: Date;
   /** The gift. */
   gift: Gift;
   /** Whether the gift is publicly visible. */
   public: boolean;
-  /** The user who sent the gift. */
-  fromUser?: User;
+  /** The sender of the gift. */
+  sender?: ChatP;
   /** A message shared when the gift was sent. */
   message?: string;
   /** The entities of the message. */
@@ -44,20 +45,23 @@ export interface UserGift {
   convertionStars?: number;
 }
 
-export function constructUserGift(userGift: Api.UserStarGift, user?: Api.user): UserGift {
-  const gift = constructGift(userGift.gift);
-  const date = fromUnixTimestamp(userGift.date);
-  const public_ = !!userGift.unsaved;
-  const fromUser = user ? constructUser(user) : undefined;
-  const message = userGift.message?.text;
-  const entities = userGift.message ? userGift.message.entities.map(constructMessageEntity).filter((v): v is MessageEntity => !!v) : undefined;
-  const messageId = userGift.msg_id;
-  const conversionStars = userGift.convert_stars;
+export function constructClaimedGift(savedStarGift: Api.SavedStarGift, fromPeer?: Api.User | Api.Chat): ClaimedGift {
+  if (fromPeer && !isOneOf(["user", "chat", "channel"], fromPeer)) {
+    unreachable();
+  }
+  const gift = constructGift(savedStarGift.gift);
+  const date = fromUnixTimestamp(savedStarGift.date);
+  const public_ = !!savedStarGift.unsaved;
+  const sender = fromPeer ? constructChatP(fromPeer) : undefined;
+  const message = savedStarGift.message?.text;
+  const entities = savedStarGift.message ? savedStarGift.message.entities.map(constructMessageEntity).filter((v): v is MessageEntity => !!v) : undefined;
+  const messageId = savedStarGift.msg_id;
+  const conversionStars = savedStarGift.convert_stars;
   return cleanObject({
     date,
     gift,
     public: public_,
-    fromUser,
+    sender,
     message,
     entities,
     messageId,

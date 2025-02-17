@@ -95,13 +95,8 @@ export class AccountManager {
   async setEmojiStatus(id: string, params?: SetEmojiStatusParams) {
     this.#c.storage.assertUser("setEmojiStatus");
     const document_id = BigInt(id);
-    let emoji_status: Api.EmojiStatus;
-    if (params?.until) {
-      const until = toUnixTimestamp(params.until);
-      emoji_status = { _: "emojiStatusUntil", document_id, until };
-    } else {
-      emoji_status = { _: "emojiStatus", document_id };
-    }
+    const until = params?.until ? toUnixTimestamp(params.until) : undefined;
+    const emoji_status: Api.EmojiStatus = { _: "emojiStatus", document_id, until };
     await this.#c.invoke({ _: "account.updateEmojiStatus", emoji_status });
   }
 
@@ -109,13 +104,8 @@ export class AccountManager {
     this.#c.storage.assertBot("setUserEmojiStatus");
     const user_id = await this.#c.getInputUser(userId);
     const document_id = BigInt(id);
-    let emoji_status: Api.EmojiStatus;
-    if (params?.until) {
-      const until = toUnixTimestamp(params.until);
-      emoji_status = { _: "emojiStatusUntil", document_id, until };
-    } else {
-      emoji_status = { _: "emojiStatus", document_id };
-    }
+    const until = params?.until ? toUnixTimestamp(params.until) : undefined;
+    const emoji_status: Api.EmojiStatus = { _: "emojiStatus", document_id, until };
     await this.#c.invoke({ _: "bots.updateUserEmojiStatus", user_id, emoji_status });
   }
 

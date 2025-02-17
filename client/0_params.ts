@@ -598,7 +598,7 @@ export interface GetCommonChatsParams {
   limit?: number;
 }
 
-export interface GetUserGiftsParams {
+export interface GetClaimedGiftsParams {
   /** An offset key returned by a previous result. */
   offset?: string;
   /** The maximum number of results to return. */
