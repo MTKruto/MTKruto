@@ -27,7 +27,7 @@ export interface Part {
   bytes: Uint8Array;
 }
 
-export class PartStream extends TransformStream<Uint8Array, Part> {
+export class PartStream extends TransformStream<Uint8Array<ArrayBuffer>, Part> {
   #buffer = new Uint8Array();
   #totalRead = 0;
   #part = 0;

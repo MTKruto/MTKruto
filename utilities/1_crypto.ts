@@ -26,7 +26,7 @@ export class CTR {
   #key: CryptoKey;
   #iv: Uint8Array;
   #bytesUntilNextBlock = 0;
-  #promise?: Promise<Uint8Array>;
+  #promise?: Promise<Uint8Array<ArrayBuffer>>;
 
   get _state(): { iv: Uint8Array; state: number } {
     return { iv: new Uint8Array(this.#iv), state: this.#bytesUntilNextBlock };
@@ -37,19 +37,19 @@ export class CTR {
     this.#iv = iv;
   }
 
-  static async importKey(key: Uint8Array): Promise<CryptoKey> {
+  static async importKey(key: Uint8Array<ArrayBuffer>): Promise<CryptoKey> {
     return await crypto.subtle.importKey("raw", key, "AES-CTR", false, ["encrypt"]);
   }
 
-  async call(data: Uint8Array): Promise<Uint8Array> {
+  async call(data: Uint8Array<ArrayBuffer>): Promise<Uint8Array<ArrayBuffer>> {
     if (this.#promise) {
       await Promise.allSettled([this.#promise]);
     }
     return await (this.#promise = this.#call(data));
   }
 
-  async #call(data: Uint8Array) {
-    let header: Uint8Array | undefined;
+  async #call(data: Uint8Array<ArrayBuffer>) {
+    let header: Uint8Array<ArrayBuffer> | undefined;
     if (this.#bytesUntilNextBlock) {
       const headerLength = Math.min(data.length, this.#iv.length - this.#bytesUntilNextBlock);
       const encrypted = await this.#encrypt(concat([new Uint8Array(this.#bytesUntilNextBlock), data.subarray(0, headerLength)]));

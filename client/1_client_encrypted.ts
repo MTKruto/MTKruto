@@ -86,7 +86,7 @@ export class ClientEncrypted extends ClientAbstract {
     drop(this.#receiveLoop()); // TODO: ability to join this promise
   }
 
-  async setAuthKey(key: Uint8Array) {
+  async setAuthKey(key: Uint8Array<ArrayBuffer>) {
     const hash = await sha1(key);
     this.#authKeyId = bigIntFromBuffer(hash.slice(-8), true, false);
     this.#authKey = key;

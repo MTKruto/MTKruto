@@ -9,7 +9,7 @@
   },
   "lint": {
     "rules": {
-      "exclude": ["no-node-globals", "no-process-globals"]
+      "exclude": ["no-node-globals", "no-process-global"]
     }
   },
   "tasks": {

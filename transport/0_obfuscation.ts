@@ -23,7 +23,7 @@ import { bufferFromBigInt, CTR } from "../1_utilities.ts";
 import { Connection } from "../2_connection.ts";
 
 export async function getObfuscationParameters(protocol: number, connection: Connection) {
-  let init: Uint8Array;
+  let init: Uint8Array<ArrayBuffer>;
 
   while (true) {
     init = concat([crypto.getRandomValues(new Uint8Array(56)), bufferFromBigInt(protocol, 4, false), crypto.getRandomValues(new Uint8Array(4))]);

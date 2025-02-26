@@ -72,7 +72,7 @@ export class ClientPlain extends ClientAbstract {
     return result as R;
   }
 
-  async createAuthKey(): Promise<[Uint8Array, bigint]> {
+  async createAuthKey(): Promise<[Uint8Array<ArrayBuffer>, bigint]> {
     const nonce = getRandomBigInt(16, false, true);
     LcreateAuthKey.debug("auth key creation started");
 

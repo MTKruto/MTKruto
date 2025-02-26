@@ -165,8 +165,8 @@ export class StorageOperations {
     }
   }
 
-  async getAuthKey(): Promise<Uint8Array | null> {
-    const authKey = await this.#storage.get<Uint8Array>(K.auth.key());
+  async getAuthKey(): Promise<Uint8Array<ArrayBuffer> | null> {
+    const authKey = await this.#storage.get<Uint8Array<ArrayBuffer>>(K.auth.key());
     await this.#resetAuthKeyId(authKey);
     return authKey;
   }

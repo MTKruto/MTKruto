@@ -53,6 +53,6 @@ export function extension(mimeType: string) {
   }
 }
 
-export { ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "jsr:@roj/tgcrypto@1.0.0";
+export { ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "jsr:@roj/tgcrypto@1.0.1";
 
 export { Parser } from "npm:htmlparser2@10.0.0";
