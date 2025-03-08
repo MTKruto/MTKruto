@@ -24,7 +24,7 @@ import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, mustPr
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, as, chatIdToPeerId, getChatIdPeerType, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { DC, getDc } from "../3_transport.ts";
-import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ClaimedGifts, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, Sticker, Story, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, Sticker, Story, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
@@ -3042,6 +3042,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async getCommonChats(userId: ID, params?: GetCommonChatsParams): Promise<ChatP[]> {
     return await this.#chatListManager.getCommonChats(userId, params);
+  }
+
+  /**
+   * Get the settings of a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat to get the settings for.
+   */
+  async getChatSettings(userId: ID): Promise<ChatSettings> {
+    return await this.#chatListManager.getChatSettings(userId);
   }
 
   //
