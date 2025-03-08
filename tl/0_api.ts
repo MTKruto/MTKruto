@@ -750,6 +750,7 @@ export interface user {
   profile_color?: PeerColor;
   bot_active_users?: number;
   bot_verification_icon?: bigint;
+  send_paid_messages_stars?: bigint;
 }
 
 export interface userProfilePhotoEmpty {
@@ -869,6 +870,7 @@ export interface channel {
   level?: number;
   subscription_until_date?: number;
   bot_verification_icon?: bigint;
+  send_paid_messages_stars?: bigint;
 }
 
 export interface channelForbidden {
@@ -927,6 +929,7 @@ export interface channelFull {
   can_view_stars_revenue?: true;
   paid_reactions_available?: true;
   stargifts_available?: true;
+  paid_messages_available?: true;
   id: bigint;
   about: string;
   participants_count?: number;
@@ -1064,6 +1067,7 @@ export interface message {
   effect?: bigint;
   factcheck?: FactCheck;
   report_delivery_until_date?: number;
+  paid_message_stars?: bigint;
 }
 
 export interface messageService {
@@ -1753,6 +1757,11 @@ export interface peerSettings {
   request_chat_date?: number;
   business_bot_id?: bigint;
   business_bot_manage_url?: string;
+  charge_paid_message_stars?: bigint;
+  registration_month?: string;
+  phone_country?: string;
+  name_change_date?: number;
+  photo_change_date?: number;
 }
 
 export interface wallPaper {
@@ -1850,7 +1859,6 @@ export interface userFull {
   private_forward_name?: string;
   bot_group_admin_rights?: ChatAdminRights;
   bot_broadcast_admin_rights?: ChatAdminRights;
-  premium_gifts?: Array<PremiumGiftOption>;
   wallpaper?: WallPaper;
   stories?: PeerStories;
   business_work_hours?: BusinessWorkHours;
@@ -1864,6 +1872,7 @@ export interface userFull {
   stargifts_count?: number;
   starref_program?: StarRefProgram;
   bot_verification?: BotVerification;
+  send_paid_messages_stars?: bigint;
 }
 
 export interface contact {
@@ -3572,6 +3581,10 @@ export interface inputPrivacyKeyStarGiftsAutoSave {
   _: "inputPrivacyKeyStarGiftsAutoSave";
 }
 
+export interface inputPrivacyKeyNoPaidMessages {
+  _: "inputPrivacyKeyNoPaidMessages";
+}
+
 export interface privacyKeyStatusTimestamp {
   _: "privacyKeyStatusTimestamp";
 }
@@ -3618,6 +3631,10 @@ export interface privacyKeyBirthday {
 
 export interface privacyKeyStarGiftsAutoSave {
   _: "privacyKeyStarGiftsAutoSave";
+}
+
+export interface privacyKeyNoPaidMessages {
+  _: "privacyKeyNoPaidMessages";
 }
 
 export interface inputPrivacyValueAllowContacts {
@@ -7377,6 +7394,7 @@ export interface globalPrivacySettings {
   keep_archived_folders?: true;
   hide_read_marks?: true;
   new_noncontact_peers_require_premium?: true;
+  noncontact_peers_paid_stars?: bigint;
 }
 
 export interface help_countryCode {
@@ -8073,6 +8091,13 @@ export interface inputInvoiceStarGiftTransfer {
   to_id: InputPeer;
 }
 
+export interface inputInvoicePremiumGiftStars {
+  _: "inputInvoicePremiumGiftStars";
+  user_id: InputUser;
+  months: number;
+  message?: TextWithEntities;
+}
+
 export interface payments_exportedInvoice {
   _: "payments.exportedInvoice";
   url: string;
@@ -8162,15 +8187,6 @@ export interface inputStorePaymentStarsGiveaway {
   currency: string;
   amount: bigint;
   users: number;
-}
-
-export interface premiumGiftOption {
-  _: "premiumGiftOption";
-  months: number;
-  currency: string;
-  amount: bigint;
-  bot_url: string;
-  store_product?: string;
 }
 
 export interface paymentFormMethod {
@@ -9671,6 +9687,8 @@ export interface starsTransaction {
   starref_commission_permille?: number;
   starref_peer?: Peer;
   starref_amount?: StarsAmount;
+  paid_messages?: number;
+  premium_gift_months?: number;
 }
 
 export interface payments_starsStatus {
@@ -10039,6 +10057,7 @@ export interface savedStarGift {
   unsaved?: true;
   refunded?: true;
   can_upgrade?: true;
+  pinned_to_top?: true;
   from_id?: Peer;
   date: number;
   gift: StarGift;
@@ -10088,6 +10107,24 @@ export interface paidReactionPrivacyAnonymous {
 export interface paidReactionPrivacyPeer {
   _: "paidReactionPrivacyPeer";
   peer: InputPeer;
+}
+
+export interface account_paidMessagesRevenue {
+  _: "account.paidMessagesRevenue";
+  stars_amount: bigint;
+}
+
+export interface requirementToContactEmpty {
+  _: "requirementToContactEmpty";
+}
+
+export interface requirementToContactPremium {
+  _: "requirementToContactPremium";
+}
+
+export interface requirementToContactPaidMessages {
+  _: "requirementToContactPaidMessages";
+  stars_amount: bigint;
 }
 
 export interface req_pq_multi {
@@ -11174,6 +11211,19 @@ export interface account_getCollectibleEmojiStatuses {
   [R]?: account_EmojiStatuses;
 }
 
+export interface account_addNoPaidMessagesException {
+  _: "account.addNoPaidMessagesException";
+  refund_charged?: true;
+  user_id: InputUser;
+  [R]?: boolean;
+}
+
+export interface account_getPaidMessagesRevenue {
+  _: "account.getPaidMessagesRevenue";
+  user_id: InputUser;
+  [R]?: account_PaidMessagesRevenue;
+}
+
 export interface users_getUsers {
   _: "users.getUsers";
   id: Array<InputUser>;
@@ -11193,10 +11243,10 @@ export interface users_setSecureValueErrors {
   [R]?: boolean;
 }
 
-export interface users_getIsPremiumRequiredToContact {
-  _: "users.getIsPremiumRequiredToContact";
+export interface users_getRequirementsToContact {
+  _: "users.getRequirementsToContact";
   id: Array<InputUser>;
-  [R]?: Array<boolean>;
+  [R]?: Array<RequirementToContact>;
 }
 
 export interface contacts_getContactIDs {
@@ -11489,6 +11539,7 @@ export interface messages_sendMessage {
   send_as?: InputPeer;
   quick_reply_shortcut?: InputQuickReplyShortcut;
   effect?: bigint;
+  allow_paid_stars?: bigint;
   [R]?: Updates;
 }
 
@@ -11512,6 +11563,7 @@ export interface messages_sendMedia {
   send_as?: InputPeer;
   quick_reply_shortcut?: InputQuickReplyShortcut;
   effect?: bigint;
+  allow_paid_stars?: bigint;
   [R]?: Updates;
 }
 
@@ -11533,6 +11585,7 @@ export interface messages_forwardMessages {
   send_as?: InputPeer;
   quick_reply_shortcut?: InputQuickReplyShortcut;
   video_timestamp?: number;
+  allow_paid_stars?: bigint;
   [R]?: Updates;
 }
 
@@ -11874,6 +11927,7 @@ export interface messages_sendInlineBotResult {
   schedule_date?: number;
   send_as?: InputPeer;
   quick_reply_shortcut?: InputQuickReplyShortcut;
+  allow_paid_stars?: bigint;
   [R]?: Updates;
 }
 
@@ -12169,6 +12223,7 @@ export interface messages_sendMultiMedia {
   send_as?: InputPeer;
   quick_reply_shortcut?: InputQuickReplyShortcut;
   effect?: bigint;
+  allow_paid_stars?: bigint;
   [R]?: Updates;
 }
 
@@ -13953,6 +14008,13 @@ export interface channels_searchPosts {
   [R]?: messages_Messages;
 }
 
+export interface channels_updatePaidMessagesPrice {
+  _: "channels.updatePaidMessagesPrice";
+  channel: InputChannel;
+  send_paid_messages_stars: bigint;
+  [R]?: Updates;
+}
+
 export interface bots_sendCustomRequest {
   _: "bots.sendCustomRequest";
   custom_method: string;
@@ -14503,6 +14565,13 @@ export interface payments_toggleChatStarGiftNotifications {
   _: "payments.toggleChatStarGiftNotifications";
   enabled?: true;
   peer: InputPeer;
+  [R]?: boolean;
+}
+
+export interface payments_toggleStarGiftsPinnedToTop {
+  _: "payments.toggleStarGiftsPinnedToTop";
+  peer: InputPeer;
+  stargift: Array<InputSavedStarGift>;
   [R]?: boolean;
 }
 
@@ -15817,6 +15886,7 @@ export interface Types {
   "inputPrivacyKeyAbout": inputPrivacyKeyAbout;
   "inputPrivacyKeyBirthday": inputPrivacyKeyBirthday;
   "inputPrivacyKeyStarGiftsAutoSave": inputPrivacyKeyStarGiftsAutoSave;
+  "inputPrivacyKeyNoPaidMessages": inputPrivacyKeyNoPaidMessages;
   "privacyKeyStatusTimestamp": privacyKeyStatusTimestamp;
   "privacyKeyChatInvite": privacyKeyChatInvite;
   "privacyKeyPhoneCall": privacyKeyPhoneCall;
@@ -15829,6 +15899,7 @@ export interface Types {
   "privacyKeyAbout": privacyKeyAbout;
   "privacyKeyBirthday": privacyKeyBirthday;
   "privacyKeyStarGiftsAutoSave": privacyKeyStarGiftsAutoSave;
+  "privacyKeyNoPaidMessages": privacyKeyNoPaidMessages;
   "inputPrivacyValueAllowContacts": inputPrivacyValueAllowContacts;
   "inputPrivacyValueAllowAll": inputPrivacyValueAllowAll;
   "inputPrivacyValueAllowUsers": inputPrivacyValueAllowUsers;
@@ -16488,6 +16559,7 @@ export interface Types {
   "inputInvoiceStarGift": inputInvoiceStarGift;
   "inputInvoiceStarGiftUpgrade": inputInvoiceStarGiftUpgrade;
   "inputInvoiceStarGiftTransfer": inputInvoiceStarGiftTransfer;
+  "inputInvoicePremiumGiftStars": inputInvoicePremiumGiftStars;
   "payments.exportedInvoice": payments_exportedInvoice;
   "messages.transcribedAudio": messages_transcribedAudio;
   "help.premiumPromo": help_premiumPromo;
@@ -16498,7 +16570,6 @@ export interface Types {
   "inputStorePaymentStarsTopup": inputStorePaymentStarsTopup;
   "inputStorePaymentStarsGift": inputStorePaymentStarsGift;
   "inputStorePaymentStarsGiveaway": inputStorePaymentStarsGiveaway;
-  "premiumGiftOption": premiumGiftOption;
   "paymentFormMethod": paymentFormMethod;
   "emojiStatusEmpty": emojiStatusEmpty;
   "emojiStatus": emojiStatus;
@@ -16764,6 +16835,10 @@ export interface Types {
   "paidReactionPrivacyDefault": paidReactionPrivacyDefault;
   "paidReactionPrivacyAnonymous": paidReactionPrivacyAnonymous;
   "paidReactionPrivacyPeer": paidReactionPrivacyPeer;
+  "account.paidMessagesRevenue": account_paidMessagesRevenue;
+  "requirementToContactEmpty": requirementToContactEmpty;
+  "requirementToContactPremium": requirementToContactPremium;
+  "requirementToContactPaidMessages": requirementToContactPaidMessages;
 }
 
 export interface Functions<T = Function> {
@@ -16927,10 +17002,12 @@ export interface Functions<T = Function> {
   "account.getReactionsNotifySettings": account_getReactionsNotifySettings;
   "account.setReactionsNotifySettings": account_setReactionsNotifySettings;
   "account.getCollectibleEmojiStatuses": account_getCollectibleEmojiStatuses;
+  "account.addNoPaidMessagesException": account_addNoPaidMessagesException;
+  "account.getPaidMessagesRevenue": account_getPaidMessagesRevenue;
   "users.getUsers": users_getUsers;
   "users.getFullUser": users_getFullUser;
   "users.setSecureValueErrors": users_setSecureValueErrors;
-  "users.getIsPremiumRequiredToContact": users_getIsPremiumRequiredToContact;
+  "users.getRequirementsToContact": users_getRequirementsToContact;
   "contacts.getContactIDs": contacts_getContactIDs;
   "contacts.getStatuses": contacts_getStatuses;
   "contacts.getContacts": contacts_getContacts;
@@ -17284,6 +17361,7 @@ export interface Functions<T = Function> {
   "channels.setEmojiStickers": channels_setEmojiStickers;
   "channels.restrictSponsoredMessages": channels_restrictSponsoredMessages;
   "channels.searchPosts": channels_searchPosts;
+  "channels.updatePaidMessagesPrice": channels_updatePaidMessagesPrice;
   "bots.sendCustomRequest": bots_sendCustomRequest;
   "bots.answerWebhookJSONQuery": bots_answerWebhookJSONQuery;
   "bots.setBotCommands": bots_setBotCommands;
@@ -17361,6 +17439,7 @@ export interface Functions<T = Function> {
   "payments.getSavedStarGift": payments_getSavedStarGift;
   "payments.getStarGiftWithdrawalUrl": payments_getStarGiftWithdrawalUrl;
   "payments.toggleChatStarGiftNotifications": payments_toggleChatStarGiftNotifications;
+  "payments.toggleStarGiftsPinnedToTop": payments_toggleStarGiftsPinnedToTop;
   "stickers.createStickerSet": stickers_createStickerSet;
   "stickers.removeStickerFromSet": stickers_removeStickerFromSet;
   "stickers.changeStickerPosition": stickers_changeStickerPosition;
@@ -17853,7 +17932,6 @@ export interface Enums {
   "messages.TranscribedAudio": messages_TranscribedAudio;
   "help.PremiumPromo": help_PremiumPromo;
   "InputStorePaymentPurpose": InputStorePaymentPurpose;
-  "PremiumGiftOption": PremiumGiftOption;
   "PaymentFormMethod": PaymentFormMethod;
   "EmojiStatus": EmojiStatus;
   "account.EmojiStatuses": account_EmojiStatuses;
@@ -18032,6 +18110,8 @@ export interface Enums {
   "InputSavedStarGift": InputSavedStarGift;
   "payments.StarGiftWithdrawalUrl": payments_StarGiftWithdrawalUrl;
   "PaidReactionPrivacy": PaidReactionPrivacy;
+  "account.PaidMessagesRevenue": account_PaidMessagesRevenue;
+  "RequirementToContact": RequirementToContact;
 }
 
 export type AnyType = Types[keyof Types];
@@ -18387,9 +18467,9 @@ export type SendMessageAction = sendMessageTypingAction | sendMessageCancelActio
 
 export type contacts_Found = contacts_found;
 
-export type InputPrivacyKey = inputPrivacyKeyStatusTimestamp | inputPrivacyKeyChatInvite | inputPrivacyKeyPhoneCall | inputPrivacyKeyPhoneP2P | inputPrivacyKeyForwards | inputPrivacyKeyProfilePhoto | inputPrivacyKeyPhoneNumber | inputPrivacyKeyAddedByPhone | inputPrivacyKeyVoiceMessages | inputPrivacyKeyAbout | inputPrivacyKeyBirthday | inputPrivacyKeyStarGiftsAutoSave;
+export type InputPrivacyKey = inputPrivacyKeyStatusTimestamp | inputPrivacyKeyChatInvite | inputPrivacyKeyPhoneCall | inputPrivacyKeyPhoneP2P | inputPrivacyKeyForwards | inputPrivacyKeyProfilePhoto | inputPrivacyKeyPhoneNumber | inputPrivacyKeyAddedByPhone | inputPrivacyKeyVoiceMessages | inputPrivacyKeyAbout | inputPrivacyKeyBirthday | inputPrivacyKeyStarGiftsAutoSave | inputPrivacyKeyNoPaidMessages;
 
-export type PrivacyKey = privacyKeyStatusTimestamp | privacyKeyChatInvite | privacyKeyPhoneCall | privacyKeyPhoneP2P | privacyKeyForwards | privacyKeyProfilePhoto | privacyKeyPhoneNumber | privacyKeyAddedByPhone | privacyKeyVoiceMessages | privacyKeyAbout | privacyKeyBirthday | privacyKeyStarGiftsAutoSave;
+export type PrivacyKey = privacyKeyStatusTimestamp | privacyKeyChatInvite | privacyKeyPhoneCall | privacyKeyPhoneP2P | privacyKeyForwards | privacyKeyProfilePhoto | privacyKeyPhoneNumber | privacyKeyAddedByPhone | privacyKeyVoiceMessages | privacyKeyAbout | privacyKeyBirthday | privacyKeyStarGiftsAutoSave | privacyKeyNoPaidMessages;
 
 export type InputPrivacyRule = inputPrivacyValueAllowContacts | inputPrivacyValueAllowAll | inputPrivacyValueAllowUsers | inputPrivacyValueDisallowContacts | inputPrivacyValueDisallowAll | inputPrivacyValueDisallowUsers | inputPrivacyValueAllowChatParticipants | inputPrivacyValueDisallowChatParticipants | inputPrivacyValueAllowCloseFriends | inputPrivacyValueAllowPremium | inputPrivacyValueAllowBots | inputPrivacyValueDisallowBots;
 
@@ -18983,7 +19063,7 @@ export type account_SavedRingtone = account_savedRingtone | account_savedRington
 
 export type AttachMenuPeerType = attachMenuPeerTypeSameBotPM | attachMenuPeerTypeBotPM | attachMenuPeerTypePM | attachMenuPeerTypeChat | attachMenuPeerTypeBroadcast;
 
-export type InputInvoice = inputInvoiceMessage | inputInvoiceSlug | inputInvoicePremiumGiftCode | inputInvoiceStars | inputInvoiceChatInviteSubscription | inputInvoiceStarGift | inputInvoiceStarGiftUpgrade | inputInvoiceStarGiftTransfer;
+export type InputInvoice = inputInvoiceMessage | inputInvoiceSlug | inputInvoicePremiumGiftCode | inputInvoiceStars | inputInvoiceChatInviteSubscription | inputInvoiceStarGift | inputInvoiceStarGiftUpgrade | inputInvoiceStarGiftTransfer | inputInvoicePremiumGiftStars;
 
 export type payments_ExportedInvoice = payments_exportedInvoice;
 
@@ -18992,8 +19072,6 @@ export type messages_TranscribedAudio = messages_transcribedAudio;
 export type help_PremiumPromo = help_premiumPromo;
 
 export type InputStorePaymentPurpose = inputStorePaymentPremiumSubscription | inputStorePaymentGiftPremium | inputStorePaymentPremiumGiftCode | inputStorePaymentPremiumGiveaway | inputStorePaymentStarsTopup | inputStorePaymentStarsGift | inputStorePaymentStarsGiveaway;
-
-export type PremiumGiftOption = premiumGiftOption;
 
 export type PaymentFormMethod = paymentFormMethod;
 
@@ -19351,6 +19429,10 @@ export type payments_StarGiftWithdrawalUrl = payments_starGiftWithdrawalUrl;
 
 export type PaidReactionPrivacy = paidReactionPrivacyDefault | paidReactionPrivacyAnonymous | paidReactionPrivacyPeer;
 
+export type account_PaidMessagesRevenue = account_paidMessagesRevenue;
+
+export type RequirementToContact = requirementToContactEmpty | requirementToContactPremium | requirementToContactPaidMessages;
+
 const map: Map<number, string> = new Map([
   [0x05162463, "resPQ"],
   [0xA9F55F95, "p_q_inner_data_dc"],
@@ -19458,7 +19540,7 @@ const map: Map<number, string> = new Map([
   [0xB3CEA0E4, "storage.fileMp4"],
   [0x1081464C, "storage.fileWebp"],
   [0xD3BC4B7A, "userEmpty"],
-  [0x4B46C37E, "user"],
+  [0x020B1422, "user"],
   [0x4F11BAE1, "userProfilePhotoEmpty"],
   [0x82D1F706, "userProfilePhoto"],
   [0x09D05049, "userStatusEmpty"],
@@ -19470,7 +19552,7 @@ const map: Map<number, string> = new Map([
   [0x29562865, "chatEmpty"],
   [0x41CBF256, "chat"],
   [0x6592A1A7, "chatForbidden"],
-  [0xE00998B7, "channel"],
+  [0x7482147E, "channel"],
   [0x17D493D5, "channelForbidden"],
   [0x2633421B, "chatFull"],
   [0x52D6806B, "channelFull"],
@@ -19482,7 +19564,7 @@ const map: Map<number, string> = new Map([
   [0x37C1011C, "chatPhotoEmpty"],
   [0x1C6E1C11, "chatPhoto"],
   [0x90A6CA84, "messageEmpty"],
-  [0x96FDBBE9, "message"],
+  [0xEABCDD4D, "message"],
   [0xD3D28540, "messageService"],
   [0x3DED6320, "messageMediaEmpty"],
   [0x695150D7, "messageMediaPhoto"],
@@ -19573,7 +19655,7 @@ const map: Map<number, string> = new Map([
   [0x5C467992, "inputNotifyForumTopic"],
   [0xCACB6AE2, "inputPeerNotifySettings"],
   [0x99622C0C, "peerNotifySettings"],
-  [0xACD66C5E, "peerSettings"],
+  [0xF47741F7, "peerSettings"],
   [0xA437C3ED, "wallPaper"],
   [0xE0804116, "wallPaperNoFile"],
   [0x58DBCAB8, "inputReportReasonSpam"],
@@ -19586,7 +19668,7 @@ const map: Map<number, string> = new Map([
   [0xF5DDD6E7, "inputReportReasonFake"],
   [0x0A8EB2BE, "inputReportReasonIllegalDrugs"],
   [0x9EC7863D, "inputReportReasonPersonalDetails"],
-  [0x4D975BBC, "userFull"],
+  [0xD2234EA0, "userFull"],
   [0x145ADE0B, "contact"],
   [0xC13E3C50, "importedContact"],
   [0x16D9703B, "contactStatus"],
@@ -19846,6 +19928,7 @@ const map: Map<number, string> = new Map([
   [0x3823CC40, "inputPrivacyKeyAbout"],
   [0xD65A11CC, "inputPrivacyKeyBirthday"],
   [0xE1732341, "inputPrivacyKeyStarGiftsAutoSave"],
+  [0xBDC597B4, "inputPrivacyKeyNoPaidMessages"],
   [0xBC2EAB30, "privacyKeyStatusTimestamp"],
   [0x500E6DFA, "privacyKeyChatInvite"],
   [0x3D662B7B, "privacyKeyPhoneCall"],
@@ -19858,6 +19941,7 @@ const map: Map<number, string> = new Map([
   [0xA486B761, "privacyKeyAbout"],
   [0x2000A518, "privacyKeyBirthday"],
   [0x2CA4FDF8, "privacyKeyStarGiftsAutoSave"],
+  [0x17D348D2, "privacyKeyNoPaidMessages"],
   [0x0D09E07B, "inputPrivacyValueAllowContacts"],
   [0x184B35CE, "inputPrivacyValueAllowAll"],
   [0x131CC67F, "inputPrivacyValueAllowUsers"],
@@ -20413,7 +20497,7 @@ const map: Map<number, string> = new Map([
   [0xD7584C87, "statsGroupTopAdmin"],
   [0x535F779D, "statsGroupTopInviter"],
   [0xEF7FF916, "stats.megagroupStats"],
-  [0x734C4CCB, "globalPrivacySettings"],
+  [0xC9D8DF1C, "globalPrivacySettings"],
   [0x4203C5EF, "help.countryCode"],
   [0xC3878E23, "help.country"],
   [0x93CC1F32, "help.countriesListNotModified"],
@@ -20517,6 +20601,7 @@ const map: Map<number, string> = new Map([
   [0xE8625E92, "inputInvoiceStarGift"],
   [0x4D818D5D, "inputInvoiceStarGiftUpgrade"],
   [0x4A5F5BD9, "inputInvoiceStarGiftTransfer"],
+  [0xDABAB2EF, "inputInvoicePremiumGiftStars"],
   [0xAED0CBD9, "payments.exportedInvoice"],
   [0xCFB9D957, "messages.transcribedAudio"],
   [0x5334759C, "help.premiumPromo"],
@@ -20527,7 +20612,6 @@ const map: Map<number, string> = new Map([
   [0xDDDD0F56, "inputStorePaymentStarsTopup"],
   [0x1D741EF7, "inputStorePaymentStarsGift"],
   [0x751F08FA, "inputStorePaymentStarsGiveaway"],
-  [0x74C34319, "premiumGiftOption"],
   [0x88F8F21B, "paymentFormMethod"],
   [0x2DE11AAE, "emojiStatusEmpty"],
   [0xE7FF068A, "emojiStatus"],
@@ -20737,7 +20821,7 @@ const map: Map<number, string> = new Map([
   [0x60682812, "starsTransactionPeerAds"],
   [0xF9677AAD, "starsTransactionPeerAPI"],
   [0x0BD915C0, "starsTopupOption"],
-  [0x64DFC926, "starsTransaction"],
+  [0xA39FD94A, "starsTransaction"],
   [0x6C9CE8ED, "payments.starsStatus"],
   [0xE87ACBC0, "foundStory"],
   [0xE2DE7737, "stories.foundStories"],
@@ -20793,6 +20877,10 @@ const map: Map<number, string> = new Map([
   [0x206AD49E, "paidReactionPrivacyDefault"],
   [0x1F0C1AD9, "paidReactionPrivacyAnonymous"],
   [0xDC6CFCF0, "paidReactionPrivacyPeer"],
+  [0x1E109708, "account.paidMessagesRevenue"],
+  [0x050A9839, "requirementToContactEmpty"],
+  [0xE581E4E9, "requirementToContactPremium"],
+  [0xB4F67E93, "requirementToContactPaidMessages"],
 ]);
 
 export const getTypeName: (id: number) => string | undefined = map.get.bind(map);
@@ -21046,8 +21134,8 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["NotifyPeer", ["notifyPeer", "notifyUsers", "notifyChats", "notifyBroadcasts", "notifyForumTopic"]],
   ["SendMessageAction", ["sendMessageTypingAction", "sendMessageCancelAction", "sendMessageRecordVideoAction", "sendMessageUploadVideoAction", "sendMessageRecordAudioAction", "sendMessageUploadAudioAction", "sendMessageUploadPhotoAction", "sendMessageUploadDocumentAction", "sendMessageGeoLocationAction", "sendMessageChooseContactAction", "sendMessageGamePlayAction", "sendMessageRecordRoundAction", "sendMessageUploadRoundAction", "speakingInGroupCallAction", "sendMessageHistoryImportAction", "sendMessageChooseStickerAction", "sendMessageEmojiInteraction", "sendMessageEmojiInteractionSeen"]],
   ["contacts.Found", ["contacts.found"]],
-  ["InputPrivacyKey", ["inputPrivacyKeyStatusTimestamp", "inputPrivacyKeyChatInvite", "inputPrivacyKeyPhoneCall", "inputPrivacyKeyPhoneP2P", "inputPrivacyKeyForwards", "inputPrivacyKeyProfilePhoto", "inputPrivacyKeyPhoneNumber", "inputPrivacyKeyAddedByPhone", "inputPrivacyKeyVoiceMessages", "inputPrivacyKeyAbout", "inputPrivacyKeyBirthday", "inputPrivacyKeyStarGiftsAutoSave"]],
-  ["PrivacyKey", ["privacyKeyStatusTimestamp", "privacyKeyChatInvite", "privacyKeyPhoneCall", "privacyKeyPhoneP2P", "privacyKeyForwards", "privacyKeyProfilePhoto", "privacyKeyPhoneNumber", "privacyKeyAddedByPhone", "privacyKeyVoiceMessages", "privacyKeyAbout", "privacyKeyBirthday", "privacyKeyStarGiftsAutoSave"]],
+  ["InputPrivacyKey", ["inputPrivacyKeyStatusTimestamp", "inputPrivacyKeyChatInvite", "inputPrivacyKeyPhoneCall", "inputPrivacyKeyPhoneP2P", "inputPrivacyKeyForwards", "inputPrivacyKeyProfilePhoto", "inputPrivacyKeyPhoneNumber", "inputPrivacyKeyAddedByPhone", "inputPrivacyKeyVoiceMessages", "inputPrivacyKeyAbout", "inputPrivacyKeyBirthday", "inputPrivacyKeyStarGiftsAutoSave", "inputPrivacyKeyNoPaidMessages"]],
+  ["PrivacyKey", ["privacyKeyStatusTimestamp", "privacyKeyChatInvite", "privacyKeyPhoneCall", "privacyKeyPhoneP2P", "privacyKeyForwards", "privacyKeyProfilePhoto", "privacyKeyPhoneNumber", "privacyKeyAddedByPhone", "privacyKeyVoiceMessages", "privacyKeyAbout", "privacyKeyBirthday", "privacyKeyStarGiftsAutoSave", "privacyKeyNoPaidMessages"]],
   ["InputPrivacyRule", ["inputPrivacyValueAllowContacts", "inputPrivacyValueAllowAll", "inputPrivacyValueAllowUsers", "inputPrivacyValueDisallowContacts", "inputPrivacyValueDisallowAll", "inputPrivacyValueDisallowUsers", "inputPrivacyValueAllowChatParticipants", "inputPrivacyValueDisallowChatParticipants", "inputPrivacyValueAllowCloseFriends", "inputPrivacyValueAllowPremium", "inputPrivacyValueAllowBots", "inputPrivacyValueDisallowBots"]],
   ["PrivacyRule", ["privacyValueAllowContacts", "privacyValueAllowAll", "privacyValueAllowUsers", "privacyValueDisallowContacts", "privacyValueDisallowAll", "privacyValueDisallowUsers", "privacyValueAllowChatParticipants", "privacyValueDisallowChatParticipants", "privacyValueAllowCloseFriends", "privacyValueAllowPremium", "privacyValueAllowBots", "privacyValueDisallowBots"]],
   ["account.PrivacyRules", ["account.privacyRules"]],
@@ -21370,12 +21458,11 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["NotificationSound", ["notificationSoundDefault", "notificationSoundNone", "notificationSoundLocal", "notificationSoundRingtone"]],
   ["account.SavedRingtone", ["account.savedRingtone", "account.savedRingtoneConverted"]],
   ["AttachMenuPeerType", ["attachMenuPeerTypeSameBotPM", "attachMenuPeerTypeBotPM", "attachMenuPeerTypePM", "attachMenuPeerTypeChat", "attachMenuPeerTypeBroadcast"]],
-  ["InputInvoice", ["inputInvoiceMessage", "inputInvoiceSlug", "inputInvoicePremiumGiftCode", "inputInvoiceStars", "inputInvoiceChatInviteSubscription", "inputInvoiceStarGift", "inputInvoiceStarGiftUpgrade", "inputInvoiceStarGiftTransfer"]],
+  ["InputInvoice", ["inputInvoiceMessage", "inputInvoiceSlug", "inputInvoicePremiumGiftCode", "inputInvoiceStars", "inputInvoiceChatInviteSubscription", "inputInvoiceStarGift", "inputInvoiceStarGiftUpgrade", "inputInvoiceStarGiftTransfer", "inputInvoicePremiumGiftStars"]],
   ["payments.ExportedInvoice", ["payments.exportedInvoice"]],
   ["messages.TranscribedAudio", ["messages.transcribedAudio"]],
   ["help.PremiumPromo", ["help.premiumPromo"]],
   ["InputStorePaymentPurpose", ["inputStorePaymentPremiumSubscription", "inputStorePaymentGiftPremium", "inputStorePaymentPremiumGiftCode", "inputStorePaymentPremiumGiveaway", "inputStorePaymentStarsTopup", "inputStorePaymentStarsGift", "inputStorePaymentStarsGiveaway"]],
-  ["PremiumGiftOption", ["premiumGiftOption"]],
   ["PaymentFormMethod", ["paymentFormMethod"]],
   ["EmojiStatus", ["emojiStatusEmpty", "emojiStatus", "emojiStatusCollectible", "inputEmojiStatusCollectible"]],
   ["account.EmojiStatuses", ["account.emojiStatusesNotModified", "account.emojiStatuses"]],
@@ -21554,6 +21641,8 @@ const enums: Map<string, (keyof Types)[]> = new Map([
   ["InputSavedStarGift", ["inputSavedStarGiftUser", "inputSavedStarGiftChat"]],
   ["payments.StarGiftWithdrawalUrl", ["payments.starGiftWithdrawalUrl"]],
   ["PaidReactionPrivacy", ["paidReactionPrivacyDefault", "paidReactionPrivacyAnonymous", "paidReactionPrivacyPeer"]],
+  ["account.PaidMessagesRevenue", ["account.paidMessagesRevenue"]],
+  ["RequirementToContact", ["requirementToContactEmpty", "requirementToContactPremium", "requirementToContactPaidMessages"]],
 ]);
 
 const types: Map<string, Parameters> = new Map([
@@ -22655,7 +22744,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "user",
     [
-      0x4B46C37E,
+      0x020B1422,
       [
         ["flags", flags, "#"],
         ["self", "true", "flags.10?true"],
@@ -22703,6 +22792,7 @@ const types: Map<string, Parameters> = new Map([
         ["profile_color", "PeerColor", "flags2.9?PeerColor"],
         ["bot_active_users", "number", "flags2.12?int"],
         ["bot_verification_icon", "bigint", "flags2.14?long"],
+        ["send_paid_messages_stars", "bigint", "flags2.15?long"],
       ],
     ],
   ],
@@ -22828,7 +22918,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "channel",
     [
-      0xE00998B7,
+      0x7482147E,
       [
         ["flags", flags, "#"],
         ["creator", "true", "flags.0?true"],
@@ -22875,6 +22965,7 @@ const types: Map<string, Parameters> = new Map([
         ["level", "number", "flags2.10?int"],
         ["subscription_until_date", "number", "flags2.11?int"],
         ["bot_verification_icon", "bigint", "flags2.13?long"],
+        ["send_paid_messages_stars", "bigint", "flags2.14?long"],
       ],
     ],
   ],
@@ -22949,6 +23040,7 @@ const types: Map<string, Parameters> = new Map([
         ["can_view_stars_revenue", "true", "flags2.15?true"],
         ["paid_reactions_available", "true", "flags2.16?true"],
         ["stargifts_available", "true", "flags2.19?true"],
+        ["paid_messages_available", "true", "flags2.20?true"],
         ["id", "bigint", "long"],
         ["about", "string", "string"],
         ["participants_count", "number", "flags.0?int"],
@@ -23082,7 +23174,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "message",
     [
-      0x96FDBBE9,
+      0xEABCDD4D,
       [
         ["flags", flags, "#"],
         ["out", "true", "flags.1?true"],
@@ -23126,6 +23218,7 @@ const types: Map<string, Parameters> = new Map([
         ["effect", "bigint", "flags2.2?long"],
         ["factcheck", "FactCheck", "flags2.3?FactCheck"],
         ["report_delivery_until_date", "number", "flags2.5?int"],
+        ["paid_message_stars", "bigint", "flags2.6?long"],
       ],
     ],
   ],
@@ -23759,7 +23852,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["flags", flags, "#"],
         ["via_giveaway", "true", "flags.0?true"],
-        ["unclaimed", "true", "flags.2?true"],
+        ["unclaimed", "true", "flags.5?true"],
         ["boost_peer", "Peer", "flags.1?Peer"],
         ["months", "number", "int"],
         ["slug", "string", "string"],
@@ -24184,7 +24277,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "peerSettings",
     [
-      0xACD66C5E,
+      0xF47741F7,
       [
         ["flags", flags, "#"],
         ["report_spam", "true", "flags.0?true"],
@@ -24203,6 +24296,11 @@ const types: Map<string, Parameters> = new Map([
         ["request_chat_date", "number", "flags.9?int"],
         ["business_bot_id", "bigint", "flags.13?long"],
         ["business_bot_manage_url", "string", "flags.13?string"],
+        ["charge_paid_message_stars", "bigint", "flags.14?long"],
+        ["registration_month", "string", "flags.15?string"],
+        ["phone_country", "string", "flags.16?string"],
+        ["name_change_date", "number", "flags.17?int"],
+        ["photo_change_date", "number", "flags.18?int"],
       ],
     ],
   ],
@@ -24310,7 +24408,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "userFull",
     [
-      0x4D975BBC,
+      0xD2234EA0,
       [
         ["flags", flags, "#"],
         ["blocked", "true", "flags.0?true"],
@@ -24346,7 +24444,6 @@ const types: Map<string, Parameters> = new Map([
         ["private_forward_name", "string", "flags.16?string"],
         ["bot_group_admin_rights", "ChatAdminRights", "flags.17?ChatAdminRights"],
         ["bot_broadcast_admin_rights", "ChatAdminRights", "flags.18?ChatAdminRights"],
-        ["premium_gifts", ["PremiumGiftOption"], "flags.19?Vector<PremiumGiftOption>"],
         ["wallpaper", "WallPaper", "flags.24?WallPaper"],
         ["stories", "PeerStories", "flags.25?PeerStories"],
         ["business_work_hours", "BusinessWorkHours", "flags2.0?BusinessWorkHours"],
@@ -24360,6 +24457,7 @@ const types: Map<string, Parameters> = new Map([
         ["stargifts_count", "number", "flags2.8?int"],
         ["starref_program", "StarRefProgram", "flags2.11?StarRefProgram"],
         ["bot_verification", "BotVerification", "flags2.12?BotVerification"],
+        ["send_paid_messages_stars", "bigint", "flags2.14?long"],
       ],
     ],
   ],
@@ -27097,6 +27195,13 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "inputPrivacyKeyNoPaidMessages",
+    [
+      0xBDC597B4,
+      [],
+    ],
+  ],
+  [
     "privacyKeyStatusTimestamp",
     [
       0xBC2EAB30,
@@ -27177,6 +27282,13 @@ const types: Map<string, Parameters> = new Map([
     "privacyKeyStarGiftsAutoSave",
     [
       0x2CA4FDF8,
+      [],
+    ],
+  ],
+  [
+    "privacyKeyNoPaidMessages",
+    [
+      0x17D348D2,
       [],
     ],
   ],
@@ -33186,7 +33298,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "globalPrivacySettings",
     [
-      0x734C4CCB,
+      0xC9D8DF1C,
       [
         ["flags", flags, "#"],
         ["archive_and_mute_new_noncontact_peers", "true", "flags.0?true"],
@@ -33194,6 +33306,7 @@ const types: Map<string, Parameters> = new Map([
         ["keep_archived_folders", "true", "flags.2?true"],
         ["hide_read_marks", "true", "flags.3?true"],
         ["new_noncontact_peers_require_premium", "true", "flags.4?true"],
+        ["noncontact_peers_paid_stars", "bigint", "flags.5?long"],
       ],
     ],
   ],
@@ -34304,6 +34417,18 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "inputInvoicePremiumGiftStars",
+    [
+      0xDABAB2EF,
+      [
+        ["flags", flags, "#"],
+        ["user_id", "InputUser", "InputUser"],
+        ["months", "number", "int"],
+        ["message", "TextWithEntities", "flags.0?TextWithEntities"],
+      ],
+    ],
+  ],
+  [
     "payments.exportedInvoice",
     [
       0xAED0CBD9,
@@ -34436,20 +34561,6 @@ const types: Map<string, Parameters> = new Map([
         ["currency", "string", "string"],
         ["amount", "bigint", "long"],
         ["users", "number", "int"],
-      ],
-    ],
-  ],
-  [
-    "premiumGiftOption",
-    [
-      0x74C34319,
-      [
-        ["flags", flags, "#"],
-        ["months", "number", "int"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
-        ["bot_url", "string", "string"],
-        ["store_product", "string", "flags.0?string"],
       ],
     ],
   ],
@@ -36810,7 +36921,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "starsTransaction",
     [
-      0x64DFC926,
+      0xA39FD94A,
       [
         ["flags", flags, "#"],
         ["refund", "true", "flags.3?true"],
@@ -36838,6 +36949,8 @@ const types: Map<string, Parameters> = new Map([
         ["starref_commission_permille", "number", "flags.16?int"],
         ["starref_peer", "Peer", "flags.17?Peer"],
         ["starref_amount", "StarsAmount", "flags.17?StarsAmount"],
+        ["paid_messages", "number", "flags.19?int"],
+        ["premium_gift_months", "number", "flags.20?int"],
       ],
     ],
   ],
@@ -37419,6 +37532,7 @@ const types: Map<string, Parameters> = new Map([
         ["unsaved", "true", "flags.5?true"],
         ["refunded", "true", "flags.9?true"],
         ["can_upgrade", "true", "flags.10?true"],
+        ["pinned_to_top", "true", "flags.12?true"],
         ["from_id", "Peer", "flags.1?Peer"],
         ["date", "number", "int"],
         ["gift", "StarGift", "StarGift"],
@@ -37495,6 +37609,38 @@ const types: Map<string, Parameters> = new Map([
       0xDC6CFCF0,
       [
         ["peer", "InputPeer", "InputPeer"],
+      ],
+    ],
+  ],
+  [
+    "account.paidMessagesRevenue",
+    [
+      0x1E109708,
+      [
+        ["stars_amount", "bigint", "long"],
+      ],
+    ],
+  ],
+  [
+    "requirementToContactEmpty",
+    [
+      0x050A9839,
+      [],
+    ],
+  ],
+  [
+    "requirementToContactPremium",
+    [
+      0xE581E4E9,
+      [],
+    ],
+  ],
+  [
+    "requirementToContactPaidMessages",
+    [
+      0xB4F67E93,
+      [
+        ["stars_amount", "bigint", "long"],
       ],
     ],
   ],
@@ -39066,6 +39212,26 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "account.addNoPaidMessagesException",
+    [
+      0x6F688AA7,
+      [
+        ["flags", flags, "#"],
+        ["refund_charged", "true", "flags.0?true"],
+        ["user_id", "InputUser", "InputUser"],
+      ],
+    ],
+  ],
+  [
+    "account.getPaidMessagesRevenue",
+    [
+      0xF1266F38,
+      [
+        ["user_id", "InputUser", "InputUser"],
+      ],
+    ],
+  ],
+  [
     "users.getUsers",
     [
       0x0D91A548,
@@ -39094,9 +39260,9 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
-    "users.getIsPremiumRequiredToContact",
+    "users.getRequirementsToContact",
     [
-      0xA622AA10,
+      0xD89A83A3,
       [
         ["id", ["InputUser"], "Vector<InputUser>"],
       ],
@@ -39489,7 +39655,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "messages.sendMessage",
     [
-      0x983F9745,
+      0xFBF2340A,
       [
         ["flags", flags, "#"],
         ["no_webpage", "true", "flags.1?true"],
@@ -39510,13 +39676,14 @@ const types: Map<string, Parameters> = new Map([
         ["send_as", "InputPeer", "flags.13?InputPeer"],
         ["quick_reply_shortcut", "InputQuickReplyShortcut", "flags.17?InputQuickReplyShortcut"],
         ["effect", "bigint", "flags.18?long"],
+        ["allow_paid_stars", "bigint", "flags.21?long"],
       ],
     ],
   ],
   [
     "messages.sendMedia",
     [
-      0x7852834E,
+      0xA550CD78,
       [
         ["flags", flags, "#"],
         ["silent", "true", "flags.5?true"],
@@ -39537,13 +39704,14 @@ const types: Map<string, Parameters> = new Map([
         ["send_as", "InputPeer", "flags.13?InputPeer"],
         ["quick_reply_shortcut", "InputQuickReplyShortcut", "flags.17?InputQuickReplyShortcut"],
         ["effect", "bigint", "flags.18?long"],
+        ["allow_paid_stars", "bigint", "flags.21?long"],
       ],
     ],
   ],
   [
     "messages.forwardMessages",
     [
-      0x6D74DA08,
+      0xBB9FA475,
       [
         ["flags", flags, "#"],
         ["silent", "true", "flags.5?true"],
@@ -39562,6 +39730,7 @@ const types: Map<string, Parameters> = new Map([
         ["send_as", "InputPeer", "flags.13?InputPeer"],
         ["quick_reply_shortcut", "InputQuickReplyShortcut", "flags.17?InputQuickReplyShortcut"],
         ["video_timestamp", "number", "flags.20?int"],
+        ["allow_paid_stars", "bigint", "flags.21?long"],
       ],
     ],
   ],
@@ -40029,7 +40198,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "messages.sendInlineBotResult",
     [
-      0x3EBEE86A,
+      0xC0CF7646,
       [
         ["flags", flags, "#"],
         ["silent", "true", "flags.5?true"],
@@ -40044,6 +40213,7 @@ const types: Map<string, Parameters> = new Map([
         ["schedule_date", "number", "flags.10?int"],
         ["send_as", "InputPeer", "flags.13?InputPeer"],
         ["quick_reply_shortcut", "InputQuickReplyShortcut", "flags.17?InputQuickReplyShortcut"],
+        ["allow_paid_stars", "bigint", "flags.21?long"],
       ],
     ],
   ],
@@ -40445,7 +40615,7 @@ const types: Map<string, Parameters> = new Map([
   [
     "messages.sendMultiMedia",
     [
-      0x37B74355,
+      0x1BF89D74,
       [
         ["flags", flags, "#"],
         ["silent", "true", "flags.5?true"],
@@ -40462,6 +40632,7 @@ const types: Map<string, Parameters> = new Map([
         ["send_as", "InputPeer", "flags.13?InputPeer"],
         ["quick_reply_shortcut", "InputQuickReplyShortcut", "flags.17?InputQuickReplyShortcut"],
         ["effect", "bigint", "flags.18?long"],
+        ["allow_paid_stars", "bigint", "flags.21?long"],
       ],
     ],
   ],
@@ -43001,6 +43172,16 @@ const types: Map<string, Parameters> = new Map([
     ],
   ],
   [
+    "channels.updatePaidMessagesPrice",
+    [
+      0xFC84653F,
+      [
+        ["channel", "InputChannel", "InputChannel"],
+        ["send_paid_messages_stars", "bigint", "long"],
+      ],
+    ],
+  ],
+  [
     "bots.sendCustomRequest",
     [
       0xAA2769ED,
@@ -43799,6 +43980,16 @@ const types: Map<string, Parameters> = new Map([
         ["flags", flags, "#"],
         ["enabled", "true", "flags.0?true"],
         ["peer", "InputPeer", "InputPeer"],
+      ],
+    ],
+  ],
+  [
+    "payments.toggleStarGiftsPinnedToTop",
+    [
+      0x1513E7B0,
+      [
+        ["peer", "InputPeer", "InputPeer"],
+        ["stargift", ["InputSavedStarGift"], "Vector<InputSavedStarGift>"],
       ],
     ],
   ],
