@@ -24,6 +24,7 @@ import { EntityGetter } from "./_getters.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { StickerSetNameGetter } from "./1_sticker.ts";
 import { constructMessage, Message, MessageGetter } from "./4_message.ts";
+import { cleanObject } from "../1_utilities.ts";
 
 export interface ChatListItem {
   chat: ChatP;
@@ -49,12 +50,12 @@ export async function constructChatListItem(chatId: number, pinned: number, last
   const lastMessage_ = lastMessageId > 0 ? await getMessage(chatId, lastMessageId) : null;
   const lastMessage = lastMessage_ == null ? undefined : lastMessage_;
 
-  return {
+  return cleanObject({
     chat: constructChatP(entity),
     order: getChatListItemOrder(lastMessage, pinned),
     pinned,
     lastMessage,
-  };
+  });
 }
 
 export function constructChatListItem2(entity: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden, pinned: number, lastMessage: Omit<Message, "replyToMessage"> | undefined): ChatListItem {
