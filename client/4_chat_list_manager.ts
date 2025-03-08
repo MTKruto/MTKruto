@@ -20,9 +20,9 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { getLogger, Logger, toUnixTimestamp } from "../1_utilities.ts";
+import { toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, chatIdToPeerId, is, isOneOf, peerToChatId } from "../2_tl.ts";
-import { ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, constructChatP, getChatListItemOrder, ID } from "../3_types.ts";
+import { ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, constructChatP, constructChatSettings, getChatListItemOrder, ID } from "../3_types.ts";
 import { type CreateChannelParams, type CreateGroupParams, type CreateSupergroupParams, GetChatMembersParams, GetCommonChatsParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, getChatListId, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -48,13 +48,8 @@ type ChatListManagerUpdate = Api.Types[(typeof chatListManagerUpdates)[number]];
 export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
   #c: C;
 
-  #LgetChats: Logger;
-
   constructor(c: C) {
     this.#c = c;
-
-    const L = getLogger("ChatListManager").client(c.id);
-    this.#LgetChats = L.branch("getChats");
   }
 
   #sendChatUpdate(chatId: number, added: boolean) {
@@ -571,5 +566,11 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       }
     }
     return chats;
+  }
+
+  async getChatSettings(chatId: ID) {
+    const peer = await this.#c.getInputPeer(chatId);
+    const settings = await this.#c.invoke({ _: "messages.getPeerSettings", peer });
+    return constructChatSettings(settings);
   }
 }
