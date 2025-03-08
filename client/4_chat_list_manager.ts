@@ -133,35 +133,6 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
   }
   #chats = new Map<number, ChatListItem>();
   #archivedChats = new Map<number, ChatListItem>();
-  #chatsLoadedFromStorage = false;
-  #tryGetChatId(username: string) {
-    username = username.toLowerCase();
-    for (const chat of this.#chats.values()) {
-      if ("username" in chat) {
-        if (
-          chat.username === username
-          //     TODO
-          //     ||
-          //     chat.chat.also?.some((v) => v.toLowerCase() === username)
-        ) {
-          return chat.chat.id;
-        }
-      }
-    }
-    for (const chat of this.#archivedChats.values()) {
-      if ("username" in chat) {
-        if (
-          chat.username === username
-          //    TODO
-          //    ||
-          //   chat.also?.some((v) => v.toLowerCase() === username)
-        ) {
-          return chat.chat.id;
-        }
-      }
-    }
-    return null;
-  }
   #getChatAnywhere(chatId: number): [ChatListItem | undefined, number] {
     let chat = this.#chats.get(chatId);
     if (chat) {
@@ -184,36 +155,6 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     }
   }
 
-  async #loadChatsFromStorage() {
-    const chats = await this.#c.storage.getChats(0);
-    const archivedChats = await this.#c.storage.getChats(1);
-    for (const { chatId, pinned, topMessageId } of chats) {
-      const chat = await constructChatListItem(chatId, pinned, topMessageId, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
-      if (chat == null) {
-        continue;
-      }
-      this.#chats.set(chat.chat.id, chat);
-    }
-    for (const { chatId, pinned, topMessageId } of archivedChats) {
-      const chat = await constructChatListItem(chatId, pinned, topMessageId, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
-      if (chat == null) {
-        continue;
-      }
-      this.#archivedChats.set(chat.chat.id, chat);
-    }
-    this.#chatsLoadedFromStorage = true;
-  }
-  #getLoadedChats(listId: number) {
-    const chats_ = this.#getChatList(listId);
-
-    const chats = new Array<ChatListItem>();
-    for (const chat of chats_.values()) {
-      chats.push(chat);
-    }
-    return chats
-      .sort((a, b) => b.chat.id - a.chat.id)
-      .sort((a, b) => b.order.localeCompare(a.order));
-  }
   #pinnedChats = new Array<number>();
   #pinnedArchiveChats = new Array<number>();
   #storageHadPinnedChats = false;
@@ -363,7 +304,15 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     }
   }
 
-  async #fetchChats(listId: number, limit: number, after?: ChatListItem) {
+  async getChats(from: "archived" | "main" = "main", after?: ChatListItem, limit = 100): Promise<ChatListItem[]> {
+    this.#c.storage.assertUser("getChats");
+    if (after && !this.#chats.get(after.chat.id)) {
+      throw new InputError("Invalid after");
+    }
+    if (limit <= 0 || limit > 100) {
+      limit = 100;
+    }
+    const listId = getChatListId(from);
     const dialogs = await this.#c.invoke({ _: "messages.getDialogs", limit, offset_id: after?.lastMessage?.id ?? 0, offset_date: after?.lastMessage?.date ? toUnixTimestamp(after.lastMessage.date) : 0, offset_peer: after ? await this.#c.getInputPeer(after.chat.id) : { _: "inputPeerEmpty" }, hash: 0n, folder_id: listId });
     const pinnedChats = await this.#getPinnedChats(listId);
     if (!(is("messages.dialogs", dialogs)) && !(is("messages.dialogsSlice", dialogs))) {
@@ -372,39 +321,12 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     if (dialogs.dialogs.length < limit) {
       await this.#c.storage.setHasAllChats(listId, true);
     }
-    const chats = this.#getChatList(listId);
+    const chats = new Array<ChatListItem>();
     for (const dialog of dialogs.dialogs) {
       const chat = await constructChatListItem4(dialog, dialogs, pinnedChats, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
-      chats.set(chat.chat.id, chat);
+      chats.push(chat);
       await this.#c.storage.setChat(listId, chat.chat.id, chat.pinned, chat.lastMessage?.id ?? 0, chat.lastMessage?.date ?? new Date(0));
     }
-  }
-
-  async getChats(from: "archived" | "main" = "main", after?: ChatListItem, limit = 100): Promise<ChatListItem[]> {
-    this.#c.storage.assertUser("getChats");
-    if (!this.#chatsLoadedFromStorage) {
-      await this.#loadChatsFromStorage();
-    }
-    if (after && !this.#chats.get(after.chat.id)) {
-      throw new InputError("Invalid after");
-    }
-    if (limit <= 0 || limit > 100) {
-      limit = 100;
-    }
-    const listId = getChatListId(from);
-    let chats = this.#getLoadedChats(listId);
-    if (after) {
-      chats = chats
-        .filter((v) => v.order < after!.order);
-    }
-    if (chats.length < limit) {
-      this.#LgetChats.debug(`have only ${chats.length} chats but ${limit - chats.length} more is needed`);
-      if (!await this.#c.storage.hasAllChats(listId)) {
-        await this.#fetchChats(listId, limit, after);
-        return await this.getChats(from, after, limit);
-      }
-    }
-    chats = chats.slice(0, limit);
     return chats;
   }
 
