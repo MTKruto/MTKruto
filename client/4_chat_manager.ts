@@ -402,7 +402,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
 
   async setDiscussionChat(chatId: ID, discussionChatId: ID) {
     this.#c.storage.assertUser("setDiscussionChat");
-    const [channel, group] = await Promise.all([this.#c.getInputChannel(chatId), this.#c.getInputChannel(discussionChatId)]);
-    await this.#c.invoke({ _: "channels.setDiscussionGroup", channel, group });
+    const [broadcast, group] = await Promise.all([this.#c.getInputChannel(chatId), this.#c.getInputChannel(discussionChatId)]);
+    await this.#c.invoke({ _: "channels.setDiscussionGroup", broadcast, group });
   }
 }
