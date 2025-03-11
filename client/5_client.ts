@@ -3054,6 +3054,26 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return await this.#chatListManager.getChatSettings(chatId);
   }
 
+  /**
+   * Disable business bots in a private chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the private chat to disable business bots in.
+   */
+  async disableBusinessBots(chatId: ID): Promise<void> {
+    await this.#chatListManager.disableBusinessBots(chatId);
+  }
+
+  /**
+   * Enable business bots in a private chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the private chat to enable business bots in.
+   */
+  async enableBusinessBots(chatId: ID): Promise<void> {
+    await this.#chatListManager.enableBusinessBots(chatId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
@@ -3080,7 +3100,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
     await this.#callbackQueryManager.answerCallbackQuery(id, params);
   }
-
   //
   // ========================= INLINE QUERIES ========================= //
   //
