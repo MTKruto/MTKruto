@@ -3191,6 +3191,18 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.#chatManager.setDiscussionChat(chatId, discussionChatId);
   }
 
+  /**
+   * Transfer the ownership of a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param userId The identifier of the new owner.
+   * @param password The password of the current account.
+   */
+  async transferChatOwnership(chatId: ID, userId: ID, password: string): Promise<void> {
+    await this.#chatManager.transferChatOwnership(chatId, userId, password);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //

@@ -21,10 +21,11 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { toUnixTimestamp } from "../1_utilities.ts";
-import { Api, as, is, isOneOf } from "../2_tl.ts";
+import { Api, as, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, FileSource, ID, Reaction, reactionToTlObject, Update } from "../3_types.ts";
 import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, SetChatMemberRightsParams, SetChatPhotoParams, SetSignaturesEnabledParams } from "./0_params.ts";
+import { checkPassword } from "./0_password.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
@@ -404,5 +405,18 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
     this.#c.storage.assertUser("setDiscussionChat");
     const [broadcast, group] = await Promise.all([this.#c.getInputChannel(chatId), this.#c.getInputChannel(discussionChatId)]);
     await this.#c.invoke({ _: "channels.setDiscussionGroup", broadcast, group });
+  }
+
+  async transferChatOwnership(chatId: ID, userId: ID, password: string) {
+    this.#c.storage.assertUser("transferChat");
+    const user_id = await this.#c.getInputUser(userId);
+    const isSelf = is("inputUserSelf", user_id);
+    if (isSelf || peerToChatId(user_id) == await this.#c.getSelfId()) {
+      throw new InputError("A user ID except that of the current one was expected.");
+    }
+    const channel = await this.#c.getInputChannel(chatId);
+    const ap = await this.#c.invoke({ _: "account.getPassword" });
+    const password_ = await checkPassword(password, ap);
+    await this.#c.invoke({ _: "channels.editCreator", channel, user_id, password: password_ });
   }
 }
