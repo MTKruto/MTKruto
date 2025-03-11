@@ -328,6 +328,26 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
     await this.#toggleSlowMode(chatId, seconds);
   }
 
+  async setChatTitle(chatId: ID, title: string) {
+    const peer = await this.#c.getInputPeer(chatId);
+    if (is("inputPeerChat", peer)) {
+      await this.#c.invoke({ _: "messages.editChatTitle", chat_id: peer.chat_id, title });
+    } else if (canBeInputChannel(peer)) {
+      const channel = toInputChannel(peer);
+      await this.#c.invoke({ _: "channels.editTitle", channel, title });
+    } else {
+      throw new InputError("A chat or channel identifier was expected.");
+    }
+  }
+
+  async setChatDescription(chatId: ID, description: string) {
+    const peer = await this.#c.getInputPeer(chatId);
+    if (canBeInputUser(peer)) {
+      throw new InputError("A chat or channel identifier was expected.");
+    }
+    await this.#c.invoke({ _: "messages.editChatAbout", peer, about: description });
+  }
+
   async setMemberListVisibility(chatId: ID, visible: boolean) {
     this.#c.storage.assertUser("setMemberListVisible");
     const channel = await this.#c.getInputChannel(chatId);

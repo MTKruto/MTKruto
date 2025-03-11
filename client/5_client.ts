@@ -3096,6 +3096,28 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
+   * Change the title of a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param title The new title.
+   */
+  async setChatTitle(chatId: ID, title: string): Promise<void> {
+    await this.#chatManager.setChatTitle(chatId, title);
+  }
+
+  /**
+   * Change the description of a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param description The new description.
+   */
+  async setChatDescription(chatId: ID, description: string): Promise<void> {
+    await this.#chatManager.setChatDescription(chatId, description);
+  }
+
+  /**
    * Hide or show the member list of a group to non-admins. User-only.
    *
    * @method ch
