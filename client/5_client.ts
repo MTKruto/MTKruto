@@ -28,7 +28,7 @@ import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuest
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
-import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetMyCommandsParams, SetReactionsParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetMyCommandsParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, getUsername, isCdnFunction, isMtprotoFunction, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -3089,6 +3089,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @method ch
    * @param chatId The identifier of the group to change slow mode in.
+   * @param duration New slow mode duration.
    */
   async setSlowMode(chatId: ID, duration: SlowModeDuration): Promise<void> {
     await this.#chatManager.setSlowMode(chatId, duration);
@@ -3114,6 +3115,50 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async setChatDescription(chatId: ID, description: string): Promise<void> {
     await this.#chatManager.setChatDescription(chatId, description);
+  }
+
+  /**
+   * Hide or show the member list of a group to non-admins. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a group.
+   * @param visible Whether the member list of the group should be visible.
+   */
+  async setMemberListVisibility(chatId: ID, visible: boolean): Promise<void> {
+    await this.#chatManager.setMemberListVisibility(chatId, visible);
+  }
+
+  /**
+   * Enable or disable topics in a group. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a group.
+   * @param enabled Whether topics should be enabled in the group.
+   */
+  async setTopicsEnabled(chatId: ID, enabled: boolean): Promise<void> {
+    await this.#chatManager.setTopicsEnabled(chatId, enabled);
+  }
+
+  /**
+   * Enable or disable automatic anti-spam in a group. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a group.
+   * @param enabled Whether automatic anti-spam should be enabled in the group.
+   */
+  async setAntispamEnabled(chatId: ID, enabled: boolean): Promise<void> {
+    await this.#chatManager.setAntispamEnabled(chatId, enabled);
+  }
+
+  /**
+   * Enable or disable post signatures in a channel. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a channel.
+   * @param enabled Whether post signatures should be enabled in the channel.
+   */
+  async setSignaturesEnabled(chatId: ID, enabled: boolean, params?: SetSignaturesEnabledParams): Promise<void> {
+    await this.#chatManager.setSignaturesEnabled(chatId, enabled, params);
   }
 
   //

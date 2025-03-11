@@ -24,7 +24,7 @@ import { toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, inputPeerToPeer, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { constructChatMemberUpdated, constructFailedInvitation, constructInviteLink, constructJoinRequest, SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, FileSource, ID, Reaction, reactionToTlObject, Update } from "../3_types.ts";
-import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, SetChatMemberRightsParams, SetChatPhotoParams } from "./0_params.ts";
+import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, SetChatMemberRightsParams, SetChatPhotoParams, SetSignaturesEnabledParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
@@ -346,5 +346,30 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
       throw new InputError("A chat or channel identifier was expected.");
     }
     await this.#c.invoke({ _: "messages.editChatAbout", peer, about: description });
+  }
+
+  async setMemberListVisibility(chatId: ID, visible: boolean) {
+    this.#c.storage.assertUser("setMemberListVisible");
+    const channel = await this.#c.getInputChannel(chatId);
+    const enabled = !visible;
+    await this.#c.invoke({ _: "channels.toggleParticipantsHidden", channel, enabled });
+  }
+
+  async setTopicsEnabled(chatId: ID, enabled: boolean) {
+    this.#c.storage.assertUser("setTopicsEnabled");
+    const channel = await this.#c.getInputChannel(chatId);
+    await this.#c.invoke({ _: "channels.toggleForum", channel, enabled });
+  }
+
+  async setAntispamEnabled(chatId: ID, enabled: boolean) {
+    this.#c.storage.assertUser("setTopicsEnabled");
+    const channel = await this.#c.getInputChannel(chatId);
+    await this.#c.invoke({ _: "channels.toggleAntiSpam", channel, enabled });
+  }
+
+  async setSignaturesEnabled(chatId: ID, enabled: boolean, params?: SetSignaturesEnabledParams) {
+    this.#c.storage.assertUser("setSignaturesEnabled");
+    const channel = await this.#c.getInputChannel(chatId);
+    await this.#c.invoke({ _: "channels.toggleSignatures", channel, signatures_enabled: enabled ? true : undefined, profiles_enabled: params?.showAuthorProfile ? true : undefined });
   }
 }
