@@ -569,6 +569,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
   }
 
   async getChatSettings(chatId: ID) {
+    this.#c.storage.assertUser("getChatSettings");
     const peer = await this.#c.getInputPeer(chatId);
     const settings = await this.#c.invoke({ _: "messages.getPeerSettings", peer });
     return constructChatSettings(settings);
