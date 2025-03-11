@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, is, isOneOf } from "../2_tl.ts";
-import { constructChatMemberUpdated, constructFailedInvitation, constructInviteLink, constructJoinRequest, SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
+import { ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, FileSource, ID, Reaction, reactionToTlObject, Update } from "../3_types.ts";
 import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, SetChatMemberRightsParams, SetChatPhotoParams, SetSignaturesEnabledParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
@@ -384,5 +384,25 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
     } else {
       throw new InputError("A chat or channel identifier was expected.");
     }
+  }
+
+  async getDiscussionChatSuggestions() {
+    this.#c.storage.assertUser("getDiscussionChatSuggestions");
+    const { chats } = await this.#c.invoke({ _: "channels.getGroupsForDiscussion" });
+    return chats
+      .map((v) => {
+        if (!isOneOf(["chat", "channel"], v)) {
+          return v;
+        } else {
+          return constructChatP(v);
+        }
+      })
+      .filter((v): v is ChatP => v != null);
+  }
+
+  async setDiscussionChat(chatId: ID, discussionChatId: ID) {
+    this.#c.storage.assertUser("setDiscussionChat");
+    const [broadcast, group] = await Promise.all([this.#c.getInputChannel(chatId), this.#c.getInputChannel(discussionChatId)]);
+    await this.#c.invoke({ _: "channels.setDiscussionGroup", broadcast, group });
   }
 }

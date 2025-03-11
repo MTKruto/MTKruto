@@ -3171,6 +3171,26 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.#chatManager.deleteChat(chatId);
   }
 
+  /**
+   * Get discussion chat suggestions. User-only.
+   *
+   * @method ch
+   */
+  async getDiscussionChatSuggestions(): Promise<ChatP[]> {
+    return await this.#chatManager.getDiscussionChatSuggestions();
+  }
+
+  /**
+   * Set a channel's discussion chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a channel.
+   * @param discussionChatId The identifier of the chat to use as discussion for the channel.
+   */
+  async setDiscussionChat(chatId: ID, discussionChatId: ID): Promise<void> {
+    await this.#chatManager.setDiscussionChat(chatId, discussionChatId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
