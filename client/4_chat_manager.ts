@@ -327,4 +327,16 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
 
     await this.#toggleSlowMode(chatId, seconds);
   }
+
+  async setChatTitle(chatId: ID, title: string) {
+    const peer = await this.#c.getInputPeer(chatId);
+    if (is("inputPeerChat", peer)) {
+      await this.#c.invoke({ _: "messages.editChatTitle", chat_id: peer.chat_id, title });
+    } else if (canBeInputChannel(peer)) {
+      const channel = toInputChannel(peer);
+      await this.#c.invoke({ _: "channels.editTitle", channel, title });
+    } else {
+      throw new InputError("A chat or channel identifier was expected.");
+    }
+  }
 }

@@ -3094,6 +3094,17 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.#chatManager.setSlowMode(chatId, duration);
   }
 
+  /**
+   * Change the title of a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param title The new title.
+   */
+  async setChatTitle(chatId: ID, title: string): Promise<void> {
+    await this.#chatManager.setChatTitle(chatId, title);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
