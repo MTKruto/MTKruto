@@ -617,3 +617,8 @@ export interface SendGiftParams {
   /** Whether the gift should be upgraded before sending it. */
   upgrade?: boolean;
 }
+
+export interface SetSignaturesEnabledParams {
+  /** Whether author profiles should be shown in posts. */
+  showAuthorProfile?: boolean;
+}
