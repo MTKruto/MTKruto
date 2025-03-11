@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { toUnixTimestamp } from "../1_utilities.ts";
-import { Api, as, is, isOneOf } from "../2_tl.ts";
+import { Api, as, inputPeerToPeer, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { constructChatMemberUpdated, constructFailedInvitation, constructInviteLink, constructJoinRequest, SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, FileSource, ID, Reaction, reactionToTlObject, Update } from "../3_types.ts";
 import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, SetChatMemberRightsParams, SetChatPhotoParams } from "./0_params.ts";
@@ -338,5 +338,13 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
     } else {
       throw new InputError("A chat or channel identifier was expected.");
     }
+  }
+
+  async setChatDescription(chatId: ID, description: string) {
+    const peer = await this.#c.getInputPeer(chatId);
+    if (canBeInputUser(peer)) {
+      throw new InputError("A chat or channel identifier was expected.");
+    }
+    await this.#c.invoke({ _: "messages.editChatAbout", peer, about: description });
   }
 }

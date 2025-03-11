@@ -3105,6 +3105,17 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.#chatManager.setChatTitle(chatId, title);
   }
 
+  /**
+   * Change the description of a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param description The new description.
+   */
+  async setChatDescription(chatId: ID, description: string): Promise<void> {
+    await this.#chatManager.setChatDescription(chatId, description);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
