@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { toUnixTimestamp } from "../1_utilities.ts";
 import { Api, as, is, isOneOf } from "../2_tl.ts";
-import { constructChatMemberUpdated, constructFailedInvitation, constructInviteLink, constructJoinRequest } from "../3_types.ts";
+import { constructChatMemberUpdated, constructFailedInvitation, constructInviteLink, constructJoinRequest, SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, FileSource, ID, Reaction, reactionToTlObject, Update } from "../3_types.ts";
 import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, SetChatMemberRightsParams, SetChatPhotoParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
@@ -306,5 +306,25 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
       return result.missing_invitees.map(constructFailedInvitation);
     }
     unreachable();
+  }
+
+  async #toggleSlowMode(chatId: ID, seconds: number) {
+    const channel = await this.#c.getInputChannel(chatId);
+    await this.#c.invoke({ _: "channels.toggleSlowMode", channel, seconds });
+  }
+
+  async disableSlowMode(chatId: ID) {
+    this.#c.storage.assertUser("disableSlowMode");
+    await this.#toggleSlowMode(chatId, 0);
+  }
+
+  async setSlowMode(chatId: ID, duration: SlowModeDuration) {
+    this.#c.storage.assertUser("setSlowMode");
+    const seconds = slowModeDurationToSeconds(duration);
+    if (seconds > 1) {
+      throw new InputError("Invalid slow mode duration.");
+    }
+
+    await this.#toggleSlowMode(chatId, seconds);
   }
 }
