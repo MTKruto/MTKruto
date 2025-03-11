@@ -3161,6 +3161,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.#chatManager.setSignaturesEnabled(chatId, enabled, params);
   }
 
+  /**
+   * Delete a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat to delete.
+   */
+  async deleteChat(chatId: ID): Promise<void> {
+    await this.#chatManager.deleteChat(chatId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //

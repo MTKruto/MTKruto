@@ -372,4 +372,17 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
     const channel = await this.#c.getInputChannel(chatId);
     await this.#c.invoke({ _: "channels.toggleSignatures", channel, signatures_enabled: enabled ? true : undefined, profiles_enabled: params?.showAuthorProfile ? true : undefined });
   }
+
+  async deleteChat(chatId: ID) {
+    this.#c.storage.assertUser("deleteChat");
+    const peer = await this.#c.getInputPeer(chatId);
+    if (is("inputPeerChat", peer)) {
+      await this.#c.invoke({ _: "messages.deleteChat", chat_id: peer.chat_id });
+    } else if (canBeInputChannel(peer)) {
+      const channel = toInputChannel(peer);
+      await this.#c.invoke({ _: "channels.deleteChannel", channel });
+    } else {
+      throw new InputError("A chat or channel identifier was expected.");
+    }
+  }
 }
