@@ -574,4 +574,22 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     const settings = await this.#c.invoke({ _: "messages.getPeerSettings", peer });
     return constructChatSettings(settings);
   }
+
+  async #toggleBusinessBotsPaused(chatId: ID, paused: boolean) {
+    const peer = await this.#c.getInputPeer(chatId);
+    if (!canBeInputUser(peer)) {
+      throw new InputError("A private chat was expected.");
+    }
+    await this.#c.invoke({ _: "account.toggleConnectedBotPaused", peer, paused });
+  }
+
+  async disableBusinessBots(chatId: ID) {
+    this.#c.storage.assertUser("disableBusinessBots");
+    await this.#toggleBusinessBotsPaused(chatId, true);
+  }
+
+  async enableBusinessBots(chatId: ID) {
+    this.#c.storage.assertUser("enableBusinessBots");
+    await this.#toggleBusinessBotsPaused(chatId, false);
+  }
 }
