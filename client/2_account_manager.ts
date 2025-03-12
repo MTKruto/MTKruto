@@ -22,8 +22,8 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { toUnixTimestamp } from "../1_utilities.ts";
 import { Api, chatIdToPeer, inputPeerToPeer, is } from "../2_tl.ts";
-import { constructInactiveChat, constructUser, ID } from "../3_types.ts";
-import { AddContactParams, SetEmojiStatusParams, UpdateProfileParams } from "./0_params.ts";
+import { birthdayToTlObject, constructInactiveChat, constructUser, ID } from "../3_types.ts";
+import { AddContactParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, UpdateProfileParams } from "./0_params.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C } from "./1_types.ts";
 
@@ -198,5 +198,51 @@ export class AccountManager {
       throw new InputError("At least one parameter must be specified.");
     }
     await this.#c.invoke({ _: "account.updateProfile", first_name: params.firstName, last_name: params.lastName, about: params.bio });
+  }
+
+  async setBirthday(params?: SetBirthdayParams) {
+    this.#c.storage.assertUser("setBirthday");
+    const birthday = params?.birthday ? birthdayToTlObject(params.birthday) : undefined;
+    await this.#c.invoke({ _: "account.updateBirthday", birthday });
+  }
+
+  async setPersonalChannel(params?: SetPersonalChannelParams) {
+    this.#c.storage.assertUser("setPersonalChannel");
+    let channel: Api.InputChannel = { _: "inputChannelEmpty" };
+    if (params?.chatId) {
+      channel = await this.#c.getInputChannel(params.chatId);
+    }
+    await this.#c.invoke({ _: "account.updatePersonalChannel", channel });
+  }
+
+  async setNameColor(color: number, params?: SetNameColorParams) {
+    this.#c.storage.assertUser("setNameColor");
+    const background_emoji_id = params?.customEmojiId ? BigInt(params.customEmojiId) : undefined;
+    await this.#c.invoke({ _: "account.updateColor", color, background_emoji_id });
+  }
+
+  async setProfileColor(color: number, params?: SetProfileColorParams) {
+    this.#c.storage.assertUser("setProfileColor");
+    const background_emoji_id = params?.customEmojiId ? BigInt(params.customEmojiId) : undefined;
+    await this.#c.invoke({ _: "account.updateColor", for_profile: true, color, background_emoji_id });
+  }
+
+  async setLocation(params?: SetLocationParams) {
+    this.#c.storage.assertUser("setLocation");
+    let address = params?.address;
+    if (typeof address === "string") {
+      address = address.trim();
+      if (!address.length) {
+        throw new InputError("Address cannot be empty.");
+      }
+      if (address.length > 96) {
+        throw new InputError("Address is too long.");
+      }
+    }
+    let geo_point: Api.inputGeoPoint | undefined;
+    if (params?.latitude && params.longitude) {
+      geo_point = { _: "inputGeoPoint", lat: params.latitude, long: params.longitude };
+    }
+    await this.#c.invoke({ _: "account.updateBusinessLocation", address, geo_point });
   }
 }

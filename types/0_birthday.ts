@@ -35,3 +35,12 @@ export function constructBirthday(birthday: Api.birthday): Birthday {
     year: birthday.year,
   });
 }
+
+export function birthdayToTlObject(birthday: Birthday): Api.birthday {
+  return {
+    _: "birthday",
+    day: birthday.day,
+    month: birthday.month,
+    year: birthday.year,
+  };
+}
