@@ -19,7 +19,7 @@
  */
 
 import { MaybePromise } from "../1_utilities.ts";
-import { BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
+import { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
 import { ReplyTo } from "../types/2_reply_to.ts";
 
 export interface AnswerCallbackQueryParams {
@@ -621,4 +621,33 @@ export interface SendGiftParams {
 export interface SetSignaturesEnabledParams {
   /** Whether author profiles should be shown in posts. */
   showAuthorProfile?: boolean;
+}
+
+export interface SetBirthdayParams {
+  /** New birthday. If not set, birthday will be removed. */
+  birthday?: Birthday;
+}
+
+export interface SetPersonalChannelParams {
+  /** New personal channel. If not set, personal channel will be removed. */
+  chatId?: ID;
+}
+
+export interface SetNameColorParams {
+  /** Identifier of a custom emoji to display in message reply headers. */
+  customEmojiId?: string;
+}
+
+export interface SetProfileColorParams {
+  /** Identifier of a custom emoji to display in the profile. */
+  customEmojiId?: string;
+}
+
+export interface SetLocationParams {
+  /** Written address of the business. If not set, address will be removed. */
+  address?: string;
+  /** Latitude of the business. */
+  latitude?: number;
+  /** Longitude of the business. */
+  longitude?: number;
 }
