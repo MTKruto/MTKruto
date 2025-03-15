@@ -20,8 +20,8 @@
 
 import { unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
-import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, gunzip, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, is, isGenericFunction, isOfEnum, isOneOf, message, ReadObject, TLError, TLReader } from "../2_tl.ts";
+import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
+import { Api, compressible, is, isGenericFunction, isOfEnum, isOneOf, message, ReadObject, TLError } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";
@@ -148,6 +148,7 @@ export class ClientEncrypted extends ClientAbstract {
       seqno: this.#nextSeqNo(true),
       body: function_,
     };
+    Object.assign(message_, { [compressible]: true });
     const message__ = message_;
 
     let container: bigint | undefined = undefined;
@@ -221,10 +222,7 @@ export class ClientEncrypted extends ClientAbstract {
 
         for (const message of messages) {
           let sendAck = true;
-          let body = message.body;
-          if (is("gzip_packed", body)) {
-            body = new TLReader(await gunzip(body.packed_data)).readObject() as Api.AnyType;
-          }
+          const body = message.body;
           this.#LreceiveLoop.debug("received", body._);
           if (isOfEnum("Updates", body) || isOfEnum("Update", body)) {
             drop(this.handlers.updates?.(body as Api.Updates | Api.Update, null));
@@ -233,10 +231,7 @@ export class ClientEncrypted extends ClientAbstract {
             drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
             this.#LreceiveLoop.debug("new session created with ID", body.unique_id);
           } else if (body._ == "rpc_result") {
-            let result = body.result;
-            if (is("gzip_packed", result)) {
-              result = new TLReader(await gunzip(result.packed_data)).readObject() as Api.AnyType;
-            }
+            const result = body.result;
             if (is("rpc_error", result)) {
               this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
             } else {

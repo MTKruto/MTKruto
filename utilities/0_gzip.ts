@@ -18,31 +18,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals } from "../0_deps.ts";
-import { Api } from "../2_tl.ts";
-import { calculateLength } from "./5_message.ts";
+import { toArrayBuffer } from "../0_deps.ts";
 
-Deno.test("calculateLength", () => {
-  const resPq: Api.resPQ = {
-    _: "resPQ", // 4 cid
-    nonce: 1n, // 16 long
-    server_nonce: 2n, // 16 long
-    pq: new Uint8Array(1024), // 4 len, 1024 bytes
-    server_public_key_fingerprints: [ // 4 vector cid, 4 vector len
-      1n, // 8 long
-      2n, // 8 long
-      3n, // 8 long
-    ],
-  };
-  const user: Api.user = {
-    _: "user", // 4 cid
-    id: 0n, // 8 long
-    // 4 flags, 4 flags2
-  };
+export function gunzip(buffer: Uint8Array): Promise<Uint8Array> {
+  return inner(buffer, new DecompressionStream("gzip"));
+}
 
-  const resPqExpectedLength = 1096;
-  const userExpectedLength = 20;
+export function gzip(buffer: Uint8Array): Promise<Uint8Array> {
+  return inner(buffer, new CompressionStream("gzip"));
+}
 
-  assertEquals(calculateLength(resPq), resPqExpectedLength);
-  assertEquals(calculateLength(user), userExpectedLength);
-});
+async function inner(buffer: Uint8Array, transformStream: GenericTransformStream): Promise<Uint8Array> {
+  let readable: ReadableStream;
+  if (ReadableStream.from) {
+    readable = ReadableStream.from([buffer]);
+  } else {
+    readable = new ReadableStream({
+      pull(controller) {
+        controller.enqueue(buffer);
+        controller.close();
+      },
+    });
+  }
+  readable = readable.pipeThrough(transformStream);
+  return new Uint8Array(await toArrayBuffer(readable));
+}
