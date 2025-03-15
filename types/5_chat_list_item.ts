@@ -59,12 +59,12 @@ export async function constructChatListItem(chatId: number, pinned: number, last
 }
 
 export function constructChatListItem2(entity: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden, pinned: number, lastMessage: Omit<Message, "replyToMessage"> | undefined): ChatListItem {
-  return {
+  return cleanObject({
     chat: constructChatP(entity),
     order: getChatListItemOrder(lastMessage, pinned),
     pinned,
     lastMessage,
-  };
+  });
 }
 
 export async function constructChatListItem3(chatId: number, pinned: number, lastMessage: Omit<Message, "replyToMessage"> | undefined, getEntity: EntityGetter): Promise<ChatListItem | null> {
@@ -72,12 +72,12 @@ export async function constructChatListItem3(chatId: number, pinned: number, las
   if (entity == null) {
     return null;
   }
-  return {
+  return cleanObject({
     chat: constructChatP(entity),
     order: getChatListItemOrder(lastMessage, pinned),
     pinned,
     lastMessage,
-  };
+  });
 }
 
 export async function constructChatListItem4(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice, pinnedChats: number[], getEntity: EntityGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<ChatListItem> {
@@ -95,10 +95,10 @@ export async function constructChatListItem4(dialog: Api.Dialog, dialogs: Api.me
   if (!chat__) {
     unreachable();
   }
-  return {
+  return cleanObject({
     chat: constructChatP(chat__ as Api.user | Api.channel | Api.chat),
     order,
     lastMessage,
     pinned,
-  };
+  });
 }
