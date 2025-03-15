@@ -18,6 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { gunzip } from "../1_utilities.ts";
+import { AnyType } from "./0_api.ts";
+import { is } from "./1_utilities.ts";
 import { TLReader } from "./3_tl_reader.ts";
 
 // rpc_result#f35c6d01 req_msg_id:long result:Object = RpcResult;
@@ -31,9 +34,12 @@ export interface rpc_result {
   result: any;
 }
 
-export function deserializeRpcResult(buffer: Uint8Array): rpc_result {
+export async function deserializeRpcResult(buffer: Uint8Array): Promise<rpc_result> {
   const reader = new TLReader(buffer);
   const messageId = reader.readInt64();
-  const result = reader.readObject();
+  let result = reader.readObject();
+  if (is("gzip_packed", result)) {
+    result = new TLReader(await gunzip(result.packed_data)).readObject() as AnyType;
+  }
   return { _: "rpc_result", req_msg_id: messageId, result };
 }

@@ -22,7 +22,7 @@ export * from "./utilities/0_bigint.ts";
 export * from "./utilities/0_buffer.ts";
 export * from "./utilities/0_cache_map.ts";
 export * from "./utilities/0_color.ts";
-export * from "./utilities/0_gunzip.ts";
+export * from "./utilities/0_gzip.ts";
 export * from "./utilities/0_hash.ts";
 export * from "./utilities/0_mutex.ts";
 export * from "./utilities/0_object.ts";

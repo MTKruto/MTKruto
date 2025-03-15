@@ -57,7 +57,7 @@ export async function encryptMessage(message: message, authKey: Uint8Array, auth
 
   payloadWriter.writeInt64(salt);
   payloadWriter.writeInt64(sessionId);
-  payloadWriter.write(serializeMessage(message));
+  payloadWriter.write(await serializeMessage(message));
   payloadWriter.write(new Uint8Array(mod(-(payloadWriter.buffer.length + 12), 16) + 12));
 
   const payload = payloadWriter.buffer;
