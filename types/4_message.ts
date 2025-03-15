@@ -948,7 +948,9 @@ export async function constructMessage(
       unreachable();
     }
   } else if (is("peerChannel", message_.peer_id)) {
-    link = `https://t.me/c/${message_.peer_id.channel_id}/${message_.id}`;
+    const reply_to_top_id = message_.reply_to && is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_top_id;
+    const threadId = reply_to_top_id && typeof reply_to_top_id === "number" ? reply_to_top_id + "/" : "";
+    link = `https://t.me/c/${message_.peer_id.channel_id}/${threadId}${message_.id}`;
     const entity = await getEntity(message_.peer_id);
     if (entity) {
       chat_ = constructChatP(entity);
