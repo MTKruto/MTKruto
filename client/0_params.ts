@@ -651,3 +651,17 @@ export interface SetLocationParams {
   /** Longitude of the business. */
   longitude?: number;
 }
+
+export interface CreateTopicParams {
+  /** The color to use for the default topic icon. */
+  color?: number;
+  /** Identifier of a custom emoji to display as the icon of the topic. */
+  customEmojiId?: string;
+  /** The identifier of a chat to create the topic on behalf of. User-only. */
+  sendAs?: ID;
+}
+
+export interface EditTopicParams {
+  /** Identifier of a custom emoji to display as the icon of the topic. */
+  customEmojiId?: string;
+}

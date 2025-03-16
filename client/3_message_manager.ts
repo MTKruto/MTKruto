@@ -179,7 +179,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     return [text, entities] as const;
   }
 
-  async #updatesToMessages(chatId: ID, updates: Api.Updates, businessConnectionId?: string) {
+  async updatesToMessages(chatId: ID, updates: Api.Updates, businessConnectionId?: string) {
     const messages = new Array<Message>();
 
     if (is("updates", updates)) {
@@ -233,7 +233,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     checkArray(messageIds, checkMessageId);
     const result = await this.#c.invoke({ _: "messages.forwardMessages", from_peer: await this.#c.getInputPeer(from), to_peer: await this.#c.getInputPeer(to), id: messageIds, random_id: messageIds.map(() => getRandomId()), silent: params?.disableNotification || undefined, top_msg_id: params?.messageThreadId, noforwards: params?.disableNotification || undefined, send_as: params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined, drop_author: params?.dropSenderName || undefined, drop_media_captions: params?.dropCaption || undefined });
 
-    return await this.#updatesToMessages(to, result);
+    return await this.updatesToMessages(to, result);
   }
 
   async getHistory(chatId: ID, params?: GetHistoryParams) { // TODO: get from database properly
@@ -354,7 +354,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       );
     }
 
-    const message_ = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
+    const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message_, "text");
   }
 
@@ -411,7 +411,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
     }, params?.businessConnectionId);
 
-    const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
+    const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "venue");
   }
 
@@ -449,7 +449,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       params?.businessConnectionId,
     );
 
-    const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
+    const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "contact");
   }
 
@@ -481,7 +481,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
     }, params?.businessConnectionId);
 
-    const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
+    const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "dice");
   }
 
@@ -534,7 +534,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       params?.businessConnectionId,
     );
 
-    const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
+    const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "location");
   }
 
@@ -702,7 +702,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       params?.businessConnectionId,
     );
 
-    return (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
+    return (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
   }
 
   resolveFileId(maybeFileId: string, expectedFileType: FileType | FileType[]) {
@@ -779,7 +779,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       params?.businessConnectionId,
     );
 
-    const message = (await this.#updatesToMessages(chatId, result, params?.businessConnectionId))[0];
+    const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "poll");
   }
 
@@ -796,7 +796,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       reply_markup: await this.#constructReplyMarkup(params),
     }, params?.businessConnectionId);
 
-    const message_ = (await this.#updatesToMessages(chatId, result))[0];
+    const message_ = (await this.updatesToMessages(chatId, result))[0];
     return message_;
   }
 
@@ -849,7 +849,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       reply_markup: await this.#constructReplyMarkup(params),
     }, params?.businessConnectionId);
 
-    const message_ = (await this.#updatesToMessages(chatId, result))[0];
+    const message_ = (await this.updatesToMessages(chatId, result))[0];
     return assertMessageType(message_, "text");
   }
 
@@ -880,7 +880,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       reply_markup: await this.#constructReplyMarkup(params),
     }, params?.businessConnectionId);
 
-    return (await this.#updatesToMessages(chatId, result))[0];
+    return (await this.updatesToMessages(chatId, result))[0];
   }
 
   async #editInlineMessageTextInner(inlineMessageId: string, text: string, params?: EditMessageTextParams, allowEmpty = true) {
@@ -1016,7 +1016,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       entities,
     }, params?.businessConnectionId);
 
-    const message_ = (await this.#updatesToMessages(chatId, result))[0];
+    const message_ = (await this.updatesToMessages(chatId, result))[0];
     return message_;
   }
 
@@ -1054,7 +1054,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     checkArray(messageIds, checkMessageId);
     const peer = await this.#c.getInputPeer(chatId);
     const result = await this.#c.invoke({ _: "messages.sendScheduledMessages", peer, id: messageIds });
-    return await this.#updatesToMessages(chatId, result);
+    return await this.updatesToMessages(chatId, result);
   }
 
   async sendScheduledMessage(chatId: ID, messageId: number) {
@@ -1318,7 +1318,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       reply_markup: await this.#constructReplyMarkup(params),
     }, params?.businessConnectionId);
 
-    const message_ = (await this.#updatesToMessages(chatId, result))[0];
+    const message_ = (await this.updatesToMessages(chatId, result))[0];
     return assertMessageType(message_, "poll").poll;
   }
 
@@ -1334,7 +1334,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         reply_markup: await this.#constructReplyMarkup(params),
       }, params?.businessConnectionId);
 
-      const message = (await this.#updatesToMessages(chatId, result))[0];
+      const message = (await this.updatesToMessages(chatId, result))[0];
       return assertMessageType(message, "location");
     }
     unreachable();
@@ -1467,7 +1467,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
     });
 
-    return await this.#updatesToMessages(chatId, result);
+    return await this.updatesToMessages(chatId, result);
   }
 
   async readMessages(chatId: ID, untilMessageId: number) {
@@ -1489,7 +1489,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     const bot = await this.#c.getInputUser(botId);
     const peer = await this.#c.getInputPeer(params?.chatId || botId);
     const result = await this.#c.invoke({ _: "messages.startBot", bot, peer, random_id: getRandomId(), start_param });
-    return (await this.#updatesToMessages(botId, result))[0];
+    return (await this.updatesToMessages(botId, result))[0];
   }
 
   async transcribeVoice(chatId: ID, messageId: number) {

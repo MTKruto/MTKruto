@@ -50,6 +50,7 @@ import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { CallbackQueryManager } from "./4_callback_query_manager.ts";
 import { ChatListManager } from "./4_chat_list_manager.ts";
 import { ChatManager } from "./4_chat_manager.ts";
+import { ForumManager } from "./4_forum_manager.ts";
 import { GiftManager } from "./4_gift_manager.ts";
 import { InlineQueryManager } from "./4_inline_query_manager.ts";
 import { PollManager } from "./4_poll_manager.ts";
@@ -310,6 +311,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #callbackQueryManager: CallbackQueryManager;
   #chatListManager: ChatListManager;
   #chatManager: ChatManager;
+  #forumManager: ForumManager;
   #giftManager: GiftManager;
   #inlineQueryManager: InlineQueryManager;
   #pollManager: PollManager;
@@ -337,6 +339,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       callbackQueryManager: this.#callbackQueryManager,
       chatListManager: this.#chatListManager,
       chatManager: this.#chatManager,
+      forumManager: this.#forumManager,
       giftManager: this.#giftManager,
       inlineQueryManager: this.#inlineQueryManager,
       pollManager: this.#pollManager,
@@ -489,6 +492,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager });
     this.#chatListManager = new ChatListManager({ ...c, fileManager, messageManager });
     this.#chatManager = new ChatManager({ ...c, fileManager, messageManager });
+    this.#forumManager = new ForumManager({ ...c, messageManager });
     this.#giftManager = new GiftManager({ ...c, messageManager });
     this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager });
     this.#pollManager = new PollManager({ ...c, messageManager });

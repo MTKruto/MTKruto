@@ -496,7 +496,7 @@ export interface MessageWriteAccessAllowed extends _MessageBase {
  */
 export interface MessageForumTopicCreated extends _MessageBase {
   /** @discriminator */
-  forumTopicCreated: { name: string; iconColor: string; iconCutsomEmojiId?: string };
+  forumTopicCreated: { name: string; color: number; customEmojiId?: string };
 }
 
 /**
@@ -505,7 +505,7 @@ export interface MessageForumTopicCreated extends _MessageBase {
  */
 export interface MessageForumTopicEdited extends _MessageBase {
   /** @discriminator */
-  forumTopicEdited: { name: string; iconCutsomEmojiId?: string };
+  forumTopicEdited: { name: string; customEmojiId?: string };
 }
 
 /**
@@ -790,14 +790,22 @@ async function getReply(message_: Api.message | Api.messageService, chat: ChatP,
   return { replyToMessage: undefined, threadId: undefined, isTopicMessage: false };
 }
 
-async function constructServiceMessage(message_: Api.messageService, chat: ChatP, getEntity: EntityGetter, getMessage: Message_MessageGetter): Promise<Message> {
+async function constructServiceMessage(message_: Api.messageService, chat: ChatP, getEntity: EntityGetter, getMessage: Message_MessageGetter, getReply_: boolean): Promise<Message> {
   const message: _MessageBase = {
     out: message_.out ?? false,
     id: message_.id,
-    chat: chat,
+    chat,
     date: fromUnixTimestamp(message_.date),
-    isTopicMessage: false,
+    isTopicMessage: message_.reply_to && is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic ? true : false,
   };
+
+  if (is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_msg_id) {
+    message.replyToMessageId = message_.reply_to.reply_to_top_id;
+    message.replyToMessageId = message_.reply_to.reply_to_msg_id;
+  }
+  if (getReply_) {
+    Object.assign(message, await getReply(message_, chat, getMessage));
+  }
 
   Object.assign(message, await getSender(message_, getEntity));
 
@@ -874,18 +882,19 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
   } else if (is("messageActionTopicCreate", message_.action)) {
     const forumTopicCreated = {
       name: message_.action.title,
-      iconColor: "#" + message_.action.icon_color.toString(16).padStart(6, "0"),
-      iconCutsomEmojiId: message_.action.icon_emoji_id ? String(message_.action.icon_emoji_id) : undefined,
+      color: message_.action.icon_color,
+      cutsomEmojiId: message_.action.icon_emoji_id ? String(message_.action.icon_emoji_id) : undefined,
     };
     return { ...message, forumTopicCreated };
   } else if (is("messageActionTopicEdit", message_.action)) {
+    console.debug("messageActionTopicEdit", message_.action);
     if (message_.action.closed) {
       const forumTopicClosed = true;
       return { ...message, forumTopicClosed };
     } else if (message_.action.title || message_.action.icon_emoji_id) {
       const forumTopicEdited = {
         name: message_.action.title ?? "",
-        iconCutsomEmojiId: message_.action.icon_emoji_id ? String(message_.action.icon_emoji_id) : undefined,
+        customEmojiId: message_.action.icon_emoji_id ? String(message_.action.icon_emoji_id) : undefined,
       };
       return { ...message, forumTopicEdited };
     } else {
@@ -965,7 +974,7 @@ export async function constructMessage(
   }
 
   if (is("messageService", message_)) {
-    return await constructServiceMessage(message_, chat_, getEntity, getMessage);
+    return await constructServiceMessage(message_, chat_, getEntity, getMessage, getReply_);
   }
 
   const message: _MessageBase = {
@@ -976,7 +985,7 @@ export async function constructMessage(
     date: fromUnixTimestamp(message_.date),
     views: message_.views,
     forwards: message_.forwards,
-    isTopicMessage: message_.reply_to && is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_top_id ? true : false,
+    isTopicMessage: message_.reply_to && is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic ? true : false,
     hasProtectedContent: message_.noforwards || false,
     senderBoostCount: message_.from_boosts_applied,
     effectId: message_.effect ? String(message_.effect) : undefined,
@@ -992,6 +1001,7 @@ export async function constructMessage(
     if (message_.reply_to.quote) {
       message.replyQuote = constructReplyQuote(message_.reply_to.quote_text, message_.reply_to.quote_offset, message_.reply_to.quote_entities);
     }
+    message.threadId = message_.reply_to.reply_to_top_id;
     message.replyToMessageId = message_.reply_to.reply_to_msg_id;
   }
   if (business) {
