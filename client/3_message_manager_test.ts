@@ -20,7 +20,6 @@
 
 import { assertEquals, assertInstanceOf } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { getChannelChatId } from "../2_tl.ts";
 import { MessageEntity } from "../3_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
