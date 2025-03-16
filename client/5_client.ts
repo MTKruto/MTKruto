@@ -2405,6 +2405,20 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
+   * Retrieve a message using its link.
+   *
+   * @method ms
+   * @param link A message link.
+   * @example ```ts
+   * const message = await client.resolveMessageLink("https://t.me/MTKruto/212");
+   * ```
+   * @returns The message that was linked to.
+   */
+  async resolveMessageLink(link: string): Promise<Message | null> {
+    return await this.#messageManager.resolveMessageLink(link);
+  }
+
+  /**
    * Delete multiple messages.
    *
    * @method ms

@@ -29,7 +29,7 @@ import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
 import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
-import { canBeInputChannel, checkArray, checkMessageId, isHttpUrl, toInputChannel } from "./0_utilities.ts";
+import { canBeInputChannel, checkArray, checkMessageId, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
 
@@ -1526,5 +1526,87 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     await this.#c.messageStorage.setVoiceTranscriptionReference(message.chat.id, message.id, message.editDate ?? message.date, BigInt(voiceTranscription.id));
     await this.#c.messageStorage.setVoiceTranscription(voiceTranscription);
     return voiceTranscription;
+  }
+
+  async resolveMessageLink(link: string) {
+    const parseResult = MessageManager.parseMessageLink(link);
+    if (parseResult == null) {
+      throw new InputError("Invalid messsage link.");
+    }
+    const [chatId, messageId] = parseResult;
+    return await this.getMessage(chatId, messageId);
+  }
+
+  static parseMessageLink(link: string): [ID, number] | null {
+    let url: URL;
+    try {
+      url = new URL(link);
+    } catch (err) {
+      if (err instanceof TypeError) {
+        try {
+          url = new URL("https://" + link);
+        } catch (err) {
+          if (err instanceof TypeError) {
+            return null;
+          } else {
+            throw err;
+          }
+        }
+      } else {
+        throw err;
+      }
+    }
+    if (url.protocol != "http:" && url.protocol != "https:") {
+      return null;
+    }
+    if (url.host != "t.me") {
+      return null;
+    }
+    const parts = url.pathname.split("/").filter((v) => v);
+    if (parts.length < 2) {
+      return null;
+    }
+    if (!isNaN(Number(parts[0]))) {
+      return null;
+    }
+    let peer: ID, id: number;
+    if (parts[0] == "c") {
+      if (parts.length < 3 || parts.length > 4) {
+        return null;
+      }
+      [peer, id] = [Number(parts[1]), Number(parts[parts.length - 1])];
+      if (isNaN(peer)) {
+        return null;
+      }
+      if (isNaN(Number(parts[2]))) {
+        return null;
+      }
+      peer = getChannelChatId(BigInt(peer));
+    } else {
+      if (parts.length > 3) {
+        return null;
+      }
+      [peer, id] = [parts[0], Number(parts[parts.length - 1])];
+      if (isNaN(Number(parts[1]))) {
+        return null;
+      }
+    }
+    if (isNaN(id)) {
+      return null;
+    }
+    if (typeof peer === "string") {
+      try {
+        if (getUsername(peer) != peer) {
+          return null;
+        }
+      } catch (err) {
+        if (err instanceof InputError) {
+          return null;
+        } else {
+          throw err;
+        }
+      }
+    }
+    return [peer, id];
   }
 }

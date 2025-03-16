@@ -20,6 +20,8 @@
 
 import { assertEquals, assertInstanceOf } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
+import { ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { getChannelChatId } from "../2_tl.ts";
 import { MessageEntity } from "../3_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
 
@@ -89,4 +91,67 @@ Deno.test("sendMediaGroup() disallows invalid media type combination", async () 
     assertInstanceOf(err, InputError);
     assertEquals(err.message, "Media of the type photo cannot be mixed with those of the type document.");
   }
+});
+
+Deno.test("parseMessageLink()", async (t) => {
+  const pml = (v: string) => MessageManager.parseMessageLink(v);
+
+  await t.step("invalid URL", () => {
+    assertEquals(pml("\xad"), null);
+  });
+
+  await t.step("invalid protocol", () => {
+    assertEquals(pml("ftp://t.me"), null);
+  });
+
+  await t.step("invalid host", () => {
+    assertEquals(pml("http://telegram.me"), null);
+    assertEquals(pml("http://t.me:8080"), null);
+  });
+
+  await t.step("invalid part length", () => {
+    assertEquals(pml("http://t.me"), null);
+    assertEquals(pml("http://t.me/c"), null);
+  });
+
+  await t.step("numeric first part", () => {
+    assertEquals(pml("http://t.me/1"), null);
+  });
+
+  await t.step("invalid private part length", () => {
+    assertEquals(pml("http://t.me/c"), null);
+    assertEquals(pml("http://t.me/c/1/2/3/4"), null);
+  });
+
+  await t.step("invalid private first part", () => {
+    assertEquals(pml("http://t.me/c/x/1"), null);
+    assertEquals(pml("http://t.me/c/x/1/2"), null);
+  });
+
+  await t.step("invalid public part length", () => {
+    assertEquals(pml("http://t.me/p/1/2/3/4"), null);
+  });
+
+  await t.step("invalid public ID", () => {
+    assertEquals(pml("http://t.me/c/1/x"), null);
+    assertEquals(pml("http://t.me/c/1/x/1"), null);
+    assertEquals(pml("http://t.me/c/1/2/y"), null);
+    assertEquals(pml("http://t.me/c/1/x/y"), null);
+    assertEquals(pml("http://t.me/username/x"), null);
+    assertEquals(pml("http://t.me/username/x/1"), null);
+    assertEquals(pml("http://t.me/username/1/x"), null);
+    assertEquals(pml("http://t.me/username/x/y"), null);
+  });
+
+  await t.step("invalid public username", () => {
+    assertEquals(pml("http://t.me/.-/x"), null);
+    assertEquals(pml("http://t.me/_username/x/2"), null);
+  });
+
+  await t.step("valid links", () => {
+    assertEquals(pml("http://t.me/username/1"), ["username", 1]);
+    assertEquals(pml("http://t.me/username/1/2"), ["username", 2]);
+    assertEquals(pml("http://t.me/c/1/2"), [getChannelChatId(1n), 2]);
+    assertEquals(pml("http://t.me/c/1/2/3"), [getChannelChatId(1n), 3]);
+  });
 });
