@@ -66,20 +66,20 @@ export class ForumManager {
     return constructTopic(assertMessageType(message, "forumTopicCreated"));
   }
 
-  #assertNongenralTopicIdValid(topicId: number) {
+  static #assertNongenralTopicIdValid(topicId: number) {
     if (!topicId || topicId < 2) {
-      throw new InputError("Invalid topic id.");
+      throw new InputError("Invalid topic ID.");
     }
   }
 
-  #assertAnyTopicIdValid(topicId: number) {
+  static #assertAnyTopicIdValid(topicId: number) {
     if (!topicId || topicId < 1) {
-      throw new InputError("Invalid topic id.");
+      throw new InputError("Invalid topic ID.");
     }
   }
 
   async editTopic(chatId: ID, topicId: number, title: string, params?: EditTopicParams) {
-    this.#assertNongenralTopicIdValid(topicId);
+    ForumManager.#assertNongenralTopicIdValid(topicId);
     title = ForumManager.#validateTopicTitle(title);
     const channel = await this.#c.getInputChannel(chatId);
     const updates = await this.#c.invoke({
@@ -112,7 +112,7 @@ export class ForumManager {
   }
 
   async #toggleNongeneralTopicClosed(chatId: ID, topicId: number, closed: boolean) {
-    this.#assertNongenralTopicIdValid(topicId);
+    ForumManager.#assertNongenralTopicIdValid(topicId);
     const channel = await this.#c.getInputChannel(chatId);
     await this.#c.invoke({
       _: "channels.editForumTopic",
@@ -131,14 +131,16 @@ export class ForumManager {
   }
 
   async #setTopicPinned(chatId: ID, topicId: number, pinned: boolean) {
-    this.#assertAnyTopicIdValid(topicId);
+    ForumManager.#assertAnyTopicIdValid(topicId);
     const channel = await this.#c.getInputChannel(chatId);
-    await this.#c.invoke({
-      _: "channels.updatePinnedForumTopic",
-      channel,
-      topic_id: 1,
-      pinned,
-    });
+    console.log(
+      await this.#c.invoke({
+        _: "channels.updatePinnedForumTopic",
+        channel,
+        topic_id: 1,
+        pinned,
+      }),
+    );
   }
 
   async pinTopic(chatId: ID, topicId: number) {
