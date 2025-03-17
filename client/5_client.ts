@@ -3313,6 +3313,28 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.#forumManager.showGeneralTopic(chatId);
   }
 
+  /**
+   * Close a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param topicId The identifier of the topic.
+   */
+  async closeTopic(chatId: ID, topicId: number): Promise<void> {
+    await this.#forumManager.closeTopic(chatId, topicId);
+  }
+
+  /**
+   * Reopen a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param topicId The identifier of the topic.
+   */
+  async reopenTopic(chatId: ID, topicId: number): Promise<void> {
+    await this.#forumManager.reopenTopic(chatId, topicId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //

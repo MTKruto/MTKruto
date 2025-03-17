@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { InputError } from "../0_errors.ts";
 import { getRandomId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { assertMessageType, constructTopic, ID } from "../3_types.ts";
@@ -65,11 +66,15 @@ export class ForumManager {
     return constructTopic(assertMessageType(message, "forumTopicCreated"));
   }
 
-  async editTopic(chatId: ID, topicId: number, title: string, params?: EditTopicParams) {
-    title = ForumManager.#validateTopicTitle(title);
+  #assertNongenralTopicIdValid(topicId: number) {
     if (topicId < 2) {
-      throw new Error("Invalid topic id.");
+      throw new InputError("Invalid topic id.");
     }
+  }
+
+  async editTopic(chatId: ID, topicId: number, title: string, params?: EditTopicParams) {
+    this.#assertNongenralTopicIdValid(topicId);
+    title = ForumManager.#validateTopicTitle(title);
     const channel = await this.#c.getInputChannel(chatId);
     const updates = await this.#c.invoke({
       _: "channels.editForumTopic",
@@ -82,7 +87,7 @@ export class ForumManager {
     return constructTopic(assertMessageType(message, "forumTopicEdited"));
   }
 
-  async #toggleHideGeneralTopic(chatId: ID, hidden: boolean) {
+  async #toggleGeneralTopicHidden(chatId: ID, hidden: boolean) {
     const channel = await this.#c.getInputChannel(chatId);
     await this.#c.invoke({
       _: "channels.editForumTopic",
@@ -92,11 +97,30 @@ export class ForumManager {
     });
   }
 
-  async hideGeneralTopic(chatId: ID): Promise<void> {
-    await this.#toggleHideGeneralTopic(chatId, true);
+  async hideGeneralTopic(chatId: ID) {
+    await this.#toggleGeneralTopicHidden(chatId, true);
   }
 
-  async showGeneralTopic(chatId: ID): Promise<void> {
-    await this.#toggleHideGeneralTopic(chatId, false);
+  async showGeneralTopic(chatId: ID) {
+    await this.#toggleGeneralTopicHidden(chatId, false);
+  }
+
+  async #toggleNongeneralTopicClosed(chatId: ID, topicId: number, closed: boolean) {
+    this.#assertNongenralTopicIdValid(topicId);
+    const channel = await this.#c.getInputChannel(chatId);
+    await this.#c.invoke({
+      _: "channels.editForumTopic",
+      channel,
+      topic_id: 1,
+      closed,
+    });
+  }
+
+  async closeTopic(chatId: ID, topicId: number) {
+    await this.#toggleNongeneralTopicClosed(chatId, topicId, true);
+  }
+
+  async reopenTopic(chatId: ID, topicId: number) {
+    await this.#toggleNongeneralTopicClosed(chatId, topicId, false);
   }
 }
