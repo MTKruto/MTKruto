@@ -3335,6 +3335,28 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.#forumManager.reopenTopic(chatId, topicId);
   }
 
+  /**
+   * Pin a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param topicId The identifier of the topic.
+   */
+  async pinTopic(chatId: ID, topicId: number): Promise<void> {
+    await this.#forumManager.pinTopic(chatId, topicId);
+  }
+
+  /**
+   * Unpin a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param topicId The identifier of the topic.
+   */
+  async unpinTopic(chatId: ID, topicId: number): Promise<void> {
+    await this.#forumManager.unpinTopic(chatId, topicId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //

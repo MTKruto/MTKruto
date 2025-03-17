@@ -67,7 +67,13 @@ export class ForumManager {
   }
 
   #assertNongenralTopicIdValid(topicId: number) {
-    if (topicId < 2) {
+    if (!topicId || topicId < 2) {
+      throw new InputError("Invalid topic id.");
+    }
+  }
+
+  #assertAnyTopicIdValid(topicId: number) {
+    if (!topicId || topicId < 1) {
       throw new InputError("Invalid topic id.");
     }
   }
@@ -122,5 +128,24 @@ export class ForumManager {
 
   async reopenTopic(chatId: ID, topicId: number) {
     await this.#toggleNongeneralTopicClosed(chatId, topicId, false);
+  }
+
+  async #setTopicPinned(chatId: ID, topicId: number, pinned: boolean) {
+    this.#assertAnyTopicIdValid(topicId);
+    const channel = await this.#c.getInputChannel(chatId);
+    await this.#c.invoke({
+      _: "channels.updatePinnedForumTopic",
+      channel,
+      topic_id: 1,
+      pinned,
+    });
+  }
+
+  async pinTopic(chatId: ID, topicId: number) {
+    await this.#setTopicPinned(chatId, topicId, true);
+  }
+
+  async unpinTopic(chatId: ID, topicId: number) {
+    await this.#setTopicPinned(chatId, topicId, false);
   }
 }
