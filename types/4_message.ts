@@ -887,7 +887,6 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     };
     return { ...message, forumTopicCreated };
   } else if (is("messageActionTopicEdit", message_.action)) {
-    console.debug("messageActionTopicEdit", message_.action);
     if (message_.action.closed) {
       const forumTopicClosed = true;
       return { ...message, forumTopicClosed };

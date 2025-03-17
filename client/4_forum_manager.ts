@@ -133,14 +133,12 @@ export class ForumManager {
   async #setTopicPinned(chatId: ID, topicId: number, pinned: boolean) {
     ForumManager.#assertAnyTopicIdValid(topicId);
     const channel = await this.#c.getInputChannel(chatId);
-    console.log(
-      await this.#c.invoke({
-        _: "channels.updatePinnedForumTopic",
-        channel,
-        topic_id: 1,
-        pinned,
-      }),
-    );
+    await this.#c.invoke({
+      _: "channels.updatePinnedForumTopic",
+      channel,
+      topic_id: 1,
+      pinned,
+    });
   }
 
   async pinTopic(chatId: ID, topicId: number) {
