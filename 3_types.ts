@@ -123,4 +123,5 @@ export * from "./types/5_callback_query.ts";
 export * from "./types/5_chat_list_item.ts";
 export * from "./types/5_claimed_gifts.ts";
 export * from "./types/5_inline_query_answer.ts";
+export * from "./types/5_topic.ts";
 export * from "./types/6_update.ts";

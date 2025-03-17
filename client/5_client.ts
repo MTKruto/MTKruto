@@ -24,11 +24,11 @@ import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, mustPr
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, as, chatIdToPeerId, getChatIdPeerType, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { DC, getDc } from "../3_transport.ts";
-import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Sticker, Story, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Sticker, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
-import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, getUsername, isCdnFunction, isMtprotoFunction, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -50,6 +50,7 @@ import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { CallbackQueryManager } from "./4_callback_query_manager.ts";
 import { ChatListManager } from "./4_chat_list_manager.ts";
 import { ChatManager } from "./4_chat_manager.ts";
+import { ForumManager } from "./4_forum_manager.ts";
 import { GiftManager } from "./4_gift_manager.ts";
 import { InlineQueryManager } from "./4_inline_query_manager.ts";
 import { PollManager } from "./4_poll_manager.ts";
@@ -310,6 +311,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #callbackQueryManager: CallbackQueryManager;
   #chatListManager: ChatListManager;
   #chatManager: ChatManager;
+  #forumManager: ForumManager;
   #giftManager: GiftManager;
   #inlineQueryManager: InlineQueryManager;
   #pollManager: PollManager;
@@ -337,6 +339,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       callbackQueryManager: this.#callbackQueryManager,
       chatListManager: this.#chatListManager,
       chatManager: this.#chatManager,
+      forumManager: this.#forumManager,
       giftManager: this.#giftManager,
       inlineQueryManager: this.#inlineQueryManager,
       pollManager: this.#pollManager,
@@ -489,6 +492,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager });
     this.#chatListManager = new ChatListManager({ ...c, fileManager, messageManager });
     this.#chatManager = new ChatManager({ ...c, fileManager, messageManager });
+    this.#forumManager = new ForumManager({ ...c, messageManager });
     this.#giftManager = new GiftManager({ ...c, messageManager });
     this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager });
     this.#pollManager = new PollManager({ ...c, messageManager });
@@ -3262,6 +3266,95 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async transferChatOwnership(chatId: ID, userId: ID, password: string): Promise<void> {
     await this.#chatManager.transferChatOwnership(chatId, userId, password);
+  }
+
+  /**
+   * Create a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param title The title of the topic.
+   * @returns The created topic.
+   */
+  async createTopic(chatId: ID, title: string, params?: CreateTopicParams): Promise<Topic> {
+    return await this.#forumManager.createTopic(chatId, title, params);
+  }
+
+  /**
+   * Edit a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param topicId The identifier of the topic.
+   * @param title The new title of the topic.
+   * @returns The new topic.
+   */
+  async editTopic(chatId: ID, topicId: number, title: string, params?: EditTopicParams): Promise<Topic> {
+    return await this.#forumManager.editTopic(chatId, topicId, title, params);
+  }
+
+  /**
+   * Hide the general forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async hideGeneralTopic(chatId: ID): Promise<void> {
+    await this.#forumManager.hideGeneralTopic(chatId);
+  }
+
+  /**
+   * Show the general forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async showGeneralTopic(chatId: ID): Promise<void> {
+    await this.#forumManager.showGeneralTopic(chatId);
+  }
+
+  /**
+   * Close a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param topicId The identifier of the topic.
+   */
+  async closeTopic(chatId: ID, topicId: number): Promise<void> {
+    await this.#forumManager.closeTopic(chatId, topicId);
+  }
+
+  /**
+   * Reopen a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param topicId The identifier of the topic.
+   */
+  async reopenTopic(chatId: ID, topicId: number): Promise<void> {
+    await this.#forumManager.reopenTopic(chatId, topicId);
+  }
+
+  /**
+   * Pin a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param topicId The identifier of the topic.
+   */
+  async pinTopic(chatId: ID, topicId: number): Promise<void> {
+    await this.#forumManager.pinTopic(chatId, topicId);
+  }
+
+  /**
+   * Unpin a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param topicId The identifier of the topic.
+   */
+  async unpinTopic(chatId: ID, topicId: number): Promise<void> {
+    await this.#forumManager.unpinTopic(chatId, topicId);
   }
 
   //
