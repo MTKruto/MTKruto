@@ -81,4 +81,22 @@ export class ForumManager {
     const message = (await this.#c.messageManager.updatesToMessages(chatId, updates))[0];
     return constructTopic(assertMessageType(message, "forumTopicEdited"));
   }
+
+  async #toggleHideGeneralTopic(chatId: ID, hidden: boolean) {
+    const channel = await this.#c.getInputChannel(chatId);
+    await this.#c.invoke({
+      _: "channels.editForumTopic",
+      channel,
+      topic_id: 1,
+      hidden,
+    });
+  }
+
+  async hideGeneralTopic(chatId: ID): Promise<void> {
+    await this.#toggleHideGeneralTopic(chatId, true);
+  }
+
+  async showGeneralTopic(chatId: ID): Promise<void> {
+    await this.#toggleHideGeneralTopic(chatId, false);
+  }
 }

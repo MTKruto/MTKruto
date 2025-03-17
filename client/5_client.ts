@@ -3293,6 +3293,26 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return await this.#forumManager.editTopic(chatId, topicId, title, params);
   }
 
+  /**
+   * Hide the general forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async hideGeneralTopic(chatId: ID): Promise<void> {
+    await this.#forumManager.hideGeneralTopic(chatId);
+  }
+
+  /**
+   * Show the general forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async showGeneralTopic(chatId: ID): Promise<void> {
+    await this.#forumManager.showGeneralTopic(chatId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
