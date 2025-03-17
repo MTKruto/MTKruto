@@ -21,7 +21,7 @@
 import { getRandomId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { assertMessageType, constructTopic, ID } from "../3_types.ts";
-import { CreateTopicParams } from "./0_params.ts";
+import { CreateTopicParams, EditTopicParams } from "./0_params.ts";
 import { C as C_ } from "./1_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
 
@@ -65,9 +65,9 @@ export class ForumManager {
     return constructTopic(assertMessageType(message, "forumTopicCreated"));
   }
 
-  async editTopic(chatId: ID, topicId: number, title: string, params?: CreateTopicParams) {
+  async editTopic(chatId: ID, topicId: number, title: string, params?: EditTopicParams) {
     title = ForumManager.#validateTopicTitle(title);
-    if (topicId < 1) {
+    if (topicId < 2) {
       throw new Error("Invalid topic id.");
     }
     const channel = await this.#c.getInputChannel(chatId);
