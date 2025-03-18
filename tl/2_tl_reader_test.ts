@@ -98,13 +98,33 @@ Deno.test("deserialize", async (t) => {
   assertEquals(new TLWriter().serialize(config).buffer, buffer);
   assertEquals(config._, "config");
 
+  await t.step("X", async () => {
+    const reader = new TLReader(buffer);
+    const config = await reader.deserialize("X") as AnyObject;
+
+    assertEquals(new TLWriter().serialize(config).buffer, buffer);
+    assertEquals(config._, "config");
+  });
+
   await t.step("gzip", async () => {
     const writer = new TLRawWriter();
     writer.writeInt32(GZIP_PACKED, false);
-    writer.write(await gzip(buffer));
+    writer.writeBytes(await gzip(buffer));
 
-    const reader = new TLReader(buffer);
+    const reader = new TLReader(writer.buffer);
     const config = await reader.deserialize("config") as AnyObject;
+
+    assertEquals(new TLWriter().serialize(config).buffer, buffer);
+    assertEquals(config._, "config");
+  });
+
+  await t.step("gzip X", async () => {
+    const writer = new TLRawWriter();
+    writer.writeInt32(GZIP_PACKED, false);
+    writer.writeBytes(await gzip(buffer));
+
+    const reader = new TLReader(writer.buffer);
+    const config = await reader.deserialize("X") as AnyObject;
 
     assertEquals(new TLWriter().serialize(config).buffer, buffer);
     assertEquals(config._, "config");
