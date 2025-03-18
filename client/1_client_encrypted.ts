@@ -20,8 +20,8 @@
 
 import { unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
-import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, compressible, is, isGenericFunction, isOfEnum, isOneOf, message, ReadObject, TLError } from "../2_tl.ts";
+import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, gunzip, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
+import { Api, GZIP_PACKED, is, isGenericFunction, isOfEnum, isOneOf, message, mustGetReturnType, ReadObject, TLError, TLReader } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";
@@ -38,6 +38,8 @@ export interface Handlers {
   result?: (result: ReadObject, callback: () => void) => void;
   error?: (err: unknown, source: ErrorSource) => void;
 }
+
+const RPC_ERROR = Api.getType("rpc_error")[0];
 
 /**
  * An MTProto client for making encrypted connections. Most users won't need to interact with this. Used internally by `Client`.
@@ -218,114 +220,14 @@ export class ClientEncrypted extends ClientAbstract {
           drop(this.handlers.error?.(err, "decryption"));
           continue;
         }
-        const messages = decrypted.body._ == "msg_container" ? decrypted.body.messages : [decrypted];
+        const messages = decrypted.body instanceof Uint8Array ? [decrypted.body] : decrypted.body.messages.map((v) => v.body);
 
         for (const message of messages) {
-          let sendAck = true;
-          const body = message.body;
-          this.#LreceiveLoop.debug("received", body._);
-          if (isOfEnum("Updates", body) || isOfEnum("Update", body)) {
-            drop(this.handlers.updates?.(body as Api.Updates | Api.Update, null));
-          } else if (is("new_session_created", body)) {
-            this.serverSalt = body.server_salt;
-            drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
-            this.#LreceiveLoop.debug("new session created with ID", body.unique_id);
-          } else if (body._ == "rpc_result") {
-            const result = body.result;
-            if (is("rpc_error", result)) {
-              this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
-            } else {
-              this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
-            }
-            const messageId = body.req_msg_id;
-            const promise = this.#promises.get(messageId);
-            const resolvePromise = () => {
-              if (promise) {
-                if (is("rpc_error", result)) {
-                  promise.reject?.(constructTelegramError(result, promise.call));
-                } else {
-                  promise.resolve?.(result);
-                }
-                this.#promises.delete(messageId);
-              }
-            };
-            if (isOfEnum("Updates", result) || isOfEnum("Update", result)) {
-              // @ts-ignore: tbd
-              let call = promise?.call ?? null;
-              if (isGenericFunction(call)) {
-                call = call.query;
-              }
-              drop(this.handlers.updates?.(result, call, resolvePromise));
-            } else {
-              drop(this.handlers.result?.(result, resolvePromise));
-            }
-          } else if (is("pong", body)) {
-            const promise = this.#promises.get(body.msg_id);
-            if (promise) {
-              promise.resolve?.(body);
-              this.#promises.delete(body.msg_id);
-            }
-          } else if (is("bad_server_salt", body)) {
-            sendAck = false;
-            this.#LreceiveLoop.debug("server salt reassigned");
-            this.serverSalt = body.new_server_salt;
-            drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
-            const promise = this.#promises.get(body.bad_msg_id);
-            const ack = this.#recentAcks.get(body.bad_msg_id);
-            if (promise) {
-              drop(this.#sendMessage(promise.message));
-            } else if (ack) {
-              drop(this.#sendMessage(ack.message));
-            } else {
-              for (const promise of this.#promises.values()) {
-                if (promise.container && promise.container == body.bad_msg_id) {
-                  drop(this.#sendMessage(promise.message));
-                }
-              }
-              for (const ack of this.#recentAcks.values()) {
-                if (ack.container && ack.container == body.bad_msg_id) {
-                  drop(this.#sendMessage(ack.message));
-                }
-              }
-            }
-          } else if (is("bad_msg_notification", body)) {
-            sendAck = false;
-            let low = false;
-            switch (body.error_code) {
-              case 16: // message ID too low
-                low = true;
-                /* falls through */
-              case 17: // message ID too high
-                this.#timeDifference = Math.abs(toUnixTimestamp(new Date()) - Number(message.msg_id >> 32n));
-                if (!low) {
-                  this.#timeDifference = -this.#timeDifference;
-                  this.#LreceiveLoop.debug("message ID too high, invalidating session");
-                  await this.#invalidateSession();
-                  break loop;
-                } else {
-                  this.#LreceiveLoop.debug("message ID too low, resending message");
-                }
-                break;
-              case 48: // bad server salt
-                // resend
-                this.#LreceiveLoop.debug("resending message that caused bad_server_salt");
-                break;
-              default:
-                await this.#invalidateSession();
-                this.#LreceiveLoop.debug("invalidating session because of unexpected bad_msg_notification:", body.error_code);
-                break loop;
-            }
-            const promise = this.#promises.get(body.bad_msg_id);
-            if (promise) {
-              promise.reject?.(body);
-              this.#promises.delete(body.bad_msg_id);
-            }
-          } else if (isOneOf(["msg_detailed_info", "msg_new_detailed_info"], body)) {
-            sendAck = false;
-            this.#toAcknowledge.push(body.answer_msg_id);
+          if (!(message instanceof Uint8Array)) {
+            unreachable();
           }
-          if (sendAck) {
-            this.#toAcknowledge.push(message.msg_id);
+          if (await this.#handleIncomingMessage(message)) {
+            break loop;
           }
         }
       } catch (err) {
@@ -347,6 +249,131 @@ export class ClientEncrypted extends ClientAbstract {
       }
     } else {
       unreachable();
+    }
+  }
+
+  async #handleIncomingMessage(body: Uint8Array) {
+    let sendAck = true;
+    let reader = new TLReader(body);
+    const id = reader.readInt32(false);
+    if (id == GZIP_PACKED) {
+      reader = new TLReader(await gunzip(reader.readBytes()));
+    }
+    if (id == RPC_RESULT) {
+      await this.#handleRpcResult(reader);
+    }
+    this.#LreceiveLoop.debug("received", body._);
+    if (isOfEnum("Updates", body) || isOfEnum("Update", body)) {
+      drop(this.handlers.updates?.(body as Api.Updates | Api.Update, null));
+    } else if (is("new_session_created", body)) {
+      this.serverSalt = body.server_salt;
+      drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
+      this.#LreceiveLoop.debug("new session created with ID", body.unique_id);
+    } else if (is("pong", body)) {
+      const promise = this.#promises.get(body.msg_id);
+      if (promise) {
+        promise.resolve?.(body);
+        this.#promises.delete(body.msg_id);
+      }
+    } else if (is("bad_server_salt", body)) {
+      sendAck = false;
+      this.#LreceiveLoop.debug("server salt reassigned");
+      this.serverSalt = body.new_server_salt;
+      drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
+      const promise = this.#promises.get(body.bad_msg_id);
+      const ack = this.#recentAcks.get(body.bad_msg_id);
+      if (promise) {
+        drop(this.#sendMessage(promise.message));
+      } else if (ack) {
+        drop(this.#sendMessage(ack.message));
+      } else {
+        for (const promise of this.#promises.values()) {
+          if (promise.container && promise.container == body.bad_msg_id) {
+            drop(this.#sendMessage(promise.message));
+          }
+        }
+        for (const ack of this.#recentAcks.values()) {
+          if (ack.container && ack.container == body.bad_msg_id) {
+            drop(this.#sendMessage(ack.message));
+          }
+        }
+      }
+    } else if (is("bad_msg_notification", body)) {
+      sendAck = false;
+      let low = false;
+      switch (body.error_code) {
+        case 16: // message ID too low
+          low = true;
+          /* falls through */
+        case 17: // message ID too high
+          this.#timeDifference = Math.abs(toUnixTimestamp(new Date()) - Number(message.msg_id >> 32n));
+          if (!low) {
+            this.#timeDifference = -this.#timeDifference;
+            this.#LreceiveLoop.debug("message ID too high, invalidating session");
+            await this.#invalidateSession();
+            return true;
+          } else {
+            this.#LreceiveLoop.debug("message ID too low, resending message");
+          }
+          break;
+        case 48: // bad server salt
+          // resend
+          this.#LreceiveLoop.debug("resending message that caused bad_server_salt");
+          break;
+        default:
+          await this.#invalidateSession();
+          this.#LreceiveLoop.debug("invalidating session because of unexpected bad_msg_notification:", body.error_code);
+          return true;
+      }
+      const promise = this.#promises.get(body.bad_msg_id);
+      if (promise) {
+        promise.reject?.(body);
+        this.#promises.delete(body.bad_msg_id);
+      }
+    } else if (isOneOf(["msg_detailed_info", "msg_new_detailed_info"], body)) {
+      sendAck = false;
+      this.#toAcknowledge.push(body.answer_msg_id);
+    }
+    if (sendAck) {
+      this.#toAcknowledge.push(message.msg_id);
+    }
+  }
+  async #handleRpcResult(reader: TLReader) {
+    const messageId = reader.readInt64();
+    const promise = this.#promises.get(messageId);
+    if (!promise) {
+      return;
+    }
+    const id = reader.readInt32(false);
+    if (id == GZIP_PACKED) {
+      reader = new TLReader(await gunzip(reader.readBytes()));
+    }
+    // deno-lint-ignore no-explicit-any
+    let result: any;
+    if (id == RPC_ERROR) {
+      result = reader.deserialize("rpc_error", id);
+      this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
+    } else {
+      result = reader.deserialize(mustGetReturnType(promise.call._));
+      this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
+    }
+    const resolvePromise = () => {
+      if (is("rpc_error", result)) {
+        promise.reject?.(constructTelegramError(result, promise.call));
+      } else {
+        promise.resolve?.(result);
+      }
+      this.#promises.delete(messageId);
+    };
+    if (isOfEnum("Updates", result) || isOfEnum("Update", result)) {
+      // @ts-ignore: tbd
+      let call = promise?.call ?? null;
+      if (isGenericFunction(call)) {
+        call = call.query;
+      }
+      drop(this.handlers.updates?.(result, call, resolvePromise));
+    } else {
+      drop(this.handlers.result?.(result, resolvePromise));
     }
   }
 }

@@ -25,5 +25,4 @@ export * from "./tl/2_serialize.ts";
 export * from "./tl/3_utilities.ts";
 export * from "./tl/3_tl_reader.ts";
 export * from "./tl/4_tl_writer.ts";
-export * from "./tl/4_rpc_result.ts";
 export * from "./tl/2_message.ts";

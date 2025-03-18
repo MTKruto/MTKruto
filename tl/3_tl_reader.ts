@@ -29,7 +29,7 @@ import { BOOL_FALSE, BOOL_TRUE, GZIP_PACKED, VECTOR } from "./1_utilities.ts";
 export type ReadObject = boolean | AnyObject | Array<ReadObject>;
 
 export class TLReader extends TLRawReader {
-  async deserialize(type: string): Promise<any> {
+  async deserialize(type: string, id?: number): Promise<any> {
     if (isOptionalParam(type)) {
       type = getOptionalParamInnerType(type);
     }
@@ -37,7 +37,9 @@ export class TLReader extends TLRawReader {
     if (primitive !== undefined) {
       return primitive;
     }
-    const id = this.readInt32(false);
+    if (!id) {
+      id = this.readInt32(false);
+    }
     if (id == GZIP_PACKED) {
       const buffer = await gunzip(this.readBytes());
       return await new TLReader(buffer).deserialize(type);
