@@ -22,8 +22,8 @@ import { assertEquals } from "../0_deps.ts";
 import { gzip } from "../1_utilities.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
 import { BOOL_FALSE, BOOL_TRUE, GZIP_PACKED, VECTOR } from "./1_utilities.ts";
-import { serialize } from "./2_serialize.ts";
-import { TLReader } from "./3_tl_reader.ts";
+import { TLReader } from "./2_tl_reader.ts";
+import { TLWriter } from "./2_tl_writer.ts";
 
 Deno.test("deserialize", async (t) => {
   // deno-fmt-ignore
@@ -94,7 +94,7 @@ Deno.test("deserialize", async (t) => {
   const reader = new TLReader(buffer);
   const config = await reader.deserialize("config");
 
-  assertEquals(serialize(config), buffer);
+  assertEquals(new TLWriter().serialize(config).buffer, buffer);
   assertEquals(config._, "config");
 
   await t.step("gzip", async () => {
@@ -105,7 +105,7 @@ Deno.test("deserialize", async (t) => {
     const reader = new TLReader(buffer);
     const config = await reader.deserialize("config");
 
-    assertEquals(serialize(config), buffer);
+    assertEquals(new TLWriter().serialize(config).buffer, buffer);
     assertEquals(config._, "config");
   });
 });

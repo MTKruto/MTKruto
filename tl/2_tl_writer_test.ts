@@ -19,30 +19,30 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
-import { _types, flags, Parameters } from "./0_api.ts";
-import { serialize } from "./2_serialize.ts";
+import { _types, Parameters } from "./0_api.ts";
+import { TLWriter } from "./2_tl_writer.ts";
 
 const testObject1: Parameters = [
   0x01010101,
-  [["string", "string", "string"]],
+  [["string", "string"]],
 ];
 _types!.set("testObject1", testObject1);
 
 const testObject2: Parameters = [
   0x10101010,
   [
-    ["boolean1", "boolean", "Bool"],
-    ["boolean2", "boolean", "Bool"],
-    ["int", "number", "int"],
-    ["long", "bigint", "long"],
-    ["int128", "bigint", "int128"],
-    ["int256", "bigint", "int256"],
-    ["string", "string", "string"],
-    ["bytes", Uint8Array, "bytes"],
-    ["flags", flags, "#"],
-    ["flag1", "true", "flags.0?true"],
-    ["flag2", ["testObject1"], "flags.1?Vector<string>"],
-    ["flag3", "bigint", "flags.3?long"],
+    ["boolean1", "Bool"],
+    ["boolean2", "Bool"],
+    ["int", "int"],
+    ["long", "long"],
+    ["int128", "int128"],
+    ["int256", "int256"],
+    ["string", "string"],
+    ["bytes", "bytes"],
+    ["flags", "#"],
+    ["flag1", "flags.0?true"],
+    ["flag2", "flags.1?Vector<string>"],
+    ["flag3", "flags.3?long"],
   ],
 ];
 _types!.set("testObject2", testObject2);
@@ -68,20 +68,22 @@ Deno.test("serialize", () => {
     0x72, 0x75, 0x74, 0x6F
   ]);
 
-  const actual = serialize({
-    _: "testObject2",
-    boolean1: true,
-    boolean2: false,
-    int: 1234,
-    long: -922337203685477580n,
-    int128: 3196265793150487616775634918212890625n,
-    int256: 34053716734886053108720723919265766388580600074269200372509658336639404296875n,
-    string: "MTKruto",
-    bytes: new Uint8Array([256, 256, 1, 1]),
-    flag1: true,
-    flag2: [{ _: "testObject1", string: "MTKruto" }, { _: "testObject1", string: "MTKruto" }],
-    // deno-lint-ignore no-explicit-any
-  } as any);
+  const actual = new TLWriter()
+    .serialize({
+      _: "testObject2",
+      boolean1: true,
+      boolean2: false,
+      int: 1234,
+      long: -922337203685477580n,
+      int128: 3196265793150487616775634918212890625n,
+      int256: 34053716734886053108720723919265766388580600074269200372509658336639404296875n,
+      string: "MTKruto",
+      bytes: new Uint8Array([256, 256, 1, 1]),
+      flag1: true,
+      flag2: [{ _: "testObject1", string: "MTKruto" }, { _: "testObject1", string: "MTKruto" }],
+      // deno-lint-ignore no-explicit-any
+    } as any)
+    .buffer;
 
   assertEquals(actual, expected);
 });
@@ -99,13 +101,15 @@ Deno.test("optional double", () => {
     0x86, 0x72, 0x02, 0x40
   ]);
 
-  const actual = serialize({
-    _: "videoSize",
-    type: "u",
-    w: 800,
-    h: 800,
-    size: 261256,
-    video_start_ts: 2.305921,
-  });
+  const actual = new TLWriter()
+    .serialize({
+      _: "videoSize",
+      type: "u",
+      w: 800,
+      h: 800,
+      size: 261256,
+      video_start_ts: 2.305921,
+    })
+    .buffer;
   assertEquals(actual, expected);
 });
