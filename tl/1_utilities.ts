@@ -94,7 +94,7 @@ export function mustGetReturnType(name: string): string {
 }
 
 export function repr(value: unknown): string | null {
-  return value == null ? null : (typeof value === "object" && "_" in value) ? value._ : value.constructor.name;
+  return value == null ? null : (typeof value === "object" && "_" in value) ? value._ as string : value.constructor.name;
 }
 
 export function getVectorItemType(type: string): string | null {
