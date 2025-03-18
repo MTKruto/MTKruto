@@ -41,6 +41,14 @@ export class TLRawReader {
     return buffer;
   }
 
+  unread(count: number) {
+    const newOffest = this._buffer.byteOffset - count;
+    if (newOffest < 0) {
+      throw new TLError("No data has been read");
+    }
+    this._buffer = new Uint8Array(this._buffer.buffer, newOffest);
+  }
+
   readInt24(signed = true): number {
     const buffer = this.read(24 / 8);
     return Number(bigIntFromBuffer(buffer, true, signed));
@@ -49,6 +57,10 @@ export class TLRawReader {
   readInt32(signed = true): number {
     const buffer = this.read(32 / 8);
     return Number(bigIntFromBuffer(buffer, true, signed));
+  }
+
+  unreadInt32() {
+    this.unread(32 / 8);
   }
 
   readInt64(signed = true): bigint {

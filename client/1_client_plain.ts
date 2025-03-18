@@ -21,7 +21,7 @@
 import { assert, assertEquals, concat, ige256Decrypt, ige256Encrypt, unreachable } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
 import { bigIntFromBuffer, bufferFromBigInt, factorize, getLogger, getRandomBigInt, modExp, rsaPad, sha1 } from "../1_utilities.ts";
-import { Api, is, serialize, TLReader } from "../2_tl.ts";
+import { Api, is, mustGetReturnType, TLReader, TLWriter } from "../2_tl.ts";
 import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
 import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
 import { getMessageId, packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
@@ -54,7 +54,7 @@ export class ClientPlain extends ClientAbstract {
     }
     const messageId = this.#lastMessageId = getMessageId(this.#lastMessageId, 0);
 
-    const payload = packUnencryptedMessage(serialize(function_), messageId);
+    const payload = packUnencryptedMessage(new TLWriter().serialize(function_).buffer, messageId);
     await this.transport.transport.send(payload);
     L.out(function_);
     L.outBin(payload);
@@ -67,7 +67,7 @@ export class ClientPlain extends ClientAbstract {
     }
     const { message } = unpackUnencryptedMessage(buffer);
     const reader = new TLReader(message);
-    const result = reader.readObject();
+    const result = await reader.deserialize(mustGetReturnType(function_._));
     L.in(result);
     return result as R;
   }
@@ -123,16 +123,18 @@ export class ClientPlain extends ClientAbstract {
     const serverNonce = resPq.server_nonce;
     const newNonce = getRandomBigInt(32, false, true);
     let encryptedData = await rsaPad(
-      serialize({
-        _: "p_q_inner_data_dc",
-        pq,
-        p,
-        q,
-        dc,
-        new_nonce: newNonce,
-        nonce,
-        server_nonce: serverNonce,
-      }),
+      new TLWriter()
+        .serialize({
+          _: "p_q_inner_data_dc",
+          pq,
+          p,
+          q,
+          dc,
+          new_nonce: newNonce,
+          nonce,
+          server_nonce: serverNonce,
+        })
+        .buffer,
       publicKey,
     );
 
@@ -155,7 +157,7 @@ export class ClientPlain extends ClientAbstract {
     const tmpAesIv = concat([(await sha1(concat([serverNonce_, newNonce_]))).subarray(12, 12 + 8), await sha1(concat([newNonce_, newNonce_])), newNonce_.subarray(0, 0 + 4)]);
     const answerWithHash = ige256Decrypt(dhParams.encrypted_answer, tmpAesKey, tmpAesIv);
 
-    const dhInnerData = new TLReader(answerWithHash.slice(20)).readObject();
+    const dhInnerData = await new TLReader(answerWithHash.slice(20)).deserialize("server_DH_inner_data");
     assert(is("server_DH_inner_data", dhInnerData));
     const { g, g_a: gA_, dh_prime: dhPrime_ } = dhInnerData;
     const gA = bigIntFromBuffer(gA_, false, false);
@@ -164,13 +166,15 @@ export class ClientPlain extends ClientAbstract {
     const b = getRandomBigInt(256, false, false);
     const gB = modExp(BigInt(g), b, dhPrime);
 
-    const data = serialize({
-      _: "client_DH_inner_data",
-      nonce,
-      server_nonce: serverNonce,
-      retry_id: 0n,
-      g_b: bufferFromBigInt(gB, 256, false, false),
-    });
+    const data = new TLWriter()
+      .serialize({
+        _: "client_DH_inner_data",
+        nonce,
+        server_nonce: serverNonce,
+        retry_id: 0n,
+        g_b: bufferFromBigInt(gB, 256, false, false),
+      })
+      .buffer;
 
     let dataWithHash = concat([await sha1(data), data]);
 

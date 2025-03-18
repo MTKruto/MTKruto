@@ -142,6 +142,13 @@ Deno.test("TLRawReader", async (t) => {
     });
   });
 
+  await t.step("unread", () => {
+    const previousLength = reader.buffer.length;
+    reader.unread(1);
+    assertEquals(reader.buffer.length, previousLength + 1);
+    reader.read(1);
+  });
+
   await t.step("readInt24", async (t) => {
     assertEquals(reader.readInt24(false), 0xFFFFFF);
     assertEquals(reader.readInt24(), -8388607);
@@ -162,6 +169,14 @@ Deno.test("TLRawReader", async (t) => {
       assertEquals(reader.buffer.length, buffer.length - read);
       assertEquals(reader.buffer, buffer.subarray(read));
     });
+  });
+
+  await t.step("unreadInt32", () => {
+    const previousLength = reader.buffer.length;
+    reader.unreadInt32();
+    assertEquals(reader.buffer.length, previousLength + 4);
+    assertEquals(reader.buffer.slice(0, 4), new Uint8Array([0xFF, 0xFF, 0xFE, 0xFF]));
+    reader.read(4);
   });
 
   await t.step("readInt64", async (t) => {

@@ -7,7 +7,7 @@
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * (at your option) any later version.,,
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -84,3 +84,31 @@ const GENERIC_FUNCTIONS = [
 export function isGenericFunction(value: unknown): boolean {
   return isOneOf(GENERIC_FUNCTIONS, value);
 }
+
+export function mustGetReturnType(name: string): string {
+  const type = getType(name);
+  if (!type || type.length < 3 || !type[2]) {
+    unreachable();
+  }
+  return type[2];
+}
+
+export function repr(value: unknown): string | null {
+  return value == null ? null : (typeof value === "object" && "_" in value) ? value._ as string : value.constructor.name;
+}
+
+export function getVectorItemType(type: string): string | null {
+  if (!type.startsWith(VECTOR_PREFIX) || !type.endsWith(VECTOR_SUFFIX)) {
+    return null;
+  }
+  return type.slice(VECTOR_PREFIX.length).slice(0, -1 * VECTOR_SUFFIX.length);
+}
+const VECTOR_PREFIX = "Vector<";
+const VECTOR_SUFFIX = ">";
+
+export const X = "X";
+export const VECTOR = 0x1CB5C415;
+export const BOOL_TRUE = 0x997275b5;
+export const BOOL_FALSE = 0xbc799737;
+export const GZIP_PACKED = 0x3072CFA1;
+export const RPC_RESULT = 0xF35C6D01;

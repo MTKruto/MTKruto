@@ -21,9 +21,7 @@
 export { TLError } from "./tl/0_tl_raw_reader.ts";
 export * as Api from "./tl/0_api.ts";
 export * from "./tl/1_utilities.ts";
-export * from "./tl/2_serialize.ts";
-export * from "./tl/3_utilities.ts";
-export * from "./tl/3_tl_reader.ts";
-export * from "./tl/4_tl_writer.ts";
-export * from "./tl/4_rpc_result.ts";
-export * from "./tl/5_message.ts";
+export * from "./tl/2_utilities.ts";
+export * from "./tl/2_message.ts";
+export * from "./tl/2_tl_reader.ts";
+export * from "./tl/2_tl_writer.ts";
