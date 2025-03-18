@@ -94,8 +94,22 @@ export function mustGetReturnType(name: string) {
   }
 }
 
+export function repr(value: unknown) {
+  return value == null ? null : (typeof value === "object" && "_" in value) ? value._ : value.constructor.name;
+}
+
+export function getVectorItemType(type: string) {
+  if (!type.startsWith(VECTOR_PREFIX) || !type.endsWith(VECTOR_SUFFIX)) {
+    return null;
+  }
+  return type.slice(VECTOR_PREFIX.length).slice(0, -1 * VECTOR_SUFFIX.length);
+}
+const VECTOR_PREFIX = "Vector<";
+const VECTOR_SUFFIX = ">";
+
+export const X = "X";
 export const VECTOR = 0x1CB5C415;
 export const BOOL_TRUE = 0x997275b5;
 export const BOOL_FALSE = 0xbc799737;
 export const GZIP_PACKED = 0x3072CFA1;
-export const RPC_RESULT_ID = 0xF35C6D01;
+export const RPC_RESULT = 0xF35C6D01;

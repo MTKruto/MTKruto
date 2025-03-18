@@ -21,28 +21,44 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { BOOL_FALSE, VECTOR } from "../2_tl.ts";
-import { AnyObject, getType } from "./0_api.ts";
+import { AnyObject, getEnum, getType } from "./0_api.ts";
+import { TLError } from "./0_tl_raw_reader.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
-import { analyzeOptionalParam, assertIsValidType, BOOL_TRUE, getOptionalParamInnerType, isOptionalParam } from "./1_utilities.ts";
+import { analyzeOptionalParam, assertIsValidType, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr } from "./1_utilities.ts";
 
 export class TLWriter extends TLRawWriter {
-  serialize(type_: AnyObject) {
-    assertIsValidType(type_);
-    const maybeParameters = getType(type_._);
-    if (!maybeParameters) {
-      throw new Error(`Unknown type: ${type_._}`);
-    }
-    const type__ = type_ as any;
-    const writer = new TLRawWriter();
-    const [id, parameters_] = maybeParameters;
-    writer.writeInt32(id, false);
+  serialize(value: AnyObject) {
+    assertIsValidType(value);
+    this.#serialize(value._, value, "");
+    return this;
+  }
 
-    for (let [i, [name, type]] of parameters_.entries()) {
+  #serialize(type: string, value: AnyObject, debugInfo: string) {
+    if (this.#serializePrimitive(type, value, debugInfo)) {
+      return;
+    }
+    if (this.#serializeVector(type, value, debugInfo)) {
+      return;
+    }
+
+    assertIsValidType(value);
+    const maybeParameters = getType(value._);
+    if (!maybeParameters) {
+      throw new TLError(`Unknown type: ${value._}`);
+    }
+    if (type != "!X" && !this.#isTypeValid(type, value)) {
+      throw new TLError(`Expected ${type} but got ${value._}`);
+    }
+    const type__ = value as any;
+    const [id, parameters_] = maybeParameters;
+    this.writeInt32(id, false);
+
+    for (const [i, [name, type]] of parameters_.entries()) {
       if (isOptionalParam(type) && type__[name] === undefined) {
         continue;
       }
 
-      const debugInfo = `[0x${id.toString(16).toUpperCase()}::${i}]`;
+      const debugInfo = ` [0x${id.toString(16).toUpperCase()}::${i}]`;
 
       if (type == "#") {
         let flags = 0;
@@ -59,7 +75,7 @@ export class TLWriter extends TLRawWriter {
             }
           }
         }
-        writer.writeInt32(flags);
+        this.writeInt32(flags);
         continue;
       }
 
@@ -67,64 +83,70 @@ export class TLWriter extends TLRawWriter {
         throw new Error(`Missing required parameter: ${name}`);
       }
 
-      if (type.startsWith("Vector<")) {
-        type = type.slice("Vector<".length).slice(0, -1);
-        if (!Array.isArray(type__[name])) {
-          throw new TypeError("Expected array");
-        }
-        writer.writeInt32(VECTOR); // vector constructor
-        writer.writeInt32(type__[name].length);
-        for (const item of type__[name]) {
-          this.#serializePrimitive(item, type, debugInfo);
-        }
-        continue;
-      }
-
-      this.#serializePrimitive(type__[name], type, debugInfo);
+      this.#serialize(type, type__[name], debugInfo);
     }
 
-    return this;
+    return;
+  }
+
+  #serializeVector(type: string, value: any, debugInfo: string) {
+    if (isOptionalParam(type)) {
+      type = getOptionalParamInnerType(type);
+    }
+    const itemType = getVectorItemType(type);
+    if (!itemType) {
+      return false;
+    }
+    if (!Array.isArray(value)) {
+      throw new TypeError(`Expected array but received ${repr(value)}${debugInfo}`);
+    }
+    this.writeInt32(VECTOR, false);
+    this.writeInt32(value.length);
+    for (const item of value) {
+      this.#serialize(itemType, item, debugInfo);
+    }
+    return true;
   }
 
   #serializePrimitive(
-    value: any,
     type: string,
+    value: any,
     debugInfo: string,
   ) {
     if (isOptionalParam(type)) {
       type = getOptionalParamInnerType(type);
     }
-    const valueRepr = value == null ? null : (typeof value === "object" && "_" in value) ? value._ : value.constructor.name;
+    const valueRepr = repr(value);
 
     switch (type) {
       case "bytes":
         if ((value instanceof Uint8Array)) {
           this.writeBytes(value);
-          return;
         } else {
-          throw new TypeError(`Expected Uint8Array but received ${valueRepr} ${debugInfo}`);
+          throw new TLError(`Expected Uint8Array but received ${valueRepr}${debugInfo}`);
         }
+        return true;
       case "int128":
         if (typeof value === "bigint") {
           this.writeInt128(value);
         } else {
-          throw new TypeError(`Expected bigint but received ${valueRepr} ${debugInfo}`);
+          throw new TLError(`Expected bigint but received ${valueRepr}${debugInfo}`);
         }
-        break;
+        return true;
       case "int256":
         if (typeof value === "bigint") {
           this.writeInt256(value);
         } else {
-          throw new TypeError(`Expected bigint but received ${valueRepr} ${debugInfo}`);
+          throw new TLError(`Expected bigint but received ${valueRepr}${debugInfo}`);
         }
-        break;
+        return true;
       case "long":
         if (typeof value === "bigint") {
           this.writeInt64(value);
         } else {
-          throw new TypeError(`Expected bigint but received ${valueRepr} ${debugInfo}`);
+          throw new TLError(`Expected bigint but received ${valueRepr}${debugInfo}`);
         }
-        break;
+        return true;
       case "Bool":
         if (typeof value === "boolean") {
           if (value) {
@@ -133,9 +155,9 @@ export class TLWriter extends TLRawWriter {
             this.writeInt32(BOOL_FALSE);
           }
         } else {
-          throw new TypeError(`Expected boolean but received ${valueRepr} ${debugInfo}`);
+          throw new TLError(`Expected boolean but received ${valueRepr}${debugInfo}`);
         }
-        break;
+        return true;
       case "int":
         //
         if (value == null) {
@@ -145,9 +167,9 @@ export class TLWriter extends TLRawWriter {
         if (typeof value === "number") {
           this.writeInt32(value);
         } else {
-          throw new TypeError(`Expected number but received ${valueRepr} ${debugInfo}`);
+          throw new TLError(`Expected number but received ${valueRepr}${debugInfo}`);
         }
-        break;
+        return true;
       case "double":
         //
         if (value == null) {
@@ -157,9 +179,9 @@ export class TLWriter extends TLRawWriter {
         if (typeof value === "number") {
           this.writeDouble(value);
         } else {
-          throw new TypeError(`Expected number but received ${valueRepr} ${debugInfo}`);
+          throw new TLError(`Expected number but received ${valueRepr}${debugInfo}`);
         }
-        break;
+        return true;
       case "string":
         if (typeof value === "string") {
           this.writeString(value);
@@ -171,18 +193,22 @@ export class TLWriter extends TLRawWriter {
         // else {
         //   throw new TypeError(`Expected string or Uint8Array but received ${valueRepr}`);
         // }
-        break;
+        return true;
       case "true":
         if (value !== true) {
-          throw new TypeError(`Expected true but received ${valueRepr} ${debugInfo}`);
+          throw new TLError(`Expected true but received ${valueRepr}${debugInfo}`);
         }
-        break;
+        return true;
       default:
-        // null = !X (generic)
-        if (type != null && typeof type !== "string") {
-          throw new TypeError(`Unexpected type: ${type} ${debugInfo}`);
-        }
-        this.serialize(value);
+        return false;
     }
+  }
+
+  #isTypeValid(type: string, value: AnyObject) {
+    if (type == value._) {
+      return true;
+    }
+    const enum_: string[] | undefined = getEnum(type);
+    return enum_?.includes(value._) || false;
   }
 }

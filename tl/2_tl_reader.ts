@@ -19,17 +19,17 @@
  */
 // deno-lint-ignore-file no-explicit-any
 
-import { TLRawReader } from "./0_tl_raw_reader.ts";
-import { AnyObject, getEnum, getType, Parameters, Types } from "./0_api.ts";
+import { TLError, TLRawReader } from "./0_tl_raw_reader.ts";
+import { AnyObject, getEnum, getType, getTypeName, Parameters, Types } from "./0_api.ts";
 import { analyzeOptionalParam, getOptionalParamInnerType, isOptionalParam } from "../2_tl.ts";
 import { unreachable } from "../0_deps.ts";
 import { gunzip } from "../1_utilities.ts";
-import { BOOL_FALSE, BOOL_TRUE, GZIP_PACKED, VECTOR } from "./1_utilities.ts";
+import { BOOL_FALSE, BOOL_TRUE, getVectorItemType, GZIP_PACKED, VECTOR, X } from "./1_utilities.ts";
 
-export type ReadObject = boolean | AnyObject | Array<ReadObject>;
+export type ReadObject = boolean | number | bigint | string | Uint8Array | AnyObject | Array<ReadObject>;
 
 export class TLReader extends TLRawReader {
-  async deserialize(type: string, id?: number): Promise<any> {
+  async deserialize(type: string, id?: number): Promise<ReadObject> {
     if (isOptionalParam(type)) {
       type = getOptionalParamInnerType(type);
     }
@@ -44,16 +44,23 @@ export class TLReader extends TLRawReader {
       const buffer = await gunzip(this.readBytes());
       return await new TLReader(buffer).deserialize(type);
     }
+    if (type == X) {
+      const typeName = getTypeName(id);
+      if (!typeName) {
+        throw new TLError(`Unknown constructor: ${id.toString(16)}`);
+      }
+      return await this.deserialize(typeName, id);
+    }
     if (id == VECTOR) {
       return await this.#deserializeVector(type);
     }
     const enum_ = getEnum(type);
     if (enum_) {
-      return await this.#deserializeEnum(enum_, id);
+      return await this.#deserializeEnum(enum_, id) as ReadObject;
     }
     const type_ = getType(type);
     if (type_) {
-      return await this.#deserializeType(type, type_, id);
+      return await this.#deserializeType(type, type_, id) as ReadObject;
     }
     unreachable(`unknown type: ${type}`);
   }
@@ -62,14 +69,14 @@ export class TLReader extends TLRawReader {
     const validTypes: [string, Parameters | undefined][] = enum_.map((v) => [v, getType(v)]);
     const type = validTypes.find((v) => v[1] && v[1][0] == id);
     if (!type || !type[1]) {
-      unreachable(`constructor not in enum: ${id.toString(16)}`);
+      throw new TLError(`Constructor not in enum: ${id.toString(16)}`);
     }
     return await this.#deserializeType(type[0], type[1], id);
   }
 
   async #deserializeType(type: string, desc: Parameters, id: number) {
     if (desc[0] != id) {
-      unreachable(`expected constructor ${desc[0].toString(16)} but got ${id}`);
+      throw new TLError(`Expected constructor ${desc[0].toString(16)} but got ${id}`);
     }
 
     const type_: Record<string, any> = { _: type };
@@ -97,14 +104,14 @@ export class TLReader extends TLRawReader {
   }
 
   async #deserializeVector(type: string) {
-    if (!type.startsWith("Vector<")) {
-      unreachable();
+    const itemType = getVectorItemType(type);
+    if (!itemType) {
+      throw new TLError(`Expected Vector but received ${type}`);
     }
-    type = type.slice("Vector<".length).slice(0, -1);
     const size = this.readInt32();
     const array = new Array<any>();
     for (let i = 0; i < size; ++i) {
-      array.push(await this.deserialize(type));
+      array.push(await this.deserialize(itemType));
     }
     return array;
   }

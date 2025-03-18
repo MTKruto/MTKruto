@@ -41,7 +41,7 @@ const testObject2: Parameters = [
     ["bytes", "bytes"],
     ["flags", "#"],
     ["flag1", "flags.0?true"],
-    ["flag2", "flags.1?Vector<string>"],
+    ["flag2", "flags.1?Vector<testObject1>"],
     ["flag3", "flags.3?long"],
   ],
 ];

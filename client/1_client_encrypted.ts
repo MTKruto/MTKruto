@@ -20,12 +20,15 @@
 
 import { unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
-import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, gunzip, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, GZIP_PACKED, is, isGenericFunction, isOfEnum, isOneOf, message, mustGetReturnType, ReadObject, TLError, TLReader } from "../2_tl.ts";
+import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, gunzip, gzip, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
+import { Api, GZIP_PACKED, is, isGenericFunction, isOfEnum, isOneOf, message, mustGetReturnType, ReadObject, repr, RPC_RESULT, TLError, TLReader, X } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
+import { TLWriter } from "../tl/2_tl_writer.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
+
+const COMPRESSION_THRESHOLD = 1024;
 
 // global ClientEncrypted ID counter for logs
 let id = 0;
@@ -39,7 +42,7 @@ export interface Handlers {
   error?: (err: unknown, source: ErrorSource) => void;
 }
 
-const RPC_ERROR = Api.getType("rpc_error")[0];
+const RPC_ERROR = Api.getType("rpc_error")![0];
 
 /**
  * An MTProto client for making encrypted connections. Most users won't need to interact with this. Used internally by `Client`.
@@ -61,6 +64,7 @@ export class ClientEncrypted extends ClientAbstract {
   #toAcknowledge = new Array<bigint>();
   #recentAcks = new CacheMap<bigint, { container?: bigint; message: message }>(20);
   #promises = new Map<bigint, { container?: bigint; message: message; resolve?: (obj: ReadObject) => void; reject?: (err: ReadObject | Error) => void; call: Api.AnyObject }>();
+  #loopActive = true;
 
   // loggers
   #L: Logger;
@@ -144,13 +148,19 @@ export class ClientEncrypted extends ClientAbstract {
 
   async invoke<T extends Api.AnyObject, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
     const messageId = this.#nextMessageId();
+    let body = new TLWriter().serialize(function_).buffer;
+    if (body.length > COMPRESSION_THRESHOLD) {
+      body = new TLWriter()
+        .writeInt32(GZIP_PACKED, false)
+        .writeBytes(await gzip(body))
+        .buffer;
+    }
     let message_: message = {
       _: "message",
       msg_id: messageId,
       seqno: this.#nextSeqNo(true),
-      body: function_,
+      body,
     };
-    Object.assign(message_, { [compressible]: true });
     const message__ = message_;
 
     let container: bigint | undefined = undefined;
@@ -160,7 +170,7 @@ export class ClientEncrypted extends ClientAbstract {
         _: "message",
         msg_id: this.#nextMessageId(),
         seqno: this.#nextSeqNo(false),
-        body: { _: "msgs_ack", msg_ids: this.#toAcknowledge.splice(0, 8192) },
+        body: new TLWriter().serialize({ _: "msgs_ack", msg_ids: this.#toAcknowledge.splice(0, 8192) }).buffer,
       };
       this.#recentAcks.set(ack.msg_id, { container, message: ack });
       message_ = {
@@ -201,7 +211,8 @@ export class ClientEncrypted extends ClientAbstract {
       this.#promises.delete(key);
     }
 
-    loop: while (this.connected) {
+    this.#loopActive = true;
+    while (this.connected && this.#loopActive) {
       try {
         const buffer = await this.transport.transport.receive();
         this.#L.inBin(buffer);
@@ -220,15 +231,13 @@ export class ClientEncrypted extends ClientAbstract {
           drop(this.handlers.error?.(err, "decryption"));
           continue;
         }
-        const messages = decrypted.body instanceof Uint8Array ? [decrypted.body] : decrypted.body.messages.map((v) => v.body);
+        const messages = decrypted.body instanceof Uint8Array ? [decrypted] : decrypted.body.messages.map((v) => v);
 
         for (const message of messages) {
-          if (!(message instanceof Uint8Array)) {
+          if (!(message.body instanceof Uint8Array)) {
             unreachable();
           }
-          if (await this.#handleIncomingMessage(message)) {
-            break loop;
-          }
+          await this.#handleIncomingMessage(message);
         }
       } catch (err) {
         if (!this.connected) {
@@ -252,17 +261,68 @@ export class ClientEncrypted extends ClientAbstract {
     }
   }
 
-  async #handleIncomingMessage(body: Uint8Array) {
-    let sendAck = true;
+  async #handleIncomingMessage(message: message) {
+    const body = message.body;
+    if (!(body instanceof Uint8Array)) {
+      unreachable();
+    }
     let reader = new TLReader(body);
     const id = reader.readInt32(false);
     if (id == GZIP_PACKED) {
       reader = new TLReader(await gunzip(reader.readBytes()));
-    }
-    if (id == RPC_RESULT) {
+    } else if (id == RPC_RESULT) {
       await this.#handleRpcResult(reader);
+    } else {
+      await this.#handleType(message, id, reader);
+      return;
     }
-    this.#LreceiveLoop.debug("received", body._);
+    this.#toAcknowledge.push(message.msg_id);
+  }
+
+  async #handleRpcResult(reader: TLReader) {
+    const messageId = reader.readInt64();
+    const promise = this.#promises.get(messageId);
+    if (!promise) {
+      return;
+    }
+    const id = reader.readInt32(false);
+    if (id == GZIP_PACKED) {
+      reader = new TLReader(await gunzip(reader.readBytes()));
+    }
+    // deno-lint-ignore no-explicit-any
+    let result: any;
+    if (id == RPC_ERROR) {
+      result = reader.deserialize("rpc_error", id);
+      this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
+    } else {
+      result = reader.deserialize(mustGetReturnType(promise.call._));
+      this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
+    }
+    const resolvePromise = () => {
+      if (is("rpc_error", result)) {
+        promise.reject?.(constructTelegramError(result, promise.call));
+      } else {
+        promise.resolve?.(result);
+      }
+      this.#promises.delete(messageId);
+    };
+    if (isOfEnum("Updates", result) || isOfEnum("Update", result)) {
+      // deno-lint-ignore no-explicit-any
+      let call: any = promise?.call ?? null;
+      if (isGenericFunction(call)) {
+        call = call.query;
+      }
+      drop(this.handlers.updates?.(result, call, resolvePromise));
+    } else {
+      drop(this.handlers.result?.(result, resolvePromise));
+    }
+  }
+
+  async #handleType(message: message, id: number, reader: TLReader) {
+    const body = await reader.deserialize(X, id);
+    this.#LreceiveLoop.debug("received", repr(body));
+
+    let sendAck = true;
     if (isOfEnum("Updates", body) || isOfEnum("Update", body)) {
       drop(this.handlers.updates?.(body as Api.Updates | Api.Update, null));
     } else if (is("new_session_created", body)) {
@@ -311,7 +371,7 @@ export class ClientEncrypted extends ClientAbstract {
             this.#timeDifference = -this.#timeDifference;
             this.#LreceiveLoop.debug("message ID too high, invalidating session");
             await this.#invalidateSession();
-            return true;
+            this.#loopActive = false;
           } else {
             this.#LreceiveLoop.debug("message ID too low, resending message");
           }
@@ -323,7 +383,7 @@ export class ClientEncrypted extends ClientAbstract {
         default:
           await this.#invalidateSession();
           this.#LreceiveLoop.debug("invalidating session because of unexpected bad_msg_notification:", body.error_code);
-          return true;
+          this.#loopActive = false;
       }
       const promise = this.#promises.get(body.bad_msg_id);
       if (promise) {
@@ -334,46 +394,9 @@ export class ClientEncrypted extends ClientAbstract {
       sendAck = false;
       this.#toAcknowledge.push(body.answer_msg_id);
     }
+
     if (sendAck) {
       this.#toAcknowledge.push(message.msg_id);
-    }
-  }
-  async #handleRpcResult(reader: TLReader) {
-    const messageId = reader.readInt64();
-    const promise = this.#promises.get(messageId);
-    if (!promise) {
-      return;
-    }
-    const id = reader.readInt32(false);
-    if (id == GZIP_PACKED) {
-      reader = new TLReader(await gunzip(reader.readBytes()));
-    }
-    // deno-lint-ignore no-explicit-any
-    let result: any;
-    if (id == RPC_ERROR) {
-      result = reader.deserialize("rpc_error", id);
-      this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
-    } else {
-      result = reader.deserialize(mustGetReturnType(promise.call._));
-      this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
-    }
-    const resolvePromise = () => {
-      if (is("rpc_error", result)) {
-        promise.reject?.(constructTelegramError(result, promise.call));
-      } else {
-        promise.resolve?.(result);
-      }
-      this.#promises.delete(messageId);
-    };
-    if (isOfEnum("Updates", result) || isOfEnum("Update", result)) {
-      // @ts-ignore: tbd
-      let call = promise?.call ?? null;
-      if (isGenericFunction(call)) {
-        call = call.query;
-      }
-      drop(this.handlers.updates?.(result, call, resolvePromise));
-    } else {
-      drop(this.handlers.result?.(result, resolvePromise));
     }
   }
 }
