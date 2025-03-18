@@ -97,7 +97,7 @@ export function repr(value: unknown): string | null {
   return value == null ? null : (typeof value === "object" && "_" in value) ? value._ : value.constructor.name;
 }
 
-export function getVectorItemType(type: string): string {
+export function getVectorItemType(type: string): string | null {
   if (!type.startsWith(VECTOR_PREFIX) || !type.endsWith(VECTOR_SUFFIX)) {
     return null;
   }
