@@ -85,7 +85,7 @@ export function isGenericFunction(value: unknown): boolean {
   return isOneOf(GENERIC_FUNCTIONS, value);
 }
 
-export function mustGetReturnType(name: string) {
+export function mustGetReturnType(name: string): string {
   const type = getType(name);
   if (!type || type.length < 3 || !type[2]) {
     unreachable();
@@ -93,11 +93,11 @@ export function mustGetReturnType(name: string) {
   return type[2];
 }
 
-export function repr(value: unknown) {
+export function repr(value: unknown): string | null {
   return value == null ? null : (typeof value === "object" && "_" in value) ? value._ : value.constructor.name;
 }
 
-export function getVectorItemType(type: string) {
+export function getVectorItemType(type: string): string {
   if (!type.startsWith(VECTOR_PREFIX) || !type.endsWith(VECTOR_SUFFIX)) {
     return null;
   }

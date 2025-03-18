@@ -26,7 +26,7 @@ import { TLRawWriter } from "./0_tl_raw_writer.ts";
 import { analyzeOptionalParam, assertIsValidType, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./1_utilities.ts";
 
 export class TLWriter extends TLRawWriter {
-  serialize(value: AnyObject) {
+  serialize(value: AnyObject): typeof this {
     assertIsValidType(value);
     this.#serialize(value._, value, "");
     return this;
