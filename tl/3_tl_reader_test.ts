@@ -233,7 +233,7 @@ Deno.test("primitives", async (t) => {
   });
 });
 
-Deno.test("primitive vectors", async (v) => {
+Deno.test("primitive vectors", async () => {
   const writer = new TLRawWriter();
   writer.writeInt32(VECTOR, false);
   const expected = new Array(1024).fill(null).map((_, i) => i * Math.random());
