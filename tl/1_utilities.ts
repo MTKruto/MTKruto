@@ -7,7 +7,7 @@
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * (at your option) any later version.,,
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,7 +20,7 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { assertEquals, assertFalse, unreachable } from "../0_deps.ts";
-import { AnyType, Enums, Functions, getEnum, getReturnType, getType, Types } from "./0_api.ts";
+import { AnyType, Enums, Functions, getEnum, getType, Types } from "./0_api.ts";
 
 export function isOptionalParam(ntype: string): boolean {
   return ntype.includes("?");
@@ -86,12 +86,11 @@ export function isGenericFunction(value: unknown): boolean {
 }
 
 export function mustGetReturnType(name: string) {
-  const returnType = getReturnType(name);
-  if (!returnType) {
+  const type = getType(name);
+  if (!type || type.length < 3 || !type[2]) {
     unreachable();
-  } else {
-    return returnType;
   }
+  return type[2];
 }
 
 export function repr(value: unknown) {

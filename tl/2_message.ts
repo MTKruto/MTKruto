@@ -50,11 +50,12 @@ export async function deserializeMessage(reader: TLRawReader): Promise<message> 
   const seqno = reader.readInt32();
   const length = reader.readInt32();
   reader = new TLRawReader(reader.read(length));
-  const cid = new TLRawReader(reader.buffer).readInt32(false);
+  const reader2 = new TLRawReader(reader.buffer);
+  const id = reader2.readInt32(false);
   let body: message["body"];
   {
-    if (cid == MSG_CONTAINER_CONSTRUCTOR) {
-      body = await deserializeMsgContainer(reader.buffer);
+    if (id == MSG_CONTAINER_CONSTRUCTOR) {
+      body = await deserializeMsgContainer(reader2.buffer);
     } else {
       body = reader.buffer;
     }

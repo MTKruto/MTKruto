@@ -29,7 +29,7 @@ import { BOOL_FALSE, BOOL_TRUE, getVectorItemType, GZIP_PACKED, VECTOR, X } from
 export type ReadObject = boolean | number | bigint | string | Uint8Array | AnyObject | Array<ReadObject>;
 
 export class TLReader extends TLRawReader {
-  async deserialize(type: string, id?: number): Promise<ReadObject> {
+  async deserialize(type: string): Promise<ReadObject> {
     if (isOptionalParam(type)) {
       type = getOptionalParamInnerType(type);
     }
@@ -37,9 +37,7 @@ export class TLReader extends TLRawReader {
     if (primitive !== undefined) {
       return primitive;
     }
-    if (!id) {
-      id = this.readInt32(false);
-    }
+    const id = this.readInt32(false);
     if (id == GZIP_PACKED) {
       const buffer = await gunzip(this.readBytes());
       return await new TLReader(buffer).deserialize(type);
@@ -49,7 +47,8 @@ export class TLReader extends TLRawReader {
       if (!typeName) {
         throw new TLError(`Unknown constructor: ${id.toString(16)}`);
       }
-      return await this.deserialize(typeName, id);
+      this.unreadInt32();
+      return await this.deserialize(typeName);
     }
     if (id == VECTOR) {
       return await this.#deserializeVector(type);
@@ -62,7 +61,7 @@ export class TLReader extends TLRawReader {
     if (type_) {
       return await this.#deserializeType(type, type_, id) as ReadObject;
     }
-    unreachable(`unknown type: ${type}`);
+    unreachable(`unknown type: ${type} id ${id}`);
   }
 
   async #deserializeEnum(enum_: (keyof Types)[], id: number) {

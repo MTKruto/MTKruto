@@ -3613,7 +3613,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param storyId The identifier of the story to add to highlights.
    */
   async addStoryToHighlights(chatId: ID, storyId: number) {
-    await this.#storyManager.addStoryToHighlights(chatId, storyId);
+    return await this.#storyManager.addStoryToHighlights(chatId, storyId);
   }
 
   /**

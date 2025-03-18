@@ -273,7 +273,8 @@ export class ClientEncrypted extends ClientAbstract {
     } else if (id == RPC_RESULT) {
       await this.#handleRpcResult(reader);
     } else {
-      await this.#handleType(message, id, reader);
+      reader.unreadInt32();
+      await this.#handleType(message, reader);
       return;
     }
     this.#toAcknowledge.push(message.msg_id);
@@ -285,22 +286,26 @@ export class ClientEncrypted extends ClientAbstract {
     if (!promise) {
       return;
     }
-    const id = reader.readInt32(false);
+    let id = reader.readInt32(false);
     if (id == GZIP_PACKED) {
       reader = new TLReader(await gunzip(reader.readBytes()));
+      id = reader.readInt32(false);
+      reader.unreadInt32();
+    } else {
+      reader.unreadInt32();
     }
     // deno-lint-ignore no-explicit-any
     let call: any = promise?.call ?? null;
-    if (isGenericFunction(call)) {
+    while (isGenericFunction(call)) {
       call = call.query;
     }
     // deno-lint-ignore no-explicit-any
     let result: any;
     if (id == RPC_ERROR) {
-      result = reader.deserialize("rpc_error", id);
+      result = await reader.deserialize("rpc_error");
       this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
     } else {
-      result = reader.deserialize(mustGetReturnType(call._));
+      result = await reader.deserialize(mustGetReturnType(call._));
       this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
     }
     const resolvePromise = () => {
@@ -318,8 +323,8 @@ export class ClientEncrypted extends ClientAbstract {
     }
   }
 
-  async #handleType(message: message, id: number, reader: TLReader) {
-    const body = await reader.deserialize(X, id);
+  async #handleType(message: message, reader: TLReader) {
+    const body = await reader.deserialize(X);
     this.#LreceiveLoop.debug("received", repr(body));
 
     let sendAck = true;

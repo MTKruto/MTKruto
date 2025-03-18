@@ -268,7 +268,7 @@ export class StorageOperations {
     const buffer = (keyOrBuffer instanceof Uint8Array || isValidType(keyOrBuffer)) ? keyOrBuffer : await this.#storage.get<[string, Uint8Array]>(keyOrBuffer);
     if (buffer != null) {
       if (Array.isArray(buffer)) {
-        return new TLReader(rleDecode(buffer[1])).deserialize(buffer[0]);
+        return await new TLReader(rleDecode(buffer[1])).deserialize(buffer[0]);
       } else {
         return buffer;
       }

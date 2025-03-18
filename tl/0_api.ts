@@ -1,4 +1,22 @@
-declare const R: unique symbol;
+/**
+ * MTKruto - Cross-runtime JavaScript library for building Telegram clients
+ * Copyright (C) 2023-2025 Roj <https://roj.im/>
+ *
+ * This file is part of MTKruto.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.,,
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */ declare const R: unique symbol;
 
 export type Function = { [R]?: unknown };
 
@@ -20865,7 +20883,7 @@ const map: Map<number, string> = new Map([
 
 export const getTypeName: (id: number) => string | undefined = map.get.bind(map);
 
-export type Parameters = [number, [string, string][]];
+export type Parameters = [number, [string, string][]] | [number, [string, string][], string];
 
 const enums: Map<string, (keyof Types)[]> = new Map([
   ["ResPQ", ["resPQ"]],
@@ -37629,6 +37647,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["nonce", "int128"],
       ],
+      "ResPQ",
     ],
   ],
   [
@@ -37643,6 +37662,7 @@ const types: Map<string, Parameters> = new Map([
         ["public_key_fingerprint", "long"],
         ["encrypted_data", "bytes"],
       ],
+      "Server_DH_Params",
     ],
   ],
   [
@@ -37654,6 +37674,7 @@ const types: Map<string, Parameters> = new Map([
         ["server_nonce", "int128"],
         ["encrypted_data", "bytes"],
       ],
+      "Set_client_DH_params_answer",
     ],
   ],
   [
@@ -37663,6 +37684,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["req_msg_id", "long"],
       ],
+      "RpcDropAnswer",
     ],
   ],
   [
@@ -37672,6 +37694,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["num", "int"],
       ],
+      "FutureSalts",
     ],
   ],
   [
@@ -37681,6 +37704,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["ping_id", "long"],
       ],
+      "Pong",
     ],
   ],
   [
@@ -37691,6 +37715,7 @@ const types: Map<string, Parameters> = new Map([
         ["ping_id", "long"],
         ["disconnect_delay", "int"],
       ],
+      "Pong",
     ],
   ],
   [
@@ -37700,6 +37725,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["session_id", "long"],
       ],
+      "DestroySessionRes",
     ],
   ],
   [
@@ -37707,6 +37733,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD1435160,
       [],
+      "DestroyAuthKeyRes",
     ],
   ],
   [
@@ -37716,6 +37743,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["connection_id", "string"],
       ],
+      "Error",
     ],
   ],
   [
@@ -37726,6 +37754,7 @@ const types: Map<string, Parameters> = new Map([
         ["nonce", "string"],
         ["token", "string"],
       ],
+      "Error",
     ],
   ],
   [
@@ -37736,6 +37765,7 @@ const types: Map<string, Parameters> = new Map([
         ["nonce", "string"],
         ["secret", "string"],
       ],
+      "Error",
     ],
   ],
   [
@@ -37745,6 +37775,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["token", "string"],
       ],
+      "Error",
     ],
   ],
   [
@@ -37755,6 +37786,7 @@ const types: Map<string, Parameters> = new Map([
         ["msg_id", "long"],
         ["query", "!X"],
       ],
+      "X",
     ],
   ],
   [
@@ -37765,6 +37797,7 @@ const types: Map<string, Parameters> = new Map([
         ["msg_ids", "Vector<long>"],
         ["query", "!X"],
       ],
+      "X",
     ],
   ],
   [
@@ -37784,6 +37817,7 @@ const types: Map<string, Parameters> = new Map([
         ["params", "flags.1?JSONValue"],
         ["query", "!X"],
       ],
+      "X",
     ],
   ],
   [
@@ -37794,6 +37828,7 @@ const types: Map<string, Parameters> = new Map([
         ["layer", "int"],
         ["query", "!X"],
       ],
+      "X",
     ],
   ],
   [
@@ -37803,6 +37838,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["query", "!X"],
       ],
+      "X",
     ],
   ],
   [
@@ -37813,6 +37849,7 @@ const types: Map<string, Parameters> = new Map([
         ["range", "MessageRange"],
         ["query", "!X"],
       ],
+      "X",
     ],
   ],
   [
@@ -37823,6 +37860,7 @@ const types: Map<string, Parameters> = new Map([
         ["takeout_id", "long"],
         ["query", "!X"],
       ],
+      "X",
     ],
   ],
   [
@@ -37833,6 +37871,7 @@ const types: Map<string, Parameters> = new Map([
         ["connection_id", "string"],
         ["query", "!X"],
       ],
+      "X",
     ],
   ],
   [
@@ -37844,6 +37883,7 @@ const types: Map<string, Parameters> = new Map([
         ["token", "string"],
         ["query", "!X"],
       ],
+      "X",
     ],
   ],
   [
@@ -37855,6 +37895,7 @@ const types: Map<string, Parameters> = new Map([
         ["secret", "string"],
         ["query", "!X"],
       ],
+      "X",
     ],
   ],
   [
@@ -37865,6 +37906,7 @@ const types: Map<string, Parameters> = new Map([
         ["token", "string"],
         ["query", "!X"],
       ],
+      "X",
     ],
   ],
   [
@@ -37877,6 +37919,7 @@ const types: Map<string, Parameters> = new Map([
         ["api_hash", "string"],
         ["settings", "CodeSettings"],
       ],
+      "auth.SentCode",
     ],
   ],
   [
@@ -37891,6 +37934,7 @@ const types: Map<string, Parameters> = new Map([
         ["first_name", "string"],
         ["last_name", "string"],
       ],
+      "auth.Authorization",
     ],
   ],
   [
@@ -37904,6 +37948,7 @@ const types: Map<string, Parameters> = new Map([
         ["phone_code", "flags.0?string"],
         ["email_verification", "flags.1?EmailVerification"],
       ],
+      "auth.Authorization",
     ],
   ],
   [
@@ -37911,6 +37956,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3E72BA19,
       [],
+      "auth.LoggedOut",
     ],
   ],
   [
@@ -37918,6 +37964,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9FAB0D1A,
       [],
+      "Bool",
     ],
   ],
   [
@@ -37927,6 +37974,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["dc_id", "int"],
       ],
+      "auth.ExportedAuthorization",
     ],
   ],
   [
@@ -37937,6 +37985,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "long"],
         ["bytes", "bytes"],
       ],
+      "auth.Authorization",
     ],
   ],
   [
@@ -37949,6 +37998,7 @@ const types: Map<string, Parameters> = new Map([
         ["expires_at", "int"],
         ["encrypted_message", "bytes"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -37961,6 +38011,7 @@ const types: Map<string, Parameters> = new Map([
         ["api_hash", "string"],
         ["bot_auth_token", "string"],
       ],
+      "auth.Authorization",
     ],
   ],
   [
@@ -37970,6 +38021,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["password", "InputCheckPasswordSRP"],
       ],
+      "auth.Authorization",
     ],
   ],
   [
@@ -37977,6 +38029,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD897BC66,
       [],
+      "auth.PasswordRecovery",
     ],
   ],
   [
@@ -37988,6 +38041,7 @@ const types: Map<string, Parameters> = new Map([
         ["code", "string"],
         ["new_settings", "flags.0?account.PasswordInputSettings"],
       ],
+      "auth.Authorization",
     ],
   ],
   [
@@ -38000,6 +38054,7 @@ const types: Map<string, Parameters> = new Map([
         ["phone_code_hash", "string"],
         ["reason", "flags.0?string"],
       ],
+      "auth.SentCode",
     ],
   ],
   [
@@ -38010,6 +38065,7 @@ const types: Map<string, Parameters> = new Map([
         ["phone_number", "string"],
         ["phone_code_hash", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38019,6 +38075,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["except_auth_keys", "Vector<long>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38030,6 +38087,7 @@ const types: Map<string, Parameters> = new Map([
         ["api_hash", "string"],
         ["except_ids", "Vector<long>"],
       ],
+      "auth.LoginToken",
     ],
   ],
   [
@@ -38039,6 +38097,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["token", "bytes"],
       ],
+      "auth.LoginToken",
     ],
   ],
   [
@@ -38048,6 +38107,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["token", "bytes"],
       ],
+      "Authorization",
     ],
   ],
   [
@@ -38057,6 +38117,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["code", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38068,6 +38129,7 @@ const types: Map<string, Parameters> = new Map([
         ["api_hash", "string"],
         ["web_auth_token", "string"],
       ],
+      "auth.Authorization",
     ],
   ],
   [
@@ -38082,6 +38144,7 @@ const types: Map<string, Parameters> = new Map([
         ["play_integrity_token", "flags.2?string"],
         ["ios_push_secret", "flags.1?string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38092,6 +38155,7 @@ const types: Map<string, Parameters> = new Map([
         ["phone_number", "string"],
         ["phone_code_hash", "string"],
       ],
+      "auth.SentCode",
     ],
   ],
   [
@@ -38103,6 +38167,7 @@ const types: Map<string, Parameters> = new Map([
         ["phone_code_hash", "string"],
         ["mnc", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38118,6 +38183,7 @@ const types: Map<string, Parameters> = new Map([
         ["secret", "bytes"],
         ["other_uids", "Vector<long>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38129,6 +38195,7 @@ const types: Map<string, Parameters> = new Map([
         ["token", "string"],
         ["other_uids", "Vector<long>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38139,6 +38206,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputNotifyPeer"],
         ["settings", "InputPeerNotifySettings"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38148,6 +38216,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputNotifyPeer"],
       ],
+      "PeerNotifySettings",
     ],
   ],
   [
@@ -38155,6 +38224,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDB7E1747,
       [],
+      "Bool",
     ],
   ],
   [
@@ -38167,6 +38237,7 @@ const types: Map<string, Parameters> = new Map([
         ["last_name", "flags.1?string"],
         ["about", "flags.2?string"],
       ],
+      "User",
     ],
   ],
   [
@@ -38176,6 +38247,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["offline", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38185,6 +38257,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "account.WallPapers",
     ],
   ],
   [
@@ -38196,6 +38269,7 @@ const types: Map<string, Parameters> = new Map([
         ["reason", "ReportReason"],
         ["message", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38205,6 +38279,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["username", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38214,6 +38289,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["username", "string"],
       ],
+      "User",
     ],
   ],
   [
@@ -38223,6 +38299,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["key", "InputPrivacyKey"],
       ],
+      "account.PrivacyRules",
     ],
   ],
   [
@@ -38233,6 +38310,7 @@ const types: Map<string, Parameters> = new Map([
         ["key", "InputPrivacyKey"],
         ["rules", "Vector<InputPrivacyRule>"],
       ],
+      "account.PrivacyRules",
     ],
   ],
   [
@@ -38244,6 +38322,7 @@ const types: Map<string, Parameters> = new Map([
         ["reason", "string"],
         ["password", "flags.0?InputCheckPasswordSRP"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38251,6 +38330,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x08FC711D,
       [],
+      "AccountDaysTTL",
     ],
   ],
   [
@@ -38260,6 +38340,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["ttl", "AccountDaysTTL"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38270,6 +38351,7 @@ const types: Map<string, Parameters> = new Map([
         ["phone_number", "string"],
         ["settings", "CodeSettings"],
       ],
+      "auth.SentCode",
     ],
   ],
   [
@@ -38281,6 +38363,7 @@ const types: Map<string, Parameters> = new Map([
         ["phone_code_hash", "string"],
         ["phone_code", "string"],
       ],
+      "User",
     ],
   ],
   [
@@ -38290,6 +38373,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["period", "int"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38297,6 +38381,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE320C158,
       [],
+      "account.Authorizations",
     ],
   ],
   [
@@ -38306,6 +38391,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38313,6 +38399,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x548A30F5,
       [],
+      "account.Password",
     ],
   ],
   [
@@ -38322,6 +38409,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["password", "InputCheckPasswordSRP"],
       ],
+      "account.PasswordSettings",
     ],
   ],
   [
@@ -38332,6 +38420,7 @@ const types: Map<string, Parameters> = new Map([
         ["password", "InputCheckPasswordSRP"],
         ["new_settings", "account.PasswordInputSettings"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38342,6 +38431,7 @@ const types: Map<string, Parameters> = new Map([
         ["hash", "string"],
         ["settings", "CodeSettings"],
       ],
+      "auth.SentCode",
     ],
   ],
   [
@@ -38352,6 +38442,7 @@ const types: Map<string, Parameters> = new Map([
         ["phone_code_hash", "string"],
         ["phone_code", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38362,6 +38453,7 @@ const types: Map<string, Parameters> = new Map([
         ["password", "InputCheckPasswordSRP"],
         ["period", "int"],
       ],
+      "account.TmpPassword",
     ],
   ],
   [
@@ -38369,6 +38461,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x182E6D6F,
       [],
+      "account.WebAuthorizations",
     ],
   ],
   [
@@ -38378,6 +38471,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38385,6 +38479,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x682D2594,
       [],
+      "Bool",
     ],
   ],
   [
@@ -38392,6 +38487,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB288BC7D,
       [],
+      "Vector<SecureValue>",
     ],
   ],
   [
@@ -38401,6 +38497,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["types", "Vector<SecureValueType>"],
       ],
+      "Vector<SecureValue>",
     ],
   ],
   [
@@ -38411,6 +38508,7 @@ const types: Map<string, Parameters> = new Map([
         ["value", "InputSecureValue"],
         ["secure_secret_id", "long"],
       ],
+      "SecureValue",
     ],
   ],
   [
@@ -38420,6 +38518,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["types", "Vector<SecureValueType>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38431,6 +38530,7 @@ const types: Map<string, Parameters> = new Map([
         ["scope", "string"],
         ["public_key", "string"],
       ],
+      "account.AuthorizationForm",
     ],
   ],
   [
@@ -38444,6 +38544,7 @@ const types: Map<string, Parameters> = new Map([
         ["value_hashes", "Vector<SecureValueHash>"],
         ["credentials", "SecureCredentialsEncrypted"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38454,6 +38555,7 @@ const types: Map<string, Parameters> = new Map([
         ["phone_number", "string"],
         ["settings", "CodeSettings"],
       ],
+      "auth.SentCode",
     ],
   ],
   [
@@ -38465,6 +38567,7 @@ const types: Map<string, Parameters> = new Map([
         ["phone_code_hash", "string"],
         ["phone_code", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38475,6 +38578,7 @@ const types: Map<string, Parameters> = new Map([
         ["purpose", "EmailVerifyPurpose"],
         ["email", "string"],
       ],
+      "account.SentEmailCode",
     ],
   ],
   [
@@ -38485,6 +38589,7 @@ const types: Map<string, Parameters> = new Map([
         ["purpose", "EmailVerifyPurpose"],
         ["verification", "EmailVerification"],
       ],
+      "account.EmailVerified",
     ],
   ],
   [
@@ -38501,6 +38606,7 @@ const types: Map<string, Parameters> = new Map([
         ["files", "flags.5?true"],
         ["file_max_size", "flags.5?long"],
       ],
+      "account.Takeout",
     ],
   ],
   [
@@ -38511,6 +38617,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", "#"],
         ["success", "flags.0?true"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38520,6 +38627,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["code", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38527,6 +38635,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7A7F2A15,
       [],
+      "Bool",
     ],
   ],
   [
@@ -38534,6 +38643,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC1CBD5B6,
       [],
+      "Bool",
     ],
   ],
   [
@@ -38541,6 +38651,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9F07C728,
       [],
+      "Bool",
     ],
   ],
   [
@@ -38550,6 +38661,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["silent", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38562,6 +38674,7 @@ const types: Map<string, Parameters> = new Map([
         ["compare_stories", "flags.2?true"],
         ["peer", "flags.0?InputNotifyPeer"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -38571,6 +38684,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["wallpaper", "InputWallPaper"],
       ],
+      "WallPaper",
     ],
   ],
   [
@@ -38584,6 +38698,7 @@ const types: Map<string, Parameters> = new Map([
         ["mime_type", "string"],
         ["settings", "WallPaperSettings"],
       ],
+      "WallPaper",
     ],
   ],
   [
@@ -38595,6 +38710,7 @@ const types: Map<string, Parameters> = new Map([
         ["unsave", "Bool"],
         ["settings", "WallPaperSettings"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38605,6 +38721,7 @@ const types: Map<string, Parameters> = new Map([
         ["wallpaper", "InputWallPaper"],
         ["settings", "WallPaperSettings"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38612,6 +38729,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBB3B9804,
       [],
+      "Bool",
     ],
   ],
   [
@@ -38619,6 +38737,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x56DA0B3F,
       [],
+      "account.AutoDownloadSettings",
     ],
   ],
   [
@@ -38631,6 +38750,7 @@ const types: Map<string, Parameters> = new Map([
         ["high", "flags.1?true"],
         ["settings", "AutoDownloadSettings"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38644,6 +38764,7 @@ const types: Map<string, Parameters> = new Map([
         ["file_name", "string"],
         ["mime_type", "string"],
       ],
+      "Document",
     ],
   ],
   [
@@ -38657,6 +38778,7 @@ const types: Map<string, Parameters> = new Map([
         ["document", "flags.2?InputDocument"],
         ["settings", "flags.3?Vector<InputThemeSettings>"],
       ],
+      "Theme",
     ],
   ],
   [
@@ -38672,6 +38794,7 @@ const types: Map<string, Parameters> = new Map([
         ["document", "flags.2?InputDocument"],
         ["settings", "flags.3?Vector<InputThemeSettings>"],
       ],
+      "Theme",
     ],
   ],
   [
@@ -38682,6 +38805,7 @@ const types: Map<string, Parameters> = new Map([
         ["theme", "InputTheme"],
         ["unsave", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38695,6 +38819,7 @@ const types: Map<string, Parameters> = new Map([
         ["format", "flags.2?string"],
         ["base_theme", "flags.3?BaseTheme"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38705,6 +38830,7 @@ const types: Map<string, Parameters> = new Map([
         ["format", "string"],
         ["theme", "InputTheme"],
       ],
+      "Theme",
     ],
   ],
   [
@@ -38715,6 +38841,7 @@ const types: Map<string, Parameters> = new Map([
         ["format", "string"],
         ["hash", "long"],
       ],
+      "account.Themes",
     ],
   ],
   [
@@ -38725,6 +38852,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", "#"],
         ["sensitive_enabled", "flags.0?true"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38732,6 +38860,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8B9B4DAE,
       [],
+      "account.ContentSettings",
     ],
   ],
   [
@@ -38741,6 +38870,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["wallpapers", "Vector<InputWallPaper>"],
       ],
+      "Vector<WallPaper>",
     ],
   ],
   [
@@ -38748,6 +38878,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEB2B4CF6,
       [],
+      "GlobalPrivacySettings",
     ],
   ],
   [
@@ -38757,6 +38888,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["settings", "GlobalPrivacySettings"],
       ],
+      "GlobalPrivacySettings",
     ],
   ],
   [
@@ -38769,6 +38901,7 @@ const types: Map<string, Parameters> = new Map([
         ["reason", "ReportReason"],
         ["message", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38776,6 +38909,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9308CE1B,
       [],
+      "account.ResetPasswordResult",
     ],
   ],
   [
@@ -38783,6 +38917,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4C9409F6,
       [],
+      "Bool",
     ],
   ],
   [
@@ -38792,6 +38927,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "account.Themes",
     ],
   ],
   [
@@ -38801,6 +38937,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["authorization_ttl_days", "int"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38814,6 +38951,7 @@ const types: Map<string, Parameters> = new Map([
         ["encrypted_requests_disabled", "flags.0?Bool"],
         ["call_requests_disabled", "flags.1?Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38823,6 +38961,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "account.SavedRingtones",
     ],
   ],
   [
@@ -38833,6 +38972,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "InputDocument"],
         ["unsave", "Bool"],
       ],
+      "account.SavedRingtone",
     ],
   ],
   [
@@ -38844,6 +38984,7 @@ const types: Map<string, Parameters> = new Map([
         ["file_name", "string"],
         ["mime_type", "string"],
       ],
+      "Document",
     ],
   ],
   [
@@ -38853,6 +38994,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["emoji_status", "EmojiStatus"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38862,6 +39004,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "account.EmojiStatuses",
     ],
   ],
   [
@@ -38871,6 +39014,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "account.EmojiStatuses",
     ],
   ],
   [
@@ -38878,6 +39022,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x18201AAE,
       [],
+      "Bool",
     ],
   ],
   [
@@ -38887,6 +39032,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["order", "Vector<string>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38897,6 +39043,7 @@ const types: Map<string, Parameters> = new Map([
         ["username", "string"],
         ["active", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38906,6 +39053,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "EmojiList",
     ],
   ],
   [
@@ -38915,6 +39063,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "EmojiList",
     ],
   ],
   [
@@ -38922,6 +39071,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xADCBBCDA,
       [],
+      "account.AutoSaveSettings",
     ],
   ],
   [
@@ -38936,6 +39086,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "flags.3?InputPeer"],
         ["settings", "AutoSaveSettings"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38943,6 +39094,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x53BC0020,
       [],
+      "Bool",
     ],
   ],
   [
@@ -38952,6 +39104,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["codes", "Vector<string>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38964,6 +39117,7 @@ const types: Map<string, Parameters> = new Map([
         ["color", "flags.2?int"],
         ["background_emoji_id", "flags.0?long"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -38973,6 +39127,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "EmojiList",
     ],
   ],
   [
@@ -38982,6 +39137,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "account.EmojiStatuses",
     ],
   ],
   [
@@ -38991,6 +39147,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "EmojiList",
     ],
   ],
   [
@@ -39001,6 +39158,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", "#"],
         ["business_work_hours", "flags.0?BusinessWorkHours"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39012,6 +39170,7 @@ const types: Map<string, Parameters> = new Map([
         ["geo_point", "flags.1?InputGeoPoint"],
         ["address", "flags.0?string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39022,6 +39181,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", "#"],
         ["message", "flags.0?InputBusinessGreetingMessage"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39032,6 +39192,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", "#"],
         ["message", "flags.0?InputBusinessAwayMessage"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39045,6 +39206,7 @@ const types: Map<string, Parameters> = new Map([
         ["bot", "InputUser"],
         ["recipients", "InputBusinessBotRecipients"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -39052,6 +39214,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4EA4C80F,
       [],
+      "account.ConnectedBots",
     ],
   ],
   [
@@ -39061,6 +39224,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["connection_id", "string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -39071,6 +39235,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", "#"],
         ["intro", "flags.0?InputBusinessIntro"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39081,6 +39246,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["paused", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39090,6 +39256,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39100,6 +39267,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", "#"],
         ["birthday", "flags.0?Birthday"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39109,6 +39277,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["link", "InputBusinessChatLink"],
       ],
+      "BusinessChatLink",
     ],
   ],
   [
@@ -39119,6 +39288,7 @@ const types: Map<string, Parameters> = new Map([
         ["slug", "string"],
         ["link", "InputBusinessChatLink"],
       ],
+      "BusinessChatLink",
     ],
   ],
   [
@@ -39128,6 +39298,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["slug", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39135,6 +39306,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6F70DDE1,
       [],
+      "account.BusinessChatLinks",
     ],
   ],
   [
@@ -39144,6 +39316,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["slug", "string"],
       ],
+      "account.ResolvedBusinessChatLinks",
     ],
   ],
   [
@@ -39153,6 +39326,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["channel", "InputChannel"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39162,6 +39336,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["enabled", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39169,6 +39344,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x06DD654C,
       [],
+      "ReactionsNotifySettings",
     ],
   ],
   [
@@ -39178,6 +39354,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["settings", "ReactionsNotifySettings"],
       ],
+      "ReactionsNotifySettings",
     ],
   ],
   [
@@ -39187,6 +39364,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "account.EmojiStatuses",
     ],
   ],
   [
@@ -39198,6 +39376,7 @@ const types: Map<string, Parameters> = new Map([
         ["refund_charged", "flags.0?true"],
         ["user_id", "InputUser"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39207,6 +39386,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["user_id", "InputUser"],
       ],
+      "account.PaidMessagesRevenue",
     ],
   ],
   [
@@ -39216,6 +39396,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "Vector<InputUser>"],
       ],
+      "Vector<User>",
     ],
   ],
   [
@@ -39225,6 +39406,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "InputUser"],
       ],
+      "users.UserFull",
     ],
   ],
   [
@@ -39235,6 +39417,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "InputUser"],
         ["errors", "Vector<SecureValueError>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39244,6 +39427,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "Vector<InputUser>"],
       ],
+      "Vector<RequirementToContact>",
     ],
   ],
   [
@@ -39253,6 +39437,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "Vector<int>",
     ],
   ],
   [
@@ -39260,6 +39445,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC4A353EE,
       [],
+      "Vector<ContactStatus>",
     ],
   ],
   [
@@ -39269,6 +39455,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "contacts.Contacts",
     ],
   ],
   [
@@ -39278,6 +39465,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["contacts", "Vector<InputContact>"],
       ],
+      "contacts.ImportedContacts",
     ],
   ],
   [
@@ -39287,6 +39475,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "Vector<InputUser>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -39296,6 +39485,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["phones", "Vector<string>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39307,6 +39497,7 @@ const types: Map<string, Parameters> = new Map([
         ["my_stories_from", "flags.0?true"],
         ["id", "InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39318,6 +39509,7 @@ const types: Map<string, Parameters> = new Map([
         ["my_stories_from", "flags.0?true"],
         ["id", "InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39330,6 +39522,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "int"],
         ["limit", "int"],
       ],
+      "contacts.Blocked",
     ],
   ],
   [
@@ -39340,6 +39533,7 @@ const types: Map<string, Parameters> = new Map([
         ["q", "string"],
         ["limit", "int"],
       ],
+      "contacts.Found",
     ],
   ],
   [
@@ -39351,6 +39545,7 @@ const types: Map<string, Parameters> = new Map([
         ["username", "string"],
         ["referer", "flags.0?string"],
       ],
+      "contacts.ResolvedPeer",
     ],
   ],
   [
@@ -39372,6 +39567,7 @@ const types: Map<string, Parameters> = new Map([
         ["limit", "int"],
         ["hash", "long"],
       ],
+      "contacts.TopPeers",
     ],
   ],
   [
@@ -39382,6 +39578,7 @@ const types: Map<string, Parameters> = new Map([
         ["category", "TopPeerCategory"],
         ["peer", "InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39389,6 +39586,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x879537F1,
       [],
+      "Bool",
     ],
   ],
   [
@@ -39396,6 +39594,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x82F1E39F,
       [],
+      "Vector<SavedContact>",
     ],
   ],
   [
@@ -39405,6 +39604,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["enabled", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39419,6 +39619,7 @@ const types: Map<string, Parameters> = new Map([
         ["last_name", "string"],
         ["phone", "string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -39428,6 +39629,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "InputUser"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -39440,6 +39642,7 @@ const types: Map<string, Parameters> = new Map([
         ["geo_point", "InputGeoPoint"],
         ["self_expires", "flags.0?int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -39453,6 +39656,7 @@ const types: Map<string, Parameters> = new Map([
         ["report_spam", "flags.2?true"],
         ["msg_id", "int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -39462,6 +39666,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["phone", "string"],
       ],
+      "contacts.ResolvedPeer",
     ],
   ],
   [
@@ -39469,6 +39674,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF8654027,
       [],
+      "ExportedContactToken",
     ],
   ],
   [
@@ -39478,6 +39684,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["token", "string"],
       ],
+      "User",
     ],
   ],
   [
@@ -39487,6 +39694,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "Vector<long>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39499,6 +39707,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "Vector<InputPeer>"],
         ["limit", "int"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39506,6 +39715,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDAEDA864,
       [],
+      "contacts.ContactBirthdays",
     ],
   ],
   [
@@ -39515,6 +39725,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "Vector<InputMessage>"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -39531,6 +39742,7 @@ const types: Map<string, Parameters> = new Map([
         ["limit", "int"],
         ["hash", "long"],
       ],
+      "messages.Dialogs",
     ],
   ],
   [
@@ -39547,6 +39759,7 @@ const types: Map<string, Parameters> = new Map([
         ["min_id", "int"],
         ["hash", "long"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -39571,6 +39784,7 @@ const types: Map<string, Parameters> = new Map([
         ["min_id", "int"],
         ["hash", "long"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -39581,6 +39795,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["max_id", "int"],
       ],
+      "messages.AffectedMessages",
     ],
   ],
   [
@@ -39596,6 +39811,7 @@ const types: Map<string, Parameters> = new Map([
         ["min_date", "flags.2?int"],
         ["max_date", "flags.3?int"],
       ],
+      "messages.AffectedHistory",
     ],
   ],
   [
@@ -39607,6 +39823,7 @@ const types: Map<string, Parameters> = new Map([
         ["revoke", "flags.0?true"],
         ["id", "Vector<int>"],
       ],
+      "messages.AffectedMessages",
     ],
   ],
   [
@@ -39616,6 +39833,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["max_id", "int"],
       ],
+      "Vector<ReceivedNotifyMessage>",
     ],
   ],
   [
@@ -39628,6 +39846,7 @@ const types: Map<string, Parameters> = new Map([
         ["top_msg_id", "flags.0?int"],
         ["action", "SendMessageAction"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39656,6 +39875,7 @@ const types: Map<string, Parameters> = new Map([
         ["effect", "flags.18?long"],
         ["allow_paid_stars", "flags.21?long"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -39684,6 +39904,7 @@ const types: Map<string, Parameters> = new Map([
         ["effect", "flags.18?long"],
         ["allow_paid_stars", "flags.21?long"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -39710,6 +39931,7 @@ const types: Map<string, Parameters> = new Map([
         ["video_timestamp", "flags.20?int"],
         ["allow_paid_stars", "flags.21?long"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -39719,6 +39941,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39728,6 +39951,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "messages.PeerSettings",
     ],
   ],
   [
@@ -39740,6 +39964,7 @@ const types: Map<string, Parameters> = new Map([
         ["option", "bytes"],
         ["message", "string"],
       ],
+      "ReportResult",
     ],
   ],
   [
@@ -39749,6 +39974,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "Vector<long>"],
       ],
+      "messages.Chats",
     ],
   ],
   [
@@ -39758,6 +39984,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["chat_id", "long"],
       ],
+      "messages.ChatFull",
     ],
   ],
   [
@@ -39768,6 +39995,7 @@ const types: Map<string, Parameters> = new Map([
         ["chat_id", "long"],
         ["title", "string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -39778,6 +40006,7 @@ const types: Map<string, Parameters> = new Map([
         ["chat_id", "long"],
         ["photo", "InputChatPhoto"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -39789,6 +40018,7 @@ const types: Map<string, Parameters> = new Map([
         ["user_id", "InputUser"],
         ["fwd_limit", "int"],
       ],
+      "messages.InvitedUsers",
     ],
   ],
   [
@@ -39801,6 +40031,7 @@ const types: Map<string, Parameters> = new Map([
         ["chat_id", "long"],
         ["user_id", "InputUser"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -39813,6 +40044,7 @@ const types: Map<string, Parameters> = new Map([
         ["title", "string"],
         ["ttl_period", "flags.0?int"],
       ],
+      "messages.InvitedUsers",
     ],
   ],
   [
@@ -39823,6 +40055,7 @@ const types: Map<string, Parameters> = new Map([
         ["version", "int"],
         ["random_length", "int"],
       ],
+      "messages.DhConfig",
     ],
   ],
   [
@@ -39834,6 +40067,7 @@ const types: Map<string, Parameters> = new Map([
         ["random_id", "int"],
         ["g_a", "bytes"],
       ],
+      "EncryptedChat",
     ],
   ],
   [
@@ -39845,6 +40079,7 @@ const types: Map<string, Parameters> = new Map([
         ["g_b", "bytes"],
         ["key_fingerprint", "long"],
       ],
+      "EncryptedChat",
     ],
   ],
   [
@@ -39856,6 +40091,7 @@ const types: Map<string, Parameters> = new Map([
         ["delete_history", "flags.0?true"],
         ["chat_id", "int"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39866,6 +40102,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputEncryptedChat"],
         ["typing", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39876,6 +40113,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputEncryptedChat"],
         ["max_date", "int"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39889,6 +40127,7 @@ const types: Map<string, Parameters> = new Map([
         ["random_id", "long"],
         ["data", "bytes"],
       ],
+      "messages.SentEncryptedMessage",
     ],
   ],
   [
@@ -39903,6 +40142,7 @@ const types: Map<string, Parameters> = new Map([
         ["data", "bytes"],
         ["file", "InputEncryptedFile"],
       ],
+      "messages.SentEncryptedMessage",
     ],
   ],
   [
@@ -39914,6 +40154,7 @@ const types: Map<string, Parameters> = new Map([
         ["random_id", "long"],
         ["data", "bytes"],
       ],
+      "messages.SentEncryptedMessage",
     ],
   ],
   [
@@ -39923,6 +40164,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["max_qts", "int"],
       ],
+      "Vector<long>",
     ],
   ],
   [
@@ -39932,6 +40174,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputEncryptedChat"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -39941,6 +40184,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "Vector<int>"],
       ],
+      "messages.AffectedMessages",
     ],
   ],
   [
@@ -39951,6 +40195,7 @@ const types: Map<string, Parameters> = new Map([
         ["emoticon", "string"],
         ["hash", "long"],
       ],
+      "messages.Stickers",
     ],
   ],
   [
@@ -39960,6 +40205,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "messages.AllStickers",
     ],
   ],
   [
@@ -39971,6 +40217,7 @@ const types: Map<string, Parameters> = new Map([
         ["message", "string"],
         ["entities", "flags.3?Vector<MessageEntity>"],
       ],
+      "messages.WebPagePreview",
     ],
   ],
   [
@@ -39987,6 +40234,7 @@ const types: Map<string, Parameters> = new Map([
         ["title", "flags.4?string"],
         ["subscription_pricing", "flags.5?StarsSubscriptionPricing"],
       ],
+      "ExportedChatInvite",
     ],
   ],
   [
@@ -39996,6 +40244,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "string"],
       ],
+      "ChatInvite",
     ],
   ],
   [
@@ -40005,6 +40254,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40015,6 +40265,7 @@ const types: Map<string, Parameters> = new Map([
         ["stickerset", "InputStickerSet"],
         ["hash", "int"],
       ],
+      "messages.StickerSet",
     ],
   ],
   [
@@ -40025,6 +40276,7 @@ const types: Map<string, Parameters> = new Map([
         ["stickerset", "InputStickerSet"],
         ["archived", "Bool"],
       ],
+      "messages.StickerSetInstallResult",
     ],
   ],
   [
@@ -40034,6 +40286,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["stickerset", "InputStickerSet"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40046,6 +40299,7 @@ const types: Map<string, Parameters> = new Map([
         ["random_id", "long"],
         ["start_param", "string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40057,6 +40311,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "Vector<int>"],
         ["increment", "Bool"],
       ],
+      "messages.MessageViews",
     ],
   ],
   [
@@ -40068,6 +40323,7 @@ const types: Map<string, Parameters> = new Map([
         ["user_id", "InputUser"],
         ["is_admin", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40077,6 +40333,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["chat_id", "long"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40098,6 +40355,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset_id", "int"],
         ["limit", "int"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -40110,6 +40368,7 @@ const types: Map<string, Parameters> = new Map([
         ["emojis", "flags.1?true"],
         ["order", "Vector<long>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40121,6 +40380,7 @@ const types: Map<string, Parameters> = new Map([
         ["size", "long"],
         ["mime_type", "string"],
       ],
+      "Document",
     ],
   ],
   [
@@ -40130,6 +40390,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "messages.SavedGifs",
     ],
   ],
   [
@@ -40140,6 +40401,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "InputDocument"],
         ["unsave", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40154,6 +40416,7 @@ const types: Map<string, Parameters> = new Map([
         ["query", "string"],
         ["offset", "string"],
       ],
+      "messages.BotResults",
     ],
   ],
   [
@@ -40171,6 +40434,7 @@ const types: Map<string, Parameters> = new Map([
         ["switch_pm", "flags.3?InlineBotSwitchPM"],
         ["switch_webview", "flags.4?InlineBotWebView"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40193,6 +40457,7 @@ const types: Map<string, Parameters> = new Map([
         ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
         ["allow_paid_stars", "flags.21?long"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40203,6 +40468,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "int"],
       ],
+      "messages.MessageEditData",
     ],
   ],
   [
@@ -40222,6 +40488,7 @@ const types: Map<string, Parameters> = new Map([
         ["schedule_date", "flags.15?int"],
         ["quick_reply_shortcut_id", "flags.17?int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40238,6 +40505,7 @@ const types: Map<string, Parameters> = new Map([
         ["reply_markup", "flags.2?ReplyMarkup"],
         ["entities", "flags.3?Vector<MessageEntity>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40252,6 +40520,7 @@ const types: Map<string, Parameters> = new Map([
         ["data", "flags.0?bytes"],
         ["password", "flags.2?InputCheckPasswordSRP"],
       ],
+      "messages.BotCallbackAnswer",
     ],
   ],
   [
@@ -40266,6 +40535,7 @@ const types: Map<string, Parameters> = new Map([
         ["url", "flags.2?string"],
         ["cache_time", "int"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40275,6 +40545,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peers", "Vector<InputDialogPeer>"],
       ],
+      "messages.PeerDialogs",
     ],
   ],
   [
@@ -40292,6 +40563,7 @@ const types: Map<string, Parameters> = new Map([
         ["media", "flags.5?InputMedia"],
         ["effect", "flags.7?long"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40299,6 +40571,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6A3F8D65,
       [],
+      "Updates",
     ],
   ],
   [
@@ -40308,6 +40581,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "messages.FeaturedStickers",
     ],
   ],
   [
@@ -40317,6 +40591,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "Vector<long>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40328,6 +40603,7 @@ const types: Map<string, Parameters> = new Map([
         ["attached", "flags.0?true"],
         ["hash", "long"],
       ],
+      "messages.RecentStickers",
     ],
   ],
   [
@@ -40340,6 +40616,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "InputDocument"],
         ["unsave", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40350,6 +40627,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", "#"],
         ["attached", "flags.0?true"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40363,6 +40641,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset_id", "long"],
         ["limit", "int"],
       ],
+      "messages.ArchivedStickers",
     ],
   ],
   [
@@ -40372,6 +40651,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "messages.AllStickers",
     ],
   ],
   [
@@ -40381,6 +40661,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["media", "InputStickeredMedia"],
       ],
+      "Vector<StickerSetCovered>",
     ],
   ],
   [
@@ -40396,6 +40677,7 @@ const types: Map<string, Parameters> = new Map([
         ["user_id", "InputUser"],
         ["score", "int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40410,6 +40692,7 @@ const types: Map<string, Parameters> = new Map([
         ["user_id", "InputUser"],
         ["score", "int"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40421,6 +40704,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "int"],
         ["user_id", "InputUser"],
       ],
+      "messages.HighScores",
     ],
   ],
   [
@@ -40431,6 +40715,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "InputBotInlineMessageID"],
         ["user_id", "InputUser"],
       ],
+      "messages.HighScores",
     ],
   ],
   [
@@ -40442,6 +40727,7 @@ const types: Map<string, Parameters> = new Map([
         ["max_id", "long"],
         ["limit", "int"],
       ],
+      "messages.Chats",
     ],
   ],
   [
@@ -40452,6 +40738,7 @@ const types: Map<string, Parameters> = new Map([
         ["url", "string"],
         ["hash", "int"],
       ],
+      "messages.WebPage",
     ],
   ],
   [
@@ -40463,6 +40750,7 @@ const types: Map<string, Parameters> = new Map([
         ["pinned", "flags.0?true"],
         ["peer", "InputDialogPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40475,6 +40763,7 @@ const types: Map<string, Parameters> = new Map([
         ["folder_id", "int"],
         ["order", "Vector<InputDialogPeer>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40484,6 +40773,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["folder_id", "int"],
       ],
+      "messages.PeerDialogs",
     ],
   ],
   [
@@ -40496,6 +40786,7 @@ const types: Map<string, Parameters> = new Map([
         ["error", "flags.0?string"],
         ["shipping_options", "flags.1?Vector<ShippingOption>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40508,6 +40799,7 @@ const types: Map<string, Parameters> = new Map([
         ["query_id", "long"],
         ["error", "flags.0?string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40520,6 +40812,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["media", "InputMedia"],
       ],
+      "MessageMedia",
     ],
   ],
   [
@@ -40531,6 +40824,7 @@ const types: Map<string, Parameters> = new Map([
         ["reply_to", "InputReplyTo"],
         ["random_id", "long"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40540,6 +40834,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "messages.FavedStickers",
     ],
   ],
   [
@@ -40550,6 +40845,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "InputDocument"],
         ["unfave", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40566,6 +40862,7 @@ const types: Map<string, Parameters> = new Map([
         ["max_id", "int"],
         ["min_id", "int"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -40577,6 +40874,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["top_msg_id", "flags.0?int"],
       ],
+      "messages.AffectedHistory",
     ],
   ],
   [
@@ -40588,6 +40886,7 @@ const types: Map<string, Parameters> = new Map([
         ["limit", "int"],
         ["hash", "long"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -40612,6 +40911,7 @@ const types: Map<string, Parameters> = new Map([
         ["effect", "flags.18?long"],
         ["allow_paid_stars", "flags.21?long"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40622,6 +40922,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputEncryptedChat"],
         ["file", "InputEncryptedFile"],
       ],
+      "EncryptedFile",
     ],
   ],
   [
@@ -40634,6 +40935,7 @@ const types: Map<string, Parameters> = new Map([
         ["q", "string"],
         ["hash", "long"],
       ],
+      "messages.FoundStickerSets",
     ],
   ],
   [
@@ -40641,6 +40943,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1CFF7E08,
       [],
+      "Vector<MessageRange>",
     ],
   ],
   [
@@ -40652,6 +40955,7 @@ const types: Map<string, Parameters> = new Map([
         ["unread", "flags.0?true"],
         ["peer", "InputDialogPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40659,6 +40963,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x22E24E22,
       [],
+      "Vector<DialogPeer>",
     ],
   ],
   [
@@ -40666,6 +40971,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7E58EE9C,
       [],
+      "Bool",
     ],
   ],
   [
@@ -40680,6 +40986,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40691,6 +40998,7 @@ const types: Map<string, Parameters> = new Map([
         ["msg_id", "int"],
         ["options", "Vector<bytes>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40701,6 +41009,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["msg_id", "int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40710,6 +41019,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "ChatOnlines",
     ],
   ],
   [
@@ -40720,6 +41030,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["about", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40730,6 +41041,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["banned_rights", "ChatBannedRights"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40739,6 +41051,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["lang_code", "string"],
       ],
+      "EmojiKeywordsDifference",
     ],
   ],
   [
@@ -40749,6 +41062,7 @@ const types: Map<string, Parameters> = new Map([
         ["lang_code", "string"],
         ["from_version", "int"],
       ],
+      "EmojiKeywordsDifference",
     ],
   ],
   [
@@ -40758,6 +41072,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["lang_codes", "Vector<string>"],
       ],
+      "Vector<EmojiLanguage>",
     ],
   ],
   [
@@ -40767,6 +41082,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["lang_code", "string"],
       ],
+      "EmojiURL",
     ],
   ],
   [
@@ -40780,6 +41096,7 @@ const types: Map<string, Parameters> = new Map([
         ["top_msg_id", "flags.0?int"],
         ["filters", "Vector<MessagesFilter>"],
       ],
+      "Vector<messages.SearchCounter>",
     ],
   ],
   [
@@ -40793,6 +41110,7 @@ const types: Map<string, Parameters> = new Map([
         ["button_id", "flags.1?int"],
         ["url", "flags.2?string"],
       ],
+      "UrlAuthResult",
     ],
   ],
   [
@@ -40807,6 +41125,7 @@ const types: Map<string, Parameters> = new Map([
         ["button_id", "flags.1?int"],
         ["url", "flags.2?string"],
       ],
+      "UrlAuthResult",
     ],
   ],
   [
@@ -40816,6 +41135,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40826,6 +41146,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["hash", "long"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -40836,6 +41157,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "Vector<int>"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -40846,6 +41168,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "Vector<int>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40856,6 +41179,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "Vector<int>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -40870,6 +41194,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "flags.1?string"],
         ["limit", "int"],
       ],
+      "messages.VotesList",
     ],
   ],
   [
@@ -40883,6 +41208,7 @@ const types: Map<string, Parameters> = new Map([
         ["unarchive", "flags.2?true"],
         ["stickersets", "Vector<InputStickerSet>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40890,6 +41216,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEFD48C89,
       [],
+      "messages.DialogFilters",
     ],
   ],
   [
@@ -40897,6 +41224,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA29CD42C,
       [],
+      "Vector<DialogFilterSuggested>",
     ],
   ],
   [
@@ -40908,6 +41236,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "int"],
         ["filter", "flags.0?DialogFilter"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40917,6 +41246,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["order", "Vector<int>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40928,6 +41258,7 @@ const types: Map<string, Parameters> = new Map([
         ["limit", "int"],
         ["hash", "long"],
       ],
+      "messages.FeaturedStickers",
     ],
   ],
   [
@@ -40945,6 +41276,7 @@ const types: Map<string, Parameters> = new Map([
         ["min_id", "int"],
         ["hash", "long"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -40955,6 +41287,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["msg_id", "int"],
       ],
+      "messages.DiscussionMessage",
     ],
   ],
   [
@@ -40966,6 +41299,7 @@ const types: Map<string, Parameters> = new Map([
         ["msg_id", "int"],
         ["read_max_id", "int"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40977,6 +41311,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["top_msg_id", "flags.0?int"],
       ],
+      "messages.AffectedHistory",
     ],
   ],
   [
@@ -40986,6 +41321,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["chat_id", "long"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -40996,6 +41332,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", "#"],
         ["revoke", "flags.0?true"],
       ],
+      "messages.AffectedFoundMessages",
     ],
   ],
   [
@@ -41005,6 +41342,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["import_head", "string"],
       ],
+      "messages.HistoryImportParsed",
     ],
   ],
   [
@@ -41016,6 +41354,7 @@ const types: Map<string, Parameters> = new Map([
         ["file", "InputFile"],
         ["media_count", "int"],
       ],
+      "messages.HistoryImport",
     ],
   ],
   [
@@ -41028,6 +41367,7 @@ const types: Map<string, Parameters> = new Map([
         ["file_name", "string"],
         ["media", "InputMedia"],
       ],
+      "MessageMedia",
     ],
   ],
   [
@@ -41038,6 +41378,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["import_id", "long"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41053,6 +41394,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset_link", "flags.2?string"],
         ["limit", "int"],
       ],
+      "messages.ExportedChatInvites",
     ],
   ],
   [
@@ -41063,6 +41405,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["link", "string"],
       ],
+      "messages.ExportedChatInvite",
     ],
   ],
   [
@@ -41079,6 +41422,7 @@ const types: Map<string, Parameters> = new Map([
         ["request_needed", "flags.3?Bool"],
         ["title", "flags.4?string"],
       ],
+      "messages.ExportedChatInvite",
     ],
   ],
   [
@@ -41089,6 +41433,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["admin_id", "InputUser"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41099,6 +41444,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["link", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41108,6 +41454,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "messages.ChatAdminsWithInvites",
     ],
   ],
   [
@@ -41125,6 +41472,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset_user", "InputUser"],
         ["limit", "int"],
       ],
+      "messages.ChatInviteImporters",
     ],
   ],
   [
@@ -41135,6 +41483,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["period", "int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41144,6 +41493,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "messages.CheckedHistoryImportPeer",
     ],
   ],
   [
@@ -41154,6 +41504,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["emoticon", "string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41164,6 +41515,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["msg_id", "int"],
       ],
+      "Vector<ReadParticipantDate>",
     ],
   ],
   [
@@ -41178,6 +41530,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset_id", "int"],
         ["offset_date", "int"],
       ],
+      "messages.SearchResultsCalendar",
     ],
   ],
   [
@@ -41192,6 +41545,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset_id", "int"],
         ["limit", "int"],
       ],
+      "messages.SearchResultsPositions",
     ],
   ],
   [
@@ -41204,6 +41558,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["user_id", "InputUser"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41216,6 +41571,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["link", "flags.1?string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41226,6 +41582,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["enabled", "Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41236,6 +41593,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["send_as", "InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41250,6 +41608,7 @@ const types: Map<string, Parameters> = new Map([
         ["msg_id", "int"],
         ["reaction", "flags.0?Vector<Reaction>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41260,6 +41619,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "Vector<int>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41274,6 +41634,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "flags.1?string"],
         ["limit", "int"],
       ],
+      "messages.MessageReactionsList",
     ],
   ],
   [
@@ -41287,6 +41648,7 @@ const types: Map<string, Parameters> = new Map([
         ["reactions_limit", "flags.0?int"],
         ["paid_enabled", "flags.1?Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41296,6 +41658,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "int"],
       ],
+      "messages.AvailableReactions",
     ],
   ],
   [
@@ -41305,6 +41668,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["reaction", "Reaction"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41318,6 +41682,7 @@ const types: Map<string, Parameters> = new Map([
         ["text", "flags.1?Vector<TextWithEntities>"],
         ["to_lang", "string"],
       ],
+      "messages.TranslatedText",
     ],
   ],
   [
@@ -41334,6 +41699,7 @@ const types: Map<string, Parameters> = new Map([
         ["max_id", "int"],
         ["min_id", "int"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -41345,6 +41711,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["top_msg_id", "flags.0?int"],
       ],
+      "messages.AffectedHistory",
     ],
   ],
   [
@@ -41356,6 +41723,7 @@ const types: Map<string, Parameters> = new Map([
         ["filter", "MessagesFilter"],
         ["limit", "int"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -41365,6 +41733,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "AttachMenuBots",
     ],
   ],
   [
@@ -41374,6 +41743,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["bot", "InputUser"],
       ],
+      "AttachMenuBotsBot",
     ],
   ],
   [
@@ -41386,6 +41756,7 @@ const types: Map<string, Parameters> = new Map([
         ["bot", "InputUser"],
         ["enabled", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41407,6 +41778,7 @@ const types: Map<string, Parameters> = new Map([
         ["reply_to", "flags.0?InputReplyTo"],
         ["send_as", "flags.13?InputPeer"],
       ],
+      "WebViewResult",
     ],
   ],
   [
@@ -41422,6 +41794,7 @@ const types: Map<string, Parameters> = new Map([
         ["reply_to", "flags.0?InputReplyTo"],
         ["send_as", "flags.13?InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41440,6 +41813,7 @@ const types: Map<string, Parameters> = new Map([
         ["theme_params", "flags.0?DataJSON"],
         ["platform", "string"],
       ],
+      "WebViewResult",
     ],
   ],
   [
@@ -41450,6 +41824,7 @@ const types: Map<string, Parameters> = new Map([
         ["bot_query_id", "string"],
         ["result", "InputBotInlineResult"],
       ],
+      "WebViewMessageSent",
     ],
   ],
   [
@@ -41462,6 +41837,7 @@ const types: Map<string, Parameters> = new Map([
         ["button_text", "string"],
         ["data", "string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41472,6 +41848,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["msg_id", "int"],
       ],
+      "messages.TranscribedAudio",
     ],
   ],
   [
@@ -41484,6 +41861,7 @@ const types: Map<string, Parameters> = new Map([
         ["transcription_id", "long"],
         ["good", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41493,6 +41871,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["document_id", "Vector<long>"],
       ],
+      "Vector<Document>",
     ],
   ],
   [
@@ -41502,6 +41881,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "messages.AllStickers",
     ],
   ],
   [
@@ -41511,6 +41891,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "messages.FeaturedStickers",
     ],
   ],
   [
@@ -41522,6 +41903,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "int"],
         ["reaction_peer", "InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41532,6 +41914,7 @@ const types: Map<string, Parameters> = new Map([
         ["limit", "int"],
         ["hash", "long"],
       ],
+      "messages.Reactions",
     ],
   ],
   [
@@ -41542,6 +41925,7 @@ const types: Map<string, Parameters> = new Map([
         ["limit", "int"],
         ["hash", "long"],
       ],
+      "messages.Reactions",
     ],
   ],
   [
@@ -41549,6 +41933,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9DFEEFB4,
       [],
+      "Bool",
     ],
   ],
   [
@@ -41559,6 +41944,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "Vector<int>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41568,6 +41954,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["period", "int"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41575,6 +41962,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x658B7188,
       [],
+      "DefaultHistoryTTL",
     ],
   ],
   [
@@ -41587,6 +41975,7 @@ const types: Map<string, Parameters> = new Map([
         ["button_id", "int"],
         ["requested_peers", "Vector<InputPeer>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41596,6 +41985,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "int"],
       ],
+      "messages.EmojiGroups",
     ],
   ],
   [
@@ -41605,6 +41995,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "int"],
       ],
+      "messages.EmojiGroups",
     ],
   ],
   [
@@ -41614,6 +42005,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "int"],
       ],
+      "messages.EmojiGroups",
     ],
   ],
   [
@@ -41624,6 +42016,7 @@ const types: Map<string, Parameters> = new Map([
         ["emoticon", "string"],
         ["hash", "long"],
       ],
+      "EmojiList",
     ],
   ],
   [
@@ -41635,6 +42028,7 @@ const types: Map<string, Parameters> = new Map([
         ["disabled", "flags.0?true"],
         ["peer", "InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41645,6 +42039,7 @@ const types: Map<string, Parameters> = new Map([
         ["app", "InputBotApp"],
         ["hash", "long"],
       ],
+      "messages.BotApp",
     ],
   ],
   [
@@ -41662,6 +42057,7 @@ const types: Map<string, Parameters> = new Map([
         ["theme_params", "flags.2?DataJSON"],
         ["platform", "string"],
       ],
+      "WebViewResult",
     ],
   ],
   [
@@ -41677,6 +42073,7 @@ const types: Map<string, Parameters> = new Map([
         ["settings", "flags.2?WallPaperSettings"],
         ["id", "flags.1?int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41689,6 +42086,7 @@ const types: Map<string, Parameters> = new Map([
         ["q", "string"],
         ["hash", "long"],
       ],
+      "messages.FoundStickerSets",
     ],
   ],
   [
@@ -41704,6 +42102,7 @@ const types: Map<string, Parameters> = new Map([
         ["limit", "int"],
         ["hash", "long"],
       ],
+      "messages.SavedDialogs",
     ],
   ],
   [
@@ -41720,6 +42119,7 @@ const types: Map<string, Parameters> = new Map([
         ["min_id", "int"],
         ["hash", "long"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -41733,6 +42133,7 @@ const types: Map<string, Parameters> = new Map([
         ["min_date", "flags.2?int"],
         ["max_date", "flags.3?int"],
       ],
+      "messages.AffectedHistory",
     ],
   ],
   [
@@ -41740,6 +42141,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD63D94E0,
       [],
+      "messages.SavedDialogs",
     ],
   ],
   [
@@ -41751,6 +42153,7 @@ const types: Map<string, Parameters> = new Map([
         ["pinned", "flags.0?true"],
         ["peer", "InputDialogPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41762,6 +42165,7 @@ const types: Map<string, Parameters> = new Map([
         ["force", "flags.0?true"],
         ["order", "Vector<InputDialogPeer>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41773,6 +42177,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "flags.0?InputPeer"],
         ["hash", "long"],
       ],
+      "messages.SavedReactionTags",
     ],
   ],
   [
@@ -41784,6 +42189,7 @@ const types: Map<string, Parameters> = new Map([
         ["reaction", "Reaction"],
         ["title", "flags.0?string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41793,6 +42199,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "messages.Reactions",
     ],
   ],
   [
@@ -41803,6 +42210,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["msg_id", "int"],
       ],
+      "OutboxReadDate",
     ],
   ],
   [
@@ -41812,6 +42220,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "long"],
       ],
+      "messages.QuickReplies",
     ],
   ],
   [
@@ -41821,6 +42230,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["order", "Vector<int>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41830,6 +42240,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["shortcut", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41840,6 +42251,7 @@ const types: Map<string, Parameters> = new Map([
         ["shortcut_id", "int"],
         ["shortcut", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41849,6 +42261,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["shortcut_id", "int"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41861,6 +42274,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "flags.0?Vector<int>"],
         ["hash", "long"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -41873,6 +42287,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "Vector<int>"],
         ["random_id", "Vector<long>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41883,6 +42298,7 @@ const types: Map<string, Parameters> = new Map([
         ["shortcut_id", "int"],
         ["id", "Vector<int>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41892,6 +42308,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["enabled", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41902,6 +42319,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset_id", "long"],
         ["limit", "int"],
       ],
+      "messages.MyStickers",
     ],
   ],
   [
@@ -41911,6 +42329,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "int"],
       ],
+      "messages.EmojiGroups",
     ],
   ],
   [
@@ -41920,6 +42339,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "int"],
       ],
+      "messages.AvailableEffects",
     ],
   ],
   [
@@ -41931,6 +42351,7 @@ const types: Map<string, Parameters> = new Map([
         ["msg_id", "int"],
         ["text", "TextWithEntities"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41941,6 +42362,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["msg_id", "int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41951,6 +42373,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["msg_id", "Vector<int>"],
       ],
+      "Vector<FactCheck>",
     ],
   ],
   [
@@ -41967,6 +42390,7 @@ const types: Map<string, Parameters> = new Map([
         ["theme_params", "flags.0?DataJSON"],
         ["platform", "string"],
       ],
+      "WebViewResult",
     ],
   ],
   [
@@ -41981,6 +42405,7 @@ const types: Map<string, Parameters> = new Map([
         ["random_id", "long"],
         ["private", "flags.0?PaidReactionPrivacy"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -41992,6 +42417,7 @@ const types: Map<string, Parameters> = new Map([
         ["msg_id", "int"],
         ["private", "PaidReactionPrivacy"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -41999,6 +42425,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x472455AA,
       [],
+      "Updates",
     ],
   ],
   [
@@ -42009,6 +42436,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["random_id", "bytes"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42022,6 +42450,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["random_id", "bytes"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42033,6 +42462,7 @@ const types: Map<string, Parameters> = new Map([
         ["random_id", "bytes"],
         ["option", "bytes"],
       ],
+      "channels.SponsoredMessageReportResult",
     ],
   ],
   [
@@ -42042,6 +42472,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "messages.SponsoredMessages",
     ],
   ],
   [
@@ -42054,6 +42485,7 @@ const types: Map<string, Parameters> = new Map([
         ["user_id", "InputUser"],
         ["peer_types", "flags.0?Vector<InlineQueryPeerType>"],
       ],
+      "messages.BotPreparedInlineMessage",
     ],
   ],
   [
@@ -42064,6 +42496,7 @@ const types: Map<string, Parameters> = new Map([
         ["bot", "InputUser"],
         ["id", "string"],
       ],
+      "messages.PreparedInlineMessage",
     ],
   ],
   [
@@ -42080,6 +42513,7 @@ const types: Map<string, Parameters> = new Map([
         ["limit", "int"],
         ["hash", "long"],
       ],
+      "messages.FoundStickers",
     ],
   ],
   [
@@ -42092,6 +42526,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "Vector<int>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42099,6 +42534,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEDD4882A,
       [],
+      "updates.State",
     ],
   ],
   [
@@ -42114,6 +42550,7 @@ const types: Map<string, Parameters> = new Map([
         ["qts", "int"],
         ["qts_limit", "flags.2?int"],
       ],
+      "updates.Difference",
     ],
   ],
   [
@@ -42128,6 +42565,7 @@ const types: Map<string, Parameters> = new Map([
         ["pts", "int"],
         ["limit", "int"],
       ],
+      "updates.ChannelDifference",
     ],
   ],
   [
@@ -42140,6 +42578,7 @@ const types: Map<string, Parameters> = new Map([
         ["bot", "flags.1?InputUser"],
         ["id", "InputPhoto"],
       ],
+      "photos.Photo",
     ],
   ],
   [
@@ -42155,6 +42594,7 @@ const types: Map<string, Parameters> = new Map([
         ["video_start_ts", "flags.2?double"],
         ["video_emoji_markup", "flags.4?VideoSize"],
       ],
+      "photos.Photo",
     ],
   ],
   [
@@ -42164,6 +42604,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "Vector<InputPhoto>"],
       ],
+      "Vector<long>",
     ],
   ],
   [
@@ -42176,6 +42617,7 @@ const types: Map<string, Parameters> = new Map([
         ["max_id", "long"],
         ["limit", "int"],
       ],
+      "photos.Photos",
     ],
   ],
   [
@@ -42192,6 +42634,7 @@ const types: Map<string, Parameters> = new Map([
         ["video_start_ts", "flags.2?double"],
         ["video_emoji_markup", "flags.5?VideoSize"],
       ],
+      "photos.Photo",
     ],
   ],
   [
@@ -42203,6 +42646,7 @@ const types: Map<string, Parameters> = new Map([
         ["file_part", "int"],
         ["bytes", "bytes"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42217,6 +42661,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "long"],
         ["limit", "int"],
       ],
+      "upload.File",
     ],
   ],
   [
@@ -42229,6 +42674,7 @@ const types: Map<string, Parameters> = new Map([
         ["file_total_parts", "int"],
         ["bytes", "bytes"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42240,6 +42686,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "int"],
         ["limit", "int"],
       ],
+      "upload.WebFile",
     ],
   ],
   [
@@ -42251,6 +42698,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "long"],
         ["limit", "int"],
       ],
+      "upload.CdnFile",
     ],
   ],
   [
@@ -42261,6 +42709,7 @@ const types: Map<string, Parameters> = new Map([
         ["file_token", "bytes"],
         ["request_token", "bytes"],
       ],
+      "Vector<FileHash>",
     ],
   ],
   [
@@ -42271,6 +42720,7 @@ const types: Map<string, Parameters> = new Map([
         ["file_token", "bytes"],
         ["offset", "long"],
       ],
+      "Vector<FileHash>",
     ],
   ],
   [
@@ -42281,6 +42731,7 @@ const types: Map<string, Parameters> = new Map([
         ["location", "InputFileLocation"],
         ["offset", "long"],
       ],
+      "Vector<FileHash>",
     ],
   ],
   [
@@ -42288,6 +42739,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC4F9186B,
       [],
+      "Config",
     ],
   ],
   [
@@ -42295,6 +42747,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1FB33026,
       [],
+      "NearestDc",
     ],
   ],
   [
@@ -42304,6 +42757,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["source", "string"],
       ],
+      "help.AppUpdate",
     ],
   ],
   [
@@ -42311,6 +42765,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4D392343,
       [],
+      "help.InviteText",
     ],
   ],
   [
@@ -42318,6 +42773,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9CDF08CD,
       [],
+      "help.Support",
     ],
   ],
   [
@@ -42328,6 +42784,7 @@ const types: Map<string, Parameters> = new Map([
         ["pending_updates_count", "int"],
         ["message", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42335,6 +42792,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x52029342,
       [],
+      "CdnConfig",
     ],
   ],
   [
@@ -42344,6 +42802,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["referer", "string"],
       ],
+      "help.RecentMeUrls",
     ],
   ],
   [
@@ -42351,6 +42810,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2CA51FD1,
       [],
+      "help.TermsOfServiceUpdate",
     ],
   ],
   [
@@ -42360,6 +42820,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "DataJSON"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42369,6 +42830,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["path", "string"],
       ],
+      "help.DeepLinkInfo",
     ],
   ],
   [
@@ -42378,6 +42840,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "int"],
       ],
+      "help.AppConfig",
     ],
   ],
   [
@@ -42387,6 +42850,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["events", "Vector<InputAppEvent>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42396,6 +42860,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "int"],
       ],
+      "help.PassportConfig",
     ],
   ],
   [
@@ -42403,6 +42868,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD360E72C,
       [],
+      "help.SupportName",
     ],
   ],
   [
@@ -42412,6 +42878,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["user_id", "InputUser"],
       ],
+      "help.UserInfo",
     ],
   ],
   [
@@ -42423,6 +42890,7 @@ const types: Map<string, Parameters> = new Map([
         ["message", "string"],
         ["entities", "Vector<MessageEntity>"],
       ],
+      "help.UserInfo",
     ],
   ],
   [
@@ -42430,6 +42898,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC0977421,
       [],
+      "help.PromoData",
     ],
   ],
   [
@@ -42439,6 +42908,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42449,6 +42919,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["suggestion", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42459,6 +42930,7 @@ const types: Map<string, Parameters> = new Map([
         ["lang_code", "string"],
         ["hash", "int"],
       ],
+      "help.CountriesList",
     ],
   ],
   [
@@ -42466,6 +42938,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB81B93D4,
       [],
+      "help.PremiumPromo",
     ],
   ],
   [
@@ -42475,6 +42948,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "int"],
       ],
+      "help.PeerColors",
     ],
   ],
   [
@@ -42484,6 +42958,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "int"],
       ],
+      "help.PeerColors",
     ],
   ],
   [
@@ -42493,6 +42968,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "int"],
       ],
+      "help.TimezonesList",
     ],
   ],
   [
@@ -42503,6 +42979,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["max_id", "int"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42513,6 +42990,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["id", "Vector<int>"],
       ],
+      "messages.AffectedMessages",
     ],
   ],
   [
@@ -42524,6 +43002,7 @@ const types: Map<string, Parameters> = new Map([
         ["participant", "InputPeer"],
         ["id", "Vector<int>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42534,6 +43013,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["id", "Vector<InputMessage>"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -42547,6 +43027,7 @@ const types: Map<string, Parameters> = new Map([
         ["limit", "int"],
         ["hash", "long"],
       ],
+      "channels.ChannelParticipants",
     ],
   ],
   [
@@ -42557,6 +43038,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["participant", "InputPeer"],
       ],
+      "channels.ChannelParticipant",
     ],
   ],
   [
@@ -42566,6 +43048,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "Vector<InputChannel>"],
       ],
+      "messages.Chats",
     ],
   ],
   [
@@ -42575,6 +43058,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["channel", "InputChannel"],
       ],
+      "messages.ChatFull",
     ],
   ],
   [
@@ -42593,6 +43077,7 @@ const types: Map<string, Parameters> = new Map([
         ["address", "flags.2?string"],
         ["ttl_period", "flags.4?int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42605,6 +43090,7 @@ const types: Map<string, Parameters> = new Map([
         ["admin_rights", "ChatAdminRights"],
         ["rank", "string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42615,6 +43101,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["title", "string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42625,6 +43112,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["photo", "InputChatPhoto"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42635,6 +43123,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["username", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42645,6 +43134,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["username", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42654,6 +43144,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["channel", "InputChannel"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42663,6 +43154,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["channel", "InputChannel"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42673,6 +43165,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["users", "Vector<InputUser>"],
       ],
+      "messages.InvitedUsers",
     ],
   ],
   [
@@ -42682,6 +43175,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["channel", "InputChannel"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42695,6 +43189,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["id", "int"],
       ],
+      "ExportedMessageLink",
     ],
   ],
   [
@@ -42707,6 +43202,7 @@ const types: Map<string, Parameters> = new Map([
         ["profiles_enabled", "flags.1?true"],
         ["channel", "InputChannel"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42719,6 +43215,7 @@ const types: Map<string, Parameters> = new Map([
         ["check_limit", "flags.1?true"],
         ["for_personal", "flags.2?true"],
       ],
+      "messages.Chats",
     ],
   ],
   [
@@ -42730,6 +43227,7 @@ const types: Map<string, Parameters> = new Map([
         ["participant", "InputPeer"],
         ["banned_rights", "ChatBannedRights"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42746,6 +43244,7 @@ const types: Map<string, Parameters> = new Map([
         ["min_id", "long"],
         ["limit", "int"],
       ],
+      "channels.AdminLogResults",
     ],
   ],
   [
@@ -42756,6 +43255,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["stickerset", "InputStickerSet"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42766,6 +43266,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["id", "Vector<int>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42778,6 +43279,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["max_id", "int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42788,6 +43290,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["enabled", "Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42797,6 +43300,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["offset", "int"],
       ],
+      "messages.Chats",
     ],
   ],
   [
@@ -42804,6 +43308,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF5DAD378,
       [],
+      "messages.Chats",
     ],
   ],
   [
@@ -42814,6 +43319,7 @@ const types: Map<string, Parameters> = new Map([
         ["broadcast", "InputChannel"],
         ["group", "InputChannel"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42825,6 +43331,7 @@ const types: Map<string, Parameters> = new Map([
         ["user_id", "InputUser"],
         ["password", "InputCheckPasswordSRP"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42836,6 +43343,7 @@ const types: Map<string, Parameters> = new Map([
         ["geo_point", "InputGeoPoint"],
         ["address", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42846,6 +43354,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["seconds", "int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42853,6 +43362,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x11E831EE,
       [],
+      "messages.InactiveChats",
     ],
   ],
   [
@@ -42862,6 +43372,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["channel", "InputChannel"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42873,6 +43384,7 @@ const types: Map<string, Parameters> = new Map([
         ["for_paid_reactions", "flags.0?true"],
         ["peer", "InputPeer"],
       ],
+      "channels.SendAsPeers",
     ],
   ],
   [
@@ -42883,6 +43395,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["participant", "InputPeer"],
       ],
+      "messages.AffectedHistory",
     ],
   ],
   [
@@ -42893,6 +43406,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["enabled", "Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42903,6 +43417,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["enabled", "Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42913,6 +43428,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["order", "Vector<string>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42924,6 +43440,7 @@ const types: Map<string, Parameters> = new Map([
         ["username", "string"],
         ["active", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42933,6 +43450,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["channel", "InputChannel"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -42943,6 +43461,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["enabled", "Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42958,6 +43477,7 @@ const types: Map<string, Parameters> = new Map([
         ["random_id", "long"],
         ["send_as", "flags.2?InputPeer"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -42973,6 +43493,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset_topic", "int"],
         ["limit", "int"],
       ],
+      "messages.ForumTopics",
     ],
   ],
   [
@@ -42983,6 +43504,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["topics", "Vector<int>"],
       ],
+      "messages.ForumTopics",
     ],
   ],
   [
@@ -42998,6 +43520,7 @@ const types: Map<string, Parameters> = new Map([
         ["closed", "flags.2?Bool"],
         ["hidden", "flags.3?Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43009,6 +43532,7 @@ const types: Map<string, Parameters> = new Map([
         ["topic_id", "int"],
         ["pinned", "Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43019,6 +43543,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["top_msg_id", "int"],
       ],
+      "messages.AffectedHistory",
     ],
   ],
   [
@@ -43031,6 +43556,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["order", "Vector<int>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43041,6 +43567,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["enabled", "Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43051,6 +43578,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["msg_id", "int"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43061,6 +43589,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["enabled", "Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43074,6 +43603,7 @@ const types: Map<string, Parameters> = new Map([
         ["color", "flags.2?int"],
         ["background_emoji_id", "flags.0?long"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43084,6 +43614,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["enabled", "Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43094,6 +43625,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", "#"],
         ["channel", "flags.0?InputChannel"],
       ],
+      "messages.Chats",
     ],
   ],
   [
@@ -43104,6 +43636,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["emoji_status", "EmojiStatus"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43114,6 +43647,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["boosts", "int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43124,6 +43658,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["stickerset", "InputStickerSet"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43134,6 +43669,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["restricted", "Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43147,6 +43683,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset_id", "int"],
         ["limit", "int"],
       ],
+      "messages.Messages",
     ],
   ],
   [
@@ -43157,6 +43694,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["send_paid_messages_stars", "long"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43167,6 +43705,7 @@ const types: Map<string, Parameters> = new Map([
         ["custom_method", "string"],
         ["params", "DataJSON"],
       ],
+      "DataJSON",
     ],
   ],
   [
@@ -43177,6 +43716,7 @@ const types: Map<string, Parameters> = new Map([
         ["query_id", "long"],
         ["data", "DataJSON"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43188,6 +43728,7 @@ const types: Map<string, Parameters> = new Map([
         ["lang_code", "string"],
         ["commands", "Vector<BotCommand>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43198,6 +43739,7 @@ const types: Map<string, Parameters> = new Map([
         ["scope", "BotCommandScope"],
         ["lang_code", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43208,6 +43750,7 @@ const types: Map<string, Parameters> = new Map([
         ["scope", "BotCommandScope"],
         ["lang_code", "string"],
       ],
+      "Vector<BotCommand>",
     ],
   ],
   [
@@ -43218,6 +43761,7 @@ const types: Map<string, Parameters> = new Map([
         ["user_id", "InputUser"],
         ["button", "BotMenuButton"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43227,6 +43771,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["user_id", "InputUser"],
       ],
+      "BotMenuButton",
     ],
   ],
   [
@@ -43236,6 +43781,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["admin_rights", "ChatAdminRights"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43245,6 +43791,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["admin_rights", "ChatAdminRights"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43259,6 +43806,7 @@ const types: Map<string, Parameters> = new Map([
         ["about", "flags.0?string"],
         ["description", "flags.1?string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43270,6 +43818,7 @@ const types: Map<string, Parameters> = new Map([
         ["bot", "flags.0?InputUser"],
         ["lang_code", "string"],
       ],
+      "bots.BotInfo",
     ],
   ],
   [
@@ -43280,6 +43829,7 @@ const types: Map<string, Parameters> = new Map([
         ["bot", "InputUser"],
         ["order", "Vector<string>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43291,6 +43841,7 @@ const types: Map<string, Parameters> = new Map([
         ["username", "string"],
         ["active", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43300,6 +43851,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["bot", "InputUser"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43309,6 +43861,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["bot", "InputUser"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43320,6 +43873,7 @@ const types: Map<string, Parameters> = new Map([
         ["custom_method", "string"],
         ["params", "DataJSON"],
       ],
+      "DataJSON",
     ],
   ],
   [
@@ -43330,6 +43884,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "string"],
         ["limit", "int"],
       ],
+      "bots.PopularAppBots",
     ],
   ],
   [
@@ -43341,6 +43896,7 @@ const types: Map<string, Parameters> = new Map([
         ["lang_code", "string"],
         ["media", "InputMedia"],
       ],
+      "BotPreviewMedia",
     ],
   ],
   [
@@ -43353,6 +43909,7 @@ const types: Map<string, Parameters> = new Map([
         ["media", "InputMedia"],
         ["new_media", "InputMedia"],
       ],
+      "BotPreviewMedia",
     ],
   ],
   [
@@ -43364,6 +43921,7 @@ const types: Map<string, Parameters> = new Map([
         ["lang_code", "string"],
         ["media", "Vector<InputMedia>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43375,6 +43933,7 @@ const types: Map<string, Parameters> = new Map([
         ["lang_code", "string"],
         ["order", "Vector<InputMedia>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43385,6 +43944,7 @@ const types: Map<string, Parameters> = new Map([
         ["bot", "InputUser"],
         ["lang_code", "string"],
       ],
+      "bots.PreviewInfo",
     ],
   ],
   [
@@ -43394,6 +43954,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["bot", "InputUser"],
       ],
+      "Vector<BotPreviewMedia>",
     ],
   ],
   [
@@ -43404,6 +43965,7 @@ const types: Map<string, Parameters> = new Map([
         ["user_id", "InputUser"],
         ["emoji_status", "EmojiStatus"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43414,6 +43976,7 @@ const types: Map<string, Parameters> = new Map([
         ["bot", "InputUser"],
         ["enabled", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43425,6 +43988,7 @@ const types: Map<string, Parameters> = new Map([
         ["file_name", "string"],
         ["url", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43432,6 +43996,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB0711D83,
       [],
+      "Vector<User>",
     ],
   ],
   [
@@ -43444,6 +44009,7 @@ const types: Map<string, Parameters> = new Map([
         ["commission_permille", "int"],
         ["duration_months", "flags.0?int"],
       ],
+      "StarRefProgram",
     ],
   ],
   [
@@ -43457,6 +44023,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["custom_description", "flags.2?string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43466,6 +44033,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["bot", "InputUser"],
       ],
+      "users.Users",
     ],
   ],
   [
@@ -43477,6 +44045,7 @@ const types: Map<string, Parameters> = new Map([
         ["invoice", "InputInvoice"],
         ["theme_params", "flags.0?DataJSON"],
       ],
+      "payments.PaymentForm",
     ],
   ],
   [
@@ -43487,6 +44056,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["msg_id", "int"],
       ],
+      "payments.PaymentReceipt",
     ],
   ],
   [
@@ -43499,6 +44069,7 @@ const types: Map<string, Parameters> = new Map([
         ["invoice", "InputInvoice"],
         ["info", "PaymentRequestedInfo"],
       ],
+      "payments.ValidatedRequestedInfo",
     ],
   ],
   [
@@ -43514,6 +44085,7 @@ const types: Map<string, Parameters> = new Map([
         ["credentials", "InputPaymentCredentials"],
         ["tip_amount", "flags.2?long"],
       ],
+      "payments.PaymentResult",
     ],
   ],
   [
@@ -43521,6 +44093,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x227D824B,
       [],
+      "payments.SavedInfo",
     ],
   ],
   [
@@ -43532,6 +44105,7 @@ const types: Map<string, Parameters> = new Map([
         ["credentials", "flags.0?true"],
         ["info", "flags.1?true"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43541,6 +44115,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["number", "string"],
       ],
+      "payments.BankCardData",
     ],
   ],
   [
@@ -43550,6 +44125,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["invoice_media", "InputMedia"],
       ],
+      "payments.ExportedInvoice",
     ],
   ],
   [
@@ -43560,6 +44136,7 @@ const types: Map<string, Parameters> = new Map([
         ["receipt", "bytes"],
         ["purpose", "InputStorePaymentPurpose"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43570,6 +44147,7 @@ const types: Map<string, Parameters> = new Map([
         ["receipt", "DataJSON"],
         ["purpose", "InputStorePaymentPurpose"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43579,6 +44157,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["purpose", "InputStorePaymentPurpose"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43589,6 +44168,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", "#"],
         ["boost_peer", "flags.0?InputPeer"],
       ],
+      "Vector<PremiumGiftCodeOption>",
     ],
   ],
   [
@@ -43598,6 +44178,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["slug", "string"],
       ],
+      "payments.CheckedGiftCode",
     ],
   ],
   [
@@ -43607,6 +44188,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["slug", "string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43617,6 +44199,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["msg_id", "int"],
       ],
+      "payments.GiveawayInfo",
     ],
   ],
   [
@@ -43628,6 +44211,7 @@ const types: Map<string, Parameters> = new Map([
         ["giveaway_id", "long"],
         ["purpose", "InputStorePaymentPurpose"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43635,6 +44219,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC00EC7D3,
       [],
+      "Vector<StarsTopupOption>",
     ],
   ],
   [
@@ -43644,6 +44229,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "payments.StarsStatus",
     ],
   ],
   [
@@ -43660,6 +44246,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "string"],
         ["limit", "int"],
       ],
+      "payments.StarsStatus",
     ],
   ],
   [
@@ -43670,6 +44257,7 @@ const types: Map<string, Parameters> = new Map([
         ["form_id", "long"],
         ["invoice", "InputInvoice"],
       ],
+      "payments.PaymentResult",
     ],
   ],
   [
@@ -43680,6 +44268,7 @@ const types: Map<string, Parameters> = new Map([
         ["user_id", "InputUser"],
         ["charge_id", "string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43691,6 +44280,7 @@ const types: Map<string, Parameters> = new Map([
         ["dark", "flags.0?true"],
         ["peer", "InputPeer"],
       ],
+      "payments.StarsRevenueStats",
     ],
   ],
   [
@@ -43702,6 +44292,7 @@ const types: Map<string, Parameters> = new Map([
         ["stars", "long"],
         ["password", "InputCheckPasswordSRP"],
       ],
+      "payments.StarsRevenueWithdrawalUrl",
     ],
   ],
   [
@@ -43711,6 +44302,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "payments.StarsRevenueAdsAccountUrl",
     ],
   ],
   [
@@ -43721,6 +44313,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "Vector<InputStarsTransaction>"],
       ],
+      "payments.StarsStatus",
     ],
   ],
   [
@@ -43731,6 +44324,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", "#"],
         ["user_id", "flags.0?InputUser"],
       ],
+      "Vector<StarsGiftOption>",
     ],
   ],
   [
@@ -43743,6 +44337,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["offset", "string"],
       ],
+      "payments.StarsStatus",
     ],
   ],
   [
@@ -43755,6 +44350,7 @@ const types: Map<string, Parameters> = new Map([
         ["subscription_id", "string"],
         ["canceled", "flags.0?Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43765,6 +44361,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["subscription_id", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43772,6 +44369,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBD1EFD3E,
       [],
+      "Vector<StarsGiveawayOption>",
     ],
   ],
   [
@@ -43781,6 +44379,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hash", "int"],
       ],
+      "payments.StarGifts",
     ],
   ],
   [
@@ -43792,6 +44391,7 @@ const types: Map<string, Parameters> = new Map([
         ["unsave", "flags.0?true"],
         ["stargift", "InputSavedStarGift"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43801,6 +44401,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["stargift", "InputSavedStarGift"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43813,6 +44414,7 @@ const types: Map<string, Parameters> = new Map([
         ["user_id", "InputUser"],
         ["charge_id", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43826,6 +44428,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset_link", "flags.2?string"],
         ["limit", "int"],
       ],
+      "payments.ConnectedStarRefBots",
     ],
   ],
   [
@@ -43836,6 +44439,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["bot", "InputUser"],
       ],
+      "payments.ConnectedStarRefBots",
     ],
   ],
   [
@@ -43850,6 +44454,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "string"],
         ["limit", "int"],
       ],
+      "payments.SuggestedStarRefBots",
     ],
   ],
   [
@@ -43860,6 +44465,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["bot", "InputUser"],
       ],
+      "payments.ConnectedStarRefBots",
     ],
   ],
   [
@@ -43872,6 +44478,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["link", "string"],
       ],
+      "payments.ConnectedStarRefBots",
     ],
   ],
   [
@@ -43881,6 +44488,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["gift_id", "long"],
       ],
+      "payments.StarGiftUpgradePreview",
     ],
   ],
   [
@@ -43892,6 +44500,7 @@ const types: Map<string, Parameters> = new Map([
         ["keep_original_details", "flags.0?true"],
         ["stargift", "InputSavedStarGift"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43902,6 +44511,7 @@ const types: Map<string, Parameters> = new Map([
         ["stargift", "InputSavedStarGift"],
         ["to_id", "InputPeer"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -43911,6 +44521,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["slug", "string"],
       ],
+      "payments.UniqueStarGift",
     ],
   ],
   [
@@ -43929,6 +44540,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "string"],
         ["limit", "int"],
       ],
+      "payments.SavedStarGifts",
     ],
   ],
   [
@@ -43938,6 +44550,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["stargift", "Vector<InputSavedStarGift>"],
       ],
+      "payments.SavedStarGifts",
     ],
   ],
   [
@@ -43948,6 +44561,7 @@ const types: Map<string, Parameters> = new Map([
         ["stargift", "InputSavedStarGift"],
         ["password", "InputCheckPasswordSRP"],
       ],
+      "payments.StarGiftWithdrawalUrl",
     ],
   ],
   [
@@ -43959,6 +44573,7 @@ const types: Map<string, Parameters> = new Map([
         ["enabled", "flags.0?true"],
         ["peer", "InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43969,6 +44584,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["stargift", "Vector<InputSavedStarGift>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -43987,6 +44603,7 @@ const types: Map<string, Parameters> = new Map([
         ["stickers", "Vector<InputStickerSetItem>"],
         ["software", "flags.3?string"],
       ],
+      "messages.StickerSet",
     ],
   ],
   [
@@ -43996,6 +44613,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["sticker", "InputDocument"],
       ],
+      "messages.StickerSet",
     ],
   ],
   [
@@ -44006,6 +44624,7 @@ const types: Map<string, Parameters> = new Map([
         ["sticker", "InputDocument"],
         ["position", "int"],
       ],
+      "messages.StickerSet",
     ],
   ],
   [
@@ -44016,6 +44635,7 @@ const types: Map<string, Parameters> = new Map([
         ["stickerset", "InputStickerSet"],
         ["sticker", "InputStickerSetItem"],
       ],
+      "messages.StickerSet",
     ],
   ],
   [
@@ -44028,6 +44648,7 @@ const types: Map<string, Parameters> = new Map([
         ["thumb", "flags.0?InputDocument"],
         ["thumb_document_id", "flags.1?long"],
       ],
+      "messages.StickerSet",
     ],
   ],
   [
@@ -44037,6 +44658,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["short_name", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -44046,6 +44668,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["title", "string"],
       ],
+      "stickers.SuggestedShortName",
     ],
   ],
   [
@@ -44059,6 +44682,7 @@ const types: Map<string, Parameters> = new Map([
         ["mask_coords", "flags.1?MaskCoords"],
         ["keywords", "flags.2?string"],
       ],
+      "messages.StickerSet",
     ],
   ],
   [
@@ -44069,6 +44693,7 @@ const types: Map<string, Parameters> = new Map([
         ["stickerset", "InputStickerSet"],
         ["title", "string"],
       ],
+      "messages.StickerSet",
     ],
   ],
   [
@@ -44078,6 +44703,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["stickerset", "InputStickerSet"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -44088,6 +44714,7 @@ const types: Map<string, Parameters> = new Map([
         ["sticker", "InputDocument"],
         ["new_sticker", "InputStickerSetItem"],
       ],
+      "messages.StickerSet",
     ],
   ],
   [
@@ -44095,6 +44722,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x55451FA9,
       [],
+      "DataJSON",
     ],
   ],
   [
@@ -44110,6 +44738,7 @@ const types: Map<string, Parameters> = new Map([
         ["g_a_hash", "bytes"],
         ["protocol", "PhoneCallProtocol"],
       ],
+      "phone.PhoneCall",
     ],
   ],
   [
@@ -44121,6 +44750,7 @@ const types: Map<string, Parameters> = new Map([
         ["g_b", "bytes"],
         ["protocol", "PhoneCallProtocol"],
       ],
+      "phone.PhoneCall",
     ],
   ],
   [
@@ -44133,6 +44763,7 @@ const types: Map<string, Parameters> = new Map([
         ["key_fingerprint", "long"],
         ["protocol", "PhoneCallProtocol"],
       ],
+      "phone.PhoneCall",
     ],
   ],
   [
@@ -44142,6 +44773,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPhoneCall"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -44156,6 +44788,7 @@ const types: Map<string, Parameters> = new Map([
         ["reason", "PhoneCallDiscardReason"],
         ["connection_id", "long"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44169,6 +44802,7 @@ const types: Map<string, Parameters> = new Map([
         ["rating", "int"],
         ["comment", "string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44179,6 +44813,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPhoneCall"],
         ["debug", "DataJSON"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -44189,6 +44824,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPhoneCall"],
         ["data", "bytes"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -44203,6 +44839,7 @@ const types: Map<string, Parameters> = new Map([
         ["title", "flags.0?string"],
         ["schedule_date", "flags.1?int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44219,6 +44856,7 @@ const types: Map<string, Parameters> = new Map([
         ["key_fingerprint", "flags.3?long"],
         ["params", "DataJSON"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44229,6 +44867,7 @@ const types: Map<string, Parameters> = new Map([
         ["call", "InputGroupCall"],
         ["source", "int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44239,6 +44878,7 @@ const types: Map<string, Parameters> = new Map([
         ["call", "InputGroupCall"],
         ["users", "Vector<InputUser>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44248,6 +44888,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["call", "InputGroupCall"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44260,6 +44901,7 @@ const types: Map<string, Parameters> = new Map([
         ["call", "InputGroupCall"],
         ["join_muted", "flags.0?Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44270,6 +44912,7 @@ const types: Map<string, Parameters> = new Map([
         ["call", "InputGroupCall"],
         ["limit", "int"],
       ],
+      "phone.GroupCall",
     ],
   ],
   [
@@ -44283,6 +44926,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "string"],
         ["limit", "int"],
       ],
+      "phone.GroupParticipants",
     ],
   ],
   [
@@ -44293,6 +44937,7 @@ const types: Map<string, Parameters> = new Map([
         ["call", "InputGroupCall"],
         ["sources", "Vector<int>"],
       ],
+      "Vector<int>",
     ],
   ],
   [
@@ -44307,6 +44952,7 @@ const types: Map<string, Parameters> = new Map([
         ["title", "flags.1?string"],
         ["video_portrait", "flags.2?Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44324,6 +44970,7 @@ const types: Map<string, Parameters> = new Map([
         ["video_paused", "flags.4?Bool"],
         ["presentation_paused", "flags.5?Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44334,6 +44981,7 @@ const types: Map<string, Parameters> = new Map([
         ["call", "InputGroupCall"],
         ["title", "string"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44343,6 +44991,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "phone.JoinAsPeers",
     ],
   ],
   [
@@ -44354,6 +45003,7 @@ const types: Map<string, Parameters> = new Map([
         ["can_self_unmute", "flags.0?true"],
         ["call", "InputGroupCall"],
       ],
+      "phone.ExportedGroupCallInvite",
     ],
   ],
   [
@@ -44364,6 +45014,7 @@ const types: Map<string, Parameters> = new Map([
         ["call", "InputGroupCall"],
         ["subscribed", "Bool"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44373,6 +45024,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["call", "InputGroupCall"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44383,6 +45035,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["join_as", "InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -44393,6 +45046,7 @@ const types: Map<string, Parameters> = new Map([
         ["call", "InputGroupCall"],
         ["params", "DataJSON"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44402,6 +45056,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["call", "InputGroupCall"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44411,6 +45066,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["call", "InputGroupCall"],
       ],
+      "phone.GroupCallStreamChannels",
     ],
   ],
   [
@@ -44421,6 +45077,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["revoke", "Bool"],
       ],
+      "phone.GroupCallStreamRtmpUrl",
     ],
   ],
   [
@@ -44431,6 +45088,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPhoneCall"],
         ["file", "InputFile"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -44441,6 +45099,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPhoneCall"],
         ["key_fingerprint", "long"],
       ],
+      "phone.PhoneCall",
     ],
   ],
   [
@@ -44451,6 +45110,7 @@ const types: Map<string, Parameters> = new Map([
         ["lang_pack", "string"],
         ["lang_code", "string"],
       ],
+      "LangPackDifference",
     ],
   ],
   [
@@ -44462,6 +45122,7 @@ const types: Map<string, Parameters> = new Map([
         ["lang_code", "string"],
         ["keys", "Vector<string>"],
       ],
+      "Vector<LangPackString>",
     ],
   ],
   [
@@ -44473,6 +45134,7 @@ const types: Map<string, Parameters> = new Map([
         ["lang_code", "string"],
         ["from_version", "int"],
       ],
+      "LangPackDifference",
     ],
   ],
   [
@@ -44482,6 +45144,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["lang_pack", "string"],
       ],
+      "Vector<LangPackLanguage>",
     ],
   ],
   [
@@ -44492,6 +45155,7 @@ const types: Map<string, Parameters> = new Map([
         ["lang_pack", "string"],
         ["lang_code", "string"],
       ],
+      "LangPackLanguage",
     ],
   ],
   [
@@ -44501,6 +45165,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["folder_peers", "Vector<InputFolderPeer>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44512,6 +45177,7 @@ const types: Map<string, Parameters> = new Map([
         ["dark", "flags.0?true"],
         ["channel", "InputChannel"],
       ],
+      "stats.BroadcastStats",
     ],
   ],
   [
@@ -44523,6 +45189,7 @@ const types: Map<string, Parameters> = new Map([
         ["token", "string"],
         ["x", "flags.0?long"],
       ],
+      "StatsGraph",
     ],
   ],
   [
@@ -44534,6 +45201,7 @@ const types: Map<string, Parameters> = new Map([
         ["dark", "flags.0?true"],
         ["channel", "InputChannel"],
       ],
+      "stats.MegagroupStats",
     ],
   ],
   [
@@ -44546,6 +45214,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "string"],
         ["limit", "int"],
       ],
+      "stats.PublicForwards",
     ],
   ],
   [
@@ -44558,6 +45227,7 @@ const types: Map<string, Parameters> = new Map([
         ["channel", "InputChannel"],
         ["msg_id", "int"],
       ],
+      "stats.MessageStats",
     ],
   ],
   [
@@ -44570,6 +45240,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "int"],
       ],
+      "stats.StoryStats",
     ],
   ],
   [
@@ -44582,6 +45253,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "string"],
         ["limit", "int"],
       ],
+      "stats.PublicForwards",
     ],
   ],
   [
@@ -44593,6 +45265,7 @@ const types: Map<string, Parameters> = new Map([
         ["dark", "flags.0?true"],
         ["peer", "InputPeer"],
       ],
+      "stats.BroadcastRevenueStats",
     ],
   ],
   [
@@ -44603,6 +45276,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["password", "InputCheckPasswordSRP"],
       ],
+      "stats.BroadcastRevenueWithdrawalUrl",
     ],
   ],
   [
@@ -44614,6 +45288,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "int"],
         ["limit", "int"],
       ],
+      "stats.BroadcastRevenueTransactions",
     ],
   ],
   [
@@ -44625,6 +45300,7 @@ const types: Map<string, Parameters> = new Map([
         ["title", "string"],
         ["peers", "Vector<InputPeer>"],
       ],
+      "chatlists.ExportedChatlistInvite",
     ],
   ],
   [
@@ -44635,6 +45311,7 @@ const types: Map<string, Parameters> = new Map([
         ["chatlist", "InputChatlist"],
         ["slug", "string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -44648,6 +45325,7 @@ const types: Map<string, Parameters> = new Map([
         ["title", "flags.1?string"],
         ["peers", "flags.2?Vector<InputPeer>"],
       ],
+      "ExportedChatlistInvite",
     ],
   ],
   [
@@ -44657,6 +45335,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["chatlist", "InputChatlist"],
       ],
+      "chatlists.ExportedInvites",
     ],
   ],
   [
@@ -44666,6 +45345,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["slug", "string"],
       ],
+      "chatlists.ChatlistInvite",
     ],
   ],
   [
@@ -44676,6 +45356,7 @@ const types: Map<string, Parameters> = new Map([
         ["slug", "string"],
         ["peers", "Vector<InputPeer>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44685,6 +45366,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["chatlist", "InputChatlist"],
       ],
+      "chatlists.ChatlistUpdates",
     ],
   ],
   [
@@ -44695,6 +45377,7 @@ const types: Map<string, Parameters> = new Map([
         ["chatlist", "InputChatlist"],
         ["peers", "Vector<InputPeer>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44704,6 +45387,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["chatlist", "InputChatlist"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -44713,6 +45397,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["chatlist", "InputChatlist"],
       ],
+      "Vector<Peer>",
     ],
   ],
   [
@@ -44723,6 +45408,7 @@ const types: Map<string, Parameters> = new Map([
         ["chatlist", "InputChatlist"],
         ["peers", "Vector<InputPeer>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44732,6 +45418,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -44754,6 +45441,7 @@ const types: Map<string, Parameters> = new Map([
         ["fwd_from_id", "flags.6?InputPeer"],
         ["fwd_from_story", "flags.6?int"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44770,6 +45458,7 @@ const types: Map<string, Parameters> = new Map([
         ["entities", "flags.1?Vector<MessageEntity>"],
         ["privacy_rules", "flags.2?Vector<InputPrivacyRule>"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44780,6 +45469,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "Vector<int>"],
       ],
+      "Vector<int>",
     ],
   ],
   [
@@ -44791,6 +45481,7 @@ const types: Map<string, Parameters> = new Map([
         ["id", "Vector<int>"],
         ["pinned", "Bool"],
       ],
+      "Vector<int>",
     ],
   ],
   [
@@ -44803,6 +45494,7 @@ const types: Map<string, Parameters> = new Map([
         ["hidden", "flags.2?true"],
         ["state", "flags.0?string"],
       ],
+      "stories.AllStories",
     ],
   ],
   [
@@ -44814,6 +45506,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset_id", "int"],
         ["limit", "int"],
       ],
+      "stories.Stories",
     ],
   ],
   [
@@ -44825,6 +45518,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset_id", "int"],
         ["limit", "int"],
       ],
+      "stories.Stories",
     ],
   ],
   [
@@ -44835,6 +45529,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "Vector<int>"],
       ],
+      "stories.Stories",
     ],
   ],
   [
@@ -44844,6 +45539,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["hidden", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -44854,6 +45550,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["max_id", "int"],
       ],
+      "Vector<int>",
     ],
   ],
   [
@@ -44864,6 +45561,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "Vector<int>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -44881,6 +45579,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "string"],
         ["limit", "int"],
       ],
+      "stories.StoryViewsList",
     ],
   ],
   [
@@ -44891,6 +45590,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "Vector<int>"],
       ],
+      "stories.StoryViews",
     ],
   ],
   [
@@ -44901,6 +45601,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "int"],
       ],
+      "ExportedStoryLink",
     ],
   ],
   [
@@ -44913,6 +45614,7 @@ const types: Map<string, Parameters> = new Map([
         ["option", "bytes"],
         ["message", "string"],
       ],
+      "ReportResult",
     ],
   ],
   [
@@ -44924,6 +45626,7 @@ const types: Map<string, Parameters> = new Map([
         ["past", "flags.0?true"],
         ["future", "flags.1?true"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44937,6 +45640,7 @@ const types: Map<string, Parameters> = new Map([
         ["story_id", "int"],
         ["reaction", "Reaction"],
       ],
+      "Updates",
     ],
   ],
   [
@@ -44946,6 +45650,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "stories.PeerStories",
     ],
   ],
   [
@@ -44953,6 +45658,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9B5AE7F9,
       [],
+      "Updates",
     ],
   ],
   [
@@ -44962,6 +45668,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["id", "Vector<InputPeer>"],
       ],
+      "Vector<int>",
     ],
   ],
   [
@@ -44969,6 +45676,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA56A8B60,
       [],
+      "messages.Chats",
     ],
   ],
   [
@@ -44979,6 +45687,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["hidden", "Bool"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -44994,6 +45703,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "flags.1?string"],
         ["limit", "int"],
       ],
+      "stories.StoryReactionsList",
     ],
   ],
   [
@@ -45004,6 +45714,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["id", "Vector<int>"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -45018,6 +45729,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "string"],
         ["limit", "int"],
       ],
+      "stories.FoundStories",
     ],
   ],
   [
@@ -45031,6 +45743,7 @@ const types: Map<string, Parameters> = new Map([
         ["offset", "string"],
         ["limit", "int"],
       ],
+      "premium.BoostsList",
     ],
   ],
   [
@@ -45038,6 +45751,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0BE77B4A,
       [],
+      "premium.MyBoosts",
     ],
   ],
   [
@@ -45049,6 +45763,7 @@ const types: Map<string, Parameters> = new Map([
         ["slots", "flags.0?Vector<int>"],
         ["peer", "InputPeer"],
       ],
+      "premium.MyBoosts",
     ],
   ],
   [
@@ -45058,6 +45773,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["peer", "InputPeer"],
       ],
+      "premium.BoostsStatus",
     ],
   ],
   [
@@ -45068,6 +45784,7 @@ const types: Map<string, Parameters> = new Map([
         ["peer", "InputPeer"],
         ["user_id", "InputUser"],
       ],
+      "premium.BoostsList",
     ],
   ],
   [
@@ -45075,6 +45792,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0EDC39D0,
       [],
+      "smsjobs.EligibilityToJoin",
     ],
   ],
   [
@@ -45082,6 +45800,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA74ECE2D,
       [],
+      "Bool",
     ],
   ],
   [
@@ -45089,6 +45808,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9898AD73,
       [],
+      "Bool",
     ],
   ],
   [
@@ -45099,6 +45819,7 @@ const types: Map<string, Parameters> = new Map([
         ["flags", "#"],
         ["allow_international", "flags.0?true"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -45106,6 +45827,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x10A698E8,
       [],
+      "smsjobs.Status",
     ],
   ],
   [
@@ -45115,6 +45837,7 @@ const types: Map<string, Parameters> = new Map([
       [
         ["job_id", "string"],
       ],
+      "SmsJob",
     ],
   ],
   [
@@ -45126,6 +45849,7 @@ const types: Map<string, Parameters> = new Map([
         ["job_id", "string"],
         ["error", "flags.0?string"],
       ],
+      "Bool",
     ],
   ],
   [
@@ -45135,725 +45859,14 @@ const types: Map<string, Parameters> = new Map([
       [
         ["collectible", "InputCollectible"],
       ],
+      "fragment.CollectibleInfo",
     ],
   ],
 ] as unknown as [string, Parameters][]);
 
-const returnTypes = new Map<string, string>([
-  ["req_pq_multi", "ResPQ"],
-  ["req_DH_params", "Server_DH_Params"],
-  ["set_client_DH_params", "Set_client_DH_params_answer"],
-  ["rpc_drop_answer", "RpcDropAnswer"],
-  ["get_future_salts", "FutureSalts"],
-  ["ping", "Pong"],
-  ["ping_delay_disconnect", "Pong"],
-  ["destroy_session", "DestroySessionRes"],
-  ["destroy_auth_key", "DestroyAuthKeyRes"],
-  ["invokeWithBusinessConnectionPrefix", "Error"],
-  ["invokeWithGooglePlayIntegrityPrefix", "Error"],
-  ["invokeWithApnsSecretPrefix", "Error"],
-  ["invokeWithReCaptchaPrefix", "Error"],
-  ["invokeAfterMsg", "X"],
-  ["invokeAfterMsgs", "X"],
-  ["initConnection", "X"],
-  ["invokeWithLayer", "X"],
-  ["invokeWithoutUpdates", "X"],
-  ["invokeWithMessagesRange", "X"],
-  ["invokeWithTakeout", "X"],
-  ["invokeWithBusinessConnection", "X"],
-  ["invokeWithGooglePlayIntegrity", "X"],
-  ["invokeWithApnsSecret", "X"],
-  ["invokeWithReCaptcha", "X"],
-  ["auth.sendCode", "auth.SentCode"],
-  ["auth.signUp", "auth.Authorization"],
-  ["auth.signIn", "auth.Authorization"],
-  ["auth.logOut", "auth.LoggedOut"],
-  ["auth.resetAuthorizations", "Bool"],
-  ["auth.exportAuthorization", "auth.ExportedAuthorization"],
-  ["auth.importAuthorization", "auth.Authorization"],
-  ["auth.bindTempAuthKey", "Bool"],
-  ["auth.importBotAuthorization", "auth.Authorization"],
-  ["auth.checkPassword", "auth.Authorization"],
-  ["auth.requestPasswordRecovery", "auth.PasswordRecovery"],
-  ["auth.recoverPassword", "auth.Authorization"],
-  ["auth.resendCode", "auth.SentCode"],
-  ["auth.cancelCode", "Bool"],
-  ["auth.dropTempAuthKeys", "Bool"],
-  ["auth.exportLoginToken", "auth.LoginToken"],
-  ["auth.importLoginToken", "auth.LoginToken"],
-  ["auth.acceptLoginToken", "Authorization"],
-  ["auth.checkRecoveryPassword", "Bool"],
-  ["auth.importWebTokenAuthorization", "auth.Authorization"],
-  ["auth.requestFirebaseSms", "Bool"],
-  ["auth.resetLoginEmail", "auth.SentCode"],
-  ["auth.reportMissingCode", "Bool"],
-  ["account.registerDevice", "Bool"],
-  ["account.unregisterDevice", "Bool"],
-  ["account.updateNotifySettings", "Bool"],
-  ["account.getNotifySettings", "PeerNotifySettings"],
-  ["account.resetNotifySettings", "Bool"],
-  ["account.updateProfile", "User"],
-  ["account.updateStatus", "Bool"],
-  ["account.getWallPapers", "account.WallPapers"],
-  ["account.reportPeer", "Bool"],
-  ["account.checkUsername", "Bool"],
-  ["account.updateUsername", "User"],
-  ["account.getPrivacy", "account.PrivacyRules"],
-  ["account.setPrivacy", "account.PrivacyRules"],
-  ["account.deleteAccount", "Bool"],
-  ["account.getAccountTTL", "AccountDaysTTL"],
-  ["account.setAccountTTL", "Bool"],
-  ["account.sendChangePhoneCode", "auth.SentCode"],
-  ["account.changePhone", "User"],
-  ["account.updateDeviceLocked", "Bool"],
-  ["account.getAuthorizations", "account.Authorizations"],
-  ["account.resetAuthorization", "Bool"],
-  ["account.getPassword", "account.Password"],
-  ["account.getPasswordSettings", "account.PasswordSettings"],
-  ["account.updatePasswordSettings", "Bool"],
-  ["account.sendConfirmPhoneCode", "auth.SentCode"],
-  ["account.confirmPhone", "Bool"],
-  ["account.getTmpPassword", "account.TmpPassword"],
-  ["account.getWebAuthorizations", "account.WebAuthorizations"],
-  ["account.resetWebAuthorization", "Bool"],
-  ["account.resetWebAuthorizations", "Bool"],
-  ["account.getAllSecureValues", "Vector<SecureValue>"],
-  ["account.getSecureValue", "Vector<SecureValue>"],
-  ["account.saveSecureValue", "SecureValue"],
-  ["account.deleteSecureValue", "Bool"],
-  ["account.getAuthorizationForm", "account.AuthorizationForm"],
-  ["account.acceptAuthorization", "Bool"],
-  ["account.sendVerifyPhoneCode", "auth.SentCode"],
-  ["account.verifyPhone", "Bool"],
-  ["account.sendVerifyEmailCode", "account.SentEmailCode"],
-  ["account.verifyEmail", "account.EmailVerified"],
-  ["account.initTakeoutSession", "account.Takeout"],
-  ["account.finishTakeoutSession", "Bool"],
-  ["account.confirmPasswordEmail", "Bool"],
-  ["account.resendPasswordEmail", "Bool"],
-  ["account.cancelPasswordEmail", "Bool"],
-  ["account.getContactSignUpNotification", "Bool"],
-  ["account.setContactSignUpNotification", "Bool"],
-  ["account.getNotifyExceptions", "Updates"],
-  ["account.getWallPaper", "WallPaper"],
-  ["account.uploadWallPaper", "WallPaper"],
-  ["account.saveWallPaper", "Bool"],
-  ["account.installWallPaper", "Bool"],
-  ["account.resetWallPapers", "Bool"],
-  ["account.getAutoDownloadSettings", "account.AutoDownloadSettings"],
-  ["account.saveAutoDownloadSettings", "Bool"],
-  ["account.uploadTheme", "Document"],
-  ["account.createTheme", "Theme"],
-  ["account.updateTheme", "Theme"],
-  ["account.saveTheme", "Bool"],
-  ["account.installTheme", "Bool"],
-  ["account.getTheme", "Theme"],
-  ["account.getThemes", "account.Themes"],
-  ["account.setContentSettings", "Bool"],
-  ["account.getContentSettings", "account.ContentSettings"],
-  ["account.getMultiWallPapers", "Vector<WallPaper>"],
-  ["account.getGlobalPrivacySettings", "GlobalPrivacySettings"],
-  ["account.setGlobalPrivacySettings", "GlobalPrivacySettings"],
-  ["account.reportProfilePhoto", "Bool"],
-  ["account.resetPassword", "account.ResetPasswordResult"],
-  ["account.declinePasswordReset", "Bool"],
-  ["account.getChatThemes", "account.Themes"],
-  ["account.setAuthorizationTTL", "Bool"],
-  ["account.changeAuthorizationSettings", "Bool"],
-  ["account.getSavedRingtones", "account.SavedRingtones"],
-  ["account.saveRingtone", "account.SavedRingtone"],
-  ["account.uploadRingtone", "Document"],
-  ["account.updateEmojiStatus", "Bool"],
-  ["account.getDefaultEmojiStatuses", "account.EmojiStatuses"],
-  ["account.getRecentEmojiStatuses", "account.EmojiStatuses"],
-  ["account.clearRecentEmojiStatuses", "Bool"],
-  ["account.reorderUsernames", "Bool"],
-  ["account.toggleUsername", "Bool"],
-  ["account.getDefaultProfilePhotoEmojis", "EmojiList"],
-  ["account.getDefaultGroupPhotoEmojis", "EmojiList"],
-  ["account.getAutoSaveSettings", "account.AutoSaveSettings"],
-  ["account.saveAutoSaveSettings", "Bool"],
-  ["account.deleteAutoSaveExceptions", "Bool"],
-  ["account.invalidateSignInCodes", "Bool"],
-  ["account.updateColor", "Bool"],
-  ["account.getDefaultBackgroundEmojis", "EmojiList"],
-  ["account.getChannelDefaultEmojiStatuses", "account.EmojiStatuses"],
-  ["account.getChannelRestrictedStatusEmojis", "EmojiList"],
-  ["account.updateBusinessWorkHours", "Bool"],
-  ["account.updateBusinessLocation", "Bool"],
-  ["account.updateBusinessGreetingMessage", "Bool"],
-  ["account.updateBusinessAwayMessage", "Bool"],
-  ["account.updateConnectedBot", "Updates"],
-  ["account.getConnectedBots", "account.ConnectedBots"],
-  ["account.getBotBusinessConnection", "Updates"],
-  ["account.updateBusinessIntro", "Bool"],
-  ["account.toggleConnectedBotPaused", "Bool"],
-  ["account.disablePeerConnectedBot", "Bool"],
-  ["account.updateBirthday", "Bool"],
-  ["account.createBusinessChatLink", "BusinessChatLink"],
-  ["account.editBusinessChatLink", "BusinessChatLink"],
-  ["account.deleteBusinessChatLink", "Bool"],
-  ["account.getBusinessChatLinks", "account.BusinessChatLinks"],
-  ["account.resolveBusinessChatLink", "account.ResolvedBusinessChatLinks"],
-  ["account.updatePersonalChannel", "Bool"],
-  ["account.toggleSponsoredMessages", "Bool"],
-  ["account.getReactionsNotifySettings", "ReactionsNotifySettings"],
-  ["account.setReactionsNotifySettings", "ReactionsNotifySettings"],
-  ["account.getCollectibleEmojiStatuses", "account.EmojiStatuses"],
-  ["account.addNoPaidMessagesException", "Bool"],
-  ["account.getPaidMessagesRevenue", "account.PaidMessagesRevenue"],
-  ["users.getUsers", "Vector<User>"],
-  ["users.getFullUser", "users.UserFull"],
-  ["users.setSecureValueErrors", "Bool"],
-  ["users.getRequirementsToContact", "Vector<RequirementToContact>"],
-  ["contacts.getContactIDs", "Vector<int>"],
-  ["contacts.getStatuses", "Vector<ContactStatus>"],
-  ["contacts.getContacts", "contacts.Contacts"],
-  ["contacts.importContacts", "contacts.ImportedContacts"],
-  ["contacts.deleteContacts", "Updates"],
-  ["contacts.deleteByPhones", "Bool"],
-  ["contacts.block", "Bool"],
-  ["contacts.unblock", "Bool"],
-  ["contacts.getBlocked", "contacts.Blocked"],
-  ["contacts.search", "contacts.Found"],
-  ["contacts.resolveUsername", "contacts.ResolvedPeer"],
-  ["contacts.getTopPeers", "contacts.TopPeers"],
-  ["contacts.resetTopPeerRating", "Bool"],
-  ["contacts.resetSaved", "Bool"],
-  ["contacts.getSaved", "Vector<SavedContact>"],
-  ["contacts.toggleTopPeers", "Bool"],
-  ["contacts.addContact", "Updates"],
-  ["contacts.acceptContact", "Updates"],
-  ["contacts.getLocated", "Updates"],
-  ["contacts.blockFromReplies", "Updates"],
-  ["contacts.resolvePhone", "contacts.ResolvedPeer"],
-  ["contacts.exportContactToken", "ExportedContactToken"],
-  ["contacts.importContactToken", "User"],
-  ["contacts.editCloseFriends", "Bool"],
-  ["contacts.setBlocked", "Bool"],
-  ["contacts.getBirthdays", "contacts.ContactBirthdays"],
-  ["messages.getMessages", "messages.Messages"],
-  ["messages.getDialogs", "messages.Dialogs"],
-  ["messages.getHistory", "messages.Messages"],
-  ["messages.search", "messages.Messages"],
-  ["messages.readHistory", "messages.AffectedMessages"],
-  ["messages.deleteHistory", "messages.AffectedHistory"],
-  ["messages.deleteMessages", "messages.AffectedMessages"],
-  ["messages.receivedMessages", "Vector<ReceivedNotifyMessage>"],
-  ["messages.setTyping", "Bool"],
-  ["messages.sendMessage", "Updates"],
-  ["messages.sendMedia", "Updates"],
-  ["messages.forwardMessages", "Updates"],
-  ["messages.reportSpam", "Bool"],
-  ["messages.getPeerSettings", "messages.PeerSettings"],
-  ["messages.report", "ReportResult"],
-  ["messages.getChats", "messages.Chats"],
-  ["messages.getFullChat", "messages.ChatFull"],
-  ["messages.editChatTitle", "Updates"],
-  ["messages.editChatPhoto", "Updates"],
-  ["messages.addChatUser", "messages.InvitedUsers"],
-  ["messages.deleteChatUser", "Updates"],
-  ["messages.createChat", "messages.InvitedUsers"],
-  ["messages.getDhConfig", "messages.DhConfig"],
-  ["messages.requestEncryption", "EncryptedChat"],
-  ["messages.acceptEncryption", "EncryptedChat"],
-  ["messages.discardEncryption", "Bool"],
-  ["messages.setEncryptedTyping", "Bool"],
-  ["messages.readEncryptedHistory", "Bool"],
-  ["messages.sendEncrypted", "messages.SentEncryptedMessage"],
-  ["messages.sendEncryptedFile", "messages.SentEncryptedMessage"],
-  ["messages.sendEncryptedService", "messages.SentEncryptedMessage"],
-  ["messages.receivedQueue", "Vector<long>"],
-  ["messages.reportEncryptedSpam", "Bool"],
-  ["messages.readMessageContents", "messages.AffectedMessages"],
-  ["messages.getStickers", "messages.Stickers"],
-  ["messages.getAllStickers", "messages.AllStickers"],
-  ["messages.getWebPagePreview", "messages.WebPagePreview"],
-  ["messages.exportChatInvite", "ExportedChatInvite"],
-  ["messages.checkChatInvite", "ChatInvite"],
-  ["messages.importChatInvite", "Updates"],
-  ["messages.getStickerSet", "messages.StickerSet"],
-  ["messages.installStickerSet", "messages.StickerSetInstallResult"],
-  ["messages.uninstallStickerSet", "Bool"],
-  ["messages.startBot", "Updates"],
-  ["messages.getMessagesViews", "messages.MessageViews"],
-  ["messages.editChatAdmin", "Bool"],
-  ["messages.migrateChat", "Updates"],
-  ["messages.searchGlobal", "messages.Messages"],
-  ["messages.reorderStickerSets", "Bool"],
-  ["messages.getDocumentByHash", "Document"],
-  ["messages.getSavedGifs", "messages.SavedGifs"],
-  ["messages.saveGif", "Bool"],
-  ["messages.getInlineBotResults", "messages.BotResults"],
-  ["messages.setInlineBotResults", "Bool"],
-  ["messages.sendInlineBotResult", "Updates"],
-  ["messages.getMessageEditData", "messages.MessageEditData"],
-  ["messages.editMessage", "Updates"],
-  ["messages.editInlineBotMessage", "Bool"],
-  ["messages.getBotCallbackAnswer", "messages.BotCallbackAnswer"],
-  ["messages.setBotCallbackAnswer", "Bool"],
-  ["messages.getPeerDialogs", "messages.PeerDialogs"],
-  ["messages.saveDraft", "Bool"],
-  ["messages.getAllDrafts", "Updates"],
-  ["messages.getFeaturedStickers", "messages.FeaturedStickers"],
-  ["messages.readFeaturedStickers", "Bool"],
-  ["messages.getRecentStickers", "messages.RecentStickers"],
-  ["messages.saveRecentSticker", "Bool"],
-  ["messages.clearRecentStickers", "Bool"],
-  ["messages.getArchivedStickers", "messages.ArchivedStickers"],
-  ["messages.getMaskStickers", "messages.AllStickers"],
-  ["messages.getAttachedStickers", "Vector<StickerSetCovered>"],
-  ["messages.setGameScore", "Updates"],
-  ["messages.setInlineGameScore", "Bool"],
-  ["messages.getGameHighScores", "messages.HighScores"],
-  ["messages.getInlineGameHighScores", "messages.HighScores"],
-  ["messages.getCommonChats", "messages.Chats"],
-  ["messages.getWebPage", "messages.WebPage"],
-  ["messages.toggleDialogPin", "Bool"],
-  ["messages.reorderPinnedDialogs", "Bool"],
-  ["messages.getPinnedDialogs", "messages.PeerDialogs"],
-  ["messages.setBotShippingResults", "Bool"],
-  ["messages.setBotPrecheckoutResults", "Bool"],
-  ["messages.uploadMedia", "MessageMedia"],
-  ["messages.sendScreenshotNotification", "Updates"],
-  ["messages.getFavedStickers", "messages.FavedStickers"],
-  ["messages.faveSticker", "Bool"],
-  ["messages.getUnreadMentions", "messages.Messages"],
-  ["messages.readMentions", "messages.AffectedHistory"],
-  ["messages.getRecentLocations", "messages.Messages"],
-  ["messages.sendMultiMedia", "Updates"],
-  ["messages.uploadEncryptedFile", "EncryptedFile"],
-  ["messages.searchStickerSets", "messages.FoundStickerSets"],
-  ["messages.getSplitRanges", "Vector<MessageRange>"],
-  ["messages.markDialogUnread", "Bool"],
-  ["messages.getDialogUnreadMarks", "Vector<DialogPeer>"],
-  ["messages.clearAllDrafts", "Bool"],
-  ["messages.updatePinnedMessage", "Updates"],
-  ["messages.sendVote", "Updates"],
-  ["messages.getPollResults", "Updates"],
-  ["messages.getOnlines", "ChatOnlines"],
-  ["messages.editChatAbout", "Bool"],
-  ["messages.editChatDefaultBannedRights", "Updates"],
-  ["messages.getEmojiKeywords", "EmojiKeywordsDifference"],
-  ["messages.getEmojiKeywordsDifference", "EmojiKeywordsDifference"],
-  ["messages.getEmojiKeywordsLanguages", "Vector<EmojiLanguage>"],
-  ["messages.getEmojiURL", "EmojiURL"],
-  ["messages.getSearchCounters", "Vector<messages.SearchCounter>"],
-  ["messages.requestUrlAuth", "UrlAuthResult"],
-  ["messages.acceptUrlAuth", "UrlAuthResult"],
-  ["messages.hidePeerSettingsBar", "Bool"],
-  ["messages.getScheduledHistory", "messages.Messages"],
-  ["messages.getScheduledMessages", "messages.Messages"],
-  ["messages.sendScheduledMessages", "Updates"],
-  ["messages.deleteScheduledMessages", "Updates"],
-  ["messages.getPollVotes", "messages.VotesList"],
-  ["messages.toggleStickerSets", "Bool"],
-  ["messages.getDialogFilters", "messages.DialogFilters"],
-  ["messages.getSuggestedDialogFilters", "Vector<DialogFilterSuggested>"],
-  ["messages.updateDialogFilter", "Bool"],
-  ["messages.updateDialogFiltersOrder", "Bool"],
-  ["messages.getOldFeaturedStickers", "messages.FeaturedStickers"],
-  ["messages.getReplies", "messages.Messages"],
-  ["messages.getDiscussionMessage", "messages.DiscussionMessage"],
-  ["messages.readDiscussion", "Bool"],
-  ["messages.unpinAllMessages", "messages.AffectedHistory"],
-  ["messages.deleteChat", "Bool"],
-  ["messages.deletePhoneCallHistory", "messages.AffectedFoundMessages"],
-  ["messages.checkHistoryImport", "messages.HistoryImportParsed"],
-  ["messages.initHistoryImport", "messages.HistoryImport"],
-  ["messages.uploadImportedMedia", "MessageMedia"],
-  ["messages.startHistoryImport", "Bool"],
-  ["messages.getExportedChatInvites", "messages.ExportedChatInvites"],
-  ["messages.getExportedChatInvite", "messages.ExportedChatInvite"],
-  ["messages.editExportedChatInvite", "messages.ExportedChatInvite"],
-  ["messages.deleteRevokedExportedChatInvites", "Bool"],
-  ["messages.deleteExportedChatInvite", "Bool"],
-  ["messages.getAdminsWithInvites", "messages.ChatAdminsWithInvites"],
-  ["messages.getChatInviteImporters", "messages.ChatInviteImporters"],
-  ["messages.setHistoryTTL", "Updates"],
-  ["messages.checkHistoryImportPeer", "messages.CheckedHistoryImportPeer"],
-  ["messages.setChatTheme", "Updates"],
-  ["messages.getMessageReadParticipants", "Vector<ReadParticipantDate>"],
-  ["messages.getSearchResultsCalendar", "messages.SearchResultsCalendar"],
-  ["messages.getSearchResultsPositions", "messages.SearchResultsPositions"],
-  ["messages.hideChatJoinRequest", "Updates"],
-  ["messages.hideAllChatJoinRequests", "Updates"],
-  ["messages.toggleNoForwards", "Updates"],
-  ["messages.saveDefaultSendAs", "Bool"],
-  ["messages.sendReaction", "Updates"],
-  ["messages.getMessagesReactions", "Updates"],
-  ["messages.getMessageReactionsList", "messages.MessageReactionsList"],
-  ["messages.setChatAvailableReactions", "Updates"],
-  ["messages.getAvailableReactions", "messages.AvailableReactions"],
-  ["messages.setDefaultReaction", "Bool"],
-  ["messages.translateText", "messages.TranslatedText"],
-  ["messages.getUnreadReactions", "messages.Messages"],
-  ["messages.readReactions", "messages.AffectedHistory"],
-  ["messages.searchSentMedia", "messages.Messages"],
-  ["messages.getAttachMenuBots", "AttachMenuBots"],
-  ["messages.getAttachMenuBot", "AttachMenuBotsBot"],
-  ["messages.toggleBotInAttachMenu", "Bool"],
-  ["messages.requestWebView", "WebViewResult"],
-  ["messages.prolongWebView", "Bool"],
-  ["messages.requestSimpleWebView", "WebViewResult"],
-  ["messages.sendWebViewResultMessage", "WebViewMessageSent"],
-  ["messages.sendWebViewData", "Updates"],
-  ["messages.transcribeAudio", "messages.TranscribedAudio"],
-  ["messages.rateTranscribedAudio", "Bool"],
-  ["messages.getCustomEmojiDocuments", "Vector<Document>"],
-  ["messages.getEmojiStickers", "messages.AllStickers"],
-  ["messages.getFeaturedEmojiStickers", "messages.FeaturedStickers"],
-  ["messages.reportReaction", "Bool"],
-  ["messages.getTopReactions", "messages.Reactions"],
-  ["messages.getRecentReactions", "messages.Reactions"],
-  ["messages.clearRecentReactions", "Bool"],
-  ["messages.getExtendedMedia", "Updates"],
-  ["messages.setDefaultHistoryTTL", "Bool"],
-  ["messages.getDefaultHistoryTTL", "DefaultHistoryTTL"],
-  ["messages.sendBotRequestedPeer", "Updates"],
-  ["messages.getEmojiGroups", "messages.EmojiGroups"],
-  ["messages.getEmojiStatusGroups", "messages.EmojiGroups"],
-  ["messages.getEmojiProfilePhotoGroups", "messages.EmojiGroups"],
-  ["messages.searchCustomEmoji", "EmojiList"],
-  ["messages.togglePeerTranslations", "Bool"],
-  ["messages.getBotApp", "messages.BotApp"],
-  ["messages.requestAppWebView", "WebViewResult"],
-  ["messages.setChatWallPaper", "Updates"],
-  ["messages.searchEmojiStickerSets", "messages.FoundStickerSets"],
-  ["messages.getSavedDialogs", "messages.SavedDialogs"],
-  ["messages.getSavedHistory", "messages.Messages"],
-  ["messages.deleteSavedHistory", "messages.AffectedHistory"],
-  ["messages.getPinnedSavedDialogs", "messages.SavedDialogs"],
-  ["messages.toggleSavedDialogPin", "Bool"],
-  ["messages.reorderPinnedSavedDialogs", "Bool"],
-  ["messages.getSavedReactionTags", "messages.SavedReactionTags"],
-  ["messages.updateSavedReactionTag", "Bool"],
-  ["messages.getDefaultTagReactions", "messages.Reactions"],
-  ["messages.getOutboxReadDate", "OutboxReadDate"],
-  ["messages.getQuickReplies", "messages.QuickReplies"],
-  ["messages.reorderQuickReplies", "Bool"],
-  ["messages.checkQuickReplyShortcut", "Bool"],
-  ["messages.editQuickReplyShortcut", "Bool"],
-  ["messages.deleteQuickReplyShortcut", "Bool"],
-  ["messages.getQuickReplyMessages", "messages.Messages"],
-  ["messages.sendQuickReplyMessages", "Updates"],
-  ["messages.deleteQuickReplyMessages", "Updates"],
-  ["messages.toggleDialogFilterTags", "Bool"],
-  ["messages.getMyStickers", "messages.MyStickers"],
-  ["messages.getEmojiStickerGroups", "messages.EmojiGroups"],
-  ["messages.getAvailableEffects", "messages.AvailableEffects"],
-  ["messages.editFactCheck", "Updates"],
-  ["messages.deleteFactCheck", "Updates"],
-  ["messages.getFactCheck", "Vector<FactCheck>"],
-  ["messages.requestMainWebView", "WebViewResult"],
-  ["messages.sendPaidReaction", "Updates"],
-  ["messages.togglePaidReactionPrivacy", "Bool"],
-  ["messages.getPaidReactionPrivacy", "Updates"],
-  ["messages.viewSponsoredMessage", "Bool"],
-  ["messages.clickSponsoredMessage", "Bool"],
-  ["messages.reportSponsoredMessage", "channels.SponsoredMessageReportResult"],
-  ["messages.getSponsoredMessages", "messages.SponsoredMessages"],
-  ["messages.savePreparedInlineMessage", "messages.BotPreparedInlineMessage"],
-  ["messages.getPreparedInlineMessage", "messages.PreparedInlineMessage"],
-  ["messages.searchStickers", "messages.FoundStickers"],
-  ["messages.reportMessagesDelivery", "Bool"],
-  ["updates.getState", "updates.State"],
-  ["updates.getDifference", "updates.Difference"],
-  ["updates.getChannelDifference", "updates.ChannelDifference"],
-  ["photos.updateProfilePhoto", "photos.Photo"],
-  ["photos.uploadProfilePhoto", "photos.Photo"],
-  ["photos.deletePhotos", "Vector<long>"],
-  ["photos.getUserPhotos", "photos.Photos"],
-  ["photos.uploadContactProfilePhoto", "photos.Photo"],
-  ["upload.saveFilePart", "Bool"],
-  ["upload.getFile", "upload.File"],
-  ["upload.saveBigFilePart", "Bool"],
-  ["upload.getWebFile", "upload.WebFile"],
-  ["upload.getCdnFile", "upload.CdnFile"],
-  ["upload.reuploadCdnFile", "Vector<FileHash>"],
-  ["upload.getCdnFileHashes", "Vector<FileHash>"],
-  ["upload.getFileHashes", "Vector<FileHash>"],
-  ["help.getConfig", "Config"],
-  ["help.getNearestDc", "NearestDc"],
-  ["help.getAppUpdate", "help.AppUpdate"],
-  ["help.getInviteText", "help.InviteText"],
-  ["help.getSupport", "help.Support"],
-  ["help.setBotUpdatesStatus", "Bool"],
-  ["help.getCdnConfig", "CdnConfig"],
-  ["help.getRecentMeUrls", "help.RecentMeUrls"],
-  ["help.getTermsOfServiceUpdate", "help.TermsOfServiceUpdate"],
-  ["help.acceptTermsOfService", "Bool"],
-  ["help.getDeepLinkInfo", "help.DeepLinkInfo"],
-  ["help.getAppConfig", "help.AppConfig"],
-  ["help.saveAppLog", "Bool"],
-  ["help.getPassportConfig", "help.PassportConfig"],
-  ["help.getSupportName", "help.SupportName"],
-  ["help.getUserInfo", "help.UserInfo"],
-  ["help.editUserInfo", "help.UserInfo"],
-  ["help.getPromoData", "help.PromoData"],
-  ["help.hidePromoData", "Bool"],
-  ["help.dismissSuggestion", "Bool"],
-  ["help.getCountriesList", "help.CountriesList"],
-  ["help.getPremiumPromo", "help.PremiumPromo"],
-  ["help.getPeerColors", "help.PeerColors"],
-  ["help.getPeerProfileColors", "help.PeerColors"],
-  ["help.getTimezonesList", "help.TimezonesList"],
-  ["channels.readHistory", "Bool"],
-  ["channels.deleteMessages", "messages.AffectedMessages"],
-  ["channels.reportSpam", "Bool"],
-  ["channels.getMessages", "messages.Messages"],
-  ["channels.getParticipants", "channels.ChannelParticipants"],
-  ["channels.getParticipant", "channels.ChannelParticipant"],
-  ["channels.getChannels", "messages.Chats"],
-  ["channels.getFullChannel", "messages.ChatFull"],
-  ["channels.createChannel", "Updates"],
-  ["channels.editAdmin", "Updates"],
-  ["channels.editTitle", "Updates"],
-  ["channels.editPhoto", "Updates"],
-  ["channels.checkUsername", "Bool"],
-  ["channels.updateUsername", "Bool"],
-  ["channels.joinChannel", "Updates"],
-  ["channels.leaveChannel", "Updates"],
-  ["channels.inviteToChannel", "messages.InvitedUsers"],
-  ["channels.deleteChannel", "Updates"],
-  ["channels.exportMessageLink", "ExportedMessageLink"],
-  ["channels.toggleSignatures", "Updates"],
-  ["channels.getAdminedPublicChannels", "messages.Chats"],
-  ["channels.editBanned", "Updates"],
-  ["channels.getAdminLog", "channels.AdminLogResults"],
-  ["channels.setStickers", "Bool"],
-  ["channels.readMessageContents", "Bool"],
-  ["channels.deleteHistory", "Updates"],
-  ["channels.togglePreHistoryHidden", "Updates"],
-  ["channels.getLeftChannels", "messages.Chats"],
-  ["channels.getGroupsForDiscussion", "messages.Chats"],
-  ["channels.setDiscussionGroup", "Bool"],
-  ["channels.editCreator", "Updates"],
-  ["channels.editLocation", "Bool"],
-  ["channels.toggleSlowMode", "Updates"],
-  ["channels.getInactiveChannels", "messages.InactiveChats"],
-  ["channels.convertToGigagroup", "Updates"],
-  ["channels.getSendAs", "channels.SendAsPeers"],
-  ["channels.deleteParticipantHistory", "messages.AffectedHistory"],
-  ["channels.toggleJoinToSend", "Updates"],
-  ["channels.toggleJoinRequest", "Updates"],
-  ["channels.reorderUsernames", "Bool"],
-  ["channels.toggleUsername", "Bool"],
-  ["channels.deactivateAllUsernames", "Bool"],
-  ["channels.toggleForum", "Updates"],
-  ["channels.createForumTopic", "Updates"],
-  ["channels.getForumTopics", "messages.ForumTopics"],
-  ["channels.getForumTopicsByID", "messages.ForumTopics"],
-  ["channels.editForumTopic", "Updates"],
-  ["channels.updatePinnedForumTopic", "Updates"],
-  ["channels.deleteTopicHistory", "messages.AffectedHistory"],
-  ["channels.reorderPinnedForumTopics", "Updates"],
-  ["channels.toggleAntiSpam", "Updates"],
-  ["channels.reportAntiSpamFalsePositive", "Bool"],
-  ["channels.toggleParticipantsHidden", "Updates"],
-  ["channels.updateColor", "Updates"],
-  ["channels.toggleViewForumAsMessages", "Updates"],
-  ["channels.getChannelRecommendations", "messages.Chats"],
-  ["channels.updateEmojiStatus", "Updates"],
-  ["channels.setBoostsToUnblockRestrictions", "Updates"],
-  ["channels.setEmojiStickers", "Bool"],
-  ["channels.restrictSponsoredMessages", "Updates"],
-  ["channels.searchPosts", "messages.Messages"],
-  ["channels.updatePaidMessagesPrice", "Updates"],
-  ["bots.sendCustomRequest", "DataJSON"],
-  ["bots.answerWebhookJSONQuery", "Bool"],
-  ["bots.setBotCommands", "Bool"],
-  ["bots.resetBotCommands", "Bool"],
-  ["bots.getBotCommands", "Vector<BotCommand>"],
-  ["bots.setBotMenuButton", "Bool"],
-  ["bots.getBotMenuButton", "BotMenuButton"],
-  ["bots.setBotBroadcastDefaultAdminRights", "Bool"],
-  ["bots.setBotGroupDefaultAdminRights", "Bool"],
-  ["bots.setBotInfo", "Bool"],
-  ["bots.getBotInfo", "bots.BotInfo"],
-  ["bots.reorderUsernames", "Bool"],
-  ["bots.toggleUsername", "Bool"],
-  ["bots.canSendMessage", "Bool"],
-  ["bots.allowSendMessage", "Updates"],
-  ["bots.invokeWebViewCustomMethod", "DataJSON"],
-  ["bots.getPopularAppBots", "bots.PopularAppBots"],
-  ["bots.addPreviewMedia", "BotPreviewMedia"],
-  ["bots.editPreviewMedia", "BotPreviewMedia"],
-  ["bots.deletePreviewMedia", "Bool"],
-  ["bots.reorderPreviewMedias", "Bool"],
-  ["bots.getPreviewInfo", "bots.PreviewInfo"],
-  ["bots.getPreviewMedias", "Vector<BotPreviewMedia>"],
-  ["bots.updateUserEmojiStatus", "Bool"],
-  ["bots.toggleUserEmojiStatusPermission", "Bool"],
-  ["bots.checkDownloadFileParams", "Bool"],
-  ["bots.getAdminedBots", "Vector<User>"],
-  ["bots.updateStarRefProgram", "StarRefProgram"],
-  ["bots.setCustomVerification", "Bool"],
-  ["bots.getBotRecommendations", "users.Users"],
-  ["payments.getPaymentForm", "payments.PaymentForm"],
-  ["payments.getPaymentReceipt", "payments.PaymentReceipt"],
-  ["payments.validateRequestedInfo", "payments.ValidatedRequestedInfo"],
-  ["payments.sendPaymentForm", "payments.PaymentResult"],
-  ["payments.getSavedInfo", "payments.SavedInfo"],
-  ["payments.clearSavedInfo", "Bool"],
-  ["payments.getBankCardData", "payments.BankCardData"],
-  ["payments.exportInvoice", "payments.ExportedInvoice"],
-  ["payments.assignAppStoreTransaction", "Updates"],
-  ["payments.assignPlayMarketTransaction", "Updates"],
-  ["payments.canPurchasePremium", "Bool"],
-  ["payments.getPremiumGiftCodeOptions", "Vector<PremiumGiftCodeOption>"],
-  ["payments.checkGiftCode", "payments.CheckedGiftCode"],
-  ["payments.applyGiftCode", "Updates"],
-  ["payments.getGiveawayInfo", "payments.GiveawayInfo"],
-  ["payments.launchPrepaidGiveaway", "Updates"],
-  ["payments.getStarsTopupOptions", "Vector<StarsTopupOption>"],
-  ["payments.getStarsStatus", "payments.StarsStatus"],
-  ["payments.getStarsTransactions", "payments.StarsStatus"],
-  ["payments.sendStarsForm", "payments.PaymentResult"],
-  ["payments.refundStarsCharge", "Updates"],
-  ["payments.getStarsRevenueStats", "payments.StarsRevenueStats"],
-  ["payments.getStarsRevenueWithdrawalUrl", "payments.StarsRevenueWithdrawalUrl"],
-  ["payments.getStarsRevenueAdsAccountUrl", "payments.StarsRevenueAdsAccountUrl"],
-  ["payments.getStarsTransactionsByID", "payments.StarsStatus"],
-  ["payments.getStarsGiftOptions", "Vector<StarsGiftOption>"],
-  ["payments.getStarsSubscriptions", "payments.StarsStatus"],
-  ["payments.changeStarsSubscription", "Bool"],
-  ["payments.fulfillStarsSubscription", "Bool"],
-  ["payments.getStarsGiveawayOptions", "Vector<StarsGiveawayOption>"],
-  ["payments.getStarGifts", "payments.StarGifts"],
-  ["payments.saveStarGift", "Bool"],
-  ["payments.convertStarGift", "Bool"],
-  ["payments.botCancelStarsSubscription", "Bool"],
-  ["payments.getConnectedStarRefBots", "payments.ConnectedStarRefBots"],
-  ["payments.getConnectedStarRefBot", "payments.ConnectedStarRefBots"],
-  ["payments.getSuggestedStarRefBots", "payments.SuggestedStarRefBots"],
-  ["payments.connectStarRefBot", "payments.ConnectedStarRefBots"],
-  ["payments.editConnectedStarRefBot", "payments.ConnectedStarRefBots"],
-  ["payments.getStarGiftUpgradePreview", "payments.StarGiftUpgradePreview"],
-  ["payments.upgradeStarGift", "Updates"],
-  ["payments.transferStarGift", "Updates"],
-  ["payments.getUniqueStarGift", "payments.UniqueStarGift"],
-  ["payments.getSavedStarGifts", "payments.SavedStarGifts"],
-  ["payments.getSavedStarGift", "payments.SavedStarGifts"],
-  ["payments.getStarGiftWithdrawalUrl", "payments.StarGiftWithdrawalUrl"],
-  ["payments.toggleChatStarGiftNotifications", "Bool"],
-  ["payments.toggleStarGiftsPinnedToTop", "Bool"],
-  ["stickers.createStickerSet", "messages.StickerSet"],
-  ["stickers.removeStickerFromSet", "messages.StickerSet"],
-  ["stickers.changeStickerPosition", "messages.StickerSet"],
-  ["stickers.addStickerToSet", "messages.StickerSet"],
-  ["stickers.setStickerSetThumb", "messages.StickerSet"],
-  ["stickers.checkShortName", "Bool"],
-  ["stickers.suggestShortName", "stickers.SuggestedShortName"],
-  ["stickers.changeSticker", "messages.StickerSet"],
-  ["stickers.renameStickerSet", "messages.StickerSet"],
-  ["stickers.deleteStickerSet", "Bool"],
-  ["stickers.replaceSticker", "messages.StickerSet"],
-  ["phone.getCallConfig", "DataJSON"],
-  ["phone.requestCall", "phone.PhoneCall"],
-  ["phone.acceptCall", "phone.PhoneCall"],
-  ["phone.confirmCall", "phone.PhoneCall"],
-  ["phone.receivedCall", "Bool"],
-  ["phone.discardCall", "Updates"],
-  ["phone.setCallRating", "Updates"],
-  ["phone.saveCallDebug", "Bool"],
-  ["phone.sendSignalingData", "Bool"],
-  ["phone.createGroupCall", "Updates"],
-  ["phone.joinGroupCall", "Updates"],
-  ["phone.leaveGroupCall", "Updates"],
-  ["phone.inviteToGroupCall", "Updates"],
-  ["phone.discardGroupCall", "Updates"],
-  ["phone.toggleGroupCallSettings", "Updates"],
-  ["phone.getGroupCall", "phone.GroupCall"],
-  ["phone.getGroupParticipants", "phone.GroupParticipants"],
-  ["phone.checkGroupCall", "Vector<int>"],
-  ["phone.toggleGroupCallRecord", "Updates"],
-  ["phone.editGroupCallParticipant", "Updates"],
-  ["phone.editGroupCallTitle", "Updates"],
-  ["phone.getGroupCallJoinAs", "phone.JoinAsPeers"],
-  ["phone.exportGroupCallInvite", "phone.ExportedGroupCallInvite"],
-  ["phone.toggleGroupCallStartSubscription", "Updates"],
-  ["phone.startScheduledGroupCall", "Updates"],
-  ["phone.saveDefaultGroupCallJoinAs", "Bool"],
-  ["phone.joinGroupCallPresentation", "Updates"],
-  ["phone.leaveGroupCallPresentation", "Updates"],
-  ["phone.getGroupCallStreamChannels", "phone.GroupCallStreamChannels"],
-  ["phone.getGroupCallStreamRtmpUrl", "phone.GroupCallStreamRtmpUrl"],
-  ["phone.saveCallLog", "Bool"],
-  ["phone.createConferenceCall", "phone.PhoneCall"],
-  ["langpack.getLangPack", "LangPackDifference"],
-  ["langpack.getStrings", "Vector<LangPackString>"],
-  ["langpack.getDifference", "LangPackDifference"],
-  ["langpack.getLanguages", "Vector<LangPackLanguage>"],
-  ["langpack.getLanguage", "LangPackLanguage"],
-  ["folders.editPeerFolders", "Updates"],
-  ["stats.getBroadcastStats", "stats.BroadcastStats"],
-  ["stats.loadAsyncGraph", "StatsGraph"],
-  ["stats.getMegagroupStats", "stats.MegagroupStats"],
-  ["stats.getMessagePublicForwards", "stats.PublicForwards"],
-  ["stats.getMessageStats", "stats.MessageStats"],
-  ["stats.getStoryStats", "stats.StoryStats"],
-  ["stats.getStoryPublicForwards", "stats.PublicForwards"],
-  ["stats.getBroadcastRevenueStats", "stats.BroadcastRevenueStats"],
-  ["stats.getBroadcastRevenueWithdrawalUrl", "stats.BroadcastRevenueWithdrawalUrl"],
-  ["stats.getBroadcastRevenueTransactions", "stats.BroadcastRevenueTransactions"],
-  ["chatlists.exportChatlistInvite", "chatlists.ExportedChatlistInvite"],
-  ["chatlists.deleteExportedInvite", "Bool"],
-  ["chatlists.editExportedInvite", "ExportedChatlistInvite"],
-  ["chatlists.getExportedInvites", "chatlists.ExportedInvites"],
-  ["chatlists.checkChatlistInvite", "chatlists.ChatlistInvite"],
-  ["chatlists.joinChatlistInvite", "Updates"],
-  ["chatlists.getChatlistUpdates", "chatlists.ChatlistUpdates"],
-  ["chatlists.joinChatlistUpdates", "Updates"],
-  ["chatlists.hideChatlistUpdates", "Bool"],
-  ["chatlists.getLeaveChatlistSuggestions", "Vector<Peer>"],
-  ["chatlists.leaveChatlist", "Updates"],
-  ["stories.canSendStory", "Bool"],
-  ["stories.sendStory", "Updates"],
-  ["stories.editStory", "Updates"],
-  ["stories.deleteStories", "Vector<int>"],
-  ["stories.togglePinned", "Vector<int>"],
-  ["stories.getAllStories", "stories.AllStories"],
-  ["stories.getPinnedStories", "stories.Stories"],
-  ["stories.getStoriesArchive", "stories.Stories"],
-  ["stories.getStoriesByID", "stories.Stories"],
-  ["stories.toggleAllStoriesHidden", "Bool"],
-  ["stories.readStories", "Vector<int>"],
-  ["stories.incrementStoryViews", "Bool"],
-  ["stories.getStoryViewsList", "stories.StoryViewsList"],
-  ["stories.getStoriesViews", "stories.StoryViews"],
-  ["stories.exportStoryLink", "ExportedStoryLink"],
-  ["stories.report", "ReportResult"],
-  ["stories.activateStealthMode", "Updates"],
-  ["stories.sendReaction", "Updates"],
-  ["stories.getPeerStories", "stories.PeerStories"],
-  ["stories.getAllReadPeerStories", "Updates"],
-  ["stories.getPeerMaxIDs", "Vector<int>"],
-  ["stories.getChatsToSend", "messages.Chats"],
-  ["stories.togglePeerStoriesHidden", "Bool"],
-  ["stories.getStoryReactionsList", "stories.StoryReactionsList"],
-  ["stories.togglePinnedToTop", "Bool"],
-  ["stories.searchPosts", "stories.FoundStories"],
-  ["premium.getBoostsList", "premium.BoostsList"],
-  ["premium.getMyBoosts", "premium.MyBoosts"],
-  ["premium.applyBoost", "premium.MyBoosts"],
-  ["premium.getBoostsStatus", "premium.BoostsStatus"],
-  ["premium.getUserBoosts", "premium.BoostsList"],
-  ["smsjobs.isEligibleToJoin", "smsjobs.EligibilityToJoin"],
-  ["smsjobs.join", "Bool"],
-  ["smsjobs.leave", "Bool"],
-  ["smsjobs.updateSettings", "Bool"],
-  ["smsjobs.getStatus", "smsjobs.Status"],
-  ["smsjobs.getSmsJob", "SmsJob"],
-  ["smsjobs.finishJob", "Bool"],
-  ["fragment.getCollectibleInfo", "fragment.CollectibleInfo"],
-] as unknown as [string, string][]);
-
 export const getType: (name: string) => Parameters | undefined = types.get.bind(types);
 
 export const getEnum: (name: string) => (keyof Types)[] | undefined = enums.get.bind(enums);
-
-export const getReturnType: (name: string) => string | undefined = returnTypes.get.bind(types);
 
 // @ts-ignore: lib
 export const _types: Map<string, Parameters> | undefined = typeof Deno === "undefined" ? typeof process === "undefined" ? undefined : process.env.__TYPE_MAP ? types : undefined : Deno.env.get("__TYPE_MAP") ? types : undefined;
