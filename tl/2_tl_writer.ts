@@ -20,11 +20,10 @@
 
 // deno-lint-ignore-file no-explicit-any
 
-import { BOOL_FALSE, VECTOR } from "../2_tl.ts";
 import { AnyObject, getEnum, getType } from "./0_api.ts";
 import { TLError } from "./0_tl_raw_reader.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
-import { analyzeOptionalParam, assertIsValidType, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr } from "./1_utilities.ts";
+import { analyzeOptionalParam, assertIsValidType, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./1_utilities.ts";
 
 export class TLWriter extends TLRawWriter {
   serialize(value: AnyObject) {

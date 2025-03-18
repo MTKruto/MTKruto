@@ -21,10 +21,9 @@
 
 import { TLError, TLRawReader } from "./0_tl_raw_reader.ts";
 import { AnyObject, getEnum, getType, getTypeName, Parameters, Types } from "./0_api.ts";
-import { analyzeOptionalParam, getOptionalParamInnerType, isOptionalParam } from "../2_tl.ts";
 import { unreachable } from "../0_deps.ts";
 import { gunzip } from "../1_utilities.ts";
-import { BOOL_FALSE, BOOL_TRUE, getVectorItemType, GZIP_PACKED, VECTOR, X } from "./1_utilities.ts";
+import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, GZIP_PACKED, isOptionalParam, VECTOR, X } from "./1_utilities.ts";
 
 export type ReadObject = boolean | number | bigint | string | Uint8Array | AnyObject | Array<ReadObject>;
 
