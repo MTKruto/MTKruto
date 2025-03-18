@@ -290,12 +290,17 @@ export class ClientEncrypted extends ClientAbstract {
       reader = new TLReader(await gunzip(reader.readBytes()));
     }
     // deno-lint-ignore no-explicit-any
+    let call: any = promise?.call ?? null;
+    if (isGenericFunction(call)) {
+      call = call.query;
+    }
+    // deno-lint-ignore no-explicit-any
     let result: any;
     if (id == RPC_ERROR) {
       result = reader.deserialize("rpc_error", id);
       this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
     } else {
-      result = reader.deserialize(mustGetReturnType(promise.call._));
+      result = reader.deserialize(mustGetReturnType(call._));
       this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
     }
     const resolvePromise = () => {
@@ -307,11 +312,6 @@ export class ClientEncrypted extends ClientAbstract {
       this.#promises.delete(messageId);
     };
     if (isOfEnum("Updates", result) || isOfEnum("Update", result)) {
-      // deno-lint-ignore no-explicit-any
-      let call: any = promise?.call ?? null;
-      if (isGenericFunction(call)) {
-        call = call.query;
-      }
       drop(this.handlers.updates?.(result, call, resolvePromise));
     } else {
       drop(this.handlers.result?.(result, resolvePromise));
