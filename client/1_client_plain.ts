@@ -21,7 +21,7 @@
 import { assert, assertEquals, concat, ige256Decrypt, ige256Encrypt, unreachable } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
 import { bigIntFromBuffer, bufferFromBigInt, factorize, getLogger, getRandomBigInt, modExp, rsaPad, sha1 } from "../1_utilities.ts";
-import { Api, is, serialize, TLReader } from "../2_tl.ts";
+import { Api, is, mustGetReturnType, serialize, TLReader } from "../2_tl.ts";
 import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
 import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
 import { getMessageId, packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
@@ -67,7 +67,7 @@ export class ClientPlain extends ClientAbstract {
     }
     const { message } = unpackUnencryptedMessage(buffer);
     const reader = new TLReader(message);
-    const result = reader.readObject();
+    const result = reader.deserialize(mustGetReturnType(function_._));
     L.in(result);
     return result as R;
   }
@@ -155,7 +155,7 @@ export class ClientPlain extends ClientAbstract {
     const tmpAesIv = concat([(await sha1(concat([serverNonce_, newNonce_]))).subarray(12, 12 + 8), await sha1(concat([newNonce_, newNonce_])), newNonce_.subarray(0, 0 + 4)]);
     const answerWithHash = ige256Decrypt(dhParams.encrypted_answer, tmpAesKey, tmpAesIv);
 
-    const dhInnerData = new TLReader(answerWithHash.slice(20)).readObject();
+    const dhInnerData = new TLReader(answerWithHash.slice(20)).deserialize("server_DH_inner_data");
     assert(is("server_DH_inner_data", dhInnerData));
     const { g, g_a: gA_, dh_prime: dhPrime_ } = dhInnerData;
     const gA = bigIntFromBuffer(gA_, false, false);

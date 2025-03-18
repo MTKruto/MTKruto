@@ -21,7 +21,7 @@
 
 import { assertEquals } from "../0_deps.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
-import { analyzeOptionalParam, getOptionalParamInnerType, isOptionalParam } from "./1_utilities.ts";
+import { analyzeOptionalParam, getOptionalParamInnerType, isOptionalParam, VECTOR_CONSTRUCTOR } from "./1_utilities.ts";
 import { AnyType, flags, getType, getTypeName } from "./0_api.ts";
 
 function deserializeSingleParam(
@@ -71,46 +71,4 @@ function deserializeSingleParam(
       }
     }
   }
-}
-export function deserialize(
-  reader: TLRawReader,
-  paramDesc: [string, unknown, string][],
-  name: string,
-): AnyType {
-  const type_: Record<string, any> = { _: name };
-  const flagFields: Record<string, number> = {};
-  for (const [name, type, ntype] of paramDesc) {
-    if (isOptionalParam(ntype)) {
-      const { flagField, bitIndex } = analyzeOptionalParam(ntype);
-      const bits = flagFields[flagField];
-      if ((bits & (1 << bitIndex)) == 0) {
-        continue;
-      }
-    }
-
-    if (type == flags && ntype == "#") {
-      flagFields[name] = reader.readInt32();
-      continue;
-    }
-
-    if (type instanceof Array) {
-      assertEquals(reader.readInt32(false), 0x1CB5C415);
-      const count = reader.readInt32();
-      const items = new Array<
-        NonNullable<ReturnType<typeof deserializeSingleParam>>
-      >();
-      for (let i = 0; i < count; i++) {
-        items.push(deserializeSingleParam(reader, type[0], ntype)!);
-      }
-      type_[name] = items;
-      continue;
-    }
-
-    const value = deserializeSingleParam(reader, type, ntype);
-    if (typeof value !== "boolean" || value) {
-      type_[name] = value;
-    }
-  }
-
-  return type_ as AnyType;
 }

@@ -18,68 +18,82 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 // deno-lint-ignore-file no-explicit-any
-import { AnyObject, flags, getType } from "./0_api.ts";
+import { BOOL_FALSE, VECTOR } from "../2_tl.ts";
+import { AnyObject, getType } from "./0_api.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
-import { analyzeOptionalParam, assertIsValidType, getOptionalParamInnerType, isOptionalParam } from "./1_utilities.ts";
+import { analyzeOptionalParam, assertIsValidType, BOOL_TRUE, getOptionalParamInnerType, isOptionalParam } from "./1_utilities.ts";
 
 function serializeSingleParam(
   writer: TLRawWriter,
   value: any,
-  type: unknown,
-  ntype: string,
+  type: string,
   debugInfo: string,
 ) {
-  if (isOptionalParam(ntype)) {
-    ntype = getOptionalParamInnerType(ntype);
+  if (isOptionalParam(type)) {
+    type = getOptionalParamInnerType(type);
   }
   const valueRepr = value == null ? null : (typeof value === "object" && "_" in value) ? value._ : value.constructor.name;
 
-  if (type == Uint8Array) {
-    if ((value instanceof Uint8Array)) {
-      writer.writeBytes(value);
-      return writer.buffer;
-    } else {
-      throw new TypeError(`Expected Uint8Array but received ${valueRepr} ${debugInfo}`);
-    }
-  }
-
   switch (type) {
-    case "bigint":
+    case "bytes":
+      if ((value instanceof Uint8Array)) {
+        writer.writeBytes(value);
+        return writer.buffer;
+      } else {
+        throw new TypeError(`Expected Uint8Array but received ${valueRepr} ${debugInfo}`);
+      }
+    case "int128":
       if (typeof value === "bigint") {
-        if (ntype == "int128") {
-          writer.writeInt128(value);
-        } else if (ntype === "int256") {
-          writer.writeInt256(value);
-        } else {
-          writer.writeInt64(value);
-        }
+        writer.writeInt128(value);
       } else {
         throw new TypeError(`Expected bigint but received ${valueRepr} ${debugInfo}`);
       }
       break;
-    case "boolean":
+    case "int256":
+      if (typeof value === "bigint") {
+        writer.writeInt256(value);
+      } else {
+        throw new TypeError(`Expected bigint but received ${valueRepr} ${debugInfo}`);
+      }
+      break;
+    case "long":
+      if (typeof value === "bigint") {
+        writer.writeInt64(value);
+      } else {
+        throw new TypeError(`Expected bigint but received ${valueRepr} ${debugInfo}`);
+      }
+      break;
+    case "Bool":
       if (typeof value === "boolean") {
         if (value) {
-          writer.writeInt32(0x997275B5);
+          writer.writeInt32(BOOL_TRUE);
         } else {
-          writer.writeInt32(0xBC799737);
+          writer.writeInt32(BOOL_FALSE);
         }
       } else {
         throw new TypeError(`Expected boolean but received ${valueRepr} ${debugInfo}`);
       }
       break;
-    case "number":
+    case "int":
       //
       if (value == null) {
         value = 0;
       }
       //
       if (typeof value === "number") {
-        if (ntype == "double") {
-          writer.writeDouble(value);
-        } else {
-          writer.writeInt32(value);
-        }
+        writer.writeInt32(value);
+      } else {
+        throw new TypeError(`Expected number but received ${valueRepr} ${debugInfo}`);
+      }
+      break;
+    case "double":
+      //
+      if (value == null) {
+        value = 0;
+      }
+      //
+      if (typeof value === "number") {
+        writer.writeDouble(value);
       } else {
         throw new TypeError(`Expected number but received ${valueRepr} ${debugInfo}`);
       }
@@ -123,20 +137,20 @@ export function serialize(type_: AnyObject): Uint8Array {
   const [id, parameters_] = maybeParameters;
   writer.writeInt32(id, false);
 
-  for (const [i, [name, type, ntype]] of parameters_.entries()) {
-    if (isOptionalParam(ntype) && type__[name] === undefined) {
+  for (let [i, [name, type]] of parameters_.entries()) {
+    if (isOptionalParam(type) && type__[name] === undefined) {
       continue;
     }
 
     const debugInfo = `[0x${id.toString(16).toUpperCase()}::${i}]`;
 
-    if (type == flags) {
+    if (type == "#") {
       let flags = 0;
       const flagField_ = name;
 
-      for (const [name, _, ntype] of parameters_) {
-        if (isOptionalParam(ntype)) {
-          const { flagField, bitIndex } = analyzeOptionalParam(ntype);
+      for (const [name, type] of parameters_) {
+        if (isOptionalParam(type)) {
+          const { flagField, bitIndex } = analyzeOptionalParam(type);
 
           if (flagField == flagField_) {
             if (type__[name] !== undefined) {
@@ -149,24 +163,24 @@ export function serialize(type_: AnyObject): Uint8Array {
       continue;
     }
 
-    if (type__[name] === undefined && !isOptionalParam(ntype)) {
+    if (type__[name] === undefined && !isOptionalParam(type)) {
       throw new Error(`Missing required parameter: ${name}`);
     }
 
-    if (type instanceof Array) {
-      const itemsType = type[0];
+    if (type.startsWith("Vector<")) {
+      type = type.slice("Vector<".length).slice(0, -1);
       if (!Array.isArray(type__[name])) {
         throw new TypeError("Expected array");
       }
-      writer.writeInt32(0x1CB5C415); // vector constructor
+      writer.writeInt32(VECTOR); // vector constructor
       writer.writeInt32(type__[name].length);
       for (const item of type__[name]) {
-        serializeSingleParam(writer, item, itemsType, ntype, debugInfo);
+        serializeSingleParam(writer, item, type, debugInfo);
       }
       continue;
     }
 
-    serializeSingleParam(writer, type__[name], type, ntype, debugInfo);
+    serializeSingleParam(writer, type__[name], type, debugInfo);
   }
 
   return writer.buffer;

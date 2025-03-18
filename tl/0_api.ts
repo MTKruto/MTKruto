@@ -1,23 +1,3 @@
-/**
- * MTKruto - Cross-runtime JavaScript library for building Telegram clients
- * Copyright (C) 2023-2025 Roj <https://roj.im/>
- *
- * This file is part of MTKruto.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 declare const R: unique symbol;
 
 export type Function = { [R]?: unknown };
@@ -20885,9 +20865,7 @@ const map: Map<number, string> = new Map([
 
 export const getTypeName: (id: number) => string | undefined = map.get.bind(map);
 
-export const flags: symbol = Symbol();
-
-export type Parameters = [number, [string, unknown, string][]];
+export type Parameters = [number, [string, string][]];
 
 const enums: Map<string, (keyof Types)[]> = new Map([
   ["ResPQ", ["resPQ"]],
@@ -21651,10 +21629,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x05162463,
       [
-        ["nonce", "bigint", "int128"],
-        ["server_nonce", "bigint", "int128"],
-        ["pq", Uint8Array, "bytes"],
-        ["server_public_key_fingerprints", ["bigint"], "Vector<long>"],
+        ["nonce", "int128"],
+        ["server_nonce", "int128"],
+        ["pq", "bytes"],
+        ["server_public_key_fingerprints", "Vector<long>"],
       ],
     ],
   ],
@@ -21663,13 +21641,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA9F55F95,
       [
-        ["pq", Uint8Array, "bytes"],
-        ["p", Uint8Array, "bytes"],
-        ["q", Uint8Array, "bytes"],
-        ["nonce", "bigint", "int128"],
-        ["server_nonce", "bigint", "int128"],
-        ["new_nonce", "bigint", "int256"],
-        ["dc", "number", "int"],
+        ["pq", "bytes"],
+        ["p", "bytes"],
+        ["q", "bytes"],
+        ["nonce", "int128"],
+        ["server_nonce", "int128"],
+        ["new_nonce", "int256"],
+        ["dc", "int"],
       ],
     ],
   ],
@@ -21678,14 +21656,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x56FDDF88,
       [
-        ["pq", Uint8Array, "bytes"],
-        ["p", Uint8Array, "bytes"],
-        ["q", Uint8Array, "bytes"],
-        ["nonce", "bigint", "int128"],
-        ["server_nonce", "bigint", "int128"],
-        ["new_nonce", "bigint", "int256"],
-        ["dc", "number", "int"],
-        ["expires_in", "number", "int"],
+        ["pq", "bytes"],
+        ["p", "bytes"],
+        ["q", "bytes"],
+        ["nonce", "int128"],
+        ["server_nonce", "int128"],
+        ["new_nonce", "int256"],
+        ["dc", "int"],
+        ["expires_in", "int"],
       ],
     ],
   ],
@@ -21694,9 +21672,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD0E8075C,
       [
-        ["nonce", "bigint", "int128"],
-        ["server_nonce", "bigint", "int128"],
-        ["encrypted_answer", Uint8Array, "bytes"],
+        ["nonce", "int128"],
+        ["server_nonce", "int128"],
+        ["encrypted_answer", "bytes"],
       ],
     ],
   ],
@@ -21705,12 +21683,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB5890DBA,
       [
-        ["nonce", "bigint", "int128"],
-        ["server_nonce", "bigint", "int128"],
-        ["g", "number", "int"],
-        ["dh_prime", Uint8Array, "bytes"],
-        ["g_a", Uint8Array, "bytes"],
-        ["server_time", "number", "int"],
+        ["nonce", "int128"],
+        ["server_nonce", "int128"],
+        ["g", "int"],
+        ["dh_prime", "bytes"],
+        ["g_a", "bytes"],
+        ["server_time", "int"],
       ],
     ],
   ],
@@ -21719,10 +21697,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6643B654,
       [
-        ["nonce", "bigint", "int128"],
-        ["server_nonce", "bigint", "int128"],
-        ["retry_id", "bigint", "long"],
-        ["g_b", Uint8Array, "bytes"],
+        ["nonce", "int128"],
+        ["server_nonce", "int128"],
+        ["retry_id", "long"],
+        ["g_b", "bytes"],
       ],
     ],
   ],
@@ -21731,9 +21709,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3BCBF734,
       [
-        ["nonce", "bigint", "int128"],
-        ["server_nonce", "bigint", "int128"],
-        ["new_nonce_hash1", "bigint", "int128"],
+        ["nonce", "int128"],
+        ["server_nonce", "int128"],
+        ["new_nonce_hash1", "int128"],
       ],
     ],
   ],
@@ -21742,9 +21720,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x46DC1FB9,
       [
-        ["nonce", "bigint", "int128"],
-        ["server_nonce", "bigint", "int128"],
-        ["new_nonce_hash2", "bigint", "int128"],
+        ["nonce", "int128"],
+        ["server_nonce", "int128"],
+        ["new_nonce_hash2", "int128"],
       ],
     ],
   ],
@@ -21753,9 +21731,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA69DAE02,
       [
-        ["nonce", "bigint", "int128"],
-        ["server_nonce", "bigint", "int128"],
-        ["new_nonce_hash3", "bigint", "int128"],
+        ["nonce", "int128"],
+        ["server_nonce", "int128"],
+        ["new_nonce_hash3", "int128"],
       ],
     ],
   ],
@@ -21764,11 +21742,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x75A3F765,
       [
-        ["nonce", "bigint", "long"],
-        ["temp_auth_key_id", "bigint", "long"],
-        ["perm_auth_key_id", "bigint", "long"],
-        ["temp_session_id", "bigint", "long"],
-        ["expires_at", "number", "int"],
+        ["nonce", "long"],
+        ["temp_auth_key_id", "long"],
+        ["perm_auth_key_id", "long"],
+        ["temp_session_id", "long"],
+        ["expires_at", "int"],
       ],
     ],
   ],
@@ -21777,8 +21755,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2144CA19,
       [
-        ["error_code", "number", "int"],
-        ["error_message", "string", "string"],
+        ["error_code", "int"],
+        ["error_message", "string"],
       ],
     ],
   ],
@@ -21801,9 +21779,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA43AD8B7,
       [
-        ["msg_id", "bigint", "long"],
-        ["seq_no", "number", "int"],
-        ["bytes", "number", "int"],
+        ["msg_id", "long"],
+        ["seq_no", "int"],
+        ["bytes", "int"],
       ],
     ],
   ],
@@ -21812,9 +21790,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0949D9DC,
       [
-        ["valid_since", "number", "int"],
-        ["valid_until", "number", "int"],
-        ["salt", "bigint", "long"],
+        ["valid_since", "int"],
+        ["valid_until", "int"],
+        ["salt", "long"],
       ],
     ],
   ],
@@ -21823,9 +21801,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAE500895,
       [
-        ["req_msg_id", "bigint", "long"],
-        ["now", "number", "int"],
-        ["salts", ["FutureSalt"], "vector<FutureSalt>"],
+        ["req_msg_id", "long"],
+        ["now", "int"],
+        ["salts", "vector<FutureSalt>"],
       ],
     ],
   ],
@@ -21834,8 +21812,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x347773C5,
       [
-        ["msg_id", "bigint", "long"],
-        ["ping_id", "bigint", "long"],
+        ["msg_id", "long"],
+        ["ping_id", "long"],
       ],
     ],
   ],
@@ -21844,7 +21822,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE22045FC,
       [
-        ["session_id", "bigint", "long"],
+        ["session_id", "long"],
       ],
     ],
   ],
@@ -21853,7 +21831,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x62D350C9,
       [
-        ["session_id", "bigint", "long"],
+        ["session_id", "long"],
       ],
     ],
   ],
@@ -21862,9 +21840,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9EC20908,
       [
-        ["first_msg_id", "bigint", "long"],
-        ["unique_id", "bigint", "long"],
-        ["server_salt", "bigint", "long"],
+        ["first_msg_id", "long"],
+        ["unique_id", "long"],
+        ["server_salt", "long"],
       ],
     ],
   ],
@@ -21873,7 +21851,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3072CFA1,
       [
-        ["packed_data", Uint8Array, "bytes"],
+        ["packed_data", "bytes"],
       ],
     ],
   ],
@@ -21882,7 +21860,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x62D6B459,
       [
-        ["msg_ids", ["bigint"], "Vector<long>"],
+        ["msg_ids", "Vector<long>"],
       ],
     ],
   ],
@@ -21891,9 +21869,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA7EFF811,
       [
-        ["bad_msg_id", "bigint", "long"],
-        ["bad_msg_seqno", "number", "int"],
-        ["error_code", "number", "int"],
+        ["bad_msg_id", "long"],
+        ["bad_msg_seqno", "int"],
+        ["error_code", "int"],
       ],
     ],
   ],
@@ -21902,10 +21880,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEDAB447B,
       [
-        ["bad_msg_id", "bigint", "long"],
-        ["bad_msg_seqno", "number", "int"],
-        ["error_code", "number", "int"],
-        ["new_server_salt", "bigint", "long"],
+        ["bad_msg_id", "long"],
+        ["bad_msg_seqno", "int"],
+        ["error_code", "int"],
+        ["new_server_salt", "long"],
       ],
     ],
   ],
@@ -21914,7 +21892,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7D861A08,
       [
-        ["msg_ids", ["bigint"], "Vector<long>"],
+        ["msg_ids", "Vector<long>"],
       ],
     ],
   ],
@@ -21923,7 +21901,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDA69FB52,
       [
-        ["msg_ids", ["bigint"], "Vector<long>"],
+        ["msg_ids", "Vector<long>"],
       ],
     ],
   ],
@@ -21932,8 +21910,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x04DEB57D,
       [
-        ["req_msg_id", "bigint", "long"],
-        ["info", Uint8Array, "bytes"],
+        ["req_msg_id", "long"],
+        ["info", "bytes"],
       ],
     ],
   ],
@@ -21942,8 +21920,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8CC0D131,
       [
-        ["msg_ids", ["bigint"], "Vector<long>"],
-        ["info", Uint8Array, "bytes"],
+        ["msg_ids", "Vector<long>"],
+        ["info", "bytes"],
       ],
     ],
   ],
@@ -21952,10 +21930,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x276D3EC6,
       [
-        ["msg_id", "bigint", "long"],
-        ["answer_msg_id", "bigint", "long"],
-        ["bytes", "number", "int"],
-        ["status", "number", "int"],
+        ["msg_id", "long"],
+        ["answer_msg_id", "long"],
+        ["bytes", "int"],
+        ["status", "int"],
       ],
     ],
   ],
@@ -21964,9 +21942,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x809DB6DF,
       [
-        ["answer_msg_id", "bigint", "long"],
-        ["bytes", "number", "int"],
-        ["status", "number", "int"],
+        ["answer_msg_id", "long"],
+        ["bytes", "int"],
+        ["status", "int"],
       ],
     ],
   ],
@@ -21996,9 +21974,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9299359F,
       [
-        ["max_delay", "number", "int"],
-        ["wait_after", "number", "int"],
-        ["max_wait", "number", "int"],
+        ["max_delay", "int"],
+        ["wait_after", "int"],
+        ["max_wait", "int"],
       ],
     ],
   ],
@@ -22014,8 +21992,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC4B9F9BB,
       [
-        ["code", "number", "int"],
-        ["text", "string", "string"],
+        ["code", "int"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -22024,8 +22002,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD433AD73,
       [
-        ["ipv4", "number", "int"],
-        ["port", "number", "int"],
+        ["ipv4", "int"],
+        ["port", "int"],
       ],
     ],
   ],
@@ -22034,9 +22012,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x37982646,
       [
-        ["ipv4", "number", "int"],
-        ["port", "number", "int"],
-        ["secret", Uint8Array, "bytes"],
+        ["ipv4", "int"],
+        ["port", "int"],
+        ["secret", "bytes"],
       ],
     ],
   ],
@@ -22045,9 +22023,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4679B65F,
       [
-        ["phone_prefix_rules", "string", "string"],
-        ["dc_id", "number", "int"],
-        ["ips", ["IpPort"], "vector<IpPort>"],
+        ["phone_prefix_rules", "string"],
+        ["dc_id", "int"],
+        ["ips", "vector<IpPort>"],
       ],
     ],
   ],
@@ -22056,9 +22034,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5A592A6C,
       [
-        ["date", "number", "int"],
-        ["expires", "number", "int"],
-        ["rules", ["AccessPointRule"], "vector<AccessPointRule>"],
+        ["date", "int"],
+        ["expires", "int"],
+        ["rules", "vector<AccessPointRule>"],
       ],
     ],
   ],
@@ -22067,11 +22045,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x27D69997,
       [
-        ["flags", flags, "#"],
-        ["big", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["volume_id", "bigint", "long"],
-        ["local_id", "number", "int"],
+        ["flags", "#"],
+        ["big", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["volume_id", "long"],
+        ["local_id", "int"],
       ],
     ],
   ],
@@ -22080,9 +22058,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0DBAEAE9,
       [
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
-        ["volume_id", "bigint", "long"],
-        ["local_id", "number", "int"],
+        ["stickerset", "InputStickerSet"],
+        ["volume_id", "long"],
+        ["local_id", "int"],
       ],
     ],
   ],
@@ -22105,7 +22083,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x35A95CB9,
       [
-        ["chat_id", "bigint", "long"],
+        ["chat_id", "long"],
       ],
     ],
   ],
@@ -22114,8 +22092,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDDE8A54C,
       [
-        ["user_id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["user_id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -22124,8 +22102,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x27BCBBFC,
       [
-        ["channel_id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["channel_id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -22134,9 +22112,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA87B0A1C,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["user_id", "bigint", "long"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["user_id", "long"],
       ],
     ],
   ],
@@ -22145,9 +22123,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBD2A0840,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["channel_id", "bigint", "long"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["channel_id", "long"],
       ],
     ],
   ],
@@ -22170,8 +22148,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF21158C6,
       [
-        ["user_id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["user_id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -22180,9 +22158,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1DA448E2,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["user_id", "bigint", "long"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["user_id", "long"],
       ],
     ],
   ],
@@ -22191,10 +22169,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF392B7F4,
       [
-        ["client_id", "bigint", "long"],
-        ["phone", "string", "string"],
-        ["first_name", "string", "string"],
-        ["last_name", "string", "string"],
+        ["client_id", "long"],
+        ["phone", "string"],
+        ["first_name", "string"],
+        ["last_name", "string"],
       ],
     ],
   ],
@@ -22203,10 +22181,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF52FF27F,
       [
-        ["id", "bigint", "long"],
-        ["parts", "number", "int"],
-        ["name", "string", "string"],
-        ["md5_checksum", "string", "string"],
+        ["id", "long"],
+        ["parts", "int"],
+        ["name", "string"],
+        ["md5_checksum", "string"],
       ],
     ],
   ],
@@ -22215,9 +22193,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFA4F0BB5,
       [
-        ["id", "bigint", "long"],
-        ["parts", "number", "int"],
-        ["name", "string", "string"],
+        ["id", "long"],
+        ["parts", "int"],
+        ["name", "string"],
       ],
     ],
   ],
@@ -22226,7 +22204,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x62DC8B48,
       [
-        ["id", "InputDocument", "InputDocument"],
+        ["id", "InputDocument"],
       ],
     ],
   ],
@@ -22242,11 +22220,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1E287D04,
       [
-        ["flags", flags, "#"],
-        ["spoiler", "true", "flags.2?true"],
-        ["file", "InputFile", "InputFile"],
-        ["stickers", ["InputDocument"], "flags.0?Vector<InputDocument>"],
-        ["ttl_seconds", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["spoiler", "flags.2?true"],
+        ["file", "InputFile"],
+        ["stickers", "flags.0?Vector<InputDocument>"],
+        ["ttl_seconds", "flags.1?int"],
       ],
     ],
   ],
@@ -22255,10 +22233,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB3BA0635,
       [
-        ["flags", flags, "#"],
-        ["spoiler", "true", "flags.1?true"],
-        ["id", "InputPhoto", "InputPhoto"],
-        ["ttl_seconds", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["spoiler", "flags.1?true"],
+        ["id", "InputPhoto"],
+        ["ttl_seconds", "flags.0?int"],
       ],
     ],
   ],
@@ -22267,7 +22245,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF9C44144,
       [
-        ["geo_point", "InputGeoPoint", "InputGeoPoint"],
+        ["geo_point", "InputGeoPoint"],
       ],
     ],
   ],
@@ -22276,10 +22254,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF8AB7DFB,
       [
-        ["phone_number", "string", "string"],
-        ["first_name", "string", "string"],
-        ["last_name", "string", "string"],
-        ["vcard", "string", "string"],
+        ["phone_number", "string"],
+        ["first_name", "string"],
+        ["last_name", "string"],
+        ["vcard", "string"],
       ],
     ],
   ],
@@ -22288,18 +22266,18 @@ const types: Map<string, Parameters> = new Map([
     [
       0x037C9330,
       [
-        ["flags", flags, "#"],
-        ["nosound_video", "true", "flags.3?true"],
-        ["force_file", "true", "flags.4?true"],
-        ["spoiler", "true", "flags.5?true"],
-        ["file", "InputFile", "InputFile"],
-        ["thumb", "InputFile", "flags.2?InputFile"],
-        ["mime_type", "string", "string"],
-        ["attributes", ["DocumentAttribute"], "Vector<DocumentAttribute>"],
-        ["stickers", ["InputDocument"], "flags.0?Vector<InputDocument>"],
-        ["video_cover", "InputPhoto", "flags.6?InputPhoto"],
-        ["video_timestamp", "number", "flags.7?int"],
-        ["ttl_seconds", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["nosound_video", "flags.3?true"],
+        ["force_file", "flags.4?true"],
+        ["spoiler", "flags.5?true"],
+        ["file", "InputFile"],
+        ["thumb", "flags.2?InputFile"],
+        ["mime_type", "string"],
+        ["attributes", "Vector<DocumentAttribute>"],
+        ["stickers", "flags.0?Vector<InputDocument>"],
+        ["video_cover", "flags.6?InputPhoto"],
+        ["video_timestamp", "flags.7?int"],
+        ["ttl_seconds", "flags.1?int"],
       ],
     ],
   ],
@@ -22308,13 +22286,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA8763AB5,
       [
-        ["flags", flags, "#"],
-        ["spoiler", "true", "flags.2?true"],
-        ["id", "InputDocument", "InputDocument"],
-        ["video_cover", "InputPhoto", "flags.3?InputPhoto"],
-        ["video_timestamp", "number", "flags.4?int"],
-        ["ttl_seconds", "number", "flags.0?int"],
-        ["query", "string", "flags.1?string"],
+        ["flags", "#"],
+        ["spoiler", "flags.2?true"],
+        ["id", "InputDocument"],
+        ["video_cover", "flags.3?InputPhoto"],
+        ["video_timestamp", "flags.4?int"],
+        ["ttl_seconds", "flags.0?int"],
+        ["query", "flags.1?string"],
       ],
     ],
   ],
@@ -22323,12 +22301,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC13D1C11,
       [
-        ["geo_point", "InputGeoPoint", "InputGeoPoint"],
-        ["title", "string", "string"],
-        ["address", "string", "string"],
-        ["provider", "string", "string"],
-        ["venue_id", "string", "string"],
-        ["venue_type", "string", "string"],
+        ["geo_point", "InputGeoPoint"],
+        ["title", "string"],
+        ["address", "string"],
+        ["provider", "string"],
+        ["venue_id", "string"],
+        ["venue_type", "string"],
       ],
     ],
   ],
@@ -22337,10 +22315,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE5BBFE1A,
       [
-        ["flags", flags, "#"],
-        ["spoiler", "true", "flags.1?true"],
-        ["url", "string", "string"],
-        ["ttl_seconds", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["spoiler", "flags.1?true"],
+        ["url", "string"],
+        ["ttl_seconds", "flags.0?int"],
       ],
     ],
   ],
@@ -22349,12 +22327,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x779600F9,
       [
-        ["flags", flags, "#"],
-        ["spoiler", "true", "flags.1?true"],
-        ["url", "string", "string"],
-        ["ttl_seconds", "number", "flags.0?int"],
-        ["video_cover", "InputPhoto", "flags.2?InputPhoto"],
-        ["video_timestamp", "number", "flags.3?int"],
+        ["flags", "#"],
+        ["spoiler", "flags.1?true"],
+        ["url", "string"],
+        ["ttl_seconds", "flags.0?int"],
+        ["video_cover", "flags.2?InputPhoto"],
+        ["video_timestamp", "flags.3?int"],
       ],
     ],
   ],
@@ -22363,7 +22341,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD33F43F3,
       [
-        ["id", "InputGame", "InputGame"],
+        ["id", "InputGame"],
       ],
     ],
   ],
@@ -22372,16 +22350,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x405FEF0D,
       [
-        ["flags", flags, "#"],
-        ["title", "string", "string"],
-        ["description", "string", "string"],
-        ["photo", "InputWebDocument", "flags.0?InputWebDocument"],
-        ["invoice", "Invoice", "Invoice"],
-        ["payload", Uint8Array, "bytes"],
-        ["provider", "string", "flags.3?string"],
-        ["provider_data", "DataJSON", "DataJSON"],
-        ["start_param", "string", "flags.1?string"],
-        ["extended_media", "InputMedia", "flags.2?InputMedia"],
+        ["flags", "#"],
+        ["title", "string"],
+        ["description", "string"],
+        ["photo", "flags.0?InputWebDocument"],
+        ["invoice", "Invoice"],
+        ["payload", "bytes"],
+        ["provider", "flags.3?string"],
+        ["provider_data", "DataJSON"],
+        ["start_param", "flags.1?string"],
+        ["extended_media", "flags.2?InputMedia"],
       ],
     ],
   ],
@@ -22390,12 +22368,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x971FA843,
       [
-        ["flags", flags, "#"],
-        ["stopped", "true", "flags.0?true"],
-        ["geo_point", "InputGeoPoint", "InputGeoPoint"],
-        ["heading", "number", "flags.2?int"],
-        ["period", "number", "flags.1?int"],
-        ["proximity_notification_radius", "number", "flags.3?int"],
+        ["flags", "#"],
+        ["stopped", "flags.0?true"],
+        ["geo_point", "InputGeoPoint"],
+        ["heading", "flags.2?int"],
+        ["period", "flags.1?int"],
+        ["proximity_notification_radius", "flags.3?int"],
       ],
     ],
   ],
@@ -22404,11 +22382,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0F94E5F1,
       [
-        ["flags", flags, "#"],
-        ["poll", "Poll", "Poll"],
-        ["correct_answers", [Uint8Array], "flags.0?Vector<bytes>"],
-        ["solution", "string", "flags.1?string"],
-        ["solution_entities", ["MessageEntity"], "flags.1?Vector<MessageEntity>"],
+        ["flags", "#"],
+        ["poll", "Poll"],
+        ["correct_answers", "flags.0?Vector<bytes>"],
+        ["solution", "flags.1?string"],
+        ["solution_entities", "flags.1?Vector<MessageEntity>"],
       ],
     ],
   ],
@@ -22417,7 +22395,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE66FBF7B,
       [
-        ["emoticon", "string", "string"],
+        ["emoticon", "string"],
       ],
     ],
   ],
@@ -22426,8 +22404,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x89FDD778,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
       ],
     ],
   ],
@@ -22436,11 +22414,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC21B8849,
       [
-        ["flags", flags, "#"],
-        ["force_large_media", "true", "flags.0?true"],
-        ["force_small_media", "true", "flags.1?true"],
-        ["optional", "true", "flags.2?true"],
-        ["url", "string", "string"],
+        ["flags", "#"],
+        ["force_large_media", "flags.0?true"],
+        ["force_small_media", "flags.1?true"],
+        ["optional", "flags.2?true"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -22449,10 +22427,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC4103386,
       [
-        ["flags", flags, "#"],
-        ["stars_amount", "bigint", "long"],
-        ["extended_media", ["InputMedia"], "Vector<InputMedia>"],
-        ["payload", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["stars_amount", "long"],
+        ["extended_media", "Vector<InputMedia>"],
+        ["payload", "flags.0?string"],
       ],
     ],
   ],
@@ -22468,11 +22446,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBDCDAEC0,
       [
-        ["flags", flags, "#"],
-        ["file", "InputFile", "flags.0?InputFile"],
-        ["video", "InputFile", "flags.1?InputFile"],
-        ["video_start_ts", "number", "flags.2?double"],
-        ["video_emoji_markup", "VideoSize", "flags.3?VideoSize"],
+        ["flags", "#"],
+        ["file", "flags.0?InputFile"],
+        ["video", "flags.1?InputFile"],
+        ["video_start_ts", "flags.2?double"],
+        ["video_emoji_markup", "flags.3?VideoSize"],
       ],
     ],
   ],
@@ -22481,7 +22459,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8953AD37,
       [
-        ["id", "InputPhoto", "InputPhoto"],
+        ["id", "InputPhoto"],
       ],
     ],
   ],
@@ -22497,10 +22475,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x48222FAF,
       [
-        ["flags", flags, "#"],
-        ["lat", "number", "double"],
-        ["long", "number", "double"],
-        ["accuracy_radius", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["lat", "double"],
+        ["long", "double"],
+        ["accuracy_radius", "flags.0?int"],
       ],
     ],
   ],
@@ -22516,9 +22494,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3BB3B94A,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["file_reference", Uint8Array, "bytes"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["file_reference", "bytes"],
       ],
     ],
   ],
@@ -22527,10 +22505,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDFDAABE1,
       [
-        ["volume_id", "bigint", "long"],
-        ["local_id", "number", "int"],
-        ["secret", "bigint", "long"],
-        ["file_reference", Uint8Array, "bytes"],
+        ["volume_id", "long"],
+        ["local_id", "int"],
+        ["secret", "long"],
+        ["file_reference", "bytes"],
       ],
     ],
   ],
@@ -22539,8 +22517,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF5235D55,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -22549,10 +22527,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBAD07584,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["file_reference", Uint8Array, "bytes"],
-        ["thumb_size", "string", "string"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["file_reference", "bytes"],
+        ["thumb_size", "string"],
       ],
     ],
   ],
@@ -22561,8 +22539,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCBC7EE28,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -22578,10 +22556,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x40181FFE,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["file_reference", Uint8Array, "bytes"],
-        ["thumb_size", "string", "string"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["file_reference", "bytes"],
+        ["thumb_size", "string"],
       ],
     ],
   ],
@@ -22590,12 +22568,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD83466F3,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["file_reference", Uint8Array, "bytes"],
-        ["volume_id", "bigint", "long"],
-        ["local_id", "number", "int"],
-        ["secret", "bigint", "long"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["file_reference", "bytes"],
+        ["volume_id", "long"],
+        ["local_id", "int"],
+        ["secret", "long"],
       ],
     ],
   ],
@@ -22604,10 +22582,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x37257E99,
       [
-        ["flags", flags, "#"],
-        ["big", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["photo_id", "bigint", "long"],
+        ["flags", "#"],
+        ["big", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["photo_id", "long"],
       ],
     ],
   ],
@@ -22616,8 +22594,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9D84F3DB,
       [
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
-        ["thumb_version", "number", "int"],
+        ["stickerset", "InputStickerSet"],
+        ["thumb_version", "int"],
       ],
     ],
   ],
@@ -22626,12 +22604,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0598A92A,
       [
-        ["flags", flags, "#"],
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["time_ms", "bigint", "long"],
-        ["scale", "number", "int"],
-        ["video_channel", "number", "flags.0?int"],
-        ["video_quality", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["call", "InputGroupCall"],
+        ["time_ms", "long"],
+        ["scale", "int"],
+        ["video_channel", "flags.0?int"],
+        ["video_quality", "flags.0?int"],
       ],
     ],
   ],
@@ -22640,7 +22618,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x59511722,
       [
-        ["user_id", "bigint", "long"],
+        ["user_id", "long"],
       ],
     ],
   ],
@@ -22649,7 +22627,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x36C6019A,
       [
-        ["chat_id", "bigint", "long"],
+        ["chat_id", "long"],
       ],
     ],
   ],
@@ -22658,7 +22636,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA2A5371E,
       [
-        ["channel_id", "bigint", "long"],
+        ["channel_id", "long"],
       ],
     ],
   ],
@@ -22737,7 +22715,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD3BC4B7A,
       [
-        ["id", "bigint", "long"],
+        ["id", "long"],
       ],
     ],
   ],
@@ -22746,53 +22724,53 @@ const types: Map<string, Parameters> = new Map([
     [
       0x020B1422,
       [
-        ["flags", flags, "#"],
-        ["self", "true", "flags.10?true"],
-        ["contact", "true", "flags.11?true"],
-        ["mutual_contact", "true", "flags.12?true"],
-        ["deleted", "true", "flags.13?true"],
-        ["bot", "true", "flags.14?true"],
-        ["bot_chat_history", "true", "flags.15?true"],
-        ["bot_nochats", "true", "flags.16?true"],
-        ["verified", "true", "flags.17?true"],
-        ["restricted", "true", "flags.18?true"],
-        ["min", "true", "flags.20?true"],
-        ["bot_inline_geo", "true", "flags.21?true"],
-        ["support", "true", "flags.23?true"],
-        ["scam", "true", "flags.24?true"],
-        ["apply_min_photo", "true", "flags.25?true"],
-        ["fake", "true", "flags.26?true"],
-        ["bot_attach_menu", "true", "flags.27?true"],
-        ["premium", "true", "flags.28?true"],
-        ["attach_menu_enabled", "true", "flags.29?true"],
-        ["flags2", flags, "#"],
-        ["bot_can_edit", "true", "flags2.1?true"],
-        ["close_friend", "true", "flags2.2?true"],
-        ["stories_hidden", "true", "flags2.3?true"],
-        ["stories_unavailable", "true", "flags2.4?true"],
-        ["contact_require_premium", "true", "flags2.10?true"],
-        ["bot_business", "true", "flags2.11?true"],
-        ["bot_has_main_app", "true", "flags2.13?true"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "flags.0?long"],
-        ["first_name", "string", "flags.1?string"],
-        ["last_name", "string", "flags.2?string"],
-        ["username", "string", "flags.3?string"],
-        ["phone", "string", "flags.4?string"],
-        ["photo", "UserProfilePhoto", "flags.5?UserProfilePhoto"],
-        ["status", "UserStatus", "flags.6?UserStatus"],
-        ["bot_info_version", "number", "flags.14?int"],
-        ["restriction_reason", ["RestrictionReason"], "flags.18?Vector<RestrictionReason>"],
-        ["bot_inline_placeholder", "string", "flags.19?string"],
-        ["lang_code", "string", "flags.22?string"],
-        ["emoji_status", "EmojiStatus", "flags.30?EmojiStatus"],
-        ["usernames", ["Username"], "flags2.0?Vector<Username>"],
-        ["stories_max_id", "number", "flags2.5?int"],
-        ["color", "PeerColor", "flags2.8?PeerColor"],
-        ["profile_color", "PeerColor", "flags2.9?PeerColor"],
-        ["bot_active_users", "number", "flags2.12?int"],
-        ["bot_verification_icon", "bigint", "flags2.14?long"],
-        ["send_paid_messages_stars", "bigint", "flags2.15?long"],
+        ["flags", "#"],
+        ["self", "flags.10?true"],
+        ["contact", "flags.11?true"],
+        ["mutual_contact", "flags.12?true"],
+        ["deleted", "flags.13?true"],
+        ["bot", "flags.14?true"],
+        ["bot_chat_history", "flags.15?true"],
+        ["bot_nochats", "flags.16?true"],
+        ["verified", "flags.17?true"],
+        ["restricted", "flags.18?true"],
+        ["min", "flags.20?true"],
+        ["bot_inline_geo", "flags.21?true"],
+        ["support", "flags.23?true"],
+        ["scam", "flags.24?true"],
+        ["apply_min_photo", "flags.25?true"],
+        ["fake", "flags.26?true"],
+        ["bot_attach_menu", "flags.27?true"],
+        ["premium", "flags.28?true"],
+        ["attach_menu_enabled", "flags.29?true"],
+        ["flags2", "#"],
+        ["bot_can_edit", "flags2.1?true"],
+        ["close_friend", "flags2.2?true"],
+        ["stories_hidden", "flags2.3?true"],
+        ["stories_unavailable", "flags2.4?true"],
+        ["contact_require_premium", "flags2.10?true"],
+        ["bot_business", "flags2.11?true"],
+        ["bot_has_main_app", "flags2.13?true"],
+        ["id", "long"],
+        ["access_hash", "flags.0?long"],
+        ["first_name", "flags.1?string"],
+        ["last_name", "flags.2?string"],
+        ["username", "flags.3?string"],
+        ["phone", "flags.4?string"],
+        ["photo", "flags.5?UserProfilePhoto"],
+        ["status", "flags.6?UserStatus"],
+        ["bot_info_version", "flags.14?int"],
+        ["restriction_reason", "flags.18?Vector<RestrictionReason>"],
+        ["bot_inline_placeholder", "flags.19?string"],
+        ["lang_code", "flags.22?string"],
+        ["emoji_status", "flags.30?EmojiStatus"],
+        ["usernames", "flags2.0?Vector<Username>"],
+        ["stories_max_id", "flags2.5?int"],
+        ["color", "flags2.8?PeerColor"],
+        ["profile_color", "flags2.9?PeerColor"],
+        ["bot_active_users", "flags2.12?int"],
+        ["bot_verification_icon", "flags2.14?long"],
+        ["send_paid_messages_stars", "flags2.15?long"],
       ],
     ],
   ],
@@ -22808,12 +22786,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x82D1F706,
       [
-        ["flags", flags, "#"],
-        ["has_video", "true", "flags.0?true"],
-        ["personal", "true", "flags.2?true"],
-        ["photo_id", "bigint", "long"],
-        ["stripped_thumb", Uint8Array, "flags.1?bytes"],
-        ["dc_id", "number", "int"],
+        ["flags", "#"],
+        ["has_video", "flags.0?true"],
+        ["personal", "flags.2?true"],
+        ["photo_id", "long"],
+        ["stripped_thumb", "flags.1?bytes"],
+        ["dc_id", "int"],
       ],
     ],
   ],
@@ -22829,7 +22807,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEDB93949,
       [
-        ["expires", "number", "int"],
+        ["expires", "int"],
       ],
     ],
   ],
@@ -22838,7 +22816,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x008C703F,
       [
-        ["was_online", "number", "int"],
+        ["was_online", "int"],
       ],
     ],
   ],
@@ -22847,8 +22825,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7B197DC8,
       [
-        ["flags", flags, "#"],
-        ["by_me", "true", "flags.0?true"],
+        ["flags", "#"],
+        ["by_me", "flags.0?true"],
       ],
     ],
   ],
@@ -22857,8 +22835,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x541A1D1A,
       [
-        ["flags", flags, "#"],
-        ["by_me", "true", "flags.0?true"],
+        ["flags", "#"],
+        ["by_me", "flags.0?true"],
       ],
     ],
   ],
@@ -22867,8 +22845,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x65899777,
       [
-        ["flags", flags, "#"],
-        ["by_me", "true", "flags.0?true"],
+        ["flags", "#"],
+        ["by_me", "flags.0?true"],
       ],
     ],
   ],
@@ -22877,7 +22855,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x29562865,
       [
-        ["id", "bigint", "long"],
+        ["id", "long"],
       ],
     ],
   ],
@@ -22886,22 +22864,22 @@ const types: Map<string, Parameters> = new Map([
     [
       0x41CBF256,
       [
-        ["flags", flags, "#"],
-        ["creator", "true", "flags.0?true"],
-        ["left", "true", "flags.2?true"],
-        ["deactivated", "true", "flags.5?true"],
-        ["call_active", "true", "flags.23?true"],
-        ["call_not_empty", "true", "flags.24?true"],
-        ["noforwards", "true", "flags.25?true"],
-        ["id", "bigint", "long"],
-        ["title", "string", "string"],
-        ["photo", "ChatPhoto", "ChatPhoto"],
-        ["participants_count", "number", "int"],
-        ["date", "number", "int"],
-        ["version", "number", "int"],
-        ["migrated_to", "InputChannel", "flags.6?InputChannel"],
-        ["admin_rights", "ChatAdminRights", "flags.14?ChatAdminRights"],
-        ["default_banned_rights", "ChatBannedRights", "flags.18?ChatBannedRights"],
+        ["flags", "#"],
+        ["creator", "flags.0?true"],
+        ["left", "flags.2?true"],
+        ["deactivated", "flags.5?true"],
+        ["call_active", "flags.23?true"],
+        ["call_not_empty", "flags.24?true"],
+        ["noforwards", "flags.25?true"],
+        ["id", "long"],
+        ["title", "string"],
+        ["photo", "ChatPhoto"],
+        ["participants_count", "int"],
+        ["date", "int"],
+        ["version", "int"],
+        ["migrated_to", "flags.6?InputChannel"],
+        ["admin_rights", "flags.14?ChatAdminRights"],
+        ["default_banned_rights", "flags.18?ChatBannedRights"],
       ],
     ],
   ],
@@ -22910,8 +22888,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6592A1A7,
       [
-        ["id", "bigint", "long"],
-        ["title", "string", "string"],
+        ["id", "long"],
+        ["title", "string"],
       ],
     ],
   ],
@@ -22920,52 +22898,52 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7482147E,
       [
-        ["flags", flags, "#"],
-        ["creator", "true", "flags.0?true"],
-        ["left", "true", "flags.2?true"],
-        ["broadcast", "true", "flags.5?true"],
-        ["verified", "true", "flags.7?true"],
-        ["megagroup", "true", "flags.8?true"],
-        ["restricted", "true", "flags.9?true"],
-        ["signatures", "true", "flags.11?true"],
-        ["min", "true", "flags.12?true"],
-        ["scam", "true", "flags.19?true"],
-        ["has_link", "true", "flags.20?true"],
-        ["has_geo", "true", "flags.21?true"],
-        ["slowmode_enabled", "true", "flags.22?true"],
-        ["call_active", "true", "flags.23?true"],
-        ["call_not_empty", "true", "flags.24?true"],
-        ["fake", "true", "flags.25?true"],
-        ["gigagroup", "true", "flags.26?true"],
-        ["noforwards", "true", "flags.27?true"],
-        ["join_to_send", "true", "flags.28?true"],
-        ["join_request", "true", "flags.29?true"],
-        ["forum", "true", "flags.30?true"],
-        ["flags2", flags, "#"],
-        ["stories_hidden", "true", "flags2.1?true"],
-        ["stories_hidden_min", "true", "flags2.2?true"],
-        ["stories_unavailable", "true", "flags2.3?true"],
-        ["signature_profiles", "true", "flags2.12?true"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "flags.13?long"],
-        ["title", "string", "string"],
-        ["username", "string", "flags.6?string"],
-        ["photo", "ChatPhoto", "ChatPhoto"],
-        ["date", "number", "int"],
-        ["restriction_reason", ["RestrictionReason"], "flags.9?Vector<RestrictionReason>"],
-        ["admin_rights", "ChatAdminRights", "flags.14?ChatAdminRights"],
-        ["banned_rights", "ChatBannedRights", "flags.15?ChatBannedRights"],
-        ["default_banned_rights", "ChatBannedRights", "flags.18?ChatBannedRights"],
-        ["participants_count", "number", "flags.17?int"],
-        ["usernames", ["Username"], "flags2.0?Vector<Username>"],
-        ["stories_max_id", "number", "flags2.4?int"],
-        ["color", "PeerColor", "flags2.7?PeerColor"],
-        ["profile_color", "PeerColor", "flags2.8?PeerColor"],
-        ["emoji_status", "EmojiStatus", "flags2.9?EmojiStatus"],
-        ["level", "number", "flags2.10?int"],
-        ["subscription_until_date", "number", "flags2.11?int"],
-        ["bot_verification_icon", "bigint", "flags2.13?long"],
-        ["send_paid_messages_stars", "bigint", "flags2.14?long"],
+        ["flags", "#"],
+        ["creator", "flags.0?true"],
+        ["left", "flags.2?true"],
+        ["broadcast", "flags.5?true"],
+        ["verified", "flags.7?true"],
+        ["megagroup", "flags.8?true"],
+        ["restricted", "flags.9?true"],
+        ["signatures", "flags.11?true"],
+        ["min", "flags.12?true"],
+        ["scam", "flags.19?true"],
+        ["has_link", "flags.20?true"],
+        ["has_geo", "flags.21?true"],
+        ["slowmode_enabled", "flags.22?true"],
+        ["call_active", "flags.23?true"],
+        ["call_not_empty", "flags.24?true"],
+        ["fake", "flags.25?true"],
+        ["gigagroup", "flags.26?true"],
+        ["noforwards", "flags.27?true"],
+        ["join_to_send", "flags.28?true"],
+        ["join_request", "flags.29?true"],
+        ["forum", "flags.30?true"],
+        ["flags2", "#"],
+        ["stories_hidden", "flags2.1?true"],
+        ["stories_hidden_min", "flags2.2?true"],
+        ["stories_unavailable", "flags2.3?true"],
+        ["signature_profiles", "flags2.12?true"],
+        ["id", "long"],
+        ["access_hash", "flags.13?long"],
+        ["title", "string"],
+        ["username", "flags.6?string"],
+        ["photo", "ChatPhoto"],
+        ["date", "int"],
+        ["restriction_reason", "flags.9?Vector<RestrictionReason>"],
+        ["admin_rights", "flags.14?ChatAdminRights"],
+        ["banned_rights", "flags.15?ChatBannedRights"],
+        ["default_banned_rights", "flags.18?ChatBannedRights"],
+        ["participants_count", "flags.17?int"],
+        ["usernames", "flags2.0?Vector<Username>"],
+        ["stories_max_id", "flags2.4?int"],
+        ["color", "flags2.7?PeerColor"],
+        ["profile_color", "flags2.8?PeerColor"],
+        ["emoji_status", "flags2.9?EmojiStatus"],
+        ["level", "flags2.10?int"],
+        ["subscription_until_date", "flags2.11?int"],
+        ["bot_verification_icon", "flags2.13?long"],
+        ["send_paid_messages_stars", "flags2.14?long"],
       ],
     ],
   ],
@@ -22974,13 +22952,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x17D493D5,
       [
-        ["flags", flags, "#"],
-        ["broadcast", "true", "flags.5?true"],
-        ["megagroup", "true", "flags.8?true"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["title", "string", "string"],
-        ["until_date", "number", "flags.16?int"],
+        ["flags", "#"],
+        ["broadcast", "flags.5?true"],
+        ["megagroup", "flags.8?true"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["title", "string"],
+        ["until_date", "flags.16?int"],
       ],
     ],
   ],
@@ -22989,27 +22967,27 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2633421B,
       [
-        ["flags", flags, "#"],
-        ["can_set_username", "true", "flags.7?true"],
-        ["has_scheduled", "true", "flags.8?true"],
-        ["translations_disabled", "true", "flags.19?true"],
-        ["id", "bigint", "long"],
-        ["about", "string", "string"],
-        ["participants", "ChatParticipants", "ChatParticipants"],
-        ["chat_photo", "Photo", "flags.2?Photo"],
-        ["notify_settings", "PeerNotifySettings", "PeerNotifySettings"],
-        ["exported_invite", "ExportedChatInvite", "flags.13?ExportedChatInvite"],
-        ["bot_info", ["BotInfo"], "flags.3?Vector<BotInfo>"],
-        ["pinned_msg_id", "number", "flags.6?int"],
-        ["folder_id", "number", "flags.11?int"],
-        ["call", "InputGroupCall", "flags.12?InputGroupCall"],
-        ["ttl_period", "number", "flags.14?int"],
-        ["groupcall_default_join_as", "Peer", "flags.15?Peer"],
-        ["theme_emoticon", "string", "flags.16?string"],
-        ["requests_pending", "number", "flags.17?int"],
-        ["recent_requesters", ["bigint"], "flags.17?Vector<long>"],
-        ["available_reactions", "ChatReactions", "flags.18?ChatReactions"],
-        ["reactions_limit", "number", "flags.20?int"],
+        ["flags", "#"],
+        ["can_set_username", "flags.7?true"],
+        ["has_scheduled", "flags.8?true"],
+        ["translations_disabled", "flags.19?true"],
+        ["id", "long"],
+        ["about", "string"],
+        ["participants", "ChatParticipants"],
+        ["chat_photo", "flags.2?Photo"],
+        ["notify_settings", "PeerNotifySettings"],
+        ["exported_invite", "flags.13?ExportedChatInvite"],
+        ["bot_info", "flags.3?Vector<BotInfo>"],
+        ["pinned_msg_id", "flags.6?int"],
+        ["folder_id", "flags.11?int"],
+        ["call", "flags.12?InputGroupCall"],
+        ["ttl_period", "flags.14?int"],
+        ["groupcall_default_join_as", "flags.15?Peer"],
+        ["theme_emoticon", "flags.16?string"],
+        ["requests_pending", "flags.17?int"],
+        ["recent_requesters", "flags.17?Vector<long>"],
+        ["available_reactions", "flags.18?ChatReactions"],
+        ["reactions_limit", "flags.20?int"],
       ],
     ],
   ],
@@ -23018,72 +22996,72 @@ const types: Map<string, Parameters> = new Map([
     [
       0x52D6806B,
       [
-        ["flags", flags, "#"],
-        ["can_view_participants", "true", "flags.3?true"],
-        ["can_set_username", "true", "flags.6?true"],
-        ["can_set_stickers", "true", "flags.7?true"],
-        ["hidden_prehistory", "true", "flags.10?true"],
-        ["can_set_location", "true", "flags.16?true"],
-        ["has_scheduled", "true", "flags.19?true"],
-        ["can_view_stats", "true", "flags.20?true"],
-        ["blocked", "true", "flags.22?true"],
-        ["flags2", flags, "#"],
-        ["can_delete_channel", "true", "flags2.0?true"],
-        ["antispam", "true", "flags2.1?true"],
-        ["participants_hidden", "true", "flags2.2?true"],
-        ["translations_disabled", "true", "flags2.3?true"],
-        ["stories_pinned_available", "true", "flags2.5?true"],
-        ["view_forum_as_messages", "true", "flags2.6?true"],
-        ["restricted_sponsored", "true", "flags2.11?true"],
-        ["can_view_revenue", "true", "flags2.12?true"],
-        ["paid_media_allowed", "true", "flags2.14?true"],
-        ["can_view_stars_revenue", "true", "flags2.15?true"],
-        ["paid_reactions_available", "true", "flags2.16?true"],
-        ["stargifts_available", "true", "flags2.19?true"],
-        ["paid_messages_available", "true", "flags2.20?true"],
-        ["id", "bigint", "long"],
-        ["about", "string", "string"],
-        ["participants_count", "number", "flags.0?int"],
-        ["admins_count", "number", "flags.1?int"],
-        ["kicked_count", "number", "flags.2?int"],
-        ["banned_count", "number", "flags.2?int"],
-        ["online_count", "number", "flags.13?int"],
-        ["read_inbox_max_id", "number", "int"],
-        ["read_outbox_max_id", "number", "int"],
-        ["unread_count", "number", "int"],
-        ["chat_photo", "Photo", "Photo"],
-        ["notify_settings", "PeerNotifySettings", "PeerNotifySettings"],
-        ["exported_invite", "ExportedChatInvite", "flags.23?ExportedChatInvite"],
-        ["bot_info", ["BotInfo"], "Vector<BotInfo>"],
-        ["migrated_from_chat_id", "bigint", "flags.4?long"],
-        ["migrated_from_max_id", "number", "flags.4?int"],
-        ["pinned_msg_id", "number", "flags.5?int"],
-        ["stickerset", "StickerSet", "flags.8?StickerSet"],
-        ["available_min_id", "number", "flags.9?int"],
-        ["folder_id", "number", "flags.11?int"],
-        ["linked_chat_id", "bigint", "flags.14?long"],
-        ["location", "ChannelLocation", "flags.15?ChannelLocation"],
-        ["slowmode_seconds", "number", "flags.17?int"],
-        ["slowmode_next_send_date", "number", "flags.18?int"],
-        ["stats_dc", "number", "flags.12?int"],
-        ["pts", "number", "int"],
-        ["call", "InputGroupCall", "flags.21?InputGroupCall"],
-        ["ttl_period", "number", "flags.24?int"],
-        ["pending_suggestions", ["string"], "flags.25?Vector<string>"],
-        ["groupcall_default_join_as", "Peer", "flags.26?Peer"],
-        ["theme_emoticon", "string", "flags.27?string"],
-        ["requests_pending", "number", "flags.28?int"],
-        ["recent_requesters", ["bigint"], "flags.28?Vector<long>"],
-        ["default_send_as", "Peer", "flags.29?Peer"],
-        ["available_reactions", "ChatReactions", "flags.30?ChatReactions"],
-        ["reactions_limit", "number", "flags2.13?int"],
-        ["stories", "PeerStories", "flags2.4?PeerStories"],
-        ["wallpaper", "WallPaper", "flags2.7?WallPaper"],
-        ["boosts_applied", "number", "flags2.8?int"],
-        ["boosts_unrestrict", "number", "flags2.9?int"],
-        ["emojiset", "StickerSet", "flags2.10?StickerSet"],
-        ["bot_verification", "BotVerification", "flags2.17?BotVerification"],
-        ["stargifts_count", "number", "flags2.18?int"],
+        ["flags", "#"],
+        ["can_view_participants", "flags.3?true"],
+        ["can_set_username", "flags.6?true"],
+        ["can_set_stickers", "flags.7?true"],
+        ["hidden_prehistory", "flags.10?true"],
+        ["can_set_location", "flags.16?true"],
+        ["has_scheduled", "flags.19?true"],
+        ["can_view_stats", "flags.20?true"],
+        ["blocked", "flags.22?true"],
+        ["flags2", "#"],
+        ["can_delete_channel", "flags2.0?true"],
+        ["antispam", "flags2.1?true"],
+        ["participants_hidden", "flags2.2?true"],
+        ["translations_disabled", "flags2.3?true"],
+        ["stories_pinned_available", "flags2.5?true"],
+        ["view_forum_as_messages", "flags2.6?true"],
+        ["restricted_sponsored", "flags2.11?true"],
+        ["can_view_revenue", "flags2.12?true"],
+        ["paid_media_allowed", "flags2.14?true"],
+        ["can_view_stars_revenue", "flags2.15?true"],
+        ["paid_reactions_available", "flags2.16?true"],
+        ["stargifts_available", "flags2.19?true"],
+        ["paid_messages_available", "flags2.20?true"],
+        ["id", "long"],
+        ["about", "string"],
+        ["participants_count", "flags.0?int"],
+        ["admins_count", "flags.1?int"],
+        ["kicked_count", "flags.2?int"],
+        ["banned_count", "flags.2?int"],
+        ["online_count", "flags.13?int"],
+        ["read_inbox_max_id", "int"],
+        ["read_outbox_max_id", "int"],
+        ["unread_count", "int"],
+        ["chat_photo", "Photo"],
+        ["notify_settings", "PeerNotifySettings"],
+        ["exported_invite", "flags.23?ExportedChatInvite"],
+        ["bot_info", "Vector<BotInfo>"],
+        ["migrated_from_chat_id", "flags.4?long"],
+        ["migrated_from_max_id", "flags.4?int"],
+        ["pinned_msg_id", "flags.5?int"],
+        ["stickerset", "flags.8?StickerSet"],
+        ["available_min_id", "flags.9?int"],
+        ["folder_id", "flags.11?int"],
+        ["linked_chat_id", "flags.14?long"],
+        ["location", "flags.15?ChannelLocation"],
+        ["slowmode_seconds", "flags.17?int"],
+        ["slowmode_next_send_date", "flags.18?int"],
+        ["stats_dc", "flags.12?int"],
+        ["pts", "int"],
+        ["call", "flags.21?InputGroupCall"],
+        ["ttl_period", "flags.24?int"],
+        ["pending_suggestions", "flags.25?Vector<string>"],
+        ["groupcall_default_join_as", "flags.26?Peer"],
+        ["theme_emoticon", "flags.27?string"],
+        ["requests_pending", "flags.28?int"],
+        ["recent_requesters", "flags.28?Vector<long>"],
+        ["default_send_as", "flags.29?Peer"],
+        ["available_reactions", "flags.30?ChatReactions"],
+        ["reactions_limit", "flags2.13?int"],
+        ["stories", "flags2.4?PeerStories"],
+        ["wallpaper", "flags2.7?WallPaper"],
+        ["boosts_applied", "flags2.8?int"],
+        ["boosts_unrestrict", "flags2.9?int"],
+        ["emojiset", "flags2.10?StickerSet"],
+        ["bot_verification", "flags2.17?BotVerification"],
+        ["stargifts_count", "flags2.18?int"],
       ],
     ],
   ],
@@ -23092,9 +23070,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC02D4007,
       [
-        ["user_id", "bigint", "long"],
-        ["inviter_id", "bigint", "long"],
-        ["date", "number", "int"],
+        ["user_id", "long"],
+        ["inviter_id", "long"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -23103,7 +23081,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE46BCEE4,
       [
-        ["user_id", "bigint", "long"],
+        ["user_id", "long"],
       ],
     ],
   ],
@@ -23112,9 +23090,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA0933F5B,
       [
-        ["user_id", "bigint", "long"],
-        ["inviter_id", "bigint", "long"],
-        ["date", "number", "int"],
+        ["user_id", "long"],
+        ["inviter_id", "long"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -23123,9 +23101,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8763D3E1,
       [
-        ["flags", flags, "#"],
-        ["chat_id", "bigint", "long"],
-        ["self_participant", "ChatParticipant", "flags.0?ChatParticipant"],
+        ["flags", "#"],
+        ["chat_id", "long"],
+        ["self_participant", "flags.0?ChatParticipant"],
       ],
     ],
   ],
@@ -23134,9 +23112,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3CBC93F8,
       [
-        ["chat_id", "bigint", "long"],
-        ["participants", ["ChatParticipant"], "Vector<ChatParticipant>"],
-        ["version", "number", "int"],
+        ["chat_id", "long"],
+        ["participants", "Vector<ChatParticipant>"],
+        ["version", "int"],
       ],
     ],
   ],
@@ -23152,11 +23130,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1C6E1C11,
       [
-        ["flags", flags, "#"],
-        ["has_video", "true", "flags.0?true"],
-        ["photo_id", "bigint", "long"],
-        ["stripped_thumb", Uint8Array, "flags.1?bytes"],
-        ["dc_id", "number", "int"],
+        ["flags", "#"],
+        ["has_video", "flags.0?true"],
+        ["photo_id", "long"],
+        ["stripped_thumb", "flags.1?bytes"],
+        ["dc_id", "int"],
       ],
     ],
   ],
@@ -23165,9 +23143,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x90A6CA84,
       [
-        ["flags", flags, "#"],
-        ["id", "number", "int"],
-        ["peer_id", "Peer", "flags.0?Peer"],
+        ["flags", "#"],
+        ["id", "int"],
+        ["peer_id", "flags.0?Peer"],
       ],
     ],
   ],
@@ -23176,49 +23154,49 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEABCDD4D,
       [
-        ["flags", flags, "#"],
-        ["out", "true", "flags.1?true"],
-        ["mentioned", "true", "flags.4?true"],
-        ["media_unread", "true", "flags.5?true"],
-        ["silent", "true", "flags.13?true"],
-        ["post", "true", "flags.14?true"],
-        ["from_scheduled", "true", "flags.18?true"],
-        ["legacy", "true", "flags.19?true"],
-        ["edit_hide", "true", "flags.21?true"],
-        ["pinned", "true", "flags.24?true"],
-        ["noforwards", "true", "flags.26?true"],
-        ["invert_media", "true", "flags.27?true"],
-        ["flags2", flags, "#"],
-        ["offline", "true", "flags2.1?true"],
-        ["video_processing_pending", "true", "flags2.4?true"],
-        ["id", "number", "int"],
-        ["from_id", "Peer", "flags.8?Peer"],
-        ["from_boosts_applied", "number", "flags.29?int"],
-        ["peer_id", "Peer", "Peer"],
-        ["saved_peer_id", "Peer", "flags.28?Peer"],
-        ["fwd_from", "MessageFwdHeader", "flags.2?MessageFwdHeader"],
-        ["via_bot_id", "bigint", "flags.11?long"],
-        ["via_business_bot_id", "bigint", "flags2.0?long"],
-        ["reply_to", "MessageReplyHeader", "flags.3?MessageReplyHeader"],
-        ["date", "number", "int"],
-        ["message", "string", "string"],
-        ["media", "MessageMedia", "flags.9?MessageMedia"],
-        ["reply_markup", "ReplyMarkup", "flags.6?ReplyMarkup"],
-        ["entities", ["MessageEntity"], "flags.7?Vector<MessageEntity>"],
-        ["views", "number", "flags.10?int"],
-        ["forwards", "number", "flags.10?int"],
-        ["replies", "MessageReplies", "flags.23?MessageReplies"],
-        ["edit_date", "number", "flags.15?int"],
-        ["post_author", "string", "flags.16?string"],
-        ["grouped_id", "bigint", "flags.17?long"],
-        ["reactions", "MessageReactions", "flags.20?MessageReactions"],
-        ["restriction_reason", ["RestrictionReason"], "flags.22?Vector<RestrictionReason>"],
-        ["ttl_period", "number", "flags.25?int"],
-        ["quick_reply_shortcut_id", "number", "flags.30?int"],
-        ["effect", "bigint", "flags2.2?long"],
-        ["factcheck", "FactCheck", "flags2.3?FactCheck"],
-        ["report_delivery_until_date", "number", "flags2.5?int"],
-        ["paid_message_stars", "bigint", "flags2.6?long"],
+        ["flags", "#"],
+        ["out", "flags.1?true"],
+        ["mentioned", "flags.4?true"],
+        ["media_unread", "flags.5?true"],
+        ["silent", "flags.13?true"],
+        ["post", "flags.14?true"],
+        ["from_scheduled", "flags.18?true"],
+        ["legacy", "flags.19?true"],
+        ["edit_hide", "flags.21?true"],
+        ["pinned", "flags.24?true"],
+        ["noforwards", "flags.26?true"],
+        ["invert_media", "flags.27?true"],
+        ["flags2", "#"],
+        ["offline", "flags2.1?true"],
+        ["video_processing_pending", "flags2.4?true"],
+        ["id", "int"],
+        ["from_id", "flags.8?Peer"],
+        ["from_boosts_applied", "flags.29?int"],
+        ["peer_id", "Peer"],
+        ["saved_peer_id", "flags.28?Peer"],
+        ["fwd_from", "flags.2?MessageFwdHeader"],
+        ["via_bot_id", "flags.11?long"],
+        ["via_business_bot_id", "flags2.0?long"],
+        ["reply_to", "flags.3?MessageReplyHeader"],
+        ["date", "int"],
+        ["message", "string"],
+        ["media", "flags.9?MessageMedia"],
+        ["reply_markup", "flags.6?ReplyMarkup"],
+        ["entities", "flags.7?Vector<MessageEntity>"],
+        ["views", "flags.10?int"],
+        ["forwards", "flags.10?int"],
+        ["replies", "flags.23?MessageReplies"],
+        ["edit_date", "flags.15?int"],
+        ["post_author", "flags.16?string"],
+        ["grouped_id", "flags.17?long"],
+        ["reactions", "flags.20?MessageReactions"],
+        ["restriction_reason", "flags.22?Vector<RestrictionReason>"],
+        ["ttl_period", "flags.25?int"],
+        ["quick_reply_shortcut_id", "flags.30?int"],
+        ["effect", "flags2.2?long"],
+        ["factcheck", "flags2.3?FactCheck"],
+        ["report_delivery_until_date", "flags2.5?int"],
+        ["paid_message_stars", "flags2.6?long"],
       ],
     ],
   ],
@@ -23227,22 +23205,22 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD3D28540,
       [
-        ["flags", flags, "#"],
-        ["out", "true", "flags.1?true"],
-        ["mentioned", "true", "flags.4?true"],
-        ["media_unread", "true", "flags.5?true"],
-        ["reactions_are_possible", "true", "flags.9?true"],
-        ["silent", "true", "flags.13?true"],
-        ["post", "true", "flags.14?true"],
-        ["legacy", "true", "flags.19?true"],
-        ["id", "number", "int"],
-        ["from_id", "Peer", "flags.8?Peer"],
-        ["peer_id", "Peer", "Peer"],
-        ["reply_to", "MessageReplyHeader", "flags.3?MessageReplyHeader"],
-        ["date", "number", "int"],
-        ["action", "MessageAction", "MessageAction"],
-        ["reactions", "MessageReactions", "flags.20?MessageReactions"],
-        ["ttl_period", "number", "flags.25?int"],
+        ["flags", "#"],
+        ["out", "flags.1?true"],
+        ["mentioned", "flags.4?true"],
+        ["media_unread", "flags.5?true"],
+        ["reactions_are_possible", "flags.9?true"],
+        ["silent", "flags.13?true"],
+        ["post", "flags.14?true"],
+        ["legacy", "flags.19?true"],
+        ["id", "int"],
+        ["from_id", "flags.8?Peer"],
+        ["peer_id", "Peer"],
+        ["reply_to", "flags.3?MessageReplyHeader"],
+        ["date", "int"],
+        ["action", "MessageAction"],
+        ["reactions", "flags.20?MessageReactions"],
+        ["ttl_period", "flags.25?int"],
       ],
     ],
   ],
@@ -23258,10 +23236,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x695150D7,
       [
-        ["flags", flags, "#"],
-        ["spoiler", "true", "flags.3?true"],
-        ["photo", "Photo", "flags.0?Photo"],
-        ["ttl_seconds", "number", "flags.2?int"],
+        ["flags", "#"],
+        ["spoiler", "flags.3?true"],
+        ["photo", "flags.0?Photo"],
+        ["ttl_seconds", "flags.2?int"],
       ],
     ],
   ],
@@ -23270,7 +23248,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x56E0D474,
       [
-        ["geo", "GeoPoint", "GeoPoint"],
+        ["geo", "GeoPoint"],
       ],
     ],
   ],
@@ -23279,11 +23257,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x70322949,
       [
-        ["phone_number", "string", "string"],
-        ["first_name", "string", "string"],
-        ["last_name", "string", "string"],
-        ["vcard", "string", "string"],
-        ["user_id", "bigint", "long"],
+        ["phone_number", "string"],
+        ["first_name", "string"],
+        ["last_name", "string"],
+        ["vcard", "string"],
+        ["user_id", "long"],
       ],
     ],
   ],
@@ -23299,17 +23277,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0x52D8CCD9,
       [
-        ["flags", flags, "#"],
-        ["nopremium", "true", "flags.3?true"],
-        ["spoiler", "true", "flags.4?true"],
-        ["video", "true", "flags.6?true"],
-        ["round", "true", "flags.7?true"],
-        ["voice", "true", "flags.8?true"],
-        ["document", "Document", "flags.0?Document"],
-        ["alt_documents", ["Document"], "flags.5?Vector<Document>"],
-        ["video_cover", "Photo", "flags.9?Photo"],
-        ["video_timestamp", "number", "flags.10?int"],
-        ["ttl_seconds", "number", "flags.2?int"],
+        ["flags", "#"],
+        ["nopremium", "flags.3?true"],
+        ["spoiler", "flags.4?true"],
+        ["video", "flags.6?true"],
+        ["round", "flags.7?true"],
+        ["voice", "flags.8?true"],
+        ["document", "flags.0?Document"],
+        ["alt_documents", "flags.5?Vector<Document>"],
+        ["video_cover", "flags.9?Photo"],
+        ["video_timestamp", "flags.10?int"],
+        ["ttl_seconds", "flags.2?int"],
       ],
     ],
   ],
@@ -23318,12 +23296,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDDF10C3B,
       [
-        ["flags", flags, "#"],
-        ["force_large_media", "true", "flags.0?true"],
-        ["force_small_media", "true", "flags.1?true"],
-        ["manual", "true", "flags.3?true"],
-        ["safe", "true", "flags.4?true"],
-        ["webpage", "WebPage", "WebPage"],
+        ["flags", "#"],
+        ["force_large_media", "flags.0?true"],
+        ["force_small_media", "flags.1?true"],
+        ["manual", "flags.3?true"],
+        ["safe", "flags.4?true"],
+        ["webpage", "WebPage"],
       ],
     ],
   ],
@@ -23332,12 +23310,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2EC0533F,
       [
-        ["geo", "GeoPoint", "GeoPoint"],
-        ["title", "string", "string"],
-        ["address", "string", "string"],
-        ["provider", "string", "string"],
-        ["venue_id", "string", "string"],
-        ["venue_type", "string", "string"],
+        ["geo", "GeoPoint"],
+        ["title", "string"],
+        ["address", "string"],
+        ["provider", "string"],
+        ["venue_id", "string"],
+        ["venue_type", "string"],
       ],
     ],
   ],
@@ -23346,7 +23324,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFDB19008,
       [
-        ["game", "Game", "Game"],
+        ["game", "Game"],
       ],
     ],
   ],
@@ -23355,17 +23333,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF6A548D3,
       [
-        ["flags", flags, "#"],
-        ["shipping_address_requested", "true", "flags.1?true"],
-        ["test", "true", "flags.3?true"],
-        ["title", "string", "string"],
-        ["description", "string", "string"],
-        ["photo", "WebDocument", "flags.0?WebDocument"],
-        ["receipt_msg_id", "number", "flags.2?int"],
-        ["currency", "string", "string"],
-        ["total_amount", "bigint", "long"],
-        ["start_param", "string", "string"],
-        ["extended_media", "MessageExtendedMedia", "flags.4?MessageExtendedMedia"],
+        ["flags", "#"],
+        ["shipping_address_requested", "flags.1?true"],
+        ["test", "flags.3?true"],
+        ["title", "string"],
+        ["description", "string"],
+        ["photo", "flags.0?WebDocument"],
+        ["receipt_msg_id", "flags.2?int"],
+        ["currency", "string"],
+        ["total_amount", "long"],
+        ["start_param", "string"],
+        ["extended_media", "flags.4?MessageExtendedMedia"],
       ],
     ],
   ],
@@ -23374,11 +23352,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB940C666,
       [
-        ["flags", flags, "#"],
-        ["geo", "GeoPoint", "GeoPoint"],
-        ["heading", "number", "flags.0?int"],
-        ["period", "number", "int"],
-        ["proximity_notification_radius", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["geo", "GeoPoint"],
+        ["heading", "flags.0?int"],
+        ["period", "int"],
+        ["proximity_notification_radius", "flags.1?int"],
       ],
     ],
   ],
@@ -23387,8 +23365,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4BD6E798,
       [
-        ["poll", "Poll", "Poll"],
-        ["results", "PollResults", "PollResults"],
+        ["poll", "Poll"],
+        ["results", "PollResults"],
       ],
     ],
   ],
@@ -23397,8 +23375,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3F7EE58B,
       [
-        ["value", "number", "int"],
-        ["emoticon", "string", "string"],
+        ["value", "int"],
+        ["emoticon", "string"],
       ],
     ],
   ],
@@ -23407,11 +23385,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x68CB6283,
       [
-        ["flags", flags, "#"],
-        ["via_mention", "true", "flags.1?true"],
-        ["peer", "Peer", "Peer"],
-        ["id", "number", "int"],
-        ["story", "StoryItem", "flags.0?StoryItem"],
+        ["flags", "#"],
+        ["via_mention", "flags.1?true"],
+        ["peer", "Peer"],
+        ["id", "int"],
+        ["story", "flags.0?StoryItem"],
       ],
     ],
   ],
@@ -23420,16 +23398,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAA073BEB,
       [
-        ["flags", flags, "#"],
-        ["only_new_subscribers", "true", "flags.0?true"],
-        ["winners_are_visible", "true", "flags.2?true"],
-        ["channels", ["bigint"], "Vector<long>"],
-        ["countries_iso2", ["string"], "flags.1?Vector<string>"],
-        ["prize_description", "string", "flags.3?string"],
-        ["quantity", "number", "int"],
-        ["months", "number", "flags.4?int"],
-        ["stars", "bigint", "flags.5?long"],
-        ["until_date", "number", "int"],
+        ["flags", "#"],
+        ["only_new_subscribers", "flags.0?true"],
+        ["winners_are_visible", "flags.2?true"],
+        ["channels", "Vector<long>"],
+        ["countries_iso2", "flags.1?Vector<string>"],
+        ["prize_description", "flags.3?string"],
+        ["quantity", "int"],
+        ["months", "flags.4?int"],
+        ["stars", "flags.5?long"],
+        ["until_date", "int"],
       ],
     ],
   ],
@@ -23438,19 +23416,19 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCEAA3EA1,
       [
-        ["flags", flags, "#"],
-        ["only_new_subscribers", "true", "flags.0?true"],
-        ["refunded", "true", "flags.2?true"],
-        ["channel_id", "bigint", "long"],
-        ["additional_peers_count", "number", "flags.3?int"],
-        ["launch_msg_id", "number", "int"],
-        ["winners_count", "number", "int"],
-        ["unclaimed_count", "number", "int"],
-        ["winners", ["bigint"], "Vector<long>"],
-        ["months", "number", "flags.4?int"],
-        ["stars", "bigint", "flags.5?long"],
-        ["prize_description", "string", "flags.1?string"],
-        ["until_date", "number", "int"],
+        ["flags", "#"],
+        ["only_new_subscribers", "flags.0?true"],
+        ["refunded", "flags.2?true"],
+        ["channel_id", "long"],
+        ["additional_peers_count", "flags.3?int"],
+        ["launch_msg_id", "int"],
+        ["winners_count", "int"],
+        ["unclaimed_count", "int"],
+        ["winners", "Vector<long>"],
+        ["months", "flags.4?int"],
+        ["stars", "flags.5?long"],
+        ["prize_description", "flags.1?string"],
+        ["until_date", "int"],
       ],
     ],
   ],
@@ -23459,8 +23437,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA8852491,
       [
-        ["stars_amount", "bigint", "long"],
-        ["extended_media", ["MessageExtendedMedia"], "Vector<MessageExtendedMedia>"],
+        ["stars_amount", "long"],
+        ["extended_media", "Vector<MessageExtendedMedia>"],
       ],
     ],
   ],
@@ -23476,8 +23454,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBD47CBAD,
       [
-        ["title", "string", "string"],
-        ["users", ["bigint"], "Vector<long>"],
+        ["title", "string"],
+        ["users", "Vector<long>"],
       ],
     ],
   ],
@@ -23486,7 +23464,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB5A1CE5A,
       [
-        ["title", "string", "string"],
+        ["title", "string"],
       ],
     ],
   ],
@@ -23495,7 +23473,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7FCB13A8,
       [
-        ["photo", "Photo", "Photo"],
+        ["photo", "Photo"],
       ],
     ],
   ],
@@ -23511,7 +23489,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x15CEFD00,
       [
-        ["users", ["bigint"], "Vector<long>"],
+        ["users", "Vector<long>"],
       ],
     ],
   ],
@@ -23520,7 +23498,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA43F30CC,
       [
-        ["user_id", "bigint", "long"],
+        ["user_id", "long"],
       ],
     ],
   ],
@@ -23529,7 +23507,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x031224C3,
       [
-        ["inviter_id", "bigint", "long"],
+        ["inviter_id", "long"],
       ],
     ],
   ],
@@ -23538,7 +23516,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x95D2AC92,
       [
-        ["title", "string", "string"],
+        ["title", "string"],
       ],
     ],
   ],
@@ -23547,7 +23525,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE1037F92,
       [
-        ["channel_id", "bigint", "long"],
+        ["channel_id", "long"],
       ],
     ],
   ],
@@ -23556,8 +23534,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEA3948E9,
       [
-        ["title", "string", "string"],
-        ["chat_id", "bigint", "long"],
+        ["title", "string"],
+        ["chat_id", "long"],
       ],
     ],
   ],
@@ -23580,8 +23558,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x92A72876,
       [
-        ["game_id", "bigint", "long"],
-        ["score", "number", "int"],
+        ["game_id", "long"],
+        ["score", "int"],
       ],
     ],
   ],
@@ -23590,16 +23568,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFFA00CCC,
       [
-        ["flags", flags, "#"],
-        ["recurring_init", "true", "flags.2?true"],
-        ["recurring_used", "true", "flags.3?true"],
-        ["currency", "string", "string"],
-        ["total_amount", "bigint", "long"],
-        ["payload", Uint8Array, "bytes"],
-        ["info", "PaymentRequestedInfo", "flags.0?PaymentRequestedInfo"],
-        ["shipping_option_id", "string", "flags.1?string"],
-        ["charge", "PaymentCharge", "PaymentCharge"],
-        ["subscription_until_date", "number", "flags.4?int"],
+        ["flags", "#"],
+        ["recurring_init", "flags.2?true"],
+        ["recurring_used", "flags.3?true"],
+        ["currency", "string"],
+        ["total_amount", "long"],
+        ["payload", "bytes"],
+        ["info", "flags.0?PaymentRequestedInfo"],
+        ["shipping_option_id", "flags.1?string"],
+        ["charge", "PaymentCharge"],
+        ["subscription_until_date", "flags.4?int"],
       ],
     ],
   ],
@@ -23608,13 +23586,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC624B16E,
       [
-        ["flags", flags, "#"],
-        ["recurring_init", "true", "flags.2?true"],
-        ["recurring_used", "true", "flags.3?true"],
-        ["currency", "string", "string"],
-        ["total_amount", "bigint", "long"],
-        ["invoice_slug", "string", "flags.0?string"],
-        ["subscription_until_date", "number", "flags.4?int"],
+        ["flags", "#"],
+        ["recurring_init", "flags.2?true"],
+        ["recurring_used", "flags.3?true"],
+        ["currency", "string"],
+        ["total_amount", "long"],
+        ["invoice_slug", "flags.0?string"],
+        ["subscription_until_date", "flags.4?int"],
       ],
     ],
   ],
@@ -23623,11 +23601,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x80E11A7F,
       [
-        ["flags", flags, "#"],
-        ["video", "true", "flags.2?true"],
-        ["call_id", "bigint", "long"],
-        ["reason", "PhoneCallDiscardReason", "flags.0?PhoneCallDiscardReason"],
-        ["duration", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["video", "flags.2?true"],
+        ["call_id", "long"],
+        ["reason", "flags.0?PhoneCallDiscardReason"],
+        ["duration", "flags.1?int"],
       ],
     ],
   ],
@@ -23643,7 +23621,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFAE69F56,
       [
-        ["message", "string", "string"],
+        ["message", "string"],
       ],
     ],
   ],
@@ -23652,11 +23630,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC516D679,
       [
-        ["flags", flags, "#"],
-        ["attach_menu", "true", "flags.1?true"],
-        ["from_request", "true", "flags.3?true"],
-        ["domain", "string", "flags.0?string"],
-        ["app", "BotApp", "flags.2?BotApp"],
+        ["flags", "#"],
+        ["attach_menu", "flags.1?true"],
+        ["from_request", "flags.3?true"],
+        ["domain", "flags.0?string"],
+        ["app", "flags.2?BotApp"],
       ],
     ],
   ],
@@ -23665,8 +23643,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1B287353,
       [
-        ["values", ["SecureValue"], "Vector<SecureValue>"],
-        ["credentials", "SecureCredentialsEncrypted", "SecureCredentialsEncrypted"],
+        ["values", "Vector<SecureValue>"],
+        ["credentials", "SecureCredentialsEncrypted"],
       ],
     ],
   ],
@@ -23675,7 +23653,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD95C6154,
       [
-        ["types", ["SecureValueType"], "Vector<SecureValueType>"],
+        ["types", "Vector<SecureValueType>"],
       ],
     ],
   ],
@@ -23691,9 +23669,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x98E0D697,
       [
-        ["from_id", "Peer", "Peer"],
-        ["to_id", "Peer", "Peer"],
-        ["distance", "number", "int"],
+        ["from_id", "Peer"],
+        ["to_id", "Peer"],
+        ["distance", "int"],
       ],
     ],
   ],
@@ -23702,9 +23680,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7A0D7F42,
       [
-        ["flags", flags, "#"],
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["duration", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["call", "InputGroupCall"],
+        ["duration", "flags.0?int"],
       ],
     ],
   ],
@@ -23713,8 +23691,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x502F92F7,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["users", ["bigint"], "Vector<long>"],
+        ["call", "InputGroupCall"],
+        ["users", "Vector<long>"],
       ],
     ],
   ],
@@ -23723,9 +23701,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3C134D7B,
       [
-        ["flags", flags, "#"],
-        ["period", "number", "int"],
-        ["auto_setting_from", "bigint", "flags.0?long"],
+        ["flags", "#"],
+        ["period", "int"],
+        ["auto_setting_from", "flags.0?long"],
       ],
     ],
   ],
@@ -23734,8 +23712,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB3A07661,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["schedule_date", "number", "int"],
+        ["call", "InputGroupCall"],
+        ["schedule_date", "int"],
       ],
     ],
   ],
@@ -23744,7 +23722,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAA786345,
       [
-        ["emoticon", "string", "string"],
+        ["emoticon", "string"],
       ],
     ],
   ],
@@ -23760,8 +23738,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x47DD8079,
       [
-        ["text", "string", "string"],
-        ["data", "string", "string"],
+        ["text", "string"],
+        ["data", "string"],
       ],
     ],
   ],
@@ -23770,7 +23748,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB4C38CB5,
       [
-        ["text", "string", "string"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -23779,13 +23757,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6C6274FA,
       [
-        ["flags", flags, "#"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
-        ["months", "number", "int"],
-        ["crypto_currency", "string", "flags.0?string"],
-        ["crypto_amount", "bigint", "flags.0?long"],
-        ["message", "TextWithEntities", "flags.1?TextWithEntities"],
+        ["flags", "#"],
+        ["currency", "string"],
+        ["amount", "long"],
+        ["months", "int"],
+        ["crypto_currency", "flags.0?string"],
+        ["crypto_amount", "flags.0?long"],
+        ["message", "flags.1?TextWithEntities"],
       ],
     ],
   ],
@@ -23794,10 +23772,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0D999256,
       [
-        ["flags", flags, "#"],
-        ["title", "string", "string"],
-        ["icon_color", "number", "int"],
-        ["icon_emoji_id", "bigint", "flags.0?long"],
+        ["flags", "#"],
+        ["title", "string"],
+        ["icon_color", "int"],
+        ["icon_emoji_id", "flags.0?long"],
       ],
     ],
   ],
@@ -23806,11 +23784,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC0944820,
       [
-        ["flags", flags, "#"],
-        ["title", "string", "flags.0?string"],
-        ["icon_emoji_id", "bigint", "flags.1?long"],
-        ["closed", "boolean", "flags.2?Bool"],
-        ["hidden", "boolean", "flags.3?Bool"],
+        ["flags", "#"],
+        ["title", "flags.0?string"],
+        ["icon_emoji_id", "flags.1?long"],
+        ["closed", "flags.2?Bool"],
+        ["hidden", "flags.3?Bool"],
       ],
     ],
   ],
@@ -23819,7 +23797,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x57DE635E,
       [
-        ["photo", "Photo", "Photo"],
+        ["photo", "Photo"],
       ],
     ],
   ],
@@ -23828,8 +23806,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x31518E9B,
       [
-        ["button_id", "number", "int"],
-        ["peers", ["Peer"], "Vector<Peer>"],
+        ["button_id", "int"],
+        ["peers", "Vector<Peer>"],
       ],
     ],
   ],
@@ -23838,10 +23816,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5060A3F4,
       [
-        ["flags", flags, "#"],
-        ["same", "true", "flags.0?true"],
-        ["for_both", "true", "flags.1?true"],
-        ["wallpaper", "WallPaper", "WallPaper"],
+        ["flags", "#"],
+        ["same", "flags.0?true"],
+        ["for_both", "flags.1?true"],
+        ["wallpaper", "WallPaper"],
       ],
     ],
   ],
@@ -23850,17 +23828,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0x56D03994,
       [
-        ["flags", flags, "#"],
-        ["via_giveaway", "true", "flags.0?true"],
-        ["unclaimed", "true", "flags.5?true"],
-        ["boost_peer", "Peer", "flags.1?Peer"],
-        ["months", "number", "int"],
-        ["slug", "string", "string"],
-        ["currency", "string", "flags.2?string"],
-        ["amount", "bigint", "flags.2?long"],
-        ["crypto_currency", "string", "flags.3?string"],
-        ["crypto_amount", "bigint", "flags.3?long"],
-        ["message", "TextWithEntities", "flags.4?TextWithEntities"],
+        ["flags", "#"],
+        ["via_giveaway", "flags.0?true"],
+        ["unclaimed", "flags.5?true"],
+        ["boost_peer", "flags.1?Peer"],
+        ["months", "int"],
+        ["slug", "string"],
+        ["currency", "flags.2?string"],
+        ["amount", "flags.2?long"],
+        ["crypto_currency", "flags.3?string"],
+        ["crypto_amount", "flags.3?long"],
+        ["message", "flags.4?TextWithEntities"],
       ],
     ],
   ],
@@ -23869,8 +23847,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA80F51E4,
       [
-        ["flags", flags, "#"],
-        ["stars", "bigint", "flags.0?long"],
+        ["flags", "#"],
+        ["stars", "flags.0?long"],
       ],
     ],
   ],
@@ -23879,10 +23857,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x87E2F155,
       [
-        ["flags", flags, "#"],
-        ["stars", "true", "flags.0?true"],
-        ["winners_count", "number", "int"],
-        ["unclaimed_count", "number", "int"],
+        ["flags", "#"],
+        ["stars", "flags.0?true"],
+        ["winners_count", "int"],
+        ["unclaimed_count", "int"],
       ],
     ],
   ],
@@ -23891,7 +23869,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCC02AA6D,
       [
-        ["boosts", "number", "int"],
+        ["boosts", "int"],
       ],
     ],
   ],
@@ -23900,8 +23878,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x93B31848,
       [
-        ["button_id", "number", "int"],
-        ["peers", ["RequestedPeer"], "Vector<RequestedPeer>"],
+        ["button_id", "int"],
+        ["peers", "Vector<RequestedPeer>"],
       ],
     ],
   ],
@@ -23910,12 +23888,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x41B3E202,
       [
-        ["flags", flags, "#"],
-        ["peer", "Peer", "Peer"],
-        ["currency", "string", "string"],
-        ["total_amount", "bigint", "long"],
-        ["payload", Uint8Array, "flags.0?bytes"],
-        ["charge", "PaymentCharge", "PaymentCharge"],
+        ["flags", "#"],
+        ["peer", "Peer"],
+        ["currency", "string"],
+        ["total_amount", "long"],
+        ["payload", "flags.0?bytes"],
+        ["charge", "PaymentCharge"],
       ],
     ],
   ],
@@ -23924,13 +23902,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x45D5B021,
       [
-        ["flags", flags, "#"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
-        ["stars", "bigint", "long"],
-        ["crypto_currency", "string", "flags.0?string"],
-        ["crypto_amount", "bigint", "flags.0?long"],
-        ["transaction_id", "string", "flags.1?string"],
+        ["flags", "#"],
+        ["currency", "string"],
+        ["amount", "long"],
+        ["stars", "long"],
+        ["crypto_currency", "flags.0?string"],
+        ["crypto_amount", "flags.0?long"],
+        ["transaction_id", "flags.1?string"],
       ],
     ],
   ],
@@ -23939,12 +23917,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB00C47A2,
       [
-        ["flags", flags, "#"],
-        ["unclaimed", "true", "flags.0?true"],
-        ["stars", "bigint", "long"],
-        ["transaction_id", "string", "string"],
-        ["boost_peer", "Peer", "Peer"],
-        ["giveaway_msg_id", "number", "int"],
+        ["flags", "#"],
+        ["unclaimed", "flags.0?true"],
+        ["stars", "long"],
+        ["transaction_id", "string"],
+        ["boost_peer", "Peer"],
+        ["giveaway_msg_id", "int"],
       ],
     ],
   ],
@@ -23953,21 +23931,21 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4717E8A4,
       [
-        ["flags", flags, "#"],
-        ["name_hidden", "true", "flags.0?true"],
-        ["saved", "true", "flags.2?true"],
-        ["converted", "true", "flags.3?true"],
-        ["upgraded", "true", "flags.5?true"],
-        ["refunded", "true", "flags.9?true"],
-        ["can_upgrade", "true", "flags.10?true"],
-        ["gift", "StarGift", "StarGift"],
-        ["message", "TextWithEntities", "flags.1?TextWithEntities"],
-        ["convert_stars", "bigint", "flags.4?long"],
-        ["upgrade_msg_id", "number", "flags.5?int"],
-        ["upgrade_stars", "bigint", "flags.8?long"],
-        ["from_id", "Peer", "flags.11?Peer"],
-        ["peer", "Peer", "flags.12?Peer"],
-        ["saved_id", "bigint", "flags.12?long"],
+        ["flags", "#"],
+        ["name_hidden", "flags.0?true"],
+        ["saved", "flags.2?true"],
+        ["converted", "flags.3?true"],
+        ["upgraded", "flags.5?true"],
+        ["refunded", "flags.9?true"],
+        ["can_upgrade", "flags.10?true"],
+        ["gift", "StarGift"],
+        ["message", "flags.1?TextWithEntities"],
+        ["convert_stars", "flags.4?long"],
+        ["upgrade_msg_id", "flags.5?int"],
+        ["upgrade_stars", "flags.8?long"],
+        ["from_id", "flags.11?Peer"],
+        ["peer", "flags.12?Peer"],
+        ["saved_id", "flags.12?long"],
       ],
     ],
   ],
@@ -23976,17 +23954,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0xACDFCB81,
       [
-        ["flags", flags, "#"],
-        ["upgrade", "true", "flags.0?true"],
-        ["transferred", "true", "flags.1?true"],
-        ["saved", "true", "flags.2?true"],
-        ["refunded", "true", "flags.5?true"],
-        ["gift", "StarGift", "StarGift"],
-        ["can_export_at", "number", "flags.3?int"],
-        ["transfer_stars", "bigint", "flags.4?long"],
-        ["from_id", "Peer", "flags.6?Peer"],
-        ["peer", "Peer", "flags.7?Peer"],
-        ["saved_id", "bigint", "flags.7?long"],
+        ["flags", "#"],
+        ["upgrade", "flags.0?true"],
+        ["transferred", "flags.1?true"],
+        ["saved", "flags.2?true"],
+        ["refunded", "flags.5?true"],
+        ["gift", "StarGift"],
+        ["can_export_at", "flags.3?int"],
+        ["transfer_stars", "flags.4?long"],
+        ["from_id", "flags.6?Peer"],
+        ["peer", "flags.7?Peer"],
+        ["saved_id", "flags.7?long"],
       ],
     ],
   ],
@@ -23995,22 +23973,22 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD58A08C6,
       [
-        ["flags", flags, "#"],
-        ["pinned", "true", "flags.2?true"],
-        ["unread_mark", "true", "flags.3?true"],
-        ["view_forum_as_messages", "true", "flags.6?true"],
-        ["peer", "Peer", "Peer"],
-        ["top_message", "number", "int"],
-        ["read_inbox_max_id", "number", "int"],
-        ["read_outbox_max_id", "number", "int"],
-        ["unread_count", "number", "int"],
-        ["unread_mentions_count", "number", "int"],
-        ["unread_reactions_count", "number", "int"],
-        ["notify_settings", "PeerNotifySettings", "PeerNotifySettings"],
-        ["pts", "number", "flags.0?int"],
-        ["draft", "DraftMessage", "flags.1?DraftMessage"],
-        ["folder_id", "number", "flags.4?int"],
-        ["ttl_period", "number", "flags.5?int"],
+        ["flags", "#"],
+        ["pinned", "flags.2?true"],
+        ["unread_mark", "flags.3?true"],
+        ["view_forum_as_messages", "flags.6?true"],
+        ["peer", "Peer"],
+        ["top_message", "int"],
+        ["read_inbox_max_id", "int"],
+        ["read_outbox_max_id", "int"],
+        ["unread_count", "int"],
+        ["unread_mentions_count", "int"],
+        ["unread_reactions_count", "int"],
+        ["notify_settings", "PeerNotifySettings"],
+        ["pts", "flags.0?int"],
+        ["draft", "flags.1?DraftMessage"],
+        ["folder_id", "flags.4?int"],
+        ["ttl_period", "flags.5?int"],
       ],
     ],
   ],
@@ -24019,15 +23997,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x71BD134C,
       [
-        ["flags", flags, "#"],
-        ["pinned", "true", "flags.2?true"],
-        ["folder", "Folder", "Folder"],
-        ["peer", "Peer", "Peer"],
-        ["top_message", "number", "int"],
-        ["unread_muted_peers_count", "number", "int"],
-        ["unread_unmuted_peers_count", "number", "int"],
-        ["unread_muted_messages_count", "number", "int"],
-        ["unread_unmuted_messages_count", "number", "int"],
+        ["flags", "#"],
+        ["pinned", "flags.2?true"],
+        ["folder", "Folder"],
+        ["peer", "Peer"],
+        ["top_message", "int"],
+        ["unread_muted_peers_count", "int"],
+        ["unread_unmuted_peers_count", "int"],
+        ["unread_muted_messages_count", "int"],
+        ["unread_unmuted_messages_count", "int"],
       ],
     ],
   ],
@@ -24036,7 +24014,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2331B22D,
       [
-        ["id", "bigint", "long"],
+        ["id", "long"],
       ],
     ],
   ],
@@ -24045,15 +24023,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFB197A65,
       [
-        ["flags", flags, "#"],
-        ["has_stickers", "true", "flags.0?true"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["file_reference", Uint8Array, "bytes"],
-        ["date", "number", "int"],
-        ["sizes", ["PhotoSize"], "Vector<PhotoSize>"],
-        ["video_sizes", ["VideoSize"], "flags.1?Vector<VideoSize>"],
-        ["dc_id", "number", "int"],
+        ["flags", "#"],
+        ["has_stickers", "flags.0?true"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["file_reference", "bytes"],
+        ["date", "int"],
+        ["sizes", "Vector<PhotoSize>"],
+        ["video_sizes", "flags.1?Vector<VideoSize>"],
+        ["dc_id", "int"],
       ],
     ],
   ],
@@ -24062,7 +24040,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0E17E23C,
       [
-        ["type", "string", "string"],
+        ["type", "string"],
       ],
     ],
   ],
@@ -24071,10 +24049,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x75C78E60,
       [
-        ["type", "string", "string"],
-        ["w", "number", "int"],
-        ["h", "number", "int"],
-        ["size", "number", "int"],
+        ["type", "string"],
+        ["w", "int"],
+        ["h", "int"],
+        ["size", "int"],
       ],
     ],
   ],
@@ -24083,10 +24061,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x021E1AD6,
       [
-        ["type", "string", "string"],
-        ["w", "number", "int"],
-        ["h", "number", "int"],
-        ["bytes", Uint8Array, "bytes"],
+        ["type", "string"],
+        ["w", "int"],
+        ["h", "int"],
+        ["bytes", "bytes"],
       ],
     ],
   ],
@@ -24095,8 +24073,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE0B0BC2E,
       [
-        ["type", "string", "string"],
-        ["bytes", Uint8Array, "bytes"],
+        ["type", "string"],
+        ["bytes", "bytes"],
       ],
     ],
   ],
@@ -24105,10 +24083,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFA3EFB95,
       [
-        ["type", "string", "string"],
-        ["w", "number", "int"],
-        ["h", "number", "int"],
-        ["sizes", ["number"], "Vector<int>"],
+        ["type", "string"],
+        ["w", "int"],
+        ["h", "int"],
+        ["sizes", "Vector<int>"],
       ],
     ],
   ],
@@ -24117,8 +24095,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD8214D41,
       [
-        ["type", "string", "string"],
-        ["bytes", Uint8Array, "bytes"],
+        ["type", "string"],
+        ["bytes", "bytes"],
       ],
     ],
   ],
@@ -24134,11 +24112,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB2A2F663,
       [
-        ["flags", flags, "#"],
-        ["long", "number", "double"],
-        ["lat", "number", "double"],
-        ["access_hash", "bigint", "long"],
-        ["accuracy_radius", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["long", "double"],
+        ["lat", "double"],
+        ["access_hash", "long"],
+        ["accuracy_radius", "flags.0?int"],
       ],
     ],
   ],
@@ -24147,11 +24125,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5E002502,
       [
-        ["flags", flags, "#"],
-        ["type", "auth_SentCodeType", "auth.SentCodeType"],
-        ["phone_code_hash", "string", "string"],
-        ["next_type", "auth_CodeType", "flags.1?auth.CodeType"],
-        ["timeout", "number", "flags.2?int"],
+        ["flags", "#"],
+        ["type", "auth.SentCodeType"],
+        ["phone_code_hash", "string"],
+        ["next_type", "flags.1?auth.CodeType"],
+        ["timeout", "flags.2?int"],
       ],
     ],
   ],
@@ -24160,7 +24138,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2390FE44,
       [
-        ["authorization", "auth_Authorization", "auth.Authorization"],
+        ["authorization", "auth.Authorization"],
       ],
     ],
   ],
@@ -24169,12 +24147,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2EA2C0D4,
       [
-        ["flags", flags, "#"],
-        ["setup_password_required", "true", "flags.1?true"],
-        ["otherwise_relogin_days", "number", "flags.1?int"],
-        ["tmp_sessions", "number", "flags.0?int"],
-        ["future_auth_token", Uint8Array, "flags.2?bytes"],
-        ["user", "User", "User"],
+        ["flags", "#"],
+        ["setup_password_required", "flags.1?true"],
+        ["otherwise_relogin_days", "flags.1?int"],
+        ["tmp_sessions", "flags.0?int"],
+        ["future_auth_token", "flags.2?bytes"],
+        ["user", "User"],
       ],
     ],
   ],
@@ -24183,8 +24161,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x44747E9A,
       [
-        ["flags", flags, "#"],
-        ["terms_of_service", "help_TermsOfService", "flags.0?help.TermsOfService"],
+        ["flags", "#"],
+        ["terms_of_service", "flags.0?help.TermsOfService"],
       ],
     ],
   ],
@@ -24193,8 +24171,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB434E2B8,
       [
-        ["id", "bigint", "long"],
-        ["bytes", Uint8Array, "bytes"],
+        ["id", "long"],
+        ["bytes", "bytes"],
       ],
     ],
   ],
@@ -24203,7 +24181,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB8BC5B0C,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -24233,8 +24211,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5C467992,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["top_msg_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["top_msg_id", "int"],
       ],
     ],
   ],
@@ -24243,14 +24221,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCACB6AE2,
       [
-        ["flags", flags, "#"],
-        ["show_previews", "boolean", "flags.0?Bool"],
-        ["silent", "boolean", "flags.1?Bool"],
-        ["mute_until", "number", "flags.2?int"],
-        ["sound", "NotificationSound", "flags.3?NotificationSound"],
-        ["stories_muted", "boolean", "flags.6?Bool"],
-        ["stories_hide_sender", "boolean", "flags.7?Bool"],
-        ["stories_sound", "NotificationSound", "flags.8?NotificationSound"],
+        ["flags", "#"],
+        ["show_previews", "flags.0?Bool"],
+        ["silent", "flags.1?Bool"],
+        ["mute_until", "flags.2?int"],
+        ["sound", "flags.3?NotificationSound"],
+        ["stories_muted", "flags.6?Bool"],
+        ["stories_hide_sender", "flags.7?Bool"],
+        ["stories_sound", "flags.8?NotificationSound"],
       ],
     ],
   ],
@@ -24259,18 +24237,18 @@ const types: Map<string, Parameters> = new Map([
     [
       0x99622C0C,
       [
-        ["flags", flags, "#"],
-        ["show_previews", "boolean", "flags.0?Bool"],
-        ["silent", "boolean", "flags.1?Bool"],
-        ["mute_until", "number", "flags.2?int"],
-        ["ios_sound", "NotificationSound", "flags.3?NotificationSound"],
-        ["android_sound", "NotificationSound", "flags.4?NotificationSound"],
-        ["other_sound", "NotificationSound", "flags.5?NotificationSound"],
-        ["stories_muted", "boolean", "flags.6?Bool"],
-        ["stories_hide_sender", "boolean", "flags.7?Bool"],
-        ["stories_ios_sound", "NotificationSound", "flags.8?NotificationSound"],
-        ["stories_android_sound", "NotificationSound", "flags.9?NotificationSound"],
-        ["stories_other_sound", "NotificationSound", "flags.10?NotificationSound"],
+        ["flags", "#"],
+        ["show_previews", "flags.0?Bool"],
+        ["silent", "flags.1?Bool"],
+        ["mute_until", "flags.2?int"],
+        ["ios_sound", "flags.3?NotificationSound"],
+        ["android_sound", "flags.4?NotificationSound"],
+        ["other_sound", "flags.5?NotificationSound"],
+        ["stories_muted", "flags.6?Bool"],
+        ["stories_hide_sender", "flags.7?Bool"],
+        ["stories_ios_sound", "flags.8?NotificationSound"],
+        ["stories_android_sound", "flags.9?NotificationSound"],
+        ["stories_other_sound", "flags.10?NotificationSound"],
       ],
     ],
   ],
@@ -24279,28 +24257,28 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF47741F7,
       [
-        ["flags", flags, "#"],
-        ["report_spam", "true", "flags.0?true"],
-        ["add_contact", "true", "flags.1?true"],
-        ["block_contact", "true", "flags.2?true"],
-        ["share_contact", "true", "flags.3?true"],
-        ["need_contacts_exception", "true", "flags.4?true"],
-        ["report_geo", "true", "flags.5?true"],
-        ["autoarchived", "true", "flags.7?true"],
-        ["invite_members", "true", "flags.8?true"],
-        ["request_chat_broadcast", "true", "flags.10?true"],
-        ["business_bot_paused", "true", "flags.11?true"],
-        ["business_bot_can_reply", "true", "flags.12?true"],
-        ["geo_distance", "number", "flags.6?int"],
-        ["request_chat_title", "string", "flags.9?string"],
-        ["request_chat_date", "number", "flags.9?int"],
-        ["business_bot_id", "bigint", "flags.13?long"],
-        ["business_bot_manage_url", "string", "flags.13?string"],
-        ["charge_paid_message_stars", "bigint", "flags.14?long"],
-        ["registration_month", "string", "flags.15?string"],
-        ["phone_country", "string", "flags.16?string"],
-        ["name_change_date", "number", "flags.17?int"],
-        ["photo_change_date", "number", "flags.18?int"],
+        ["flags", "#"],
+        ["report_spam", "flags.0?true"],
+        ["add_contact", "flags.1?true"],
+        ["block_contact", "flags.2?true"],
+        ["share_contact", "flags.3?true"],
+        ["need_contacts_exception", "flags.4?true"],
+        ["report_geo", "flags.5?true"],
+        ["autoarchived", "flags.7?true"],
+        ["invite_members", "flags.8?true"],
+        ["request_chat_broadcast", "flags.10?true"],
+        ["business_bot_paused", "flags.11?true"],
+        ["business_bot_can_reply", "flags.12?true"],
+        ["geo_distance", "flags.6?int"],
+        ["request_chat_title", "flags.9?string"],
+        ["request_chat_date", "flags.9?int"],
+        ["business_bot_id", "flags.13?long"],
+        ["business_bot_manage_url", "flags.13?string"],
+        ["charge_paid_message_stars", "flags.14?long"],
+        ["registration_month", "flags.15?string"],
+        ["phone_country", "flags.16?string"],
+        ["name_change_date", "flags.17?int"],
+        ["photo_change_date", "flags.18?int"],
       ],
     ],
   ],
@@ -24309,16 +24287,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA437C3ED,
       [
-        ["id", "bigint", "long"],
-        ["flags", flags, "#"],
-        ["creator", "true", "flags.0?true"],
-        ["default", "true", "flags.1?true"],
-        ["pattern", "true", "flags.3?true"],
-        ["dark", "true", "flags.4?true"],
-        ["access_hash", "bigint", "long"],
-        ["slug", "string", "string"],
-        ["document", "Document", "Document"],
-        ["settings", "WallPaperSettings", "flags.2?WallPaperSettings"],
+        ["id", "long"],
+        ["flags", "#"],
+        ["creator", "flags.0?true"],
+        ["default", "flags.1?true"],
+        ["pattern", "flags.3?true"],
+        ["dark", "flags.4?true"],
+        ["access_hash", "long"],
+        ["slug", "string"],
+        ["document", "Document"],
+        ["settings", "flags.2?WallPaperSettings"],
       ],
     ],
   ],
@@ -24327,11 +24305,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE0804116,
       [
-        ["id", "bigint", "long"],
-        ["flags", flags, "#"],
-        ["default", "true", "flags.1?true"],
-        ["dark", "true", "flags.4?true"],
-        ["settings", "WallPaperSettings", "flags.2?WallPaperSettings"],
+        ["id", "long"],
+        ["flags", "#"],
+        ["default", "flags.1?true"],
+        ["dark", "flags.4?true"],
+        ["settings", "flags.2?WallPaperSettings"],
       ],
     ],
   ],
@@ -24410,54 +24388,54 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD2234EA0,
       [
-        ["flags", flags, "#"],
-        ["blocked", "true", "flags.0?true"],
-        ["phone_calls_available", "true", "flags.4?true"],
-        ["phone_calls_private", "true", "flags.5?true"],
-        ["can_pin_message", "true", "flags.7?true"],
-        ["has_scheduled", "true", "flags.12?true"],
-        ["video_calls_available", "true", "flags.13?true"],
-        ["voice_messages_forbidden", "true", "flags.20?true"],
-        ["translations_disabled", "true", "flags.23?true"],
-        ["stories_pinned_available", "true", "flags.26?true"],
-        ["blocked_my_stories_from", "true", "flags.27?true"],
-        ["wallpaper_overridden", "true", "flags.28?true"],
-        ["contact_require_premium", "true", "flags.29?true"],
-        ["read_dates_private", "true", "flags.30?true"],
-        ["flags2", flags, "#"],
-        ["sponsored_enabled", "true", "flags2.7?true"],
-        ["can_view_revenue", "true", "flags2.9?true"],
-        ["bot_can_manage_emoji_status", "true", "flags2.10?true"],
-        ["id", "bigint", "long"],
-        ["about", "string", "flags.1?string"],
-        ["settings", "PeerSettings", "PeerSettings"],
-        ["personal_photo", "Photo", "flags.21?Photo"],
-        ["profile_photo", "Photo", "flags.2?Photo"],
-        ["fallback_photo", "Photo", "flags.22?Photo"],
-        ["notify_settings", "PeerNotifySettings", "PeerNotifySettings"],
-        ["bot_info", "BotInfo", "flags.3?BotInfo"],
-        ["pinned_msg_id", "number", "flags.6?int"],
-        ["common_chats_count", "number", "int"],
-        ["folder_id", "number", "flags.11?int"],
-        ["ttl_period", "number", "flags.14?int"],
-        ["theme_emoticon", "string", "flags.15?string"],
-        ["private_forward_name", "string", "flags.16?string"],
-        ["bot_group_admin_rights", "ChatAdminRights", "flags.17?ChatAdminRights"],
-        ["bot_broadcast_admin_rights", "ChatAdminRights", "flags.18?ChatAdminRights"],
-        ["wallpaper", "WallPaper", "flags.24?WallPaper"],
-        ["stories", "PeerStories", "flags.25?PeerStories"],
-        ["business_work_hours", "BusinessWorkHours", "flags2.0?BusinessWorkHours"],
-        ["business_location", "BusinessLocation", "flags2.1?BusinessLocation"],
-        ["business_greeting_message", "BusinessGreetingMessage", "flags2.2?BusinessGreetingMessage"],
-        ["business_away_message", "BusinessAwayMessage", "flags2.3?BusinessAwayMessage"],
-        ["business_intro", "BusinessIntro", "flags2.4?BusinessIntro"],
-        ["birthday", "Birthday", "flags2.5?Birthday"],
-        ["personal_channel_id", "bigint", "flags2.6?long"],
-        ["personal_channel_message", "number", "flags2.6?int"],
-        ["stargifts_count", "number", "flags2.8?int"],
-        ["starref_program", "StarRefProgram", "flags2.11?StarRefProgram"],
-        ["bot_verification", "BotVerification", "flags2.12?BotVerification"],
-        ["send_paid_messages_stars", "bigint", "flags2.14?long"],
+        ["flags", "#"],
+        ["blocked", "flags.0?true"],
+        ["phone_calls_available", "flags.4?true"],
+        ["phone_calls_private", "flags.5?true"],
+        ["can_pin_message", "flags.7?true"],
+        ["has_scheduled", "flags.12?true"],
+        ["video_calls_available", "flags.13?true"],
+        ["voice_messages_forbidden", "flags.20?true"],
+        ["translations_disabled", "flags.23?true"],
+        ["stories_pinned_available", "flags.26?true"],
+        ["blocked_my_stories_from", "flags.27?true"],
+        ["wallpaper_overridden", "flags.28?true"],
+        ["contact_require_premium", "flags.29?true"],
+        ["read_dates_private", "flags.30?true"],
+        ["flags2", "#"],
+        ["sponsored_enabled", "flags2.7?true"],
+        ["can_view_revenue", "flags2.9?true"],
+        ["bot_can_manage_emoji_status", "flags2.10?true"],
+        ["id", "long"],
+        ["about", "flags.1?string"],
+        ["settings", "PeerSettings"],
+        ["personal_photo", "flags.21?Photo"],
+        ["profile_photo", "flags.2?Photo"],
+        ["fallback_photo", "flags.22?Photo"],
+        ["notify_settings", "PeerNotifySettings"],
+        ["bot_info", "flags.3?BotInfo"],
+        ["pinned_msg_id", "flags.6?int"],
+        ["common_chats_count", "int"],
+        ["folder_id", "flags.11?int"],
+        ["ttl_period", "flags.14?int"],
+        ["theme_emoticon", "flags.15?string"],
+        ["private_forward_name", "flags.16?string"],
+        ["bot_group_admin_rights", "flags.17?ChatAdminRights"],
+        ["bot_broadcast_admin_rights", "flags.18?ChatAdminRights"],
+        ["wallpaper", "flags.24?WallPaper"],
+        ["stories", "flags.25?PeerStories"],
+        ["business_work_hours", "flags2.0?BusinessWorkHours"],
+        ["business_location", "flags2.1?BusinessLocation"],
+        ["business_greeting_message", "flags2.2?BusinessGreetingMessage"],
+        ["business_away_message", "flags2.3?BusinessAwayMessage"],
+        ["business_intro", "flags2.4?BusinessIntro"],
+        ["birthday", "flags2.5?Birthday"],
+        ["personal_channel_id", "flags2.6?long"],
+        ["personal_channel_message", "flags2.6?int"],
+        ["stargifts_count", "flags2.8?int"],
+        ["starref_program", "flags2.11?StarRefProgram"],
+        ["bot_verification", "flags2.12?BotVerification"],
+        ["send_paid_messages_stars", "flags2.14?long"],
       ],
     ],
   ],
@@ -24466,8 +24444,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x145ADE0B,
       [
-        ["user_id", "bigint", "long"],
-        ["mutual", "boolean", "Bool"],
+        ["user_id", "long"],
+        ["mutual", "Bool"],
       ],
     ],
   ],
@@ -24476,8 +24454,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC13E3C50,
       [
-        ["user_id", "bigint", "long"],
-        ["client_id", "bigint", "long"],
+        ["user_id", "long"],
+        ["client_id", "long"],
       ],
     ],
   ],
@@ -24486,8 +24464,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x16D9703B,
       [
-        ["user_id", "bigint", "long"],
-        ["status", "UserStatus", "UserStatus"],
+        ["user_id", "long"],
+        ["status", "UserStatus"],
       ],
     ],
   ],
@@ -24503,9 +24481,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEAE87E42,
       [
-        ["contacts", ["Contact"], "Vector<Contact>"],
-        ["saved_count", "number", "int"],
-        ["users", ["User"], "Vector<User>"],
+        ["contacts", "Vector<Contact>"],
+        ["saved_count", "int"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -24514,10 +24492,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x77D01C3B,
       [
-        ["imported", ["ImportedContact"], "Vector<ImportedContact>"],
-        ["popular_invites", ["PopularContact"], "Vector<PopularContact>"],
-        ["retry_contacts", ["bigint"], "Vector<long>"],
-        ["users", ["User"], "Vector<User>"],
+        ["imported", "Vector<ImportedContact>"],
+        ["popular_invites", "Vector<PopularContact>"],
+        ["retry_contacts", "Vector<long>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -24526,9 +24504,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0ADE1591,
       [
-        ["blocked", ["PeerBlocked"], "Vector<PeerBlocked>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["blocked", "Vector<PeerBlocked>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -24537,10 +24515,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE1664194,
       [
-        ["count", "number", "int"],
-        ["blocked", ["PeerBlocked"], "Vector<PeerBlocked>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["count", "int"],
+        ["blocked", "Vector<PeerBlocked>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -24549,10 +24527,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x15BA6C40,
       [
-        ["dialogs", ["Dialog"], "Vector<Dialog>"],
-        ["messages", ["Message"], "Vector<Message>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["dialogs", "Vector<Dialog>"],
+        ["messages", "Vector<Message>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -24561,11 +24539,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x71E094F3,
       [
-        ["count", "number", "int"],
-        ["dialogs", ["Dialog"], "Vector<Dialog>"],
-        ["messages", ["Message"], "Vector<Message>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["count", "int"],
+        ["dialogs", "Vector<Dialog>"],
+        ["messages", "Vector<Message>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -24574,7 +24552,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF0E3E596,
       [
-        ["count", "number", "int"],
+        ["count", "int"],
       ],
     ],
   ],
@@ -24583,9 +24561,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8C718E87,
       [
-        ["messages", ["Message"], "Vector<Message>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["messages", "Vector<Message>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -24594,14 +24572,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3A54685E,
       [
-        ["flags", flags, "#"],
-        ["inexact", "true", "flags.1?true"],
-        ["count", "number", "int"],
-        ["next_rate", "number", "flags.0?int"],
-        ["offset_id_offset", "number", "flags.2?int"],
-        ["messages", ["Message"], "Vector<Message>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["inexact", "flags.1?true"],
+        ["count", "int"],
+        ["next_rate", "flags.0?int"],
+        ["offset_id_offset", "flags.2?int"],
+        ["messages", "Vector<Message>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -24610,15 +24588,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC776BA4E,
       [
-        ["flags", flags, "#"],
-        ["inexact", "true", "flags.1?true"],
-        ["pts", "number", "int"],
-        ["count", "number", "int"],
-        ["offset_id_offset", "number", "flags.2?int"],
-        ["messages", ["Message"], "Vector<Message>"],
-        ["topics", ["ForumTopic"], "Vector<ForumTopic>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["inexact", "flags.1?true"],
+        ["pts", "int"],
+        ["count", "int"],
+        ["offset_id_offset", "flags.2?int"],
+        ["messages", "Vector<Message>"],
+        ["topics", "Vector<ForumTopic>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -24627,7 +24605,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x74535F21,
       [
-        ["count", "number", "int"],
+        ["count", "int"],
       ],
     ],
   ],
@@ -24636,7 +24614,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x64FF9FD5,
       [
-        ["chats", ["Chat"], "Vector<Chat>"],
+        ["chats", "Vector<Chat>"],
       ],
     ],
   ],
@@ -24645,8 +24623,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9CD81144,
       [
-        ["count", "number", "int"],
-        ["chats", ["Chat"], "Vector<Chat>"],
+        ["count", "int"],
+        ["chats", "Vector<Chat>"],
       ],
     ],
   ],
@@ -24655,9 +24633,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE5D7D19C,
       [
-        ["full_chat", "ChatFull", "ChatFull"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["full_chat", "ChatFull"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -24666,9 +24644,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB45C69D1,
       [
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
-        ["offset", "number", "int"],
+        ["pts", "int"],
+        ["pts_count", "int"],
+        ["offset", "int"],
       ],
     ],
   ],
@@ -24747,8 +24725,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x80C99768,
       [
-        ["flags", flags, "#"],
-        ["missed", "true", "flags.0?true"],
+        ["flags", "#"],
+        ["missed", "flags.0?true"],
       ],
     ],
   ],
@@ -24799,9 +24777,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1F2B0AFD,
       [
-        ["message", "Message", "Message"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["message", "Message"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -24810,8 +24788,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4E90BFD6,
       [
-        ["id", "number", "int"],
-        ["random_id", "bigint", "long"],
+        ["id", "int"],
+        ["random_id", "long"],
       ],
     ],
   ],
@@ -24820,9 +24798,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA20DB0E5,
       [
-        ["messages", ["number"], "Vector<int>"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["messages", "Vector<int>"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -24831,8 +24809,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC01E857F,
       [
-        ["user_id", "bigint", "long"],
-        ["action", "SendMessageAction", "SendMessageAction"],
+        ["user_id", "long"],
+        ["action", "SendMessageAction"],
       ],
     ],
   ],
@@ -24841,9 +24819,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x83487AF0,
       [
-        ["chat_id", "bigint", "long"],
-        ["from_id", "Peer", "Peer"],
-        ["action", "SendMessageAction", "SendMessageAction"],
+        ["chat_id", "long"],
+        ["from_id", "Peer"],
+        ["action", "SendMessageAction"],
       ],
     ],
   ],
@@ -24852,7 +24830,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x07761198,
       [
-        ["participants", "ChatParticipants", "ChatParticipants"],
+        ["participants", "ChatParticipants"],
       ],
     ],
   ],
@@ -24861,8 +24839,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE5BDF8DE,
       [
-        ["user_id", "bigint", "long"],
-        ["status", "UserStatus", "UserStatus"],
+        ["user_id", "long"],
+        ["status", "UserStatus"],
       ],
     ],
   ],
@@ -24871,10 +24849,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA7848924,
       [
-        ["user_id", "bigint", "long"],
-        ["first_name", "string", "string"],
-        ["last_name", "string", "string"],
-        ["usernames", ["Username"], "Vector<Username>"],
+        ["user_id", "long"],
+        ["first_name", "string"],
+        ["last_name", "string"],
+        ["usernames", "Vector<Username>"],
       ],
     ],
   ],
@@ -24883,12 +24861,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8951ABEF,
       [
-        ["flags", flags, "#"],
-        ["unconfirmed", "true", "flags.0?true"],
-        ["hash", "bigint", "long"],
-        ["date", "number", "flags.0?int"],
-        ["device", "string", "flags.0?string"],
-        ["location", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["unconfirmed", "flags.0?true"],
+        ["hash", "long"],
+        ["date", "flags.0?int"],
+        ["device", "flags.0?string"],
+        ["location", "flags.0?string"],
       ],
     ],
   ],
@@ -24897,8 +24875,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x12BCBD9A,
       [
-        ["message", "EncryptedMessage", "EncryptedMessage"],
-        ["qts", "number", "int"],
+        ["message", "EncryptedMessage"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -24907,7 +24885,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1710F156,
       [
-        ["chat_id", "number", "int"],
+        ["chat_id", "int"],
       ],
     ],
   ],
@@ -24916,8 +24894,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB4A2E88D,
       [
-        ["chat", "EncryptedChat", "EncryptedChat"],
-        ["date", "number", "int"],
+        ["chat", "EncryptedChat"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -24926,9 +24904,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x38FE25B7,
       [
-        ["chat_id", "number", "int"],
-        ["max_date", "number", "int"],
-        ["date", "number", "int"],
+        ["chat_id", "int"],
+        ["max_date", "int"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -24937,11 +24915,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3DDA5451,
       [
-        ["chat_id", "bigint", "long"],
-        ["user_id", "bigint", "long"],
-        ["inviter_id", "bigint", "long"],
-        ["date", "number", "int"],
-        ["version", "number", "int"],
+        ["chat_id", "long"],
+        ["user_id", "long"],
+        ["inviter_id", "long"],
+        ["date", "int"],
+        ["version", "int"],
       ],
     ],
   ],
@@ -24950,9 +24928,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE32F3D77,
       [
-        ["chat_id", "bigint", "long"],
-        ["user_id", "bigint", "long"],
-        ["version", "number", "int"],
+        ["chat_id", "long"],
+        ["user_id", "long"],
+        ["version", "int"],
       ],
     ],
   ],
@@ -24961,7 +24939,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8E5E9873,
       [
-        ["dc_options", ["DcOption"], "Vector<DcOption>"],
+        ["dc_options", "Vector<DcOption>"],
       ],
     ],
   ],
@@ -24970,8 +24948,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBEC268EF,
       [
-        ["peer", "NotifyPeer", "NotifyPeer"],
-        ["notify_settings", "PeerNotifySettings", "PeerNotifySettings"],
+        ["peer", "NotifyPeer"],
+        ["notify_settings", "PeerNotifySettings"],
       ],
     ],
   ],
@@ -24980,14 +24958,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEBE46819,
       [
-        ["flags", flags, "#"],
-        ["popup", "true", "flags.0?true"],
-        ["invert_media", "true", "flags.2?true"],
-        ["inbox_date", "number", "flags.1?int"],
-        ["type", "string", "string"],
-        ["message", "string", "string"],
-        ["media", "MessageMedia", "MessageMedia"],
-        ["entities", ["MessageEntity"], "Vector<MessageEntity>"],
+        ["flags", "#"],
+        ["popup", "flags.0?true"],
+        ["invert_media", "flags.2?true"],
+        ["inbox_date", "flags.1?int"],
+        ["type", "string"],
+        ["message", "string"],
+        ["media", "MessageMedia"],
+        ["entities", "Vector<MessageEntity>"],
       ],
     ],
   ],
@@ -24996,8 +24974,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEE3B272A,
       [
-        ["key", "PrivacyKey", "PrivacyKey"],
-        ["rules", ["PrivacyRule"], "Vector<PrivacyRule>"],
+        ["key", "PrivacyKey"],
+        ["rules", "Vector<PrivacyRule>"],
       ],
     ],
   ],
@@ -25006,8 +24984,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x05492A13,
       [
-        ["user_id", "bigint", "long"],
-        ["phone", "string", "string"],
+        ["user_id", "long"],
+        ["phone", "string"],
       ],
     ],
   ],
@@ -25016,13 +24994,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9C974FDF,
       [
-        ["flags", flags, "#"],
-        ["folder_id", "number", "flags.0?int"],
-        ["peer", "Peer", "Peer"],
-        ["max_id", "number", "int"],
-        ["still_unread_count", "number", "int"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["flags", "#"],
+        ["folder_id", "flags.0?int"],
+        ["peer", "Peer"],
+        ["max_id", "int"],
+        ["still_unread_count", "int"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -25031,10 +25009,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2F2F21BF,
       [
-        ["peer", "Peer", "Peer"],
-        ["max_id", "number", "int"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["peer", "Peer"],
+        ["max_id", "int"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -25043,9 +25021,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7F891213,
       [
-        ["webpage", "WebPage", "WebPage"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["webpage", "WebPage"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -25054,11 +25032,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF8227181,
       [
-        ["flags", flags, "#"],
-        ["messages", ["number"], "Vector<int>"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
-        ["date", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["messages", "Vector<int>"],
+        ["pts", "int"],
+        ["pts_count", "int"],
+        ["date", "flags.0?int"],
       ],
     ],
   ],
@@ -25067,9 +25045,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x108D941F,
       [
-        ["flags", flags, "#"],
-        ["channel_id", "bigint", "long"],
-        ["pts", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["channel_id", "long"],
+        ["pts", "flags.0?int"],
       ],
     ],
   ],
@@ -25078,7 +25056,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x635B4C09,
       [
-        ["channel_id", "bigint", "long"],
+        ["channel_id", "long"],
       ],
     ],
   ],
@@ -25087,9 +25065,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x62BA04D9,
       [
-        ["message", "Message", "Message"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["message", "Message"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -25098,12 +25076,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x922E6E10,
       [
-        ["flags", flags, "#"],
-        ["folder_id", "number", "flags.0?int"],
-        ["channel_id", "bigint", "long"],
-        ["max_id", "number", "int"],
-        ["still_unread_count", "number", "int"],
-        ["pts", "number", "int"],
+        ["flags", "#"],
+        ["folder_id", "flags.0?int"],
+        ["channel_id", "long"],
+        ["max_id", "int"],
+        ["still_unread_count", "int"],
+        ["pts", "int"],
       ],
     ],
   ],
@@ -25112,10 +25090,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC32D5B12,
       [
-        ["channel_id", "bigint", "long"],
-        ["messages", ["number"], "Vector<int>"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["channel_id", "long"],
+        ["messages", "Vector<int>"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -25124,9 +25102,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF226AC08,
       [
-        ["channel_id", "bigint", "long"],
-        ["id", "number", "int"],
-        ["views", "number", "int"],
+        ["channel_id", "long"],
+        ["id", "int"],
+        ["views", "int"],
       ],
     ],
   ],
@@ -25135,10 +25113,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD7CA61A2,
       [
-        ["chat_id", "bigint", "long"],
-        ["user_id", "bigint", "long"],
-        ["is_admin", "boolean", "Bool"],
-        ["version", "number", "int"],
+        ["chat_id", "long"],
+        ["user_id", "long"],
+        ["is_admin", "Bool"],
+        ["version", "int"],
       ],
     ],
   ],
@@ -25147,7 +25125,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x688A30AA,
       [
-        ["stickerset", "messages_StickerSet", "messages.StickerSet"],
+        ["stickerset", "messages.StickerSet"],
       ],
     ],
   ],
@@ -25156,10 +25134,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0BB2D201,
       [
-        ["flags", flags, "#"],
-        ["masks", "true", "flags.0?true"],
-        ["emojis", "true", "flags.1?true"],
-        ["order", ["bigint"], "Vector<long>"],
+        ["flags", "#"],
+        ["masks", "flags.0?true"],
+        ["emojis", "flags.1?true"],
+        ["order", "Vector<long>"],
       ],
     ],
   ],
@@ -25168,9 +25146,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x31C24808,
       [
-        ["flags", flags, "#"],
-        ["masks", "true", "flags.0?true"],
-        ["emojis", "true", "flags.1?true"],
+        ["flags", "#"],
+        ["masks", "flags.0?true"],
+        ["emojis", "flags.1?true"],
       ],
     ],
   ],
@@ -25186,13 +25164,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x496F379C,
       [
-        ["flags", flags, "#"],
-        ["query_id", "bigint", "long"],
-        ["user_id", "bigint", "long"],
-        ["query", "string", "string"],
-        ["geo", "GeoPoint", "flags.0?GeoPoint"],
-        ["peer_type", "InlineQueryPeerType", "flags.1?InlineQueryPeerType"],
-        ["offset", "string", "string"],
+        ["flags", "#"],
+        ["query_id", "long"],
+        ["user_id", "long"],
+        ["query", "string"],
+        ["geo", "flags.0?GeoPoint"],
+        ["peer_type", "flags.1?InlineQueryPeerType"],
+        ["offset", "string"],
       ],
     ],
   ],
@@ -25201,12 +25179,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x12F12A07,
       [
-        ["flags", flags, "#"],
-        ["user_id", "bigint", "long"],
-        ["query", "string", "string"],
-        ["geo", "GeoPoint", "flags.0?GeoPoint"],
-        ["id", "string", "string"],
-        ["msg_id", "InputBotInlineMessageID", "flags.1?InputBotInlineMessageID"],
+        ["flags", "#"],
+        ["user_id", "long"],
+        ["query", "string"],
+        ["geo", "flags.0?GeoPoint"],
+        ["id", "string"],
+        ["msg_id", "flags.1?InputBotInlineMessageID"],
       ],
     ],
   ],
@@ -25215,9 +25193,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1B3F4DF7,
       [
-        ["message", "Message", "Message"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["message", "Message"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -25226,14 +25204,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB9CFC48D,
       [
-        ["flags", flags, "#"],
-        ["query_id", "bigint", "long"],
-        ["user_id", "bigint", "long"],
-        ["peer", "Peer", "Peer"],
-        ["msg_id", "number", "int"],
-        ["chat_instance", "bigint", "long"],
-        ["data", Uint8Array, "flags.0?bytes"],
-        ["game_short_name", "string", "flags.1?string"],
+        ["flags", "#"],
+        ["query_id", "long"],
+        ["user_id", "long"],
+        ["peer", "Peer"],
+        ["msg_id", "int"],
+        ["chat_instance", "long"],
+        ["data", "flags.0?bytes"],
+        ["game_short_name", "flags.1?string"],
       ],
     ],
   ],
@@ -25242,9 +25220,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE40370A3,
       [
-        ["message", "Message", "Message"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["message", "Message"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -25253,13 +25231,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x691E9052,
       [
-        ["flags", flags, "#"],
-        ["query_id", "bigint", "long"],
-        ["user_id", "bigint", "long"],
-        ["msg_id", "InputBotInlineMessageID", "InputBotInlineMessageID"],
-        ["chat_instance", "bigint", "long"],
-        ["data", Uint8Array, "flags.0?bytes"],
-        ["game_short_name", "string", "flags.1?string"],
+        ["flags", "#"],
+        ["query_id", "long"],
+        ["user_id", "long"],
+        ["msg_id", "InputBotInlineMessageID"],
+        ["chat_instance", "long"],
+        ["data", "flags.0?bytes"],
+        ["game_short_name", "flags.1?string"],
       ],
     ],
   ],
@@ -25268,8 +25246,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB75F99A9,
       [
-        ["channel_id", "bigint", "long"],
-        ["max_id", "number", "int"],
+        ["channel_id", "long"],
+        ["max_id", "int"],
       ],
     ],
   ],
@@ -25278,10 +25256,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1B49EC6D,
       [
-        ["flags", flags, "#"],
-        ["peer", "Peer", "Peer"],
-        ["top_msg_id", "number", "flags.0?int"],
-        ["draft", "DraftMessage", "DraftMessage"],
+        ["flags", "#"],
+        ["peer", "Peer"],
+        ["top_msg_id", "flags.0?int"],
+        ["draft", "DraftMessage"],
       ],
     ],
   ],
@@ -25318,10 +25296,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2F2BA99F,
       [
-        ["channel_id", "bigint", "long"],
-        ["webpage", "WebPage", "WebPage"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["channel_id", "long"],
+        ["webpage", "WebPage"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -25330,10 +25308,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6E6FE51C,
       [
-        ["flags", flags, "#"],
-        ["pinned", "true", "flags.0?true"],
-        ["folder_id", "number", "flags.1?int"],
-        ["peer", "DialogPeer", "DialogPeer"],
+        ["flags", "#"],
+        ["pinned", "flags.0?true"],
+        ["folder_id", "flags.1?int"],
+        ["peer", "DialogPeer"],
       ],
     ],
   ],
@@ -25342,9 +25320,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFA0F3CA2,
       [
-        ["flags", flags, "#"],
-        ["folder_id", "number", "flags.1?int"],
-        ["order", ["DialogPeer"], "flags.0?Vector<DialogPeer>"],
+        ["flags", "#"],
+        ["folder_id", "flags.1?int"],
+        ["order", "flags.0?Vector<DialogPeer>"],
       ],
     ],
   ],
@@ -25353,7 +25331,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8317C0C3,
       [
-        ["data", "DataJSON", "DataJSON"],
+        ["data", "DataJSON"],
       ],
     ],
   ],
@@ -25362,9 +25340,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9B9240A6,
       [
-        ["query_id", "bigint", "long"],
-        ["data", "DataJSON", "DataJSON"],
-        ["timeout", "number", "int"],
+        ["query_id", "long"],
+        ["data", "DataJSON"],
+        ["timeout", "int"],
       ],
     ],
   ],
@@ -25373,10 +25351,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB5AEFD7D,
       [
-        ["query_id", "bigint", "long"],
-        ["user_id", "bigint", "long"],
-        ["payload", Uint8Array, "bytes"],
-        ["shipping_address", "PostAddress", "PostAddress"],
+        ["query_id", "long"],
+        ["user_id", "long"],
+        ["payload", "bytes"],
+        ["shipping_address", "PostAddress"],
       ],
     ],
   ],
@@ -25385,14 +25363,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8CAA9A96,
       [
-        ["flags", flags, "#"],
-        ["query_id", "bigint", "long"],
-        ["user_id", "bigint", "long"],
-        ["payload", Uint8Array, "bytes"],
-        ["info", "PaymentRequestedInfo", "flags.0?PaymentRequestedInfo"],
-        ["shipping_option_id", "string", "flags.1?string"],
-        ["currency", "string", "string"],
-        ["total_amount", "bigint", "long"],
+        ["flags", "#"],
+        ["query_id", "long"],
+        ["user_id", "long"],
+        ["payload", "bytes"],
+        ["info", "flags.0?PaymentRequestedInfo"],
+        ["shipping_option_id", "flags.1?string"],
+        ["currency", "string"],
+        ["total_amount", "long"],
       ],
     ],
   ],
@@ -25401,7 +25379,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAB0F6B1E,
       [
-        ["phone_call", "PhoneCall", "PhoneCall"],
+        ["phone_call", "PhoneCall"],
       ],
     ],
   ],
@@ -25410,7 +25388,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x46560264,
       [
-        ["lang_code", "string", "string"],
+        ["lang_code", "string"],
       ],
     ],
   ],
@@ -25419,7 +25397,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x56022F4D,
       [
-        ["difference", "LangPackDifference", "LangPackDifference"],
+        ["difference", "LangPackDifference"],
       ],
     ],
   ],
@@ -25435,10 +25413,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEA29055D,
       [
-        ["flags", flags, "#"],
-        ["channel_id", "bigint", "long"],
-        ["top_msg_id", "number", "flags.0?int"],
-        ["messages", ["number"], "Vector<int>"],
+        ["flags", "#"],
+        ["channel_id", "long"],
+        ["top_msg_id", "flags.0?int"],
+        ["messages", "Vector<int>"],
       ],
     ],
   ],
@@ -25454,8 +25432,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB23FC698,
       [
-        ["channel_id", "bigint", "long"],
-        ["available_min_id", "number", "int"],
+        ["channel_id", "long"],
+        ["available_min_id", "int"],
       ],
     ],
   ],
@@ -25464,9 +25442,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE16459C3,
       [
-        ["flags", flags, "#"],
-        ["unread", "true", "flags.0?true"],
-        ["peer", "DialogPeer", "DialogPeer"],
+        ["flags", "#"],
+        ["unread", "flags.0?true"],
+        ["peer", "DialogPeer"],
       ],
     ],
   ],
@@ -25475,10 +25453,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xACA1657B,
       [
-        ["flags", flags, "#"],
-        ["poll_id", "bigint", "long"],
-        ["poll", "Poll", "flags.0?Poll"],
-        ["results", "PollResults", "PollResults"],
+        ["flags", "#"],
+        ["poll_id", "long"],
+        ["poll", "flags.0?Poll"],
+        ["results", "PollResults"],
       ],
     ],
   ],
@@ -25487,9 +25465,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x54C01850,
       [
-        ["peer", "Peer", "Peer"],
-        ["default_banned_rights", "ChatBannedRights", "ChatBannedRights"],
-        ["version", "number", "int"],
+        ["peer", "Peer"],
+        ["default_banned_rights", "ChatBannedRights"],
+        ["version", "int"],
       ],
     ],
   ],
@@ -25498,9 +25476,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x19360DC0,
       [
-        ["folder_peers", ["FolderPeer"], "Vector<FolderPeer>"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["folder_peers", "Vector<FolderPeer>"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -25509,8 +25487,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6A7E7366,
       [
-        ["peer", "Peer", "Peer"],
-        ["settings", "PeerSettings", "PeerSettings"],
+        ["peer", "Peer"],
+        ["settings", "PeerSettings"],
       ],
     ],
   ],
@@ -25519,7 +25497,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB4AFCFB0,
       [
-        ["peers", ["PeerLocated"], "Vector<PeerLocated>"],
+        ["peers", "Vector<PeerLocated>"],
       ],
     ],
   ],
@@ -25528,7 +25506,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x39A51DFB,
       [
-        ["message", "Message", "Message"],
+        ["message", "Message"],
       ],
     ],
   ],
@@ -25537,10 +25515,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF2A71983,
       [
-        ["flags", flags, "#"],
-        ["peer", "Peer", "Peer"],
-        ["messages", ["number"], "Vector<int>"],
-        ["sent_messages", ["number"], "flags.0?Vector<int>"],
+        ["flags", "#"],
+        ["peer", "Peer"],
+        ["messages", "Vector<int>"],
+        ["sent_messages", "flags.0?Vector<int>"],
       ],
     ],
   ],
@@ -25549,7 +25527,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8216FBA3,
       [
-        ["theme", "Theme", "Theme"],
+        ["theme", "Theme"],
       ],
     ],
   ],
@@ -25558,8 +25536,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x871FB939,
       [
-        ["peer", "Peer", "Peer"],
-        ["msg_id", "number", "int"],
+        ["peer", "Peer"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -25575,10 +25553,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x24F40E77,
       [
-        ["poll_id", "bigint", "long"],
-        ["peer", "Peer", "Peer"],
-        ["options", [Uint8Array], "Vector<bytes>"],
-        ["qts", "number", "int"],
+        ["poll_id", "long"],
+        ["peer", "Peer"],
+        ["options", "Vector<bytes>"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -25587,9 +25565,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x26FFDE7D,
       [
-        ["flags", flags, "#"],
-        ["id", "number", "int"],
-        ["filter", "DialogFilter", "flags.0?DialogFilter"],
+        ["flags", "#"],
+        ["id", "int"],
+        ["filter", "flags.0?DialogFilter"],
       ],
     ],
   ],
@@ -25598,7 +25576,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA5D72105,
       [
-        ["order", ["number"], "Vector<int>"],
+        ["order", "Vector<int>"],
       ],
     ],
   ],
@@ -25614,8 +25592,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2661BF09,
       [
-        ["phone_call_id", "bigint", "long"],
-        ["data", Uint8Array, "bytes"],
+        ["phone_call_id", "long"],
+        ["data", "bytes"],
       ],
     ],
   ],
@@ -25624,9 +25602,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD29A27F4,
       [
-        ["channel_id", "bigint", "long"],
-        ["id", "number", "int"],
-        ["forwards", "number", "int"],
+        ["channel_id", "long"],
+        ["id", "int"],
+        ["forwards", "int"],
       ],
     ],
   ],
@@ -25635,12 +25613,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD6B19546,
       [
-        ["flags", flags, "#"],
-        ["channel_id", "bigint", "long"],
-        ["top_msg_id", "number", "int"],
-        ["read_max_id", "number", "int"],
-        ["broadcast_id", "bigint", "flags.0?long"],
-        ["broadcast_post", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["channel_id", "long"],
+        ["top_msg_id", "int"],
+        ["read_max_id", "int"],
+        ["broadcast_id", "flags.0?long"],
+        ["broadcast_post", "flags.0?int"],
       ],
     ],
   ],
@@ -25649,9 +25627,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x695C9E7C,
       [
-        ["channel_id", "bigint", "long"],
-        ["top_msg_id", "number", "int"],
-        ["read_max_id", "number", "int"],
+        ["channel_id", "long"],
+        ["top_msg_id", "int"],
+        ["read_max_id", "int"],
       ],
     ],
   ],
@@ -25660,10 +25638,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEBE07752,
       [
-        ["flags", flags, "#"],
-        ["blocked", "true", "flags.0?true"],
-        ["blocked_my_stories_from", "true", "flags.1?true"],
-        ["peer_id", "Peer", "Peer"],
+        ["flags", "#"],
+        ["blocked", "flags.0?true"],
+        ["blocked_my_stories_from", "flags.1?true"],
+        ["peer_id", "Peer"],
       ],
     ],
   ],
@@ -25672,11 +25650,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8C88C923,
       [
-        ["flags", flags, "#"],
-        ["channel_id", "bigint", "long"],
-        ["top_msg_id", "number", "flags.0?int"],
-        ["from_id", "Peer", "Peer"],
-        ["action", "SendMessageAction", "SendMessageAction"],
+        ["flags", "#"],
+        ["channel_id", "long"],
+        ["top_msg_id", "flags.0?int"],
+        ["from_id", "Peer"],
+        ["action", "SendMessageAction"],
       ],
     ],
   ],
@@ -25685,12 +25663,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xED85EAB5,
       [
-        ["flags", flags, "#"],
-        ["pinned", "true", "flags.0?true"],
-        ["peer", "Peer", "Peer"],
-        ["messages", ["number"], "Vector<int>"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["flags", "#"],
+        ["pinned", "flags.0?true"],
+        ["peer", "Peer"],
+        ["messages", "Vector<int>"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -25699,12 +25677,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5BB98608,
       [
-        ["flags", flags, "#"],
-        ["pinned", "true", "flags.0?true"],
-        ["channel_id", "bigint", "long"],
-        ["messages", ["number"], "Vector<int>"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["flags", "#"],
+        ["pinned", "flags.0?true"],
+        ["channel_id", "long"],
+        ["messages", "Vector<int>"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -25713,7 +25691,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF89A6A4E,
       [
-        ["chat_id", "bigint", "long"],
+        ["chat_id", "long"],
       ],
     ],
   ],
@@ -25722,9 +25700,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF2EBDB4E,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["participants", ["GroupCallParticipant"], "Vector<GroupCallParticipant>"],
-        ["version", "number", "int"],
+        ["call", "InputGroupCall"],
+        ["participants", "Vector<GroupCallParticipant>"],
+        ["version", "int"],
       ],
     ],
   ],
@@ -25733,9 +25711,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x97D64341,
       [
-        ["flags", flags, "#"],
-        ["chat_id", "bigint", "flags.0?long"],
-        ["call", "GroupCall", "GroupCall"],
+        ["flags", "#"],
+        ["chat_id", "flags.0?long"],
+        ["call", "GroupCall"],
       ],
     ],
   ],
@@ -25744,9 +25722,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBB9BB9A5,
       [
-        ["flags", flags, "#"],
-        ["peer", "Peer", "Peer"],
-        ["ttl_period", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["peer", "Peer"],
+        ["ttl_period", "flags.0?int"],
       ],
     ],
   ],
@@ -25755,15 +25733,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD087663A,
       [
-        ["flags", flags, "#"],
-        ["chat_id", "bigint", "long"],
-        ["date", "number", "int"],
-        ["actor_id", "bigint", "long"],
-        ["user_id", "bigint", "long"],
-        ["prev_participant", "ChatParticipant", "flags.0?ChatParticipant"],
-        ["new_participant", "ChatParticipant", "flags.1?ChatParticipant"],
-        ["invite", "ExportedChatInvite", "flags.2?ExportedChatInvite"],
-        ["qts", "number", "int"],
+        ["flags", "#"],
+        ["chat_id", "long"],
+        ["date", "int"],
+        ["actor_id", "long"],
+        ["user_id", "long"],
+        ["prev_participant", "flags.0?ChatParticipant"],
+        ["new_participant", "flags.1?ChatParticipant"],
+        ["invite", "flags.2?ExportedChatInvite"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -25772,16 +25750,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x985D3ABB,
       [
-        ["flags", flags, "#"],
-        ["via_chatlist", "true", "flags.3?true"],
-        ["channel_id", "bigint", "long"],
-        ["date", "number", "int"],
-        ["actor_id", "bigint", "long"],
-        ["user_id", "bigint", "long"],
-        ["prev_participant", "ChannelParticipant", "flags.0?ChannelParticipant"],
-        ["new_participant", "ChannelParticipant", "flags.1?ChannelParticipant"],
-        ["invite", "ExportedChatInvite", "flags.2?ExportedChatInvite"],
-        ["qts", "number", "int"],
+        ["flags", "#"],
+        ["via_chatlist", "flags.3?true"],
+        ["channel_id", "long"],
+        ["date", "int"],
+        ["actor_id", "long"],
+        ["user_id", "long"],
+        ["prev_participant", "flags.0?ChannelParticipant"],
+        ["new_participant", "flags.1?ChannelParticipant"],
+        ["invite", "flags.2?ExportedChatInvite"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -25790,10 +25768,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC4870A49,
       [
-        ["user_id", "bigint", "long"],
-        ["date", "number", "int"],
-        ["stopped", "boolean", "Bool"],
-        ["qts", "number", "int"],
+        ["user_id", "long"],
+        ["date", "int"],
+        ["stopped", "Bool"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -25802,9 +25780,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0B783982,
       [
-        ["flags", flags, "#"],
-        ["presentation", "true", "flags.0?true"],
-        ["params", "DataJSON", "DataJSON"],
+        ["flags", "#"],
+        ["presentation", "flags.0?true"],
+        ["params", "DataJSON"],
       ],
     ],
   ],
@@ -25813,9 +25791,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4D712F2E,
       [
-        ["peer", "Peer", "Peer"],
-        ["bot_id", "bigint", "long"],
-        ["commands", ["BotCommand"], "Vector<BotCommand>"],
+        ["peer", "Peer"],
+        ["bot_id", "long"],
+        ["commands", "Vector<BotCommand>"],
       ],
     ],
   ],
@@ -25824,9 +25802,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7063C3DB,
       [
-        ["peer", "Peer", "Peer"],
-        ["requests_pending", "number", "int"],
-        ["recent_requesters", ["bigint"], "Vector<long>"],
+        ["peer", "Peer"],
+        ["requests_pending", "int"],
+        ["recent_requesters", "Vector<long>"],
       ],
     ],
   ],
@@ -25835,12 +25813,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x11DFA986,
       [
-        ["peer", "Peer", "Peer"],
-        ["date", "number", "int"],
-        ["user_id", "bigint", "long"],
-        ["about", "string", "string"],
-        ["invite", "ExportedChatInvite", "ExportedChatInvite"],
-        ["qts", "number", "int"],
+        ["peer", "Peer"],
+        ["date", "int"],
+        ["user_id", "long"],
+        ["about", "string"],
+        ["invite", "ExportedChatInvite"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -25849,11 +25827,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5E1B3CB8,
       [
-        ["flags", flags, "#"],
-        ["peer", "Peer", "Peer"],
-        ["msg_id", "number", "int"],
-        ["top_msg_id", "number", "flags.0?int"],
-        ["reactions", "MessageReactions", "MessageReactions"],
+        ["flags", "#"],
+        ["peer", "Peer"],
+        ["msg_id", "int"],
+        ["top_msg_id", "flags.0?int"],
+        ["reactions", "MessageReactions"],
       ],
     ],
   ],
@@ -25869,7 +25847,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1592B79D,
       [
-        ["query_id", "bigint", "long"],
+        ["query_id", "long"],
       ],
     ],
   ],
@@ -25878,8 +25856,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x14B85813,
       [
-        ["bot_id", "bigint", "long"],
-        ["button", "BotMenuButton", "BotMenuButton"],
+        ["bot_id", "long"],
+        ["button", "BotMenuButton"],
       ],
     ],
   ],
@@ -25895,12 +25873,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0084CD5A,
       [
-        ["flags", flags, "#"],
-        ["pending", "true", "flags.0?true"],
-        ["peer", "Peer", "Peer"],
-        ["msg_id", "number", "int"],
-        ["transcription_id", "bigint", "long"],
-        ["text", "string", "string"],
+        ["flags", "#"],
+        ["pending", "flags.0?true"],
+        ["peer", "Peer"],
+        ["msg_id", "int"],
+        ["transcription_id", "long"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -25916,8 +25894,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x28373599,
       [
-        ["user_id", "bigint", "long"],
-        ["emoji_status", "EmojiStatus", "EmojiStatus"],
+        ["user_id", "long"],
+        ["emoji_status", "EmojiStatus"],
       ],
     ],
   ],
@@ -25940,10 +25918,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x86FCCF85,
       [
-        ["flags", flags, "#"],
-        ["masks", "true", "flags.0?true"],
-        ["emojis", "true", "flags.1?true"],
-        ["stickerset", "bigint", "long"],
+        ["flags", "#"],
+        ["masks", "flags.0?true"],
+        ["emojis", "flags.1?true"],
+        ["stickerset", "long"],
       ],
     ],
   ],
@@ -25952,9 +25930,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD5A41724,
       [
-        ["peer", "Peer", "Peer"],
-        ["msg_id", "number", "int"],
-        ["extended_media", ["MessageExtendedMedia"], "Vector<MessageExtendedMedia>"],
+        ["peer", "Peer"],
+        ["msg_id", "int"],
+        ["extended_media", "Vector<MessageExtendedMedia>"],
       ],
     ],
   ],
@@ -25963,10 +25941,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x192EFBE3,
       [
-        ["flags", flags, "#"],
-        ["pinned", "true", "flags.0?true"],
-        ["channel_id", "bigint", "long"],
-        ["topic_id", "number", "int"],
+        ["flags", "#"],
+        ["pinned", "flags.0?true"],
+        ["channel_id", "long"],
+        ["topic_id", "int"],
       ],
     ],
   ],
@@ -25975,9 +25953,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFE198602,
       [
-        ["flags", flags, "#"],
-        ["channel_id", "bigint", "long"],
-        ["order", ["number"], "flags.0?Vector<int>"],
+        ["flags", "#"],
+        ["channel_id", "long"],
+        ["order", "flags.0?Vector<int>"],
       ],
     ],
   ],
@@ -25986,7 +25964,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x20529438,
       [
-        ["user_id", "bigint", "long"],
+        ["user_id", "long"],
       ],
     ],
   ],
@@ -26002,8 +25980,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x75B3B798,
       [
-        ["peer", "Peer", "Peer"],
-        ["story", "StoryItem", "StoryItem"],
+        ["peer", "Peer"],
+        ["story", "StoryItem"],
       ],
     ],
   ],
@@ -26012,8 +25990,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF74E932B,
       [
-        ["peer", "Peer", "Peer"],
-        ["max_id", "number", "int"],
+        ["peer", "Peer"],
+        ["max_id", "int"],
       ],
     ],
   ],
@@ -26022,8 +26000,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1BF335B9,
       [
-        ["id", "number", "int"],
-        ["random_id", "bigint", "long"],
+        ["id", "int"],
+        ["random_id", "long"],
       ],
     ],
   ],
@@ -26032,7 +26010,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2C084DC1,
       [
-        ["stealth_mode", "StoriesStealthMode", "StoriesStealthMode"],
+        ["stealth_mode", "StoriesStealthMode"],
       ],
     ],
   ],
@@ -26041,9 +26019,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7D627683,
       [
-        ["peer", "Peer", "Peer"],
-        ["story_id", "number", "int"],
-        ["reaction", "Reaction", "Reaction"],
+        ["peer", "Peer"],
+        ["story_id", "int"],
+        ["reaction", "Reaction"],
       ],
     ],
   ],
@@ -26052,9 +26030,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x904DD49C,
       [
-        ["peer", "Peer", "Peer"],
-        ["boost", "Boost", "Boost"],
-        ["qts", "number", "int"],
+        ["peer", "Peer"],
+        ["boost", "Boost"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -26063,8 +26041,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x07B68920,
       [
-        ["channel_id", "bigint", "long"],
-        ["enabled", "boolean", "Bool"],
+        ["channel_id", "long"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -26073,10 +26051,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAE3F101D,
       [
-        ["flags", flags, "#"],
-        ["wallpaper_overridden", "true", "flags.1?true"],
-        ["peer", "Peer", "Peer"],
-        ["wallpaper", "WallPaper", "flags.0?WallPaper"],
+        ["flags", "#"],
+        ["wallpaper_overridden", "flags.1?true"],
+        ["peer", "Peer"],
+        ["wallpaper", "flags.0?WallPaper"],
       ],
     ],
   ],
@@ -26085,13 +26063,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAC21D3CE,
       [
-        ["peer", "Peer", "Peer"],
-        ["msg_id", "number", "int"],
-        ["date", "number", "int"],
-        ["actor", "Peer", "Peer"],
-        ["old_reactions", ["Reaction"], "Vector<Reaction>"],
-        ["new_reactions", ["Reaction"], "Vector<Reaction>"],
-        ["qts", "number", "int"],
+        ["peer", "Peer"],
+        ["msg_id", "int"],
+        ["date", "int"],
+        ["actor", "Peer"],
+        ["old_reactions", "Vector<Reaction>"],
+        ["new_reactions", "Vector<Reaction>"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -26100,11 +26078,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x09CB7759,
       [
-        ["peer", "Peer", "Peer"],
-        ["msg_id", "number", "int"],
-        ["date", "number", "int"],
-        ["reactions", ["ReactionCount"], "Vector<ReactionCount>"],
-        ["qts", "number", "int"],
+        ["peer", "Peer"],
+        ["msg_id", "int"],
+        ["date", "int"],
+        ["reactions", "Vector<ReactionCount>"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -26113,9 +26091,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAEAF9E74,
       [
-        ["flags", flags, "#"],
-        ["pinned", "true", "flags.0?true"],
-        ["peer", "DialogPeer", "DialogPeer"],
+        ["flags", "#"],
+        ["pinned", "flags.0?true"],
+        ["peer", "DialogPeer"],
       ],
     ],
   ],
@@ -26124,8 +26102,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x686C85A6,
       [
-        ["flags", flags, "#"],
-        ["order", ["DialogPeer"], "flags.0?Vector<DialogPeer>"],
+        ["flags", "#"],
+        ["order", "flags.0?Vector<DialogPeer>"],
       ],
     ],
   ],
@@ -26141,7 +26119,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF16269D4,
       [
-        ["job_id", "string", "string"],
+        ["job_id", "string"],
       ],
     ],
   ],
@@ -26150,7 +26128,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF9470AB2,
       [
-        ["quick_replies", ["QuickReply"], "Vector<QuickReply>"],
+        ["quick_replies", "Vector<QuickReply>"],
       ],
     ],
   ],
@@ -26159,7 +26137,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF53DA717,
       [
-        ["quick_reply", "QuickReply", "QuickReply"],
+        ["quick_reply", "QuickReply"],
       ],
     ],
   ],
@@ -26168,7 +26146,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x53E6F1EC,
       [
-        ["shortcut_id", "number", "int"],
+        ["shortcut_id", "int"],
       ],
     ],
   ],
@@ -26177,7 +26155,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3E050D0F,
       [
-        ["message", "Message", "Message"],
+        ["message", "Message"],
       ],
     ],
   ],
@@ -26186,8 +26164,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x566FE7CD,
       [
-        ["shortcut_id", "number", "int"],
-        ["messages", ["number"], "Vector<int>"],
+        ["shortcut_id", "int"],
+        ["messages", "Vector<int>"],
       ],
     ],
   ],
@@ -26196,8 +26174,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8AE5C97A,
       [
-        ["connection", "BotBusinessConnection", "BotBusinessConnection"],
-        ["qts", "number", "int"],
+        ["connection", "BotBusinessConnection"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -26206,11 +26184,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9DDB347C,
       [
-        ["flags", flags, "#"],
-        ["connection_id", "string", "string"],
-        ["message", "Message", "Message"],
-        ["reply_to_message", "Message", "flags.0?Message"],
-        ["qts", "number", "int"],
+        ["flags", "#"],
+        ["connection_id", "string"],
+        ["message", "Message"],
+        ["reply_to_message", "flags.0?Message"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -26219,11 +26197,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x07DF587C,
       [
-        ["flags", flags, "#"],
-        ["connection_id", "string", "string"],
-        ["message", "Message", "Message"],
-        ["reply_to_message", "Message", "flags.0?Message"],
-        ["qts", "number", "int"],
+        ["flags", "#"],
+        ["connection_id", "string"],
+        ["message", "Message"],
+        ["reply_to_message", "flags.0?Message"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -26232,10 +26210,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA02A982E,
       [
-        ["connection_id", "string", "string"],
-        ["peer", "Peer", "Peer"],
-        ["messages", ["number"], "Vector<int>"],
-        ["qts", "number", "int"],
+        ["connection_id", "string"],
+        ["peer", "Peer"],
+        ["messages", "Vector<int>"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -26244,9 +26222,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1824E40B,
       [
-        ["story_id", "number", "int"],
-        ["peer", "Peer", "Peer"],
-        ["reaction", "Reaction", "Reaction"],
+        ["story_id", "int"],
+        ["peer", "Peer"],
+        ["reaction", "Reaction"],
       ],
     ],
   ],
@@ -26255,8 +26233,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDFD961F5,
       [
-        ["peer", "Peer", "Peer"],
-        ["balances", "BroadcastRevenueBalances", "BroadcastRevenueBalances"],
+        ["peer", "Peer"],
+        ["balances", "BroadcastRevenueBalances"],
       ],
     ],
   ],
@@ -26265,7 +26243,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4E80A379,
       [
-        ["balance", "StarsAmount", "StarsAmount"],
+        ["balance", "StarsAmount"],
       ],
     ],
   ],
@@ -26274,14 +26252,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1EA2FDA7,
       [
-        ["flags", flags, "#"],
-        ["query_id", "bigint", "long"],
-        ["user_id", "bigint", "long"],
-        ["connection_id", "string", "string"],
-        ["message", "Message", "Message"],
-        ["reply_to_message", "Message", "flags.2?Message"],
-        ["chat_instance", "bigint", "long"],
-        ["data", Uint8Array, "flags.0?bytes"],
+        ["flags", "#"],
+        ["query_id", "long"],
+        ["user_id", "long"],
+        ["connection_id", "string"],
+        ["message", "Message"],
+        ["reply_to_message", "flags.2?Message"],
+        ["chat_instance", "long"],
+        ["data", "flags.0?bytes"],
       ],
     ],
   ],
@@ -26290,8 +26268,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA584B019,
       [
-        ["peer", "Peer", "Peer"],
-        ["status", "StarsRevenueStatus", "StarsRevenueStatus"],
+        ["peer", "Peer"],
+        ["status", "StarsRevenueStatus"],
       ],
     ],
   ],
@@ -26300,9 +26278,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x283BD312,
       [
-        ["user_id", "bigint", "long"],
-        ["payload", "string", "string"],
-        ["qts", "number", "int"],
+        ["user_id", "long"],
+        ["payload", "string"],
+        ["qts", "int"],
       ],
     ],
   ],
@@ -26311,7 +26289,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8B725FCE,
       [
-        ["private", "PaidReactionPrivacy", "PaidReactionPrivacy"],
+        ["private", "PaidReactionPrivacy"],
       ],
     ],
   ],
@@ -26320,11 +26298,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA56C2A3E,
       [
-        ["pts", "number", "int"],
-        ["qts", "number", "int"],
-        ["date", "number", "int"],
-        ["seq", "number", "int"],
-        ["unread_count", "number", "int"],
+        ["pts", "int"],
+        ["qts", "int"],
+        ["date", "int"],
+        ["seq", "int"],
+        ["unread_count", "int"],
       ],
     ],
   ],
@@ -26333,8 +26311,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5D75A138,
       [
-        ["date", "number", "int"],
-        ["seq", "number", "int"],
+        ["date", "int"],
+        ["seq", "int"],
       ],
     ],
   ],
@@ -26343,12 +26321,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x00F49CA0,
       [
-        ["new_messages", ["Message"], "Vector<Message>"],
-        ["new_encrypted_messages", ["EncryptedMessage"], "Vector<EncryptedMessage>"],
-        ["other_updates", ["Update"], "Vector<Update>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
-        ["state", "updates_State", "updates.State"],
+        ["new_messages", "Vector<Message>"],
+        ["new_encrypted_messages", "Vector<EncryptedMessage>"],
+        ["other_updates", "Vector<Update>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+        ["state", "updates.State"],
       ],
     ],
   ],
@@ -26357,12 +26335,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA8FB1981,
       [
-        ["new_messages", ["Message"], "Vector<Message>"],
-        ["new_encrypted_messages", ["EncryptedMessage"], "Vector<EncryptedMessage>"],
-        ["other_updates", ["Update"], "Vector<Update>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
-        ["intermediate_state", "updates_State", "updates.State"],
+        ["new_messages", "Vector<Message>"],
+        ["new_encrypted_messages", "Vector<EncryptedMessage>"],
+        ["other_updates", "Vector<Update>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+        ["intermediate_state", "updates.State"],
       ],
     ],
   ],
@@ -26371,7 +26349,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4AFE8F6D,
       [
-        ["pts", "number", "int"],
+        ["pts", "int"],
       ],
     ],
   ],
@@ -26387,22 +26365,22 @@ const types: Map<string, Parameters> = new Map([
     [
       0x313BC7F8,
       [
-        ["flags", flags, "#"],
-        ["out", "true", "flags.1?true"],
-        ["mentioned", "true", "flags.4?true"],
-        ["media_unread", "true", "flags.5?true"],
-        ["silent", "true", "flags.13?true"],
-        ["id", "number", "int"],
-        ["user_id", "bigint", "long"],
-        ["message", "string", "string"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
-        ["date", "number", "int"],
-        ["fwd_from", "MessageFwdHeader", "flags.2?MessageFwdHeader"],
-        ["via_bot_id", "bigint", "flags.11?long"],
-        ["reply_to", "MessageReplyHeader", "flags.3?MessageReplyHeader"],
-        ["entities", ["MessageEntity"], "flags.7?Vector<MessageEntity>"],
-        ["ttl_period", "number", "flags.25?int"],
+        ["flags", "#"],
+        ["out", "flags.1?true"],
+        ["mentioned", "flags.4?true"],
+        ["media_unread", "flags.5?true"],
+        ["silent", "flags.13?true"],
+        ["id", "int"],
+        ["user_id", "long"],
+        ["message", "string"],
+        ["pts", "int"],
+        ["pts_count", "int"],
+        ["date", "int"],
+        ["fwd_from", "flags.2?MessageFwdHeader"],
+        ["via_bot_id", "flags.11?long"],
+        ["reply_to", "flags.3?MessageReplyHeader"],
+        ["entities", "flags.7?Vector<MessageEntity>"],
+        ["ttl_period", "flags.25?int"],
       ],
     ],
   ],
@@ -26411,23 +26389,23 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4D6DEEA5,
       [
-        ["flags", flags, "#"],
-        ["out", "true", "flags.1?true"],
-        ["mentioned", "true", "flags.4?true"],
-        ["media_unread", "true", "flags.5?true"],
-        ["silent", "true", "flags.13?true"],
-        ["id", "number", "int"],
-        ["from_id", "bigint", "long"],
-        ["chat_id", "bigint", "long"],
-        ["message", "string", "string"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
-        ["date", "number", "int"],
-        ["fwd_from", "MessageFwdHeader", "flags.2?MessageFwdHeader"],
-        ["via_bot_id", "bigint", "flags.11?long"],
-        ["reply_to", "MessageReplyHeader", "flags.3?MessageReplyHeader"],
-        ["entities", ["MessageEntity"], "flags.7?Vector<MessageEntity>"],
-        ["ttl_period", "number", "flags.25?int"],
+        ["flags", "#"],
+        ["out", "flags.1?true"],
+        ["mentioned", "flags.4?true"],
+        ["media_unread", "flags.5?true"],
+        ["silent", "flags.13?true"],
+        ["id", "int"],
+        ["from_id", "long"],
+        ["chat_id", "long"],
+        ["message", "string"],
+        ["pts", "int"],
+        ["pts_count", "int"],
+        ["date", "int"],
+        ["fwd_from", "flags.2?MessageFwdHeader"],
+        ["via_bot_id", "flags.11?long"],
+        ["reply_to", "flags.3?MessageReplyHeader"],
+        ["entities", "flags.7?Vector<MessageEntity>"],
+        ["ttl_period", "flags.25?int"],
       ],
     ],
   ],
@@ -26436,8 +26414,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x78D4DEC1,
       [
-        ["update", "Update", "Update"],
-        ["date", "number", "int"],
+        ["update", "Update"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -26446,12 +26424,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x725B04C3,
       [
-        ["updates", ["Update"], "Vector<Update>"],
-        ["users", ["User"], "Vector<User>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["date", "number", "int"],
-        ["seq_start", "number", "int"],
-        ["seq", "number", "int"],
+        ["updates", "Vector<Update>"],
+        ["users", "Vector<User>"],
+        ["chats", "Vector<Chat>"],
+        ["date", "int"],
+        ["seq_start", "int"],
+        ["seq", "int"],
       ],
     ],
   ],
@@ -26460,11 +26438,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x74AE4240,
       [
-        ["updates", ["Update"], "Vector<Update>"],
-        ["users", ["User"], "Vector<User>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["date", "number", "int"],
-        ["seq", "number", "int"],
+        ["updates", "Vector<Update>"],
+        ["users", "Vector<User>"],
+        ["chats", "Vector<Chat>"],
+        ["date", "int"],
+        ["seq", "int"],
       ],
     ],
   ],
@@ -26473,15 +26451,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9015E101,
       [
-        ["flags", flags, "#"],
-        ["out", "true", "flags.1?true"],
-        ["id", "number", "int"],
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
-        ["date", "number", "int"],
-        ["media", "MessageMedia", "flags.9?MessageMedia"],
-        ["entities", ["MessageEntity"], "flags.7?Vector<MessageEntity>"],
-        ["ttl_period", "number", "flags.25?int"],
+        ["flags", "#"],
+        ["out", "flags.1?true"],
+        ["id", "int"],
+        ["pts", "int"],
+        ["pts_count", "int"],
+        ["date", "int"],
+        ["media", "flags.9?MessageMedia"],
+        ["entities", "flags.7?Vector<MessageEntity>"],
+        ["ttl_period", "flags.25?int"],
       ],
     ],
   ],
@@ -26490,8 +26468,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8DCA6AA5,
       [
-        ["photos", ["Photo"], "Vector<Photo>"],
-        ["users", ["User"], "Vector<User>"],
+        ["photos", "Vector<Photo>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -26500,9 +26478,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x15051F54,
       [
-        ["count", "number", "int"],
-        ["photos", ["Photo"], "Vector<Photo>"],
-        ["users", ["User"], "Vector<User>"],
+        ["count", "int"],
+        ["photos", "Vector<Photo>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -26511,8 +26489,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x20212CA8,
       [
-        ["photo", "Photo", "Photo"],
-        ["users", ["User"], "Vector<User>"],
+        ["photo", "Photo"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -26521,9 +26499,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x096A18D5,
       [
-        ["type", "storage_FileType", "storage.FileType"],
-        ["mtime", "number", "int"],
-        ["bytes", Uint8Array, "bytes"],
+        ["type", "storage.FileType"],
+        ["mtime", "int"],
+        ["bytes", "bytes"],
       ],
     ],
   ],
@@ -26532,11 +26510,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF18CDA44,
       [
-        ["dc_id", "number", "int"],
-        ["file_token", Uint8Array, "bytes"],
-        ["encryption_key", Uint8Array, "bytes"],
-        ["encryption_iv", Uint8Array, "bytes"],
-        ["file_hashes", ["FileHash"], "Vector<FileHash>"],
+        ["dc_id", "int"],
+        ["file_token", "bytes"],
+        ["encryption_key", "bytes"],
+        ["encryption_iv", "bytes"],
+        ["file_hashes", "Vector<FileHash>"],
       ],
     ],
   ],
@@ -26545,17 +26523,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0x18B7A10D,
       [
-        ["flags", flags, "#"],
-        ["ipv6", "true", "flags.0?true"],
-        ["media_only", "true", "flags.1?true"],
-        ["tcpo_only", "true", "flags.2?true"],
-        ["cdn", "true", "flags.3?true"],
-        ["static", "true", "flags.4?true"],
-        ["this_port_only", "true", "flags.5?true"],
-        ["id", "number", "int"],
-        ["ip_address", "string", "string"],
-        ["port", "number", "int"],
-        ["secret", Uint8Array, "flags.10?bytes"],
+        ["flags", "#"],
+        ["ipv6", "flags.0?true"],
+        ["media_only", "flags.1?true"],
+        ["tcpo_only", "flags.2?true"],
+        ["cdn", "flags.3?true"],
+        ["static", "flags.4?true"],
+        ["this_port_only", "flags.5?true"],
+        ["id", "int"],
+        ["ip_address", "string"],
+        ["port", "int"],
+        ["secret", "flags.10?bytes"],
       ],
     ],
   ],
@@ -26564,54 +26542,54 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCC1A241E,
       [
-        ["flags", flags, "#"],
-        ["default_p2p_contacts", "true", "flags.3?true"],
-        ["preload_featured_stickers", "true", "flags.4?true"],
-        ["revoke_pm_inbox", "true", "flags.6?true"],
-        ["blocked_mode", "true", "flags.8?true"],
-        ["force_try_ipv6", "true", "flags.14?true"],
-        ["date", "number", "int"],
-        ["expires", "number", "int"],
-        ["test_mode", "boolean", "Bool"],
-        ["this_dc", "number", "int"],
-        ["dc_options", ["DcOption"], "Vector<DcOption>"],
-        ["dc_txt_domain_name", "string", "string"],
-        ["chat_size_max", "number", "int"],
-        ["megagroup_size_max", "number", "int"],
-        ["forwarded_count_max", "number", "int"],
-        ["online_update_period_ms", "number", "int"],
-        ["offline_blur_timeout_ms", "number", "int"],
-        ["offline_idle_timeout_ms", "number", "int"],
-        ["online_cloud_timeout_ms", "number", "int"],
-        ["notify_cloud_delay_ms", "number", "int"],
-        ["notify_default_delay_ms", "number", "int"],
-        ["push_chat_period_ms", "number", "int"],
-        ["push_chat_limit", "number", "int"],
-        ["edit_time_limit", "number", "int"],
-        ["revoke_time_limit", "number", "int"],
-        ["revoke_pm_time_limit", "number", "int"],
-        ["rating_e_decay", "number", "int"],
-        ["stickers_recent_limit", "number", "int"],
-        ["channels_read_media_period", "number", "int"],
-        ["tmp_sessions", "number", "flags.0?int"],
-        ["call_receive_timeout_ms", "number", "int"],
-        ["call_ring_timeout_ms", "number", "int"],
-        ["call_connect_timeout_ms", "number", "int"],
-        ["call_packet_timeout_ms", "number", "int"],
-        ["me_url_prefix", "string", "string"],
-        ["autoupdate_url_prefix", "string", "flags.7?string"],
-        ["gif_search_username", "string", "flags.9?string"],
-        ["venue_search_username", "string", "flags.10?string"],
-        ["img_search_username", "string", "flags.11?string"],
-        ["static_maps_provider", "string", "flags.12?string"],
-        ["caption_length_max", "number", "int"],
-        ["message_length_max", "number", "int"],
-        ["webfile_dc_id", "number", "int"],
-        ["suggested_lang_code", "string", "flags.2?string"],
-        ["lang_pack_version", "number", "flags.2?int"],
-        ["base_lang_pack_version", "number", "flags.2?int"],
-        ["reactions_default", "Reaction", "flags.15?Reaction"],
-        ["autologin_token", "string", "flags.16?string"],
+        ["flags", "#"],
+        ["default_p2p_contacts", "flags.3?true"],
+        ["preload_featured_stickers", "flags.4?true"],
+        ["revoke_pm_inbox", "flags.6?true"],
+        ["blocked_mode", "flags.8?true"],
+        ["force_try_ipv6", "flags.14?true"],
+        ["date", "int"],
+        ["expires", "int"],
+        ["test_mode", "Bool"],
+        ["this_dc", "int"],
+        ["dc_options", "Vector<DcOption>"],
+        ["dc_txt_domain_name", "string"],
+        ["chat_size_max", "int"],
+        ["megagroup_size_max", "int"],
+        ["forwarded_count_max", "int"],
+        ["online_update_period_ms", "int"],
+        ["offline_blur_timeout_ms", "int"],
+        ["offline_idle_timeout_ms", "int"],
+        ["online_cloud_timeout_ms", "int"],
+        ["notify_cloud_delay_ms", "int"],
+        ["notify_default_delay_ms", "int"],
+        ["push_chat_period_ms", "int"],
+        ["push_chat_limit", "int"],
+        ["edit_time_limit", "int"],
+        ["revoke_time_limit", "int"],
+        ["revoke_pm_time_limit", "int"],
+        ["rating_e_decay", "int"],
+        ["stickers_recent_limit", "int"],
+        ["channels_read_media_period", "int"],
+        ["tmp_sessions", "flags.0?int"],
+        ["call_receive_timeout_ms", "int"],
+        ["call_ring_timeout_ms", "int"],
+        ["call_connect_timeout_ms", "int"],
+        ["call_packet_timeout_ms", "int"],
+        ["me_url_prefix", "string"],
+        ["autoupdate_url_prefix", "flags.7?string"],
+        ["gif_search_username", "flags.9?string"],
+        ["venue_search_username", "flags.10?string"],
+        ["img_search_username", "flags.11?string"],
+        ["static_maps_provider", "flags.12?string"],
+        ["caption_length_max", "int"],
+        ["message_length_max", "int"],
+        ["webfile_dc_id", "int"],
+        ["suggested_lang_code", "flags.2?string"],
+        ["lang_pack_version", "flags.2?int"],
+        ["base_lang_pack_version", "flags.2?int"],
+        ["reactions_default", "flags.15?Reaction"],
+        ["autologin_token", "flags.16?string"],
       ],
     ],
   ],
@@ -26620,9 +26598,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8E1A1775,
       [
-        ["country", "string", "string"],
-        ["this_dc", "number", "int"],
-        ["nearest_dc", "number", "int"],
+        ["country", "string"],
+        ["this_dc", "int"],
+        ["nearest_dc", "int"],
       ],
     ],
   ],
@@ -26631,15 +26609,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCCBBCE30,
       [
-        ["flags", flags, "#"],
-        ["can_not_skip", "true", "flags.0?true"],
-        ["id", "number", "int"],
-        ["version", "string", "string"],
-        ["text", "string", "string"],
-        ["entities", ["MessageEntity"], "Vector<MessageEntity>"],
-        ["document", "Document", "flags.1?Document"],
-        ["url", "string", "flags.2?string"],
-        ["sticker", "Document", "flags.3?Document"],
+        ["flags", "#"],
+        ["can_not_skip", "flags.0?true"],
+        ["id", "int"],
+        ["version", "string"],
+        ["text", "string"],
+        ["entities", "Vector<MessageEntity>"],
+        ["document", "flags.1?Document"],
+        ["url", "flags.2?string"],
+        ["sticker", "flags.3?Document"],
       ],
     ],
   ],
@@ -26655,7 +26633,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x18CB9F78,
       [
-        ["message", "string", "string"],
+        ["message", "string"],
       ],
     ],
   ],
@@ -26664,7 +26642,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAB7EC0A0,
       [
-        ["id", "number", "int"],
+        ["id", "int"],
       ],
     ],
   ],
@@ -26673,11 +26651,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x66B25953,
       [
-        ["id", "number", "int"],
-        ["access_hash", "bigint", "long"],
-        ["date", "number", "int"],
-        ["admin_id", "bigint", "long"],
-        ["participant_id", "bigint", "long"],
+        ["id", "int"],
+        ["access_hash", "long"],
+        ["date", "int"],
+        ["admin_id", "long"],
+        ["participant_id", "long"],
       ],
     ],
   ],
@@ -26686,14 +26664,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x48F1D94C,
       [
-        ["flags", flags, "#"],
-        ["folder_id", "number", "flags.0?int"],
-        ["id", "number", "int"],
-        ["access_hash", "bigint", "long"],
-        ["date", "number", "int"],
-        ["admin_id", "bigint", "long"],
-        ["participant_id", "bigint", "long"],
-        ["g_a", Uint8Array, "bytes"],
+        ["flags", "#"],
+        ["folder_id", "flags.0?int"],
+        ["id", "int"],
+        ["access_hash", "long"],
+        ["date", "int"],
+        ["admin_id", "long"],
+        ["participant_id", "long"],
+        ["g_a", "bytes"],
       ],
     ],
   ],
@@ -26702,13 +26680,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x61F0D4C7,
       [
-        ["id", "number", "int"],
-        ["access_hash", "bigint", "long"],
-        ["date", "number", "int"],
-        ["admin_id", "bigint", "long"],
-        ["participant_id", "bigint", "long"],
-        ["g_a_or_b", Uint8Array, "bytes"],
-        ["key_fingerprint", "bigint", "long"],
+        ["id", "int"],
+        ["access_hash", "long"],
+        ["date", "int"],
+        ["admin_id", "long"],
+        ["participant_id", "long"],
+        ["g_a_or_b", "bytes"],
+        ["key_fingerprint", "long"],
       ],
     ],
   ],
@@ -26717,9 +26695,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1E1C7C45,
       [
-        ["flags", flags, "#"],
-        ["history_deleted", "true", "flags.0?true"],
-        ["id", "number", "int"],
+        ["flags", "#"],
+        ["history_deleted", "flags.0?true"],
+        ["id", "int"],
       ],
     ],
   ],
@@ -26728,8 +26706,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF141B5E1,
       [
-        ["chat_id", "number", "int"],
-        ["access_hash", "bigint", "long"],
+        ["chat_id", "int"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -26745,11 +26723,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA8008CD8,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["size", "bigint", "long"],
-        ["dc_id", "number", "int"],
-        ["key_fingerprint", "number", "int"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["size", "long"],
+        ["dc_id", "int"],
+        ["key_fingerprint", "int"],
       ],
     ],
   ],
@@ -26765,10 +26743,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x64BD0306,
       [
-        ["id", "bigint", "long"],
-        ["parts", "number", "int"],
-        ["md5_checksum", "string", "string"],
-        ["key_fingerprint", "number", "int"],
+        ["id", "long"],
+        ["parts", "int"],
+        ["md5_checksum", "string"],
+        ["key_fingerprint", "int"],
       ],
     ],
   ],
@@ -26777,8 +26755,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5A17B5E5,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -26787,9 +26765,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2DC173C8,
       [
-        ["id", "bigint", "long"],
-        ["parts", "number", "int"],
-        ["key_fingerprint", "number", "int"],
+        ["id", "long"],
+        ["parts", "int"],
+        ["key_fingerprint", "int"],
       ],
     ],
   ],
@@ -26798,11 +26776,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xED18C118,
       [
-        ["random_id", "bigint", "long"],
-        ["chat_id", "number", "int"],
-        ["date", "number", "int"],
-        ["bytes", Uint8Array, "bytes"],
-        ["file", "EncryptedFile", "EncryptedFile"],
+        ["random_id", "long"],
+        ["chat_id", "int"],
+        ["date", "int"],
+        ["bytes", "bytes"],
+        ["file", "EncryptedFile"],
       ],
     ],
   ],
@@ -26811,10 +26789,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x23734B06,
       [
-        ["random_id", "bigint", "long"],
-        ["chat_id", "number", "int"],
-        ["date", "number", "int"],
-        ["bytes", Uint8Array, "bytes"],
+        ["random_id", "long"],
+        ["chat_id", "int"],
+        ["date", "int"],
+        ["bytes", "bytes"],
       ],
     ],
   ],
@@ -26823,7 +26801,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC0E24635,
       [
-        ["random", Uint8Array, "bytes"],
+        ["random", "bytes"],
       ],
     ],
   ],
@@ -26832,10 +26810,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2C221EDD,
       [
-        ["g", "number", "int"],
-        ["p", Uint8Array, "bytes"],
-        ["version", "number", "int"],
-        ["random", Uint8Array, "bytes"],
+        ["g", "int"],
+        ["p", "bytes"],
+        ["version", "int"],
+        ["random", "bytes"],
       ],
     ],
   ],
@@ -26844,7 +26822,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x560F8935,
       [
-        ["date", "number", "int"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -26853,8 +26831,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9493FF32,
       [
-        ["date", "number", "int"],
-        ["file", "EncryptedFile", "EncryptedFile"],
+        ["date", "int"],
+        ["file", "EncryptedFile"],
       ],
     ],
   ],
@@ -26870,9 +26848,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1ABFB575,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["file_reference", Uint8Array, "bytes"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["file_reference", "bytes"],
       ],
     ],
   ],
@@ -26881,7 +26859,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x36F8C871,
       [
-        ["id", "bigint", "long"],
+        ["id", "long"],
       ],
     ],
   ],
@@ -26890,17 +26868,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8FD4C4D8,
       [
-        ["flags", flags, "#"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["file_reference", Uint8Array, "bytes"],
-        ["date", "number", "int"],
-        ["mime_type", "string", "string"],
-        ["size", "bigint", "long"],
-        ["thumbs", ["PhotoSize"], "flags.0?Vector<PhotoSize>"],
-        ["video_thumbs", ["VideoSize"], "flags.1?Vector<VideoSize>"],
-        ["dc_id", "number", "int"],
-        ["attributes", ["DocumentAttribute"], "Vector<DocumentAttribute>"],
+        ["flags", "#"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["file_reference", "bytes"],
+        ["date", "int"],
+        ["mime_type", "string"],
+        ["size", "long"],
+        ["thumbs", "flags.0?Vector<PhotoSize>"],
+        ["video_thumbs", "flags.1?Vector<VideoSize>"],
+        ["dc_id", "int"],
+        ["attributes", "Vector<DocumentAttribute>"],
       ],
     ],
   ],
@@ -26909,8 +26887,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x17C6B5F6,
       [
-        ["phone_number", "string", "string"],
-        ["user", "User", "User"],
+        ["phone_number", "string"],
+        ["user", "User"],
       ],
     ],
   ],
@@ -26919,7 +26897,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9FD40BD8,
       [
-        ["peer", "Peer", "Peer"],
+        ["peer", "Peer"],
       ],
     ],
   ],
@@ -26949,8 +26927,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x226E6308,
       [
-        ["peer", "Peer", "Peer"],
-        ["top_msg_id", "number", "int"],
+        ["peer", "Peer"],
+        ["top_msg_id", "int"],
       ],
     ],
   ],
@@ -26980,7 +26958,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE9763AEC,
       [
-        ["progress", "number", "int"],
+        ["progress", "int"],
       ],
     ],
   ],
@@ -26996,7 +26974,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF351D7AB,
       [
-        ["progress", "number", "int"],
+        ["progress", "int"],
       ],
     ],
   ],
@@ -27005,7 +26983,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD1D34A26,
       [
-        ["progress", "number", "int"],
+        ["progress", "int"],
       ],
     ],
   ],
@@ -27014,7 +26992,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAA0CD9E4,
       [
-        ["progress", "number", "int"],
+        ["progress", "int"],
       ],
     ],
   ],
@@ -27051,7 +27029,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x243E1C66,
       [
-        ["progress", "number", "int"],
+        ["progress", "int"],
       ],
     ],
   ],
@@ -27067,7 +27045,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDBDA9246,
       [
-        ["progress", "number", "int"],
+        ["progress", "int"],
       ],
     ],
   ],
@@ -27083,9 +27061,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x25972BCB,
       [
-        ["emoticon", "string", "string"],
-        ["msg_id", "number", "int"],
-        ["interaction", "DataJSON", "DataJSON"],
+        ["emoticon", "string"],
+        ["msg_id", "int"],
+        ["interaction", "DataJSON"],
       ],
     ],
   ],
@@ -27094,7 +27072,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB665902E,
       [
-        ["emoticon", "string", "string"],
+        ["emoticon", "string"],
       ],
     ],
   ],
@@ -27103,10 +27081,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB3134D9D,
       [
-        ["my_results", ["Peer"], "Vector<Peer>"],
-        ["results", ["Peer"], "Vector<Peer>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["my_results", "Vector<Peer>"],
+        ["results", "Vector<Peer>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -27311,7 +27289,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x131CC67F,
       [
-        ["users", ["InputUser"], "Vector<InputUser>"],
+        ["users", "Vector<InputUser>"],
       ],
     ],
   ],
@@ -27334,7 +27312,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x90110467,
       [
-        ["users", ["InputUser"], "Vector<InputUser>"],
+        ["users", "Vector<InputUser>"],
       ],
     ],
   ],
@@ -27343,7 +27321,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x840649CF,
       [
-        ["chats", ["bigint"], "Vector<long>"],
+        ["chats", "Vector<long>"],
       ],
     ],
   ],
@@ -27352,7 +27330,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE94F0F86,
       [
-        ["chats", ["bigint"], "Vector<long>"],
+        ["chats", "Vector<long>"],
       ],
     ],
   ],
@@ -27403,7 +27381,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB8905FB2,
       [
-        ["users", ["bigint"], "Vector<long>"],
+        ["users", "Vector<long>"],
       ],
     ],
   ],
@@ -27426,7 +27404,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE4621141,
       [
-        ["users", ["bigint"], "Vector<long>"],
+        ["users", "Vector<long>"],
       ],
     ],
   ],
@@ -27435,7 +27413,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6B134E8E,
       [
-        ["chats", ["bigint"], "Vector<long>"],
+        ["chats", "Vector<long>"],
       ],
     ],
   ],
@@ -27444,7 +27422,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x41C87565,
       [
-        ["chats", ["bigint"], "Vector<long>"],
+        ["chats", "Vector<long>"],
       ],
     ],
   ],
@@ -27481,9 +27459,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x50A04E45,
       [
-        ["rules", ["PrivacyRule"], "Vector<PrivacyRule>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["rules", "Vector<PrivacyRule>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -27492,7 +27470,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB8D0AFDF,
       [
-        ["days", "number", "int"],
+        ["days", "int"],
       ],
     ],
   ],
@@ -27501,8 +27479,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6C37C15C,
       [
-        ["w", "number", "int"],
-        ["h", "number", "int"],
+        ["w", "int"],
+        ["h", "int"],
       ],
     ],
   ],
@@ -27518,11 +27496,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6319D612,
       [
-        ["flags", flags, "#"],
-        ["mask", "true", "flags.1?true"],
-        ["alt", "string", "string"],
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
-        ["mask_coords", "MaskCoords", "flags.0?MaskCoords"],
+        ["flags", "#"],
+        ["mask", "flags.1?true"],
+        ["alt", "string"],
+        ["stickerset", "InputStickerSet"],
+        ["mask_coords", "flags.0?MaskCoords"],
       ],
     ],
   ],
@@ -27531,16 +27509,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x43C57C48,
       [
-        ["flags", flags, "#"],
-        ["round_message", "true", "flags.0?true"],
-        ["supports_streaming", "true", "flags.1?true"],
-        ["nosound", "true", "flags.3?true"],
-        ["duration", "number", "double"],
-        ["w", "number", "int"],
-        ["h", "number", "int"],
-        ["preload_prefix_size", "number", "flags.2?int"],
-        ["video_start_ts", "number", "flags.4?double"],
-        ["video_codec", "string", "flags.5?string"],
+        ["flags", "#"],
+        ["round_message", "flags.0?true"],
+        ["supports_streaming", "flags.1?true"],
+        ["nosound", "flags.3?true"],
+        ["duration", "double"],
+        ["w", "int"],
+        ["h", "int"],
+        ["preload_prefix_size", "flags.2?int"],
+        ["video_start_ts", "flags.4?double"],
+        ["video_codec", "flags.5?string"],
       ],
     ],
   ],
@@ -27549,12 +27527,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9852F9C6,
       [
-        ["flags", flags, "#"],
-        ["voice", "true", "flags.10?true"],
-        ["duration", "number", "int"],
-        ["title", "string", "flags.0?string"],
-        ["performer", "string", "flags.1?string"],
-        ["waveform", Uint8Array, "flags.2?bytes"],
+        ["flags", "#"],
+        ["voice", "flags.10?true"],
+        ["duration", "int"],
+        ["title", "flags.0?string"],
+        ["performer", "flags.1?string"],
+        ["waveform", "flags.2?bytes"],
       ],
     ],
   ],
@@ -27563,7 +27541,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x15590068,
       [
-        ["file_name", "string", "string"],
+        ["file_name", "string"],
       ],
     ],
   ],
@@ -27579,11 +27557,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFD149899,
       [
-        ["flags", flags, "#"],
-        ["free", "true", "flags.0?true"],
-        ["text_color", "true", "flags.1?true"],
-        ["alt", "string", "string"],
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
+        ["flags", "#"],
+        ["free", "flags.0?true"],
+        ["text_color", "flags.1?true"],
+        ["alt", "string"],
+        ["stickerset", "InputStickerSet"],
       ],
     ],
   ],
@@ -27599,8 +27577,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x30A6EC7E,
       [
-        ["hash", "bigint", "long"],
-        ["stickers", ["Document"], "Vector<Document>"],
+        ["hash", "long"],
+        ["stickers", "Vector<Document>"],
       ],
     ],
   ],
@@ -27609,8 +27587,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x12B299D4,
       [
-        ["emoticon", "string", "string"],
-        ["documents", ["bigint"], "Vector<long>"],
+        ["emoticon", "string"],
+        ["documents", "Vector<long>"],
       ],
     ],
   ],
@@ -27626,8 +27604,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCDBBCEBB,
       [
-        ["hash", "bigint", "long"],
-        ["sets", ["StickerSet"], "Vector<StickerSet>"],
+        ["hash", "long"],
+        ["sets", "Vector<StickerSet>"],
       ],
     ],
   ],
@@ -27636,8 +27614,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x84D19185,
       [
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
+        ["pts", "int"],
+        ["pts_count", "int"],
       ],
     ],
   ],
@@ -27646,9 +27624,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x211A1788,
       [
-        ["flags", flags, "#"],
-        ["id", "bigint", "long"],
-        ["url", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["id", "long"],
+        ["url", "flags.0?string"],
       ],
     ],
   ],
@@ -27657,10 +27635,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB0D13E47,
       [
-        ["flags", flags, "#"],
-        ["id", "bigint", "long"],
-        ["url", "string", "flags.0?string"],
-        ["date", "number", "int"],
+        ["flags", "#"],
+        ["id", "long"],
+        ["url", "flags.0?string"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -27669,27 +27647,27 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE89C45B2,
       [
-        ["flags", flags, "#"],
-        ["has_large_media", "true", "flags.13?true"],
-        ["video_cover_photo", "true", "flags.14?true"],
-        ["id", "bigint", "long"],
-        ["url", "string", "string"],
-        ["display_url", "string", "string"],
-        ["hash", "number", "int"],
-        ["type", "string", "flags.0?string"],
-        ["site_name", "string", "flags.1?string"],
-        ["title", "string", "flags.2?string"],
-        ["description", "string", "flags.3?string"],
-        ["photo", "Photo", "flags.4?Photo"],
-        ["embed_url", "string", "flags.5?string"],
-        ["embed_type", "string", "flags.5?string"],
-        ["embed_width", "number", "flags.6?int"],
-        ["embed_height", "number", "flags.6?int"],
-        ["duration", "number", "flags.7?int"],
-        ["author", "string", "flags.8?string"],
-        ["document", "Document", "flags.9?Document"],
-        ["cached_page", "Page", "flags.10?Page"],
-        ["attributes", ["WebPageAttribute"], "flags.12?Vector<WebPageAttribute>"],
+        ["flags", "#"],
+        ["has_large_media", "flags.13?true"],
+        ["video_cover_photo", "flags.14?true"],
+        ["id", "long"],
+        ["url", "string"],
+        ["display_url", "string"],
+        ["hash", "int"],
+        ["type", "flags.0?string"],
+        ["site_name", "flags.1?string"],
+        ["title", "flags.2?string"],
+        ["description", "flags.3?string"],
+        ["photo", "flags.4?Photo"],
+        ["embed_url", "flags.5?string"],
+        ["embed_type", "flags.5?string"],
+        ["embed_width", "flags.6?int"],
+        ["embed_height", "flags.6?int"],
+        ["duration", "flags.7?int"],
+        ["author", "flags.8?string"],
+        ["document", "flags.9?Document"],
+        ["cached_page", "flags.10?Page"],
+        ["attributes", "flags.12?Vector<WebPageAttribute>"],
       ],
     ],
   ],
@@ -27698,8 +27676,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7311CA11,
       [
-        ["flags", flags, "#"],
-        ["cached_page_views", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["cached_page_views", "flags.0?int"],
       ],
     ],
   ],
@@ -27708,25 +27686,25 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAD01D61D,
       [
-        ["flags", flags, "#"],
-        ["current", "true", "flags.0?true"],
-        ["official_app", "true", "flags.1?true"],
-        ["password_pending", "true", "flags.2?true"],
-        ["encrypted_requests_disabled", "true", "flags.3?true"],
-        ["call_requests_disabled", "true", "flags.4?true"],
-        ["unconfirmed", "true", "flags.5?true"],
-        ["hash", "bigint", "long"],
-        ["device_model", "string", "string"],
-        ["platform", "string", "string"],
-        ["system_version", "string", "string"],
-        ["api_id", "number", "int"],
-        ["app_name", "string", "string"],
-        ["app_version", "string", "string"],
-        ["date_created", "number", "int"],
-        ["date_active", "number", "int"],
-        ["ip", "string", "string"],
-        ["country", "string", "string"],
-        ["region", "string", "string"],
+        ["flags", "#"],
+        ["current", "flags.0?true"],
+        ["official_app", "flags.1?true"],
+        ["password_pending", "flags.2?true"],
+        ["encrypted_requests_disabled", "flags.3?true"],
+        ["call_requests_disabled", "flags.4?true"],
+        ["unconfirmed", "flags.5?true"],
+        ["hash", "long"],
+        ["device_model", "string"],
+        ["platform", "string"],
+        ["system_version", "string"],
+        ["api_id", "int"],
+        ["app_name", "string"],
+        ["app_version", "string"],
+        ["date_created", "int"],
+        ["date_active", "int"],
+        ["ip", "string"],
+        ["country", "string"],
+        ["region", "string"],
       ],
     ],
   ],
@@ -27735,8 +27713,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4BFF8EA0,
       [
-        ["authorization_ttl_days", "number", "int"],
-        ["authorizations", ["Authorization"], "Vector<Authorization>"],
+        ["authorization_ttl_days", "int"],
+        ["authorizations", "Vector<Authorization>"],
       ],
     ],
   ],
@@ -27745,20 +27723,20 @@ const types: Map<string, Parameters> = new Map([
     [
       0x957B50FB,
       [
-        ["flags", flags, "#"],
-        ["has_recovery", "true", "flags.0?true"],
-        ["has_secure_values", "true", "flags.1?true"],
-        ["has_password", "true", "flags.2?true"],
-        ["current_algo", "PasswordKdfAlgo", "flags.2?PasswordKdfAlgo"],
-        ["srp_B", Uint8Array, "flags.2?bytes"],
-        ["srp_id", "bigint", "flags.2?long"],
-        ["hint", "string", "flags.3?string"],
-        ["email_unconfirmed_pattern", "string", "flags.4?string"],
-        ["new_algo", "PasswordKdfAlgo", "PasswordKdfAlgo"],
-        ["new_secure_algo", "SecurePasswordKdfAlgo", "SecurePasswordKdfAlgo"],
-        ["secure_random", Uint8Array, "bytes"],
-        ["pending_reset_date", "number", "flags.5?int"],
-        ["login_email_pattern", "string", "flags.6?string"],
+        ["flags", "#"],
+        ["has_recovery", "flags.0?true"],
+        ["has_secure_values", "flags.1?true"],
+        ["has_password", "flags.2?true"],
+        ["current_algo", "flags.2?PasswordKdfAlgo"],
+        ["srp_B", "flags.2?bytes"],
+        ["srp_id", "flags.2?long"],
+        ["hint", "flags.3?string"],
+        ["email_unconfirmed_pattern", "flags.4?string"],
+        ["new_algo", "PasswordKdfAlgo"],
+        ["new_secure_algo", "SecurePasswordKdfAlgo"],
+        ["secure_random", "bytes"],
+        ["pending_reset_date", "flags.5?int"],
+        ["login_email_pattern", "flags.6?string"],
       ],
     ],
   ],
@@ -27767,9 +27745,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9A5C33E5,
       [
-        ["flags", flags, "#"],
-        ["email", "string", "flags.0?string"],
-        ["secure_settings", "SecureSecretSettings", "flags.1?SecureSecretSettings"],
+        ["flags", "#"],
+        ["email", "flags.0?string"],
+        ["secure_settings", "flags.1?SecureSecretSettings"],
       ],
     ],
   ],
@@ -27778,12 +27756,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC23727C9,
       [
-        ["flags", flags, "#"],
-        ["new_algo", "PasswordKdfAlgo", "flags.0?PasswordKdfAlgo"],
-        ["new_password_hash", Uint8Array, "flags.0?bytes"],
-        ["hint", "string", "flags.0?string"],
-        ["email", "string", "flags.1?string"],
-        ["new_secure_settings", "SecureSecretSettings", "flags.2?SecureSecretSettings"],
+        ["flags", "#"],
+        ["new_algo", "flags.0?PasswordKdfAlgo"],
+        ["new_password_hash", "flags.0?bytes"],
+        ["hint", "flags.0?string"],
+        ["email", "flags.1?string"],
+        ["new_secure_settings", "flags.2?SecureSecretSettings"],
       ],
     ],
   ],
@@ -27792,7 +27770,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x137948A5,
       [
-        ["email_pattern", "string", "string"],
+        ["email_pattern", "string"],
       ],
     ],
   ],
@@ -27801,8 +27779,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA384B779,
       [
-        ["id", "number", "int"],
-        ["flags", "number", "int"],
+        ["id", "int"],
+        ["flags", "int"],
       ],
     ],
   ],
@@ -27811,21 +27789,21 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA22CBD96,
       [
-        ["flags", flags, "#"],
-        ["revoked", "true", "flags.0?true"],
-        ["permanent", "true", "flags.5?true"],
-        ["request_needed", "true", "flags.6?true"],
-        ["link", "string", "string"],
-        ["admin_id", "bigint", "long"],
-        ["date", "number", "int"],
-        ["start_date", "number", "flags.4?int"],
-        ["expire_date", "number", "flags.1?int"],
-        ["usage_limit", "number", "flags.2?int"],
-        ["usage", "number", "flags.3?int"],
-        ["requested", "number", "flags.7?int"],
-        ["subscription_expired", "number", "flags.10?int"],
-        ["title", "string", "flags.8?string"],
-        ["subscription_pricing", "StarsSubscriptionPricing", "flags.9?StarsSubscriptionPricing"],
+        ["flags", "#"],
+        ["revoked", "flags.0?true"],
+        ["permanent", "flags.5?true"],
+        ["request_needed", "flags.6?true"],
+        ["link", "string"],
+        ["admin_id", "long"],
+        ["date", "int"],
+        ["start_date", "flags.4?int"],
+        ["expire_date", "flags.1?int"],
+        ["usage_limit", "flags.2?int"],
+        ["usage", "flags.3?int"],
+        ["requested", "flags.7?int"],
+        ["subscription_expired", "flags.10?int"],
+        ["title", "flags.8?string"],
+        ["subscription_pricing", "flags.9?StarsSubscriptionPricing"],
       ],
     ],
   ],
@@ -27841,7 +27819,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5A686D7C,
       [
-        ["chat", "Chat", "Chat"],
+        ["chat", "Chat"],
       ],
     ],
   ],
@@ -27850,25 +27828,25 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5C9D3702,
       [
-        ["flags", flags, "#"],
-        ["channel", "true", "flags.0?true"],
-        ["broadcast", "true", "flags.1?true"],
-        ["public", "true", "flags.2?true"],
-        ["megagroup", "true", "flags.3?true"],
-        ["request_needed", "true", "flags.6?true"],
-        ["verified", "true", "flags.7?true"],
-        ["scam", "true", "flags.8?true"],
-        ["fake", "true", "flags.9?true"],
-        ["can_refulfill_subscription", "true", "flags.11?true"],
-        ["title", "string", "string"],
-        ["about", "string", "flags.5?string"],
-        ["photo", "Photo", "Photo"],
-        ["participants_count", "number", "int"],
-        ["participants", ["User"], "flags.4?Vector<User>"],
-        ["color", "number", "int"],
-        ["subscription_pricing", "StarsSubscriptionPricing", "flags.10?StarsSubscriptionPricing"],
-        ["subscription_form_id", "bigint", "flags.12?long"],
-        ["bot_verification", "BotVerification", "flags.13?BotVerification"],
+        ["flags", "#"],
+        ["channel", "flags.0?true"],
+        ["broadcast", "flags.1?true"],
+        ["public", "flags.2?true"],
+        ["megagroup", "flags.3?true"],
+        ["request_needed", "flags.6?true"],
+        ["verified", "flags.7?true"],
+        ["scam", "flags.8?true"],
+        ["fake", "flags.9?true"],
+        ["can_refulfill_subscription", "flags.11?true"],
+        ["title", "string"],
+        ["about", "flags.5?string"],
+        ["photo", "Photo"],
+        ["participants_count", "int"],
+        ["participants", "flags.4?Vector<User>"],
+        ["color", "int"],
+        ["subscription_pricing", "flags.10?StarsSubscriptionPricing"],
+        ["subscription_form_id", "flags.12?long"],
+        ["bot_verification", "flags.13?BotVerification"],
       ],
     ],
   ],
@@ -27877,8 +27855,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x61695CB0,
       [
-        ["chat", "Chat", "Chat"],
-        ["expires", "number", "int"],
+        ["chat", "Chat"],
+        ["expires", "int"],
       ],
     ],
   ],
@@ -27894,8 +27872,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9DE7A269,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -27904,7 +27882,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x861CC8A0,
       [
-        ["short_name", "string", "string"],
+        ["short_name", "string"],
       ],
     ],
   ],
@@ -27920,7 +27898,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE67F520E,
       [
-        ["emoticon", "string", "string"],
+        ["emoticon", "string"],
       ],
     ],
   ],
@@ -27971,25 +27949,25 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2DD14EDC,
       [
-        ["flags", flags, "#"],
-        ["archived", "true", "flags.1?true"],
-        ["official", "true", "flags.2?true"],
-        ["masks", "true", "flags.3?true"],
-        ["emojis", "true", "flags.7?true"],
-        ["text_color", "true", "flags.9?true"],
-        ["channel_emoji_status", "true", "flags.10?true"],
-        ["creator", "true", "flags.11?true"],
-        ["installed_date", "number", "flags.0?int"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["title", "string", "string"],
-        ["short_name", "string", "string"],
-        ["thumbs", ["PhotoSize"], "flags.4?Vector<PhotoSize>"],
-        ["thumb_dc_id", "number", "flags.4?int"],
-        ["thumb_version", "number", "flags.4?int"],
-        ["thumb_document_id", "bigint", "flags.8?long"],
-        ["count", "number", "int"],
-        ["hash", "number", "int"],
+        ["flags", "#"],
+        ["archived", "flags.1?true"],
+        ["official", "flags.2?true"],
+        ["masks", "flags.3?true"],
+        ["emojis", "flags.7?true"],
+        ["text_color", "flags.9?true"],
+        ["channel_emoji_status", "flags.10?true"],
+        ["creator", "flags.11?true"],
+        ["installed_date", "flags.0?int"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["title", "string"],
+        ["short_name", "string"],
+        ["thumbs", "flags.4?Vector<PhotoSize>"],
+        ["thumb_dc_id", "flags.4?int"],
+        ["thumb_version", "flags.4?int"],
+        ["thumb_document_id", "flags.8?long"],
+        ["count", "int"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -27998,10 +27976,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6E153F16,
       [
-        ["set", "StickerSet", "StickerSet"],
-        ["packs", ["StickerPack"], "Vector<StickerPack>"],
-        ["keywords", ["StickerKeyword"], "Vector<StickerKeyword>"],
-        ["documents", ["Document"], "Vector<Document>"],
+        ["set", "StickerSet"],
+        ["packs", "Vector<StickerPack>"],
+        ["keywords", "Vector<StickerKeyword>"],
+        ["documents", "Vector<Document>"],
       ],
     ],
   ],
@@ -28017,8 +27995,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC27AC8C7,
       [
-        ["command", "string", "string"],
-        ["description", "string", "string"],
+        ["command", "string"],
+        ["description", "string"],
       ],
     ],
   ],
@@ -28027,17 +28005,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4D8A0299,
       [
-        ["flags", flags, "#"],
-        ["has_preview_medias", "true", "flags.6?true"],
-        ["user_id", "bigint", "flags.0?long"],
-        ["description", "string", "flags.1?string"],
-        ["description_photo", "Photo", "flags.4?Photo"],
-        ["description_document", "Document", "flags.5?Document"],
-        ["commands", ["BotCommand"], "flags.2?Vector<BotCommand>"],
-        ["menu_button", "BotMenuButton", "flags.3?BotMenuButton"],
-        ["privacy_policy_url", "string", "flags.7?string"],
-        ["app_settings", "BotAppSettings", "flags.8?BotAppSettings"],
-        ["verifier_settings", "BotVerifierSettings", "flags.9?BotVerifierSettings"],
+        ["flags", "#"],
+        ["has_preview_medias", "flags.6?true"],
+        ["user_id", "flags.0?long"],
+        ["description", "flags.1?string"],
+        ["description_photo", "flags.4?Photo"],
+        ["description_document", "flags.5?Document"],
+        ["commands", "flags.2?Vector<BotCommand>"],
+        ["menu_button", "flags.3?BotMenuButton"],
+        ["privacy_policy_url", "flags.7?string"],
+        ["app_settings", "flags.8?BotAppSettings"],
+        ["verifier_settings", "flags.9?BotVerifierSettings"],
       ],
     ],
   ],
@@ -28046,7 +28024,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA2FA4880,
       [
-        ["text", "string", "string"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -28055,8 +28033,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x258AFF05,
       [
-        ["text", "string", "string"],
-        ["url", "string", "string"],
+        ["text", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -28065,10 +28043,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x35BBDB6B,
       [
-        ["flags", flags, "#"],
-        ["requires_password", "true", "flags.0?true"],
-        ["text", "string", "string"],
-        ["data", Uint8Array, "bytes"],
+        ["flags", "#"],
+        ["requires_password", "flags.0?true"],
+        ["text", "string"],
+        ["data", "bytes"],
       ],
     ],
   ],
@@ -28077,7 +28055,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB16A6C29,
       [
-        ["text", "string", "string"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -28086,7 +28064,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFC796B3F,
       [
-        ["text", "string", "string"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -28095,11 +28073,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x93B9FBB5,
       [
-        ["flags", flags, "#"],
-        ["same_peer", "true", "flags.0?true"],
-        ["text", "string", "string"],
-        ["query", "string", "string"],
-        ["peer_types", ["InlineQueryPeerType"], "flags.1?Vector<InlineQueryPeerType>"],
+        ["flags", "#"],
+        ["same_peer", "flags.0?true"],
+        ["text", "string"],
+        ["query", "string"],
+        ["peer_types", "flags.1?Vector<InlineQueryPeerType>"],
       ],
     ],
   ],
@@ -28108,7 +28086,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x50F41CCF,
       [
-        ["text", "string", "string"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -28117,7 +28095,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAFD93FBB,
       [
-        ["text", "string", "string"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -28126,11 +28104,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x10B78D29,
       [
-        ["flags", flags, "#"],
-        ["text", "string", "string"],
-        ["fwd_text", "string", "flags.0?string"],
-        ["url", "string", "string"],
-        ["button_id", "number", "int"],
+        ["flags", "#"],
+        ["text", "string"],
+        ["fwd_text", "flags.0?string"],
+        ["url", "string"],
+        ["button_id", "int"],
       ],
     ],
   ],
@@ -28139,12 +28117,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD02E7FD4,
       [
-        ["flags", flags, "#"],
-        ["request_write_access", "true", "flags.0?true"],
-        ["text", "string", "string"],
-        ["fwd_text", "string", "flags.1?string"],
-        ["url", "string", "string"],
-        ["bot", "InputUser", "InputUser"],
+        ["flags", "#"],
+        ["request_write_access", "flags.0?true"],
+        ["text", "string"],
+        ["fwd_text", "flags.1?string"],
+        ["url", "string"],
+        ["bot", "InputUser"],
       ],
     ],
   ],
@@ -28153,9 +28131,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBBC7515D,
       [
-        ["flags", flags, "#"],
-        ["quiz", "boolean", "flags.0?Bool"],
-        ["text", "string", "string"],
+        ["flags", "#"],
+        ["quiz", "flags.0?Bool"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -28164,8 +28142,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE988037B,
       [
-        ["text", "string", "string"],
-        ["user_id", "InputUser", "InputUser"],
+        ["text", "string"],
+        ["user_id", "InputUser"],
       ],
     ],
   ],
@@ -28174,8 +28152,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x308660C1,
       [
-        ["text", "string", "string"],
-        ["user_id", "bigint", "long"],
+        ["text", "string"],
+        ["user_id", "long"],
       ],
     ],
   ],
@@ -28184,8 +28162,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x13767230,
       [
-        ["text", "string", "string"],
-        ["url", "string", "string"],
+        ["text", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -28194,8 +28172,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA0C0505C,
       [
-        ["text", "string", "string"],
-        ["url", "string", "string"],
+        ["text", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -28204,10 +28182,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x53D7BFD8,
       [
-        ["text", "string", "string"],
-        ["button_id", "number", "int"],
-        ["peer_type", "RequestPeerType", "RequestPeerType"],
-        ["max_quantity", "number", "int"],
+        ["text", "string"],
+        ["button_id", "int"],
+        ["peer_type", "RequestPeerType"],
+        ["max_quantity", "int"],
       ],
     ],
   ],
@@ -28216,14 +28194,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC9662D05,
       [
-        ["flags", flags, "#"],
-        ["name_requested", "true", "flags.0?true"],
-        ["username_requested", "true", "flags.1?true"],
-        ["photo_requested", "true", "flags.2?true"],
-        ["text", "string", "string"],
-        ["button_id", "number", "int"],
-        ["peer_type", "RequestPeerType", "RequestPeerType"],
-        ["max_quantity", "number", "int"],
+        ["flags", "#"],
+        ["name_requested", "flags.0?true"],
+        ["username_requested", "flags.1?true"],
+        ["photo_requested", "flags.2?true"],
+        ["text", "string"],
+        ["button_id", "int"],
+        ["peer_type", "RequestPeerType"],
+        ["max_quantity", "int"],
       ],
     ],
   ],
@@ -28232,8 +28210,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x75D2698E,
       [
-        ["text", "string", "string"],
-        ["copy_text", "string", "string"],
+        ["text", "string"],
+        ["copy_text", "string"],
       ],
     ],
   ],
@@ -28242,7 +28220,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x77608B83,
       [
-        ["buttons", ["KeyboardButton"], "Vector<KeyboardButton>"],
+        ["buttons", "Vector<KeyboardButton>"],
       ],
     ],
   ],
@@ -28251,8 +28229,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA03E5B85,
       [
-        ["flags", flags, "#"],
-        ["selective", "true", "flags.2?true"],
+        ["flags", "#"],
+        ["selective", "flags.2?true"],
       ],
     ],
   ],
@@ -28261,10 +28239,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x86B40B08,
       [
-        ["flags", flags, "#"],
-        ["single_use", "true", "flags.1?true"],
-        ["selective", "true", "flags.2?true"],
-        ["placeholder", "string", "flags.3?string"],
+        ["flags", "#"],
+        ["single_use", "flags.1?true"],
+        ["selective", "flags.2?true"],
+        ["placeholder", "flags.3?string"],
       ],
     ],
   ],
@@ -28273,13 +28251,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x85DD99D1,
       [
-        ["flags", flags, "#"],
-        ["resize", "true", "flags.0?true"],
-        ["single_use", "true", "flags.1?true"],
-        ["selective", "true", "flags.2?true"],
-        ["persistent", "true", "flags.4?true"],
-        ["rows", ["KeyboardButtonRow"], "Vector<KeyboardButtonRow>"],
-        ["placeholder", "string", "flags.3?string"],
+        ["flags", "#"],
+        ["resize", "flags.0?true"],
+        ["single_use", "flags.1?true"],
+        ["selective", "flags.2?true"],
+        ["persistent", "flags.4?true"],
+        ["rows", "Vector<KeyboardButtonRow>"],
+        ["placeholder", "flags.3?string"],
       ],
     ],
   ],
@@ -28288,7 +28266,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x48A30254,
       [
-        ["rows", ["KeyboardButtonRow"], "Vector<KeyboardButtonRow>"],
+        ["rows", "Vector<KeyboardButtonRow>"],
       ],
     ],
   ],
@@ -28297,8 +28275,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBB92BA95,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28307,8 +28285,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFA04579D,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28317,8 +28295,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6F635B0D,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28327,8 +28305,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6CEF8AC7,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28337,8 +28315,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6ED02538,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28347,8 +28325,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x64E475C2,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28357,8 +28335,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBD610BC9,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28367,8 +28345,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x826F8B60,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28377,8 +28355,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x28A20571,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28387,9 +28365,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x73924BE0,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
-        ["language", "string", "string"],
+        ["offset", "int"],
+        ["length", "int"],
+        ["language", "string"],
       ],
     ],
   ],
@@ -28398,9 +28376,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x76A6D327,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
-        ["url", "string", "string"],
+        ["offset", "int"],
+        ["length", "int"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -28409,9 +28387,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDC7B1140,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
-        ["user_id", "bigint", "long"],
+        ["offset", "int"],
+        ["length", "int"],
+        ["user_id", "long"],
       ],
     ],
   ],
@@ -28420,9 +28398,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x208E68C9,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
-        ["user_id", "InputUser", "InputUser"],
+        ["offset", "int"],
+        ["length", "int"],
+        ["user_id", "InputUser"],
       ],
     ],
   ],
@@ -28431,8 +28409,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9B69E34B,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28441,8 +28419,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4C4E743F,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28451,8 +28429,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9C4E7E8B,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28461,8 +28439,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBF0693D4,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28471,8 +28449,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x761E6AF4,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28481,8 +28459,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x32CA960F,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28491,9 +28469,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC8CF05F8,
       [
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
-        ["document_id", "bigint", "long"],
+        ["offset", "int"],
+        ["length", "int"],
+        ["document_id", "long"],
       ],
     ],
   ],
@@ -28502,10 +28480,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF1CCAAAC,
       [
-        ["flags", flags, "#"],
-        ["collapsed", "true", "flags.0?true"],
-        ["offset", "number", "int"],
-        ["length", "number", "int"],
+        ["flags", "#"],
+        ["collapsed", "flags.0?true"],
+        ["offset", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -28521,8 +28499,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF35AEC28,
       [
-        ["channel_id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["channel_id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -28531,9 +28509,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5B934F9D,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["channel_id", "bigint", "long"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["channel_id", "long"],
       ],
     ],
   ],
@@ -28542,9 +28520,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7F077AD9,
       [
-        ["peer", "Peer", "Peer"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["peer", "Peer"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -28553,8 +28531,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0AE30253,
       [
-        ["min_id", "number", "int"],
-        ["max_id", "number", "int"],
+        ["min_id", "int"],
+        ["max_id", "int"],
       ],
     ],
   ],
@@ -28563,10 +28541,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3E11AFFB,
       [
-        ["flags", flags, "#"],
-        ["final", "true", "flags.0?true"],
-        ["pts", "number", "int"],
-        ["timeout", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["final", "flags.0?true"],
+        ["pts", "int"],
+        ["timeout", "flags.1?int"],
       ],
     ],
   ],
@@ -28575,13 +28553,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA4BCC6FE,
       [
-        ["flags", flags, "#"],
-        ["final", "true", "flags.0?true"],
-        ["timeout", "number", "flags.1?int"],
-        ["dialog", "Dialog", "Dialog"],
-        ["messages", ["Message"], "Vector<Message>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["final", "flags.0?true"],
+        ["timeout", "flags.1?int"],
+        ["dialog", "Dialog"],
+        ["messages", "Vector<Message>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -28590,14 +28568,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2064674E,
       [
-        ["flags", flags, "#"],
-        ["final", "true", "flags.0?true"],
-        ["pts", "number", "int"],
-        ["timeout", "number", "flags.1?int"],
-        ["new_messages", ["Message"], "Vector<Message>"],
-        ["other_updates", ["Update"], "Vector<Update>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["final", "flags.0?true"],
+        ["pts", "int"],
+        ["timeout", "flags.1?int"],
+        ["new_messages", "Vector<Message>"],
+        ["other_updates", "Vector<Update>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -28613,9 +28591,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCD77D957,
       [
-        ["flags", flags, "#"],
-        ["exclude_new_messages", "true", "flags.1?true"],
-        ["ranges", ["MessageRange"], "Vector<MessageRange>"],
+        ["flags", "#"],
+        ["exclude_new_messages", "flags.1?true"],
+        ["ranges", "Vector<MessageRange>"],
       ],
     ],
   ],
@@ -28624,10 +28602,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCB397619,
       [
-        ["flags", flags, "#"],
-        ["user_id", "bigint", "long"],
-        ["date", "number", "int"],
-        ["subscription_until_date", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["user_id", "long"],
+        ["date", "int"],
+        ["subscription_until_date", "flags.0?int"],
       ],
     ],
   ],
@@ -28636,12 +28614,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4F607BEF,
       [
-        ["flags", flags, "#"],
-        ["via_request", "true", "flags.0?true"],
-        ["user_id", "bigint", "long"],
-        ["inviter_id", "bigint", "long"],
-        ["date", "number", "int"],
-        ["subscription_until_date", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["via_request", "flags.0?true"],
+        ["user_id", "long"],
+        ["inviter_id", "long"],
+        ["date", "int"],
+        ["subscription_until_date", "flags.1?int"],
       ],
     ],
   ],
@@ -28650,10 +28628,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2FE601D3,
       [
-        ["flags", flags, "#"],
-        ["user_id", "bigint", "long"],
-        ["admin_rights", "ChatAdminRights", "ChatAdminRights"],
-        ["rank", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["user_id", "long"],
+        ["admin_rights", "ChatAdminRights"],
+        ["rank", "flags.0?string"],
       ],
     ],
   ],
@@ -28662,15 +28640,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x34C3BB53,
       [
-        ["flags", flags, "#"],
-        ["can_edit", "true", "flags.0?true"],
-        ["self", "true", "flags.1?true"],
-        ["user_id", "bigint", "long"],
-        ["inviter_id", "bigint", "flags.1?long"],
-        ["promoted_by", "bigint", "long"],
-        ["date", "number", "int"],
-        ["admin_rights", "ChatAdminRights", "ChatAdminRights"],
-        ["rank", "string", "flags.2?string"],
+        ["flags", "#"],
+        ["can_edit", "flags.0?true"],
+        ["self", "flags.1?true"],
+        ["user_id", "long"],
+        ["inviter_id", "flags.1?long"],
+        ["promoted_by", "long"],
+        ["date", "int"],
+        ["admin_rights", "ChatAdminRights"],
+        ["rank", "flags.2?string"],
       ],
     ],
   ],
@@ -28679,12 +28657,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6DF8014E,
       [
-        ["flags", flags, "#"],
-        ["left", "true", "flags.0?true"],
-        ["peer", "Peer", "Peer"],
-        ["kicked_by", "bigint", "long"],
-        ["date", "number", "int"],
-        ["banned_rights", "ChatBannedRights", "ChatBannedRights"],
+        ["flags", "#"],
+        ["left", "flags.0?true"],
+        ["peer", "Peer"],
+        ["kicked_by", "long"],
+        ["date", "int"],
+        ["banned_rights", "ChatBannedRights"],
       ],
     ],
   ],
@@ -28693,7 +28671,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1B03F006,
       [
-        ["peer", "Peer", "Peer"],
+        ["peer", "Peer"],
       ],
     ],
   ],
@@ -28716,7 +28694,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA3B54985,
       [
-        ["q", "string", "string"],
+        ["q", "string"],
       ],
     ],
   ],
@@ -28732,7 +28710,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1427A5E1,
       [
-        ["q", "string", "string"],
+        ["q", "string"],
       ],
     ],
   ],
@@ -28741,7 +28719,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0656AC4B,
       [
-        ["q", "string", "string"],
+        ["q", "string"],
       ],
     ],
   ],
@@ -28750,7 +28728,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBB6AE88D,
       [
-        ["q", "string", "string"],
+        ["q", "string"],
       ],
     ],
   ],
@@ -28759,9 +28737,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE04B5CEB,
       [
-        ["flags", flags, "#"],
-        ["q", "string", "flags.0?string"],
-        ["top_msg_id", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["q", "flags.0?string"],
+        ["top_msg_id", "flags.1?int"],
       ],
     ],
   ],
@@ -28770,10 +28748,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9AB0FEAF,
       [
-        ["count", "number", "int"],
-        ["participants", ["ChannelParticipant"], "Vector<ChannelParticipant>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["count", "int"],
+        ["participants", "Vector<ChannelParticipant>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -28789,9 +28767,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDFB80317,
       [
-        ["participant", "ChannelParticipant", "ChannelParticipant"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["participant", "ChannelParticipant"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -28800,12 +28778,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x780A0310,
       [
-        ["flags", flags, "#"],
-        ["popup", "true", "flags.0?true"],
-        ["id", "DataJSON", "DataJSON"],
-        ["text", "string", "string"],
-        ["entities", ["MessageEntity"], "Vector<MessageEntity>"],
-        ["min_age_confirm", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["popup", "flags.0?true"],
+        ["id", "DataJSON"],
+        ["text", "string"],
+        ["entities", "Vector<MessageEntity>"],
+        ["min_age_confirm", "flags.1?int"],
       ],
     ],
   ],
@@ -28821,8 +28799,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x84A02A0D,
       [
-        ["hash", "bigint", "long"],
-        ["gifs", ["Document"], "Vector<Document>"],
+        ["hash", "long"],
+        ["gifs", "Vector<Document>"],
       ],
     ],
   ],
@@ -28831,11 +28809,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3380C786,
       [
-        ["flags", flags, "#"],
-        ["invert_media", "true", "flags.3?true"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.1?Vector<MessageEntity>"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["invert_media", "flags.3?true"],
+        ["message", "string"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -28844,12 +28822,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3DCD7A87,
       [
-        ["flags", flags, "#"],
-        ["no_webpage", "true", "flags.0?true"],
-        ["invert_media", "true", "flags.3?true"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.1?Vector<MessageEntity>"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["no_webpage", "flags.0?true"],
+        ["invert_media", "flags.3?true"],
+        ["message", "string"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -28858,12 +28836,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x96929A85,
       [
-        ["flags", flags, "#"],
-        ["geo_point", "InputGeoPoint", "InputGeoPoint"],
-        ["heading", "number", "flags.0?int"],
-        ["period", "number", "flags.1?int"],
-        ["proximity_notification_radius", "number", "flags.3?int"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["geo_point", "InputGeoPoint"],
+        ["heading", "flags.0?int"],
+        ["period", "flags.1?int"],
+        ["proximity_notification_radius", "flags.3?int"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -28872,14 +28850,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x417BBF11,
       [
-        ["flags", flags, "#"],
-        ["geo_point", "InputGeoPoint", "InputGeoPoint"],
-        ["title", "string", "string"],
-        ["address", "string", "string"],
-        ["provider", "string", "string"],
-        ["venue_id", "string", "string"],
-        ["venue_type", "string", "string"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["geo_point", "InputGeoPoint"],
+        ["title", "string"],
+        ["address", "string"],
+        ["provider", "string"],
+        ["venue_id", "string"],
+        ["venue_type", "string"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -28888,12 +28866,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA6EDBFFD,
       [
-        ["flags", flags, "#"],
-        ["phone_number", "string", "string"],
-        ["first_name", "string", "string"],
-        ["last_name", "string", "string"],
-        ["vcard", "string", "string"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["phone_number", "string"],
+        ["first_name", "string"],
+        ["last_name", "string"],
+        ["vcard", "string"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -28902,8 +28880,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4B425864,
       [
-        ["flags", flags, "#"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -28912,15 +28890,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD7E78225,
       [
-        ["flags", flags, "#"],
-        ["title", "string", "string"],
-        ["description", "string", "string"],
-        ["photo", "InputWebDocument", "flags.0?InputWebDocument"],
-        ["invoice", "Invoice", "Invoice"],
-        ["payload", Uint8Array, "bytes"],
-        ["provider", "string", "string"],
-        ["provider_data", "DataJSON", "DataJSON"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["title", "string"],
+        ["description", "string"],
+        ["photo", "flags.0?InputWebDocument"],
+        ["invoice", "Invoice"],
+        ["payload", "bytes"],
+        ["provider", "string"],
+        ["provider_data", "DataJSON"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -28929,15 +28907,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBDDCC510,
       [
-        ["flags", flags, "#"],
-        ["invert_media", "true", "flags.3?true"],
-        ["force_large_media", "true", "flags.4?true"],
-        ["force_small_media", "true", "flags.5?true"],
-        ["optional", "true", "flags.6?true"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.1?Vector<MessageEntity>"],
-        ["url", "string", "string"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["invert_media", "flags.3?true"],
+        ["force_large_media", "flags.4?true"],
+        ["force_small_media", "flags.5?true"],
+        ["optional", "flags.6?true"],
+        ["message", "string"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
+        ["url", "string"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -28946,15 +28924,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x88BF9319,
       [
-        ["flags", flags, "#"],
-        ["id", "string", "string"],
-        ["type", "string", "string"],
-        ["title", "string", "flags.1?string"],
-        ["description", "string", "flags.2?string"],
-        ["url", "string", "flags.3?string"],
-        ["thumb", "InputWebDocument", "flags.4?InputWebDocument"],
-        ["content", "InputWebDocument", "flags.5?InputWebDocument"],
-        ["send_message", "InputBotInlineMessage", "InputBotInlineMessage"],
+        ["flags", "#"],
+        ["id", "string"],
+        ["type", "string"],
+        ["title", "flags.1?string"],
+        ["description", "flags.2?string"],
+        ["url", "flags.3?string"],
+        ["thumb", "flags.4?InputWebDocument"],
+        ["content", "flags.5?InputWebDocument"],
+        ["send_message", "InputBotInlineMessage"],
       ],
     ],
   ],
@@ -28963,10 +28941,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA8D864A7,
       [
-        ["id", "string", "string"],
-        ["type", "string", "string"],
-        ["photo", "InputPhoto", "InputPhoto"],
-        ["send_message", "InputBotInlineMessage", "InputBotInlineMessage"],
+        ["id", "string"],
+        ["type", "string"],
+        ["photo", "InputPhoto"],
+        ["send_message", "InputBotInlineMessage"],
       ],
     ],
   ],
@@ -28975,13 +28953,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFFF8FDC4,
       [
-        ["flags", flags, "#"],
-        ["id", "string", "string"],
-        ["type", "string", "string"],
-        ["title", "string", "flags.1?string"],
-        ["description", "string", "flags.2?string"],
-        ["document", "InputDocument", "InputDocument"],
-        ["send_message", "InputBotInlineMessage", "InputBotInlineMessage"],
+        ["flags", "#"],
+        ["id", "string"],
+        ["type", "string"],
+        ["title", "flags.1?string"],
+        ["description", "flags.2?string"],
+        ["document", "InputDocument"],
+        ["send_message", "InputBotInlineMessage"],
       ],
     ],
   ],
@@ -28990,9 +28968,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4FA417F2,
       [
-        ["id", "string", "string"],
-        ["short_name", "string", "string"],
-        ["send_message", "InputBotInlineMessage", "InputBotInlineMessage"],
+        ["id", "string"],
+        ["short_name", "string"],
+        ["send_message", "InputBotInlineMessage"],
       ],
     ],
   ],
@@ -29001,11 +28979,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x764CF810,
       [
-        ["flags", flags, "#"],
-        ["invert_media", "true", "flags.3?true"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.1?Vector<MessageEntity>"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["invert_media", "flags.3?true"],
+        ["message", "string"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -29014,12 +28992,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8C7F65E2,
       [
-        ["flags", flags, "#"],
-        ["no_webpage", "true", "flags.0?true"],
-        ["invert_media", "true", "flags.3?true"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.1?Vector<MessageEntity>"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["no_webpage", "flags.0?true"],
+        ["invert_media", "flags.3?true"],
+        ["message", "string"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -29028,12 +29006,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x051846FD,
       [
-        ["flags", flags, "#"],
-        ["geo", "GeoPoint", "GeoPoint"],
-        ["heading", "number", "flags.0?int"],
-        ["period", "number", "flags.1?int"],
-        ["proximity_notification_radius", "number", "flags.3?int"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["geo", "GeoPoint"],
+        ["heading", "flags.0?int"],
+        ["period", "flags.1?int"],
+        ["proximity_notification_radius", "flags.3?int"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -29042,14 +29020,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8A86659C,
       [
-        ["flags", flags, "#"],
-        ["geo", "GeoPoint", "GeoPoint"],
-        ["title", "string", "string"],
-        ["address", "string", "string"],
-        ["provider", "string", "string"],
-        ["venue_id", "string", "string"],
-        ["venue_type", "string", "string"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["geo", "GeoPoint"],
+        ["title", "string"],
+        ["address", "string"],
+        ["provider", "string"],
+        ["venue_id", "string"],
+        ["venue_type", "string"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -29058,12 +29036,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x18D1CDC2,
       [
-        ["flags", flags, "#"],
-        ["phone_number", "string", "string"],
-        ["first_name", "string", "string"],
-        ["last_name", "string", "string"],
-        ["vcard", "string", "string"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["phone_number", "string"],
+        ["first_name", "string"],
+        ["last_name", "string"],
+        ["vcard", "string"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -29072,15 +29050,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x354A9B09,
       [
-        ["flags", flags, "#"],
-        ["shipping_address_requested", "true", "flags.1?true"],
-        ["test", "true", "flags.3?true"],
-        ["title", "string", "string"],
-        ["description", "string", "string"],
-        ["photo", "WebDocument", "flags.0?WebDocument"],
-        ["currency", "string", "string"],
-        ["total_amount", "bigint", "long"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["shipping_address_requested", "flags.1?true"],
+        ["test", "flags.3?true"],
+        ["title", "string"],
+        ["description", "string"],
+        ["photo", "flags.0?WebDocument"],
+        ["currency", "string"],
+        ["total_amount", "long"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -29089,16 +29067,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x809AD9A6,
       [
-        ["flags", flags, "#"],
-        ["invert_media", "true", "flags.3?true"],
-        ["force_large_media", "true", "flags.4?true"],
-        ["force_small_media", "true", "flags.5?true"],
-        ["manual", "true", "flags.7?true"],
-        ["safe", "true", "flags.8?true"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.1?Vector<MessageEntity>"],
-        ["url", "string", "string"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
+        ["flags", "#"],
+        ["invert_media", "flags.3?true"],
+        ["force_large_media", "flags.4?true"],
+        ["force_small_media", "flags.5?true"],
+        ["manual", "flags.7?true"],
+        ["safe", "flags.8?true"],
+        ["message", "string"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
+        ["url", "string"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
       ],
     ],
   ],
@@ -29107,15 +29085,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x11965F3A,
       [
-        ["flags", flags, "#"],
-        ["id", "string", "string"],
-        ["type", "string", "string"],
-        ["title", "string", "flags.1?string"],
-        ["description", "string", "flags.2?string"],
-        ["url", "string", "flags.3?string"],
-        ["thumb", "WebDocument", "flags.4?WebDocument"],
-        ["content", "WebDocument", "flags.5?WebDocument"],
-        ["send_message", "BotInlineMessage", "BotInlineMessage"],
+        ["flags", "#"],
+        ["id", "string"],
+        ["type", "string"],
+        ["title", "flags.1?string"],
+        ["description", "flags.2?string"],
+        ["url", "flags.3?string"],
+        ["thumb", "flags.4?WebDocument"],
+        ["content", "flags.5?WebDocument"],
+        ["send_message", "BotInlineMessage"],
       ],
     ],
   ],
@@ -29124,14 +29102,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x17DB940B,
       [
-        ["flags", flags, "#"],
-        ["id", "string", "string"],
-        ["type", "string", "string"],
-        ["photo", "Photo", "flags.0?Photo"],
-        ["document", "Document", "flags.1?Document"],
-        ["title", "string", "flags.2?string"],
-        ["description", "string", "flags.3?string"],
-        ["send_message", "BotInlineMessage", "BotInlineMessage"],
+        ["flags", "#"],
+        ["id", "string"],
+        ["type", "string"],
+        ["photo", "flags.0?Photo"],
+        ["document", "flags.1?Document"],
+        ["title", "flags.2?string"],
+        ["description", "flags.3?string"],
+        ["send_message", "BotInlineMessage"],
       ],
     ],
   ],
@@ -29140,15 +29118,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE021F2F6,
       [
-        ["flags", flags, "#"],
-        ["gallery", "true", "flags.0?true"],
-        ["query_id", "bigint", "long"],
-        ["next_offset", "string", "flags.1?string"],
-        ["switch_pm", "InlineBotSwitchPM", "flags.2?InlineBotSwitchPM"],
-        ["switch_webview", "InlineBotWebView", "flags.3?InlineBotWebView"],
-        ["results", ["BotInlineResult"], "Vector<BotInlineResult>"],
-        ["cache_time", "number", "int"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["gallery", "flags.0?true"],
+        ["query_id", "long"],
+        ["next_offset", "flags.1?string"],
+        ["switch_pm", "flags.2?InlineBotSwitchPM"],
+        ["switch_webview", "flags.3?InlineBotWebView"],
+        ["results", "Vector<BotInlineResult>"],
+        ["cache_time", "int"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -29157,8 +29135,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5DAB1AF4,
       [
-        ["link", "string", "string"],
-        ["html", "string", "string"],
+        ["link", "string"],
+        ["html", "string"],
       ],
     ],
   ],
@@ -29167,20 +29145,20 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4E4DF4BB,
       [
-        ["flags", flags, "#"],
-        ["imported", "true", "flags.7?true"],
-        ["saved_out", "true", "flags.11?true"],
-        ["from_id", "Peer", "flags.0?Peer"],
-        ["from_name", "string", "flags.5?string"],
-        ["date", "number", "int"],
-        ["channel_post", "number", "flags.2?int"],
-        ["post_author", "string", "flags.3?string"],
-        ["saved_from_peer", "Peer", "flags.4?Peer"],
-        ["saved_from_msg_id", "number", "flags.4?int"],
-        ["saved_from_id", "Peer", "flags.8?Peer"],
-        ["saved_from_name", "string", "flags.9?string"],
-        ["saved_date", "number", "flags.10?int"],
-        ["psa_type", "string", "flags.6?string"],
+        ["flags", "#"],
+        ["imported", "flags.7?true"],
+        ["saved_out", "flags.11?true"],
+        ["from_id", "flags.0?Peer"],
+        ["from_name", "flags.5?string"],
+        ["date", "int"],
+        ["channel_post", "flags.2?int"],
+        ["post_author", "flags.3?string"],
+        ["saved_from_peer", "flags.4?Peer"],
+        ["saved_from_msg_id", "flags.4?int"],
+        ["saved_from_id", "flags.8?Peer"],
+        ["saved_from_name", "flags.9?string"],
+        ["saved_date", "flags.10?int"],
+        ["psa_type", "flags.6?string"],
       ],
     ],
   ],
@@ -29224,7 +29202,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3DBB5986,
       [
-        ["length", "number", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -29233,7 +29211,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC000BBA2,
       [
-        ["length", "number", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -29242,7 +29220,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5353E5A7,
       [
-        ["length", "number", "int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -29251,7 +29229,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAB03C6D9,
       [
-        ["pattern", "string", "string"],
+        ["pattern", "string"],
       ],
     ],
   ],
@@ -29260,8 +29238,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x82006484,
       [
-        ["prefix", "string", "string"],
-        ["length", "number", "int"],
+        ["prefix", "string"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -29270,13 +29248,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF450F59B,
       [
-        ["flags", flags, "#"],
-        ["apple_signin_allowed", "true", "flags.0?true"],
-        ["google_signin_allowed", "true", "flags.1?true"],
-        ["email_pattern", "string", "string"],
-        ["length", "number", "int"],
-        ["reset_available_period", "number", "flags.3?int"],
-        ["reset_pending_date", "number", "flags.4?int"],
+        ["flags", "#"],
+        ["apple_signin_allowed", "flags.0?true"],
+        ["google_signin_allowed", "flags.1?true"],
+        ["email_pattern", "string"],
+        ["length", "int"],
+        ["reset_available_period", "flags.3?int"],
+        ["reset_pending_date", "flags.4?int"],
       ],
     ],
   ],
@@ -29285,9 +29263,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA5491DEA,
       [
-        ["flags", flags, "#"],
-        ["apple_signin_allowed", "true", "flags.0?true"],
-        ["google_signin_allowed", "true", "flags.1?true"],
+        ["flags", "#"],
+        ["apple_signin_allowed", "flags.0?true"],
+        ["google_signin_allowed", "flags.1?true"],
       ],
     ],
   ],
@@ -29296,8 +29274,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD9565C39,
       [
-        ["url", "string", "string"],
-        ["length", "number", "int"],
+        ["url", "string"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -29306,13 +29284,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x009FD736,
       [
-        ["flags", flags, "#"],
-        ["nonce", Uint8Array, "flags.0?bytes"],
-        ["play_integrity_project_id", "bigint", "flags.2?long"],
-        ["play_integrity_nonce", Uint8Array, "flags.2?bytes"],
-        ["receipt", "string", "flags.1?string"],
-        ["push_timeout", "number", "flags.1?int"],
-        ["length", "number", "int"],
+        ["flags", "#"],
+        ["nonce", "flags.0?bytes"],
+        ["play_integrity_project_id", "flags.2?long"],
+        ["play_integrity_nonce", "flags.2?bytes"],
+        ["receipt", "flags.1?string"],
+        ["push_timeout", "flags.1?int"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -29321,8 +29299,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA416AC81,
       [
-        ["flags", flags, "#"],
-        ["beginning", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["beginning", "flags.0?string"],
       ],
     ],
   ],
@@ -29331,8 +29309,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB37794AF,
       [
-        ["flags", flags, "#"],
-        ["beginning", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["beginning", "flags.0?string"],
       ],
     ],
   ],
@@ -29341,13 +29319,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x36585EA4,
       [
-        ["flags", flags, "#"],
-        ["alert", "true", "flags.1?true"],
-        ["has_url", "true", "flags.3?true"],
-        ["native_ui", "true", "flags.4?true"],
-        ["message", "string", "flags.0?string"],
-        ["url", "string", "flags.2?string"],
-        ["cache_time", "number", "int"],
+        ["flags", "#"],
+        ["alert", "flags.1?true"],
+        ["has_url", "flags.3?true"],
+        ["native_ui", "flags.4?true"],
+        ["message", "flags.0?string"],
+        ["url", "flags.2?string"],
+        ["cache_time", "int"],
       ],
     ],
   ],
@@ -29356,8 +29334,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x26B5DDE6,
       [
-        ["flags", flags, "#"],
-        ["caption", "true", "flags.0?true"],
+        ["flags", "#"],
+        ["caption", "flags.0?true"],
       ],
     ],
   ],
@@ -29366,9 +29344,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x890C3D89,
       [
-        ["dc_id", "number", "int"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["dc_id", "int"],
+        ["id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -29377,10 +29355,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB6D915D7,
       [
-        ["dc_id", "number", "int"],
-        ["owner_id", "bigint", "long"],
-        ["id", "number", "int"],
-        ["access_hash", "bigint", "long"],
+        ["dc_id", "int"],
+        ["owner_id", "long"],
+        ["id", "int"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -29389,8 +29367,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3C20629F,
       [
-        ["text", "string", "string"],
-        ["start_param", "string", "string"],
+        ["text", "string"],
+        ["start_param", "string"],
       ],
     ],
   ],
@@ -29399,11 +29377,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3371C354,
       [
-        ["dialogs", ["Dialog"], "Vector<Dialog>"],
-        ["messages", ["Message"], "Vector<Message>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
-        ["state", "updates_State", "updates.State"],
+        ["dialogs", "Vector<Dialog>"],
+        ["messages", "Vector<Message>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+        ["state", "updates.State"],
       ],
     ],
   ],
@@ -29412,8 +29390,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEDCDC05B,
       [
-        ["peer", "Peer", "Peer"],
-        ["rating", "number", "double"],
+        ["peer", "Peer"],
+        ["rating", "double"],
       ],
     ],
   ],
@@ -29485,9 +29463,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFB834291,
       [
-        ["category", "TopPeerCategory", "TopPeerCategory"],
-        ["count", "number", "int"],
-        ["peers", ["TopPeer"], "Vector<TopPeer>"],
+        ["category", "TopPeerCategory"],
+        ["count", "int"],
+        ["peers", "Vector<TopPeer>"],
       ],
     ],
   ],
@@ -29503,9 +29481,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x70B772A8,
       [
-        ["categories", ["TopPeerCategoryPeers"], "Vector<TopPeerCategoryPeers>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["categories", "Vector<TopPeerCategoryPeers>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -29521,8 +29499,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1B0C841A,
       [
-        ["flags", flags, "#"],
-        ["date", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["date", "flags.0?int"],
       ],
     ],
   ],
@@ -29531,15 +29509,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2D65321F,
       [
-        ["flags", flags, "#"],
-        ["no_webpage", "true", "flags.1?true"],
-        ["invert_media", "true", "flags.6?true"],
-        ["reply_to", "InputReplyTo", "flags.4?InputReplyTo"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.3?Vector<MessageEntity>"],
-        ["media", "InputMedia", "flags.5?InputMedia"],
-        ["date", "number", "int"],
-        ["effect", "bigint", "flags.7?long"],
+        ["flags", "#"],
+        ["no_webpage", "flags.1?true"],
+        ["invert_media", "flags.6?true"],
+        ["reply_to", "flags.4?InputReplyTo"],
+        ["message", "string"],
+        ["entities", "flags.3?Vector<MessageEntity>"],
+        ["media", "flags.5?InputMedia"],
+        ["date", "int"],
+        ["effect", "flags.7?long"],
       ],
     ],
   ],
@@ -29548,7 +29526,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC6DC0C66,
       [
-        ["count", "number", "int"],
+        ["count", "int"],
       ],
     ],
   ],
@@ -29557,12 +29535,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBE382906,
       [
-        ["flags", flags, "#"],
-        ["premium", "true", "flags.0?true"],
-        ["hash", "bigint", "long"],
-        ["count", "number", "int"],
-        ["sets", ["StickerSetCovered"], "Vector<StickerSetCovered>"],
-        ["unread", ["bigint"], "Vector<long>"],
+        ["flags", "#"],
+        ["premium", "flags.0?true"],
+        ["hash", "long"],
+        ["count", "int"],
+        ["sets", "Vector<StickerSetCovered>"],
+        ["unread", "Vector<long>"],
       ],
     ],
   ],
@@ -29578,10 +29556,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x88D37C56,
       [
-        ["hash", "bigint", "long"],
-        ["packs", ["StickerPack"], "Vector<StickerPack>"],
-        ["stickers", ["Document"], "Vector<Document>"],
-        ["dates", ["number"], "Vector<int>"],
+        ["hash", "long"],
+        ["packs", "Vector<StickerPack>"],
+        ["stickers", "Vector<Document>"],
+        ["dates", "Vector<int>"],
       ],
     ],
   ],
@@ -29590,8 +29568,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4FCBA9C8,
       [
-        ["count", "number", "int"],
-        ["sets", ["StickerSetCovered"], "Vector<StickerSetCovered>"],
+        ["count", "int"],
+        ["sets", "Vector<StickerSetCovered>"],
       ],
     ],
   ],
@@ -29607,7 +29585,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x35E410A8,
       [
-        ["sets", ["StickerSetCovered"], "Vector<StickerSetCovered>"],
+        ["sets", "Vector<StickerSetCovered>"],
       ],
     ],
   ],
@@ -29616,8 +29594,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6410A5D2,
       [
-        ["set", "StickerSet", "StickerSet"],
-        ["cover", "Document", "Document"],
+        ["set", "StickerSet"],
+        ["cover", "Document"],
       ],
     ],
   ],
@@ -29626,8 +29604,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3407E51B,
       [
-        ["set", "StickerSet", "StickerSet"],
-        ["covers", ["Document"], "Vector<Document>"],
+        ["set", "StickerSet"],
+        ["covers", "Vector<Document>"],
       ],
     ],
   ],
@@ -29636,10 +29614,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x40D13C0E,
       [
-        ["set", "StickerSet", "StickerSet"],
-        ["packs", ["StickerPack"], "Vector<StickerPack>"],
-        ["keywords", ["StickerKeyword"], "Vector<StickerKeyword>"],
-        ["documents", ["Document"], "Vector<Document>"],
+        ["set", "StickerSet"],
+        ["packs", "Vector<StickerPack>"],
+        ["keywords", "Vector<StickerKeyword>"],
+        ["documents", "Vector<Document>"],
       ],
     ],
   ],
@@ -29648,7 +29626,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x77B15D1C,
       [
-        ["set", "StickerSet", "StickerSet"],
+        ["set", "StickerSet"],
       ],
     ],
   ],
@@ -29657,10 +29635,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAED6DBB2,
       [
-        ["n", "number", "int"],
-        ["x", "number", "double"],
-        ["y", "number", "double"],
-        ["zoom", "number", "double"],
+        ["n", "int"],
+        ["x", "double"],
+        ["y", "double"],
+        ["zoom", "double"],
       ],
     ],
   ],
@@ -29669,7 +29647,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4A992157,
       [
-        ["id", "InputPhoto", "InputPhoto"],
+        ["id", "InputPhoto"],
       ],
     ],
   ],
@@ -29678,7 +29656,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0438865B,
       [
-        ["id", "InputDocument", "InputDocument"],
+        ["id", "InputDocument"],
       ],
     ],
   ],
@@ -29687,14 +29665,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBDF9653B,
       [
-        ["flags", flags, "#"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["short_name", "string", "string"],
-        ["title", "string", "string"],
-        ["description", "string", "string"],
-        ["photo", "Photo", "Photo"],
-        ["document", "Document", "flags.0?Document"],
+        ["flags", "#"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["short_name", "string"],
+        ["title", "string"],
+        ["description", "string"],
+        ["photo", "Photo"],
+        ["document", "flags.0?Document"],
       ],
     ],
   ],
@@ -29703,8 +29681,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x032C3E77,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -29713,8 +29691,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC331E80A,
       [
-        ["bot_id", "InputUser", "InputUser"],
-        ["short_name", "string", "string"],
+        ["bot_id", "InputUser"],
+        ["short_name", "string"],
       ],
     ],
   ],
@@ -29723,9 +29701,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x73A379EB,
       [
-        ["pos", "number", "int"],
-        ["user_id", "bigint", "long"],
-        ["score", "number", "int"],
+        ["pos", "int"],
+        ["user_id", "long"],
+        ["score", "int"],
       ],
     ],
   ],
@@ -29734,8 +29712,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9A3BFD99,
       [
-        ["scores", ["HighScore"], "Vector<HighScore>"],
-        ["users", ["User"], "Vector<User>"],
+        ["scores", "Vector<HighScore>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -29751,7 +29729,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x744694E0,
       [
-        ["text", "string", "string"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -29760,7 +29738,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6724ABC4,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29769,7 +29747,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD912A59C,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29778,7 +29756,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC12622C4,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29787,7 +29765,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9BF8BB95,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29796,7 +29774,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6C3F19B9,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29805,9 +29783,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3C2884C1,
       [
-        ["text", "RichText", "RichText"],
-        ["url", "string", "string"],
-        ["webpage_id", "bigint", "long"],
+        ["text", "RichText"],
+        ["url", "string"],
+        ["webpage_id", "long"],
       ],
     ],
   ],
@@ -29816,8 +29794,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDE5A0DD6,
       [
-        ["text", "RichText", "RichText"],
-        ["email", "string", "string"],
+        ["text", "RichText"],
+        ["email", "string"],
       ],
     ],
   ],
@@ -29826,7 +29804,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7E6260D7,
       [
-        ["texts", ["RichText"], "Vector<RichText>"],
+        ["texts", "Vector<RichText>"],
       ],
     ],
   ],
@@ -29835,7 +29813,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xED6A8504,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29844,7 +29822,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC7FB5E01,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29853,7 +29831,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x034B8621,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29862,8 +29840,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1CCB966A,
       [
-        ["text", "RichText", "RichText"],
-        ["phone", "string", "string"],
+        ["text", "RichText"],
+        ["phone", "string"],
       ],
     ],
   ],
@@ -29872,9 +29850,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x081CCF4F,
       [
-        ["document_id", "bigint", "long"],
-        ["w", "number", "int"],
-        ["h", "number", "int"],
+        ["document_id", "long"],
+        ["w", "int"],
+        ["h", "int"],
       ],
     ],
   ],
@@ -29883,8 +29861,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x35553762,
       [
-        ["text", "RichText", "RichText"],
-        ["name", "string", "string"],
+        ["text", "RichText"],
+        ["name", "string"],
       ],
     ],
   ],
@@ -29900,7 +29878,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x70ABC3FD,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29909,7 +29887,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8FFA9A1F,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29918,8 +29896,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBAAFE5E0,
       [
-        ["author", "RichText", "RichText"],
-        ["published_date", "number", "int"],
+        ["author", "RichText"],
+        ["published_date", "int"],
       ],
     ],
   ],
@@ -29928,7 +29906,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBFD064EC,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29937,7 +29915,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF12BB6E1,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29946,7 +29924,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x467A0766,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29955,8 +29933,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC070D93E,
       [
-        ["text", "RichText", "RichText"],
-        ["language", "string", "string"],
+        ["text", "RichText"],
+        ["language", "string"],
       ],
     ],
   ],
@@ -29965,7 +29943,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x48870999,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -29981,7 +29959,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCE0D37B0,
       [
-        ["name", "string", "string"],
+        ["name", "string"],
       ],
     ],
   ],
@@ -29990,7 +29968,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE4E88011,
       [
-        ["items", ["PageListItem"], "Vector<PageListItem>"],
+        ["items", "Vector<PageListItem>"],
       ],
     ],
   ],
@@ -29999,8 +29977,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x263D7C26,
       [
-        ["text", "RichText", "RichText"],
-        ["caption", "RichText", "RichText"],
+        ["text", "RichText"],
+        ["caption", "RichText"],
       ],
     ],
   ],
@@ -30009,8 +29987,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4F4456D3,
       [
-        ["text", "RichText", "RichText"],
-        ["caption", "RichText", "RichText"],
+        ["text", "RichText"],
+        ["caption", "RichText"],
       ],
     ],
   ],
@@ -30019,11 +29997,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1759C560,
       [
-        ["flags", flags, "#"],
-        ["photo_id", "bigint", "long"],
-        ["caption", "PageCaption", "PageCaption"],
-        ["url", "string", "flags.0?string"],
-        ["webpage_id", "bigint", "flags.0?long"],
+        ["flags", "#"],
+        ["photo_id", "long"],
+        ["caption", "PageCaption"],
+        ["url", "flags.0?string"],
+        ["webpage_id", "flags.0?long"],
       ],
     ],
   ],
@@ -30032,11 +30010,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7C8FE7B6,
       [
-        ["flags", flags, "#"],
-        ["autoplay", "true", "flags.0?true"],
-        ["loop", "true", "flags.1?true"],
-        ["video_id", "bigint", "long"],
-        ["caption", "PageCaption", "PageCaption"],
+        ["flags", "#"],
+        ["autoplay", "flags.0?true"],
+        ["loop", "flags.1?true"],
+        ["video_id", "long"],
+        ["caption", "PageCaption"],
       ],
     ],
   ],
@@ -30045,7 +30023,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x39F23300,
       [
-        ["cover", "PageBlock", "PageBlock"],
+        ["cover", "PageBlock"],
       ],
     ],
   ],
@@ -30054,15 +30032,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA8718DC5,
       [
-        ["flags", flags, "#"],
-        ["full_width", "true", "flags.0?true"],
-        ["allow_scrolling", "true", "flags.3?true"],
-        ["url", "string", "flags.1?string"],
-        ["html", "string", "flags.2?string"],
-        ["poster_photo_id", "bigint", "flags.4?long"],
-        ["w", "number", "flags.5?int"],
-        ["h", "number", "flags.5?int"],
-        ["caption", "PageCaption", "PageCaption"],
+        ["flags", "#"],
+        ["full_width", "flags.0?true"],
+        ["allow_scrolling", "flags.3?true"],
+        ["url", "flags.1?string"],
+        ["html", "flags.2?string"],
+        ["poster_photo_id", "flags.4?long"],
+        ["w", "flags.5?int"],
+        ["h", "flags.5?int"],
+        ["caption", "PageCaption"],
       ],
     ],
   ],
@@ -30071,13 +30049,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF259A80B,
       [
-        ["url", "string", "string"],
-        ["webpage_id", "bigint", "long"],
-        ["author_photo_id", "bigint", "long"],
-        ["author", "string", "string"],
-        ["date", "number", "int"],
-        ["blocks", ["PageBlock"], "Vector<PageBlock>"],
-        ["caption", "PageCaption", "PageCaption"],
+        ["url", "string"],
+        ["webpage_id", "long"],
+        ["author_photo_id", "long"],
+        ["author", "string"],
+        ["date", "int"],
+        ["blocks", "Vector<PageBlock>"],
+        ["caption", "PageCaption"],
       ],
     ],
   ],
@@ -30086,8 +30064,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x65A0FA4D,
       [
-        ["items", ["PageBlock"], "Vector<PageBlock>"],
-        ["caption", "PageCaption", "PageCaption"],
+        ["items", "Vector<PageBlock>"],
+        ["caption", "PageCaption"],
       ],
     ],
   ],
@@ -30096,8 +30074,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x031F9590,
       [
-        ["items", ["PageBlock"], "Vector<PageBlock>"],
-        ["caption", "PageCaption", "PageCaption"],
+        ["items", "Vector<PageBlock>"],
+        ["caption", "PageCaption"],
       ],
     ],
   ],
@@ -30106,7 +30084,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEF1751B5,
       [
-        ["channel", "Chat", "Chat"],
+        ["channel", "Chat"],
       ],
     ],
   ],
@@ -30115,8 +30093,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x804361EA,
       [
-        ["audio_id", "bigint", "long"],
-        ["caption", "PageCaption", "PageCaption"],
+        ["audio_id", "long"],
+        ["caption", "PageCaption"],
       ],
     ],
   ],
@@ -30125,7 +30103,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1E148390,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -30134,11 +30112,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBF4DEA82,
       [
-        ["flags", flags, "#"],
-        ["bordered", "true", "flags.0?true"],
-        ["striped", "true", "flags.1?true"],
-        ["title", "RichText", "RichText"],
-        ["rows", ["PageTableRow"], "Vector<PageTableRow>"],
+        ["flags", "#"],
+        ["bordered", "flags.0?true"],
+        ["striped", "flags.1?true"],
+        ["title", "RichText"],
+        ["rows", "Vector<PageTableRow>"],
       ],
     ],
   ],
@@ -30147,7 +30125,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9A8AE1E1,
       [
-        ["items", ["PageListOrderedItem"], "Vector<PageListOrderedItem>"],
+        ["items", "Vector<PageListOrderedItem>"],
       ],
     ],
   ],
@@ -30156,10 +30134,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x76768BED,
       [
-        ["flags", flags, "#"],
-        ["open", "true", "flags.0?true"],
-        ["blocks", ["PageBlock"], "Vector<PageBlock>"],
-        ["title", "RichText", "RichText"],
+        ["flags", "#"],
+        ["open", "flags.0?true"],
+        ["blocks", "Vector<PageBlock>"],
+        ["title", "RichText"],
       ],
     ],
   ],
@@ -30168,8 +30146,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x16115A96,
       [
-        ["title", "RichText", "RichText"],
-        ["articles", ["PageRelatedArticle"], "Vector<PageRelatedArticle>"],
+        ["title", "RichText"],
+        ["articles", "Vector<PageRelatedArticle>"],
       ],
     ],
   ],
@@ -30178,11 +30156,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA44F3EF6,
       [
-        ["geo", "GeoPoint", "GeoPoint"],
-        ["zoom", "number", "int"],
-        ["w", "number", "int"],
-        ["h", "number", "int"],
-        ["caption", "PageCaption", "PageCaption"],
+        ["geo", "GeoPoint"],
+        ["zoom", "int"],
+        ["w", "int"],
+        ["h", "int"],
+        ["caption", "PageCaption"],
       ],
     ],
   ],
@@ -30219,7 +30197,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAFE2B839,
       [
-        ["encrypted_key", Uint8Array, "bytes"],
+        ["encrypted_key", "bytes"],
       ],
     ],
   ],
@@ -30228,7 +30206,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7D748D04,
       [
-        ["data", "string", "string"],
+        ["data", "string"],
       ],
     ],
   ],
@@ -30237,8 +30215,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCB296BF8,
       [
-        ["label", "string", "string"],
-        ["amount", "bigint", "long"],
+        ["label", "string"],
+        ["amount", "long"],
       ],
     ],
   ],
@@ -30247,22 +30225,22 @@ const types: Map<string, Parameters> = new Map([
     [
       0x049EE584,
       [
-        ["flags", flags, "#"],
-        ["test", "true", "flags.0?true"],
-        ["name_requested", "true", "flags.1?true"],
-        ["phone_requested", "true", "flags.2?true"],
-        ["email_requested", "true", "flags.3?true"],
-        ["shipping_address_requested", "true", "flags.4?true"],
-        ["flexible", "true", "flags.5?true"],
-        ["phone_to_provider", "true", "flags.6?true"],
-        ["email_to_provider", "true", "flags.7?true"],
-        ["recurring", "true", "flags.9?true"],
-        ["currency", "string", "string"],
-        ["prices", ["LabeledPrice"], "Vector<LabeledPrice>"],
-        ["max_tip_amount", "bigint", "flags.8?long"],
-        ["suggested_tip_amounts", ["bigint"], "flags.8?Vector<long>"],
-        ["terms_url", "string", "flags.10?string"],
-        ["subscription_period", "number", "flags.11?int"],
+        ["flags", "#"],
+        ["test", "flags.0?true"],
+        ["name_requested", "flags.1?true"],
+        ["phone_requested", "flags.2?true"],
+        ["email_requested", "flags.3?true"],
+        ["shipping_address_requested", "flags.4?true"],
+        ["flexible", "flags.5?true"],
+        ["phone_to_provider", "flags.6?true"],
+        ["email_to_provider", "flags.7?true"],
+        ["recurring", "flags.9?true"],
+        ["currency", "string"],
+        ["prices", "Vector<LabeledPrice>"],
+        ["max_tip_amount", "flags.8?long"],
+        ["suggested_tip_amounts", "flags.8?Vector<long>"],
+        ["terms_url", "flags.10?string"],
+        ["subscription_period", "flags.11?int"],
       ],
     ],
   ],
@@ -30271,8 +30249,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEA02C27E,
       [
-        ["id", "string", "string"],
-        ["provider_charge_id", "string", "string"],
+        ["id", "string"],
+        ["provider_charge_id", "string"],
       ],
     ],
   ],
@@ -30281,12 +30259,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1E8CAAEB,
       [
-        ["street_line1", "string", "string"],
-        ["street_line2", "string", "string"],
-        ["city", "string", "string"],
-        ["state", "string", "string"],
-        ["country_iso2", "string", "string"],
-        ["post_code", "string", "string"],
+        ["street_line1", "string"],
+        ["street_line2", "string"],
+        ["city", "string"],
+        ["state", "string"],
+        ["country_iso2", "string"],
+        ["post_code", "string"],
       ],
     ],
   ],
@@ -30295,11 +30273,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x909C3F94,
       [
-        ["flags", flags, "#"],
-        ["name", "string", "flags.0?string"],
-        ["phone", "string", "flags.1?string"],
-        ["email", "string", "flags.2?string"],
-        ["shipping_address", "PostAddress", "flags.3?PostAddress"],
+        ["flags", "#"],
+        ["name", "flags.0?string"],
+        ["phone", "flags.1?string"],
+        ["email", "flags.2?string"],
+        ["shipping_address", "flags.3?PostAddress"],
       ],
     ],
   ],
@@ -30308,8 +30286,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCDC27A1F,
       [
-        ["id", "string", "string"],
-        ["title", "string", "string"],
+        ["id", "string"],
+        ["title", "string"],
       ],
     ],
   ],
@@ -30318,11 +30296,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1C570ED1,
       [
-        ["url", "string", "string"],
-        ["access_hash", "bigint", "long"],
-        ["size", "number", "int"],
-        ["mime_type", "string", "string"],
-        ["attributes", ["DocumentAttribute"], "Vector<DocumentAttribute>"],
+        ["url", "string"],
+        ["access_hash", "long"],
+        ["size", "int"],
+        ["mime_type", "string"],
+        ["attributes", "Vector<DocumentAttribute>"],
       ],
     ],
   ],
@@ -30331,10 +30309,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF9C8BCC6,
       [
-        ["url", "string", "string"],
-        ["size", "number", "int"],
-        ["mime_type", "string", "string"],
-        ["attributes", ["DocumentAttribute"], "Vector<DocumentAttribute>"],
+        ["url", "string"],
+        ["size", "int"],
+        ["mime_type", "string"],
+        ["attributes", "Vector<DocumentAttribute>"],
       ],
     ],
   ],
@@ -30343,10 +30321,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9BED434D,
       [
-        ["url", "string", "string"],
-        ["size", "number", "int"],
-        ["mime_type", "string", "string"],
-        ["attributes", ["DocumentAttribute"], "Vector<DocumentAttribute>"],
+        ["url", "string"],
+        ["size", "int"],
+        ["mime_type", "string"],
+        ["attributes", "Vector<DocumentAttribute>"],
       ],
     ],
   ],
@@ -30355,8 +30333,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC239D686,
       [
-        ["url", "string", "string"],
-        ["access_hash", "bigint", "long"],
+        ["url", "string"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -30365,12 +30343,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9F2221C9,
       [
-        ["geo_point", "InputGeoPoint", "InputGeoPoint"],
-        ["access_hash", "bigint", "long"],
-        ["w", "number", "int"],
-        ["h", "number", "int"],
-        ["zoom", "number", "int"],
-        ["scale", "number", "int"],
+        ["geo_point", "InputGeoPoint"],
+        ["access_hash", "long"],
+        ["w", "int"],
+        ["h", "int"],
+        ["zoom", "int"],
+        ["scale", "int"],
       ],
     ],
   ],
@@ -30379,11 +30357,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF46FE924,
       [
-        ["flags", flags, "#"],
-        ["small", "true", "flags.2?true"],
-        ["document", "InputDocument", "flags.0?InputDocument"],
-        ["title", "string", "flags.1?string"],
-        ["performer", "string", "flags.1?string"],
+        ["flags", "#"],
+        ["small", "flags.2?true"],
+        ["document", "flags.0?InputDocument"],
+        ["title", "flags.1?string"],
+        ["performer", "flags.1?string"],
       ],
     ],
   ],
@@ -30392,11 +30370,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x21E753BC,
       [
-        ["size", "number", "int"],
-        ["mime_type", "string", "string"],
-        ["file_type", "storage_FileType", "storage.FileType"],
-        ["mtime", "number", "int"],
-        ["bytes", Uint8Array, "bytes"],
+        ["size", "int"],
+        ["mime_type", "string"],
+        ["file_type", "storage.FileType"],
+        ["mtime", "int"],
+        ["bytes", "bytes"],
       ],
     ],
   ],
@@ -30405,23 +30383,23 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA0058751,
       [
-        ["flags", flags, "#"],
-        ["can_save_credentials", "true", "flags.2?true"],
-        ["password_missing", "true", "flags.3?true"],
-        ["form_id", "bigint", "long"],
-        ["bot_id", "bigint", "long"],
-        ["title", "string", "string"],
-        ["description", "string", "string"],
-        ["photo", "WebDocument", "flags.5?WebDocument"],
-        ["invoice", "Invoice", "Invoice"],
-        ["provider_id", "bigint", "long"],
-        ["url", "string", "string"],
-        ["native_provider", "string", "flags.4?string"],
-        ["native_params", "DataJSON", "flags.4?DataJSON"],
-        ["additional_methods", ["PaymentFormMethod"], "flags.6?Vector<PaymentFormMethod>"],
-        ["saved_info", "PaymentRequestedInfo", "flags.0?PaymentRequestedInfo"],
-        ["saved_credentials", ["PaymentSavedCredentials"], "flags.1?Vector<PaymentSavedCredentials>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["can_save_credentials", "flags.2?true"],
+        ["password_missing", "flags.3?true"],
+        ["form_id", "long"],
+        ["bot_id", "long"],
+        ["title", "string"],
+        ["description", "string"],
+        ["photo", "flags.5?WebDocument"],
+        ["invoice", "Invoice"],
+        ["provider_id", "long"],
+        ["url", "string"],
+        ["native_provider", "flags.4?string"],
+        ["native_params", "flags.4?DataJSON"],
+        ["additional_methods", "flags.6?Vector<PaymentFormMethod>"],
+        ["saved_info", "flags.0?PaymentRequestedInfo"],
+        ["saved_credentials", "flags.1?Vector<PaymentSavedCredentials>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -30430,14 +30408,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7BF6B15C,
       [
-        ["flags", flags, "#"],
-        ["form_id", "bigint", "long"],
-        ["bot_id", "bigint", "long"],
-        ["title", "string", "string"],
-        ["description", "string", "string"],
-        ["photo", "WebDocument", "flags.5?WebDocument"],
-        ["invoice", "Invoice", "Invoice"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["form_id", "long"],
+        ["bot_id", "long"],
+        ["title", "string"],
+        ["description", "string"],
+        ["photo", "flags.5?WebDocument"],
+        ["invoice", "Invoice"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -30446,8 +30424,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB425CFE1,
       [
-        ["form_id", "bigint", "long"],
-        ["invoice", "Invoice", "Invoice"],
+        ["form_id", "long"],
+        ["invoice", "Invoice"],
       ],
     ],
   ],
@@ -30456,9 +30434,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD1451883,
       [
-        ["flags", flags, "#"],
-        ["id", "string", "flags.0?string"],
-        ["shipping_options", ["ShippingOption"], "flags.1?Vector<ShippingOption>"],
+        ["flags", "#"],
+        ["id", "flags.0?string"],
+        ["shipping_options", "flags.1?Vector<ShippingOption>"],
       ],
     ],
   ],
@@ -30467,7 +30445,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4E5F810D,
       [
-        ["updates", "Updates", "Updates"],
+        ["updates", "Updates"],
       ],
     ],
   ],
@@ -30476,7 +30454,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD8411139,
       [
-        ["url", "string", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -30485,21 +30463,21 @@ const types: Map<string, Parameters> = new Map([
     [
       0x70C4FE03,
       [
-        ["flags", flags, "#"],
-        ["date", "number", "int"],
-        ["bot_id", "bigint", "long"],
-        ["provider_id", "bigint", "long"],
-        ["title", "string", "string"],
-        ["description", "string", "string"],
-        ["photo", "WebDocument", "flags.2?WebDocument"],
-        ["invoice", "Invoice", "Invoice"],
-        ["info", "PaymentRequestedInfo", "flags.0?PaymentRequestedInfo"],
-        ["shipping", "ShippingOption", "flags.1?ShippingOption"],
-        ["tip_amount", "bigint", "flags.3?long"],
-        ["currency", "string", "string"],
-        ["total_amount", "bigint", "long"],
-        ["credentials_title", "string", "string"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["date", "int"],
+        ["bot_id", "long"],
+        ["provider_id", "long"],
+        ["title", "string"],
+        ["description", "string"],
+        ["photo", "flags.2?WebDocument"],
+        ["invoice", "Invoice"],
+        ["info", "flags.0?PaymentRequestedInfo"],
+        ["shipping", "flags.1?ShippingOption"],
+        ["tip_amount", "flags.3?long"],
+        ["currency", "string"],
+        ["total_amount", "long"],
+        ["credentials_title", "string"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -30508,17 +30486,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDABBF83A,
       [
-        ["flags", flags, "#"],
-        ["date", "number", "int"],
-        ["bot_id", "bigint", "long"],
-        ["title", "string", "string"],
-        ["description", "string", "string"],
-        ["photo", "WebDocument", "flags.2?WebDocument"],
-        ["invoice", "Invoice", "Invoice"],
-        ["currency", "string", "string"],
-        ["total_amount", "bigint", "long"],
-        ["transaction_id", "string", "string"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["date", "int"],
+        ["bot_id", "long"],
+        ["title", "string"],
+        ["description", "string"],
+        ["photo", "flags.2?WebDocument"],
+        ["invoice", "Invoice"],
+        ["currency", "string"],
+        ["total_amount", "long"],
+        ["transaction_id", "string"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -30527,9 +30505,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFB8FE43C,
       [
-        ["flags", flags, "#"],
-        ["has_saved_credentials", "true", "flags.1?true"],
-        ["saved_info", "PaymentRequestedInfo", "flags.0?PaymentRequestedInfo"],
+        ["flags", "#"],
+        ["has_saved_credentials", "flags.1?true"],
+        ["saved_info", "flags.0?PaymentRequestedInfo"],
       ],
     ],
   ],
@@ -30538,8 +30516,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC10EB2CF,
       [
-        ["id", "string", "string"],
-        ["tmp_password", Uint8Array, "bytes"],
+        ["id", "string"],
+        ["tmp_password", "bytes"],
       ],
     ],
   ],
@@ -30548,9 +30526,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3417D728,
       [
-        ["flags", flags, "#"],
-        ["save", "true", "flags.0?true"],
-        ["data", "DataJSON", "DataJSON"],
+        ["flags", "#"],
+        ["save", "flags.0?true"],
+        ["data", "DataJSON"],
       ],
     ],
   ],
@@ -30559,7 +30537,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0AA1C39F,
       [
-        ["payment_data", "DataJSON", "DataJSON"],
+        ["payment_data", "DataJSON"],
       ],
     ],
   ],
@@ -30568,7 +30546,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8AC32801,
       [
-        ["payment_token", "DataJSON", "DataJSON"],
+        ["payment_token", "DataJSON"],
       ],
     ],
   ],
@@ -30577,8 +30555,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDB64FD34,
       [
-        ["tmp_password", Uint8Array, "bytes"],
-        ["valid_until", "number", "int"],
+        ["tmp_password", "bytes"],
+        ["valid_until", "int"],
       ],
     ],
   ],
@@ -30587,9 +30565,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB6213CDF,
       [
-        ["id", "string", "string"],
-        ["title", "string", "string"],
-        ["prices", ["LabeledPrice"], "Vector<LabeledPrice>"],
+        ["id", "string"],
+        ["title", "string"],
+        ["prices", "Vector<LabeledPrice>"],
       ],
     ],
   ],
@@ -30598,11 +30576,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x32DA9E9C,
       [
-        ["flags", flags, "#"],
-        ["document", "InputDocument", "InputDocument"],
-        ["emoji", "string", "string"],
-        ["mask_coords", "MaskCoords", "flags.0?MaskCoords"],
-        ["keywords", "string", "flags.1?string"],
+        ["flags", "#"],
+        ["document", "InputDocument"],
+        ["emoji", "string"],
+        ["mask_coords", "flags.0?MaskCoords"],
+        ["keywords", "flags.1?string"],
       ],
     ],
   ],
@@ -30611,8 +30589,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1E36FDED,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -30621,7 +30599,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5366C915,
       [
-        ["id", "bigint", "long"],
+        ["id", "long"],
       ],
     ],
   ],
@@ -30630,16 +30608,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEED42858,
       [
-        ["flags", flags, "#"],
-        ["video", "true", "flags.6?true"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["date", "number", "int"],
-        ["admin_id", "bigint", "long"],
-        ["participant_id", "bigint", "long"],
-        ["protocol", "PhoneCallProtocol", "PhoneCallProtocol"],
-        ["receive_date", "number", "flags.0?int"],
-        ["conference_call", "InputGroupCall", "flags.8?InputGroupCall"],
+        ["flags", "#"],
+        ["video", "flags.6?true"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["date", "int"],
+        ["admin_id", "long"],
+        ["participant_id", "long"],
+        ["protocol", "PhoneCallProtocol"],
+        ["receive_date", "flags.0?int"],
+        ["conference_call", "flags.8?InputGroupCall"],
       ],
     ],
   ],
@@ -30648,16 +30626,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x45361C63,
       [
-        ["flags", flags, "#"],
-        ["video", "true", "flags.6?true"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["date", "number", "int"],
-        ["admin_id", "bigint", "long"],
-        ["participant_id", "bigint", "long"],
-        ["g_a_hash", Uint8Array, "bytes"],
-        ["protocol", "PhoneCallProtocol", "PhoneCallProtocol"],
-        ["conference_call", "InputGroupCall", "flags.8?InputGroupCall"],
+        ["flags", "#"],
+        ["video", "flags.6?true"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["date", "int"],
+        ["admin_id", "long"],
+        ["participant_id", "long"],
+        ["g_a_hash", "bytes"],
+        ["protocol", "PhoneCallProtocol"],
+        ["conference_call", "flags.8?InputGroupCall"],
       ],
     ],
   ],
@@ -30666,16 +30644,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x22FD7181,
       [
-        ["flags", flags, "#"],
-        ["video", "true", "flags.6?true"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["date", "number", "int"],
-        ["admin_id", "bigint", "long"],
-        ["participant_id", "bigint", "long"],
-        ["g_b", Uint8Array, "bytes"],
-        ["protocol", "PhoneCallProtocol", "PhoneCallProtocol"],
-        ["conference_call", "InputGroupCall", "flags.8?InputGroupCall"],
+        ["flags", "#"],
+        ["video", "flags.6?true"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["date", "int"],
+        ["admin_id", "long"],
+        ["participant_id", "long"],
+        ["g_b", "bytes"],
+        ["protocol", "PhoneCallProtocol"],
+        ["conference_call", "flags.8?InputGroupCall"],
       ],
     ],
   ],
@@ -30684,21 +30662,21 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3BA5940C,
       [
-        ["flags", flags, "#"],
-        ["p2p_allowed", "true", "flags.5?true"],
-        ["video", "true", "flags.6?true"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["date", "number", "int"],
-        ["admin_id", "bigint", "long"],
-        ["participant_id", "bigint", "long"],
-        ["g_a_or_b", Uint8Array, "bytes"],
-        ["key_fingerprint", "bigint", "long"],
-        ["protocol", "PhoneCallProtocol", "PhoneCallProtocol"],
-        ["connections", ["PhoneConnection"], "Vector<PhoneConnection>"],
-        ["start_date", "number", "int"],
-        ["custom_parameters", "DataJSON", "flags.7?DataJSON"],
-        ["conference_call", "InputGroupCall", "flags.8?InputGroupCall"],
+        ["flags", "#"],
+        ["p2p_allowed", "flags.5?true"],
+        ["video", "flags.6?true"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["date", "int"],
+        ["admin_id", "long"],
+        ["participant_id", "long"],
+        ["g_a_or_b", "bytes"],
+        ["key_fingerprint", "long"],
+        ["protocol", "PhoneCallProtocol"],
+        ["connections", "Vector<PhoneConnection>"],
+        ["start_date", "int"],
+        ["custom_parameters", "flags.7?DataJSON"],
+        ["conference_call", "flags.8?InputGroupCall"],
       ],
     ],
   ],
@@ -30707,14 +30685,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF9D25503,
       [
-        ["flags", flags, "#"],
-        ["need_rating", "true", "flags.2?true"],
-        ["need_debug", "true", "flags.3?true"],
-        ["video", "true", "flags.6?true"],
-        ["id", "bigint", "long"],
-        ["reason", "PhoneCallDiscardReason", "flags.0?PhoneCallDiscardReason"],
-        ["duration", "number", "flags.1?int"],
-        ["conference_call", "InputGroupCall", "flags.8?InputGroupCall"],
+        ["flags", "#"],
+        ["need_rating", "flags.2?true"],
+        ["need_debug", "flags.3?true"],
+        ["video", "flags.6?true"],
+        ["id", "long"],
+        ["reason", "flags.0?PhoneCallDiscardReason"],
+        ["duration", "flags.1?int"],
+        ["conference_call", "flags.8?InputGroupCall"],
       ],
     ],
   ],
@@ -30723,13 +30701,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9CC123C7,
       [
-        ["flags", flags, "#"],
-        ["tcp", "true", "flags.0?true"],
-        ["id", "bigint", "long"],
-        ["ip", "string", "string"],
-        ["ipv6", "string", "string"],
-        ["port", "number", "int"],
-        ["peer_tag", Uint8Array, "bytes"],
+        ["flags", "#"],
+        ["tcp", "flags.0?true"],
+        ["id", "long"],
+        ["ip", "string"],
+        ["ipv6", "string"],
+        ["port", "int"],
+        ["peer_tag", "bytes"],
       ],
     ],
   ],
@@ -30738,15 +30716,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x635FE375,
       [
-        ["flags", flags, "#"],
-        ["turn", "true", "flags.0?true"],
-        ["stun", "true", "flags.1?true"],
-        ["id", "bigint", "long"],
-        ["ip", "string", "string"],
-        ["ipv6", "string", "string"],
-        ["port", "number", "int"],
-        ["username", "string", "string"],
-        ["password", "string", "string"],
+        ["flags", "#"],
+        ["turn", "flags.0?true"],
+        ["stun", "flags.1?true"],
+        ["id", "long"],
+        ["ip", "string"],
+        ["ipv6", "string"],
+        ["port", "int"],
+        ["username", "string"],
+        ["password", "string"],
       ],
     ],
   ],
@@ -30755,12 +30733,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFC878FC8,
       [
-        ["flags", flags, "#"],
-        ["udp_p2p", "true", "flags.0?true"],
-        ["udp_reflector", "true", "flags.1?true"],
-        ["min_layer", "number", "int"],
-        ["max_layer", "number", "int"],
-        ["library_versions", ["string"], "Vector<string>"],
+        ["flags", "#"],
+        ["udp_p2p", "flags.0?true"],
+        ["udp_reflector", "flags.1?true"],
+        ["min_layer", "int"],
+        ["max_layer", "int"],
+        ["library_versions", "Vector<string>"],
       ],
     ],
   ],
@@ -30769,8 +30747,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEC82E140,
       [
-        ["phone_call", "PhoneCall", "PhoneCall"],
-        ["users", ["User"], "Vector<User>"],
+        ["phone_call", "PhoneCall"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -30779,7 +30757,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEEA8E46E,
       [
-        ["request_token", Uint8Array, "bytes"],
+        ["request_token", "bytes"],
       ],
     ],
   ],
@@ -30788,7 +30766,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA99FCA4F,
       [
-        ["bytes", Uint8Array, "bytes"],
+        ["bytes", "bytes"],
       ],
     ],
   ],
@@ -30797,8 +30775,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC982EABA,
       [
-        ["dc_id", "number", "int"],
-        ["public_key", "string", "string"],
+        ["dc_id", "int"],
+        ["public_key", "string"],
       ],
     ],
   ],
@@ -30807,7 +30785,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5725E40A,
       [
-        ["public_keys", ["CdnPublicKey"], "Vector<CdnPublicKey>"],
+        ["public_keys", "Vector<CdnPublicKey>"],
       ],
     ],
   ],
@@ -30816,8 +30794,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCAD181F6,
       [
-        ["key", "string", "string"],
-        ["value", "string", "string"],
+        ["key", "string"],
+        ["value", "string"],
       ],
     ],
   ],
@@ -30826,14 +30804,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6C47AC9F,
       [
-        ["flags", flags, "#"],
-        ["key", "string", "string"],
-        ["zero_value", "string", "flags.0?string"],
-        ["one_value", "string", "flags.1?string"],
-        ["two_value", "string", "flags.2?string"],
-        ["few_value", "string", "flags.3?string"],
-        ["many_value", "string", "flags.4?string"],
-        ["other_value", "string", "string"],
+        ["flags", "#"],
+        ["key", "string"],
+        ["zero_value", "flags.0?string"],
+        ["one_value", "flags.1?string"],
+        ["two_value", "flags.2?string"],
+        ["few_value", "flags.3?string"],
+        ["many_value", "flags.4?string"],
+        ["other_value", "string"],
       ],
     ],
   ],
@@ -30842,7 +30820,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2979EEB2,
       [
-        ["key", "string", "string"],
+        ["key", "string"],
       ],
     ],
   ],
@@ -30851,10 +30829,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF385C1F6,
       [
-        ["lang_code", "string", "string"],
-        ["from_version", "number", "int"],
-        ["version", "number", "int"],
-        ["strings", ["LangPackString"], "Vector<LangPackString>"],
+        ["lang_code", "string"],
+        ["from_version", "int"],
+        ["version", "int"],
+        ["strings", "Vector<LangPackString>"],
       ],
     ],
   ],
@@ -30863,18 +30841,18 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEECA5CE3,
       [
-        ["flags", flags, "#"],
-        ["official", "true", "flags.0?true"],
-        ["rtl", "true", "flags.2?true"],
-        ["beta", "true", "flags.3?true"],
-        ["name", "string", "string"],
-        ["native_name", "string", "string"],
-        ["lang_code", "string", "string"],
-        ["base_lang_code", "string", "flags.1?string"],
-        ["plural_code", "string", "string"],
-        ["strings_count", "number", "int"],
-        ["translated_count", "number", "int"],
-        ["translations_url", "string", "string"],
+        ["flags", "#"],
+        ["official", "flags.0?true"],
+        ["rtl", "flags.2?true"],
+        ["beta", "flags.3?true"],
+        ["name", "string"],
+        ["native_name", "string"],
+        ["lang_code", "string"],
+        ["base_lang_code", "flags.1?string"],
+        ["plural_code", "string"],
+        ["strings_count", "int"],
+        ["translated_count", "int"],
+        ["translations_url", "string"],
       ],
     ],
   ],
@@ -30883,8 +30861,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE6DFB825,
       [
-        ["prev_value", "string", "string"],
-        ["new_value", "string", "string"],
+        ["prev_value", "string"],
+        ["new_value", "string"],
       ],
     ],
   ],
@@ -30893,8 +30871,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x55188A2E,
       [
-        ["prev_value", "string", "string"],
-        ["new_value", "string", "string"],
+        ["prev_value", "string"],
+        ["new_value", "string"],
       ],
     ],
   ],
@@ -30903,8 +30881,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6A4AFC38,
       [
-        ["prev_value", "string", "string"],
-        ["new_value", "string", "string"],
+        ["prev_value", "string"],
+        ["new_value", "string"],
       ],
     ],
   ],
@@ -30913,8 +30891,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x434BD2AF,
       [
-        ["prev_photo", "Photo", "Photo"],
-        ["new_photo", "Photo", "Photo"],
+        ["prev_photo", "Photo"],
+        ["new_photo", "Photo"],
       ],
     ],
   ],
@@ -30923,7 +30901,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1B7907AE,
       [
-        ["new_value", "boolean", "Bool"],
+        ["new_value", "Bool"],
       ],
     ],
   ],
@@ -30932,7 +30910,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x26AE0971,
       [
-        ["new_value", "boolean", "Bool"],
+        ["new_value", "Bool"],
       ],
     ],
   ],
@@ -30941,7 +30919,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE9E82C18,
       [
-        ["message", "Message", "Message"],
+        ["message", "Message"],
       ],
     ],
   ],
@@ -30950,8 +30928,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x709B2405,
       [
-        ["prev_message", "Message", "Message"],
-        ["new_message", "Message", "Message"],
+        ["prev_message", "Message"],
+        ["new_message", "Message"],
       ],
     ],
   ],
@@ -30960,7 +30938,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x42E047BB,
       [
-        ["message", "Message", "Message"],
+        ["message", "Message"],
       ],
     ],
   ],
@@ -30983,7 +30961,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE31C34D8,
       [
-        ["participant", "ChannelParticipant", "ChannelParticipant"],
+        ["participant", "ChannelParticipant"],
       ],
     ],
   ],
@@ -30992,8 +30970,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE6D83D7E,
       [
-        ["prev_participant", "ChannelParticipant", "ChannelParticipant"],
-        ["new_participant", "ChannelParticipant", "ChannelParticipant"],
+        ["prev_participant", "ChannelParticipant"],
+        ["new_participant", "ChannelParticipant"],
       ],
     ],
   ],
@@ -31002,8 +30980,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD5676710,
       [
-        ["prev_participant", "ChannelParticipant", "ChannelParticipant"],
-        ["new_participant", "ChannelParticipant", "ChannelParticipant"],
+        ["prev_participant", "ChannelParticipant"],
+        ["new_participant", "ChannelParticipant"],
       ],
     ],
   ],
@@ -31012,8 +30990,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB1C3CAA7,
       [
-        ["prev_stickerset", "InputStickerSet", "InputStickerSet"],
-        ["new_stickerset", "InputStickerSet", "InputStickerSet"],
+        ["prev_stickerset", "InputStickerSet"],
+        ["new_stickerset", "InputStickerSet"],
       ],
     ],
   ],
@@ -31022,7 +31000,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5F5C95F1,
       [
-        ["new_value", "boolean", "Bool"],
+        ["new_value", "Bool"],
       ],
     ],
   ],
@@ -31031,8 +31009,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2DF5FC0A,
       [
-        ["prev_banned_rights", "ChatBannedRights", "ChatBannedRights"],
-        ["new_banned_rights", "ChatBannedRights", "ChatBannedRights"],
+        ["prev_banned_rights", "ChatBannedRights"],
+        ["new_banned_rights", "ChatBannedRights"],
       ],
     ],
   ],
@@ -31041,7 +31019,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8F079643,
       [
-        ["message", "Message", "Message"],
+        ["message", "Message"],
       ],
     ],
   ],
@@ -31050,8 +31028,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x050C7AC8,
       [
-        ["prev_value", "bigint", "long"],
-        ["new_value", "bigint", "long"],
+        ["prev_value", "long"],
+        ["new_value", "long"],
       ],
     ],
   ],
@@ -31060,8 +31038,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0E6B76AE,
       [
-        ["prev_value", "ChannelLocation", "ChannelLocation"],
-        ["new_value", "ChannelLocation", "ChannelLocation"],
+        ["prev_value", "ChannelLocation"],
+        ["new_value", "ChannelLocation"],
       ],
     ],
   ],
@@ -31070,8 +31048,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x53909779,
       [
-        ["prev_value", "number", "int"],
-        ["new_value", "number", "int"],
+        ["prev_value", "int"],
+        ["new_value", "int"],
       ],
     ],
   ],
@@ -31080,7 +31058,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x23209745,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
+        ["call", "InputGroupCall"],
       ],
     ],
   ],
@@ -31089,7 +31067,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDB9F9140,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
+        ["call", "InputGroupCall"],
       ],
     ],
   ],
@@ -31098,7 +31076,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF92424D2,
       [
-        ["participant", "GroupCallParticipant", "GroupCallParticipant"],
+        ["participant", "GroupCallParticipant"],
       ],
     ],
   ],
@@ -31107,7 +31085,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE64429C0,
       [
-        ["participant", "GroupCallParticipant", "GroupCallParticipant"],
+        ["participant", "GroupCallParticipant"],
       ],
     ],
   ],
@@ -31116,7 +31094,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x56D6A247,
       [
-        ["join_muted", "boolean", "Bool"],
+        ["join_muted", "Bool"],
       ],
     ],
   ],
@@ -31125,9 +31103,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFE9FC158,
       [
-        ["flags", flags, "#"],
-        ["via_chatlist", "true", "flags.0?true"],
-        ["invite", "ExportedChatInvite", "ExportedChatInvite"],
+        ["flags", "#"],
+        ["via_chatlist", "flags.0?true"],
+        ["invite", "ExportedChatInvite"],
       ],
     ],
   ],
@@ -31136,7 +31114,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5A50FCA4,
       [
-        ["invite", "ExportedChatInvite", "ExportedChatInvite"],
+        ["invite", "ExportedChatInvite"],
       ],
     ],
   ],
@@ -31145,7 +31123,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x410A134E,
       [
-        ["invite", "ExportedChatInvite", "ExportedChatInvite"],
+        ["invite", "ExportedChatInvite"],
       ],
     ],
   ],
@@ -31154,8 +31132,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE90EBB59,
       [
-        ["prev_invite", "ExportedChatInvite", "ExportedChatInvite"],
-        ["new_invite", "ExportedChatInvite", "ExportedChatInvite"],
+        ["prev_invite", "ExportedChatInvite"],
+        ["new_invite", "ExportedChatInvite"],
       ],
     ],
   ],
@@ -31164,7 +31142,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3E7F6847,
       [
-        ["participant", "GroupCallParticipant", "GroupCallParticipant"],
+        ["participant", "GroupCallParticipant"],
       ],
     ],
   ],
@@ -31173,8 +31151,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6E941A38,
       [
-        ["prev_value", "number", "int"],
-        ["new_value", "number", "int"],
+        ["prev_value", "int"],
+        ["new_value", "int"],
       ],
     ],
   ],
@@ -31183,8 +31161,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAFB6144A,
       [
-        ["invite", "ExportedChatInvite", "ExportedChatInvite"],
-        ["approved_by", "bigint", "long"],
+        ["invite", "ExportedChatInvite"],
+        ["approved_by", "long"],
       ],
     ],
   ],
@@ -31193,7 +31171,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCB2AC766,
       [
-        ["new_value", "boolean", "Bool"],
+        ["new_value", "Bool"],
       ],
     ],
   ],
@@ -31202,7 +31180,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x278F2868,
       [
-        ["message", "Message", "Message"],
+        ["message", "Message"],
       ],
     ],
   ],
@@ -31211,8 +31189,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBE4E0EF8,
       [
-        ["prev_value", "ChatReactions", "ChatReactions"],
-        ["new_value", "ChatReactions", "ChatReactions"],
+        ["prev_value", "ChatReactions"],
+        ["new_value", "ChatReactions"],
       ],
     ],
   ],
@@ -31221,8 +31199,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF04FB3A9,
       [
-        ["prev_value", ["string"], "Vector<string>"],
-        ["new_value", ["string"], "Vector<string>"],
+        ["prev_value", "Vector<string>"],
+        ["new_value", "Vector<string>"],
       ],
     ],
   ],
@@ -31231,7 +31209,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x02CC6383,
       [
-        ["new_value", "boolean", "Bool"],
+        ["new_value", "Bool"],
       ],
     ],
   ],
@@ -31240,7 +31218,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x58707D28,
       [
-        ["topic", "ForumTopic", "ForumTopic"],
+        ["topic", "ForumTopic"],
       ],
     ],
   ],
@@ -31249,8 +31227,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF06FE208,
       [
-        ["prev_topic", "ForumTopic", "ForumTopic"],
-        ["new_topic", "ForumTopic", "ForumTopic"],
+        ["prev_topic", "ForumTopic"],
+        ["new_topic", "ForumTopic"],
       ],
     ],
   ],
@@ -31259,7 +31237,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAE168909,
       [
-        ["topic", "ForumTopic", "ForumTopic"],
+        ["topic", "ForumTopic"],
       ],
     ],
   ],
@@ -31268,9 +31246,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5D8D353B,
       [
-        ["flags", flags, "#"],
-        ["prev_topic", "ForumTopic", "flags.0?ForumTopic"],
-        ["new_topic", "ForumTopic", "flags.1?ForumTopic"],
+        ["flags", "#"],
+        ["prev_topic", "flags.0?ForumTopic"],
+        ["new_topic", "flags.1?ForumTopic"],
       ],
     ],
   ],
@@ -31279,7 +31257,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x64F36DFC,
       [
-        ["new_value", "boolean", "Bool"],
+        ["new_value", "Bool"],
       ],
     ],
   ],
@@ -31288,8 +31266,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5796E780,
       [
-        ["prev_value", "PeerColor", "PeerColor"],
-        ["new_value", "PeerColor", "PeerColor"],
+        ["prev_value", "PeerColor"],
+        ["new_value", "PeerColor"],
       ],
     ],
   ],
@@ -31298,8 +31276,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5E477B25,
       [
-        ["prev_value", "PeerColor", "PeerColor"],
-        ["new_value", "PeerColor", "PeerColor"],
+        ["prev_value", "PeerColor"],
+        ["new_value", "PeerColor"],
       ],
     ],
   ],
@@ -31308,8 +31286,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x31BB5D52,
       [
-        ["prev_value", "WallPaper", "WallPaper"],
-        ["new_value", "WallPaper", "WallPaper"],
+        ["prev_value", "WallPaper"],
+        ["new_value", "WallPaper"],
       ],
     ],
   ],
@@ -31318,8 +31296,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3EA9FEB1,
       [
-        ["prev_value", "EmojiStatus", "EmojiStatus"],
-        ["new_value", "EmojiStatus", "EmojiStatus"],
+        ["prev_value", "EmojiStatus"],
+        ["new_value", "EmojiStatus"],
       ],
     ],
   ],
@@ -31328,8 +31306,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x46D840AB,
       [
-        ["prev_stickerset", "InputStickerSet", "InputStickerSet"],
-        ["new_stickerset", "InputStickerSet", "InputStickerSet"],
+        ["prev_stickerset", "InputStickerSet"],
+        ["new_stickerset", "InputStickerSet"],
       ],
     ],
   ],
@@ -31338,7 +31316,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x60A79C79,
       [
-        ["new_value", "boolean", "Bool"],
+        ["new_value", "Bool"],
       ],
     ],
   ],
@@ -31347,8 +31325,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x64642DB3,
       [
-        ["prev_participant", "ChannelParticipant", "ChannelParticipant"],
-        ["new_participant", "ChannelParticipant", "ChannelParticipant"],
+        ["prev_participant", "ChannelParticipant"],
+        ["new_participant", "ChannelParticipant"],
       ],
     ],
   ],
@@ -31357,10 +31335,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1FAD68CD,
       [
-        ["id", "bigint", "long"],
-        ["date", "number", "int"],
-        ["user_id", "bigint", "long"],
-        ["action", "ChannelAdminLogEventAction", "ChannelAdminLogEventAction"],
+        ["id", "long"],
+        ["date", "int"],
+        ["user_id", "long"],
+        ["action", "ChannelAdminLogEventAction"],
       ],
     ],
   ],
@@ -31369,9 +31347,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xED8AF74D,
       [
-        ["events", ["ChannelAdminLogEvent"], "Vector<ChannelAdminLogEvent>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["events", "Vector<ChannelAdminLogEvent>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -31380,26 +31358,26 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEA107AE4,
       [
-        ["flags", flags, "#"],
-        ["join", "true", "flags.0?true"],
-        ["leave", "true", "flags.1?true"],
-        ["invite", "true", "flags.2?true"],
-        ["ban", "true", "flags.3?true"],
-        ["unban", "true", "flags.4?true"],
-        ["kick", "true", "flags.5?true"],
-        ["unkick", "true", "flags.6?true"],
-        ["promote", "true", "flags.7?true"],
-        ["demote", "true", "flags.8?true"],
-        ["info", "true", "flags.9?true"],
-        ["settings", "true", "flags.10?true"],
-        ["pinned", "true", "flags.11?true"],
-        ["edit", "true", "flags.12?true"],
-        ["delete", "true", "flags.13?true"],
-        ["group_call", "true", "flags.14?true"],
-        ["invites", "true", "flags.15?true"],
-        ["send", "true", "flags.16?true"],
-        ["forums", "true", "flags.17?true"],
-        ["sub_extend", "true", "flags.18?true"],
+        ["flags", "#"],
+        ["join", "flags.0?true"],
+        ["leave", "flags.1?true"],
+        ["invite", "flags.2?true"],
+        ["ban", "flags.3?true"],
+        ["unban", "flags.4?true"],
+        ["kick", "flags.5?true"],
+        ["unkick", "flags.6?true"],
+        ["promote", "flags.7?true"],
+        ["demote", "flags.8?true"],
+        ["info", "flags.9?true"],
+        ["settings", "flags.10?true"],
+        ["pinned", "flags.11?true"],
+        ["edit", "flags.12?true"],
+        ["delete", "flags.13?true"],
+        ["group_call", "flags.14?true"],
+        ["invites", "flags.15?true"],
+        ["send", "flags.16?true"],
+        ["forums", "flags.17?true"],
+        ["sub_extend", "flags.18?true"],
       ],
     ],
   ],
@@ -31408,8 +31386,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5CE14175,
       [
-        ["client_id", "bigint", "long"],
-        ["importers", "number", "int"],
+        ["client_id", "long"],
+        ["importers", "int"],
       ],
     ],
   ],
@@ -31425,9 +31403,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2CB51097,
       [
-        ["hash", "bigint", "long"],
-        ["packs", ["StickerPack"], "Vector<StickerPack>"],
-        ["stickers", ["Document"], "Vector<Document>"],
+        ["hash", "long"],
+        ["packs", "Vector<StickerPack>"],
+        ["stickers", "Vector<Document>"],
       ],
     ],
   ],
@@ -31436,7 +31414,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x46E1D13D,
       [
-        ["url", "string", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -31445,8 +31423,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB92C09E2,
       [
-        ["url", "string", "string"],
-        ["user_id", "bigint", "long"],
+        ["url", "string"],
+        ["user_id", "long"],
       ],
     ],
   ],
@@ -31455,8 +31433,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB2DA71D2,
       [
-        ["url", "string", "string"],
-        ["chat_id", "bigint", "long"],
+        ["url", "string"],
+        ["chat_id", "long"],
       ],
     ],
   ],
@@ -31465,8 +31443,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEB49081D,
       [
-        ["url", "string", "string"],
-        ["chat_invite", "ChatInvite", "ChatInvite"],
+        ["url", "string"],
+        ["chat_invite", "ChatInvite"],
       ],
     ],
   ],
@@ -31475,8 +31453,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBC0A57DC,
       [
-        ["url", "string", "string"],
-        ["set", "StickerSetCovered", "StickerSetCovered"],
+        ["url", "string"],
+        ["set", "StickerSetCovered"],
       ],
     ],
   ],
@@ -31485,9 +31463,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0E0310D7,
       [
-        ["urls", ["RecentMeUrl"], "Vector<RecentMeUrl>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["urls", "Vector<RecentMeUrl>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -31496,11 +31474,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1CC6E91F,
       [
-        ["flags", flags, "#"],
-        ["media", "InputMedia", "InputMedia"],
-        ["random_id", "bigint", "long"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.0?Vector<MessageEntity>"],
+        ["flags", "#"],
+        ["media", "InputMedia"],
+        ["random_id", "long"],
+        ["message", "string"],
+        ["entities", "flags.0?Vector<MessageEntity>"],
       ],
     ],
   ],
@@ -31509,15 +31487,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA6F8F452,
       [
-        ["hash", "bigint", "long"],
-        ["bot_id", "bigint", "long"],
-        ["domain", "string", "string"],
-        ["browser", "string", "string"],
-        ["platform", "string", "string"],
-        ["date_created", "number", "int"],
-        ["date_active", "number", "int"],
-        ["ip", "string", "string"],
-        ["region", "string", "string"],
+        ["hash", "long"],
+        ["bot_id", "long"],
+        ["domain", "string"],
+        ["browser", "string"],
+        ["platform", "string"],
+        ["date_created", "int"],
+        ["date_active", "int"],
+        ["ip", "string"],
+        ["region", "string"],
       ],
     ],
   ],
@@ -31526,8 +31504,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xED56C9FC,
       [
-        ["authorizations", ["WebAuthorization"], "Vector<WebAuthorization>"],
-        ["users", ["User"], "Vector<User>"],
+        ["authorizations", "Vector<WebAuthorization>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -31536,7 +31514,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA676A322,
       [
-        ["id", "number", "int"],
+        ["id", "int"],
       ],
     ],
   ],
@@ -31545,7 +31523,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBAD88395,
       [
-        ["id", "number", "int"],
+        ["id", "int"],
       ],
     ],
   ],
@@ -31561,8 +31539,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xACFA1A7E,
       [
-        ["id", "number", "int"],
-        ["query_id", "bigint", "long"],
+        ["id", "int"],
+        ["query_id", "long"],
       ],
     ],
   ],
@@ -31571,7 +31549,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFCAAFEB7,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -31580,7 +31558,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x64600527,
       [
-        ["folder_id", "number", "int"],
+        ["folder_id", "int"],
       ],
     ],
   ],
@@ -31589,7 +31567,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE56DBF05,
       [
-        ["peer", "Peer", "Peer"],
+        ["peer", "Peer"],
       ],
     ],
   ],
@@ -31598,7 +31576,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x514519E2,
       [
-        ["folder_id", "number", "int"],
+        ["folder_id", "int"],
       ],
     ],
   ],
@@ -31614,8 +31592,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8AF09DD2,
       [
-        ["hash", "bigint", "long"],
-        ["sets", ["StickerSetCovered"], "Vector<StickerSetCovered>"],
+        ["hash", "long"],
+        ["sets", "Vector<StickerSetCovered>"],
       ],
     ],
   ],
@@ -31624,9 +31602,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF39B035C,
       [
-        ["offset", "bigint", "long"],
-        ["limit", "number", "int"],
-        ["hash", Uint8Array, "bytes"],
+        ["offset", "long"],
+        ["limit", "int"],
+        ["hash", "bytes"],
       ],
     ],
   ],
@@ -31635,8 +31613,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x75588B3F,
       [
-        ["address", "string", "string"],
-        ["port", "number", "int"],
+        ["address", "string"],
+        ["port", "int"],
       ],
     ],
   ],
@@ -31645,7 +31623,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE3309F7F,
       [
-        ["expires", "number", "int"],
+        ["expires", "int"],
       ],
     ],
   ],
@@ -31654,8 +31632,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x28ECF961,
       [
-        ["expires", "number", "int"],
-        ["terms_of_service", "help_TermsOfService", "help.TermsOfService"],
+        ["expires", "int"],
+        ["terms_of_service", "help.TermsOfService"],
       ],
     ],
   ],
@@ -31664,11 +31642,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3334B0F0,
       [
-        ["id", "bigint", "long"],
-        ["parts", "number", "int"],
-        ["md5_checksum", "string", "string"],
-        ["file_hash", Uint8Array, "bytes"],
-        ["secret", Uint8Array, "bytes"],
+        ["id", "long"],
+        ["parts", "int"],
+        ["md5_checksum", "string"],
+        ["file_hash", "bytes"],
+        ["secret", "bytes"],
       ],
     ],
   ],
@@ -31677,8 +31655,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5367E5BE,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -31694,13 +31672,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7D09C27E,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["size", "bigint", "long"],
-        ["dc_id", "number", "int"],
-        ["date", "number", "int"],
-        ["file_hash", Uint8Array, "bytes"],
-        ["secret", Uint8Array, "bytes"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["size", "long"],
+        ["dc_id", "int"],
+        ["date", "int"],
+        ["file_hash", "bytes"],
+        ["secret", "bytes"],
       ],
     ],
   ],
@@ -31709,9 +31687,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8AEABEC3,
       [
-        ["data", Uint8Array, "bytes"],
-        ["data_hash", Uint8Array, "bytes"],
-        ["secret", Uint8Array, "bytes"],
+        ["data", "bytes"],
+        ["data_hash", "bytes"],
+        ["secret", "bytes"],
       ],
     ],
   ],
@@ -31720,7 +31698,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7D6099DD,
       [
-        ["phone", "string", "string"],
+        ["phone", "string"],
       ],
     ],
   ],
@@ -31729,7 +31707,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x21EC5A5F,
       [
-        ["email", "string", "string"],
+        ["email", "string"],
       ],
     ],
   ],
@@ -31829,16 +31807,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x187FA0CA,
       [
-        ["flags", flags, "#"],
-        ["type", "SecureValueType", "SecureValueType"],
-        ["data", "SecureData", "flags.0?SecureData"],
-        ["front_side", "SecureFile", "flags.1?SecureFile"],
-        ["reverse_side", "SecureFile", "flags.2?SecureFile"],
-        ["selfie", "SecureFile", "flags.3?SecureFile"],
-        ["translation", ["SecureFile"], "flags.6?Vector<SecureFile>"],
-        ["files", ["SecureFile"], "flags.4?Vector<SecureFile>"],
-        ["plain_data", "SecurePlainData", "flags.5?SecurePlainData"],
-        ["hash", Uint8Array, "bytes"],
+        ["flags", "#"],
+        ["type", "SecureValueType"],
+        ["data", "flags.0?SecureData"],
+        ["front_side", "flags.1?SecureFile"],
+        ["reverse_side", "flags.2?SecureFile"],
+        ["selfie", "flags.3?SecureFile"],
+        ["translation", "flags.6?Vector<SecureFile>"],
+        ["files", "flags.4?Vector<SecureFile>"],
+        ["plain_data", "flags.5?SecurePlainData"],
+        ["hash", "bytes"],
       ],
     ],
   ],
@@ -31847,15 +31825,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDB21D0A7,
       [
-        ["flags", flags, "#"],
-        ["type", "SecureValueType", "SecureValueType"],
-        ["data", "SecureData", "flags.0?SecureData"],
-        ["front_side", "InputSecureFile", "flags.1?InputSecureFile"],
-        ["reverse_side", "InputSecureFile", "flags.2?InputSecureFile"],
-        ["selfie", "InputSecureFile", "flags.3?InputSecureFile"],
-        ["translation", ["InputSecureFile"], "flags.6?Vector<InputSecureFile>"],
-        ["files", ["InputSecureFile"], "flags.4?Vector<InputSecureFile>"],
-        ["plain_data", "SecurePlainData", "flags.5?SecurePlainData"],
+        ["flags", "#"],
+        ["type", "SecureValueType"],
+        ["data", "flags.0?SecureData"],
+        ["front_side", "flags.1?InputSecureFile"],
+        ["reverse_side", "flags.2?InputSecureFile"],
+        ["selfie", "flags.3?InputSecureFile"],
+        ["translation", "flags.6?Vector<InputSecureFile>"],
+        ["files", "flags.4?Vector<InputSecureFile>"],
+        ["plain_data", "flags.5?SecurePlainData"],
       ],
     ],
   ],
@@ -31864,8 +31842,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xED1ECDB0,
       [
-        ["type", "SecureValueType", "SecureValueType"],
-        ["hash", Uint8Array, "bytes"],
+        ["type", "SecureValueType"],
+        ["hash", "bytes"],
       ],
     ],
   ],
@@ -31874,10 +31852,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE8A40BD9,
       [
-        ["type", "SecureValueType", "SecureValueType"],
-        ["data_hash", Uint8Array, "bytes"],
-        ["field", "string", "string"],
-        ["text", "string", "string"],
+        ["type", "SecureValueType"],
+        ["data_hash", "bytes"],
+        ["field", "string"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -31886,9 +31864,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x00BE3DFA,
       [
-        ["type", "SecureValueType", "SecureValueType"],
-        ["file_hash", Uint8Array, "bytes"],
-        ["text", "string", "string"],
+        ["type", "SecureValueType"],
+        ["file_hash", "bytes"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -31897,9 +31875,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x868A2AA5,
       [
-        ["type", "SecureValueType", "SecureValueType"],
-        ["file_hash", Uint8Array, "bytes"],
-        ["text", "string", "string"],
+        ["type", "SecureValueType"],
+        ["file_hash", "bytes"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -31908,9 +31886,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE537CED6,
       [
-        ["type", "SecureValueType", "SecureValueType"],
-        ["file_hash", Uint8Array, "bytes"],
-        ["text", "string", "string"],
+        ["type", "SecureValueType"],
+        ["file_hash", "bytes"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -31919,9 +31897,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7A700873,
       [
-        ["type", "SecureValueType", "SecureValueType"],
-        ["file_hash", Uint8Array, "bytes"],
-        ["text", "string", "string"],
+        ["type", "SecureValueType"],
+        ["file_hash", "bytes"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -31930,9 +31908,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x666220E9,
       [
-        ["type", "SecureValueType", "SecureValueType"],
-        ["file_hash", [Uint8Array], "Vector<bytes>"],
-        ["text", "string", "string"],
+        ["type", "SecureValueType"],
+        ["file_hash", "Vector<bytes>"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -31941,9 +31919,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x869D758F,
       [
-        ["type", "SecureValueType", "SecureValueType"],
-        ["hash", Uint8Array, "bytes"],
-        ["text", "string", "string"],
+        ["type", "SecureValueType"],
+        ["hash", "bytes"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -31952,9 +31930,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA1144770,
       [
-        ["type", "SecureValueType", "SecureValueType"],
-        ["file_hash", Uint8Array, "bytes"],
-        ["text", "string", "string"],
+        ["type", "SecureValueType"],
+        ["file_hash", "bytes"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -31963,9 +31941,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x34636DD8,
       [
-        ["type", "SecureValueType", "SecureValueType"],
-        ["file_hash", [Uint8Array], "Vector<bytes>"],
-        ["text", "string", "string"],
+        ["type", "SecureValueType"],
+        ["file_hash", "Vector<bytes>"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -31974,9 +31952,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x33F0EA47,
       [
-        ["data", Uint8Array, "bytes"],
-        ["hash", Uint8Array, "bytes"],
-        ["secret", Uint8Array, "bytes"],
+        ["data", "bytes"],
+        ["hash", "bytes"],
+        ["secret", "bytes"],
       ],
     ],
   ],
@@ -31985,12 +31963,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAD2E1CD8,
       [
-        ["flags", flags, "#"],
-        ["required_types", ["SecureRequiredType"], "Vector<SecureRequiredType>"],
-        ["values", ["SecureValue"], "Vector<SecureValue>"],
-        ["errors", ["SecureValueError"], "Vector<SecureValueError>"],
-        ["users", ["User"], "Vector<User>"],
-        ["privacy_policy_url", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["required_types", "Vector<SecureRequiredType>"],
+        ["values", "Vector<SecureValue>"],
+        ["errors", "Vector<SecureValueError>"],
+        ["users", "Vector<User>"],
+        ["privacy_policy_url", "flags.0?string"],
       ],
     ],
   ],
@@ -31999,8 +31977,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x811F854F,
       [
-        ["email_pattern", "string", "string"],
-        ["length", "number", "int"],
+        ["email_pattern", "string"],
+        ["length", "int"],
       ],
     ],
   ],
@@ -32016,10 +31994,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6A4EE832,
       [
-        ["flags", flags, "#"],
-        ["update_app", "true", "flags.0?true"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.1?Vector<MessageEntity>"],
+        ["flags", "#"],
+        ["update_app", "flags.0?true"],
+        ["message", "string"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
       ],
     ],
   ],
@@ -32028,10 +32006,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1142BD56,
       [
-        ["phone", "string", "string"],
-        ["first_name", "string", "string"],
-        ["last_name", "string", "string"],
-        ["date", "number", "int"],
+        ["phone", "string"],
+        ["first_name", "string"],
+        ["last_name", "string"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -32040,7 +32018,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4DBA4501,
       [
-        ["id", "bigint", "long"],
+        ["id", "long"],
       ],
     ],
   ],
@@ -32056,10 +32034,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3A912D4A,
       [
-        ["salt1", Uint8Array, "bytes"],
-        ["salt2", Uint8Array, "bytes"],
-        ["g", "number", "int"],
-        ["p", Uint8Array, "bytes"],
+        ["salt1", "bytes"],
+        ["salt2", "bytes"],
+        ["g", "int"],
+        ["p", "bytes"],
       ],
     ],
   ],
@@ -32075,7 +32053,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBBF2DDA0,
       [
-        ["salt", Uint8Array, "bytes"],
+        ["salt", "bytes"],
       ],
     ],
   ],
@@ -32084,7 +32062,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x86471D92,
       [
-        ["salt", Uint8Array, "bytes"],
+        ["salt", "bytes"],
       ],
     ],
   ],
@@ -32093,9 +32071,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1527BCAC,
       [
-        ["secure_algo", "SecurePasswordKdfAlgo", "SecurePasswordKdfAlgo"],
-        ["secure_secret", Uint8Array, "bytes"],
-        ["secure_secret_id", "bigint", "long"],
+        ["secure_algo", "SecurePasswordKdfAlgo"],
+        ["secure_secret", "bytes"],
+        ["secure_secret_id", "long"],
       ],
     ],
   ],
@@ -32111,9 +32089,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD27FF082,
       [
-        ["srp_id", "bigint", "long"],
-        ["A", Uint8Array, "bytes"],
-        ["M1", Uint8Array, "bytes"],
+        ["srp_id", "long"],
+        ["A", "bytes"],
+        ["M1", "bytes"],
       ],
     ],
   ],
@@ -32122,11 +32100,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x829D99DA,
       [
-        ["flags", flags, "#"],
-        ["native_names", "true", "flags.0?true"],
-        ["selfie_required", "true", "flags.1?true"],
-        ["translation_required", "true", "flags.2?true"],
-        ["type", "SecureValueType", "SecureValueType"],
+        ["flags", "#"],
+        ["native_names", "flags.0?true"],
+        ["selfie_required", "flags.1?true"],
+        ["translation_required", "flags.2?true"],
+        ["type", "SecureValueType"],
       ],
     ],
   ],
@@ -32135,7 +32113,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x027477B4,
       [
-        ["types", ["SecureRequiredType"], "Vector<SecureRequiredType>"],
+        ["types", "Vector<SecureRequiredType>"],
       ],
     ],
   ],
@@ -32151,8 +32129,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA098D6AF,
       [
-        ["hash", "number", "int"],
-        ["countries_langs", "DataJSON", "DataJSON"],
+        ["hash", "int"],
+        ["countries_langs", "DataJSON"],
       ],
     ],
   ],
@@ -32161,10 +32139,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1D1B1245,
       [
-        ["time", "number", "double"],
-        ["type", "string", "string"],
-        ["peer", "bigint", "long"],
-        ["data", "JSONValue", "JSONValue"],
+        ["time", "double"],
+        ["type", "string"],
+        ["peer", "long"],
+        ["data", "JSONValue"],
       ],
     ],
   ],
@@ -32173,8 +32151,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC0DE1BD9,
       [
-        ["key", "string", "string"],
-        ["value", "JSONValue", "JSONValue"],
+        ["key", "string"],
+        ["value", "JSONValue"],
       ],
     ],
   ],
@@ -32190,7 +32168,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC7345E6A,
       [
-        ["value", "boolean", "Bool"],
+        ["value", "Bool"],
       ],
     ],
   ],
@@ -32199,7 +32177,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2BE0DFA4,
       [
-        ["value", "number", "double"],
+        ["value", "double"],
       ],
     ],
   ],
@@ -32208,7 +32186,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB71E767A,
       [
-        ["value", "string", "string"],
+        ["value", "string"],
       ],
     ],
   ],
@@ -32217,7 +32195,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF7444763,
       [
-        ["value", ["JSONValue"], "Vector<JSONValue>"],
+        ["value", "Vector<JSONValue>"],
       ],
     ],
   ],
@@ -32226,7 +32204,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x99C1D49D,
       [
-        ["value", ["JSONObjectValue"], "Vector<JSONObjectValue>"],
+        ["value", "Vector<JSONObjectValue>"],
       ],
     ],
   ],
@@ -32235,15 +32213,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x34566B6A,
       [
-        ["flags", flags, "#"],
-        ["header", "true", "flags.0?true"],
-        ["align_center", "true", "flags.3?true"],
-        ["align_right", "true", "flags.4?true"],
-        ["valign_middle", "true", "flags.5?true"],
-        ["valign_bottom", "true", "flags.6?true"],
-        ["text", "RichText", "flags.7?RichText"],
-        ["colspan", "number", "flags.1?int"],
-        ["rowspan", "number", "flags.2?int"],
+        ["flags", "#"],
+        ["header", "flags.0?true"],
+        ["align_center", "flags.3?true"],
+        ["align_right", "flags.4?true"],
+        ["valign_middle", "flags.5?true"],
+        ["valign_bottom", "flags.6?true"],
+        ["text", "flags.7?RichText"],
+        ["colspan", "flags.1?int"],
+        ["rowspan", "flags.2?int"],
       ],
     ],
   ],
@@ -32252,7 +32230,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE0C0C5E5,
       [
-        ["cells", ["PageTableCell"], "Vector<PageTableCell>"],
+        ["cells", "Vector<PageTableCell>"],
       ],
     ],
   ],
@@ -32261,8 +32239,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6F747657,
       [
-        ["text", "RichText", "RichText"],
-        ["credit", "RichText", "RichText"],
+        ["text", "RichText"],
+        ["credit", "RichText"],
       ],
     ],
   ],
@@ -32271,7 +32249,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB92FB6CD,
       [
-        ["text", "RichText", "RichText"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -32280,7 +32258,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x25E073FC,
       [
-        ["blocks", ["PageBlock"], "Vector<PageBlock>"],
+        ["blocks", "Vector<PageBlock>"],
       ],
     ],
   ],
@@ -32289,8 +32267,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5E068047,
       [
-        ["num", "string", "string"],
-        ["text", "RichText", "RichText"],
+        ["num", "string"],
+        ["text", "RichText"],
       ],
     ],
   ],
@@ -32299,8 +32277,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x98DD8936,
       [
-        ["num", "string", "string"],
-        ["blocks", ["PageBlock"], "Vector<PageBlock>"],
+        ["num", "string"],
+        ["blocks", "Vector<PageBlock>"],
       ],
     ],
   ],
@@ -32309,14 +32287,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB390DC08,
       [
-        ["flags", flags, "#"],
-        ["url", "string", "string"],
-        ["webpage_id", "bigint", "long"],
-        ["title", "string", "flags.0?string"],
-        ["description", "string", "flags.1?string"],
-        ["photo_id", "bigint", "flags.2?long"],
-        ["author", "string", "flags.3?string"],
-        ["published_date", "number", "flags.4?int"],
+        ["flags", "#"],
+        ["url", "string"],
+        ["webpage_id", "long"],
+        ["title", "flags.0?string"],
+        ["description", "flags.1?string"],
+        ["photo_id", "flags.2?long"],
+        ["author", "flags.3?string"],
+        ["published_date", "flags.4?int"],
       ],
     ],
   ],
@@ -32325,15 +32303,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x98657F0D,
       [
-        ["flags", flags, "#"],
-        ["part", "true", "flags.0?true"],
-        ["rtl", "true", "flags.1?true"],
-        ["v2", "true", "flags.2?true"],
-        ["url", "string", "string"],
-        ["blocks", ["PageBlock"], "Vector<PageBlock>"],
-        ["photos", ["Photo"], "Vector<Photo>"],
-        ["documents", ["Document"], "Vector<Document>"],
-        ["views", "number", "flags.3?int"],
+        ["flags", "#"],
+        ["part", "flags.0?true"],
+        ["rtl", "flags.1?true"],
+        ["v2", "flags.2?true"],
+        ["url", "string"],
+        ["blocks", "Vector<PageBlock>"],
+        ["photos", "Vector<Photo>"],
+        ["documents", "Vector<Document>"],
+        ["views", "flags.3?int"],
       ],
     ],
   ],
@@ -32342,7 +32320,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8C05F1C9,
       [
-        ["name", "string", "string"],
+        ["name", "string"],
       ],
     ],
   ],
@@ -32358,10 +32336,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x01EB3758,
       [
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "Vector<MessageEntity>"],
-        ["author", "string", "string"],
-        ["date", "number", "int"],
+        ["message", "string"],
+        ["entities", "Vector<MessageEntity>"],
+        ["author", "string"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -32370,8 +32348,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFF16E2CA,
       [
-        ["text", "TextWithEntities", "TextWithEntities"],
-        ["option", Uint8Array, "bytes"],
+        ["text", "TextWithEntities"],
+        ["option", "bytes"],
       ],
     ],
   ],
@@ -32380,16 +32358,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x58747131,
       [
-        ["id", "bigint", "long"],
-        ["flags", flags, "#"],
-        ["closed", "true", "flags.0?true"],
-        ["public_voters", "true", "flags.1?true"],
-        ["multiple_choice", "true", "flags.2?true"],
-        ["quiz", "true", "flags.3?true"],
-        ["question", "TextWithEntities", "TextWithEntities"],
-        ["answers", ["PollAnswer"], "Vector<PollAnswer>"],
-        ["close_period", "number", "flags.4?int"],
-        ["close_date", "number", "flags.5?int"],
+        ["id", "long"],
+        ["flags", "#"],
+        ["closed", "flags.0?true"],
+        ["public_voters", "flags.1?true"],
+        ["multiple_choice", "flags.2?true"],
+        ["quiz", "flags.3?true"],
+        ["question", "TextWithEntities"],
+        ["answers", "Vector<PollAnswer>"],
+        ["close_period", "flags.4?int"],
+        ["close_date", "flags.5?int"],
       ],
     ],
   ],
@@ -32398,11 +32376,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3B6DDAD2,
       [
-        ["flags", flags, "#"],
-        ["chosen", "true", "flags.0?true"],
-        ["correct", "true", "flags.1?true"],
-        ["option", Uint8Array, "bytes"],
-        ["voters", "number", "int"],
+        ["flags", "#"],
+        ["chosen", "flags.0?true"],
+        ["correct", "flags.1?true"],
+        ["option", "bytes"],
+        ["voters", "int"],
       ],
     ],
   ],
@@ -32411,13 +32389,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7ADF2420,
       [
-        ["flags", flags, "#"],
-        ["min", "true", "flags.0?true"],
-        ["results", ["PollAnswerVoters"], "flags.1?Vector<PollAnswerVoters>"],
-        ["total_voters", "number", "flags.2?int"],
-        ["recent_voters", ["Peer"], "flags.3?Vector<Peer>"],
-        ["solution", "string", "flags.4?string"],
-        ["solution_entities", ["MessageEntity"], "flags.4?Vector<MessageEntity>"],
+        ["flags", "#"],
+        ["min", "flags.0?true"],
+        ["results", "flags.1?Vector<PollAnswerVoters>"],
+        ["total_voters", "flags.2?int"],
+        ["recent_voters", "flags.3?Vector<Peer>"],
+        ["solution", "flags.4?string"],
+        ["solution_entities", "flags.4?Vector<MessageEntity>"],
       ],
     ],
   ],
@@ -32426,7 +32404,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF041E250,
       [
-        ["onlines", "number", "int"],
+        ["onlines", "int"],
       ],
     ],
   ],
@@ -32435,7 +32413,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x47A971E0,
       [
-        ["url", "string", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -32444,22 +32422,22 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5FB224D5,
       [
-        ["flags", flags, "#"],
-        ["change_info", "true", "flags.0?true"],
-        ["post_messages", "true", "flags.1?true"],
-        ["edit_messages", "true", "flags.2?true"],
-        ["delete_messages", "true", "flags.3?true"],
-        ["ban_users", "true", "flags.4?true"],
-        ["invite_users", "true", "flags.5?true"],
-        ["pin_messages", "true", "flags.7?true"],
-        ["add_admins", "true", "flags.9?true"],
-        ["anonymous", "true", "flags.10?true"],
-        ["manage_call", "true", "flags.11?true"],
-        ["other", "true", "flags.12?true"],
-        ["manage_topics", "true", "flags.13?true"],
-        ["post_stories", "true", "flags.14?true"],
-        ["edit_stories", "true", "flags.15?true"],
-        ["delete_stories", "true", "flags.16?true"],
+        ["flags", "#"],
+        ["change_info", "flags.0?true"],
+        ["post_messages", "flags.1?true"],
+        ["edit_messages", "flags.2?true"],
+        ["delete_messages", "flags.3?true"],
+        ["ban_users", "flags.4?true"],
+        ["invite_users", "flags.5?true"],
+        ["pin_messages", "flags.7?true"],
+        ["add_admins", "flags.9?true"],
+        ["anonymous", "flags.10?true"],
+        ["manage_call", "flags.11?true"],
+        ["other", "flags.12?true"],
+        ["manage_topics", "flags.13?true"],
+        ["post_stories", "flags.14?true"],
+        ["edit_stories", "flags.15?true"],
+        ["delete_stories", "flags.16?true"],
       ],
     ],
   ],
@@ -32468,28 +32446,28 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9F120418,
       [
-        ["flags", flags, "#"],
-        ["view_messages", "true", "flags.0?true"],
-        ["send_messages", "true", "flags.1?true"],
-        ["send_media", "true", "flags.2?true"],
-        ["send_stickers", "true", "flags.3?true"],
-        ["send_gifs", "true", "flags.4?true"],
-        ["send_games", "true", "flags.5?true"],
-        ["send_inline", "true", "flags.6?true"],
-        ["embed_links", "true", "flags.7?true"],
-        ["send_polls", "true", "flags.8?true"],
-        ["change_info", "true", "flags.10?true"],
-        ["invite_users", "true", "flags.15?true"],
-        ["pin_messages", "true", "flags.17?true"],
-        ["manage_topics", "true", "flags.18?true"],
-        ["send_photos", "true", "flags.19?true"],
-        ["send_videos", "true", "flags.20?true"],
-        ["send_roundvideos", "true", "flags.21?true"],
-        ["send_audios", "true", "flags.22?true"],
-        ["send_voices", "true", "flags.23?true"],
-        ["send_docs", "true", "flags.24?true"],
-        ["send_plain", "true", "flags.25?true"],
-        ["until_date", "number", "int"],
+        ["flags", "#"],
+        ["view_messages", "flags.0?true"],
+        ["send_messages", "flags.1?true"],
+        ["send_media", "flags.2?true"],
+        ["send_stickers", "flags.3?true"],
+        ["send_gifs", "flags.4?true"],
+        ["send_games", "flags.5?true"],
+        ["send_inline", "flags.6?true"],
+        ["embed_links", "flags.7?true"],
+        ["send_polls", "flags.8?true"],
+        ["change_info", "flags.10?true"],
+        ["invite_users", "flags.15?true"],
+        ["pin_messages", "flags.17?true"],
+        ["manage_topics", "flags.18?true"],
+        ["send_photos", "flags.19?true"],
+        ["send_videos", "flags.20?true"],
+        ["send_roundvideos", "flags.21?true"],
+        ["send_audios", "flags.22?true"],
+        ["send_voices", "flags.23?true"],
+        ["send_docs", "flags.24?true"],
+        ["send_plain", "flags.25?true"],
+        ["until_date", "int"],
       ],
     ],
   ],
@@ -32498,8 +32476,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE630B979,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -32508,7 +32486,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x72091C80,
       [
-        ["slug", "string", "string"],
+        ["slug", "string"],
       ],
     ],
   ],
@@ -32517,7 +32495,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x967A462E,
       [
-        ["id", "bigint", "long"],
+        ["id", "long"],
       ],
     ],
   ],
@@ -32533,8 +32511,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCDC3858C,
       [
-        ["hash", "bigint", "long"],
-        ["wallpapers", ["WallPaper"], "Vector<WallPaper>"],
+        ["hash", "long"],
+        ["wallpapers", "Vector<WallPaper>"],
       ],
     ],
   ],
@@ -32543,16 +32521,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAD253D78,
       [
-        ["flags", flags, "#"],
-        ["allow_flashcall", "true", "flags.0?true"],
-        ["current_number", "true", "flags.1?true"],
-        ["allow_app_hash", "true", "flags.4?true"],
-        ["allow_missed_call", "true", "flags.5?true"],
-        ["allow_firebase", "true", "flags.7?true"],
-        ["unknown_number", "true", "flags.9?true"],
-        ["logout_tokens", [Uint8Array], "flags.6?Vector<bytes>"],
-        ["token", "string", "flags.8?string"],
-        ["app_sandbox", "boolean", "flags.8?Bool"],
+        ["flags", "#"],
+        ["allow_flashcall", "flags.0?true"],
+        ["current_number", "flags.1?true"],
+        ["allow_app_hash", "flags.4?true"],
+        ["allow_missed_call", "flags.5?true"],
+        ["allow_firebase", "flags.7?true"],
+        ["unknown_number", "flags.9?true"],
+        ["logout_tokens", "flags.6?Vector<bytes>"],
+        ["token", "flags.8?string"],
+        ["app_sandbox", "flags.8?Bool"],
       ],
     ],
   ],
@@ -32561,16 +32539,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x372EFCD0,
       [
-        ["flags", flags, "#"],
-        ["blur", "true", "flags.1?true"],
-        ["motion", "true", "flags.2?true"],
-        ["background_color", "number", "flags.0?int"],
-        ["second_background_color", "number", "flags.4?int"],
-        ["third_background_color", "number", "flags.5?int"],
-        ["fourth_background_color", "number", "flags.6?int"],
-        ["intensity", "number", "flags.3?int"],
-        ["rotation", "number", "flags.4?int"],
-        ["emoticon", "string", "flags.7?string"],
+        ["flags", "#"],
+        ["blur", "flags.1?true"],
+        ["motion", "flags.2?true"],
+        ["background_color", "flags.0?int"],
+        ["second_background_color", "flags.4?int"],
+        ["third_background_color", "flags.5?int"],
+        ["fourth_background_color", "flags.6?int"],
+        ["intensity", "flags.3?int"],
+        ["rotation", "flags.4?int"],
+        ["emoticon", "flags.7?string"],
       ],
     ],
   ],
@@ -32579,18 +32557,18 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBAA57628,
       [
-        ["flags", flags, "#"],
-        ["disabled", "true", "flags.0?true"],
-        ["video_preload_large", "true", "flags.1?true"],
-        ["audio_preload_next", "true", "flags.2?true"],
-        ["phonecalls_less_data", "true", "flags.3?true"],
-        ["stories_preload", "true", "flags.4?true"],
-        ["photo_size_max", "number", "int"],
-        ["video_size_max", "bigint", "long"],
-        ["file_size_max", "bigint", "long"],
-        ["video_upload_maxbitrate", "number", "int"],
-        ["small_queue_active_operations_max", "number", "int"],
-        ["large_queue_active_operations_max", "number", "int"],
+        ["flags", "#"],
+        ["disabled", "flags.0?true"],
+        ["video_preload_large", "flags.1?true"],
+        ["audio_preload_next", "flags.2?true"],
+        ["phonecalls_less_data", "flags.3?true"],
+        ["stories_preload", "flags.4?true"],
+        ["photo_size_max", "int"],
+        ["video_size_max", "long"],
+        ["file_size_max", "long"],
+        ["video_upload_maxbitrate", "int"],
+        ["small_queue_active_operations_max", "int"],
+        ["large_queue_active_operations_max", "int"],
       ],
     ],
   ],
@@ -32599,9 +32577,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x63CACF26,
       [
-        ["low", "AutoDownloadSettings", "AutoDownloadSettings"],
-        ["medium", "AutoDownloadSettings", "AutoDownloadSettings"],
-        ["high", "AutoDownloadSettings", "AutoDownloadSettings"],
+        ["low", "AutoDownloadSettings"],
+        ["medium", "AutoDownloadSettings"],
+        ["high", "AutoDownloadSettings"],
       ],
     ],
   ],
@@ -32610,8 +32588,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD5B3B9F9,
       [
-        ["keyword", "string", "string"],
-        ["emoticons", ["string"], "Vector<string>"],
+        ["keyword", "string"],
+        ["emoticons", "Vector<string>"],
       ],
     ],
   ],
@@ -32620,8 +32598,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x236DF622,
       [
-        ["keyword", "string", "string"],
-        ["emoticons", ["string"], "Vector<string>"],
+        ["keyword", "string"],
+        ["emoticons", "Vector<string>"],
       ],
     ],
   ],
@@ -32630,10 +32608,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5CC761BD,
       [
-        ["lang_code", "string", "string"],
-        ["from_version", "number", "int"],
-        ["version", "number", "int"],
-        ["keywords", ["EmojiKeyword"], "Vector<EmojiKeyword>"],
+        ["lang_code", "string"],
+        ["from_version", "int"],
+        ["version", "int"],
+        ["keywords", "Vector<EmojiKeyword>"],
       ],
     ],
   ],
@@ -32642,7 +32620,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA575739D,
       [
-        ["url", "string", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -32651,7 +32629,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB3FB5361,
       [
-        ["lang_code", "string", "string"],
+        ["lang_code", "string"],
       ],
     ],
   ],
@@ -32660,13 +32638,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFF544E65,
       [
-        ["flags", flags, "#"],
-        ["autofill_new_broadcasts", "true", "flags.0?true"],
-        ["autofill_public_groups", "true", "flags.1?true"],
-        ["autofill_new_correspondents", "true", "flags.2?true"],
-        ["id", "number", "int"],
-        ["title", "string", "string"],
-        ["photo", "ChatPhoto", "flags.3?ChatPhoto"],
+        ["flags", "#"],
+        ["autofill_new_broadcasts", "flags.0?true"],
+        ["autofill_public_groups", "flags.1?true"],
+        ["autofill_new_correspondents", "flags.2?true"],
+        ["id", "int"],
+        ["title", "string"],
+        ["photo", "flags.3?ChatPhoto"],
       ],
     ],
   ],
@@ -32675,8 +32653,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFBD2C296,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["folder_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["folder_id", "int"],
       ],
     ],
   ],
@@ -32685,8 +32663,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE9BAA668,
       [
-        ["peer", "Peer", "Peer"],
-        ["folder_id", "number", "int"],
+        ["peer", "Peer"],
+        ["folder_id", "int"],
       ],
     ],
   ],
@@ -32695,10 +32673,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE844EBFF,
       [
-        ["flags", flags, "#"],
-        ["inexact", "true", "flags.1?true"],
-        ["filter", "MessagesFilter", "MessagesFilter"],
-        ["count", "number", "int"],
+        ["flags", "#"],
+        ["inexact", "flags.1?true"],
+        ["filter", "MessagesFilter"],
+        ["count", "int"],
       ],
     ],
   ],
@@ -32707,10 +32685,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x92D33A0E,
       [
-        ["flags", flags, "#"],
-        ["request_write_access", "true", "flags.0?true"],
-        ["bot", "User", "User"],
-        ["domain", "string", "string"],
+        ["flags", "#"],
+        ["request_write_access", "flags.0?true"],
+        ["bot", "User"],
+        ["domain", "string"],
       ],
     ],
   ],
@@ -32719,7 +32697,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8F8C0E4E,
       [
-        ["url", "string", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -32742,8 +32720,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x209B82DB,
       [
-        ["geo_point", "GeoPoint", "GeoPoint"],
-        ["address", "string", "string"],
+        ["geo_point", "GeoPoint"],
+        ["address", "string"],
       ],
     ],
   ],
@@ -32752,9 +32730,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCA461B5D,
       [
-        ["peer", "Peer", "Peer"],
-        ["expires", "number", "int"],
-        ["distance", "number", "int"],
+        ["peer", "Peer"],
+        ["expires", "int"],
+        ["distance", "int"],
       ],
     ],
   ],
@@ -32763,7 +32741,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF8EC284B,
       [
-        ["expires", "number", "int"],
+        ["expires", "int"],
       ],
     ],
   ],
@@ -32772,9 +32750,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD072ACB4,
       [
-        ["platform", "string", "string"],
-        ["reason", "string", "string"],
-        ["text", "string", "string"],
+        ["platform", "string"],
+        ["reason", "string"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -32783,8 +32761,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3C5693E9,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -32793,7 +32771,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF5890DF1,
       [
-        ["slug", "string", "string"],
+        ["slug", "string"],
       ],
     ],
   ],
@@ -32802,18 +32780,18 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA00E67D6,
       [
-        ["flags", flags, "#"],
-        ["creator", "true", "flags.0?true"],
-        ["default", "true", "flags.1?true"],
-        ["for_chat", "true", "flags.5?true"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["slug", "string", "string"],
-        ["title", "string", "string"],
-        ["document", "Document", "flags.2?Document"],
-        ["settings", ["ThemeSettings"], "flags.3?Vector<ThemeSettings>"],
-        ["emoticon", "string", "flags.6?string"],
-        ["installs_count", "number", "flags.4?int"],
+        ["flags", "#"],
+        ["creator", "flags.0?true"],
+        ["default", "flags.1?true"],
+        ["for_chat", "flags.5?true"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["slug", "string"],
+        ["title", "string"],
+        ["document", "flags.2?Document"],
+        ["settings", "flags.3?Vector<ThemeSettings>"],
+        ["emoticon", "flags.6?string"],
+        ["installs_count", "flags.4?int"],
       ],
     ],
   ],
@@ -32829,8 +32807,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9A3D8C6D,
       [
-        ["hash", "bigint", "long"],
-        ["themes", ["Theme"], "Vector<Theme>"],
+        ["hash", "long"],
+        ["themes", "Vector<Theme>"],
       ],
     ],
   ],
@@ -32839,8 +32817,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x629F1980,
       [
-        ["expires", "number", "int"],
-        ["token", Uint8Array, "bytes"],
+        ["expires", "int"],
+        ["token", "bytes"],
       ],
     ],
   ],
@@ -32849,8 +32827,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x068E9916,
       [
-        ["dc_id", "number", "int"],
-        ["token", Uint8Array, "bytes"],
+        ["dc_id", "int"],
+        ["token", "bytes"],
       ],
     ],
   ],
@@ -32859,7 +32837,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x390D5C5E,
       [
-        ["authorization", "auth_Authorization", "auth.Authorization"],
+        ["authorization", "auth.Authorization"],
       ],
     ],
   ],
@@ -32868,9 +32846,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x57E28221,
       [
-        ["flags", flags, "#"],
-        ["sensitive_enabled", "true", "flags.0?true"],
-        ["sensitive_can_change", "true", "flags.1?true"],
+        ["flags", "#"],
+        ["sensitive_enabled", "flags.0?true"],
+        ["sensitive_can_change", "flags.1?true"],
       ],
     ],
   ],
@@ -32879,9 +32857,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA927FEC5,
       [
-        ["dates", ["number"], "Vector<int>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["dates", "Vector<int>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -32925,14 +32903,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8FDE504F,
       [
-        ["flags", flags, "#"],
-        ["message_colors_animated", "true", "flags.2?true"],
-        ["base_theme", "BaseTheme", "BaseTheme"],
-        ["accent_color", "number", "int"],
-        ["outbox_accent_color", "number", "flags.3?int"],
-        ["message_colors", ["number"], "flags.0?Vector<int>"],
-        ["wallpaper", "InputWallPaper", "flags.1?InputWallPaper"],
-        ["wallpaper_settings", "WallPaperSettings", "flags.1?WallPaperSettings"],
+        ["flags", "#"],
+        ["message_colors_animated", "flags.2?true"],
+        ["base_theme", "BaseTheme"],
+        ["accent_color", "int"],
+        ["outbox_accent_color", "flags.3?int"],
+        ["message_colors", "flags.0?Vector<int>"],
+        ["wallpaper", "flags.1?InputWallPaper"],
+        ["wallpaper_settings", "flags.1?WallPaperSettings"],
       ],
     ],
   ],
@@ -32941,13 +32919,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFA58B6D4,
       [
-        ["flags", flags, "#"],
-        ["message_colors_animated", "true", "flags.2?true"],
-        ["base_theme", "BaseTheme", "BaseTheme"],
-        ["accent_color", "number", "int"],
-        ["outbox_accent_color", "number", "flags.3?int"],
-        ["message_colors", ["number"], "flags.0?Vector<int>"],
-        ["wallpaper", "WallPaper", "flags.1?WallPaper"],
+        ["flags", "#"],
+        ["message_colors_animated", "flags.2?true"],
+        ["base_theme", "BaseTheme"],
+        ["accent_color", "int"],
+        ["outbox_accent_color", "flags.3?int"],
+        ["message_colors", "flags.0?Vector<int>"],
+        ["wallpaper", "flags.1?WallPaper"],
       ],
     ],
   ],
@@ -32956,9 +32934,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x54B56617,
       [
-        ["flags", flags, "#"],
-        ["documents", ["Document"], "flags.0?Vector<Document>"],
-        ["settings", "ThemeSettings", "flags.1?ThemeSettings"],
+        ["flags", "#"],
+        ["documents", "flags.0?Vector<Document>"],
+        ["settings", "flags.1?ThemeSettings"],
       ],
     ],
   ],
@@ -32967,10 +32945,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2E94C3E7,
       [
-        ["flags", flags, "#"],
-        ["peer", "Peer", "Peer"],
-        ["id", "number", "int"],
-        ["story", "StoryItem", "flags.0?StoryItem"],
+        ["flags", "#"],
+        ["peer", "Peer"],
+        ["id", "int"],
+        ["story", "flags.0?StoryItem"],
       ],
     ],
   ],
@@ -32979,10 +32957,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x50CC03D3,
       [
-        ["flags", flags, "#"],
-        ["emojis", "true", "flags.0?true"],
-        ["text_color", "true", "flags.1?true"],
-        ["stickers", ["Document"], "Vector<Document>"],
+        ["flags", "#"],
+        ["emojis", "flags.0?true"],
+        ["text_color", "flags.1?true"],
+        ["stickers", "Vector<Document>"],
       ],
     ],
   ],
@@ -32991,7 +32969,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCF6F6DB8,
       [
-        ["gift", "StarGift", "StarGift"],
+        ["gift", "StarGift"],
       ],
     ],
   ],
@@ -33000,12 +32978,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4899484E,
       [
-        ["flags", flags, "#"],
-        ["count", "number", "int"],
-        ["votes", ["MessagePeerVote"], "Vector<MessagePeerVote>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
-        ["next_offset", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["count", "int"],
+        ["votes", "Vector<MessagePeerVote>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+        ["next_offset", "flags.0?string"],
       ],
     ],
   ],
@@ -33014,8 +32992,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF568028A,
       [
-        ["url", "string", "string"],
-        ["name", "string", "string"],
+        ["url", "string"],
+        ["name", "string"],
       ],
     ],
   ],
@@ -33024,8 +33002,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3E24E573,
       [
-        ["title", "string", "string"],
-        ["open_urls", ["BankCardOpenUrl"], "Vector<BankCardOpenUrl>"],
+        ["title", "string"],
+        ["open_urls", "Vector<BankCardOpenUrl>"],
       ],
     ],
   ],
@@ -33034,23 +33012,23 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAA472651,
       [
-        ["flags", flags, "#"],
-        ["contacts", "true", "flags.0?true"],
-        ["non_contacts", "true", "flags.1?true"],
-        ["groups", "true", "flags.2?true"],
-        ["broadcasts", "true", "flags.3?true"],
-        ["bots", "true", "flags.4?true"],
-        ["exclude_muted", "true", "flags.11?true"],
-        ["exclude_read", "true", "flags.12?true"],
-        ["exclude_archived", "true", "flags.13?true"],
-        ["title_noanimate", "true", "flags.28?true"],
-        ["id", "number", "int"],
-        ["title", "TextWithEntities", "TextWithEntities"],
-        ["emoticon", "string", "flags.25?string"],
-        ["color", "number", "flags.27?int"],
-        ["pinned_peers", ["InputPeer"], "Vector<InputPeer>"],
-        ["include_peers", ["InputPeer"], "Vector<InputPeer>"],
-        ["exclude_peers", ["InputPeer"], "Vector<InputPeer>"],
+        ["flags", "#"],
+        ["contacts", "flags.0?true"],
+        ["non_contacts", "flags.1?true"],
+        ["groups", "flags.2?true"],
+        ["broadcasts", "flags.3?true"],
+        ["bots", "flags.4?true"],
+        ["exclude_muted", "flags.11?true"],
+        ["exclude_read", "flags.12?true"],
+        ["exclude_archived", "flags.13?true"],
+        ["title_noanimate", "flags.28?true"],
+        ["id", "int"],
+        ["title", "TextWithEntities"],
+        ["emoticon", "flags.25?string"],
+        ["color", "flags.27?int"],
+        ["pinned_peers", "Vector<InputPeer>"],
+        ["include_peers", "Vector<InputPeer>"],
+        ["exclude_peers", "Vector<InputPeer>"],
       ],
     ],
   ],
@@ -33066,15 +33044,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x96537BD7,
       [
-        ["flags", flags, "#"],
-        ["has_my_invites", "true", "flags.26?true"],
-        ["title_noanimate", "true", "flags.28?true"],
-        ["id", "number", "int"],
-        ["title", "TextWithEntities", "TextWithEntities"],
-        ["emoticon", "string", "flags.25?string"],
-        ["color", "number", "flags.27?int"],
-        ["pinned_peers", ["InputPeer"], "Vector<InputPeer>"],
-        ["include_peers", ["InputPeer"], "Vector<InputPeer>"],
+        ["flags", "#"],
+        ["has_my_invites", "flags.26?true"],
+        ["title_noanimate", "flags.28?true"],
+        ["id", "int"],
+        ["title", "TextWithEntities"],
+        ["emoticon", "flags.25?string"],
+        ["color", "flags.27?int"],
+        ["pinned_peers", "Vector<InputPeer>"],
+        ["include_peers", "Vector<InputPeer>"],
       ],
     ],
   ],
@@ -33083,8 +33061,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x77744D4A,
       [
-        ["filter", "DialogFilter", "DialogFilter"],
-        ["description", "string", "string"],
+        ["filter", "DialogFilter"],
+        ["description", "string"],
       ],
     ],
   ],
@@ -33093,8 +33071,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB637EDAF,
       [
-        ["min_date", "number", "int"],
-        ["max_date", "number", "int"],
+        ["min_date", "int"],
+        ["max_date", "int"],
       ],
     ],
   ],
@@ -33103,8 +33081,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCB43ACDE,
       [
-        ["current", "number", "double"],
-        ["previous", "number", "double"],
+        ["current", "double"],
+        ["previous", "double"],
       ],
     ],
   ],
@@ -33113,8 +33091,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCBCE2FE0,
       [
-        ["part", "number", "double"],
-        ["total", "number", "double"],
+        ["part", "double"],
+        ["total", "double"],
       ],
     ],
   ],
@@ -33123,7 +33101,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4A27EB2D,
       [
-        ["token", "string", "string"],
+        ["token", "string"],
       ],
     ],
   ],
@@ -33132,7 +33110,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBEDC9822,
       [
-        ["error", "string", "string"],
+        ["error", "string"],
       ],
     ],
   ],
@@ -33141,9 +33119,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8EA464B6,
       [
-        ["flags", flags, "#"],
-        ["json", "DataJSON", "DataJSON"],
-        ["zoom_token", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["json", "DataJSON"],
+        ["zoom_token", "flags.0?string"],
       ],
     ],
   ],
@@ -33152,28 +33130,28 @@ const types: Map<string, Parameters> = new Map([
     [
       0x396CA5FC,
       [
-        ["period", "StatsDateRangeDays", "StatsDateRangeDays"],
-        ["followers", "StatsAbsValueAndPrev", "StatsAbsValueAndPrev"],
-        ["views_per_post", "StatsAbsValueAndPrev", "StatsAbsValueAndPrev"],
-        ["shares_per_post", "StatsAbsValueAndPrev", "StatsAbsValueAndPrev"],
-        ["reactions_per_post", "StatsAbsValueAndPrev", "StatsAbsValueAndPrev"],
-        ["views_per_story", "StatsAbsValueAndPrev", "StatsAbsValueAndPrev"],
-        ["shares_per_story", "StatsAbsValueAndPrev", "StatsAbsValueAndPrev"],
-        ["reactions_per_story", "StatsAbsValueAndPrev", "StatsAbsValueAndPrev"],
-        ["enabled_notifications", "StatsPercentValue", "StatsPercentValue"],
-        ["growth_graph", "StatsGraph", "StatsGraph"],
-        ["followers_graph", "StatsGraph", "StatsGraph"],
-        ["mute_graph", "StatsGraph", "StatsGraph"],
-        ["top_hours_graph", "StatsGraph", "StatsGraph"],
-        ["interactions_graph", "StatsGraph", "StatsGraph"],
-        ["iv_interactions_graph", "StatsGraph", "StatsGraph"],
-        ["views_by_source_graph", "StatsGraph", "StatsGraph"],
-        ["new_followers_by_source_graph", "StatsGraph", "StatsGraph"],
-        ["languages_graph", "StatsGraph", "StatsGraph"],
-        ["reactions_by_emotion_graph", "StatsGraph", "StatsGraph"],
-        ["story_interactions_graph", "StatsGraph", "StatsGraph"],
-        ["story_reactions_by_emotion_graph", "StatsGraph", "StatsGraph"],
-        ["recent_posts_interactions", ["PostInteractionCounters"], "Vector<PostInteractionCounters>"],
+        ["period", "StatsDateRangeDays"],
+        ["followers", "StatsAbsValueAndPrev"],
+        ["views_per_post", "StatsAbsValueAndPrev"],
+        ["shares_per_post", "StatsAbsValueAndPrev"],
+        ["reactions_per_post", "StatsAbsValueAndPrev"],
+        ["views_per_story", "StatsAbsValueAndPrev"],
+        ["shares_per_story", "StatsAbsValueAndPrev"],
+        ["reactions_per_story", "StatsAbsValueAndPrev"],
+        ["enabled_notifications", "StatsPercentValue"],
+        ["growth_graph", "StatsGraph"],
+        ["followers_graph", "StatsGraph"],
+        ["mute_graph", "StatsGraph"],
+        ["top_hours_graph", "StatsGraph"],
+        ["interactions_graph", "StatsGraph"],
+        ["iv_interactions_graph", "StatsGraph"],
+        ["views_by_source_graph", "StatsGraph"],
+        ["new_followers_by_source_graph", "StatsGraph"],
+        ["languages_graph", "StatsGraph"],
+        ["reactions_by_emotion_graph", "StatsGraph"],
+        ["story_interactions_graph", "StatsGraph"],
+        ["story_reactions_by_emotion_graph", "StatsGraph"],
+        ["recent_posts_interactions", "Vector<PostInteractionCounters>"],
       ],
     ],
   ],
@@ -33182,7 +33160,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x98F6AC75,
       [
-        ["expires", "number", "int"],
+        ["expires", "int"],
       ],
     ],
   ],
@@ -33191,14 +33169,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8C39793F,
       [
-        ["flags", flags, "#"],
-        ["proxy", "true", "flags.0?true"],
-        ["expires", "number", "int"],
-        ["peer", "Peer", "Peer"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
-        ["psa_type", "string", "flags.1?string"],
-        ["psa_message", "string", "flags.2?string"],
+        ["flags", "#"],
+        ["proxy", "flags.0?true"],
+        ["expires", "int"],
+        ["peer", "Peer"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+        ["psa_type", "flags.1?string"],
+        ["psa_message", "flags.2?string"],
       ],
     ],
   ],
@@ -33207,12 +33185,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDE33B094,
       [
-        ["flags", flags, "#"],
-        ["type", "string", "string"],
-        ["w", "number", "int"],
-        ["h", "number", "int"],
-        ["size", "number", "int"],
-        ["video_start_ts", "number", "flags.0?double"],
+        ["flags", "#"],
+        ["type", "string"],
+        ["w", "int"],
+        ["h", "int"],
+        ["size", "int"],
+        ["video_start_ts", "flags.0?double"],
       ],
     ],
   ],
@@ -33221,8 +33199,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF85C413C,
       [
-        ["emoji_id", "bigint", "long"],
-        ["background_colors", ["number"], "Vector<int>"],
+        ["emoji_id", "long"],
+        ["background_colors", "Vector<int>"],
       ],
     ],
   ],
@@ -33231,9 +33209,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0DA082FE,
       [
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
-        ["sticker_id", "bigint", "long"],
-        ["background_colors", ["number"], "Vector<int>"],
+        ["stickerset", "InputStickerSet"],
+        ["sticker_id", "long"],
+        ["background_colors", "Vector<int>"],
       ],
     ],
   ],
@@ -33242,9 +33220,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9D04AF9B,
       [
-        ["user_id", "bigint", "long"],
-        ["messages", "number", "int"],
-        ["avg_chars", "number", "int"],
+        ["user_id", "long"],
+        ["messages", "int"],
+        ["avg_chars", "int"],
       ],
     ],
   ],
@@ -33253,10 +33231,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD7584C87,
       [
-        ["user_id", "bigint", "long"],
-        ["deleted", "number", "int"],
-        ["kicked", "number", "int"],
-        ["banned", "number", "int"],
+        ["user_id", "long"],
+        ["deleted", "int"],
+        ["kicked", "int"],
+        ["banned", "int"],
       ],
     ],
   ],
@@ -33265,8 +33243,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x535F779D,
       [
-        ["user_id", "bigint", "long"],
-        ["invitations", "number", "int"],
+        ["user_id", "long"],
+        ["invitations", "int"],
       ],
     ],
   ],
@@ -33275,23 +33253,23 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEF7FF916,
       [
-        ["period", "StatsDateRangeDays", "StatsDateRangeDays"],
-        ["members", "StatsAbsValueAndPrev", "StatsAbsValueAndPrev"],
-        ["messages", "StatsAbsValueAndPrev", "StatsAbsValueAndPrev"],
-        ["viewers", "StatsAbsValueAndPrev", "StatsAbsValueAndPrev"],
-        ["posters", "StatsAbsValueAndPrev", "StatsAbsValueAndPrev"],
-        ["growth_graph", "StatsGraph", "StatsGraph"],
-        ["members_graph", "StatsGraph", "StatsGraph"],
-        ["new_members_by_source_graph", "StatsGraph", "StatsGraph"],
-        ["languages_graph", "StatsGraph", "StatsGraph"],
-        ["messages_graph", "StatsGraph", "StatsGraph"],
-        ["actions_graph", "StatsGraph", "StatsGraph"],
-        ["top_hours_graph", "StatsGraph", "StatsGraph"],
-        ["weekdays_graph", "StatsGraph", "StatsGraph"],
-        ["top_posters", ["StatsGroupTopPoster"], "Vector<StatsGroupTopPoster>"],
-        ["top_admins", ["StatsGroupTopAdmin"], "Vector<StatsGroupTopAdmin>"],
-        ["top_inviters", ["StatsGroupTopInviter"], "Vector<StatsGroupTopInviter>"],
-        ["users", ["User"], "Vector<User>"],
+        ["period", "StatsDateRangeDays"],
+        ["members", "StatsAbsValueAndPrev"],
+        ["messages", "StatsAbsValueAndPrev"],
+        ["viewers", "StatsAbsValueAndPrev"],
+        ["posters", "StatsAbsValueAndPrev"],
+        ["growth_graph", "StatsGraph"],
+        ["members_graph", "StatsGraph"],
+        ["new_members_by_source_graph", "StatsGraph"],
+        ["languages_graph", "StatsGraph"],
+        ["messages_graph", "StatsGraph"],
+        ["actions_graph", "StatsGraph"],
+        ["top_hours_graph", "StatsGraph"],
+        ["weekdays_graph", "StatsGraph"],
+        ["top_posters", "Vector<StatsGroupTopPoster>"],
+        ["top_admins", "Vector<StatsGroupTopAdmin>"],
+        ["top_inviters", "Vector<StatsGroupTopInviter>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33300,13 +33278,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC9D8DF1C,
       [
-        ["flags", flags, "#"],
-        ["archive_and_mute_new_noncontact_peers", "true", "flags.0?true"],
-        ["keep_archived_unmuted", "true", "flags.1?true"],
-        ["keep_archived_folders", "true", "flags.2?true"],
-        ["hide_read_marks", "true", "flags.3?true"],
-        ["new_noncontact_peers_require_premium", "true", "flags.4?true"],
-        ["noncontact_peers_paid_stars", "bigint", "flags.5?long"],
+        ["flags", "#"],
+        ["archive_and_mute_new_noncontact_peers", "flags.0?true"],
+        ["keep_archived_unmuted", "flags.1?true"],
+        ["keep_archived_folders", "flags.2?true"],
+        ["hide_read_marks", "flags.3?true"],
+        ["new_noncontact_peers_require_premium", "flags.4?true"],
+        ["noncontact_peers_paid_stars", "flags.5?long"],
       ],
     ],
   ],
@@ -33315,10 +33293,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4203C5EF,
       [
-        ["flags", flags, "#"],
-        ["country_code", "string", "string"],
-        ["prefixes", ["string"], "flags.0?Vector<string>"],
-        ["patterns", ["string"], "flags.1?Vector<string>"],
+        ["flags", "#"],
+        ["country_code", "string"],
+        ["prefixes", "flags.0?Vector<string>"],
+        ["patterns", "flags.1?Vector<string>"],
       ],
     ],
   ],
@@ -33327,12 +33305,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC3878E23,
       [
-        ["flags", flags, "#"],
-        ["hidden", "true", "flags.0?true"],
-        ["iso2", "string", "string"],
-        ["default_name", "string", "string"],
-        ["name", "string", "flags.1?string"],
-        ["country_codes", ["help_CountryCode"], "Vector<help.CountryCode>"],
+        ["flags", "#"],
+        ["hidden", "flags.0?true"],
+        ["iso2", "string"],
+        ["default_name", "string"],
+        ["name", "flags.1?string"],
+        ["country_codes", "Vector<help.CountryCode>"],
       ],
     ],
   ],
@@ -33348,8 +33326,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x87D0759E,
       [
-        ["countries", ["help_Country"], "Vector<help.Country>"],
-        ["hash", "number", "int"],
+        ["countries", "Vector<help.Country>"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -33358,10 +33336,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x455B853D,
       [
-        ["flags", flags, "#"],
-        ["views", "number", "flags.0?int"],
-        ["forwards", "number", "flags.1?int"],
-        ["replies", "MessageReplies", "flags.2?MessageReplies"],
+        ["flags", "#"],
+        ["views", "flags.0?int"],
+        ["forwards", "flags.1?int"],
+        ["replies", "flags.2?MessageReplies"],
       ],
     ],
   ],
@@ -33370,9 +33348,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB6C4F543,
       [
-        ["views", ["MessageViews"], "Vector<MessageViews>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["views", "Vector<MessageViews>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33381,14 +33359,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA6341782,
       [
-        ["flags", flags, "#"],
-        ["messages", ["Message"], "Vector<Message>"],
-        ["max_id", "number", "flags.0?int"],
-        ["read_inbox_max_id", "number", "flags.1?int"],
-        ["read_outbox_max_id", "number", "flags.2?int"],
-        ["unread_count", "number", "int"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["messages", "Vector<Message>"],
+        ["max_id", "flags.0?int"],
+        ["read_inbox_max_id", "flags.1?int"],
+        ["read_outbox_max_id", "flags.2?int"],
+        ["unread_count", "int"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33397,18 +33375,18 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAFBC09DB,
       [
-        ["flags", flags, "#"],
-        ["reply_to_scheduled", "true", "flags.2?true"],
-        ["forum_topic", "true", "flags.3?true"],
-        ["quote", "true", "flags.9?true"],
-        ["reply_to_msg_id", "number", "flags.4?int"],
-        ["reply_to_peer_id", "Peer", "flags.0?Peer"],
-        ["reply_from", "MessageFwdHeader", "flags.5?MessageFwdHeader"],
-        ["reply_media", "MessageMedia", "flags.8?MessageMedia"],
-        ["reply_to_top_id", "number", "flags.1?int"],
-        ["quote_text", "string", "flags.6?string"],
-        ["quote_entities", ["MessageEntity"], "flags.7?Vector<MessageEntity>"],
-        ["quote_offset", "number", "flags.10?int"],
+        ["flags", "#"],
+        ["reply_to_scheduled", "flags.2?true"],
+        ["forum_topic", "flags.3?true"],
+        ["quote", "flags.9?true"],
+        ["reply_to_msg_id", "flags.4?int"],
+        ["reply_to_peer_id", "flags.0?Peer"],
+        ["reply_from", "flags.5?MessageFwdHeader"],
+        ["reply_media", "flags.8?MessageMedia"],
+        ["reply_to_top_id", "flags.1?int"],
+        ["quote_text", "flags.6?string"],
+        ["quote_entities", "flags.7?Vector<MessageEntity>"],
+        ["quote_offset", "flags.10?int"],
       ],
     ],
   ],
@@ -33417,8 +33395,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0E5AF939,
       [
-        ["peer", "Peer", "Peer"],
-        ["story_id", "number", "int"],
+        ["peer", "Peer"],
+        ["story_id", "int"],
       ],
     ],
   ],
@@ -33427,14 +33405,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x83D60FC2,
       [
-        ["flags", flags, "#"],
-        ["comments", "true", "flags.0?true"],
-        ["replies", "number", "int"],
-        ["replies_pts", "number", "int"],
-        ["recent_repliers", ["Peer"], "flags.1?Vector<Peer>"],
-        ["channel_id", "bigint", "flags.0?long"],
-        ["max_id", "number", "flags.2?int"],
-        ["read_max_id", "number", "flags.3?int"],
+        ["flags", "#"],
+        ["comments", "flags.0?true"],
+        ["replies", "int"],
+        ["replies_pts", "int"],
+        ["recent_repliers", "flags.1?Vector<Peer>"],
+        ["channel_id", "flags.0?long"],
+        ["max_id", "flags.2?int"],
+        ["read_max_id", "flags.3?int"],
       ],
     ],
   ],
@@ -33443,8 +33421,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE8FD8014,
       [
-        ["peer_id", "Peer", "Peer"],
-        ["date", "number", "int"],
+        ["peer_id", "Peer"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -33453,8 +33431,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7FE91C14,
       [
-        ["views_graph", "StatsGraph", "StatsGraph"],
-        ["reactions_by_emotion_graph", "StatsGraph", "StatsGraph"],
+        ["views_graph", "StatsGraph"],
+        ["reactions_by_emotion_graph", "StatsGraph"],
       ],
     ],
   ],
@@ -33463,9 +33441,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7780BCB4,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["duration", "number", "int"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["duration", "int"],
       ],
     ],
   ],
@@ -33474,26 +33452,26 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCDF8D3E3,
       [
-        ["flags", flags, "#"],
-        ["join_muted", "true", "flags.1?true"],
-        ["can_change_join_muted", "true", "flags.2?true"],
-        ["join_date_asc", "true", "flags.6?true"],
-        ["schedule_start_subscribed", "true", "flags.8?true"],
-        ["can_start_video", "true", "flags.9?true"],
-        ["record_video_active", "true", "flags.11?true"],
-        ["rtmp_stream", "true", "flags.12?true"],
-        ["listeners_hidden", "true", "flags.13?true"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["participants_count", "number", "int"],
-        ["title", "string", "flags.3?string"],
-        ["stream_dc_id", "number", "flags.4?int"],
-        ["record_start_date", "number", "flags.5?int"],
-        ["schedule_date", "number", "flags.7?int"],
-        ["unmuted_video_count", "number", "flags.10?int"],
-        ["unmuted_video_limit", "number", "int"],
-        ["version", "number", "int"],
-        ["conference_from_call", "bigint", "flags.14?long"],
+        ["flags", "#"],
+        ["join_muted", "flags.1?true"],
+        ["can_change_join_muted", "flags.2?true"],
+        ["join_date_asc", "flags.6?true"],
+        ["schedule_start_subscribed", "flags.8?true"],
+        ["can_start_video", "flags.9?true"],
+        ["record_video_active", "flags.11?true"],
+        ["rtmp_stream", "flags.12?true"],
+        ["listeners_hidden", "flags.13?true"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["participants_count", "int"],
+        ["title", "flags.3?string"],
+        ["stream_dc_id", "flags.4?int"],
+        ["record_start_date", "flags.5?int"],
+        ["schedule_date", "flags.7?int"],
+        ["unmuted_video_count", "flags.10?int"],
+        ["unmuted_video_limit", "int"],
+        ["version", "int"],
+        ["conference_from_call", "flags.14?long"],
       ],
     ],
   ],
@@ -33502,8 +33480,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD8AA840F,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -33512,26 +33490,26 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEBA636FE,
       [
-        ["flags", flags, "#"],
-        ["muted", "true", "flags.0?true"],
-        ["left", "true", "flags.1?true"],
-        ["can_self_unmute", "true", "flags.2?true"],
-        ["just_joined", "true", "flags.4?true"],
-        ["versioned", "true", "flags.5?true"],
-        ["min", "true", "flags.8?true"],
-        ["muted_by_you", "true", "flags.9?true"],
-        ["volume_by_admin", "true", "flags.10?true"],
-        ["self", "true", "flags.12?true"],
-        ["video_joined", "true", "flags.15?true"],
-        ["peer", "Peer", "Peer"],
-        ["date", "number", "int"],
-        ["active_date", "number", "flags.3?int"],
-        ["source", "number", "int"],
-        ["volume", "number", "flags.7?int"],
-        ["about", "string", "flags.11?string"],
-        ["raise_hand_rating", "bigint", "flags.13?long"],
-        ["video", "GroupCallParticipantVideo", "flags.6?GroupCallParticipantVideo"],
-        ["presentation", "GroupCallParticipantVideo", "flags.14?GroupCallParticipantVideo"],
+        ["flags", "#"],
+        ["muted", "flags.0?true"],
+        ["left", "flags.1?true"],
+        ["can_self_unmute", "flags.2?true"],
+        ["just_joined", "flags.4?true"],
+        ["versioned", "flags.5?true"],
+        ["min", "flags.8?true"],
+        ["muted_by_you", "flags.9?true"],
+        ["volume_by_admin", "flags.10?true"],
+        ["self", "flags.12?true"],
+        ["video_joined", "flags.15?true"],
+        ["peer", "Peer"],
+        ["date", "int"],
+        ["active_date", "flags.3?int"],
+        ["source", "int"],
+        ["volume", "flags.7?int"],
+        ["about", "flags.11?string"],
+        ["raise_hand_rating", "flags.13?long"],
+        ["video", "flags.6?GroupCallParticipantVideo"],
+        ["presentation", "flags.14?GroupCallParticipantVideo"],
       ],
     ],
   ],
@@ -33540,11 +33518,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9E727AAD,
       [
-        ["call", "GroupCall", "GroupCall"],
-        ["participants", ["GroupCallParticipant"], "Vector<GroupCallParticipant>"],
-        ["participants_next_offset", "string", "string"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["call", "GroupCall"],
+        ["participants", "Vector<GroupCallParticipant>"],
+        ["participants_next_offset", "string"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33553,12 +33531,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF47751B6,
       [
-        ["count", "number", "int"],
-        ["participants", ["GroupCallParticipant"], "Vector<GroupCallParticipant>"],
-        ["next_offset", "string", "string"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
-        ["version", "number", "int"],
+        ["count", "int"],
+        ["participants", "Vector<GroupCallParticipant>"],
+        ["next_offset", "string"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+        ["version", "int"],
       ],
     ],
   ],
@@ -33609,7 +33587,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1662AF0B,
       [
-        ["id", "bigint", "long"],
+        ["id", "long"],
       ],
     ],
   ],
@@ -33618,10 +33596,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5E0FB7B9,
       [
-        ["flags", flags, "#"],
-        ["pm", "true", "flags.0?true"],
-        ["group", "true", "flags.1?true"],
-        ["title", "string", "flags.2?string"],
+        ["flags", "#"],
+        ["pm", "flags.0?true"],
+        ["group", "flags.1?true"],
+        ["title", "flags.2?string"],
       ],
     ],
   ],
@@ -33630,10 +33608,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEF8D3E6C,
       [
-        ["pts", "number", "int"],
-        ["pts_count", "number", "int"],
-        ["offset", "number", "int"],
-        ["messages", ["number"], "Vector<int>"],
+        ["pts", "int"],
+        ["pts_count", "int"],
+        ["offset", "int"],
+        ["messages", "Vector<int>"],
       ],
     ],
   ],
@@ -33642,13 +33620,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8C5ADFD9,
       [
-        ["flags", flags, "#"],
-        ["requested", "true", "flags.0?true"],
-        ["via_chatlist", "true", "flags.3?true"],
-        ["user_id", "bigint", "long"],
-        ["date", "number", "int"],
-        ["about", "string", "flags.2?string"],
-        ["approved_by", "bigint", "flags.1?long"],
+        ["flags", "#"],
+        ["requested", "flags.0?true"],
+        ["via_chatlist", "flags.3?true"],
+        ["user_id", "long"],
+        ["date", "int"],
+        ["about", "flags.2?string"],
+        ["approved_by", "flags.1?long"],
       ],
     ],
   ],
@@ -33657,9 +33635,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBDC62DCC,
       [
-        ["count", "number", "int"],
-        ["invites", ["ExportedChatInvite"], "Vector<ExportedChatInvite>"],
-        ["users", ["User"], "Vector<User>"],
+        ["count", "int"],
+        ["invites", "Vector<ExportedChatInvite>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33668,8 +33646,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1871BE50,
       [
-        ["invite", "ExportedChatInvite", "ExportedChatInvite"],
-        ["users", ["User"], "Vector<User>"],
+        ["invite", "ExportedChatInvite"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33678,9 +33656,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x222600EF,
       [
-        ["invite", "ExportedChatInvite", "ExportedChatInvite"],
-        ["new_invite", "ExportedChatInvite", "ExportedChatInvite"],
-        ["users", ["User"], "Vector<User>"],
+        ["invite", "ExportedChatInvite"],
+        ["new_invite", "ExportedChatInvite"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33689,9 +33667,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x81B6B00A,
       [
-        ["count", "number", "int"],
-        ["importers", ["ChatInviteImporter"], "Vector<ChatInviteImporter>"],
-        ["users", ["User"], "Vector<User>"],
+        ["count", "int"],
+        ["importers", "Vector<ChatInviteImporter>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33700,9 +33678,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF2ECEF23,
       [
-        ["admin_id", "bigint", "long"],
-        ["invites_count", "number", "int"],
-        ["revoked_invites_count", "number", "int"],
+        ["admin_id", "long"],
+        ["invites_count", "int"],
+        ["revoked_invites_count", "int"],
       ],
     ],
   ],
@@ -33711,8 +33689,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB69B72D7,
       [
-        ["admins", ["ChatAdminWithInvites"], "Vector<ChatAdminWithInvites>"],
-        ["users", ["User"], "Vector<User>"],
+        ["admins", "Vector<ChatAdminWithInvites>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33721,7 +33699,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA24DE717,
       [
-        ["confirm_text", "string", "string"],
+        ["confirm_text", "string"],
       ],
     ],
   ],
@@ -33730,9 +33708,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAFE5623F,
       [
-        ["peers", ["Peer"], "Vector<Peer>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["peers", "Vector<Peer>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33741,7 +33719,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x204BD158,
       [
-        ["link", "string", "string"],
+        ["link", "string"],
       ],
     ],
   ],
@@ -33750,8 +33728,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDCB118B7,
       [
-        ["semantics", "string", "string"],
-        ["sources", ["number"], "Vector<int>"],
+        ["semantics", "string"],
+        ["sources", "Vector<int>"],
       ],
     ],
   ],
@@ -33760,11 +33738,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x67753AC8,
       [
-        ["flags", flags, "#"],
-        ["paused", "true", "flags.0?true"],
-        ["endpoint", "string", "string"],
-        ["source_groups", ["GroupCallParticipantVideoSourceGroup"], "Vector<GroupCallParticipantVideoSourceGroup>"],
-        ["audio_source", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["paused", "flags.0?true"],
+        ["endpoint", "string"],
+        ["source_groups", "Vector<GroupCallParticipantVideoSourceGroup>"],
+        ["audio_source", "flags.1?int"],
       ],
     ],
   ],
@@ -33773,7 +33751,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x85FEA03F,
       [
-        ["short_name", "string", "string"],
+        ["short_name", "string"],
       ],
     ],
   ],
@@ -33810,7 +33788,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDB9D897D,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -33819,7 +33797,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3FD863D1,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -33828,8 +33806,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0A1321F3,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["user_id", "InputUser", "InputUser"],
+        ["peer", "InputPeer"],
+        ["user_id", "InputUser"],
       ],
     ],
   ],
@@ -33838,7 +33816,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE3779861,
       [
-        ["retry_date", "number", "int"],
+        ["retry_date", "int"],
       ],
     ],
   ],
@@ -33847,7 +33825,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE9EFFC7D,
       [
-        ["until_date", "number", "int"],
+        ["until_date", "int"],
       ],
     ],
   ],
@@ -33863,20 +33841,20 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4D93A990,
       [
-        ["flags", flags, "#"],
-        ["recommended", "true", "flags.5?true"],
-        ["can_report", "true", "flags.12?true"],
-        ["random_id", Uint8Array, "bytes"],
-        ["url", "string", "string"],
-        ["title", "string", "string"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.1?Vector<MessageEntity>"],
-        ["photo", "Photo", "flags.6?Photo"],
-        ["media", "MessageMedia", "flags.14?MessageMedia"],
-        ["color", "PeerColor", "flags.13?PeerColor"],
-        ["button_text", "string", "string"],
-        ["sponsor_info", "string", "flags.7?string"],
-        ["additional_info", "string", "flags.8?string"],
+        ["flags", "#"],
+        ["recommended", "flags.5?true"],
+        ["can_report", "flags.12?true"],
+        ["random_id", "bytes"],
+        ["url", "string"],
+        ["title", "string"],
+        ["message", "string"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
+        ["photo", "flags.6?Photo"],
+        ["media", "flags.14?MessageMedia"],
+        ["color", "flags.13?PeerColor"],
+        ["button_text", "string"],
+        ["sponsor_info", "flags.7?string"],
+        ["additional_info", "flags.8?string"],
       ],
     ],
   ],
@@ -33885,11 +33863,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC9EE1D87,
       [
-        ["flags", flags, "#"],
-        ["posts_between", "number", "flags.0?int"],
-        ["messages", ["SponsoredMessage"], "Vector<SponsoredMessage>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["posts_between", "flags.0?int"],
+        ["messages", "Vector<SponsoredMessage>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33905,10 +33883,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC9B0539F,
       [
-        ["date", "number", "int"],
-        ["min_msg_id", "number", "int"],
-        ["max_msg_id", "number", "int"],
-        ["count", "number", "int"],
+        ["date", "int"],
+        ["min_msg_id", "int"],
+        ["max_msg_id", "int"],
+        ["count", "int"],
       ],
     ],
   ],
@@ -33917,16 +33895,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x147EE23C,
       [
-        ["flags", flags, "#"],
-        ["inexact", "true", "flags.0?true"],
-        ["count", "number", "int"],
-        ["min_date", "number", "int"],
-        ["min_msg_id", "number", "int"],
-        ["offset_id_offset", "number", "flags.1?int"],
-        ["periods", ["SearchResultsCalendarPeriod"], "Vector<SearchResultsCalendarPeriod>"],
-        ["messages", ["Message"], "Vector<Message>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["inexact", "flags.0?true"],
+        ["count", "int"],
+        ["min_date", "int"],
+        ["min_msg_id", "int"],
+        ["offset_id_offset", "flags.1?int"],
+        ["periods", "Vector<SearchResultsCalendarPeriod>"],
+        ["messages", "Vector<Message>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33935,9 +33913,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7F648B67,
       [
-        ["msg_id", "number", "int"],
-        ["date", "number", "int"],
-        ["offset", "number", "int"],
+        ["msg_id", "int"],
+        ["date", "int"],
+        ["offset", "int"],
       ],
     ],
   ],
@@ -33946,8 +33924,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x53B22BAF,
       [
-        ["count", "number", "int"],
-        ["positions", ["SearchResultsPosition"], "Vector<SearchResultsPosition>"],
+        ["count", "int"],
+        ["positions", "Vector<SearchResultsPosition>"],
       ],
     ],
   ],
@@ -33956,9 +33934,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF496B0C6,
       [
-        ["peers", ["SendAsPeer"], "Vector<SendAsPeer>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["peers", "Vector<SendAsPeer>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33967,9 +33945,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3B6D152E,
       [
-        ["full_user", "UserFull", "UserFull"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["full_user", "UserFull"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33978,9 +33956,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6880B94D,
       [
-        ["settings", "PeerSettings", "PeerSettings"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["settings", "PeerSettings"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -33989,8 +33967,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC3A2835F,
       [
-        ["flags", flags, "#"],
-        ["future_auth_token", Uint8Array, "flags.0?bytes"],
+        ["flags", "#"],
+        ["future_auth_token", "flags.0?bytes"],
       ],
     ],
   ],
@@ -33999,10 +33977,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA3D1CB80,
       [
-        ["flags", flags, "#"],
-        ["chosen_order", "number", "flags.0?int"],
-        ["reaction", "Reaction", "Reaction"],
-        ["count", "number", "int"],
+        ["flags", "#"],
+        ["chosen_order", "flags.0?int"],
+        ["reaction", "Reaction"],
+        ["count", "int"],
       ],
     ],
   ],
@@ -34011,13 +33989,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0A339F0B,
       [
-        ["flags", flags, "#"],
-        ["min", "true", "flags.0?true"],
-        ["can_see_list", "true", "flags.2?true"],
-        ["reactions_as_tags", "true", "flags.3?true"],
-        ["results", ["ReactionCount"], "Vector<ReactionCount>"],
-        ["recent_reactions", ["MessagePeerReaction"], "flags.1?Vector<MessagePeerReaction>"],
-        ["top_reactors", ["MessageReactor"], "flags.4?Vector<MessageReactor>"],
+        ["flags", "#"],
+        ["min", "flags.0?true"],
+        ["can_see_list", "flags.2?true"],
+        ["reactions_as_tags", "flags.3?true"],
+        ["results", "Vector<ReactionCount>"],
+        ["recent_reactions", "flags.1?Vector<MessagePeerReaction>"],
+        ["top_reactors", "flags.4?Vector<MessageReactor>"],
       ],
     ],
   ],
@@ -34026,12 +34004,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x31BD492D,
       [
-        ["flags", flags, "#"],
-        ["count", "number", "int"],
-        ["reactions", ["MessagePeerReaction"], "Vector<MessagePeerReaction>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
-        ["next_offset", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["count", "int"],
+        ["reactions", "Vector<MessagePeerReaction>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+        ["next_offset", "flags.0?string"],
       ],
     ],
   ],
@@ -34040,18 +34018,18 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC077EC01,
       [
-        ["flags", flags, "#"],
-        ["inactive", "true", "flags.0?true"],
-        ["premium", "true", "flags.2?true"],
-        ["reaction", "string", "string"],
-        ["title", "string", "string"],
-        ["static_icon", "Document", "Document"],
-        ["appear_animation", "Document", "Document"],
-        ["select_animation", "Document", "Document"],
-        ["activate_animation", "Document", "Document"],
-        ["effect_animation", "Document", "Document"],
-        ["around_animation", "Document", "flags.1?Document"],
-        ["center_icon", "Document", "flags.1?Document"],
+        ["flags", "#"],
+        ["inactive", "flags.0?true"],
+        ["premium", "flags.2?true"],
+        ["reaction", "string"],
+        ["title", "string"],
+        ["static_icon", "Document"],
+        ["appear_animation", "Document"],
+        ["select_animation", "Document"],
+        ["activate_animation", "Document"],
+        ["effect_animation", "Document"],
+        ["around_animation", "flags.1?Document"],
+        ["center_icon", "flags.1?Document"],
       ],
     ],
   ],
@@ -34067,8 +34045,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x768E3AAD,
       [
-        ["hash", "number", "int"],
-        ["reactions", ["AvailableReaction"], "Vector<AvailableReaction>"],
+        ["hash", "int"],
+        ["reactions", "Vector<AvailableReaction>"],
       ],
     ],
   ],
@@ -34077,13 +34055,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8C79B63C,
       [
-        ["flags", flags, "#"],
-        ["big", "true", "flags.0?true"],
-        ["unread", "true", "flags.1?true"],
-        ["my", "true", "flags.2?true"],
-        ["peer_id", "Peer", "Peer"],
-        ["date", "number", "int"],
-        ["reaction", "Reaction", "Reaction"],
+        ["flags", "#"],
+        ["big", "flags.0?true"],
+        ["unread", "flags.1?true"],
+        ["my", "flags.2?true"],
+        ["peer_id", "Peer"],
+        ["date", "int"],
+        ["reaction", "Reaction"],
       ],
     ],
   ],
@@ -34092,9 +34070,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x80EB48AF,
       [
-        ["channel", "number", "int"],
-        ["scale", "number", "int"],
-        ["last_timestamp_ms", "bigint", "long"],
+        ["channel", "int"],
+        ["scale", "int"],
+        ["last_timestamp_ms", "long"],
       ],
     ],
   ],
@@ -34103,7 +34081,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD0E482B2,
       [
-        ["channels", ["GroupCallStreamChannel"], "Vector<GroupCallStreamChannel>"],
+        ["channels", "Vector<GroupCallStreamChannel>"],
       ],
     ],
   ],
@@ -34112,8 +34090,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2DBF3432,
       [
-        ["url", "string", "string"],
-        ["key", "string", "string"],
+        ["url", "string"],
+        ["key", "string"],
       ],
     ],
   ],
@@ -34122,8 +34100,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4576F3F0,
       [
-        ["name", "string", "string"],
-        ["color", "number", "int"],
+        ["name", "string"],
+        ["color", "int"],
       ],
     ],
   ],
@@ -34132,10 +34110,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB2A7386B,
       [
-        ["flags", flags, "#"],
-        ["name", "string", "string"],
-        ["icon", "Document", "Document"],
-        ["colors", ["AttachMenuBotIconColor"], "flags.0?Vector<AttachMenuBotIconColor>"],
+        ["flags", "#"],
+        ["name", "string"],
+        ["icon", "Document"],
+        ["colors", "flags.0?Vector<AttachMenuBotIconColor>"],
       ],
     ],
   ],
@@ -34144,17 +34122,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD90D8DFE,
       [
-        ["flags", flags, "#"],
-        ["inactive", "true", "flags.0?true"],
-        ["has_settings", "true", "flags.1?true"],
-        ["request_write_access", "true", "flags.2?true"],
-        ["show_in_attach_menu", "true", "flags.3?true"],
-        ["show_in_side_menu", "true", "flags.4?true"],
-        ["side_menu_disclaimer_needed", "true", "flags.5?true"],
-        ["bot_id", "bigint", "long"],
-        ["short_name", "string", "string"],
-        ["peer_types", ["AttachMenuPeerType"], "flags.3?Vector<AttachMenuPeerType>"],
-        ["icons", ["AttachMenuBotIcon"], "Vector<AttachMenuBotIcon>"],
+        ["flags", "#"],
+        ["inactive", "flags.0?true"],
+        ["has_settings", "flags.1?true"],
+        ["request_write_access", "flags.2?true"],
+        ["show_in_attach_menu", "flags.3?true"],
+        ["show_in_side_menu", "flags.4?true"],
+        ["side_menu_disclaimer_needed", "flags.5?true"],
+        ["bot_id", "long"],
+        ["short_name", "string"],
+        ["peer_types", "flags.3?Vector<AttachMenuPeerType>"],
+        ["icons", "Vector<AttachMenuBotIcon>"],
       ],
     ],
   ],
@@ -34170,9 +34148,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3C4301C0,
       [
-        ["hash", "bigint", "long"],
-        ["bots", ["AttachMenuBot"], "Vector<AttachMenuBot>"],
-        ["users", ["User"], "Vector<User>"],
+        ["hash", "long"],
+        ["bots", "Vector<AttachMenuBot>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -34181,8 +34159,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x93BF667F,
       [
-        ["bot", "AttachMenuBot", "AttachMenuBot"],
-        ["users", ["User"], "Vector<User>"],
+        ["bot", "AttachMenuBot"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -34191,11 +34169,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4D22FF98,
       [
-        ["flags", flags, "#"],
-        ["fullsize", "true", "flags.1?true"],
-        ["fullscreen", "true", "flags.2?true"],
-        ["query_id", "bigint", "flags.0?long"],
-        ["url", "string", "string"],
+        ["flags", "#"],
+        ["fullsize", "flags.1?true"],
+        ["fullscreen", "flags.2?true"],
+        ["query_id", "flags.0?long"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -34204,8 +34182,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0C94511C,
       [
-        ["flags", flags, "#"],
-        ["msg_id", "InputBotInlineMessageID", "flags.0?InputBotInlineMessageID"],
+        ["flags", "#"],
+        ["msg_id", "flags.0?InputBotInlineMessageID"],
       ],
     ],
   ],
@@ -34228,8 +34206,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC7B57CE6,
       [
-        ["text", "string", "string"],
-        ["url", "string", "string"],
+        ["text", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -34245,8 +34223,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC1E92CC5,
       [
-        ["hash", "bigint", "long"],
-        ["ringtones", ["Document"], "Vector<Document>"],
+        ["hash", "long"],
+        ["ringtones", "Vector<Document>"],
       ],
     ],
   ],
@@ -34269,8 +34247,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x830B9AE4,
       [
-        ["title", "string", "string"],
-        ["data", "string", "string"],
+        ["title", "string"],
+        ["data", "string"],
       ],
     ],
   ],
@@ -34279,7 +34257,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFF6C8049,
       [
-        ["id", "bigint", "long"],
+        ["id", "long"],
       ],
     ],
   ],
@@ -34295,7 +34273,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1F307EB7,
       [
-        ["document", "Document", "Document"],
+        ["document", "Document"],
       ],
     ],
   ],
@@ -34339,8 +34317,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC5B56859,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -34349,7 +34327,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC326CAEF,
       [
-        ["slug", "string", "string"],
+        ["slug", "string"],
       ],
     ],
   ],
@@ -34358,8 +34336,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x98986C0D,
       [
-        ["purpose", "InputStorePaymentPurpose", "InputStorePaymentPurpose"],
-        ["option", "PremiumGiftCodeOption", "PremiumGiftCodeOption"],
+        ["purpose", "InputStorePaymentPurpose"],
+        ["option", "PremiumGiftCodeOption"],
       ],
     ],
   ],
@@ -34368,7 +34346,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x65F00CE3,
       [
-        ["purpose", "InputStorePaymentPurpose", "InputStorePaymentPurpose"],
+        ["purpose", "InputStorePaymentPurpose"],
       ],
     ],
   ],
@@ -34377,7 +34355,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x34E793F1,
       [
-        ["hash", "string", "string"],
+        ["hash", "string"],
       ],
     ],
   ],
@@ -34386,12 +34364,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE8625E92,
       [
-        ["flags", flags, "#"],
-        ["hide_name", "true", "flags.0?true"],
-        ["include_upgrade", "true", "flags.2?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["gift_id", "bigint", "long"],
-        ["message", "TextWithEntities", "flags.1?TextWithEntities"],
+        ["flags", "#"],
+        ["hide_name", "flags.0?true"],
+        ["include_upgrade", "flags.2?true"],
+        ["peer", "InputPeer"],
+        ["gift_id", "long"],
+        ["message", "flags.1?TextWithEntities"],
       ],
     ],
   ],
@@ -34400,9 +34378,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4D818D5D,
       [
-        ["flags", flags, "#"],
-        ["keep_original_details", "true", "flags.0?true"],
-        ["stargift", "InputSavedStarGift", "InputSavedStarGift"],
+        ["flags", "#"],
+        ["keep_original_details", "flags.0?true"],
+        ["stargift", "InputSavedStarGift"],
       ],
     ],
   ],
@@ -34411,8 +34389,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4A5F5BD9,
       [
-        ["stargift", "InputSavedStarGift", "InputSavedStarGift"],
-        ["to_id", "InputPeer", "InputPeer"],
+        ["stargift", "InputSavedStarGift"],
+        ["to_id", "InputPeer"],
       ],
     ],
   ],
@@ -34421,10 +34399,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDABAB2EF,
       [
-        ["flags", flags, "#"],
-        ["user_id", "InputUser", "InputUser"],
-        ["months", "number", "int"],
-        ["message", "TextWithEntities", "flags.0?TextWithEntities"],
+        ["flags", "#"],
+        ["user_id", "InputUser"],
+        ["months", "int"],
+        ["message", "flags.0?TextWithEntities"],
       ],
     ],
   ],
@@ -34433,7 +34411,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAED0CBD9,
       [
-        ["url", "string", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -34442,12 +34420,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCFB9D957,
       [
-        ["flags", flags, "#"],
-        ["pending", "true", "flags.0?true"],
-        ["transcription_id", "bigint", "long"],
-        ["text", "string", "string"],
-        ["trial_remains_num", "number", "flags.1?int"],
-        ["trial_remains_until_date", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["pending", "flags.0?true"],
+        ["transcription_id", "long"],
+        ["text", "string"],
+        ["trial_remains_num", "flags.1?int"],
+        ["trial_remains_until_date", "flags.1?int"],
       ],
     ],
   ],
@@ -34456,12 +34434,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5334759C,
       [
-        ["status_text", "string", "string"],
-        ["status_entities", ["MessageEntity"], "Vector<MessageEntity>"],
-        ["video_sections", ["string"], "Vector<string>"],
-        ["videos", ["Document"], "Vector<Document>"],
-        ["period_options", ["PremiumSubscriptionOption"], "Vector<PremiumSubscriptionOption>"],
-        ["users", ["User"], "Vector<User>"],
+        ["status_text", "string"],
+        ["status_entities", "Vector<MessageEntity>"],
+        ["video_sections", "Vector<string>"],
+        ["videos", "Vector<Document>"],
+        ["period_options", "Vector<PremiumSubscriptionOption>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -34470,9 +34448,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA6751E66,
       [
-        ["flags", flags, "#"],
-        ["restore", "true", "flags.0?true"],
-        ["upgrade", "true", "flags.1?true"],
+        ["flags", "#"],
+        ["restore", "flags.0?true"],
+        ["upgrade", "flags.1?true"],
       ],
     ],
   ],
@@ -34481,9 +34459,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x616F7FE8,
       [
-        ["user_id", "InputUser", "InputUser"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
+        ["user_id", "InputUser"],
+        ["currency", "string"],
+        ["amount", "long"],
       ],
     ],
   ],
@@ -34492,12 +34470,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFB790393,
       [
-        ["flags", flags, "#"],
-        ["users", ["InputUser"], "Vector<InputUser>"],
-        ["boost_peer", "InputPeer", "flags.0?InputPeer"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
-        ["message", "TextWithEntities", "flags.1?TextWithEntities"],
+        ["flags", "#"],
+        ["users", "Vector<InputUser>"],
+        ["boost_peer", "flags.0?InputPeer"],
+        ["currency", "string"],
+        ["amount", "long"],
+        ["message", "flags.1?TextWithEntities"],
       ],
     ],
   ],
@@ -34506,17 +34484,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0x160544CA,
       [
-        ["flags", flags, "#"],
-        ["only_new_subscribers", "true", "flags.0?true"],
-        ["winners_are_visible", "true", "flags.3?true"],
-        ["boost_peer", "InputPeer", "InputPeer"],
-        ["additional_peers", ["InputPeer"], "flags.1?Vector<InputPeer>"],
-        ["countries_iso2", ["string"], "flags.2?Vector<string>"],
-        ["prize_description", "string", "flags.4?string"],
-        ["random_id", "bigint", "long"],
-        ["until_date", "number", "int"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
+        ["flags", "#"],
+        ["only_new_subscribers", "flags.0?true"],
+        ["winners_are_visible", "flags.3?true"],
+        ["boost_peer", "InputPeer"],
+        ["additional_peers", "flags.1?Vector<InputPeer>"],
+        ["countries_iso2", "flags.2?Vector<string>"],
+        ["prize_description", "flags.4?string"],
+        ["random_id", "long"],
+        ["until_date", "int"],
+        ["currency", "string"],
+        ["amount", "long"],
       ],
     ],
   ],
@@ -34525,9 +34503,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDDDD0F56,
       [
-        ["stars", "bigint", "long"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
+        ["stars", "long"],
+        ["currency", "string"],
+        ["amount", "long"],
       ],
     ],
   ],
@@ -34536,10 +34514,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1D741EF7,
       [
-        ["user_id", "InputUser", "InputUser"],
-        ["stars", "bigint", "long"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
+        ["user_id", "InputUser"],
+        ["stars", "long"],
+        ["currency", "string"],
+        ["amount", "long"],
       ],
     ],
   ],
@@ -34548,19 +34526,19 @@ const types: Map<string, Parameters> = new Map([
     [
       0x751F08FA,
       [
-        ["flags", flags, "#"],
-        ["only_new_subscribers", "true", "flags.0?true"],
-        ["winners_are_visible", "true", "flags.3?true"],
-        ["stars", "bigint", "long"],
-        ["boost_peer", "InputPeer", "InputPeer"],
-        ["additional_peers", ["InputPeer"], "flags.1?Vector<InputPeer>"],
-        ["countries_iso2", ["string"], "flags.2?Vector<string>"],
-        ["prize_description", "string", "flags.4?string"],
-        ["random_id", "bigint", "long"],
-        ["until_date", "number", "int"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
-        ["users", "number", "int"],
+        ["flags", "#"],
+        ["only_new_subscribers", "flags.0?true"],
+        ["winners_are_visible", "flags.3?true"],
+        ["stars", "long"],
+        ["boost_peer", "InputPeer"],
+        ["additional_peers", "flags.1?Vector<InputPeer>"],
+        ["countries_iso2", "flags.2?Vector<string>"],
+        ["prize_description", "flags.4?string"],
+        ["random_id", "long"],
+        ["until_date", "int"],
+        ["currency", "string"],
+        ["amount", "long"],
+        ["users", "int"],
       ],
     ],
   ],
@@ -34569,8 +34547,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x88F8F21B,
       [
-        ["url", "string", "string"],
-        ["title", "string", "string"],
+        ["url", "string"],
+        ["title", "string"],
       ],
     ],
   ],
@@ -34586,9 +34564,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE7FF068A,
       [
-        ["flags", flags, "#"],
-        ["document_id", "bigint", "long"],
-        ["until", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["document_id", "long"],
+        ["until", "flags.0?int"],
       ],
     ],
   ],
@@ -34597,17 +34575,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7184603B,
       [
-        ["flags", flags, "#"],
-        ["collectible_id", "bigint", "long"],
-        ["document_id", "bigint", "long"],
-        ["title", "string", "string"],
-        ["slug", "string", "string"],
-        ["pattern_document_id", "bigint", "long"],
-        ["center_color", "number", "int"],
-        ["edge_color", "number", "int"],
-        ["pattern_color", "number", "int"],
-        ["text_color", "number", "int"],
-        ["until", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["collectible_id", "long"],
+        ["document_id", "long"],
+        ["title", "string"],
+        ["slug", "string"],
+        ["pattern_document_id", "long"],
+        ["center_color", "int"],
+        ["edge_color", "int"],
+        ["pattern_color", "int"],
+        ["text_color", "int"],
+        ["until", "flags.0?int"],
       ],
     ],
   ],
@@ -34616,9 +34594,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x07141DBF,
       [
-        ["flags", flags, "#"],
-        ["collectible_id", "bigint", "long"],
-        ["until", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["collectible_id", "long"],
+        ["until", "flags.0?int"],
       ],
     ],
   ],
@@ -34634,8 +34612,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x90C467D1,
       [
-        ["hash", "bigint", "long"],
-        ["statuses", ["EmojiStatus"], "Vector<EmojiStatus>"],
+        ["hash", "long"],
+        ["statuses", "Vector<EmojiStatus>"],
       ],
     ],
   ],
@@ -34651,7 +34629,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1B2286B8,
       [
-        ["emoticon", "string", "string"],
+        ["emoticon", "string"],
       ],
     ],
   ],
@@ -34660,7 +34638,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8935FC73,
       [
-        ["document_id", "bigint", "long"],
+        ["document_id", "long"],
       ],
     ],
   ],
@@ -34683,8 +34661,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x52928BCA,
       [
-        ["flags", flags, "#"],
-        ["allow_custom", "true", "flags.0?true"],
+        ["flags", "#"],
+        ["allow_custom", "flags.0?true"],
       ],
     ],
   ],
@@ -34693,7 +34671,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x661D4037,
       [
-        ["reactions", ["Reaction"], "Vector<Reaction>"],
+        ["reactions", "Vector<Reaction>"],
       ],
     ],
   ],
@@ -34709,8 +34687,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEAFDF716,
       [
-        ["hash", "bigint", "long"],
-        ["reactions", ["Reaction"], "Vector<Reaction>"],
+        ["hash", "long"],
+        ["reactions", "Vector<Reaction>"],
       ],
     ],
   ],
@@ -34719,8 +34697,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4345BE73,
       [
-        ["phone_number", "string", "string"],
-        ["phone_code_hash", "string", "string"],
+        ["phone_number", "string"],
+        ["phone_code_hash", "string"],
       ],
     ],
   ],
@@ -34743,7 +34721,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x922E55A9,
       [
-        ["code", "string", "string"],
+        ["code", "string"],
       ],
     ],
   ],
@@ -34752,7 +34730,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDB909EC2,
       [
-        ["token", "string", "string"],
+        ["token", "string"],
       ],
     ],
   ],
@@ -34761,7 +34739,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x96D074FD,
       [
-        ["token", "string", "string"],
+        ["token", "string"],
       ],
     ],
   ],
@@ -34770,7 +34748,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2B96CD1B,
       [
-        ["email", "string", "string"],
+        ["email", "string"],
       ],
     ],
   ],
@@ -34779,8 +34757,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE1BB0D61,
       [
-        ["email", "string", "string"],
-        ["sent_code", "auth_SentCode", "auth.SentCode"],
+        ["email", "string"],
+        ["sent_code", "auth.SentCode"],
       ],
     ],
   ],
@@ -34789,15 +34767,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5F2D1DF2,
       [
-        ["flags", flags, "#"],
-        ["current", "true", "flags.1?true"],
-        ["can_purchase_upgrade", "true", "flags.2?true"],
-        ["transaction", "string", "flags.3?string"],
-        ["months", "number", "int"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
-        ["bot_url", "string", "string"],
-        ["store_product", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["current", "flags.1?true"],
+        ["can_purchase_upgrade", "flags.2?true"],
+        ["transaction", "flags.3?string"],
+        ["months", "int"],
+        ["currency", "string"],
+        ["amount", "long"],
+        ["bot_url", "string"],
+        ["store_product", "flags.0?string"],
       ],
     ],
   ],
@@ -34806,9 +34784,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB81C7034,
       [
-        ["flags", flags, "#"],
-        ["premium_required", "true", "flags.0?true"],
-        ["peer", "Peer", "Peer"],
+        ["flags", "#"],
+        ["premium_required", "flags.0?true"],
+        ["peer", "Peer"],
       ],
     ],
   ],
@@ -34817,11 +34795,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAD628CC8,
       [
-        ["flags", flags, "#"],
-        ["w", "number", "flags.0?int"],
-        ["h", "number", "flags.0?int"],
-        ["thumb", "PhotoSize", "flags.1?PhotoSize"],
-        ["video_duration", "number", "flags.2?int"],
+        ["flags", "#"],
+        ["w", "flags.0?int"],
+        ["h", "flags.0?int"],
+        ["thumb", "flags.1?PhotoSize"],
+        ["video_duration", "flags.2?int"],
       ],
     ],
   ],
@@ -34830,7 +34808,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEE479C64,
       [
-        ["media", "MessageMedia", "MessageMedia"],
+        ["media", "MessageMedia"],
       ],
     ],
   ],
@@ -34839,8 +34817,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFCFEB29C,
       [
-        ["document_id", "bigint", "long"],
-        ["keyword", ["string"], "Vector<string>"],
+        ["document_id", "long"],
+        ["keyword", "Vector<string>"],
       ],
     ],
   ],
@@ -34849,10 +34827,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB4073647,
       [
-        ["flags", flags, "#"],
-        ["editable", "true", "flags.0?true"],
-        ["active", "true", "flags.1?true"],
-        ["username", "string", "string"],
+        ["flags", "#"],
+        ["editable", "flags.0?true"],
+        ["active", "flags.1?true"],
+        ["username", "string"],
       ],
     ],
   ],
@@ -34861,7 +34839,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x023F109B,
       [
-        ["id", "number", "int"],
+        ["id", "int"],
       ],
     ],
   ],
@@ -34870,26 +34848,26 @@ const types: Map<string, Parameters> = new Map([
     [
       0x71701DA9,
       [
-        ["flags", flags, "#"],
-        ["my", "true", "flags.1?true"],
-        ["closed", "true", "flags.2?true"],
-        ["pinned", "true", "flags.3?true"],
-        ["short", "true", "flags.5?true"],
-        ["hidden", "true", "flags.6?true"],
-        ["id", "number", "int"],
-        ["date", "number", "int"],
-        ["title", "string", "string"],
-        ["icon_color", "number", "int"],
-        ["icon_emoji_id", "bigint", "flags.0?long"],
-        ["top_message", "number", "int"],
-        ["read_inbox_max_id", "number", "int"],
-        ["read_outbox_max_id", "number", "int"],
-        ["unread_count", "number", "int"],
-        ["unread_mentions_count", "number", "int"],
-        ["unread_reactions_count", "number", "int"],
-        ["from_id", "Peer", "Peer"],
-        ["notify_settings", "PeerNotifySettings", "PeerNotifySettings"],
-        ["draft", "DraftMessage", "flags.4?DraftMessage"],
+        ["flags", "#"],
+        ["my", "flags.1?true"],
+        ["closed", "flags.2?true"],
+        ["pinned", "flags.3?true"],
+        ["short", "flags.5?true"],
+        ["hidden", "flags.6?true"],
+        ["id", "int"],
+        ["date", "int"],
+        ["title", "string"],
+        ["icon_color", "int"],
+        ["icon_emoji_id", "flags.0?long"],
+        ["top_message", "int"],
+        ["read_inbox_max_id", "int"],
+        ["read_outbox_max_id", "int"],
+        ["unread_count", "int"],
+        ["unread_mentions_count", "int"],
+        ["unread_reactions_count", "int"],
+        ["from_id", "Peer"],
+        ["notify_settings", "PeerNotifySettings"],
+        ["draft", "flags.4?DraftMessage"],
       ],
     ],
   ],
@@ -34898,14 +34876,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x367617D3,
       [
-        ["flags", flags, "#"],
-        ["order_by_create_date", "true", "flags.0?true"],
-        ["count", "number", "int"],
-        ["topics", ["ForumTopic"], "Vector<ForumTopic>"],
-        ["messages", ["Message"], "Vector<Message>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
-        ["pts", "number", "int"],
+        ["flags", "#"],
+        ["order_by_create_date", "flags.0?true"],
+        ["count", "int"],
+        ["topics", "Vector<ForumTopic>"],
+        ["messages", "Vector<Message>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+        ["pts", "int"],
       ],
     ],
   ],
@@ -34914,7 +34892,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x43B46B20,
       [
-        ["period", "number", "int"],
+        ["period", "int"],
       ],
     ],
   ],
@@ -34923,8 +34901,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x41BF109B,
       [
-        ["url", "string", "string"],
-        ["expires", "number", "int"],
+        ["url", "string"],
+        ["expires", "int"],
       ],
     ],
   ],
@@ -34933,9 +34911,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5F3B8A00,
       [
-        ["flags", flags, "#"],
-        ["bot", "boolean", "flags.0?Bool"],
-        ["premium", "boolean", "flags.1?Bool"],
+        ["flags", "#"],
+        ["bot", "flags.0?Bool"],
+        ["premium", "flags.1?Bool"],
       ],
     ],
   ],
@@ -34944,13 +34922,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC9F06E1B,
       [
-        ["flags", flags, "#"],
-        ["creator", "true", "flags.0?true"],
-        ["bot_participant", "true", "flags.5?true"],
-        ["has_username", "boolean", "flags.3?Bool"],
-        ["forum", "boolean", "flags.4?Bool"],
-        ["user_admin_rights", "ChatAdminRights", "flags.1?ChatAdminRights"],
-        ["bot_admin_rights", "ChatAdminRights", "flags.2?ChatAdminRights"],
+        ["flags", "#"],
+        ["creator", "flags.0?true"],
+        ["bot_participant", "flags.5?true"],
+        ["has_username", "flags.3?Bool"],
+        ["forum", "flags.4?Bool"],
+        ["user_admin_rights", "flags.1?ChatAdminRights"],
+        ["bot_admin_rights", "flags.2?ChatAdminRights"],
       ],
     ],
   ],
@@ -34959,11 +34937,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x339BEF6C,
       [
-        ["flags", flags, "#"],
-        ["creator", "true", "flags.0?true"],
-        ["has_username", "boolean", "flags.3?Bool"],
-        ["user_admin_rights", "ChatAdminRights", "flags.1?ChatAdminRights"],
-        ["bot_admin_rights", "ChatAdminRights", "flags.2?ChatAdminRights"],
+        ["flags", "#"],
+        ["creator", "flags.0?true"],
+        ["has_username", "flags.3?Bool"],
+        ["user_admin_rights", "flags.1?ChatAdminRights"],
+        ["bot_admin_rights", "flags.2?ChatAdminRights"],
       ],
     ],
   ],
@@ -34979,8 +34957,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7A1E11D1,
       [
-        ["hash", "bigint", "long"],
-        ["document_id", ["bigint"], "Vector<long>"],
+        ["hash", "long"],
+        ["document_id", "Vector<long>"],
       ],
     ],
   ],
@@ -34989,9 +34967,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7A9ABDA9,
       [
-        ["title", "string", "string"],
-        ["icon_emoji_id", "bigint", "long"],
-        ["emoticons", ["string"], "Vector<string>"],
+        ["title", "string"],
+        ["icon_emoji_id", "long"],
+        ["emoticons", "Vector<string>"],
       ],
     ],
   ],
@@ -35000,9 +34978,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x80D26CC7,
       [
-        ["title", "string", "string"],
-        ["icon_emoji_id", "bigint", "long"],
-        ["emoticons", ["string"], "Vector<string>"],
+        ["title", "string"],
+        ["icon_emoji_id", "long"],
+        ["emoticons", "Vector<string>"],
       ],
     ],
   ],
@@ -35011,8 +34989,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x093BCF34,
       [
-        ["title", "string", "string"],
-        ["icon_emoji_id", "bigint", "long"],
+        ["title", "string"],
+        ["icon_emoji_id", "long"],
       ],
     ],
   ],
@@ -35028,8 +35006,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x881FB94B,
       [
-        ["hash", "number", "int"],
-        ["groups", ["EmojiGroup"], "Vector<EmojiGroup>"],
+        ["hash", "int"],
+        ["groups", "Vector<EmojiGroup>"],
       ],
     ],
   ],
@@ -35038,8 +35016,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x751F3146,
       [
-        ["text", "string", "string"],
-        ["entities", ["MessageEntity"], "Vector<MessageEntity>"],
+        ["text", "string"],
+        ["entities", "Vector<MessageEntity>"],
       ],
     ],
   ],
@@ -35048,7 +35026,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x33DB32F8,
       [
-        ["result", ["TextWithEntities"], "Vector<TextWithEntities>"],
+        ["result", "Vector<TextWithEntities>"],
       ],
     ],
   ],
@@ -35057,10 +35035,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC84834CE,
       [
-        ["flags", flags, "#"],
-        ["photos", "true", "flags.0?true"],
-        ["videos", "true", "flags.1?true"],
-        ["video_max_size", "bigint", "flags.2?long"],
+        ["flags", "#"],
+        ["photos", "flags.0?true"],
+        ["videos", "flags.1?true"],
+        ["video_max_size", "flags.2?long"],
       ],
     ],
   ],
@@ -35069,8 +35047,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x81602D47,
       [
-        ["peer", "Peer", "Peer"],
-        ["settings", "AutoSaveSettings", "AutoSaveSettings"],
+        ["peer", "Peer"],
+        ["settings", "AutoSaveSettings"],
       ],
     ],
   ],
@@ -35079,12 +35057,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4C3E069D,
       [
-        ["users_settings", "AutoSaveSettings", "AutoSaveSettings"],
-        ["chats_settings", "AutoSaveSettings", "AutoSaveSettings"],
-        ["broadcasts_settings", "AutoSaveSettings", "AutoSaveSettings"],
-        ["exceptions", ["AutoSaveException"], "Vector<AutoSaveException>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["users_settings", "AutoSaveSettings"],
+        ["chats_settings", "AutoSaveSettings"],
+        ["broadcasts_settings", "AutoSaveSettings"],
+        ["exceptions", "Vector<AutoSaveException>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -35100,8 +35078,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDD18782E,
       [
-        ["hash", "number", "int"],
-        ["config", "JSONValue", "JSONValue"],
+        ["hash", "int"],
+        ["config", "JSONValue"],
       ],
     ],
   ],
@@ -35110,8 +35088,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA920BD7A,
       [
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
+        ["id", "long"],
+        ["access_hash", "long"],
       ],
     ],
   ],
@@ -35120,8 +35098,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x908C0407,
       [
-        ["bot_id", "InputUser", "InputUser"],
-        ["short_name", "string", "string"],
+        ["bot_id", "InputUser"],
+        ["short_name", "string"],
       ],
     ],
   ],
@@ -35137,15 +35115,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x95FCD1D6,
       [
-        ["flags", flags, "#"],
-        ["id", "bigint", "long"],
-        ["access_hash", "bigint", "long"],
-        ["short_name", "string", "string"],
-        ["title", "string", "string"],
-        ["description", "string", "string"],
-        ["photo", "Photo", "Photo"],
-        ["document", "Document", "flags.0?Document"],
-        ["hash", "bigint", "long"],
+        ["flags", "#"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["short_name", "string"],
+        ["title", "string"],
+        ["description", "string"],
+        ["photo", "Photo"],
+        ["document", "flags.0?Document"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -35154,11 +35132,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEB50ADF5,
       [
-        ["flags", flags, "#"],
-        ["inactive", "true", "flags.0?true"],
-        ["request_write_access", "true", "flags.1?true"],
-        ["has_settings", "true", "flags.2?true"],
-        ["app", "BotApp", "BotApp"],
+        ["flags", "#"],
+        ["inactive", "flags.0?true"],
+        ["request_write_access", "flags.1?true"],
+        ["has_settings", "flags.2?true"],
+        ["app", "BotApp"],
       ],
     ],
   ],
@@ -35167,8 +35145,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB57295D5,
       [
-        ["text", "string", "string"],
-        ["url", "string", "string"],
+        ["text", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -35177,8 +35155,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4A4FF172,
       [
-        ["user_id", "bigint", "long"],
-        ["date", "number", "int"],
+        ["user_id", "long"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -35187,7 +35165,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF3E0DA33,
       [
-        ["filter_id", "number", "int"],
+        ["filter_id", "int"],
       ],
     ],
   ],
@@ -35196,10 +35174,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0C5181AC,
       [
-        ["flags", flags, "#"],
-        ["title", "string", "string"],
-        ["url", "string", "string"],
-        ["peers", ["Peer"], "Vector<Peer>"],
+        ["flags", "#"],
+        ["title", "string"],
+        ["url", "string"],
+        ["peers", "Vector<Peer>"],
       ],
     ],
   ],
@@ -35208,8 +35186,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x10E6E3A6,
       [
-        ["filter", "DialogFilter", "DialogFilter"],
-        ["invite", "ExportedChatlistInvite", "ExportedChatlistInvite"],
+        ["filter", "DialogFilter"],
+        ["invite", "ExportedChatlistInvite"],
       ],
     ],
   ],
@@ -35218,9 +35196,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x10AB6DC7,
       [
-        ["invites", ["ExportedChatlistInvite"], "Vector<ExportedChatlistInvite>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["invites", "Vector<ExportedChatlistInvite>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -35229,11 +35207,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFA87F659,
       [
-        ["filter_id", "number", "int"],
-        ["missing_peers", ["Peer"], "Vector<Peer>"],
-        ["already_peers", ["Peer"], "Vector<Peer>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["filter_id", "int"],
+        ["missing_peers", "Vector<Peer>"],
+        ["already_peers", "Vector<Peer>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -35242,13 +35220,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF10ECE2F,
       [
-        ["flags", flags, "#"],
-        ["title_noanimate", "true", "flags.1?true"],
-        ["title", "TextWithEntities", "TextWithEntities"],
-        ["emoticon", "string", "flags.0?string"],
-        ["peers", ["Peer"], "Vector<Peer>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["title_noanimate", "flags.1?true"],
+        ["title", "TextWithEntities"],
+        ["emoticon", "flags.0?string"],
+        ["peers", "Vector<Peer>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -35257,9 +35235,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x93BD878D,
       [
-        ["missing_peers", ["Peer"], "Vector<Peer>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["missing_peers", "Vector<Peer>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -35268,9 +35246,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE8A775B0,
       [
-        ["name", "string", "string"],
-        ["about", "string", "string"],
-        ["description", "string", "string"],
+        ["name", "string"],
+        ["about", "string"],
+        ["description", "string"],
       ],
     ],
   ],
@@ -35279,9 +35257,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB6CC2D5C,
       [
-        ["peer", "Peer", "Peer"],
-        ["option", Uint8Array, "bytes"],
-        ["date", "number", "int"],
+        ["peer", "Peer"],
+        ["option", "bytes"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -35290,8 +35268,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x74CDA504,
       [
-        ["peer", "Peer", "Peer"],
-        ["date", "number", "int"],
+        ["peer", "Peer"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -35300,9 +35278,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4628F6E6,
       [
-        ["peer", "Peer", "Peer"],
-        ["options", [Uint8Array], "Vector<bytes>"],
-        ["date", "number", "int"],
+        ["peer", "Peer"],
+        ["options", "Vector<bytes>"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -35311,13 +35289,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8D595CD6,
       [
-        ["flags", flags, "#"],
-        ["has_viewers", "true", "flags.1?true"],
-        ["views_count", "number", "int"],
-        ["forwards_count", "number", "flags.2?int"],
-        ["reactions", ["ReactionCount"], "flags.3?Vector<ReactionCount>"],
-        ["reactions_count", "number", "flags.4?int"],
-        ["recent_viewers", ["bigint"], "flags.0?Vector<long>"],
+        ["flags", "#"],
+        ["has_viewers", "flags.1?true"],
+        ["views_count", "int"],
+        ["forwards_count", "flags.2?int"],
+        ["reactions", "flags.3?Vector<ReactionCount>"],
+        ["reactions_count", "flags.4?int"],
+        ["recent_viewers", "flags.0?Vector<long>"],
       ],
     ],
   ],
@@ -35326,7 +35304,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x51E6EE4F,
       [
-        ["id", "number", "int"],
+        ["id", "int"],
       ],
     ],
   ],
@@ -35335,11 +35313,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFFADC913,
       [
-        ["flags", flags, "#"],
-        ["close_friends", "true", "flags.8?true"],
-        ["id", "number", "int"],
-        ["date", "number", "int"],
-        ["expire_date", "number", "int"],
+        ["flags", "#"],
+        ["close_friends", "flags.8?true"],
+        ["id", "int"],
+        ["date", "int"],
+        ["expire_date", "int"],
       ],
     ],
   ],
@@ -35348,28 +35326,28 @@ const types: Map<string, Parameters> = new Map([
     [
       0x79B26A24,
       [
-        ["flags", flags, "#"],
-        ["pinned", "true", "flags.5?true"],
-        ["public", "true", "flags.7?true"],
-        ["close_friends", "true", "flags.8?true"],
-        ["min", "true", "flags.9?true"],
-        ["noforwards", "true", "flags.10?true"],
-        ["edited", "true", "flags.11?true"],
-        ["contacts", "true", "flags.12?true"],
-        ["selected_contacts", "true", "flags.13?true"],
-        ["out", "true", "flags.16?true"],
-        ["id", "number", "int"],
-        ["date", "number", "int"],
-        ["from_id", "Peer", "flags.18?Peer"],
-        ["fwd_from", "StoryFwdHeader", "flags.17?StoryFwdHeader"],
-        ["expire_date", "number", "int"],
-        ["caption", "string", "flags.0?string"],
-        ["entities", ["MessageEntity"], "flags.1?Vector<MessageEntity>"],
-        ["media", "MessageMedia", "MessageMedia"],
-        ["media_areas", ["MediaArea"], "flags.14?Vector<MediaArea>"],
-        ["privacy", ["PrivacyRule"], "flags.2?Vector<PrivacyRule>"],
-        ["views", "StoryViews", "flags.3?StoryViews"],
-        ["sent_reaction", "Reaction", "flags.15?Reaction"],
+        ["flags", "#"],
+        ["pinned", "flags.5?true"],
+        ["public", "flags.7?true"],
+        ["close_friends", "flags.8?true"],
+        ["min", "flags.9?true"],
+        ["noforwards", "flags.10?true"],
+        ["edited", "flags.11?true"],
+        ["contacts", "flags.12?true"],
+        ["selected_contacts", "flags.13?true"],
+        ["out", "flags.16?true"],
+        ["id", "int"],
+        ["date", "int"],
+        ["from_id", "flags.18?Peer"],
+        ["fwd_from", "flags.17?StoryFwdHeader"],
+        ["expire_date", "int"],
+        ["caption", "flags.0?string"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
+        ["media", "MessageMedia"],
+        ["media_areas", "flags.14?Vector<MediaArea>"],
+        ["privacy", "flags.2?Vector<PrivacyRule>"],
+        ["views", "flags.3?StoryViews"],
+        ["sent_reaction", "flags.15?Reaction"],
       ],
     ],
   ],
@@ -35378,9 +35356,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1158FE3E,
       [
-        ["flags", flags, "#"],
-        ["state", "string", "string"],
-        ["stealth_mode", "StoriesStealthMode", "StoriesStealthMode"],
+        ["flags", "#"],
+        ["state", "string"],
+        ["stealth_mode", "StoriesStealthMode"],
       ],
     ],
   ],
@@ -35389,14 +35367,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6EFC5E81,
       [
-        ["flags", flags, "#"],
-        ["has_more", "true", "flags.0?true"],
-        ["count", "number", "int"],
-        ["state", "string", "string"],
-        ["peer_stories", ["PeerStories"], "Vector<PeerStories>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
-        ["stealth_mode", "StoriesStealthMode", "StoriesStealthMode"],
+        ["flags", "#"],
+        ["has_more", "flags.0?true"],
+        ["count", "int"],
+        ["state", "string"],
+        ["peer_stories", "Vector<PeerStories>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+        ["stealth_mode", "StoriesStealthMode"],
       ],
     ],
   ],
@@ -35405,12 +35383,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x63C3DD0A,
       [
-        ["flags", flags, "#"],
-        ["count", "number", "int"],
-        ["stories", ["StoryItem"], "Vector<StoryItem>"],
-        ["pinned_to_top", ["number"], "flags.0?Vector<int>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["count", "int"],
+        ["stories", "Vector<StoryItem>"],
+        ["pinned_to_top", "flags.0?Vector<int>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -35419,12 +35397,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB0BDEAC5,
       [
-        ["flags", flags, "#"],
-        ["blocked", "true", "flags.0?true"],
-        ["blocked_my_stories_from", "true", "flags.1?true"],
-        ["user_id", "bigint", "long"],
-        ["date", "number", "int"],
-        ["reaction", "Reaction", "flags.2?Reaction"],
+        ["flags", "#"],
+        ["blocked", "flags.0?true"],
+        ["blocked_my_stories_from", "flags.1?true"],
+        ["user_id", "long"],
+        ["date", "int"],
+        ["reaction", "flags.2?Reaction"],
       ],
     ],
   ],
@@ -35433,10 +35411,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9083670B,
       [
-        ["flags", flags, "#"],
-        ["blocked", "true", "flags.0?true"],
-        ["blocked_my_stories_from", "true", "flags.1?true"],
-        ["message", "Message", "Message"],
+        ["flags", "#"],
+        ["blocked", "flags.0?true"],
+        ["blocked_my_stories_from", "flags.1?true"],
+        ["message", "Message"],
       ],
     ],
   ],
@@ -35445,11 +35423,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBD74CF49,
       [
-        ["flags", flags, "#"],
-        ["blocked", "true", "flags.0?true"],
-        ["blocked_my_stories_from", "true", "flags.1?true"],
-        ["peer_id", "Peer", "Peer"],
-        ["story", "StoryItem", "StoryItem"],
+        ["flags", "#"],
+        ["blocked", "flags.0?true"],
+        ["blocked_my_stories_from", "flags.1?true"],
+        ["peer_id", "Peer"],
+        ["story", "StoryItem"],
       ],
     ],
   ],
@@ -35458,15 +35436,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x59D78FC5,
       [
-        ["flags", flags, "#"],
-        ["count", "number", "int"],
-        ["views_count", "number", "int"],
-        ["forwards_count", "number", "int"],
-        ["reactions_count", "number", "int"],
-        ["views", ["StoryView"], "Vector<StoryView>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
-        ["next_offset", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["count", "int"],
+        ["views_count", "int"],
+        ["forwards_count", "int"],
+        ["reactions_count", "int"],
+        ["views", "Vector<StoryView>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+        ["next_offset", "flags.0?string"],
       ],
     ],
   ],
@@ -35475,8 +35453,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDE9EED1D,
       [
-        ["views", ["StoryViews"], "Vector<StoryViews>"],
-        ["users", ["User"], "Vector<User>"],
+        ["views", "Vector<StoryViews>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -35485,13 +35463,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x22C0F6D5,
       [
-        ["flags", flags, "#"],
-        ["reply_to_msg_id", "number", "int"],
-        ["top_msg_id", "number", "flags.0?int"],
-        ["reply_to_peer_id", "InputPeer", "flags.1?InputPeer"],
-        ["quote_text", "string", "flags.2?string"],
-        ["quote_entities", ["MessageEntity"], "flags.3?Vector<MessageEntity>"],
-        ["quote_offset", "number", "flags.4?int"],
+        ["flags", "#"],
+        ["reply_to_msg_id", "int"],
+        ["top_msg_id", "flags.0?int"],
+        ["reply_to_peer_id", "flags.1?InputPeer"],
+        ["quote_text", "flags.2?string"],
+        ["quote_entities", "flags.3?Vector<MessageEntity>"],
+        ["quote_offset", "flags.4?int"],
       ],
     ],
   ],
@@ -35500,8 +35478,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5881323A,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["story_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["story_id", "int"],
       ],
     ],
   ],
@@ -35510,7 +35488,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3FC9053B,
       [
-        ["link", "string", "string"],
+        ["link", "string"],
       ],
     ],
   ],
@@ -35519,9 +35497,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x712E27FD,
       [
-        ["flags", flags, "#"],
-        ["active_until_date", "number", "flags.0?int"],
-        ["cooldown_until_date", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["active_until_date", "flags.0?int"],
+        ["cooldown_until_date", "flags.1?int"],
       ],
     ],
   ],
@@ -35530,13 +35508,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCFC9E002,
       [
-        ["flags", flags, "#"],
-        ["x", "number", "double"],
-        ["y", "number", "double"],
-        ["w", "number", "double"],
-        ["h", "number", "double"],
-        ["rotation", "number", "double"],
-        ["radius", "number", "flags.0?double"],
+        ["flags", "#"],
+        ["x", "double"],
+        ["y", "double"],
+        ["w", "double"],
+        ["h", "double"],
+        ["rotation", "double"],
+        ["radius", "flags.0?double"],
       ],
     ],
   ],
@@ -35545,13 +35523,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBE82DB9C,
       [
-        ["coordinates", "MediaAreaCoordinates", "MediaAreaCoordinates"],
-        ["geo", "GeoPoint", "GeoPoint"],
-        ["title", "string", "string"],
-        ["address", "string", "string"],
-        ["provider", "string", "string"],
-        ["venue_id", "string", "string"],
-        ["venue_type", "string", "string"],
+        ["coordinates", "MediaAreaCoordinates"],
+        ["geo", "GeoPoint"],
+        ["title", "string"],
+        ["address", "string"],
+        ["provider", "string"],
+        ["venue_id", "string"],
+        ["venue_type", "string"],
       ],
     ],
   ],
@@ -35560,9 +35538,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB282217F,
       [
-        ["coordinates", "MediaAreaCoordinates", "MediaAreaCoordinates"],
-        ["query_id", "bigint", "long"],
-        ["result_id", "string", "string"],
+        ["coordinates", "MediaAreaCoordinates"],
+        ["query_id", "long"],
+        ["result_id", "string"],
       ],
     ],
   ],
@@ -35571,10 +35549,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCAD5452D,
       [
-        ["flags", flags, "#"],
-        ["coordinates", "MediaAreaCoordinates", "MediaAreaCoordinates"],
-        ["geo", "GeoPoint", "GeoPoint"],
-        ["address", "GeoPointAddress", "flags.0?GeoPointAddress"],
+        ["flags", "#"],
+        ["coordinates", "MediaAreaCoordinates"],
+        ["geo", "GeoPoint"],
+        ["address", "flags.0?GeoPointAddress"],
       ],
     ],
   ],
@@ -35583,11 +35561,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x14455871,
       [
-        ["flags", flags, "#"],
-        ["dark", "true", "flags.0?true"],
-        ["flipped", "true", "flags.1?true"],
-        ["coordinates", "MediaAreaCoordinates", "MediaAreaCoordinates"],
-        ["reaction", "Reaction", "Reaction"],
+        ["flags", "#"],
+        ["dark", "flags.0?true"],
+        ["flipped", "flags.1?true"],
+        ["coordinates", "MediaAreaCoordinates"],
+        ["reaction", "Reaction"],
       ],
     ],
   ],
@@ -35596,9 +35574,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x770416AF,
       [
-        ["coordinates", "MediaAreaCoordinates", "MediaAreaCoordinates"],
-        ["channel_id", "bigint", "long"],
-        ["msg_id", "number", "int"],
+        ["coordinates", "MediaAreaCoordinates"],
+        ["channel_id", "long"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -35607,9 +35585,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2271F2BF,
       [
-        ["coordinates", "MediaAreaCoordinates", "MediaAreaCoordinates"],
-        ["channel", "InputChannel", "InputChannel"],
-        ["msg_id", "number", "int"],
+        ["coordinates", "MediaAreaCoordinates"],
+        ["channel", "InputChannel"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -35618,8 +35596,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x37381085,
       [
-        ["coordinates", "MediaAreaCoordinates", "MediaAreaCoordinates"],
-        ["url", "string", "string"],
+        ["coordinates", "MediaAreaCoordinates"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -35628,10 +35606,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x49A6549C,
       [
-        ["coordinates", "MediaAreaCoordinates", "MediaAreaCoordinates"],
-        ["emoji", "string", "string"],
-        ["temperature_c", "number", "double"],
-        ["color", "number", "int"],
+        ["coordinates", "MediaAreaCoordinates"],
+        ["emoji", "string"],
+        ["temperature_c", "double"],
+        ["color", "int"],
       ],
     ],
   ],
@@ -35640,8 +35618,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5787686D,
       [
-        ["coordinates", "MediaAreaCoordinates", "MediaAreaCoordinates"],
-        ["slug", "string", "string"],
+        ["coordinates", "MediaAreaCoordinates"],
+        ["slug", "string"],
       ],
     ],
   ],
@@ -35650,10 +35628,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9A35E999,
       [
-        ["flags", flags, "#"],
-        ["peer", "Peer", "Peer"],
-        ["max_read_id", "number", "flags.0?int"],
-        ["stories", ["StoryItem"], "Vector<StoryItem>"],
+        ["flags", "#"],
+        ["peer", "Peer"],
+        ["max_read_id", "flags.0?int"],
+        ["stories", "Vector<StoryItem>"],
       ],
     ],
   ],
@@ -35662,9 +35640,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCAE68768,
       [
-        ["stories", "PeerStories", "PeerStories"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["stories", "PeerStories"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -35673,9 +35651,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFD5E12BD,
       [
-        ["webpage", "WebPage", "WebPage"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["webpage", "WebPage"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -35684,13 +35662,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x257E962B,
       [
-        ["flags", flags, "#"],
-        ["users", "number", "int"],
-        ["months", "number", "int"],
-        ["store_product", "string", "flags.0?string"],
-        ["store_quantity", "number", "flags.1?int"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
+        ["flags", "#"],
+        ["users", "int"],
+        ["months", "int"],
+        ["store_product", "flags.0?string"],
+        ["store_quantity", "flags.1?int"],
+        ["currency", "string"],
+        ["amount", "long"],
       ],
     ],
   ],
@@ -35699,16 +35677,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x284A1096,
       [
-        ["flags", flags, "#"],
-        ["via_giveaway", "true", "flags.2?true"],
-        ["from_id", "Peer", "flags.4?Peer"],
-        ["giveaway_msg_id", "number", "flags.3?int"],
-        ["to_id", "bigint", "flags.0?long"],
-        ["date", "number", "int"],
-        ["months", "number", "int"],
-        ["used_date", "number", "flags.1?int"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["via_giveaway", "flags.2?true"],
+        ["from_id", "flags.4?Peer"],
+        ["giveaway_msg_id", "flags.3?int"],
+        ["to_id", "flags.0?long"],
+        ["date", "int"],
+        ["months", "int"],
+        ["used_date", "flags.1?int"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -35717,13 +35695,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4367DAA0,
       [
-        ["flags", flags, "#"],
-        ["participating", "true", "flags.0?true"],
-        ["preparing_results", "true", "flags.3?true"],
-        ["start_date", "number", "int"],
-        ["joined_too_early_date", "number", "flags.1?int"],
-        ["admin_disallowed_chat_id", "bigint", "flags.2?long"],
-        ["disallowed_country", "string", "flags.4?string"],
+        ["flags", "#"],
+        ["participating", "flags.0?true"],
+        ["preparing_results", "flags.3?true"],
+        ["start_date", "int"],
+        ["joined_too_early_date", "flags.1?int"],
+        ["admin_disallowed_chat_id", "flags.2?long"],
+        ["disallowed_country", "flags.4?string"],
       ],
     ],
   ],
@@ -35732,15 +35710,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE175E66F,
       [
-        ["flags", flags, "#"],
-        ["winner", "true", "flags.0?true"],
-        ["refunded", "true", "flags.1?true"],
-        ["start_date", "number", "int"],
-        ["gift_code_slug", "string", "flags.3?string"],
-        ["stars_prize", "bigint", "flags.4?long"],
-        ["finish_date", "number", "int"],
-        ["winners_count", "number", "int"],
-        ["activated_count", "number", "flags.2?int"],
+        ["flags", "#"],
+        ["winner", "flags.0?true"],
+        ["refunded", "flags.1?true"],
+        ["start_date", "int"],
+        ["gift_code_slug", "flags.3?string"],
+        ["stars_prize", "flags.4?long"],
+        ["finish_date", "int"],
+        ["winners_count", "int"],
+        ["activated_count", "flags.2?int"],
       ],
     ],
   ],
@@ -35749,10 +35727,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB2539D54,
       [
-        ["id", "bigint", "long"],
-        ["months", "number", "int"],
-        ["quantity", "number", "int"],
-        ["date", "number", "int"],
+        ["id", "long"],
+        ["months", "int"],
+        ["quantity", "int"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -35761,11 +35739,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9A9D77E0,
       [
-        ["id", "bigint", "long"],
-        ["stars", "bigint", "long"],
-        ["quantity", "number", "int"],
-        ["boosts", "number", "int"],
-        ["date", "number", "int"],
+        ["id", "long"],
+        ["stars", "long"],
+        ["quantity", "int"],
+        ["boosts", "int"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -35774,18 +35752,18 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4B3E14D6,
       [
-        ["flags", flags, "#"],
-        ["gift", "true", "flags.1?true"],
-        ["giveaway", "true", "flags.2?true"],
-        ["unclaimed", "true", "flags.3?true"],
-        ["id", "string", "string"],
-        ["user_id", "bigint", "flags.0?long"],
-        ["giveaway_msg_id", "number", "flags.2?int"],
-        ["date", "number", "int"],
-        ["expires", "number", "int"],
-        ["used_gift_slug", "string", "flags.4?string"],
-        ["multiplier", "number", "flags.5?int"],
-        ["stars", "bigint", "flags.6?long"],
+        ["flags", "#"],
+        ["gift", "flags.1?true"],
+        ["giveaway", "flags.2?true"],
+        ["unclaimed", "flags.3?true"],
+        ["id", "string"],
+        ["user_id", "flags.0?long"],
+        ["giveaway_msg_id", "flags.2?int"],
+        ["date", "int"],
+        ["expires", "int"],
+        ["used_gift_slug", "flags.4?string"],
+        ["multiplier", "flags.5?int"],
+        ["stars", "flags.6?long"],
       ],
     ],
   ],
@@ -35794,11 +35772,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x86F8613C,
       [
-        ["flags", flags, "#"],
-        ["count", "number", "int"],
-        ["boosts", ["Boost"], "Vector<Boost>"],
-        ["next_offset", "string", "flags.0?string"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["count", "int"],
+        ["boosts", "Vector<Boost>"],
+        ["next_offset", "flags.0?string"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -35807,12 +35785,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC448415C,
       [
-        ["flags", flags, "#"],
-        ["slot", "number", "int"],
-        ["peer", "Peer", "flags.0?Peer"],
-        ["date", "number", "int"],
-        ["expires", "number", "int"],
-        ["cooldown_until_date", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["slot", "int"],
+        ["peer", "flags.0?Peer"],
+        ["date", "int"],
+        ["expires", "int"],
+        ["cooldown_until_date", "flags.1?int"],
       ],
     ],
   ],
@@ -35821,9 +35799,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9AE228E2,
       [
-        ["my_boosts", ["MyBoost"], "Vector<MyBoost>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["my_boosts", "Vector<MyBoost>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -35832,17 +35810,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4959427A,
       [
-        ["flags", flags, "#"],
-        ["my_boost", "true", "flags.2?true"],
-        ["level", "number", "int"],
-        ["current_level_boosts", "number", "int"],
-        ["boosts", "number", "int"],
-        ["gift_boosts", "number", "flags.4?int"],
-        ["next_level_boosts", "number", "flags.0?int"],
-        ["premium_audience", "StatsPercentValue", "flags.1?StatsPercentValue"],
-        ["boost_url", "string", "string"],
-        ["prepaid_giveaways", ["PrepaidGiveaway"], "flags.3?Vector<PrepaidGiveaway>"],
-        ["my_boost_slots", ["number"], "flags.2?Vector<int>"],
+        ["flags", "#"],
+        ["my_boost", "flags.2?true"],
+        ["level", "int"],
+        ["current_level_boosts", "int"],
+        ["boosts", "int"],
+        ["gift_boosts", "flags.4?int"],
+        ["next_level_boosts", "flags.0?int"],
+        ["premium_audience", "flags.1?StatsPercentValue"],
+        ["boost_url", "string"],
+        ["prepaid_giveaways", "flags.3?Vector<PrepaidGiveaway>"],
+        ["my_boost_slots", "flags.2?Vector<int>"],
       ],
     ],
   ],
@@ -35851,11 +35829,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB826E150,
       [
-        ["flags", flags, "#"],
-        ["modified", "true", "flags.3?true"],
-        ["from", "Peer", "flags.0?Peer"],
-        ["from_name", "string", "flags.1?string"],
-        ["story_id", "number", "flags.2?int"],
+        ["flags", "#"],
+        ["modified", "flags.3?true"],
+        ["from", "flags.0?Peer"],
+        ["from_name", "flags.1?string"],
+        ["story_id", "flags.2?int"],
       ],
     ],
   ],
@@ -35864,10 +35842,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE7058E7F,
       [
-        ["msg_id", "number", "int"],
-        ["views", "number", "int"],
-        ["forwards", "number", "int"],
-        ["reactions", "number", "int"],
+        ["msg_id", "int"],
+        ["views", "int"],
+        ["forwards", "int"],
+        ["reactions", "int"],
       ],
     ],
   ],
@@ -35876,10 +35854,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8A480E27,
       [
-        ["story_id", "number", "int"],
-        ["views", "number", "int"],
-        ["forwards", "number", "int"],
-        ["reactions", "number", "int"],
+        ["story_id", "int"],
+        ["views", "int"],
+        ["forwards", "int"],
+        ["reactions", "int"],
       ],
     ],
   ],
@@ -35888,8 +35866,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x50CD067C,
       [
-        ["views_graph", "StatsGraph", "StatsGraph"],
-        ["reactions_by_emotion_graph", "StatsGraph", "StatsGraph"],
+        ["views_graph", "StatsGraph"],
+        ["reactions_by_emotion_graph", "StatsGraph"],
       ],
     ],
   ],
@@ -35898,7 +35876,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x01F2BF4A,
       [
-        ["message", "Message", "Message"],
+        ["message", "Message"],
       ],
     ],
   ],
@@ -35907,8 +35885,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEDF3ADD0,
       [
-        ["peer", "Peer", "Peer"],
-        ["story", "StoryItem", "StoryItem"],
+        ["peer", "Peer"],
+        ["story", "StoryItem"],
       ],
     ],
   ],
@@ -35917,12 +35895,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x93037E20,
       [
-        ["flags", flags, "#"],
-        ["count", "number", "int"],
-        ["forwards", ["PublicForward"], "Vector<PublicForward>"],
-        ["next_offset", "string", "flags.0?string"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["count", "int"],
+        ["forwards", "Vector<PublicForward>"],
+        ["next_offset", "flags.0?string"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -35931,9 +35909,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB54B5ACF,
       [
-        ["flags", flags, "#"],
-        ["color", "number", "flags.0?int"],
-        ["background_emoji_id", "bigint", "flags.1?long"],
+        ["flags", "#"],
+        ["color", "flags.0?int"],
+        ["background_emoji_id", "flags.1?long"],
       ],
     ],
   ],
@@ -35942,7 +35920,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x26219A58,
       [
-        ["colors", ["number"], "Vector<int>"],
+        ["colors", "Vector<int>"],
       ],
     ],
   ],
@@ -35951,9 +35929,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x767D61EB,
       [
-        ["palette_colors", ["number"], "Vector<int>"],
-        ["bg_colors", ["number"], "Vector<int>"],
-        ["story_colors", ["number"], "Vector<int>"],
+        ["palette_colors", "Vector<int>"],
+        ["bg_colors", "Vector<int>"],
+        ["story_colors", "Vector<int>"],
       ],
     ],
   ],
@@ -35962,13 +35940,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xADEC6EBE,
       [
-        ["flags", flags, "#"],
-        ["hidden", "true", "flags.0?true"],
-        ["color_id", "number", "int"],
-        ["colors", "help_PeerColorSet", "flags.1?help.PeerColorSet"],
-        ["dark_colors", "help_PeerColorSet", "flags.2?help.PeerColorSet"],
-        ["channel_min_level", "number", "flags.3?int"],
-        ["group_min_level", "number", "flags.4?int"],
+        ["flags", "#"],
+        ["hidden", "flags.0?true"],
+        ["color_id", "int"],
+        ["colors", "flags.1?help.PeerColorSet"],
+        ["dark_colors", "flags.2?help.PeerColorSet"],
+        ["channel_min_level", "flags.3?int"],
+        ["group_min_level", "flags.4?int"],
       ],
     ],
   ],
@@ -35984,8 +35962,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x00F8ED08,
       [
-        ["hash", "number", "int"],
-        ["colors", ["help_PeerColorOption"], "Vector<help.PeerColorOption>"],
+        ["hash", "int"],
+        ["colors", "Vector<help.PeerColorOption>"],
       ],
     ],
   ],
@@ -35994,9 +35972,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6090D6D5,
       [
-        ["peer_id", "Peer", "Peer"],
-        ["date", "number", "int"],
-        ["reaction", "Reaction", "Reaction"],
+        ["peer_id", "Peer"],
+        ["date", "int"],
+        ["reaction", "Reaction"],
       ],
     ],
   ],
@@ -36005,7 +35983,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBBAB2643,
       [
-        ["message", "Message", "Message"],
+        ["message", "Message"],
       ],
     ],
   ],
@@ -36014,8 +35992,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCFCD0F13,
       [
-        ["peer_id", "Peer", "Peer"],
-        ["story", "StoryItem", "StoryItem"],
+        ["peer_id", "Peer"],
+        ["story", "StoryItem"],
       ],
     ],
   ],
@@ -36024,12 +36002,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAA5F789C,
       [
-        ["flags", flags, "#"],
-        ["count", "number", "int"],
-        ["reactions", ["StoryReaction"], "Vector<StoryReaction>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
-        ["next_offset", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["count", "int"],
+        ["reactions", "Vector<StoryReaction>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+        ["next_offset", "flags.0?string"],
       ],
     ],
   ],
@@ -36038,10 +36016,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBD87CB6C,
       [
-        ["flags", flags, "#"],
-        ["pinned", "true", "flags.2?true"],
-        ["peer", "Peer", "Peer"],
-        ["top_message", "number", "int"],
+        ["flags", "#"],
+        ["pinned", "flags.2?true"],
+        ["peer", "Peer"],
+        ["top_message", "int"],
       ],
     ],
   ],
@@ -36050,10 +36028,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF83AE221,
       [
-        ["dialogs", ["SavedDialog"], "Vector<SavedDialog>"],
-        ["messages", ["Message"], "Vector<Message>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["dialogs", "Vector<SavedDialog>"],
+        ["messages", "Vector<Message>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -36062,11 +36040,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x44BA9DD9,
       [
-        ["count", "number", "int"],
-        ["dialogs", ["SavedDialog"], "Vector<SavedDialog>"],
-        ["messages", ["Message"], "Vector<Message>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["count", "int"],
+        ["dialogs", "Vector<SavedDialog>"],
+        ["messages", "Vector<Message>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -36075,7 +36053,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC01F6FE8,
       [
-        ["count", "number", "int"],
+        ["count", "int"],
       ],
     ],
   ],
@@ -36084,10 +36062,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCB6FF828,
       [
-        ["flags", flags, "#"],
-        ["reaction", "Reaction", "Reaction"],
-        ["title", "string", "flags.0?string"],
-        ["count", "number", "int"],
+        ["flags", "#"],
+        ["reaction", "Reaction"],
+        ["title", "flags.0?string"],
+        ["count", "int"],
       ],
     ],
   ],
@@ -36103,8 +36081,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3259950A,
       [
-        ["tags", ["SavedReactionTag"], "Vector<SavedReactionTag>"],
-        ["hash", "bigint", "long"],
+        ["tags", "Vector<SavedReactionTag>"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -36113,7 +36091,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3BB842AC,
       [
-        ["date", "number", "int"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -36122,8 +36100,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDC8B44CF,
       [
-        ["terms_url", "string", "string"],
-        ["monthly_sent_sms", "number", "int"],
+        ["terms_url", "string"],
+        ["monthly_sent_sms", "int"],
       ],
     ],
   ],
@@ -36132,15 +36110,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2AEE9191,
       [
-        ["flags", flags, "#"],
-        ["allow_international", "true", "flags.0?true"],
-        ["recent_sent", "number", "int"],
-        ["recent_since", "number", "int"],
-        ["recent_remains", "number", "int"],
-        ["total_sent", "number", "int"],
-        ["total_since", "number", "int"],
-        ["last_gift_slug", "string", "flags.1?string"],
-        ["terms_url", "string", "string"],
+        ["flags", "#"],
+        ["allow_international", "flags.0?true"],
+        ["recent_sent", "int"],
+        ["recent_since", "int"],
+        ["recent_remains", "int"],
+        ["total_sent", "int"],
+        ["total_since", "int"],
+        ["last_gift_slug", "flags.1?string"],
+        ["terms_url", "string"],
       ],
     ],
   ],
@@ -36149,9 +36127,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE6A1EEB8,
       [
-        ["job_id", "string", "string"],
-        ["phone_number", "string", "string"],
-        ["text", "string", "string"],
+        ["job_id", "string"],
+        ["phone_number", "string"],
+        ["text", "string"],
       ],
     ],
   ],
@@ -36160,8 +36138,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x120B1AB9,
       [
-        ["start_minute", "number", "int"],
-        ["end_minute", "number", "int"],
+        ["start_minute", "int"],
+        ["end_minute", "int"],
       ],
     ],
   ],
@@ -36170,10 +36148,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8C92B098,
       [
-        ["flags", flags, "#"],
-        ["open_now", "true", "flags.0?true"],
-        ["timezone_id", "string", "string"],
-        ["weekly_open", ["BusinessWeeklyOpen"], "Vector<BusinessWeeklyOpen>"],
+        ["flags", "#"],
+        ["open_now", "flags.0?true"],
+        ["timezone_id", "string"],
+        ["weekly_open", "Vector<BusinessWeeklyOpen>"],
       ],
     ],
   ],
@@ -36182,9 +36160,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAC5C1AF7,
       [
-        ["flags", flags, "#"],
-        ["geo_point", "GeoPoint", "flags.0?GeoPoint"],
-        ["address", "string", "string"],
+        ["flags", "#"],
+        ["geo_point", "flags.0?GeoPoint"],
+        ["address", "string"],
       ],
     ],
   ],
@@ -36193,13 +36171,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6F8B32AA,
       [
-        ["flags", flags, "#"],
-        ["existing_chats", "true", "flags.0?true"],
-        ["new_chats", "true", "flags.1?true"],
-        ["contacts", "true", "flags.2?true"],
-        ["non_contacts", "true", "flags.3?true"],
-        ["exclude_selected", "true", "flags.5?true"],
-        ["users", ["InputUser"], "flags.4?Vector<InputUser>"],
+        ["flags", "#"],
+        ["existing_chats", "flags.0?true"],
+        ["new_chats", "flags.1?true"],
+        ["contacts", "flags.2?true"],
+        ["non_contacts", "flags.3?true"],
+        ["exclude_selected", "flags.5?true"],
+        ["users", "flags.4?Vector<InputUser>"],
       ],
     ],
   ],
@@ -36208,13 +36186,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x21108FF7,
       [
-        ["flags", flags, "#"],
-        ["existing_chats", "true", "flags.0?true"],
-        ["new_chats", "true", "flags.1?true"],
-        ["contacts", "true", "flags.2?true"],
-        ["non_contacts", "true", "flags.3?true"],
-        ["exclude_selected", "true", "flags.5?true"],
-        ["users", ["bigint"], "flags.4?Vector<long>"],
+        ["flags", "#"],
+        ["existing_chats", "flags.0?true"],
+        ["new_chats", "flags.1?true"],
+        ["contacts", "flags.2?true"],
+        ["non_contacts", "flags.3?true"],
+        ["exclude_selected", "flags.5?true"],
+        ["users", "flags.4?Vector<long>"],
       ],
     ],
   ],
@@ -36237,8 +36215,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCC4D9ECC,
       [
-        ["start_date", "number", "int"],
-        ["end_date", "number", "int"],
+        ["start_date", "int"],
+        ["end_date", "int"],
       ],
     ],
   ],
@@ -36247,9 +36225,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0194CB3B,
       [
-        ["shortcut_id", "number", "int"],
-        ["recipients", "InputBusinessRecipients", "InputBusinessRecipients"],
-        ["no_activity_days", "number", "int"],
+        ["shortcut_id", "int"],
+        ["recipients", "InputBusinessRecipients"],
+        ["no_activity_days", "int"],
       ],
     ],
   ],
@@ -36258,9 +36236,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE519ABAB,
       [
-        ["shortcut_id", "number", "int"],
-        ["recipients", "BusinessRecipients", "BusinessRecipients"],
-        ["no_activity_days", "number", "int"],
+        ["shortcut_id", "int"],
+        ["recipients", "BusinessRecipients"],
+        ["no_activity_days", "int"],
       ],
     ],
   ],
@@ -36269,11 +36247,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x832175E0,
       [
-        ["flags", flags, "#"],
-        ["offline_only", "true", "flags.0?true"],
-        ["shortcut_id", "number", "int"],
-        ["schedule", "BusinessAwayMessageSchedule", "BusinessAwayMessageSchedule"],
-        ["recipients", "InputBusinessRecipients", "InputBusinessRecipients"],
+        ["flags", "#"],
+        ["offline_only", "flags.0?true"],
+        ["shortcut_id", "int"],
+        ["schedule", "BusinessAwayMessageSchedule"],
+        ["recipients", "InputBusinessRecipients"],
       ],
     ],
   ],
@@ -36282,11 +36260,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEF156A5C,
       [
-        ["flags", flags, "#"],
-        ["offline_only", "true", "flags.0?true"],
-        ["shortcut_id", "number", "int"],
-        ["schedule", "BusinessAwayMessageSchedule", "BusinessAwayMessageSchedule"],
-        ["recipients", "BusinessRecipients", "BusinessRecipients"],
+        ["flags", "#"],
+        ["offline_only", "flags.0?true"],
+        ["shortcut_id", "int"],
+        ["schedule", "BusinessAwayMessageSchedule"],
+        ["recipients", "BusinessRecipients"],
       ],
     ],
   ],
@@ -36295,9 +36273,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFF9289F5,
       [
-        ["id", "string", "string"],
-        ["name", "string", "string"],
-        ["utc_offset", "number", "int"],
+        ["id", "string"],
+        ["name", "string"],
+        ["utc_offset", "int"],
       ],
     ],
   ],
@@ -36313,8 +36291,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7B74ED71,
       [
-        ["timezones", ["Timezone"], "Vector<Timezone>"],
-        ["hash", "number", "int"],
+        ["timezones", "Vector<Timezone>"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -36323,10 +36301,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0697102B,
       [
-        ["shortcut_id", "number", "int"],
-        ["shortcut", "string", "string"],
-        ["top_message", "number", "int"],
-        ["count", "number", "int"],
+        ["shortcut_id", "int"],
+        ["shortcut", "string"],
+        ["top_message", "int"],
+        ["count", "int"],
       ],
     ],
   ],
@@ -36335,7 +36313,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x24596D41,
       [
-        ["shortcut", "string", "string"],
+        ["shortcut", "string"],
       ],
     ],
   ],
@@ -36344,7 +36322,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x01190CF1,
       [
-        ["shortcut_id", "number", "int"],
+        ["shortcut_id", "int"],
       ],
     ],
   ],
@@ -36353,10 +36331,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC68D6695,
       [
-        ["quick_replies", ["QuickReply"], "Vector<QuickReply>"],
-        ["messages", ["Message"], "Vector<Message>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["quick_replies", "Vector<QuickReply>"],
+        ["messages", "Vector<Message>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -36372,10 +36350,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBD068601,
       [
-        ["flags", flags, "#"],
-        ["can_reply", "true", "flags.0?true"],
-        ["bot_id", "bigint", "long"],
-        ["recipients", "BusinessBotRecipients", "BusinessBotRecipients"],
+        ["flags", "#"],
+        ["can_reply", "flags.0?true"],
+        ["bot_id", "long"],
+        ["recipients", "BusinessBotRecipients"],
       ],
     ],
   ],
@@ -36384,8 +36362,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x17D7F87B,
       [
-        ["connected_bots", ["ConnectedBot"], "Vector<ConnectedBot>"],
-        ["users", ["User"], "Vector<User>"],
+        ["connected_bots", "Vector<ConnectedBot>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -36394,9 +36372,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2AD93719,
       [
-        ["flags", flags, "#"],
-        ["tags_enabled", "true", "flags.0?true"],
-        ["filters", ["DialogFilter"], "Vector<DialogFilter>"],
+        ["flags", "#"],
+        ["tags_enabled", "flags.0?true"],
+        ["filters", "Vector<DialogFilter>"],
       ],
     ],
   ],
@@ -36405,10 +36383,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6C8E1E06,
       [
-        ["flags", flags, "#"],
-        ["day", "number", "int"],
-        ["month", "number", "int"],
-        ["year", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["day", "int"],
+        ["month", "int"],
+        ["year", "flags.0?int"],
       ],
     ],
   ],
@@ -36417,13 +36395,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x896433B4,
       [
-        ["flags", flags, "#"],
-        ["can_reply", "true", "flags.0?true"],
-        ["disabled", "true", "flags.1?true"],
-        ["connection_id", "string", "string"],
-        ["user_id", "bigint", "long"],
-        ["dc_id", "number", "int"],
-        ["date", "number", "int"],
+        ["flags", "#"],
+        ["can_reply", "flags.0?true"],
+        ["disabled", "flags.1?true"],
+        ["connection_id", "string"],
+        ["user_id", "long"],
+        ["dc_id", "int"],
+        ["date", "int"],
       ],
     ],
   ],
@@ -36432,10 +36410,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x09C469CD,
       [
-        ["flags", flags, "#"],
-        ["title", "string", "string"],
-        ["description", "string", "string"],
-        ["sticker", "InputDocument", "flags.0?InputDocument"],
+        ["flags", "#"],
+        ["title", "string"],
+        ["description", "string"],
+        ["sticker", "flags.0?InputDocument"],
       ],
     ],
   ],
@@ -36444,10 +36422,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5A0A066D,
       [
-        ["flags", flags, "#"],
-        ["title", "string", "string"],
-        ["description", "string", "string"],
-        ["sticker", "Document", "flags.0?Document"],
+        ["flags", "#"],
+        ["title", "string"],
+        ["description", "string"],
+        ["sticker", "flags.0?Document"],
       ],
     ],
   ],
@@ -36456,8 +36434,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFAFF629D,
       [
-        ["count", "number", "int"],
-        ["sets", ["StickerSetCovered"], "Vector<StickerSetCovered>"],
+        ["count", "int"],
+        ["sets", "Vector<StickerSetCovered>"],
       ],
     ],
   ],
@@ -36466,7 +36444,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE39460A9,
       [
-        ["username", "string", "string"],
+        ["username", "string"],
       ],
     ],
   ],
@@ -36475,7 +36453,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA2E214A4,
       [
-        ["phone", "string", "string"],
+        ["phone", "string"],
       ],
     ],
   ],
@@ -36484,12 +36462,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6EBDFF91,
       [
-        ["purchase_date", "number", "int"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
-        ["crypto_currency", "string", "string"],
-        ["crypto_amount", "bigint", "long"],
-        ["url", "string", "string"],
+        ["purchase_date", "int"],
+        ["currency", "string"],
+        ["amount", "long"],
+        ["crypto_currency", "string"],
+        ["crypto_amount", "long"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -36498,14 +36476,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC4E5921E,
       [
-        ["flags", flags, "#"],
-        ["existing_chats", "true", "flags.0?true"],
-        ["new_chats", "true", "flags.1?true"],
-        ["contacts", "true", "flags.2?true"],
-        ["non_contacts", "true", "flags.3?true"],
-        ["exclude_selected", "true", "flags.5?true"],
-        ["users", ["InputUser"], "flags.4?Vector<InputUser>"],
-        ["exclude_users", ["InputUser"], "flags.6?Vector<InputUser>"],
+        ["flags", "#"],
+        ["existing_chats", "flags.0?true"],
+        ["new_chats", "flags.1?true"],
+        ["contacts", "flags.2?true"],
+        ["non_contacts", "flags.3?true"],
+        ["exclude_selected", "flags.5?true"],
+        ["users", "flags.4?Vector<InputUser>"],
+        ["exclude_users", "flags.6?Vector<InputUser>"],
       ],
     ],
   ],
@@ -36514,14 +36492,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB88CF373,
       [
-        ["flags", flags, "#"],
-        ["existing_chats", "true", "flags.0?true"],
-        ["new_chats", "true", "flags.1?true"],
-        ["contacts", "true", "flags.2?true"],
-        ["non_contacts", "true", "flags.3?true"],
-        ["exclude_selected", "true", "flags.5?true"],
-        ["users", ["bigint"], "flags.4?Vector<long>"],
-        ["exclude_users", ["bigint"], "flags.6?Vector<long>"],
+        ["flags", "#"],
+        ["existing_chats", "flags.0?true"],
+        ["new_chats", "flags.1?true"],
+        ["contacts", "flags.2?true"],
+        ["non_contacts", "flags.3?true"],
+        ["exclude_selected", "flags.5?true"],
+        ["users", "flags.4?Vector<long>"],
+        ["exclude_users", "flags.6?Vector<long>"],
       ],
     ],
   ],
@@ -36530,8 +36508,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1D998733,
       [
-        ["contact_id", "bigint", "long"],
-        ["birthday", "Birthday", "Birthday"],
+        ["contact_id", "long"],
+        ["birthday", "Birthday"],
       ],
     ],
   ],
@@ -36540,8 +36518,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x114FF30D,
       [
-        ["contacts", ["ContactBirthday"], "Vector<ContactBirthday>"],
-        ["users", ["User"], "Vector<User>"],
+        ["contacts", "Vector<ContactBirthday>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -36550,10 +36528,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x628C9224,
       [
-        ["flags", flags, "#"],
-        ["premium_would_allow_invite", "true", "flags.0?true"],
-        ["premium_required_for_pm", "true", "flags.1?true"],
-        ["user_id", "bigint", "long"],
+        ["flags", "#"],
+        ["premium_would_allow_invite", "flags.0?true"],
+        ["premium_required_for_pm", "flags.1?true"],
+        ["user_id", "long"],
       ],
     ],
   ],
@@ -36562,8 +36540,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7F5DEFA6,
       [
-        ["updates", "Updates", "Updates"],
-        ["missing_invitees", ["MissingInvitee"], "Vector<MissingInvitee>"],
+        ["updates", "Updates"],
+        ["missing_invitees", "Vector<MissingInvitee>"],
       ],
     ],
   ],
@@ -36572,10 +36550,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x11679FA7,
       [
-        ["flags", flags, "#"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.0?Vector<MessageEntity>"],
-        ["title", "string", "flags.1?string"],
+        ["flags", "#"],
+        ["message", "string"],
+        ["entities", "flags.0?Vector<MessageEntity>"],
+        ["title", "flags.1?string"],
       ],
     ],
   ],
@@ -36584,12 +36562,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB4AE666F,
       [
-        ["flags", flags, "#"],
-        ["link", "string", "string"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.0?Vector<MessageEntity>"],
-        ["title", "string", "flags.1?string"],
-        ["views", "number", "int"],
+        ["flags", "#"],
+        ["link", "string"],
+        ["message", "string"],
+        ["entities", "flags.0?Vector<MessageEntity>"],
+        ["title", "flags.1?string"],
+        ["views", "int"],
       ],
     ],
   ],
@@ -36598,9 +36576,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEC43A2D1,
       [
-        ["links", ["BusinessChatLink"], "Vector<BusinessChatLink>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["links", "Vector<BusinessChatLink>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -36609,12 +36587,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9A23AF21,
       [
-        ["flags", flags, "#"],
-        ["peer", "Peer", "Peer"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.0?Vector<MessageEntity>"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["peer", "Peer"],
+        ["message", "string"],
+        ["entities", "flags.0?Vector<MessageEntity>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -36623,12 +36601,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD62FF46A,
       [
-        ["flags", flags, "#"],
-        ["user_id", "bigint", "long"],
-        ["first_name", "string", "flags.0?string"],
-        ["last_name", "string", "flags.0?string"],
-        ["username", "string", "flags.1?string"],
-        ["photo", "Photo", "flags.2?Photo"],
+        ["flags", "#"],
+        ["user_id", "long"],
+        ["first_name", "flags.0?string"],
+        ["last_name", "flags.0?string"],
+        ["username", "flags.1?string"],
+        ["photo", "flags.2?Photo"],
       ],
     ],
   ],
@@ -36637,10 +36615,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7307544F,
       [
-        ["flags", flags, "#"],
-        ["chat_id", "bigint", "long"],
-        ["title", "string", "flags.0?string"],
-        ["photo", "Photo", "flags.2?Photo"],
+        ["flags", "#"],
+        ["chat_id", "long"],
+        ["title", "flags.0?string"],
+        ["photo", "flags.2?Photo"],
       ],
     ],
   ],
@@ -36649,11 +36627,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8BA403E4,
       [
-        ["flags", flags, "#"],
-        ["channel_id", "bigint", "long"],
-        ["title", "string", "flags.0?string"],
-        ["username", "string", "flags.1?string"],
-        ["photo", "Photo", "flags.2?Photo"],
+        ["flags", "#"],
+        ["channel_id", "long"],
+        ["title", "flags.0?string"],
+        ["username", "flags.1?string"],
+        ["photo", "flags.2?Photo"],
       ],
     ],
   ],
@@ -36662,8 +36640,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x430D3150,
       [
-        ["text", "string", "string"],
-        ["option", Uint8Array, "bytes"],
+        ["text", "string"],
+        ["option", "bytes"],
       ],
     ],
   ],
@@ -36672,8 +36650,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x846F9E42,
       [
-        ["title", "string", "string"],
-        ["options", ["SponsoredMessageReportOption"], "Vector<SponsoredMessageReportOption>"],
+        ["title", "string"],
+        ["options", "Vector<SponsoredMessageReportOption>"],
       ],
     ],
   ],
@@ -36696,10 +36674,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5407E297,
       [
-        ["top_hours_graph", "StatsGraph", "StatsGraph"],
-        ["revenue_graph", "StatsGraph", "StatsGraph"],
-        ["balances", "BroadcastRevenueBalances", "BroadcastRevenueBalances"],
-        ["usd_rate", "number", "double"],
+        ["top_hours_graph", "StatsGraph"],
+        ["revenue_graph", "StatsGraph"],
+        ["balances", "BroadcastRevenueBalances"],
+        ["usd_rate", "double"],
       ],
     ],
   ],
@@ -36708,7 +36686,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEC659737,
       [
-        ["url", "string", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -36717,9 +36695,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x557E2CC4,
       [
-        ["amount", "bigint", "long"],
-        ["from_date", "number", "int"],
-        ["to_date", "number", "int"],
+        ["amount", "long"],
+        ["from_date", "int"],
+        ["to_date", "int"],
       ],
     ],
   ],
@@ -36728,14 +36706,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5A590978,
       [
-        ["flags", flags, "#"],
-        ["pending", "true", "flags.0?true"],
-        ["failed", "true", "flags.2?true"],
-        ["amount", "bigint", "long"],
-        ["date", "number", "int"],
-        ["provider", "string", "string"],
-        ["transaction_date", "number", "flags.1?int"],
-        ["transaction_url", "string", "flags.1?string"],
+        ["flags", "#"],
+        ["pending", "flags.0?true"],
+        ["failed", "flags.2?true"],
+        ["amount", "long"],
+        ["date", "int"],
+        ["provider", "string"],
+        ["transaction_date", "flags.1?int"],
+        ["transaction_url", "flags.1?string"],
       ],
     ],
   ],
@@ -36744,9 +36722,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x42D30D2E,
       [
-        ["amount", "bigint", "long"],
-        ["date", "number", "int"],
-        ["provider", "string", "string"],
+        ["amount", "long"],
+        ["date", "int"],
+        ["provider", "string"],
       ],
     ],
   ],
@@ -36755,8 +36733,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x87158466,
       [
-        ["count", "number", "int"],
-        ["transactions", ["BroadcastRevenueTransaction"], "Vector<BroadcastRevenueTransaction>"],
+        ["count", "int"],
+        ["transactions", "Vector<BroadcastRevenueTransaction>"],
       ],
     ],
   ],
@@ -36779,11 +36757,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x56E34970,
       [
-        ["flags", flags, "#"],
-        ["messages_notify_from", "ReactionNotificationsFrom", "flags.0?ReactionNotificationsFrom"],
-        ["stories_notify_from", "ReactionNotificationsFrom", "flags.1?ReactionNotificationsFrom"],
-        ["sound", "NotificationSound", "NotificationSound"],
-        ["show_previews", "boolean", "Bool"],
+        ["flags", "#"],
+        ["messages_notify_from", "flags.0?ReactionNotificationsFrom"],
+        ["stories_notify_from", "flags.1?ReactionNotificationsFrom"],
+        ["sound", "NotificationSound"],
+        ["show_previews", "Bool"],
       ],
     ],
   ],
@@ -36792,11 +36770,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC3FF71E7,
       [
-        ["flags", flags, "#"],
-        ["withdrawal_enabled", "true", "flags.0?true"],
-        ["current_balance", "bigint", "long"],
-        ["available_balance", "bigint", "long"],
-        ["overall_revenue", "bigint", "long"],
+        ["flags", "#"],
+        ["withdrawal_enabled", "flags.0?true"],
+        ["current_balance", "long"],
+        ["available_balance", "long"],
+        ["overall_revenue", "long"],
       ],
     ],
   ],
@@ -36805,13 +36783,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x93C3E27E,
       [
-        ["flags", flags, "#"],
-        ["premium_required", "true", "flags.2?true"],
-        ["id", "bigint", "long"],
-        ["emoticon", "string", "string"],
-        ["static_icon_id", "bigint", "flags.0?long"],
-        ["effect_sticker_id", "bigint", "long"],
-        ["effect_animation_id", "bigint", "flags.1?long"],
+        ["flags", "#"],
+        ["premium_required", "flags.2?true"],
+        ["id", "long"],
+        ["emoticon", "string"],
+        ["static_icon_id", "flags.0?long"],
+        ["effect_sticker_id", "long"],
+        ["effect_animation_id", "flags.1?long"],
       ],
     ],
   ],
@@ -36827,9 +36805,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBDDB616E,
       [
-        ["hash", "number", "int"],
-        ["effects", ["AvailableEffect"], "Vector<AvailableEffect>"],
-        ["documents", ["Document"], "Vector<Document>"],
+        ["hash", "int"],
+        ["effects", "Vector<AvailableEffect>"],
+        ["documents", "Vector<Document>"],
       ],
     ],
   ],
@@ -36838,11 +36816,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB89BFCCF,
       [
-        ["flags", flags, "#"],
-        ["need_check", "true", "flags.0?true"],
-        ["country", "string", "flags.1?string"],
-        ["text", "TextWithEntities", "flags.1?TextWithEntities"],
-        ["hash", "bigint", "long"],
+        ["flags", "#"],
+        ["need_check", "flags.0?true"],
+        ["country", "flags.1?string"],
+        ["text", "flags.1?TextWithEntities"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -36886,7 +36864,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD80DA15D,
       [
-        ["peer", "Peer", "Peer"],
+        ["peer", "Peer"],
       ],
     ],
   ],
@@ -36909,12 +36887,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0BD915C0,
       [
-        ["flags", flags, "#"],
-        ["extended", "true", "flags.1?true"],
-        ["stars", "bigint", "long"],
-        ["store_product", "string", "flags.0?string"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
+        ["flags", "#"],
+        ["extended", "flags.1?true"],
+        ["stars", "long"],
+        ["store_product", "flags.0?string"],
+        ["currency", "string"],
+        ["amount", "long"],
       ],
     ],
   ],
@@ -36923,34 +36901,34 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA39FD94A,
       [
-        ["flags", flags, "#"],
-        ["refund", "true", "flags.3?true"],
-        ["pending", "true", "flags.4?true"],
-        ["failed", "true", "flags.6?true"],
-        ["gift", "true", "flags.10?true"],
-        ["reaction", "true", "flags.11?true"],
-        ["stargift_upgrade", "true", "flags.18?true"],
-        ["id", "string", "string"],
-        ["stars", "StarsAmount", "StarsAmount"],
-        ["date", "number", "int"],
-        ["peer", "StarsTransactionPeer", "StarsTransactionPeer"],
-        ["title", "string", "flags.0?string"],
-        ["description", "string", "flags.1?string"],
-        ["photo", "WebDocument", "flags.2?WebDocument"],
-        ["transaction_date", "number", "flags.5?int"],
-        ["transaction_url", "string", "flags.5?string"],
-        ["bot_payload", Uint8Array, "flags.7?bytes"],
-        ["msg_id", "number", "flags.8?int"],
-        ["extended_media", ["MessageMedia"], "flags.9?Vector<MessageMedia>"],
-        ["subscription_period", "number", "flags.12?int"],
-        ["giveaway_post_id", "number", "flags.13?int"],
-        ["stargift", "StarGift", "flags.14?StarGift"],
-        ["floodskip_number", "number", "flags.15?int"],
-        ["starref_commission_permille", "number", "flags.16?int"],
-        ["starref_peer", "Peer", "flags.17?Peer"],
-        ["starref_amount", "StarsAmount", "flags.17?StarsAmount"],
-        ["paid_messages", "number", "flags.19?int"],
-        ["premium_gift_months", "number", "flags.20?int"],
+        ["flags", "#"],
+        ["refund", "flags.3?true"],
+        ["pending", "flags.4?true"],
+        ["failed", "flags.6?true"],
+        ["gift", "flags.10?true"],
+        ["reaction", "flags.11?true"],
+        ["stargift_upgrade", "flags.18?true"],
+        ["id", "string"],
+        ["stars", "StarsAmount"],
+        ["date", "int"],
+        ["peer", "StarsTransactionPeer"],
+        ["title", "flags.0?string"],
+        ["description", "flags.1?string"],
+        ["photo", "flags.2?WebDocument"],
+        ["transaction_date", "flags.5?int"],
+        ["transaction_url", "flags.5?string"],
+        ["bot_payload", "flags.7?bytes"],
+        ["msg_id", "flags.8?int"],
+        ["extended_media", "flags.9?Vector<MessageMedia>"],
+        ["subscription_period", "flags.12?int"],
+        ["giveaway_post_id", "flags.13?int"],
+        ["stargift", "flags.14?StarGift"],
+        ["floodskip_number", "flags.15?int"],
+        ["starref_commission_permille", "flags.16?int"],
+        ["starref_peer", "flags.17?Peer"],
+        ["starref_amount", "flags.17?StarsAmount"],
+        ["paid_messages", "flags.19?int"],
+        ["premium_gift_months", "flags.20?int"],
       ],
     ],
   ],
@@ -36959,15 +36937,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6C9CE8ED,
       [
-        ["flags", flags, "#"],
-        ["balance", "StarsAmount", "StarsAmount"],
-        ["subscriptions", ["StarsSubscription"], "flags.1?Vector<StarsSubscription>"],
-        ["subscriptions_next_offset", "string", "flags.2?string"],
-        ["subscriptions_missing_balance", "bigint", "flags.4?long"],
-        ["history", ["StarsTransaction"], "flags.3?Vector<StarsTransaction>"],
-        ["next_offset", "string", "flags.0?string"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["balance", "StarsAmount"],
+        ["subscriptions", "flags.1?Vector<StarsSubscription>"],
+        ["subscriptions_next_offset", "flags.2?string"],
+        ["subscriptions_missing_balance", "flags.4?long"],
+        ["history", "flags.3?Vector<StarsTransaction>"],
+        ["next_offset", "flags.0?string"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -36976,8 +36954,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE87ACBC0,
       [
-        ["peer", "Peer", "Peer"],
-        ["story", "StoryItem", "StoryItem"],
+        ["peer", "Peer"],
+        ["story", "StoryItem"],
       ],
     ],
   ],
@@ -36986,12 +36964,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE2DE7737,
       [
-        ["flags", flags, "#"],
-        ["count", "number", "int"],
-        ["stories", ["FoundStory"], "Vector<FoundStory>"],
-        ["next_offset", "string", "flags.0?string"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["count", "int"],
+        ["stories", "Vector<FoundStory>"],
+        ["next_offset", "flags.0?string"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -37000,11 +36978,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDE4C5D93,
       [
-        ["flags", flags, "#"],
-        ["country_iso2", "string", "string"],
-        ["state", "string", "flags.0?string"],
-        ["city", "string", "flags.1?string"],
-        ["street", "string", "flags.2?string"],
+        ["flags", "#"],
+        ["country_iso2", "string"],
+        ["state", "flags.0?string"],
+        ["city", "flags.1?string"],
+        ["street", "flags.2?string"],
       ],
     ],
   ],
@@ -37013,12 +36991,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFEBE5491,
       [
-        ["flags", flags, "#"],
-        ["withdrawal_enabled", "true", "flags.0?true"],
-        ["current_balance", "StarsAmount", "StarsAmount"],
-        ["available_balance", "StarsAmount", "StarsAmount"],
-        ["overall_revenue", "StarsAmount", "StarsAmount"],
-        ["next_withdrawal_at", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["withdrawal_enabled", "flags.0?true"],
+        ["current_balance", "StarsAmount"],
+        ["available_balance", "StarsAmount"],
+        ["overall_revenue", "StarsAmount"],
+        ["next_withdrawal_at", "flags.1?int"],
       ],
     ],
   ],
@@ -37027,9 +37005,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC92BB73B,
       [
-        ["revenue_graph", "StatsGraph", "StatsGraph"],
-        ["status", "StarsRevenueStatus", "StarsRevenueStatus"],
-        ["usd_rate", "number", "double"],
+        ["revenue_graph", "StatsGraph"],
+        ["status", "StarsRevenueStatus"],
+        ["usd_rate", "double"],
       ],
     ],
   ],
@@ -37038,7 +37016,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1DAB80B7,
       [
-        ["url", "string", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -37047,7 +37025,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x394E7F21,
       [
-        ["url", "string", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -37056,9 +37034,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x206AE6D1,
       [
-        ["flags", flags, "#"],
-        ["refund", "true", "flags.0?true"],
-        ["id", "string", "string"],
+        ["flags", "#"],
+        ["refund", "flags.0?true"],
+        ["id", "string"],
       ],
     ],
   ],
@@ -37067,12 +37045,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5E0589F1,
       [
-        ["flags", flags, "#"],
-        ["extended", "true", "flags.1?true"],
-        ["stars", "bigint", "long"],
-        ["store_product", "string", "flags.0?string"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
+        ["flags", "#"],
+        ["extended", "flags.1?true"],
+        ["stars", "long"],
+        ["store_product", "flags.0?string"],
+        ["currency", "string"],
+        ["amount", "long"],
       ],
     ],
   ],
@@ -37081,9 +37059,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1991B13B,
       [
-        ["flags", flags, "#"],
-        ["next_offset", "string", "flags.0?string"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["next_offset", "flags.0?string"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -37092,8 +37070,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x23E91BA3,
       [
-        ["date", "number", "int"],
-        ["media", "MessageMedia", "MessageMedia"],
+        ["date", "int"],
+        ["media", "MessageMedia"],
       ],
     ],
   ],
@@ -37102,8 +37080,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0CA71D64,
       [
-        ["media", ["BotPreviewMedia"], "Vector<BotPreviewMedia>"],
-        ["lang_codes", ["string"], "Vector<string>"],
+        ["media", "Vector<BotPreviewMedia>"],
+        ["lang_codes", "Vector<string>"],
       ],
     ],
   ],
@@ -37112,8 +37090,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x05416D58,
       [
-        ["period", "number", "int"],
-        ["amount", "bigint", "long"],
+        ["period", "int"],
+        ["amount", "long"],
       ],
     ],
   ],
@@ -37122,19 +37100,19 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2E6EAB1A,
       [
-        ["flags", flags, "#"],
-        ["canceled", "true", "flags.0?true"],
-        ["can_refulfill", "true", "flags.1?true"],
-        ["missing_balance", "true", "flags.2?true"],
-        ["bot_canceled", "true", "flags.7?true"],
-        ["id", "string", "string"],
-        ["peer", "Peer", "Peer"],
-        ["until_date", "number", "int"],
-        ["pricing", "StarsSubscriptionPricing", "StarsSubscriptionPricing"],
-        ["chat_invite_hash", "string", "flags.3?string"],
-        ["title", "string", "flags.4?string"],
-        ["photo", "WebDocument", "flags.5?WebDocument"],
-        ["invoice_slug", "string", "flags.6?string"],
+        ["flags", "#"],
+        ["canceled", "flags.0?true"],
+        ["can_refulfill", "flags.1?true"],
+        ["missing_balance", "flags.2?true"],
+        ["bot_canceled", "flags.7?true"],
+        ["id", "string"],
+        ["peer", "Peer"],
+        ["until_date", "int"],
+        ["pricing", "StarsSubscriptionPricing"],
+        ["chat_invite_hash", "flags.3?string"],
+        ["title", "flags.4?string"],
+        ["photo", "flags.5?WebDocument"],
+        ["invoice_slug", "flags.6?string"],
       ],
     ],
   ],
@@ -37143,12 +37121,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4BA3A95A,
       [
-        ["flags", flags, "#"],
-        ["top", "true", "flags.0?true"],
-        ["my", "true", "flags.1?true"],
-        ["anonymous", "true", "flags.2?true"],
-        ["peer_id", "Peer", "flags.3?Peer"],
-        ["count", "number", "int"],
+        ["flags", "#"],
+        ["top", "flags.0?true"],
+        ["my", "flags.1?true"],
+        ["anonymous", "flags.2?true"],
+        ["peer_id", "flags.3?Peer"],
+        ["count", "int"],
       ],
     ],
   ],
@@ -37157,15 +37135,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x94CE852A,
       [
-        ["flags", flags, "#"],
-        ["extended", "true", "flags.0?true"],
-        ["default", "true", "flags.1?true"],
-        ["stars", "bigint", "long"],
-        ["yearly_boosts", "number", "int"],
-        ["store_product", "string", "flags.2?string"],
-        ["currency", "string", "string"],
-        ["amount", "bigint", "long"],
-        ["winners", ["StarsGiveawayWinnersOption"], "Vector<StarsGiveawayWinnersOption>"],
+        ["flags", "#"],
+        ["extended", "flags.0?true"],
+        ["default", "flags.1?true"],
+        ["stars", "long"],
+        ["yearly_boosts", "int"],
+        ["store_product", "flags.2?string"],
+        ["currency", "string"],
+        ["amount", "long"],
+        ["winners", "Vector<StarsGiveawayWinnersOption>"],
       ],
     ],
   ],
@@ -37174,10 +37152,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x54236209,
       [
-        ["flags", flags, "#"],
-        ["default", "true", "flags.0?true"],
-        ["users", "number", "int"],
-        ["per_user_stars", "bigint", "long"],
+        ["flags", "#"],
+        ["default", "flags.0?true"],
+        ["users", "int"],
+        ["per_user_stars", "long"],
       ],
     ],
   ],
@@ -37186,19 +37164,19 @@ const types: Map<string, Parameters> = new Map([
     [
       0x02CC73C8,
       [
-        ["flags", flags, "#"],
-        ["limited", "true", "flags.0?true"],
-        ["sold_out", "true", "flags.1?true"],
-        ["birthday", "true", "flags.2?true"],
-        ["id", "bigint", "long"],
-        ["sticker", "Document", "Document"],
-        ["stars", "bigint", "long"],
-        ["availability_remains", "number", "flags.0?int"],
-        ["availability_total", "number", "flags.0?int"],
-        ["convert_stars", "bigint", "long"],
-        ["first_sale_date", "number", "flags.1?int"],
-        ["last_sale_date", "number", "flags.1?int"],
-        ["upgrade_stars", "bigint", "flags.3?long"],
+        ["flags", "#"],
+        ["limited", "flags.0?true"],
+        ["sold_out", "flags.1?true"],
+        ["birthday", "flags.2?true"],
+        ["id", "long"],
+        ["sticker", "Document"],
+        ["stars", "long"],
+        ["availability_remains", "flags.0?int"],
+        ["availability_total", "flags.0?int"],
+        ["convert_stars", "long"],
+        ["first_sale_date", "flags.1?int"],
+        ["last_sale_date", "flags.1?int"],
+        ["upgrade_stars", "flags.3?long"],
       ],
     ],
   ],
@@ -37207,18 +37185,18 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5C62D151,
       [
-        ["flags", flags, "#"],
-        ["id", "bigint", "long"],
-        ["title", "string", "string"],
-        ["slug", "string", "string"],
-        ["num", "number", "int"],
-        ["owner_id", "Peer", "flags.0?Peer"],
-        ["owner_name", "string", "flags.1?string"],
-        ["owner_address", "string", "flags.2?string"],
-        ["attributes", ["StarGiftAttribute"], "Vector<StarGiftAttribute>"],
-        ["availability_issued", "number", "int"],
-        ["availability_total", "number", "int"],
-        ["gift_address", "string", "flags.3?string"],
+        ["flags", "#"],
+        ["id", "long"],
+        ["title", "string"],
+        ["slug", "string"],
+        ["num", "int"],
+        ["owner_id", "flags.0?Peer"],
+        ["owner_name", "flags.1?string"],
+        ["owner_address", "flags.2?string"],
+        ["attributes", "Vector<StarGiftAttribute>"],
+        ["availability_issued", "int"],
+        ["availability_total", "int"],
+        ["gift_address", "flags.3?string"],
       ],
     ],
   ],
@@ -37234,8 +37212,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x901689EA,
       [
-        ["hash", "number", "int"],
-        ["gifts", ["StarGift"], "Vector<StarGift>"],
+        ["hash", "int"],
+        ["gifts", "Vector<StarGift>"],
       ],
     ],
   ],
@@ -37244,8 +37222,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7903E3D9,
       [
-        ["text", "string", "string"],
-        ["option", Uint8Array, "bytes"],
+        ["text", "string"],
+        ["option", "bytes"],
       ],
     ],
   ],
@@ -37254,8 +37232,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF0E4E0B6,
       [
-        ["title", "string", "string"],
-        ["options", ["MessageReportOption"], "Vector<MessageReportOption>"],
+        ["title", "string"],
+        ["options", "Vector<MessageReportOption>"],
       ],
     ],
   ],
@@ -37264,9 +37242,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6F09AC31,
       [
-        ["flags", flags, "#"],
-        ["optional", "true", "flags.0?true"],
-        ["option", Uint8Array, "bytes"],
+        ["flags", "#"],
+        ["optional", "flags.0?true"],
+        ["option", "bytes"],
       ],
     ],
   ],
@@ -37282,8 +37260,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8ECF0511,
       [
-        ["id", "string", "string"],
-        ["expire_date", "number", "int"],
+        ["id", "string"],
+        ["expire_date", "int"],
       ],
     ],
   ],
@@ -37292,11 +37270,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFF57708D,
       [
-        ["query_id", "bigint", "long"],
-        ["result", "BotInlineResult", "BotInlineResult"],
-        ["peer_types", ["InlineQueryPeerType"], "Vector<InlineQueryPeerType>"],
-        ["cache_time", "number", "int"],
-        ["users", ["User"], "Vector<User>"],
+        ["query_id", "long"],
+        ["result", "BotInlineResult"],
+        ["peer_types", "Vector<InlineQueryPeerType>"],
+        ["cache_time", "int"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -37305,12 +37283,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC99B1950,
       [
-        ["flags", flags, "#"],
-        ["placeholder_path", Uint8Array, "flags.0?bytes"],
-        ["background_color", "number", "flags.1?int"],
-        ["background_dark_color", "number", "flags.2?int"],
-        ["header_color", "number", "flags.3?int"],
-        ["header_dark_color", "number", "flags.4?int"],
+        ["flags", "#"],
+        ["placeholder_path", "flags.0?bytes"],
+        ["background_color", "flags.1?int"],
+        ["background_dark_color", "flags.2?int"],
+        ["header_color", "flags.3?int"],
+        ["header_dark_color", "flags.4?int"],
       ],
     ],
   ],
@@ -37319,12 +37297,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDD0C66F2,
       [
-        ["flags", flags, "#"],
-        ["bot_id", "bigint", "long"],
-        ["commission_permille", "number", "int"],
-        ["duration_months", "number", "flags.0?int"],
-        ["end_date", "number", "flags.1?int"],
-        ["daily_revenue_per_user", "StarsAmount", "flags.2?StarsAmount"],
+        ["flags", "#"],
+        ["bot_id", "long"],
+        ["commission_permille", "int"],
+        ["duration_months", "flags.0?int"],
+        ["end_date", "flags.1?int"],
+        ["daily_revenue_per_user", "flags.2?StarsAmount"],
       ],
     ],
   ],
@@ -37333,15 +37311,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x19A13F71,
       [
-        ["flags", flags, "#"],
-        ["revoked", "true", "flags.1?true"],
-        ["url", "string", "string"],
-        ["date", "number", "int"],
-        ["bot_id", "bigint", "long"],
-        ["commission_permille", "number", "int"],
-        ["duration_months", "number", "flags.0?int"],
-        ["participants", "bigint", "long"],
-        ["revenue", "bigint", "long"],
+        ["flags", "#"],
+        ["revoked", "flags.1?true"],
+        ["url", "string"],
+        ["date", "int"],
+        ["bot_id", "long"],
+        ["commission_permille", "int"],
+        ["duration_months", "flags.0?int"],
+        ["participants", "long"],
+        ["revenue", "long"],
       ],
     ],
   ],
@@ -37350,9 +37328,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x98D5EA1D,
       [
-        ["count", "number", "int"],
-        ["connected_bots", ["ConnectedBotStarRef"], "Vector<ConnectedBotStarRef>"],
-        ["users", ["User"], "Vector<User>"],
+        ["count", "int"],
+        ["connected_bots", "Vector<ConnectedBotStarRef>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -37361,11 +37339,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB4D5D859,
       [
-        ["flags", flags, "#"],
-        ["count", "number", "int"],
-        ["suggested_bots", ["StarRefProgram"], "Vector<StarRefProgram>"],
-        ["users", ["User"], "Vector<User>"],
-        ["next_offset", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["count", "int"],
+        ["suggested_bots", "Vector<StarRefProgram>"],
+        ["users", "Vector<User>"],
+        ["next_offset", "flags.0?string"],
       ],
     ],
   ],
@@ -37374,8 +37352,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBBB6B4A3,
       [
-        ["amount", "bigint", "long"],
-        ["nanos", "number", "int"],
+        ["amount", "long"],
+        ["nanos", "int"],
       ],
     ],
   ],
@@ -37384,8 +37362,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6010C534,
       [
-        ["flags", flags, "#"],
-        ["next_offset", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["next_offset", "flags.0?int"],
       ],
     ],
   ],
@@ -37394,10 +37372,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x82C9E290,
       [
-        ["flags", flags, "#"],
-        ["next_offset", "number", "flags.0?int"],
-        ["hash", "bigint", "long"],
-        ["stickers", ["Document"], "Vector<Document>"],
+        ["flags", "#"],
+        ["next_offset", "flags.0?int"],
+        ["hash", "long"],
+        ["stickers", "Vector<Document>"],
       ],
     ],
   ],
@@ -37406,11 +37384,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB0CD6617,
       [
-        ["flags", flags, "#"],
-        ["can_modify_custom_description", "true", "flags.1?true"],
-        ["icon", "bigint", "long"],
-        ["company", "string", "string"],
-        ["custom_description", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["can_modify_custom_description", "flags.1?true"],
+        ["icon", "long"],
+        ["company", "string"],
+        ["custom_description", "flags.0?string"],
       ],
     ],
   ],
@@ -37419,9 +37397,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF93CD45C,
       [
-        ["bot_id", "bigint", "long"],
-        ["icon", "bigint", "long"],
-        ["description", "string", "string"],
+        ["bot_id", "long"],
+        ["icon", "long"],
+        ["description", "string"],
       ],
     ],
   ],
@@ -37430,9 +37408,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x39D99013,
       [
-        ["name", "string", "string"],
-        ["document", "Document", "Document"],
-        ["rarity_permille", "number", "int"],
+        ["name", "string"],
+        ["document", "Document"],
+        ["rarity_permille", "int"],
       ],
     ],
   ],
@@ -37441,9 +37419,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x13ACFF19,
       [
-        ["name", "string", "string"],
-        ["document", "Document", "Document"],
-        ["rarity_permille", "number", "int"],
+        ["name", "string"],
+        ["document", "Document"],
+        ["rarity_permille", "int"],
       ],
     ],
   ],
@@ -37452,12 +37430,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x94271762,
       [
-        ["name", "string", "string"],
-        ["center_color", "number", "int"],
-        ["edge_color", "number", "int"],
-        ["pattern_color", "number", "int"],
-        ["text_color", "number", "int"],
-        ["rarity_permille", "number", "int"],
+        ["name", "string"],
+        ["center_color", "int"],
+        ["edge_color", "int"],
+        ["pattern_color", "int"],
+        ["text_color", "int"],
+        ["rarity_permille", "int"],
       ],
     ],
   ],
@@ -37466,11 +37444,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE0BFF26C,
       [
-        ["flags", flags, "#"],
-        ["sender_id", "Peer", "flags.0?Peer"],
-        ["recipient_id", "Peer", "Peer"],
-        ["date", "number", "int"],
-        ["message", "TextWithEntities", "flags.1?TextWithEntities"],
+        ["flags", "#"],
+        ["sender_id", "flags.0?Peer"],
+        ["recipient_id", "Peer"],
+        ["date", "int"],
+        ["message", "flags.1?TextWithEntities"],
       ],
     ],
   ],
@@ -37479,7 +37457,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x167BD90B,
       [
-        ["sample_attributes", ["StarGiftAttribute"], "Vector<StarGiftAttribute>"],
+        ["sample_attributes", "Vector<StarGiftAttribute>"],
       ],
     ],
   ],
@@ -37488,7 +37466,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x62D706B8,
       [
-        ["users", ["User"], "Vector<User>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -37497,8 +37475,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x315A4974,
       [
-        ["count", "number", "int"],
-        ["users", ["User"], "Vector<User>"],
+        ["count", "int"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -37507,8 +37485,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCAA2F60B,
       [
-        ["gift", "StarGift", "StarGift"],
-        ["users", ["User"], "Vector<User>"],
+        ["gift", "StarGift"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -37517,8 +37495,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB53E8B21,
       [
-        ["media", "MessageMedia", "MessageMedia"],
-        ["users", ["User"], "Vector<User>"],
+        ["media", "MessageMedia"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -37527,22 +37505,22 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6056DBA5,
       [
-        ["flags", flags, "#"],
-        ["name_hidden", "true", "flags.0?true"],
-        ["unsaved", "true", "flags.5?true"],
-        ["refunded", "true", "flags.9?true"],
-        ["can_upgrade", "true", "flags.10?true"],
-        ["pinned_to_top", "true", "flags.12?true"],
-        ["from_id", "Peer", "flags.1?Peer"],
-        ["date", "number", "int"],
-        ["gift", "StarGift", "StarGift"],
-        ["message", "TextWithEntities", "flags.2?TextWithEntities"],
-        ["msg_id", "number", "flags.3?int"],
-        ["saved_id", "bigint", "flags.11?long"],
-        ["convert_stars", "bigint", "flags.4?long"],
-        ["upgrade_stars", "bigint", "flags.6?long"],
-        ["can_export_at", "number", "flags.7?int"],
-        ["transfer_stars", "bigint", "flags.8?long"],
+        ["flags", "#"],
+        ["name_hidden", "flags.0?true"],
+        ["unsaved", "flags.5?true"],
+        ["refunded", "flags.9?true"],
+        ["can_upgrade", "flags.10?true"],
+        ["pinned_to_top", "flags.12?true"],
+        ["from_id", "flags.1?Peer"],
+        ["date", "int"],
+        ["gift", "StarGift"],
+        ["message", "flags.2?TextWithEntities"],
+        ["msg_id", "flags.3?int"],
+        ["saved_id", "flags.11?long"],
+        ["convert_stars", "flags.4?long"],
+        ["upgrade_stars", "flags.6?long"],
+        ["can_export_at", "flags.7?int"],
+        ["transfer_stars", "flags.8?long"],
       ],
     ],
   ],
@@ -37551,13 +37529,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x95F389B1,
       [
-        ["flags", flags, "#"],
-        ["count", "number", "int"],
-        ["chat_notifications_enabled", "boolean", "flags.1?Bool"],
-        ["gifts", ["SavedStarGift"], "Vector<SavedStarGift>"],
-        ["next_offset", "string", "flags.0?string"],
-        ["chats", ["Chat"], "Vector<Chat>"],
-        ["users", ["User"], "Vector<User>"],
+        ["flags", "#"],
+        ["count", "int"],
+        ["chat_notifications_enabled", "flags.1?Bool"],
+        ["gifts", "Vector<SavedStarGift>"],
+        ["next_offset", "flags.0?string"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
     ],
   ],
@@ -37566,7 +37544,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x69279795,
       [
-        ["msg_id", "number", "int"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -37575,8 +37553,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF101AA7F,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["saved_id", "bigint", "long"],
+        ["peer", "InputPeer"],
+        ["saved_id", "long"],
       ],
     ],
   ],
@@ -37585,7 +37563,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x84AA3A9C,
       [
-        ["url", "string", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -37608,7 +37586,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDC6CFCF0,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -37617,7 +37595,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1E109708,
       [
-        ["stars_amount", "bigint", "long"],
+        ["stars_amount", "long"],
       ],
     ],
   ],
@@ -37640,7 +37618,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB4F67E93,
       [
-        ["stars_amount", "bigint", "long"],
+        ["stars_amount", "long"],
       ],
     ],
   ],
@@ -37649,7 +37627,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBE7E8EF1,
       [
-        ["nonce", "bigint", "int128"],
+        ["nonce", "int128"],
       ],
     ],
   ],
@@ -37658,12 +37636,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD712E4BE,
       [
-        ["nonce", "bigint", "int128"],
-        ["server_nonce", "bigint", "int128"],
-        ["p", Uint8Array, "bytes"],
-        ["q", Uint8Array, "bytes"],
-        ["public_key_fingerprint", "bigint", "long"],
-        ["encrypted_data", Uint8Array, "bytes"],
+        ["nonce", "int128"],
+        ["server_nonce", "int128"],
+        ["p", "bytes"],
+        ["q", "bytes"],
+        ["public_key_fingerprint", "long"],
+        ["encrypted_data", "bytes"],
       ],
     ],
   ],
@@ -37672,9 +37650,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF5045F1F,
       [
-        ["nonce", "bigint", "int128"],
-        ["server_nonce", "bigint", "int128"],
-        ["encrypted_data", Uint8Array, "bytes"],
+        ["nonce", "int128"],
+        ["server_nonce", "int128"],
+        ["encrypted_data", "bytes"],
       ],
     ],
   ],
@@ -37683,7 +37661,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x58E4A740,
       [
-        ["req_msg_id", "bigint", "long"],
+        ["req_msg_id", "long"],
       ],
     ],
   ],
@@ -37692,7 +37670,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB921BD04,
       [
-        ["num", "number", "int"],
+        ["num", "int"],
       ],
     ],
   ],
@@ -37701,7 +37679,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7ABE77EC,
       [
-        ["ping_id", "bigint", "long"],
+        ["ping_id", "long"],
       ],
     ],
   ],
@@ -37710,8 +37688,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF3427B8C,
       [
-        ["ping_id", "bigint", "long"],
-        ["disconnect_delay", "number", "int"],
+        ["ping_id", "long"],
+        ["disconnect_delay", "int"],
       ],
     ],
   ],
@@ -37720,7 +37698,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE7512126,
       [
-        ["session_id", "bigint", "long"],
+        ["session_id", "long"],
       ],
     ],
   ],
@@ -37736,7 +37714,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDD289F8E,
       [
-        ["connection_id", "string", "string"],
+        ["connection_id", "string"],
       ],
     ],
   ],
@@ -37745,8 +37723,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1DF92984,
       [
-        ["nonce", "string", "string"],
-        ["token", "string", "string"],
+        ["nonce", "string"],
+        ["token", "string"],
       ],
     ],
   ],
@@ -37755,8 +37733,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0DAE54F8,
       [
-        ["nonce", "string", "string"],
-        ["secret", "string", "string"],
+        ["nonce", "string"],
+        ["secret", "string"],
       ],
     ],
   ],
@@ -37765,7 +37743,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xADBB0F94,
       [
-        ["token", "string", "string"],
+        ["token", "string"],
       ],
     ],
   ],
@@ -37774,8 +37752,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCB9F372D,
       [
-        ["msg_id", "bigint", "long"],
-        ["query", null, "!X"],
+        ["msg_id", "long"],
+        ["query", "!X"],
       ],
     ],
   ],
@@ -37784,8 +37762,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3DC4B4F0,
       [
-        ["msg_ids", ["bigint"], "Vector<long>"],
-        ["query", null, "!X"],
+        ["msg_ids", "Vector<long>"],
+        ["query", "!X"],
       ],
     ],
   ],
@@ -37794,17 +37772,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC1CD5EA9,
       [
-        ["flags", flags, "#"],
-        ["api_id", "number", "int"],
-        ["device_model", "string", "string"],
-        ["system_version", "string", "string"],
-        ["app_version", "string", "string"],
-        ["system_lang_code", "string", "string"],
-        ["lang_pack", "string", "string"],
-        ["lang_code", "string", "string"],
-        ["proxy", "InputClientProxy", "flags.0?InputClientProxy"],
-        ["params", "JSONValue", "flags.1?JSONValue"],
-        ["query", null, "!X"],
+        ["flags", "#"],
+        ["api_id", "int"],
+        ["device_model", "string"],
+        ["system_version", "string"],
+        ["app_version", "string"],
+        ["system_lang_code", "string"],
+        ["lang_pack", "string"],
+        ["lang_code", "string"],
+        ["proxy", "flags.0?InputClientProxy"],
+        ["params", "flags.1?JSONValue"],
+        ["query", "!X"],
       ],
     ],
   ],
@@ -37813,8 +37791,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDA9B0D0D,
       [
-        ["layer", "number", "int"],
-        ["query", null, "!X"],
+        ["layer", "int"],
+        ["query", "!X"],
       ],
     ],
   ],
@@ -37823,7 +37801,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBF9459B7,
       [
-        ["query", null, "!X"],
+        ["query", "!X"],
       ],
     ],
   ],
@@ -37832,8 +37810,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x365275F2,
       [
-        ["range", "MessageRange", "MessageRange"],
-        ["query", null, "!X"],
+        ["range", "MessageRange"],
+        ["query", "!X"],
       ],
     ],
   ],
@@ -37842,8 +37820,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xACA9FD2E,
       [
-        ["takeout_id", "bigint", "long"],
-        ["query", null, "!X"],
+        ["takeout_id", "long"],
+        ["query", "!X"],
       ],
     ],
   ],
@@ -37852,8 +37830,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDD289F8E,
       [
-        ["connection_id", "string", "string"],
-        ["query", null, "!X"],
+        ["connection_id", "string"],
+        ["query", "!X"],
       ],
     ],
   ],
@@ -37862,9 +37840,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1DF92984,
       [
-        ["nonce", "string", "string"],
-        ["token", "string", "string"],
-        ["query", null, "!X"],
+        ["nonce", "string"],
+        ["token", "string"],
+        ["query", "!X"],
       ],
     ],
   ],
@@ -37873,9 +37851,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0DAE54F8,
       [
-        ["nonce", "string", "string"],
-        ["secret", "string", "string"],
-        ["query", null, "!X"],
+        ["nonce", "string"],
+        ["secret", "string"],
+        ["query", "!X"],
       ],
     ],
   ],
@@ -37884,8 +37862,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xADBB0F94,
       [
-        ["token", "string", "string"],
-        ["query", null, "!X"],
+        ["token", "string"],
+        ["query", "!X"],
       ],
     ],
   ],
@@ -37894,10 +37872,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA677244F,
       [
-        ["phone_number", "string", "string"],
-        ["api_id", "number", "int"],
-        ["api_hash", "string", "string"],
-        ["settings", "CodeSettings", "CodeSettings"],
+        ["phone_number", "string"],
+        ["api_id", "int"],
+        ["api_hash", "string"],
+        ["settings", "CodeSettings"],
       ],
     ],
   ],
@@ -37906,12 +37884,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAAC7B717,
       [
-        ["flags", flags, "#"],
-        ["no_joined_notifications", "true", "flags.0?true"],
-        ["phone_number", "string", "string"],
-        ["phone_code_hash", "string", "string"],
-        ["first_name", "string", "string"],
-        ["last_name", "string", "string"],
+        ["flags", "#"],
+        ["no_joined_notifications", "flags.0?true"],
+        ["phone_number", "string"],
+        ["phone_code_hash", "string"],
+        ["first_name", "string"],
+        ["last_name", "string"],
       ],
     ],
   ],
@@ -37920,11 +37898,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8D52A951,
       [
-        ["flags", flags, "#"],
-        ["phone_number", "string", "string"],
-        ["phone_code_hash", "string", "string"],
-        ["phone_code", "string", "flags.0?string"],
-        ["email_verification", "EmailVerification", "flags.1?EmailVerification"],
+        ["flags", "#"],
+        ["phone_number", "string"],
+        ["phone_code_hash", "string"],
+        ["phone_code", "flags.0?string"],
+        ["email_verification", "flags.1?EmailVerification"],
       ],
     ],
   ],
@@ -37947,7 +37925,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE5BFFFCD,
       [
-        ["dc_id", "number", "int"],
+        ["dc_id", "int"],
       ],
     ],
   ],
@@ -37956,8 +37934,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA57A7DAD,
       [
-        ["id", "bigint", "long"],
-        ["bytes", Uint8Array, "bytes"],
+        ["id", "long"],
+        ["bytes", "bytes"],
       ],
     ],
   ],
@@ -37966,10 +37944,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCDD42A05,
       [
-        ["perm_auth_key_id", "bigint", "long"],
-        ["nonce", "bigint", "long"],
-        ["expires_at", "number", "int"],
-        ["encrypted_message", Uint8Array, "bytes"],
+        ["perm_auth_key_id", "long"],
+        ["nonce", "long"],
+        ["expires_at", "int"],
+        ["encrypted_message", "bytes"],
       ],
     ],
   ],
@@ -37978,10 +37956,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x67A3FF2C,
       [
-        ["flags", "number", "int"],
-        ["api_id", "number", "int"],
-        ["api_hash", "string", "string"],
-        ["bot_auth_token", "string", "string"],
+        ["flags", "int"],
+        ["api_id", "int"],
+        ["api_hash", "string"],
+        ["bot_auth_token", "string"],
       ],
     ],
   ],
@@ -37990,7 +37968,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD18B4D16,
       [
-        ["password", "InputCheckPasswordSRP", "InputCheckPasswordSRP"],
+        ["password", "InputCheckPasswordSRP"],
       ],
     ],
   ],
@@ -38006,9 +37984,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x37096C70,
       [
-        ["flags", flags, "#"],
-        ["code", "string", "string"],
-        ["new_settings", "account_PasswordInputSettings", "flags.0?account.PasswordInputSettings"],
+        ["flags", "#"],
+        ["code", "string"],
+        ["new_settings", "flags.0?account.PasswordInputSettings"],
       ],
     ],
   ],
@@ -38017,10 +37995,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCAE47523,
       [
-        ["flags", flags, "#"],
-        ["phone_number", "string", "string"],
-        ["phone_code_hash", "string", "string"],
-        ["reason", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["phone_number", "string"],
+        ["phone_code_hash", "string"],
+        ["reason", "flags.0?string"],
       ],
     ],
   ],
@@ -38029,8 +38007,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1F040578,
       [
-        ["phone_number", "string", "string"],
-        ["phone_code_hash", "string", "string"],
+        ["phone_number", "string"],
+        ["phone_code_hash", "string"],
       ],
     ],
   ],
@@ -38039,7 +38017,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8E48A188,
       [
-        ["except_auth_keys", ["bigint"], "Vector<long>"],
+        ["except_auth_keys", "Vector<long>"],
       ],
     ],
   ],
@@ -38048,9 +38026,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB7E085FE,
       [
-        ["api_id", "number", "int"],
-        ["api_hash", "string", "string"],
-        ["except_ids", ["bigint"], "Vector<long>"],
+        ["api_id", "int"],
+        ["api_hash", "string"],
+        ["except_ids", "Vector<long>"],
       ],
     ],
   ],
@@ -38059,7 +38037,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x95AC5CE4,
       [
-        ["token", Uint8Array, "bytes"],
+        ["token", "bytes"],
       ],
     ],
   ],
@@ -38068,7 +38046,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE894AD4D,
       [
-        ["token", Uint8Array, "bytes"],
+        ["token", "bytes"],
       ],
     ],
   ],
@@ -38077,7 +38055,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0D36BF79,
       [
-        ["code", "string", "string"],
+        ["code", "string"],
       ],
     ],
   ],
@@ -38086,9 +38064,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2DB873A9,
       [
-        ["api_id", "number", "int"],
-        ["api_hash", "string", "string"],
-        ["web_auth_token", "string", "string"],
+        ["api_id", "int"],
+        ["api_hash", "string"],
+        ["web_auth_token", "string"],
       ],
     ],
   ],
@@ -38097,12 +38075,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8E39261E,
       [
-        ["flags", flags, "#"],
-        ["phone_number", "string", "string"],
-        ["phone_code_hash", "string", "string"],
-        ["safety_net_token", "string", "flags.0?string"],
-        ["play_integrity_token", "string", "flags.2?string"],
-        ["ios_push_secret", "string", "flags.1?string"],
+        ["flags", "#"],
+        ["phone_number", "string"],
+        ["phone_code_hash", "string"],
+        ["safety_net_token", "flags.0?string"],
+        ["play_integrity_token", "flags.2?string"],
+        ["ios_push_secret", "flags.1?string"],
       ],
     ],
   ],
@@ -38111,8 +38089,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7E960193,
       [
-        ["phone_number", "string", "string"],
-        ["phone_code_hash", "string", "string"],
+        ["phone_number", "string"],
+        ["phone_code_hash", "string"],
       ],
     ],
   ],
@@ -38121,9 +38099,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCB9DEFF6,
       [
-        ["phone_number", "string", "string"],
-        ["phone_code_hash", "string", "string"],
-        ["mnc", "string", "string"],
+        ["phone_number", "string"],
+        ["phone_code_hash", "string"],
+        ["mnc", "string"],
       ],
     ],
   ],
@@ -38132,13 +38110,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEC86017A,
       [
-        ["flags", flags, "#"],
-        ["no_muted", "true", "flags.0?true"],
-        ["token_type", "number", "int"],
-        ["token", "string", "string"],
-        ["app_sandbox", "boolean", "Bool"],
-        ["secret", Uint8Array, "bytes"],
-        ["other_uids", ["bigint"], "Vector<long>"],
+        ["flags", "#"],
+        ["no_muted", "flags.0?true"],
+        ["token_type", "int"],
+        ["token", "string"],
+        ["app_sandbox", "Bool"],
+        ["secret", "bytes"],
+        ["other_uids", "Vector<long>"],
       ],
     ],
   ],
@@ -38147,9 +38125,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6A0D3206,
       [
-        ["token_type", "number", "int"],
-        ["token", "string", "string"],
-        ["other_uids", ["bigint"], "Vector<long>"],
+        ["token_type", "int"],
+        ["token", "string"],
+        ["other_uids", "Vector<long>"],
       ],
     ],
   ],
@@ -38158,8 +38136,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x84BE5B93,
       [
-        ["peer", "InputNotifyPeer", "InputNotifyPeer"],
-        ["settings", "InputPeerNotifySettings", "InputPeerNotifySettings"],
+        ["peer", "InputNotifyPeer"],
+        ["settings", "InputPeerNotifySettings"],
       ],
     ],
   ],
@@ -38168,7 +38146,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x12B3AD31,
       [
-        ["peer", "InputNotifyPeer", "InputNotifyPeer"],
+        ["peer", "InputNotifyPeer"],
       ],
     ],
   ],
@@ -38184,10 +38162,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x78515775,
       [
-        ["flags", flags, "#"],
-        ["first_name", "string", "flags.0?string"],
-        ["last_name", "string", "flags.1?string"],
-        ["about", "string", "flags.2?string"],
+        ["flags", "#"],
+        ["first_name", "flags.0?string"],
+        ["last_name", "flags.1?string"],
+        ["about", "flags.2?string"],
       ],
     ],
   ],
@@ -38196,7 +38174,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6628562C,
       [
-        ["offline", "boolean", "Bool"],
+        ["offline", "Bool"],
       ],
     ],
   ],
@@ -38205,7 +38183,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x07967D36,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -38214,9 +38192,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC5BA3D86,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["reason", "ReportReason", "ReportReason"],
-        ["message", "string", "string"],
+        ["peer", "InputPeer"],
+        ["reason", "ReportReason"],
+        ["message", "string"],
       ],
     ],
   ],
@@ -38225,7 +38203,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2714D86C,
       [
-        ["username", "string", "string"],
+        ["username", "string"],
       ],
     ],
   ],
@@ -38234,7 +38212,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3E0BDD7C,
       [
-        ["username", "string", "string"],
+        ["username", "string"],
       ],
     ],
   ],
@@ -38243,7 +38221,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDADBC950,
       [
-        ["key", "InputPrivacyKey", "InputPrivacyKey"],
+        ["key", "InputPrivacyKey"],
       ],
     ],
   ],
@@ -38252,8 +38230,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC9F81CE8,
       [
-        ["key", "InputPrivacyKey", "InputPrivacyKey"],
-        ["rules", ["InputPrivacyRule"], "Vector<InputPrivacyRule>"],
+        ["key", "InputPrivacyKey"],
+        ["rules", "Vector<InputPrivacyRule>"],
       ],
     ],
   ],
@@ -38262,9 +38240,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA2C0CF74,
       [
-        ["flags", flags, "#"],
-        ["reason", "string", "string"],
-        ["password", "InputCheckPasswordSRP", "flags.0?InputCheckPasswordSRP"],
+        ["flags", "#"],
+        ["reason", "string"],
+        ["password", "flags.0?InputCheckPasswordSRP"],
       ],
     ],
   ],
@@ -38280,7 +38258,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2442485E,
       [
-        ["ttl", "AccountDaysTTL", "AccountDaysTTL"],
+        ["ttl", "AccountDaysTTL"],
       ],
     ],
   ],
@@ -38289,8 +38267,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x82574AE5,
       [
-        ["phone_number", "string", "string"],
-        ["settings", "CodeSettings", "CodeSettings"],
+        ["phone_number", "string"],
+        ["settings", "CodeSettings"],
       ],
     ],
   ],
@@ -38299,9 +38277,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x70C32EDB,
       [
-        ["phone_number", "string", "string"],
-        ["phone_code_hash", "string", "string"],
-        ["phone_code", "string", "string"],
+        ["phone_number", "string"],
+        ["phone_code_hash", "string"],
+        ["phone_code", "string"],
       ],
     ],
   ],
@@ -38310,7 +38288,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x38DF3532,
       [
-        ["period", "number", "int"],
+        ["period", "int"],
       ],
     ],
   ],
@@ -38326,7 +38304,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDF77F3BC,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -38342,7 +38320,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9CD4EAF9,
       [
-        ["password", "InputCheckPasswordSRP", "InputCheckPasswordSRP"],
+        ["password", "InputCheckPasswordSRP"],
       ],
     ],
   ],
@@ -38351,8 +38329,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA59B102F,
       [
-        ["password", "InputCheckPasswordSRP", "InputCheckPasswordSRP"],
-        ["new_settings", "account_PasswordInputSettings", "account.PasswordInputSettings"],
+        ["password", "InputCheckPasswordSRP"],
+        ["new_settings", "account.PasswordInputSettings"],
       ],
     ],
   ],
@@ -38361,8 +38339,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1B3FAA88,
       [
-        ["hash", "string", "string"],
-        ["settings", "CodeSettings", "CodeSettings"],
+        ["hash", "string"],
+        ["settings", "CodeSettings"],
       ],
     ],
   ],
@@ -38371,8 +38349,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5F2178C3,
       [
-        ["phone_code_hash", "string", "string"],
-        ["phone_code", "string", "string"],
+        ["phone_code_hash", "string"],
+        ["phone_code", "string"],
       ],
     ],
   ],
@@ -38381,8 +38359,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x449E0B51,
       [
-        ["password", "InputCheckPasswordSRP", "InputCheckPasswordSRP"],
-        ["period", "number", "int"],
+        ["password", "InputCheckPasswordSRP"],
+        ["period", "int"],
       ],
     ],
   ],
@@ -38398,7 +38376,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2D01B9EF,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -38421,7 +38399,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x73665BC2,
       [
-        ["types", ["SecureValueType"], "Vector<SecureValueType>"],
+        ["types", "Vector<SecureValueType>"],
       ],
     ],
   ],
@@ -38430,8 +38408,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x899FE31D,
       [
-        ["value", "InputSecureValue", "InputSecureValue"],
-        ["secure_secret_id", "bigint", "long"],
+        ["value", "InputSecureValue"],
+        ["secure_secret_id", "long"],
       ],
     ],
   ],
@@ -38440,7 +38418,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB880BC4B,
       [
-        ["types", ["SecureValueType"], "Vector<SecureValueType>"],
+        ["types", "Vector<SecureValueType>"],
       ],
     ],
   ],
@@ -38449,9 +38427,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA929597A,
       [
-        ["bot_id", "bigint", "long"],
-        ["scope", "string", "string"],
-        ["public_key", "string", "string"],
+        ["bot_id", "long"],
+        ["scope", "string"],
+        ["public_key", "string"],
       ],
     ],
   ],
@@ -38460,11 +38438,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF3ED4C73,
       [
-        ["bot_id", "bigint", "long"],
-        ["scope", "string", "string"],
-        ["public_key", "string", "string"],
-        ["value_hashes", ["SecureValueHash"], "Vector<SecureValueHash>"],
-        ["credentials", "SecureCredentialsEncrypted", "SecureCredentialsEncrypted"],
+        ["bot_id", "long"],
+        ["scope", "string"],
+        ["public_key", "string"],
+        ["value_hashes", "Vector<SecureValueHash>"],
+        ["credentials", "SecureCredentialsEncrypted"],
       ],
     ],
   ],
@@ -38473,8 +38451,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA5A356F9,
       [
-        ["phone_number", "string", "string"],
-        ["settings", "CodeSettings", "CodeSettings"],
+        ["phone_number", "string"],
+        ["settings", "CodeSettings"],
       ],
     ],
   ],
@@ -38483,9 +38461,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4DD3A7F6,
       [
-        ["phone_number", "string", "string"],
-        ["phone_code_hash", "string", "string"],
-        ["phone_code", "string", "string"],
+        ["phone_number", "string"],
+        ["phone_code_hash", "string"],
+        ["phone_code", "string"],
       ],
     ],
   ],
@@ -38494,8 +38472,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x98E037BB,
       [
-        ["purpose", "EmailVerifyPurpose", "EmailVerifyPurpose"],
-        ["email", "string", "string"],
+        ["purpose", "EmailVerifyPurpose"],
+        ["email", "string"],
       ],
     ],
   ],
@@ -38504,8 +38482,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x032DA4CF,
       [
-        ["purpose", "EmailVerifyPurpose", "EmailVerifyPurpose"],
-        ["verification", "EmailVerification", "EmailVerification"],
+        ["purpose", "EmailVerifyPurpose"],
+        ["verification", "EmailVerification"],
       ],
     ],
   ],
@@ -38514,14 +38492,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8EF3EAB0,
       [
-        ["flags", flags, "#"],
-        ["contacts", "true", "flags.0?true"],
-        ["message_users", "true", "flags.1?true"],
-        ["message_chats", "true", "flags.2?true"],
-        ["message_megagroups", "true", "flags.3?true"],
-        ["message_channels", "true", "flags.4?true"],
-        ["files", "true", "flags.5?true"],
-        ["file_max_size", "bigint", "flags.5?long"],
+        ["flags", "#"],
+        ["contacts", "flags.0?true"],
+        ["message_users", "flags.1?true"],
+        ["message_chats", "flags.2?true"],
+        ["message_megagroups", "flags.3?true"],
+        ["message_channels", "flags.4?true"],
+        ["files", "flags.5?true"],
+        ["file_max_size", "flags.5?long"],
       ],
     ],
   ],
@@ -38530,8 +38508,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1D2652EE,
       [
-        ["flags", flags, "#"],
-        ["success", "true", "flags.0?true"],
+        ["flags", "#"],
+        ["success", "flags.0?true"],
       ],
     ],
   ],
@@ -38540,7 +38518,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8FDF1920,
       [
-        ["code", "string", "string"],
+        ["code", "string"],
       ],
     ],
   ],
@@ -38570,7 +38548,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCFF43F61,
       [
-        ["silent", "boolean", "Bool"],
+        ["silent", "Bool"],
       ],
     ],
   ],
@@ -38579,10 +38557,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x53577479,
       [
-        ["flags", flags, "#"],
-        ["compare_sound", "true", "flags.1?true"],
-        ["compare_stories", "true", "flags.2?true"],
-        ["peer", "InputNotifyPeer", "flags.0?InputNotifyPeer"],
+        ["flags", "#"],
+        ["compare_sound", "flags.1?true"],
+        ["compare_stories", "flags.2?true"],
+        ["peer", "flags.0?InputNotifyPeer"],
       ],
     ],
   ],
@@ -38591,7 +38569,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFC8DDBEA,
       [
-        ["wallpaper", "InputWallPaper", "InputWallPaper"],
+        ["wallpaper", "InputWallPaper"],
       ],
     ],
   ],
@@ -38600,11 +38578,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE39A8F03,
       [
-        ["flags", flags, "#"],
-        ["for_chat", "true", "flags.0?true"],
-        ["file", "InputFile", "InputFile"],
-        ["mime_type", "string", "string"],
-        ["settings", "WallPaperSettings", "WallPaperSettings"],
+        ["flags", "#"],
+        ["for_chat", "flags.0?true"],
+        ["file", "InputFile"],
+        ["mime_type", "string"],
+        ["settings", "WallPaperSettings"],
       ],
     ],
   ],
@@ -38613,9 +38591,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6C5A5B37,
       [
-        ["wallpaper", "InputWallPaper", "InputWallPaper"],
-        ["unsave", "boolean", "Bool"],
-        ["settings", "WallPaperSettings", "WallPaperSettings"],
+        ["wallpaper", "InputWallPaper"],
+        ["unsave", "Bool"],
+        ["settings", "WallPaperSettings"],
       ],
     ],
   ],
@@ -38624,8 +38602,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFEED5769,
       [
-        ["wallpaper", "InputWallPaper", "InputWallPaper"],
-        ["settings", "WallPaperSettings", "WallPaperSettings"],
+        ["wallpaper", "InputWallPaper"],
+        ["settings", "WallPaperSettings"],
       ],
     ],
   ],
@@ -38648,10 +38626,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x76F36233,
       [
-        ["flags", flags, "#"],
-        ["low", "true", "flags.0?true"],
-        ["high", "true", "flags.1?true"],
-        ["settings", "AutoDownloadSettings", "AutoDownloadSettings"],
+        ["flags", "#"],
+        ["low", "flags.0?true"],
+        ["high", "flags.1?true"],
+        ["settings", "AutoDownloadSettings"],
       ],
     ],
   ],
@@ -38660,11 +38638,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1C3DB333,
       [
-        ["flags", flags, "#"],
-        ["file", "InputFile", "InputFile"],
-        ["thumb", "InputFile", "flags.0?InputFile"],
-        ["file_name", "string", "string"],
-        ["mime_type", "string", "string"],
+        ["flags", "#"],
+        ["file", "InputFile"],
+        ["thumb", "flags.0?InputFile"],
+        ["file_name", "string"],
+        ["mime_type", "string"],
       ],
     ],
   ],
@@ -38673,11 +38651,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x652E4400,
       [
-        ["flags", flags, "#"],
-        ["slug", "string", "string"],
-        ["title", "string", "string"],
-        ["document", "InputDocument", "flags.2?InputDocument"],
-        ["settings", ["InputThemeSettings"], "flags.3?Vector<InputThemeSettings>"],
+        ["flags", "#"],
+        ["slug", "string"],
+        ["title", "string"],
+        ["document", "flags.2?InputDocument"],
+        ["settings", "flags.3?Vector<InputThemeSettings>"],
       ],
     ],
   ],
@@ -38686,13 +38664,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2BF40CCC,
       [
-        ["flags", flags, "#"],
-        ["format", "string", "string"],
-        ["theme", "InputTheme", "InputTheme"],
-        ["slug", "string", "flags.0?string"],
-        ["title", "string", "flags.1?string"],
-        ["document", "InputDocument", "flags.2?InputDocument"],
-        ["settings", ["InputThemeSettings"], "flags.3?Vector<InputThemeSettings>"],
+        ["flags", "#"],
+        ["format", "string"],
+        ["theme", "InputTheme"],
+        ["slug", "flags.0?string"],
+        ["title", "flags.1?string"],
+        ["document", "flags.2?InputDocument"],
+        ["settings", "flags.3?Vector<InputThemeSettings>"],
       ],
     ],
   ],
@@ -38701,8 +38679,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF257106C,
       [
-        ["theme", "InputTheme", "InputTheme"],
-        ["unsave", "boolean", "Bool"],
+        ["theme", "InputTheme"],
+        ["unsave", "Bool"],
       ],
     ],
   ],
@@ -38711,11 +38689,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC727BB3B,
       [
-        ["flags", flags, "#"],
-        ["dark", "true", "flags.0?true"],
-        ["theme", "InputTheme", "flags.1?InputTheme"],
-        ["format", "string", "flags.2?string"],
-        ["base_theme", "BaseTheme", "flags.3?BaseTheme"],
+        ["flags", "#"],
+        ["dark", "flags.0?true"],
+        ["theme", "flags.1?InputTheme"],
+        ["format", "flags.2?string"],
+        ["base_theme", "flags.3?BaseTheme"],
       ],
     ],
   ],
@@ -38724,8 +38702,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3A5869EC,
       [
-        ["format", "string", "string"],
-        ["theme", "InputTheme", "InputTheme"],
+        ["format", "string"],
+        ["theme", "InputTheme"],
       ],
     ],
   ],
@@ -38734,8 +38712,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7206E458,
       [
-        ["format", "string", "string"],
-        ["hash", "bigint", "long"],
+        ["format", "string"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -38744,8 +38722,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB574B16B,
       [
-        ["flags", flags, "#"],
-        ["sensitive_enabled", "true", "flags.0?true"],
+        ["flags", "#"],
+        ["sensitive_enabled", "flags.0?true"],
       ],
     ],
   ],
@@ -38761,7 +38739,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x65AD71DC,
       [
-        ["wallpapers", ["InputWallPaper"], "Vector<InputWallPaper>"],
+        ["wallpapers", "Vector<InputWallPaper>"],
       ],
     ],
   ],
@@ -38777,7 +38755,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1EDAAAC2,
       [
-        ["settings", "GlobalPrivacySettings", "GlobalPrivacySettings"],
+        ["settings", "GlobalPrivacySettings"],
       ],
     ],
   ],
@@ -38786,10 +38764,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFA8CC6F5,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["photo_id", "InputPhoto", "InputPhoto"],
-        ["reason", "ReportReason", "ReportReason"],
-        ["message", "string", "string"],
+        ["peer", "InputPeer"],
+        ["photo_id", "InputPhoto"],
+        ["reason", "ReportReason"],
+        ["message", "string"],
       ],
     ],
   ],
@@ -38812,7 +38790,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD638DE89,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -38821,7 +38799,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBF899AA0,
       [
-        ["authorization_ttl_days", "number", "int"],
+        ["authorization_ttl_days", "int"],
       ],
     ],
   ],
@@ -38830,11 +38808,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x40F48462,
       [
-        ["flags", flags, "#"],
-        ["confirmed", "true", "flags.3?true"],
-        ["hash", "bigint", "long"],
-        ["encrypted_requests_disabled", "boolean", "flags.0?Bool"],
-        ["call_requests_disabled", "boolean", "flags.1?Bool"],
+        ["flags", "#"],
+        ["confirmed", "flags.3?true"],
+        ["hash", "long"],
+        ["encrypted_requests_disabled", "flags.0?Bool"],
+        ["call_requests_disabled", "flags.1?Bool"],
       ],
     ],
   ],
@@ -38843,7 +38821,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE1902288,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -38852,8 +38830,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3DEA5B03,
       [
-        ["id", "InputDocument", "InputDocument"],
-        ["unsave", "boolean", "Bool"],
+        ["id", "InputDocument"],
+        ["unsave", "Bool"],
       ],
     ],
   ],
@@ -38862,9 +38840,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x831A83A2,
       [
-        ["file", "InputFile", "InputFile"],
-        ["file_name", "string", "string"],
-        ["mime_type", "string", "string"],
+        ["file", "InputFile"],
+        ["file_name", "string"],
+        ["mime_type", "string"],
       ],
     ],
   ],
@@ -38873,7 +38851,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFBD3DE6B,
       [
-        ["emoji_status", "EmojiStatus", "EmojiStatus"],
+        ["emoji_status", "EmojiStatus"],
       ],
     ],
   ],
@@ -38882,7 +38860,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD6753386,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -38891,7 +38869,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0F578105,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -38907,7 +38885,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEF500EAB,
       [
-        ["order", ["string"], "Vector<string>"],
+        ["order", "Vector<string>"],
       ],
     ],
   ],
@@ -38916,8 +38894,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x58D6B376,
       [
-        ["username", "string", "string"],
-        ["active", "boolean", "Bool"],
+        ["username", "string"],
+        ["active", "Bool"],
       ],
     ],
   ],
@@ -38926,7 +38904,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE2750328,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -38935,7 +38913,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x915860AE,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -38951,12 +38929,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD69B8361,
       [
-        ["flags", flags, "#"],
-        ["users", "true", "flags.0?true"],
-        ["chats", "true", "flags.1?true"],
-        ["broadcasts", "true", "flags.2?true"],
-        ["peer", "InputPeer", "flags.3?InputPeer"],
-        ["settings", "AutoSaveSettings", "AutoSaveSettings"],
+        ["flags", "#"],
+        ["users", "flags.0?true"],
+        ["chats", "flags.1?true"],
+        ["broadcasts", "flags.2?true"],
+        ["peer", "flags.3?InputPeer"],
+        ["settings", "AutoSaveSettings"],
       ],
     ],
   ],
@@ -38972,7 +38950,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCA8AE8BA,
       [
-        ["codes", ["string"], "Vector<string>"],
+        ["codes", "Vector<string>"],
       ],
     ],
   ],
@@ -38981,10 +38959,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7CEFA15D,
       [
-        ["flags", flags, "#"],
-        ["for_profile", "true", "flags.1?true"],
-        ["color", "number", "flags.2?int"],
-        ["background_emoji_id", "bigint", "flags.0?long"],
+        ["flags", "#"],
+        ["for_profile", "flags.1?true"],
+        ["color", "flags.2?int"],
+        ["background_emoji_id", "flags.0?long"],
       ],
     ],
   ],
@@ -38993,7 +38971,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA60AB9CE,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -39002,7 +38980,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7727A7D5,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -39011,7 +38989,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x35A9E0D5,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -39020,8 +38998,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4B00E066,
       [
-        ["flags", flags, "#"],
-        ["business_work_hours", "BusinessWorkHours", "flags.0?BusinessWorkHours"],
+        ["flags", "#"],
+        ["business_work_hours", "flags.0?BusinessWorkHours"],
       ],
     ],
   ],
@@ -39030,9 +39008,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9E6B131A,
       [
-        ["flags", flags, "#"],
-        ["geo_point", "InputGeoPoint", "flags.1?InputGeoPoint"],
-        ["address", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["geo_point", "flags.1?InputGeoPoint"],
+        ["address", "flags.0?string"],
       ],
     ],
   ],
@@ -39041,8 +39019,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x66CDAFC4,
       [
-        ["flags", flags, "#"],
-        ["message", "InputBusinessGreetingMessage", "flags.0?InputBusinessGreetingMessage"],
+        ["flags", "#"],
+        ["message", "flags.0?InputBusinessGreetingMessage"],
       ],
     ],
   ],
@@ -39051,8 +39029,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA26A7FA5,
       [
-        ["flags", flags, "#"],
-        ["message", "InputBusinessAwayMessage", "flags.0?InputBusinessAwayMessage"],
+        ["flags", "#"],
+        ["message", "flags.0?InputBusinessAwayMessage"],
       ],
     ],
   ],
@@ -39061,11 +39039,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x43D8521D,
       [
-        ["flags", flags, "#"],
-        ["can_reply", "true", "flags.0?true"],
-        ["deleted", "true", "flags.1?true"],
-        ["bot", "InputUser", "InputUser"],
-        ["recipients", "InputBusinessBotRecipients", "InputBusinessBotRecipients"],
+        ["flags", "#"],
+        ["can_reply", "flags.0?true"],
+        ["deleted", "flags.1?true"],
+        ["bot", "InputUser"],
+        ["recipients", "InputBusinessBotRecipients"],
       ],
     ],
   ],
@@ -39081,7 +39059,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x76A86270,
       [
-        ["connection_id", "string", "string"],
+        ["connection_id", "string"],
       ],
     ],
   ],
@@ -39090,8 +39068,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA614D034,
       [
-        ["flags", flags, "#"],
-        ["intro", "InputBusinessIntro", "flags.0?InputBusinessIntro"],
+        ["flags", "#"],
+        ["intro", "flags.0?InputBusinessIntro"],
       ],
     ],
   ],
@@ -39100,8 +39078,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x646E1097,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["paused", "boolean", "Bool"],
+        ["peer", "InputPeer"],
+        ["paused", "Bool"],
       ],
     ],
   ],
@@ -39110,7 +39088,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5E437ED9,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -39119,8 +39097,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCC6E0C11,
       [
-        ["flags", flags, "#"],
-        ["birthday", "Birthday", "flags.0?Birthday"],
+        ["flags", "#"],
+        ["birthday", "flags.0?Birthday"],
       ],
     ],
   ],
@@ -39129,7 +39107,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8851E68E,
       [
-        ["link", "InputBusinessChatLink", "InputBusinessChatLink"],
+        ["link", "InputBusinessChatLink"],
       ],
     ],
   ],
@@ -39138,8 +39116,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8C3410AF,
       [
-        ["slug", "string", "string"],
-        ["link", "InputBusinessChatLink", "InputBusinessChatLink"],
+        ["slug", "string"],
+        ["link", "InputBusinessChatLink"],
       ],
     ],
   ],
@@ -39148,7 +39126,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x60073674,
       [
-        ["slug", "string", "string"],
+        ["slug", "string"],
       ],
     ],
   ],
@@ -39164,7 +39142,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5492E5EE,
       [
-        ["slug", "string", "string"],
+        ["slug", "string"],
       ],
     ],
   ],
@@ -39173,7 +39151,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD94305E0,
       [
-        ["channel", "InputChannel", "InputChannel"],
+        ["channel", "InputChannel"],
       ],
     ],
   ],
@@ -39182,7 +39160,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB9D9A38D,
       [
-        ["enabled", "boolean", "Bool"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -39198,7 +39176,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x316CE548,
       [
-        ["settings", "ReactionsNotifySettings", "ReactionsNotifySettings"],
+        ["settings", "ReactionsNotifySettings"],
       ],
     ],
   ],
@@ -39207,7 +39185,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2E7B4543,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -39216,9 +39194,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6F688AA7,
       [
-        ["flags", flags, "#"],
-        ["refund_charged", "true", "flags.0?true"],
-        ["user_id", "InputUser", "InputUser"],
+        ["flags", "#"],
+        ["refund_charged", "flags.0?true"],
+        ["user_id", "InputUser"],
       ],
     ],
   ],
@@ -39227,7 +39205,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF1266F38,
       [
-        ["user_id", "InputUser", "InputUser"],
+        ["user_id", "InputUser"],
       ],
     ],
   ],
@@ -39236,7 +39214,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0D91A548,
       [
-        ["id", ["InputUser"], "Vector<InputUser>"],
+        ["id", "Vector<InputUser>"],
       ],
     ],
   ],
@@ -39245,7 +39223,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB60F5918,
       [
-        ["id", "InputUser", "InputUser"],
+        ["id", "InputUser"],
       ],
     ],
   ],
@@ -39254,8 +39232,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x90C894B5,
       [
-        ["id", "InputUser", "InputUser"],
-        ["errors", ["SecureValueError"], "Vector<SecureValueError>"],
+        ["id", "InputUser"],
+        ["errors", "Vector<SecureValueError>"],
       ],
     ],
   ],
@@ -39264,7 +39242,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD89A83A3,
       [
-        ["id", ["InputUser"], "Vector<InputUser>"],
+        ["id", "Vector<InputUser>"],
       ],
     ],
   ],
@@ -39273,7 +39251,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7ADC669D,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -39289,7 +39267,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5DD69E12,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -39298,7 +39276,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2C800BE5,
       [
-        ["contacts", ["InputContact"], "Vector<InputContact>"],
+        ["contacts", "Vector<InputContact>"],
       ],
     ],
   ],
@@ -39307,7 +39285,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x096A0E00,
       [
-        ["id", ["InputUser"], "Vector<InputUser>"],
+        ["id", "Vector<InputUser>"],
       ],
     ],
   ],
@@ -39316,7 +39294,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1013FD9E,
       [
-        ["phones", ["string"], "Vector<string>"],
+        ["phones", "Vector<string>"],
       ],
     ],
   ],
@@ -39325,9 +39303,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2E2E8734,
       [
-        ["flags", flags, "#"],
-        ["my_stories_from", "true", "flags.0?true"],
-        ["id", "InputPeer", "InputPeer"],
+        ["flags", "#"],
+        ["my_stories_from", "flags.0?true"],
+        ["id", "InputPeer"],
       ],
     ],
   ],
@@ -39336,9 +39314,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB550D328,
       [
-        ["flags", flags, "#"],
-        ["my_stories_from", "true", "flags.0?true"],
-        ["id", "InputPeer", "InputPeer"],
+        ["flags", "#"],
+        ["my_stories_from", "flags.0?true"],
+        ["id", "InputPeer"],
       ],
     ],
   ],
@@ -39347,10 +39325,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9A868F80,
       [
-        ["flags", flags, "#"],
-        ["my_stories_from", "true", "flags.0?true"],
-        ["offset", "number", "int"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["my_stories_from", "flags.0?true"],
+        ["offset", "int"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -39359,8 +39337,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x11F812D8,
       [
-        ["q", "string", "string"],
-        ["limit", "number", "int"],
+        ["q", "string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -39369,9 +39347,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x725AFBBC,
       [
-        ["flags", flags, "#"],
-        ["username", "string", "string"],
-        ["referer", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["username", "string"],
+        ["referer", "flags.0?string"],
       ],
     ],
   ],
@@ -39380,19 +39358,19 @@ const types: Map<string, Parameters> = new Map([
     [
       0x973478B6,
       [
-        ["flags", flags, "#"],
-        ["correspondents", "true", "flags.0?true"],
-        ["bots_pm", "true", "flags.1?true"],
-        ["bots_inline", "true", "flags.2?true"],
-        ["phone_calls", "true", "flags.3?true"],
-        ["forward_users", "true", "flags.4?true"],
-        ["forward_chats", "true", "flags.5?true"],
-        ["groups", "true", "flags.10?true"],
-        ["channels", "true", "flags.15?true"],
-        ["bots_app", "true", "flags.16?true"],
-        ["offset", "number", "int"],
-        ["limit", "number", "int"],
-        ["hash", "bigint", "long"],
+        ["flags", "#"],
+        ["correspondents", "flags.0?true"],
+        ["bots_pm", "flags.1?true"],
+        ["bots_inline", "flags.2?true"],
+        ["phone_calls", "flags.3?true"],
+        ["forward_users", "flags.4?true"],
+        ["forward_chats", "flags.5?true"],
+        ["groups", "flags.10?true"],
+        ["channels", "flags.15?true"],
+        ["bots_app", "flags.16?true"],
+        ["offset", "int"],
+        ["limit", "int"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -39401,8 +39379,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1AE373AC,
       [
-        ["category", "TopPeerCategory", "TopPeerCategory"],
-        ["peer", "InputPeer", "InputPeer"],
+        ["category", "TopPeerCategory"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -39425,7 +39403,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8514BDDA,
       [
-        ["enabled", "boolean", "Bool"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -39434,12 +39412,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE8F463D0,
       [
-        ["flags", flags, "#"],
-        ["add_phone_privacy_exception", "true", "flags.0?true"],
-        ["id", "InputUser", "InputUser"],
-        ["first_name", "string", "string"],
-        ["last_name", "string", "string"],
-        ["phone", "string", "string"],
+        ["flags", "#"],
+        ["add_phone_privacy_exception", "flags.0?true"],
+        ["id", "InputUser"],
+        ["first_name", "string"],
+        ["last_name", "string"],
+        ["phone", "string"],
       ],
     ],
   ],
@@ -39448,7 +39426,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF831A20F,
       [
-        ["id", "InputUser", "InputUser"],
+        ["id", "InputUser"],
       ],
     ],
   ],
@@ -39457,10 +39435,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD348BC44,
       [
-        ["flags", flags, "#"],
-        ["background", "true", "flags.1?true"],
-        ["geo_point", "InputGeoPoint", "InputGeoPoint"],
-        ["self_expires", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["background", "flags.1?true"],
+        ["geo_point", "InputGeoPoint"],
+        ["self_expires", "flags.0?int"],
       ],
     ],
   ],
@@ -39469,11 +39447,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x29A8962C,
       [
-        ["flags", flags, "#"],
-        ["delete_message", "true", "flags.0?true"],
-        ["delete_history", "true", "flags.1?true"],
-        ["report_spam", "true", "flags.2?true"],
-        ["msg_id", "number", "int"],
+        ["flags", "#"],
+        ["delete_message", "flags.0?true"],
+        ["delete_history", "flags.1?true"],
+        ["report_spam", "flags.2?true"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -39482,7 +39460,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8AF94344,
       [
-        ["phone", "string", "string"],
+        ["phone", "string"],
       ],
     ],
   ],
@@ -39498,7 +39476,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x13005788,
       [
-        ["token", "string", "string"],
+        ["token", "string"],
       ],
     ],
   ],
@@ -39507,7 +39485,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBA6705F0,
       [
-        ["id", ["bigint"], "Vector<long>"],
+        ["id", "Vector<long>"],
       ],
     ],
   ],
@@ -39516,10 +39494,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x94C65C76,
       [
-        ["flags", flags, "#"],
-        ["my_stories_from", "true", "flags.0?true"],
-        ["id", ["InputPeer"], "Vector<InputPeer>"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["my_stories_from", "flags.0?true"],
+        ["id", "Vector<InputPeer>"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -39535,7 +39513,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x63C66506,
       [
-        ["id", ["InputMessage"], "Vector<InputMessage>"],
+        ["id", "Vector<InputMessage>"],
       ],
     ],
   ],
@@ -39544,14 +39522,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA0F4CB4F,
       [
-        ["flags", flags, "#"],
-        ["exclude_pinned", "true", "flags.0?true"],
-        ["folder_id", "number", "flags.1?int"],
-        ["offset_date", "number", "int"],
-        ["offset_id", "number", "int"],
-        ["offset_peer", "InputPeer", "InputPeer"],
-        ["limit", "number", "int"],
-        ["hash", "bigint", "long"],
+        ["flags", "#"],
+        ["exclude_pinned", "flags.0?true"],
+        ["folder_id", "flags.1?int"],
+        ["offset_date", "int"],
+        ["offset_id", "int"],
+        ["offset_peer", "InputPeer"],
+        ["limit", "int"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -39560,14 +39538,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4423E6C5,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["offset_id", "number", "int"],
-        ["offset_date", "number", "int"],
-        ["add_offset", "number", "int"],
-        ["limit", "number", "int"],
-        ["max_id", "number", "int"],
-        ["min_id", "number", "int"],
-        ["hash", "bigint", "long"],
+        ["peer", "InputPeer"],
+        ["offset_id", "int"],
+        ["offset_date", "int"],
+        ["add_offset", "int"],
+        ["limit", "int"],
+        ["max_id", "int"],
+        ["min_id", "int"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -39576,22 +39554,22 @@ const types: Map<string, Parameters> = new Map([
     [
       0x29EE847A,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["q", "string", "string"],
-        ["from_id", "InputPeer", "flags.0?InputPeer"],
-        ["saved_peer_id", "InputPeer", "flags.2?InputPeer"],
-        ["saved_reaction", ["Reaction"], "flags.3?Vector<Reaction>"],
-        ["top_msg_id", "number", "flags.1?int"],
-        ["filter", "MessagesFilter", "MessagesFilter"],
-        ["min_date", "number", "int"],
-        ["max_date", "number", "int"],
-        ["offset_id", "number", "int"],
-        ["add_offset", "number", "int"],
-        ["limit", "number", "int"],
-        ["max_id", "number", "int"],
-        ["min_id", "number", "int"],
-        ["hash", "bigint", "long"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["q", "string"],
+        ["from_id", "flags.0?InputPeer"],
+        ["saved_peer_id", "flags.2?InputPeer"],
+        ["saved_reaction", "flags.3?Vector<Reaction>"],
+        ["top_msg_id", "flags.1?int"],
+        ["filter", "MessagesFilter"],
+        ["min_date", "int"],
+        ["max_date", "int"],
+        ["offset_id", "int"],
+        ["add_offset", "int"],
+        ["limit", "int"],
+        ["max_id", "int"],
+        ["min_id", "int"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -39600,8 +39578,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0E306D3A,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["max_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["max_id", "int"],
       ],
     ],
   ],
@@ -39610,13 +39588,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB08F922A,
       [
-        ["flags", flags, "#"],
-        ["just_clear", "true", "flags.0?true"],
-        ["revoke", "true", "flags.1?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["max_id", "number", "int"],
-        ["min_date", "number", "flags.2?int"],
-        ["max_date", "number", "flags.3?int"],
+        ["flags", "#"],
+        ["just_clear", "flags.0?true"],
+        ["revoke", "flags.1?true"],
+        ["peer", "InputPeer"],
+        ["max_id", "int"],
+        ["min_date", "flags.2?int"],
+        ["max_date", "flags.3?int"],
       ],
     ],
   ],
@@ -39625,9 +39603,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE58E95D2,
       [
-        ["flags", flags, "#"],
-        ["revoke", "true", "flags.0?true"],
-        ["id", ["number"], "Vector<int>"],
+        ["flags", "#"],
+        ["revoke", "flags.0?true"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -39636,7 +39614,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x05A954C0,
       [
-        ["max_id", "number", "int"],
+        ["max_id", "int"],
       ],
     ],
   ],
@@ -39645,10 +39623,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x58943EE2,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["top_msg_id", "number", "flags.0?int"],
-        ["action", "SendMessageAction", "SendMessageAction"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["top_msg_id", "flags.0?int"],
+        ["action", "SendMessageAction"],
       ],
     ],
   ],
@@ -39657,26 +39635,26 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFBF2340A,
       [
-        ["flags", flags, "#"],
-        ["no_webpage", "true", "flags.1?true"],
-        ["silent", "true", "flags.5?true"],
-        ["background", "true", "flags.6?true"],
-        ["clear_draft", "true", "flags.7?true"],
-        ["noforwards", "true", "flags.14?true"],
-        ["update_stickersets_order", "true", "flags.15?true"],
-        ["invert_media", "true", "flags.16?true"],
-        ["allow_paid_floodskip", "true", "flags.19?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["reply_to", "InputReplyTo", "flags.0?InputReplyTo"],
-        ["message", "string", "string"],
-        ["random_id", "bigint", "long"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
-        ["entities", ["MessageEntity"], "flags.3?Vector<MessageEntity>"],
-        ["schedule_date", "number", "flags.10?int"],
-        ["send_as", "InputPeer", "flags.13?InputPeer"],
-        ["quick_reply_shortcut", "InputQuickReplyShortcut", "flags.17?InputQuickReplyShortcut"],
-        ["effect", "bigint", "flags.18?long"],
-        ["allow_paid_stars", "bigint", "flags.21?long"],
+        ["flags", "#"],
+        ["no_webpage", "flags.1?true"],
+        ["silent", "flags.5?true"],
+        ["background", "flags.6?true"],
+        ["clear_draft", "flags.7?true"],
+        ["noforwards", "flags.14?true"],
+        ["update_stickersets_order", "flags.15?true"],
+        ["invert_media", "flags.16?true"],
+        ["allow_paid_floodskip", "flags.19?true"],
+        ["peer", "InputPeer"],
+        ["reply_to", "flags.0?InputReplyTo"],
+        ["message", "string"],
+        ["random_id", "long"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
+        ["entities", "flags.3?Vector<MessageEntity>"],
+        ["schedule_date", "flags.10?int"],
+        ["send_as", "flags.13?InputPeer"],
+        ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
+        ["effect", "flags.18?long"],
+        ["allow_paid_stars", "flags.21?long"],
       ],
     ],
   ],
@@ -39685,26 +39663,26 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA550CD78,
       [
-        ["flags", flags, "#"],
-        ["silent", "true", "flags.5?true"],
-        ["background", "true", "flags.6?true"],
-        ["clear_draft", "true", "flags.7?true"],
-        ["noforwards", "true", "flags.14?true"],
-        ["update_stickersets_order", "true", "flags.15?true"],
-        ["invert_media", "true", "flags.16?true"],
-        ["allow_paid_floodskip", "true", "flags.19?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["reply_to", "InputReplyTo", "flags.0?InputReplyTo"],
-        ["media", "InputMedia", "InputMedia"],
-        ["message", "string", "string"],
-        ["random_id", "bigint", "long"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
-        ["entities", ["MessageEntity"], "flags.3?Vector<MessageEntity>"],
-        ["schedule_date", "number", "flags.10?int"],
-        ["send_as", "InputPeer", "flags.13?InputPeer"],
-        ["quick_reply_shortcut", "InputQuickReplyShortcut", "flags.17?InputQuickReplyShortcut"],
-        ["effect", "bigint", "flags.18?long"],
-        ["allow_paid_stars", "bigint", "flags.21?long"],
+        ["flags", "#"],
+        ["silent", "flags.5?true"],
+        ["background", "flags.6?true"],
+        ["clear_draft", "flags.7?true"],
+        ["noforwards", "flags.14?true"],
+        ["update_stickersets_order", "flags.15?true"],
+        ["invert_media", "flags.16?true"],
+        ["allow_paid_floodskip", "flags.19?true"],
+        ["peer", "InputPeer"],
+        ["reply_to", "flags.0?InputReplyTo"],
+        ["media", "InputMedia"],
+        ["message", "string"],
+        ["random_id", "long"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
+        ["entities", "flags.3?Vector<MessageEntity>"],
+        ["schedule_date", "flags.10?int"],
+        ["send_as", "flags.13?InputPeer"],
+        ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
+        ["effect", "flags.18?long"],
+        ["allow_paid_stars", "flags.21?long"],
       ],
     ],
   ],
@@ -39713,24 +39691,24 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBB9FA475,
       [
-        ["flags", flags, "#"],
-        ["silent", "true", "flags.5?true"],
-        ["background", "true", "flags.6?true"],
-        ["with_my_score", "true", "flags.8?true"],
-        ["drop_author", "true", "flags.11?true"],
-        ["drop_media_captions", "true", "flags.12?true"],
-        ["noforwards", "true", "flags.14?true"],
-        ["allow_paid_floodskip", "true", "flags.19?true"],
-        ["from_peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
-        ["random_id", ["bigint"], "Vector<long>"],
-        ["to_peer", "InputPeer", "InputPeer"],
-        ["top_msg_id", "number", "flags.9?int"],
-        ["schedule_date", "number", "flags.10?int"],
-        ["send_as", "InputPeer", "flags.13?InputPeer"],
-        ["quick_reply_shortcut", "InputQuickReplyShortcut", "flags.17?InputQuickReplyShortcut"],
-        ["video_timestamp", "number", "flags.20?int"],
-        ["allow_paid_stars", "bigint", "flags.21?long"],
+        ["flags", "#"],
+        ["silent", "flags.5?true"],
+        ["background", "flags.6?true"],
+        ["with_my_score", "flags.8?true"],
+        ["drop_author", "flags.11?true"],
+        ["drop_media_captions", "flags.12?true"],
+        ["noforwards", "flags.14?true"],
+        ["allow_paid_floodskip", "flags.19?true"],
+        ["from_peer", "InputPeer"],
+        ["id", "Vector<int>"],
+        ["random_id", "Vector<long>"],
+        ["to_peer", "InputPeer"],
+        ["top_msg_id", "flags.9?int"],
+        ["schedule_date", "flags.10?int"],
+        ["send_as", "flags.13?InputPeer"],
+        ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
+        ["video_timestamp", "flags.20?int"],
+        ["allow_paid_stars", "flags.21?long"],
       ],
     ],
   ],
@@ -39739,7 +39717,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCF1592DB,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -39748,7 +39726,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEFD9A6A2,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -39757,10 +39735,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFC78AF9B,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
-        ["option", Uint8Array, "bytes"],
-        ["message", "string", "string"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
+        ["option", "bytes"],
+        ["message", "string"],
       ],
     ],
   ],
@@ -39769,7 +39747,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x49E9528F,
       [
-        ["id", ["bigint"], "Vector<long>"],
+        ["id", "Vector<long>"],
       ],
     ],
   ],
@@ -39778,7 +39756,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAEB00B34,
       [
-        ["chat_id", "bigint", "long"],
+        ["chat_id", "long"],
       ],
     ],
   ],
@@ -39787,8 +39765,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x73783FFD,
       [
-        ["chat_id", "bigint", "long"],
-        ["title", "string", "string"],
+        ["chat_id", "long"],
+        ["title", "string"],
       ],
     ],
   ],
@@ -39797,8 +39775,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x35DDD674,
       [
-        ["chat_id", "bigint", "long"],
-        ["photo", "InputChatPhoto", "InputChatPhoto"],
+        ["chat_id", "long"],
+        ["photo", "InputChatPhoto"],
       ],
     ],
   ],
@@ -39807,9 +39785,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCBC6D107,
       [
-        ["chat_id", "bigint", "long"],
-        ["user_id", "InputUser", "InputUser"],
-        ["fwd_limit", "number", "int"],
+        ["chat_id", "long"],
+        ["user_id", "InputUser"],
+        ["fwd_limit", "int"],
       ],
     ],
   ],
@@ -39818,10 +39796,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA2185CAB,
       [
-        ["flags", flags, "#"],
-        ["revoke_history", "true", "flags.0?true"],
-        ["chat_id", "bigint", "long"],
-        ["user_id", "InputUser", "InputUser"],
+        ["flags", "#"],
+        ["revoke_history", "flags.0?true"],
+        ["chat_id", "long"],
+        ["user_id", "InputUser"],
       ],
     ],
   ],
@@ -39830,10 +39808,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x92CEDDD4,
       [
-        ["flags", flags, "#"],
-        ["users", ["InputUser"], "Vector<InputUser>"],
-        ["title", "string", "string"],
-        ["ttl_period", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["users", "Vector<InputUser>"],
+        ["title", "string"],
+        ["ttl_period", "flags.0?int"],
       ],
     ],
   ],
@@ -39842,8 +39820,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x26CF8950,
       [
-        ["version", "number", "int"],
-        ["random_length", "number", "int"],
+        ["version", "int"],
+        ["random_length", "int"],
       ],
     ],
   ],
@@ -39852,9 +39830,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF64DAF43,
       [
-        ["user_id", "InputUser", "InputUser"],
-        ["random_id", "number", "int"],
-        ["g_a", Uint8Array, "bytes"],
+        ["user_id", "InputUser"],
+        ["random_id", "int"],
+        ["g_a", "bytes"],
       ],
     ],
   ],
@@ -39863,9 +39841,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3DBC0415,
       [
-        ["peer", "InputEncryptedChat", "InputEncryptedChat"],
-        ["g_b", Uint8Array, "bytes"],
-        ["key_fingerprint", "bigint", "long"],
+        ["peer", "InputEncryptedChat"],
+        ["g_b", "bytes"],
+        ["key_fingerprint", "long"],
       ],
     ],
   ],
@@ -39874,9 +39852,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF393AEA0,
       [
-        ["flags", flags, "#"],
-        ["delete_history", "true", "flags.0?true"],
-        ["chat_id", "number", "int"],
+        ["flags", "#"],
+        ["delete_history", "flags.0?true"],
+        ["chat_id", "int"],
       ],
     ],
   ],
@@ -39885,8 +39863,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x791451ED,
       [
-        ["peer", "InputEncryptedChat", "InputEncryptedChat"],
-        ["typing", "boolean", "Bool"],
+        ["peer", "InputEncryptedChat"],
+        ["typing", "Bool"],
       ],
     ],
   ],
@@ -39895,8 +39873,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7F4B690A,
       [
-        ["peer", "InputEncryptedChat", "InputEncryptedChat"],
-        ["max_date", "number", "int"],
+        ["peer", "InputEncryptedChat"],
+        ["max_date", "int"],
       ],
     ],
   ],
@@ -39905,11 +39883,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x44FA7A15,
       [
-        ["flags", flags, "#"],
-        ["silent", "true", "flags.0?true"],
-        ["peer", "InputEncryptedChat", "InputEncryptedChat"],
-        ["random_id", "bigint", "long"],
-        ["data", Uint8Array, "bytes"],
+        ["flags", "#"],
+        ["silent", "flags.0?true"],
+        ["peer", "InputEncryptedChat"],
+        ["random_id", "long"],
+        ["data", "bytes"],
       ],
     ],
   ],
@@ -39918,12 +39896,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5559481D,
       [
-        ["flags", flags, "#"],
-        ["silent", "true", "flags.0?true"],
-        ["peer", "InputEncryptedChat", "InputEncryptedChat"],
-        ["random_id", "bigint", "long"],
-        ["data", Uint8Array, "bytes"],
-        ["file", "InputEncryptedFile", "InputEncryptedFile"],
+        ["flags", "#"],
+        ["silent", "flags.0?true"],
+        ["peer", "InputEncryptedChat"],
+        ["random_id", "long"],
+        ["data", "bytes"],
+        ["file", "InputEncryptedFile"],
       ],
     ],
   ],
@@ -39932,9 +39910,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x32D439A4,
       [
-        ["peer", "InputEncryptedChat", "InputEncryptedChat"],
-        ["random_id", "bigint", "long"],
-        ["data", Uint8Array, "bytes"],
+        ["peer", "InputEncryptedChat"],
+        ["random_id", "long"],
+        ["data", "bytes"],
       ],
     ],
   ],
@@ -39943,7 +39921,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x55A5BB66,
       [
-        ["max_qts", "number", "int"],
+        ["max_qts", "int"],
       ],
     ],
   ],
@@ -39952,7 +39930,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4B0C8C0F,
       [
-        ["peer", "InputEncryptedChat", "InputEncryptedChat"],
+        ["peer", "InputEncryptedChat"],
       ],
     ],
   ],
@@ -39961,7 +39939,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x36A73F77,
       [
-        ["id", ["number"], "Vector<int>"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -39970,8 +39948,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD5A5D3A1,
       [
-        ["emoticon", "string", "string"],
-        ["hash", "bigint", "long"],
+        ["emoticon", "string"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -39980,7 +39958,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB8A0A1A8,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -39989,9 +39967,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x570D6F6F,
       [
-        ["flags", flags, "#"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.3?Vector<MessageEntity>"],
+        ["flags", "#"],
+        ["message", "string"],
+        ["entities", "flags.3?Vector<MessageEntity>"],
       ],
     ],
   ],
@@ -40000,14 +39978,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA455DE90,
       [
-        ["flags", flags, "#"],
-        ["legacy_revoke_permanent", "true", "flags.2?true"],
-        ["request_needed", "true", "flags.3?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["expire_date", "number", "flags.0?int"],
-        ["usage_limit", "number", "flags.1?int"],
-        ["title", "string", "flags.4?string"],
-        ["subscription_pricing", "StarsSubscriptionPricing", "flags.5?StarsSubscriptionPricing"],
+        ["flags", "#"],
+        ["legacy_revoke_permanent", "flags.2?true"],
+        ["request_needed", "flags.3?true"],
+        ["peer", "InputPeer"],
+        ["expire_date", "flags.0?int"],
+        ["usage_limit", "flags.1?int"],
+        ["title", "flags.4?string"],
+        ["subscription_pricing", "flags.5?StarsSubscriptionPricing"],
       ],
     ],
   ],
@@ -40016,7 +39994,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3EADB1BB,
       [
-        ["hash", "string", "string"],
+        ["hash", "string"],
       ],
     ],
   ],
@@ -40025,7 +40003,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6C50051C,
       [
-        ["hash", "string", "string"],
+        ["hash", "string"],
       ],
     ],
   ],
@@ -40034,8 +40012,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC8A0EC74,
       [
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
-        ["hash", "number", "int"],
+        ["stickerset", "InputStickerSet"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -40044,8 +40022,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC78FE460,
       [
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
-        ["archived", "boolean", "Bool"],
+        ["stickerset", "InputStickerSet"],
+        ["archived", "Bool"],
       ],
     ],
   ],
@@ -40054,7 +40032,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF96E55DE,
       [
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
+        ["stickerset", "InputStickerSet"],
       ],
     ],
   ],
@@ -40063,10 +40041,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE6DF7378,
       [
-        ["bot", "InputUser", "InputUser"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["random_id", "bigint", "long"],
-        ["start_param", "string", "string"],
+        ["bot", "InputUser"],
+        ["peer", "InputPeer"],
+        ["random_id", "long"],
+        ["start_param", "string"],
       ],
     ],
   ],
@@ -40075,9 +40053,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5784D3E1,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
-        ["increment", "boolean", "Bool"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
+        ["increment", "Bool"],
       ],
     ],
   ],
@@ -40086,9 +40064,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA85BD1C2,
       [
-        ["chat_id", "bigint", "long"],
-        ["user_id", "InputUser", "InputUser"],
-        ["is_admin", "boolean", "Bool"],
+        ["chat_id", "long"],
+        ["user_id", "InputUser"],
+        ["is_admin", "Bool"],
       ],
     ],
   ],
@@ -40097,7 +40075,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA2875319,
       [
-        ["chat_id", "bigint", "long"],
+        ["chat_id", "long"],
       ],
     ],
   ],
@@ -40106,19 +40084,19 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4BC6589A,
       [
-        ["flags", flags, "#"],
-        ["broadcasts_only", "true", "flags.1?true"],
-        ["groups_only", "true", "flags.2?true"],
-        ["users_only", "true", "flags.3?true"],
-        ["folder_id", "number", "flags.0?int"],
-        ["q", "string", "string"],
-        ["filter", "MessagesFilter", "MessagesFilter"],
-        ["min_date", "number", "int"],
-        ["max_date", "number", "int"],
-        ["offset_rate", "number", "int"],
-        ["offset_peer", "InputPeer", "InputPeer"],
-        ["offset_id", "number", "int"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["broadcasts_only", "flags.1?true"],
+        ["groups_only", "flags.2?true"],
+        ["users_only", "flags.3?true"],
+        ["folder_id", "flags.0?int"],
+        ["q", "string"],
+        ["filter", "MessagesFilter"],
+        ["min_date", "int"],
+        ["max_date", "int"],
+        ["offset_rate", "int"],
+        ["offset_peer", "InputPeer"],
+        ["offset_id", "int"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -40127,10 +40105,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x78337739,
       [
-        ["flags", flags, "#"],
-        ["masks", "true", "flags.0?true"],
-        ["emojis", "true", "flags.1?true"],
-        ["order", ["bigint"], "Vector<long>"],
+        ["flags", "#"],
+        ["masks", "flags.0?true"],
+        ["emojis", "flags.1?true"],
+        ["order", "Vector<long>"],
       ],
     ],
   ],
@@ -40139,9 +40117,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB1F2061F,
       [
-        ["sha256", Uint8Array, "bytes"],
-        ["size", "bigint", "long"],
-        ["mime_type", "string", "string"],
+        ["sha256", "bytes"],
+        ["size", "long"],
+        ["mime_type", "string"],
       ],
     ],
   ],
@@ -40150,7 +40128,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5CF09635,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -40159,8 +40137,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x327A30CB,
       [
-        ["id", "InputDocument", "InputDocument"],
-        ["unsave", "boolean", "Bool"],
+        ["id", "InputDocument"],
+        ["unsave", "Bool"],
       ],
     ],
   ],
@@ -40169,12 +40147,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x514E999D,
       [
-        ["flags", flags, "#"],
-        ["bot", "InputUser", "InputUser"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["geo_point", "InputGeoPoint", "flags.0?InputGeoPoint"],
-        ["query", "string", "string"],
-        ["offset", "string", "string"],
+        ["flags", "#"],
+        ["bot", "InputUser"],
+        ["peer", "InputPeer"],
+        ["geo_point", "flags.0?InputGeoPoint"],
+        ["query", "string"],
+        ["offset", "string"],
       ],
     ],
   ],
@@ -40183,15 +40161,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBB12A419,
       [
-        ["flags", flags, "#"],
-        ["gallery", "true", "flags.0?true"],
-        ["private", "true", "flags.1?true"],
-        ["query_id", "bigint", "long"],
-        ["results", ["InputBotInlineResult"], "Vector<InputBotInlineResult>"],
-        ["cache_time", "number", "int"],
-        ["next_offset", "string", "flags.2?string"],
-        ["switch_pm", "InlineBotSwitchPM", "flags.3?InlineBotSwitchPM"],
-        ["switch_webview", "InlineBotWebView", "flags.4?InlineBotWebView"],
+        ["flags", "#"],
+        ["gallery", "flags.0?true"],
+        ["private", "flags.1?true"],
+        ["query_id", "long"],
+        ["results", "Vector<InputBotInlineResult>"],
+        ["cache_time", "int"],
+        ["next_offset", "flags.2?string"],
+        ["switch_pm", "flags.3?InlineBotSwitchPM"],
+        ["switch_webview", "flags.4?InlineBotWebView"],
       ],
     ],
   ],
@@ -40200,20 +40178,20 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC0CF7646,
       [
-        ["flags", flags, "#"],
-        ["silent", "true", "flags.5?true"],
-        ["background", "true", "flags.6?true"],
-        ["clear_draft", "true", "flags.7?true"],
-        ["hide_via", "true", "flags.11?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["reply_to", "InputReplyTo", "flags.0?InputReplyTo"],
-        ["random_id", "bigint", "long"],
-        ["query_id", "bigint", "long"],
-        ["id", "string", "string"],
-        ["schedule_date", "number", "flags.10?int"],
-        ["send_as", "InputPeer", "flags.13?InputPeer"],
-        ["quick_reply_shortcut", "InputQuickReplyShortcut", "flags.17?InputQuickReplyShortcut"],
-        ["allow_paid_stars", "bigint", "flags.21?long"],
+        ["flags", "#"],
+        ["silent", "flags.5?true"],
+        ["background", "flags.6?true"],
+        ["clear_draft", "flags.7?true"],
+        ["hide_via", "flags.11?true"],
+        ["peer", "InputPeer"],
+        ["reply_to", "flags.0?InputReplyTo"],
+        ["random_id", "long"],
+        ["query_id", "long"],
+        ["id", "string"],
+        ["schedule_date", "flags.10?int"],
+        ["send_as", "flags.13?InputPeer"],
+        ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
+        ["allow_paid_stars", "flags.21?long"],
       ],
     ],
   ],
@@ -40222,8 +40200,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFDA68D36,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
       ],
     ],
   ],
@@ -40232,17 +40210,17 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDFD14005,
       [
-        ["flags", flags, "#"],
-        ["no_webpage", "true", "flags.1?true"],
-        ["invert_media", "true", "flags.16?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
-        ["message", "string", "flags.11?string"],
-        ["media", "InputMedia", "flags.14?InputMedia"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
-        ["entities", ["MessageEntity"], "flags.3?Vector<MessageEntity>"],
-        ["schedule_date", "number", "flags.15?int"],
-        ["quick_reply_shortcut_id", "number", "flags.17?int"],
+        ["flags", "#"],
+        ["no_webpage", "flags.1?true"],
+        ["invert_media", "flags.16?true"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
+        ["message", "flags.11?string"],
+        ["media", "flags.14?InputMedia"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
+        ["entities", "flags.3?Vector<MessageEntity>"],
+        ["schedule_date", "flags.15?int"],
+        ["quick_reply_shortcut_id", "flags.17?int"],
       ],
     ],
   ],
@@ -40251,14 +40229,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x83557DBA,
       [
-        ["flags", flags, "#"],
-        ["no_webpage", "true", "flags.1?true"],
-        ["invert_media", "true", "flags.16?true"],
-        ["id", "InputBotInlineMessageID", "InputBotInlineMessageID"],
-        ["message", "string", "flags.11?string"],
-        ["media", "InputMedia", "flags.14?InputMedia"],
-        ["reply_markup", "ReplyMarkup", "flags.2?ReplyMarkup"],
-        ["entities", ["MessageEntity"], "flags.3?Vector<MessageEntity>"],
+        ["flags", "#"],
+        ["no_webpage", "flags.1?true"],
+        ["invert_media", "flags.16?true"],
+        ["id", "InputBotInlineMessageID"],
+        ["message", "flags.11?string"],
+        ["media", "flags.14?InputMedia"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
+        ["entities", "flags.3?Vector<MessageEntity>"],
       ],
     ],
   ],
@@ -40267,12 +40245,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9342CA07,
       [
-        ["flags", flags, "#"],
-        ["game", "true", "flags.1?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["data", Uint8Array, "flags.0?bytes"],
-        ["password", "InputCheckPasswordSRP", "flags.2?InputCheckPasswordSRP"],
+        ["flags", "#"],
+        ["game", "flags.1?true"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["data", "flags.0?bytes"],
+        ["password", "flags.2?InputCheckPasswordSRP"],
       ],
     ],
   ],
@@ -40281,12 +40259,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD58F130A,
       [
-        ["flags", flags, "#"],
-        ["alert", "true", "flags.1?true"],
-        ["query_id", "bigint", "long"],
-        ["message", "string", "flags.0?string"],
-        ["url", "string", "flags.2?string"],
-        ["cache_time", "number", "int"],
+        ["flags", "#"],
+        ["alert", "flags.1?true"],
+        ["query_id", "long"],
+        ["message", "flags.0?string"],
+        ["url", "flags.2?string"],
+        ["cache_time", "int"],
       ],
     ],
   ],
@@ -40295,7 +40273,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE470BCFD,
       [
-        ["peers", ["InputDialogPeer"], "Vector<InputDialogPeer>"],
+        ["peers", "Vector<InputDialogPeer>"],
       ],
     ],
   ],
@@ -40304,15 +40282,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD372C5CE,
       [
-        ["flags", flags, "#"],
-        ["no_webpage", "true", "flags.1?true"],
-        ["invert_media", "true", "flags.6?true"],
-        ["reply_to", "InputReplyTo", "flags.4?InputReplyTo"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "flags.3?Vector<MessageEntity>"],
-        ["media", "InputMedia", "flags.5?InputMedia"],
-        ["effect", "bigint", "flags.7?long"],
+        ["flags", "#"],
+        ["no_webpage", "flags.1?true"],
+        ["invert_media", "flags.6?true"],
+        ["reply_to", "flags.4?InputReplyTo"],
+        ["peer", "InputPeer"],
+        ["message", "string"],
+        ["entities", "flags.3?Vector<MessageEntity>"],
+        ["media", "flags.5?InputMedia"],
+        ["effect", "flags.7?long"],
       ],
     ],
   ],
@@ -40328,7 +40306,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x64780B14,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -40337,7 +40315,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5B118126,
       [
-        ["id", ["bigint"], "Vector<long>"],
+        ["id", "Vector<long>"],
       ],
     ],
   ],
@@ -40346,9 +40324,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9DA9403B,
       [
-        ["flags", flags, "#"],
-        ["attached", "true", "flags.0?true"],
-        ["hash", "bigint", "long"],
+        ["flags", "#"],
+        ["attached", "flags.0?true"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -40357,10 +40335,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x392718F8,
       [
-        ["flags", flags, "#"],
-        ["attached", "true", "flags.0?true"],
-        ["id", "InputDocument", "InputDocument"],
-        ["unsave", "boolean", "Bool"],
+        ["flags", "#"],
+        ["attached", "flags.0?true"],
+        ["id", "InputDocument"],
+        ["unsave", "Bool"],
       ],
     ],
   ],
@@ -40369,8 +40347,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8999602D,
       [
-        ["flags", flags, "#"],
-        ["attached", "true", "flags.0?true"],
+        ["flags", "#"],
+        ["attached", "flags.0?true"],
       ],
     ],
   ],
@@ -40379,11 +40357,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x57F17692,
       [
-        ["flags", flags, "#"],
-        ["masks", "true", "flags.0?true"],
-        ["emojis", "true", "flags.1?true"],
-        ["offset_id", "bigint", "long"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["masks", "flags.0?true"],
+        ["emojis", "flags.1?true"],
+        ["offset_id", "long"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -40392,7 +40370,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x640F82B8,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -40401,7 +40379,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCC5B67CC,
       [
-        ["media", "InputStickeredMedia", "InputStickeredMedia"],
+        ["media", "InputStickeredMedia"],
       ],
     ],
   ],
@@ -40410,13 +40388,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8EF8ECC0,
       [
-        ["flags", flags, "#"],
-        ["edit_message", "true", "flags.0?true"],
-        ["force", "true", "flags.1?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
-        ["user_id", "InputUser", "InputUser"],
-        ["score", "number", "int"],
+        ["flags", "#"],
+        ["edit_message", "flags.0?true"],
+        ["force", "flags.1?true"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
+        ["user_id", "InputUser"],
+        ["score", "int"],
       ],
     ],
   ],
@@ -40425,12 +40403,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x15AD9F64,
       [
-        ["flags", flags, "#"],
-        ["edit_message", "true", "flags.0?true"],
-        ["force", "true", "flags.1?true"],
-        ["id", "InputBotInlineMessageID", "InputBotInlineMessageID"],
-        ["user_id", "InputUser", "InputUser"],
-        ["score", "number", "int"],
+        ["flags", "#"],
+        ["edit_message", "flags.0?true"],
+        ["force", "flags.1?true"],
+        ["id", "InputBotInlineMessageID"],
+        ["user_id", "InputUser"],
+        ["score", "int"],
       ],
     ],
   ],
@@ -40439,9 +40417,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE822649D,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
-        ["user_id", "InputUser", "InputUser"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
+        ["user_id", "InputUser"],
       ],
     ],
   ],
@@ -40450,8 +40428,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0F635E1B,
       [
-        ["id", "InputBotInlineMessageID", "InputBotInlineMessageID"],
-        ["user_id", "InputUser", "InputUser"],
+        ["id", "InputBotInlineMessageID"],
+        ["user_id", "InputUser"],
       ],
     ],
   ],
@@ -40460,9 +40438,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE40CA104,
       [
-        ["user_id", "InputUser", "InputUser"],
-        ["max_id", "bigint", "long"],
-        ["limit", "number", "int"],
+        ["user_id", "InputUser"],
+        ["max_id", "long"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -40471,8 +40449,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8D9692A3,
       [
-        ["url", "string", "string"],
-        ["hash", "number", "int"],
+        ["url", "string"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -40481,9 +40459,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA731E257,
       [
-        ["flags", flags, "#"],
-        ["pinned", "true", "flags.0?true"],
-        ["peer", "InputDialogPeer", "InputDialogPeer"],
+        ["flags", "#"],
+        ["pinned", "flags.0?true"],
+        ["peer", "InputDialogPeer"],
       ],
     ],
   ],
@@ -40492,10 +40470,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3B1ADF37,
       [
-        ["flags", flags, "#"],
-        ["force", "true", "flags.0?true"],
-        ["folder_id", "number", "int"],
-        ["order", ["InputDialogPeer"], "Vector<InputDialogPeer>"],
+        ["flags", "#"],
+        ["force", "flags.0?true"],
+        ["folder_id", "int"],
+        ["order", "Vector<InputDialogPeer>"],
       ],
     ],
   ],
@@ -40504,7 +40482,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD6B94DF2,
       [
-        ["folder_id", "number", "int"],
+        ["folder_id", "int"],
       ],
     ],
   ],
@@ -40513,10 +40491,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE5F672FA,
       [
-        ["flags", flags, "#"],
-        ["query_id", "bigint", "long"],
-        ["error", "string", "flags.0?string"],
-        ["shipping_options", ["ShippingOption"], "flags.1?Vector<ShippingOption>"],
+        ["flags", "#"],
+        ["query_id", "long"],
+        ["error", "flags.0?string"],
+        ["shipping_options", "flags.1?Vector<ShippingOption>"],
       ],
     ],
   ],
@@ -40525,10 +40503,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x09C2DD95,
       [
-        ["flags", flags, "#"],
-        ["success", "true", "flags.1?true"],
-        ["query_id", "bigint", "long"],
-        ["error", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["success", "flags.1?true"],
+        ["query_id", "long"],
+        ["error", "flags.0?string"],
       ],
     ],
   ],
@@ -40537,10 +40515,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x14967978,
       [
-        ["flags", flags, "#"],
-        ["business_connection_id", "string", "flags.0?string"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["media", "InputMedia", "InputMedia"],
+        ["flags", "#"],
+        ["business_connection_id", "flags.0?string"],
+        ["peer", "InputPeer"],
+        ["media", "InputMedia"],
       ],
     ],
   ],
@@ -40549,9 +40527,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA1405817,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["reply_to", "InputReplyTo", "InputReplyTo"],
-        ["random_id", "bigint", "long"],
+        ["peer", "InputPeer"],
+        ["reply_to", "InputReplyTo"],
+        ["random_id", "long"],
       ],
     ],
   ],
@@ -40560,7 +40538,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x04F1AAA9,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -40569,8 +40547,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB9FFC55B,
       [
-        ["id", "InputDocument", "InputDocument"],
-        ["unfave", "boolean", "Bool"],
+        ["id", "InputDocument"],
+        ["unfave", "Bool"],
       ],
     ],
   ],
@@ -40579,14 +40557,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF107E790,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["top_msg_id", "number", "flags.0?int"],
-        ["offset_id", "number", "int"],
-        ["add_offset", "number", "int"],
-        ["limit", "number", "int"],
-        ["max_id", "number", "int"],
-        ["min_id", "number", "int"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["top_msg_id", "flags.0?int"],
+        ["offset_id", "int"],
+        ["add_offset", "int"],
+        ["limit", "int"],
+        ["max_id", "int"],
+        ["min_id", "int"],
       ],
     ],
   ],
@@ -40595,9 +40573,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x36E5BF4D,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["top_msg_id", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["top_msg_id", "flags.0?int"],
       ],
     ],
   ],
@@ -40606,9 +40584,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x702A40E0,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["limit", "number", "int"],
-        ["hash", "bigint", "long"],
+        ["peer", "InputPeer"],
+        ["limit", "int"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -40617,22 +40595,22 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1BF89D74,
       [
-        ["flags", flags, "#"],
-        ["silent", "true", "flags.5?true"],
-        ["background", "true", "flags.6?true"],
-        ["clear_draft", "true", "flags.7?true"],
-        ["noforwards", "true", "flags.14?true"],
-        ["update_stickersets_order", "true", "flags.15?true"],
-        ["invert_media", "true", "flags.16?true"],
-        ["allow_paid_floodskip", "true", "flags.19?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["reply_to", "InputReplyTo", "flags.0?InputReplyTo"],
-        ["multi_media", ["InputSingleMedia"], "Vector<InputSingleMedia>"],
-        ["schedule_date", "number", "flags.10?int"],
-        ["send_as", "InputPeer", "flags.13?InputPeer"],
-        ["quick_reply_shortcut", "InputQuickReplyShortcut", "flags.17?InputQuickReplyShortcut"],
-        ["effect", "bigint", "flags.18?long"],
-        ["allow_paid_stars", "bigint", "flags.21?long"],
+        ["flags", "#"],
+        ["silent", "flags.5?true"],
+        ["background", "flags.6?true"],
+        ["clear_draft", "flags.7?true"],
+        ["noforwards", "flags.14?true"],
+        ["update_stickersets_order", "flags.15?true"],
+        ["invert_media", "flags.16?true"],
+        ["allow_paid_floodskip", "flags.19?true"],
+        ["peer", "InputPeer"],
+        ["reply_to", "flags.0?InputReplyTo"],
+        ["multi_media", "Vector<InputSingleMedia>"],
+        ["schedule_date", "flags.10?int"],
+        ["send_as", "flags.13?InputPeer"],
+        ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
+        ["effect", "flags.18?long"],
+        ["allow_paid_stars", "flags.21?long"],
       ],
     ],
   ],
@@ -40641,8 +40619,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5057C497,
       [
-        ["peer", "InputEncryptedChat", "InputEncryptedChat"],
-        ["file", "InputEncryptedFile", "InputEncryptedFile"],
+        ["peer", "InputEncryptedChat"],
+        ["file", "InputEncryptedFile"],
       ],
     ],
   ],
@@ -40651,10 +40629,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x35705B8A,
       [
-        ["flags", flags, "#"],
-        ["exclude_featured", "true", "flags.0?true"],
-        ["q", "string", "string"],
-        ["hash", "bigint", "long"],
+        ["flags", "#"],
+        ["exclude_featured", "flags.0?true"],
+        ["q", "string"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -40670,9 +40648,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC286D98F,
       [
-        ["flags", flags, "#"],
-        ["unread", "true", "flags.0?true"],
-        ["peer", "InputDialogPeer", "InputDialogPeer"],
+        ["flags", "#"],
+        ["unread", "flags.0?true"],
+        ["peer", "InputDialogPeer"],
       ],
     ],
   ],
@@ -40695,12 +40673,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD2AAF7EC,
       [
-        ["flags", flags, "#"],
-        ["silent", "true", "flags.0?true"],
-        ["unpin", "true", "flags.1?true"],
-        ["pm_oneside", "true", "flags.2?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
+        ["flags", "#"],
+        ["silent", "flags.0?true"],
+        ["unpin", "flags.1?true"],
+        ["pm_oneside", "flags.2?true"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
       ],
     ],
   ],
@@ -40709,9 +40687,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x10EA6184,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["options", [Uint8Array], "Vector<bytes>"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["options", "Vector<bytes>"],
       ],
     ],
   ],
@@ -40720,8 +40698,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x73BB643B,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -40730,7 +40708,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6E2BE050,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -40739,8 +40717,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDEF60797,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["about", "string", "string"],
+        ["peer", "InputPeer"],
+        ["about", "string"],
       ],
     ],
   ],
@@ -40749,8 +40727,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA5866B41,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["banned_rights", "ChatBannedRights", "ChatBannedRights"],
+        ["peer", "InputPeer"],
+        ["banned_rights", "ChatBannedRights"],
       ],
     ],
   ],
@@ -40759,7 +40737,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x35A0E062,
       [
-        ["lang_code", "string", "string"],
+        ["lang_code", "string"],
       ],
     ],
   ],
@@ -40768,8 +40746,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1508B6AF,
       [
-        ["lang_code", "string", "string"],
-        ["from_version", "number", "int"],
+        ["lang_code", "string"],
+        ["from_version", "int"],
       ],
     ],
   ],
@@ -40778,7 +40756,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4E9963B2,
       [
-        ["lang_codes", ["string"], "Vector<string>"],
+        ["lang_codes", "Vector<string>"],
       ],
     ],
   ],
@@ -40787,7 +40765,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD5B10C26,
       [
-        ["lang_code", "string", "string"],
+        ["lang_code", "string"],
       ],
     ],
   ],
@@ -40796,11 +40774,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1BBCF300,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["saved_peer_id", "InputPeer", "flags.2?InputPeer"],
-        ["top_msg_id", "number", "flags.0?int"],
-        ["filters", ["MessagesFilter"], "Vector<MessagesFilter>"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["saved_peer_id", "flags.2?InputPeer"],
+        ["top_msg_id", "flags.0?int"],
+        ["filters", "Vector<MessagesFilter>"],
       ],
     ],
   ],
@@ -40809,11 +40787,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x198FB446,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "flags.1?InputPeer"],
-        ["msg_id", "number", "flags.1?int"],
-        ["button_id", "number", "flags.1?int"],
-        ["url", "string", "flags.2?string"],
+        ["flags", "#"],
+        ["peer", "flags.1?InputPeer"],
+        ["msg_id", "flags.1?int"],
+        ["button_id", "flags.1?int"],
+        ["url", "flags.2?string"],
       ],
     ],
   ],
@@ -40822,12 +40800,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB12C7125,
       [
-        ["flags", flags, "#"],
-        ["write_allowed", "true", "flags.0?true"],
-        ["peer", "InputPeer", "flags.1?InputPeer"],
-        ["msg_id", "number", "flags.1?int"],
-        ["button_id", "number", "flags.1?int"],
-        ["url", "string", "flags.2?string"],
+        ["flags", "#"],
+        ["write_allowed", "flags.0?true"],
+        ["peer", "flags.1?InputPeer"],
+        ["msg_id", "flags.1?int"],
+        ["button_id", "flags.1?int"],
+        ["url", "flags.2?string"],
       ],
     ],
   ],
@@ -40836,7 +40814,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4FACB138,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -40845,8 +40823,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF516760B,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["hash", "bigint", "long"],
+        ["peer", "InputPeer"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -40855,8 +40833,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBDBB0464,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -40865,8 +40843,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBD38850A,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -40875,8 +40853,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x59AE2B16,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -40885,12 +40863,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB86E380E,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
-        ["option", Uint8Array, "flags.0?bytes"],
-        ["offset", "string", "flags.1?string"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
+        ["option", "flags.0?bytes"],
+        ["offset", "flags.1?string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -40899,11 +40877,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB5052FEA,
       [
-        ["flags", flags, "#"],
-        ["uninstall", "true", "flags.0?true"],
-        ["archive", "true", "flags.1?true"],
-        ["unarchive", "true", "flags.2?true"],
-        ["stickersets", ["InputStickerSet"], "Vector<InputStickerSet>"],
+        ["flags", "#"],
+        ["uninstall", "flags.0?true"],
+        ["archive", "flags.1?true"],
+        ["unarchive", "flags.2?true"],
+        ["stickersets", "Vector<InputStickerSet>"],
       ],
     ],
   ],
@@ -40926,9 +40904,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1AD4A04A,
       [
-        ["flags", flags, "#"],
-        ["id", "number", "int"],
-        ["filter", "DialogFilter", "flags.0?DialogFilter"],
+        ["flags", "#"],
+        ["id", "int"],
+        ["filter", "flags.0?DialogFilter"],
       ],
     ],
   ],
@@ -40937,7 +40915,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC563C1E4,
       [
-        ["order", ["number"], "Vector<int>"],
+        ["order", "Vector<int>"],
       ],
     ],
   ],
@@ -40946,9 +40924,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7ED094A1,
       [
-        ["offset", "number", "int"],
-        ["limit", "number", "int"],
-        ["hash", "bigint", "long"],
+        ["offset", "int"],
+        ["limit", "int"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -40957,15 +40935,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x22DDD30C,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["offset_id", "number", "int"],
-        ["offset_date", "number", "int"],
-        ["add_offset", "number", "int"],
-        ["limit", "number", "int"],
-        ["max_id", "number", "int"],
-        ["min_id", "number", "int"],
-        ["hash", "bigint", "long"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["offset_id", "int"],
+        ["offset_date", "int"],
+        ["add_offset", "int"],
+        ["limit", "int"],
+        ["max_id", "int"],
+        ["min_id", "int"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -40974,8 +40952,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x446972FD,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -40984,9 +40962,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF731A9F4,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["read_max_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["read_max_id", "int"],
       ],
     ],
   ],
@@ -40995,9 +40973,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEE22B9A8,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["top_msg_id", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["top_msg_id", "flags.0?int"],
       ],
     ],
   ],
@@ -41006,7 +40984,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5BD0EE50,
       [
-        ["chat_id", "bigint", "long"],
+        ["chat_id", "long"],
       ],
     ],
   ],
@@ -41015,8 +40993,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF9CBE409,
       [
-        ["flags", flags, "#"],
-        ["revoke", "true", "flags.0?true"],
+        ["flags", "#"],
+        ["revoke", "flags.0?true"],
       ],
     ],
   ],
@@ -41025,7 +41003,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x43FE19F3,
       [
-        ["import_head", "string", "string"],
+        ["import_head", "string"],
       ],
     ],
   ],
@@ -41034,9 +41012,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x34090C3B,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["file", "InputFile", "InputFile"],
-        ["media_count", "number", "int"],
+        ["peer", "InputPeer"],
+        ["file", "InputFile"],
+        ["media_count", "int"],
       ],
     ],
   ],
@@ -41045,10 +41023,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2A862092,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["import_id", "bigint", "long"],
-        ["file_name", "string", "string"],
-        ["media", "InputMedia", "InputMedia"],
+        ["peer", "InputPeer"],
+        ["import_id", "long"],
+        ["file_name", "string"],
+        ["media", "InputMedia"],
       ],
     ],
   ],
@@ -41057,8 +41035,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB43DF344,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["import_id", "bigint", "long"],
+        ["peer", "InputPeer"],
+        ["import_id", "long"],
       ],
     ],
   ],
@@ -41067,13 +41045,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA2B5A3F6,
       [
-        ["flags", flags, "#"],
-        ["revoked", "true", "flags.3?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["admin_id", "InputUser", "InputUser"],
-        ["offset_date", "number", "flags.2?int"],
-        ["offset_link", "string", "flags.2?string"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["revoked", "flags.3?true"],
+        ["peer", "InputPeer"],
+        ["admin_id", "InputUser"],
+        ["offset_date", "flags.2?int"],
+        ["offset_link", "flags.2?string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -41082,8 +41060,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x73746F5C,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["link", "string", "string"],
+        ["peer", "InputPeer"],
+        ["link", "string"],
       ],
     ],
   ],
@@ -41092,14 +41070,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBDCA2F75,
       [
-        ["flags", flags, "#"],
-        ["revoked", "true", "flags.2?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["link", "string", "string"],
-        ["expire_date", "number", "flags.0?int"],
-        ["usage_limit", "number", "flags.1?int"],
-        ["request_needed", "boolean", "flags.3?Bool"],
-        ["title", "string", "flags.4?string"],
+        ["flags", "#"],
+        ["revoked", "flags.2?true"],
+        ["peer", "InputPeer"],
+        ["link", "string"],
+        ["expire_date", "flags.0?int"],
+        ["usage_limit", "flags.1?int"],
+        ["request_needed", "flags.3?Bool"],
+        ["title", "flags.4?string"],
       ],
     ],
   ],
@@ -41108,8 +41086,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x56987BD5,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["admin_id", "InputUser", "InputUser"],
+        ["peer", "InputPeer"],
+        ["admin_id", "InputUser"],
       ],
     ],
   ],
@@ -41118,8 +41096,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD464A42B,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["link", "string", "string"],
+        ["peer", "InputPeer"],
+        ["link", "string"],
       ],
     ],
   ],
@@ -41128,7 +41106,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3920E6EF,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -41137,15 +41115,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDF04DD4E,
       [
-        ["flags", flags, "#"],
-        ["requested", "true", "flags.0?true"],
-        ["subscription_expired", "true", "flags.3?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["link", "string", "flags.1?string"],
-        ["q", "string", "flags.2?string"],
-        ["offset_date", "number", "int"],
-        ["offset_user", "InputUser", "InputUser"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["requested", "flags.0?true"],
+        ["subscription_expired", "flags.3?true"],
+        ["peer", "InputPeer"],
+        ["link", "flags.1?string"],
+        ["q", "flags.2?string"],
+        ["offset_date", "int"],
+        ["offset_user", "InputUser"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -41154,8 +41132,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB80E5FE4,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["period", "number", "int"],
+        ["peer", "InputPeer"],
+        ["period", "int"],
       ],
     ],
   ],
@@ -41164,7 +41142,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5DC60F03,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -41173,8 +41151,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE63BE13F,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["emoticon", "string", "string"],
+        ["peer", "InputPeer"],
+        ["emoticon", "string"],
       ],
     ],
   ],
@@ -41183,8 +41161,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x31C1C44F,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -41193,12 +41171,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6AA3F6BD,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["saved_peer_id", "InputPeer", "flags.2?InputPeer"],
-        ["filter", "MessagesFilter", "MessagesFilter"],
-        ["offset_id", "number", "int"],
-        ["offset_date", "number", "int"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["saved_peer_id", "flags.2?InputPeer"],
+        ["filter", "MessagesFilter"],
+        ["offset_id", "int"],
+        ["offset_date", "int"],
       ],
     ],
   ],
@@ -41207,12 +41185,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9C7F2F10,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["saved_peer_id", "InputPeer", "flags.2?InputPeer"],
-        ["filter", "MessagesFilter", "MessagesFilter"],
-        ["offset_id", "number", "int"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["saved_peer_id", "flags.2?InputPeer"],
+        ["filter", "MessagesFilter"],
+        ["offset_id", "int"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -41221,10 +41199,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7FE7E815,
       [
-        ["flags", flags, "#"],
-        ["approved", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["user_id", "InputUser", "InputUser"],
+        ["flags", "#"],
+        ["approved", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["user_id", "InputUser"],
       ],
     ],
   ],
@@ -41233,10 +41211,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE085F4EA,
       [
-        ["flags", flags, "#"],
-        ["approved", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["link", "string", "flags.1?string"],
+        ["flags", "#"],
+        ["approved", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["link", "flags.1?string"],
       ],
     ],
   ],
@@ -41245,8 +41223,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB11EAFA2,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["enabled", "boolean", "Bool"],
+        ["peer", "InputPeer"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -41255,8 +41233,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCCFDDF96,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["send_as", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
+        ["send_as", "InputPeer"],
       ],
     ],
   ],
@@ -41265,12 +41243,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD30D78D4,
       [
-        ["flags", flags, "#"],
-        ["big", "true", "flags.1?true"],
-        ["add_to_recent", "true", "flags.2?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["reaction", ["Reaction"], "flags.0?Vector<Reaction>"],
+        ["flags", "#"],
+        ["big", "flags.1?true"],
+        ["add_to_recent", "flags.2?true"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["reaction", "flags.0?Vector<Reaction>"],
       ],
     ],
   ],
@@ -41279,8 +41257,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8BBA90E6,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -41289,12 +41267,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x461B3F48,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
-        ["reaction", "Reaction", "flags.0?Reaction"],
-        ["offset", "string", "flags.1?string"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
+        ["reaction", "flags.0?Reaction"],
+        ["offset", "flags.1?string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -41303,11 +41281,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x864B2581,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["available_reactions", "ChatReactions", "ChatReactions"],
-        ["reactions_limit", "number", "flags.0?int"],
-        ["paid_enabled", "boolean", "flags.1?Bool"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["available_reactions", "ChatReactions"],
+        ["reactions_limit", "flags.0?int"],
+        ["paid_enabled", "flags.1?Bool"],
       ],
     ],
   ],
@@ -41316,7 +41294,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x18DEA0AC,
       [
-        ["hash", "number", "int"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -41325,7 +41303,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4F47A016,
       [
-        ["reaction", "Reaction", "Reaction"],
+        ["reaction", "Reaction"],
       ],
     ],
   ],
@@ -41334,11 +41312,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x63183030,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "flags.0?InputPeer"],
-        ["id", ["number"], "flags.0?Vector<int>"],
-        ["text", ["TextWithEntities"], "flags.1?Vector<TextWithEntities>"],
-        ["to_lang", "string", "string"],
+        ["flags", "#"],
+        ["peer", "flags.0?InputPeer"],
+        ["id", "flags.0?Vector<int>"],
+        ["text", "flags.1?Vector<TextWithEntities>"],
+        ["to_lang", "string"],
       ],
     ],
   ],
@@ -41347,14 +41325,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3223495B,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["top_msg_id", "number", "flags.0?int"],
-        ["offset_id", "number", "int"],
-        ["add_offset", "number", "int"],
-        ["limit", "number", "int"],
-        ["max_id", "number", "int"],
-        ["min_id", "number", "int"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["top_msg_id", "flags.0?int"],
+        ["offset_id", "int"],
+        ["add_offset", "int"],
+        ["limit", "int"],
+        ["max_id", "int"],
+        ["min_id", "int"],
       ],
     ],
   ],
@@ -41363,9 +41341,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x54AA7F8E,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["top_msg_id", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["top_msg_id", "flags.0?int"],
       ],
     ],
   ],
@@ -41374,9 +41352,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x107E31A0,
       [
-        ["q", "string", "string"],
-        ["filter", "MessagesFilter", "MessagesFilter"],
-        ["limit", "number", "int"],
+        ["q", "string"],
+        ["filter", "MessagesFilter"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -41385,7 +41363,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x16FCC2CB,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41394,7 +41372,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x77216192,
       [
-        ["bot", "InputUser", "InputUser"],
+        ["bot", "InputUser"],
       ],
     ],
   ],
@@ -41403,10 +41381,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x69F59D69,
       [
-        ["flags", flags, "#"],
-        ["write_allowed", "true", "flags.0?true"],
-        ["bot", "InputUser", "InputUser"],
-        ["enabled", "boolean", "Bool"],
+        ["flags", "#"],
+        ["write_allowed", "flags.0?true"],
+        ["bot", "InputUser"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -41415,19 +41393,19 @@ const types: Map<string, Parameters> = new Map([
     [
       0x269DC2C1,
       [
-        ["flags", flags, "#"],
-        ["from_bot_menu", "true", "flags.4?true"],
-        ["silent", "true", "flags.5?true"],
-        ["compact", "true", "flags.7?true"],
-        ["fullscreen", "true", "flags.8?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["bot", "InputUser", "InputUser"],
-        ["url", "string", "flags.1?string"],
-        ["start_param", "string", "flags.3?string"],
-        ["theme_params", "DataJSON", "flags.2?DataJSON"],
-        ["platform", "string", "string"],
-        ["reply_to", "InputReplyTo", "flags.0?InputReplyTo"],
-        ["send_as", "InputPeer", "flags.13?InputPeer"],
+        ["flags", "#"],
+        ["from_bot_menu", "flags.4?true"],
+        ["silent", "flags.5?true"],
+        ["compact", "flags.7?true"],
+        ["fullscreen", "flags.8?true"],
+        ["peer", "InputPeer"],
+        ["bot", "InputUser"],
+        ["url", "flags.1?string"],
+        ["start_param", "flags.3?string"],
+        ["theme_params", "flags.2?DataJSON"],
+        ["platform", "string"],
+        ["reply_to", "flags.0?InputReplyTo"],
+        ["send_as", "flags.13?InputPeer"],
       ],
     ],
   ],
@@ -41436,13 +41414,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB0D81A83,
       [
-        ["flags", flags, "#"],
-        ["silent", "true", "flags.5?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["bot", "InputUser", "InputUser"],
-        ["query_id", "bigint", "long"],
-        ["reply_to", "InputReplyTo", "flags.0?InputReplyTo"],
-        ["send_as", "InputPeer", "flags.13?InputPeer"],
+        ["flags", "#"],
+        ["silent", "flags.5?true"],
+        ["peer", "InputPeer"],
+        ["bot", "InputUser"],
+        ["query_id", "long"],
+        ["reply_to", "flags.0?InputReplyTo"],
+        ["send_as", "flags.13?InputPeer"],
       ],
     ],
   ],
@@ -41451,16 +41429,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x413A3E73,
       [
-        ["flags", flags, "#"],
-        ["from_switch_webview", "true", "flags.1?true"],
-        ["from_side_menu", "true", "flags.2?true"],
-        ["compact", "true", "flags.7?true"],
-        ["fullscreen", "true", "flags.8?true"],
-        ["bot", "InputUser", "InputUser"],
-        ["url", "string", "flags.3?string"],
-        ["start_param", "string", "flags.4?string"],
-        ["theme_params", "DataJSON", "flags.0?DataJSON"],
-        ["platform", "string", "string"],
+        ["flags", "#"],
+        ["from_switch_webview", "flags.1?true"],
+        ["from_side_menu", "flags.2?true"],
+        ["compact", "flags.7?true"],
+        ["fullscreen", "flags.8?true"],
+        ["bot", "InputUser"],
+        ["url", "flags.3?string"],
+        ["start_param", "flags.4?string"],
+        ["theme_params", "flags.0?DataJSON"],
+        ["platform", "string"],
       ],
     ],
   ],
@@ -41469,8 +41447,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0A4314F5,
       [
-        ["bot_query_id", "string", "string"],
-        ["result", "InputBotInlineResult", "InputBotInlineResult"],
+        ["bot_query_id", "string"],
+        ["result", "InputBotInlineResult"],
       ],
     ],
   ],
@@ -41479,10 +41457,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDC0242C8,
       [
-        ["bot", "InputUser", "InputUser"],
-        ["random_id", "bigint", "long"],
-        ["button_text", "string", "string"],
-        ["data", "string", "string"],
+        ["bot", "InputUser"],
+        ["random_id", "long"],
+        ["button_text", "string"],
+        ["data", "string"],
       ],
     ],
   ],
@@ -41491,8 +41469,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x269E9A49,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -41501,10 +41479,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7F1D072F,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["transcription_id", "bigint", "long"],
-        ["good", "boolean", "Bool"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["transcription_id", "long"],
+        ["good", "Bool"],
       ],
     ],
   ],
@@ -41513,7 +41491,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD9AB0F54,
       [
-        ["document_id", ["bigint"], "Vector<long>"],
+        ["document_id", "Vector<long>"],
       ],
     ],
   ],
@@ -41522,7 +41500,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFBFCA18F,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41531,7 +41509,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0ECF6736,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41540,9 +41518,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3F64C076,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
-        ["reaction_peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
+        ["reaction_peer", "InputPeer"],
       ],
     ],
   ],
@@ -41551,8 +41529,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBB8125BA,
       [
-        ["limit", "number", "int"],
-        ["hash", "bigint", "long"],
+        ["limit", "int"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41561,8 +41539,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x39461DB2,
       [
-        ["limit", "number", "int"],
-        ["hash", "bigint", "long"],
+        ["limit", "int"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41578,8 +41556,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x84F80814,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -41588,7 +41566,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9EB51445,
       [
-        ["period", "number", "int"],
+        ["period", "int"],
       ],
     ],
   ],
@@ -41604,10 +41582,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x91B2D060,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["button_id", "number", "int"],
-        ["requested_peers", ["InputPeer"], "Vector<InputPeer>"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["button_id", "int"],
+        ["requested_peers", "Vector<InputPeer>"],
       ],
     ],
   ],
@@ -41616,7 +41594,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7488CE5B,
       [
-        ["hash", "number", "int"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -41625,7 +41603,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2ECD56CD,
       [
-        ["hash", "number", "int"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -41634,7 +41612,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x21A548F3,
       [
-        ["hash", "number", "int"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -41643,8 +41621,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2C11C0D7,
       [
-        ["emoticon", "string", "string"],
-        ["hash", "bigint", "long"],
+        ["emoticon", "string"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41653,9 +41631,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE47CB579,
       [
-        ["flags", flags, "#"],
-        ["disabled", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
+        ["flags", "#"],
+        ["disabled", "flags.0?true"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -41664,8 +41642,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x34FDC5C3,
       [
-        ["app", "InputBotApp", "InputBotApp"],
-        ["hash", "bigint", "long"],
+        ["app", "InputBotApp"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41674,15 +41652,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x53618BCE,
       [
-        ["flags", flags, "#"],
-        ["write_allowed", "true", "flags.0?true"],
-        ["compact", "true", "flags.7?true"],
-        ["fullscreen", "true", "flags.8?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["app", "InputBotApp", "InputBotApp"],
-        ["start_param", "string", "flags.1?string"],
-        ["theme_params", "DataJSON", "flags.2?DataJSON"],
-        ["platform", "string", "string"],
+        ["flags", "#"],
+        ["write_allowed", "flags.0?true"],
+        ["compact", "flags.7?true"],
+        ["fullscreen", "flags.8?true"],
+        ["peer", "InputPeer"],
+        ["app", "InputBotApp"],
+        ["start_param", "flags.1?string"],
+        ["theme_params", "flags.2?DataJSON"],
+        ["platform", "string"],
       ],
     ],
   ],
@@ -41691,13 +41669,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8FFACAE1,
       [
-        ["flags", flags, "#"],
-        ["for_both", "true", "flags.3?true"],
-        ["revert", "true", "flags.4?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["wallpaper", "InputWallPaper", "flags.0?InputWallPaper"],
-        ["settings", "WallPaperSettings", "flags.2?WallPaperSettings"],
-        ["id", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["for_both", "flags.3?true"],
+        ["revert", "flags.4?true"],
+        ["peer", "InputPeer"],
+        ["wallpaper", "flags.0?InputWallPaper"],
+        ["settings", "flags.2?WallPaperSettings"],
+        ["id", "flags.1?int"],
       ],
     ],
   ],
@@ -41706,10 +41684,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x92B4494C,
       [
-        ["flags", flags, "#"],
-        ["exclude_featured", "true", "flags.0?true"],
-        ["q", "string", "string"],
-        ["hash", "bigint", "long"],
+        ["flags", "#"],
+        ["exclude_featured", "flags.0?true"],
+        ["q", "string"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41718,13 +41696,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5381D21A,
       [
-        ["flags", flags, "#"],
-        ["exclude_pinned", "true", "flags.0?true"],
-        ["offset_date", "number", "int"],
-        ["offset_id", "number", "int"],
-        ["offset_peer", "InputPeer", "InputPeer"],
-        ["limit", "number", "int"],
-        ["hash", "bigint", "long"],
+        ["flags", "#"],
+        ["exclude_pinned", "flags.0?true"],
+        ["offset_date", "int"],
+        ["offset_id", "int"],
+        ["offset_peer", "InputPeer"],
+        ["limit", "int"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41733,14 +41711,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3D9A414D,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["offset_id", "number", "int"],
-        ["offset_date", "number", "int"],
-        ["add_offset", "number", "int"],
-        ["limit", "number", "int"],
-        ["max_id", "number", "int"],
-        ["min_id", "number", "int"],
-        ["hash", "bigint", "long"],
+        ["peer", "InputPeer"],
+        ["offset_id", "int"],
+        ["offset_date", "int"],
+        ["add_offset", "int"],
+        ["limit", "int"],
+        ["max_id", "int"],
+        ["min_id", "int"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41749,11 +41727,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6E98102B,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["max_id", "number", "int"],
-        ["min_date", "number", "flags.2?int"],
-        ["max_date", "number", "flags.3?int"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["max_id", "int"],
+        ["min_date", "flags.2?int"],
+        ["max_date", "flags.3?int"],
       ],
     ],
   ],
@@ -41769,9 +41747,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAC81BBDE,
       [
-        ["flags", flags, "#"],
-        ["pinned", "true", "flags.0?true"],
-        ["peer", "InputDialogPeer", "InputDialogPeer"],
+        ["flags", "#"],
+        ["pinned", "flags.0?true"],
+        ["peer", "InputDialogPeer"],
       ],
     ],
   ],
@@ -41780,9 +41758,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8B716587,
       [
-        ["flags", flags, "#"],
-        ["force", "true", "flags.0?true"],
-        ["order", ["InputDialogPeer"], "Vector<InputDialogPeer>"],
+        ["flags", "#"],
+        ["force", "flags.0?true"],
+        ["order", "Vector<InputDialogPeer>"],
       ],
     ],
   ],
@@ -41791,9 +41769,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3637E05B,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "flags.0?InputPeer"],
-        ["hash", "bigint", "long"],
+        ["flags", "#"],
+        ["peer", "flags.0?InputPeer"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41802,9 +41780,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x60297DEC,
       [
-        ["flags", flags, "#"],
-        ["reaction", "Reaction", "Reaction"],
-        ["title", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["reaction", "Reaction"],
+        ["title", "flags.0?string"],
       ],
     ],
   ],
@@ -41813,7 +41791,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBDF93428,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41822,8 +41800,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8C4BFE5D,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -41832,7 +41810,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD483F2A8,
       [
-        ["hash", "bigint", "long"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41841,7 +41819,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x60331907,
       [
-        ["order", ["number"], "Vector<int>"],
+        ["order", "Vector<int>"],
       ],
     ],
   ],
@@ -41850,7 +41828,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF1D0FBD3,
       [
-        ["shortcut", "string", "string"],
+        ["shortcut", "string"],
       ],
     ],
   ],
@@ -41859,8 +41837,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5C003CEF,
       [
-        ["shortcut_id", "number", "int"],
-        ["shortcut", "string", "string"],
+        ["shortcut_id", "int"],
+        ["shortcut", "string"],
       ],
     ],
   ],
@@ -41869,7 +41847,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3CC04740,
       [
-        ["shortcut_id", "number", "int"],
+        ["shortcut_id", "int"],
       ],
     ],
   ],
@@ -41878,10 +41856,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x94A495C3,
       [
-        ["flags", flags, "#"],
-        ["shortcut_id", "number", "int"],
-        ["id", ["number"], "flags.0?Vector<int>"],
-        ["hash", "bigint", "long"],
+        ["flags", "#"],
+        ["shortcut_id", "int"],
+        ["id", "flags.0?Vector<int>"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -41890,10 +41868,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6C750DE1,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["shortcut_id", "number", "int"],
-        ["id", ["number"], "Vector<int>"],
-        ["random_id", ["bigint"], "Vector<long>"],
+        ["peer", "InputPeer"],
+        ["shortcut_id", "int"],
+        ["id", "Vector<int>"],
+        ["random_id", "Vector<long>"],
       ],
     ],
   ],
@@ -41902,8 +41880,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE105E910,
       [
-        ["shortcut_id", "number", "int"],
-        ["id", ["number"], "Vector<int>"],
+        ["shortcut_id", "int"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -41912,7 +41890,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFD2DDA49,
       [
-        ["enabled", "boolean", "Bool"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -41921,8 +41899,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD0B5E1FC,
       [
-        ["offset_id", "bigint", "long"],
-        ["limit", "number", "int"],
+        ["offset_id", "long"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -41931,7 +41909,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1DD840F5,
       [
-        ["hash", "number", "int"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -41940,7 +41918,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDEA20A39,
       [
-        ["hash", "number", "int"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -41949,9 +41927,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0589EE75,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["text", "TextWithEntities", "TextWithEntities"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["text", "TextWithEntities"],
       ],
     ],
   ],
@@ -41960,8 +41938,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD1DA940C,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -41970,8 +41948,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB9CDC5EE,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", ["number"], "Vector<int>"],
+        ["peer", "InputPeer"],
+        ["msg_id", "Vector<int>"],
       ],
     ],
   ],
@@ -41980,14 +41958,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC9E01E7B,
       [
-        ["flags", flags, "#"],
-        ["compact", "true", "flags.7?true"],
-        ["fullscreen", "true", "flags.8?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["bot", "InputUser", "InputUser"],
-        ["start_param", "string", "flags.1?string"],
-        ["theme_params", "DataJSON", "flags.0?DataJSON"],
-        ["platform", "string", "string"],
+        ["flags", "#"],
+        ["compact", "flags.7?true"],
+        ["fullscreen", "flags.8?true"],
+        ["peer", "InputPeer"],
+        ["bot", "InputUser"],
+        ["start_param", "flags.1?string"],
+        ["theme_params", "flags.0?DataJSON"],
+        ["platform", "string"],
       ],
     ],
   ],
@@ -41996,12 +41974,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x58BBCB50,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["count", "number", "int"],
-        ["random_id", "bigint", "long"],
-        ["private", "PaidReactionPrivacy", "flags.0?PaidReactionPrivacy"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["count", "int"],
+        ["random_id", "long"],
+        ["private", "flags.0?PaidReactionPrivacy"],
       ],
     ],
   ],
@@ -42010,9 +41988,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x435885B5,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
-        ["private", "PaidReactionPrivacy", "PaidReactionPrivacy"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["private", "PaidReactionPrivacy"],
       ],
     ],
   ],
@@ -42028,8 +42006,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x673AD8F1,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["random_id", Uint8Array, "bytes"],
+        ["peer", "InputPeer"],
+        ["random_id", "bytes"],
       ],
     ],
   ],
@@ -42038,11 +42016,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0F093465,
       [
-        ["flags", flags, "#"],
-        ["media", "true", "flags.0?true"],
-        ["fullscreen", "true", "flags.1?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["random_id", Uint8Array, "bytes"],
+        ["flags", "#"],
+        ["media", "flags.0?true"],
+        ["fullscreen", "flags.1?true"],
+        ["peer", "InputPeer"],
+        ["random_id", "bytes"],
       ],
     ],
   ],
@@ -42051,9 +42029,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1AF3DBB8,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["random_id", Uint8Array, "bytes"],
-        ["option", Uint8Array, "bytes"],
+        ["peer", "InputPeer"],
+        ["random_id", "bytes"],
+        ["option", "bytes"],
       ],
     ],
   ],
@@ -42062,7 +42040,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9BD2F439,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -42071,10 +42049,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF21F7F2F,
       [
-        ["flags", flags, "#"],
-        ["result", "InputBotInlineResult", "InputBotInlineResult"],
-        ["user_id", "InputUser", "InputUser"],
-        ["peer_types", ["InlineQueryPeerType"], "flags.0?Vector<InlineQueryPeerType>"],
+        ["flags", "#"],
+        ["result", "InputBotInlineResult"],
+        ["user_id", "InputUser"],
+        ["peer_types", "flags.0?Vector<InlineQueryPeerType>"],
       ],
     ],
   ],
@@ -42083,8 +42061,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x857EBDB8,
       [
-        ["bot", "InputUser", "InputUser"],
-        ["id", "string", "string"],
+        ["bot", "InputUser"],
+        ["id", "string"],
       ],
     ],
   ],
@@ -42093,14 +42071,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x29B1C66A,
       [
-        ["flags", flags, "#"],
-        ["emojis", "true", "flags.0?true"],
-        ["q", "string", "string"],
-        ["emoticon", "string", "string"],
-        ["lang_code", ["string"], "Vector<string>"],
-        ["offset", "number", "int"],
-        ["limit", "number", "int"],
-        ["hash", "bigint", "long"],
+        ["flags", "#"],
+        ["emojis", "flags.0?true"],
+        ["q", "string"],
+        ["emoticon", "string"],
+        ["lang_code", "Vector<string>"],
+        ["offset", "int"],
+        ["limit", "int"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -42109,10 +42087,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5A6D7395,
       [
-        ["flags", flags, "#"],
-        ["push", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
+        ["flags", "#"],
+        ["push", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -42128,13 +42106,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x19C2F763,
       [
-        ["flags", flags, "#"],
-        ["pts", "number", "int"],
-        ["pts_limit", "number", "flags.1?int"],
-        ["pts_total_limit", "number", "flags.0?int"],
-        ["date", "number", "int"],
-        ["qts", "number", "int"],
-        ["qts_limit", "number", "flags.2?int"],
+        ["flags", "#"],
+        ["pts", "int"],
+        ["pts_limit", "flags.1?int"],
+        ["pts_total_limit", "flags.0?int"],
+        ["date", "int"],
+        ["qts", "int"],
+        ["qts_limit", "flags.2?int"],
       ],
     ],
   ],
@@ -42143,12 +42121,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x03173D78,
       [
-        ["flags", flags, "#"],
-        ["force", "true", "flags.0?true"],
-        ["channel", "InputChannel", "InputChannel"],
-        ["filter", "ChannelMessagesFilter", "ChannelMessagesFilter"],
-        ["pts", "number", "int"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["force", "flags.0?true"],
+        ["channel", "InputChannel"],
+        ["filter", "ChannelMessagesFilter"],
+        ["pts", "int"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -42157,10 +42135,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x09E82039,
       [
-        ["flags", flags, "#"],
-        ["fallback", "true", "flags.0?true"],
-        ["bot", "InputUser", "flags.1?InputUser"],
-        ["id", "InputPhoto", "InputPhoto"],
+        ["flags", "#"],
+        ["fallback", "flags.0?true"],
+        ["bot", "flags.1?InputUser"],
+        ["id", "InputPhoto"],
       ],
     ],
   ],
@@ -42169,13 +42147,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0388A3B5,
       [
-        ["flags", flags, "#"],
-        ["fallback", "true", "flags.3?true"],
-        ["bot", "InputUser", "flags.5?InputUser"],
-        ["file", "InputFile", "flags.0?InputFile"],
-        ["video", "InputFile", "flags.1?InputFile"],
-        ["video_start_ts", "number", "flags.2?double"],
-        ["video_emoji_markup", "VideoSize", "flags.4?VideoSize"],
+        ["flags", "#"],
+        ["fallback", "flags.3?true"],
+        ["bot", "flags.5?InputUser"],
+        ["file", "flags.0?InputFile"],
+        ["video", "flags.1?InputFile"],
+        ["video_start_ts", "flags.2?double"],
+        ["video_emoji_markup", "flags.4?VideoSize"],
       ],
     ],
   ],
@@ -42184,7 +42162,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x87CF7F2F,
       [
-        ["id", ["InputPhoto"], "Vector<InputPhoto>"],
+        ["id", "Vector<InputPhoto>"],
       ],
     ],
   ],
@@ -42193,10 +42171,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x91CD32A8,
       [
-        ["user_id", "InputUser", "InputUser"],
-        ["offset", "number", "int"],
-        ["max_id", "bigint", "long"],
-        ["limit", "number", "int"],
+        ["user_id", "InputUser"],
+        ["offset", "int"],
+        ["max_id", "long"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -42205,14 +42183,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE14C4A71,
       [
-        ["flags", flags, "#"],
-        ["suggest", "true", "flags.3?true"],
-        ["save", "true", "flags.4?true"],
-        ["user_id", "InputUser", "InputUser"],
-        ["file", "InputFile", "flags.0?InputFile"],
-        ["video", "InputFile", "flags.1?InputFile"],
-        ["video_start_ts", "number", "flags.2?double"],
-        ["video_emoji_markup", "VideoSize", "flags.5?VideoSize"],
+        ["flags", "#"],
+        ["suggest", "flags.3?true"],
+        ["save", "flags.4?true"],
+        ["user_id", "InputUser"],
+        ["file", "flags.0?InputFile"],
+        ["video", "flags.1?InputFile"],
+        ["video_start_ts", "flags.2?double"],
+        ["video_emoji_markup", "flags.5?VideoSize"],
       ],
     ],
   ],
@@ -42221,9 +42199,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB304A621,
       [
-        ["file_id", "bigint", "long"],
-        ["file_part", "number", "int"],
-        ["bytes", Uint8Array, "bytes"],
+        ["file_id", "long"],
+        ["file_part", "int"],
+        ["bytes", "bytes"],
       ],
     ],
   ],
@@ -42232,12 +42210,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBE5335BE,
       [
-        ["flags", flags, "#"],
-        ["precise", "true", "flags.0?true"],
-        ["cdn_supported", "true", "flags.1?true"],
-        ["location", "InputFileLocation", "InputFileLocation"],
-        ["offset", "bigint", "long"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["precise", "flags.0?true"],
+        ["cdn_supported", "flags.1?true"],
+        ["location", "InputFileLocation"],
+        ["offset", "long"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -42246,10 +42224,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDE7B673D,
       [
-        ["file_id", "bigint", "long"],
-        ["file_part", "number", "int"],
-        ["file_total_parts", "number", "int"],
-        ["bytes", Uint8Array, "bytes"],
+        ["file_id", "long"],
+        ["file_part", "int"],
+        ["file_total_parts", "int"],
+        ["bytes", "bytes"],
       ],
     ],
   ],
@@ -42258,9 +42236,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x24E6818D,
       [
-        ["location", "InputWebFileLocation", "InputWebFileLocation"],
-        ["offset", "number", "int"],
-        ["limit", "number", "int"],
+        ["location", "InputWebFileLocation"],
+        ["offset", "int"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -42269,9 +42247,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x395F69DA,
       [
-        ["file_token", Uint8Array, "bytes"],
-        ["offset", "bigint", "long"],
-        ["limit", "number", "int"],
+        ["file_token", "bytes"],
+        ["offset", "long"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -42280,8 +42258,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9B2754A8,
       [
-        ["file_token", Uint8Array, "bytes"],
-        ["request_token", Uint8Array, "bytes"],
+        ["file_token", "bytes"],
+        ["request_token", "bytes"],
       ],
     ],
   ],
@@ -42290,8 +42268,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x91DC3F31,
       [
-        ["file_token", Uint8Array, "bytes"],
-        ["offset", "bigint", "long"],
+        ["file_token", "bytes"],
+        ["offset", "long"],
       ],
     ],
   ],
@@ -42300,8 +42278,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9156982A,
       [
-        ["location", "InputFileLocation", "InputFileLocation"],
-        ["offset", "bigint", "long"],
+        ["location", "InputFileLocation"],
+        ["offset", "long"],
       ],
     ],
   ],
@@ -42324,7 +42302,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x522D5A7D,
       [
-        ["source", "string", "string"],
+        ["source", "string"],
       ],
     ],
   ],
@@ -42347,8 +42325,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEC22CFCD,
       [
-        ["pending_updates_count", "number", "int"],
-        ["message", "string", "string"],
+        ["pending_updates_count", "int"],
+        ["message", "string"],
       ],
     ],
   ],
@@ -42364,7 +42342,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3DC0F114,
       [
-        ["referer", "string", "string"],
+        ["referer", "string"],
       ],
     ],
   ],
@@ -42380,7 +42358,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEE72F79A,
       [
-        ["id", "DataJSON", "DataJSON"],
+        ["id", "DataJSON"],
       ],
     ],
   ],
@@ -42389,7 +42367,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3FEDC75F,
       [
-        ["path", "string", "string"],
+        ["path", "string"],
       ],
     ],
   ],
@@ -42398,7 +42376,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x61E3F854,
       [
-        ["hash", "number", "int"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -42407,7 +42385,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6F02F748,
       [
-        ["events", ["InputAppEvent"], "Vector<InputAppEvent>"],
+        ["events", "Vector<InputAppEvent>"],
       ],
     ],
   ],
@@ -42416,7 +42394,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC661AD08,
       [
-        ["hash", "number", "int"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -42432,7 +42410,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x038A08D3,
       [
-        ["user_id", "InputUser", "InputUser"],
+        ["user_id", "InputUser"],
       ],
     ],
   ],
@@ -42441,9 +42419,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x66B91B70,
       [
-        ["user_id", "InputUser", "InputUser"],
-        ["message", "string", "string"],
-        ["entities", ["MessageEntity"], "Vector<MessageEntity>"],
+        ["user_id", "InputUser"],
+        ["message", "string"],
+        ["entities", "Vector<MessageEntity>"],
       ],
     ],
   ],
@@ -42459,7 +42437,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1E251C95,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -42468,8 +42446,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF50DBAA1,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["suggestion", "string", "string"],
+        ["peer", "InputPeer"],
+        ["suggestion", "string"],
       ],
     ],
   ],
@@ -42478,8 +42456,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x735787A8,
       [
-        ["lang_code", "string", "string"],
-        ["hash", "number", "int"],
+        ["lang_code", "string"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -42495,7 +42473,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDA80F42F,
       [
-        ["hash", "number", "int"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -42504,7 +42482,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xABCFA9FD,
       [
-        ["hash", "number", "int"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -42513,7 +42491,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x49B30240,
       [
-        ["hash", "number", "int"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -42522,8 +42500,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCC104937,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["max_id", "number", "int"],
+        ["channel", "InputChannel"],
+        ["max_id", "int"],
       ],
     ],
   ],
@@ -42532,8 +42510,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x84C1FD4E,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["id", ["number"], "Vector<int>"],
+        ["channel", "InputChannel"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -42542,9 +42520,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF44A8315,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["participant", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
+        ["channel", "InputChannel"],
+        ["participant", "InputPeer"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -42553,8 +42531,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAD8C9A23,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["id", ["InputMessage"], "Vector<InputMessage>"],
+        ["channel", "InputChannel"],
+        ["id", "Vector<InputMessage>"],
       ],
     ],
   ],
@@ -42563,11 +42541,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x77CED9D0,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["filter", "ChannelParticipantsFilter", "ChannelParticipantsFilter"],
-        ["offset", "number", "int"],
-        ["limit", "number", "int"],
-        ["hash", "bigint", "long"],
+        ["channel", "InputChannel"],
+        ["filter", "ChannelParticipantsFilter"],
+        ["offset", "int"],
+        ["limit", "int"],
+        ["hash", "long"],
       ],
     ],
   ],
@@ -42576,8 +42554,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA0AB6CC6,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["participant", "InputPeer", "InputPeer"],
+        ["channel", "InputChannel"],
+        ["participant", "InputPeer"],
       ],
     ],
   ],
@@ -42586,7 +42564,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0A7F6BBB,
       [
-        ["id", ["InputChannel"], "Vector<InputChannel>"],
+        ["id", "Vector<InputChannel>"],
       ],
     ],
   ],
@@ -42595,7 +42573,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x08736A09,
       [
-        ["channel", "InputChannel", "InputChannel"],
+        ["channel", "InputChannel"],
       ],
     ],
   ],
@@ -42604,16 +42582,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x91006707,
       [
-        ["flags", flags, "#"],
-        ["broadcast", "true", "flags.0?true"],
-        ["megagroup", "true", "flags.1?true"],
-        ["for_import", "true", "flags.3?true"],
-        ["forum", "true", "flags.5?true"],
-        ["title", "string", "string"],
-        ["about", "string", "string"],
-        ["geo_point", "InputGeoPoint", "flags.2?InputGeoPoint"],
-        ["address", "string", "flags.2?string"],
-        ["ttl_period", "number", "flags.4?int"],
+        ["flags", "#"],
+        ["broadcast", "flags.0?true"],
+        ["megagroup", "flags.1?true"],
+        ["for_import", "flags.3?true"],
+        ["forum", "flags.5?true"],
+        ["title", "string"],
+        ["about", "string"],
+        ["geo_point", "flags.2?InputGeoPoint"],
+        ["address", "flags.2?string"],
+        ["ttl_period", "flags.4?int"],
       ],
     ],
   ],
@@ -42622,10 +42600,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD33C8902,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["user_id", "InputUser", "InputUser"],
-        ["admin_rights", "ChatAdminRights", "ChatAdminRights"],
-        ["rank", "string", "string"],
+        ["channel", "InputChannel"],
+        ["user_id", "InputUser"],
+        ["admin_rights", "ChatAdminRights"],
+        ["rank", "string"],
       ],
     ],
   ],
@@ -42634,8 +42612,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x566DECD0,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["title", "string", "string"],
+        ["channel", "InputChannel"],
+        ["title", "string"],
       ],
     ],
   ],
@@ -42644,8 +42622,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF12E57C9,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["photo", "InputChatPhoto", "InputChatPhoto"],
+        ["channel", "InputChannel"],
+        ["photo", "InputChatPhoto"],
       ],
     ],
   ],
@@ -42654,8 +42632,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x10E6BD2C,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["username", "string", "string"],
+        ["channel", "InputChannel"],
+        ["username", "string"],
       ],
     ],
   ],
@@ -42664,8 +42642,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3514B3DE,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["username", "string", "string"],
+        ["channel", "InputChannel"],
+        ["username", "string"],
       ],
     ],
   ],
@@ -42674,7 +42652,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x24B524C5,
       [
-        ["channel", "InputChannel", "InputChannel"],
+        ["channel", "InputChannel"],
       ],
     ],
   ],
@@ -42683,7 +42661,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF836AA95,
       [
-        ["channel", "InputChannel", "InputChannel"],
+        ["channel", "InputChannel"],
       ],
     ],
   ],
@@ -42692,8 +42670,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC9E33D54,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["users", ["InputUser"], "Vector<InputUser>"],
+        ["channel", "InputChannel"],
+        ["users", "Vector<InputUser>"],
       ],
     ],
   ],
@@ -42702,7 +42680,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC0111FE3,
       [
-        ["channel", "InputChannel", "InputChannel"],
+        ["channel", "InputChannel"],
       ],
     ],
   ],
@@ -42711,11 +42689,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE63FADEB,
       [
-        ["flags", flags, "#"],
-        ["grouped", "true", "flags.0?true"],
-        ["thread", "true", "flags.1?true"],
-        ["channel", "InputChannel", "InputChannel"],
-        ["id", "number", "int"],
+        ["flags", "#"],
+        ["grouped", "flags.0?true"],
+        ["thread", "flags.1?true"],
+        ["channel", "InputChannel"],
+        ["id", "int"],
       ],
     ],
   ],
@@ -42724,10 +42702,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x418D549C,
       [
-        ["flags", flags, "#"],
-        ["signatures_enabled", "true", "flags.0?true"],
-        ["profiles_enabled", "true", "flags.1?true"],
-        ["channel", "InputChannel", "InputChannel"],
+        ["flags", "#"],
+        ["signatures_enabled", "flags.0?true"],
+        ["profiles_enabled", "flags.1?true"],
+        ["channel", "InputChannel"],
       ],
     ],
   ],
@@ -42736,10 +42714,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF8B036AF,
       [
-        ["flags", flags, "#"],
-        ["by_location", "true", "flags.0?true"],
-        ["check_limit", "true", "flags.1?true"],
-        ["for_personal", "true", "flags.2?true"],
+        ["flags", "#"],
+        ["by_location", "flags.0?true"],
+        ["check_limit", "flags.1?true"],
+        ["for_personal", "flags.2?true"],
       ],
     ],
   ],
@@ -42748,9 +42726,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x96E6CD81,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["participant", "InputPeer", "InputPeer"],
-        ["banned_rights", "ChatBannedRights", "ChatBannedRights"],
+        ["channel", "InputChannel"],
+        ["participant", "InputPeer"],
+        ["banned_rights", "ChatBannedRights"],
       ],
     ],
   ],
@@ -42759,14 +42737,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x33DDF480,
       [
-        ["flags", flags, "#"],
-        ["channel", "InputChannel", "InputChannel"],
-        ["q", "string", "string"],
-        ["events_filter", "ChannelAdminLogEventsFilter", "flags.0?ChannelAdminLogEventsFilter"],
-        ["admins", ["InputUser"], "flags.1?Vector<InputUser>"],
-        ["max_id", "bigint", "long"],
-        ["min_id", "bigint", "long"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["channel", "InputChannel"],
+        ["q", "string"],
+        ["events_filter", "flags.0?ChannelAdminLogEventsFilter"],
+        ["admins", "flags.1?Vector<InputUser>"],
+        ["max_id", "long"],
+        ["min_id", "long"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -42775,8 +42753,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEA8CA4F9,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
+        ["channel", "InputChannel"],
+        ["stickerset", "InputStickerSet"],
       ],
     ],
   ],
@@ -42785,8 +42763,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEAB5DC38,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["id", ["number"], "Vector<int>"],
+        ["channel", "InputChannel"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -42795,10 +42773,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9BAA9647,
       [
-        ["flags", flags, "#"],
-        ["for_everyone", "true", "flags.0?true"],
-        ["channel", "InputChannel", "InputChannel"],
-        ["max_id", "number", "int"],
+        ["flags", "#"],
+        ["for_everyone", "flags.0?true"],
+        ["channel", "InputChannel"],
+        ["max_id", "int"],
       ],
     ],
   ],
@@ -42807,8 +42785,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEABBB94C,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["enabled", "boolean", "Bool"],
+        ["channel", "InputChannel"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -42817,7 +42795,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8341ECC0,
       [
-        ["offset", "number", "int"],
+        ["offset", "int"],
       ],
     ],
   ],
@@ -42833,8 +42811,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x40582BB2,
       [
-        ["broadcast", "InputChannel", "InputChannel"],
-        ["group", "InputChannel", "InputChannel"],
+        ["broadcast", "InputChannel"],
+        ["group", "InputChannel"],
       ],
     ],
   ],
@@ -42843,9 +42821,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8F38CD1F,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["user_id", "InputUser", "InputUser"],
-        ["password", "InputCheckPasswordSRP", "InputCheckPasswordSRP"],
+        ["channel", "InputChannel"],
+        ["user_id", "InputUser"],
+        ["password", "InputCheckPasswordSRP"],
       ],
     ],
   ],
@@ -42854,9 +42832,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x58E63F6D,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["geo_point", "InputGeoPoint", "InputGeoPoint"],
-        ["address", "string", "string"],
+        ["channel", "InputChannel"],
+        ["geo_point", "InputGeoPoint"],
+        ["address", "string"],
       ],
     ],
   ],
@@ -42865,8 +42843,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEDD49EF0,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["seconds", "number", "int"],
+        ["channel", "InputChannel"],
+        ["seconds", "int"],
       ],
     ],
   ],
@@ -42882,7 +42860,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0B290C69,
       [
-        ["channel", "InputChannel", "InputChannel"],
+        ["channel", "InputChannel"],
       ],
     ],
   ],
@@ -42891,9 +42869,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE785A43F,
       [
-        ["flags", flags, "#"],
-        ["for_paid_reactions", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
+        ["flags", "#"],
+        ["for_paid_reactions", "flags.0?true"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -42902,8 +42880,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x367544DB,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["participant", "InputPeer", "InputPeer"],
+        ["channel", "InputChannel"],
+        ["participant", "InputPeer"],
       ],
     ],
   ],
@@ -42912,8 +42890,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE4CB9580,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["enabled", "boolean", "Bool"],
+        ["channel", "InputChannel"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -42922,8 +42900,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4C2985B6,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["enabled", "boolean", "Bool"],
+        ["channel", "InputChannel"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -42932,8 +42910,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB45CED1D,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["order", ["string"], "Vector<string>"],
+        ["channel", "InputChannel"],
+        ["order", "Vector<string>"],
       ],
     ],
   ],
@@ -42942,9 +42920,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x50F24105,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["username", "string", "string"],
-        ["active", "boolean", "Bool"],
+        ["channel", "InputChannel"],
+        ["username", "string"],
+        ["active", "Bool"],
       ],
     ],
   ],
@@ -42953,7 +42931,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0A245DD3,
       [
-        ["channel", "InputChannel", "InputChannel"],
+        ["channel", "InputChannel"],
       ],
     ],
   ],
@@ -42962,8 +42940,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA4298B29,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["enabled", "boolean", "Bool"],
+        ["channel", "InputChannel"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -42972,13 +42950,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF40C0224,
       [
-        ["flags", flags, "#"],
-        ["channel", "InputChannel", "InputChannel"],
-        ["title", "string", "string"],
-        ["icon_color", "number", "flags.0?int"],
-        ["icon_emoji_id", "bigint", "flags.3?long"],
-        ["random_id", "bigint", "long"],
-        ["send_as", "InputPeer", "flags.2?InputPeer"],
+        ["flags", "#"],
+        ["channel", "InputChannel"],
+        ["title", "string"],
+        ["icon_color", "flags.0?int"],
+        ["icon_emoji_id", "flags.3?long"],
+        ["random_id", "long"],
+        ["send_as", "flags.2?InputPeer"],
       ],
     ],
   ],
@@ -42987,13 +42965,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0DE560D1,
       [
-        ["flags", flags, "#"],
-        ["channel", "InputChannel", "InputChannel"],
-        ["q", "string", "flags.0?string"],
-        ["offset_date", "number", "int"],
-        ["offset_id", "number", "int"],
-        ["offset_topic", "number", "int"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["channel", "InputChannel"],
+        ["q", "flags.0?string"],
+        ["offset_date", "int"],
+        ["offset_id", "int"],
+        ["offset_topic", "int"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -43002,8 +42980,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB0831EB9,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["topics", ["number"], "Vector<int>"],
+        ["channel", "InputChannel"],
+        ["topics", "Vector<int>"],
       ],
     ],
   ],
@@ -43012,13 +42990,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF4DFA185,
       [
-        ["flags", flags, "#"],
-        ["channel", "InputChannel", "InputChannel"],
-        ["topic_id", "number", "int"],
-        ["title", "string", "flags.0?string"],
-        ["icon_emoji_id", "bigint", "flags.1?long"],
-        ["closed", "boolean", "flags.2?Bool"],
-        ["hidden", "boolean", "flags.3?Bool"],
+        ["flags", "#"],
+        ["channel", "InputChannel"],
+        ["topic_id", "int"],
+        ["title", "flags.0?string"],
+        ["icon_emoji_id", "flags.1?long"],
+        ["closed", "flags.2?Bool"],
+        ["hidden", "flags.3?Bool"],
       ],
     ],
   ],
@@ -43027,9 +43005,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6C2D9026,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["topic_id", "number", "int"],
-        ["pinned", "boolean", "Bool"],
+        ["channel", "InputChannel"],
+        ["topic_id", "int"],
+        ["pinned", "Bool"],
       ],
     ],
   ],
@@ -43038,8 +43016,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x34435F2D,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["top_msg_id", "number", "int"],
+        ["channel", "InputChannel"],
+        ["top_msg_id", "int"],
       ],
     ],
   ],
@@ -43048,10 +43026,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2950A18F,
       [
-        ["flags", flags, "#"],
-        ["force", "true", "flags.0?true"],
-        ["channel", "InputChannel", "InputChannel"],
-        ["order", ["number"], "Vector<int>"],
+        ["flags", "#"],
+        ["force", "flags.0?true"],
+        ["channel", "InputChannel"],
+        ["order", "Vector<int>"],
       ],
     ],
   ],
@@ -43060,8 +43038,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x68F3E4EB,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["enabled", "boolean", "Bool"],
+        ["channel", "InputChannel"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -43070,8 +43048,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA850A693,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["msg_id", "number", "int"],
+        ["channel", "InputChannel"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -43080,8 +43058,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6A6E7854,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["enabled", "boolean", "Bool"],
+        ["channel", "InputChannel"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -43090,11 +43068,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD8AA3671,
       [
-        ["flags", flags, "#"],
-        ["for_profile", "true", "flags.1?true"],
-        ["channel", "InputChannel", "InputChannel"],
-        ["color", "number", "flags.2?int"],
-        ["background_emoji_id", "bigint", "flags.0?long"],
+        ["flags", "#"],
+        ["for_profile", "flags.1?true"],
+        ["channel", "InputChannel"],
+        ["color", "flags.2?int"],
+        ["background_emoji_id", "flags.0?long"],
       ],
     ],
   ],
@@ -43103,8 +43081,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9738BB15,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["enabled", "boolean", "Bool"],
+        ["channel", "InputChannel"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -43113,8 +43091,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x25A71742,
       [
-        ["flags", flags, "#"],
-        ["channel", "InputChannel", "flags.0?InputChannel"],
+        ["flags", "#"],
+        ["channel", "flags.0?InputChannel"],
       ],
     ],
   ],
@@ -43123,8 +43101,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF0D3E6A8,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["emoji_status", "EmojiStatus", "EmojiStatus"],
+        ["channel", "InputChannel"],
+        ["emoji_status", "EmojiStatus"],
       ],
     ],
   ],
@@ -43133,8 +43111,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAD399CEE,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["boosts", "number", "int"],
+        ["channel", "InputChannel"],
+        ["boosts", "int"],
       ],
     ],
   ],
@@ -43143,8 +43121,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3CD930B7,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
+        ["channel", "InputChannel"],
+        ["stickerset", "InputStickerSet"],
       ],
     ],
   ],
@@ -43153,8 +43131,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9AE91519,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["restricted", "boolean", "Bool"],
+        ["channel", "InputChannel"],
+        ["restricted", "Bool"],
       ],
     ],
   ],
@@ -43163,11 +43141,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD19F987B,
       [
-        ["hashtag", "string", "string"],
-        ["offset_rate", "number", "int"],
-        ["offset_peer", "InputPeer", "InputPeer"],
-        ["offset_id", "number", "int"],
-        ["limit", "number", "int"],
+        ["hashtag", "string"],
+        ["offset_rate", "int"],
+        ["offset_peer", "InputPeer"],
+        ["offset_id", "int"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -43176,8 +43154,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFC84653F,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["send_paid_messages_stars", "bigint", "long"],
+        ["channel", "InputChannel"],
+        ["send_paid_messages_stars", "long"],
       ],
     ],
   ],
@@ -43186,8 +43164,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAA2769ED,
       [
-        ["custom_method", "string", "string"],
-        ["params", "DataJSON", "DataJSON"],
+        ["custom_method", "string"],
+        ["params", "DataJSON"],
       ],
     ],
   ],
@@ -43196,8 +43174,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE6213F4D,
       [
-        ["query_id", "bigint", "long"],
-        ["data", "DataJSON", "DataJSON"],
+        ["query_id", "long"],
+        ["data", "DataJSON"],
       ],
     ],
   ],
@@ -43206,9 +43184,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0517165A,
       [
-        ["scope", "BotCommandScope", "BotCommandScope"],
-        ["lang_code", "string", "string"],
-        ["commands", ["BotCommand"], "Vector<BotCommand>"],
+        ["scope", "BotCommandScope"],
+        ["lang_code", "string"],
+        ["commands", "Vector<BotCommand>"],
       ],
     ],
   ],
@@ -43217,8 +43195,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3D8DE0F9,
       [
-        ["scope", "BotCommandScope", "BotCommandScope"],
-        ["lang_code", "string", "string"],
+        ["scope", "BotCommandScope"],
+        ["lang_code", "string"],
       ],
     ],
   ],
@@ -43227,8 +43205,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE34C0DD6,
       [
-        ["scope", "BotCommandScope", "BotCommandScope"],
-        ["lang_code", "string", "string"],
+        ["scope", "BotCommandScope"],
+        ["lang_code", "string"],
       ],
     ],
   ],
@@ -43237,8 +43215,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4504D54F,
       [
-        ["user_id", "InputUser", "InputUser"],
-        ["button", "BotMenuButton", "BotMenuButton"],
+        ["user_id", "InputUser"],
+        ["button", "BotMenuButton"],
       ],
     ],
   ],
@@ -43247,7 +43225,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9C60EB28,
       [
-        ["user_id", "InputUser", "InputUser"],
+        ["user_id", "InputUser"],
       ],
     ],
   ],
@@ -43256,7 +43234,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x788464E1,
       [
-        ["admin_rights", "ChatAdminRights", "ChatAdminRights"],
+        ["admin_rights", "ChatAdminRights"],
       ],
     ],
   ],
@@ -43265,7 +43243,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x925EC9EA,
       [
-        ["admin_rights", "ChatAdminRights", "ChatAdminRights"],
+        ["admin_rights", "ChatAdminRights"],
       ],
     ],
   ],
@@ -43274,12 +43252,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x10CF3123,
       [
-        ["flags", flags, "#"],
-        ["bot", "InputUser", "flags.2?InputUser"],
-        ["lang_code", "string", "string"],
-        ["name", "string", "flags.3?string"],
-        ["about", "string", "flags.0?string"],
-        ["description", "string", "flags.1?string"],
+        ["flags", "#"],
+        ["bot", "flags.2?InputUser"],
+        ["lang_code", "string"],
+        ["name", "flags.3?string"],
+        ["about", "flags.0?string"],
+        ["description", "flags.1?string"],
       ],
     ],
   ],
@@ -43288,9 +43266,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDCD914FD,
       [
-        ["flags", flags, "#"],
-        ["bot", "InputUser", "flags.0?InputUser"],
-        ["lang_code", "string", "string"],
+        ["flags", "#"],
+        ["bot", "flags.0?InputUser"],
+        ["lang_code", "string"],
       ],
     ],
   ],
@@ -43299,8 +43277,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9709B1C2,
       [
-        ["bot", "InputUser", "InputUser"],
-        ["order", ["string"], "Vector<string>"],
+        ["bot", "InputUser"],
+        ["order", "Vector<string>"],
       ],
     ],
   ],
@@ -43309,9 +43287,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x053CA973,
       [
-        ["bot", "InputUser", "InputUser"],
-        ["username", "string", "string"],
-        ["active", "boolean", "Bool"],
+        ["bot", "InputUser"],
+        ["username", "string"],
+        ["active", "Bool"],
       ],
     ],
   ],
@@ -43320,7 +43298,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1359F4E6,
       [
-        ["bot", "InputUser", "InputUser"],
+        ["bot", "InputUser"],
       ],
     ],
   ],
@@ -43329,7 +43307,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF132E3EF,
       [
-        ["bot", "InputUser", "InputUser"],
+        ["bot", "InputUser"],
       ],
     ],
   ],
@@ -43338,9 +43316,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x087FC5E7,
       [
-        ["bot", "InputUser", "InputUser"],
-        ["custom_method", "string", "string"],
-        ["params", "DataJSON", "DataJSON"],
+        ["bot", "InputUser"],
+        ["custom_method", "string"],
+        ["params", "DataJSON"],
       ],
     ],
   ],
@@ -43349,8 +43327,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC2510192,
       [
-        ["offset", "string", "string"],
-        ["limit", "number", "int"],
+        ["offset", "string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -43359,9 +43337,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x17AEB75A,
       [
-        ["bot", "InputUser", "InputUser"],
-        ["lang_code", "string", "string"],
-        ["media", "InputMedia", "InputMedia"],
+        ["bot", "InputUser"],
+        ["lang_code", "string"],
+        ["media", "InputMedia"],
       ],
     ],
   ],
@@ -43370,10 +43348,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8525606F,
       [
-        ["bot", "InputUser", "InputUser"],
-        ["lang_code", "string", "string"],
-        ["media", "InputMedia", "InputMedia"],
-        ["new_media", "InputMedia", "InputMedia"],
+        ["bot", "InputUser"],
+        ["lang_code", "string"],
+        ["media", "InputMedia"],
+        ["new_media", "InputMedia"],
       ],
     ],
   ],
@@ -43382,9 +43360,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2D0135B3,
       [
-        ["bot", "InputUser", "InputUser"],
-        ["lang_code", "string", "string"],
-        ["media", ["InputMedia"], "Vector<InputMedia>"],
+        ["bot", "InputUser"],
+        ["lang_code", "string"],
+        ["media", "Vector<InputMedia>"],
       ],
     ],
   ],
@@ -43393,9 +43371,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB627F3AA,
       [
-        ["bot", "InputUser", "InputUser"],
-        ["lang_code", "string", "string"],
-        ["order", ["InputMedia"], "Vector<InputMedia>"],
+        ["bot", "InputUser"],
+        ["lang_code", "string"],
+        ["order", "Vector<InputMedia>"],
       ],
     ],
   ],
@@ -43404,8 +43382,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x423AB3AD,
       [
-        ["bot", "InputUser", "InputUser"],
-        ["lang_code", "string", "string"],
+        ["bot", "InputUser"],
+        ["lang_code", "string"],
       ],
     ],
   ],
@@ -43414,7 +43392,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA2A5594D,
       [
-        ["bot", "InputUser", "InputUser"],
+        ["bot", "InputUser"],
       ],
     ],
   ],
@@ -43423,8 +43401,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xED9F30C5,
       [
-        ["user_id", "InputUser", "InputUser"],
-        ["emoji_status", "EmojiStatus", "EmojiStatus"],
+        ["user_id", "InputUser"],
+        ["emoji_status", "EmojiStatus"],
       ],
     ],
   ],
@@ -43433,8 +43411,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x06DE6392,
       [
-        ["bot", "InputUser", "InputUser"],
-        ["enabled", "boolean", "Bool"],
+        ["bot", "InputUser"],
+        ["enabled", "Bool"],
       ],
     ],
   ],
@@ -43443,9 +43421,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x50077589,
       [
-        ["bot", "InputUser", "InputUser"],
-        ["file_name", "string", "string"],
-        ["url", "string", "string"],
+        ["bot", "InputUser"],
+        ["file_name", "string"],
+        ["url", "string"],
       ],
     ],
   ],
@@ -43461,10 +43439,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x778B5AB3,
       [
-        ["flags", flags, "#"],
-        ["bot", "InputUser", "InputUser"],
-        ["commission_permille", "number", "int"],
-        ["duration_months", "number", "flags.0?int"],
+        ["flags", "#"],
+        ["bot", "InputUser"],
+        ["commission_permille", "int"],
+        ["duration_months", "flags.0?int"],
       ],
     ],
   ],
@@ -43473,11 +43451,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8B89DFBD,
       [
-        ["flags", flags, "#"],
-        ["enabled", "true", "flags.1?true"],
-        ["bot", "InputUser", "flags.0?InputUser"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["custom_description", "string", "flags.2?string"],
+        ["flags", "#"],
+        ["enabled", "flags.1?true"],
+        ["bot", "flags.0?InputUser"],
+        ["peer", "InputPeer"],
+        ["custom_description", "flags.2?string"],
       ],
     ],
   ],
@@ -43486,7 +43464,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA1B70815,
       [
-        ["bot", "InputUser", "InputUser"],
+        ["bot", "InputUser"],
       ],
     ],
   ],
@@ -43495,9 +43473,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x37148DBB,
       [
-        ["flags", flags, "#"],
-        ["invoice", "InputInvoice", "InputInvoice"],
-        ["theme_params", "DataJSON", "flags.0?DataJSON"],
+        ["flags", "#"],
+        ["invoice", "InputInvoice"],
+        ["theme_params", "flags.0?DataJSON"],
       ],
     ],
   ],
@@ -43506,8 +43484,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2478D1CC,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -43516,10 +43494,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB6C8F12B,
       [
-        ["flags", flags, "#"],
-        ["save", "true", "flags.0?true"],
-        ["invoice", "InputInvoice", "InputInvoice"],
-        ["info", "PaymentRequestedInfo", "PaymentRequestedInfo"],
+        ["flags", "#"],
+        ["save", "flags.0?true"],
+        ["invoice", "InputInvoice"],
+        ["info", "PaymentRequestedInfo"],
       ],
     ],
   ],
@@ -43528,13 +43506,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2D03522F,
       [
-        ["flags", flags, "#"],
-        ["form_id", "bigint", "long"],
-        ["invoice", "InputInvoice", "InputInvoice"],
-        ["requested_info_id", "string", "flags.0?string"],
-        ["shipping_option_id", "string", "flags.1?string"],
-        ["credentials", "InputPaymentCredentials", "InputPaymentCredentials"],
-        ["tip_amount", "bigint", "flags.2?long"],
+        ["flags", "#"],
+        ["form_id", "long"],
+        ["invoice", "InputInvoice"],
+        ["requested_info_id", "flags.0?string"],
+        ["shipping_option_id", "flags.1?string"],
+        ["credentials", "InputPaymentCredentials"],
+        ["tip_amount", "flags.2?long"],
       ],
     ],
   ],
@@ -43550,9 +43528,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD83D70C1,
       [
-        ["flags", flags, "#"],
-        ["credentials", "true", "flags.0?true"],
-        ["info", "true", "flags.1?true"],
+        ["flags", "#"],
+        ["credentials", "flags.0?true"],
+        ["info", "flags.1?true"],
       ],
     ],
   ],
@@ -43561,7 +43539,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2E79D779,
       [
-        ["number", "string", "string"],
+        ["number", "string"],
       ],
     ],
   ],
@@ -43570,7 +43548,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0F91B065,
       [
-        ["invoice_media", "InputMedia", "InputMedia"],
+        ["invoice_media", "InputMedia"],
       ],
     ],
   ],
@@ -43579,8 +43557,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x80ED747D,
       [
-        ["receipt", Uint8Array, "bytes"],
-        ["purpose", "InputStorePaymentPurpose", "InputStorePaymentPurpose"],
+        ["receipt", "bytes"],
+        ["purpose", "InputStorePaymentPurpose"],
       ],
     ],
   ],
@@ -43589,8 +43567,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDFFD50D3,
       [
-        ["receipt", "DataJSON", "DataJSON"],
-        ["purpose", "InputStorePaymentPurpose", "InputStorePaymentPurpose"],
+        ["receipt", "DataJSON"],
+        ["purpose", "InputStorePaymentPurpose"],
       ],
     ],
   ],
@@ -43599,7 +43577,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9FC19EB6,
       [
-        ["purpose", "InputStorePaymentPurpose", "InputStorePaymentPurpose"],
+        ["purpose", "InputStorePaymentPurpose"],
       ],
     ],
   ],
@@ -43608,8 +43586,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2757BA54,
       [
-        ["flags", flags, "#"],
-        ["boost_peer", "InputPeer", "flags.0?InputPeer"],
+        ["flags", "#"],
+        ["boost_peer", "flags.0?InputPeer"],
       ],
     ],
   ],
@@ -43618,7 +43596,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8E51B4C1,
       [
-        ["slug", "string", "string"],
+        ["slug", "string"],
       ],
     ],
   ],
@@ -43627,7 +43605,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF6E26854,
       [
-        ["slug", "string", "string"],
+        ["slug", "string"],
       ],
     ],
   ],
@@ -43636,8 +43614,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF4239425,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["msg_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -43646,9 +43624,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5FF58F20,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["giveaway_id", "bigint", "long"],
-        ["purpose", "InputStorePaymentPurpose", "InputStorePaymentPurpose"],
+        ["peer", "InputPeer"],
+        ["giveaway_id", "long"],
+        ["purpose", "InputStorePaymentPurpose"],
       ],
     ],
   ],
@@ -43664,7 +43642,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x104FCFA7,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -43673,14 +43651,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0x69DA4557,
       [
-        ["flags", flags, "#"],
-        ["inbound", "true", "flags.0?true"],
-        ["outbound", "true", "flags.1?true"],
-        ["ascending", "true", "flags.2?true"],
-        ["subscription_id", "string", "flags.3?string"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["offset", "string", "string"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["inbound", "flags.0?true"],
+        ["outbound", "flags.1?true"],
+        ["ascending", "flags.2?true"],
+        ["subscription_id", "flags.3?string"],
+        ["peer", "InputPeer"],
+        ["offset", "string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -43689,8 +43667,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7998C914,
       [
-        ["form_id", "bigint", "long"],
-        ["invoice", "InputInvoice", "InputInvoice"],
+        ["form_id", "long"],
+        ["invoice", "InputInvoice"],
       ],
     ],
   ],
@@ -43699,8 +43677,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x25AE8F4A,
       [
-        ["user_id", "InputUser", "InputUser"],
-        ["charge_id", "string", "string"],
+        ["user_id", "InputUser"],
+        ["charge_id", "string"],
       ],
     ],
   ],
@@ -43709,9 +43687,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD91FFAD6,
       [
-        ["flags", flags, "#"],
-        ["dark", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
+        ["flags", "#"],
+        ["dark", "flags.0?true"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -43720,9 +43698,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x13BBE8B3,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["stars", "bigint", "long"],
-        ["password", "InputCheckPasswordSRP", "InputCheckPasswordSRP"],
+        ["peer", "InputPeer"],
+        ["stars", "long"],
+        ["password", "InputCheckPasswordSRP"],
       ],
     ],
   ],
@@ -43731,7 +43709,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD1D7EFC5,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -43740,8 +43718,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x27842D2E,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["InputStarsTransaction"], "Vector<InputStarsTransaction>"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<InputStarsTransaction>"],
       ],
     ],
   ],
@@ -43750,8 +43728,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD3C96BC8,
       [
-        ["flags", flags, "#"],
-        ["user_id", "InputUser", "flags.0?InputUser"],
+        ["flags", "#"],
+        ["user_id", "flags.0?InputUser"],
       ],
     ],
   ],
@@ -43760,10 +43738,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x032512C5,
       [
-        ["flags", flags, "#"],
-        ["missing_balance", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["offset", "string", "string"],
+        ["flags", "#"],
+        ["missing_balance", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["offset", "string"],
       ],
     ],
   ],
@@ -43772,10 +43750,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC7770878,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["subscription_id", "string", "string"],
-        ["canceled", "boolean", "flags.0?Bool"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["subscription_id", "string"],
+        ["canceled", "flags.0?Bool"],
       ],
     ],
   ],
@@ -43784,8 +43762,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCC5BEBB3,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["subscription_id", "string", "string"],
+        ["peer", "InputPeer"],
+        ["subscription_id", "string"],
       ],
     ],
   ],
@@ -43801,7 +43779,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC4563590,
       [
-        ["hash", "number", "int"],
+        ["hash", "int"],
       ],
     ],
   ],
@@ -43810,9 +43788,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2A2A697C,
       [
-        ["flags", flags, "#"],
-        ["unsave", "true", "flags.0?true"],
-        ["stargift", "InputSavedStarGift", "InputSavedStarGift"],
+        ["flags", "#"],
+        ["unsave", "flags.0?true"],
+        ["stargift", "InputSavedStarGift"],
       ],
     ],
   ],
@@ -43821,7 +43799,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x74BF076B,
       [
-        ["stargift", "InputSavedStarGift", "InputSavedStarGift"],
+        ["stargift", "InputSavedStarGift"],
       ],
     ],
   ],
@@ -43830,10 +43808,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6DFA0622,
       [
-        ["flags", flags, "#"],
-        ["restore", "true", "flags.0?true"],
-        ["user_id", "InputUser", "InputUser"],
-        ["charge_id", "string", "string"],
+        ["flags", "#"],
+        ["restore", "flags.0?true"],
+        ["user_id", "InputUser"],
+        ["charge_id", "string"],
       ],
     ],
   ],
@@ -43842,11 +43820,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5869A553,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["offset_date", "number", "flags.2?int"],
-        ["offset_link", "string", "flags.2?string"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["offset_date", "flags.2?int"],
+        ["offset_link", "flags.2?string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -43855,8 +43833,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB7D998F0,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["bot", "InputUser", "InputUser"],
+        ["peer", "InputPeer"],
+        ["bot", "InputUser"],
       ],
     ],
   ],
@@ -43865,12 +43843,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0D6B48F7,
       [
-        ["flags", flags, "#"],
-        ["order_by_revenue", "true", "flags.0?true"],
-        ["order_by_date", "true", "flags.1?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["offset", "string", "string"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["order_by_revenue", "flags.0?true"],
+        ["order_by_date", "flags.1?true"],
+        ["peer", "InputPeer"],
+        ["offset", "string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -43879,8 +43857,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7ED5348A,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["bot", "InputUser", "InputUser"],
+        ["peer", "InputPeer"],
+        ["bot", "InputUser"],
       ],
     ],
   ],
@@ -43889,10 +43867,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE4FCA4A3,
       [
-        ["flags", flags, "#"],
-        ["revoked", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["link", "string", "string"],
+        ["flags", "#"],
+        ["revoked", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["link", "string"],
       ],
     ],
   ],
@@ -43901,7 +43879,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9C9ABCB1,
       [
-        ["gift_id", "bigint", "long"],
+        ["gift_id", "long"],
       ],
     ],
   ],
@@ -43910,9 +43888,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAED6E4F5,
       [
-        ["flags", flags, "#"],
-        ["keep_original_details", "true", "flags.0?true"],
-        ["stargift", "InputSavedStarGift", "InputSavedStarGift"],
+        ["flags", "#"],
+        ["keep_original_details", "flags.0?true"],
+        ["stargift", "InputSavedStarGift"],
       ],
     ],
   ],
@@ -43921,8 +43899,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7F18176A,
       [
-        ["stargift", "InputSavedStarGift", "InputSavedStarGift"],
-        ["to_id", "InputPeer", "InputPeer"],
+        ["stargift", "InputSavedStarGift"],
+        ["to_id", "InputPeer"],
       ],
     ],
   ],
@@ -43931,7 +43909,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA1974D72,
       [
-        ["slug", "string", "string"],
+        ["slug", "string"],
       ],
     ],
   ],
@@ -43940,16 +43918,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x23830DE9,
       [
-        ["flags", flags, "#"],
-        ["exclude_unsaved", "true", "flags.0?true"],
-        ["exclude_saved", "true", "flags.1?true"],
-        ["exclude_unlimited", "true", "flags.2?true"],
-        ["exclude_limited", "true", "flags.3?true"],
-        ["exclude_unique", "true", "flags.4?true"],
-        ["sort_by_value", "true", "flags.5?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["offset", "string", "string"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["exclude_unsaved", "flags.0?true"],
+        ["exclude_saved", "flags.1?true"],
+        ["exclude_unlimited", "flags.2?true"],
+        ["exclude_limited", "flags.3?true"],
+        ["exclude_unique", "flags.4?true"],
+        ["sort_by_value", "flags.5?true"],
+        ["peer", "InputPeer"],
+        ["offset", "string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -43958,7 +43936,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB455A106,
       [
-        ["stargift", ["InputSavedStarGift"], "Vector<InputSavedStarGift>"],
+        ["stargift", "Vector<InputSavedStarGift>"],
       ],
     ],
   ],
@@ -43967,8 +43945,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD06E93A8,
       [
-        ["stargift", "InputSavedStarGift", "InputSavedStarGift"],
-        ["password", "InputCheckPasswordSRP", "InputCheckPasswordSRP"],
+        ["stargift", "InputSavedStarGift"],
+        ["password", "InputCheckPasswordSRP"],
       ],
     ],
   ],
@@ -43977,9 +43955,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x60EAEFA1,
       [
-        ["flags", flags, "#"],
-        ["enabled", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
+        ["flags", "#"],
+        ["enabled", "flags.0?true"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -43988,8 +43966,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1513E7B0,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["stargift", ["InputSavedStarGift"], "Vector<InputSavedStarGift>"],
+        ["peer", "InputPeer"],
+        ["stargift", "Vector<InputSavedStarGift>"],
       ],
     ],
   ],
@@ -43998,16 +43976,16 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9021AB67,
       [
-        ["flags", flags, "#"],
-        ["masks", "true", "flags.0?true"],
-        ["emojis", "true", "flags.5?true"],
-        ["text_color", "true", "flags.6?true"],
-        ["user_id", "InputUser", "InputUser"],
-        ["title", "string", "string"],
-        ["short_name", "string", "string"],
-        ["thumb", "InputDocument", "flags.2?InputDocument"],
-        ["stickers", ["InputStickerSetItem"], "Vector<InputStickerSetItem>"],
-        ["software", "string", "flags.3?string"],
+        ["flags", "#"],
+        ["masks", "flags.0?true"],
+        ["emojis", "flags.5?true"],
+        ["text_color", "flags.6?true"],
+        ["user_id", "InputUser"],
+        ["title", "string"],
+        ["short_name", "string"],
+        ["thumb", "flags.2?InputDocument"],
+        ["stickers", "Vector<InputStickerSetItem>"],
+        ["software", "flags.3?string"],
       ],
     ],
   ],
@@ -44016,7 +43994,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF7760F51,
       [
-        ["sticker", "InputDocument", "InputDocument"],
+        ["sticker", "InputDocument"],
       ],
     ],
   ],
@@ -44025,8 +44003,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFFB6D4CA,
       [
-        ["sticker", "InputDocument", "InputDocument"],
-        ["position", "number", "int"],
+        ["sticker", "InputDocument"],
+        ["position", "int"],
       ],
     ],
   ],
@@ -44035,8 +44013,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8653FEBE,
       [
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
-        ["sticker", "InputStickerSetItem", "InputStickerSetItem"],
+        ["stickerset", "InputStickerSet"],
+        ["sticker", "InputStickerSetItem"],
       ],
     ],
   ],
@@ -44045,10 +44023,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA76A5392,
       [
-        ["flags", flags, "#"],
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
-        ["thumb", "InputDocument", "flags.0?InputDocument"],
-        ["thumb_document_id", "bigint", "flags.1?long"],
+        ["flags", "#"],
+        ["stickerset", "InputStickerSet"],
+        ["thumb", "flags.0?InputDocument"],
+        ["thumb_document_id", "flags.1?long"],
       ],
     ],
   ],
@@ -44057,7 +44035,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x284B3639,
       [
-        ["short_name", "string", "string"],
+        ["short_name", "string"],
       ],
     ],
   ],
@@ -44066,7 +44044,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4DAFC503,
       [
-        ["title", "string", "string"],
+        ["title", "string"],
       ],
     ],
   ],
@@ -44075,11 +44053,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF5537EBC,
       [
-        ["flags", flags, "#"],
-        ["sticker", "InputDocument", "InputDocument"],
-        ["emoji", "string", "flags.0?string"],
-        ["mask_coords", "MaskCoords", "flags.1?MaskCoords"],
-        ["keywords", "string", "flags.2?string"],
+        ["flags", "#"],
+        ["sticker", "InputDocument"],
+        ["emoji", "flags.0?string"],
+        ["mask_coords", "flags.1?MaskCoords"],
+        ["keywords", "flags.2?string"],
       ],
     ],
   ],
@@ -44088,8 +44066,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x124B1C00,
       [
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
-        ["title", "string", "string"],
+        ["stickerset", "InputStickerSet"],
+        ["title", "string"],
       ],
     ],
   ],
@@ -44098,7 +44076,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x87704394,
       [
-        ["stickerset", "InputStickerSet", "InputStickerSet"],
+        ["stickerset", "InputStickerSet"],
       ],
     ],
   ],
@@ -44107,8 +44085,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4696459A,
       [
-        ["sticker", "InputDocument", "InputDocument"],
-        ["new_sticker", "InputStickerSetItem", "InputStickerSetItem"],
+        ["sticker", "InputDocument"],
+        ["new_sticker", "InputStickerSetItem"],
       ],
     ],
   ],
@@ -44124,13 +44102,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA6C4600C,
       [
-        ["flags", flags, "#"],
-        ["video", "true", "flags.0?true"],
-        ["user_id", "InputUser", "InputUser"],
-        ["conference_call", "InputGroupCall", "flags.1?InputGroupCall"],
-        ["random_id", "number", "int"],
-        ["g_a_hash", Uint8Array, "bytes"],
-        ["protocol", "PhoneCallProtocol", "PhoneCallProtocol"],
+        ["flags", "#"],
+        ["video", "flags.0?true"],
+        ["user_id", "InputUser"],
+        ["conference_call", "flags.1?InputGroupCall"],
+        ["random_id", "int"],
+        ["g_a_hash", "bytes"],
+        ["protocol", "PhoneCallProtocol"],
       ],
     ],
   ],
@@ -44139,9 +44117,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x3BD2B4A0,
       [
-        ["peer", "InputPhoneCall", "InputPhoneCall"],
-        ["g_b", Uint8Array, "bytes"],
-        ["protocol", "PhoneCallProtocol", "PhoneCallProtocol"],
+        ["peer", "InputPhoneCall"],
+        ["g_b", "bytes"],
+        ["protocol", "PhoneCallProtocol"],
       ],
     ],
   ],
@@ -44150,10 +44128,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2EFE1722,
       [
-        ["peer", "InputPhoneCall", "InputPhoneCall"],
-        ["g_a", Uint8Array, "bytes"],
-        ["key_fingerprint", "bigint", "long"],
-        ["protocol", "PhoneCallProtocol", "PhoneCallProtocol"],
+        ["peer", "InputPhoneCall"],
+        ["g_a", "bytes"],
+        ["key_fingerprint", "long"],
+        ["protocol", "PhoneCallProtocol"],
       ],
     ],
   ],
@@ -44162,7 +44140,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x17D54F61,
       [
-        ["peer", "InputPhoneCall", "InputPhoneCall"],
+        ["peer", "InputPhoneCall"],
       ],
     ],
   ],
@@ -44171,12 +44149,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB2CBC1C0,
       [
-        ["flags", flags, "#"],
-        ["video", "true", "flags.0?true"],
-        ["peer", "InputPhoneCall", "InputPhoneCall"],
-        ["duration", "number", "int"],
-        ["reason", "PhoneCallDiscardReason", "PhoneCallDiscardReason"],
-        ["connection_id", "bigint", "long"],
+        ["flags", "#"],
+        ["video", "flags.0?true"],
+        ["peer", "InputPhoneCall"],
+        ["duration", "int"],
+        ["reason", "PhoneCallDiscardReason"],
+        ["connection_id", "long"],
       ],
     ],
   ],
@@ -44185,11 +44163,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x59EAD627,
       [
-        ["flags", flags, "#"],
-        ["user_initiative", "true", "flags.0?true"],
-        ["peer", "InputPhoneCall", "InputPhoneCall"],
-        ["rating", "number", "int"],
-        ["comment", "string", "string"],
+        ["flags", "#"],
+        ["user_initiative", "flags.0?true"],
+        ["peer", "InputPhoneCall"],
+        ["rating", "int"],
+        ["comment", "string"],
       ],
     ],
   ],
@@ -44198,8 +44176,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x277ADD7E,
       [
-        ["peer", "InputPhoneCall", "InputPhoneCall"],
-        ["debug", "DataJSON", "DataJSON"],
+        ["peer", "InputPhoneCall"],
+        ["debug", "DataJSON"],
       ],
     ],
   ],
@@ -44208,8 +44186,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFF7A9383,
       [
-        ["peer", "InputPhoneCall", "InputPhoneCall"],
-        ["data", Uint8Array, "bytes"],
+        ["peer", "InputPhoneCall"],
+        ["data", "bytes"],
       ],
     ],
   ],
@@ -44218,12 +44196,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0x48CDC6D8,
       [
-        ["flags", flags, "#"],
-        ["rtmp_stream", "true", "flags.2?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["random_id", "number", "int"],
-        ["title", "string", "flags.0?string"],
-        ["schedule_date", "number", "flags.1?int"],
+        ["flags", "#"],
+        ["rtmp_stream", "flags.2?true"],
+        ["peer", "InputPeer"],
+        ["random_id", "int"],
+        ["title", "flags.0?string"],
+        ["schedule_date", "flags.1?int"],
       ],
     ],
   ],
@@ -44232,14 +44210,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD61E1DF3,
       [
-        ["flags", flags, "#"],
-        ["muted", "true", "flags.0?true"],
-        ["video_stopped", "true", "flags.2?true"],
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["join_as", "InputPeer", "InputPeer"],
-        ["invite_hash", "string", "flags.1?string"],
-        ["key_fingerprint", "bigint", "flags.3?long"],
-        ["params", "DataJSON", "DataJSON"],
+        ["flags", "#"],
+        ["muted", "flags.0?true"],
+        ["video_stopped", "flags.2?true"],
+        ["call", "InputGroupCall"],
+        ["join_as", "InputPeer"],
+        ["invite_hash", "flags.1?string"],
+        ["key_fingerprint", "flags.3?long"],
+        ["params", "DataJSON"],
       ],
     ],
   ],
@@ -44248,8 +44226,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x500377F9,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["source", "number", "int"],
+        ["call", "InputGroupCall"],
+        ["source", "int"],
       ],
     ],
   ],
@@ -44258,8 +44236,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7B393160,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["users", ["InputUser"], "Vector<InputUser>"],
+        ["call", "InputGroupCall"],
+        ["users", "Vector<InputUser>"],
       ],
     ],
   ],
@@ -44268,7 +44246,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7A777135,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
+        ["call", "InputGroupCall"],
       ],
     ],
   ],
@@ -44277,10 +44255,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x74BBB43D,
       [
-        ["flags", flags, "#"],
-        ["reset_invite_hash", "true", "flags.1?true"],
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["join_muted", "boolean", "flags.0?Bool"],
+        ["flags", "#"],
+        ["reset_invite_hash", "flags.1?true"],
+        ["call", "InputGroupCall"],
+        ["join_muted", "flags.0?Bool"],
       ],
     ],
   ],
@@ -44289,8 +44267,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x041845DB,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["limit", "number", "int"],
+        ["call", "InputGroupCall"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -44299,11 +44277,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC558D8AB,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["ids", ["InputPeer"], "Vector<InputPeer>"],
-        ["sources", ["number"], "Vector<int>"],
-        ["offset", "string", "string"],
-        ["limit", "number", "int"],
+        ["call", "InputGroupCall"],
+        ["ids", "Vector<InputPeer>"],
+        ["sources", "Vector<int>"],
+        ["offset", "string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -44312,8 +44290,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB59CF977,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["sources", ["number"], "Vector<int>"],
+        ["call", "InputGroupCall"],
+        ["sources", "Vector<int>"],
       ],
     ],
   ],
@@ -44322,12 +44300,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF128C708,
       [
-        ["flags", flags, "#"],
-        ["start", "true", "flags.0?true"],
-        ["video", "true", "flags.2?true"],
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["title", "string", "flags.1?string"],
-        ["video_portrait", "boolean", "flags.2?Bool"],
+        ["flags", "#"],
+        ["start", "flags.0?true"],
+        ["video", "flags.2?true"],
+        ["call", "InputGroupCall"],
+        ["title", "flags.1?string"],
+        ["video_portrait", "flags.2?Bool"],
       ],
     ],
   ],
@@ -44336,15 +44314,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA5273ABF,
       [
-        ["flags", flags, "#"],
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["participant", "InputPeer", "InputPeer"],
-        ["muted", "boolean", "flags.0?Bool"],
-        ["volume", "number", "flags.1?int"],
-        ["raise_hand", "boolean", "flags.2?Bool"],
-        ["video_stopped", "boolean", "flags.3?Bool"],
-        ["video_paused", "boolean", "flags.4?Bool"],
-        ["presentation_paused", "boolean", "flags.5?Bool"],
+        ["flags", "#"],
+        ["call", "InputGroupCall"],
+        ["participant", "InputPeer"],
+        ["muted", "flags.0?Bool"],
+        ["volume", "flags.1?int"],
+        ["raise_hand", "flags.2?Bool"],
+        ["video_stopped", "flags.3?Bool"],
+        ["video_paused", "flags.4?Bool"],
+        ["presentation_paused", "flags.5?Bool"],
       ],
     ],
   ],
@@ -44353,8 +44331,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1CA6AC0A,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["title", "string", "string"],
+        ["call", "InputGroupCall"],
+        ["title", "string"],
       ],
     ],
   ],
@@ -44363,7 +44341,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEF7C213A,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -44372,9 +44350,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE6AA647F,
       [
-        ["flags", flags, "#"],
-        ["can_self_unmute", "true", "flags.0?true"],
-        ["call", "InputGroupCall", "InputGroupCall"],
+        ["flags", "#"],
+        ["can_self_unmute", "flags.0?true"],
+        ["call", "InputGroupCall"],
       ],
     ],
   ],
@@ -44383,8 +44361,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x219C34E6,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["subscribed", "boolean", "Bool"],
+        ["call", "InputGroupCall"],
+        ["subscribed", "Bool"],
       ],
     ],
   ],
@@ -44393,7 +44371,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5680E342,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
+        ["call", "InputGroupCall"],
       ],
     ],
   ],
@@ -44402,8 +44380,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x575E1F8C,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["join_as", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
+        ["join_as", "InputPeer"],
       ],
     ],
   ],
@@ -44412,8 +44390,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCBEA6BC4,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
-        ["params", "DataJSON", "DataJSON"],
+        ["call", "InputGroupCall"],
+        ["params", "DataJSON"],
       ],
     ],
   ],
@@ -44422,7 +44400,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1C50D144,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
+        ["call", "InputGroupCall"],
       ],
     ],
   ],
@@ -44431,7 +44409,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x1AB21940,
       [
-        ["call", "InputGroupCall", "InputGroupCall"],
+        ["call", "InputGroupCall"],
       ],
     ],
   ],
@@ -44440,8 +44418,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDEB3ABBF,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["revoke", "boolean", "Bool"],
+        ["peer", "InputPeer"],
+        ["revoke", "Bool"],
       ],
     ],
   ],
@@ -44450,8 +44428,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x41248786,
       [
-        ["peer", "InputPhoneCall", "InputPhoneCall"],
-        ["file", "InputFile", "InputFile"],
+        ["peer", "InputPhoneCall"],
+        ["file", "InputFile"],
       ],
     ],
   ],
@@ -44460,8 +44438,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDFC909AB,
       [
-        ["peer", "InputPhoneCall", "InputPhoneCall"],
-        ["key_fingerprint", "bigint", "long"],
+        ["peer", "InputPhoneCall"],
+        ["key_fingerprint", "long"],
       ],
     ],
   ],
@@ -44470,8 +44448,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF2F2330A,
       [
-        ["lang_pack", "string", "string"],
-        ["lang_code", "string", "string"],
+        ["lang_pack", "string"],
+        ["lang_code", "string"],
       ],
     ],
   ],
@@ -44480,9 +44458,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEFEA3803,
       [
-        ["lang_pack", "string", "string"],
-        ["lang_code", "string", "string"],
-        ["keys", ["string"], "Vector<string>"],
+        ["lang_pack", "string"],
+        ["lang_code", "string"],
+        ["keys", "Vector<string>"],
       ],
     ],
   ],
@@ -44491,9 +44469,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCD984AA5,
       [
-        ["lang_pack", "string", "string"],
-        ["lang_code", "string", "string"],
-        ["from_version", "number", "int"],
+        ["lang_pack", "string"],
+        ["lang_code", "string"],
+        ["from_version", "int"],
       ],
     ],
   ],
@@ -44502,7 +44480,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x42C6978F,
       [
-        ["lang_pack", "string", "string"],
+        ["lang_pack", "string"],
       ],
     ],
   ],
@@ -44511,8 +44489,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6A596502,
       [
-        ["lang_pack", "string", "string"],
-        ["lang_code", "string", "string"],
+        ["lang_pack", "string"],
+        ["lang_code", "string"],
       ],
     ],
   ],
@@ -44521,7 +44499,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6847D0AB,
       [
-        ["folder_peers", ["InputFolderPeer"], "Vector<InputFolderPeer>"],
+        ["folder_peers", "Vector<InputFolderPeer>"],
       ],
     ],
   ],
@@ -44530,9 +44508,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAB42441A,
       [
-        ["flags", flags, "#"],
-        ["dark", "true", "flags.0?true"],
-        ["channel", "InputChannel", "InputChannel"],
+        ["flags", "#"],
+        ["dark", "flags.0?true"],
+        ["channel", "InputChannel"],
       ],
     ],
   ],
@@ -44541,9 +44519,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x621D5FA0,
       [
-        ["flags", flags, "#"],
-        ["token", "string", "string"],
-        ["x", "bigint", "flags.0?long"],
+        ["flags", "#"],
+        ["token", "string"],
+        ["x", "flags.0?long"],
       ],
     ],
   ],
@@ -44552,9 +44530,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xDCDF8607,
       [
-        ["flags", flags, "#"],
-        ["dark", "true", "flags.0?true"],
-        ["channel", "InputChannel", "InputChannel"],
+        ["flags", "#"],
+        ["dark", "flags.0?true"],
+        ["channel", "InputChannel"],
       ],
     ],
   ],
@@ -44563,10 +44541,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5F150144,
       [
-        ["channel", "InputChannel", "InputChannel"],
-        ["msg_id", "number", "int"],
-        ["offset", "string", "string"],
-        ["limit", "number", "int"],
+        ["channel", "InputChannel"],
+        ["msg_id", "int"],
+        ["offset", "string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -44575,10 +44553,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB6E0A3F5,
       [
-        ["flags", flags, "#"],
-        ["dark", "true", "flags.0?true"],
-        ["channel", "InputChannel", "InputChannel"],
-        ["msg_id", "number", "int"],
+        ["flags", "#"],
+        ["dark", "flags.0?true"],
+        ["channel", "InputChannel"],
+        ["msg_id", "int"],
       ],
     ],
   ],
@@ -44587,10 +44565,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x374FEF40,
       [
-        ["flags", flags, "#"],
-        ["dark", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
+        ["flags", "#"],
+        ["dark", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
       ],
     ],
   ],
@@ -44599,10 +44577,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA6437EF6,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
-        ["offset", "string", "string"],
-        ["limit", "number", "int"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
+        ["offset", "string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -44611,9 +44589,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xF788EE19,
       [
-        ["flags", flags, "#"],
-        ["dark", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
+        ["flags", "#"],
+        ["dark", "flags.0?true"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -44622,8 +44600,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9DF4FAAD,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["password", "InputCheckPasswordSRP", "InputCheckPasswordSRP"],
+        ["peer", "InputPeer"],
+        ["password", "InputCheckPasswordSRP"],
       ],
     ],
   ],
@@ -44632,9 +44610,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x70990B6D,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["offset", "number", "int"],
-        ["limit", "number", "int"],
+        ["peer", "InputPeer"],
+        ["offset", "int"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -44643,9 +44621,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x8472478E,
       [
-        ["chatlist", "InputChatlist", "InputChatlist"],
-        ["title", "string", "string"],
-        ["peers", ["InputPeer"], "Vector<InputPeer>"],
+        ["chatlist", "InputChatlist"],
+        ["title", "string"],
+        ["peers", "Vector<InputPeer>"],
       ],
     ],
   ],
@@ -44654,8 +44632,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x719C5C5E,
       [
-        ["chatlist", "InputChatlist", "InputChatlist"],
-        ["slug", "string", "string"],
+        ["chatlist", "InputChatlist"],
+        ["slug", "string"],
       ],
     ],
   ],
@@ -44664,11 +44642,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x653DB63D,
       [
-        ["flags", flags, "#"],
-        ["chatlist", "InputChatlist", "InputChatlist"],
-        ["slug", "string", "string"],
-        ["title", "string", "flags.1?string"],
-        ["peers", ["InputPeer"], "flags.2?Vector<InputPeer>"],
+        ["flags", "#"],
+        ["chatlist", "InputChatlist"],
+        ["slug", "string"],
+        ["title", "flags.1?string"],
+        ["peers", "flags.2?Vector<InputPeer>"],
       ],
     ],
   ],
@@ -44677,7 +44655,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xCE03DA83,
       [
-        ["chatlist", "InputChatlist", "InputChatlist"],
+        ["chatlist", "InputChatlist"],
       ],
     ],
   ],
@@ -44686,7 +44664,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x41C10FFF,
       [
-        ["slug", "string", "string"],
+        ["slug", "string"],
       ],
     ],
   ],
@@ -44695,8 +44673,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA6B1E39A,
       [
-        ["slug", "string", "string"],
-        ["peers", ["InputPeer"], "Vector<InputPeer>"],
+        ["slug", "string"],
+        ["peers", "Vector<InputPeer>"],
       ],
     ],
   ],
@@ -44705,7 +44683,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x89419521,
       [
-        ["chatlist", "InputChatlist", "InputChatlist"],
+        ["chatlist", "InputChatlist"],
       ],
     ],
   ],
@@ -44714,8 +44692,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE089F8F5,
       [
-        ["chatlist", "InputChatlist", "InputChatlist"],
-        ["peers", ["InputPeer"], "Vector<InputPeer>"],
+        ["chatlist", "InputChatlist"],
+        ["peers", "Vector<InputPeer>"],
       ],
     ],
   ],
@@ -44724,7 +44702,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x66E486FB,
       [
-        ["chatlist", "InputChatlist", "InputChatlist"],
+        ["chatlist", "InputChatlist"],
       ],
     ],
   ],
@@ -44733,7 +44711,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xFDBCD714,
       [
-        ["chatlist", "InputChatlist", "InputChatlist"],
+        ["chatlist", "InputChatlist"],
       ],
     ],
   ],
@@ -44742,8 +44720,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x74FAE13A,
       [
-        ["chatlist", "InputChatlist", "InputChatlist"],
-        ["peers", ["InputPeer"], "Vector<InputPeer>"],
+        ["chatlist", "InputChatlist"],
+        ["peers", "Vector<InputPeer>"],
       ],
     ],
   ],
@@ -44752,7 +44730,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0xC7DFDFDD,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -44761,20 +44739,20 @@ const types: Map<string, Parameters> = new Map([
     [
       0xE4E6694B,
       [
-        ["flags", flags, "#"],
-        ["pinned", "true", "flags.2?true"],
-        ["noforwards", "true", "flags.4?true"],
-        ["fwd_modified", "true", "flags.7?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["media", "InputMedia", "InputMedia"],
-        ["media_areas", ["MediaArea"], "flags.5?Vector<MediaArea>"],
-        ["caption", "string", "flags.0?string"],
-        ["entities", ["MessageEntity"], "flags.1?Vector<MessageEntity>"],
-        ["privacy_rules", ["InputPrivacyRule"], "Vector<InputPrivacyRule>"],
-        ["random_id", "bigint", "long"],
-        ["period", "number", "flags.3?int"],
-        ["fwd_from_id", "InputPeer", "flags.6?InputPeer"],
-        ["fwd_from_story", "number", "flags.6?int"],
+        ["flags", "#"],
+        ["pinned", "flags.2?true"],
+        ["noforwards", "flags.4?true"],
+        ["fwd_modified", "flags.7?true"],
+        ["peer", "InputPeer"],
+        ["media", "InputMedia"],
+        ["media_areas", "flags.5?Vector<MediaArea>"],
+        ["caption", "flags.0?string"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
+        ["privacy_rules", "Vector<InputPrivacyRule>"],
+        ["random_id", "long"],
+        ["period", "flags.3?int"],
+        ["fwd_from_id", "flags.6?InputPeer"],
+        ["fwd_from_story", "flags.6?int"],
       ],
     ],
   ],
@@ -44783,14 +44761,14 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB583BA46,
       [
-        ["flags", flags, "#"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
-        ["media", "InputMedia", "flags.0?InputMedia"],
-        ["media_areas", ["MediaArea"], "flags.3?Vector<MediaArea>"],
-        ["caption", "string", "flags.1?string"],
-        ["entities", ["MessageEntity"], "flags.1?Vector<MessageEntity>"],
-        ["privacy_rules", ["InputPrivacyRule"], "flags.2?Vector<InputPrivacyRule>"],
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
+        ["media", "flags.0?InputMedia"],
+        ["media_areas", "flags.3?Vector<MediaArea>"],
+        ["caption", "flags.1?string"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
+        ["privacy_rules", "flags.2?Vector<InputPrivacyRule>"],
       ],
     ],
   ],
@@ -44799,8 +44777,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xAE59DB5F,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -44809,9 +44787,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x9A75A1EF,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
-        ["pinned", "boolean", "Bool"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
+        ["pinned", "Bool"],
       ],
     ],
   ],
@@ -44820,10 +44798,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0xEEB0D625,
       [
-        ["flags", flags, "#"],
-        ["next", "true", "flags.1?true"],
-        ["hidden", "true", "flags.2?true"],
-        ["state", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["next", "flags.1?true"],
+        ["hidden", "flags.2?true"],
+        ["state", "flags.0?string"],
       ],
     ],
   ],
@@ -44832,9 +44810,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5821A5DC,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["offset_id", "number", "int"],
-        ["limit", "number", "int"],
+        ["peer", "InputPeer"],
+        ["offset_id", "int"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -44843,9 +44821,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB4352016,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["offset_id", "number", "int"],
-        ["limit", "number", "int"],
+        ["peer", "InputPeer"],
+        ["offset_id", "int"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -44854,8 +44832,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x5774CA74,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -44864,7 +44842,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7C2557C4,
       [
-        ["hidden", "boolean", "Bool"],
+        ["hidden", "Bool"],
       ],
     ],
   ],
@@ -44873,8 +44851,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xA556DAC8,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["max_id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["max_id", "int"],
       ],
     ],
   ],
@@ -44883,8 +44861,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB2028AFB,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -44893,15 +44871,15 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7ED23C57,
       [
-        ["flags", flags, "#"],
-        ["just_contacts", "true", "flags.0?true"],
-        ["reactions_first", "true", "flags.2?true"],
-        ["forwards_first", "true", "flags.3?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["q", "string", "flags.1?string"],
-        ["id", "number", "int"],
-        ["offset", "string", "string"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["just_contacts", "flags.0?true"],
+        ["reactions_first", "flags.2?true"],
+        ["forwards_first", "flags.3?true"],
+        ["peer", "InputPeer"],
+        ["q", "flags.1?string"],
+        ["id", "int"],
+        ["offset", "string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -44910,8 +44888,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x28E16CC8,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -44920,8 +44898,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7B8DEF20,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
       ],
     ],
   ],
@@ -44930,10 +44908,10 @@ const types: Map<string, Parameters> = new Map([
     [
       0x19D8EB45,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
-        ["option", Uint8Array, "bytes"],
-        ["message", "string", "string"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
+        ["option", "bytes"],
+        ["message", "string"],
       ],
     ],
   ],
@@ -44942,9 +44920,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x57BBD166,
       [
-        ["flags", flags, "#"],
-        ["past", "true", "flags.0?true"],
-        ["future", "true", "flags.1?true"],
+        ["flags", "#"],
+        ["past", "flags.0?true"],
+        ["future", "flags.1?true"],
       ],
     ],
   ],
@@ -44953,11 +44931,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x7FD736B2,
       [
-        ["flags", flags, "#"],
-        ["add_to_recent", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["story_id", "number", "int"],
-        ["reaction", "Reaction", "Reaction"],
+        ["flags", "#"],
+        ["add_to_recent", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["story_id", "int"],
+        ["reaction", "Reaction"],
       ],
     ],
   ],
@@ -44966,7 +44944,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x2C4ADA50,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -44982,7 +44960,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x535983C3,
       [
-        ["id", ["InputPeer"], "Vector<InputPeer>"],
+        ["id", "Vector<InputPeer>"],
       ],
     ],
   ],
@@ -44998,8 +44976,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBD0415C4,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["hidden", "boolean", "Bool"],
+        ["peer", "InputPeer"],
+        ["hidden", "Bool"],
       ],
     ],
   ],
@@ -45008,13 +44986,13 @@ const types: Map<string, Parameters> = new Map([
     [
       0xB9B2881F,
       [
-        ["flags", flags, "#"],
-        ["forwards_first", "true", "flags.2?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", "number", "int"],
-        ["reaction", "Reaction", "flags.0?Reaction"],
-        ["offset", "string", "flags.1?string"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["forwards_first", "flags.2?true"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
+        ["reaction", "flags.0?Reaction"],
+        ["offset", "flags.1?string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -45023,8 +45001,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x0B297E9B,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["id", ["number"], "Vector<int>"],
+        ["peer", "InputPeer"],
+        ["id", "Vector<int>"],
       ],
     ],
   ],
@@ -45033,12 +45011,12 @@ const types: Map<string, Parameters> = new Map([
     [
       0xD1810907,
       [
-        ["flags", flags, "#"],
-        ["hashtag", "string", "flags.0?string"],
-        ["area", "MediaArea", "flags.1?MediaArea"],
-        ["peer", "InputPeer", "flags.2?InputPeer"],
-        ["offset", "string", "string"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["hashtag", "flags.0?string"],
+        ["area", "flags.1?MediaArea"],
+        ["peer", "flags.2?InputPeer"],
+        ["offset", "string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -45047,11 +45025,11 @@ const types: Map<string, Parameters> = new Map([
     [
       0x60F67660,
       [
-        ["flags", flags, "#"],
-        ["gifts", "true", "flags.0?true"],
-        ["peer", "InputPeer", "InputPeer"],
-        ["offset", "string", "string"],
-        ["limit", "number", "int"],
+        ["flags", "#"],
+        ["gifts", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["offset", "string"],
+        ["limit", "int"],
       ],
     ],
   ],
@@ -45067,9 +45045,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x6B7DA746,
       [
-        ["flags", flags, "#"],
-        ["slots", ["number"], "flags.0?Vector<int>"],
-        ["peer", "InputPeer", "InputPeer"],
+        ["flags", "#"],
+        ["slots", "flags.0?Vector<int>"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -45078,7 +45056,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x042F1F61,
       [
-        ["peer", "InputPeer", "InputPeer"],
+        ["peer", "InputPeer"],
       ],
     ],
   ],
@@ -45087,8 +45065,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x39854D1F,
       [
-        ["peer", "InputPeer", "InputPeer"],
-        ["user_id", "InputUser", "InputUser"],
+        ["peer", "InputPeer"],
+        ["user_id", "InputUser"],
       ],
     ],
   ],
@@ -45118,8 +45096,8 @@ const types: Map<string, Parameters> = new Map([
     [
       0x093FA0BF,
       [
-        ["flags", flags, "#"],
-        ["allow_international", "true", "flags.0?true"],
+        ["flags", "#"],
+        ["allow_international", "flags.0?true"],
       ],
     ],
   ],
@@ -45135,7 +45113,7 @@ const types: Map<string, Parameters> = new Map([
     [
       0x778D902F,
       [
-        ["job_id", "string", "string"],
+        ["job_id", "string"],
       ],
     ],
   ],
@@ -45144,9 +45122,9 @@ const types: Map<string, Parameters> = new Map([
     [
       0x4F1EBF24,
       [
-        ["flags", flags, "#"],
-        ["job_id", "string", "string"],
-        ["error", "string", "flags.0?string"],
+        ["flags", "#"],
+        ["job_id", "string"],
+        ["error", "flags.0?string"],
       ],
     ],
   ],
@@ -45155,15 +45133,727 @@ const types: Map<string, Parameters> = new Map([
     [
       0xBE1E85BA,
       [
-        ["collectible", "InputCollectible", "InputCollectible"],
+        ["collectible", "InputCollectible"],
       ],
     ],
   ],
 ] as unknown as [string, Parameters][]);
 
+const returnTypes = new Map<string, string>([
+  ["req_pq_multi", "ResPQ"],
+  ["req_DH_params", "Server_DH_Params"],
+  ["set_client_DH_params", "Set_client_DH_params_answer"],
+  ["rpc_drop_answer", "RpcDropAnswer"],
+  ["get_future_salts", "FutureSalts"],
+  ["ping", "Pong"],
+  ["ping_delay_disconnect", "Pong"],
+  ["destroy_session", "DestroySessionRes"],
+  ["destroy_auth_key", "DestroyAuthKeyRes"],
+  ["invokeWithBusinessConnectionPrefix", "Error"],
+  ["invokeWithGooglePlayIntegrityPrefix", "Error"],
+  ["invokeWithApnsSecretPrefix", "Error"],
+  ["invokeWithReCaptchaPrefix", "Error"],
+  ["invokeAfterMsg", "X"],
+  ["invokeAfterMsgs", "X"],
+  ["initConnection", "X"],
+  ["invokeWithLayer", "X"],
+  ["invokeWithoutUpdates", "X"],
+  ["invokeWithMessagesRange", "X"],
+  ["invokeWithTakeout", "X"],
+  ["invokeWithBusinessConnection", "X"],
+  ["invokeWithGooglePlayIntegrity", "X"],
+  ["invokeWithApnsSecret", "X"],
+  ["invokeWithReCaptcha", "X"],
+  ["auth.sendCode", "auth.SentCode"],
+  ["auth.signUp", "auth.Authorization"],
+  ["auth.signIn", "auth.Authorization"],
+  ["auth.logOut", "auth.LoggedOut"],
+  ["auth.resetAuthorizations", "Bool"],
+  ["auth.exportAuthorization", "auth.ExportedAuthorization"],
+  ["auth.importAuthorization", "auth.Authorization"],
+  ["auth.bindTempAuthKey", "Bool"],
+  ["auth.importBotAuthorization", "auth.Authorization"],
+  ["auth.checkPassword", "auth.Authorization"],
+  ["auth.requestPasswordRecovery", "auth.PasswordRecovery"],
+  ["auth.recoverPassword", "auth.Authorization"],
+  ["auth.resendCode", "auth.SentCode"],
+  ["auth.cancelCode", "Bool"],
+  ["auth.dropTempAuthKeys", "Bool"],
+  ["auth.exportLoginToken", "auth.LoginToken"],
+  ["auth.importLoginToken", "auth.LoginToken"],
+  ["auth.acceptLoginToken", "Authorization"],
+  ["auth.checkRecoveryPassword", "Bool"],
+  ["auth.importWebTokenAuthorization", "auth.Authorization"],
+  ["auth.requestFirebaseSms", "Bool"],
+  ["auth.resetLoginEmail", "auth.SentCode"],
+  ["auth.reportMissingCode", "Bool"],
+  ["account.registerDevice", "Bool"],
+  ["account.unregisterDevice", "Bool"],
+  ["account.updateNotifySettings", "Bool"],
+  ["account.getNotifySettings", "PeerNotifySettings"],
+  ["account.resetNotifySettings", "Bool"],
+  ["account.updateProfile", "User"],
+  ["account.updateStatus", "Bool"],
+  ["account.getWallPapers", "account.WallPapers"],
+  ["account.reportPeer", "Bool"],
+  ["account.checkUsername", "Bool"],
+  ["account.updateUsername", "User"],
+  ["account.getPrivacy", "account.PrivacyRules"],
+  ["account.setPrivacy", "account.PrivacyRules"],
+  ["account.deleteAccount", "Bool"],
+  ["account.getAccountTTL", "AccountDaysTTL"],
+  ["account.setAccountTTL", "Bool"],
+  ["account.sendChangePhoneCode", "auth.SentCode"],
+  ["account.changePhone", "User"],
+  ["account.updateDeviceLocked", "Bool"],
+  ["account.getAuthorizations", "account.Authorizations"],
+  ["account.resetAuthorization", "Bool"],
+  ["account.getPassword", "account.Password"],
+  ["account.getPasswordSettings", "account.PasswordSettings"],
+  ["account.updatePasswordSettings", "Bool"],
+  ["account.sendConfirmPhoneCode", "auth.SentCode"],
+  ["account.confirmPhone", "Bool"],
+  ["account.getTmpPassword", "account.TmpPassword"],
+  ["account.getWebAuthorizations", "account.WebAuthorizations"],
+  ["account.resetWebAuthorization", "Bool"],
+  ["account.resetWebAuthorizations", "Bool"],
+  ["account.getAllSecureValues", "Vector<SecureValue>"],
+  ["account.getSecureValue", "Vector<SecureValue>"],
+  ["account.saveSecureValue", "SecureValue"],
+  ["account.deleteSecureValue", "Bool"],
+  ["account.getAuthorizationForm", "account.AuthorizationForm"],
+  ["account.acceptAuthorization", "Bool"],
+  ["account.sendVerifyPhoneCode", "auth.SentCode"],
+  ["account.verifyPhone", "Bool"],
+  ["account.sendVerifyEmailCode", "account.SentEmailCode"],
+  ["account.verifyEmail", "account.EmailVerified"],
+  ["account.initTakeoutSession", "account.Takeout"],
+  ["account.finishTakeoutSession", "Bool"],
+  ["account.confirmPasswordEmail", "Bool"],
+  ["account.resendPasswordEmail", "Bool"],
+  ["account.cancelPasswordEmail", "Bool"],
+  ["account.getContactSignUpNotification", "Bool"],
+  ["account.setContactSignUpNotification", "Bool"],
+  ["account.getNotifyExceptions", "Updates"],
+  ["account.getWallPaper", "WallPaper"],
+  ["account.uploadWallPaper", "WallPaper"],
+  ["account.saveWallPaper", "Bool"],
+  ["account.installWallPaper", "Bool"],
+  ["account.resetWallPapers", "Bool"],
+  ["account.getAutoDownloadSettings", "account.AutoDownloadSettings"],
+  ["account.saveAutoDownloadSettings", "Bool"],
+  ["account.uploadTheme", "Document"],
+  ["account.createTheme", "Theme"],
+  ["account.updateTheme", "Theme"],
+  ["account.saveTheme", "Bool"],
+  ["account.installTheme", "Bool"],
+  ["account.getTheme", "Theme"],
+  ["account.getThemes", "account.Themes"],
+  ["account.setContentSettings", "Bool"],
+  ["account.getContentSettings", "account.ContentSettings"],
+  ["account.getMultiWallPapers", "Vector<WallPaper>"],
+  ["account.getGlobalPrivacySettings", "GlobalPrivacySettings"],
+  ["account.setGlobalPrivacySettings", "GlobalPrivacySettings"],
+  ["account.reportProfilePhoto", "Bool"],
+  ["account.resetPassword", "account.ResetPasswordResult"],
+  ["account.declinePasswordReset", "Bool"],
+  ["account.getChatThemes", "account.Themes"],
+  ["account.setAuthorizationTTL", "Bool"],
+  ["account.changeAuthorizationSettings", "Bool"],
+  ["account.getSavedRingtones", "account.SavedRingtones"],
+  ["account.saveRingtone", "account.SavedRingtone"],
+  ["account.uploadRingtone", "Document"],
+  ["account.updateEmojiStatus", "Bool"],
+  ["account.getDefaultEmojiStatuses", "account.EmojiStatuses"],
+  ["account.getRecentEmojiStatuses", "account.EmojiStatuses"],
+  ["account.clearRecentEmojiStatuses", "Bool"],
+  ["account.reorderUsernames", "Bool"],
+  ["account.toggleUsername", "Bool"],
+  ["account.getDefaultProfilePhotoEmojis", "EmojiList"],
+  ["account.getDefaultGroupPhotoEmojis", "EmojiList"],
+  ["account.getAutoSaveSettings", "account.AutoSaveSettings"],
+  ["account.saveAutoSaveSettings", "Bool"],
+  ["account.deleteAutoSaveExceptions", "Bool"],
+  ["account.invalidateSignInCodes", "Bool"],
+  ["account.updateColor", "Bool"],
+  ["account.getDefaultBackgroundEmojis", "EmojiList"],
+  ["account.getChannelDefaultEmojiStatuses", "account.EmojiStatuses"],
+  ["account.getChannelRestrictedStatusEmojis", "EmojiList"],
+  ["account.updateBusinessWorkHours", "Bool"],
+  ["account.updateBusinessLocation", "Bool"],
+  ["account.updateBusinessGreetingMessage", "Bool"],
+  ["account.updateBusinessAwayMessage", "Bool"],
+  ["account.updateConnectedBot", "Updates"],
+  ["account.getConnectedBots", "account.ConnectedBots"],
+  ["account.getBotBusinessConnection", "Updates"],
+  ["account.updateBusinessIntro", "Bool"],
+  ["account.toggleConnectedBotPaused", "Bool"],
+  ["account.disablePeerConnectedBot", "Bool"],
+  ["account.updateBirthday", "Bool"],
+  ["account.createBusinessChatLink", "BusinessChatLink"],
+  ["account.editBusinessChatLink", "BusinessChatLink"],
+  ["account.deleteBusinessChatLink", "Bool"],
+  ["account.getBusinessChatLinks", "account.BusinessChatLinks"],
+  ["account.resolveBusinessChatLink", "account.ResolvedBusinessChatLinks"],
+  ["account.updatePersonalChannel", "Bool"],
+  ["account.toggleSponsoredMessages", "Bool"],
+  ["account.getReactionsNotifySettings", "ReactionsNotifySettings"],
+  ["account.setReactionsNotifySettings", "ReactionsNotifySettings"],
+  ["account.getCollectibleEmojiStatuses", "account.EmojiStatuses"],
+  ["account.addNoPaidMessagesException", "Bool"],
+  ["account.getPaidMessagesRevenue", "account.PaidMessagesRevenue"],
+  ["users.getUsers", "Vector<User>"],
+  ["users.getFullUser", "users.UserFull"],
+  ["users.setSecureValueErrors", "Bool"],
+  ["users.getRequirementsToContact", "Vector<RequirementToContact>"],
+  ["contacts.getContactIDs", "Vector<int>"],
+  ["contacts.getStatuses", "Vector<ContactStatus>"],
+  ["contacts.getContacts", "contacts.Contacts"],
+  ["contacts.importContacts", "contacts.ImportedContacts"],
+  ["contacts.deleteContacts", "Updates"],
+  ["contacts.deleteByPhones", "Bool"],
+  ["contacts.block", "Bool"],
+  ["contacts.unblock", "Bool"],
+  ["contacts.getBlocked", "contacts.Blocked"],
+  ["contacts.search", "contacts.Found"],
+  ["contacts.resolveUsername", "contacts.ResolvedPeer"],
+  ["contacts.getTopPeers", "contacts.TopPeers"],
+  ["contacts.resetTopPeerRating", "Bool"],
+  ["contacts.resetSaved", "Bool"],
+  ["contacts.getSaved", "Vector<SavedContact>"],
+  ["contacts.toggleTopPeers", "Bool"],
+  ["contacts.addContact", "Updates"],
+  ["contacts.acceptContact", "Updates"],
+  ["contacts.getLocated", "Updates"],
+  ["contacts.blockFromReplies", "Updates"],
+  ["contacts.resolvePhone", "contacts.ResolvedPeer"],
+  ["contacts.exportContactToken", "ExportedContactToken"],
+  ["contacts.importContactToken", "User"],
+  ["contacts.editCloseFriends", "Bool"],
+  ["contacts.setBlocked", "Bool"],
+  ["contacts.getBirthdays", "contacts.ContactBirthdays"],
+  ["messages.getMessages", "messages.Messages"],
+  ["messages.getDialogs", "messages.Dialogs"],
+  ["messages.getHistory", "messages.Messages"],
+  ["messages.search", "messages.Messages"],
+  ["messages.readHistory", "messages.AffectedMessages"],
+  ["messages.deleteHistory", "messages.AffectedHistory"],
+  ["messages.deleteMessages", "messages.AffectedMessages"],
+  ["messages.receivedMessages", "Vector<ReceivedNotifyMessage>"],
+  ["messages.setTyping", "Bool"],
+  ["messages.sendMessage", "Updates"],
+  ["messages.sendMedia", "Updates"],
+  ["messages.forwardMessages", "Updates"],
+  ["messages.reportSpam", "Bool"],
+  ["messages.getPeerSettings", "messages.PeerSettings"],
+  ["messages.report", "ReportResult"],
+  ["messages.getChats", "messages.Chats"],
+  ["messages.getFullChat", "messages.ChatFull"],
+  ["messages.editChatTitle", "Updates"],
+  ["messages.editChatPhoto", "Updates"],
+  ["messages.addChatUser", "messages.InvitedUsers"],
+  ["messages.deleteChatUser", "Updates"],
+  ["messages.createChat", "messages.InvitedUsers"],
+  ["messages.getDhConfig", "messages.DhConfig"],
+  ["messages.requestEncryption", "EncryptedChat"],
+  ["messages.acceptEncryption", "EncryptedChat"],
+  ["messages.discardEncryption", "Bool"],
+  ["messages.setEncryptedTyping", "Bool"],
+  ["messages.readEncryptedHistory", "Bool"],
+  ["messages.sendEncrypted", "messages.SentEncryptedMessage"],
+  ["messages.sendEncryptedFile", "messages.SentEncryptedMessage"],
+  ["messages.sendEncryptedService", "messages.SentEncryptedMessage"],
+  ["messages.receivedQueue", "Vector<long>"],
+  ["messages.reportEncryptedSpam", "Bool"],
+  ["messages.readMessageContents", "messages.AffectedMessages"],
+  ["messages.getStickers", "messages.Stickers"],
+  ["messages.getAllStickers", "messages.AllStickers"],
+  ["messages.getWebPagePreview", "messages.WebPagePreview"],
+  ["messages.exportChatInvite", "ExportedChatInvite"],
+  ["messages.checkChatInvite", "ChatInvite"],
+  ["messages.importChatInvite", "Updates"],
+  ["messages.getStickerSet", "messages.StickerSet"],
+  ["messages.installStickerSet", "messages.StickerSetInstallResult"],
+  ["messages.uninstallStickerSet", "Bool"],
+  ["messages.startBot", "Updates"],
+  ["messages.getMessagesViews", "messages.MessageViews"],
+  ["messages.editChatAdmin", "Bool"],
+  ["messages.migrateChat", "Updates"],
+  ["messages.searchGlobal", "messages.Messages"],
+  ["messages.reorderStickerSets", "Bool"],
+  ["messages.getDocumentByHash", "Document"],
+  ["messages.getSavedGifs", "messages.SavedGifs"],
+  ["messages.saveGif", "Bool"],
+  ["messages.getInlineBotResults", "messages.BotResults"],
+  ["messages.setInlineBotResults", "Bool"],
+  ["messages.sendInlineBotResult", "Updates"],
+  ["messages.getMessageEditData", "messages.MessageEditData"],
+  ["messages.editMessage", "Updates"],
+  ["messages.editInlineBotMessage", "Bool"],
+  ["messages.getBotCallbackAnswer", "messages.BotCallbackAnswer"],
+  ["messages.setBotCallbackAnswer", "Bool"],
+  ["messages.getPeerDialogs", "messages.PeerDialogs"],
+  ["messages.saveDraft", "Bool"],
+  ["messages.getAllDrafts", "Updates"],
+  ["messages.getFeaturedStickers", "messages.FeaturedStickers"],
+  ["messages.readFeaturedStickers", "Bool"],
+  ["messages.getRecentStickers", "messages.RecentStickers"],
+  ["messages.saveRecentSticker", "Bool"],
+  ["messages.clearRecentStickers", "Bool"],
+  ["messages.getArchivedStickers", "messages.ArchivedStickers"],
+  ["messages.getMaskStickers", "messages.AllStickers"],
+  ["messages.getAttachedStickers", "Vector<StickerSetCovered>"],
+  ["messages.setGameScore", "Updates"],
+  ["messages.setInlineGameScore", "Bool"],
+  ["messages.getGameHighScores", "messages.HighScores"],
+  ["messages.getInlineGameHighScores", "messages.HighScores"],
+  ["messages.getCommonChats", "messages.Chats"],
+  ["messages.getWebPage", "messages.WebPage"],
+  ["messages.toggleDialogPin", "Bool"],
+  ["messages.reorderPinnedDialogs", "Bool"],
+  ["messages.getPinnedDialogs", "messages.PeerDialogs"],
+  ["messages.setBotShippingResults", "Bool"],
+  ["messages.setBotPrecheckoutResults", "Bool"],
+  ["messages.uploadMedia", "MessageMedia"],
+  ["messages.sendScreenshotNotification", "Updates"],
+  ["messages.getFavedStickers", "messages.FavedStickers"],
+  ["messages.faveSticker", "Bool"],
+  ["messages.getUnreadMentions", "messages.Messages"],
+  ["messages.readMentions", "messages.AffectedHistory"],
+  ["messages.getRecentLocations", "messages.Messages"],
+  ["messages.sendMultiMedia", "Updates"],
+  ["messages.uploadEncryptedFile", "EncryptedFile"],
+  ["messages.searchStickerSets", "messages.FoundStickerSets"],
+  ["messages.getSplitRanges", "Vector<MessageRange>"],
+  ["messages.markDialogUnread", "Bool"],
+  ["messages.getDialogUnreadMarks", "Vector<DialogPeer>"],
+  ["messages.clearAllDrafts", "Bool"],
+  ["messages.updatePinnedMessage", "Updates"],
+  ["messages.sendVote", "Updates"],
+  ["messages.getPollResults", "Updates"],
+  ["messages.getOnlines", "ChatOnlines"],
+  ["messages.editChatAbout", "Bool"],
+  ["messages.editChatDefaultBannedRights", "Updates"],
+  ["messages.getEmojiKeywords", "EmojiKeywordsDifference"],
+  ["messages.getEmojiKeywordsDifference", "EmojiKeywordsDifference"],
+  ["messages.getEmojiKeywordsLanguages", "Vector<EmojiLanguage>"],
+  ["messages.getEmojiURL", "EmojiURL"],
+  ["messages.getSearchCounters", "Vector<messages.SearchCounter>"],
+  ["messages.requestUrlAuth", "UrlAuthResult"],
+  ["messages.acceptUrlAuth", "UrlAuthResult"],
+  ["messages.hidePeerSettingsBar", "Bool"],
+  ["messages.getScheduledHistory", "messages.Messages"],
+  ["messages.getScheduledMessages", "messages.Messages"],
+  ["messages.sendScheduledMessages", "Updates"],
+  ["messages.deleteScheduledMessages", "Updates"],
+  ["messages.getPollVotes", "messages.VotesList"],
+  ["messages.toggleStickerSets", "Bool"],
+  ["messages.getDialogFilters", "messages.DialogFilters"],
+  ["messages.getSuggestedDialogFilters", "Vector<DialogFilterSuggested>"],
+  ["messages.updateDialogFilter", "Bool"],
+  ["messages.updateDialogFiltersOrder", "Bool"],
+  ["messages.getOldFeaturedStickers", "messages.FeaturedStickers"],
+  ["messages.getReplies", "messages.Messages"],
+  ["messages.getDiscussionMessage", "messages.DiscussionMessage"],
+  ["messages.readDiscussion", "Bool"],
+  ["messages.unpinAllMessages", "messages.AffectedHistory"],
+  ["messages.deleteChat", "Bool"],
+  ["messages.deletePhoneCallHistory", "messages.AffectedFoundMessages"],
+  ["messages.checkHistoryImport", "messages.HistoryImportParsed"],
+  ["messages.initHistoryImport", "messages.HistoryImport"],
+  ["messages.uploadImportedMedia", "MessageMedia"],
+  ["messages.startHistoryImport", "Bool"],
+  ["messages.getExportedChatInvites", "messages.ExportedChatInvites"],
+  ["messages.getExportedChatInvite", "messages.ExportedChatInvite"],
+  ["messages.editExportedChatInvite", "messages.ExportedChatInvite"],
+  ["messages.deleteRevokedExportedChatInvites", "Bool"],
+  ["messages.deleteExportedChatInvite", "Bool"],
+  ["messages.getAdminsWithInvites", "messages.ChatAdminsWithInvites"],
+  ["messages.getChatInviteImporters", "messages.ChatInviteImporters"],
+  ["messages.setHistoryTTL", "Updates"],
+  ["messages.checkHistoryImportPeer", "messages.CheckedHistoryImportPeer"],
+  ["messages.setChatTheme", "Updates"],
+  ["messages.getMessageReadParticipants", "Vector<ReadParticipantDate>"],
+  ["messages.getSearchResultsCalendar", "messages.SearchResultsCalendar"],
+  ["messages.getSearchResultsPositions", "messages.SearchResultsPositions"],
+  ["messages.hideChatJoinRequest", "Updates"],
+  ["messages.hideAllChatJoinRequests", "Updates"],
+  ["messages.toggleNoForwards", "Updates"],
+  ["messages.saveDefaultSendAs", "Bool"],
+  ["messages.sendReaction", "Updates"],
+  ["messages.getMessagesReactions", "Updates"],
+  ["messages.getMessageReactionsList", "messages.MessageReactionsList"],
+  ["messages.setChatAvailableReactions", "Updates"],
+  ["messages.getAvailableReactions", "messages.AvailableReactions"],
+  ["messages.setDefaultReaction", "Bool"],
+  ["messages.translateText", "messages.TranslatedText"],
+  ["messages.getUnreadReactions", "messages.Messages"],
+  ["messages.readReactions", "messages.AffectedHistory"],
+  ["messages.searchSentMedia", "messages.Messages"],
+  ["messages.getAttachMenuBots", "AttachMenuBots"],
+  ["messages.getAttachMenuBot", "AttachMenuBotsBot"],
+  ["messages.toggleBotInAttachMenu", "Bool"],
+  ["messages.requestWebView", "WebViewResult"],
+  ["messages.prolongWebView", "Bool"],
+  ["messages.requestSimpleWebView", "WebViewResult"],
+  ["messages.sendWebViewResultMessage", "WebViewMessageSent"],
+  ["messages.sendWebViewData", "Updates"],
+  ["messages.transcribeAudio", "messages.TranscribedAudio"],
+  ["messages.rateTranscribedAudio", "Bool"],
+  ["messages.getCustomEmojiDocuments", "Vector<Document>"],
+  ["messages.getEmojiStickers", "messages.AllStickers"],
+  ["messages.getFeaturedEmojiStickers", "messages.FeaturedStickers"],
+  ["messages.reportReaction", "Bool"],
+  ["messages.getTopReactions", "messages.Reactions"],
+  ["messages.getRecentReactions", "messages.Reactions"],
+  ["messages.clearRecentReactions", "Bool"],
+  ["messages.getExtendedMedia", "Updates"],
+  ["messages.setDefaultHistoryTTL", "Bool"],
+  ["messages.getDefaultHistoryTTL", "DefaultHistoryTTL"],
+  ["messages.sendBotRequestedPeer", "Updates"],
+  ["messages.getEmojiGroups", "messages.EmojiGroups"],
+  ["messages.getEmojiStatusGroups", "messages.EmojiGroups"],
+  ["messages.getEmojiProfilePhotoGroups", "messages.EmojiGroups"],
+  ["messages.searchCustomEmoji", "EmojiList"],
+  ["messages.togglePeerTranslations", "Bool"],
+  ["messages.getBotApp", "messages.BotApp"],
+  ["messages.requestAppWebView", "WebViewResult"],
+  ["messages.setChatWallPaper", "Updates"],
+  ["messages.searchEmojiStickerSets", "messages.FoundStickerSets"],
+  ["messages.getSavedDialogs", "messages.SavedDialogs"],
+  ["messages.getSavedHistory", "messages.Messages"],
+  ["messages.deleteSavedHistory", "messages.AffectedHistory"],
+  ["messages.getPinnedSavedDialogs", "messages.SavedDialogs"],
+  ["messages.toggleSavedDialogPin", "Bool"],
+  ["messages.reorderPinnedSavedDialogs", "Bool"],
+  ["messages.getSavedReactionTags", "messages.SavedReactionTags"],
+  ["messages.updateSavedReactionTag", "Bool"],
+  ["messages.getDefaultTagReactions", "messages.Reactions"],
+  ["messages.getOutboxReadDate", "OutboxReadDate"],
+  ["messages.getQuickReplies", "messages.QuickReplies"],
+  ["messages.reorderQuickReplies", "Bool"],
+  ["messages.checkQuickReplyShortcut", "Bool"],
+  ["messages.editQuickReplyShortcut", "Bool"],
+  ["messages.deleteQuickReplyShortcut", "Bool"],
+  ["messages.getQuickReplyMessages", "messages.Messages"],
+  ["messages.sendQuickReplyMessages", "Updates"],
+  ["messages.deleteQuickReplyMessages", "Updates"],
+  ["messages.toggleDialogFilterTags", "Bool"],
+  ["messages.getMyStickers", "messages.MyStickers"],
+  ["messages.getEmojiStickerGroups", "messages.EmojiGroups"],
+  ["messages.getAvailableEffects", "messages.AvailableEffects"],
+  ["messages.editFactCheck", "Updates"],
+  ["messages.deleteFactCheck", "Updates"],
+  ["messages.getFactCheck", "Vector<FactCheck>"],
+  ["messages.requestMainWebView", "WebViewResult"],
+  ["messages.sendPaidReaction", "Updates"],
+  ["messages.togglePaidReactionPrivacy", "Bool"],
+  ["messages.getPaidReactionPrivacy", "Updates"],
+  ["messages.viewSponsoredMessage", "Bool"],
+  ["messages.clickSponsoredMessage", "Bool"],
+  ["messages.reportSponsoredMessage", "channels.SponsoredMessageReportResult"],
+  ["messages.getSponsoredMessages", "messages.SponsoredMessages"],
+  ["messages.savePreparedInlineMessage", "messages.BotPreparedInlineMessage"],
+  ["messages.getPreparedInlineMessage", "messages.PreparedInlineMessage"],
+  ["messages.searchStickers", "messages.FoundStickers"],
+  ["messages.reportMessagesDelivery", "Bool"],
+  ["updates.getState", "updates.State"],
+  ["updates.getDifference", "updates.Difference"],
+  ["updates.getChannelDifference", "updates.ChannelDifference"],
+  ["photos.updateProfilePhoto", "photos.Photo"],
+  ["photos.uploadProfilePhoto", "photos.Photo"],
+  ["photos.deletePhotos", "Vector<long>"],
+  ["photos.getUserPhotos", "photos.Photos"],
+  ["photos.uploadContactProfilePhoto", "photos.Photo"],
+  ["upload.saveFilePart", "Bool"],
+  ["upload.getFile", "upload.File"],
+  ["upload.saveBigFilePart", "Bool"],
+  ["upload.getWebFile", "upload.WebFile"],
+  ["upload.getCdnFile", "upload.CdnFile"],
+  ["upload.reuploadCdnFile", "Vector<FileHash>"],
+  ["upload.getCdnFileHashes", "Vector<FileHash>"],
+  ["upload.getFileHashes", "Vector<FileHash>"],
+  ["help.getConfig", "Config"],
+  ["help.getNearestDc", "NearestDc"],
+  ["help.getAppUpdate", "help.AppUpdate"],
+  ["help.getInviteText", "help.InviteText"],
+  ["help.getSupport", "help.Support"],
+  ["help.setBotUpdatesStatus", "Bool"],
+  ["help.getCdnConfig", "CdnConfig"],
+  ["help.getRecentMeUrls", "help.RecentMeUrls"],
+  ["help.getTermsOfServiceUpdate", "help.TermsOfServiceUpdate"],
+  ["help.acceptTermsOfService", "Bool"],
+  ["help.getDeepLinkInfo", "help.DeepLinkInfo"],
+  ["help.getAppConfig", "help.AppConfig"],
+  ["help.saveAppLog", "Bool"],
+  ["help.getPassportConfig", "help.PassportConfig"],
+  ["help.getSupportName", "help.SupportName"],
+  ["help.getUserInfo", "help.UserInfo"],
+  ["help.editUserInfo", "help.UserInfo"],
+  ["help.getPromoData", "help.PromoData"],
+  ["help.hidePromoData", "Bool"],
+  ["help.dismissSuggestion", "Bool"],
+  ["help.getCountriesList", "help.CountriesList"],
+  ["help.getPremiumPromo", "help.PremiumPromo"],
+  ["help.getPeerColors", "help.PeerColors"],
+  ["help.getPeerProfileColors", "help.PeerColors"],
+  ["help.getTimezonesList", "help.TimezonesList"],
+  ["channels.readHistory", "Bool"],
+  ["channels.deleteMessages", "messages.AffectedMessages"],
+  ["channels.reportSpam", "Bool"],
+  ["channels.getMessages", "messages.Messages"],
+  ["channels.getParticipants", "channels.ChannelParticipants"],
+  ["channels.getParticipant", "channels.ChannelParticipant"],
+  ["channels.getChannels", "messages.Chats"],
+  ["channels.getFullChannel", "messages.ChatFull"],
+  ["channels.createChannel", "Updates"],
+  ["channels.editAdmin", "Updates"],
+  ["channels.editTitle", "Updates"],
+  ["channels.editPhoto", "Updates"],
+  ["channels.checkUsername", "Bool"],
+  ["channels.updateUsername", "Bool"],
+  ["channels.joinChannel", "Updates"],
+  ["channels.leaveChannel", "Updates"],
+  ["channels.inviteToChannel", "messages.InvitedUsers"],
+  ["channels.deleteChannel", "Updates"],
+  ["channels.exportMessageLink", "ExportedMessageLink"],
+  ["channels.toggleSignatures", "Updates"],
+  ["channels.getAdminedPublicChannels", "messages.Chats"],
+  ["channels.editBanned", "Updates"],
+  ["channels.getAdminLog", "channels.AdminLogResults"],
+  ["channels.setStickers", "Bool"],
+  ["channels.readMessageContents", "Bool"],
+  ["channels.deleteHistory", "Updates"],
+  ["channels.togglePreHistoryHidden", "Updates"],
+  ["channels.getLeftChannels", "messages.Chats"],
+  ["channels.getGroupsForDiscussion", "messages.Chats"],
+  ["channels.setDiscussionGroup", "Bool"],
+  ["channels.editCreator", "Updates"],
+  ["channels.editLocation", "Bool"],
+  ["channels.toggleSlowMode", "Updates"],
+  ["channels.getInactiveChannels", "messages.InactiveChats"],
+  ["channels.convertToGigagroup", "Updates"],
+  ["channels.getSendAs", "channels.SendAsPeers"],
+  ["channels.deleteParticipantHistory", "messages.AffectedHistory"],
+  ["channels.toggleJoinToSend", "Updates"],
+  ["channels.toggleJoinRequest", "Updates"],
+  ["channels.reorderUsernames", "Bool"],
+  ["channels.toggleUsername", "Bool"],
+  ["channels.deactivateAllUsernames", "Bool"],
+  ["channels.toggleForum", "Updates"],
+  ["channels.createForumTopic", "Updates"],
+  ["channels.getForumTopics", "messages.ForumTopics"],
+  ["channels.getForumTopicsByID", "messages.ForumTopics"],
+  ["channels.editForumTopic", "Updates"],
+  ["channels.updatePinnedForumTopic", "Updates"],
+  ["channels.deleteTopicHistory", "messages.AffectedHistory"],
+  ["channels.reorderPinnedForumTopics", "Updates"],
+  ["channels.toggleAntiSpam", "Updates"],
+  ["channels.reportAntiSpamFalsePositive", "Bool"],
+  ["channels.toggleParticipantsHidden", "Updates"],
+  ["channels.updateColor", "Updates"],
+  ["channels.toggleViewForumAsMessages", "Updates"],
+  ["channels.getChannelRecommendations", "messages.Chats"],
+  ["channels.updateEmojiStatus", "Updates"],
+  ["channels.setBoostsToUnblockRestrictions", "Updates"],
+  ["channels.setEmojiStickers", "Bool"],
+  ["channels.restrictSponsoredMessages", "Updates"],
+  ["channels.searchPosts", "messages.Messages"],
+  ["channels.updatePaidMessagesPrice", "Updates"],
+  ["bots.sendCustomRequest", "DataJSON"],
+  ["bots.answerWebhookJSONQuery", "Bool"],
+  ["bots.setBotCommands", "Bool"],
+  ["bots.resetBotCommands", "Bool"],
+  ["bots.getBotCommands", "Vector<BotCommand>"],
+  ["bots.setBotMenuButton", "Bool"],
+  ["bots.getBotMenuButton", "BotMenuButton"],
+  ["bots.setBotBroadcastDefaultAdminRights", "Bool"],
+  ["bots.setBotGroupDefaultAdminRights", "Bool"],
+  ["bots.setBotInfo", "Bool"],
+  ["bots.getBotInfo", "bots.BotInfo"],
+  ["bots.reorderUsernames", "Bool"],
+  ["bots.toggleUsername", "Bool"],
+  ["bots.canSendMessage", "Bool"],
+  ["bots.allowSendMessage", "Updates"],
+  ["bots.invokeWebViewCustomMethod", "DataJSON"],
+  ["bots.getPopularAppBots", "bots.PopularAppBots"],
+  ["bots.addPreviewMedia", "BotPreviewMedia"],
+  ["bots.editPreviewMedia", "BotPreviewMedia"],
+  ["bots.deletePreviewMedia", "Bool"],
+  ["bots.reorderPreviewMedias", "Bool"],
+  ["bots.getPreviewInfo", "bots.PreviewInfo"],
+  ["bots.getPreviewMedias", "Vector<BotPreviewMedia>"],
+  ["bots.updateUserEmojiStatus", "Bool"],
+  ["bots.toggleUserEmojiStatusPermission", "Bool"],
+  ["bots.checkDownloadFileParams", "Bool"],
+  ["bots.getAdminedBots", "Vector<User>"],
+  ["bots.updateStarRefProgram", "StarRefProgram"],
+  ["bots.setCustomVerification", "Bool"],
+  ["bots.getBotRecommendations", "users.Users"],
+  ["payments.getPaymentForm", "payments.PaymentForm"],
+  ["payments.getPaymentReceipt", "payments.PaymentReceipt"],
+  ["payments.validateRequestedInfo", "payments.ValidatedRequestedInfo"],
+  ["payments.sendPaymentForm", "payments.PaymentResult"],
+  ["payments.getSavedInfo", "payments.SavedInfo"],
+  ["payments.clearSavedInfo", "Bool"],
+  ["payments.getBankCardData", "payments.BankCardData"],
+  ["payments.exportInvoice", "payments.ExportedInvoice"],
+  ["payments.assignAppStoreTransaction", "Updates"],
+  ["payments.assignPlayMarketTransaction", "Updates"],
+  ["payments.canPurchasePremium", "Bool"],
+  ["payments.getPremiumGiftCodeOptions", "Vector<PremiumGiftCodeOption>"],
+  ["payments.checkGiftCode", "payments.CheckedGiftCode"],
+  ["payments.applyGiftCode", "Updates"],
+  ["payments.getGiveawayInfo", "payments.GiveawayInfo"],
+  ["payments.launchPrepaidGiveaway", "Updates"],
+  ["payments.getStarsTopupOptions", "Vector<StarsTopupOption>"],
+  ["payments.getStarsStatus", "payments.StarsStatus"],
+  ["payments.getStarsTransactions", "payments.StarsStatus"],
+  ["payments.sendStarsForm", "payments.PaymentResult"],
+  ["payments.refundStarsCharge", "Updates"],
+  ["payments.getStarsRevenueStats", "payments.StarsRevenueStats"],
+  ["payments.getStarsRevenueWithdrawalUrl", "payments.StarsRevenueWithdrawalUrl"],
+  ["payments.getStarsRevenueAdsAccountUrl", "payments.StarsRevenueAdsAccountUrl"],
+  ["payments.getStarsTransactionsByID", "payments.StarsStatus"],
+  ["payments.getStarsGiftOptions", "Vector<StarsGiftOption>"],
+  ["payments.getStarsSubscriptions", "payments.StarsStatus"],
+  ["payments.changeStarsSubscription", "Bool"],
+  ["payments.fulfillStarsSubscription", "Bool"],
+  ["payments.getStarsGiveawayOptions", "Vector<StarsGiveawayOption>"],
+  ["payments.getStarGifts", "payments.StarGifts"],
+  ["payments.saveStarGift", "Bool"],
+  ["payments.convertStarGift", "Bool"],
+  ["payments.botCancelStarsSubscription", "Bool"],
+  ["payments.getConnectedStarRefBots", "payments.ConnectedStarRefBots"],
+  ["payments.getConnectedStarRefBot", "payments.ConnectedStarRefBots"],
+  ["payments.getSuggestedStarRefBots", "payments.SuggestedStarRefBots"],
+  ["payments.connectStarRefBot", "payments.ConnectedStarRefBots"],
+  ["payments.editConnectedStarRefBot", "payments.ConnectedStarRefBots"],
+  ["payments.getStarGiftUpgradePreview", "payments.StarGiftUpgradePreview"],
+  ["payments.upgradeStarGift", "Updates"],
+  ["payments.transferStarGift", "Updates"],
+  ["payments.getUniqueStarGift", "payments.UniqueStarGift"],
+  ["payments.getSavedStarGifts", "payments.SavedStarGifts"],
+  ["payments.getSavedStarGift", "payments.SavedStarGifts"],
+  ["payments.getStarGiftWithdrawalUrl", "payments.StarGiftWithdrawalUrl"],
+  ["payments.toggleChatStarGiftNotifications", "Bool"],
+  ["payments.toggleStarGiftsPinnedToTop", "Bool"],
+  ["stickers.createStickerSet", "messages.StickerSet"],
+  ["stickers.removeStickerFromSet", "messages.StickerSet"],
+  ["stickers.changeStickerPosition", "messages.StickerSet"],
+  ["stickers.addStickerToSet", "messages.StickerSet"],
+  ["stickers.setStickerSetThumb", "messages.StickerSet"],
+  ["stickers.checkShortName", "Bool"],
+  ["stickers.suggestShortName", "stickers.SuggestedShortName"],
+  ["stickers.changeSticker", "messages.StickerSet"],
+  ["stickers.renameStickerSet", "messages.StickerSet"],
+  ["stickers.deleteStickerSet", "Bool"],
+  ["stickers.replaceSticker", "messages.StickerSet"],
+  ["phone.getCallConfig", "DataJSON"],
+  ["phone.requestCall", "phone.PhoneCall"],
+  ["phone.acceptCall", "phone.PhoneCall"],
+  ["phone.confirmCall", "phone.PhoneCall"],
+  ["phone.receivedCall", "Bool"],
+  ["phone.discardCall", "Updates"],
+  ["phone.setCallRating", "Updates"],
+  ["phone.saveCallDebug", "Bool"],
+  ["phone.sendSignalingData", "Bool"],
+  ["phone.createGroupCall", "Updates"],
+  ["phone.joinGroupCall", "Updates"],
+  ["phone.leaveGroupCall", "Updates"],
+  ["phone.inviteToGroupCall", "Updates"],
+  ["phone.discardGroupCall", "Updates"],
+  ["phone.toggleGroupCallSettings", "Updates"],
+  ["phone.getGroupCall", "phone.GroupCall"],
+  ["phone.getGroupParticipants", "phone.GroupParticipants"],
+  ["phone.checkGroupCall", "Vector<int>"],
+  ["phone.toggleGroupCallRecord", "Updates"],
+  ["phone.editGroupCallParticipant", "Updates"],
+  ["phone.editGroupCallTitle", "Updates"],
+  ["phone.getGroupCallJoinAs", "phone.JoinAsPeers"],
+  ["phone.exportGroupCallInvite", "phone.ExportedGroupCallInvite"],
+  ["phone.toggleGroupCallStartSubscription", "Updates"],
+  ["phone.startScheduledGroupCall", "Updates"],
+  ["phone.saveDefaultGroupCallJoinAs", "Bool"],
+  ["phone.joinGroupCallPresentation", "Updates"],
+  ["phone.leaveGroupCallPresentation", "Updates"],
+  ["phone.getGroupCallStreamChannels", "phone.GroupCallStreamChannels"],
+  ["phone.getGroupCallStreamRtmpUrl", "phone.GroupCallStreamRtmpUrl"],
+  ["phone.saveCallLog", "Bool"],
+  ["phone.createConferenceCall", "phone.PhoneCall"],
+  ["langpack.getLangPack", "LangPackDifference"],
+  ["langpack.getStrings", "Vector<LangPackString>"],
+  ["langpack.getDifference", "LangPackDifference"],
+  ["langpack.getLanguages", "Vector<LangPackLanguage>"],
+  ["langpack.getLanguage", "LangPackLanguage"],
+  ["folders.editPeerFolders", "Updates"],
+  ["stats.getBroadcastStats", "stats.BroadcastStats"],
+  ["stats.loadAsyncGraph", "StatsGraph"],
+  ["stats.getMegagroupStats", "stats.MegagroupStats"],
+  ["stats.getMessagePublicForwards", "stats.PublicForwards"],
+  ["stats.getMessageStats", "stats.MessageStats"],
+  ["stats.getStoryStats", "stats.StoryStats"],
+  ["stats.getStoryPublicForwards", "stats.PublicForwards"],
+  ["stats.getBroadcastRevenueStats", "stats.BroadcastRevenueStats"],
+  ["stats.getBroadcastRevenueWithdrawalUrl", "stats.BroadcastRevenueWithdrawalUrl"],
+  ["stats.getBroadcastRevenueTransactions", "stats.BroadcastRevenueTransactions"],
+  ["chatlists.exportChatlistInvite", "chatlists.ExportedChatlistInvite"],
+  ["chatlists.deleteExportedInvite", "Bool"],
+  ["chatlists.editExportedInvite", "ExportedChatlistInvite"],
+  ["chatlists.getExportedInvites", "chatlists.ExportedInvites"],
+  ["chatlists.checkChatlistInvite", "chatlists.ChatlistInvite"],
+  ["chatlists.joinChatlistInvite", "Updates"],
+  ["chatlists.getChatlistUpdates", "chatlists.ChatlistUpdates"],
+  ["chatlists.joinChatlistUpdates", "Updates"],
+  ["chatlists.hideChatlistUpdates", "Bool"],
+  ["chatlists.getLeaveChatlistSuggestions", "Vector<Peer>"],
+  ["chatlists.leaveChatlist", "Updates"],
+  ["stories.canSendStory", "Bool"],
+  ["stories.sendStory", "Updates"],
+  ["stories.editStory", "Updates"],
+  ["stories.deleteStories", "Vector<int>"],
+  ["stories.togglePinned", "Vector<int>"],
+  ["stories.getAllStories", "stories.AllStories"],
+  ["stories.getPinnedStories", "stories.Stories"],
+  ["stories.getStoriesArchive", "stories.Stories"],
+  ["stories.getStoriesByID", "stories.Stories"],
+  ["stories.toggleAllStoriesHidden", "Bool"],
+  ["stories.readStories", "Vector<int>"],
+  ["stories.incrementStoryViews", "Bool"],
+  ["stories.getStoryViewsList", "stories.StoryViewsList"],
+  ["stories.getStoriesViews", "stories.StoryViews"],
+  ["stories.exportStoryLink", "ExportedStoryLink"],
+  ["stories.report", "ReportResult"],
+  ["stories.activateStealthMode", "Updates"],
+  ["stories.sendReaction", "Updates"],
+  ["stories.getPeerStories", "stories.PeerStories"],
+  ["stories.getAllReadPeerStories", "Updates"],
+  ["stories.getPeerMaxIDs", "Vector<int>"],
+  ["stories.getChatsToSend", "messages.Chats"],
+  ["stories.togglePeerStoriesHidden", "Bool"],
+  ["stories.getStoryReactionsList", "stories.StoryReactionsList"],
+  ["stories.togglePinnedToTop", "Bool"],
+  ["stories.searchPosts", "stories.FoundStories"],
+  ["premium.getBoostsList", "premium.BoostsList"],
+  ["premium.getMyBoosts", "premium.MyBoosts"],
+  ["premium.applyBoost", "premium.MyBoosts"],
+  ["premium.getBoostsStatus", "premium.BoostsStatus"],
+  ["premium.getUserBoosts", "premium.BoostsList"],
+  ["smsjobs.isEligibleToJoin", "smsjobs.EligibilityToJoin"],
+  ["smsjobs.join", "Bool"],
+  ["smsjobs.leave", "Bool"],
+  ["smsjobs.updateSettings", "Bool"],
+  ["smsjobs.getStatus", "smsjobs.Status"],
+  ["smsjobs.getSmsJob", "SmsJob"],
+  ["smsjobs.finishJob", "Bool"],
+  ["fragment.getCollectibleInfo", "fragment.CollectibleInfo"],
+] as unknown as [string, string][]);
+
 export const getType: (name: string) => Parameters | undefined = types.get.bind(types);
 
 export const getEnum: (name: string) => (keyof Types)[] | undefined = enums.get.bind(enums);
+
+export const getReturnType: (name: string) => string | undefined = returnTypes.get.bind(types);
 
 // @ts-ignore: lib
 export const _types: Map<string, Parameters> | undefined = typeof Deno === "undefined" ? typeof process === "undefined" ? undefined : process.env.__TYPE_MAP ? types : undefined : Deno.env.get("__TYPE_MAP") ? types : undefined;

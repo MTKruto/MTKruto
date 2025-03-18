@@ -49,7 +49,7 @@ export function deserializeInlineMessageId(inlineMessageId: string): Api.InputBo
   try {
     const buffer = base64DecodeUrlSafe(inlineMessageId);
     const reader = new TLReader(buffer);
-    const object = reader.readObject();
+    const object = reader.readObject("InputBotInlineMessageID");
     if (is("inputBotInlineMessageID64", object) || is("inputBotInlineMessageID", object)) {
       return object;
     }

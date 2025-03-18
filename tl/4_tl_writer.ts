@@ -18,15 +18,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { VECTOR_CONSTRUCTOR } from "../1_utilities.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
+import { VECTOR } from "./1_utilities.ts";
 import { serialize } from "./2_serialize.ts";
 import { ReadObject } from "./3_tl_reader.ts";
 
 export class TLWriter extends TLRawWriter {
   writeObject(object: ReadObject): typeof this {
     if (Array.isArray(object)) {
-      this.writeInt32(VECTOR_CONSTRUCTOR, false);
+      this.writeInt32(VECTOR, false);
       this.writeInt32(object.length);
       for (const item of object) {
         this.writeObject(item);

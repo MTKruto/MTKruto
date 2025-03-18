@@ -20,7 +20,7 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { assertEquals, assertFalse, unreachable } from "../0_deps.ts";
-import { AnyType, Enums, Functions, getEnum, getType, Types } from "./0_api.ts";
+import { AnyType, Enums, Functions, getEnum, getReturnType, getType, Types } from "./0_api.ts";
 
 export function isOptionalParam(ntype: string): boolean {
   return ntype.includes("?");
@@ -84,3 +84,18 @@ const GENERIC_FUNCTIONS = [
 export function isGenericFunction(value: unknown): boolean {
   return isOneOf(GENERIC_FUNCTIONS, value);
 }
+
+export function mustGetReturnType(name: string) {
+  const returnType = getReturnType(name);
+  if (!returnType) {
+    unreachable();
+  } else {
+    return returnType;
+  }
+}
+
+export const VECTOR = 0x1CB5C415;
+export const BOOL_TRUE = 0x997275b5;
+export const BOOL_FALSE = 0xbc799737;
+export const GZIP_PACKED = 0x3072CFA1;
+export const RPC_RESULT_ID = 0xF35C6D01;

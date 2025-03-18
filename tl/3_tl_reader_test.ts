@@ -19,12 +19,13 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
-import { getType, getTypeName } from "./0_api.ts";
-import { TLRawReader } from "./0_tl_raw_reader.ts";
-import { deserialize } from "./2_deserialize.ts";
+import { gzip } from "../1_utilities.ts";
+import { TLRawWriter } from "./0_tl_raw_writer.ts";
+import { BOOL_FALSE, BOOL_TRUE, GZIP_PACKED, VECTOR } from "./1_utilities.ts";
 import { serialize } from "./2_serialize.ts";
+import { TLReader } from "./3_tl_reader.ts";
 
-Deno.test("deserialize", () => {
+Deno.test("deserialize", async (t) => {
   // deno-fmt-ignore
   const buffer = new Uint8Array([
     0x1E, 0x24, 0x1A, 0xCC, 0x48, 0x0E, 0x00, 0x00, 0xE7, 0x5F,
@@ -90,18 +91,26 @@ Deno.test("deserialize", () => {
     0x67, 0x65, 0x62, 0x6F, 0x74, 0x00, 0x00, 0x00, 0x00, 0x04,
     0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00
   ]);
-  const reader = new TLRawReader(buffer);
-
-  const constructorId = reader.readInt32(false);
-  const constructor = getTypeName(constructorId)!;
-
-  const config = deserialize(reader, getType(constructor)![1], constructor);
+  const reader = new TLReader(buffer);
+  const config = await reader.deserialize("config");
 
   assertEquals(serialize(config), buffer);
   assertEquals(config._, "config");
+
+  await t.step("gzip", async () => {
+    const writer = new TLRawWriter();
+    writer.writeInt32(GZIP_PACKED, false);
+    writer.write(await gzip(buffer));
+
+    const reader = new TLReader(buffer);
+    const config = await reader.deserialize("config");
+
+    assertEquals(serialize(config), buffer);
+    assertEquals(config._, "config");
+  });
 });
 
-Deno.test("optional double", () => {
+Deno.test("optional double", async () => {
   // deno-fmt-ignore
   const buffer = new Uint8Array([
     0x94, 0xb0, 0x33, 0xde,
@@ -124,11 +133,114 @@ Deno.test("optional double", () => {
     // deno-lint-ignore no-explicit-any
   } as any;
 
-  const reader = new TLRawReader(buffer);
+  const reader = new TLReader(buffer);
+  const actual = await reader.deserialize("videoSize");
 
-  const constructorId = reader.readInt32(false);
-  const constructor = getTypeName(constructorId)!;
-
-  const actual = deserialize(reader, getType(constructor)![1], constructor);
   assertEquals(actual, expected);
+});
+
+Deno.test("primitives", async (t) => {
+  const writer = new TLRawWriter();
+
+  const bytes = new Uint8Array(16);
+  writer.writeBytes(bytes);
+
+  const bytes2 = new Uint8Array(1024 * 1024);
+  writer.writeBytes(bytes2);
+
+  const int128 = -17014118346046923173168730305728n;
+  writer.writeInt128(int128);
+
+  const int256 = 115792089237316195423570985008687907853269984665640564039457584007913129676n;
+  writer.writeInt256(int256);
+
+  const double = 1.0205;
+  writer.writeDouble(double);
+
+  const long = -92233720368547708n;
+  writer.writeInt64(long);
+
+  const int = 777000;
+  writer.writeInt32(int);
+
+  const boolTrue = true;
+  writer.writeInt32(BOOL_TRUE, false);
+
+  const boolFalse = false;
+  writer.writeInt32(BOOL_FALSE, false);
+
+  const string = "MTKruto";
+  writer.writeString(string);
+
+  const string2 = string.repeat(256);
+  writer.writeString(string2);
+
+  const reader = new TLReader(writer.buffer);
+
+  await t.step("bytes", async () => {
+    let deserialized = await reader.deserialize("bytes");
+    assertEquals(deserialized, bytes);
+    deserialized = await reader.deserialize("bytes");
+    assertEquals(deserialized, bytes2);
+  });
+
+  await t.step("int128", async () => {
+    const deserialized = await reader.deserialize("int128");
+    assertEquals(deserialized, int128);
+  });
+
+  await t.step("int256", async () => {
+    const deserialized = await reader.deserialize("int256");
+    assertEquals(deserialized, int256);
+  });
+
+  await t.step("double", async () => {
+    const deserialized = await reader.deserialize("double");
+    assertEquals(deserialized, double);
+  });
+
+  await t.step("long", async () => {
+    const deserialized = await reader.deserialize("long");
+    assertEquals(deserialized, long);
+  });
+
+  await t.step("true", async () => {
+    const lengthBefore = reader.buffer.length;
+    for (let i = 0; i < 10; ++i) {
+      const deserialized = await reader.deserialize("true");
+      assertEquals(deserialized, true);
+    }
+    assertEquals(reader.buffer.length, lengthBefore);
+  });
+
+  await t.step("int", async () => {
+    const deserialized = await reader.deserialize("int");
+    assertEquals(deserialized, int);
+  });
+
+  await t.step("Bool", async () => {
+    let deserialized = await reader.deserialize("Bool");
+    assertEquals(deserialized, boolTrue);
+    deserialized = await reader.deserialize("Bool");
+    assertEquals(deserialized, boolFalse);
+  });
+
+  await t.step("string", async () => {
+    let deserialized = await reader.deserialize("string");
+    assertEquals(deserialized, string);
+    deserialized = await reader.deserialize("string");
+    assertEquals(deserialized, string2);
+  });
+});
+
+Deno.test("primitive vectors", async (v) => {
+  const writer = new TLRawWriter();
+  writer.writeInt32(VECTOR, false);
+  const expected = new Array(1024).fill(null).map((_, i) => i * Math.random());
+  writer.writeInt32(expected.length);
+  for (const item of expected) {
+    writer.writeDouble(item);
+  }
+  const deserialized = await new TLReader(writer.buffer).deserialize("Vector<double>");
+  assertEquals(deserialized, expected);
 });

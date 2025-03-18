@@ -18,16 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { gunzip, gzip } from "../1_utilities.ts";
-import { AnyObject, AnyType } from "./0_api.ts";
-import { is } from "./1_utilities.ts";
-import { TLReader } from "./3_tl_reader.ts";
-import { deserializeRpcResult, rpc_result, RPC_RESULT_ID } from "./4_rpc_result.ts";
-import { TLWriter } from "./4_tl_writer.ts";
-
-const COMPRESSION_THREHSOLD = 1024;
-
-export const compressible = Symbol.for("compressible");
+import { TLRawReader } from "./0_tl_raw_reader.ts";
+import { TLRawWriter } from "./0_tl_raw_writer.ts";
 
 // message msg_id:long seqno:int bytes:int body:Object = Message;
 
@@ -35,24 +27,17 @@ export interface message {
   _: "message";
   msg_id: bigint;
   seqno: number;
-  body: AnyObject | msg_container | rpc_result;
+  body: Uint8Array | msg_container;
 }
 
 export async function serializeMessage(message: message): Promise<Uint8Array> {
-  if (message.body._ == "rpc_result") {
-    throw new Error("Not applicable");
-  }
   let body: Uint8Array;
-  if (message.body._ == "msg_container") {
-    body = await serializeMsgContainer(message.body);
+  if (message.body instanceof Uint8Array) {
+    body = message.body;
   } else {
-    body = new TLWriter().writeObject(message.body).buffer;
+    body = await serializeMsgContainer(message.body);
   }
-  if (compressible in message && body.length >= COMPRESSION_THREHSOLD) {
-    const packed_data = await gzip(body);
-    body = new TLWriter().writeObject({ _: "gzip_packed", packed_data }).buffer;
-  }
-  const writer = new TLWriter()
+  const writer = new TLRawWriter()
     .writeInt64(message.msg_id)
     .writeInt32(message.seqno)
     .writeInt32(body.length)
@@ -60,24 +45,19 @@ export async function serializeMessage(message: message): Promise<Uint8Array> {
   return writer.buffer;
 }
 
-export async function deserializeMessage(reader: TLReader): Promise<message> {
+export async function deserializeMessage(reader: TLRawReader): Promise<message> {
   const id_ = reader.readInt64();
   const seqno = reader.readInt32();
   const length = reader.readInt32();
-  reader = new TLReader(reader.read(length));
-  const cid = reader.readInt32(false);
+  reader = new TLRawReader(reader.read(length));
+  const cid = new TLRawReader(reader.buffer).readInt32(false);
   let body: message["body"];
   {
-    if (cid == RPC_RESULT_ID) {
-      body = await deserializeRpcResult(reader.buffer);
-    } else if (cid == MSG_CONTAINER_ID) {
+    if (cid == MSG_CONTAINER_CONSTRUCTOR) {
       body = await deserializeMsgContainer(reader.buffer);
     } else {
-      body = reader.readObject(cid) as AnyObject;
+      body = reader.buffer;
     }
-  }
-  if (is("gzip_packed", body)) {
-    body = new TLReader(await gunzip(body.packed_data)).readObject() as AnyType;
   }
   return { _: "message", msg_id: id_, seqno, body };
 }
@@ -89,11 +69,11 @@ export interface msg_container {
   messages: message[];
 }
 
-export const MSG_CONTAINER_ID = 0x73F1F8DC;
+export const MSG_CONTAINER_CONSTRUCTOR = 0x73F1F8DC;
 
 export async function serializeMsgContainer(msgContainer: msg_container): Promise<Uint8Array> {
-  const writer = new TLWriter();
-  writer.writeInt32(MSG_CONTAINER_ID, false);
+  const writer = new TLRawWriter();
+  writer.writeInt32(MSG_CONTAINER_CONSTRUCTOR, false);
   writer.writeInt32(msgContainer.messages.length);
   for (const message of msgContainer.messages) {
     writer.write(await serializeMessage(message));
@@ -102,7 +82,7 @@ export async function serializeMsgContainer(msgContainer: msg_container): Promis
 }
 
 export async function deserializeMsgContainer(buffer: Uint8Array): Promise<msg_container> {
-  const reader = new TLReader(buffer);
+  const reader = new TLRawReader(buffer);
   const length = reader.readInt32();
   const messages = new Array<message>();
   for (let i = 0; i < length; i++) {

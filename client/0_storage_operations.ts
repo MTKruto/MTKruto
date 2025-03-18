@@ -259,16 +259,16 @@ export class StorageOperations {
     if (value == null) {
       await this.#storage.set(key, null);
     } else {
-      await this.#storage.set(key, this.#mustSerialize ? rleEncode(serialize(value)) : (value as unknown));
+      await this.#storage.set(key, this.#mustSerialize ? [value._, rleEncode(serialize(value))] : (value as unknown));
     }
   }
 
   async getTlObject(keyOrBuffer: Api.AnyType | Uint8Array | readonly StorageKeyPart[]): Promise<ReadObject | null> {
     // @ts-ignore: TBD
-    const buffer = (keyOrBuffer instanceof Uint8Array || isValidType(keyOrBuffer)) ? keyOrBuffer : await this.#storage.get<Uint8Array>(keyOrBuffer);
+    const buffer = (keyOrBuffer instanceof Uint8Array || isValidType(keyOrBuffer)) ? keyOrBuffer : await this.#storage.get<[string, Uint8Array]>(keyOrBuffer);
     if (buffer != null) {
-      if (buffer instanceof Uint8Array) {
-        return new TLReader(rleDecode(buffer)).readObject();
+      if (Array.isArray(buffer)) {
+        return new TLReader(rleDecode(buffer[1])).deserialize(buffer[0]);
       } else {
         return buffer;
       }
