@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
+import { SECOND, unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
-import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, gunzip, gzip, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
+import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, getRandomId, gunzip, gzip, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, GZIP_PACKED, is, isGenericFunction, isOfEnum, isOneOf, message, mustGetReturnType, ReadObject, repr, RPC_RESULT, TLError, TLReader, X } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { TLWriter } from "../tl/2_tl_writer.ts";
@@ -70,6 +70,7 @@ export class ClientEncrypted extends ClientAbstract {
   #L: Logger;
   #LreceiveLoop: Logger;
   #Linvoke: Logger;
+  #LpingLoop: Logger;
 
   // receive loop handlers
   handlers: Handlers = {};
@@ -80,6 +81,10 @@ export class ClientEncrypted extends ClientAbstract {
     const L = this.#L = getLogger("ClientEncrypted").client(id++);
     this.#LreceiveLoop = L.branch("receiveLoop");
     this.#Linvoke = L.branch("invoke");
+    this.#LpingLoop = L.branch("pingLoop");
+    this.stateChangeHandler = () => {
+      drop(this.#reconnect());
+    };
   }
 
   override async connect(): Promise<void> {
@@ -90,6 +95,49 @@ export class ClientEncrypted extends ClientAbstract {
       this.#shouldInvalidateSession = false;
     }
     drop(this.#receiveLoop()); // TODO: ability to join this promise
+    this.#startConnectionInsuranceLoop();
+    this.#startPingLoop();
+  }
+
+  override async disconnect() {
+    await super.disconnect();
+    this.#pingLoopAbortController?.abort();
+    this.#connectionInsuranceLoopAbortController?.abort();
+  }
+
+  #reconnecting = false;
+  async #reconnect() {
+    if (this.connected) {
+      return;
+    }
+    if (this.disconnected) {
+      this.#L.debug("not reconnecting");
+      return;
+    }
+    if (this.#reconnecting) {
+      return;
+    }
+    this.#reconnecting = true;
+    try {
+      let delay = 5;
+      while (!this.connected) {
+        this.#L.debug("reconnecting");
+        this.#pingLoopAbortController?.abort();
+        try {
+          await this.connect();
+          this.#L.debug("reconnected");
+          break;
+        } catch (err) {
+          if (delay < 15) {
+            delay += 5;
+          }
+          this.#L.debug(`failed to reconnect, retrying in ${delay}:`, err);
+        }
+        await new Promise((r) => setTimeout(r, delay * SECOND));
+      }
+    } finally {
+      this.#reconnecting = false;
+    }
   }
 
   async setAuthKey(key: Uint8Array<ArrayBuffer>) {
@@ -201,6 +249,7 @@ export class ClientEncrypted extends ClientAbstract {
     })) as R;
   }
 
+  //// RECEIVE LOOP ////
   async #receiveLoop() {
     if (!this.transport) {
       unreachable();
@@ -403,5 +452,78 @@ export class ClientEncrypted extends ClientAbstract {
     if (sendAck) {
       this.#toAcknowledge.push(message.msg_id);
     }
+  }
+
+  //// PING LOOP ////
+  #pingLoopAbortController: AbortController | null = null;
+  #pingInterval = 56 * SECOND;
+  #startPingLoop() {
+    drop(this.#pingLoop());
+  }
+  async #pingLoop() {
+    if (this.cdn) {
+      return;
+    }
+    this.#pingLoopAbortController = new AbortController();
+    let timeElapsed = 0;
+    while (this.connected) {
+      const then = Date.now();
+      try {
+        await new Promise((resolve, reject) => {
+          const timeout = setTimeout(resolve, this.#pingInterval - timeElapsed);
+          this.#pingLoopAbortController!.signal.onabort = () => {
+            reject(this.#pingLoopAbortController?.signal.reason);
+            clearTimeout(timeout);
+          };
+        });
+        if (!this.connected) {
+          continue;
+        }
+        this.#pingLoopAbortController.signal.throwIfAborted();
+        await this.invoke({ _: "ping_delay_disconnect", ping_id: getRandomId(), disconnect_delay: this.#pingInterval / SECOND + 15 });
+        this.#pingLoopAbortController.signal.throwIfAborted();
+      } catch (err) {
+        if (err instanceof DOMException && err.name == "AbortError") {
+          this.#pingLoopAbortController = new AbortController();
+        }
+        if (!this.connected) {
+          continue;
+        }
+        this.#LpingLoop.error(err);
+      } finally {
+        timeElapsed = Date.now() - then;
+      }
+    }
+  }
+
+  //// CONNECTION INSURANCE LOOP ////
+  #connectionInsuranceLoopStarted = false;
+  #connectionInsuranceLoopAbortController: AbortController | null = null;
+  #startConnectionInsuranceLoop() {
+    drop(this.#connectionInsuranceLoop());
+  }
+  async #connectionInsuranceLoop() {
+    if (this.#connectionInsuranceLoopStarted) {
+      return;
+    }
+    this.#connectionInsuranceLoopAbortController = new AbortController();
+    this.#connectionInsuranceLoopStarted = true;
+    while (!this.disconnected) {
+      try {
+        await new Promise((resolve, reject) => {
+          const timeout = setTimeout(resolve, 10 * SECOND);
+          this.#connectionInsuranceLoopAbortController!.signal.onabort = () => {
+            reject(this.#connectionInsuranceLoopAbortController?.signal.reason);
+            clearTimeout(timeout);
+          };
+        });
+      } catch {
+        break;
+      }
+      if (!this.connected) {
+        drop(this.#reconnect());
+      }
+    }
+    this.#connectionInsuranceLoopStarted = false;
   }
 }

@@ -20,7 +20,7 @@
 
 import { MINUTE, SECOND, unreachable } from "../0_deps.ts";
 import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
-import { cleanObject, drop, getLogger, getRandomId, Logger, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { cleanObject, drop, getLogger, Logger, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, as, chatIdToPeerId, getChatIdPeerType, is, isOneOf, peerToChatId } from "../2_tl.ts";
 import { DC, getDc } from "../3_transport.ts";
@@ -370,7 +370,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #cdn: boolean;
   #L: Logger;
   #LsignIn: Logger;
-  #LpingLoop: Logger;
+  #LupdateGapRecoveryLoop: Logger;
   #LhandleMigrationError: Logger;
   #L$initConncetion: Logger;
   #Lmin: Logger;
@@ -381,7 +381,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
   constructor(params?: ClientParams) {
     super();
     this.#client = new ClientEncrypted(params);
-    this.#client.stateChangeHandler = this.#stateChangeHandler.bind(this);
+    const stateChangeHandler = this.#client.stateChangeHandler;
+    this.#client.stateChangeHandler = (connected) => {
+      stateChangeHandler?.(connected);
+      this.#stateChangeHandler(connected);
+    };
     this.#client.handlers = {
       serverSaltReassigned: async (newServerSalt) => {
         await this.storage.setServerSalt(newServerSalt);
@@ -437,7 +441,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
     const L = this.#L = getLogger("Client").client(id++);
     this.#LsignIn = L.branch("signIn");
-    this.#LpingLoop = L.branch("pingLoop");
+    this.#LupdateGapRecoveryLoop = L.branch("updateGapRecoveryLoop");
     this.#LhandleMigrationError = L.branch("[handleMigrationError]");
     this.#L$initConncetion = L.branch("#initConnection");
     this.#Lmin = L.branch("min");
@@ -537,42 +541,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
           return next();
         }
       });
-    }
-  }
-
-  #reconnecting = false;
-  async #reconnect() {
-    if (this.connected) {
-      return;
-    }
-    if (this.disconnected) {
-      this.#L.debug("not reconnecting");
-      return;
-    }
-    if (this.#reconnecting) {
-      return;
-    }
-    this.#reconnecting = true;
-    try {
-      let delay = 5;
-      while (!this.connected) {
-        this.#L.debug("reconnecting");
-        this.#pingLoopAbortController?.abort();
-        try {
-          await this.connect();
-          this.#L.debug("reconnected");
-          drop(this.#updateManager.recoverUpdateGap("reconnect"));
-          break;
-        } catch (err) {
-          if (delay < 15) {
-            delay += 5;
-          }
-          this.#L.debug(`failed to reconnect, retrying in ${delay}:`, err);
-        }
-        await new Promise((r) => setTimeout(r, delay * SECOND));
-      }
-    } finally {
-      this.#reconnecting = false;
     }
   }
 
@@ -1074,7 +1042,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   #lastPropagatedConnectionState: ConnectionState | null = null;
   #stateChangeHandler: (connected: boolean) => void = ((connected: boolean) => {
-    drop(this.#reconnect());
     const connectionState = connected ? "ready" : "notConnected";
     if (this.#lastPropagatedConnectionState != connectionState) {
       this.#propagateConnectionState(connectionState);
@@ -1151,8 +1118,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       await this.#client.connect();
       this.#lastConnect = new Date();
       await Promise.all([this.storage.setAuthKey(this.#client.authKey), this.storage.setDc(this.#client.dc), this.storage.setServerSalt(this.#client.serverSalt)]);
-      this.#startConnectionInsuranceLoop();
-      this.#startPingLoop();
+      this.#startUpdateGapRecoveryLoop();
     } finally {
       unlock();
     }
@@ -1179,8 +1145,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#connectionInited = false;
     await this.#client.disconnect();
     this.#updateManager.closeAllChats();
-    this.#pingLoopAbortController?.abort();
-    this.#connectionInsuranceLoopAbortController?.abort();
   }
 
   #lastPropagatedAuthorizationState: boolean | null = null;
@@ -1197,6 +1161,48 @@ export class Client<C extends Context = Context> extends Composer<C> {
       throw new Error("Unauthorized");
     }
     return id;
+  }
+
+  #lastUpdates = new Date();
+  #updateGapRecoveryLoopAbortController: AbortController | null = null;
+  #startUpdateGapRecoveryLoop() {
+    drop(this.#updateGapRecoveryLoop());
+  }
+  async #updateGapRecoveryLoop() {
+    if (this.#cdn) {
+      return;
+    }
+    this.#updateGapRecoveryLoopAbortController = new AbortController();
+    while (this.connected) {
+      try {
+        await new Promise((resolve, reject) => {
+          const timeout = setTimeout(resolve, 60 * SECOND);
+          this.#updateGapRecoveryLoopAbortController!.signal.onabort = () => {
+            reject(this.#updateGapRecoveryLoopAbortController?.signal.reason);
+            clearTimeout(timeout);
+          };
+        });
+        if (!this.connected) {
+          continue;
+        }
+        this.#updateGapRecoveryLoopAbortController.signal.throwIfAborted();
+        if (Date.now() - this.#lastUpdates.getTime() >= 15 * MINUTE) {
+          drop(
+            this.#updateManager.recoverUpdateGap("lastUpdates").then(() => {
+              this.#lastUpdates = new Date();
+            }),
+          );
+        }
+      } catch (err) {
+        if (err instanceof DOMException && err.name == "AbortError") {
+          this.#updateGapRecoveryLoopAbortController = new AbortController();
+        }
+        if (!this.connected) {
+          continue;
+        }
+        this.#LupdateGapRecoveryLoop.error(err);
+      }
+    }
   }
 
   /**
@@ -1378,85 +1384,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async start(params?: SignInParams) {
     await this.connect();
     await this.signIn(params);
-  }
-
-  #connectionInsuranceLoopStarted = false;
-  #connectionInsuranceLoopAbortController: AbortController | null = null;
-  #startConnectionInsuranceLoop() {
-    drop(this.#connectionInsuranceLoop());
-  }
-  async #connectionInsuranceLoop() {
-    if (this.#connectionInsuranceLoopStarted) {
-      return;
-    }
-    this.#connectionInsuranceLoopAbortController = new AbortController();
-    this.#connectionInsuranceLoopStarted = true;
-    while (!this.disconnected) {
-      try {
-        await new Promise((resolve, reject) => {
-          const timeout = setTimeout(resolve, 10 * SECOND);
-          this.#connectionInsuranceLoopAbortController!.signal.onabort = () => {
-            reject(this.#connectionInsuranceLoopAbortController?.signal.reason);
-            clearTimeout(timeout);
-          };
-        });
-      } catch {
-        break;
-      }
-      if (!this.connected) {
-        drop(this.#reconnect());
-      }
-    }
-    this.#connectionInsuranceLoopStarted = false;
-  }
-
-  #pingLoopAbortController: AbortController | null = null;
-  #pingInterval = 56 * SECOND;
-  #lastUpdates = new Date();
-  #startPingLoop() {
-    drop(this.#pingLoop());
-  }
-  async #pingLoop() {
-    if (this.#cdn) {
-      return;
-    }
-    this.#pingLoopAbortController = new AbortController();
-    let timeElapsed = 0;
-    while (this.connected) {
-      const then = Date.now();
-      try {
-        await new Promise((resolve, reject) => {
-          const timeout = setTimeout(resolve, this.#pingInterval - timeElapsed);
-          this.#pingLoopAbortController!.signal.onabort = () => {
-            reject(this.#pingLoopAbortController?.signal.reason);
-            clearTimeout(timeout);
-          };
-        });
-        if (!this.connected) {
-          continue;
-        }
-        this.#pingLoopAbortController.signal.throwIfAborted();
-        await this.invoke({ _: "ping_delay_disconnect", ping_id: getRandomId(), disconnect_delay: this.#pingInterval / SECOND + 15 });
-        this.#pingLoopAbortController.signal.throwIfAborted();
-        if (Date.now() - this.#lastUpdates.getTime() >= 15 * MINUTE) {
-          drop(
-            this.#updateManager.recoverUpdateGap("lastUpdates").then(() => {
-              this.#lastUpdates = new Date();
-            }),
-          );
-        }
-      } catch (err) {
-        if (err instanceof DOMException && err.name == "AbortError") {
-          this.#pingLoopAbortController = new AbortController();
-        }
-        if (!this.connected) {
-          continue;
-        }
-        this.#LpingLoop.error(err);
-      } finally {
-        timeElapsed = Date.now() - then;
-      }
-    }
   }
 
   async #invoke<T extends Api.AnyObject, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T): Promise<R>;
