@@ -52,7 +52,7 @@ export class TLWriter extends TLRawWriter {
     const [id, parameters_] = maybeParameters;
     this.writeInt32(id, false);
 
-    for (const [i, [name, type]] of parameters_.entries()) {
+    for (let [i, [name, type]] of parameters_.entries()) {
       if (isOptionalParam(type) && type__[name] === undefined) {
         continue;
       }
@@ -82,6 +82,9 @@ export class TLWriter extends TLRawWriter {
         throw new Error(`Missing required parameter: ${name}`);
       }
 
+      if (isOptionalParam(type)) {
+        type = getOptionalParamInnerType(type);
+      }
       this.#serialize(type, type__[name], debugInfo);
     }
 
@@ -89,9 +92,6 @@ export class TLWriter extends TLRawWriter {
   }
 
   #serializeVector(type: string, value: any, debugInfo: string) {
-    if (isOptionalParam(type)) {
-      type = getOptionalParamInnerType(type);
-    }
     const itemType = getVectorItemType(type);
     if (!itemType) {
       return false;
@@ -112,9 +112,6 @@ export class TLWriter extends TLRawWriter {
     value: any,
     debugInfo: string,
   ) {
-    if (isOptionalParam(type)) {
-      type = getOptionalParamInnerType(type);
-    }
     const valueRepr = repr(value);
 
     switch (type) {
