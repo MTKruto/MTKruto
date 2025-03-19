@@ -804,7 +804,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     inlineMessageId: string,
     params?: EditMessageReplyMarkupParams,
   ) {
-    const id = deserializeInlineMessageId(inlineMessageId);
+    const id = await deserializeInlineMessageId(inlineMessageId);
 
     await this.#c.invoke({ _: "messages.editInlineBotMessage", id, reply_markup: await this.#constructReplyMarkup(params) });
   }
@@ -890,7 +890,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       throw new InputError("Message text cannot be empty.");
     }
 
-    const id = deserializeInlineMessageId(inlineMessageId);
+    const id = await deserializeInlineMessageId(inlineMessageId);
     const noWebpage = params?.linkPreview?.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
 
@@ -1023,7 +1023,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditInlineMessageMediaParams) {
     this.#checkParams(params);
     this.#c.storage.assertBot("editInlineMessageMedia");
-    const id = deserializeInlineMessageId(inlineMessageId);
+    const id = await deserializeInlineMessageId(inlineMessageId);
     await this.#c.invoke({ _: "messages.editInlineBotMessage", id, media: await this.#resolveInputMedia(media), reply_markup: await this.#constructReplyMarkup(params) });
   }
 
@@ -1343,7 +1343,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   async editInlineMessageLiveLocation(inlineMessageId: string, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {
     this.#checkParams(params);
     this.#c.storage.assertBot("editInlineMessageLiveLocation");
-    const id = deserializeInlineMessageId(inlineMessageId);
+    const id = await deserializeInlineMessageId(inlineMessageId);
     await this.#c.invoke({ _: "messages.editInlineBotMessage", id, media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }), reply_markup: await this.#constructReplyMarkup(params) });
   }
 
