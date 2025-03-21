@@ -366,7 +366,7 @@ Deno.test("TLReader", async (t) => {
         ],
       },
       identifierToName: {
-        [0x18B7A10D]: 'dcOption',
+        [0x18B7A10D]: "dcOption",
         [0xCC1A241E]: "config",
       },
     };
@@ -436,14 +436,14 @@ Deno.test("TLReader", async (t) => {
         0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00
       ]);
     const reader = new TLReader(buffer);
-    const config = await reader.readObject("config", schema);
+    const config = await reader.readType("config", schema);
 
     assertEquals(new TLWriter().writeObject(config, schema).buffer, buffer);
     assertEquals(config._, "config");
 
     await t.step("X", async () => {
       const reader = new TLReader(buffer);
-      const config = await reader.readObject("X", schema);
+      const config = await reader.readType("X", schema);
 
       assertEquals(new TLWriter().writeObject(config, schema).buffer, buffer);
       assertEquals(config._, "config");
@@ -495,7 +495,7 @@ Deno.test("optional double", async () => {
   } as any;
 
   const reader = new TLReader(buffer);
-  const actual = await reader.readObject("videoSize", schema);
+  const actual = await reader.readType("videoSize", schema);
 
   assertEquals(actual, expected);
 });
@@ -540,57 +540,57 @@ Deno.test("primitives", async (t) => {
   const reader = new TLReader(writer.buffer);
 
   await t.step("bytes", async () => {
-    let deserialized = await reader.readObject("bytes", emptySchema);
+    let deserialized = await reader.readType("bytes", emptySchema);
     assertEquals(deserialized, bytes);
-    deserialized = await reader.readObject("bytes", emptySchema);
+    deserialized = await reader.readType("bytes", emptySchema);
     assertEquals(deserialized, bytes2);
   });
 
   await t.step("int128", async () => {
-    const deserialized = await reader.readObject("int128", emptySchema);
+    const deserialized = await reader.readType("int128", emptySchema);
     assertEquals(deserialized, int128);
   });
 
   await t.step("int256", async () => {
-    const deserialized = await reader.readObject("int256", emptySchema);
+    const deserialized = await reader.readType("int256", emptySchema);
     assertEquals(deserialized, int256);
   });
 
   await t.step("double", async () => {
-    const deserialized = await reader.readObject("double", emptySchema);
+    const deserialized = await reader.readType("double", emptySchema);
     assertEquals(deserialized, double);
   });
 
   await t.step("long", async () => {
-    const deserialized = await reader.readObject("long", emptySchema);
+    const deserialized = await reader.readType("long", emptySchema);
     assertEquals(deserialized, long);
   });
 
   await t.step("true", async () => {
     const lengthBefore = reader.buffer.length;
     for (let i = 0; i < 10; ++i) {
-      const deserialized = await reader.readObject("true", emptySchema);
+      const deserialized = await reader.readType("true", emptySchema);
       assertEquals(deserialized, true);
     }
     assertEquals(reader.buffer.length, lengthBefore);
   });
 
   await t.step("int", async () => {
-    const deserialized = await reader.readObject("int", emptySchema);
+    const deserialized = await reader.readType("int", emptySchema);
     assertEquals(deserialized, int);
   });
 
   await t.step("Bool", async () => {
-    let deserialized = await reader.readObject("Bool", emptySchema);
+    let deserialized = await reader.readType("Bool", emptySchema);
     assertEquals(deserialized, boolTrue);
-    deserialized = await reader.readObject("Bool", emptySchema);
+    deserialized = await reader.readType("Bool", emptySchema);
     assertEquals(deserialized, boolFalse);
   });
 
   await t.step("string", async () => {
-    let deserialized = await reader.readObject("string", emptySchema);
+    let deserialized = await reader.readType("string", emptySchema);
     assertEquals(deserialized, string);
-    deserialized = await reader.readObject("string", emptySchema);
+    deserialized = await reader.readType("string", emptySchema);
     assertEquals(deserialized, string2);
   });
 });
@@ -603,6 +603,6 @@ Deno.test("primitive vectors", async () => {
   for (const item of expected) {
     writer.writeDouble(item);
   }
-  const deserialized = await new TLReader(writer.buffer).readObject("Vector<double>", emptySchema);
+  const deserialized = await new TLReader(writer.buffer).readType("Vector<double>", emptySchema);
   assertEquals(deserialized, expected);
 });

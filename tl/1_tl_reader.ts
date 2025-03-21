@@ -107,35 +107,35 @@ export class TLReader {
     return new TextDecoder().decode(this.readBytes());
   }
 
-  async readObject(type: string, schema: Schema): Promise<any> {
-    if (isOptionalParam(type)) {
-      type = getOptionalParamInnerType(type);
+  async readType(name: string, schema: Schema): Promise<any> {
+    if (isOptionalParam(name)) {
+      name = getOptionalParamInnerType(name);
     }
-    const primitive = this.#deserializePrimitive(type);
+    const primitive = this.#deserializePrimitive(name);
     if (primitive !== undefined) {
       return primitive;
     }
     const id = this.readInt32(false);
-    if (type == X) {
+    if (name == X) {
       const typeName = schema.identifierToName[id];
       if (!typeName) {
         throw new TLError(`Unknown constructor: ${id.toString(16)}`);
       }
       this.unreadInt32();
-      return await this.readObject(typeName, schema);
+      return await this.readType(typeName, schema);
     }
     if (id == VECTOR) {
-      return await this.#deserializeVector(type, schema);
+      return await this.#deserializeVector(name, schema);
     }
-    const definition = schema.definitions[type];
+    const definition = schema.definitions[name];
     if (definition) {
-      return await this.#deserializeType(type, definition, id, schema);
+      return await this.#deserializeType(name, definition, id, schema);
     }
-    const deserializedEnum = await this.#deserializeEnum(type, id, schema);
+    const deserializedEnum = await this.#deserializeEnum(name, id, schema);
     if (deserializedEnum !== undefined) {
       return deserializedEnum;
     }
-    throw new TLError(`Unknown type: ${type} ID ${id}`);
+    throw new TLError(`Unknown type: ${name} ID ${id}`);
   }
 
   async #deserializeEnum(type: string, id: number, schema: Schema) {
@@ -170,7 +170,7 @@ export class TLReader {
         flagFields[name] = this.readInt32();
         continue;
       }
-      const value = await this.readObject(type, schema);
+      const value = await this.readType(type, schema);
       if (typeof value !== "boolean" || value) {
         type_[name] = value;
       }
@@ -187,7 +187,7 @@ export class TLReader {
     const size = this.readInt32();
     const array = new Array<any>();
     for (let i = 0; i < size; ++i) {
-      array.push(await this.readObject(itemType, schema));
+      array.push(await this.readType(itemType, schema));
     }
     return array;
   }
