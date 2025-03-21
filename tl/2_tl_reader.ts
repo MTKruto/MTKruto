@@ -20,11 +20,10 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { TLError, TLRawReader } from "./0_tl_raw_reader.ts";
-import { AnyObject, getObjectIdentifier, ObjectDefinition } from "./0_api.ts";
+import { AnyObject, getObjectIdentifier, ObjectDefinition, schema } from "./0_api.ts";
 import { unreachable } from "../0_deps.ts";
 import { gunzip } from "../1_utilities.ts";
 import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, GZIP_PACKED, isOptionalParam, VECTOR, X } from "./1_utilities.ts";
-import { Api } from "../2_tl.ts";
 
 export type ReadObject = boolean | number | bigint | string | Uint8Array | AnyObject | Array<ReadObject>;
 
@@ -53,7 +52,7 @@ export class TLReader extends TLRawReader {
     if (id == VECTOR) {
       return await this.#deserializeVector(type);
     }
-    const type_ = Api.schema[type];
+    const type_ = schema[type];
     if (type_) {
       return await this.#deserializeType(type, type_, id) as ReadObject;
     }
@@ -69,7 +68,7 @@ export class TLReader extends TLRawReader {
     if (!name) {
       return;
     }
-    const definition = Api.schema[name];
+    const definition = schema[name];
     if (definition[2] != type) {
       return;
     }
