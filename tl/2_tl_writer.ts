@@ -20,7 +20,7 @@
 
 // deno-lint-ignore-file no-explicit-any
 
-import { AnyObject, getEnum, getType } from "./0_api.ts";
+import { AnyObject, schema } from "./0_api.ts";
 import { TLError } from "./0_tl_raw_reader.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
 import { analyzeOptionalParam, assertIsValidType, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./1_utilities.ts";
@@ -41,15 +41,15 @@ export class TLWriter extends TLRawWriter {
     }
 
     assertIsValidType(value);
-    const maybeParameters = getType(value._);
-    if (!maybeParameters) {
+    const maybeDefinition = schema[value._];
+    if (!maybeDefinition) {
       throw new TLError(`Unknown type: ${value._}`);
     }
     if (type != "!X" && !this.#isTypeValid(type, value)) {
       throw new TLError(`Expected ${type} but got ${value._}`);
     }
     const type__ = value as any;
-    const [id, parameters_] = maybeParameters;
+    const [id, parameters_] = maybeDefinition;
     this.writeInt32(id, false);
 
     for (let [i, [name, type]] of parameters_.entries()) {
@@ -204,7 +204,6 @@ export class TLWriter extends TLRawWriter {
     if (type == value._) {
       return true;
     }
-    const enum_: string[] | undefined = getEnum(type);
-    return enum_?.includes(value._) || false;
+    return schema[value._]?.[2] === type;
   }
 }

@@ -7,7 +7,7 @@
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.,,
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,7 +16,14 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */ declare const R: unique symbol;
+ */
+
+// object#number string:string... = string;
+export type ObjectDefinition = [number, /* ID */ [string, string][], string];
+
+export type Schema = Record<string, ObjectDefinition>;
+
+declare const R: unique symbol;
 
 export type Function = { [R]?: unknown };
 
@@ -19431,7 +19438,7 @@ export type account_PaidMessagesRevenue = account_paidMessagesRevenue;
 
 export type RequirementToContact = requirementToContactEmpty | requirementToContactPremium | requirementToContactPaidMessages;
 
-const map: Map<number, string> = new Map([
+const idMap: Map<number, string> = new Map([
   [0x05162463, "resPQ"],
   [0xA9F55F95, "p_q_inner_data_dc"],
   [0x56FDDF88, "p_q_inner_data_temp_dc"],
@@ -20881,24992 +20888,19212 @@ const map: Map<number, string> = new Map([
   [0xB4F67E93, "requirementToContactPaidMessages"],
 ]);
 
-export const getTypeName: (id: number) => string | undefined = map.get.bind(map);
+export const getObjectIdentifier: (id: number) => string | undefined = idMap.get.bind(idMap);
 
-export type Parameters = [number, [string, string][]] | [number, [string, string][], string];
-
-const enums: Map<string, (keyof Types)[]> = new Map([
-  ["ResPQ", ["resPQ"]],
-  ["P_Q_inner_data", ["p_q_inner_data_dc", "p_q_inner_data_temp_dc"]],
-  ["Server_DH_Params", ["server_DH_params_ok"]],
-  ["Server_DH_inner_data", ["server_DH_inner_data"]],
-  ["Client_DH_Inner_Data", ["client_DH_inner_data"]],
-  ["Set_client_DH_params_answer", ["dh_gen_ok", "dh_gen_retry", "dh_gen_fail"]],
-  ["BindAuthKeyInner", ["bind_auth_key_inner"]],
-  ["RpcError", ["rpc_error"]],
-  ["RpcDropAnswer", ["rpc_answer_unknown", "rpc_answer_dropped_running", "rpc_answer_dropped"]],
-  ["FutureSalt", ["future_salt"]],
-  ["FutureSalts", ["future_salts"]],
-  ["Pong", ["pong"]],
-  ["DestroySessionRes", ["destroy_session_ok", "destroy_session_none"]],
-  ["NewSession", ["new_session_created"]],
-  ["Object", ["gzip_packed"]],
-  ["MsgsAck", ["msgs_ack"]],
-  ["BadMsgNotification", ["bad_msg_notification", "bad_server_salt"]],
-  ["MsgResendReq", ["msg_resend_req"]],
-  ["MsgsStateReq", ["msgs_state_req"]],
-  ["MsgsStateInfo", ["msgs_state_info"]],
-  ["MsgsAllInfo", ["msgs_all_info"]],
-  ["MsgDetailedInfo", ["msg_detailed_info", "msg_new_detailed_info"]],
-  ["DestroyAuthKeyRes", ["destroy_auth_key_ok", "destroy_auth_key_none", "destroy_auth_key_fail"]],
-  ["HttpWait", ["http_wait"]],
-  ["True", ["true"]],
-  ["Error", ["error"]],
-  ["IpPort", ["ipPort", "ipPortSecret"]],
-  ["AccessPointRule", ["accessPointRule"]],
-  ["help.ConfigSimple", ["help.configSimple"]],
-  ["InputFileLocation", ["inputPeerPhotoFileLocationLegacy", "inputStickerSetThumbLegacy", "inputFileLocation", "inputEncryptedFileLocation", "inputDocumentFileLocation", "inputSecureFileLocation", "inputTakeoutFileLocation", "inputPhotoFileLocation", "inputPhotoLegacyFileLocation", "inputPeerPhotoFileLocation", "inputStickerSetThumb", "inputGroupCallStream"]],
-  ["InputPeer", ["inputPeerEmpty", "inputPeerSelf", "inputPeerChat", "inputPeerUser", "inputPeerChannel", "inputPeerUserFromMessage", "inputPeerChannelFromMessage"]],
-  ["InputUser", ["inputUserEmpty", "inputUserSelf", "inputUser", "inputUserFromMessage"]],
-  ["InputContact", ["inputPhoneContact"]],
-  ["InputFile", ["inputFile", "inputFileBig", "inputFileStoryDocument"]],
-  ["InputMedia", ["inputMediaEmpty", "inputMediaUploadedPhoto", "inputMediaPhoto", "inputMediaGeoPoint", "inputMediaContact", "inputMediaUploadedDocument", "inputMediaDocument", "inputMediaVenue", "inputMediaPhotoExternal", "inputMediaDocumentExternal", "inputMediaGame", "inputMediaInvoice", "inputMediaGeoLive", "inputMediaPoll", "inputMediaDice", "inputMediaStory", "inputMediaWebPage", "inputMediaPaidMedia"]],
-  ["InputChatPhoto", ["inputChatPhotoEmpty", "inputChatUploadedPhoto", "inputChatPhoto"]],
-  ["InputGeoPoint", ["inputGeoPointEmpty", "inputGeoPoint"]],
-  ["InputPhoto", ["inputPhotoEmpty", "inputPhoto"]],
-  ["Peer", ["peerUser", "peerChat", "peerChannel"]],
-  ["storage.FileType", ["storage.fileUnknown", "storage.filePartial", "storage.fileJpeg", "storage.fileGif", "storage.filePng", "storage.filePdf", "storage.fileMp3", "storage.fileMov", "storage.fileMp4", "storage.fileWebp"]],
-  ["User", ["userEmpty", "user"]],
-  ["UserProfilePhoto", ["userProfilePhotoEmpty", "userProfilePhoto"]],
-  ["UserStatus", ["userStatusEmpty", "userStatusOnline", "userStatusOffline", "userStatusRecently", "userStatusLastWeek", "userStatusLastMonth"]],
-  ["Chat", ["chatEmpty", "chat", "chatForbidden", "channel", "channelForbidden"]],
-  ["ChatFull", ["chatFull", "channelFull"]],
-  ["ChatParticipant", ["chatParticipant", "chatParticipantCreator", "chatParticipantAdmin"]],
-  ["ChatParticipants", ["chatParticipantsForbidden", "chatParticipants"]],
-  ["ChatPhoto", ["chatPhotoEmpty", "chatPhoto"]],
-  ["Message", ["messageEmpty", "message", "messageService"]],
-  ["MessageMedia", ["messageMediaEmpty", "messageMediaPhoto", "messageMediaGeo", "messageMediaContact", "messageMediaUnsupported", "messageMediaDocument", "messageMediaWebPage", "messageMediaVenue", "messageMediaGame", "messageMediaInvoice", "messageMediaGeoLive", "messageMediaPoll", "messageMediaDice", "messageMediaStory", "messageMediaGiveaway", "messageMediaGiveawayResults", "messageMediaPaidMedia"]],
-  ["MessageAction", ["messageActionEmpty", "messageActionChatCreate", "messageActionChatEditTitle", "messageActionChatEditPhoto", "messageActionChatDeletePhoto", "messageActionChatAddUser", "messageActionChatDeleteUser", "messageActionChatJoinedByLink", "messageActionChannelCreate", "messageActionChatMigrateTo", "messageActionChannelMigrateFrom", "messageActionPinMessage", "messageActionHistoryClear", "messageActionGameScore", "messageActionPaymentSentMe", "messageActionPaymentSent", "messageActionPhoneCall", "messageActionScreenshotTaken", "messageActionCustomAction", "messageActionBotAllowed", "messageActionSecureValuesSentMe", "messageActionSecureValuesSent", "messageActionContactSignUp", "messageActionGeoProximityReached", "messageActionGroupCall", "messageActionInviteToGroupCall", "messageActionSetMessagesTTL", "messageActionGroupCallScheduled", "messageActionSetChatTheme", "messageActionChatJoinedByRequest", "messageActionWebViewDataSentMe", "messageActionWebViewDataSent", "messageActionGiftPremium", "messageActionTopicCreate", "messageActionTopicEdit", "messageActionSuggestProfilePhoto", "messageActionRequestedPeer", "messageActionSetChatWallPaper", "messageActionGiftCode", "messageActionGiveawayLaunch", "messageActionGiveawayResults", "messageActionBoostApply", "messageActionRequestedPeerSentMe", "messageActionPaymentRefunded", "messageActionGiftStars", "messageActionPrizeStars", "messageActionStarGift", "messageActionStarGiftUnique"]],
-  ["Dialog", ["dialog", "dialogFolder"]],
-  ["Photo", ["photoEmpty", "photo"]],
-  ["PhotoSize", ["photoSizeEmpty", "photoSize", "photoCachedSize", "photoStrippedSize", "photoSizeProgressive", "photoPathSize"]],
-  ["GeoPoint", ["geoPointEmpty", "geoPoint"]],
-  ["auth.SentCode", ["auth.sentCode", "auth.sentCodeSuccess"]],
-  ["auth.Authorization", ["auth.authorization", "auth.authorizationSignUpRequired"]],
-  ["auth.ExportedAuthorization", ["auth.exportedAuthorization"]],
-  ["InputNotifyPeer", ["inputNotifyPeer", "inputNotifyUsers", "inputNotifyChats", "inputNotifyBroadcasts", "inputNotifyForumTopic"]],
-  ["InputPeerNotifySettings", ["inputPeerNotifySettings"]],
-  ["PeerNotifySettings", ["peerNotifySettings"]],
-  ["PeerSettings", ["peerSettings"]],
-  ["WallPaper", ["wallPaper", "wallPaperNoFile"]],
-  ["ReportReason", ["inputReportReasonSpam", "inputReportReasonViolence", "inputReportReasonPornography", "inputReportReasonChildAbuse", "inputReportReasonOther", "inputReportReasonCopyright", "inputReportReasonGeoIrrelevant", "inputReportReasonFake", "inputReportReasonIllegalDrugs", "inputReportReasonPersonalDetails"]],
-  ["UserFull", ["userFull"]],
-  ["Contact", ["contact"]],
-  ["ImportedContact", ["importedContact"]],
-  ["ContactStatus", ["contactStatus"]],
-  ["contacts.Contacts", ["contacts.contactsNotModified", "contacts.contacts"]],
-  ["contacts.ImportedContacts", ["contacts.importedContacts"]],
-  ["contacts.Blocked", ["contacts.blocked", "contacts.blockedSlice"]],
-  ["messages.Dialogs", ["messages.dialogs", "messages.dialogsSlice", "messages.dialogsNotModified"]],
-  ["messages.Messages", ["messages.messages", "messages.messagesSlice", "messages.channelMessages", "messages.messagesNotModified"]],
-  ["messages.Chats", ["messages.chats", "messages.chatsSlice"]],
-  ["messages.ChatFull", ["messages.chatFull"]],
-  ["messages.AffectedHistory", ["messages.affectedHistory"]],
-  ["MessagesFilter", ["inputMessagesFilterEmpty", "inputMessagesFilterPhotos", "inputMessagesFilterVideo", "inputMessagesFilterPhotoVideo", "inputMessagesFilterDocument", "inputMessagesFilterUrl", "inputMessagesFilterGif", "inputMessagesFilterVoice", "inputMessagesFilterMusic", "inputMessagesFilterChatPhotos", "inputMessagesFilterPhoneCalls", "inputMessagesFilterRoundVoice", "inputMessagesFilterRoundVideo", "inputMessagesFilterMyMentions", "inputMessagesFilterGeo", "inputMessagesFilterContacts", "inputMessagesFilterPinned"]],
-  ["Update", [
-    "updateNewMessage",
-    "updateMessageID",
-    "updateDeleteMessages",
-    "updateUserTyping",
-    "updateChatUserTyping",
-    "updateChatParticipants",
-    "updateUserStatus",
-    "updateUserName",
-    "updateNewAuthorization",
-    "updateNewEncryptedMessage",
-    "updateEncryptedChatTyping",
-    "updateEncryption",
-    "updateEncryptedMessagesRead",
-    "updateChatParticipantAdd",
-    "updateChatParticipantDelete",
-    "updateDcOptions",
-    "updateNotifySettings",
-    "updateServiceNotification",
-    "updatePrivacy",
-    "updateUserPhone",
-    "updateReadHistoryInbox",
-    "updateReadHistoryOutbox",
-    "updateWebPage",
-    "updateReadMessagesContents",
-    "updateChannelTooLong",
-    "updateChannel",
-    "updateNewChannelMessage",
-    "updateReadChannelInbox",
-    "updateDeleteChannelMessages",
-    "updateChannelMessageViews",
-    "updateChatParticipantAdmin",
-    "updateNewStickerSet",
-    "updateStickerSetsOrder",
-    "updateStickerSets",
-    "updateSavedGifs",
-    "updateBotInlineQuery",
-    "updateBotInlineSend",
-    "updateEditChannelMessage",
-    "updateBotCallbackQuery",
-    "updateEditMessage",
-    "updateInlineBotCallbackQuery",
-    "updateReadChannelOutbox",
-    "updateDraftMessage",
-    "updateReadFeaturedStickers",
-    "updateRecentStickers",
-    "updateConfig",
-    "updatePtsChanged",
-    "updateChannelWebPage",
-    "updateDialogPinned",
-    "updatePinnedDialogs",
-    "updateBotWebhookJSON",
-    "updateBotWebhookJSONQuery",
-    "updateBotShippingQuery",
-    "updateBotPrecheckoutQuery",
-    "updatePhoneCall",
-    "updateLangPackTooLong",
-    "updateLangPack",
-    "updateFavedStickers",
-    "updateChannelReadMessagesContents",
-    "updateContactsReset",
-    "updateChannelAvailableMessages",
-    "updateDialogUnreadMark",
-    "updateMessagePoll",
-    "updateChatDefaultBannedRights",
-    "updateFolderPeers",
-    "updatePeerSettings",
-    "updatePeerLocated",
-    "updateNewScheduledMessage",
-    "updateDeleteScheduledMessages",
-    "updateTheme",
-    "updateGeoLiveViewed",
-    "updateLoginToken",
-    "updateMessagePollVote",
-    "updateDialogFilter",
-    "updateDialogFilterOrder",
-    "updateDialogFilters",
-    "updatePhoneCallSignalingData",
-    "updateChannelMessageForwards",
-    "updateReadChannelDiscussionInbox",
-    "updateReadChannelDiscussionOutbox",
-    "updatePeerBlocked",
-    "updateChannelUserTyping",
-    "updatePinnedMessages",
-    "updatePinnedChannelMessages",
-    "updateChat",
-    "updateGroupCallParticipants",
-    "updateGroupCall",
-    "updatePeerHistoryTTL",
-    "updateChatParticipant",
-    "updateChannelParticipant",
-    "updateBotStopped",
-    "updateGroupCallConnection",
-    "updateBotCommands",
-    "updatePendingJoinRequests",
-    "updateBotChatInviteRequester",
-    "updateMessageReactions",
-    "updateAttachMenuBots",
-    "updateWebViewResultSent",
-    "updateBotMenuButton",
-    "updateSavedRingtones",
-    "updateTranscribedAudio",
-    "updateReadFeaturedEmojiStickers",
-    "updateUserEmojiStatus",
-    "updateRecentEmojiStatuses",
-    "updateRecentReactions",
-    "updateMoveStickerSetToTop",
-    "updateMessageExtendedMedia",
-    "updateChannelPinnedTopic",
-    "updateChannelPinnedTopics",
-    "updateUser",
-    "updateAutoSaveSettings",
-    "updateStory",
-    "updateReadStories",
-    "updateStoryID",
-    "updateStoriesStealthMode",
-    "updateSentStoryReaction",
-    "updateBotChatBoost",
-    "updateChannelViewForumAsMessages",
-    "updatePeerWallpaper",
-    "updateBotMessageReaction",
-    "updateBotMessageReactions",
-    "updateSavedDialogPinned",
-    "updatePinnedSavedDialogs",
-    "updateSavedReactionTags",
-    "updateSmsJob",
-    "updateQuickReplies",
-    "updateNewQuickReply",
-    "updateDeleteQuickReply",
-    "updateQuickReplyMessage",
-    "updateDeleteQuickReplyMessages",
-    "updateBotBusinessConnect",
-    "updateBotNewBusinessMessage",
-    "updateBotEditBusinessMessage",
-    "updateBotDeleteBusinessMessage",
-    "updateNewStoryReaction",
-    "updateBroadcastRevenueTransactions",
-    "updateStarsBalance",
-    "updateBusinessBotCallbackQuery",
-    "updateStarsRevenueStatus",
-    "updateBotPurchasedPaidMedia",
-    "updatePaidReactionPrivacy",
-  ]],
-  ["updates.State", ["updates.state"]],
-  ["updates.Difference", ["updates.differenceEmpty", "updates.difference", "updates.differenceSlice", "updates.differenceTooLong"]],
-  ["Updates", ["updatesTooLong", "updateShortMessage", "updateShortChatMessage", "updateShort", "updatesCombined", "updates", "updateShortSentMessage"]],
-  ["photos.Photos", ["photos.photos", "photos.photosSlice"]],
-  ["photos.Photo", ["photos.photo"]],
-  ["upload.File", ["upload.file", "upload.fileCdnRedirect"]],
-  ["DcOption", ["dcOption"]],
-  ["Config", ["config"]],
-  ["NearestDc", ["nearestDc"]],
-  ["help.AppUpdate", ["help.appUpdate", "help.noAppUpdate"]],
-  ["help.InviteText", ["help.inviteText"]],
-  ["EncryptedChat", ["encryptedChatEmpty", "encryptedChatWaiting", "encryptedChatRequested", "encryptedChat", "encryptedChatDiscarded"]],
-  ["InputEncryptedChat", ["inputEncryptedChat"]],
-  ["EncryptedFile", ["encryptedFileEmpty", "encryptedFile"]],
-  ["InputEncryptedFile", ["inputEncryptedFileEmpty", "inputEncryptedFileUploaded", "inputEncryptedFile", "inputEncryptedFileBigUploaded"]],
-  ["EncryptedMessage", ["encryptedMessage", "encryptedMessageService"]],
-  ["messages.DhConfig", ["messages.dhConfigNotModified", "messages.dhConfig"]],
-  ["messages.SentEncryptedMessage", ["messages.sentEncryptedMessage", "messages.sentEncryptedFile"]],
-  ["InputDocument", ["inputDocumentEmpty", "inputDocument"]],
-  ["Document", ["documentEmpty", "document"]],
-  ["help.Support", ["help.support"]],
-  ["NotifyPeer", ["notifyPeer", "notifyUsers", "notifyChats", "notifyBroadcasts", "notifyForumTopic"]],
-  ["SendMessageAction", ["sendMessageTypingAction", "sendMessageCancelAction", "sendMessageRecordVideoAction", "sendMessageUploadVideoAction", "sendMessageRecordAudioAction", "sendMessageUploadAudioAction", "sendMessageUploadPhotoAction", "sendMessageUploadDocumentAction", "sendMessageGeoLocationAction", "sendMessageChooseContactAction", "sendMessageGamePlayAction", "sendMessageRecordRoundAction", "sendMessageUploadRoundAction", "speakingInGroupCallAction", "sendMessageHistoryImportAction", "sendMessageChooseStickerAction", "sendMessageEmojiInteraction", "sendMessageEmojiInteractionSeen"]],
-  ["contacts.Found", ["contacts.found"]],
-  ["InputPrivacyKey", ["inputPrivacyKeyStatusTimestamp", "inputPrivacyKeyChatInvite", "inputPrivacyKeyPhoneCall", "inputPrivacyKeyPhoneP2P", "inputPrivacyKeyForwards", "inputPrivacyKeyProfilePhoto", "inputPrivacyKeyPhoneNumber", "inputPrivacyKeyAddedByPhone", "inputPrivacyKeyVoiceMessages", "inputPrivacyKeyAbout", "inputPrivacyKeyBirthday", "inputPrivacyKeyStarGiftsAutoSave", "inputPrivacyKeyNoPaidMessages"]],
-  ["PrivacyKey", ["privacyKeyStatusTimestamp", "privacyKeyChatInvite", "privacyKeyPhoneCall", "privacyKeyPhoneP2P", "privacyKeyForwards", "privacyKeyProfilePhoto", "privacyKeyPhoneNumber", "privacyKeyAddedByPhone", "privacyKeyVoiceMessages", "privacyKeyAbout", "privacyKeyBirthday", "privacyKeyStarGiftsAutoSave", "privacyKeyNoPaidMessages"]],
-  ["InputPrivacyRule", ["inputPrivacyValueAllowContacts", "inputPrivacyValueAllowAll", "inputPrivacyValueAllowUsers", "inputPrivacyValueDisallowContacts", "inputPrivacyValueDisallowAll", "inputPrivacyValueDisallowUsers", "inputPrivacyValueAllowChatParticipants", "inputPrivacyValueDisallowChatParticipants", "inputPrivacyValueAllowCloseFriends", "inputPrivacyValueAllowPremium", "inputPrivacyValueAllowBots", "inputPrivacyValueDisallowBots"]],
-  ["PrivacyRule", ["privacyValueAllowContacts", "privacyValueAllowAll", "privacyValueAllowUsers", "privacyValueDisallowContacts", "privacyValueDisallowAll", "privacyValueDisallowUsers", "privacyValueAllowChatParticipants", "privacyValueDisallowChatParticipants", "privacyValueAllowCloseFriends", "privacyValueAllowPremium", "privacyValueAllowBots", "privacyValueDisallowBots"]],
-  ["account.PrivacyRules", ["account.privacyRules"]],
-  ["AccountDaysTTL", ["accountDaysTTL"]],
-  ["DocumentAttribute", ["documentAttributeImageSize", "documentAttributeAnimated", "documentAttributeSticker", "documentAttributeVideo", "documentAttributeAudio", "documentAttributeFilename", "documentAttributeHasStickers", "documentAttributeCustomEmoji"]],
-  ["messages.Stickers", ["messages.stickersNotModified", "messages.stickers"]],
-  ["StickerPack", ["stickerPack"]],
-  ["messages.AllStickers", ["messages.allStickersNotModified", "messages.allStickers"]],
-  ["messages.AffectedMessages", ["messages.affectedMessages"]],
-  ["WebPage", ["webPageEmpty", "webPagePending", "webPage", "webPageNotModified"]],
-  ["Authorization", ["authorization"]],
-  ["account.Authorizations", ["account.authorizations"]],
-  ["account.Password", ["account.password"]],
-  ["account.PasswordSettings", ["account.passwordSettings"]],
-  ["account.PasswordInputSettings", ["account.passwordInputSettings"]],
-  ["auth.PasswordRecovery", ["auth.passwordRecovery"]],
-  ["ReceivedNotifyMessage", ["receivedNotifyMessage"]],
-  ["ExportedChatInvite", ["chatInviteExported", "chatInvitePublicJoinRequests"]],
-  ["ChatInvite", ["chatInviteAlready", "chatInvite", "chatInvitePeek"]],
-  ["InputStickerSet", ["inputStickerSetEmpty", "inputStickerSetID", "inputStickerSetShortName", "inputStickerSetAnimatedEmoji", "inputStickerSetDice", "inputStickerSetAnimatedEmojiAnimations", "inputStickerSetPremiumGifts", "inputStickerSetEmojiGenericAnimations", "inputStickerSetEmojiDefaultStatuses", "inputStickerSetEmojiDefaultTopicIcons", "inputStickerSetEmojiChannelDefaultStatuses"]],
-  ["StickerSet", ["stickerSet"]],
-  ["messages.StickerSet", ["messages.stickerSet", "messages.stickerSetNotModified"]],
-  ["BotCommand", ["botCommand"]],
-  ["BotInfo", ["botInfo"]],
-  ["KeyboardButton", ["keyboardButton", "keyboardButtonUrl", "keyboardButtonCallback", "keyboardButtonRequestPhone", "keyboardButtonRequestGeoLocation", "keyboardButtonSwitchInline", "keyboardButtonGame", "keyboardButtonBuy", "keyboardButtonUrlAuth", "inputKeyboardButtonUrlAuth", "keyboardButtonRequestPoll", "inputKeyboardButtonUserProfile", "keyboardButtonUserProfile", "keyboardButtonWebView", "keyboardButtonSimpleWebView", "keyboardButtonRequestPeer", "inputKeyboardButtonRequestPeer", "keyboardButtonCopy"]],
-  ["KeyboardButtonRow", ["keyboardButtonRow"]],
-  ["ReplyMarkup", ["replyKeyboardHide", "replyKeyboardForceReply", "replyKeyboardMarkup", "replyInlineMarkup"]],
-  ["MessageEntity", ["messageEntityUnknown", "messageEntityMention", "messageEntityHashtag", "messageEntityBotCommand", "messageEntityUrl", "messageEntityEmail", "messageEntityBold", "messageEntityItalic", "messageEntityCode", "messageEntityPre", "messageEntityTextUrl", "messageEntityMentionName", "inputMessageEntityMentionName", "messageEntityPhone", "messageEntityCashtag", "messageEntityUnderline", "messageEntityStrike", "messageEntityBankCard", "messageEntitySpoiler", "messageEntityCustomEmoji", "messageEntityBlockquote"]],
-  ["InputChannel", ["inputChannelEmpty", "inputChannel", "inputChannelFromMessage"]],
-  ["contacts.ResolvedPeer", ["contacts.resolvedPeer"]],
-  ["MessageRange", ["messageRange"]],
-  ["updates.ChannelDifference", ["updates.channelDifferenceEmpty", "updates.channelDifferenceTooLong", "updates.channelDifference"]],
-  ["ChannelMessagesFilter", ["channelMessagesFilterEmpty", "channelMessagesFilter"]],
-  ["ChannelParticipant", ["channelParticipant", "channelParticipantSelf", "channelParticipantCreator", "channelParticipantAdmin", "channelParticipantBanned", "channelParticipantLeft"]],
-  ["ChannelParticipantsFilter", ["channelParticipantsRecent", "channelParticipantsAdmins", "channelParticipantsKicked", "channelParticipantsBots", "channelParticipantsBanned", "channelParticipantsSearch", "channelParticipantsContacts", "channelParticipantsMentions"]],
-  ["channels.ChannelParticipants", ["channels.channelParticipants", "channels.channelParticipantsNotModified"]],
-  ["channels.ChannelParticipant", ["channels.channelParticipant"]],
-  ["help.TermsOfService", ["help.termsOfService"]],
-  ["messages.SavedGifs", ["messages.savedGifsNotModified", "messages.savedGifs"]],
-  ["InputBotInlineMessage", ["inputBotInlineMessageMediaAuto", "inputBotInlineMessageText", "inputBotInlineMessageMediaGeo", "inputBotInlineMessageMediaVenue", "inputBotInlineMessageMediaContact", "inputBotInlineMessageGame", "inputBotInlineMessageMediaInvoice", "inputBotInlineMessageMediaWebPage"]],
-  ["InputBotInlineResult", ["inputBotInlineResult", "inputBotInlineResultPhoto", "inputBotInlineResultDocument", "inputBotInlineResultGame"]],
-  ["BotInlineMessage", ["botInlineMessageMediaAuto", "botInlineMessageText", "botInlineMessageMediaGeo", "botInlineMessageMediaVenue", "botInlineMessageMediaContact", "botInlineMessageMediaInvoice", "botInlineMessageMediaWebPage"]],
-  ["BotInlineResult", ["botInlineResult", "botInlineMediaResult"]],
-  ["messages.BotResults", ["messages.botResults"]],
-  ["ExportedMessageLink", ["exportedMessageLink"]],
-  ["MessageFwdHeader", ["messageFwdHeader"]],
-  ["auth.CodeType", ["auth.codeTypeSms", "auth.codeTypeCall", "auth.codeTypeFlashCall", "auth.codeTypeMissedCall", "auth.codeTypeFragmentSms"]],
-  ["auth.SentCodeType", ["auth.sentCodeTypeApp", "auth.sentCodeTypeSms", "auth.sentCodeTypeCall", "auth.sentCodeTypeFlashCall", "auth.sentCodeTypeMissedCall", "auth.sentCodeTypeEmailCode", "auth.sentCodeTypeSetUpEmailRequired", "auth.sentCodeTypeFragmentSms", "auth.sentCodeTypeFirebaseSms", "auth.sentCodeTypeSmsWord", "auth.sentCodeTypeSmsPhrase"]],
-  ["messages.BotCallbackAnswer", ["messages.botCallbackAnswer"]],
-  ["messages.MessageEditData", ["messages.messageEditData"]],
-  ["InputBotInlineMessageID", ["inputBotInlineMessageID", "inputBotInlineMessageID64"]],
-  ["InlineBotSwitchPM", ["inlineBotSwitchPM"]],
-  ["messages.PeerDialogs", ["messages.peerDialogs"]],
-  ["TopPeer", ["topPeer"]],
-  ["TopPeerCategory", ["topPeerCategoryBotsPM", "topPeerCategoryBotsInline", "topPeerCategoryCorrespondents", "topPeerCategoryGroups", "topPeerCategoryChannels", "topPeerCategoryPhoneCalls", "topPeerCategoryForwardUsers", "topPeerCategoryForwardChats", "topPeerCategoryBotsApp"]],
-  ["TopPeerCategoryPeers", ["topPeerCategoryPeers"]],
-  ["contacts.TopPeers", ["contacts.topPeersNotModified", "contacts.topPeers", "contacts.topPeersDisabled"]],
-  ["DraftMessage", ["draftMessageEmpty", "draftMessage"]],
-  ["messages.FeaturedStickers", ["messages.featuredStickersNotModified", "messages.featuredStickers"]],
-  ["messages.RecentStickers", ["messages.recentStickersNotModified", "messages.recentStickers"]],
-  ["messages.ArchivedStickers", ["messages.archivedStickers"]],
-  ["messages.StickerSetInstallResult", ["messages.stickerSetInstallResultSuccess", "messages.stickerSetInstallResultArchive"]],
-  ["StickerSetCovered", ["stickerSetCovered", "stickerSetMultiCovered", "stickerSetFullCovered", "stickerSetNoCovered"]],
-  ["MaskCoords", ["maskCoords"]],
-  ["InputStickeredMedia", ["inputStickeredMediaPhoto", "inputStickeredMediaDocument"]],
-  ["Game", ["game"]],
-  ["InputGame", ["inputGameID", "inputGameShortName"]],
-  ["HighScore", ["highScore"]],
-  ["messages.HighScores", ["messages.highScores"]],
-  ["RichText", ["textEmpty", "textPlain", "textBold", "textItalic", "textUnderline", "textStrike", "textFixed", "textUrl", "textEmail", "textConcat", "textSubscript", "textSuperscript", "textMarked", "textPhone", "textImage", "textAnchor"]],
-  ["PageBlock", ["pageBlockUnsupported", "pageBlockTitle", "pageBlockSubtitle", "pageBlockAuthorDate", "pageBlockHeader", "pageBlockSubheader", "pageBlockParagraph", "pageBlockPreformatted", "pageBlockFooter", "pageBlockDivider", "pageBlockAnchor", "pageBlockList", "pageBlockBlockquote", "pageBlockPullquote", "pageBlockPhoto", "pageBlockVideo", "pageBlockCover", "pageBlockEmbed", "pageBlockEmbedPost", "pageBlockCollage", "pageBlockSlideshow", "pageBlockChannel", "pageBlockAudio", "pageBlockKicker", "pageBlockTable", "pageBlockOrderedList", "pageBlockDetails", "pageBlockRelatedArticles", "pageBlockMap"]],
-  ["PhoneCallDiscardReason", ["phoneCallDiscardReasonMissed", "phoneCallDiscardReasonDisconnect", "phoneCallDiscardReasonHangup", "phoneCallDiscardReasonBusy", "phoneCallDiscardReasonAllowGroupCall"]],
-  ["DataJSON", ["dataJSON"]],
-  ["LabeledPrice", ["labeledPrice"]],
-  ["Invoice", ["invoice"]],
-  ["PaymentCharge", ["paymentCharge"]],
-  ["PostAddress", ["postAddress"]],
-  ["PaymentRequestedInfo", ["paymentRequestedInfo"]],
-  ["PaymentSavedCredentials", ["paymentSavedCredentialsCard"]],
-  ["WebDocument", ["webDocument", "webDocumentNoProxy"]],
-  ["InputWebDocument", ["inputWebDocument"]],
-  ["InputWebFileLocation", ["inputWebFileLocation", "inputWebFileGeoPointLocation", "inputWebFileAudioAlbumThumbLocation"]],
-  ["upload.WebFile", ["upload.webFile"]],
-  ["payments.PaymentForm", ["payments.paymentForm", "payments.paymentFormStars", "payments.paymentFormStarGift"]],
-  ["payments.ValidatedRequestedInfo", ["payments.validatedRequestedInfo"]],
-  ["payments.PaymentResult", ["payments.paymentResult", "payments.paymentVerificationNeeded"]],
-  ["payments.PaymentReceipt", ["payments.paymentReceipt", "payments.paymentReceiptStars"]],
-  ["payments.SavedInfo", ["payments.savedInfo"]],
-  ["InputPaymentCredentials", ["inputPaymentCredentialsSaved", "inputPaymentCredentials", "inputPaymentCredentialsApplePay", "inputPaymentCredentialsGooglePay"]],
-  ["account.TmpPassword", ["account.tmpPassword"]],
-  ["ShippingOption", ["shippingOption"]],
-  ["InputStickerSetItem", ["inputStickerSetItem"]],
-  ["InputPhoneCall", ["inputPhoneCall"]],
-  ["PhoneCall", ["phoneCallEmpty", "phoneCallWaiting", "phoneCallRequested", "phoneCallAccepted", "phoneCall", "phoneCallDiscarded"]],
-  ["PhoneConnection", ["phoneConnection", "phoneConnectionWebrtc"]],
-  ["PhoneCallProtocol", ["phoneCallProtocol"]],
-  ["phone.PhoneCall", ["phone.phoneCall"]],
-  ["upload.CdnFile", ["upload.cdnFileReuploadNeeded", "upload.cdnFile"]],
-  ["CdnPublicKey", ["cdnPublicKey"]],
-  ["CdnConfig", ["cdnConfig"]],
-  ["LangPackString", ["langPackString", "langPackStringPluralized", "langPackStringDeleted"]],
-  ["LangPackDifference", ["langPackDifference"]],
-  ["LangPackLanguage", ["langPackLanguage"]],
-  ["ChannelAdminLogEventAction", [
-    "channelAdminLogEventActionChangeTitle",
-    "channelAdminLogEventActionChangeAbout",
-    "channelAdminLogEventActionChangeUsername",
-    "channelAdminLogEventActionChangePhoto",
-    "channelAdminLogEventActionToggleInvites",
-    "channelAdminLogEventActionToggleSignatures",
-    "channelAdminLogEventActionUpdatePinned",
-    "channelAdminLogEventActionEditMessage",
-    "channelAdminLogEventActionDeleteMessage",
-    "channelAdminLogEventActionParticipantJoin",
-    "channelAdminLogEventActionParticipantLeave",
-    "channelAdminLogEventActionParticipantInvite",
-    "channelAdminLogEventActionParticipantToggleBan",
-    "channelAdminLogEventActionParticipantToggleAdmin",
-    "channelAdminLogEventActionChangeStickerSet",
-    "channelAdminLogEventActionTogglePreHistoryHidden",
-    "channelAdminLogEventActionDefaultBannedRights",
-    "channelAdminLogEventActionStopPoll",
-    "channelAdminLogEventActionChangeLinkedChat",
-    "channelAdminLogEventActionChangeLocation",
-    "channelAdminLogEventActionToggleSlowMode",
-    "channelAdminLogEventActionStartGroupCall",
-    "channelAdminLogEventActionDiscardGroupCall",
-    "channelAdminLogEventActionParticipantMute",
-    "channelAdminLogEventActionParticipantUnmute",
-    "channelAdminLogEventActionToggleGroupCallSetting",
-    "channelAdminLogEventActionParticipantJoinByInvite",
-    "channelAdminLogEventActionExportedInviteDelete",
-    "channelAdminLogEventActionExportedInviteRevoke",
-    "channelAdminLogEventActionExportedInviteEdit",
-    "channelAdminLogEventActionParticipantVolume",
-    "channelAdminLogEventActionChangeHistoryTTL",
-    "channelAdminLogEventActionParticipantJoinByRequest",
-    "channelAdminLogEventActionToggleNoForwards",
-    "channelAdminLogEventActionSendMessage",
-    "channelAdminLogEventActionChangeAvailableReactions",
-    "channelAdminLogEventActionChangeUsernames",
-    "channelAdminLogEventActionToggleForum",
-    "channelAdminLogEventActionCreateTopic",
-    "channelAdminLogEventActionEditTopic",
-    "channelAdminLogEventActionDeleteTopic",
-    "channelAdminLogEventActionPinTopic",
-    "channelAdminLogEventActionToggleAntiSpam",
-    "channelAdminLogEventActionChangePeerColor",
-    "channelAdminLogEventActionChangeProfilePeerColor",
-    "channelAdminLogEventActionChangeWallpaper",
-    "channelAdminLogEventActionChangeEmojiStatus",
-    "channelAdminLogEventActionChangeEmojiStickerSet",
-    "channelAdminLogEventActionToggleSignatureProfiles",
-    "channelAdminLogEventActionParticipantSubExtend",
-  ]],
-  ["ChannelAdminLogEvent", ["channelAdminLogEvent"]],
-  ["channels.AdminLogResults", ["channels.adminLogResults"]],
-  ["ChannelAdminLogEventsFilter", ["channelAdminLogEventsFilter"]],
-  ["PopularContact", ["popularContact"]],
-  ["messages.FavedStickers", ["messages.favedStickersNotModified", "messages.favedStickers"]],
-  ["RecentMeUrl", ["recentMeUrlUnknown", "recentMeUrlUser", "recentMeUrlChat", "recentMeUrlChatInvite", "recentMeUrlStickerSet"]],
-  ["help.RecentMeUrls", ["help.recentMeUrls"]],
-  ["InputSingleMedia", ["inputSingleMedia"]],
-  ["WebAuthorization", ["webAuthorization"]],
-  ["account.WebAuthorizations", ["account.webAuthorizations"]],
-  ["InputMessage", ["inputMessageID", "inputMessageReplyTo", "inputMessagePinned", "inputMessageCallbackQuery"]],
-  ["InputDialogPeer", ["inputDialogPeer", "inputDialogPeerFolder"]],
-  ["DialogPeer", ["dialogPeer", "dialogPeerFolder"]],
-  ["messages.FoundStickerSets", ["messages.foundStickerSetsNotModified", "messages.foundStickerSets"]],
-  ["FileHash", ["fileHash"]],
-  ["InputClientProxy", ["inputClientProxy"]],
-  ["help.TermsOfServiceUpdate", ["help.termsOfServiceUpdateEmpty", "help.termsOfServiceUpdate"]],
-  ["InputSecureFile", ["inputSecureFileUploaded", "inputSecureFile"]],
-  ["SecureFile", ["secureFileEmpty", "secureFile"]],
-  ["SecureData", ["secureData"]],
-  ["SecurePlainData", ["securePlainPhone", "securePlainEmail"]],
-  ["SecureValueType", ["secureValueTypePersonalDetails", "secureValueTypePassport", "secureValueTypeDriverLicense", "secureValueTypeIdentityCard", "secureValueTypeInternalPassport", "secureValueTypeAddress", "secureValueTypeUtilityBill", "secureValueTypeBankStatement", "secureValueTypeRentalAgreement", "secureValueTypePassportRegistration", "secureValueTypeTemporaryRegistration", "secureValueTypePhone", "secureValueTypeEmail"]],
-  ["SecureValue", ["secureValue"]],
-  ["InputSecureValue", ["inputSecureValue"]],
-  ["SecureValueHash", ["secureValueHash"]],
-  ["SecureValueError", ["secureValueErrorData", "secureValueErrorFrontSide", "secureValueErrorReverseSide", "secureValueErrorSelfie", "secureValueErrorFile", "secureValueErrorFiles", "secureValueError", "secureValueErrorTranslationFile", "secureValueErrorTranslationFiles"]],
-  ["SecureCredentialsEncrypted", ["secureCredentialsEncrypted"]],
-  ["account.AuthorizationForm", ["account.authorizationForm"]],
-  ["account.SentEmailCode", ["account.sentEmailCode"]],
-  ["help.DeepLinkInfo", ["help.deepLinkInfoEmpty", "help.deepLinkInfo"]],
-  ["SavedContact", ["savedPhoneContact"]],
-  ["account.Takeout", ["account.takeout"]],
-  ["PasswordKdfAlgo", ["passwordKdfAlgoUnknown", "passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow"]],
-  ["SecurePasswordKdfAlgo", ["securePasswordKdfAlgoUnknown", "securePasswordKdfAlgoPBKDF2HMACSHA512iter100000", "securePasswordKdfAlgoSHA512"]],
-  ["SecureSecretSettings", ["secureSecretSettings"]],
-  ["InputCheckPasswordSRP", ["inputCheckPasswordEmpty", "inputCheckPasswordSRP"]],
-  ["SecureRequiredType", ["secureRequiredType", "secureRequiredTypeOneOf"]],
-  ["help.PassportConfig", ["help.passportConfigNotModified", "help.passportConfig"]],
-  ["InputAppEvent", ["inputAppEvent"]],
-  ["JSONObjectValue", ["jsonObjectValue"]],
-  ["JSONValue", ["jsonNull", "jsonBool", "jsonNumber", "jsonString", "jsonArray", "jsonObject"]],
-  ["PageTableCell", ["pageTableCell"]],
-  ["PageTableRow", ["pageTableRow"]],
-  ["PageCaption", ["pageCaption"]],
-  ["PageListItem", ["pageListItemText", "pageListItemBlocks"]],
-  ["PageListOrderedItem", ["pageListOrderedItemText", "pageListOrderedItemBlocks"]],
-  ["PageRelatedArticle", ["pageRelatedArticle"]],
-  ["Page", ["page"]],
-  ["help.SupportName", ["help.supportName"]],
-  ["help.UserInfo", ["help.userInfoEmpty", "help.userInfo"]],
-  ["PollAnswer", ["pollAnswer"]],
-  ["Poll", ["poll"]],
-  ["PollAnswerVoters", ["pollAnswerVoters"]],
-  ["PollResults", ["pollResults"]],
-  ["ChatOnlines", ["chatOnlines"]],
-  ["StatsURL", ["statsURL"]],
-  ["ChatAdminRights", ["chatAdminRights"]],
-  ["ChatBannedRights", ["chatBannedRights"]],
-  ["InputWallPaper", ["inputWallPaper", "inputWallPaperSlug", "inputWallPaperNoFile"]],
-  ["account.WallPapers", ["account.wallPapersNotModified", "account.wallPapers"]],
-  ["CodeSettings", ["codeSettings"]],
-  ["WallPaperSettings", ["wallPaperSettings"]],
-  ["AutoDownloadSettings", ["autoDownloadSettings"]],
-  ["account.AutoDownloadSettings", ["account.autoDownloadSettings"]],
-  ["EmojiKeyword", ["emojiKeyword", "emojiKeywordDeleted"]],
-  ["EmojiKeywordsDifference", ["emojiKeywordsDifference"]],
-  ["EmojiURL", ["emojiURL"]],
-  ["EmojiLanguage", ["emojiLanguage"]],
-  ["Folder", ["folder"]],
-  ["InputFolderPeer", ["inputFolderPeer"]],
-  ["FolderPeer", ["folderPeer"]],
-  ["messages.SearchCounter", ["messages.searchCounter"]],
-  ["UrlAuthResult", ["urlAuthResultRequest", "urlAuthResultAccepted", "urlAuthResultDefault"]],
-  ["ChannelLocation", ["channelLocationEmpty", "channelLocation"]],
-  ["PeerLocated", ["peerLocated", "peerSelfLocated"]],
-  ["RestrictionReason", ["restrictionReason"]],
-  ["InputTheme", ["inputTheme", "inputThemeSlug"]],
-  ["Theme", ["theme"]],
-  ["account.Themes", ["account.themesNotModified", "account.themes"]],
-  ["auth.LoginToken", ["auth.loginToken", "auth.loginTokenMigrateTo", "auth.loginTokenSuccess"]],
-  ["account.ContentSettings", ["account.contentSettings"]],
-  ["messages.InactiveChats", ["messages.inactiveChats"]],
-  ["BaseTheme", ["baseThemeClassic", "baseThemeDay", "baseThemeNight", "baseThemeTinted", "baseThemeArctic"]],
-  ["InputThemeSettings", ["inputThemeSettings"]],
-  ["ThemeSettings", ["themeSettings"]],
-  ["WebPageAttribute", ["webPageAttributeTheme", "webPageAttributeStory", "webPageAttributeStickerSet", "webPageAttributeUniqueStarGift"]],
-  ["messages.VotesList", ["messages.votesList"]],
-  ["BankCardOpenUrl", ["bankCardOpenUrl"]],
-  ["payments.BankCardData", ["payments.bankCardData"]],
-  ["DialogFilter", ["dialogFilter", "dialogFilterDefault", "dialogFilterChatlist"]],
-  ["DialogFilterSuggested", ["dialogFilterSuggested"]],
-  ["StatsDateRangeDays", ["statsDateRangeDays"]],
-  ["StatsAbsValueAndPrev", ["statsAbsValueAndPrev"]],
-  ["StatsPercentValue", ["statsPercentValue"]],
-  ["StatsGraph", ["statsGraphAsync", "statsGraphError", "statsGraph"]],
-  ["stats.BroadcastStats", ["stats.broadcastStats"]],
-  ["help.PromoData", ["help.promoDataEmpty", "help.promoData"]],
-  ["VideoSize", ["videoSize", "videoSizeEmojiMarkup", "videoSizeStickerMarkup"]],
-  ["StatsGroupTopPoster", ["statsGroupTopPoster"]],
-  ["StatsGroupTopAdmin", ["statsGroupTopAdmin"]],
-  ["StatsGroupTopInviter", ["statsGroupTopInviter"]],
-  ["stats.MegagroupStats", ["stats.megagroupStats"]],
-  ["GlobalPrivacySettings", ["globalPrivacySettings"]],
-  ["help.CountryCode", ["help.countryCode"]],
-  ["help.Country", ["help.country"]],
-  ["help.CountriesList", ["help.countriesListNotModified", "help.countriesList"]],
-  ["MessageViews", ["messageViews"]],
-  ["messages.MessageViews", ["messages.messageViews"]],
-  ["messages.DiscussionMessage", ["messages.discussionMessage"]],
-  ["MessageReplyHeader", ["messageReplyHeader", "messageReplyStoryHeader"]],
-  ["MessageReplies", ["messageReplies"]],
-  ["PeerBlocked", ["peerBlocked"]],
-  ["stats.MessageStats", ["stats.messageStats"]],
-  ["GroupCall", ["groupCallDiscarded", "groupCall"]],
-  ["InputGroupCall", ["inputGroupCall"]],
-  ["GroupCallParticipant", ["groupCallParticipant"]],
-  ["phone.GroupCall", ["phone.groupCall"]],
-  ["phone.GroupParticipants", ["phone.groupParticipants"]],
-  ["InlineQueryPeerType", ["inlineQueryPeerTypeSameBotPM", "inlineQueryPeerTypePM", "inlineQueryPeerTypeChat", "inlineQueryPeerTypeMegagroup", "inlineQueryPeerTypeBroadcast", "inlineQueryPeerTypeBotPM"]],
-  ["messages.HistoryImport", ["messages.historyImport"]],
-  ["messages.HistoryImportParsed", ["messages.historyImportParsed"]],
-  ["messages.AffectedFoundMessages", ["messages.affectedFoundMessages"]],
-  ["ChatInviteImporter", ["chatInviteImporter"]],
-  ["messages.ExportedChatInvites", ["messages.exportedChatInvites"]],
-  ["messages.ExportedChatInvite", ["messages.exportedChatInvite", "messages.exportedChatInviteReplaced"]],
-  ["messages.ChatInviteImporters", ["messages.chatInviteImporters"]],
-  ["ChatAdminWithInvites", ["chatAdminWithInvites"]],
-  ["messages.ChatAdminsWithInvites", ["messages.chatAdminsWithInvites"]],
-  ["messages.CheckedHistoryImportPeer", ["messages.checkedHistoryImportPeer"]],
-  ["phone.JoinAsPeers", ["phone.joinAsPeers"]],
-  ["phone.ExportedGroupCallInvite", ["phone.exportedGroupCallInvite"]],
-  ["GroupCallParticipantVideoSourceGroup", ["groupCallParticipantVideoSourceGroup"]],
-  ["GroupCallParticipantVideo", ["groupCallParticipantVideo"]],
-  ["stickers.SuggestedShortName", ["stickers.suggestedShortName"]],
-  ["BotCommandScope", ["botCommandScopeDefault", "botCommandScopeUsers", "botCommandScopeChats", "botCommandScopeChatAdmins", "botCommandScopePeer", "botCommandScopePeerAdmins", "botCommandScopePeerUser"]],
-  ["account.ResetPasswordResult", ["account.resetPasswordFailedWait", "account.resetPasswordRequestedWait", "account.resetPasswordOk"]],
-  ["SponsoredMessage", ["sponsoredMessage"]],
-  ["messages.SponsoredMessages", ["messages.sponsoredMessages", "messages.sponsoredMessagesEmpty"]],
-  ["SearchResultsCalendarPeriod", ["searchResultsCalendarPeriod"]],
-  ["messages.SearchResultsCalendar", ["messages.searchResultsCalendar"]],
-  ["SearchResultsPosition", ["searchResultPosition"]],
-  ["messages.SearchResultsPositions", ["messages.searchResultsPositions"]],
-  ["channels.SendAsPeers", ["channels.sendAsPeers"]],
-  ["users.UserFull", ["users.userFull"]],
-  ["messages.PeerSettings", ["messages.peerSettings"]],
-  ["auth.LoggedOut", ["auth.loggedOut"]],
-  ["ReactionCount", ["reactionCount"]],
-  ["MessageReactions", ["messageReactions"]],
-  ["messages.MessageReactionsList", ["messages.messageReactionsList"]],
-  ["AvailableReaction", ["availableReaction"]],
-  ["messages.AvailableReactions", ["messages.availableReactionsNotModified", "messages.availableReactions"]],
-  ["MessagePeerReaction", ["messagePeerReaction"]],
-  ["GroupCallStreamChannel", ["groupCallStreamChannel"]],
-  ["phone.GroupCallStreamChannels", ["phone.groupCallStreamChannels"]],
-  ["phone.GroupCallStreamRtmpUrl", ["phone.groupCallStreamRtmpUrl"]],
-  ["AttachMenuBotIconColor", ["attachMenuBotIconColor"]],
-  ["AttachMenuBotIcon", ["attachMenuBotIcon"]],
-  ["AttachMenuBot", ["attachMenuBot"]],
-  ["AttachMenuBots", ["attachMenuBotsNotModified", "attachMenuBots"]],
-  ["AttachMenuBotsBot", ["attachMenuBotsBot"]],
-  ["WebViewResult", ["webViewResultUrl"]],
-  ["WebViewMessageSent", ["webViewMessageSent"]],
-  ["BotMenuButton", ["botMenuButtonDefault", "botMenuButtonCommands", "botMenuButton"]],
-  ["account.SavedRingtones", ["account.savedRingtonesNotModified", "account.savedRingtones"]],
-  ["NotificationSound", ["notificationSoundDefault", "notificationSoundNone", "notificationSoundLocal", "notificationSoundRingtone"]],
-  ["account.SavedRingtone", ["account.savedRingtone", "account.savedRingtoneConverted"]],
-  ["AttachMenuPeerType", ["attachMenuPeerTypeSameBotPM", "attachMenuPeerTypeBotPM", "attachMenuPeerTypePM", "attachMenuPeerTypeChat", "attachMenuPeerTypeBroadcast"]],
-  ["InputInvoice", ["inputInvoiceMessage", "inputInvoiceSlug", "inputInvoicePremiumGiftCode", "inputInvoiceStars", "inputInvoiceChatInviteSubscription", "inputInvoiceStarGift", "inputInvoiceStarGiftUpgrade", "inputInvoiceStarGiftTransfer", "inputInvoicePremiumGiftStars"]],
-  ["payments.ExportedInvoice", ["payments.exportedInvoice"]],
-  ["messages.TranscribedAudio", ["messages.transcribedAudio"]],
-  ["help.PremiumPromo", ["help.premiumPromo"]],
-  ["InputStorePaymentPurpose", ["inputStorePaymentPremiumSubscription", "inputStorePaymentGiftPremium", "inputStorePaymentPremiumGiftCode", "inputStorePaymentPremiumGiveaway", "inputStorePaymentStarsTopup", "inputStorePaymentStarsGift", "inputStorePaymentStarsGiveaway"]],
-  ["PaymentFormMethod", ["paymentFormMethod"]],
-  ["EmojiStatus", ["emojiStatusEmpty", "emojiStatus", "emojiStatusCollectible", "inputEmojiStatusCollectible"]],
-  ["account.EmojiStatuses", ["account.emojiStatusesNotModified", "account.emojiStatuses"]],
-  ["Reaction", ["reactionEmpty", "reactionEmoji", "reactionCustomEmoji", "reactionPaid"]],
-  ["ChatReactions", ["chatReactionsNone", "chatReactionsAll", "chatReactionsSome"]],
-  ["messages.Reactions", ["messages.reactionsNotModified", "messages.reactions"]],
-  ["EmailVerifyPurpose", ["emailVerifyPurposeLoginSetup", "emailVerifyPurposeLoginChange", "emailVerifyPurposePassport"]],
-  ["EmailVerification", ["emailVerificationCode", "emailVerificationGoogle", "emailVerificationApple"]],
-  ["account.EmailVerified", ["account.emailVerified", "account.emailVerifiedLogin"]],
-  ["PremiumSubscriptionOption", ["premiumSubscriptionOption"]],
-  ["SendAsPeer", ["sendAsPeer"]],
-  ["MessageExtendedMedia", ["messageExtendedMediaPreview", "messageExtendedMedia"]],
-  ["StickerKeyword", ["stickerKeyword"]],
-  ["Username", ["username"]],
-  ["ForumTopic", ["forumTopicDeleted", "forumTopic"]],
-  ["messages.ForumTopics", ["messages.forumTopics"]],
-  ["DefaultHistoryTTL", ["defaultHistoryTTL"]],
-  ["ExportedContactToken", ["exportedContactToken"]],
-  ["RequestPeerType", ["requestPeerTypeUser", "requestPeerTypeChat", "requestPeerTypeBroadcast"]],
-  ["EmojiList", ["emojiListNotModified", "emojiList"]],
-  ["EmojiGroup", ["emojiGroup", "emojiGroupGreeting", "emojiGroupPremium"]],
-  ["messages.EmojiGroups", ["messages.emojiGroupsNotModified", "messages.emojiGroups"]],
-  ["TextWithEntities", ["textWithEntities"]],
-  ["messages.TranslatedText", ["messages.translateResult"]],
-  ["AutoSaveSettings", ["autoSaveSettings"]],
-  ["AutoSaveException", ["autoSaveException"]],
-  ["account.AutoSaveSettings", ["account.autoSaveSettings"]],
-  ["help.AppConfig", ["help.appConfigNotModified", "help.appConfig"]],
-  ["InputBotApp", ["inputBotAppID", "inputBotAppShortName"]],
-  ["BotApp", ["botAppNotModified", "botApp"]],
-  ["messages.BotApp", ["messages.botApp"]],
-  ["InlineBotWebView", ["inlineBotWebView"]],
-  ["ReadParticipantDate", ["readParticipantDate"]],
-  ["InputChatlist", ["inputChatlistDialogFilter"]],
-  ["ExportedChatlistInvite", ["exportedChatlistInvite"]],
-  ["chatlists.ExportedChatlistInvite", ["chatlists.exportedChatlistInvite"]],
-  ["chatlists.ExportedInvites", ["chatlists.exportedInvites"]],
-  ["chatlists.ChatlistInvite", ["chatlists.chatlistInviteAlready", "chatlists.chatlistInvite"]],
-  ["chatlists.ChatlistUpdates", ["chatlists.chatlistUpdates"]],
-  ["bots.BotInfo", ["bots.botInfo"]],
-  ["MessagePeerVote", ["messagePeerVote", "messagePeerVoteInputOption", "messagePeerVoteMultiple"]],
-  ["StoryViews", ["storyViews"]],
-  ["StoryItem", ["storyItemDeleted", "storyItemSkipped", "storyItem"]],
-  ["stories.AllStories", ["stories.allStoriesNotModified", "stories.allStories"]],
-  ["stories.Stories", ["stories.stories"]],
-  ["StoryView", ["storyView", "storyViewPublicForward", "storyViewPublicRepost"]],
-  ["stories.StoryViewsList", ["stories.storyViewsList"]],
-  ["stories.StoryViews", ["stories.storyViews"]],
-  ["InputReplyTo", ["inputReplyToMessage", "inputReplyToStory"]],
-  ["ExportedStoryLink", ["exportedStoryLink"]],
-  ["StoriesStealthMode", ["storiesStealthMode"]],
-  ["MediaAreaCoordinates", ["mediaAreaCoordinates"]],
-  ["MediaArea", ["mediaAreaVenue", "inputMediaAreaVenue", "mediaAreaGeoPoint", "mediaAreaSuggestedReaction", "mediaAreaChannelPost", "inputMediaAreaChannelPost", "mediaAreaUrl", "mediaAreaWeather", "mediaAreaStarGift"]],
-  ["PeerStories", ["peerStories"]],
-  ["stories.PeerStories", ["stories.peerStories"]],
-  ["messages.WebPage", ["messages.webPage"]],
-  ["PremiumGiftCodeOption", ["premiumGiftCodeOption"]],
-  ["payments.CheckedGiftCode", ["payments.checkedGiftCode"]],
-  ["payments.GiveawayInfo", ["payments.giveawayInfo", "payments.giveawayInfoResults"]],
-  ["PrepaidGiveaway", ["prepaidGiveaway", "prepaidStarsGiveaway"]],
-  ["Boost", ["boost"]],
-  ["premium.BoostsList", ["premium.boostsList"]],
-  ["MyBoost", ["myBoost"]],
-  ["premium.MyBoosts", ["premium.myBoosts"]],
-  ["premium.BoostsStatus", ["premium.boostsStatus"]],
-  ["StoryFwdHeader", ["storyFwdHeader"]],
-  ["PostInteractionCounters", ["postInteractionCountersMessage", "postInteractionCountersStory"]],
-  ["stats.StoryStats", ["stats.storyStats"]],
-  ["PublicForward", ["publicForwardMessage", "publicForwardStory"]],
-  ["stats.PublicForwards", ["stats.publicForwards"]],
-  ["PeerColor", ["peerColor"]],
-  ["help.PeerColorSet", ["help.peerColorSet", "help.peerColorProfileSet"]],
-  ["help.PeerColorOption", ["help.peerColorOption"]],
-  ["help.PeerColors", ["help.peerColorsNotModified", "help.peerColors"]],
-  ["StoryReaction", ["storyReaction", "storyReactionPublicForward", "storyReactionPublicRepost"]],
-  ["stories.StoryReactionsList", ["stories.storyReactionsList"]],
-  ["SavedDialog", ["savedDialog"]],
-  ["messages.SavedDialogs", ["messages.savedDialogs", "messages.savedDialogsSlice", "messages.savedDialogsNotModified"]],
-  ["SavedReactionTag", ["savedReactionTag"]],
-  ["messages.SavedReactionTags", ["messages.savedReactionTagsNotModified", "messages.savedReactionTags"]],
-  ["OutboxReadDate", ["outboxReadDate"]],
-  ["smsjobs.EligibilityToJoin", ["smsjobs.eligibleToJoin"]],
-  ["smsjobs.Status", ["smsjobs.status"]],
-  ["SmsJob", ["smsJob"]],
-  ["BusinessWeeklyOpen", ["businessWeeklyOpen"]],
-  ["BusinessWorkHours", ["businessWorkHours"]],
-  ["BusinessLocation", ["businessLocation"]],
-  ["InputBusinessRecipients", ["inputBusinessRecipients"]],
-  ["BusinessRecipients", ["businessRecipients"]],
-  ["BusinessAwayMessageSchedule", ["businessAwayMessageScheduleAlways", "businessAwayMessageScheduleOutsideWorkHours", "businessAwayMessageScheduleCustom"]],
-  ["InputBusinessGreetingMessage", ["inputBusinessGreetingMessage"]],
-  ["BusinessGreetingMessage", ["businessGreetingMessage"]],
-  ["InputBusinessAwayMessage", ["inputBusinessAwayMessage"]],
-  ["BusinessAwayMessage", ["businessAwayMessage"]],
-  ["Timezone", ["timezone"]],
-  ["help.TimezonesList", ["help.timezonesListNotModified", "help.timezonesList"]],
-  ["QuickReply", ["quickReply"]],
-  ["InputQuickReplyShortcut", ["inputQuickReplyShortcut", "inputQuickReplyShortcutId"]],
-  ["messages.QuickReplies", ["messages.quickReplies", "messages.quickRepliesNotModified"]],
-  ["ConnectedBot", ["connectedBot"]],
-  ["account.ConnectedBots", ["account.connectedBots"]],
-  ["messages.DialogFilters", ["messages.dialogFilters"]],
-  ["Birthday", ["birthday"]],
-  ["BotBusinessConnection", ["botBusinessConnection"]],
-  ["InputBusinessIntro", ["inputBusinessIntro"]],
-  ["BusinessIntro", ["businessIntro"]],
-  ["messages.MyStickers", ["messages.myStickers"]],
-  ["InputCollectible", ["inputCollectibleUsername", "inputCollectiblePhone"]],
-  ["fragment.CollectibleInfo", ["fragment.collectibleInfo"]],
-  ["InputBusinessBotRecipients", ["inputBusinessBotRecipients"]],
-  ["BusinessBotRecipients", ["businessBotRecipients"]],
-  ["ContactBirthday", ["contactBirthday"]],
-  ["contacts.ContactBirthdays", ["contacts.contactBirthdays"]],
-  ["MissingInvitee", ["missingInvitee"]],
-  ["messages.InvitedUsers", ["messages.invitedUsers"]],
-  ["InputBusinessChatLink", ["inputBusinessChatLink"]],
-  ["BusinessChatLink", ["businessChatLink"]],
-  ["account.BusinessChatLinks", ["account.businessChatLinks"]],
-  ["account.ResolvedBusinessChatLinks", ["account.resolvedBusinessChatLinks"]],
-  ["RequestedPeer", ["requestedPeerUser", "requestedPeerChat", "requestedPeerChannel"]],
-  ["SponsoredMessageReportOption", ["sponsoredMessageReportOption"]],
-  ["channels.SponsoredMessageReportResult", ["channels.sponsoredMessageReportResultChooseOption", "channels.sponsoredMessageReportResultAdsHidden", "channels.sponsoredMessageReportResultReported"]],
-  ["stats.BroadcastRevenueStats", ["stats.broadcastRevenueStats"]],
-  ["stats.BroadcastRevenueWithdrawalUrl", ["stats.broadcastRevenueWithdrawalUrl"]],
-  ["BroadcastRevenueTransaction", ["broadcastRevenueTransactionProceeds", "broadcastRevenueTransactionWithdrawal", "broadcastRevenueTransactionRefund"]],
-  ["stats.BroadcastRevenueTransactions", ["stats.broadcastRevenueTransactions"]],
-  ["ReactionNotificationsFrom", ["reactionNotificationsFromContacts", "reactionNotificationsFromAll"]],
-  ["ReactionsNotifySettings", ["reactionsNotifySettings"]],
-  ["BroadcastRevenueBalances", ["broadcastRevenueBalances"]],
-  ["AvailableEffect", ["availableEffect"]],
-  ["messages.AvailableEffects", ["messages.availableEffectsNotModified", "messages.availableEffects"]],
-  ["FactCheck", ["factCheck"]],
-  ["StarsTransactionPeer", ["starsTransactionPeerUnsupported", "starsTransactionPeerAppStore", "starsTransactionPeerPlayMarket", "starsTransactionPeerPremiumBot", "starsTransactionPeerFragment", "starsTransactionPeer", "starsTransactionPeerAds", "starsTransactionPeerAPI"]],
-  ["StarsTopupOption", ["starsTopupOption"]],
-  ["StarsTransaction", ["starsTransaction"]],
-  ["payments.StarsStatus", ["payments.starsStatus"]],
-  ["FoundStory", ["foundStory"]],
-  ["stories.FoundStories", ["stories.foundStories"]],
-  ["GeoPointAddress", ["geoPointAddress"]],
-  ["StarsRevenueStatus", ["starsRevenueStatus"]],
-  ["payments.StarsRevenueStats", ["payments.starsRevenueStats"]],
-  ["payments.StarsRevenueWithdrawalUrl", ["payments.starsRevenueWithdrawalUrl"]],
-  ["payments.StarsRevenueAdsAccountUrl", ["payments.starsRevenueAdsAccountUrl"]],
-  ["InputStarsTransaction", ["inputStarsTransaction"]],
-  ["StarsGiftOption", ["starsGiftOption"]],
-  ["bots.PopularAppBots", ["bots.popularAppBots"]],
-  ["BotPreviewMedia", ["botPreviewMedia"]],
-  ["bots.PreviewInfo", ["bots.previewInfo"]],
-  ["StarsSubscriptionPricing", ["starsSubscriptionPricing"]],
-  ["StarsSubscription", ["starsSubscription"]],
-  ["MessageReactor", ["messageReactor"]],
-  ["StarsGiveawayOption", ["starsGiveawayOption"]],
-  ["StarsGiveawayWinnersOption", ["starsGiveawayWinnersOption"]],
-  ["StarGift", ["starGift", "starGiftUnique"]],
-  ["payments.StarGifts", ["payments.starGiftsNotModified", "payments.starGifts"]],
-  ["MessageReportOption", ["messageReportOption"]],
-  ["ReportResult", ["reportResultChooseOption", "reportResultAddComment", "reportResultReported"]],
-  ["messages.BotPreparedInlineMessage", ["messages.botPreparedInlineMessage"]],
-  ["messages.PreparedInlineMessage", ["messages.preparedInlineMessage"]],
-  ["BotAppSettings", ["botAppSettings"]],
-  ["StarRefProgram", ["starRefProgram"]],
-  ["ConnectedBotStarRef", ["connectedBotStarRef"]],
-  ["payments.ConnectedStarRefBots", ["payments.connectedStarRefBots"]],
-  ["payments.SuggestedStarRefBots", ["payments.suggestedStarRefBots"]],
-  ["StarsAmount", ["starsAmount"]],
-  ["messages.FoundStickers", ["messages.foundStickersNotModified", "messages.foundStickers"]],
-  ["BotVerifierSettings", ["botVerifierSettings"]],
-  ["BotVerification", ["botVerification"]],
-  ["StarGiftAttribute", ["starGiftAttributeModel", "starGiftAttributePattern", "starGiftAttributeBackdrop", "starGiftAttributeOriginalDetails"]],
-  ["payments.StarGiftUpgradePreview", ["payments.starGiftUpgradePreview"]],
-  ["users.Users", ["users.users", "users.usersSlice"]],
-  ["payments.UniqueStarGift", ["payments.uniqueStarGift"]],
-  ["messages.WebPagePreview", ["messages.webPagePreview"]],
-  ["SavedStarGift", ["savedStarGift"]],
-  ["payments.SavedStarGifts", ["payments.savedStarGifts"]],
-  ["InputSavedStarGift", ["inputSavedStarGiftUser", "inputSavedStarGiftChat"]],
-  ["payments.StarGiftWithdrawalUrl", ["payments.starGiftWithdrawalUrl"]],
-  ["PaidReactionPrivacy", ["paidReactionPrivacyDefault", "paidReactionPrivacyAnonymous", "paidReactionPrivacyPeer"]],
-  ["account.PaidMessagesRevenue", ["account.paidMessagesRevenue"]],
-  ["RequirementToContact", ["requirementToContactEmpty", "requirementToContactPremium", "requirementToContactPaidMessages"]],
-]);
-
-const types: Map<string, Parameters> = new Map([
-  [
-    "resPQ",
-    [
-      0x05162463,
-      [
-        ["nonce", "int128"],
-        ["server_nonce", "int128"],
-        ["pq", "bytes"],
-        ["server_public_key_fingerprints", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "p_q_inner_data_dc",
-    [
-      0xA9F55F95,
-      [
-        ["pq", "bytes"],
-        ["p", "bytes"],
-        ["q", "bytes"],
-        ["nonce", "int128"],
-        ["server_nonce", "int128"],
-        ["new_nonce", "int256"],
-        ["dc", "int"],
-      ],
-    ],
-  ],
-  [
-    "p_q_inner_data_temp_dc",
-    [
-      0x56FDDF88,
-      [
-        ["pq", "bytes"],
-        ["p", "bytes"],
-        ["q", "bytes"],
-        ["nonce", "int128"],
-        ["server_nonce", "int128"],
-        ["new_nonce", "int256"],
-        ["dc", "int"],
-        ["expires_in", "int"],
-      ],
-    ],
-  ],
-  [
-    "server_DH_params_ok",
-    [
-      0xD0E8075C,
-      [
-        ["nonce", "int128"],
-        ["server_nonce", "int128"],
-        ["encrypted_answer", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "server_DH_inner_data",
-    [
-      0xB5890DBA,
-      [
-        ["nonce", "int128"],
-        ["server_nonce", "int128"],
-        ["g", "int"],
-        ["dh_prime", "bytes"],
-        ["g_a", "bytes"],
-        ["server_time", "int"],
-      ],
-    ],
-  ],
-  [
-    "client_DH_inner_data",
-    [
-      0x6643B654,
-      [
-        ["nonce", "int128"],
-        ["server_nonce", "int128"],
-        ["retry_id", "long"],
-        ["g_b", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "dh_gen_ok",
-    [
-      0x3BCBF734,
-      [
-        ["nonce", "int128"],
-        ["server_nonce", "int128"],
-        ["new_nonce_hash1", "int128"],
-      ],
-    ],
-  ],
-  [
-    "dh_gen_retry",
-    [
-      0x46DC1FB9,
-      [
-        ["nonce", "int128"],
-        ["server_nonce", "int128"],
-        ["new_nonce_hash2", "int128"],
-      ],
-    ],
-  ],
-  [
-    "dh_gen_fail",
-    [
-      0xA69DAE02,
-      [
-        ["nonce", "int128"],
-        ["server_nonce", "int128"],
-        ["new_nonce_hash3", "int128"],
-      ],
-    ],
-  ],
-  [
-    "bind_auth_key_inner",
-    [
-      0x75A3F765,
-      [
-        ["nonce", "long"],
-        ["temp_auth_key_id", "long"],
-        ["perm_auth_key_id", "long"],
-        ["temp_session_id", "long"],
-        ["expires_at", "int"],
-      ],
-    ],
-  ],
-  [
-    "rpc_error",
-    [
-      0x2144CA19,
-      [
-        ["error_code", "int"],
-        ["error_message", "string"],
-      ],
-    ],
-  ],
-  [
-    "rpc_answer_unknown",
-    [
-      0x5E2AD36E,
-      [],
-    ],
-  ],
-  [
-    "rpc_answer_dropped_running",
-    [
-      0xCD78E586,
-      [],
-    ],
-  ],
-  [
-    "rpc_answer_dropped",
-    [
-      0xA43AD8B7,
-      [
-        ["msg_id", "long"],
-        ["seq_no", "int"],
-        ["bytes", "int"],
-      ],
-    ],
-  ],
-  [
-    "future_salt",
-    [
-      0x0949D9DC,
-      [
-        ["valid_since", "int"],
-        ["valid_until", "int"],
-        ["salt", "long"],
-      ],
-    ],
-  ],
-  [
-    "future_salts",
-    [
-      0xAE500895,
-      [
-        ["req_msg_id", "long"],
-        ["now", "int"],
-        ["salts", "vector<FutureSalt>"],
-      ],
-    ],
-  ],
-  [
-    "pong",
-    [
-      0x347773C5,
-      [
-        ["msg_id", "long"],
-        ["ping_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "destroy_session_ok",
-    [
-      0xE22045FC,
-      [
-        ["session_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "destroy_session_none",
-    [
-      0x62D350C9,
-      [
-        ["session_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "new_session_created",
-    [
-      0x9EC20908,
-      [
-        ["first_msg_id", "long"],
-        ["unique_id", "long"],
-        ["server_salt", "long"],
-      ],
-    ],
-  ],
-  [
-    "gzip_packed",
-    [
-      0x3072CFA1,
-      [
-        ["packed_data", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "msgs_ack",
-    [
-      0x62D6B459,
-      [
-        ["msg_ids", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "bad_msg_notification",
-    [
-      0xA7EFF811,
-      [
-        ["bad_msg_id", "long"],
-        ["bad_msg_seqno", "int"],
-        ["error_code", "int"],
-      ],
-    ],
-  ],
-  [
-    "bad_server_salt",
-    [
-      0xEDAB447B,
-      [
-        ["bad_msg_id", "long"],
-        ["bad_msg_seqno", "int"],
-        ["error_code", "int"],
-        ["new_server_salt", "long"],
-      ],
-    ],
-  ],
-  [
-    "msg_resend_req",
-    [
-      0x7D861A08,
-      [
-        ["msg_ids", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "msgs_state_req",
-    [
-      0xDA69FB52,
-      [
-        ["msg_ids", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "msgs_state_info",
-    [
-      0x04DEB57D,
-      [
-        ["req_msg_id", "long"],
-        ["info", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "msgs_all_info",
-    [
-      0x8CC0D131,
-      [
-        ["msg_ids", "Vector<long>"],
-        ["info", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "msg_detailed_info",
-    [
-      0x276D3EC6,
-      [
-        ["msg_id", "long"],
-        ["answer_msg_id", "long"],
-        ["bytes", "int"],
-        ["status", "int"],
-      ],
-    ],
-  ],
-  [
-    "msg_new_detailed_info",
-    [
-      0x809DB6DF,
-      [
-        ["answer_msg_id", "long"],
-        ["bytes", "int"],
-        ["status", "int"],
-      ],
-    ],
-  ],
-  [
-    "destroy_auth_key_ok",
-    [
-      0xF660E1D4,
-      [],
-    ],
-  ],
-  [
-    "destroy_auth_key_none",
-    [
-      0x0A9F2259,
-      [],
-    ],
-  ],
-  [
-    "destroy_auth_key_fail",
-    [
-      0xEA109B13,
-      [],
-    ],
-  ],
-  [
-    "http_wait",
-    [
-      0x9299359F,
-      [
-        ["max_delay", "int"],
-        ["wait_after", "int"],
-        ["max_wait", "int"],
-      ],
-    ],
-  ],
-  [
-    "true",
-    [
-      0x3FEDD339,
-      [],
-    ],
-  ],
-  [
-    "error",
-    [
-      0xC4B9F9BB,
-      [
-        ["code", "int"],
-        ["text", "string"],
-      ],
-    ],
-  ],
-  [
-    "ipPort",
-    [
-      0xD433AD73,
-      [
-        ["ipv4", "int"],
-        ["port", "int"],
-      ],
-    ],
-  ],
-  [
-    "ipPortSecret",
-    [
-      0x37982646,
-      [
-        ["ipv4", "int"],
-        ["port", "int"],
-        ["secret", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "accessPointRule",
-    [
-      0x4679B65F,
-      [
-        ["phone_prefix_rules", "string"],
-        ["dc_id", "int"],
-        ["ips", "vector<IpPort>"],
-      ],
-    ],
-  ],
-  [
-    "help.configSimple",
-    [
-      0x5A592A6C,
-      [
-        ["date", "int"],
-        ["expires", "int"],
-        ["rules", "vector<AccessPointRule>"],
-      ],
-    ],
-  ],
-  [
-    "inputPeerPhotoFileLocationLegacy",
-    [
-      0x27D69997,
-      [
-        ["flags", "#"],
-        ["big", "flags.0?true"],
-        ["peer", "InputPeer"],
-        ["volume_id", "long"],
-        ["local_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputStickerSetThumbLegacy",
-    [
-      0x0DBAEAE9,
-      [
-        ["stickerset", "InputStickerSet"],
-        ["volume_id", "long"],
-        ["local_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputPeerEmpty",
-    [
-      0x7F3B18EA,
-      [],
-    ],
-  ],
-  [
-    "inputPeerSelf",
-    [
-      0x7DA07EC9,
-      [],
-    ],
-  ],
-  [
-    "inputPeerChat",
-    [
-      0x35A95CB9,
-      [
-        ["chat_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputPeerUser",
-    [
-      0xDDE8A54C,
-      [
-        ["user_id", "long"],
-        ["access_hash", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputPeerChannel",
-    [
-      0x27BCBBFC,
-      [
-        ["channel_id", "long"],
-        ["access_hash", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputPeerUserFromMessage",
-    [
-      0xA87B0A1C,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["user_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputPeerChannelFromMessage",
-    [
-      0xBD2A0840,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["channel_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputUserEmpty",
-    [
-      0xB98886CF,
-      [],
-    ],
-  ],
-  [
-    "inputUserSelf",
-    [
-      0xF7C1B13F,
-      [],
-    ],
-  ],
-  [
-    "inputUser",
-    [
-      0xF21158C6,
-      [
-        ["user_id", "long"],
-        ["access_hash", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputUserFromMessage",
-    [
-      0x1DA448E2,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["user_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputPhoneContact",
-    [
-      0xF392B7F4,
-      [
-        ["client_id", "long"],
-        ["phone", "string"],
-        ["first_name", "string"],
-        ["last_name", "string"],
-      ],
-    ],
-  ],
-  [
-    "inputFile",
-    [
-      0xF52FF27F,
-      [
-        ["id", "long"],
-        ["parts", "int"],
-        ["name", "string"],
-        ["md5_checksum", "string"],
-      ],
-    ],
-  ],
-  [
-    "inputFileBig",
-    [
-      0xFA4F0BB5,
-      [
-        ["id", "long"],
-        ["parts", "int"],
-        ["name", "string"],
-      ],
-    ],
-  ],
-  [
-    "inputFileStoryDocument",
-    [
-      0x62DC8B48,
-      [
-        ["id", "InputDocument"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaEmpty",
-    [
-      0x9664F57F,
-      [],
-    ],
-  ],
-  [
-    "inputMediaUploadedPhoto",
-    [
-      0x1E287D04,
-      [
-        ["flags", "#"],
-        ["spoiler", "flags.2?true"],
-        ["file", "InputFile"],
-        ["stickers", "flags.0?Vector<InputDocument>"],
-        ["ttl_seconds", "flags.1?int"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaPhoto",
-    [
-      0xB3BA0635,
-      [
-        ["flags", "#"],
-        ["spoiler", "flags.1?true"],
-        ["id", "InputPhoto"],
-        ["ttl_seconds", "flags.0?int"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaGeoPoint",
-    [
-      0xF9C44144,
-      [
-        ["geo_point", "InputGeoPoint"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaContact",
-    [
-      0xF8AB7DFB,
-      [
-        ["phone_number", "string"],
-        ["first_name", "string"],
-        ["last_name", "string"],
-        ["vcard", "string"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaUploadedDocument",
-    [
-      0x037C9330,
-      [
-        ["flags", "#"],
-        ["nosound_video", "flags.3?true"],
-        ["force_file", "flags.4?true"],
-        ["spoiler", "flags.5?true"],
-        ["file", "InputFile"],
-        ["thumb", "flags.2?InputFile"],
-        ["mime_type", "string"],
-        ["attributes", "Vector<DocumentAttribute>"],
-        ["stickers", "flags.0?Vector<InputDocument>"],
-        ["video_cover", "flags.6?InputPhoto"],
-        ["video_timestamp", "flags.7?int"],
-        ["ttl_seconds", "flags.1?int"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaDocument",
-    [
-      0xA8763AB5,
-      [
-        ["flags", "#"],
-        ["spoiler", "flags.2?true"],
-        ["id", "InputDocument"],
-        ["video_cover", "flags.3?InputPhoto"],
-        ["video_timestamp", "flags.4?int"],
-        ["ttl_seconds", "flags.0?int"],
-        ["query", "flags.1?string"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaVenue",
-    [
-      0xC13D1C11,
-      [
-        ["geo_point", "InputGeoPoint"],
-        ["title", "string"],
-        ["address", "string"],
-        ["provider", "string"],
-        ["venue_id", "string"],
-        ["venue_type", "string"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaPhotoExternal",
-    [
-      0xE5BBFE1A,
-      [
-        ["flags", "#"],
-        ["spoiler", "flags.1?true"],
-        ["url", "string"],
-        ["ttl_seconds", "flags.0?int"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaDocumentExternal",
-    [
-      0x779600F9,
-      [
-        ["flags", "#"],
-        ["spoiler", "flags.1?true"],
-        ["url", "string"],
-        ["ttl_seconds", "flags.0?int"],
-        ["video_cover", "flags.2?InputPhoto"],
-        ["video_timestamp", "flags.3?int"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaGame",
-    [
-      0xD33F43F3,
-      [
-        ["id", "InputGame"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaInvoice",
-    [
-      0x405FEF0D,
-      [
-        ["flags", "#"],
-        ["title", "string"],
-        ["description", "string"],
-        ["photo", "flags.0?InputWebDocument"],
-        ["invoice", "Invoice"],
-        ["payload", "bytes"],
-        ["provider", "flags.3?string"],
-        ["provider_data", "DataJSON"],
-        ["start_param", "flags.1?string"],
-        ["extended_media", "flags.2?InputMedia"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaGeoLive",
-    [
-      0x971FA843,
-      [
-        ["flags", "#"],
-        ["stopped", "flags.0?true"],
-        ["geo_point", "InputGeoPoint"],
-        ["heading", "flags.2?int"],
-        ["period", "flags.1?int"],
-        ["proximity_notification_radius", "flags.3?int"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaPoll",
-    [
-      0x0F94E5F1,
-      [
-        ["flags", "#"],
-        ["poll", "Poll"],
-        ["correct_answers", "flags.0?Vector<bytes>"],
-        ["solution", "flags.1?string"],
-        ["solution_entities", "flags.1?Vector<MessageEntity>"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaDice",
-    [
-      0xE66FBF7B,
-      [
-        ["emoticon", "string"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaStory",
-    [
-      0x89FDD778,
-      [
-        ["peer", "InputPeer"],
-        ["id", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaWebPage",
-    [
-      0xC21B8849,
-      [
-        ["flags", "#"],
-        ["force_large_media", "flags.0?true"],
-        ["force_small_media", "flags.1?true"],
-        ["optional", "flags.2?true"],
-        ["url", "string"],
-      ],
-    ],
-  ],
-  [
-    "inputMediaPaidMedia",
-    [
-      0xC4103386,
-      [
-        ["flags", "#"],
-        ["stars_amount", "long"],
-        ["extended_media", "Vector<InputMedia>"],
-        ["payload", "flags.0?string"],
-      ],
-    ],
-  ],
-  [
-    "inputChatPhotoEmpty",
-    [
-      0x1CA48F57,
-      [],
-    ],
-  ],
-  [
-    "inputChatUploadedPhoto",
-    [
-      0xBDCDAEC0,
-      [
-        ["flags", "#"],
-        ["file", "flags.0?InputFile"],
-        ["video", "flags.1?InputFile"],
-        ["video_start_ts", "flags.2?double"],
-        ["video_emoji_markup", "flags.3?VideoSize"],
-      ],
-    ],
-  ],
-  [
-    "inputChatPhoto",
-    [
-      0x8953AD37,
-      [
-        ["id", "InputPhoto"],
-      ],
-    ],
-  ],
-  [
-    "inputGeoPointEmpty",
-    [
-      0xE4C123D6,
-      [],
-    ],
-  ],
-  [
-    "inputGeoPoint",
-    [
-      0x48222FAF,
-      [
-        ["flags", "#"],
-        ["lat", "double"],
-        ["long", "double"],
-        ["accuracy_radius", "flags.0?int"],
-      ],
-    ],
-  ],
-  [
-    "inputPhotoEmpty",
-    [
-      0x1CD7BF0D,
-      [],
-    ],
-  ],
-  [
-    "inputPhoto",
-    [
-      0x3BB3B94A,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["file_reference", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "inputFileLocation",
-    [
-      0xDFDAABE1,
-      [
-        ["volume_id", "long"],
-        ["local_id", "int"],
-        ["secret", "long"],
-        ["file_reference", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "inputEncryptedFileLocation",
-    [
-      0xF5235D55,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputDocumentFileLocation",
-    [
-      0xBAD07584,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["file_reference", "bytes"],
-        ["thumb_size", "string"],
-      ],
-    ],
-  ],
-  [
-    "inputSecureFileLocation",
-    [
-      0xCBC7EE28,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputTakeoutFileLocation",
-    [
-      0x29BE5899,
-      [],
-    ],
-  ],
-  [
-    "inputPhotoFileLocation",
-    [
-      0x40181FFE,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["file_reference", "bytes"],
-        ["thumb_size", "string"],
-      ],
-    ],
-  ],
-  [
-    "inputPhotoLegacyFileLocation",
-    [
-      0xD83466F3,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["file_reference", "bytes"],
-        ["volume_id", "long"],
-        ["local_id", "int"],
-        ["secret", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputPeerPhotoFileLocation",
-    [
-      0x37257E99,
-      [
-        ["flags", "#"],
-        ["big", "flags.0?true"],
-        ["peer", "InputPeer"],
-        ["photo_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputStickerSetThumb",
-    [
-      0x9D84F3DB,
-      [
-        ["stickerset", "InputStickerSet"],
-        ["thumb_version", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputGroupCallStream",
-    [
-      0x0598A92A,
-      [
-        ["flags", "#"],
-        ["call", "InputGroupCall"],
-        ["time_ms", "long"],
-        ["scale", "int"],
-        ["video_channel", "flags.0?int"],
-        ["video_quality", "flags.0?int"],
-      ],
-    ],
-  ],
-  [
-    "peerUser",
-    [
-      0x59511722,
-      [
-        ["user_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "peerChat",
-    [
-      0x36C6019A,
-      [
-        ["chat_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "peerChannel",
-    [
-      0xA2A5371E,
-      [
-        ["channel_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "storage.fileUnknown",
-    [
-      0xAA963B05,
-      [],
-    ],
-  ],
-  [
-    "storage.filePartial",
-    [
-      0x40BC6F52,
-      [],
-    ],
-  ],
-  [
-    "storage.fileJpeg",
-    [
-      0x007EFE0E,
-      [],
-    ],
-  ],
-  [
-    "storage.fileGif",
-    [
-      0xCAE1AADF,
-      [],
-    ],
-  ],
-  [
-    "storage.filePng",
-    [
-      0x0A4F63C0,
-      [],
-    ],
-  ],
-  [
-    "storage.filePdf",
-    [
-      0xAE1E508D,
-      [],
-    ],
-  ],
-  [
-    "storage.fileMp3",
-    [
-      0x528A0677,
-      [],
-    ],
-  ],
-  [
-    "storage.fileMov",
-    [
-      0x4B09EBBC,
-      [],
-    ],
-  ],
-  [
-    "storage.fileMp4",
-    [
-      0xB3CEA0E4,
-      [],
-    ],
-  ],
-  [
-    "storage.fileWebp",
-    [
-      0x1081464C,
-      [],
-    ],
-  ],
-  [
-    "userEmpty",
-    [
-      0xD3BC4B7A,
-      [
-        ["id", "long"],
-      ],
-    ],
-  ],
-  [
-    "user",
-    [
-      0x020B1422,
-      [
-        ["flags", "#"],
-        ["self", "flags.10?true"],
-        ["contact", "flags.11?true"],
-        ["mutual_contact", "flags.12?true"],
-        ["deleted", "flags.13?true"],
-        ["bot", "flags.14?true"],
-        ["bot_chat_history", "flags.15?true"],
-        ["bot_nochats", "flags.16?true"],
-        ["verified", "flags.17?true"],
-        ["restricted", "flags.18?true"],
-        ["min", "flags.20?true"],
-        ["bot_inline_geo", "flags.21?true"],
-        ["support", "flags.23?true"],
-        ["scam", "flags.24?true"],
-        ["apply_min_photo", "flags.25?true"],
-        ["fake", "flags.26?true"],
-        ["bot_attach_menu", "flags.27?true"],
-        ["premium", "flags.28?true"],
-        ["attach_menu_enabled", "flags.29?true"],
-        ["flags2", "#"],
-        ["bot_can_edit", "flags2.1?true"],
-        ["close_friend", "flags2.2?true"],
-        ["stories_hidden", "flags2.3?true"],
-        ["stories_unavailable", "flags2.4?true"],
-        ["contact_require_premium", "flags2.10?true"],
-        ["bot_business", "flags2.11?true"],
-        ["bot_has_main_app", "flags2.13?true"],
-        ["id", "long"],
-        ["access_hash", "flags.0?long"],
-        ["first_name", "flags.1?string"],
-        ["last_name", "flags.2?string"],
-        ["username", "flags.3?string"],
-        ["phone", "flags.4?string"],
-        ["photo", "flags.5?UserProfilePhoto"],
-        ["status", "flags.6?UserStatus"],
-        ["bot_info_version", "flags.14?int"],
-        ["restriction_reason", "flags.18?Vector<RestrictionReason>"],
-        ["bot_inline_placeholder", "flags.19?string"],
-        ["lang_code", "flags.22?string"],
-        ["emoji_status", "flags.30?EmojiStatus"],
-        ["usernames", "flags2.0?Vector<Username>"],
-        ["stories_max_id", "flags2.5?int"],
-        ["color", "flags2.8?PeerColor"],
-        ["profile_color", "flags2.9?PeerColor"],
-        ["bot_active_users", "flags2.12?int"],
-        ["bot_verification_icon", "flags2.14?long"],
-        ["send_paid_messages_stars", "flags2.15?long"],
-      ],
-    ],
-  ],
-  [
-    "userProfilePhotoEmpty",
-    [
-      0x4F11BAE1,
-      [],
-    ],
-  ],
-  [
-    "userProfilePhoto",
-    [
-      0x82D1F706,
-      [
-        ["flags", "#"],
-        ["has_video", "flags.0?true"],
-        ["personal", "flags.2?true"],
-        ["photo_id", "long"],
-        ["stripped_thumb", "flags.1?bytes"],
-        ["dc_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "userStatusEmpty",
-    [
-      0x09D05049,
-      [],
-    ],
-  ],
-  [
-    "userStatusOnline",
-    [
-      0xEDB93949,
-      [
-        ["expires", "int"],
-      ],
-    ],
-  ],
-  [
-    "userStatusOffline",
-    [
-      0x008C703F,
-      [
-        ["was_online", "int"],
-      ],
-    ],
-  ],
-  [
-    "userStatusRecently",
-    [
-      0x7B197DC8,
-      [
-        ["flags", "#"],
-        ["by_me", "flags.0?true"],
-      ],
-    ],
-  ],
-  [
-    "userStatusLastWeek",
-    [
-      0x541A1D1A,
-      [
-        ["flags", "#"],
-        ["by_me", "flags.0?true"],
-      ],
-    ],
-  ],
-  [
-    "userStatusLastMonth",
-    [
-      0x65899777,
-      [
-        ["flags", "#"],
-        ["by_me", "flags.0?true"],
-      ],
-    ],
-  ],
-  [
-    "chatEmpty",
-    [
-      0x29562865,
-      [
-        ["id", "long"],
-      ],
-    ],
-  ],
-  [
-    "chat",
-    [
-      0x41CBF256,
-      [
-        ["flags", "#"],
-        ["creator", "flags.0?true"],
-        ["left", "flags.2?true"],
-        ["deactivated", "flags.5?true"],
-        ["call_active", "flags.23?true"],
-        ["call_not_empty", "flags.24?true"],
-        ["noforwards", "flags.25?true"],
-        ["id", "long"],
-        ["title", "string"],
-        ["photo", "ChatPhoto"],
-        ["participants_count", "int"],
-        ["date", "int"],
-        ["version", "int"],
-        ["migrated_to", "flags.6?InputChannel"],
-        ["admin_rights", "flags.14?ChatAdminRights"],
-        ["default_banned_rights", "flags.18?ChatBannedRights"],
-      ],
-    ],
-  ],
-  [
-    "chatForbidden",
-    [
-      0x6592A1A7,
-      [
-        ["id", "long"],
-        ["title", "string"],
-      ],
-    ],
-  ],
-  [
-    "channel",
-    [
-      0x7482147E,
-      [
-        ["flags", "#"],
-        ["creator", "flags.0?true"],
-        ["left", "flags.2?true"],
-        ["broadcast", "flags.5?true"],
-        ["verified", "flags.7?true"],
-        ["megagroup", "flags.8?true"],
-        ["restricted", "flags.9?true"],
-        ["signatures", "flags.11?true"],
-        ["min", "flags.12?true"],
-        ["scam", "flags.19?true"],
-        ["has_link", "flags.20?true"],
-        ["has_geo", "flags.21?true"],
-        ["slowmode_enabled", "flags.22?true"],
-        ["call_active", "flags.23?true"],
-        ["call_not_empty", "flags.24?true"],
-        ["fake", "flags.25?true"],
-        ["gigagroup", "flags.26?true"],
-        ["noforwards", "flags.27?true"],
-        ["join_to_send", "flags.28?true"],
-        ["join_request", "flags.29?true"],
-        ["forum", "flags.30?true"],
-        ["flags2", "#"],
-        ["stories_hidden", "flags2.1?true"],
-        ["stories_hidden_min", "flags2.2?true"],
-        ["stories_unavailable", "flags2.3?true"],
-        ["signature_profiles", "flags2.12?true"],
-        ["id", "long"],
-        ["access_hash", "flags.13?long"],
-        ["title", "string"],
-        ["username", "flags.6?string"],
-        ["photo", "ChatPhoto"],
-        ["date", "int"],
-        ["restriction_reason", "flags.9?Vector<RestrictionReason>"],
-        ["admin_rights", "flags.14?ChatAdminRights"],
-        ["banned_rights", "flags.15?ChatBannedRights"],
-        ["default_banned_rights", "flags.18?ChatBannedRights"],
-        ["participants_count", "flags.17?int"],
-        ["usernames", "flags2.0?Vector<Username>"],
-        ["stories_max_id", "flags2.4?int"],
-        ["color", "flags2.7?PeerColor"],
-        ["profile_color", "flags2.8?PeerColor"],
-        ["emoji_status", "flags2.9?EmojiStatus"],
-        ["level", "flags2.10?int"],
-        ["subscription_until_date", "flags2.11?int"],
-        ["bot_verification_icon", "flags2.13?long"],
-        ["send_paid_messages_stars", "flags2.14?long"],
-      ],
-    ],
-  ],
-  [
-    "channelForbidden",
-    [
-      0x17D493D5,
-      [
-        ["flags", "#"],
-        ["broadcast", "flags.5?true"],
-        ["megagroup", "flags.8?true"],
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["title", "string"],
-        ["until_date", "flags.16?int"],
-      ],
-    ],
-  ],
-  [
-    "chatFull",
-    [
-      0x2633421B,
-      [
-        ["flags", "#"],
-        ["can_set_username", "flags.7?true"],
-        ["has_scheduled", "flags.8?true"],
-        ["translations_disabled", "flags.19?true"],
-        ["id", "long"],
-        ["about", "string"],
-        ["participants", "ChatParticipants"],
-        ["chat_photo", "flags.2?Photo"],
-        ["notify_settings", "PeerNotifySettings"],
-        ["exported_invite", "flags.13?ExportedChatInvite"],
-        ["bot_info", "flags.3?Vector<BotInfo>"],
-        ["pinned_msg_id", "flags.6?int"],
-        ["folder_id", "flags.11?int"],
-        ["call", "flags.12?InputGroupCall"],
-        ["ttl_period", "flags.14?int"],
-        ["groupcall_default_join_as", "flags.15?Peer"],
-        ["theme_emoticon", "flags.16?string"],
-        ["requests_pending", "flags.17?int"],
-        ["recent_requesters", "flags.17?Vector<long>"],
-        ["available_reactions", "flags.18?ChatReactions"],
-        ["reactions_limit", "flags.20?int"],
-      ],
-    ],
-  ],
-  [
-    "channelFull",
-    [
-      0x52D6806B,
-      [
-        ["flags", "#"],
-        ["can_view_participants", "flags.3?true"],
-        ["can_set_username", "flags.6?true"],
-        ["can_set_stickers", "flags.7?true"],
-        ["hidden_prehistory", "flags.10?true"],
-        ["can_set_location", "flags.16?true"],
-        ["has_scheduled", "flags.19?true"],
-        ["can_view_stats", "flags.20?true"],
-        ["blocked", "flags.22?true"],
-        ["flags2", "#"],
-        ["can_delete_channel", "flags2.0?true"],
-        ["antispam", "flags2.1?true"],
-        ["participants_hidden", "flags2.2?true"],
-        ["translations_disabled", "flags2.3?true"],
-        ["stories_pinned_available", "flags2.5?true"],
-        ["view_forum_as_messages", "flags2.6?true"],
-        ["restricted_sponsored", "flags2.11?true"],
-        ["can_view_revenue", "flags2.12?true"],
-        ["paid_media_allowed", "flags2.14?true"],
-        ["can_view_stars_revenue", "flags2.15?true"],
-        ["paid_reactions_available", "flags2.16?true"],
-        ["stargifts_available", "flags2.19?true"],
-        ["paid_messages_available", "flags2.20?true"],
-        ["id", "long"],
-        ["about", "string"],
-        ["participants_count", "flags.0?int"],
-        ["admins_count", "flags.1?int"],
-        ["kicked_count", "flags.2?int"],
-        ["banned_count", "flags.2?int"],
-        ["online_count", "flags.13?int"],
-        ["read_inbox_max_id", "int"],
-        ["read_outbox_max_id", "int"],
-        ["unread_count", "int"],
-        ["chat_photo", "Photo"],
-        ["notify_settings", "PeerNotifySettings"],
-        ["exported_invite", "flags.23?ExportedChatInvite"],
-        ["bot_info", "Vector<BotInfo>"],
-        ["migrated_from_chat_id", "flags.4?long"],
-        ["migrated_from_max_id", "flags.4?int"],
-        ["pinned_msg_id", "flags.5?int"],
-        ["stickerset", "flags.8?StickerSet"],
-        ["available_min_id", "flags.9?int"],
-        ["folder_id", "flags.11?int"],
-        ["linked_chat_id", "flags.14?long"],
-        ["location", "flags.15?ChannelLocation"],
-        ["slowmode_seconds", "flags.17?int"],
-        ["slowmode_next_send_date", "flags.18?int"],
-        ["stats_dc", "flags.12?int"],
-        ["pts", "int"],
-        ["call", "flags.21?InputGroupCall"],
-        ["ttl_period", "flags.24?int"],
-        ["pending_suggestions", "flags.25?Vector<string>"],
-        ["groupcall_default_join_as", "flags.26?Peer"],
-        ["theme_emoticon", "flags.27?string"],
-        ["requests_pending", "flags.28?int"],
-        ["recent_requesters", "flags.28?Vector<long>"],
-        ["default_send_as", "flags.29?Peer"],
-        ["available_reactions", "flags.30?ChatReactions"],
-        ["reactions_limit", "flags2.13?int"],
-        ["stories", "flags2.4?PeerStories"],
-        ["wallpaper", "flags2.7?WallPaper"],
-        ["boosts_applied", "flags2.8?int"],
-        ["boosts_unrestrict", "flags2.9?int"],
-        ["emojiset", "flags2.10?StickerSet"],
-        ["bot_verification", "flags2.17?BotVerification"],
-        ["stargifts_count", "flags2.18?int"],
-      ],
-    ],
-  ],
-  [
-    "chatParticipant",
-    [
-      0xC02D4007,
-      [
-        ["user_id", "long"],
-        ["inviter_id", "long"],
-        ["date", "int"],
-      ],
-    ],
-  ],
-  [
-    "chatParticipantCreator",
-    [
-      0xE46BCEE4,
-      [
-        ["user_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "chatParticipantAdmin",
-    [
-      0xA0933F5B,
-      [
-        ["user_id", "long"],
-        ["inviter_id", "long"],
-        ["date", "int"],
-      ],
-    ],
-  ],
-  [
-    "chatParticipantsForbidden",
-    [
-      0x8763D3E1,
-      [
-        ["flags", "#"],
-        ["chat_id", "long"],
-        ["self_participant", "flags.0?ChatParticipant"],
-      ],
-    ],
-  ],
-  [
-    "chatParticipants",
-    [
-      0x3CBC93F8,
-      [
-        ["chat_id", "long"],
-        ["participants", "Vector<ChatParticipant>"],
-        ["version", "int"],
-      ],
-    ],
-  ],
-  [
-    "chatPhotoEmpty",
-    [
-      0x37C1011C,
-      [],
-    ],
-  ],
-  [
-    "chatPhoto",
-    [
-      0x1C6E1C11,
-      [
-        ["flags", "#"],
-        ["has_video", "flags.0?true"],
-        ["photo_id", "long"],
-        ["stripped_thumb", "flags.1?bytes"],
-        ["dc_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEmpty",
-    [
-      0x90A6CA84,
-      [
-        ["flags", "#"],
-        ["id", "int"],
-        ["peer_id", "flags.0?Peer"],
-      ],
-    ],
-  ],
-  [
-    "message",
-    [
-      0xEABCDD4D,
-      [
-        ["flags", "#"],
-        ["out", "flags.1?true"],
-        ["mentioned", "flags.4?true"],
-        ["media_unread", "flags.5?true"],
-        ["silent", "flags.13?true"],
-        ["post", "flags.14?true"],
-        ["from_scheduled", "flags.18?true"],
-        ["legacy", "flags.19?true"],
-        ["edit_hide", "flags.21?true"],
-        ["pinned", "flags.24?true"],
-        ["noforwards", "flags.26?true"],
-        ["invert_media", "flags.27?true"],
-        ["flags2", "#"],
-        ["offline", "flags2.1?true"],
-        ["video_processing_pending", "flags2.4?true"],
-        ["id", "int"],
-        ["from_id", "flags.8?Peer"],
-        ["from_boosts_applied", "flags.29?int"],
-        ["peer_id", "Peer"],
-        ["saved_peer_id", "flags.28?Peer"],
-        ["fwd_from", "flags.2?MessageFwdHeader"],
-        ["via_bot_id", "flags.11?long"],
-        ["via_business_bot_id", "flags2.0?long"],
-        ["reply_to", "flags.3?MessageReplyHeader"],
-        ["date", "int"],
-        ["message", "string"],
-        ["media", "flags.9?MessageMedia"],
-        ["reply_markup", "flags.6?ReplyMarkup"],
-        ["entities", "flags.7?Vector<MessageEntity>"],
-        ["views", "flags.10?int"],
-        ["forwards", "flags.10?int"],
-        ["replies", "flags.23?MessageReplies"],
-        ["edit_date", "flags.15?int"],
-        ["post_author", "flags.16?string"],
-        ["grouped_id", "flags.17?long"],
-        ["reactions", "flags.20?MessageReactions"],
-        ["restriction_reason", "flags.22?Vector<RestrictionReason>"],
-        ["ttl_period", "flags.25?int"],
-        ["quick_reply_shortcut_id", "flags.30?int"],
-        ["effect", "flags2.2?long"],
-        ["factcheck", "flags2.3?FactCheck"],
-        ["report_delivery_until_date", "flags2.5?int"],
-        ["paid_message_stars", "flags2.6?long"],
-      ],
-    ],
-  ],
-  [
-    "messageService",
-    [
-      0xD3D28540,
-      [
-        ["flags", "#"],
-        ["out", "flags.1?true"],
-        ["mentioned", "flags.4?true"],
-        ["media_unread", "flags.5?true"],
-        ["reactions_are_possible", "flags.9?true"],
-        ["silent", "flags.13?true"],
-        ["post", "flags.14?true"],
-        ["legacy", "flags.19?true"],
-        ["id", "int"],
-        ["from_id", "flags.8?Peer"],
-        ["peer_id", "Peer"],
-        ["reply_to", "flags.3?MessageReplyHeader"],
-        ["date", "int"],
-        ["action", "MessageAction"],
-        ["reactions", "flags.20?MessageReactions"],
-        ["ttl_period", "flags.25?int"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaEmpty",
-    [
-      0x3DED6320,
-      [],
-    ],
-  ],
-  [
-    "messageMediaPhoto",
-    [
-      0x695150D7,
-      [
-        ["flags", "#"],
-        ["spoiler", "flags.3?true"],
-        ["photo", "flags.0?Photo"],
-        ["ttl_seconds", "flags.2?int"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaGeo",
-    [
-      0x56E0D474,
-      [
-        ["geo", "GeoPoint"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaContact",
-    [
-      0x70322949,
-      [
-        ["phone_number", "string"],
-        ["first_name", "string"],
-        ["last_name", "string"],
-        ["vcard", "string"],
-        ["user_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaUnsupported",
-    [
-      0x9F84F49E,
-      [],
-    ],
-  ],
-  [
-    "messageMediaDocument",
-    [
-      0x52D8CCD9,
-      [
-        ["flags", "#"],
-        ["nopremium", "flags.3?true"],
-        ["spoiler", "flags.4?true"],
-        ["video", "flags.6?true"],
-        ["round", "flags.7?true"],
-        ["voice", "flags.8?true"],
-        ["document", "flags.0?Document"],
-        ["alt_documents", "flags.5?Vector<Document>"],
-        ["video_cover", "flags.9?Photo"],
-        ["video_timestamp", "flags.10?int"],
-        ["ttl_seconds", "flags.2?int"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaWebPage",
-    [
-      0xDDF10C3B,
-      [
-        ["flags", "#"],
-        ["force_large_media", "flags.0?true"],
-        ["force_small_media", "flags.1?true"],
-        ["manual", "flags.3?true"],
-        ["safe", "flags.4?true"],
-        ["webpage", "WebPage"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaVenue",
-    [
-      0x2EC0533F,
-      [
-        ["geo", "GeoPoint"],
-        ["title", "string"],
-        ["address", "string"],
-        ["provider", "string"],
-        ["venue_id", "string"],
-        ["venue_type", "string"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaGame",
-    [
-      0xFDB19008,
-      [
-        ["game", "Game"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaInvoice",
-    [
-      0xF6A548D3,
-      [
-        ["flags", "#"],
-        ["shipping_address_requested", "flags.1?true"],
-        ["test", "flags.3?true"],
-        ["title", "string"],
-        ["description", "string"],
-        ["photo", "flags.0?WebDocument"],
-        ["receipt_msg_id", "flags.2?int"],
-        ["currency", "string"],
-        ["total_amount", "long"],
-        ["start_param", "string"],
-        ["extended_media", "flags.4?MessageExtendedMedia"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaGeoLive",
-    [
-      0xB940C666,
-      [
-        ["flags", "#"],
-        ["geo", "GeoPoint"],
-        ["heading", "flags.0?int"],
-        ["period", "int"],
-        ["proximity_notification_radius", "flags.1?int"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaPoll",
-    [
-      0x4BD6E798,
-      [
-        ["poll", "Poll"],
-        ["results", "PollResults"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaDice",
-    [
-      0x3F7EE58B,
-      [
-        ["value", "int"],
-        ["emoticon", "string"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaStory",
-    [
-      0x68CB6283,
-      [
-        ["flags", "#"],
-        ["via_mention", "flags.1?true"],
-        ["peer", "Peer"],
-        ["id", "int"],
-        ["story", "flags.0?StoryItem"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaGiveaway",
-    [
-      0xAA073BEB,
-      [
-        ["flags", "#"],
-        ["only_new_subscribers", "flags.0?true"],
-        ["winners_are_visible", "flags.2?true"],
-        ["channels", "Vector<long>"],
-        ["countries_iso2", "flags.1?Vector<string>"],
-        ["prize_description", "flags.3?string"],
-        ["quantity", "int"],
-        ["months", "flags.4?int"],
-        ["stars", "flags.5?long"],
-        ["until_date", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaGiveawayResults",
-    [
-      0xCEAA3EA1,
-      [
-        ["flags", "#"],
-        ["only_new_subscribers", "flags.0?true"],
-        ["refunded", "flags.2?true"],
-        ["channel_id", "long"],
-        ["additional_peers_count", "flags.3?int"],
-        ["launch_msg_id", "int"],
-        ["winners_count", "int"],
-        ["unclaimed_count", "int"],
-        ["winners", "Vector<long>"],
-        ["months", "flags.4?int"],
-        ["stars", "flags.5?long"],
-        ["prize_description", "flags.1?string"],
-        ["until_date", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageMediaPaidMedia",
-    [
-      0xA8852491,
-      [
-        ["stars_amount", "long"],
-        ["extended_media", "Vector<MessageExtendedMedia>"],
-      ],
-    ],
-  ],
-  [
-    "messageActionEmpty",
-    [
-      0xB6AEF7B0,
-      [],
-    ],
-  ],
-  [
-    "messageActionChatCreate",
-    [
-      0xBD47CBAD,
-      [
-        ["title", "string"],
-        ["users", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "messageActionChatEditTitle",
-    [
-      0xB5A1CE5A,
-      [
-        ["title", "string"],
-      ],
-    ],
-  ],
-  [
-    "messageActionChatEditPhoto",
-    [
-      0x7FCB13A8,
-      [
-        ["photo", "Photo"],
-      ],
-    ],
-  ],
-  [
-    "messageActionChatDeletePhoto",
-    [
-      0x95E3FBEF,
-      [],
-    ],
-  ],
-  [
-    "messageActionChatAddUser",
-    [
-      0x15CEFD00,
-      [
-        ["users", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "messageActionChatDeleteUser",
-    [
-      0xA43F30CC,
-      [
-        ["user_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "messageActionChatJoinedByLink",
-    [
-      0x031224C3,
-      [
-        ["inviter_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "messageActionChannelCreate",
-    [
-      0x95D2AC92,
-      [
-        ["title", "string"],
-      ],
-    ],
-  ],
-  [
-    "messageActionChatMigrateTo",
-    [
-      0xE1037F92,
-      [
-        ["channel_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "messageActionChannelMigrateFrom",
-    [
-      0xEA3948E9,
-      [
-        ["title", "string"],
-        ["chat_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "messageActionPinMessage",
-    [
-      0x94BD38ED,
-      [],
-    ],
-  ],
-  [
-    "messageActionHistoryClear",
-    [
-      0x9FBAB604,
-      [],
-    ],
-  ],
-  [
-    "messageActionGameScore",
-    [
-      0x92A72876,
-      [
-        ["game_id", "long"],
-        ["score", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageActionPaymentSentMe",
-    [
-      0xFFA00CCC,
-      [
-        ["flags", "#"],
-        ["recurring_init", "flags.2?true"],
-        ["recurring_used", "flags.3?true"],
-        ["currency", "string"],
-        ["total_amount", "long"],
-        ["payload", "bytes"],
-        ["info", "flags.0?PaymentRequestedInfo"],
-        ["shipping_option_id", "flags.1?string"],
-        ["charge", "PaymentCharge"],
-        ["subscription_until_date", "flags.4?int"],
-      ],
-    ],
-  ],
-  [
-    "messageActionPaymentSent",
-    [
-      0xC624B16E,
-      [
-        ["flags", "#"],
-        ["recurring_init", "flags.2?true"],
-        ["recurring_used", "flags.3?true"],
-        ["currency", "string"],
-        ["total_amount", "long"],
-        ["invoice_slug", "flags.0?string"],
-        ["subscription_until_date", "flags.4?int"],
-      ],
-    ],
-  ],
-  [
-    "messageActionPhoneCall",
-    [
-      0x80E11A7F,
-      [
-        ["flags", "#"],
-        ["video", "flags.2?true"],
-        ["call_id", "long"],
-        ["reason", "flags.0?PhoneCallDiscardReason"],
-        ["duration", "flags.1?int"],
-      ],
-    ],
-  ],
-  [
-    "messageActionScreenshotTaken",
-    [
-      0x4792929B,
-      [],
-    ],
-  ],
-  [
-    "messageActionCustomAction",
-    [
-      0xFAE69F56,
-      [
-        ["message", "string"],
-      ],
-    ],
-  ],
-  [
-    "messageActionBotAllowed",
-    [
-      0xC516D679,
-      [
-        ["flags", "#"],
-        ["attach_menu", "flags.1?true"],
-        ["from_request", "flags.3?true"],
-        ["domain", "flags.0?string"],
-        ["app", "flags.2?BotApp"],
-      ],
-    ],
-  ],
-  [
-    "messageActionSecureValuesSentMe",
-    [
-      0x1B287353,
-      [
-        ["values", "Vector<SecureValue>"],
-        ["credentials", "SecureCredentialsEncrypted"],
-      ],
-    ],
-  ],
-  [
-    "messageActionSecureValuesSent",
-    [
-      0xD95C6154,
-      [
-        ["types", "Vector<SecureValueType>"],
-      ],
-    ],
-  ],
-  [
-    "messageActionContactSignUp",
-    [
-      0xF3F25F76,
-      [],
-    ],
-  ],
-  [
-    "messageActionGeoProximityReached",
-    [
-      0x98E0D697,
-      [
-        ["from_id", "Peer"],
-        ["to_id", "Peer"],
-        ["distance", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageActionGroupCall",
-    [
-      0x7A0D7F42,
-      [
-        ["flags", "#"],
-        ["call", "InputGroupCall"],
-        ["duration", "flags.0?int"],
-      ],
-    ],
-  ],
-  [
-    "messageActionInviteToGroupCall",
-    [
-      0x502F92F7,
-      [
-        ["call", "InputGroupCall"],
-        ["users", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "messageActionSetMessagesTTL",
-    [
-      0x3C134D7B,
-      [
-        ["flags", "#"],
-        ["period", "int"],
-        ["auto_setting_from", "flags.0?long"],
-      ],
-    ],
-  ],
-  [
-    "messageActionGroupCallScheduled",
-    [
-      0xB3A07661,
-      [
-        ["call", "InputGroupCall"],
-        ["schedule_date", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageActionSetChatTheme",
-    [
-      0xAA786345,
-      [
-        ["emoticon", "string"],
-      ],
-    ],
-  ],
-  [
-    "messageActionChatJoinedByRequest",
-    [
-      0xEBBCA3CB,
-      [],
-    ],
-  ],
-  [
-    "messageActionWebViewDataSentMe",
-    [
-      0x47DD8079,
-      [
-        ["text", "string"],
-        ["data", "string"],
-      ],
-    ],
-  ],
-  [
-    "messageActionWebViewDataSent",
-    [
-      0xB4C38CB5,
-      [
-        ["text", "string"],
-      ],
-    ],
-  ],
-  [
-    "messageActionGiftPremium",
-    [
-      0x6C6274FA,
-      [
-        ["flags", "#"],
-        ["currency", "string"],
-        ["amount", "long"],
-        ["months", "int"],
-        ["crypto_currency", "flags.0?string"],
-        ["crypto_amount", "flags.0?long"],
-        ["message", "flags.1?TextWithEntities"],
-      ],
-    ],
-  ],
-  [
-    "messageActionTopicCreate",
-    [
-      0x0D999256,
-      [
-        ["flags", "#"],
-        ["title", "string"],
-        ["icon_color", "int"],
-        ["icon_emoji_id", "flags.0?long"],
-      ],
-    ],
-  ],
-  [
-    "messageActionTopicEdit",
-    [
-      0xC0944820,
-      [
-        ["flags", "#"],
-        ["title", "flags.0?string"],
-        ["icon_emoji_id", "flags.1?long"],
-        ["closed", "flags.2?Bool"],
-        ["hidden", "flags.3?Bool"],
-      ],
-    ],
-  ],
-  [
-    "messageActionSuggestProfilePhoto",
-    [
-      0x57DE635E,
-      [
-        ["photo", "Photo"],
-      ],
-    ],
-  ],
-  [
-    "messageActionRequestedPeer",
-    [
-      0x31518E9B,
-      [
-        ["button_id", "int"],
-        ["peers", "Vector<Peer>"],
-      ],
-    ],
-  ],
-  [
-    "messageActionSetChatWallPaper",
-    [
-      0x5060A3F4,
-      [
-        ["flags", "#"],
-        ["same", "flags.0?true"],
-        ["for_both", "flags.1?true"],
-        ["wallpaper", "WallPaper"],
-      ],
-    ],
-  ],
-  [
-    "messageActionGiftCode",
-    [
-      0x56D03994,
-      [
-        ["flags", "#"],
-        ["via_giveaway", "flags.0?true"],
-        ["unclaimed", "flags.5?true"],
-        ["boost_peer", "flags.1?Peer"],
-        ["months", "int"],
-        ["slug", "string"],
-        ["currency", "flags.2?string"],
-        ["amount", "flags.2?long"],
-        ["crypto_currency", "flags.3?string"],
-        ["crypto_amount", "flags.3?long"],
-        ["message", "flags.4?TextWithEntities"],
-      ],
-    ],
-  ],
-  [
-    "messageActionGiveawayLaunch",
-    [
-      0xA80F51E4,
-      [
-        ["flags", "#"],
-        ["stars", "flags.0?long"],
-      ],
-    ],
-  ],
-  [
-    "messageActionGiveawayResults",
-    [
-      0x87E2F155,
-      [
-        ["flags", "#"],
-        ["stars", "flags.0?true"],
-        ["winners_count", "int"],
-        ["unclaimed_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageActionBoostApply",
-    [
-      0xCC02AA6D,
-      [
-        ["boosts", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageActionRequestedPeerSentMe",
-    [
-      0x93B31848,
-      [
-        ["button_id", "int"],
-        ["peers", "Vector<RequestedPeer>"],
-      ],
-    ],
-  ],
-  [
-    "messageActionPaymentRefunded",
-    [
-      0x41B3E202,
-      [
-        ["flags", "#"],
-        ["peer", "Peer"],
-        ["currency", "string"],
-        ["total_amount", "long"],
-        ["payload", "flags.0?bytes"],
-        ["charge", "PaymentCharge"],
-      ],
-    ],
-  ],
-  [
-    "messageActionGiftStars",
-    [
-      0x45D5B021,
-      [
-        ["flags", "#"],
-        ["currency", "string"],
-        ["amount", "long"],
-        ["stars", "long"],
-        ["crypto_currency", "flags.0?string"],
-        ["crypto_amount", "flags.0?long"],
-        ["transaction_id", "flags.1?string"],
-      ],
-    ],
-  ],
-  [
-    "messageActionPrizeStars",
-    [
-      0xB00C47A2,
-      [
-        ["flags", "#"],
-        ["unclaimed", "flags.0?true"],
-        ["stars", "long"],
-        ["transaction_id", "string"],
-        ["boost_peer", "Peer"],
-        ["giveaway_msg_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageActionStarGift",
-    [
-      0x4717E8A4,
-      [
-        ["flags", "#"],
-        ["name_hidden", "flags.0?true"],
-        ["saved", "flags.2?true"],
-        ["converted", "flags.3?true"],
-        ["upgraded", "flags.5?true"],
-        ["refunded", "flags.9?true"],
-        ["can_upgrade", "flags.10?true"],
-        ["gift", "StarGift"],
-        ["message", "flags.1?TextWithEntities"],
-        ["convert_stars", "flags.4?long"],
-        ["upgrade_msg_id", "flags.5?int"],
-        ["upgrade_stars", "flags.8?long"],
-        ["from_id", "flags.11?Peer"],
-        ["peer", "flags.12?Peer"],
-        ["saved_id", "flags.12?long"],
-      ],
-    ],
-  ],
-  [
-    "messageActionStarGiftUnique",
-    [
-      0xACDFCB81,
-      [
-        ["flags", "#"],
-        ["upgrade", "flags.0?true"],
-        ["transferred", "flags.1?true"],
-        ["saved", "flags.2?true"],
-        ["refunded", "flags.5?true"],
-        ["gift", "StarGift"],
-        ["can_export_at", "flags.3?int"],
-        ["transfer_stars", "flags.4?long"],
-        ["from_id", "flags.6?Peer"],
-        ["peer", "flags.7?Peer"],
-        ["saved_id", "flags.7?long"],
-      ],
-    ],
-  ],
-  [
-    "dialog",
-    [
-      0xD58A08C6,
-      [
-        ["flags", "#"],
-        ["pinned", "flags.2?true"],
-        ["unread_mark", "flags.3?true"],
-        ["view_forum_as_messages", "flags.6?true"],
-        ["peer", "Peer"],
-        ["top_message", "int"],
-        ["read_inbox_max_id", "int"],
-        ["read_outbox_max_id", "int"],
-        ["unread_count", "int"],
-        ["unread_mentions_count", "int"],
-        ["unread_reactions_count", "int"],
-        ["notify_settings", "PeerNotifySettings"],
-        ["pts", "flags.0?int"],
-        ["draft", "flags.1?DraftMessage"],
-        ["folder_id", "flags.4?int"],
-        ["ttl_period", "flags.5?int"],
-      ],
-    ],
-  ],
-  [
-    "dialogFolder",
-    [
-      0x71BD134C,
-      [
-        ["flags", "#"],
-        ["pinned", "flags.2?true"],
-        ["folder", "Folder"],
-        ["peer", "Peer"],
-        ["top_message", "int"],
-        ["unread_muted_peers_count", "int"],
-        ["unread_unmuted_peers_count", "int"],
-        ["unread_muted_messages_count", "int"],
-        ["unread_unmuted_messages_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "photoEmpty",
-    [
-      0x2331B22D,
-      [
-        ["id", "long"],
-      ],
-    ],
-  ],
-  [
-    "photo",
-    [
-      0xFB197A65,
-      [
-        ["flags", "#"],
-        ["has_stickers", "flags.0?true"],
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["file_reference", "bytes"],
-        ["date", "int"],
-        ["sizes", "Vector<PhotoSize>"],
-        ["video_sizes", "flags.1?Vector<VideoSize>"],
-        ["dc_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "photoSizeEmpty",
-    [
-      0x0E17E23C,
-      [
-        ["type", "string"],
-      ],
-    ],
-  ],
-  [
-    "photoSize",
-    [
-      0x75C78E60,
-      [
-        ["type", "string"],
-        ["w", "int"],
-        ["h", "int"],
-        ["size", "int"],
-      ],
-    ],
-  ],
-  [
-    "photoCachedSize",
-    [
-      0x021E1AD6,
-      [
-        ["type", "string"],
-        ["w", "int"],
-        ["h", "int"],
-        ["bytes", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "photoStrippedSize",
-    [
-      0xE0B0BC2E,
-      [
-        ["type", "string"],
-        ["bytes", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "photoSizeProgressive",
-    [
-      0xFA3EFB95,
-      [
-        ["type", "string"],
-        ["w", "int"],
-        ["h", "int"],
-        ["sizes", "Vector<int>"],
-      ],
-    ],
-  ],
-  [
-    "photoPathSize",
-    [
-      0xD8214D41,
-      [
-        ["type", "string"],
-        ["bytes", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "geoPointEmpty",
-    [
-      0x1117DD5F,
-      [],
-    ],
-  ],
-  [
-    "geoPoint",
-    [
-      0xB2A2F663,
-      [
-        ["flags", "#"],
-        ["long", "double"],
-        ["lat", "double"],
-        ["access_hash", "long"],
-        ["accuracy_radius", "flags.0?int"],
-      ],
-    ],
-  ],
-  [
-    "auth.sentCode",
-    [
-      0x5E002502,
-      [
-        ["flags", "#"],
-        ["type", "auth.SentCodeType"],
-        ["phone_code_hash", "string"],
-        ["next_type", "flags.1?auth.CodeType"],
-        ["timeout", "flags.2?int"],
-      ],
-    ],
-  ],
-  [
-    "auth.sentCodeSuccess",
-    [
-      0x2390FE44,
-      [
-        ["authorization", "auth.Authorization"],
-      ],
-    ],
-  ],
-  [
-    "auth.authorization",
-    [
-      0x2EA2C0D4,
-      [
-        ["flags", "#"],
-        ["setup_password_required", "flags.1?true"],
-        ["otherwise_relogin_days", "flags.1?int"],
-        ["tmp_sessions", "flags.0?int"],
-        ["future_auth_token", "flags.2?bytes"],
-        ["user", "User"],
-      ],
-    ],
-  ],
-  [
-    "auth.authorizationSignUpRequired",
-    [
-      0x44747E9A,
-      [
-        ["flags", "#"],
-        ["terms_of_service", "flags.0?help.TermsOfService"],
-      ],
-    ],
-  ],
-  [
-    "auth.exportedAuthorization",
-    [
-      0xB434E2B8,
-      [
-        ["id", "long"],
-        ["bytes", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "inputNotifyPeer",
-    [
-      0xB8BC5B0C,
-      [
-        ["peer", "InputPeer"],
-      ],
-    ],
-  ],
-  [
-    "inputNotifyUsers",
-    [
-      0x193B4417,
-      [],
-    ],
-  ],
-  [
-    "inputNotifyChats",
-    [
-      0x4A95E84E,
-      [],
-    ],
-  ],
-  [
-    "inputNotifyBroadcasts",
-    [
-      0xB1DB7C7E,
-      [],
-    ],
-  ],
-  [
-    "inputNotifyForumTopic",
-    [
-      0x5C467992,
-      [
-        ["peer", "InputPeer"],
-        ["top_msg_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputPeerNotifySettings",
-    [
-      0xCACB6AE2,
-      [
-        ["flags", "#"],
-        ["show_previews", "flags.0?Bool"],
-        ["silent", "flags.1?Bool"],
-        ["mute_until", "flags.2?int"],
-        ["sound", "flags.3?NotificationSound"],
-        ["stories_muted", "flags.6?Bool"],
-        ["stories_hide_sender", "flags.7?Bool"],
-        ["stories_sound", "flags.8?NotificationSound"],
-      ],
-    ],
-  ],
-  [
-    "peerNotifySettings",
-    [
-      0x99622C0C,
-      [
-        ["flags", "#"],
-        ["show_previews", "flags.0?Bool"],
-        ["silent", "flags.1?Bool"],
-        ["mute_until", "flags.2?int"],
-        ["ios_sound", "flags.3?NotificationSound"],
-        ["android_sound", "flags.4?NotificationSound"],
-        ["other_sound", "flags.5?NotificationSound"],
-        ["stories_muted", "flags.6?Bool"],
-        ["stories_hide_sender", "flags.7?Bool"],
-        ["stories_ios_sound", "flags.8?NotificationSound"],
-        ["stories_android_sound", "flags.9?NotificationSound"],
-        ["stories_other_sound", "flags.10?NotificationSound"],
-      ],
-    ],
-  ],
-  [
-    "peerSettings",
-    [
-      0xF47741F7,
-      [
-        ["flags", "#"],
-        ["report_spam", "flags.0?true"],
-        ["add_contact", "flags.1?true"],
-        ["block_contact", "flags.2?true"],
-        ["share_contact", "flags.3?true"],
-        ["need_contacts_exception", "flags.4?true"],
-        ["report_geo", "flags.5?true"],
-        ["autoarchived", "flags.7?true"],
-        ["invite_members", "flags.8?true"],
-        ["request_chat_broadcast", "flags.10?true"],
-        ["business_bot_paused", "flags.11?true"],
-        ["business_bot_can_reply", "flags.12?true"],
-        ["geo_distance", "flags.6?int"],
-        ["request_chat_title", "flags.9?string"],
-        ["request_chat_date", "flags.9?int"],
-        ["business_bot_id", "flags.13?long"],
-        ["business_bot_manage_url", "flags.13?string"],
-        ["charge_paid_message_stars", "flags.14?long"],
-        ["registration_month", "flags.15?string"],
-        ["phone_country", "flags.16?string"],
-        ["name_change_date", "flags.17?int"],
-        ["photo_change_date", "flags.18?int"],
-      ],
-    ],
-  ],
-  [
-    "wallPaper",
-    [
-      0xA437C3ED,
-      [
-        ["id", "long"],
-        ["flags", "#"],
-        ["creator", "flags.0?true"],
-        ["default", "flags.1?true"],
-        ["pattern", "flags.3?true"],
-        ["dark", "flags.4?true"],
-        ["access_hash", "long"],
-        ["slug", "string"],
-        ["document", "Document"],
-        ["settings", "flags.2?WallPaperSettings"],
-      ],
-    ],
-  ],
-  [
-    "wallPaperNoFile",
-    [
-      0xE0804116,
-      [
-        ["id", "long"],
-        ["flags", "#"],
-        ["default", "flags.1?true"],
-        ["dark", "flags.4?true"],
-        ["settings", "flags.2?WallPaperSettings"],
-      ],
-    ],
-  ],
-  [
-    "inputReportReasonSpam",
-    [
-      0x58DBCAB8,
-      [],
-    ],
-  ],
-  [
-    "inputReportReasonViolence",
-    [
-      0x1E22C78D,
-      [],
-    ],
-  ],
-  [
-    "inputReportReasonPornography",
-    [
-      0x2E59D922,
-      [],
-    ],
-  ],
-  [
-    "inputReportReasonChildAbuse",
-    [
-      0xADF44EE3,
-      [],
-    ],
-  ],
-  [
-    "inputReportReasonOther",
-    [
-      0xC1E4A2B1,
-      [],
-    ],
-  ],
-  [
-    "inputReportReasonCopyright",
-    [
-      0x9B89F93A,
-      [],
-    ],
-  ],
-  [
-    "inputReportReasonGeoIrrelevant",
-    [
-      0xDBD4FEED,
-      [],
-    ],
-  ],
-  [
-    "inputReportReasonFake",
-    [
-      0xF5DDD6E7,
-      [],
-    ],
-  ],
-  [
-    "inputReportReasonIllegalDrugs",
-    [
-      0x0A8EB2BE,
-      [],
-    ],
-  ],
-  [
-    "inputReportReasonPersonalDetails",
-    [
-      0x9EC7863D,
-      [],
-    ],
-  ],
-  [
-    "userFull",
-    [
-      0xD2234EA0,
-      [
-        ["flags", "#"],
-        ["blocked", "flags.0?true"],
-        ["phone_calls_available", "flags.4?true"],
-        ["phone_calls_private", "flags.5?true"],
-        ["can_pin_message", "flags.7?true"],
-        ["has_scheduled", "flags.12?true"],
-        ["video_calls_available", "flags.13?true"],
-        ["voice_messages_forbidden", "flags.20?true"],
-        ["translations_disabled", "flags.23?true"],
-        ["stories_pinned_available", "flags.26?true"],
-        ["blocked_my_stories_from", "flags.27?true"],
-        ["wallpaper_overridden", "flags.28?true"],
-        ["contact_require_premium", "flags.29?true"],
-        ["read_dates_private", "flags.30?true"],
-        ["flags2", "#"],
-        ["sponsored_enabled", "flags2.7?true"],
-        ["can_view_revenue", "flags2.9?true"],
-        ["bot_can_manage_emoji_status", "flags2.10?true"],
-        ["id", "long"],
-        ["about", "flags.1?string"],
-        ["settings", "PeerSettings"],
-        ["personal_photo", "flags.21?Photo"],
-        ["profile_photo", "flags.2?Photo"],
-        ["fallback_photo", "flags.22?Photo"],
-        ["notify_settings", "PeerNotifySettings"],
-        ["bot_info", "flags.3?BotInfo"],
-        ["pinned_msg_id", "flags.6?int"],
-        ["common_chats_count", "int"],
-        ["folder_id", "flags.11?int"],
-        ["ttl_period", "flags.14?int"],
-        ["theme_emoticon", "flags.15?string"],
-        ["private_forward_name", "flags.16?string"],
-        ["bot_group_admin_rights", "flags.17?ChatAdminRights"],
-        ["bot_broadcast_admin_rights", "flags.18?ChatAdminRights"],
-        ["wallpaper", "flags.24?WallPaper"],
-        ["stories", "flags.25?PeerStories"],
-        ["business_work_hours", "flags2.0?BusinessWorkHours"],
-        ["business_location", "flags2.1?BusinessLocation"],
-        ["business_greeting_message", "flags2.2?BusinessGreetingMessage"],
-        ["business_away_message", "flags2.3?BusinessAwayMessage"],
-        ["business_intro", "flags2.4?BusinessIntro"],
-        ["birthday", "flags2.5?Birthday"],
-        ["personal_channel_id", "flags2.6?long"],
-        ["personal_channel_message", "flags2.6?int"],
-        ["stargifts_count", "flags2.8?int"],
-        ["starref_program", "flags2.11?StarRefProgram"],
-        ["bot_verification", "flags2.12?BotVerification"],
-        ["send_paid_messages_stars", "flags2.14?long"],
-      ],
-    ],
-  ],
-  [
-    "contact",
-    [
-      0x145ADE0B,
-      [
-        ["user_id", "long"],
-        ["mutual", "Bool"],
-      ],
-    ],
-  ],
-  [
-    "importedContact",
-    [
-      0xC13E3C50,
-      [
-        ["user_id", "long"],
-        ["client_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "contactStatus",
-    [
-      0x16D9703B,
-      [
-        ["user_id", "long"],
-        ["status", "UserStatus"],
-      ],
-    ],
-  ],
-  [
-    "contacts.contactsNotModified",
-    [
-      0xB74BA9D2,
-      [],
-    ],
-  ],
-  [
-    "contacts.contacts",
-    [
-      0xEAE87E42,
-      [
-        ["contacts", "Vector<Contact>"],
-        ["saved_count", "int"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "contacts.importedContacts",
-    [
-      0x77D01C3B,
-      [
-        ["imported", "Vector<ImportedContact>"],
-        ["popular_invites", "Vector<PopularContact>"],
-        ["retry_contacts", "Vector<long>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "contacts.blocked",
-    [
-      0x0ADE1591,
-      [
-        ["blocked", "Vector<PeerBlocked>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "contacts.blockedSlice",
-    [
-      0xE1664194,
-      [
-        ["count", "int"],
-        ["blocked", "Vector<PeerBlocked>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "messages.dialogs",
-    [
-      0x15BA6C40,
-      [
-        ["dialogs", "Vector<Dialog>"],
-        ["messages", "Vector<Message>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "messages.dialogsSlice",
-    [
-      0x71E094F3,
-      [
-        ["count", "int"],
-        ["dialogs", "Vector<Dialog>"],
-        ["messages", "Vector<Message>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "messages.dialogsNotModified",
-    [
-      0xF0E3E596,
-      [
-        ["count", "int"],
-      ],
-    ],
-  ],
-  [
-    "messages.messages",
-    [
-      0x8C718E87,
-      [
-        ["messages", "Vector<Message>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "messages.messagesSlice",
-    [
-      0x3A54685E,
-      [
-        ["flags", "#"],
-        ["inexact", "flags.1?true"],
-        ["count", "int"],
-        ["next_rate", "flags.0?int"],
-        ["offset_id_offset", "flags.2?int"],
-        ["messages", "Vector<Message>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "messages.channelMessages",
-    [
-      0xC776BA4E,
-      [
-        ["flags", "#"],
-        ["inexact", "flags.1?true"],
-        ["pts", "int"],
-        ["count", "int"],
-        ["offset_id_offset", "flags.2?int"],
-        ["messages", "Vector<Message>"],
-        ["topics", "Vector<ForumTopic>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "messages.messagesNotModified",
-    [
-      0x74535F21,
-      [
-        ["count", "int"],
-      ],
-    ],
-  ],
-  [
-    "messages.chats",
-    [
-      0x64FF9FD5,
-      [
-        ["chats", "Vector<Chat>"],
-      ],
-    ],
-  ],
-  [
-    "messages.chatsSlice",
-    [
-      0x9CD81144,
-      [
-        ["count", "int"],
-        ["chats", "Vector<Chat>"],
-      ],
-    ],
-  ],
-  [
-    "messages.chatFull",
-    [
-      0xE5D7D19C,
-      [
-        ["full_chat", "ChatFull"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "messages.affectedHistory",
-    [
-      0xB45C69D1,
-      [
-        ["pts", "int"],
-        ["pts_count", "int"],
-        ["offset", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputMessagesFilterEmpty",
-    [
-      0x57E2F66C,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterPhotos",
-    [
-      0x9609A51C,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterVideo",
-    [
-      0x9FC00E65,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterPhotoVideo",
-    [
-      0x56E9F0E4,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterDocument",
-    [
-      0x9EDDF188,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterUrl",
-    [
-      0x7EF0DD87,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterGif",
-    [
-      0xFFC86587,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterVoice",
-    [
-      0x50F5C392,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterMusic",
-    [
-      0x3751B49E,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterChatPhotos",
-    [
-      0x3A20ECB8,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterPhoneCalls",
-    [
-      0x80C99768,
-      [
-        ["flags", "#"],
-        ["missed", "flags.0?true"],
-      ],
-    ],
-  ],
-  [
-    "inputMessagesFilterRoundVoice",
-    [
-      0x7A7C17A4,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterRoundVideo",
-    [
-      0xB549DA53,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterMyMentions",
-    [
-      0xC1F8E69A,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterGeo",
-    [
-      0xE7026D0D,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterContacts",
-    [
-      0xE062DB83,
-      [],
-    ],
-  ],
-  [
-    "inputMessagesFilterPinned",
-    [
-      0x1BB00451,
-      [],
-    ],
-  ],
-  [
-    "updateNewMessage",
-    [
-      0x1F2B0AFD,
-      [
-        ["message", "Message"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateMessageID",
-    [
-      0x4E90BFD6,
-      [
-        ["id", "int"],
-        ["random_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "updateDeleteMessages",
-    [
-      0xA20DB0E5,
-      [
-        ["messages", "Vector<int>"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateUserTyping",
-    [
-      0xC01E857F,
-      [
-        ["user_id", "long"],
-        ["action", "SendMessageAction"],
-      ],
-    ],
-  ],
-  [
-    "updateChatUserTyping",
-    [
-      0x83487AF0,
-      [
-        ["chat_id", "long"],
-        ["from_id", "Peer"],
-        ["action", "SendMessageAction"],
-      ],
-    ],
-  ],
-  [
-    "updateChatParticipants",
-    [
-      0x07761198,
-      [
-        ["participants", "ChatParticipants"],
-      ],
-    ],
-  ],
-  [
-    "updateUserStatus",
-    [
-      0xE5BDF8DE,
-      [
-        ["user_id", "long"],
-        ["status", "UserStatus"],
-      ],
-    ],
-  ],
-  [
-    "updateUserName",
-    [
-      0xA7848924,
-      [
-        ["user_id", "long"],
-        ["first_name", "string"],
-        ["last_name", "string"],
-        ["usernames", "Vector<Username>"],
-      ],
-    ],
-  ],
-  [
-    "updateNewAuthorization",
-    [
-      0x8951ABEF,
-      [
-        ["flags", "#"],
-        ["unconfirmed", "flags.0?true"],
-        ["hash", "long"],
-        ["date", "flags.0?int"],
-        ["device", "flags.0?string"],
-        ["location", "flags.0?string"],
-      ],
-    ],
-  ],
-  [
-    "updateNewEncryptedMessage",
-    [
-      0x12BCBD9A,
-      [
-        ["message", "EncryptedMessage"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateEncryptedChatTyping",
-    [
-      0x1710F156,
-      [
-        ["chat_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateEncryption",
-    [
-      0xB4A2E88D,
-      [
-        ["chat", "EncryptedChat"],
-        ["date", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateEncryptedMessagesRead",
-    [
-      0x38FE25B7,
-      [
-        ["chat_id", "int"],
-        ["max_date", "int"],
-        ["date", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateChatParticipantAdd",
-    [
-      0x3DDA5451,
-      [
-        ["chat_id", "long"],
-        ["user_id", "long"],
-        ["inviter_id", "long"],
-        ["date", "int"],
-        ["version", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateChatParticipantDelete",
-    [
-      0xE32F3D77,
-      [
-        ["chat_id", "long"],
-        ["user_id", "long"],
-        ["version", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateDcOptions",
-    [
-      0x8E5E9873,
-      [
-        ["dc_options", "Vector<DcOption>"],
-      ],
-    ],
-  ],
-  [
-    "updateNotifySettings",
-    [
-      0xBEC268EF,
-      [
-        ["peer", "NotifyPeer"],
-        ["notify_settings", "PeerNotifySettings"],
-      ],
-    ],
-  ],
-  [
-    "updateServiceNotification",
-    [
-      0xEBE46819,
-      [
-        ["flags", "#"],
-        ["popup", "flags.0?true"],
-        ["invert_media", "flags.2?true"],
-        ["inbox_date", "flags.1?int"],
-        ["type", "string"],
-        ["message", "string"],
-        ["media", "MessageMedia"],
-        ["entities", "Vector<MessageEntity>"],
-      ],
-    ],
-  ],
-  [
-    "updatePrivacy",
-    [
-      0xEE3B272A,
-      [
-        ["key", "PrivacyKey"],
-        ["rules", "Vector<PrivacyRule>"],
-      ],
-    ],
-  ],
-  [
-    "updateUserPhone",
-    [
-      0x05492A13,
-      [
-        ["user_id", "long"],
-        ["phone", "string"],
-      ],
-    ],
-  ],
-  [
-    "updateReadHistoryInbox",
-    [
-      0x9C974FDF,
-      [
-        ["flags", "#"],
-        ["folder_id", "flags.0?int"],
-        ["peer", "Peer"],
-        ["max_id", "int"],
-        ["still_unread_count", "int"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateReadHistoryOutbox",
-    [
-      0x2F2F21BF,
-      [
-        ["peer", "Peer"],
-        ["max_id", "int"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateWebPage",
-    [
-      0x7F891213,
-      [
-        ["webpage", "WebPage"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateReadMessagesContents",
-    [
-      0xF8227181,
-      [
-        ["flags", "#"],
-        ["messages", "Vector<int>"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-        ["date", "flags.0?int"],
-      ],
-    ],
-  ],
-  [
-    "updateChannelTooLong",
-    [
-      0x108D941F,
-      [
-        ["flags", "#"],
-        ["channel_id", "long"],
-        ["pts", "flags.0?int"],
-      ],
-    ],
-  ],
-  [
-    "updateChannel",
-    [
-      0x635B4C09,
-      [
-        ["channel_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "updateNewChannelMessage",
-    [
-      0x62BA04D9,
-      [
-        ["message", "Message"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateReadChannelInbox",
-    [
-      0x922E6E10,
-      [
-        ["flags", "#"],
-        ["folder_id", "flags.0?int"],
-        ["channel_id", "long"],
-        ["max_id", "int"],
-        ["still_unread_count", "int"],
-        ["pts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateDeleteChannelMessages",
-    [
-      0xC32D5B12,
-      [
-        ["channel_id", "long"],
-        ["messages", "Vector<int>"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateChannelMessageViews",
-    [
-      0xF226AC08,
-      [
-        ["channel_id", "long"],
-        ["id", "int"],
-        ["views", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateChatParticipantAdmin",
-    [
-      0xD7CA61A2,
-      [
-        ["chat_id", "long"],
-        ["user_id", "long"],
-        ["is_admin", "Bool"],
-        ["version", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateNewStickerSet",
-    [
-      0x688A30AA,
-      [
-        ["stickerset", "messages.StickerSet"],
-      ],
-    ],
-  ],
-  [
-    "updateStickerSetsOrder",
-    [
-      0x0BB2D201,
-      [
-        ["flags", "#"],
-        ["masks", "flags.0?true"],
-        ["emojis", "flags.1?true"],
-        ["order", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "updateStickerSets",
-    [
-      0x31C24808,
-      [
-        ["flags", "#"],
-        ["masks", "flags.0?true"],
-        ["emojis", "flags.1?true"],
-      ],
-    ],
-  ],
-  [
-    "updateSavedGifs",
-    [
-      0x9375341E,
-      [],
-    ],
-  ],
-  [
-    "updateBotInlineQuery",
-    [
-      0x496F379C,
-      [
-        ["flags", "#"],
-        ["query_id", "long"],
-        ["user_id", "long"],
-        ["query", "string"],
-        ["geo", "flags.0?GeoPoint"],
-        ["peer_type", "flags.1?InlineQueryPeerType"],
-        ["offset", "string"],
-      ],
-    ],
-  ],
-  [
-    "updateBotInlineSend",
-    [
-      0x12F12A07,
-      [
-        ["flags", "#"],
-        ["user_id", "long"],
-        ["query", "string"],
-        ["geo", "flags.0?GeoPoint"],
-        ["id", "string"],
-        ["msg_id", "flags.1?InputBotInlineMessageID"],
-      ],
-    ],
-  ],
-  [
-    "updateEditChannelMessage",
-    [
-      0x1B3F4DF7,
-      [
-        ["message", "Message"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateBotCallbackQuery",
-    [
-      0xB9CFC48D,
-      [
-        ["flags", "#"],
-        ["query_id", "long"],
-        ["user_id", "long"],
-        ["peer", "Peer"],
-        ["msg_id", "int"],
-        ["chat_instance", "long"],
-        ["data", "flags.0?bytes"],
-        ["game_short_name", "flags.1?string"],
-      ],
-    ],
-  ],
-  [
-    "updateEditMessage",
-    [
-      0xE40370A3,
-      [
-        ["message", "Message"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateInlineBotCallbackQuery",
-    [
-      0x691E9052,
-      [
-        ["flags", "#"],
-        ["query_id", "long"],
-        ["user_id", "long"],
-        ["msg_id", "InputBotInlineMessageID"],
-        ["chat_instance", "long"],
-        ["data", "flags.0?bytes"],
-        ["game_short_name", "flags.1?string"],
-      ],
-    ],
-  ],
-  [
-    "updateReadChannelOutbox",
-    [
-      0xB75F99A9,
-      [
-        ["channel_id", "long"],
-        ["max_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateDraftMessage",
-    [
-      0x1B49EC6D,
-      [
-        ["flags", "#"],
-        ["peer", "Peer"],
-        ["top_msg_id", "flags.0?int"],
-        ["draft", "DraftMessage"],
-      ],
-    ],
-  ],
-  [
-    "updateReadFeaturedStickers",
-    [
-      0x571D2742,
-      [],
-    ],
-  ],
-  [
-    "updateRecentStickers",
-    [
-      0x9A422C20,
-      [],
-    ],
-  ],
-  [
-    "updateConfig",
-    [
-      0xA229DD06,
-      [],
-    ],
-  ],
-  [
-    "updatePtsChanged",
-    [
-      0x3354678F,
-      [],
-    ],
-  ],
-  [
-    "updateChannelWebPage",
-    [
-      0x2F2BA99F,
-      [
-        ["channel_id", "long"],
-        ["webpage", "WebPage"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateDialogPinned",
-    [
-      0x6E6FE51C,
-      [
-        ["flags", "#"],
-        ["pinned", "flags.0?true"],
-        ["folder_id", "flags.1?int"],
-        ["peer", "DialogPeer"],
-      ],
-    ],
-  ],
-  [
-    "updatePinnedDialogs",
-    [
-      0xFA0F3CA2,
-      [
-        ["flags", "#"],
-        ["folder_id", "flags.1?int"],
-        ["order", "flags.0?Vector<DialogPeer>"],
-      ],
-    ],
-  ],
-  [
-    "updateBotWebhookJSON",
-    [
-      0x8317C0C3,
-      [
-        ["data", "DataJSON"],
-      ],
-    ],
-  ],
-  [
-    "updateBotWebhookJSONQuery",
-    [
-      0x9B9240A6,
-      [
-        ["query_id", "long"],
-        ["data", "DataJSON"],
-        ["timeout", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateBotShippingQuery",
-    [
-      0xB5AEFD7D,
-      [
-        ["query_id", "long"],
-        ["user_id", "long"],
-        ["payload", "bytes"],
-        ["shipping_address", "PostAddress"],
-      ],
-    ],
-  ],
-  [
-    "updateBotPrecheckoutQuery",
-    [
-      0x8CAA9A96,
-      [
-        ["flags", "#"],
-        ["query_id", "long"],
-        ["user_id", "long"],
-        ["payload", "bytes"],
-        ["info", "flags.0?PaymentRequestedInfo"],
-        ["shipping_option_id", "flags.1?string"],
-        ["currency", "string"],
-        ["total_amount", "long"],
-      ],
-    ],
-  ],
-  [
-    "updatePhoneCall",
-    [
-      0xAB0F6B1E,
-      [
-        ["phone_call", "PhoneCall"],
-      ],
-    ],
-  ],
-  [
-    "updateLangPackTooLong",
-    [
-      0x46560264,
-      [
-        ["lang_code", "string"],
-      ],
-    ],
-  ],
-  [
-    "updateLangPack",
-    [
-      0x56022F4D,
-      [
-        ["difference", "LangPackDifference"],
-      ],
-    ],
-  ],
-  [
-    "updateFavedStickers",
-    [
-      0xE511996D,
-      [],
-    ],
-  ],
-  [
-    "updateChannelReadMessagesContents",
-    [
-      0xEA29055D,
-      [
-        ["flags", "#"],
-        ["channel_id", "long"],
-        ["top_msg_id", "flags.0?int"],
-        ["messages", "Vector<int>"],
-      ],
-    ],
-  ],
-  [
-    "updateContactsReset",
-    [
-      0x7084A7BE,
-      [],
-    ],
-  ],
-  [
-    "updateChannelAvailableMessages",
-    [
-      0xB23FC698,
-      [
-        ["channel_id", "long"],
-        ["available_min_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateDialogUnreadMark",
-    [
-      0xE16459C3,
-      [
-        ["flags", "#"],
-        ["unread", "flags.0?true"],
-        ["peer", "DialogPeer"],
-      ],
-    ],
-  ],
-  [
-    "updateMessagePoll",
-    [
-      0xACA1657B,
-      [
-        ["flags", "#"],
-        ["poll_id", "long"],
-        ["poll", "flags.0?Poll"],
-        ["results", "PollResults"],
-      ],
-    ],
-  ],
-  [
-    "updateChatDefaultBannedRights",
-    [
-      0x54C01850,
-      [
-        ["peer", "Peer"],
-        ["default_banned_rights", "ChatBannedRights"],
-        ["version", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateFolderPeers",
-    [
-      0x19360DC0,
-      [
-        ["folder_peers", "Vector<FolderPeer>"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updatePeerSettings",
-    [
-      0x6A7E7366,
-      [
-        ["peer", "Peer"],
-        ["settings", "PeerSettings"],
-      ],
-    ],
-  ],
-  [
-    "updatePeerLocated",
-    [
-      0xB4AFCFB0,
-      [
-        ["peers", "Vector<PeerLocated>"],
-      ],
-    ],
-  ],
-  [
-    "updateNewScheduledMessage",
-    [
-      0x39A51DFB,
-      [
-        ["message", "Message"],
-      ],
-    ],
-  ],
-  [
-    "updateDeleteScheduledMessages",
-    [
-      0xF2A71983,
-      [
-        ["flags", "#"],
-        ["peer", "Peer"],
-        ["messages", "Vector<int>"],
-        ["sent_messages", "flags.0?Vector<int>"],
-      ],
-    ],
-  ],
-  [
-    "updateTheme",
-    [
-      0x8216FBA3,
-      [
-        ["theme", "Theme"],
-      ],
-    ],
-  ],
-  [
-    "updateGeoLiveViewed",
-    [
-      0x871FB939,
-      [
-        ["peer", "Peer"],
-        ["msg_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateLoginToken",
-    [
-      0x564FE691,
-      [],
-    ],
-  ],
-  [
-    "updateMessagePollVote",
-    [
-      0x24F40E77,
-      [
-        ["poll_id", "long"],
-        ["peer", "Peer"],
-        ["options", "Vector<bytes>"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateDialogFilter",
-    [
-      0x26FFDE7D,
-      [
-        ["flags", "#"],
-        ["id", "int"],
-        ["filter", "flags.0?DialogFilter"],
-      ],
-    ],
-  ],
-  [
-    "updateDialogFilterOrder",
-    [
-      0xA5D72105,
-      [
-        ["order", "Vector<int>"],
-      ],
-    ],
-  ],
-  [
-    "updateDialogFilters",
-    [
-      0x3504914F,
-      [],
-    ],
-  ],
-  [
-    "updatePhoneCallSignalingData",
-    [
-      0x2661BF09,
-      [
-        ["phone_call_id", "long"],
-        ["data", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "updateChannelMessageForwards",
-    [
-      0xD29A27F4,
-      [
-        ["channel_id", "long"],
-        ["id", "int"],
-        ["forwards", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateReadChannelDiscussionInbox",
-    [
-      0xD6B19546,
-      [
-        ["flags", "#"],
-        ["channel_id", "long"],
-        ["top_msg_id", "int"],
-        ["read_max_id", "int"],
-        ["broadcast_id", "flags.0?long"],
-        ["broadcast_post", "flags.0?int"],
-      ],
-    ],
-  ],
-  [
-    "updateReadChannelDiscussionOutbox",
-    [
-      0x695C9E7C,
-      [
-        ["channel_id", "long"],
-        ["top_msg_id", "int"],
-        ["read_max_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "updatePeerBlocked",
-    [
-      0xEBE07752,
-      [
-        ["flags", "#"],
-        ["blocked", "flags.0?true"],
-        ["blocked_my_stories_from", "flags.1?true"],
-        ["peer_id", "Peer"],
-      ],
-    ],
-  ],
-  [
-    "updateChannelUserTyping",
-    [
-      0x8C88C923,
-      [
-        ["flags", "#"],
-        ["channel_id", "long"],
-        ["top_msg_id", "flags.0?int"],
-        ["from_id", "Peer"],
-        ["action", "SendMessageAction"],
-      ],
-    ],
-  ],
-  [
-    "updatePinnedMessages",
-    [
-      0xED85EAB5,
-      [
-        ["flags", "#"],
-        ["pinned", "flags.0?true"],
-        ["peer", "Peer"],
-        ["messages", "Vector<int>"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updatePinnedChannelMessages",
-    [
-      0x5BB98608,
-      [
-        ["flags", "#"],
-        ["pinned", "flags.0?true"],
-        ["channel_id", "long"],
-        ["messages", "Vector<int>"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateChat",
-    [
-      0xF89A6A4E,
-      [
-        ["chat_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "updateGroupCallParticipants",
-    [
-      0xF2EBDB4E,
-      [
-        ["call", "InputGroupCall"],
-        ["participants", "Vector<GroupCallParticipant>"],
-        ["version", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateGroupCall",
-    [
-      0x97D64341,
-      [
-        ["flags", "#"],
-        ["chat_id", "flags.0?long"],
-        ["call", "GroupCall"],
-      ],
-    ],
-  ],
-  [
-    "updatePeerHistoryTTL",
-    [
-      0xBB9BB9A5,
-      [
-        ["flags", "#"],
-        ["peer", "Peer"],
-        ["ttl_period", "flags.0?int"],
-      ],
-    ],
-  ],
-  [
-    "updateChatParticipant",
-    [
-      0xD087663A,
-      [
-        ["flags", "#"],
-        ["chat_id", "long"],
-        ["date", "int"],
-        ["actor_id", "long"],
-        ["user_id", "long"],
-        ["prev_participant", "flags.0?ChatParticipant"],
-        ["new_participant", "flags.1?ChatParticipant"],
-        ["invite", "flags.2?ExportedChatInvite"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateChannelParticipant",
-    [
-      0x985D3ABB,
-      [
-        ["flags", "#"],
-        ["via_chatlist", "flags.3?true"],
-        ["channel_id", "long"],
-        ["date", "int"],
-        ["actor_id", "long"],
-        ["user_id", "long"],
-        ["prev_participant", "flags.0?ChannelParticipant"],
-        ["new_participant", "flags.1?ChannelParticipant"],
-        ["invite", "flags.2?ExportedChatInvite"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateBotStopped",
-    [
-      0xC4870A49,
-      [
-        ["user_id", "long"],
-        ["date", "int"],
-        ["stopped", "Bool"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateGroupCallConnection",
-    [
-      0x0B783982,
-      [
-        ["flags", "#"],
-        ["presentation", "flags.0?true"],
-        ["params", "DataJSON"],
-      ],
-    ],
-  ],
-  [
-    "updateBotCommands",
-    [
-      0x4D712F2E,
-      [
-        ["peer", "Peer"],
-        ["bot_id", "long"],
-        ["commands", "Vector<BotCommand>"],
-      ],
-    ],
-  ],
-  [
-    "updatePendingJoinRequests",
-    [
-      0x7063C3DB,
-      [
-        ["peer", "Peer"],
-        ["requests_pending", "int"],
-        ["recent_requesters", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "updateBotChatInviteRequester",
-    [
-      0x11DFA986,
-      [
-        ["peer", "Peer"],
-        ["date", "int"],
-        ["user_id", "long"],
-        ["about", "string"],
-        ["invite", "ExportedChatInvite"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateMessageReactions",
-    [
-      0x5E1B3CB8,
-      [
-        ["flags", "#"],
-        ["peer", "Peer"],
-        ["msg_id", "int"],
-        ["top_msg_id", "flags.0?int"],
-        ["reactions", "MessageReactions"],
-      ],
-    ],
-  ],
-  [
-    "updateAttachMenuBots",
-    [
-      0x17B7A20B,
-      [],
-    ],
-  ],
-  [
-    "updateWebViewResultSent",
-    [
-      0x1592B79D,
-      [
-        ["query_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "updateBotMenuButton",
-    [
-      0x14B85813,
-      [
-        ["bot_id", "long"],
-        ["button", "BotMenuButton"],
-      ],
-    ],
-  ],
-  [
-    "updateSavedRingtones",
-    [
-      0x74D8BE99,
-      [],
-    ],
-  ],
-  [
-    "updateTranscribedAudio",
-    [
-      0x0084CD5A,
-      [
-        ["flags", "#"],
-        ["pending", "flags.0?true"],
-        ["peer", "Peer"],
-        ["msg_id", "int"],
-        ["transcription_id", "long"],
-        ["text", "string"],
-      ],
-    ],
-  ],
-  [
-    "updateReadFeaturedEmojiStickers",
-    [
-      0xFB4C496C,
-      [],
-    ],
-  ],
-  [
-    "updateUserEmojiStatus",
-    [
-      0x28373599,
-      [
-        ["user_id", "long"],
-        ["emoji_status", "EmojiStatus"],
-      ],
-    ],
-  ],
-  [
-    "updateRecentEmojiStatuses",
-    [
-      0x30F443DB,
-      [],
-    ],
-  ],
-  [
-    "updateRecentReactions",
-    [
-      0x6F7863F4,
-      [],
-    ],
-  ],
-  [
-    "updateMoveStickerSetToTop",
-    [
-      0x86FCCF85,
-      [
-        ["flags", "#"],
-        ["masks", "flags.0?true"],
-        ["emojis", "flags.1?true"],
-        ["stickerset", "long"],
-      ],
-    ],
-  ],
-  [
-    "updateMessageExtendedMedia",
-    [
-      0xD5A41724,
-      [
-        ["peer", "Peer"],
-        ["msg_id", "int"],
-        ["extended_media", "Vector<MessageExtendedMedia>"],
-      ],
-    ],
-  ],
-  [
-    "updateChannelPinnedTopic",
-    [
-      0x192EFBE3,
-      [
-        ["flags", "#"],
-        ["pinned", "flags.0?true"],
-        ["channel_id", "long"],
-        ["topic_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateChannelPinnedTopics",
-    [
-      0xFE198602,
-      [
-        ["flags", "#"],
-        ["channel_id", "long"],
-        ["order", "flags.0?Vector<int>"],
-      ],
-    ],
-  ],
-  [
-    "updateUser",
-    [
-      0x20529438,
-      [
-        ["user_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "updateAutoSaveSettings",
-    [
-      0xEC05B097,
-      [],
-    ],
-  ],
-  [
-    "updateStory",
-    [
-      0x75B3B798,
-      [
-        ["peer", "Peer"],
-        ["story", "StoryItem"],
-      ],
-    ],
-  ],
-  [
-    "updateReadStories",
-    [
-      0xF74E932B,
-      [
-        ["peer", "Peer"],
-        ["max_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateStoryID",
-    [
-      0x1BF335B9,
-      [
-        ["id", "int"],
-        ["random_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "updateStoriesStealthMode",
-    [
-      0x2C084DC1,
-      [
-        ["stealth_mode", "StoriesStealthMode"],
-      ],
-    ],
-  ],
-  [
-    "updateSentStoryReaction",
-    [
-      0x7D627683,
-      [
-        ["peer", "Peer"],
-        ["story_id", "int"],
-        ["reaction", "Reaction"],
-      ],
-    ],
-  ],
-  [
-    "updateBotChatBoost",
-    [
-      0x904DD49C,
-      [
-        ["peer", "Peer"],
-        ["boost", "Boost"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateChannelViewForumAsMessages",
-    [
-      0x07B68920,
-      [
-        ["channel_id", "long"],
-        ["enabled", "Bool"],
-      ],
-    ],
-  ],
-  [
-    "updatePeerWallpaper",
-    [
-      0xAE3F101D,
-      [
-        ["flags", "#"],
-        ["wallpaper_overridden", "flags.1?true"],
-        ["peer", "Peer"],
-        ["wallpaper", "flags.0?WallPaper"],
-      ],
-    ],
-  ],
-  [
-    "updateBotMessageReaction",
-    [
-      0xAC21D3CE,
-      [
-        ["peer", "Peer"],
-        ["msg_id", "int"],
-        ["date", "int"],
-        ["actor", "Peer"],
-        ["old_reactions", "Vector<Reaction>"],
-        ["new_reactions", "Vector<Reaction>"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateBotMessageReactions",
-    [
-      0x09CB7759,
-      [
-        ["peer", "Peer"],
-        ["msg_id", "int"],
-        ["date", "int"],
-        ["reactions", "Vector<ReactionCount>"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateSavedDialogPinned",
-    [
-      0xAEAF9E74,
-      [
-        ["flags", "#"],
-        ["pinned", "flags.0?true"],
-        ["peer", "DialogPeer"],
-      ],
-    ],
-  ],
-  [
-    "updatePinnedSavedDialogs",
-    [
-      0x686C85A6,
-      [
-        ["flags", "#"],
-        ["order", "flags.0?Vector<DialogPeer>"],
-      ],
-    ],
-  ],
-  [
-    "updateSavedReactionTags",
-    [
-      0x39C67432,
-      [],
-    ],
-  ],
-  [
-    "updateSmsJob",
-    [
-      0xF16269D4,
-      [
-        ["job_id", "string"],
-      ],
-    ],
-  ],
-  [
-    "updateQuickReplies",
-    [
-      0xF9470AB2,
-      [
-        ["quick_replies", "Vector<QuickReply>"],
-      ],
-    ],
-  ],
-  [
-    "updateNewQuickReply",
-    [
-      0xF53DA717,
-      [
-        ["quick_reply", "QuickReply"],
-      ],
-    ],
-  ],
-  [
-    "updateDeleteQuickReply",
-    [
-      0x53E6F1EC,
-      [
-        ["shortcut_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateQuickReplyMessage",
-    [
-      0x3E050D0F,
-      [
-        ["message", "Message"],
-      ],
-    ],
-  ],
-  [
-    "updateDeleteQuickReplyMessages",
-    [
-      0x566FE7CD,
-      [
-        ["shortcut_id", "int"],
-        ["messages", "Vector<int>"],
-      ],
-    ],
-  ],
-  [
-    "updateBotBusinessConnect",
-    [
-      0x8AE5C97A,
-      [
-        ["connection", "BotBusinessConnection"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateBotNewBusinessMessage",
-    [
-      0x9DDB347C,
-      [
-        ["flags", "#"],
-        ["connection_id", "string"],
-        ["message", "Message"],
-        ["reply_to_message", "flags.0?Message"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateBotEditBusinessMessage",
-    [
-      0x07DF587C,
-      [
-        ["flags", "#"],
-        ["connection_id", "string"],
-        ["message", "Message"],
-        ["reply_to_message", "flags.0?Message"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateBotDeleteBusinessMessage",
-    [
-      0xA02A982E,
-      [
-        ["connection_id", "string"],
-        ["peer", "Peer"],
-        ["messages", "Vector<int>"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateNewStoryReaction",
-    [
-      0x1824E40B,
-      [
-        ["story_id", "int"],
-        ["peer", "Peer"],
-        ["reaction", "Reaction"],
-      ],
-    ],
-  ],
-  [
-    "updateBroadcastRevenueTransactions",
-    [
-      0xDFD961F5,
-      [
-        ["peer", "Peer"],
-        ["balances", "BroadcastRevenueBalances"],
-      ],
-    ],
-  ],
-  [
-    "updateStarsBalance",
-    [
-      0x4E80A379,
-      [
-        ["balance", "StarsAmount"],
-      ],
-    ],
-  ],
-  [
-    "updateBusinessBotCallbackQuery",
-    [
-      0x1EA2FDA7,
-      [
-        ["flags", "#"],
-        ["query_id", "long"],
-        ["user_id", "long"],
-        ["connection_id", "string"],
-        ["message", "Message"],
-        ["reply_to_message", "flags.2?Message"],
-        ["chat_instance", "long"],
-        ["data", "flags.0?bytes"],
-      ],
-    ],
-  ],
-  [
-    "updateStarsRevenueStatus",
-    [
-      0xA584B019,
-      [
-        ["peer", "Peer"],
-        ["status", "StarsRevenueStatus"],
-      ],
-    ],
-  ],
-  [
-    "updateBotPurchasedPaidMedia",
-    [
-      0x283BD312,
-      [
-        ["user_id", "long"],
-        ["payload", "string"],
-        ["qts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updatePaidReactionPrivacy",
-    [
-      0x8B725FCE,
-      [
-        ["private", "PaidReactionPrivacy"],
-      ],
-    ],
-  ],
-  [
-    "updates.state",
-    [
-      0xA56C2A3E,
-      [
-        ["pts", "int"],
-        ["qts", "int"],
-        ["date", "int"],
-        ["seq", "int"],
-        ["unread_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "updates.differenceEmpty",
-    [
-      0x5D75A138,
-      [
-        ["date", "int"],
-        ["seq", "int"],
-      ],
-    ],
-  ],
-  [
-    "updates.difference",
-    [
-      0x00F49CA0,
-      [
-        ["new_messages", "Vector<Message>"],
-        ["new_encrypted_messages", "Vector<EncryptedMessage>"],
-        ["other_updates", "Vector<Update>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-        ["state", "updates.State"],
-      ],
-    ],
-  ],
-  [
-    "updates.differenceSlice",
-    [
-      0xA8FB1981,
-      [
-        ["new_messages", "Vector<Message>"],
-        ["new_encrypted_messages", "Vector<EncryptedMessage>"],
-        ["other_updates", "Vector<Update>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-        ["intermediate_state", "updates.State"],
-      ],
-    ],
-  ],
-  [
-    "updates.differenceTooLong",
-    [
-      0x4AFE8F6D,
-      [
-        ["pts", "int"],
-      ],
-    ],
-  ],
-  [
-    "updatesTooLong",
-    [
-      0xE317AF7E,
-      [],
-    ],
-  ],
-  [
-    "updateShortMessage",
-    [
-      0x313BC7F8,
-      [
-        ["flags", "#"],
-        ["out", "flags.1?true"],
-        ["mentioned", "flags.4?true"],
-        ["media_unread", "flags.5?true"],
-        ["silent", "flags.13?true"],
-        ["id", "int"],
-        ["user_id", "long"],
-        ["message", "string"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-        ["date", "int"],
-        ["fwd_from", "flags.2?MessageFwdHeader"],
-        ["via_bot_id", "flags.11?long"],
-        ["reply_to", "flags.3?MessageReplyHeader"],
-        ["entities", "flags.7?Vector<MessageEntity>"],
-        ["ttl_period", "flags.25?int"],
-      ],
-    ],
-  ],
-  [
-    "updateShortChatMessage",
-    [
-      0x4D6DEEA5,
-      [
-        ["flags", "#"],
-        ["out", "flags.1?true"],
-        ["mentioned", "flags.4?true"],
-        ["media_unread", "flags.5?true"],
-        ["silent", "flags.13?true"],
-        ["id", "int"],
-        ["from_id", "long"],
-        ["chat_id", "long"],
-        ["message", "string"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-        ["date", "int"],
-        ["fwd_from", "flags.2?MessageFwdHeader"],
-        ["via_bot_id", "flags.11?long"],
-        ["reply_to", "flags.3?MessageReplyHeader"],
-        ["entities", "flags.7?Vector<MessageEntity>"],
-        ["ttl_period", "flags.25?int"],
-      ],
-    ],
-  ],
-  [
-    "updateShort",
-    [
-      0x78D4DEC1,
-      [
-        ["update", "Update"],
-        ["date", "int"],
-      ],
-    ],
-  ],
-  [
-    "updatesCombined",
-    [
-      0x725B04C3,
-      [
-        ["updates", "Vector<Update>"],
-        ["users", "Vector<User>"],
-        ["chats", "Vector<Chat>"],
-        ["date", "int"],
-        ["seq_start", "int"],
-        ["seq", "int"],
-      ],
-    ],
-  ],
-  [
-    "updates",
-    [
-      0x74AE4240,
-      [
-        ["updates", "Vector<Update>"],
-        ["users", "Vector<User>"],
-        ["chats", "Vector<Chat>"],
-        ["date", "int"],
-        ["seq", "int"],
-      ],
-    ],
-  ],
-  [
-    "updateShortSentMessage",
-    [
-      0x9015E101,
-      [
-        ["flags", "#"],
-        ["out", "flags.1?true"],
-        ["id", "int"],
-        ["pts", "int"],
-        ["pts_count", "int"],
-        ["date", "int"],
-        ["media", "flags.9?MessageMedia"],
-        ["entities", "flags.7?Vector<MessageEntity>"],
-        ["ttl_period", "flags.25?int"],
-      ],
-    ],
-  ],
-  [
-    "photos.photos",
-    [
-      0x8DCA6AA5,
-      [
-        ["photos", "Vector<Photo>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "photos.photosSlice",
-    [
-      0x15051F54,
-      [
-        ["count", "int"],
-        ["photos", "Vector<Photo>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "photos.photo",
-    [
-      0x20212CA8,
-      [
-        ["photo", "Photo"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "upload.file",
-    [
-      0x096A18D5,
-      [
-        ["type", "storage.FileType"],
-        ["mtime", "int"],
-        ["bytes", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "upload.fileCdnRedirect",
-    [
-      0xF18CDA44,
-      [
-        ["dc_id", "int"],
-        ["file_token", "bytes"],
-        ["encryption_key", "bytes"],
-        ["encryption_iv", "bytes"],
-        ["file_hashes", "Vector<FileHash>"],
-      ],
-    ],
-  ],
-  [
-    "dcOption",
-    [
-      0x18B7A10D,
-      [
-        ["flags", "#"],
-        ["ipv6", "flags.0?true"],
-        ["media_only", "flags.1?true"],
-        ["tcpo_only", "flags.2?true"],
-        ["cdn", "flags.3?true"],
-        ["static", "flags.4?true"],
-        ["this_port_only", "flags.5?true"],
-        ["id", "int"],
-        ["ip_address", "string"],
-        ["port", "int"],
-        ["secret", "flags.10?bytes"],
-      ],
-    ],
-  ],
-  [
-    "config",
-    [
-      0xCC1A241E,
-      [
-        ["flags", "#"],
-        ["default_p2p_contacts", "flags.3?true"],
-        ["preload_featured_stickers", "flags.4?true"],
-        ["revoke_pm_inbox", "flags.6?true"],
-        ["blocked_mode", "flags.8?true"],
-        ["force_try_ipv6", "flags.14?true"],
-        ["date", "int"],
-        ["expires", "int"],
-        ["test_mode", "Bool"],
-        ["this_dc", "int"],
-        ["dc_options", "Vector<DcOption>"],
-        ["dc_txt_domain_name", "string"],
-        ["chat_size_max", "int"],
-        ["megagroup_size_max", "int"],
-        ["forwarded_count_max", "int"],
-        ["online_update_period_ms", "int"],
-        ["offline_blur_timeout_ms", "int"],
-        ["offline_idle_timeout_ms", "int"],
-        ["online_cloud_timeout_ms", "int"],
-        ["notify_cloud_delay_ms", "int"],
-        ["notify_default_delay_ms", "int"],
-        ["push_chat_period_ms", "int"],
-        ["push_chat_limit", "int"],
-        ["edit_time_limit", "int"],
-        ["revoke_time_limit", "int"],
-        ["revoke_pm_time_limit", "int"],
-        ["rating_e_decay", "int"],
-        ["stickers_recent_limit", "int"],
-        ["channels_read_media_period", "int"],
-        ["tmp_sessions", "flags.0?int"],
-        ["call_receive_timeout_ms", "int"],
-        ["call_ring_timeout_ms", "int"],
-        ["call_connect_timeout_ms", "int"],
-        ["call_packet_timeout_ms", "int"],
-        ["me_url_prefix", "string"],
-        ["autoupdate_url_prefix", "flags.7?string"],
-        ["gif_search_username", "flags.9?string"],
-        ["venue_search_username", "flags.10?string"],
-        ["img_search_username", "flags.11?string"],
-        ["static_maps_provider", "flags.12?string"],
-        ["caption_length_max", "int"],
-        ["message_length_max", "int"],
-        ["webfile_dc_id", "int"],
-        ["suggested_lang_code", "flags.2?string"],
-        ["lang_pack_version", "flags.2?int"],
-        ["base_lang_pack_version", "flags.2?int"],
-        ["reactions_default", "flags.15?Reaction"],
-        ["autologin_token", "flags.16?string"],
-      ],
-    ],
-  ],
-  [
-    "nearestDc",
-    [
-      0x8E1A1775,
-      [
-        ["country", "string"],
-        ["this_dc", "int"],
-        ["nearest_dc", "int"],
-      ],
-    ],
-  ],
-  [
-    "help.appUpdate",
-    [
-      0xCCBBCE30,
-      [
-        ["flags", "#"],
-        ["can_not_skip", "flags.0?true"],
-        ["id", "int"],
-        ["version", "string"],
-        ["text", "string"],
-        ["entities", "Vector<MessageEntity>"],
-        ["document", "flags.1?Document"],
-        ["url", "flags.2?string"],
-        ["sticker", "flags.3?Document"],
-      ],
-    ],
-  ],
-  [
-    "help.noAppUpdate",
-    [
-      0xC45A6536,
-      [],
-    ],
-  ],
-  [
-    "help.inviteText",
-    [
-      0x18CB9F78,
-      [
-        ["message", "string"],
-      ],
-    ],
-  ],
-  [
-    "encryptedChatEmpty",
-    [
-      0xAB7EC0A0,
-      [
-        ["id", "int"],
-      ],
-    ],
-  ],
-  [
-    "encryptedChatWaiting",
-    [
-      0x66B25953,
-      [
-        ["id", "int"],
-        ["access_hash", "long"],
-        ["date", "int"],
-        ["admin_id", "long"],
-        ["participant_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "encryptedChatRequested",
-    [
-      0x48F1D94C,
-      [
-        ["flags", "#"],
-        ["folder_id", "flags.0?int"],
-        ["id", "int"],
-        ["access_hash", "long"],
-        ["date", "int"],
-        ["admin_id", "long"],
-        ["participant_id", "long"],
-        ["g_a", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "encryptedChat",
-    [
-      0x61F0D4C7,
-      [
-        ["id", "int"],
-        ["access_hash", "long"],
-        ["date", "int"],
-        ["admin_id", "long"],
-        ["participant_id", "long"],
-        ["g_a_or_b", "bytes"],
-        ["key_fingerprint", "long"],
-      ],
-    ],
-  ],
-  [
-    "encryptedChatDiscarded",
-    [
-      0x1E1C7C45,
-      [
-        ["flags", "#"],
-        ["history_deleted", "flags.0?true"],
-        ["id", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputEncryptedChat",
-    [
-      0xF141B5E1,
-      [
-        ["chat_id", "int"],
-        ["access_hash", "long"],
-      ],
-    ],
-  ],
-  [
-    "encryptedFileEmpty",
-    [
-      0xC21F497E,
-      [],
-    ],
-  ],
-  [
-    "encryptedFile",
-    [
-      0xA8008CD8,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["size", "long"],
-        ["dc_id", "int"],
-        ["key_fingerprint", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputEncryptedFileEmpty",
-    [
-      0x1837C364,
-      [],
-    ],
-  ],
-  [
-    "inputEncryptedFileUploaded",
-    [
-      0x64BD0306,
-      [
-        ["id", "long"],
-        ["parts", "int"],
-        ["md5_checksum", "string"],
-        ["key_fingerprint", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputEncryptedFile",
-    [
-      0x5A17B5E5,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputEncryptedFileBigUploaded",
-    [
-      0x2DC173C8,
-      [
-        ["id", "long"],
-        ["parts", "int"],
-        ["key_fingerprint", "int"],
-      ],
-    ],
-  ],
-  [
-    "encryptedMessage",
-    [
-      0xED18C118,
-      [
-        ["random_id", "long"],
-        ["chat_id", "int"],
-        ["date", "int"],
-        ["bytes", "bytes"],
-        ["file", "EncryptedFile"],
-      ],
-    ],
-  ],
-  [
-    "encryptedMessageService",
-    [
-      0x23734B06,
-      [
-        ["random_id", "long"],
-        ["chat_id", "int"],
-        ["date", "int"],
-        ["bytes", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "messages.dhConfigNotModified",
-    [
-      0xC0E24635,
-      [
-        ["random", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "messages.dhConfig",
-    [
-      0x2C221EDD,
-      [
-        ["g", "int"],
-        ["p", "bytes"],
-        ["version", "int"],
-        ["random", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "messages.sentEncryptedMessage",
-    [
-      0x560F8935,
-      [
-        ["date", "int"],
-      ],
-    ],
-  ],
-  [
-    "messages.sentEncryptedFile",
-    [
-      0x9493FF32,
-      [
-        ["date", "int"],
-        ["file", "EncryptedFile"],
-      ],
-    ],
-  ],
-  [
-    "inputDocumentEmpty",
-    [
-      0x72F0EAAE,
-      [],
-    ],
-  ],
-  [
-    "inputDocument",
-    [
-      0x1ABFB575,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["file_reference", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "documentEmpty",
-    [
-      0x36F8C871,
-      [
-        ["id", "long"],
-      ],
-    ],
-  ],
-  [
-    "document",
-    [
-      0x8FD4C4D8,
-      [
-        ["flags", "#"],
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["file_reference", "bytes"],
-        ["date", "int"],
-        ["mime_type", "string"],
-        ["size", "long"],
-        ["thumbs", "flags.0?Vector<PhotoSize>"],
-        ["video_thumbs", "flags.1?Vector<VideoSize>"],
-        ["dc_id", "int"],
-        ["attributes", "Vector<DocumentAttribute>"],
-      ],
-    ],
-  ],
-  [
-    "help.support",
-    [
-      0x17C6B5F6,
-      [
-        ["phone_number", "string"],
-        ["user", "User"],
-      ],
-    ],
-  ],
-  [
-    "notifyPeer",
-    [
-      0x9FD40BD8,
-      [
-        ["peer", "Peer"],
-      ],
-    ],
-  ],
-  [
-    "notifyUsers",
-    [
-      0xB4C83B4C,
-      [],
-    ],
-  ],
-  [
-    "notifyChats",
-    [
-      0xC007CEC3,
-      [],
-    ],
-  ],
-  [
-    "notifyBroadcasts",
-    [
-      0xD612E8EF,
-      [],
-    ],
-  ],
-  [
-    "notifyForumTopic",
-    [
-      0x226E6308,
-      [
-        ["peer", "Peer"],
-        ["top_msg_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "sendMessageTypingAction",
-    [
-      0x16BF744E,
-      [],
-    ],
-  ],
-  [
-    "sendMessageCancelAction",
-    [
-      0xFD5EC8F5,
-      [],
-    ],
-  ],
-  [
-    "sendMessageRecordVideoAction",
-    [
-      0xA187D66F,
-      [],
-    ],
-  ],
-  [
-    "sendMessageUploadVideoAction",
-    [
-      0xE9763AEC,
-      [
-        ["progress", "int"],
-      ],
-    ],
-  ],
-  [
-    "sendMessageRecordAudioAction",
-    [
-      0xD52F73F7,
-      [],
-    ],
-  ],
-  [
-    "sendMessageUploadAudioAction",
-    [
-      0xF351D7AB,
-      [
-        ["progress", "int"],
-      ],
-    ],
-  ],
-  [
-    "sendMessageUploadPhotoAction",
-    [
-      0xD1D34A26,
-      [
-        ["progress", "int"],
-      ],
-    ],
-  ],
-  [
-    "sendMessageUploadDocumentAction",
-    [
-      0xAA0CD9E4,
-      [
-        ["progress", "int"],
-      ],
-    ],
-  ],
-  [
-    "sendMessageGeoLocationAction",
-    [
-      0x176F8BA1,
-      [],
-    ],
-  ],
-  [
-    "sendMessageChooseContactAction",
-    [
-      0x628CBC6F,
-      [],
-    ],
-  ],
-  [
-    "sendMessageGamePlayAction",
-    [
-      0xDD6A8F48,
-      [],
-    ],
-  ],
-  [
-    "sendMessageRecordRoundAction",
-    [
-      0x88F27FBC,
-      [],
-    ],
-  ],
-  [
-    "sendMessageUploadRoundAction",
-    [
-      0x243E1C66,
-      [
-        ["progress", "int"],
-      ],
-    ],
-  ],
-  [
-    "speakingInGroupCallAction",
-    [
-      0xD92C2285,
-      [],
-    ],
-  ],
-  [
-    "sendMessageHistoryImportAction",
-    [
-      0xDBDA9246,
-      [
-        ["progress", "int"],
-      ],
-    ],
-  ],
-  [
-    "sendMessageChooseStickerAction",
-    [
-      0xB05AC6B1,
-      [],
-    ],
-  ],
-  [
-    "sendMessageEmojiInteraction",
-    [
-      0x25972BCB,
-      [
-        ["emoticon", "string"],
-        ["msg_id", "int"],
-        ["interaction", "DataJSON"],
-      ],
-    ],
-  ],
-  [
-    "sendMessageEmojiInteractionSeen",
-    [
-      0xB665902E,
-      [
-        ["emoticon", "string"],
-      ],
-    ],
-  ],
-  [
-    "contacts.found",
-    [
-      0xB3134D9D,
-      [
-        ["my_results", "Vector<Peer>"],
-        ["results", "Vector<Peer>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "inputPrivacyKeyStatusTimestamp",
-    [
-      0x4F96CB18,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyKeyChatInvite",
-    [
-      0xBDFB0426,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyKeyPhoneCall",
-    [
-      0xFABADC5F,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyKeyPhoneP2P",
-    [
-      0xDB9E70D2,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyKeyForwards",
-    [
-      0xA4DD4C08,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyKeyProfilePhoto",
-    [
-      0x5719BACC,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyKeyPhoneNumber",
-    [
-      0x0352DAFA,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyKeyAddedByPhone",
-    [
-      0xD1219BDD,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyKeyVoiceMessages",
-    [
-      0xAEE69D68,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyKeyAbout",
-    [
-      0x3823CC40,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyKeyBirthday",
-    [
-      0xD65A11CC,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyKeyStarGiftsAutoSave",
-    [
-      0xE1732341,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyKeyNoPaidMessages",
-    [
-      0xBDC597B4,
-      [],
-    ],
-  ],
-  [
-    "privacyKeyStatusTimestamp",
-    [
-      0xBC2EAB30,
-      [],
-    ],
-  ],
-  [
-    "privacyKeyChatInvite",
-    [
-      0x500E6DFA,
-      [],
-    ],
-  ],
-  [
-    "privacyKeyPhoneCall",
-    [
-      0x3D662B7B,
-      [],
-    ],
-  ],
-  [
-    "privacyKeyPhoneP2P",
-    [
-      0x39491CC8,
-      [],
-    ],
-  ],
-  [
-    "privacyKeyForwards",
-    [
-      0x69EC56A3,
-      [],
-    ],
-  ],
-  [
-    "privacyKeyProfilePhoto",
-    [
-      0x96151FED,
-      [],
-    ],
-  ],
-  [
-    "privacyKeyPhoneNumber",
-    [
-      0xD19AE46D,
-      [],
-    ],
-  ],
-  [
-    "privacyKeyAddedByPhone",
-    [
-      0x42FFD42B,
-      [],
-    ],
-  ],
-  [
-    "privacyKeyVoiceMessages",
-    [
-      0x0697F414,
-      [],
-    ],
-  ],
-  [
-    "privacyKeyAbout",
-    [
-      0xA486B761,
-      [],
-    ],
-  ],
-  [
-    "privacyKeyBirthday",
-    [
-      0x2000A518,
-      [],
-    ],
-  ],
-  [
-    "privacyKeyStarGiftsAutoSave",
-    [
-      0x2CA4FDF8,
-      [],
-    ],
-  ],
-  [
-    "privacyKeyNoPaidMessages",
-    [
-      0x17D348D2,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyValueAllowContacts",
-    [
-      0x0D09E07B,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyValueAllowAll",
-    [
-      0x184B35CE,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyValueAllowUsers",
-    [
-      0x131CC67F,
-      [
-        ["users", "Vector<InputUser>"],
-      ],
-    ],
-  ],
-  [
-    "inputPrivacyValueDisallowContacts",
-    [
-      0x0BA52007,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyValueDisallowAll",
-    [
-      0xD66B66C9,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyValueDisallowUsers",
-    [
-      0x90110467,
-      [
-        ["users", "Vector<InputUser>"],
-      ],
-    ],
-  ],
-  [
-    "inputPrivacyValueAllowChatParticipants",
-    [
-      0x840649CF,
-      [
-        ["chats", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "inputPrivacyValueDisallowChatParticipants",
-    [
-      0xE94F0F86,
-      [
-        ["chats", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "inputPrivacyValueAllowCloseFriends",
-    [
-      0x2F453E49,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyValueAllowPremium",
-    [
-      0x77CDC9F1,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyValueAllowBots",
-    [
-      0x5A4FCCE5,
-      [],
-    ],
-  ],
-  [
-    "inputPrivacyValueDisallowBots",
-    [
-      0xC4E57915,
-      [],
-    ],
-  ],
-  [
-    "privacyValueAllowContacts",
-    [
-      0xFFFE1BAC,
-      [],
-    ],
-  ],
-  [
-    "privacyValueAllowAll",
-    [
-      0x65427B82,
-      [],
-    ],
-  ],
-  [
-    "privacyValueAllowUsers",
-    [
-      0xB8905FB2,
-      [
-        ["users", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "privacyValueDisallowContacts",
-    [
-      0xF888FA1A,
-      [],
-    ],
-  ],
-  [
-    "privacyValueDisallowAll",
-    [
-      0x8B73E763,
-      [],
-    ],
-  ],
-  [
-    "privacyValueDisallowUsers",
-    [
-      0xE4621141,
-      [
-        ["users", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "privacyValueAllowChatParticipants",
-    [
-      0x6B134E8E,
-      [
-        ["chats", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "privacyValueDisallowChatParticipants",
-    [
-      0x41C87565,
-      [
-        ["chats", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "privacyValueAllowCloseFriends",
-    [
-      0xF7E8D89B,
-      [],
-    ],
-  ],
-  [
-    "privacyValueAllowPremium",
-    [
-      0xECE9814B,
-      [],
-    ],
-  ],
-  [
-    "privacyValueAllowBots",
-    [
-      0x21461B5D,
-      [],
-    ],
-  ],
-  [
-    "privacyValueDisallowBots",
-    [
-      0xF6A5F82F,
-      [],
-    ],
-  ],
-  [
-    "account.privacyRules",
-    [
-      0x50A04E45,
-      [
-        ["rules", "Vector<PrivacyRule>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "accountDaysTTL",
-    [
-      0xB8D0AFDF,
-      [
-        ["days", "int"],
-      ],
-    ],
-  ],
-  [
-    "documentAttributeImageSize",
-    [
-      0x6C37C15C,
-      [
-        ["w", "int"],
-        ["h", "int"],
-      ],
-    ],
-  ],
-  [
-    "documentAttributeAnimated",
-    [
-      0x11B58939,
-      [],
-    ],
-  ],
-  [
-    "documentAttributeSticker",
-    [
-      0x6319D612,
-      [
-        ["flags", "#"],
-        ["mask", "flags.1?true"],
-        ["alt", "string"],
-        ["stickerset", "InputStickerSet"],
-        ["mask_coords", "flags.0?MaskCoords"],
-      ],
-    ],
-  ],
-  [
-    "documentAttributeVideo",
-    [
-      0x43C57C48,
-      [
-        ["flags", "#"],
-        ["round_message", "flags.0?true"],
-        ["supports_streaming", "flags.1?true"],
-        ["nosound", "flags.3?true"],
-        ["duration", "double"],
-        ["w", "int"],
-        ["h", "int"],
-        ["preload_prefix_size", "flags.2?int"],
-        ["video_start_ts", "flags.4?double"],
-        ["video_codec", "flags.5?string"],
-      ],
-    ],
-  ],
-  [
-    "documentAttributeAudio",
-    [
-      0x9852F9C6,
-      [
-        ["flags", "#"],
-        ["voice", "flags.10?true"],
-        ["duration", "int"],
-        ["title", "flags.0?string"],
-        ["performer", "flags.1?string"],
-        ["waveform", "flags.2?bytes"],
-      ],
-    ],
-  ],
-  [
-    "documentAttributeFilename",
-    [
-      0x15590068,
-      [
-        ["file_name", "string"],
-      ],
-    ],
-  ],
-  [
-    "documentAttributeHasStickers",
-    [
-      0x9801D2F7,
-      [],
-    ],
-  ],
-  [
-    "documentAttributeCustomEmoji",
-    [
-      0xFD149899,
-      [
-        ["flags", "#"],
-        ["free", "flags.0?true"],
-        ["text_color", "flags.1?true"],
-        ["alt", "string"],
-        ["stickerset", "InputStickerSet"],
-      ],
-    ],
-  ],
-  [
-    "messages.stickersNotModified",
-    [
-      0xF1749A22,
-      [],
-    ],
-  ],
-  [
-    "messages.stickers",
-    [
-      0x30A6EC7E,
-      [
-        ["hash", "long"],
-        ["stickers", "Vector<Document>"],
-      ],
-    ],
-  ],
-  [
-    "stickerPack",
-    [
-      0x12B299D4,
-      [
-        ["emoticon", "string"],
-        ["documents", "Vector<long>"],
-      ],
-    ],
-  ],
-  [
-    "messages.allStickersNotModified",
-    [
-      0xE86602C3,
-      [],
-    ],
-  ],
-  [
-    "messages.allStickers",
-    [
-      0xCDBBCEBB,
-      [
-        ["hash", "long"],
-        ["sets", "Vector<StickerSet>"],
-      ],
-    ],
-  ],
-  [
-    "messages.affectedMessages",
-    [
-      0x84D19185,
-      [
-        ["pts", "int"],
-        ["pts_count", "int"],
-      ],
-    ],
-  ],
-  [
-    "webPageEmpty",
-    [
-      0x211A1788,
-      [
-        ["flags", "#"],
-        ["id", "long"],
-        ["url", "flags.0?string"],
-      ],
-    ],
-  ],
-  [
-    "webPagePending",
-    [
-      0xB0D13E47,
-      [
-        ["flags", "#"],
-        ["id", "long"],
-        ["url", "flags.0?string"],
-        ["date", "int"],
-      ],
-    ],
-  ],
-  [
-    "webPage",
-    [
-      0xE89C45B2,
-      [
-        ["flags", "#"],
-        ["has_large_media", "flags.13?true"],
-        ["video_cover_photo", "flags.14?true"],
-        ["id", "long"],
-        ["url", "string"],
-        ["display_url", "string"],
-        ["hash", "int"],
-        ["type", "flags.0?string"],
-        ["site_name", "flags.1?string"],
-        ["title", "flags.2?string"],
-        ["description", "flags.3?string"],
-        ["photo", "flags.4?Photo"],
-        ["embed_url", "flags.5?string"],
-        ["embed_type", "flags.5?string"],
-        ["embed_width", "flags.6?int"],
-        ["embed_height", "flags.6?int"],
-        ["duration", "flags.7?int"],
-        ["author", "flags.8?string"],
-        ["document", "flags.9?Document"],
-        ["cached_page", "flags.10?Page"],
-        ["attributes", "flags.12?Vector<WebPageAttribute>"],
-      ],
-    ],
-  ],
-  [
-    "webPageNotModified",
-    [
-      0x7311CA11,
-      [
-        ["flags", "#"],
-        ["cached_page_views", "flags.0?int"],
-      ],
-    ],
-  ],
-  [
-    "authorization",
-    [
-      0xAD01D61D,
-      [
-        ["flags", "#"],
-        ["current", "flags.0?true"],
-        ["official_app", "flags.1?true"],
-        ["password_pending", "flags.2?true"],
-        ["encrypted_requests_disabled", "flags.3?true"],
-        ["call_requests_disabled", "flags.4?true"],
-        ["unconfirmed", "flags.5?true"],
-        ["hash", "long"],
-        ["device_model", "string"],
-        ["platform", "string"],
-        ["system_version", "string"],
-        ["api_id", "int"],
-        ["app_name", "string"],
-        ["app_version", "string"],
-        ["date_created", "int"],
-        ["date_active", "int"],
-        ["ip", "string"],
-        ["country", "string"],
-        ["region", "string"],
-      ],
-    ],
-  ],
-  [
-    "account.authorizations",
-    [
-      0x4BFF8EA0,
-      [
-        ["authorization_ttl_days", "int"],
-        ["authorizations", "Vector<Authorization>"],
-      ],
-    ],
-  ],
-  [
-    "account.password",
-    [
-      0x957B50FB,
-      [
-        ["flags", "#"],
-        ["has_recovery", "flags.0?true"],
-        ["has_secure_values", "flags.1?true"],
-        ["has_password", "flags.2?true"],
-        ["current_algo", "flags.2?PasswordKdfAlgo"],
-        ["srp_B", "flags.2?bytes"],
-        ["srp_id", "flags.2?long"],
-        ["hint", "flags.3?string"],
-        ["email_unconfirmed_pattern", "flags.4?string"],
-        ["new_algo", "PasswordKdfAlgo"],
-        ["new_secure_algo", "SecurePasswordKdfAlgo"],
-        ["secure_random", "bytes"],
-        ["pending_reset_date", "flags.5?int"],
-        ["login_email_pattern", "flags.6?string"],
-      ],
-    ],
-  ],
-  [
-    "account.passwordSettings",
-    [
-      0x9A5C33E5,
-      [
-        ["flags", "#"],
-        ["email", "flags.0?string"],
-        ["secure_settings", "flags.1?SecureSecretSettings"],
-      ],
-    ],
-  ],
-  [
-    "account.passwordInputSettings",
-    [
-      0xC23727C9,
-      [
-        ["flags", "#"],
-        ["new_algo", "flags.0?PasswordKdfAlgo"],
-        ["new_password_hash", "flags.0?bytes"],
-        ["hint", "flags.0?string"],
-        ["email", "flags.1?string"],
-        ["new_secure_settings", "flags.2?SecureSecretSettings"],
-      ],
-    ],
-  ],
-  [
-    "auth.passwordRecovery",
-    [
-      0x137948A5,
-      [
-        ["email_pattern", "string"],
-      ],
-    ],
-  ],
-  [
-    "receivedNotifyMessage",
-    [
-      0xA384B779,
-      [
-        ["id", "int"],
-        ["flags", "int"],
-      ],
-    ],
-  ],
-  [
-    "chatInviteExported",
-    [
-      0xA22CBD96,
-      [
-        ["flags", "#"],
-        ["revoked", "flags.0?true"],
-        ["permanent", "flags.5?true"],
-        ["request_needed", "flags.6?true"],
-        ["link", "string"],
-        ["admin_id", "long"],
-        ["date", "int"],
-        ["start_date", "flags.4?int"],
-        ["expire_date", "flags.1?int"],
-        ["usage_limit", "flags.2?int"],
-        ["usage", "flags.3?int"],
-        ["requested", "flags.7?int"],
-        ["subscription_expired", "flags.10?int"],
-        ["title", "flags.8?string"],
-        ["subscription_pricing", "flags.9?StarsSubscriptionPricing"],
-      ],
-    ],
-  ],
-  [
-    "chatInvitePublicJoinRequests",
-    [
-      0xED107AB7,
-      [],
-    ],
-  ],
-  [
-    "chatInviteAlready",
-    [
-      0x5A686D7C,
-      [
-        ["chat", "Chat"],
-      ],
-    ],
-  ],
-  [
-    "chatInvite",
-    [
-      0x5C9D3702,
-      [
-        ["flags", "#"],
-        ["channel", "flags.0?true"],
-        ["broadcast", "flags.1?true"],
-        ["public", "flags.2?true"],
-        ["megagroup", "flags.3?true"],
-        ["request_needed", "flags.6?true"],
-        ["verified", "flags.7?true"],
-        ["scam", "flags.8?true"],
-        ["fake", "flags.9?true"],
-        ["can_refulfill_subscription", "flags.11?true"],
-        ["title", "string"],
-        ["about", "flags.5?string"],
-        ["photo", "Photo"],
-        ["participants_count", "int"],
-        ["participants", "flags.4?Vector<User>"],
-        ["color", "int"],
-        ["subscription_pricing", "flags.10?StarsSubscriptionPricing"],
-        ["subscription_form_id", "flags.12?long"],
-        ["bot_verification", "flags.13?BotVerification"],
-      ],
-    ],
-  ],
-  [
-    "chatInvitePeek",
-    [
-      0x61695CB0,
-      [
-        ["chat", "Chat"],
-        ["expires", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputStickerSetEmpty",
-    [
-      0xFFB62B95,
-      [],
-    ],
-  ],
-  [
-    "inputStickerSetID",
-    [
-      0x9DE7A269,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputStickerSetShortName",
-    [
-      0x861CC8A0,
-      [
-        ["short_name", "string"],
-      ],
-    ],
-  ],
-  [
-    "inputStickerSetAnimatedEmoji",
-    [
-      0x028703C8,
-      [],
-    ],
-  ],
-  [
-    "inputStickerSetDice",
-    [
-      0xE67F520E,
-      [
-        ["emoticon", "string"],
-      ],
-    ],
-  ],
-  [
-    "inputStickerSetAnimatedEmojiAnimations",
-    [
-      0x0CDE3739,
-      [],
-    ],
-  ],
-  [
-    "inputStickerSetPremiumGifts",
-    [
-      0xC88B3B02,
-      [],
-    ],
-  ],
-  [
-    "inputStickerSetEmojiGenericAnimations",
-    [
-      0x04C4D4CE,
-      [],
-    ],
-  ],
-  [
-    "inputStickerSetEmojiDefaultStatuses",
-    [
-      0x29D0F5EE,
-      [],
-    ],
-  ],
-  [
-    "inputStickerSetEmojiDefaultTopicIcons",
-    [
-      0x44C1F8E9,
-      [],
-    ],
-  ],
-  [
-    "inputStickerSetEmojiChannelDefaultStatuses",
-    [
-      0x49748553,
-      [],
-    ],
-  ],
-  [
-    "stickerSet",
-    [
-      0x2DD14EDC,
-      [
-        ["flags", "#"],
-        ["archived", "flags.1?true"],
-        ["official", "flags.2?true"],
-        ["masks", "flags.3?true"],
-        ["emojis", "flags.7?true"],
-        ["text_color", "flags.9?true"],
-        ["channel_emoji_status", "flags.10?true"],
-        ["creator", "flags.11?true"],
-        ["installed_date", "flags.0?int"],
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["title", "string"],
-        ["short_name", "string"],
-        ["thumbs", "flags.4?Vector<PhotoSize>"],
-        ["thumb_dc_id", "flags.4?int"],
-        ["thumb_version", "flags.4?int"],
-        ["thumb_document_id", "flags.8?long"],
-        ["count", "int"],
-        ["hash", "int"],
-      ],
-    ],
-  ],
-  [
-    "messages.stickerSet",
-    [
-      0x6E153F16,
-      [
-        ["set", "StickerSet"],
-        ["packs", "Vector<StickerPack>"],
-        ["keywords", "Vector<StickerKeyword>"],
-        ["documents", "Vector<Document>"],
-      ],
-    ],
-  ],
-  [
-    "messages.stickerSetNotModified",
-    [
-      0xD3F924EB,
-      [],
-    ],
-  ],
-  [
-    "botCommand",
-    [
-      0xC27AC8C7,
-      [
-        ["command", "string"],
-        ["description", "string"],
-      ],
-    ],
-  ],
-  [
-    "botInfo",
-    [
-      0x4D8A0299,
-      [
-        ["flags", "#"],
-        ["has_preview_medias", "flags.6?true"],
-        ["user_id", "flags.0?long"],
-        ["description", "flags.1?string"],
-        ["description_photo", "flags.4?Photo"],
-        ["description_document", "flags.5?Document"],
-        ["commands", "flags.2?Vector<BotCommand>"],
-        ["menu_button", "flags.3?BotMenuButton"],
-        ["privacy_policy_url", "flags.7?string"],
-        ["app_settings", "flags.8?BotAppSettings"],
-        ["verifier_settings", "flags.9?BotVerifierSettings"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButton",
-    [
-      0xA2FA4880,
-      [
-        ["text", "string"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonUrl",
-    [
-      0x258AFF05,
-      [
-        ["text", "string"],
-        ["url", "string"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonCallback",
-    [
-      0x35BBDB6B,
-      [
-        ["flags", "#"],
-        ["requires_password", "flags.0?true"],
-        ["text", "string"],
-        ["data", "bytes"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonRequestPhone",
-    [
-      0xB16A6C29,
-      [
-        ["text", "string"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonRequestGeoLocation",
-    [
-      0xFC796B3F,
-      [
-        ["text", "string"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonSwitchInline",
-    [
-      0x93B9FBB5,
-      [
-        ["flags", "#"],
-        ["same_peer", "flags.0?true"],
-        ["text", "string"],
-        ["query", "string"],
-        ["peer_types", "flags.1?Vector<InlineQueryPeerType>"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonGame",
-    [
-      0x50F41CCF,
-      [
-        ["text", "string"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonBuy",
-    [
-      0xAFD93FBB,
-      [
-        ["text", "string"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonUrlAuth",
-    [
-      0x10B78D29,
-      [
-        ["flags", "#"],
-        ["text", "string"],
-        ["fwd_text", "flags.0?string"],
-        ["url", "string"],
-        ["button_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputKeyboardButtonUrlAuth",
-    [
-      0xD02E7FD4,
-      [
-        ["flags", "#"],
-        ["request_write_access", "flags.0?true"],
-        ["text", "string"],
-        ["fwd_text", "flags.1?string"],
-        ["url", "string"],
-        ["bot", "InputUser"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonRequestPoll",
-    [
-      0xBBC7515D,
-      [
-        ["flags", "#"],
-        ["quiz", "flags.0?Bool"],
-        ["text", "string"],
-      ],
-    ],
-  ],
-  [
-    "inputKeyboardButtonUserProfile",
-    [
-      0xE988037B,
-      [
-        ["text", "string"],
-        ["user_id", "InputUser"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonUserProfile",
-    [
-      0x308660C1,
-      [
-        ["text", "string"],
-        ["user_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonWebView",
-    [
-      0x13767230,
-      [
-        ["text", "string"],
-        ["url", "string"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonSimpleWebView",
-    [
-      0xA0C0505C,
-      [
-        ["text", "string"],
-        ["url", "string"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonRequestPeer",
-    [
-      0x53D7BFD8,
-      [
-        ["text", "string"],
-        ["button_id", "int"],
-        ["peer_type", "RequestPeerType"],
-        ["max_quantity", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputKeyboardButtonRequestPeer",
-    [
-      0xC9662D05,
-      [
-        ["flags", "#"],
-        ["name_requested", "flags.0?true"],
-        ["username_requested", "flags.1?true"],
-        ["photo_requested", "flags.2?true"],
-        ["text", "string"],
-        ["button_id", "int"],
-        ["peer_type", "RequestPeerType"],
-        ["max_quantity", "int"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonCopy",
-    [
-      0x75D2698E,
-      [
-        ["text", "string"],
-        ["copy_text", "string"],
-      ],
-    ],
-  ],
-  [
-    "keyboardButtonRow",
-    [
-      0x77608B83,
-      [
-        ["buttons", "Vector<KeyboardButton>"],
-      ],
-    ],
-  ],
-  [
-    "replyKeyboardHide",
-    [
-      0xA03E5B85,
-      [
-        ["flags", "#"],
-        ["selective", "flags.2?true"],
-      ],
-    ],
-  ],
-  [
-    "replyKeyboardForceReply",
-    [
-      0x86B40B08,
-      [
-        ["flags", "#"],
-        ["single_use", "flags.1?true"],
-        ["selective", "flags.2?true"],
-        ["placeholder", "flags.3?string"],
-      ],
-    ],
-  ],
-  [
-    "replyKeyboardMarkup",
-    [
-      0x85DD99D1,
-      [
-        ["flags", "#"],
-        ["resize", "flags.0?true"],
-        ["single_use", "flags.1?true"],
-        ["selective", "flags.2?true"],
-        ["persistent", "flags.4?true"],
-        ["rows", "Vector<KeyboardButtonRow>"],
-        ["placeholder", "flags.3?string"],
-      ],
-    ],
-  ],
-  [
-    "replyInlineMarkup",
-    [
-      0x48A30254,
-      [
-        ["rows", "Vector<KeyboardButtonRow>"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityUnknown",
-    [
-      0xBB92BA95,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityMention",
-    [
-      0xFA04579D,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityHashtag",
-    [
-      0x6F635B0D,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityBotCommand",
-    [
-      0x6CEF8AC7,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityUrl",
-    [
-      0x6ED02538,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityEmail",
-    [
-      0x64E475C2,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityBold",
-    [
-      0xBD610BC9,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityItalic",
-    [
-      0x826F8B60,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityCode",
-    [
-      0x28A20571,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityPre",
-    [
-      0x73924BE0,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-        ["language", "string"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityTextUrl",
-    [
-      0x76A6D327,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-        ["url", "string"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityMentionName",
-    [
-      0xDC7B1140,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-        ["user_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputMessageEntityMentionName",
-    [
-      0x208E68C9,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-        ["user_id", "InputUser"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityPhone",
-    [
-      0x9B69E34B,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityCashtag",
-    [
-      0x4C4E743F,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityUnderline",
-    [
-      0x9C4E7E8B,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityStrike",
-    [
-      0xBF0693D4,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityBankCard",
-    [
-      0x761E6AF4,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntitySpoiler",
-    [
-      0x32CA960F,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityCustomEmoji",
-    [
-      0xC8CF05F8,
-      [
-        ["offset", "int"],
-        ["length", "int"],
-        ["document_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "messageEntityBlockquote",
-    [
-      0xF1CCAAAC,
-      [
-        ["flags", "#"],
-        ["collapsed", "flags.0?true"],
-        ["offset", "int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "inputChannelEmpty",
-    [
-      0xEE8C1E86,
-      [],
-    ],
-  ],
-  [
-    "inputChannel",
-    [
-      0xF35AEC28,
-      [
-        ["channel_id", "long"],
-        ["access_hash", "long"],
-      ],
-    ],
-  ],
-  [
-    "inputChannelFromMessage",
-    [
-      0x5B934F9D,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["channel_id", "long"],
-      ],
-    ],
-  ],
-  [
-    "contacts.resolvedPeer",
-    [
-      0x7F077AD9,
-      [
-        ["peer", "Peer"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "messageRange",
-    [
-      0x0AE30253,
-      [
-        ["min_id", "int"],
-        ["max_id", "int"],
-      ],
-    ],
-  ],
-  [
-    "updates.channelDifferenceEmpty",
-    [
-      0x3E11AFFB,
-      [
-        ["flags", "#"],
-        ["final", "flags.0?true"],
-        ["pts", "int"],
-        ["timeout", "flags.1?int"],
-      ],
-    ],
-  ],
-  [
-    "updates.channelDifferenceTooLong",
-    [
-      0xA4BCC6FE,
-      [
-        ["flags", "#"],
-        ["final", "flags.0?true"],
-        ["timeout", "flags.1?int"],
-        ["dialog", "Dialog"],
-        ["messages", "Vector<Message>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "updates.channelDifference",
-    [
-      0x2064674E,
-      [
-        ["flags", "#"],
-        ["final", "flags.0?true"],
-        ["pts", "int"],
-        ["timeout", "flags.1?int"],
-        ["new_messages", "Vector<Message>"],
-        ["other_updates", "Vector<Update>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "channelMessagesFilterEmpty",
-    [
-      0x94D42EE7,
-      [],
-    ],
-  ],
-  [
-    "channelMessagesFilter",
-    [
-      0xCD77D957,
-      [
-        ["flags", "#"],
-        ["exclude_new_messages", "flags.1?true"],
-        ["ranges", "Vector<MessageRange>"],
-      ],
-    ],
-  ],
-  [
-    "channelParticipant",
-    [
-      0xCB397619,
-      [
-        ["flags", "#"],
-        ["user_id", "long"],
-        ["date", "int"],
-        ["subscription_until_date", "flags.0?int"],
-      ],
-    ],
-  ],
-  [
-    "channelParticipantSelf",
-    [
-      0x4F607BEF,
-      [
-        ["flags", "#"],
-        ["via_request", "flags.0?true"],
-        ["user_id", "long"],
-        ["inviter_id", "long"],
-        ["date", "int"],
-        ["subscription_until_date", "flags.1?int"],
-      ],
-    ],
-  ],
-  [
-    "channelParticipantCreator",
-    [
-      0x2FE601D3,
-      [
-        ["flags", "#"],
-        ["user_id", "long"],
-        ["admin_rights", "ChatAdminRights"],
-        ["rank", "flags.0?string"],
-      ],
-    ],
-  ],
-  [
-    "channelParticipantAdmin",
-    [
-      0x34C3BB53,
-      [
-        ["flags", "#"],
-        ["can_edit", "flags.0?true"],
-        ["self", "flags.1?true"],
-        ["user_id", "long"],
-        ["inviter_id", "flags.1?long"],
-        ["promoted_by", "long"],
-        ["date", "int"],
-        ["admin_rights", "ChatAdminRights"],
-        ["rank", "flags.2?string"],
-      ],
-    ],
-  ],
-  [
-    "channelParticipantBanned",
-    [
-      0x6DF8014E,
-      [
-        ["flags", "#"],
-        ["left", "flags.0?true"],
-        ["peer", "Peer"],
-        ["kicked_by", "long"],
-        ["date", "int"],
-        ["banned_rights", "ChatBannedRights"],
-      ],
+export const schema: Schema = Object.freeze({
+  "resPQ": [
+    0x05162463,
+    [
+      ["nonce", "int128"],
+      ["server_nonce", "int128"],
+      ["pq", "bytes"],
+      ["server_public_key_fingerprints", "Vector<long>"],
+    ],
+    "ResPQ",
+  ],
+  "p_q_inner_data_dc": [
+    0xA9F55F95,
+    [
+      ["pq", "bytes"],
+      ["p", "bytes"],
+      ["q", "bytes"],
+      ["nonce", "int128"],
+      ["server_nonce", "int128"],
+      ["new_nonce", "int256"],
+      ["dc", "int"],
+    ],
+    "P_Q_inner_data",
+  ],
+  "p_q_inner_data_temp_dc": [
+    0x56FDDF88,
+    [
+      ["pq", "bytes"],
+      ["p", "bytes"],
+      ["q", "bytes"],
+      ["nonce", "int128"],
+      ["server_nonce", "int128"],
+      ["new_nonce", "int256"],
+      ["dc", "int"],
+      ["expires_in", "int"],
+    ],
+    "P_Q_inner_data",
+  ],
+  "server_DH_params_ok": [
+    0xD0E8075C,
+    [
+      ["nonce", "int128"],
+      ["server_nonce", "int128"],
+      ["encrypted_answer", "bytes"],
+    ],
+    "Server_DH_Params",
+  ],
+  "server_DH_inner_data": [
+    0xB5890DBA,
+    [
+      ["nonce", "int128"],
+      ["server_nonce", "int128"],
+      ["g", "int"],
+      ["dh_prime", "bytes"],
+      ["g_a", "bytes"],
+      ["server_time", "int"],
+    ],
+    "Server_DH_inner_data",
+  ],
+  "client_DH_inner_data": [
+    0x6643B654,
+    [
+      ["nonce", "int128"],
+      ["server_nonce", "int128"],
+      ["retry_id", "long"],
+      ["g_b", "bytes"],
+    ],
+    "Client_DH_Inner_Data",
+  ],
+  "dh_gen_ok": [
+    0x3BCBF734,
+    [
+      ["nonce", "int128"],
+      ["server_nonce", "int128"],
+      ["new_nonce_hash1", "int128"],
+    ],
+    "Set_client_DH_params_answer",
+  ],
+  "dh_gen_retry": [
+    0x46DC1FB9,
+    [
+      ["nonce", "int128"],
+      ["server_nonce", "int128"],
+      ["new_nonce_hash2", "int128"],
+    ],
+    "Set_client_DH_params_answer",
+  ],
+  "dh_gen_fail": [
+    0xA69DAE02,
+    [
+      ["nonce", "int128"],
+      ["server_nonce", "int128"],
+      ["new_nonce_hash3", "int128"],
+    ],
+    "Set_client_DH_params_answer",
+  ],
+  "bind_auth_key_inner": [
+    0x75A3F765,
+    [
+      ["nonce", "long"],
+      ["temp_auth_key_id", "long"],
+      ["perm_auth_key_id", "long"],
+      ["temp_session_id", "long"],
+      ["expires_at", "int"],
+    ],
+    "BindAuthKeyInner",
+  ],
+  "rpc_error": [
+    0x2144CA19,
+    [
+      ["error_code", "int"],
+      ["error_message", "string"],
+    ],
+    "RpcError",
+  ],
+  "rpc_answer_unknown": [
+    0x5E2AD36E,
+    [],
+    "RpcDropAnswer",
+  ],
+  "rpc_answer_dropped_running": [
+    0xCD78E586,
+    [],
+    "RpcDropAnswer",
+  ],
+  "rpc_answer_dropped": [
+    0xA43AD8B7,
+    [
+      ["msg_id", "long"],
+      ["seq_no", "int"],
+      ["bytes", "int"],
+    ],
+    "RpcDropAnswer",
+  ],
+  "future_salt": [
+    0x0949D9DC,
+    [
+      ["valid_since", "int"],
+      ["valid_until", "int"],
+      ["salt", "long"],
+    ],
+    "FutureSalt",
+  ],
+  "future_salts": [
+    0xAE500895,
+    [
+      ["req_msg_id", "long"],
+      ["now", "int"],
+      ["salts", "vector<FutureSalt>"],
+    ],
+    "FutureSalts",
+  ],
+  "pong": [
+    0x347773C5,
+    [
+      ["msg_id", "long"],
+      ["ping_id", "long"],
+    ],
+    "Pong",
+  ],
+  "destroy_session_ok": [
+    0xE22045FC,
+    [
+      ["session_id", "long"],
+    ],
+    "DestroySessionRes",
+  ],
+  "destroy_session_none": [
+    0x62D350C9,
+    [
+      ["session_id", "long"],
+    ],
+    "DestroySessionRes",
+  ],
+  "new_session_created": [
+    0x9EC20908,
+    [
+      ["first_msg_id", "long"],
+      ["unique_id", "long"],
+      ["server_salt", "long"],
+    ],
+    "NewSession",
+  ],
+  "gzip_packed": [
+    0x3072CFA1,
+    [
+      ["packed_data", "bytes"],
+    ],
+    "Object",
+  ],
+  "msgs_ack": [
+    0x62D6B459,
+    [
+      ["msg_ids", "Vector<long>"],
+    ],
+    "MsgsAck",
+  ],
+  "bad_msg_notification": [
+    0xA7EFF811,
+    [
+      ["bad_msg_id", "long"],
+      ["bad_msg_seqno", "int"],
+      ["error_code", "int"],
+    ],
+    "BadMsgNotification",
+  ],
+  "bad_server_salt": [
+    0xEDAB447B,
+    [
+      ["bad_msg_id", "long"],
+      ["bad_msg_seqno", "int"],
+      ["error_code", "int"],
+      ["new_server_salt", "long"],
+    ],
+    "BadMsgNotification",
+  ],
+  "msg_resend_req": [
+    0x7D861A08,
+    [
+      ["msg_ids", "Vector<long>"],
+    ],
+    "MsgResendReq",
+  ],
+  "msgs_state_req": [
+    0xDA69FB52,
+    [
+      ["msg_ids", "Vector<long>"],
+    ],
+    "MsgsStateReq",
+  ],
+  "msgs_state_info": [
+    0x04DEB57D,
+    [
+      ["req_msg_id", "long"],
+      ["info", "bytes"],
+    ],
+    "MsgsStateInfo",
+  ],
+  "msgs_all_info": [
+    0x8CC0D131,
+    [
+      ["msg_ids", "Vector<long>"],
+      ["info", "bytes"],
+    ],
+    "MsgsAllInfo",
+  ],
+  "msg_detailed_info": [
+    0x276D3EC6,
+    [
+      ["msg_id", "long"],
+      ["answer_msg_id", "long"],
+      ["bytes", "int"],
+      ["status", "int"],
+    ],
+    "MsgDetailedInfo",
+  ],
+  "msg_new_detailed_info": [
+    0x809DB6DF,
+    [
+      ["answer_msg_id", "long"],
+      ["bytes", "int"],
+      ["status", "int"],
+    ],
+    "MsgDetailedInfo",
+  ],
+  "destroy_auth_key_ok": [
+    0xF660E1D4,
+    [],
+    "DestroyAuthKeyRes",
+  ],
+  "destroy_auth_key_none": [
+    0x0A9F2259,
+    [],
+    "DestroyAuthKeyRes",
+  ],
+  "destroy_auth_key_fail": [
+    0xEA109B13,
+    [],
+    "DestroyAuthKeyRes",
+  ],
+  "http_wait": [
+    0x9299359F,
+    [
+      ["max_delay", "int"],
+      ["wait_after", "int"],
+      ["max_wait", "int"],
+    ],
+    "HttpWait",
+  ],
+  "true": [
+    0x3FEDD339,
+    [],
+    "True",
+  ],
+  "error": [
+    0xC4B9F9BB,
+    [
+      ["code", "int"],
+      ["text", "string"],
+    ],
+    "Error",
+  ],
+  "ipPort": [
+    0xD433AD73,
+    [
+      ["ipv4", "int"],
+      ["port", "int"],
+    ],
+    "IpPort",
+  ],
+  "ipPortSecret": [
+    0x37982646,
+    [
+      ["ipv4", "int"],
+      ["port", "int"],
+      ["secret", "bytes"],
+    ],
+    "IpPort",
+  ],
+  "accessPointRule": [
+    0x4679B65F,
+    [
+      ["phone_prefix_rules", "string"],
+      ["dc_id", "int"],
+      ["ips", "vector<IpPort>"],
+    ],
+    "AccessPointRule",
+  ],
+  "help.configSimple": [
+    0x5A592A6C,
+    [
+      ["date", "int"],
+      ["expires", "int"],
+      ["rules", "vector<AccessPointRule>"],
+    ],
+    "help.ConfigSimple",
+  ],
+  "inputPeerPhotoFileLocationLegacy": [
+    0x27D69997,
+    [
+      ["flags", "#"],
+      ["big", "flags.0?true"],
+      ["peer", "InputPeer"],
+      ["volume_id", "long"],
+      ["local_id", "int"],
+    ],
+    "InputFileLocation",
+  ],
+  "inputStickerSetThumbLegacy": [
+    0x0DBAEAE9,
+    [
+      ["stickerset", "InputStickerSet"],
+      ["volume_id", "long"],
+      ["local_id", "int"],
+    ],
+    "InputFileLocation",
+  ],
+  "inputPeerEmpty": [
+    0x7F3B18EA,
+    [],
+    "InputPeer",
+  ],
+  "inputPeerSelf": [
+    0x7DA07EC9,
+    [],
+    "InputPeer",
+  ],
+  "inputPeerChat": [
+    0x35A95CB9,
+    [
+      ["chat_id", "long"],
+    ],
+    "InputPeer",
+  ],
+  "inputPeerUser": [
+    0xDDE8A54C,
+    [
+      ["user_id", "long"],
+      ["access_hash", "long"],
+    ],
+    "InputPeer",
+  ],
+  "inputPeerChannel": [
+    0x27BCBBFC,
+    [
+      ["channel_id", "long"],
+      ["access_hash", "long"],
+    ],
+    "InputPeer",
+  ],
+  "inputPeerUserFromMessage": [
+    0xA87B0A1C,
+    [
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["user_id", "long"],
+    ],
+    "InputPeer",
+  ],
+  "inputPeerChannelFromMessage": [
+    0xBD2A0840,
+    [
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["channel_id", "long"],
+    ],
+    "InputPeer",
+  ],
+  "inputUserEmpty": [
+    0xB98886CF,
+    [],
+    "InputUser",
+  ],
+  "inputUserSelf": [
+    0xF7C1B13F,
+    [],
+    "InputUser",
+  ],
+  "inputUser": [
+    0xF21158C6,
+    [
+      ["user_id", "long"],
+      ["access_hash", "long"],
+    ],
+    "InputUser",
+  ],
+  "inputUserFromMessage": [
+    0x1DA448E2,
+    [
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["user_id", "long"],
+    ],
+    "InputUser",
+  ],
+  "inputPhoneContact": [
+    0xF392B7F4,
+    [
+      ["client_id", "long"],
+      ["phone", "string"],
+      ["first_name", "string"],
+      ["last_name", "string"],
+    ],
+    "InputContact",
+  ],
+  "inputFile": [
+    0xF52FF27F,
+    [
+      ["id", "long"],
+      ["parts", "int"],
+      ["name", "string"],
+      ["md5_checksum", "string"],
+    ],
+    "InputFile",
+  ],
+  "inputFileBig": [
+    0xFA4F0BB5,
+    [
+      ["id", "long"],
+      ["parts", "int"],
+      ["name", "string"],
+    ],
+    "InputFile",
+  ],
+  "inputFileStoryDocument": [
+    0x62DC8B48,
+    [
+      ["id", "InputDocument"],
+    ],
+    "InputFile",
+  ],
+  "inputMediaEmpty": [
+    0x9664F57F,
+    [],
+    "InputMedia",
+  ],
+  "inputMediaUploadedPhoto": [
+    0x1E287D04,
+    [
+      ["flags", "#"],
+      ["spoiler", "flags.2?true"],
+      ["file", "InputFile"],
+      ["stickers", "flags.0?Vector<InputDocument>"],
+      ["ttl_seconds", "flags.1?int"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaPhoto": [
+    0xB3BA0635,
+    [
+      ["flags", "#"],
+      ["spoiler", "flags.1?true"],
+      ["id", "InputPhoto"],
+      ["ttl_seconds", "flags.0?int"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaGeoPoint": [
+    0xF9C44144,
+    [
+      ["geo_point", "InputGeoPoint"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaContact": [
+    0xF8AB7DFB,
+    [
+      ["phone_number", "string"],
+      ["first_name", "string"],
+      ["last_name", "string"],
+      ["vcard", "string"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaUploadedDocument": [
+    0x037C9330,
+    [
+      ["flags", "#"],
+      ["nosound_video", "flags.3?true"],
+      ["force_file", "flags.4?true"],
+      ["spoiler", "flags.5?true"],
+      ["file", "InputFile"],
+      ["thumb", "flags.2?InputFile"],
+      ["mime_type", "string"],
+      ["attributes", "Vector<DocumentAttribute>"],
+      ["stickers", "flags.0?Vector<InputDocument>"],
+      ["video_cover", "flags.6?InputPhoto"],
+      ["video_timestamp", "flags.7?int"],
+      ["ttl_seconds", "flags.1?int"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaDocument": [
+    0xA8763AB5,
+    [
+      ["flags", "#"],
+      ["spoiler", "flags.2?true"],
+      ["id", "InputDocument"],
+      ["video_cover", "flags.3?InputPhoto"],
+      ["video_timestamp", "flags.4?int"],
+      ["ttl_seconds", "flags.0?int"],
+      ["query", "flags.1?string"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaVenue": [
+    0xC13D1C11,
+    [
+      ["geo_point", "InputGeoPoint"],
+      ["title", "string"],
+      ["address", "string"],
+      ["provider", "string"],
+      ["venue_id", "string"],
+      ["venue_type", "string"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaPhotoExternal": [
+    0xE5BBFE1A,
+    [
+      ["flags", "#"],
+      ["spoiler", "flags.1?true"],
+      ["url", "string"],
+      ["ttl_seconds", "flags.0?int"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaDocumentExternal": [
+    0x779600F9,
+    [
+      ["flags", "#"],
+      ["spoiler", "flags.1?true"],
+      ["url", "string"],
+      ["ttl_seconds", "flags.0?int"],
+      ["video_cover", "flags.2?InputPhoto"],
+      ["video_timestamp", "flags.3?int"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaGame": [
+    0xD33F43F3,
+    [
+      ["id", "InputGame"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaInvoice": [
+    0x405FEF0D,
+    [
+      ["flags", "#"],
+      ["title", "string"],
+      ["description", "string"],
+      ["photo", "flags.0?InputWebDocument"],
+      ["invoice", "Invoice"],
+      ["payload", "bytes"],
+      ["provider", "flags.3?string"],
+      ["provider_data", "DataJSON"],
+      ["start_param", "flags.1?string"],
+      ["extended_media", "flags.2?InputMedia"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaGeoLive": [
+    0x971FA843,
+    [
+      ["flags", "#"],
+      ["stopped", "flags.0?true"],
+      ["geo_point", "InputGeoPoint"],
+      ["heading", "flags.2?int"],
+      ["period", "flags.1?int"],
+      ["proximity_notification_radius", "flags.3?int"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaPoll": [
+    0x0F94E5F1,
+    [
+      ["flags", "#"],
+      ["poll", "Poll"],
+      ["correct_answers", "flags.0?Vector<bytes>"],
+      ["solution", "flags.1?string"],
+      ["solution_entities", "flags.1?Vector<MessageEntity>"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaDice": [
+    0xE66FBF7B,
+    [
+      ["emoticon", "string"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaStory": [
+    0x89FDD778,
+    [
+      ["peer", "InputPeer"],
+      ["id", "int"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaWebPage": [
+    0xC21B8849,
+    [
+      ["flags", "#"],
+      ["force_large_media", "flags.0?true"],
+      ["force_small_media", "flags.1?true"],
+      ["optional", "flags.2?true"],
+      ["url", "string"],
+    ],
+    "InputMedia",
+  ],
+  "inputMediaPaidMedia": [
+    0xC4103386,
+    [
+      ["flags", "#"],
+      ["stars_amount", "long"],
+      ["extended_media", "Vector<InputMedia>"],
+      ["payload", "flags.0?string"],
+    ],
+    "InputMedia",
+  ],
+  "inputChatPhotoEmpty": [
+    0x1CA48F57,
+    [],
+    "InputChatPhoto",
+  ],
+  "inputChatUploadedPhoto": [
+    0xBDCDAEC0,
+    [
+      ["flags", "#"],
+      ["file", "flags.0?InputFile"],
+      ["video", "flags.1?InputFile"],
+      ["video_start_ts", "flags.2?double"],
+      ["video_emoji_markup", "flags.3?VideoSize"],
+    ],
+    "InputChatPhoto",
+  ],
+  "inputChatPhoto": [
+    0x8953AD37,
+    [
+      ["id", "InputPhoto"],
+    ],
+    "InputChatPhoto",
+  ],
+  "inputGeoPointEmpty": [
+    0xE4C123D6,
+    [],
+    "InputGeoPoint",
+  ],
+  "inputGeoPoint": [
+    0x48222FAF,
+    [
+      ["flags", "#"],
+      ["lat", "double"],
+      ["long", "double"],
+      ["accuracy_radius", "flags.0?int"],
+    ],
+    "InputGeoPoint",
+  ],
+  "inputPhotoEmpty": [
+    0x1CD7BF0D,
+    [],
+    "InputPhoto",
+  ],
+  "inputPhoto": [
+    0x3BB3B94A,
+    [
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["file_reference", "bytes"],
+    ],
+    "InputPhoto",
+  ],
+  "inputFileLocation": [
+    0xDFDAABE1,
+    [
+      ["volume_id", "long"],
+      ["local_id", "int"],
+      ["secret", "long"],
+      ["file_reference", "bytes"],
+    ],
+    "InputFileLocation",
+  ],
+  "inputEncryptedFileLocation": [
+    0xF5235D55,
+    [
+      ["id", "long"],
+      ["access_hash", "long"],
+    ],
+    "InputFileLocation",
+  ],
+  "inputDocumentFileLocation": [
+    0xBAD07584,
+    [
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["file_reference", "bytes"],
+      ["thumb_size", "string"],
+    ],
+    "InputFileLocation",
+  ],
+  "inputSecureFileLocation": [
+    0xCBC7EE28,
+    [
+      ["id", "long"],
+      ["access_hash", "long"],
+    ],
+    "InputFileLocation",
+  ],
+  "inputTakeoutFileLocation": [
+    0x29BE5899,
+    [],
+    "InputFileLocation",
+  ],
+  "inputPhotoFileLocation": [
+    0x40181FFE,
+    [
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["file_reference", "bytes"],
+      ["thumb_size", "string"],
+    ],
+    "InputFileLocation",
+  ],
+  "inputPhotoLegacyFileLocation": [
+    0xD83466F3,
+    [
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["file_reference", "bytes"],
+      ["volume_id", "long"],
+      ["local_id", "int"],
+      ["secret", "long"],
+    ],
+    "InputFileLocation",
+  ],
+  "inputPeerPhotoFileLocation": [
+    0x37257E99,
+    [
+      ["flags", "#"],
+      ["big", "flags.0?true"],
+      ["peer", "InputPeer"],
+      ["photo_id", "long"],
+    ],
+    "InputFileLocation",
+  ],
+  "inputStickerSetThumb": [
+    0x9D84F3DB,
+    [
+      ["stickerset", "InputStickerSet"],
+      ["thumb_version", "int"],
+    ],
+    "InputFileLocation",
+  ],
+  "inputGroupCallStream": [
+    0x0598A92A,
+    [
+      ["flags", "#"],
+      ["call", "InputGroupCall"],
+      ["time_ms", "long"],
+      ["scale", "int"],
+      ["video_channel", "flags.0?int"],
+      ["video_quality", "flags.0?int"],
+    ],
+    "InputFileLocation",
+  ],
+  "peerUser": [
+    0x59511722,
+    [
+      ["user_id", "long"],
+    ],
+    "Peer",
+  ],
+  "peerChat": [
+    0x36C6019A,
+    [
+      ["chat_id", "long"],
+    ],
+    "Peer",
+  ],
+  "peerChannel": [
+    0xA2A5371E,
+    [
+      ["channel_id", "long"],
+    ],
+    "Peer",
+  ],
+  "storage.fileUnknown": [
+    0xAA963B05,
+    [],
+    "storage.FileType",
+  ],
+  "storage.filePartial": [
+    0x40BC6F52,
+    [],
+    "storage.FileType",
+  ],
+  "storage.fileJpeg": [
+    0x007EFE0E,
+    [],
+    "storage.FileType",
+  ],
+  "storage.fileGif": [
+    0xCAE1AADF,
+    [],
+    "storage.FileType",
+  ],
+  "storage.filePng": [
+    0x0A4F63C0,
+    [],
+    "storage.FileType",
+  ],
+  "storage.filePdf": [
+    0xAE1E508D,
+    [],
+    "storage.FileType",
+  ],
+  "storage.fileMp3": [
+    0x528A0677,
+    [],
+    "storage.FileType",
+  ],
+  "storage.fileMov": [
+    0x4B09EBBC,
+    [],
+    "storage.FileType",
+  ],
+  "storage.fileMp4": [
+    0xB3CEA0E4,
+    [],
+    "storage.FileType",
+  ],
+  "storage.fileWebp": [
+    0x1081464C,
+    [],
+    "storage.FileType",
+  ],
+  "userEmpty": [
+    0xD3BC4B7A,
+    [
+      ["id", "long"],
+    ],
+    "User",
+  ],
+  "user": [
+    0x020B1422,
+    [
+      ["flags", "#"],
+      ["self", "flags.10?true"],
+      ["contact", "flags.11?true"],
+      ["mutual_contact", "flags.12?true"],
+      ["deleted", "flags.13?true"],
+      ["bot", "flags.14?true"],
+      ["bot_chat_history", "flags.15?true"],
+      ["bot_nochats", "flags.16?true"],
+      ["verified", "flags.17?true"],
+      ["restricted", "flags.18?true"],
+      ["min", "flags.20?true"],
+      ["bot_inline_geo", "flags.21?true"],
+      ["support", "flags.23?true"],
+      ["scam", "flags.24?true"],
+      ["apply_min_photo", "flags.25?true"],
+      ["fake", "flags.26?true"],
+      ["bot_attach_menu", "flags.27?true"],
+      ["premium", "flags.28?true"],
+      ["attach_menu_enabled", "flags.29?true"],
+      ["flags2", "#"],
+      ["bot_can_edit", "flags2.1?true"],
+      ["close_friend", "flags2.2?true"],
+      ["stories_hidden", "flags2.3?true"],
+      ["stories_unavailable", "flags2.4?true"],
+      ["contact_require_premium", "flags2.10?true"],
+      ["bot_business", "flags2.11?true"],
+      ["bot_has_main_app", "flags2.13?true"],
+      ["id", "long"],
+      ["access_hash", "flags.0?long"],
+      ["first_name", "flags.1?string"],
+      ["last_name", "flags.2?string"],
+      ["username", "flags.3?string"],
+      ["phone", "flags.4?string"],
+      ["photo", "flags.5?UserProfilePhoto"],
+      ["status", "flags.6?UserStatus"],
+      ["bot_info_version", "flags.14?int"],
+      ["restriction_reason", "flags.18?Vector<RestrictionReason>"],
+      ["bot_inline_placeholder", "flags.19?string"],
+      ["lang_code", "flags.22?string"],
+      ["emoji_status", "flags.30?EmojiStatus"],
+      ["usernames", "flags2.0?Vector<Username>"],
+      ["stories_max_id", "flags2.5?int"],
+      ["color", "flags2.8?PeerColor"],
+      ["profile_color", "flags2.9?PeerColor"],
+      ["bot_active_users", "flags2.12?int"],
+      ["bot_verification_icon", "flags2.14?long"],
+      ["send_paid_messages_stars", "flags2.15?long"],
+    ],
+    "User",
+  ],
+  "userProfilePhotoEmpty": [
+    0x4F11BAE1,
+    [],
+    "UserProfilePhoto",
+  ],
+  "userProfilePhoto": [
+    0x82D1F706,
+    [
+      ["flags", "#"],
+      ["has_video", "flags.0?true"],
+      ["personal", "flags.2?true"],
+      ["photo_id", "long"],
+      ["stripped_thumb", "flags.1?bytes"],
+      ["dc_id", "int"],
+    ],
+    "UserProfilePhoto",
+  ],
+  "userStatusEmpty": [
+    0x09D05049,
+    [],
+    "UserStatus",
+  ],
+  "userStatusOnline": [
+    0xEDB93949,
+    [
+      ["expires", "int"],
+    ],
+    "UserStatus",
+  ],
+  "userStatusOffline": [
+    0x008C703F,
+    [
+      ["was_online", "int"],
+    ],
+    "UserStatus",
+  ],
+  "userStatusRecently": [
+    0x7B197DC8,
+    [
+      ["flags", "#"],
+      ["by_me", "flags.0?true"],
+    ],
+    "UserStatus",
+  ],
+  "userStatusLastWeek": [
+    0x541A1D1A,
+    [
+      ["flags", "#"],
+      ["by_me", "flags.0?true"],
+    ],
+    "UserStatus",
+  ],
+  "userStatusLastMonth": [
+    0x65899777,
+    [
+      ["flags", "#"],
+      ["by_me", "flags.0?true"],
+    ],
+    "UserStatus",
+  ],
+  "chatEmpty": [
+    0x29562865,
+    [
+      ["id", "long"],
+    ],
+    "Chat",
+  ],
+  "chat": [
+    0x41CBF256,
+    [
+      ["flags", "#"],
+      ["creator", "flags.0?true"],
+      ["left", "flags.2?true"],
+      ["deactivated", "flags.5?true"],
+      ["call_active", "flags.23?true"],
+      ["call_not_empty", "flags.24?true"],
+      ["noforwards", "flags.25?true"],
+      ["id", "long"],
+      ["title", "string"],
+      ["photo", "ChatPhoto"],
+      ["participants_count", "int"],
+      ["date", "int"],
+      ["version", "int"],
+      ["migrated_to", "flags.6?InputChannel"],
+      ["admin_rights", "flags.14?ChatAdminRights"],
+      ["default_banned_rights", "flags.18?ChatBannedRights"],
+    ],
+    "Chat",
+  ],
+  "chatForbidden": [
+    0x6592A1A7,
+    [
+      ["id", "long"],
+      ["title", "string"],
+    ],
+    "Chat",
+  ],
+  "channel": [
+    0x7482147E,
+    [
+      ["flags", "#"],
+      ["creator", "flags.0?true"],
+      ["left", "flags.2?true"],
+      ["broadcast", "flags.5?true"],
+      ["verified", "flags.7?true"],
+      ["megagroup", "flags.8?true"],
+      ["restricted", "flags.9?true"],
+      ["signatures", "flags.11?true"],
+      ["min", "flags.12?true"],
+      ["scam", "flags.19?true"],
+      ["has_link", "flags.20?true"],
+      ["has_geo", "flags.21?true"],
+      ["slowmode_enabled", "flags.22?true"],
+      ["call_active", "flags.23?true"],
+      ["call_not_empty", "flags.24?true"],
+      ["fake", "flags.25?true"],
+      ["gigagroup", "flags.26?true"],
+      ["noforwards", "flags.27?true"],
+      ["join_to_send", "flags.28?true"],
+      ["join_request", "flags.29?true"],
+      ["forum", "flags.30?true"],
+      ["flags2", "#"],
+      ["stories_hidden", "flags2.1?true"],
+      ["stories_hidden_min", "flags2.2?true"],
+      ["stories_unavailable", "flags2.3?true"],
+      ["signature_profiles", "flags2.12?true"],
+      ["id", "long"],
+      ["access_hash", "flags.13?long"],
+      ["title", "string"],
+      ["username", "flags.6?string"],
+      ["photo", "ChatPhoto"],
+      ["date", "int"],
+      ["restriction_reason", "flags.9?Vector<RestrictionReason>"],
+      ["admin_rights", "flags.14?ChatAdminRights"],
+      ["banned_rights", "flags.15?ChatBannedRights"],
+      ["default_banned_rights", "flags.18?ChatBannedRights"],
+      ["participants_count", "flags.17?int"],
+      ["usernames", "flags2.0?Vector<Username>"],
+      ["stories_max_id", "flags2.4?int"],
+      ["color", "flags2.7?PeerColor"],
+      ["profile_color", "flags2.8?PeerColor"],
+      ["emoji_status", "flags2.9?EmojiStatus"],
+      ["level", "flags2.10?int"],
+      ["subscription_until_date", "flags2.11?int"],
+      ["bot_verification_icon", "flags2.13?long"],
+      ["send_paid_messages_stars", "flags2.14?long"],
+    ],
+    "Chat",
+  ],
+  "channelForbidden": [
+    0x17D493D5,
+    [
+      ["flags", "#"],
+      ["broadcast", "flags.5?true"],
+      ["megagroup", "flags.8?true"],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["title", "string"],
+      ["until_date", "flags.16?int"],
+    ],
+    "Chat",
+  ],
+  "chatFull": [
+    0x2633421B,
+    [
+      ["flags", "#"],
+      ["can_set_username", "flags.7?true"],
+      ["has_scheduled", "flags.8?true"],
+      ["translations_disabled", "flags.19?true"],
+      ["id", "long"],
+      ["about", "string"],
+      ["participants", "ChatParticipants"],
+      ["chat_photo", "flags.2?Photo"],
+      ["notify_settings", "PeerNotifySettings"],
+      ["exported_invite", "flags.13?ExportedChatInvite"],
+      ["bot_info", "flags.3?Vector<BotInfo>"],
+      ["pinned_msg_id", "flags.6?int"],
+      ["folder_id", "flags.11?int"],
+      ["call", "flags.12?InputGroupCall"],
+      ["ttl_period", "flags.14?int"],
+      ["groupcall_default_join_as", "flags.15?Peer"],
+      ["theme_emoticon", "flags.16?string"],
+      ["requests_pending", "flags.17?int"],
+      ["recent_requesters", "flags.17?Vector<long>"],
+      ["available_reactions", "flags.18?ChatReactions"],
+      ["reactions_limit", "flags.20?int"],
+    ],
+    "ChatFull",
+  ],
+  "channelFull": [
+    0x52D6806B,
+    [
+      ["flags", "#"],
+      ["can_view_participants", "flags.3?true"],
+      ["can_set_username", "flags.6?true"],
+      ["can_set_stickers", "flags.7?true"],
+      ["hidden_prehistory", "flags.10?true"],
+      ["can_set_location", "flags.16?true"],
+      ["has_scheduled", "flags.19?true"],
+      ["can_view_stats", "flags.20?true"],
+      ["blocked", "flags.22?true"],
+      ["flags2", "#"],
+      ["can_delete_channel", "flags2.0?true"],
+      ["antispam", "flags2.1?true"],
+      ["participants_hidden", "flags2.2?true"],
+      ["translations_disabled", "flags2.3?true"],
+      ["stories_pinned_available", "flags2.5?true"],
+      ["view_forum_as_messages", "flags2.6?true"],
+      ["restricted_sponsored", "flags2.11?true"],
+      ["can_view_revenue", "flags2.12?true"],
+      ["paid_media_allowed", "flags2.14?true"],
+      ["can_view_stars_revenue", "flags2.15?true"],
+      ["paid_reactions_available", "flags2.16?true"],
+      ["stargifts_available", "flags2.19?true"],
+      ["paid_messages_available", "flags2.20?true"],
+      ["id", "long"],
+      ["about", "string"],
+      ["participants_count", "flags.0?int"],
+      ["admins_count", "flags.1?int"],
+      ["kicked_count", "flags.2?int"],
+      ["banned_count", "flags.2?int"],
+      ["online_count", "flags.13?int"],
+      ["read_inbox_max_id", "int"],
+      ["read_outbox_max_id", "int"],
+      ["unread_count", "int"],
+      ["chat_photo", "Photo"],
+      ["notify_settings", "PeerNotifySettings"],
+      ["exported_invite", "flags.23?ExportedChatInvite"],
+      ["bot_info", "Vector<BotInfo>"],
+      ["migrated_from_chat_id", "flags.4?long"],
+      ["migrated_from_max_id", "flags.4?int"],
+      ["pinned_msg_id", "flags.5?int"],
+      ["stickerset", "flags.8?StickerSet"],
+      ["available_min_id", "flags.9?int"],
+      ["folder_id", "flags.11?int"],
+      ["linked_chat_id", "flags.14?long"],
+      ["location", "flags.15?ChannelLocation"],
+      ["slowmode_seconds", "flags.17?int"],
+      ["slowmode_next_send_date", "flags.18?int"],
+      ["stats_dc", "flags.12?int"],
+      ["pts", "int"],
+      ["call", "flags.21?InputGroupCall"],
+      ["ttl_period", "flags.24?int"],
+      ["pending_suggestions", "flags.25?Vector<string>"],
+      ["groupcall_default_join_as", "flags.26?Peer"],
+      ["theme_emoticon", "flags.27?string"],
+      ["requests_pending", "flags.28?int"],
+      ["recent_requesters", "flags.28?Vector<long>"],
+      ["default_send_as", "flags.29?Peer"],
+      ["available_reactions", "flags.30?ChatReactions"],
+      ["reactions_limit", "flags2.13?int"],
+      ["stories", "flags2.4?PeerStories"],
+      ["wallpaper", "flags2.7?WallPaper"],
+      ["boosts_applied", "flags2.8?int"],
+      ["boosts_unrestrict", "flags2.9?int"],
+      ["emojiset", "flags2.10?StickerSet"],
+      ["bot_verification", "flags2.17?BotVerification"],
+      ["stargifts_count", "flags2.18?int"],
+    ],
+    "ChatFull",
+  ],
+  "chatParticipant": [
+    0xC02D4007,
+    [
+      ["user_id", "long"],
+      ["inviter_id", "long"],
+      ["date", "int"],
+    ],
+    "ChatParticipant",
+  ],
+  "chatParticipantCreator": [
+    0xE46BCEE4,
+    [
+      ["user_id", "long"],
+    ],
+    "ChatParticipant",
+  ],
+  "chatParticipantAdmin": [
+    0xA0933F5B,
+    [
+      ["user_id", "long"],
+      ["inviter_id", "long"],
+      ["date", "int"],
+    ],
+    "ChatParticipant",
+  ],
+  "chatParticipantsForbidden": [
+    0x8763D3E1,
+    [
+      ["flags", "#"],
+      ["chat_id", "long"],
+      ["self_participant", "flags.0?ChatParticipant"],
+    ],
+    "ChatParticipants",
+  ],
+  "chatParticipants": [
+    0x3CBC93F8,
+    [
+      ["chat_id", "long"],
+      ["participants", "Vector<ChatParticipant>"],
+      ["version", "int"],
+    ],
+    "ChatParticipants",
+  ],
+  "chatPhotoEmpty": [
+    0x37C1011C,
+    [],
+    "ChatPhoto",
+  ],
+  "chatPhoto": [
+    0x1C6E1C11,
+    [
+      ["flags", "#"],
+      ["has_video", "flags.0?true"],
+      ["photo_id", "long"],
+      ["stripped_thumb", "flags.1?bytes"],
+      ["dc_id", "int"],
+    ],
+    "ChatPhoto",
+  ],
+  "messageEmpty": [
+    0x90A6CA84,
+    [
+      ["flags", "#"],
+      ["id", "int"],
+      ["peer_id", "flags.0?Peer"],
+    ],
+    "Message",
+  ],
+  "message": [
+    0xEABCDD4D,
+    [
+      ["flags", "#"],
+      ["out", "flags.1?true"],
+      ["mentioned", "flags.4?true"],
+      ["media_unread", "flags.5?true"],
+      ["silent", "flags.13?true"],
+      ["post", "flags.14?true"],
+      ["from_scheduled", "flags.18?true"],
+      ["legacy", "flags.19?true"],
+      ["edit_hide", "flags.21?true"],
+      ["pinned", "flags.24?true"],
+      ["noforwards", "flags.26?true"],
+      ["invert_media", "flags.27?true"],
+      ["flags2", "#"],
+      ["offline", "flags2.1?true"],
+      ["video_processing_pending", "flags2.4?true"],
+      ["id", "int"],
+      ["from_id", "flags.8?Peer"],
+      ["from_boosts_applied", "flags.29?int"],
+      ["peer_id", "Peer"],
+      ["saved_peer_id", "flags.28?Peer"],
+      ["fwd_from", "flags.2?MessageFwdHeader"],
+      ["via_bot_id", "flags.11?long"],
+      ["via_business_bot_id", "flags2.0?long"],
+      ["reply_to", "flags.3?MessageReplyHeader"],
+      ["date", "int"],
+      ["message", "string"],
+      ["media", "flags.9?MessageMedia"],
+      ["reply_markup", "flags.6?ReplyMarkup"],
+      ["entities", "flags.7?Vector<MessageEntity>"],
+      ["views", "flags.10?int"],
+      ["forwards", "flags.10?int"],
+      ["replies", "flags.23?MessageReplies"],
+      ["edit_date", "flags.15?int"],
+      ["post_author", "flags.16?string"],
+      ["grouped_id", "flags.17?long"],
+      ["reactions", "flags.20?MessageReactions"],
+      ["restriction_reason", "flags.22?Vector<RestrictionReason>"],
+      ["ttl_period", "flags.25?int"],
+      ["quick_reply_shortcut_id", "flags.30?int"],
+      ["effect", "flags2.2?long"],
+      ["factcheck", "flags2.3?FactCheck"],
+      ["report_delivery_until_date", "flags2.5?int"],
+      ["paid_message_stars", "flags2.6?long"],
+    ],
+    "Message",
+  ],
+  "messageService": [
+    0xD3D28540,
+    [
+      ["flags", "#"],
+      ["out", "flags.1?true"],
+      ["mentioned", "flags.4?true"],
+      ["media_unread", "flags.5?true"],
+      ["reactions_are_possible", "flags.9?true"],
+      ["silent", "flags.13?true"],
+      ["post", "flags.14?true"],
+      ["legacy", "flags.19?true"],
+      ["id", "int"],
+      ["from_id", "flags.8?Peer"],
+      ["peer_id", "Peer"],
+      ["reply_to", "flags.3?MessageReplyHeader"],
+      ["date", "int"],
+      ["action", "MessageAction"],
+      ["reactions", "flags.20?MessageReactions"],
+      ["ttl_period", "flags.25?int"],
+    ],
+    "Message",
+  ],
+  "messageMediaEmpty": [
+    0x3DED6320,
+    [],
+    "MessageMedia",
+  ],
+  "messageMediaPhoto": [
+    0x695150D7,
+    [
+      ["flags", "#"],
+      ["spoiler", "flags.3?true"],
+      ["photo", "flags.0?Photo"],
+      ["ttl_seconds", "flags.2?int"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaGeo": [
+    0x56E0D474,
+    [
+      ["geo", "GeoPoint"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaContact": [
+    0x70322949,
+    [
+      ["phone_number", "string"],
+      ["first_name", "string"],
+      ["last_name", "string"],
+      ["vcard", "string"],
+      ["user_id", "long"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaUnsupported": [
+    0x9F84F49E,
+    [],
+    "MessageMedia",
+  ],
+  "messageMediaDocument": [
+    0x52D8CCD9,
+    [
+      ["flags", "#"],
+      ["nopremium", "flags.3?true"],
+      ["spoiler", "flags.4?true"],
+      ["video", "flags.6?true"],
+      ["round", "flags.7?true"],
+      ["voice", "flags.8?true"],
+      ["document", "flags.0?Document"],
+      ["alt_documents", "flags.5?Vector<Document>"],
+      ["video_cover", "flags.9?Photo"],
+      ["video_timestamp", "flags.10?int"],
+      ["ttl_seconds", "flags.2?int"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaWebPage": [
+    0xDDF10C3B,
+    [
+      ["flags", "#"],
+      ["force_large_media", "flags.0?true"],
+      ["force_small_media", "flags.1?true"],
+      ["manual", "flags.3?true"],
+      ["safe", "flags.4?true"],
+      ["webpage", "WebPage"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaVenue": [
+    0x2EC0533F,
+    [
+      ["geo", "GeoPoint"],
+      ["title", "string"],
+      ["address", "string"],
+      ["provider", "string"],
+      ["venue_id", "string"],
+      ["venue_type", "string"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaGame": [
+    0xFDB19008,
+    [
+      ["game", "Game"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaInvoice": [
+    0xF6A548D3,
+    [
+      ["flags", "#"],
+      ["shipping_address_requested", "flags.1?true"],
+      ["test", "flags.3?true"],
+      ["title", "string"],
+      ["description", "string"],
+      ["photo", "flags.0?WebDocument"],
+      ["receipt_msg_id", "flags.2?int"],
+      ["currency", "string"],
+      ["total_amount", "long"],
+      ["start_param", "string"],
+      ["extended_media", "flags.4?MessageExtendedMedia"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaGeoLive": [
+    0xB940C666,
+    [
+      ["flags", "#"],
+      ["geo", "GeoPoint"],
+      ["heading", "flags.0?int"],
+      ["period", "int"],
+      ["proximity_notification_radius", "flags.1?int"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaPoll": [
+    0x4BD6E798,
+    [
+      ["poll", "Poll"],
+      ["results", "PollResults"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaDice": [
+    0x3F7EE58B,
+    [
+      ["value", "int"],
+      ["emoticon", "string"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaStory": [
+    0x68CB6283,
+    [
+      ["flags", "#"],
+      ["via_mention", "flags.1?true"],
+      ["peer", "Peer"],
+      ["id", "int"],
+      ["story", "flags.0?StoryItem"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaGiveaway": [
+    0xAA073BEB,
+    [
+      ["flags", "#"],
+      ["only_new_subscribers", "flags.0?true"],
+      ["winners_are_visible", "flags.2?true"],
+      ["channels", "Vector<long>"],
+      ["countries_iso2", "flags.1?Vector<string>"],
+      ["prize_description", "flags.3?string"],
+      ["quantity", "int"],
+      ["months", "flags.4?int"],
+      ["stars", "flags.5?long"],
+      ["until_date", "int"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaGiveawayResults": [
+    0xCEAA3EA1,
+    [
+      ["flags", "#"],
+      ["only_new_subscribers", "flags.0?true"],
+      ["refunded", "flags.2?true"],
+      ["channel_id", "long"],
+      ["additional_peers_count", "flags.3?int"],
+      ["launch_msg_id", "int"],
+      ["winners_count", "int"],
+      ["unclaimed_count", "int"],
+      ["winners", "Vector<long>"],
+      ["months", "flags.4?int"],
+      ["stars", "flags.5?long"],
+      ["prize_description", "flags.1?string"],
+      ["until_date", "int"],
+    ],
+    "MessageMedia",
+  ],
+  "messageMediaPaidMedia": [
+    0xA8852491,
+    [
+      ["stars_amount", "long"],
+      ["extended_media", "Vector<MessageExtendedMedia>"],
+    ],
+    "MessageMedia",
+  ],
+  "messageActionEmpty": [
+    0xB6AEF7B0,
+    [],
+    "MessageAction",
+  ],
+  "messageActionChatCreate": [
+    0xBD47CBAD,
+    [
+      ["title", "string"],
+      ["users", "Vector<long>"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionChatEditTitle": [
+    0xB5A1CE5A,
+    [
+      ["title", "string"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionChatEditPhoto": [
+    0x7FCB13A8,
+    [
+      ["photo", "Photo"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionChatDeletePhoto": [
+    0x95E3FBEF,
+    [],
+    "MessageAction",
+  ],
+  "messageActionChatAddUser": [
+    0x15CEFD00,
+    [
+      ["users", "Vector<long>"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionChatDeleteUser": [
+    0xA43F30CC,
+    [
+      ["user_id", "long"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionChatJoinedByLink": [
+    0x031224C3,
+    [
+      ["inviter_id", "long"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionChannelCreate": [
+    0x95D2AC92,
+    [
+      ["title", "string"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionChatMigrateTo": [
+    0xE1037F92,
+    [
+      ["channel_id", "long"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionChannelMigrateFrom": [
+    0xEA3948E9,
+    [
+      ["title", "string"],
+      ["chat_id", "long"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionPinMessage": [
+    0x94BD38ED,
+    [],
+    "MessageAction",
+  ],
+  "messageActionHistoryClear": [
+    0x9FBAB604,
+    [],
+    "MessageAction",
+  ],
+  "messageActionGameScore": [
+    0x92A72876,
+    [
+      ["game_id", "long"],
+      ["score", "int"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionPaymentSentMe": [
+    0xFFA00CCC,
+    [
+      ["flags", "#"],
+      ["recurring_init", "flags.2?true"],
+      ["recurring_used", "flags.3?true"],
+      ["currency", "string"],
+      ["total_amount", "long"],
+      ["payload", "bytes"],
+      ["info", "flags.0?PaymentRequestedInfo"],
+      ["shipping_option_id", "flags.1?string"],
+      ["charge", "PaymentCharge"],
+      ["subscription_until_date", "flags.4?int"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionPaymentSent": [
+    0xC624B16E,
+    [
+      ["flags", "#"],
+      ["recurring_init", "flags.2?true"],
+      ["recurring_used", "flags.3?true"],
+      ["currency", "string"],
+      ["total_amount", "long"],
+      ["invoice_slug", "flags.0?string"],
+      ["subscription_until_date", "flags.4?int"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionPhoneCall": [
+    0x80E11A7F,
+    [
+      ["flags", "#"],
+      ["video", "flags.2?true"],
+      ["call_id", "long"],
+      ["reason", "flags.0?PhoneCallDiscardReason"],
+      ["duration", "flags.1?int"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionScreenshotTaken": [
+    0x4792929B,
+    [],
+    "MessageAction",
+  ],
+  "messageActionCustomAction": [
+    0xFAE69F56,
+    [
+      ["message", "string"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionBotAllowed": [
+    0xC516D679,
+    [
+      ["flags", "#"],
+      ["attach_menu", "flags.1?true"],
+      ["from_request", "flags.3?true"],
+      ["domain", "flags.0?string"],
+      ["app", "flags.2?BotApp"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionSecureValuesSentMe": [
+    0x1B287353,
+    [
+      ["values", "Vector<SecureValue>"],
+      ["credentials", "SecureCredentialsEncrypted"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionSecureValuesSent": [
+    0xD95C6154,
+    [
+      ["types", "Vector<SecureValueType>"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionContactSignUp": [
+    0xF3F25F76,
+    [],
+    "MessageAction",
+  ],
+  "messageActionGeoProximityReached": [
+    0x98E0D697,
+    [
+      ["from_id", "Peer"],
+      ["to_id", "Peer"],
+      ["distance", "int"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionGroupCall": [
+    0x7A0D7F42,
+    [
+      ["flags", "#"],
+      ["call", "InputGroupCall"],
+      ["duration", "flags.0?int"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionInviteToGroupCall": [
+    0x502F92F7,
+    [
+      ["call", "InputGroupCall"],
+      ["users", "Vector<long>"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionSetMessagesTTL": [
+    0x3C134D7B,
+    [
+      ["flags", "#"],
+      ["period", "int"],
+      ["auto_setting_from", "flags.0?long"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionGroupCallScheduled": [
+    0xB3A07661,
+    [
+      ["call", "InputGroupCall"],
+      ["schedule_date", "int"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionSetChatTheme": [
+    0xAA786345,
+    [
+      ["emoticon", "string"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionChatJoinedByRequest": [
+    0xEBBCA3CB,
+    [],
+    "MessageAction",
+  ],
+  "messageActionWebViewDataSentMe": [
+    0x47DD8079,
+    [
+      ["text", "string"],
+      ["data", "string"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionWebViewDataSent": [
+    0xB4C38CB5,
+    [
+      ["text", "string"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionGiftPremium": [
+    0x6C6274FA,
+    [
+      ["flags", "#"],
+      ["currency", "string"],
+      ["amount", "long"],
+      ["months", "int"],
+      ["crypto_currency", "flags.0?string"],
+      ["crypto_amount", "flags.0?long"],
+      ["message", "flags.1?TextWithEntities"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionTopicCreate": [
+    0x0D999256,
+    [
+      ["flags", "#"],
+      ["title", "string"],
+      ["icon_color", "int"],
+      ["icon_emoji_id", "flags.0?long"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionTopicEdit": [
+    0xC0944820,
+    [
+      ["flags", "#"],
+      ["title", "flags.0?string"],
+      ["icon_emoji_id", "flags.1?long"],
+      ["closed", "flags.2?Bool"],
+      ["hidden", "flags.3?Bool"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionSuggestProfilePhoto": [
+    0x57DE635E,
+    [
+      ["photo", "Photo"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionRequestedPeer": [
+    0x31518E9B,
+    [
+      ["button_id", "int"],
+      ["peers", "Vector<Peer>"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionSetChatWallPaper": [
+    0x5060A3F4,
+    [
+      ["flags", "#"],
+      ["same", "flags.0?true"],
+      ["for_both", "flags.1?true"],
+      ["wallpaper", "WallPaper"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionGiftCode": [
+    0x56D03994,
+    [
+      ["flags", "#"],
+      ["via_giveaway", "flags.0?true"],
+      ["unclaimed", "flags.5?true"],
+      ["boost_peer", "flags.1?Peer"],
+      ["months", "int"],
+      ["slug", "string"],
+      ["currency", "flags.2?string"],
+      ["amount", "flags.2?long"],
+      ["crypto_currency", "flags.3?string"],
+      ["crypto_amount", "flags.3?long"],
+      ["message", "flags.4?TextWithEntities"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionGiveawayLaunch": [
+    0xA80F51E4,
+    [
+      ["flags", "#"],
+      ["stars", "flags.0?long"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionGiveawayResults": [
+    0x87E2F155,
+    [
+      ["flags", "#"],
+      ["stars", "flags.0?true"],
+      ["winners_count", "int"],
+      ["unclaimed_count", "int"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionBoostApply": [
+    0xCC02AA6D,
+    [
+      ["boosts", "int"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionRequestedPeerSentMe": [
+    0x93B31848,
+    [
+      ["button_id", "int"],
+      ["peers", "Vector<RequestedPeer>"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionPaymentRefunded": [
+    0x41B3E202,
+    [
+      ["flags", "#"],
+      ["peer", "Peer"],
+      ["currency", "string"],
+      ["total_amount", "long"],
+      ["payload", "flags.0?bytes"],
+      ["charge", "PaymentCharge"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionGiftStars": [
+    0x45D5B021,
+    [
+      ["flags", "#"],
+      ["currency", "string"],
+      ["amount", "long"],
+      ["stars", "long"],
+      ["crypto_currency", "flags.0?string"],
+      ["crypto_amount", "flags.0?long"],
+      ["transaction_id", "flags.1?string"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionPrizeStars": [
+    0xB00C47A2,
+    [
+      ["flags", "#"],
+      ["unclaimed", "flags.0?true"],
+      ["stars", "long"],
+      ["transaction_id", "string"],
+      ["boost_peer", "Peer"],
+      ["giveaway_msg_id", "int"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionStarGift": [
+    0x4717E8A4,
+    [
+      ["flags", "#"],
+      ["name_hidden", "flags.0?true"],
+      ["saved", "flags.2?true"],
+      ["converted", "flags.3?true"],
+      ["upgraded", "flags.5?true"],
+      ["refunded", "flags.9?true"],
+      ["can_upgrade", "flags.10?true"],
+      ["gift", "StarGift"],
+      ["message", "flags.1?TextWithEntities"],
+      ["convert_stars", "flags.4?long"],
+      ["upgrade_msg_id", "flags.5?int"],
+      ["upgrade_stars", "flags.8?long"],
+      ["from_id", "flags.11?Peer"],
+      ["peer", "flags.12?Peer"],
+      ["saved_id", "flags.12?long"],
+    ],
+    "MessageAction",
+  ],
+  "messageActionStarGiftUnique": [
+    0xACDFCB81,
+    [
+      ["flags", "#"],
+      ["upgrade", "flags.0?true"],
+      ["transferred", "flags.1?true"],
+      ["saved", "flags.2?true"],
+      ["refunded", "flags.5?true"],
+      ["gift", "StarGift"],
+      ["can_export_at", "flags.3?int"],
+      ["transfer_stars", "flags.4?long"],
+      ["from_id", "flags.6?Peer"],
+      ["peer", "flags.7?Peer"],
+      ["saved_id", "flags.7?long"],
+    ],
+    "MessageAction",
+  ],
+  "dialog": [
+    0xD58A08C6,
+    [
+      ["flags", "#"],
+      ["pinned", "flags.2?true"],
+      ["unread_mark", "flags.3?true"],
+      ["view_forum_as_messages", "flags.6?true"],
+      ["peer", "Peer"],
+      ["top_message", "int"],
+      ["read_inbox_max_id", "int"],
+      ["read_outbox_max_id", "int"],
+      ["unread_count", "int"],
+      ["unread_mentions_count", "int"],
+      ["unread_reactions_count", "int"],
+      ["notify_settings", "PeerNotifySettings"],
+      ["pts", "flags.0?int"],
+      ["draft", "flags.1?DraftMessage"],
+      ["folder_id", "flags.4?int"],
+      ["ttl_period", "flags.5?int"],
+    ],
+    "Dialog",
+  ],
+  "dialogFolder": [
+    0x71BD134C,
+    [
+      ["flags", "#"],
+      ["pinned", "flags.2?true"],
+      ["folder", "Folder"],
+      ["peer", "Peer"],
+      ["top_message", "int"],
+      ["unread_muted_peers_count", "int"],
+      ["unread_unmuted_peers_count", "int"],
+      ["unread_muted_messages_count", "int"],
+      ["unread_unmuted_messages_count", "int"],
+    ],
+    "Dialog",
+  ],
+  "photoEmpty": [
+    0x2331B22D,
+    [
+      ["id", "long"],
+    ],
+    "Photo",
+  ],
+  "photo": [
+    0xFB197A65,
+    [
+      ["flags", "#"],
+      ["has_stickers", "flags.0?true"],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["file_reference", "bytes"],
+      ["date", "int"],
+      ["sizes", "Vector<PhotoSize>"],
+      ["video_sizes", "flags.1?Vector<VideoSize>"],
+      ["dc_id", "int"],
+    ],
+    "Photo",
+  ],
+  "photoSizeEmpty": [
+    0x0E17E23C,
+    [
+      ["type", "string"],
+    ],
+    "PhotoSize",
+  ],
+  "photoSize": [
+    0x75C78E60,
+    [
+      ["type", "string"],
+      ["w", "int"],
+      ["h", "int"],
+      ["size", "int"],
+    ],
+    "PhotoSize",
+  ],
+  "photoCachedSize": [
+    0x021E1AD6,
+    [
+      ["type", "string"],
+      ["w", "int"],
+      ["h", "int"],
+      ["bytes", "bytes"],
+    ],
+    "PhotoSize",
+  ],
+  "photoStrippedSize": [
+    0xE0B0BC2E,
+    [
+      ["type", "string"],
+      ["bytes", "bytes"],
+    ],
+    "PhotoSize",
+  ],
+  "photoSizeProgressive": [
+    0xFA3EFB95,
+    [
+      ["type", "string"],
+      ["w", "int"],
+      ["h", "int"],
+      ["sizes", "Vector<int>"],
+    ],
+    "PhotoSize",
+  ],
+  "photoPathSize": [
+    0xD8214D41,
+    [
+      ["type", "string"],
+      ["bytes", "bytes"],
+    ],
+    "PhotoSize",
+  ],
+  "geoPointEmpty": [
+    0x1117DD5F,
+    [],
+    "GeoPoint",
+  ],
+  "geoPoint": [
+    0xB2A2F663,
+    [
+      ["flags", "#"],
+      ["long", "double"],
+      ["lat", "double"],
+      ["access_hash", "long"],
+      ["accuracy_radius", "flags.0?int"],
+    ],
+    "GeoPoint",
+  ],
+  "auth.sentCode": [
+    0x5E002502,
+    [
+      ["flags", "#"],
+      ["type", "auth.SentCodeType"],
+      ["phone_code_hash", "string"],
+      ["next_type", "flags.1?auth.CodeType"],
+      ["timeout", "flags.2?int"],
+    ],
+    "auth.SentCode",
+  ],
+  "auth.sentCodeSuccess": [
+    0x2390FE44,
+    [
+      ["authorization", "auth.Authorization"],
+    ],
+    "auth.SentCode",
+  ],
+  "auth.authorization": [
+    0x2EA2C0D4,
+    [
+      ["flags", "#"],
+      ["setup_password_required", "flags.1?true"],
+      ["otherwise_relogin_days", "flags.1?int"],
+      ["tmp_sessions", "flags.0?int"],
+      ["future_auth_token", "flags.2?bytes"],
+      ["user", "User"],
+    ],
+    "auth.Authorization",
+  ],
+  "auth.authorizationSignUpRequired": [
+    0x44747E9A,
+    [
+      ["flags", "#"],
+      ["terms_of_service", "flags.0?help.TermsOfService"],
+    ],
+    "auth.Authorization",
+  ],
+  "auth.exportedAuthorization": [
+    0xB434E2B8,
+    [
+      ["id", "long"],
+      ["bytes", "bytes"],
+    ],
+    "auth.ExportedAuthorization",
+  ],
+  "inputNotifyPeer": [
+    0xB8BC5B0C,
+    [
+      ["peer", "InputPeer"],
+    ],
+    "InputNotifyPeer",
+  ],
+  "inputNotifyUsers": [
+    0x193B4417,
+    [],
+    "InputNotifyPeer",
+  ],
+  "inputNotifyChats": [
+    0x4A95E84E,
+    [],
+    "InputNotifyPeer",
+  ],
+  "inputNotifyBroadcasts": [
+    0xB1DB7C7E,
+    [],
+    "InputNotifyPeer",
+  ],
+  "inputNotifyForumTopic": [
+    0x5C467992,
+    [
+      ["peer", "InputPeer"],
+      ["top_msg_id", "int"],
+    ],
+    "InputNotifyPeer",
+  ],
+  "inputPeerNotifySettings": [
+    0xCACB6AE2,
+    [
+      ["flags", "#"],
+      ["show_previews", "flags.0?Bool"],
+      ["silent", "flags.1?Bool"],
+      ["mute_until", "flags.2?int"],
+      ["sound", "flags.3?NotificationSound"],
+      ["stories_muted", "flags.6?Bool"],
+      ["stories_hide_sender", "flags.7?Bool"],
+      ["stories_sound", "flags.8?NotificationSound"],
+    ],
+    "InputPeerNotifySettings",
+  ],
+  "peerNotifySettings": [
+    0x99622C0C,
+    [
+      ["flags", "#"],
+      ["show_previews", "flags.0?Bool"],
+      ["silent", "flags.1?Bool"],
+      ["mute_until", "flags.2?int"],
+      ["ios_sound", "flags.3?NotificationSound"],
+      ["android_sound", "flags.4?NotificationSound"],
+      ["other_sound", "flags.5?NotificationSound"],
+      ["stories_muted", "flags.6?Bool"],
+      ["stories_hide_sender", "flags.7?Bool"],
+      ["stories_ios_sound", "flags.8?NotificationSound"],
+      ["stories_android_sound", "flags.9?NotificationSound"],
+      ["stories_other_sound", "flags.10?NotificationSound"],
+    ],
+    "PeerNotifySettings",
+  ],
+  "peerSettings": [
+    0xF47741F7,
+    [
+      ["flags", "#"],
+      ["report_spam", "flags.0?true"],
+      ["add_contact", "flags.1?true"],
+      ["block_contact", "flags.2?true"],
+      ["share_contact", "flags.3?true"],
+      ["need_contacts_exception", "flags.4?true"],
+      ["report_geo", "flags.5?true"],
+      ["autoarchived", "flags.7?true"],
+      ["invite_members", "flags.8?true"],
+      ["request_chat_broadcast", "flags.10?true"],
+      ["business_bot_paused", "flags.11?true"],
+      ["business_bot_can_reply", "flags.12?true"],
+      ["geo_distance", "flags.6?int"],
+      ["request_chat_title", "flags.9?string"],
+      ["request_chat_date", "flags.9?int"],
+      ["business_bot_id", "flags.13?long"],
+      ["business_bot_manage_url", "flags.13?string"],
+      ["charge_paid_message_stars", "flags.14?long"],
+      ["registration_month", "flags.15?string"],
+      ["phone_country", "flags.16?string"],
+      ["name_change_date", "flags.17?int"],
+      ["photo_change_date", "flags.18?int"],
+    ],
+    "PeerSettings",
+  ],
+  "wallPaper": [
+    0xA437C3ED,
+    [
+      ["id", "long"],
+      ["flags", "#"],
+      ["creator", "flags.0?true"],
+      ["default", "flags.1?true"],
+      ["pattern", "flags.3?true"],
+      ["dark", "flags.4?true"],
+      ["access_hash", "long"],
+      ["slug", "string"],
+      ["document", "Document"],
+      ["settings", "flags.2?WallPaperSettings"],
+    ],
+    "WallPaper",
+  ],
+  "wallPaperNoFile": [
+    0xE0804116,
+    [
+      ["id", "long"],
+      ["flags", "#"],
+      ["default", "flags.1?true"],
+      ["dark", "flags.4?true"],
+      ["settings", "flags.2?WallPaperSettings"],
+    ],
+    "WallPaper",
+  ],
+  "inputReportReasonSpam": [
+    0x58DBCAB8,
+    [],
+    "ReportReason",
+  ],
+  "inputReportReasonViolence": [
+    0x1E22C78D,
+    [],
+    "ReportReason",
+  ],
+  "inputReportReasonPornography": [
+    0x2E59D922,
+    [],
+    "ReportReason",
+  ],
+  "inputReportReasonChildAbuse": [
+    0xADF44EE3,
+    [],
+    "ReportReason",
+  ],
+  "inputReportReasonOther": [
+    0xC1E4A2B1,
+    [],
+    "ReportReason",
+  ],
+  "inputReportReasonCopyright": [
+    0x9B89F93A,
+    [],
+    "ReportReason",
+  ],
+  "inputReportReasonGeoIrrelevant": [
+    0xDBD4FEED,
+    [],
+    "ReportReason",
+  ],
+  "inputReportReasonFake": [
+    0xF5DDD6E7,
+    [],
+    "ReportReason",
+  ],
+  "inputReportReasonIllegalDrugs": [
+    0x0A8EB2BE,
+    [],
+    "ReportReason",
+  ],
+  "inputReportReasonPersonalDetails": [
+    0x9EC7863D,
+    [],
+    "ReportReason",
+  ],
+  "userFull": [
+    0xD2234EA0,
+    [
+      ["flags", "#"],
+      ["blocked", "flags.0?true"],
+      ["phone_calls_available", "flags.4?true"],
+      ["phone_calls_private", "flags.5?true"],
+      ["can_pin_message", "flags.7?true"],
+      ["has_scheduled", "flags.12?true"],
+      ["video_calls_available", "flags.13?true"],
+      ["voice_messages_forbidden", "flags.20?true"],
+      ["translations_disabled", "flags.23?true"],
+      ["stories_pinned_available", "flags.26?true"],
+      ["blocked_my_stories_from", "flags.27?true"],
+      ["wallpaper_overridden", "flags.28?true"],
+      ["contact_require_premium", "flags.29?true"],
+      ["read_dates_private", "flags.30?true"],
+      ["flags2", "#"],
+      ["sponsored_enabled", "flags2.7?true"],
+      ["can_view_revenue", "flags2.9?true"],
+      ["bot_can_manage_emoji_status", "flags2.10?true"],
+      ["id", "long"],
+      ["about", "flags.1?string"],
+      ["settings", "PeerSettings"],
+      ["personal_photo", "flags.21?Photo"],
+      ["profile_photo", "flags.2?Photo"],
+      ["fallback_photo", "flags.22?Photo"],
+      ["notify_settings", "PeerNotifySettings"],
+      ["bot_info", "flags.3?BotInfo"],
+      ["pinned_msg_id", "flags.6?int"],
+      ["common_chats_count", "int"],
+      ["folder_id", "flags.11?int"],
+      ["ttl_period", "flags.14?int"],
+      ["theme_emoticon", "flags.15?string"],
+      ["private_forward_name", "flags.16?string"],
+      ["bot_group_admin_rights", "flags.17?ChatAdminRights"],
+      ["bot_broadcast_admin_rights", "flags.18?ChatAdminRights"],
+      ["wallpaper", "flags.24?WallPaper"],
+      ["stories", "flags.25?PeerStories"],
+      ["business_work_hours", "flags2.0?BusinessWorkHours"],
+      ["business_location", "flags2.1?BusinessLocation"],
+      ["business_greeting_message", "flags2.2?BusinessGreetingMessage"],
+      ["business_away_message", "flags2.3?BusinessAwayMessage"],
+      ["business_intro", "flags2.4?BusinessIntro"],
+      ["birthday", "flags2.5?Birthday"],
+      ["personal_channel_id", "flags2.6?long"],
+      ["personal_channel_message", "flags2.6?int"],
+      ["stargifts_count", "flags2.8?int"],
+      ["starref_program", "flags2.11?StarRefProgram"],
+      ["bot_verification", "flags2.12?BotVerification"],
+      ["send_paid_messages_stars", "flags2.14?long"],
+    ],
+    "UserFull",
+  ],
+  "contact": [
+    0x145ADE0B,
+    [
+      ["user_id", "long"],
+      ["mutual", "Bool"],
+    ],
+    "Contact",
+  ],
+  "importedContact": [
+    0xC13E3C50,
+    [
+      ["user_id", "long"],
+      ["client_id", "long"],
+    ],
+    "ImportedContact",
+  ],
+  "contactStatus": [
+    0x16D9703B,
+    [
+      ["user_id", "long"],
+      ["status", "UserStatus"],
+    ],
+    "ContactStatus",
+  ],
+  "contacts.contactsNotModified": [
+    0xB74BA9D2,
+    [],
+    "contacts.Contacts",
+  ],
+  "contacts.contacts": [
+    0xEAE87E42,
+    [
+      ["contacts", "Vector<Contact>"],
+      ["saved_count", "int"],
+      ["users", "Vector<User>"],
+    ],
+    "contacts.Contacts",
+  ],
+  "contacts.importedContacts": [
+    0x77D01C3B,
+    [
+      ["imported", "Vector<ImportedContact>"],
+      ["popular_invites", "Vector<PopularContact>"],
+      ["retry_contacts", "Vector<long>"],
+      ["users", "Vector<User>"],
+    ],
+    "contacts.ImportedContacts",
+  ],
+  "contacts.blocked": [
+    0x0ADE1591,
+    [
+      ["blocked", "Vector<PeerBlocked>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+    ],
+    "contacts.Blocked",
+  ],
+  "contacts.blockedSlice": [
+    0xE1664194,
+    [
+      ["count", "int"],
+      ["blocked", "Vector<PeerBlocked>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+    ],
+    "contacts.Blocked",
+  ],
+  "messages.dialogs": [
+    0x15BA6C40,
+    [
+      ["dialogs", "Vector<Dialog>"],
+      ["messages", "Vector<Message>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+    ],
+    "messages.Dialogs",
+  ],
+  "messages.dialogsSlice": [
+    0x71E094F3,
+    [
+      ["count", "int"],
+      ["dialogs", "Vector<Dialog>"],
+      ["messages", "Vector<Message>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+    ],
+    "messages.Dialogs",
+  ],
+  "messages.dialogsNotModified": [
+    0xF0E3E596,
+    [
+      ["count", "int"],
+    ],
+    "messages.Dialogs",
+  ],
+  "messages.messages": [
+    0x8C718E87,
+    [
+      ["messages", "Vector<Message>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+    ],
+    "messages.Messages",
+  ],
+  "messages.messagesSlice": [
+    0x3A54685E,
+    [
+      ["flags", "#"],
+      ["inexact", "flags.1?true"],
+      ["count", "int"],
+      ["next_rate", "flags.0?int"],
+      ["offset_id_offset", "flags.2?int"],
+      ["messages", "Vector<Message>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+    ],
+    "messages.Messages",
+  ],
+  "messages.channelMessages": [
+    0xC776BA4E,
+    [
+      ["flags", "#"],
+      ["inexact", "flags.1?true"],
+      ["pts", "int"],
+      ["count", "int"],
+      ["offset_id_offset", "flags.2?int"],
+      ["messages", "Vector<Message>"],
+      ["topics", "Vector<ForumTopic>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+    ],
+    "messages.Messages",
+  ],
+  "messages.messagesNotModified": [
+    0x74535F21,
+    [
+      ["count", "int"],
+    ],
+    "messages.Messages",
+  ],
+  "messages.chats": [
+    0x64FF9FD5,
+    [
+      ["chats", "Vector<Chat>"],
+    ],
+    "messages.Chats",
+  ],
+  "messages.chatsSlice": [
+    0x9CD81144,
+    [
+      ["count", "int"],
+      ["chats", "Vector<Chat>"],
+    ],
+    "messages.Chats",
+  ],
+  "messages.chatFull": [
+    0xE5D7D19C,
+    [
+      ["full_chat", "ChatFull"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+    ],
+    "messages.ChatFull",
+  ],
+  "messages.affectedHistory": [
+    0xB45C69D1,
+    [
+      ["pts", "int"],
+      ["pts_count", "int"],
+      ["offset", "int"],
+    ],
+    "messages.AffectedHistory",
+  ],
+  "inputMessagesFilterEmpty": [
+    0x57E2F66C,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterPhotos": [
+    0x9609A51C,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterVideo": [
+    0x9FC00E65,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterPhotoVideo": [
+    0x56E9F0E4,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterDocument": [
+    0x9EDDF188,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterUrl": [
+    0x7EF0DD87,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterGif": [
+    0xFFC86587,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterVoice": [
+    0x50F5C392,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterMusic": [
+    0x3751B49E,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterChatPhotos": [
+    0x3A20ECB8,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterPhoneCalls": [
+    0x80C99768,
+    [
+      ["flags", "#"],
+      ["missed", "flags.0?true"],
+    ],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterRoundVoice": [
+    0x7A7C17A4,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterRoundVideo": [
+    0xB549DA53,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterMyMentions": [
+    0xC1F8E69A,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterGeo": [
+    0xE7026D0D,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterContacts": [
+    0xE062DB83,
+    [],
+    "MessagesFilter",
+  ],
+  "inputMessagesFilterPinned": [
+    0x1BB00451,
+    [],
+    "MessagesFilter",
+  ],
+  "updateNewMessage": [
+    0x1F2B0AFD,
+    [
+      ["message", "Message"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+    ],
+    "Update",
+  ],
+  "updateMessageID": [
+    0x4E90BFD6,
+    [
+      ["id", "int"],
+      ["random_id", "long"],
+    ],
+    "Update",
+  ],
+  "updateDeleteMessages": [
+    0xA20DB0E5,
+    [
+      ["messages", "Vector<int>"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+    ],
+    "Update",
+  ],
+  "updateUserTyping": [
+    0xC01E857F,
+    [
+      ["user_id", "long"],
+      ["action", "SendMessageAction"],
+    ],
+    "Update",
+  ],
+  "updateChatUserTyping": [
+    0x83487AF0,
+    [
+      ["chat_id", "long"],
+      ["from_id", "Peer"],
+      ["action", "SendMessageAction"],
+    ],
+    "Update",
+  ],
+  "updateChatParticipants": [
+    0x07761198,
+    [
+      ["participants", "ChatParticipants"],
+    ],
+    "Update",
+  ],
+  "updateUserStatus": [
+    0xE5BDF8DE,
+    [
+      ["user_id", "long"],
+      ["status", "UserStatus"],
+    ],
+    "Update",
+  ],
+  "updateUserName": [
+    0xA7848924,
+    [
+      ["user_id", "long"],
+      ["first_name", "string"],
+      ["last_name", "string"],
+      ["usernames", "Vector<Username>"],
+    ],
+    "Update",
+  ],
+  "updateNewAuthorization": [
+    0x8951ABEF,
+    [
+      ["flags", "#"],
+      ["unconfirmed", "flags.0?true"],
+      ["hash", "long"],
+      ["date", "flags.0?int"],
+      ["device", "flags.0?string"],
+      ["location", "flags.0?string"],
+    ],
+    "Update",
+  ],
+  "updateNewEncryptedMessage": [
+    0x12BCBD9A,
+    [
+      ["message", "EncryptedMessage"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updateEncryptedChatTyping": [
+    0x1710F156,
+    [
+      ["chat_id", "int"],
+    ],
+    "Update",
+  ],
+  "updateEncryption": [
+    0xB4A2E88D,
+    [
+      ["chat", "EncryptedChat"],
+      ["date", "int"],
+    ],
+    "Update",
+  ],
+  "updateEncryptedMessagesRead": [
+    0x38FE25B7,
+    [
+      ["chat_id", "int"],
+      ["max_date", "int"],
+      ["date", "int"],
+    ],
+    "Update",
+  ],
+  "updateChatParticipantAdd": [
+    0x3DDA5451,
+    [
+      ["chat_id", "long"],
+      ["user_id", "long"],
+      ["inviter_id", "long"],
+      ["date", "int"],
+      ["version", "int"],
+    ],
+    "Update",
+  ],
+  "updateChatParticipantDelete": [
+    0xE32F3D77,
+    [
+      ["chat_id", "long"],
+      ["user_id", "long"],
+      ["version", "int"],
+    ],
+    "Update",
+  ],
+  "updateDcOptions": [
+    0x8E5E9873,
+    [
+      ["dc_options", "Vector<DcOption>"],
+    ],
+    "Update",
+  ],
+  "updateNotifySettings": [
+    0xBEC268EF,
+    [
+      ["peer", "NotifyPeer"],
+      ["notify_settings", "PeerNotifySettings"],
+    ],
+    "Update",
+  ],
+  "updateServiceNotification": [
+    0xEBE46819,
+    [
+      ["flags", "#"],
+      ["popup", "flags.0?true"],
+      ["invert_media", "flags.2?true"],
+      ["inbox_date", "flags.1?int"],
+      ["type", "string"],
+      ["message", "string"],
+      ["media", "MessageMedia"],
+      ["entities", "Vector<MessageEntity>"],
+    ],
+    "Update",
+  ],
+  "updatePrivacy": [
+    0xEE3B272A,
+    [
+      ["key", "PrivacyKey"],
+      ["rules", "Vector<PrivacyRule>"],
+    ],
+    "Update",
+  ],
+  "updateUserPhone": [
+    0x05492A13,
+    [
+      ["user_id", "long"],
+      ["phone", "string"],
+    ],
+    "Update",
+  ],
+  "updateReadHistoryInbox": [
+    0x9C974FDF,
+    [
+      ["flags", "#"],
+      ["folder_id", "flags.0?int"],
+      ["peer", "Peer"],
+      ["max_id", "int"],
+      ["still_unread_count", "int"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+    ],
+    "Update",
+  ],
+  "updateReadHistoryOutbox": [
+    0x2F2F21BF,
+    [
+      ["peer", "Peer"],
+      ["max_id", "int"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+    ],
+    "Update",
+  ],
+  "updateWebPage": [
+    0x7F891213,
+    [
+      ["webpage", "WebPage"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+    ],
+    "Update",
+  ],
+  "updateReadMessagesContents": [
+    0xF8227181,
+    [
+      ["flags", "#"],
+      ["messages", "Vector<int>"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+      ["date", "flags.0?int"],
+    ],
+    "Update",
+  ],
+  "updateChannelTooLong": [
+    0x108D941F,
+    [
+      ["flags", "#"],
+      ["channel_id", "long"],
+      ["pts", "flags.0?int"],
+    ],
+    "Update",
+  ],
+  "updateChannel": [
+    0x635B4C09,
+    [
+      ["channel_id", "long"],
+    ],
+    "Update",
+  ],
+  "updateNewChannelMessage": [
+    0x62BA04D9,
+    [
+      ["message", "Message"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+    ],
+    "Update",
+  ],
+  "updateReadChannelInbox": [
+    0x922E6E10,
+    [
+      ["flags", "#"],
+      ["folder_id", "flags.0?int"],
+      ["channel_id", "long"],
+      ["max_id", "int"],
+      ["still_unread_count", "int"],
+      ["pts", "int"],
+    ],
+    "Update",
+  ],
+  "updateDeleteChannelMessages": [
+    0xC32D5B12,
+    [
+      ["channel_id", "long"],
+      ["messages", "Vector<int>"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+    ],
+    "Update",
+  ],
+  "updateChannelMessageViews": [
+    0xF226AC08,
+    [
+      ["channel_id", "long"],
+      ["id", "int"],
+      ["views", "int"],
+    ],
+    "Update",
+  ],
+  "updateChatParticipantAdmin": [
+    0xD7CA61A2,
+    [
+      ["chat_id", "long"],
+      ["user_id", "long"],
+      ["is_admin", "Bool"],
+      ["version", "int"],
+    ],
+    "Update",
+  ],
+  "updateNewStickerSet": [
+    0x688A30AA,
+    [
+      ["stickerset", "messages.StickerSet"],
+    ],
+    "Update",
+  ],
+  "updateStickerSetsOrder": [
+    0x0BB2D201,
+    [
+      ["flags", "#"],
+      ["masks", "flags.0?true"],
+      ["emojis", "flags.1?true"],
+      ["order", "Vector<long>"],
+    ],
+    "Update",
+  ],
+  "updateStickerSets": [
+    0x31C24808,
+    [
+      ["flags", "#"],
+      ["masks", "flags.0?true"],
+      ["emojis", "flags.1?true"],
+    ],
+    "Update",
+  ],
+  "updateSavedGifs": [
+    0x9375341E,
+    [],
+    "Update",
+  ],
+  "updateBotInlineQuery": [
+    0x496F379C,
+    [
+      ["flags", "#"],
+      ["query_id", "long"],
+      ["user_id", "long"],
+      ["query", "string"],
+      ["geo", "flags.0?GeoPoint"],
+      ["peer_type", "flags.1?InlineQueryPeerType"],
+      ["offset", "string"],
+    ],
+    "Update",
+  ],
+  "updateBotInlineSend": [
+    0x12F12A07,
+    [
+      ["flags", "#"],
+      ["user_id", "long"],
+      ["query", "string"],
+      ["geo", "flags.0?GeoPoint"],
+      ["id", "string"],
+      ["msg_id", "flags.1?InputBotInlineMessageID"],
+    ],
+    "Update",
+  ],
+  "updateEditChannelMessage": [
+    0x1B3F4DF7,
+    [
+      ["message", "Message"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+    ],
+    "Update",
+  ],
+  "updateBotCallbackQuery": [
+    0xB9CFC48D,
+    [
+      ["flags", "#"],
+      ["query_id", "long"],
+      ["user_id", "long"],
+      ["peer", "Peer"],
+      ["msg_id", "int"],
+      ["chat_instance", "long"],
+      ["data", "flags.0?bytes"],
+      ["game_short_name", "flags.1?string"],
+    ],
+    "Update",
+  ],
+  "updateEditMessage": [
+    0xE40370A3,
+    [
+      ["message", "Message"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+    ],
+    "Update",
+  ],
+  "updateInlineBotCallbackQuery": [
+    0x691E9052,
+    [
+      ["flags", "#"],
+      ["query_id", "long"],
+      ["user_id", "long"],
+      ["msg_id", "InputBotInlineMessageID"],
+      ["chat_instance", "long"],
+      ["data", "flags.0?bytes"],
+      ["game_short_name", "flags.1?string"],
+    ],
+    "Update",
+  ],
+  "updateReadChannelOutbox": [
+    0xB75F99A9,
+    [
+      ["channel_id", "long"],
+      ["max_id", "int"],
+    ],
+    "Update",
+  ],
+  "updateDraftMessage": [
+    0x1B49EC6D,
+    [
+      ["flags", "#"],
+      ["peer", "Peer"],
+      ["top_msg_id", "flags.0?int"],
+      ["draft", "DraftMessage"],
+    ],
+    "Update",
+  ],
+  "updateReadFeaturedStickers": [
+    0x571D2742,
+    [],
+    "Update",
+  ],
+  "updateRecentStickers": [
+    0x9A422C20,
+    [],
+    "Update",
+  ],
+  "updateConfig": [
+    0xA229DD06,
+    [],
+    "Update",
+  ],
+  "updatePtsChanged": [
+    0x3354678F,
+    [],
+    "Update",
+  ],
+  "updateChannelWebPage": [
+    0x2F2BA99F,
+    [
+      ["channel_id", "long"],
+      ["webpage", "WebPage"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+    ],
+    "Update",
+  ],
+  "updateDialogPinned": [
+    0x6E6FE51C,
+    [
+      ["flags", "#"],
+      ["pinned", "flags.0?true"],
+      ["folder_id", "flags.1?int"],
+      ["peer", "DialogPeer"],
+    ],
+    "Update",
+  ],
+  "updatePinnedDialogs": [
+    0xFA0F3CA2,
+    [
+      ["flags", "#"],
+      ["folder_id", "flags.1?int"],
+      ["order", "flags.0?Vector<DialogPeer>"],
+    ],
+    "Update",
+  ],
+  "updateBotWebhookJSON": [
+    0x8317C0C3,
+    [
+      ["data", "DataJSON"],
+    ],
+    "Update",
+  ],
+  "updateBotWebhookJSONQuery": [
+    0x9B9240A6,
+    [
+      ["query_id", "long"],
+      ["data", "DataJSON"],
+      ["timeout", "int"],
+    ],
+    "Update",
+  ],
+  "updateBotShippingQuery": [
+    0xB5AEFD7D,
+    [
+      ["query_id", "long"],
+      ["user_id", "long"],
+      ["payload", "bytes"],
+      ["shipping_address", "PostAddress"],
+    ],
+    "Update",
+  ],
+  "updateBotPrecheckoutQuery": [
+    0x8CAA9A96,
+    [
+      ["flags", "#"],
+      ["query_id", "long"],
+      ["user_id", "long"],
+      ["payload", "bytes"],
+      ["info", "flags.0?PaymentRequestedInfo"],
+      ["shipping_option_id", "flags.1?string"],
+      ["currency", "string"],
+      ["total_amount", "long"],
+    ],
+    "Update",
+  ],
+  "updatePhoneCall": [
+    0xAB0F6B1E,
+    [
+      ["phone_call", "PhoneCall"],
+    ],
+    "Update",
+  ],
+  "updateLangPackTooLong": [
+    0x46560264,
+    [
+      ["lang_code", "string"],
+    ],
+    "Update",
+  ],
+  "updateLangPack": [
+    0x56022F4D,
+    [
+      ["difference", "LangPackDifference"],
+    ],
+    "Update",
+  ],
+  "updateFavedStickers": [
+    0xE511996D,
+    [],
+    "Update",
+  ],
+  "updateChannelReadMessagesContents": [
+    0xEA29055D,
+    [
+      ["flags", "#"],
+      ["channel_id", "long"],
+      ["top_msg_id", "flags.0?int"],
+      ["messages", "Vector<int>"],
+    ],
+    "Update",
+  ],
+  "updateContactsReset": [
+    0x7084A7BE,
+    [],
+    "Update",
+  ],
+  "updateChannelAvailableMessages": [
+    0xB23FC698,
+    [
+      ["channel_id", "long"],
+      ["available_min_id", "int"],
+    ],
+    "Update",
+  ],
+  "updateDialogUnreadMark": [
+    0xE16459C3,
+    [
+      ["flags", "#"],
+      ["unread", "flags.0?true"],
+      ["peer", "DialogPeer"],
+    ],
+    "Update",
+  ],
+  "updateMessagePoll": [
+    0xACA1657B,
+    [
+      ["flags", "#"],
+      ["poll_id", "long"],
+      ["poll", "flags.0?Poll"],
+      ["results", "PollResults"],
+    ],
+    "Update",
+  ],
+  "updateChatDefaultBannedRights": [
+    0x54C01850,
+    [
+      ["peer", "Peer"],
+      ["default_banned_rights", "ChatBannedRights"],
+      ["version", "int"],
+    ],
+    "Update",
+  ],
+  "updateFolderPeers": [
+    0x19360DC0,
+    [
+      ["folder_peers", "Vector<FolderPeer>"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+    ],
+    "Update",
+  ],
+  "updatePeerSettings": [
+    0x6A7E7366,
+    [
+      ["peer", "Peer"],
+      ["settings", "PeerSettings"],
+    ],
+    "Update",
+  ],
+  "updatePeerLocated": [
+    0xB4AFCFB0,
+    [
+      ["peers", "Vector<PeerLocated>"],
+    ],
+    "Update",
+  ],
+  "updateNewScheduledMessage": [
+    0x39A51DFB,
+    [
+      ["message", "Message"],
+    ],
+    "Update",
+  ],
+  "updateDeleteScheduledMessages": [
+    0xF2A71983,
+    [
+      ["flags", "#"],
+      ["peer", "Peer"],
+      ["messages", "Vector<int>"],
+      ["sent_messages", "flags.0?Vector<int>"],
+    ],
+    "Update",
+  ],
+  "updateTheme": [
+    0x8216FBA3,
+    [
+      ["theme", "Theme"],
+    ],
+    "Update",
+  ],
+  "updateGeoLiveViewed": [
+    0x871FB939,
+    [
+      ["peer", "Peer"],
+      ["msg_id", "int"],
+    ],
+    "Update",
+  ],
+  "updateLoginToken": [
+    0x564FE691,
+    [],
+    "Update",
+  ],
+  "updateMessagePollVote": [
+    0x24F40E77,
+    [
+      ["poll_id", "long"],
+      ["peer", "Peer"],
+      ["options", "Vector<bytes>"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updateDialogFilter": [
+    0x26FFDE7D,
+    [
+      ["flags", "#"],
+      ["id", "int"],
+      ["filter", "flags.0?DialogFilter"],
+    ],
+    "Update",
+  ],
+  "updateDialogFilterOrder": [
+    0xA5D72105,
+    [
+      ["order", "Vector<int>"],
+    ],
+    "Update",
+  ],
+  "updateDialogFilters": [
+    0x3504914F,
+    [],
+    "Update",
+  ],
+  "updatePhoneCallSignalingData": [
+    0x2661BF09,
+    [
+      ["phone_call_id", "long"],
+      ["data", "bytes"],
+    ],
+    "Update",
+  ],
+  "updateChannelMessageForwards": [
+    0xD29A27F4,
+    [
+      ["channel_id", "long"],
+      ["id", "int"],
+      ["forwards", "int"],
+    ],
+    "Update",
+  ],
+  "updateReadChannelDiscussionInbox": [
+    0xD6B19546,
+    [
+      ["flags", "#"],
+      ["channel_id", "long"],
+      ["top_msg_id", "int"],
+      ["read_max_id", "int"],
+      ["broadcast_id", "flags.0?long"],
+      ["broadcast_post", "flags.0?int"],
+    ],
+    "Update",
+  ],
+  "updateReadChannelDiscussionOutbox": [
+    0x695C9E7C,
+    [
+      ["channel_id", "long"],
+      ["top_msg_id", "int"],
+      ["read_max_id", "int"],
+    ],
+    "Update",
+  ],
+  "updatePeerBlocked": [
+    0xEBE07752,
+    [
+      ["flags", "#"],
+      ["blocked", "flags.0?true"],
+      ["blocked_my_stories_from", "flags.1?true"],
+      ["peer_id", "Peer"],
+    ],
+    "Update",
+  ],
+  "updateChannelUserTyping": [
+    0x8C88C923,
+    [
+      ["flags", "#"],
+      ["channel_id", "long"],
+      ["top_msg_id", "flags.0?int"],
+      ["from_id", "Peer"],
+      ["action", "SendMessageAction"],
+    ],
+    "Update",
+  ],
+  "updatePinnedMessages": [
+    0xED85EAB5,
+    [
+      ["flags", "#"],
+      ["pinned", "flags.0?true"],
+      ["peer", "Peer"],
+      ["messages", "Vector<int>"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+    ],
+    "Update",
+  ],
+  "updatePinnedChannelMessages": [
+    0x5BB98608,
+    [
+      ["flags", "#"],
+      ["pinned", "flags.0?true"],
+      ["channel_id", "long"],
+      ["messages", "Vector<int>"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+    ],
+    "Update",
+  ],
+  "updateChat": [
+    0xF89A6A4E,
+    [
+      ["chat_id", "long"],
+    ],
+    "Update",
+  ],
+  "updateGroupCallParticipants": [
+    0xF2EBDB4E,
+    [
+      ["call", "InputGroupCall"],
+      ["participants", "Vector<GroupCallParticipant>"],
+      ["version", "int"],
+    ],
+    "Update",
+  ],
+  "updateGroupCall": [
+    0x97D64341,
+    [
+      ["flags", "#"],
+      ["chat_id", "flags.0?long"],
+      ["call", "GroupCall"],
+    ],
+    "Update",
+  ],
+  "updatePeerHistoryTTL": [
+    0xBB9BB9A5,
+    [
+      ["flags", "#"],
+      ["peer", "Peer"],
+      ["ttl_period", "flags.0?int"],
+    ],
+    "Update",
+  ],
+  "updateChatParticipant": [
+    0xD087663A,
+    [
+      ["flags", "#"],
+      ["chat_id", "long"],
+      ["date", "int"],
+      ["actor_id", "long"],
+      ["user_id", "long"],
+      ["prev_participant", "flags.0?ChatParticipant"],
+      ["new_participant", "flags.1?ChatParticipant"],
+      ["invite", "flags.2?ExportedChatInvite"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updateChannelParticipant": [
+    0x985D3ABB,
+    [
+      ["flags", "#"],
+      ["via_chatlist", "flags.3?true"],
+      ["channel_id", "long"],
+      ["date", "int"],
+      ["actor_id", "long"],
+      ["user_id", "long"],
+      ["prev_participant", "flags.0?ChannelParticipant"],
+      ["new_participant", "flags.1?ChannelParticipant"],
+      ["invite", "flags.2?ExportedChatInvite"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updateBotStopped": [
+    0xC4870A49,
+    [
+      ["user_id", "long"],
+      ["date", "int"],
+      ["stopped", "Bool"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updateGroupCallConnection": [
+    0x0B783982,
+    [
+      ["flags", "#"],
+      ["presentation", "flags.0?true"],
+      ["params", "DataJSON"],
+    ],
+    "Update",
+  ],
+  "updateBotCommands": [
+    0x4D712F2E,
+    [
+      ["peer", "Peer"],
+      ["bot_id", "long"],
+      ["commands", "Vector<BotCommand>"],
+    ],
+    "Update",
+  ],
+  "updatePendingJoinRequests": [
+    0x7063C3DB,
+    [
+      ["peer", "Peer"],
+      ["requests_pending", "int"],
+      ["recent_requesters", "Vector<long>"],
+    ],
+    "Update",
+  ],
+  "updateBotChatInviteRequester": [
+    0x11DFA986,
+    [
+      ["peer", "Peer"],
+      ["date", "int"],
+      ["user_id", "long"],
+      ["about", "string"],
+      ["invite", "ExportedChatInvite"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updateMessageReactions": [
+    0x5E1B3CB8,
+    [
+      ["flags", "#"],
+      ["peer", "Peer"],
+      ["msg_id", "int"],
+      ["top_msg_id", "flags.0?int"],
+      ["reactions", "MessageReactions"],
+    ],
+    "Update",
+  ],
+  "updateAttachMenuBots": [
+    0x17B7A20B,
+    [],
+    "Update",
+  ],
+  "updateWebViewResultSent": [
+    0x1592B79D,
+    [
+      ["query_id", "long"],
+    ],
+    "Update",
+  ],
+  "updateBotMenuButton": [
+    0x14B85813,
+    [
+      ["bot_id", "long"],
+      ["button", "BotMenuButton"],
+    ],
+    "Update",
+  ],
+  "updateSavedRingtones": [
+    0x74D8BE99,
+    [],
+    "Update",
+  ],
+  "updateTranscribedAudio": [
+    0x0084CD5A,
+    [
+      ["flags", "#"],
+      ["pending", "flags.0?true"],
+      ["peer", "Peer"],
+      ["msg_id", "int"],
+      ["transcription_id", "long"],
+      ["text", "string"],
+    ],
+    "Update",
+  ],
+  "updateReadFeaturedEmojiStickers": [
+    0xFB4C496C,
+    [],
+    "Update",
+  ],
+  "updateUserEmojiStatus": [
+    0x28373599,
+    [
+      ["user_id", "long"],
+      ["emoji_status", "EmojiStatus"],
+    ],
+    "Update",
+  ],
+  "updateRecentEmojiStatuses": [
+    0x30F443DB,
+    [],
+    "Update",
+  ],
+  "updateRecentReactions": [
+    0x6F7863F4,
+    [],
+    "Update",
+  ],
+  "updateMoveStickerSetToTop": [
+    0x86FCCF85,
+    [
+      ["flags", "#"],
+      ["masks", "flags.0?true"],
+      ["emojis", "flags.1?true"],
+      ["stickerset", "long"],
+    ],
+    "Update",
+  ],
+  "updateMessageExtendedMedia": [
+    0xD5A41724,
+    [
+      ["peer", "Peer"],
+      ["msg_id", "int"],
+      ["extended_media", "Vector<MessageExtendedMedia>"],
+    ],
+    "Update",
+  ],
+  "updateChannelPinnedTopic": [
+    0x192EFBE3,
+    [
+      ["flags", "#"],
+      ["pinned", "flags.0?true"],
+      ["channel_id", "long"],
+      ["topic_id", "int"],
+    ],
+    "Update",
+  ],
+  "updateChannelPinnedTopics": [
+    0xFE198602,
+    [
+      ["flags", "#"],
+      ["channel_id", "long"],
+      ["order", "flags.0?Vector<int>"],
+    ],
+    "Update",
+  ],
+  "updateUser": [
+    0x20529438,
+    [
+      ["user_id", "long"],
+    ],
+    "Update",
+  ],
+  "updateAutoSaveSettings": [
+    0xEC05B097,
+    [],
+    "Update",
+  ],
+  "updateStory": [
+    0x75B3B798,
+    [
+      ["peer", "Peer"],
+      ["story", "StoryItem"],
+    ],
+    "Update",
+  ],
+  "updateReadStories": [
+    0xF74E932B,
+    [
+      ["peer", "Peer"],
+      ["max_id", "int"],
+    ],
+    "Update",
+  ],
+  "updateStoryID": [
+    0x1BF335B9,
+    [
+      ["id", "int"],
+      ["random_id", "long"],
+    ],
+    "Update",
+  ],
+  "updateStoriesStealthMode": [
+    0x2C084DC1,
+    [
+      ["stealth_mode", "StoriesStealthMode"],
+    ],
+    "Update",
+  ],
+  "updateSentStoryReaction": [
+    0x7D627683,
+    [
+      ["peer", "Peer"],
+      ["story_id", "int"],
+      ["reaction", "Reaction"],
+    ],
+    "Update",
+  ],
+  "updateBotChatBoost": [
+    0x904DD49C,
+    [
+      ["peer", "Peer"],
+      ["boost", "Boost"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updateChannelViewForumAsMessages": [
+    0x07B68920,
+    [
+      ["channel_id", "long"],
+      ["enabled", "Bool"],
+    ],
+    "Update",
+  ],
+  "updatePeerWallpaper": [
+    0xAE3F101D,
+    [
+      ["flags", "#"],
+      ["wallpaper_overridden", "flags.1?true"],
+      ["peer", "Peer"],
+      ["wallpaper", "flags.0?WallPaper"],
+    ],
+    "Update",
+  ],
+  "updateBotMessageReaction": [
+    0xAC21D3CE,
+    [
+      ["peer", "Peer"],
+      ["msg_id", "int"],
+      ["date", "int"],
+      ["actor", "Peer"],
+      ["old_reactions", "Vector<Reaction>"],
+      ["new_reactions", "Vector<Reaction>"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updateBotMessageReactions": [
+    0x09CB7759,
+    [
+      ["peer", "Peer"],
+      ["msg_id", "int"],
+      ["date", "int"],
+      ["reactions", "Vector<ReactionCount>"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updateSavedDialogPinned": [
+    0xAEAF9E74,
+    [
+      ["flags", "#"],
+      ["pinned", "flags.0?true"],
+      ["peer", "DialogPeer"],
+    ],
+    "Update",
+  ],
+  "updatePinnedSavedDialogs": [
+    0x686C85A6,
+    [
+      ["flags", "#"],
+      ["order", "flags.0?Vector<DialogPeer>"],
+    ],
+    "Update",
+  ],
+  "updateSavedReactionTags": [
+    0x39C67432,
+    [],
+    "Update",
+  ],
+  "updateSmsJob": [
+    0xF16269D4,
+    [
+      ["job_id", "string"],
+    ],
+    "Update",
+  ],
+  "updateQuickReplies": [
+    0xF9470AB2,
+    [
+      ["quick_replies", "Vector<QuickReply>"],
+    ],
+    "Update",
+  ],
+  "updateNewQuickReply": [
+    0xF53DA717,
+    [
+      ["quick_reply", "QuickReply"],
+    ],
+    "Update",
+  ],
+  "updateDeleteQuickReply": [
+    0x53E6F1EC,
+    [
+      ["shortcut_id", "int"],
+    ],
+    "Update",
+  ],
+  "updateQuickReplyMessage": [
+    0x3E050D0F,
+    [
+      ["message", "Message"],
+    ],
+    "Update",
+  ],
+  "updateDeleteQuickReplyMessages": [
+    0x566FE7CD,
+    [
+      ["shortcut_id", "int"],
+      ["messages", "Vector<int>"],
+    ],
+    "Update",
+  ],
+  "updateBotBusinessConnect": [
+    0x8AE5C97A,
+    [
+      ["connection", "BotBusinessConnection"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updateBotNewBusinessMessage": [
+    0x9DDB347C,
+    [
+      ["flags", "#"],
+      ["connection_id", "string"],
+      ["message", "Message"],
+      ["reply_to_message", "flags.0?Message"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updateBotEditBusinessMessage": [
+    0x07DF587C,
+    [
+      ["flags", "#"],
+      ["connection_id", "string"],
+      ["message", "Message"],
+      ["reply_to_message", "flags.0?Message"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updateBotDeleteBusinessMessage": [
+    0xA02A982E,
+    [
+      ["connection_id", "string"],
+      ["peer", "Peer"],
+      ["messages", "Vector<int>"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updateNewStoryReaction": [
+    0x1824E40B,
+    [
+      ["story_id", "int"],
+      ["peer", "Peer"],
+      ["reaction", "Reaction"],
+    ],
+    "Update",
+  ],
+  "updateBroadcastRevenueTransactions": [
+    0xDFD961F5,
+    [
+      ["peer", "Peer"],
+      ["balances", "BroadcastRevenueBalances"],
+    ],
+    "Update",
+  ],
+  "updateStarsBalance": [
+    0x4E80A379,
+    [
+      ["balance", "StarsAmount"],
+    ],
+    "Update",
+  ],
+  "updateBusinessBotCallbackQuery": [
+    0x1EA2FDA7,
+    [
+      ["flags", "#"],
+      ["query_id", "long"],
+      ["user_id", "long"],
+      ["connection_id", "string"],
+      ["message", "Message"],
+      ["reply_to_message", "flags.2?Message"],
+      ["chat_instance", "long"],
+      ["data", "flags.0?bytes"],
+    ],
+    "Update",
+  ],
+  "updateStarsRevenueStatus": [
+    0xA584B019,
+    [
+      ["peer", "Peer"],
+      ["status", "StarsRevenueStatus"],
+    ],
+    "Update",
+  ],
+  "updateBotPurchasedPaidMedia": [
+    0x283BD312,
+    [
+      ["user_id", "long"],
+      ["payload", "string"],
+      ["qts", "int"],
+    ],
+    "Update",
+  ],
+  "updatePaidReactionPrivacy": [
+    0x8B725FCE,
+    [
+      ["private", "PaidReactionPrivacy"],
+    ],
+    "Update",
+  ],
+  "updates.state": [
+    0xA56C2A3E,
+    [
+      ["pts", "int"],
+      ["qts", "int"],
+      ["date", "int"],
+      ["seq", "int"],
+      ["unread_count", "int"],
+    ],
+    "updates.State",
+  ],
+  "updates.differenceEmpty": [
+    0x5D75A138,
+    [
+      ["date", "int"],
+      ["seq", "int"],
+    ],
+    "updates.Difference",
+  ],
+  "updates.difference": [
+    0x00F49CA0,
+    [
+      ["new_messages", "Vector<Message>"],
+      ["new_encrypted_messages", "Vector<EncryptedMessage>"],
+      ["other_updates", "Vector<Update>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+      ["state", "updates.State"],
+    ],
+    "updates.Difference",
+  ],
+  "updates.differenceSlice": [
+    0xA8FB1981,
+    [
+      ["new_messages", "Vector<Message>"],
+      ["new_encrypted_messages", "Vector<EncryptedMessage>"],
+      ["other_updates", "Vector<Update>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+      ["intermediate_state", "updates.State"],
+    ],
+    "updates.Difference",
+  ],
+  "updates.differenceTooLong": [
+    0x4AFE8F6D,
+    [
+      ["pts", "int"],
+    ],
+    "updates.Difference",
+  ],
+  "updatesTooLong": [
+    0xE317AF7E,
+    [],
+    "Updates",
+  ],
+  "updateShortMessage": [
+    0x313BC7F8,
+    [
+      ["flags", "#"],
+      ["out", "flags.1?true"],
+      ["mentioned", "flags.4?true"],
+      ["media_unread", "flags.5?true"],
+      ["silent", "flags.13?true"],
+      ["id", "int"],
+      ["user_id", "long"],
+      ["message", "string"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+      ["date", "int"],
+      ["fwd_from", "flags.2?MessageFwdHeader"],
+      ["via_bot_id", "flags.11?long"],
+      ["reply_to", "flags.3?MessageReplyHeader"],
+      ["entities", "flags.7?Vector<MessageEntity>"],
+      ["ttl_period", "flags.25?int"],
+    ],
+    "Updates",
+  ],
+  "updateShortChatMessage": [
+    0x4D6DEEA5,
+    [
+      ["flags", "#"],
+      ["out", "flags.1?true"],
+      ["mentioned", "flags.4?true"],
+      ["media_unread", "flags.5?true"],
+      ["silent", "flags.13?true"],
+      ["id", "int"],
+      ["from_id", "long"],
+      ["chat_id", "long"],
+      ["message", "string"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+      ["date", "int"],
+      ["fwd_from", "flags.2?MessageFwdHeader"],
+      ["via_bot_id", "flags.11?long"],
+      ["reply_to", "flags.3?MessageReplyHeader"],
+      ["entities", "flags.7?Vector<MessageEntity>"],
+      ["ttl_period", "flags.25?int"],
+    ],
+    "Updates",
+  ],
+  "updateShort": [
+    0x78D4DEC1,
+    [
+      ["update", "Update"],
+      ["date", "int"],
+    ],
+    "Updates",
+  ],
+  "updatesCombined": [
+    0x725B04C3,
+    [
+      ["updates", "Vector<Update>"],
+      ["users", "Vector<User>"],
+      ["chats", "Vector<Chat>"],
+      ["date", "int"],
+      ["seq_start", "int"],
+      ["seq", "int"],
     ],
+    "Updates",
   ],
-  [
-    "channelParticipantLeft",
+  "updates": [
+    0x74AE4240,
     [
-      0x1B03F006,
-      [
-        ["peer", "Peer"],
-      ],
+      ["updates", "Vector<Update>"],
+      ["users", "Vector<User>"],
+      ["chats", "Vector<Chat>"],
+      ["date", "int"],
+      ["seq", "int"],
     ],
+    "Updates",
   ],
-  [
-    "channelParticipantsRecent",
+  "updateShortSentMessage": [
+    0x9015E101,
     [
-      0xDE3F3C79,
-      [],
+      ["flags", "#"],
+      ["out", "flags.1?true"],
+      ["id", "int"],
+      ["pts", "int"],
+      ["pts_count", "int"],
+      ["date", "int"],
+      ["media", "flags.9?MessageMedia"],
+      ["entities", "flags.7?Vector<MessageEntity>"],
+      ["ttl_period", "flags.25?int"],
     ],
+    "Updates",
   ],
-  [
-    "channelParticipantsAdmins",
-    [
-      0xB4608969,
-      [],
+  "photos.photos": [
+    0x8DCA6AA5,
+    [
+      ["photos", "Vector<Photo>"],
+      ["users", "Vector<User>"],
+    ],
+    "photos.Photos",
+  ],
+  "photos.photosSlice": [
+    0x15051F54,
+    [
+      ["count", "int"],
+      ["photos", "Vector<Photo>"],
+      ["users", "Vector<User>"],
+    ],
+    "photos.Photos",
+  ],
+  "photos.photo": [
+    0x20212CA8,
+    [
+      ["photo", "Photo"],
+      ["users", "Vector<User>"],
+    ],
+    "photos.Photo",
+  ],
+  "upload.file": [
+    0x096A18D5,
+    [
+      ["type", "storage.FileType"],
+      ["mtime", "int"],
+      ["bytes", "bytes"],
+    ],
+    "upload.File",
+  ],
+  "upload.fileCdnRedirect": [
+    0xF18CDA44,
+    [
+      ["dc_id", "int"],
+      ["file_token", "bytes"],
+      ["encryption_key", "bytes"],
+      ["encryption_iv", "bytes"],
+      ["file_hashes", "Vector<FileHash>"],
+    ],
+    "upload.File",
+  ],
+  "dcOption": [
+    0x18B7A10D,
+    [
+      ["flags", "#"],
+      ["ipv6", "flags.0?true"],
+      ["media_only", "flags.1?true"],
+      ["tcpo_only", "flags.2?true"],
+      ["cdn", "flags.3?true"],
+      ["static", "flags.4?true"],
+      ["this_port_only", "flags.5?true"],
+      ["id", "int"],
+      ["ip_address", "string"],
+      ["port", "int"],
+      ["secret", "flags.10?bytes"],
+    ],
+    "DcOption",
+  ],
+  "config": [
+    0xCC1A241E,
+    [
+      ["flags", "#"],
+      ["default_p2p_contacts", "flags.3?true"],
+      ["preload_featured_stickers", "flags.4?true"],
+      ["revoke_pm_inbox", "flags.6?true"],
+      ["blocked_mode", "flags.8?true"],
+      ["force_try_ipv6", "flags.14?true"],
+      ["date", "int"],
+      ["expires", "int"],
+      ["test_mode", "Bool"],
+      ["this_dc", "int"],
+      ["dc_options", "Vector<DcOption>"],
+      ["dc_txt_domain_name", "string"],
+      ["chat_size_max", "int"],
+      ["megagroup_size_max", "int"],
+      ["forwarded_count_max", "int"],
+      ["online_update_period_ms", "int"],
+      ["offline_blur_timeout_ms", "int"],
+      ["offline_idle_timeout_ms", "int"],
+      ["online_cloud_timeout_ms", "int"],
+      ["notify_cloud_delay_ms", "int"],
+      ["notify_default_delay_ms", "int"],
+      ["push_chat_period_ms", "int"],
+      ["push_chat_limit", "int"],
+      ["edit_time_limit", "int"],
+      ["revoke_time_limit", "int"],
+      ["revoke_pm_time_limit", "int"],
+      ["rating_e_decay", "int"],
+      ["stickers_recent_limit", "int"],
+      ["channels_read_media_period", "int"],
+      ["tmp_sessions", "flags.0?int"],
+      ["call_receive_timeout_ms", "int"],
+      ["call_ring_timeout_ms", "int"],
+      ["call_connect_timeout_ms", "int"],
+      ["call_packet_timeout_ms", "int"],
+      ["me_url_prefix", "string"],
+      ["autoupdate_url_prefix", "flags.7?string"],
+      ["gif_search_username", "flags.9?string"],
+      ["venue_search_username", "flags.10?string"],
+      ["img_search_username", "flags.11?string"],
+      ["static_maps_provider", "flags.12?string"],
+      ["caption_length_max", "int"],
+      ["message_length_max", "int"],
+      ["webfile_dc_id", "int"],
+      ["suggested_lang_code", "flags.2?string"],
+      ["lang_pack_version", "flags.2?int"],
+      ["base_lang_pack_version", "flags.2?int"],
+      ["reactions_default", "flags.15?Reaction"],
+      ["autologin_token", "flags.16?string"],
+    ],
+    "Config",
+  ],
+  "nearestDc": [
+    0x8E1A1775,
+    [
+      ["country", "string"],
+      ["this_dc", "int"],
+      ["nearest_dc", "int"],
+    ],
+    "NearestDc",
+  ],
+  "help.appUpdate": [
+    0xCCBBCE30,
+    [
+      ["flags", "#"],
+      ["can_not_skip", "flags.0?true"],
+      ["id", "int"],
+      ["version", "string"],
+      ["text", "string"],
+      ["entities", "Vector<MessageEntity>"],
+      ["document", "flags.1?Document"],
+      ["url", "flags.2?string"],
+      ["sticker", "flags.3?Document"],
+    ],
+    "help.AppUpdate",
+  ],
+  "help.noAppUpdate": [
+    0xC45A6536,
+    [],
+    "help.AppUpdate",
+  ],
+  "help.inviteText": [
+    0x18CB9F78,
+    [
+      ["message", "string"],
+    ],
+    "help.InviteText",
+  ],
+  "encryptedChatEmpty": [
+    0xAB7EC0A0,
+    [
+      ["id", "int"],
+    ],
+    "EncryptedChat",
+  ],
+  "encryptedChatWaiting": [
+    0x66B25953,
+    [
+      ["id", "int"],
+      ["access_hash", "long"],
+      ["date", "int"],
+      ["admin_id", "long"],
+      ["participant_id", "long"],
+    ],
+    "EncryptedChat",
+  ],
+  "encryptedChatRequested": [
+    0x48F1D94C,
+    [
+      ["flags", "#"],
+      ["folder_id", "flags.0?int"],
+      ["id", "int"],
+      ["access_hash", "long"],
+      ["date", "int"],
+      ["admin_id", "long"],
+      ["participant_id", "long"],
+      ["g_a", "bytes"],
+    ],
+    "EncryptedChat",
+  ],
+  "encryptedChat": [
+    0x61F0D4C7,
+    [
+      ["id", "int"],
+      ["access_hash", "long"],
+      ["date", "int"],
+      ["admin_id", "long"],
+      ["participant_id", "long"],
+      ["g_a_or_b", "bytes"],
+      ["key_fingerprint", "long"],
+    ],
+    "EncryptedChat",
+  ],
+  "encryptedChatDiscarded": [
+    0x1E1C7C45,
+    [
+      ["flags", "#"],
+      ["history_deleted", "flags.0?true"],
+      ["id", "int"],
+    ],
+    "EncryptedChat",
+  ],
+  "inputEncryptedChat": [
+    0xF141B5E1,
+    [
+      ["chat_id", "int"],
+      ["access_hash", "long"],
+    ],
+    "InputEncryptedChat",
+  ],
+  "encryptedFileEmpty": [
+    0xC21F497E,
+    [],
+    "EncryptedFile",
+  ],
+  "encryptedFile": [
+    0xA8008CD8,
+    [
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["size", "long"],
+      ["dc_id", "int"],
+      ["key_fingerprint", "int"],
+    ],
+    "EncryptedFile",
+  ],
+  "inputEncryptedFileEmpty": [
+    0x1837C364,
+    [],
+    "InputEncryptedFile",
+  ],
+  "inputEncryptedFileUploaded": [
+    0x64BD0306,
+    [
+      ["id", "long"],
+      ["parts", "int"],
+      ["md5_checksum", "string"],
+      ["key_fingerprint", "int"],
+    ],
+    "InputEncryptedFile",
+  ],
+  "inputEncryptedFile": [
+    0x5A17B5E5,
+    [
+      ["id", "long"],
+      ["access_hash", "long"],
+    ],
+    "InputEncryptedFile",
+  ],
+  "inputEncryptedFileBigUploaded": [
+    0x2DC173C8,
+    [
+      ["id", "long"],
+      ["parts", "int"],
+      ["key_fingerprint", "int"],
+    ],
+    "InputEncryptedFile",
+  ],
+  "encryptedMessage": [
+    0xED18C118,
+    [
+      ["random_id", "long"],
+      ["chat_id", "int"],
+      ["date", "int"],
+      ["bytes", "bytes"],
+      ["file", "EncryptedFile"],
     ],
+    "EncryptedMessage",
   ],
-  [
-    "channelParticipantsKicked",
+  "encryptedMessageService": [
+    0x23734B06,
     [
-      0xA3B54985,
-      [
-        ["q", "string"],
-      ],
+      ["random_id", "long"],
+      ["chat_id", "int"],
+      ["date", "int"],
+      ["bytes", "bytes"],
     ],
+    "EncryptedMessage",
   ],
-  [
-    "channelParticipantsBots",
+  "messages.dhConfigNotModified": [
+    0xC0E24635,
     [
-      0xB0D1865B,
-      [],
+      ["random", "bytes"],
     ],
+    "messages.DhConfig",
   ],
-  [
-    "channelParticipantsBanned",
+  "messages.dhConfig": [
+    0x2C221EDD,
     [
-      0x1427A5E1,
-      [
-        ["q", "string"],
-      ],
+      ["g", "int"],
+      ["p", "bytes"],
+      ["version", "int"],
+      ["random", "bytes"],
     ],
+    "messages.DhConfig",
   ],
-  [
-    "channelParticipantsSearch",
+  "messages.sentEncryptedMessage": [
+    0x560F8935,
     [
-      0x0656AC4B,
-      [
-        ["q", "string"],
-      ],
+      ["date", "int"],
     ],
+    "messages.SentEncryptedMessage",
   ],
-  [
-    "channelParticipantsContacts",
+  "messages.sentEncryptedFile": [
+    0x9493FF32,
     [
-      0xBB6AE88D,
-      [
-        ["q", "string"],
-      ],
+      ["date", "int"],
+      ["file", "EncryptedFile"],
     ],
+    "messages.SentEncryptedMessage",
   ],
-  [
-    "channelParticipantsMentions",
+  "inputDocumentEmpty": [
+    0x72F0EAAE,
+    [],
+    "InputDocument",
+  ],
+  "inputDocument": [
+    0x1ABFB575,
+    [
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["file_reference", "bytes"],
+    ],
+    "InputDocument",
+  ],
+  "documentEmpty": [
+    0x36F8C871,
+    [
+      ["id", "long"],
+    ],
+    "Document",
+  ],
+  "document": [
+    0x8FD4C4D8,
+    [
+      ["flags", "#"],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["file_reference", "bytes"],
+      ["date", "int"],
+      ["mime_type", "string"],
+      ["size", "long"],
+      ["thumbs", "flags.0?Vector<PhotoSize>"],
+      ["video_thumbs", "flags.1?Vector<VideoSize>"],
+      ["dc_id", "int"],
+      ["attributes", "Vector<DocumentAttribute>"],
+    ],
+    "Document",
+  ],
+  "help.support": [
+    0x17C6B5F6,
+    [
+      ["phone_number", "string"],
+      ["user", "User"],
+    ],
+    "help.Support",
+  ],
+  "notifyPeer": [
+    0x9FD40BD8,
+    [
+      ["peer", "Peer"],
+    ],
+    "NotifyPeer",
+  ],
+  "notifyUsers": [
+    0xB4C83B4C,
+    [],
+    "NotifyPeer",
+  ],
+  "notifyChats": [
+    0xC007CEC3,
+    [],
+    "NotifyPeer",
+  ],
+  "notifyBroadcasts": [
+    0xD612E8EF,
+    [],
+    "NotifyPeer",
+  ],
+  "notifyForumTopic": [
+    0x226E6308,
+    [
+      ["peer", "Peer"],
+      ["top_msg_id", "int"],
+    ],
+    "NotifyPeer",
+  ],
+  "sendMessageTypingAction": [
+    0x16BF744E,
+    [],
+    "SendMessageAction",
+  ],
+  "sendMessageCancelAction": [
+    0xFD5EC8F5,
+    [],
+    "SendMessageAction",
+  ],
+  "sendMessageRecordVideoAction": [
+    0xA187D66F,
+    [],
+    "SendMessageAction",
+  ],
+  "sendMessageUploadVideoAction": [
+    0xE9763AEC,
+    [
+      ["progress", "int"],
+    ],
+    "SendMessageAction",
+  ],
+  "sendMessageRecordAudioAction": [
+    0xD52F73F7,
+    [],
+    "SendMessageAction",
+  ],
+  "sendMessageUploadAudioAction": [
+    0xF351D7AB,
     [
-      0xE04B5CEB,
-      [
-        ["flags", "#"],
-        ["q", "flags.0?string"],
-        ["top_msg_id", "flags.1?int"],
-      ],
+      ["progress", "int"],
     ],
-  ],
-  [
-    "channels.channelParticipants",
+    "SendMessageAction",
+  ],
+  "sendMessageUploadPhotoAction": [
+    0xD1D34A26,
     [
-      0x9AB0FEAF,
-      [
-        ["count", "int"],
-        ["participants", "Vector<ChannelParticipant>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["progress", "int"],
     ],
-  ],
-  [
-    "channels.channelParticipantsNotModified",
-    [
-      0xF0173FE9,
-      [],
-    ],
+    "SendMessageAction",
   ],
-  [
-    "channels.channelParticipant",
+  "sendMessageUploadDocumentAction": [
+    0xAA0CD9E4,
     [
-      0xDFB80317,
-      [
-        ["participant", "ChannelParticipant"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "help.termsOfService",
-    [
-      0x780A0310,
-      [
-        ["flags", "#"],
-        ["popup", "flags.0?true"],
-        ["id", "DataJSON"],
-        ["text", "string"],
-        ["entities", "Vector<MessageEntity>"],
-        ["min_age_confirm", "flags.1?int"],
-      ],
+      ["progress", "int"],
     ],
-  ],
-  [
-    "messages.savedGifsNotModified",
+    "SendMessageAction",
+  ],
+  "sendMessageGeoLocationAction": [
+    0x176F8BA1,
+    [],
+    "SendMessageAction",
+  ],
+  "sendMessageChooseContactAction": [
+    0x628CBC6F,
+    [],
+    "SendMessageAction",
+  ],
+  "sendMessageGamePlayAction": [
+    0xDD6A8F48,
+    [],
+    "SendMessageAction",
+  ],
+  "sendMessageRecordRoundAction": [
+    0x88F27FBC,
+    [],
+    "SendMessageAction",
+  ],
+  "sendMessageUploadRoundAction": [
+    0x243E1C66,
     [
-      0xE8025CA2,
-      [],
-    ],
-  ],
-  [
-    "messages.savedGifs",
-    [
-      0x84A02A0D,
-      [
-        ["hash", "long"],
-        ["gifs", "Vector<Document>"],
-      ],
-    ],
-  ],
-  [
-    "inputBotInlineMessageMediaAuto",
-    [
-      0x3380C786,
-      [
-        ["flags", "#"],
-        ["invert_media", "flags.3?true"],
-        ["message", "string"],
-        ["entities", "flags.1?Vector<MessageEntity>"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "inputBotInlineMessageText",
-    [
-      0x3DCD7A87,
-      [
-        ["flags", "#"],
-        ["no_webpage", "flags.0?true"],
-        ["invert_media", "flags.3?true"],
-        ["message", "string"],
-        ["entities", "flags.1?Vector<MessageEntity>"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "inputBotInlineMessageMediaGeo",
-    [
-      0x96929A85,
-      [
-        ["flags", "#"],
-        ["geo_point", "InputGeoPoint"],
-        ["heading", "flags.0?int"],
-        ["period", "flags.1?int"],
-        ["proximity_notification_radius", "flags.3?int"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "inputBotInlineMessageMediaVenue",
-    [
-      0x417BBF11,
-      [
-        ["flags", "#"],
-        ["geo_point", "InputGeoPoint"],
-        ["title", "string"],
-        ["address", "string"],
-        ["provider", "string"],
-        ["venue_id", "string"],
-        ["venue_type", "string"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "inputBotInlineMessageMediaContact",
-    [
-      0xA6EDBFFD,
-      [
-        ["flags", "#"],
-        ["phone_number", "string"],
-        ["first_name", "string"],
-        ["last_name", "string"],
-        ["vcard", "string"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "inputBotInlineMessageGame",
-    [
-      0x4B425864,
-      [
-        ["flags", "#"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "inputBotInlineMessageMediaInvoice",
-    [
-      0xD7E78225,
-      [
-        ["flags", "#"],
-        ["title", "string"],
-        ["description", "string"],
-        ["photo", "flags.0?InputWebDocument"],
-        ["invoice", "Invoice"],
-        ["payload", "bytes"],
-        ["provider", "string"],
-        ["provider_data", "DataJSON"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "inputBotInlineMessageMediaWebPage",
-    [
-      0xBDDCC510,
-      [
-        ["flags", "#"],
-        ["invert_media", "flags.3?true"],
-        ["force_large_media", "flags.4?true"],
-        ["force_small_media", "flags.5?true"],
-        ["optional", "flags.6?true"],
-        ["message", "string"],
-        ["entities", "flags.1?Vector<MessageEntity>"],
-        ["url", "string"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "inputBotInlineResult",
-    [
-      0x88BF9319,
-      [
-        ["flags", "#"],
-        ["id", "string"],
-        ["type", "string"],
-        ["title", "flags.1?string"],
-        ["description", "flags.2?string"],
-        ["url", "flags.3?string"],
-        ["thumb", "flags.4?InputWebDocument"],
-        ["content", "flags.5?InputWebDocument"],
-        ["send_message", "InputBotInlineMessage"],
-      ],
-    ],
-  ],
-  [
-    "inputBotInlineResultPhoto",
-    [
-      0xA8D864A7,
-      [
-        ["id", "string"],
-        ["type", "string"],
-        ["photo", "InputPhoto"],
-        ["send_message", "InputBotInlineMessage"],
-      ],
-    ],
-  ],
-  [
-    "inputBotInlineResultDocument",
-    [
-      0xFFF8FDC4,
-      [
-        ["flags", "#"],
-        ["id", "string"],
-        ["type", "string"],
-        ["title", "flags.1?string"],
-        ["description", "flags.2?string"],
-        ["document", "InputDocument"],
-        ["send_message", "InputBotInlineMessage"],
-      ],
-    ],
-  ],
-  [
-    "inputBotInlineResultGame",
-    [
-      0x4FA417F2,
-      [
-        ["id", "string"],
-        ["short_name", "string"],
-        ["send_message", "InputBotInlineMessage"],
-      ],
-    ],
-  ],
-  [
-    "botInlineMessageMediaAuto",
-    [
-      0x764CF810,
-      [
-        ["flags", "#"],
-        ["invert_media", "flags.3?true"],
-        ["message", "string"],
-        ["entities", "flags.1?Vector<MessageEntity>"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "botInlineMessageText",
-    [
-      0x8C7F65E2,
-      [
-        ["flags", "#"],
-        ["no_webpage", "flags.0?true"],
-        ["invert_media", "flags.3?true"],
-        ["message", "string"],
-        ["entities", "flags.1?Vector<MessageEntity>"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "botInlineMessageMediaGeo",
-    [
-      0x051846FD,
-      [
-        ["flags", "#"],
-        ["geo", "GeoPoint"],
-        ["heading", "flags.0?int"],
-        ["period", "flags.1?int"],
-        ["proximity_notification_radius", "flags.3?int"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "botInlineMessageMediaVenue",
-    [
-      0x8A86659C,
-      [
-        ["flags", "#"],
-        ["geo", "GeoPoint"],
-        ["title", "string"],
-        ["address", "string"],
-        ["provider", "string"],
-        ["venue_id", "string"],
-        ["venue_type", "string"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "botInlineMessageMediaContact",
-    [
-      0x18D1CDC2,
-      [
-        ["flags", "#"],
-        ["phone_number", "string"],
-        ["first_name", "string"],
-        ["last_name", "string"],
-        ["vcard", "string"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "botInlineMessageMediaInvoice",
-    [
-      0x354A9B09,
-      [
-        ["flags", "#"],
-        ["shipping_address_requested", "flags.1?true"],
-        ["test", "flags.3?true"],
-        ["title", "string"],
-        ["description", "string"],
-        ["photo", "flags.0?WebDocument"],
-        ["currency", "string"],
-        ["total_amount", "long"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "botInlineMessageMediaWebPage",
-    [
-      0x809AD9A6,
-      [
-        ["flags", "#"],
-        ["invert_media", "flags.3?true"],
-        ["force_large_media", "flags.4?true"],
-        ["force_small_media", "flags.5?true"],
-        ["manual", "flags.7?true"],
-        ["safe", "flags.8?true"],
-        ["message", "string"],
-        ["entities", "flags.1?Vector<MessageEntity>"],
-        ["url", "string"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-      ],
-    ],
-  ],
-  [
-    "botInlineResult",
-    [
-      0x11965F3A,
-      [
-        ["flags", "#"],
-        ["id", "string"],
-        ["type", "string"],
-        ["title", "flags.1?string"],
-        ["description", "flags.2?string"],
-        ["url", "flags.3?string"],
-        ["thumb", "flags.4?WebDocument"],
-        ["content", "flags.5?WebDocument"],
-        ["send_message", "BotInlineMessage"],
-      ],
-    ],
-  ],
-  [
-    "botInlineMediaResult",
-    [
-      0x17DB940B,
-      [
-        ["flags", "#"],
-        ["id", "string"],
-        ["type", "string"],
-        ["photo", "flags.0?Photo"],
-        ["document", "flags.1?Document"],
-        ["title", "flags.2?string"],
-        ["description", "flags.3?string"],
-        ["send_message", "BotInlineMessage"],
-      ],
-    ],
-  ],
-  [
-    "messages.botResults",
-    [
-      0xE021F2F6,
-      [
-        ["flags", "#"],
-        ["gallery", "flags.0?true"],
-        ["query_id", "long"],
-        ["next_offset", "flags.1?string"],
-        ["switch_pm", "flags.2?InlineBotSwitchPM"],
-        ["switch_webview", "flags.3?InlineBotWebView"],
-        ["results", "Vector<BotInlineResult>"],
-        ["cache_time", "int"],
-        ["users", "Vector<User>"],
-      ],
-    ],
-  ],
-  [
-    "exportedMessageLink",
-    [
-      0x5DAB1AF4,
-      [
-        ["link", "string"],
-        ["html", "string"],
-      ],
-    ],
-  ],
-  [
-    "messageFwdHeader",
-    [
-      0x4E4DF4BB,
-      [
-        ["flags", "#"],
-        ["imported", "flags.7?true"],
-        ["saved_out", "flags.11?true"],
-        ["from_id", "flags.0?Peer"],
-        ["from_name", "flags.5?string"],
-        ["date", "int"],
-        ["channel_post", "flags.2?int"],
-        ["post_author", "flags.3?string"],
-        ["saved_from_peer", "flags.4?Peer"],
-        ["saved_from_msg_id", "flags.4?int"],
-        ["saved_from_id", "flags.8?Peer"],
-        ["saved_from_name", "flags.9?string"],
-        ["saved_date", "flags.10?int"],
-        ["psa_type", "flags.6?string"],
-      ],
-    ],
-  ],
-  [
-    "auth.codeTypeSms",
-    [
-      0x72A3158C,
-      [],
-    ],
-  ],
-  [
-    "auth.codeTypeCall",
-    [
-      0x741CD3E3,
-      [],
-    ],
-  ],
-  [
-    "auth.codeTypeFlashCall",
-    [
-      0x226CCEFB,
-      [],
-    ],
-  ],
-  [
-    "auth.codeTypeMissedCall",
-    [
-      0xD61AD6EE,
-      [],
-    ],
-  ],
-  [
-    "auth.codeTypeFragmentSms",
-    [
-      0x06ED998C,
-      [],
-    ],
-  ],
-  [
-    "auth.sentCodeTypeApp",
-    [
-      0x3DBB5986,
-      [
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "auth.sentCodeTypeSms",
-    [
-      0xC000BBA2,
-      [
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "auth.sentCodeTypeCall",
-    [
-      0x5353E5A7,
-      [
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "auth.sentCodeTypeFlashCall",
-    [
-      0xAB03C6D9,
-      [
-        ["pattern", "string"],
-      ],
-    ],
-  ],
-  [
-    "auth.sentCodeTypeMissedCall",
-    [
-      0x82006484,
-      [
-        ["prefix", "string"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "auth.sentCodeTypeEmailCode",
-    [
-      0xF450F59B,
-      [
-        ["flags", "#"],
-        ["apple_signin_allowed", "flags.0?true"],
-        ["google_signin_allowed", "flags.1?true"],
-        ["email_pattern", "string"],
-        ["length", "int"],
-        ["reset_available_period", "flags.3?int"],
-        ["reset_pending_date", "flags.4?int"],
-      ],
-    ],
-  ],
-  [
-    "auth.sentCodeTypeSetUpEmailRequired",
-    [
-      0xA5491DEA,
-      [
-        ["flags", "#"],
-        ["apple_signin_allowed", "flags.0?true"],
-        ["google_signin_allowed", "flags.1?true"],
-      ],
-    ],
-  ],
-  [
-    "auth.sentCodeTypeFragmentSms",
-    [
-      0xD9565C39,
-      [
-        ["url", "string"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "auth.sentCodeTypeFirebaseSms",
-    [
-      0x009FD736,
-      [
-        ["flags", "#"],
-        ["nonce", "flags.0?bytes"],
-        ["play_integrity_project_id", "flags.2?long"],
-        ["play_integrity_nonce", "flags.2?bytes"],
-        ["receipt", "flags.1?string"],
-        ["push_timeout", "flags.1?int"],
-        ["length", "int"],
-      ],
-    ],
-  ],
-  [
-    "auth.sentCodeTypeSmsWord",
-    [
-      0xA416AC81,
-      [
-        ["flags", "#"],
-        ["beginning", "flags.0?string"],
-      ],
-    ],
-  ],
-  [
-    "auth.sentCodeTypeSmsPhrase",
-    [
-      0xB37794AF,
-      [
-        ["flags", "#"],
-        ["beginning", "flags.0?string"],
-      ],
-    ],
-  ],
-  [
-    "messages.botCallbackAnswer",
-    [
-      0x36585EA4,
-      [
-        ["flags", "#"],
-        ["alert", "flags.1?true"],
-        ["has_url", "flags.3?true"],
-        ["native_ui", "flags.4?true"],
-        ["message", "flags.0?string"],
-        ["url", "flags.2?string"],
-        ["cache_time", "int"],
-      ],
+      ["progress", "int"],
     ],
+    "SendMessageAction",
+  ],
+  "speakingInGroupCallAction": [
+    0xD92C2285,
+    [],
+    "SendMessageAction",
   ],
-  [
-    "messages.messageEditData",
+  "sendMessageHistoryImportAction": [
+    0xDBDA9246,
     [
-      0x26B5DDE6,
-      [
-        ["flags", "#"],
-        ["caption", "flags.0?true"],
-      ],
+      ["progress", "int"],
     ],
+    "SendMessageAction",
   ],
-  [
-    "inputBotInlineMessageID",
+  "sendMessageChooseStickerAction": [
+    0xB05AC6B1,
+    [],
+    "SendMessageAction",
+  ],
+  "sendMessageEmojiInteraction": [
+    0x25972BCB,
     [
-      0x890C3D89,
-      [
-        ["dc_id", "int"],
-        ["id", "long"],
-        ["access_hash", "long"],
-      ],
+      ["emoticon", "string"],
+      ["msg_id", "int"],
+      ["interaction", "DataJSON"],
     ],
+    "SendMessageAction",
   ],
-  [
-    "inputBotInlineMessageID64",
+  "sendMessageEmojiInteractionSeen": [
+    0xB665902E,
     [
-      0xB6D915D7,
-      [
-        ["dc_id", "int"],
-        ["owner_id", "long"],
-        ["id", "int"],
-        ["access_hash", "long"],
-      ],
+      ["emoticon", "string"],
     ],
+    "SendMessageAction",
   ],
-  [
-    "inlineBotSwitchPM",
+  "contacts.found": [
+    0xB3134D9D,
     [
-      0x3C20629F,
-      [
-        ["text", "string"],
-        ["start_param", "string"],
-      ],
+      ["my_results", "Vector<Peer>"],
+      ["results", "Vector<Peer>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "contacts.Found",
+  ],
+  "inputPrivacyKeyStatusTimestamp": [
+    0x4F96CB18,
+    [],
+    "InputPrivacyKey",
+  ],
+  "inputPrivacyKeyChatInvite": [
+    0xBDFB0426,
+    [],
+    "InputPrivacyKey",
+  ],
+  "inputPrivacyKeyPhoneCall": [
+    0xFABADC5F,
+    [],
+    "InputPrivacyKey",
+  ],
+  "inputPrivacyKeyPhoneP2P": [
+    0xDB9E70D2,
+    [],
+    "InputPrivacyKey",
+  ],
+  "inputPrivacyKeyForwards": [
+    0xA4DD4C08,
+    [],
+    "InputPrivacyKey",
+  ],
+  "inputPrivacyKeyProfilePhoto": [
+    0x5719BACC,
+    [],
+    "InputPrivacyKey",
+  ],
+  "inputPrivacyKeyPhoneNumber": [
+    0x0352DAFA,
+    [],
+    "InputPrivacyKey",
+  ],
+  "inputPrivacyKeyAddedByPhone": [
+    0xD1219BDD,
+    [],
+    "InputPrivacyKey",
+  ],
+  "inputPrivacyKeyVoiceMessages": [
+    0xAEE69D68,
+    [],
+    "InputPrivacyKey",
+  ],
+  "inputPrivacyKeyAbout": [
+    0x3823CC40,
+    [],
+    "InputPrivacyKey",
+  ],
+  "inputPrivacyKeyBirthday": [
+    0xD65A11CC,
+    [],
+    "InputPrivacyKey",
+  ],
+  "inputPrivacyKeyStarGiftsAutoSave": [
+    0xE1732341,
+    [],
+    "InputPrivacyKey",
+  ],
+  "inputPrivacyKeyNoPaidMessages": [
+    0xBDC597B4,
+    [],
+    "InputPrivacyKey",
+  ],
+  "privacyKeyStatusTimestamp": [
+    0xBC2EAB30,
+    [],
+    "PrivacyKey",
+  ],
+  "privacyKeyChatInvite": [
+    0x500E6DFA,
+    [],
+    "PrivacyKey",
+  ],
+  "privacyKeyPhoneCall": [
+    0x3D662B7B,
+    [],
+    "PrivacyKey",
+  ],
+  "privacyKeyPhoneP2P": [
+    0x39491CC8,
+    [],
+    "PrivacyKey",
+  ],
+  "privacyKeyForwards": [
+    0x69EC56A3,
+    [],
+    "PrivacyKey",
+  ],
+  "privacyKeyProfilePhoto": [
+    0x96151FED,
+    [],
+    "PrivacyKey",
+  ],
+  "privacyKeyPhoneNumber": [
+    0xD19AE46D,
+    [],
+    "PrivacyKey",
+  ],
+  "privacyKeyAddedByPhone": [
+    0x42FFD42B,
+    [],
+    "PrivacyKey",
+  ],
+  "privacyKeyVoiceMessages": [
+    0x0697F414,
+    [],
+    "PrivacyKey",
+  ],
+  "privacyKeyAbout": [
+    0xA486B761,
+    [],
+    "PrivacyKey",
+  ],
+  "privacyKeyBirthday": [
+    0x2000A518,
+    [],
+    "PrivacyKey",
+  ],
+  "privacyKeyStarGiftsAutoSave": [
+    0x2CA4FDF8,
+    [],
+    "PrivacyKey",
+  ],
+  "privacyKeyNoPaidMessages": [
+    0x17D348D2,
+    [],
+    "PrivacyKey",
+  ],
+  "inputPrivacyValueAllowContacts": [
+    0x0D09E07B,
+    [],
+    "InputPrivacyRule",
+  ],
+  "inputPrivacyValueAllowAll": [
+    0x184B35CE,
+    [],
+    "InputPrivacyRule",
   ],
-  [
-    "messages.peerDialogs",
+  "inputPrivacyValueAllowUsers": [
+    0x131CC67F,
     [
-      0x3371C354,
-      [
-        ["dialogs", "Vector<Dialog>"],
-        ["messages", "Vector<Message>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-        ["state", "updates.State"],
-      ],
+      ["users", "Vector<InputUser>"],
     ],
+    "InputPrivacyRule",
   ],
-  [
-    "topPeer",
-    [
-      0xEDCDC05B,
-      [
-        ["peer", "Peer"],
-        ["rating", "double"],
-      ],
-    ],
+  "inputPrivacyValueDisallowContacts": [
+    0x0BA52007,
+    [],
+    "InputPrivacyRule",
   ],
-  [
-    "topPeerCategoryBotsPM",
-    [
-      0xAB661B5B,
-      [],
-    ],
+  "inputPrivacyValueDisallowAll": [
+    0xD66B66C9,
+    [],
+    "InputPrivacyRule",
   ],
-  [
-    "topPeerCategoryBotsInline",
+  "inputPrivacyValueDisallowUsers": [
+    0x90110467,
     [
-      0x148677E2,
-      [],
+      ["users", "Vector<InputUser>"],
     ],
+    "InputPrivacyRule",
   ],
-  [
-    "topPeerCategoryCorrespondents",
+  "inputPrivacyValueAllowChatParticipants": [
+    0x840649CF,
     [
-      0x0637B7ED,
-      [],
+      ["chats", "Vector<long>"],
     ],
+    "InputPrivacyRule",
   ],
-  [
-    "topPeerCategoryGroups",
+  "inputPrivacyValueDisallowChatParticipants": [
+    0xE94F0F86,
     [
-      0xBD17A14A,
-      [],
+      ["chats", "Vector<long>"],
     ],
+    "InputPrivacyRule",
   ],
-  [
-    "topPeerCategoryChannels",
-    [
-      0x161D9628,
-      [],
-    ],
+  "inputPrivacyValueAllowCloseFriends": [
+    0x2F453E49,
+    [],
+    "InputPrivacyRule",
   ],
-  [
-    "topPeerCategoryPhoneCalls",
-    [
-      0x1E76A78C,
-      [],
-    ],
+  "inputPrivacyValueAllowPremium": [
+    0x77CDC9F1,
+    [],
+    "InputPrivacyRule",
   ],
-  [
-    "topPeerCategoryForwardUsers",
-    [
-      0xA8406CA9,
-      [],
-    ],
+  "inputPrivacyValueAllowBots": [
+    0x5A4FCCE5,
+    [],
+    "InputPrivacyRule",
   ],
-  [
-    "topPeerCategoryForwardChats",
-    [
-      0xFBEEC0F0,
-      [],
-    ],
+  "inputPrivacyValueDisallowBots": [
+    0xC4E57915,
+    [],
+    "InputPrivacyRule",
   ],
-  [
-    "topPeerCategoryBotsApp",
-    [
-      0xFD9E7BEC,
-      [],
-    ],
+  "privacyValueAllowContacts": [
+    0xFFFE1BAC,
+    [],
+    "PrivacyRule",
   ],
-  [
-    "topPeerCategoryPeers",
-    [
-      0xFB834291,
-      [
-        ["category", "TopPeerCategory"],
-        ["count", "int"],
-        ["peers", "Vector<TopPeer>"],
-      ],
-    ],
+  "privacyValueAllowAll": [
+    0x65427B82,
+    [],
+    "PrivacyRule",
   ],
-  [
-    "contacts.topPeersNotModified",
+  "privacyValueAllowUsers": [
+    0xB8905FB2,
     [
-      0xDE266EF5,
-      [],
+      ["users", "Vector<long>"],
     ],
+    "PrivacyRule",
   ],
-  [
-    "contacts.topPeers",
-    [
-      0x70B772A8,
-      [
-        ["categories", "Vector<TopPeerCategoryPeers>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
+  "privacyValueDisallowContacts": [
+    0xF888FA1A,
+    [],
+    "PrivacyRule",
   ],
-  [
-    "contacts.topPeersDisabled",
-    [
-      0xB52C939D,
-      [],
-    ],
+  "privacyValueDisallowAll": [
+    0x8B73E763,
+    [],
+    "PrivacyRule",
   ],
-  [
-    "draftMessageEmpty",
+  "privacyValueDisallowUsers": [
+    0xE4621141,
     [
-      0x1B0C841A,
-      [
-        ["flags", "#"],
-        ["date", "flags.0?int"],
-      ],
+      ["users", "Vector<long>"],
     ],
+    "PrivacyRule",
   ],
-  [
-    "draftMessage",
+  "privacyValueAllowChatParticipants": [
+    0x6B134E8E,
     [
-      0x2D65321F,
-      [
-        ["flags", "#"],
-        ["no_webpage", "flags.1?true"],
-        ["invert_media", "flags.6?true"],
-        ["reply_to", "flags.4?InputReplyTo"],
-        ["message", "string"],
-        ["entities", "flags.3?Vector<MessageEntity>"],
-        ["media", "flags.5?InputMedia"],
-        ["date", "int"],
-        ["effect", "flags.7?long"],
-      ],
+      ["chats", "Vector<long>"],
     ],
+    "PrivacyRule",
   ],
-  [
-    "messages.featuredStickersNotModified",
+  "privacyValueDisallowChatParticipants": [
+    0x41C87565,
     [
-      0xC6DC0C66,
-      [
-        ["count", "int"],
-      ],
+      ["chats", "Vector<long>"],
     ],
+    "PrivacyRule",
   ],
-  [
-    "messages.featuredStickers",
-    [
-      0xBE382906,
-      [
-        ["flags", "#"],
-        ["premium", "flags.0?true"],
-        ["hash", "long"],
-        ["count", "int"],
-        ["sets", "Vector<StickerSetCovered>"],
-        ["unread", "Vector<long>"],
-      ],
-    ],
+  "privacyValueAllowCloseFriends": [
+    0xF7E8D89B,
+    [],
+    "PrivacyRule",
   ],
-  [
-    "messages.recentStickersNotModified",
-    [
-      0x0B17F890,
-      [],
-    ],
+  "privacyValueAllowPremium": [
+    0xECE9814B,
+    [],
+    "PrivacyRule",
   ],
-  [
-    "messages.recentStickers",
-    [
-      0x88D37C56,
-      [
-        ["hash", "long"],
-        ["packs", "Vector<StickerPack>"],
-        ["stickers", "Vector<Document>"],
-        ["dates", "Vector<int>"],
-      ],
-    ],
+  "privacyValueAllowBots": [
+    0x21461B5D,
+    [],
+    "PrivacyRule",
   ],
-  [
-    "messages.archivedStickers",
-    [
-      0x4FCBA9C8,
-      [
-        ["count", "int"],
-        ["sets", "Vector<StickerSetCovered>"],
-      ],
-    ],
+  "privacyValueDisallowBots": [
+    0xF6A5F82F,
+    [],
+    "PrivacyRule",
   ],
-  [
-    "messages.stickerSetInstallResultSuccess",
+  "account.privacyRules": [
+    0x50A04E45,
     [
-      0x38641628,
-      [],
+      ["rules", "Vector<PrivacyRule>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "account.PrivacyRules",
   ],
-  [
-    "messages.stickerSetInstallResultArchive",
+  "accountDaysTTL": [
+    0xB8D0AFDF,
     [
-      0x35E410A8,
-      [
-        ["sets", "Vector<StickerSetCovered>"],
-      ],
+      ["days", "int"],
     ],
+    "AccountDaysTTL",
   ],
-  [
-    "stickerSetCovered",
+  "documentAttributeImageSize": [
+    0x6C37C15C,
     [
-      0x6410A5D2,
-      [
-        ["set", "StickerSet"],
-        ["cover", "Document"],
-      ],
+      ["w", "int"],
+      ["h", "int"],
     ],
+    "DocumentAttribute",
   ],
-  [
-    "stickerSetMultiCovered",
-    [
-      0x3407E51B,
-      [
-        ["set", "StickerSet"],
-        ["covers", "Vector<Document>"],
-      ],
-    ],
+  "documentAttributeAnimated": [
+    0x11B58939,
+    [],
+    "DocumentAttribute",
   ],
-  [
-    "stickerSetFullCovered",
+  "documentAttributeSticker": [
+    0x6319D612,
     [
-      0x40D13C0E,
-      [
-        ["set", "StickerSet"],
-        ["packs", "Vector<StickerPack>"],
-        ["keywords", "Vector<StickerKeyword>"],
-        ["documents", "Vector<Document>"],
-      ],
+      ["flags", "#"],
+      ["mask", "flags.1?true"],
+      ["alt", "string"],
+      ["stickerset", "InputStickerSet"],
+      ["mask_coords", "flags.0?MaskCoords"],
     ],
+    "DocumentAttribute",
   ],
-  [
-    "stickerSetNoCovered",
+  "documentAttributeVideo": [
+    0x43C57C48,
     [
-      0x77B15D1C,
-      [
-        ["set", "StickerSet"],
-      ],
+      ["flags", "#"],
+      ["round_message", "flags.0?true"],
+      ["supports_streaming", "flags.1?true"],
+      ["nosound", "flags.3?true"],
+      ["duration", "double"],
+      ["w", "int"],
+      ["h", "int"],
+      ["preload_prefix_size", "flags.2?int"],
+      ["video_start_ts", "flags.4?double"],
+      ["video_codec", "flags.5?string"],
     ],
+    "DocumentAttribute",
   ],
-  [
-    "maskCoords",
+  "documentAttributeAudio": [
+    0x9852F9C6,
     [
-      0xAED6DBB2,
-      [
-        ["n", "int"],
-        ["x", "double"],
-        ["y", "double"],
-        ["zoom", "double"],
-      ],
+      ["flags", "#"],
+      ["voice", "flags.10?true"],
+      ["duration", "int"],
+      ["title", "flags.0?string"],
+      ["performer", "flags.1?string"],
+      ["waveform", "flags.2?bytes"],
     ],
+    "DocumentAttribute",
   ],
-  [
-    "inputStickeredMediaPhoto",
+  "documentAttributeFilename": [
+    0x15590068,
     [
-      0x4A992157,
-      [
-        ["id", "InputPhoto"],
-      ],
+      ["file_name", "string"],
     ],
+    "DocumentAttribute",
   ],
-  [
-    "inputStickeredMediaDocument",
-    [
-      0x0438865B,
-      [
-        ["id", "InputDocument"],
-      ],
-    ],
+  "documentAttributeHasStickers": [
+    0x9801D2F7,
+    [],
+    "DocumentAttribute",
   ],
-  [
-    "game",
+  "documentAttributeCustomEmoji": [
+    0xFD149899,
     [
-      0xBDF9653B,
-      [
-        ["flags", "#"],
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["short_name", "string"],
-        ["title", "string"],
-        ["description", "string"],
-        ["photo", "Photo"],
-        ["document", "flags.0?Document"],
-      ],
+      ["flags", "#"],
+      ["free", "flags.0?true"],
+      ["text_color", "flags.1?true"],
+      ["alt", "string"],
+      ["stickerset", "InputStickerSet"],
     ],
+    "DocumentAttribute",
   ],
-  [
-    "inputGameID",
-    [
-      0x032C3E77,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-      ],
-    ],
+  "messages.stickersNotModified": [
+    0xF1749A22,
+    [],
+    "messages.Stickers",
   ],
-  [
-    "inputGameShortName",
+  "messages.stickers": [
+    0x30A6EC7E,
     [
-      0xC331E80A,
-      [
-        ["bot_id", "InputUser"],
-        ["short_name", "string"],
-      ],
+      ["hash", "long"],
+      ["stickers", "Vector<Document>"],
     ],
+    "messages.Stickers",
   ],
-  [
-    "highScore",
+  "stickerPack": [
+    0x12B299D4,
     [
-      0x73A379EB,
-      [
-        ["pos", "int"],
-        ["user_id", "long"],
-        ["score", "int"],
-      ],
+      ["emoticon", "string"],
+      ["documents", "Vector<long>"],
     ],
+    "StickerPack",
   ],
-  [
-    "messages.highScores",
-    [
-      0x9A3BFD99,
-      [
-        ["scores", "Vector<HighScore>"],
-        ["users", "Vector<User>"],
-      ],
-    ],
+  "messages.allStickersNotModified": [
+    0xE86602C3,
+    [],
+    "messages.AllStickers",
   ],
-  [
-    "textEmpty",
+  "messages.allStickers": [
+    0xCDBBCEBB,
     [
-      0xDC3D824F,
-      [],
+      ["hash", "long"],
+      ["sets", "Vector<StickerSet>"],
     ],
+    "messages.AllStickers",
   ],
-  [
-    "textPlain",
+  "messages.affectedMessages": [
+    0x84D19185,
     [
-      0x744694E0,
-      [
-        ["text", "string"],
-      ],
+      ["pts", "int"],
+      ["pts_count", "int"],
     ],
+    "messages.AffectedMessages",
   ],
-  [
-    "textBold",
+  "webPageEmpty": [
+    0x211A1788,
     [
-      0x6724ABC4,
-      [
-        ["text", "RichText"],
-      ],
+      ["flags", "#"],
+      ["id", "long"],
+      ["url", "flags.0?string"],
     ],
+    "WebPage",
   ],
-  [
-    "textItalic",
+  "webPagePending": [
+    0xB0D13E47,
     [
-      0xD912A59C,
-      [
-        ["text", "RichText"],
-      ],
+      ["flags", "#"],
+      ["id", "long"],
+      ["url", "flags.0?string"],
+      ["date", "int"],
     ],
+    "WebPage",
   ],
-  [
-    "textUnderline",
+  "webPage": [
+    0xE89C45B2,
     [
-      0xC12622C4,
-      [
-        ["text", "RichText"],
-      ],
+      ["flags", "#"],
+      ["has_large_media", "flags.13?true"],
+      ["video_cover_photo", "flags.14?true"],
+      ["id", "long"],
+      ["url", "string"],
+      ["display_url", "string"],
+      ["hash", "int"],
+      ["type", "flags.0?string"],
+      ["site_name", "flags.1?string"],
+      ["title", "flags.2?string"],
+      ["description", "flags.3?string"],
+      ["photo", "flags.4?Photo"],
+      ["embed_url", "flags.5?string"],
+      ["embed_type", "flags.5?string"],
+      ["embed_width", "flags.6?int"],
+      ["embed_height", "flags.6?int"],
+      ["duration", "flags.7?int"],
+      ["author", "flags.8?string"],
+      ["document", "flags.9?Document"],
+      ["cached_page", "flags.10?Page"],
+      ["attributes", "flags.12?Vector<WebPageAttribute>"],
     ],
+    "WebPage",
   ],
-  [
-    "textStrike",
+  "webPageNotModified": [
+    0x7311CA11,
     [
-      0x9BF8BB95,
-      [
-        ["text", "RichText"],
-      ],
+      ["flags", "#"],
+      ["cached_page_views", "flags.0?int"],
     ],
+    "WebPage",
   ],
-  [
-    "textFixed",
+  "authorization": [
+    0xAD01D61D,
     [
-      0x6C3F19B9,
-      [
-        ["text", "RichText"],
-      ],
+      ["flags", "#"],
+      ["current", "flags.0?true"],
+      ["official_app", "flags.1?true"],
+      ["password_pending", "flags.2?true"],
+      ["encrypted_requests_disabled", "flags.3?true"],
+      ["call_requests_disabled", "flags.4?true"],
+      ["unconfirmed", "flags.5?true"],
+      ["hash", "long"],
+      ["device_model", "string"],
+      ["platform", "string"],
+      ["system_version", "string"],
+      ["api_id", "int"],
+      ["app_name", "string"],
+      ["app_version", "string"],
+      ["date_created", "int"],
+      ["date_active", "int"],
+      ["ip", "string"],
+      ["country", "string"],
+      ["region", "string"],
     ],
+    "Authorization",
   ],
-  [
-    "textUrl",
+  "account.authorizations": [
+    0x4BFF8EA0,
     [
-      0x3C2884C1,
-      [
-        ["text", "RichText"],
-        ["url", "string"],
-        ["webpage_id", "long"],
-      ],
+      ["authorization_ttl_days", "int"],
+      ["authorizations", "Vector<Authorization>"],
     ],
+    "account.Authorizations",
   ],
-  [
-    "textEmail",
+  "account.password": [
+    0x957B50FB,
     [
-      0xDE5A0DD6,
-      [
-        ["text", "RichText"],
-        ["email", "string"],
-      ],
+      ["flags", "#"],
+      ["has_recovery", "flags.0?true"],
+      ["has_secure_values", "flags.1?true"],
+      ["has_password", "flags.2?true"],
+      ["current_algo", "flags.2?PasswordKdfAlgo"],
+      ["srp_B", "flags.2?bytes"],
+      ["srp_id", "flags.2?long"],
+      ["hint", "flags.3?string"],
+      ["email_unconfirmed_pattern", "flags.4?string"],
+      ["new_algo", "PasswordKdfAlgo"],
+      ["new_secure_algo", "SecurePasswordKdfAlgo"],
+      ["secure_random", "bytes"],
+      ["pending_reset_date", "flags.5?int"],
+      ["login_email_pattern", "flags.6?string"],
     ],
+    "account.Password",
   ],
-  [
-    "textConcat",
+  "account.passwordSettings": [
+    0x9A5C33E5,
     [
-      0x7E6260D7,
-      [
-        ["texts", "Vector<RichText>"],
-      ],
+      ["flags", "#"],
+      ["email", "flags.0?string"],
+      ["secure_settings", "flags.1?SecureSecretSettings"],
     ],
+    "account.PasswordSettings",
   ],
-  [
-    "textSubscript",
+  "account.passwordInputSettings": [
+    0xC23727C9,
     [
-      0xED6A8504,
-      [
-        ["text", "RichText"],
-      ],
+      ["flags", "#"],
+      ["new_algo", "flags.0?PasswordKdfAlgo"],
+      ["new_password_hash", "flags.0?bytes"],
+      ["hint", "flags.0?string"],
+      ["email", "flags.1?string"],
+      ["new_secure_settings", "flags.2?SecureSecretSettings"],
     ],
+    "account.PasswordInputSettings",
   ],
-  [
-    "textSuperscript",
+  "auth.passwordRecovery": [
+    0x137948A5,
     [
-      0xC7FB5E01,
-      [
-        ["text", "RichText"],
-      ],
+      ["email_pattern", "string"],
     ],
+    "auth.PasswordRecovery",
   ],
-  [
-    "textMarked",
+  "receivedNotifyMessage": [
+    0xA384B779,
     [
-      0x034B8621,
-      [
-        ["text", "RichText"],
-      ],
+      ["id", "int"],
+      ["flags", "int"],
     ],
+    "ReceivedNotifyMessage",
   ],
-  [
-    "textPhone",
+  "chatInviteExported": [
+    0xA22CBD96,
     [
-      0x1CCB966A,
-      [
-        ["text", "RichText"],
-        ["phone", "string"],
-      ],
+      ["flags", "#"],
+      ["revoked", "flags.0?true"],
+      ["permanent", "flags.5?true"],
+      ["request_needed", "flags.6?true"],
+      ["link", "string"],
+      ["admin_id", "long"],
+      ["date", "int"],
+      ["start_date", "flags.4?int"],
+      ["expire_date", "flags.1?int"],
+      ["usage_limit", "flags.2?int"],
+      ["usage", "flags.3?int"],
+      ["requested", "flags.7?int"],
+      ["subscription_expired", "flags.10?int"],
+      ["title", "flags.8?string"],
+      ["subscription_pricing", "flags.9?StarsSubscriptionPricing"],
     ],
+    "ExportedChatInvite",
   ],
-  [
-    "textImage",
-    [
-      0x081CCF4F,
-      [
-        ["document_id", "long"],
-        ["w", "int"],
-        ["h", "int"],
-      ],
-    ],
+  "chatInvitePublicJoinRequests": [
+    0xED107AB7,
+    [],
+    "ExportedChatInvite",
   ],
-  [
-    "textAnchor",
+  "chatInviteAlready": [
+    0x5A686D7C,
     [
-      0x35553762,
-      [
-        ["text", "RichText"],
-        ["name", "string"],
-      ],
+      ["chat", "Chat"],
     ],
+    "ChatInvite",
   ],
-  [
-    "pageBlockUnsupported",
+  "chatInvite": [
+    0x5C9D3702,
     [
-      0x13567E8A,
-      [],
+      ["flags", "#"],
+      ["channel", "flags.0?true"],
+      ["broadcast", "flags.1?true"],
+      ["public", "flags.2?true"],
+      ["megagroup", "flags.3?true"],
+      ["request_needed", "flags.6?true"],
+      ["verified", "flags.7?true"],
+      ["scam", "flags.8?true"],
+      ["fake", "flags.9?true"],
+      ["can_refulfill_subscription", "flags.11?true"],
+      ["title", "string"],
+      ["about", "flags.5?string"],
+      ["photo", "Photo"],
+      ["participants_count", "int"],
+      ["participants", "flags.4?Vector<User>"],
+      ["color", "int"],
+      ["subscription_pricing", "flags.10?StarsSubscriptionPricing"],
+      ["subscription_form_id", "flags.12?long"],
+      ["bot_verification", "flags.13?BotVerification"],
     ],
+    "ChatInvite",
   ],
-  [
-    "pageBlockTitle",
+  "chatInvitePeek": [
+    0x61695CB0,
     [
-      0x70ABC3FD,
-      [
-        ["text", "RichText"],
-      ],
+      ["chat", "Chat"],
+      ["expires", "int"],
     ],
+    "ChatInvite",
   ],
-  [
-    "pageBlockSubtitle",
-    [
-      0x8FFA9A1F,
-      [
-        ["text", "RichText"],
-      ],
-    ],
+  "inputStickerSetEmpty": [
+    0xFFB62B95,
+    [],
+    "InputStickerSet",
   ],
-  [
-    "pageBlockAuthorDate",
+  "inputStickerSetID": [
+    0x9DE7A269,
     [
-      0xBAAFE5E0,
-      [
-        ["author", "RichText"],
-        ["published_date", "int"],
-      ],
+      ["id", "long"],
+      ["access_hash", "long"],
     ],
+    "InputStickerSet",
   ],
-  [
-    "pageBlockHeader",
+  "inputStickerSetShortName": [
+    0x861CC8A0,
     [
-      0xBFD064EC,
-      [
-        ["text", "RichText"],
-      ],
+      ["short_name", "string"],
     ],
+    "InputStickerSet",
   ],
-  [
-    "pageBlockSubheader",
-    [
-      0xF12BB6E1,
-      [
-        ["text", "RichText"],
-      ],
-    ],
+  "inputStickerSetAnimatedEmoji": [
+    0x028703C8,
+    [],
+    "InputStickerSet",
   ],
-  [
-    "pageBlockParagraph",
+  "inputStickerSetDice": [
+    0xE67F520E,
     [
-      0x467A0766,
-      [
-        ["text", "RichText"],
-      ],
+      ["emoticon", "string"],
     ],
+    "InputStickerSet",
   ],
-  [
-    "pageBlockPreformatted",
-    [
-      0xC070D93E,
-      [
-        ["text", "RichText"],
-        ["language", "string"],
-      ],
-    ],
+  "inputStickerSetAnimatedEmojiAnimations": [
+    0x0CDE3739,
+    [],
+    "InputStickerSet",
   ],
-  [
-    "pageBlockFooter",
-    [
-      0x48870999,
-      [
-        ["text", "RichText"],
-      ],
-    ],
+  "inputStickerSetPremiumGifts": [
+    0xC88B3B02,
+    [],
+    "InputStickerSet",
   ],
-  [
-    "pageBlockDivider",
-    [
-      0xDB20B188,
-      [],
-    ],
+  "inputStickerSetEmojiGenericAnimations": [
+    0x04C4D4CE,
+    [],
+    "InputStickerSet",
   ],
-  [
-    "pageBlockAnchor",
-    [
-      0xCE0D37B0,
-      [
-        ["name", "string"],
-      ],
-    ],
+  "inputStickerSetEmojiDefaultStatuses": [
+    0x29D0F5EE,
+    [],
+    "InputStickerSet",
   ],
-  [
-    "pageBlockList",
-    [
-      0xE4E88011,
-      [
-        ["items", "Vector<PageListItem>"],
-      ],
-    ],
+  "inputStickerSetEmojiDefaultTopicIcons": [
+    0x44C1F8E9,
+    [],
+    "InputStickerSet",
   ],
-  [
-    "pageBlockBlockquote",
-    [
-      0x263D7C26,
-      [
-        ["text", "RichText"],
-        ["caption", "RichText"],
-      ],
-    ],
+  "inputStickerSetEmojiChannelDefaultStatuses": [
+    0x49748553,
+    [],
+    "InputStickerSet",
   ],
-  [
-    "pageBlockPullquote",
+  "stickerSet": [
+    0x2DD14EDC,
     [
-      0x4F4456D3,
-      [
-        ["text", "RichText"],
-        ["caption", "RichText"],
-      ],
+      ["flags", "#"],
+      ["archived", "flags.1?true"],
+      ["official", "flags.2?true"],
+      ["masks", "flags.3?true"],
+      ["emojis", "flags.7?true"],
+      ["text_color", "flags.9?true"],
+      ["channel_emoji_status", "flags.10?true"],
+      ["creator", "flags.11?true"],
+      ["installed_date", "flags.0?int"],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["title", "string"],
+      ["short_name", "string"],
+      ["thumbs", "flags.4?Vector<PhotoSize>"],
+      ["thumb_dc_id", "flags.4?int"],
+      ["thumb_version", "flags.4?int"],
+      ["thumb_document_id", "flags.8?long"],
+      ["count", "int"],
+      ["hash", "int"],
     ],
+    "StickerSet",
   ],
-  [
-    "pageBlockPhoto",
+  "messages.stickerSet": [
+    0x6E153F16,
     [
-      0x1759C560,
-      [
-        ["flags", "#"],
-        ["photo_id", "long"],
-        ["caption", "PageCaption"],
-        ["url", "flags.0?string"],
-        ["webpage_id", "flags.0?long"],
-      ],
+      ["set", "StickerSet"],
+      ["packs", "Vector<StickerPack>"],
+      ["keywords", "Vector<StickerKeyword>"],
+      ["documents", "Vector<Document>"],
     ],
+    "messages.StickerSet",
   ],
-  [
-    "pageBlockVideo",
-    [
-      0x7C8FE7B6,
-      [
-        ["flags", "#"],
-        ["autoplay", "flags.0?true"],
-        ["loop", "flags.1?true"],
-        ["video_id", "long"],
-        ["caption", "PageCaption"],
-      ],
-    ],
+  "messages.stickerSetNotModified": [
+    0xD3F924EB,
+    [],
+    "messages.StickerSet",
   ],
-  [
-    "pageBlockCover",
+  "botCommand": [
+    0xC27AC8C7,
     [
-      0x39F23300,
-      [
-        ["cover", "PageBlock"],
-      ],
+      ["command", "string"],
+      ["description", "string"],
     ],
+    "BotCommand",
   ],
-  [
-    "pageBlockEmbed",
+  "botInfo": [
+    0x4D8A0299,
     [
-      0xA8718DC5,
-      [
-        ["flags", "#"],
-        ["full_width", "flags.0?true"],
-        ["allow_scrolling", "flags.3?true"],
-        ["url", "flags.1?string"],
-        ["html", "flags.2?string"],
-        ["poster_photo_id", "flags.4?long"],
-        ["w", "flags.5?int"],
-        ["h", "flags.5?int"],
-        ["caption", "PageCaption"],
-      ],
+      ["flags", "#"],
+      ["has_preview_medias", "flags.6?true"],
+      ["user_id", "flags.0?long"],
+      ["description", "flags.1?string"],
+      ["description_photo", "flags.4?Photo"],
+      ["description_document", "flags.5?Document"],
+      ["commands", "flags.2?Vector<BotCommand>"],
+      ["menu_button", "flags.3?BotMenuButton"],
+      ["privacy_policy_url", "flags.7?string"],
+      ["app_settings", "flags.8?BotAppSettings"],
+      ["verifier_settings", "flags.9?BotVerifierSettings"],
     ],
+    "BotInfo",
   ],
-  [
-    "pageBlockEmbedPost",
+  "keyboardButton": [
+    0xA2FA4880,
     [
-      0xF259A80B,
-      [
-        ["url", "string"],
-        ["webpage_id", "long"],
-        ["author_photo_id", "long"],
-        ["author", "string"],
-        ["date", "int"],
-        ["blocks", "Vector<PageBlock>"],
-        ["caption", "PageCaption"],
-      ],
+      ["text", "string"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "pageBlockCollage",
+  "keyboardButtonUrl": [
+    0x258AFF05,
     [
-      0x65A0FA4D,
-      [
-        ["items", "Vector<PageBlock>"],
-        ["caption", "PageCaption"],
-      ],
+      ["text", "string"],
+      ["url", "string"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "pageBlockSlideshow",
+  "keyboardButtonCallback": [
+    0x35BBDB6B,
     [
-      0x031F9590,
-      [
-        ["items", "Vector<PageBlock>"],
-        ["caption", "PageCaption"],
-      ],
+      ["flags", "#"],
+      ["requires_password", "flags.0?true"],
+      ["text", "string"],
+      ["data", "bytes"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "pageBlockChannel",
+  "keyboardButtonRequestPhone": [
+    0xB16A6C29,
     [
-      0xEF1751B5,
-      [
-        ["channel", "Chat"],
-      ],
+      ["text", "string"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "pageBlockAudio",
+  "keyboardButtonRequestGeoLocation": [
+    0xFC796B3F,
     [
-      0x804361EA,
-      [
-        ["audio_id", "long"],
-        ["caption", "PageCaption"],
-      ],
+      ["text", "string"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "pageBlockKicker",
+  "keyboardButtonSwitchInline": [
+    0x93B9FBB5,
     [
-      0x1E148390,
-      [
-        ["text", "RichText"],
-      ],
+      ["flags", "#"],
+      ["same_peer", "flags.0?true"],
+      ["text", "string"],
+      ["query", "string"],
+      ["peer_types", "flags.1?Vector<InlineQueryPeerType>"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "pageBlockTable",
+  "keyboardButtonGame": [
+    0x50F41CCF,
     [
-      0xBF4DEA82,
-      [
-        ["flags", "#"],
-        ["bordered", "flags.0?true"],
-        ["striped", "flags.1?true"],
-        ["title", "RichText"],
-        ["rows", "Vector<PageTableRow>"],
-      ],
+      ["text", "string"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "pageBlockOrderedList",
+  "keyboardButtonBuy": [
+    0xAFD93FBB,
     [
-      0x9A8AE1E1,
-      [
-        ["items", "Vector<PageListOrderedItem>"],
-      ],
+      ["text", "string"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "pageBlockDetails",
+  "keyboardButtonUrlAuth": [
+    0x10B78D29,
     [
-      0x76768BED,
-      [
-        ["flags", "#"],
-        ["open", "flags.0?true"],
-        ["blocks", "Vector<PageBlock>"],
-        ["title", "RichText"],
-      ],
+      ["flags", "#"],
+      ["text", "string"],
+      ["fwd_text", "flags.0?string"],
+      ["url", "string"],
+      ["button_id", "int"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "pageBlockRelatedArticles",
+  "inputKeyboardButtonUrlAuth": [
+    0xD02E7FD4,
     [
-      0x16115A96,
-      [
-        ["title", "RichText"],
-        ["articles", "Vector<PageRelatedArticle>"],
-      ],
+      ["flags", "#"],
+      ["request_write_access", "flags.0?true"],
+      ["text", "string"],
+      ["fwd_text", "flags.1?string"],
+      ["url", "string"],
+      ["bot", "InputUser"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "pageBlockMap",
+  "keyboardButtonRequestPoll": [
+    0xBBC7515D,
     [
-      0xA44F3EF6,
-      [
-        ["geo", "GeoPoint"],
-        ["zoom", "int"],
-        ["w", "int"],
-        ["h", "int"],
-        ["caption", "PageCaption"],
-      ],
+      ["flags", "#"],
+      ["quiz", "flags.0?Bool"],
+      ["text", "string"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "phoneCallDiscardReasonMissed",
+  "inputKeyboardButtonUserProfile": [
+    0xE988037B,
     [
-      0x85E42301,
-      [],
+      ["text", "string"],
+      ["user_id", "InputUser"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "phoneCallDiscardReasonDisconnect",
+  "keyboardButtonUserProfile": [
+    0x308660C1,
     [
-      0xE095C1A0,
-      [],
+      ["text", "string"],
+      ["user_id", "long"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "phoneCallDiscardReasonHangup",
+  "keyboardButtonWebView": [
+    0x13767230,
     [
-      0x57ADC690,
-      [],
+      ["text", "string"],
+      ["url", "string"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "phoneCallDiscardReasonBusy",
+  "keyboardButtonSimpleWebView": [
+    0xA0C0505C,
     [
-      0xFAF7E8C9,
-      [],
+      ["text", "string"],
+      ["url", "string"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "phoneCallDiscardReasonAllowGroupCall",
+  "keyboardButtonRequestPeer": [
+    0x53D7BFD8,
     [
-      0xAFE2B839,
-      [
-        ["encrypted_key", "bytes"],
-      ],
+      ["text", "string"],
+      ["button_id", "int"],
+      ["peer_type", "RequestPeerType"],
+      ["max_quantity", "int"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "dataJSON",
+  "inputKeyboardButtonRequestPeer": [
+    0xC9662D05,
     [
-      0x7D748D04,
-      [
-        ["data", "string"],
-      ],
+      ["flags", "#"],
+      ["name_requested", "flags.0?true"],
+      ["username_requested", "flags.1?true"],
+      ["photo_requested", "flags.2?true"],
+      ["text", "string"],
+      ["button_id", "int"],
+      ["peer_type", "RequestPeerType"],
+      ["max_quantity", "int"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "labeledPrice",
+  "keyboardButtonCopy": [
+    0x75D2698E,
     [
-      0xCB296BF8,
-      [
-        ["label", "string"],
-        ["amount", "long"],
-      ],
+      ["text", "string"],
+      ["copy_text", "string"],
     ],
+    "KeyboardButton",
   ],
-  [
-    "invoice",
+  "keyboardButtonRow": [
+    0x77608B83,
     [
-      0x049EE584,
-      [
-        ["flags", "#"],
-        ["test", "flags.0?true"],
-        ["name_requested", "flags.1?true"],
-        ["phone_requested", "flags.2?true"],
-        ["email_requested", "flags.3?true"],
-        ["shipping_address_requested", "flags.4?true"],
-        ["flexible", "flags.5?true"],
-        ["phone_to_provider", "flags.6?true"],
-        ["email_to_provider", "flags.7?true"],
-        ["recurring", "flags.9?true"],
-        ["currency", "string"],
-        ["prices", "Vector<LabeledPrice>"],
-        ["max_tip_amount", "flags.8?long"],
-        ["suggested_tip_amounts", "flags.8?Vector<long>"],
-        ["terms_url", "flags.10?string"],
-        ["subscription_period", "flags.11?int"],
-      ],
+      ["buttons", "Vector<KeyboardButton>"],
     ],
+    "KeyboardButtonRow",
   ],
-  [
-    "paymentCharge",
+  "replyKeyboardHide": [
+    0xA03E5B85,
     [
-      0xEA02C27E,
-      [
-        ["id", "string"],
-        ["provider_charge_id", "string"],
-      ],
+      ["flags", "#"],
+      ["selective", "flags.2?true"],
     ],
+    "ReplyMarkup",
   ],
-  [
-    "postAddress",
+  "replyKeyboardForceReply": [
+    0x86B40B08,
     [
-      0x1E8CAAEB,
-      [
-        ["street_line1", "string"],
-        ["street_line2", "string"],
-        ["city", "string"],
-        ["state", "string"],
-        ["country_iso2", "string"],
-        ["post_code", "string"],
-      ],
+      ["flags", "#"],
+      ["single_use", "flags.1?true"],
+      ["selective", "flags.2?true"],
+      ["placeholder", "flags.3?string"],
     ],
+    "ReplyMarkup",
   ],
-  [
-    "paymentRequestedInfo",
+  "replyKeyboardMarkup": [
+    0x85DD99D1,
     [
-      0x909C3F94,
-      [
-        ["flags", "#"],
-        ["name", "flags.0?string"],
-        ["phone", "flags.1?string"],
-        ["email", "flags.2?string"],
-        ["shipping_address", "flags.3?PostAddress"],
-      ],
+      ["flags", "#"],
+      ["resize", "flags.0?true"],
+      ["single_use", "flags.1?true"],
+      ["selective", "flags.2?true"],
+      ["persistent", "flags.4?true"],
+      ["rows", "Vector<KeyboardButtonRow>"],
+      ["placeholder", "flags.3?string"],
     ],
+    "ReplyMarkup",
   ],
-  [
-    "paymentSavedCredentialsCard",
+  "replyInlineMarkup": [
+    0x48A30254,
     [
-      0xCDC27A1F,
-      [
-        ["id", "string"],
-        ["title", "string"],
-      ],
+      ["rows", "Vector<KeyboardButtonRow>"],
     ],
+    "ReplyMarkup",
   ],
-  [
-    "webDocument",
+  "messageEntityUnknown": [
+    0xBB92BA95,
     [
-      0x1C570ED1,
-      [
-        ["url", "string"],
-        ["access_hash", "long"],
-        ["size", "int"],
-        ["mime_type", "string"],
-        ["attributes", "Vector<DocumentAttribute>"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "webDocumentNoProxy",
+  "messageEntityMention": [
+    0xFA04579D,
     [
-      0xF9C8BCC6,
-      [
-        ["url", "string"],
-        ["size", "int"],
-        ["mime_type", "string"],
-        ["attributes", "Vector<DocumentAttribute>"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "inputWebDocument",
+  "messageEntityHashtag": [
+    0x6F635B0D,
     [
-      0x9BED434D,
-      [
-        ["url", "string"],
-        ["size", "int"],
-        ["mime_type", "string"],
-        ["attributes", "Vector<DocumentAttribute>"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "inputWebFileLocation",
+  "messageEntityBotCommand": [
+    0x6CEF8AC7,
     [
-      0xC239D686,
-      [
-        ["url", "string"],
-        ["access_hash", "long"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "inputWebFileGeoPointLocation",
+  "messageEntityUrl": [
+    0x6ED02538,
     [
-      0x9F2221C9,
-      [
-        ["geo_point", "InputGeoPoint"],
-        ["access_hash", "long"],
-        ["w", "int"],
-        ["h", "int"],
-        ["zoom", "int"],
-        ["scale", "int"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "inputWebFileAudioAlbumThumbLocation",
+  "messageEntityEmail": [
+    0x64E475C2,
     [
-      0xF46FE924,
-      [
-        ["flags", "#"],
-        ["small", "flags.2?true"],
-        ["document", "flags.0?InputDocument"],
-        ["title", "flags.1?string"],
-        ["performer", "flags.1?string"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "upload.webFile",
+  "messageEntityBold": [
+    0xBD610BC9,
     [
-      0x21E753BC,
-      [
-        ["size", "int"],
-        ["mime_type", "string"],
-        ["file_type", "storage.FileType"],
-        ["mtime", "int"],
-        ["bytes", "bytes"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "payments.paymentForm",
+  "messageEntityItalic": [
+    0x826F8B60,
     [
-      0xA0058751,
-      [
-        ["flags", "#"],
-        ["can_save_credentials", "flags.2?true"],
-        ["password_missing", "flags.3?true"],
-        ["form_id", "long"],
-        ["bot_id", "long"],
-        ["title", "string"],
-        ["description", "string"],
-        ["photo", "flags.5?WebDocument"],
-        ["invoice", "Invoice"],
-        ["provider_id", "long"],
-        ["url", "string"],
-        ["native_provider", "flags.4?string"],
-        ["native_params", "flags.4?DataJSON"],
-        ["additional_methods", "flags.6?Vector<PaymentFormMethod>"],
-        ["saved_info", "flags.0?PaymentRequestedInfo"],
-        ["saved_credentials", "flags.1?Vector<PaymentSavedCredentials>"],
-        ["users", "Vector<User>"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "payments.paymentFormStars",
+  "messageEntityCode": [
+    0x28A20571,
     [
-      0x7BF6B15C,
-      [
-        ["flags", "#"],
-        ["form_id", "long"],
-        ["bot_id", "long"],
-        ["title", "string"],
-        ["description", "string"],
-        ["photo", "flags.5?WebDocument"],
-        ["invoice", "Invoice"],
-        ["users", "Vector<User>"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "payments.paymentFormStarGift",
+  "messageEntityPre": [
+    0x73924BE0,
     [
-      0xB425CFE1,
-      [
-        ["form_id", "long"],
-        ["invoice", "Invoice"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
+      ["language", "string"],
     ],
+    "MessageEntity",
   ],
-  [
-    "payments.validatedRequestedInfo",
+  "messageEntityTextUrl": [
+    0x76A6D327,
     [
-      0xD1451883,
-      [
-        ["flags", "#"],
-        ["id", "flags.0?string"],
-        ["shipping_options", "flags.1?Vector<ShippingOption>"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
+      ["url", "string"],
     ],
+    "MessageEntity",
   ],
-  [
-    "payments.paymentResult",
+  "messageEntityMentionName": [
+    0xDC7B1140,
     [
-      0x4E5F810D,
-      [
-        ["updates", "Updates"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
+      ["user_id", "long"],
     ],
+    "MessageEntity",
   ],
-  [
-    "payments.paymentVerificationNeeded",
+  "inputMessageEntityMentionName": [
+    0x208E68C9,
     [
-      0xD8411139,
-      [
-        ["url", "string"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
+      ["user_id", "InputUser"],
     ],
+    "MessageEntity",
   ],
-  [
-    "payments.paymentReceipt",
+  "messageEntityPhone": [
+    0x9B69E34B,
     [
-      0x70C4FE03,
-      [
-        ["flags", "#"],
-        ["date", "int"],
-        ["bot_id", "long"],
-        ["provider_id", "long"],
-        ["title", "string"],
-        ["description", "string"],
-        ["photo", "flags.2?WebDocument"],
-        ["invoice", "Invoice"],
-        ["info", "flags.0?PaymentRequestedInfo"],
-        ["shipping", "flags.1?ShippingOption"],
-        ["tip_amount", "flags.3?long"],
-        ["currency", "string"],
-        ["total_amount", "long"],
-        ["credentials_title", "string"],
-        ["users", "Vector<User>"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "payments.paymentReceiptStars",
+  "messageEntityCashtag": [
+    0x4C4E743F,
     [
-      0xDABBF83A,
-      [
-        ["flags", "#"],
-        ["date", "int"],
-        ["bot_id", "long"],
-        ["title", "string"],
-        ["description", "string"],
-        ["photo", "flags.2?WebDocument"],
-        ["invoice", "Invoice"],
-        ["currency", "string"],
-        ["total_amount", "long"],
-        ["transaction_id", "string"],
-        ["users", "Vector<User>"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "payments.savedInfo",
+  "messageEntityUnderline": [
+    0x9C4E7E8B,
     [
-      0xFB8FE43C,
-      [
-        ["flags", "#"],
-        ["has_saved_credentials", "flags.1?true"],
-        ["saved_info", "flags.0?PaymentRequestedInfo"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "inputPaymentCredentialsSaved",
+  "messageEntityStrike": [
+    0xBF0693D4,
     [
-      0xC10EB2CF,
-      [
-        ["id", "string"],
-        ["tmp_password", "bytes"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "inputPaymentCredentials",
+  "messageEntityBankCard": [
+    0x761E6AF4,
     [
-      0x3417D728,
-      [
-        ["flags", "#"],
-        ["save", "flags.0?true"],
-        ["data", "DataJSON"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "inputPaymentCredentialsApplePay",
+  "messageEntitySpoiler": [
+    0x32CA960F,
     [
-      0x0AA1C39F,
-      [
-        ["payment_data", "DataJSON"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "inputPaymentCredentialsGooglePay",
+  "messageEntityCustomEmoji": [
+    0xC8CF05F8,
     [
-      0x8AC32801,
-      [
-        ["payment_token", "DataJSON"],
-      ],
+      ["offset", "int"],
+      ["length", "int"],
+      ["document_id", "long"],
     ],
+    "MessageEntity",
   ],
-  [
-    "account.tmpPassword",
+  "messageEntityBlockquote": [
+    0xF1CCAAAC,
     [
-      0xDB64FD34,
-      [
-        ["tmp_password", "bytes"],
-        ["valid_until", "int"],
-      ],
+      ["flags", "#"],
+      ["collapsed", "flags.0?true"],
+      ["offset", "int"],
+      ["length", "int"],
     ],
+    "MessageEntity",
   ],
-  [
-    "shippingOption",
-    [
-      0xB6213CDF,
-      [
-        ["id", "string"],
-        ["title", "string"],
-        ["prices", "Vector<LabeledPrice>"],
-      ],
-    ],
+  "inputChannelEmpty": [
+    0xEE8C1E86,
+    [],
+    "InputChannel",
   ],
-  [
-    "inputStickerSetItem",
+  "inputChannel": [
+    0xF35AEC28,
     [
-      0x32DA9E9C,
-      [
-        ["flags", "#"],
-        ["document", "InputDocument"],
-        ["emoji", "string"],
-        ["mask_coords", "flags.0?MaskCoords"],
-        ["keywords", "flags.1?string"],
-      ],
+      ["channel_id", "long"],
+      ["access_hash", "long"],
     ],
+    "InputChannel",
   ],
-  [
-    "inputPhoneCall",
+  "inputChannelFromMessage": [
+    0x5B934F9D,
     [
-      0x1E36FDED,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-      ],
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["channel_id", "long"],
     ],
+    "InputChannel",
   ],
-  [
-    "phoneCallEmpty",
+  "contacts.resolvedPeer": [
+    0x7F077AD9,
     [
-      0x5366C915,
-      [
-        ["id", "long"],
-      ],
+      ["peer", "Peer"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "contacts.ResolvedPeer",
   ],
-  [
-    "phoneCallWaiting",
+  "messageRange": [
+    0x0AE30253,
     [
-      0xEED42858,
-      [
-        ["flags", "#"],
-        ["video", "flags.6?true"],
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["date", "int"],
-        ["admin_id", "long"],
-        ["participant_id", "long"],
-        ["protocol", "PhoneCallProtocol"],
-        ["receive_date", "flags.0?int"],
-        ["conference_call", "flags.8?InputGroupCall"],
-      ],
+      ["min_id", "int"],
+      ["max_id", "int"],
     ],
+    "MessageRange",
   ],
-  [
-    "phoneCallRequested",
+  "updates.channelDifferenceEmpty": [
+    0x3E11AFFB,
     [
-      0x45361C63,
-      [
-        ["flags", "#"],
-        ["video", "flags.6?true"],
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["date", "int"],
-        ["admin_id", "long"],
-        ["participant_id", "long"],
-        ["g_a_hash", "bytes"],
-        ["protocol", "PhoneCallProtocol"],
-        ["conference_call", "flags.8?InputGroupCall"],
-      ],
+      ["flags", "#"],
+      ["final", "flags.0?true"],
+      ["pts", "int"],
+      ["timeout", "flags.1?int"],
     ],
+    "updates.ChannelDifference",
   ],
-  [
-    "phoneCallAccepted",
+  "updates.channelDifferenceTooLong": [
+    0xA4BCC6FE,
     [
-      0x22FD7181,
-      [
-        ["flags", "#"],
-        ["video", "flags.6?true"],
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["date", "int"],
-        ["admin_id", "long"],
-        ["participant_id", "long"],
-        ["g_b", "bytes"],
-        ["protocol", "PhoneCallProtocol"],
-        ["conference_call", "flags.8?InputGroupCall"],
-      ],
+      ["flags", "#"],
+      ["final", "flags.0?true"],
+      ["timeout", "flags.1?int"],
+      ["dialog", "Dialog"],
+      ["messages", "Vector<Message>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "updates.ChannelDifference",
   ],
-  [
-    "phoneCall",
+  "updates.channelDifference": [
+    0x2064674E,
     [
-      0x3BA5940C,
-      [
-        ["flags", "#"],
-        ["p2p_allowed", "flags.5?true"],
-        ["video", "flags.6?true"],
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["date", "int"],
-        ["admin_id", "long"],
-        ["participant_id", "long"],
-        ["g_a_or_b", "bytes"],
-        ["key_fingerprint", "long"],
-        ["protocol", "PhoneCallProtocol"],
-        ["connections", "Vector<PhoneConnection>"],
-        ["start_date", "int"],
-        ["custom_parameters", "flags.7?DataJSON"],
-        ["conference_call", "flags.8?InputGroupCall"],
-      ],
+      ["flags", "#"],
+      ["final", "flags.0?true"],
+      ["pts", "int"],
+      ["timeout", "flags.1?int"],
+      ["new_messages", "Vector<Message>"],
+      ["other_updates", "Vector<Update>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "updates.ChannelDifference",
   ],
-  [
-    "phoneCallDiscarded",
-    [
-      0xF9D25503,
-      [
-        ["flags", "#"],
-        ["need_rating", "flags.2?true"],
-        ["need_debug", "flags.3?true"],
-        ["video", "flags.6?true"],
-        ["id", "long"],
-        ["reason", "flags.0?PhoneCallDiscardReason"],
-        ["duration", "flags.1?int"],
-        ["conference_call", "flags.8?InputGroupCall"],
-      ],
-    ],
+  "channelMessagesFilterEmpty": [
+    0x94D42EE7,
+    [],
+    "ChannelMessagesFilter",
   ],
-  [
-    "phoneConnection",
+  "channelMessagesFilter": [
+    0xCD77D957,
     [
-      0x9CC123C7,
-      [
-        ["flags", "#"],
-        ["tcp", "flags.0?true"],
-        ["id", "long"],
-        ["ip", "string"],
-        ["ipv6", "string"],
-        ["port", "int"],
-        ["peer_tag", "bytes"],
-      ],
+      ["flags", "#"],
+      ["exclude_new_messages", "flags.1?true"],
+      ["ranges", "Vector<MessageRange>"],
     ],
+    "ChannelMessagesFilter",
   ],
-  [
-    "phoneConnectionWebrtc",
+  "channelParticipant": [
+    0xCB397619,
     [
-      0x635FE375,
-      [
-        ["flags", "#"],
-        ["turn", "flags.0?true"],
-        ["stun", "flags.1?true"],
-        ["id", "long"],
-        ["ip", "string"],
-        ["ipv6", "string"],
-        ["port", "int"],
-        ["username", "string"],
-        ["password", "string"],
-      ],
+      ["flags", "#"],
+      ["user_id", "long"],
+      ["date", "int"],
+      ["subscription_until_date", "flags.0?int"],
     ],
+    "ChannelParticipant",
   ],
-  [
-    "phoneCallProtocol",
+  "channelParticipantSelf": [
+    0x4F607BEF,
     [
-      0xFC878FC8,
-      [
-        ["flags", "#"],
-        ["udp_p2p", "flags.0?true"],
-        ["udp_reflector", "flags.1?true"],
-        ["min_layer", "int"],
-        ["max_layer", "int"],
-        ["library_versions", "Vector<string>"],
-      ],
+      ["flags", "#"],
+      ["via_request", "flags.0?true"],
+      ["user_id", "long"],
+      ["inviter_id", "long"],
+      ["date", "int"],
+      ["subscription_until_date", "flags.1?int"],
     ],
+    "ChannelParticipant",
   ],
-  [
-    "phone.phoneCall",
+  "channelParticipantCreator": [
+    0x2FE601D3,
     [
-      0xEC82E140,
-      [
-        ["phone_call", "PhoneCall"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["user_id", "long"],
+      ["admin_rights", "ChatAdminRights"],
+      ["rank", "flags.0?string"],
     ],
+    "ChannelParticipant",
   ],
-  [
-    "upload.cdnFileReuploadNeeded",
+  "channelParticipantAdmin": [
+    0x34C3BB53,
     [
-      0xEEA8E46E,
-      [
-        ["request_token", "bytes"],
-      ],
+      ["flags", "#"],
+      ["can_edit", "flags.0?true"],
+      ["self", "flags.1?true"],
+      ["user_id", "long"],
+      ["inviter_id", "flags.1?long"],
+      ["promoted_by", "long"],
+      ["date", "int"],
+      ["admin_rights", "ChatAdminRights"],
+      ["rank", "flags.2?string"],
     ],
+    "ChannelParticipant",
   ],
-  [
-    "upload.cdnFile",
+  "channelParticipantBanned": [
+    0x6DF8014E,
     [
-      0xA99FCA4F,
-      [
-        ["bytes", "bytes"],
-      ],
+      ["flags", "#"],
+      ["left", "flags.0?true"],
+      ["peer", "Peer"],
+      ["kicked_by", "long"],
+      ["date", "int"],
+      ["banned_rights", "ChatBannedRights"],
     ],
+    "ChannelParticipant",
   ],
-  [
-    "cdnPublicKey",
+  "channelParticipantLeft": [
+    0x1B03F006,
     [
-      0xC982EABA,
-      [
-        ["dc_id", "int"],
-        ["public_key", "string"],
-      ],
+      ["peer", "Peer"],
     ],
+    "ChannelParticipant",
   ],
-  [
-    "cdnConfig",
-    [
-      0x5725E40A,
-      [
-        ["public_keys", "Vector<CdnPublicKey>"],
-      ],
-    ],
+  "channelParticipantsRecent": [
+    0xDE3F3C79,
+    [],
+    "ChannelParticipantsFilter",
   ],
-  [
-    "langPackString",
-    [
-      0xCAD181F6,
-      [
-        ["key", "string"],
-        ["value", "string"],
-      ],
-    ],
+  "channelParticipantsAdmins": [
+    0xB4608969,
+    [],
+    "ChannelParticipantsFilter",
   ],
-  [
-    "langPackStringPluralized",
+  "channelParticipantsKicked": [
+    0xA3B54985,
     [
-      0x6C47AC9F,
-      [
-        ["flags", "#"],
-        ["key", "string"],
-        ["zero_value", "flags.0?string"],
-        ["one_value", "flags.1?string"],
-        ["two_value", "flags.2?string"],
-        ["few_value", "flags.3?string"],
-        ["many_value", "flags.4?string"],
-        ["other_value", "string"],
-      ],
+      ["q", "string"],
     ],
+    "ChannelParticipantsFilter",
   ],
-  [
-    "langPackStringDeleted",
-    [
-      0x2979EEB2,
-      [
-        ["key", "string"],
-      ],
-    ],
+  "channelParticipantsBots": [
+    0xB0D1865B,
+    [],
+    "ChannelParticipantsFilter",
   ],
-  [
-    "langPackDifference",
+  "channelParticipantsBanned": [
+    0x1427A5E1,
     [
-      0xF385C1F6,
-      [
-        ["lang_code", "string"],
-        ["from_version", "int"],
-        ["version", "int"],
-        ["strings", "Vector<LangPackString>"],
-      ],
+      ["q", "string"],
     ],
+    "ChannelParticipantsFilter",
   ],
-  [
-    "langPackLanguage",
+  "channelParticipantsSearch": [
+    0x0656AC4B,
     [
-      0xEECA5CE3,
-      [
-        ["flags", "#"],
-        ["official", "flags.0?true"],
-        ["rtl", "flags.2?true"],
-        ["beta", "flags.3?true"],
-        ["name", "string"],
-        ["native_name", "string"],
-        ["lang_code", "string"],
-        ["base_lang_code", "flags.1?string"],
-        ["plural_code", "string"],
-        ["strings_count", "int"],
-        ["translated_count", "int"],
-        ["translations_url", "string"],
-      ],
+      ["q", "string"],
     ],
+    "ChannelParticipantsFilter",
   ],
-  [
-    "channelAdminLogEventActionChangeTitle",
+  "channelParticipantsContacts": [
+    0xBB6AE88D,
     [
-      0xE6DFB825,
-      [
-        ["prev_value", "string"],
-        ["new_value", "string"],
-      ],
+      ["q", "string"],
     ],
+    "ChannelParticipantsFilter",
   ],
-  [
-    "channelAdminLogEventActionChangeAbout",
+  "channelParticipantsMentions": [
+    0xE04B5CEB,
     [
-      0x55188A2E,
-      [
-        ["prev_value", "string"],
-        ["new_value", "string"],
-      ],
+      ["flags", "#"],
+      ["q", "flags.0?string"],
+      ["top_msg_id", "flags.1?int"],
     ],
+    "ChannelParticipantsFilter",
   ],
-  [
-    "channelAdminLogEventActionChangeUsername",
+  "channels.channelParticipants": [
+    0x9AB0FEAF,
     [
-      0x6A4AFC38,
-      [
-        ["prev_value", "string"],
-        ["new_value", "string"],
-      ],
+      ["count", "int"],
+      ["participants", "Vector<ChannelParticipant>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "channels.ChannelParticipants",
   ],
-  [
-    "channelAdminLogEventActionChangePhoto",
-    [
-      0x434BD2AF,
-      [
-        ["prev_photo", "Photo"],
-        ["new_photo", "Photo"],
-      ],
-    ],
+  "channels.channelParticipantsNotModified": [
+    0xF0173FE9,
+    [],
+    "channels.ChannelParticipants",
   ],
-  [
-    "channelAdminLogEventActionToggleInvites",
+  "channels.channelParticipant": [
+    0xDFB80317,
     [
-      0x1B7907AE,
-      [
-        ["new_value", "Bool"],
-      ],
+      ["participant", "ChannelParticipant"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "channels.ChannelParticipant",
   ],
-  [
-    "channelAdminLogEventActionToggleSignatures",
+  "help.termsOfService": [
+    0x780A0310,
     [
-      0x26AE0971,
-      [
-        ["new_value", "Bool"],
-      ],
+      ["flags", "#"],
+      ["popup", "flags.0?true"],
+      ["id", "DataJSON"],
+      ["text", "string"],
+      ["entities", "Vector<MessageEntity>"],
+      ["min_age_confirm", "flags.1?int"],
     ],
+    "help.TermsOfService",
   ],
-  [
-    "channelAdminLogEventActionUpdatePinned",
+  "messages.savedGifsNotModified": [
+    0xE8025CA2,
+    [],
+    "messages.SavedGifs",
+  ],
+  "messages.savedGifs": [
+    0x84A02A0D,
     [
-      0xE9E82C18,
-      [
-        ["message", "Message"],
-      ],
+      ["hash", "long"],
+      ["gifs", "Vector<Document>"],
     ],
+    "messages.SavedGifs",
   ],
-  [
-    "channelAdminLogEventActionEditMessage",
+  "inputBotInlineMessageMediaAuto": [
+    0x3380C786,
     [
-      0x709B2405,
-      [
-        ["prev_message", "Message"],
-        ["new_message", "Message"],
-      ],
+      ["flags", "#"],
+      ["invert_media", "flags.3?true"],
+      ["message", "string"],
+      ["entities", "flags.1?Vector<MessageEntity>"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "InputBotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionDeleteMessage",
+  "inputBotInlineMessageText": [
+    0x3DCD7A87,
     [
-      0x42E047BB,
-      [
-        ["message", "Message"],
-      ],
+      ["flags", "#"],
+      ["no_webpage", "flags.0?true"],
+      ["invert_media", "flags.3?true"],
+      ["message", "string"],
+      ["entities", "flags.1?Vector<MessageEntity>"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "InputBotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionParticipantJoin",
+  "inputBotInlineMessageMediaGeo": [
+    0x96929A85,
     [
-      0x183040D3,
-      [],
+      ["flags", "#"],
+      ["geo_point", "InputGeoPoint"],
+      ["heading", "flags.0?int"],
+      ["period", "flags.1?int"],
+      ["proximity_notification_radius", "flags.3?int"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "InputBotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionParticipantLeave",
+  "inputBotInlineMessageMediaVenue": [
+    0x417BBF11,
     [
-      0xF89777F2,
-      [],
+      ["flags", "#"],
+      ["geo_point", "InputGeoPoint"],
+      ["title", "string"],
+      ["address", "string"],
+      ["provider", "string"],
+      ["venue_id", "string"],
+      ["venue_type", "string"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "InputBotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionParticipantInvite",
+  "inputBotInlineMessageMediaContact": [
+    0xA6EDBFFD,
     [
-      0xE31C34D8,
-      [
-        ["participant", "ChannelParticipant"],
-      ],
+      ["flags", "#"],
+      ["phone_number", "string"],
+      ["first_name", "string"],
+      ["last_name", "string"],
+      ["vcard", "string"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "InputBotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionParticipantToggleBan",
+  "inputBotInlineMessageGame": [
+    0x4B425864,
     [
-      0xE6D83D7E,
-      [
-        ["prev_participant", "ChannelParticipant"],
-        ["new_participant", "ChannelParticipant"],
-      ],
+      ["flags", "#"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "InputBotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionParticipantToggleAdmin",
+  "inputBotInlineMessageMediaInvoice": [
+    0xD7E78225,
     [
-      0xD5676710,
-      [
-        ["prev_participant", "ChannelParticipant"],
-        ["new_participant", "ChannelParticipant"],
-      ],
+      ["flags", "#"],
+      ["title", "string"],
+      ["description", "string"],
+      ["photo", "flags.0?InputWebDocument"],
+      ["invoice", "Invoice"],
+      ["payload", "bytes"],
+      ["provider", "string"],
+      ["provider_data", "DataJSON"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "InputBotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionChangeStickerSet",
+  "inputBotInlineMessageMediaWebPage": [
+    0xBDDCC510,
     [
-      0xB1C3CAA7,
-      [
-        ["prev_stickerset", "InputStickerSet"],
-        ["new_stickerset", "InputStickerSet"],
-      ],
+      ["flags", "#"],
+      ["invert_media", "flags.3?true"],
+      ["force_large_media", "flags.4?true"],
+      ["force_small_media", "flags.5?true"],
+      ["optional", "flags.6?true"],
+      ["message", "string"],
+      ["entities", "flags.1?Vector<MessageEntity>"],
+      ["url", "string"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "InputBotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionTogglePreHistoryHidden",
+  "inputBotInlineResult": [
+    0x88BF9319,
     [
-      0x5F5C95F1,
-      [
-        ["new_value", "Bool"],
-      ],
+      ["flags", "#"],
+      ["id", "string"],
+      ["type", "string"],
+      ["title", "flags.1?string"],
+      ["description", "flags.2?string"],
+      ["url", "flags.3?string"],
+      ["thumb", "flags.4?InputWebDocument"],
+      ["content", "flags.5?InputWebDocument"],
+      ["send_message", "InputBotInlineMessage"],
     ],
+    "InputBotInlineResult",
   ],
-  [
-    "channelAdminLogEventActionDefaultBannedRights",
+  "inputBotInlineResultPhoto": [
+    0xA8D864A7,
     [
-      0x2DF5FC0A,
-      [
-        ["prev_banned_rights", "ChatBannedRights"],
-        ["new_banned_rights", "ChatBannedRights"],
-      ],
+      ["id", "string"],
+      ["type", "string"],
+      ["photo", "InputPhoto"],
+      ["send_message", "InputBotInlineMessage"],
     ],
+    "InputBotInlineResult",
   ],
-  [
-    "channelAdminLogEventActionStopPoll",
+  "inputBotInlineResultDocument": [
+    0xFFF8FDC4,
     [
-      0x8F079643,
-      [
-        ["message", "Message"],
-      ],
+      ["flags", "#"],
+      ["id", "string"],
+      ["type", "string"],
+      ["title", "flags.1?string"],
+      ["description", "flags.2?string"],
+      ["document", "InputDocument"],
+      ["send_message", "InputBotInlineMessage"],
     ],
+    "InputBotInlineResult",
   ],
-  [
-    "channelAdminLogEventActionChangeLinkedChat",
+  "inputBotInlineResultGame": [
+    0x4FA417F2,
     [
-      0x050C7AC8,
-      [
-        ["prev_value", "long"],
-        ["new_value", "long"],
-      ],
+      ["id", "string"],
+      ["short_name", "string"],
+      ["send_message", "InputBotInlineMessage"],
     ],
+    "InputBotInlineResult",
   ],
-  [
-    "channelAdminLogEventActionChangeLocation",
+  "botInlineMessageMediaAuto": [
+    0x764CF810,
     [
-      0x0E6B76AE,
-      [
-        ["prev_value", "ChannelLocation"],
-        ["new_value", "ChannelLocation"],
-      ],
+      ["flags", "#"],
+      ["invert_media", "flags.3?true"],
+      ["message", "string"],
+      ["entities", "flags.1?Vector<MessageEntity>"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "BotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionToggleSlowMode",
+  "botInlineMessageText": [
+    0x8C7F65E2,
     [
-      0x53909779,
-      [
-        ["prev_value", "int"],
-        ["new_value", "int"],
-      ],
+      ["flags", "#"],
+      ["no_webpage", "flags.0?true"],
+      ["invert_media", "flags.3?true"],
+      ["message", "string"],
+      ["entities", "flags.1?Vector<MessageEntity>"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "BotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionStartGroupCall",
+  "botInlineMessageMediaGeo": [
+    0x051846FD,
     [
-      0x23209745,
-      [
-        ["call", "InputGroupCall"],
-      ],
+      ["flags", "#"],
+      ["geo", "GeoPoint"],
+      ["heading", "flags.0?int"],
+      ["period", "flags.1?int"],
+      ["proximity_notification_radius", "flags.3?int"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "BotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionDiscardGroupCall",
+  "botInlineMessageMediaVenue": [
+    0x8A86659C,
     [
-      0xDB9F9140,
-      [
-        ["call", "InputGroupCall"],
-      ],
+      ["flags", "#"],
+      ["geo", "GeoPoint"],
+      ["title", "string"],
+      ["address", "string"],
+      ["provider", "string"],
+      ["venue_id", "string"],
+      ["venue_type", "string"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "BotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionParticipantMute",
+  "botInlineMessageMediaContact": [
+    0x18D1CDC2,
     [
-      0xF92424D2,
-      [
-        ["participant", "GroupCallParticipant"],
-      ],
+      ["flags", "#"],
+      ["phone_number", "string"],
+      ["first_name", "string"],
+      ["last_name", "string"],
+      ["vcard", "string"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "BotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionParticipantUnmute",
+  "botInlineMessageMediaInvoice": [
+    0x354A9B09,
     [
-      0xE64429C0,
-      [
-        ["participant", "GroupCallParticipant"],
-      ],
+      ["flags", "#"],
+      ["shipping_address_requested", "flags.1?true"],
+      ["test", "flags.3?true"],
+      ["title", "string"],
+      ["description", "string"],
+      ["photo", "flags.0?WebDocument"],
+      ["currency", "string"],
+      ["total_amount", "long"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "BotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionToggleGroupCallSetting",
+  "botInlineMessageMediaWebPage": [
+    0x809AD9A6,
     [
-      0x56D6A247,
-      [
-        ["join_muted", "Bool"],
-      ],
+      ["flags", "#"],
+      ["invert_media", "flags.3?true"],
+      ["force_large_media", "flags.4?true"],
+      ["force_small_media", "flags.5?true"],
+      ["manual", "flags.7?true"],
+      ["safe", "flags.8?true"],
+      ["message", "string"],
+      ["entities", "flags.1?Vector<MessageEntity>"],
+      ["url", "string"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
     ],
+    "BotInlineMessage",
   ],
-  [
-    "channelAdminLogEventActionParticipantJoinByInvite",
+  "botInlineResult": [
+    0x11965F3A,
     [
-      0xFE9FC158,
-      [
-        ["flags", "#"],
-        ["via_chatlist", "flags.0?true"],
-        ["invite", "ExportedChatInvite"],
-      ],
+      ["flags", "#"],
+      ["id", "string"],
+      ["type", "string"],
+      ["title", "flags.1?string"],
+      ["description", "flags.2?string"],
+      ["url", "flags.3?string"],
+      ["thumb", "flags.4?WebDocument"],
+      ["content", "flags.5?WebDocument"],
+      ["send_message", "BotInlineMessage"],
     ],
+    "BotInlineResult",
   ],
-  [
-    "channelAdminLogEventActionExportedInviteDelete",
+  "botInlineMediaResult": [
+    0x17DB940B,
     [
-      0x5A50FCA4,
-      [
-        ["invite", "ExportedChatInvite"],
-      ],
+      ["flags", "#"],
+      ["id", "string"],
+      ["type", "string"],
+      ["photo", "flags.0?Photo"],
+      ["document", "flags.1?Document"],
+      ["title", "flags.2?string"],
+      ["description", "flags.3?string"],
+      ["send_message", "BotInlineMessage"],
     ],
+    "BotInlineResult",
   ],
-  [
-    "channelAdminLogEventActionExportedInviteRevoke",
+  "messages.botResults": [
+    0xE021F2F6,
     [
-      0x410A134E,
-      [
-        ["invite", "ExportedChatInvite"],
-      ],
+      ["flags", "#"],
+      ["gallery", "flags.0?true"],
+      ["query_id", "long"],
+      ["next_offset", "flags.1?string"],
+      ["switch_pm", "flags.2?InlineBotSwitchPM"],
+      ["switch_webview", "flags.3?InlineBotWebView"],
+      ["results", "Vector<BotInlineResult>"],
+      ["cache_time", "int"],
+      ["users", "Vector<User>"],
     ],
+    "messages.BotResults",
   ],
-  [
-    "channelAdminLogEventActionExportedInviteEdit",
+  "exportedMessageLink": [
+    0x5DAB1AF4,
     [
-      0xE90EBB59,
-      [
-        ["prev_invite", "ExportedChatInvite"],
-        ["new_invite", "ExportedChatInvite"],
-      ],
+      ["link", "string"],
+      ["html", "string"],
     ],
+    "ExportedMessageLink",
   ],
-  [
-    "channelAdminLogEventActionParticipantVolume",
+  "messageFwdHeader": [
+    0x4E4DF4BB,
     [
-      0x3E7F6847,
-      [
-        ["participant", "GroupCallParticipant"],
-      ],
+      ["flags", "#"],
+      ["imported", "flags.7?true"],
+      ["saved_out", "flags.11?true"],
+      ["from_id", "flags.0?Peer"],
+      ["from_name", "flags.5?string"],
+      ["date", "int"],
+      ["channel_post", "flags.2?int"],
+      ["post_author", "flags.3?string"],
+      ["saved_from_peer", "flags.4?Peer"],
+      ["saved_from_msg_id", "flags.4?int"],
+      ["saved_from_id", "flags.8?Peer"],
+      ["saved_from_name", "flags.9?string"],
+      ["saved_date", "flags.10?int"],
+      ["psa_type", "flags.6?string"],
     ],
+    "MessageFwdHeader",
+  ],
+  "auth.codeTypeSms": [
+    0x72A3158C,
+    [],
+    "auth.CodeType",
+  ],
+  "auth.codeTypeCall": [
+    0x741CD3E3,
+    [],
+    "auth.CodeType",
+  ],
+  "auth.codeTypeFlashCall": [
+    0x226CCEFB,
+    [],
+    "auth.CodeType",
   ],
-  [
-    "channelAdminLogEventActionChangeHistoryTTL",
+  "auth.codeTypeMissedCall": [
+    0xD61AD6EE,
+    [],
+    "auth.CodeType",
+  ],
+  "auth.codeTypeFragmentSms": [
+    0x06ED998C,
+    [],
+    "auth.CodeType",
+  ],
+  "auth.sentCodeTypeApp": [
+    0x3DBB5986,
     [
-      0x6E941A38,
-      [
-        ["prev_value", "int"],
-        ["new_value", "int"],
-      ],
+      ["length", "int"],
     ],
+    "auth.SentCodeType",
   ],
-  [
-    "channelAdminLogEventActionParticipantJoinByRequest",
+  "auth.sentCodeTypeSms": [
+    0xC000BBA2,
     [
-      0xAFB6144A,
-      [
-        ["invite", "ExportedChatInvite"],
-        ["approved_by", "long"],
-      ],
+      ["length", "int"],
     ],
+    "auth.SentCodeType",
   ],
-  [
-    "channelAdminLogEventActionToggleNoForwards",
+  "auth.sentCodeTypeCall": [
+    0x5353E5A7,
     [
-      0xCB2AC766,
-      [
-        ["new_value", "Bool"],
-      ],
+      ["length", "int"],
     ],
+    "auth.SentCodeType",
   ],
-  [
-    "channelAdminLogEventActionSendMessage",
+  "auth.sentCodeTypeFlashCall": [
+    0xAB03C6D9,
     [
-      0x278F2868,
-      [
-        ["message", "Message"],
-      ],
+      ["pattern", "string"],
     ],
+    "auth.SentCodeType",
   ],
-  [
-    "channelAdminLogEventActionChangeAvailableReactions",
+  "auth.sentCodeTypeMissedCall": [
+    0x82006484,
     [
-      0xBE4E0EF8,
-      [
-        ["prev_value", "ChatReactions"],
-        ["new_value", "ChatReactions"],
-      ],
+      ["prefix", "string"],
+      ["length", "int"],
     ],
+    "auth.SentCodeType",
   ],
-  [
-    "channelAdminLogEventActionChangeUsernames",
+  "auth.sentCodeTypeEmailCode": [
+    0xF450F59B,
     [
-      0xF04FB3A9,
-      [
-        ["prev_value", "Vector<string>"],
-        ["new_value", "Vector<string>"],
-      ],
+      ["flags", "#"],
+      ["apple_signin_allowed", "flags.0?true"],
+      ["google_signin_allowed", "flags.1?true"],
+      ["email_pattern", "string"],
+      ["length", "int"],
+      ["reset_available_period", "flags.3?int"],
+      ["reset_pending_date", "flags.4?int"],
     ],
+    "auth.SentCodeType",
   ],
-  [
-    "channelAdminLogEventActionToggleForum",
+  "auth.sentCodeTypeSetUpEmailRequired": [
+    0xA5491DEA,
     [
-      0x02CC6383,
-      [
-        ["new_value", "Bool"],
-      ],
+      ["flags", "#"],
+      ["apple_signin_allowed", "flags.0?true"],
+      ["google_signin_allowed", "flags.1?true"],
     ],
+    "auth.SentCodeType",
   ],
-  [
-    "channelAdminLogEventActionCreateTopic",
+  "auth.sentCodeTypeFragmentSms": [
+    0xD9565C39,
     [
-      0x58707D28,
-      [
-        ["topic", "ForumTopic"],
-      ],
+      ["url", "string"],
+      ["length", "int"],
     ],
+    "auth.SentCodeType",
   ],
-  [
-    "channelAdminLogEventActionEditTopic",
+  "auth.sentCodeTypeFirebaseSms": [
+    0x009FD736,
     [
-      0xF06FE208,
-      [
-        ["prev_topic", "ForumTopic"],
-        ["new_topic", "ForumTopic"],
-      ],
+      ["flags", "#"],
+      ["nonce", "flags.0?bytes"],
+      ["play_integrity_project_id", "flags.2?long"],
+      ["play_integrity_nonce", "flags.2?bytes"],
+      ["receipt", "flags.1?string"],
+      ["push_timeout", "flags.1?int"],
+      ["length", "int"],
     ],
+    "auth.SentCodeType",
   ],
-  [
-    "channelAdminLogEventActionDeleteTopic",
+  "auth.sentCodeTypeSmsWord": [
+    0xA416AC81,
     [
-      0xAE168909,
-      [
-        ["topic", "ForumTopic"],
-      ],
+      ["flags", "#"],
+      ["beginning", "flags.0?string"],
     ],
+    "auth.SentCodeType",
   ],
-  [
-    "channelAdminLogEventActionPinTopic",
+  "auth.sentCodeTypeSmsPhrase": [
+    0xB37794AF,
     [
-      0x5D8D353B,
-      [
-        ["flags", "#"],
-        ["prev_topic", "flags.0?ForumTopic"],
-        ["new_topic", "flags.1?ForumTopic"],
-      ],
+      ["flags", "#"],
+      ["beginning", "flags.0?string"],
     ],
+    "auth.SentCodeType",
   ],
-  [
-    "channelAdminLogEventActionToggleAntiSpam",
+  "messages.botCallbackAnswer": [
+    0x36585EA4,
     [
-      0x64F36DFC,
-      [
-        ["new_value", "Bool"],
-      ],
+      ["flags", "#"],
+      ["alert", "flags.1?true"],
+      ["has_url", "flags.3?true"],
+      ["native_ui", "flags.4?true"],
+      ["message", "flags.0?string"],
+      ["url", "flags.2?string"],
+      ["cache_time", "int"],
     ],
+    "messages.BotCallbackAnswer",
   ],
-  [
-    "channelAdminLogEventActionChangePeerColor",
+  "messages.messageEditData": [
+    0x26B5DDE6,
     [
-      0x5796E780,
-      [
-        ["prev_value", "PeerColor"],
-        ["new_value", "PeerColor"],
-      ],
+      ["flags", "#"],
+      ["caption", "flags.0?true"],
     ],
+    "messages.MessageEditData",
   ],
-  [
-    "channelAdminLogEventActionChangeProfilePeerColor",
+  "inputBotInlineMessageID": [
+    0x890C3D89,
     [
-      0x5E477B25,
-      [
-        ["prev_value", "PeerColor"],
-        ["new_value", "PeerColor"],
-      ],
+      ["dc_id", "int"],
+      ["id", "long"],
+      ["access_hash", "long"],
     ],
+    "InputBotInlineMessageID",
   ],
-  [
-    "channelAdminLogEventActionChangeWallpaper",
+  "inputBotInlineMessageID64": [
+    0xB6D915D7,
     [
-      0x31BB5D52,
-      [
-        ["prev_value", "WallPaper"],
-        ["new_value", "WallPaper"],
-      ],
+      ["dc_id", "int"],
+      ["owner_id", "long"],
+      ["id", "int"],
+      ["access_hash", "long"],
     ],
+    "InputBotInlineMessageID",
   ],
-  [
-    "channelAdminLogEventActionChangeEmojiStatus",
+  "inlineBotSwitchPM": [
+    0x3C20629F,
     [
-      0x3EA9FEB1,
-      [
-        ["prev_value", "EmojiStatus"],
-        ["new_value", "EmojiStatus"],
-      ],
+      ["text", "string"],
+      ["start_param", "string"],
     ],
+    "InlineBotSwitchPM",
   ],
-  [
-    "channelAdminLogEventActionChangeEmojiStickerSet",
+  "messages.peerDialogs": [
+    0x3371C354,
     [
-      0x46D840AB,
-      [
-        ["prev_stickerset", "InputStickerSet"],
-        ["new_stickerset", "InputStickerSet"],
-      ],
+      ["dialogs", "Vector<Dialog>"],
+      ["messages", "Vector<Message>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+      ["state", "updates.State"],
     ],
+    "messages.PeerDialogs",
   ],
-  [
-    "channelAdminLogEventActionToggleSignatureProfiles",
+  "topPeer": [
+    0xEDCDC05B,
     [
-      0x60A79C79,
-      [
-        ["new_value", "Bool"],
-      ],
+      ["peer", "Peer"],
+      ["rating", "double"],
     ],
+    "TopPeer",
+  ],
+  "topPeerCategoryBotsPM": [
+    0xAB661B5B,
+    [],
+    "TopPeerCategory",
+  ],
+  "topPeerCategoryBotsInline": [
+    0x148677E2,
+    [],
+    "TopPeerCategory",
+  ],
+  "topPeerCategoryCorrespondents": [
+    0x0637B7ED,
+    [],
+    "TopPeerCategory",
+  ],
+  "topPeerCategoryGroups": [
+    0xBD17A14A,
+    [],
+    "TopPeerCategory",
+  ],
+  "topPeerCategoryChannels": [
+    0x161D9628,
+    [],
+    "TopPeerCategory",
+  ],
+  "topPeerCategoryPhoneCalls": [
+    0x1E76A78C,
+    [],
+    "TopPeerCategory",
   ],
-  [
-    "channelAdminLogEventActionParticipantSubExtend",
+  "topPeerCategoryForwardUsers": [
+    0xA8406CA9,
+    [],
+    "TopPeerCategory",
+  ],
+  "topPeerCategoryForwardChats": [
+    0xFBEEC0F0,
+    [],
+    "TopPeerCategory",
+  ],
+  "topPeerCategoryBotsApp": [
+    0xFD9E7BEC,
+    [],
+    "TopPeerCategory",
+  ],
+  "topPeerCategoryPeers": [
+    0xFB834291,
     [
-      0x64642DB3,
-      [
-        ["prev_participant", "ChannelParticipant"],
-        ["new_participant", "ChannelParticipant"],
-      ],
+      ["category", "TopPeerCategory"],
+      ["count", "int"],
+      ["peers", "Vector<TopPeer>"],
     ],
+    "TopPeerCategoryPeers",
+  ],
+  "contacts.topPeersNotModified": [
+    0xDE266EF5,
+    [],
+    "contacts.TopPeers",
   ],
-  [
-    "channelAdminLogEvent",
+  "contacts.topPeers": [
+    0x70B772A8,
     [
-      0x1FAD68CD,
-      [
-        ["id", "long"],
-        ["date", "int"],
-        ["user_id", "long"],
-        ["action", "ChannelAdminLogEventAction"],
-      ],
+      ["categories", "Vector<TopPeerCategoryPeers>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "contacts.TopPeers",
   ],
-  [
-    "channels.adminLogResults",
+  "contacts.topPeersDisabled": [
+    0xB52C939D,
+    [],
+    "contacts.TopPeers",
+  ],
+  "draftMessageEmpty": [
+    0x1B0C841A,
     [
-      0xED8AF74D,
-      [
-        ["events", "Vector<ChannelAdminLogEvent>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["date", "flags.0?int"],
     ],
+    "DraftMessage",
   ],
-  [
-    "channelAdminLogEventsFilter",
+  "draftMessage": [
+    0x2D65321F,
     [
-      0xEA107AE4,
-      [
-        ["flags", "#"],
-        ["join", "flags.0?true"],
-        ["leave", "flags.1?true"],
-        ["invite", "flags.2?true"],
-        ["ban", "flags.3?true"],
-        ["unban", "flags.4?true"],
-        ["kick", "flags.5?true"],
-        ["unkick", "flags.6?true"],
-        ["promote", "flags.7?true"],
-        ["demote", "flags.8?true"],
-        ["info", "flags.9?true"],
-        ["settings", "flags.10?true"],
-        ["pinned", "flags.11?true"],
-        ["edit", "flags.12?true"],
-        ["delete", "flags.13?true"],
-        ["group_call", "flags.14?true"],
-        ["invites", "flags.15?true"],
-        ["send", "flags.16?true"],
-        ["forums", "flags.17?true"],
-        ["sub_extend", "flags.18?true"],
-      ],
+      ["flags", "#"],
+      ["no_webpage", "flags.1?true"],
+      ["invert_media", "flags.6?true"],
+      ["reply_to", "flags.4?InputReplyTo"],
+      ["message", "string"],
+      ["entities", "flags.3?Vector<MessageEntity>"],
+      ["media", "flags.5?InputMedia"],
+      ["date", "int"],
+      ["effect", "flags.7?long"],
     ],
+    "DraftMessage",
   ],
-  [
-    "popularContact",
+  "messages.featuredStickersNotModified": [
+    0xC6DC0C66,
     [
-      0x5CE14175,
-      [
-        ["client_id", "long"],
-        ["importers", "int"],
-      ],
+      ["count", "int"],
     ],
+    "messages.FeaturedStickers",
   ],
-  [
-    "messages.favedStickersNotModified",
+  "messages.featuredStickers": [
+    0xBE382906,
     [
-      0x9E8FA6D3,
-      [],
+      ["flags", "#"],
+      ["premium", "flags.0?true"],
+      ["hash", "long"],
+      ["count", "int"],
+      ["sets", "Vector<StickerSetCovered>"],
+      ["unread", "Vector<long>"],
     ],
+    "messages.FeaturedStickers",
+  ],
+  "messages.recentStickersNotModified": [
+    0x0B17F890,
+    [],
+    "messages.RecentStickers",
   ],
-  [
-    "messages.favedStickers",
+  "messages.recentStickers": [
+    0x88D37C56,
     [
-      0x2CB51097,
-      [
-        ["hash", "long"],
-        ["packs", "Vector<StickerPack>"],
-        ["stickers", "Vector<Document>"],
-      ],
+      ["hash", "long"],
+      ["packs", "Vector<StickerPack>"],
+      ["stickers", "Vector<Document>"],
+      ["dates", "Vector<int>"],
     ],
+    "messages.RecentStickers",
   ],
-  [
-    "recentMeUrlUnknown",
+  "messages.archivedStickers": [
+    0x4FCBA9C8,
     [
-      0x46E1D13D,
-      [
-        ["url", "string"],
-      ],
+      ["count", "int"],
+      ["sets", "Vector<StickerSetCovered>"],
     ],
+    "messages.ArchivedStickers",
   ],
-  [
-    "recentMeUrlUser",
+  "messages.stickerSetInstallResultSuccess": [
+    0x38641628,
+    [],
+    "messages.StickerSetInstallResult",
+  ],
+  "messages.stickerSetInstallResultArchive": [
+    0x35E410A8,
     [
-      0xB92C09E2,
-      [
-        ["url", "string"],
-        ["user_id", "long"],
-      ],
+      ["sets", "Vector<StickerSetCovered>"],
     ],
+    "messages.StickerSetInstallResult",
   ],
-  [
-    "recentMeUrlChat",
+  "stickerSetCovered": [
+    0x6410A5D2,
     [
-      0xB2DA71D2,
-      [
-        ["url", "string"],
-        ["chat_id", "long"],
-      ],
+      ["set", "StickerSet"],
+      ["cover", "Document"],
     ],
+    "StickerSetCovered",
   ],
-  [
-    "recentMeUrlChatInvite",
+  "stickerSetMultiCovered": [
+    0x3407E51B,
     [
-      0xEB49081D,
-      [
-        ["url", "string"],
-        ["chat_invite", "ChatInvite"],
-      ],
+      ["set", "StickerSet"],
+      ["covers", "Vector<Document>"],
     ],
+    "StickerSetCovered",
   ],
-  [
-    "recentMeUrlStickerSet",
+  "stickerSetFullCovered": [
+    0x40D13C0E,
     [
-      0xBC0A57DC,
-      [
-        ["url", "string"],
-        ["set", "StickerSetCovered"],
-      ],
+      ["set", "StickerSet"],
+      ["packs", "Vector<StickerPack>"],
+      ["keywords", "Vector<StickerKeyword>"],
+      ["documents", "Vector<Document>"],
     ],
+    "StickerSetCovered",
   ],
-  [
-    "help.recentMeUrls",
+  "stickerSetNoCovered": [
+    0x77B15D1C,
     [
-      0x0E0310D7,
-      [
-        ["urls", "Vector<RecentMeUrl>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["set", "StickerSet"],
     ],
+    "StickerSetCovered",
   ],
-  [
-    "inputSingleMedia",
+  "maskCoords": [
+    0xAED6DBB2,
     [
-      0x1CC6E91F,
-      [
-        ["flags", "#"],
-        ["media", "InputMedia"],
-        ["random_id", "long"],
-        ["message", "string"],
-        ["entities", "flags.0?Vector<MessageEntity>"],
-      ],
+      ["n", "int"],
+      ["x", "double"],
+      ["y", "double"],
+      ["zoom", "double"],
     ],
+    "MaskCoords",
   ],
-  [
-    "webAuthorization",
+  "inputStickeredMediaPhoto": [
+    0x4A992157,
     [
-      0xA6F8F452,
-      [
-        ["hash", "long"],
-        ["bot_id", "long"],
-        ["domain", "string"],
-        ["browser", "string"],
-        ["platform", "string"],
-        ["date_created", "int"],
-        ["date_active", "int"],
-        ["ip", "string"],
-        ["region", "string"],
-      ],
+      ["id", "InputPhoto"],
     ],
+    "InputStickeredMedia",
   ],
-  [
-    "account.webAuthorizations",
+  "inputStickeredMediaDocument": [
+    0x0438865B,
     [
-      0xED56C9FC,
-      [
-        ["authorizations", "Vector<WebAuthorization>"],
-        ["users", "Vector<User>"],
-      ],
+      ["id", "InputDocument"],
     ],
+    "InputStickeredMedia",
   ],
-  [
-    "inputMessageID",
+  "game": [
+    0xBDF9653B,
     [
-      0xA676A322,
-      [
-        ["id", "int"],
-      ],
+      ["flags", "#"],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["short_name", "string"],
+      ["title", "string"],
+      ["description", "string"],
+      ["photo", "Photo"],
+      ["document", "flags.0?Document"],
     ],
+    "Game",
   ],
-  [
-    "inputMessageReplyTo",
+  "inputGameID": [
+    0x032C3E77,
     [
-      0xBAD88395,
-      [
-        ["id", "int"],
-      ],
+      ["id", "long"],
+      ["access_hash", "long"],
     ],
+    "InputGame",
   ],
-  [
-    "inputMessagePinned",
+  "inputGameShortName": [
+    0xC331E80A,
     [
-      0x86872538,
-      [],
+      ["bot_id", "InputUser"],
+      ["short_name", "string"],
     ],
+    "InputGame",
   ],
-  [
-    "inputMessageCallbackQuery",
+  "highScore": [
+    0x73A379EB,
     [
-      0xACFA1A7E,
-      [
-        ["id", "int"],
-        ["query_id", "long"],
-      ],
+      ["pos", "int"],
+      ["user_id", "long"],
+      ["score", "int"],
     ],
+    "HighScore",
   ],
-  [
-    "inputDialogPeer",
+  "messages.highScores": [
+    0x9A3BFD99,
     [
-      0xFCAAFEB7,
-      [
-        ["peer", "InputPeer"],
-      ],
+      ["scores", "Vector<HighScore>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.HighScores",
+  ],
+  "textEmpty": [
+    0xDC3D824F,
+    [],
+    "RichText",
   ],
-  [
-    "inputDialogPeerFolder",
+  "textPlain": [
+    0x744694E0,
     [
-      0x64600527,
-      [
-        ["folder_id", "int"],
-      ],
+      ["text", "string"],
     ],
+    "RichText",
   ],
-  [
-    "dialogPeer",
+  "textBold": [
+    0x6724ABC4,
     [
-      0xE56DBF05,
-      [
-        ["peer", "Peer"],
-      ],
+      ["text", "RichText"],
     ],
+    "RichText",
   ],
-  [
-    "dialogPeerFolder",
+  "textItalic": [
+    0xD912A59C,
     [
-      0x514519E2,
-      [
-        ["folder_id", "int"],
-      ],
+      ["text", "RichText"],
     ],
+    "RichText",
   ],
-  [
-    "messages.foundStickerSetsNotModified",
+  "textUnderline": [
+    0xC12622C4,
     [
-      0x0D54B65D,
-      [],
+      ["text", "RichText"],
     ],
+    "RichText",
   ],
-  [
-    "messages.foundStickerSets",
+  "textStrike": [
+    0x9BF8BB95,
     [
-      0x8AF09DD2,
-      [
-        ["hash", "long"],
-        ["sets", "Vector<StickerSetCovered>"],
-      ],
+      ["text", "RichText"],
     ],
+    "RichText",
   ],
-  [
-    "fileHash",
+  "textFixed": [
+    0x6C3F19B9,
     [
-      0xF39B035C,
-      [
-        ["offset", "long"],
-        ["limit", "int"],
-        ["hash", "bytes"],
-      ],
+      ["text", "RichText"],
     ],
+    "RichText",
   ],
-  [
-    "inputClientProxy",
+  "textUrl": [
+    0x3C2884C1,
     [
-      0x75588B3F,
-      [
-        ["address", "string"],
-        ["port", "int"],
-      ],
+      ["text", "RichText"],
+      ["url", "string"],
+      ["webpage_id", "long"],
     ],
+    "RichText",
   ],
-  [
-    "help.termsOfServiceUpdateEmpty",
+  "textEmail": [
+    0xDE5A0DD6,
     [
-      0xE3309F7F,
-      [
-        ["expires", "int"],
-      ],
+      ["text", "RichText"],
+      ["email", "string"],
     ],
+    "RichText",
   ],
-  [
-    "help.termsOfServiceUpdate",
+  "textConcat": [
+    0x7E6260D7,
     [
-      0x28ECF961,
-      [
-        ["expires", "int"],
-        ["terms_of_service", "help.TermsOfService"],
-      ],
+      ["texts", "Vector<RichText>"],
     ],
+    "RichText",
   ],
-  [
-    "inputSecureFileUploaded",
+  "textSubscript": [
+    0xED6A8504,
     [
-      0x3334B0F0,
-      [
-        ["id", "long"],
-        ["parts", "int"],
-        ["md5_checksum", "string"],
-        ["file_hash", "bytes"],
-        ["secret", "bytes"],
-      ],
+      ["text", "RichText"],
     ],
+    "RichText",
   ],
-  [
-    "inputSecureFile",
+  "textSuperscript": [
+    0xC7FB5E01,
     [
-      0x5367E5BE,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-      ],
+      ["text", "RichText"],
     ],
+    "RichText",
   ],
-  [
-    "secureFileEmpty",
+  "textMarked": [
+    0x034B8621,
     [
-      0x64199744,
-      [],
+      ["text", "RichText"],
     ],
+    "RichText",
   ],
-  [
-    "secureFile",
+  "textPhone": [
+    0x1CCB966A,
     [
-      0x7D09C27E,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["size", "long"],
-        ["dc_id", "int"],
-        ["date", "int"],
-        ["file_hash", "bytes"],
-        ["secret", "bytes"],
-      ],
+      ["text", "RichText"],
+      ["phone", "string"],
     ],
+    "RichText",
   ],
-  [
-    "secureData",
+  "textImage": [
+    0x081CCF4F,
     [
-      0x8AEABEC3,
-      [
-        ["data", "bytes"],
-        ["data_hash", "bytes"],
-        ["secret", "bytes"],
-      ],
+      ["document_id", "long"],
+      ["w", "int"],
+      ["h", "int"],
     ],
+    "RichText",
   ],
-  [
-    "securePlainPhone",
+  "textAnchor": [
+    0x35553762,
     [
-      0x7D6099DD,
-      [
-        ["phone", "string"],
-      ],
+      ["text", "RichText"],
+      ["name", "string"],
     ],
+    "RichText",
   ],
-  [
-    "securePlainEmail",
+  "pageBlockUnsupported": [
+    0x13567E8A,
+    [],
+    "PageBlock",
+  ],
+  "pageBlockTitle": [
+    0x70ABC3FD,
     [
-      0x21EC5A5F,
-      [
-        ["email", "string"],
-      ],
+      ["text", "RichText"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueTypePersonalDetails",
+  "pageBlockSubtitle": [
+    0x8FFA9A1F,
     [
-      0x9D2A81E3,
-      [],
+      ["text", "RichText"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueTypePassport",
+  "pageBlockAuthorDate": [
+    0xBAAFE5E0,
     [
-      0x3DAC6A00,
-      [],
+      ["author", "RichText"],
+      ["published_date", "int"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueTypeDriverLicense",
+  "pageBlockHeader": [
+    0xBFD064EC,
     [
-      0x06E425C4,
-      [],
+      ["text", "RichText"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueTypeIdentityCard",
+  "pageBlockSubheader": [
+    0xF12BB6E1,
     [
-      0xA0D0744B,
-      [],
+      ["text", "RichText"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueTypeInternalPassport",
+  "pageBlockParagraph": [
+    0x467A0766,
     [
-      0x99A48F23,
-      [],
+      ["text", "RichText"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueTypeAddress",
+  "pageBlockPreformatted": [
+    0xC070D93E,
     [
-      0xCBE31E26,
-      [],
+      ["text", "RichText"],
+      ["language", "string"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueTypeUtilityBill",
+  "pageBlockFooter": [
+    0x48870999,
     [
-      0xFC36954E,
-      [],
+      ["text", "RichText"],
     ],
+    "PageBlock",
+  ],
+  "pageBlockDivider": [
+    0xDB20B188,
+    [],
+    "PageBlock",
   ],
-  [
-    "secureValueTypeBankStatement",
+  "pageBlockAnchor": [
+    0xCE0D37B0,
     [
-      0x89137C0D,
-      [],
+      ["name", "string"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueTypeRentalAgreement",
+  "pageBlockList": [
+    0xE4E88011,
     [
-      0x8B883488,
-      [],
+      ["items", "Vector<PageListItem>"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueTypePassportRegistration",
+  "pageBlockBlockquote": [
+    0x263D7C26,
     [
-      0x99E3806A,
-      [],
+      ["text", "RichText"],
+      ["caption", "RichText"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueTypeTemporaryRegistration",
+  "pageBlockPullquote": [
+    0x4F4456D3,
     [
-      0xEA02EC33,
-      [],
+      ["text", "RichText"],
+      ["caption", "RichText"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueTypePhone",
+  "pageBlockPhoto": [
+    0x1759C560,
     [
-      0xB320AADB,
-      [],
+      ["flags", "#"],
+      ["photo_id", "long"],
+      ["caption", "PageCaption"],
+      ["url", "flags.0?string"],
+      ["webpage_id", "flags.0?long"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueTypeEmail",
+  "pageBlockVideo": [
+    0x7C8FE7B6,
     [
-      0x8E3CA7EE,
-      [],
+      ["flags", "#"],
+      ["autoplay", "flags.0?true"],
+      ["loop", "flags.1?true"],
+      ["video_id", "long"],
+      ["caption", "PageCaption"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValue",
+  "pageBlockCover": [
+    0x39F23300,
     [
-      0x187FA0CA,
-      [
-        ["flags", "#"],
-        ["type", "SecureValueType"],
-        ["data", "flags.0?SecureData"],
-        ["front_side", "flags.1?SecureFile"],
-        ["reverse_side", "flags.2?SecureFile"],
-        ["selfie", "flags.3?SecureFile"],
-        ["translation", "flags.6?Vector<SecureFile>"],
-        ["files", "flags.4?Vector<SecureFile>"],
-        ["plain_data", "flags.5?SecurePlainData"],
-        ["hash", "bytes"],
-      ],
+      ["cover", "PageBlock"],
     ],
+    "PageBlock",
   ],
-  [
-    "inputSecureValue",
+  "pageBlockEmbed": [
+    0xA8718DC5,
     [
-      0xDB21D0A7,
-      [
-        ["flags", "#"],
-        ["type", "SecureValueType"],
-        ["data", "flags.0?SecureData"],
-        ["front_side", "flags.1?InputSecureFile"],
-        ["reverse_side", "flags.2?InputSecureFile"],
-        ["selfie", "flags.3?InputSecureFile"],
-        ["translation", "flags.6?Vector<InputSecureFile>"],
-        ["files", "flags.4?Vector<InputSecureFile>"],
-        ["plain_data", "flags.5?SecurePlainData"],
-      ],
+      ["flags", "#"],
+      ["full_width", "flags.0?true"],
+      ["allow_scrolling", "flags.3?true"],
+      ["url", "flags.1?string"],
+      ["html", "flags.2?string"],
+      ["poster_photo_id", "flags.4?long"],
+      ["w", "flags.5?int"],
+      ["h", "flags.5?int"],
+      ["caption", "PageCaption"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueHash",
+  "pageBlockEmbedPost": [
+    0xF259A80B,
     [
-      0xED1ECDB0,
-      [
-        ["type", "SecureValueType"],
-        ["hash", "bytes"],
-      ],
+      ["url", "string"],
+      ["webpage_id", "long"],
+      ["author_photo_id", "long"],
+      ["author", "string"],
+      ["date", "int"],
+      ["blocks", "Vector<PageBlock>"],
+      ["caption", "PageCaption"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueErrorData",
+  "pageBlockCollage": [
+    0x65A0FA4D,
     [
-      0xE8A40BD9,
-      [
-        ["type", "SecureValueType"],
-        ["data_hash", "bytes"],
-        ["field", "string"],
-        ["text", "string"],
-      ],
+      ["items", "Vector<PageBlock>"],
+      ["caption", "PageCaption"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueErrorFrontSide",
+  "pageBlockSlideshow": [
+    0x031F9590,
     [
-      0x00BE3DFA,
-      [
-        ["type", "SecureValueType"],
-        ["file_hash", "bytes"],
-        ["text", "string"],
-      ],
+      ["items", "Vector<PageBlock>"],
+      ["caption", "PageCaption"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueErrorReverseSide",
+  "pageBlockChannel": [
+    0xEF1751B5,
     [
-      0x868A2AA5,
-      [
-        ["type", "SecureValueType"],
-        ["file_hash", "bytes"],
-        ["text", "string"],
-      ],
+      ["channel", "Chat"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueErrorSelfie",
+  "pageBlockAudio": [
+    0x804361EA,
     [
-      0xE537CED6,
-      [
-        ["type", "SecureValueType"],
-        ["file_hash", "bytes"],
-        ["text", "string"],
-      ],
+      ["audio_id", "long"],
+      ["caption", "PageCaption"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueErrorFile",
+  "pageBlockKicker": [
+    0x1E148390,
     [
-      0x7A700873,
-      [
-        ["type", "SecureValueType"],
-        ["file_hash", "bytes"],
-        ["text", "string"],
-      ],
+      ["text", "RichText"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueErrorFiles",
+  "pageBlockTable": [
+    0xBF4DEA82,
     [
-      0x666220E9,
-      [
-        ["type", "SecureValueType"],
-        ["file_hash", "Vector<bytes>"],
-        ["text", "string"],
-      ],
+      ["flags", "#"],
+      ["bordered", "flags.0?true"],
+      ["striped", "flags.1?true"],
+      ["title", "RichText"],
+      ["rows", "Vector<PageTableRow>"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueError",
+  "pageBlockOrderedList": [
+    0x9A8AE1E1,
     [
-      0x869D758F,
-      [
-        ["type", "SecureValueType"],
-        ["hash", "bytes"],
-        ["text", "string"],
-      ],
+      ["items", "Vector<PageListOrderedItem>"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueErrorTranslationFile",
+  "pageBlockDetails": [
+    0x76768BED,
     [
-      0xA1144770,
-      [
-        ["type", "SecureValueType"],
-        ["file_hash", "bytes"],
-        ["text", "string"],
-      ],
+      ["flags", "#"],
+      ["open", "flags.0?true"],
+      ["blocks", "Vector<PageBlock>"],
+      ["title", "RichText"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureValueErrorTranslationFiles",
+  "pageBlockRelatedArticles": [
+    0x16115A96,
     [
-      0x34636DD8,
-      [
-        ["type", "SecureValueType"],
-        ["file_hash", "Vector<bytes>"],
-        ["text", "string"],
-      ],
+      ["title", "RichText"],
+      ["articles", "Vector<PageRelatedArticle>"],
     ],
+    "PageBlock",
   ],
-  [
-    "secureCredentialsEncrypted",
+  "pageBlockMap": [
+    0xA44F3EF6,
     [
-      0x33F0EA47,
-      [
-        ["data", "bytes"],
-        ["hash", "bytes"],
-        ["secret", "bytes"],
-      ],
+      ["geo", "GeoPoint"],
+      ["zoom", "int"],
+      ["w", "int"],
+      ["h", "int"],
+      ["caption", "PageCaption"],
     ],
+    "PageBlock",
+  ],
+  "phoneCallDiscardReasonMissed": [
+    0x85E42301,
+    [],
+    "PhoneCallDiscardReason",
+  ],
+  "phoneCallDiscardReasonDisconnect": [
+    0xE095C1A0,
+    [],
+    "PhoneCallDiscardReason",
   ],
-  [
-    "account.authorizationForm",
+  "phoneCallDiscardReasonHangup": [
+    0x57ADC690,
+    [],
+    "PhoneCallDiscardReason",
+  ],
+  "phoneCallDiscardReasonBusy": [
+    0xFAF7E8C9,
+    [],
+    "PhoneCallDiscardReason",
+  ],
+  "phoneCallDiscardReasonAllowGroupCall": [
+    0xAFE2B839,
     [
-      0xAD2E1CD8,
-      [
-        ["flags", "#"],
-        ["required_types", "Vector<SecureRequiredType>"],
-        ["values", "Vector<SecureValue>"],
-        ["errors", "Vector<SecureValueError>"],
-        ["users", "Vector<User>"],
-        ["privacy_policy_url", "flags.0?string"],
-      ],
+      ["encrypted_key", "bytes"],
     ],
+    "PhoneCallDiscardReason",
   ],
-  [
-    "account.sentEmailCode",
+  "dataJSON": [
+    0x7D748D04,
     [
-      0x811F854F,
-      [
-        ["email_pattern", "string"],
-        ["length", "int"],
-      ],
+      ["data", "string"],
     ],
+    "DataJSON",
   ],
-  [
-    "help.deepLinkInfoEmpty",
+  "labeledPrice": [
+    0xCB296BF8,
     [
-      0x66AFA166,
-      [],
+      ["label", "string"],
+      ["amount", "long"],
     ],
+    "LabeledPrice",
   ],
-  [
-    "help.deepLinkInfo",
+  "invoice": [
+    0x049EE584,
     [
-      0x6A4EE832,
-      [
-        ["flags", "#"],
-        ["update_app", "flags.0?true"],
-        ["message", "string"],
-        ["entities", "flags.1?Vector<MessageEntity>"],
-      ],
+      ["flags", "#"],
+      ["test", "flags.0?true"],
+      ["name_requested", "flags.1?true"],
+      ["phone_requested", "flags.2?true"],
+      ["email_requested", "flags.3?true"],
+      ["shipping_address_requested", "flags.4?true"],
+      ["flexible", "flags.5?true"],
+      ["phone_to_provider", "flags.6?true"],
+      ["email_to_provider", "flags.7?true"],
+      ["recurring", "flags.9?true"],
+      ["currency", "string"],
+      ["prices", "Vector<LabeledPrice>"],
+      ["max_tip_amount", "flags.8?long"],
+      ["suggested_tip_amounts", "flags.8?Vector<long>"],
+      ["terms_url", "flags.10?string"],
+      ["subscription_period", "flags.11?int"],
     ],
+    "Invoice",
   ],
-  [
-    "savedPhoneContact",
+  "paymentCharge": [
+    0xEA02C27E,
     [
-      0x1142BD56,
-      [
-        ["phone", "string"],
-        ["first_name", "string"],
-        ["last_name", "string"],
-        ["date", "int"],
-      ],
+      ["id", "string"],
+      ["provider_charge_id", "string"],
     ],
+    "PaymentCharge",
   ],
-  [
-    "account.takeout",
+  "postAddress": [
+    0x1E8CAAEB,
     [
-      0x4DBA4501,
-      [
-        ["id", "long"],
-      ],
+      ["street_line1", "string"],
+      ["street_line2", "string"],
+      ["city", "string"],
+      ["state", "string"],
+      ["country_iso2", "string"],
+      ["post_code", "string"],
     ],
+    "PostAddress",
   ],
-  [
-    "passwordKdfAlgoUnknown",
+  "paymentRequestedInfo": [
+    0x909C3F94,
     [
-      0xD45AB096,
-      [],
+      ["flags", "#"],
+      ["name", "flags.0?string"],
+      ["phone", "flags.1?string"],
+      ["email", "flags.2?string"],
+      ["shipping_address", "flags.3?PostAddress"],
     ],
+    "PaymentRequestedInfo",
   ],
-  [
-    "passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow",
+  "paymentSavedCredentialsCard": [
+    0xCDC27A1F,
     [
-      0x3A912D4A,
-      [
-        ["salt1", "bytes"],
-        ["salt2", "bytes"],
-        ["g", "int"],
-        ["p", "bytes"],
-      ],
+      ["id", "string"],
+      ["title", "string"],
     ],
+    "PaymentSavedCredentials",
   ],
-  [
-    "securePasswordKdfAlgoUnknown",
+  "webDocument": [
+    0x1C570ED1,
     [
-      0x004A8537,
-      [],
+      ["url", "string"],
+      ["access_hash", "long"],
+      ["size", "int"],
+      ["mime_type", "string"],
+      ["attributes", "Vector<DocumentAttribute>"],
     ],
+    "WebDocument",
   ],
-  [
-    "securePasswordKdfAlgoPBKDF2HMACSHA512iter100000",
+  "webDocumentNoProxy": [
+    0xF9C8BCC6,
     [
-      0xBBF2DDA0,
-      [
-        ["salt", "bytes"],
-      ],
+      ["url", "string"],
+      ["size", "int"],
+      ["mime_type", "string"],
+      ["attributes", "Vector<DocumentAttribute>"],
     ],
+    "WebDocument",
   ],
-  [
-    "securePasswordKdfAlgoSHA512",
+  "inputWebDocument": [
+    0x9BED434D,
     [
-      0x86471D92,
-      [
-        ["salt", "bytes"],
-      ],
+      ["url", "string"],
+      ["size", "int"],
+      ["mime_type", "string"],
+      ["attributes", "Vector<DocumentAttribute>"],
     ],
+    "InputWebDocument",
   ],
-  [
-    "secureSecretSettings",
+  "inputWebFileLocation": [
+    0xC239D686,
     [
-      0x1527BCAC,
-      [
-        ["secure_algo", "SecurePasswordKdfAlgo"],
-        ["secure_secret", "bytes"],
-        ["secure_secret_id", "long"],
-      ],
+      ["url", "string"],
+      ["access_hash", "long"],
     ],
+    "InputWebFileLocation",
   ],
-  [
-    "inputCheckPasswordEmpty",
+  "inputWebFileGeoPointLocation": [
+    0x9F2221C9,
     [
-      0x9880F658,
-      [],
+      ["geo_point", "InputGeoPoint"],
+      ["access_hash", "long"],
+      ["w", "int"],
+      ["h", "int"],
+      ["zoom", "int"],
+      ["scale", "int"],
     ],
+    "InputWebFileLocation",
   ],
-  [
-    "inputCheckPasswordSRP",
+  "inputWebFileAudioAlbumThumbLocation": [
+    0xF46FE924,
     [
-      0xD27FF082,
-      [
-        ["srp_id", "long"],
-        ["A", "bytes"],
-        ["M1", "bytes"],
-      ],
+      ["flags", "#"],
+      ["small", "flags.2?true"],
+      ["document", "flags.0?InputDocument"],
+      ["title", "flags.1?string"],
+      ["performer", "flags.1?string"],
     ],
+    "InputWebFileLocation",
   ],
-  [
-    "secureRequiredType",
+  "upload.webFile": [
+    0x21E753BC,
     [
-      0x829D99DA,
-      [
-        ["flags", "#"],
-        ["native_names", "flags.0?true"],
-        ["selfie_required", "flags.1?true"],
-        ["translation_required", "flags.2?true"],
-        ["type", "SecureValueType"],
-      ],
+      ["size", "int"],
+      ["mime_type", "string"],
+      ["file_type", "storage.FileType"],
+      ["mtime", "int"],
+      ["bytes", "bytes"],
     ],
+    "upload.WebFile",
   ],
-  [
-    "secureRequiredTypeOneOf",
+  "payments.paymentForm": [
+    0xA0058751,
     [
-      0x027477B4,
-      [
-        ["types", "Vector<SecureRequiredType>"],
-      ],
+      ["flags", "#"],
+      ["can_save_credentials", "flags.2?true"],
+      ["password_missing", "flags.3?true"],
+      ["form_id", "long"],
+      ["bot_id", "long"],
+      ["title", "string"],
+      ["description", "string"],
+      ["photo", "flags.5?WebDocument"],
+      ["invoice", "Invoice"],
+      ["provider_id", "long"],
+      ["url", "string"],
+      ["native_provider", "flags.4?string"],
+      ["native_params", "flags.4?DataJSON"],
+      ["additional_methods", "flags.6?Vector<PaymentFormMethod>"],
+      ["saved_info", "flags.0?PaymentRequestedInfo"],
+      ["saved_credentials", "flags.1?Vector<PaymentSavedCredentials>"],
+      ["users", "Vector<User>"],
     ],
+    "payments.PaymentForm",
   ],
-  [
-    "help.passportConfigNotModified",
+  "payments.paymentFormStars": [
+    0x7BF6B15C,
     [
-      0xBFB9F457,
-      [],
+      ["flags", "#"],
+      ["form_id", "long"],
+      ["bot_id", "long"],
+      ["title", "string"],
+      ["description", "string"],
+      ["photo", "flags.5?WebDocument"],
+      ["invoice", "Invoice"],
+      ["users", "Vector<User>"],
     ],
+    "payments.PaymentForm",
   ],
-  [
-    "help.passportConfig",
+  "payments.paymentFormStarGift": [
+    0xB425CFE1,
     [
-      0xA098D6AF,
-      [
-        ["hash", "int"],
-        ["countries_langs", "DataJSON"],
-      ],
+      ["form_id", "long"],
+      ["invoice", "Invoice"],
     ],
+    "payments.PaymentForm",
   ],
-  [
-    "inputAppEvent",
+  "payments.validatedRequestedInfo": [
+    0xD1451883,
     [
-      0x1D1B1245,
-      [
-        ["time", "double"],
-        ["type", "string"],
-        ["peer", "long"],
-        ["data", "JSONValue"],
-      ],
+      ["flags", "#"],
+      ["id", "flags.0?string"],
+      ["shipping_options", "flags.1?Vector<ShippingOption>"],
     ],
+    "payments.ValidatedRequestedInfo",
   ],
-  [
-    "jsonObjectValue",
+  "payments.paymentResult": [
+    0x4E5F810D,
     [
-      0xC0DE1BD9,
-      [
-        ["key", "string"],
-        ["value", "JSONValue"],
-      ],
+      ["updates", "Updates"],
     ],
+    "payments.PaymentResult",
   ],
-  [
-    "jsonNull",
+  "payments.paymentVerificationNeeded": [
+    0xD8411139,
     [
-      0x3F6D7B68,
-      [],
+      ["url", "string"],
     ],
+    "payments.PaymentResult",
   ],
-  [
-    "jsonBool",
+  "payments.paymentReceipt": [
+    0x70C4FE03,
     [
-      0xC7345E6A,
-      [
-        ["value", "Bool"],
-      ],
+      ["flags", "#"],
+      ["date", "int"],
+      ["bot_id", "long"],
+      ["provider_id", "long"],
+      ["title", "string"],
+      ["description", "string"],
+      ["photo", "flags.2?WebDocument"],
+      ["invoice", "Invoice"],
+      ["info", "flags.0?PaymentRequestedInfo"],
+      ["shipping", "flags.1?ShippingOption"],
+      ["tip_amount", "flags.3?long"],
+      ["currency", "string"],
+      ["total_amount", "long"],
+      ["credentials_title", "string"],
+      ["users", "Vector<User>"],
     ],
+    "payments.PaymentReceipt",
   ],
-  [
-    "jsonNumber",
+  "payments.paymentReceiptStars": [
+    0xDABBF83A,
     [
-      0x2BE0DFA4,
-      [
-        ["value", "double"],
-      ],
+      ["flags", "#"],
+      ["date", "int"],
+      ["bot_id", "long"],
+      ["title", "string"],
+      ["description", "string"],
+      ["photo", "flags.2?WebDocument"],
+      ["invoice", "Invoice"],
+      ["currency", "string"],
+      ["total_amount", "long"],
+      ["transaction_id", "string"],
+      ["users", "Vector<User>"],
     ],
+    "payments.PaymentReceipt",
   ],
-  [
-    "jsonString",
+  "payments.savedInfo": [
+    0xFB8FE43C,
     [
-      0xB71E767A,
-      [
-        ["value", "string"],
-      ],
+      ["flags", "#"],
+      ["has_saved_credentials", "flags.1?true"],
+      ["saved_info", "flags.0?PaymentRequestedInfo"],
     ],
+    "payments.SavedInfo",
   ],
-  [
-    "jsonArray",
+  "inputPaymentCredentialsSaved": [
+    0xC10EB2CF,
     [
-      0xF7444763,
-      [
-        ["value", "Vector<JSONValue>"],
-      ],
+      ["id", "string"],
+      ["tmp_password", "bytes"],
     ],
+    "InputPaymentCredentials",
   ],
-  [
-    "jsonObject",
+  "inputPaymentCredentials": [
+    0x3417D728,
     [
-      0x99C1D49D,
-      [
-        ["value", "Vector<JSONObjectValue>"],
-      ],
+      ["flags", "#"],
+      ["save", "flags.0?true"],
+      ["data", "DataJSON"],
     ],
+    "InputPaymentCredentials",
   ],
-  [
-    "pageTableCell",
+  "inputPaymentCredentialsApplePay": [
+    0x0AA1C39F,
     [
-      0x34566B6A,
-      [
-        ["flags", "#"],
-        ["header", "flags.0?true"],
-        ["align_center", "flags.3?true"],
-        ["align_right", "flags.4?true"],
-        ["valign_middle", "flags.5?true"],
-        ["valign_bottom", "flags.6?true"],
-        ["text", "flags.7?RichText"],
-        ["colspan", "flags.1?int"],
-        ["rowspan", "flags.2?int"],
-      ],
+      ["payment_data", "DataJSON"],
     ],
+    "InputPaymentCredentials",
   ],
-  [
-    "pageTableRow",
+  "inputPaymentCredentialsGooglePay": [
+    0x8AC32801,
     [
-      0xE0C0C5E5,
-      [
-        ["cells", "Vector<PageTableCell>"],
-      ],
+      ["payment_token", "DataJSON"],
     ],
+    "InputPaymentCredentials",
   ],
-  [
-    "pageCaption",
+  "account.tmpPassword": [
+    0xDB64FD34,
     [
-      0x6F747657,
-      [
-        ["text", "RichText"],
-        ["credit", "RichText"],
-      ],
+      ["tmp_password", "bytes"],
+      ["valid_until", "int"],
     ],
+    "account.TmpPassword",
   ],
-  [
-    "pageListItemText",
+  "shippingOption": [
+    0xB6213CDF,
     [
-      0xB92FB6CD,
-      [
-        ["text", "RichText"],
-      ],
+      ["id", "string"],
+      ["title", "string"],
+      ["prices", "Vector<LabeledPrice>"],
     ],
+    "ShippingOption",
   ],
-  [
-    "pageListItemBlocks",
+  "inputStickerSetItem": [
+    0x32DA9E9C,
     [
-      0x25E073FC,
-      [
-        ["blocks", "Vector<PageBlock>"],
-      ],
+      ["flags", "#"],
+      ["document", "InputDocument"],
+      ["emoji", "string"],
+      ["mask_coords", "flags.0?MaskCoords"],
+      ["keywords", "flags.1?string"],
     ],
+    "InputStickerSetItem",
   ],
-  [
-    "pageListOrderedItemText",
+  "inputPhoneCall": [
+    0x1E36FDED,
     [
-      0x5E068047,
-      [
-        ["num", "string"],
-        ["text", "RichText"],
-      ],
+      ["id", "long"],
+      ["access_hash", "long"],
     ],
+    "InputPhoneCall",
   ],
-  [
-    "pageListOrderedItemBlocks",
+  "phoneCallEmpty": [
+    0x5366C915,
     [
-      0x98DD8936,
-      [
-        ["num", "string"],
-        ["blocks", "Vector<PageBlock>"],
-      ],
+      ["id", "long"],
     ],
+    "PhoneCall",
   ],
-  [
-    "pageRelatedArticle",
+  "phoneCallWaiting": [
+    0xEED42858,
     [
-      0xB390DC08,
-      [
-        ["flags", "#"],
-        ["url", "string"],
-        ["webpage_id", "long"],
-        ["title", "flags.0?string"],
-        ["description", "flags.1?string"],
-        ["photo_id", "flags.2?long"],
-        ["author", "flags.3?string"],
-        ["published_date", "flags.4?int"],
-      ],
+      ["flags", "#"],
+      ["video", "flags.6?true"],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["date", "int"],
+      ["admin_id", "long"],
+      ["participant_id", "long"],
+      ["protocol", "PhoneCallProtocol"],
+      ["receive_date", "flags.0?int"],
+      ["conference_call", "flags.8?InputGroupCall"],
     ],
+    "PhoneCall",
   ],
-  [
-    "page",
+  "phoneCallRequested": [
+    0x45361C63,
     [
-      0x98657F0D,
-      [
-        ["flags", "#"],
-        ["part", "flags.0?true"],
-        ["rtl", "flags.1?true"],
-        ["v2", "flags.2?true"],
-        ["url", "string"],
-        ["blocks", "Vector<PageBlock>"],
-        ["photos", "Vector<Photo>"],
-        ["documents", "Vector<Document>"],
-        ["views", "flags.3?int"],
-      ],
+      ["flags", "#"],
+      ["video", "flags.6?true"],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["date", "int"],
+      ["admin_id", "long"],
+      ["participant_id", "long"],
+      ["g_a_hash", "bytes"],
+      ["protocol", "PhoneCallProtocol"],
+      ["conference_call", "flags.8?InputGroupCall"],
     ],
+    "PhoneCall",
   ],
-  [
-    "help.supportName",
+  "phoneCallAccepted": [
+    0x22FD7181,
     [
-      0x8C05F1C9,
-      [
-        ["name", "string"],
-      ],
+      ["flags", "#"],
+      ["video", "flags.6?true"],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["date", "int"],
+      ["admin_id", "long"],
+      ["participant_id", "long"],
+      ["g_b", "bytes"],
+      ["protocol", "PhoneCallProtocol"],
+      ["conference_call", "flags.8?InputGroupCall"],
     ],
+    "PhoneCall",
   ],
-  [
-    "help.userInfoEmpty",
+  "phoneCall": [
+    0x3BA5940C,
     [
-      0xF3AE2EED,
-      [],
+      ["flags", "#"],
+      ["p2p_allowed", "flags.5?true"],
+      ["video", "flags.6?true"],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["date", "int"],
+      ["admin_id", "long"],
+      ["participant_id", "long"],
+      ["g_a_or_b", "bytes"],
+      ["key_fingerprint", "long"],
+      ["protocol", "PhoneCallProtocol"],
+      ["connections", "Vector<PhoneConnection>"],
+      ["start_date", "int"],
+      ["custom_parameters", "flags.7?DataJSON"],
+      ["conference_call", "flags.8?InputGroupCall"],
     ],
+    "PhoneCall",
   ],
-  [
-    "help.userInfo",
+  "phoneCallDiscarded": [
+    0xF9D25503,
     [
-      0x01EB3758,
-      [
-        ["message", "string"],
-        ["entities", "Vector<MessageEntity>"],
-        ["author", "string"],
-        ["date", "int"],
-      ],
+      ["flags", "#"],
+      ["need_rating", "flags.2?true"],
+      ["need_debug", "flags.3?true"],
+      ["video", "flags.6?true"],
+      ["id", "long"],
+      ["reason", "flags.0?PhoneCallDiscardReason"],
+      ["duration", "flags.1?int"],
+      ["conference_call", "flags.8?InputGroupCall"],
     ],
+    "PhoneCall",
   ],
-  [
-    "pollAnswer",
+  "phoneConnection": [
+    0x9CC123C7,
     [
-      0xFF16E2CA,
-      [
-        ["text", "TextWithEntities"],
-        ["option", "bytes"],
-      ],
+      ["flags", "#"],
+      ["tcp", "flags.0?true"],
+      ["id", "long"],
+      ["ip", "string"],
+      ["ipv6", "string"],
+      ["port", "int"],
+      ["peer_tag", "bytes"],
     ],
+    "PhoneConnection",
   ],
-  [
-    "poll",
+  "phoneConnectionWebrtc": [
+    0x635FE375,
     [
-      0x58747131,
-      [
-        ["id", "long"],
-        ["flags", "#"],
-        ["closed", "flags.0?true"],
-        ["public_voters", "flags.1?true"],
-        ["multiple_choice", "flags.2?true"],
-        ["quiz", "flags.3?true"],
-        ["question", "TextWithEntities"],
-        ["answers", "Vector<PollAnswer>"],
-        ["close_period", "flags.4?int"],
-        ["close_date", "flags.5?int"],
-      ],
+      ["flags", "#"],
+      ["turn", "flags.0?true"],
+      ["stun", "flags.1?true"],
+      ["id", "long"],
+      ["ip", "string"],
+      ["ipv6", "string"],
+      ["port", "int"],
+      ["username", "string"],
+      ["password", "string"],
     ],
+    "PhoneConnection",
   ],
-  [
-    "pollAnswerVoters",
+  "phoneCallProtocol": [
+    0xFC878FC8,
     [
-      0x3B6DDAD2,
-      [
-        ["flags", "#"],
-        ["chosen", "flags.0?true"],
-        ["correct", "flags.1?true"],
-        ["option", "bytes"],
-        ["voters", "int"],
-      ],
+      ["flags", "#"],
+      ["udp_p2p", "flags.0?true"],
+      ["udp_reflector", "flags.1?true"],
+      ["min_layer", "int"],
+      ["max_layer", "int"],
+      ["library_versions", "Vector<string>"],
     ],
+    "PhoneCallProtocol",
   ],
-  [
-    "pollResults",
+  "phone.phoneCall": [
+    0xEC82E140,
     [
-      0x7ADF2420,
-      [
-        ["flags", "#"],
-        ["min", "flags.0?true"],
-        ["results", "flags.1?Vector<PollAnswerVoters>"],
-        ["total_voters", "flags.2?int"],
-        ["recent_voters", "flags.3?Vector<Peer>"],
-        ["solution", "flags.4?string"],
-        ["solution_entities", "flags.4?Vector<MessageEntity>"],
-      ],
+      ["phone_call", "PhoneCall"],
+      ["users", "Vector<User>"],
     ],
+    "phone.PhoneCall",
   ],
-  [
-    "chatOnlines",
+  "upload.cdnFileReuploadNeeded": [
+    0xEEA8E46E,
     [
-      0xF041E250,
-      [
-        ["onlines", "int"],
-      ],
+      ["request_token", "bytes"],
     ],
+    "upload.CdnFile",
   ],
-  [
-    "statsURL",
+  "upload.cdnFile": [
+    0xA99FCA4F,
     [
-      0x47A971E0,
-      [
-        ["url", "string"],
-      ],
+      ["bytes", "bytes"],
     ],
+    "upload.CdnFile",
   ],
-  [
-    "chatAdminRights",
+  "cdnPublicKey": [
+    0xC982EABA,
     [
-      0x5FB224D5,
-      [
-        ["flags", "#"],
-        ["change_info", "flags.0?true"],
-        ["post_messages", "flags.1?true"],
-        ["edit_messages", "flags.2?true"],
-        ["delete_messages", "flags.3?true"],
-        ["ban_users", "flags.4?true"],
-        ["invite_users", "flags.5?true"],
-        ["pin_messages", "flags.7?true"],
-        ["add_admins", "flags.9?true"],
-        ["anonymous", "flags.10?true"],
-        ["manage_call", "flags.11?true"],
-        ["other", "flags.12?true"],
-        ["manage_topics", "flags.13?true"],
-        ["post_stories", "flags.14?true"],
-        ["edit_stories", "flags.15?true"],
-        ["delete_stories", "flags.16?true"],
-      ],
+      ["dc_id", "int"],
+      ["public_key", "string"],
     ],
+    "CdnPublicKey",
   ],
-  [
-    "chatBannedRights",
+  "cdnConfig": [
+    0x5725E40A,
     [
-      0x9F120418,
-      [
-        ["flags", "#"],
-        ["view_messages", "flags.0?true"],
-        ["send_messages", "flags.1?true"],
-        ["send_media", "flags.2?true"],
-        ["send_stickers", "flags.3?true"],
-        ["send_gifs", "flags.4?true"],
-        ["send_games", "flags.5?true"],
-        ["send_inline", "flags.6?true"],
-        ["embed_links", "flags.7?true"],
-        ["send_polls", "flags.8?true"],
-        ["change_info", "flags.10?true"],
-        ["invite_users", "flags.15?true"],
-        ["pin_messages", "flags.17?true"],
-        ["manage_topics", "flags.18?true"],
-        ["send_photos", "flags.19?true"],
-        ["send_videos", "flags.20?true"],
-        ["send_roundvideos", "flags.21?true"],
-        ["send_audios", "flags.22?true"],
-        ["send_voices", "flags.23?true"],
-        ["send_docs", "flags.24?true"],
-        ["send_plain", "flags.25?true"],
-        ["until_date", "int"],
-      ],
+      ["public_keys", "Vector<CdnPublicKey>"],
     ],
+    "CdnConfig",
   ],
-  [
-    "inputWallPaper",
+  "langPackString": [
+    0xCAD181F6,
     [
-      0xE630B979,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-      ],
+      ["key", "string"],
+      ["value", "string"],
     ],
+    "LangPackString",
   ],
-  [
-    "inputWallPaperSlug",
+  "langPackStringPluralized": [
+    0x6C47AC9F,
     [
-      0x72091C80,
-      [
-        ["slug", "string"],
-      ],
+      ["flags", "#"],
+      ["key", "string"],
+      ["zero_value", "flags.0?string"],
+      ["one_value", "flags.1?string"],
+      ["two_value", "flags.2?string"],
+      ["few_value", "flags.3?string"],
+      ["many_value", "flags.4?string"],
+      ["other_value", "string"],
     ],
+    "LangPackString",
   ],
-  [
-    "inputWallPaperNoFile",
+  "langPackStringDeleted": [
+    0x2979EEB2,
     [
-      0x967A462E,
-      [
-        ["id", "long"],
-      ],
+      ["key", "string"],
     ],
+    "LangPackString",
   ],
-  [
-    "account.wallPapersNotModified",
+  "langPackDifference": [
+    0xF385C1F6,
     [
-      0x1C199183,
-      [],
+      ["lang_code", "string"],
+      ["from_version", "int"],
+      ["version", "int"],
+      ["strings", "Vector<LangPackString>"],
     ],
+    "LangPackDifference",
   ],
-  [
-    "account.wallPapers",
+  "langPackLanguage": [
+    0xEECA5CE3,
     [
-      0xCDC3858C,
-      [
-        ["hash", "long"],
-        ["wallpapers", "Vector<WallPaper>"],
-      ],
+      ["flags", "#"],
+      ["official", "flags.0?true"],
+      ["rtl", "flags.2?true"],
+      ["beta", "flags.3?true"],
+      ["name", "string"],
+      ["native_name", "string"],
+      ["lang_code", "string"],
+      ["base_lang_code", "flags.1?string"],
+      ["plural_code", "string"],
+      ["strings_count", "int"],
+      ["translated_count", "int"],
+      ["translations_url", "string"],
     ],
+    "LangPackLanguage",
   ],
-  [
-    "codeSettings",
+  "channelAdminLogEventActionChangeTitle": [
+    0xE6DFB825,
     [
-      0xAD253D78,
-      [
-        ["flags", "#"],
-        ["allow_flashcall", "flags.0?true"],
-        ["current_number", "flags.1?true"],
-        ["allow_app_hash", "flags.4?true"],
-        ["allow_missed_call", "flags.5?true"],
-        ["allow_firebase", "flags.7?true"],
-        ["unknown_number", "flags.9?true"],
-        ["logout_tokens", "flags.6?Vector<bytes>"],
-        ["token", "flags.8?string"],
-        ["app_sandbox", "flags.8?Bool"],
-      ],
+      ["prev_value", "string"],
+      ["new_value", "string"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "wallPaperSettings",
+  "channelAdminLogEventActionChangeAbout": [
+    0x55188A2E,
     [
-      0x372EFCD0,
-      [
-        ["flags", "#"],
-        ["blur", "flags.1?true"],
-        ["motion", "flags.2?true"],
-        ["background_color", "flags.0?int"],
-        ["second_background_color", "flags.4?int"],
-        ["third_background_color", "flags.5?int"],
-        ["fourth_background_color", "flags.6?int"],
-        ["intensity", "flags.3?int"],
-        ["rotation", "flags.4?int"],
-        ["emoticon", "flags.7?string"],
-      ],
+      ["prev_value", "string"],
+      ["new_value", "string"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "autoDownloadSettings",
+  "channelAdminLogEventActionChangeUsername": [
+    0x6A4AFC38,
     [
-      0xBAA57628,
-      [
-        ["flags", "#"],
-        ["disabled", "flags.0?true"],
-        ["video_preload_large", "flags.1?true"],
-        ["audio_preload_next", "flags.2?true"],
-        ["phonecalls_less_data", "flags.3?true"],
-        ["stories_preload", "flags.4?true"],
-        ["photo_size_max", "int"],
-        ["video_size_max", "long"],
-        ["file_size_max", "long"],
-        ["video_upload_maxbitrate", "int"],
-        ["small_queue_active_operations_max", "int"],
-        ["large_queue_active_operations_max", "int"],
-      ],
+      ["prev_value", "string"],
+      ["new_value", "string"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "account.autoDownloadSettings",
+  "channelAdminLogEventActionChangePhoto": [
+    0x434BD2AF,
     [
-      0x63CACF26,
-      [
-        ["low", "AutoDownloadSettings"],
-        ["medium", "AutoDownloadSettings"],
-        ["high", "AutoDownloadSettings"],
-      ],
+      ["prev_photo", "Photo"],
+      ["new_photo", "Photo"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "emojiKeyword",
+  "channelAdminLogEventActionToggleInvites": [
+    0x1B7907AE,
     [
-      0xD5B3B9F9,
-      [
-        ["keyword", "string"],
-        ["emoticons", "Vector<string>"],
-      ],
+      ["new_value", "Bool"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "emojiKeywordDeleted",
+  "channelAdminLogEventActionToggleSignatures": [
+    0x26AE0971,
     [
-      0x236DF622,
-      [
-        ["keyword", "string"],
-        ["emoticons", "Vector<string>"],
-      ],
+      ["new_value", "Bool"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "emojiKeywordsDifference",
+  "channelAdminLogEventActionUpdatePinned": [
+    0xE9E82C18,
     [
-      0x5CC761BD,
-      [
-        ["lang_code", "string"],
-        ["from_version", "int"],
-        ["version", "int"],
-        ["keywords", "Vector<EmojiKeyword>"],
-      ],
+      ["message", "Message"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "emojiURL",
+  "channelAdminLogEventActionEditMessage": [
+    0x709B2405,
     [
-      0xA575739D,
-      [
-        ["url", "string"],
-      ],
+      ["prev_message", "Message"],
+      ["new_message", "Message"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "emojiLanguage",
+  "channelAdminLogEventActionDeleteMessage": [
+    0x42E047BB,
     [
-      0xB3FB5361,
-      [
-        ["lang_code", "string"],
-      ],
+      ["message", "Message"],
     ],
+    "ChannelAdminLogEventAction",
+  ],
+  "channelAdminLogEventActionParticipantJoin": [
+    0x183040D3,
+    [],
+    "ChannelAdminLogEventAction",
+  ],
+  "channelAdminLogEventActionParticipantLeave": [
+    0xF89777F2,
+    [],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "folder",
+  "channelAdminLogEventActionParticipantInvite": [
+    0xE31C34D8,
     [
-      0xFF544E65,
-      [
-        ["flags", "#"],
-        ["autofill_new_broadcasts", "flags.0?true"],
-        ["autofill_public_groups", "flags.1?true"],
-        ["autofill_new_correspondents", "flags.2?true"],
-        ["id", "int"],
-        ["title", "string"],
-        ["photo", "flags.3?ChatPhoto"],
-      ],
+      ["participant", "ChannelParticipant"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "inputFolderPeer",
+  "channelAdminLogEventActionParticipantToggleBan": [
+    0xE6D83D7E,
     [
-      0xFBD2C296,
-      [
-        ["peer", "InputPeer"],
-        ["folder_id", "int"],
-      ],
+      ["prev_participant", "ChannelParticipant"],
+      ["new_participant", "ChannelParticipant"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "folderPeer",
+  "channelAdminLogEventActionParticipantToggleAdmin": [
+    0xD5676710,
     [
-      0xE9BAA668,
-      [
-        ["peer", "Peer"],
-        ["folder_id", "int"],
-      ],
+      ["prev_participant", "ChannelParticipant"],
+      ["new_participant", "ChannelParticipant"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "messages.searchCounter",
+  "channelAdminLogEventActionChangeStickerSet": [
+    0xB1C3CAA7,
     [
-      0xE844EBFF,
-      [
-        ["flags", "#"],
-        ["inexact", "flags.1?true"],
-        ["filter", "MessagesFilter"],
-        ["count", "int"],
-      ],
+      ["prev_stickerset", "InputStickerSet"],
+      ["new_stickerset", "InputStickerSet"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "urlAuthResultRequest",
+  "channelAdminLogEventActionTogglePreHistoryHidden": [
+    0x5F5C95F1,
     [
-      0x92D33A0E,
-      [
-        ["flags", "#"],
-        ["request_write_access", "flags.0?true"],
-        ["bot", "User"],
-        ["domain", "string"],
-      ],
+      ["new_value", "Bool"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "urlAuthResultAccepted",
+  "channelAdminLogEventActionDefaultBannedRights": [
+    0x2DF5FC0A,
     [
-      0x8F8C0E4E,
-      [
-        ["url", "string"],
-      ],
+      ["prev_banned_rights", "ChatBannedRights"],
+      ["new_banned_rights", "ChatBannedRights"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "urlAuthResultDefault",
+  "channelAdminLogEventActionStopPoll": [
+    0x8F079643,
     [
-      0xA9D6DB1F,
-      [],
+      ["message", "Message"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "channelLocationEmpty",
+  "channelAdminLogEventActionChangeLinkedChat": [
+    0x050C7AC8,
     [
-      0xBFB5AD8B,
-      [],
+      ["prev_value", "long"],
+      ["new_value", "long"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "channelLocation",
+  "channelAdminLogEventActionChangeLocation": [
+    0x0E6B76AE,
     [
-      0x209B82DB,
-      [
-        ["geo_point", "GeoPoint"],
-        ["address", "string"],
-      ],
+      ["prev_value", "ChannelLocation"],
+      ["new_value", "ChannelLocation"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "peerLocated",
+  "channelAdminLogEventActionToggleSlowMode": [
+    0x53909779,
     [
-      0xCA461B5D,
-      [
-        ["peer", "Peer"],
-        ["expires", "int"],
-        ["distance", "int"],
-      ],
+      ["prev_value", "int"],
+      ["new_value", "int"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "peerSelfLocated",
+  "channelAdminLogEventActionStartGroupCall": [
+    0x23209745,
     [
-      0xF8EC284B,
-      [
-        ["expires", "int"],
-      ],
+      ["call", "InputGroupCall"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "restrictionReason",
+  "channelAdminLogEventActionDiscardGroupCall": [
+    0xDB9F9140,
     [
-      0xD072ACB4,
-      [
-        ["platform", "string"],
-        ["reason", "string"],
-        ["text", "string"],
-      ],
+      ["call", "InputGroupCall"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "inputTheme",
+  "channelAdminLogEventActionParticipantMute": [
+    0xF92424D2,
     [
-      0x3C5693E9,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-      ],
+      ["participant", "GroupCallParticipant"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "inputThemeSlug",
+  "channelAdminLogEventActionParticipantUnmute": [
+    0xE64429C0,
     [
-      0xF5890DF1,
-      [
-        ["slug", "string"],
-      ],
+      ["participant", "GroupCallParticipant"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "theme",
+  "channelAdminLogEventActionToggleGroupCallSetting": [
+    0x56D6A247,
     [
-      0xA00E67D6,
-      [
-        ["flags", "#"],
-        ["creator", "flags.0?true"],
-        ["default", "flags.1?true"],
-        ["for_chat", "flags.5?true"],
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["slug", "string"],
-        ["title", "string"],
-        ["document", "flags.2?Document"],
-        ["settings", "flags.3?Vector<ThemeSettings>"],
-        ["emoticon", "flags.6?string"],
-        ["installs_count", "flags.4?int"],
-      ],
+      ["join_muted", "Bool"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "account.themesNotModified",
+  "channelAdminLogEventActionParticipantJoinByInvite": [
+    0xFE9FC158,
     [
-      0xF41EB622,
-      [],
+      ["flags", "#"],
+      ["via_chatlist", "flags.0?true"],
+      ["invite", "ExportedChatInvite"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "account.themes",
+  "channelAdminLogEventActionExportedInviteDelete": [
+    0x5A50FCA4,
     [
-      0x9A3D8C6D,
-      [
-        ["hash", "long"],
-        ["themes", "Vector<Theme>"],
-      ],
+      ["invite", "ExportedChatInvite"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "auth.loginToken",
+  "channelAdminLogEventActionExportedInviteRevoke": [
+    0x410A134E,
     [
-      0x629F1980,
-      [
-        ["expires", "int"],
-        ["token", "bytes"],
-      ],
+      ["invite", "ExportedChatInvite"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "auth.loginTokenMigrateTo",
+  "channelAdminLogEventActionExportedInviteEdit": [
+    0xE90EBB59,
     [
-      0x068E9916,
-      [
-        ["dc_id", "int"],
-        ["token", "bytes"],
-      ],
+      ["prev_invite", "ExportedChatInvite"],
+      ["new_invite", "ExportedChatInvite"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "auth.loginTokenSuccess",
+  "channelAdminLogEventActionParticipantVolume": [
+    0x3E7F6847,
     [
-      0x390D5C5E,
-      [
-        ["authorization", "auth.Authorization"],
-      ],
+      ["participant", "GroupCallParticipant"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "account.contentSettings",
+  "channelAdminLogEventActionChangeHistoryTTL": [
+    0x6E941A38,
     [
-      0x57E28221,
-      [
-        ["flags", "#"],
-        ["sensitive_enabled", "flags.0?true"],
-        ["sensitive_can_change", "flags.1?true"],
-      ],
+      ["prev_value", "int"],
+      ["new_value", "int"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "messages.inactiveChats",
+  "channelAdminLogEventActionParticipantJoinByRequest": [
+    0xAFB6144A,
     [
-      0xA927FEC5,
-      [
-        ["dates", "Vector<int>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["invite", "ExportedChatInvite"],
+      ["approved_by", "long"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "baseThemeClassic",
+  "channelAdminLogEventActionToggleNoForwards": [
+    0xCB2AC766,
     [
-      0xC3A12462,
-      [],
+      ["new_value", "Bool"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "baseThemeDay",
+  "channelAdminLogEventActionSendMessage": [
+    0x278F2868,
     [
-      0xFBD81688,
-      [],
+      ["message", "Message"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "baseThemeNight",
+  "channelAdminLogEventActionChangeAvailableReactions": [
+    0xBE4E0EF8,
     [
-      0xB7B31EA8,
-      [],
+      ["prev_value", "ChatReactions"],
+      ["new_value", "ChatReactions"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "baseThemeTinted",
+  "channelAdminLogEventActionChangeUsernames": [
+    0xF04FB3A9,
     [
-      0x6D5F77EE,
-      [],
+      ["prev_value", "Vector<string>"],
+      ["new_value", "Vector<string>"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "baseThemeArctic",
+  "channelAdminLogEventActionToggleForum": [
+    0x02CC6383,
     [
-      0x5B11125A,
-      [],
+      ["new_value", "Bool"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "inputThemeSettings",
+  "channelAdminLogEventActionCreateTopic": [
+    0x58707D28,
     [
-      0x8FDE504F,
-      [
-        ["flags", "#"],
-        ["message_colors_animated", "flags.2?true"],
-        ["base_theme", "BaseTheme"],
-        ["accent_color", "int"],
-        ["outbox_accent_color", "flags.3?int"],
-        ["message_colors", "flags.0?Vector<int>"],
-        ["wallpaper", "flags.1?InputWallPaper"],
-        ["wallpaper_settings", "flags.1?WallPaperSettings"],
-      ],
+      ["topic", "ForumTopic"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "themeSettings",
+  "channelAdminLogEventActionEditTopic": [
+    0xF06FE208,
     [
-      0xFA58B6D4,
-      [
-        ["flags", "#"],
-        ["message_colors_animated", "flags.2?true"],
-        ["base_theme", "BaseTheme"],
-        ["accent_color", "int"],
-        ["outbox_accent_color", "flags.3?int"],
-        ["message_colors", "flags.0?Vector<int>"],
-        ["wallpaper", "flags.1?WallPaper"],
-      ],
+      ["prev_topic", "ForumTopic"],
+      ["new_topic", "ForumTopic"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "webPageAttributeTheme",
+  "channelAdminLogEventActionDeleteTopic": [
+    0xAE168909,
     [
-      0x54B56617,
-      [
-        ["flags", "#"],
-        ["documents", "flags.0?Vector<Document>"],
-        ["settings", "flags.1?ThemeSettings"],
-      ],
+      ["topic", "ForumTopic"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "webPageAttributeStory",
+  "channelAdminLogEventActionPinTopic": [
+    0x5D8D353B,
     [
-      0x2E94C3E7,
-      [
-        ["flags", "#"],
-        ["peer", "Peer"],
-        ["id", "int"],
-        ["story", "flags.0?StoryItem"],
-      ],
+      ["flags", "#"],
+      ["prev_topic", "flags.0?ForumTopic"],
+      ["new_topic", "flags.1?ForumTopic"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "webPageAttributeStickerSet",
+  "channelAdminLogEventActionToggleAntiSpam": [
+    0x64F36DFC,
     [
-      0x50CC03D3,
-      [
-        ["flags", "#"],
-        ["emojis", "flags.0?true"],
-        ["text_color", "flags.1?true"],
-        ["stickers", "Vector<Document>"],
-      ],
+      ["new_value", "Bool"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "webPageAttributeUniqueStarGift",
+  "channelAdminLogEventActionChangePeerColor": [
+    0x5796E780,
     [
-      0xCF6F6DB8,
-      [
-        ["gift", "StarGift"],
-      ],
+      ["prev_value", "PeerColor"],
+      ["new_value", "PeerColor"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "messages.votesList",
+  "channelAdminLogEventActionChangeProfilePeerColor": [
+    0x5E477B25,
     [
-      0x4899484E,
-      [
-        ["flags", "#"],
-        ["count", "int"],
-        ["votes", "Vector<MessagePeerVote>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-        ["next_offset", "flags.0?string"],
-      ],
+      ["prev_value", "PeerColor"],
+      ["new_value", "PeerColor"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "bankCardOpenUrl",
+  "channelAdminLogEventActionChangeWallpaper": [
+    0x31BB5D52,
     [
-      0xF568028A,
-      [
-        ["url", "string"],
-        ["name", "string"],
-      ],
+      ["prev_value", "WallPaper"],
+      ["new_value", "WallPaper"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "payments.bankCardData",
+  "channelAdminLogEventActionChangeEmojiStatus": [
+    0x3EA9FEB1,
     [
-      0x3E24E573,
-      [
-        ["title", "string"],
-        ["open_urls", "Vector<BankCardOpenUrl>"],
-      ],
+      ["prev_value", "EmojiStatus"],
+      ["new_value", "EmojiStatus"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "dialogFilter",
+  "channelAdminLogEventActionChangeEmojiStickerSet": [
+    0x46D840AB,
     [
-      0xAA472651,
-      [
-        ["flags", "#"],
-        ["contacts", "flags.0?true"],
-        ["non_contacts", "flags.1?true"],
-        ["groups", "flags.2?true"],
-        ["broadcasts", "flags.3?true"],
-        ["bots", "flags.4?true"],
-        ["exclude_muted", "flags.11?true"],
-        ["exclude_read", "flags.12?true"],
-        ["exclude_archived", "flags.13?true"],
-        ["title_noanimate", "flags.28?true"],
-        ["id", "int"],
-        ["title", "TextWithEntities"],
-        ["emoticon", "flags.25?string"],
-        ["color", "flags.27?int"],
-        ["pinned_peers", "Vector<InputPeer>"],
-        ["include_peers", "Vector<InputPeer>"],
-        ["exclude_peers", "Vector<InputPeer>"],
-      ],
+      ["prev_stickerset", "InputStickerSet"],
+      ["new_stickerset", "InputStickerSet"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "dialogFilterDefault",
+  "channelAdminLogEventActionToggleSignatureProfiles": [
+    0x60A79C79,
     [
-      0x363293AE,
-      [],
+      ["new_value", "Bool"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "dialogFilterChatlist",
+  "channelAdminLogEventActionParticipantSubExtend": [
+    0x64642DB3,
     [
-      0x96537BD7,
-      [
-        ["flags", "#"],
-        ["has_my_invites", "flags.26?true"],
-        ["title_noanimate", "flags.28?true"],
-        ["id", "int"],
-        ["title", "TextWithEntities"],
-        ["emoticon", "flags.25?string"],
-        ["color", "flags.27?int"],
-        ["pinned_peers", "Vector<InputPeer>"],
-        ["include_peers", "Vector<InputPeer>"],
-      ],
+      ["prev_participant", "ChannelParticipant"],
+      ["new_participant", "ChannelParticipant"],
     ],
+    "ChannelAdminLogEventAction",
   ],
-  [
-    "dialogFilterSuggested",
+  "channelAdminLogEvent": [
+    0x1FAD68CD,
     [
-      0x77744D4A,
-      [
-        ["filter", "DialogFilter"],
-        ["description", "string"],
-      ],
+      ["id", "long"],
+      ["date", "int"],
+      ["user_id", "long"],
+      ["action", "ChannelAdminLogEventAction"],
     ],
+    "ChannelAdminLogEvent",
   ],
-  [
-    "statsDateRangeDays",
+  "channels.adminLogResults": [
+    0xED8AF74D,
     [
-      0xB637EDAF,
-      [
-        ["min_date", "int"],
-        ["max_date", "int"],
-      ],
+      ["events", "Vector<ChannelAdminLogEvent>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "channels.AdminLogResults",
   ],
-  [
-    "statsAbsValueAndPrev",
+  "channelAdminLogEventsFilter": [
+    0xEA107AE4,
     [
-      0xCB43ACDE,
-      [
-        ["current", "double"],
-        ["previous", "double"],
-      ],
+      ["flags", "#"],
+      ["join", "flags.0?true"],
+      ["leave", "flags.1?true"],
+      ["invite", "flags.2?true"],
+      ["ban", "flags.3?true"],
+      ["unban", "flags.4?true"],
+      ["kick", "flags.5?true"],
+      ["unkick", "flags.6?true"],
+      ["promote", "flags.7?true"],
+      ["demote", "flags.8?true"],
+      ["info", "flags.9?true"],
+      ["settings", "flags.10?true"],
+      ["pinned", "flags.11?true"],
+      ["edit", "flags.12?true"],
+      ["delete", "flags.13?true"],
+      ["group_call", "flags.14?true"],
+      ["invites", "flags.15?true"],
+      ["send", "flags.16?true"],
+      ["forums", "flags.17?true"],
+      ["sub_extend", "flags.18?true"],
     ],
+    "ChannelAdminLogEventsFilter",
   ],
-  [
-    "statsPercentValue",
+  "popularContact": [
+    0x5CE14175,
     [
-      0xCBCE2FE0,
-      [
-        ["part", "double"],
-        ["total", "double"],
-      ],
+      ["client_id", "long"],
+      ["importers", "int"],
     ],
+    "PopularContact",
   ],
-  [
-    "statsGraphAsync",
+  "messages.favedStickersNotModified": [
+    0x9E8FA6D3,
+    [],
+    "messages.FavedStickers",
+  ],
+  "messages.favedStickers": [
+    0x2CB51097,
     [
-      0x4A27EB2D,
-      [
-        ["token", "string"],
-      ],
+      ["hash", "long"],
+      ["packs", "Vector<StickerPack>"],
+      ["stickers", "Vector<Document>"],
     ],
+    "messages.FavedStickers",
   ],
-  [
-    "statsGraphError",
+  "recentMeUrlUnknown": [
+    0x46E1D13D,
     [
-      0xBEDC9822,
-      [
-        ["error", "string"],
-      ],
+      ["url", "string"],
     ],
+    "RecentMeUrl",
   ],
-  [
-    "statsGraph",
+  "recentMeUrlUser": [
+    0xB92C09E2,
     [
-      0x8EA464B6,
-      [
-        ["flags", "#"],
-        ["json", "DataJSON"],
-        ["zoom_token", "flags.0?string"],
-      ],
+      ["url", "string"],
+      ["user_id", "long"],
     ],
+    "RecentMeUrl",
   ],
-  [
-    "stats.broadcastStats",
+  "recentMeUrlChat": [
+    0xB2DA71D2,
     [
-      0x396CA5FC,
-      [
-        ["period", "StatsDateRangeDays"],
-        ["followers", "StatsAbsValueAndPrev"],
-        ["views_per_post", "StatsAbsValueAndPrev"],
-        ["shares_per_post", "StatsAbsValueAndPrev"],
-        ["reactions_per_post", "StatsAbsValueAndPrev"],
-        ["views_per_story", "StatsAbsValueAndPrev"],
-        ["shares_per_story", "StatsAbsValueAndPrev"],
-        ["reactions_per_story", "StatsAbsValueAndPrev"],
-        ["enabled_notifications", "StatsPercentValue"],
-        ["growth_graph", "StatsGraph"],
-        ["followers_graph", "StatsGraph"],
-        ["mute_graph", "StatsGraph"],
-        ["top_hours_graph", "StatsGraph"],
-        ["interactions_graph", "StatsGraph"],
-        ["iv_interactions_graph", "StatsGraph"],
-        ["views_by_source_graph", "StatsGraph"],
-        ["new_followers_by_source_graph", "StatsGraph"],
-        ["languages_graph", "StatsGraph"],
-        ["reactions_by_emotion_graph", "StatsGraph"],
-        ["story_interactions_graph", "StatsGraph"],
-        ["story_reactions_by_emotion_graph", "StatsGraph"],
-        ["recent_posts_interactions", "Vector<PostInteractionCounters>"],
-      ],
+      ["url", "string"],
+      ["chat_id", "long"],
     ],
+    "RecentMeUrl",
   ],
-  [
-    "help.promoDataEmpty",
+  "recentMeUrlChatInvite": [
+    0xEB49081D,
     [
-      0x98F6AC75,
-      [
-        ["expires", "int"],
-      ],
+      ["url", "string"],
+      ["chat_invite", "ChatInvite"],
     ],
+    "RecentMeUrl",
   ],
-  [
-    "help.promoData",
+  "recentMeUrlStickerSet": [
+    0xBC0A57DC,
     [
-      0x8C39793F,
-      [
-        ["flags", "#"],
-        ["proxy", "flags.0?true"],
-        ["expires", "int"],
-        ["peer", "Peer"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-        ["psa_type", "flags.1?string"],
-        ["psa_message", "flags.2?string"],
-      ],
+      ["url", "string"],
+      ["set", "StickerSetCovered"],
     ],
+    "RecentMeUrl",
   ],
-  [
-    "videoSize",
+  "help.recentMeUrls": [
+    0x0E0310D7,
     [
-      0xDE33B094,
-      [
-        ["flags", "#"],
-        ["type", "string"],
-        ["w", "int"],
-        ["h", "int"],
-        ["size", "int"],
-        ["video_start_ts", "flags.0?double"],
-      ],
+      ["urls", "Vector<RecentMeUrl>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "help.RecentMeUrls",
   ],
-  [
-    "videoSizeEmojiMarkup",
+  "inputSingleMedia": [
+    0x1CC6E91F,
     [
-      0xF85C413C,
-      [
-        ["emoji_id", "long"],
-        ["background_colors", "Vector<int>"],
-      ],
+      ["flags", "#"],
+      ["media", "InputMedia"],
+      ["random_id", "long"],
+      ["message", "string"],
+      ["entities", "flags.0?Vector<MessageEntity>"],
     ],
+    "InputSingleMedia",
   ],
-  [
-    "videoSizeStickerMarkup",
+  "webAuthorization": [
+    0xA6F8F452,
     [
-      0x0DA082FE,
-      [
-        ["stickerset", "InputStickerSet"],
-        ["sticker_id", "long"],
-        ["background_colors", "Vector<int>"],
-      ],
+      ["hash", "long"],
+      ["bot_id", "long"],
+      ["domain", "string"],
+      ["browser", "string"],
+      ["platform", "string"],
+      ["date_created", "int"],
+      ["date_active", "int"],
+      ["ip", "string"],
+      ["region", "string"],
     ],
+    "WebAuthorization",
   ],
-  [
-    "statsGroupTopPoster",
+  "account.webAuthorizations": [
+    0xED56C9FC,
     [
-      0x9D04AF9B,
-      [
-        ["user_id", "long"],
-        ["messages", "int"],
-        ["avg_chars", "int"],
-      ],
+      ["authorizations", "Vector<WebAuthorization>"],
+      ["users", "Vector<User>"],
     ],
+    "account.WebAuthorizations",
   ],
-  [
-    "statsGroupTopAdmin",
+  "inputMessageID": [
+    0xA676A322,
     [
-      0xD7584C87,
-      [
-        ["user_id", "long"],
-        ["deleted", "int"],
-        ["kicked", "int"],
-        ["banned", "int"],
-      ],
+      ["id", "int"],
     ],
+    "InputMessage",
   ],
-  [
-    "statsGroupTopInviter",
+  "inputMessageReplyTo": [
+    0xBAD88395,
     [
-      0x535F779D,
-      [
-        ["user_id", "long"],
-        ["invitations", "int"],
-      ],
+      ["id", "int"],
     ],
+    "InputMessage",
+  ],
+  "inputMessagePinned": [
+    0x86872538,
+    [],
+    "InputMessage",
   ],
-  [
-    "stats.megagroupStats",
+  "inputMessageCallbackQuery": [
+    0xACFA1A7E,
     [
-      0xEF7FF916,
-      [
-        ["period", "StatsDateRangeDays"],
-        ["members", "StatsAbsValueAndPrev"],
-        ["messages", "StatsAbsValueAndPrev"],
-        ["viewers", "StatsAbsValueAndPrev"],
-        ["posters", "StatsAbsValueAndPrev"],
-        ["growth_graph", "StatsGraph"],
-        ["members_graph", "StatsGraph"],
-        ["new_members_by_source_graph", "StatsGraph"],
-        ["languages_graph", "StatsGraph"],
-        ["messages_graph", "StatsGraph"],
-        ["actions_graph", "StatsGraph"],
-        ["top_hours_graph", "StatsGraph"],
-        ["weekdays_graph", "StatsGraph"],
-        ["top_posters", "Vector<StatsGroupTopPoster>"],
-        ["top_admins", "Vector<StatsGroupTopAdmin>"],
-        ["top_inviters", "Vector<StatsGroupTopInviter>"],
-        ["users", "Vector<User>"],
-      ],
+      ["id", "int"],
+      ["query_id", "long"],
     ],
+    "InputMessage",
   ],
-  [
-    "globalPrivacySettings",
+  "inputDialogPeer": [
+    0xFCAAFEB7,
     [
-      0xC9D8DF1C,
-      [
-        ["flags", "#"],
-        ["archive_and_mute_new_noncontact_peers", "flags.0?true"],
-        ["keep_archived_unmuted", "flags.1?true"],
-        ["keep_archived_folders", "flags.2?true"],
-        ["hide_read_marks", "flags.3?true"],
-        ["new_noncontact_peers_require_premium", "flags.4?true"],
-        ["noncontact_peers_paid_stars", "flags.5?long"],
-      ],
+      ["peer", "InputPeer"],
     ],
+    "InputDialogPeer",
   ],
-  [
-    "help.countryCode",
+  "inputDialogPeerFolder": [
+    0x64600527,
     [
-      0x4203C5EF,
-      [
-        ["flags", "#"],
-        ["country_code", "string"],
-        ["prefixes", "flags.0?Vector<string>"],
-        ["patterns", "flags.1?Vector<string>"],
-      ],
+      ["folder_id", "int"],
     ],
+    "InputDialogPeer",
   ],
-  [
-    "help.country",
+  "dialogPeer": [
+    0xE56DBF05,
     [
-      0xC3878E23,
-      [
-        ["flags", "#"],
-        ["hidden", "flags.0?true"],
-        ["iso2", "string"],
-        ["default_name", "string"],
-        ["name", "flags.1?string"],
-        ["country_codes", "Vector<help.CountryCode>"],
-      ],
+      ["peer", "Peer"],
     ],
+    "DialogPeer",
   ],
-  [
-    "help.countriesListNotModified",
+  "dialogPeerFolder": [
+    0x514519E2,
     [
-      0x93CC1F32,
-      [],
+      ["folder_id", "int"],
     ],
+    "DialogPeer",
   ],
-  [
-    "help.countriesList",
+  "messages.foundStickerSetsNotModified": [
+    0x0D54B65D,
+    [],
+    "messages.FoundStickerSets",
+  ],
+  "messages.foundStickerSets": [
+    0x8AF09DD2,
     [
-      0x87D0759E,
-      [
-        ["countries", "Vector<help.Country>"],
-        ["hash", "int"],
-      ],
+      ["hash", "long"],
+      ["sets", "Vector<StickerSetCovered>"],
     ],
+    "messages.FoundStickerSets",
   ],
-  [
-    "messageViews",
+  "fileHash": [
+    0xF39B035C,
     [
-      0x455B853D,
-      [
-        ["flags", "#"],
-        ["views", "flags.0?int"],
-        ["forwards", "flags.1?int"],
-        ["replies", "flags.2?MessageReplies"],
-      ],
+      ["offset", "long"],
+      ["limit", "int"],
+      ["hash", "bytes"],
     ],
+    "FileHash",
   ],
-  [
-    "messages.messageViews",
+  "inputClientProxy": [
+    0x75588B3F,
     [
-      0xB6C4F543,
-      [
-        ["views", "Vector<MessageViews>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["address", "string"],
+      ["port", "int"],
     ],
+    "InputClientProxy",
   ],
-  [
-    "messages.discussionMessage",
+  "help.termsOfServiceUpdateEmpty": [
+    0xE3309F7F,
     [
-      0xA6341782,
-      [
-        ["flags", "#"],
-        ["messages", "Vector<Message>"],
-        ["max_id", "flags.0?int"],
-        ["read_inbox_max_id", "flags.1?int"],
-        ["read_outbox_max_id", "flags.2?int"],
-        ["unread_count", "int"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["expires", "int"],
     ],
+    "help.TermsOfServiceUpdate",
   ],
-  [
-    "messageReplyHeader",
+  "help.termsOfServiceUpdate": [
+    0x28ECF961,
     [
-      0xAFBC09DB,
-      [
-        ["flags", "#"],
-        ["reply_to_scheduled", "flags.2?true"],
-        ["forum_topic", "flags.3?true"],
-        ["quote", "flags.9?true"],
-        ["reply_to_msg_id", "flags.4?int"],
-        ["reply_to_peer_id", "flags.0?Peer"],
-        ["reply_from", "flags.5?MessageFwdHeader"],
-        ["reply_media", "flags.8?MessageMedia"],
-        ["reply_to_top_id", "flags.1?int"],
-        ["quote_text", "flags.6?string"],
-        ["quote_entities", "flags.7?Vector<MessageEntity>"],
-        ["quote_offset", "flags.10?int"],
-      ],
+      ["expires", "int"],
+      ["terms_of_service", "help.TermsOfService"],
     ],
+    "help.TermsOfServiceUpdate",
   ],
-  [
-    "messageReplyStoryHeader",
+  "inputSecureFileUploaded": [
+    0x3334B0F0,
     [
-      0x0E5AF939,
-      [
-        ["peer", "Peer"],
-        ["story_id", "int"],
-      ],
+      ["id", "long"],
+      ["parts", "int"],
+      ["md5_checksum", "string"],
+      ["file_hash", "bytes"],
+      ["secret", "bytes"],
     ],
+    "InputSecureFile",
   ],
-  [
-    "messageReplies",
+  "inputSecureFile": [
+    0x5367E5BE,
     [
-      0x83D60FC2,
-      [
-        ["flags", "#"],
-        ["comments", "flags.0?true"],
-        ["replies", "int"],
-        ["replies_pts", "int"],
-        ["recent_repliers", "flags.1?Vector<Peer>"],
-        ["channel_id", "flags.0?long"],
-        ["max_id", "flags.2?int"],
-        ["read_max_id", "flags.3?int"],
-      ],
+      ["id", "long"],
+      ["access_hash", "long"],
     ],
+    "InputSecureFile",
+  ],
+  "secureFileEmpty": [
+    0x64199744,
+    [],
+    "SecureFile",
   ],
-  [
-    "peerBlocked",
+  "secureFile": [
+    0x7D09C27E,
     [
-      0xE8FD8014,
-      [
-        ["peer_id", "Peer"],
-        ["date", "int"],
-      ],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["size", "long"],
+      ["dc_id", "int"],
+      ["date", "int"],
+      ["file_hash", "bytes"],
+      ["secret", "bytes"],
     ],
+    "SecureFile",
   ],
-  [
-    "stats.messageStats",
+  "secureData": [
+    0x8AEABEC3,
     [
-      0x7FE91C14,
-      [
-        ["views_graph", "StatsGraph"],
-        ["reactions_by_emotion_graph", "StatsGraph"],
-      ],
+      ["data", "bytes"],
+      ["data_hash", "bytes"],
+      ["secret", "bytes"],
     ],
+    "SecureData",
   ],
-  [
-    "groupCallDiscarded",
+  "securePlainPhone": [
+    0x7D6099DD,
     [
-      0x7780BCB4,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["duration", "int"],
-      ],
+      ["phone", "string"],
     ],
+    "SecurePlainData",
   ],
-  [
-    "groupCall",
+  "securePlainEmail": [
+    0x21EC5A5F,
     [
-      0xCDF8D3E3,
-      [
-        ["flags", "#"],
-        ["join_muted", "flags.1?true"],
-        ["can_change_join_muted", "flags.2?true"],
-        ["join_date_asc", "flags.6?true"],
-        ["schedule_start_subscribed", "flags.8?true"],
-        ["can_start_video", "flags.9?true"],
-        ["record_video_active", "flags.11?true"],
-        ["rtmp_stream", "flags.12?true"],
-        ["listeners_hidden", "flags.13?true"],
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["participants_count", "int"],
-        ["title", "flags.3?string"],
-        ["stream_dc_id", "flags.4?int"],
-        ["record_start_date", "flags.5?int"],
-        ["schedule_date", "flags.7?int"],
-        ["unmuted_video_count", "flags.10?int"],
-        ["unmuted_video_limit", "int"],
-        ["version", "int"],
-        ["conference_from_call", "flags.14?long"],
-      ],
+      ["email", "string"],
     ],
+    "SecurePlainData",
+  ],
+  "secureValueTypePersonalDetails": [
+    0x9D2A81E3,
+    [],
+    "SecureValueType",
+  ],
+  "secureValueTypePassport": [
+    0x3DAC6A00,
+    [],
+    "SecureValueType",
+  ],
+  "secureValueTypeDriverLicense": [
+    0x06E425C4,
+    [],
+    "SecureValueType",
+  ],
+  "secureValueTypeIdentityCard": [
+    0xA0D0744B,
+    [],
+    "SecureValueType",
+  ],
+  "secureValueTypeInternalPassport": [
+    0x99A48F23,
+    [],
+    "SecureValueType",
+  ],
+  "secureValueTypeAddress": [
+    0xCBE31E26,
+    [],
+    "SecureValueType",
+  ],
+  "secureValueTypeUtilityBill": [
+    0xFC36954E,
+    [],
+    "SecureValueType",
+  ],
+  "secureValueTypeBankStatement": [
+    0x89137C0D,
+    [],
+    "SecureValueType",
+  ],
+  "secureValueTypeRentalAgreement": [
+    0x8B883488,
+    [],
+    "SecureValueType",
+  ],
+  "secureValueTypePassportRegistration": [
+    0x99E3806A,
+    [],
+    "SecureValueType",
+  ],
+  "secureValueTypeTemporaryRegistration": [
+    0xEA02EC33,
+    [],
+    "SecureValueType",
+  ],
+  "secureValueTypePhone": [
+    0xB320AADB,
+    [],
+    "SecureValueType",
   ],
-  [
-    "inputGroupCall",
+  "secureValueTypeEmail": [
+    0x8E3CA7EE,
+    [],
+    "SecureValueType",
+  ],
+  "secureValue": [
+    0x187FA0CA,
     [
-      0xD8AA840F,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-      ],
+      ["flags", "#"],
+      ["type", "SecureValueType"],
+      ["data", "flags.0?SecureData"],
+      ["front_side", "flags.1?SecureFile"],
+      ["reverse_side", "flags.2?SecureFile"],
+      ["selfie", "flags.3?SecureFile"],
+      ["translation", "flags.6?Vector<SecureFile>"],
+      ["files", "flags.4?Vector<SecureFile>"],
+      ["plain_data", "flags.5?SecurePlainData"],
+      ["hash", "bytes"],
     ],
+    "SecureValue",
   ],
-  [
-    "groupCallParticipant",
+  "inputSecureValue": [
+    0xDB21D0A7,
     [
-      0xEBA636FE,
-      [
-        ["flags", "#"],
-        ["muted", "flags.0?true"],
-        ["left", "flags.1?true"],
-        ["can_self_unmute", "flags.2?true"],
-        ["just_joined", "flags.4?true"],
-        ["versioned", "flags.5?true"],
-        ["min", "flags.8?true"],
-        ["muted_by_you", "flags.9?true"],
-        ["volume_by_admin", "flags.10?true"],
-        ["self", "flags.12?true"],
-        ["video_joined", "flags.15?true"],
-        ["peer", "Peer"],
-        ["date", "int"],
-        ["active_date", "flags.3?int"],
-        ["source", "int"],
-        ["volume", "flags.7?int"],
-        ["about", "flags.11?string"],
-        ["raise_hand_rating", "flags.13?long"],
-        ["video", "flags.6?GroupCallParticipantVideo"],
-        ["presentation", "flags.14?GroupCallParticipantVideo"],
-      ],
+      ["flags", "#"],
+      ["type", "SecureValueType"],
+      ["data", "flags.0?SecureData"],
+      ["front_side", "flags.1?InputSecureFile"],
+      ["reverse_side", "flags.2?InputSecureFile"],
+      ["selfie", "flags.3?InputSecureFile"],
+      ["translation", "flags.6?Vector<InputSecureFile>"],
+      ["files", "flags.4?Vector<InputSecureFile>"],
+      ["plain_data", "flags.5?SecurePlainData"],
     ],
+    "InputSecureValue",
   ],
-  [
-    "phone.groupCall",
+  "secureValueHash": [
+    0xED1ECDB0,
     [
-      0x9E727AAD,
-      [
-        ["call", "GroupCall"],
-        ["participants", "Vector<GroupCallParticipant>"],
-        ["participants_next_offset", "string"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["type", "SecureValueType"],
+      ["hash", "bytes"],
     ],
+    "SecureValueHash",
   ],
-  [
-    "phone.groupParticipants",
+  "secureValueErrorData": [
+    0xE8A40BD9,
     [
-      0xF47751B6,
-      [
-        ["count", "int"],
-        ["participants", "Vector<GroupCallParticipant>"],
-        ["next_offset", "string"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-        ["version", "int"],
-      ],
+      ["type", "SecureValueType"],
+      ["data_hash", "bytes"],
+      ["field", "string"],
+      ["text", "string"],
     ],
+    "SecureValueError",
   ],
-  [
-    "inlineQueryPeerTypeSameBotPM",
+  "secureValueErrorFrontSide": [
+    0x00BE3DFA,
     [
-      0x3081ED9D,
-      [],
+      ["type", "SecureValueType"],
+      ["file_hash", "bytes"],
+      ["text", "string"],
     ],
+    "SecureValueError",
   ],
-  [
-    "inlineQueryPeerTypePM",
+  "secureValueErrorReverseSide": [
+    0x868A2AA5,
     [
-      0x833C0FAC,
-      [],
+      ["type", "SecureValueType"],
+      ["file_hash", "bytes"],
+      ["text", "string"],
     ],
+    "SecureValueError",
   ],
-  [
-    "inlineQueryPeerTypeChat",
+  "secureValueErrorSelfie": [
+    0xE537CED6,
     [
-      0xD766C50A,
-      [],
+      ["type", "SecureValueType"],
+      ["file_hash", "bytes"],
+      ["text", "string"],
     ],
+    "SecureValueError",
   ],
-  [
-    "inlineQueryPeerTypeMegagroup",
+  "secureValueErrorFile": [
+    0x7A700873,
     [
-      0x5EC4BE43,
-      [],
+      ["type", "SecureValueType"],
+      ["file_hash", "bytes"],
+      ["text", "string"],
     ],
+    "SecureValueError",
   ],
-  [
-    "inlineQueryPeerTypeBroadcast",
+  "secureValueErrorFiles": [
+    0x666220E9,
     [
-      0x6334EE9A,
-      [],
+      ["type", "SecureValueType"],
+      ["file_hash", "Vector<bytes>"],
+      ["text", "string"],
     ],
+    "SecureValueError",
   ],
-  [
-    "inlineQueryPeerTypeBotPM",
+  "secureValueError": [
+    0x869D758F,
     [
-      0x0E3B2D0C,
-      [],
+      ["type", "SecureValueType"],
+      ["hash", "bytes"],
+      ["text", "string"],
     ],
+    "SecureValueError",
   ],
-  [
-    "messages.historyImport",
+  "secureValueErrorTranslationFile": [
+    0xA1144770,
     [
-      0x1662AF0B,
-      [
-        ["id", "long"],
-      ],
+      ["type", "SecureValueType"],
+      ["file_hash", "bytes"],
+      ["text", "string"],
     ],
+    "SecureValueError",
   ],
-  [
-    "messages.historyImportParsed",
+  "secureValueErrorTranslationFiles": [
+    0x34636DD8,
     [
-      0x5E0FB7B9,
-      [
-        ["flags", "#"],
-        ["pm", "flags.0?true"],
-        ["group", "flags.1?true"],
-        ["title", "flags.2?string"],
-      ],
+      ["type", "SecureValueType"],
+      ["file_hash", "Vector<bytes>"],
+      ["text", "string"],
     ],
+    "SecureValueError",
   ],
-  [
-    "messages.affectedFoundMessages",
+  "secureCredentialsEncrypted": [
+    0x33F0EA47,
     [
-      0xEF8D3E6C,
-      [
-        ["pts", "int"],
-        ["pts_count", "int"],
-        ["offset", "int"],
-        ["messages", "Vector<int>"],
-      ],
+      ["data", "bytes"],
+      ["hash", "bytes"],
+      ["secret", "bytes"],
     ],
+    "SecureCredentialsEncrypted",
   ],
-  [
-    "chatInviteImporter",
+  "account.authorizationForm": [
+    0xAD2E1CD8,
     [
-      0x8C5ADFD9,
-      [
-        ["flags", "#"],
-        ["requested", "flags.0?true"],
-        ["via_chatlist", "flags.3?true"],
-        ["user_id", "long"],
-        ["date", "int"],
-        ["about", "flags.2?string"],
-        ["approved_by", "flags.1?long"],
-      ],
+      ["flags", "#"],
+      ["required_types", "Vector<SecureRequiredType>"],
+      ["values", "Vector<SecureValue>"],
+      ["errors", "Vector<SecureValueError>"],
+      ["users", "Vector<User>"],
+      ["privacy_policy_url", "flags.0?string"],
     ],
+    "account.AuthorizationForm",
   ],
-  [
-    "messages.exportedChatInvites",
+  "account.sentEmailCode": [
+    0x811F854F,
     [
-      0xBDC62DCC,
-      [
-        ["count", "int"],
-        ["invites", "Vector<ExportedChatInvite>"],
-        ["users", "Vector<User>"],
-      ],
+      ["email_pattern", "string"],
+      ["length", "int"],
     ],
+    "account.SentEmailCode",
+  ],
+  "help.deepLinkInfoEmpty": [
+    0x66AFA166,
+    [],
+    "help.DeepLinkInfo",
   ],
-  [
-    "messages.exportedChatInvite",
+  "help.deepLinkInfo": [
+    0x6A4EE832,
     [
-      0x1871BE50,
-      [
-        ["invite", "ExportedChatInvite"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["update_app", "flags.0?true"],
+      ["message", "string"],
+      ["entities", "flags.1?Vector<MessageEntity>"],
     ],
+    "help.DeepLinkInfo",
   ],
-  [
-    "messages.exportedChatInviteReplaced",
+  "savedPhoneContact": [
+    0x1142BD56,
     [
-      0x222600EF,
-      [
-        ["invite", "ExportedChatInvite"],
-        ["new_invite", "ExportedChatInvite"],
-        ["users", "Vector<User>"],
-      ],
+      ["phone", "string"],
+      ["first_name", "string"],
+      ["last_name", "string"],
+      ["date", "int"],
     ],
+    "SavedContact",
   ],
-  [
-    "messages.chatInviteImporters",
+  "account.takeout": [
+    0x4DBA4501,
     [
-      0x81B6B00A,
-      [
-        ["count", "int"],
-        ["importers", "Vector<ChatInviteImporter>"],
-        ["users", "Vector<User>"],
-      ],
+      ["id", "long"],
     ],
+    "account.Takeout",
   ],
-  [
-    "chatAdminWithInvites",
+  "passwordKdfAlgoUnknown": [
+    0xD45AB096,
+    [],
+    "PasswordKdfAlgo",
+  ],
+  "passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow": [
+    0x3A912D4A,
     [
-      0xF2ECEF23,
-      [
-        ["admin_id", "long"],
-        ["invites_count", "int"],
-        ["revoked_invites_count", "int"],
-      ],
+      ["salt1", "bytes"],
+      ["salt2", "bytes"],
+      ["g", "int"],
+      ["p", "bytes"],
     ],
+    "PasswordKdfAlgo",
+  ],
+  "securePasswordKdfAlgoUnknown": [
+    0x004A8537,
+    [],
+    "SecurePasswordKdfAlgo",
   ],
-  [
-    "messages.chatAdminsWithInvites",
+  "securePasswordKdfAlgoPBKDF2HMACSHA512iter100000": [
+    0xBBF2DDA0,
     [
-      0xB69B72D7,
-      [
-        ["admins", "Vector<ChatAdminWithInvites>"],
-        ["users", "Vector<User>"],
-      ],
+      ["salt", "bytes"],
     ],
+    "SecurePasswordKdfAlgo",
   ],
-  [
-    "messages.checkedHistoryImportPeer",
+  "securePasswordKdfAlgoSHA512": [
+    0x86471D92,
     [
-      0xA24DE717,
-      [
-        ["confirm_text", "string"],
-      ],
+      ["salt", "bytes"],
     ],
+    "SecurePasswordKdfAlgo",
   ],
-  [
-    "phone.joinAsPeers",
+  "secureSecretSettings": [
+    0x1527BCAC,
     [
-      0xAFE5623F,
-      [
-        ["peers", "Vector<Peer>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["secure_algo", "SecurePasswordKdfAlgo"],
+      ["secure_secret", "bytes"],
+      ["secure_secret_id", "long"],
     ],
+    "SecureSecretSettings",
   ],
-  [
-    "phone.exportedGroupCallInvite",
+  "inputCheckPasswordEmpty": [
+    0x9880F658,
+    [],
+    "InputCheckPasswordSRP",
+  ],
+  "inputCheckPasswordSRP": [
+    0xD27FF082,
     [
-      0x204BD158,
-      [
-        ["link", "string"],
-      ],
+      ["srp_id", "long"],
+      ["A", "bytes"],
+      ["M1", "bytes"],
     ],
+    "InputCheckPasswordSRP",
   ],
-  [
-    "groupCallParticipantVideoSourceGroup",
+  "secureRequiredType": [
+    0x829D99DA,
     [
-      0xDCB118B7,
-      [
-        ["semantics", "string"],
-        ["sources", "Vector<int>"],
-      ],
+      ["flags", "#"],
+      ["native_names", "flags.0?true"],
+      ["selfie_required", "flags.1?true"],
+      ["translation_required", "flags.2?true"],
+      ["type", "SecureValueType"],
     ],
+    "SecureRequiredType",
   ],
-  [
-    "groupCallParticipantVideo",
+  "secureRequiredTypeOneOf": [
+    0x027477B4,
     [
-      0x67753AC8,
-      [
-        ["flags", "#"],
-        ["paused", "flags.0?true"],
-        ["endpoint", "string"],
-        ["source_groups", "Vector<GroupCallParticipantVideoSourceGroup>"],
-        ["audio_source", "flags.1?int"],
-      ],
+      ["types", "Vector<SecureRequiredType>"],
     ],
+    "SecureRequiredType",
+  ],
+  "help.passportConfigNotModified": [
+    0xBFB9F457,
+    [],
+    "help.PassportConfig",
   ],
-  [
-    "stickers.suggestedShortName",
+  "help.passportConfig": [
+    0xA098D6AF,
     [
-      0x85FEA03F,
-      [
-        ["short_name", "string"],
-      ],
+      ["hash", "int"],
+      ["countries_langs", "DataJSON"],
     ],
+    "help.PassportConfig",
   ],
-  [
-    "botCommandScopeDefault",
+  "inputAppEvent": [
+    0x1D1B1245,
     [
-      0x2F6CB2AB,
-      [],
+      ["time", "double"],
+      ["type", "string"],
+      ["peer", "long"],
+      ["data", "JSONValue"],
     ],
+    "InputAppEvent",
   ],
-  [
-    "botCommandScopeUsers",
+  "jsonObjectValue": [
+    0xC0DE1BD9,
     [
-      0x3C4F04D8,
-      [],
+      ["key", "string"],
+      ["value", "JSONValue"],
     ],
+    "JSONObjectValue",
   ],
-  [
-    "botCommandScopeChats",
+  "jsonNull": [
+    0x3F6D7B68,
+    [],
+    "JSONValue",
+  ],
+  "jsonBool": [
+    0xC7345E6A,
     [
-      0x6FE1A881,
-      [],
+      ["value", "Bool"],
     ],
+    "JSONValue",
   ],
-  [
-    "botCommandScopeChatAdmins",
+  "jsonNumber": [
+    0x2BE0DFA4,
     [
-      0xB9AA606A,
-      [],
+      ["value", "double"],
     ],
+    "JSONValue",
   ],
-  [
-    "botCommandScopePeer",
+  "jsonString": [
+    0xB71E767A,
     [
-      0xDB9D897D,
-      [
-        ["peer", "InputPeer"],
-      ],
+      ["value", "string"],
     ],
+    "JSONValue",
   ],
-  [
-    "botCommandScopePeerAdmins",
+  "jsonArray": [
+    0xF7444763,
     [
-      0x3FD863D1,
-      [
-        ["peer", "InputPeer"],
-      ],
+      ["value", "Vector<JSONValue>"],
     ],
+    "JSONValue",
   ],
-  [
-    "botCommandScopePeerUser",
+  "jsonObject": [
+    0x99C1D49D,
     [
-      0x0A1321F3,
-      [
-        ["peer", "InputPeer"],
-        ["user_id", "InputUser"],
-      ],
+      ["value", "Vector<JSONObjectValue>"],
     ],
+    "JSONValue",
   ],
-  [
-    "account.resetPasswordFailedWait",
+  "pageTableCell": [
+    0x34566B6A,
     [
-      0xE3779861,
-      [
-        ["retry_date", "int"],
-      ],
+      ["flags", "#"],
+      ["header", "flags.0?true"],
+      ["align_center", "flags.3?true"],
+      ["align_right", "flags.4?true"],
+      ["valign_middle", "flags.5?true"],
+      ["valign_bottom", "flags.6?true"],
+      ["text", "flags.7?RichText"],
+      ["colspan", "flags.1?int"],
+      ["rowspan", "flags.2?int"],
     ],
+    "PageTableCell",
   ],
-  [
-    "account.resetPasswordRequestedWait",
+  "pageTableRow": [
+    0xE0C0C5E5,
     [
-      0xE9EFFC7D,
-      [
-        ["until_date", "int"],
-      ],
+      ["cells", "Vector<PageTableCell>"],
     ],
+    "PageTableRow",
   ],
-  [
-    "account.resetPasswordOk",
+  "pageCaption": [
+    0x6F747657,
     [
-      0xE926D63E,
-      [],
+      ["text", "RichText"],
+      ["credit", "RichText"],
     ],
+    "PageCaption",
   ],
-  [
-    "sponsoredMessage",
+  "pageListItemText": [
+    0xB92FB6CD,
     [
-      0x4D93A990,
-      [
-        ["flags", "#"],
-        ["recommended", "flags.5?true"],
-        ["can_report", "flags.12?true"],
-        ["random_id", "bytes"],
-        ["url", "string"],
-        ["title", "string"],
-        ["message", "string"],
-        ["entities", "flags.1?Vector<MessageEntity>"],
-        ["photo", "flags.6?Photo"],
-        ["media", "flags.14?MessageMedia"],
-        ["color", "flags.13?PeerColor"],
-        ["button_text", "string"],
-        ["sponsor_info", "flags.7?string"],
-        ["additional_info", "flags.8?string"],
-      ],
+      ["text", "RichText"],
     ],
+    "PageListItem",
   ],
-  [
-    "messages.sponsoredMessages",
+  "pageListItemBlocks": [
+    0x25E073FC,
     [
-      0xC9EE1D87,
-      [
-        ["flags", "#"],
-        ["posts_between", "flags.0?int"],
-        ["messages", "Vector<SponsoredMessage>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["blocks", "Vector<PageBlock>"],
     ],
+    "PageListItem",
   ],
-  [
-    "messages.sponsoredMessagesEmpty",
+  "pageListOrderedItemText": [
+    0x5E068047,
     [
-      0x1839490F,
-      [],
+      ["num", "string"],
+      ["text", "RichText"],
     ],
+    "PageListOrderedItem",
   ],
-  [
-    "searchResultsCalendarPeriod",
+  "pageListOrderedItemBlocks": [
+    0x98DD8936,
     [
-      0xC9B0539F,
-      [
-        ["date", "int"],
-        ["min_msg_id", "int"],
-        ["max_msg_id", "int"],
-        ["count", "int"],
-      ],
+      ["num", "string"],
+      ["blocks", "Vector<PageBlock>"],
     ],
+    "PageListOrderedItem",
   ],
-  [
-    "messages.searchResultsCalendar",
+  "pageRelatedArticle": [
+    0xB390DC08,
     [
-      0x147EE23C,
-      [
-        ["flags", "#"],
-        ["inexact", "flags.0?true"],
-        ["count", "int"],
-        ["min_date", "int"],
-        ["min_msg_id", "int"],
-        ["offset_id_offset", "flags.1?int"],
-        ["periods", "Vector<SearchResultsCalendarPeriod>"],
-        ["messages", "Vector<Message>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["url", "string"],
+      ["webpage_id", "long"],
+      ["title", "flags.0?string"],
+      ["description", "flags.1?string"],
+      ["photo_id", "flags.2?long"],
+      ["author", "flags.3?string"],
+      ["published_date", "flags.4?int"],
     ],
+    "PageRelatedArticle",
   ],
-  [
-    "searchResultPosition",
+  "page": [
+    0x98657F0D,
     [
-      0x7F648B67,
-      [
-        ["msg_id", "int"],
-        ["date", "int"],
-        ["offset", "int"],
-      ],
+      ["flags", "#"],
+      ["part", "flags.0?true"],
+      ["rtl", "flags.1?true"],
+      ["v2", "flags.2?true"],
+      ["url", "string"],
+      ["blocks", "Vector<PageBlock>"],
+      ["photos", "Vector<Photo>"],
+      ["documents", "Vector<Document>"],
+      ["views", "flags.3?int"],
     ],
+    "Page",
   ],
-  [
-    "messages.searchResultsPositions",
+  "help.supportName": [
+    0x8C05F1C9,
     [
-      0x53B22BAF,
-      [
-        ["count", "int"],
-        ["positions", "Vector<SearchResultsPosition>"],
-      ],
+      ["name", "string"],
     ],
+    "help.SupportName",
+  ],
+  "help.userInfoEmpty": [
+    0xF3AE2EED,
+    [],
+    "help.UserInfo",
   ],
-  [
-    "channels.sendAsPeers",
+  "help.userInfo": [
+    0x01EB3758,
     [
-      0xF496B0C6,
-      [
-        ["peers", "Vector<SendAsPeer>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["message", "string"],
+      ["entities", "Vector<MessageEntity>"],
+      ["author", "string"],
+      ["date", "int"],
     ],
+    "help.UserInfo",
   ],
-  [
-    "users.userFull",
+  "pollAnswer": [
+    0xFF16E2CA,
     [
-      0x3B6D152E,
-      [
-        ["full_user", "UserFull"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["text", "TextWithEntities"],
+      ["option", "bytes"],
     ],
+    "PollAnswer",
   ],
-  [
-    "messages.peerSettings",
+  "poll": [
+    0x58747131,
     [
-      0x6880B94D,
-      [
-        ["settings", "PeerSettings"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["id", "long"],
+      ["flags", "#"],
+      ["closed", "flags.0?true"],
+      ["public_voters", "flags.1?true"],
+      ["multiple_choice", "flags.2?true"],
+      ["quiz", "flags.3?true"],
+      ["question", "TextWithEntities"],
+      ["answers", "Vector<PollAnswer>"],
+      ["close_period", "flags.4?int"],
+      ["close_date", "flags.5?int"],
     ],
+    "Poll",
   ],
-  [
-    "auth.loggedOut",
+  "pollAnswerVoters": [
+    0x3B6DDAD2,
     [
-      0xC3A2835F,
-      [
-        ["flags", "#"],
-        ["future_auth_token", "flags.0?bytes"],
-      ],
+      ["flags", "#"],
+      ["chosen", "flags.0?true"],
+      ["correct", "flags.1?true"],
+      ["option", "bytes"],
+      ["voters", "int"],
     ],
+    "PollAnswerVoters",
   ],
-  [
-    "reactionCount",
+  "pollResults": [
+    0x7ADF2420,
     [
-      0xA3D1CB80,
-      [
-        ["flags", "#"],
-        ["chosen_order", "flags.0?int"],
-        ["reaction", "Reaction"],
-        ["count", "int"],
-      ],
+      ["flags", "#"],
+      ["min", "flags.0?true"],
+      ["results", "flags.1?Vector<PollAnswerVoters>"],
+      ["total_voters", "flags.2?int"],
+      ["recent_voters", "flags.3?Vector<Peer>"],
+      ["solution", "flags.4?string"],
+      ["solution_entities", "flags.4?Vector<MessageEntity>"],
     ],
+    "PollResults",
   ],
-  [
-    "messageReactions",
+  "chatOnlines": [
+    0xF041E250,
     [
-      0x0A339F0B,
-      [
-        ["flags", "#"],
-        ["min", "flags.0?true"],
-        ["can_see_list", "flags.2?true"],
-        ["reactions_as_tags", "flags.3?true"],
-        ["results", "Vector<ReactionCount>"],
-        ["recent_reactions", "flags.1?Vector<MessagePeerReaction>"],
-        ["top_reactors", "flags.4?Vector<MessageReactor>"],
-      ],
+      ["onlines", "int"],
     ],
+    "ChatOnlines",
   ],
-  [
-    "messages.messageReactionsList",
+  "statsURL": [
+    0x47A971E0,
     [
-      0x31BD492D,
-      [
-        ["flags", "#"],
-        ["count", "int"],
-        ["reactions", "Vector<MessagePeerReaction>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-        ["next_offset", "flags.0?string"],
-      ],
+      ["url", "string"],
     ],
+    "StatsURL",
   ],
-  [
-    "availableReaction",
+  "chatAdminRights": [
+    0x5FB224D5,
     [
-      0xC077EC01,
-      [
-        ["flags", "#"],
-        ["inactive", "flags.0?true"],
-        ["premium", "flags.2?true"],
-        ["reaction", "string"],
-        ["title", "string"],
-        ["static_icon", "Document"],
-        ["appear_animation", "Document"],
-        ["select_animation", "Document"],
-        ["activate_animation", "Document"],
-        ["effect_animation", "Document"],
-        ["around_animation", "flags.1?Document"],
-        ["center_icon", "flags.1?Document"],
-      ],
+      ["flags", "#"],
+      ["change_info", "flags.0?true"],
+      ["post_messages", "flags.1?true"],
+      ["edit_messages", "flags.2?true"],
+      ["delete_messages", "flags.3?true"],
+      ["ban_users", "flags.4?true"],
+      ["invite_users", "flags.5?true"],
+      ["pin_messages", "flags.7?true"],
+      ["add_admins", "flags.9?true"],
+      ["anonymous", "flags.10?true"],
+      ["manage_call", "flags.11?true"],
+      ["other", "flags.12?true"],
+      ["manage_topics", "flags.13?true"],
+      ["post_stories", "flags.14?true"],
+      ["edit_stories", "flags.15?true"],
+      ["delete_stories", "flags.16?true"],
     ],
+    "ChatAdminRights",
   ],
-  [
-    "messages.availableReactionsNotModified",
+  "chatBannedRights": [
+    0x9F120418,
     [
-      0x9F071957,
-      [],
+      ["flags", "#"],
+      ["view_messages", "flags.0?true"],
+      ["send_messages", "flags.1?true"],
+      ["send_media", "flags.2?true"],
+      ["send_stickers", "flags.3?true"],
+      ["send_gifs", "flags.4?true"],
+      ["send_games", "flags.5?true"],
+      ["send_inline", "flags.6?true"],
+      ["embed_links", "flags.7?true"],
+      ["send_polls", "flags.8?true"],
+      ["change_info", "flags.10?true"],
+      ["invite_users", "flags.15?true"],
+      ["pin_messages", "flags.17?true"],
+      ["manage_topics", "flags.18?true"],
+      ["send_photos", "flags.19?true"],
+      ["send_videos", "flags.20?true"],
+      ["send_roundvideos", "flags.21?true"],
+      ["send_audios", "flags.22?true"],
+      ["send_voices", "flags.23?true"],
+      ["send_docs", "flags.24?true"],
+      ["send_plain", "flags.25?true"],
+      ["until_date", "int"],
     ],
+    "ChatBannedRights",
   ],
-  [
-    "messages.availableReactions",
+  "inputWallPaper": [
+    0xE630B979,
     [
-      0x768E3AAD,
-      [
-        ["hash", "int"],
-        ["reactions", "Vector<AvailableReaction>"],
-      ],
+      ["id", "long"],
+      ["access_hash", "long"],
     ],
+    "InputWallPaper",
   ],
-  [
-    "messagePeerReaction",
+  "inputWallPaperSlug": [
+    0x72091C80,
     [
-      0x8C79B63C,
-      [
-        ["flags", "#"],
-        ["big", "flags.0?true"],
-        ["unread", "flags.1?true"],
-        ["my", "flags.2?true"],
-        ["peer_id", "Peer"],
-        ["date", "int"],
-        ["reaction", "Reaction"],
-      ],
+      ["slug", "string"],
     ],
+    "InputWallPaper",
   ],
-  [
-    "groupCallStreamChannel",
+  "inputWallPaperNoFile": [
+    0x967A462E,
     [
-      0x80EB48AF,
-      [
-        ["channel", "int"],
-        ["scale", "int"],
-        ["last_timestamp_ms", "long"],
-      ],
+      ["id", "long"],
     ],
+    "InputWallPaper",
   ],
-  [
-    "phone.groupCallStreamChannels",
+  "account.wallPapersNotModified": [
+    0x1C199183,
+    [],
+    "account.WallPapers",
+  ],
+  "account.wallPapers": [
+    0xCDC3858C,
     [
-      0xD0E482B2,
-      [
-        ["channels", "Vector<GroupCallStreamChannel>"],
-      ],
+      ["hash", "long"],
+      ["wallpapers", "Vector<WallPaper>"],
     ],
+    "account.WallPapers",
   ],
-  [
-    "phone.groupCallStreamRtmpUrl",
+  "codeSettings": [
+    0xAD253D78,
     [
-      0x2DBF3432,
-      [
-        ["url", "string"],
-        ["key", "string"],
-      ],
+      ["flags", "#"],
+      ["allow_flashcall", "flags.0?true"],
+      ["current_number", "flags.1?true"],
+      ["allow_app_hash", "flags.4?true"],
+      ["allow_missed_call", "flags.5?true"],
+      ["allow_firebase", "flags.7?true"],
+      ["unknown_number", "flags.9?true"],
+      ["logout_tokens", "flags.6?Vector<bytes>"],
+      ["token", "flags.8?string"],
+      ["app_sandbox", "flags.8?Bool"],
     ],
+    "CodeSettings",
   ],
-  [
-    "attachMenuBotIconColor",
+  "wallPaperSettings": [
+    0x372EFCD0,
     [
-      0x4576F3F0,
-      [
-        ["name", "string"],
-        ["color", "int"],
-      ],
+      ["flags", "#"],
+      ["blur", "flags.1?true"],
+      ["motion", "flags.2?true"],
+      ["background_color", "flags.0?int"],
+      ["second_background_color", "flags.4?int"],
+      ["third_background_color", "flags.5?int"],
+      ["fourth_background_color", "flags.6?int"],
+      ["intensity", "flags.3?int"],
+      ["rotation", "flags.4?int"],
+      ["emoticon", "flags.7?string"],
     ],
+    "WallPaperSettings",
   ],
-  [
-    "attachMenuBotIcon",
+  "autoDownloadSettings": [
+    0xBAA57628,
     [
-      0xB2A7386B,
-      [
-        ["flags", "#"],
-        ["name", "string"],
-        ["icon", "Document"],
-        ["colors", "flags.0?Vector<AttachMenuBotIconColor>"],
-      ],
+      ["flags", "#"],
+      ["disabled", "flags.0?true"],
+      ["video_preload_large", "flags.1?true"],
+      ["audio_preload_next", "flags.2?true"],
+      ["phonecalls_less_data", "flags.3?true"],
+      ["stories_preload", "flags.4?true"],
+      ["photo_size_max", "int"],
+      ["video_size_max", "long"],
+      ["file_size_max", "long"],
+      ["video_upload_maxbitrate", "int"],
+      ["small_queue_active_operations_max", "int"],
+      ["large_queue_active_operations_max", "int"],
     ],
+    "AutoDownloadSettings",
   ],
-  [
-    "attachMenuBot",
+  "account.autoDownloadSettings": [
+    0x63CACF26,
     [
-      0xD90D8DFE,
-      [
-        ["flags", "#"],
-        ["inactive", "flags.0?true"],
-        ["has_settings", "flags.1?true"],
-        ["request_write_access", "flags.2?true"],
-        ["show_in_attach_menu", "flags.3?true"],
-        ["show_in_side_menu", "flags.4?true"],
-        ["side_menu_disclaimer_needed", "flags.5?true"],
-        ["bot_id", "long"],
-        ["short_name", "string"],
-        ["peer_types", "flags.3?Vector<AttachMenuPeerType>"],
-        ["icons", "Vector<AttachMenuBotIcon>"],
-      ],
+      ["low", "AutoDownloadSettings"],
+      ["medium", "AutoDownloadSettings"],
+      ["high", "AutoDownloadSettings"],
     ],
+    "account.AutoDownloadSettings",
   ],
-  [
-    "attachMenuBotsNotModified",
+  "emojiKeyword": [
+    0xD5B3B9F9,
     [
-      0xF1D88A5C,
-      [],
+      ["keyword", "string"],
+      ["emoticons", "Vector<string>"],
     ],
+    "EmojiKeyword",
   ],
-  [
-    "attachMenuBots",
+  "emojiKeywordDeleted": [
+    0x236DF622,
     [
-      0x3C4301C0,
-      [
-        ["hash", "long"],
-        ["bots", "Vector<AttachMenuBot>"],
-        ["users", "Vector<User>"],
-      ],
+      ["keyword", "string"],
+      ["emoticons", "Vector<string>"],
     ],
+    "EmojiKeyword",
   ],
-  [
-    "attachMenuBotsBot",
+  "emojiKeywordsDifference": [
+    0x5CC761BD,
     [
-      0x93BF667F,
-      [
-        ["bot", "AttachMenuBot"],
-        ["users", "Vector<User>"],
-      ],
+      ["lang_code", "string"],
+      ["from_version", "int"],
+      ["version", "int"],
+      ["keywords", "Vector<EmojiKeyword>"],
     ],
+    "EmojiKeywordsDifference",
   ],
-  [
-    "webViewResultUrl",
+  "emojiURL": [
+    0xA575739D,
     [
-      0x4D22FF98,
-      [
-        ["flags", "#"],
-        ["fullsize", "flags.1?true"],
-        ["fullscreen", "flags.2?true"],
-        ["query_id", "flags.0?long"],
-        ["url", "string"],
-      ],
+      ["url", "string"],
     ],
+    "EmojiURL",
   ],
-  [
-    "webViewMessageSent",
+  "emojiLanguage": [
+    0xB3FB5361,
     [
-      0x0C94511C,
-      [
-        ["flags", "#"],
-        ["msg_id", "flags.0?InputBotInlineMessageID"],
-      ],
+      ["lang_code", "string"],
     ],
+    "EmojiLanguage",
   ],
-  [
-    "botMenuButtonDefault",
+  "folder": [
+    0xFF544E65,
     [
-      0x7533A588,
-      [],
+      ["flags", "#"],
+      ["autofill_new_broadcasts", "flags.0?true"],
+      ["autofill_public_groups", "flags.1?true"],
+      ["autofill_new_correspondents", "flags.2?true"],
+      ["id", "int"],
+      ["title", "string"],
+      ["photo", "flags.3?ChatPhoto"],
     ],
+    "Folder",
   ],
-  [
-    "botMenuButtonCommands",
+  "inputFolderPeer": [
+    0xFBD2C296,
     [
-      0x4258C205,
-      [],
+      ["peer", "InputPeer"],
+      ["folder_id", "int"],
     ],
+    "InputFolderPeer",
   ],
-  [
-    "botMenuButton",
+  "folderPeer": [
+    0xE9BAA668,
     [
-      0xC7B57CE6,
-      [
-        ["text", "string"],
-        ["url", "string"],
-      ],
+      ["peer", "Peer"],
+      ["folder_id", "int"],
     ],
+    "FolderPeer",
   ],
-  [
-    "account.savedRingtonesNotModified",
+  "messages.searchCounter": [
+    0xE844EBFF,
     [
-      0xFBF6E8B1,
-      [],
+      ["flags", "#"],
+      ["inexact", "flags.1?true"],
+      ["filter", "MessagesFilter"],
+      ["count", "int"],
     ],
+    "messages.SearchCounter",
   ],
-  [
-    "account.savedRingtones",
+  "urlAuthResultRequest": [
+    0x92D33A0E,
     [
-      0xC1E92CC5,
-      [
-        ["hash", "long"],
-        ["ringtones", "Vector<Document>"],
-      ],
+      ["flags", "#"],
+      ["request_write_access", "flags.0?true"],
+      ["bot", "User"],
+      ["domain", "string"],
     ],
+    "UrlAuthResult",
   ],
-  [
-    "notificationSoundDefault",
+  "urlAuthResultAccepted": [
+    0x8F8C0E4E,
     [
-      0x97E8BEBE,
-      [],
+      ["url", "string"],
     ],
+    "UrlAuthResult",
+  ],
+  "urlAuthResultDefault": [
+    0xA9D6DB1F,
+    [],
+    "UrlAuthResult",
   ],
-  [
-    "notificationSoundNone",
+  "channelLocationEmpty": [
+    0xBFB5AD8B,
+    [],
+    "ChannelLocation",
+  ],
+  "channelLocation": [
+    0x209B82DB,
     [
-      0x6F0C34DF,
-      [],
+      ["geo_point", "GeoPoint"],
+      ["address", "string"],
     ],
+    "ChannelLocation",
   ],
-  [
-    "notificationSoundLocal",
+  "peerLocated": [
+    0xCA461B5D,
     [
-      0x830B9AE4,
-      [
-        ["title", "string"],
-        ["data", "string"],
-      ],
+      ["peer", "Peer"],
+      ["expires", "int"],
+      ["distance", "int"],
     ],
+    "PeerLocated",
   ],
-  [
-    "notificationSoundRingtone",
+  "peerSelfLocated": [
+    0xF8EC284B,
     [
-      0xFF6C8049,
-      [
-        ["id", "long"],
-      ],
+      ["expires", "int"],
     ],
+    "PeerLocated",
   ],
-  [
-    "account.savedRingtone",
+  "restrictionReason": [
+    0xD072ACB4,
     [
-      0xB7263F6D,
-      [],
+      ["platform", "string"],
+      ["reason", "string"],
+      ["text", "string"],
     ],
+    "RestrictionReason",
   ],
-  [
-    "account.savedRingtoneConverted",
+  "inputTheme": [
+    0x3C5693E9,
     [
-      0x1F307EB7,
-      [
-        ["document", "Document"],
-      ],
+      ["id", "long"],
+      ["access_hash", "long"],
     ],
+    "InputTheme",
   ],
-  [
-    "attachMenuPeerTypeSameBotPM",
+  "inputThemeSlug": [
+    0xF5890DF1,
     [
-      0x7D6BE90E,
-      [],
+      ["slug", "string"],
     ],
+    "InputTheme",
   ],
-  [
-    "attachMenuPeerTypeBotPM",
+  "theme": [
+    0xA00E67D6,
     [
-      0xC32BFA1A,
-      [],
+      ["flags", "#"],
+      ["creator", "flags.0?true"],
+      ["default", "flags.1?true"],
+      ["for_chat", "flags.5?true"],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["slug", "string"],
+      ["title", "string"],
+      ["document", "flags.2?Document"],
+      ["settings", "flags.3?Vector<ThemeSettings>"],
+      ["emoticon", "flags.6?string"],
+      ["installs_count", "flags.4?int"],
     ],
+    "Theme",
+  ],
+  "account.themesNotModified": [
+    0xF41EB622,
+    [],
+    "account.Themes",
   ],
-  [
-    "attachMenuPeerTypePM",
+  "account.themes": [
+    0x9A3D8C6D,
     [
-      0xF146D31F,
-      [],
+      ["hash", "long"],
+      ["themes", "Vector<Theme>"],
     ],
+    "account.Themes",
   ],
-  [
-    "attachMenuPeerTypeChat",
+  "auth.loginToken": [
+    0x629F1980,
     [
-      0x0509113F,
-      [],
+      ["expires", "int"],
+      ["token", "bytes"],
     ],
+    "auth.LoginToken",
   ],
-  [
-    "attachMenuPeerTypeBroadcast",
+  "auth.loginTokenMigrateTo": [
+    0x068E9916,
     [
-      0x7BFBDEFC,
-      [],
+      ["dc_id", "int"],
+      ["token", "bytes"],
     ],
+    "auth.LoginToken",
   ],
-  [
-    "inputInvoiceMessage",
+  "auth.loginTokenSuccess": [
+    0x390D5C5E,
     [
-      0xC5B56859,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-      ],
+      ["authorization", "auth.Authorization"],
     ],
+    "auth.LoginToken",
   ],
-  [
-    "inputInvoiceSlug",
+  "account.contentSettings": [
+    0x57E28221,
     [
-      0xC326CAEF,
-      [
-        ["slug", "string"],
-      ],
+      ["flags", "#"],
+      ["sensitive_enabled", "flags.0?true"],
+      ["sensitive_can_change", "flags.1?true"],
     ],
+    "account.ContentSettings",
   ],
-  [
-    "inputInvoicePremiumGiftCode",
+  "messages.inactiveChats": [
+    0xA927FEC5,
     [
-      0x98986C0D,
-      [
-        ["purpose", "InputStorePaymentPurpose"],
-        ["option", "PremiumGiftCodeOption"],
-      ],
+      ["dates", "Vector<int>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.InactiveChats",
+  ],
+  "baseThemeClassic": [
+    0xC3A12462,
+    [],
+    "BaseTheme",
+  ],
+  "baseThemeDay": [
+    0xFBD81688,
+    [],
+    "BaseTheme",
+  ],
+  "baseThemeNight": [
+    0xB7B31EA8,
+    [],
+    "BaseTheme",
+  ],
+  "baseThemeTinted": [
+    0x6D5F77EE,
+    [],
+    "BaseTheme",
   ],
-  [
-    "inputInvoiceStars",
+  "baseThemeArctic": [
+    0x5B11125A,
+    [],
+    "BaseTheme",
+  ],
+  "inputThemeSettings": [
+    0x8FDE504F,
     [
-      0x65F00CE3,
-      [
-        ["purpose", "InputStorePaymentPurpose"],
-      ],
+      ["flags", "#"],
+      ["message_colors_animated", "flags.2?true"],
+      ["base_theme", "BaseTheme"],
+      ["accent_color", "int"],
+      ["outbox_accent_color", "flags.3?int"],
+      ["message_colors", "flags.0?Vector<int>"],
+      ["wallpaper", "flags.1?InputWallPaper"],
+      ["wallpaper_settings", "flags.1?WallPaperSettings"],
     ],
+    "InputThemeSettings",
   ],
-  [
-    "inputInvoiceChatInviteSubscription",
+  "themeSettings": [
+    0xFA58B6D4,
     [
-      0x34E793F1,
-      [
-        ["hash", "string"],
-      ],
+      ["flags", "#"],
+      ["message_colors_animated", "flags.2?true"],
+      ["base_theme", "BaseTheme"],
+      ["accent_color", "int"],
+      ["outbox_accent_color", "flags.3?int"],
+      ["message_colors", "flags.0?Vector<int>"],
+      ["wallpaper", "flags.1?WallPaper"],
     ],
+    "ThemeSettings",
   ],
-  [
-    "inputInvoiceStarGift",
+  "webPageAttributeTheme": [
+    0x54B56617,
     [
-      0xE8625E92,
-      [
-        ["flags", "#"],
-        ["hide_name", "flags.0?true"],
-        ["include_upgrade", "flags.2?true"],
-        ["peer", "InputPeer"],
-        ["gift_id", "long"],
-        ["message", "flags.1?TextWithEntities"],
-      ],
+      ["flags", "#"],
+      ["documents", "flags.0?Vector<Document>"],
+      ["settings", "flags.1?ThemeSettings"],
     ],
+    "WebPageAttribute",
   ],
-  [
-    "inputInvoiceStarGiftUpgrade",
+  "webPageAttributeStory": [
+    0x2E94C3E7,
     [
-      0x4D818D5D,
-      [
-        ["flags", "#"],
-        ["keep_original_details", "flags.0?true"],
-        ["stargift", "InputSavedStarGift"],
-      ],
+      ["flags", "#"],
+      ["peer", "Peer"],
+      ["id", "int"],
+      ["story", "flags.0?StoryItem"],
     ],
+    "WebPageAttribute",
   ],
-  [
-    "inputInvoiceStarGiftTransfer",
+  "webPageAttributeStickerSet": [
+    0x50CC03D3,
     [
-      0x4A5F5BD9,
-      [
-        ["stargift", "InputSavedStarGift"],
-        ["to_id", "InputPeer"],
-      ],
+      ["flags", "#"],
+      ["emojis", "flags.0?true"],
+      ["text_color", "flags.1?true"],
+      ["stickers", "Vector<Document>"],
     ],
+    "WebPageAttribute",
   ],
-  [
-    "inputInvoicePremiumGiftStars",
+  "webPageAttributeUniqueStarGift": [
+    0xCF6F6DB8,
     [
-      0xDABAB2EF,
-      [
-        ["flags", "#"],
-        ["user_id", "InputUser"],
-        ["months", "int"],
-        ["message", "flags.0?TextWithEntities"],
-      ],
+      ["gift", "StarGift"],
     ],
+    "WebPageAttribute",
   ],
-  [
-    "payments.exportedInvoice",
+  "messages.votesList": [
+    0x4899484E,
     [
-      0xAED0CBD9,
-      [
-        ["url", "string"],
-      ],
+      ["flags", "#"],
+      ["count", "int"],
+      ["votes", "Vector<MessagePeerVote>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+      ["next_offset", "flags.0?string"],
     ],
+    "messages.VotesList",
   ],
-  [
-    "messages.transcribedAudio",
+  "bankCardOpenUrl": [
+    0xF568028A,
     [
-      0xCFB9D957,
-      [
-        ["flags", "#"],
-        ["pending", "flags.0?true"],
-        ["transcription_id", "long"],
-        ["text", "string"],
-        ["trial_remains_num", "flags.1?int"],
-        ["trial_remains_until_date", "flags.1?int"],
-      ],
+      ["url", "string"],
+      ["name", "string"],
     ],
+    "BankCardOpenUrl",
   ],
-  [
-    "help.premiumPromo",
+  "payments.bankCardData": [
+    0x3E24E573,
     [
-      0x5334759C,
-      [
-        ["status_text", "string"],
-        ["status_entities", "Vector<MessageEntity>"],
-        ["video_sections", "Vector<string>"],
-        ["videos", "Vector<Document>"],
-        ["period_options", "Vector<PremiumSubscriptionOption>"],
-        ["users", "Vector<User>"],
-      ],
+      ["title", "string"],
+      ["open_urls", "Vector<BankCardOpenUrl>"],
     ],
+    "payments.BankCardData",
   ],
-  [
-    "inputStorePaymentPremiumSubscription",
+  "dialogFilter": [
+    0xAA472651,
     [
-      0xA6751E66,
-      [
-        ["flags", "#"],
-        ["restore", "flags.0?true"],
-        ["upgrade", "flags.1?true"],
-      ],
+      ["flags", "#"],
+      ["contacts", "flags.0?true"],
+      ["non_contacts", "flags.1?true"],
+      ["groups", "flags.2?true"],
+      ["broadcasts", "flags.3?true"],
+      ["bots", "flags.4?true"],
+      ["exclude_muted", "flags.11?true"],
+      ["exclude_read", "flags.12?true"],
+      ["exclude_archived", "flags.13?true"],
+      ["title_noanimate", "flags.28?true"],
+      ["id", "int"],
+      ["title", "TextWithEntities"],
+      ["emoticon", "flags.25?string"],
+      ["color", "flags.27?int"],
+      ["pinned_peers", "Vector<InputPeer>"],
+      ["include_peers", "Vector<InputPeer>"],
+      ["exclude_peers", "Vector<InputPeer>"],
     ],
+    "DialogFilter",
+  ],
+  "dialogFilterDefault": [
+    0x363293AE,
+    [],
+    "DialogFilter",
   ],
-  [
-    "inputStorePaymentGiftPremium",
+  "dialogFilterChatlist": [
+    0x96537BD7,
     [
-      0x616F7FE8,
-      [
-        ["user_id", "InputUser"],
-        ["currency", "string"],
-        ["amount", "long"],
-      ],
+      ["flags", "#"],
+      ["has_my_invites", "flags.26?true"],
+      ["title_noanimate", "flags.28?true"],
+      ["id", "int"],
+      ["title", "TextWithEntities"],
+      ["emoticon", "flags.25?string"],
+      ["color", "flags.27?int"],
+      ["pinned_peers", "Vector<InputPeer>"],
+      ["include_peers", "Vector<InputPeer>"],
     ],
+    "DialogFilter",
   ],
-  [
-    "inputStorePaymentPremiumGiftCode",
+  "dialogFilterSuggested": [
+    0x77744D4A,
     [
-      0xFB790393,
-      [
-        ["flags", "#"],
-        ["users", "Vector<InputUser>"],
-        ["boost_peer", "flags.0?InputPeer"],
-        ["currency", "string"],
-        ["amount", "long"],
-        ["message", "flags.1?TextWithEntities"],
-      ],
+      ["filter", "DialogFilter"],
+      ["description", "string"],
     ],
+    "DialogFilterSuggested",
   ],
-  [
-    "inputStorePaymentPremiumGiveaway",
+  "statsDateRangeDays": [
+    0xB637EDAF,
     [
-      0x160544CA,
-      [
-        ["flags", "#"],
-        ["only_new_subscribers", "flags.0?true"],
-        ["winners_are_visible", "flags.3?true"],
-        ["boost_peer", "InputPeer"],
-        ["additional_peers", "flags.1?Vector<InputPeer>"],
-        ["countries_iso2", "flags.2?Vector<string>"],
-        ["prize_description", "flags.4?string"],
-        ["random_id", "long"],
-        ["until_date", "int"],
-        ["currency", "string"],
-        ["amount", "long"],
-      ],
+      ["min_date", "int"],
+      ["max_date", "int"],
     ],
+    "StatsDateRangeDays",
   ],
-  [
-    "inputStorePaymentStarsTopup",
+  "statsAbsValueAndPrev": [
+    0xCB43ACDE,
     [
-      0xDDDD0F56,
-      [
-        ["stars", "long"],
-        ["currency", "string"],
-        ["amount", "long"],
-      ],
+      ["current", "double"],
+      ["previous", "double"],
     ],
+    "StatsAbsValueAndPrev",
   ],
-  [
-    "inputStorePaymentStarsGift",
+  "statsPercentValue": [
+    0xCBCE2FE0,
     [
-      0x1D741EF7,
-      [
-        ["user_id", "InputUser"],
-        ["stars", "long"],
-        ["currency", "string"],
-        ["amount", "long"],
-      ],
+      ["part", "double"],
+      ["total", "double"],
     ],
+    "StatsPercentValue",
   ],
-  [
-    "inputStorePaymentStarsGiveaway",
+  "statsGraphAsync": [
+    0x4A27EB2D,
     [
-      0x751F08FA,
-      [
-        ["flags", "#"],
-        ["only_new_subscribers", "flags.0?true"],
-        ["winners_are_visible", "flags.3?true"],
-        ["stars", "long"],
-        ["boost_peer", "InputPeer"],
-        ["additional_peers", "flags.1?Vector<InputPeer>"],
-        ["countries_iso2", "flags.2?Vector<string>"],
-        ["prize_description", "flags.4?string"],
-        ["random_id", "long"],
-        ["until_date", "int"],
-        ["currency", "string"],
-        ["amount", "long"],
-        ["users", "int"],
-      ],
+      ["token", "string"],
     ],
+    "StatsGraph",
   ],
-  [
-    "paymentFormMethod",
+  "statsGraphError": [
+    0xBEDC9822,
     [
-      0x88F8F21B,
-      [
-        ["url", "string"],
-        ["title", "string"],
-      ],
+      ["error", "string"],
     ],
+    "StatsGraph",
   ],
-  [
-    "emojiStatusEmpty",
+  "statsGraph": [
+    0x8EA464B6,
     [
-      0x2DE11AAE,
-      [],
+      ["flags", "#"],
+      ["json", "DataJSON"],
+      ["zoom_token", "flags.0?string"],
     ],
+    "StatsGraph",
   ],
-  [
-    "emojiStatus",
+  "stats.broadcastStats": [
+    0x396CA5FC,
     [
-      0xE7FF068A,
-      [
-        ["flags", "#"],
-        ["document_id", "long"],
-        ["until", "flags.0?int"],
-      ],
+      ["period", "StatsDateRangeDays"],
+      ["followers", "StatsAbsValueAndPrev"],
+      ["views_per_post", "StatsAbsValueAndPrev"],
+      ["shares_per_post", "StatsAbsValueAndPrev"],
+      ["reactions_per_post", "StatsAbsValueAndPrev"],
+      ["views_per_story", "StatsAbsValueAndPrev"],
+      ["shares_per_story", "StatsAbsValueAndPrev"],
+      ["reactions_per_story", "StatsAbsValueAndPrev"],
+      ["enabled_notifications", "StatsPercentValue"],
+      ["growth_graph", "StatsGraph"],
+      ["followers_graph", "StatsGraph"],
+      ["mute_graph", "StatsGraph"],
+      ["top_hours_graph", "StatsGraph"],
+      ["interactions_graph", "StatsGraph"],
+      ["iv_interactions_graph", "StatsGraph"],
+      ["views_by_source_graph", "StatsGraph"],
+      ["new_followers_by_source_graph", "StatsGraph"],
+      ["languages_graph", "StatsGraph"],
+      ["reactions_by_emotion_graph", "StatsGraph"],
+      ["story_interactions_graph", "StatsGraph"],
+      ["story_reactions_by_emotion_graph", "StatsGraph"],
+      ["recent_posts_interactions", "Vector<PostInteractionCounters>"],
     ],
+    "stats.BroadcastStats",
   ],
-  [
-    "emojiStatusCollectible",
+  "help.promoDataEmpty": [
+    0x98F6AC75,
     [
-      0x7184603B,
-      [
-        ["flags", "#"],
-        ["collectible_id", "long"],
-        ["document_id", "long"],
-        ["title", "string"],
-        ["slug", "string"],
-        ["pattern_document_id", "long"],
-        ["center_color", "int"],
-        ["edge_color", "int"],
-        ["pattern_color", "int"],
-        ["text_color", "int"],
-        ["until", "flags.0?int"],
-      ],
+      ["expires", "int"],
     ],
+    "help.PromoData",
   ],
-  [
-    "inputEmojiStatusCollectible",
+  "help.promoData": [
+    0x8C39793F,
     [
-      0x07141DBF,
-      [
-        ["flags", "#"],
-        ["collectible_id", "long"],
-        ["until", "flags.0?int"],
-      ],
+      ["flags", "#"],
+      ["proxy", "flags.0?true"],
+      ["expires", "int"],
+      ["peer", "Peer"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+      ["psa_type", "flags.1?string"],
+      ["psa_message", "flags.2?string"],
     ],
+    "help.PromoData",
   ],
-  [
-    "account.emojiStatusesNotModified",
+  "videoSize": [
+    0xDE33B094,
     [
-      0xD08CE645,
-      [],
+      ["flags", "#"],
+      ["type", "string"],
+      ["w", "int"],
+      ["h", "int"],
+      ["size", "int"],
+      ["video_start_ts", "flags.0?double"],
     ],
+    "VideoSize",
   ],
-  [
-    "account.emojiStatuses",
+  "videoSizeEmojiMarkup": [
+    0xF85C413C,
     [
-      0x90C467D1,
-      [
-        ["hash", "long"],
-        ["statuses", "Vector<EmojiStatus>"],
-      ],
+      ["emoji_id", "long"],
+      ["background_colors", "Vector<int>"],
     ],
+    "VideoSize",
   ],
-  [
-    "reactionEmpty",
+  "videoSizeStickerMarkup": [
+    0x0DA082FE,
     [
-      0x79F5D419,
-      [],
+      ["stickerset", "InputStickerSet"],
+      ["sticker_id", "long"],
+      ["background_colors", "Vector<int>"],
     ],
+    "VideoSize",
   ],
-  [
-    "reactionEmoji",
+  "statsGroupTopPoster": [
+    0x9D04AF9B,
     [
-      0x1B2286B8,
-      [
-        ["emoticon", "string"],
-      ],
+      ["user_id", "long"],
+      ["messages", "int"],
+      ["avg_chars", "int"],
     ],
+    "StatsGroupTopPoster",
   ],
-  [
-    "reactionCustomEmoji",
+  "statsGroupTopAdmin": [
+    0xD7584C87,
     [
-      0x8935FC73,
-      [
-        ["document_id", "long"],
-      ],
+      ["user_id", "long"],
+      ["deleted", "int"],
+      ["kicked", "int"],
+      ["banned", "int"],
     ],
+    "StatsGroupTopAdmin",
   ],
-  [
-    "reactionPaid",
+  "statsGroupTopInviter": [
+    0x535F779D,
     [
-      0x523DA4EB,
-      [],
+      ["user_id", "long"],
+      ["invitations", "int"],
     ],
+    "StatsGroupTopInviter",
   ],
-  [
-    "chatReactionsNone",
+  "stats.megagroupStats": [
+    0xEF7FF916,
     [
-      0xEAFC32BC,
-      [],
+      ["period", "StatsDateRangeDays"],
+      ["members", "StatsAbsValueAndPrev"],
+      ["messages", "StatsAbsValueAndPrev"],
+      ["viewers", "StatsAbsValueAndPrev"],
+      ["posters", "StatsAbsValueAndPrev"],
+      ["growth_graph", "StatsGraph"],
+      ["members_graph", "StatsGraph"],
+      ["new_members_by_source_graph", "StatsGraph"],
+      ["languages_graph", "StatsGraph"],
+      ["messages_graph", "StatsGraph"],
+      ["actions_graph", "StatsGraph"],
+      ["top_hours_graph", "StatsGraph"],
+      ["weekdays_graph", "StatsGraph"],
+      ["top_posters", "Vector<StatsGroupTopPoster>"],
+      ["top_admins", "Vector<StatsGroupTopAdmin>"],
+      ["top_inviters", "Vector<StatsGroupTopInviter>"],
+      ["users", "Vector<User>"],
     ],
+    "stats.MegagroupStats",
   ],
-  [
-    "chatReactionsAll",
+  "globalPrivacySettings": [
+    0xC9D8DF1C,
     [
-      0x52928BCA,
-      [
-        ["flags", "#"],
-        ["allow_custom", "flags.0?true"],
-      ],
+      ["flags", "#"],
+      ["archive_and_mute_new_noncontact_peers", "flags.0?true"],
+      ["keep_archived_unmuted", "flags.1?true"],
+      ["keep_archived_folders", "flags.2?true"],
+      ["hide_read_marks", "flags.3?true"],
+      ["new_noncontact_peers_require_premium", "flags.4?true"],
+      ["noncontact_peers_paid_stars", "flags.5?long"],
     ],
+    "GlobalPrivacySettings",
   ],
-  [
-    "chatReactionsSome",
+  "help.countryCode": [
+    0x4203C5EF,
     [
-      0x661D4037,
-      [
-        ["reactions", "Vector<Reaction>"],
-      ],
+      ["flags", "#"],
+      ["country_code", "string"],
+      ["prefixes", "flags.0?Vector<string>"],
+      ["patterns", "flags.1?Vector<string>"],
     ],
+    "help.CountryCode",
   ],
-  [
-    "messages.reactionsNotModified",
+  "help.country": [
+    0xC3878E23,
     [
-      0xB06FDBDF,
-      [],
+      ["flags", "#"],
+      ["hidden", "flags.0?true"],
+      ["iso2", "string"],
+      ["default_name", "string"],
+      ["name", "flags.1?string"],
+      ["country_codes", "Vector<help.CountryCode>"],
     ],
+    "help.Country",
   ],
-  [
-    "messages.reactions",
+  "help.countriesListNotModified": [
+    0x93CC1F32,
+    [],
+    "help.CountriesList",
+  ],
+  "help.countriesList": [
+    0x87D0759E,
     [
-      0xEAFDF716,
-      [
-        ["hash", "long"],
-        ["reactions", "Vector<Reaction>"],
-      ],
+      ["countries", "Vector<help.Country>"],
+      ["hash", "int"],
     ],
+    "help.CountriesList",
   ],
-  [
-    "emailVerifyPurposeLoginSetup",
+  "messageViews": [
+    0x455B853D,
     [
-      0x4345BE73,
-      [
-        ["phone_number", "string"],
-        ["phone_code_hash", "string"],
-      ],
+      ["flags", "#"],
+      ["views", "flags.0?int"],
+      ["forwards", "flags.1?int"],
+      ["replies", "flags.2?MessageReplies"],
     ],
+    "MessageViews",
   ],
-  [
-    "emailVerifyPurposeLoginChange",
+  "messages.messageViews": [
+    0xB6C4F543,
     [
-      0x527D22EB,
-      [],
+      ["views", "Vector<MessageViews>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.MessageViews",
   ],
-  [
-    "emailVerifyPurposePassport",
+  "messages.discussionMessage": [
+    0xA6341782,
     [
-      0xBBF51685,
-      [],
+      ["flags", "#"],
+      ["messages", "Vector<Message>"],
+      ["max_id", "flags.0?int"],
+      ["read_inbox_max_id", "flags.1?int"],
+      ["read_outbox_max_id", "flags.2?int"],
+      ["unread_count", "int"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.DiscussionMessage",
   ],
-  [
-    "emailVerificationCode",
+  "messageReplyHeader": [
+    0xAFBC09DB,
     [
-      0x922E55A9,
-      [
-        ["code", "string"],
-      ],
+      ["flags", "#"],
+      ["reply_to_scheduled", "flags.2?true"],
+      ["forum_topic", "flags.3?true"],
+      ["quote", "flags.9?true"],
+      ["reply_to_msg_id", "flags.4?int"],
+      ["reply_to_peer_id", "flags.0?Peer"],
+      ["reply_from", "flags.5?MessageFwdHeader"],
+      ["reply_media", "flags.8?MessageMedia"],
+      ["reply_to_top_id", "flags.1?int"],
+      ["quote_text", "flags.6?string"],
+      ["quote_entities", "flags.7?Vector<MessageEntity>"],
+      ["quote_offset", "flags.10?int"],
     ],
+    "MessageReplyHeader",
   ],
-  [
-    "emailVerificationGoogle",
+  "messageReplyStoryHeader": [
+    0x0E5AF939,
     [
-      0xDB909EC2,
-      [
-        ["token", "string"],
-      ],
+      ["peer", "Peer"],
+      ["story_id", "int"],
     ],
+    "MessageReplyHeader",
   ],
-  [
-    "emailVerificationApple",
+  "messageReplies": [
+    0x83D60FC2,
     [
-      0x96D074FD,
-      [
-        ["token", "string"],
-      ],
+      ["flags", "#"],
+      ["comments", "flags.0?true"],
+      ["replies", "int"],
+      ["replies_pts", "int"],
+      ["recent_repliers", "flags.1?Vector<Peer>"],
+      ["channel_id", "flags.0?long"],
+      ["max_id", "flags.2?int"],
+      ["read_max_id", "flags.3?int"],
     ],
+    "MessageReplies",
   ],
-  [
-    "account.emailVerified",
+  "peerBlocked": [
+    0xE8FD8014,
     [
-      0x2B96CD1B,
-      [
-        ["email", "string"],
-      ],
+      ["peer_id", "Peer"],
+      ["date", "int"],
     ],
+    "PeerBlocked",
   ],
-  [
-    "account.emailVerifiedLogin",
+  "stats.messageStats": [
+    0x7FE91C14,
     [
-      0xE1BB0D61,
-      [
-        ["email", "string"],
-        ["sent_code", "auth.SentCode"],
-      ],
+      ["views_graph", "StatsGraph"],
+      ["reactions_by_emotion_graph", "StatsGraph"],
     ],
+    "stats.MessageStats",
   ],
-  [
-    "premiumSubscriptionOption",
+  "groupCallDiscarded": [
+    0x7780BCB4,
     [
-      0x5F2D1DF2,
-      [
-        ["flags", "#"],
-        ["current", "flags.1?true"],
-        ["can_purchase_upgrade", "flags.2?true"],
-        ["transaction", "flags.3?string"],
-        ["months", "int"],
-        ["currency", "string"],
-        ["amount", "long"],
-        ["bot_url", "string"],
-        ["store_product", "flags.0?string"],
-      ],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["duration", "int"],
     ],
+    "GroupCall",
   ],
-  [
-    "sendAsPeer",
+  "groupCall": [
+    0xCDF8D3E3,
     [
-      0xB81C7034,
-      [
-        ["flags", "#"],
-        ["premium_required", "flags.0?true"],
-        ["peer", "Peer"],
-      ],
+      ["flags", "#"],
+      ["join_muted", "flags.1?true"],
+      ["can_change_join_muted", "flags.2?true"],
+      ["join_date_asc", "flags.6?true"],
+      ["schedule_start_subscribed", "flags.8?true"],
+      ["can_start_video", "flags.9?true"],
+      ["record_video_active", "flags.11?true"],
+      ["rtmp_stream", "flags.12?true"],
+      ["listeners_hidden", "flags.13?true"],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["participants_count", "int"],
+      ["title", "flags.3?string"],
+      ["stream_dc_id", "flags.4?int"],
+      ["record_start_date", "flags.5?int"],
+      ["schedule_date", "flags.7?int"],
+      ["unmuted_video_count", "flags.10?int"],
+      ["unmuted_video_limit", "int"],
+      ["version", "int"],
+      ["conference_from_call", "flags.14?long"],
     ],
+    "GroupCall",
   ],
-  [
-    "messageExtendedMediaPreview",
+  "inputGroupCall": [
+    0xD8AA840F,
     [
-      0xAD628CC8,
-      [
-        ["flags", "#"],
-        ["w", "flags.0?int"],
-        ["h", "flags.0?int"],
-        ["thumb", "flags.1?PhotoSize"],
-        ["video_duration", "flags.2?int"],
-      ],
+      ["id", "long"],
+      ["access_hash", "long"],
     ],
+    "InputGroupCall",
   ],
-  [
-    "messageExtendedMedia",
+  "groupCallParticipant": [
+    0xEBA636FE,
     [
-      0xEE479C64,
-      [
-        ["media", "MessageMedia"],
-      ],
+      ["flags", "#"],
+      ["muted", "flags.0?true"],
+      ["left", "flags.1?true"],
+      ["can_self_unmute", "flags.2?true"],
+      ["just_joined", "flags.4?true"],
+      ["versioned", "flags.5?true"],
+      ["min", "flags.8?true"],
+      ["muted_by_you", "flags.9?true"],
+      ["volume_by_admin", "flags.10?true"],
+      ["self", "flags.12?true"],
+      ["video_joined", "flags.15?true"],
+      ["peer", "Peer"],
+      ["date", "int"],
+      ["active_date", "flags.3?int"],
+      ["source", "int"],
+      ["volume", "flags.7?int"],
+      ["about", "flags.11?string"],
+      ["raise_hand_rating", "flags.13?long"],
+      ["video", "flags.6?GroupCallParticipantVideo"],
+      ["presentation", "flags.14?GroupCallParticipantVideo"],
     ],
+    "GroupCallParticipant",
   ],
-  [
-    "stickerKeyword",
+  "phone.groupCall": [
+    0x9E727AAD,
     [
-      0xFCFEB29C,
-      [
-        ["document_id", "long"],
-        ["keyword", "Vector<string>"],
-      ],
+      ["call", "GroupCall"],
+      ["participants", "Vector<GroupCallParticipant>"],
+      ["participants_next_offset", "string"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "phone.GroupCall",
   ],
-  [
-    "username",
+  "phone.groupParticipants": [
+    0xF47751B6,
     [
-      0xB4073647,
-      [
-        ["flags", "#"],
-        ["editable", "flags.0?true"],
-        ["active", "flags.1?true"],
-        ["username", "string"],
-      ],
+      ["count", "int"],
+      ["participants", "Vector<GroupCallParticipant>"],
+      ["next_offset", "string"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+      ["version", "int"],
     ],
+    "phone.GroupParticipants",
+  ],
+  "inlineQueryPeerTypeSameBotPM": [
+    0x3081ED9D,
+    [],
+    "InlineQueryPeerType",
+  ],
+  "inlineQueryPeerTypePM": [
+    0x833C0FAC,
+    [],
+    "InlineQueryPeerType",
+  ],
+  "inlineQueryPeerTypeChat": [
+    0xD766C50A,
+    [],
+    "InlineQueryPeerType",
+  ],
+  "inlineQueryPeerTypeMegagroup": [
+    0x5EC4BE43,
+    [],
+    "InlineQueryPeerType",
+  ],
+  "inlineQueryPeerTypeBroadcast": [
+    0x6334EE9A,
+    [],
+    "InlineQueryPeerType",
   ],
-  [
-    "forumTopicDeleted",
+  "inlineQueryPeerTypeBotPM": [
+    0x0E3B2D0C,
+    [],
+    "InlineQueryPeerType",
+  ],
+  "messages.historyImport": [
+    0x1662AF0B,
     [
-      0x023F109B,
-      [
-        ["id", "int"],
-      ],
+      ["id", "long"],
     ],
+    "messages.HistoryImport",
   ],
-  [
-    "forumTopic",
+  "messages.historyImportParsed": [
+    0x5E0FB7B9,
     [
-      0x71701DA9,
-      [
-        ["flags", "#"],
-        ["my", "flags.1?true"],
-        ["closed", "flags.2?true"],
-        ["pinned", "flags.3?true"],
-        ["short", "flags.5?true"],
-        ["hidden", "flags.6?true"],
-        ["id", "int"],
-        ["date", "int"],
-        ["title", "string"],
-        ["icon_color", "int"],
-        ["icon_emoji_id", "flags.0?long"],
-        ["top_message", "int"],
-        ["read_inbox_max_id", "int"],
-        ["read_outbox_max_id", "int"],
-        ["unread_count", "int"],
-        ["unread_mentions_count", "int"],
-        ["unread_reactions_count", "int"],
-        ["from_id", "Peer"],
-        ["notify_settings", "PeerNotifySettings"],
-        ["draft", "flags.4?DraftMessage"],
-      ],
+      ["flags", "#"],
+      ["pm", "flags.0?true"],
+      ["group", "flags.1?true"],
+      ["title", "flags.2?string"],
     ],
+    "messages.HistoryImportParsed",
   ],
-  [
-    "messages.forumTopics",
+  "messages.affectedFoundMessages": [
+    0xEF8D3E6C,
     [
-      0x367617D3,
-      [
-        ["flags", "#"],
-        ["order_by_create_date", "flags.0?true"],
-        ["count", "int"],
-        ["topics", "Vector<ForumTopic>"],
-        ["messages", "Vector<Message>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-        ["pts", "int"],
-      ],
+      ["pts", "int"],
+      ["pts_count", "int"],
+      ["offset", "int"],
+      ["messages", "Vector<int>"],
     ],
+    "messages.AffectedFoundMessages",
   ],
-  [
-    "defaultHistoryTTL",
+  "chatInviteImporter": [
+    0x8C5ADFD9,
     [
-      0x43B46B20,
-      [
-        ["period", "int"],
-      ],
+      ["flags", "#"],
+      ["requested", "flags.0?true"],
+      ["via_chatlist", "flags.3?true"],
+      ["user_id", "long"],
+      ["date", "int"],
+      ["about", "flags.2?string"],
+      ["approved_by", "flags.1?long"],
     ],
+    "ChatInviteImporter",
   ],
-  [
-    "exportedContactToken",
+  "messages.exportedChatInvites": [
+    0xBDC62DCC,
     [
-      0x41BF109B,
-      [
-        ["url", "string"],
-        ["expires", "int"],
-      ],
+      ["count", "int"],
+      ["invites", "Vector<ExportedChatInvite>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.ExportedChatInvites",
   ],
-  [
-    "requestPeerTypeUser",
+  "messages.exportedChatInvite": [
+    0x1871BE50,
     [
-      0x5F3B8A00,
-      [
-        ["flags", "#"],
-        ["bot", "flags.0?Bool"],
-        ["premium", "flags.1?Bool"],
-      ],
+      ["invite", "ExportedChatInvite"],
+      ["users", "Vector<User>"],
     ],
+    "messages.ExportedChatInvite",
   ],
-  [
-    "requestPeerTypeChat",
+  "messages.exportedChatInviteReplaced": [
+    0x222600EF,
     [
-      0xC9F06E1B,
-      [
-        ["flags", "#"],
-        ["creator", "flags.0?true"],
-        ["bot_participant", "flags.5?true"],
-        ["has_username", "flags.3?Bool"],
-        ["forum", "flags.4?Bool"],
-        ["user_admin_rights", "flags.1?ChatAdminRights"],
-        ["bot_admin_rights", "flags.2?ChatAdminRights"],
-      ],
+      ["invite", "ExportedChatInvite"],
+      ["new_invite", "ExportedChatInvite"],
+      ["users", "Vector<User>"],
     ],
+    "messages.ExportedChatInvite",
   ],
-  [
-    "requestPeerTypeBroadcast",
+  "messages.chatInviteImporters": [
+    0x81B6B00A,
     [
-      0x339BEF6C,
-      [
-        ["flags", "#"],
-        ["creator", "flags.0?true"],
-        ["has_username", "flags.3?Bool"],
-        ["user_admin_rights", "flags.1?ChatAdminRights"],
-        ["bot_admin_rights", "flags.2?ChatAdminRights"],
-      ],
+      ["count", "int"],
+      ["importers", "Vector<ChatInviteImporter>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.ChatInviteImporters",
   ],
-  [
-    "emojiListNotModified",
+  "chatAdminWithInvites": [
+    0xF2ECEF23,
     [
-      0x481EADFA,
-      [],
+      ["admin_id", "long"],
+      ["invites_count", "int"],
+      ["revoked_invites_count", "int"],
     ],
+    "ChatAdminWithInvites",
   ],
-  [
-    "emojiList",
+  "messages.chatAdminsWithInvites": [
+    0xB69B72D7,
     [
-      0x7A1E11D1,
-      [
-        ["hash", "long"],
-        ["document_id", "Vector<long>"],
-      ],
+      ["admins", "Vector<ChatAdminWithInvites>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.ChatAdminsWithInvites",
   ],
-  [
-    "emojiGroup",
+  "messages.checkedHistoryImportPeer": [
+    0xA24DE717,
     [
-      0x7A9ABDA9,
-      [
-        ["title", "string"],
-        ["icon_emoji_id", "long"],
-        ["emoticons", "Vector<string>"],
-      ],
+      ["confirm_text", "string"],
     ],
+    "messages.CheckedHistoryImportPeer",
   ],
-  [
-    "emojiGroupGreeting",
+  "phone.joinAsPeers": [
+    0xAFE5623F,
     [
-      0x80D26CC7,
-      [
-        ["title", "string"],
-        ["icon_emoji_id", "long"],
-        ["emoticons", "Vector<string>"],
-      ],
+      ["peers", "Vector<Peer>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "phone.JoinAsPeers",
   ],
-  [
-    "emojiGroupPremium",
+  "phone.exportedGroupCallInvite": [
+    0x204BD158,
     [
-      0x093BCF34,
-      [
-        ["title", "string"],
-        ["icon_emoji_id", "long"],
-      ],
+      ["link", "string"],
     ],
+    "phone.ExportedGroupCallInvite",
   ],
-  [
-    "messages.emojiGroupsNotModified",
+  "groupCallParticipantVideoSourceGroup": [
+    0xDCB118B7,
     [
-      0x6FB4AD87,
-      [],
+      ["semantics", "string"],
+      ["sources", "Vector<int>"],
     ],
+    "GroupCallParticipantVideoSourceGroup",
   ],
-  [
-    "messages.emojiGroups",
+  "groupCallParticipantVideo": [
+    0x67753AC8,
     [
-      0x881FB94B,
-      [
-        ["hash", "int"],
-        ["groups", "Vector<EmojiGroup>"],
-      ],
+      ["flags", "#"],
+      ["paused", "flags.0?true"],
+      ["endpoint", "string"],
+      ["source_groups", "Vector<GroupCallParticipantVideoSourceGroup>"],
+      ["audio_source", "flags.1?int"],
     ],
+    "GroupCallParticipantVideo",
   ],
-  [
-    "textWithEntities",
+  "stickers.suggestedShortName": [
+    0x85FEA03F,
     [
-      0x751F3146,
-      [
-        ["text", "string"],
-        ["entities", "Vector<MessageEntity>"],
-      ],
+      ["short_name", "string"],
     ],
+    "stickers.SuggestedShortName",
+  ],
+  "botCommandScopeDefault": [
+    0x2F6CB2AB,
+    [],
+    "BotCommandScope",
+  ],
+  "botCommandScopeUsers": [
+    0x3C4F04D8,
+    [],
+    "BotCommandScope",
+  ],
+  "botCommandScopeChats": [
+    0x6FE1A881,
+    [],
+    "BotCommandScope",
   ],
-  [
-    "messages.translateResult",
+  "botCommandScopeChatAdmins": [
+    0xB9AA606A,
+    [],
+    "BotCommandScope",
+  ],
+  "botCommandScopePeer": [
+    0xDB9D897D,
     [
-      0x33DB32F8,
-      [
-        ["result", "Vector<TextWithEntities>"],
-      ],
+      ["peer", "InputPeer"],
     ],
+    "BotCommandScope",
   ],
-  [
-    "autoSaveSettings",
+  "botCommandScopePeerAdmins": [
+    0x3FD863D1,
     [
-      0xC84834CE,
-      [
-        ["flags", "#"],
-        ["photos", "flags.0?true"],
-        ["videos", "flags.1?true"],
-        ["video_max_size", "flags.2?long"],
-      ],
+      ["peer", "InputPeer"],
     ],
+    "BotCommandScope",
   ],
-  [
-    "autoSaveException",
+  "botCommandScopePeerUser": [
+    0x0A1321F3,
     [
-      0x81602D47,
-      [
-        ["peer", "Peer"],
-        ["settings", "AutoSaveSettings"],
-      ],
+      ["peer", "InputPeer"],
+      ["user_id", "InputUser"],
     ],
+    "BotCommandScope",
   ],
-  [
-    "account.autoSaveSettings",
+  "account.resetPasswordFailedWait": [
+    0xE3779861,
     [
-      0x4C3E069D,
-      [
-        ["users_settings", "AutoSaveSettings"],
-        ["chats_settings", "AutoSaveSettings"],
-        ["broadcasts_settings", "AutoSaveSettings"],
-        ["exceptions", "Vector<AutoSaveException>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["retry_date", "int"],
     ],
+    "account.ResetPasswordResult",
   ],
-  [
-    "help.appConfigNotModified",
+  "account.resetPasswordRequestedWait": [
+    0xE9EFFC7D,
     [
-      0x7CDE641D,
-      [],
+      ["until_date", "int"],
     ],
+    "account.ResetPasswordResult",
+  ],
+  "account.resetPasswordOk": [
+    0xE926D63E,
+    [],
+    "account.ResetPasswordResult",
   ],
-  [
-    "help.appConfig",
+  "sponsoredMessage": [
+    0x4D93A990,
     [
-      0xDD18782E,
-      [
-        ["hash", "int"],
-        ["config", "JSONValue"],
-      ],
+      ["flags", "#"],
+      ["recommended", "flags.5?true"],
+      ["can_report", "flags.12?true"],
+      ["random_id", "bytes"],
+      ["url", "string"],
+      ["title", "string"],
+      ["message", "string"],
+      ["entities", "flags.1?Vector<MessageEntity>"],
+      ["photo", "flags.6?Photo"],
+      ["media", "flags.14?MessageMedia"],
+      ["color", "flags.13?PeerColor"],
+      ["button_text", "string"],
+      ["sponsor_info", "flags.7?string"],
+      ["additional_info", "flags.8?string"],
     ],
+    "SponsoredMessage",
   ],
-  [
-    "inputBotAppID",
+  "messages.sponsoredMessages": [
+    0xC9EE1D87,
     [
-      0xA920BD7A,
-      [
-        ["id", "long"],
-        ["access_hash", "long"],
-      ],
+      ["flags", "#"],
+      ["posts_between", "flags.0?int"],
+      ["messages", "Vector<SponsoredMessage>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.SponsoredMessages",
   ],
-  [
-    "inputBotAppShortName",
+  "messages.sponsoredMessagesEmpty": [
+    0x1839490F,
+    [],
+    "messages.SponsoredMessages",
+  ],
+  "searchResultsCalendarPeriod": [
+    0xC9B0539F,
     [
-      0x908C0407,
-      [
-        ["bot_id", "InputUser"],
-        ["short_name", "string"],
-      ],
+      ["date", "int"],
+      ["min_msg_id", "int"],
+      ["max_msg_id", "int"],
+      ["count", "int"],
     ],
+    "SearchResultsCalendarPeriod",
   ],
-  [
-    "botAppNotModified",
+  "messages.searchResultsCalendar": [
+    0x147EE23C,
     [
-      0x5DA674B7,
-      [],
+      ["flags", "#"],
+      ["inexact", "flags.0?true"],
+      ["count", "int"],
+      ["min_date", "int"],
+      ["min_msg_id", "int"],
+      ["offset_id_offset", "flags.1?int"],
+      ["periods", "Vector<SearchResultsCalendarPeriod>"],
+      ["messages", "Vector<Message>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.SearchResultsCalendar",
   ],
-  [
-    "botApp",
+  "searchResultPosition": [
+    0x7F648B67,
     [
-      0x95FCD1D6,
-      [
-        ["flags", "#"],
-        ["id", "long"],
-        ["access_hash", "long"],
-        ["short_name", "string"],
-        ["title", "string"],
-        ["description", "string"],
-        ["photo", "Photo"],
-        ["document", "flags.0?Document"],
-        ["hash", "long"],
-      ],
+      ["msg_id", "int"],
+      ["date", "int"],
+      ["offset", "int"],
     ],
+    "SearchResultsPosition",
   ],
-  [
-    "messages.botApp",
+  "messages.searchResultsPositions": [
+    0x53B22BAF,
     [
-      0xEB50ADF5,
-      [
-        ["flags", "#"],
-        ["inactive", "flags.0?true"],
-        ["request_write_access", "flags.1?true"],
-        ["has_settings", "flags.2?true"],
-        ["app", "BotApp"],
-      ],
+      ["count", "int"],
+      ["positions", "Vector<SearchResultsPosition>"],
     ],
+    "messages.SearchResultsPositions",
   ],
-  [
-    "inlineBotWebView",
+  "channels.sendAsPeers": [
+    0xF496B0C6,
     [
-      0xB57295D5,
-      [
-        ["text", "string"],
-        ["url", "string"],
-      ],
+      ["peers", "Vector<SendAsPeer>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "channels.SendAsPeers",
   ],
-  [
-    "readParticipantDate",
+  "users.userFull": [
+    0x3B6D152E,
     [
-      0x4A4FF172,
-      [
-        ["user_id", "long"],
-        ["date", "int"],
-      ],
+      ["full_user", "UserFull"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "users.UserFull",
   ],
-  [
-    "inputChatlistDialogFilter",
+  "messages.peerSettings": [
+    0x6880B94D,
     [
-      0xF3E0DA33,
-      [
-        ["filter_id", "int"],
-      ],
+      ["settings", "PeerSettings"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.PeerSettings",
   ],
-  [
-    "exportedChatlistInvite",
+  "auth.loggedOut": [
+    0xC3A2835F,
     [
-      0x0C5181AC,
-      [
-        ["flags", "#"],
-        ["title", "string"],
-        ["url", "string"],
-        ["peers", "Vector<Peer>"],
-      ],
+      ["flags", "#"],
+      ["future_auth_token", "flags.0?bytes"],
     ],
+    "auth.LoggedOut",
   ],
-  [
-    "chatlists.exportedChatlistInvite",
+  "reactionCount": [
+    0xA3D1CB80,
     [
-      0x10E6E3A6,
-      [
-        ["filter", "DialogFilter"],
-        ["invite", "ExportedChatlistInvite"],
-      ],
+      ["flags", "#"],
+      ["chosen_order", "flags.0?int"],
+      ["reaction", "Reaction"],
+      ["count", "int"],
     ],
+    "ReactionCount",
   ],
-  [
-    "chatlists.exportedInvites",
+  "messageReactions": [
+    0x0A339F0B,
     [
-      0x10AB6DC7,
-      [
-        ["invites", "Vector<ExportedChatlistInvite>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["min", "flags.0?true"],
+      ["can_see_list", "flags.2?true"],
+      ["reactions_as_tags", "flags.3?true"],
+      ["results", "Vector<ReactionCount>"],
+      ["recent_reactions", "flags.1?Vector<MessagePeerReaction>"],
+      ["top_reactors", "flags.4?Vector<MessageReactor>"],
     ],
+    "MessageReactions",
   ],
-  [
-    "chatlists.chatlistInviteAlready",
+  "messages.messageReactionsList": [
+    0x31BD492D,
     [
-      0xFA87F659,
-      [
-        ["filter_id", "int"],
-        ["missing_peers", "Vector<Peer>"],
-        ["already_peers", "Vector<Peer>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["count", "int"],
+      ["reactions", "Vector<MessagePeerReaction>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+      ["next_offset", "flags.0?string"],
     ],
+    "messages.MessageReactionsList",
   ],
-  [
-    "chatlists.chatlistInvite",
+  "availableReaction": [
+    0xC077EC01,
     [
-      0xF10ECE2F,
-      [
-        ["flags", "#"],
-        ["title_noanimate", "flags.1?true"],
-        ["title", "TextWithEntities"],
-        ["emoticon", "flags.0?string"],
-        ["peers", "Vector<Peer>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["inactive", "flags.0?true"],
+      ["premium", "flags.2?true"],
+      ["reaction", "string"],
+      ["title", "string"],
+      ["static_icon", "Document"],
+      ["appear_animation", "Document"],
+      ["select_animation", "Document"],
+      ["activate_animation", "Document"],
+      ["effect_animation", "Document"],
+      ["around_animation", "flags.1?Document"],
+      ["center_icon", "flags.1?Document"],
     ],
+    "AvailableReaction",
+  ],
+  "messages.availableReactionsNotModified": [
+    0x9F071957,
+    [],
+    "messages.AvailableReactions",
   ],
-  [
-    "chatlists.chatlistUpdates",
+  "messages.availableReactions": [
+    0x768E3AAD,
     [
-      0x93BD878D,
-      [
-        ["missing_peers", "Vector<Peer>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["hash", "int"],
+      ["reactions", "Vector<AvailableReaction>"],
     ],
+    "messages.AvailableReactions",
   ],
-  [
-    "bots.botInfo",
+  "messagePeerReaction": [
+    0x8C79B63C,
     [
-      0xE8A775B0,
-      [
-        ["name", "string"],
-        ["about", "string"],
-        ["description", "string"],
-      ],
+      ["flags", "#"],
+      ["big", "flags.0?true"],
+      ["unread", "flags.1?true"],
+      ["my", "flags.2?true"],
+      ["peer_id", "Peer"],
+      ["date", "int"],
+      ["reaction", "Reaction"],
     ],
+    "MessagePeerReaction",
   ],
-  [
-    "messagePeerVote",
+  "groupCallStreamChannel": [
+    0x80EB48AF,
     [
-      0xB6CC2D5C,
-      [
-        ["peer", "Peer"],
-        ["option", "bytes"],
-        ["date", "int"],
-      ],
+      ["channel", "int"],
+      ["scale", "int"],
+      ["last_timestamp_ms", "long"],
     ],
+    "GroupCallStreamChannel",
   ],
-  [
-    "messagePeerVoteInputOption",
+  "phone.groupCallStreamChannels": [
+    0xD0E482B2,
     [
-      0x74CDA504,
-      [
-        ["peer", "Peer"],
-        ["date", "int"],
-      ],
+      ["channels", "Vector<GroupCallStreamChannel>"],
     ],
+    "phone.GroupCallStreamChannels",
   ],
-  [
-    "messagePeerVoteMultiple",
+  "phone.groupCallStreamRtmpUrl": [
+    0x2DBF3432,
     [
-      0x4628F6E6,
-      [
-        ["peer", "Peer"],
-        ["options", "Vector<bytes>"],
-        ["date", "int"],
-      ],
+      ["url", "string"],
+      ["key", "string"],
     ],
+    "phone.GroupCallStreamRtmpUrl",
   ],
-  [
-    "storyViews",
+  "attachMenuBotIconColor": [
+    0x4576F3F0,
     [
-      0x8D595CD6,
-      [
-        ["flags", "#"],
-        ["has_viewers", "flags.1?true"],
-        ["views_count", "int"],
-        ["forwards_count", "flags.2?int"],
-        ["reactions", "flags.3?Vector<ReactionCount>"],
-        ["reactions_count", "flags.4?int"],
-        ["recent_viewers", "flags.0?Vector<long>"],
-      ],
+      ["name", "string"],
+      ["color", "int"],
     ],
+    "AttachMenuBotIconColor",
   ],
-  [
-    "storyItemDeleted",
+  "attachMenuBotIcon": [
+    0xB2A7386B,
     [
-      0x51E6EE4F,
-      [
-        ["id", "int"],
-      ],
+      ["flags", "#"],
+      ["name", "string"],
+      ["icon", "Document"],
+      ["colors", "flags.0?Vector<AttachMenuBotIconColor>"],
     ],
+    "AttachMenuBotIcon",
   ],
-  [
-    "storyItemSkipped",
+  "attachMenuBot": [
+    0xD90D8DFE,
     [
-      0xFFADC913,
-      [
-        ["flags", "#"],
-        ["close_friends", "flags.8?true"],
-        ["id", "int"],
-        ["date", "int"],
-        ["expire_date", "int"],
-      ],
+      ["flags", "#"],
+      ["inactive", "flags.0?true"],
+      ["has_settings", "flags.1?true"],
+      ["request_write_access", "flags.2?true"],
+      ["show_in_attach_menu", "flags.3?true"],
+      ["show_in_side_menu", "flags.4?true"],
+      ["side_menu_disclaimer_needed", "flags.5?true"],
+      ["bot_id", "long"],
+      ["short_name", "string"],
+      ["peer_types", "flags.3?Vector<AttachMenuPeerType>"],
+      ["icons", "Vector<AttachMenuBotIcon>"],
     ],
+    "AttachMenuBot",
   ],
-  [
-    "storyItem",
+  "attachMenuBotsNotModified": [
+    0xF1D88A5C,
+    [],
+    "AttachMenuBots",
+  ],
+  "attachMenuBots": [
+    0x3C4301C0,
     [
-      0x79B26A24,
-      [
-        ["flags", "#"],
-        ["pinned", "flags.5?true"],
-        ["public", "flags.7?true"],
-        ["close_friends", "flags.8?true"],
-        ["min", "flags.9?true"],
-        ["noforwards", "flags.10?true"],
-        ["edited", "flags.11?true"],
-        ["contacts", "flags.12?true"],
-        ["selected_contacts", "flags.13?true"],
-        ["out", "flags.16?true"],
-        ["id", "int"],
-        ["date", "int"],
-        ["from_id", "flags.18?Peer"],
-        ["fwd_from", "flags.17?StoryFwdHeader"],
-        ["expire_date", "int"],
-        ["caption", "flags.0?string"],
-        ["entities", "flags.1?Vector<MessageEntity>"],
-        ["media", "MessageMedia"],
-        ["media_areas", "flags.14?Vector<MediaArea>"],
-        ["privacy", "flags.2?Vector<PrivacyRule>"],
-        ["views", "flags.3?StoryViews"],
-        ["sent_reaction", "flags.15?Reaction"],
-      ],
+      ["hash", "long"],
+      ["bots", "Vector<AttachMenuBot>"],
+      ["users", "Vector<User>"],
     ],
+    "AttachMenuBots",
   ],
-  [
-    "stories.allStoriesNotModified",
+  "attachMenuBotsBot": [
+    0x93BF667F,
     [
-      0x1158FE3E,
-      [
-        ["flags", "#"],
-        ["state", "string"],
-        ["stealth_mode", "StoriesStealthMode"],
-      ],
+      ["bot", "AttachMenuBot"],
+      ["users", "Vector<User>"],
     ],
+    "AttachMenuBotsBot",
   ],
-  [
-    "stories.allStories",
+  "webViewResultUrl": [
+    0x4D22FF98,
     [
-      0x6EFC5E81,
-      [
-        ["flags", "#"],
-        ["has_more", "flags.0?true"],
-        ["count", "int"],
-        ["state", "string"],
-        ["peer_stories", "Vector<PeerStories>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-        ["stealth_mode", "StoriesStealthMode"],
-      ],
+      ["flags", "#"],
+      ["fullsize", "flags.1?true"],
+      ["fullscreen", "flags.2?true"],
+      ["query_id", "flags.0?long"],
+      ["url", "string"],
     ],
+    "WebViewResult",
   ],
-  [
-    "stories.stories",
+  "webViewMessageSent": [
+    0x0C94511C,
     [
-      0x63C3DD0A,
-      [
-        ["flags", "#"],
-        ["count", "int"],
-        ["stories", "Vector<StoryItem>"],
-        ["pinned_to_top", "flags.0?Vector<int>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["msg_id", "flags.0?InputBotInlineMessageID"],
     ],
+    "WebViewMessageSent",
+  ],
+  "botMenuButtonDefault": [
+    0x7533A588,
+    [],
+    "BotMenuButton",
   ],
-  [
-    "storyView",
+  "botMenuButtonCommands": [
+    0x4258C205,
+    [],
+    "BotMenuButton",
+  ],
+  "botMenuButton": [
+    0xC7B57CE6,
     [
-      0xB0BDEAC5,
-      [
-        ["flags", "#"],
-        ["blocked", "flags.0?true"],
-        ["blocked_my_stories_from", "flags.1?true"],
-        ["user_id", "long"],
-        ["date", "int"],
-        ["reaction", "flags.2?Reaction"],
-      ],
+      ["text", "string"],
+      ["url", "string"],
     ],
+    "BotMenuButton",
+  ],
+  "account.savedRingtonesNotModified": [
+    0xFBF6E8B1,
+    [],
+    "account.SavedRingtones",
   ],
-  [
-    "storyViewPublicForward",
+  "account.savedRingtones": [
+    0xC1E92CC5,
     [
-      0x9083670B,
-      [
-        ["flags", "#"],
-        ["blocked", "flags.0?true"],
-        ["blocked_my_stories_from", "flags.1?true"],
-        ["message", "Message"],
-      ],
+      ["hash", "long"],
+      ["ringtones", "Vector<Document>"],
     ],
+    "account.SavedRingtones",
   ],
-  [
-    "storyViewPublicRepost",
+  "notificationSoundDefault": [
+    0x97E8BEBE,
+    [],
+    "NotificationSound",
+  ],
+  "notificationSoundNone": [
+    0x6F0C34DF,
+    [],
+    "NotificationSound",
+  ],
+  "notificationSoundLocal": [
+    0x830B9AE4,
     [
-      0xBD74CF49,
-      [
-        ["flags", "#"],
-        ["blocked", "flags.0?true"],
-        ["blocked_my_stories_from", "flags.1?true"],
-        ["peer_id", "Peer"],
-        ["story", "StoryItem"],
-      ],
+      ["title", "string"],
+      ["data", "string"],
     ],
+    "NotificationSound",
   ],
-  [
-    "stories.storyViewsList",
+  "notificationSoundRingtone": [
+    0xFF6C8049,
     [
-      0x59D78FC5,
-      [
-        ["flags", "#"],
-        ["count", "int"],
-        ["views_count", "int"],
-        ["forwards_count", "int"],
-        ["reactions_count", "int"],
-        ["views", "Vector<StoryView>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-        ["next_offset", "flags.0?string"],
-      ],
+      ["id", "long"],
     ],
+    "NotificationSound",
   ],
-  [
-    "stories.storyViews",
+  "account.savedRingtone": [
+    0xB7263F6D,
+    [],
+    "account.SavedRingtone",
+  ],
+  "account.savedRingtoneConverted": [
+    0x1F307EB7,
     [
-      0xDE9EED1D,
-      [
-        ["views", "Vector<StoryViews>"],
-        ["users", "Vector<User>"],
-      ],
+      ["document", "Document"],
     ],
+    "account.SavedRingtone",
+  ],
+  "attachMenuPeerTypeSameBotPM": [
+    0x7D6BE90E,
+    [],
+    "AttachMenuPeerType",
   ],
-  [
-    "inputReplyToMessage",
+  "attachMenuPeerTypeBotPM": [
+    0xC32BFA1A,
+    [],
+    "AttachMenuPeerType",
+  ],
+  "attachMenuPeerTypePM": [
+    0xF146D31F,
+    [],
+    "AttachMenuPeerType",
+  ],
+  "attachMenuPeerTypeChat": [
+    0x0509113F,
+    [],
+    "AttachMenuPeerType",
+  ],
+  "attachMenuPeerTypeBroadcast": [
+    0x7BFBDEFC,
+    [],
+    "AttachMenuPeerType",
+  ],
+  "inputInvoiceMessage": [
+    0xC5B56859,
     [
-      0x22C0F6D5,
-      [
-        ["flags", "#"],
-        ["reply_to_msg_id", "int"],
-        ["top_msg_id", "flags.0?int"],
-        ["reply_to_peer_id", "flags.1?InputPeer"],
-        ["quote_text", "flags.2?string"],
-        ["quote_entities", "flags.3?Vector<MessageEntity>"],
-        ["quote_offset", "flags.4?int"],
-      ],
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
     ],
+    "InputInvoice",
   ],
-  [
-    "inputReplyToStory",
+  "inputInvoiceSlug": [
+    0xC326CAEF,
     [
-      0x5881323A,
-      [
-        ["peer", "InputPeer"],
-        ["story_id", "int"],
-      ],
+      ["slug", "string"],
     ],
+    "InputInvoice",
   ],
-  [
-    "exportedStoryLink",
+  "inputInvoicePremiumGiftCode": [
+    0x98986C0D,
     [
-      0x3FC9053B,
-      [
-        ["link", "string"],
-      ],
+      ["purpose", "InputStorePaymentPurpose"],
+      ["option", "PremiumGiftCodeOption"],
     ],
+    "InputInvoice",
   ],
-  [
-    "storiesStealthMode",
+  "inputInvoiceStars": [
+    0x65F00CE3,
     [
-      0x712E27FD,
-      [
-        ["flags", "#"],
-        ["active_until_date", "flags.0?int"],
-        ["cooldown_until_date", "flags.1?int"],
-      ],
+      ["purpose", "InputStorePaymentPurpose"],
     ],
+    "InputInvoice",
   ],
-  [
-    "mediaAreaCoordinates",
+  "inputInvoiceChatInviteSubscription": [
+    0x34E793F1,
     [
-      0xCFC9E002,
-      [
-        ["flags", "#"],
-        ["x", "double"],
-        ["y", "double"],
-        ["w", "double"],
-        ["h", "double"],
-        ["rotation", "double"],
-        ["radius", "flags.0?double"],
-      ],
+      ["hash", "string"],
     ],
+    "InputInvoice",
   ],
-  [
-    "mediaAreaVenue",
+  "inputInvoiceStarGift": [
+    0xE8625E92,
     [
-      0xBE82DB9C,
-      [
-        ["coordinates", "MediaAreaCoordinates"],
-        ["geo", "GeoPoint"],
-        ["title", "string"],
-        ["address", "string"],
-        ["provider", "string"],
-        ["venue_id", "string"],
-        ["venue_type", "string"],
-      ],
+      ["flags", "#"],
+      ["hide_name", "flags.0?true"],
+      ["include_upgrade", "flags.2?true"],
+      ["peer", "InputPeer"],
+      ["gift_id", "long"],
+      ["message", "flags.1?TextWithEntities"],
     ],
+    "InputInvoice",
   ],
-  [
-    "inputMediaAreaVenue",
+  "inputInvoiceStarGiftUpgrade": [
+    0x4D818D5D,
     [
-      0xB282217F,
-      [
-        ["coordinates", "MediaAreaCoordinates"],
-        ["query_id", "long"],
-        ["result_id", "string"],
-      ],
+      ["flags", "#"],
+      ["keep_original_details", "flags.0?true"],
+      ["stargift", "InputSavedStarGift"],
     ],
+    "InputInvoice",
   ],
-  [
-    "mediaAreaGeoPoint",
+  "inputInvoiceStarGiftTransfer": [
+    0x4A5F5BD9,
     [
-      0xCAD5452D,
-      [
-        ["flags", "#"],
-        ["coordinates", "MediaAreaCoordinates"],
-        ["geo", "GeoPoint"],
-        ["address", "flags.0?GeoPointAddress"],
-      ],
+      ["stargift", "InputSavedStarGift"],
+      ["to_id", "InputPeer"],
     ],
+    "InputInvoice",
   ],
-  [
-    "mediaAreaSuggestedReaction",
+  "inputInvoicePremiumGiftStars": [
+    0xDABAB2EF,
     [
-      0x14455871,
-      [
-        ["flags", "#"],
-        ["dark", "flags.0?true"],
-        ["flipped", "flags.1?true"],
-        ["coordinates", "MediaAreaCoordinates"],
-        ["reaction", "Reaction"],
-      ],
+      ["flags", "#"],
+      ["user_id", "InputUser"],
+      ["months", "int"],
+      ["message", "flags.0?TextWithEntities"],
     ],
+    "InputInvoice",
   ],
-  [
-    "mediaAreaChannelPost",
+  "payments.exportedInvoice": [
+    0xAED0CBD9,
     [
-      0x770416AF,
-      [
-        ["coordinates", "MediaAreaCoordinates"],
-        ["channel_id", "long"],
-        ["msg_id", "int"],
-      ],
+      ["url", "string"],
     ],
+    "payments.ExportedInvoice",
   ],
-  [
-    "inputMediaAreaChannelPost",
+  "messages.transcribedAudio": [
+    0xCFB9D957,
     [
-      0x2271F2BF,
-      [
-        ["coordinates", "MediaAreaCoordinates"],
-        ["channel", "InputChannel"],
-        ["msg_id", "int"],
-      ],
+      ["flags", "#"],
+      ["pending", "flags.0?true"],
+      ["transcription_id", "long"],
+      ["text", "string"],
+      ["trial_remains_num", "flags.1?int"],
+      ["trial_remains_until_date", "flags.1?int"],
     ],
+    "messages.TranscribedAudio",
   ],
-  [
-    "mediaAreaUrl",
+  "help.premiumPromo": [
+    0x5334759C,
     [
-      0x37381085,
-      [
-        ["coordinates", "MediaAreaCoordinates"],
-        ["url", "string"],
-      ],
+      ["status_text", "string"],
+      ["status_entities", "Vector<MessageEntity>"],
+      ["video_sections", "Vector<string>"],
+      ["videos", "Vector<Document>"],
+      ["period_options", "Vector<PremiumSubscriptionOption>"],
+      ["users", "Vector<User>"],
     ],
+    "help.PremiumPromo",
   ],
-  [
-    "mediaAreaWeather",
+  "inputStorePaymentPremiumSubscription": [
+    0xA6751E66,
     [
-      0x49A6549C,
-      [
-        ["coordinates", "MediaAreaCoordinates"],
-        ["emoji", "string"],
-        ["temperature_c", "double"],
-        ["color", "int"],
-      ],
+      ["flags", "#"],
+      ["restore", "flags.0?true"],
+      ["upgrade", "flags.1?true"],
     ],
+    "InputStorePaymentPurpose",
   ],
-  [
-    "mediaAreaStarGift",
+  "inputStorePaymentGiftPremium": [
+    0x616F7FE8,
     [
-      0x5787686D,
-      [
-        ["coordinates", "MediaAreaCoordinates"],
-        ["slug", "string"],
-      ],
+      ["user_id", "InputUser"],
+      ["currency", "string"],
+      ["amount", "long"],
     ],
+    "InputStorePaymentPurpose",
   ],
-  [
-    "peerStories",
+  "inputStorePaymentPremiumGiftCode": [
+    0xFB790393,
     [
-      0x9A35E999,
-      [
-        ["flags", "#"],
-        ["peer", "Peer"],
-        ["max_read_id", "flags.0?int"],
-        ["stories", "Vector<StoryItem>"],
-      ],
+      ["flags", "#"],
+      ["users", "Vector<InputUser>"],
+      ["boost_peer", "flags.0?InputPeer"],
+      ["currency", "string"],
+      ["amount", "long"],
+      ["message", "flags.1?TextWithEntities"],
     ],
+    "InputStorePaymentPurpose",
   ],
-  [
-    "stories.peerStories",
+  "inputStorePaymentPremiumGiveaway": [
+    0x160544CA,
     [
-      0xCAE68768,
-      [
-        ["stories", "PeerStories"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["only_new_subscribers", "flags.0?true"],
+      ["winners_are_visible", "flags.3?true"],
+      ["boost_peer", "InputPeer"],
+      ["additional_peers", "flags.1?Vector<InputPeer>"],
+      ["countries_iso2", "flags.2?Vector<string>"],
+      ["prize_description", "flags.4?string"],
+      ["random_id", "long"],
+      ["until_date", "int"],
+      ["currency", "string"],
+      ["amount", "long"],
     ],
+    "InputStorePaymentPurpose",
   ],
-  [
-    "messages.webPage",
+  "inputStorePaymentStarsTopup": [
+    0xDDDD0F56,
     [
-      0xFD5E12BD,
-      [
-        ["webpage", "WebPage"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["stars", "long"],
+      ["currency", "string"],
+      ["amount", "long"],
     ],
+    "InputStorePaymentPurpose",
   ],
-  [
-    "premiumGiftCodeOption",
+  "inputStorePaymentStarsGift": [
+    0x1D741EF7,
     [
-      0x257E962B,
-      [
-        ["flags", "#"],
-        ["users", "int"],
-        ["months", "int"],
-        ["store_product", "flags.0?string"],
-        ["store_quantity", "flags.1?int"],
-        ["currency", "string"],
-        ["amount", "long"],
-      ],
+      ["user_id", "InputUser"],
+      ["stars", "long"],
+      ["currency", "string"],
+      ["amount", "long"],
     ],
+    "InputStorePaymentPurpose",
   ],
-  [
-    "payments.checkedGiftCode",
+  "inputStorePaymentStarsGiveaway": [
+    0x751F08FA,
     [
-      0x284A1096,
-      [
-        ["flags", "#"],
-        ["via_giveaway", "flags.2?true"],
-        ["from_id", "flags.4?Peer"],
-        ["giveaway_msg_id", "flags.3?int"],
-        ["to_id", "flags.0?long"],
-        ["date", "int"],
-        ["months", "int"],
-        ["used_date", "flags.1?int"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["only_new_subscribers", "flags.0?true"],
+      ["winners_are_visible", "flags.3?true"],
+      ["stars", "long"],
+      ["boost_peer", "InputPeer"],
+      ["additional_peers", "flags.1?Vector<InputPeer>"],
+      ["countries_iso2", "flags.2?Vector<string>"],
+      ["prize_description", "flags.4?string"],
+      ["random_id", "long"],
+      ["until_date", "int"],
+      ["currency", "string"],
+      ["amount", "long"],
+      ["users", "int"],
     ],
+    "InputStorePaymentPurpose",
   ],
-  [
-    "payments.giveawayInfo",
+  "paymentFormMethod": [
+    0x88F8F21B,
     [
-      0x4367DAA0,
-      [
-        ["flags", "#"],
-        ["participating", "flags.0?true"],
-        ["preparing_results", "flags.3?true"],
-        ["start_date", "int"],
-        ["joined_too_early_date", "flags.1?int"],
-        ["admin_disallowed_chat_id", "flags.2?long"],
-        ["disallowed_country", "flags.4?string"],
-      ],
+      ["url", "string"],
+      ["title", "string"],
     ],
+    "PaymentFormMethod",
   ],
-  [
-    "payments.giveawayInfoResults",
+  "emojiStatusEmpty": [
+    0x2DE11AAE,
+    [],
+    "EmojiStatus",
+  ],
+  "emojiStatus": [
+    0xE7FF068A,
     [
-      0xE175E66F,
-      [
-        ["flags", "#"],
-        ["winner", "flags.0?true"],
-        ["refunded", "flags.1?true"],
-        ["start_date", "int"],
-        ["gift_code_slug", "flags.3?string"],
-        ["stars_prize", "flags.4?long"],
-        ["finish_date", "int"],
-        ["winners_count", "int"],
-        ["activated_count", "flags.2?int"],
-      ],
+      ["flags", "#"],
+      ["document_id", "long"],
+      ["until", "flags.0?int"],
     ],
+    "EmojiStatus",
   ],
-  [
-    "prepaidGiveaway",
+  "emojiStatusCollectible": [
+    0x7184603B,
     [
-      0xB2539D54,
-      [
-        ["id", "long"],
-        ["months", "int"],
-        ["quantity", "int"],
-        ["date", "int"],
-      ],
+      ["flags", "#"],
+      ["collectible_id", "long"],
+      ["document_id", "long"],
+      ["title", "string"],
+      ["slug", "string"],
+      ["pattern_document_id", "long"],
+      ["center_color", "int"],
+      ["edge_color", "int"],
+      ["pattern_color", "int"],
+      ["text_color", "int"],
+      ["until", "flags.0?int"],
     ],
+    "EmojiStatus",
   ],
-  [
-    "prepaidStarsGiveaway",
+  "inputEmojiStatusCollectible": [
+    0x07141DBF,
     [
-      0x9A9D77E0,
-      [
-        ["id", "long"],
-        ["stars", "long"],
-        ["quantity", "int"],
-        ["boosts", "int"],
-        ["date", "int"],
-      ],
+      ["flags", "#"],
+      ["collectible_id", "long"],
+      ["until", "flags.0?int"],
     ],
+    "EmojiStatus",
+  ],
+  "account.emojiStatusesNotModified": [
+    0xD08CE645,
+    [],
+    "account.EmojiStatuses",
   ],
-  [
-    "boost",
+  "account.emojiStatuses": [
+    0x90C467D1,
     [
-      0x4B3E14D6,
-      [
-        ["flags", "#"],
-        ["gift", "flags.1?true"],
-        ["giveaway", "flags.2?true"],
-        ["unclaimed", "flags.3?true"],
-        ["id", "string"],
-        ["user_id", "flags.0?long"],
-        ["giveaway_msg_id", "flags.2?int"],
-        ["date", "int"],
-        ["expires", "int"],
-        ["used_gift_slug", "flags.4?string"],
-        ["multiplier", "flags.5?int"],
-        ["stars", "flags.6?long"],
-      ],
+      ["hash", "long"],
+      ["statuses", "Vector<EmojiStatus>"],
     ],
+    "account.EmojiStatuses",
   ],
-  [
-    "premium.boostsList",
+  "reactionEmpty": [
+    0x79F5D419,
+    [],
+    "Reaction",
+  ],
+  "reactionEmoji": [
+    0x1B2286B8,
     [
-      0x86F8613C,
-      [
-        ["flags", "#"],
-        ["count", "int"],
-        ["boosts", "Vector<Boost>"],
-        ["next_offset", "flags.0?string"],
-        ["users", "Vector<User>"],
-      ],
+      ["emoticon", "string"],
     ],
+    "Reaction",
   ],
-  [
-    "myBoost",
+  "reactionCustomEmoji": [
+    0x8935FC73,
     [
-      0xC448415C,
-      [
-        ["flags", "#"],
-        ["slot", "int"],
-        ["peer", "flags.0?Peer"],
-        ["date", "int"],
-        ["expires", "int"],
-        ["cooldown_until_date", "flags.1?int"],
-      ],
+      ["document_id", "long"],
     ],
+    "Reaction",
+  ],
+  "reactionPaid": [
+    0x523DA4EB,
+    [],
+    "Reaction",
   ],
-  [
-    "premium.myBoosts",
+  "chatReactionsNone": [
+    0xEAFC32BC,
+    [],
+    "ChatReactions",
+  ],
+  "chatReactionsAll": [
+    0x52928BCA,
     [
-      0x9AE228E2,
-      [
-        ["my_boosts", "Vector<MyBoost>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["allow_custom", "flags.0?true"],
     ],
+    "ChatReactions",
   ],
-  [
-    "premium.boostsStatus",
+  "chatReactionsSome": [
+    0x661D4037,
     [
-      0x4959427A,
-      [
-        ["flags", "#"],
-        ["my_boost", "flags.2?true"],
-        ["level", "int"],
-        ["current_level_boosts", "int"],
-        ["boosts", "int"],
-        ["gift_boosts", "flags.4?int"],
-        ["next_level_boosts", "flags.0?int"],
-        ["premium_audience", "flags.1?StatsPercentValue"],
-        ["boost_url", "string"],
-        ["prepaid_giveaways", "flags.3?Vector<PrepaidGiveaway>"],
-        ["my_boost_slots", "flags.2?Vector<int>"],
-      ],
+      ["reactions", "Vector<Reaction>"],
     ],
+    "ChatReactions",
+  ],
+  "messages.reactionsNotModified": [
+    0xB06FDBDF,
+    [],
+    "messages.Reactions",
   ],
-  [
-    "storyFwdHeader",
+  "messages.reactions": [
+    0xEAFDF716,
     [
-      0xB826E150,
-      [
-        ["flags", "#"],
-        ["modified", "flags.3?true"],
-        ["from", "flags.0?Peer"],
-        ["from_name", "flags.1?string"],
-        ["story_id", "flags.2?int"],
-      ],
+      ["hash", "long"],
+      ["reactions", "Vector<Reaction>"],
     ],
+    "messages.Reactions",
   ],
-  [
-    "postInteractionCountersMessage",
+  "emailVerifyPurposeLoginSetup": [
+    0x4345BE73,
     [
-      0xE7058E7F,
-      [
-        ["msg_id", "int"],
-        ["views", "int"],
-        ["forwards", "int"],
-        ["reactions", "int"],
-      ],
+      ["phone_number", "string"],
+      ["phone_code_hash", "string"],
     ],
+    "EmailVerifyPurpose",
+  ],
+  "emailVerifyPurposeLoginChange": [
+    0x527D22EB,
+    [],
+    "EmailVerifyPurpose",
+  ],
+  "emailVerifyPurposePassport": [
+    0xBBF51685,
+    [],
+    "EmailVerifyPurpose",
   ],
-  [
-    "postInteractionCountersStory",
+  "emailVerificationCode": [
+    0x922E55A9,
     [
-      0x8A480E27,
-      [
-        ["story_id", "int"],
-        ["views", "int"],
-        ["forwards", "int"],
-        ["reactions", "int"],
-      ],
+      ["code", "string"],
     ],
+    "EmailVerification",
   ],
-  [
-    "stats.storyStats",
+  "emailVerificationGoogle": [
+    0xDB909EC2,
     [
-      0x50CD067C,
-      [
-        ["views_graph", "StatsGraph"],
-        ["reactions_by_emotion_graph", "StatsGraph"],
-      ],
+      ["token", "string"],
     ],
+    "EmailVerification",
   ],
-  [
-    "publicForwardMessage",
+  "emailVerificationApple": [
+    0x96D074FD,
     [
-      0x01F2BF4A,
-      [
-        ["message", "Message"],
-      ],
+      ["token", "string"],
     ],
+    "EmailVerification",
   ],
-  [
-    "publicForwardStory",
+  "account.emailVerified": [
+    0x2B96CD1B,
     [
-      0xEDF3ADD0,
-      [
-        ["peer", "Peer"],
-        ["story", "StoryItem"],
-      ],
+      ["email", "string"],
     ],
+    "account.EmailVerified",
   ],
-  [
-    "stats.publicForwards",
+  "account.emailVerifiedLogin": [
+    0xE1BB0D61,
     [
-      0x93037E20,
-      [
-        ["flags", "#"],
-        ["count", "int"],
-        ["forwards", "Vector<PublicForward>"],
-        ["next_offset", "flags.0?string"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["email", "string"],
+      ["sent_code", "auth.SentCode"],
     ],
+    "account.EmailVerified",
   ],
-  [
-    "peerColor",
+  "premiumSubscriptionOption": [
+    0x5F2D1DF2,
     [
-      0xB54B5ACF,
-      [
-        ["flags", "#"],
-        ["color", "flags.0?int"],
-        ["background_emoji_id", "flags.1?long"],
-      ],
+      ["flags", "#"],
+      ["current", "flags.1?true"],
+      ["can_purchase_upgrade", "flags.2?true"],
+      ["transaction", "flags.3?string"],
+      ["months", "int"],
+      ["currency", "string"],
+      ["amount", "long"],
+      ["bot_url", "string"],
+      ["store_product", "flags.0?string"],
     ],
+    "PremiumSubscriptionOption",
   ],
-  [
-    "help.peerColorSet",
+  "sendAsPeer": [
+    0xB81C7034,
     [
-      0x26219A58,
-      [
-        ["colors", "Vector<int>"],
-      ],
+      ["flags", "#"],
+      ["premium_required", "flags.0?true"],
+      ["peer", "Peer"],
     ],
+    "SendAsPeer",
   ],
-  [
-    "help.peerColorProfileSet",
+  "messageExtendedMediaPreview": [
+    0xAD628CC8,
     [
-      0x767D61EB,
-      [
-        ["palette_colors", "Vector<int>"],
-        ["bg_colors", "Vector<int>"],
-        ["story_colors", "Vector<int>"],
-      ],
+      ["flags", "#"],
+      ["w", "flags.0?int"],
+      ["h", "flags.0?int"],
+      ["thumb", "flags.1?PhotoSize"],
+      ["video_duration", "flags.2?int"],
     ],
+    "MessageExtendedMedia",
   ],
-  [
-    "help.peerColorOption",
+  "messageExtendedMedia": [
+    0xEE479C64,
     [
-      0xADEC6EBE,
-      [
-        ["flags", "#"],
-        ["hidden", "flags.0?true"],
-        ["color_id", "int"],
-        ["colors", "flags.1?help.PeerColorSet"],
-        ["dark_colors", "flags.2?help.PeerColorSet"],
-        ["channel_min_level", "flags.3?int"],
-        ["group_min_level", "flags.4?int"],
-      ],
+      ["media", "MessageMedia"],
     ],
+    "MessageExtendedMedia",
   ],
-  [
-    "help.peerColorsNotModified",
+  "stickerKeyword": [
+    0xFCFEB29C,
     [
-      0x2BA1F5CE,
-      [],
+      ["document_id", "long"],
+      ["keyword", "Vector<string>"],
     ],
+    "StickerKeyword",
   ],
-  [
-    "help.peerColors",
+  "username": [
+    0xB4073647,
     [
-      0x00F8ED08,
-      [
-        ["hash", "int"],
-        ["colors", "Vector<help.PeerColorOption>"],
-      ],
+      ["flags", "#"],
+      ["editable", "flags.0?true"],
+      ["active", "flags.1?true"],
+      ["username", "string"],
     ],
+    "Username",
   ],
-  [
-    "storyReaction",
+  "forumTopicDeleted": [
+    0x023F109B,
     [
-      0x6090D6D5,
-      [
-        ["peer_id", "Peer"],
-        ["date", "int"],
-        ["reaction", "Reaction"],
-      ],
+      ["id", "int"],
     ],
+    "ForumTopic",
   ],
-  [
-    "storyReactionPublicForward",
+  "forumTopic": [
+    0x71701DA9,
     [
-      0xBBAB2643,
-      [
-        ["message", "Message"],
-      ],
+      ["flags", "#"],
+      ["my", "flags.1?true"],
+      ["closed", "flags.2?true"],
+      ["pinned", "flags.3?true"],
+      ["short", "flags.5?true"],
+      ["hidden", "flags.6?true"],
+      ["id", "int"],
+      ["date", "int"],
+      ["title", "string"],
+      ["icon_color", "int"],
+      ["icon_emoji_id", "flags.0?long"],
+      ["top_message", "int"],
+      ["read_inbox_max_id", "int"],
+      ["read_outbox_max_id", "int"],
+      ["unread_count", "int"],
+      ["unread_mentions_count", "int"],
+      ["unread_reactions_count", "int"],
+      ["from_id", "Peer"],
+      ["notify_settings", "PeerNotifySettings"],
+      ["draft", "flags.4?DraftMessage"],
     ],
+    "ForumTopic",
   ],
-  [
-    "storyReactionPublicRepost",
+  "messages.forumTopics": [
+    0x367617D3,
     [
-      0xCFCD0F13,
-      [
-        ["peer_id", "Peer"],
-        ["story", "StoryItem"],
-      ],
+      ["flags", "#"],
+      ["order_by_create_date", "flags.0?true"],
+      ["count", "int"],
+      ["topics", "Vector<ForumTopic>"],
+      ["messages", "Vector<Message>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+      ["pts", "int"],
     ],
+    "messages.ForumTopics",
   ],
-  [
-    "stories.storyReactionsList",
+  "defaultHistoryTTL": [
+    0x43B46B20,
     [
-      0xAA5F789C,
-      [
-        ["flags", "#"],
-        ["count", "int"],
-        ["reactions", "Vector<StoryReaction>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-        ["next_offset", "flags.0?string"],
-      ],
+      ["period", "int"],
     ],
+    "DefaultHistoryTTL",
   ],
-  [
-    "savedDialog",
+  "exportedContactToken": [
+    0x41BF109B,
     [
-      0xBD87CB6C,
-      [
-        ["flags", "#"],
-        ["pinned", "flags.2?true"],
-        ["peer", "Peer"],
-        ["top_message", "int"],
-      ],
+      ["url", "string"],
+      ["expires", "int"],
     ],
+    "ExportedContactToken",
   ],
-  [
-    "messages.savedDialogs",
+  "requestPeerTypeUser": [
+    0x5F3B8A00,
     [
-      0xF83AE221,
-      [
-        ["dialogs", "Vector<SavedDialog>"],
-        ["messages", "Vector<Message>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["bot", "flags.0?Bool"],
+      ["premium", "flags.1?Bool"],
     ],
+    "RequestPeerType",
   ],
-  [
-    "messages.savedDialogsSlice",
+  "requestPeerTypeChat": [
+    0xC9F06E1B,
     [
-      0x44BA9DD9,
-      [
-        ["count", "int"],
-        ["dialogs", "Vector<SavedDialog>"],
-        ["messages", "Vector<Message>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["creator", "flags.0?true"],
+      ["bot_participant", "flags.5?true"],
+      ["has_username", "flags.3?Bool"],
+      ["forum", "flags.4?Bool"],
+      ["user_admin_rights", "flags.1?ChatAdminRights"],
+      ["bot_admin_rights", "flags.2?ChatAdminRights"],
     ],
+    "RequestPeerType",
   ],
-  [
-    "messages.savedDialogsNotModified",
+  "requestPeerTypeBroadcast": [
+    0x339BEF6C,
     [
-      0xC01F6FE8,
-      [
-        ["count", "int"],
-      ],
+      ["flags", "#"],
+      ["creator", "flags.0?true"],
+      ["has_username", "flags.3?Bool"],
+      ["user_admin_rights", "flags.1?ChatAdminRights"],
+      ["bot_admin_rights", "flags.2?ChatAdminRights"],
     ],
+    "RequestPeerType",
   ],
-  [
-    "savedReactionTag",
+  "emojiListNotModified": [
+    0x481EADFA,
+    [],
+    "EmojiList",
+  ],
+  "emojiList": [
+    0x7A1E11D1,
     [
-      0xCB6FF828,
-      [
-        ["flags", "#"],
-        ["reaction", "Reaction"],
-        ["title", "flags.0?string"],
-        ["count", "int"],
-      ],
+      ["hash", "long"],
+      ["document_id", "Vector<long>"],
     ],
+    "EmojiList",
   ],
-  [
-    "messages.savedReactionTagsNotModified",
+  "emojiGroup": [
+    0x7A9ABDA9,
     [
-      0x889B59EF,
-      [],
+      ["title", "string"],
+      ["icon_emoji_id", "long"],
+      ["emoticons", "Vector<string>"],
     ],
+    "EmojiGroup",
   ],
-  [
-    "messages.savedReactionTags",
+  "emojiGroupGreeting": [
+    0x80D26CC7,
     [
-      0x3259950A,
-      [
-        ["tags", "Vector<SavedReactionTag>"],
-        ["hash", "long"],
-      ],
+      ["title", "string"],
+      ["icon_emoji_id", "long"],
+      ["emoticons", "Vector<string>"],
     ],
+    "EmojiGroup",
   ],
-  [
-    "outboxReadDate",
+  "emojiGroupPremium": [
+    0x093BCF34,
     [
-      0x3BB842AC,
-      [
-        ["date", "int"],
-      ],
+      ["title", "string"],
+      ["icon_emoji_id", "long"],
     ],
+    "EmojiGroup",
+  ],
+  "messages.emojiGroupsNotModified": [
+    0x6FB4AD87,
+    [],
+    "messages.EmojiGroups",
   ],
-  [
-    "smsjobs.eligibleToJoin",
+  "messages.emojiGroups": [
+    0x881FB94B,
     [
-      0xDC8B44CF,
-      [
-        ["terms_url", "string"],
-        ["monthly_sent_sms", "int"],
-      ],
+      ["hash", "int"],
+      ["groups", "Vector<EmojiGroup>"],
     ],
+    "messages.EmojiGroups",
   ],
-  [
-    "smsjobs.status",
+  "textWithEntities": [
+    0x751F3146,
     [
-      0x2AEE9191,
-      [
-        ["flags", "#"],
-        ["allow_international", "flags.0?true"],
-        ["recent_sent", "int"],
-        ["recent_since", "int"],
-        ["recent_remains", "int"],
-        ["total_sent", "int"],
-        ["total_since", "int"],
-        ["last_gift_slug", "flags.1?string"],
-        ["terms_url", "string"],
-      ],
+      ["text", "string"],
+      ["entities", "Vector<MessageEntity>"],
     ],
+    "TextWithEntities",
   ],
-  [
-    "smsJob",
+  "messages.translateResult": [
+    0x33DB32F8,
     [
-      0xE6A1EEB8,
-      [
-        ["job_id", "string"],
-        ["phone_number", "string"],
-        ["text", "string"],
-      ],
+      ["result", "Vector<TextWithEntities>"],
     ],
+    "messages.TranslatedText",
   ],
-  [
-    "businessWeeklyOpen",
+  "autoSaveSettings": [
+    0xC84834CE,
     [
-      0x120B1AB9,
-      [
-        ["start_minute", "int"],
-        ["end_minute", "int"],
-      ],
+      ["flags", "#"],
+      ["photos", "flags.0?true"],
+      ["videos", "flags.1?true"],
+      ["video_max_size", "flags.2?long"],
     ],
+    "AutoSaveSettings",
   ],
-  [
-    "businessWorkHours",
+  "autoSaveException": [
+    0x81602D47,
     [
-      0x8C92B098,
-      [
-        ["flags", "#"],
-        ["open_now", "flags.0?true"],
-        ["timezone_id", "string"],
-        ["weekly_open", "Vector<BusinessWeeklyOpen>"],
-      ],
+      ["peer", "Peer"],
+      ["settings", "AutoSaveSettings"],
     ],
+    "AutoSaveException",
   ],
-  [
-    "businessLocation",
+  "account.autoSaveSettings": [
+    0x4C3E069D,
     [
-      0xAC5C1AF7,
-      [
-        ["flags", "#"],
-        ["geo_point", "flags.0?GeoPoint"],
-        ["address", "string"],
-      ],
+      ["users_settings", "AutoSaveSettings"],
+      ["chats_settings", "AutoSaveSettings"],
+      ["broadcasts_settings", "AutoSaveSettings"],
+      ["exceptions", "Vector<AutoSaveException>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "account.AutoSaveSettings",
   ],
-  [
-    "inputBusinessRecipients",
+  "help.appConfigNotModified": [
+    0x7CDE641D,
+    [],
+    "help.AppConfig",
+  ],
+  "help.appConfig": [
+    0xDD18782E,
     [
-      0x6F8B32AA,
-      [
-        ["flags", "#"],
-        ["existing_chats", "flags.0?true"],
-        ["new_chats", "flags.1?true"],
-        ["contacts", "flags.2?true"],
-        ["non_contacts", "flags.3?true"],
-        ["exclude_selected", "flags.5?true"],
-        ["users", "flags.4?Vector<InputUser>"],
-      ],
+      ["hash", "int"],
+      ["config", "JSONValue"],
     ],
+    "help.AppConfig",
   ],
-  [
-    "businessRecipients",
+  "inputBotAppID": [
+    0xA920BD7A,
     [
-      0x21108FF7,
-      [
-        ["flags", "#"],
-        ["existing_chats", "flags.0?true"],
-        ["new_chats", "flags.1?true"],
-        ["contacts", "flags.2?true"],
-        ["non_contacts", "flags.3?true"],
-        ["exclude_selected", "flags.5?true"],
-        ["users", "flags.4?Vector<long>"],
-      ],
+      ["id", "long"],
+      ["access_hash", "long"],
     ],
+    "InputBotApp",
   ],
-  [
-    "businessAwayMessageScheduleAlways",
+  "inputBotAppShortName": [
+    0x908C0407,
     [
-      0xC9B9E2B9,
-      [],
+      ["bot_id", "InputUser"],
+      ["short_name", "string"],
     ],
+    "InputBotApp",
+  ],
+  "botAppNotModified": [
+    0x5DA674B7,
+    [],
+    "BotApp",
   ],
-  [
-    "businessAwayMessageScheduleOutsideWorkHours",
+  "botApp": [
+    0x95FCD1D6,
     [
-      0xC3F2F501,
-      [],
+      ["flags", "#"],
+      ["id", "long"],
+      ["access_hash", "long"],
+      ["short_name", "string"],
+      ["title", "string"],
+      ["description", "string"],
+      ["photo", "Photo"],
+      ["document", "flags.0?Document"],
+      ["hash", "long"],
     ],
+    "BotApp",
   ],
-  [
-    "businessAwayMessageScheduleCustom",
+  "messages.botApp": [
+    0xEB50ADF5,
     [
-      0xCC4D9ECC,
-      [
-        ["start_date", "int"],
-        ["end_date", "int"],
-      ],
+      ["flags", "#"],
+      ["inactive", "flags.0?true"],
+      ["request_write_access", "flags.1?true"],
+      ["has_settings", "flags.2?true"],
+      ["app", "BotApp"],
     ],
+    "messages.BotApp",
   ],
-  [
-    "inputBusinessGreetingMessage",
+  "inlineBotWebView": [
+    0xB57295D5,
     [
-      0x0194CB3B,
-      [
-        ["shortcut_id", "int"],
-        ["recipients", "InputBusinessRecipients"],
-        ["no_activity_days", "int"],
-      ],
+      ["text", "string"],
+      ["url", "string"],
     ],
+    "InlineBotWebView",
   ],
-  [
-    "businessGreetingMessage",
+  "readParticipantDate": [
+    0x4A4FF172,
     [
-      0xE519ABAB,
-      [
-        ["shortcut_id", "int"],
-        ["recipients", "BusinessRecipients"],
-        ["no_activity_days", "int"],
-      ],
+      ["user_id", "long"],
+      ["date", "int"],
     ],
+    "ReadParticipantDate",
   ],
-  [
-    "inputBusinessAwayMessage",
+  "inputChatlistDialogFilter": [
+    0xF3E0DA33,
     [
-      0x832175E0,
-      [
-        ["flags", "#"],
-        ["offline_only", "flags.0?true"],
-        ["shortcut_id", "int"],
-        ["schedule", "BusinessAwayMessageSchedule"],
-        ["recipients", "InputBusinessRecipients"],
-      ],
+      ["filter_id", "int"],
     ],
+    "InputChatlist",
   ],
-  [
-    "businessAwayMessage",
+  "exportedChatlistInvite": [
+    0x0C5181AC,
     [
-      0xEF156A5C,
-      [
-        ["flags", "#"],
-        ["offline_only", "flags.0?true"],
-        ["shortcut_id", "int"],
-        ["schedule", "BusinessAwayMessageSchedule"],
-        ["recipients", "BusinessRecipients"],
-      ],
+      ["flags", "#"],
+      ["title", "string"],
+      ["url", "string"],
+      ["peers", "Vector<Peer>"],
     ],
+    "ExportedChatlistInvite",
   ],
-  [
-    "timezone",
+  "chatlists.exportedChatlistInvite": [
+    0x10E6E3A6,
     [
-      0xFF9289F5,
-      [
-        ["id", "string"],
-        ["name", "string"],
-        ["utc_offset", "int"],
-      ],
+      ["filter", "DialogFilter"],
+      ["invite", "ExportedChatlistInvite"],
     ],
+    "chatlists.ExportedChatlistInvite",
   ],
-  [
-    "help.timezonesListNotModified",
+  "chatlists.exportedInvites": [
+    0x10AB6DC7,
     [
-      0x970708CC,
-      [],
+      ["invites", "Vector<ExportedChatlistInvite>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "chatlists.ExportedInvites",
   ],
-  [
-    "help.timezonesList",
+  "chatlists.chatlistInviteAlready": [
+    0xFA87F659,
     [
-      0x7B74ED71,
-      [
-        ["timezones", "Vector<Timezone>"],
-        ["hash", "int"],
-      ],
+      ["filter_id", "int"],
+      ["missing_peers", "Vector<Peer>"],
+      ["already_peers", "Vector<Peer>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "chatlists.ChatlistInvite",
   ],
-  [
-    "quickReply",
+  "chatlists.chatlistInvite": [
+    0xF10ECE2F,
     [
-      0x0697102B,
-      [
-        ["shortcut_id", "int"],
-        ["shortcut", "string"],
-        ["top_message", "int"],
-        ["count", "int"],
-      ],
+      ["flags", "#"],
+      ["title_noanimate", "flags.1?true"],
+      ["title", "TextWithEntities"],
+      ["emoticon", "flags.0?string"],
+      ["peers", "Vector<Peer>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "chatlists.ChatlistInvite",
   ],
-  [
-    "inputQuickReplyShortcut",
+  "chatlists.chatlistUpdates": [
+    0x93BD878D,
     [
-      0x24596D41,
-      [
-        ["shortcut", "string"],
-      ],
+      ["missing_peers", "Vector<Peer>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "chatlists.ChatlistUpdates",
   ],
-  [
-    "inputQuickReplyShortcutId",
+  "bots.botInfo": [
+    0xE8A775B0,
     [
-      0x01190CF1,
-      [
-        ["shortcut_id", "int"],
-      ],
+      ["name", "string"],
+      ["about", "string"],
+      ["description", "string"],
     ],
+    "bots.BotInfo",
   ],
-  [
-    "messages.quickReplies",
+  "messagePeerVote": [
+    0xB6CC2D5C,
     [
-      0xC68D6695,
-      [
-        ["quick_replies", "Vector<QuickReply>"],
-        ["messages", "Vector<Message>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["peer", "Peer"],
+      ["option", "bytes"],
+      ["date", "int"],
     ],
+    "MessagePeerVote",
   ],
-  [
-    "messages.quickRepliesNotModified",
+  "messagePeerVoteInputOption": [
+    0x74CDA504,
     [
-      0x5F91EB5B,
-      [],
+      ["peer", "Peer"],
+      ["date", "int"],
     ],
+    "MessagePeerVote",
   ],
-  [
-    "connectedBot",
+  "messagePeerVoteMultiple": [
+    0x4628F6E6,
     [
-      0xBD068601,
-      [
-        ["flags", "#"],
-        ["can_reply", "flags.0?true"],
-        ["bot_id", "long"],
-        ["recipients", "BusinessBotRecipients"],
-      ],
+      ["peer", "Peer"],
+      ["options", "Vector<bytes>"],
+      ["date", "int"],
     ],
+    "MessagePeerVote",
   ],
-  [
-    "account.connectedBots",
+  "storyViews": [
+    0x8D595CD6,
     [
-      0x17D7F87B,
-      [
-        ["connected_bots", "Vector<ConnectedBot>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["has_viewers", "flags.1?true"],
+      ["views_count", "int"],
+      ["forwards_count", "flags.2?int"],
+      ["reactions", "flags.3?Vector<ReactionCount>"],
+      ["reactions_count", "flags.4?int"],
+      ["recent_viewers", "flags.0?Vector<long>"],
     ],
+    "StoryViews",
   ],
-  [
-    "messages.dialogFilters",
+  "storyItemDeleted": [
+    0x51E6EE4F,
     [
-      0x2AD93719,
-      [
-        ["flags", "#"],
-        ["tags_enabled", "flags.0?true"],
-        ["filters", "Vector<DialogFilter>"],
-      ],
+      ["id", "int"],
     ],
+    "StoryItem",
   ],
-  [
-    "birthday",
+  "storyItemSkipped": [
+    0xFFADC913,
     [
-      0x6C8E1E06,
-      [
-        ["flags", "#"],
-        ["day", "int"],
-        ["month", "int"],
-        ["year", "flags.0?int"],
-      ],
+      ["flags", "#"],
+      ["close_friends", "flags.8?true"],
+      ["id", "int"],
+      ["date", "int"],
+      ["expire_date", "int"],
     ],
+    "StoryItem",
   ],
-  [
-    "botBusinessConnection",
+  "storyItem": [
+    0x79B26A24,
     [
-      0x896433B4,
-      [
-        ["flags", "#"],
-        ["can_reply", "flags.0?true"],
-        ["disabled", "flags.1?true"],
-        ["connection_id", "string"],
-        ["user_id", "long"],
-        ["dc_id", "int"],
-        ["date", "int"],
-      ],
+      ["flags", "#"],
+      ["pinned", "flags.5?true"],
+      ["public", "flags.7?true"],
+      ["close_friends", "flags.8?true"],
+      ["min", "flags.9?true"],
+      ["noforwards", "flags.10?true"],
+      ["edited", "flags.11?true"],
+      ["contacts", "flags.12?true"],
+      ["selected_contacts", "flags.13?true"],
+      ["out", "flags.16?true"],
+      ["id", "int"],
+      ["date", "int"],
+      ["from_id", "flags.18?Peer"],
+      ["fwd_from", "flags.17?StoryFwdHeader"],
+      ["expire_date", "int"],
+      ["caption", "flags.0?string"],
+      ["entities", "flags.1?Vector<MessageEntity>"],
+      ["media", "MessageMedia"],
+      ["media_areas", "flags.14?Vector<MediaArea>"],
+      ["privacy", "flags.2?Vector<PrivacyRule>"],
+      ["views", "flags.3?StoryViews"],
+      ["sent_reaction", "flags.15?Reaction"],
     ],
+    "StoryItem",
   ],
-  [
-    "inputBusinessIntro",
+  "stories.allStoriesNotModified": [
+    0x1158FE3E,
     [
-      0x09C469CD,
-      [
-        ["flags", "#"],
-        ["title", "string"],
-        ["description", "string"],
-        ["sticker", "flags.0?InputDocument"],
-      ],
+      ["flags", "#"],
+      ["state", "string"],
+      ["stealth_mode", "StoriesStealthMode"],
     ],
+    "stories.AllStories",
   ],
-  [
-    "businessIntro",
+  "stories.allStories": [
+    0x6EFC5E81,
     [
-      0x5A0A066D,
-      [
-        ["flags", "#"],
-        ["title", "string"],
-        ["description", "string"],
-        ["sticker", "flags.0?Document"],
-      ],
+      ["flags", "#"],
+      ["has_more", "flags.0?true"],
+      ["count", "int"],
+      ["state", "string"],
+      ["peer_stories", "Vector<PeerStories>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+      ["stealth_mode", "StoriesStealthMode"],
     ],
+    "stories.AllStories",
   ],
-  [
-    "messages.myStickers",
+  "stories.stories": [
+    0x63C3DD0A,
     [
-      0xFAFF629D,
-      [
-        ["count", "int"],
-        ["sets", "Vector<StickerSetCovered>"],
-      ],
+      ["flags", "#"],
+      ["count", "int"],
+      ["stories", "Vector<StoryItem>"],
+      ["pinned_to_top", "flags.0?Vector<int>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "stories.Stories",
   ],
-  [
-    "inputCollectibleUsername",
+  "storyView": [
+    0xB0BDEAC5,
     [
-      0xE39460A9,
-      [
-        ["username", "string"],
-      ],
+      ["flags", "#"],
+      ["blocked", "flags.0?true"],
+      ["blocked_my_stories_from", "flags.1?true"],
+      ["user_id", "long"],
+      ["date", "int"],
+      ["reaction", "flags.2?Reaction"],
     ],
+    "StoryView",
   ],
-  [
-    "inputCollectiblePhone",
+  "storyViewPublicForward": [
+    0x9083670B,
     [
-      0xA2E214A4,
-      [
-        ["phone", "string"],
-      ],
+      ["flags", "#"],
+      ["blocked", "flags.0?true"],
+      ["blocked_my_stories_from", "flags.1?true"],
+      ["message", "Message"],
     ],
+    "StoryView",
   ],
-  [
-    "fragment.collectibleInfo",
+  "storyViewPublicRepost": [
+    0xBD74CF49,
     [
-      0x6EBDFF91,
-      [
-        ["purchase_date", "int"],
-        ["currency", "string"],
-        ["amount", "long"],
-        ["crypto_currency", "string"],
-        ["crypto_amount", "long"],
-        ["url", "string"],
-      ],
+      ["flags", "#"],
+      ["blocked", "flags.0?true"],
+      ["blocked_my_stories_from", "flags.1?true"],
+      ["peer_id", "Peer"],
+      ["story", "StoryItem"],
     ],
+    "StoryView",
   ],
-  [
-    "inputBusinessBotRecipients",
+  "stories.storyViewsList": [
+    0x59D78FC5,
     [
-      0xC4E5921E,
-      [
-        ["flags", "#"],
-        ["existing_chats", "flags.0?true"],
-        ["new_chats", "flags.1?true"],
-        ["contacts", "flags.2?true"],
-        ["non_contacts", "flags.3?true"],
-        ["exclude_selected", "flags.5?true"],
-        ["users", "flags.4?Vector<InputUser>"],
-        ["exclude_users", "flags.6?Vector<InputUser>"],
-      ],
+      ["flags", "#"],
+      ["count", "int"],
+      ["views_count", "int"],
+      ["forwards_count", "int"],
+      ["reactions_count", "int"],
+      ["views", "Vector<StoryView>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+      ["next_offset", "flags.0?string"],
     ],
+    "stories.StoryViewsList",
   ],
-  [
-    "businessBotRecipients",
+  "stories.storyViews": [
+    0xDE9EED1D,
     [
-      0xB88CF373,
-      [
-        ["flags", "#"],
-        ["existing_chats", "flags.0?true"],
-        ["new_chats", "flags.1?true"],
-        ["contacts", "flags.2?true"],
-        ["non_contacts", "flags.3?true"],
-        ["exclude_selected", "flags.5?true"],
-        ["users", "flags.4?Vector<long>"],
-        ["exclude_users", "flags.6?Vector<long>"],
-      ],
+      ["views", "Vector<StoryViews>"],
+      ["users", "Vector<User>"],
     ],
+    "stories.StoryViews",
   ],
-  [
-    "contactBirthday",
+  "inputReplyToMessage": [
+    0x22C0F6D5,
     [
-      0x1D998733,
-      [
-        ["contact_id", "long"],
-        ["birthday", "Birthday"],
-      ],
+      ["flags", "#"],
+      ["reply_to_msg_id", "int"],
+      ["top_msg_id", "flags.0?int"],
+      ["reply_to_peer_id", "flags.1?InputPeer"],
+      ["quote_text", "flags.2?string"],
+      ["quote_entities", "flags.3?Vector<MessageEntity>"],
+      ["quote_offset", "flags.4?int"],
     ],
+    "InputReplyTo",
   ],
-  [
-    "contacts.contactBirthdays",
+  "inputReplyToStory": [
+    0x5881323A,
     [
-      0x114FF30D,
-      [
-        ["contacts", "Vector<ContactBirthday>"],
-        ["users", "Vector<User>"],
-      ],
+      ["peer", "InputPeer"],
+      ["story_id", "int"],
     ],
+    "InputReplyTo",
   ],
-  [
-    "missingInvitee",
+  "exportedStoryLink": [
+    0x3FC9053B,
     [
-      0x628C9224,
-      [
-        ["flags", "#"],
-        ["premium_would_allow_invite", "flags.0?true"],
-        ["premium_required_for_pm", "flags.1?true"],
-        ["user_id", "long"],
-      ],
+      ["link", "string"],
     ],
+    "ExportedStoryLink",
   ],
-  [
-    "messages.invitedUsers",
+  "storiesStealthMode": [
+    0x712E27FD,
     [
-      0x7F5DEFA6,
-      [
-        ["updates", "Updates"],
-        ["missing_invitees", "Vector<MissingInvitee>"],
-      ],
+      ["flags", "#"],
+      ["active_until_date", "flags.0?int"],
+      ["cooldown_until_date", "flags.1?int"],
     ],
+    "StoriesStealthMode",
   ],
-  [
-    "inputBusinessChatLink",
+  "mediaAreaCoordinates": [
+    0xCFC9E002,
     [
-      0x11679FA7,
-      [
-        ["flags", "#"],
-        ["message", "string"],
-        ["entities", "flags.0?Vector<MessageEntity>"],
-        ["title", "flags.1?string"],
-      ],
+      ["flags", "#"],
+      ["x", "double"],
+      ["y", "double"],
+      ["w", "double"],
+      ["h", "double"],
+      ["rotation", "double"],
+      ["radius", "flags.0?double"],
     ],
+    "MediaAreaCoordinates",
   ],
-  [
-    "businessChatLink",
+  "mediaAreaVenue": [
+    0xBE82DB9C,
     [
-      0xB4AE666F,
-      [
-        ["flags", "#"],
-        ["link", "string"],
-        ["message", "string"],
-        ["entities", "flags.0?Vector<MessageEntity>"],
-        ["title", "flags.1?string"],
-        ["views", "int"],
-      ],
+      ["coordinates", "MediaAreaCoordinates"],
+      ["geo", "GeoPoint"],
+      ["title", "string"],
+      ["address", "string"],
+      ["provider", "string"],
+      ["venue_id", "string"],
+      ["venue_type", "string"],
     ],
+    "MediaArea",
   ],
-  [
-    "account.businessChatLinks",
+  "inputMediaAreaVenue": [
+    0xB282217F,
     [
-      0xEC43A2D1,
-      [
-        ["links", "Vector<BusinessChatLink>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["coordinates", "MediaAreaCoordinates"],
+      ["query_id", "long"],
+      ["result_id", "string"],
     ],
+    "MediaArea",
   ],
-  [
-    "account.resolvedBusinessChatLinks",
+  "mediaAreaGeoPoint": [
+    0xCAD5452D,
     [
-      0x9A23AF21,
-      [
-        ["flags", "#"],
-        ["peer", "Peer"],
-        ["message", "string"],
-        ["entities", "flags.0?Vector<MessageEntity>"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["coordinates", "MediaAreaCoordinates"],
+      ["geo", "GeoPoint"],
+      ["address", "flags.0?GeoPointAddress"],
     ],
+    "MediaArea",
   ],
-  [
-    "requestedPeerUser",
+  "mediaAreaSuggestedReaction": [
+    0x14455871,
     [
-      0xD62FF46A,
-      [
-        ["flags", "#"],
-        ["user_id", "long"],
-        ["first_name", "flags.0?string"],
-        ["last_name", "flags.0?string"],
-        ["username", "flags.1?string"],
-        ["photo", "flags.2?Photo"],
-      ],
+      ["flags", "#"],
+      ["dark", "flags.0?true"],
+      ["flipped", "flags.1?true"],
+      ["coordinates", "MediaAreaCoordinates"],
+      ["reaction", "Reaction"],
     ],
+    "MediaArea",
   ],
-  [
-    "requestedPeerChat",
+  "mediaAreaChannelPost": [
+    0x770416AF,
     [
-      0x7307544F,
-      [
-        ["flags", "#"],
-        ["chat_id", "long"],
-        ["title", "flags.0?string"],
-        ["photo", "flags.2?Photo"],
-      ],
+      ["coordinates", "MediaAreaCoordinates"],
+      ["channel_id", "long"],
+      ["msg_id", "int"],
     ],
+    "MediaArea",
   ],
-  [
-    "requestedPeerChannel",
+  "inputMediaAreaChannelPost": [
+    0x2271F2BF,
     [
-      0x8BA403E4,
-      [
-        ["flags", "#"],
-        ["channel_id", "long"],
-        ["title", "flags.0?string"],
-        ["username", "flags.1?string"],
-        ["photo", "flags.2?Photo"],
-      ],
+      ["coordinates", "MediaAreaCoordinates"],
+      ["channel", "InputChannel"],
+      ["msg_id", "int"],
     ],
+    "MediaArea",
   ],
-  [
-    "sponsoredMessageReportOption",
+  "mediaAreaUrl": [
+    0x37381085,
     [
-      0x430D3150,
-      [
-        ["text", "string"],
-        ["option", "bytes"],
-      ],
+      ["coordinates", "MediaAreaCoordinates"],
+      ["url", "string"],
     ],
+    "MediaArea",
   ],
-  [
-    "channels.sponsoredMessageReportResultChooseOption",
+  "mediaAreaWeather": [
+    0x49A6549C,
     [
-      0x846F9E42,
-      [
-        ["title", "string"],
-        ["options", "Vector<SponsoredMessageReportOption>"],
-      ],
+      ["coordinates", "MediaAreaCoordinates"],
+      ["emoji", "string"],
+      ["temperature_c", "double"],
+      ["color", "int"],
     ],
+    "MediaArea",
   ],
-  [
-    "channels.sponsoredMessageReportResultAdsHidden",
+  "mediaAreaStarGift": [
+    0x5787686D,
     [
-      0x3E3BCF2F,
-      [],
+      ["coordinates", "MediaAreaCoordinates"],
+      ["slug", "string"],
     ],
+    "MediaArea",
   ],
-  [
-    "channels.sponsoredMessageReportResultReported",
+  "peerStories": [
+    0x9A35E999,
     [
-      0xAD798849,
-      [],
+      ["flags", "#"],
+      ["peer", "Peer"],
+      ["max_read_id", "flags.0?int"],
+      ["stories", "Vector<StoryItem>"],
     ],
+    "PeerStories",
   ],
-  [
-    "stats.broadcastRevenueStats",
+  "stories.peerStories": [
+    0xCAE68768,
     [
-      0x5407E297,
-      [
-        ["top_hours_graph", "StatsGraph"],
-        ["revenue_graph", "StatsGraph"],
-        ["balances", "BroadcastRevenueBalances"],
-        ["usd_rate", "double"],
-      ],
+      ["stories", "PeerStories"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "stories.PeerStories",
   ],
-  [
-    "stats.broadcastRevenueWithdrawalUrl",
+  "messages.webPage": [
+    0xFD5E12BD,
     [
-      0xEC659737,
-      [
-        ["url", "string"],
-      ],
+      ["webpage", "WebPage"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.WebPage",
   ],
-  [
-    "broadcastRevenueTransactionProceeds",
+  "premiumGiftCodeOption": [
+    0x257E962B,
     [
-      0x557E2CC4,
-      [
-        ["amount", "long"],
-        ["from_date", "int"],
-        ["to_date", "int"],
-      ],
+      ["flags", "#"],
+      ["users", "int"],
+      ["months", "int"],
+      ["store_product", "flags.0?string"],
+      ["store_quantity", "flags.1?int"],
+      ["currency", "string"],
+      ["amount", "long"],
     ],
+    "PremiumGiftCodeOption",
   ],
-  [
-    "broadcastRevenueTransactionWithdrawal",
+  "payments.checkedGiftCode": [
+    0x284A1096,
     [
-      0x5A590978,
-      [
-        ["flags", "#"],
-        ["pending", "flags.0?true"],
-        ["failed", "flags.2?true"],
-        ["amount", "long"],
-        ["date", "int"],
-        ["provider", "string"],
-        ["transaction_date", "flags.1?int"],
-        ["transaction_url", "flags.1?string"],
-      ],
+      ["flags", "#"],
+      ["via_giveaway", "flags.2?true"],
+      ["from_id", "flags.4?Peer"],
+      ["giveaway_msg_id", "flags.3?int"],
+      ["to_id", "flags.0?long"],
+      ["date", "int"],
+      ["months", "int"],
+      ["used_date", "flags.1?int"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "payments.CheckedGiftCode",
   ],
-  [
-    "broadcastRevenueTransactionRefund",
+  "payments.giveawayInfo": [
+    0x4367DAA0,
     [
-      0x42D30D2E,
-      [
-        ["amount", "long"],
-        ["date", "int"],
-        ["provider", "string"],
-      ],
+      ["flags", "#"],
+      ["participating", "flags.0?true"],
+      ["preparing_results", "flags.3?true"],
+      ["start_date", "int"],
+      ["joined_too_early_date", "flags.1?int"],
+      ["admin_disallowed_chat_id", "flags.2?long"],
+      ["disallowed_country", "flags.4?string"],
     ],
+    "payments.GiveawayInfo",
   ],
-  [
-    "stats.broadcastRevenueTransactions",
+  "payments.giveawayInfoResults": [
+    0xE175E66F,
     [
-      0x87158466,
-      [
-        ["count", "int"],
-        ["transactions", "Vector<BroadcastRevenueTransaction>"],
-      ],
+      ["flags", "#"],
+      ["winner", "flags.0?true"],
+      ["refunded", "flags.1?true"],
+      ["start_date", "int"],
+      ["gift_code_slug", "flags.3?string"],
+      ["stars_prize", "flags.4?long"],
+      ["finish_date", "int"],
+      ["winners_count", "int"],
+      ["activated_count", "flags.2?int"],
     ],
+    "payments.GiveawayInfo",
   ],
-  [
-    "reactionNotificationsFromContacts",
+  "prepaidGiveaway": [
+    0xB2539D54,
     [
-      0xBAC3A61A,
-      [],
+      ["id", "long"],
+      ["months", "int"],
+      ["quantity", "int"],
+      ["date", "int"],
     ],
+    "PrepaidGiveaway",
   ],
-  [
-    "reactionNotificationsFromAll",
+  "prepaidStarsGiveaway": [
+    0x9A9D77E0,
     [
-      0x4B9E22A0,
-      [],
+      ["id", "long"],
+      ["stars", "long"],
+      ["quantity", "int"],
+      ["boosts", "int"],
+      ["date", "int"],
     ],
+    "PrepaidGiveaway",
   ],
-  [
-    "reactionsNotifySettings",
+  "boost": [
+    0x4B3E14D6,
     [
-      0x56E34970,
-      [
-        ["flags", "#"],
-        ["messages_notify_from", "flags.0?ReactionNotificationsFrom"],
-        ["stories_notify_from", "flags.1?ReactionNotificationsFrom"],
-        ["sound", "NotificationSound"],
-        ["show_previews", "Bool"],
-      ],
+      ["flags", "#"],
+      ["gift", "flags.1?true"],
+      ["giveaway", "flags.2?true"],
+      ["unclaimed", "flags.3?true"],
+      ["id", "string"],
+      ["user_id", "flags.0?long"],
+      ["giveaway_msg_id", "flags.2?int"],
+      ["date", "int"],
+      ["expires", "int"],
+      ["used_gift_slug", "flags.4?string"],
+      ["multiplier", "flags.5?int"],
+      ["stars", "flags.6?long"],
     ],
+    "Boost",
   ],
-  [
-    "broadcastRevenueBalances",
+  "premium.boostsList": [
+    0x86F8613C,
     [
-      0xC3FF71E7,
-      [
-        ["flags", "#"],
-        ["withdrawal_enabled", "flags.0?true"],
-        ["current_balance", "long"],
-        ["available_balance", "long"],
-        ["overall_revenue", "long"],
-      ],
+      ["flags", "#"],
+      ["count", "int"],
+      ["boosts", "Vector<Boost>"],
+      ["next_offset", "flags.0?string"],
+      ["users", "Vector<User>"],
     ],
+    "premium.BoostsList",
   ],
-  [
-    "availableEffect",
+  "myBoost": [
+    0xC448415C,
     [
-      0x93C3E27E,
-      [
-        ["flags", "#"],
-        ["premium_required", "flags.2?true"],
-        ["id", "long"],
-        ["emoticon", "string"],
-        ["static_icon_id", "flags.0?long"],
-        ["effect_sticker_id", "long"],
-        ["effect_animation_id", "flags.1?long"],
-      ],
+      ["flags", "#"],
+      ["slot", "int"],
+      ["peer", "flags.0?Peer"],
+      ["date", "int"],
+      ["expires", "int"],
+      ["cooldown_until_date", "flags.1?int"],
     ],
+    "MyBoost",
   ],
-  [
-    "messages.availableEffectsNotModified",
+  "premium.myBoosts": [
+    0x9AE228E2,
     [
-      0xD1ED9A5B,
-      [],
+      ["my_boosts", "Vector<MyBoost>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "premium.MyBoosts",
   ],
-  [
-    "messages.availableEffects",
+  "premium.boostsStatus": [
+    0x4959427A,
     [
-      0xBDDB616E,
-      [
-        ["hash", "int"],
-        ["effects", "Vector<AvailableEffect>"],
-        ["documents", "Vector<Document>"],
-      ],
+      ["flags", "#"],
+      ["my_boost", "flags.2?true"],
+      ["level", "int"],
+      ["current_level_boosts", "int"],
+      ["boosts", "int"],
+      ["gift_boosts", "flags.4?int"],
+      ["next_level_boosts", "flags.0?int"],
+      ["premium_audience", "flags.1?StatsPercentValue"],
+      ["boost_url", "string"],
+      ["prepaid_giveaways", "flags.3?Vector<PrepaidGiveaway>"],
+      ["my_boost_slots", "flags.2?Vector<int>"],
     ],
+    "premium.BoostsStatus",
   ],
-  [
-    "factCheck",
+  "storyFwdHeader": [
+    0xB826E150,
     [
-      0xB89BFCCF,
-      [
-        ["flags", "#"],
-        ["need_check", "flags.0?true"],
-        ["country", "flags.1?string"],
-        ["text", "flags.1?TextWithEntities"],
-        ["hash", "long"],
-      ],
+      ["flags", "#"],
+      ["modified", "flags.3?true"],
+      ["from", "flags.0?Peer"],
+      ["from_name", "flags.1?string"],
+      ["story_id", "flags.2?int"],
     ],
+    "StoryFwdHeader",
   ],
-  [
-    "starsTransactionPeerUnsupported",
+  "postInteractionCountersMessage": [
+    0xE7058E7F,
     [
-      0x95F2BFE4,
-      [],
+      ["msg_id", "int"],
+      ["views", "int"],
+      ["forwards", "int"],
+      ["reactions", "int"],
     ],
+    "PostInteractionCounters",
   ],
-  [
-    "starsTransactionPeerAppStore",
+  "postInteractionCountersStory": [
+    0x8A480E27,
     [
-      0xB457B375,
-      [],
+      ["story_id", "int"],
+      ["views", "int"],
+      ["forwards", "int"],
+      ["reactions", "int"],
     ],
+    "PostInteractionCounters",
   ],
-  [
-    "starsTransactionPeerPlayMarket",
+  "stats.storyStats": [
+    0x50CD067C,
     [
-      0x7B560A0B,
-      [],
+      ["views_graph", "StatsGraph"],
+      ["reactions_by_emotion_graph", "StatsGraph"],
     ],
+    "stats.StoryStats",
   ],
-  [
-    "starsTransactionPeerPremiumBot",
+  "publicForwardMessage": [
+    0x01F2BF4A,
     [
-      0x250DBAF8,
-      [],
+      ["message", "Message"],
     ],
+    "PublicForward",
   ],
-  [
-    "starsTransactionPeerFragment",
+  "publicForwardStory": [
+    0xEDF3ADD0,
     [
-      0xE92FD902,
-      [],
+      ["peer", "Peer"],
+      ["story", "StoryItem"],
     ],
+    "PublicForward",
   ],
-  [
-    "starsTransactionPeer",
+  "stats.publicForwards": [
+    0x93037E20,
     [
-      0xD80DA15D,
-      [
-        ["peer", "Peer"],
-      ],
+      ["flags", "#"],
+      ["count", "int"],
+      ["forwards", "Vector<PublicForward>"],
+      ["next_offset", "flags.0?string"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "stats.PublicForwards",
   ],
-  [
-    "starsTransactionPeerAds",
+  "peerColor": [
+    0xB54B5ACF,
     [
-      0x60682812,
-      [],
+      ["flags", "#"],
+      ["color", "flags.0?int"],
+      ["background_emoji_id", "flags.1?long"],
     ],
+    "PeerColor",
   ],
-  [
-    "starsTransactionPeerAPI",
+  "help.peerColorSet": [
+    0x26219A58,
     [
-      0xF9677AAD,
-      [],
+      ["colors", "Vector<int>"],
     ],
+    "help.PeerColorSet",
   ],
-  [
-    "starsTopupOption",
+  "help.peerColorProfileSet": [
+    0x767D61EB,
     [
-      0x0BD915C0,
-      [
-        ["flags", "#"],
-        ["extended", "flags.1?true"],
-        ["stars", "long"],
-        ["store_product", "flags.0?string"],
-        ["currency", "string"],
-        ["amount", "long"],
-      ],
+      ["palette_colors", "Vector<int>"],
+      ["bg_colors", "Vector<int>"],
+      ["story_colors", "Vector<int>"],
     ],
+    "help.PeerColorSet",
   ],
-  [
-    "starsTransaction",
+  "help.peerColorOption": [
+    0xADEC6EBE,
     [
-      0xA39FD94A,
-      [
-        ["flags", "#"],
-        ["refund", "flags.3?true"],
-        ["pending", "flags.4?true"],
-        ["failed", "flags.6?true"],
-        ["gift", "flags.10?true"],
-        ["reaction", "flags.11?true"],
-        ["stargift_upgrade", "flags.18?true"],
-        ["id", "string"],
-        ["stars", "StarsAmount"],
-        ["date", "int"],
-        ["peer", "StarsTransactionPeer"],
-        ["title", "flags.0?string"],
-        ["description", "flags.1?string"],
-        ["photo", "flags.2?WebDocument"],
-        ["transaction_date", "flags.5?int"],
-        ["transaction_url", "flags.5?string"],
-        ["bot_payload", "flags.7?bytes"],
-        ["msg_id", "flags.8?int"],
-        ["extended_media", "flags.9?Vector<MessageMedia>"],
-        ["subscription_period", "flags.12?int"],
-        ["giveaway_post_id", "flags.13?int"],
-        ["stargift", "flags.14?StarGift"],
-        ["floodskip_number", "flags.15?int"],
-        ["starref_commission_permille", "flags.16?int"],
-        ["starref_peer", "flags.17?Peer"],
-        ["starref_amount", "flags.17?StarsAmount"],
-        ["paid_messages", "flags.19?int"],
-        ["premium_gift_months", "flags.20?int"],
-      ],
+      ["flags", "#"],
+      ["hidden", "flags.0?true"],
+      ["color_id", "int"],
+      ["colors", "flags.1?help.PeerColorSet"],
+      ["dark_colors", "flags.2?help.PeerColorSet"],
+      ["channel_min_level", "flags.3?int"],
+      ["group_min_level", "flags.4?int"],
     ],
+    "help.PeerColorOption",
   ],
-  [
-    "payments.starsStatus",
+  "help.peerColorsNotModified": [
+    0x2BA1F5CE,
+    [],
+    "help.PeerColors",
+  ],
+  "help.peerColors": [
+    0x00F8ED08,
     [
-      0x6C9CE8ED,
-      [
-        ["flags", "#"],
-        ["balance", "StarsAmount"],
-        ["subscriptions", "flags.1?Vector<StarsSubscription>"],
-        ["subscriptions_next_offset", "flags.2?string"],
-        ["subscriptions_missing_balance", "flags.4?long"],
-        ["history", "flags.3?Vector<StarsTransaction>"],
-        ["next_offset", "flags.0?string"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["hash", "int"],
+      ["colors", "Vector<help.PeerColorOption>"],
     ],
+    "help.PeerColors",
   ],
-  [
-    "foundStory",
+  "storyReaction": [
+    0x6090D6D5,
     [
-      0xE87ACBC0,
-      [
-        ["peer", "Peer"],
-        ["story", "StoryItem"],
-      ],
+      ["peer_id", "Peer"],
+      ["date", "int"],
+      ["reaction", "Reaction"],
     ],
+    "StoryReaction",
   ],
-  [
-    "stories.foundStories",
+  "storyReactionPublicForward": [
+    0xBBAB2643,
     [
-      0xE2DE7737,
-      [
-        ["flags", "#"],
-        ["count", "int"],
-        ["stories", "Vector<FoundStory>"],
-        ["next_offset", "flags.0?string"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["message", "Message"],
     ],
+    "StoryReaction",
   ],
-  [
-    "geoPointAddress",
+  "storyReactionPublicRepost": [
+    0xCFCD0F13,
     [
-      0xDE4C5D93,
-      [
-        ["flags", "#"],
-        ["country_iso2", "string"],
-        ["state", "flags.0?string"],
-        ["city", "flags.1?string"],
-        ["street", "flags.2?string"],
-      ],
+      ["peer_id", "Peer"],
+      ["story", "StoryItem"],
     ],
+    "StoryReaction",
   ],
-  [
-    "starsRevenueStatus",
+  "stories.storyReactionsList": [
+    0xAA5F789C,
     [
-      0xFEBE5491,
-      [
-        ["flags", "#"],
-        ["withdrawal_enabled", "flags.0?true"],
-        ["current_balance", "StarsAmount"],
-        ["available_balance", "StarsAmount"],
-        ["overall_revenue", "StarsAmount"],
-        ["next_withdrawal_at", "flags.1?int"],
-      ],
+      ["flags", "#"],
+      ["count", "int"],
+      ["reactions", "Vector<StoryReaction>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
+      ["next_offset", "flags.0?string"],
     ],
+    "stories.StoryReactionsList",
   ],
-  [
-    "payments.starsRevenueStats",
+  "savedDialog": [
+    0xBD87CB6C,
     [
-      0xC92BB73B,
-      [
-        ["revenue_graph", "StatsGraph"],
-        ["status", "StarsRevenueStatus"],
-        ["usd_rate", "double"],
-      ],
+      ["flags", "#"],
+      ["pinned", "flags.2?true"],
+      ["peer", "Peer"],
+      ["top_message", "int"],
     ],
+    "SavedDialog",
   ],
-  [
-    "payments.starsRevenueWithdrawalUrl",
+  "messages.savedDialogs": [
+    0xF83AE221,
     [
-      0x1DAB80B7,
-      [
-        ["url", "string"],
-      ],
+      ["dialogs", "Vector<SavedDialog>"],
+      ["messages", "Vector<Message>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.SavedDialogs",
   ],
-  [
-    "payments.starsRevenueAdsAccountUrl",
+  "messages.savedDialogsSlice": [
+    0x44BA9DD9,
     [
-      0x394E7F21,
-      [
-        ["url", "string"],
-      ],
+      ["count", "int"],
+      ["dialogs", "Vector<SavedDialog>"],
+      ["messages", "Vector<Message>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.SavedDialogs",
   ],
-  [
-    "inputStarsTransaction",
+  "messages.savedDialogsNotModified": [
+    0xC01F6FE8,
     [
-      0x206AE6D1,
-      [
-        ["flags", "#"],
-        ["refund", "flags.0?true"],
-        ["id", "string"],
-      ],
+      ["count", "int"],
     ],
+    "messages.SavedDialogs",
   ],
-  [
-    "starsGiftOption",
+  "savedReactionTag": [
+    0xCB6FF828,
     [
-      0x5E0589F1,
-      [
-        ["flags", "#"],
-        ["extended", "flags.1?true"],
-        ["stars", "long"],
-        ["store_product", "flags.0?string"],
-        ["currency", "string"],
-        ["amount", "long"],
-      ],
+      ["flags", "#"],
+      ["reaction", "Reaction"],
+      ["title", "flags.0?string"],
+      ["count", "int"],
     ],
+    "SavedReactionTag",
+  ],
+  "messages.savedReactionTagsNotModified": [
+    0x889B59EF,
+    [],
+    "messages.SavedReactionTags",
   ],
-  [
-    "bots.popularAppBots",
+  "messages.savedReactionTags": [
+    0x3259950A,
     [
-      0x1991B13B,
-      [
-        ["flags", "#"],
-        ["next_offset", "flags.0?string"],
-        ["users", "Vector<User>"],
-      ],
+      ["tags", "Vector<SavedReactionTag>"],
+      ["hash", "long"],
     ],
+    "messages.SavedReactionTags",
   ],
-  [
-    "botPreviewMedia",
+  "outboxReadDate": [
+    0x3BB842AC,
     [
-      0x23E91BA3,
-      [
-        ["date", "int"],
-        ["media", "MessageMedia"],
-      ],
+      ["date", "int"],
     ],
+    "OutboxReadDate",
   ],
-  [
-    "bots.previewInfo",
+  "smsjobs.eligibleToJoin": [
+    0xDC8B44CF,
     [
-      0x0CA71D64,
-      [
-        ["media", "Vector<BotPreviewMedia>"],
-        ["lang_codes", "Vector<string>"],
-      ],
+      ["terms_url", "string"],
+      ["monthly_sent_sms", "int"],
     ],
+    "smsjobs.EligibilityToJoin",
   ],
-  [
-    "starsSubscriptionPricing",
+  "smsjobs.status": [
+    0x2AEE9191,
     [
-      0x05416D58,
-      [
-        ["period", "int"],
-        ["amount", "long"],
-      ],
+      ["flags", "#"],
+      ["allow_international", "flags.0?true"],
+      ["recent_sent", "int"],
+      ["recent_since", "int"],
+      ["recent_remains", "int"],
+      ["total_sent", "int"],
+      ["total_since", "int"],
+      ["last_gift_slug", "flags.1?string"],
+      ["terms_url", "string"],
     ],
+    "smsjobs.Status",
   ],
-  [
-    "starsSubscription",
+  "smsJob": [
+    0xE6A1EEB8,
     [
-      0x2E6EAB1A,
-      [
-        ["flags", "#"],
-        ["canceled", "flags.0?true"],
-        ["can_refulfill", "flags.1?true"],
-        ["missing_balance", "flags.2?true"],
-        ["bot_canceled", "flags.7?true"],
-        ["id", "string"],
-        ["peer", "Peer"],
-        ["until_date", "int"],
-        ["pricing", "StarsSubscriptionPricing"],
-        ["chat_invite_hash", "flags.3?string"],
-        ["title", "flags.4?string"],
-        ["photo", "flags.5?WebDocument"],
-        ["invoice_slug", "flags.6?string"],
-      ],
+      ["job_id", "string"],
+      ["phone_number", "string"],
+      ["text", "string"],
     ],
+    "SmsJob",
   ],
-  [
-    "messageReactor",
+  "businessWeeklyOpen": [
+    0x120B1AB9,
     [
-      0x4BA3A95A,
-      [
-        ["flags", "#"],
-        ["top", "flags.0?true"],
-        ["my", "flags.1?true"],
-        ["anonymous", "flags.2?true"],
-        ["peer_id", "flags.3?Peer"],
-        ["count", "int"],
-      ],
+      ["start_minute", "int"],
+      ["end_minute", "int"],
     ],
+    "BusinessWeeklyOpen",
   ],
-  [
-    "starsGiveawayOption",
+  "businessWorkHours": [
+    0x8C92B098,
     [
-      0x94CE852A,
-      [
-        ["flags", "#"],
-        ["extended", "flags.0?true"],
-        ["default", "flags.1?true"],
-        ["stars", "long"],
-        ["yearly_boosts", "int"],
-        ["store_product", "flags.2?string"],
-        ["currency", "string"],
-        ["amount", "long"],
-        ["winners", "Vector<StarsGiveawayWinnersOption>"],
-      ],
+      ["flags", "#"],
+      ["open_now", "flags.0?true"],
+      ["timezone_id", "string"],
+      ["weekly_open", "Vector<BusinessWeeklyOpen>"],
     ],
+    "BusinessWorkHours",
   ],
-  [
-    "starsGiveawayWinnersOption",
+  "businessLocation": [
+    0xAC5C1AF7,
     [
-      0x54236209,
-      [
-        ["flags", "#"],
-        ["default", "flags.0?true"],
-        ["users", "int"],
-        ["per_user_stars", "long"],
-      ],
+      ["flags", "#"],
+      ["geo_point", "flags.0?GeoPoint"],
+      ["address", "string"],
     ],
+    "BusinessLocation",
   ],
-  [
-    "starGift",
+  "inputBusinessRecipients": [
+    0x6F8B32AA,
     [
-      0x02CC73C8,
-      [
-        ["flags", "#"],
-        ["limited", "flags.0?true"],
-        ["sold_out", "flags.1?true"],
-        ["birthday", "flags.2?true"],
-        ["id", "long"],
-        ["sticker", "Document"],
-        ["stars", "long"],
-        ["availability_remains", "flags.0?int"],
-        ["availability_total", "flags.0?int"],
-        ["convert_stars", "long"],
-        ["first_sale_date", "flags.1?int"],
-        ["last_sale_date", "flags.1?int"],
-        ["upgrade_stars", "flags.3?long"],
-      ],
+      ["flags", "#"],
+      ["existing_chats", "flags.0?true"],
+      ["new_chats", "flags.1?true"],
+      ["contacts", "flags.2?true"],
+      ["non_contacts", "flags.3?true"],
+      ["exclude_selected", "flags.5?true"],
+      ["users", "flags.4?Vector<InputUser>"],
     ],
+    "InputBusinessRecipients",
   ],
-  [
-    "starGiftUnique",
+  "businessRecipients": [
+    0x21108FF7,
     [
-      0x5C62D151,
-      [
-        ["flags", "#"],
-        ["id", "long"],
-        ["title", "string"],
-        ["slug", "string"],
-        ["num", "int"],
-        ["owner_id", "flags.0?Peer"],
-        ["owner_name", "flags.1?string"],
-        ["owner_address", "flags.2?string"],
-        ["attributes", "Vector<StarGiftAttribute>"],
-        ["availability_issued", "int"],
-        ["availability_total", "int"],
-        ["gift_address", "flags.3?string"],
-      ],
+      ["flags", "#"],
+      ["existing_chats", "flags.0?true"],
+      ["new_chats", "flags.1?true"],
+      ["contacts", "flags.2?true"],
+      ["non_contacts", "flags.3?true"],
+      ["exclude_selected", "flags.5?true"],
+      ["users", "flags.4?Vector<long>"],
     ],
+    "BusinessRecipients",
+  ],
+  "businessAwayMessageScheduleAlways": [
+    0xC9B9E2B9,
+    [],
+    "BusinessAwayMessageSchedule",
+  ],
+  "businessAwayMessageScheduleOutsideWorkHours": [
+    0xC3F2F501,
+    [],
+    "BusinessAwayMessageSchedule",
   ],
-  [
-    "payments.starGiftsNotModified",
+  "businessAwayMessageScheduleCustom": [
+    0xCC4D9ECC,
     [
-      0xA388A368,
-      [],
+      ["start_date", "int"],
+      ["end_date", "int"],
     ],
+    "BusinessAwayMessageSchedule",
   ],
-  [
-    "payments.starGifts",
+  "inputBusinessGreetingMessage": [
+    0x0194CB3B,
     [
-      0x901689EA,
-      [
-        ["hash", "int"],
-        ["gifts", "Vector<StarGift>"],
-      ],
+      ["shortcut_id", "int"],
+      ["recipients", "InputBusinessRecipients"],
+      ["no_activity_days", "int"],
     ],
+    "InputBusinessGreetingMessage",
   ],
-  [
-    "messageReportOption",
+  "businessGreetingMessage": [
+    0xE519ABAB,
     [
-      0x7903E3D9,
-      [
-        ["text", "string"],
-        ["option", "bytes"],
-      ],
+      ["shortcut_id", "int"],
+      ["recipients", "BusinessRecipients"],
+      ["no_activity_days", "int"],
     ],
+    "BusinessGreetingMessage",
   ],
-  [
-    "reportResultChooseOption",
+  "inputBusinessAwayMessage": [
+    0x832175E0,
     [
-      0xF0E4E0B6,
-      [
-        ["title", "string"],
-        ["options", "Vector<MessageReportOption>"],
-      ],
+      ["flags", "#"],
+      ["offline_only", "flags.0?true"],
+      ["shortcut_id", "int"],
+      ["schedule", "BusinessAwayMessageSchedule"],
+      ["recipients", "InputBusinessRecipients"],
     ],
+    "InputBusinessAwayMessage",
   ],
-  [
-    "reportResultAddComment",
+  "businessAwayMessage": [
+    0xEF156A5C,
     [
-      0x6F09AC31,
-      [
-        ["flags", "#"],
-        ["optional", "flags.0?true"],
-        ["option", "bytes"],
-      ],
+      ["flags", "#"],
+      ["offline_only", "flags.0?true"],
+      ["shortcut_id", "int"],
+      ["schedule", "BusinessAwayMessageSchedule"],
+      ["recipients", "BusinessRecipients"],
     ],
+    "BusinessAwayMessage",
   ],
-  [
-    "reportResultReported",
+  "timezone": [
+    0xFF9289F5,
     [
-      0x8DB33C4B,
-      [],
+      ["id", "string"],
+      ["name", "string"],
+      ["utc_offset", "int"],
     ],
+    "Timezone",
   ],
-  [
-    "messages.botPreparedInlineMessage",
+  "help.timezonesListNotModified": [
+    0x970708CC,
+    [],
+    "help.TimezonesList",
+  ],
+  "help.timezonesList": [
+    0x7B74ED71,
     [
-      0x8ECF0511,
-      [
-        ["id", "string"],
-        ["expire_date", "int"],
-      ],
+      ["timezones", "Vector<Timezone>"],
+      ["hash", "int"],
     ],
+    "help.TimezonesList",
   ],
-  [
-    "messages.preparedInlineMessage",
+  "quickReply": [
+    0x0697102B,
     [
-      0xFF57708D,
-      [
-        ["query_id", "long"],
-        ["result", "BotInlineResult"],
-        ["peer_types", "Vector<InlineQueryPeerType>"],
-        ["cache_time", "int"],
-        ["users", "Vector<User>"],
-      ],
+      ["shortcut_id", "int"],
+      ["shortcut", "string"],
+      ["top_message", "int"],
+      ["count", "int"],
     ],
+    "QuickReply",
   ],
-  [
-    "botAppSettings",
+  "inputQuickReplyShortcut": [
+    0x24596D41,
     [
-      0xC99B1950,
-      [
-        ["flags", "#"],
-        ["placeholder_path", "flags.0?bytes"],
-        ["background_color", "flags.1?int"],
-        ["background_dark_color", "flags.2?int"],
-        ["header_color", "flags.3?int"],
-        ["header_dark_color", "flags.4?int"],
-      ],
+      ["shortcut", "string"],
     ],
+    "InputQuickReplyShortcut",
   ],
-  [
-    "starRefProgram",
+  "inputQuickReplyShortcutId": [
+    0x01190CF1,
     [
-      0xDD0C66F2,
-      [
-        ["flags", "#"],
-        ["bot_id", "long"],
-        ["commission_permille", "int"],
-        ["duration_months", "flags.0?int"],
-        ["end_date", "flags.1?int"],
-        ["daily_revenue_per_user", "flags.2?StarsAmount"],
-      ],
+      ["shortcut_id", "int"],
     ],
+    "InputQuickReplyShortcut",
   ],
-  [
-    "connectedBotStarRef",
+  "messages.quickReplies": [
+    0xC68D6695,
     [
-      0x19A13F71,
-      [
-        ["flags", "#"],
-        ["revoked", "flags.1?true"],
-        ["url", "string"],
-        ["date", "int"],
-        ["bot_id", "long"],
-        ["commission_permille", "int"],
-        ["duration_months", "flags.0?int"],
-        ["participants", "long"],
-        ["revenue", "long"],
-      ],
+      ["quick_replies", "Vector<QuickReply>"],
+      ["messages", "Vector<Message>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "messages.QuickReplies",
+  ],
+  "messages.quickRepliesNotModified": [
+    0x5F91EB5B,
+    [],
+    "messages.QuickReplies",
   ],
-  [
-    "payments.connectedStarRefBots",
+  "connectedBot": [
+    0xBD068601,
     [
-      0x98D5EA1D,
-      [
-        ["count", "int"],
-        ["connected_bots", "Vector<ConnectedBotStarRef>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["can_reply", "flags.0?true"],
+      ["bot_id", "long"],
+      ["recipients", "BusinessBotRecipients"],
     ],
+    "ConnectedBot",
   ],
-  [
-    "payments.suggestedStarRefBots",
+  "account.connectedBots": [
+    0x17D7F87B,
     [
-      0xB4D5D859,
-      [
-        ["flags", "#"],
-        ["count", "int"],
-        ["suggested_bots", "Vector<StarRefProgram>"],
-        ["users", "Vector<User>"],
-        ["next_offset", "flags.0?string"],
-      ],
+      ["connected_bots", "Vector<ConnectedBot>"],
+      ["users", "Vector<User>"],
     ],
+    "account.ConnectedBots",
   ],
-  [
-    "starsAmount",
+  "messages.dialogFilters": [
+    0x2AD93719,
     [
-      0xBBB6B4A3,
-      [
-        ["amount", "long"],
-        ["nanos", "int"],
-      ],
+      ["flags", "#"],
+      ["tags_enabled", "flags.0?true"],
+      ["filters", "Vector<DialogFilter>"],
     ],
+    "messages.DialogFilters",
   ],
-  [
-    "messages.foundStickersNotModified",
+  "birthday": [
+    0x6C8E1E06,
     [
-      0x6010C534,
-      [
-        ["flags", "#"],
-        ["next_offset", "flags.0?int"],
-      ],
+      ["flags", "#"],
+      ["day", "int"],
+      ["month", "int"],
+      ["year", "flags.0?int"],
     ],
+    "Birthday",
   ],
-  [
-    "messages.foundStickers",
+  "botBusinessConnection": [
+    0x896433B4,
     [
-      0x82C9E290,
-      [
-        ["flags", "#"],
-        ["next_offset", "flags.0?int"],
-        ["hash", "long"],
-        ["stickers", "Vector<Document>"],
-      ],
+      ["flags", "#"],
+      ["can_reply", "flags.0?true"],
+      ["disabled", "flags.1?true"],
+      ["connection_id", "string"],
+      ["user_id", "long"],
+      ["dc_id", "int"],
+      ["date", "int"],
     ],
+    "BotBusinessConnection",
   ],
-  [
-    "botVerifierSettings",
+  "inputBusinessIntro": [
+    0x09C469CD,
     [
-      0xB0CD6617,
-      [
-        ["flags", "#"],
-        ["can_modify_custom_description", "flags.1?true"],
-        ["icon", "long"],
-        ["company", "string"],
-        ["custom_description", "flags.0?string"],
-      ],
+      ["flags", "#"],
+      ["title", "string"],
+      ["description", "string"],
+      ["sticker", "flags.0?InputDocument"],
     ],
+    "InputBusinessIntro",
   ],
-  [
-    "botVerification",
+  "businessIntro": [
+    0x5A0A066D,
     [
-      0xF93CD45C,
-      [
-        ["bot_id", "long"],
-        ["icon", "long"],
-        ["description", "string"],
-      ],
+      ["flags", "#"],
+      ["title", "string"],
+      ["description", "string"],
+      ["sticker", "flags.0?Document"],
     ],
+    "BusinessIntro",
   ],
-  [
-    "starGiftAttributeModel",
+  "messages.myStickers": [
+    0xFAFF629D,
     [
-      0x39D99013,
-      [
-        ["name", "string"],
-        ["document", "Document"],
-        ["rarity_permille", "int"],
-      ],
+      ["count", "int"],
+      ["sets", "Vector<StickerSetCovered>"],
     ],
+    "messages.MyStickers",
   ],
-  [
-    "starGiftAttributePattern",
+  "inputCollectibleUsername": [
+    0xE39460A9,
     [
-      0x13ACFF19,
-      [
-        ["name", "string"],
-        ["document", "Document"],
-        ["rarity_permille", "int"],
-      ],
+      ["username", "string"],
     ],
+    "InputCollectible",
   ],
-  [
-    "starGiftAttributeBackdrop",
+  "inputCollectiblePhone": [
+    0xA2E214A4,
     [
-      0x94271762,
-      [
-        ["name", "string"],
-        ["center_color", "int"],
-        ["edge_color", "int"],
-        ["pattern_color", "int"],
-        ["text_color", "int"],
-        ["rarity_permille", "int"],
-      ],
+      ["phone", "string"],
     ],
+    "InputCollectible",
   ],
-  [
-    "starGiftAttributeOriginalDetails",
+  "fragment.collectibleInfo": [
+    0x6EBDFF91,
     [
-      0xE0BFF26C,
-      [
-        ["flags", "#"],
-        ["sender_id", "flags.0?Peer"],
-        ["recipient_id", "Peer"],
-        ["date", "int"],
-        ["message", "flags.1?TextWithEntities"],
-      ],
+      ["purchase_date", "int"],
+      ["currency", "string"],
+      ["amount", "long"],
+      ["crypto_currency", "string"],
+      ["crypto_amount", "long"],
+      ["url", "string"],
     ],
+    "fragment.CollectibleInfo",
   ],
-  [
-    "payments.starGiftUpgradePreview",
+  "inputBusinessBotRecipients": [
+    0xC4E5921E,
     [
-      0x167BD90B,
-      [
-        ["sample_attributes", "Vector<StarGiftAttribute>"],
-      ],
+      ["flags", "#"],
+      ["existing_chats", "flags.0?true"],
+      ["new_chats", "flags.1?true"],
+      ["contacts", "flags.2?true"],
+      ["non_contacts", "flags.3?true"],
+      ["exclude_selected", "flags.5?true"],
+      ["users", "flags.4?Vector<InputUser>"],
+      ["exclude_users", "flags.6?Vector<InputUser>"],
     ],
+    "InputBusinessBotRecipients",
   ],
-  [
-    "users.users",
+  "businessBotRecipients": [
+    0xB88CF373,
     [
-      0x62D706B8,
-      [
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["existing_chats", "flags.0?true"],
+      ["new_chats", "flags.1?true"],
+      ["contacts", "flags.2?true"],
+      ["non_contacts", "flags.3?true"],
+      ["exclude_selected", "flags.5?true"],
+      ["users", "flags.4?Vector<long>"],
+      ["exclude_users", "flags.6?Vector<long>"],
     ],
+    "BusinessBotRecipients",
   ],
-  [
-    "users.usersSlice",
+  "contactBirthday": [
+    0x1D998733,
     [
-      0x315A4974,
-      [
-        ["count", "int"],
-        ["users", "Vector<User>"],
-      ],
+      ["contact_id", "long"],
+      ["birthday", "Birthday"],
     ],
+    "ContactBirthday",
   ],
-  [
-    "payments.uniqueStarGift",
+  "contacts.contactBirthdays": [
+    0x114FF30D,
     [
-      0xCAA2F60B,
-      [
-        ["gift", "StarGift"],
-        ["users", "Vector<User>"],
-      ],
+      ["contacts", "Vector<ContactBirthday>"],
+      ["users", "Vector<User>"],
     ],
+    "contacts.ContactBirthdays",
   ],
-  [
-    "messages.webPagePreview",
+  "missingInvitee": [
+    0x628C9224,
     [
-      0xB53E8B21,
-      [
-        ["media", "MessageMedia"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["premium_would_allow_invite", "flags.0?true"],
+      ["premium_required_for_pm", "flags.1?true"],
+      ["user_id", "long"],
     ],
+    "MissingInvitee",
   ],
-  [
-    "savedStarGift",
+  "messages.invitedUsers": [
+    0x7F5DEFA6,
     [
-      0x6056DBA5,
-      [
-        ["flags", "#"],
-        ["name_hidden", "flags.0?true"],
-        ["unsaved", "flags.5?true"],
-        ["refunded", "flags.9?true"],
-        ["can_upgrade", "flags.10?true"],
-        ["pinned_to_top", "flags.12?true"],
-        ["from_id", "flags.1?Peer"],
-        ["date", "int"],
-        ["gift", "StarGift"],
-        ["message", "flags.2?TextWithEntities"],
-        ["msg_id", "flags.3?int"],
-        ["saved_id", "flags.11?long"],
-        ["convert_stars", "flags.4?long"],
-        ["upgrade_stars", "flags.6?long"],
-        ["can_export_at", "flags.7?int"],
-        ["transfer_stars", "flags.8?long"],
-      ],
+      ["updates", "Updates"],
+      ["missing_invitees", "Vector<MissingInvitee>"],
     ],
+    "messages.InvitedUsers",
   ],
-  [
-    "payments.savedStarGifts",
+  "inputBusinessChatLink": [
+    0x11679FA7,
     [
-      0x95F389B1,
-      [
-        ["flags", "#"],
-        ["count", "int"],
-        ["chat_notifications_enabled", "flags.1?Bool"],
-        ["gifts", "Vector<SavedStarGift>"],
-        ["next_offset", "flags.0?string"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
-      ],
+      ["flags", "#"],
+      ["message", "string"],
+      ["entities", "flags.0?Vector<MessageEntity>"],
+      ["title", "flags.1?string"],
     ],
+    "InputBusinessChatLink",
   ],
-  [
-    "inputSavedStarGiftUser",
+  "businessChatLink": [
+    0xB4AE666F,
     [
-      0x69279795,
-      [
-        ["msg_id", "int"],
-      ],
+      ["flags", "#"],
+      ["link", "string"],
+      ["message", "string"],
+      ["entities", "flags.0?Vector<MessageEntity>"],
+      ["title", "flags.1?string"],
+      ["views", "int"],
     ],
+    "BusinessChatLink",
   ],
-  [
-    "inputSavedStarGiftChat",
+  "account.businessChatLinks": [
+    0xEC43A2D1,
     [
-      0xF101AA7F,
-      [
-        ["peer", "InputPeer"],
-        ["saved_id", "long"],
-      ],
+      ["links", "Vector<BusinessChatLink>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "account.BusinessChatLinks",
   ],
-  [
-    "payments.starGiftWithdrawalUrl",
+  "account.resolvedBusinessChatLinks": [
+    0x9A23AF21,
     [
-      0x84AA3A9C,
-      [
-        ["url", "string"],
-      ],
+      ["flags", "#"],
+      ["peer", "Peer"],
+      ["message", "string"],
+      ["entities", "flags.0?Vector<MessageEntity>"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "account.ResolvedBusinessChatLinks",
   ],
-  [
-    "paidReactionPrivacyDefault",
+  "requestedPeerUser": [
+    0xD62FF46A,
     [
-      0x206AD49E,
-      [],
+      ["flags", "#"],
+      ["user_id", "long"],
+      ["first_name", "flags.0?string"],
+      ["last_name", "flags.0?string"],
+      ["username", "flags.1?string"],
+      ["photo", "flags.2?Photo"],
     ],
+    "RequestedPeer",
   ],
-  [
-    "paidReactionPrivacyAnonymous",
+  "requestedPeerChat": [
+    0x7307544F,
     [
-      0x1F0C1AD9,
-      [],
+      ["flags", "#"],
+      ["chat_id", "long"],
+      ["title", "flags.0?string"],
+      ["photo", "flags.2?Photo"],
     ],
+    "RequestedPeer",
   ],
-  [
-    "paidReactionPrivacyPeer",
+  "requestedPeerChannel": [
+    0x8BA403E4,
     [
-      0xDC6CFCF0,
-      [
-        ["peer", "InputPeer"],
-      ],
+      ["flags", "#"],
+      ["channel_id", "long"],
+      ["title", "flags.0?string"],
+      ["username", "flags.1?string"],
+      ["photo", "flags.2?Photo"],
     ],
+    "RequestedPeer",
   ],
-  [
-    "account.paidMessagesRevenue",
+  "sponsoredMessageReportOption": [
+    0x430D3150,
     [
-      0x1E109708,
-      [
-        ["stars_amount", "long"],
-      ],
+      ["text", "string"],
+      ["option", "bytes"],
     ],
+    "SponsoredMessageReportOption",
   ],
-  [
-    "requirementToContactEmpty",
+  "channels.sponsoredMessageReportResultChooseOption": [
+    0x846F9E42,
     [
-      0x050A9839,
-      [],
+      ["title", "string"],
+      ["options", "Vector<SponsoredMessageReportOption>"],
     ],
+    "channels.SponsoredMessageReportResult",
+  ],
+  "channels.sponsoredMessageReportResultAdsHidden": [
+    0x3E3BCF2F,
+    [],
+    "channels.SponsoredMessageReportResult",
+  ],
+  "channels.sponsoredMessageReportResultReported": [
+    0xAD798849,
+    [],
+    "channels.SponsoredMessageReportResult",
   ],
-  [
-    "requirementToContactPremium",
+  "stats.broadcastRevenueStats": [
+    0x5407E297,
     [
-      0xE581E4E9,
-      [],
+      ["top_hours_graph", "StatsGraph"],
+      ["revenue_graph", "StatsGraph"],
+      ["balances", "BroadcastRevenueBalances"],
+      ["usd_rate", "double"],
     ],
+    "stats.BroadcastRevenueStats",
   ],
-  [
-    "requirementToContactPaidMessages",
+  "stats.broadcastRevenueWithdrawalUrl": [
+    0xEC659737,
     [
-      0xB4F67E93,
-      [
-        ["stars_amount", "long"],
-      ],
+      ["url", "string"],
     ],
+    "stats.BroadcastRevenueWithdrawalUrl",
   ],
-  [
-    "req_pq_multi",
+  "broadcastRevenueTransactionProceeds": [
+    0x557E2CC4,
     [
-      0xBE7E8EF1,
-      [
-        ["nonce", "int128"],
-      ],
-      "ResPQ",
+      ["amount", "long"],
+      ["from_date", "int"],
+      ["to_date", "int"],
     ],
+    "BroadcastRevenueTransaction",
   ],
-  [
-    "req_DH_params",
+  "broadcastRevenueTransactionWithdrawal": [
+    0x5A590978,
     [
-      0xD712E4BE,
-      [
-        ["nonce", "int128"],
-        ["server_nonce", "int128"],
-        ["p", "bytes"],
-        ["q", "bytes"],
-        ["public_key_fingerprint", "long"],
-        ["encrypted_data", "bytes"],
-      ],
-      "Server_DH_Params",
+      ["flags", "#"],
+      ["pending", "flags.0?true"],
+      ["failed", "flags.2?true"],
+      ["amount", "long"],
+      ["date", "int"],
+      ["provider", "string"],
+      ["transaction_date", "flags.1?int"],
+      ["transaction_url", "flags.1?string"],
     ],
+    "BroadcastRevenueTransaction",
   ],
-  [
-    "set_client_DH_params",
+  "broadcastRevenueTransactionRefund": [
+    0x42D30D2E,
     [
-      0xF5045F1F,
-      [
-        ["nonce", "int128"],
-        ["server_nonce", "int128"],
-        ["encrypted_data", "bytes"],
-      ],
-      "Set_client_DH_params_answer",
+      ["amount", "long"],
+      ["date", "int"],
+      ["provider", "string"],
     ],
+    "BroadcastRevenueTransaction",
   ],
-  [
-    "rpc_drop_answer",
+  "stats.broadcastRevenueTransactions": [
+    0x87158466,
     [
-      0x58E4A740,
-      [
-        ["req_msg_id", "long"],
-      ],
-      "RpcDropAnswer",
+      ["count", "int"],
+      ["transactions", "Vector<BroadcastRevenueTransaction>"],
     ],
+    "stats.BroadcastRevenueTransactions",
   ],
-  [
-    "get_future_salts",
+  "reactionNotificationsFromContacts": [
+    0xBAC3A61A,
+    [],
+    "ReactionNotificationsFrom",
+  ],
+  "reactionNotificationsFromAll": [
+    0x4B9E22A0,
+    [],
+    "ReactionNotificationsFrom",
+  ],
+  "reactionsNotifySettings": [
+    0x56E34970,
     [
-      0xB921BD04,
-      [
-        ["num", "int"],
-      ],
-      "FutureSalts",
+      ["flags", "#"],
+      ["messages_notify_from", "flags.0?ReactionNotificationsFrom"],
+      ["stories_notify_from", "flags.1?ReactionNotificationsFrom"],
+      ["sound", "NotificationSound"],
+      ["show_previews", "Bool"],
     ],
+    "ReactionsNotifySettings",
   ],
-  [
-    "ping",
+  "broadcastRevenueBalances": [
+    0xC3FF71E7,
     [
-      0x7ABE77EC,
-      [
-        ["ping_id", "long"],
-      ],
-      "Pong",
+      ["flags", "#"],
+      ["withdrawal_enabled", "flags.0?true"],
+      ["current_balance", "long"],
+      ["available_balance", "long"],
+      ["overall_revenue", "long"],
     ],
+    "BroadcastRevenueBalances",
   ],
-  [
-    "ping_delay_disconnect",
+  "availableEffect": [
+    0x93C3E27E,
     [
-      0xF3427B8C,
-      [
-        ["ping_id", "long"],
-        ["disconnect_delay", "int"],
-      ],
-      "Pong",
+      ["flags", "#"],
+      ["premium_required", "flags.2?true"],
+      ["id", "long"],
+      ["emoticon", "string"],
+      ["static_icon_id", "flags.0?long"],
+      ["effect_sticker_id", "long"],
+      ["effect_animation_id", "flags.1?long"],
     ],
+    "AvailableEffect",
   ],
-  [
-    "destroy_session",
+  "messages.availableEffectsNotModified": [
+    0xD1ED9A5B,
+    [],
+    "messages.AvailableEffects",
+  ],
+  "messages.availableEffects": [
+    0xBDDB616E,
     [
-      0xE7512126,
-      [
-        ["session_id", "long"],
-      ],
-      "DestroySessionRes",
+      ["hash", "int"],
+      ["effects", "Vector<AvailableEffect>"],
+      ["documents", "Vector<Document>"],
     ],
+    "messages.AvailableEffects",
   ],
-  [
-    "destroy_auth_key",
+  "factCheck": [
+    0xB89BFCCF,
     [
-      0xD1435160,
-      [],
-      "DestroyAuthKeyRes",
+      ["flags", "#"],
+      ["need_check", "flags.0?true"],
+      ["country", "flags.1?string"],
+      ["text", "flags.1?TextWithEntities"],
+      ["hash", "long"],
     ],
+    "FactCheck",
+  ],
+  "starsTransactionPeerUnsupported": [
+    0x95F2BFE4,
+    [],
+    "StarsTransactionPeer",
+  ],
+  "starsTransactionPeerAppStore": [
+    0xB457B375,
+    [],
+    "StarsTransactionPeer",
+  ],
+  "starsTransactionPeerPlayMarket": [
+    0x7B560A0B,
+    [],
+    "StarsTransactionPeer",
+  ],
+  "starsTransactionPeerPremiumBot": [
+    0x250DBAF8,
+    [],
+    "StarsTransactionPeer",
+  ],
+  "starsTransactionPeerFragment": [
+    0xE92FD902,
+    [],
+    "StarsTransactionPeer",
   ],
-  [
-    "invokeWithBusinessConnectionPrefix",
+  "starsTransactionPeer": [
+    0xD80DA15D,
     [
-      0xDD289F8E,
-      [
-        ["connection_id", "string"],
-      ],
-      "Error",
+      ["peer", "Peer"],
     ],
+    "StarsTransactionPeer",
   ],
-  [
-    "invokeWithGooglePlayIntegrityPrefix",
+  "starsTransactionPeerAds": [
+    0x60682812,
+    [],
+    "StarsTransactionPeer",
+  ],
+  "starsTransactionPeerAPI": [
+    0xF9677AAD,
+    [],
+    "StarsTransactionPeer",
+  ],
+  "starsTopupOption": [
+    0x0BD915C0,
     [
-      0x1DF92984,
-      [
-        ["nonce", "string"],
-        ["token", "string"],
-      ],
-      "Error",
+      ["flags", "#"],
+      ["extended", "flags.1?true"],
+      ["stars", "long"],
+      ["store_product", "flags.0?string"],
+      ["currency", "string"],
+      ["amount", "long"],
     ],
+    "StarsTopupOption",
   ],
-  [
-    "invokeWithApnsSecretPrefix",
+  "starsTransaction": [
+    0xA39FD94A,
     [
-      0x0DAE54F8,
-      [
-        ["nonce", "string"],
-        ["secret", "string"],
-      ],
-      "Error",
+      ["flags", "#"],
+      ["refund", "flags.3?true"],
+      ["pending", "flags.4?true"],
+      ["failed", "flags.6?true"],
+      ["gift", "flags.10?true"],
+      ["reaction", "flags.11?true"],
+      ["stargift_upgrade", "flags.18?true"],
+      ["id", "string"],
+      ["stars", "StarsAmount"],
+      ["date", "int"],
+      ["peer", "StarsTransactionPeer"],
+      ["title", "flags.0?string"],
+      ["description", "flags.1?string"],
+      ["photo", "flags.2?WebDocument"],
+      ["transaction_date", "flags.5?int"],
+      ["transaction_url", "flags.5?string"],
+      ["bot_payload", "flags.7?bytes"],
+      ["msg_id", "flags.8?int"],
+      ["extended_media", "flags.9?Vector<MessageMedia>"],
+      ["subscription_period", "flags.12?int"],
+      ["giveaway_post_id", "flags.13?int"],
+      ["stargift", "flags.14?StarGift"],
+      ["floodskip_number", "flags.15?int"],
+      ["starref_commission_permille", "flags.16?int"],
+      ["starref_peer", "flags.17?Peer"],
+      ["starref_amount", "flags.17?StarsAmount"],
+      ["paid_messages", "flags.19?int"],
+      ["premium_gift_months", "flags.20?int"],
     ],
+    "StarsTransaction",
   ],
-  [
-    "invokeWithReCaptchaPrefix",
+  "payments.starsStatus": [
+    0x6C9CE8ED,
     [
-      0xADBB0F94,
-      [
-        ["token", "string"],
-      ],
-      "Error",
+      ["flags", "#"],
+      ["balance", "StarsAmount"],
+      ["subscriptions", "flags.1?Vector<StarsSubscription>"],
+      ["subscriptions_next_offset", "flags.2?string"],
+      ["subscriptions_missing_balance", "flags.4?long"],
+      ["history", "flags.3?Vector<StarsTransaction>"],
+      ["next_offset", "flags.0?string"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "payments.StarsStatus",
   ],
-  [
-    "invokeAfterMsg",
+  "foundStory": [
+    0xE87ACBC0,
     [
-      0xCB9F372D,
-      [
-        ["msg_id", "long"],
-        ["query", "!X"],
-      ],
-      "X",
+      ["peer", "Peer"],
+      ["story", "StoryItem"],
     ],
+    "FoundStory",
   ],
-  [
-    "invokeAfterMsgs",
+  "stories.foundStories": [
+    0xE2DE7737,
     [
-      0x3DC4B4F0,
-      [
-        ["msg_ids", "Vector<long>"],
-        ["query", "!X"],
-      ],
-      "X",
+      ["flags", "#"],
+      ["count", "int"],
+      ["stories", "Vector<FoundStory>"],
+      ["next_offset", "flags.0?string"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "stories.FoundStories",
   ],
-  [
-    "initConnection",
+  "geoPointAddress": [
+    0xDE4C5D93,
     [
-      0xC1CD5EA9,
-      [
-        ["flags", "#"],
-        ["api_id", "int"],
-        ["device_model", "string"],
-        ["system_version", "string"],
-        ["app_version", "string"],
-        ["system_lang_code", "string"],
-        ["lang_pack", "string"],
-        ["lang_code", "string"],
-        ["proxy", "flags.0?InputClientProxy"],
-        ["params", "flags.1?JSONValue"],
-        ["query", "!X"],
-      ],
-      "X",
+      ["flags", "#"],
+      ["country_iso2", "string"],
+      ["state", "flags.0?string"],
+      ["city", "flags.1?string"],
+      ["street", "flags.2?string"],
     ],
+    "GeoPointAddress",
   ],
-  [
-    "invokeWithLayer",
+  "starsRevenueStatus": [
+    0xFEBE5491,
     [
-      0xDA9B0D0D,
-      [
-        ["layer", "int"],
-        ["query", "!X"],
-      ],
-      "X",
+      ["flags", "#"],
+      ["withdrawal_enabled", "flags.0?true"],
+      ["current_balance", "StarsAmount"],
+      ["available_balance", "StarsAmount"],
+      ["overall_revenue", "StarsAmount"],
+      ["next_withdrawal_at", "flags.1?int"],
     ],
+    "StarsRevenueStatus",
   ],
-  [
-    "invokeWithoutUpdates",
+  "payments.starsRevenueStats": [
+    0xC92BB73B,
     [
-      0xBF9459B7,
-      [
-        ["query", "!X"],
-      ],
-      "X",
+      ["revenue_graph", "StatsGraph"],
+      ["status", "StarsRevenueStatus"],
+      ["usd_rate", "double"],
     ],
+    "payments.StarsRevenueStats",
   ],
-  [
-    "invokeWithMessagesRange",
+  "payments.starsRevenueWithdrawalUrl": [
+    0x1DAB80B7,
     [
-      0x365275F2,
-      [
-        ["range", "MessageRange"],
-        ["query", "!X"],
-      ],
-      "X",
+      ["url", "string"],
     ],
+    "payments.StarsRevenueWithdrawalUrl",
   ],
-  [
-    "invokeWithTakeout",
+  "payments.starsRevenueAdsAccountUrl": [
+    0x394E7F21,
     [
-      0xACA9FD2E,
-      [
-        ["takeout_id", "long"],
-        ["query", "!X"],
-      ],
-      "X",
+      ["url", "string"],
     ],
+    "payments.StarsRevenueAdsAccountUrl",
   ],
-  [
-    "invokeWithBusinessConnection",
+  "inputStarsTransaction": [
+    0x206AE6D1,
     [
-      0xDD289F8E,
-      [
-        ["connection_id", "string"],
-        ["query", "!X"],
-      ],
-      "X",
+      ["flags", "#"],
+      ["refund", "flags.0?true"],
+      ["id", "string"],
     ],
+    "InputStarsTransaction",
   ],
-  [
-    "invokeWithGooglePlayIntegrity",
+  "starsGiftOption": [
+    0x5E0589F1,
     [
-      0x1DF92984,
-      [
-        ["nonce", "string"],
-        ["token", "string"],
-        ["query", "!X"],
-      ],
-      "X",
+      ["flags", "#"],
+      ["extended", "flags.1?true"],
+      ["stars", "long"],
+      ["store_product", "flags.0?string"],
+      ["currency", "string"],
+      ["amount", "long"],
     ],
+    "StarsGiftOption",
   ],
-  [
-    "invokeWithApnsSecret",
+  "bots.popularAppBots": [
+    0x1991B13B,
     [
-      0x0DAE54F8,
-      [
-        ["nonce", "string"],
-        ["secret", "string"],
-        ["query", "!X"],
-      ],
-      "X",
+      ["flags", "#"],
+      ["next_offset", "flags.0?string"],
+      ["users", "Vector<User>"],
     ],
+    "bots.PopularAppBots",
   ],
-  [
-    "invokeWithReCaptcha",
+  "botPreviewMedia": [
+    0x23E91BA3,
     [
-      0xADBB0F94,
-      [
-        ["token", "string"],
-        ["query", "!X"],
-      ],
-      "X",
+      ["date", "int"],
+      ["media", "MessageMedia"],
     ],
+    "BotPreviewMedia",
   ],
-  [
-    "auth.sendCode",
+  "bots.previewInfo": [
+    0x0CA71D64,
     [
-      0xA677244F,
-      [
-        ["phone_number", "string"],
-        ["api_id", "int"],
-        ["api_hash", "string"],
-        ["settings", "CodeSettings"],
-      ],
-      "auth.SentCode",
+      ["media", "Vector<BotPreviewMedia>"],
+      ["lang_codes", "Vector<string>"],
     ],
+    "bots.PreviewInfo",
   ],
-  [
-    "auth.signUp",
+  "starsSubscriptionPricing": [
+    0x05416D58,
     [
-      0xAAC7B717,
-      [
-        ["flags", "#"],
-        ["no_joined_notifications", "flags.0?true"],
-        ["phone_number", "string"],
-        ["phone_code_hash", "string"],
-        ["first_name", "string"],
-        ["last_name", "string"],
-      ],
-      "auth.Authorization",
+      ["period", "int"],
+      ["amount", "long"],
     ],
+    "StarsSubscriptionPricing",
   ],
-  [
-    "auth.signIn",
+  "starsSubscription": [
+    0x2E6EAB1A,
     [
-      0x8D52A951,
-      [
-        ["flags", "#"],
-        ["phone_number", "string"],
-        ["phone_code_hash", "string"],
-        ["phone_code", "flags.0?string"],
-        ["email_verification", "flags.1?EmailVerification"],
-      ],
-      "auth.Authorization",
+      ["flags", "#"],
+      ["canceled", "flags.0?true"],
+      ["can_refulfill", "flags.1?true"],
+      ["missing_balance", "flags.2?true"],
+      ["bot_canceled", "flags.7?true"],
+      ["id", "string"],
+      ["peer", "Peer"],
+      ["until_date", "int"],
+      ["pricing", "StarsSubscriptionPricing"],
+      ["chat_invite_hash", "flags.3?string"],
+      ["title", "flags.4?string"],
+      ["photo", "flags.5?WebDocument"],
+      ["invoice_slug", "flags.6?string"],
     ],
+    "StarsSubscription",
   ],
-  [
-    "auth.logOut",
+  "messageReactor": [
+    0x4BA3A95A,
     [
-      0x3E72BA19,
-      [],
-      "auth.LoggedOut",
+      ["flags", "#"],
+      ["top", "flags.0?true"],
+      ["my", "flags.1?true"],
+      ["anonymous", "flags.2?true"],
+      ["peer_id", "flags.3?Peer"],
+      ["count", "int"],
     ],
+    "MessageReactor",
   ],
-  [
-    "auth.resetAuthorizations",
+  "starsGiveawayOption": [
+    0x94CE852A,
     [
-      0x9FAB0D1A,
-      [],
-      "Bool",
+      ["flags", "#"],
+      ["extended", "flags.0?true"],
+      ["default", "flags.1?true"],
+      ["stars", "long"],
+      ["yearly_boosts", "int"],
+      ["store_product", "flags.2?string"],
+      ["currency", "string"],
+      ["amount", "long"],
+      ["winners", "Vector<StarsGiveawayWinnersOption>"],
     ],
+    "StarsGiveawayOption",
   ],
-  [
-    "auth.exportAuthorization",
+  "starsGiveawayWinnersOption": [
+    0x54236209,
     [
-      0xE5BFFFCD,
-      [
-        ["dc_id", "int"],
-      ],
-      "auth.ExportedAuthorization",
+      ["flags", "#"],
+      ["default", "flags.0?true"],
+      ["users", "int"],
+      ["per_user_stars", "long"],
     ],
+    "StarsGiveawayWinnersOption",
   ],
-  [
-    "auth.importAuthorization",
+  "starGift": [
+    0x02CC73C8,
     [
-      0xA57A7DAD,
-      [
-        ["id", "long"],
-        ["bytes", "bytes"],
-      ],
-      "auth.Authorization",
+      ["flags", "#"],
+      ["limited", "flags.0?true"],
+      ["sold_out", "flags.1?true"],
+      ["birthday", "flags.2?true"],
+      ["id", "long"],
+      ["sticker", "Document"],
+      ["stars", "long"],
+      ["availability_remains", "flags.0?int"],
+      ["availability_total", "flags.0?int"],
+      ["convert_stars", "long"],
+      ["first_sale_date", "flags.1?int"],
+      ["last_sale_date", "flags.1?int"],
+      ["upgrade_stars", "flags.3?long"],
     ],
+    "StarGift",
   ],
-  [
-    "auth.bindTempAuthKey",
+  "starGiftUnique": [
+    0x5C62D151,
     [
-      0xCDD42A05,
-      [
-        ["perm_auth_key_id", "long"],
-        ["nonce", "long"],
-        ["expires_at", "int"],
-        ["encrypted_message", "bytes"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["id", "long"],
+      ["title", "string"],
+      ["slug", "string"],
+      ["num", "int"],
+      ["owner_id", "flags.0?Peer"],
+      ["owner_name", "flags.1?string"],
+      ["owner_address", "flags.2?string"],
+      ["attributes", "Vector<StarGiftAttribute>"],
+      ["availability_issued", "int"],
+      ["availability_total", "int"],
+      ["gift_address", "flags.3?string"],
     ],
+    "StarGift",
   ],
-  [
-    "auth.importBotAuthorization",
+  "payments.starGiftsNotModified": [
+    0xA388A368,
+    [],
+    "payments.StarGifts",
+  ],
+  "payments.starGifts": [
+    0x901689EA,
     [
-      0x67A3FF2C,
-      [
-        ["flags", "int"],
-        ["api_id", "int"],
-        ["api_hash", "string"],
-        ["bot_auth_token", "string"],
-      ],
-      "auth.Authorization",
+      ["hash", "int"],
+      ["gifts", "Vector<StarGift>"],
     ],
+    "payments.StarGifts",
   ],
-  [
-    "auth.checkPassword",
+  "messageReportOption": [
+    0x7903E3D9,
     [
-      0xD18B4D16,
-      [
-        ["password", "InputCheckPasswordSRP"],
-      ],
-      "auth.Authorization",
+      ["text", "string"],
+      ["option", "bytes"],
     ],
+    "MessageReportOption",
   ],
-  [
-    "auth.requestPasswordRecovery",
+  "reportResultChooseOption": [
+    0xF0E4E0B6,
     [
-      0xD897BC66,
-      [],
-      "auth.PasswordRecovery",
+      ["title", "string"],
+      ["options", "Vector<MessageReportOption>"],
     ],
+    "ReportResult",
   ],
-  [
-    "auth.recoverPassword",
+  "reportResultAddComment": [
+    0x6F09AC31,
     [
-      0x37096C70,
-      [
-        ["flags", "#"],
-        ["code", "string"],
-        ["new_settings", "flags.0?account.PasswordInputSettings"],
-      ],
-      "auth.Authorization",
+      ["flags", "#"],
+      ["optional", "flags.0?true"],
+      ["option", "bytes"],
     ],
+    "ReportResult",
+  ],
+  "reportResultReported": [
+    0x8DB33C4B,
+    [],
+    "ReportResult",
   ],
-  [
-    "auth.resendCode",
+  "messages.botPreparedInlineMessage": [
+    0x8ECF0511,
     [
-      0xCAE47523,
-      [
-        ["flags", "#"],
-        ["phone_number", "string"],
-        ["phone_code_hash", "string"],
-        ["reason", "flags.0?string"],
-      ],
-      "auth.SentCode",
+      ["id", "string"],
+      ["expire_date", "int"],
     ],
+    "messages.BotPreparedInlineMessage",
   ],
-  [
-    "auth.cancelCode",
+  "messages.preparedInlineMessage": [
+    0xFF57708D,
     [
-      0x1F040578,
-      [
-        ["phone_number", "string"],
-        ["phone_code_hash", "string"],
-      ],
-      "Bool",
+      ["query_id", "long"],
+      ["result", "BotInlineResult"],
+      ["peer_types", "Vector<InlineQueryPeerType>"],
+      ["cache_time", "int"],
+      ["users", "Vector<User>"],
     ],
+    "messages.PreparedInlineMessage",
   ],
-  [
-    "auth.dropTempAuthKeys",
+  "botAppSettings": [
+    0xC99B1950,
     [
-      0x8E48A188,
-      [
-        ["except_auth_keys", "Vector<long>"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["placeholder_path", "flags.0?bytes"],
+      ["background_color", "flags.1?int"],
+      ["background_dark_color", "flags.2?int"],
+      ["header_color", "flags.3?int"],
+      ["header_dark_color", "flags.4?int"],
     ],
+    "BotAppSettings",
   ],
-  [
-    "auth.exportLoginToken",
+  "starRefProgram": [
+    0xDD0C66F2,
     [
-      0xB7E085FE,
-      [
-        ["api_id", "int"],
-        ["api_hash", "string"],
-        ["except_ids", "Vector<long>"],
-      ],
-      "auth.LoginToken",
+      ["flags", "#"],
+      ["bot_id", "long"],
+      ["commission_permille", "int"],
+      ["duration_months", "flags.0?int"],
+      ["end_date", "flags.1?int"],
+      ["daily_revenue_per_user", "flags.2?StarsAmount"],
     ],
+    "StarRefProgram",
   ],
-  [
-    "auth.importLoginToken",
+  "connectedBotStarRef": [
+    0x19A13F71,
     [
-      0x95AC5CE4,
-      [
-        ["token", "bytes"],
-      ],
-      "auth.LoginToken",
+      ["flags", "#"],
+      ["revoked", "flags.1?true"],
+      ["url", "string"],
+      ["date", "int"],
+      ["bot_id", "long"],
+      ["commission_permille", "int"],
+      ["duration_months", "flags.0?int"],
+      ["participants", "long"],
+      ["revenue", "long"],
     ],
+    "ConnectedBotStarRef",
   ],
-  [
-    "auth.acceptLoginToken",
+  "payments.connectedStarRefBots": [
+    0x98D5EA1D,
     [
-      0xE894AD4D,
-      [
-        ["token", "bytes"],
-      ],
-      "Authorization",
+      ["count", "int"],
+      ["connected_bots", "Vector<ConnectedBotStarRef>"],
+      ["users", "Vector<User>"],
     ],
+    "payments.ConnectedStarRefBots",
   ],
-  [
-    "auth.checkRecoveryPassword",
+  "payments.suggestedStarRefBots": [
+    0xB4D5D859,
     [
-      0x0D36BF79,
-      [
-        ["code", "string"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["count", "int"],
+      ["suggested_bots", "Vector<StarRefProgram>"],
+      ["users", "Vector<User>"],
+      ["next_offset", "flags.0?string"],
     ],
+    "payments.SuggestedStarRefBots",
   ],
-  [
-    "auth.importWebTokenAuthorization",
+  "starsAmount": [
+    0xBBB6B4A3,
     [
-      0x2DB873A9,
-      [
-        ["api_id", "int"],
-        ["api_hash", "string"],
-        ["web_auth_token", "string"],
-      ],
-      "auth.Authorization",
+      ["amount", "long"],
+      ["nanos", "int"],
     ],
+    "StarsAmount",
   ],
-  [
-    "auth.requestFirebaseSms",
+  "messages.foundStickersNotModified": [
+    0x6010C534,
     [
-      0x8E39261E,
-      [
-        ["flags", "#"],
-        ["phone_number", "string"],
-        ["phone_code_hash", "string"],
-        ["safety_net_token", "flags.0?string"],
-        ["play_integrity_token", "flags.2?string"],
-        ["ios_push_secret", "flags.1?string"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["next_offset", "flags.0?int"],
     ],
+    "messages.FoundStickers",
   ],
-  [
-    "auth.resetLoginEmail",
+  "messages.foundStickers": [
+    0x82C9E290,
     [
-      0x7E960193,
-      [
-        ["phone_number", "string"],
-        ["phone_code_hash", "string"],
-      ],
-      "auth.SentCode",
+      ["flags", "#"],
+      ["next_offset", "flags.0?int"],
+      ["hash", "long"],
+      ["stickers", "Vector<Document>"],
     ],
+    "messages.FoundStickers",
   ],
-  [
-    "auth.reportMissingCode",
+  "botVerifierSettings": [
+    0xB0CD6617,
     [
-      0xCB9DEFF6,
-      [
-        ["phone_number", "string"],
-        ["phone_code_hash", "string"],
-        ["mnc", "string"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["can_modify_custom_description", "flags.1?true"],
+      ["icon", "long"],
+      ["company", "string"],
+      ["custom_description", "flags.0?string"],
     ],
+    "BotVerifierSettings",
   ],
-  [
-    "account.registerDevice",
+  "botVerification": [
+    0xF93CD45C,
     [
-      0xEC86017A,
-      [
-        ["flags", "#"],
-        ["no_muted", "flags.0?true"],
-        ["token_type", "int"],
-        ["token", "string"],
-        ["app_sandbox", "Bool"],
-        ["secret", "bytes"],
-        ["other_uids", "Vector<long>"],
-      ],
-      "Bool",
+      ["bot_id", "long"],
+      ["icon", "long"],
+      ["description", "string"],
     ],
+    "BotVerification",
   ],
-  [
-    "account.unregisterDevice",
+  "starGiftAttributeModel": [
+    0x39D99013,
     [
-      0x6A0D3206,
-      [
-        ["token_type", "int"],
-        ["token", "string"],
-        ["other_uids", "Vector<long>"],
-      ],
-      "Bool",
+      ["name", "string"],
+      ["document", "Document"],
+      ["rarity_permille", "int"],
     ],
+    "StarGiftAttribute",
   ],
-  [
-    "account.updateNotifySettings",
+  "starGiftAttributePattern": [
+    0x13ACFF19,
     [
-      0x84BE5B93,
-      [
-        ["peer", "InputNotifyPeer"],
-        ["settings", "InputPeerNotifySettings"],
-      ],
-      "Bool",
+      ["name", "string"],
+      ["document", "Document"],
+      ["rarity_permille", "int"],
     ],
+    "StarGiftAttribute",
   ],
-  [
-    "account.getNotifySettings",
+  "starGiftAttributeBackdrop": [
+    0x94271762,
     [
-      0x12B3AD31,
-      [
-        ["peer", "InputNotifyPeer"],
-      ],
-      "PeerNotifySettings",
+      ["name", "string"],
+      ["center_color", "int"],
+      ["edge_color", "int"],
+      ["pattern_color", "int"],
+      ["text_color", "int"],
+      ["rarity_permille", "int"],
     ],
+    "StarGiftAttribute",
   ],
-  [
-    "account.resetNotifySettings",
+  "starGiftAttributeOriginalDetails": [
+    0xE0BFF26C,
     [
-      0xDB7E1747,
-      [],
-      "Bool",
+      ["flags", "#"],
+      ["sender_id", "flags.0?Peer"],
+      ["recipient_id", "Peer"],
+      ["date", "int"],
+      ["message", "flags.1?TextWithEntities"],
     ],
+    "StarGiftAttribute",
   ],
-  [
-    "account.updateProfile",
+  "payments.starGiftUpgradePreview": [
+    0x167BD90B,
     [
-      0x78515775,
-      [
-        ["flags", "#"],
-        ["first_name", "flags.0?string"],
-        ["last_name", "flags.1?string"],
-        ["about", "flags.2?string"],
-      ],
-      "User",
+      ["sample_attributes", "Vector<StarGiftAttribute>"],
     ],
+    "payments.StarGiftUpgradePreview",
   ],
-  [
-    "account.updateStatus",
+  "users.users": [
+    0x62D706B8,
     [
-      0x6628562C,
-      [
-        ["offline", "Bool"],
-      ],
-      "Bool",
+      ["users", "Vector<User>"],
     ],
+    "users.Users",
   ],
-  [
-    "account.getWallPapers",
+  "users.usersSlice": [
+    0x315A4974,
     [
-      0x07967D36,
-      [
-        ["hash", "long"],
-      ],
-      "account.WallPapers",
+      ["count", "int"],
+      ["users", "Vector<User>"],
     ],
+    "users.Users",
   ],
-  [
-    "account.reportPeer",
+  "payments.uniqueStarGift": [
+    0xCAA2F60B,
     [
-      0xC5BA3D86,
-      [
-        ["peer", "InputPeer"],
-        ["reason", "ReportReason"],
-        ["message", "string"],
-      ],
-      "Bool",
+      ["gift", "StarGift"],
+      ["users", "Vector<User>"],
     ],
+    "payments.UniqueStarGift",
   ],
-  [
-    "account.checkUsername",
+  "messages.webPagePreview": [
+    0xB53E8B21,
     [
-      0x2714D86C,
-      [
-        ["username", "string"],
-      ],
-      "Bool",
+      ["media", "MessageMedia"],
+      ["users", "Vector<User>"],
     ],
+    "messages.WebPagePreview",
   ],
-  [
-    "account.updateUsername",
+  "savedStarGift": [
+    0x6056DBA5,
     [
-      0x3E0BDD7C,
-      [
-        ["username", "string"],
-      ],
-      "User",
+      ["flags", "#"],
+      ["name_hidden", "flags.0?true"],
+      ["unsaved", "flags.5?true"],
+      ["refunded", "flags.9?true"],
+      ["can_upgrade", "flags.10?true"],
+      ["pinned_to_top", "flags.12?true"],
+      ["from_id", "flags.1?Peer"],
+      ["date", "int"],
+      ["gift", "StarGift"],
+      ["message", "flags.2?TextWithEntities"],
+      ["msg_id", "flags.3?int"],
+      ["saved_id", "flags.11?long"],
+      ["convert_stars", "flags.4?long"],
+      ["upgrade_stars", "flags.6?long"],
+      ["can_export_at", "flags.7?int"],
+      ["transfer_stars", "flags.8?long"],
     ],
+    "SavedStarGift",
   ],
-  [
-    "account.getPrivacy",
+  "payments.savedStarGifts": [
+    0x95F389B1,
     [
-      0xDADBC950,
-      [
-        ["key", "InputPrivacyKey"],
-      ],
-      "account.PrivacyRules",
+      ["flags", "#"],
+      ["count", "int"],
+      ["chat_notifications_enabled", "flags.1?Bool"],
+      ["gifts", "Vector<SavedStarGift>"],
+      ["next_offset", "flags.0?string"],
+      ["chats", "Vector<Chat>"],
+      ["users", "Vector<User>"],
     ],
+    "payments.SavedStarGifts",
   ],
-  [
-    "account.setPrivacy",
+  "inputSavedStarGiftUser": [
+    0x69279795,
     [
-      0xC9F81CE8,
-      [
-        ["key", "InputPrivacyKey"],
-        ["rules", "Vector<InputPrivacyRule>"],
-      ],
-      "account.PrivacyRules",
+      ["msg_id", "int"],
     ],
+    "InputSavedStarGift",
   ],
-  [
-    "account.deleteAccount",
+  "inputSavedStarGiftChat": [
+    0xF101AA7F,
     [
-      0xA2C0CF74,
-      [
-        ["flags", "#"],
-        ["reason", "string"],
-        ["password", "flags.0?InputCheckPasswordSRP"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["saved_id", "long"],
     ],
+    "InputSavedStarGift",
   ],
-  [
-    "account.getAccountTTL",
+  "payments.starGiftWithdrawalUrl": [
+    0x84AA3A9C,
     [
-      0x08FC711D,
-      [],
-      "AccountDaysTTL",
+      ["url", "string"],
     ],
+    "payments.StarGiftWithdrawalUrl",
   ],
-  [
-    "account.setAccountTTL",
+  "paidReactionPrivacyDefault": [
+    0x206AD49E,
+    [],
+    "PaidReactionPrivacy",
+  ],
+  "paidReactionPrivacyAnonymous": [
+    0x1F0C1AD9,
+    [],
+    "PaidReactionPrivacy",
+  ],
+  "paidReactionPrivacyPeer": [
+    0xDC6CFCF0,
     [
-      0x2442485E,
-      [
-        ["ttl", "AccountDaysTTL"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
     ],
+    "PaidReactionPrivacy",
   ],
-  [
-    "account.sendChangePhoneCode",
+  "account.paidMessagesRevenue": [
+    0x1E109708,
     [
-      0x82574AE5,
-      [
-        ["phone_number", "string"],
-        ["settings", "CodeSettings"],
-      ],
-      "auth.SentCode",
+      ["stars_amount", "long"],
     ],
+    "account.PaidMessagesRevenue",
+  ],
+  "requirementToContactEmpty": [
+    0x050A9839,
+    [],
+    "RequirementToContact",
+  ],
+  "requirementToContactPremium": [
+    0xE581E4E9,
+    [],
+    "RequirementToContact",
   ],
-  [
-    "account.changePhone",
+  "requirementToContactPaidMessages": [
+    0xB4F67E93,
     [
-      0x70C32EDB,
-      [
-        ["phone_number", "string"],
-        ["phone_code_hash", "string"],
-        ["phone_code", "string"],
-      ],
-      "User",
+      ["stars_amount", "long"],
     ],
+    "RequirementToContact",
   ],
-  [
-    "account.updateDeviceLocked",
+  "req_pq_multi": [
+    0xBE7E8EF1,
     [
-      0x38DF3532,
-      [
-        ["period", "int"],
-      ],
-      "Bool",
+      ["nonce", "int128"],
     ],
+    "ResPQ",
   ],
-  [
-    "account.getAuthorizations",
+  "req_DH_params": [
+    0xD712E4BE,
     [
-      0xE320C158,
-      [],
-      "account.Authorizations",
+      ["nonce", "int128"],
+      ["server_nonce", "int128"],
+      ["p", "bytes"],
+      ["q", "bytes"],
+      ["public_key_fingerprint", "long"],
+      ["encrypted_data", "bytes"],
     ],
+    "Server_DH_Params",
   ],
-  [
-    "account.resetAuthorization",
+  "set_client_DH_params": [
+    0xF5045F1F,
     [
-      0xDF77F3BC,
-      [
-        ["hash", "long"],
-      ],
-      "Bool",
+      ["nonce", "int128"],
+      ["server_nonce", "int128"],
+      ["encrypted_data", "bytes"],
     ],
+    "Set_client_DH_params_answer",
   ],
-  [
-    "account.getPassword",
+  "rpc_drop_answer": [
+    0x58E4A740,
     [
-      0x548A30F5,
-      [],
-      "account.Password",
+      ["req_msg_id", "long"],
     ],
+    "RpcDropAnswer",
   ],
-  [
-    "account.getPasswordSettings",
+  "get_future_salts": [
+    0xB921BD04,
     [
-      0x9CD4EAF9,
-      [
-        ["password", "InputCheckPasswordSRP"],
-      ],
-      "account.PasswordSettings",
+      ["num", "int"],
     ],
+    "FutureSalts",
   ],
-  [
-    "account.updatePasswordSettings",
+  "ping": [
+    0x7ABE77EC,
     [
-      0xA59B102F,
-      [
-        ["password", "InputCheckPasswordSRP"],
-        ["new_settings", "account.PasswordInputSettings"],
-      ],
-      "Bool",
+      ["ping_id", "long"],
     ],
+    "Pong",
   ],
-  [
-    "account.sendConfirmPhoneCode",
+  "ping_delay_disconnect": [
+    0xF3427B8C,
     [
-      0x1B3FAA88,
-      [
-        ["hash", "string"],
-        ["settings", "CodeSettings"],
-      ],
-      "auth.SentCode",
+      ["ping_id", "long"],
+      ["disconnect_delay", "int"],
     ],
+    "Pong",
   ],
-  [
-    "account.confirmPhone",
+  "destroy_session": [
+    0xE7512126,
     [
-      0x5F2178C3,
-      [
-        ["phone_code_hash", "string"],
-        ["phone_code", "string"],
-      ],
-      "Bool",
+      ["session_id", "long"],
     ],
+    "DestroySessionRes",
   ],
-  [
-    "account.getTmpPassword",
+  "destroy_auth_key": [
+    0xD1435160,
+    [],
+    "DestroyAuthKeyRes",
+  ],
+  "invokeWithBusinessConnectionPrefix": [
+    0xDD289F8E,
     [
-      0x449E0B51,
-      [
-        ["password", "InputCheckPasswordSRP"],
-        ["period", "int"],
-      ],
-      "account.TmpPassword",
+      ["connection_id", "string"],
     ],
+    "Error",
   ],
-  [
-    "account.getWebAuthorizations",
+  "invokeWithGooglePlayIntegrityPrefix": [
+    0x1DF92984,
     [
-      0x182E6D6F,
-      [],
-      "account.WebAuthorizations",
+      ["nonce", "string"],
+      ["token", "string"],
     ],
+    "Error",
   ],
-  [
-    "account.resetWebAuthorization",
+  "invokeWithApnsSecretPrefix": [
+    0x0DAE54F8,
     [
-      0x2D01B9EF,
-      [
-        ["hash", "long"],
-      ],
-      "Bool",
+      ["nonce", "string"],
+      ["secret", "string"],
     ],
+    "Error",
   ],
-  [
-    "account.resetWebAuthorizations",
+  "invokeWithReCaptchaPrefix": [
+    0xADBB0F94,
     [
-      0x682D2594,
-      [],
-      "Bool",
+      ["token", "string"],
     ],
+    "Error",
   ],
-  [
-    "account.getAllSecureValues",
+  "invokeAfterMsg": [
+    0xCB9F372D,
     [
-      0xB288BC7D,
-      [],
-      "Vector<SecureValue>",
+      ["msg_id", "long"],
+      ["query", "!X"],
     ],
+    "X",
   ],
-  [
-    "account.getSecureValue",
+  "invokeAfterMsgs": [
+    0x3DC4B4F0,
     [
-      0x73665BC2,
-      [
-        ["types", "Vector<SecureValueType>"],
-      ],
-      "Vector<SecureValue>",
+      ["msg_ids", "Vector<long>"],
+      ["query", "!X"],
     ],
+    "X",
   ],
-  [
-    "account.saveSecureValue",
+  "initConnection": [
+    0xC1CD5EA9,
     [
-      0x899FE31D,
-      [
-        ["value", "InputSecureValue"],
-        ["secure_secret_id", "long"],
-      ],
-      "SecureValue",
+      ["flags", "#"],
+      ["api_id", "int"],
+      ["device_model", "string"],
+      ["system_version", "string"],
+      ["app_version", "string"],
+      ["system_lang_code", "string"],
+      ["lang_pack", "string"],
+      ["lang_code", "string"],
+      ["proxy", "flags.0?InputClientProxy"],
+      ["params", "flags.1?JSONValue"],
+      ["query", "!X"],
     ],
+    "X",
   ],
-  [
-    "account.deleteSecureValue",
+  "invokeWithLayer": [
+    0xDA9B0D0D,
     [
-      0xB880BC4B,
-      [
-        ["types", "Vector<SecureValueType>"],
-      ],
-      "Bool",
+      ["layer", "int"],
+      ["query", "!X"],
     ],
+    "X",
   ],
-  [
-    "account.getAuthorizationForm",
+  "invokeWithoutUpdates": [
+    0xBF9459B7,
     [
-      0xA929597A,
-      [
-        ["bot_id", "long"],
-        ["scope", "string"],
-        ["public_key", "string"],
-      ],
-      "account.AuthorizationForm",
+      ["query", "!X"],
     ],
+    "X",
   ],
-  [
-    "account.acceptAuthorization",
+  "invokeWithMessagesRange": [
+    0x365275F2,
     [
-      0xF3ED4C73,
-      [
-        ["bot_id", "long"],
-        ["scope", "string"],
-        ["public_key", "string"],
-        ["value_hashes", "Vector<SecureValueHash>"],
-        ["credentials", "SecureCredentialsEncrypted"],
-      ],
-      "Bool",
+      ["range", "MessageRange"],
+      ["query", "!X"],
     ],
+    "X",
   ],
-  [
-    "account.sendVerifyPhoneCode",
+  "invokeWithTakeout": [
+    0xACA9FD2E,
     [
-      0xA5A356F9,
-      [
-        ["phone_number", "string"],
-        ["settings", "CodeSettings"],
-      ],
-      "auth.SentCode",
+      ["takeout_id", "long"],
+      ["query", "!X"],
     ],
+    "X",
   ],
-  [
-    "account.verifyPhone",
+  "invokeWithBusinessConnection": [
+    0xDD289F8E,
     [
-      0x4DD3A7F6,
-      [
-        ["phone_number", "string"],
-        ["phone_code_hash", "string"],
-        ["phone_code", "string"],
-      ],
-      "Bool",
+      ["connection_id", "string"],
+      ["query", "!X"],
     ],
+    "X",
   ],
-  [
-    "account.sendVerifyEmailCode",
+  "invokeWithGooglePlayIntegrity": [
+    0x1DF92984,
     [
-      0x98E037BB,
-      [
-        ["purpose", "EmailVerifyPurpose"],
-        ["email", "string"],
-      ],
-      "account.SentEmailCode",
+      ["nonce", "string"],
+      ["token", "string"],
+      ["query", "!X"],
     ],
+    "X",
   ],
-  [
-    "account.verifyEmail",
+  "invokeWithApnsSecret": [
+    0x0DAE54F8,
     [
-      0x032DA4CF,
-      [
-        ["purpose", "EmailVerifyPurpose"],
-        ["verification", "EmailVerification"],
-      ],
-      "account.EmailVerified",
+      ["nonce", "string"],
+      ["secret", "string"],
+      ["query", "!X"],
     ],
+    "X",
   ],
-  [
-    "account.initTakeoutSession",
+  "invokeWithReCaptcha": [
+    0xADBB0F94,
     [
-      0x8EF3EAB0,
-      [
-        ["flags", "#"],
-        ["contacts", "flags.0?true"],
-        ["message_users", "flags.1?true"],
-        ["message_chats", "flags.2?true"],
-        ["message_megagroups", "flags.3?true"],
-        ["message_channels", "flags.4?true"],
-        ["files", "flags.5?true"],
-        ["file_max_size", "flags.5?long"],
-      ],
-      "account.Takeout",
+      ["token", "string"],
+      ["query", "!X"],
     ],
+    "X",
   ],
-  [
-    "account.finishTakeoutSession",
+  "auth.sendCode": [
+    0xA677244F,
     [
-      0x1D2652EE,
-      [
-        ["flags", "#"],
-        ["success", "flags.0?true"],
-      ],
-      "Bool",
+      ["phone_number", "string"],
+      ["api_id", "int"],
+      ["api_hash", "string"],
+      ["settings", "CodeSettings"],
     ],
+    "auth.SentCode",
   ],
-  [
-    "account.confirmPasswordEmail",
+  "auth.signUp": [
+    0xAAC7B717,
     [
-      0x8FDF1920,
-      [
-        ["code", "string"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["no_joined_notifications", "flags.0?true"],
+      ["phone_number", "string"],
+      ["phone_code_hash", "string"],
+      ["first_name", "string"],
+      ["last_name", "string"],
     ],
+    "auth.Authorization",
   ],
-  [
-    "account.resendPasswordEmail",
+  "auth.signIn": [
+    0x8D52A951,
     [
-      0x7A7F2A15,
-      [],
-      "Bool",
+      ["flags", "#"],
+      ["phone_number", "string"],
+      ["phone_code_hash", "string"],
+      ["phone_code", "flags.0?string"],
+      ["email_verification", "flags.1?EmailVerification"],
     ],
+    "auth.Authorization",
+  ],
+  "auth.logOut": [
+    0x3E72BA19,
+    [],
+    "auth.LoggedOut",
   ],
-  [
-    "account.cancelPasswordEmail",
+  "auth.resetAuthorizations": [
+    0x9FAB0D1A,
+    [],
+    "Bool",
+  ],
+  "auth.exportAuthorization": [
+    0xE5BFFFCD,
     [
-      0xC1CBD5B6,
-      [],
-      "Bool",
+      ["dc_id", "int"],
     ],
+    "auth.ExportedAuthorization",
   ],
-  [
-    "account.getContactSignUpNotification",
+  "auth.importAuthorization": [
+    0xA57A7DAD,
     [
-      0x9F07C728,
-      [],
-      "Bool",
+      ["id", "long"],
+      ["bytes", "bytes"],
     ],
+    "auth.Authorization",
   ],
-  [
-    "account.setContactSignUpNotification",
+  "auth.bindTempAuthKey": [
+    0xCDD42A05,
     [
-      0xCFF43F61,
-      [
-        ["silent", "Bool"],
-      ],
-      "Bool",
+      ["perm_auth_key_id", "long"],
+      ["nonce", "long"],
+      ["expires_at", "int"],
+      ["encrypted_message", "bytes"],
     ],
+    "Bool",
   ],
-  [
-    "account.getNotifyExceptions",
+  "auth.importBotAuthorization": [
+    0x67A3FF2C,
     [
-      0x53577479,
-      [
-        ["flags", "#"],
-        ["compare_sound", "flags.1?true"],
-        ["compare_stories", "flags.2?true"],
-        ["peer", "flags.0?InputNotifyPeer"],
-      ],
-      "Updates",
+      ["flags", "int"],
+      ["api_id", "int"],
+      ["api_hash", "string"],
+      ["bot_auth_token", "string"],
     ],
+    "auth.Authorization",
   ],
-  [
-    "account.getWallPaper",
+  "auth.checkPassword": [
+    0xD18B4D16,
     [
-      0xFC8DDBEA,
-      [
-        ["wallpaper", "InputWallPaper"],
-      ],
-      "WallPaper",
+      ["password", "InputCheckPasswordSRP"],
     ],
+    "auth.Authorization",
+  ],
+  "auth.requestPasswordRecovery": [
+    0xD897BC66,
+    [],
+    "auth.PasswordRecovery",
   ],
-  [
-    "account.uploadWallPaper",
+  "auth.recoverPassword": [
+    0x37096C70,
     [
-      0xE39A8F03,
-      [
-        ["flags", "#"],
-        ["for_chat", "flags.0?true"],
-        ["file", "InputFile"],
-        ["mime_type", "string"],
-        ["settings", "WallPaperSettings"],
-      ],
-      "WallPaper",
+      ["flags", "#"],
+      ["code", "string"],
+      ["new_settings", "flags.0?account.PasswordInputSettings"],
     ],
+    "auth.Authorization",
   ],
-  [
-    "account.saveWallPaper",
+  "auth.resendCode": [
+    0xCAE47523,
     [
-      0x6C5A5B37,
-      [
-        ["wallpaper", "InputWallPaper"],
-        ["unsave", "Bool"],
-        ["settings", "WallPaperSettings"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["phone_number", "string"],
+      ["phone_code_hash", "string"],
+      ["reason", "flags.0?string"],
     ],
+    "auth.SentCode",
   ],
-  [
-    "account.installWallPaper",
+  "auth.cancelCode": [
+    0x1F040578,
     [
-      0xFEED5769,
-      [
-        ["wallpaper", "InputWallPaper"],
-        ["settings", "WallPaperSettings"],
-      ],
-      "Bool",
+      ["phone_number", "string"],
+      ["phone_code_hash", "string"],
     ],
+    "Bool",
   ],
-  [
-    "account.resetWallPapers",
+  "auth.dropTempAuthKeys": [
+    0x8E48A188,
     [
-      0xBB3B9804,
-      [],
-      "Bool",
+      ["except_auth_keys", "Vector<long>"],
     ],
+    "Bool",
   ],
-  [
-    "account.getAutoDownloadSettings",
+  "auth.exportLoginToken": [
+    0xB7E085FE,
     [
-      0x56DA0B3F,
-      [],
-      "account.AutoDownloadSettings",
+      ["api_id", "int"],
+      ["api_hash", "string"],
+      ["except_ids", "Vector<long>"],
     ],
+    "auth.LoginToken",
   ],
-  [
-    "account.saveAutoDownloadSettings",
+  "auth.importLoginToken": [
+    0x95AC5CE4,
     [
-      0x76F36233,
-      [
-        ["flags", "#"],
-        ["low", "flags.0?true"],
-        ["high", "flags.1?true"],
-        ["settings", "AutoDownloadSettings"],
-      ],
-      "Bool",
+      ["token", "bytes"],
     ],
+    "auth.LoginToken",
   ],
-  [
-    "account.uploadTheme",
+  "auth.acceptLoginToken": [
+    0xE894AD4D,
     [
-      0x1C3DB333,
-      [
-        ["flags", "#"],
-        ["file", "InputFile"],
-        ["thumb", "flags.0?InputFile"],
-        ["file_name", "string"],
-        ["mime_type", "string"],
-      ],
-      "Document",
+      ["token", "bytes"],
     ],
+    "Authorization",
   ],
-  [
-    "account.createTheme",
+  "auth.checkRecoveryPassword": [
+    0x0D36BF79,
     [
-      0x652E4400,
-      [
-        ["flags", "#"],
-        ["slug", "string"],
-        ["title", "string"],
-        ["document", "flags.2?InputDocument"],
-        ["settings", "flags.3?Vector<InputThemeSettings>"],
-      ],
-      "Theme",
+      ["code", "string"],
     ],
+    "Bool",
   ],
-  [
-    "account.updateTheme",
+  "auth.importWebTokenAuthorization": [
+    0x2DB873A9,
     [
-      0x2BF40CCC,
-      [
-        ["flags", "#"],
-        ["format", "string"],
-        ["theme", "InputTheme"],
-        ["slug", "flags.0?string"],
-        ["title", "flags.1?string"],
-        ["document", "flags.2?InputDocument"],
-        ["settings", "flags.3?Vector<InputThemeSettings>"],
-      ],
-      "Theme",
+      ["api_id", "int"],
+      ["api_hash", "string"],
+      ["web_auth_token", "string"],
     ],
+    "auth.Authorization",
   ],
-  [
-    "account.saveTheme",
+  "auth.requestFirebaseSms": [
+    0x8E39261E,
     [
-      0xF257106C,
-      [
-        ["theme", "InputTheme"],
-        ["unsave", "Bool"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["phone_number", "string"],
+      ["phone_code_hash", "string"],
+      ["safety_net_token", "flags.0?string"],
+      ["play_integrity_token", "flags.2?string"],
+      ["ios_push_secret", "flags.1?string"],
     ],
+    "Bool",
   ],
-  [
-    "account.installTheme",
+  "auth.resetLoginEmail": [
+    0x7E960193,
     [
-      0xC727BB3B,
-      [
-        ["flags", "#"],
-        ["dark", "flags.0?true"],
-        ["theme", "flags.1?InputTheme"],
-        ["format", "flags.2?string"],
-        ["base_theme", "flags.3?BaseTheme"],
-      ],
-      "Bool",
+      ["phone_number", "string"],
+      ["phone_code_hash", "string"],
     ],
+    "auth.SentCode",
   ],
-  [
-    "account.getTheme",
+  "auth.reportMissingCode": [
+    0xCB9DEFF6,
     [
-      0x3A5869EC,
-      [
-        ["format", "string"],
-        ["theme", "InputTheme"],
-      ],
-      "Theme",
+      ["phone_number", "string"],
+      ["phone_code_hash", "string"],
+      ["mnc", "string"],
     ],
+    "Bool",
   ],
-  [
-    "account.getThemes",
+  "account.registerDevice": [
+    0xEC86017A,
     [
-      0x7206E458,
-      [
-        ["format", "string"],
-        ["hash", "long"],
-      ],
-      "account.Themes",
+      ["flags", "#"],
+      ["no_muted", "flags.0?true"],
+      ["token_type", "int"],
+      ["token", "string"],
+      ["app_sandbox", "Bool"],
+      ["secret", "bytes"],
+      ["other_uids", "Vector<long>"],
     ],
+    "Bool",
   ],
-  [
-    "account.setContentSettings",
+  "account.unregisterDevice": [
+    0x6A0D3206,
     [
-      0xB574B16B,
-      [
-        ["flags", "#"],
-        ["sensitive_enabled", "flags.0?true"],
-      ],
-      "Bool",
+      ["token_type", "int"],
+      ["token", "string"],
+      ["other_uids", "Vector<long>"],
     ],
+    "Bool",
   ],
-  [
-    "account.getContentSettings",
+  "account.updateNotifySettings": [
+    0x84BE5B93,
     [
-      0x8B9B4DAE,
-      [],
-      "account.ContentSettings",
+      ["peer", "InputNotifyPeer"],
+      ["settings", "InputPeerNotifySettings"],
     ],
+    "Bool",
   ],
-  [
-    "account.getMultiWallPapers",
+  "account.getNotifySettings": [
+    0x12B3AD31,
     [
-      0x65AD71DC,
-      [
-        ["wallpapers", "Vector<InputWallPaper>"],
-      ],
-      "Vector<WallPaper>",
+      ["peer", "InputNotifyPeer"],
     ],
+    "PeerNotifySettings",
   ],
-  [
-    "account.getGlobalPrivacySettings",
+  "account.resetNotifySettings": [
+    0xDB7E1747,
+    [],
+    "Bool",
+  ],
+  "account.updateProfile": [
+    0x78515775,
     [
-      0xEB2B4CF6,
-      [],
-      "GlobalPrivacySettings",
+      ["flags", "#"],
+      ["first_name", "flags.0?string"],
+      ["last_name", "flags.1?string"],
+      ["about", "flags.2?string"],
     ],
+    "User",
   ],
-  [
-    "account.setGlobalPrivacySettings",
+  "account.updateStatus": [
+    0x6628562C,
     [
-      0x1EDAAAC2,
-      [
-        ["settings", "GlobalPrivacySettings"],
-      ],
-      "GlobalPrivacySettings",
+      ["offline", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "account.reportProfilePhoto",
+  "account.getWallPapers": [
+    0x07967D36,
     [
-      0xFA8CC6F5,
-      [
-        ["peer", "InputPeer"],
-        ["photo_id", "InputPhoto"],
-        ["reason", "ReportReason"],
-        ["message", "string"],
-      ],
-      "Bool",
+      ["hash", "long"],
     ],
+    "account.WallPapers",
   ],
-  [
-    "account.resetPassword",
+  "account.reportPeer": [
+    0xC5BA3D86,
     [
-      0x9308CE1B,
-      [],
-      "account.ResetPasswordResult",
+      ["peer", "InputPeer"],
+      ["reason", "ReportReason"],
+      ["message", "string"],
     ],
+    "Bool",
   ],
-  [
-    "account.declinePasswordReset",
+  "account.checkUsername": [
+    0x2714D86C,
     [
-      0x4C9409F6,
-      [],
-      "Bool",
+      ["username", "string"],
     ],
+    "Bool",
   ],
-  [
-    "account.getChatThemes",
+  "account.updateUsername": [
+    0x3E0BDD7C,
     [
-      0xD638DE89,
-      [
-        ["hash", "long"],
-      ],
-      "account.Themes",
+      ["username", "string"],
     ],
+    "User",
   ],
-  [
-    "account.setAuthorizationTTL",
+  "account.getPrivacy": [
+    0xDADBC950,
     [
-      0xBF899AA0,
-      [
-        ["authorization_ttl_days", "int"],
-      ],
-      "Bool",
+      ["key", "InputPrivacyKey"],
     ],
+    "account.PrivacyRules",
   ],
-  [
-    "account.changeAuthorizationSettings",
+  "account.setPrivacy": [
+    0xC9F81CE8,
     [
-      0x40F48462,
-      [
-        ["flags", "#"],
-        ["confirmed", "flags.3?true"],
-        ["hash", "long"],
-        ["encrypted_requests_disabled", "flags.0?Bool"],
-        ["call_requests_disabled", "flags.1?Bool"],
-      ],
-      "Bool",
+      ["key", "InputPrivacyKey"],
+      ["rules", "Vector<InputPrivacyRule>"],
     ],
+    "account.PrivacyRules",
   ],
-  [
-    "account.getSavedRingtones",
+  "account.deleteAccount": [
+    0xA2C0CF74,
     [
-      0xE1902288,
-      [
-        ["hash", "long"],
-      ],
-      "account.SavedRingtones",
+      ["flags", "#"],
+      ["reason", "string"],
+      ["password", "flags.0?InputCheckPasswordSRP"],
     ],
+    "Bool",
+  ],
+  "account.getAccountTTL": [
+    0x08FC711D,
+    [],
+    "AccountDaysTTL",
   ],
-  [
-    "account.saveRingtone",
+  "account.setAccountTTL": [
+    0x2442485E,
     [
-      0x3DEA5B03,
-      [
-        ["id", "InputDocument"],
-        ["unsave", "Bool"],
-      ],
-      "account.SavedRingtone",
+      ["ttl", "AccountDaysTTL"],
     ],
+    "Bool",
   ],
-  [
-    "account.uploadRingtone",
+  "account.sendChangePhoneCode": [
+    0x82574AE5,
     [
-      0x831A83A2,
-      [
-        ["file", "InputFile"],
-        ["file_name", "string"],
-        ["mime_type", "string"],
-      ],
-      "Document",
+      ["phone_number", "string"],
+      ["settings", "CodeSettings"],
     ],
+    "auth.SentCode",
   ],
-  [
-    "account.updateEmojiStatus",
+  "account.changePhone": [
+    0x70C32EDB,
     [
-      0xFBD3DE6B,
-      [
-        ["emoji_status", "EmojiStatus"],
-      ],
-      "Bool",
+      ["phone_number", "string"],
+      ["phone_code_hash", "string"],
+      ["phone_code", "string"],
     ],
+    "User",
   ],
-  [
-    "account.getDefaultEmojiStatuses",
+  "account.updateDeviceLocked": [
+    0x38DF3532,
     [
-      0xD6753386,
-      [
-        ["hash", "long"],
-      ],
-      "account.EmojiStatuses",
+      ["period", "int"],
     ],
+    "Bool",
   ],
-  [
-    "account.getRecentEmojiStatuses",
+  "account.getAuthorizations": [
+    0xE320C158,
+    [],
+    "account.Authorizations",
+  ],
+  "account.resetAuthorization": [
+    0xDF77F3BC,
     [
-      0x0F578105,
-      [
-        ["hash", "long"],
-      ],
-      "account.EmojiStatuses",
+      ["hash", "long"],
     ],
+    "Bool",
+  ],
+  "account.getPassword": [
+    0x548A30F5,
+    [],
+    "account.Password",
   ],
-  [
-    "account.clearRecentEmojiStatuses",
+  "account.getPasswordSettings": [
+    0x9CD4EAF9,
     [
-      0x18201AAE,
-      [],
-      "Bool",
+      ["password", "InputCheckPasswordSRP"],
     ],
+    "account.PasswordSettings",
   ],
-  [
-    "account.reorderUsernames",
+  "account.updatePasswordSettings": [
+    0xA59B102F,
     [
-      0xEF500EAB,
-      [
-        ["order", "Vector<string>"],
-      ],
-      "Bool",
+      ["password", "InputCheckPasswordSRP"],
+      ["new_settings", "account.PasswordInputSettings"],
     ],
+    "Bool",
   ],
-  [
-    "account.toggleUsername",
+  "account.sendConfirmPhoneCode": [
+    0x1B3FAA88,
     [
-      0x58D6B376,
-      [
-        ["username", "string"],
-        ["active", "Bool"],
-      ],
-      "Bool",
+      ["hash", "string"],
+      ["settings", "CodeSettings"],
     ],
+    "auth.SentCode",
   ],
-  [
-    "account.getDefaultProfilePhotoEmojis",
+  "account.confirmPhone": [
+    0x5F2178C3,
     [
-      0xE2750328,
-      [
-        ["hash", "long"],
-      ],
-      "EmojiList",
+      ["phone_code_hash", "string"],
+      ["phone_code", "string"],
     ],
+    "Bool",
   ],
-  [
-    "account.getDefaultGroupPhotoEmojis",
+  "account.getTmpPassword": [
+    0x449E0B51,
     [
-      0x915860AE,
-      [
-        ["hash", "long"],
-      ],
-      "EmojiList",
+      ["password", "InputCheckPasswordSRP"],
+      ["period", "int"],
     ],
+    "account.TmpPassword",
   ],
-  [
-    "account.getAutoSaveSettings",
+  "account.getWebAuthorizations": [
+    0x182E6D6F,
+    [],
+    "account.WebAuthorizations",
+  ],
+  "account.resetWebAuthorization": [
+    0x2D01B9EF,
     [
-      0xADCBBCDA,
-      [],
-      "account.AutoSaveSettings",
+      ["hash", "long"],
     ],
+    "Bool",
+  ],
+  "account.resetWebAuthorizations": [
+    0x682D2594,
+    [],
+    "Bool",
   ],
-  [
-    "account.saveAutoSaveSettings",
+  "account.getAllSecureValues": [
+    0xB288BC7D,
+    [],
+    "Vector<SecureValue>",
+  ],
+  "account.getSecureValue": [
+    0x73665BC2,
     [
-      0xD69B8361,
-      [
-        ["flags", "#"],
-        ["users", "flags.0?true"],
-        ["chats", "flags.1?true"],
-        ["broadcasts", "flags.2?true"],
-        ["peer", "flags.3?InputPeer"],
-        ["settings", "AutoSaveSettings"],
-      ],
-      "Bool",
+      ["types", "Vector<SecureValueType>"],
     ],
+    "Vector<SecureValue>",
   ],
-  [
-    "account.deleteAutoSaveExceptions",
+  "account.saveSecureValue": [
+    0x899FE31D,
     [
-      0x53BC0020,
-      [],
-      "Bool",
+      ["value", "InputSecureValue"],
+      ["secure_secret_id", "long"],
     ],
+    "SecureValue",
   ],
-  [
-    "account.invalidateSignInCodes",
+  "account.deleteSecureValue": [
+    0xB880BC4B,
     [
-      0xCA8AE8BA,
-      [
-        ["codes", "Vector<string>"],
-      ],
-      "Bool",
+      ["types", "Vector<SecureValueType>"],
     ],
+    "Bool",
   ],
-  [
-    "account.updateColor",
+  "account.getAuthorizationForm": [
+    0xA929597A,
     [
-      0x7CEFA15D,
-      [
-        ["flags", "#"],
-        ["for_profile", "flags.1?true"],
-        ["color", "flags.2?int"],
-        ["background_emoji_id", "flags.0?long"],
-      ],
-      "Bool",
+      ["bot_id", "long"],
+      ["scope", "string"],
+      ["public_key", "string"],
     ],
+    "account.AuthorizationForm",
   ],
-  [
-    "account.getDefaultBackgroundEmojis",
+  "account.acceptAuthorization": [
+    0xF3ED4C73,
     [
-      0xA60AB9CE,
-      [
-        ["hash", "long"],
-      ],
-      "EmojiList",
+      ["bot_id", "long"],
+      ["scope", "string"],
+      ["public_key", "string"],
+      ["value_hashes", "Vector<SecureValueHash>"],
+      ["credentials", "SecureCredentialsEncrypted"],
     ],
+    "Bool",
   ],
-  [
-    "account.getChannelDefaultEmojiStatuses",
+  "account.sendVerifyPhoneCode": [
+    0xA5A356F9,
     [
-      0x7727A7D5,
-      [
-        ["hash", "long"],
-      ],
-      "account.EmojiStatuses",
+      ["phone_number", "string"],
+      ["settings", "CodeSettings"],
     ],
+    "auth.SentCode",
   ],
-  [
-    "account.getChannelRestrictedStatusEmojis",
+  "account.verifyPhone": [
+    0x4DD3A7F6,
     [
-      0x35A9E0D5,
-      [
-        ["hash", "long"],
-      ],
-      "EmojiList",
+      ["phone_number", "string"],
+      ["phone_code_hash", "string"],
+      ["phone_code", "string"],
     ],
+    "Bool",
   ],
-  [
-    "account.updateBusinessWorkHours",
+  "account.sendVerifyEmailCode": [
+    0x98E037BB,
     [
-      0x4B00E066,
-      [
-        ["flags", "#"],
-        ["business_work_hours", "flags.0?BusinessWorkHours"],
-      ],
-      "Bool",
+      ["purpose", "EmailVerifyPurpose"],
+      ["email", "string"],
     ],
+    "account.SentEmailCode",
   ],
-  [
-    "account.updateBusinessLocation",
+  "account.verifyEmail": [
+    0x032DA4CF,
     [
-      0x9E6B131A,
-      [
-        ["flags", "#"],
-        ["geo_point", "flags.1?InputGeoPoint"],
-        ["address", "flags.0?string"],
-      ],
-      "Bool",
+      ["purpose", "EmailVerifyPurpose"],
+      ["verification", "EmailVerification"],
     ],
+    "account.EmailVerified",
   ],
-  [
-    "account.updateBusinessGreetingMessage",
+  "account.initTakeoutSession": [
+    0x8EF3EAB0,
     [
-      0x66CDAFC4,
-      [
-        ["flags", "#"],
-        ["message", "flags.0?InputBusinessGreetingMessage"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["contacts", "flags.0?true"],
+      ["message_users", "flags.1?true"],
+      ["message_chats", "flags.2?true"],
+      ["message_megagroups", "flags.3?true"],
+      ["message_channels", "flags.4?true"],
+      ["files", "flags.5?true"],
+      ["file_max_size", "flags.5?long"],
     ],
+    "account.Takeout",
   ],
-  [
-    "account.updateBusinessAwayMessage",
+  "account.finishTakeoutSession": [
+    0x1D2652EE,
     [
-      0xA26A7FA5,
-      [
-        ["flags", "#"],
-        ["message", "flags.0?InputBusinessAwayMessage"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["success", "flags.0?true"],
     ],
+    "Bool",
   ],
-  [
-    "account.updateConnectedBot",
+  "account.confirmPasswordEmail": [
+    0x8FDF1920,
     [
-      0x43D8521D,
-      [
-        ["flags", "#"],
-        ["can_reply", "flags.0?true"],
-        ["deleted", "flags.1?true"],
-        ["bot", "InputUser"],
-        ["recipients", "InputBusinessBotRecipients"],
-      ],
-      "Updates",
+      ["code", "string"],
     ],
+    "Bool",
+  ],
+  "account.resendPasswordEmail": [
+    0x7A7F2A15,
+    [],
+    "Bool",
   ],
-  [
-    "account.getConnectedBots",
+  "account.cancelPasswordEmail": [
+    0xC1CBD5B6,
+    [],
+    "Bool",
+  ],
+  "account.getContactSignUpNotification": [
+    0x9F07C728,
+    [],
+    "Bool",
+  ],
+  "account.setContactSignUpNotification": [
+    0xCFF43F61,
     [
-      0x4EA4C80F,
-      [],
-      "account.ConnectedBots",
+      ["silent", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "account.getBotBusinessConnection",
+  "account.getNotifyExceptions": [
+    0x53577479,
     [
-      0x76A86270,
-      [
-        ["connection_id", "string"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["compare_sound", "flags.1?true"],
+      ["compare_stories", "flags.2?true"],
+      ["peer", "flags.0?InputNotifyPeer"],
     ],
+    "Updates",
   ],
-  [
-    "account.updateBusinessIntro",
+  "account.getWallPaper": [
+    0xFC8DDBEA,
     [
-      0xA614D034,
-      [
-        ["flags", "#"],
-        ["intro", "flags.0?InputBusinessIntro"],
-      ],
-      "Bool",
+      ["wallpaper", "InputWallPaper"],
     ],
+    "WallPaper",
   ],
-  [
-    "account.toggleConnectedBotPaused",
+  "account.uploadWallPaper": [
+    0xE39A8F03,
     [
-      0x646E1097,
-      [
-        ["peer", "InputPeer"],
-        ["paused", "Bool"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["for_chat", "flags.0?true"],
+      ["file", "InputFile"],
+      ["mime_type", "string"],
+      ["settings", "WallPaperSettings"],
     ],
+    "WallPaper",
   ],
-  [
-    "account.disablePeerConnectedBot",
+  "account.saveWallPaper": [
+    0x6C5A5B37,
     [
-      0x5E437ED9,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "Bool",
+      ["wallpaper", "InputWallPaper"],
+      ["unsave", "Bool"],
+      ["settings", "WallPaperSettings"],
     ],
+    "Bool",
   ],
-  [
-    "account.updateBirthday",
+  "account.installWallPaper": [
+    0xFEED5769,
     [
-      0xCC6E0C11,
-      [
-        ["flags", "#"],
-        ["birthday", "flags.0?Birthday"],
-      ],
-      "Bool",
+      ["wallpaper", "InputWallPaper"],
+      ["settings", "WallPaperSettings"],
     ],
+    "Bool",
+  ],
+  "account.resetWallPapers": [
+    0xBB3B9804,
+    [],
+    "Bool",
+  ],
+  "account.getAutoDownloadSettings": [
+    0x56DA0B3F,
+    [],
+    "account.AutoDownloadSettings",
   ],
-  [
-    "account.createBusinessChatLink",
+  "account.saveAutoDownloadSettings": [
+    0x76F36233,
     [
-      0x8851E68E,
-      [
-        ["link", "InputBusinessChatLink"],
-      ],
-      "BusinessChatLink",
+      ["flags", "#"],
+      ["low", "flags.0?true"],
+      ["high", "flags.1?true"],
+      ["settings", "AutoDownloadSettings"],
     ],
+    "Bool",
   ],
-  [
-    "account.editBusinessChatLink",
+  "account.uploadTheme": [
+    0x1C3DB333,
     [
-      0x8C3410AF,
-      [
-        ["slug", "string"],
-        ["link", "InputBusinessChatLink"],
-      ],
-      "BusinessChatLink",
+      ["flags", "#"],
+      ["file", "InputFile"],
+      ["thumb", "flags.0?InputFile"],
+      ["file_name", "string"],
+      ["mime_type", "string"],
     ],
+    "Document",
   ],
-  [
-    "account.deleteBusinessChatLink",
+  "account.createTheme": [
+    0x652E4400,
     [
-      0x60073674,
-      [
-        ["slug", "string"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["slug", "string"],
+      ["title", "string"],
+      ["document", "flags.2?InputDocument"],
+      ["settings", "flags.3?Vector<InputThemeSettings>"],
     ],
+    "Theme",
   ],
-  [
-    "account.getBusinessChatLinks",
+  "account.updateTheme": [
+    0x2BF40CCC,
     [
-      0x6F70DDE1,
-      [],
-      "account.BusinessChatLinks",
+      ["flags", "#"],
+      ["format", "string"],
+      ["theme", "InputTheme"],
+      ["slug", "flags.0?string"],
+      ["title", "flags.1?string"],
+      ["document", "flags.2?InputDocument"],
+      ["settings", "flags.3?Vector<InputThemeSettings>"],
     ],
+    "Theme",
   ],
-  [
-    "account.resolveBusinessChatLink",
+  "account.saveTheme": [
+    0xF257106C,
     [
-      0x5492E5EE,
-      [
-        ["slug", "string"],
-      ],
-      "account.ResolvedBusinessChatLinks",
+      ["theme", "InputTheme"],
+      ["unsave", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "account.updatePersonalChannel",
+  "account.installTheme": [
+    0xC727BB3B,
     [
-      0xD94305E0,
-      [
-        ["channel", "InputChannel"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["dark", "flags.0?true"],
+      ["theme", "flags.1?InputTheme"],
+      ["format", "flags.2?string"],
+      ["base_theme", "flags.3?BaseTheme"],
     ],
+    "Bool",
   ],
-  [
-    "account.toggleSponsoredMessages",
+  "account.getTheme": [
+    0x3A5869EC,
     [
-      0xB9D9A38D,
-      [
-        ["enabled", "Bool"],
-      ],
-      "Bool",
+      ["format", "string"],
+      ["theme", "InputTheme"],
     ],
+    "Theme",
   ],
-  [
-    "account.getReactionsNotifySettings",
+  "account.getThemes": [
+    0x7206E458,
     [
-      0x06DD654C,
-      [],
-      "ReactionsNotifySettings",
+      ["format", "string"],
+      ["hash", "long"],
     ],
+    "account.Themes",
   ],
-  [
-    "account.setReactionsNotifySettings",
+  "account.setContentSettings": [
+    0xB574B16B,
     [
-      0x316CE548,
-      [
-        ["settings", "ReactionsNotifySettings"],
-      ],
-      "ReactionsNotifySettings",
+      ["flags", "#"],
+      ["sensitive_enabled", "flags.0?true"],
     ],
+    "Bool",
   ],
-  [
-    "account.getCollectibleEmojiStatuses",
+  "account.getContentSettings": [
+    0x8B9B4DAE,
+    [],
+    "account.ContentSettings",
+  ],
+  "account.getMultiWallPapers": [
+    0x65AD71DC,
     [
-      0x2E7B4543,
-      [
-        ["hash", "long"],
-      ],
-      "account.EmojiStatuses",
+      ["wallpapers", "Vector<InputWallPaper>"],
     ],
+    "Vector<WallPaper>",
+  ],
+  "account.getGlobalPrivacySettings": [
+    0xEB2B4CF6,
+    [],
+    "GlobalPrivacySettings",
   ],
-  [
-    "account.addNoPaidMessagesException",
+  "account.setGlobalPrivacySettings": [
+    0x1EDAAAC2,
     [
-      0x6F688AA7,
-      [
-        ["flags", "#"],
-        ["refund_charged", "flags.0?true"],
-        ["user_id", "InputUser"],
-      ],
-      "Bool",
+      ["settings", "GlobalPrivacySettings"],
     ],
+    "GlobalPrivacySettings",
   ],
-  [
-    "account.getPaidMessagesRevenue",
+  "account.reportProfilePhoto": [
+    0xFA8CC6F5,
     [
-      0xF1266F38,
-      [
-        ["user_id", "InputUser"],
-      ],
-      "account.PaidMessagesRevenue",
+      ["peer", "InputPeer"],
+      ["photo_id", "InputPhoto"],
+      ["reason", "ReportReason"],
+      ["message", "string"],
     ],
+    "Bool",
+  ],
+  "account.resetPassword": [
+    0x9308CE1B,
+    [],
+    "account.ResetPasswordResult",
+  ],
+  "account.declinePasswordReset": [
+    0x4C9409F6,
+    [],
+    "Bool",
   ],
-  [
-    "users.getUsers",
+  "account.getChatThemes": [
+    0xD638DE89,
     [
-      0x0D91A548,
-      [
-        ["id", "Vector<InputUser>"],
-      ],
-      "Vector<User>",
+      ["hash", "long"],
     ],
+    "account.Themes",
   ],
-  [
-    "users.getFullUser",
+  "account.setAuthorizationTTL": [
+    0xBF899AA0,
     [
-      0xB60F5918,
-      [
-        ["id", "InputUser"],
-      ],
-      "users.UserFull",
+      ["authorization_ttl_days", "int"],
     ],
+    "Bool",
   ],
-  [
-    "users.setSecureValueErrors",
+  "account.changeAuthorizationSettings": [
+    0x40F48462,
     [
-      0x90C894B5,
-      [
-        ["id", "InputUser"],
-        ["errors", "Vector<SecureValueError>"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["confirmed", "flags.3?true"],
+      ["hash", "long"],
+      ["encrypted_requests_disabled", "flags.0?Bool"],
+      ["call_requests_disabled", "flags.1?Bool"],
     ],
+    "Bool",
   ],
-  [
-    "users.getRequirementsToContact",
+  "account.getSavedRingtones": [
+    0xE1902288,
     [
-      0xD89A83A3,
-      [
-        ["id", "Vector<InputUser>"],
-      ],
-      "Vector<RequirementToContact>",
+      ["hash", "long"],
     ],
+    "account.SavedRingtones",
   ],
-  [
-    "contacts.getContactIDs",
+  "account.saveRingtone": [
+    0x3DEA5B03,
     [
-      0x7ADC669D,
-      [
-        ["hash", "long"],
-      ],
-      "Vector<int>",
+      ["id", "InputDocument"],
+      ["unsave", "Bool"],
     ],
+    "account.SavedRingtone",
   ],
-  [
-    "contacts.getStatuses",
+  "account.uploadRingtone": [
+    0x831A83A2,
     [
-      0xC4A353EE,
-      [],
-      "Vector<ContactStatus>",
+      ["file", "InputFile"],
+      ["file_name", "string"],
+      ["mime_type", "string"],
     ],
+    "Document",
   ],
-  [
-    "contacts.getContacts",
+  "account.updateEmojiStatus": [
+    0xFBD3DE6B,
     [
-      0x5DD69E12,
-      [
-        ["hash", "long"],
-      ],
-      "contacts.Contacts",
+      ["emoji_status", "EmojiStatus"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.importContacts",
+  "account.getDefaultEmojiStatuses": [
+    0xD6753386,
     [
-      0x2C800BE5,
-      [
-        ["contacts", "Vector<InputContact>"],
-      ],
-      "contacts.ImportedContacts",
+      ["hash", "long"],
     ],
+    "account.EmojiStatuses",
   ],
-  [
-    "contacts.deleteContacts",
+  "account.getRecentEmojiStatuses": [
+    0x0F578105,
     [
-      0x096A0E00,
-      [
-        ["id", "Vector<InputUser>"],
-      ],
-      "Updates",
+      ["hash", "long"],
     ],
+    "account.EmojiStatuses",
   ],
-  [
-    "contacts.deleteByPhones",
+  "account.clearRecentEmojiStatuses": [
+    0x18201AAE,
+    [],
+    "Bool",
+  ],
+  "account.reorderUsernames": [
+    0xEF500EAB,
     [
-      0x1013FD9E,
-      [
-        ["phones", "Vector<string>"],
-      ],
-      "Bool",
+      ["order", "Vector<string>"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.block",
+  "account.toggleUsername": [
+    0x58D6B376,
     [
-      0x2E2E8734,
-      [
-        ["flags", "#"],
-        ["my_stories_from", "flags.0?true"],
-        ["id", "InputPeer"],
-      ],
-      "Bool",
+      ["username", "string"],
+      ["active", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.unblock",
+  "account.getDefaultProfilePhotoEmojis": [
+    0xE2750328,
     [
-      0xB550D328,
-      [
-        ["flags", "#"],
-        ["my_stories_from", "flags.0?true"],
-        ["id", "InputPeer"],
-      ],
-      "Bool",
+      ["hash", "long"],
     ],
+    "EmojiList",
   ],
-  [
-    "contacts.getBlocked",
+  "account.getDefaultGroupPhotoEmojis": [
+    0x915860AE,
     [
-      0x9A868F80,
-      [
-        ["flags", "#"],
-        ["my_stories_from", "flags.0?true"],
-        ["offset", "int"],
-        ["limit", "int"],
-      ],
-      "contacts.Blocked",
+      ["hash", "long"],
     ],
+    "EmojiList",
+  ],
+  "account.getAutoSaveSettings": [
+    0xADCBBCDA,
+    [],
+    "account.AutoSaveSettings",
   ],
-  [
-    "contacts.search",
+  "account.saveAutoSaveSettings": [
+    0xD69B8361,
     [
-      0x11F812D8,
-      [
-        ["q", "string"],
-        ["limit", "int"],
-      ],
-      "contacts.Found",
+      ["flags", "#"],
+      ["users", "flags.0?true"],
+      ["chats", "flags.1?true"],
+      ["broadcasts", "flags.2?true"],
+      ["peer", "flags.3?InputPeer"],
+      ["settings", "AutoSaveSettings"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.resolveUsername",
+  "account.deleteAutoSaveExceptions": [
+    0x53BC0020,
+    [],
+    "Bool",
+  ],
+  "account.invalidateSignInCodes": [
+    0xCA8AE8BA,
     [
-      0x725AFBBC,
-      [
-        ["flags", "#"],
-        ["username", "string"],
-        ["referer", "flags.0?string"],
-      ],
-      "contacts.ResolvedPeer",
+      ["codes", "Vector<string>"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.getTopPeers",
+  "account.updateColor": [
+    0x7CEFA15D,
     [
-      0x973478B6,
-      [
-        ["flags", "#"],
-        ["correspondents", "flags.0?true"],
-        ["bots_pm", "flags.1?true"],
-        ["bots_inline", "flags.2?true"],
-        ["phone_calls", "flags.3?true"],
-        ["forward_users", "flags.4?true"],
-        ["forward_chats", "flags.5?true"],
-        ["groups", "flags.10?true"],
-        ["channels", "flags.15?true"],
-        ["bots_app", "flags.16?true"],
-        ["offset", "int"],
-        ["limit", "int"],
-        ["hash", "long"],
-      ],
-      "contacts.TopPeers",
+      ["flags", "#"],
+      ["for_profile", "flags.1?true"],
+      ["color", "flags.2?int"],
+      ["background_emoji_id", "flags.0?long"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.resetTopPeerRating",
+  "account.getDefaultBackgroundEmojis": [
+    0xA60AB9CE,
     [
-      0x1AE373AC,
-      [
-        ["category", "TopPeerCategory"],
-        ["peer", "InputPeer"],
-      ],
-      "Bool",
+      ["hash", "long"],
     ],
+    "EmojiList",
   ],
-  [
-    "contacts.resetSaved",
+  "account.getChannelDefaultEmojiStatuses": [
+    0x7727A7D5,
     [
-      0x879537F1,
-      [],
-      "Bool",
+      ["hash", "long"],
     ],
+    "account.EmojiStatuses",
   ],
-  [
-    "contacts.getSaved",
+  "account.getChannelRestrictedStatusEmojis": [
+    0x35A9E0D5,
     [
-      0x82F1E39F,
-      [],
-      "Vector<SavedContact>",
+      ["hash", "long"],
     ],
+    "EmojiList",
   ],
-  [
-    "contacts.toggleTopPeers",
+  "account.updateBusinessWorkHours": [
+    0x4B00E066,
     [
-      0x8514BDDA,
-      [
-        ["enabled", "Bool"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["business_work_hours", "flags.0?BusinessWorkHours"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.addContact",
+  "account.updateBusinessLocation": [
+    0x9E6B131A,
     [
-      0xE8F463D0,
-      [
-        ["flags", "#"],
-        ["add_phone_privacy_exception", "flags.0?true"],
-        ["id", "InputUser"],
-        ["first_name", "string"],
-        ["last_name", "string"],
-        ["phone", "string"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["geo_point", "flags.1?InputGeoPoint"],
+      ["address", "flags.0?string"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.acceptContact",
+  "account.updateBusinessGreetingMessage": [
+    0x66CDAFC4,
     [
-      0xF831A20F,
-      [
-        ["id", "InputUser"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["message", "flags.0?InputBusinessGreetingMessage"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.getLocated",
+  "account.updateBusinessAwayMessage": [
+    0xA26A7FA5,
     [
-      0xD348BC44,
-      [
-        ["flags", "#"],
-        ["background", "flags.1?true"],
-        ["geo_point", "InputGeoPoint"],
-        ["self_expires", "flags.0?int"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["message", "flags.0?InputBusinessAwayMessage"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.blockFromReplies",
+  "account.updateConnectedBot": [
+    0x43D8521D,
     [
-      0x29A8962C,
-      [
-        ["flags", "#"],
-        ["delete_message", "flags.0?true"],
-        ["delete_history", "flags.1?true"],
-        ["report_spam", "flags.2?true"],
-        ["msg_id", "int"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["can_reply", "flags.0?true"],
+      ["deleted", "flags.1?true"],
+      ["bot", "InputUser"],
+      ["recipients", "InputBusinessBotRecipients"],
     ],
+    "Updates",
+  ],
+  "account.getConnectedBots": [
+    0x4EA4C80F,
+    [],
+    "account.ConnectedBots",
   ],
-  [
-    "contacts.resolvePhone",
+  "account.getBotBusinessConnection": [
+    0x76A86270,
     [
-      0x8AF94344,
-      [
-        ["phone", "string"],
-      ],
-      "contacts.ResolvedPeer",
+      ["connection_id", "string"],
     ],
+    "Updates",
   ],
-  [
-    "contacts.exportContactToken",
+  "account.updateBusinessIntro": [
+    0xA614D034,
     [
-      0xF8654027,
-      [],
-      "ExportedContactToken",
+      ["flags", "#"],
+      ["intro", "flags.0?InputBusinessIntro"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.importContactToken",
+  "account.toggleConnectedBotPaused": [
+    0x646E1097,
     [
-      0x13005788,
-      [
-        ["token", "string"],
-      ],
-      "User",
+      ["peer", "InputPeer"],
+      ["paused", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.editCloseFriends",
+  "account.disablePeerConnectedBot": [
+    0x5E437ED9,
     [
-      0xBA6705F0,
-      [
-        ["id", "Vector<long>"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.setBlocked",
+  "account.updateBirthday": [
+    0xCC6E0C11,
     [
-      0x94C65C76,
-      [
-        ["flags", "#"],
-        ["my_stories_from", "flags.0?true"],
-        ["id", "Vector<InputPeer>"],
-        ["limit", "int"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["birthday", "flags.0?Birthday"],
     ],
+    "Bool",
   ],
-  [
-    "contacts.getBirthdays",
+  "account.createBusinessChatLink": [
+    0x8851E68E,
     [
-      0xDAEDA864,
-      [],
-      "contacts.ContactBirthdays",
+      ["link", "InputBusinessChatLink"],
     ],
+    "BusinessChatLink",
   ],
-  [
-    "messages.getMessages",
+  "account.editBusinessChatLink": [
+    0x8C3410AF,
     [
-      0x63C66506,
-      [
-        ["id", "Vector<InputMessage>"],
-      ],
-      "messages.Messages",
+      ["slug", "string"],
+      ["link", "InputBusinessChatLink"],
     ],
+    "BusinessChatLink",
   ],
-  [
-    "messages.getDialogs",
+  "account.deleteBusinessChatLink": [
+    0x60073674,
     [
-      0xA0F4CB4F,
-      [
-        ["flags", "#"],
-        ["exclude_pinned", "flags.0?true"],
-        ["folder_id", "flags.1?int"],
-        ["offset_date", "int"],
-        ["offset_id", "int"],
-        ["offset_peer", "InputPeer"],
-        ["limit", "int"],
-        ["hash", "long"],
-      ],
-      "messages.Dialogs",
+      ["slug", "string"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getHistory",
+  "account.getBusinessChatLinks": [
+    0x6F70DDE1,
+    [],
+    "account.BusinessChatLinks",
+  ],
+  "account.resolveBusinessChatLink": [
+    0x5492E5EE,
     [
-      0x4423E6C5,
-      [
-        ["peer", "InputPeer"],
-        ["offset_id", "int"],
-        ["offset_date", "int"],
-        ["add_offset", "int"],
-        ["limit", "int"],
-        ["max_id", "int"],
-        ["min_id", "int"],
-        ["hash", "long"],
-      ],
-      "messages.Messages",
+      ["slug", "string"],
     ],
+    "account.ResolvedBusinessChatLinks",
   ],
-  [
-    "messages.search",
+  "account.updatePersonalChannel": [
+    0xD94305E0,
     [
-      0x29EE847A,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["q", "string"],
-        ["from_id", "flags.0?InputPeer"],
-        ["saved_peer_id", "flags.2?InputPeer"],
-        ["saved_reaction", "flags.3?Vector<Reaction>"],
-        ["top_msg_id", "flags.1?int"],
-        ["filter", "MessagesFilter"],
-        ["min_date", "int"],
-        ["max_date", "int"],
-        ["offset_id", "int"],
-        ["add_offset", "int"],
-        ["limit", "int"],
-        ["max_id", "int"],
-        ["min_id", "int"],
-        ["hash", "long"],
-      ],
-      "messages.Messages",
+      ["channel", "InputChannel"],
     ],
+    "Bool",
   ],
-  [
-    "messages.readHistory",
+  "account.toggleSponsoredMessages": [
+    0xB9D9A38D,
     [
-      0x0E306D3A,
-      [
-        ["peer", "InputPeer"],
-        ["max_id", "int"],
-      ],
-      "messages.AffectedMessages",
+      ["enabled", "Bool"],
     ],
+    "Bool",
+  ],
+  "account.getReactionsNotifySettings": [
+    0x06DD654C,
+    [],
+    "ReactionsNotifySettings",
   ],
-  [
-    "messages.deleteHistory",
+  "account.setReactionsNotifySettings": [
+    0x316CE548,
     [
-      0xB08F922A,
-      [
-        ["flags", "#"],
-        ["just_clear", "flags.0?true"],
-        ["revoke", "flags.1?true"],
-        ["peer", "InputPeer"],
-        ["max_id", "int"],
-        ["min_date", "flags.2?int"],
-        ["max_date", "flags.3?int"],
-      ],
-      "messages.AffectedHistory",
+      ["settings", "ReactionsNotifySettings"],
     ],
+    "ReactionsNotifySettings",
   ],
-  [
-    "messages.deleteMessages",
+  "account.getCollectibleEmojiStatuses": [
+    0x2E7B4543,
     [
-      0xE58E95D2,
-      [
-        ["flags", "#"],
-        ["revoke", "flags.0?true"],
-        ["id", "Vector<int>"],
-      ],
-      "messages.AffectedMessages",
+      ["hash", "long"],
     ],
+    "account.EmojiStatuses",
   ],
-  [
-    "messages.receivedMessages",
+  "account.addNoPaidMessagesException": [
+    0x6F688AA7,
     [
-      0x05A954C0,
-      [
-        ["max_id", "int"],
-      ],
-      "Vector<ReceivedNotifyMessage>",
+      ["flags", "#"],
+      ["refund_charged", "flags.0?true"],
+      ["user_id", "InputUser"],
     ],
+    "Bool",
   ],
-  [
-    "messages.setTyping",
+  "account.getPaidMessagesRevenue": [
+    0xF1266F38,
     [
-      0x58943EE2,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["top_msg_id", "flags.0?int"],
-        ["action", "SendMessageAction"],
-      ],
-      "Bool",
+      ["user_id", "InputUser"],
     ],
+    "account.PaidMessagesRevenue",
   ],
-  [
-    "messages.sendMessage",
+  "users.getUsers": [
+    0x0D91A548,
     [
-      0xFBF2340A,
-      [
-        ["flags", "#"],
-        ["no_webpage", "flags.1?true"],
-        ["silent", "flags.5?true"],
-        ["background", "flags.6?true"],
-        ["clear_draft", "flags.7?true"],
-        ["noforwards", "flags.14?true"],
-        ["update_stickersets_order", "flags.15?true"],
-        ["invert_media", "flags.16?true"],
-        ["allow_paid_floodskip", "flags.19?true"],
-        ["peer", "InputPeer"],
-        ["reply_to", "flags.0?InputReplyTo"],
-        ["message", "string"],
-        ["random_id", "long"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-        ["entities", "flags.3?Vector<MessageEntity>"],
-        ["schedule_date", "flags.10?int"],
-        ["send_as", "flags.13?InputPeer"],
-        ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
-        ["effect", "flags.18?long"],
-        ["allow_paid_stars", "flags.21?long"],
-      ],
-      "Updates",
+      ["id", "Vector<InputUser>"],
     ],
+    "Vector<User>",
   ],
-  [
-    "messages.sendMedia",
+  "users.getFullUser": [
+    0xB60F5918,
     [
-      0xA550CD78,
-      [
-        ["flags", "#"],
-        ["silent", "flags.5?true"],
-        ["background", "flags.6?true"],
-        ["clear_draft", "flags.7?true"],
-        ["noforwards", "flags.14?true"],
-        ["update_stickersets_order", "flags.15?true"],
-        ["invert_media", "flags.16?true"],
-        ["allow_paid_floodskip", "flags.19?true"],
-        ["peer", "InputPeer"],
-        ["reply_to", "flags.0?InputReplyTo"],
-        ["media", "InputMedia"],
-        ["message", "string"],
-        ["random_id", "long"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-        ["entities", "flags.3?Vector<MessageEntity>"],
-        ["schedule_date", "flags.10?int"],
-        ["send_as", "flags.13?InputPeer"],
-        ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
-        ["effect", "flags.18?long"],
-        ["allow_paid_stars", "flags.21?long"],
-      ],
-      "Updates",
+      ["id", "InputUser"],
     ],
+    "users.UserFull",
   ],
-  [
-    "messages.forwardMessages",
+  "users.setSecureValueErrors": [
+    0x90C894B5,
     [
-      0xBB9FA475,
-      [
-        ["flags", "#"],
-        ["silent", "flags.5?true"],
-        ["background", "flags.6?true"],
-        ["with_my_score", "flags.8?true"],
-        ["drop_author", "flags.11?true"],
-        ["drop_media_captions", "flags.12?true"],
-        ["noforwards", "flags.14?true"],
-        ["allow_paid_floodskip", "flags.19?true"],
-        ["from_peer", "InputPeer"],
-        ["id", "Vector<int>"],
-        ["random_id", "Vector<long>"],
-        ["to_peer", "InputPeer"],
-        ["top_msg_id", "flags.9?int"],
-        ["schedule_date", "flags.10?int"],
-        ["send_as", "flags.13?InputPeer"],
-        ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
-        ["video_timestamp", "flags.20?int"],
-        ["allow_paid_stars", "flags.21?long"],
-      ],
-      "Updates",
+      ["id", "InputUser"],
+      ["errors", "Vector<SecureValueError>"],
     ],
+    "Bool",
   ],
-  [
-    "messages.reportSpam",
+  "users.getRequirementsToContact": [
+    0xD89A83A3,
     [
-      0xCF1592DB,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "Bool",
+      ["id", "Vector<InputUser>"],
     ],
+    "Vector<RequirementToContact>",
   ],
-  [
-    "messages.getPeerSettings",
+  "contacts.getContactIDs": [
+    0x7ADC669D,
     [
-      0xEFD9A6A2,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "messages.PeerSettings",
+      ["hash", "long"],
     ],
+    "Vector<int>",
   ],
-  [
-    "messages.report",
+  "contacts.getStatuses": [
+    0xC4A353EE,
+    [],
+    "Vector<ContactStatus>",
+  ],
+  "contacts.getContacts": [
+    0x5DD69E12,
     [
-      0xFC78AF9B,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-        ["option", "bytes"],
-        ["message", "string"],
-      ],
-      "ReportResult",
+      ["hash", "long"],
     ],
+    "contacts.Contacts",
   ],
-  [
-    "messages.getChats",
+  "contacts.importContacts": [
+    0x2C800BE5,
     [
-      0x49E9528F,
-      [
-        ["id", "Vector<long>"],
-      ],
-      "messages.Chats",
+      ["contacts", "Vector<InputContact>"],
     ],
+    "contacts.ImportedContacts",
   ],
-  [
-    "messages.getFullChat",
+  "contacts.deleteContacts": [
+    0x096A0E00,
     [
-      0xAEB00B34,
-      [
-        ["chat_id", "long"],
-      ],
-      "messages.ChatFull",
+      ["id", "Vector<InputUser>"],
     ],
+    "Updates",
   ],
-  [
-    "messages.editChatTitle",
+  "contacts.deleteByPhones": [
+    0x1013FD9E,
     [
-      0x73783FFD,
-      [
-        ["chat_id", "long"],
-        ["title", "string"],
-      ],
-      "Updates",
+      ["phones", "Vector<string>"],
     ],
+    "Bool",
   ],
-  [
-    "messages.editChatPhoto",
+  "contacts.block": [
+    0x2E2E8734,
     [
-      0x35DDD674,
-      [
-        ["chat_id", "long"],
-        ["photo", "InputChatPhoto"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["my_stories_from", "flags.0?true"],
+      ["id", "InputPeer"],
     ],
+    "Bool",
   ],
-  [
-    "messages.addChatUser",
+  "contacts.unblock": [
+    0xB550D328,
     [
-      0xCBC6D107,
-      [
-        ["chat_id", "long"],
-        ["user_id", "InputUser"],
-        ["fwd_limit", "int"],
-      ],
-      "messages.InvitedUsers",
+      ["flags", "#"],
+      ["my_stories_from", "flags.0?true"],
+      ["id", "InputPeer"],
     ],
+    "Bool",
   ],
-  [
-    "messages.deleteChatUser",
+  "contacts.getBlocked": [
+    0x9A868F80,
     [
-      0xA2185CAB,
-      [
-        ["flags", "#"],
-        ["revoke_history", "flags.0?true"],
-        ["chat_id", "long"],
-        ["user_id", "InputUser"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["my_stories_from", "flags.0?true"],
+      ["offset", "int"],
+      ["limit", "int"],
     ],
+    "contacts.Blocked",
   ],
-  [
-    "messages.createChat",
+  "contacts.search": [
+    0x11F812D8,
     [
-      0x92CEDDD4,
-      [
-        ["flags", "#"],
-        ["users", "Vector<InputUser>"],
-        ["title", "string"],
-        ["ttl_period", "flags.0?int"],
-      ],
-      "messages.InvitedUsers",
+      ["q", "string"],
+      ["limit", "int"],
     ],
+    "contacts.Found",
   ],
-  [
-    "messages.getDhConfig",
+  "contacts.resolveUsername": [
+    0x725AFBBC,
     [
-      0x26CF8950,
-      [
-        ["version", "int"],
-        ["random_length", "int"],
-      ],
-      "messages.DhConfig",
+      ["flags", "#"],
+      ["username", "string"],
+      ["referer", "flags.0?string"],
     ],
+    "contacts.ResolvedPeer",
   ],
-  [
-    "messages.requestEncryption",
+  "contacts.getTopPeers": [
+    0x973478B6,
     [
-      0xF64DAF43,
-      [
-        ["user_id", "InputUser"],
-        ["random_id", "int"],
-        ["g_a", "bytes"],
-      ],
-      "EncryptedChat",
+      ["flags", "#"],
+      ["correspondents", "flags.0?true"],
+      ["bots_pm", "flags.1?true"],
+      ["bots_inline", "flags.2?true"],
+      ["phone_calls", "flags.3?true"],
+      ["forward_users", "flags.4?true"],
+      ["forward_chats", "flags.5?true"],
+      ["groups", "flags.10?true"],
+      ["channels", "flags.15?true"],
+      ["bots_app", "flags.16?true"],
+      ["offset", "int"],
+      ["limit", "int"],
+      ["hash", "long"],
     ],
+    "contacts.TopPeers",
   ],
-  [
-    "messages.acceptEncryption",
+  "contacts.resetTopPeerRating": [
+    0x1AE373AC,
     [
-      0x3DBC0415,
-      [
-        ["peer", "InputEncryptedChat"],
-        ["g_b", "bytes"],
-        ["key_fingerprint", "long"],
-      ],
-      "EncryptedChat",
+      ["category", "TopPeerCategory"],
+      ["peer", "InputPeer"],
     ],
+    "Bool",
+  ],
+  "contacts.resetSaved": [
+    0x879537F1,
+    [],
+    "Bool",
   ],
-  [
-    "messages.discardEncryption",
+  "contacts.getSaved": [
+    0x82F1E39F,
+    [],
+    "Vector<SavedContact>",
+  ],
+  "contacts.toggleTopPeers": [
+    0x8514BDDA,
     [
-      0xF393AEA0,
-      [
-        ["flags", "#"],
-        ["delete_history", "flags.0?true"],
-        ["chat_id", "int"],
-      ],
-      "Bool",
+      ["enabled", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "messages.setEncryptedTyping",
+  "contacts.addContact": [
+    0xE8F463D0,
     [
-      0x791451ED,
-      [
-        ["peer", "InputEncryptedChat"],
-        ["typing", "Bool"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["add_phone_privacy_exception", "flags.0?true"],
+      ["id", "InputUser"],
+      ["first_name", "string"],
+      ["last_name", "string"],
+      ["phone", "string"],
     ],
+    "Updates",
   ],
-  [
-    "messages.readEncryptedHistory",
+  "contacts.acceptContact": [
+    0xF831A20F,
     [
-      0x7F4B690A,
-      [
-        ["peer", "InputEncryptedChat"],
-        ["max_date", "int"],
-      ],
-      "Bool",
+      ["id", "InputUser"],
     ],
+    "Updates",
   ],
-  [
-    "messages.sendEncrypted",
+  "contacts.getLocated": [
+    0xD348BC44,
     [
-      0x44FA7A15,
-      [
-        ["flags", "#"],
-        ["silent", "flags.0?true"],
-        ["peer", "InputEncryptedChat"],
-        ["random_id", "long"],
-        ["data", "bytes"],
-      ],
-      "messages.SentEncryptedMessage",
+      ["flags", "#"],
+      ["background", "flags.1?true"],
+      ["geo_point", "InputGeoPoint"],
+      ["self_expires", "flags.0?int"],
     ],
+    "Updates",
   ],
-  [
-    "messages.sendEncryptedFile",
+  "contacts.blockFromReplies": [
+    0x29A8962C,
     [
-      0x5559481D,
-      [
-        ["flags", "#"],
-        ["silent", "flags.0?true"],
-        ["peer", "InputEncryptedChat"],
-        ["random_id", "long"],
-        ["data", "bytes"],
-        ["file", "InputEncryptedFile"],
-      ],
-      "messages.SentEncryptedMessage",
+      ["flags", "#"],
+      ["delete_message", "flags.0?true"],
+      ["delete_history", "flags.1?true"],
+      ["report_spam", "flags.2?true"],
+      ["msg_id", "int"],
     ],
+    "Updates",
   ],
-  [
-    "messages.sendEncryptedService",
+  "contacts.resolvePhone": [
+    0x8AF94344,
     [
-      0x32D439A4,
-      [
-        ["peer", "InputEncryptedChat"],
-        ["random_id", "long"],
-        ["data", "bytes"],
-      ],
-      "messages.SentEncryptedMessage",
+      ["phone", "string"],
     ],
+    "contacts.ResolvedPeer",
+  ],
+  "contacts.exportContactToken": [
+    0xF8654027,
+    [],
+    "ExportedContactToken",
   ],
-  [
-    "messages.receivedQueue",
+  "contacts.importContactToken": [
+    0x13005788,
     [
-      0x55A5BB66,
-      [
-        ["max_qts", "int"],
-      ],
-      "Vector<long>",
+      ["token", "string"],
     ],
+    "User",
   ],
-  [
-    "messages.reportEncryptedSpam",
+  "contacts.editCloseFriends": [
+    0xBA6705F0,
     [
-      0x4B0C8C0F,
-      [
-        ["peer", "InputEncryptedChat"],
-      ],
-      "Bool",
+      ["id", "Vector<long>"],
     ],
+    "Bool",
   ],
-  [
-    "messages.readMessageContents",
+  "contacts.setBlocked": [
+    0x94C65C76,
     [
-      0x36A73F77,
-      [
-        ["id", "Vector<int>"],
-      ],
-      "messages.AffectedMessages",
+      ["flags", "#"],
+      ["my_stories_from", "flags.0?true"],
+      ["id", "Vector<InputPeer>"],
+      ["limit", "int"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getStickers",
+  "contacts.getBirthdays": [
+    0xDAEDA864,
+    [],
+    "contacts.ContactBirthdays",
+  ],
+  "messages.getMessages": [
+    0x63C66506,
     [
-      0xD5A5D3A1,
-      [
-        ["emoticon", "string"],
-        ["hash", "long"],
-      ],
-      "messages.Stickers",
+      ["id", "Vector<InputMessage>"],
     ],
+    "messages.Messages",
   ],
-  [
-    "messages.getAllStickers",
+  "messages.getDialogs": [
+    0xA0F4CB4F,
     [
-      0xB8A0A1A8,
-      [
-        ["hash", "long"],
-      ],
-      "messages.AllStickers",
+      ["flags", "#"],
+      ["exclude_pinned", "flags.0?true"],
+      ["folder_id", "flags.1?int"],
+      ["offset_date", "int"],
+      ["offset_id", "int"],
+      ["offset_peer", "InputPeer"],
+      ["limit", "int"],
+      ["hash", "long"],
     ],
+    "messages.Dialogs",
   ],
-  [
-    "messages.getWebPagePreview",
+  "messages.getHistory": [
+    0x4423E6C5,
     [
-      0x570D6F6F,
-      [
-        ["flags", "#"],
-        ["message", "string"],
-        ["entities", "flags.3?Vector<MessageEntity>"],
-      ],
-      "messages.WebPagePreview",
+      ["peer", "InputPeer"],
+      ["offset_id", "int"],
+      ["offset_date", "int"],
+      ["add_offset", "int"],
+      ["limit", "int"],
+      ["max_id", "int"],
+      ["min_id", "int"],
+      ["hash", "long"],
     ],
+    "messages.Messages",
   ],
-  [
-    "messages.exportChatInvite",
+  "messages.search": [
+    0x29EE847A,
     [
-      0xA455DE90,
-      [
-        ["flags", "#"],
-        ["legacy_revoke_permanent", "flags.2?true"],
-        ["request_needed", "flags.3?true"],
-        ["peer", "InputPeer"],
-        ["expire_date", "flags.0?int"],
-        ["usage_limit", "flags.1?int"],
-        ["title", "flags.4?string"],
-        ["subscription_pricing", "flags.5?StarsSubscriptionPricing"],
-      ],
-      "ExportedChatInvite",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["q", "string"],
+      ["from_id", "flags.0?InputPeer"],
+      ["saved_peer_id", "flags.2?InputPeer"],
+      ["saved_reaction", "flags.3?Vector<Reaction>"],
+      ["top_msg_id", "flags.1?int"],
+      ["filter", "MessagesFilter"],
+      ["min_date", "int"],
+      ["max_date", "int"],
+      ["offset_id", "int"],
+      ["add_offset", "int"],
+      ["limit", "int"],
+      ["max_id", "int"],
+      ["min_id", "int"],
+      ["hash", "long"],
     ],
+    "messages.Messages",
   ],
-  [
-    "messages.checkChatInvite",
+  "messages.readHistory": [
+    0x0E306D3A,
     [
-      0x3EADB1BB,
-      [
-        ["hash", "string"],
-      ],
-      "ChatInvite",
+      ["peer", "InputPeer"],
+      ["max_id", "int"],
     ],
+    "messages.AffectedMessages",
   ],
-  [
-    "messages.importChatInvite",
+  "messages.deleteHistory": [
+    0xB08F922A,
     [
-      0x6C50051C,
-      [
-        ["hash", "string"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["just_clear", "flags.0?true"],
+      ["revoke", "flags.1?true"],
+      ["peer", "InputPeer"],
+      ["max_id", "int"],
+      ["min_date", "flags.2?int"],
+      ["max_date", "flags.3?int"],
     ],
+    "messages.AffectedHistory",
   ],
-  [
-    "messages.getStickerSet",
+  "messages.deleteMessages": [
+    0xE58E95D2,
     [
-      0xC8A0EC74,
-      [
-        ["stickerset", "InputStickerSet"],
-        ["hash", "int"],
-      ],
-      "messages.StickerSet",
+      ["flags", "#"],
+      ["revoke", "flags.0?true"],
+      ["id", "Vector<int>"],
     ],
+    "messages.AffectedMessages",
   ],
-  [
-    "messages.installStickerSet",
+  "messages.receivedMessages": [
+    0x05A954C0,
     [
-      0xC78FE460,
-      [
-        ["stickerset", "InputStickerSet"],
-        ["archived", "Bool"],
-      ],
-      "messages.StickerSetInstallResult",
+      ["max_id", "int"],
     ],
+    "Vector<ReceivedNotifyMessage>",
   ],
-  [
-    "messages.uninstallStickerSet",
+  "messages.setTyping": [
+    0x58943EE2,
     [
-      0xF96E55DE,
-      [
-        ["stickerset", "InputStickerSet"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["top_msg_id", "flags.0?int"],
+      ["action", "SendMessageAction"],
     ],
+    "Bool",
   ],
-  [
-    "messages.startBot",
+  "messages.sendMessage": [
+    0xFBF2340A,
     [
-      0xE6DF7378,
-      [
-        ["bot", "InputUser"],
-        ["peer", "InputPeer"],
-        ["random_id", "long"],
-        ["start_param", "string"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["no_webpage", "flags.1?true"],
+      ["silent", "flags.5?true"],
+      ["background", "flags.6?true"],
+      ["clear_draft", "flags.7?true"],
+      ["noforwards", "flags.14?true"],
+      ["update_stickersets_order", "flags.15?true"],
+      ["invert_media", "flags.16?true"],
+      ["allow_paid_floodskip", "flags.19?true"],
+      ["peer", "InputPeer"],
+      ["reply_to", "flags.0?InputReplyTo"],
+      ["message", "string"],
+      ["random_id", "long"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
+      ["entities", "flags.3?Vector<MessageEntity>"],
+      ["schedule_date", "flags.10?int"],
+      ["send_as", "flags.13?InputPeer"],
+      ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
+      ["effect", "flags.18?long"],
+      ["allow_paid_stars", "flags.21?long"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getMessagesViews",
+  "messages.sendMedia": [
+    0xA550CD78,
     [
-      0x5784D3E1,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-        ["increment", "Bool"],
-      ],
-      "messages.MessageViews",
+      ["flags", "#"],
+      ["silent", "flags.5?true"],
+      ["background", "flags.6?true"],
+      ["clear_draft", "flags.7?true"],
+      ["noforwards", "flags.14?true"],
+      ["update_stickersets_order", "flags.15?true"],
+      ["invert_media", "flags.16?true"],
+      ["allow_paid_floodskip", "flags.19?true"],
+      ["peer", "InputPeer"],
+      ["reply_to", "flags.0?InputReplyTo"],
+      ["media", "InputMedia"],
+      ["message", "string"],
+      ["random_id", "long"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
+      ["entities", "flags.3?Vector<MessageEntity>"],
+      ["schedule_date", "flags.10?int"],
+      ["send_as", "flags.13?InputPeer"],
+      ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
+      ["effect", "flags.18?long"],
+      ["allow_paid_stars", "flags.21?long"],
     ],
+    "Updates",
   ],
-  [
-    "messages.editChatAdmin",
+  "messages.forwardMessages": [
+    0xBB9FA475,
     [
-      0xA85BD1C2,
-      [
-        ["chat_id", "long"],
-        ["user_id", "InputUser"],
-        ["is_admin", "Bool"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["silent", "flags.5?true"],
+      ["background", "flags.6?true"],
+      ["with_my_score", "flags.8?true"],
+      ["drop_author", "flags.11?true"],
+      ["drop_media_captions", "flags.12?true"],
+      ["noforwards", "flags.14?true"],
+      ["allow_paid_floodskip", "flags.19?true"],
+      ["from_peer", "InputPeer"],
+      ["id", "Vector<int>"],
+      ["random_id", "Vector<long>"],
+      ["to_peer", "InputPeer"],
+      ["top_msg_id", "flags.9?int"],
+      ["schedule_date", "flags.10?int"],
+      ["send_as", "flags.13?InputPeer"],
+      ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
+      ["video_timestamp", "flags.20?int"],
+      ["allow_paid_stars", "flags.21?long"],
     ],
+    "Updates",
   ],
-  [
-    "messages.migrateChat",
+  "messages.reportSpam": [
+    0xCF1592DB,
     [
-      0xA2875319,
-      [
-        ["chat_id", "long"],
-      ],
-      "Updates",
+      ["peer", "InputPeer"],
     ],
+    "Bool",
   ],
-  [
-    "messages.searchGlobal",
+  "messages.getPeerSettings": [
+    0xEFD9A6A2,
     [
-      0x4BC6589A,
-      [
-        ["flags", "#"],
-        ["broadcasts_only", "flags.1?true"],
-        ["groups_only", "flags.2?true"],
-        ["users_only", "flags.3?true"],
-        ["folder_id", "flags.0?int"],
-        ["q", "string"],
-        ["filter", "MessagesFilter"],
-        ["min_date", "int"],
-        ["max_date", "int"],
-        ["offset_rate", "int"],
-        ["offset_peer", "InputPeer"],
-        ["offset_id", "int"],
-        ["limit", "int"],
-      ],
-      "messages.Messages",
+      ["peer", "InputPeer"],
     ],
+    "messages.PeerSettings",
   ],
-  [
-    "messages.reorderStickerSets",
+  "messages.report": [
+    0xFC78AF9B,
     [
-      0x78337739,
-      [
-        ["flags", "#"],
-        ["masks", "flags.0?true"],
-        ["emojis", "flags.1?true"],
-        ["order", "Vector<long>"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
+      ["option", "bytes"],
+      ["message", "string"],
     ],
+    "ReportResult",
   ],
-  [
-    "messages.getDocumentByHash",
+  "messages.getChats": [
+    0x49E9528F,
     [
-      0xB1F2061F,
-      [
-        ["sha256", "bytes"],
-        ["size", "long"],
-        ["mime_type", "string"],
-      ],
-      "Document",
+      ["id", "Vector<long>"],
     ],
+    "messages.Chats",
   ],
-  [
-    "messages.getSavedGifs",
+  "messages.getFullChat": [
+    0xAEB00B34,
     [
-      0x5CF09635,
-      [
-        ["hash", "long"],
-      ],
-      "messages.SavedGifs",
+      ["chat_id", "long"],
     ],
+    "messages.ChatFull",
   ],
-  [
-    "messages.saveGif",
+  "messages.editChatTitle": [
+    0x73783FFD,
     [
-      0x327A30CB,
-      [
-        ["id", "InputDocument"],
-        ["unsave", "Bool"],
-      ],
-      "Bool",
+      ["chat_id", "long"],
+      ["title", "string"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getInlineBotResults",
+  "messages.editChatPhoto": [
+    0x35DDD674,
     [
-      0x514E999D,
-      [
-        ["flags", "#"],
-        ["bot", "InputUser"],
-        ["peer", "InputPeer"],
-        ["geo_point", "flags.0?InputGeoPoint"],
-        ["query", "string"],
-        ["offset", "string"],
-      ],
-      "messages.BotResults",
+      ["chat_id", "long"],
+      ["photo", "InputChatPhoto"],
     ],
+    "Updates",
   ],
-  [
-    "messages.setInlineBotResults",
+  "messages.addChatUser": [
+    0xCBC6D107,
     [
-      0xBB12A419,
-      [
-        ["flags", "#"],
-        ["gallery", "flags.0?true"],
-        ["private", "flags.1?true"],
-        ["query_id", "long"],
-        ["results", "Vector<InputBotInlineResult>"],
-        ["cache_time", "int"],
-        ["next_offset", "flags.2?string"],
-        ["switch_pm", "flags.3?InlineBotSwitchPM"],
-        ["switch_webview", "flags.4?InlineBotWebView"],
-      ],
-      "Bool",
+      ["chat_id", "long"],
+      ["user_id", "InputUser"],
+      ["fwd_limit", "int"],
     ],
+    "messages.InvitedUsers",
   ],
-  [
-    "messages.sendInlineBotResult",
+  "messages.deleteChatUser": [
+    0xA2185CAB,
     [
-      0xC0CF7646,
-      [
-        ["flags", "#"],
-        ["silent", "flags.5?true"],
-        ["background", "flags.6?true"],
-        ["clear_draft", "flags.7?true"],
-        ["hide_via", "flags.11?true"],
-        ["peer", "InputPeer"],
-        ["reply_to", "flags.0?InputReplyTo"],
-        ["random_id", "long"],
-        ["query_id", "long"],
-        ["id", "string"],
-        ["schedule_date", "flags.10?int"],
-        ["send_as", "flags.13?InputPeer"],
-        ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
-        ["allow_paid_stars", "flags.21?long"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["revoke_history", "flags.0?true"],
+      ["chat_id", "long"],
+      ["user_id", "InputUser"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getMessageEditData",
+  "messages.createChat": [
+    0x92CEDDD4,
     [
-      0xFDA68D36,
-      [
-        ["peer", "InputPeer"],
-        ["id", "int"],
-      ],
-      "messages.MessageEditData",
+      ["flags", "#"],
+      ["users", "Vector<InputUser>"],
+      ["title", "string"],
+      ["ttl_period", "flags.0?int"],
     ],
+    "messages.InvitedUsers",
   ],
-  [
-    "messages.editMessage",
+  "messages.getDhConfig": [
+    0x26CF8950,
     [
-      0xDFD14005,
-      [
-        ["flags", "#"],
-        ["no_webpage", "flags.1?true"],
-        ["invert_media", "flags.16?true"],
-        ["peer", "InputPeer"],
-        ["id", "int"],
-        ["message", "flags.11?string"],
-        ["media", "flags.14?InputMedia"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-        ["entities", "flags.3?Vector<MessageEntity>"],
-        ["schedule_date", "flags.15?int"],
-        ["quick_reply_shortcut_id", "flags.17?int"],
-      ],
-      "Updates",
+      ["version", "int"],
+      ["random_length", "int"],
     ],
+    "messages.DhConfig",
   ],
-  [
-    "messages.editInlineBotMessage",
+  "messages.requestEncryption": [
+    0xF64DAF43,
     [
-      0x83557DBA,
-      [
-        ["flags", "#"],
-        ["no_webpage", "flags.1?true"],
-        ["invert_media", "flags.16?true"],
-        ["id", "InputBotInlineMessageID"],
-        ["message", "flags.11?string"],
-        ["media", "flags.14?InputMedia"],
-        ["reply_markup", "flags.2?ReplyMarkup"],
-        ["entities", "flags.3?Vector<MessageEntity>"],
-      ],
-      "Bool",
+      ["user_id", "InputUser"],
+      ["random_id", "int"],
+      ["g_a", "bytes"],
     ],
+    "EncryptedChat",
   ],
-  [
-    "messages.getBotCallbackAnswer",
+  "messages.acceptEncryption": [
+    0x3DBC0415,
     [
-      0x9342CA07,
-      [
-        ["flags", "#"],
-        ["game", "flags.1?true"],
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["data", "flags.0?bytes"],
-        ["password", "flags.2?InputCheckPasswordSRP"],
-      ],
-      "messages.BotCallbackAnswer",
+      ["peer", "InputEncryptedChat"],
+      ["g_b", "bytes"],
+      ["key_fingerprint", "long"],
     ],
+    "EncryptedChat",
   ],
-  [
-    "messages.setBotCallbackAnswer",
+  "messages.discardEncryption": [
+    0xF393AEA0,
     [
-      0xD58F130A,
-      [
-        ["flags", "#"],
-        ["alert", "flags.1?true"],
-        ["query_id", "long"],
-        ["message", "flags.0?string"],
-        ["url", "flags.2?string"],
-        ["cache_time", "int"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["delete_history", "flags.0?true"],
+      ["chat_id", "int"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getPeerDialogs",
+  "messages.setEncryptedTyping": [
+    0x791451ED,
     [
-      0xE470BCFD,
-      [
-        ["peers", "Vector<InputDialogPeer>"],
-      ],
-      "messages.PeerDialogs",
+      ["peer", "InputEncryptedChat"],
+      ["typing", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "messages.saveDraft",
+  "messages.readEncryptedHistory": [
+    0x7F4B690A,
     [
-      0xD372C5CE,
-      [
-        ["flags", "#"],
-        ["no_webpage", "flags.1?true"],
-        ["invert_media", "flags.6?true"],
-        ["reply_to", "flags.4?InputReplyTo"],
-        ["peer", "InputPeer"],
-        ["message", "string"],
-        ["entities", "flags.3?Vector<MessageEntity>"],
-        ["media", "flags.5?InputMedia"],
-        ["effect", "flags.7?long"],
-      ],
-      "Bool",
+      ["peer", "InputEncryptedChat"],
+      ["max_date", "int"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getAllDrafts",
+  "messages.sendEncrypted": [
+    0x44FA7A15,
     [
-      0x6A3F8D65,
-      [],
-      "Updates",
+      ["flags", "#"],
+      ["silent", "flags.0?true"],
+      ["peer", "InputEncryptedChat"],
+      ["random_id", "long"],
+      ["data", "bytes"],
     ],
+    "messages.SentEncryptedMessage",
   ],
-  [
-    "messages.getFeaturedStickers",
+  "messages.sendEncryptedFile": [
+    0x5559481D,
     [
-      0x64780B14,
-      [
-        ["hash", "long"],
-      ],
-      "messages.FeaturedStickers",
+      ["flags", "#"],
+      ["silent", "flags.0?true"],
+      ["peer", "InputEncryptedChat"],
+      ["random_id", "long"],
+      ["data", "bytes"],
+      ["file", "InputEncryptedFile"],
     ],
+    "messages.SentEncryptedMessage",
   ],
-  [
-    "messages.readFeaturedStickers",
+  "messages.sendEncryptedService": [
+    0x32D439A4,
     [
-      0x5B118126,
-      [
-        ["id", "Vector<long>"],
-      ],
-      "Bool",
+      ["peer", "InputEncryptedChat"],
+      ["random_id", "long"],
+      ["data", "bytes"],
     ],
+    "messages.SentEncryptedMessage",
   ],
-  [
-    "messages.getRecentStickers",
+  "messages.receivedQueue": [
+    0x55A5BB66,
     [
-      0x9DA9403B,
-      [
-        ["flags", "#"],
-        ["attached", "flags.0?true"],
-        ["hash", "long"],
-      ],
-      "messages.RecentStickers",
+      ["max_qts", "int"],
     ],
+    "Vector<long>",
   ],
-  [
-    "messages.saveRecentSticker",
+  "messages.reportEncryptedSpam": [
+    0x4B0C8C0F,
     [
-      0x392718F8,
-      [
-        ["flags", "#"],
-        ["attached", "flags.0?true"],
-        ["id", "InputDocument"],
-        ["unsave", "Bool"],
-      ],
-      "Bool",
+      ["peer", "InputEncryptedChat"],
     ],
+    "Bool",
   ],
-  [
-    "messages.clearRecentStickers",
+  "messages.readMessageContents": [
+    0x36A73F77,
     [
-      0x8999602D,
-      [
-        ["flags", "#"],
-        ["attached", "flags.0?true"],
-      ],
-      "Bool",
+      ["id", "Vector<int>"],
     ],
+    "messages.AffectedMessages",
   ],
-  [
-    "messages.getArchivedStickers",
+  "messages.getStickers": [
+    0xD5A5D3A1,
     [
-      0x57F17692,
-      [
-        ["flags", "#"],
-        ["masks", "flags.0?true"],
-        ["emojis", "flags.1?true"],
-        ["offset_id", "long"],
-        ["limit", "int"],
-      ],
-      "messages.ArchivedStickers",
+      ["emoticon", "string"],
+      ["hash", "long"],
     ],
+    "messages.Stickers",
   ],
-  [
-    "messages.getMaskStickers",
+  "messages.getAllStickers": [
+    0xB8A0A1A8,
     [
-      0x640F82B8,
-      [
-        ["hash", "long"],
-      ],
-      "messages.AllStickers",
+      ["hash", "long"],
     ],
+    "messages.AllStickers",
   ],
-  [
-    "messages.getAttachedStickers",
+  "messages.getWebPagePreview": [
+    0x570D6F6F,
     [
-      0xCC5B67CC,
-      [
-        ["media", "InputStickeredMedia"],
-      ],
-      "Vector<StickerSetCovered>",
+      ["flags", "#"],
+      ["message", "string"],
+      ["entities", "flags.3?Vector<MessageEntity>"],
     ],
+    "messages.WebPagePreview",
   ],
-  [
-    "messages.setGameScore",
+  "messages.exportChatInvite": [
+    0xA455DE90,
     [
-      0x8EF8ECC0,
-      [
-        ["flags", "#"],
-        ["edit_message", "flags.0?true"],
-        ["force", "flags.1?true"],
-        ["peer", "InputPeer"],
-        ["id", "int"],
-        ["user_id", "InputUser"],
-        ["score", "int"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["legacy_revoke_permanent", "flags.2?true"],
+      ["request_needed", "flags.3?true"],
+      ["peer", "InputPeer"],
+      ["expire_date", "flags.0?int"],
+      ["usage_limit", "flags.1?int"],
+      ["title", "flags.4?string"],
+      ["subscription_pricing", "flags.5?StarsSubscriptionPricing"],
     ],
+    "ExportedChatInvite",
   ],
-  [
-    "messages.setInlineGameScore",
+  "messages.checkChatInvite": [
+    0x3EADB1BB,
     [
-      0x15AD9F64,
-      [
-        ["flags", "#"],
-        ["edit_message", "flags.0?true"],
-        ["force", "flags.1?true"],
-        ["id", "InputBotInlineMessageID"],
-        ["user_id", "InputUser"],
-        ["score", "int"],
-      ],
-      "Bool",
+      ["hash", "string"],
     ],
+    "ChatInvite",
   ],
-  [
-    "messages.getGameHighScores",
+  "messages.importChatInvite": [
+    0x6C50051C,
     [
-      0xE822649D,
-      [
-        ["peer", "InputPeer"],
-        ["id", "int"],
-        ["user_id", "InputUser"],
-      ],
-      "messages.HighScores",
+      ["hash", "string"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getInlineGameHighScores",
+  "messages.getStickerSet": [
+    0xC8A0EC74,
     [
-      0x0F635E1B,
-      [
-        ["id", "InputBotInlineMessageID"],
-        ["user_id", "InputUser"],
-      ],
-      "messages.HighScores",
+      ["stickerset", "InputStickerSet"],
+      ["hash", "int"],
     ],
+    "messages.StickerSet",
   ],
-  [
-    "messages.getCommonChats",
+  "messages.installStickerSet": [
+    0xC78FE460,
     [
-      0xE40CA104,
-      [
-        ["user_id", "InputUser"],
-        ["max_id", "long"],
-        ["limit", "int"],
-      ],
-      "messages.Chats",
+      ["stickerset", "InputStickerSet"],
+      ["archived", "Bool"],
     ],
+    "messages.StickerSetInstallResult",
   ],
-  [
-    "messages.getWebPage",
+  "messages.uninstallStickerSet": [
+    0xF96E55DE,
     [
-      0x8D9692A3,
-      [
-        ["url", "string"],
-        ["hash", "int"],
-      ],
-      "messages.WebPage",
+      ["stickerset", "InputStickerSet"],
     ],
+    "Bool",
   ],
-  [
-    "messages.toggleDialogPin",
+  "messages.startBot": [
+    0xE6DF7378,
     [
-      0xA731E257,
-      [
-        ["flags", "#"],
-        ["pinned", "flags.0?true"],
-        ["peer", "InputDialogPeer"],
-      ],
-      "Bool",
+      ["bot", "InputUser"],
+      ["peer", "InputPeer"],
+      ["random_id", "long"],
+      ["start_param", "string"],
     ],
+    "Updates",
   ],
-  [
-    "messages.reorderPinnedDialogs",
+  "messages.getMessagesViews": [
+    0x5784D3E1,
     [
-      0x3B1ADF37,
-      [
-        ["flags", "#"],
-        ["force", "flags.0?true"],
-        ["folder_id", "int"],
-        ["order", "Vector<InputDialogPeer>"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
+      ["increment", "Bool"],
     ],
+    "messages.MessageViews",
   ],
-  [
-    "messages.getPinnedDialogs",
+  "messages.editChatAdmin": [
+    0xA85BD1C2,
     [
-      0xD6B94DF2,
-      [
-        ["folder_id", "int"],
-      ],
-      "messages.PeerDialogs",
+      ["chat_id", "long"],
+      ["user_id", "InputUser"],
+      ["is_admin", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "messages.setBotShippingResults",
+  "messages.migrateChat": [
+    0xA2875319,
     [
-      0xE5F672FA,
-      [
-        ["flags", "#"],
-        ["query_id", "long"],
-        ["error", "flags.0?string"],
-        ["shipping_options", "flags.1?Vector<ShippingOption>"],
-      ],
-      "Bool",
+      ["chat_id", "long"],
     ],
+    "Updates",
   ],
-  [
-    "messages.setBotPrecheckoutResults",
+  "messages.searchGlobal": [
+    0x4BC6589A,
     [
-      0x09C2DD95,
-      [
-        ["flags", "#"],
-        ["success", "flags.1?true"],
-        ["query_id", "long"],
-        ["error", "flags.0?string"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["broadcasts_only", "flags.1?true"],
+      ["groups_only", "flags.2?true"],
+      ["users_only", "flags.3?true"],
+      ["folder_id", "flags.0?int"],
+      ["q", "string"],
+      ["filter", "MessagesFilter"],
+      ["min_date", "int"],
+      ["max_date", "int"],
+      ["offset_rate", "int"],
+      ["offset_peer", "InputPeer"],
+      ["offset_id", "int"],
+      ["limit", "int"],
     ],
+    "messages.Messages",
   ],
-  [
-    "messages.uploadMedia",
+  "messages.reorderStickerSets": [
+    0x78337739,
     [
-      0x14967978,
-      [
-        ["flags", "#"],
-        ["business_connection_id", "flags.0?string"],
-        ["peer", "InputPeer"],
-        ["media", "InputMedia"],
-      ],
-      "MessageMedia",
+      ["flags", "#"],
+      ["masks", "flags.0?true"],
+      ["emojis", "flags.1?true"],
+      ["order", "Vector<long>"],
     ],
+    "Bool",
   ],
-  [
-    "messages.sendScreenshotNotification",
+  "messages.getDocumentByHash": [
+    0xB1F2061F,
     [
-      0xA1405817,
-      [
-        ["peer", "InputPeer"],
-        ["reply_to", "InputReplyTo"],
-        ["random_id", "long"],
-      ],
-      "Updates",
+      ["sha256", "bytes"],
+      ["size", "long"],
+      ["mime_type", "string"],
     ],
+    "Document",
   ],
-  [
-    "messages.getFavedStickers",
+  "messages.getSavedGifs": [
+    0x5CF09635,
     [
-      0x04F1AAA9,
-      [
-        ["hash", "long"],
-      ],
-      "messages.FavedStickers",
+      ["hash", "long"],
     ],
+    "messages.SavedGifs",
   ],
-  [
-    "messages.faveSticker",
+  "messages.saveGif": [
+    0x327A30CB,
     [
-      0xB9FFC55B,
-      [
-        ["id", "InputDocument"],
-        ["unfave", "Bool"],
-      ],
-      "Bool",
+      ["id", "InputDocument"],
+      ["unsave", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getUnreadMentions",
+  "messages.getInlineBotResults": [
+    0x514E999D,
     [
-      0xF107E790,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["top_msg_id", "flags.0?int"],
-        ["offset_id", "int"],
-        ["add_offset", "int"],
-        ["limit", "int"],
-        ["max_id", "int"],
-        ["min_id", "int"],
-      ],
-      "messages.Messages",
+      ["flags", "#"],
+      ["bot", "InputUser"],
+      ["peer", "InputPeer"],
+      ["geo_point", "flags.0?InputGeoPoint"],
+      ["query", "string"],
+      ["offset", "string"],
     ],
+    "messages.BotResults",
   ],
-  [
-    "messages.readMentions",
+  "messages.setInlineBotResults": [
+    0xBB12A419,
     [
-      0x36E5BF4D,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["top_msg_id", "flags.0?int"],
-      ],
-      "messages.AffectedHistory",
+      ["flags", "#"],
+      ["gallery", "flags.0?true"],
+      ["private", "flags.1?true"],
+      ["query_id", "long"],
+      ["results", "Vector<InputBotInlineResult>"],
+      ["cache_time", "int"],
+      ["next_offset", "flags.2?string"],
+      ["switch_pm", "flags.3?InlineBotSwitchPM"],
+      ["switch_webview", "flags.4?InlineBotWebView"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getRecentLocations",
+  "messages.sendInlineBotResult": [
+    0xC0CF7646,
     [
-      0x702A40E0,
-      [
-        ["peer", "InputPeer"],
-        ["limit", "int"],
-        ["hash", "long"],
-      ],
-      "messages.Messages",
+      ["flags", "#"],
+      ["silent", "flags.5?true"],
+      ["background", "flags.6?true"],
+      ["clear_draft", "flags.7?true"],
+      ["hide_via", "flags.11?true"],
+      ["peer", "InputPeer"],
+      ["reply_to", "flags.0?InputReplyTo"],
+      ["random_id", "long"],
+      ["query_id", "long"],
+      ["id", "string"],
+      ["schedule_date", "flags.10?int"],
+      ["send_as", "flags.13?InputPeer"],
+      ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
+      ["allow_paid_stars", "flags.21?long"],
     ],
+    "Updates",
   ],
-  [
-    "messages.sendMultiMedia",
+  "messages.getMessageEditData": [
+    0xFDA68D36,
     [
-      0x1BF89D74,
-      [
-        ["flags", "#"],
-        ["silent", "flags.5?true"],
-        ["background", "flags.6?true"],
-        ["clear_draft", "flags.7?true"],
-        ["noforwards", "flags.14?true"],
-        ["update_stickersets_order", "flags.15?true"],
-        ["invert_media", "flags.16?true"],
-        ["allow_paid_floodskip", "flags.19?true"],
-        ["peer", "InputPeer"],
-        ["reply_to", "flags.0?InputReplyTo"],
-        ["multi_media", "Vector<InputSingleMedia>"],
-        ["schedule_date", "flags.10?int"],
-        ["send_as", "flags.13?InputPeer"],
-        ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
-        ["effect", "flags.18?long"],
-        ["allow_paid_stars", "flags.21?long"],
-      ],
-      "Updates",
+      ["peer", "InputPeer"],
+      ["id", "int"],
     ],
+    "messages.MessageEditData",
   ],
-  [
-    "messages.uploadEncryptedFile",
+  "messages.editMessage": [
+    0xDFD14005,
     [
-      0x5057C497,
-      [
-        ["peer", "InputEncryptedChat"],
-        ["file", "InputEncryptedFile"],
-      ],
-      "EncryptedFile",
+      ["flags", "#"],
+      ["no_webpage", "flags.1?true"],
+      ["invert_media", "flags.16?true"],
+      ["peer", "InputPeer"],
+      ["id", "int"],
+      ["message", "flags.11?string"],
+      ["media", "flags.14?InputMedia"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
+      ["entities", "flags.3?Vector<MessageEntity>"],
+      ["schedule_date", "flags.15?int"],
+      ["quick_reply_shortcut_id", "flags.17?int"],
     ],
+    "Updates",
   ],
-  [
-    "messages.searchStickerSets",
+  "messages.editInlineBotMessage": [
+    0x83557DBA,
     [
-      0x35705B8A,
-      [
-        ["flags", "#"],
-        ["exclude_featured", "flags.0?true"],
-        ["q", "string"],
-        ["hash", "long"],
-      ],
-      "messages.FoundStickerSets",
+      ["flags", "#"],
+      ["no_webpage", "flags.1?true"],
+      ["invert_media", "flags.16?true"],
+      ["id", "InputBotInlineMessageID"],
+      ["message", "flags.11?string"],
+      ["media", "flags.14?InputMedia"],
+      ["reply_markup", "flags.2?ReplyMarkup"],
+      ["entities", "flags.3?Vector<MessageEntity>"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getSplitRanges",
+  "messages.getBotCallbackAnswer": [
+    0x9342CA07,
     [
-      0x1CFF7E08,
-      [],
-      "Vector<MessageRange>",
+      ["flags", "#"],
+      ["game", "flags.1?true"],
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["data", "flags.0?bytes"],
+      ["password", "flags.2?InputCheckPasswordSRP"],
     ],
+    "messages.BotCallbackAnswer",
   ],
-  [
-    "messages.markDialogUnread",
+  "messages.setBotCallbackAnswer": [
+    0xD58F130A,
     [
-      0xC286D98F,
-      [
-        ["flags", "#"],
-        ["unread", "flags.0?true"],
-        ["peer", "InputDialogPeer"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["alert", "flags.1?true"],
+      ["query_id", "long"],
+      ["message", "flags.0?string"],
+      ["url", "flags.2?string"],
+      ["cache_time", "int"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getDialogUnreadMarks",
+  "messages.getPeerDialogs": [
+    0xE470BCFD,
     [
-      0x22E24E22,
-      [],
-      "Vector<DialogPeer>",
+      ["peers", "Vector<InputDialogPeer>"],
     ],
+    "messages.PeerDialogs",
   ],
-  [
-    "messages.clearAllDrafts",
+  "messages.saveDraft": [
+    0xD372C5CE,
     [
-      0x7E58EE9C,
-      [],
-      "Bool",
+      ["flags", "#"],
+      ["no_webpage", "flags.1?true"],
+      ["invert_media", "flags.6?true"],
+      ["reply_to", "flags.4?InputReplyTo"],
+      ["peer", "InputPeer"],
+      ["message", "string"],
+      ["entities", "flags.3?Vector<MessageEntity>"],
+      ["media", "flags.5?InputMedia"],
+      ["effect", "flags.7?long"],
     ],
+    "Bool",
+  ],
+  "messages.getAllDrafts": [
+    0x6A3F8D65,
+    [],
+    "Updates",
   ],
-  [
-    "messages.updatePinnedMessage",
+  "messages.getFeaturedStickers": [
+    0x64780B14,
     [
-      0xD2AAF7EC,
-      [
-        ["flags", "#"],
-        ["silent", "flags.0?true"],
-        ["unpin", "flags.1?true"],
-        ["pm_oneside", "flags.2?true"],
-        ["peer", "InputPeer"],
-        ["id", "int"],
-      ],
-      "Updates",
+      ["hash", "long"],
     ],
+    "messages.FeaturedStickers",
   ],
-  [
-    "messages.sendVote",
+  "messages.readFeaturedStickers": [
+    0x5B118126,
     [
-      0x10EA6184,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["options", "Vector<bytes>"],
-      ],
-      "Updates",
+      ["id", "Vector<long>"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getPollResults",
+  "messages.getRecentStickers": [
+    0x9DA9403B,
     [
-      0x73BB643B,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["attached", "flags.0?true"],
+      ["hash", "long"],
     ],
+    "messages.RecentStickers",
   ],
-  [
-    "messages.getOnlines",
+  "messages.saveRecentSticker": [
+    0x392718F8,
     [
-      0x6E2BE050,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "ChatOnlines",
+      ["flags", "#"],
+      ["attached", "flags.0?true"],
+      ["id", "InputDocument"],
+      ["unsave", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "messages.editChatAbout",
+  "messages.clearRecentStickers": [
+    0x8999602D,
     [
-      0xDEF60797,
-      [
-        ["peer", "InputPeer"],
-        ["about", "string"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["attached", "flags.0?true"],
     ],
+    "Bool",
   ],
-  [
-    "messages.editChatDefaultBannedRights",
+  "messages.getArchivedStickers": [
+    0x57F17692,
     [
-      0xA5866B41,
-      [
-        ["peer", "InputPeer"],
-        ["banned_rights", "ChatBannedRights"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["masks", "flags.0?true"],
+      ["emojis", "flags.1?true"],
+      ["offset_id", "long"],
+      ["limit", "int"],
     ],
+    "messages.ArchivedStickers",
   ],
-  [
-    "messages.getEmojiKeywords",
+  "messages.getMaskStickers": [
+    0x640F82B8,
     [
-      0x35A0E062,
-      [
-        ["lang_code", "string"],
-      ],
-      "EmojiKeywordsDifference",
+      ["hash", "long"],
     ],
+    "messages.AllStickers",
   ],
-  [
-    "messages.getEmojiKeywordsDifference",
+  "messages.getAttachedStickers": [
+    0xCC5B67CC,
     [
-      0x1508B6AF,
-      [
-        ["lang_code", "string"],
-        ["from_version", "int"],
-      ],
-      "EmojiKeywordsDifference",
+      ["media", "InputStickeredMedia"],
     ],
+    "Vector<StickerSetCovered>",
   ],
-  [
-    "messages.getEmojiKeywordsLanguages",
+  "messages.setGameScore": [
+    0x8EF8ECC0,
     [
-      0x4E9963B2,
-      [
-        ["lang_codes", "Vector<string>"],
-      ],
-      "Vector<EmojiLanguage>",
+      ["flags", "#"],
+      ["edit_message", "flags.0?true"],
+      ["force", "flags.1?true"],
+      ["peer", "InputPeer"],
+      ["id", "int"],
+      ["user_id", "InputUser"],
+      ["score", "int"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getEmojiURL",
+  "messages.setInlineGameScore": [
+    0x15AD9F64,
     [
-      0xD5B10C26,
-      [
-        ["lang_code", "string"],
-      ],
-      "EmojiURL",
+      ["flags", "#"],
+      ["edit_message", "flags.0?true"],
+      ["force", "flags.1?true"],
+      ["id", "InputBotInlineMessageID"],
+      ["user_id", "InputUser"],
+      ["score", "int"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getSearchCounters",
+  "messages.getGameHighScores": [
+    0xE822649D,
     [
-      0x1BBCF300,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["saved_peer_id", "flags.2?InputPeer"],
-        ["top_msg_id", "flags.0?int"],
-        ["filters", "Vector<MessagesFilter>"],
-      ],
-      "Vector<messages.SearchCounter>",
+      ["peer", "InputPeer"],
+      ["id", "int"],
+      ["user_id", "InputUser"],
     ],
+    "messages.HighScores",
   ],
-  [
-    "messages.requestUrlAuth",
+  "messages.getInlineGameHighScores": [
+    0x0F635E1B,
     [
-      0x198FB446,
-      [
-        ["flags", "#"],
-        ["peer", "flags.1?InputPeer"],
-        ["msg_id", "flags.1?int"],
-        ["button_id", "flags.1?int"],
-        ["url", "flags.2?string"],
-      ],
-      "UrlAuthResult",
+      ["id", "InputBotInlineMessageID"],
+      ["user_id", "InputUser"],
     ],
+    "messages.HighScores",
   ],
-  [
-    "messages.acceptUrlAuth",
+  "messages.getCommonChats": [
+    0xE40CA104,
     [
-      0xB12C7125,
-      [
-        ["flags", "#"],
-        ["write_allowed", "flags.0?true"],
-        ["peer", "flags.1?InputPeer"],
-        ["msg_id", "flags.1?int"],
-        ["button_id", "flags.1?int"],
-        ["url", "flags.2?string"],
-      ],
-      "UrlAuthResult",
+      ["user_id", "InputUser"],
+      ["max_id", "long"],
+      ["limit", "int"],
     ],
+    "messages.Chats",
   ],
-  [
-    "messages.hidePeerSettingsBar",
+  "messages.getWebPage": [
+    0x8D9692A3,
     [
-      0x4FACB138,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "Bool",
+      ["url", "string"],
+      ["hash", "int"],
     ],
+    "messages.WebPage",
   ],
-  [
-    "messages.getScheduledHistory",
+  "messages.toggleDialogPin": [
+    0xA731E257,
     [
-      0xF516760B,
-      [
-        ["peer", "InputPeer"],
-        ["hash", "long"],
-      ],
-      "messages.Messages",
+      ["flags", "#"],
+      ["pinned", "flags.0?true"],
+      ["peer", "InputDialogPeer"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getScheduledMessages",
+  "messages.reorderPinnedDialogs": [
+    0x3B1ADF37,
     [
-      0xBDBB0464,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-      ],
-      "messages.Messages",
+      ["flags", "#"],
+      ["force", "flags.0?true"],
+      ["folder_id", "int"],
+      ["order", "Vector<InputDialogPeer>"],
     ],
+    "Bool",
   ],
-  [
-    "messages.sendScheduledMessages",
+  "messages.getPinnedDialogs": [
+    0xD6B94DF2,
     [
-      0xBD38850A,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-      ],
-      "Updates",
+      ["folder_id", "int"],
     ],
+    "messages.PeerDialogs",
   ],
-  [
-    "messages.deleteScheduledMessages",
+  "messages.setBotShippingResults": [
+    0xE5F672FA,
     [
-      0x59AE2B16,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["query_id", "long"],
+      ["error", "flags.0?string"],
+      ["shipping_options", "flags.1?Vector<ShippingOption>"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getPollVotes",
+  "messages.setBotPrecheckoutResults": [
+    0x09C2DD95,
     [
-      0xB86E380E,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["id", "int"],
-        ["option", "flags.0?bytes"],
-        ["offset", "flags.1?string"],
-        ["limit", "int"],
-      ],
-      "messages.VotesList",
+      ["flags", "#"],
+      ["success", "flags.1?true"],
+      ["query_id", "long"],
+      ["error", "flags.0?string"],
     ],
+    "Bool",
   ],
-  [
-    "messages.toggleStickerSets",
+  "messages.uploadMedia": [
+    0x14967978,
     [
-      0xB5052FEA,
-      [
-        ["flags", "#"],
-        ["uninstall", "flags.0?true"],
-        ["archive", "flags.1?true"],
-        ["unarchive", "flags.2?true"],
-        ["stickersets", "Vector<InputStickerSet>"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["business_connection_id", "flags.0?string"],
+      ["peer", "InputPeer"],
+      ["media", "InputMedia"],
     ],
+    "MessageMedia",
   ],
-  [
-    "messages.getDialogFilters",
+  "messages.sendScreenshotNotification": [
+    0xA1405817,
     [
-      0xEFD48C89,
-      [],
-      "messages.DialogFilters",
+      ["peer", "InputPeer"],
+      ["reply_to", "InputReplyTo"],
+      ["random_id", "long"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getSuggestedDialogFilters",
+  "messages.getFavedStickers": [
+    0x04F1AAA9,
     [
-      0xA29CD42C,
-      [],
-      "Vector<DialogFilterSuggested>",
+      ["hash", "long"],
     ],
+    "messages.FavedStickers",
   ],
-  [
-    "messages.updateDialogFilter",
+  "messages.faveSticker": [
+    0xB9FFC55B,
     [
-      0x1AD4A04A,
-      [
-        ["flags", "#"],
-        ["id", "int"],
-        ["filter", "flags.0?DialogFilter"],
-      ],
-      "Bool",
+      ["id", "InputDocument"],
+      ["unfave", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "messages.updateDialogFiltersOrder",
+  "messages.getUnreadMentions": [
+    0xF107E790,
     [
-      0xC563C1E4,
-      [
-        ["order", "Vector<int>"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["top_msg_id", "flags.0?int"],
+      ["offset_id", "int"],
+      ["add_offset", "int"],
+      ["limit", "int"],
+      ["max_id", "int"],
+      ["min_id", "int"],
     ],
+    "messages.Messages",
   ],
-  [
-    "messages.getOldFeaturedStickers",
+  "messages.readMentions": [
+    0x36E5BF4D,
     [
-      0x7ED094A1,
-      [
-        ["offset", "int"],
-        ["limit", "int"],
-        ["hash", "long"],
-      ],
-      "messages.FeaturedStickers",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["top_msg_id", "flags.0?int"],
     ],
+    "messages.AffectedHistory",
   ],
-  [
-    "messages.getReplies",
+  "messages.getRecentLocations": [
+    0x702A40E0,
     [
-      0x22DDD30C,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["offset_id", "int"],
-        ["offset_date", "int"],
-        ["add_offset", "int"],
-        ["limit", "int"],
-        ["max_id", "int"],
-        ["min_id", "int"],
-        ["hash", "long"],
-      ],
-      "messages.Messages",
+      ["peer", "InputPeer"],
+      ["limit", "int"],
+      ["hash", "long"],
     ],
+    "messages.Messages",
   ],
-  [
-    "messages.getDiscussionMessage",
+  "messages.sendMultiMedia": [
+    0x1BF89D74,
     [
-      0x446972FD,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-      ],
-      "messages.DiscussionMessage",
+      ["flags", "#"],
+      ["silent", "flags.5?true"],
+      ["background", "flags.6?true"],
+      ["clear_draft", "flags.7?true"],
+      ["noforwards", "flags.14?true"],
+      ["update_stickersets_order", "flags.15?true"],
+      ["invert_media", "flags.16?true"],
+      ["allow_paid_floodskip", "flags.19?true"],
+      ["peer", "InputPeer"],
+      ["reply_to", "flags.0?InputReplyTo"],
+      ["multi_media", "Vector<InputSingleMedia>"],
+      ["schedule_date", "flags.10?int"],
+      ["send_as", "flags.13?InputPeer"],
+      ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
+      ["effect", "flags.18?long"],
+      ["allow_paid_stars", "flags.21?long"],
     ],
+    "Updates",
   ],
-  [
-    "messages.readDiscussion",
+  "messages.uploadEncryptedFile": [
+    0x5057C497,
     [
-      0xF731A9F4,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["read_max_id", "int"],
-      ],
-      "Bool",
+      ["peer", "InputEncryptedChat"],
+      ["file", "InputEncryptedFile"],
     ],
+    "EncryptedFile",
   ],
-  [
-    "messages.unpinAllMessages",
+  "messages.searchStickerSets": [
+    0x35705B8A,
     [
-      0xEE22B9A8,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["top_msg_id", "flags.0?int"],
-      ],
-      "messages.AffectedHistory",
+      ["flags", "#"],
+      ["exclude_featured", "flags.0?true"],
+      ["q", "string"],
+      ["hash", "long"],
     ],
+    "messages.FoundStickerSets",
   ],
-  [
-    "messages.deleteChat",
+  "messages.getSplitRanges": [
+    0x1CFF7E08,
+    [],
+    "Vector<MessageRange>",
+  ],
+  "messages.markDialogUnread": [
+    0xC286D98F,
     [
-      0x5BD0EE50,
-      [
-        ["chat_id", "long"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["unread", "flags.0?true"],
+      ["peer", "InputDialogPeer"],
     ],
+    "Bool",
+  ],
+  "messages.getDialogUnreadMarks": [
+    0x22E24E22,
+    [],
+    "Vector<DialogPeer>",
   ],
-  [
-    "messages.deletePhoneCallHistory",
+  "messages.clearAllDrafts": [
+    0x7E58EE9C,
+    [],
+    "Bool",
+  ],
+  "messages.updatePinnedMessage": [
+    0xD2AAF7EC,
     [
-      0xF9CBE409,
-      [
-        ["flags", "#"],
-        ["revoke", "flags.0?true"],
-      ],
-      "messages.AffectedFoundMessages",
+      ["flags", "#"],
+      ["silent", "flags.0?true"],
+      ["unpin", "flags.1?true"],
+      ["pm_oneside", "flags.2?true"],
+      ["peer", "InputPeer"],
+      ["id", "int"],
     ],
+    "Updates",
   ],
-  [
-    "messages.checkHistoryImport",
+  "messages.sendVote": [
+    0x10EA6184,
     [
-      0x43FE19F3,
-      [
-        ["import_head", "string"],
-      ],
-      "messages.HistoryImportParsed",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["options", "Vector<bytes>"],
     ],
+    "Updates",
   ],
-  [
-    "messages.initHistoryImport",
+  "messages.getPollResults": [
+    0x73BB643B,
     [
-      0x34090C3B,
-      [
-        ["peer", "InputPeer"],
-        ["file", "InputFile"],
-        ["media_count", "int"],
-      ],
-      "messages.HistoryImport",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
     ],
+    "Updates",
   ],
-  [
-    "messages.uploadImportedMedia",
+  "messages.getOnlines": [
+    0x6E2BE050,
     [
-      0x2A862092,
-      [
-        ["peer", "InputPeer"],
-        ["import_id", "long"],
-        ["file_name", "string"],
-        ["media", "InputMedia"],
-      ],
-      "MessageMedia",
+      ["peer", "InputPeer"],
     ],
+    "ChatOnlines",
   ],
-  [
-    "messages.startHistoryImport",
+  "messages.editChatAbout": [
+    0xDEF60797,
     [
-      0xB43DF344,
-      [
-        ["peer", "InputPeer"],
-        ["import_id", "long"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["about", "string"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getExportedChatInvites",
+  "messages.editChatDefaultBannedRights": [
+    0xA5866B41,
     [
-      0xA2B5A3F6,
-      [
-        ["flags", "#"],
-        ["revoked", "flags.3?true"],
-        ["peer", "InputPeer"],
-        ["admin_id", "InputUser"],
-        ["offset_date", "flags.2?int"],
-        ["offset_link", "flags.2?string"],
-        ["limit", "int"],
-      ],
-      "messages.ExportedChatInvites",
+      ["peer", "InputPeer"],
+      ["banned_rights", "ChatBannedRights"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getExportedChatInvite",
+  "messages.getEmojiKeywords": [
+    0x35A0E062,
     [
-      0x73746F5C,
-      [
-        ["peer", "InputPeer"],
-        ["link", "string"],
-      ],
-      "messages.ExportedChatInvite",
+      ["lang_code", "string"],
     ],
+    "EmojiKeywordsDifference",
   ],
-  [
-    "messages.editExportedChatInvite",
+  "messages.getEmojiKeywordsDifference": [
+    0x1508B6AF,
     [
-      0xBDCA2F75,
-      [
-        ["flags", "#"],
-        ["revoked", "flags.2?true"],
-        ["peer", "InputPeer"],
-        ["link", "string"],
-        ["expire_date", "flags.0?int"],
-        ["usage_limit", "flags.1?int"],
-        ["request_needed", "flags.3?Bool"],
-        ["title", "flags.4?string"],
-      ],
-      "messages.ExportedChatInvite",
+      ["lang_code", "string"],
+      ["from_version", "int"],
     ],
+    "EmojiKeywordsDifference",
   ],
-  [
-    "messages.deleteRevokedExportedChatInvites",
+  "messages.getEmojiKeywordsLanguages": [
+    0x4E9963B2,
     [
-      0x56987BD5,
-      [
-        ["peer", "InputPeer"],
-        ["admin_id", "InputUser"],
-      ],
-      "Bool",
+      ["lang_codes", "Vector<string>"],
     ],
+    "Vector<EmojiLanguage>",
   ],
-  [
-    "messages.deleteExportedChatInvite",
+  "messages.getEmojiURL": [
+    0xD5B10C26,
     [
-      0xD464A42B,
-      [
-        ["peer", "InputPeer"],
-        ["link", "string"],
-      ],
-      "Bool",
+      ["lang_code", "string"],
     ],
+    "EmojiURL",
   ],
-  [
-    "messages.getAdminsWithInvites",
+  "messages.getSearchCounters": [
+    0x1BBCF300,
     [
-      0x3920E6EF,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "messages.ChatAdminsWithInvites",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["saved_peer_id", "flags.2?InputPeer"],
+      ["top_msg_id", "flags.0?int"],
+      ["filters", "Vector<MessagesFilter>"],
     ],
+    "Vector<messages.SearchCounter>",
   ],
-  [
-    "messages.getChatInviteImporters",
+  "messages.requestUrlAuth": [
+    0x198FB446,
     [
-      0xDF04DD4E,
-      [
-        ["flags", "#"],
-        ["requested", "flags.0?true"],
-        ["subscription_expired", "flags.3?true"],
-        ["peer", "InputPeer"],
-        ["link", "flags.1?string"],
-        ["q", "flags.2?string"],
-        ["offset_date", "int"],
-        ["offset_user", "InputUser"],
-        ["limit", "int"],
-      ],
-      "messages.ChatInviteImporters",
+      ["flags", "#"],
+      ["peer", "flags.1?InputPeer"],
+      ["msg_id", "flags.1?int"],
+      ["button_id", "flags.1?int"],
+      ["url", "flags.2?string"],
     ],
+    "UrlAuthResult",
   ],
-  [
-    "messages.setHistoryTTL",
+  "messages.acceptUrlAuth": [
+    0xB12C7125,
     [
-      0xB80E5FE4,
-      [
-        ["peer", "InputPeer"],
-        ["period", "int"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["write_allowed", "flags.0?true"],
+      ["peer", "flags.1?InputPeer"],
+      ["msg_id", "flags.1?int"],
+      ["button_id", "flags.1?int"],
+      ["url", "flags.2?string"],
     ],
+    "UrlAuthResult",
   ],
-  [
-    "messages.checkHistoryImportPeer",
+  "messages.hidePeerSettingsBar": [
+    0x4FACB138,
     [
-      0x5DC60F03,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "messages.CheckedHistoryImportPeer",
+      ["peer", "InputPeer"],
     ],
+    "Bool",
   ],
-  [
-    "messages.setChatTheme",
+  "messages.getScheduledHistory": [
+    0xF516760B,
     [
-      0xE63BE13F,
-      [
-        ["peer", "InputPeer"],
-        ["emoticon", "string"],
-      ],
-      "Updates",
+      ["peer", "InputPeer"],
+      ["hash", "long"],
     ],
+    "messages.Messages",
   ],
-  [
-    "messages.getMessageReadParticipants",
+  "messages.getScheduledMessages": [
+    0xBDBB0464,
     [
-      0x31C1C44F,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-      ],
-      "Vector<ReadParticipantDate>",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
     ],
+    "messages.Messages",
   ],
-  [
-    "messages.getSearchResultsCalendar",
+  "messages.sendScheduledMessages": [
+    0xBD38850A,
     [
-      0x6AA3F6BD,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["saved_peer_id", "flags.2?InputPeer"],
-        ["filter", "MessagesFilter"],
-        ["offset_id", "int"],
-        ["offset_date", "int"],
-      ],
-      "messages.SearchResultsCalendar",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getSearchResultsPositions",
+  "messages.deleteScheduledMessages": [
+    0x59AE2B16,
     [
-      0x9C7F2F10,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["saved_peer_id", "flags.2?InputPeer"],
-        ["filter", "MessagesFilter"],
-        ["offset_id", "int"],
-        ["limit", "int"],
-      ],
-      "messages.SearchResultsPositions",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
     ],
+    "Updates",
   ],
-  [
-    "messages.hideChatJoinRequest",
+  "messages.getPollVotes": [
+    0xB86E380E,
     [
-      0x7FE7E815,
-      [
-        ["flags", "#"],
-        ["approved", "flags.0?true"],
-        ["peer", "InputPeer"],
-        ["user_id", "InputUser"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["id", "int"],
+      ["option", "flags.0?bytes"],
+      ["offset", "flags.1?string"],
+      ["limit", "int"],
     ],
+    "messages.VotesList",
   ],
-  [
-    "messages.hideAllChatJoinRequests",
+  "messages.toggleStickerSets": [
+    0xB5052FEA,
     [
-      0xE085F4EA,
-      [
-        ["flags", "#"],
-        ["approved", "flags.0?true"],
-        ["peer", "InputPeer"],
-        ["link", "flags.1?string"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["uninstall", "flags.0?true"],
+      ["archive", "flags.1?true"],
+      ["unarchive", "flags.2?true"],
+      ["stickersets", "Vector<InputStickerSet>"],
     ],
+    "Bool",
+  ],
+  "messages.getDialogFilters": [
+    0xEFD48C89,
+    [],
+    "messages.DialogFilters",
   ],
-  [
-    "messages.toggleNoForwards",
+  "messages.getSuggestedDialogFilters": [
+    0xA29CD42C,
+    [],
+    "Vector<DialogFilterSuggested>",
+  ],
+  "messages.updateDialogFilter": [
+    0x1AD4A04A,
     [
-      0xB11EAFA2,
-      [
-        ["peer", "InputPeer"],
-        ["enabled", "Bool"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["id", "int"],
+      ["filter", "flags.0?DialogFilter"],
     ],
+    "Bool",
   ],
-  [
-    "messages.saveDefaultSendAs",
+  "messages.updateDialogFiltersOrder": [
+    0xC563C1E4,
     [
-      0xCCFDDF96,
-      [
-        ["peer", "InputPeer"],
-        ["send_as", "InputPeer"],
-      ],
-      "Bool",
+      ["order", "Vector<int>"],
     ],
+    "Bool",
   ],
-  [
-    "messages.sendReaction",
+  "messages.getOldFeaturedStickers": [
+    0x7ED094A1,
     [
-      0xD30D78D4,
-      [
-        ["flags", "#"],
-        ["big", "flags.1?true"],
-        ["add_to_recent", "flags.2?true"],
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["reaction", "flags.0?Vector<Reaction>"],
-      ],
-      "Updates",
+      ["offset", "int"],
+      ["limit", "int"],
+      ["hash", "long"],
     ],
+    "messages.FeaturedStickers",
   ],
-  [
-    "messages.getMessagesReactions",
+  "messages.getReplies": [
+    0x22DDD30C,
     [
-      0x8BBA90E6,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-      ],
-      "Updates",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["offset_id", "int"],
+      ["offset_date", "int"],
+      ["add_offset", "int"],
+      ["limit", "int"],
+      ["max_id", "int"],
+      ["min_id", "int"],
+      ["hash", "long"],
     ],
+    "messages.Messages",
   ],
-  [
-    "messages.getMessageReactionsList",
+  "messages.getDiscussionMessage": [
+    0x446972FD,
     [
-      0x461B3F48,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["id", "int"],
-        ["reaction", "flags.0?Reaction"],
-        ["offset", "flags.1?string"],
-        ["limit", "int"],
-      ],
-      "messages.MessageReactionsList",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
     ],
+    "messages.DiscussionMessage",
   ],
-  [
-    "messages.setChatAvailableReactions",
+  "messages.readDiscussion": [
+    0xF731A9F4,
     [
-      0x864B2581,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["available_reactions", "ChatReactions"],
-        ["reactions_limit", "flags.0?int"],
-        ["paid_enabled", "flags.1?Bool"],
-      ],
-      "Updates",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["read_max_id", "int"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getAvailableReactions",
+  "messages.unpinAllMessages": [
+    0xEE22B9A8,
     [
-      0x18DEA0AC,
-      [
-        ["hash", "int"],
-      ],
-      "messages.AvailableReactions",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["top_msg_id", "flags.0?int"],
     ],
+    "messages.AffectedHistory",
   ],
-  [
-    "messages.setDefaultReaction",
+  "messages.deleteChat": [
+    0x5BD0EE50,
     [
-      0x4F47A016,
-      [
-        ["reaction", "Reaction"],
-      ],
-      "Bool",
+      ["chat_id", "long"],
     ],
+    "Bool",
   ],
-  [
-    "messages.translateText",
+  "messages.deletePhoneCallHistory": [
+    0xF9CBE409,
     [
-      0x63183030,
-      [
-        ["flags", "#"],
-        ["peer", "flags.0?InputPeer"],
-        ["id", "flags.0?Vector<int>"],
-        ["text", "flags.1?Vector<TextWithEntities>"],
-        ["to_lang", "string"],
-      ],
-      "messages.TranslatedText",
+      ["flags", "#"],
+      ["revoke", "flags.0?true"],
     ],
+    "messages.AffectedFoundMessages",
   ],
-  [
-    "messages.getUnreadReactions",
+  "messages.checkHistoryImport": [
+    0x43FE19F3,
     [
-      0x3223495B,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["top_msg_id", "flags.0?int"],
-        ["offset_id", "int"],
-        ["add_offset", "int"],
-        ["limit", "int"],
-        ["max_id", "int"],
-        ["min_id", "int"],
-      ],
-      "messages.Messages",
+      ["import_head", "string"],
     ],
+    "messages.HistoryImportParsed",
   ],
-  [
-    "messages.readReactions",
+  "messages.initHistoryImport": [
+    0x34090C3B,
     [
-      0x54AA7F8E,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["top_msg_id", "flags.0?int"],
-      ],
-      "messages.AffectedHistory",
+      ["peer", "InputPeer"],
+      ["file", "InputFile"],
+      ["media_count", "int"],
     ],
+    "messages.HistoryImport",
   ],
-  [
-    "messages.searchSentMedia",
+  "messages.uploadImportedMedia": [
+    0x2A862092,
     [
-      0x107E31A0,
-      [
-        ["q", "string"],
-        ["filter", "MessagesFilter"],
-        ["limit", "int"],
-      ],
-      "messages.Messages",
+      ["peer", "InputPeer"],
+      ["import_id", "long"],
+      ["file_name", "string"],
+      ["media", "InputMedia"],
     ],
+    "MessageMedia",
   ],
-  [
-    "messages.getAttachMenuBots",
+  "messages.startHistoryImport": [
+    0xB43DF344,
     [
-      0x16FCC2CB,
-      [
-        ["hash", "long"],
-      ],
-      "AttachMenuBots",
+      ["peer", "InputPeer"],
+      ["import_id", "long"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getAttachMenuBot",
+  "messages.getExportedChatInvites": [
+    0xA2B5A3F6,
     [
-      0x77216192,
-      [
-        ["bot", "InputUser"],
-      ],
-      "AttachMenuBotsBot",
+      ["flags", "#"],
+      ["revoked", "flags.3?true"],
+      ["peer", "InputPeer"],
+      ["admin_id", "InputUser"],
+      ["offset_date", "flags.2?int"],
+      ["offset_link", "flags.2?string"],
+      ["limit", "int"],
     ],
+    "messages.ExportedChatInvites",
   ],
-  [
-    "messages.toggleBotInAttachMenu",
+  "messages.getExportedChatInvite": [
+    0x73746F5C,
     [
-      0x69F59D69,
-      [
-        ["flags", "#"],
-        ["write_allowed", "flags.0?true"],
-        ["bot", "InputUser"],
-        ["enabled", "Bool"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["link", "string"],
     ],
+    "messages.ExportedChatInvite",
   ],
-  [
-    "messages.requestWebView",
+  "messages.editExportedChatInvite": [
+    0xBDCA2F75,
     [
-      0x269DC2C1,
-      [
-        ["flags", "#"],
-        ["from_bot_menu", "flags.4?true"],
-        ["silent", "flags.5?true"],
-        ["compact", "flags.7?true"],
-        ["fullscreen", "flags.8?true"],
-        ["peer", "InputPeer"],
-        ["bot", "InputUser"],
-        ["url", "flags.1?string"],
-        ["start_param", "flags.3?string"],
-        ["theme_params", "flags.2?DataJSON"],
-        ["platform", "string"],
-        ["reply_to", "flags.0?InputReplyTo"],
-        ["send_as", "flags.13?InputPeer"],
-      ],
-      "WebViewResult",
+      ["flags", "#"],
+      ["revoked", "flags.2?true"],
+      ["peer", "InputPeer"],
+      ["link", "string"],
+      ["expire_date", "flags.0?int"],
+      ["usage_limit", "flags.1?int"],
+      ["request_needed", "flags.3?Bool"],
+      ["title", "flags.4?string"],
     ],
+    "messages.ExportedChatInvite",
   ],
-  [
-    "messages.prolongWebView",
+  "messages.deleteRevokedExportedChatInvites": [
+    0x56987BD5,
     [
-      0xB0D81A83,
-      [
-        ["flags", "#"],
-        ["silent", "flags.5?true"],
-        ["peer", "InputPeer"],
-        ["bot", "InputUser"],
-        ["query_id", "long"],
-        ["reply_to", "flags.0?InputReplyTo"],
-        ["send_as", "flags.13?InputPeer"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["admin_id", "InputUser"],
     ],
+    "Bool",
   ],
-  [
-    "messages.requestSimpleWebView",
+  "messages.deleteExportedChatInvite": [
+    0xD464A42B,
     [
-      0x413A3E73,
-      [
-        ["flags", "#"],
-        ["from_switch_webview", "flags.1?true"],
-        ["from_side_menu", "flags.2?true"],
-        ["compact", "flags.7?true"],
-        ["fullscreen", "flags.8?true"],
-        ["bot", "InputUser"],
-        ["url", "flags.3?string"],
-        ["start_param", "flags.4?string"],
-        ["theme_params", "flags.0?DataJSON"],
-        ["platform", "string"],
-      ],
-      "WebViewResult",
+      ["peer", "InputPeer"],
+      ["link", "string"],
     ],
+    "Bool",
   ],
-  [
-    "messages.sendWebViewResultMessage",
+  "messages.getAdminsWithInvites": [
+    0x3920E6EF,
     [
-      0x0A4314F5,
-      [
-        ["bot_query_id", "string"],
-        ["result", "InputBotInlineResult"],
-      ],
-      "WebViewMessageSent",
+      ["peer", "InputPeer"],
     ],
+    "messages.ChatAdminsWithInvites",
   ],
-  [
-    "messages.sendWebViewData",
+  "messages.getChatInviteImporters": [
+    0xDF04DD4E,
     [
-      0xDC0242C8,
-      [
-        ["bot", "InputUser"],
-        ["random_id", "long"],
-        ["button_text", "string"],
-        ["data", "string"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["requested", "flags.0?true"],
+      ["subscription_expired", "flags.3?true"],
+      ["peer", "InputPeer"],
+      ["link", "flags.1?string"],
+      ["q", "flags.2?string"],
+      ["offset_date", "int"],
+      ["offset_user", "InputUser"],
+      ["limit", "int"],
     ],
+    "messages.ChatInviteImporters",
   ],
-  [
-    "messages.transcribeAudio",
+  "messages.setHistoryTTL": [
+    0xB80E5FE4,
     [
-      0x269E9A49,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-      ],
-      "messages.TranscribedAudio",
+      ["peer", "InputPeer"],
+      ["period", "int"],
     ],
+    "Updates",
   ],
-  [
-    "messages.rateTranscribedAudio",
+  "messages.checkHistoryImportPeer": [
+    0x5DC60F03,
     [
-      0x7F1D072F,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["transcription_id", "long"],
-        ["good", "Bool"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
     ],
+    "messages.CheckedHistoryImportPeer",
   ],
-  [
-    "messages.getCustomEmojiDocuments",
+  "messages.setChatTheme": [
+    0xE63BE13F,
     [
-      0xD9AB0F54,
-      [
-        ["document_id", "Vector<long>"],
-      ],
-      "Vector<Document>",
+      ["peer", "InputPeer"],
+      ["emoticon", "string"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getEmojiStickers",
+  "messages.getMessageReadParticipants": [
+    0x31C1C44F,
     [
-      0xFBFCA18F,
-      [
-        ["hash", "long"],
-      ],
-      "messages.AllStickers",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
     ],
+    "Vector<ReadParticipantDate>",
   ],
-  [
-    "messages.getFeaturedEmojiStickers",
+  "messages.getSearchResultsCalendar": [
+    0x6AA3F6BD,
     [
-      0x0ECF6736,
-      [
-        ["hash", "long"],
-      ],
-      "messages.FeaturedStickers",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["saved_peer_id", "flags.2?InputPeer"],
+      ["filter", "MessagesFilter"],
+      ["offset_id", "int"],
+      ["offset_date", "int"],
     ],
+    "messages.SearchResultsCalendar",
   ],
-  [
-    "messages.reportReaction",
+  "messages.getSearchResultsPositions": [
+    0x9C7F2F10,
     [
-      0x3F64C076,
-      [
-        ["peer", "InputPeer"],
-        ["id", "int"],
-        ["reaction_peer", "InputPeer"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["saved_peer_id", "flags.2?InputPeer"],
+      ["filter", "MessagesFilter"],
+      ["offset_id", "int"],
+      ["limit", "int"],
     ],
+    "messages.SearchResultsPositions",
   ],
-  [
-    "messages.getTopReactions",
+  "messages.hideChatJoinRequest": [
+    0x7FE7E815,
     [
-      0xBB8125BA,
-      [
-        ["limit", "int"],
-        ["hash", "long"],
-      ],
-      "messages.Reactions",
+      ["flags", "#"],
+      ["approved", "flags.0?true"],
+      ["peer", "InputPeer"],
+      ["user_id", "InputUser"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getRecentReactions",
+  "messages.hideAllChatJoinRequests": [
+    0xE085F4EA,
     [
-      0x39461DB2,
-      [
-        ["limit", "int"],
-        ["hash", "long"],
-      ],
-      "messages.Reactions",
+      ["flags", "#"],
+      ["approved", "flags.0?true"],
+      ["peer", "InputPeer"],
+      ["link", "flags.1?string"],
     ],
+    "Updates",
   ],
-  [
-    "messages.clearRecentReactions",
+  "messages.toggleNoForwards": [
+    0xB11EAFA2,
     [
-      0x9DFEEFB4,
-      [],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["enabled", "Bool"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getExtendedMedia",
+  "messages.saveDefaultSendAs": [
+    0xCCFDDF96,
     [
-      0x84F80814,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-      ],
-      "Updates",
+      ["peer", "InputPeer"],
+      ["send_as", "InputPeer"],
     ],
+    "Bool",
   ],
-  [
-    "messages.setDefaultHistoryTTL",
+  "messages.sendReaction": [
+    0xD30D78D4,
     [
-      0x9EB51445,
-      [
-        ["period", "int"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["big", "flags.1?true"],
+      ["add_to_recent", "flags.2?true"],
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["reaction", "flags.0?Vector<Reaction>"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getDefaultHistoryTTL",
+  "messages.getMessagesReactions": [
+    0x8BBA90E6,
     [
-      0x658B7188,
-      [],
-      "DefaultHistoryTTL",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
     ],
+    "Updates",
   ],
-  [
-    "messages.sendBotRequestedPeer",
+  "messages.getMessageReactionsList": [
+    0x461B3F48,
     [
-      0x91B2D060,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["button_id", "int"],
-        ["requested_peers", "Vector<InputPeer>"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["id", "int"],
+      ["reaction", "flags.0?Reaction"],
+      ["offset", "flags.1?string"],
+      ["limit", "int"],
     ],
+    "messages.MessageReactionsList",
   ],
-  [
-    "messages.getEmojiGroups",
+  "messages.setChatAvailableReactions": [
+    0x864B2581,
     [
-      0x7488CE5B,
-      [
-        ["hash", "int"],
-      ],
-      "messages.EmojiGroups",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["available_reactions", "ChatReactions"],
+      ["reactions_limit", "flags.0?int"],
+      ["paid_enabled", "flags.1?Bool"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getEmojiStatusGroups",
+  "messages.getAvailableReactions": [
+    0x18DEA0AC,
     [
-      0x2ECD56CD,
-      [
-        ["hash", "int"],
-      ],
-      "messages.EmojiGroups",
+      ["hash", "int"],
     ],
+    "messages.AvailableReactions",
   ],
-  [
-    "messages.getEmojiProfilePhotoGroups",
+  "messages.setDefaultReaction": [
+    0x4F47A016,
     [
-      0x21A548F3,
-      [
-        ["hash", "int"],
-      ],
-      "messages.EmojiGroups",
+      ["reaction", "Reaction"],
     ],
+    "Bool",
   ],
-  [
-    "messages.searchCustomEmoji",
+  "messages.translateText": [
+    0x63183030,
     [
-      0x2C11C0D7,
-      [
-        ["emoticon", "string"],
-        ["hash", "long"],
-      ],
-      "EmojiList",
+      ["flags", "#"],
+      ["peer", "flags.0?InputPeer"],
+      ["id", "flags.0?Vector<int>"],
+      ["text", "flags.1?Vector<TextWithEntities>"],
+      ["to_lang", "string"],
     ],
+    "messages.TranslatedText",
   ],
-  [
-    "messages.togglePeerTranslations",
+  "messages.getUnreadReactions": [
+    0x3223495B,
     [
-      0xE47CB579,
-      [
-        ["flags", "#"],
-        ["disabled", "flags.0?true"],
-        ["peer", "InputPeer"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["top_msg_id", "flags.0?int"],
+      ["offset_id", "int"],
+      ["add_offset", "int"],
+      ["limit", "int"],
+      ["max_id", "int"],
+      ["min_id", "int"],
     ],
+    "messages.Messages",
   ],
-  [
-    "messages.getBotApp",
+  "messages.readReactions": [
+    0x54AA7F8E,
     [
-      0x34FDC5C3,
-      [
-        ["app", "InputBotApp"],
-        ["hash", "long"],
-      ],
-      "messages.BotApp",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["top_msg_id", "flags.0?int"],
     ],
+    "messages.AffectedHistory",
   ],
-  [
-    "messages.requestAppWebView",
+  "messages.searchSentMedia": [
+    0x107E31A0,
     [
-      0x53618BCE,
-      [
-        ["flags", "#"],
-        ["write_allowed", "flags.0?true"],
-        ["compact", "flags.7?true"],
-        ["fullscreen", "flags.8?true"],
-        ["peer", "InputPeer"],
-        ["app", "InputBotApp"],
-        ["start_param", "flags.1?string"],
-        ["theme_params", "flags.2?DataJSON"],
-        ["platform", "string"],
-      ],
-      "WebViewResult",
+      ["q", "string"],
+      ["filter", "MessagesFilter"],
+      ["limit", "int"],
     ],
+    "messages.Messages",
   ],
-  [
-    "messages.setChatWallPaper",
+  "messages.getAttachMenuBots": [
+    0x16FCC2CB,
     [
-      0x8FFACAE1,
-      [
-        ["flags", "#"],
-        ["for_both", "flags.3?true"],
-        ["revert", "flags.4?true"],
-        ["peer", "InputPeer"],
-        ["wallpaper", "flags.0?InputWallPaper"],
-        ["settings", "flags.2?WallPaperSettings"],
-        ["id", "flags.1?int"],
-      ],
-      "Updates",
+      ["hash", "long"],
     ],
+    "AttachMenuBots",
   ],
-  [
-    "messages.searchEmojiStickerSets",
+  "messages.getAttachMenuBot": [
+    0x77216192,
     [
-      0x92B4494C,
-      [
-        ["flags", "#"],
-        ["exclude_featured", "flags.0?true"],
-        ["q", "string"],
-        ["hash", "long"],
-      ],
-      "messages.FoundStickerSets",
+      ["bot", "InputUser"],
     ],
+    "AttachMenuBotsBot",
   ],
-  [
-    "messages.getSavedDialogs",
+  "messages.toggleBotInAttachMenu": [
+    0x69F59D69,
     [
-      0x5381D21A,
-      [
-        ["flags", "#"],
-        ["exclude_pinned", "flags.0?true"],
-        ["offset_date", "int"],
-        ["offset_id", "int"],
-        ["offset_peer", "InputPeer"],
-        ["limit", "int"],
-        ["hash", "long"],
-      ],
-      "messages.SavedDialogs",
+      ["flags", "#"],
+      ["write_allowed", "flags.0?true"],
+      ["bot", "InputUser"],
+      ["enabled", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getSavedHistory",
+  "messages.requestWebView": [
+    0x269DC2C1,
     [
-      0x3D9A414D,
-      [
-        ["peer", "InputPeer"],
-        ["offset_id", "int"],
-        ["offset_date", "int"],
-        ["add_offset", "int"],
-        ["limit", "int"],
-        ["max_id", "int"],
-        ["min_id", "int"],
-        ["hash", "long"],
-      ],
-      "messages.Messages",
+      ["flags", "#"],
+      ["from_bot_menu", "flags.4?true"],
+      ["silent", "flags.5?true"],
+      ["compact", "flags.7?true"],
+      ["fullscreen", "flags.8?true"],
+      ["peer", "InputPeer"],
+      ["bot", "InputUser"],
+      ["url", "flags.1?string"],
+      ["start_param", "flags.3?string"],
+      ["theme_params", "flags.2?DataJSON"],
+      ["platform", "string"],
+      ["reply_to", "flags.0?InputReplyTo"],
+      ["send_as", "flags.13?InputPeer"],
     ],
+    "WebViewResult",
   ],
-  [
-    "messages.deleteSavedHistory",
+  "messages.prolongWebView": [
+    0xB0D81A83,
     [
-      0x6E98102B,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["max_id", "int"],
-        ["min_date", "flags.2?int"],
-        ["max_date", "flags.3?int"],
-      ],
-      "messages.AffectedHistory",
+      ["flags", "#"],
+      ["silent", "flags.5?true"],
+      ["peer", "InputPeer"],
+      ["bot", "InputUser"],
+      ["query_id", "long"],
+      ["reply_to", "flags.0?InputReplyTo"],
+      ["send_as", "flags.13?InputPeer"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getPinnedSavedDialogs",
+  "messages.requestSimpleWebView": [
+    0x413A3E73,
     [
-      0xD63D94E0,
-      [],
-      "messages.SavedDialogs",
+      ["flags", "#"],
+      ["from_switch_webview", "flags.1?true"],
+      ["from_side_menu", "flags.2?true"],
+      ["compact", "flags.7?true"],
+      ["fullscreen", "flags.8?true"],
+      ["bot", "InputUser"],
+      ["url", "flags.3?string"],
+      ["start_param", "flags.4?string"],
+      ["theme_params", "flags.0?DataJSON"],
+      ["platform", "string"],
     ],
+    "WebViewResult",
   ],
-  [
-    "messages.toggleSavedDialogPin",
+  "messages.sendWebViewResultMessage": [
+    0x0A4314F5,
     [
-      0xAC81BBDE,
-      [
-        ["flags", "#"],
-        ["pinned", "flags.0?true"],
-        ["peer", "InputDialogPeer"],
-      ],
-      "Bool",
+      ["bot_query_id", "string"],
+      ["result", "InputBotInlineResult"],
     ],
+    "WebViewMessageSent",
   ],
-  [
-    "messages.reorderPinnedSavedDialogs",
+  "messages.sendWebViewData": [
+    0xDC0242C8,
     [
-      0x8B716587,
-      [
-        ["flags", "#"],
-        ["force", "flags.0?true"],
-        ["order", "Vector<InputDialogPeer>"],
-      ],
-      "Bool",
+      ["bot", "InputUser"],
+      ["random_id", "long"],
+      ["button_text", "string"],
+      ["data", "string"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getSavedReactionTags",
+  "messages.transcribeAudio": [
+    0x269E9A49,
     [
-      0x3637E05B,
-      [
-        ["flags", "#"],
-        ["peer", "flags.0?InputPeer"],
-        ["hash", "long"],
-      ],
-      "messages.SavedReactionTags",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
     ],
+    "messages.TranscribedAudio",
   ],
-  [
-    "messages.updateSavedReactionTag",
+  "messages.rateTranscribedAudio": [
+    0x7F1D072F,
     [
-      0x60297DEC,
-      [
-        ["flags", "#"],
-        ["reaction", "Reaction"],
-        ["title", "flags.0?string"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["transcription_id", "long"],
+      ["good", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "messages.getDefaultTagReactions",
+  "messages.getCustomEmojiDocuments": [
+    0xD9AB0F54,
     [
-      0xBDF93428,
-      [
-        ["hash", "long"],
-      ],
-      "messages.Reactions",
+      ["document_id", "Vector<long>"],
     ],
+    "Vector<Document>",
   ],
-  [
-    "messages.getOutboxReadDate",
+  "messages.getEmojiStickers": [
+    0xFBFCA18F,
     [
-      0x8C4BFE5D,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-      ],
-      "OutboxReadDate",
+      ["hash", "long"],
     ],
+    "messages.AllStickers",
   ],
-  [
-    "messages.getQuickReplies",
+  "messages.getFeaturedEmojiStickers": [
+    0x0ECF6736,
     [
-      0xD483F2A8,
-      [
-        ["hash", "long"],
-      ],
-      "messages.QuickReplies",
+      ["hash", "long"],
     ],
+    "messages.FeaturedStickers",
   ],
-  [
-    "messages.reorderQuickReplies",
+  "messages.reportReaction": [
+    0x3F64C076,
     [
-      0x60331907,
-      [
-        ["order", "Vector<int>"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["id", "int"],
+      ["reaction_peer", "InputPeer"],
     ],
+    "Bool",
   ],
-  [
-    "messages.checkQuickReplyShortcut",
+  "messages.getTopReactions": [
+    0xBB8125BA,
     [
-      0xF1D0FBD3,
-      [
-        ["shortcut", "string"],
-      ],
-      "Bool",
+      ["limit", "int"],
+      ["hash", "long"],
     ],
+    "messages.Reactions",
   ],
-  [
-    "messages.editQuickReplyShortcut",
+  "messages.getRecentReactions": [
+    0x39461DB2,
     [
-      0x5C003CEF,
-      [
-        ["shortcut_id", "int"],
-        ["shortcut", "string"],
-      ],
-      "Bool",
+      ["limit", "int"],
+      ["hash", "long"],
     ],
+    "messages.Reactions",
+  ],
+  "messages.clearRecentReactions": [
+    0x9DFEEFB4,
+    [],
+    "Bool",
   ],
-  [
-    "messages.deleteQuickReplyShortcut",
+  "messages.getExtendedMedia": [
+    0x84F80814,
     [
-      0x3CC04740,
-      [
-        ["shortcut_id", "int"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
     ],
+    "Updates",
   ],
-  [
-    "messages.getQuickReplyMessages",
+  "messages.setDefaultHistoryTTL": [
+    0x9EB51445,
     [
-      0x94A495C3,
-      [
-        ["flags", "#"],
-        ["shortcut_id", "int"],
-        ["id", "flags.0?Vector<int>"],
-        ["hash", "long"],
-      ],
-      "messages.Messages",
+      ["period", "int"],
     ],
+    "Bool",
   ],
-  [
-    "messages.sendQuickReplyMessages",
+  "messages.getDefaultHistoryTTL": [
+    0x658B7188,
+    [],
+    "DefaultHistoryTTL",
+  ],
+  "messages.sendBotRequestedPeer": [
+    0x91B2D060,
     [
-      0x6C750DE1,
-      [
-        ["peer", "InputPeer"],
-        ["shortcut_id", "int"],
-        ["id", "Vector<int>"],
-        ["random_id", "Vector<long>"],
-      ],
-      "Updates",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["button_id", "int"],
+      ["requested_peers", "Vector<InputPeer>"],
     ],
+    "Updates",
   ],
-  [
-    "messages.deleteQuickReplyMessages",
+  "messages.getEmojiGroups": [
+    0x7488CE5B,
     [
-      0xE105E910,
-      [
-        ["shortcut_id", "int"],
-        ["id", "Vector<int>"],
-      ],
-      "Updates",
+      ["hash", "int"],
     ],
+    "messages.EmojiGroups",
   ],
-  [
-    "messages.toggleDialogFilterTags",
+  "messages.getEmojiStatusGroups": [
+    0x2ECD56CD,
     [
-      0xFD2DDA49,
-      [
-        ["enabled", "Bool"],
-      ],
-      "Bool",
+      ["hash", "int"],
     ],
+    "messages.EmojiGroups",
   ],
-  [
-    "messages.getMyStickers",
+  "messages.getEmojiProfilePhotoGroups": [
+    0x21A548F3,
     [
-      0xD0B5E1FC,
-      [
-        ["offset_id", "long"],
-        ["limit", "int"],
-      ],
-      "messages.MyStickers",
+      ["hash", "int"],
     ],
+    "messages.EmojiGroups",
   ],
-  [
-    "messages.getEmojiStickerGroups",
+  "messages.searchCustomEmoji": [
+    0x2C11C0D7,
     [
-      0x1DD840F5,
-      [
-        ["hash", "int"],
-      ],
-      "messages.EmojiGroups",
+      ["emoticon", "string"],
+      ["hash", "long"],
     ],
+    "EmojiList",
   ],
-  [
-    "messages.getAvailableEffects",
+  "messages.togglePeerTranslations": [
+    0xE47CB579,
     [
-      0xDEA20A39,
-      [
-        ["hash", "int"],
-      ],
-      "messages.AvailableEffects",
+      ["flags", "#"],
+      ["disabled", "flags.0?true"],
+      ["peer", "InputPeer"],
     ],
+    "Bool",
   ],
-  [
-    "messages.editFactCheck",
+  "messages.getBotApp": [
+    0x34FDC5C3,
     [
-      0x0589EE75,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["text", "TextWithEntities"],
-      ],
-      "Updates",
+      ["app", "InputBotApp"],
+      ["hash", "long"],
     ],
+    "messages.BotApp",
   ],
-  [
-    "messages.deleteFactCheck",
+  "messages.requestAppWebView": [
+    0x53618BCE,
     [
-      0xD1DA940C,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["write_allowed", "flags.0?true"],
+      ["compact", "flags.7?true"],
+      ["fullscreen", "flags.8?true"],
+      ["peer", "InputPeer"],
+      ["app", "InputBotApp"],
+      ["start_param", "flags.1?string"],
+      ["theme_params", "flags.2?DataJSON"],
+      ["platform", "string"],
     ],
+    "WebViewResult",
   ],
-  [
-    "messages.getFactCheck",
+  "messages.setChatWallPaper": [
+    0x8FFACAE1,
     [
-      0xB9CDC5EE,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "Vector<int>"],
-      ],
-      "Vector<FactCheck>",
+      ["flags", "#"],
+      ["for_both", "flags.3?true"],
+      ["revert", "flags.4?true"],
+      ["peer", "InputPeer"],
+      ["wallpaper", "flags.0?InputWallPaper"],
+      ["settings", "flags.2?WallPaperSettings"],
+      ["id", "flags.1?int"],
     ],
+    "Updates",
   ],
-  [
-    "messages.requestMainWebView",
+  "messages.searchEmojiStickerSets": [
+    0x92B4494C,
     [
-      0xC9E01E7B,
-      [
-        ["flags", "#"],
-        ["compact", "flags.7?true"],
-        ["fullscreen", "flags.8?true"],
-        ["peer", "InputPeer"],
-        ["bot", "InputUser"],
-        ["start_param", "flags.1?string"],
-        ["theme_params", "flags.0?DataJSON"],
-        ["platform", "string"],
-      ],
-      "WebViewResult",
+      ["flags", "#"],
+      ["exclude_featured", "flags.0?true"],
+      ["q", "string"],
+      ["hash", "long"],
     ],
+    "messages.FoundStickerSets",
   ],
-  [
-    "messages.sendPaidReaction",
+  "messages.getSavedDialogs": [
+    0x5381D21A,
     [
-      0x58BBCB50,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["count", "int"],
-        ["random_id", "long"],
-        ["private", "flags.0?PaidReactionPrivacy"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["exclude_pinned", "flags.0?true"],
+      ["offset_date", "int"],
+      ["offset_id", "int"],
+      ["offset_peer", "InputPeer"],
+      ["limit", "int"],
+      ["hash", "long"],
     ],
+    "messages.SavedDialogs",
   ],
-  [
-    "messages.togglePaidReactionPrivacy",
+  "messages.getSavedHistory": [
+    0x3D9A414D,
     [
-      0x435885B5,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-        ["private", "PaidReactionPrivacy"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["offset_id", "int"],
+      ["offset_date", "int"],
+      ["add_offset", "int"],
+      ["limit", "int"],
+      ["max_id", "int"],
+      ["min_id", "int"],
+      ["hash", "long"],
     ],
+    "messages.Messages",
   ],
-  [
-    "messages.getPaidReactionPrivacy",
+  "messages.deleteSavedHistory": [
+    0x6E98102B,
     [
-      0x472455AA,
-      [],
-      "Updates",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["max_id", "int"],
+      ["min_date", "flags.2?int"],
+      ["max_date", "flags.3?int"],
     ],
+    "messages.AffectedHistory",
+  ],
+  "messages.getPinnedSavedDialogs": [
+    0xD63D94E0,
+    [],
+    "messages.SavedDialogs",
   ],
-  [
-    "messages.viewSponsoredMessage",
+  "messages.toggleSavedDialogPin": [
+    0xAC81BBDE,
     [
-      0x673AD8F1,
-      [
-        ["peer", "InputPeer"],
-        ["random_id", "bytes"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["pinned", "flags.0?true"],
+      ["peer", "InputDialogPeer"],
     ],
+    "Bool",
   ],
-  [
-    "messages.clickSponsoredMessage",
+  "messages.reorderPinnedSavedDialogs": [
+    0x8B716587,
     [
-      0x0F093465,
-      [
-        ["flags", "#"],
-        ["media", "flags.0?true"],
-        ["fullscreen", "flags.1?true"],
-        ["peer", "InputPeer"],
-        ["random_id", "bytes"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["force", "flags.0?true"],
+      ["order", "Vector<InputDialogPeer>"],
     ],
+    "Bool",
   ],
-  [
-    "messages.reportSponsoredMessage",
+  "messages.getSavedReactionTags": [
+    0x3637E05B,
     [
-      0x1AF3DBB8,
-      [
-        ["peer", "InputPeer"],
-        ["random_id", "bytes"],
-        ["option", "bytes"],
-      ],
-      "channels.SponsoredMessageReportResult",
+      ["flags", "#"],
+      ["peer", "flags.0?InputPeer"],
+      ["hash", "long"],
     ],
+    "messages.SavedReactionTags",
   ],
-  [
-    "messages.getSponsoredMessages",
+  "messages.updateSavedReactionTag": [
+    0x60297DEC,
     [
-      0x9BD2F439,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "messages.SponsoredMessages",
+      ["flags", "#"],
+      ["reaction", "Reaction"],
+      ["title", "flags.0?string"],
     ],
+    "Bool",
   ],
-  [
-    "messages.savePreparedInlineMessage",
+  "messages.getDefaultTagReactions": [
+    0xBDF93428,
     [
-      0xF21F7F2F,
-      [
-        ["flags", "#"],
-        ["result", "InputBotInlineResult"],
-        ["user_id", "InputUser"],
-        ["peer_types", "flags.0?Vector<InlineQueryPeerType>"],
-      ],
-      "messages.BotPreparedInlineMessage",
+      ["hash", "long"],
     ],
+    "messages.Reactions",
   ],
-  [
-    "messages.getPreparedInlineMessage",
+  "messages.getOutboxReadDate": [
+    0x8C4BFE5D,
     [
-      0x857EBDB8,
-      [
-        ["bot", "InputUser"],
-        ["id", "string"],
-      ],
-      "messages.PreparedInlineMessage",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
     ],
+    "OutboxReadDate",
   ],
-  [
-    "messages.searchStickers",
+  "messages.getQuickReplies": [
+    0xD483F2A8,
     [
-      0x29B1C66A,
-      [
-        ["flags", "#"],
-        ["emojis", "flags.0?true"],
-        ["q", "string"],
-        ["emoticon", "string"],
-        ["lang_code", "Vector<string>"],
-        ["offset", "int"],
-        ["limit", "int"],
-        ["hash", "long"],
-      ],
-      "messages.FoundStickers",
+      ["hash", "long"],
     ],
+    "messages.QuickReplies",
   ],
-  [
-    "messages.reportMessagesDelivery",
+  "messages.reorderQuickReplies": [
+    0x60331907,
     [
-      0x5A6D7395,
-      [
-        ["flags", "#"],
-        ["push", "flags.0?true"],
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-      ],
-      "Bool",
+      ["order", "Vector<int>"],
     ],
+    "Bool",
   ],
-  [
-    "updates.getState",
+  "messages.checkQuickReplyShortcut": [
+    0xF1D0FBD3,
     [
-      0xEDD4882A,
-      [],
-      "updates.State",
+      ["shortcut", "string"],
     ],
+    "Bool",
   ],
-  [
-    "updates.getDifference",
+  "messages.editQuickReplyShortcut": [
+    0x5C003CEF,
     [
-      0x19C2F763,
-      [
-        ["flags", "#"],
-        ["pts", "int"],
-        ["pts_limit", "flags.1?int"],
-        ["pts_total_limit", "flags.0?int"],
-        ["date", "int"],
-        ["qts", "int"],
-        ["qts_limit", "flags.2?int"],
-      ],
-      "updates.Difference",
+      ["shortcut_id", "int"],
+      ["shortcut", "string"],
     ],
+    "Bool",
   ],
-  [
-    "updates.getChannelDifference",
+  "messages.deleteQuickReplyShortcut": [
+    0x3CC04740,
     [
-      0x03173D78,
-      [
-        ["flags", "#"],
-        ["force", "flags.0?true"],
-        ["channel", "InputChannel"],
-        ["filter", "ChannelMessagesFilter"],
-        ["pts", "int"],
-        ["limit", "int"],
-      ],
-      "updates.ChannelDifference",
+      ["shortcut_id", "int"],
     ],
+    "Bool",
   ],
-  [
-    "photos.updateProfilePhoto",
+  "messages.getQuickReplyMessages": [
+    0x94A495C3,
     [
-      0x09E82039,
-      [
-        ["flags", "#"],
-        ["fallback", "flags.0?true"],
-        ["bot", "flags.1?InputUser"],
-        ["id", "InputPhoto"],
-      ],
-      "photos.Photo",
+      ["flags", "#"],
+      ["shortcut_id", "int"],
+      ["id", "flags.0?Vector<int>"],
+      ["hash", "long"],
     ],
+    "messages.Messages",
   ],
-  [
-    "photos.uploadProfilePhoto",
+  "messages.sendQuickReplyMessages": [
+    0x6C750DE1,
     [
-      0x0388A3B5,
-      [
-        ["flags", "#"],
-        ["fallback", "flags.3?true"],
-        ["bot", "flags.5?InputUser"],
-        ["file", "flags.0?InputFile"],
-        ["video", "flags.1?InputFile"],
-        ["video_start_ts", "flags.2?double"],
-        ["video_emoji_markup", "flags.4?VideoSize"],
-      ],
-      "photos.Photo",
+      ["peer", "InputPeer"],
+      ["shortcut_id", "int"],
+      ["id", "Vector<int>"],
+      ["random_id", "Vector<long>"],
     ],
+    "Updates",
   ],
-  [
-    "photos.deletePhotos",
+  "messages.deleteQuickReplyMessages": [
+    0xE105E910,
     [
-      0x87CF7F2F,
-      [
-        ["id", "Vector<InputPhoto>"],
-      ],
-      "Vector<long>",
+      ["shortcut_id", "int"],
+      ["id", "Vector<int>"],
     ],
+    "Updates",
   ],
-  [
-    "photos.getUserPhotos",
+  "messages.toggleDialogFilterTags": [
+    0xFD2DDA49,
     [
-      0x91CD32A8,
-      [
-        ["user_id", "InputUser"],
-        ["offset", "int"],
-        ["max_id", "long"],
-        ["limit", "int"],
-      ],
-      "photos.Photos",
+      ["enabled", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "photos.uploadContactProfilePhoto",
+  "messages.getMyStickers": [
+    0xD0B5E1FC,
     [
-      0xE14C4A71,
-      [
-        ["flags", "#"],
-        ["suggest", "flags.3?true"],
-        ["save", "flags.4?true"],
-        ["user_id", "InputUser"],
-        ["file", "flags.0?InputFile"],
-        ["video", "flags.1?InputFile"],
-        ["video_start_ts", "flags.2?double"],
-        ["video_emoji_markup", "flags.5?VideoSize"],
-      ],
-      "photos.Photo",
+      ["offset_id", "long"],
+      ["limit", "int"],
     ],
+    "messages.MyStickers",
   ],
-  [
-    "upload.saveFilePart",
+  "messages.getEmojiStickerGroups": [
+    0x1DD840F5,
     [
-      0xB304A621,
-      [
-        ["file_id", "long"],
-        ["file_part", "int"],
-        ["bytes", "bytes"],
-      ],
-      "Bool",
+      ["hash", "int"],
     ],
+    "messages.EmojiGroups",
   ],
-  [
-    "upload.getFile",
+  "messages.getAvailableEffects": [
+    0xDEA20A39,
     [
-      0xBE5335BE,
-      [
-        ["flags", "#"],
-        ["precise", "flags.0?true"],
-        ["cdn_supported", "flags.1?true"],
-        ["location", "InputFileLocation"],
-        ["offset", "long"],
-        ["limit", "int"],
-      ],
-      "upload.File",
+      ["hash", "int"],
     ],
+    "messages.AvailableEffects",
   ],
-  [
-    "upload.saveBigFilePart",
+  "messages.editFactCheck": [
+    0x0589EE75,
     [
-      0xDE7B673D,
-      [
-        ["file_id", "long"],
-        ["file_part", "int"],
-        ["file_total_parts", "int"],
-        ["bytes", "bytes"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["text", "TextWithEntities"],
     ],
+    "Updates",
   ],
-  [
-    "upload.getWebFile",
+  "messages.deleteFactCheck": [
+    0xD1DA940C,
     [
-      0x24E6818D,
-      [
-        ["location", "InputWebFileLocation"],
-        ["offset", "int"],
-        ["limit", "int"],
-      ],
-      "upload.WebFile",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
     ],
+    "Updates",
   ],
-  [
-    "upload.getCdnFile",
+  "messages.getFactCheck": [
+    0xB9CDC5EE,
     [
-      0x395F69DA,
-      [
-        ["file_token", "bytes"],
-        ["offset", "long"],
-        ["limit", "int"],
-      ],
-      "upload.CdnFile",
+      ["peer", "InputPeer"],
+      ["msg_id", "Vector<int>"],
     ],
+    "Vector<FactCheck>",
   ],
-  [
-    "upload.reuploadCdnFile",
+  "messages.requestMainWebView": [
+    0xC9E01E7B,
     [
-      0x9B2754A8,
-      [
-        ["file_token", "bytes"],
-        ["request_token", "bytes"],
-      ],
-      "Vector<FileHash>",
+      ["flags", "#"],
+      ["compact", "flags.7?true"],
+      ["fullscreen", "flags.8?true"],
+      ["peer", "InputPeer"],
+      ["bot", "InputUser"],
+      ["start_param", "flags.1?string"],
+      ["theme_params", "flags.0?DataJSON"],
+      ["platform", "string"],
     ],
+    "WebViewResult",
   ],
-  [
-    "upload.getCdnFileHashes",
+  "messages.sendPaidReaction": [
+    0x58BBCB50,
     [
-      0x91DC3F31,
-      [
-        ["file_token", "bytes"],
-        ["offset", "long"],
-      ],
-      "Vector<FileHash>",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["count", "int"],
+      ["random_id", "long"],
+      ["private", "flags.0?PaidReactionPrivacy"],
     ],
+    "Updates",
   ],
-  [
-    "upload.getFileHashes",
+  "messages.togglePaidReactionPrivacy": [
+    0x435885B5,
     [
-      0x9156982A,
-      [
-        ["location", "InputFileLocation"],
-        ["offset", "long"],
-      ],
-      "Vector<FileHash>",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
+      ["private", "PaidReactionPrivacy"],
     ],
+    "Bool",
   ],
-  [
-    "help.getConfig",
+  "messages.getPaidReactionPrivacy": [
+    0x472455AA,
+    [],
+    "Updates",
+  ],
+  "messages.viewSponsoredMessage": [
+    0x673AD8F1,
     [
-      0xC4F9186B,
-      [],
-      "Config",
+      ["peer", "InputPeer"],
+      ["random_id", "bytes"],
     ],
+    "Bool",
   ],
-  [
-    "help.getNearestDc",
+  "messages.clickSponsoredMessage": [
+    0x0F093465,
     [
-      0x1FB33026,
-      [],
-      "NearestDc",
+      ["flags", "#"],
+      ["media", "flags.0?true"],
+      ["fullscreen", "flags.1?true"],
+      ["peer", "InputPeer"],
+      ["random_id", "bytes"],
     ],
+    "Bool",
   ],
-  [
-    "help.getAppUpdate",
+  "messages.reportSponsoredMessage": [
+    0x1AF3DBB8,
     [
-      0x522D5A7D,
-      [
-        ["source", "string"],
-      ],
-      "help.AppUpdate",
+      ["peer", "InputPeer"],
+      ["random_id", "bytes"],
+      ["option", "bytes"],
     ],
+    "channels.SponsoredMessageReportResult",
   ],
-  [
-    "help.getInviteText",
+  "messages.getSponsoredMessages": [
+    0x9BD2F439,
     [
-      0x4D392343,
-      [],
-      "help.InviteText",
+      ["peer", "InputPeer"],
     ],
+    "messages.SponsoredMessages",
   ],
-  [
-    "help.getSupport",
+  "messages.savePreparedInlineMessage": [
+    0xF21F7F2F,
     [
-      0x9CDF08CD,
-      [],
-      "help.Support",
+      ["flags", "#"],
+      ["result", "InputBotInlineResult"],
+      ["user_id", "InputUser"],
+      ["peer_types", "flags.0?Vector<InlineQueryPeerType>"],
     ],
+    "messages.BotPreparedInlineMessage",
   ],
-  [
-    "help.setBotUpdatesStatus",
+  "messages.getPreparedInlineMessage": [
+    0x857EBDB8,
     [
-      0xEC22CFCD,
-      [
-        ["pending_updates_count", "int"],
-        ["message", "string"],
-      ],
-      "Bool",
+      ["bot", "InputUser"],
+      ["id", "string"],
     ],
+    "messages.PreparedInlineMessage",
   ],
-  [
-    "help.getCdnConfig",
+  "messages.searchStickers": [
+    0x29B1C66A,
     [
-      0x52029342,
-      [],
-      "CdnConfig",
+      ["flags", "#"],
+      ["emojis", "flags.0?true"],
+      ["q", "string"],
+      ["emoticon", "string"],
+      ["lang_code", "Vector<string>"],
+      ["offset", "int"],
+      ["limit", "int"],
+      ["hash", "long"],
     ],
+    "messages.FoundStickers",
   ],
-  [
-    "help.getRecentMeUrls",
+  "messages.reportMessagesDelivery": [
+    0x5A6D7395,
     [
-      0x3DC0F114,
-      [
-        ["referer", "string"],
-      ],
-      "help.RecentMeUrls",
+      ["flags", "#"],
+      ["push", "flags.0?true"],
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
     ],
+    "Bool",
+  ],
+  "updates.getState": [
+    0xEDD4882A,
+    [],
+    "updates.State",
   ],
-  [
-    "help.getTermsOfServiceUpdate",
+  "updates.getDifference": [
+    0x19C2F763,
     [
-      0x2CA51FD1,
-      [],
-      "help.TermsOfServiceUpdate",
+      ["flags", "#"],
+      ["pts", "int"],
+      ["pts_limit", "flags.1?int"],
+      ["pts_total_limit", "flags.0?int"],
+      ["date", "int"],
+      ["qts", "int"],
+      ["qts_limit", "flags.2?int"],
     ],
+    "updates.Difference",
   ],
-  [
-    "help.acceptTermsOfService",
+  "updates.getChannelDifference": [
+    0x03173D78,
     [
-      0xEE72F79A,
-      [
-        ["id", "DataJSON"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["force", "flags.0?true"],
+      ["channel", "InputChannel"],
+      ["filter", "ChannelMessagesFilter"],
+      ["pts", "int"],
+      ["limit", "int"],
     ],
+    "updates.ChannelDifference",
   ],
-  [
-    "help.getDeepLinkInfo",
+  "photos.updateProfilePhoto": [
+    0x09E82039,
     [
-      0x3FEDC75F,
-      [
-        ["path", "string"],
-      ],
-      "help.DeepLinkInfo",
+      ["flags", "#"],
+      ["fallback", "flags.0?true"],
+      ["bot", "flags.1?InputUser"],
+      ["id", "InputPhoto"],
     ],
+    "photos.Photo",
   ],
-  [
-    "help.getAppConfig",
+  "photos.uploadProfilePhoto": [
+    0x0388A3B5,
     [
-      0x61E3F854,
-      [
-        ["hash", "int"],
-      ],
-      "help.AppConfig",
+      ["flags", "#"],
+      ["fallback", "flags.3?true"],
+      ["bot", "flags.5?InputUser"],
+      ["file", "flags.0?InputFile"],
+      ["video", "flags.1?InputFile"],
+      ["video_start_ts", "flags.2?double"],
+      ["video_emoji_markup", "flags.4?VideoSize"],
     ],
+    "photos.Photo",
   ],
-  [
-    "help.saveAppLog",
+  "photos.deletePhotos": [
+    0x87CF7F2F,
     [
-      0x6F02F748,
-      [
-        ["events", "Vector<InputAppEvent>"],
-      ],
-      "Bool",
+      ["id", "Vector<InputPhoto>"],
     ],
+    "Vector<long>",
   ],
-  [
-    "help.getPassportConfig",
+  "photos.getUserPhotos": [
+    0x91CD32A8,
     [
-      0xC661AD08,
-      [
-        ["hash", "int"],
-      ],
-      "help.PassportConfig",
+      ["user_id", "InputUser"],
+      ["offset", "int"],
+      ["max_id", "long"],
+      ["limit", "int"],
     ],
+    "photos.Photos",
   ],
-  [
-    "help.getSupportName",
+  "photos.uploadContactProfilePhoto": [
+    0xE14C4A71,
     [
-      0xD360E72C,
-      [],
-      "help.SupportName",
+      ["flags", "#"],
+      ["suggest", "flags.3?true"],
+      ["save", "flags.4?true"],
+      ["user_id", "InputUser"],
+      ["file", "flags.0?InputFile"],
+      ["video", "flags.1?InputFile"],
+      ["video_start_ts", "flags.2?double"],
+      ["video_emoji_markup", "flags.5?VideoSize"],
     ],
+    "photos.Photo",
   ],
-  [
-    "help.getUserInfo",
+  "upload.saveFilePart": [
+    0xB304A621,
     [
-      0x038A08D3,
-      [
-        ["user_id", "InputUser"],
-      ],
-      "help.UserInfo",
+      ["file_id", "long"],
+      ["file_part", "int"],
+      ["bytes", "bytes"],
     ],
+    "Bool",
   ],
-  [
-    "help.editUserInfo",
+  "upload.getFile": [
+    0xBE5335BE,
     [
-      0x66B91B70,
-      [
-        ["user_id", "InputUser"],
-        ["message", "string"],
-        ["entities", "Vector<MessageEntity>"],
-      ],
-      "help.UserInfo",
+      ["flags", "#"],
+      ["precise", "flags.0?true"],
+      ["cdn_supported", "flags.1?true"],
+      ["location", "InputFileLocation"],
+      ["offset", "long"],
+      ["limit", "int"],
     ],
+    "upload.File",
   ],
-  [
-    "help.getPromoData",
+  "upload.saveBigFilePart": [
+    0xDE7B673D,
     [
-      0xC0977421,
-      [],
-      "help.PromoData",
+      ["file_id", "long"],
+      ["file_part", "int"],
+      ["file_total_parts", "int"],
+      ["bytes", "bytes"],
     ],
+    "Bool",
   ],
-  [
-    "help.hidePromoData",
+  "upload.getWebFile": [
+    0x24E6818D,
     [
-      0x1E251C95,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "Bool",
+      ["location", "InputWebFileLocation"],
+      ["offset", "int"],
+      ["limit", "int"],
     ],
+    "upload.WebFile",
   ],
-  [
-    "help.dismissSuggestion",
+  "upload.getCdnFile": [
+    0x395F69DA,
     [
-      0xF50DBAA1,
-      [
-        ["peer", "InputPeer"],
-        ["suggestion", "string"],
-      ],
-      "Bool",
+      ["file_token", "bytes"],
+      ["offset", "long"],
+      ["limit", "int"],
     ],
+    "upload.CdnFile",
   ],
-  [
-    "help.getCountriesList",
+  "upload.reuploadCdnFile": [
+    0x9B2754A8,
     [
-      0x735787A8,
-      [
-        ["lang_code", "string"],
-        ["hash", "int"],
-      ],
-      "help.CountriesList",
+      ["file_token", "bytes"],
+      ["request_token", "bytes"],
     ],
+    "Vector<FileHash>",
   ],
-  [
-    "help.getPremiumPromo",
+  "upload.getCdnFileHashes": [
+    0x91DC3F31,
     [
-      0xB81B93D4,
-      [],
-      "help.PremiumPromo",
+      ["file_token", "bytes"],
+      ["offset", "long"],
     ],
+    "Vector<FileHash>",
   ],
-  [
-    "help.getPeerColors",
+  "upload.getFileHashes": [
+    0x9156982A,
     [
-      0xDA80F42F,
-      [
-        ["hash", "int"],
-      ],
-      "help.PeerColors",
+      ["location", "InputFileLocation"],
+      ["offset", "long"],
     ],
+    "Vector<FileHash>",
+  ],
+  "help.getConfig": [
+    0xC4F9186B,
+    [],
+    "Config",
+  ],
+  "help.getNearestDc": [
+    0x1FB33026,
+    [],
+    "NearestDc",
   ],
-  [
-    "help.getPeerProfileColors",
+  "help.getAppUpdate": [
+    0x522D5A7D,
     [
-      0xABCFA9FD,
-      [
-        ["hash", "int"],
-      ],
-      "help.PeerColors",
+      ["source", "string"],
     ],
+    "help.AppUpdate",
   ],
-  [
-    "help.getTimezonesList",
+  "help.getInviteText": [
+    0x4D392343,
+    [],
+    "help.InviteText",
+  ],
+  "help.getSupport": [
+    0x9CDF08CD,
+    [],
+    "help.Support",
+  ],
+  "help.setBotUpdatesStatus": [
+    0xEC22CFCD,
     [
-      0x49B30240,
-      [
-        ["hash", "int"],
-      ],
-      "help.TimezonesList",
+      ["pending_updates_count", "int"],
+      ["message", "string"],
     ],
+    "Bool",
   ],
-  [
-    "channels.readHistory",
+  "help.getCdnConfig": [
+    0x52029342,
+    [],
+    "CdnConfig",
+  ],
+  "help.getRecentMeUrls": [
+    0x3DC0F114,
     [
-      0xCC104937,
-      [
-        ["channel", "InputChannel"],
-        ["max_id", "int"],
-      ],
-      "Bool",
+      ["referer", "string"],
     ],
+    "help.RecentMeUrls",
+  ],
+  "help.getTermsOfServiceUpdate": [
+    0x2CA51FD1,
+    [],
+    "help.TermsOfServiceUpdate",
   ],
-  [
-    "channels.deleteMessages",
+  "help.acceptTermsOfService": [
+    0xEE72F79A,
     [
-      0x84C1FD4E,
-      [
-        ["channel", "InputChannel"],
-        ["id", "Vector<int>"],
-      ],
-      "messages.AffectedMessages",
+      ["id", "DataJSON"],
     ],
+    "Bool",
   ],
-  [
-    "channels.reportSpam",
+  "help.getDeepLinkInfo": [
+    0x3FEDC75F,
     [
-      0xF44A8315,
-      [
-        ["channel", "InputChannel"],
-        ["participant", "InputPeer"],
-        ["id", "Vector<int>"],
-      ],
-      "Bool",
+      ["path", "string"],
     ],
+    "help.DeepLinkInfo",
   ],
-  [
-    "channels.getMessages",
+  "help.getAppConfig": [
+    0x61E3F854,
     [
-      0xAD8C9A23,
-      [
-        ["channel", "InputChannel"],
-        ["id", "Vector<InputMessage>"],
-      ],
-      "messages.Messages",
+      ["hash", "int"],
     ],
+    "help.AppConfig",
   ],
-  [
-    "channels.getParticipants",
+  "help.saveAppLog": [
+    0x6F02F748,
     [
-      0x77CED9D0,
-      [
-        ["channel", "InputChannel"],
-        ["filter", "ChannelParticipantsFilter"],
-        ["offset", "int"],
-        ["limit", "int"],
-        ["hash", "long"],
-      ],
-      "channels.ChannelParticipants",
+      ["events", "Vector<InputAppEvent>"],
     ],
+    "Bool",
   ],
-  [
-    "channels.getParticipant",
+  "help.getPassportConfig": [
+    0xC661AD08,
     [
-      0xA0AB6CC6,
-      [
-        ["channel", "InputChannel"],
-        ["participant", "InputPeer"],
-      ],
-      "channels.ChannelParticipant",
+      ["hash", "int"],
     ],
+    "help.PassportConfig",
   ],
-  [
-    "channels.getChannels",
+  "help.getSupportName": [
+    0xD360E72C,
+    [],
+    "help.SupportName",
+  ],
+  "help.getUserInfo": [
+    0x038A08D3,
     [
-      0x0A7F6BBB,
-      [
-        ["id", "Vector<InputChannel>"],
-      ],
-      "messages.Chats",
+      ["user_id", "InputUser"],
     ],
+    "help.UserInfo",
   ],
-  [
-    "channels.getFullChannel",
+  "help.editUserInfo": [
+    0x66B91B70,
     [
-      0x08736A09,
-      [
-        ["channel", "InputChannel"],
-      ],
-      "messages.ChatFull",
+      ["user_id", "InputUser"],
+      ["message", "string"],
+      ["entities", "Vector<MessageEntity>"],
     ],
+    "help.UserInfo",
+  ],
+  "help.getPromoData": [
+    0xC0977421,
+    [],
+    "help.PromoData",
   ],
-  [
-    "channels.createChannel",
+  "help.hidePromoData": [
+    0x1E251C95,
     [
-      0x91006707,
-      [
-        ["flags", "#"],
-        ["broadcast", "flags.0?true"],
-        ["megagroup", "flags.1?true"],
-        ["for_import", "flags.3?true"],
-        ["forum", "flags.5?true"],
-        ["title", "string"],
-        ["about", "string"],
-        ["geo_point", "flags.2?InputGeoPoint"],
-        ["address", "flags.2?string"],
-        ["ttl_period", "flags.4?int"],
-      ],
-      "Updates",
+      ["peer", "InputPeer"],
     ],
+    "Bool",
   ],
-  [
-    "channels.editAdmin",
+  "help.dismissSuggestion": [
+    0xF50DBAA1,
     [
-      0xD33C8902,
-      [
-        ["channel", "InputChannel"],
-        ["user_id", "InputUser"],
-        ["admin_rights", "ChatAdminRights"],
-        ["rank", "string"],
-      ],
-      "Updates",
+      ["peer", "InputPeer"],
+      ["suggestion", "string"],
     ],
+    "Bool",
   ],
-  [
-    "channels.editTitle",
+  "help.getCountriesList": [
+    0x735787A8,
     [
-      0x566DECD0,
-      [
-        ["channel", "InputChannel"],
-        ["title", "string"],
-      ],
-      "Updates",
+      ["lang_code", "string"],
+      ["hash", "int"],
     ],
+    "help.CountriesList",
   ],
-  [
-    "channels.editPhoto",
+  "help.getPremiumPromo": [
+    0xB81B93D4,
+    [],
+    "help.PremiumPromo",
+  ],
+  "help.getPeerColors": [
+    0xDA80F42F,
     [
-      0xF12E57C9,
-      [
-        ["channel", "InputChannel"],
-        ["photo", "InputChatPhoto"],
-      ],
-      "Updates",
+      ["hash", "int"],
     ],
+    "help.PeerColors",
   ],
-  [
-    "channels.checkUsername",
+  "help.getPeerProfileColors": [
+    0xABCFA9FD,
     [
-      0x10E6BD2C,
-      [
-        ["channel", "InputChannel"],
-        ["username", "string"],
-      ],
-      "Bool",
+      ["hash", "int"],
     ],
+    "help.PeerColors",
   ],
-  [
-    "channels.updateUsername",
+  "help.getTimezonesList": [
+    0x49B30240,
     [
-      0x3514B3DE,
-      [
-        ["channel", "InputChannel"],
-        ["username", "string"],
-      ],
-      "Bool",
+      ["hash", "int"],
     ],
+    "help.TimezonesList",
   ],
-  [
-    "channels.joinChannel",
+  "channels.readHistory": [
+    0xCC104937,
     [
-      0x24B524C5,
-      [
-        ["channel", "InputChannel"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["max_id", "int"],
     ],
+    "Bool",
   ],
-  [
-    "channels.leaveChannel",
+  "channels.deleteMessages": [
+    0x84C1FD4E,
     [
-      0xF836AA95,
-      [
-        ["channel", "InputChannel"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["id", "Vector<int>"],
     ],
+    "messages.AffectedMessages",
   ],
-  [
-    "channels.inviteToChannel",
+  "channels.reportSpam": [
+    0xF44A8315,
     [
-      0xC9E33D54,
-      [
-        ["channel", "InputChannel"],
-        ["users", "Vector<InputUser>"],
-      ],
-      "messages.InvitedUsers",
+      ["channel", "InputChannel"],
+      ["participant", "InputPeer"],
+      ["id", "Vector<int>"],
     ],
+    "Bool",
   ],
-  [
-    "channels.deleteChannel",
+  "channels.getMessages": [
+    0xAD8C9A23,
     [
-      0xC0111FE3,
-      [
-        ["channel", "InputChannel"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["id", "Vector<InputMessage>"],
     ],
+    "messages.Messages",
   ],
-  [
-    "channels.exportMessageLink",
+  "channels.getParticipants": [
+    0x77CED9D0,
     [
-      0xE63FADEB,
-      [
-        ["flags", "#"],
-        ["grouped", "flags.0?true"],
-        ["thread", "flags.1?true"],
-        ["channel", "InputChannel"],
-        ["id", "int"],
-      ],
-      "ExportedMessageLink",
+      ["channel", "InputChannel"],
+      ["filter", "ChannelParticipantsFilter"],
+      ["offset", "int"],
+      ["limit", "int"],
+      ["hash", "long"],
     ],
+    "channels.ChannelParticipants",
   ],
-  [
-    "channels.toggleSignatures",
+  "channels.getParticipant": [
+    0xA0AB6CC6,
     [
-      0x418D549C,
-      [
-        ["flags", "#"],
-        ["signatures_enabled", "flags.0?true"],
-        ["profiles_enabled", "flags.1?true"],
-        ["channel", "InputChannel"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["participant", "InputPeer"],
     ],
+    "channels.ChannelParticipant",
   ],
-  [
-    "channels.getAdminedPublicChannels",
+  "channels.getChannels": [
+    0x0A7F6BBB,
     [
-      0xF8B036AF,
-      [
-        ["flags", "#"],
-        ["by_location", "flags.0?true"],
-        ["check_limit", "flags.1?true"],
-        ["for_personal", "flags.2?true"],
-      ],
-      "messages.Chats",
+      ["id", "Vector<InputChannel>"],
     ],
+    "messages.Chats",
   ],
-  [
-    "channels.editBanned",
+  "channels.getFullChannel": [
+    0x08736A09,
     [
-      0x96E6CD81,
-      [
-        ["channel", "InputChannel"],
-        ["participant", "InputPeer"],
-        ["banned_rights", "ChatBannedRights"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
     ],
+    "messages.ChatFull",
   ],
-  [
-    "channels.getAdminLog",
+  "channels.createChannel": [
+    0x91006707,
     [
-      0x33DDF480,
-      [
-        ["flags", "#"],
-        ["channel", "InputChannel"],
-        ["q", "string"],
-        ["events_filter", "flags.0?ChannelAdminLogEventsFilter"],
-        ["admins", "flags.1?Vector<InputUser>"],
-        ["max_id", "long"],
-        ["min_id", "long"],
-        ["limit", "int"],
-      ],
-      "channels.AdminLogResults",
+      ["flags", "#"],
+      ["broadcast", "flags.0?true"],
+      ["megagroup", "flags.1?true"],
+      ["for_import", "flags.3?true"],
+      ["forum", "flags.5?true"],
+      ["title", "string"],
+      ["about", "string"],
+      ["geo_point", "flags.2?InputGeoPoint"],
+      ["address", "flags.2?string"],
+      ["ttl_period", "flags.4?int"],
     ],
+    "Updates",
   ],
-  [
-    "channels.setStickers",
+  "channels.editAdmin": [
+    0xD33C8902,
     [
-      0xEA8CA4F9,
-      [
-        ["channel", "InputChannel"],
-        ["stickerset", "InputStickerSet"],
-      ],
-      "Bool",
+      ["channel", "InputChannel"],
+      ["user_id", "InputUser"],
+      ["admin_rights", "ChatAdminRights"],
+      ["rank", "string"],
     ],
+    "Updates",
   ],
-  [
-    "channels.readMessageContents",
+  "channels.editTitle": [
+    0x566DECD0,
     [
-      0xEAB5DC38,
-      [
-        ["channel", "InputChannel"],
-        ["id", "Vector<int>"],
-      ],
-      "Bool",
+      ["channel", "InputChannel"],
+      ["title", "string"],
     ],
+    "Updates",
   ],
-  [
-    "channels.deleteHistory",
+  "channels.editPhoto": [
+    0xF12E57C9,
     [
-      0x9BAA9647,
-      [
-        ["flags", "#"],
-        ["for_everyone", "flags.0?true"],
-        ["channel", "InputChannel"],
-        ["max_id", "int"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["photo", "InputChatPhoto"],
     ],
+    "Updates",
   ],
-  [
-    "channels.togglePreHistoryHidden",
+  "channels.checkUsername": [
+    0x10E6BD2C,
     [
-      0xEABBB94C,
-      [
-        ["channel", "InputChannel"],
-        ["enabled", "Bool"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["username", "string"],
     ],
+    "Bool",
   ],
-  [
-    "channels.getLeftChannels",
+  "channels.updateUsername": [
+    0x3514B3DE,
     [
-      0x8341ECC0,
-      [
-        ["offset", "int"],
-      ],
-      "messages.Chats",
+      ["channel", "InputChannel"],
+      ["username", "string"],
     ],
+    "Bool",
   ],
-  [
-    "channels.getGroupsForDiscussion",
+  "channels.joinChannel": [
+    0x24B524C5,
     [
-      0xF5DAD378,
-      [],
-      "messages.Chats",
+      ["channel", "InputChannel"],
     ],
+    "Updates",
   ],
-  [
-    "channels.setDiscussionGroup",
+  "channels.leaveChannel": [
+    0xF836AA95,
     [
-      0x40582BB2,
-      [
-        ["broadcast", "InputChannel"],
-        ["group", "InputChannel"],
-      ],
-      "Bool",
+      ["channel", "InputChannel"],
     ],
+    "Updates",
   ],
-  [
-    "channels.editCreator",
+  "channels.inviteToChannel": [
+    0xC9E33D54,
     [
-      0x8F38CD1F,
-      [
-        ["channel", "InputChannel"],
-        ["user_id", "InputUser"],
-        ["password", "InputCheckPasswordSRP"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["users", "Vector<InputUser>"],
     ],
+    "messages.InvitedUsers",
   ],
-  [
-    "channels.editLocation",
+  "channels.deleteChannel": [
+    0xC0111FE3,
     [
-      0x58E63F6D,
-      [
-        ["channel", "InputChannel"],
-        ["geo_point", "InputGeoPoint"],
-        ["address", "string"],
-      ],
-      "Bool",
+      ["channel", "InputChannel"],
     ],
+    "Updates",
   ],
-  [
-    "channels.toggleSlowMode",
+  "channels.exportMessageLink": [
+    0xE63FADEB,
     [
-      0xEDD49EF0,
-      [
-        ["channel", "InputChannel"],
-        ["seconds", "int"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["grouped", "flags.0?true"],
+      ["thread", "flags.1?true"],
+      ["channel", "InputChannel"],
+      ["id", "int"],
     ],
+    "ExportedMessageLink",
   ],
-  [
-    "channels.getInactiveChannels",
+  "channels.toggleSignatures": [
+    0x418D549C,
     [
-      0x11E831EE,
-      [],
-      "messages.InactiveChats",
+      ["flags", "#"],
+      ["signatures_enabled", "flags.0?true"],
+      ["profiles_enabled", "flags.1?true"],
+      ["channel", "InputChannel"],
     ],
+    "Updates",
   ],
-  [
-    "channels.convertToGigagroup",
+  "channels.getAdminedPublicChannels": [
+    0xF8B036AF,
     [
-      0x0B290C69,
-      [
-        ["channel", "InputChannel"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["by_location", "flags.0?true"],
+      ["check_limit", "flags.1?true"],
+      ["for_personal", "flags.2?true"],
     ],
+    "messages.Chats",
   ],
-  [
-    "channels.getSendAs",
+  "channels.editBanned": [
+    0x96E6CD81,
     [
-      0xE785A43F,
-      [
-        ["flags", "#"],
-        ["for_paid_reactions", "flags.0?true"],
-        ["peer", "InputPeer"],
-      ],
-      "channels.SendAsPeers",
+      ["channel", "InputChannel"],
+      ["participant", "InputPeer"],
+      ["banned_rights", "ChatBannedRights"],
     ],
+    "Updates",
   ],
-  [
-    "channels.deleteParticipantHistory",
+  "channels.getAdminLog": [
+    0x33DDF480,
     [
-      0x367544DB,
-      [
-        ["channel", "InputChannel"],
-        ["participant", "InputPeer"],
-      ],
-      "messages.AffectedHistory",
+      ["flags", "#"],
+      ["channel", "InputChannel"],
+      ["q", "string"],
+      ["events_filter", "flags.0?ChannelAdminLogEventsFilter"],
+      ["admins", "flags.1?Vector<InputUser>"],
+      ["max_id", "long"],
+      ["min_id", "long"],
+      ["limit", "int"],
     ],
+    "channels.AdminLogResults",
   ],
-  [
-    "channels.toggleJoinToSend",
+  "channels.setStickers": [
+    0xEA8CA4F9,
     [
-      0xE4CB9580,
-      [
-        ["channel", "InputChannel"],
-        ["enabled", "Bool"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["stickerset", "InputStickerSet"],
     ],
+    "Bool",
   ],
-  [
-    "channels.toggleJoinRequest",
+  "channels.readMessageContents": [
+    0xEAB5DC38,
     [
-      0x4C2985B6,
-      [
-        ["channel", "InputChannel"],
-        ["enabled", "Bool"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["id", "Vector<int>"],
     ],
+    "Bool",
   ],
-  [
-    "channels.reorderUsernames",
+  "channels.deleteHistory": [
+    0x9BAA9647,
     [
-      0xB45CED1D,
-      [
-        ["channel", "InputChannel"],
-        ["order", "Vector<string>"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["for_everyone", "flags.0?true"],
+      ["channel", "InputChannel"],
+      ["max_id", "int"],
     ],
+    "Updates",
   ],
-  [
-    "channels.toggleUsername",
+  "channels.togglePreHistoryHidden": [
+    0xEABBB94C,
     [
-      0x50F24105,
-      [
-        ["channel", "InputChannel"],
-        ["username", "string"],
-        ["active", "Bool"],
-      ],
-      "Bool",
+      ["channel", "InputChannel"],
+      ["enabled", "Bool"],
     ],
+    "Updates",
   ],
-  [
-    "channels.deactivateAllUsernames",
+  "channels.getLeftChannels": [
+    0x8341ECC0,
     [
-      0x0A245DD3,
-      [
-        ["channel", "InputChannel"],
-      ],
-      "Bool",
+      ["offset", "int"],
     ],
+    "messages.Chats",
+  ],
+  "channels.getGroupsForDiscussion": [
+    0xF5DAD378,
+    [],
+    "messages.Chats",
   ],
-  [
-    "channels.toggleForum",
+  "channels.setDiscussionGroup": [
+    0x40582BB2,
     [
-      0xA4298B29,
-      [
-        ["channel", "InputChannel"],
-        ["enabled", "Bool"],
-      ],
-      "Updates",
+      ["broadcast", "InputChannel"],
+      ["group", "InputChannel"],
     ],
+    "Bool",
   ],
-  [
-    "channels.createForumTopic",
+  "channels.editCreator": [
+    0x8F38CD1F,
     [
-      0xF40C0224,
-      [
-        ["flags", "#"],
-        ["channel", "InputChannel"],
-        ["title", "string"],
-        ["icon_color", "flags.0?int"],
-        ["icon_emoji_id", "flags.3?long"],
-        ["random_id", "long"],
-        ["send_as", "flags.2?InputPeer"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["user_id", "InputUser"],
+      ["password", "InputCheckPasswordSRP"],
     ],
+    "Updates",
   ],
-  [
-    "channels.getForumTopics",
+  "channels.editLocation": [
+    0x58E63F6D,
     [
-      0x0DE560D1,
-      [
-        ["flags", "#"],
-        ["channel", "InputChannel"],
-        ["q", "flags.0?string"],
-        ["offset_date", "int"],
-        ["offset_id", "int"],
-        ["offset_topic", "int"],
-        ["limit", "int"],
-      ],
-      "messages.ForumTopics",
+      ["channel", "InputChannel"],
+      ["geo_point", "InputGeoPoint"],
+      ["address", "string"],
     ],
+    "Bool",
   ],
-  [
-    "channels.getForumTopicsByID",
+  "channels.toggleSlowMode": [
+    0xEDD49EF0,
     [
-      0xB0831EB9,
-      [
-        ["channel", "InputChannel"],
-        ["topics", "Vector<int>"],
-      ],
-      "messages.ForumTopics",
+      ["channel", "InputChannel"],
+      ["seconds", "int"],
     ],
+    "Updates",
   ],
-  [
-    "channels.editForumTopic",
+  "channels.getInactiveChannels": [
+    0x11E831EE,
+    [],
+    "messages.InactiveChats",
+  ],
+  "channels.convertToGigagroup": [
+    0x0B290C69,
     [
-      0xF4DFA185,
-      [
-        ["flags", "#"],
-        ["channel", "InputChannel"],
-        ["topic_id", "int"],
-        ["title", "flags.0?string"],
-        ["icon_emoji_id", "flags.1?long"],
-        ["closed", "flags.2?Bool"],
-        ["hidden", "flags.3?Bool"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
     ],
+    "Updates",
   ],
-  [
-    "channels.updatePinnedForumTopic",
+  "channels.getSendAs": [
+    0xE785A43F,
     [
-      0x6C2D9026,
-      [
-        ["channel", "InputChannel"],
-        ["topic_id", "int"],
-        ["pinned", "Bool"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["for_paid_reactions", "flags.0?true"],
+      ["peer", "InputPeer"],
     ],
+    "channels.SendAsPeers",
   ],
-  [
-    "channels.deleteTopicHistory",
+  "channels.deleteParticipantHistory": [
+    0x367544DB,
     [
-      0x34435F2D,
-      [
-        ["channel", "InputChannel"],
-        ["top_msg_id", "int"],
-      ],
-      "messages.AffectedHistory",
+      ["channel", "InputChannel"],
+      ["participant", "InputPeer"],
     ],
+    "messages.AffectedHistory",
   ],
-  [
-    "channels.reorderPinnedForumTopics",
+  "channels.toggleJoinToSend": [
+    0xE4CB9580,
     [
-      0x2950A18F,
-      [
-        ["flags", "#"],
-        ["force", "flags.0?true"],
-        ["channel", "InputChannel"],
-        ["order", "Vector<int>"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["enabled", "Bool"],
     ],
+    "Updates",
   ],
-  [
-    "channels.toggleAntiSpam",
+  "channels.toggleJoinRequest": [
+    0x4C2985B6,
     [
-      0x68F3E4EB,
-      [
-        ["channel", "InputChannel"],
-        ["enabled", "Bool"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["enabled", "Bool"],
     ],
+    "Updates",
   ],
-  [
-    "channels.reportAntiSpamFalsePositive",
+  "channels.reorderUsernames": [
+    0xB45CED1D,
     [
-      0xA850A693,
-      [
-        ["channel", "InputChannel"],
-        ["msg_id", "int"],
-      ],
-      "Bool",
+      ["channel", "InputChannel"],
+      ["order", "Vector<string>"],
     ],
+    "Bool",
   ],
-  [
-    "channels.toggleParticipantsHidden",
+  "channels.toggleUsername": [
+    0x50F24105,
     [
-      0x6A6E7854,
-      [
-        ["channel", "InputChannel"],
-        ["enabled", "Bool"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["username", "string"],
+      ["active", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "channels.updateColor",
+  "channels.deactivateAllUsernames": [
+    0x0A245DD3,
     [
-      0xD8AA3671,
-      [
-        ["flags", "#"],
-        ["for_profile", "flags.1?true"],
-        ["channel", "InputChannel"],
-        ["color", "flags.2?int"],
-        ["background_emoji_id", "flags.0?long"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
     ],
+    "Bool",
   ],
-  [
-    "channels.toggleViewForumAsMessages",
+  "channels.toggleForum": [
+    0xA4298B29,
     [
-      0x9738BB15,
-      [
-        ["channel", "InputChannel"],
-        ["enabled", "Bool"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["enabled", "Bool"],
     ],
+    "Updates",
   ],
-  [
-    "channels.getChannelRecommendations",
+  "channels.createForumTopic": [
+    0xF40C0224,
     [
-      0x25A71742,
-      [
-        ["flags", "#"],
-        ["channel", "flags.0?InputChannel"],
-      ],
-      "messages.Chats",
+      ["flags", "#"],
+      ["channel", "InputChannel"],
+      ["title", "string"],
+      ["icon_color", "flags.0?int"],
+      ["icon_emoji_id", "flags.3?long"],
+      ["random_id", "long"],
+      ["send_as", "flags.2?InputPeer"],
     ],
+    "Updates",
   ],
-  [
-    "channels.updateEmojiStatus",
+  "channels.getForumTopics": [
+    0x0DE560D1,
     [
-      0xF0D3E6A8,
-      [
-        ["channel", "InputChannel"],
-        ["emoji_status", "EmojiStatus"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["channel", "InputChannel"],
+      ["q", "flags.0?string"],
+      ["offset_date", "int"],
+      ["offset_id", "int"],
+      ["offset_topic", "int"],
+      ["limit", "int"],
     ],
+    "messages.ForumTopics",
   ],
-  [
-    "channels.setBoostsToUnblockRestrictions",
+  "channels.getForumTopicsByID": [
+    0xB0831EB9,
     [
-      0xAD399CEE,
-      [
-        ["channel", "InputChannel"],
-        ["boosts", "int"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["topics", "Vector<int>"],
     ],
+    "messages.ForumTopics",
   ],
-  [
-    "channels.setEmojiStickers",
+  "channels.editForumTopic": [
+    0xF4DFA185,
     [
-      0x3CD930B7,
-      [
-        ["channel", "InputChannel"],
-        ["stickerset", "InputStickerSet"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["channel", "InputChannel"],
+      ["topic_id", "int"],
+      ["title", "flags.0?string"],
+      ["icon_emoji_id", "flags.1?long"],
+      ["closed", "flags.2?Bool"],
+      ["hidden", "flags.3?Bool"],
     ],
+    "Updates",
   ],
-  [
-    "channels.restrictSponsoredMessages",
+  "channels.updatePinnedForumTopic": [
+    0x6C2D9026,
     [
-      0x9AE91519,
-      [
-        ["channel", "InputChannel"],
-        ["restricted", "Bool"],
-      ],
-      "Updates",
+      ["channel", "InputChannel"],
+      ["topic_id", "int"],
+      ["pinned", "Bool"],
     ],
+    "Updates",
   ],
-  [
-    "channels.searchPosts",
+  "channels.deleteTopicHistory": [
+    0x34435F2D,
     [
-      0xD19F987B,
-      [
-        ["hashtag", "string"],
-        ["offset_rate", "int"],
-        ["offset_peer", "InputPeer"],
-        ["offset_id", "int"],
-        ["limit", "int"],
-      ],
-      "messages.Messages",
+      ["channel", "InputChannel"],
+      ["top_msg_id", "int"],
     ],
+    "messages.AffectedHistory",
   ],
-  [
-    "channels.updatePaidMessagesPrice",
+  "channels.reorderPinnedForumTopics": [
+    0x2950A18F,
     [
-      0xFC84653F,
-      [
-        ["channel", "InputChannel"],
-        ["send_paid_messages_stars", "long"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["force", "flags.0?true"],
+      ["channel", "InputChannel"],
+      ["order", "Vector<int>"],
     ],
+    "Updates",
   ],
-  [
-    "bots.sendCustomRequest",
+  "channels.toggleAntiSpam": [
+    0x68F3E4EB,
     [
-      0xAA2769ED,
-      [
-        ["custom_method", "string"],
-        ["params", "DataJSON"],
-      ],
-      "DataJSON",
+      ["channel", "InputChannel"],
+      ["enabled", "Bool"],
     ],
+    "Updates",
   ],
-  [
-    "bots.answerWebhookJSONQuery",
+  "channels.reportAntiSpamFalsePositive": [
+    0xA850A693,
     [
-      0xE6213F4D,
-      [
-        ["query_id", "long"],
-        ["data", "DataJSON"],
-      ],
-      "Bool",
+      ["channel", "InputChannel"],
+      ["msg_id", "int"],
     ],
+    "Bool",
   ],
-  [
-    "bots.setBotCommands",
+  "channels.toggleParticipantsHidden": [
+    0x6A6E7854,
     [
-      0x0517165A,
-      [
-        ["scope", "BotCommandScope"],
-        ["lang_code", "string"],
-        ["commands", "Vector<BotCommand>"],
-      ],
-      "Bool",
+      ["channel", "InputChannel"],
+      ["enabled", "Bool"],
     ],
+    "Updates",
   ],
-  [
-    "bots.resetBotCommands",
+  "channels.updateColor": [
+    0xD8AA3671,
     [
-      0x3D8DE0F9,
-      [
-        ["scope", "BotCommandScope"],
-        ["lang_code", "string"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["for_profile", "flags.1?true"],
+      ["channel", "InputChannel"],
+      ["color", "flags.2?int"],
+      ["background_emoji_id", "flags.0?long"],
     ],
+    "Updates",
   ],
-  [
-    "bots.getBotCommands",
+  "channels.toggleViewForumAsMessages": [
+    0x9738BB15,
     [
-      0xE34C0DD6,
-      [
-        ["scope", "BotCommandScope"],
-        ["lang_code", "string"],
-      ],
-      "Vector<BotCommand>",
+      ["channel", "InputChannel"],
+      ["enabled", "Bool"],
     ],
+    "Updates",
   ],
-  [
-    "bots.setBotMenuButton",
+  "channels.getChannelRecommendations": [
+    0x25A71742,
     [
-      0x4504D54F,
-      [
-        ["user_id", "InputUser"],
-        ["button", "BotMenuButton"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["channel", "flags.0?InputChannel"],
     ],
+    "messages.Chats",
   ],
-  [
-    "bots.getBotMenuButton",
+  "channels.updateEmojiStatus": [
+    0xF0D3E6A8,
     [
-      0x9C60EB28,
-      [
-        ["user_id", "InputUser"],
-      ],
-      "BotMenuButton",
+      ["channel", "InputChannel"],
+      ["emoji_status", "EmojiStatus"],
     ],
+    "Updates",
   ],
-  [
-    "bots.setBotBroadcastDefaultAdminRights",
+  "channels.setBoostsToUnblockRestrictions": [
+    0xAD399CEE,
     [
-      0x788464E1,
-      [
-        ["admin_rights", "ChatAdminRights"],
-      ],
-      "Bool",
+      ["channel", "InputChannel"],
+      ["boosts", "int"],
     ],
+    "Updates",
   ],
-  [
-    "bots.setBotGroupDefaultAdminRights",
+  "channels.setEmojiStickers": [
+    0x3CD930B7,
     [
-      0x925EC9EA,
-      [
-        ["admin_rights", "ChatAdminRights"],
-      ],
-      "Bool",
+      ["channel", "InputChannel"],
+      ["stickerset", "InputStickerSet"],
     ],
+    "Bool",
   ],
-  [
-    "bots.setBotInfo",
+  "channels.restrictSponsoredMessages": [
+    0x9AE91519,
     [
-      0x10CF3123,
-      [
-        ["flags", "#"],
-        ["bot", "flags.2?InputUser"],
-        ["lang_code", "string"],
-        ["name", "flags.3?string"],
-        ["about", "flags.0?string"],
-        ["description", "flags.1?string"],
-      ],
-      "Bool",
+      ["channel", "InputChannel"],
+      ["restricted", "Bool"],
     ],
+    "Updates",
   ],
-  [
-    "bots.getBotInfo",
+  "channels.searchPosts": [
+    0xD19F987B,
     [
-      0xDCD914FD,
-      [
-        ["flags", "#"],
-        ["bot", "flags.0?InputUser"],
-        ["lang_code", "string"],
-      ],
-      "bots.BotInfo",
+      ["hashtag", "string"],
+      ["offset_rate", "int"],
+      ["offset_peer", "InputPeer"],
+      ["offset_id", "int"],
+      ["limit", "int"],
     ],
+    "messages.Messages",
   ],
-  [
-    "bots.reorderUsernames",
+  "channels.updatePaidMessagesPrice": [
+    0xFC84653F,
     [
-      0x9709B1C2,
-      [
-        ["bot", "InputUser"],
-        ["order", "Vector<string>"],
-      ],
-      "Bool",
+      ["channel", "InputChannel"],
+      ["send_paid_messages_stars", "long"],
     ],
+    "Updates",
   ],
-  [
-    "bots.toggleUsername",
+  "bots.sendCustomRequest": [
+    0xAA2769ED,
     [
-      0x053CA973,
-      [
-        ["bot", "InputUser"],
-        ["username", "string"],
-        ["active", "Bool"],
-      ],
-      "Bool",
+      ["custom_method", "string"],
+      ["params", "DataJSON"],
     ],
+    "DataJSON",
   ],
-  [
-    "bots.canSendMessage",
+  "bots.answerWebhookJSONQuery": [
+    0xE6213F4D,
     [
-      0x1359F4E6,
-      [
-        ["bot", "InputUser"],
-      ],
-      "Bool",
+      ["query_id", "long"],
+      ["data", "DataJSON"],
     ],
+    "Bool",
   ],
-  [
-    "bots.allowSendMessage",
+  "bots.setBotCommands": [
+    0x0517165A,
     [
-      0xF132E3EF,
-      [
-        ["bot", "InputUser"],
-      ],
-      "Updates",
+      ["scope", "BotCommandScope"],
+      ["lang_code", "string"],
+      ["commands", "Vector<BotCommand>"],
     ],
+    "Bool",
   ],
-  [
-    "bots.invokeWebViewCustomMethod",
+  "bots.resetBotCommands": [
+    0x3D8DE0F9,
     [
-      0x087FC5E7,
-      [
-        ["bot", "InputUser"],
-        ["custom_method", "string"],
-        ["params", "DataJSON"],
-      ],
-      "DataJSON",
+      ["scope", "BotCommandScope"],
+      ["lang_code", "string"],
     ],
+    "Bool",
   ],
-  [
-    "bots.getPopularAppBots",
+  "bots.getBotCommands": [
+    0xE34C0DD6,
     [
-      0xC2510192,
-      [
-        ["offset", "string"],
-        ["limit", "int"],
-      ],
-      "bots.PopularAppBots",
+      ["scope", "BotCommandScope"],
+      ["lang_code", "string"],
     ],
+    "Vector<BotCommand>",
   ],
-  [
-    "bots.addPreviewMedia",
+  "bots.setBotMenuButton": [
+    0x4504D54F,
     [
-      0x17AEB75A,
-      [
-        ["bot", "InputUser"],
-        ["lang_code", "string"],
-        ["media", "InputMedia"],
-      ],
-      "BotPreviewMedia",
+      ["user_id", "InputUser"],
+      ["button", "BotMenuButton"],
     ],
+    "Bool",
   ],
-  [
-    "bots.editPreviewMedia",
+  "bots.getBotMenuButton": [
+    0x9C60EB28,
     [
-      0x8525606F,
-      [
-        ["bot", "InputUser"],
-        ["lang_code", "string"],
-        ["media", "InputMedia"],
-        ["new_media", "InputMedia"],
-      ],
-      "BotPreviewMedia",
+      ["user_id", "InputUser"],
     ],
+    "BotMenuButton",
   ],
-  [
-    "bots.deletePreviewMedia",
+  "bots.setBotBroadcastDefaultAdminRights": [
+    0x788464E1,
     [
-      0x2D0135B3,
-      [
-        ["bot", "InputUser"],
-        ["lang_code", "string"],
-        ["media", "Vector<InputMedia>"],
-      ],
-      "Bool",
+      ["admin_rights", "ChatAdminRights"],
     ],
+    "Bool",
   ],
-  [
-    "bots.reorderPreviewMedias",
+  "bots.setBotGroupDefaultAdminRights": [
+    0x925EC9EA,
     [
-      0xB627F3AA,
-      [
-        ["bot", "InputUser"],
-        ["lang_code", "string"],
-        ["order", "Vector<InputMedia>"],
-      ],
-      "Bool",
+      ["admin_rights", "ChatAdminRights"],
     ],
+    "Bool",
   ],
-  [
-    "bots.getPreviewInfo",
+  "bots.setBotInfo": [
+    0x10CF3123,
     [
-      0x423AB3AD,
-      [
-        ["bot", "InputUser"],
-        ["lang_code", "string"],
-      ],
-      "bots.PreviewInfo",
+      ["flags", "#"],
+      ["bot", "flags.2?InputUser"],
+      ["lang_code", "string"],
+      ["name", "flags.3?string"],
+      ["about", "flags.0?string"],
+      ["description", "flags.1?string"],
     ],
+    "Bool",
   ],
-  [
-    "bots.getPreviewMedias",
+  "bots.getBotInfo": [
+    0xDCD914FD,
     [
-      0xA2A5594D,
-      [
-        ["bot", "InputUser"],
-      ],
-      "Vector<BotPreviewMedia>",
+      ["flags", "#"],
+      ["bot", "flags.0?InputUser"],
+      ["lang_code", "string"],
     ],
+    "bots.BotInfo",
   ],
-  [
-    "bots.updateUserEmojiStatus",
+  "bots.reorderUsernames": [
+    0x9709B1C2,
     [
-      0xED9F30C5,
-      [
-        ["user_id", "InputUser"],
-        ["emoji_status", "EmojiStatus"],
-      ],
-      "Bool",
+      ["bot", "InputUser"],
+      ["order", "Vector<string>"],
     ],
+    "Bool",
   ],
-  [
-    "bots.toggleUserEmojiStatusPermission",
+  "bots.toggleUsername": [
+    0x053CA973,
     [
-      0x06DE6392,
-      [
-        ["bot", "InputUser"],
-        ["enabled", "Bool"],
-      ],
-      "Bool",
+      ["bot", "InputUser"],
+      ["username", "string"],
+      ["active", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "bots.checkDownloadFileParams",
+  "bots.canSendMessage": [
+    0x1359F4E6,
     [
-      0x50077589,
-      [
-        ["bot", "InputUser"],
-        ["file_name", "string"],
-        ["url", "string"],
-      ],
-      "Bool",
+      ["bot", "InputUser"],
     ],
+    "Bool",
   ],
-  [
-    "bots.getAdminedBots",
+  "bots.allowSendMessage": [
+    0xF132E3EF,
     [
-      0xB0711D83,
-      [],
-      "Vector<User>",
+      ["bot", "InputUser"],
     ],
+    "Updates",
   ],
-  [
-    "bots.updateStarRefProgram",
+  "bots.invokeWebViewCustomMethod": [
+    0x087FC5E7,
     [
-      0x778B5AB3,
-      [
-        ["flags", "#"],
-        ["bot", "InputUser"],
-        ["commission_permille", "int"],
-        ["duration_months", "flags.0?int"],
-      ],
-      "StarRefProgram",
+      ["bot", "InputUser"],
+      ["custom_method", "string"],
+      ["params", "DataJSON"],
     ],
+    "DataJSON",
   ],
-  [
-    "bots.setCustomVerification",
+  "bots.getPopularAppBots": [
+    0xC2510192,
     [
-      0x8B89DFBD,
-      [
-        ["flags", "#"],
-        ["enabled", "flags.1?true"],
-        ["bot", "flags.0?InputUser"],
-        ["peer", "InputPeer"],
-        ["custom_description", "flags.2?string"],
-      ],
-      "Bool",
+      ["offset", "string"],
+      ["limit", "int"],
     ],
+    "bots.PopularAppBots",
   ],
-  [
-    "bots.getBotRecommendations",
+  "bots.addPreviewMedia": [
+    0x17AEB75A,
     [
-      0xA1B70815,
-      [
-        ["bot", "InputUser"],
-      ],
-      "users.Users",
+      ["bot", "InputUser"],
+      ["lang_code", "string"],
+      ["media", "InputMedia"],
     ],
+    "BotPreviewMedia",
   ],
-  [
-    "payments.getPaymentForm",
+  "bots.editPreviewMedia": [
+    0x8525606F,
     [
-      0x37148DBB,
-      [
-        ["flags", "#"],
-        ["invoice", "InputInvoice"],
-        ["theme_params", "flags.0?DataJSON"],
-      ],
-      "payments.PaymentForm",
+      ["bot", "InputUser"],
+      ["lang_code", "string"],
+      ["media", "InputMedia"],
+      ["new_media", "InputMedia"],
     ],
+    "BotPreviewMedia",
   ],
-  [
-    "payments.getPaymentReceipt",
+  "bots.deletePreviewMedia": [
+    0x2D0135B3,
     [
-      0x2478D1CC,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-      ],
-      "payments.PaymentReceipt",
+      ["bot", "InputUser"],
+      ["lang_code", "string"],
+      ["media", "Vector<InputMedia>"],
     ],
+    "Bool",
   ],
-  [
-    "payments.validateRequestedInfo",
+  "bots.reorderPreviewMedias": [
+    0xB627F3AA,
     [
-      0xB6C8F12B,
-      [
-        ["flags", "#"],
-        ["save", "flags.0?true"],
-        ["invoice", "InputInvoice"],
-        ["info", "PaymentRequestedInfo"],
-      ],
-      "payments.ValidatedRequestedInfo",
+      ["bot", "InputUser"],
+      ["lang_code", "string"],
+      ["order", "Vector<InputMedia>"],
     ],
+    "Bool",
   ],
-  [
-    "payments.sendPaymentForm",
+  "bots.getPreviewInfo": [
+    0x423AB3AD,
     [
-      0x2D03522F,
-      [
-        ["flags", "#"],
-        ["form_id", "long"],
-        ["invoice", "InputInvoice"],
-        ["requested_info_id", "flags.0?string"],
-        ["shipping_option_id", "flags.1?string"],
-        ["credentials", "InputPaymentCredentials"],
-        ["tip_amount", "flags.2?long"],
-      ],
-      "payments.PaymentResult",
+      ["bot", "InputUser"],
+      ["lang_code", "string"],
     ],
+    "bots.PreviewInfo",
   ],
-  [
-    "payments.getSavedInfo",
+  "bots.getPreviewMedias": [
+    0xA2A5594D,
     [
-      0x227D824B,
-      [],
-      "payments.SavedInfo",
+      ["bot", "InputUser"],
     ],
+    "Vector<BotPreviewMedia>",
   ],
-  [
-    "payments.clearSavedInfo",
+  "bots.updateUserEmojiStatus": [
+    0xED9F30C5,
     [
-      0xD83D70C1,
-      [
-        ["flags", "#"],
-        ["credentials", "flags.0?true"],
-        ["info", "flags.1?true"],
-      ],
-      "Bool",
+      ["user_id", "InputUser"],
+      ["emoji_status", "EmojiStatus"],
     ],
+    "Bool",
   ],
-  [
-    "payments.getBankCardData",
+  "bots.toggleUserEmojiStatusPermission": [
+    0x06DE6392,
     [
-      0x2E79D779,
-      [
-        ["number", "string"],
-      ],
-      "payments.BankCardData",
+      ["bot", "InputUser"],
+      ["enabled", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "payments.exportInvoice",
+  "bots.checkDownloadFileParams": [
+    0x50077589,
     [
-      0x0F91B065,
-      [
-        ["invoice_media", "InputMedia"],
-      ],
-      "payments.ExportedInvoice",
+      ["bot", "InputUser"],
+      ["file_name", "string"],
+      ["url", "string"],
     ],
+    "Bool",
+  ],
+  "bots.getAdminedBots": [
+    0xB0711D83,
+    [],
+    "Vector<User>",
   ],
-  [
-    "payments.assignAppStoreTransaction",
+  "bots.updateStarRefProgram": [
+    0x778B5AB3,
     [
-      0x80ED747D,
-      [
-        ["receipt", "bytes"],
-        ["purpose", "InputStorePaymentPurpose"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["bot", "InputUser"],
+      ["commission_permille", "int"],
+      ["duration_months", "flags.0?int"],
     ],
+    "StarRefProgram",
   ],
-  [
-    "payments.assignPlayMarketTransaction",
+  "bots.setCustomVerification": [
+    0x8B89DFBD,
     [
-      0xDFFD50D3,
-      [
-        ["receipt", "DataJSON"],
-        ["purpose", "InputStorePaymentPurpose"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["enabled", "flags.1?true"],
+      ["bot", "flags.0?InputUser"],
+      ["peer", "InputPeer"],
+      ["custom_description", "flags.2?string"],
     ],
+    "Bool",
   ],
-  [
-    "payments.canPurchasePremium",
+  "bots.getBotRecommendations": [
+    0xA1B70815,
     [
-      0x9FC19EB6,
-      [
-        ["purpose", "InputStorePaymentPurpose"],
-      ],
-      "Bool",
+      ["bot", "InputUser"],
     ],
+    "users.Users",
   ],
-  [
-    "payments.getPremiumGiftCodeOptions",
+  "payments.getPaymentForm": [
+    0x37148DBB,
     [
-      0x2757BA54,
-      [
-        ["flags", "#"],
-        ["boost_peer", "flags.0?InputPeer"],
-      ],
-      "Vector<PremiumGiftCodeOption>",
+      ["flags", "#"],
+      ["invoice", "InputInvoice"],
+      ["theme_params", "flags.0?DataJSON"],
     ],
+    "payments.PaymentForm",
   ],
-  [
-    "payments.checkGiftCode",
+  "payments.getPaymentReceipt": [
+    0x2478D1CC,
     [
-      0x8E51B4C1,
-      [
-        ["slug", "string"],
-      ],
-      "payments.CheckedGiftCode",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
     ],
+    "payments.PaymentReceipt",
   ],
-  [
-    "payments.applyGiftCode",
+  "payments.validateRequestedInfo": [
+    0xB6C8F12B,
     [
-      0xF6E26854,
-      [
-        ["slug", "string"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["save", "flags.0?true"],
+      ["invoice", "InputInvoice"],
+      ["info", "PaymentRequestedInfo"],
     ],
+    "payments.ValidatedRequestedInfo",
   ],
-  [
-    "payments.getGiveawayInfo",
+  "payments.sendPaymentForm": [
+    0x2D03522F,
     [
-      0xF4239425,
-      [
-        ["peer", "InputPeer"],
-        ["msg_id", "int"],
-      ],
-      "payments.GiveawayInfo",
+      ["flags", "#"],
+      ["form_id", "long"],
+      ["invoice", "InputInvoice"],
+      ["requested_info_id", "flags.0?string"],
+      ["shipping_option_id", "flags.1?string"],
+      ["credentials", "InputPaymentCredentials"],
+      ["tip_amount", "flags.2?long"],
     ],
+    "payments.PaymentResult",
   ],
-  [
-    "payments.launchPrepaidGiveaway",
+  "payments.getSavedInfo": [
+    0x227D824B,
+    [],
+    "payments.SavedInfo",
+  ],
+  "payments.clearSavedInfo": [
+    0xD83D70C1,
     [
-      0x5FF58F20,
-      [
-        ["peer", "InputPeer"],
-        ["giveaway_id", "long"],
-        ["purpose", "InputStorePaymentPurpose"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["credentials", "flags.0?true"],
+      ["info", "flags.1?true"],
     ],
+    "Bool",
   ],
-  [
-    "payments.getStarsTopupOptions",
+  "payments.getBankCardData": [
+    0x2E79D779,
     [
-      0xC00EC7D3,
-      [],
-      "Vector<StarsTopupOption>",
+      ["number", "string"],
     ],
+    "payments.BankCardData",
   ],
-  [
-    "payments.getStarsStatus",
+  "payments.exportInvoice": [
+    0x0F91B065,
     [
-      0x104FCFA7,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "payments.StarsStatus",
+      ["invoice_media", "InputMedia"],
     ],
+    "payments.ExportedInvoice",
   ],
-  [
-    "payments.getStarsTransactions",
+  "payments.assignAppStoreTransaction": [
+    0x80ED747D,
     [
-      0x69DA4557,
-      [
-        ["flags", "#"],
-        ["inbound", "flags.0?true"],
-        ["outbound", "flags.1?true"],
-        ["ascending", "flags.2?true"],
-        ["subscription_id", "flags.3?string"],
-        ["peer", "InputPeer"],
-        ["offset", "string"],
-        ["limit", "int"],
-      ],
-      "payments.StarsStatus",
+      ["receipt", "bytes"],
+      ["purpose", "InputStorePaymentPurpose"],
     ],
+    "Updates",
   ],
-  [
-    "payments.sendStarsForm",
+  "payments.assignPlayMarketTransaction": [
+    0xDFFD50D3,
     [
-      0x7998C914,
-      [
-        ["form_id", "long"],
-        ["invoice", "InputInvoice"],
-      ],
-      "payments.PaymentResult",
+      ["receipt", "DataJSON"],
+      ["purpose", "InputStorePaymentPurpose"],
     ],
+    "Updates",
   ],
-  [
-    "payments.refundStarsCharge",
+  "payments.canPurchasePremium": [
+    0x9FC19EB6,
     [
-      0x25AE8F4A,
-      [
-        ["user_id", "InputUser"],
-        ["charge_id", "string"],
-      ],
-      "Updates",
+      ["purpose", "InputStorePaymentPurpose"],
     ],
+    "Bool",
   ],
-  [
-    "payments.getStarsRevenueStats",
+  "payments.getPremiumGiftCodeOptions": [
+    0x2757BA54,
     [
-      0xD91FFAD6,
-      [
-        ["flags", "#"],
-        ["dark", "flags.0?true"],
-        ["peer", "InputPeer"],
-      ],
-      "payments.StarsRevenueStats",
+      ["flags", "#"],
+      ["boost_peer", "flags.0?InputPeer"],
     ],
+    "Vector<PremiumGiftCodeOption>",
   ],
-  [
-    "payments.getStarsRevenueWithdrawalUrl",
+  "payments.checkGiftCode": [
+    0x8E51B4C1,
     [
-      0x13BBE8B3,
-      [
-        ["peer", "InputPeer"],
-        ["stars", "long"],
-        ["password", "InputCheckPasswordSRP"],
-      ],
-      "payments.StarsRevenueWithdrawalUrl",
+      ["slug", "string"],
     ],
+    "payments.CheckedGiftCode",
   ],
-  [
-    "payments.getStarsRevenueAdsAccountUrl",
+  "payments.applyGiftCode": [
+    0xF6E26854,
     [
-      0xD1D7EFC5,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "payments.StarsRevenueAdsAccountUrl",
+      ["slug", "string"],
     ],
+    "Updates",
   ],
-  [
-    "payments.getStarsTransactionsByID",
+  "payments.getGiveawayInfo": [
+    0xF4239425,
     [
-      0x27842D2E,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<InputStarsTransaction>"],
-      ],
-      "payments.StarsStatus",
+      ["peer", "InputPeer"],
+      ["msg_id", "int"],
     ],
+    "payments.GiveawayInfo",
   ],
-  [
-    "payments.getStarsGiftOptions",
+  "payments.launchPrepaidGiveaway": [
+    0x5FF58F20,
     [
-      0xD3C96BC8,
-      [
-        ["flags", "#"],
-        ["user_id", "flags.0?InputUser"],
-      ],
-      "Vector<StarsGiftOption>",
+      ["peer", "InputPeer"],
+      ["giveaway_id", "long"],
+      ["purpose", "InputStorePaymentPurpose"],
     ],
+    "Updates",
+  ],
+  "payments.getStarsTopupOptions": [
+    0xC00EC7D3,
+    [],
+    "Vector<StarsTopupOption>",
   ],
-  [
-    "payments.getStarsSubscriptions",
+  "payments.getStarsStatus": [
+    0x104FCFA7,
     [
-      0x032512C5,
-      [
-        ["flags", "#"],
-        ["missing_balance", "flags.0?true"],
-        ["peer", "InputPeer"],
-        ["offset", "string"],
-      ],
-      "payments.StarsStatus",
+      ["peer", "InputPeer"],
     ],
+    "payments.StarsStatus",
   ],
-  [
-    "payments.changeStarsSubscription",
+  "payments.getStarsTransactions": [
+    0x69DA4557,
     [
-      0xC7770878,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["subscription_id", "string"],
-        ["canceled", "flags.0?Bool"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["inbound", "flags.0?true"],
+      ["outbound", "flags.1?true"],
+      ["ascending", "flags.2?true"],
+      ["subscription_id", "flags.3?string"],
+      ["peer", "InputPeer"],
+      ["offset", "string"],
+      ["limit", "int"],
     ],
+    "payments.StarsStatus",
   ],
-  [
-    "payments.fulfillStarsSubscription",
+  "payments.sendStarsForm": [
+    0x7998C914,
     [
-      0xCC5BEBB3,
-      [
-        ["peer", "InputPeer"],
-        ["subscription_id", "string"],
-      ],
-      "Bool",
+      ["form_id", "long"],
+      ["invoice", "InputInvoice"],
     ],
+    "payments.PaymentResult",
   ],
-  [
-    "payments.getStarsGiveawayOptions",
+  "payments.refundStarsCharge": [
+    0x25AE8F4A,
     [
-      0xBD1EFD3E,
-      [],
-      "Vector<StarsGiveawayOption>",
+      ["user_id", "InputUser"],
+      ["charge_id", "string"],
     ],
+    "Updates",
   ],
-  [
-    "payments.getStarGifts",
+  "payments.getStarsRevenueStats": [
+    0xD91FFAD6,
     [
-      0xC4563590,
-      [
-        ["hash", "int"],
-      ],
-      "payments.StarGifts",
+      ["flags", "#"],
+      ["dark", "flags.0?true"],
+      ["peer", "InputPeer"],
     ],
+    "payments.StarsRevenueStats",
   ],
-  [
-    "payments.saveStarGift",
+  "payments.getStarsRevenueWithdrawalUrl": [
+    0x13BBE8B3,
     [
-      0x2A2A697C,
-      [
-        ["flags", "#"],
-        ["unsave", "flags.0?true"],
-        ["stargift", "InputSavedStarGift"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["stars", "long"],
+      ["password", "InputCheckPasswordSRP"],
     ],
+    "payments.StarsRevenueWithdrawalUrl",
   ],
-  [
-    "payments.convertStarGift",
+  "payments.getStarsRevenueAdsAccountUrl": [
+    0xD1D7EFC5,
     [
-      0x74BF076B,
-      [
-        ["stargift", "InputSavedStarGift"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
     ],
+    "payments.StarsRevenueAdsAccountUrl",
   ],
-  [
-    "payments.botCancelStarsSubscription",
+  "payments.getStarsTransactionsByID": [
+    0x27842D2E,
     [
-      0x6DFA0622,
-      [
-        ["flags", "#"],
-        ["restore", "flags.0?true"],
-        ["user_id", "InputUser"],
-        ["charge_id", "string"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["id", "Vector<InputStarsTransaction>"],
     ],
+    "payments.StarsStatus",
   ],
-  [
-    "payments.getConnectedStarRefBots",
+  "payments.getStarsGiftOptions": [
+    0xD3C96BC8,
     [
-      0x5869A553,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["offset_date", "flags.2?int"],
-        ["offset_link", "flags.2?string"],
-        ["limit", "int"],
-      ],
-      "payments.ConnectedStarRefBots",
+      ["flags", "#"],
+      ["user_id", "flags.0?InputUser"],
     ],
+    "Vector<StarsGiftOption>",
   ],
-  [
-    "payments.getConnectedStarRefBot",
+  "payments.getStarsSubscriptions": [
+    0x032512C5,
     [
-      0xB7D998F0,
-      [
-        ["peer", "InputPeer"],
-        ["bot", "InputUser"],
-      ],
-      "payments.ConnectedStarRefBots",
+      ["flags", "#"],
+      ["missing_balance", "flags.0?true"],
+      ["peer", "InputPeer"],
+      ["offset", "string"],
     ],
+    "payments.StarsStatus",
   ],
-  [
-    "payments.getSuggestedStarRefBots",
+  "payments.changeStarsSubscription": [
+    0xC7770878,
     [
-      0x0D6B48F7,
-      [
-        ["flags", "#"],
-        ["order_by_revenue", "flags.0?true"],
-        ["order_by_date", "flags.1?true"],
-        ["peer", "InputPeer"],
-        ["offset", "string"],
-        ["limit", "int"],
-      ],
-      "payments.SuggestedStarRefBots",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["subscription_id", "string"],
+      ["canceled", "flags.0?Bool"],
     ],
+    "Bool",
   ],
-  [
-    "payments.connectStarRefBot",
+  "payments.fulfillStarsSubscription": [
+    0xCC5BEBB3,
     [
-      0x7ED5348A,
-      [
-        ["peer", "InputPeer"],
-        ["bot", "InputUser"],
-      ],
-      "payments.ConnectedStarRefBots",
+      ["peer", "InputPeer"],
+      ["subscription_id", "string"],
     ],
+    "Bool",
   ],
-  [
-    "payments.editConnectedStarRefBot",
+  "payments.getStarsGiveawayOptions": [
+    0xBD1EFD3E,
+    [],
+    "Vector<StarsGiveawayOption>",
+  ],
+  "payments.getStarGifts": [
+    0xC4563590,
     [
-      0xE4FCA4A3,
-      [
-        ["flags", "#"],
-        ["revoked", "flags.0?true"],
-        ["peer", "InputPeer"],
-        ["link", "string"],
-      ],
-      "payments.ConnectedStarRefBots",
+      ["hash", "int"],
     ],
+    "payments.StarGifts",
   ],
-  [
-    "payments.getStarGiftUpgradePreview",
+  "payments.saveStarGift": [
+    0x2A2A697C,
     [
-      0x9C9ABCB1,
-      [
-        ["gift_id", "long"],
-      ],
-      "payments.StarGiftUpgradePreview",
+      ["flags", "#"],
+      ["unsave", "flags.0?true"],
+      ["stargift", "InputSavedStarGift"],
     ],
+    "Bool",
   ],
-  [
-    "payments.upgradeStarGift",
+  "payments.convertStarGift": [
+    0x74BF076B,
     [
-      0xAED6E4F5,
-      [
-        ["flags", "#"],
-        ["keep_original_details", "flags.0?true"],
-        ["stargift", "InputSavedStarGift"],
-      ],
-      "Updates",
+      ["stargift", "InputSavedStarGift"],
     ],
+    "Bool",
   ],
-  [
-    "payments.transferStarGift",
+  "payments.botCancelStarsSubscription": [
+    0x6DFA0622,
     [
-      0x7F18176A,
-      [
-        ["stargift", "InputSavedStarGift"],
-        ["to_id", "InputPeer"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["restore", "flags.0?true"],
+      ["user_id", "InputUser"],
+      ["charge_id", "string"],
     ],
+    "Bool",
   ],
-  [
-    "payments.getUniqueStarGift",
+  "payments.getConnectedStarRefBots": [
+    0x5869A553,
     [
-      0xA1974D72,
-      [
-        ["slug", "string"],
-      ],
-      "payments.UniqueStarGift",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["offset_date", "flags.2?int"],
+      ["offset_link", "flags.2?string"],
+      ["limit", "int"],
     ],
+    "payments.ConnectedStarRefBots",
   ],
-  [
-    "payments.getSavedStarGifts",
+  "payments.getConnectedStarRefBot": [
+    0xB7D998F0,
     [
-      0x23830DE9,
-      [
-        ["flags", "#"],
-        ["exclude_unsaved", "flags.0?true"],
-        ["exclude_saved", "flags.1?true"],
-        ["exclude_unlimited", "flags.2?true"],
-        ["exclude_limited", "flags.3?true"],
-        ["exclude_unique", "flags.4?true"],
-        ["sort_by_value", "flags.5?true"],
-        ["peer", "InputPeer"],
-        ["offset", "string"],
-        ["limit", "int"],
-      ],
-      "payments.SavedStarGifts",
+      ["peer", "InputPeer"],
+      ["bot", "InputUser"],
     ],
+    "payments.ConnectedStarRefBots",
   ],
-  [
-    "payments.getSavedStarGift",
+  "payments.getSuggestedStarRefBots": [
+    0x0D6B48F7,
     [
-      0xB455A106,
-      [
-        ["stargift", "Vector<InputSavedStarGift>"],
-      ],
-      "payments.SavedStarGifts",
+      ["flags", "#"],
+      ["order_by_revenue", "flags.0?true"],
+      ["order_by_date", "flags.1?true"],
+      ["peer", "InputPeer"],
+      ["offset", "string"],
+      ["limit", "int"],
     ],
+    "payments.SuggestedStarRefBots",
   ],
-  [
-    "payments.getStarGiftWithdrawalUrl",
+  "payments.connectStarRefBot": [
+    0x7ED5348A,
     [
-      0xD06E93A8,
-      [
-        ["stargift", "InputSavedStarGift"],
-        ["password", "InputCheckPasswordSRP"],
-      ],
-      "payments.StarGiftWithdrawalUrl",
+      ["peer", "InputPeer"],
+      ["bot", "InputUser"],
     ],
+    "payments.ConnectedStarRefBots",
   ],
-  [
-    "payments.toggleChatStarGiftNotifications",
+  "payments.editConnectedStarRefBot": [
+    0xE4FCA4A3,
     [
-      0x60EAEFA1,
-      [
-        ["flags", "#"],
-        ["enabled", "flags.0?true"],
-        ["peer", "InputPeer"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["revoked", "flags.0?true"],
+      ["peer", "InputPeer"],
+      ["link", "string"],
     ],
+    "payments.ConnectedStarRefBots",
   ],
-  [
-    "payments.toggleStarGiftsPinnedToTop",
+  "payments.getStarGiftUpgradePreview": [
+    0x9C9ABCB1,
     [
-      0x1513E7B0,
-      [
-        ["peer", "InputPeer"],
-        ["stargift", "Vector<InputSavedStarGift>"],
-      ],
-      "Bool",
+      ["gift_id", "long"],
     ],
+    "payments.StarGiftUpgradePreview",
   ],
-  [
-    "stickers.createStickerSet",
+  "payments.upgradeStarGift": [
+    0xAED6E4F5,
     [
-      0x9021AB67,
-      [
-        ["flags", "#"],
-        ["masks", "flags.0?true"],
-        ["emojis", "flags.5?true"],
-        ["text_color", "flags.6?true"],
-        ["user_id", "InputUser"],
-        ["title", "string"],
-        ["short_name", "string"],
-        ["thumb", "flags.2?InputDocument"],
-        ["stickers", "Vector<InputStickerSetItem>"],
-        ["software", "flags.3?string"],
-      ],
-      "messages.StickerSet",
+      ["flags", "#"],
+      ["keep_original_details", "flags.0?true"],
+      ["stargift", "InputSavedStarGift"],
     ],
+    "Updates",
   ],
-  [
-    "stickers.removeStickerFromSet",
+  "payments.transferStarGift": [
+    0x7F18176A,
     [
-      0xF7760F51,
-      [
-        ["sticker", "InputDocument"],
-      ],
-      "messages.StickerSet",
+      ["stargift", "InputSavedStarGift"],
+      ["to_id", "InputPeer"],
     ],
+    "Updates",
   ],
-  [
-    "stickers.changeStickerPosition",
+  "payments.getUniqueStarGift": [
+    0xA1974D72,
     [
-      0xFFB6D4CA,
-      [
-        ["sticker", "InputDocument"],
-        ["position", "int"],
-      ],
-      "messages.StickerSet",
+      ["slug", "string"],
     ],
+    "payments.UniqueStarGift",
   ],
-  [
-    "stickers.addStickerToSet",
+  "payments.getSavedStarGifts": [
+    0x23830DE9,
     [
-      0x8653FEBE,
-      [
-        ["stickerset", "InputStickerSet"],
-        ["sticker", "InputStickerSetItem"],
-      ],
-      "messages.StickerSet",
+      ["flags", "#"],
+      ["exclude_unsaved", "flags.0?true"],
+      ["exclude_saved", "flags.1?true"],
+      ["exclude_unlimited", "flags.2?true"],
+      ["exclude_limited", "flags.3?true"],
+      ["exclude_unique", "flags.4?true"],
+      ["sort_by_value", "flags.5?true"],
+      ["peer", "InputPeer"],
+      ["offset", "string"],
+      ["limit", "int"],
     ],
+    "payments.SavedStarGifts",
   ],
-  [
-    "stickers.setStickerSetThumb",
+  "payments.getSavedStarGift": [
+    0xB455A106,
     [
-      0xA76A5392,
-      [
-        ["flags", "#"],
-        ["stickerset", "InputStickerSet"],
-        ["thumb", "flags.0?InputDocument"],
-        ["thumb_document_id", "flags.1?long"],
-      ],
-      "messages.StickerSet",
+      ["stargift", "Vector<InputSavedStarGift>"],
     ],
+    "payments.SavedStarGifts",
   ],
-  [
-    "stickers.checkShortName",
+  "payments.getStarGiftWithdrawalUrl": [
+    0xD06E93A8,
     [
-      0x284B3639,
-      [
-        ["short_name", "string"],
-      ],
-      "Bool",
+      ["stargift", "InputSavedStarGift"],
+      ["password", "InputCheckPasswordSRP"],
     ],
+    "payments.StarGiftWithdrawalUrl",
   ],
-  [
-    "stickers.suggestShortName",
+  "payments.toggleChatStarGiftNotifications": [
+    0x60EAEFA1,
     [
-      0x4DAFC503,
-      [
-        ["title", "string"],
-      ],
-      "stickers.SuggestedShortName",
+      ["flags", "#"],
+      ["enabled", "flags.0?true"],
+      ["peer", "InputPeer"],
     ],
+    "Bool",
   ],
-  [
-    "stickers.changeSticker",
+  "payments.toggleStarGiftsPinnedToTop": [
+    0x1513E7B0,
     [
-      0xF5537EBC,
-      [
-        ["flags", "#"],
-        ["sticker", "InputDocument"],
-        ["emoji", "flags.0?string"],
-        ["mask_coords", "flags.1?MaskCoords"],
-        ["keywords", "flags.2?string"],
-      ],
-      "messages.StickerSet",
+      ["peer", "InputPeer"],
+      ["stargift", "Vector<InputSavedStarGift>"],
     ],
+    "Bool",
   ],
-  [
-    "stickers.renameStickerSet",
+  "stickers.createStickerSet": [
+    0x9021AB67,
     [
-      0x124B1C00,
-      [
-        ["stickerset", "InputStickerSet"],
-        ["title", "string"],
-      ],
-      "messages.StickerSet",
+      ["flags", "#"],
+      ["masks", "flags.0?true"],
+      ["emojis", "flags.5?true"],
+      ["text_color", "flags.6?true"],
+      ["user_id", "InputUser"],
+      ["title", "string"],
+      ["short_name", "string"],
+      ["thumb", "flags.2?InputDocument"],
+      ["stickers", "Vector<InputStickerSetItem>"],
+      ["software", "flags.3?string"],
     ],
+    "messages.StickerSet",
   ],
-  [
-    "stickers.deleteStickerSet",
+  "stickers.removeStickerFromSet": [
+    0xF7760F51,
     [
-      0x87704394,
-      [
-        ["stickerset", "InputStickerSet"],
-      ],
-      "Bool",
+      ["sticker", "InputDocument"],
     ],
+    "messages.StickerSet",
   ],
-  [
-    "stickers.replaceSticker",
+  "stickers.changeStickerPosition": [
+    0xFFB6D4CA,
     [
-      0x4696459A,
-      [
-        ["sticker", "InputDocument"],
-        ["new_sticker", "InputStickerSetItem"],
-      ],
-      "messages.StickerSet",
+      ["sticker", "InputDocument"],
+      ["position", "int"],
     ],
+    "messages.StickerSet",
   ],
-  [
-    "phone.getCallConfig",
+  "stickers.addStickerToSet": [
+    0x8653FEBE,
     [
-      0x55451FA9,
-      [],
-      "DataJSON",
+      ["stickerset", "InputStickerSet"],
+      ["sticker", "InputStickerSetItem"],
     ],
+    "messages.StickerSet",
   ],
-  [
-    "phone.requestCall",
+  "stickers.setStickerSetThumb": [
+    0xA76A5392,
     [
-      0xA6C4600C,
-      [
-        ["flags", "#"],
-        ["video", "flags.0?true"],
-        ["user_id", "InputUser"],
-        ["conference_call", "flags.1?InputGroupCall"],
-        ["random_id", "int"],
-        ["g_a_hash", "bytes"],
-        ["protocol", "PhoneCallProtocol"],
-      ],
-      "phone.PhoneCall",
+      ["flags", "#"],
+      ["stickerset", "InputStickerSet"],
+      ["thumb", "flags.0?InputDocument"],
+      ["thumb_document_id", "flags.1?long"],
     ],
+    "messages.StickerSet",
   ],
-  [
-    "phone.acceptCall",
+  "stickers.checkShortName": [
+    0x284B3639,
     [
-      0x3BD2B4A0,
-      [
-        ["peer", "InputPhoneCall"],
-        ["g_b", "bytes"],
-        ["protocol", "PhoneCallProtocol"],
-      ],
-      "phone.PhoneCall",
+      ["short_name", "string"],
     ],
+    "Bool",
   ],
-  [
-    "phone.confirmCall",
+  "stickers.suggestShortName": [
+    0x4DAFC503,
     [
-      0x2EFE1722,
-      [
-        ["peer", "InputPhoneCall"],
-        ["g_a", "bytes"],
-        ["key_fingerprint", "long"],
-        ["protocol", "PhoneCallProtocol"],
-      ],
-      "phone.PhoneCall",
+      ["title", "string"],
     ],
+    "stickers.SuggestedShortName",
   ],
-  [
-    "phone.receivedCall",
+  "stickers.changeSticker": [
+    0xF5537EBC,
     [
-      0x17D54F61,
-      [
-        ["peer", "InputPhoneCall"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["sticker", "InputDocument"],
+      ["emoji", "flags.0?string"],
+      ["mask_coords", "flags.1?MaskCoords"],
+      ["keywords", "flags.2?string"],
     ],
+    "messages.StickerSet",
   ],
-  [
-    "phone.discardCall",
+  "stickers.renameStickerSet": [
+    0x124B1C00,
     [
-      0xB2CBC1C0,
-      [
-        ["flags", "#"],
-        ["video", "flags.0?true"],
-        ["peer", "InputPhoneCall"],
-        ["duration", "int"],
-        ["reason", "PhoneCallDiscardReason"],
-        ["connection_id", "long"],
-      ],
-      "Updates",
+      ["stickerset", "InputStickerSet"],
+      ["title", "string"],
     ],
+    "messages.StickerSet",
   ],
-  [
-    "phone.setCallRating",
+  "stickers.deleteStickerSet": [
+    0x87704394,
     [
-      0x59EAD627,
-      [
-        ["flags", "#"],
-        ["user_initiative", "flags.0?true"],
-        ["peer", "InputPhoneCall"],
-        ["rating", "int"],
-        ["comment", "string"],
-      ],
-      "Updates",
+      ["stickerset", "InputStickerSet"],
     ],
+    "Bool",
   ],
-  [
-    "phone.saveCallDebug",
+  "stickers.replaceSticker": [
+    0x4696459A,
     [
-      0x277ADD7E,
-      [
-        ["peer", "InputPhoneCall"],
-        ["debug", "DataJSON"],
-      ],
-      "Bool",
+      ["sticker", "InputDocument"],
+      ["new_sticker", "InputStickerSetItem"],
     ],
+    "messages.StickerSet",
+  ],
+  "phone.getCallConfig": [
+    0x55451FA9,
+    [],
+    "DataJSON",
   ],
-  [
-    "phone.sendSignalingData",
+  "phone.requestCall": [
+    0xA6C4600C,
     [
-      0xFF7A9383,
-      [
-        ["peer", "InputPhoneCall"],
-        ["data", "bytes"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["video", "flags.0?true"],
+      ["user_id", "InputUser"],
+      ["conference_call", "flags.1?InputGroupCall"],
+      ["random_id", "int"],
+      ["g_a_hash", "bytes"],
+      ["protocol", "PhoneCallProtocol"],
     ],
+    "phone.PhoneCall",
   ],
-  [
-    "phone.createGroupCall",
+  "phone.acceptCall": [
+    0x3BD2B4A0,
     [
-      0x48CDC6D8,
-      [
-        ["flags", "#"],
-        ["rtmp_stream", "flags.2?true"],
-        ["peer", "InputPeer"],
-        ["random_id", "int"],
-        ["title", "flags.0?string"],
-        ["schedule_date", "flags.1?int"],
-      ],
-      "Updates",
+      ["peer", "InputPhoneCall"],
+      ["g_b", "bytes"],
+      ["protocol", "PhoneCallProtocol"],
     ],
+    "phone.PhoneCall",
   ],
-  [
-    "phone.joinGroupCall",
+  "phone.confirmCall": [
+    0x2EFE1722,
     [
-      0xD61E1DF3,
-      [
-        ["flags", "#"],
-        ["muted", "flags.0?true"],
-        ["video_stopped", "flags.2?true"],
-        ["call", "InputGroupCall"],
-        ["join_as", "InputPeer"],
-        ["invite_hash", "flags.1?string"],
-        ["key_fingerprint", "flags.3?long"],
-        ["params", "DataJSON"],
-      ],
-      "Updates",
+      ["peer", "InputPhoneCall"],
+      ["g_a", "bytes"],
+      ["key_fingerprint", "long"],
+      ["protocol", "PhoneCallProtocol"],
     ],
+    "phone.PhoneCall",
   ],
-  [
-    "phone.leaveGroupCall",
+  "phone.receivedCall": [
+    0x17D54F61,
     [
-      0x500377F9,
-      [
-        ["call", "InputGroupCall"],
-        ["source", "int"],
-      ],
-      "Updates",
+      ["peer", "InputPhoneCall"],
     ],
+    "Bool",
   ],
-  [
-    "phone.inviteToGroupCall",
+  "phone.discardCall": [
+    0xB2CBC1C0,
     [
-      0x7B393160,
-      [
-        ["call", "InputGroupCall"],
-        ["users", "Vector<InputUser>"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["video", "flags.0?true"],
+      ["peer", "InputPhoneCall"],
+      ["duration", "int"],
+      ["reason", "PhoneCallDiscardReason"],
+      ["connection_id", "long"],
     ],
+    "Updates",
   ],
-  [
-    "phone.discardGroupCall",
+  "phone.setCallRating": [
+    0x59EAD627,
     [
-      0x7A777135,
-      [
-        ["call", "InputGroupCall"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["user_initiative", "flags.0?true"],
+      ["peer", "InputPhoneCall"],
+      ["rating", "int"],
+      ["comment", "string"],
     ],
+    "Updates",
   ],
-  [
-    "phone.toggleGroupCallSettings",
+  "phone.saveCallDebug": [
+    0x277ADD7E,
     [
-      0x74BBB43D,
-      [
-        ["flags", "#"],
-        ["reset_invite_hash", "flags.1?true"],
-        ["call", "InputGroupCall"],
-        ["join_muted", "flags.0?Bool"],
-      ],
-      "Updates",
+      ["peer", "InputPhoneCall"],
+      ["debug", "DataJSON"],
     ],
+    "Bool",
   ],
-  [
-    "phone.getGroupCall",
+  "phone.sendSignalingData": [
+    0xFF7A9383,
     [
-      0x041845DB,
-      [
-        ["call", "InputGroupCall"],
-        ["limit", "int"],
-      ],
-      "phone.GroupCall",
+      ["peer", "InputPhoneCall"],
+      ["data", "bytes"],
     ],
+    "Bool",
   ],
-  [
-    "phone.getGroupParticipants",
+  "phone.createGroupCall": [
+    0x48CDC6D8,
     [
-      0xC558D8AB,
-      [
-        ["call", "InputGroupCall"],
-        ["ids", "Vector<InputPeer>"],
-        ["sources", "Vector<int>"],
-        ["offset", "string"],
-        ["limit", "int"],
-      ],
-      "phone.GroupParticipants",
+      ["flags", "#"],
+      ["rtmp_stream", "flags.2?true"],
+      ["peer", "InputPeer"],
+      ["random_id", "int"],
+      ["title", "flags.0?string"],
+      ["schedule_date", "flags.1?int"],
     ],
+    "Updates",
   ],
-  [
-    "phone.checkGroupCall",
+  "phone.joinGroupCall": [
+    0xD61E1DF3,
     [
-      0xB59CF977,
-      [
-        ["call", "InputGroupCall"],
-        ["sources", "Vector<int>"],
-      ],
-      "Vector<int>",
+      ["flags", "#"],
+      ["muted", "flags.0?true"],
+      ["video_stopped", "flags.2?true"],
+      ["call", "InputGroupCall"],
+      ["join_as", "InputPeer"],
+      ["invite_hash", "flags.1?string"],
+      ["key_fingerprint", "flags.3?long"],
+      ["params", "DataJSON"],
     ],
+    "Updates",
   ],
-  [
-    "phone.toggleGroupCallRecord",
+  "phone.leaveGroupCall": [
+    0x500377F9,
     [
-      0xF128C708,
-      [
-        ["flags", "#"],
-        ["start", "flags.0?true"],
-        ["video", "flags.2?true"],
-        ["call", "InputGroupCall"],
-        ["title", "flags.1?string"],
-        ["video_portrait", "flags.2?Bool"],
-      ],
-      "Updates",
+      ["call", "InputGroupCall"],
+      ["source", "int"],
     ],
+    "Updates",
   ],
-  [
-    "phone.editGroupCallParticipant",
+  "phone.inviteToGroupCall": [
+    0x7B393160,
     [
-      0xA5273ABF,
-      [
-        ["flags", "#"],
-        ["call", "InputGroupCall"],
-        ["participant", "InputPeer"],
-        ["muted", "flags.0?Bool"],
-        ["volume", "flags.1?int"],
-        ["raise_hand", "flags.2?Bool"],
-        ["video_stopped", "flags.3?Bool"],
-        ["video_paused", "flags.4?Bool"],
-        ["presentation_paused", "flags.5?Bool"],
-      ],
-      "Updates",
+      ["call", "InputGroupCall"],
+      ["users", "Vector<InputUser>"],
     ],
+    "Updates",
   ],
-  [
-    "phone.editGroupCallTitle",
+  "phone.discardGroupCall": [
+    0x7A777135,
     [
-      0x1CA6AC0A,
-      [
-        ["call", "InputGroupCall"],
-        ["title", "string"],
-      ],
-      "Updates",
+      ["call", "InputGroupCall"],
     ],
+    "Updates",
   ],
-  [
-    "phone.getGroupCallJoinAs",
+  "phone.toggleGroupCallSettings": [
+    0x74BBB43D,
     [
-      0xEF7C213A,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "phone.JoinAsPeers",
+      ["flags", "#"],
+      ["reset_invite_hash", "flags.1?true"],
+      ["call", "InputGroupCall"],
+      ["join_muted", "flags.0?Bool"],
     ],
+    "Updates",
   ],
-  [
-    "phone.exportGroupCallInvite",
+  "phone.getGroupCall": [
+    0x041845DB,
     [
-      0xE6AA647F,
-      [
-        ["flags", "#"],
-        ["can_self_unmute", "flags.0?true"],
-        ["call", "InputGroupCall"],
-      ],
-      "phone.ExportedGroupCallInvite",
+      ["call", "InputGroupCall"],
+      ["limit", "int"],
     ],
+    "phone.GroupCall",
   ],
-  [
-    "phone.toggleGroupCallStartSubscription",
+  "phone.getGroupParticipants": [
+    0xC558D8AB,
     [
-      0x219C34E6,
-      [
-        ["call", "InputGroupCall"],
-        ["subscribed", "Bool"],
-      ],
-      "Updates",
+      ["call", "InputGroupCall"],
+      ["ids", "Vector<InputPeer>"],
+      ["sources", "Vector<int>"],
+      ["offset", "string"],
+      ["limit", "int"],
     ],
+    "phone.GroupParticipants",
   ],
-  [
-    "phone.startScheduledGroupCall",
+  "phone.checkGroupCall": [
+    0xB59CF977,
     [
-      0x5680E342,
-      [
-        ["call", "InputGroupCall"],
-      ],
-      "Updates",
+      ["call", "InputGroupCall"],
+      ["sources", "Vector<int>"],
     ],
+    "Vector<int>",
   ],
-  [
-    "phone.saveDefaultGroupCallJoinAs",
+  "phone.toggleGroupCallRecord": [
+    0xF128C708,
     [
-      0x575E1F8C,
-      [
-        ["peer", "InputPeer"],
-        ["join_as", "InputPeer"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["start", "flags.0?true"],
+      ["video", "flags.2?true"],
+      ["call", "InputGroupCall"],
+      ["title", "flags.1?string"],
+      ["video_portrait", "flags.2?Bool"],
     ],
+    "Updates",
   ],
-  [
-    "phone.joinGroupCallPresentation",
+  "phone.editGroupCallParticipant": [
+    0xA5273ABF,
     [
-      0xCBEA6BC4,
-      [
-        ["call", "InputGroupCall"],
-        ["params", "DataJSON"],
-      ],
-      "Updates",
+      ["flags", "#"],
+      ["call", "InputGroupCall"],
+      ["participant", "InputPeer"],
+      ["muted", "flags.0?Bool"],
+      ["volume", "flags.1?int"],
+      ["raise_hand", "flags.2?Bool"],
+      ["video_stopped", "flags.3?Bool"],
+      ["video_paused", "flags.4?Bool"],
+      ["presentation_paused", "flags.5?Bool"],
     ],
+    "Updates",
   ],
-  [
-    "phone.leaveGroupCallPresentation",
+  "phone.editGroupCallTitle": [
+    0x1CA6AC0A,
     [
-      0x1C50D144,
-      [
-        ["call", "InputGroupCall"],
-      ],
-      "Updates",
+      ["call", "InputGroupCall"],
+      ["title", "string"],
     ],
+    "Updates",
   ],
-  [
-    "phone.getGroupCallStreamChannels",
+  "phone.getGroupCallJoinAs": [
+    0xEF7C213A,
     [
-      0x1AB21940,
-      [
-        ["call", "InputGroupCall"],
-      ],
-      "phone.GroupCallStreamChannels",
+      ["peer", "InputPeer"],
     ],
+    "phone.JoinAsPeers",
   ],
-  [
-    "phone.getGroupCallStreamRtmpUrl",
+  "phone.exportGroupCallInvite": [
+    0xE6AA647F,
     [
-      0xDEB3ABBF,
-      [
-        ["peer", "InputPeer"],
-        ["revoke", "Bool"],
-      ],
-      "phone.GroupCallStreamRtmpUrl",
+      ["flags", "#"],
+      ["can_self_unmute", "flags.0?true"],
+      ["call", "InputGroupCall"],
     ],
+    "phone.ExportedGroupCallInvite",
   ],
-  [
-    "phone.saveCallLog",
+  "phone.toggleGroupCallStartSubscription": [
+    0x219C34E6,
     [
-      0x41248786,
-      [
-        ["peer", "InputPhoneCall"],
-        ["file", "InputFile"],
-      ],
-      "Bool",
+      ["call", "InputGroupCall"],
+      ["subscribed", "Bool"],
     ],
+    "Updates",
   ],
-  [
-    "phone.createConferenceCall",
+  "phone.startScheduledGroupCall": [
+    0x5680E342,
     [
-      0xDFC909AB,
-      [
-        ["peer", "InputPhoneCall"],
-        ["key_fingerprint", "long"],
-      ],
-      "phone.PhoneCall",
+      ["call", "InputGroupCall"],
     ],
+    "Updates",
   ],
-  [
-    "langpack.getLangPack",
+  "phone.saveDefaultGroupCallJoinAs": [
+    0x575E1F8C,
     [
-      0xF2F2330A,
-      [
-        ["lang_pack", "string"],
-        ["lang_code", "string"],
-      ],
-      "LangPackDifference",
+      ["peer", "InputPeer"],
+      ["join_as", "InputPeer"],
     ],
+    "Bool",
   ],
-  [
-    "langpack.getStrings",
+  "phone.joinGroupCallPresentation": [
+    0xCBEA6BC4,
     [
-      0xEFEA3803,
-      [
-        ["lang_pack", "string"],
-        ["lang_code", "string"],
-        ["keys", "Vector<string>"],
-      ],
-      "Vector<LangPackString>",
+      ["call", "InputGroupCall"],
+      ["params", "DataJSON"],
     ],
+    "Updates",
   ],
-  [
-    "langpack.getDifference",
+  "phone.leaveGroupCallPresentation": [
+    0x1C50D144,
     [
-      0xCD984AA5,
-      [
-        ["lang_pack", "string"],
-        ["lang_code", "string"],
-        ["from_version", "int"],
-      ],
-      "LangPackDifference",
+      ["call", "InputGroupCall"],
     ],
+    "Updates",
   ],
-  [
-    "langpack.getLanguages",
+  "phone.getGroupCallStreamChannels": [
+    0x1AB21940,
     [
-      0x42C6978F,
-      [
-        ["lang_pack", "string"],
-      ],
-      "Vector<LangPackLanguage>",
+      ["call", "InputGroupCall"],
     ],
+    "phone.GroupCallStreamChannels",
   ],
-  [
-    "langpack.getLanguage",
+  "phone.getGroupCallStreamRtmpUrl": [
+    0xDEB3ABBF,
     [
-      0x6A596502,
-      [
-        ["lang_pack", "string"],
-        ["lang_code", "string"],
-      ],
-      "LangPackLanguage",
+      ["peer", "InputPeer"],
+      ["revoke", "Bool"],
     ],
+    "phone.GroupCallStreamRtmpUrl",
   ],
-  [
-    "folders.editPeerFolders",
+  "phone.saveCallLog": [
+    0x41248786,
     [
-      0x6847D0AB,
-      [
-        ["folder_peers", "Vector<InputFolderPeer>"],
-      ],
-      "Updates",
+      ["peer", "InputPhoneCall"],
+      ["file", "InputFile"],
     ],
+    "Bool",
   ],
-  [
-    "stats.getBroadcastStats",
+  "phone.createConferenceCall": [
+    0xDFC909AB,
     [
-      0xAB42441A,
-      [
-        ["flags", "#"],
-        ["dark", "flags.0?true"],
-        ["channel", "InputChannel"],
-      ],
-      "stats.BroadcastStats",
+      ["peer", "InputPhoneCall"],
+      ["key_fingerprint", "long"],
     ],
+    "phone.PhoneCall",
   ],
-  [
-    "stats.loadAsyncGraph",
+  "langpack.getLangPack": [
+    0xF2F2330A,
     [
-      0x621D5FA0,
-      [
-        ["flags", "#"],
-        ["token", "string"],
-        ["x", "flags.0?long"],
-      ],
-      "StatsGraph",
+      ["lang_pack", "string"],
+      ["lang_code", "string"],
     ],
+    "LangPackDifference",
   ],
-  [
-    "stats.getMegagroupStats",
+  "langpack.getStrings": [
+    0xEFEA3803,
     [
-      0xDCDF8607,
-      [
-        ["flags", "#"],
-        ["dark", "flags.0?true"],
-        ["channel", "InputChannel"],
-      ],
-      "stats.MegagroupStats",
+      ["lang_pack", "string"],
+      ["lang_code", "string"],
+      ["keys", "Vector<string>"],
     ],
+    "Vector<LangPackString>",
   ],
-  [
-    "stats.getMessagePublicForwards",
+  "langpack.getDifference": [
+    0xCD984AA5,
     [
-      0x5F150144,
-      [
-        ["channel", "InputChannel"],
-        ["msg_id", "int"],
-        ["offset", "string"],
-        ["limit", "int"],
-      ],
-      "stats.PublicForwards",
+      ["lang_pack", "string"],
+      ["lang_code", "string"],
+      ["from_version", "int"],
     ],
+    "LangPackDifference",
   ],
-  [
-    "stats.getMessageStats",
+  "langpack.getLanguages": [
+    0x42C6978F,
     [
-      0xB6E0A3F5,
-      [
-        ["flags", "#"],
-        ["dark", "flags.0?true"],
-        ["channel", "InputChannel"],
-        ["msg_id", "int"],
-      ],
-      "stats.MessageStats",
+      ["lang_pack", "string"],
     ],
+    "Vector<LangPackLanguage>",
   ],
-  [
-    "stats.getStoryStats",
+  "langpack.getLanguage": [
+    0x6A596502,
     [
-      0x374FEF40,
-      [
-        ["flags", "#"],
-        ["dark", "flags.0?true"],
-        ["peer", "InputPeer"],
-        ["id", "int"],
-      ],
-      "stats.StoryStats",
+      ["lang_pack", "string"],
+      ["lang_code", "string"],
     ],
+    "LangPackLanguage",
   ],
-  [
-    "stats.getStoryPublicForwards",
+  "folders.editPeerFolders": [
+    0x6847D0AB,
     [
-      0xA6437EF6,
-      [
-        ["peer", "InputPeer"],
-        ["id", "int"],
-        ["offset", "string"],
-        ["limit", "int"],
-      ],
-      "stats.PublicForwards",
+      ["folder_peers", "Vector<InputFolderPeer>"],
     ],
+    "Updates",
   ],
-  [
-    "stats.getBroadcastRevenueStats",
+  "stats.getBroadcastStats": [
+    0xAB42441A,
     [
-      0xF788EE19,
-      [
-        ["flags", "#"],
-        ["dark", "flags.0?true"],
-        ["peer", "InputPeer"],
-      ],
-      "stats.BroadcastRevenueStats",
+      ["flags", "#"],
+      ["dark", "flags.0?true"],
+      ["channel", "InputChannel"],
     ],
+    "stats.BroadcastStats",
   ],
-  [
-    "stats.getBroadcastRevenueWithdrawalUrl",
+  "stats.loadAsyncGraph": [
+    0x621D5FA0,
     [
-      0x9DF4FAAD,
-      [
-        ["peer", "InputPeer"],
-        ["password", "InputCheckPasswordSRP"],
-      ],
-      "stats.BroadcastRevenueWithdrawalUrl",
+      ["flags", "#"],
+      ["token", "string"],
+      ["x", "flags.0?long"],
     ],
+    "StatsGraph",
   ],
-  [
-    "stats.getBroadcastRevenueTransactions",
+  "stats.getMegagroupStats": [
+    0xDCDF8607,
     [
-      0x70990B6D,
-      [
-        ["peer", "InputPeer"],
-        ["offset", "int"],
-        ["limit", "int"],
-      ],
-      "stats.BroadcastRevenueTransactions",
+      ["flags", "#"],
+      ["dark", "flags.0?true"],
+      ["channel", "InputChannel"],
     ],
+    "stats.MegagroupStats",
   ],
-  [
-    "chatlists.exportChatlistInvite",
+  "stats.getMessagePublicForwards": [
+    0x5F150144,
     [
-      0x8472478E,
-      [
-        ["chatlist", "InputChatlist"],
-        ["title", "string"],
-        ["peers", "Vector<InputPeer>"],
-      ],
-      "chatlists.ExportedChatlistInvite",
+      ["channel", "InputChannel"],
+      ["msg_id", "int"],
+      ["offset", "string"],
+      ["limit", "int"],
     ],
+    "stats.PublicForwards",
   ],
-  [
-    "chatlists.deleteExportedInvite",
+  "stats.getMessageStats": [
+    0xB6E0A3F5,
     [
-      0x719C5C5E,
-      [
-        ["chatlist", "InputChatlist"],
-        ["slug", "string"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["dark", "flags.0?true"],
+      ["channel", "InputChannel"],
+      ["msg_id", "int"],
     ],
+    "stats.MessageStats",
   ],
-  [
-    "chatlists.editExportedInvite",
+  "stats.getStoryStats": [
+    0x374FEF40,
     [
-      0x653DB63D,
-      [
-        ["flags", "#"],
-        ["chatlist", "InputChatlist"],
-        ["slug", "string"],
-        ["title", "flags.1?string"],
-        ["peers", "flags.2?Vector<InputPeer>"],
-      ],
-      "ExportedChatlistInvite",
+      ["flags", "#"],
+      ["dark", "flags.0?true"],
+      ["peer", "InputPeer"],
+      ["id", "int"],
     ],
+    "stats.StoryStats",
   ],
-  [
-    "chatlists.getExportedInvites",
+  "stats.getStoryPublicForwards": [
+    0xA6437EF6,
     [
-      0xCE03DA83,
-      [
-        ["chatlist", "InputChatlist"],
-      ],
-      "chatlists.ExportedInvites",
+      ["peer", "InputPeer"],
+      ["id", "int"],
+      ["offset", "string"],
+      ["limit", "int"],
     ],
+    "stats.PublicForwards",
   ],
-  [
-    "chatlists.checkChatlistInvite",
+  "stats.getBroadcastRevenueStats": [
+    0xF788EE19,
     [
-      0x41C10FFF,
-      [
-        ["slug", "string"],
-      ],
-      "chatlists.ChatlistInvite",
+      ["flags", "#"],
+      ["dark", "flags.0?true"],
+      ["peer", "InputPeer"],
     ],
+    "stats.BroadcastRevenueStats",
   ],
-  [
-    "chatlists.joinChatlistInvite",
+  "stats.getBroadcastRevenueWithdrawalUrl": [
+    0x9DF4FAAD,
     [
-      0xA6B1E39A,
-      [
-        ["slug", "string"],
-        ["peers", "Vector<InputPeer>"],
-      ],
-      "Updates",
+      ["peer", "InputPeer"],
+      ["password", "InputCheckPasswordSRP"],
     ],
+    "stats.BroadcastRevenueWithdrawalUrl",
   ],
-  [
-    "chatlists.getChatlistUpdates",
+  "stats.getBroadcastRevenueTransactions": [
+    0x70990B6D,
     [
-      0x89419521,
-      [
-        ["chatlist", "InputChatlist"],
-      ],
-      "chatlists.ChatlistUpdates",
+      ["peer", "InputPeer"],
+      ["offset", "int"],
+      ["limit", "int"],
     ],
+    "stats.BroadcastRevenueTransactions",
   ],
-  [
-    "chatlists.joinChatlistUpdates",
+  "chatlists.exportChatlistInvite": [
+    0x8472478E,
     [
-      0xE089F8F5,
-      [
-        ["chatlist", "InputChatlist"],
-        ["peers", "Vector<InputPeer>"],
-      ],
-      "Updates",
+      ["chatlist", "InputChatlist"],
+      ["title", "string"],
+      ["peers", "Vector<InputPeer>"],
     ],
+    "chatlists.ExportedChatlistInvite",
   ],
-  [
-    "chatlists.hideChatlistUpdates",
+  "chatlists.deleteExportedInvite": [
+    0x719C5C5E,
     [
-      0x66E486FB,
-      [
-        ["chatlist", "InputChatlist"],
-      ],
-      "Bool",
+      ["chatlist", "InputChatlist"],
+      ["slug", "string"],
     ],
+    "Bool",
   ],
-  [
-    "chatlists.getLeaveChatlistSuggestions",
+  "chatlists.editExportedInvite": [
+    0x653DB63D,
     [
-      0xFDBCD714,
-      [
-        ["chatlist", "InputChatlist"],
-      ],
-      "Vector<Peer>",
+      ["flags", "#"],
+      ["chatlist", "InputChatlist"],
+      ["slug", "string"],
+      ["title", "flags.1?string"],
+      ["peers", "flags.2?Vector<InputPeer>"],
     ],
+    "ExportedChatlistInvite",
   ],
-  [
-    "chatlists.leaveChatlist",
+  "chatlists.getExportedInvites": [
+    0xCE03DA83,
     [
-      0x74FAE13A,
-      [
-        ["chatlist", "InputChatlist"],
-        ["peers", "Vector<InputPeer>"],
-      ],
-      "Updates",
+      ["chatlist", "InputChatlist"],
     ],
+    "chatlists.ExportedInvites",
   ],
-  [
-    "stories.canSendStory",
+  "chatlists.checkChatlistInvite": [
+    0x41C10FFF,
     [
-      0xC7DFDFDD,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "Bool",
+      ["slug", "string"],
     ],
+    "chatlists.ChatlistInvite",
   ],
-  [
-    "stories.sendStory",
+  "chatlists.joinChatlistInvite": [
+    0xA6B1E39A,
     [
-      0xE4E6694B,
-      [
-        ["flags", "#"],
-        ["pinned", "flags.2?true"],
-        ["noforwards", "flags.4?true"],
-        ["fwd_modified", "flags.7?true"],
-        ["peer", "InputPeer"],
-        ["media", "InputMedia"],
-        ["media_areas", "flags.5?Vector<MediaArea>"],
-        ["caption", "flags.0?string"],
-        ["entities", "flags.1?Vector<MessageEntity>"],
-        ["privacy_rules", "Vector<InputPrivacyRule>"],
-        ["random_id", "long"],
-        ["period", "flags.3?int"],
-        ["fwd_from_id", "flags.6?InputPeer"],
-        ["fwd_from_story", "flags.6?int"],
-      ],
-      "Updates",
+      ["slug", "string"],
+      ["peers", "Vector<InputPeer>"],
     ],
+    "Updates",
   ],
-  [
-    "stories.editStory",
+  "chatlists.getChatlistUpdates": [
+    0x89419521,
     [
-      0xB583BA46,
-      [
-        ["flags", "#"],
-        ["peer", "InputPeer"],
-        ["id", "int"],
-        ["media", "flags.0?InputMedia"],
-        ["media_areas", "flags.3?Vector<MediaArea>"],
-        ["caption", "flags.1?string"],
-        ["entities", "flags.1?Vector<MessageEntity>"],
-        ["privacy_rules", "flags.2?Vector<InputPrivacyRule>"],
-      ],
-      "Updates",
+      ["chatlist", "InputChatlist"],
     ],
+    "chatlists.ChatlistUpdates",
   ],
-  [
-    "stories.deleteStories",
+  "chatlists.joinChatlistUpdates": [
+    0xE089F8F5,
     [
-      0xAE59DB5F,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-      ],
-      "Vector<int>",
+      ["chatlist", "InputChatlist"],
+      ["peers", "Vector<InputPeer>"],
     ],
+    "Updates",
   ],
-  [
-    "stories.togglePinned",
+  "chatlists.hideChatlistUpdates": [
+    0x66E486FB,
     [
-      0x9A75A1EF,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-        ["pinned", "Bool"],
-      ],
-      "Vector<int>",
+      ["chatlist", "InputChatlist"],
     ],
+    "Bool",
   ],
-  [
-    "stories.getAllStories",
+  "chatlists.getLeaveChatlistSuggestions": [
+    0xFDBCD714,
     [
-      0xEEB0D625,
-      [
-        ["flags", "#"],
-        ["next", "flags.1?true"],
-        ["hidden", "flags.2?true"],
-        ["state", "flags.0?string"],
-      ],
-      "stories.AllStories",
+      ["chatlist", "InputChatlist"],
     ],
+    "Vector<Peer>",
   ],
-  [
-    "stories.getPinnedStories",
+  "chatlists.leaveChatlist": [
+    0x74FAE13A,
     [
-      0x5821A5DC,
-      [
-        ["peer", "InputPeer"],
-        ["offset_id", "int"],
-        ["limit", "int"],
-      ],
-      "stories.Stories",
+      ["chatlist", "InputChatlist"],
+      ["peers", "Vector<InputPeer>"],
     ],
+    "Updates",
   ],
-  [
-    "stories.getStoriesArchive",
+  "stories.canSendStory": [
+    0xC7DFDFDD,
     [
-      0xB4352016,
-      [
-        ["peer", "InputPeer"],
-        ["offset_id", "int"],
-        ["limit", "int"],
-      ],
-      "stories.Stories",
+      ["peer", "InputPeer"],
     ],
+    "Bool",
   ],
-  [
-    "stories.getStoriesByID",
+  "stories.sendStory": [
+    0xE4E6694B,
     [
-      0x5774CA74,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-      ],
-      "stories.Stories",
+      ["flags", "#"],
+      ["pinned", "flags.2?true"],
+      ["noforwards", "flags.4?true"],
+      ["fwd_modified", "flags.7?true"],
+      ["peer", "InputPeer"],
+      ["media", "InputMedia"],
+      ["media_areas", "flags.5?Vector<MediaArea>"],
+      ["caption", "flags.0?string"],
+      ["entities", "flags.1?Vector<MessageEntity>"],
+      ["privacy_rules", "Vector<InputPrivacyRule>"],
+      ["random_id", "long"],
+      ["period", "flags.3?int"],
+      ["fwd_from_id", "flags.6?InputPeer"],
+      ["fwd_from_story", "flags.6?int"],
     ],
+    "Updates",
   ],
-  [
-    "stories.toggleAllStoriesHidden",
+  "stories.editStory": [
+    0xB583BA46,
     [
-      0x7C2557C4,
-      [
-        ["hidden", "Bool"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["peer", "InputPeer"],
+      ["id", "int"],
+      ["media", "flags.0?InputMedia"],
+      ["media_areas", "flags.3?Vector<MediaArea>"],
+      ["caption", "flags.1?string"],
+      ["entities", "flags.1?Vector<MessageEntity>"],
+      ["privacy_rules", "flags.2?Vector<InputPrivacyRule>"],
     ],
+    "Updates",
   ],
-  [
-    "stories.readStories",
+  "stories.deleteStories": [
+    0xAE59DB5F,
     [
-      0xA556DAC8,
-      [
-        ["peer", "InputPeer"],
-        ["max_id", "int"],
-      ],
-      "Vector<int>",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
     ],
+    "Vector<int>",
   ],
-  [
-    "stories.incrementStoryViews",
+  "stories.togglePinned": [
+    0x9A75A1EF,
     [
-      0xB2028AFB,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
+      ["pinned", "Bool"],
     ],
+    "Vector<int>",
   ],
-  [
-    "stories.getStoryViewsList",
+  "stories.getAllStories": [
+    0xEEB0D625,
     [
-      0x7ED23C57,
-      [
-        ["flags", "#"],
-        ["just_contacts", "flags.0?true"],
-        ["reactions_first", "flags.2?true"],
-        ["forwards_first", "flags.3?true"],
-        ["peer", "InputPeer"],
-        ["q", "flags.1?string"],
-        ["id", "int"],
-        ["offset", "string"],
-        ["limit", "int"],
-      ],
-      "stories.StoryViewsList",
+      ["flags", "#"],
+      ["next", "flags.1?true"],
+      ["hidden", "flags.2?true"],
+      ["state", "flags.0?string"],
     ],
+    "stories.AllStories",
   ],
-  [
-    "stories.getStoriesViews",
+  "stories.getPinnedStories": [
+    0x5821A5DC,
     [
-      0x28E16CC8,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-      ],
-      "stories.StoryViews",
+      ["peer", "InputPeer"],
+      ["offset_id", "int"],
+      ["limit", "int"],
     ],
+    "stories.Stories",
   ],
-  [
-    "stories.exportStoryLink",
+  "stories.getStoriesArchive": [
+    0xB4352016,
     [
-      0x7B8DEF20,
-      [
-        ["peer", "InputPeer"],
-        ["id", "int"],
-      ],
-      "ExportedStoryLink",
+      ["peer", "InputPeer"],
+      ["offset_id", "int"],
+      ["limit", "int"],
     ],
+    "stories.Stories",
   ],
-  [
-    "stories.report",
+  "stories.getStoriesByID": [
+    0x5774CA74,
     [
-      0x19D8EB45,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-        ["option", "bytes"],
-        ["message", "string"],
-      ],
-      "ReportResult",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
     ],
+    "stories.Stories",
   ],
-  [
-    "stories.activateStealthMode",
+  "stories.toggleAllStoriesHidden": [
+    0x7C2557C4,
     [
-      0x57BBD166,
-      [
-        ["flags", "#"],
-        ["past", "flags.0?true"],
-        ["future", "flags.1?true"],
-      ],
-      "Updates",
+      ["hidden", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "stories.sendReaction",
+  "stories.readStories": [
+    0xA556DAC8,
     [
-      0x7FD736B2,
-      [
-        ["flags", "#"],
-        ["add_to_recent", "flags.0?true"],
-        ["peer", "InputPeer"],
-        ["story_id", "int"],
-        ["reaction", "Reaction"],
-      ],
-      "Updates",
+      ["peer", "InputPeer"],
+      ["max_id", "int"],
     ],
+    "Vector<int>",
   ],
-  [
-    "stories.getPeerStories",
+  "stories.incrementStoryViews": [
+    0xB2028AFB,
     [
-      0x2C4ADA50,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "stories.PeerStories",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
     ],
+    "Bool",
   ],
-  [
-    "stories.getAllReadPeerStories",
+  "stories.getStoryViewsList": [
+    0x7ED23C57,
     [
-      0x9B5AE7F9,
-      [],
-      "Updates",
+      ["flags", "#"],
+      ["just_contacts", "flags.0?true"],
+      ["reactions_first", "flags.2?true"],
+      ["forwards_first", "flags.3?true"],
+      ["peer", "InputPeer"],
+      ["q", "flags.1?string"],
+      ["id", "int"],
+      ["offset", "string"],
+      ["limit", "int"],
     ],
+    "stories.StoryViewsList",
   ],
-  [
-    "stories.getPeerMaxIDs",
+  "stories.getStoriesViews": [
+    0x28E16CC8,
     [
-      0x535983C3,
-      [
-        ["id", "Vector<InputPeer>"],
-      ],
-      "Vector<int>",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
     ],
+    "stories.StoryViews",
   ],
-  [
-    "stories.getChatsToSend",
+  "stories.exportStoryLink": [
+    0x7B8DEF20,
     [
-      0xA56A8B60,
-      [],
-      "messages.Chats",
+      ["peer", "InputPeer"],
+      ["id", "int"],
     ],
+    "ExportedStoryLink",
   ],
-  [
-    "stories.togglePeerStoriesHidden",
+  "stories.report": [
+    0x19D8EB45,
     [
-      0xBD0415C4,
-      [
-        ["peer", "InputPeer"],
-        ["hidden", "Bool"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
+      ["option", "bytes"],
+      ["message", "string"],
     ],
+    "ReportResult",
   ],
-  [
-    "stories.getStoryReactionsList",
+  "stories.activateStealthMode": [
+    0x57BBD166,
     [
-      0xB9B2881F,
-      [
-        ["flags", "#"],
-        ["forwards_first", "flags.2?true"],
-        ["peer", "InputPeer"],
-        ["id", "int"],
-        ["reaction", "flags.0?Reaction"],
-        ["offset", "flags.1?string"],
-        ["limit", "int"],
-      ],
-      "stories.StoryReactionsList",
+      ["flags", "#"],
+      ["past", "flags.0?true"],
+      ["future", "flags.1?true"],
     ],
+    "Updates",
   ],
-  [
-    "stories.togglePinnedToTop",
+  "stories.sendReaction": [
+    0x7FD736B2,
     [
-      0x0B297E9B,
-      [
-        ["peer", "InputPeer"],
-        ["id", "Vector<int>"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["add_to_recent", "flags.0?true"],
+      ["peer", "InputPeer"],
+      ["story_id", "int"],
+      ["reaction", "Reaction"],
     ],
+    "Updates",
   ],
-  [
-    "stories.searchPosts",
+  "stories.getPeerStories": [
+    0x2C4ADA50,
     [
-      0xD1810907,
-      [
-        ["flags", "#"],
-        ["hashtag", "flags.0?string"],
-        ["area", "flags.1?MediaArea"],
-        ["peer", "flags.2?InputPeer"],
-        ["offset", "string"],
-        ["limit", "int"],
-      ],
-      "stories.FoundStories",
+      ["peer", "InputPeer"],
     ],
+    "stories.PeerStories",
   ],
-  [
-    "premium.getBoostsList",
+  "stories.getAllReadPeerStories": [
+    0x9B5AE7F9,
+    [],
+    "Updates",
+  ],
+  "stories.getPeerMaxIDs": [
+    0x535983C3,
     [
-      0x60F67660,
-      [
-        ["flags", "#"],
-        ["gifts", "flags.0?true"],
-        ["peer", "InputPeer"],
-        ["offset", "string"],
-        ["limit", "int"],
-      ],
-      "premium.BoostsList",
+      ["id", "Vector<InputPeer>"],
     ],
+    "Vector<int>",
+  ],
+  "stories.getChatsToSend": [
+    0xA56A8B60,
+    [],
+    "messages.Chats",
   ],
-  [
-    "premium.getMyBoosts",
+  "stories.togglePeerStoriesHidden": [
+    0xBD0415C4,
     [
-      0x0BE77B4A,
-      [],
-      "premium.MyBoosts",
+      ["peer", "InputPeer"],
+      ["hidden", "Bool"],
     ],
+    "Bool",
   ],
-  [
-    "premium.applyBoost",
+  "stories.getStoryReactionsList": [
+    0xB9B2881F,
     [
-      0x6B7DA746,
-      [
-        ["flags", "#"],
-        ["slots", "flags.0?Vector<int>"],
-        ["peer", "InputPeer"],
-      ],
-      "premium.MyBoosts",
+      ["flags", "#"],
+      ["forwards_first", "flags.2?true"],
+      ["peer", "InputPeer"],
+      ["id", "int"],
+      ["reaction", "flags.0?Reaction"],
+      ["offset", "flags.1?string"],
+      ["limit", "int"],
     ],
+    "stories.StoryReactionsList",
   ],
-  [
-    "premium.getBoostsStatus",
+  "stories.togglePinnedToTop": [
+    0x0B297E9B,
     [
-      0x042F1F61,
-      [
-        ["peer", "InputPeer"],
-      ],
-      "premium.BoostsStatus",
+      ["peer", "InputPeer"],
+      ["id", "Vector<int>"],
     ],
+    "Bool",
   ],
-  [
-    "premium.getUserBoosts",
+  "stories.searchPosts": [
+    0xD1810907,
     [
-      0x39854D1F,
-      [
-        ["peer", "InputPeer"],
-        ["user_id", "InputUser"],
-      ],
-      "premium.BoostsList",
+      ["flags", "#"],
+      ["hashtag", "flags.0?string"],
+      ["area", "flags.1?MediaArea"],
+      ["peer", "flags.2?InputPeer"],
+      ["offset", "string"],
+      ["limit", "int"],
     ],
+    "stories.FoundStories",
   ],
-  [
-    "smsjobs.isEligibleToJoin",
+  "premium.getBoostsList": [
+    0x60F67660,
     [
-      0x0EDC39D0,
-      [],
-      "smsjobs.EligibilityToJoin",
+      ["flags", "#"],
+      ["gifts", "flags.0?true"],
+      ["peer", "InputPeer"],
+      ["offset", "string"],
+      ["limit", "int"],
     ],
+    "premium.BoostsList",
   ],
-  [
-    "smsjobs.join",
+  "premium.getMyBoosts": [
+    0x0BE77B4A,
+    [],
+    "premium.MyBoosts",
+  ],
+  "premium.applyBoost": [
+    0x6B7DA746,
     [
-      0xA74ECE2D,
-      [],
-      "Bool",
+      ["flags", "#"],
+      ["slots", "flags.0?Vector<int>"],
+      ["peer", "InputPeer"],
     ],
+    "premium.MyBoosts",
   ],
-  [
-    "smsjobs.leave",
+  "premium.getBoostsStatus": [
+    0x042F1F61,
     [
-      0x9898AD73,
-      [],
-      "Bool",
+      ["peer", "InputPeer"],
     ],
+    "premium.BoostsStatus",
   ],
-  [
-    "smsjobs.updateSettings",
+  "premium.getUserBoosts": [
+    0x39854D1F,
     [
-      0x093FA0BF,
-      [
-        ["flags", "#"],
-        ["allow_international", "flags.0?true"],
-      ],
-      "Bool",
+      ["peer", "InputPeer"],
+      ["user_id", "InputUser"],
     ],
+    "premium.BoostsList",
+  ],
+  "smsjobs.isEligibleToJoin": [
+    0x0EDC39D0,
+    [],
+    "smsjobs.EligibilityToJoin",
   ],
-  [
-    "smsjobs.getStatus",
+  "smsjobs.join": [
+    0xA74ECE2D,
+    [],
+    "Bool",
+  ],
+  "smsjobs.leave": [
+    0x9898AD73,
+    [],
+    "Bool",
+  ],
+  "smsjobs.updateSettings": [
+    0x093FA0BF,
     [
-      0x10A698E8,
-      [],
-      "smsjobs.Status",
+      ["flags", "#"],
+      ["allow_international", "flags.0?true"],
     ],
+    "Bool",
+  ],
+  "smsjobs.getStatus": [
+    0x10A698E8,
+    [],
+    "smsjobs.Status",
   ],
-  [
-    "smsjobs.getSmsJob",
+  "smsjobs.getSmsJob": [
+    0x778D902F,
     [
-      0x778D902F,
-      [
-        ["job_id", "string"],
-      ],
-      "SmsJob",
+      ["job_id", "string"],
     ],
+    "SmsJob",
   ],
-  [
-    "smsjobs.finishJob",
+  "smsjobs.finishJob": [
+    0x4F1EBF24,
     [
-      0x4F1EBF24,
-      [
-        ["flags", "#"],
-        ["job_id", "string"],
-        ["error", "flags.0?string"],
-      ],
-      "Bool",
+      ["flags", "#"],
+      ["job_id", "string"],
+      ["error", "flags.0?string"],
     ],
+    "Bool",
   ],
-  [
-    "fragment.getCollectibleInfo",
+  "fragment.getCollectibleInfo": [
+    0xBE1E85BA,
     [
-      0xBE1E85BA,
-      [
-        ["collectible", "InputCollectible"],
-      ],
-      "fragment.CollectibleInfo",
+      ["collectible", "InputCollectible"],
     ],
+    "fragment.CollectibleInfo",
   ],
-] as unknown as [string, Parameters][]);
-
-export const getType: (name: string) => Parameters | undefined = types.get.bind(types);
-
-export const getEnum: (name: string) => (keyof Types)[] | undefined = enums.get.bind(enums);
-
-// @ts-ignore: lib
-export const _types: Map<string, Parameters> | undefined = typeof Deno === "undefined" ? typeof process === "undefined" ? undefined : process.env.__TYPE_MAP ? types : undefined : Deno.env.get("__TYPE_MAP") ? types : undefined;
+});
