@@ -19,8 +19,8 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
-import { TLWriter } from "./1_tl_writer.ts";
 import { Schema } from "./0_types.ts";
+import { TLWriter } from "./1_tl_writer.ts";
 
 Deno.test("TLWriter", async (t) => {
   const writer = new TLWriter();

@@ -57,5 +57,3 @@ export const X = "X";
 export const VECTOR = 0x1CB5C415;
 export const BOOL_TRUE = 0x997275b5;
 export const BOOL_FALSE = 0xbc799737;
-export const GZIP_PACKED = 0x3072CFA1;
-export const RPC_RESULT = 0xF35C6D01;

@@ -23,5 +23,5 @@ export * as Api from "./tl/0_api.ts";
 export * from "./tl/0_utilities.ts";
 export * from "./tl/2_utilities.ts";
 export * from "./tl/2_message.ts";
-export * from "./tl/2_tl_reader.ts";
+export * from "./tl/1_tl_reader.ts";
 export * from "./tl/2_tl_writer.ts";

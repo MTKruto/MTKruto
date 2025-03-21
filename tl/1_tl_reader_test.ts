@@ -19,9 +19,9 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
-import { TLRawReader } from "./0_tl_raw_reader.ts";
+import { TLReader } from "./1_tl_reader.ts";
 
-Deno.test("TLRawReader", async (t) => {
+Deno.test("TLReader", async (t) => {
   // deno-fmt-ignore
   const buffer = new Uint8Array([
     0x00, // read 1
@@ -129,7 +129,7 @@ Deno.test("TLRawReader", async (t) => {
     0x4D, 0x54, 0x4B, 0x72, 0x75, 0x74, 0x6F, 0x00 // string with more than 254 bytes
   ]);
   const bufferLength = buffer.length;
-  const reader = new TLRawReader(buffer);
+  const reader = new TLReader(buffer);
   let read = 0;
 
   await t.step("read", async (t) => {
