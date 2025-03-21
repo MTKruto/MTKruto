@@ -312,7 +312,7 @@ const schema: Schema = {
   },
 };
 
-Deno.test("serialize", () => {
+Deno.test("writeObject", () => {
   // deno-fmt-ignore
   const expected = new Uint8Array([
     0x10, 0x10, 0x10, 0x10, 0xB5, 0x75, 0x72, 0x99,
@@ -350,5 +350,50 @@ Deno.test("serialize", () => {
     } as any, schema)
     .buffer;
 
+  assertEquals(actual, expected);
+});
+
+Deno.test("optional double", () => {
+  const schema: Schema = {
+    definitions: {
+      videoSize: [
+        0xDE33B094,
+        [
+          ["flags", "#"],
+          ["type", "string"],
+          ["w", "int"],
+          ["h", "int"],
+          ["size", "int"],
+          ["video_start_ts", "flags.0?double"],
+        ],
+        "VideoSize",
+      ],
+    },
+    identifierToName: {
+      [0xDE33B094]: "videoSize",
+    },
+  };
+  // deno-fmt-ignore
+  const expected = new Uint8Array([
+    0x94, 0xb0, 0x33, 0xde,
+    0x01, 0x00, 0x00, 0x00,
+    0x01, 0x75, 0x00, 0x00,
+    0x20, 0x03, 0x00, 0x00,
+    0x20, 0x03, 0x00, 0x00,
+    0x88, 0xfc, 0x03, 0x00,
+    0xe5, 0x46, 0x91, 0xb5,
+    0x86, 0x72, 0x02, 0x40
+  ]);
+
+  const actual = new TLWriter()
+    .writeObject({
+      _: "videoSize",
+      type: "u",
+      w: 800,
+      h: 800,
+      size: 261256,
+      video_start_ts: 2.305921,
+    }, schema)
+    .buffer;
   assertEquals(actual, expected);
 });

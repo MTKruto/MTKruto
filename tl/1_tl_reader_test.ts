@@ -291,9 +291,85 @@ Deno.test("TLReader", async (t) => {
   });
 
   await t.step("readObject", async (t) => {
-    const schema = createSchemaFromTlContent(`dcOption#18b7a10d flags:# ipv6:flags.0?true media_only:flags.1?true tcpo_only:flags.2?true cdn:flags.3?true static:flags.4?true this_port_only:flags.5?true id:int ip_address:string port:int secret:flags.10?bytes = DcOption;
-config#cc1a241e flags:# default_p2p_contacts:flags.3?true preload_featured_stickers:flags.4?true revoke_pm_inbox:flags.6?true blocked_mode:flags.8?true force_try_ipv6:flags.14?true date:int expires:int test_mode:Bool this_dc:int dc_options:Vector<DcOption> dc_txt_domain_name:string chat_size_max:int megagroup_size_max:int forwarded_count_max:int online_update_period_ms:int offline_blur_timeout_ms:int offline_idle_timeout_ms:int online_cloud_timeout_ms:int notify_cloud_delay_ms:int notify_default_delay_ms:int push_chat_period_ms:int push_chat_limit:int edit_time_limit:int revoke_time_limit:int revoke_pm_time_limit:int rating_e_decay:int stickers_recent_limit:int channels_read_media_period:int tmp_sessions:flags.0?int call_receive_timeout_ms:int call_ring_timeout_ms:int call_connect_timeout_ms:int call_packet_timeout_ms:int me_url_prefix:string autoupdate_url_prefix:flags.7?string gif_search_username:flags.9?string venue_search_username:flags.10?string img_search_username:flags.11?string static_maps_provider:flags.12?string caption_length_max:int message_length_max:int webfile_dc_id:int suggested_lang_code:flags.2?string lang_pack_version:flags.2?int base_lang_pack_version:flags.2?int reactions_default:flags.15?Reaction autologin_token:flags.16?string = Config;
-`);
+    const schema: Schema = {
+      definitions: {
+        dcOption: [
+          0x18B7A10D,
+          [
+            ["flags", "#"],
+            ["ipv6", "flags.0?true"],
+            ["media_only", "flags.1?true"],
+            ["tcpo_only", "flags.2?true"],
+            ["cdn", "flags.3?true"],
+            ["static", "flags.4?true"],
+            ["this_port_only", "flags.5?true"],
+            ["id", "int"],
+            ["ip_address", "string"],
+            ["port", "int"],
+            ["secret", "flags.10?bytes"],
+          ],
+          "DcOption",
+        ],
+        config: [
+          0xCC1A241E,
+          [
+            ["flags", "#"],
+            ["default_p2p_contacts", "flags.3?true"],
+            ["preload_featured_stickers", "flags.4?true"],
+            ["revoke_pm_inbox", "flags.6?true"],
+            ["blocked_mode", "flags.8?true"],
+            ["force_try_ipv6", "flags.14?true"],
+            ["date", "int"],
+            ["expires", "int"],
+            ["test_mode", "Bool"],
+            ["this_dc", "int"],
+            ["dc_options", "Vector<DcOption>"],
+            ["dc_txt_domain_name", "string"],
+            ["chat_size_max", "int"],
+            ["megagroup_size_max", "int"],
+            ["forwarded_count_max", "int"],
+            ["online_update_period_ms", "int"],
+            ["offline_blur_timeout_ms", "int"],
+            ["offline_idle_timeout_ms", "int"],
+            ["online_cloud_timeout_ms", "int"],
+            ["notify_cloud_delay_ms", "int"],
+            ["notify_default_delay_ms", "int"],
+            ["push_chat_period_ms", "int"],
+            ["push_chat_limit", "int"],
+            ["edit_time_limit", "int"],
+            ["revoke_time_limit", "int"],
+            ["revoke_pm_time_limit", "int"],
+            ["rating_e_decay", "int"],
+            ["stickers_recent_limit", "int"],
+            ["channels_read_media_period", "int"],
+            ["tmp_sessions", "flags.0?int"],
+            ["call_receive_timeout_ms", "int"],
+            ["call_ring_timeout_ms", "int"],
+            ["call_connect_timeout_ms", "int"],
+            ["call_packet_timeout_ms", "int"],
+            ["me_url_prefix", "string"],
+            ["autoupdate_url_prefix", "flags.7?string"],
+            ["gif_search_username", "flags.9?string"],
+            ["venue_search_username", "flags.10?string"],
+            ["img_search_username", "flags.11?string"],
+            ["static_maps_provider", "flags.12?string"],
+            ["caption_length_max", "int"],
+            ["message_length_max", "int"],
+            ["webfile_dc_id", "int"],
+            ["suggested_lang_code", "flags.2?string"],
+            ["lang_pack_version", "flags.2?int"],
+            ["base_lang_pack_version", "flags.2?int"],
+            ["reactions_default", "flags.15?Reaction"],
+            ["autologin_token", "flags.16?string"],
+          ],
+          "Config",
+        ],
+      },
+      identifierToName: {
+        [0x18B7A10D]: 'dcOption',
+        [0xCC1A241E]: "config",
+      },
+    };
     // deno-fmt-ignore
     const buffer = new Uint8Array([
         0x1E, 0x24, 0x1A, 0xCC, 0x48, 0x0E, 0x00, 0x00, 0xE7, 0x5F,
@@ -376,8 +452,26 @@ config#cc1a241e flags:# default_p2p_contacts:flags.3?true preload_featured_stick
 });
 
 Deno.test("optional double", async () => {
-  const schema = createSchemaFromTlContent(`videoSize#de33b094 flags:# type:string w:int h:int size:int video_start_ts:flags.0?double = VideoSize;
-`);
+  const schema: Schema = {
+    definitions: {
+      videoSize: [
+        0xDE33B094,
+        [
+          ["flags", "#"],
+          ["type", "string"],
+          ["w", "int"],
+          ["h", "int"],
+          ["size", "int"],
+          ["video_start_ts", "flags.0?double"],
+        ],
+        "VideoSize",
+      ],
+    },
+    identifierToName: {
+      [0x18B7A10D]: "dcOption",
+      [0xDE33B094]: "videoSize",
+    },
+  };
   // deno-fmt-ignore
   const buffer = new Uint8Array([
     0x94, 0xb0, 0x33, 0xde,
@@ -512,47 +606,3 @@ Deno.test("primitive vectors", async () => {
   const deserialized = await new TLReader(writer.buffer).readObject("Vector<double>", emptySchema);
   assertEquals(deserialized, expected);
 });
-
-function createSchemaFromTlContent(tlContent: string): Schema {
-  const definitions: Schema["definitions"] = {};
-
-  const lines = tlContent
-    .split("\n")
-    .filter((v) => v)
-    .filter((v) => !v.startsWith("-"))
-    .map((v) => v.trim());
-
-  upper: for (const line of lines) {
-    const [nameId] = line.split(/\s/);
-    if (!nameId) {
-      continue;
-    }
-    const name = nameId.split("#")[0];
-    if (!name) {
-      continue;
-    }
-    const id = parseInt(nameId.split("#")[1], 16);
-    if (!id) {
-      continue;
-    }
-    const ret = line.split("=")[1]?.trim()?.replace(";", "");
-    if (!ret) {
-      continue;
-    }
-    const fields = line.split("=")[0]?.slice(nameId.length).trim();
-    if (!fields) {
-      continue;
-    }
-    const fields_ = new Array<[string, string]>();
-    for (const field of fields.split(/\s/)) {
-      const [identifier, type] = field.split(":");
-      if (!identifier || !type) {
-        continue upper;
-      }
-      fields_.push([identifier, type]);
-    }
-    definitions[name] = [id, fields_, ret];
-  }
-
-  return { definitions, identifierToName: Object.fromEntries(Object.entries(definitions).map(([k, [v]]) => [v, k])) };
-}
