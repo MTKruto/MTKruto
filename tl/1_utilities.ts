@@ -17,8 +17,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+// deno-lint-ignore-file no-explicit-any
 
-import { assertEquals, assertFalse } from "../0_deps.ts";
+import { assertEquals, assertFalse, unreachable } from "../0_deps.ts";
+import { AnyType, Enums, Functions, Schema, schema as schema_, Types } from "./0_api.ts";
 
 export function isOptionalParam(ntype: string): boolean {
   return ntype.includes("?");
@@ -38,6 +40,57 @@ export function analyzeOptionalParam(ntype: string): { flagField: string; bitInd
   assertFalse(isNaN(bitIndex));
 
   return { flagField, bitIndex };
+}
+
+export function isValidType(object: any, schema: Schema = schema_): object is AnyType {
+  return object != null && typeof object === "object" && typeof object._ === "string" && schema[object._] !== undefined;
+}
+export function assertIsValidType(object: any, schema: Schema = schema_) {
+  if (!isValidType(object, schema)) {
+    throw new Error("Invalid object");
+  }
+}
+
+export function is<S extends keyof (Types & Functions)>(typeName: S, value: unknown): value is S extends keyof Types ? Types[S] : S extends keyof Functions ? Functions[S] : never {
+  if (!isValidType(value)) {
+    return false;
+  } else {
+    return value._ === typeName;
+  }
+}
+export function isOneOf<S extends keyof (Types & Functions)>(typeNames: S[] | readonly S[], value: unknown): value is S extends keyof Types ? Types[S] : S extends keyof Functions ? Functions[S] : never {
+  return typeNames.some((v) => is(v, value));
+}
+export function isOfEnum<S extends keyof Enums>(enumName: S, value: unknown): value is Enums[S] {
+  return !isValidType(value) || schema_[value._][2] != enumName;
+}
+export function as<S extends keyof Types>(typeName: S, value: unknown): Types[S] {
+  if (is(typeName, value)) {
+    return value;
+  } else {
+    unreachable();
+  }
+}
+
+const GENERIC_FUNCTIONS = [
+  "invokeAfterMsg",
+  "invokeAfterMsgs",
+  "initConnection",
+  "invokeWithLayer",
+  "invokeWithoutUpdates",
+  "invokeWithMessagesRange",
+  "invokeWithTakeout",
+] as const;
+export function isGenericFunction(value: unknown): boolean {
+  return isOneOf(GENERIC_FUNCTIONS, value);
+}
+
+export function mustGetReturnType(name: string): string {
+  const type = schema_[name];
+  if (!type || !type[2]) {
+    unreachable();
+  }
+  return type[2];
 }
 
 export function repr(value: unknown): string | null {
