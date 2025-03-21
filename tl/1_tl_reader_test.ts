@@ -19,10 +19,10 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
-import { TLReader } from "./1_tl_reader.ts";
-import { TLWriter } from "./1_tl_writer.ts";
 import { Schema } from "./0_types.ts";
 import { BOOL_FALSE, BOOL_TRUE, VECTOR } from "./0_utilities.ts";
+import { TLReader } from "./1_tl_reader.ts";
+import { TLWriter } from "./1_tl_writer.ts";
 
 Deno.test("TLReader", async (t) => {
   // deno-fmt-ignore
