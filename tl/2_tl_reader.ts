@@ -23,7 +23,7 @@ import { TLError, TLRawReader } from "./0_tl_raw_reader.ts";
 import { AnyObject, getObjectIdentifier, ObjectDefinition, schema } from "./0_api.ts";
 import { unreachable } from "../0_deps.ts";
 import { gunzip } from "../1_utilities.ts";
-import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, GZIP_PACKED, isOptionalParam, VECTOR, X } from "./1_utilities.ts";
+import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, GZIP_PACKED, isOptionalParam, VECTOR, X } from "./0_utilities.ts";
 
 export type ReadObject = boolean | number | bigint | string | Uint8Array | AnyObject | Array<ReadObject>;
 

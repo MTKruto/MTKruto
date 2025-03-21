@@ -17,9 +17,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+// deno-lint-ignore-file no-explicit-any
 
 import { concat } from "../0_deps.ts";
-import { bufferFromBigInt } from "../1_utilities.ts";
+import { TLError } from "./0_tl_error.ts";
+import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./0_utilities.ts";
+import { Schema } from "./0_types.ts";
+import { bufferFromBigInt } from "../utilities/0_buffer.ts";
 
 export class TLRawWriter {
   protected _buffer: Uint8Array = new Uint8Array();
@@ -89,5 +93,184 @@ export class TLRawWriter {
   writeString(string: string): typeof this {
     this.writeBytes(new TextEncoder().encode(string));
     return this;
+  }
+
+  writeOject(value: any, schema: Schema): typeof this {
+    this.#serialize(value._, value, "", schema);
+    return this;
+  }
+
+  #serialize(type: string, value: any, debugInfo: string, schema: Schema) {
+    if (this.#serializePrimitive(type, value, debugInfo)) {
+      return;
+    }
+    if (this.#serializeVector(type, value, debugInfo, schema)) {
+      return;
+    }
+
+    const maybeDefinition = schema.definitions[value._];
+    if (!maybeDefinition) {
+      throw new TLError(`Unknown type: ${value._}`);
+    }
+    if (type != "!X" && !this.#isTypeValid(type, value, schema)) {
+      throw new TLError(`Expected ${type} but got ${value._}`);
+    }
+    const type__ = value as any;
+    const [id, parameters_] = maybeDefinition;
+    this.writeInt32(id, false);
+
+    for (let [i, [name, type]] of parameters_.entries()) {
+      if (isOptionalParam(type) && type__[name] === undefined) {
+        continue;
+      }
+
+      const debugInfo = ` [0x${id.toString(16).toUpperCase()}::${i}]`;
+
+      if (type == "#") {
+        let flags = 0;
+        const flagField_ = name;
+
+        for (const [name, type] of parameters_) {
+          if (isOptionalParam(type)) {
+            const { flagField, bitIndex } = analyzeOptionalParam(type);
+
+            if (flagField == flagField_) {
+              if (type__[name] !== undefined) {
+                flags |= 1 << bitIndex;
+              }
+            }
+          }
+        }
+        this.writeInt32(flags);
+        continue;
+      }
+
+      if (type__[name] === undefined && !isOptionalParam(type)) {
+        throw new Error(`Missing required parameter: ${name}`);
+      }
+
+      if (isOptionalParam(type)) {
+        type = getOptionalParamInnerType(type);
+      }
+      this.#serialize(type, type__[name], debugInfo, schema);
+    }
+
+    return;
+  }
+
+  #serializeVector(type: string, value: any, debugInfo: string, schema: Schema) {
+    const itemType = getVectorItemType(type);
+    if (!itemType) {
+      return false;
+    }
+    if (!Array.isArray(value)) {
+      throw new TypeError(`Expected array but received ${repr(value)}${debugInfo}`);
+    }
+    this.writeInt32(VECTOR, false);
+    this.writeInt32(value.length);
+    for (const item of value) {
+      this.#serialize(itemType, item, debugInfo, schema);
+    }
+    return true;
+  }
+
+  #serializePrimitive(
+    type: string,
+    value: any,
+    debugInfo: string,
+  ) {
+    const valueRepr = repr(value);
+
+    switch (type) {
+      case "bytes":
+        if ((value instanceof Uint8Array)) {
+          this.writeBytes(value);
+        } else {
+          throw new TLError(`Expected Uint8Array but received ${valueRepr}${debugInfo}`);
+        }
+        return true;
+      case "int128":
+        if (typeof value === "bigint") {
+          this.writeInt128(value);
+        } else {
+          throw new TLError(`Expected bigint but received ${valueRepr}${debugInfo}`);
+        }
+        return true;
+      case "int256":
+        if (typeof value === "bigint") {
+          this.writeInt256(value);
+        } else {
+          throw new TLError(`Expected bigint but received ${valueRepr}${debugInfo}`);
+        }
+        return true;
+      case "long":
+        if (typeof value === "bigint") {
+          this.writeInt64(value);
+        } else {
+          throw new TLError(`Expected bigint but received ${valueRepr}${debugInfo}`);
+        }
+        return true;
+      case "Bool":
+        if (typeof value === "boolean") {
+          if (value) {
+            this.writeInt32(BOOL_TRUE);
+          } else {
+            this.writeInt32(BOOL_FALSE);
+          }
+        } else {
+          throw new TLError(`Expected boolean but received ${valueRepr}${debugInfo}`);
+        }
+        return true;
+      case "int":
+        //
+        if (value == null) {
+          value = 0;
+        }
+        //
+        if (typeof value === "number") {
+          this.writeInt32(value);
+        } else {
+          throw new TLError(`Expected number but received ${valueRepr}${debugInfo}`);
+        }
+        return true;
+      case "double":
+        //
+        if (value == null) {
+          value = 0;
+        }
+        //
+        if (typeof value === "number") {
+          this.writeDouble(value);
+        } else {
+          throw new TLError(`Expected number but received ${valueRepr}${debugInfo}`);
+        }
+        return true;
+      case "string":
+        if (typeof value === "string") {
+          this.writeString(value);
+        } else if (value instanceof Uint8Array) {
+          this.writeBytes(value);
+        } else {
+          this.writeString("");
+        }
+        // else {
+        //   throw new TypeError(`Expected string or Uint8Array but received ${valueRepr}`);
+        // }
+        return true;
+      case "true":
+        if (value !== true) {
+          throw new TLError(`Expected true but received ${valueRepr}${debugInfo}`);
+        }
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  #isTypeValid(type: string, value: any, schema: Schema) {
+    if (type == value._) {
+      return true;
+    }
+    return schema.definitions[value._]?.[2] === type;
   }
 }

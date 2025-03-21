@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import * as Api from "./0_api.ts";
-import { isOneOf } from "./1_utilities.ts";
+import { isOneOf } from "./0_utilities.ts";
 
 export function getChannelChatId(channelId: bigint): number {
   return ZERO_CHANNEL_ID + -Number(channelId);

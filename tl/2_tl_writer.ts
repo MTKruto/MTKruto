@@ -23,7 +23,7 @@
 import { AnyObject, Schema, schema as schema_ } from "./0_api.ts";
 import { TLError } from "./0_tl_raw_reader.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
-import { analyzeOptionalParam, assertIsValidType, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./1_utilities.ts";
+import { analyzeOptionalParam, assertIsValidType, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./0_utilities.ts";
 
 export class TLWriter extends TLRawWriter {
   serialize(value: AnyObject, schema: Schema = schema_): typeof this {
