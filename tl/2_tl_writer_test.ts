@@ -19,16 +19,19 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
-import { _types, Parameters } from "./0_api.ts";
+import { ObjectDefinition, schema as schema_ } from "./0_api.ts";
 import { TLWriter } from "./2_tl_writer.ts";
 
-const testObject1: Parameters = [
+const schema = structuredClone(schema_);
+
+const testObject1: ObjectDefinition = [
   0x01010101,
   [["string", "string"]],
+  "TestObject",
 ];
-_types!.set("testObject1", testObject1);
+schema.testObject1 = testObject1;
 
-const testObject2: Parameters = [
+const testObject2: ObjectDefinition = [
   0x10101010,
   [
     ["boolean1", "Bool"],
@@ -44,8 +47,9 @@ const testObject2: Parameters = [
     ["flag2", "flags.1?Vector<testObject1>"],
     ["flag3", "flags.3?long"],
   ],
+  "TestObject",
 ];
-_types!.set("testObject2", testObject2);
+schema.testObject2 = testObject2;
 
 Deno.test("serialize", () => {
   // deno-fmt-ignore
@@ -82,7 +86,7 @@ Deno.test("serialize", () => {
       flag1: true,
       flag2: [{ _: "testObject1", string: "MTKruto" }, { _: "testObject1", string: "MTKruto" }],
       // deno-lint-ignore no-explicit-any
-    } as any)
+    } as any, schema)
     .buffer;
 
   assertEquals(actual, expected);

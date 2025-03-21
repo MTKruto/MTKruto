@@ -83,8 +83,6 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('0_deps.ts') }}
 
       - run: deno test --allow-env
-        env:
-          __TYPE_MAP: 1
 
   transform:
     runs-on: ubuntu-latest
@@ -131,8 +129,6 @@ jobs:
 
       - name: Transform
         run: deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform.ts 0.0.0 ./mod.ts
-        env:
-          __TYPE_MAP: 1
 
   doc:
     runs-on: ubuntu-latest

@@ -20,7 +20,7 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { TLError, TLRawReader } from "./0_tl_raw_reader.ts";
-import { AnyObject, getEnum, getType, getTypeName, Parameters, Types } from "./0_api.ts";
+import { AnyObject, getObjectIdentifier, ObjectDefinition, schema } from "./0_api.ts";
 import { unreachable } from "../0_deps.ts";
 import { gunzip } from "../1_utilities.ts";
 import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, GZIP_PACKED, isOptionalParam, VECTOR, X } from "./1_utilities.ts";
@@ -42,7 +42,7 @@ export class TLReader extends TLRawReader {
       return await new TLReader(buffer).deserialize(type);
     }
     if (type == X) {
-      const typeName = getTypeName(id);
+      const typeName = getObjectIdentifier(id);
       if (!typeName) {
         throw new TLError(`Unknown constructor: ${id.toString(16)}`);
       }
@@ -52,27 +52,30 @@ export class TLReader extends TLRawReader {
     if (id == VECTOR) {
       return await this.#deserializeVector(type);
     }
-    const enum_ = getEnum(type);
-    if (enum_) {
-      return await this.#deserializeEnum(enum_, id) as ReadObject;
-    }
-    const type_ = getType(type);
+    const type_ = schema[type];
     if (type_) {
       return await this.#deserializeType(type, type_, id) as ReadObject;
+    }
+    const deserializedEnum = await this.#deserializeEnum(type, id);
+    if (deserializedEnum !== undefined) {
+      return deserializedEnum as ReadObject;
     }
     unreachable(`unknown type: ${type} id ${id}`);
   }
 
-  async #deserializeEnum(enum_: (keyof Types)[], id: number) {
-    const validTypes: [string, Parameters | undefined][] = enum_.map((v) => [v, getType(v)]);
-    const type = validTypes.find((v) => v[1] && v[1][0] == id);
-    if (!type || !type[1]) {
-      throw new TLError(`Constructor not in enum: ${id.toString(16)}`);
+  async #deserializeEnum(type: string, id: number) {
+    const name = getObjectIdentifier(id);
+    if (!name) {
+      return;
     }
-    return await this.#deserializeType(type[0], type[1], id);
+    const definition = schema[name];
+    if (definition[2] != type) {
+      return;
+    }
+    return await this.#deserializeType(name, definition, id);
   }
 
-  async #deserializeType(type: string, desc: Parameters, id: number) {
+  async #deserializeType(type: string, desc: ObjectDefinition, id: number) {
     if (desc[0] != id) {
       throw new TLError(`Expected constructor ${desc[0].toString(16)} but got ${id}`);
     }

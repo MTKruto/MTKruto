@@ -20,36 +20,36 @@
 
 // deno-lint-ignore-file no-explicit-any
 
-import { AnyObject, getEnum, getType } from "./0_api.ts";
+import { AnyObject, Schema, schema as schema_ } from "./0_api.ts";
 import { TLError } from "./0_tl_raw_reader.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
 import { analyzeOptionalParam, assertIsValidType, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./1_utilities.ts";
 
 export class TLWriter extends TLRawWriter {
-  serialize(value: AnyObject): typeof this {
-    assertIsValidType(value);
-    this.#serialize(value._, value, "");
+  serialize(value: AnyObject, schema: Schema = schema_): typeof this {
+    assertIsValidType(value, schema);
+    this.#serialize(value._, value, "", schema);
     return this;
   }
 
-  #serialize(type: string, value: AnyObject, debugInfo: string) {
+  #serialize(type: string, value: AnyObject, debugInfo: string, schema: Schema) {
     if (this.#serializePrimitive(type, value, debugInfo)) {
       return;
     }
-    if (this.#serializeVector(type, value, debugInfo)) {
+    if (this.#serializeVector(type, value, debugInfo, schema)) {
       return;
     }
 
-    assertIsValidType(value);
-    const maybeParameters = getType(value._);
-    if (!maybeParameters) {
+    assertIsValidType(value, schema);
+    const maybeDefinition = schema[value._];
+    if (!maybeDefinition) {
       throw new TLError(`Unknown type: ${value._}`);
     }
-    if (type != "!X" && !this.#isTypeValid(type, value)) {
+    if (type != "!X" && !this.#isTypeValid(type, value, schema)) {
       throw new TLError(`Expected ${type} but got ${value._}`);
     }
     const type__ = value as any;
-    const [id, parameters_] = maybeParameters;
+    const [id, parameters_] = maybeDefinition;
     this.writeInt32(id, false);
 
     for (let [i, [name, type]] of parameters_.entries()) {
@@ -85,13 +85,13 @@ export class TLWriter extends TLRawWriter {
       if (isOptionalParam(type)) {
         type = getOptionalParamInnerType(type);
       }
-      this.#serialize(type, type__[name], debugInfo);
+      this.#serialize(type, type__[name], debugInfo, schema);
     }
 
     return;
   }
 
-  #serializeVector(type: string, value: any, debugInfo: string) {
+  #serializeVector(type: string, value: any, debugInfo: string, schema: Schema) {
     const itemType = getVectorItemType(type);
     if (!itemType) {
       return false;
@@ -102,7 +102,7 @@ export class TLWriter extends TLRawWriter {
     this.writeInt32(VECTOR, false);
     this.writeInt32(value.length);
     for (const item of value) {
-      this.#serialize(itemType, item, debugInfo);
+      this.#serialize(itemType, item, debugInfo, schema);
     }
     return true;
   }
@@ -200,11 +200,10 @@ export class TLWriter extends TLRawWriter {
     }
   }
 
-  #isTypeValid(type: string, value: AnyObject) {
+  #isTypeValid(type: string, value: AnyObject, schema: Schema) {
     if (type == value._) {
       return true;
     }
-    const enum_: string[] | undefined = getEnum(type);
-    return enum_?.includes(value._) || false;
+    return schema[value._]?.[2] === type;
   }
 }
