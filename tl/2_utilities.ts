@@ -22,8 +22,8 @@
 import { unreachable } from "../0_deps.ts";
 import { ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Schema } from "./0_types.ts";
-import * as Api from "./1_api.ts";
-import { AnyType, Enums, Functions, schema as schema_, Types } from "./1_api.ts";
+import * as Api from "./1_telegram_api.ts";
+import { AnyType, Enums, Functions, schema as schema_, Types } from "./1_telegram_api.ts";
 
 export function isValidType(object: any, schema: Schema = schema_): object is AnyType {
   return object != null && typeof object === "object" && typeof object._ === "string" && schema.definitions[object._] !== undefined;

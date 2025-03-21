@@ -19,7 +19,7 @@
  */
 
 import { gunzip } from "../1_utilities.ts";
-import { AnyObject, AnyType, schema, Types } from "./1_api.ts";
+import { AnyObject, AnyType, schema, Types } from "./1_telegram_api.ts";
 import { TLReader } from "./1_tl_reader.ts";
 import { TLWriter } from "./1_tl_writer.ts";
 

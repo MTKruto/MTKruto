@@ -20,7 +20,7 @@
 
 export { TLError } from "./tl/0_tl_error.ts";
 export * from "./tl/0_utilities.ts";
-export * as Api from "./tl/1_api.ts";
+export * as Api from "./tl/1_telegram_api.ts";
 export * from "./tl/1_tl_reader.ts";
 export * from "./tl/1_tl_writer.ts";
 export * from "./tl/2_message.ts";
