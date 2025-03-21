@@ -18,11 +18,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export { TLError } from "./tl/0_tl_error.ts";
-export * from "./tl/0_utilities.ts";
-export * as Api from "./tl/1_api.ts";
-export * from "./tl/1_tl_reader.ts";
-export * from "./tl/1_tl_writer.ts";
-export * from "./tl/2_message.ts";
-export * from "./tl/2_telegram.ts";
-export * from "./tl/2_utilities.ts";
+import { assert, assertEquals, assertFalse, assertThrows } from "../0_deps.ts";
+import { analyzeOptionalParam, isOptionalParam } from "./0_utilities.ts";
+
+Deno.test("isOptionalParam", () => {
+  assert(isOptionalParam("flags.8?string"));
+  assertFalse(isOptionalParam("long"));
+});
+
+Deno.test("analyzeOptionalParam", () => {
+  assertThrows(() => analyzeOptionalParam("long"));
+
+  const { flagField, bitIndex } = analyzeOptionalParam("flags.0?long");
+
+  assertEquals(flagField, "flags");
+  assertEquals(bitIndex, 0);
+});

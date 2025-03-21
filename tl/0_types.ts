@@ -18,11 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export { TLError } from "./tl/0_tl_error.ts";
-export * from "./tl/0_utilities.ts";
-export * as Api from "./tl/1_api.ts";
-export * from "./tl/1_tl_reader.ts";
-export * from "./tl/1_tl_writer.ts";
-export * from "./tl/2_message.ts";
-export * from "./tl/2_telegram.ts";
-export * from "./tl/2_utilities.ts";
+export type ObjectDefinition = [number, /* ID */ [string, string][], /* fields */ string /* return type / parent */];
+
+export interface Schema {
+  readonly definitions: Record<string, ObjectDefinition>;
+  readonly identifierToName: Record<string, string>;
+}
