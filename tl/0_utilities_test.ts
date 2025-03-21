@@ -19,7 +19,7 @@
  */
 
 import { assert, assertEquals, assertFalse, assertThrows } from "../0_deps.ts";
-import { analyzeOptionalParam, isOptionalParam } from "./1_utilities.ts";
+import { analyzeOptionalParam, isOptionalParam } from "./0_utilities.ts";
 
 Deno.test("isOptionalParam", () => {
   assert(isOptionalParam("flags.8?string"));

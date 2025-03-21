@@ -19,28 +19,8 @@
  */
 // deno-lint-ignore-file no-explicit-any
 
-import { assertEquals, assertFalse, unreachable } from "../0_deps.ts";
+import { unreachable } from "../0_deps.ts";
 import { AnyType, Enums, Functions, Schema, schema as schema_, Types } from "./0_api.ts";
-
-export function isOptionalParam(ntype: string): boolean {
-  return ntype.includes("?");
-}
-export function getOptionalParamInnerType(ntype: string): string {
-  return ntype.split("?")[1];
-}
-export function analyzeOptionalParam(ntype: string): { flagField: string; bitIndex: number } {
-  if (!isOptionalParam(ntype)) {
-    throw new Error("Parameter not optional");
-  }
-
-  const flagField = ntype.split(".")[0];
-  assertEquals(typeof flagField, "string");
-
-  const bitIndex = Number(ntype.split("?")[0].split(".")[1]);
-  assertFalse(isNaN(bitIndex));
-
-  return { flagField, bitIndex };
-}
 
 export function isValidType(object: any, schema: Schema = schema_): object is AnyType {
   return object != null && typeof object === "object" && typeof object._ === "string" && schema[object._] !== undefined;
@@ -92,23 +72,3 @@ export function mustGetReturnType(name: string): string {
   }
   return type[2];
 }
-
-export function repr(value: unknown): string | null {
-  return value == null ? null : (typeof value === "object" && "_" in value) ? value._ as string : value.constructor.name;
-}
-
-export function getVectorItemType(type: string): string | null {
-  if (!type.startsWith(VECTOR_PREFIX) || !type.endsWith(VECTOR_SUFFIX)) {
-    return null;
-  }
-  return type.slice(VECTOR_PREFIX.length).slice(0, -1 * VECTOR_SUFFIX.length);
-}
-const VECTOR_PREFIX = "Vector<";
-const VECTOR_SUFFIX = ">";
-
-export const X = "X";
-export const VECTOR = 0x1CB5C415;
-export const BOOL_TRUE = 0x997275b5;
-export const BOOL_FALSE = 0xbc799737;
-export const GZIP_PACKED = 0x3072CFA1;
-export const RPC_RESULT = 0xF35C6D01;
