@@ -21,7 +21,7 @@
 import { SECOND, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, Logger, Mutex, Queue, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { Api, as, inputPeerToPeer, is, isOfEnum, isOneOf, peerToChatId, ReadObject } from "../2_tl.ts";
+import { Api, as, DeserializedType, inputPeerToPeer, is, isOfEnum, isOneOf, peerToChatId } from "../2_tl.ts";
 import { PersistentTimestampInvalid } from "../3_errors.ts";
 import { ID } from "../3_types.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
@@ -157,7 +157,7 @@ export class UpdateManager {
     }
   }
 
-  #extractMessages(context: ReadObject) {
+  #extractMessages(context: DeserializedType) {
     const messages = new Array<Api.message>();
     if (Array.isArray(context)) {
       for (const item of context) {
@@ -188,7 +188,7 @@ export class UpdateManager {
     return messages;
   }
 
-  #extractMinPeerReferences(context: ReadObject) {
+  #extractMinPeerReferences(context: DeserializedType) {
     const minPeerReferences = new Array<{ chatId: number; senderId: number; messageId: number }>();
     const messages = this.#extractMessages(context);
     for (const message of messages) {
@@ -200,7 +200,7 @@ export class UpdateManager {
     return minPeerReferences;
   }
 
-  async processChats(chats: Api.Chat[], context: ReadObject) {
+  async processChats(chats: Api.Chat[], context: DeserializedType) {
     for (const chat of chats) {
       if (isOneOf(["channel", "channelForbidden"], chat)) {
         if (!is("channel", chat) || !chat.min || chat.min && await this.#c.messageStorage.getEntity(peerToChatId(chat)) == null) {
@@ -230,7 +230,7 @@ export class UpdateManager {
     }
   }
 
-  async processResult(result: ReadObject) {
+  async processResult(result: DeserializedType) {
     if (
       isOneOf([
         "account.authorizationForm",
@@ -331,7 +331,7 @@ export class UpdateManager {
     }
   }
 
-  async processUsers(users: Api.User[], context: ReadObject) {
+  async processUsers(users: Api.User[], context: DeserializedType) {
     for (const user of users) {
       if (is("user", user) && user.access_hash) {
         if (!user.min || user.min && await this.#c.messageStorage.getEntity(peerToChatId(user)) == null) {
