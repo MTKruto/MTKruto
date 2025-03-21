@@ -18,10 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export { TLError } from "./tl/0_tl_raw_reader.ts";
-export * as Api from "./tl/0_api.ts";
+export { TLError } from "./tl/0_tl_error.ts";
 export * from "./tl/0_utilities.ts";
-export * from "./tl/2_utilities.ts";
-export * from "./tl/2_message.ts";
+export * as Api from "./tl/1_api.ts";
 export * from "./tl/1_tl_reader.ts";
-export * from "./tl/2_tl_writer.ts";
+export * from "./tl/1_tl_writer.ts";
+export * from "./tl/2_message.ts";
