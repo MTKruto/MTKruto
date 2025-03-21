@@ -290,7 +290,7 @@ Deno.test("TLReader", async (t) => {
     });
   });
 
-  await t.step("readObject", async (t) => {
+  await t.step("readType", async (t) => {
     const schema: Schema = {
       definitions: {
         dcOption: [
