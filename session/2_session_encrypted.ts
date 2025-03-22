@@ -24,6 +24,7 @@ import { bigIntFromBuffer, bufferFromBigInt, drop, getLogger, getRandomId, gunzi
 import { deserializeMessage, message, msg_container, Mtproto, repr, serializeMessage, TLReader, X } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
 import { TLWriter } from "../tl/1_tl_writer.ts";
+import { SessionError } from "./0_session_error.ts";
 import { Session, SessionParams } from "./1_session.ts";
 
 // global SessionEncrypted ID counter for logs
@@ -36,12 +37,11 @@ const RPC_ERROR = Mtproto.schema.definitions["rpc_error"][0];
 export interface Handlers {
   onUpdate?: (body: Uint8Array) => void;
   onNewServerSalt?: (serverSalt: bigint) => void;
-  onMessageFailed?: (id: bigint) => void;
+  onMessageFailed?: (id: bigint, reason: SessionError) => void;
   onRpcError?: (id: bigint, error: Mtproto.rpc_error) => void;
   onRpcResult?: (id: bigint, result: Uint8Array) => void;
 }
 
-// TODO(roj): fail all messages when the connection is lost
 export class SessionEncrypted extends Session implements Session {
   #id = getRandomId();
   #authKey = new Uint8Array();
@@ -82,7 +82,10 @@ export class SessionEncrypted extends Session implements Session {
 
   override disconnect(): void {
     super.disconnect();
+    this.state.reset();
+    this.#id = getRandomId();
     this.#pingLoopAbortController?.abort();
+    this.#rejectAllPending(new SessionError("Disconnected.", false));
   }
 
   #assertConnected() {
@@ -96,17 +99,26 @@ export class SessionEncrypted extends Session implements Session {
     this.state.reset();
     this.disconnect();
     await this.connect();
-    for (const id of this.#pendingMessages) {
-      this.#onMessageFailed(id);
-    }
+    const reason = new SessionError("Session invalidated.", true);
+    this.#rejectAllPending(reason);
   }
 
-  #onMessageFailed(id: bigint) {
+  #rejectAllPending(reason: SessionError) {
+    for (const id of this.#pendingMessages) {
+      this.#onMessageFailed(id, reason);
+    }
+    for (const pendingPing of this.#pendingPings.values()) {
+      pendingPing.reject(reason);
+    }
+    this.#pendingPings.clear();
+  }
+
+  #onMessageFailed(id: bigint, reason: SessionError) {
     this.#pendingMessages.delete(id);
-    this.handlers?.onMessageFailed?.(id);
+    this.handlers?.onMessageFailed?.(id, reason);
     const pendingPing = this.#pendingPings.get(id);
     if (pendingPing) {
-      pendingPing.reject(null); // TODO(roj): specify reasons
+      pendingPing.reject(reason);
       this.#pendingPings.delete(id);
     }
   }
@@ -343,12 +355,12 @@ export class SessionEncrypted extends Session implements Session {
         await this.#invalidateSession();
         return;
     }
-    this.#onMessageFailed(badMsgNotification.bad_msg_id);
+    this.#onMessageFailed(badMsgNotification.bad_msg_id, new SessionError(badMsgNotification._, true));
   }
 
   #onBadServerSalt(badServerSalt: Mtproto.bad_server_salt) {
     this.#setServerSalt(badServerSalt.new_server_salt);
-    this.#onMessageFailed(badServerSalt.bad_msg_id);
+    this.#onMessageFailed(badServerSalt.bad_msg_id, new SessionError(badServerSalt._, true));
   }
 
   #onPong(msgId: bigint, pong: Mtproto.pong) {
