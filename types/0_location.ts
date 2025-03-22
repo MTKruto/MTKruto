@@ -39,7 +39,7 @@ export interface Location {
 
 export function constructLocation(geo_: Api.messageMediaGeo | Api.messageMediaGeoLive | Api.geoPoint): Location {
   if (Api.is("messageMediaGeo", geo_)) {
-    const geo = as("geoPoint", geo_.geo);
+    const geo = Api.as("geoPoint", geo_.geo);
     return cleanObject({
       latitude: geo.lat,
       longitude: geo.long,
@@ -47,7 +47,7 @@ export function constructLocation(geo_: Api.messageMediaGeo | Api.messageMediaGe
     });
   } else if (Api.is("messageMediaGeoLive", geo_)) {
     const media = geo_;
-    const geo = as("geoPoint", media.geo);
+    const geo = Api.as("geoPoint", media.geo);
     return cleanObject({
       latitude: geo.lat,
       longitude: geo.long,

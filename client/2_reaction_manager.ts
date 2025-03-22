@@ -74,7 +74,7 @@ export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate> {
       } else {
         return null;
       }
-    } else if (isOneOf(["updateChannelMessageViews", "updateChannelMessageForwards"], update)) {
+    } else if (Api.isOneOf(["updateChannelMessageViews", "updateChannelMessageForwards"], update)) {
       const chatId = peerToChatId({ ...update, _: "peerChannel" });
       const message = await this.#c.messageStorage.getMessage(chatId, update.id);
       if (Api.is("message", message)) {

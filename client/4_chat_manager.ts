@@ -128,7 +128,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams) {
     this.#c.storage.assertUser("getCreatedInviteLinks");
     const { invites } = await this.#c.invoke({ _: "messages.getExportedChatInvites", peer: await this.#c.getInputPeer(chatId), revoked: params?.revoked ? true : undefined, admin_id: params?.by ? await this.#c.getInputUser(params.by) : { _: "inputUserEmpty" }, limit: params?.limit ?? 100, offset_date: params?.afterDate ? toUnixTimestamp(params.afterDate) : undefined, offset_link: params?.afterInviteLink });
-    return await Promise.all(invites.map((v) => as("chatInviteExported", v)).map((v) => constructInviteLink(v, this.#c.getEntity)));
+    return await Promise.all(invites.map((v) => Api.as("chatInviteExported", v)).map((v) => constructInviteLink(v, this.#c.getEntity)));
   }
 
   // JOINING AND LEAVING CHATS //
@@ -276,7 +276,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   async addChatMember(chatId: ID, userId: ID, params?: AddChatMemberParams) {
     this.#c.storage.assertUser("addChatMember");
     const chat = await this.#c.getInputPeer(chatId);
-    if (isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
+    if (Api.isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
       throw new InputError("Cannot add members to private chats");
     }
     const user = await this.#c.getInputUser(userId);
@@ -293,7 +293,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   async addChatMembers(chatId: ID, userIds: ID[]) {
     this.#c.storage.assertUser("addChatMembers");
     const chat = await this.#c.getInputPeer(chatId);
-    if (isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
+    if (Api.isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
       throw new InputError("Cannot add members to private chats");
     }
     const users = new Array<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage>();

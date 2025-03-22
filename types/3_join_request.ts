@@ -51,7 +51,7 @@ export async function constructJoinRequest(update: Api.updateBotChatInviteReques
     unreachable();
   }
   const user = constructUser(user_);
-  const inviteLink = update.invite && is("chatInviteExported", update.invite) ? await constructInviteLink(update.invite, getEntity) : undefined;
+  const inviteLink = update.invite && Api.is("chatInviteExported", update.invite) ? await constructInviteLink(update.invite, getEntity) : undefined;
   return cleanObject({
     chat,
     user,

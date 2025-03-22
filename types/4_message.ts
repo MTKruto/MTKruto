@@ -774,7 +774,7 @@ async function getSender(message_: Api.message | Api.messageService, getEntity: 
 }
 
 async function getReply(message_: Api.message | Api.messageService, chat: ChatP, getMessage: Message_MessageGetter) {
-  if (getMessage && is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_msg_id) {
+  if (getMessage && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_msg_id) {
     let isTopicMessage = false;
     if (message_.reply_to.forum_topic) {
       isTopicMessage = true;
@@ -796,7 +796,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     id: message_.id,
     chat,
     date: fromUnixTimestamp(message_.date),
-    isTopicMessage: message_.reply_to && is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic ? true : false,
+    isTopicMessage: message_.reply_to && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic ? true : false,
   };
 
   if (Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_msg_id) {
@@ -872,7 +872,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
       return { ...message, pinnedMessage };
     }
   } else if (Api.is("messageActionRequestedPeer", message_.action)) {
-    const user = as("peerUser", message_.action.peers[0]);
+    const user = Api.as("peerUser", message_.action.peers[0]);
     const userShared = { requestId: message_.action.button_id, userId: Number(user.user_id) };
     return { ...message, userShared };
   } else if (Api.is("messageActionBotAllowed", message_.action)) {
@@ -956,7 +956,7 @@ export async function constructMessage(
       unreachable();
     }
   } else if (Api.is("peerChannel", message_.peer_id)) {
-    const reply_to_top_id = message_.reply_to && is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_top_id;
+    const reply_to_top_id = message_.reply_to && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_top_id;
     const threadId = reply_to_top_id && typeof reply_to_top_id === "number" ? reply_to_top_id + "/" : "";
     link = `https://t.me/c/${message_.peer_id.channel_id}/${threadId}${message_.id}`;
     const entity = await getEntity(message_.peer_id);
@@ -984,7 +984,7 @@ export async function constructMessage(
     date: fromUnixTimestamp(message_.date),
     views: message_.views,
     forwards: message_.forwards,
-    isTopicMessage: message_.reply_to && is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic ? true : false,
+    isTopicMessage: message_.reply_to && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic ? true : false,
     hasProtectedContent: message_.noforwards || false,
     senderBoostCount: message_.from_boosts_applied,
     effectId: message_.effect ? String(message_.effect) : undefined,

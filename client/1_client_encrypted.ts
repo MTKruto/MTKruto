@@ -443,7 +443,7 @@ export class ClientEncrypted extends ClientAbstract {
         promise.reject?.(body);
         this.#promises.delete(body.bad_msg_id);
       }
-    } else if (isOneOf(["msg_detailed_info", "msg_new_detailed_info"], body)) {
+    } else if (Api.isOneOf(["msg_detailed_info", "msg_new_detailed_info"], body)) {
       sendAck = false;
       this.#toAcknowledge.push(body.answer_msg_id);
     }

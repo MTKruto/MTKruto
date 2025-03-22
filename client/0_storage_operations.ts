@@ -216,7 +216,7 @@ export class StorageOperations {
   async getChannelAccessHash(id: number): Promise<bigint | null> {
     const channel = await this.getEntity(id);
     if (channel) {
-      if (!(Api.is("channel", channel)) && !is("channelForbidden", channel)) {
+      if (!(Api.is("channel", channel)) && !Api.is("channelForbidden", channel)) {
         unreachable();
       }
       if (Api.is("channel", channel) && channel.min) {
@@ -324,7 +324,7 @@ export class StorageOperations {
   }
 
   async setEntity(entity: AnyEntity) {
-    await this.#storage.set(K.cache.peer(peerToChatId(entity)), [this.#mustSerialize ? rleEncode(serializeObject(entity)) : entity, new Date()]);
+    await this.#storage.set(K.cache.peer(Api.peerToChatId(entity)), [this.#mustSerialize ? rleEncode(serializeObject(entity)) : entity, new Date()]);
   }
 
   async getEntity(key: number): Promise<DeserializedType | null> {
@@ -512,7 +512,7 @@ export class StorageOperations {
     const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.inlineQueryAnswer(userId, chatId, query, offset));
     if (peer_ != null) {
       const [obj_, date] = peer_;
-      return [as("messages.botResults", await this.getTlObject(obj_)), date];
+      return [Api.as("messages.botResults", await this.getTlObject(obj_)), date];
     } else {
       return null;
     }
@@ -526,7 +526,7 @@ export class StorageOperations {
     const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.callbackQueryAnswer(chatId, messageId, question));
     if (peer_ != null) {
       const [obj_, date] = peer_;
-      return [as("messages.botCallbackAnswer", await this.getTlObject(obj_)), date];
+      return [Api.as("messages.botCallbackAnswer", await this.getTlObject(obj_)), date];
     } else {
       return null;
     }

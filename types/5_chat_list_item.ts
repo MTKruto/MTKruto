@@ -85,7 +85,7 @@ export async function constructChatListItem4(dialog: Api.Dialog, dialogs: Api.me
   if (!topMessage_) {
     unreachable();
   }
-  const pinned = pinnedChats.indexOf(peerToChatId(dialog.peer));
+  const pinned = pinnedChats.indexOf(Api.peerToChatId(dialog.peer));
   const lastMessage = await constructMessage(topMessage_, getEntity, getMessage, getStickerSetName, false);
   const order = getChatListItemOrder(lastMessage, pinned);
   const userId = "user_id" in dialog.peer ? dialog.peer.user_id : null;

@@ -36,7 +36,7 @@ export interface Venue {
 }
 
 export function constructVenue(media_: Api.messageMediaVenue | Api.mediaAreaVenue): Venue {
-  const geo = as("geoPoint", media_.geo);
+  const geo = Api.as("geoPoint", media_.geo);
   return {
     location: constructLocation(geo),
     title: media_.title,

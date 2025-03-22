@@ -62,7 +62,7 @@ export async function constructChatMemberUpdated(update: Api.updateChannelPartic
   const oldChatMember = await constructChatMember(update.prev_participant ?? ({ _: "channelParticipantLeft", peer: userPeer }), getEntity);
   const newChatMember = await constructChatMember(update.new_participant ?? ({ _: "channelParticipantLeft", peer: userPeer }), getEntity);
   const viaSharedFolder = "via_chatlist" in update ? update.via_chatlist ? true : update.invite ? false : undefined : undefined;
-  const inviteLink = (update.invite && is("chatInviteExported", update.invite)) ? await constructInviteLink(update.invite, getEntity) : undefined;
+  const inviteLink = (update.invite && Api.is("chatInviteExported", update.invite)) ? await constructInviteLink(update.invite, getEntity) : undefined;
   return cleanObject({
     chat,
     from,

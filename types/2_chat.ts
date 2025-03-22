@@ -81,9 +81,9 @@ export async function constructChat(fullChat: Api.userFull | Api.chatFull | Api.
     return cleanObject({
       ...chatP,
       birthday: fullChat.birthday ? constructBirthday(fullChat.birthday) : undefined,
-      photo: fullChat.profile_photo && is("photo", fullChat.profile_photo) ? constructPhoto(fullChat.profile_photo) : undefined,
+      photo: fullChat.profile_photo && Api.is("photo", fullChat.profile_photo) ? constructPhoto(fullChat.profile_photo) : undefined,
       address: fullChat.business_location?.address,
-      location: fullChat.business_location?.geo_point && is("geoPoint", fullChat.business_location.geo_point) ? constructLocation(fullChat.business_location.geo_point) : undefined,
+      location: fullChat.business_location?.geo_point && Api.is("geoPoint", fullChat.business_location.geo_point) ? constructLocation(fullChat.business_location.geo_point) : undefined,
       openingHours: fullChat.business_work_hours ? constructOpeningHours(fullChat.business_work_hours) : undefined,
       hasMainMiniApp: user.bot ? user.bot_has_main_app : undefined,
     });
@@ -93,7 +93,7 @@ export async function constructChat(fullChat: Api.userFull | Api.chatFull | Api.
     const chatP = constructChatP(chat);
     return cleanObject({
       ...chatP,
-      photo: fullChat.chat_photo && is("photo", fullChat.chat_photo) ? constructPhoto(fullChat.chat_photo) : undefined,
+      photo: fullChat.chat_photo && Api.is("photo", fullChat.chat_photo) ? constructPhoto(fullChat.chat_photo) : undefined,
       videoChatId: fullChat.call ? String(fullChat.call.id) : undefined,
     });
   } else if (Api.is("channelFull", fullChat)) {
@@ -102,7 +102,7 @@ export async function constructChat(fullChat: Api.userFull | Api.chatFull | Api.
     const chatP = constructChatP(chat);
     return cleanObject({
       ...chatP,
-      photo: fullChat.chat_photo && is("photo", fullChat.chat_photo) ? constructPhoto(fullChat.chat_photo) : undefined,
+      photo: fullChat.chat_photo && Api.is("photo", fullChat.chat_photo) ? constructPhoto(fullChat.chat_photo) : undefined,
       videoChatId: fullChat.call ? String(fullChat.call.id) : undefined,
     });
   }

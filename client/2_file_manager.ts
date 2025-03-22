@@ -444,7 +444,7 @@ export class FileManager {
       return maybeStickerSetName[0];
     } else {
       const stickerSet = await this.#c.invoke({ _: "messages.getStickerSet", stickerset: inputStickerSet, hash });
-      const name = as("messages.stickerSet", stickerSet).set.short_name;
+      const name = Api.as("messages.stickerSet", stickerSet).set.short_name;
       await this.#c.messageStorage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
       return name;
     }
@@ -480,7 +480,7 @@ export class FileManager {
     if (!shouldFetch) {
       return stickers;
     }
-    const documents_ = (await this.#c.invoke({ _: "messages.getCustomEmojiDocuments", document_id: id.map(BigInt) })).map((v) => as("document", v));
+    const documents_ = (await this.#c.invoke({ _: "messages.getCustomEmojiDocuments", document_id: id.map(BigInt) })).map((v) => Api.as("document", v));
     for (const [i, document_] of documents_.entries()) {
       await this.#c.messageStorage.setCustomEmojiDocument(document_.id, document_);
       const fileId_: FileId = {

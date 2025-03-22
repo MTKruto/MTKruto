@@ -40,8 +40,8 @@ export class BusinessConnectionManager implements UpdateProcessor<BusinessConnec
     const connection_ = await this.#c.messageStorage.getBusinessConnection(id);
     if (!connection_) {
       const connection_ = await this.#c.invoke({ _: "account.getBotBusinessConnection", connection_id: id })
-        .then((v) => as("updates", v))
-        .then((v) => as("updateBotBusinessConnect", v.updates[0]).connection);
+        .then((v) => Api.as("updates", v))
+        .then((v) => Api.as("updateBotBusinessConnect", v.updates[0]).connection);
       await this.#c.messageStorage.setBusinessConnection(id, connection_);
       return await constructBusinessConnection(connection_, this.#c.getEntity);
     } else {

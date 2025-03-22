@@ -98,7 +98,7 @@ export type InputPeerWithIdentifier = Api.inputPeerChat | Api.inputPeerUser | Ap
 export type IdentifierContainer = { user_id: bigint } | { chat_id: bigint } | { channel_id: bigint };
 
 export function peerToChatId(peer: AnyEntity | InputPeerWithIdentifier | Api.Peer | IdentifierContainer): number {
-  if (isOneOf(["peerUser", "inputPeerUser", "inputPeerUserFromMessage", "user", "userFull"], peer) || "user_id" in peer) {
+  if (Api.isOneOf(["peerUser", "inputPeerUser", "inputPeerUserFromMessage", "user", "userFull"], peer) || "user_id" in peer) {
     return Number("user_id" in peer ? peer.user_id : peer.id);
   } else if ("chat_id" in peer || Api.isOneOf(["peerChat", "inputPeerChat", "chat", "chatForbidden", "chatFull"], peer)) {
     return -Number("chat_id" in peer ? peer.chat_id : peer.id);

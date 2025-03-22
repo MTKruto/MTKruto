@@ -359,12 +359,12 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
     let photo: Api.photo | undefined;
     if (Api.is("botInlineMediaResult", result)) {
       if (result.photo) {
-        photo = as("photo", result.photo);
+        photo = Api.as("photo", result.photo);
         ref = { fileId: getPhotoFileId(photo).fileId };
         const { largest } = photoSizes = getPhotoSizes(photo);
         attributes = [{ _: "documentAttributeImageSize", w: largest.w, h: largest.h }];
       } else if (result.document) {
-        const document = as("document", result.document);
+        const document = Api.as("document", result.document);
         ref = {
           fileId: serializeFileId(
             {

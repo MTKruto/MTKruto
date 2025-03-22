@@ -51,7 +51,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
     if (canBeInputUser(peer)) {
       throw new InputError("Video chats are only available for groups and channels.");
     }
-    const { updates } = await this.#c.invoke({ _: "phone.createGroupCall", peer, random_id: getRandomId(true), title, rtmp_stream: liveStream, schedule_date: scheduleDate ? toUnixTimestamp(scheduleDate) : undefined }).then((v) => as("updates", v));
+    const { updates } = await this.#c.invoke({ _: "phone.createGroupCall", peer, random_id: getRandomId(true), title, rtmp_stream: liveStream, schedule_date: scheduleDate ? toUnixTimestamp(scheduleDate) : undefined }).then((v) => Api.as("updates", v));
     const updateGroupCall = updates
       .find((v): v is Api.updateGroupCall => Api.is("updateGroupCall", v));
     if (!updateGroupCall) {
@@ -82,7 +82,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
   async joinVideoChat(id: string, params: string, params_?: JoinVideoChatParams) {
     this.#c.storage.assertUser("joinVideoChat");
     const call = await this.#getInputGroupCall(id);
-    const { updates } = await this.#c.invoke({ _: "phone.joinGroupCall", call, join_as: params_?.joinAs ? await this.#c.getInputPeer(params_.joinAs) : { _: "inputPeerSelf" }, params: ({ _: "dataJSON", data: params }), invite_hash: params_?.inviteHash, muted: params_?.audio ? undefined : true, video_stopped: params_?.video ? undefined : true }).then((v) => as("updates", v));
+    const { updates } = await this.#c.invoke({ _: "phone.joinGroupCall", call, join_as: params_?.joinAs ? await this.#c.getInputPeer(params_.joinAs) : { _: "inputPeerSelf" }, params: ({ _: "dataJSON", data: params }), invite_hash: params_?.inviteHash, muted: params_?.audio ? undefined : true, video_stopped: params_?.video ? undefined : true }).then((v) => Api.as("updates", v));
     const updateGroupCall = updates
       .find((v): v is Api.updateGroupCallConnection => Api.is("updateGroupCallConnection", v));
     if (!updateGroupCall) unreachable();
@@ -111,7 +111,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
           ufrag: "",
         }),
       }),
-    }).then((v) => as("updates", v));
+    }).then((v) => Api.as("updates", v));
     const updateGroupCall = updates
       .find((v): v is Api.updateGroupCallConnection => Api.is("updateGroupCallConnection", v));
     if (!updateGroupCall) unreachable();

@@ -168,7 +168,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       const dialogs = await this.#c.invoke({ _: "messages.getPinnedDialogs", folder_id: 0 });
       const pinnedChats = new Array<number>();
       for (const dialog of dialogs.dialogs) {
-        pinnedChats.push(peerToChatId(dialog.peer));
+        pinnedChats.push(Api.peerToChatId(dialog.peer));
       }
       this.#pinnedChats = pinnedChats;
       await this.#c.storage.setPinnedChats(0, this.#pinnedChats);
@@ -177,7 +177,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       const dialogs = await this.#c.invoke({ _: "messages.getPinnedDialogs", folder_id: 1 });
       const pinnedArchiveChats = new Array<number>();
       for (const dialog of dialogs.dialogs) {
-        pinnedArchiveChats.push(peerToChatId(dialog.peer));
+        pinnedArchiveChats.push(Api.peerToChatId(dialog.peer));
       }
       this.#pinnedArchiveChats = pinnedArchiveChats;
       await this.#c.storage.setPinnedChats(1, this.#pinnedArchiveChats);
@@ -395,7 +395,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       return chatMembers;
     } else if (Api.is("inputPeerChat", peer)) {
       const fullChat = await this.#getFullChat(chatId);
-      if (!fullChat || !("participants" in fullChat) || !is("chatParticipants", fullChat.participants)) {
+      if (!fullChat || !("participants" in fullChat) || !Api.is("chatParticipants", fullChat.participants)) {
         unreachable();
       }
       const chatMembers = new Array<ChatMember>();
@@ -417,8 +417,8 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     } else if (Api.is("inputPeerChat", peer)) {
       const user = await this.#c.getInputUser(userId);
       const userId_ = BigInt(await this.#c.getInputPeerChatId(user));
-      const fullChat = await this.#c.invoke({ ...peer, _: "messages.getFullChat" }).then((v) => as("chatFull", v.full_chat));
-      const participant = as("chatParticipants", fullChat.participants).participants.find((v) => v.user_id == userId_)!;
+      const fullChat = await this.#c.invoke({ ...peer, _: "messages.getFullChat" }).then((v) => Api.as("chatFull", v.full_chat));
+      const participant = Api.as("chatParticipants", fullChat.participants).participants.find((v) => v.user_id == userId_)!;
       return await constructChatMember(participant, this.#c.getEntity);
     } else {
       throw new InputError("Expected a channel, supergroup, or group ID. Got a user ID instead.");
@@ -440,7 +440,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       return chatMembers;
     } else if (Api.is("inputPeerChat", peer)) {
       const fullChat = await this.#getFullChat(chatId);
-      if (!fullChat || !("participants" in fullChat) || !is("chatParticipants", fullChat.participants)) {
+      if (!fullChat || !("participants" in fullChat) || !Api.is("chatParticipants", fullChat.participants)) {
         unreachable();
       }
       const chatMembers = new Array<ChatMember>();

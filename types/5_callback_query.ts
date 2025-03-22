@@ -70,7 +70,7 @@ export async function constructCallbackQuery(callbackQuery: Api.updateBotCallbac
   const data = callbackQuery.data !== undefined ? new TextDecoder().decode(callbackQuery.data) : undefined;
   const chatInstance = callbackQuery.chat_instance == 0n ? "" : String(callbackQuery.chat_instance);
   if (Api.is("updateBotCallbackQuery", callbackQuery)) {
-    const message = await getMessage(peerToChatId(callbackQuery.peer), Number(callbackQuery.msg_id));
+    const message = await getMessage(Api.peerToChatId(callbackQuery.peer), Number(callbackQuery.msg_id));
     if (message == null) {
       unreachable();
     }

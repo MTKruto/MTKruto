@@ -1278,7 +1278,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
                 api_id: this.#apiId,
                 api_hash: this.#apiHash,
                 settings: { _: "codeSettings" },
-              }).then((v) => as("auth.sentCode", v));
+              }).then((v) => Api.as("auth.sentCode", v));
             try {
               sentCode = await sendCode();
             } catch (err) {
@@ -1484,7 +1484,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #getUserAccessHash(userId: bigint) {
     const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUser", user_id: userId, access_hash: 0n }] });
-    const user = as("user", users[0]);
+    const user = Api.as("user", users[0]);
     if (user) {
       await this.messageStorage.setEntity(user);
     }
@@ -1493,7 +1493,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #getChannelAccessHash(channelId: bigint) {
     const channels = await this.invoke({ _: "channels.getChannels", id: [{ _: "inputChannel", channel_id: channelId, access_hash: 0n }] });
-    const channel = as("channel", channels.chats[0]);
+    const channel = Api.as("channel", channels.chats[0]);
     if (channel) {
       await this.messageStorage.setEntity(channel);
     }
@@ -1524,9 +1524,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #getInputPeerChatId(inputPeer: Api.InputPeer | Api.InputUser | Api.InputChannel) {
-    if (isOneOf(["inputPeerSelf", "inputUserSelf"], inputPeer)) {
+    if (Api.isOneOf(["inputPeerSelf", "inputUserSelf"], inputPeer)) {
       return await this.#getSelfId();
-    } else if (isOneOf(["inputPeerEmpty", "inputUserEmpty", "inputChannelEmpty"], inputPeer)) {
+    } else if (Api.isOneOf(["inputPeerEmpty", "inputUserEmpty", "inputChannelEmpty"], inputPeer)) {
       unreachable();
     } else {
       return peerToChatId(inputPeer);
@@ -1624,7 +1624,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #getMinInputPeer(type: "user" | "channel", reference: { chatId: number; senderId: number; messageId: number }): Promise<Api.inputPeerUserFromMessage | Api.inputPeerChannelFromMessage | null> {
     const entity = await this.messageStorage.getEntity(reference.chatId);
-    if (isOneOf(["channel", "channelForbidden"], entity) && entity.access_hash) {
+    if (Api.isOneOf(["channel", "channelForbidden"], entity) && entity.access_hash) {
       const peer: Api.inputPeerChannel = { _: "inputPeerChannel", channel_id: entity.id, access_hash: entity.access_hash };
       if (type == "user") {
         return { _: "inputPeerUserFromMessage", peer, msg_id: reference.messageId, user_id: chatIdToPeerId(reference.senderId) };
@@ -1643,7 +1643,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   private async [getEntity](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
     const id = peerToChatId(peer);
     const entity = await this.messageStorage.getEntity(id);
-    if (entity == null && await this.storage.getAccountType() == "bot" && is("peerUser", peer) || Api.is("peerChannel", peer)) {
+    if (entity == null && await this.storage.getAccountType() == "bot" && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
       await this.getInputPeer(id);
     } else {
       return entity;
@@ -1816,7 +1816,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     let user_ = await this[getEntity]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) });
     if (user_ == null) {
       const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUserSelf" }] });
-      user_ = as("user", users[0]);
+      user_ = Api.as("user", users[0]);
       await this.messageStorage.setEntity(user_);
     }
     const user = constructUser(user_);
