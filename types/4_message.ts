@@ -935,7 +935,7 @@ export async function constructMessage(
   poll?: Api.poll,
   pollResults?: Api.pollResults,
 ): Promise<Message> {
-  if (!(is("message", message_)) && !(is("messageService", message_))) {
+  if (!(Api.is("message", message_)) && !(Api.is("messageService", message_))) {
     unreachable();
   }
 

@@ -41,7 +41,7 @@ export interface ChosenInlineResult {
 
 export async function constructChosenInlineResult(ubis: Api.updateBotInlineSend, getEntity: EntityGetter): Promise<ChosenInlineResult> {
   const entity = await getEntity({ ...ubis, _: "peerUser" });
-  if (!entity || !(is("user", entity))) {
+  if (!entity || !(Api.is("user", entity))) {
     unreachable();
   }
   return cleanObject({

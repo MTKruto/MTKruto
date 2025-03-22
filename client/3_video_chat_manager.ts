@@ -167,7 +167,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
   async getLiveStreamChannels(id: string) {
     this.#c.storage.assertUser("getLiveStreamChannels");
     const call = await this.#getCall(id);
-    if (!(is("groupCall", call)) || !call.rtmp_stream) {
+    if (!(Api.is("groupCall", call)) || !call.rtmp_stream) {
       throw new InputError("Not a live stream.");
     }
     const client = this.#c.getCdnConnection(call.stream_dc_id);
@@ -183,7 +183,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
   async *downloadLiveStreamChunk(id: string, channel: number, scale: number, timestamp: number, params?: DownloadLiveStreamChunkParams) {
     this.#c.storage.assertUser("downloadLiveStreamChunk");
     const call = await this.#getCall(id);
-    if (!(is("groupCall", call)) || !call.rtmp_stream) {
+    if (!(Api.is("groupCall", call)) || !call.rtmp_stream) {
       throw new InputError("Not a live stream.");
     }
     const quality = params?.quality ?? "low";

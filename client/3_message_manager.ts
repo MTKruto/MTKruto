@@ -1142,7 +1142,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       is("updateBotEditBusinessMessage", update) ||
       is("updateNewScheduledMessage", update)
     ) {
-      if (!(is("messageEmpty", update.message))) {
+      if (!(Api.is("messageEmpty", update.message))) {
         const isOutgoing = update.message.out;
         let shouldIgnore = false;
         if (isOutgoing) {
@@ -1272,7 +1272,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   async blockUser(userId: ID) {
     this.#c.storage.assertUser("blockUser");
     const id = await this.#c.getInputPeer(userId);
-    if (!(is("user", id))) {
+    if (!(Api.is("user", id))) {
       throw new InputError("Only users can be blocked or unblocked.");
     }
     await this.#c.invoke({ _: "contacts.block", id });
@@ -1281,7 +1281,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   async unblockUser(userId: ID) {
     this.#c.storage.assertUser("unblockUser");
     const id = await this.#c.getInputPeer(userId);
-    if (!(is("user", id))) {
+    if (!(Api.is("user", id))) {
       throw new InputError("Only users can be blocked or unblocked.");
     }
     await this.#c.invoke({ _: "contacts.unblock", id });

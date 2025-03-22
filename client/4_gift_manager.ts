@@ -39,7 +39,7 @@ export class GiftManager {
 
   async getGifts() {
     const gifts = await this.#c.invoke({ _: "payments.getStarGifts", hash: 0 });
-    if (!(is("payments.starGifts", gifts))) {
+    if (!(Api.is("payments.starGifts", gifts))) {
       unreachable();
     }
     return gifts.gifts.map(constructGift);

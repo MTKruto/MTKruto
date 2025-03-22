@@ -216,7 +216,7 @@ export class StorageOperations {
   async getChannelAccessHash(id: number): Promise<bigint | null> {
     const channel = await this.getEntity(id);
     if (channel) {
-      if (!(is("channel", channel)) && !is("channelForbidden", channel)) {
+      if (!(Api.is("channel", channel)) && !is("channelForbidden", channel)) {
         unreachable();
       }
       if (Api.is("channel", channel) && channel.min) {

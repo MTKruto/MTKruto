@@ -162,7 +162,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   // RESTRICTING, BANNING, AND UNBANNING CHAT MEMBERS //
   async banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams) {
     const chat = await this.#c.getInputPeer(chatId);
-    if (!(is("inputPeerChannel", chat)) && !(is("inputPeerChat", chat))) {
+    if (!(Api.is("inputPeerChannel", chat)) && !(Api.is("inputPeerChat", chat))) {
       throw new InputError("Expected a channel, supergroup, or group ID.");
     }
     const member = await this.#c.getInputPeer(memberId);
@@ -245,7 +245,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   // CHAT PHOTOS //
   async deleteChatPhoto(chatId: number) {
     const peer = await this.#c.getInputPeer(chatId);
-    if (!(canBeInputChannel(peer)) && !(is("inputPeerChat", peer))) {
+    if (!(canBeInputChannel(peer)) && !(Api.is("inputPeerChat", peer))) {
       unreachable();
     }
 
@@ -258,7 +258,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
 
   async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
     const peer = await this.#c.getInputPeer(chatId);
-    if (!(canBeInputChannel(peer)) && !(is("inputPeerChat", peer))) {
+    if (!(canBeInputChannel(peer)) && !(Api.is("inputPeerChat", peer))) {
       unreachable();
     }
 

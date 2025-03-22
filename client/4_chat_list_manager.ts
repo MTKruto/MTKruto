@@ -310,7 +310,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     const listId = getChatListId(from);
     const dialogs = await this.#c.invoke({ _: "messages.getDialogs", limit, offset_id: after?.lastMessage?.id ?? 0, offset_date: after?.lastMessage?.date ? toUnixTimestamp(after.lastMessage.date) : 0, offset_peer: after ? await this.#c.getInputPeer(after.chat.id) : { _: "inputPeerEmpty" }, hash: 0n, folder_id: listId });
     const pinnedChats = await this.#getPinnedChats(listId);
-    if (!(is("messages.dialogs", dialogs)) && !(is("messages.dialogsSlice", dialogs))) {
+    if (!(Api.is("messages.dialogs", dialogs)) && !(Api.is("messages.dialogsSlice", dialogs))) {
       unreachable();
     }
     if (dialogs.dialogs.length < limit) {

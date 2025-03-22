@@ -57,7 +57,7 @@ async function resolveUsers(ids: number[], getEntity: EntityGetter) {
   const users = new Array<Api.inputUser>();
   for (const id of ids) {
     const entity = await getEntity({ _: "peerUser", user_id: BigInt(id) });
-    if (!(is("user", entity))) {
+    if (!(Api.is("user", entity))) {
       unreachable();
     } else {
       users.push({ _: "inputUser", user_id: entity.id, access_hash: entity.access_hash ?? 0n });

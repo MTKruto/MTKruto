@@ -138,7 +138,7 @@ export async function storyInteractiveAreaToTlObject(area: StoryInteractiveArea,
     return { _: "mediaAreaSuggestedReaction", coordinates, reaction, dark: area.dark ? true : undefined, flipped: area.flipped ? true : undefined };
   } else if ("messageReference" in area) {
     const entity = await getEntity(chatIdToPeer(area.messageReference.chatId));
-    if (!(is("channel", entity))) {
+    if (!(Api.is("channel", entity))) {
       unreachable();
     }
     const channel: Api.inputChannel = { _: "inputChannel", channel_id: entity.id, access_hash: entity.access_hash ?? 0n };
