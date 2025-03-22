@@ -82,7 +82,9 @@ export class ClientEncrypted extends ClientAbstract {
     this.#Linvoke = L.branch("invoke");
     this.#LpingLoop = L.branch("pingLoop");
     this.stateChangeHandler = () => {
-      drop(this.#reconnect());
+      setTimeout(() => {
+        drop(this.#reconnect());
+      });
     };
   }
 
