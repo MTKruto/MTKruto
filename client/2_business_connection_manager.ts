@@ -50,7 +50,7 @@ export class BusinessConnectionManager implements UpdateProcessor<BusinessConnec
   }
 
   canHandleUpdate(update: Api.Update): update is BusinessConnectionManagerUpdate {
-    return isOneOf(businessConnectionManagerUpdates, update);
+    return Api.isOneOf(businessConnectionManagerUpdates, update);
   }
 
   async handleUpdate(update: BusinessConnectionManagerUpdate): Promise<Update> {

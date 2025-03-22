@@ -326,7 +326,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
   }
 
   canHandleUpdate(update: Api.Update): update is ChatListManagerUpdate {
-    return isOneOf(chatListManagerUpdates, update);
+    return Api.isOneOf(chatListManagerUpdates, update);
   }
 
   async handleUpdate(update: ChatListManagerUpdate) {

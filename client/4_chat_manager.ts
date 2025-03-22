@@ -53,7 +53,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   }
 
   canHandleUpdate(update: Api.Update): update is ChatManagerUpdate {
-    return isOneOf(chatManagerUpdates, update);
+    return Api.isOneOf(chatManagerUpdates, update);
   }
 
   async handleUpdate(update: ChatManagerUpdate): Promise<Update | null> {

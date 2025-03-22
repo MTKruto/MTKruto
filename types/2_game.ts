@@ -60,8 +60,8 @@ export function constructGame(media_: Api.messageMediaGame): Game {
     animation: fileId_ && document_
       ? constructAnimation(
         document_,
-        document_.attributes.find((v): v is Api.documentAttributeVideo => is("documentAttributeVideo", v))!,
-        document_.attributes.find((v): v is Api.documentAttributeFilename => is("documentAttributeFilename", v))!,
+        document_.attributes.find((v): v is Api.documentAttributeVideo => Api.is("documentAttributeVideo", v))!,
+        document_.attributes.find((v): v is Api.documentAttributeFilename => Api.is("documentAttributeFilename", v))!,
         serializeFileId(fileId_),
         toUniqueFileId(fileId_),
       )

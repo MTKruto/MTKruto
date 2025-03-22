@@ -156,7 +156,7 @@ const MTPROTO_FUNCTIONS = [
   "set_client_DH_params",
 ] as (keyof Api.Functions)[];
 export function isMtprotoFunction(value: unknown) {
-  return isOneOf(MTPROTO_FUNCTIONS, value);
+  return Api.isOneOf(MTPROTO_FUNCTIONS, value);
 }
 
 const CDN_FUNCTIONS = [
@@ -170,11 +170,11 @@ const CDN_FUNCTIONS = [
   "upload.getFileHashes",
 ] as (keyof Api.Functions)[];
 export function isCdnFunction(value: unknown) {
-  return isOneOf(CDN_FUNCTIONS, value);
+  return Api.isOneOf(CDN_FUNCTIONS, value);
 }
 
 export function canBeInputUser(inputPeer: Api.InputPeer) {
-  return isOneOf(["inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], inputPeer);
+  return Api.isOneOf(["inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], inputPeer);
 }
 export function toInputUser(inputPeer: Api.InputPeer) {
   let id: Api.InputUser;
@@ -191,7 +191,7 @@ export function toInputUser(inputPeer: Api.InputPeer) {
 }
 
 export function canBeInputChannel(inputPeer: Api.InputPeer) {
-  return isOneOf(["inputPeerChannel", "inputPeerChannelFromMessage"], inputPeer);
+  return Api.isOneOf(["inputPeerChannel", "inputPeerChannelFromMessage"], inputPeer);
 }
 export function toInputChannel(inputPeer: Api.InputPeer) {
   let id: Api.InputChannel;

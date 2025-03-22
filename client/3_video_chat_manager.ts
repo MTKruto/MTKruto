@@ -53,7 +53,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
     }
     const { updates } = await this.#c.invoke({ _: "phone.createGroupCall", peer, random_id: getRandomId(true), title, rtmp_stream: liveStream, schedule_date: scheduleDate ? toUnixTimestamp(scheduleDate) : undefined }).then((v) => as("updates", v));
     const updateGroupCall = updates
-      .find((v): v is Api.updateGroupCall => is("updateGroupCall", v));
+      .find((v): v is Api.updateGroupCall => Api.is("updateGroupCall", v));
     if (!updateGroupCall) {
       unreachable();
     }
@@ -84,7 +84,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
     const call = await this.#getInputGroupCall(id);
     const { updates } = await this.#c.invoke({ _: "phone.joinGroupCall", call, join_as: params_?.joinAs ? await this.#c.getInputPeer(params_.joinAs) : { _: "inputPeerSelf" }, params: ({ _: "dataJSON", data: params }), invite_hash: params_?.inviteHash, muted: params_?.audio ? undefined : true, video_stopped: params_?.video ? undefined : true }).then((v) => as("updates", v));
     const updateGroupCall = updates
-      .find((v): v is Api.updateGroupCallConnection => is("updateGroupCallConnection", v));
+      .find((v): v is Api.updateGroupCallConnection => Api.is("updateGroupCallConnection", v));
     if (!updateGroupCall) unreachable();
     return updateGroupCall.params.data;
   }
@@ -113,7 +113,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
       }),
     }).then((v) => as("updates", v));
     const updateGroupCall = updates
-      .find((v): v is Api.updateGroupCallConnection => is("updateGroupCallConnection", v));
+      .find((v): v is Api.updateGroupCallConnection => Api.is("updateGroupCallConnection", v));
     if (!updateGroupCall) unreachable();
   }
 
@@ -131,7 +131,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
   }
 
   canHandleUpdate(update: Api.Update): update is VideoChatManagerUpdate {
-    return isOneOf(videoChatManagerUpdates, update);
+    return Api.isOneOf(videoChatManagerUpdates, update);
   }
 
   async handleUpdate(update: VideoChatManagerUpdate): Promise<Update | null> {

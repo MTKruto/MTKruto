@@ -587,7 +587,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     if (typeof document === "string") {
       const fileId = this.resolveFileId(document, fileType);
       if (fileId != null) {
-        media = { _: "inputMediaDocument", id: { ...fileId, _: "inputDocument" }, spoiler, query: otherAttribs.find((v): v is Api.documentAttributeSticker => is("documentAttributeSticker", v))?.alt || undefined, ttl_seconds };
+        media = { _: "inputMediaDocument", id: { ...fileId, _: "inputDocument" }, spoiler, query: otherAttribs.find((v): v is Api.documentAttributeSticker => Api.is("documentAttributeSticker", v))?.alt || undefined, ttl_seconds };
       }
     }
 
@@ -917,7 +917,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     if (typeof document === "string") {
       const fileId = this.resolveFileId(document, fileType);
       if (fileId != null) {
-        media_ = { _: "inputMediaDocument", id: { ...fileId, _: "inputDocument" }, spoiler, query: otherAttribs.find((v): v is Api.documentAttributeSticker => is("documentAttributeSticker", v))?.alt || undefined };
+        media_ = { _: "inputMediaDocument", id: { ...fileId, _: "inputDocument" }, spoiler, query: otherAttribs.find((v): v is Api.documentAttributeSticker => Api.is("documentAttributeSticker", v))?.alt || undefined };
       }
     }
 
@@ -1122,7 +1122,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   }
 
   canHandleUpdate(update: Api.Update): update is MessageManagerUpdate {
-    return isOneOf(messageManagerUpdates, update);
+    return Api.isOneOf(messageManagerUpdates, update);
   }
 
   async handleUpdate(update: MessageManagerUpdate): Promise<Update | null> {

@@ -1095,11 +1095,11 @@ export async function constructMessage(
         }
       );
 
-      const animated = document.attributes.find((v): v is Api.documentAttributeAnimated => is("documentAttributeAnimated", v));
-      const audio = document.attributes.find((v): v is Api.documentAttributeAudio => is("documentAttributeAudio", v));
-      const fileName = document.attributes.find((v): v is Api.documentAttributeFilename => is("documentAttributeFilename", v));
-      const sticker = document.attributes.find((v): v is Api.documentAttributeSticker => is("documentAttributeSticker", v));
-      const video = document.attributes.find((v): v is Api.documentAttributeVideo => is("documentAttributeVideo", v));
+      const animated = document.attributes.find((v): v is Api.documentAttributeAnimated => Api.is("documentAttributeAnimated", v));
+      const audio = document.attributes.find((v): v is Api.documentAttributeAudio => Api.is("documentAttributeAudio", v));
+      const fileName = document.attributes.find((v): v is Api.documentAttributeFilename => Api.is("documentAttributeFilename", v));
+      const sticker = document.attributes.find((v): v is Api.documentAttributeSticker => Api.is("documentAttributeSticker", v));
+      const video = document.attributes.find((v): v is Api.documentAttributeVideo => Api.is("documentAttributeVideo", v));
 
       if (animated) {
         const fileId = getFileId(FileType.Animation);

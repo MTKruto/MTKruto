@@ -50,7 +50,7 @@ export class InlineQueryManager implements UpdateProcessor<InlineQueryManagerUpd
   }
 
   canHandleUpdate(update: Api.Update): update is InlineQueryManagerUpdate {
-    return isOneOf(inlineQueryManagerUpdates, update);
+    return Api.isOneOf(inlineQueryManagerUpdates, update);
   }
 
   async handleUpdate(update: InlineQueryManagerUpdate): Promise<Update> {

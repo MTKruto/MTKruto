@@ -122,7 +122,7 @@ export class AccountManager {
     if (!Api.is("contacts.contacts", result)) {
       unreachable();
     }
-    return result.users.map((v) => is("user", v) ? constructUser(v) : null).filter((v) => v != null);
+    return result.users.map((v) => Api.is("user", v) ? constructUser(v) : null).filter((v) => v != null);
   }
 
   async deleteContacts(userIds: ID[]) {

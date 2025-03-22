@@ -93,15 +93,15 @@ export class UpdateManager {
   }
 
   static isPtsUpdate(v: Api.Update): v is PtsUpdate {
-    return isOneOf(["updateNewMessage", "updateDeleteMessages", "updateReadHistoryInbox", "updateReadHistoryOutbox", "updatePinnedChannelMessages", "updatePinnedMessages", "updateFolderPeers", "updateChannelWebPage", "updateEditMessage", "updateReadMessagesContents", "updateWebPage"], v);
+    return Api.isOneOf(["updateNewMessage", "updateDeleteMessages", "updateReadHistoryInbox", "updateReadHistoryOutbox", "updatePinnedChannelMessages", "updatePinnedMessages", "updateFolderPeers", "updateChannelWebPage", "updateEditMessage", "updateReadMessagesContents", "updateWebPage"], v);
   }
 
   static isQtsUpdate(v: Api.Update): v is QtsUpdate {
-    return isOneOf(["updateNewEncryptedMessage", "updateMessagePollVote", "updateBotStopped", "updateChatParticipant", "updateChannelParticipant", "updateBotChatInviteRequester", "updateBotChatBoost", "updateBotMessageReaction", "updateBotMessageReactions", "updateBotBusinessConnect", "updateBotNewBusinessMessage", "updateBotEditBusinessMessage", "updateBotDeleteBusinessMessage"], v);
+    return Api.isOneOf(["updateNewEncryptedMessage", "updateMessagePollVote", "updateBotStopped", "updateChatParticipant", "updateChannelParticipant", "updateBotChatInviteRequester", "updateBotChatBoost", "updateBotMessageReaction", "updateBotMessageReactions", "updateBotBusinessConnect", "updateBotNewBusinessMessage", "updateBotEditBusinessMessage", "updateBotDeleteBusinessMessage"], v);
   }
 
   static isChannelPtsUpdate(v: Api.Update | Api.Updates): v is ChannelPtsUpdate {
-    return isOneOf([
+    return Api.isOneOf([
       "updateNewChannelMessage",
       "updateEditChannelMessage",
       "updateDeleteChannelMessages",
@@ -232,7 +232,7 @@ export class UpdateManager {
 
   async processResult(result: DeserializedType) {
     if (
-      isOneOf([
+      Api.isOneOf([
         "account.authorizationForm",
         "account.autoSaveSettings",
         "account.privacyRules",

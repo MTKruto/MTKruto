@@ -42,7 +42,7 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
   }
 
   canHandleUpdate(update: Api.Update): update is TranslationsManagerUpdate {
-    return isOneOf(translationsManagerUpdates, update);
+    return Api.isOneOf(translationsManagerUpdates, update);
   }
 
   async getTranslations(params?: GetTranslationsParams) {

@@ -50,7 +50,7 @@ export function constructVideo(document: Api.document, videoAttribute: Api.docum
     width: videoAttribute.w,
     height: videoAttribute.h,
     duration: videoAttribute.duration,
-    thumbnails: document.thumbs ? document.thumbs.map((v) => is("photoSize", v) ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
+    thumbnails: document.thumbs ? document.thumbs.map((v) => Api.is("photoSize", v) ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
     fileName,
     mimeType: document.mime_type,
     fileSize: Number(document.size),

@@ -368,7 +368,7 @@ export function getPhotoFileId(photo: Api.photo): { fileId: string; fileUniqueId
         return v;
       }
     })
-    .filter((v): v is Api.photoSize => is("photoSize", v))
+    .filter((v): v is Api.photoSize => Api.is("photoSize", v))
     .sort((a, b) => a.size - b.size);
   const largest = sizes.slice(-1)[0];
   const { dc_id: dcId, id, access_hash: accessHash, file_reference: fileReference } = photo;

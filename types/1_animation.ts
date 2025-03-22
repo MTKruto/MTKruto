@@ -51,7 +51,7 @@ export function constructAnimation(document: Api.document, videoAttribute: Api.d
     width: videoAttribute?.w ?? 0,
     height: videoAttribute?.h ?? 0,
     duration: videoAttribute?.duration ?? 0,
-    thumbnails: document.thumbs ? document.thumbs.map((v) => is("photoSize", v) ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
+    thumbnails: document.thumbs ? document.thumbs.map((v) => Api.is("photoSize", v) ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
     fileName: fileAttribute?.file_name,
     mimeType: document.mime_type,
     fileSize: Number(document.size),

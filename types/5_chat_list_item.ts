@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
-import { Api, chatIdToPeer, is, peerToChatId } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { StickerSetNameGetter } from "./1_sticker.ts";
@@ -91,7 +91,7 @@ export async function constructChatListItem4(dialog: Api.Dialog, dialogs: Api.me
   const userId = "user_id" in dialog.peer ? dialog.peer.user_id : null;
   const chatId = "chat_id" in dialog.peer ? dialog.peer.chat_id : null;
   const channelId = "channel_id" in dialog.peer ? dialog.peer.channel_id : null;
-  const chat__ = chatId != null ? dialogs.chats.find((v) => is("chat", v) && v.id == chatId) : channelId != null ? dialogs.chats.find((v) => is("channel", v) && v.id == channelId) : userId != null ? dialogs.users.find((v) => is("user", v) && v.id == userId) : unreachable();
+  const chat__ = chatId != null ? dialogs.chats.find((v) => Api.is("chat", v) && v.id == chatId) : channelId != null ? dialogs.chats.find((v) => Api.is("channel", v) && v.id == channelId) : userId != null ? dialogs.users.find((v) => Api.is("user", v) && v.id == userId) : unreachable();
   if (!chat__) {
     unreachable();
   }

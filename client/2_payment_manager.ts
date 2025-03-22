@@ -39,7 +39,7 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
   }
 
   canHandleUpdate(update: Api.Update): update is PaymentManagerUpdate {
-    return isOneOf(paymentManagerUpdates, update);
+    return Api.isOneOf(paymentManagerUpdates, update);
   }
 
   async handleUpdate(update: PaymentManagerUpdate): Promise<Update | null> {

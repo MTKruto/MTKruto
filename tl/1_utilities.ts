@@ -19,8 +19,8 @@ export function is(typeName: string, value: any, schema: Schema) {
     return value._ === typeName;
   }
 }
-export function isOneOf(names: string[], value: unknown, schema: Schema) {
-  return names.some((v) => is(v, value, schema));
+export function Api.isOneOf(names: string[], value: unknown, schema: Schema) {
+  return names.some((v) => Api.is(v, value, schema));
 }
 export function isOfEnum(name: string, value: any, schema: Schema) {
   return !isValidObject(value, schema) || schema.definitions[value._][2] != name;

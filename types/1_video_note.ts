@@ -45,7 +45,7 @@ export function constructVideoNote(document: Api.document, videoAttribute: Api.d
     fileUniqueId,
     length: videoAttribute.w,
     duration: videoAttribute.duration,
-    thumbnails: document.thumbs ? document.thumbs.map((v) => is("photoSize", v) ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
+    thumbnails: document.thumbs ? document.thumbs.map((v) => Api.is("photoSize", v) ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
     fileSize: Number(document.size),
   };
 }

@@ -58,7 +58,7 @@ export function constructStoryContent(media: Api.MessageMedia): StoryContent {
       unreachable();
     }
 
-    const video = document.attributes.find((v): v is Api.documentAttributeVideo => is("documentAttributeVideo", v));
+    const video = document.attributes.find((v): v is Api.documentAttributeVideo => Api.is("documentAttributeVideo", v));
     if (!video) {
       unreachable();
     }

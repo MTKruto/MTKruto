@@ -396,7 +396,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
 
     switch (type) {
       case "audio": {
-        const a = attributes?.find((v): v is Api.documentAttributeAudio => is("documentAttributeAudio", v));
+        const a = attributes?.find((v): v is Api.documentAttributeAudio => Api.is("documentAttributeAudio", v));
         return cleanObject({
           id,
           type,
@@ -410,7 +410,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
       }
       case "gif":
       case "mpeg4Gif": {
-        const a = attributes.find((v): v is Api.documentAttributeVideo => is("documentAttributeVideo", v));
+        const a = attributes.find((v): v is Api.documentAttributeVideo => Api.is("documentAttributeVideo", v));
         return cleanObject({
           id,
           type,
@@ -425,7 +425,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
         }) as InlineQueryResultGif | InlineQueryResultMpeg4Gif;
       }
       case "photo": {
-        const a = attributes.find((v): v is Api.documentAttributeImageSize => is("documentAttributeImageSize", v));
+        const a = attributes.find((v): v is Api.documentAttributeImageSize => Api.is("documentAttributeImageSize", v));
         return cleanObject({
           id,
           type,
@@ -441,7 +441,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
         });
       }
       case "video": {
-        const a = attributes.find((v): v is Api.documentAttributeVideo => is("documentAttributeVideo", v));
+        const a = attributes.find((v): v is Api.documentAttributeVideo => Api.is("documentAttributeVideo", v));
         return cleanObject({
           id,
           type,
@@ -458,7 +458,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
         });
       }
       case "voice": {
-        const a = attributes.find((v): v is Api.documentAttributeAudio => is("documentAttributeAudio", v));
+        const a = attributes.find((v): v is Api.documentAttributeAudio => Api.is("documentAttributeAudio", v));
         return cleanObject({
           id,
           type,

@@ -93,15 +93,15 @@ export async function storyPrivacyToTlObject(privacy: StoryPrivacy, getEntity: E
 }
 
 export function constructStoryPrivacy(privacy: Api.PrivacyRule[]): StoryPrivacy {
-  const except = privacy.find((v): v is Api.privacyValueDisallowUsers => is("privacyValueDisallowUsers", v))?.users?.map(Number) ?? [];
-  if (privacy.some((v) => is("privacyValueAllowAll", v))) {
+  const except = privacy.find((v): v is Api.privacyValueDisallowUsers => Api.is("privacyValueDisallowUsers", v))?.users?.map(Number) ?? [];
+  if (privacy.some((v) => Api.is("privacyValueAllowAll", v))) {
     return { everyoneExcept: except };
-  } else if (privacy.some((v) => is("privacyValueAllowContacts", v))) {
+  } else if (privacy.some((v) => Api.is("privacyValueAllowContacts", v))) {
     return { contactsExcept: except };
-  } else if (privacy.some((v) => is("privacyValueAllowCloseFriends", v))) {
+  } else if (privacy.some((v) => Api.is("privacyValueAllowCloseFriends", v))) {
     return { closeFriends: true };
   }
 
-  const only = privacy.find((v): v is Api.privacyValueAllowUsers => is("privacyValueAllowUsers", v))?.users?.map(Number) ?? [];
+  const only = privacy.find((v): v is Api.privacyValueAllowUsers => Api.is("privacyValueAllowUsers", v))?.users?.map(Number) ?? [];
   return { only };
 }

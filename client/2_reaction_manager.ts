@@ -42,7 +42,7 @@ export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate> {
   }
 
   canHandleUpdate(update: Api.Update): update is ReactionManagerUpdate {
-    return isOneOf(reactionManagerUpdates, update);
+    return Api.isOneOf(reactionManagerUpdates, update);
   }
 
   async handleUpdate(update: ReactionManagerUpdate): Promise<Update | null> {

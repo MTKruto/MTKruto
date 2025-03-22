@@ -57,7 +57,7 @@ export function getPhotoSizes(photo: Api.photo): { sizes: Api.photoSize[]; large
         return v;
       }
     })
-    .filter((v): v is Api.photoSize => is("photoSize", v))
+    .filter((v): v is Api.photoSize => Api.is("photoSize", v))
     .sort((a, b) => a.size - b.size);
   const largest = sizes.slice(-1)[0];
   return { sizes, largest };

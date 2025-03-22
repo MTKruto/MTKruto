@@ -76,7 +76,7 @@ export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManage
   }
 
   canHandleUpdate(update: Api.Update): update is CallbackQueryManagerUpdate {
-    return isOneOf(callbackQueryManagerUpdates, update);
+    return Api.isOneOf(callbackQueryManagerUpdates, update);
   }
 
   async handleUpdate(update: CallbackQueryManagerUpdate): Promise<Update> {

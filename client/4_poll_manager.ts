@@ -90,7 +90,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate> {
   }
 
   canHandleUpdate(update: Api.Update): update is PollManagerUpdate {
-    return isOneOf(pollManagerUpdates, update);
+    return Api.isOneOf(pollManagerUpdates, update);
   }
 
   async handleUpdate(update: PollManagerUpdate): Promise<Update | null> {

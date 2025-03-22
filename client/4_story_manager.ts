@@ -48,7 +48,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
 
   async #updatesToStory(updates: Api.Updates) {
     if (Api.is("updates", updates)) {
-      const updateStory = updates.updates.find((v): v is Api.updateStory => is("updateStory", v));
+      const updateStory = updates.updates.find((v): v is Api.updateStory => Api.is("updateStory", v));
       if (updateStory && is("storyItem", updateStory.story)) {
         return await constructStory(updateStory.story, updateStory.peer, this.#c.getEntity);
       }
@@ -160,7 +160,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
   }
 
   canHandleUpdate(update: Api.Update): update is StoryManagerUpdate {
-    return isOneOf(storyManagerUpdates, update);
+    return Api.isOneOf(storyManagerUpdates, update);
   }
 
   async handleUpdate(update: StoryManagerUpdate): Promise<Update | null> {
