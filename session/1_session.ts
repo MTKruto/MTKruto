@@ -19,7 +19,7 @@
  */
 
 import { SECOND } from "../0_deps.ts";
-import { drop, getLogger, Logger } from "../1_utilities.ts";
+import { drop, getLogger, Logger, Mutex } from "../1_utilities.ts";
 import { DC, TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
 import { SessionState } from "./0_session_state.ts";
 
@@ -101,7 +101,9 @@ export abstract class Session {
     return this.transport.connection.connected;
   }
 
+  #connectMutex = new Mutex();
   async connect() {
+    const release = this.#connectMutex.lock();
     if (this.connected) {
       return;
     }
