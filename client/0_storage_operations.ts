@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageKeyPart } from "../2_storage.ts";
-import { AnyEntity, Api, as, DeserializedType, deserializeTelegramType, is, isValidType, peerToChatId, serializeTelegramObject, TLReader, TLWriter } from "../2_tl.ts";
+import { AnyEntity, Api, as, DeserializedType, deserializeType, is, isValidType, peerToChatId, serializeObject, TLReader, TLWriter } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
 import { Translation, VoiceTranscription } from "../3_types.ts";
 
@@ -259,7 +259,7 @@ export class StorageOperations {
     if (value == null) {
       await this.#storage.set(key, null);
     } else {
-      await this.#storage.set(key, this.#mustSerialize ? [value._, rleEncode(serializeTelegramObject(value))] : (value as unknown));
+      await this.#storage.set(key, this.#mustSerialize ? [value._, rleEncode(serializeObject(value))] : (value as unknown));
     }
   }
 
@@ -268,7 +268,7 @@ export class StorageOperations {
     const buffer = (keyOrBuffer instanceof Uint8Array || isValidType(keyOrBuffer)) ? keyOrBuffer : await this.#storage.get<[string, Uint8Array]>(keyOrBuffer);
     if (buffer != null) {
       if (Array.isArray(buffer)) {
-        return await deserializeTelegramType(buffer[0], rleDecode(buffer[1]));
+        return await deserializeType(buffer[0], rleDecode(buffer[1]));
       } else {
         return buffer;
       }
@@ -324,7 +324,7 @@ export class StorageOperations {
   }
 
   async setEntity(entity: AnyEntity) {
-    await this.#storage.set(K.cache.peer(peerToChatId(entity)), [this.#mustSerialize ? rleEncode(serializeTelegramObject(entity)) : entity, new Date()]);
+    await this.#storage.set(K.cache.peer(peerToChatId(entity)), [this.#mustSerialize ? rleEncode(serializeObject(entity)) : entity, new Date()]);
   }
 
   async getEntity(key: number): Promise<DeserializedType | null> {
@@ -479,7 +479,7 @@ export class StorageOperations {
   }
 
   async setCustomEmojiDocument(id: bigint, document: Api.document) {
-    await this.#storage.set(K.cache.customEmojiDocument(id), [this.#mustSerialize ? rleEncode(serializeTelegramObject(document)) : document, new Date()]);
+    await this.#storage.set(K.cache.customEmojiDocument(id), [this.#mustSerialize ? rleEncode(serializeObject(document)) : document, new Date()]);
   }
 
   async getCustomEmojiDocument(id: bigint): Promise<[Api.document, Date] | null> {
@@ -492,7 +492,7 @@ export class StorageOperations {
   }
 
   async setBusinessConnection(id: string, connection: Api.botBusinessConnection | null) {
-    await this.#storage.set(K.cache.businessConnection(id), connection == null ? null : this.#mustSerialize ? rleEncode(serializeTelegramObject(connection)) : connection);
+    await this.#storage.set(K.cache.businessConnection(id), connection == null ? null : this.#mustSerialize ? rleEncode(serializeObject(connection)) : connection);
   }
 
   async getBusinessConnection(id: string): Promise<Api.botBusinessConnection | null> {
@@ -505,7 +505,7 @@ export class StorageOperations {
   }
 
   async setInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string, results: Api.messages_botResults, date: Date) {
-    await this.#storage.set(K.cache.inlineQueryAnswer(userId, chatId, query, offset), [this.#mustSerialize ? rleEncode(serializeTelegramObject(results)) : results, date]);
+    await this.#storage.set(K.cache.inlineQueryAnswer(userId, chatId, query, offset), [this.#mustSerialize ? rleEncode(serializeObject(results)) : results, date]);
   }
 
   async getInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string): Promise<[Api.messages_botResults, Date] | null> {
@@ -519,7 +519,7 @@ export class StorageOperations {
   }
 
   async setCallbackQueryAnswer(chatId: number, messageId: number, question: string, answer: Api.messages_botCallbackAnswer) {
-    await this.#storage.set(K.cache.callbackQueryAnswer(chatId, messageId, question), [this.#mustSerialize ? rleEncode(serializeTelegramObject(answer)) : answer, new Date()]);
+    await this.#storage.set(K.cache.callbackQueryAnswer(chatId, messageId, question), [this.#mustSerialize ? rleEncode(serializeObject(answer)) : answer, new Date()]);
   }
 
   async getCallbackQueryAnswer(chatId: number, messageId: number, question: string): Promise<[Api.messages_botCallbackAnswer, Date] | null> {

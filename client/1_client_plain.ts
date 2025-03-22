@@ -21,7 +21,7 @@
 import { assert, assertEquals, concat, ige256Decrypt, ige256Encrypt, unreachable } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
 import { bigIntFromBuffer, bufferFromBigInt, factorize, getLogger, getRandomBigInt, modExp, rsaPad, sha1 } from "../1_utilities.ts";
-import { Mtproto, mustGetReturnType } from "../2_tl.ts";
+import { Mtproto } from "../2_tl.ts";
 import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
 import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
 import { getMessageId, packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
@@ -66,7 +66,7 @@ export class ClientPlain extends ClientAbstract {
       throw new TransportError(Number(int));
     }
     const { message } = unpackUnencryptedMessage(buffer);
-    const result = await Mtproto.deserializeType(mustGetReturnType(function_._), message);
+    const result = await Mtproto.deserializeType(Mtproto.mustGetReturnType(function_._), message);
     L.in(result);
     return result as R;
   }
@@ -81,8 +81,7 @@ export class ClientPlain extends ClientAbstract {
         LcreateAuthKey.debug(`req_pq_multi [${i + 1}]`);
         resPq = await this.invoke({ _: "req_pq_multi", nonce });
 
-        Mtproto.assertIsValidObject(resPq);
-        assert(resPq._ == "resPQ");
+        assert(Mtproto.is("resPQ", resPq));
         assertEquals(resPq.nonce, nonce);
         LcreateAuthKey.debug("got res_pq");
         break;
@@ -146,8 +145,7 @@ export class ClientPlain extends ClientAbstract {
       encrypted_data: encryptedData,
     });
 
-    Mtproto.assertIsValidObject(dhParams);
-    assert(dhParams._ == "server_DH_params_ok");
+    assert(Mtproto.is("server_DH_params_ok", dhParams));
     LcreateAuthKey.debug("got server_DH_params_ok");
 
     const newNonce_ = bufferFromBigInt(newNonce, 32, true, true);
@@ -186,8 +184,7 @@ export class ClientPlain extends ClientAbstract {
       server_nonce: serverNonce,
       encrypted_data: encryptedData,
     });
-    Mtproto.assertIsValidObject(dhGenOk);
-    assert(dhGenOk._ == "dh_gen_ok");
+    assert(Mtproto.is("dh_gen_ok", dhGenOk));
     LcreateAuthKey.debug("got dh_gen_ok");
 
     const serverNonceSlice = serverNonce_.subarray(0, 8);

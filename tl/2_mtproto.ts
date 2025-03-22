@@ -17,12 +17,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+// deno-lint-ignore-file no-explicit-any
 
 import { gunzip } from "../1_utilities.ts";
-import { AnyObject, AnyType, schema, Types } from "./1_mtproto_api.ts";
+import { AnyObject, AnyType, Enums, Functions, schema, Types } from "./1_mtproto_api.ts";
 import { TLReader } from "./1_tl_reader.ts";
 import { TLWriter } from "./1_tl_writer.ts";
-import { assertIsValidObject as assertIsValidObject_ } from "./1_utilities.ts";
+import { as as as_, assertIsValidObject as assertIsValidObject_, is as is_, isOfEnum as isOfEnum_, isOneOf as isOneOf_, isValidObject as isValidObject_, mustGetReturnType as mustGetReturnType_ } from "./1_utilities.ts";
 
 export * from "./1_mtproto_api.ts";
 
@@ -45,6 +46,26 @@ export function serializeObject(object: AnyObject): Uint8Array {
   return new TLWriter().writeObject(object, schema).buffer;
 }
 
-export function assertIsValidObject(object: unknown): asserts object is AnyType {
-  assertIsValidObject_<AnyType>(object, schema);
+export function isValidObject(object: any): object is AnyType {
+  return isValidObject_(object, schema);
+}
+export function assertIsValidObject(object: any) {
+  return assertIsValidObject_(object, schema);
+}
+
+export function is<S extends keyof (Types & Functions)>(name: S, value: unknown): value is S extends keyof Types ? Types[S] : S extends keyof Functions ? Functions[S] : never {
+  return is_(name, value, schema);
+}
+export function isOneOf<S extends keyof (Types & Functions)>(names: S[] | readonly S[], value: unknown): value is S extends keyof Types ? Types[S] : S extends keyof Functions ? Functions[S] : never {
+  return isOneOf_(names as S[], value, schema);
+}
+export function isOfEnum<S extends keyof Enums>(name: S, value: unknown): value is Enums[S] {
+  return isOfEnum_(name, value, schema);
+}
+export function as<S extends keyof Types>(name: S, value: unknown): Types[S] {
+  return as_(name, value, schema) as Types[S];
+}
+
+export function mustGetReturnType(name: string): string {
+  return mustGetReturnType_(name, schema);
 }

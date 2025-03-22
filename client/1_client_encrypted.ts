@@ -21,7 +21,7 @@
 import { SECOND, unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, getRandomId, gunzip, gzip, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, DeserializedType, deserializeTelegramType, GZIP_PACKED, is, isGenericFunction, isOfEnum, isOneOf, message, mustGetReturnType, repr, RPC_RESULT, serializeTelegramObject, TLError, TLReader, TLWriter, X } from "../2_tl.ts";
+import { Api, DeserializedType, deserializeType, GZIP_PACKED, is, isGenericFunction, isOfEnum, isOneOf, message, mustGetReturnType, repr, RPC_RESULT, serializeObject, TLError, TLReader, TLWriter, X } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";
@@ -195,7 +195,7 @@ export class ClientEncrypted extends ClientAbstract {
 
   async invoke<T extends Api.AnyObject, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
     const messageId = this.#nextMessageId();
-    let body = serializeTelegramObject(function_);
+    let body = serializeObject(function_);
     if (body.length > COMPRESSION_THRESHOLD) {
       body = new TLWriter()
         .writeInt32(GZIP_PACKED, false)
@@ -217,7 +217,7 @@ export class ClientEncrypted extends ClientAbstract {
         _: "message",
         msg_id: this.#nextMessageId(),
         seqno: this.#nextSeqNo(false),
-        body: serializeTelegramObject({ _: "msgs_ack", msg_ids: this.#toAcknowledge.splice(0, 8192) }),
+        body: serializeObject({ _: "msgs_ack", msg_ids: this.#toAcknowledge.splice(0, 8192) }),
       };
       this.#recentAcks.set(ack.msg_id, { container, message: ack });
       message_ = {
@@ -350,10 +350,10 @@ export class ClientEncrypted extends ClientAbstract {
     // deno-lint-ignore no-explicit-any
     let result: any;
     if (id == RPC_ERROR) {
-      result = await deserializeTelegramType("rpc_error", reader);
+      result = await deserializeType("rpc_error", reader);
       this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
     } else {
-      result = await deserializeTelegramType(mustGetReturnType(call._), reader);
+      result = await deserializeType(mustGetReturnType(call._), reader);
       this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
     }
     const resolvePromise = () => {
@@ -372,7 +372,7 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   async #handleType(message: message, reader: TLReader) {
-    const body = await deserializeTelegramType(X, reader);
+    const body = await deserializeType(X, reader);
     this.#LreceiveLoop.debug("received", repr(body));
 
     let sendAck = true;
