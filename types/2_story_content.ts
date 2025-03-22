@@ -50,7 +50,7 @@ export function constructStoryContent(media: Api.MessageMedia): StoryContent {
     if (!media.photo) {
       unreachable();
     }
-    const photo = constructPhoto(as("photo", media.photo));
+    const photo = constructPhoto(Api.as("photo", media.photo));
     return { photo };
   } else if (Api.is("messageMediaDocument", media)) {
     const document = media.document;

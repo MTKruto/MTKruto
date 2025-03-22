@@ -833,7 +833,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     const newChatTitle = message_.action.title;
     return { ...message, newChatTitle };
   } else if (Api.is("messageActionChatEditPhoto", message_.action)) {
-    const newChatPhoto = constructPhoto(as("photo", message_.action.photo));
+    const newChatPhoto = constructPhoto(Api.as("photo", message_.action.photo));
     return { ...message, newChatPhoto };
   } else if (Api.is("messageActionChatDeletePhoto", message_.action)) {
     const deletedChatPhoto = true;
@@ -876,7 +876,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     const userShared = { requestId: message_.action.button_id, userId: Number(user.user_id) };
     return { ...message, userShared };
   } else if (Api.is("messageActionBotAllowed", message_.action)) {
-    const miniAppName = message_.action.app ? as("botApp", message_.action.app).title : undefined;
+    const miniAppName = message_.action.app ? Api.as("botApp", message_.action.app).title : undefined;
     const writeAccessAllowed = { miniAppName };
     return { ...message, writeAccessAllowed };
   } else if (Api.is("messageActionTopicCreate", message_.action)) {
@@ -1078,7 +1078,7 @@ export async function constructMessage(
     if (!message_.media.photo) {
       unreachable();
     }
-    const photo = constructPhoto(as("photo", message_.media.photo));
+    const photo = constructPhoto(Api.as("photo", message_.media.photo));
     m = { ...messageMedia, photo };
   } else if (Api.is("messageMediaDice", message_.media)) {
     const dice = constructDice(message_.media);

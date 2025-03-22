@@ -104,7 +104,7 @@ export function constructStoryInteractiveArea(area: Api.MediaArea): StoryInterac
     return {
       position,
       messageReference: {
-        chatId: peerToChatId(area),
+        chatId: Api.peerToChatId(area),
         messageId: area.msg_id,
       },
     };
@@ -137,7 +137,7 @@ export async function storyInteractiveAreaToTlObject(area: StoryInteractiveArea,
     const reaction = reactionToTlObject(area.reaction);
     return { _: "mediaAreaSuggestedReaction", coordinates, reaction, dark: area.dark ? true : undefined, flipped: area.flipped ? true : undefined };
   } else if ("messageReference" in area) {
-    const entity = await getEntity(chatIdToPeer(area.messageReference.chatId));
+    const entity = await getEntity(Api.chatIdToPeer(area.messageReference.chatId));
     if (!(Api.is("channel", entity))) {
       unreachable();
     }

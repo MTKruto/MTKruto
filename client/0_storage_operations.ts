@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageKeyPart } from "../2_storage.ts";
-import { AnyEntity, Api, as, DeserializedType, deserializeType, is, isValidType, peerToChatId, serializeObject, TLReader, TLWriter } from "../2_tl.ts";
+import { Api, TLReader, TLWriter } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
 import { Translation, VoiceTranscription } from "../3_types.ts";
 
@@ -259,11 +259,11 @@ export class StorageOperations {
     if (value == null) {
       await this.#storage.set(key, null);
     } else {
-      await this.#storage.set(key, this.#mustSerialize ? [value._, rleEncode(serializeObject(value))] : (value as unknown));
+      await this.#storage.set(key, this.#mustSerialize ? [value._, rleEncode(Api.serializeObject(value))] : (value as unknown));
     }
   }
 
-  async getTlObject(keyOrBuffer: Api.AnyType | Uint8Array | readonly StorageKeyPart[]): Promise<DeserializedType | null> {
+  async getTlObject(keyOrBuffer: Api.AnyType | Uint8Array | readonly StorageKeyPart[]): Promise<Api.DeserializedType | null> {
     // @ts-ignore: TBD
     const buffer = (keyOrBuffer instanceof Uint8Array || isValidType(keyOrBuffer)) ? keyOrBuffer : await this.#storage.get<[string, Uint8Array]>(keyOrBuffer);
     if (buffer != null) {
@@ -323,11 +323,11 @@ export class StorageOperations {
     return this.#storage.get<number>(K.updates.channelPts(channelId));
   }
 
-  async setEntity(entity: AnyEntity) {
-    await this.#storage.set(K.cache.peer(Api.peerToChatId(entity)), [this.#mustSerialize ? rleEncode(serializeObject(entity)) : entity, new Date()]);
+  async setEntity(entity: Api.AnyEntity) {
+    await this.#storage.set(K.cache.peer(Api.peerToChatId(entity)), [this.#mustSerialize ? rleEncode(Api.serializeObject(entity)) : entity, new Date()]);
   }
 
-  async getEntity(key: number): Promise<DeserializedType | null> {
+  async getEntity(key: number): Promise<Api.DeserializedType | null> {
     const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.peer(key));
     if (peer_ != null) {
       const [obj_] = peer_;
@@ -479,7 +479,7 @@ export class StorageOperations {
   }
 
   async setCustomEmojiDocument(id: bigint, document: Api.document) {
-    await this.#storage.set(K.cache.customEmojiDocument(id), [this.#mustSerialize ? rleEncode(serializeObject(document)) : document, new Date()]);
+    await this.#storage.set(K.cache.customEmojiDocument(id), [this.#mustSerialize ? rleEncode(Api.serializeObject(document)) : document, new Date()]);
   }
 
   async getCustomEmojiDocument(id: bigint): Promise<[Api.document, Date] | null> {
@@ -492,7 +492,7 @@ export class StorageOperations {
   }
 
   async setBusinessConnection(id: string, connection: Api.botBusinessConnection | null) {
-    await this.#storage.set(K.cache.businessConnection(id), connection == null ? null : this.#mustSerialize ? rleEncode(serializeObject(connection)) : connection);
+    await this.#storage.set(K.cache.businessConnection(id), connection == null ? null : this.#mustSerialize ? rleEncode(Api.serializeObject(connection)) : connection);
   }
 
   async getBusinessConnection(id: string): Promise<Api.botBusinessConnection | null> {
@@ -505,7 +505,7 @@ export class StorageOperations {
   }
 
   async setInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string, results: Api.messages_botResults, date: Date) {
-    await this.#storage.set(K.cache.inlineQueryAnswer(userId, chatId, query, offset), [this.#mustSerialize ? rleEncode(serializeObject(results)) : results, date]);
+    await this.#storage.set(K.cache.inlineQueryAnswer(userId, chatId, query, offset), [this.#mustSerialize ? rleEncode(Api.serializeObject(results)) : results, date]);
   }
 
   async getInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string): Promise<[Api.messages_botResults, Date] | null> {
@@ -519,7 +519,7 @@ export class StorageOperations {
   }
 
   async setCallbackQueryAnswer(chatId: number, messageId: number, question: string, answer: Api.messages_botCallbackAnswer) {
-    await this.#storage.set(K.cache.callbackQueryAnswer(chatId, messageId, question), [this.#mustSerialize ? rleEncode(serializeObject(answer)) : answer, new Date()]);
+    await this.#storage.set(K.cache.callbackQueryAnswer(chatId, messageId, question), [this.#mustSerialize ? rleEncode(Api.serializeObject(answer)) : answer, new Date()]);
   }
 
   async getCallbackQueryAnswer(chatId: number, messageId: number, question: string): Promise<[Api.messages_botCallbackAnswer, Date] | null> {

@@ -46,7 +46,7 @@ export interface ClaimedGift {
 }
 
 export function constructClaimedGift(savedStarGift: Api.SavedStarGift, fromPeer?: Api.User | Api.Chat): ClaimedGift {
-  if (fromPeer && !isOneOf(["user", "chat", "channel"], fromPeer)) {
+  if (fromPeer && !Api.isOneOf(["user", "chat", "channel"], fromPeer)) {
     unreachable();
   }
   const gift = constructGift(savedStarGift.gift);

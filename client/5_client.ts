@@ -22,7 +22,7 @@ import { MINUTE, SECOND, unreachable } from "../0_deps.ts";
 import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
 import { cleanObject, drop, getLogger, Logger, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageMemory } from "../2_storage.ts";
-import { Api, as, chatIdToPeerId, getChatIdPeerType, is, isOneOf, peerToChatId } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { DC, getDc } from "../3_transport.ts";
 import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Sticker, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
@@ -1240,13 +1240,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
       }
     }
 
-    this.#LsignIn.debug("authorizing with", typeof params === "string" ? "bot token" : is("auth.exportedAuthorization", params) ? "exported authorization" : "AuthorizeUserParams");
+    this.#LsignIn.debug("authorizing with", typeof params === "string" ? "bot token" : Api.is("auth.exportedAuthorization", params) ? "exported authorization" : "AuthorizeUserParams");
 
     if (params && "botToken" in params) {
       while (true) {
         try {
           const auth = await this.invoke({ _: "auth.importBotAuthorization", api_id: apiId, api_hash: this.#apiHash, bot_auth_token: params.botToken, flags: 0 });
-          await this.storage.setAccountId(Number(as("auth.authorization", auth).user.id));
+          await this.storage.setAccountId(Number(Api.as("auth.authorization", auth).user.id));
           await this.storage.setAccountType("bot");
           break;
         } catch (err) {
@@ -1310,7 +1310,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
               phone_code: code,
               phone_code_hash: sentCode.phone_code_hash,
             });
-            await this.storage.setAccountId(Number(as("auth.authorization", auth).user.id));
+            await this.storage.setAccountId(Number(Api.as("auth.authorization", auth).user.id));
             await this.storage.setAccountType("user");
             this.#LsignIn.debug("signed in as user");
             await this.#propagateAuthorizationState(true);
@@ -1340,7 +1340,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
             const input = await checkPassword(password, ap);
 
             const auth = await this.invoke({ _: "auth.checkPassword", password: input });
-            await this.storage.setAccountId(Number(as("auth.authorization", auth).user.id));
+            await this.storage.setAccountId(Number(Api.as("auth.authorization", auth).user.id));
             await this.storage.setAccountType("user");
             this.#LsignIn.debug("signed in as user");
             await this.#propagateAuthorizationState(true);
@@ -1577,9 +1577,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
         await this.#updateManager.processChats(resolved.chats, resolved);
         await this.#updateManager.processUsers(resolved.users, resolved);
         if (Api.is("peerUser", resolved.peer)) {
-          resolvedId = peerToChatId(resolved.peer);
+          resolvedId = Api.peerToChatId(resolved.peer);
         } else if (Api.is("peerChannel", resolved.peer)) {
-          resolvedId = peerToChatId(resolved.peer);
+          resolvedId = Api.peerToChatId(resolved.peer);
         } else {
           unreachable();
         }
@@ -1608,7 +1608,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
 
     if (!Api.is("inputPeerChat", peer) && !peer.access_hash) {
-      const chatId = peerToChatId(peer);
+      const chatId = Api.peerToChatId(peer);
       const minPeerReference = await this.messageStorage.getLastMinPeerReference(chatId);
       if (minPeerReference) {
         const minInputPeer = await this.#getMinInputPeer(canBeInputChannel(peer) ? "channel" : "user", { ...minPeerReference, senderId: chatId });
@@ -1641,7 +1641,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   private [getEntity](peer: Api.peerChannel): Promise<Api.channel | Api.channelForbidden | null>;
   private [getEntity](peer: Api.peerUser | Api.peerChat | Api.peerChannel): Promise<Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden | null>;
   private async [getEntity](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
-    const id = peerToChatId(peer);
+    const id = Api.peerToChatId(peer);
     const entity = await this.messageStorage.getEntity(id);
     if (entity == null && await this.storage.getAccountType() == "bot" && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
       await this.getInputPeer(id);

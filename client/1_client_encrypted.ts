@@ -21,7 +21,7 @@
 import { SECOND, unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, getRandomId, gunzip, gzip, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, GZIP_PACKED, message, mustGetReturnType, repr, RPC_RESULT, serializeObject, TLError, TLReader, TLWriter, X } from "../2_tl.ts";
+import { Api, GZIP_PACKED, message, repr, RPC_RESULT, serializeObject, TLError, TLReader, TLWriter, X } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";

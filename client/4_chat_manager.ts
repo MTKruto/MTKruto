@@ -122,7 +122,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
       throw new InputError("requireApproval cannot be true while limit is specified.");
     }
     const result = await this.#c.invoke({ _: "messages.exportChatInvite", peer: await this.#c.getInputPeer(chatId), title: params?.title, expire_date: params?.expireAt ? toUnixTimestamp(params.expireAt) : undefined, request_needed: params?.requireApproval ? true : undefined, usage_limit: params?.limit });
-    return await constructInviteLink(as("chatInviteExported", result), this.#c.getEntity);
+    return await constructInviteLink(Api.as("chatInviteExported", result), this.#c.getEntity);
   }
 
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams) {
@@ -410,7 +410,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   async transferChatOwnership(chatId: ID, userId: ID, password: string) {
     this.#c.storage.assertUser("transferChat");
     const user_id = await this.#c.getInputUser(userId);
-    const isSelf = is("inputUserSelf", user_id);
+    const isSelf = api.is("inputUserSelf", user_id);
     if (isSelf || peerToChatId(user_id) == await this.#c.getSelfId()) {
       throw new InputError("A user ID except that of the current one was expected.");
     }

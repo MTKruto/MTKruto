@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { base64EncodeUrlSafe, cleanObject } from "../1_utilities.ts";
-import { Api, serializeObject } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { constructUser, User } from "./1_user.ts";
@@ -47,8 +47,8 @@ export async function constructChosenInlineResult(ubis: Api.updateBotInlineSend,
   return cleanObject({
     resultId: ubis.id,
     from: constructUser(entity),
-    location: is("geoPoint", ubis.geo) ? constructLocation(ubis.geo) : undefined,
-    inlineMessageId: ubis.msg_id === undefined ? undefined : base64EncodeUrlSafe(serializeObject(ubis.msg_id)),
+    location: Api.is("geoPoint", ubis.geo) ? constructLocation(ubis.geo) : undefined,
+    inlineMessageId: ubis.msg_id === undefined ? undefined : base64EncodeUrlSafe(Api.serializeObject(ubis.msg_id)),
     query: ubis.query,
   });
 }

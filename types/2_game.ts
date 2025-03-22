@@ -43,7 +43,7 @@ export interface Game {
 
 export function constructGame(media_: Api.messageMediaGame): Game {
   const game_ = media_.game;
-  const document_ = game_.document ? as("document", game_.document) : undefined;
+  const document_ = game_.document ? Api.as("document", game_.document) : undefined;
   const fileId_: FileId | undefined = document_
     ? {
       type: FileType.Animation,
@@ -56,7 +56,7 @@ export function constructGame(media_: Api.messageMediaGame): Game {
   return cleanObject({
     title: game_.title,
     description: media_.game.description,
-    photo: constructPhoto(as("photo", game_.photo)),
+    photo: constructPhoto(Api.as("photo", game_.photo)),
     animation: fileId_ && document_
       ? constructAnimation(
         document_,

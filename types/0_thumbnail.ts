@@ -36,8 +36,8 @@ export interface Thumbnail {
 }
 
 export function constructThumbnail(size: Api.photoSize, file: Api.document | Api.photo): Thumbnail {
-  const type = is("photo", file) ? FileType.Photo : FileType.Thumbnail;
-  const fileType = is("photo", file) ? FileType.Photo : FileType.Document;
+  const type = api.is("photo", file) ? FileType.Photo : FileType.Thumbnail;
+  const fileType = api.is("photo", file) ? FileType.Photo : FileType.Document;
 
   const fileId_: FileId = {
     type,

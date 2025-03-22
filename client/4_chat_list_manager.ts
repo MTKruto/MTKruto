@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { toUnixTimestamp } from "../1_utilities.ts";
-import { Api, as, chatIdToPeerId, is, isOneOf, peerToChatId } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, constructChatP, constructChatSettings, getChatListItemOrder, ID } from "../3_types.ts";
 import { type CreateChannelParams, type CreateGroupParams, type CreateSupergroupParams, GetChatMembersParams, GetCommonChatsParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
@@ -229,7 +229,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
   }
   #handleUpdateFolderPeers(update: Api.updateFolderPeers) {
     for (const { peer, folder_id: listId } of update.folder_peers) {
-      const chatId = peerToChatId(peer);
+      const chatId = Api.peerToChatId(peer);
       const [chat, currentListId] = this.#getChatAnywhere(chatId);
       if (chat !== undefined && listId != currentListId) {
         this.#getChatList(currentListId).delete(chatId);
@@ -264,7 +264,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
   async #handleUpdateChannel(update: Api.updateChannel) {
     const peer: Api.peerChannel = { ...update, _: "peerChannel" };
     const channel = await this.#c.getEntity(peer);
-    const chatId = peerToChatId(peer);
+    const chatId = Api.peerToChatId(peer);
     await this.#c.storage.setFullChat(chatId, null);
     if (channel != null && "left" in channel && channel.left) {
       this.#removeChat(chatId);
@@ -278,7 +278,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
   async #handleUpdateChat(update: Api.updateChat) { // TODO: handle deactivated (migration)
     const peer: Api.peerChat = { ...update, _: "peerChat" };
     const chat = await this.#c.getEntity(peer);
-    const chatId = peerToChatId(peer);
+    const chatId = Api.peerToChatId(peer);
     await this.#c.storage.setFullChat(chatId, null);
     if (chat != null && "left" in chat && chat.left) {
       await this.#removeChat(chatId);
@@ -292,7 +292,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
   async #handleUpdateUser(update: Api.updateUser | Api.updateUserName) {
     const peer: Api.peerUser = { ...update, _: "peerUser" };
     const chat = await this.#c.getEntity(peer);
-    const chatId = peerToChatId(peer);
+    const chatId = Api.peerToChatId(peer);
     await this.#c.storage.setFullChat(chatId, null);
     if (chat != null) {
       await this.#updateOrAddChat(chatId);
@@ -332,7 +332,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
   async handleUpdate(update: ChatListManagerUpdate) {
     if (Api.is("updateNewMessage", update) || Api.is("updateNewChannelMessage", update) || Api.is("updateEditMessage", update) || Api.is("updateEditChannelMessage", update)) {
       if (Api.is("message", update.message) || Api.is("messageService", update.message)) {
-        const chatId = peerToChatId(update.message.peer_id);
+        const chatId = Api.peerToChatId(update.message.peer_id);
         await this.reassignChatLastMessage(chatId);
       }
     } else if (Api.is("updatePinnedDialogs", update)) {

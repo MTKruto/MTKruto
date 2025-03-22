@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api, as, isOneOf } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructBusinessConnection, Update } from "../3_types.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
 import { C } from "./1_types.ts";

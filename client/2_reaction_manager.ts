@@ -61,7 +61,7 @@ export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate> {
         return null;
       }
     } else if (Api.is("updateMessageReactions", update)) {
-      const chatId = peerToChatId(update.peer);
+      const chatId = Api.peerToChatId(update.peer);
       const message = await this.#c.messageStorage.getMessage(chatId, update.msg_id);
       if (Api.is("message", message)) {
         message.reactions = update.reactions;
@@ -75,7 +75,7 @@ export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate> {
         return null;
       }
     } else if (Api.isOneOf(["updateChannelMessageViews", "updateChannelMessageForwards"], update)) {
-      const chatId = peerToChatId({ ...update, _: "peerChannel" });
+      const chatId = Api.peerToChatId({ ...update, _: "peerChannel" });
       const message = await this.#c.messageStorage.getMessage(chatId, update.id);
       if (Api.is("message", message)) {
         if ("views" in update) {

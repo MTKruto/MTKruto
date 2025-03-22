@@ -42,7 +42,7 @@ export function getChatListItemOrder(lastMessage: Omit<Message, "replyToMessage"
 }
 
 export async function constructChatListItem(chatId: number, pinned: number, lastMessageId: number, getEntity: EntityGetter, getMessage: MessageGetter): Promise<ChatListItem | null> {
-  const entity = await getEntity(chatIdToPeer(chatId));
+  const entity = await getEntity(Api.chatIdToPeer(chatId));
   if (entity == null) {
     return null;
   }
@@ -68,7 +68,7 @@ export function constructChatListItem2(entity: Api.user | Api.chat | Api.chatFor
 }
 
 export async function constructChatListItem3(chatId: number, pinned: number, lastMessage: Omit<Message, "replyToMessage"> | undefined, getEntity: EntityGetter): Promise<ChatListItem | null> {
-  const entity = await getEntity(chatIdToPeer(chatId));
+  const entity = await getEntity(Api.chatIdToPeer(chatId));
   if (entity == null) {
     return null;
   }

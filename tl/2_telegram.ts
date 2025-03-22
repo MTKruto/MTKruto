@@ -120,7 +120,7 @@ export function chatIdToPeer(chatId: number): Api.Peer {
 }
 
 export function chatIdToPeerId(chatId: number): bigint {
-  const peer = chatIdToPeer(chatId);
+  const peer = Api.chatIdToPeer(chatId);
   if ("user_id" in peer) {
     return peer.user_id;
   } else if ("chat_id" in peer) {

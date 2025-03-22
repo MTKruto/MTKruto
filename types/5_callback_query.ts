@@ -76,6 +76,6 @@ export async function constructCallbackQuery(callbackQuery: Api.updateBotCallbac
     }
     return cleanObject({ id, from: user, message, chatInstance, data, gameShortName });
   } else {
-    return cleanObject({ id, from: user, inlineMessageId: base64EncodeUrlSafe(serializeObject(callbackQuery.msg_id)), chatInstance, data, gameShortName });
+    return cleanObject({ id, from: user, inlineMessageId: base64EncodeUrlSafe(Api.serializeObject(callbackQuery.msg_id)), chatInstance, data, gameShortName });
   }
 }

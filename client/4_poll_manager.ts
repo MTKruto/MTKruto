@@ -74,7 +74,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate> {
       throw new InputError("The same options are already casted.");
     }
     const peer = await this.#c.getInputPeer(chatId);
-    const chatId_ = peerToChatId(peer as IdentifierContainer);
+    const chatId_ = Api.peerToChatId(peer as IdentifierContainer);
     const message_ = await this.#c.messageStorage.getMessage(chatId_, messageId);
     if (!Api.is("message", message_)) {
       unreachable();

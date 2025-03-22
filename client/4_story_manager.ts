@@ -21,7 +21,7 @@
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getRandomId } from "../1_utilities.ts";
-import { Api, as, inputPeerToPeer, is, isOneOf, peerToChatId } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, Update } from "../3_types.ts";
 import { InputStoryContent } from "../types/1_input_story_content.ts";
 import { CreateStoryParams } from "./0_params.ts";
@@ -112,7 +112,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     const stories_ = await this.#c.invoke({ _: "stories.getStoriesByID", peer, id: storyIds });
     const stories = new Array<Story>();
     for (const story of stories_.stories) {
-      stories.push(await constructStory(as("storyItem", story), inputPeerToPeer(peer), this.#c.getEntity));
+      stories.push(await constructStory(Api.as("storyItem", story), inputPeerToPeer(peer), this.#c.getEntity));
     }
     return stories;
   }
@@ -165,7 +165,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
 
   async handleUpdate(update: StoryManagerUpdate): Promise<Update | null> {
     if (Api.is("storyItemDeleted", update.story)) {
-      const chatId = peerToChatId(update.peer);
+      const chatId = Api.peerToChatId(update.peer);
       const storyId = update.story.id;
       return { deletedStory: { chatId, storyId } };
     } else if (Api.is("storyItem", update.story)) {

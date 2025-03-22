@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { toUnixTimestamp } from "../1_utilities.ts";
-import { Api, chatIdToPeer, inputPeerToPeer, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { birthdayToTlObject, constructInactiveChat, constructUser, ID } from "../3_types.ts";
 import { AddContactParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, UpdateProfileParams } from "./0_params.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -174,7 +174,7 @@ export class AccountManager {
     this.#c.storage.assertUser("updateProfile");
     const selfId = await this.#c.getSelfId();
     const userFull = await this.#getUserFull(selfId);
-    const entity = await this.#c.getEntity(chatIdToPeer(selfId));
+    const entity = await this.#c.getEntity(Api.chatIdToPeer(selfId));
     if (!Api.is("user", entity)) {
       unreachable();
     }

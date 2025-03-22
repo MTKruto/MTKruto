@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api, as } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructLocation, Location } from "./0_location.ts";
 
 /** A shared venue. */
