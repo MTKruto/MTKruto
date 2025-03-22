@@ -31,7 +31,7 @@ export class SessionEncrypted extends Session implements Session {
   #pendingMessages = new Set<bigint>();
   #pendingPings = new Map<bigint, { resolve: (pong: Mtproto.pong) => void; reject: (reason: unknown) => void }>();
   #L: Logger;
-  
+
   static #TGCRYPTO_INITED = false;
 
   constructor(dc: DC, params?: SessionParams) {
