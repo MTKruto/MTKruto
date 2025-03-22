@@ -49,7 +49,7 @@ export function serializeObject(object: AnyObject): Uint8Array {
 export function isValidObject(object: any): object is AnyType {
   return isValidObject_(object, schema);
 }
-export function assertIsValidObject(object: any) {
+export function assertIsValidObject(object: any): asserts object is AnyType {
   return assertIsValidObject_(object, schema);
 }
 
