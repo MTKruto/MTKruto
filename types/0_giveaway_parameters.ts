@@ -19,7 +19,7 @@
  */
 
 import { fromUnixTimestamp } from "../1_utilities.ts";
-import { Api, peerToChatId } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** Giveaway parameters. */
 export interface GiveawayParameters {
@@ -38,7 +38,7 @@ export interface GiveawayParameters {
 export function constructGiveawayParameters(g: Api.messageMediaGiveaway): GiveawayParameters {
   const countries = g.countries_iso2 ?? [];
   const boostedChatId = Api.peerToChatId({ _: "peerChannel", channel_id: g.channels[0] });
-  const additionalChatIds = g.channels.slice(1).map((v) => peerToChatId({ _: "peerChannel", channel_id: v }));
+  const additionalChatIds = g.channels.slice(1).map((v) => Api.peerToChatId({ _: "peerChannel", channel_id: v }));
   const onlyNewMembers = g.only_new_subscribers ? true : false;
   const winnerSelectionDate = fromUnixTimestamp(g.until_date);
 

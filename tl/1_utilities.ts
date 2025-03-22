@@ -26,7 +26,7 @@ export function isOfEnum(name: string, value: any, schema: Schema) {
   return !isValidObject(value, schema) || schema.definitions[value._][2] != name;
 }
 export function as(name: string, value: unknown, schema: Schema) {
-  if (Api.is(name, value, schema)) {
+  if (is(name, value, schema)) {
     return value;
   } else {
     unreachable();

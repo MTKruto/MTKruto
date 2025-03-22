@@ -21,7 +21,7 @@
 import { SECOND, unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, getRandomId, gunzip, gzip, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, GZIP_PACKED, message, repr, RPC_RESULT, serializeObject, TLError, TLReader, TLWriter, X } from "../2_tl.ts";
+import { Api, message, Mtproto, repr, TLError, TLReader, TLWriter, X } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";
@@ -37,7 +37,7 @@ export type ErrorSource = "deserialization" | "decryption" | "unknown";
 export interface Handlers {
   serverSaltReassigned?: (newServerSalt: bigint) => void;
   updates?: (updates: Api.Updates | Api.Update, call: Api.AnyType | null, callback?: () => void) => void;
-  result?: (result: DeserializedType, callback: () => void) => void;
+  result?: (result: Api.DeserializedType, callback: () => void) => void;
   error?: (err: unknown, source: ErrorSource) => void;
 }
 
@@ -62,7 +62,7 @@ export class ClientEncrypted extends ClientAbstract {
   #shouldInvalidateSession = true;
   #toAcknowledge = new Array<bigint>();
   #recentAcks = new CacheMap<bigint, { container?: bigint; message: message }>(20);
-  #promises = new Map<bigint, { container?: bigint; message: message; resolve?: (obj: DeserializedType) => void; reject?: (err: DeserializedType | Error) => void; call: Api.AnyObject }>();
+  #promises = new Map<bigint, { container?: bigint; message: message; resolve?: (obj: Api.DeserializedType) => void; reject?: (err: Api.DeserializedType | Error) => void; call: Api.AnyObject }>();
   #loopActive = true;
 
   // loggers
@@ -193,12 +193,12 @@ export class ClientEncrypted extends ClientAbstract {
     this.#L.outBin(payload);
   }
 
-  async invoke<T extends Api.AnyObject, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
+  async invoke<T extends Api.AnyObject | Mtproto.AnyObject, R = T["_"] extends keyof Mtproto.Functions ? Mtproto.ReturnType<T> extends never ? Mtproto.ReturnType<Mtproto.Functions[T["_"]]> : never : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
     const messageId = this.#nextMessageId();
     let body = serializeObject(function_);
     if (body.length > COMPRESSION_THRESHOLD) {
       body = new TLWriter()
-        .writeInt32(GZIP_PACKED, false)
+        .writeInt32(Mtproto.GZIP_PACKED, false)
         .writeBytes(await gzip(body))
         .buffer;
     }
@@ -243,7 +243,7 @@ export class ClientEncrypted extends ClientAbstract {
       return;
     }
 
-    return (await new Promise<DeserializedType>((resolve, reject) => {
+    return (await new Promise<Api.DeserializedType>((resolve, reject) => {
       this.#promises.set(messageId, { container, message: message__, resolve, reject, call: function_ });
     })) as R;
   }
@@ -344,20 +344,20 @@ export class ClientEncrypted extends ClientAbstract {
     }
     // deno-lint-ignore no-explicit-any
     let call: any = promise?.call ?? null;
-    while (isGenericFunction(call)) {
+    while (Api.isGenericFunction(call)) {
       call = call.query;
     }
     // deno-lint-ignore no-explicit-any
     let result: any;
     if (id == RPC_ERROR) {
-      result = await Api.deserializeType("rpc_error", reader);
+      result = await Mtproto.deserializeType("rpc_error", reader);
       this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
     } else {
       result = await Api.deserializeType(Api.mustGetReturnType(call._), reader);
       this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
     }
     const resolvePromise = () => {
-      if (Api.is("rpc_error", result)) {
+      if (Mtproto.is("rpc_error", result)) {
         promise.reject?.(constructTelegramError(result, promise.call));
       } else {
         promise.resolve?.(result);
@@ -372,23 +372,28 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   async #handleType(message: message, reader: TLReader) {
-    const body = await Api.deserializeType(X, reader);
+    let body: Api.DeserializedType | Mtproto.DeserializedType;
+    try {
+      body = await Mtproto.deserializeType(X, reader);
+    } catch {
+      body = await Api.deserializeType(X, reader);
+    }
     this.#LreceiveLoop.debug("received", repr(body));
 
     let sendAck = true;
-    if (Api.isOfEnum("Updates", body) || isOfEnum("Update", body)) {
+    if (Api.isOfEnum("Updates", body) || Api.isOfEnum("Update", body)) {
       drop(this.handlers.updates?.(body as Api.Updates | Api.Update, null));
-    } else if (Api.is("new_session_created", body)) {
+    } else if (Mtproto.is("new_session_created", body)) {
       this.serverSalt = body.server_salt;
       drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
       this.#LreceiveLoop.debug("new session created with ID", body.unique_id);
-    } else if (Api.is("pong", body)) {
+    } else if (Mtproto.is("pong", body)) {
       const promise = this.#promises.get(body.msg_id);
       if (promise) {
         promise.resolve?.(body);
         this.#promises.delete(body.msg_id);
       }
-    } else if (Api.is("bad_server_salt", body)) {
+    } else if (Mtproto.is("bad_server_salt", body)) {
       sendAck = false;
       this.#LreceiveLoop.debug("server salt reassigned");
       this.serverSalt = body.new_server_salt;
@@ -411,7 +416,7 @@ export class ClientEncrypted extends ClientAbstract {
           }
         }
       }
-    } else if (Api.is("bad_msg_notification", body)) {
+    } else if (Mtproto.is("bad_msg_notification", body)) {
       sendAck = false;
       let low = false;
       switch (body.error_code) {
@@ -443,7 +448,7 @@ export class ClientEncrypted extends ClientAbstract {
         promise.reject?.(body);
         this.#promises.delete(body.bad_msg_id);
       }
-    } else if (Api.isOneOf(["msg_detailed_info", "msg_new_detailed_info"], body)) {
+    } else if (Mtproto.isOneOf(["msg_detailed_info", "msg_new_detailed_info"], body)) {
       sendAck = false;
       this.#toAcknowledge.push(body.answer_msg_id);
     }

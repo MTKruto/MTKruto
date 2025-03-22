@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { Api, IdentifierContainer } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructPoll, ID, Update } from "../3_types.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
 import { C as C_ } from "./1_types.ts";
@@ -74,7 +74,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate> {
       throw new InputError("The same options are already casted.");
     }
     const peer = await this.#c.getInputPeer(chatId);
-    const chatId_ = Api.peerToChatId(peer as IdentifierContainer);
+    const chatId_ = Api.peerToChatId(peer as Api.IdentifierContainer);
     const message_ = await this.#c.messageStorage.getMessage(chatId_, messageId);
     if (!Api.is("message", message_)) {
       unreachable();

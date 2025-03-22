@@ -77,7 +77,7 @@ export interface ChatMemberBanned extends _ChatMemberBase {
 export type ChatMember = ChatMemberCreator | ChatMemberAdministrator | ChatMemberMember | ChatMemberRestricted | ChatMemberLeft | ChatMemberBanned;
 
 export async function constructChatMember(participant: Api.ChannelParticipant | Api.ChatParticipant, getEntity: EntityGetter): Promise<ChatMember> {
-  const user_ = "user_id" in participant ? await getEntity({ ...participant, _: "peerUser" }) : "peer" in participant ? is("peerUser", participant.peer) ? await getEntity(participant.peer) : unreachable() : unreachable(); // TODO: support other peer types
+  const user_ = "user_id" in participant ? await getEntity({ ...participant, _: "peerUser" }) : "peer" in participant ? Api.is("peerUser", participant.peer) ? await getEntity(participant.peer) : unreachable() : unreachable(); // TODO: support other peer types
   if (user_ == null) unreachable();
   const user = constructUser(user_);
   if (Api.is("channelParticipant", participant) || Api.is("chatParticipant", participant)) {

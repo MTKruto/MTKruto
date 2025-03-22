@@ -142,7 +142,7 @@ export class AccountManager {
     if (!Api.is("inputPeerUser", id)) {
       unreachable();
     }
-    const user = await this.#c.getEntity(inputPeerToPeer(id));
+    const user = await this.#c.getEntity(Api.inputPeerToPeer(id));
     if (!user || !("first_name" in user)) {
       unreachable();
     }

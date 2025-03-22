@@ -392,7 +392,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
     const { chats } = await this.#c.invoke({ _: "channels.getGroupsForDiscussion" });
     return chats
       .map((v) => {
-        if (!isOneOf(["chat", "channel"], v)) {
+        if (!Api.isOneOf(["chat", "channel"], v)) {
           return v;
         } else {
           return constructChatP(v);
@@ -410,8 +410,8 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   async transferChatOwnership(chatId: ID, userId: ID, password: string) {
     this.#c.storage.assertUser("transferChat");
     const user_id = await this.#c.getInputUser(userId);
-    const isSelf = api.is("inputUserSelf", user_id);
-    if (isSelf || peerToChatId(user_id) == await this.#c.getSelfId()) {
+    const isSelf = Api.is("inputUserSelf", user_id);
+    if (isSelf || Api.peerToChatId(user_id) == await this.#c.getSelfId()) {
       throw new InputError("A user ID except that of the current one was expected.");
     }
     const channel = await this.#c.getInputChannel(chatId);

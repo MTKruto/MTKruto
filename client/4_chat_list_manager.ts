@@ -558,7 +558,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     if (limit > 100) {
       limit = 100;
     }
-    const result = await this.#c.invoke({ _: "messages.getCommonChats", user_id, max_id: chatIdToPeerId(max_id), limit });
+    const result = await this.#c.invoke({ _: "messages.getCommonChats", user_id, max_id: Api.chatIdToPeerId(max_id), limit });
     const chats = new Array<ChatP>();
     for (const chat of result.chats) {
       if (!Api.is("chatEmpty", chat)) {

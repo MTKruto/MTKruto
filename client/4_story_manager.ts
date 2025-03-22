@@ -112,7 +112,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     const stories_ = await this.#c.invoke({ _: "stories.getStoriesByID", peer, id: storyIds });
     const stories = new Array<Story>();
     for (const story of stories_.stories) {
-      stories.push(await constructStory(Api.as("storyItem", story), inputPeerToPeer(peer), this.#c.getEntity));
+      stories.push(await constructStory(Api.as("storyItem", story), Api.inputPeerToPeer(peer), this.#c.getEntity));
     }
     return stories;
   }

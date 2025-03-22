@@ -83,7 +83,7 @@ const GENERIC_FUNCTIONS = [
   "invokeWithTakeout",
 ] as const;
 export function isGenericFunction(value: unknown): boolean {
-  return Api.isOneOf(GENERIC_FUNCTIONS, value);
+  return isOneOf(GENERIC_FUNCTIONS, value);
 }
 
 export function getChannelChatId(channelId: bigint): number {
@@ -98,11 +98,11 @@ export type InputPeerWithIdentifier = Api.inputPeerChat | Api.inputPeerUser | Ap
 export type IdentifierContainer = { user_id: bigint } | { chat_id: bigint } | { channel_id: bigint };
 
 export function peerToChatId(peer: AnyEntity | InputPeerWithIdentifier | Api.Peer | IdentifierContainer): number {
-  if (Api.isOneOf(["peerUser", "inputPeerUser", "inputPeerUserFromMessage", "user", "userFull"], peer) || "user_id" in peer) {
+  if (isOneOf(["peerUser", "inputPeerUser", "inputPeerUserFromMessage", "user", "userFull"], peer) || "user_id" in peer) {
     return Number("user_id" in peer ? peer.user_id : peer.id);
-  } else if ("chat_id" in peer || Api.isOneOf(["peerChat", "inputPeerChat", "chat", "chatForbidden", "chatFull"], peer)) {
+  } else if ("chat_id" in peer || isOneOf(["peerChat", "inputPeerChat", "chat", "chatForbidden", "chatFull"], peer)) {
     return -Number("chat_id" in peer ? peer.chat_id : peer.id);
-  } else if ("channel_id" in peer || Api.isOneOf(["peerChannel", "inputPeerChannel", "inputPeerChannelFromMessage", "channel", "channelForbidden", "channelFull"], peer)) {
+  } else if ("channel_id" in peer || isOneOf(["peerChannel", "inputPeerChannel", "inputPeerChannelFromMessage", "channel", "channelForbidden", "channelFull"], peer)) {
     return getChannelChatId("channel_id" in peer ? peer.channel_id : peer.id);
   } else {
     unreachable();
@@ -120,7 +120,7 @@ export function chatIdToPeer(chatId: number): Api.Peer {
 }
 
 export function chatIdToPeerId(chatId: number): bigint {
-  const peer = Api.chatIdToPeer(chatId);
+  const peer = chatIdToPeer(chatId);
   if ("user_id" in peer) {
     return peer.user_id;
   } else if ("chat_id" in peer) {
