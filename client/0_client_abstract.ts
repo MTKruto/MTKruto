@@ -43,9 +43,9 @@ export abstract class ClientAbstract {
     this.cdn = params?.cdn ?? false;
   }
 
-  abstract get connected(): boolean;
-
   abstract connect(): Promise<void>;
+
+  abstract get connected(): boolean;
 
   abstract disconnect(): void;
 
