@@ -41,7 +41,7 @@ export interface Handlers {
   error?: (err: unknown, source: ErrorSource) => void;
 }
 
-const RPC_ERROR = Api.schema.definitions["rpc_error"][0];
+const RPC_ERROR = Mtproto.schema.definitions["rpc_error"][0];
 
 /**
  * An MTProto client for making encrypted connections. Most users won't need to interact with this. Used internally by `Client`.
