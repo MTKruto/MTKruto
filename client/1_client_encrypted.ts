@@ -51,16 +51,9 @@ export interface Handlers {
  * - It doesn't uncompress compressed packets.
  */
 export class ClientEncrypted extends ClientAbstract {
-  #authKey = new Uint8Array();
-  #authKeyId = 0n;
-  #sessionId = 0n;
-  #state = { serverSalt: 0n, seqNo: 0, messageId: 0n };
-  #shouldInvalidateSession = true;
-  #toAcknowledge = new Array<bigint>();
-  #recentAcks = new CacheMap<bigint, { container?: bigint; message: message }>(20);
-  #promises = new Map<bigint, { container?: bigint; message: message; resolve?: (obj: Api.DeserializedType | Mtproto.DeserializedType) => void; reject?: (err: Api.DeserializedType | Mtproto.DeserializedType | Error) => void; call: Api.AnyObject | Mtproto.AnyObject }>();
+  #promises = new Map<bigint, { resolve?: (obj: Api.DeserializedType) => void; reject?: (err: Api.DeserializedType | Error) => void; call: Api.AnyObject }>();
 
-  #session: SessionEncrypted;
+  #session!: SessionEncrypted;
 
   // loggers
   #L: Logger;
@@ -71,118 +64,28 @@ export class ClientEncrypted extends ClientAbstract {
   // receive loop handlers
   handlers: Handlers = {};
 
-  constructor(params?: ClientAbstractParams) {
-    super(params);
-
-    this.#session;
-    const L = this.#L = getLogger("ClientEncrypted").client(id++);
-    this.#LreceiveLoop = L.branch("receiveLoop");
-    this.#Linvoke = L.branch("invoke");
-    this.#LpingLoop = L.branch("pingLoop");
+  constructor() {
+    super();
+    this.#session.handlers = {};
+    this.#session.handlers.onMessageFailed = this.#onMessageFailed.bind(this);
   }
 
-  override async connect(): Promise<void> {
-    await super.connect();
-  }
-
-  #reconnecting = false;
-  async #reconnect() {
-    if (this.connected) {
-      return;
-    }
-    if (this.disconnected) {
-      this.#L.debug("not reconnecting");
-      return;
-    }
-    if (this.#reconnecting) {
-      return;
-    }
-    this.#reconnecting = true;
-    try {
-      let delay = 5;
-      while (!this.connected) {
-        this.#L.debug("reconnecting");
-        this.#pingLoopAbortController?.abort();
-        try {
-          await this.connect();
-          this.#L.debug("reconnected");
-          break;
-        } catch (err) {
-          if (delay < 15) {
-            delay += 5;
-          }
-          this.#L.debug(`failed to reconnect, retrying in ${delay}:`, err);
-        }
-        await new Promise((r) => setTimeout(r, delay * SECOND));
-      }
-    } finally {
-      this.#reconnecting = false;
-    }
-  }
-
-  async setAuthKey(key: Uint8Array<ArrayBuffer>) {
-    await this.#session.setAuthKey(key);
-  }
-
-  async invoke<T extends Api.AnyObject | Mtproto.AnyObject, R = T["_"] extends keyof Mtproto.Functions ? Mtproto.ReturnType<T> extends never ? Mtproto.ReturnType<Mtproto.Functions[T["_"]]> : never : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
-    const messageId = this.#nextMessageId();
-    let body: Uint8Array;
-    if (Mtproto.isValidObject(function_)) {
-      body = Mtproto.serializeObject(function_);
-    } else if (Api.isValidObject(function_)) {
-      body = Api.serializeObject(function_);
-    } else {
-      unreachable();
-    }
-    if (body.length > COMPRESSION_THRESHOLD) {
-      body = new TLWriter()
-        .writeInt32(Mtproto.GZIP_PACKED, false)
-        .writeBytes(await gzip(body))
-        .buffer;
-    }
-    let message_: message = {
-      _: "message",
-      msg_id: messageId,
-      seqno: this.#nextSeqNo(true),
-      body,
-    };
-    const message__ = message_;
-
-    let container: bigint | undefined = undefined;
-
-    if (this.#toAcknowledge.length) {
-      const ack: message = {
-        _: "message",
-        msg_id: this.#nextMessageId(),
-        seqno: this.#nextSeqNo(false),
-        body: Mtproto.serializeObject({ _: "msgs_ack", msg_ids: this.#toAcknowledge.splice(0, 8192) }),
-      };
-      this.#recentAcks.set(ack.msg_id, { container, message: ack });
-      message_ = {
-        _: "message",
-        msg_id: container = this.#nextMessageId(),
-        seqno: this.#nextSeqNo(false),
-        body: {
-          _: "msg_container",
-          messages: [message_, ack],
-        },
-      };
-    }
-
-    await this.#sendMessage(message_);
+  async invoke<T extends Api.AnyObject, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
+    const messageId = await this.#session.send(Api.serializeObject(function_));
     this.#Linvoke.debug("invoked", function_._);
 
     if (noWait) {
       this.#promises.set(messageId, {
-        container,
-        message: message_,
         call: function_,
       });
       return;
     }
 
-    return (await new Promise<Api.DeserializedType | Mtproto.DeserializedType>((resolve, reject) => {
-      this.#promises.set(messageId, { container, message: message__, resolve, reject, call: function_ });
+    return (await new Promise<Api.DeserializedType>((resolve, reject) => {
+      this.#promises.set(messageId, { resolve, reject, call: function_ });
     })) as R;
+  }
+
+  #onMessageFailed(msgId: bigint) {
   }
 }
