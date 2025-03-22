@@ -19,13 +19,11 @@
  */
 
 import { SECOND, unreachable } from "../0_deps.ts";
-import { ConnectionError } from "../0_errors.ts";
-import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, getRandomId, gunzip, gzip, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, message, Mtproto, repr, TLError, TLReader, TLWriter, X } from "../2_tl.ts";
-import { constructTelegramError } from "../4_errors.ts";
+import { CacheMap, getLogger, gzip, Logger } from "../1_utilities.ts";
+import { Api, message, Mtproto, TLWriter, X } from "../2_tl.ts";
+import { SessionEncrypted } from "../4_session.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";
-import { SessionEncrypted } from "../4_session.ts";
 
 const COMPRESSION_THRESHOLD = 1024;
 
@@ -40,8 +38,6 @@ export interface Handlers {
   result?: (result: Api.DeserializedType, callback: () => void) => void;
   error?: (err: unknown, source: ErrorSource) => void;
 }
-
-const RPC_ERROR = Mtproto.schema.definitions["rpc_error"][0];
 
 /**
  * An MTProto client for making encrypted connections. Most users won't need to interact with this. Used internally by `Client`.
