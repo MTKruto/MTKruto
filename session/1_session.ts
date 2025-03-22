@@ -42,6 +42,7 @@ export interface SessionParams {
 
 export abstract class Session {
   #dc: DC;
+  #cdn: boolean;
   protected state = new SessionState();
   protected transport: ReturnType<TransportProvider>;
   #lastConnect?: Date;
@@ -50,15 +51,24 @@ export abstract class Session {
 
   constructor(dc: DC, params?: SessionParams) {
     this.#dc = dc;
+    this.#cdn = params?.cdn ?? false;
 
     const transportProvider = params?.transportProvider ?? defaultTransportProvider();
-    this.transport = transportProvider({ dc: this.#dc, cdn: params?.cdn ?? false });
+    this.transport = transportProvider({ dc: this.#dc, cdn: this.#cdn });
     this.transport.connection.stateChangeHandler = (connected) => {
       setTimeout(() => {
         drop(this.#stateChangeHandler(connected));
       });
     };
     this.#L = getLogger("Session").client(id++);
+  }
+
+  get dc() {
+    return this.#dc;
+  }
+
+  get cdn() {
+    return this.#cdn;
   }
 
   set serverSalt(serverSalt: bigint) {
@@ -85,10 +95,6 @@ export abstract class Session {
     }
 
     await this.connect();
-  }
-
-  get dc(): DC {
-    return this.#dc;
   }
 
   get connected(): boolean {

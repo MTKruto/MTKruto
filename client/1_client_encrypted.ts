@@ -25,7 +25,7 @@ import { Api, message, Mtproto, repr, TLError, TLReader, TLWriter, X } from "../
 import { constructTelegramError } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";
-import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
+import { SessionEncrypted } from "../4_session.ts";
 
 const COMPRESSION_THRESHOLD = 1024;
 
@@ -63,7 +63,8 @@ export class ClientEncrypted extends ClientAbstract {
   #toAcknowledge = new Array<bigint>();
   #recentAcks = new CacheMap<bigint, { container?: bigint; message: message }>(20);
   #promises = new Map<bigint, { container?: bigint; message: message; resolve?: (obj: Api.DeserializedType | Mtproto.DeserializedType) => void; reject?: (err: Api.DeserializedType | Mtproto.DeserializedType | Error) => void; call: Api.AnyObject | Mtproto.AnyObject }>();
-  #loopActive = true;
+
+  #session: SessionEncrypted;
 
   // loggers
   #L: Logger;
@@ -77,33 +78,15 @@ export class ClientEncrypted extends ClientAbstract {
   constructor(params?: ClientAbstractParams) {
     super(params);
 
+    this.#session;
     const L = this.#L = getLogger("ClientEncrypted").client(id++);
     this.#LreceiveLoop = L.branch("receiveLoop");
     this.#Linvoke = L.branch("invoke");
     this.#LpingLoop = L.branch("pingLoop");
-    this.stateChangeHandler = () => {
-      setTimeout(() => {
-        drop(this.#reconnect());
-      });
-    };
   }
 
   override async connect(): Promise<void> {
     await super.connect();
-    if (this.#shouldInvalidateSession) {
-      this.#sessionId = getRandomBigInt(8, true, false);
-      this.#state = { serverSalt: 0n, seqNo: 0, messageId: 0n };
-      this.#shouldInvalidateSession = false;
-    }
-    drop(this.#receiveLoop()); // TODO: ability to join this promise
-    this.#startConnectionInsuranceLoop();
-    this.#startPingLoop();
-  }
-
-  override async disconnect() {
-    await super.disconnect();
-    this.#pingLoopAbortController?.abort();
-    this.#connectionInsuranceLoopAbortController?.abort();
   }
 
   #reconnecting = false;
@@ -142,57 +125,7 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   async setAuthKey(key: Uint8Array<ArrayBuffer>) {
-    const hash = await sha1(key);
-    this.#authKeyId = bigIntFromBuffer(hash.slice(-8), true, false);
-    this.#authKey = key;
-  }
-
-  get authKey(): Uint8Array {
-    return this.#authKey;
-  }
-
-  set serverSalt(serverSalt: bigint) {
-    this.#state.serverSalt = serverSalt;
-  }
-
-  get serverSalt(): bigint {
-    return this.#state.serverSalt;
-  }
-
-  #timeDifference = 0;
-  #nextMessageId() {
-    return this.#state.messageId = getMessageId(this.#state.messageId, this.#timeDifference);
-  }
-
-  #nextSeqNo(contentRelated: boolean) {
-    let seqNo = this.#state.seqNo * 2;
-    if (contentRelated) {
-      seqNo++;
-      this.#state.seqNo++;
-    }
-    return seqNo;
-  }
-
-  async #invalidateSession() {
-    await this.transport?.transport.deinitialize();
-    await this.transport?.connection.close();
-    this.#shouldInvalidateSession = true;
-  }
-
-  async #sendMessage(message: message) {
-    const payload = await encryptMessage(
-      message,
-      this.#authKey,
-      this.#authKeyId,
-      this.#state.serverSalt,
-      this.#sessionId,
-    );
-    if (!this.transport) {
-      throw new ConnectionError("Not connected.");
-    }
-    await this.transport!.transport.send(payload);
-    this.#L.out(message);
-    this.#L.outBin(payload);
+    await this.#session.setAuthKey(key);
   }
 
   async invoke<T extends Api.AnyObject | Mtproto.AnyObject, R = T["_"] extends keyof Mtproto.Functions ? Mtproto.ReturnType<T> extends never ? Mtproto.ReturnType<Mtproto.Functions[T["_"]]> : never : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
@@ -255,288 +188,5 @@ export class ClientEncrypted extends ClientAbstract {
     return (await new Promise<Api.DeserializedType | Mtproto.DeserializedType>((resolve, reject) => {
       this.#promises.set(messageId, { container, message: message__, resolve, reject, call: function_ });
     })) as R;
-  }
-
-  //// RECEIVE LOOP ////
-  async #receiveLoop() {
-    if (!this.transport) {
-      unreachable();
-    }
-
-    for (const [key, { reject }] of this.#promises.entries()) {
-      reject?.(new ConnectionError("Connection was closed"));
-      this.#promises.delete(key);
-    }
-
-    this.#loopActive = true;
-    while (this.connected && this.#loopActive) {
-      try {
-        const buffer = await this.transport.transport.receive();
-        this.#L.inBin(buffer);
-
-        let decrypted;
-        try {
-          decrypted = await (decryptMessage(
-            buffer,
-            this.#authKey,
-            this.#authKeyId,
-            this.#sessionId,
-          ));
-          this.#L.in(decrypted);
-        } catch (err) {
-          this.#LreceiveLoop.error("failed to decrypt message:", err);
-          drop(this.handlers.error?.(err, "decryption"));
-          continue;
-        }
-        const messages = decrypted.body instanceof Uint8Array ? [decrypted] : decrypted.body.messages.map((v) => v);
-
-        for (const message of messages) {
-          if (!(message.body instanceof Uint8Array)) {
-            unreachable();
-          }
-          await this.#handleIncomingMessage(message);
-        }
-      } catch (err) {
-        if (!this.connected) {
-          break;
-        } else if (err instanceof TLError) {
-          this.#LreceiveLoop.error("failed to deserialize:", err);
-          drop(this.handlers.error?.(err, "deserialization"));
-        } else {
-          this.#LreceiveLoop.error("unexpected error:", err);
-        }
-      }
-    }
-
-    if (!this.connected) {
-      for (const [key, { reject }] of this.#promises.entries()) {
-        reject?.(new ConnectionError("Connection was closed"));
-        this.#promises.delete(key);
-      }
-    } else {
-      unreachable();
-    }
-  }
-
-  async #handleIncomingMessage(message: message) {
-    const body = message.body;
-    if (!(body instanceof Uint8Array)) {
-      unreachable();
-    }
-    let reader = new TLReader(body);
-    const id = reader.readInt32(false);
-    if (id == Mtproto.GZIP_PACKED) {
-      reader = new TLReader(await gunzip(reader.readBytes()));
-    } else if (id == Mtproto.RPC_RESULT) {
-      await this.#handleRpcResult(reader);
-    } else {
-      reader.unreadInt32();
-      await this.#handleType(message, reader);
-      return;
-    }
-    this.#toAcknowledge.push(message.msg_id);
-  }
-
-  async #handleRpcResult(reader: TLReader) {
-    const messageId = reader.readInt64();
-    const promise = this.#promises.get(messageId);
-    if (!promise) {
-      return;
-    }
-    let id = reader.readInt32(false);
-    if (id == Mtproto.GZIP_PACKED) {
-      reader = new TLReader(await gunzip(reader.readBytes()));
-      id = reader.readInt32(false);
-      reader.unreadInt32();
-    } else {
-      reader.unreadInt32();
-    }
-    // deno-lint-ignore no-explicit-any
-    let call: any = promise?.call ?? null;
-    while (Api.isGenericFunction(call)) {
-      call = call.query;
-    }
-    // deno-lint-ignore no-explicit-any
-    let result: any;
-    if (id == RPC_ERROR) {
-      result = await Mtproto.deserializeType("rpc_error", reader);
-      this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
-    } else {
-      result = await Api.deserializeType(Api.mustGetReturnType(call._), reader);
-      this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
-    }
-    const resolvePromise = () => {
-      if (Mtproto.is("rpc_error", result)) {
-        promise.reject?.(constructTelegramError(result, promise.call));
-      } else {
-        promise.resolve?.(result);
-      }
-      this.#promises.delete(messageId);
-    };
-    if (Api.isOfEnum("Updates", result) || Api.isOfEnum("Update", result)) {
-      drop(this.handlers.updates?.(result, call, resolvePromise));
-    } else {
-      drop(this.handlers.result?.(result, resolvePromise));
-    }
-  }
-
-  async #handleType(message: message, reader: TLReader) {
-    let body: Api.DeserializedType | Mtproto.DeserializedType;
-    try {
-      body = await Mtproto.deserializeType(X, reader);
-    } catch {
-      body = await Api.deserializeType(X, reader);
-    }
-    this.#LreceiveLoop.debug("received", repr(body));
-
-    let sendAck = true;
-    if (Api.isOfEnum("Updates", body) || Api.isOfEnum("Update", body)) {
-      drop(this.handlers.updates?.(body as Api.Updates | Api.Update, null));
-    } else if (Mtproto.is("new_session_created", body)) {
-      this.serverSalt = body.server_salt;
-      drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
-      this.#LreceiveLoop.debug("new session created with ID", body.unique_id);
-    } else if (Mtproto.is("pong", body)) {
-      const promise = this.#promises.get(body.msg_id);
-      if (promise) {
-        promise.resolve?.(body);
-        this.#promises.delete(body.msg_id);
-      }
-    } else if (Mtproto.is("bad_server_salt", body)) {
-      sendAck = false;
-      this.#LreceiveLoop.debug("server salt reassigned");
-      this.serverSalt = body.new_server_salt;
-      drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
-      const promise = this.#promises.get(body.bad_msg_id);
-      const ack = this.#recentAcks.get(body.bad_msg_id);
-      if (promise) {
-        drop(this.#sendMessage(promise.message));
-      } else if (ack) {
-        drop(this.#sendMessage(ack.message));
-      } else {
-        for (const promise of this.#promises.values()) {
-          if (promise.container && promise.container == body.bad_msg_id) {
-            drop(this.#sendMessage(promise.message));
-          }
-        }
-        for (const ack of this.#recentAcks.values()) {
-          if (ack.container && ack.container == body.bad_msg_id) {
-            drop(this.#sendMessage(ack.message));
-          }
-        }
-      }
-    } else if (Mtproto.is("bad_msg_notification", body)) {
-      sendAck = false;
-      let low = false;
-      switch (body.error_code) {
-        case 16: // message ID too low
-          low = true;
-          /* falls through */
-        case 17: // message ID too high
-          this.#timeDifference = Math.abs(toUnixTimestamp(new Date()) - Number(message.msg_id >> 32n));
-          if (!low) {
-            this.#timeDifference = -this.#timeDifference;
-            this.#LreceiveLoop.debug("message ID too high, invalidating session");
-            await this.#invalidateSession();
-            this.#loopActive = false;
-          } else {
-            this.#LreceiveLoop.debug("message ID too low, resending message");
-          }
-          break;
-        case 48: // bad server salt
-          // resend
-          this.#LreceiveLoop.debug("resending message that caused bad_server_salt");
-          break;
-        default:
-          await this.#invalidateSession();
-          this.#LreceiveLoop.debug("invalidating session because of unexpected bad_msg_notification:", body.error_code);
-          this.#loopActive = false;
-      }
-      const promise = this.#promises.get(body.bad_msg_id);
-      if (promise) {
-        promise.reject?.(body);
-        this.#promises.delete(body.bad_msg_id);
-      }
-    } else if (Mtproto.isOneOf(["msg_detailed_info", "msg_new_detailed_info"], body)) {
-      sendAck = false;
-      this.#toAcknowledge.push(body.answer_msg_id);
-    }
-
-    if (sendAck) {
-      this.#toAcknowledge.push(message.msg_id);
-    }
-  }
-
-  //// PING LOOP ////
-  #pingLoopAbortController: AbortController | null = null;
-  #pingInterval = 56 * SECOND;
-  #startPingLoop() {
-    drop(this.#pingLoop());
-  }
-  async #pingLoop() {
-    if (this.cdn) {
-      return;
-    }
-    this.#pingLoopAbortController = new AbortController();
-    let timeElapsed = 0;
-    while (this.connected) {
-      const then = Date.now();
-      try {
-        await new Promise((resolve, reject) => {
-          const timeout = setTimeout(resolve, this.#pingInterval - timeElapsed);
-          this.#pingLoopAbortController!.signal.onabort = () => {
-            reject(this.#pingLoopAbortController?.signal.reason);
-            clearTimeout(timeout);
-          };
-        });
-        if (!this.connected) {
-          continue;
-        }
-        this.#pingLoopAbortController.signal.throwIfAborted();
-        await this.invoke({ _: "ping_delay_disconnect", ping_id: getRandomId(), disconnect_delay: this.#pingInterval / SECOND + 15 });
-        this.#pingLoopAbortController.signal.throwIfAborted();
-      } catch (err) {
-        if (err instanceof DOMException && err.name == "AbortError") {
-          this.#pingLoopAbortController = new AbortController();
-        }
-        if (!this.connected) {
-          continue;
-        }
-        this.#LpingLoop.error(err);
-      } finally {
-        timeElapsed = Date.now() - then;
-      }
-    }
-  }
-
-  //// CONNECTION INSURANCE LOOP ////
-  #connectionInsuranceLoopStarted = false;
-  #connectionInsuranceLoopAbortController: AbortController | null = null;
-  #startConnectionInsuranceLoop() {
-    drop(this.#connectionInsuranceLoop());
-  }
-  async #connectionInsuranceLoop() {
-    if (this.#connectionInsuranceLoopStarted) {
-      return;
-    }
-    this.#connectionInsuranceLoopAbortController = new AbortController();
-    this.#connectionInsuranceLoopStarted = true;
-    while (!this.disconnected) {
-      try {
-        await new Promise((resolve, reject) => {
-          const timeout = setTimeout(resolve, 10 * SECOND);
-          this.#connectionInsuranceLoopAbortController!.signal.onabort = () => {
-            reject(this.#connectionInsuranceLoopAbortController?.signal.reason);
-            clearTimeout(timeout);
-          };
-        });
-      } catch {
-        break;
-      }
-      if (!this.connected) {
-        drop(this.#reconnect());
-      }
-    }
-    this.#connectionInsuranceLoopStarted = false;
   }
 }

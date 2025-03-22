@@ -19,12 +19,12 @@
  */
 
 import { assert, assertEquals, concat, ige256Decrypt, ige256Encrypt, unreachable } from "../0_deps.ts";
-import { ConnectionError, TransportError } from "../0_errors.ts";
 import { bigIntFromBuffer, bufferFromBigInt, factorize, getLogger, getRandomBigInt, modExp, rsaPad, sha1 } from "../1_utilities.ts";
 import { Mtproto } from "../2_tl.ts";
+import { DC, getDcId } from "../3_transport.ts";
 import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
+import { SessionPlain } from "../4_session.ts";
 import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
-import { getMessageId, packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
 
 const L = getLogger("ClientPlain");
 const LcreateAuthKey = L.branch("createAuthKey");
@@ -39,36 +39,40 @@ export interface ClientPlainParams extends ClientAbstractParams {
 /**
  * An MTProto client for making plain connections. Most users won't need to interact with this. Used internally for creating authorization keys.
  */
-export class ClientPlain extends ClientAbstract {
+export class ClientPlain extends ClientAbstract implements ClientAbstract {
   readonly #publicKeys: PublicKeys;
-  #lastMessageId = 0n;
+  #session: SessionPlain;
+  #dc: DC;
+  #cdn: boolean;
 
-  constructor(params?: ClientPlainParams) {
+  constructor(dc: DC, params?: ClientPlainParams) {
     super(params);
     this.#publicKeys = params?.publicKeys ?? PUBLIC_KEYS;
+    this.#session = new SessionPlain(dc, params);
+    this.#dc = this.#session.dc;
+    this.#cdn = this.#session.cdn;
+  }
+
+  get connected() {
+    return this.#session.connected;
+  }
+
+  async connect() {
+    await this.#session.connect();
+  }
+
+  disconnect() {
+    this.#session.disconnect();
+  }
+
+  get disconnected() {
+    return this.#session.disconnected;
   }
 
   async invoke<T extends Mtproto.AnyObject, R = T["_"] extends keyof Mtproto.Functions ? Mtproto.ReturnType<T> extends never ? Mtproto.ReturnType<Mtproto.Functions[T["_"]]> : never : never>(function_: T): Promise<R> {
-    if (!this.transport) {
-      throw new ConnectionError("Not connected.");
-    }
-    const messageId = this.#lastMessageId = getMessageId(this.#lastMessageId, 0);
-
-    const payload = packUnencryptedMessage(Mtproto.serializeObject(function_), messageId);
-    await this.transport.transport.send(payload);
-    L.out(function_);
-    L.outBin(payload);
-
-    const buffer = await this.transport.transport.receive();
-    L.inBin(payload);
-    if (buffer.length == 4) {
-      const int = bigIntFromBuffer(buffer, true, true);
-      throw new TransportError(Number(int));
-    }
-    const { message } = unpackUnencryptedMessage(buffer);
-    const result = await Mtproto.deserializeType(Mtproto.mustGetReturnType(function_._), message);
-    L.in(result);
-    return result as R;
+    await this.#session.send(Mtproto.serializeObject(function_));
+    const body = await this.#session.receive();
+    return await Mtproto.deserializeType(Mtproto.mustGetReturnType(function_._), body) as R;
   }
 
   async createAuthKey(): Promise<[Uint8Array<ArrayBuffer>, bigint]> {
@@ -117,7 +121,7 @@ export class ClientPlain extends ClientAbstract {
       throw new Error("No corresponding public key found");
     }
 
-    const dc = this.dcId;
+    const dc = getDcId(this.#dc, this.#cdn);
     const pq = resPq.pq;
     const serverNonce = resPq.server_nonce;
     const newNonce = getRandomBigInt(32, false, true);

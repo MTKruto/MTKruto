@@ -18,18 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ConnectionError } from "../0_errors.ts";
-import { DC, TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
-import { INITIAL_DC } from "../4_constants.ts";
+import { TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
 
 // @ts-ignore: lib
 const defaultTransportProvider = typeof Deno === "undefined" ? transportProviderWebSocket : transportProviderTcp;
 
 export interface ClientAbstractParams {
-  /**
-   * The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC.
-   */
-  initialDc?: DC;
   /**
    * The transport provider to use. Defaults to `webSocketTransportProvider` with its default options.
    */
@@ -41,68 +35,19 @@ export interface ClientAbstractParams {
 }
 
 export abstract class ClientAbstract {
-  public readonly initialDc: DC;
   public transportProvider: TransportProvider;
   public readonly cdn: boolean;
 
-  protected transport?: ReturnType<TransportProvider>;
-  #dc?: DC;
-
   constructor(params?: ClientAbstractParams) {
-    this.initialDc = params?.initialDc ?? INITIAL_DC;
     this.transportProvider = params?.transportProvider ?? defaultTransportProvider();
     this.cdn = params?.cdn ?? false;
   }
 
-  stateChangeHandler?: (connected: boolean) => void;
+  abstract get connected(): boolean;
 
-  get dc(): DC {
-    return this.#dc ?? this.initialDc;
-  }
+  abstract connect(): Promise<void>;
 
-  get dcId(): number {
-    if (!this.transport) {
-      throw new ConnectionError("Not connected.");
-    }
-    return this.transport.dcId;
-  }
+  abstract disconnect(): void;
 
-  setDc(dc: DC) {
-    this.#dc = dc;
-  }
-
-  get connected(): boolean {
-    return this.transport === undefined ? false : this.transport.connection.connected;
-  }
-
-  async connect() {
-    this.transport = this.transportProvider({ dc: this.#dc ?? this.initialDc, cdn: this.cdn });
-    this.transport.connection.stateChangeHandler = this.stateChangeHandler;
-    await this.transport.connection.open();
-    await this.transport.transport.initialize();
-    this.#disconnected = false;
-  }
-
-  async reconnect(dc?: DC) {
-    await this.transport?.transport.deinitialize();
-    await this.transport?.connection.close();
-    if (dc) {
-      this.setDc(dc);
-    }
-    await this.connect();
-  }
-
-  #disconnected = false;
-  async disconnect() {
-    if (!this.transport) {
-      throw new ConnectionError("Not connected.");
-    }
-    await this.transport.transport.deinitialize();
-    await this.transport.connection.close();
-    this.#disconnected = true;
-  }
-
-  get disconnected(): boolean {
-    return this.#disconnected;
-  }
+  abstract get disconnected(): boolean;
 }
