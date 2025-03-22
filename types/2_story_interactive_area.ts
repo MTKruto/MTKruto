@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Api, chatIdToPeer, is, peerToChatId } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { MessageReference } from "./0_message_reference.ts";
@@ -82,16 +82,16 @@ function constructStoryInteractiveAreaPosition(position: Api.mediaAreaCoordinate
 }
 export function constructStoryInteractiveArea(area: Api.MediaArea): StoryInteractiveArea {
   const position = constructStoryInteractiveAreaPosition(area.coordinates);
-  if (is("mediaAreaGeoPoint", area)) {
-    if (is("geoPointEmpty", area.geo)) {
+  if (Api.is("mediaAreaGeoPoint", area)) {
+    if (Api.is("geoPointEmpty", area.geo)) {
       unreachable(); // will this ever be empty?
     }
     const location = constructLocation(area.geo);
     return { position, location };
-  } else if (is("mediaAreaVenue", area)) {
+  } else if (Api.is("mediaAreaVenue", area)) {
     const venue = constructVenue(area);
     return { position, venue };
-  } else if (is("mediaAreaSuggestedReaction", area)) {
+  } else if (Api.is("mediaAreaSuggestedReaction", area)) {
     const reaction = constructReaction(area.reaction);
     return {
       position,
@@ -100,7 +100,7 @@ export function constructStoryInteractiveArea(area: Api.MediaArea): StoryInterac
       flipped: area.flipped ? true : false,
       dark: area.dark ? true : false,
     };
-  } else if (is("mediaAreaChannelPost", area)) {
+  } else if (Api.is("mediaAreaChannelPost", area)) {
     return {
       position,
       messageReference: {

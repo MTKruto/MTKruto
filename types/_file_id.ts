@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, rleDecode, rleEncode } from "../1_utilities.ts";
-import { Api, is, TLReader, TLWriter } from "../2_tl.ts";
+import { Api, TLReader, TLWriter } from "../2_tl.ts";
 
 const NEXT_VERSION = 53;
 const PERSISTENT_ID_VERSION = 4;
@@ -362,7 +362,7 @@ export function toUniqueFileId(fileId: FileId): string {
 export function getPhotoFileId(photo: Api.photo): { fileId: string; fileUniqueId: string } {
   const sizes = photo.sizes
     .map((v) => {
-      if (is("photoSizeProgressive", v)) {
+      if (Api.is("photoSizeProgressive", v)) {
         return { _: "photoSize", type: v.type, w: v.w, h: v.h, size: Math.max(...v.sizes) };
       } else {
         return v;

@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { base64EncodeUrlSafe, cleanObject } from "../1_utilities.ts";
-import { Api, is, serializeObject } from "../2_tl.ts";
+import { Api, serializeObject } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { constructUser, User } from "./1_user.ts";

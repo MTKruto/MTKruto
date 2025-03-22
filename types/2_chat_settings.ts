@@ -19,7 +19,7 @@
  */
 
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructUser, User } from "./1_user.ts";
 
 export interface ChatSettings {
@@ -70,7 +70,7 @@ export function constructChatSettings(settings_: Api.messages_peerSettings): Cha
     photoChangeDate: settings_.settings.photo_change_date ? fromUnixTimestamp(settings_.settings.photo_change_date) : undefined,
   };
   const bot = settings_.users.find((v) => v.id == settings_.settings.business_bot_id);
-  if (is("user", bot)) {
+  if (Api.is("user", bot)) {
     settings.businessBot = constructUser(bot);
   }
   return cleanObject(settings);

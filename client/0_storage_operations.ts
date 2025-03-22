@@ -219,7 +219,7 @@ export class StorageOperations {
       if (!(is("channel", channel)) && !is("channelForbidden", channel)) {
         unreachable();
       }
-      if (is("channel", channel) && channel.min) {
+      if (Api.is("channel", channel) && channel.min) {
         return null;
       }
       return typeof channel.access_hash === "bigint" ? channel.access_hash : null;
@@ -231,7 +231,7 @@ export class StorageOperations {
   async getUserAccessHash(id: number): Promise<bigint | null> {
     const user = await this.getEntity(id);
     if (user) {
-      if (!is("user", user)) {
+      if (!Api.is("user", user)) {
         unreachable();
       }
       if (user.min) {

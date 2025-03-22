@@ -47,7 +47,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
   }
 
   async #updatesToStory(updates: Api.Updates) {
-    if (is("updates", updates)) {
+    if (Api.is("updates", updates)) {
       const updateStory = updates.updates.find((v): v is Api.updateStory => is("updateStory", v));
       if (updateStory && is("storyItem", updateStory.story)) {
         return await constructStory(updateStory.story, updateStory.peer, this.#c.getEntity);
@@ -73,7 +73,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
         throw new InputError("URL not supported.");
       } else {
         const file = await this.#c.fileManager.upload(source, params, null, "video" in content);
-        if (is("inputFileStoryDocument", file)) {
+        if (Api.is("inputFileStoryDocument", file)) {
           unreachable();
         }
         const mimeType = contentType(file.name.split(".").slice(-1)[0]) ?? "application/octet-stream";
@@ -164,11 +164,11 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
   }
 
   async handleUpdate(update: StoryManagerUpdate): Promise<Update | null> {
-    if (is("storyItemDeleted", update.story)) {
+    if (Api.is("storyItemDeleted", update.story)) {
       const chatId = peerToChatId(update.peer);
       const storyId = update.story.id;
       return { deletedStory: { chatId, storyId } };
-    } else if (is("storyItem", update.story)) {
+    } else if (Api.is("storyItem", update.story)) {
       const story = await constructStory(update.story, update.peer, this.#c.getEntity);
       return { story };
     } else {

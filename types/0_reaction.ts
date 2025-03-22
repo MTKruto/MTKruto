@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /**
  * A regular reaction.
@@ -51,11 +51,11 @@ export interface ReactionPaid {
 export type Reaction = ReactionEmoji | ReactionCustom | ReactionPaid;
 
 export function constructReaction(reaction: Api.Reaction): Reaction {
-  if (is("reactionEmoji", reaction)) {
+  if (Api.is("reactionEmoji", reaction)) {
     return { type: "emoji", emoji: reaction.emoticon };
-  } else if (is("reactionCustomEmoji", reaction)) {
+  } else if (Api.is("reactionCustomEmoji", reaction)) {
     return { type: "custom", id: String(reaction.document_id) };
-  } else if (is("reactionPaid", reaction)) {
+  } else if (Api.is("reactionPaid", reaction)) {
     return { type: "paid" };
   } else {
     unreachable();

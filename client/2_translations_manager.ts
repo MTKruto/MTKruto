@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Queue } from "../1_utilities.ts";
-import { Api, is, isOneOf } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructTranslation, Translation, Update } from "../3_types.ts";
 import { GetTranslationsParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
@@ -124,7 +124,7 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
 
   #applyLangPackDifference(translations: Translation[], strings: Api.LangPackString[]) {
     for (const string of strings) {
-      if (is("langPackStringDeleted", string)) {
+      if (Api.is("langPackStringDeleted", string)) {
         translations = translations.filter((v) => v.key != string.key);
       } else {
         const newTranslation = constructTranslation(string);
@@ -143,11 +143,11 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
     if (!this.#c.langPack) {
       return null;
     }
-    if (is("updateLangPackTooLong", update)) {
+    if (Api.is("updateLangPackTooLong", update)) {
       await this.#updateTranslations(this.#c.langPack, update.lang_code);
       const translations = await this.#getTranslationsInner(this.#c.langPack, update.lang_code, true);
       return { platform: this.#c.langPack, language: update.lang_code, translations };
-    } else if (is("updateLangPack", update)) {
+    } else if (Api.is("updateLangPack", update)) {
       if (!this.#c.langCode) {
         return null;
       }

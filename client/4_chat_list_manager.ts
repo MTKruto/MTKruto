@@ -268,9 +268,9 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     await this.#c.storage.setFullChat(chatId, null);
     if (channel != null && "left" in channel && channel.left) {
       this.#removeChat(chatId);
-    } else if (is("channelForbidden", channel)) {
+    } else if (Api.is("channelForbidden", channel)) {
       this.#removeChat(chatId);
-    } else if (is("channel", channel)) {
+    } else if (Api.is("channel", channel)) {
       await this.#updateOrAddChat(chatId);
     }
   }
@@ -282,9 +282,9 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     await this.#c.storage.setFullChat(chatId, null);
     if (chat != null && "left" in chat && chat.left) {
       await this.#removeChat(chatId);
-    } else if (is("chatForbidden", chat)) {
+    } else if (Api.is("chatForbidden", chat)) {
       await this.#removeChat(chatId);
-    } else if (is("chat", chat)) {
+    } else if (Api.is("chat", chat)) {
       await this.#updateOrAddChat(chatId);
     }
   }
@@ -330,20 +330,20 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
   }
 
   async handleUpdate(update: ChatListManagerUpdate) {
-    if (is("updateNewMessage", update) || is("updateNewChannelMessage", update) || is("updateEditMessage", update) || is("updateEditChannelMessage", update)) {
-      if (is("message", update.message) || is("messageService", update.message)) {
+    if (Api.is("updateNewMessage", update) || Api.is("updateNewChannelMessage", update) || Api.is("updateEditMessage", update) || Api.is("updateEditChannelMessage", update)) {
+      if (Api.is("message", update.message) || Api.is("messageService", update.message)) {
         const chatId = peerToChatId(update.message.peer_id);
         await this.reassignChatLastMessage(chatId);
       }
-    } else if (is("updatePinnedDialogs", update)) {
+    } else if (Api.is("updatePinnedDialogs", update)) {
       await this.#handleUpdatePinnedDialogs(update);
-    } else if (is("updateFolderPeers", update)) {
+    } else if (Api.is("updateFolderPeers", update)) {
       this.#handleUpdateFolderPeers(update);
-    } else if (is("updateChannel", update)) {
+    } else if (Api.is("updateChannel", update)) {
       await this.#handleUpdateChannel(update);
-    } else if (is("updateChat", update)) {
+    } else if (Api.is("updateChat", update)) {
       await this.#handleUpdateChat(update);
-    } else if (is("updateUser", update) || is("updateUserName", update)) {
+    } else if (Api.is("updateUser", update) || Api.is("updateUserName", update)) {
       await this.#handleUpdateUser(update);
     } else {
       unreachable();
@@ -360,7 +360,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     }
     if (canBeInputUser(inputPeer)) {
       fullChat = (await this.#c.invoke({ _: "users.getFullUser", id: toInputUser(inputPeer) })).full_user;
-    } else if (is("inputPeerChat", inputPeer)) {
+    } else if (Api.is("inputPeerChat", inputPeer)) {
       fullChat = (await this.#c.invoke({ ...inputPeer, _: "messages.getFullChat" })).full_chat;
     } else if (canBeInputChannel(inputPeer)) {
       fullChat = (await this.#c.invoke({ _: "channels.getFullChannel", channel: toInputChannel(inputPeer) })).full_chat;
@@ -385,7 +385,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     if (canBeInputChannel(peer)) {
       const channel: Api.inputChannel | Api.inputChannelFromMessage = toInputChannel(peer);
       const participants = await this.#c.invoke({ _: "channels.getParticipants", channel, filter: { _: "channelParticipantsAdmins" }, offset: 0, limit: 100, hash: 0n });
-      if (is("channels.channelParticipantsNotModified", participants)) {
+      if (Api.is("channels.channelParticipantsNotModified", participants)) {
         unreachable();
       }
       const chatMembers = new Array<ChatMember>();
@@ -393,7 +393,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
         chatMembers.push(await constructChatMember(p, this.#c.getEntity));
       }
       return chatMembers;
-    } else if (is("inputPeerChat", peer)) {
+    } else if (Api.is("inputPeerChat", peer)) {
       const fullChat = await this.#getFullChat(chatId);
       if (!fullChat || !("participants" in fullChat) || !is("chatParticipants", fullChat.participants)) {
         unreachable();
@@ -414,7 +414,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     if (canBeInputChannel(peer)) {
       const { participant } = await this.#c.invoke({ _: "channels.getParticipant", channel: toInputChannel(peer), participant: await this.#c.getInputPeer(userId) });
       return await constructChatMember(participant, this.#c.getEntity);
-    } else if (is("inputPeerChat", peer)) {
+    } else if (Api.is("inputPeerChat", peer)) {
       const user = await this.#c.getInputUser(userId);
       const userId_ = BigInt(await this.#c.getInputPeerChatId(user));
       const fullChat = await this.#c.invoke({ ...peer, _: "messages.getFullChat" }).then((v) => as("chatFull", v.full_chat));
@@ -430,7 +430,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     if (canBeInputChannel(peer)) {
       const channel: Api.inputChannel | Api.inputChannelFromMessage = toInputChannel(peer);
       const participants = await this.#c.invoke({ _: "channels.getParticipants", channel, filter: { _: "channelParticipantsRecent" }, offset: params?.offset ?? 0, limit: params?.limit ?? 100, hash: 0n });
-      if (is("channels.channelParticipantsNotModified", participants)) {
+      if (Api.is("channels.channelParticipantsNotModified", participants)) {
         unreachable();
       }
       const chatMembers = new Array<ChatMember>();
@@ -438,7 +438,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
         chatMembers.push(await constructChatMember(p, this.#c.getEntity));
       }
       return chatMembers;
-    } else if (is("inputPeerChat", peer)) {
+    } else if (Api.is("inputPeerChat", peer)) {
       const fullChat = await this.#getFullChat(chatId);
       if (!fullChat || !("participants" in fullChat) || !is("chatParticipants", fullChat.participants)) {
         unreachable();
@@ -561,7 +561,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     const result = await this.#c.invoke({ _: "messages.getCommonChats", user_id, max_id: chatIdToPeerId(max_id), limit });
     const chats = new Array<ChatP>();
     for (const chat of result.chats) {
-      if (!is("chatEmpty", chat)) {
+      if (!Api.is("chatEmpty", chat)) {
         chats.push(constructChatP(chat));
       }
     }

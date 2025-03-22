@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 
 /** A file or sticker thumbnail. */

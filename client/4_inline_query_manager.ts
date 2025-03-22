@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Api, is, isOneOf } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructChosenInlineResult, constructInlineQuery, constructInlineQueryAnswer, ID, InlineQueryResult, inlineQueryResultToTlObject, Update } from "../3_types.ts";
 import { AnswerInlineQueryParams, SendInlineQueryParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
@@ -54,9 +54,9 @@ export class InlineQueryManager implements UpdateProcessor<InlineQueryManagerUpd
   }
 
   async handleUpdate(update: InlineQueryManagerUpdate): Promise<Update> {
-    if (is("updateBotInlineQuery", update)) {
+    if (Api.is("updateBotInlineQuery", update)) {
       return { inlineQuery: await constructInlineQuery(update, this.#c.getEntity) };
-    } else if (is("updateBotInlineSend", update)) {
+    } else if (Api.is("updateBotInlineSend", update)) {
       return { chosenInlineResult: await constructChosenInlineResult(update, this.#c.getEntity) };
     } else {
       unreachable();

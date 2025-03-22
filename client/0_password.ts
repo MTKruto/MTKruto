@@ -20,7 +20,7 @@
 
 import { concat } from "../0_deps.ts";
 import { bigIntFromBuffer, bufferFromBigInt, getRandomBigInt, mod, modExp, sha256 } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 export function isSafePrime(primeBytes: Uint8Array, g: number) {
   // deno-fmt-ignore

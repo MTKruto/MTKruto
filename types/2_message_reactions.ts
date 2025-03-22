@@ -19,7 +19,7 @@
  */
 
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructReaction, Reaction } from "./0_reaction.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
@@ -62,7 +62,7 @@ export async function constructMessageReactions(update: Api.updateBotMessageReac
   if (!entity) {
     return null;
   }
-  if (is("user", entity)) {
+  if (Api.is("user", entity)) {
     user = constructUser(entity);
   } else {
     actorChat = constructChatP(entity);

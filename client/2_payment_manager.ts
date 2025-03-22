@@ -19,7 +19,7 @@
  */
 
 import { InputError } from "../0_errors.ts";
-import { Api, is, isOneOf } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructPreCheckoutQuery, ID, Update } from "../3_types.ts";
 import { AnswerPreCheckoutQueryParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
@@ -43,7 +43,7 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
   }
 
   async handleUpdate(update: PaymentManagerUpdate): Promise<Update | null> {
-    if (is("updateBotPrecheckoutQuery", update)) {
+    if (Api.is("updateBotPrecheckoutQuery", update)) {
       const preCheckoutQuery = await constructPreCheckoutQuery(update, this.#c.getEntity);
       return { preCheckoutQuery };
     }

@@ -36,7 +36,7 @@ export class AccountManager {
 
   async #toggleUsername(id: ID, username: string, active: boolean) {
     const peer = await this.#c.getInputPeer(id);
-    if (is("inputPeerSelf", peer)) {
+    if (Api.is("inputPeerSelf", peer)) {
       await this.#c.invoke({ _: "account.toggleUsername", username, active });
     } else if (canBeInputUser(peer)) {
       await this.#c.invoke({ _: "bots.toggleUsername", bot: toInputUser(peer), username, active });
@@ -60,7 +60,7 @@ export class AccountManager {
   async reorderUsernames(id: ID, order: string[]) {
     this.#c.storage.assertUser("reorderUsernames");
     const peer = await this.#c.getInputPeer(id);
-    if (is("inputPeerSelf", peer)) {
+    if (Api.is("inputPeerSelf", peer)) {
       return await this.#c.invoke({ _: "account.reorderUsernames", order });
     } else if (canBeInputUser(peer)) {
       return await this.#c.invoke({ _: "bots.reorderUsernames", bot: toInputUser(peer), order });
@@ -119,7 +119,7 @@ export class AccountManager {
   async getContacts() {
     this.#c.storage.assertUser("getContacts");
     const result = await this.#c.invoke({ _: "contacts.getContacts", hash: 0n });
-    if (!is("contacts.contacts", result)) {
+    if (!Api.is("contacts.contacts", result)) {
       unreachable();
     }
     return result.users.map((v) => is("user", v) ? constructUser(v) : null).filter((v) => v != null);
@@ -139,7 +139,7 @@ export class AccountManager {
   async addContact(userId: ID, params?: AddContactParams) {
     this.#c.storage.assertUser("addContact");
     const id = await this.#c.getInputUser(userId);
-    if (!is("inputPeerUser", id)) {
+    if (!Api.is("inputPeerUser", id)) {
       unreachable();
     }
     const user = await this.#c.getEntity(inputPeerToPeer(id));
@@ -158,7 +158,7 @@ export class AccountManager {
     const chatId_ = await this.#c.getInputPeerChatId(inputPeer);
     let fullChat = await this.#c.storage.getFullChat(chatId_);
     if (fullChat != null) {
-      if (!is("userFull", fullChat)) {
+      if (!Api.is("userFull", fullChat)) {
         unreachable();
       }
       return fullChat;
@@ -175,7 +175,7 @@ export class AccountManager {
     const selfId = await this.#c.getSelfId();
     const userFull = await this.#getUserFull(selfId);
     const entity = await this.#c.getEntity(chatIdToPeer(selfId));
-    if (!is("user", entity)) {
+    if (!Api.is("user", entity)) {
       unreachable();
     }
     params ??= {};

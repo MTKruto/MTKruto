@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { constructSticker2, Sticker } from "./1_sticker.ts";
@@ -107,7 +107,7 @@ export function constructGiftUpgradedComponent(attribute: Api.StarGiftAttribute)
 
   switch (attribute._) {
     case "starGiftAttributeModel": {
-      if (!is("document", attribute.document)) {
+      if (!Api.is("document", attribute.document)) {
         unreachable();
       }
       const fileId: FileId = {
@@ -125,7 +125,7 @@ export function constructGiftUpgradedComponent(attribute: Api.StarGiftAttribute)
       };
     }
     case "starGiftAttributePattern": {
-      if (!is("document", attribute.document)) {
+      if (!Api.is("document", attribute.document)) {
         unreachable();
       }
       const fileId: FileId = {

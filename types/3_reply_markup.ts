@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { UsernameResolver } from "./_getters.ts";
 import { constructKeyboardButton, KeyboardButton, keyboardButtonToTlObject } from "./1_keyboard_button.ts";
 import { constructInlineKeyboardButton, InlineKeyboardButton, inlineKeyboardButtonToTlObject } from "./2_inline_keyboard_button.ts";
@@ -163,13 +163,13 @@ function forceReplyToTlObject(replyMarkup: ReplyMarkupForceReply): Api.replyKeyb
 export type ReplyMarkup = ReplyMarkupInlineKeyboard | ReplyMarkupKeyboard | ReplyMarkupRemoveKeyboard | ReplyMarkupForceReply;
 
 export function constructReplyMarkup(replyMarkup: Api.ReplyMarkup): ReplyMarkup {
-  if (is("replyKeyboardMarkup", replyMarkup)) {
+  if (Api.is("replyKeyboardMarkup", replyMarkup)) {
     return constructReplyKeyboardMarkup(replyMarkup);
-  } else if (is("replyInlineMarkup", replyMarkup)) {
+  } else if (Api.is("replyInlineMarkup", replyMarkup)) {
     return constructInlineKeyboardMarkup(replyMarkup);
-  } else if (is("replyKeyboardHide", replyMarkup)) {
+  } else if (Api.is("replyKeyboardHide", replyMarkup)) {
     return constructReplyKeyboardRemove(replyMarkup);
-  } else if (is("replyKeyboardForceReply", replyMarkup)) {
+  } else if (Api.is("replyKeyboardForceReply", replyMarkup)) {
     return constructForceReply(replyMarkup);
   } else {
     unreachable();

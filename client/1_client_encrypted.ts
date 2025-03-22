@@ -21,7 +21,7 @@
 import { SECOND, unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, getRandomId, gunzip, gzip, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, DeserializedType, deserializeType, GZIP_PACKED, is, isGenericFunction, isOfEnum, isOneOf, message, mustGetReturnType, repr, RPC_RESULT, serializeObject, TLError, TLReader, TLWriter, X } from "../2_tl.ts";
+import { Api, DeserializedType, deserializeType, GZIP_PACKED, message, mustGetReturnType, repr, RPC_RESULT, serializeObject, TLError, TLReader, TLWriter, X } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";
@@ -357,7 +357,7 @@ export class ClientEncrypted extends ClientAbstract {
       this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
     }
     const resolvePromise = () => {
-      if (is("rpc_error", result)) {
+      if (Api.is("rpc_error", result)) {
         promise.reject?.(constructTelegramError(result, promise.call));
       } else {
         promise.resolve?.(result);
@@ -378,17 +378,17 @@ export class ClientEncrypted extends ClientAbstract {
     let sendAck = true;
     if (isOfEnum("Updates", body) || isOfEnum("Update", body)) {
       drop(this.handlers.updates?.(body as Api.Updates | Api.Update, null));
-    } else if (is("new_session_created", body)) {
+    } else if (Api.is("new_session_created", body)) {
       this.serverSalt = body.server_salt;
       drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
       this.#LreceiveLoop.debug("new session created with ID", body.unique_id);
-    } else if (is("pong", body)) {
+    } else if (Api.is("pong", body)) {
       const promise = this.#promises.get(body.msg_id);
       if (promise) {
         promise.resolve?.(body);
         this.#promises.delete(body.msg_id);
       }
-    } else if (is("bad_server_salt", body)) {
+    } else if (Api.is("bad_server_salt", body)) {
       sendAck = false;
       this.#LreceiveLoop.debug("server salt reassigned");
       this.serverSalt = body.new_server_salt;
@@ -411,7 +411,7 @@ export class ClientEncrypted extends ClientAbstract {
           }
         }
       }
-    } else if (is("bad_msg_notification", body)) {
+    } else if (Api.is("bad_msg_notification", body)) {
       sendAck = false;
       let low = false;
       switch (body.error_code) {

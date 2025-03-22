@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getRandomId, toUnixTimestamp, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { Api, as, is, isOneOf } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructLiveStreamChannel, constructVideoChat, ID, Update, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { DownloadLiveStreamChunkParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
@@ -141,7 +141,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
     let chatId = Number(-update.chat_id);
     const fullChat = await this.#c.storage.getFullChat(chatId).then((v) => v == null ? this.#c.storage.getFullChat(chatId = ZERO_CHANNEL_ID - Number(update.chat_id)) : v) as Api.channelFull | Api.chatFull | null;
     let updateFullChat = false;
-    if (is("groupCallDiscarded", update.call)) {
+    if (Api.is("groupCallDiscarded", update.call)) {
       await this.#c.storage.setGroupCall(update.call.id, null);
       await this.#c.storage.setGroupCallAccessHash(update.call.id, null);
       if (fullChat != null) {

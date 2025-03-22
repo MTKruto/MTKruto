@@ -524,7 +524,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
           }
         }
         return true;
-      } else if (is("bad_msg_notification", error)) {
+      } else if (Api.is("bad_msg_notification", error)) {
         return true;
       } else {
         return next();
@@ -1510,14 +1510,14 @@ export class Client<C extends Context = Context> extends Composer<C> {
       return { _: "inputPeerSelf" };
     }
     const inputPeer = await this.#getInputPeerInner(id);
-    if (((is("inputPeerUser", inputPeer) || is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n) && await this.storage.getAccountType() == "bot") {
+    if (((is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n) && await this.storage.getAccountType() == "bot") {
       if ("channel_id" in inputPeer) {
         inputPeer.access_hash = await this.#getChannelAccessHash(inputPeer.channel_id);
       } else {
         inputPeer.access_hash = await this.#getUserAccessHash(inputPeer.user_id);
       }
     }
-    if ((is("inputPeerUser", inputPeer) || is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n && await this.storage.getAccountType() == "user") {
+    if ((is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n && await this.storage.getAccountType() == "user") {
       throw new AccessError(`Cannot access the chat ${id} because there is no access hash for it.`);
     }
     return inputPeer;
@@ -1576,9 +1576,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
         const resolved = await this.invoke({ _: "contacts.resolveUsername", username: id });
         await this.#updateManager.processChats(resolved.chats, resolved);
         await this.#updateManager.processUsers(resolved.users, resolved);
-        if (is("peerUser", resolved.peer)) {
+        if (Api.is("peerUser", resolved.peer)) {
           resolvedId = peerToChatId(resolved.peer);
-        } else if (is("peerChannel", resolved.peer)) {
+        } else if (Api.is("peerChannel", resolved.peer)) {
           resolvedId = peerToChatId(resolved.peer);
         } else {
           unreachable();
@@ -1607,7 +1607,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       throw new InputError("The ID is of an format unknown.");
     }
 
-    if (!is("inputPeerChat", peer) && !peer.access_hash) {
+    if (!Api.is("inputPeerChat", peer) && !peer.access_hash) {
       const chatId = peerToChatId(peer);
       const minPeerReference = await this.messageStorage.getLastMinPeerReference(chatId);
       if (minPeerReference) {
@@ -1643,7 +1643,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   private async [getEntity](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
     const id = peerToChatId(peer);
     const entity = await this.messageStorage.getEntity(id);
-    if (entity == null && await this.storage.getAccountType() == "bot" && is("peerUser", peer) || is("peerChannel", peer)) {
+    if (entity == null && await this.storage.getAccountType() == "bot" && is("peerUser", peer) || Api.is("peerChannel", peer)) {
       await this.getInputPeer(id);
     } else {
       return entity;
@@ -1670,7 +1670,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #handleUpdate(update: Api.Update) {
     const promises = new Array<() => Promise<unknown>>();
-    if (is("updateUserName", update)) {
+    if (Api.is("updateUserName", update)) {
       await this.messageStorage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
       const peer: Api.peerUser = { ...update, _: "peerUser" };
       const entity = await this[getEntity](peer);

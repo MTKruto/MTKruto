@@ -19,7 +19,7 @@
  */
 
 import { fromUnixTimestamp } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** @unlisted */
 export interface _VideoChatCommon {
@@ -71,7 +71,7 @@ export type VideoChat = VideoChatActive | VideoChatScheduled | VideoChatEnded;
 
 export function constructVideoChat(call: Api.GroupCall): VideoChat {
   const id = String(call.id);
-  if (is("groupCallDiscarded", call)) {
+  if (Api.is("groupCallDiscarded", call)) {
     return {
       type: "ended",
       id,

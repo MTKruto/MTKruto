@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Api, is, peerToChatId } from "../2_tl.ts";
+import { Api, peerToChatId } from "../2_tl.ts";
 import { constructReaction, Reaction } from "./0_reaction.ts";
 
 /** Represents a type of reaction made to a message. */
@@ -37,9 +37,9 @@ export interface MessageReaction {
 export function constructMessageReaction(reaction_: Api.reactionCount, recentReactions: Api.messagePeerReaction[]): MessageReaction {
   const choosers = recentReactions
     .filter((v) => {
-      if (is("reactionEmoji", reaction_.reaction)) {
+      if (Api.is("reactionEmoji", reaction_.reaction)) {
         return is("reactionEmoji", v.reaction) && v.reaction.emoticon == reaction_.reaction.emoticon;
-      } else if (is("reactionCustomEmoji", reaction_.reaction)) {
+      } else if (Api.is("reactionCustomEmoji", reaction_.reaction)) {
         return is("reactionCustomEmoji", v.reaction) && v.reaction.document_id == reaction_.reaction.document_id;
       } else {
         unreachable();

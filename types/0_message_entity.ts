@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 
 /** @unlisted */
@@ -198,43 +198,43 @@ export type MessageEntity =
   | MessageEntityCustomEmoji;
 
 export function constructMessageEntity(obj: Api.MessageEntity): MessageEntity | null {
-  if (is("messageEntityMention", obj)) {
+  if (Api.is("messageEntityMention", obj)) {
     return { type: "mention", offset: obj.offset, length: obj.length };
-  } else if (is("messageEntityHashtag", obj)) {
+  } else if (Api.is("messageEntityHashtag", obj)) {
     return { type: "hashtag", offset: obj.offset, length: obj.length };
-  } else if (is("messageEntityBotCommand", obj)) {
+  } else if (Api.is("messageEntityBotCommand", obj)) {
     return { type: "botCommand", offset: obj.offset ?? 0, length: obj.length };
-  } else if (is("messageEntityUrl", obj)) {
+  } else if (Api.is("messageEntityUrl", obj)) {
     return { type: "url", offset: obj.offset, length: obj.length };
-  } else if (is("messageEntityEmail", obj)) {
+  } else if (Api.is("messageEntityEmail", obj)) {
     return { type: "email", offset: obj.offset, length: obj.length };
-  } else if (is("messageEntityBold", obj)) {
+  } else if (Api.is("messageEntityBold", obj)) {
     return { type: "bold", offset: obj.offset, length: obj.length };
-  } else if (is("messageEntityItalic", obj)) {
+  } else if (Api.is("messageEntityItalic", obj)) {
     return { type: "italic", offset: obj.offset, length: obj.length };
-  } else if (is("messageEntityCode", obj)) {
+  } else if (Api.is("messageEntityCode", obj)) {
     return { type: "code", offset: obj.offset, length: obj.length };
-  } else if (is("messageEntityPre", obj)) {
+  } else if (Api.is("messageEntityPre", obj)) {
     return { type: "pre", offset: obj.offset, length: obj.length, language: obj.language };
-  } else if (is("messageEntityTextUrl", obj)) {
+  } else if (Api.is("messageEntityTextUrl", obj)) {
     return { type: "textLink", offset: obj.offset, length: obj.length, url: obj.url };
-  } else if (is("messageEntityMentionName", obj)) {
+  } else if (Api.is("messageEntityMentionName", obj)) {
     return { type: "textMention", offset: obj.offset, length: obj.length, userId: Number(obj.user_id) };
-  } else if (is("messageEntityCashtag", obj)) {
+  } else if (Api.is("messageEntityCashtag", obj)) {
     return { type: "cashtag", offset: obj.offset, length: obj.length };
-  } else if (is("messageEntityPhone", obj)) {
+  } else if (Api.is("messageEntityPhone", obj)) {
     return { type: "phoneNumber", offset: obj.offset, length: obj.length };
-  } else if (is("messageEntityUnderline", obj)) {
+  } else if (Api.is("messageEntityUnderline", obj)) {
     return { type: "underline", offset: obj.offset, length: obj.length };
-  } else if (is("messageEntityStrike", obj)) {
+  } else if (Api.is("messageEntityStrike", obj)) {
     return { type: "strikethrough", offset: obj.offset, length: obj.length };
-  } else if (is("messageEntityBlockquote", obj)) {
+  } else if (Api.is("messageEntityBlockquote", obj)) {
     return cleanObject({ type: "blockquote", offset: obj.offset, length: obj.length, collapsible: obj.collapsed ? true : undefined } as const);
-  } else if (is("messageEntityBankCard", obj)) {
+  } else if (Api.is("messageEntityBankCard", obj)) {
     return { type: "bankCard", offset: obj.offset, length: obj.length };
-  } else if (is("messageEntitySpoiler", obj)) {
+  } else if (Api.is("messageEntitySpoiler", obj)) {
     return { type: "spoiler", offset: obj.offset, length: obj.length };
-  } else if (is("messageEntityCustomEmoji", obj)) {
+  } else if (Api.is("messageEntityCustomEmoji", obj)) {
     return { type: "customEmoji", offset: obj.offset, length: obj.length, customEmojiId: String(obj.document_id) };
   } else {
     return null;

@@ -19,7 +19,7 @@
  */
 
 import { cleanObject, MaybePromise } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructMaskPosition, MaskPosition } from "./0_mask_position.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 

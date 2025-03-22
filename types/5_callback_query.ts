@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, cleanObject } from "../1_utilities.ts";
-import { Api, deserializeType, is, peerToChatId, serializeObject } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructUser, User } from "./1_user.ts";
 import { Message, MessageGetter } from "./4_message.ts";
@@ -49,7 +49,7 @@ export async function deserializeInlineMessageId(inlineMessageId: string): Promi
   try {
     const buffer = base64DecodeUrlSafe(inlineMessageId);
     const object = await deserializeType("InputBotInlineMessageID", buffer);
-    if (is("inputBotInlineMessageID64", object) || is("inputBotInlineMessageID", object)) {
+    if (Api.is("inputBotInlineMessageID64", object) || Api.is("inputBotInlineMessageID", object)) {
       return object;
     }
   } catch {
@@ -69,7 +69,7 @@ export async function constructCallbackQuery(callbackQuery: Api.updateBotCallbac
   const gameShortName = callbackQuery.game_short_name;
   const data = callbackQuery.data !== undefined ? new TextDecoder().decode(callbackQuery.data) : undefined;
   const chatInstance = callbackQuery.chat_instance == 0n ? "" : String(callbackQuery.chat_instance);
-  if (is("updateBotCallbackQuery", callbackQuery)) {
+  if (Api.is("updateBotCallbackQuery", callbackQuery)) {
     const message = await getMessage(peerToChatId(callbackQuery.peer), Number(callbackQuery.msg_id));
     if (message == null) {
       unreachable();

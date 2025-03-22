@@ -19,7 +19,7 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import { Api, as, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** A shared location. */
 export interface Location {
@@ -38,14 +38,14 @@ export interface Location {
 }
 
 export function constructLocation(geo_: Api.messageMediaGeo | Api.messageMediaGeoLive | Api.geoPoint): Location {
-  if (is("messageMediaGeo", geo_)) {
+  if (Api.is("messageMediaGeo", geo_)) {
     const geo = as("geoPoint", geo_.geo);
     return cleanObject({
       latitude: geo.lat,
       longitude: geo.long,
       horizontalAccuracy: geo.accuracy_radius,
     });
-  } else if (is("messageMediaGeoLive", geo_)) {
+  } else if (Api.is("messageMediaGeoLive", geo_)) {
     const media = geo_;
     const geo = as("geoPoint", media.geo);
     return cleanObject({

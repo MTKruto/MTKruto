@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api, isOneOf } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { CallbackQueryQuestion, constructCallbackQuery, constructCallbackQueryAnswer, ID, Update, validateCallbackQueryQuestion } from "../3_types.ts";
 import { AnswerCallbackQueryParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";

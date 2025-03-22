@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
-import { Api, as, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { deserializeFileId, FileType, getPhotoFileId, serializeFileId } from "./_file_id.ts";
 import { UsernameResolver } from "./_getters.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
@@ -312,7 +312,7 @@ export type InlineQueryResult =
 
 export function constructInlineQueryResult(result: Api.botInlineResult | Api.botInlineMediaResult): InlineQueryResult {
   const id = result.id, title = result.title ?? "", type = result.type, description = result.description;
-  if (is("botInlineMessageMediaGeo", result.send_message)) {
+  if (Api.is("botInlineMessageMediaGeo", result.send_message)) {
     const geoPoint = result.send_message.geo as Api.geoPoint;
     return cleanObject({
       type: "location",
@@ -325,7 +325,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
       heading: result.send_message.heading,
       proximityAlertRadius: result.send_message.proximity_notification_radius,
     });
-  } else if (is("botInlineMessageMediaVenue", result.send_message)) {
+  } else if (Api.is("botInlineMessageMediaVenue", result.send_message)) {
     const geoPoint = result.send_message.geo as Api.geoPoint;
     return cleanObject({
       type: "venue",
@@ -337,7 +337,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
       foursquareId: result.send_message.venue_id,
       foursquareType: result.send_message.venue_type,
     });
-  } else if (is("botInlineMessageMediaWebPage", result.send_message) || is("botInlineMessageText", result.send_message)) {
+  } else if (Api.is("botInlineMessageMediaWebPage", result.send_message) || Api.is("botInlineMessageText", result.send_message)) {
     return cleanObject({
       type: "article",
       id,
@@ -351,13 +351,13 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
       }),
       replyMarkup: result.send_message.reply_markup ? constructReplyMarkup(result.send_message.reply_markup) as ReplyMarkupInlineKeyboard : undefined,
     });
-  } else if (is("botInlineMessageMediaAuto", result.send_message)) {
+  } else if (Api.is("botInlineMessageMediaAuto", result.send_message)) {
     let ref: { url: string } | { fileId: string };
     let attributes: Api.DocumentAttribute[] | undefined;
     const thumbnailUrl = "thumb" in result ? result.thumb?.url : undefined;
     let photoSizes: ReturnType<typeof getPhotoSizes> | undefined;
     let photo: Api.photo | undefined;
-    if (is("botInlineMediaResult", result)) {
+    if (Api.is("botInlineMediaResult", result)) {
       if (result.photo) {
         photo = as("photo", result.photo);
         ref = { fileId: getPhotoFileId(photo).fileId };
