@@ -18,61 +18,72 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { SECOND, unreachable } from "../0_deps.ts";
-import { CacheMap, getLogger, gzip, Logger } from "../1_utilities.ts";
-import { Api, message, Mtproto, TLWriter, X } from "../2_tl.ts";
-import { SessionEncrypted } from "../4_session.ts";
-import { ClientAbstract } from "./0_client_abstract.ts";
-import { ClientAbstractParams } from "./0_client_abstract.ts";
+import { Api, Mtproto, X } from "../2_tl.ts";
+import { constructTelegramError } from "../4_errors.ts";
+import { SessionEncrypted, SessionError } from "../4_session.ts";
+import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
 
-const COMPRESSION_THRESHOLD = 1024;
-
-// global ClientEncrypted ID counter for logs
-let id = 0;
-
-export type ErrorSource = "deserialization" | "decryption" | "unknown";
-
-export interface Handlers {
-  serverSaltReassigned?: (newServerSalt: bigint) => void;
-  updates?: (updates: Api.Updates | Api.Update, call: Api.AnyType | null, callback?: () => void) => void;
-  result?: (result: Api.DeserializedType, callback: () => void) => void;
-  error?: (err: unknown, source: ErrorSource) => void;
+export interface ClientEncryptedParams extends ClientAbstractParams {
+  /** App's API ID from [my.telegram.org/apps](https://my.telegram.org/apps). Required if no account was previously authorized. */
+  apiId?: number;
+  /** The app_version parameter to be passed to initConnection. It is recommended that this parameter is changed if users are authorized. Defaults to _MTKruto_. */
+  appVersion?: string;
+  /** The device_version parameter to be passed to initConnection. The default varies by the current runtime. */
+  deviceModel?: string;
+  /** The system_lang_code parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
+  systemLangCode?: string;
+  /** The system_version parameter to be passed to initConnection. The default varies by the current runtime. */
+  systemVersion?: string;
+  /** Whether to disable receiving updates. UpdateConnectionState and UpdatesAuthorizationState will always be received. Defaults to `false`. */
+  disableUpdates?: boolean;
 }
 
-/**
- * An MTProto client for making encrypted connections. Most users won't need to interact with this. Used internally by `Client`.
- *
- * There are a few things to note:
- *
- * - This is a bare client and it stores nothing.
- * - It expects an authorization key to be present before invoking any method.
- * - Authorization must be set using `setAuthKey`.
- * - Incoming packets that aren't a reply to a specific call are passed to the assigned handlers.
- * - It doesn't uncompress compressed packets.
- */
+export interface ClientEncryptedHandlers {
+  onNewServerSalt?: (newServerSalt: bigint) => void;
+  onUpdate?: (update: Api.Updates | Api.Update) => void;
+}
+
 export class ClientEncrypted extends ClientAbstract {
-  #promises = new Map<bigint, { resolve?: (obj: Api.DeserializedType) => void; reject?: (err: Api.DeserializedType | Error) => void; call: Api.AnyObject }>();
+  #promises = new Map<bigint, { resolve?: (obj: Api.DeserializedType) => void; reject?: (reason?: unknown) => void; call: Api.AnyObject }>();
 
   #session!: SessionEncrypted;
 
-  // loggers
-  #L: Logger;
-  #LreceiveLoop: Logger;
-  #Linvoke: Logger;
-  #LpingLoop: Logger;
-
   // receive loop handlers
-  handlers: Handlers = {};
+  handlers: ClientEncryptedHandlers = {};
 
   constructor() {
     super();
     this.#session.handlers = {};
+
+    this.#session.handlers.onUpdate = this.#onUpdate.bind(this);
+    this.#session.handlers.onNewServerSalt = this.#onNewServerSalt.bind(this);
     this.#session.handlers.onMessageFailed = this.#onMessageFailed.bind(this);
+    this.#session.handlers.onRpcError = this.#onRpcError.bind(this);
+    this.#session.handlers.onRpcResult = this.#onRpcResult.bind(this);
+  }
+
+  async connect() {
+    await this.#session.connect();
+  }
+
+  get connected() {
+    return this.#session.connected;
+  }
+
+  disconnect() {
+    this.#session.disconnect();
+  }
+
+  get disconnected() {
+    return this.#session.disconnected;
+  }
+
+  async #send(function_: Api.AnyObject) {
+    return await this.#session.send(Api.serializeObject(function_));
   }
 
   async invoke<T extends Api.AnyObject, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
-    const messageId = await this.#session.send(Api.serializeObject(function_));
-    this.#Linvoke.debug("invoked", function_._);
+    const messageId = await this.#send(function_);
 
     if (noWait) {
       this.#promises.set(messageId, {
@@ -86,6 +97,67 @@ export class ClientEncrypted extends ClientAbstract {
     })) as R;
   }
 
-  #onMessageFailed(msgId: bigint) {
+  async #onUpdate(body: Uint8Array) {
+    let type: Api.DeserializedType;
+    try {
+      type = await Api.deserializeType(X, body);
+    } catch (err) {
+      // TODO(roj): log
+      return;
+    }
+    if (Api.isOfEnum("Update", type) || Api.isOfEnum("Updates", type)) {
+      this.handlers.onUpdate?.(type);
+    } else {
+      // TOOD(roj): log
+      // unknown type
+    }
+  }
+
+  #onNewServerSalt(serverSalt: bigint) {
+    this.handlers.onNewServerSalt?.(serverSalt);
+  }
+
+  async #onMessageFailed(msgId: bigint, error: SessionError) {
+    const promise = this.#promises.get(msgId);
+    if (promise) {
+      this.#promises.delete(msgId);
+      if (error.retry) {
+        const messageId = await this.#send(promise.call);
+        this.#promises.set(messageId, promise);
+      } else if (promise.reject) {
+        promise.reject(error);
+      }
+    }
+  }
+
+  #onRpcError(msgId: bigint, error: Mtproto.rpc_error) {
+    const promise = this.#promises.get(msgId);
+    if (promise) {
+      this.#promises.delete(msgId);
+      if (promise.reject) {
+        promise.reject(constructTelegramError(error, promise.call));
+      }
+    }
+  }
+
+  async #onRpcResult(msgId: bigint, body: Uint8Array) {
+    let type: Api.DeserializedType;
+    try {
+      type = await Api.deserializeType(X, body);
+    } catch (err) {
+      const promise = this.#promises.get(msgId);
+      if (promise) {
+        this.#promises.delete(msgId);
+        promise.reject?.(err);
+      }
+      // TODO(roj): log
+      return;
+    }
+
+    const promise = this.#promises.get(msgId);
+    if (promise) {
+      this.#promises.delete(msgId);
+      promise.resolve?.(type);
+    }
   }
 }
