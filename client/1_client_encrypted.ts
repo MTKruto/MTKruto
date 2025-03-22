@@ -22,20 +22,22 @@ import { Api, Mtproto, X } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { SessionEncrypted, SessionError } from "../4_session.ts";
 import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
+import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "../4_constants.ts";
+import { ConnectionNotInited } from "../3_errors.ts";
 
 export interface ClientEncryptedParams extends ClientAbstractParams {
-  /** App's API ID from [my.telegram.org/apps](https://my.telegram.org/apps). Required if no account was previously authorized. */
-  apiId?: number;
   /** The app_version parameter to be passed to initConnection. It is recommended that this parameter is changed if users are authorized. Defaults to _MTKruto_. */
   appVersion?: string;
   /** The device_version parameter to be passed to initConnection. The default varies by the current runtime. */
   deviceModel?: string;
+  /** The lang_pack parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
+  langCode?: string;
+  /** The lang_pack parameter to be passed to initConnection. Defaults to an empty string. */
+  langPack?: string;
   /** The system_lang_code parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
   systemLangCode?: string;
   /** The system_version parameter to be passed to initConnection. The default varies by the current runtime. */
   systemVersion?: string;
-  /** Whether to disable receiving updates. UpdateConnectionState and UpdatesAuthorizationState will always be received. Defaults to `false`. */
-  disableUpdates?: boolean;
 }
 
 export interface ClientEncryptedHandlers {
@@ -46,20 +48,33 @@ export interface ClientEncryptedHandlers {
 export class ClientEncrypted extends ClientAbstract {
   #promises = new Map<bigint, { resolve?: (obj: Api.DeserializedType) => void; reject?: (reason?: unknown) => void; call: Api.AnyObject }>();
 
-  #session!: SessionEncrypted;
+  #session: SessionEncrypted;
 
   // receive loop handlers
   handlers: ClientEncryptedHandlers = {};
 
-  constructor() {
-    super();
-    this.#session.handlers = {};
+  #appVersion: string;
+  #deviceModel: string;
+  #langCode: string;
+  #langPack: string;
+  #systemLangCode: string;
+  #systemVersion: string;
 
+  constructor(public apiId: number, params?: ClientEncryptedParams) {
+    super();
+    this.#session = new SessionEncrypted(INITIAL_DC, params);
     this.#session.handlers.onUpdate = this.#onUpdate.bind(this);
     this.#session.handlers.onNewServerSalt = this.#onNewServerSalt.bind(this);
     this.#session.handlers.onMessageFailed = this.#onMessageFailed.bind(this);
     this.#session.handlers.onRpcError = this.#onRpcError.bind(this);
     this.#session.handlers.onRpcResult = this.#onRpcResult.bind(this);
+
+    this.#appVersion = params?.appVersion ?? APP_VERSION;
+    this.#deviceModel = params?.deviceModel ?? DEVICE_MODEL;
+    this.#langCode = params?.langCode ?? LANG_CODE;
+    this.#langPack = params?.langPack ?? LANG_PACK;
+    this.#systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
+    this.#systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
   }
 
   async connect() {
@@ -78,7 +93,26 @@ export class ClientEncrypted extends ClientAbstract {
     return this.#session.disconnected;
   }
 
+  #connectionInited = false;
   async #send(function_: Api.AnyObject) {
+    if (!this.#connectionInited) {
+      function_ = {
+        _: "initConnection",
+        api_id: this.apiId,
+        app_version: this.#appVersion,
+        device_model: this.#deviceModel,
+        lang_code: this.#langCode,
+        lang_pack: this.#langPack,
+        query: {
+          _: "invokeWithLayer",
+          layer: Api.LAYER,
+          query: function_,
+        } as Api.Function,
+        system_lang_code: this.#systemLangCode,
+        system_version: this.#systemVersion,
+      };
+      this.#connectionInited = true;
+    }
     return await this.#session.send(Api.serializeObject(function_));
   }
 
@@ -130,12 +164,18 @@ export class ClientEncrypted extends ClientAbstract {
     }
   }
 
-  #onRpcError(msgId: bigint, error: Mtproto.rpc_error) {
+  async #onRpcError(msgId: bigint, error: Mtproto.rpc_error) {
     const promise = this.#promises.get(msgId);
     if (promise) {
       this.#promises.delete(msgId);
       if (promise.reject) {
-        promise.reject(constructTelegramError(error, promise.call));
+        const reason = constructTelegramError(error, promise.call);
+        if (reason instanceof ConnectionNotInited) {
+          const messageId = await this.#send(promise.call); // TODO(roj): handle error
+          this.#promises.set(messageId, promise);
+        } else {
+          promise.reject(constructTelegramError(error, promise.call));
+        }
       }
     }
   }

@@ -46,7 +46,7 @@ export class SessionEncrypted extends Session implements Session {
   #id = getRandomId();
   #authKey = new Uint8Array();
   #authKeyId = 0n;
-  handlers?: Handlers;
+  handlers: Handlers = {};
   #toAcknowledge = new Array<bigint>();
   #pendingMessages = new Set<bigint>();
   #pendingPings = new Map<bigint, { resolve: (pong: Mtproto.pong) => void; reject: (reason: unknown) => void }>();
@@ -115,7 +115,7 @@ export class SessionEncrypted extends Session implements Session {
 
   #onMessageFailed(id: bigint, reason: SessionError) {
     this.#pendingMessages.delete(id);
-    this.handlers?.onMessageFailed?.(id, reason);
+    this.handlers.onMessageFailed?.(id, reason);
     const pendingPing = this.#pendingPings.get(id);
     if (pendingPing) {
       pendingPing.reject(reason);
@@ -125,7 +125,7 @@ export class SessionEncrypted extends Session implements Session {
 
   #setServerSalt(newServerSalt: bigint) {
     this.state.serverSalt = newServerSalt;
-    this.handlers?.onNewServerSalt?.(newServerSalt);
+    this.handlers.onNewServerSalt?.(newServerSalt);
   }
 
   async send(body: Uint8Array) {
@@ -277,7 +277,7 @@ export class SessionEncrypted extends Session implements Session {
       return;
     }
     if (!Mtproto.schema.identifierToName[id]) {
-      this.handlers?.onUpdate?.(body);
+      this.handlers.onUpdate?.(body);
       return;
     }
     let type: Mtproto.DeserializedType;
@@ -317,9 +317,9 @@ export class SessionEncrypted extends Session implements Session {
     }
     if (id == RPC_ERROR) {
       const error = await Mtproto.deserializeType("rpc_error", reader);
-      this.handlers?.onRpcError?.(msgId, error);
+      this.handlers.onRpcError?.(msgId, error);
     } else {
-      this.handlers?.onRpcResult?.(msgId, reader.buffer);
+      this.handlers.onRpcResult?.(msgId, reader.buffer);
     }
   }
 
