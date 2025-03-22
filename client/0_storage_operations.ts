@@ -265,7 +265,7 @@ export class StorageOperations {
 
   async getTlObject(keyOrBuffer: Api.AnyType | Uint8Array | readonly StorageKeyPart[]): Promise<Api.DeserializedType | null> {
     // @ts-ignore: TBD
-    const buffer = (keyOrBuffer instanceof Uint8Array || isValidType(keyOrBuffer)) ? keyOrBuffer : await this.#storage.get<[string, Uint8Array]>(keyOrBuffer);
+    const buffer = (keyOrBuffer instanceof Uint8Array || Api.isValidObject(keyOrBuffer)) ? keyOrBuffer : await this.#storage.get<[string, Uint8Array]>(keyOrBuffer);
     if (buffer != null) {
       if (Array.isArray(buffer)) {
         return await Api.deserializeType(buffer[0], rleDecode(buffer[1]));
