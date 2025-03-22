@@ -639,7 +639,7 @@ export class UpdateManager {
     } else if (Api.is("updatesTooLong", updates_)) {
       await this.recoverUpdateGap("updatesTooLong");
       return;
-    } else if (isOfEnum("Update", updates_)) {
+    } else if (Api.isOfEnum("Update", updates_)) {
       updates = [updates_];
     } else {
       unreachable();

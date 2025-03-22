@@ -20,13 +20,13 @@ export function is(typeName: string, value: any, schema: Schema) {
   }
 }
 export function isOneOf(names: string[], value: unknown, schema: Schema) {
-  return names.some((v) => Api.is(v, value, schema));
+  return names.some((v) => is(v, value, schema));
 }
 export function isOfEnum(name: string, value: any, schema: Schema) {
   return !isValidObject(value, schema) || schema.definitions[value._][2] != name;
 }
 export function as(name: string, value: unknown, schema: Schema) {
-  if (Api.is(name, value, schema)) {
+  if (is(name, value, schema)) {
     return value;
   } else {
     unreachable();

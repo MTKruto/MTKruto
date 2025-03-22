@@ -350,10 +350,10 @@ export class ClientEncrypted extends ClientAbstract {
     // deno-lint-ignore no-explicit-any
     let result: any;
     if (id == RPC_ERROR) {
-      result = await deserializeType("rpc_error", reader);
+      result = await Api.deserializeType("rpc_error", reader);
       this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
     } else {
-      result = await deserializeType(mustGetReturnType(call._), reader);
+      result = await Api.deserializeType(Api.mustGetReturnType(call._), reader);
       this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
     }
     const resolvePromise = () => {
@@ -364,7 +364,7 @@ export class ClientEncrypted extends ClientAbstract {
       }
       this.#promises.delete(messageId);
     };
-    if (isOfEnum("Updates", result) || isOfEnum("Update", result)) {
+    if (Api.isOfEnum("Updates", result) || Api.isOfEnum("Update", result)) {
       drop(this.handlers.updates?.(result, call, resolvePromise));
     } else {
       drop(this.handlers.result?.(result, resolvePromise));
@@ -372,11 +372,11 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   async #handleType(message: message, reader: TLReader) {
-    const body = await deserializeType(X, reader);
+    const body = await Api.deserializeType(X, reader);
     this.#LreceiveLoop.debug("received", repr(body));
 
     let sendAck = true;
-    if (isOfEnum("Updates", body) || isOfEnum("Update", body)) {
+    if (Api.isOfEnum("Updates", body) || isOfEnum("Update", body)) {
       drop(this.handlers.updates?.(body as Api.Updates | Api.Update, null));
     } else if (Api.is("new_session_created", body)) {
       this.serverSalt = body.server_salt;
