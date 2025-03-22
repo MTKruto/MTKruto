@@ -20,7 +20,7 @@
 
 import { unreachable } from "./0_deps.ts";
 import { map, TelegramError, TelegramErrorParams } from "./3_errors.ts";
-import { Api } from "./2_tl.ts";
+import { Mtproto } from "./2_tl.ts";
 
 export * from "./3_errors.ts";
 
@@ -74,7 +74,7 @@ const prefixMap = {
   "FLOOD_WAIT_": FloodWait,
 };
 
-export function constructTelegramError(error: Api.rpc_error, call: Api.AnyObject): TelegramError {
+export function constructTelegramError(error: Mtproto.rpc_error, call: unknown): TelegramError {
   for (const [k, v] of Object.entries(prefixMap)) {
     if (error.error_message.startsWith(k)) {
       return new v({ ...error, call });

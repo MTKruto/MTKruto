@@ -62,7 +62,7 @@ export class ClientEncrypted extends ClientAbstract {
   #shouldInvalidateSession = true;
   #toAcknowledge = new Array<bigint>();
   #recentAcks = new CacheMap<bigint, { container?: bigint; message: message }>(20);
-  #promises = new Map<bigint, { container?: bigint; message: message; resolve?: (obj: Api.DeserializedType) => void; reject?: (err: Api.DeserializedType | Error) => void; call: Api.AnyObject }>();
+  #promises = new Map<bigint, { container?: bigint; message: message; resolve?: (obj: Api.DeserializedType | Mtproto.DeserializedType) => void; reject?: (err: Api.DeserializedType | Mtproto.DeserializedType | Error) => void; call: Api.AnyObject | Mtproto.AnyObject }>();
   #loopActive = true;
 
   // loggers
@@ -195,7 +195,14 @@ export class ClientEncrypted extends ClientAbstract {
 
   async invoke<T extends Api.AnyObject | Mtproto.AnyObject, R = T["_"] extends keyof Mtproto.Functions ? Mtproto.ReturnType<T> extends never ? Mtproto.ReturnType<Mtproto.Functions[T["_"]]> : never : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
     const messageId = this.#nextMessageId();
-    let body = serializeObject(function_);
+    let body: Uint8Array;
+    if (Mtproto.isValidObject(function_)) {
+      body = Mtproto.serializeObject(function_);
+    } else if (Api.isValidObject(function_)) {
+      body = Api.serializeObject(function_);
+    } else {
+      unreachable();
+    }
     if (body.length > COMPRESSION_THRESHOLD) {
       body = new TLWriter()
         .writeInt32(Mtproto.GZIP_PACKED, false)
@@ -217,7 +224,7 @@ export class ClientEncrypted extends ClientAbstract {
         _: "message",
         msg_id: this.#nextMessageId(),
         seqno: this.#nextSeqNo(false),
-        body: serializeObject({ _: "msgs_ack", msg_ids: this.#toAcknowledge.splice(0, 8192) }),
+        body: Mtproto.serializeObject({ _: "msgs_ack", msg_ids: this.#toAcknowledge.splice(0, 8192) }),
       };
       this.#recentAcks.set(ack.msg_id, { container, message: ack });
       message_ = {
@@ -243,7 +250,7 @@ export class ClientEncrypted extends ClientAbstract {
       return;
     }
 
-    return (await new Promise<Api.DeserializedType>((resolve, reject) => {
+    return (await new Promise<Api.DeserializedType | Mtproto.DeserializedType>((resolve, reject) => {
       this.#promises.set(messageId, { container, message: message__, resolve, reject, call: function_ });
     })) as R;
   }
@@ -316,9 +323,9 @@ export class ClientEncrypted extends ClientAbstract {
     }
     let reader = new TLReader(body);
     const id = reader.readInt32(false);
-    if (id == GZIP_PACKED) {
+    if (id == Mtproto.GZIP_PACKED) {
       reader = new TLReader(await gunzip(reader.readBytes()));
-    } else if (id == RPC_RESULT) {
+    } else if (id == Mtproto.RPC_RESULT) {
       await this.#handleRpcResult(reader);
     } else {
       reader.unreadInt32();
@@ -335,7 +342,7 @@ export class ClientEncrypted extends ClientAbstract {
       return;
     }
     let id = reader.readInt32(false);
-    if (id == GZIP_PACKED) {
+    if (id == Mtproto.GZIP_PACKED) {
       reader = new TLReader(await gunzip(reader.readBytes()));
       id = reader.readInt32(false);
       reader.unreadInt32();

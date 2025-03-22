@@ -144,21 +144,6 @@ export function checkInlineQueryId(id: string) {
   }
 }
 
-const MTPROTO_FUNCTIONS = [
-  "ping",
-  "ping_delay_disconnect",
-  "req_pq_multi",
-  "rpc_drop_answer",
-  "get_future_salts",
-  "destroy_session",
-  "destroy_auth_key",
-  "req_DH_params",
-  "set_client_DH_params",
-] as (keyof Api.Functions)[];
-export function isMtprotoFunction(value: unknown) {
-  return Api.isOneOf(MTPROTO_FUNCTIONS, value);
-}
-
 const CDN_FUNCTIONS = [
   "upload.saveFilePart",
   "upload.getFile",
