@@ -19,7 +19,6 @@
  */
 // deno-lint-ignore-file no-explicit-any
 
-import { gunzip } from "../1_utilities.ts";
 import { AnyObject, AnyType, Enums, Functions, schema, Types } from "./1_telegram_api.ts";
 import { TLReader } from "./1_tl_reader.ts";
 import { TLWriter } from "./1_tl_writer.ts";
@@ -34,16 +33,8 @@ export type DeserializedType = boolean | number | bigint | string | Uint8Array |
 
 export async function deserializeType<T extends (keyof Types) | "X" | string>(name: T, bufferOrReader: TLReader | Uint8Array): Promise<T extends keyof Types ? Types[T] : DeserializedType> {
   const reader = bufferOrReader instanceof Uint8Array ? new TLReader(bufferOrReader) : bufferOrReader;
-  const id = reader.readInt32(false);
-  if (id == GZIP_PACKED) {
-    const buffer = await gunzip(reader.readBytes());
-    return await deserializeType(name, buffer);
-  }
-  reader.unreadInt32();
   return await reader.readType(name, schema);
 }
-export const GZIP_PACKED = 0x3072CFA1;
-export const RPC_RESULT = 0xF35C6D01;
 
 export function serializeObject(object: AnyObject): Uint8Array {
   return new TLWriter().writeObject(object, schema).buffer;
