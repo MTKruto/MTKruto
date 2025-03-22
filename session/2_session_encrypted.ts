@@ -1,4 +1,4 @@
-import { assertEquals, concat, ige256Decrypt, ige256Encrypt, SECOND } from "../0_deps.ts";
+import { assertEquals, concat, ige256Decrypt, ige256Encrypt, initTgCrypto, SECOND } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { bigIntFromBuffer, bufferFromBigInt, drop, getLogger, getRandomId, gunzip, Logger, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
 import { deserializeMessage, message, msg_container, Mtproto, repr, serializeMessage, TLReader, X } from "../2_tl.ts";
@@ -31,6 +31,8 @@ export class SessionEncrypted extends Session implements Session {
   #pendingMessages = new Set<bigint>();
   #pendingPings = new Map<bigint, { resolve: (pong: Mtproto.pong) => void; reject: (reason: unknown) => void }>();
   #L: Logger;
+  
+  static #TGCRYPTO_INITED = false;
 
   constructor(dc: DC, params?: SessionParams) {
     super(dc, params);
@@ -50,6 +52,10 @@ export class SessionEncrypted extends Session implements Session {
 
   override async connect(): Promise<void> {
     await super.connect();
+    if (!SessionEncrypted.#TGCRYPTO_INITED) {
+      await initTgCrypto();
+      SessionEncrypted.#TGCRYPTO_INITED = true;
+    }
     this.#startReceiveLoop();
     this.#startPingLoop();
   }

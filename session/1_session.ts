@@ -99,7 +99,6 @@ export abstract class Session {
     if (this.connected) {
       return;
     }
-    await initTgCrypto();
     await this.transport.connection.open();
     await this.transport.transport.initialize();
     this.#lastConnect = new Date();

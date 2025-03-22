@@ -79,7 +79,6 @@ export abstract class ClientAbstract {
   async connect() {
     this.transport = this.transportProvider({ dc: this.#dc ?? this.initialDc, cdn: this.cdn });
     this.transport.connection.stateChangeHandler = this.stateChangeHandler;
-    await initTgCrypto();
     await this.transport.connection.open();
     await this.transport.transport.initialize();
     this.#disconnected = false;
