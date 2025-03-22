@@ -45,7 +45,7 @@ export function isOneOf<S extends keyof (Types & Functions)>(typeNames: S[] | re
   return typeNames.some((v) => is(v, value));
 }
 export function isOfEnum<S extends keyof Enums>(enumName: S, value: unknown): value is Enums[S] {
-  return !isValidType(value) || schema_.definitions[value._][2] != enumName;
+  return isValidType(value) && schema_.definitions[value._][2] == enumName;
 }
 export function as<S extends keyof Types>(typeName: S, value: unknown): Types[S] {
   if (is(typeName, value)) {
