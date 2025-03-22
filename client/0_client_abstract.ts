@@ -18,7 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { initTgCrypto } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { DC, TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
 import { INITIAL_DC } from "../4_constants.ts";

@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { initTgCrypto, SECOND } from "../0_deps.ts";
+import { SECOND } from "../0_deps.ts";
 import { drop, getLogger, Logger } from "../1_utilities.ts";
 import { DC, TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
 import { SessionState } from "./0_session_state.ts";

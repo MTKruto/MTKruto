@@ -19,7 +19,6 @@
  */
 // deno-lint-ignore-file no-explicit-any
 
-import { gunzip } from "../1_utilities.ts";
 import { AnyObject, AnyType, Enums, Functions, schema, Types } from "./1_mtproto_api.ts";
 import { TLReader } from "./1_tl_reader.ts";
 import { TLWriter } from "./1_tl_writer.ts";
