@@ -20,7 +20,7 @@
 
 import { concat } from "../0_deps.ts";
 import { bigIntFromBuffer, bufferFromBigInt, getRandomBigInt, mod, modExp, sha256 } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 export function isSafePrime(primeBytes: Uint8Array, g: number) {
   // deno-fmt-ignore
@@ -104,7 +104,7 @@ export async function checkPassword(password_: string, ap: Api.account_Password)
   const password = new TextEncoder().encode(password_);
   const algo = ap.current_algo;
   if (
-    !(is("passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow", algo))
+    !(Api.is("passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow", algo))
   ) {
     throw new Error("Unexpected algorithm");
   }

@@ -21,7 +21,7 @@
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getRandomId } from "../1_utilities.ts";
-import { Api, as, inputPeerToPeer, is, isOneOf, peerToChatId } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, Update } from "../3_types.ts";
 import { InputStoryContent } from "../types/1_input_story_content.ts";
 import { CreateStoryParams } from "./0_params.ts";
@@ -47,9 +47,9 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
   }
 
   async #updatesToStory(updates: Api.Updates) {
-    if (is("updates", updates)) {
-      const updateStory = updates.updates.find((v): v is Api.updateStory => is("updateStory", v));
-      if (updateStory && is("storyItem", updateStory.story)) {
+    if (Api.is("updates", updates)) {
+      const updateStory = updates.updates.find((v): v is Api.updateStory => Api.is("updateStory", v));
+      if (updateStory && Api.is("storyItem", updateStory.story)) {
         return await constructStory(updateStory.story, updateStory.peer, this.#c.getEntity);
       }
     }
@@ -73,7 +73,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
         throw new InputError("URL not supported.");
       } else {
         const file = await this.#c.fileManager.upload(source, params, null, "video" in content);
-        if (is("inputFileStoryDocument", file)) {
+        if (Api.is("inputFileStoryDocument", file)) {
           unreachable();
         }
         const mimeType = contentType(file.name.split(".").slice(-1)[0]) ?? "application/octet-stream";
@@ -112,7 +112,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     const stories_ = await this.#c.invoke({ _: "stories.getStoriesByID", peer, id: storyIds });
     const stories = new Array<Story>();
     for (const story of stories_.stories) {
-      stories.push(await constructStory(as("storyItem", story), inputPeerToPeer(peer), this.#c.getEntity));
+      stories.push(await constructStory(Api.as("storyItem", story), Api.inputPeerToPeer(peer), this.#c.getEntity));
     }
     return stories;
   }
@@ -160,15 +160,15 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
   }
 
   canHandleUpdate(update: Api.Update): update is StoryManagerUpdate {
-    return isOneOf(storyManagerUpdates, update);
+    return Api.isOneOf(storyManagerUpdates, update);
   }
 
   async handleUpdate(update: StoryManagerUpdate): Promise<Update | null> {
-    if (is("storyItemDeleted", update.story)) {
-      const chatId = peerToChatId(update.peer);
+    if (Api.is("storyItemDeleted", update.story)) {
+      const chatId = Api.peerToChatId(update.peer);
       const storyId = update.story.id;
       return { deletedStory: { chatId, storyId } };
-    } else if (is("storyItem", update.story)) {
+    } else if (Api.is("storyItem", update.story)) {
       const story = await constructStory(update.story, update.peer, this.#c.getEntity);
       return { story };
     } else {

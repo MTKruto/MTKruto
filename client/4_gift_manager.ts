@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructClaimedGifts, constructGift, ID } from "../3_types.ts";
 import { GetClaimedGiftsParams, SendGiftParams } from "./0_params.ts";
 import { C as C_ } from "./1_types.ts";
@@ -39,7 +39,7 @@ export class GiftManager {
 
   async getGifts() {
     const gifts = await this.#c.invoke({ _: "payments.getStarGifts", hash: 0 });
-    if (!(is("payments.starGifts", gifts))) {
+    if (!(Api.is("payments.starGifts", gifts))) {
       unreachable();
     }
     return gifts.gifts.map(constructGift);

@@ -21,7 +21,7 @@
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, as, getChannelChatId, is, isOneOf, peerToChatId } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructVoiceTranscription, deserializeFileId, FileId, InputMedia, isMessageType, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt, VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
@@ -86,17 +86,17 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     }
     if (shouldFetch) {
       if (canBeInputChannel(peer)) {
-        messages_ = await this.#c.invoke({ _: "channels.getMessages", channel: toInputChannel(peer), id: messageIds.map((v) => ({ _: "inputMessageID", id: v })) }).then((v) => as("messages.channelMessages", v).messages);
+        messages_ = await this.#c.invoke({ _: "channels.getMessages", channel: toInputChannel(peer), id: messageIds.map((v) => ({ _: "inputMessageID", id: v })) }).then((v) => Api.as("messages.channelMessages", v).messages);
       } else {
         messages_ = await this.#c.invoke({
           _: "messages.getMessages",
           id: messageIds.map((v) => ({ _: "inputMessageID", id: v })),
-        }).then((v) => as("messages.messages", v).messages);
+        }).then((v) => Api.as("messages.messages", v).messages);
       }
     }
     const messages = new Array<Message>();
     for (const message_ of messages_) {
-      if (is("messageEmpty", message_)) {
+      if (Api.is("messageEmpty", message_)) {
         continue;
       }
       const message = await this.constructMessage(message_);
@@ -182,26 +182,26 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   async updatesToMessages(chatId: ID, updates: Api.Updates, businessConnectionId?: string) {
     const messages = new Array<Message>();
 
-    if (is("updates", updates)) {
+    if (Api.is("updates", updates)) {
       for (const update of updates.updates) {
-        if ("message" in update && is("messageEmpty", update.message)) {
+        if ("message" in update && Api.is("messageEmpty", update.message)) {
           continue;
         }
-        if (is("updateNewMessage", update) || is("updateEditMessage", update) || is("updateNewScheduledMessage", update)) {
+        if (Api.is("updateNewMessage", update) || Api.is("updateEditMessage", update) || Api.is("updateNewScheduledMessage", update)) {
           const message = await this.constructMessage(update.message);
-          if (is("updateNewScheduledMessage", update)) {
+          if (Api.is("updateNewScheduledMessage", update)) {
             message.scheduled = true;
           }
           messages.push(message);
-        } else if (is("updateNewChannelMessage", update) || is("updateEditChannelMessage", update)) {
+        } else if (Api.is("updateNewChannelMessage", update) || Api.is("updateEditChannelMessage", update)) {
           messages.push(await this.constructMessage(update.message));
-        } else if (is("updateBotNewBusinessMessage", update)) {
+        } else if (Api.is("updateBotNewBusinessMessage", update)) {
           messages.push(await this.constructMessage(update.message, false, { connectionId: businessConnectionId ?? update.connection_id, replyToMessage: update.reply_to_message }));
-        } else if (is("updateBotEditBusinessMessage", update)) {
+        } else if (Api.is("updateBotEditBusinessMessage", update)) {
           messages.push(await this.constructMessage(update.message, false, { connectionId: businessConnectionId ?? update.connection_id, replyToMessage: update.reply_to_message }));
         }
       }
-    } else if (is("updateShortSentMessage", updates)) {
+    } else if (Api.is("updateShortSentMessage", updates)) {
       const message = await this.getMessage(chatId, updates.id);
       if (message != null) {
         messages.push(message);
@@ -212,7 +212,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   }
 
   async constructMessage(message_: Api.Message, r?: boolean, business?: { connectionId: string; replyToMessage?: Api.Message }) {
-    const mediaPoll = "media" in message_ && is("messageMediaPoll", message_.media) ? message_.media : null;
+    const mediaPoll = "media" in message_ && Api.is("messageMediaPoll", message_.media) ? message_.media : null;
     const pollId = mediaPoll?.poll.id;
     let poll: Api.poll | null = null;
     let pollResults: Api.pollResults | null = null;
@@ -266,7 +266,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   }
 
   usernameResolver: UsernameResolver = async (v) => {
-    const inputPeer = await this.#c.getInputPeer(v).then((v) => as("inputPeerUser", v));
+    const inputPeer = await this.#c.getInputPeer(v).then((v) => Api.as("inputPeerUser", v));
     return { ...inputPeer, _: "inputUser" };
   };
 
@@ -587,7 +587,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     if (typeof document === "string") {
       const fileId = this.resolveFileId(document, fileType);
       if (fileId != null) {
-        media = { _: "inputMediaDocument", id: { ...fileId, _: "inputDocument" }, spoiler, query: otherAttribs.find((v): v is Api.documentAttributeSticker => is("documentAttributeSticker", v))?.alt || undefined, ttl_seconds };
+        media = { _: "inputMediaDocument", id: { ...fileId, _: "inputDocument" }, spoiler, query: otherAttribs.find((v): v is Api.documentAttributeSticker => Api.is("documentAttributeSticker", v))?.alt || undefined, ttl_seconds };
       }
     }
 
@@ -609,7 +609,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
           }
           return name;
         });
-        if (is("inputFileStoryDocument", file)) {
+        if (Api.is("inputFileStoryDocument", file)) {
           unreachable();
         }
         let thumb: Api.InputFile | undefined = undefined;
@@ -917,7 +917,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     if (typeof document === "string") {
       const fileId = this.resolveFileId(document, fileType);
       if (fileId != null) {
-        media_ = { _: "inputMediaDocument", id: { ...fileId, _: "inputDocument" }, spoiler, query: otherAttribs.find((v): v is Api.documentAttributeSticker => is("documentAttributeSticker", v))?.alt || undefined };
+        media_ = { _: "inputMediaDocument", id: { ...fileId, _: "inputDocument" }, spoiler, query: otherAttribs.find((v): v is Api.documentAttributeSticker => Api.is("documentAttributeSticker", v))?.alt || undefined };
       }
     }
 
@@ -933,7 +933,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
           }
           return name;
         });
-        if (is("inputFileStoryDocument", file)) {
+        if (Api.is("inputFileStoryDocument", file)) {
           unreachable();
         }
         let thumb: Api.InputFile | undefined = undefined;
@@ -1122,27 +1122,29 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   }
 
   canHandleUpdate(update: Api.Update): update is MessageManagerUpdate {
-    return isOneOf(messageManagerUpdates, update);
+    return Api.isOneOf(messageManagerUpdates, update);
   }
 
   async handleUpdate(update: MessageManagerUpdate): Promise<Update | null> {
-    if (is("updateNewMessage", update) || is("updateNewChannelMessage", update) || is("updateEditMessage", update) || is("updateEditChannelMessage", update)) {
-      if (is("message", update.message) || is("messageService", update.message)) {
-        const chatId = peerToChatId(update.message.peer_id);
+    if (Api.is("updateNewMessage", update) || Api.is("updateNewChannelMessage", update) || Api.is("updateEditMessage", update) || Api.is("updateEditChannelMessage", update)) {
+      if (Api.is("message", update.message) || Api.is("messageService", update.message)) {
+        const chatId = Api.peerToChatId(update.message.peer_id);
         await this.#c.messageStorage.setMessage(chatId, update.message.id, update.message);
       }
     }
 
     if (
-      is("updateNewMessage", update) ||
-      is("updateNewChannelMessage", update) ||
-      is("updateEditMessage", update) ||
-      is("updateEditChannelMessage", update) ||
-      is("updateBotNewBusinessMessage", update) ||
-      is("updateBotEditBusinessMessage", update) ||
-      is("updateNewScheduledMessage", update)
+      Api.isOneOf([
+        "updateNewMessage",
+        "updateNewChannelMessage",
+        "updateEditMessage",
+        "updateEditChannelMessage",
+        "updateBotNewBusinessMessage",
+        "updateBotEditBusinessMessage",
+        "updateNewScheduledMessage",
+      ], update)
     ) {
-      if (!(is("messageEmpty", update.message))) {
+      if (!(Api.is("messageEmpty", update.message))) {
         const isOutgoing = update.message.out;
         let shouldIgnore = false;
         if (isOutgoing) {
@@ -1152,7 +1154,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
           if (this.#c.outgoingMessages == "none") {
             shouldIgnore = true;
           } else if (this.#c.outgoingMessages == "business") {
-            if (!is("updateBotNewBusinessMessage", update) && !is("updateBotEditBusinessMessage", update)) {
+            if (!Api.is("updateBotNewBusinessMessage", update) && !Api.is("updateBotEditBusinessMessage", update)) {
               shouldIgnore = true;
             }
           }
@@ -1160,9 +1162,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         if (!shouldIgnore) {
           const business = "connection_id" in update ? { connectionId: update.connection_id, replyToMessage: update.reply_to_message } : undefined;
           const message = await this.constructMessage(update.message, undefined, business);
-          if (is("updateNewMessage", update) || is("updateNewChannelMessage", update) || is("updateBotNewBusinessMessage", update)) {
+          if (Api.is("updateNewMessage", update) || Api.is("updateNewChannelMessage", update) || Api.is("updateBotNewBusinessMessage", update)) {
             return { message };
-          } else if (is("updateNewScheduledMessage", update)) {
+          } else if (Api.is("updateNewScheduledMessage", update)) {
             message.scheduled = true;
             return { scheduledMessage: message };
           } else {
@@ -1172,7 +1174,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       }
     }
 
-    if (is("updateDeleteMessages", update)) {
+    if (Api.is("updateDeleteMessages", update)) {
       const deletedMessages = new Array<{ chatId: number; messageId: number }>();
       for (const messageId of update.messages) {
         const chatId = await this.#c.messageStorage.getMessageChat(messageId);
@@ -1183,8 +1185,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       if (deletedMessages.length > 0) {
         return { deletedMessages };
       }
-    } else if (is("updateDeleteChannelMessages", update)) {
-      const chatId = getChannelChatId(update.channel_id);
+    } else if (Api.is("updateDeleteChannelMessages", update)) {
+      const chatId = Api.getChannelChatId(update.channel_id);
       const deletedMessages = new Array<{ chatId: number; messageId: number }>();
       for (const messageId of update.messages) {
         const message = await this.#c.messageStorage.getMessage(chatId, messageId);
@@ -1193,17 +1195,17 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         }
       }
       return { deletedMessages };
-    } else if (is("updateDeleteScheduledMessages", update)) {
-      const chatId = peerToChatId(update.peer);
+    } else if (Api.is("updateDeleteScheduledMessages", update)) {
+      const chatId = Api.peerToChatId(update.peer);
       const deletedMessages = update.messages.map((v) => ({ chatId, messageId: v }));
       return { deletedMessages, scheduled: true };
-    } else if (is("updateBotDeleteBusinessMessage", update)) {
-      const chatId = peerToChatId(update.peer);
+    } else if (Api.is("updateBotDeleteBusinessMessage", update)) {
+      const chatId = Api.peerToChatId(update.peer);
       const deletedMessages = update.messages.map((v) => ({ chatId, messageId: v }));
       return { deletedMessages, businessConnectionId: update.connection_id };
     }
 
-    if (is("updateTranscribedAudio", update)) {
+    if (Api.is("updateTranscribedAudio", update)) {
       const voiceTranscription = constructVoiceTranscription(update);
       await this.#c.messageStorage.setVoiceTranscription(voiceTranscription);
       return { voiceTranscription };
@@ -1272,7 +1274,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   async blockUser(userId: ID) {
     this.#c.storage.assertUser("blockUser");
     const id = await this.#c.getInputPeer(userId);
-    if (!(is("user", id))) {
+    if (!(Api.is("user", id))) {
       throw new InputError("Only users can be blocked or unblocked.");
     }
     await this.#c.invoke({ _: "contacts.block", id });
@@ -1281,7 +1283,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   async unblockUser(userId: ID) {
     this.#c.storage.assertUser("unblockUser");
     const id = await this.#c.getInputPeer(userId);
-    if (!(is("user", id))) {
+    if (!(Api.is("user", id))) {
       throw new InputError("Only users can be blocked or unblocked.");
     }
     await this.#c.invoke({ _: "contacts.unblock", id });
@@ -1440,13 +1442,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
 
     const peer = await this.#c.getInputPeer(chatId);
     for (const [i, media_] of multiMedia.entries()) {
-      if (is("inputMediaUploadedPhoto", media_.media)) {
-        const result = as("messageMediaPhoto", await this.#c.invoke({ _: "messages.uploadMedia", media: media_.media, peer }));
-        const photo = as("photo", result.photo);
+      if (Api.is("inputMediaUploadedPhoto", media_.media)) {
+        const result = Api.as("messageMediaPhoto", await this.#c.invoke({ _: "messages.uploadMedia", media: media_.media, peer }));
+        const photo = Api.as("photo", result.photo);
         multiMedia[i] = { ...media_, media: { _: "inputMediaPhoto", id: { ...photo, _: "inputPhoto" } } };
-      } else if (is("inputMediaUploadedDocument", media_.media)) {
-        const result = as("messageMediaDocument", await this.#c.invoke({ _: "messages.uploadMedia", media: media_.media, peer }));
-        const document = as("document", result.document);
+      } else if (Api.is("inputMediaUploadedDocument", media_.media)) {
+        const result = Api.as("messageMediaDocument", await this.#c.invoke({ _: "messages.uploadMedia", media: media_.media, peer }));
+        const document = Api.as("document", result.document);
         multiMedia[i] = { ...media_, media: { _: "inputMediaDocument", id: { ...document, _: "inputDocument" } } };
       }
     }
@@ -1581,7 +1583,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       if (isNaN(Number(parts[2]))) {
         return null;
       }
-      peer = getChannelChatId(BigInt(peer));
+      peer = Api.getChannelChatId(BigInt(peer));
     } else {
       if (parts.length > 3) {
         return null;

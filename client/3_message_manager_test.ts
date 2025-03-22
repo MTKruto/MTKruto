@@ -20,7 +20,7 @@
 
 import { assertEquals, assertInstanceOf } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { getChannelChatId } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { MessageEntity } from "../3_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
 
@@ -150,7 +150,7 @@ Deno.test("parseMessageLink()", async (t) => {
   await t.step("valid links", () => {
     assertEquals(pml("http://t.me/username/1"), ["username", 1]);
     assertEquals(pml("http://t.me/username/1/2"), ["username", 2]);
-    assertEquals(pml("http://t.me/c/1/2"), [getChannelChatId(1n), 2]);
-    assertEquals(pml("http://t.me/c/1/2/3"), [getChannelChatId(1n), 3]);
+    assertEquals(pml("http://t.me/c/1/2"), [Api.getChannelChatId(1n), 2]);
+    assertEquals(pml("http://t.me/c/1/2/3"), [Api.getChannelChatId(1n), 3]);
   });
 });

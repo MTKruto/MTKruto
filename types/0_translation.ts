@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 /** A translation. */
 export interface Translation {
@@ -32,12 +32,12 @@ export interface Translation {
 }
 
 export function constructTranslation(langPackString: Api.LangPackString): Translation {
-  if (is("langPackString", langPackString)) {
+  if (Api.is("langPackString", langPackString)) {
     return {
       key: langPackString.key,
       value: langPackString.value,
     };
-  } else if (is("langPackStringPluralized", langPackString)) {
+  } else if (Api.is("langPackStringPluralized", langPackString)) {
     return {
       key: langPackString.key,
       value: langPackString.other_value,

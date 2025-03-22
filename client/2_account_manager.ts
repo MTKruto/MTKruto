@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { toUnixTimestamp } from "../1_utilities.ts";
-import { Api, chatIdToPeer, inputPeerToPeer, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { birthdayToTlObject, constructInactiveChat, constructUser, ID } from "../3_types.ts";
 import { AddContactParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, UpdateProfileParams } from "./0_params.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -36,7 +36,7 @@ export class AccountManager {
 
   async #toggleUsername(id: ID, username: string, active: boolean) {
     const peer = await this.#c.getInputPeer(id);
-    if (is("inputPeerSelf", peer)) {
+    if (Api.is("inputPeerSelf", peer)) {
       await this.#c.invoke({ _: "account.toggleUsername", username, active });
     } else if (canBeInputUser(peer)) {
       await this.#c.invoke({ _: "bots.toggleUsername", bot: toInputUser(peer), username, active });
@@ -60,7 +60,7 @@ export class AccountManager {
   async reorderUsernames(id: ID, order: string[]) {
     this.#c.storage.assertUser("reorderUsernames");
     const peer = await this.#c.getInputPeer(id);
-    if (is("inputPeerSelf", peer)) {
+    if (Api.is("inputPeerSelf", peer)) {
       return await this.#c.invoke({ _: "account.reorderUsernames", order });
     } else if (canBeInputUser(peer)) {
       return await this.#c.invoke({ _: "bots.reorderUsernames", bot: toInputUser(peer), order });
@@ -119,10 +119,10 @@ export class AccountManager {
   async getContacts() {
     this.#c.storage.assertUser("getContacts");
     const result = await this.#c.invoke({ _: "contacts.getContacts", hash: 0n });
-    if (!is("contacts.contacts", result)) {
+    if (!Api.is("contacts.contacts", result)) {
       unreachable();
     }
-    return result.users.map((v) => is("user", v) ? constructUser(v) : null).filter((v) => v != null);
+    return result.users.map((v) => Api.is("user", v) ? constructUser(v) : null).filter((v) => v != null);
   }
 
   async deleteContacts(userIds: ID[]) {
@@ -139,10 +139,10 @@ export class AccountManager {
   async addContact(userId: ID, params?: AddContactParams) {
     this.#c.storage.assertUser("addContact");
     const id = await this.#c.getInputUser(userId);
-    if (!is("inputPeerUser", id)) {
+    if (!Api.is("inputPeerUser", id)) {
       unreachable();
     }
-    const user = await this.#c.getEntity(inputPeerToPeer(id));
+    const user = await this.#c.getEntity(Api.inputPeerToPeer(id));
     if (!user || !("first_name" in user)) {
       unreachable();
     }
@@ -158,7 +158,7 @@ export class AccountManager {
     const chatId_ = await this.#c.getInputPeerChatId(inputPeer);
     let fullChat = await this.#c.storage.getFullChat(chatId_);
     if (fullChat != null) {
-      if (!is("userFull", fullChat)) {
+      if (!Api.is("userFull", fullChat)) {
         unreachable();
       }
       return fullChat;
@@ -174,8 +174,8 @@ export class AccountManager {
     this.#c.storage.assertUser("updateProfile");
     const selfId = await this.#c.getSelfId();
     const userFull = await this.#getUserFull(selfId);
-    const entity = await this.#c.getEntity(chatIdToPeer(selfId));
-    if (!is("user", entity)) {
+    const entity = await this.#c.getEntity(Api.chatIdToPeer(selfId));
+    if (!Api.is("user", entity)) {
       unreachable();
     }
     params ??= {};

@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import { constructSticker2, Sticker } from "./1_sticker.ts";
 import { constructGiftUpgradedComponent, GiftUpgradedComponent } from "./2_gift_upgraded_component.ts";
@@ -87,7 +87,7 @@ export interface GiftUpgraded {
 export type Gift = GiftNonUpgraded | GiftUpgraded;
 
 export function constructGift(gift: Api.StarGift): Gift {
-  if (is("starGiftUnique", gift)) {
+  if (Api.is("starGiftUnique", gift)) {
     return constructGiftUpgraded(gift);
   } else {
     return constructGiftNonUpgraded(gift);
@@ -113,7 +113,7 @@ export function constructGiftUpgraded(gift: Api.starGiftUnique): GiftUpgraded {
   };
 }
 export function constructGiftNonUpgraded(gift: Api.starGift): Gift {
-  if (!is("document", gift.sticker)) {
+  if (!Api.is("document", gift.sticker)) {
     unreachable();
   }
   const id = String(gift.id);

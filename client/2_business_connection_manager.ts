@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api, as, isOneOf } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructBusinessConnection, Update } from "../3_types.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
 import { C } from "./1_types.ts";
@@ -40,8 +40,8 @@ export class BusinessConnectionManager implements UpdateProcessor<BusinessConnec
     const connection_ = await this.#c.messageStorage.getBusinessConnection(id);
     if (!connection_) {
       const connection_ = await this.#c.invoke({ _: "account.getBotBusinessConnection", connection_id: id })
-        .then((v) => as("updates", v))
-        .then((v) => as("updateBotBusinessConnect", v.updates[0]).connection);
+        .then((v) => Api.as("updates", v))
+        .then((v) => Api.as("updateBotBusinessConnect", v.updates[0]).connection);
       await this.#c.messageStorage.setBusinessConnection(id, connection_);
       return await constructBusinessConnection(connection_, this.#c.getEntity);
     } else {
@@ -50,7 +50,7 @@ export class BusinessConnectionManager implements UpdateProcessor<BusinessConnec
   }
 
   canHandleUpdate(update: Api.Update): update is BusinessConnectionManagerUpdate {
-    return isOneOf(businessConnectionManagerUpdates, update);
+    return Api.isOneOf(businessConnectionManagerUpdates, update);
   }
 
   async handleUpdate(update: BusinessConnectionManagerUpdate): Promise<Update> {

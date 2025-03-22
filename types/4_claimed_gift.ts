@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
-import { Api, isOneOf } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructGift, Gift } from "./3_gift.ts";
@@ -46,7 +46,7 @@ export interface ClaimedGift {
 }
 
 export function constructClaimedGift(savedStarGift: Api.SavedStarGift, fromPeer?: Api.User | Api.Chat): ClaimedGift {
-  if (fromPeer && !isOneOf(["user", "chat", "channel"], fromPeer)) {
+  if (fromPeer && !Api.isOneOf(["user", "chat", "channel"], fromPeer)) {
     unreachable();
   }
   const gift = constructGift(savedStarGift.gift);

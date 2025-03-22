@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { InputPeerGetter } from "./_getters.ts";
 import { ID } from "./0_id.ts";
 
@@ -88,7 +88,7 @@ export async function botCommandScopeToTlObject(scope: BotCommandScope, getInput
       return { _: "botCommandScopePeerAdmins", peer: await getInputPeer(scope.chatId) };
     case "chatMember": {
       const user = await getInputPeer(scope.userId);
-      if (!is("inputPeerUser", user)) {
+      if (!Api.is("inputPeerUser", user)) {
         unreachable();
       }
       return { _: "botCommandScopePeerUser", peer: await getInputPeer(scope.chatId), user_id: ({ _: "inputUser", user_id: user.user_id, access_hash: user.access_hash }) };

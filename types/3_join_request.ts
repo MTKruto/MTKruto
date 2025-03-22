@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructUser, User } from "./1_user.ts";
@@ -51,7 +51,7 @@ export async function constructJoinRequest(update: Api.updateBotChatInviteReques
     unreachable();
   }
   const user = constructUser(user_);
-  const inviteLink = update.invite && is("chatInviteExported", update.invite) ? await constructInviteLink(update.invite, getEntity) : undefined;
+  const inviteLink = update.invite && Api.is("chatInviteExported", update.invite) ? await constructInviteLink(update.invite, getEntity) : undefined;
   return cleanObject({
     chat,
     user,

@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 
 /** @unlisted */
@@ -57,7 +57,7 @@ async function resolveUsers(ids: number[], getEntity: EntityGetter) {
   const users = new Array<Api.inputUser>();
   for (const id of ids) {
     const entity = await getEntity({ _: "peerUser", user_id: BigInt(id) });
-    if (!(is("user", entity))) {
+    if (!(Api.is("user", entity))) {
       unreachable();
     } else {
       users.push({ _: "inputUser", user_id: entity.id, access_hash: entity.access_hash ?? 0n });
@@ -93,15 +93,15 @@ export async function storyPrivacyToTlObject(privacy: StoryPrivacy, getEntity: E
 }
 
 export function constructStoryPrivacy(privacy: Api.PrivacyRule[]): StoryPrivacy {
-  const except = privacy.find((v): v is Api.privacyValueDisallowUsers => is("privacyValueDisallowUsers", v))?.users?.map(Number) ?? [];
-  if (privacy.some((v) => is("privacyValueAllowAll", v))) {
+  const except = privacy.find((v): v is Api.privacyValueDisallowUsers => Api.is("privacyValueDisallowUsers", v))?.users?.map(Number) ?? [];
+  if (privacy.some((v) => Api.is("privacyValueAllowAll", v))) {
     return { everyoneExcept: except };
-  } else if (privacy.some((v) => is("privacyValueAllowContacts", v))) {
+  } else if (privacy.some((v) => Api.is("privacyValueAllowContacts", v))) {
     return { contactsExcept: except };
-  } else if (privacy.some((v) => is("privacyValueAllowCloseFriends", v))) {
+  } else if (privacy.some((v) => Api.is("privacyValueAllowCloseFriends", v))) {
     return { closeFriends: true };
   }
 
-  const only = privacy.find((v): v is Api.privacyValueAllowUsers => is("privacyValueAllowUsers", v))?.users?.map(Number) ?? [];
+  const only = privacy.find((v): v is Api.privacyValueAllowUsers => Api.is("privacyValueAllowUsers", v))?.users?.map(Number) ?? [];
   return { only };
 }

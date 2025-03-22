@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Api, is, isOneOf, peerToChatId } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructMessageReaction, constructMessageReactionCount, constructMessageReactions, Update } from "../3_types.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
 import { C } from "./1_types.ts";
@@ -42,28 +42,28 @@ export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate> {
   }
 
   canHandleUpdate(update: Api.Update): update is ReactionManagerUpdate {
-    return isOneOf(reactionManagerUpdates, update);
+    return Api.isOneOf(reactionManagerUpdates, update);
   }
 
   async handleUpdate(update: ReactionManagerUpdate): Promise<Update | null> {
-    if (is("updateBotMessageReactions", update)) {
+    if (Api.is("updateBotMessageReactions", update)) {
       const messageReactionCount = await constructMessageReactionCount(update, this.#c.getEntity);
       if (messageReactionCount) {
         return { messageReactionCount };
       } else {
         return null;
       }
-    } else if (is("updateBotMessageReaction", update)) {
+    } else if (Api.is("updateBotMessageReaction", update)) {
       const messageReactions = await constructMessageReactions(update, this.#c.getEntity);
       if (messageReactions) {
         return { messageReactions };
       } else {
         return null;
       }
-    } else if (is("updateMessageReactions", update)) {
-      const chatId = peerToChatId(update.peer);
+    } else if (Api.is("updateMessageReactions", update)) {
+      const chatId = Api.peerToChatId(update.peer);
       const message = await this.#c.messageStorage.getMessage(chatId, update.msg_id);
-      if (is("message", message)) {
+      if (Api.is("message", message)) {
         message.reactions = update.reactions;
         await this.#c.messageStorage.setMessage(chatId, update.msg_id, message);
         const views = message.views ?? 0;
@@ -74,10 +74,10 @@ export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate> {
       } else {
         return null;
       }
-    } else if (isOneOf(["updateChannelMessageViews", "updateChannelMessageForwards"], update)) {
-      const chatId = peerToChatId({ ...update, _: "peerChannel" });
+    } else if (Api.isOneOf(["updateChannelMessageViews", "updateChannelMessageForwards"], update)) {
+      const chatId = Api.peerToChatId({ ...update, _: "peerChannel" });
       const message = await this.#c.messageStorage.getMessage(chatId, update.id);
-      if (is("message", message)) {
+      if (Api.is("message", message)) {
         if ("views" in update) {
           message.views = update.views;
         }

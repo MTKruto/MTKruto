@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { cleanObject } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { UsernameResolver } from "./_getters.ts";
 import { LoginUrl } from "./0_login_url.ts";
 import { constructMiniAppInfo, MiniAppInfo } from "./0_mini_app_info.ts";
@@ -161,15 +161,15 @@ export type InlineKeyboardButton =
   | InlineKeyboardButtonCopy;
 
 export function constructInlineKeyboardButton(button_: Api.KeyboardButton): InlineKeyboardButton {
-  if (is("keyboardButtonUrl", button_)) {
+  if (Api.is("keyboardButtonUrl", button_)) {
     return { text: button_.text, url: button_.url };
-  } else if (is("keyboardButtonCallback", button_)) {
+  } else if (Api.is("keyboardButtonCallback", button_)) {
     return { text: button_.text, callbackData: new TextDecoder().decode(button_.data) };
-  } else if (is("keyboardButtonWebView", button_) || is("keyboardButtonSimpleWebView", button_)) {
+  } else if (Api.is("keyboardButtonWebView", button_) || Api.is("keyboardButtonSimpleWebView", button_)) {
     return { text: button_.text, miniApp: constructMiniAppInfo(button_.url) };
-  } else if (is("keyboardButtonUrlAuth", button_)) {
+  } else if (Api.is("keyboardButtonUrlAuth", button_)) {
     return { text: button_.text, loginUrl: { url: button_.url, forwardText: button_.fwd_text } };
-  } else if (is("keyboardButtonSwitchInline", button_)) {
+  } else if (Api.is("keyboardButtonSwitchInline", button_)) {
     if (button_.same_peer) {
       return { text: button_.text, switchInlineQueryCurrentChat: button_.query };
     } else if (button_.peer_types && button_.peer_types.length) {
@@ -181,13 +181,13 @@ export function constructInlineKeyboardButton(button_: Api.KeyboardButton): Inli
     } else {
       return { text: button_.text, switchInlineQuery: button_.query };
     }
-  } else if (is("keyboardButtonBuy", button_)) {
+  } else if (Api.is("keyboardButtonBuy", button_)) {
     return { text: button_.text, pay: true };
-  } else if (is("keyboardButtonGame", button_)) {
+  } else if (Api.is("keyboardButtonGame", button_)) {
     return { text: button_.text, callbackGame: {} };
-  } else if (is("keyboardButtonCopy", button_)) {
+  } else if (Api.is("keyboardButtonCopy", button_)) {
     return { text: button_.text, copy: button_.copy_text };
-  } else if (is("keyboardButtonRequestPeer", button_)) {
+  } else if (Api.is("keyboardButtonRequestPeer", button_)) {
     unreachable();
   } else {
     unreachable();

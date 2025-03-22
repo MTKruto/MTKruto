@@ -21,7 +21,7 @@
 import { SECOND, unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { bigIntFromBuffer, CacheMap, drop, getLogger, getRandomBigInt, getRandomId, gunzip, gzip, Logger, sha1, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, DeserializedType, deserializeTelegramType, GZIP_PACKED, is, isGenericFunction, isOfEnum, isOneOf, message, mustGetReturnType, repr, RPC_RESULT, serializeTelegramObject, TLError, TLReader, TLWriter, X } from "../2_tl.ts";
+import { Api, message, Mtproto, repr, TLError, TLReader, TLWriter, X } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { ClientAbstractParams } from "./0_client_abstract.ts";
@@ -37,11 +37,11 @@ export type ErrorSource = "deserialization" | "decryption" | "unknown";
 export interface Handlers {
   serverSaltReassigned?: (newServerSalt: bigint) => void;
   updates?: (updates: Api.Updates | Api.Update, call: Api.AnyType | null, callback?: () => void) => void;
-  result?: (result: DeserializedType, callback: () => void) => void;
+  result?: (result: Api.DeserializedType, callback: () => void) => void;
   error?: (err: unknown, source: ErrorSource) => void;
 }
 
-const RPC_ERROR = Api.schema.definitions["rpc_error"][0];
+const RPC_ERROR = Mtproto.schema.definitions["rpc_error"][0];
 
 /**
  * An MTProto client for making encrypted connections. Most users won't need to interact with this. Used internally by `Client`.
@@ -62,7 +62,7 @@ export class ClientEncrypted extends ClientAbstract {
   #shouldInvalidateSession = true;
   #toAcknowledge = new Array<bigint>();
   #recentAcks = new CacheMap<bigint, { container?: bigint; message: message }>(20);
-  #promises = new Map<bigint, { container?: bigint; message: message; resolve?: (obj: DeserializedType) => void; reject?: (err: DeserializedType | Error) => void; call: Api.AnyObject }>();
+  #promises = new Map<bigint, { container?: bigint; message: message; resolve?: (obj: Api.DeserializedType | Mtproto.DeserializedType) => void; reject?: (err: Api.DeserializedType | Mtproto.DeserializedType | Error) => void; call: Api.AnyObject | Mtproto.AnyObject }>();
   #loopActive = true;
 
   // loggers
@@ -195,12 +195,19 @@ export class ClientEncrypted extends ClientAbstract {
     this.#L.outBin(payload);
   }
 
-  async invoke<T extends Api.AnyObject, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
+  async invoke<T extends Api.AnyObject | Mtproto.AnyObject, R = T["_"] extends keyof Mtproto.Functions ? Mtproto.ReturnType<T> extends never ? Mtproto.ReturnType<Mtproto.Functions[T["_"]]> : never : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
     const messageId = this.#nextMessageId();
-    let body = serializeTelegramObject(function_);
+    let body: Uint8Array;
+    if (Mtproto.isValidObject(function_)) {
+      body = Mtproto.serializeObject(function_);
+    } else if (Api.isValidObject(function_)) {
+      body = Api.serializeObject(function_);
+    } else {
+      unreachable();
+    }
     if (body.length > COMPRESSION_THRESHOLD) {
       body = new TLWriter()
-        .writeInt32(GZIP_PACKED, false)
+        .writeInt32(Mtproto.GZIP_PACKED, false)
         .writeBytes(await gzip(body))
         .buffer;
     }
@@ -219,7 +226,7 @@ export class ClientEncrypted extends ClientAbstract {
         _: "message",
         msg_id: this.#nextMessageId(),
         seqno: this.#nextSeqNo(false),
-        body: serializeTelegramObject({ _: "msgs_ack", msg_ids: this.#toAcknowledge.splice(0, 8192) }),
+        body: Mtproto.serializeObject({ _: "msgs_ack", msg_ids: this.#toAcknowledge.splice(0, 8192) }),
       };
       this.#recentAcks.set(ack.msg_id, { container, message: ack });
       message_ = {
@@ -245,7 +252,7 @@ export class ClientEncrypted extends ClientAbstract {
       return;
     }
 
-    return (await new Promise<DeserializedType>((resolve, reject) => {
+    return (await new Promise<Api.DeserializedType | Mtproto.DeserializedType>((resolve, reject) => {
       this.#promises.set(messageId, { container, message: message__, resolve, reject, call: function_ });
     })) as R;
   }
@@ -318,9 +325,9 @@ export class ClientEncrypted extends ClientAbstract {
     }
     let reader = new TLReader(body);
     const id = reader.readInt32(false);
-    if (id == GZIP_PACKED) {
+    if (id == Mtproto.GZIP_PACKED) {
       reader = new TLReader(await gunzip(reader.readBytes()));
-    } else if (id == RPC_RESULT) {
+    } else if (id == Mtproto.RPC_RESULT) {
       await this.#handleRpcResult(reader);
     } else {
       reader.unreadInt32();
@@ -337,7 +344,7 @@ export class ClientEncrypted extends ClientAbstract {
       return;
     }
     let id = reader.readInt32(false);
-    if (id == GZIP_PACKED) {
+    if (id == Mtproto.GZIP_PACKED) {
       reader = new TLReader(await gunzip(reader.readBytes()));
       id = reader.readInt32(false);
       reader.unreadInt32();
@@ -346,27 +353,27 @@ export class ClientEncrypted extends ClientAbstract {
     }
     // deno-lint-ignore no-explicit-any
     let call: any = promise?.call ?? null;
-    while (isGenericFunction(call)) {
+    while (Api.isGenericFunction(call)) {
       call = call.query;
     }
     // deno-lint-ignore no-explicit-any
     let result: any;
     if (id == RPC_ERROR) {
-      result = await deserializeTelegramType("rpc_error", reader);
+      result = await Mtproto.deserializeType("rpc_error", reader);
       this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
     } else {
-      result = await deserializeTelegramType(mustGetReturnType(call._), reader);
+      result = await Api.deserializeType(Api.mustGetReturnType(call._), reader);
       this.#LreceiveLoop.debug("RPCResult:", Array.isArray(result) ? "Array" : typeof result === "object" ? result._ : result);
     }
     const resolvePromise = () => {
-      if (is("rpc_error", result)) {
+      if (Mtproto.is("rpc_error", result)) {
         promise.reject?.(constructTelegramError(result, promise.call));
       } else {
         promise.resolve?.(result);
       }
       this.#promises.delete(messageId);
     };
-    if (isOfEnum("Updates", result) || isOfEnum("Update", result)) {
+    if (Api.isOfEnum("Updates", result) || Api.isOfEnum("Update", result)) {
       drop(this.handlers.updates?.(result, call, resolvePromise));
     } else {
       drop(this.handlers.result?.(result, resolvePromise));
@@ -374,23 +381,28 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   async #handleType(message: message, reader: TLReader) {
-    const body = await deserializeTelegramType(X, reader);
+    let body: Api.DeserializedType | Mtproto.DeserializedType;
+    try {
+      body = await Mtproto.deserializeType(X, reader);
+    } catch {
+      body = await Api.deserializeType(X, reader);
+    }
     this.#LreceiveLoop.debug("received", repr(body));
 
     let sendAck = true;
-    if (isOfEnum("Updates", body) || isOfEnum("Update", body)) {
+    if (Api.isOfEnum("Updates", body) || Api.isOfEnum("Update", body)) {
       drop(this.handlers.updates?.(body as Api.Updates | Api.Update, null));
-    } else if (is("new_session_created", body)) {
+    } else if (Mtproto.is("new_session_created", body)) {
       this.serverSalt = body.server_salt;
       drop(this.handlers.serverSaltReassigned?.(this.serverSalt));
       this.#LreceiveLoop.debug("new session created with ID", body.unique_id);
-    } else if (is("pong", body)) {
+    } else if (Mtproto.is("pong", body)) {
       const promise = this.#promises.get(body.msg_id);
       if (promise) {
         promise.resolve?.(body);
         this.#promises.delete(body.msg_id);
       }
-    } else if (is("bad_server_salt", body)) {
+    } else if (Mtproto.is("bad_server_salt", body)) {
       sendAck = false;
       this.#LreceiveLoop.debug("server salt reassigned");
       this.serverSalt = body.new_server_salt;
@@ -413,7 +425,7 @@ export class ClientEncrypted extends ClientAbstract {
           }
         }
       }
-    } else if (is("bad_msg_notification", body)) {
+    } else if (Mtproto.is("bad_msg_notification", body)) {
       sendAck = false;
       let low = false;
       switch (body.error_code) {
@@ -445,7 +457,7 @@ export class ClientEncrypted extends ClientAbstract {
         promise.reject?.(body);
         this.#promises.delete(body.bad_msg_id);
       }
-    } else if (isOneOf(["msg_detailed_info", "msg_new_detailed_info"], body)) {
+    } else if (Mtproto.isOneOf(["msg_detailed_info", "msg_new_detailed_info"], body)) {
       sendAck = false;
       this.#toAcknowledge.push(body.answer_msg_id);
     }

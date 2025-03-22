@@ -18,15 +18,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api } from "./2_tl.ts";
 import { MtkrutoError } from "./0_errors.ts";
+import { repr } from "./2_tl.ts";
 
 export * from "./0_errors.ts";
 
 export interface TelegramErrorParams {
   error_code: number;
   error_message: string;
-  call: Api.AnyObject;
+  call: unknown;
 }
 
 export class TelegramError extends MtkrutoError {
@@ -34,7 +34,7 @@ export class TelegramError extends MtkrutoError {
   errorMessage: string;
 
   constructor(params: TelegramErrorParams) {
-    super(`${params.error_code}: ${params.error_message} (${params.call._})`);
+    super(`${params.error_code}: ${params.error_message} (${repr(params.call)})`);
     this.name = "TelegramError";
     this.errorCode = params.error_code;
     this.errorMessage = params.error_message;

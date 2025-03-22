@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { toUnixTimestamp } from "../1_utilities.ts";
-import { Api, as, is, isOneOf, peerToChatId } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, FileSource, ID, Reaction, reactionToTlObject, Update } from "../3_types.ts";
 import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, SetChatMemberRightsParams, SetChatPhotoParams, SetSignaturesEnabledParams } from "./0_params.ts";
@@ -53,11 +53,11 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   }
 
   canHandleUpdate(update: Api.Update): update is ChatManagerUpdate {
-    return isOneOf(chatManagerUpdates, update);
+    return Api.isOneOf(chatManagerUpdates, update);
   }
 
   async handleUpdate(update: ChatManagerUpdate): Promise<Update | null> {
-    if (is("updateChannelParticipant", update) || is("updateChatParticipant", update)) {
+    if (Api.is("updateChannelParticipant", update) || Api.is("updateChatParticipant", update)) {
       const chatMember = await constructChatMemberUpdated(update, this.#c.getEntity);
       const selfId = await this.#c.getSelfId();
       if (chatMember.oldChatMember.user.id == selfId) {
@@ -67,7 +67,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
       }
     }
 
-    if (is("updateBotChatInviteRequester", update)) {
+    if (Api.is("updateBotChatInviteRequester", update)) {
       const joinRequest = await constructJoinRequest(update, this.#c.getEntity);
       return { joinRequest };
     }
@@ -122,13 +122,13 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
       throw new InputError("requireApproval cannot be true while limit is specified.");
     }
     const result = await this.#c.invoke({ _: "messages.exportChatInvite", peer: await this.#c.getInputPeer(chatId), title: params?.title, expire_date: params?.expireAt ? toUnixTimestamp(params.expireAt) : undefined, request_needed: params?.requireApproval ? true : undefined, usage_limit: params?.limit });
-    return await constructInviteLink(as("chatInviteExported", result), this.#c.getEntity);
+    return await constructInviteLink(Api.as("chatInviteExported", result), this.#c.getEntity);
   }
 
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams) {
     this.#c.storage.assertUser("getCreatedInviteLinks");
     const { invites } = await this.#c.invoke({ _: "messages.getExportedChatInvites", peer: await this.#c.getInputPeer(chatId), revoked: params?.revoked ? true : undefined, admin_id: params?.by ? await this.#c.getInputUser(params.by) : { _: "inputUserEmpty" }, limit: params?.limit ?? 100, offset_date: params?.afterDate ? toUnixTimestamp(params.afterDate) : undefined, offset_link: params?.afterInviteLink });
-    return await Promise.all(invites.map((v) => as("chatInviteExported", v)).map((v) => constructInviteLink(v, this.#c.getEntity)));
+    return await Promise.all(invites.map((v) => Api.as("chatInviteExported", v)).map((v) => constructInviteLink(v, this.#c.getEntity)));
   }
 
   // JOINING AND LEAVING CHATS //
@@ -139,7 +139,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
       throw new InputError("Cannot join private chats.");
     } else if (canBeInputChannel(peer)) {
       await this.#c.invoke({ _: "channels.joinChannel", channel: toInputChannel(peer) });
-    } else if (is("inputPeerChat", peer)) {
+    } else if (Api.is("inputPeerChat", peer)) {
       await this.#c.invoke({ _: "messages.addChatUser", chat_id: peer.chat_id, user_id: { _: "inputUserSelf" }, fwd_limit: 0 }); // TODO: use potential high-level method for adding participants to chats
     } else {
       unreachable();
@@ -152,7 +152,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
       throw new InputError("Cannot leave private chats.");
     } else if (canBeInputChannel(peer)) {
       await this.#c.invoke({ _: "channels.leaveChannel", channel: toInputChannel(peer) });
-    } else if (is("inputPeerChat", peer)) {
+    } else if (Api.is("inputPeerChat", peer)) {
       await this.#c.invoke({ _: "messages.deleteChatUser", chat_id: peer.chat_id, user_id: { _: "inputUserSelf" } }); // TODO: use potential high-level method for adding participants to chats
     } else {
       unreachable();
@@ -162,11 +162,11 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   // RESTRICTING, BANNING, AND UNBANNING CHAT MEMBERS //
   async banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams) {
     const chat = await this.#c.getInputPeer(chatId);
-    if (!(is("inputPeerChannel", chat)) && !(is("inputPeerChat", chat))) {
+    if (!(Api.is("inputPeerChannel", chat)) && !(Api.is("inputPeerChat", chat))) {
       throw new InputError("Expected a channel, supergroup, or group ID.");
     }
     const member = await this.#c.getInputPeer(memberId);
-    if (is("inputPeerChannel", chat)) {
+    if (Api.is("inputPeerChannel", chat)) {
       if (params?.deleteMessages) {
         try {
           await this.#c.messageManager.deleteChatMemberMessages(chatId, memberId);
@@ -191,7 +191,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
           embed_links: true,
         }),
       });
-    } else if (is("inputPeerChat", chat)) {
+    } else if (Api.is("inputPeerChat", chat)) {
       if (!canBeInputUser(member)) {
         throw new InputError(`Invalid user ID: ${memberId}`);
       }
@@ -245,20 +245,20 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   // CHAT PHOTOS //
   async deleteChatPhoto(chatId: number) {
     const peer = await this.#c.getInputPeer(chatId);
-    if (!(canBeInputChannel(peer)) && !(is("inputPeerChat", peer))) {
+    if (!(canBeInputChannel(peer)) && !(Api.is("inputPeerChat", peer))) {
       unreachable();
     }
 
     if (canBeInputChannel(peer)) {
       await this.#c.invoke({ _: "channels.editPhoto", channel: toInputChannel(peer), photo: { _: "inputChatPhotoEmpty" } });
-    } else if (is("inputPeerChat", peer)) {
+    } else if (Api.is("inputPeerChat", peer)) {
       await this.#c.invoke({ _: "messages.editChatPhoto", chat_id: peer.chat_id, photo: { _: "inputChatPhotoEmpty" } });
     }
   }
 
   async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
     const peer = await this.#c.getInputPeer(chatId);
-    if (!(canBeInputChannel(peer)) && !(is("inputPeerChat", peer))) {
+    if (!(canBeInputChannel(peer)) && !(Api.is("inputPeerChat", peer))) {
       unreachable();
     }
 
@@ -267,7 +267,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
 
     if (canBeInputChannel(peer)) {
       await this.#c.invoke({ _: "channels.editPhoto", channel: toInputChannel(peer), photo: photo_ });
-    } else if (is("inputPeerChat", peer)) {
+    } else if (Api.is("inputPeerChat", peer)) {
       await this.#c.invoke({ _: "messages.editChatPhoto", chat_id: peer.chat_id, photo: photo_ });
     }
   }
@@ -276,14 +276,14 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   async addChatMember(chatId: ID, userId: ID, params?: AddChatMemberParams) {
     this.#c.storage.assertUser("addChatMember");
     const chat = await this.#c.getInputPeer(chatId);
-    if (isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
+    if (Api.isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
       throw new InputError("Cannot add members to private chats");
     }
     const user = await this.#c.getInputUser(userId);
-    if (is("inputPeerChat", chat)) {
+    if (Api.is("inputPeerChat", chat)) {
       const result = await this.#c.invoke({ _: "messages.addChatUser", chat_id: chat.chat_id, user_id: user, fwd_limit: params?.historyLimit ?? 0 });
       return result.missing_invitees.map(constructFailedInvitation);
-    } else if (is("inputPeerChannel", chat)) {
+    } else if (Api.is("inputPeerChannel", chat)) {
       const result = await this.#c.invoke({ _: "channels.inviteToChannel", channel: { ...chat, _: "inputChannel" }, users: [user] });
       return result.missing_invitees.map(constructFailedInvitation);
     }
@@ -293,14 +293,14 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   async addChatMembers(chatId: ID, userIds: ID[]) {
     this.#c.storage.assertUser("addChatMembers");
     const chat = await this.#c.getInputPeer(chatId);
-    if (isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
+    if (Api.isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
       throw new InputError("Cannot add members to private chats");
     }
     const users = new Array<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage>();
     for (const userId of userIds) {
       users.push(await this.#c.getInputUser(userId));
     }
-    if (is("inputPeerChat", chat)) {
+    if (Api.is("inputPeerChat", chat)) {
       throw new InputError("addChatMembers cannot be used with basic groups");
     } else if (canBeInputChannel(chat)) {
       const result = await this.#c.invoke({ _: "channels.inviteToChannel", channel: toInputChannel(chat), users });
@@ -331,7 +331,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
 
   async setChatTitle(chatId: ID, title: string) {
     const peer = await this.#c.getInputPeer(chatId);
-    if (is("inputPeerChat", peer)) {
+    if (Api.is("inputPeerChat", peer)) {
       await this.#c.invoke({ _: "messages.editChatTitle", chat_id: peer.chat_id, title });
     } else if (canBeInputChannel(peer)) {
       const channel = toInputChannel(peer);
@@ -377,7 +377,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   async deleteChat(chatId: ID) {
     this.#c.storage.assertUser("deleteChat");
     const peer = await this.#c.getInputPeer(chatId);
-    if (is("inputPeerChat", peer)) {
+    if (Api.is("inputPeerChat", peer)) {
       await this.#c.invoke({ _: "messages.deleteChat", chat_id: peer.chat_id });
     } else if (canBeInputChannel(peer)) {
       const channel = toInputChannel(peer);
@@ -392,7 +392,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
     const { chats } = await this.#c.invoke({ _: "channels.getGroupsForDiscussion" });
     return chats
       .map((v) => {
-        if (!isOneOf(["chat", "channel"], v)) {
+        if (!Api.isOneOf(["chat", "channel"], v)) {
           return v;
         } else {
           return constructChatP(v);
@@ -410,8 +410,8 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   async transferChatOwnership(chatId: ID, userId: ID, password: string) {
     this.#c.storage.assertUser("transferChat");
     const user_id = await this.#c.getInputUser(userId);
-    const isSelf = is("inputUserSelf", user_id);
-    if (isSelf || peerToChatId(user_id) == await this.#c.getSelfId()) {
+    const isSelf = Api.is("inputUserSelf", user_id);
+    if (isSelf || Api.peerToChatId(user_id) == await this.#c.getSelfId()) {
       throw new InputError("A user ID except that of the current one was expected.");
     }
     const channel = await this.#c.getInputChannel(chatId);

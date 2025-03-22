@@ -19,7 +19,7 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 
 /** A chat photo. */
@@ -55,7 +55,7 @@ export function constructChatPhoto(photo: Api.userProfilePhoto | Api.chatPhoto, 
   const bigFileId = serializeFileId(bigFileId_);
   const bigFileUniqueId = toUniqueFileId(bigFileId_);
 
-  if (is("chatPhoto", photo)) {
+  if (Api.is("chatPhoto", photo)) {
     return cleanObject({
       smallFileId,
       smallFileUniqueId,

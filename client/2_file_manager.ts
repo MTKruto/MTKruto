@@ -21,7 +21,7 @@
 import { AssertionError, basename, extension, extname, isAbsolute, MINUTE, SECOND, toFileUrl, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { drop, getLogger, getRandomId, iterateReadableStream, kilobyte, Logger, megabyte, mod, Part, PartStream } from "../1_utilities.ts";
-import { Api, as, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { _UploadCommon, DownloadParams } from "./0_params.ts";
@@ -320,7 +320,7 @@ export class FileManager {
           const file = await connection.invoke({ _: "upload.getFile", location, offset, limit });
           signal?.throwIfAborted();
 
-          if (is("upload.file", file)) {
+          if (Api.is("upload.file", file)) {
             yield file.bytes;
             if (id != null) {
               await this.#c.storage.saveFilePart(id, part, file.bytes);
@@ -444,7 +444,7 @@ export class FileManager {
       return maybeStickerSetName[0];
     } else {
       const stickerSet = await this.#c.invoke({ _: "messages.getStickerSet", stickerset: inputStickerSet, hash });
-      const name = as("messages.stickerSet", stickerSet).set.short_name;
+      const name = Api.as("messages.stickerSet", stickerSet).set.short_name;
       await this.#c.messageStorage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
       return name;
     }
@@ -480,7 +480,7 @@ export class FileManager {
     if (!shouldFetch) {
       return stickers;
     }
-    const documents_ = (await this.#c.invoke({ _: "messages.getCustomEmojiDocuments", document_id: id.map(BigInt) })).map((v) => as("document", v));
+    const documents_ = (await this.#c.invoke({ _: "messages.getCustomEmojiDocuments", document_id: id.map(BigInt) })).map((v) => Api.as("document", v));
     for (const [i, document_] of documents_.entries()) {
       await this.#c.messageStorage.setCustomEmojiDocument(document_.id, document_);
       const fileId_: FileId = {

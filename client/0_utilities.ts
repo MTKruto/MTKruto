@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { Api, is, isOneOf } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 
 export const resolve = () => Promise.resolve();
 
@@ -144,21 +144,6 @@ export function checkInlineQueryId(id: string) {
   }
 }
 
-const MTPROTO_FUNCTIONS = [
-  "ping",
-  "ping_delay_disconnect",
-  "req_pq_multi",
-  "rpc_drop_answer",
-  "get_future_salts",
-  "destroy_session",
-  "destroy_auth_key",
-  "req_DH_params",
-  "set_client_DH_params",
-] as (keyof Api.Functions)[];
-export function isMtprotoFunction(value: unknown) {
-  return isOneOf(MTPROTO_FUNCTIONS, value);
-}
-
 const CDN_FUNCTIONS = [
   "upload.saveFilePart",
   "upload.getFile",
@@ -170,19 +155,19 @@ const CDN_FUNCTIONS = [
   "upload.getFileHashes",
 ] as (keyof Api.Functions)[];
 export function isCdnFunction(value: unknown) {
-  return isOneOf(CDN_FUNCTIONS, value);
+  return Api.isOneOf(CDN_FUNCTIONS, value);
 }
 
 export function canBeInputUser(inputPeer: Api.InputPeer) {
-  return isOneOf(["inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], inputPeer);
+  return Api.isOneOf(["inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], inputPeer);
 }
 export function toInputUser(inputPeer: Api.InputPeer) {
   let id: Api.InputUser;
-  if (is("inputPeerUser", inputPeer)) {
+  if (Api.is("inputPeerUser", inputPeer)) {
     id = { ...inputPeer, _: "inputUser" };
-  } else if (is("inputPeerUserFromMessage", inputPeer)) {
+  } else if (Api.is("inputPeerUserFromMessage", inputPeer)) {
     id = { ...inputPeer, _: "inputUserFromMessage" };
-  } else if (is("inputPeerSelf", inputPeer)) {
+  } else if (Api.is("inputPeerSelf", inputPeer)) {
     id = { _: "inputUserSelf" };
   } else {
     unreachable();
@@ -191,13 +176,13 @@ export function toInputUser(inputPeer: Api.InputPeer) {
 }
 
 export function canBeInputChannel(inputPeer: Api.InputPeer) {
-  return isOneOf(["inputPeerChannel", "inputPeerChannelFromMessage"], inputPeer);
+  return Api.isOneOf(["inputPeerChannel", "inputPeerChannelFromMessage"], inputPeer);
 }
 export function toInputChannel(inputPeer: Api.InputPeer) {
   let id: Api.InputChannel;
-  if (is("inputPeerChannel", inputPeer)) {
+  if (Api.is("inputPeerChannel", inputPeer)) {
     id = { ...inputPeer, _: "inputChannel" };
-  } else if (is("inputPeerChannelFromMessage", inputPeer)) {
+  } else if (Api.is("inputPeerChannelFromMessage", inputPeer)) {
     id = { ...inputPeer, _: "inputChannelFromMessage" };
   } else {
     unreachable();

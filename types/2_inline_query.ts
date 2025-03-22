@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { constructUser, User } from "./1_user.ts";
@@ -50,22 +50,22 @@ export async function constructInlineQuery(query_: Api.updateBotInlineQuery, get
 
   let chatType: InlineQuery["chatType"] | undefined;
   if (query_.peer_type !== undefined) {
-    if (is("inlineQueryPeerTypeSameBotPM", query_.peer_type)) {
+    if (Api.is("inlineQueryPeerTypeSameBotPM", query_.peer_type)) {
       chatType = "private";
-    } else if (is("inlineQueryPeerTypeBotPM", query_.peer_type) || is("inlineQueryPeerTypePM", query_.peer_type)) {
+    } else if (Api.is("inlineQueryPeerTypeBotPM", query_.peer_type) || Api.is("inlineQueryPeerTypePM", query_.peer_type)) {
       chatType = "sender";
-    } else if (is("inlineQueryPeerTypeChat", query_.peer_type)) {
+    } else if (Api.is("inlineQueryPeerTypeChat", query_.peer_type)) {
       chatType = "group";
-    } else if (is("inlineQueryPeerTypeMegagroup", query_.peer_type)) {
+    } else if (Api.is("inlineQueryPeerTypeMegagroup", query_.peer_type)) {
       chatType = "supergroup";
-    } else if (is("inlineQueryPeerTypeBroadcast", query_.peer_type)) {
+    } else if (Api.is("inlineQueryPeerTypeBroadcast", query_.peer_type)) {
       chatType = "channel";
     } else {
       unreachable();
     }
   }
 
-  const location = query_.geo !== undefined && is("geoPoint", query_.geo) ? constructLocation(query_.geo) : undefined;
+  const location = query_.geo !== undefined && Api.is("geoPoint", query_.geo) ? constructLocation(query_.geo) : undefined;
 
   return {
     id: String(query_.query_id),

@@ -21,7 +21,7 @@
 import { assert, assertEquals, concat, ige256Decrypt, ige256Encrypt, unreachable } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
 import { bigIntFromBuffer, bufferFromBigInt, factorize, getLogger, getRandomBigInt, modExp, rsaPad, sha1 } from "../1_utilities.ts";
-import { Api, deserializeTelegramType, is, mustGetReturnType, serializeTelegramObject } from "../2_tl.ts";
+import { Mtproto } from "../2_tl.ts";
 import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
 import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
 import { getMessageId, packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
@@ -48,13 +48,13 @@ export class ClientPlain extends ClientAbstract {
     this.#publicKeys = params?.publicKeys ?? PUBLIC_KEYS;
   }
 
-  async invoke<T extends Api.AnyObject, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T): Promise<R> {
+  async invoke<T extends Mtproto.AnyObject, R = T["_"] extends keyof Mtproto.Functions ? Mtproto.ReturnType<T> extends never ? Mtproto.ReturnType<Mtproto.Functions[T["_"]]> : never : never>(function_: T): Promise<R> {
     if (!this.transport) {
       throw new ConnectionError("Not connected.");
     }
     const messageId = this.#lastMessageId = getMessageId(this.#lastMessageId, 0);
 
-    const payload = packUnencryptedMessage(serializeTelegramObject(function_), messageId);
+    const payload = packUnencryptedMessage(Mtproto.serializeObject(function_), messageId);
     await this.transport.transport.send(payload);
     L.out(function_);
     L.outBin(payload);
@@ -66,7 +66,7 @@ export class ClientPlain extends ClientAbstract {
       throw new TransportError(Number(int));
     }
     const { message } = unpackUnencryptedMessage(buffer);
-    const result = await deserializeTelegramType(mustGetReturnType(function_._), message);
+    const result = await Mtproto.deserializeType(Mtproto.mustGetReturnType(function_._), message);
     L.in(result);
     return result as R;
   }
@@ -75,13 +75,13 @@ export class ClientPlain extends ClientAbstract {
     const nonce = getRandomBigInt(16, false, true);
     LcreateAuthKey.debug("auth key creation started");
 
-    let resPq: Api.resPQ | null = null;
+    let resPq: Mtproto.resPQ | null = null;
     for (let i = 0; i < 10; i++) {
       try {
         LcreateAuthKey.debug(`req_pq_multi [${i + 1}]`);
         resPq = await this.invoke({ _: "req_pq_multi", nonce });
 
-        assert(is("resPQ", resPq));
+        assert(Mtproto.is("resPQ", resPq));
         assertEquals(resPq.nonce, nonce);
         LcreateAuthKey.debug("got res_pq");
         break;
@@ -122,7 +122,7 @@ export class ClientPlain extends ClientAbstract {
     const serverNonce = resPq.server_nonce;
     const newNonce = getRandomBigInt(32, false, true);
     let encryptedData = await rsaPad(
-      serializeTelegramObject({
+      Mtproto.serializeObject({
         _: "p_q_inner_data_dc",
         pq,
         p,
@@ -145,7 +145,7 @@ export class ClientPlain extends ClientAbstract {
       encrypted_data: encryptedData,
     });
 
-    assert(is("server_DH_params_ok", dhParams));
+    assert(Mtproto.is("server_DH_params_ok", dhParams));
     LcreateAuthKey.debug("got server_DH_params_ok");
 
     const newNonce_ = bufferFromBigInt(newNonce, 32, true, true);
@@ -154,8 +154,7 @@ export class ClientPlain extends ClientAbstract {
     const tmpAesIv = concat([(await sha1(concat([serverNonce_, newNonce_]))).subarray(12, 12 + 8), await sha1(concat([newNonce_, newNonce_])), newNonce_.subarray(0, 0 + 4)]);
     const answerWithHash = ige256Decrypt(dhParams.encrypted_answer, tmpAesKey, tmpAesIv);
 
-    const dhInnerData = await deserializeTelegramType("server_DH_inner_data", answerWithHash.slice(20));
-    assert(is("server_DH_inner_data", dhInnerData));
+    const dhInnerData = await Mtproto.deserializeType("server_DH_inner_data", answerWithHash.slice(20));
     const { g, g_a: gA_, dh_prime: dhPrime_ } = dhInnerData;
     const gA = bigIntFromBuffer(gA_, false, false);
     const dhPrime = bigIntFromBuffer(dhPrime_, false, false);
@@ -163,7 +162,7 @@ export class ClientPlain extends ClientAbstract {
     const b = getRandomBigInt(256, false, false);
     const gB = modExp(BigInt(g), b, dhPrime);
 
-    const data = serializeTelegramObject({
+    const data = Mtproto.serializeObject({
       _: "client_DH_inner_data",
       nonce,
       server_nonce: serverNonce,
@@ -185,7 +184,7 @@ export class ClientPlain extends ClientAbstract {
       server_nonce: serverNonce,
       encrypted_data: encryptedData,
     });
-    assert(is("dh_gen_ok", dhGenOk));
+    assert(Mtproto.is("dh_gen_ok", dhGenOk));
     LcreateAuthKey.debug("got dh_gen_ok");
 
     const serverNonceSlice = serverNonce_.subarray(0, 8);

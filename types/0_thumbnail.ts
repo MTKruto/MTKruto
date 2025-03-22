@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 
 /** A file or sticker thumbnail. */
@@ -36,8 +36,8 @@ export interface Thumbnail {
 }
 
 export function constructThumbnail(size: Api.photoSize, file: Api.document | Api.photo): Thumbnail {
-  const type = is("photo", file) ? FileType.Photo : FileType.Thumbnail;
-  const fileType = is("photo", file) ? FileType.Photo : FileType.Document;
+  const type = Api.is("photo", file) ? FileType.Photo : FileType.Thumbnail;
+  const fileType = Api.is("photo", file) ? FileType.Photo : FileType.Document;
 
   const fileId_: FileId = {
     type,

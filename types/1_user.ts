@@ -19,7 +19,7 @@
  */
 
 import { cleanObject, getColorFromPeerId } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 
 /** A user. */
@@ -76,7 +76,7 @@ export function constructUser(user_: Api.user): User {
     isSupport: user_.support || false,
     addedToAttachmentMenu: user_.attach_menu_enabled || false,
   };
-  if (is("userProfilePhoto", user_.photo)) {
+  if (Api.is("userProfilePhoto", user_.photo)) {
     user.photo = constructChatPhoto(user_.photo, user.id, user_.access_hash ?? 0n);
   }
 

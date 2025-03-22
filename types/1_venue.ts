@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api, as } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructLocation, Location } from "./0_location.ts";
 
 /** A shared venue. */
@@ -36,7 +36,7 @@ export interface Venue {
 }
 
 export function constructVenue(media_: Api.messageMediaVenue | Api.mediaAreaVenue): Venue {
-  const geo = as("geoPoint", media_.geo);
+  const geo = Api.as("geoPoint", media_.geo);
   return {
     location: constructLocation(geo),
     title: media_.title,

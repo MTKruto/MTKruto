@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, getColorFromPeerId, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { Api, is } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructRestrictionReason, RestrictionReason } from "./0_restriction_reason.ts";
 
 /** @unlisted */
@@ -122,7 +122,7 @@ export function constructChatP(chat: Api.chat | Api.chatForbidden): ChatPGroup;
 export function constructChatP(chat: Api.channel | Api.channelForbidden): ChatPSupergroup | ChatPChannel;
 export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden): ChatP;
 export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden): ChatP {
-  if (is("user", chat)) {
+  if (Api.is("user", chat)) {
     const id = Number(chat.id);
     const chat_: ChatPPrivate = {
       id,
@@ -143,7 +143,7 @@ export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | A
     }
 
     return cleanObject(chat_);
-  } else if (is("chat", chat) || is("chatForbidden", chat)) {
+  } else if (Api.is("chat", chat) || Api.is("chatForbidden", chat)) {
     const id = Number(-chat.id);
     const chat_: ChatPGroup = {
       id,
@@ -153,15 +153,15 @@ export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | A
       isCreator: false,
     };
 
-    if (is("chat", chat)) {
+    if (Api.is("chat", chat)) {
       chat_.isCreator = chat.creator || false;
     }
 
     return cleanObject(chat_);
-  } else if (is("channel", chat) || is("channelForbidden", chat)) {
+  } else if (Api.is("channel", chat) || Api.is("channelForbidden", chat)) {
     let chat_: ChatPSupergroup | ChatPChannel;
     const id = ZERO_CHANNEL_ID + -Number(chat.id);
-    if (is("channelForbidden", chat)) {
+    if (Api.is("channelForbidden", chat)) {
       const { title } = chat;
       if (chat.megagroup) {
         return { id, color: getColorFromPeerId(id), title, type: "supergroup", isScam: false, isFake: false, isVerified: false, isRestricted: false, isForum: false };
