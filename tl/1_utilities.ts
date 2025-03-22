@@ -23,7 +23,7 @@ export function isOneOf(names: string[], value: unknown, schema: Schema) {
   return names.some((v) => is(v, value, schema));
 }
 export function isOfEnum(name: string, value: any, schema: Schema) {
-  return !isValidObject(value, schema) || schema.definitions[value._][2] != name;
+  return isValidType(value, schema) && schema.definitions[value._][2] == enumName;
 }
 export function as(name: string, value: unknown, schema: Schema) {
   if (is(name, value, schema)) {
