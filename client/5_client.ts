@@ -536,12 +536,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       cdn,
       disableUpdates: !main || cdn,
     });
-    const transportProvider = client.transportProvider;
-    client.transportProvider = (params) => {
-      const transport = transportProvider(params);
-      transport.connection.callback = this.#networkStatisticsManager.getTransportReadWriteCallback(cdn);
-      return transport;
-    };
+    client.connectionCallback = this.#networkStatisticsManager.getTransportReadWriteCallback(cdn);
     if (main) {
       client.handlers.onUpdate = (updates) => {
         this.#updateManager.processUpdates(updates, true, null); // TODO(roj): callback?
@@ -1349,7 +1344,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
     try {
       client = await this.#newClient(dc, false, false);
-      await this.#setupClient(dc, client);
+      await this.#setupClient(client);
       this.#clients.push(client);
       return client;
     } finally {
