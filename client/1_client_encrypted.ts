@@ -18,14 +18,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { getLogger, Logger } from "../1_utilities.ts";
 import { Api, Mtproto, repr, X } from "../2_tl.ts";
+import { ConnectionNotInited } from "../3_errors.ts";
+import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "../4_constants.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { SessionEncrypted, SessionError } from "../4_session.ts";
 import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
-import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "../4_constants.ts";
-import { ConnectionNotInited } from "../3_errors.ts";
 import { isCdnFunction } from "./0_utilities.ts";
-import { getLogger, Logger } from "../1_utilities.ts";
 
 // global ClientEncrypted ID counter for logs
 let id = 0;
