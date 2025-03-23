@@ -232,11 +232,11 @@ export class ClientEncrypted extends ClientAbstract {
     this.handlers.onNewServerSalt?.(serverSalt);
   }
 
-  async #onMessageFailed(msgId: bigint, error: SessionError) {
+  async #onMessageFailed(msgId: bigint, error: unknown) {
     const request = this.#pendingRequests.get(msgId);
     if (request) {
       this.#pendingRequests.delete(msgId);
-      if (error.retry) {
+      if (error instanceof SessionError) {
         await this.#resend(request);
       } else {
         request.reject(error);

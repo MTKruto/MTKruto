@@ -37,7 +37,7 @@ const RPC_ERROR = Mtproto.schema.definitions["rpc_error"][0];
 export interface Handlers {
   onUpdate?: (body: Uint8Array) => void;
   onNewServerSalt?: (serverSalt: bigint) => void;
-  onMessageFailed?: (id: bigint, reason: SessionError) => void;
+  onMessageFailed?: (id: bigint, reason: unknown) => void;
   onRpcError?: (id: bigint, error: Mtproto.rpc_error) => void;
   onRpcResult?: (id: bigint, result: Uint8Array) => void;
 }
@@ -85,7 +85,7 @@ export class SessionEncrypted extends Session implements Session {
     this.state.reset();
     this.#id = getRandomId();
     this.#pingLoopAbortController?.abort();
-    this.#rejectAllPending(new SessionError("Disconnected.", false));
+    this.#rejectAllPending(new ConnectionError("Not connected."));
   }
 
   #assertNotDisconnected() {
@@ -99,11 +99,11 @@ export class SessionEncrypted extends Session implements Session {
     this.state.reset();
     this.disconnect();
     await this.connect();
-    const reason = new SessionError("Session invalidated.", true);
+    const reason = new SessionError("Session invalidated.");
     this.#rejectAllPending(reason);
   }
 
-  #rejectAllPending(reason: SessionError) {
+  #rejectAllPending(reason: unknown) {
     for (const id of this.#pendingMessages) {
       this.#onMessageFailed(id, reason);
     }
@@ -113,7 +113,7 @@ export class SessionEncrypted extends Session implements Session {
     this.#pendingPings.clear();
   }
 
-  #onMessageFailed(id: bigint, reason: SessionError) {
+  #onMessageFailed(id: bigint, reason: unknown) {
     this.#pendingMessages.delete(id);
     this.handlers.onMessageFailed?.(id, reason);
     const pendingPing = this.#pendingPings.get(id);
@@ -364,12 +364,12 @@ export class SessionEncrypted extends Session implements Session {
         await this.#invalidateSession();
         return;
     }
-    this.#onMessageFailed(badMsgNotification.bad_msg_id, new SessionError(badMsgNotification._, true));
+    this.#onMessageFailed(badMsgNotification.bad_msg_id, new SessionError(badMsgNotification._));
   }
 
   #onBadServerSalt(badServerSalt: Mtproto.bad_server_salt) {
     this.#setServerSalt(badServerSalt.new_server_salt);
-    this.#onMessageFailed(badServerSalt.bad_msg_id, new SessionError(badServerSalt._, true));
+    this.#onMessageFailed(badServerSalt.bad_msg_id, new SessionError(badServerSalt._));
   }
 
   #onPong(msgId: bigint, pong: Mtproto.pong) {

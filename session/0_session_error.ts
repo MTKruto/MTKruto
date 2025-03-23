@@ -18,8 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export class SessionError extends Error {
-  constructor(message: string, public retry: boolean) {
+import { MtkrutoError } from "../0_errors.ts";
+
+export class SessionError extends MtkrutoError {
+  constructor(message: string) {
     super(message);
   }
 }
