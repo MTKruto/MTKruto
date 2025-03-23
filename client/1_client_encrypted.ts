@@ -56,7 +56,7 @@ export interface ClientEncryptedHandlers {
 interface PendingRequest {
   resolve?: (obj: Api.DeserializedType) => void;
   reject?: (reason?: unknown) => void;
-  call: Api.AnyObject;
+  call: Api.AnyFunction;
 }
 
 export class ClientEncrypted extends ClientAbstract {
@@ -113,7 +113,7 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   #connectionInited = false;
-  async #send(function_: Api.AnyObject) {
+  async #send(function_: Api.AnyFunction) {
     if (this.#disableUpdates && !isCdnFunction(function_)) {
       function_ = { _: "invokeWithoutUpdates", query: function_ };
     }
@@ -160,7 +160,7 @@ export class ClientEncrypted extends ClientAbstract {
     }
   }
 
-  async invoke<T extends Api.AnyObject, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
+  async invoke<T extends Api.AnyFunction, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
     const messageId = await this.#send(function_);
 
     if (noWait) {
