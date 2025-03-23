@@ -82,7 +82,7 @@ export class ClientEncrypted extends ClientAbstract {
     super(dc, params);
     this.#L = getLogger("ClientEncrypted").client(id++);
 
-    this.#session = new SessionEncrypted(INITIAL_DC, params);
+    this.#session = new SessionEncrypted(dc, params);
     this.#session.handlers.onUpdate = this.#onUpdate.bind(this);
     this.#session.handlers.onNewServerSalt = this.#onNewServerSalt.bind(this);
     this.#session.handlers.onMessageFailed = this.#onMessageFailed.bind(this);

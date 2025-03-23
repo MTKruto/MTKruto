@@ -19,7 +19,7 @@
  */
 
 import { assertEquals, concat, ige256Decrypt, ige256Encrypt, initTgCrypto, SECOND } from "../0_deps.ts";
-import { ConnectionError } from "../0_errors.ts";
+import { ConnectionError, TransportError } from "../0_errors.ts";
 import { bigIntFromBuffer, bufferFromBigInt, drop, getLogger, getRandomId, gunzip, Logger, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
 import { deserializeMessage, message, msg_container, Mtproto, repr, serializeMessage, TLReader, X } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
@@ -170,6 +170,10 @@ export class SessionEncrypted extends Session implements Session {
   async #receive() {
     this.#assertNotDisconnected();
     const buffer = await this.transport.transport.receive();
+    if (buffer.length == 4) {
+      const int = bigIntFromBuffer(buffer, true, true);
+      throw new TransportError(Number(int));
+    }
     const decrypted = await this.#decryptMessage(buffer);
     this.#L.in(decrypted);
     return decrypted;
@@ -272,7 +276,7 @@ export class SessionEncrypted extends Session implements Session {
     let id = reader.readInt32(false);
     if (id == GZIP_PACKED) {
       reader = new TLReader(await gunzip(reader.readBytes()));
-      id = reader.readInt32();
+      id = reader.readInt32(false);
     }
     if (id == RPC_RESULT) {
       this.#onRpcResult(reader.buffer);

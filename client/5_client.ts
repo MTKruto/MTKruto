@@ -1355,6 +1355,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
     try {
       client = await this.#newClient(dc, false, false);
+      console.log("created client for dc", dc);
       await this.#setupClient(dc, client);
       this.#clients.push(client);
       return client;
@@ -1371,6 +1372,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       if (serverSalt) {
         client.serverSalt = serverSalt;
       }
+      await client.connect();
     } else {
       const plain = new ClientPlain(dc, { transportProvider: this.#transportProvider, publicKeys: this.#publicKeys });
       await plain.connect();
@@ -1379,11 +1381,14 @@ export class Client<C extends Context = Context> extends Composer<C> {
       client.setAuthKey(authKey);
       client.serverSalt = serverSalt;
       await client.setAuthKey(authKey);
+      await Promise.all([storage.setAuthKey(authKey), storage.setServerSalt(serverSalt)]);
+      const exportedAuthorization = await this.#client!.invoke({ _: "auth.exportAuthorization", dc_id: getDcId(dc, false) });
+      await client.connect();
+      await client.invoke({ ...exportedAuthorization, _: "auth.importAuthorization" });
     }
     client.handlers.onNewServerSalt = async (serverSalt) => {
       await storage.setServerSalt(serverSalt);
     };
-    await client.connect();
   }
 
   async #invoke<T extends Api.AnyFunction, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R> {
