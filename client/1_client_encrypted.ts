@@ -157,14 +157,20 @@ export class ClientEncrypted extends ClientAbstract {
     const body = Api.serializeObject(function_);
     let lastErr: unknown;
     for (let i = 0; i < ClientEncrypted.#SEND_MAX_TRIES; ++i) {
+      let errored = false;
       try {
         return await this.#session.send(body);
       } catch (err) {
+        errored = true;
         lastErr = err;
         if (this.disconnected) {
           break;
         }
         this.#L.error("send failed:", err);
+      } finally {
+        if (!errored) {
+          this.#L.debug("invoked", repr(function_));
+        }
       }
     }
     throw new Error(`Failed to invoke function after ${ClientEncrypted.#SEND_MAX_TRIES} tries.`, { cause: lastErr });
@@ -233,24 +239,21 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   async #onRpcResult(msgId: bigint, body: Uint8Array) {
-    let type: Api.DeserializedType;
-    try {
-      type = await Api.deserializeType(X, body);
-    } catch (err) {
-      const request = this.#pendingRequests.get(msgId);
-      if (request) {
-        this.#pendingRequests.delete(msgId);
-        request.reject(err);
-      }
-      this.#L.error("failed to deserialize RPC result body:", err);
-      this.handlers.onDeserializationError?.();
-      return;
-    }
-
     const request = this.#pendingRequests.get(msgId);
     if (request) {
-      this.#pendingRequests.delete(msgId);
-      request.resolve(type);
+      let type: Api.DeserializedType;
+      try {
+        type = await Api.deserializeType(Api.mustGetReturnType(request.call._), body);
+        this.#L.debug("received rpc_result", repr(type));
+        request.resolve(type);
+      } catch (err) {
+        request.reject(err);
+        this.#L.error("failed to deserialize RPC result body:", err);
+        this.handlers.onDeserializationError?.();
+        return;
+      } finally {
+        this.#pendingRequests.delete(msgId);
+      }
     }
   }
 }
