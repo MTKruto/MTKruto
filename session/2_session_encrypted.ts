@@ -130,9 +130,9 @@ export class SessionEncrypted extends Session implements Session {
 
   async send(body: Uint8Array) {
     if (!this.disconnected && !this.connected) {
-      await super.waitUntilConnected()
+      await super.waitUntilConnected();
     }
-    this.#assertNotDisconnected()
+    this.#assertNotDisconnected();
     const msg_id = this.state.nextMessageId();
     const seqno = this.state.nextSeqNo(true);
     let message: message = {

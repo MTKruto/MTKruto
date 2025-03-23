@@ -18,13 +18,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api, Mtproto, X } from "../2_tl.ts";
+import { Api, Mtproto, repr, X } from "../2_tl.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { SessionEncrypted, SessionError } from "../4_session.ts";
 import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "../4_constants.ts";
 import { ConnectionNotInited } from "../3_errors.ts";
 import { isCdnFunction } from "./0_utilities.ts";
+import { getLogger, Logger } from "../1_utilities.ts";
+
+// global ClientEncrypted ID counter for logs
+let id = 0;
 
 export interface ClientEncryptedParams extends ClientAbstractParams {
   /** The app_version parameter to be passed to initConnection. It is recommended that this parameter is changed if users are authorized. Defaults to _MTKruto_. */
@@ -46,6 +50,7 @@ export interface ClientEncryptedParams extends ClientAbstractParams {
 export interface ClientEncryptedHandlers {
   onNewServerSalt?: (newServerSalt: bigint) => void;
   onUpdate?: (update: Api.Updates | Api.Update) => void;
+  onDeserializationError?: () => void;
 }
 
 interface PendingRequest {
@@ -57,12 +62,11 @@ interface PendingRequest {
 export class ClientEncrypted extends ClientAbstract {
   static #SEND_MAX_TRIES = 10;
 
-  #pendingRequests = new Map<bigint, PendingRequest>();
-
-  #session: SessionEncrypted;
-
-  // receive loop handlers
   handlers: ClientEncryptedHandlers = {};
+
+  #L: Logger;
+  #session: SessionEncrypted;
+  #pendingRequests = new Map<bigint, PendingRequest>();
 
   #appVersion: string;
   #deviceModel: string;
@@ -74,6 +78,8 @@ export class ClientEncrypted extends ClientAbstract {
 
   constructor(public apiId: number, params?: ClientEncryptedParams) {
     super();
+    this.#L = getLogger("ClientEncrypted").client(id++);
+
     this.#session = new SessionEncrypted(INITIAL_DC, params);
     this.#session.handlers.onUpdate = this.#onUpdate.bind(this);
     this.#session.handlers.onNewServerSalt = this.#onNewServerSalt.bind(this);
@@ -109,7 +115,7 @@ export class ClientEncrypted extends ClientAbstract {
   #connectionInited = false;
   async #send(function_: Api.AnyObject) {
     if (this.#disableUpdates && !isCdnFunction(function_)) {
-      function_ = { _: "invokeWithoutUpdates", query: function_ } as unknown as T;
+      function_ = { _: "invokeWithoutUpdates", query: function_ };
     }
     if (!this.#connectionInited) {
       function_ = {
@@ -139,7 +145,7 @@ export class ClientEncrypted extends ClientAbstract {
         if (this.disconnected) {
           break;
         }
-        // TODO(roj): log err
+        this.#L.error("send failed:", err);
       }
     }
     throw new Error(`Failed to invoke function after ${ClientEncrypted.#SEND_MAX_TRIES} tries.`, { cause: lastErr });
@@ -174,14 +180,14 @@ export class ClientEncrypted extends ClientAbstract {
     try {
       type = await Api.deserializeType(X, body);
     } catch (err) {
-      // TODO(roj): log
+      this.#L.error("failed to deserialize update:", err);
+      this.handlers.onDeserializationError?.();
       return;
     }
     if (Api.isOfEnum("Update", type) || Api.isOfEnum("Updates", type)) {
       this.handlers.onUpdate?.(type);
     } else {
-      // TOOD(roj): log
-      // unknown type
+      this.#L.warning("received unknown type:", repr(type));
     }
   }
 
@@ -227,7 +233,8 @@ export class ClientEncrypted extends ClientAbstract {
         this.#pendingRequests.delete(msgId);
         request.reject?.(err);
       }
-      // TODO(roj): log
+      this.#L.error("failed to deserialize RPC result body:", err);
+      this.handlers.onDeserializationError?.();
       return;
     }
 
