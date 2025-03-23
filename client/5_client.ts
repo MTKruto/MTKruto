@@ -374,7 +374,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #LsignIn: Logger;
   #LupdateGapRecoveryLoop: Logger;
   #LhandleMigrationError: Logger;
-  #L$initConncetion: Logger;
   #Lmin: Logger;
 
   /**
@@ -535,6 +534,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       transportProvider: this.#transportProvider,
       cdn,
       disableUpdates: !main || cdn,
+      publicKeys: this.#publicKeys,
     });
     client.connectionCallback = this.#networkStatisticsManager.getTransportReadWriteCallback(cdn);
     if (main) {
