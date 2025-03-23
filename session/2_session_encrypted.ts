@@ -283,7 +283,8 @@ export class SessionEncrypted extends Session implements Session {
       return;
     }
     if (!Mtproto.schema.identifierToName[id]) {
-      this.handlers.onUpdate?.(body);
+      reader.unreadInt32();
+      this.handlers.onUpdate?.(reader.buffer);
       return;
     }
     let type: Mtproto.DeserializedType;
