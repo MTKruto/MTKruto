@@ -24,6 +24,7 @@ import { SessionEncrypted, SessionError } from "../4_session.ts";
 import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "../4_constants.ts";
 import { ConnectionNotInited } from "../3_errors.ts";
+import { isCdnFunction } from "./0_utilities.ts";
 
 export interface ClientEncryptedParams extends ClientAbstractParams {
   /** The app_version parameter to be passed to initConnection. It is recommended that this parameter is changed if users are authorized. Defaults to _MTKruto_. */
@@ -38,6 +39,8 @@ export interface ClientEncryptedParams extends ClientAbstractParams {
   systemLangCode?: string;
   /** The system_version parameter to be passed to initConnection. The default varies by the current runtime. */
   systemVersion?: string;
+  /** Whether to disable receiving updates. Defaults to `false`. */
+  disableUpdates?: boolean;
 }
 
 export interface ClientEncryptedHandlers {
@@ -59,6 +62,7 @@ export class ClientEncrypted extends ClientAbstract {
   #langPack: string;
   #systemLangCode: string;
   #systemVersion: string;
+  #disableUpdates: boolean;
 
   constructor(public apiId: number, params?: ClientEncryptedParams) {
     super();
@@ -75,6 +79,7 @@ export class ClientEncrypted extends ClientAbstract {
     this.#langPack = params?.langPack ?? LANG_PACK;
     this.#systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
     this.#systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
+    this.#disableUpdates = params?.disableUpdates ?? false;
   }
 
   async connect() {
@@ -95,6 +100,9 @@ export class ClientEncrypted extends ClientAbstract {
 
   #connectionInited = false;
   async #send(function_: Api.AnyObject) {
+    if (this.#disableUpdates && !isCdnFunction(function_)) {
+      function_ = { _: "invokeWithoutUpdates", query: function_ } as unknown as T;
+    }
     if (!this.#connectionInited) {
       function_ = {
         _: "initConnection",
