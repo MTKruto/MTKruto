@@ -1355,7 +1355,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
     try {
       client = await this.#newClient(dc, false, false);
-      console.log("created client for dc", dc);
       await this.#setupClient(dc, client);
       this.#clients.push(client);
       return client;
