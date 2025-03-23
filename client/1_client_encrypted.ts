@@ -21,6 +21,7 @@
 import { getLogger, Logger } from "../1_utilities.ts";
 import { Api, Mtproto, repr, X } from "../2_tl.ts";
 import { ConnectionNotInited } from "../3_errors.ts";
+import { DC } from "../3_transport.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "../4_constants.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { SessionEncrypted, SessionError } from "../4_session.ts";
@@ -68,6 +69,7 @@ export class ClientEncrypted extends ClientAbstract {
   #session: SessionEncrypted;
   #pendingRequests = new Map<bigint, PendingRequest>();
 
+  #apiId: number;
   #appVersion: string;
   #deviceModel: string;
   #langCode: string;
@@ -76,8 +78,8 @@ export class ClientEncrypted extends ClientAbstract {
   #systemVersion: string;
   #disableUpdates: boolean;
 
-  constructor(public apiId: number, params?: ClientEncryptedParams) {
-    super();
+  constructor(dc: DC, apiId: number, params?: ClientEncryptedParams) {
+    super(dc, params);
     this.#L = getLogger("ClientEncrypted").client(id++);
 
     this.#session = new SessionEncrypted(INITIAL_DC, params);
@@ -87,6 +89,7 @@ export class ClientEncrypted extends ClientAbstract {
     this.#session.handlers.onRpcError = this.#onRpcError.bind(this);
     this.#session.handlers.onRpcResult = this.#onRpcResult.bind(this);
 
+    this.#apiId = apiId;
     this.#appVersion = params?.appVersion ?? APP_VERSION;
     this.#deviceModel = params?.deviceModel ?? DEVICE_MODEL;
     this.#langCode = params?.langCode ?? LANG_CODE;
@@ -120,7 +123,7 @@ export class ClientEncrypted extends ClientAbstract {
     if (!this.#connectionInited) {
       function_ = {
         _: "initConnection",
-        api_id: this.apiId,
+        api_id: this.#apiId,
         app_version: this.#appVersion,
         device_model: this.#deviceModel,
         lang_code: this.#langCode,

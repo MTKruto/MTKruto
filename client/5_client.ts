@@ -23,7 +23,7 @@ import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
 import { cleanObject, drop, getLogger, Logger, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
-import { DC, getDc } from "../3_transport.ts";
+import { DC, getDcId, TransportProvider } from "../3_transport.ts";
 import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Sticker, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
@@ -35,10 +35,10 @@ import { canBeInputChannel, canBeInputUser, getUsername, resolve, toInputChannel
 import { ClientEncrypted } from "./1_client_encrypted.ts";
 import { ClientPlain, ClientPlainParams } from "./1_client_plain.ts";
 import { Composer as Composer_, Middleware, MiddlewareFn, MiddlewareObj, NextFunction } from "./1_composer.ts";
-import { Invoke } from "./1_types.ts";
 import { AccountManager } from "./2_account_manager.ts";
 import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
+import { ClientEncryptedPool } from "./2_client_encrypted_pool.ts";
 import { FileManager } from "./2_file_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
@@ -292,7 +292,9 @@ export interface ClientParams extends ClientPlainParams {
  * An MTKruto client.
  */
 export class Client<C extends Context = Context> extends Composer<C> {
-  #client: ClientEncrypted;
+  #clients = new Array<ClientEncrypted>();
+  #downloadPools = new Map<DC, ClientEncryptedPool>();
+  #uploadPools = new Map<DC, ClientEncryptedPool>();
   #guaranteeUpdateDelivery: boolean;
   // 2_
   #accountManager: AccountManager;
@@ -355,6 +357,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   #apiId: number;
   #apiHash: string;
+  #transportProvider?: TransportProvider;
   public readonly appVersion: string;
   public readonly deviceModel: string;
   public readonly language: string;
@@ -367,7 +370,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #disableUpdates: boolean;
   #authString?: string;
 
-  #cdn: boolean;
   #L: Logger;
   #LsignIn: Logger;
   #LupdateGapRecoveryLoop: Logger;
@@ -380,34 +382,22 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   constructor(params?: ClientParams) {
     super();
-    this.#client = new ClientEncrypted(0, params);
-    this.#client.handlers.onUpdate = (updates) => {
-      this.#updateManager.processUpdates(updates, true, null); // TODO(roj): callback?
-      this.#lastUpdates = new Date();
-    };
-    this.#client.handlers.onNewServerSalt = async (serverSalt) => {
-      await this.storage.setServerSalt(serverSalt);
-    };
-    this.#client.handlers.onDeserializationError = async () => {
-      await this.#updateManager.recoverUpdateGap("deserialization error");
-    };
-    this.#client.handlers = {
-      // TODO(roj): decryption err?
-      // error: async (_err, source) => {
-      //   switch (source) {
-      //     case "deserialization":
-      //       await this.#updateManager.recoverUpdateGap(source);
-      //       break;
-      //     case "decryption":
-      //       await this.reconnect();
-      //       await this.#updateManager.recoverUpdateGap(source);
-      //       break;
-      //   }
-      // },
-    };
+    // TODO(roj): decryption err?
+    // error: async (_err, source) => {
+    //   switch (source) {
+    //     case "deserialization":
+    //       await this.#updateManager.recoverUpdateGap(source);
+    //       break;
+    //     case "decryption":
+    //       await this.reconnect();
+    //       await this.#updateManager.recoverUpdateGap(source);
+    //       break;
+    //   }
+    // },
 
     this.#apiId = params?.apiId ?? 0;
     this.#apiHash = params?.apiHash ?? "";
+    this.#transportProvider = params?.transportProvider;
     this.#storage_ = params?.storage || new StorageMemory();
     this.#persistCache = params?.persistCache ?? false;
     if (!this.#persistCache) {
@@ -440,7 +430,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#LhandleMigrationError = L.branch("[handleMigrationError]");
     this.#L$initConncetion = L.branch("#initConnection");
     this.#Lmin = L.branch("min");
-    this.#cdn = params?.cdn ?? false;
 
     const c = {
       id,
@@ -464,8 +453,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
       getEntity: this[getEntity].bind(this),
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
-      getCdnConnection: this.#getCdnConnection.bind(this),
-      getCdnConnectionPool: this.#getCdnConnectionPool.bind(this),
       cdn: this.#cdn,
       outgoingMessages: this.#outgoingMessages,
       dropPendingUpdates: params?.dropPendingUpdates,
@@ -498,13 +485,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#storyManager = new StoryManager({ ...c, fileManager, messageManager });
 
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
-
-    const transportProvider = this.#client.transportProvider;
-    this.#client.transportProvider = (params) => {
-      const transport = transportProvider(params);
-      transport.connection.callback = this.#networkStatisticsManager.getTransportReadWriteCallback();
-      return transport;
-    };
 
     this.invoke.use(async ({ error }, next) => {
       if (error instanceof ConnectionError) {
@@ -539,12 +519,59 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
+  async #newClient(dc: DC, main: boolean, cdn: boolean) {
+    const apiId = await this.#getApiId();
+    const client = new ClientEncrypted(dc, apiId, {
+      appVersion: this.appVersion,
+      deviceModel: this.deviceModel,
+      langCode: this.language,
+      langPack: this.platform,
+      systemLangCode: this.systemLangCode,
+      systemVersion: this.systemVersion,
+      transportProvider: this.#transportProvider,
+      cdn,
+      disableUpdates: !main || cdn,
+    });
+    const transportProvider = client.transportProvider;
+    client.transportProvider = (params) => {
+      const transport = transportProvider(params);
+      transport.connection.callback = this.#networkStatisticsManager.getTransportReadWriteCallback(cdn);
+      return transport;
+    };
+    if (main) {
+      client.handlers.onUpdate = (updates) => {
+        this.#updateManager.processUpdates(updates, true, null); // TODO(roj): callback?
+        this.#lastUpdates = new Date();
+      };
+      client.handlers.onDeserializationError = async () => {
+        await this.#updateManager.recoverUpdateGap("deserialization error");
+      };
+    }
+    return client;
+  }
+
+  #disconnectAllClients() {
+    for (const client of this.#clients) {
+      client.disconnect();
+    }
+    for (const client of this.#downloadPools.values()) {
+      client.disconnect();
+    }
+    for (const client of this.#uploadPools.values()) {
+      client.disconnect();
+    }
+  }
+
+  get #client(): ClientEncrypted | undefined {
+    return this.#clients[0];
+  }
+
   // direct ClientEncrypted property proxies
   get connected(): boolean {
-    return this.#client.connected;
+    return this.#client?.connected ?? false;
   }
   get disconnected(): boolean {
-    return this.#client.disconnected;
+    return this.#client?.disconnected ?? true;
   }
 
   async #getApiId() {
@@ -553,82 +580,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
       throw new InputError("apiId not set");
     }
     return apiId;
-  }
-
-  #getCdnConnectionPool(connectionCount: number, dcId?: number) {
-    const connections = new Array<{ invoke: Invoke; connect: () => Promise<void>; disconnect: () => Promise<void> }>();
-    for (let i = 0; i < connectionCount; ++i) {
-      connections.push(this.#getCdnConnection(dcId));
-    }
-    let prev = 0;
-    return {
-      size: connectionCount,
-      invoke: () => {
-        if (prev + 1 > connections.length) prev = 0;
-        const connection = connections[prev++];
-        return connection.invoke;
-      },
-      connect: async () => {
-        for await (const connection of connections) {
-          await connection.connect();
-        }
-      },
-      disconnect: async () => {
-        for await (const connection of connections) {
-          await connection.disconnect();
-        }
-      },
-    };
-  }
-
-  #getCdnConnection(dcId?: number) {
-    const provider = this.storage.provider;
-    const client = new Client({
-      storage: (!dcId || dcId == this.#client.dcId) ? provider : provider.branch(`download_client_${dcId}`),
-      apiId: this.#apiId,
-      apiHash: this.#apiHash,
-      transportProvider: this.#client.transportProvider,
-      appVersion: this.appVersion,
-      deviceModel: this.deviceModel,
-      language: this.language,
-      platform: this.platform,
-      systemLangCode: this.systemLangCode,
-      systemVersion: this.systemVersion,
-      cdn: true,
-      initialDc: getDc(dcId || this.#client.dcId),
-    });
-
-    client.#client.serverSalt = this.#client.serverSalt;
-
-    client.invoke.use(async (ctx, next) => {
-      if (ctx.error instanceof AuthKeyUnregistered && dcId) {
-        try {
-          const exportedAuth = await this.invoke({ _: "auth.exportAuthorization", dc_id: dcId });
-          await client.invoke({ ...exportedAuth, _: "auth.importAuthorization" });
-          return true;
-        } catch (err) {
-          throw err;
-        }
-      } else {
-        return await next();
-      }
-    });
-
-    return {
-      invoke: client.invoke.bind(client),
-      connect: async () => {
-        await client.connect();
-
-        if (dcId && dcId != this.#client.dcId) {
-          let dc = String(dcId);
-          if (this.#client.dcId < 0) {
-            dc += "-test";
-          }
-          await client.setDc(dc as DC);
-        }
-      },
-      disconnect: client.disconnect.bind(client),
-    };
   }
 
   #constructContext = async (update: Update) => {
@@ -1136,10 +1087,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#LhandleMigrationError.debug(`migrated to DC${newDc}`);
   }
 
-  #connectionInited = false;
-  async disconnect() {
-    this.#connectionInited = false;
-    await this.#client.disconnect();
+  disconnect() {
+    this.#disconnectAllClients();
     this.#updateManager.closeAllChats();
   }
 
@@ -1165,9 +1114,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     drop(this.#updateGapRecoveryLoop());
   }
   async #updateGapRecoveryLoop() {
-    if (this.#cdn) {
-      return;
-    }
     this.#updateGapRecoveryLoopAbortController = new AbortController();
     while (this.connected) {
       try {

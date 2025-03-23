@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
+import { DC, TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
 
 // @ts-ignore: lib
 const defaultTransportProvider = typeof Deno === "undefined" ? transportProviderWebSocket : transportProviderTcp;
@@ -37,10 +37,16 @@ export interface ClientAbstractParams {
 export abstract class ClientAbstract {
   public transportProvider: TransportProvider;
   public readonly cdn: boolean;
+  #dc: DC;
 
-  constructor(params?: ClientAbstractParams) {
+  constructor(dc: DC, params?: ClientAbstractParams) {
     this.transportProvider = params?.transportProvider ?? defaultTransportProvider();
     this.cdn = params?.cdn ?? false;
+    this.#dc = dc;
+  }
+
+  get dc() {
+    return this.#dc;
   }
 
   abstract connect(): Promise<void>;

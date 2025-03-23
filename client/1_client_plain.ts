@@ -46,7 +46,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
   #cdn: boolean;
 
   constructor(dc: DC, params?: ClientPlainParams) {
-    super(params);
+    super(dc, params);
     this.#publicKeys = params?.publicKeys ?? PUBLIC_KEYS;
     this.#session = new SessionPlain(dc, params);
     this.#dc = this.#session.dc;
