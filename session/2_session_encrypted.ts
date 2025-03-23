@@ -275,7 +275,7 @@ export class SessionEncrypted extends Session implements Session {
       id = reader.readInt32();
     }
     if (id == RPC_RESULT) {
-      this.#onRpcResult(msgId, body);
+      this.#onRpcResult(reader.buffer);
       return;
     }
     if (!Mtproto.schema.identifierToName[id]) {
@@ -308,20 +308,22 @@ export class SessionEncrypted extends Session implements Session {
     }
   }
 
-  async #onRpcResult(msgId: bigint, body: Uint8Array) {
+  async #onRpcResult(body: Uint8Array) {
     let reader = new TLReader(body);
+    const reqMsgId = reader.readInt64();
     let id = reader.readInt32(false);
-    reader.unreadInt32();
     if (id == GZIP_PACKED) {
       reader = new TLReader(await gunzip(reader.readBytes()));
       id = reader.readInt32(false);
       reader.unreadInt32();
+    } else {
+      reader.unreadInt32();
     }
     if (id == RPC_ERROR) {
       const error = await Mtproto.deserializeType("rpc_error", reader);
-      this.handlers.onRpcError?.(msgId, error);
+      this.handlers.onRpcError?.(reqMsgId, error);
     } else {
-      this.handlers.onRpcResult?.(msgId, reader.buffer);
+      this.handlers.onRpcResult?.(reqMsgId, reader.buffer);
     }
   }
 
