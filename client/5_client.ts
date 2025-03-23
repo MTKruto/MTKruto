@@ -25,13 +25,13 @@ import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { DC, getDc } from "../3_transport.ts";
 import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Sticker, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
-import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
+import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
 import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
-import { canBeInputChannel, canBeInputUser, getUsername, isCdnFunction, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
+import { canBeInputChannel, canBeInputUser, getUsername, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { ClientEncrypted } from "./1_client_encrypted.ts";
 import { ClientPlain, ClientPlainParams } from "./1_client_plain.ts";
 import { Composer as Composer_, Middleware, MiddlewareFn, MiddlewareObj, NextFunction } from "./1_composer.ts";
@@ -380,35 +380,30 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   constructor(params?: ClientParams) {
     super();
-    this.#client = new ClientEncrypted(params);
-    const stateChangeHandler = this.#client.stateChangeHandler;
-    this.#client.stateChangeHandler = (connected) => {
-      stateChangeHandler?.(connected);
-      this.#stateChangeHandler(connected);
+    this.#client = new ClientEncrypted(0, params);
+    this.#client.handlers.onUpdate = (updates) => {
+      this.#updateManager.processUpdates(updates, true, null); // TODO(roj): callback?
+      this.#lastUpdates = new Date();
+    };
+    this.#client.handlers.onNewServerSalt = async (serverSalt) => {
+      await this.storage.setServerSalt(serverSalt);
+    };
+    this.#client.handlers.onDeserializationError = async () => {
+      await this.#updateManager.recoverUpdateGap("deserialization error");
     };
     this.#client.handlers = {
-      serverSaltReassigned: async (newServerSalt) => {
-        await this.storage.setServerSalt(newServerSalt);
-      },
-      updates: (updates, call, callback) => {
-        this.#updateManager.processUpdates(updates, true, call, callback);
-        this.#lastUpdates = new Date();
-      },
-      result: async (result, callback) => {
-        await this.#updateManager.processResult(result);
-        callback();
-      },
-      error: async (_err, source) => {
-        switch (source) {
-          case "deserialization":
-            await this.#updateManager.recoverUpdateGap(source);
-            break;
-          case "decryption":
-            await this.reconnect();
-            await this.#updateManager.recoverUpdateGap(source);
-            break;
-        }
-      },
+      // TODO(roj): decryption err?
+      // error: async (_err, source) => {
+      //   switch (source) {
+      //     case "deserialization":
+      //       await this.#updateManager.recoverUpdateGap(source);
+      //       break;
+      //     case "decryption":
+      //       await this.reconnect();
+      //       await this.#updateManager.recoverUpdateGap(source);
+      //       break;
+      //   }
+      // },
     };
 
     this.#apiId = params?.apiId ?? 0;
@@ -1072,6 +1067,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         await this.storage.deleteUpdates();
       }
       this.#storageInited = true;
+      this.#client.apiId = await this.#getApiId();
     }
   }
 
@@ -1133,7 +1129,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async [handleMigrationError](err: Migrate) {
     let newDc = String(err.dc);
-    if (Math.abs(this.#client.dcId) >= 10_000) {
+    if (Math.abs(getDcId(this.#client.dc)) >= 10_000) {
       newDc += "-test";
     }
     await this.reconnect(newDc as DC);
@@ -1386,37 +1382,23 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.signIn(params);
   }
 
-  async #invoke<T extends Api.AnyObject, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T): Promise<R>;
-  async #invoke<T extends Api.AnyObject>(function_: T, noWait: true): Promise<void>;
-  async #invoke<T extends Api.AnyObject, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
+  async #invoke<T extends Api.AnyFunction, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T): Promise<R>;
+  async #invoke<T extends Api.AnyFunction>(function_: T, noWait: true): Promise<void>;
+  async #invoke<T extends Api.AnyFunction, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
     let n = 1;
     while (true) {
       try {
-        if (this.#disableUpdates && !Mtproto.isValidObject(function_) && !isCdnFunction(function_)) {
-          function_ = { _: "invokeWithoutUpdates", query: function_ } as unknown as T;
-        }
-        if (!this.#connectionInited && !Mtproto.isValidObject(function_)) {
-          this.#connectionInited = true;
-          this.#L.debug("init");
-          const result = await this.#client.invoke({
-            _: "initConnection",
-            api_id: await this.#getApiId(),
-            app_version: this.appVersion,
-            device_model: this.deviceModel,
-            lang_code: this.language,
-            lang_pack: this.platform,
-            query: {
-              _: "invokeWithLayer",
-              layer: LAYER,
-              query: function_,
-            } as Api.Function,
-            system_lang_code: this.systemLangCode,
-            system_version: this.systemVersion,
-          }, noWait);
-          this.#L$initConncetion.debug("connection inited");
-          return result as R | void;
+        const result = await this.#client.invoke(function_, noWait);
+        if (result) {
+          await this.#updateManager.processResult(result);
+          if (Api.isOfEnum("Update", result) || Api.isOfEnum("Updates", result)) {
+            // TODO(roj): set callback
+            this.#updateManager.processUpdates(result, true, null);
+          }
+          return result as R;
         } else {
-          return await this.#client.invoke(function_, noWait);
+          // TODO(roj) rpc result in case of noWait must still be handled
+          return;
         }
       } catch (err) {
         if (err instanceof ConnectionNotInited) {
