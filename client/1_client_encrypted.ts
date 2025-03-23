@@ -171,6 +171,7 @@ export class ClientEncrypted extends ClientAbstract {
       if (promise.reject) {
         const reason = constructTelegramError(error, promise.call);
         if (reason instanceof ConnectionNotInited) {
+          this.#connectionInited = false;
           const messageId = await this.#send(promise.call); // TODO(roj): handle error
           this.#promises.set(messageId, promise);
         } else {
