@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getLogger, Logger, Mutex } from "../1_utilities.ts";
+import { getLogger, Logger } from "../1_utilities.ts";
 import { Api, Mtproto, repr, X } from "../2_tl.ts";
 import { ConnectionNotInited } from "../3_errors.ts";
 import { DC } from "../3_transport.ts";
@@ -103,40 +103,44 @@ export class ClientEncrypted extends ClientAbstract {
     this.#disableUpdates = params?.disableUpdates ?? false;
   }
 
-  #connectMutex = new Mutex();
   override async connect() {
     if (!this.authKey.length) {
-      const release = await this.#connectMutex.lock();
-      try {
-        let lastErr: unknown;
-        let errored = false;
-        for (let i = 0; i < ClientEncrypted.#AUTH_KEY_CREATION_MAX_TRIES; ++i) {
-          try {
-            await this.#plain.connect();
-            const [authKey, serverSalt] = await this.#plain.createAuthKey();
-            await this.setAuthKey(authKey);
-            this.serverSalt = serverSalt;
-            errored = false;
-            break;
-          } catch (err) {
-            errored = true;
-            lastErr = err;
-            if (this.disconnected) {
-              break;
-            }
-            this.#L.error("failed to create auth key:", err);
-          } finally {
-            this.#plain.disconnect();
-          }
-        }
-        if (errored) {
-          throw lastErr;
-        }
-      } finally {
-        release();
-      }
+      await this.#createAuthKey();
     }
     await super.connect();
+  }
+
+  #createAuthKeyPromise?: Promise<void>;
+  #createAuthKey() {
+    return this.#createAuthKeyPromise ??= this.#createAuthKeyInner().finally(() => {
+      this.#createAuthKeyPromise = undefined;
+    });
+  }
+  async #createAuthKeyInner() {
+    let lastErr: unknown;
+    let errored = false;
+    for (let i = 0; i < ClientEncrypted.#AUTH_KEY_CREATION_MAX_TRIES; ++i) {
+      try {
+        await this.#plain.connect();
+        const [authKey, serverSalt] = await this.#plain.createAuthKey();
+        await this.setAuthKey(authKey);
+        this.serverSalt = serverSalt;
+        errored = false;
+        break;
+      } catch (err) {
+        errored = true;
+        lastErr = err;
+        if (this.disconnected) {
+          break;
+        }
+        this.#L.error("failed to create auth key:", err);
+      } finally {
+        this.#plain.disconnect();
+      }
+    }
+    if (errored) {
+      throw lastErr;
+    }
   }
 
   get authKey() {
