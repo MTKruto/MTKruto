@@ -114,6 +114,7 @@ export class ClientEncrypted extends ClientAbstract {
           await this.setAuthKey(authKey);
           this.serverSalt = serverSalt;
           errored = false;
+          break;
         } catch (err) {
           errored = true;
           lastErr = err;

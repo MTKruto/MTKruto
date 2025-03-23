@@ -1397,6 +1397,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
       }
     }
     await client.connect();
+    if (!authKey) {
+      await this.#importAuthorization(client);
+    }
     await Promise.all([storage.setAuthKey(client.authKey), storage.setServerSalt(client.serverSalt)]);
     client.handlers.onNewServerSalt = async (serverSalt) => {
       await storage.setServerSalt(serverSalt);
@@ -1427,7 +1430,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
         }
         return result as R;
       } catch (err) {
-        if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
+        if (err instanceof AuthKeyUnregistered) {
+          await this.#importAuthorization(client);
+          continue;
+        } else if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
           continue;
         } else {
           throw err;
