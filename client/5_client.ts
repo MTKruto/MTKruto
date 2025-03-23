@@ -427,7 +427,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#LsignIn = L.branch("signIn");
     this.#LupdateGapRecoveryLoop = L.branch("updateGapRecoveryLoop");
     this.#LhandleMigrationError = L.branch("[handleMigrationError]");
-    this.#L$initConncetion = L.branch("#initConnection");
     this.#Lmin = L.branch("min");
 
     const c = {
