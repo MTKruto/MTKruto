@@ -26,6 +26,7 @@ import { getDc } from "../3_transport.ts";
 import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { _UploadCommon, DownloadParams } from "./0_params.ts";
+import { UPLOAD_POOL_SIZE, UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
 import { C } from "./1_types.ts";
 
 export class FileManager {
@@ -57,10 +58,10 @@ export class FileManager {
 
     const fileId = getRandomId();
 
-    // TODO(roj) const isBig = contents instanceof Uint8Array ? contents.length > FileManager.#BIG_FILE_THRESHOLD : true;
+    const isBig = contents instanceof Uint8Array ? contents.length > FileManager.#BIG_FILE_THRESHOLD : true;
 
-    // TODO(roj) const whatIsUploaded = contents instanceof Uint8Array ? (isBig ? "big file" : "file") + " of size " + size : "stream";
-    // TODO(roj) this.#Lupload.debug("uploading " + whatIsUploaded + " with chunk size of " + chunkSize + " and pool size of " + poolSize + " and file ID of " + fileId);
+    const whatIsUploaded = contents instanceof Uint8Array ? (isBig ? "big file" : "file") + " of size " + size : "stream";
+    this.#Lupload.debug("uploading " + whatIsUploaded + " with chunk size of " + chunkSize + " and pool size of " + UPLOAD_POOL_SIZE + " and file ID of " + fileId);
 
     let result: { small: boolean; parts: number };
     if (contents instanceof Uint8Array) {
@@ -113,8 +114,7 @@ export class FileManager {
           }
         })(),
       );
-      // TODO(roj)
-      if (promises.length == 3 * FileManager.#UPLOAD_REQUEST_PER_CONNECTION) {
+      if (promises.length == UPLOAD_POOL_SIZE * UPLOAD_REQUEST_PER_CONNECTION) {
         await Promise.all(promises);
         promises = [];
       }
@@ -130,7 +130,7 @@ export class FileManager {
     let started = false;
     let delay = 0.05;
     main: for (let part = 0; part < partCount;) {
-      for (let i = 0; i < 2 /*pool.size TODO(roj)*/; ++i) {
+      for (let i = 0; i < UPLOAD_POOL_SIZE; ++i) {
         for (let i = 0; i < FileManager.#UPLOAD_REQUEST_PER_CONNECTION; ++i) {
           const start = part * chunkSize;
           const end = start + chunkSize;
