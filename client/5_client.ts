@@ -32,19 +32,19 @@ import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbac
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, getUsername, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
-import { ClientEncrypted } from "./1_client_encrypted.ts";
-import { ClientPlain, ClientPlainParams } from "./1_client_plain.ts";
+import { ClientPlainParams } from "./1_client_plain.ts";
 import { Composer as Composer_, Middleware, MiddlewareFn, MiddlewareObj, NextFunction } from "./1_composer.ts";
 import { AccountManager } from "./2_account_manager.ts";
 import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
-import { ClientEncryptedPool } from "./2_client_encrypted_pool.ts";
+import { ClientEncrypted } from "./2_client_encrypted.ts";
 import { FileManager } from "./2_file_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
 import { TranslationsManager } from "./2_translations_manager.ts";
 import { UpdateManager } from "./2_update_manager.ts";
+import { ClientEncryptedPool } from "./3_client_encrypted_pool.ts";
 import { MessageManager } from "./3_message_manager.ts";
 import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { CallbackQueryManager } from "./4_callback_query_manager.ts";
@@ -1057,12 +1057,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
           this.#client?.disconnect();
           this.#setMainClient(await this.#newClient(dc, true, false));
         }
-        const plain = new ClientPlain(dc, { transportProvider: this.#transportProvider, publicKeys: this.#publicKeys });
-        await plain.connect();
-        const [authKey, serverSalt] = await plain.createAuthKey();
-        plain.disconnect();
-        await this.#client!.setAuthKey(authKey);
-        this.#client!.serverSalt = serverSalt;
       }
       await this.#client!.connect();
       this.#lastConnect = new Date();
@@ -1363,31 +1357,25 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
-  async #setupClient(dc: DC, client: ClientEncrypted) {
-    const storage = new StorageOperations(this.storage.provider.branch(dc));
+  async #setupClient(client: ClientEncrypted) {
+    const storage = new StorageOperations(this.storage.provider.branch(client.dc + (client.cdn ? "_cdn" : "")));
     const [authKey, serverSalt] = await Promise.all([storage.getAuthKey(), storage.getServerSalt()]);
     if (authKey) {
       await client.setAuthKey(authKey);
       if (serverSalt) {
         client.serverSalt = serverSalt;
       }
-      await client.connect();
-    } else {
-      const plain = new ClientPlain(dc, { transportProvider: this.#transportProvider, publicKeys: this.#publicKeys });
-      await plain.connect();
-      const [authKey, serverSalt] = await plain.createAuthKey();
-      plain.disconnect();
-      client.setAuthKey(authKey);
-      client.serverSalt = serverSalt;
-      await client.setAuthKey(authKey);
-      await Promise.all([storage.setAuthKey(authKey), storage.setServerSalt(serverSalt)]);
-      const exportedAuthorization = await this.#client!.invoke({ _: "auth.exportAuthorization", dc_id: getDcId(dc, false) });
-      await client.connect();
-      await client.invoke({ ...exportedAuthorization, _: "auth.importAuthorization" });
     }
+    await client.connect();
+    await Promise.all([storage.setAuthKey(client.authKey), storage.setServerSalt(client.serverSalt)]);
     client.handlers.onNewServerSalt = async (serverSalt) => {
       await storage.setServerSalt(serverSalt);
     };
+  }
+
+  async #importAuthorization(client: ClientEncrypted) {
+    const exportedAuthorization = await this.#client!.invoke({ _: "auth.exportAuthorization", dc_id: getDcId(client.dc, client.cdn) });
+    await client.invoke({ ...exportedAuthorization, _: "auth.importAuthorization" });
   }
 
   async #invoke<T extends Api.AnyFunction, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R> {

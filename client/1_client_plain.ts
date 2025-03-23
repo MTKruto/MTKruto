@@ -23,13 +23,13 @@ import { bigIntFromBuffer, bufferFromBigInt, factorize, getLogger, getRandomBigI
 import { Mtproto } from "../2_tl.ts";
 import { DC, getDcId } from "../3_transport.ts";
 import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
-import { SessionPlain } from "../4_session.ts";
-import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
+import { SessionParams, SessionPlain } from "../4_session.ts";
+import { ClientAbstract } from "./0_client_abstract.ts";
 
 const L = getLogger("ClientPlain");
 const LcreateAuthKey = L.branch("createAuthKey");
 
-export interface ClientPlainParams extends ClientAbstractParams {
+export interface ClientPlainParams extends SessionParams {
   /**
    * MTProto public keys to use in the `[keyId, [key, exponent]][]` format. Don't set this unless you know what you are doing. Defaults to Telegram servers' public keys.
    */
@@ -41,37 +41,17 @@ export interface ClientPlainParams extends ClientAbstractParams {
  */
 export class ClientPlain extends ClientAbstract implements ClientAbstract {
   readonly #publicKeys: PublicKeys;
-  #session: SessionPlain;
-  #dc: DC;
-  #cdn: boolean;
+  session: SessionPlain;
 
   constructor(dc: DC, params?: ClientPlainParams) {
-    super(dc, params);
+    super();
     this.#publicKeys = params?.publicKeys ?? PUBLIC_KEYS;
-    this.#session = new SessionPlain(dc, params);
-    this.#dc = this.#session.dc;
-    this.#cdn = this.#session.cdn;
-  }
-
-  get connected() {
-    return this.#session.connected;
-  }
-
-  async connect() {
-    await this.#session.connect();
-  }
-
-  disconnect() {
-    this.#session.disconnect();
-  }
-
-  get disconnected() {
-    return this.#session.disconnected;
+    this.session = new SessionPlain(dc, params);
   }
 
   async invoke<T extends Mtproto.AnyObject, R = T["_"] extends keyof Mtproto.Functions ? Mtproto.ReturnType<T> extends never ? Mtproto.ReturnType<Mtproto.Functions[T["_"]]> : never : never>(function_: T): Promise<R> {
-    await this.#session.send(Mtproto.serializeObject(function_));
-    const body = await this.#session.receive();
+    await this.session.send(Mtproto.serializeObject(function_));
+    const body = await this.session.receive();
     return await Mtproto.deserializeType(Mtproto.mustGetReturnType(function_._), body) as R;
   }
 
@@ -121,7 +101,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
       throw new Error("No corresponding public key found");
     }
 
-    const dc = getDcId(this.#dc, this.#cdn);
+    const dc = getDcId(this.dc, this.cdn);
     const pq = resPq.pq;
     const serverNonce = resPq.server_nonce;
     const newNonce = getRandomBigInt(32, false, true);

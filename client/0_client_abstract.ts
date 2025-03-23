@@ -18,42 +18,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { DC, TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
-
-// @ts-ignore: lib
-const defaultTransportProvider = typeof Deno === "undefined" ? transportProviderWebSocket : transportProviderTcp;
-
-export interface ClientAbstractParams {
-  /**
-   * The transport provider to use. Defaults to `webSocketTransportProvider` with its default options.
-   */
-  transportProvider?: TransportProvider;
-  /**
-   * Whether the connection is with a CDN server. Defaults to false.
-   */
-  cdn?: boolean;
-}
+import { Session } from "../4_session.ts";
 
 export abstract class ClientAbstract {
-  public transportProvider: TransportProvider;
-  public readonly cdn: boolean;
-  #dc: DC;
-
-  constructor(dc: DC, params?: ClientAbstractParams) {
-    this.transportProvider = params?.transportProvider ?? defaultTransportProvider();
-    this.cdn = params?.cdn ?? false;
-    this.#dc = dc;
-  }
+  abstract session: Session;
 
   get dc() {
-    return this.#dc;
+    return this.session.dc;
   }
 
-  abstract connect(): Promise<void>;
+  get cdn() {
+    return this.session.cdn;
+  }
 
-  abstract get connected(): boolean;
+  set serverSalt(serverSalt: bigint) {
+    this.session.serverSalt = serverSalt;
+  }
 
-  abstract disconnect(): void;
+  get connected() {
+    return this.session.connected;
+  }
 
-  abstract get disconnected(): boolean;
+  async connect() {
+    await this.session.connect();
+  }
+
+  get disconnected() {
+    return this.session.disconnected;
+  }
+
+  disconnect() {
+    this.session.disconnect();
+  }
 }

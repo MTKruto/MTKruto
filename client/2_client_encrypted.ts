@@ -25,13 +25,14 @@ import { DC } from "../3_transport.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "../4_constants.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { SessionEncrypted, SessionError } from "../4_session.ts";
-import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
+import { ClientAbstract } from "./0_client_abstract.ts";
 import { isCdnFunction } from "./0_utilities.ts";
+import { ClientPlain, ClientPlainParams } from "./1_client_plain.ts";
 
 // global ClientEncrypted ID counter for logs
 let id = 0;
 
-export interface ClientEncryptedParams extends ClientAbstractParams {
+export interface ClientEncryptedParams extends ClientPlainParams {
   /** The app_version parameter to be passed to initConnection. It is recommended that this parameter is changed if users are authorized. Defaults to _MTKruto_. */
   appVersion?: string;
   /** The device_version parameter to be passed to initConnection. The default varies by the current runtime. */
@@ -62,11 +63,13 @@ interface PendingRequest {
 
 export class ClientEncrypted extends ClientAbstract {
   static #SEND_MAX_TRIES = 10;
+  static #AUTH_KEY_CREATION_MAX_TRIES = 10;
 
   handlers: ClientEncryptedHandlers = {};
 
   #L: Logger;
-  #session: SessionEncrypted;
+  #plain: ClientPlain;
+  session: SessionEncrypted;
   #pendingRequests = new Map<bigint, PendingRequest>();
 
   #apiId: number;
@@ -79,15 +82,16 @@ export class ClientEncrypted extends ClientAbstract {
   #disableUpdates: boolean;
 
   constructor(dc: DC, apiId: number, params?: ClientEncryptedParams) {
-    super(dc, params);
+    super();
     this.#L = getLogger("ClientEncrypted").client(id++);
 
-    this.#session = new SessionEncrypted(dc, params);
-    this.#session.handlers.onUpdate = this.#onUpdate.bind(this);
-    this.#session.handlers.onNewServerSalt = this.#onNewServerSalt.bind(this);
-    this.#session.handlers.onMessageFailed = this.#onMessageFailed.bind(this);
-    this.#session.handlers.onRpcError = this.#onRpcError.bind(this);
-    this.#session.handlers.onRpcResult = this.#onRpcResult.bind(this);
+    this.#plain = new ClientPlain(dc, params);
+    this.session = new SessionEncrypted(dc, params);
+    this.session.handlers.onUpdate = this.#onUpdate.bind(this);
+    this.session.handlers.onNewServerSalt = this.#onNewServerSalt.bind(this);
+    this.session.handlers.onMessageFailed = this.#onMessageFailed.bind(this);
+    this.session.handlers.onRpcError = this.#onRpcError.bind(this);
+    this.session.handlers.onRpcResult = this.#onRpcResult.bind(this);
 
     this.#apiId = apiId;
     this.#appVersion = params?.appVersion ?? APP_VERSION;
@@ -99,36 +103,41 @@ export class ClientEncrypted extends ClientAbstract {
     this.#disableUpdates = params?.disableUpdates ?? false;
   }
 
-  async connect() {
-    await this.#session.connect();
-  }
-
-  get connected() {
-    return this.#session.connected;
-  }
-
-  disconnect() {
-    this.#session.disconnect();
-  }
-
-  get disconnected() {
-    return this.#session.disconnected;
+  override async connect() {
+    if (!this.authKey.length) {
+      let lastErr: unknown;
+      let errored = false;
+      for (let i = 0; i < ClientEncrypted.#AUTH_KEY_CREATION_MAX_TRIES; ++i) {
+        try {
+          await this.#plain.connect();
+          const [authKey, serverSalt] = await this.#plain.createAuthKey();
+          await this.setAuthKey(authKey);
+          this.serverSalt = serverSalt;
+          errored = false;
+        } catch (err) {
+          errored = true;
+          lastErr = err;
+          if (this.disconnected) {
+            break;
+          }
+          this.#L.error("failed to create auth key:", err);
+        } finally {
+          this.#plain.disconnect();
+        }
+      }
+      if (errored) {
+        throw lastErr;
+      }
+    }
+    await super.connect();
   }
 
   get authKey() {
-    return this.#session.authKey;
+    return this.session.authKey;
   }
 
   async setAuthKey(authKey: Uint8Array<ArrayBuffer>) {
-    await this.#session.setAuthKey(authKey);
-  }
-
-  get serverSalt() {
-    return this.#session.serverSalt;
-  }
-
-  set serverSalt(serverSalt: bigint) {
-    this.#session.serverSalt = serverSalt;
+    await this.session.setAuthKey(authKey);
   }
 
   #connectionInited = false;
@@ -159,7 +168,7 @@ export class ClientEncrypted extends ClientAbstract {
     for (let i = 0; i < ClientEncrypted.#SEND_MAX_TRIES; ++i) {
       let errored = false;
       try {
-        return await this.#session.send(body);
+        return await this.session.send(body);
       } catch (err) {
         errored = true;
         lastErr = err;
