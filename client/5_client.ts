@@ -31,7 +31,7 @@ import { PhoneCodeInvalid } from "../4_errors.ts";
 import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
-import { canBeInputChannel, canBeInputUser, getUsername, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
+import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, DOWNLOAD_REQUEST_PER_CONNECTION, getUsername, resolve, toInputChannel, toInputUser, UPLOAD_POOL_SIZE, UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
 import { ClientPlainParams } from "./1_client_plain.ts";
 import { Composer as Composer_, Middleware, MiddlewareFn, MiddlewareObj, NextFunction } from "./1_composer.ts";
 import { AccountManager } from "./2_account_manager.ts";
@@ -293,8 +293,8 @@ export interface ClientParams extends ClientPlainParams {
  */
 export class Client<C extends Context = Context> extends Composer<C> {
   #clients = new Array<ClientEncrypted>();
-  #downloadPools = new Map<DC, ClientEncryptedPool>();
-  #uploadPools = new Map<DC, ClientEncryptedPool>();
+  #downloadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
+  #uploadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
   #guaranteeUpdateDelivery: boolean;
   // 2_
   #accountManager: AccountManager;
@@ -553,10 +553,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
     for (const client of this.#clients) {
       client.disconnect();
     }
-    for (const pool of this.#downloadPools.values()) {
+    for (const pool of Object.values(this.#downloadPools)) {
       pool.disconnect();
     }
-    for (const pool of this.#uploadPools.values()) {
+    for (const pool of Object.values(this.#uploadPools)) {
       pool.disconnect();
     }
   }
@@ -1321,10 +1321,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #getClient(params: InvokeParams) {
-    if (params.type === undefined) {
-      return await this.#getMainClient(params.dc);
-    } else {
-      unimplemented();
+    switch (params.type) {
+      case undefined:
+        return await this.#getMainClient(params.dc);
+      case "download":
+        return await this.#getDownloadClient(params.dc);
+      case "upload":
+        return await this.#getUploadClient(params.dc);
     }
   }
 
@@ -1352,8 +1355,40 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
+  async #getDownloadClient(dc?: DC) {
+    dc ??= this.#client!.dc;
+    const pool = this.#downloadPools[dc] ??= new ClientEncryptedPool(DOWNLOAD_REQUEST_PER_CONNECTION);
+    if (!pool.size) {
+      for (let i = 0; i < DOWNLOAD_POOL_SIZE; ++i) {
+        pool.add(await this.#newClient(dc, false, true));
+      }
+    }
+    const client = pool.nextClient();
+    if (client.authKey.length) {
+      return client;
+    }
+    await this.#setupClient(client);
+    return client;
+  }
+
+  async #getUploadClient(dc?: DC) {
+    dc ??= this.#client!.dc;
+    const pool = this.#downloadPools[dc] ??= new ClientEncryptedPool(UPLOAD_REQUEST_PER_CONNECTION);
+    if (!pool.size) {
+      for (let i = 0; i < UPLOAD_POOL_SIZE; ++i) {
+        pool.add(await this.#newClient(dc, false, true));
+      }
+    }
+    const client = pool.nextClient();
+    if (client.authKey.length) {
+      return client;
+    }
+    await this.#setupClient(client);
+    return client;
+  }
+
   async #setupClient(client: ClientEncrypted) {
-    const storage = new StorageOperations(this.storage.provider.branch(client.dc + (client.cdn ? "_cdn" : "")));
+    const storage = client.dc == this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.cdn ? "_cdn" : "")));
     const [authKey, serverSalt] = await Promise.all([storage.getAuthKey(), storage.getServerSalt()]);
     if (authKey) {
       await client.setAuthKey(authKey);

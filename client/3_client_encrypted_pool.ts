@@ -26,31 +26,32 @@ export class ClientEncryptedPool {
   #index = 0;
   #requestCounter = 0;
   #clients = new Array<ClientEncrypted>();
+  #requestPerClient: number;
 
-  constructor(size: number, requestPerClient: number, dc: DC, apiId: number, params?: ClientEncryptedParams) {
-    if (!size || size < 1) {
-      unreachable();
-    }
-    for (let i = 0; i < size; ++i) {
-      const client = new ClientEncrypted(dc, apiId, params);
-      const invoke = client.invoke.bind(client);
-      client.invoke = (...args: Parameters<typeof client["invoke"]>) => {
-        if (++this.#requestCounter >= requestPerClient) {
-          this.#index++;
-          if (this.#index >= this.#clients.length - 1) {
-            this.#index = 0;
-          }
-        }
-        return invoke(...args);
-      };
-    }
+  constructor(requestPerClient: number) {
+    this.#requestPerClient = requestPerClient;
   }
 
-  async nextClient() {
+  get size() {
+    return this.#clients.length;
+  }
+
+  add(client: ClientEncrypted) {
+    this.#clients.push(client);
+    const invoke = client.invoke.bind(client);
+    client.invoke = (...args: Parameters<typeof client["invoke"]>) => {
+      if (++this.#requestCounter >= this.#requestPerClient) {
+        this.#index++;
+        if (this.#index >= this.#clients.length - 1) {
+          this.#index = 0;
+        }
+      }
+      return invoke(...args);
+    };
+  }
+
+  nextClient() {
     const client = this.#clients[this.#index];
-    if (client.disconnected) {
-      await client.connect();
-    }
     return client;
   }
 
