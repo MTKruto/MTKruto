@@ -18,17 +18,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MINUTE, SECOND, unreachable } from "../0_deps.ts";
+import { MINUTE, SECOND, unimplemented, unreachable } from "../0_deps.ts";
 import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
 import { cleanObject, drop, getLogger, Logger, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { DC, getDcId, TransportProvider } from "../3_transport.ts";
 import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Sticker, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
-import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
-import { AuthKeyUnregistered, ConnectionNotInited, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
+import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
+import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
-import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, getUsername, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -433,11 +433,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
     const c = {
       id,
-      invoke: async <T extends Api.AnyFunction<P>, P extends Api.Function, R extends unknown = Api.ReturnType<Api.Functions[T["_"]]>>(function_: T, businessConnectionId: string | undefined): Promise<R> => {
+      invoke: async <T extends Api.AnyFunction<P>, P extends Api.Function, R extends unknown = Api.ReturnType<Api.Functions[T["_"]]>>(function_: T, businessConnectionId: string | undefined, params?: InvokeParams): Promise<R> => {
         if (businessConnectionId) {
-          return await this.invoke({ _: "invokeWithBusinessConnection", connection_id: businessConnectionId, query: function_ });
+          return await this.invoke({ _: "invokeWithBusinessConnection", connection_id: businessConnectionId, query: function_ }, params);
         } else {
-          return await this.invoke(function_);
+          return await this.invoke(function_, params);
         }
       },
       storage: this.storage,
@@ -453,7 +453,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
       getEntity: this[getEntity].bind(this),
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
-      cdn: this.#cdn,
       outgoingMessages: this.#outgoingMessages,
       dropPendingUpdates: params?.dropPendingUpdates,
       disconnected: () => this.disconnected,
@@ -519,6 +518,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
+  #setMainClient(client: ClientEncrypted) {
+    this.#disconnectAllClients();
+    this.#clients = [client];
+  }
+
   async #newClient(dc: DC, main: boolean, cdn: boolean) {
     const apiId = await this.#getApiId();
     const client = new ClientEncrypted(dc, apiId, {
@@ -554,11 +558,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
     for (const client of this.#clients) {
       client.disconnect();
     }
-    for (const client of this.#downloadPools.values()) {
-      client.disconnect();
+    for (const pool of this.#downloadPools.values()) {
+      pool.disconnect();
     }
-    for (const client of this.#uploadPools.values()) {
-      client.disconnect();
+    for (const pool of this.#uploadPools.values()) {
+      pool.disconnect();
     }
   }
 
@@ -1007,7 +1011,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
       await this.storage.setAuthKey(null);
       await this.storage.getAuthKey();
     }
-    this.#client.setDc(dc);
   }
 
   #storageInited = false;
@@ -1018,7 +1021,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
         await this.storage.deleteUpdates();
       }
       this.#storageInited = true;
-      this.#client.apiId = await this.#getApiId();
     }
   }
 
@@ -1035,36 +1037,36 @@ export class Client<C extends Context = Context> extends Composer<C> {
       if (this.connected) {
         return;
       }
-      if (this.#lastConnect != null && Date.now() - this.#lastConnect.getTime() <= 10 * SECOND) {
-        await new Promise((r) => setTimeout(r, 3 * SECOND));
-      }
       await this.#initStorage();
       if (this.#authString && !this.#authStringImported) {
         await this.importAuthString(this.#authString);
       }
       const [authKey, dc] = await Promise.all([this.storage.getAuthKey(), this.storage.getDc()]);
       if (authKey != null && dc != null) {
-        await this.#client.setAuthKey(authKey);
-        this.#client.setDc(dc);
-        if (this.#client.serverSalt == 0n) {
-          this.#client.serverSalt = await this.storage.getServerSalt() ?? 0n;
+        if (!this.#client || this.#client.dc != dc) {
+          this.#client?.disconnect();
+          this.#setMainClient(await this.#newClient(dc, true, false));
+        }
+        await this.#client!.setAuthKey(authKey);
+        if (this.#client!.serverSalt == 0n) {
+          this.#client!.serverSalt = await this.storage.getServerSalt() ?? 0n;
         }
       } else {
-        const plain = new ClientPlain({ initialDc: this.#client.initialDc, transportProvider: this.#client.transportProvider, cdn: this.#client.cdn, publicKeys: this.#publicKeys });
-        const dc = await this.storage.getDc();
-        if (dc != null) {
-          plain.setDc(dc);
-          this.#client.setDc(dc);
+        const dc = await this.storage.getDc() ?? INITIAL_DC;
+        if (!this.#client || this.#client.dc != dc) {
+          this.#client?.disconnect();
+          this.#setMainClient(await this.#newClient(dc, true, false));
         }
+        const plain = new ClientPlain(dc, { transportProvider: this.#transportProvider, publicKeys: this.#publicKeys });
         await plain.connect();
         const [authKey, serverSalt] = await plain.createAuthKey();
-        drop(plain.disconnect());
-        await this.#client.setAuthKey(authKey);
-        this.#client.serverSalt = serverSalt;
+        plain.disconnect();
+        await this.#client!.setAuthKey(authKey);
+        this.#client!.serverSalt = serverSalt;
       }
-      await this.#client.connect();
+      await this.#client!.connect();
       this.#lastConnect = new Date();
-      await Promise.all([this.storage.setAuthKey(this.#client.authKey), this.storage.setDc(this.#client.dc), this.storage.setServerSalt(this.#client.serverSalt)]);
+      await Promise.all([this.storage.setAuthKey(this.#client!.authKey), this.storage.setDc(this.#client!.dc), this.storage.setServerSalt(this.#client!.serverSalt)]);
       this.#startUpdateGapRecoveryLoop();
     } finally {
       unlock();
@@ -1075,12 +1077,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
     if (dc) {
       await this.setDc(dc);
     }
-    await this.#client.reconnect();
+    this.disconnect();
+    await this.connect();
   }
 
   async [handleMigrationError](err: Migrate) {
     let newDc = String(err.dc);
-    if (Math.abs(getDcId(this.#client.dc)) >= 10_000) {
+    if (Math.abs(getDcId(this.#client!.dc, this.#client!.cdn)) >= 10_000) {
       newDc += "-test";
     }
     await this.reconnect(newDc as DC);
@@ -1328,29 +1331,80 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.signIn(params);
   }
 
-  async #invoke<T extends Api.AnyFunction, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T): Promise<R>;
-  async #invoke<T extends Api.AnyFunction>(function_: T, noWait: true): Promise<void>;
-  async #invoke<T extends Api.AnyFunction, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
+  async #getClient(params: InvokeParams) {
+    if (params.type === undefined) {
+      return await this.#getMainClient(params.dc);
+    } else {
+      unimplemented();
+    }
+  }
+
+  #getMainClientMutex = new Mutex();
+  async #getMainClient(dc?: DC) {
+    if (dc === undefined || dc == this.#client?.dc) {
+      return this.#client!;
+    }
+    let client = this.#clients.find((v) => v.dc == dc);
+    if (client) {
+      return client;
+    }
+    const release = await this.#getMainClientMutex.lock();
+    client = this.#clients.find((v) => v.dc == dc);
+    if (client) {
+      return client;
+    }
+    try {
+      client = await this.#newClient(dc, true, false);
+      await this.#setupClient(dc, client);
+      this.#clients.push(client);
+      return client;
+    } finally {
+      release();
+    }
+  }
+
+  async #setupClient(dc: DC, client: ClientEncrypted) {
+    const storage = new StorageOperations(this.storage.provider.branch(dc));
+    const [authKey, serverSalt] = await Promise.all([storage.getAuthKey(), storage.getServerSalt()]);
+    if (authKey) {
+      await client.setAuthKey(authKey);
+      if (serverSalt) {
+        client.serverSalt = serverSalt;
+      }
+    } else {
+      const plain = new ClientPlain(dc, { transportProvider: this.#transportProvider, publicKeys: this.#publicKeys });
+      await plain.connect();
+      const [authKey, serverSalt] = await plain.createAuthKey();
+      plain.disconnect();
+      client.setAuthKey(authKey);
+      client.serverSalt = serverSalt;
+      await client.setAuthKey(authKey);
+    }
+    client.handlers.onNewServerSalt = async (serverSalt) => {
+      await storage.setServerSalt(serverSalt);
+    };
+  }
+
+  async #invoke<T extends Api.AnyFunction, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R> {
+    if (!this.#client) {
+      throw new ConnectionError("Not connected.");
+    }
+    const client = params ? await this.#getClient(params) : this.#client!;
+    const main = client === this.#client;
     let n = 1;
     while (true) {
       try {
-        const result = await this.#client.invoke(function_, noWait);
-        if (result) {
-          await this.#updateManager.processResult(result);
+        const result = await client.invoke(function_);
+        if (main) {
+          await this.#updateManager.processResult(result as Api.DeserializedType);
           if (Api.isOfEnum("Update", result) || Api.isOfEnum("Updates", result)) {
             // TODO(roj): set callback
             this.#updateManager.processUpdates(result, true, null);
           }
-          return result as R;
-        } else {
-          // TODO(roj) rpc result in case of noWait must still be handled
-          return;
         }
+        return result as R;
       } catch (err) {
-        if (err instanceof ConnectionNotInited) {
-          this.#connectionInited = false;
-          continue;
-        } else if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
+        if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
           continue;
         } else {
           throw err;
@@ -1368,9 +1422,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param function_ The function to invoke.
    */
   invoke: {
-    <T extends Api.AnyObject, R = T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T): Promise<R>;
-    <T extends Api.AnyObject>(function_: T, noWait: true): Promise<void>;
-    <T extends Api.AnyObject, R = T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void>;
+    <T extends Api.AnyFunction, R = T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R>;
     use: (handler: InvokeErrorHandler<Client<C>>) => void;
   } = Object.assign(
     this.#invoke,
@@ -1388,13 +1440,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
       },
     },
   );
-
-  /**
-   * Alias for `invoke` with its second parameter being `true`.
-   */
-  send<T extends Api.AnyObject<P>, P extends Api.Function>(function_: T): Promise<void> {
-    return this.invoke(function_, true);
-  }
 
   exportAuthString(): Promise<string> {
     return this.storage.exportAuthString(this.#apiId);

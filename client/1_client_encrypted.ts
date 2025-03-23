@@ -55,8 +55,8 @@ export interface ClientEncryptedHandlers {
 }
 
 interface PendingRequest {
-  resolve?: (obj: Api.DeserializedType) => void;
-  reject?: (reason?: unknown) => void;
+  resolve: (obj: Api.DeserializedType) => void;
+  reject: (reason?: unknown) => void;
   call: Api.AnyFunction;
 }
 
@@ -115,6 +115,22 @@ export class ClientEncrypted extends ClientAbstract {
     return this.#session.disconnected;
   }
 
+  get authKey() {
+    return this.#session.authKey;
+  }
+
+  async setAuthKey(authKey: Uint8Array<ArrayBuffer>) {
+    await this.#session.setAuthKey(authKey);
+  }
+
+  get serverSalt() {
+    return this.#session.serverSalt;
+  }
+
+  set serverSalt(serverSalt: bigint) {
+    this.#session.serverSalt = serverSalt;
+  }
+
   #connectionInited = false;
   async #send(function_: Api.AnyFunction) {
     if (this.#disableUpdates && !isCdnFunction(function_)) {
@@ -159,20 +175,12 @@ export class ClientEncrypted extends ClientAbstract {
       const messageId = await this.#send(request.call);
       this.#pendingRequests.set(messageId, request);
     } catch (err) {
-      request.reject?.(err);
+      request.reject(err);
     }
   }
 
-  async invoke<T extends Api.AnyFunction, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
+  async invoke<T extends Api.AnyFunction, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T): Promise<R> {
     const messageId = await this.#send(function_);
-
-    if (noWait) {
-      this.#pendingRequests.set(messageId, {
-        call: function_,
-      });
-      return;
-    }
-
     return (await new Promise<Api.DeserializedType>((resolve, reject) => {
       this.#pendingRequests.set(messageId, { resolve, reject, call: function_ });
     })) as R;
@@ -204,7 +212,7 @@ export class ClientEncrypted extends ClientAbstract {
       this.#pendingRequests.delete(msgId);
       if (error.retry) {
         await this.#resend(request);
-      } else if (request.reject) {
+      } else {
         request.reject(error);
       }
     }
@@ -214,14 +222,12 @@ export class ClientEncrypted extends ClientAbstract {
     const request = this.#pendingRequests.get(msgId);
     if (request) {
       this.#pendingRequests.delete(msgId);
-      if (request.reject) {
-        const reason = constructTelegramError(error, request.call);
-        if (reason instanceof ConnectionNotInited) {
-          this.#connectionInited = false;
-          await this.#resend(request);
-        } else {
-          request.reject(constructTelegramError(error, request.call));
-        }
+      const reason = constructTelegramError(error, request.call);
+      if (reason instanceof ConnectionNotInited) {
+        this.#connectionInited = false;
+        await this.#resend(request);
+      } else {
+        request.reject(constructTelegramError(error, request.call));
       }
     }
   }
@@ -234,17 +240,17 @@ export class ClientEncrypted extends ClientAbstract {
       const request = this.#pendingRequests.get(msgId);
       if (request) {
         this.#pendingRequests.delete(msgId);
-        request.reject?.(err);
+        request.reject(err);
       }
       this.#L.error("failed to deserialize RPC result body:", err);
       this.handlers.onDeserializationError?.();
       return;
     }
 
-    const promise = this.#pendingRequests.get(msgId);
-    if (promise) {
+    const request = this.#pendingRequests.get(msgId);
+    if (request) {
       this.#pendingRequests.delete(msgId);
-      promise.resolve?.(type);
+      request.resolve(type);
     }
   }
 }

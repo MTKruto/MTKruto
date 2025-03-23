@@ -1,6 +1,6 @@
-import { ClientEncrypted, ClientEncryptedParams } from "../5_client.ts";
-import { DC } from "../3_transport.ts";
 import { unreachable } from "../0_deps.ts";
+import { DC } from "../3_transport.ts";
+import { ClientEncrypted, ClientEncryptedParams } from "../5_client.ts";
 
 export class ClientEncryptedPool {
   #index = 0;
