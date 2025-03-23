@@ -103,13 +103,21 @@ export abstract class Session {
 
   #connectMutex = new Mutex();
   async connect() {
-    const release = this.#connectMutex.lock();
-    if (this.connected) {
-      return;
+    const release = await this.#connectMutex.lock();
+    try {
+      if (this.connected) {
+        return;
+      }
+      await this.transport.connection.open();
+      await this.transport.transport.initialize();
+      this.#lastConnect = new Date();
+    } finally {
+      release();
     }
-    await this.transport.connection.open();
-    await this.transport.transport.initialize();
-    this.#lastConnect = new Date();
+  }
+
+  protected async waitUntilConnected() {
+    (await this.#connectMutex.lock())();
   }
 
   get disconnected() {

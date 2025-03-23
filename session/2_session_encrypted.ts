@@ -88,8 +88,8 @@ export class SessionEncrypted extends Session implements Session {
     this.#rejectAllPending(new SessionError("Disconnected.", false));
   }
 
-  #assertConnected() {
-    if (!this.connected) {
+  #assertNotDisconnected() {
+    if (this.disconnected) {
       throw new ConnectionError("Not connected.");
     }
   }
@@ -129,7 +129,10 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   async send(body: Uint8Array) {
-    this.#assertConnected();
+    if (!this.disconnected && !this.connected) {
+      await super.waitUntilConnected()
+    }
+    this.#assertNotDisconnected()
     const msg_id = this.state.nextMessageId();
     const seqno = this.state.nextSeqNo(true);
     let message: message = {
@@ -140,7 +143,6 @@ export class SessionEncrypted extends Session implements Session {
     };
 
     if (this.#toAcknowledge.length) {
-      console.log("there are msgs to ack");
       const ack: message = {
         _: "message",
         msg_id: this.state.nextMessageId(),
@@ -166,7 +168,7 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   async #receive() {
-    this.#assertConnected();
+    this.#assertNotDisconnected();
     const buffer = await this.transport.transport.receive();
     const decrypted = await this.#decryptMessage(buffer);
     this.#L.in(decrypted);

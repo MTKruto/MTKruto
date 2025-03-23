@@ -48,8 +48,16 @@ export interface ClientEncryptedHandlers {
   onUpdate?: (update: Api.Updates | Api.Update) => void;
 }
 
+interface PendingRequest {
+  resolve?: (obj: Api.DeserializedType) => void;
+  reject?: (reason?: unknown) => void;
+  call: Api.AnyObject;
+}
+
 export class ClientEncrypted extends ClientAbstract {
-  #promises = new Map<bigint, { resolve?: (obj: Api.DeserializedType) => void; reject?: (reason?: unknown) => void; call: Api.AnyObject }>();
+  static #SEND_MAX_TRIES = 10;
+
+  #pendingRequests = new Map<bigint, PendingRequest>();
 
   #session: SessionEncrypted;
 
@@ -121,21 +129,43 @@ export class ClientEncrypted extends ClientAbstract {
       };
       this.#connectionInited = true;
     }
-    return await this.#session.send(Api.serializeObject(function_));
+    const body = Api.serializeObject(function_);
+    let lastErr: unknown;
+    for (let i = 0; i < ClientEncrypted.#SEND_MAX_TRIES; ++i) {
+      try {
+        return await this.#session.send(body);
+      } catch (err) {
+        lastErr = err;
+        if (this.disconnected) {
+          break;
+        }
+        // TODO(roj): log err
+      }
+    }
+    throw new Error(`Failed to invoke function after ${ClientEncrypted.#SEND_MAX_TRIES} tries.`, { cause: lastErr });
+  }
+
+  async #resend(request: PendingRequest) {
+    try {
+      const messageId = await this.#send(request.call);
+      this.#pendingRequests.set(messageId, request);
+    } catch (err) {
+      request.reject?.(err);
+    }
   }
 
   async invoke<T extends Api.AnyObject, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, noWait?: boolean): Promise<R | void> {
     const messageId = await this.#send(function_);
 
     if (noWait) {
-      this.#promises.set(messageId, {
+      this.#pendingRequests.set(messageId, {
         call: function_,
       });
       return;
     }
 
     return (await new Promise<Api.DeserializedType>((resolve, reject) => {
-      this.#promises.set(messageId, { resolve, reject, call: function_ });
+      this.#pendingRequests.set(messageId, { resolve, reject, call: function_ });
     })) as R;
   }
 
@@ -160,30 +190,28 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   async #onMessageFailed(msgId: bigint, error: SessionError) {
-    const promise = this.#promises.get(msgId);
-    if (promise) {
-      this.#promises.delete(msgId);
+    const request = this.#pendingRequests.get(msgId);
+    if (request) {
+      this.#pendingRequests.delete(msgId);
       if (error.retry) {
-        const messageId = await this.#send(promise.call);
-        this.#promises.set(messageId, promise);
-      } else if (promise.reject) {
-        promise.reject(error);
+        await this.#resend(request);
+      } else if (request.reject) {
+        request.reject(error);
       }
     }
   }
 
   async #onRpcError(msgId: bigint, error: Mtproto.rpc_error) {
-    const promise = this.#promises.get(msgId);
-    if (promise) {
-      this.#promises.delete(msgId);
-      if (promise.reject) {
-        const reason = constructTelegramError(error, promise.call);
+    const request = this.#pendingRequests.get(msgId);
+    if (request) {
+      this.#pendingRequests.delete(msgId);
+      if (request.reject) {
+        const reason = constructTelegramError(error, request.call);
         if (reason instanceof ConnectionNotInited) {
           this.#connectionInited = false;
-          const messageId = await this.#send(promise.call); // TODO(roj): handle error
-          this.#promises.set(messageId, promise);
+          await this.#resend(request);
         } else {
-          promise.reject(constructTelegramError(error, promise.call));
+          request.reject(constructTelegramError(error, request.call));
         }
       }
     }
@@ -194,18 +222,18 @@ export class ClientEncrypted extends ClientAbstract {
     try {
       type = await Api.deserializeType(X, body);
     } catch (err) {
-      const promise = this.#promises.get(msgId);
-      if (promise) {
-        this.#promises.delete(msgId);
-        promise.reject?.(err);
+      const request = this.#pendingRequests.get(msgId);
+      if (request) {
+        this.#pendingRequests.delete(msgId);
+        request.reject?.(err);
       }
       // TODO(roj): log
       return;
     }
 
-    const promise = this.#promises.get(msgId);
+    const promise = this.#pendingRequests.get(msgId);
     if (promise) {
-      this.#promises.delete(msgId);
+      this.#pendingRequests.delete(msgId);
       promise.resolve?.(type);
     }
   }
