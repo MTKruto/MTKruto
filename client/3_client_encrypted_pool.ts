@@ -18,9 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
-import { DC } from "../3_transport.ts";
-import { ClientEncrypted, ClientEncryptedParams } from "./2_client_encrypted.ts";
+import { ClientEncrypted } from "./2_client_encrypted.ts";
 
 export class ClientEncryptedPool {
   #index = 0;
