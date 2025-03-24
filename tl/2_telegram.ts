@@ -73,7 +73,7 @@ const GENERIC_FUNCTIONS = [
   "invokeWithMessagesRange",
   "invokeWithTakeout",
 ] as const;
-export function isGenericFunction(value: unknown): boolean {
+export function isGenericFunction(value: unknown): value is Api.AnyGenericFunction<Api.AnyFunction> {
   return isOneOf(GENERIC_FUNCTIONS, value);
 }
 

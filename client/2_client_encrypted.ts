@@ -19,14 +19,14 @@
  */
 
 import { getLogger, Logger } from "../1_utilities.ts";
-import { Api, Mtproto, repr, X } from "../2_tl.ts";
+import { Api, Mtproto, X } from "../2_tl.ts";
 import { ConnectionNotInited } from "../3_errors.ts";
 import { DC } from "../3_transport.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "../4_constants.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { SessionEncrypted, SessionError } from "../4_session.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
-import { isCdnFunction } from "./0_utilities.ts";
+import { isCdnFunction, repr } from "./0_utilities.ts";
 import { ClientPlain, ClientPlainParams } from "./1_client_plain.ts";
 
 // global ClientEncrypted ID counter for logs

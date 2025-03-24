@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { Api } from "../2_tl.ts";
+import { Api, repr as repr_ } from "../2_tl.ts";
 
 export const resolve = () => Promise.resolve();
 
@@ -188,6 +188,14 @@ export function toInputChannel(inputPeer: Api.InputPeer) {
     unreachable();
   }
   return id;
+}
+
+export function repr(value: unknown): string | null {
+  if (Api.isGenericFunction(value) && "query" in value) {
+    return `${repr_(value)}<${repr(value.query as Api.AnyFunction)}>`;
+  } else {
+    return repr_(value);
+  }
 }
 
 export const UPLOAD_POOL_SIZE = 3;
