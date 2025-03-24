@@ -47,7 +47,7 @@ export abstract class Session {
   protected state = new SessionState();
   protected transport: ReturnType<TransportProvider>;
   #lastConnect?: Date;
-  #disconnected = false;
+  #disconnected = true;
   #L: Logger;
 
   constructor(dc: DC, params?: SessionParams) {
@@ -120,6 +120,7 @@ export abstract class Session {
       await this.transport.connection.open();
       await this.transport.transport.initialize();
       this.#lastConnect = new Date();
+      this.#disconnected = false;
     } finally {
       release();
     }
