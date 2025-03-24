@@ -43,5 +43,5 @@ export interface C {
   disconnected: () => boolean;
   langPack?: string;
   langCode?: string;
-  invoke<T extends Api.AnyFunction<P>, P extends Api.Function, R extends unknown = Api.ReturnType<Api.Functions[T["_"]]>>(function_: T, businessConnectionId?: string, params?: InvokeParams): Promise<R>;
+  invoke<T extends Api.AnyFunction<P>, P extends Api.Function, R extends unknown = Api.ReturnType<Api.Functions[T["_"]]>>(function_: T, params?: InvokeParams & { businessConnectionId?: string }): Promise<R>;
 }

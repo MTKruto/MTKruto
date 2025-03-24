@@ -172,7 +172,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
       throw new InputError("Not a live stream.");
     }
     const dc = call.stream_dc_id ? getDc(call.stream_dc_id) : undefined;
-    const streams = await this.#c.invoke({ _: "phone.getGroupCallStreamChannels", call: await this.#getInputGroupCall(id) }, undefined, { dc, type: "download" });
+    const streams = await this.#c.invoke({ _: "phone.getGroupCallStreamChannels", call: await this.#getInputGroupCall(id) }, { dc, type: "download" });
     return streams.channels.map(constructLiveStreamChannel);
   }
 

@@ -154,9 +154,9 @@ export class FileManager {
                   signal?.throwIfAborted();
                   this.#Lupload.debug(`[${fileId}] uploading part ` + (thisPart + 1));
                   if (isBig) {
-                    await this.#c.invoke({ _: "upload.saveBigFilePart", file_id: fileId, file_part: thisPart, bytes, file_total_parts: partCount }, undefined, { type: "upload" });
+                    await this.#c.invoke({ _: "upload.saveBigFilePart", file_id: fileId, file_part: thisPart, bytes, file_total_parts: partCount }, { type: "upload" });
                   } else {
-                    await this.#c.invoke({ _: "upload.saveFilePart", file_id: fileId, bytes, file_part: thisPart }, undefined, { type: "upload" });
+                    await this.#c.invoke({ _: "upload.saveFilePart", file_id: fileId, bytes, file_part: thisPart }, { type: "upload" });
                   }
                   this.#Lupload.debug(`[${fileId}] uploaded part ` + (thisPart + 1) + " / " + partCount);
                   break;
@@ -302,7 +302,7 @@ export class FileManager {
       let retryIn = 1;
       let errorCount = 0;
       try {
-        const file = await this.#c.invoke({ _: "upload.getFile", location, offset, limit }, undefined, { dc, type: "download" });
+        const file = await this.#c.invoke({ _: "upload.getFile", location, offset, limit }, { dc, type: "download" });
         signal?.throwIfAborted();
 
         if (Api.is("upload.file", file)) {

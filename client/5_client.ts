@@ -419,9 +419,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
     const c = {
       id,
-      invoke: async <T extends Api.AnyFunction<P>, P extends Api.Function, R extends unknown = Api.ReturnType<Api.Functions[T["_"]]>>(function_: T, businessConnectionId: string | undefined, params?: InvokeParams): Promise<R> => {
-        if (businessConnectionId) {
-          return await this.invoke({ _: "invokeWithBusinessConnection", connection_id: businessConnectionId, query: function_ }, params);
+      invoke: async <T extends Api.AnyFunction<P>, P extends Api.Function, R extends unknown = Api.ReturnType<Api.Functions[T["_"]]>>(function_: T, params?: InvokeParams & { businessConnectionId?: string }): Promise<R> => {
+        if (params?.businessConnectionId) {
+          return await this.invoke({ _: "invokeWithBusinessConnection", connection_id: params.businessConnectionId, query: function_ }, params);
         } else {
           return await this.invoke(function_, params);
         }
