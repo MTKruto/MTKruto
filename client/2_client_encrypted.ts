@@ -179,7 +179,6 @@ export class ClientEncrypted extends ClientAbstract {
         system_lang_code: this.#systemLangCode,
         system_version: this.#systemVersion,
       };
-      this.#connectionInited = true;
     }
     const body = Api.serializeObject(function_);
     let lastErr: unknown;
@@ -281,6 +280,9 @@ export class ClientEncrypted extends ClientAbstract {
       } finally {
         this.#pendingRequests.delete(msgId);
       }
+    }
+    if (!this.#connectionInited) {
+      this.#connectionInited = true;
     }
   }
 }
