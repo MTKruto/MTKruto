@@ -1313,7 +1313,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       case "download":
         return await this.#getDownloadClient(params.dc);
       case "upload":
-        return await this.#getUploadClient(params.dc);
+        return await this.#getUploadClient();
     }
   }
 
@@ -1357,9 +1357,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return client;
   }
 
-  async #getUploadClient(dc?: DC) {
-    dc ??= this.#client!.dc;
-    const pool = this.#downloadPools[dc] ??= new ClientEncryptedPool(UPLOAD_REQUEST_PER_CONNECTION);
+  async #getUploadClient() {
+    const dc = this.#client!.dc;
+    const pool = this.#uploadPools[dc] ??= new ClientEncryptedPool(UPLOAD_REQUEST_PER_CONNECTION);
     if (!pool.size) {
       for (let i = 0; i < UPLOAD_POOL_SIZE; ++i) {
         pool.add(await this.#newClient(dc, false, true));
