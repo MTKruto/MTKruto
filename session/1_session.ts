@@ -135,7 +135,9 @@ export abstract class Session {
 
   disconnect() {
     this.#disconnected = true;
-    this.transport.connection.close();
+    if (this.transport.connection.connected) {
+      this.transport.connection.close();
+    }
   }
 
   abstract send(body: Uint8Array): Promise<bigint>;
