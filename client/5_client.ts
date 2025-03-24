@@ -1405,6 +1405,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #importAuthorization(client: ClientEncrypted) {
+    if (this.#client!.dc == client.dc && this.#client!.cdn == client.cdn) {
+      const [authKey, serverSalt] = await Promise.all([this.storage.getAuthKey(), this.storage.getServerSalt()]);
+      if (authKey) {
+        await client.setAuthKey(authKey);
+        if (serverSalt) {
+          client.serverSalt = serverSalt;
+        }
+      }
+      return;
+    }
     const exportedAuthorization = await this.#client!.invoke({ _: "auth.exportAuthorization", dc_id: getDcId(client.dc, client.cdn) });
     await client.invoke({ ...exportedAuthorization, _: "auth.importAuthorization" });
   }
@@ -1428,7 +1438,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         }
         return result as R;
       } catch (err) {
-        if (err instanceof AuthKeyUnregistered) {
+        if (err instanceof AuthKeyUnregistered && client != this.#client) {
           await this.#importAuthorization(client);
           continue;
         } else if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
