@@ -1043,6 +1043,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       this.#lastConnect = new Date();
       await Promise.all([this.storage.setAuthKey(this.#client!.authKey), this.storage.setDc(this.#client!.dc), this.storage.setServerSalt(this.#client!.serverSalt)]);
       this.#startUpdateGapRecoveryLoop();
+      this.#startClientDisconnectionLoop();
     } finally {
       unlock();
     }
@@ -1121,6 +1122,43 @@ export class Client<C extends Context = Context> extends Composer<C> {
           continue;
         }
         this.#LupdateGapRecoveryLoop.error(err);
+      }
+    }
+  }
+
+  #clientDisconnectionLoopAbortController: AbortController | null = null;
+  #startClientDisconnectionLoop() {
+    drop(this.#clientDisconnectionLoop());
+  }
+  async #clientDisconnectionLoop() {
+    this.#clientDisconnectionLoopAbortController = new AbortController();
+    while (this.connected) {
+      try {
+        await new Promise((resolve, reject) => {
+          const timeout = setTimeout(resolve, 60 * SECOND);
+          this.#clientDisconnectionLoopAbortController!.signal.onabort = () => {
+            reject(this.#clientDisconnectionLoopAbortController?.signal.reason);
+            clearTimeout(timeout);
+          };
+        });
+        if (!this.connected) {
+          continue;
+        }
+        this.#clientDisconnectionLoopAbortController.signal.throwIfAborted();
+        const now = Date.now();
+        const disconnectAfter = 5 * MINUTE;
+        this.#clients.map((client, i) => {
+          if (i > 0 && !client.disconnected && client.lastRequest && now - client.lastRequest.getTime() >= disconnectAfter) {
+            client?.disconnect();
+          }
+        });
+      } catch (err) {
+        if (err instanceof DOMException && err.name == "AbortError") {
+          this.#clientDisconnectionLoopAbortController = new AbortController();
+        }
+        if (!this.connected) {
+          continue;
+        }
       }
     }
   }
@@ -1419,10 +1457,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
     if (!this.#client) {
       throw new ConnectionError("Not connected.");
     }
-    const client = params ? await this.#getClient(params) : this.#client!;
-    const main = client === this.#client;
     let n = 1;
+    let client: ClientEncrypted;
     while (true) {
+      client = params ? await this.#getClient(params) : this.#client!;
+      const main = client === this.#client;
       try {
         const result = await client.invoke(function_);
         if (main) {
@@ -1439,8 +1478,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
         }
         return result as R;
       } catch (err) {
-        if (err instanceof AuthKeyUnregistered && client != this.#client) {
+        if (err instanceof AuthKeyUnregistered && !main) {
           await this.#importAuthorization(client);
+          continue;
+        } else if (err instanceof ConnectionError && !main && !this.disconnected) {
           continue;
         } else if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
           continue;

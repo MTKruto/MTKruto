@@ -58,4 +58,8 @@ export class ClientEncryptedPool {
       client.disconnect();
     }
   }
+
+  map(callback: (client: ClientEncrypted) => void) {
+    this.#clients.map(callback);
+  }
 }

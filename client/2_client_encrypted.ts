@@ -110,6 +110,11 @@ export class ClientEncrypted extends ClientAbstract {
     await super.connect();
   }
 
+  override disconnect() {
+    super.disconnect();
+    this.lastRequest = undefined;
+  }
+
   #createAuthKeyPromise?: Promise<void>;
   #createAuthKey() {
     return this.#createAuthKeyPromise ??= this.#createAuthKeyInner().finally(() => {
@@ -152,7 +157,9 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   #connectionInited = false;
+  lastRequest?: Date;
   async #send(function_: Api.AnyFunction) {
+    this.lastRequest = new Date();
     if (this.#disableUpdates && !isCdnFunction(function_)) {
       function_ = { _: "invokeWithoutUpdates", query: function_ };
     }
