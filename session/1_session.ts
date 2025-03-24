@@ -49,6 +49,7 @@ export abstract class Session {
   #lastConnect?: Date;
   #disconnected = true;
   #L: Logger;
+  #onConnectionStateChange: Connection["stateChangeHandler"];
 
   constructor(dc: DC, params?: SessionParams) {
     this.#dc = dc;
@@ -65,7 +66,7 @@ export abstract class Session {
   }
 
   set onConnectionStateChange(onConnectionStateChange: Connection["stateChangeHandler"]) {
-    this.transport.connection.stateChangeHandler = onConnectionStateChange;
+    this.#onConnectionStateChange = onConnectionStateChange;
   }
 
   set connectionCallback(connectionCallback: ConnectionCallback | undefined) {
@@ -86,6 +87,14 @@ export abstract class Session {
 
   #lastState?: boolean;
   async #stateChangeHandler(connected: boolean) {
+    if (this.#lastState !== connected) {
+      setTimeout(() => {
+        this.#onConnectionStateChange?.(connected);
+      });
+    }
+    if (!connected) {
+      this.transport.transport.deinitialize();
+    }
     if (this.#lastState === connected) {
       return;
     }
@@ -138,6 +147,7 @@ export abstract class Session {
     this.#disconnected = true;
     if (this.transport.connection.connected) {
       this.transport.connection.close();
+      this.transport.transport.deinitialize();
     }
   }
 
