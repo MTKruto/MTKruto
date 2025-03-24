@@ -516,7 +516,7 @@ export class UpdateManager {
 
   #processUpdatesQueue = new Queue("UpdateManager/processUpdates");
   processUpdates(updates: Api.Update | Api.Updates, checkGap: boolean, call: Api.AnyObject | null = null, callback?: () => void) {
-    this.#processUpdatesQueue.add(() => this.#processUpdates(updates, checkGap, call).then(callback));
+    this.#processUpdatesQueue.add(() => this.#processUpdates(updates, checkGap, call).finally(callback));
   }
 
   async #processUpdates(updates_: Api.Update | Api.Updates, checkGap: boolean, call: Api.AnyObject | null = null) {

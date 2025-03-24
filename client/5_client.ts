@@ -381,18 +381,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   constructor(params?: ClientParams) {
     super();
-    // TODO(roj): decryption err?
-    // error: async (_err, source) => {
-    //   switch (source) {
-    //     case "deserialization":
-    //       await this.#updateManager.recoverUpdateGap(source);
-    //       break;
-    //     case "decryption":
-    //       await this.reconnect();
-    //       await this.#updateManager.recoverUpdateGap(source);
-    //       break;
-    //   }
-    // },
 
     this.#apiId = params?.apiId ?? 0;
     this.#apiHash = params?.apiHash ?? "";
@@ -1430,10 +1418,15 @@ export class Client<C extends Context = Context> extends Composer<C> {
       try {
         const result = await client.invoke(function_);
         if (main) {
-          await this.#updateManager.processResult(result as Api.DeserializedType);
+          try {
+            await this.#updateManager.processResult(result as Api.DeserializedType);
+          } catch (err) {
+            this.#L.error("failed to process result:", err);
+          }
           if (Api.isOfEnum("Update", result) || Api.isOfEnum("Updates", result)) {
-            // TODO(roj): set callback
-            this.#updateManager.processUpdates(result, true, null);
+            return new Promise<R>((resolve) => {
+              this.#updateManager.processUpdates(result, true, null, () => resolve(result as R));
+            });
           }
         }
         return result as R;
