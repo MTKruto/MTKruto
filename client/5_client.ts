@@ -1813,11 +1813,15 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
+  #previouslyConnected = false;
   #lastConnectionState = false;
   #onConnectionStateChange(connected: boolean) {
     if (this.#lastConnectionState != connected) {
       if (connected) {
-        drop(this.#updateManager.recoverUpdateGap("connect"));
+        if (this.#previouslyConnected) {
+          drop(this.#updateManager.recoverUpdateGap("reconnect"));
+        }
+        this.#previouslyConnected = true;
       }
       const connectionState = connected ? "ready" : "notConnected";
       this.#queueHandleCtxUpdate({ connectionState });
