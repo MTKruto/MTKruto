@@ -45,14 +45,14 @@ export class NetworkStatisticsManager {
     return { messages, cdn };
   }
 
-  getTransportReadWriteCallback() {
+  getTransportReadWriteCallback(cdn: boolean) {
     return {
       read: async (count: number) => {
-        const key = this.#c.cdn ? "netstat_cdn_read" : "netstat_messages_read";
+        const key = cdn ? "netstat_cdn_read" : "netstat_messages_read";
         await this.#c.storage.incr([key], count);
       },
       write: async (count: number) => {
-        const key = this.#c.cdn ? "netstat_cdn_write" : "netstat_messages_write";
+        const key = cdn ? "netstat_cdn_write" : "netstat_messages_write";
         await this.#c.storage.incr([key], count);
       },
     };

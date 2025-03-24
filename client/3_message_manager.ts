@@ -22,6 +22,7 @@ import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import { getDc } from "../3_transport.ts";
 import { constructVoiceTranscription, deserializeFileId, FileId, InputMedia, isMessageType, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt, VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
@@ -330,7 +331,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         effect,
         schedule_date,
         allow_paid_floodskip,
-      }, params?.businessConnectionId);
+      }, { businessConnectionId: params?.businessConnectionId });
     } else {
       result = await this.#c.invoke(
         {
@@ -350,7 +351,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
           schedule_date,
           allow_paid_floodskip,
         },
-        params?.businessConnectionId,
+        { businessConnectionId: params?.businessConnectionId },
       );
     }
 
@@ -409,7 +410,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
       schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
       allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
-    }, params?.businessConnectionId);
+    }, { businessConnectionId: params?.businessConnectionId });
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "venue");
@@ -446,7 +447,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
         allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
-      params?.businessConnectionId,
+      { businessConnectionId: params?.businessConnectionId },
     );
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -479,7 +480,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
       schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
       allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
-    }, params?.businessConnectionId);
+    }, { businessConnectionId: params?.businessConnectionId });
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "dice");
@@ -531,7 +532,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
         allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
-      params?.businessConnectionId,
+      { businessConnectionId: params?.businessConnectionId },
     );
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -699,7 +700,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
         allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
-      params?.businessConnectionId,
+      { businessConnectionId: params?.businessConnectionId },
     );
 
     return (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -776,7 +777,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
         allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
-      params?.businessConnectionId,
+      { businessConnectionId: params?.businessConnectionId },
     );
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -794,7 +795,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       id: checkMessageId(messageId),
       peer: await this.#c.getInputPeer(chatId),
       reply_markup: await this.#constructReplyMarkup(params),
-    }, params?.businessConnectionId);
+    }, { businessConnectionId: params?.businessConnectionId });
 
     const message_ = (await this.updatesToMessages(chatId, result))[0];
     return message_;
@@ -847,7 +848,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       no_webpage: noWebpage,
       invert_media: invertMedia,
       reply_markup: await this.#constructReplyMarkup(params),
-    }, params?.businessConnectionId);
+    }, { businessConnectionId: params?.businessConnectionId });
 
     const message_ = (await this.updatesToMessages(chatId, result))[0];
     return assertMessageType(message_, "text");
@@ -878,7 +879,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       entities: message ? entities : [],
       message,
       reply_markup: await this.#constructReplyMarkup(params),
-    }, params?.businessConnectionId);
+    }, { businessConnectionId: params?.businessConnectionId });
 
     return (await this.updatesToMessages(chatId, result))[0];
   }
@@ -899,7 +900,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.largeMedia ? true : undefined, force_small_media: params.linkPreview.smallMedia ? true : undefined, optional: message.length ? undefined : true };
     }
 
-    await this.#c.invoke({ _: "messages.editInlineBotMessage", id, entities, message, media, no_webpage: noWebpage, invert_media: invertMedia, reply_markup: await this.#constructReplyMarkup(params) });
+    await this.#c.invoke({ _: "messages.editInlineBotMessage", id, entities, message, media, no_webpage: noWebpage, invert_media: invertMedia, reply_markup: await this.#constructReplyMarkup(params) }, { dc: getDc(id.dc_id) });
   }
 
   async editInlineMessageText(inlineMessageId: string, text: string, params?: EditInlineMessageTextParams) {
@@ -1014,7 +1015,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       reply_markup: await this.#constructReplyMarkup(params),
       message: text,
       entities,
-    }, params?.businessConnectionId);
+    }, { businessConnectionId: params?.businessConnectionId });
 
     const message_ = (await this.updatesToMessages(chatId, result))[0];
     return message_;
@@ -1076,7 +1077,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
 
   async unpinMessage(chatId: ID, messageId: number, params?: UnpinMessageParams) {
     this.#checkParams(params);
-    await this.#c.invoke({ _: "messages.updatePinnedMessage", peer: await this.#c.getInputPeer(chatId), id: checkMessageId(messageId), unpin: true }, params?.businessConnectionId);
+    await this.#c.invoke({ _: "messages.updatePinnedMessage", peer: await this.#c.getInputPeer(chatId), id: checkMessageId(messageId), unpin: true }, { businessConnectionId: params?.businessConnectionId });
   }
 
   async unpinMessages(chatId: ID) {
@@ -1254,7 +1255,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       default:
         throw new InputError(`Invalid chat action: ${action}`);
     }
-    await this.#c.invoke({ _: "messages.setTyping", peer: await this.#c.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId }, params?.businessConnectionId);
+    await this.#c.invoke({ _: "messages.setTyping", peer: await this.#c.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId }, { businessConnectionId: params?.businessConnectionId });
   }
 
   async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams) {
@@ -1318,7 +1319,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       id: messageId,
       media: ({ _: "inputMediaPoll", poll: ({ _: "poll", id: BigInt(message.poll.id), closed: true, question: { _: "textWithEntities", text: "", entities: [] }, answers: [] }) }),
       reply_markup: await this.#constructReplyMarkup(params),
-    }, params?.businessConnectionId);
+    }, { businessConnectionId: params?.businessConnectionId });
 
     const message_ = (await this.updatesToMessages(chatId, result))[0];
     return assertMessageType(message_, "poll").poll;
@@ -1334,7 +1335,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         id: messageId,
         media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }),
         reply_markup: await this.#constructReplyMarkup(params),
-      }, params?.businessConnectionId);
+      }, { businessConnectionId: params?.businessConnectionId });
 
       const message = (await this.updatesToMessages(chatId, result))[0];
       return assertMessageType(message, "location");

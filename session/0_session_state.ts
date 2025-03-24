@@ -18,14 +18,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export { getColorFromPeerId, getColorName, getRandomId, type LoggingProvider, setLogFilter, setLoggingProvider, setLogVerbosity } from "./1_utilities.ts";
-export { checkPassword } from "./client/0_password.ts";
+import { toUnixTimestamp } from "../1_utilities.ts";
 
-export * from "./2_connection.ts";
-export * from "./2_storage.ts";
-export * from "./3_transport.ts";
-export * from "./2_tl.ts";
-export * from "./3_types.ts";
-export { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "./4_constants.ts";
-export * as errors from "./4_errors.ts";
-export * from "./5_client.ts";
+export class SessionState {
+  timeDifference = 0;
+  serverSalt = 0n;
+  #seqNo = 0;
+  #messageId = 0n;
+
+  nextMessageId(): bigint {
+    const now = toUnixTimestamp(new Date()) + this.timeDifference;
+    const nanoseconds = Math.floor((now - Math.floor(now)) * 1e9);
+    const newMessageId = (BigInt(Math.floor(now)) << 32n) || (BigInt(nanoseconds) << 2n);
+    if (this.#messageId >= newMessageId) {
+      this.#messageId += 4n;
+    } else {
+      this.#messageId = newMessageId;
+    }
+    return this.#messageId;
+  }
+
+  nextSeqNo(contentRelated: boolean): number {
+    let seqNo = this.#seqNo * 2;
+    if (contentRelated) {
+      seqNo++;
+      this.#seqNo++;
+    }
+    return seqNo;
+  }
+
+  reset() {
+    this.serverSalt = 0n;
+    this.#seqNo = 0;
+    this.#messageId = 0n;
+  }
+}
