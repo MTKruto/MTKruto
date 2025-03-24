@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ConnectionCallback } from "../2_connection.ts";
+import { Connection, ConnectionCallback } from "../2_connection.ts";
 import { Session } from "../4_session.ts";
 
 export abstract class ClientAbstract {
@@ -54,5 +54,9 @@ export abstract class ClientAbstract {
 
   set connectionCallback(connectionCallback: ConnectionCallback | undefined) {
     this.session.connectionCallback = connectionCallback;
+  }
+
+  set onConnectionStateChange(onConnectionStateChange: Connection["stateChangeHandler"]) {
+    this.session.onConnectionStateChange = onConnectionStateChange;
   }
 }

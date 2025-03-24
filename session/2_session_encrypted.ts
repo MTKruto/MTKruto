@@ -94,13 +94,13 @@ export class SessionEncrypted extends Session implements Session {
     }
   }
 
-  async #invalidateSession() {
+  async #invalidateSession(reason: string) {
+    this.#L.debug("invalidating session because of", reason);
     this.#id = getRandomId();
     this.state.reset();
     this.disconnect();
     await this.connect();
-    const reason = new SessionError("Session invalidated.");
-    this.#rejectAllPending(reason);
+    this.#rejectAllPending(new SessionError("Session invalidated."));
   }
 
   #rejectAllPending(reason: unknown) {
@@ -174,9 +174,14 @@ export class SessionEncrypted extends Session implements Session {
       const int = bigIntFromBuffer(buffer, true, true);
       throw new TransportError(Number(int));
     }
-    const decrypted = await this.#decryptMessage(buffer);
-    this.#L.in(decrypted);
-    return decrypted;
+    try {
+      const decrypted = await this.#decryptMessage(buffer);
+      this.#L.in(decrypted);
+      return decrypted;
+    } catch (err) {
+      await this.#invalidateSession("decryption error");
+      throw err;
+    }
   }
 
   async #encryptMessage(message: message) {
@@ -350,7 +355,7 @@ export class SessionEncrypted extends Session implements Session {
         this.state.timeDifference = Math.abs(toUnixTimestamp(new Date()) - Number(msgId >> 32n));
         if (!low) {
           this.state.timeDifference = -this.state.timeDifference;
-          await this.#invalidateSession();
+          await this.#invalidateSession("message ID too high");
           return;
         } else {
           this.#L.debug("message ID too low, resending message");
@@ -361,7 +366,7 @@ export class SessionEncrypted extends Session implements Session {
         this.#L.debug("resending message that caused bad_server_salt");
         break;
       default:
-        await this.#invalidateSession();
+        await this.#invalidateSession("unexpected bad_msg_notification");
         return;
     }
     this.#onMessageFailed(badMsgNotification.bad_msg_id, new SessionError(badMsgNotification._));

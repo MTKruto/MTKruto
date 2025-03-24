@@ -519,6 +519,14 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #setMainClient(client: ClientEncrypted) {
     this.#disconnectAllClients();
     this.#clients = [client];
+    client.handlers.onUpdate = (updates) => {
+      this.#updateManager.processUpdates(updates, true, null); // TODO(roj): callback?
+      this.#lastUpdates = new Date();
+    };
+    client.handlers.onDeserializationError = async () => {
+      await this.#updateManager.recoverUpdateGap("deserialization error");
+    };
+    client.onConnectionStateChange = this.#onConnectionStateChange.bind(this);
   }
 
   async #newClient(dc: DC, main: boolean, cdn: boolean) {
@@ -536,15 +544,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
       publicKeys: this.#publicKeys,
     });
     client.connectionCallback = this.#networkStatisticsManager.getTransportReadWriteCallback(cdn);
-    if (main) {
-      client.handlers.onUpdate = (updates) => {
-        this.#updateManager.processUpdates(updates, true, null); // TODO(roj): callback?
-        this.#lastUpdates = new Date();
-      };
-      client.handlers.onDeserializationError = async () => {
-        await this.#updateManager.recoverUpdateGap("deserialization error");
-      };
-    }
     return client;
   }
 
@@ -1801,6 +1800,17 @@ export class Client<C extends Context = Context> extends Composer<C> {
       const user = await this.getMe();
       this.#lastGetMe = user;
       return user;
+    }
+  }
+
+  #lastConnectionState = false;
+  #onConnectionStateChange(connected: boolean) {
+    if (this.#lastConnectionState != connected) {
+      if (connected) {
+        drop(this.#updateManager.recoverUpdateGap("connect"));
+      }
+      const connectionState = connected ? "ready" : "notConnected";
+      this.#queueHandleCtxUpdate({ connectionState });
     }
   }
 

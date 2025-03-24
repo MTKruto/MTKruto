@@ -20,7 +20,7 @@
 
 import { SECOND } from "../0_deps.ts";
 import { drop, getLogger, Logger, Mutex } from "../1_utilities.ts";
-import { ConnectionCallback } from "../2_connection.ts";
+import { Connection, ConnectionCallback } from "../2_connection.ts";
 import { DC, TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
 import { SessionState } from "./0_session_state.ts";
 
@@ -62,6 +62,10 @@ export abstract class Session {
       });
     };
     this.#L = getLogger("Session").client(id++);
+  }
+
+  set onConnectionStateChange(onConnectionStateChange: Connection["stateChangeHandler"]) {
+    this.transport.connection.stateChangeHandler = onConnectionStateChange;
   }
 
   set connectionCallback(connectionCallback: ConnectionCallback | undefined) {
