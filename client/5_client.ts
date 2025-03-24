@@ -508,7 +508,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#disconnectAllClients();
     this.#clients = [client];
     client.handlers.onUpdate = (updates) => {
-      this.#updateManager.processUpdates(updates, true, null); // TODO(roj): callback?
+      this.#updateManager.processUpdates(updates, true, null);
       this.#lastUpdates = new Date();
     };
     client.handlers.onDeserializationError = async () => {
