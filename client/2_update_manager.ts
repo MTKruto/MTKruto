@@ -140,9 +140,6 @@ export class UpdateManager {
   }
 
   async fetchState(source: string) {
-    if (this.#c.cdn) {
-      return;
-    }
     let state = await this.#c.invoke({ _: "updates.getState" });
     const difference = await this.#c.invoke({ ...state, _: "updates.getDifference" });
     if (Api.is("updates.difference", difference)) {
@@ -519,10 +516,7 @@ export class UpdateManager {
 
   #processUpdatesQueue = new Queue("UpdateManager/processUpdates");
   processUpdates(updates: Api.Update | Api.Updates, checkGap: boolean, call: Api.AnyObject | null = null, callback?: () => void) {
-    if (this.#c.cdn) {
-      return;
-    }
-    this.#processUpdatesQueue.add(() => this.#processUpdates(updates, checkGap, call).then(callback));
+    this.#processUpdatesQueue.add(() => this.#processUpdates(updates, checkGap, call).finally(callback));
   }
 
   async #processUpdates(updates_: Api.Update | Api.Updates, checkGap: boolean, call: Api.AnyObject | null = null) {
@@ -720,9 +714,6 @@ export class UpdateManager {
   #recoveringUpdateGap = false;
   #recoverUpdateGapMutex = new Mutex();
   async recoverUpdateGap(source: string) {
-    if (this.#c.cdn) {
-      return;
-    }
     const wasRecoveringUpdateGap = this.#recoveringUpdateGap;
     const unlock = await this.#recoverUpdateGapMutex.lock();
     if (wasRecoveringUpdateGap) {
@@ -902,9 +893,6 @@ export class UpdateManager {
   }
 
   setUpdateHandler(handler: UpdateHandler) {
-    if (this.#c.cdn) {
-      return;
-    }
     this.#updateHandler = handler;
   }
 

@@ -20,28 +20,8 @@
 
 import { Api } from "../2_tl.ts";
 import { ConnectionState, EntityGetter, ID, ParseMode, Update } from "../3_types.ts";
+import { InvokeParams } from "./0_params.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
-
-export type Invoke = <T extends Api.AnyFunction<P>, P extends Api.Function, R extends unknown = Api.ReturnType<Api.Functions[T["_"]]>>(function_: T, businessConnectionId?: string) => Promise<R>;
-
-interface Connection {
-  invoke: Invoke;
-  connect: () => Promise<void>;
-  disconnect: () => Promise<void>;
-}
-export interface ConnectionPool extends Omit<Connection, "invoke"> {
-  size: number;
-  invoke: () => Invoke;
-  connect: () => Promise<void>;
-  disconnect: () => Promise<void>;
-}
-
-interface GetCdnConnection {
-  (dcId?: number): Connection;
-}
-interface GetCdnConnectionPool {
-  (size: number, dcId?: number): ConnectionPool;
-}
 
 export interface C {
   id: number;
@@ -58,13 +38,10 @@ export interface C {
   getEntity: EntityGetter;
   handleUpdate: (update: Update) => void;
   parseMode: ParseMode;
-  getCdnConnection: GetCdnConnection;
-  getCdnConnectionPool: GetCdnConnectionPool;
   outgoingMessages: "none" | "business" | "all" | null;
-  cdn: boolean;
   dropPendingUpdates?: boolean;
-  invoke: Invoke;
   disconnected: () => boolean;
   langPack?: string;
   langCode?: string;
+  invoke<T extends Api.AnyFunction<P>, P extends Api.Function, R extends unknown = Api.ReturnType<Api.Functions[T["_"]]>>(function_: T, params?: InvokeParams & { businessConnectionId?: string }): Promise<R>;
 }

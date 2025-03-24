@@ -19,6 +19,6 @@
  */
 
 export * from "./client/0_params.ts";
-export * from "./client/1_client_encrypted.ts";
+export * from "./client/2_client_encrypted.ts";
 export * from "./client/1_client_plain.ts";
 export * from "./client/5_client.ts";

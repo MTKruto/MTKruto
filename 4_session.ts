@@ -18,14 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export { getColorFromPeerId, getColorName, getRandomId, type LoggingProvider, setLogFilter, setLoggingProvider, setLogVerbosity } from "./1_utilities.ts";
-export { checkPassword } from "./client/0_password.ts";
-
-export * from "./2_connection.ts";
-export * from "./2_storage.ts";
-export * from "./3_transport.ts";
-export * from "./2_tl.ts";
-export * from "./3_types.ts";
-export { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "./4_constants.ts";
-export * as errors from "./4_errors.ts";
-export * from "./5_client.ts";
+export * from "./session/0_session_error.ts";
+export * from "./session/1_session.ts";
+export * from "./session/2_session_encrypted.ts";
+export * from "./session/2_session_plain.ts";
