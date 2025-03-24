@@ -19,16 +19,17 @@
  */
 
 import { Connection, ConnectionCallback } from "../2_connection.ts";
+import { DC } from "../3_transport.ts";
 import { Session } from "../4_session.ts";
 
 export abstract class ClientAbstract {
   abstract session: Session;
 
-  get dc() {
+  get dc(): DC {
     return this.session.dc;
   }
 
-  get cdn() {
+  get cdn(): boolean {
     return this.session.cdn;
   }
 
@@ -36,7 +37,7 @@ export abstract class ClientAbstract {
     this.session.serverSalt = serverSalt;
   }
 
-  get connected() {
+  get connected(): boolean {
     return this.session.connected;
   }
 
@@ -44,7 +45,7 @@ export abstract class ClientAbstract {
     await this.session.connect();
   }
 
-  get disconnected() {
+  get disconnected(): boolean {
     return this.session.disconnected;
   }
 
