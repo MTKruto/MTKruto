@@ -807,7 +807,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   ) {
     const id = await deserializeInlineMessageId(inlineMessageId);
 
-    await this.#c.invoke({ _: "messages.editInlineBotMessage", id, reply_markup: await this.#constructReplyMarkup(params) });
+    await this.#c.invoke({
+      _: "messages.editInlineBotMessage",
+      id,
+      reply_markup: await this.#constructReplyMarkup(params),
+    }, { dc: getDc(id.dc_id) });
   }
 
   async editMessageText(
@@ -900,7 +904,16 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.largeMedia ? true : undefined, force_small_media: params.linkPreview.smallMedia ? true : undefined, optional: message.length ? undefined : true };
     }
 
-    await this.#c.invoke({ _: "messages.editInlineBotMessage", id, entities, message, media, no_webpage: noWebpage, invert_media: invertMedia, reply_markup: await this.#constructReplyMarkup(params) }, { dc: getDc(id.dc_id) });
+    await this.#c.invoke({
+      _: "messages.editInlineBotMessage",
+      id,
+      entities,
+      message,
+      media,
+      no_webpage: noWebpage,
+      invert_media: invertMedia,
+      reply_markup: await this.#constructReplyMarkup(params),
+    }, { dc: getDc(id.dc_id) });
   }
 
   async editInlineMessageText(inlineMessageId: string, text: string, params?: EditInlineMessageTextParams) {
@@ -1025,7 +1038,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     this.#checkParams(params);
     this.#c.storage.assertBot("editInlineMessageMedia");
     const id = await deserializeInlineMessageId(inlineMessageId);
-    await this.#c.invoke({ _: "messages.editInlineBotMessage", id, media: await this.#resolveInputMedia(media), reply_markup: await this.#constructReplyMarkup(params) });
+    await this.#c.invoke({
+      _: "messages.editInlineBotMessage",
+      id,
+      media: await this.#resolveInputMedia(media),
+      reply_markup: await this.#constructReplyMarkup(params),
+    }, { dc: getDc(id.dc_id) });
   }
 
   async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams) {
@@ -1347,7 +1365,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     this.#checkParams(params);
     this.#c.storage.assertBot("editInlineMessageLiveLocation");
     const id = await deserializeInlineMessageId(inlineMessageId);
-    await this.#c.invoke({ _: "messages.editInlineBotMessage", id, media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }), reply_markup: await this.#constructReplyMarkup(params) });
+    await this.#c.invoke({
+      _: "messages.editInlineBotMessage",
+      id,
+      media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }),
+      reply_markup: await this.#constructReplyMarkup(params),
+    }, { dc: getDc(id.dc_id) });
   }
 
   async sendInvoice(chatId: ID, title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: SendInvoiceParams) {
