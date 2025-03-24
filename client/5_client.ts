@@ -1307,14 +1307,22 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #getClient(params: InvokeParams) {
+    let client: ClientEncrypted;
     switch (params.type) {
       case undefined:
-        return await this.#getMainClient(params.dc);
+        client = await this.#getMainClient(params.dc);
+        break;
       case "download":
-        return await this.#getDownloadClient(params.dc);
+        client = await this.#getDownloadClient(params.dc);
+        break;
       case "upload":
-        return await this.#getUploadClient();
+        client = await this.#getUploadClient();
+        break;
     }
+    if (client !== this.#client && !this.disconnected && client.disconnected) {
+      await client.connect();
+    }
+    return client;
   }
 
   #getMainClientMutex = new Mutex();
