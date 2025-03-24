@@ -26,12 +26,10 @@ export class SessionState {
   #seqNo = 0;
   #messageId = 0n;
 
-  nextMessageId() {
+  nextMessageId(): bigint {
     const now = toUnixTimestamp(new Date()) + this.timeDifference;
     const nanoseconds = Math.floor((now - Math.floor(now)) * 1e9);
-    const newMessageId = (BigInt(Math.floor(now)) <<
-      32n) ||
-      (BigInt(nanoseconds) << 2n);
+    const newMessageId = (BigInt(Math.floor(now)) << 32n) || (BigInt(nanoseconds) << 2n);
     if (this.#messageId >= newMessageId) {
       this.#messageId += 4n;
     } else {
@@ -40,7 +38,7 @@ export class SessionState {
     return this.#messageId;
   }
 
-  nextSeqNo(contentRelated: boolean) {
+  nextSeqNo(contentRelated: boolean): number {
     let seqNo = this.#seqNo * 2;
     if (contentRelated) {
       seqNo++;

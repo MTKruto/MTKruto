@@ -128,7 +128,7 @@ export class SessionEncrypted extends Session implements Session {
     this.handlers.onNewServerSalt?.(newServerSalt);
   }
 
-  async send(body: Uint8Array) {
+  async send(body: Uint8Array): Promise<bigint> {
     if (!this.disconnected && !this.connected) {
       await super.waitUntilConnected();
     }

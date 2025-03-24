@@ -25,7 +25,7 @@ import { TLWriter } from "../tl/1_tl_writer.ts";
 import { Session } from "./1_session.ts";
 
 export class SessionPlain extends Session implements Session {
-  async send(data: Uint8Array) {
+  async send(data: Uint8Array): Promise<bigint> {
     if (!this.connected) {
       throw new ConnectionError("Not connected.");
     }
@@ -42,7 +42,7 @@ export class SessionPlain extends Session implements Session {
     return messageId;
   }
 
-  async receive() {
+  async receive(): Promise<Uint8Array> {
     if (!this.connected) {
       throw new ConnectionError("Not connected.");
     }

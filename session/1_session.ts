@@ -44,7 +44,7 @@ export interface SessionParams {
 export abstract class Session {
   #dc: DC;
   #cdn: boolean;
-  protected state = new SessionState();
+  protected state: SessionState = new SessionState();
   protected transport: ReturnType<TransportProvider>;
   #lastConnect?: Date;
   #disconnected = true;
@@ -73,11 +73,11 @@ export abstract class Session {
     this.transport.connection.callback = connectionCallback;
   }
 
-  get dc() {
+  get dc(): DC {
     return this.#dc;
   }
 
-  get cdn() {
+  get cdn(): boolean {
     return this.#cdn;
   }
 
@@ -139,7 +139,7 @@ export abstract class Session {
     (await this.#connectMutex.lock())();
   }
 
-  get disconnected() {
+  get disconnected(): boolean {
     return this.#disconnected;
   }
 
