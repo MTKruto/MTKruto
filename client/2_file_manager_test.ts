@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertThrows } from "../0_deps.ts";
+import { assertThrows } from "../0_test_deps.ts";
 import { kilobyte, megabyte } from "../1_utilities.ts";
 import { FileManager } from "./2_file_manager.ts";
 

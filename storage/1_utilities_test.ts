@@ -18,7 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assert, assertEquals, assertNotEquals } from "../0_deps.ts";
+import { assertNotEquals } from "../0_test_deps.ts";
+import { assert, assertEquals } from "../0_deps.ts";
 import { fixKey, fromString, isInRange, toString } from "./1_utilities.ts";
 
 function eq(v: unknown) {
