@@ -474,26 +474,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
 
-    this.invoke.use(async ({ error }, next) => {
-      if (error instanceof ConnectionError) {
-        while (!this.connected) {
-          if (this.disconnected) {
-            return next();
-          }
-          try {
-            await this.connect();
-          } catch {
-            //
-          }
-        }
-        return true;
-      } else if (Mtproto.is("bad_msg_notification", error)) {
-        return true;
-      } else {
-        return next();
-      }
-    });
-
     if (params?.defaultHandlers ?? true) {
       this.invoke.use(async ({ error }, next) => {
         if (error instanceof FloodWait && error.seconds <= 10) {
