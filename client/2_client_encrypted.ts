@@ -206,6 +206,7 @@ export class ClientEncrypted extends ClientAbstract {
       } finally {
         if (!errored) {
           this.#L.debug("invoked", repr(function_));
+          this.#L.out(function_);
         }
       }
     }
@@ -280,6 +281,7 @@ export class ClientEncrypted extends ClientAbstract {
       let type: Api.DeserializedType;
       try {
         type = await Api.deserializeType(Api.mustGetReturnType(request.call._), body);
+        this.#L.in(type);
         this.#L.debug("received rpc_result", repr(type));
         request.resolve(type);
       } catch (err) {
