@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api } from "../2_tl.ts";
+import { Api, Mtproto } from "../2_tl.ts";
 import { ConnectionState, EntityGetter, ID, ParseMode, Update } from "../3_types.ts";
 import { InvokeParams } from "./0_params.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
@@ -43,5 +43,5 @@ export interface C {
   disconnected: () => boolean;
   langPack?: string;
   langCode?: string;
-  invoke<T extends Api.AnyFunction<P>, P extends Api.Function, R extends unknown = Api.ReturnType<Api.Functions[T["_"]]>>(function_: T, params?: InvokeParams & { businessConnectionId?: string }): Promise<R>;
+  invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams & { businessConnectionId?: string }): Promise<R>;
 }

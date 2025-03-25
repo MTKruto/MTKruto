@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { InputError } from "../0_errors.ts";
 import { getLogger, Logger } from "../1_utilities.ts";
 import { Api, Mtproto, X } from "../2_tl.ts";
 import { ConnectionNotInited } from "../3_errors.ts";
@@ -56,9 +57,9 @@ export interface ClientEncryptedHandlers {
 }
 
 interface PendingRequest {
-  resolve: (obj: Api.DeserializedType) => void;
+  resolve: (obj: Api.DeserializedType | Mtproto.DeserializedType) => void;
   reject: (reason?: unknown) => void;
-  call: Api.AnyFunction;
+  call: Api.AnyFunction | Mtproto.ping;
 }
 
 export class ClientEncrypted extends ClientAbstract {
@@ -92,6 +93,7 @@ export class ClientEncrypted extends ClientAbstract {
     this.session.handlers.onMessageFailed = this.#onMessageFailed.bind(this);
     this.session.handlers.onRpcError = this.#onRpcError.bind(this);
     this.session.handlers.onRpcResult = this.#onRpcResult.bind(this);
+    this.session.handlers.onPong = this.#onPong.bind(this);
 
     this.#apiId = apiId;
     this.#appVersion = params?.appVersion ?? APP_VERSION;
@@ -158,29 +160,37 @@ export class ClientEncrypted extends ClientAbstract {
 
   #connectionInited = false;
   lastRequest?: Date;
-  async #send(function_: Api.AnyFunction) {
+  async #send(function_: Api.AnyFunction | Mtproto.ping) {
     this.lastRequest = new Date();
-    if (this.#disableUpdates && !isCdnFunction(function_)) {
-      function_ = { _: "invokeWithoutUpdates", query: function_ };
+    let body: Uint8Array;
+    if (Mtproto.is("ping", function_)) {
+      body = Mtproto.serializeObject(function_);
+    } else {
+      if (this.#disableUpdates && !isCdnFunction(function_)) {
+        function_ = { _: "invokeWithoutUpdates", query: function_ };
+      }
+      if (!this.#connectionInited) {
+        if (!this.#apiId) {
+          throw new InputError("apiId not set");
+        }
+        function_ = {
+          _: "initConnection",
+          api_id: this.#apiId,
+          app_version: this.#appVersion,
+          device_model: this.#deviceModel,
+          lang_code: this.#langCode,
+          lang_pack: this.#langPack,
+          query: {
+            _: "invokeWithLayer",
+            layer: Api.LAYER,
+            query: function_,
+          } as Api.Function,
+          system_lang_code: this.#systemLangCode,
+          system_version: this.#systemVersion,
+        };
+      }
+      body = Api.serializeObject(function_);
     }
-    if (!this.#connectionInited) {
-      function_ = {
-        _: "initConnection",
-        api_id: this.#apiId,
-        app_version: this.#appVersion,
-        device_model: this.#deviceModel,
-        lang_code: this.#langCode,
-        lang_pack: this.#langPack,
-        query: {
-          _: "invokeWithLayer",
-          layer: Api.LAYER,
-          query: function_,
-        } as Api.Function,
-        system_lang_code: this.#systemLangCode,
-        system_version: this.#systemVersion,
-      };
-    }
-    const body = Api.serializeObject(function_);
     let lastErr: unknown;
     for (let i = 0; i < ClientEncrypted.#SEND_MAX_TRIES; ++i) {
       let errored = false;
@@ -211,9 +221,9 @@ export class ClientEncrypted extends ClientAbstract {
     }
   }
 
-  async invoke<T extends Api.AnyFunction, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T): Promise<R> {
+  async invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T): Promise<R> {
     const messageId = await this.#send(function_);
-    return (await new Promise<Api.DeserializedType>((resolve, reject) => {
+    return (await new Promise<Api.DeserializedType | Mtproto.DeserializedType>((resolve, reject) => {
       this.#pendingRequests.set(messageId, { resolve, reject, call: function_ });
     })) as R;
   }
@@ -283,6 +293,14 @@ export class ClientEncrypted extends ClientAbstract {
     }
     if (!this.#connectionInited) {
       this.#connectionInited = true;
+    }
+  }
+
+  #onPong(pong: Mtproto.pong) {
+    const pendingRequest = this.#pendingRequests.get(pong.msg_id);
+    if (pendingRequest) {
+      pendingRequest.resolve(pong);
+      this.#pendingRequests.delete(pong.msg_id);
     }
   }
 }
