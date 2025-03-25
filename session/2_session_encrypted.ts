@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals, concat, ige256Decrypt, ige256Encrypt, initTgCrypto, SECOND } from "../0_deps.ts";
+import { assertEquals, concat, delay, ige256Decrypt, ige256Encrypt, initTgCrypto, SECOND } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
 import { bigIntFromBuffer, bufferFromBigInt, drop, getLogger, getRandomId, gunzip, Logger, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
 import { deserializeMessage, message, msg_container, Mtproto, repr, serializeMessage, TLReader, X } from "../2_tl.ts";
@@ -434,13 +434,7 @@ export class SessionEncrypted extends Session implements Session {
     while (this.connected) {
       const then = Date.now();
       try {
-        await new Promise((resolve, reject) => {
-          const timeout = setTimeout(resolve, this.#pingInterval - timeElapsed);
-          this.#pingLoopAbortController!.signal.onabort = () => {
-            reject(this.#pingLoopAbortController?.signal.reason);
-            clearTimeout(timeout);
-          };
-        });
+        await delay(this.#pingInterval - timeElapsed, { signal: this.#pingLoopAbortController.signal });
         if (!this.connected) {
           continue;
         }

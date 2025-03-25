@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { SECOND, unreachable } from "../0_deps.ts";
+import { delay, SECOND, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, Logger, Mutex, Queue, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
@@ -726,7 +726,7 @@ export class UpdateManager {
 
     this.#c.setConnectionState("updating");
     try {
-      let delay = 5;
+      let retryIn = 5;
       let state = await this.#getLocalState();
       while (true) {
         let difference: Api.updates_Difference;
@@ -734,10 +734,10 @@ export class UpdateManager {
           difference = await this.#c.invoke({ _: "updates.getDifference", pts: state.pts, date: state.date, qts: state.qts ?? 0 });
         } catch (err) {
           if (err instanceof PersistentTimestampInvalid) {
-            await new Promise((r) => setTimeout(r, delay * SECOND));
-            ++delay;
-            if (delay > 60) {
-              delay = 60;
+            await delay(retryIn * SECOND);
+            ++retryIn;
+            if (retryIn > 60) {
+              retryIn = 60;
             }
             continue;
           } else {
@@ -790,7 +790,7 @@ export class UpdateManager {
     this.#LrecoverChannelUpdateGap.debug(`recovering channel update gap [${channelId}, ${source}]`);
     const pts_ = await this.#c.storage.getChannelPts(channelId);
     let pts = pts_ == null ? 1 : pts_;
-    let delay = 5;
+    let retryIn = 5;
     while (true) {
       const { access_hash } = await this.#c.getInputPeer(ZERO_CHANNEL_ID + -Number(channelId)).then((v) => Api.as("inputPeerChannel", v));
       let difference: Api.updates_ChannelDifference;
@@ -805,10 +805,10 @@ export class UpdateManager {
         lastTimeout = difference.timeout ?? 1;
       } catch (err) {
         if (err instanceof PersistentTimestampInvalid) {
-          await new Promise((r) => setTimeout(r, delay * SECOND));
-          delay += 5;
-          if (delay > 60) {
-            delay = 60;
+          await delay(retryIn * SECOND);
+          retryIn += 5;
+          if (retryIn > 60) {
+            retryIn = 60;
           }
           continue;
         } else {

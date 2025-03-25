@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MINUTE, SECOND, unreachable } from "../0_deps.ts";
+import { delay, MINUTE, SECOND, unreachable } from "../0_deps.ts";
 import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
 import { cleanObject, drop, getLogger, Logger, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageMemory } from "../2_storage.ts";
@@ -1054,13 +1054,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#updateGapRecoveryLoopAbortController = new AbortController();
     while (this.connected) {
       try {
-        await new Promise((resolve, reject) => {
-          const timeout = setTimeout(resolve, 60 * SECOND);
-          this.#updateGapRecoveryLoopAbortController!.signal.onabort = () => {
-            reject(this.#updateGapRecoveryLoopAbortController?.signal.reason);
-            clearTimeout(timeout);
-          };
-        });
+        await delay(60 * SECOND, { signal: this.#updateGapRecoveryLoopAbortController.signal });
         if (!this.connected) {
           continue;
         }
