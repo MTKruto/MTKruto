@@ -78,6 +78,9 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   override async connect(): Promise<void> {
+    if (!this.connected) {
+      this.#rejectAllPending(new ConnectionError("Not connected."));
+    }
     await super.connect();
     if (!SessionEncrypted.#TGCRYPTO_INITED) {
       await initTgCrypto();
