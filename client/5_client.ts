@@ -1029,6 +1029,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   disconnect() {
     this.#disconnectAllClients();
+    this.#clientDisconnectionLoopAbortController?.abort();
+    this.#updateGapRecoveryLoopAbortController?.abort();
     this.#updateManager.closeAllChats();
   }
 
@@ -1049,19 +1051,20 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   #lastUpdates = new Date();
-  #updateGapRecoveryLoopAbortController: AbortController | null = null;
+  #updateGapRecoveryLoopAbortController?: AbortController;
   #startUpdateGapRecoveryLoop() {
     drop(this.#updateGapRecoveryLoop());
   }
   async #updateGapRecoveryLoop() {
-    this.#updateGapRecoveryLoopAbortController = new AbortController();
+    this.#updateGapRecoveryLoopAbortController?.abort();
+    const controller = this.#updateGapRecoveryLoopAbortController = new AbortController();
     while (this.connected) {
       try {
-        await delay(60 * SECOND, { signal: this.#updateGapRecoveryLoopAbortController.signal });
+        await delay(60 * SECOND, { signal: controller.signal });
         if (!this.connected) {
-          continue;
+          break;
         }
-        this.#updateGapRecoveryLoopAbortController.signal.throwIfAborted();
+        controller.signal.throwIfAborted();
         if (Date.now() - this.#lastUpdates.getTime() >= 15 * MINUTE) {
           drop(
             this.#updateManager.recoverUpdateGap("lastUpdates").then(() => {
@@ -1071,35 +1074,28 @@ export class Client<C extends Context = Context> extends Composer<C> {
         }
       } catch (err) {
         if (err instanceof DOMException && err.name == "AbortError") {
-          this.#updateGapRecoveryLoopAbortController = new AbortController();
-        }
-        if (!this.connected) {
-          continue;
+          break;
+        } else if (!this.connected) {
+          break;
         }
         this.#LupdateGapRecoveryLoop.error(err);
       }
     }
   }
 
-  #clientDisconnectionLoopAbortController: AbortController | null = null;
+  #clientDisconnectionLoopAbortController?: AbortController;
   #startClientDisconnectionLoop() {
     drop(this.#clientDisconnectionLoop());
   }
   async #clientDisconnectionLoop() {
-    this.#clientDisconnectionLoopAbortController = new AbortController();
+    const controller = this.#clientDisconnectionLoopAbortController = new AbortController();
     while (this.connected) {
       try {
-        await new Promise((resolve, reject) => {
-          const timeout = setTimeout(resolve, 60 * SECOND);
-          this.#clientDisconnectionLoopAbortController!.signal.onabort = () => {
-            reject(this.#clientDisconnectionLoopAbortController?.signal.reason);
-            clearTimeout(timeout);
-          };
-        });
+        await delay(60 * SECOND, { signal: controller.signal });
         if (!this.connected) {
-          continue;
+          break;
         }
-        this.#clientDisconnectionLoopAbortController.signal.throwIfAborted();
+        controller.signal.throwIfAborted();
         const now = Date.now();
         const disconnectAfter = 5 * MINUTE;
         this.#clients.map((client, i) => {
@@ -1109,10 +1105,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
         });
       } catch (err) {
         if (err instanceof DOMException && err.name == "AbortError") {
-          this.#clientDisconnectionLoopAbortController = new AbortController();
-        }
-        if (!this.connected) {
-          continue;
+          break;
+        } else if (!this.connected) {
+          break;
         }
       }
     }

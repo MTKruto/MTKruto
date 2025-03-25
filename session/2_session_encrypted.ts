@@ -428,24 +428,24 @@ export class SessionEncrypted extends Session implements Session {
   #pingLoopAbortController?: AbortController;
   #LpingLoop: Logger;
   async #pingLoop() {
-    this.#pingLoopAbortController = new AbortController();
+    this.#pingLoopAbortController?.abort();
+    const controller = this.#pingLoopAbortController = new AbortController();
     let timeElapsed = 0;
     while (this.connected) {
       const then = Date.now();
       try {
-        await delay(this.#pingInterval - timeElapsed, { signal: this.#pingLoopAbortController.signal });
+        await delay(this.#pingInterval - timeElapsed, { signal: controller.signal });
         if (!this.connected) {
           continue;
         }
-        this.#pingLoopAbortController.signal.throwIfAborted();
+        controller.signal.throwIfAborted();
         await this.#sendPingDelayDisconnect(this.#pingInterval / SECOND + 15);
-        this.#pingLoopAbortController.signal.throwIfAborted();
+        controller.signal.throwIfAborted();
       } catch (err) {
         if (err instanceof DOMException && err.name == "AbortError") {
-          this.#pingLoopAbortController = new AbortController();
-        }
-        if (!this.connected) {
-          continue;
+          break;
+        } else if (!this.connected) {
+          break;
         }
         this.#LpingLoop.error(err);
       } finally {
