@@ -22,11 +22,11 @@ import { AssertionError, basename, delay, extension, extname, isAbsolute, MINUTE
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, iterateReadableStream, kilobyte, Logger, megabyte, mod, Part, PartStream } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { getDc } from "../3_transport.ts";
+import { DC, getDc } from "../3_transport.ts";
 import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { _UploadCommon, DownloadParams } from "./0_params.ts";
-import { UPLOAD_POOL_SIZE, UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
+import { DOWNLOAD_POOL_SIZE, DOWNLOAD_REQUEST_PER_CONNECTION, UPLOAD_POOL_SIZE, UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
 import { C } from "./1_types.ts";
 
 export class FileManager {
@@ -275,6 +275,30 @@ export class FileManager {
     let part = 0;
 
     let ms = 0.05;
+    let promises = new Array<Promise<Uint8Array>>();
+    while (true) {
+      if (part > 0) {
+        await delay(ms);
+        ms = Math.max(ms * .8, 0.003);
+      }
+      promises.push(this.#downloadPart(dc, location, part++, offset, limit, id, signal));
+      offset += BigInt(limit);
+      if (promises.length == DOWNLOAD_POOL_SIZE * DOWNLOAD_REQUEST_PER_CONNECTION) {
+        const chunks = await Promise.all(promises);
+        promises = [];
+        for (const chunk of chunks) {
+          if (chunk.length) {
+            yield chunk;
+          }
+          if (chunk.length < limit) {
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  async #downloadPart(dc: DC, location: Api.InputFileLocation, index: number, offset: bigint, limit: number, id: bigint | null, signal: AbortSignal | undefined) {
     while (true) {
       signal?.throwIfAborted();
       let retryIn = 1;
@@ -284,27 +308,22 @@ export class FileManager {
         signal?.throwIfAborted();
 
         if (Api.is("upload.file", file)) {
-          yield file.bytes;
           if (id != null) {
-            await this.#c.storage.saveFilePart(id, part, file.bytes);
+            await this.#c.storage.saveFilePart(id, index, file.bytes);
             signal?.throwIfAborted();
           }
-          ++part;
           if (file.bytes.length < limit) {
             if (id != null) {
-              await this.#c.storage.setFilePartCount(id, part + 1, chunkSize);
+              await this.#c.storage.setFilePartCount(id, index + 1, limit);
               signal?.throwIfAborted();
             }
-            break;
           } else {
             offset += BigInt(file.bytes.length);
           }
+          return file.bytes;
         } else {
           unreachable();
         }
-
-        await delay(ms);
-        ms = Math.max(ms * .8, 0.003);
       } catch (err) {
         if (typeof err === "object" && err instanceof AssertionError) {
           throw err;
@@ -313,7 +332,7 @@ export class FileManager {
         if (errorCount > 20) {
           retryIn = 0;
         }
-        await this.#handleError(err, retryIn, `[${id}-${part + 1}]`);
+        await this.#handleError(err, retryIn, `[${id}-${index + 1}]`);
         signal?.throwIfAborted();
         retryIn += 2;
         if (retryIn > 11) {
