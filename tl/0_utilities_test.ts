@@ -18,7 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assert, assertEquals, assertFalse, assertThrows } from "../0_deps.ts";
+import { assert, assertEquals, assertFalse } from "../0_deps.ts";
+import { assertThrows } from "../0_test_deps.ts";
 import { analyzeOptionalParam, isOptionalParam } from "./0_utilities.ts";
 
 Deno.test("isOptionalParam", () => {
