@@ -228,7 +228,7 @@ function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
   return (_ctx, next) => next();
 }
 export interface InvokeErrorHandler<C> {
-  (ctx: { client: C; error: unknown; function: Api.AnyObject; n: number }, next: NextFunction<boolean>): MaybePromise<boolean>;
+  (ctx: { client: C; error: unknown; function: Api.AnyFunction | Mtproto.ping; n: number }, next: NextFunction<boolean>): MaybePromise<boolean>;
 }
 
 export const restartAuth = Symbol("restartAuth");
@@ -419,8 +419,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
     const c = {
       id,
-      invoke: async <T extends Api.AnyFunction<P>, P extends Api.Function, R extends unknown = Api.ReturnType<Api.Functions[T["_"]]>>(function_: T, params?: InvokeParams & { businessConnectionId?: string }): Promise<R> => {
+      invoke: async <T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams & { businessConnectionId?: string }): Promise<R> => {
         if (params?.businessConnectionId) {
+          if (Mtproto.is("ping", function_)) {
+            unreachable();
+          }
           return await this.invoke({ _: "invokeWithBusinessConnection", connection_id: params.businessConnectionId, query: function_ }, params);
         } else {
           return await this.invoke(function_, params);
@@ -561,10 +564,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #getApiId() {
     const apiId = this.#apiId || await this.storage.getApiId();
-    if (!apiId) {
-      throw new InputError("apiId not set");
-    }
-    return apiId;
+    return apiId || 0;
   }
 
   #constructContext = async (update: Update) => {
@@ -1453,7 +1453,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await client.invoke({ ...exportedAuthorization, _: "auth.importAuthorization" });
   }
 
-  async #invoke<T extends Api.AnyFunction, R = T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R> {
+  async #invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R> {
     if (!this.#client) {
       throw new ConnectionError("Not connected.");
     }
@@ -1501,7 +1501,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param function_ The function to invoke.
    */
   invoke: {
-    <T extends Api.AnyFunction, R = T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R>;
+    <T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R>;
     use: (handler: InvokeErrorHandler<Client<C>>) => void;
   } = Object.assign(
     this.#invoke,

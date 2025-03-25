@@ -38,8 +38,15 @@ export interface Handlers {
   onUpdate?: (body: Uint8Array) => void;
   onNewServerSalt?: (serverSalt: bigint) => void;
   onMessageFailed?: (id: bigint, reason: unknown) => void;
+  onPong?: (pong: Mtproto.pong) => void;
   onRpcError?: (id: bigint, error: Mtproto.rpc_error) => void;
   onRpcResult?: (id: bigint, result: Uint8Array) => void;
+}
+
+interface PendingPing {
+  call: Mtproto.ping_delay_disconnect;
+  resolve: (pong: Mtproto.pong) => void;
+  reject: (reason: unknown) => void;
 }
 
 export class SessionEncrypted extends Session implements Session {
@@ -49,7 +56,7 @@ export class SessionEncrypted extends Session implements Session {
   handlers: Handlers = {};
   #toAcknowledge = new Array<bigint>();
   #pendingMessages = new Set<bigint>();
-  #pendingPings = new Map<bigint, { resolve: (pong: Mtproto.pong) => void; reject: (reason: unknown) => void }>();
+  #pendingPings = new Map<bigint, PendingPing>();
   #L: Logger;
 
   static #TGCRYPTO_INITED = false;
@@ -107,6 +114,7 @@ export class SessionEncrypted extends Session implements Session {
     for (const id of this.#pendingMessages) {
       this.#onMessageFailed(id, reason);
     }
+    this.#pendingMessages.clear();
     for (const pendingPing of this.#pendingPings.values()) {
       pendingPing.reject(reason);
     }
@@ -115,11 +123,17 @@ export class SessionEncrypted extends Session implements Session {
 
   #onMessageFailed(id: bigint, reason: unknown) {
     this.#pendingMessages.delete(id);
-    this.handlers.onMessageFailed?.(id, reason);
     const pendingPing = this.#pendingPings.get(id);
     if (pendingPing) {
-      pendingPing.reject(reason);
       this.#pendingPings.delete(id);
+      if (reason instanceof SessionError) {
+        drop(this.#resendPendingPing(pendingPing));
+      } else {
+        pendingPing.reject(reason);
+      }
+    } else {
+      // message was not sent by us
+      this.handlers.onMessageFailed?.(id, reason);
     }
   }
 
@@ -275,7 +289,6 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   //// RECEIVE LOOP HANDLERS ////
-
   async #onMessage(msgId: bigint, body: Uint8Array) {
     let reader = new TLReader(body);
     let id = reader.readInt32(false);
@@ -380,10 +393,13 @@ export class SessionEncrypted extends Session implements Session {
 
   #onPong(msgId: bigint, pong: Mtproto.pong) {
     this.#toAcknowledge.push(msgId);
-    const pendingPing = this.#pendingPings.get(msgId);
+    const pendingPing = this.#pendingPings.get(pong.msg_id);
     if (pendingPing) {
       pendingPing.resolve(pong);
-      this.#pendingPings.delete(msgId);
+      this.#pendingPings.delete(pong.msg_id);
+    } else {
+      // pong is not ours
+      this.handlers.onPong?.(pong);
     }
   }
 
@@ -444,17 +460,19 @@ export class SessionEncrypted extends Session implements Session {
 
   async #sendPingDelayDisconnect(disconnect_delay: number) {
     const ping_id = getRandomId();
-    const request: Mtproto.ping_delay_disconnect = { _: "ping_delay_disconnect", ping_id, disconnect_delay };
+    const call: Mtproto.ping_delay_disconnect = { _: "ping_delay_disconnect", ping_id, disconnect_delay };
+    const messageId = await this.send(Mtproto.serializeObject(call));
     await new Promise((resolve, reject) => {
-      Promise.resolve().then(async () => {
-        this.#pendingPings.set(ping_id, { resolve, reject });
-        try {
-          await this.send(Mtproto.serializeObject(request));
-        } catch (err) {
-          reject(err);
-          this.#pendingMessages.delete(ping_id);
-        }
-      });
+      this.#pendingPings.set(messageId, { call, resolve, reject });
     });
+  }
+
+  async #resendPendingPing(pendingPing: PendingPing) {
+    try {
+      const messageId = await this.send(Mtproto.serializeObject(pendingPing.call));
+      this.#pendingPings.set(messageId, pendingPing);
+    } catch (err) {
+      pendingPing.reject(err);
+    }
   }
 }
