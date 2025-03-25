@@ -18,37 +18,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { assertEquals } from "../0_deps.ts";
 import { ClientEncrypted } from "./2_client_encrypted.ts";
+import { ClientEncryptedPool } from "./3_client_encrypted_pool.ts";
 
-export class ClientEncryptedPool {
-  #index = 0;
-  #clients = new Array<ClientEncrypted>();
-
-  get size() {
-    return this.#clients.length;
+Deno.test("ClientEncryptedPool", () => {
+  const pool = new ClientEncryptedPool();
+  const clients = new Array(3).fill(null).map(() => new ClientEncrypted("1", 0));
+  for (const client of clients) {
+    pool.add(client);
   }
-
-  add(client: ClientEncrypted) {
-    this.#clients.push(client);
+  for (let i = 0; i < 10; ++i) {
+    assertEquals(pool.nextClient(), clients[0]);
+    assertEquals(pool.nextClient(), clients[1]);
+    assertEquals(pool.nextClient(), clients[2]);
   }
-
-  nextClient() {
-    const client = this.#clients[this.#index];
-    if (this.#index >= this.#clients.length - 1) {
-      this.#index = 0;
-    } else {
-      ++this.#index;
-    }
-    return client;
-  }
-
-  disconnect() {
-    for (const client of this.#clients) {
-      client.disconnect();
-    }
-  }
-
-  map(callback: (client: ClientEncrypted) => void) {
-    this.#clients.map(callback);
-  }
-}
+});

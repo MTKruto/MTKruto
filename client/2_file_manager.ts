@@ -35,7 +35,6 @@ export class FileManager {
   static #UPLOAD_MAX_CHUNK_SIZE = 512 * kilobyte;
   static #DOWNLOAD_MAX_CHUNK_SIZE = 1 * megabyte;
   static #BIG_FILE_THRESHOLD = 10 * megabyte;
-  static #UPLOAD_REQUEST_PER_CONNECTION = 2;
 
   constructor(c: C) {
     this.#c = c;
@@ -82,38 +81,13 @@ export class FileManager {
   async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, chunkSize: number, signal: AbortSignal | undefined) {
     let part: Part;
     let promises = new Array<Promise<void>>();
+    let ms = 0.05;
     for await (part of iterateReadableStream(stream.pipeThrough(new PartStream(chunkSize)))) {
-      promises.push(
-        (async () => {
-          let retryIn = 1;
-          let errorCount = 0;
-          while (true) {
-            try {
-              signal?.throwIfAborted();
-              this.#Lupload.debug(`[${fileId}] uploading part ` + (part.part + 1));
-              if (part.small) {
-                await this.#c.invoke({ _: "upload.saveFilePart", file_id: fileId, bytes: part.bytes, file_part: part.part });
-              } else {
-                await this.#c.invoke({ _: "upload.saveBigFilePart", file_id: fileId, file_part: part.part, bytes: part.bytes, file_total_parts: part.totalParts });
-              }
-              this.#Lupload.debug(`[${fileId}] uploaded part ` + (part.part + 1));
-              break;
-            } catch (err) {
-              signal?.throwIfAborted();
-              this.#Lupload.debug(`[${fileId}] failed to upload part ` + (part.part + 1));
-              ++errorCount;
-              if (errorCount > 20) {
-                retryIn = 0;
-              }
-              await this.#handleError(err, retryIn, `[${fileId}-${part.part + 1}]`);
-              retryIn += 2;
-              if (retryIn > 11) {
-                retryIn = 11;
-              }
-            }
-          }
-        })(),
-      );
+      if (!part.small && part.part > 0) {
+        await delay(ms);
+        ms = Math.max(ms * .8, 0.003);
+      }
+      promises.push(this.#uploadPart(fileId, part.totalParts, !part.small, part.part, part.bytes, signal));
       if (promises.length == UPLOAD_POOL_SIZE * UPLOAD_REQUEST_PER_CONNECTION) {
         await Promise.all(promises);
         promises = [];
@@ -131,51 +105,24 @@ export class FileManager {
     let ms = 0.05;
     main: for (let part = 0; part < partCount;) {
       for (let i = 0; i < UPLOAD_POOL_SIZE; ++i) {
-        for (let i = 0; i < FileManager.#UPLOAD_REQUEST_PER_CONNECTION; ++i) {
+        for (let i = 0; i < UPLOAD_REQUEST_PER_CONNECTION; ++i) {
           const start = part * chunkSize;
           const end = start + chunkSize;
           const bytes = buffer.subarray(start, end);
           if (!bytes.length) {
             break main;
           }
-          const thisPart = part++; // `thisPart` must be used instead of `part` in the promise body
           if (!started) {
             started = true;
-          } else if (isBig) {
+          } else if (isBig && part > 0) {
             await delay(ms);
             ms = Math.max(ms * .8, 0.003);
           }
-          promises.push(
-            (async () => {
-              let retryIn = 1;
-              let errorCount = 0;
-              while (true) {
-                try {
-                  signal?.throwIfAborted();
-                  this.#Lupload.debug(`[${fileId}] uploading part ` + (thisPart + 1));
-                  if (isBig) {
-                    await this.#c.invoke({ _: "upload.saveBigFilePart", file_id: fileId, file_part: thisPart, bytes, file_total_parts: partCount }, { type: "upload" });
-                  } else {
-                    await this.#c.invoke({ _: "upload.saveFilePart", file_id: fileId, bytes, file_part: thisPart }, { type: "upload" });
-                  }
-                  this.#Lupload.debug(`[${fileId}] uploaded part ` + (thisPart + 1) + " / " + partCount);
-                  break;
-                } catch (err) {
-                  signal?.throwIfAborted();
-                  this.#Lupload.debug(`[${fileId}] failed to upload part ` + (thisPart + 1) + " / " + partCount, err);
-                  ++errorCount;
-                  if (errorCount > 20) {
-                    retryIn = 0;
-                  }
-                  await this.#handleError(err, retryIn, `[${fileId}-${thisPart + 1}]`);
-                  retryIn += 2;
-                  if (retryIn > 11) {
-                    retryIn = 11;
-                  }
-                }
-              }
-            })(),
-          );
+          promises.push(this.#uploadPart(fileId, partCount, isBig, part++, bytes, signal));
+          if (promises.length == UPLOAD_POOL_SIZE * UPLOAD_REQUEST_PER_CONNECTION) {
+            await Promise.all(promises);
+            promises = [];
+          }
         }
       }
       await Promise.all(promises);
@@ -183,6 +130,36 @@ export class FileManager {
     }
     await Promise.all(promises);
     return { small: !isBig, parts: partCount };
+  }
+
+  async #uploadPart(fileId: bigint, partCount: number, isBig: boolean, index: number, bytes: Uint8Array, signal: AbortSignal | undefined) {
+    let retryIn = 1;
+    let errorCount = 0;
+    while (true) {
+      try {
+        signal?.throwIfAborted();
+        this.#Lupload.debug(`[${fileId}] uploading part ` + (index + 1));
+        if (isBig) {
+          await this.#c.invoke({ _: "upload.saveBigFilePart", file_id: fileId, file_part: index, bytes: bytes, file_total_parts: partCount }, { type: "upload" });
+        } else {
+          await this.#c.invoke({ _: "upload.saveFilePart", file_id: fileId, bytes: bytes, file_part: index }, { type: "upload" });
+        }
+        this.#Lupload.debug(`[${fileId}] uploaded part ` + (index + 1));
+        break;
+      } catch (err) {
+        signal?.throwIfAborted();
+        this.#Lupload.debug(`[${fileId}] failed to upload part ` + (index + 1));
+        ++errorCount;
+        if (errorCount > 20) {
+          retryIn = 0;
+        }
+        await this.#handleError(err, retryIn, `[${fileId}-${index + 1}]`);
+        retryIn += 2;
+        if (retryIn > 11) {
+          retryIn = 11;
+        }
+      }
+    }
   }
 
   async #handleError(err: unknown, retryIn: number, logPrefix: string) {
