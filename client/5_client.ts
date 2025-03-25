@@ -959,21 +959,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }).bind(this);
 
-  /**
-   * Sets the DC and resets the auth key stored in the session provider
-   * if the stored DC was not the same as the `dc` parameter.
-   *
-   * @param dc The DC to change to.
-   */
-  async setDc(dc: DC) {
-    await this.#initStorage();
-    if (await this.storage.getDc() != dc) {
-      await this.storage.setDc(dc);
-      await this.storage.setAuthKey(null);
-      await this.storage.getAuthKey();
-    }
-  }
-
   #storageInited = false;
   async #initStorage() {
     if (!this.#storageInited) {
@@ -1027,20 +1012,15 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
-  async reconnect(dc?: DC) {
-    if (dc) {
-      await this.setDc(dc);
-    }
-    this.disconnect();
-    await this.connect();
-  }
-
   async [handleMigrationError](err: Migrate) {
     let newDc = String(err.dc);
     if (Math.abs(getDcId(this.#client!.dc, this.#client!.cdn)) >= 10_000) {
       newDc += "-test";
     }
-    await this.reconnect(newDc as DC);
+    this.disconnect();
+    await this.storage.setDc(newDc as DC);
+    await this.storage.setAuthKey(null);
+    await this.connect();
     this.#LhandleMigrationError.debug(`migrated to DC${newDc}`);
   }
 
@@ -1310,7 +1290,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
       ]);
     } finally {
       this.#lastGetMe = null;
-      await this.reconnect();
+      this.disconnect();
+      await this.connect();
     }
   }
 
