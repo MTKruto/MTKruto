@@ -18,7 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { retry } from "jsr:@std/async/retry";
 import { AssertionError, basename, delay, extension, extname, isAbsolute, MINUTE, SECOND, toFileUrl, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, iterateReadableStream, kilobyte, Logger, megabyte, mod, Part, PartStream } from "../1_utilities.ts";
@@ -298,6 +297,7 @@ export class FileManager {
     let offset = params?.offset ? BigInt(params.offset) : 0n;
     let part = 0;
 
+    let ms = 0.05;
     while (true) {
       signal?.throwIfAborted();
       let retryIn = 1;
@@ -325,6 +325,9 @@ export class FileManager {
         } else {
           unreachable();
         }
+
+        await delay(ms);
+        ms = Math.max(ms * .8, 0.003);
       } catch (err) {
         if (typeof err === "object" && err instanceof AssertionError) {
           throw err;
