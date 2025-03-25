@@ -1352,7 +1352,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     if (client) {
       return client;
     }
-    const release = await this.#getMainClientMutex.lock();
+    const unlock = await this.#getMainClientMutex.lock();
     client = this.#clients.find((v) => v.dc == dc);
     if (client) {
       return client;
@@ -1363,7 +1363,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       this.#clients.push(client);
       return client;
     } finally {
-      release();
+      unlock();
     }
   }
 
