@@ -18,7 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AssertionError, basename, extension, extname, isAbsolute, MINUTE, SECOND, toFileUrl, unreachable } from "../0_deps.ts";
+import { retry } from "jsr:@std/async/retry";
+import { AssertionError, basename, delay, extension, extname, isAbsolute, MINUTE, SECOND, toFileUrl, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, iterateReadableStream, kilobyte, Logger, megabyte, mod, Part, PartStream } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
@@ -128,7 +129,7 @@ export class FileManager {
     const partCount = Math.ceil(buffer.byteLength / chunkSize);
     let promises = new Array<Promise<void>>();
     let started = false;
-    let delay = 0.05;
+    let ms = 0.05;
     main: for (let part = 0; part < partCount;) {
       for (let i = 0; i < UPLOAD_POOL_SIZE; ++i) {
         for (let i = 0; i < FileManager.#UPLOAD_REQUEST_PER_CONNECTION; ++i) {
@@ -142,8 +143,8 @@ export class FileManager {
           if (!started) {
             started = true;
           } else if (isBig) {
-            await new Promise((r) => setTimeout(r, delay));
-            delay = Math.max(delay * .8, 0.003);
+            await delay(ms);
+            ms = Math.max(ms * .8, 0.003);
           }
           promises.push(
             (async () => {
@@ -188,7 +189,7 @@ export class FileManager {
   async #handleError(err: unknown, retryIn: number, logPrefix: string) {
     if (retryIn > 0) {
       this.#Lupload.warning(`${logPrefix} retrying in ${retryIn} seconds`);
-      await new Promise((r) => setTimeout(r, retryIn * SECOND));
+      await delay(retryIn * SECOND);
     } else {
       throw err;
     }

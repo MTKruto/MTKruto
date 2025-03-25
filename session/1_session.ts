@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { SECOND } from "../0_deps.ts";
+import { delay, SECOND } from "../0_deps.ts";
 import { drop, getLogger, Logger, Mutex } from "../1_utilities.ts";
 import { Connection, ConnectionCallback } from "../2_connection.ts";
 import { DC, TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
@@ -107,7 +107,7 @@ export abstract class Session {
     }
     if (this.#lastConnect && Date.now() - this.#lastConnect.getTime() <= 10 * SECOND) {
       this.#L.debug("reconnecting after a delay");
-      await new Promise((r) => setTimeout(r, 3 * SECOND));
+      await delay(3 * SECOND);
     } else {
       this.#L.debug("reconnecting");
     }
