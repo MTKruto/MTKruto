@@ -986,7 +986,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   #connectMutex = new Mutex();
-  #lastConnect: Date | null = null;
   /**
    * Loads the session if `setDc` was not called, initializes and connnects
    * a `ClientPlain` to generate auth key if there was none, and connects the client.
@@ -1020,7 +1019,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
         }
       }
       await this.#client!.connect();
-      this.#lastConnect = new Date();
       await Promise.all([this.storage.setAuthKey(this.#client!.authKey), this.storage.setDc(this.#client!.dc), this.storage.setServerSalt(this.#client!.serverSalt)]);
       this.#startUpdateGapRecoveryLoop();
       this.#startClientDisconnectionLoop();
