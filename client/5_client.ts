@@ -31,7 +31,7 @@ import { PhoneCodeInvalid } from "../4_errors.ts";
 import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
-import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, DOWNLOAD_REQUEST_PER_CONNECTION, getUsername, resolve, toInputChannel, toInputUser, UPLOAD_POOL_SIZE, UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
+import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, resolve, toInputChannel, toInputUser, UPLOAD_POOL_SIZE } from "./0_utilities.ts";
 import { ClientPlainParams } from "./1_client_plain.ts";
 import { Composer as Composer_, Middleware, MiddlewareFn, MiddlewareObj, NextFunction } from "./1_composer.ts";
 import { AccountManager } from "./2_account_manager.ts";
@@ -496,6 +496,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
     };
     client.handlers.onDeserializationError = async () => {
       await this.#updateManager.recoverUpdateGap("deserialization error");
+    };
+    client.handlers.onNewServerSalt = async (serverSalt) => {
+      await this.storage.setServerSalt(serverSalt);
     };
     client.onConnectionStateChange = this.#onConnectionStateChange.bind(this);
   }
@@ -1342,7 +1345,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #getDownloadClient(dc?: DC) {
     dc ??= this.#client!.dc;
-    const pool = this.#downloadPools[dc] ??= new ClientEncryptedPool(DOWNLOAD_REQUEST_PER_CONNECTION);
+    const pool = this.#downloadPools[dc] ??= new ClientEncryptedPool();
     if (!pool.size) {
       for (let i = 0; i < DOWNLOAD_POOL_SIZE; ++i) {
         pool.add(await this.#newClient(dc, false, true));
@@ -1358,7 +1361,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #getUploadClient() {
     const dc = this.#client!.dc;
-    const pool = this.#uploadPools[dc] ??= new ClientEncryptedPool(UPLOAD_REQUEST_PER_CONNECTION);
+    const pool = this.#uploadPools[dc] ??= new ClientEncryptedPool();
     if (!pool.size) {
       for (let i = 0; i < UPLOAD_POOL_SIZE; ++i) {
         pool.add(await this.#newClient(dc, false, true));
@@ -1385,10 +1388,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
     if (!authKey) {
       await this.#importAuthorization(client);
     }
-    await Promise.all([storage.setAuthKey(client.authKey), storage.setServerSalt(client.serverSalt)]);
-    client.handlers.onNewServerSalt = async (serverSalt) => {
-      await storage.setServerSalt(serverSalt);
-    };
+    await storage.setAuthKey(client.authKey);
+    if (client.dc !== this.#client!.dc) {
+      await storage.setServerSalt(client.serverSalt);
+      client.handlers.onNewServerSalt = async (serverSalt) => {
+        await storage.setServerSalt(serverSalt);
+      };
+    }
   }
 
   async #importAuthorization(client: ClientEncrypted) {
