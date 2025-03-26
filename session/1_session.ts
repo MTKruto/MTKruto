@@ -92,9 +92,6 @@ export abstract class Session {
         this.#onConnectionStateChange?.(connected);
       });
     }
-    if (!connected) {
-      this.transport.transport.deinitialize();
-    }
     if (this.#lastState === connected) {
       return;
     }
@@ -147,7 +144,6 @@ export abstract class Session {
     this.#disconnected = true;
     if (this.transport.connection.connected) {
       this.transport.connection.close();
-      this.transport.transport.deinitialize();
     }
   }
 
