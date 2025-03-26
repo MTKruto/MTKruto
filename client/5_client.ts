@@ -503,9 +503,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
     client.onConnectionStateChange = this.#onConnectionStateChange.bind(this);
   }
 
-  async #newClient(dc: DC, main: boolean, cdn: boolean) {
-    const apiId = await this.#getApiId();
-    const client = new ClientEncrypted(dc, apiId, {
+  #newClient(dc: DC, main: boolean, cdn: boolean) {
+    const client = new ClientEncrypted(dc, this.#apiId, {
       appVersion: this.appVersion,
       deviceModel: this.deviceModel,
       langCode: this.language,
@@ -543,11 +542,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
   get disconnected(): boolean {
     return this.#client?.disconnected ?? true;
-  }
-
-  async #getApiId() {
-    const apiId = this.#apiId || await this.storage.getApiId();
-    return apiId || 0;
   }
 
   #constructContext = async (update: Update) => {
@@ -993,7 +987,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       if (authKey != null && dc != null) {
         if (!this.#client || this.#client.dc != dc) {
           this.#client?.disconnect();
-          this.#setMainClient(await this.#newClient(dc, true, false));
+          this.#setMainClient(this.#newClient(dc, true, false));
         }
         await this.#client!.setAuthKey(authKey);
         if (this.#client!.serverSalt == 0n) {
@@ -1003,7 +997,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         const dc = await this.storage.getDc() ?? INITIAL_DC;
         if (!this.#client || this.#client.dc != dc) {
           this.#client?.disconnect();
-          this.#setMainClient(await this.#newClient(dc, true, false));
+          this.#setMainClient(this.#newClient(dc, true, false));
         }
       }
       await this.#client!.connect();
@@ -1134,7 +1128,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
       }
     }
 
-    const apiId = await this.#getApiId();
+    if (!this.#apiId) {
+      throw new InputError("apiId not set");
+    }
     if (!this.#apiHash) {
       throw new InputError("apiHash not set");
     }
@@ -1153,7 +1149,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     if (params && "botToken" in params) {
       while (true) {
         try {
-          const auth = await this.invoke({ _: "auth.importBotAuthorization", api_id: apiId, api_hash: this.#apiHash, bot_auth_token: params.botToken, flags: 0 });
+          const auth = await this.invoke({ _: "auth.importBotAuthorization", api_id: this.#apiId, api_hash: this.#apiHash, bot_auth_token: params.botToken, flags: 0 });
           await this.storage.setAccountId(Number(Api.as("auth.authorization", auth).user.id));
           await this.storage.setAccountType("bot");
           break;
@@ -1329,7 +1325,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       return client;
     }
     try {
-      client = await this.#newClient(dc, false, false);
+      client = this.#newClient(dc, false, false);
       await this.#setupClient(client);
       this.#clients.push(client);
       return client;
@@ -1342,8 +1338,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
     dc ??= this.#client!.dc;
     const pool = this.#downloadPools[dc] ??= new ClientEncryptedPool();
     if (!pool.size) {
-      for (let i = 0; i < DOWNLOAD_POOL_SIZE; ++i) {
-        pool.add(await this.#newClient(dc, false, true));
+      if (!pool.size) {
+        for (let i = 0; i < DOWNLOAD_POOL_SIZE; ++i) {
+          pool.add(this.#newClient(dc, false, true));
+        }
       }
     }
     const client = pool.nextClient();
@@ -1486,6 +1484,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.#initStorage();
     await this.storage.importAuthString(authString);
     this.#authStringImported = true;
+    if (!this.#apiId) {
+      this.#apiId = await this.storage.getApiId() ?? 0;
+    }
   }
 
   async #getUserAccessHash(userId: bigint) {

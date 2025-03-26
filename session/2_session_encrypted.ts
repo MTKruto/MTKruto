@@ -269,10 +269,10 @@ export class SessionEncrypted extends Session implements Session {
         try {
           message = await this.#receive();
         } catch (err) {
+          this.#L.error("failed to receive message:", err);
           if (!this.connected) {
             break;
           } else {
-            this.#L.error("failed to receive message:", err);
             continue;
           }
         }

@@ -152,6 +152,7 @@ export class FileManager {
         ++errorCount;
         if (errorCount > 20) {
           retryIn = 0;
+          errorCount = 20;
         }
         await this.#handleError(err, retryIn, `[${fileId}-${index + 1}]`);
         retryIn += 2;
@@ -312,6 +313,7 @@ export class FileManager {
         ++errorCount;
         if (errorCount > 20) {
           retryIn = 0;
+          errorCount = 0;
         }
         await this.#handleError(err, retryIn, `[${id}-${part + 1}]`);
         signal?.throwIfAborted();
