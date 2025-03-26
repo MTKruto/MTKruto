@@ -61,7 +61,7 @@ export class TransportAbridged extends Transport implements Transport {
         let buffer = new Uint8Array(3);
         await this.#connection.read(buffer);
         buffer = await this.decrypt(buffer);
-        length = Number(bigIntFromBuffer(buffer, true, true));
+        length = Number(bigIntFromBuffer(buffer));
       }
     }
 
