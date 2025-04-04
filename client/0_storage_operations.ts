@@ -42,6 +42,7 @@ export const K = {
     key: (): StorageKeyPart[] => [K.auth.P("key")],
     accountId: (): StorageKeyPart[] => [K.auth.P("accountId")],
     accountType: (): StorageKeyPart[] => [K.auth.P("accountType")],
+    isPremium: (): StorageKeyPart[] => [K.auth.P("isPremium")],
   },
   updates: {
     P: (string: string): string => `updates.${string}`,
@@ -369,6 +370,14 @@ export class StorageOperations {
       unreachable();
     }
     return this.#accountType;
+  }
+
+  async setIsPremium(isPremium: boolean) {
+    await this.#storage.set(K.auth.isPremium(), isPremium);
+  }
+
+  async getIsPremium() {
+    return await this.#storage.get<boolean>(K.auth.isPremium());
   }
 
   async updateStickerSetName(id: bigint, accessHash: bigint, name: string) {
