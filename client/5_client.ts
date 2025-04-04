@@ -419,7 +419,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
     const c = {
       id,
-      getDc: () => this.#client!.dc,
+      getUploadPoolSize: this.#getUploadPoolSize.bind(this),
       invoke: async <T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams & { businessConnectionId?: string }): Promise<R> => {
         if (params?.businessConnectionId) {
           if (Mtproto.is("ping", function_)) {
@@ -1362,11 +1362,17 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return client;
   }
 
+  async #getUploadPoolSize() {
+    const dc = this.#client!.dc;
+    return (dc != "2" && dc != "4") || await this.#getIsPremium() ? 8 : 4;
+  }
+
   async #getUploadClient() {
     const dc = this.#client!.dc;
+    const poolSize = await this.#getUploadPoolSize();
     const pool = this.#uploadPools[dc] ??= new ClientEncryptedPool();
     if (!pool.size) {
-      for (let i = 0; i < UPLOAD_POOL_SIZE; ++i) {
+      for (let i = 0; i < poolSize; ++i) {
         pool.add(await this.#newClient(dc, false, true));
       }
     }
