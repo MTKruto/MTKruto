@@ -36,46 +36,8 @@ export interface error {
   text: string;
 }
 
-export interface ipPort {
-  _: "ipPort";
-  ipv4: number;
-  port: number;
-}
-
-export interface ipPortSecret {
-  _: "ipPortSecret";
-  ipv4: number;
-  port: number;
-  secret: Uint8Array;
-}
-
-export interface accessPointRule {
-  _: "accessPointRule";
-  phone_prefix_rules: string;
-  dc_id: number;
-  ips: Array<IpPort>;
-}
-
-export interface help_configSimple {
-  _: "help.configSimple";
-  date: number;
-  expires: number;
-  rules: Array<AccessPointRule>;
-}
-
-export interface inputPeerPhotoFileLocationLegacy {
-  _: "inputPeerPhotoFileLocationLegacy";
-  big?: true;
-  peer: InputPeer;
-  volume_id: bigint;
-  local_id: number;
-}
-
-export interface inputStickerSetThumbLegacy {
-  _: "inputStickerSetThumbLegacy";
-  stickerset: InputStickerSet;
-  volume_id: bigint;
-  local_id: number;
+export interface null_ {
+  _: "null";
 }
 
 export interface inputPeerEmpty {
@@ -1333,6 +1295,17 @@ export interface messageActionStarGiftUnique {
   saved_id?: bigint;
 }
 
+export interface messageActionPaidMessagesRefunded {
+  _: "messageActionPaidMessagesRefunded";
+  count: number;
+  stars: bigint;
+}
+
+export interface messageActionPaidMessagesPrice {
+  _: "messageActionPaidMessagesPrice";
+  stars: bigint;
+}
+
 export interface dialog {
   _: "dialog";
   pinned?: true;
@@ -1445,6 +1418,12 @@ export interface auth_sentCode {
 export interface auth_sentCodeSuccess {
   _: "auth.sentCodeSuccess";
   authorization: auth_Authorization;
+}
+
+export interface auth_sentCodePaymentRequired {
+  _: "auth.sentCodePaymentRequired";
+  store_product: string;
+  phone_code_hash: string;
 }
 
 export interface auth_authorization {
@@ -1620,6 +1599,7 @@ export interface userFull {
   sponsored_enabled?: true;
   can_view_revenue?: true;
   bot_can_manage_emoji_status?: true;
+  display_gifts_button?: true;
   id: bigint;
   about?: string;
   settings: PeerSettings;
@@ -1650,6 +1630,7 @@ export interface userFull {
   starref_program?: StarRefProgram;
   bot_verification?: BotVerification;
   send_paid_messages_stars?: bigint;
+  disallowed_gifts?: DisallowedGiftsSettings;
 }
 
 export interface contact {
@@ -2784,6 +2765,11 @@ export interface updateBotPurchasedPaidMedia {
 export interface updatePaidReactionPrivacy {
   _: "updatePaidReactionPrivacy";
   private: PaidReactionPrivacy;
+}
+
+export interface updateSentPhoneCode {
+  _: "updateSentPhoneCode";
+  sent_code: auth_SentCode;
 }
 
 export interface updates_state {
@@ -7171,7 +7157,9 @@ export interface globalPrivacySettings {
   keep_archived_folders?: true;
   hide_read_marks?: true;
   new_noncontact_peers_require_premium?: true;
+  display_gifts_button?: true;
   noncontact_peers_paid_stars?: bigint;
+  disallowed_gifts?: DisallowedGiftsSettings;
 }
 
 export interface help_countryCode {
@@ -7964,6 +7952,15 @@ export interface inputStorePaymentStarsGiveaway {
   currency: string;
   amount: bigint;
   users: number;
+}
+
+export interface inputStorePaymentAuthCode {
+  _: "inputStorePaymentAuthCode";
+  restore?: true;
+  phone_number: string;
+  phone_code_hash: string;
+  currency: string;
+  amount: bigint;
 }
 
 export interface paymentFormMethod {
@@ -9101,9 +9098,9 @@ export interface messages_quickRepliesNotModified {
 
 export interface connectedBot {
   _: "connectedBot";
-  can_reply?: true;
   bot_id: bigint;
   recipients: BusinessBotRecipients;
+  rights: BusinessBotRights;
 }
 
 export interface account_connectedBots {
@@ -9127,12 +9124,12 @@ export interface birthday {
 
 export interface botBusinessConnection {
   _: "botBusinessConnection";
-  can_reply?: true;
   disabled?: true;
   connection_id: string;
   user_id: bigint;
   dc_id: number;
   date: number;
+  rights?: BusinessBotRights;
 }
 
 export interface inputBusinessIntro {
@@ -9904,30 +9901,49 @@ export interface requirementToContactPaidMessages {
   stars_amount: bigint;
 }
 
-export interface invokeWithBusinessConnectionPrefix {
-  _: "invokeWithBusinessConnectionPrefix";
-  connection_id: string;
-  [R]?: Error;
+export interface businessBotRights {
+  _: "businessBotRights";
+  reply?: true;
+  read_messages?: true;
+  delete_sent_messages?: true;
+  delete_received_messages?: true;
+  edit_name?: true;
+  edit_bio?: true;
+  edit_profile_photo?: true;
+  edit_username?: true;
+  view_gifts?: true;
+  sell_gifts?: true;
+  change_gift_settings?: true;
+  transfer_and_upgrade_gifts?: true;
+  transfer_stars?: true;
+  manage_stories?: true;
 }
 
-export interface invokeWithGooglePlayIntegrityPrefix {
-  _: "invokeWithGooglePlayIntegrityPrefix";
-  nonce: string;
-  token: string;
-  [R]?: Error;
+export interface disallowedGiftsSettings {
+  _: "disallowedGiftsSettings";
+  disallow_unlimited_stargifts?: true;
+  disallow_limited_stargifts?: true;
+  disallow_unique_stargifts?: true;
+  disallow_premium_gifts?: true;
 }
 
-export interface invokeWithApnsSecretPrefix {
-  _: "invokeWithApnsSecretPrefix";
-  nonce: string;
-  secret: string;
-  [R]?: Error;
+export interface sponsoredPeer {
+  _: "sponsoredPeer";
+  random_id: Uint8Array;
+  peer: Peer;
+  sponsor_info?: string;
+  additional_info?: string;
 }
 
-export interface invokeWithReCaptchaPrefix {
-  _: "invokeWithReCaptchaPrefix";
-  token: string;
-  [R]?: Error;
+export interface contacts_sponsoredPeersEmpty {
+  _: "contacts.sponsoredPeersEmpty";
+}
+
+export interface contacts_sponsoredPeers {
+  _: "contacts.sponsoredPeers";
+  peers: Array<SponsoredPeer>;
+  chats: Array<Chat>;
+  users: Array<User>;
 }
 
 export interface invokeAfterMsg<T> {
@@ -10825,8 +10841,8 @@ export interface account_updateBusinessAwayMessage {
 
 export interface account_updateConnectedBot {
   _: "account.updateConnectedBot";
-  can_reply?: true;
   deleted?: true;
+  rights?: BusinessBotRights;
   bot: InputUser;
   recipients: InputBusinessBotRecipients;
   [R]?: Updates;
@@ -11143,6 +11159,12 @@ export interface contacts_setBlocked {
 export interface contacts_getBirthdays {
   _: "contacts.getBirthdays";
   [R]?: contacts_ContactBirthdays;
+}
+
+export interface contacts_getSponsoredPeers {
+  _: "contacts.getSponsoredPeers";
+  q: string;
+  [R]?: contacts_SponsoredPeers;
 }
 
 export interface messages_getMessages {
@@ -12919,7 +12941,6 @@ export interface messages_getPaidReactionPrivacy {
 
 export interface messages_viewSponsoredMessage {
   _: "messages.viewSponsoredMessage";
-  peer: InputPeer;
   random_id: Uint8Array;
   [R]?: boolean;
 }
@@ -12928,14 +12949,12 @@ export interface messages_clickSponsoredMessage {
   _: "messages.clickSponsoredMessage";
   media?: true;
   fullscreen?: true;
-  peer: InputPeer;
   random_id: Uint8Array;
   [R]?: boolean;
 }
 
 export interface messages_reportSponsoredMessage {
   _: "messages.reportSponsoredMessage";
-  peer: InputPeer;
   random_id: Uint8Array;
   option: Uint8Array;
   [R]?: channels_SponsoredMessageReportResult;
@@ -14018,12 +14037,6 @@ export interface payments_assignPlayMarketTransaction {
   [R]?: Updates;
 }
 
-export interface payments_canPurchasePremium {
-  _: "payments.canPurchasePremium";
-  purpose: InputStorePaymentPurpose;
-  [R]?: boolean;
-}
-
 export interface payments_getPremiumGiftCodeOptions {
   _: "payments.getPremiumGiftCodeOptions";
   boost_peer?: InputPeer;
@@ -14288,6 +14301,12 @@ export interface payments_toggleStarGiftsPinnedToTop {
   _: "payments.toggleStarGiftsPinnedToTop";
   peer: InputPeer;
   stargift: Array<InputSavedStarGift>;
+  [R]?: boolean;
+}
+
+export interface payments_canPurchaseStore {
+  _: "payments.canPurchaseStore";
+  purpose: InputStorePaymentPurpose;
   [R]?: boolean;
 }
 
@@ -15110,12 +15129,7 @@ export interface fragment_getCollectibleInfo {
 export interface Types {
   "true": true_;
   "error": error;
-  "ipPort": ipPort;
-  "ipPortSecret": ipPortSecret;
-  "accessPointRule": accessPointRule;
-  "help.configSimple": help_configSimple;
-  "inputPeerPhotoFileLocationLegacy": inputPeerPhotoFileLocationLegacy;
-  "inputStickerSetThumbLegacy": inputStickerSetThumbLegacy;
+  "null": null_;
   "inputPeerEmpty": inputPeerEmpty;
   "inputPeerSelf": inputPeerSelf;
   "inputPeerChat": inputPeerChat;
@@ -15271,6 +15285,8 @@ export interface Types {
   "messageActionPrizeStars": messageActionPrizeStars;
   "messageActionStarGift": messageActionStarGift;
   "messageActionStarGiftUnique": messageActionStarGiftUnique;
+  "messageActionPaidMessagesRefunded": messageActionPaidMessagesRefunded;
+  "messageActionPaidMessagesPrice": messageActionPaidMessagesPrice;
   "dialog": dialog;
   "dialogFolder": dialogFolder;
   "photoEmpty": photoEmpty;
@@ -15285,6 +15301,7 @@ export interface Types {
   "geoPoint": geoPoint;
   "auth.sentCode": auth_sentCode;
   "auth.sentCodeSuccess": auth_sentCodeSuccess;
+  "auth.sentCodePaymentRequired": auth_sentCodePaymentRequired;
   "auth.authorization": auth_authorization;
   "auth.authorizationSignUpRequired": auth_authorizationSignUpRequired;
   "auth.exportedAuthorization": auth_exportedAuthorization;
@@ -15486,6 +15503,7 @@ export interface Types {
   "updateStarsRevenueStatus": updateStarsRevenueStatus;
   "updateBotPurchasedPaidMedia": updateBotPurchasedPaidMedia;
   "updatePaidReactionPrivacy": updatePaidReactionPrivacy;
+  "updateSentPhoneCode": updateSentPhoneCode;
   "updates.state": updates_state;
   "updates.differenceEmpty": updates_differenceEmpty;
   "updates.difference": updates_difference;
@@ -16252,6 +16270,7 @@ export interface Types {
   "inputStorePaymentStarsTopup": inputStorePaymentStarsTopup;
   "inputStorePaymentStarsGift": inputStorePaymentStarsGift;
   "inputStorePaymentStarsGiveaway": inputStorePaymentStarsGiveaway;
+  "inputStorePaymentAuthCode": inputStorePaymentAuthCode;
   "paymentFormMethod": paymentFormMethod;
   "emojiStatusEmpty": emojiStatusEmpty;
   "emojiStatus": emojiStatus;
@@ -16521,13 +16540,14 @@ export interface Types {
   "requirementToContactEmpty": requirementToContactEmpty;
   "requirementToContactPremium": requirementToContactPremium;
   "requirementToContactPaidMessages": requirementToContactPaidMessages;
+  "businessBotRights": businessBotRights;
+  "disallowedGiftsSettings": disallowedGiftsSettings;
+  "sponsoredPeer": sponsoredPeer;
+  "contacts.sponsoredPeersEmpty": contacts_sponsoredPeersEmpty;
+  "contacts.sponsoredPeers": contacts_sponsoredPeers;
 }
 
 export interface Functions<T = Function> {
-  "invokeWithBusinessConnectionPrefix": invokeWithBusinessConnectionPrefix;
-  "invokeWithGooglePlayIntegrityPrefix": invokeWithGooglePlayIntegrityPrefix;
-  "invokeWithApnsSecretPrefix": invokeWithApnsSecretPrefix;
-  "invokeWithReCaptchaPrefix": invokeWithReCaptchaPrefix;
   "invokeAfterMsg": invokeAfterMsg<T>;
   "invokeAfterMsgs": invokeAfterMsgs<T>;
   "initConnection": initConnection<T>;
@@ -16707,6 +16727,7 @@ export interface Functions<T = Function> {
   "contacts.editCloseFriends": contacts_editCloseFriends;
   "contacts.setBlocked": contacts_setBlocked;
   "contacts.getBirthdays": contacts_getBirthdays;
+  "contacts.getSponsoredPeers": contacts_getSponsoredPeers;
   "messages.getMessages": messages_getMessages;
   "messages.getDialogs": messages_getDialogs;
   "messages.getHistory": messages_getHistory;
@@ -17075,7 +17096,6 @@ export interface Functions<T = Function> {
   "payments.exportInvoice": payments_exportInvoice;
   "payments.assignAppStoreTransaction": payments_assignAppStoreTransaction;
   "payments.assignPlayMarketTransaction": payments_assignPlayMarketTransaction;
-  "payments.canPurchasePremium": payments_canPurchasePremium;
   "payments.getPremiumGiftCodeOptions": payments_getPremiumGiftCodeOptions;
   "payments.checkGiftCode": payments_checkGiftCode;
   "payments.applyGiftCode": payments_applyGiftCode;
@@ -17113,6 +17133,7 @@ export interface Functions<T = Function> {
   "payments.getStarGiftWithdrawalUrl": payments_getStarGiftWithdrawalUrl;
   "payments.toggleChatStarGiftNotifications": payments_toggleChatStarGiftNotifications;
   "payments.toggleStarGiftsPinnedToTop": payments_toggleStarGiftsPinnedToTop;
+  "payments.canPurchaseStore": payments_canPurchaseStore;
   "stickers.createStickerSet": stickers_createStickerSet;
   "stickers.removeStickerFromSet": stickers_removeStickerFromSet;
   "stickers.changeStickerPosition": stickers_changeStickerPosition;
@@ -17227,10 +17248,7 @@ export interface Functions<T = Function> {
 export interface Enums {
   "True": True;
   "Error": Error;
-  "IpPort": IpPort;
-  "AccessPointRule": AccessPointRule;
-  "help.ConfigSimple": help_ConfigSimple;
-  "InputFileLocation": InputFileLocation;
+  "Null": Null;
   "InputPeer": InputPeer;
   "InputUser": InputUser;
   "InputContact": InputContact;
@@ -17239,6 +17257,7 @@ export interface Enums {
   "InputChatPhoto": InputChatPhoto;
   "InputGeoPoint": InputGeoPoint;
   "InputPhoto": InputPhoto;
+  "InputFileLocation": InputFileLocation;
   "Peer": Peer;
   "storage.FileType": storage_FileType;
   "User": User;
@@ -17761,6 +17780,10 @@ export interface Enums {
   "PaidReactionPrivacy": PaidReactionPrivacy;
   "account.PaidMessagesRevenue": account_PaidMessagesRevenue;
   "RequirementToContact": RequirementToContact;
+  "BusinessBotRights": BusinessBotRights;
+  "DisallowedGiftsSettings": DisallowedGiftsSettings;
+  "SponsoredPeer": SponsoredPeer;
+  "contacts.SponsoredPeers": contacts_SponsoredPeers;
 }
 
 export type AnyType = Types[keyof Types];
@@ -17775,13 +17798,7 @@ export type True = true_;
 
 export type Error = error;
 
-export type IpPort = ipPort | ipPortSecret;
-
-export type AccessPointRule = accessPointRule;
-
-export type help_ConfigSimple = help_configSimple;
-
-export type InputFileLocation = inputPeerPhotoFileLocationLegacy | inputStickerSetThumbLegacy | inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
+export type Null = null_;
 
 export type InputPeer = inputPeerEmpty | inputPeerSelf | inputPeerChat | inputPeerUser | inputPeerChannel | inputPeerUserFromMessage | inputPeerChannelFromMessage;
 
@@ -17798,6 +17815,8 @@ export type InputChatPhoto = inputChatPhotoEmpty | inputChatUploadedPhoto | inpu
 export type InputGeoPoint = inputGeoPointEmpty | inputGeoPoint;
 
 export type InputPhoto = inputPhotoEmpty | inputPhoto;
+
+export type InputFileLocation = inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
 
 export type Peer = peerUser | peerChat | peerChannel;
 
@@ -17823,7 +17842,7 @@ export type Message = messageEmpty | message | messageService;
 
 export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia;
 
-export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique;
+export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice;
 
 export type Dialog = dialog | dialogFolder;
 
@@ -17833,7 +17852,7 @@ export type PhotoSize = photoSizeEmpty | photoSize | photoCachedSize | photoStri
 
 export type GeoPoint = geoPointEmpty | geoPoint;
 
-export type auth_SentCode = auth_sentCode | auth_sentCodeSuccess;
+export type auth_SentCode = auth_sentCode | auth_sentCodeSuccess | auth_sentCodePaymentRequired;
 
 export type auth_Authorization = auth_authorization | auth_authorizationSignUpRequired;
 
@@ -18018,7 +18037,8 @@ export type Update =
   | updateBusinessBotCallbackQuery
   | updateStarsRevenueStatus
   | updateBotPurchasedPaidMedia
-  | updatePaidReactionPrivacy;
+  | updatePaidReactionPrivacy
+  | updateSentPhoneCode;
 
 export type updates_State = updates_state;
 
@@ -18672,7 +18692,7 @@ export type messages_TranscribedAudio = messages_transcribedAudio;
 
 export type help_PremiumPromo = help_premiumPromo;
 
-export type InputStorePaymentPurpose = inputStorePaymentPremiumSubscription | inputStorePaymentGiftPremium | inputStorePaymentPremiumGiftCode | inputStorePaymentPremiumGiveaway | inputStorePaymentStarsTopup | inputStorePaymentStarsGift | inputStorePaymentStarsGiveaway;
+export type InputStorePaymentPurpose = inputStorePaymentPremiumSubscription | inputStorePaymentGiftPremium | inputStorePaymentPremiumGiftCode | inputStorePaymentPremiumGiveaway | inputStorePaymentStarsTopup | inputStorePaymentStarsGift | inputStorePaymentStarsGiveaway | inputStorePaymentAuthCode;
 
 export type PaymentFormMethod = paymentFormMethod;
 
@@ -19034,6 +19054,14 @@ export type account_PaidMessagesRevenue = account_paidMessagesRevenue;
 
 export type RequirementToContact = requirementToContactEmpty | requirementToContactPremium | requirementToContactPaidMessages;
 
+export type BusinessBotRights = businessBotRights;
+
+export type DisallowedGiftsSettings = disallowedGiftsSettings;
+
+export type SponsoredPeer = sponsoredPeer;
+
+export type contacts_SponsoredPeers = contacts_sponsoredPeersEmpty | contacts_sponsoredPeers;
+
 export const schema = Object.freeze({
   definitions: {
     true: [
@@ -19049,60 +19077,10 @@ export const schema = Object.freeze({
       ],
       "Error",
     ],
-    ipPort: [
-      0xD433AD73,
-      [
-        ["ipv4", "int"],
-        ["port", "int"],
-      ],
-      "IpPort",
-    ],
-    ipPortSecret: [
-      0x37982646,
-      [
-        ["ipv4", "int"],
-        ["port", "int"],
-        ["secret", "bytes"],
-      ],
-      "IpPort",
-    ],
-    accessPointRule: [
-      0x4679B65F,
-      [
-        ["phone_prefix_rules", "string"],
-        ["dc_id", "int"],
-        ["ips", "vector<IpPort>"],
-      ],
-      "AccessPointRule",
-    ],
-    "help.configSimple": [
-      0x5A592A6C,
-      [
-        ["date", "int"],
-        ["expires", "int"],
-        ["rules", "vector<AccessPointRule>"],
-      ],
-      "help.ConfigSimple",
-    ],
-    inputPeerPhotoFileLocationLegacy: [
-      0x27D69997,
-      [
-        ["flags", "#"],
-        ["big", "flags.0?true"],
-        ["peer", "InputPeer"],
-        ["volume_id", "long"],
-        ["local_id", "int"],
-      ],
-      "InputFileLocation",
-    ],
-    inputStickerSetThumbLegacy: [
-      0x0DBAEAE9,
-      [
-        ["stickerset", "InputStickerSet"],
-        ["volume_id", "long"],
-        ["local_id", "int"],
-      ],
-      "InputFileLocation",
+    null: [
+      0x56730BCC,
+      [],
+      "Null",
     ],
     inputPeerEmpty: [
       0x7F3B18EA,
@@ -20698,6 +20676,21 @@ export const schema = Object.freeze({
       ],
       "MessageAction",
     ],
+    messageActionPaidMessagesRefunded: [
+      0xAC1F1FCD,
+      [
+        ["count", "int"],
+        ["stars", "long"],
+      ],
+      "MessageAction",
+    ],
+    messageActionPaidMessagesPrice: [
+      0xBCD71419,
+      [
+        ["stars", "long"],
+      ],
+      "MessageAction",
+    ],
     dialog: [
       0xD58A08C6,
       [
@@ -20841,6 +20834,14 @@ export const schema = Object.freeze({
       0x2390FE44,
       [
         ["authorization", "auth.Authorization"],
+      ],
+      "auth.SentCode",
+    ],
+    "auth.sentCodePaymentRequired": [
+      0xD7CEF980,
+      [
+        ["store_product", "string"],
+        ["phone_code_hash", "string"],
       ],
       "auth.SentCode",
     ],
@@ -21040,7 +21041,7 @@ export const schema = Object.freeze({
       "ReportReason",
     ],
     userFull: [
-      0xD2234EA0,
+      0x99E78045,
       [
         ["flags", "#"],
         ["blocked", "flags.0?true"],
@@ -21060,6 +21061,7 @@ export const schema = Object.freeze({
         ["sponsored_enabled", "flags2.7?true"],
         ["can_view_revenue", "flags2.9?true"],
         ["bot_can_manage_emoji_status", "flags2.10?true"],
+        ["display_gifts_button", "flags2.16?true"],
         ["id", "long"],
         ["about", "flags.1?string"],
         ["settings", "PeerSettings"],
@@ -21090,6 +21092,7 @@ export const schema = Object.freeze({
         ["starref_program", "flags2.11?StarRefProgram"],
         ["bot_verification", "flags2.12?BotVerification"],
         ["send_paid_messages_stars", "flags2.14?long"],
+        ["disallowed_gifts", "flags2.15?DisallowedGiftsSettings"],
       ],
       "UserFull",
     ],
@@ -22590,6 +22593,13 @@ export const schema = Object.freeze({
       0x8B725FCE,
       [
         ["private", "PaidReactionPrivacy"],
+      ],
+      "Update",
+    ],
+    updateSentPhoneCode: [
+      0x504AA18F,
+      [
+        ["sent_code", "auth.SentCode"],
       ],
       "Update",
     ],
@@ -28272,7 +28282,7 @@ export const schema = Object.freeze({
       "stats.MegagroupStats",
     ],
     globalPrivacySettings: [
-      0xC9D8DF1C,
+      0xFE41B34F,
       [
         ["flags", "#"],
         ["archive_and_mute_new_noncontact_peers", "flags.0?true"],
@@ -28280,7 +28290,9 @@ export const schema = Object.freeze({
         ["keep_archived_folders", "flags.2?true"],
         ["hide_read_marks", "flags.3?true"],
         ["new_noncontact_peers_require_premium", "flags.4?true"],
+        ["display_gifts_button", "flags.7?true"],
         ["noncontact_peers_paid_stars", "flags.5?long"],
+        ["disallowed_gifts", "flags.6?DisallowedGiftsSettings"],
       ],
       "GlobalPrivacySettings",
     ],
@@ -29307,6 +29319,18 @@ export const schema = Object.freeze({
         ["currency", "string"],
         ["amount", "long"],
         ["users", "int"],
+      ],
+      "InputStorePaymentPurpose",
+    ],
+    inputStorePaymentAuthCode: [
+      0x9BB2636D,
+      [
+        ["flags", "#"],
+        ["restore", "flags.0?true"],
+        ["phone_number", "string"],
+        ["phone_code_hash", "string"],
+        ["currency", "string"],
+        ["amount", "long"],
       ],
       "InputStorePaymentPurpose",
     ],
@@ -30798,12 +30822,12 @@ export const schema = Object.freeze({
       "messages.QuickReplies",
     ],
     connectedBot: [
-      0xBD068601,
+      0xCD64636C,
       [
         ["flags", "#"],
-        ["can_reply", "flags.0?true"],
         ["bot_id", "long"],
         ["recipients", "BusinessBotRecipients"],
+        ["rights", "BusinessBotRights"],
       ],
       "ConnectedBot",
     ],
@@ -30835,15 +30859,15 @@ export const schema = Object.freeze({
       "Birthday",
     ],
     botBusinessConnection: [
-      0x896433B4,
+      0x8F34B2F5,
       [
         ["flags", "#"],
-        ["can_reply", "flags.0?true"],
         ["disabled", "flags.1?true"],
         ["connection_id", "string"],
         ["user_id", "long"],
         ["dc_id", "int"],
         ["date", "int"],
+        ["rights", "flags.2?BusinessBotRights"],
       ],
       "BotBusinessConnection",
     ],
@@ -31852,35 +31876,62 @@ export const schema = Object.freeze({
       ],
       "RequirementToContact",
     ],
-    invokeWithBusinessConnectionPrefix: [
-      0xDD289F8E,
+    businessBotRights: [
+      0xA0624CF7,
       [
-        ["connection_id", "string"],
+        ["flags", "#"],
+        ["reply", "flags.0?true"],
+        ["read_messages", "flags.1?true"],
+        ["delete_sent_messages", "flags.2?true"],
+        ["delete_received_messages", "flags.3?true"],
+        ["edit_name", "flags.4?true"],
+        ["edit_bio", "flags.5?true"],
+        ["edit_profile_photo", "flags.6?true"],
+        ["edit_username", "flags.7?true"],
+        ["view_gifts", "flags.8?true"],
+        ["sell_gifts", "flags.9?true"],
+        ["change_gift_settings", "flags.10?true"],
+        ["transfer_and_upgrade_gifts", "flags.11?true"],
+        ["transfer_stars", "flags.12?true"],
+        ["manage_stories", "flags.13?true"],
       ],
-      "Error",
+      "BusinessBotRights",
     ],
-    invokeWithGooglePlayIntegrityPrefix: [
-      0x1DF92984,
+    disallowedGiftsSettings: [
+      0x71F276C4,
       [
-        ["nonce", "string"],
-        ["token", "string"],
+        ["flags", "#"],
+        ["disallow_unlimited_stargifts", "flags.0?true"],
+        ["disallow_limited_stargifts", "flags.1?true"],
+        ["disallow_unique_stargifts", "flags.2?true"],
+        ["disallow_premium_gifts", "flags.3?true"],
       ],
-      "Error",
+      "DisallowedGiftsSettings",
     ],
-    invokeWithApnsSecretPrefix: [
-      0x0DAE54F8,
+    sponsoredPeer: [
+      0xC69708D3,
       [
-        ["nonce", "string"],
-        ["secret", "string"],
+        ["flags", "#"],
+        ["random_id", "bytes"],
+        ["peer", "Peer"],
+        ["sponsor_info", "flags.0?string"],
+        ["additional_info", "flags.1?string"],
       ],
-      "Error",
+      "SponsoredPeer",
     ],
-    invokeWithReCaptchaPrefix: [
-      0xADBB0F94,
+    "contacts.sponsoredPeersEmpty": [
+      0xEA32B4B1,
+      [],
+      "contacts.SponsoredPeers",
+    ],
+    "contacts.sponsoredPeers": [
+      0xEB032884,
       [
-        ["token", "string"],
+        ["peers", "Vector<SponsoredPeer>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
-      "Error",
+      "contacts.SponsoredPeers",
     ],
     invokeAfterMsg: [
       0xCB9F372D,
@@ -32910,11 +32961,11 @@ export const schema = Object.freeze({
       "Bool",
     ],
     "account.updateConnectedBot": [
-      0x43D8521D,
+      0x66A08C7E,
       [
         ["flags", "#"],
-        ["can_reply", "flags.0?true"],
         ["deleted", "flags.1?true"],
+        ["rights", "flags.0?BusinessBotRights"],
         ["bot", "InputUser"],
         ["recipients", "InputBusinessBotRecipients"],
       ],
@@ -33284,6 +33335,13 @@ export const schema = Object.freeze({
       0xDAEDA864,
       [],
       "contacts.ContactBirthdays",
+    ],
+    "contacts.getSponsoredPeers": [
+      0xB6C8C393,
+      [
+        ["q", "string"],
+      ],
+      "contacts.SponsoredPeers",
     ],
     "messages.getMessages": [
       0x63C66506,
@@ -35345,28 +35403,25 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "messages.viewSponsoredMessage": [
-      0x673AD8F1,
+      0x269E3643,
       [
-        ["peer", "InputPeer"],
         ["random_id", "bytes"],
       ],
       "Bool",
     ],
     "messages.clickSponsoredMessage": [
-      0x0F093465,
+      0x8235057E,
       [
         ["flags", "#"],
         ["media", "flags.0?true"],
         ["fullscreen", "flags.1?true"],
-        ["peer", "InputPeer"],
         ["random_id", "bytes"],
       ],
       "Bool",
     ],
     "messages.reportSponsoredMessage": [
-      0x1AF3DBB8,
+      0x12CBF0C4,
       [
-        ["peer", "InputPeer"],
         ["random_id", "bytes"],
         ["option", "bytes"],
       ],
@@ -36613,13 +36668,6 @@ export const schema = Object.freeze({
       ],
       "Updates",
     ],
-    "payments.canPurchasePremium": [
-      0x9FC19EB6,
-      [
-        ["purpose", "InputStorePaymentPurpose"],
-      ],
-      "Bool",
-    ],
     "payments.getPremiumGiftCodeOptions": [
       0x2757BA54,
       [
@@ -36933,6 +36981,13 @@ export const schema = Object.freeze({
       [
         ["peer", "InputPeer"],
         ["stargift", "Vector<InputSavedStarGift>"],
+      ],
+      "Bool",
+    ],
+    "payments.canPurchaseStore": [
+      0x4FDC5EA7,
+      [
+        ["purpose", "InputStorePaymentPurpose"],
       ],
       "Bool",
     ],
@@ -37888,12 +37943,7 @@ export const schema = Object.freeze({
   identifierToName: {
     [0x3FEDD339]: "true",
     [0xC4B9F9BB]: "error",
-    [0xD433AD73]: "ipPort",
-    [0x37982646]: "ipPortSecret",
-    [0x4679B65F]: "accessPointRule",
-    [0x5A592A6C]: "help.configSimple",
-    [0x27D69997]: "inputPeerPhotoFileLocationLegacy",
-    [0x0DBAEAE9]: "inputStickerSetThumbLegacy",
+    [0x56730BCC]: "null",
     [0x7F3B18EA]: "inputPeerEmpty",
     [0x7DA07EC9]: "inputPeerSelf",
     [0x35A95CB9]: "inputPeerChat",
@@ -38049,6 +38099,8 @@ export const schema = Object.freeze({
     [0xB00C47A2]: "messageActionPrizeStars",
     [0x4717E8A4]: "messageActionStarGift",
     [0xACDFCB81]: "messageActionStarGiftUnique",
+    [0xAC1F1FCD]: "messageActionPaidMessagesRefunded",
+    [0xBCD71419]: "messageActionPaidMessagesPrice",
     [0xD58A08C6]: "dialog",
     [0x71BD134C]: "dialogFolder",
     [0x2331B22D]: "photoEmpty",
@@ -38063,6 +38115,7 @@ export const schema = Object.freeze({
     [0xB2A2F663]: "geoPoint",
     [0x5E002502]: "auth.sentCode",
     [0x2390FE44]: "auth.sentCodeSuccess",
+    [0xD7CEF980]: "auth.sentCodePaymentRequired",
     [0x2EA2C0D4]: "auth.authorization",
     [0x44747E9A]: "auth.authorizationSignUpRequired",
     [0xB434E2B8]: "auth.exportedAuthorization",
@@ -38086,7 +38139,7 @@ export const schema = Object.freeze({
     [0xF5DDD6E7]: "inputReportReasonFake",
     [0x0A8EB2BE]: "inputReportReasonIllegalDrugs",
     [0x9EC7863D]: "inputReportReasonPersonalDetails",
-    [0xD2234EA0]: "userFull",
+    [0x99E78045]: "userFull",
     [0x145ADE0B]: "contact",
     [0xC13E3C50]: "importedContact",
     [0x16D9703B]: "contactStatus",
@@ -38264,6 +38317,7 @@ export const schema = Object.freeze({
     [0xA584B019]: "updateStarsRevenueStatus",
     [0x283BD312]: "updateBotPurchasedPaidMedia",
     [0x8B725FCE]: "updatePaidReactionPrivacy",
+    [0x504AA18F]: "updateSentPhoneCode",
     [0xA56C2A3E]: "updates.state",
     [0x5D75A138]: "updates.differenceEmpty",
     [0x00F49CA0]: "updates.difference",
@@ -38915,7 +38969,7 @@ export const schema = Object.freeze({
     [0xD7584C87]: "statsGroupTopAdmin",
     [0x535F779D]: "statsGroupTopInviter",
     [0xEF7FF916]: "stats.megagroupStats",
-    [0xC9D8DF1C]: "globalPrivacySettings",
+    [0xFE41B34F]: "globalPrivacySettings",
     [0x4203C5EF]: "help.countryCode",
     [0xC3878E23]: "help.country",
     [0x93CC1F32]: "help.countriesListNotModified",
@@ -39030,6 +39084,7 @@ export const schema = Object.freeze({
     [0xDDDD0F56]: "inputStorePaymentStarsTopup",
     [0x1D741EF7]: "inputStorePaymentStarsGift",
     [0x751F08FA]: "inputStorePaymentStarsGiveaway",
+    [0x9BB2636D]: "inputStorePaymentAuthCode",
     [0x88F8F21B]: "paymentFormMethod",
     [0x2DE11AAE]: "emojiStatusEmpty",
     [0xE7FF068A]: "emojiStatus",
@@ -39188,11 +39243,11 @@ export const schema = Object.freeze({
     [0x01190CF1]: "inputQuickReplyShortcutId",
     [0xC68D6695]: "messages.quickReplies",
     [0x5F91EB5B]: "messages.quickRepliesNotModified",
-    [0xBD068601]: "connectedBot",
+    [0xCD64636C]: "connectedBot",
     [0x17D7F87B]: "account.connectedBots",
     [0x2AD93719]: "messages.dialogFilters",
     [0x6C8E1E06]: "birthday",
-    [0x896433B4]: "botBusinessConnection",
+    [0x8F34B2F5]: "botBusinessConnection",
     [0x09C469CD]: "inputBusinessIntro",
     [0x5A0A066D]: "businessIntro",
     [0xFAFF629D]: "messages.myStickers",
@@ -39299,7 +39354,12 @@ export const schema = Object.freeze({
     [0x050A9839]: "requirementToContactEmpty",
     [0xE581E4E9]: "requirementToContactPremium",
     [0xB4F67E93]: "requirementToContactPaidMessages",
+    [0xA0624CF7]: "businessBotRights",
+    [0x71F276C4]: "disallowedGiftsSettings",
+    [0xC69708D3]: "sponsoredPeer",
+    [0xEA32B4B1]: "contacts.sponsoredPeersEmpty",
+    [0xEB032884]: "contacts.sponsoredPeers",
   },
 }) as unknown as Schema;
 
-export const LAYER = 200;
+export const LAYER = 201;

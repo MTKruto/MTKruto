@@ -42,7 +42,7 @@ export async function constructBusinessConnection(connection: Api.botBusinessCon
     id: connection.connection_id,
     user: constructUser((await getEntity({ ...connection, _: "peerUser" }))!),
     date: fromUnixTimestamp(connection.date),
-    canReply: !!connection.can_reply,
+    canReply: !!connection.rights?.reply,
     isEnabled: !connection.disabled,
   };
 }
