@@ -52,7 +52,7 @@ export class FileManager {
       throw new InputError("Invalid file size.");
     }
 
-    const poolSize = this.#c.getUploadPoolSize();
+    const poolSize = await this.#c.getUploadPoolSize();
 
     const chunkSize = params?.chunkSize ?? FileManager.#UPLOAD_MAX_CHUNK_SIZE;
     FileManager.validateChunkSize(chunkSize, FileManager.#UPLOAD_MAX_CHUNK_SIZE);
