@@ -19,18 +19,21 @@
  */
 
 import { Api, Mtproto } from "../2_tl.ts";
+import { DC } from "../3_transport.ts";
 import { ConnectionState, EntityGetter, ID, ParseMode, Update } from "../3_types.ts";
 import { InvokeParams } from "./0_params.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 
 export interface C {
   id: number;
+  getDc: () => DC;
   storage: StorageOperations;
   messageStorage: StorageOperations;
   guaranteeUpdateDelivery: boolean;
   setConnectionState: (connectionState: ConnectionState) => void;
   resetConnectionState: () => void;
   getSelfId: () => Promise<number>;
+  getIsPremium: () => Promise<boolean>;
   getInputPeer: (id: ID) => Promise<Api.InputPeer>;
   getInputChannel: (id: ID) => Promise<Api.inputChannel | Api.inputChannelFromMessage>;
   getInputUser: (id: ID) => Promise<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage>;

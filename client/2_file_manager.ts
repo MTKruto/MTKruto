@@ -26,7 +26,7 @@ import { getDc } from "../3_transport.ts";
 import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { _UploadCommon, DownloadParams } from "./0_params.ts";
-import { UPLOAD_POOL_SIZE, UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
+import { UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
 import { C } from "./1_types.ts";
 
 export class FileManager {
@@ -52,6 +52,10 @@ export class FileManager {
       throw new InputError("Invalid file size.");
     }
 
+    const dc = this.#c.getDc();
+    const isPremium = await this.#c.getIsPremium();
+    const poolSize = (dc != "2" && dc != "4") || isPremium ? 8 : 4;
+
     const chunkSize = params?.chunkSize ?? FileManager.#UPLOAD_MAX_CHUNK_SIZE;
     FileManager.validateChunkSize(chunkSize, FileManager.#UPLOAD_MAX_CHUNK_SIZE);
 
@@ -60,13 +64,13 @@ export class FileManager {
     const isBig = contents instanceof Uint8Array ? contents.length > FileManager.#BIG_FILE_THRESHOLD : true;
 
     const whatIsUploaded = contents instanceof Uint8Array ? (isBig ? "big file" : "file") + " of size " + size : "stream";
-    this.#Lupload.debug("uploading " + whatIsUploaded + " with chunk size of " + chunkSize + " and pool size of " + UPLOAD_POOL_SIZE + " and file ID of " + fileId);
+    this.#Lupload.debug("uploading " + whatIsUploaded + " with chunk size of " + chunkSize + " and pool size of " + poolSize + " and file ID of " + fileId);
 
     let result: { small: boolean; parts: number };
     if (contents instanceof Uint8Array) {
-      result = await this.#uploadBuffer(contents, fileId, chunkSize, params?.signal);
+      result = await this.#uploadBuffer(contents, fileId, chunkSize, poolSize, params?.signal);
     } else {
-      result = await this.#uploadStream(contents, fileId, chunkSize, params?.signal);
+      result = await this.#uploadStream(contents, fileId, chunkSize, poolSize, params?.signal);
     }
 
     this.#Lupload.debug(`[${fileId}] uploaded ` + result.parts + " part(s)");
@@ -78,7 +82,7 @@ export class FileManager {
     }
   }
 
-  async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, chunkSize: number, signal: AbortSignal | undefined) {
+  async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, chunkSize: number, poolSize: number, signal: AbortSignal | undefined) {
     let part: Part;
     let promises = new Array<Promise<void>>();
     let ms = 0.05;
@@ -88,7 +92,7 @@ export class FileManager {
         ms = Math.max(ms * .8, 0.003);
       }
       promises.push(this.#uploadPart(fileId, part.totalParts, !part.small, part.part, part.bytes, signal));
-      if (promises.length == UPLOAD_POOL_SIZE * UPLOAD_REQUEST_PER_CONNECTION) {
+      if (promises.length == poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
         await Promise.all(promises);
         promises = [];
       }
@@ -97,14 +101,14 @@ export class FileManager {
     return { small: part!.small, parts: part!.totalParts };
   }
 
-  async #uploadBuffer(buffer: Uint8Array, fileId: bigint, chunkSize: number, signal: AbortSignal | undefined) {
+  async #uploadBuffer(buffer: Uint8Array, fileId: bigint, chunkSize: number, poolSize: number, signal: AbortSignal | undefined) {
     const isBig = buffer.byteLength > FileManager.#BIG_FILE_THRESHOLD;
     const partCount = Math.ceil(buffer.byteLength / chunkSize);
     let promises = new Array<Promise<void>>();
     let started = false;
     let ms = 0.05;
     main: for (let part = 0; part < partCount;) {
-      for (let i = 0; i < UPLOAD_POOL_SIZE; ++i) {
+      for (let i = 0; i < poolSize; ++i) {
         for (let i = 0; i < UPLOAD_REQUEST_PER_CONNECTION; ++i) {
           const start = part * chunkSize;
           const end = start + chunkSize;
@@ -119,7 +123,7 @@ export class FileManager {
             ms = Math.max(ms * .8, 0.003);
           }
           promises.push(this.#uploadPart(fileId, partCount, isBig, part++, bytes, signal));
-          if (promises.length == UPLOAD_POOL_SIZE * UPLOAD_REQUEST_PER_CONNECTION) {
+          if (promises.length == poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
             await Promise.all(promises);
             promises = [];
           }

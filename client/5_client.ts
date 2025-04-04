@@ -419,6 +419,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
     const c = {
       id,
+      getDc: () => this.#client!.dc,
       invoke: async <T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams & { businessConnectionId?: string }): Promise<R> => {
         if (params?.businessConnectionId) {
           if (Mtproto.is("ping", function_)) {
@@ -435,6 +436,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       setConnectionState: this.#propagateConnectionState.bind(this),
       resetConnectionState: () => this.#stateChangeHandler(this.connected),
       getSelfId: this.#getSelfId.bind(this),
+      getIsPremium: this.#getIsPremium.bind(this),
       getInputPeer: this.getInputPeer.bind(this),
       getInputChannel: this.getInputChannel.bind(this),
       getInputUser: this.getInputUser.bind(this),
@@ -1042,6 +1044,14 @@ export class Client<C extends Context = Context> extends Composer<C> {
       throw new Error("Unauthorized");
     }
     return id;
+  }
+
+  async #getIsPremium() {
+    const maybeIsPremium = await this.storage.getIsPremium();
+    if (maybeIsPremium != null) {
+      return maybeIsPremium;
+    }
+    return this.#lastGetMe?.isPremium ?? false;
   }
 
   #lastUpdates = new Date();
@@ -1840,6 +1850,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUserSelf" }] });
       user_ = Api.as("user", users[0]);
       await this.messageStorage.setEntity(user_);
+      await this.storage.setIsPremium(user_.premium ?? false);
     }
     const user = constructUser(user_);
     this.#lastGetMe = user;
