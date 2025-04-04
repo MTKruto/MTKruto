@@ -31,7 +31,7 @@ import { PhoneCodeInvalid } from "../4_errors.ts";
 import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
-import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, resolve, toInputChannel, toInputUser, UPLOAD_POOL_SIZE } from "./0_utilities.ts";
+import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, resolve, toInputChannel, toInputUser} from "./0_utilities.ts";
 import { ClientPlainParams } from "./1_client_plain.ts";
 import { Composer as Composer_, Middleware, MiddlewareFn, MiddlewareObj, NextFunction } from "./1_composer.ts";
 import { AccountManager } from "./2_account_manager.ts";
@@ -419,6 +419,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
     const c = {
       id,
+      getUploadPoolSize: this.#getUploadPoolSize.bind(this),
       invoke: async <T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams & { businessConnectionId?: string }): Promise<R> => {
         if (params?.businessConnectionId) {
           if (Mtproto.is("ping", function_)) {
@@ -435,6 +436,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       setConnectionState: this.#propagateConnectionState.bind(this),
       resetConnectionState: () => this.#stateChangeHandler(this.connected),
       getSelfId: this.#getSelfId.bind(this),
+      getIsPremium: this.#getIsPremium.bind(this),
       getInputPeer: this.getInputPeer.bind(this),
       getInputChannel: this.getInputChannel.bind(this),
       getInputUser: this.getInputUser.bind(this),
@@ -1044,6 +1046,14 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return id;
   }
 
+  async #getIsPremium() {
+    const maybeIsPremium = await this.storage.getIsPremium();
+    if (maybeIsPremium != null) {
+      return maybeIsPremium;
+    }
+    return this.#lastGetMe?.isPremium ?? false;
+  }
+
   #lastUpdates = new Date();
   #updateGapRecoveryLoopAbortController?: AbortController;
   #startUpdateGapRecoveryLoop() {
@@ -1352,11 +1362,17 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return client;
   }
 
+  async #getUploadPoolSize() {
+    const dc = this.#client!.dc;
+    return (dc != "2" && dc != "4") || await this.#getIsPremium() ? 8 : 4;
+  }
+
   async #getUploadClient() {
     const dc = this.#client!.dc;
+    const poolSize = await this.#getUploadPoolSize();
     const pool = this.#uploadPools[dc] ??= new ClientEncryptedPool();
     if (!pool.size) {
-      for (let i = 0; i < UPLOAD_POOL_SIZE; ++i) {
+      for (let i = 0; i < poolSize; ++i) {
         pool.add(await this.#newClient(dc, false, true));
       }
     }
@@ -1840,6 +1856,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUserSelf" }] });
       user_ = Api.as("user", users[0]);
       await this.messageStorage.setEntity(user_);
+      await this.storage.setIsPremium(user_.premium ?? false);
     }
     const user = constructUser(user_);
     this.#lastGetMe = user;
