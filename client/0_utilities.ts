@@ -198,7 +198,6 @@ export function repr(value: unknown): string | null {
   }
 }
 
-export const UPLOAD_POOL_SIZE = 3;
 export const UPLOAD_REQUEST_PER_CONNECTION = 2;
 
 export const DOWNLOAD_POOL_SIZE = 1;

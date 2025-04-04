@@ -25,6 +25,7 @@ import { StorageOperations } from "./0_storage_operations.ts";
 
 export interface C {
   id: number;
+  getUploadPoolSize: () => Promise<number>;
   storage: StorageOperations;
   messageStorage: StorageOperations;
   guaranteeUpdateDelivery: boolean;
