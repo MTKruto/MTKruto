@@ -376,7 +376,7 @@ export class StorageOperations {
     await this.#storage.set(K.auth.isPremium(), isPremium);
   }
 
-  async getIsPremium() {
+  async getIsPremium(): Promise<boolean | null> {
     return await this.#storage.get<boolean>(K.auth.isPremium());
   }
 
