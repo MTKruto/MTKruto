@@ -372,6 +372,8 @@ export interface GetHistoryParams {
 export interface SetReactionsParams {
   /** Whether to make the new reactions more notable. */
   big?: boolean;
+  /** Whether to add the reaction to recent reactions. */
+  addToRecents?: boolean;
 }
 
 export interface AddReactionParams {
