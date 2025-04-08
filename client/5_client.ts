@@ -286,6 +286,10 @@ export interface ClientParams extends ClientPlainParams {
   disableUpdates?: boolean;
   /** An auth string to automatically import. Can be overriden by a later importAuthString call. */
   authString?: string;
+  /**
+   * The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC.
+   */
+  initialDc?: DC;
 }
 
 /**
@@ -369,6 +373,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #persistCache: boolean;
   #disableUpdates: boolean;
   #authString?: string;
+  #initialDc: DC;
 
   #L: Logger;
   #LsignIn: Logger;
@@ -385,6 +390,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#apiId = params?.apiId ?? 0;
     this.#apiHash = params?.apiHash ?? "";
     this.#transportProvider = params?.transportProvider;
+    this.#initialDc = params?.initialDc ?? INITIAL_DC;
     this.#storage_ = params?.storage || new StorageMemory();
     this.#persistCache = params?.persistCache ?? false;
     if (!this.#persistCache) {
@@ -996,7 +1002,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
           this.#client!.serverSalt = await this.storage.getServerSalt() ?? 0n;
         }
       } else {
-        const dc = await this.storage.getDc() ?? INITIAL_DC;
+        const dc = await this.storage.getDc() ?? this.#initialDc;
         if (!this.#client || this.#client.dc != dc) {
           this.#client?.disconnect();
           this.#setMainClient(this.#newClient(dc, true, false));
