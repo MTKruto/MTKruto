@@ -2571,7 +2571,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param chatId The identifier of the chat that includes the messages.
    * @param untilMessageId The identifier of a message that will be marked as read, along with any other unread messages before it.
    */
-  async readMessages(chatId: number, untilMessageId: number): Promise<void> {
+  async readMessages(chatId: ID, untilMessageId: number): Promise<void> {
     await this.#messageManager.readMessages(chatId, untilMessageId);
   }
 
@@ -2707,7 +2707,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param chatId The identifier of the chat.
    * @param photo A photo to set as the chat's photo.
    */
-  async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams) {
+  async setChatPhoto(chatId: ID, photo: FileSource, params?: SetChatPhotoParams) {
     await this.#chatManager.setChatPhoto(chatId, photo, params);
   }
 
@@ -2717,7 +2717,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @method ch
    * @param chatId The identifier of the chat.
    */
-  async deleteChatPhoto(chatId: number) {
+  async deleteChatPhoto(chatId: ID) {
     await this.#chatManager.deleteChatPhoto(chatId);
   }
 
@@ -3475,7 +3475,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param messageId The identifier of the message to add the reaction to.
    * @param reactions The new reactions.
    */
-  async setReactions(chatId: number, messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
+  async setReactions(chatId: ID, messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
     await this.#messageManager.setReactions(chatId, messageId, reactions, params);
   }
 
@@ -3487,7 +3487,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param messageId The identifier of the message to add the reaction to.
    * @param reaction The reaction to add.
    */
-  async addReaction(chatId: number, messageId: number, reaction: Reaction, params?: AddReactionParams) {
+  async addReaction(chatId: ID, messageId: number, reaction: Reaction, params?: AddReactionParams) {
     await this.#messageManager.addReaction(chatId, messageId, reaction, params);
   }
 
@@ -3499,7 +3499,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param messageId The identifier of the message which the reaction was made to.
    * @param reaction The reaction to remove.
    */
-  async removeReaction(chatId: number, messageId: number, reaction: Reaction) {
+  async removeReaction(chatId: ID, messageId: number, reaction: Reaction) {
     await this.#messageManager.removeReaction(chatId, messageId, reaction);
   }
 
