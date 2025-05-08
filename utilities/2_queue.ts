@@ -23,9 +23,11 @@ import { getLogger, Logger } from "./1_logger.ts";
 export class Queue {
   #logger: Logger;
   functions = new Array<() => Promise<void>>();
+  #throw: boolean;
 
-  constructor(name: string) {
+  constructor(name: string, throw_ = false) {
     this.#logger = getLogger(`q/${name}`);
+    this.#throw = throw_;
   }
 
   add(fn: () => Promise<void>) {
@@ -42,14 +44,16 @@ export class Queue {
     }
     const fn = this.functions.shift();
     if (fn !== undefined) {
-      fn()
-        .catch((err) => {
-          this.#logger.error((typeof err === "object" && err != null && "stack" in err) ? err.stack : err);
-        })
+      const promise = fn()
         .finally(() => {
           this.#busy = false;
           this.#check();
         });
+      if (!this.#throw) {
+        promise.catch((err) => {
+          this.#logger.error((typeof err === "object" && err != null && "stack" in err) ? err.stack : err);
+        });
+      }
     } else {
       this.#busy = false;
     }

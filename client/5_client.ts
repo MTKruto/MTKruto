@@ -1688,6 +1688,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       await this.middleware()(await this.#constructContext(update), resolve);
     } catch (err) {
       this.#L.error("Failed to handle update:", err);
+      throw err;
     }
   }
 

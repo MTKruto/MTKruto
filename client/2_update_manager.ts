@@ -365,7 +365,7 @@ export class UpdateManager {
     if (queue !== undefined) {
       return queue;
     } else {
-      queue = new Queue(`handleUpdate-${boxId}`);
+      queue = new Queue(`handleUpdate-${boxId}`, true);
       return queue;
     }
   }
