@@ -366,7 +366,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       fullChat = (await this.#c.invoke({ _: "channels.getFullChannel", channel: toInputChannel(inputPeer) })).full_chat;
     }
     await this.#c.storage.setFullChat(chatId_, fullChat);
-    if (fullChat != null && "call" in fullChat && fullChat.call) {
+    if (fullChat != null && "call" in fullChat && Api.is("inputGroupCall", fullChat.call)) {
       await this.#c.storage.setGroupCallAccessHash(fullChat.call.id, fullChat.call.access_hash);
     }
     return fullChat;
