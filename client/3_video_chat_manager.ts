@@ -153,7 +153,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
       await this.#c.storage.setGroupCall(update.call.id, update.call);
       await this.#c.storage.setGroupCallAccessHash(update.call.id, update.call.access_hash);
       if (fullChat != null) {
-        if (!("call" in fullChat) || !fullChat.call || fullChat.call.id != update.call.id) {
+        if (!("call" in fullChat) || !fullChat.call || !Api.is("inputGroupCall", fullChat.call) || fullChat.call.id != update.call.id) {
           fullChat.call = { ...update.call, _: "inputGroupCall" };
           updateFullChat = true;
         }
