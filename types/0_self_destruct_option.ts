@@ -28,6 +28,16 @@ export type SelfDestructAfterSeconds = number;
 
 export type SelfDestructOption = SelfDestructAfterOpen | SelfDestructAfterSeconds;
 
+const MAX_INT_32 = ~~(0xFFFFFFFF / 2);
+
+export function constructSelfDestructOption(ttlSeconds: number): SelfDestructOption {
+  if (ttlSeconds == MAX_INT_32) {
+    return "afterOpen";
+  } else {
+    return ttlSeconds;
+  }
+}
+
 export function selfDestructOptionToInt(option: SelfDestructOption): number {
   if (option == "afterOpen") {
     return 2147483647;

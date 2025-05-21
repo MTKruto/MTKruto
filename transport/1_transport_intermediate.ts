@@ -26,7 +26,6 @@ import { Transport } from "./0_transport.ts";
 
 export class TransportIntermediate extends Transport implements Transport {
   #connection: Connection;
-  #initialized = false;
   #obfuscated: boolean;
 
   constructor(connection: Connection, obfuscated = false) {
@@ -36,15 +35,10 @@ export class TransportIntermediate extends Transport implements Transport {
   }
 
   async initialize() {
-    if (!this.initialized) {
-      if (this.#obfuscated) {
-        this.obfuscationParameters = await getObfuscationParameters(0xEEEEEEEE, this.#connection);
-      } else {
-        await this.#connection.write(new Uint8Array([0xEE, 0xEE, 0xEE, 0xEE]));
-      }
-      this.#initialized = true;
+    if (this.#obfuscated) {
+      this.obfuscationParameters = await getObfuscationParameters(0xEEEEEEEE, this.#connection);
     } else {
-      throw new Error("Transport already initialized");
+      await this.#connection.write(new Uint8Array([0xEE, 0xEE, 0xEE, 0xEE]));
     }
   }
 
@@ -66,22 +60,9 @@ export class TransportIntermediate extends Transport implements Transport {
   }
 
   async send(buffer: Uint8Array) {
-    if (!this.initialized) {
-      throw new Error("Transport not initialized");
-    }
-
     const length = bufferFromBigInt(buffer.length, 4);
     const data = concat([length, buffer]);
 
     await this.#connection.write(await this.encrypt(data));
-  }
-
-  override deinitialize() {
-    super.deinitialize();
-    this.#initialized = false;
-  }
-
-  get initialized(): boolean {
-    return this.#initialized;
   }
 }

@@ -124,6 +124,8 @@ export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | A
 export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden): ChatP {
   if (Api.is("user", chat)) {
     const id = Number(chat.id);
+    const usernames = chat.usernames?.map((v) => v.username);
+    const username = chat.username ?? usernames?.shift();
     const chat_: ChatPPrivate = {
       id,
       type: "private",
@@ -131,6 +133,8 @@ export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | A
       color: chat.color?.color !== undefined ? chat.color.color : getColorFromPeerId(id),
       firstName: chat.first_name || "",
       lastName: chat.last_name,
+      username,
+      also: usernames?.filter((v) => v != username),
       isScam: chat.scam || false,
       isFake: chat.fake || false,
       isSupport: chat.support || false,

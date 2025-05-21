@@ -31,6 +31,7 @@ import { constructLinkPreview, LinkPreview } from "./0_link_preview.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { constructRefundedPayment, RefundedPayment } from "./0_refunded_payment.ts";
+import { constructSelfDestructOption, SelfDestructOption } from "./0_self_destruct_option.ts";
 import { constructVoice, Voice } from "./0_voice.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
 import { Audio, constructAudio } from "./1_audio.ts";
@@ -114,6 +115,8 @@ export interface _MessageBase {
   effectId?: string;
   /** Whether the message is scheduled. */
   scheduled?: boolean;
+  /** The message's self-destruct preference. */
+  selfDestruct?: SelfDestructOption;
 }
 
 /**
@@ -1067,6 +1070,10 @@ export async function constructMessage(
     caption: message_.message,
     captionEntities: message_.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v) ?? [],
   };
+
+  if (message_.media && "ttl_seconds" in message_.media && typeof message_.media.ttl_seconds === "number") {
+    messageMedia.selfDestruct = constructSelfDestructOption(message_.media.ttl_seconds);
+  }
 
   if (Api.is("messageMediaPhoto", message_.media) || Api.is("messageMediaDocument", message_.media)) {
     messageMedia.hasMediaSpoiler = message_.media.spoiler || false;

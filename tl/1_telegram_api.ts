@@ -36,46 +36,8 @@ export interface error {
   text: string;
 }
 
-export interface ipPort {
-  _: "ipPort";
-  ipv4: number;
-  port: number;
-}
-
-export interface ipPortSecret {
-  _: "ipPortSecret";
-  ipv4: number;
-  port: number;
-  secret: Uint8Array;
-}
-
-export interface accessPointRule {
-  _: "accessPointRule";
-  phone_prefix_rules: string;
-  dc_id: number;
-  ips: Array<IpPort>;
-}
-
-export interface help_configSimple {
-  _: "help.configSimple";
-  date: number;
-  expires: number;
-  rules: Array<AccessPointRule>;
-}
-
-export interface inputPeerPhotoFileLocationLegacy {
-  _: "inputPeerPhotoFileLocationLegacy";
-  big?: true;
-  peer: InputPeer;
-  volume_id: bigint;
-  local_id: number;
-}
-
-export interface inputStickerSetThumbLegacy {
-  _: "inputStickerSetThumbLegacy";
-  stickerset: InputStickerSet;
-  volume_id: bigint;
-  local_id: number;
+export interface null_ {
+  _: "null";
 }
 
 export interface inputPeerEmpty {
@@ -628,6 +590,7 @@ export interface channel {
   stories_hidden_min?: true;
   stories_unavailable?: true;
   signature_profiles?: true;
+  autotranslation?: true;
   id: bigint;
   access_hash?: bigint;
   title: string;
@@ -1331,6 +1294,30 @@ export interface messageActionStarGiftUnique {
   from_id?: Peer;
   peer?: Peer;
   saved_id?: bigint;
+  resale_stars?: bigint;
+  can_transfer_at?: number;
+  can_resell_at?: number;
+}
+
+export interface messageActionPaidMessagesRefunded {
+  _: "messageActionPaidMessagesRefunded";
+  count: number;
+  stars: bigint;
+}
+
+export interface messageActionPaidMessagesPrice {
+  _: "messageActionPaidMessagesPrice";
+  stars: bigint;
+}
+
+export interface messageActionConferenceCall {
+  _: "messageActionConferenceCall";
+  missed?: true;
+  active?: true;
+  video?: true;
+  call_id: bigint;
+  duration?: number;
+  other_participants?: Array<Peer>;
 }
 
 export interface dialog {
@@ -1445,6 +1432,12 @@ export interface auth_sentCode {
 export interface auth_sentCodeSuccess {
   _: "auth.sentCodeSuccess";
   authorization: auth_Authorization;
+}
+
+export interface auth_sentCodePaymentRequired {
+  _: "auth.sentCodePaymentRequired";
+  store_product: string;
+  phone_code_hash: string;
 }
 
 export interface auth_authorization {
@@ -1620,6 +1613,7 @@ export interface userFull {
   sponsored_enabled?: true;
   can_view_revenue?: true;
   bot_can_manage_emoji_status?: true;
+  display_gifts_button?: true;
   id: bigint;
   about?: string;
   settings: PeerSettings;
@@ -1650,6 +1644,7 @@ export interface userFull {
   starref_program?: StarRefProgram;
   bot_verification?: BotVerification;
   send_paid_messages_stars?: bigint;
+  disallowed_gifts?: DisallowedGiftsSettings;
 }
 
 export interface contact {
@@ -2784,6 +2779,19 @@ export interface updateBotPurchasedPaidMedia {
 export interface updatePaidReactionPrivacy {
   _: "updatePaidReactionPrivacy";
   private: PaidReactionPrivacy;
+}
+
+export interface updateSentPhoneCode {
+  _: "updateSentPhoneCode";
+  sent_code: auth_SentCode;
+}
+
+export interface updateGroupCallChainBlocks {
+  _: "updateGroupCallChainBlocks";
+  call: InputGroupCall;
+  sub_chain_id: number;
+  blocks: Array<Uint8Array>;
+  next_offset: number;
 }
 
 export interface updates_state {
@@ -5220,9 +5228,9 @@ export interface phoneCallDiscardReasonBusy {
   _: "phoneCallDiscardReasonBusy";
 }
 
-export interface phoneCallDiscardReasonAllowGroupCall {
-  _: "phoneCallDiscardReasonAllowGroupCall";
-  encrypted_key: Uint8Array;
+export interface phoneCallDiscardReasonMigrateConferenceCall {
+  _: "phoneCallDiscardReasonMigrateConferenceCall";
+  slug: string;
 }
 
 export interface dataJSON {
@@ -5498,7 +5506,6 @@ export interface phoneCallWaiting {
   participant_id: bigint;
   protocol: PhoneCallProtocol;
   receive_date?: number;
-  conference_call?: InputGroupCall;
 }
 
 export interface phoneCallRequested {
@@ -5511,7 +5518,6 @@ export interface phoneCallRequested {
   participant_id: bigint;
   g_a_hash: Uint8Array;
   protocol: PhoneCallProtocol;
-  conference_call?: InputGroupCall;
 }
 
 export interface phoneCallAccepted {
@@ -5524,13 +5530,13 @@ export interface phoneCallAccepted {
   participant_id: bigint;
   g_b: Uint8Array;
   protocol: PhoneCallProtocol;
-  conference_call?: InputGroupCall;
 }
 
 export interface phoneCall {
   _: "phoneCall";
   p2p_allowed?: true;
   video?: true;
+  conference_supported?: true;
   id: bigint;
   access_hash: bigint;
   date: number;
@@ -5542,7 +5548,6 @@ export interface phoneCall {
   connections: Array<PhoneConnection>;
   start_date: number;
   custom_parameters?: DataJSON;
-  conference_call?: InputGroupCall;
 }
 
 export interface phoneCallDiscarded {
@@ -5553,7 +5558,6 @@ export interface phoneCallDiscarded {
   id: bigint;
   reason?: PhoneCallDiscardReason;
   duration?: number;
-  conference_call?: InputGroupCall;
 }
 
 export interface phoneConnection {
@@ -5931,6 +5935,11 @@ export interface channelAdminLogEventActionParticipantSubExtend {
   _: "channelAdminLogEventActionParticipantSubExtend";
   prev_participant: ChannelParticipant;
   new_participant: ChannelParticipant;
+}
+
+export interface channelAdminLogEventActionToggleAutotranslation {
+  _: "channelAdminLogEventActionToggleAutotranslation";
+  new_value: boolean;
 }
 
 export interface channelAdminLogEvent {
@@ -7093,11 +7102,14 @@ export interface help_promoData {
   _: "help.promoData";
   proxy?: true;
   expires: number;
-  peer: Peer;
-  chats: Array<Chat>;
-  users: Array<User>;
+  peer?: Peer;
   psa_type?: string;
   psa_message?: string;
+  pending_suggestions: Array<string>;
+  dismissed_suggestions: Array<string>;
+  custom_pending_suggestion?: PendingSuggestion;
+  chats: Array<Chat>;
+  users: Array<User>;
 }
 
 export interface videoSize {
@@ -7171,7 +7183,9 @@ export interface globalPrivacySettings {
   keep_archived_folders?: true;
   hide_read_marks?: true;
   new_noncontact_peers_require_premium?: true;
+  display_gifts_button?: true;
   noncontact_peers_paid_stars?: bigint;
+  disallowed_gifts?: DisallowedGiftsSettings;
 }
 
 export interface help_countryCode {
@@ -7286,6 +7300,8 @@ export interface groupCall {
   record_video_active?: true;
   rtmp_stream?: true;
   listeners_hidden?: true;
+  conference?: true;
+  creator?: true;
   id: bigint;
   access_hash: bigint;
   participants_count: number;
@@ -7296,13 +7312,23 @@ export interface groupCall {
   unmuted_video_count?: number;
   unmuted_video_limit: number;
   version: number;
-  conference_from_call?: bigint;
+  invite_link?: string;
 }
 
 export interface inputGroupCall {
   _: "inputGroupCall";
   id: bigint;
   access_hash: bigint;
+}
+
+export interface inputGroupCallSlug {
+  _: "inputGroupCallSlug";
+  slug: string;
+}
+
+export interface inputGroupCallInviteMessage {
+  _: "inputGroupCallInviteMessage";
+  msg_id: number;
 }
 
 export interface groupCallParticipant {
@@ -7875,6 +7901,18 @@ export interface inputInvoicePremiumGiftStars {
   message?: TextWithEntities;
 }
 
+export interface inputInvoiceBusinessBotTransferStars {
+  _: "inputInvoiceBusinessBotTransferStars";
+  bot: InputUser;
+  stars: bigint;
+}
+
+export interface inputInvoiceStarGiftResale {
+  _: "inputInvoiceStarGiftResale";
+  slug: string;
+  to_id: InputPeer;
+}
+
 export interface payments_exportedInvoice {
   _: "payments.exportedInvoice";
   url: string;
@@ -7964,6 +8002,15 @@ export interface inputStorePaymentStarsGiveaway {
   currency: string;
   amount: bigint;
   users: number;
+}
+
+export interface inputStorePaymentAuthCode {
+  _: "inputStorePaymentAuthCode";
+  restore?: true;
+  phone_number: string;
+  phone_code_hash: string;
+  currency: string;
+  amount: bigint;
 }
 
 export interface paymentFormMethod {
@@ -9101,9 +9148,9 @@ export interface messages_quickRepliesNotModified {
 
 export interface connectedBot {
   _: "connectedBot";
-  can_reply?: true;
   bot_id: bigint;
   recipients: BusinessBotRecipients;
+  rights: BusinessBotRights;
 }
 
 export interface account_connectedBots {
@@ -9127,12 +9174,12 @@ export interface birthday {
 
 export interface botBusinessConnection {
   _: "botBusinessConnection";
-  can_reply?: true;
   disabled?: true;
   connection_id: string;
   user_id: bigint;
   dc_id: number;
   date: number;
+  rights?: BusinessBotRights;
 }
 
 export interface inputBusinessIntro {
@@ -9445,6 +9492,8 @@ export interface starsTransaction {
   gift?: true;
   reaction?: true;
   stargift_upgrade?: true;
+  business_transfer?: true;
+  stargift_resale?: true;
   id: string;
   stars: StarsAmount;
   date: number;
@@ -9622,10 +9671,13 @@ export interface starGift {
   stars: bigint;
   availability_remains?: number;
   availability_total?: number;
+  availability_resale?: bigint;
   convert_stars: bigint;
   first_sale_date?: number;
   last_sale_date?: number;
   upgrade_stars?: bigint;
+  resell_min_stars?: bigint;
+  title?: string;
 }
 
 export interface starGiftUnique {
@@ -9641,6 +9693,7 @@ export interface starGiftUnique {
   availability_issued: number;
   availability_total: number;
   gift_address?: string;
+  resell_stars?: bigint;
 }
 
 export interface payments_starGiftsNotModified {
@@ -9785,6 +9838,7 @@ export interface starGiftAttributePattern {
 export interface starGiftAttributeBackdrop {
   _: "starGiftAttributeBackdrop";
   name: string;
+  backdrop_id: number;
   center_color: number;
   edge_color: number;
   pattern_color: number;
@@ -9845,6 +9899,8 @@ export interface savedStarGift {
   upgrade_stars?: bigint;
   can_export_at?: number;
   transfer_stars?: bigint;
+  can_transfer_at?: number;
+  can_resell_at?: number;
 }
 
 export interface payments_savedStarGifts {
@@ -9866,6 +9922,11 @@ export interface inputSavedStarGiftChat {
   _: "inputSavedStarGiftChat";
   peer: InputPeer;
   saved_id: bigint;
+}
+
+export interface inputSavedStarGiftSlug {
+  _: "inputSavedStarGiftSlug";
+  slug: string;
 }
 
 export interface payments_starGiftWithdrawalUrl {
@@ -9904,30 +9965,95 @@ export interface requirementToContactPaidMessages {
   stars_amount: bigint;
 }
 
-export interface invokeWithBusinessConnectionPrefix {
-  _: "invokeWithBusinessConnectionPrefix";
-  connection_id: string;
-  [R]?: Error;
+export interface businessBotRights {
+  _: "businessBotRights";
+  reply?: true;
+  read_messages?: true;
+  delete_sent_messages?: true;
+  delete_received_messages?: true;
+  edit_name?: true;
+  edit_bio?: true;
+  edit_profile_photo?: true;
+  edit_username?: true;
+  view_gifts?: true;
+  sell_gifts?: true;
+  change_gift_settings?: true;
+  transfer_and_upgrade_gifts?: true;
+  transfer_stars?: true;
+  manage_stories?: true;
 }
 
-export interface invokeWithGooglePlayIntegrityPrefix {
-  _: "invokeWithGooglePlayIntegrityPrefix";
-  nonce: string;
-  token: string;
-  [R]?: Error;
+export interface disallowedGiftsSettings {
+  _: "disallowedGiftsSettings";
+  disallow_unlimited_stargifts?: true;
+  disallow_limited_stargifts?: true;
+  disallow_unique_stargifts?: true;
+  disallow_premium_gifts?: true;
 }
 
-export interface invokeWithApnsSecretPrefix {
-  _: "invokeWithApnsSecretPrefix";
-  nonce: string;
-  secret: string;
-  [R]?: Error;
+export interface sponsoredPeer {
+  _: "sponsoredPeer";
+  random_id: Uint8Array;
+  peer: Peer;
+  sponsor_info?: string;
+  additional_info?: string;
 }
 
-export interface invokeWithReCaptchaPrefix {
-  _: "invokeWithReCaptchaPrefix";
-  token: string;
-  [R]?: Error;
+export interface contacts_sponsoredPeersEmpty {
+  _: "contacts.sponsoredPeersEmpty";
+}
+
+export interface contacts_sponsoredPeers {
+  _: "contacts.sponsoredPeers";
+  peers: Array<SponsoredPeer>;
+  chats: Array<Chat>;
+  users: Array<User>;
+}
+
+export interface starGiftAttributeIdModel {
+  _: "starGiftAttributeIdModel";
+  document_id: bigint;
+}
+
+export interface starGiftAttributeIdPattern {
+  _: "starGiftAttributeIdPattern";
+  document_id: bigint;
+}
+
+export interface starGiftAttributeIdBackdrop {
+  _: "starGiftAttributeIdBackdrop";
+  backdrop_id: number;
+}
+
+export interface starGiftAttributeCounter {
+  _: "starGiftAttributeCounter";
+  attribute: StarGiftAttributeId;
+  count: number;
+}
+
+export interface payments_resaleStarGifts {
+  _: "payments.resaleStarGifts";
+  count: number;
+  gifts: Array<StarGift>;
+  next_offset?: string;
+  attributes?: Array<StarGiftAttribute>;
+  attributes_hash?: bigint;
+  chats: Array<Chat>;
+  counters?: Array<StarGiftAttributeCounter>;
+  users: Array<User>;
+}
+
+export interface stories_canSendStoryCount {
+  _: "stories.canSendStoryCount";
+  count_remains: number;
+}
+
+export interface pendingSuggestion {
+  _: "pendingSuggestion";
+  suggestion: string;
+  title: TextWithEntities;
+  description: TextWithEntities;
+  url: string;
 }
 
 export interface invokeAfterMsg<T> {
@@ -10825,8 +10951,8 @@ export interface account_updateBusinessAwayMessage {
 
 export interface account_updateConnectedBot {
   _: "account.updateConnectedBot";
-  can_reply?: true;
   deleted?: true;
+  rights?: BusinessBotRights;
   bot: InputUser;
   recipients: InputBusinessBotRecipients;
   [R]?: Updates;
@@ -11143,6 +11269,12 @@ export interface contacts_setBlocked {
 export interface contacts_getBirthdays {
   _: "contacts.getBirthdays";
   [R]?: contacts_ContactBirthdays;
+}
+
+export interface contacts_getSponsoredPeers {
+  _: "contacts.getSponsoredPeers";
+  q: string;
+  [R]?: contacts_SponsoredPeers;
 }
 
 export interface messages_getMessages {
@@ -12919,7 +13051,6 @@ export interface messages_getPaidReactionPrivacy {
 
 export interface messages_viewSponsoredMessage {
   _: "messages.viewSponsoredMessage";
-  peer: InputPeer;
   random_id: Uint8Array;
   [R]?: boolean;
 }
@@ -12928,14 +13059,12 @@ export interface messages_clickSponsoredMessage {
   _: "messages.clickSponsoredMessage";
   media?: true;
   fullscreen?: true;
-  peer: InputPeer;
   random_id: Uint8Array;
   [R]?: boolean;
 }
 
 export interface messages_reportSponsoredMessage {
   _: "messages.reportSponsoredMessage";
-  peer: InputPeer;
   random_id: Uint8Array;
   option: Uint8Array;
   [R]?: channels_SponsoredMessageReportResult;
@@ -13731,6 +13860,13 @@ export interface channels_updatePaidMessagesPrice {
   [R]?: Updates;
 }
 
+export interface channels_toggleAutotranslation {
+  _: "channels.toggleAutotranslation";
+  channel: InputChannel;
+  enabled: boolean;
+  [R]?: Updates;
+}
+
 export interface bots_sendCustomRequest {
   _: "bots.sendCustomRequest";
   custom_method: string;
@@ -14018,12 +14154,6 @@ export interface payments_assignPlayMarketTransaction {
   [R]?: Updates;
 }
 
-export interface payments_canPurchasePremium {
-  _: "payments.canPurchasePremium";
-  purpose: InputStorePaymentPurpose;
-  [R]?: boolean;
-}
-
 export interface payments_getPremiumGiftCodeOptions {
   _: "payments.getPremiumGiftCodeOptions";
   boost_peer?: InputPeer;
@@ -14291,6 +14421,31 @@ export interface payments_toggleStarGiftsPinnedToTop {
   [R]?: boolean;
 }
 
+export interface payments_canPurchaseStore {
+  _: "payments.canPurchaseStore";
+  purpose: InputStorePaymentPurpose;
+  [R]?: boolean;
+}
+
+export interface payments_getResaleStarGifts {
+  _: "payments.getResaleStarGifts";
+  sort_by_price?: true;
+  sort_by_num?: true;
+  attributes_hash?: bigint;
+  gift_id: bigint;
+  attributes?: Array<StarGiftAttributeId>;
+  offset: string;
+  limit: number;
+  [R]?: payments_ResaleStarGifts;
+}
+
+export interface payments_updateStarGiftPrice {
+  _: "payments.updateStarGiftPrice";
+  stargift: InputSavedStarGift;
+  resell_stars: bigint;
+  [R]?: Updates;
+}
+
 export interface stickers_createStickerSet {
   _: "stickers.createStickerSet";
   masks?: true;
@@ -14383,7 +14538,6 @@ export interface phone_requestCall {
   _: "phone.requestCall";
   video?: true;
   user_id: InputUser;
-  conference_call?: InputGroupCall;
   random_id: number;
   g_a_hash: Uint8Array;
   protocol: PhoneCallProtocol;
@@ -14463,7 +14617,8 @@ export interface phone_joinGroupCall {
   call: InputGroupCall;
   join_as: InputPeer;
   invite_hash?: string;
-  key_fingerprint?: bigint;
+  public_key?: bigint;
+  block?: Uint8Array;
   params: DataJSON;
   [R]?: Updates;
 }
@@ -14618,9 +14773,54 @@ export interface phone_saveCallLog {
 
 export interface phone_createConferenceCall {
   _: "phone.createConferenceCall";
-  peer: InputPhoneCall;
-  key_fingerprint: bigint;
-  [R]?: phone_PhoneCall;
+  muted?: true;
+  video_stopped?: true;
+  join?: true;
+  random_id: number;
+  public_key?: bigint;
+  block?: Uint8Array;
+  params?: DataJSON;
+  [R]?: Updates;
+}
+
+export interface phone_deleteConferenceCallParticipants {
+  _: "phone.deleteConferenceCallParticipants";
+  only_left?: true;
+  kick?: true;
+  call: InputGroupCall;
+  ids: Array<bigint>;
+  block: Uint8Array;
+  [R]?: Updates;
+}
+
+export interface phone_sendConferenceCallBroadcast {
+  _: "phone.sendConferenceCallBroadcast";
+  call: InputGroupCall;
+  block: Uint8Array;
+  [R]?: Updates;
+}
+
+export interface phone_inviteConferenceCallParticipant {
+  _: "phone.inviteConferenceCallParticipant";
+  video?: true;
+  call: InputGroupCall;
+  user_id: InputUser;
+  [R]?: Updates;
+}
+
+export interface phone_declineConferenceCallInvite {
+  _: "phone.declineConferenceCallInvite";
+  msg_id: number;
+  [R]?: Updates;
+}
+
+export interface phone_getGroupCallChainBlocks {
+  _: "phone.getGroupCallChainBlocks";
+  call: InputGroupCall;
+  sub_chain_id: number;
+  offset: number;
+  limit: number;
+  [R]?: Updates;
 }
 
 export interface langpack_getLangPack {
@@ -14820,7 +15020,7 @@ export interface chatlists_leaveChatlist {
 export interface stories_canSendStory {
   _: "stories.canSendStory";
   peer: InputPeer;
-  [R]?: boolean;
+  [R]?: stories_CanSendStoryCount;
 }
 
 export interface stories_sendStory {
@@ -15110,12 +15310,7 @@ export interface fragment_getCollectibleInfo {
 export interface Types {
   "true": true_;
   "error": error;
-  "ipPort": ipPort;
-  "ipPortSecret": ipPortSecret;
-  "accessPointRule": accessPointRule;
-  "help.configSimple": help_configSimple;
-  "inputPeerPhotoFileLocationLegacy": inputPeerPhotoFileLocationLegacy;
-  "inputStickerSetThumbLegacy": inputStickerSetThumbLegacy;
+  "null": null_;
   "inputPeerEmpty": inputPeerEmpty;
   "inputPeerSelf": inputPeerSelf;
   "inputPeerChat": inputPeerChat;
@@ -15271,6 +15466,9 @@ export interface Types {
   "messageActionPrizeStars": messageActionPrizeStars;
   "messageActionStarGift": messageActionStarGift;
   "messageActionStarGiftUnique": messageActionStarGiftUnique;
+  "messageActionPaidMessagesRefunded": messageActionPaidMessagesRefunded;
+  "messageActionPaidMessagesPrice": messageActionPaidMessagesPrice;
+  "messageActionConferenceCall": messageActionConferenceCall;
   "dialog": dialog;
   "dialogFolder": dialogFolder;
   "photoEmpty": photoEmpty;
@@ -15285,6 +15483,7 @@ export interface Types {
   "geoPoint": geoPoint;
   "auth.sentCode": auth_sentCode;
   "auth.sentCodeSuccess": auth_sentCodeSuccess;
+  "auth.sentCodePaymentRequired": auth_sentCodePaymentRequired;
   "auth.authorization": auth_authorization;
   "auth.authorizationSignUpRequired": auth_authorizationSignUpRequired;
   "auth.exportedAuthorization": auth_exportedAuthorization;
@@ -15486,6 +15685,8 @@ export interface Types {
   "updateStarsRevenueStatus": updateStarsRevenueStatus;
   "updateBotPurchasedPaidMedia": updateBotPurchasedPaidMedia;
   "updatePaidReactionPrivacy": updatePaidReactionPrivacy;
+  "updateSentPhoneCode": updateSentPhoneCode;
+  "updateGroupCallChainBlocks": updateGroupCallChainBlocks;
   "updates.state": updates_state;
   "updates.differenceEmpty": updates_differenceEmpty;
   "updates.difference": updates_difference;
@@ -15858,7 +16059,7 @@ export interface Types {
   "phoneCallDiscardReasonDisconnect": phoneCallDiscardReasonDisconnect;
   "phoneCallDiscardReasonHangup": phoneCallDiscardReasonHangup;
   "phoneCallDiscardReasonBusy": phoneCallDiscardReasonBusy;
-  "phoneCallDiscardReasonAllowGroupCall": phoneCallDiscardReasonAllowGroupCall;
+  "phoneCallDiscardReasonMigrateConferenceCall": phoneCallDiscardReasonMigrateConferenceCall;
   "dataJSON": dataJSON;
   "labeledPrice": labeledPrice;
   "invoice": invoice;
@@ -15959,6 +16160,7 @@ export interface Types {
   "channelAdminLogEventActionChangeEmojiStickerSet": channelAdminLogEventActionChangeEmojiStickerSet;
   "channelAdminLogEventActionToggleSignatureProfiles": channelAdminLogEventActionToggleSignatureProfiles;
   "channelAdminLogEventActionParticipantSubExtend": channelAdminLogEventActionParticipantSubExtend;
+  "channelAdminLogEventActionToggleAutotranslation": channelAdminLogEventActionToggleAutotranslation;
   "channelAdminLogEvent": channelAdminLogEvent;
   "channels.adminLogResults": channels_adminLogResults;
   "channelAdminLogEventsFilter": channelAdminLogEventsFilter;
@@ -16153,6 +16355,8 @@ export interface Types {
   "groupCallDiscarded": groupCallDiscarded;
   "groupCall": groupCall;
   "inputGroupCall": inputGroupCall;
+  "inputGroupCallSlug": inputGroupCallSlug;
+  "inputGroupCallInviteMessage": inputGroupCallInviteMessage;
   "groupCallParticipant": groupCallParticipant;
   "phone.groupCall": phone_groupCall;
   "phone.groupParticipants": phone_groupParticipants;
@@ -16242,6 +16446,8 @@ export interface Types {
   "inputInvoiceStarGiftUpgrade": inputInvoiceStarGiftUpgrade;
   "inputInvoiceStarGiftTransfer": inputInvoiceStarGiftTransfer;
   "inputInvoicePremiumGiftStars": inputInvoicePremiumGiftStars;
+  "inputInvoiceBusinessBotTransferStars": inputInvoiceBusinessBotTransferStars;
+  "inputInvoiceStarGiftResale": inputInvoiceStarGiftResale;
   "payments.exportedInvoice": payments_exportedInvoice;
   "messages.transcribedAudio": messages_transcribedAudio;
   "help.premiumPromo": help_premiumPromo;
@@ -16252,6 +16458,7 @@ export interface Types {
   "inputStorePaymentStarsTopup": inputStorePaymentStarsTopup;
   "inputStorePaymentStarsGift": inputStorePaymentStarsGift;
   "inputStorePaymentStarsGiveaway": inputStorePaymentStarsGiveaway;
+  "inputStorePaymentAuthCode": inputStorePaymentAuthCode;
   "paymentFormMethod": paymentFormMethod;
   "emojiStatusEmpty": emojiStatusEmpty;
   "emojiStatus": emojiStatus;
@@ -16513,6 +16720,7 @@ export interface Types {
   "payments.savedStarGifts": payments_savedStarGifts;
   "inputSavedStarGiftUser": inputSavedStarGiftUser;
   "inputSavedStarGiftChat": inputSavedStarGiftChat;
+  "inputSavedStarGiftSlug": inputSavedStarGiftSlug;
   "payments.starGiftWithdrawalUrl": payments_starGiftWithdrawalUrl;
   "paidReactionPrivacyDefault": paidReactionPrivacyDefault;
   "paidReactionPrivacyAnonymous": paidReactionPrivacyAnonymous;
@@ -16521,13 +16729,21 @@ export interface Types {
   "requirementToContactEmpty": requirementToContactEmpty;
   "requirementToContactPremium": requirementToContactPremium;
   "requirementToContactPaidMessages": requirementToContactPaidMessages;
+  "businessBotRights": businessBotRights;
+  "disallowedGiftsSettings": disallowedGiftsSettings;
+  "sponsoredPeer": sponsoredPeer;
+  "contacts.sponsoredPeersEmpty": contacts_sponsoredPeersEmpty;
+  "contacts.sponsoredPeers": contacts_sponsoredPeers;
+  "starGiftAttributeIdModel": starGiftAttributeIdModel;
+  "starGiftAttributeIdPattern": starGiftAttributeIdPattern;
+  "starGiftAttributeIdBackdrop": starGiftAttributeIdBackdrop;
+  "starGiftAttributeCounter": starGiftAttributeCounter;
+  "payments.resaleStarGifts": payments_resaleStarGifts;
+  "stories.canSendStoryCount": stories_canSendStoryCount;
+  "pendingSuggestion": pendingSuggestion;
 }
 
 export interface Functions<T = Function> {
-  "invokeWithBusinessConnectionPrefix": invokeWithBusinessConnectionPrefix;
-  "invokeWithGooglePlayIntegrityPrefix": invokeWithGooglePlayIntegrityPrefix;
-  "invokeWithApnsSecretPrefix": invokeWithApnsSecretPrefix;
-  "invokeWithReCaptchaPrefix": invokeWithReCaptchaPrefix;
   "invokeAfterMsg": invokeAfterMsg<T>;
   "invokeAfterMsgs": invokeAfterMsgs<T>;
   "initConnection": initConnection<T>;
@@ -16707,6 +16923,7 @@ export interface Functions<T = Function> {
   "contacts.editCloseFriends": contacts_editCloseFriends;
   "contacts.setBlocked": contacts_setBlocked;
   "contacts.getBirthdays": contacts_getBirthdays;
+  "contacts.getSponsoredPeers": contacts_getSponsoredPeers;
   "messages.getMessages": messages_getMessages;
   "messages.getDialogs": messages_getDialogs;
   "messages.getHistory": messages_getHistory;
@@ -17035,6 +17252,7 @@ export interface Functions<T = Function> {
   "channels.restrictSponsoredMessages": channels_restrictSponsoredMessages;
   "channels.searchPosts": channels_searchPosts;
   "channels.updatePaidMessagesPrice": channels_updatePaidMessagesPrice;
+  "channels.toggleAutotranslation": channels_toggleAutotranslation;
   "bots.sendCustomRequest": bots_sendCustomRequest;
   "bots.answerWebhookJSONQuery": bots_answerWebhookJSONQuery;
   "bots.setBotCommands": bots_setBotCommands;
@@ -17075,7 +17293,6 @@ export interface Functions<T = Function> {
   "payments.exportInvoice": payments_exportInvoice;
   "payments.assignAppStoreTransaction": payments_assignAppStoreTransaction;
   "payments.assignPlayMarketTransaction": payments_assignPlayMarketTransaction;
-  "payments.canPurchasePremium": payments_canPurchasePremium;
   "payments.getPremiumGiftCodeOptions": payments_getPremiumGiftCodeOptions;
   "payments.checkGiftCode": payments_checkGiftCode;
   "payments.applyGiftCode": payments_applyGiftCode;
@@ -17113,6 +17330,9 @@ export interface Functions<T = Function> {
   "payments.getStarGiftWithdrawalUrl": payments_getStarGiftWithdrawalUrl;
   "payments.toggleChatStarGiftNotifications": payments_toggleChatStarGiftNotifications;
   "payments.toggleStarGiftsPinnedToTop": payments_toggleStarGiftsPinnedToTop;
+  "payments.canPurchaseStore": payments_canPurchaseStore;
+  "payments.getResaleStarGifts": payments_getResaleStarGifts;
+  "payments.updateStarGiftPrice": payments_updateStarGiftPrice;
   "stickers.createStickerSet": stickers_createStickerSet;
   "stickers.removeStickerFromSet": stickers_removeStickerFromSet;
   "stickers.changeStickerPosition": stickers_changeStickerPosition;
@@ -17156,6 +17376,11 @@ export interface Functions<T = Function> {
   "phone.getGroupCallStreamRtmpUrl": phone_getGroupCallStreamRtmpUrl;
   "phone.saveCallLog": phone_saveCallLog;
   "phone.createConferenceCall": phone_createConferenceCall;
+  "phone.deleteConferenceCallParticipants": phone_deleteConferenceCallParticipants;
+  "phone.sendConferenceCallBroadcast": phone_sendConferenceCallBroadcast;
+  "phone.inviteConferenceCallParticipant": phone_inviteConferenceCallParticipant;
+  "phone.declineConferenceCallInvite": phone_declineConferenceCallInvite;
+  "phone.getGroupCallChainBlocks": phone_getGroupCallChainBlocks;
   "langpack.getLangPack": langpack_getLangPack;
   "langpack.getStrings": langpack_getStrings;
   "langpack.getDifference": langpack_getDifference;
@@ -17227,10 +17452,7 @@ export interface Functions<T = Function> {
 export interface Enums {
   "True": True;
   "Error": Error;
-  "IpPort": IpPort;
-  "AccessPointRule": AccessPointRule;
-  "help.ConfigSimple": help_ConfigSimple;
-  "InputFileLocation": InputFileLocation;
+  "Null": Null;
   "InputPeer": InputPeer;
   "InputUser": InputUser;
   "InputContact": InputContact;
@@ -17239,6 +17461,7 @@ export interface Enums {
   "InputChatPhoto": InputChatPhoto;
   "InputGeoPoint": InputGeoPoint;
   "InputPhoto": InputPhoto;
+  "InputFileLocation": InputFileLocation;
   "Peer": Peer;
   "storage.FileType": storage_FileType;
   "User": User;
@@ -17761,6 +17984,15 @@ export interface Enums {
   "PaidReactionPrivacy": PaidReactionPrivacy;
   "account.PaidMessagesRevenue": account_PaidMessagesRevenue;
   "RequirementToContact": RequirementToContact;
+  "BusinessBotRights": BusinessBotRights;
+  "DisallowedGiftsSettings": DisallowedGiftsSettings;
+  "SponsoredPeer": SponsoredPeer;
+  "contacts.SponsoredPeers": contacts_SponsoredPeers;
+  "StarGiftAttributeId": StarGiftAttributeId;
+  "StarGiftAttributeCounter": StarGiftAttributeCounter;
+  "payments.ResaleStarGifts": payments_ResaleStarGifts;
+  "stories.CanSendStoryCount": stories_CanSendStoryCount;
+  "PendingSuggestion": PendingSuggestion;
 }
 
 export type AnyType = Types[keyof Types];
@@ -17775,13 +18007,7 @@ export type True = true_;
 
 export type Error = error;
 
-export type IpPort = ipPort | ipPortSecret;
-
-export type AccessPointRule = accessPointRule;
-
-export type help_ConfigSimple = help_configSimple;
-
-export type InputFileLocation = inputPeerPhotoFileLocationLegacy | inputStickerSetThumbLegacy | inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
+export type Null = null_;
 
 export type InputPeer = inputPeerEmpty | inputPeerSelf | inputPeerChat | inputPeerUser | inputPeerChannel | inputPeerUserFromMessage | inputPeerChannelFromMessage;
 
@@ -17798,6 +18024,8 @@ export type InputChatPhoto = inputChatPhotoEmpty | inputChatUploadedPhoto | inpu
 export type InputGeoPoint = inputGeoPointEmpty | inputGeoPoint;
 
 export type InputPhoto = inputPhotoEmpty | inputPhoto;
+
+export type InputFileLocation = inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
 
 export type Peer = peerUser | peerChat | peerChannel;
 
@@ -17823,7 +18051,7 @@ export type Message = messageEmpty | message | messageService;
 
 export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia;
 
-export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique;
+export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall;
 
 export type Dialog = dialog | dialogFolder;
 
@@ -17833,7 +18061,7 @@ export type PhotoSize = photoSizeEmpty | photoSize | photoCachedSize | photoStri
 
 export type GeoPoint = geoPointEmpty | geoPoint;
 
-export type auth_SentCode = auth_sentCode | auth_sentCodeSuccess;
+export type auth_SentCode = auth_sentCode | auth_sentCodeSuccess | auth_sentCodePaymentRequired;
 
 export type auth_Authorization = auth_authorization | auth_authorizationSignUpRequired;
 
@@ -18018,7 +18246,9 @@ export type Update =
   | updateBusinessBotCallbackQuery
   | updateStarsRevenueStatus
   | updateBotPurchasedPaidMedia
-  | updatePaidReactionPrivacy;
+  | updatePaidReactionPrivacy
+  | updateSentPhoneCode
+  | updateGroupCallChainBlocks;
 
 export type updates_State = updates_state;
 
@@ -18214,7 +18444,7 @@ export type RichText = textEmpty | textPlain | textBold | textItalic | textUnder
 
 export type PageBlock = pageBlockUnsupported | pageBlockTitle | pageBlockSubtitle | pageBlockAuthorDate | pageBlockHeader | pageBlockSubheader | pageBlockParagraph | pageBlockPreformatted | pageBlockFooter | pageBlockDivider | pageBlockAnchor | pageBlockList | pageBlockBlockquote | pageBlockPullquote | pageBlockPhoto | pageBlockVideo | pageBlockCover | pageBlockEmbed | pageBlockEmbedPost | pageBlockCollage | pageBlockSlideshow | pageBlockChannel | pageBlockAudio | pageBlockKicker | pageBlockTable | pageBlockOrderedList | pageBlockDetails | pageBlockRelatedArticles | pageBlockMap;
 
-export type PhoneCallDiscardReason = phoneCallDiscardReasonMissed | phoneCallDiscardReasonDisconnect | phoneCallDiscardReasonHangup | phoneCallDiscardReasonBusy | phoneCallDiscardReasonAllowGroupCall;
+export type PhoneCallDiscardReason = phoneCallDiscardReasonMissed | phoneCallDiscardReasonDisconnect | phoneCallDiscardReasonHangup | phoneCallDiscardReasonBusy | phoneCallDiscardReasonMigrateConferenceCall;
 
 export type DataJSON = dataJSON;
 
@@ -18328,7 +18558,8 @@ export type ChannelAdminLogEventAction =
   | channelAdminLogEventActionChangeEmojiStatus
   | channelAdminLogEventActionChangeEmojiStickerSet
   | channelAdminLogEventActionToggleSignatureProfiles
-  | channelAdminLogEventActionParticipantSubExtend;
+  | channelAdminLogEventActionParticipantSubExtend
+  | channelAdminLogEventActionToggleAutotranslation;
 
 export type ChannelAdminLogEvent = channelAdminLogEvent;
 
@@ -18558,7 +18789,7 @@ export type stats_MessageStats = stats_messageStats;
 
 export type GroupCall = groupCallDiscarded | groupCall;
 
-export type InputGroupCall = inputGroupCall;
+export type InputGroupCall = inputGroupCall | inputGroupCallSlug | inputGroupCallInviteMessage;
 
 export type GroupCallParticipant = groupCallParticipant;
 
@@ -18664,7 +18895,7 @@ export type account_SavedRingtone = account_savedRingtone | account_savedRington
 
 export type AttachMenuPeerType = attachMenuPeerTypeSameBotPM | attachMenuPeerTypeBotPM | attachMenuPeerTypePM | attachMenuPeerTypeChat | attachMenuPeerTypeBroadcast;
 
-export type InputInvoice = inputInvoiceMessage | inputInvoiceSlug | inputInvoicePremiumGiftCode | inputInvoiceStars | inputInvoiceChatInviteSubscription | inputInvoiceStarGift | inputInvoiceStarGiftUpgrade | inputInvoiceStarGiftTransfer | inputInvoicePremiumGiftStars;
+export type InputInvoice = inputInvoiceMessage | inputInvoiceSlug | inputInvoicePremiumGiftCode | inputInvoiceStars | inputInvoiceChatInviteSubscription | inputInvoiceStarGift | inputInvoiceStarGiftUpgrade | inputInvoiceStarGiftTransfer | inputInvoicePremiumGiftStars | inputInvoiceBusinessBotTransferStars | inputInvoiceStarGiftResale;
 
 export type payments_ExportedInvoice = payments_exportedInvoice;
 
@@ -18672,7 +18903,7 @@ export type messages_TranscribedAudio = messages_transcribedAudio;
 
 export type help_PremiumPromo = help_premiumPromo;
 
-export type InputStorePaymentPurpose = inputStorePaymentPremiumSubscription | inputStorePaymentGiftPremium | inputStorePaymentPremiumGiftCode | inputStorePaymentPremiumGiveaway | inputStorePaymentStarsTopup | inputStorePaymentStarsGift | inputStorePaymentStarsGiveaway;
+export type InputStorePaymentPurpose = inputStorePaymentPremiumSubscription | inputStorePaymentGiftPremium | inputStorePaymentPremiumGiftCode | inputStorePaymentPremiumGiveaway | inputStorePaymentStarsTopup | inputStorePaymentStarsGift | inputStorePaymentStarsGiveaway | inputStorePaymentAuthCode;
 
 export type PaymentFormMethod = paymentFormMethod;
 
@@ -19024,7 +19255,7 @@ export type SavedStarGift = savedStarGift;
 
 export type payments_SavedStarGifts = payments_savedStarGifts;
 
-export type InputSavedStarGift = inputSavedStarGiftUser | inputSavedStarGiftChat;
+export type InputSavedStarGift = inputSavedStarGiftUser | inputSavedStarGiftChat | inputSavedStarGiftSlug;
 
 export type payments_StarGiftWithdrawalUrl = payments_starGiftWithdrawalUrl;
 
@@ -19033,6 +19264,24 @@ export type PaidReactionPrivacy = paidReactionPrivacyDefault | paidReactionPriva
 export type account_PaidMessagesRevenue = account_paidMessagesRevenue;
 
 export type RequirementToContact = requirementToContactEmpty | requirementToContactPremium | requirementToContactPaidMessages;
+
+export type BusinessBotRights = businessBotRights;
+
+export type DisallowedGiftsSettings = disallowedGiftsSettings;
+
+export type SponsoredPeer = sponsoredPeer;
+
+export type contacts_SponsoredPeers = contacts_sponsoredPeersEmpty | contacts_sponsoredPeers;
+
+export type StarGiftAttributeId = starGiftAttributeIdModel | starGiftAttributeIdPattern | starGiftAttributeIdBackdrop;
+
+export type StarGiftAttributeCounter = starGiftAttributeCounter;
+
+export type payments_ResaleStarGifts = payments_resaleStarGifts;
+
+export type stories_CanSendStoryCount = stories_canSendStoryCount;
+
+export type PendingSuggestion = pendingSuggestion;
 
 export const schema = Object.freeze({
   definitions: {
@@ -19049,60 +19298,10 @@ export const schema = Object.freeze({
       ],
       "Error",
     ],
-    ipPort: [
-      0xD433AD73,
-      [
-        ["ipv4", "int"],
-        ["port", "int"],
-      ],
-      "IpPort",
-    ],
-    ipPortSecret: [
-      0x37982646,
-      [
-        ["ipv4", "int"],
-        ["port", "int"],
-        ["secret", "bytes"],
-      ],
-      "IpPort",
-    ],
-    accessPointRule: [
-      0x4679B65F,
-      [
-        ["phone_prefix_rules", "string"],
-        ["dc_id", "int"],
-        ["ips", "vector<IpPort>"],
-      ],
-      "AccessPointRule",
-    ],
-    "help.configSimple": [
-      0x5A592A6C,
-      [
-        ["date", "int"],
-        ["expires", "int"],
-        ["rules", "vector<AccessPointRule>"],
-      ],
-      "help.ConfigSimple",
-    ],
-    inputPeerPhotoFileLocationLegacy: [
-      0x27D69997,
-      [
-        ["flags", "#"],
-        ["big", "flags.0?true"],
-        ["peer", "InputPeer"],
-        ["volume_id", "long"],
-        ["local_id", "int"],
-      ],
-      "InputFileLocation",
-    ],
-    inputStickerSetThumbLegacy: [
-      0x0DBAEAE9,
-      [
-        ["stickerset", "InputStickerSet"],
-        ["volume_id", "long"],
-        ["local_id", "int"],
-      ],
-      "InputFileLocation",
+    null: [
+      0x56730BCC,
+      [],
+      "Null",
     ],
     inputPeerEmpty: [
       0x7F3B18EA,
@@ -19810,6 +20009,7 @@ export const schema = Object.freeze({
         ["stories_hidden_min", "flags2.2?true"],
         ["stories_unavailable", "flags2.3?true"],
         ["signature_profiles", "flags2.12?true"],
+        ["autotranslation", "flags2.15?true"],
         ["id", "long"],
         ["access_hash", "flags.13?long"],
         ["title", "string"],
@@ -20682,7 +20882,7 @@ export const schema = Object.freeze({
       "MessageAction",
     ],
     messageActionStarGiftUnique: [
-      0xACDFCB81,
+      0x2E3AE60E,
       [
         ["flags", "#"],
         ["upgrade", "flags.0?true"],
@@ -20695,6 +20895,37 @@ export const schema = Object.freeze({
         ["from_id", "flags.6?Peer"],
         ["peer", "flags.7?Peer"],
         ["saved_id", "flags.7?long"],
+        ["resale_stars", "flags.8?long"],
+        ["can_transfer_at", "flags.9?int"],
+        ["can_resell_at", "flags.10?int"],
+      ],
+      "MessageAction",
+    ],
+    messageActionPaidMessagesRefunded: [
+      0xAC1F1FCD,
+      [
+        ["count", "int"],
+        ["stars", "long"],
+      ],
+      "MessageAction",
+    ],
+    messageActionPaidMessagesPrice: [
+      0xBCD71419,
+      [
+        ["stars", "long"],
+      ],
+      "MessageAction",
+    ],
+    messageActionConferenceCall: [
+      0x2FFE2F7A,
+      [
+        ["flags", "#"],
+        ["missed", "flags.0?true"],
+        ["active", "flags.1?true"],
+        ["video", "flags.4?true"],
+        ["call_id", "long"],
+        ["duration", "flags.2?int"],
+        ["other_participants", "flags.3?Vector<Peer>"],
       ],
       "MessageAction",
     ],
@@ -20841,6 +21072,14 @@ export const schema = Object.freeze({
       0x2390FE44,
       [
         ["authorization", "auth.Authorization"],
+      ],
+      "auth.SentCode",
+    ],
+    "auth.sentCodePaymentRequired": [
+      0xD7CEF980,
+      [
+        ["store_product", "string"],
+        ["phone_code_hash", "string"],
       ],
       "auth.SentCode",
     ],
@@ -21040,7 +21279,7 @@ export const schema = Object.freeze({
       "ReportReason",
     ],
     userFull: [
-      0xD2234EA0,
+      0x99E78045,
       [
         ["flags", "#"],
         ["blocked", "flags.0?true"],
@@ -21060,6 +21299,7 @@ export const schema = Object.freeze({
         ["sponsored_enabled", "flags2.7?true"],
         ["can_view_revenue", "flags2.9?true"],
         ["bot_can_manage_emoji_status", "flags2.10?true"],
+        ["display_gifts_button", "flags2.16?true"],
         ["id", "long"],
         ["about", "flags.1?string"],
         ["settings", "PeerSettings"],
@@ -21090,6 +21330,7 @@ export const schema = Object.freeze({
         ["starref_program", "flags2.11?StarRefProgram"],
         ["bot_verification", "flags2.12?BotVerification"],
         ["send_paid_messages_stars", "flags2.14?long"],
+        ["disallowed_gifts", "flags2.15?DisallowedGiftsSettings"],
       ],
       "UserFull",
     ],
@@ -22590,6 +22831,23 @@ export const schema = Object.freeze({
       0x8B725FCE,
       [
         ["private", "PaidReactionPrivacy"],
+      ],
+      "Update",
+    ],
+    updateSentPhoneCode: [
+      0x504AA18F,
+      [
+        ["sent_code", "auth.SentCode"],
+      ],
+      "Update",
+    ],
+    updateGroupCallChainBlocks: [
+      0xA477288F,
+      [
+        ["call", "InputGroupCall"],
+        ["sub_chain_id", "int"],
+        ["blocks", "Vector<bytes>"],
+        ["next_offset", "int"],
       ],
       "Update",
     ],
@@ -25748,10 +26006,10 @@ export const schema = Object.freeze({
       [],
       "PhoneCallDiscardReason",
     ],
-    phoneCallDiscardReasonAllowGroupCall: [
-      0xAFE2B839,
+    phoneCallDiscardReasonMigrateConferenceCall: [
+      0x9FBBF1F7,
       [
-        ["encrypted_key", "bytes"],
+        ["slug", "string"],
       ],
       "PhoneCallDiscardReason",
     ],
@@ -26094,7 +26352,7 @@ export const schema = Object.freeze({
       "PhoneCall",
     ],
     phoneCallWaiting: [
-      0xEED42858,
+      0xC5226F17,
       [
         ["flags", "#"],
         ["video", "flags.6?true"],
@@ -26105,12 +26363,11 @@ export const schema = Object.freeze({
         ["participant_id", "long"],
         ["protocol", "PhoneCallProtocol"],
         ["receive_date", "flags.0?int"],
-        ["conference_call", "flags.8?InputGroupCall"],
       ],
       "PhoneCall",
     ],
     phoneCallRequested: [
-      0x45361C63,
+      0x14B0ED0C,
       [
         ["flags", "#"],
         ["video", "flags.6?true"],
@@ -26121,12 +26378,11 @@ export const schema = Object.freeze({
         ["participant_id", "long"],
         ["g_a_hash", "bytes"],
         ["protocol", "PhoneCallProtocol"],
-        ["conference_call", "flags.8?InputGroupCall"],
       ],
       "PhoneCall",
     ],
     phoneCallAccepted: [
-      0x22FD7181,
+      0x3660C311,
       [
         ["flags", "#"],
         ["video", "flags.6?true"],
@@ -26137,16 +26393,16 @@ export const schema = Object.freeze({
         ["participant_id", "long"],
         ["g_b", "bytes"],
         ["protocol", "PhoneCallProtocol"],
-        ["conference_call", "flags.8?InputGroupCall"],
       ],
       "PhoneCall",
     ],
     phoneCall: [
-      0x3BA5940C,
+      0x30535AF5,
       [
         ["flags", "#"],
         ["p2p_allowed", "flags.5?true"],
         ["video", "flags.6?true"],
+        ["conference_supported", "flags.8?true"],
         ["id", "long"],
         ["access_hash", "long"],
         ["date", "int"],
@@ -26158,12 +26414,11 @@ export const schema = Object.freeze({
         ["connections", "Vector<PhoneConnection>"],
         ["start_date", "int"],
         ["custom_parameters", "flags.7?DataJSON"],
-        ["conference_call", "flags.8?InputGroupCall"],
       ],
       "PhoneCall",
     ],
     phoneCallDiscarded: [
-      0xF9D25503,
+      0x50CA4DE1,
       [
         ["flags", "#"],
         ["need_rating", "flags.2?true"],
@@ -26172,7 +26427,6 @@ export const schema = Object.freeze({
         ["id", "long"],
         ["reason", "flags.0?PhoneCallDiscardReason"],
         ["duration", "flags.1?int"],
-        ["conference_call", "flags.8?InputGroupCall"],
       ],
       "PhoneCall",
     ],
@@ -26681,6 +26935,13 @@ export const schema = Object.freeze({
       [
         ["prev_participant", "ChannelParticipant"],
         ["new_participant", "ChannelParticipant"],
+      ],
+      "ChannelAdminLogEventAction",
+    ],
+    channelAdminLogEventActionToggleAutotranslation: [
+      0xC517F77E,
+      [
+        ["new_value", "Bool"],
       ],
       "ChannelAdminLogEventAction",
     ],
@@ -28179,16 +28440,19 @@ export const schema = Object.freeze({
       "help.PromoData",
     ],
     "help.promoData": [
-      0x8C39793F,
+      0x08A4D87A,
       [
         ["flags", "#"],
         ["proxy", "flags.0?true"],
         ["expires", "int"],
-        ["peer", "Peer"],
-        ["chats", "Vector<Chat>"],
-        ["users", "Vector<User>"],
+        ["peer", "flags.3?Peer"],
         ["psa_type", "flags.1?string"],
         ["psa_message", "flags.2?string"],
+        ["pending_suggestions", "Vector<string>"],
+        ["dismissed_suggestions", "Vector<string>"],
+        ["custom_pending_suggestion", "flags.4?PendingSuggestion"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
       "help.PromoData",
     ],
@@ -28272,7 +28536,7 @@ export const schema = Object.freeze({
       "stats.MegagroupStats",
     ],
     globalPrivacySettings: [
-      0xC9D8DF1C,
+      0xFE41B34F,
       [
         ["flags", "#"],
         ["archive_and_mute_new_noncontact_peers", "flags.0?true"],
@@ -28280,7 +28544,9 @@ export const schema = Object.freeze({
         ["keep_archived_folders", "flags.2?true"],
         ["hide_read_marks", "flags.3?true"],
         ["new_noncontact_peers_require_premium", "flags.4?true"],
+        ["display_gifts_button", "flags.7?true"],
         ["noncontact_peers_paid_stars", "flags.5?long"],
+        ["disallowed_gifts", "flags.6?DisallowedGiftsSettings"],
       ],
       "GlobalPrivacySettings",
     ],
@@ -28418,7 +28684,7 @@ export const schema = Object.freeze({
       "GroupCall",
     ],
     groupCall: [
-      0xCDF8D3E3,
+      0x553B0BA1,
       [
         ["flags", "#"],
         ["join_muted", "flags.1?true"],
@@ -28429,6 +28695,8 @@ export const schema = Object.freeze({
         ["record_video_active", "flags.11?true"],
         ["rtmp_stream", "flags.12?true"],
         ["listeners_hidden", "flags.13?true"],
+        ["conference", "flags.14?true"],
+        ["creator", "flags.15?true"],
         ["id", "long"],
         ["access_hash", "long"],
         ["participants_count", "int"],
@@ -28439,7 +28707,7 @@ export const schema = Object.freeze({
         ["unmuted_video_count", "flags.10?int"],
         ["unmuted_video_limit", "int"],
         ["version", "int"],
-        ["conference_from_call", "flags.14?long"],
+        ["invite_link", "flags.16?string"],
       ],
       "GroupCall",
     ],
@@ -28448,6 +28716,20 @@ export const schema = Object.freeze({
       [
         ["id", "long"],
         ["access_hash", "long"],
+      ],
+      "InputGroupCall",
+    ],
+    inputGroupCallSlug: [
+      0xFE06823F,
+      [
+        ["slug", "string"],
+      ],
+      "InputGroupCall",
+    ],
+    inputGroupCallInviteMessage: [
+      0x8C10603F,
+      [
+        ["msg_id", "int"],
       ],
       "InputGroupCall",
     ],
@@ -29194,6 +29476,22 @@ export const schema = Object.freeze({
       ],
       "InputInvoice",
     ],
+    inputInvoiceBusinessBotTransferStars: [
+      0xF4997E42,
+      [
+        ["bot", "InputUser"],
+        ["stars", "long"],
+      ],
+      "InputInvoice",
+    ],
+    inputInvoiceStarGiftResale: [
+      0x63CBC38C,
+      [
+        ["slug", "string"],
+        ["to_id", "InputPeer"],
+      ],
+      "InputInvoice",
+    ],
     "payments.exportedInvoice": [
       0xAED0CBD9,
       [
@@ -29307,6 +29605,18 @@ export const schema = Object.freeze({
         ["currency", "string"],
         ["amount", "long"],
         ["users", "int"],
+      ],
+      "InputStorePaymentPurpose",
+    ],
+    inputStorePaymentAuthCode: [
+      0x9BB2636D,
+      [
+        ["flags", "#"],
+        ["restore", "flags.0?true"],
+        ["phone_number", "string"],
+        ["phone_code_hash", "string"],
+        ["currency", "string"],
+        ["amount", "long"],
       ],
       "InputStorePaymentPurpose",
     ],
@@ -30798,12 +31108,12 @@ export const schema = Object.freeze({
       "messages.QuickReplies",
     ],
     connectedBot: [
-      0xBD068601,
+      0xCD64636C,
       [
         ["flags", "#"],
-        ["can_reply", "flags.0?true"],
         ["bot_id", "long"],
         ["recipients", "BusinessBotRecipients"],
+        ["rights", "BusinessBotRights"],
       ],
       "ConnectedBot",
     ],
@@ -30835,15 +31145,15 @@ export const schema = Object.freeze({
       "Birthday",
     ],
     botBusinessConnection: [
-      0x896433B4,
+      0x8F34B2F5,
       [
         ["flags", "#"],
-        ["can_reply", "flags.0?true"],
         ["disabled", "flags.1?true"],
         ["connection_id", "string"],
         ["user_id", "long"],
         ["dc_id", "int"],
         ["date", "int"],
+        ["rights", "flags.2?BusinessBotRights"],
       ],
       "BotBusinessConnection",
     ],
@@ -31256,6 +31566,8 @@ export const schema = Object.freeze({
         ["gift", "flags.10?true"],
         ["reaction", "flags.11?true"],
         ["stargift_upgrade", "flags.18?true"],
+        ["business_transfer", "flags.21?true"],
+        ["stargift_resale", "flags.22?true"],
         ["id", "string"],
         ["stars", "StarsAmount"],
         ["date", "int"],
@@ -31472,7 +31784,7 @@ export const schema = Object.freeze({
       "StarsGiveawayWinnersOption",
     ],
     starGift: [
-      0x02CC73C8,
+      0xC62ACA28,
       [
         ["flags", "#"],
         ["limited", "flags.0?true"],
@@ -31483,15 +31795,18 @@ export const schema = Object.freeze({
         ["stars", "long"],
         ["availability_remains", "flags.0?int"],
         ["availability_total", "flags.0?int"],
+        ["availability_resale", "flags.4?long"],
         ["convert_stars", "long"],
         ["first_sale_date", "flags.1?int"],
         ["last_sale_date", "flags.1?int"],
         ["upgrade_stars", "flags.3?long"],
+        ["resell_min_stars", "flags.4?long"],
+        ["title", "flags.5?string"],
       ],
       "StarGift",
     ],
     starGiftUnique: [
-      0x5C62D151,
+      0x6411DB89,
       [
         ["flags", "#"],
         ["id", "long"],
@@ -31505,6 +31820,7 @@ export const schema = Object.freeze({
         ["availability_issued", "int"],
         ["availability_total", "int"],
         ["gift_address", "flags.3?string"],
+        ["resell_stars", "flags.4?long"],
       ],
       "StarGift",
     ],
@@ -31694,9 +32010,10 @@ export const schema = Object.freeze({
       "StarGiftAttribute",
     ],
     starGiftAttributeBackdrop: [
-      0x94271762,
+      0xD93D859C,
       [
         ["name", "string"],
+        ["backdrop_id", "int"],
         ["center_color", "int"],
         ["edge_color", "int"],
         ["pattern_color", "int"],
@@ -31755,7 +32072,7 @@ export const schema = Object.freeze({
       "messages.WebPagePreview",
     ],
     savedStarGift: [
-      0x6056DBA5,
+      0xDFDA0499,
       [
         ["flags", "#"],
         ["name_hidden", "flags.0?true"],
@@ -31773,6 +32090,8 @@ export const schema = Object.freeze({
         ["upgrade_stars", "flags.6?long"],
         ["can_export_at", "flags.7?int"],
         ["transfer_stars", "flags.8?long"],
+        ["can_transfer_at", "flags.13?int"],
+        ["can_resell_at", "flags.14?int"],
       ],
       "SavedStarGift",
     ],
@@ -31801,6 +32120,13 @@ export const schema = Object.freeze({
       [
         ["peer", "InputPeer"],
         ["saved_id", "long"],
+      ],
+      "InputSavedStarGift",
+    ],
+    inputSavedStarGiftSlug: [
+      0x2085C238,
+      [
+        ["slug", "string"],
       ],
       "InputSavedStarGift",
     ],
@@ -31852,35 +32178,123 @@ export const schema = Object.freeze({
       ],
       "RequirementToContact",
     ],
-    invokeWithBusinessConnectionPrefix: [
-      0xDD289F8E,
+    businessBotRights: [
+      0xA0624CF7,
       [
-        ["connection_id", "string"],
+        ["flags", "#"],
+        ["reply", "flags.0?true"],
+        ["read_messages", "flags.1?true"],
+        ["delete_sent_messages", "flags.2?true"],
+        ["delete_received_messages", "flags.3?true"],
+        ["edit_name", "flags.4?true"],
+        ["edit_bio", "flags.5?true"],
+        ["edit_profile_photo", "flags.6?true"],
+        ["edit_username", "flags.7?true"],
+        ["view_gifts", "flags.8?true"],
+        ["sell_gifts", "flags.9?true"],
+        ["change_gift_settings", "flags.10?true"],
+        ["transfer_and_upgrade_gifts", "flags.11?true"],
+        ["transfer_stars", "flags.12?true"],
+        ["manage_stories", "flags.13?true"],
       ],
-      "Error",
+      "BusinessBotRights",
     ],
-    invokeWithGooglePlayIntegrityPrefix: [
-      0x1DF92984,
+    disallowedGiftsSettings: [
+      0x71F276C4,
       [
-        ["nonce", "string"],
-        ["token", "string"],
+        ["flags", "#"],
+        ["disallow_unlimited_stargifts", "flags.0?true"],
+        ["disallow_limited_stargifts", "flags.1?true"],
+        ["disallow_unique_stargifts", "flags.2?true"],
+        ["disallow_premium_gifts", "flags.3?true"],
       ],
-      "Error",
+      "DisallowedGiftsSettings",
     ],
-    invokeWithApnsSecretPrefix: [
-      0x0DAE54F8,
+    sponsoredPeer: [
+      0xC69708D3,
       [
-        ["nonce", "string"],
-        ["secret", "string"],
+        ["flags", "#"],
+        ["random_id", "bytes"],
+        ["peer", "Peer"],
+        ["sponsor_info", "flags.0?string"],
+        ["additional_info", "flags.1?string"],
       ],
-      "Error",
+      "SponsoredPeer",
     ],
-    invokeWithReCaptchaPrefix: [
-      0xADBB0F94,
+    "contacts.sponsoredPeersEmpty": [
+      0xEA32B4B1,
+      [],
+      "contacts.SponsoredPeers",
+    ],
+    "contacts.sponsoredPeers": [
+      0xEB032884,
       [
-        ["token", "string"],
+        ["peers", "Vector<SponsoredPeer>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
       ],
-      "Error",
+      "contacts.SponsoredPeers",
+    ],
+    starGiftAttributeIdModel: [
+      0x48AAAE3C,
+      [
+        ["document_id", "long"],
+      ],
+      "StarGiftAttributeId",
+    ],
+    starGiftAttributeIdPattern: [
+      0x4A162433,
+      [
+        ["document_id", "long"],
+      ],
+      "StarGiftAttributeId",
+    ],
+    starGiftAttributeIdBackdrop: [
+      0x1F01C757,
+      [
+        ["backdrop_id", "int"],
+      ],
+      "StarGiftAttributeId",
+    ],
+    starGiftAttributeCounter: [
+      0x2EB1B658,
+      [
+        ["attribute", "StarGiftAttributeId"],
+        ["count", "int"],
+      ],
+      "StarGiftAttributeCounter",
+    ],
+    "payments.resaleStarGifts": [
+      0x947A12DF,
+      [
+        ["flags", "#"],
+        ["count", "int"],
+        ["gifts", "Vector<StarGift>"],
+        ["next_offset", "flags.0?string"],
+        ["attributes", "flags.1?Vector<StarGiftAttribute>"],
+        ["attributes_hash", "flags.1?long"],
+        ["chats", "Vector<Chat>"],
+        ["counters", "flags.2?Vector<StarGiftAttributeCounter>"],
+        ["users", "Vector<User>"],
+      ],
+      "payments.ResaleStarGifts",
+    ],
+    "stories.canSendStoryCount": [
+      0xC387C04E,
+      [
+        ["count_remains", "int"],
+      ],
+      "stories.CanSendStoryCount",
+    ],
+    pendingSuggestion: [
+      0xE7E82E12,
+      [
+        ["suggestion", "string"],
+        ["title", "TextWithEntities"],
+        ["description", "TextWithEntities"],
+        ["url", "string"],
+      ],
+      "PendingSuggestion",
     ],
     invokeAfterMsg: [
       0xCB9F372D,
@@ -32910,11 +33324,11 @@ export const schema = Object.freeze({
       "Bool",
     ],
     "account.updateConnectedBot": [
-      0x43D8521D,
+      0x66A08C7E,
       [
         ["flags", "#"],
-        ["can_reply", "flags.0?true"],
         ["deleted", "flags.1?true"],
+        ["rights", "flags.0?BusinessBotRights"],
         ["bot", "InputUser"],
         ["recipients", "InputBusinessBotRecipients"],
       ],
@@ -33284,6 +33698,13 @@ export const schema = Object.freeze({
       0xDAEDA864,
       [],
       "contacts.ContactBirthdays",
+    ],
+    "contacts.getSponsoredPeers": [
+      0xB6C8C393,
+      [
+        ["q", "string"],
+      ],
+      "contacts.SponsoredPeers",
     ],
     "messages.getMessages": [
       0x63C66506,
@@ -35345,28 +35766,25 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "messages.viewSponsoredMessage": [
-      0x673AD8F1,
+      0x269E3643,
       [
-        ["peer", "InputPeer"],
         ["random_id", "bytes"],
       ],
       "Bool",
     ],
     "messages.clickSponsoredMessage": [
-      0x0F093465,
+      0x8235057E,
       [
         ["flags", "#"],
         ["media", "flags.0?true"],
         ["fullscreen", "flags.1?true"],
-        ["peer", "InputPeer"],
         ["random_id", "bytes"],
       ],
       "Bool",
     ],
     "messages.reportSponsoredMessage": [
-      0x1AF3DBB8,
+      0x12CBF0C4,
       [
-        ["peer", "InputPeer"],
         ["random_id", "bytes"],
         ["option", "bytes"],
       ],
@@ -36280,6 +36698,14 @@ export const schema = Object.freeze({
       ],
       "Updates",
     ],
+    "channels.toggleAutotranslation": [
+      0x167FC0A1,
+      [
+        ["channel", "InputChannel"],
+        ["enabled", "Bool"],
+      ],
+      "Updates",
+    ],
     "bots.sendCustomRequest": [
       0xAA2769ED,
       [
@@ -36613,13 +37039,6 @@ export const schema = Object.freeze({
       ],
       "Updates",
     ],
-    "payments.canPurchasePremium": [
-      0x9FC19EB6,
-      [
-        ["purpose", "InputStorePaymentPurpose"],
-      ],
-      "Bool",
-    ],
     "payments.getPremiumGiftCodeOptions": [
       0x2757BA54,
       [
@@ -36936,6 +37355,35 @@ export const schema = Object.freeze({
       ],
       "Bool",
     ],
+    "payments.canPurchaseStore": [
+      0x4FDC5EA7,
+      [
+        ["purpose", "InputStorePaymentPurpose"],
+      ],
+      "Bool",
+    ],
+    "payments.getResaleStarGifts": [
+      0x7A5FA236,
+      [
+        ["flags", "#"],
+        ["sort_by_price", "flags.1?true"],
+        ["sort_by_num", "flags.2?true"],
+        ["attributes_hash", "flags.0?long"],
+        ["gift_id", "long"],
+        ["attributes", "flags.3?Vector<StarGiftAttributeId>"],
+        ["offset", "string"],
+        ["limit", "int"],
+      ],
+      "payments.ResaleStarGifts",
+    ],
+    "payments.updateStarGiftPrice": [
+      0x3BAEA4E1,
+      [
+        ["stargift", "InputSavedStarGift"],
+        ["resell_stars", "long"],
+      ],
+      "Updates",
+    ],
     "stickers.createStickerSet": [
       0x9021AB67,
       [
@@ -37039,12 +37487,11 @@ export const schema = Object.freeze({
       "DataJSON",
     ],
     "phone.requestCall": [
-      0xA6C4600C,
+      0x42FF96ED,
       [
         ["flags", "#"],
         ["video", "flags.0?true"],
         ["user_id", "InputUser"],
-        ["conference_call", "flags.1?InputGroupCall"],
         ["random_id", "int"],
         ["g_a_hash", "bytes"],
         ["protocol", "PhoneCallProtocol"],
@@ -37129,7 +37576,7 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "phone.joinGroupCall": [
-      0xD61E1DF3,
+      0x8FB53057,
       [
         ["flags", "#"],
         ["muted", "flags.0?true"],
@@ -37137,7 +37584,8 @@ export const schema = Object.freeze({
         ["call", "InputGroupCall"],
         ["join_as", "InputPeer"],
         ["invite_hash", "flags.1?string"],
-        ["key_fingerprint", "flags.3?long"],
+        ["public_key", "flags.3?int256"],
+        ["block", "flags.3?bytes"],
         ["params", "DataJSON"],
       ],
       "Updates",
@@ -37315,12 +37763,65 @@ export const schema = Object.freeze({
       "Bool",
     ],
     "phone.createConferenceCall": [
-      0xDFC909AB,
+      0x7D0444BB,
       [
-        ["peer", "InputPhoneCall"],
-        ["key_fingerprint", "long"],
+        ["flags", "#"],
+        ["muted", "flags.0?true"],
+        ["video_stopped", "flags.2?true"],
+        ["join", "flags.3?true"],
+        ["random_id", "int"],
+        ["public_key", "flags.3?int256"],
+        ["block", "flags.3?bytes"],
+        ["params", "flags.3?DataJSON"],
       ],
-      "phone.PhoneCall",
+      "Updates",
+    ],
+    "phone.deleteConferenceCallParticipants": [
+      0x8CA60525,
+      [
+        ["flags", "#"],
+        ["only_left", "flags.0?true"],
+        ["kick", "flags.1?true"],
+        ["call", "InputGroupCall"],
+        ["ids", "Vector<long>"],
+        ["block", "bytes"],
+      ],
+      "Updates",
+    ],
+    "phone.sendConferenceCallBroadcast": [
+      0xC6701900,
+      [
+        ["call", "InputGroupCall"],
+        ["block", "bytes"],
+      ],
+      "Updates",
+    ],
+    "phone.inviteConferenceCallParticipant": [
+      0xBCF22685,
+      [
+        ["flags", "#"],
+        ["video", "flags.0?true"],
+        ["call", "InputGroupCall"],
+        ["user_id", "InputUser"],
+      ],
+      "Updates",
+    ],
+    "phone.declineConferenceCallInvite": [
+      0x3C479971,
+      [
+        ["msg_id", "int"],
+      ],
+      "Updates",
+    ],
+    "phone.getGroupCallChainBlocks": [
+      0xEE9F88A6,
+      [
+        ["call", "InputGroupCall"],
+        ["sub_chain_id", "int"],
+        ["offset", "int"],
+        ["limit", "int"],
+      ],
+      "Updates",
     ],
     "langpack.getLangPack": [
       0xF2F2330A,
@@ -37551,11 +38052,11 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "stories.canSendStory": [
-      0xC7DFDFDD,
+      0x30EB63F0,
       [
         ["peer", "InputPeer"],
       ],
-      "Bool",
+      "stories.CanSendStoryCount",
     ],
     "stories.sendStory": [
       0xE4E6694B,
@@ -37888,12 +38389,7 @@ export const schema = Object.freeze({
   identifierToName: {
     [0x3FEDD339]: "true",
     [0xC4B9F9BB]: "error",
-    [0xD433AD73]: "ipPort",
-    [0x37982646]: "ipPortSecret",
-    [0x4679B65F]: "accessPointRule",
-    [0x5A592A6C]: "help.configSimple",
-    [0x27D69997]: "inputPeerPhotoFileLocationLegacy",
-    [0x0DBAEAE9]: "inputStickerSetThumbLegacy",
+    [0x56730BCC]: "null",
     [0x7F3B18EA]: "inputPeerEmpty",
     [0x7DA07EC9]: "inputPeerSelf",
     [0x35A95CB9]: "inputPeerChat",
@@ -38048,7 +38544,10 @@ export const schema = Object.freeze({
     [0x45D5B021]: "messageActionGiftStars",
     [0xB00C47A2]: "messageActionPrizeStars",
     [0x4717E8A4]: "messageActionStarGift",
-    [0xACDFCB81]: "messageActionStarGiftUnique",
+    [0x2E3AE60E]: "messageActionStarGiftUnique",
+    [0xAC1F1FCD]: "messageActionPaidMessagesRefunded",
+    [0xBCD71419]: "messageActionPaidMessagesPrice",
+    [0x2FFE2F7A]: "messageActionConferenceCall",
     [0xD58A08C6]: "dialog",
     [0x71BD134C]: "dialogFolder",
     [0x2331B22D]: "photoEmpty",
@@ -38063,6 +38562,7 @@ export const schema = Object.freeze({
     [0xB2A2F663]: "geoPoint",
     [0x5E002502]: "auth.sentCode",
     [0x2390FE44]: "auth.sentCodeSuccess",
+    [0xD7CEF980]: "auth.sentCodePaymentRequired",
     [0x2EA2C0D4]: "auth.authorization",
     [0x44747E9A]: "auth.authorizationSignUpRequired",
     [0xB434E2B8]: "auth.exportedAuthorization",
@@ -38086,7 +38586,7 @@ export const schema = Object.freeze({
     [0xF5DDD6E7]: "inputReportReasonFake",
     [0x0A8EB2BE]: "inputReportReasonIllegalDrugs",
     [0x9EC7863D]: "inputReportReasonPersonalDetails",
-    [0xD2234EA0]: "userFull",
+    [0x99E78045]: "userFull",
     [0x145ADE0B]: "contact",
     [0xC13E3C50]: "importedContact",
     [0x16D9703B]: "contactStatus",
@@ -38264,6 +38764,8 @@ export const schema = Object.freeze({
     [0xA584B019]: "updateStarsRevenueStatus",
     [0x283BD312]: "updateBotPurchasedPaidMedia",
     [0x8B725FCE]: "updatePaidReactionPrivacy",
+    [0x504AA18F]: "updateSentPhoneCode",
+    [0xA477288F]: "updateGroupCallChainBlocks",
     [0xA56C2A3E]: "updates.state",
     [0x5D75A138]: "updates.differenceEmpty",
     [0x00F49CA0]: "updates.difference",
@@ -38636,7 +39138,7 @@ export const schema = Object.freeze({
     [0xE095C1A0]: "phoneCallDiscardReasonDisconnect",
     [0x57ADC690]: "phoneCallDiscardReasonHangup",
     [0xFAF7E8C9]: "phoneCallDiscardReasonBusy",
-    [0xAFE2B839]: "phoneCallDiscardReasonAllowGroupCall",
+    [0x9FBBF1F7]: "phoneCallDiscardReasonMigrateConferenceCall",
     [0x7D748D04]: "dataJSON",
     [0xCB296BF8]: "labeledPrice",
     [0x049EE584]: "invoice",
@@ -38669,11 +39171,11 @@ export const schema = Object.freeze({
     [0x32DA9E9C]: "inputStickerSetItem",
     [0x1E36FDED]: "inputPhoneCall",
     [0x5366C915]: "phoneCallEmpty",
-    [0xEED42858]: "phoneCallWaiting",
-    [0x45361C63]: "phoneCallRequested",
-    [0x22FD7181]: "phoneCallAccepted",
-    [0x3BA5940C]: "phoneCall",
-    [0xF9D25503]: "phoneCallDiscarded",
+    [0xC5226F17]: "phoneCallWaiting",
+    [0x14B0ED0C]: "phoneCallRequested",
+    [0x3660C311]: "phoneCallAccepted",
+    [0x30535AF5]: "phoneCall",
+    [0x50CA4DE1]: "phoneCallDiscarded",
     [0x9CC123C7]: "phoneConnection",
     [0x635FE375]: "phoneConnectionWebrtc",
     [0xFC878FC8]: "phoneCallProtocol",
@@ -38737,6 +39239,7 @@ export const schema = Object.freeze({
     [0x46D840AB]: "channelAdminLogEventActionChangeEmojiStickerSet",
     [0x60A79C79]: "channelAdminLogEventActionToggleSignatureProfiles",
     [0x64642DB3]: "channelAdminLogEventActionParticipantSubExtend",
+    [0xC517F77E]: "channelAdminLogEventActionToggleAutotranslation",
     [0x1FAD68CD]: "channelAdminLogEvent",
     [0xED8AF74D]: "channels.adminLogResults",
     [0xEA107AE4]: "channelAdminLogEventsFilter",
@@ -38907,7 +39410,7 @@ export const schema = Object.freeze({
     [0x8EA464B6]: "statsGraph",
     [0x396CA5FC]: "stats.broadcastStats",
     [0x98F6AC75]: "help.promoDataEmpty",
-    [0x8C39793F]: "help.promoData",
+    [0x08A4D87A]: "help.promoData",
     [0xDE33B094]: "videoSize",
     [0xF85C413C]: "videoSizeEmojiMarkup",
     [0x0DA082FE]: "videoSizeStickerMarkup",
@@ -38915,7 +39418,7 @@ export const schema = Object.freeze({
     [0xD7584C87]: "statsGroupTopAdmin",
     [0x535F779D]: "statsGroupTopInviter",
     [0xEF7FF916]: "stats.megagroupStats",
-    [0xC9D8DF1C]: "globalPrivacySettings",
+    [0xFE41B34F]: "globalPrivacySettings",
     [0x4203C5EF]: "help.countryCode",
     [0xC3878E23]: "help.country",
     [0x93CC1F32]: "help.countriesListNotModified",
@@ -38929,8 +39432,10 @@ export const schema = Object.freeze({
     [0xE8FD8014]: "peerBlocked",
     [0x7FE91C14]: "stats.messageStats",
     [0x7780BCB4]: "groupCallDiscarded",
-    [0xCDF8D3E3]: "groupCall",
+    [0x553B0BA1]: "groupCall",
     [0xD8AA840F]: "inputGroupCall",
+    [0xFE06823F]: "inputGroupCallSlug",
+    [0x8C10603F]: "inputGroupCallInviteMessage",
     [0xEBA636FE]: "groupCallParticipant",
     [0x9E727AAD]: "phone.groupCall",
     [0xF47751B6]: "phone.groupParticipants",
@@ -39020,6 +39525,8 @@ export const schema = Object.freeze({
     [0x4D818D5D]: "inputInvoiceStarGiftUpgrade",
     [0x4A5F5BD9]: "inputInvoiceStarGiftTransfer",
     [0xDABAB2EF]: "inputInvoicePremiumGiftStars",
+    [0xF4997E42]: "inputInvoiceBusinessBotTransferStars",
+    [0x63CBC38C]: "inputInvoiceStarGiftResale",
     [0xAED0CBD9]: "payments.exportedInvoice",
     [0xCFB9D957]: "messages.transcribedAudio",
     [0x5334759C]: "help.premiumPromo",
@@ -39030,6 +39537,7 @@ export const schema = Object.freeze({
     [0xDDDD0F56]: "inputStorePaymentStarsTopup",
     [0x1D741EF7]: "inputStorePaymentStarsGift",
     [0x751F08FA]: "inputStorePaymentStarsGiveaway",
+    [0x9BB2636D]: "inputStorePaymentAuthCode",
     [0x88F8F21B]: "paymentFormMethod",
     [0x2DE11AAE]: "emojiStatusEmpty",
     [0xE7FF068A]: "emojiStatus",
@@ -39188,11 +39696,11 @@ export const schema = Object.freeze({
     [0x01190CF1]: "inputQuickReplyShortcutId",
     [0xC68D6695]: "messages.quickReplies",
     [0x5F91EB5B]: "messages.quickRepliesNotModified",
-    [0xBD068601]: "connectedBot",
+    [0xCD64636C]: "connectedBot",
     [0x17D7F87B]: "account.connectedBots",
     [0x2AD93719]: "messages.dialogFilters",
     [0x6C8E1E06]: "birthday",
-    [0x896433B4]: "botBusinessConnection",
+    [0x8F34B2F5]: "botBusinessConnection",
     [0x09C469CD]: "inputBusinessIntro",
     [0x5A0A066D]: "businessIntro",
     [0xFAFF629D]: "messages.myStickers",
@@ -39258,8 +39766,8 @@ export const schema = Object.freeze({
     [0x4BA3A95A]: "messageReactor",
     [0x94CE852A]: "starsGiveawayOption",
     [0x54236209]: "starsGiveawayWinnersOption",
-    [0x02CC73C8]: "starGift",
-    [0x5C62D151]: "starGiftUnique",
+    [0xC62ACA28]: "starGift",
+    [0x6411DB89]: "starGiftUnique",
     [0xA388A368]: "payments.starGiftsNotModified",
     [0x901689EA]: "payments.starGifts",
     [0x7903E3D9]: "messageReportOption",
@@ -39280,17 +39788,18 @@ export const schema = Object.freeze({
     [0xF93CD45C]: "botVerification",
     [0x39D99013]: "starGiftAttributeModel",
     [0x13ACFF19]: "starGiftAttributePattern",
-    [0x94271762]: "starGiftAttributeBackdrop",
+    [0xD93D859C]: "starGiftAttributeBackdrop",
     [0xE0BFF26C]: "starGiftAttributeOriginalDetails",
     [0x167BD90B]: "payments.starGiftUpgradePreview",
     [0x62D706B8]: "users.users",
     [0x315A4974]: "users.usersSlice",
     [0xCAA2F60B]: "payments.uniqueStarGift",
     [0xB53E8B21]: "messages.webPagePreview",
-    [0x6056DBA5]: "savedStarGift",
+    [0xDFDA0499]: "savedStarGift",
     [0x95F389B1]: "payments.savedStarGifts",
     [0x69279795]: "inputSavedStarGiftUser",
     [0xF101AA7F]: "inputSavedStarGiftChat",
+    [0x2085C238]: "inputSavedStarGiftSlug",
     [0x84AA3A9C]: "payments.starGiftWithdrawalUrl",
     [0x206AD49E]: "paidReactionPrivacyDefault",
     [0x1F0C1AD9]: "paidReactionPrivacyAnonymous",
@@ -39299,5 +39808,19 @@ export const schema = Object.freeze({
     [0x050A9839]: "requirementToContactEmpty",
     [0xE581E4E9]: "requirementToContactPremium",
     [0xB4F67E93]: "requirementToContactPaidMessages",
+    [0xA0624CF7]: "businessBotRights",
+    [0x71F276C4]: "disallowedGiftsSettings",
+    [0xC69708D3]: "sponsoredPeer",
+    [0xEA32B4B1]: "contacts.sponsoredPeersEmpty",
+    [0xEB032884]: "contacts.sponsoredPeers",
+    [0x48AAAE3C]: "starGiftAttributeIdModel",
+    [0x4A162433]: "starGiftAttributeIdPattern",
+    [0x1F01C757]: "starGiftAttributeIdBackdrop",
+    [0x2EB1B658]: "starGiftAttributeCounter",
+    [0x947A12DF]: "payments.resaleStarGifts",
+    [0xC387C04E]: "stories.canSendStoryCount",
+    [0xE7E82E12]: "pendingSuggestion",
   },
 }) as unknown as Schema;
+
+export const LAYER = 203;

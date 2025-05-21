@@ -18,28 +18,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { CTR, MaybePromise } from "../1_utilities.ts";
+import { assertEquals } from "../0_deps.ts";
+import { ClientEncrypted } from "./2_client_encrypted.ts";
+import { ClientEncryptedPool } from "./3_client_encrypted_pool.ts";
 
-export abstract class Transport {
-  protected obfuscationParameters: { encryptionCTR: CTR; decryptionCTR: CTR } | null = null;
-
-  protected async encrypt(buffer: Uint8Array<ArrayBuffer>): Promise<Uint8Array> {
-    if (this.obfuscationParameters) {
-      return await this.obfuscationParameters.encryptionCTR.call(buffer);
-    } else {
-      return buffer;
-    }
+Deno.test("ClientEncryptedPool", () => {
+  const pool = new ClientEncryptedPool();
+  const clients = new Array(3).fill(null).map(() => new ClientEncrypted("1", 0));
+  for (const client of clients) {
+    pool.add(client);
   }
-
-  protected async decrypt(buffer: Uint8Array<ArrayBuffer>): Promise<Uint8Array<ArrayBuffer>> {
-    if (this.obfuscationParameters) {
-      return await this.obfuscationParameters.decryptionCTR.call(buffer);
-    } else {
-      return buffer;
-    }
+  for (let i = 0; i < 10; ++i) {
+    assertEquals(pool.nextClient(), clients[0]);
+    assertEquals(pool.nextClient(), clients[1]);
+    assertEquals(pool.nextClient(), clients[2]);
   }
-
-  abstract initialize(): MaybePromise<void>;
-  abstract receive(): MaybePromise<Uint8Array>;
-  abstract send(buffer: Uint8Array): MaybePromise<void>;
-}
+});

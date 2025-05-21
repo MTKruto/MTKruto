@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageKeyPart } from "../2_storage.ts";
-import { Api, TLReader, TLWriter } from "../2_tl.ts";
+import { Api, TLReader, TLWriter, X } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
 import { Translation, VoiceTranscription } from "../3_types.ts";
 
@@ -42,6 +42,7 @@ export const K = {
     key: (): StorageKeyPart[] => [K.auth.P("key")],
     accountId: (): StorageKeyPart[] => [K.auth.P("accountId")],
     accountType: (): StorageKeyPart[] => [K.auth.P("accountType")],
+    isPremium: (): StorageKeyPart[] => [K.auth.P("isPremium")],
   },
   updates: {
     P: (string: string): string => `updates.${string}`,
@@ -267,7 +268,9 @@ export class StorageOperations {
     // @ts-ignore: TBD
     const buffer = (keyOrBuffer instanceof Uint8Array || Api.isValidObject(keyOrBuffer)) ? keyOrBuffer : await this.#storage.get<[string, Uint8Array]>(keyOrBuffer);
     if (buffer != null) {
-      if (Array.isArray(buffer)) {
+      if (buffer instanceof Uint8Array) {
+        return await Api.deserializeType(X, rleDecode(buffer));
+      } else if (Array.isArray(buffer)) {
         return await Api.deserializeType(buffer[0], rleDecode(buffer[1]));
       } else {
         return buffer;
@@ -369,6 +372,14 @@ export class StorageOperations {
       unreachable();
     }
     return this.#accountType;
+  }
+
+  async setIsPremium(isPremium: boolean) {
+    await this.#storage.set(K.auth.isPremium(), isPremium);
+  }
+
+  async getIsPremium(): Promise<boolean | null> {
+    return await this.#storage.get<boolean>(K.auth.isPremium());
   }
 
   async updateStickerSetName(id: bigint, accessHash: bigint, name: string) {

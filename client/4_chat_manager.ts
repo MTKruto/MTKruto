@@ -243,7 +243,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   }
 
   // CHAT PHOTOS //
-  async deleteChatPhoto(chatId: number) {
+  async deleteChatPhoto(chatId: ID) {
     const peer = await this.#c.getInputPeer(chatId);
     if (!(canBeInputChannel(peer)) && !(Api.is("inputPeerChat", peer))) {
       unreachable();
@@ -256,7 +256,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
     }
   }
 
-  async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
+  async setChatPhoto(chatId: ID, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
     const peer = await this.#c.getInputPeer(chatId);
     if (!(canBeInputChannel(peer)) && !(Api.is("inputPeerChat", peer))) {
       unreachable();

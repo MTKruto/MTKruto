@@ -18,7 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals, assertThrows } from "../0_deps.ts";
+import { assertEquals } from "../0_deps.ts";
+import { assertThrows } from "../0_test_deps.ts";
 import { CacheMap } from "./0_cache_map.ts";
 
 Deno.test("throws when invalid limit is provided", () => {

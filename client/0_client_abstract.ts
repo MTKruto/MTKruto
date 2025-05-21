@@ -18,93 +18,46 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { initTgCrypto } from "../0_deps.ts";
-import { ConnectionError } from "../0_errors.ts";
-import { DC, TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
-import { INITIAL_DC } from "../4_constants.ts";
-
-// @ts-ignore: lib
-const defaultTransportProvider = typeof Deno === "undefined" ? transportProviderWebSocket : transportProviderTcp;
-
-export interface ClientAbstractParams {
-  /**
-   * The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC.
-   */
-  initialDc?: DC;
-  /**
-   * The transport provider to use. Defaults to `webSocketTransportProvider` with its default options.
-   */
-  transportProvider?: TransportProvider;
-  /**
-   * Whether the connection is with a CDN server. Defaults to false.
-   */
-  cdn?: boolean;
-}
+import { Connection, ConnectionCallback } from "../2_connection.ts";
+import { DC } from "../3_transport.ts";
+import { Session } from "../4_session.ts";
 
 export abstract class ClientAbstract {
-  public readonly initialDc: DC;
-  public transportProvider: TransportProvider;
-  public readonly cdn: boolean;
-
-  protected transport?: ReturnType<TransportProvider>;
-  #dc?: DC;
-
-  constructor(params?: ClientAbstractParams) {
-    this.initialDc = params?.initialDc ?? INITIAL_DC;
-    this.transportProvider = params?.transportProvider ?? defaultTransportProvider();
-    this.cdn = params?.cdn ?? false;
-  }
-
-  stateChangeHandler?: (connected: boolean) => void;
+  abstract session: Session;
 
   get dc(): DC {
-    return this.#dc ?? this.initialDc;
+    return this.session.dc;
   }
 
-  get dcId(): number {
-    if (!this.transport) {
-      throw new ConnectionError("Not connected.");
-    }
-    return this.transport.dcId;
+  get cdn(): boolean {
+    return this.session.cdn;
   }
 
-  setDc(dc: DC) {
-    this.#dc = dc;
+  set serverSalt(serverSalt: bigint) {
+    this.session.serverSalt = serverSalt;
   }
 
   get connected(): boolean {
-    return this.transport === undefined ? false : this.transport.connection.connected;
+    return this.session.connected;
   }
 
   async connect() {
-    this.transport = this.transportProvider({ dc: this.#dc ?? this.initialDc, cdn: this.cdn });
-    this.transport.connection.stateChangeHandler = this.stateChangeHandler;
-    await initTgCrypto();
-    await this.transport.connection.open();
-    await this.transport.transport.initialize();
-    this.#disconnected = false;
-  }
-
-  async reconnect(dc?: DC) {
-    await this.transport?.transport.deinitialize();
-    await this.transport?.connection.close();
-    if (dc) {
-      this.setDc(dc);
-    }
-    await this.connect();
-  }
-
-  #disconnected = false;
-  async disconnect() {
-    if (!this.transport) {
-      throw new ConnectionError("Not connected.");
-    }
-    await this.transport.transport.deinitialize();
-    await this.transport.connection.close();
-    this.#disconnected = true;
+    await this.session.connect();
   }
 
   get disconnected(): boolean {
-    return this.#disconnected;
+    return this.session.disconnected;
+  }
+
+  disconnect() {
+    this.session.disconnect();
+  }
+
+  set connectionCallback(connectionCallback: ConnectionCallback | undefined) {
+    this.session.connectionCallback = connectionCallback;
+  }
+
+  set onConnectionStateChange(onConnectionStateChange: Connection["stateChangeHandler"]) {
+    this.session.onConnectionStateChange = onConnectionStateChange;
   }
 }

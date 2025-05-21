@@ -18,28 +18,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { CTR, MaybePromise } from "../1_utilities.ts";
+import { toUnixTimestamp } from "../1_utilities.ts";
 
-export abstract class Transport {
-  protected obfuscationParameters: { encryptionCTR: CTR; decryptionCTR: CTR } | null = null;
+export class SessionState {
+  timeDifference = 0;
+  serverSalt = 0n;
+  #seqNo = 0;
+  #messageId = 0n;
 
-  protected async encrypt(buffer: Uint8Array<ArrayBuffer>): Promise<Uint8Array> {
-    if (this.obfuscationParameters) {
-      return await this.obfuscationParameters.encryptionCTR.call(buffer);
+  nextMessageId(): bigint {
+    const now = toUnixTimestamp(new Date()) + this.timeDifference;
+    const nanoseconds = Math.floor((now - Math.floor(now)) * 1e9);
+    const newMessageId = (BigInt(Math.floor(now)) << 32n) || (BigInt(nanoseconds) << 2n);
+    if (this.#messageId >= newMessageId) {
+      this.#messageId += 4n;
     } else {
-      return buffer;
+      this.#messageId = newMessageId;
     }
+    return this.#messageId;
   }
 
-  protected async decrypt(buffer: Uint8Array<ArrayBuffer>): Promise<Uint8Array<ArrayBuffer>> {
-    if (this.obfuscationParameters) {
-      return await this.obfuscationParameters.decryptionCTR.call(buffer);
-    } else {
-      return buffer;
+  nextSeqNo(contentRelated: boolean): number {
+    let seqNo = this.#seqNo * 2;
+    if (contentRelated) {
+      seqNo++;
+      this.#seqNo++;
     }
+    return seqNo;
   }
 
-  abstract initialize(): MaybePromise<void>;
-  abstract receive(): MaybePromise<Uint8Array>;
-  abstract send(buffer: Uint8Array): MaybePromise<void>;
+  reset() {
+    this.serverSalt = 0n;
+    this.#seqNo = 0;
+    this.#messageId = 0n;
+  }
 }

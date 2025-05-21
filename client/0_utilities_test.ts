@@ -18,7 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals, assertThrows } from "../0_deps.ts";
+import { assertEquals } from "../0_deps.ts";
+import { assertThrows } from "../0_test_deps.ts";
 import { getUsername } from "./0_utilities.ts";
 
 Deno.test("getUsername", () => {

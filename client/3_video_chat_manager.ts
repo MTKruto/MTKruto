@@ -22,6 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getRandomId, toUnixTimestamp, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import { getDc } from "../3_transport.ts";
 import { constructLiveStreamChannel, constructVideoChat, ID, Update, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
 import { DownloadLiveStreamChunkParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
@@ -152,7 +153,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
       await this.#c.storage.setGroupCall(update.call.id, update.call);
       await this.#c.storage.setGroupCallAccessHash(update.call.id, update.call.access_hash);
       if (fullChat != null) {
-        if (!("call" in fullChat) || !fullChat.call || fullChat.call.id != update.call.id) {
+        if (!("call" in fullChat) || !fullChat.call || !Api.is("inputGroupCall", fullChat.call) || fullChat.call.id != update.call.id) {
           fullChat.call = { ...update.call, _: "inputGroupCall" };
           updateFullChat = true;
         }
@@ -170,14 +171,9 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
     if (!(Api.is("groupCall", call)) || !call.rtmp_stream) {
       throw new InputError("Not a live stream.");
     }
-    const client = this.#c.getCdnConnection(call.stream_dc_id);
-    await client.connect();
-    try {
-      const streams = await client.invoke({ _: "phone.getGroupCallStreamChannels", call: await this.#getInputGroupCall(id) });
-      return streams.channels.map(constructLiveStreamChannel);
-    } finally {
-      await client.disconnect();
-    }
+    const dc = call.stream_dc_id ? getDc(call.stream_dc_id) : undefined;
+    const streams = await this.#c.invoke({ _: "phone.getGroupCallStreamChannels", call: await this.#getInputGroupCall(id) }, { dc, type: "download" });
+    return streams.channels.map(constructLiveStreamChannel);
   }
 
   async *downloadLiveStreamChunk(id: string, channel: number, scale: number, timestamp: number, params?: DownloadLiveStreamChunkParams) {

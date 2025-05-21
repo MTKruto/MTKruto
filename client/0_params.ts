@@ -19,8 +19,14 @@
  */
 
 import { MaybePromise } from "../1_utilities.ts";
+import { DC } from "../3_transport.ts";
 import { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
 import { ReplyTo } from "../types/2_reply_to.ts";
+
+export interface InvokeParams {
+  dc?: DC;
+  type?: "download" | "upload";
+}
 
 export interface AnswerCallbackQueryParams {
   /** A text to be shown to the user. */
@@ -366,6 +372,8 @@ export interface GetHistoryParams {
 export interface SetReactionsParams {
   /** Whether to make the new reactions more notable. */
   big?: boolean;
+  /** Whether to add the reaction to recent reactions. */
+  addToRecents?: boolean;
 }
 
 export interface AddReactionParams {

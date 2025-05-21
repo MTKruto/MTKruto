@@ -18,21 +18,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "jsr:@std/assert@1.0.11";
+export { assert } from "jsr:@std/assert@1.0.13/assert";
+export { assertFalse } from "jsr:@std/assert@1.0.13/false";
+export { assertEquals } from "jsr:@std/assert@1.0.13/equals";
+export { unreachable } from "jsr:@std/assert@1.0.13/unreachable";
+export { AssertionError } from "jsr:@std/assert@1.0.13/assertion-error";
 
-export { basename } from "jsr:@std/path@1.0.8/basename";
-export { extname } from "jsr:@std/path@1.0.8/extname";
-export { isAbsolute } from "jsr:@std/path@1.0.8/is-absolute";
-export { join } from "jsr:@std/path@1.0.8/join";
-export { toFileUrl } from "jsr:@std/path@1.0.8/to-file-url";
+export { join } from "jsr:@std/path@1.0.9/join";
+export { extname } from "jsr:@std/path@1.0.9/extname";
+export { basename } from "jsr:@std/path@1.0.9/basename";
+export { toFileUrl } from "jsr:@std/path@1.0.9/to-file-url";
+export { isAbsolute } from "jsr:@std/path@1.0.9/is-absolute";
+
+export { delay } from "jsr:@std/async@1.0.12";
 
 export { concat } from "jsr:@std/bytes@1.0.5/concat";
 
-export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.3/constants";
+export { iterateReader } from "jsr:@std/io@0.225.2/iterate-reader";
+
+export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.4/constants";
 
 export { toArrayBuffer } from "jsr:@std/streams@1.0.9/to-array-buffer";
-
-export { iterateReader } from "jsr:@std/io@0.225.2/iterate-reader";
 
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.7/base64";
 

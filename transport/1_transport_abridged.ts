@@ -19,14 +19,12 @@
  */
 
 import { concat } from "../0_deps.ts";
-import { ConnectionError } from "../0_errors.ts";
 import { bigIntFromBuffer, bufferFromBigInt } from "../1_utilities.ts";
 import { Connection } from "../2_connection.ts";
 import { getObfuscationParameters } from "./0_obfuscation.ts";
 import { Transport } from "./0_transport.ts";
 
 export class TransportAbridged extends Transport implements Transport {
-  #initialized = false;
   #connection: Connection;
   #obfuscated: boolean;
 
@@ -37,13 +35,10 @@ export class TransportAbridged extends Transport implements Transport {
   }
 
   async initialize() {
-    if (!this.#initialized) {
-      if (this.#obfuscated) {
-        this.obfuscationParameters = await getObfuscationParameters(0xEFEFEFEF, this.#connection);
-      } else {
-        await this.#connection.write(new Uint8Array([0xEF]));
-      }
-      this.#initialized = true;
+    if (this.#obfuscated) {
+      this.obfuscationParameters = await getObfuscationParameters(0xEFEFEFEF, this.#connection);
+    } else {
+      await this.#connection.write(new Uint8Array([0xEF]));
     }
   }
 
@@ -61,7 +56,7 @@ export class TransportAbridged extends Transport implements Transport {
         let buffer = new Uint8Array(3);
         await this.#connection.read(buffer);
         buffer = await this.decrypt(buffer);
-        length = Number(bigIntFromBuffer(buffer, true, true));
+        length = Number(bigIntFromBuffer(buffer));
       }
     }
 
@@ -74,10 +69,6 @@ export class TransportAbridged extends Transport implements Transport {
   }
 
   async send(buffer: Uint8Array) {
-    if (!this.initialized) {
-      throw new ConnectionError("Transport not initialized");
-    }
-
     const bufferLength = buffer.length / 4;
 
     const header = new Uint8Array([bufferLength >= 0x7F ? 0x7F : bufferLength]);
@@ -85,14 +76,5 @@ export class TransportAbridged extends Transport implements Transport {
     const data = concat([header, length, buffer]);
 
     await this.#connection.write(await this.encrypt(data));
-  }
-
-  override deinitialize() {
-    super.deinitialize();
-    this.#initialized = false;
-  }
-
-  get initialized(): boolean {
-    return this.#initialized;
   }
 }

@@ -18,8 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals, assertInstanceOf } from "../0_deps.ts";
+import { assertEquals } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
+import { assertInstanceOf } from "../0_test_deps.ts";
 import { Api } from "../2_tl.ts";
 import { MessageEntity } from "../3_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
