@@ -1,7 +1,6 @@
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { serializeFileId, toUniqueFileId } from "../3_types.ts";
-import { FileId, FileType } from "./_file_id.ts";
+import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import { Thumbnail } from "./0_thumbnail.ts";
 import { constructSticker2, Sticker } from "./1_sticker.ts";
 
