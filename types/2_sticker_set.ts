@@ -16,6 +16,7 @@ export function constructStickerSet(stickerSet: Api.messages_StickerSet): Sticke
   if (!Api.is("messages.stickerSet", stickerSet)) {
     unreachable();
   }
+  const type: StickerSet["type"] = stickerSet.set.emojis ? "customEmoji" : stickerSet.set.masks ? "mask" : "regular";
   const name = stickerSet.set.short_name;
   const title = stickerSet.set.title;
   const stickers = stickerSet.documents.map((v) => {
@@ -31,8 +32,9 @@ export function constructStickerSet(stickerSet: Api.messages_StickerSet): Sticke
     return constructSticker2(v, serializeFileId(fileId), toUniqueFileId(fileId), name);
   });
   const thumbnails = new Array<Thumbnail>(); // TODO
+
   return {
-    type: "regular", // TODO
+    type,
     name,
     title,
     stickers,
