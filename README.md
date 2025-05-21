@@ -62,7 +62,7 @@ console.debug(pong);
 ### Bun
 
 ```ts
-import { Client, getRandomId } from "@mtkruto/mtkruto"; // bun add @mtkruto/node
+import { Client, getRandomId } from "@mtkruto/node"; // bun add @mtkruto/node
 
 const client = new Client();
 await client.connect();
