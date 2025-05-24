@@ -1,5 +1,6 @@
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
+import { constructThumbnail } from "../3_types.ts";
 import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import { Thumbnail } from "./0_thumbnail.ts";
 import { constructSticker2, Sticker } from "./1_sticker.ts";
@@ -32,6 +33,21 @@ export function constructStickerSet(stickerSet: Api.messages_StickerSet): Sticke
     return constructSticker2(v, serializeFileId(fileId), toUniqueFileId(fileId), name);
   });
   const thumbnails = new Array<Thumbnail>(); // TODO
+
+  // stickerSet.set.thumbs?.map((v) => {
+  //   return constructThumbnail(
+  //     Api.as("photoSize", v),
+  //     {
+  //       _: "document",
+  //       id: stickerSet.set.thumb_document_id,
+  //       access_hash: stickerSet.set.access_hash,
+  //       file_reference: new Uint16Array(),
+  //       date: 0,
+  //       mime_type: '',
+  //       size: 
+  //     },
+  //   );
+  // });
 
   return {
     type,

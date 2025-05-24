@@ -898,7 +898,7 @@ export class UpdateManager {
 
   #openChats = new Map<bigint, { controller: AbortController; promise: Promise<void> }>();
   async openChat(chatId: ID) {
-    this.#c.storage.assertUser("openChat");
+    // this.#c.storage.assertUser("openChat");
     const channel = await this.#c.getInputChannel(chatId);
     const channelId = channel.channel_id;
     if (this.#openChats.has(channelId)) {
