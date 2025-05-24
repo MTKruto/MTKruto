@@ -2969,7 +2969,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Open a chat. User-only.
+   * Open a chat.
    *
    * @method ch
    * @param chatId The chat to open.
@@ -2979,7 +2979,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Close a chat previously opened by openChat. User-only.
+   * Close a chat previously opened by openChat.
    *
    * @method ch
    * @param chatId The chat to close.
