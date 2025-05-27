@@ -31,7 +31,7 @@ export interface JoinRequest {
   /** The chat that the user requested to join. */
   chat: ChatP;
   /** The user who made the join request. */
-  user: User;
+  from: User;
   /** The point in time in which the join request was made. */
   date: Date;
   /** The bio of the user who made the join request. */
@@ -50,11 +50,11 @@ export async function constructJoinRequest(update: Api.updateBotChatInviteReques
   if (!user_) {
     unreachable();
   }
-  const user = constructUser(user_);
+  const from = constructUser(user_);
   const inviteLink = update.invite && Api.is("chatInviteExported", update.invite) ? await constructInviteLink(update.invite, getEntity) : undefined;
   return cleanObject({
     chat,
-    user,
+    from,
     date: fromUnixTimestamp(update.date),
     bio: update.about,
     inviteLink,

@@ -68,7 +68,7 @@ interface Shortcuts<T extends UpdateIntersection> {
     : T["editedMessage"] extends object ? T["editedMessage"]["from"]
     : T["scheduledMessage"] extends object ? T["scheduledMessage"]["from"]
     : T["preCheckoutQuery"] extends object ? T["preCheckoutQuery"]["from"]
-    : T["joinRequest"] extends object ? T["joinRequest"]["user"]
+    : T["joinRequest"] extends object ? T["joinRequest"]["from"]
     : undefined;
 }
 
