@@ -70,7 +70,6 @@ interface Shortcuts<T extends UpdateIntersection> {
     : T["preCheckoutQuery"] extends object ? T["preCheckoutQuery"]["from"]
     : T["joinRequest"] extends object ? T["joinRequest"]["from"]
     : undefined;
-  senderChat: Shortcuts<T>["msg"] extends object ? Shortcuts<T>["msg"]["senderChat"] : undefined;
 }
 
 type Filter<Q extends AnyLevelX> = FilterCore<Q> & Shortcuts<FilterCore<Q>>;
