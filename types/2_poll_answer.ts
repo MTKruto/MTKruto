@@ -1,4 +1,5 @@
 import { unreachable } from "../0_deps.ts";
+import { decodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
@@ -20,7 +21,7 @@ export async function constructPollAnswer(update: Api.updateMessagePollVote, get
     unreachable();
   }
   const from = constructChatP(entity);
-  const optionIndexes = update.options.map((v) => v[0]);
+  const optionIndexes = update.options.map((v) => Number(decodeText(v)));
   return {
     pollId,
     from,

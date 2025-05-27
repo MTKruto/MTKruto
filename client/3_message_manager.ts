@@ -27,10 +27,10 @@ import { constructVoiceTranscription, deserializeFileId, FileId, InputMedia, isM
 import { assertMessageType, ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
+import { parseMarkdown } from "./0_markdown.ts";
 import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
-import { parseMarkdown } from "./0_markdown.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
 
@@ -753,13 +753,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       const text = typeof v === "string" ? v : v.text;
       const entities = typeof v === "string" ? [] : v.entities;
       const parseResult = await this.parseText(text, { parseMode: params?.optionParseMode, entities: entities });
-      return ({ _: "pollAnswer", option: new Uint8Array([i]), text: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } });
+      return ({ _: "pollAnswer", option: encodeText(String(i)), text: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } });
     }));
 
     const questionParseResult = await this.parseText(question, { parseMode: params?.questionParseMode, entities: params?.questionEntities });
     const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate ? toUnixTimestamp(params.closeDate) : undefined, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type == "quiz" ? true : undefined };
 
-    const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndex ? [new Uint8Array([params.correctOptionIndex])] : undefined, solution, solution_entities: solutionEntities };
+    const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndex !== undefined ? [encodeText(String(params.correctOptionIndex))] : undefined, solution, solution_entities: solutionEntities };
 
     const result = await this.#c.invoke(
       {
