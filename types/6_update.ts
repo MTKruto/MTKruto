@@ -31,6 +31,7 @@ import { InlineQuery } from "./2_inline_query.ts";
 import { MessageInteractions } from "./2_message_interactions.ts";
 import { MessageReactionCount } from "./2_message_reaction_count.ts";
 import { MessageReactions } from "./2_message_reactions.ts";
+import { PollAnswer } from "./2_poll_answer.ts";
 import { Poll } from "./2_poll.ts";
 import { PreCheckoutQuery } from "./2_pre_checkout_query.ts";
 import { ChatMemberUpdated } from "./3_chat_member_updated.ts";
@@ -424,6 +425,25 @@ export interface UpdatePoll {
 }
 
 /**
+ * A poll was answered.
+ *
+ * ```
+ * client.on("pollAnswer", (ctx) => {
+ *   console.log("A poll just got an answer.");
+ *   // ctx.poll
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdatePollAnswer {
+  /**
+   * The poll answer.
+   * @discriminator
+   */
+  pollAnswer: PollAnswer;
+}
+
+/**
  * A voice transcription was updated.
  *
  * ```
@@ -468,6 +488,7 @@ export interface UpdateMap {
   joinRequest: UpdateJoinRequest;
   translations: UpdateTranslations;
   poll: UpdatePoll;
+  pollAnswer: UpdatePollAnswer;
   voiceTranscription: UpdateVoiceTranscription;
 }
 
@@ -498,6 +519,7 @@ export type UpdateIntersection = Partial<
   & UpdateJoinRequest
   & UpdateTranslations
   & UpdatePoll
+  & UpdatePollAnswer
   & UpdateVoiceTranscription
 >;
 
@@ -528,4 +550,5 @@ export type Update =
   | UpdateJoinRequest
   | UpdateTranslations
   | UpdatePoll
+  | UpdatePollAnswer
   | UpdateVoiceTranscription;

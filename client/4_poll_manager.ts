@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructPoll, ID, Update } from "../3_types.ts";
+import { constructPoll, constructPollAnswer, ID, Update } from "../3_types.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
 import { C as C_ } from "./1_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
@@ -30,6 +30,7 @@ type C = C_ & { messageManager: MessageManager };
 
 const pollManagerUpdates = [
   "updateMessagePoll",
+  "updateMessagePollVote",
 ] as const;
 
 type PollManagerUpdate = Api.Types[(typeof pollManagerUpdates)[number]];
@@ -94,19 +95,24 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate> {
   }
 
   async handleUpdate(update: PollManagerUpdate): Promise<Update | null> {
-    await this.#c.storage.setPollResults(update.poll_id, update.results);
-    let poll: Api.poll | null = null;
-    if (update.poll) {
-      poll = update.poll;
-      await this.#c.storage.setPoll(poll.id, poll);
+    if (Api.is("updateMessagePoll", update)) {
+      await this.#c.storage.setPollResults(update.poll_id, update.results);
+      let poll: Api.poll | null = null;
+      if (update.poll) {
+        poll = update.poll;
+        await this.#c.storage.setPoll(poll.id, poll);
+      } else {
+        poll = await this.#c.storage.getPoll(update.poll_id);
+      }
+      if (poll) {
+        const messageMediaPoll: Api.messageMediaPoll = { _: "messageMediaPoll", poll, results: update.results };
+        return { poll: constructPoll(messageMediaPoll) };
+      } else {
+        return null;
+      }
     } else {
-      poll = await this.#c.storage.getPoll(update.poll_id);
-    }
-    if (poll) {
-      const messageMediaPoll: Api.messageMediaPoll = { _: "messageMediaPoll", poll, results: update.results };
-      return { poll: constructPoll(messageMediaPoll) };
-    } else {
-      return null;
+      const pollAnswer = await constructPollAnswer(update, this.#c.getEntity);
+      return { pollAnswer };
     }
   }
 }
