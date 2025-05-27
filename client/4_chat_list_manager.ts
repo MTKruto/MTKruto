@@ -374,6 +374,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
 
   async getChat(chatId: ID) {
     const fullChat = await this.#getFullChat(chatId);
+    console.log(fullChat);
     if (fullChat == null) {
       throw new InputError("Chat not found.");
     }

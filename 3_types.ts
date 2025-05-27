@@ -104,6 +104,7 @@ export * from "./types/2_invite_link.ts";
 export * from "./types/2_message_interactions.ts";
 export * from "./types/2_message_reaction_count.ts";
 export * from "./types/2_message_reactions.ts";
+export * from "./types/2_poll_answer.ts";
 export * from "./types/2_poll.ts";
 export * from "./types/2_pre_checkout_query.ts";
 export * from "./types/2_reply_to.ts";

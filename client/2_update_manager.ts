@@ -520,6 +520,7 @@ export class UpdateManager {
   }
 
   async #processUpdates(updates_: Api.Update | Api.Updates, checkGap: boolean, call: Api.AnyObject | null = null) {
+    console.log("processing", { updates_ });
     /// First, individual updates (Update[1]) are extracted from Updates.[2]
     ///
     /// If an updatesTooLong[3] was received, an update gap recovery is initiated and no further action will be taken.
