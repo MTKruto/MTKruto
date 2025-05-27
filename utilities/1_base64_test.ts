@@ -40,7 +40,7 @@ Deno.test("base64DecodeUrlSafe", () => {
 
   {
     const actual = base64DecodeUrlSafe("aGk");
-    const expected = new TextEncoder().encode("hi");
+    const expected = encodeText("hi");
 
     assertEquals(actual, expected);
   }
