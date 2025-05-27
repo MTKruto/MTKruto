@@ -1180,7 +1180,6 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         }
         if (!shouldIgnore) {
           const business = "connection_id" in update ? { connectionId: update.connection_id, replyToMessage: update.reply_to_message } : undefined;
-          console.log({ update });
           const message = await this.constructMessage(update.message, undefined, business);
           if (Api.is("updateNewMessage", update) || Api.is("updateNewChannelMessage", update) || Api.is("updateBotNewBusinessMessage", update)) {
             return { message };
