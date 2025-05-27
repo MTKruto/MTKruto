@@ -65,10 +65,8 @@ export interface _MessageBase {
   id: number;
   /** The identifier of the message's thread. */
   threadId?: number;
-  /** The user who sent the message. */
-  from?: User;
-  /** The chat which the message was sent on behalf of. */
-  senderChat?: ChatP;
+  /** The sender of the message. */
+  from: ChatP;
   /** The point in time in which the message was sent. */
   date: Date;
   /** The chat where the message was sent to. */
@@ -752,27 +750,16 @@ export interface MessageGetter {
 type Message_MessageGetter = MessageGetter | null;
 
 async function getSender(message_: Api.message | Api.messageService, getEntity: EntityGetter) {
-  if (Api.is("peerUser", message_.from_id)) {
-    const entity = await getEntity(message_.from_id);
+  const peer = message_.from_id ?? message_.peer_id;
+  if (Api.isOneOf(["peerChannel", "peerUser"], peer)) {
+    const entity = await getEntity(peer);
     if (entity) {
-      return { from: constructUser(entity) };
+      return { from: constructChatP(entity) };
     } else {
       unreachable();
     }
-  } else if (Api.is("peerChannel", message_.from_id)) {
-    const entity = await getEntity(message_.from_id);
-    if (entity) {
-      return { senderChat: constructChatP(entity) };
-    } else {
-      unreachable();
-    }
-  } else if (Api.is("peerUser", message_.peer_id)) {
-    const entity = await getEntity(message_.peer_id);
-    if (entity) {
-      return { from: constructUser(entity) };
-    } else {
-      unreachable();
-    }
+  } else {
+    unreachable();
   }
 }
 
@@ -800,6 +787,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     chat,
     date: fromUnixTimestamp(message_.date),
     isTopicMessage: message_.reply_to && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic ? true : false,
+    ...await getSender(message_, getEntity),
   };
 
   if (Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_msg_id) {
@@ -809,8 +797,6 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
   if (getReply_) {
     Object.assign(message, await getReply(message_, chat, getMessage));
   }
-
-  Object.assign(message, await getSender(message_, getEntity));
 
   if (Api.is("messageActionChatAddUser", message_.action) || Api.is("messageActionChatJoinedByLink", message_.action) || Api.is("messageActionChatJoinedByRequest", message_.action)) {
     const newChatMembers = new Array<User>();
@@ -992,6 +978,7 @@ export async function constructMessage(
     senderBoostCount: message_.from_boosts_applied,
     effectId: message_.effect ? String(message_.effect) : undefined,
     scheduled: message_.from_scheduled ? true : undefined,
+    ...await getSender(message_, getEntity),
   };
 
   if (message_.reactions) {
@@ -1015,7 +1002,6 @@ export async function constructMessage(
   } else if (getReply_) {
     Object.assign(message, await getReply(message_, chat_, getMessage));
   }
-  Object.assign(message, await getSender(message_, getEntity));
 
   if (message_.reply_markup) {
     message.replyMarkup = constructReplyMarkup(message_.reply_markup);
