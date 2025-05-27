@@ -750,8 +750,9 @@ export interface MessageGetter {
 type Message_MessageGetter = MessageGetter | null;
 
 async function getSender(message_: Api.message | Api.messageService, getEntity: EntityGetter) {
-  if (Api.isOneOf(["peerChannel", "peerUser"], message_.from_id)) {
-    const entity = await getEntity(message_.from_id);
+  const peer = message_.from_id ?? message_.peer_id;
+  if (Api.isOneOf(["peerChannel", "peerUser"], peer)) {
+    const entity = await getEntity(peer);
     if (entity) {
       return { from: constructChatP(entity) };
     } else {
