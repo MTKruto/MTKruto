@@ -50,7 +50,7 @@ export async function constructChatMemberUpdated(update: Api.updateChannelPartic
   if (!update.prev_participant && !update.new_participant) {
     unreachable();
   }
-  const chat_ = await getEntity("channel_id" in update ? { ...update, _: "peerChannel" } : { ...update, _: "peerChat" });
+  const chat_ = await getEntity("channel_id" in update ? { channel_id: update.channel_id, _: "peerChannel" } : { chat_id: update.chat_id, _: "peerChat" });
   const from_ = await getEntity({ _: "peerUser", user_id: update.actor_id });
   if (!chat_ || !from_) {
     unreachable();
