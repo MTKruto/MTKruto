@@ -52,6 +52,7 @@ export interface ChatMemberAdministrator extends _ChatMemberBase {
 /** @unlisted */
 export interface ChatMemberMember extends _ChatMemberBase {
   status: "member";
+  untilDate?: Date;
 }
 
 /** @unlisted */
@@ -119,7 +120,12 @@ export async function constructChatMember(participant: Api.ChannelParticipant | 
       untilDate,
     });
   } else if (Api.is("channelParticipantSelf", participant)) {
-    unreachable(); // TODO: implement
+    const untilDate = participant.subscription_until_date ? fromUnixTimestamp(participant.subscription_until_date) : undefined;
+    return cleanObject({
+      status: "member",
+      user,
+      untilDate,
+    });
   } else if (Api.is("channelParticipantLeft", participant)) {
     return { status: "left", user };
   } else if (Api.is("chatParticipantAdmin", participant)) {
