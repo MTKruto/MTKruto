@@ -1697,7 +1697,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #handleUpdate(update: Api.Update) {
-    const promises = new Array<() => Promise<unknown>>();
+    const promises = new Array<() => Promise<Update | null>>();
     if (Api.is("updateUserName", update)) {
       await this.messageStorage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
       const peer: Api.peerUser = { ...update, _: "peerUser" };
@@ -1711,66 +1711,31 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
 
     if (this.#messageManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#messageManager.handleUpdate(update);
-        if (!ctxUpdate) {
-          return;
-        }
-        try {
-          await this.#handleCtxUpdate(ctxUpdate);
-        } finally {
-          if ("deletedMessages" in ctxUpdate) {
-            for (const { chatId, messageId } of ctxUpdate.deletedMessages) {
-              await this.messageStorage.setMessage(chatId, messageId, null);
-              await this.#chatListManager.reassignChatLastMessage(chatId);
-            }
-          }
-        }
-      });
+      promises.push(() => this.#messageManager.handleUpdate(update));
     }
 
     if (this.#chatManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#chatManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#chatManager.handleUpdate(update));
     }
 
     if (this.#pollManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#pollManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#pollManager.handleUpdate(update));
     }
 
     if (this.#videoChatManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#videoChatManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#videoChatManager.handleUpdate(update));
     }
 
     if (this.#callbackQueryManager.canHandleUpdate(update)) {
-      promises.push(async () => this.#handleCtxUpdate(await this.#callbackQueryManager.handleUpdate(update)));
+      promises.push(() => this.#callbackQueryManager.handleUpdate(update));
     }
 
     if (this.#inlineQueryManager.canHandleUpdate(update)) {
-      promises.push(async () => this.#handleCtxUpdate(await this.#inlineQueryManager.handleUpdate(update)));
+      promises.push(() => this.#inlineQueryManager.handleUpdate(update));
     }
 
     if (this.#reactionManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const upd = await this.#reactionManager.handleUpdate(update);
-        if (upd) {
-          await this.#handleCtxUpdate(upd);
-        }
-      });
+      promises.push(() => this.#reactionManager.handleUpdate(update));
     }
 
     if (this.#chatListManager.canHandleUpdate(update)) {
@@ -1778,46 +1743,52 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
 
     if (this.#storyManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#storyManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#storyManager.handleUpdate(update));
     }
 
     if (this.#businessConnectionManager.canHandleUpdate(update)) {
-      promises.push(async () => this.#handleCtxUpdate(await this.#businessConnectionManager.handleUpdate(update)));
+      promises.push(() => this.#businessConnectionManager.handleUpdate(update));
     }
 
     if (this.#storyManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#storyManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#storyManager.handleUpdate(update));
     }
 
     if (this.#paymentManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#paymentManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#paymentManager.handleUpdate(update));
     }
 
     if (this.#translationsManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#translationsManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#translationsManager.handleUpdate(update));
     }
 
-    return () => Promise.all(promises.map((v) => v()));
+    return () =>
+      Promise.resolve().then(async () => {
+        const updates = new Array<Update>();
+        for (const promise of promises) {
+          try {
+            const update = await promise();
+            if (update) {
+              updates.push(update);
+            }
+          } catch (err) {
+            this.#L.error("failed to construct update:", err);
+          }
+        }
+
+        for (const update of updates) {
+          try {
+            await this.#handleCtxUpdate(update);
+          } finally {
+            if ("deletedMessages" in update) {
+              for (const { chatId, messageId } of update.deletedMessages) {
+                await this.messageStorage.setMessage(chatId, messageId, null);
+                await this.#chatListManager.reassignChatLastMessage(chatId);
+              }
+            }
+          }
+        }
+      });
   }
 
   #lastGetMe: User | null = null;
