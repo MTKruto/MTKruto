@@ -37,9 +37,9 @@ import { PreCheckoutQuery } from "./2_pre_checkout_query.ts";
 import { ChatMemberUpdated } from "./3_chat_member_updated.ts";
 import { JoinRequest } from "./3_join_request.ts";
 import { Story } from "./3_story.ts";
-import { Message } from "./4_message.ts";
-import { CallbackQuery } from "./5_callback_query.ts";
-import { ChatListItem } from "./5_chat_list_item.ts";
+import { Message } from "./5_message.ts";
+import { CallbackQuery } from "./6_callback_query.ts";
+import { ChatListItem } from "./6_chat_list_item.ts";
 
 /**
  * A client's connection state was changed.

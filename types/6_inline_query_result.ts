@@ -26,9 +26,9 @@ import { UsernameResolver } from "./_getters.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
-import { MessageContent } from "./1_message_content.ts";
 import { getPhotoSizes } from "./1_photo.ts";
 import { constructReplyMarkup, ReplyMarkupInlineKeyboard, replyMarkupToTlObject } from "./3_reply_markup.ts";
+import { MessageContent } from "./5_message_content.ts";
 
 /** @unlisted */
 export type InlineQueryResultType =
@@ -347,7 +347,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
         type: "text",
         text: result.send_message.message,
         entities: (result.send_message.entities ?? []).map(constructMessageEntity).filter((v) => v != null) as MessageEntity[],
-        linkPreview: Api.is("botInlineMessageMediaWebPage", result.send_message) ? { url: result.send_message.url, smallMedia: result.send_message.force_small_media, largeMedia: result.send_message.force_large_media, aboveText: result.send_message.invert_media } : undefined,
+        linkPreview: Api.is("botInlineMessageMediaWebPage", result.send_message) ? { type: "unknown", id: "", url: result.send_message.url, smallMedia: result.send_message.force_small_media ?? false, largeMedia: result.send_message.force_large_media ?? false, aboveText: result.send_message.invert_media ?? false } : undefined,
       }),
       replyMarkup: result.send_message.reply_markup ? constructReplyMarkup(result.send_message.reply_markup) as ReplyMarkupInlineKeyboard : undefined,
     });
@@ -634,7 +634,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       unreachable();
     }
     const [message, entities] = await parseText(result_.messageContent.text, { entities: result_.messageContent.entities, parseMode: result_.messageContent.parseMode });
-    const noWebpage = result_.messageContent?.linkPreview?.disable ? true : undefined;
+    const noWebpage = result_.messageContent?.linkPreview && result_.messageContent?.linkPreview.type == "input" && result_.messageContent?.linkPreview.disable ? true : undefined;
     const invertMedia = result_.messageContent?.linkPreview?.aboveText ? true : undefined;
 
     let sendMessage: Api.InputBotInlineMessage;

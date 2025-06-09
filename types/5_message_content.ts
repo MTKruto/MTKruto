@@ -18,10 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { LinkPreview } from "./0_link_preview.ts";
 import { MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
 import { PriceTag } from "./0_price_tag.ts";
+import { LinkPreview } from "./4_link_preview.ts";
 
 /**
  * A message content that shares a contact.
@@ -121,5 +121,5 @@ export interface MessageContentInvoice {
   isFlexible?: boolean;
 }
 
-/** The content of a message to be returned as an inline query result. */
+/** The content of a message in an inline query result. */
 export type MessageContent = MessageContentText | MessageContentLocation | MessageContentVenue | MessageContentContact | MessageContentInvoice;

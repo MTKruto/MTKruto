@@ -834,7 +834,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     if (!message) {
       throw new InputError("Message text cannot be empty.");
     }
-    const noWebpage = params?.linkPreview?.disable ? true : undefined;
+    if (params?.linkPreview && params.linkPreview.type != "input") {
+      throw new InputError("Expected link preview of type input.");
+    }
+    const noWebpage = params?.linkPreview && params.linkPreview.type == "input" && params.linkPreview.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
 
     let media: Api.InputMedia | undefined = undefined;
@@ -896,7 +899,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     }
 
     const id = await deserializeInlineMessageId(inlineMessageId);
-    const noWebpage = params?.linkPreview?.disable ? true : undefined;
+    if (params?.linkPreview && params.linkPreview.type != "input") {
+      throw new InputError("Expected link preview of type input.");
+    }
+    const noWebpage = params?.linkPreview && params.linkPreview.type == "input" && params.linkPreview.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
 
     let media: Api.InputMedia | undefined = undefined;
