@@ -21,7 +21,8 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { Audio, constructAudio, FileId, FileType, serializeFileId, toUniqueFileId } from "../3_types.ts";
+import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
+import { Audio, constructAudio } from "./1_audio.ts";
 import { constructDocument, Document } from "./1_document.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
 import { constructGift, Gift } from "./3_gift.ts";
