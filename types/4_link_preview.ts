@@ -45,7 +45,10 @@ export interface InputLinkPreview {
   aboveText?: boolean;
 }
 
-/** A link preview. */
+/**
+ * A link preview.
+ * @unlisted
+ */
 export interface _LinkPreviewBase {
   /** The ID of the link preview. */
   id: string;
@@ -57,7 +60,10 @@ export interface _LinkPreviewBase {
   aboveText: boolean;
 }
 
-/** A link preview that is being loaded. */
+/**
+ * A link preview that is being loaded.
+ * @unlisted
+ */
 export interface LinkPreviewLoading extends _LinkPreviewBase {
   /** @discriminator */
   type: "loading";
@@ -67,7 +73,10 @@ export interface LinkPreviewLoading extends _LinkPreviewBase {
   date: Date;
 }
 
-/** A link preview that was not loaded. */
+/**
+ * A link preview that was not loaded.
+ * @unlisted
+ */
 export interface LinkPreviewNotLoaded extends _LinkPreviewBase {
   /** @discriminator */
   type: "notLoaded";
@@ -75,19 +84,26 @@ export interface LinkPreviewNotLoaded extends _LinkPreviewBase {
   url?: string;
 }
 
+/** @unlisted */
 export interface _LinkPreviewLoadedBase extends _LinkPreviewBase {
   /** The URL of the link preview. */
   url: string;
 }
 
-/** A link preview of an unknown type. */
+/**
+ * A link preview of an unknown type.
+ * @unlisted
+ */
 
 export interface LinkPreviewUnknown extends _LinkPreviewLoadedBase {
   /** @discriminator */
   type: "unknown";
 }
 
-/** An embedded video link preview. */
+/**
+ * An embedded video link preview.
+ * @unlisted
+ */
 
 export interface LinkPreviewPhoto extends _LinkPreviewLoadedBase {
   /** @discriminator */
@@ -95,7 +111,9 @@ export interface LinkPreviewPhoto extends _LinkPreviewLoadedBase {
   photo: Photo;
 }
 
-/** An embedded video link preview. */
+/** An embedded video link preview.
+ * @unlisted
+ */
 
 export interface _LinkPreviewEmbeddedBase extends _LinkPreviewLoadedBase {
   embedUrl: string;
@@ -104,7 +122,10 @@ export interface _LinkPreviewEmbeddedBase extends _LinkPreviewLoadedBase {
   duration: number;
 }
 
-/** An embedded video link preview. */
+/**
+ *  An embedded video link preview.
+ * @unlisted
+ */
 
 export interface LinkPreviewEmbeddedVideo extends _LinkPreviewEmbeddedBase {
   /** @discriminator */
@@ -112,7 +133,10 @@ export interface LinkPreviewEmbeddedVideo extends _LinkPreviewEmbeddedBase {
   thumbnail?: Photo;
 }
 
-/** An embedded video link preview. */
+/**
+ * An embedded video link preview.
+ * @unlisted
+ */
 
 export interface LinkPreviewExternalVideo extends _LinkPreviewEmbeddedBase {
   /** @discriminator */
@@ -123,7 +147,9 @@ export interface LinkPreviewExternalVideo extends _LinkPreviewEmbeddedBase {
   duration: number;
 }
 
-/** A video link preview. */
+/** A video link preview.
+ * @unlisted
+ */
 export interface LinkPreviewVideo extends _LinkPreviewLoadedBase {
   /** @discriminator */
   type: "video";
@@ -132,8 +158,10 @@ export interface LinkPreviewVideo extends _LinkPreviewLoadedBase {
   thumbnail?: Photo;
 }
 
-/** An embedded audio link preview. */
-
+/**
+ * An embedded audio link preview.
+ * @unlisted
+ */
 export interface LinkPreviewEmbeddedAudio extends _LinkPreviewEmbeddedBase {
   /** @discriminator */
   type: "embeddedAudio";
@@ -142,8 +170,10 @@ export interface LinkPreviewEmbeddedAudio extends _LinkPreviewEmbeddedBase {
   height: number;
 }
 
-/** An external audio link preview. */
-
+/**
+ * An external audio link preview.
+ * @unlisted
+ */
 export interface LinkPreviewExternalAudio extends _LinkPreviewEmbeddedBase {
   /** @discriminator */
   type: "externalAudio";
@@ -151,21 +181,30 @@ export interface LinkPreviewExternalAudio extends _LinkPreviewEmbeddedBase {
   duration: number;
 }
 
-/** An audio link preview. */
+/**
+ * An audio link preview.
+ * @unlisted
+ */
 export interface LinkPreviewAudio extends _LinkPreviewLoadedBase {
   /** @discriminator */
   type: "audio";
   audio: Audio;
 }
 
-/** An gift link preview. */
+/**
+ * An gift link preview.
+ * @unlisted
+ */
 export interface LinkPreviewGift extends _LinkPreviewLoadedBase {
   /** @discriminator */
   type: "gift";
   gift: Gift;
 }
 
-/** A link preview that was loaded. */
+/**
+ * A link preview that was loaded.
+ * @unlisted
+ */
 export type LinkPreviewLoaded =
   | LinkPreviewUnknown
   | LinkPreviewPhoto
