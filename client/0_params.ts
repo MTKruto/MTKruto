@@ -673,3 +673,10 @@ export interface EditTopicParams {
   /** Identifier of a custom emoji to display as the icon of the topic. */
   customEmojiId?: string;
 }
+
+export interface GetLinkPreviewParams {
+  /** The parse mode to use. if omitted, the default parse mode will be used. */
+  parseMode?: ParseMode;
+  /** The message's entities. */
+  entities?: MessageEntity[];
+}

@@ -37,6 +37,7 @@ import { PreCheckoutQuery } from "./2_pre_checkout_query.ts";
 import { ChatMemberUpdated } from "./3_chat_member_updated.ts";
 import { JoinRequest } from "./3_join_request.ts";
 import { Story } from "./3_story.ts";
+import { LinkPreview } from "./4_link_preview.ts";
 import { Message } from "./5_message.ts";
 import { CallbackQuery } from "./6_callback_query.ts";
 import { ChatListItem } from "./6_chat_list_item.ts";
@@ -461,6 +462,24 @@ export interface UpdateVoiceTranscription {
   voiceTranscription: VoiceTranscription;
 }
 
+/**
+ * A link preview was updated.
+ *
+ * ```
+ * client.on("linkPreview", (ctx) => {
+ *   // ctx.linkPreview
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateLinkPreview {
+  /**
+   * The new link preview.
+   * @discriminator
+   */
+  linkPreview: LinkPreview;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -490,6 +509,7 @@ export interface UpdateMap {
   poll: UpdatePoll;
   pollAnswer: UpdatePollAnswer;
   voiceTranscription: UpdateVoiceTranscription;
+  linkPreview: UpdateLinkPreview;
 }
 
 /** @unlisted */
@@ -521,6 +541,7 @@ export type UpdateIntersection = Partial<
   & UpdatePoll
   & UpdatePollAnswer
   & UpdateVoiceTranscription
+  & UpdateLinkPreview
 >;
 
 /** An incoming update. */
@@ -551,4 +572,5 @@ export type Update =
   | UpdateTranslations
   | UpdatePoll
   | UpdatePollAnswer
-  | UpdateVoiceTranscription;
+  | UpdateVoiceTranscription
+  | UpdateLinkPreview;
