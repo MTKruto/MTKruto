@@ -27,7 +27,6 @@ import { EntityGetter } from "./_getters.ts";
 import { constructContact, Contact } from "./0_contact.ts";
 import { constructDice, Dice } from "./0_dice.ts";
 import { constructInvoice, Invoice } from "./0_invoice.ts";
-import { constructLinkPreview, LinkPreview } from "./0_link_preview.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { constructRefundedPayment, RefundedPayment } from "./0_refunded_payment.ts";
@@ -51,6 +50,7 @@ import { constructGame, Game } from "./2_game.ts";
 import { constructPoll, Poll } from "./2_poll.ts";
 import { constructSuccessfulPayment, SuccessfulPayment } from "./2_successful_payment.ts";
 import { constructReplyMarkup, ReplyMarkup } from "./3_reply_markup.ts";
+import { constructLinkPreview, LinkPreview } from "./4_link_preview.ts";
 
 const L = getLogger("Message");
 

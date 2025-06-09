@@ -20,26 +20,22 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import { constructInlineQueryResult, InlineQueryResult } from "./6_inline_query_result.ts";
 
-/** A link preview. */
-export interface LinkPreview {
-  /** Whether link preview is disabled. */
-  disable?: boolean;
-  /** The URL of the preview. */
-  url?: string;
-  /** Wether the media is to be shown in a small size. */
-  smallMedia?: boolean;
-  /** Whether the media is to be shown in a large size. */
-  largeMedia?: boolean;
-  /** Whether the preview is to be shown above the message's text. */
-  aboveText?: boolean;
+/** An answer to an inline query. */
+export interface InlineQueryAnswer {
+  /** The ID of the inline query that yielded these results. */
+  id: string;
+  /** The inline query results. */
+  results: InlineQueryResult[];
+  /** A parameter that can be passed to next queries with the same text to yield more results. */
+  nextOffset?: string;
 }
 
-export function constructLinkPreview(media: Api.messageMediaWebPage, invert?: boolean): LinkPreview {
+export function constructInlineQueryAnswer(results: Api.messages_BotResults): InlineQueryAnswer {
   return cleanObject({
-    url: "url" in media.webpage ? media.webpage.url : undefined,
-    smallMedia: media.force_small_media ? true : undefined,
-    largeMedia: media.force_large_media ? true : undefined,
-    putAboveText: !!invert,
+    id: results.query_id + "",
+    results: results.results.map(constructInlineQueryResult),
+    nextOffset: results.next_offset,
   });
 }

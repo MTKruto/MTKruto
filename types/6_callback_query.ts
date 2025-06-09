@@ -24,7 +24,7 @@ import { base64DecodeUrlSafe, base64EncodeUrlSafe, cleanObject, decodeText } fro
 import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructUser, User } from "./1_user.ts";
-import { Message, MessageGetter } from "./4_message.ts";
+import { Message, MessageGetter } from "./5_message.ts";
 
 /** A received callback query. */
 export interface CallbackQuery {

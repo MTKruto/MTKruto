@@ -24,7 +24,7 @@ import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { StickerSetNameGetter } from "./1_sticker.ts";
-import { constructMessage, Message, MessageGetter } from "./4_message.ts";
+import { constructMessage, Message, MessageGetter } from "./5_message.ts";
 
 export interface ChatListItem {
   chat: ChatP;
