@@ -42,7 +42,7 @@ export class GiftManager {
     if (!(Api.is("payments.starGifts", gifts))) {
       unreachable();
     }
-    return gifts.gifts.map(constructGift);
+    return await Promise.all(gifts.gifts.map((v) => constructGift(v, this.#c.getEntity)));
   }
 
   async getClaimedGifts(chatId: ID, params?: GetClaimedGiftsParams) {
@@ -57,7 +57,7 @@ export class GiftManager {
     }
     const peer = await this.#c.getInputPeer(chatId);
     const result = await this.#c.invoke({ _: "payments.getSavedStarGifts", peer, offset, limit });
-    return constructClaimedGifts(result);
+    return await constructClaimedGifts(result, this.#c.getEntity);
   }
 
   async sendGift(chatId: ID, giftId: string, params?: SendGiftParams) {

@@ -49,7 +49,7 @@ export class LinkPreviewManager implements UpdateProcessor<LinkPreviewManagerUpd
       entities: entities_,
     });
     if (Api.is("messageMediaWebPage", result.media)) {
-      return constructLinkPreview(result.media);
+      return await constructLinkPreview(result.media, undefined, this.#c.getEntity);
     } else {
       return null;
     }
@@ -59,8 +59,8 @@ export class LinkPreviewManager implements UpdateProcessor<LinkPreviewManagerUpd
     return Api.isOneOf(linkPreviewManagerUpdates, update);
   }
 
-  handleUpdate(update: LinkPreviewManagerUpdate): Promise<Update | null> {
-    const linkPreview = constructLinkPreview({ _: "messageMediaWebPage", webpage: update.webpage });
-    return Promise.resolve({ linkPreview });
+  async handleUpdate(update: LinkPreviewManagerUpdate): Promise<Update | null> {
+    const linkPreview = await constructLinkPreview({ _: "messageMediaWebPage", webpage: update.webpage }, undefined, this.#c.getEntity);
+    return { linkPreview };
   }
 }

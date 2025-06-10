@@ -22,7 +22,9 @@ import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
+import { EntityGetter } from "./_getters.ts";
 import { constructSticker2, Sticker } from "./1_sticker.ts";
+import { constructUser, User } from "./1_user.ts";
 import { constructGiftUpgradedComponent, GiftUpgradedComponent } from "./2_gift_upgraded_component.ts";
 
 /**
@@ -73,8 +75,8 @@ export interface GiftUpgraded {
   title: string;
   /** The unique index of the gift among others of the same type. */
   index: number;
-  /** The identifier of the user that owns the gift. */
-  ownerId: number;
+  /** The user that owns the gift. */
+  owner?: User;
   /** The count of the amount of upgraded gifts of the same type. */
   currentUpgrades: number;
   /** The maximum count of gifts of the same type that can be upgraded. */
@@ -86,31 +88,37 @@ export interface GiftUpgraded {
 /** A gift. */
 export type Gift = GiftNonUpgraded | GiftUpgraded;
 
-export function constructGift(gift: Api.StarGift): Gift {
+export async function constructGift(gift: Api.StarGift, getEntity: EntityGetter): Promise<Gift> {
   if (Api.is("starGiftUnique", gift)) {
-    return constructGiftUpgraded(gift);
+    return await constructGiftUpgraded(gift, getEntity);
   } else {
     return constructGiftNonUpgraded(gift);
   }
 }
-export function constructGiftUpgraded(gift: Api.starGiftUnique): GiftUpgraded {
+export async function constructGiftUpgraded(gift: Api.starGiftUnique, getEntity: EntityGetter): Promise<GiftUpgraded> {
   const id = String(gift.id);
   const title = gift.title;
   const index = gift.num;
-  const ownerId = Number(gift.owner_id);
+  let owner: User | undefined;
+  if (gift.owner_id) {
+    const entity = await getEntity(gift.owner_id);
+    if (Api.is("user", entity)) {
+      owner = constructUser(entity);
+    }
+  }
   const currentUpgrades = gift.availability_issued;
   const maxUpgrades = gift.availability_total;
   const components = gift.attributes.map(constructGiftUpgradedComponent);
-  return {
+  return cleanObject({
     type: "upgraded",
     id,
     title,
     index,
-    ownerId,
+    owner,
     currentUpgrades,
     maxUpgrades,
     components,
-  };
+  });
 }
 export function constructGiftNonUpgraded(gift: Api.starGift): Gift {
   if (!Api.is("document", gift.sticker)) {

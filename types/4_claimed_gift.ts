@@ -21,6 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import { EntityGetter } from "./_getters.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructGift, Gift } from "./3_gift.ts";
@@ -45,11 +46,11 @@ export interface ClaimedGift {
   convertionStars?: number;
 }
 
-export function constructClaimedGift(savedStarGift: Api.SavedStarGift, fromPeer?: Api.User | Api.Chat): ClaimedGift {
+export async function constructClaimedGift(savedStarGift: Api.SavedStarGift, fromPeer: Api.User | Api.Chat | undefined, getEntity: EntityGetter): Promise<ClaimedGift> {
   if (fromPeer && !Api.isOneOf(["user", "chat", "channel"], fromPeer)) {
     unreachable();
   }
-  const gift = constructGift(savedStarGift.gift);
+  const gift = await constructGift(savedStarGift.gift, getEntity);
   const date = fromUnixTimestamp(savedStarGift.date);
   const public_ = !!savedStarGift.unsaved;
   const sender = fromPeer ? constructChatP(fromPeer) : undefined;

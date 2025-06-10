@@ -20,6 +20,7 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import { EntityGetter } from "./_getters.ts";
 import { ClaimedGift, constructClaimedGift } from "./4_claimed_gift.ts";
 
 /** Gifts claimed by a user or a channel. */
@@ -32,21 +33,23 @@ export interface ClaimedGifts {
   gifts: ClaimedGift[];
 }
 
-export function constructClaimedGifts(savedStarGifts: Api.payments_SavedStarGifts): ClaimedGifts {
+export async function constructClaimedGifts(savedStarGifts: Api.payments_SavedStarGifts, getEntity: EntityGetter): Promise<ClaimedGifts> {
   return cleanObject({
     all: savedStarGifts.count,
     offset: savedStarGifts.next_offset,
-    gifts: savedStarGifts.gifts.map((v): [Api.SavedStarGift, Api.User | Api.Chat | undefined] => {
-      const fromId = v.from_id;
-      if (Api.is("peerUser", fromId)) {
-        return [v, savedStarGifts.users.find((u) => Api.is("user", u) && u.id == fromId.user_id)];
-      } else if (Api.is("peerChat", fromId)) {
-        return [v, savedStarGifts.chats.find((u) => Api.is("chat", u) && u.id == fromId.chat_id)];
-      } else if (fromId) {
-        return [v, savedStarGifts.chats.find((u) => Api.is("channel", u) && u.id == fromId.channel_id)];
-      } else {
-        return [v, undefined];
-      }
-    }).map((v) => constructClaimedGift(v[0], v[1])),
+    gifts: await Promise.all(
+      savedStarGifts.gifts.map((v): [Api.SavedStarGift, Api.User | Api.Chat | undefined] => {
+        const fromId = v.from_id;
+        if (Api.is("peerUser", fromId)) {
+          return [v, savedStarGifts.users.find((u) => Api.is("user", u) && u.id == fromId.user_id)];
+        } else if (Api.is("peerChat", fromId)) {
+          return [v, savedStarGifts.chats.find((u) => Api.is("chat", u) && u.id == fromId.chat_id)];
+        } else if (fromId) {
+          return [v, savedStarGifts.chats.find((u) => Api.is("channel", u) && u.id == fromId.channel_id)];
+        } else {
+          return [v, undefined];
+        }
+      }).map((v) => constructClaimedGift(v[0], v[1], getEntity)),
+    ),
   });
 }

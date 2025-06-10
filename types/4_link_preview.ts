@@ -22,6 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
+import { EntityGetter } from "./_getters.ts";
 import { Audio, constructAudio } from "./1_audio.ts";
 import { constructDocument, Document } from "./1_document.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
@@ -219,7 +220,7 @@ export type LinkPreviewLoaded =
 
 export type LinkPreview = InputLinkPreview | LinkPreviewLoading | LinkPreviewNotLoaded | LinkPreviewLoaded;
 
-export function constructLinkPreview(media: Api.messageMediaWebPage, invert?: boolean): LinkPreview {
+export async function constructLinkPreview(media: Api.messageMediaWebPage, invert: boolean | undefined, getEntity: EntityGetter): Promise<LinkPreview> {
   if (Api.is("webPageNotModified", media.webpage)) {
     unreachable();
   }
@@ -399,7 +400,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert?: bo
           smallMedia,
           largeMedia,
           aboveText,
-          gift: constructGift(gift),
+          gift: await constructGift(gift, getEntity),
         };
         break;
       }
