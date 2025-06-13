@@ -75,6 +75,10 @@ export interface GiftUpgraded {
   title: string;
   /** The unique index of the gift among others of the same type. */
   index: number;
+  /** The name of the user that owns the gift. */
+  ownerName?: string;
+  /** The address of the TON wallet that owns the gift. */
+  ownerAddress?: string;
   /** The user that owns the gift. */
   owner?: User;
   /** The count of the amount of upgraded gifts of the same type. */
@@ -106,6 +110,8 @@ export async function constructGiftUpgraded(gift: Api.starGiftUnique, getEntity:
       owner = constructUser(entity);
     }
   }
+  const ownerName = gift.owner_name;
+  const ownerAddress = gift.owner_address;
   const currentUpgrades = gift.availability_issued;
   const maxUpgrades = gift.availability_total;
   const components = gift.attributes.map(constructGiftUpgradedComponent);
@@ -114,6 +120,8 @@ export async function constructGiftUpgraded(gift: Api.starGiftUnique, getEntity:
     id,
     title,
     index,
+    ownerName,
+    ownerAddress,
     owner,
     currentUpgrades,
     maxUpgrades,
