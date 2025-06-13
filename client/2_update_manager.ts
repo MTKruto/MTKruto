@@ -228,86 +228,31 @@ export class UpdateManager {
   }
 
   async processResult(result: Api.DeserializedType) {
-    if (
-      Api.isOneOf([
-        "account.authorizationForm",
-        "account.autoSaveSettings",
-        "account.privacyRules",
-        "account.webAuthorizations",
-        "attachMenuBots",
-        "attachMenuBotsBot",
-        "channels.adminLogResults",
-        "channels.channelParticipant",
-        "channels.channelParticipants",
-        "channels.sendAsPeers",
-        "chatInvite",
-        "chatlists.chatlistInvite",
-        "chatlists.chatlistInviteAlready",
-        "chatlists.chatlistUpdates",
-        "chatlists.exportedInvites",
-        "contacts.blocked",
-        "contacts.blockedSlice",
-        "contacts.contacts",
-        "contacts.found",
-        "contacts.importedContacts",
-        "contacts.resolvedPeer",
-        "contacts.topPeers",
-        "help.promoData",
-        "help.recentMeUrls",
-        "messages.botResults",
-        "messages.channelMessages",
-        "messages.chatAdminsWithInvites",
-        "messages.chatFull",
-        "messages.chatInviteImporters",
-        "messages.chats",
-        "messages.chatsSlice",
-        "messages.dialogs",
-        "messages.dialogsSlice",
-        "messages.discussionMessage",
-        "messages.exportedChatInvite",
-        "messages.exportedChatInviteReplaced",
-        "messages.exportedChatInvites",
-        "messages.forumTopics",
-        "messages.highScores",
-        "messages.inactiveChats",
-        "messages.messageReactionsList",
-        "messages.messages",
-        "messages.messagesSlice",
-        "messages.messageViews",
-        "messages.peerDialogs",
-        "messages.peerSettings",
-        "messages.searchResultsCalendar",
-        "messages.sponsoredMessages",
-        "messages.votesList",
-        "messages.webPage",
-        "payments.checkedGiftCode",
-        "payments.paymentForm",
-        "payments.paymentReceipt",
-        "phone.groupCall",
-        "phone.groupParticipants",
-        "phone.joinAsPeers",
-        "phone.phoneCall",
-        "photos.photo",
-        "photos.photos",
-        "photos.photosSlice",
-        "premium.boostsList",
-        "premium.myBoosts",
-        "stats.megagroupStats",
-        "stats.publicForwards",
-        "stories.allStories",
-        "stories.peerStories",
-        "stories.stories",
-        "stories.storyViews",
-        "stories.storyViewsList",
-        "users.userFull",
-      ], result)
-    ) {
+    if (result !== null && typeof result === "object") {
       if ("chats" in result) {
-        await this.processChats(result.chats, result);
+        let valid = true;
+        for (const chat of result.chats) {
+          if (!Api.isOfEnum("Chat", chat)) {
+            valid = false;
+            break;
+          }
+        }
+        if (valid) {
+          await this.processChats(result.chats as Api.Chat[], result);
+        }
       }
 
-      if ("users" in result) {
-        await this.processUsers(result.users, result);
+      if ("users" in result && Array.isArray(result.users)) {
+        let valid = true;
+        for (const user of result.users) {
+          if (!Api.isOfEnum("User", user)) {
+            valid = false;
+            break;
+          }
+        }
+        if (valid) {
+          await this.processUsers(result.users as Api.User[], result);
+        }
       }
 
       if ("messages" in result && Array.isArray(result.messages)) {
