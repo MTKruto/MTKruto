@@ -3849,4 +3849,14 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async sellGift(userId: ID, messageId: number): Promise<void> {
     await this.#giftManager.sellGift(userId, messageId);
   }
+
+  /**
+   * Get a gift using its slug.
+   *
+   * @method gf
+   * @param slug The slug of a gift.
+   */
+  async getGift(slug: string): Promise<Gift> {
+    return await this.#giftManager.getGift(slug);
+  }
 }
