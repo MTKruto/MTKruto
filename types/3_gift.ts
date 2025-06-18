@@ -87,6 +87,10 @@ export interface GiftUpgraded {
   maxUpgrades: number;
   /** The components of the gift. */
   components: GiftUpgradedComponent[];
+  /** The address of the gift in TON blockchain. */
+  address?: string;
+  /** The amount of stars that can be used to buy the gift.  */
+  price?: number;
 }
 
 /** A gift. */
@@ -115,6 +119,8 @@ export async function constructGiftUpgraded(gift: Api.starGiftUnique, getEntity:
   const currentUpgrades = gift.availability_issued;
   const maxUpgrades = gift.availability_total;
   const components = gift.attributes.map(constructGiftUpgradedComponent);
+  const address = gift.gift_address;
+  const price = gift.resell_stars !== undefined ? Number(gift.resell_stars) : undefined;
   return cleanObject({
     type: "upgraded",
     id,
@@ -126,6 +132,8 @@ export async function constructGiftUpgraded(gift: Api.starGiftUnique, getEntity:
     currentUpgrades,
     maxUpgrades,
     components,
+    address,
+    price,
   });
 }
 export function constructGiftNonUpgraded(gift: Api.starGift): Gift {
