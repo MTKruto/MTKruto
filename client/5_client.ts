@@ -1896,6 +1896,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @method ac
    * @param id The identifier of the business connection.
+   * @cache
    */
   async getBusinessConnection(id: string): Promise<BusinessConnection> {
     return await this.#businessConnectionManager.getBusinessConnection(id);
@@ -2338,6 +2339,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * const message = await client.getMessages("@MTKruto", [210, 212]);
    * ```
    * @returns The retrieved messages.
+   * @cache
    */
   async getMessages(chatId: ID, messageIds: number[]): Promise<Message[]> {
     return await this.#messageManager.getMessages(chatId, messageIds);
@@ -2353,6 +2355,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * const message = await client.getMessage("@MTKruto", 212);
    * ```
    * @returns The retrieved message.
+   * @cache
    */
   async getMessage(chatId: ID, messageId: number): Promise<Message | null> {
     return await this.#messageManager.getMessage(chatId, messageId);
@@ -2570,6 +2573,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @method ms
    * @param chatId The identifier of the chat that includes the message.
    * @param messageId The identifier of the message.
+   * @cache
    */
   async transcribeVoice(chatId: ID, messageId: number): Promise<VoiceTranscription> {
     return await this.#messageManager.transcribeVoice(chatId, messageId);
@@ -2627,6 +2631,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * }
    * ```
    * @returns A generator yielding the contents of the file.
+   * @cache file
    */
   async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown> {
     for await (const chunk of this.#fileManager.download(fileId, params)) {
@@ -2640,6 +2645,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @method fs
    * @param id Identifier of one or more of custom emojis.
    * @returns The custom emoji documents.
+   * @cache
    */
   async getCustomEmojiStickers(id: string | string[]): Promise<Sticker[]> {
     return await this.#fileManager.getCustomEmojiStickers(id);
@@ -2662,6 +2668,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get a chat.
    *
    * @method ch
+   * @cache
    */
   async getChat(chatId: ID): Promise<Chat> {
     return await this.#chatListManager.getChat(chatId);
@@ -3329,6 +3336,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param messageId The message that includes at a button responsible for the callback query question.
    * @param question The callback query's question.
    * @returns The bot's answer to the callback query.
+   * @cache
    */
   async sendCallbackQuery(chatId: ID, messageId: number, question: CallbackQueryQuestion): Promise<CallbackQueryAnswer> {
     return await this.#callbackQueryManager.sendCallbackQuery(chatId, messageId, question);
@@ -3354,6 +3362,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param userId The ID of the bot to send the inline query to.
    * @param chatId The ID of the chat from which the inline query is sent.
    * @returns The bot's answer to the inline query.
+   * @cache
    */
   async sendInlineQuery(userId: ID, chatId: ID, params?: SendInlineQueryParams): Promise<InlineQueryAnswer> {
     return await this.#inlineQueryManager.sendInlineQuery(userId, chatId, params);
@@ -3695,6 +3704,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @method vc
    * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
+   * @cache
    */
   async getVideoChat(id: string): Promise<VideoChat> {
     return await this.#videoChatManager.getVideoChat(id);
@@ -3800,6 +3810,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get translations. User-only.
    *
    * @method ta
+   * @cache
    */
   async getTranslations(params?: GetTranslationsParams): Promise<Translation[]> {
     return await this.#translationsManager.getTranslations(params);
