@@ -58,7 +58,7 @@ export interface Poll {
 export function constructPoll(media_: Api.messageMediaPoll): Poll {
   const poll = media_.poll;
   const correctOption = media_.results.results?.find((v) => v.correct)?.option;
-  const correctOptionId = correctOption !== undefined ? poll.answers.findIndex((v) => v.option.every((v, i) => correctOption[i] == v)) : undefined;
+  const correctOptionIndex = correctOption !== undefined ? poll.answers.findIndex((v) => v.option.every((v, i) => correctOption[i] == v)) : undefined;
   return cleanObject({
     id: String(poll.id),
     question: poll.question.text,
@@ -69,7 +69,7 @@ export function constructPoll(media_: Api.messageMediaPoll): Poll {
     isAnonymous: !poll.public_voters,
     type: poll.quiz ? "quiz" : "regular",
     allowMultipleAnswers: poll.quiz ? undefined : poll.multiple_choice || false,
-    correctOptionId,
+    correctOptionIndex,
     explanation: media_.results.solution,
     explanationEntities: media_.results.solution_entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v != null),
     openPeriod: poll.close_period,

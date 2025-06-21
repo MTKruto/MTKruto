@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject } from "../1_utilities.ts";
+import { cleanObject, decodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructOrderInfo } from "./1_order_info.ts";
@@ -47,7 +47,7 @@ export async function constructPreCheckoutQuery(query: Api.updateBotPrecheckoutQ
     from,
     currency: query.currency,
     totalAmount: Number(query.total_amount),
-    invoicePayload: new TextDecoder().decode(query.payload),
+    invoicePayload: decodeText(query.payload),
     shippingOptionId: query.shipping_option_id,
     orderInfo: query.info ? constructOrderInfo(query.info) : undefined,
   });

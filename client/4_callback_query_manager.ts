@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { encodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { CallbackQueryQuestion, constructCallbackQuery, constructCallbackQueryAnswer, ID, Update, validateCallbackQueryQuestion } from "../3_types.ts";
 import { AnswerCallbackQueryParams } from "./0_params.ts";
@@ -49,7 +50,6 @@ export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManage
     await this.#c.invoke({ _: "messages.setBotCallbackAnswer", query_id: BigInt(id), cache_time: params?.cacheTime ?? 0, message: params?.text, alert: params?.alert ? true : undefined });
   }
 
-  static #enc = new TextEncoder();
   async sendCallbackQuery(chatId: ID, messageId: number, question: CallbackQueryQuestion) {
     this.#c.storage.assertUser("sendCallbackQuery");
     checkMessageId(messageId);
@@ -59,7 +59,7 @@ export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManage
     if (maybeAnswer != null && !CallbackQueryManager.#isExpired(maybeAnswer[1], maybeAnswer[0].cache_time)) {
       return constructCallbackQueryAnswer(maybeAnswer[0]);
     }
-    const answer = await this.#c.invoke({ _: "messages.getBotCallbackAnswer", peer, msg_id: messageId, data: "data" in question ? CallbackQueryManager.#enc.encode(question.data) : undefined, game: question.type == "game" ? true : undefined, password: question.type == "password" ? await this.#getPasswordCheck(question.password) : undefined });
+    const answer = await this.#c.invoke({ _: "messages.getBotCallbackAnswer", peer, msg_id: messageId, data: "data" in question ? encodeText(question.data) : undefined, game: question.type == "game" ? true : undefined, password: question.type == "password" ? await this.#getPasswordCheck(question.password) : undefined });
     if (answer.cache_time >= 0) {
       await this.#c.messageStorage.setCallbackQueryAnswer(peerId, messageId, questionKey, answer);
     }

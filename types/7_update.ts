@@ -31,14 +31,16 @@ import { InlineQuery } from "./2_inline_query.ts";
 import { MessageInteractions } from "./2_message_interactions.ts";
 import { MessageReactionCount } from "./2_message_reaction_count.ts";
 import { MessageReactions } from "./2_message_reactions.ts";
+import { PollAnswer } from "./2_poll_answer.ts";
 import { Poll } from "./2_poll.ts";
 import { PreCheckoutQuery } from "./2_pre_checkout_query.ts";
 import { ChatMemberUpdated } from "./3_chat_member_updated.ts";
 import { JoinRequest } from "./3_join_request.ts";
 import { Story } from "./3_story.ts";
-import { Message } from "./4_message.ts";
-import { CallbackQuery } from "./5_callback_query.ts";
-import { ChatListItem } from "./5_chat_list_item.ts";
+import { LinkPreview } from "./4_link_preview.ts";
+import { Message } from "./5_message.ts";
+import { CallbackQuery } from "./6_callback_query.ts";
+import { ChatListItem } from "./6_chat_list_item.ts";
 
 /**
  * A client's connection state was changed.
@@ -424,6 +426,25 @@ export interface UpdatePoll {
 }
 
 /**
+ * A poll was answered.
+ *
+ * ```
+ * client.on("pollAnswer", (ctx) => {
+ *   console.log("A poll just got an answer.");
+ *   // ctx.poll
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdatePollAnswer {
+  /**
+   * The poll answer.
+   * @discriminator
+   */
+  pollAnswer: PollAnswer;
+}
+
+/**
  * A voice transcription was updated.
  *
  * ```
@@ -439,6 +460,24 @@ export interface UpdateVoiceTranscription {
    * @discriminator
    */
   voiceTranscription: VoiceTranscription;
+}
+
+/**
+ * A link preview was updated.
+ *
+ * ```
+ * client.on("linkPreview", (ctx) => {
+ *   // ctx.linkPreview
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateLinkPreview {
+  /**
+   * The new link preview.
+   * @discriminator
+   */
+  linkPreview: LinkPreview;
 }
 
 /** @unlisted */
@@ -468,7 +507,9 @@ export interface UpdateMap {
   joinRequest: UpdateJoinRequest;
   translations: UpdateTranslations;
   poll: UpdatePoll;
+  pollAnswer: UpdatePollAnswer;
   voiceTranscription: UpdateVoiceTranscription;
+  linkPreview: UpdateLinkPreview;
 }
 
 /** @unlisted */
@@ -498,7 +539,9 @@ export type UpdateIntersection = Partial<
   & UpdateJoinRequest
   & UpdateTranslations
   & UpdatePoll
+  & UpdatePollAnswer
   & UpdateVoiceTranscription
+  & UpdateLinkPreview
 >;
 
 /** An incoming update. */
@@ -528,4 +571,6 @@ export type Update =
   | UpdateJoinRequest
   | UpdateTranslations
   | UpdatePoll
-  | UpdateVoiceTranscription;
+  | UpdatePollAnswer
+  | UpdateVoiceTranscription
+  | UpdateLinkPreview;

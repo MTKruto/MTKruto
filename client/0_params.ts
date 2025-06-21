@@ -20,7 +20,7 @@
 
 import { MaybePromise } from "../1_utilities.ts";
 import { DC } from "../3_transport.ts";
-import { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
+import { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
 import { ReplyTo } from "../types/2_reply_to.ts";
 
 export interface InvokeParams {
@@ -91,7 +91,7 @@ export interface SendMessageParams extends _SendCommon, _ReplyMarkupCommon {
   /** The message's entities. */
   entities?: MessageEntity[];
   /** The message's link preview. */
-  linkPreview?: LinkPreview;
+  linkPreview?: InputLinkPreview;
 }
 
 export interface SendChatActionParams extends _BusinessConnectionIdCommon {
@@ -672,4 +672,11 @@ export interface CreateTopicParams {
 export interface EditTopicParams {
   /** Identifier of a custom emoji to display as the icon of the topic. */
   customEmojiId?: string;
+}
+
+export interface GetLinkPreviewParams {
+  /** The parse mode to use. if omitted, the default parse mode will be used. */
+  parseMode?: ParseMode;
+  /** The message's entities. */
+  entities?: MessageEntity[];
 }

@@ -42,7 +42,7 @@ export class GiftManager {
     if (!(Api.is("payments.starGifts", gifts))) {
       unreachable();
     }
-    return gifts.gifts.map(constructGift);
+    return await Promise.all(gifts.gifts.map((v) => constructGift(v, this.#c.getEntity)));
   }
 
   async getClaimedGifts(chatId: ID, params?: GetClaimedGiftsParams) {
@@ -57,7 +57,7 @@ export class GiftManager {
     }
     const peer = await this.#c.getInputPeer(chatId);
     const result = await this.#c.invoke({ _: "payments.getSavedStarGifts", peer, offset, limit });
-    return constructClaimedGifts(result);
+    return await constructClaimedGifts(result, this.#c.getEntity);
   }
 
   async sendGift(chatId: ID, giftId: string, params?: SendGiftParams) {
@@ -81,5 +81,17 @@ export class GiftManager {
       throw new InputError("Message not found.");
     }
     await this.#c.invoke({ _: "payments.convertStarGift", stargift: { _: "inputSavedStarGiftUser", msg_id: message.id } });
+  }
+
+  async getGift(slug: string) {
+    if (slug.length > 100) {
+      throw new InputError("Slug too long.");
+    }
+    slug = slug.toLowerCase();
+    if (!/^[a-z]+-[1-9][0-9]*$/.test(slug)) {
+      throw new InputError("Invalid slug.");
+    }
+    const result = await this.#c.invoke({ _: "payments.getUniqueStarGift", slug });
+    return await constructGift(result.gift, this.#c.getEntity.bind(this));
   }
 }

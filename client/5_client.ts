@@ -24,11 +24,11 @@ import { cleanObject, drop, getLogger, Logger, MaybePromise, mustPrompt, mustPro
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { DC, getDcId, TransportProvider } from "../3_transport.ts";
-import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
-import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetLinkPreviewParams, GetMyCommandsParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -53,6 +53,7 @@ import { ChatManager } from "./4_chat_manager.ts";
 import { ForumManager } from "./4_forum_manager.ts";
 import { GiftManager } from "./4_gift_manager.ts";
 import { InlineQueryManager } from "./4_inline_query_manager.ts";
+import { LinkPreviewManager } from "./4_link_preview_manager.ts";
 import { PollManager } from "./4_poll_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
 
@@ -320,6 +321,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #forumManager: ForumManager;
   #giftManager: GiftManager;
   #inlineQueryManager: InlineQueryManager;
+  #linkPreviewManager: LinkPreviewManager;
   #pollManager: PollManager;
   #storyManager: StoryManager;
 
@@ -348,6 +350,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       forumManager: this.#forumManager,
       giftManager: this.#giftManager,
       inlineQueryManager: this.#inlineQueryManager,
+      linkPreviewManager: this.#linkPreviewManager,
       pollManager: this.#pollManager,
       storyManager: this.#storyManager,
     });
@@ -477,6 +480,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#forumManager = new ForumManager({ ...c, messageManager });
     this.#giftManager = new GiftManager({ ...c, messageManager });
     this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager });
+    this.#linkPreviewManager = new LinkPreviewManager({ ...c, messageManager });
     this.#pollManager = new PollManager({ ...c, messageManager });
     this.#storyManager = new StoryManager({ ...c, fileManager, messageManager });
 
@@ -557,7 +561,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     const reactions = "messageInteractions" in update ? update.messageInteractions : undefined;
     const mustGetMsg = () => {
       if (msg !== undefined) {
-        return { chatId: msg.chat.id, messageId: msg.id, businessConnectionId: msg.businessConnectionId, senderId: (msg.from ?? msg.senderChat)?.id, userId: msg.from?.id };
+        return { chatId: msg.chat.id, messageId: msg.id, businessConnectionId: msg.businessConnectionId, senderId: msg.from?.id, userId: msg.from?.id };
       } else if (reactions !== undefined) {
         return { chatId: reactions.chatId, messageId: reactions.messageId };
       } else {
@@ -587,10 +591,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
       }
       unreachable();
     };
-    const chat_ = "messageReactions" in update ? update.messageReactions.chat : "messageReactionCount" in update ? update.messageReactionCount.chat : "chatMember" in update ? update.chatMember.chat : "joinRequest" in update ? update.joinRequest.chat : "story" in update ? update.story.chat : undefined;
+    const chat_ = "messageReactions" in update ? update.messageReactions.chat : "messageReactionCount" in update ? update.messageReactionCount.chat : "chatMember" in update ? update.chatMember.chat : "myChatMember" in update ? update.myChatMember.chat : "joinRequest" in update ? update.joinRequest.chat : "story" in update ? update.story.chat : undefined;
     const chat = chat_ ?? msg?.chat;
-    const from = "callbackQuery" in update ? update.callbackQuery.from : "inlineQuery" in update ? update.inlineQuery.from : "chatMember" in update ? update.chatMember.from : "messageReactions" in update ? update.messageReactions.user : "preCheckoutQuery" in update ? update.preCheckoutQuery.from : "joinRequest" in update ? update.joinRequest.user : "businessConnection" in update ? update.businessConnection.user : msg?.from ? msg.from : undefined;
-    const senderChat = msg?.senderChat;
+    const from = "callbackQuery" in update ? update.callbackQuery.from : "inlineQuery" in update ? update.inlineQuery.from : "chatMember" in update ? update.chatMember.from : "myChatMember" in update ? update.myChatMember.from : "messageReactions" in update ? update.messageReactions.user : "preCheckoutQuery" in update ? update.preCheckoutQuery.from : "joinRequest" in update ? update.joinRequest.from : "businessConnection" in update ? update.businessConnection.user : "pollAnswer" in update ? update.pollAnswer.from : msg?.from ? msg.from : undefined;
     const getReplyTo = (quote: boolean | undefined, chatId: number, messageId: number): ReplyTo | undefined => {
       if ("story" in update) {
         return { chatId: update.story.chat.id, storyId: update.story.id };
@@ -608,7 +611,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
       msg: msg as C["msg"],
       chat: chat as C["chat"],
       from: from as C["from"],
-      senderChat: senderChat as C["senderChat"],
       get toJSON() {
         return () => update;
       },
@@ -1699,7 +1701,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #handleUpdate(update: Api.Update) {
-    const promises = new Array<() => Promise<unknown>>();
+    const promises = new Array<() => Promise<Update | null>>();
     if (Api.is("updateUserName", update)) {
       await this.messageStorage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
       const peer: Api.peerUser = { ...update, _: "peerUser" };
@@ -1713,66 +1715,35 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
 
     if (this.#messageManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#messageManager.handleUpdate(update);
-        if (!ctxUpdate) {
-          return;
-        }
-        try {
-          await this.#handleCtxUpdate(ctxUpdate);
-        } finally {
-          if ("deletedMessages" in ctxUpdate) {
-            for (const { chatId, messageId } of ctxUpdate.deletedMessages) {
-              await this.messageStorage.setMessage(chatId, messageId, null);
-              await this.#chatListManager.reassignChatLastMessage(chatId);
-            }
-          }
-        }
-      });
+      promises.push(() => this.#messageManager.handleUpdate(update));
     }
 
     if (this.#chatManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#chatManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#chatManager.handleUpdate(update));
     }
 
     if (this.#pollManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#pollManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#pollManager.handleUpdate(update));
     }
 
     if (this.#videoChatManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#videoChatManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#videoChatManager.handleUpdate(update));
     }
 
     if (this.#callbackQueryManager.canHandleUpdate(update)) {
-      promises.push(async () => this.#handleCtxUpdate(await this.#callbackQueryManager.handleUpdate(update)));
+      promises.push(() => this.#callbackQueryManager.handleUpdate(update));
     }
 
     if (this.#inlineQueryManager.canHandleUpdate(update)) {
-      promises.push(async () => this.#handleCtxUpdate(await this.#inlineQueryManager.handleUpdate(update)));
+      promises.push(() => this.#inlineQueryManager.handleUpdate(update));
+    }
+
+    if (this.#linkPreviewManager.canHandleUpdate(update)) {
+      promises.push(() => this.#linkPreviewManager.handleUpdate(update));
     }
 
     if (this.#reactionManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const upd = await this.#reactionManager.handleUpdate(update);
-        if (upd) {
-          await this.#handleCtxUpdate(upd);
-        }
-      });
+      promises.push(() => this.#reactionManager.handleUpdate(update));
     }
 
     if (this.#chatListManager.canHandleUpdate(update)) {
@@ -1780,46 +1751,52 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
 
     if (this.#storyManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#storyManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#storyManager.handleUpdate(update));
     }
 
     if (this.#businessConnectionManager.canHandleUpdate(update)) {
-      promises.push(async () => this.#handleCtxUpdate(await this.#businessConnectionManager.handleUpdate(update)));
+      promises.push(() => this.#businessConnectionManager.handleUpdate(update));
     }
 
     if (this.#storyManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#storyManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#storyManager.handleUpdate(update));
     }
 
     if (this.#paymentManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#paymentManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#paymentManager.handleUpdate(update));
     }
 
     if (this.#translationsManager.canHandleUpdate(update)) {
-      promises.push(async () => {
-        const ctxUpdate = await this.#translationsManager.handleUpdate(update);
-        if (ctxUpdate) {
-          await this.#handleCtxUpdate(ctxUpdate);
-        }
-      });
+      promises.push(() => this.#translationsManager.handleUpdate(update));
     }
 
-    return () => Promise.all(promises.map((v) => v()));
+    return () =>
+      Promise.resolve().then(async () => {
+        const updates = new Array<Update>();
+        for (const promise of promises) {
+          try {
+            const update = await promise();
+            if (update) {
+              updates.push(update);
+            }
+          } catch (err) {
+            this.#L.error("failed to construct update:", err);
+          }
+        }
+
+        for (const update of updates) {
+          try {
+            await this.#handleCtxUpdate(update);
+          } finally {
+            if ("deletedMessages" in update) {
+              for (const { chatId, messageId } of update.deletedMessages) {
+                await this.messageStorage.setMessage(chatId, messageId, null);
+                await this.#chatListManager.reassignChatLastMessage(chatId);
+              }
+            }
+          }
+        }
+      });
   }
 
   #lastGetMe: User | null = null;
@@ -2608,6 +2585,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return await this.#messageManager.getStickerSet(name);
   }
 
+  /*
+   * Get the link preview for a message that is about to be sent. User-only.
+   *
+   * @method ms
+   * @param text The message's text.
+   */
+  async getLinkPreview(text: string, params?: GetLinkPreviewParams): Promise<LinkPreview | null> {
+    return await this.#linkPreviewManager.getLinkPreview(text, params);
+  }
+
   //
   // ========================= POLLS ========================= //
   //
@@ -2979,7 +2966,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Open a chat. User-only.
+   * Open a chat.
    *
    * @method ch
    * @param chatId The chat to open.
@@ -2989,7 +2976,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Close a chat previously opened by openChat. User-only.
+   * Close a chat previously opened by openChat.
    *
    * @method ch
    * @param chatId The chat to close.
@@ -3871,5 +3858,15 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async sellGift(userId: ID, messageId: number): Promise<void> {
     await this.#giftManager.sellGift(userId, messageId);
+  }
+
+  /**
+   * Get a gift using its slug.
+   *
+   * @method gf
+   * @param slug The slug of a gift.
+   */
+  async getGift(slug: string): Promise<Gift> {
+    return await this.#giftManager.getGift(slug);
   }
 }

@@ -20,11 +20,11 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { base64DecodeUrlSafe, base64EncodeUrlSafe, cleanObject } from "../1_utilities.ts";
+import { base64DecodeUrlSafe, base64EncodeUrlSafe, cleanObject, decodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructUser, User } from "./1_user.ts";
-import { Message, MessageGetter } from "./4_message.ts";
+import { Message, MessageGetter } from "./5_message.ts";
 
 /** A received callback query. */
 export interface CallbackQuery {
@@ -67,7 +67,7 @@ export async function constructCallbackQuery(callbackQuery: Api.updateBotCallbac
   const user = constructUser(user_);
   const id = String(callbackQuery.query_id);
   const gameShortName = callbackQuery.game_short_name;
-  const data = callbackQuery.data !== undefined ? new TextDecoder().decode(callbackQuery.data) : undefined;
+  const data = callbackQuery.data !== undefined ? decodeText(callbackQuery.data) : undefined;
   const chatInstance = callbackQuery.chat_instance == 0n ? "" : String(callbackQuery.chat_instance);
   if (Api.is("updateBotCallbackQuery", callbackQuery)) {
     const message = await getMessage(Api.peerToChatId(callbackQuery.peer), Number(callbackQuery.msg_id));

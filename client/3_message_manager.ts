@@ -20,7 +20,7 @@
 
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
+import { encodeText, getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
 import { constructStickerSet, constructVoiceTranscription, deserializeFileId, FileId, InputMedia, isMessageType, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt, VoiceTranscription } from "../3_types.ts";
@@ -753,13 +753,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       const text = typeof v === "string" ? v : v.text;
       const entities = typeof v === "string" ? [] : v.entities;
       const parseResult = await this.parseText(text, { parseMode: params?.optionParseMode, entities: entities });
-      return ({ _: "pollAnswer", option: new Uint8Array([i]), text: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } });
+      return ({ _: "pollAnswer", option: encodeText(String(i)), text: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } });
     }));
 
     const questionParseResult = await this.parseText(question, { parseMode: params?.questionParseMode, entities: params?.questionEntities });
     const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate ? toUnixTimestamp(params.closeDate) : undefined, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type == "quiz" ? true : undefined };
 
-    const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndex ? [new Uint8Array([params.correctOptionIndex])] : undefined, solution, solution_entities: solutionEntities };
+    const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndex !== undefined ? [encodeText(String(params.correctOptionIndex))] : undefined, solution, solution_entities: solutionEntities };
 
     const result = await this.#c.invoke(
       {
@@ -834,7 +834,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     if (!message) {
       throw new InputError("Message text cannot be empty.");
     }
-    const noWebpage = params?.linkPreview?.disable ? true : undefined;
+    if (params?.linkPreview && params.linkPreview.type != "input") {
+      throw new InputError("Expected link preview of type input.");
+    }
+    const noWebpage = params?.linkPreview && params.linkPreview.type == "input" && params.linkPreview.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
 
     let media: Api.InputMedia | undefined = undefined;
@@ -896,7 +899,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     }
 
     const id = await deserializeInlineMessageId(inlineMessageId);
-    const noWebpage = params?.linkPreview?.disable ? true : undefined;
+    if (params?.linkPreview && params.linkPreview.type != "input") {
+      throw new InputError("Expected link preview of type input.");
+    }
+    const noWebpage = params?.linkPreview && params.linkPreview.type == "input" && params.linkPreview.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
 
     let media: Api.InputMedia | undefined = undefined;
@@ -1405,7 +1411,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         description,
         invoice,
         start_param: params?.startParameter,
-        payload: new TextEncoder().encode(payload),
+        payload: encodeText(payload),
         provider_data: { _: "dataJSON", data: params?.providerData ?? "null" },
         provider: params?.providerToken ?? "",
         photo: params?.photoUrl

@@ -149,4 +149,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: test `cat $(find . -type f | grep ".ts$") | grep "console." | wc -l` -eq 22
+      - run: test `cat $(find . -type f | grep ".ts$") | grep "console." | wc -l` -eq 23

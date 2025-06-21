@@ -19,7 +19,7 @@
  */
 // deno-lint-ignore-file no-explicit-any
 
-import { bigIntFromBuffer } from "../1_utilities.ts";
+import { bigIntFromBuffer, decodeText } from "../1_utilities.ts";
 import { ObjectDefinition, Schema } from "./0_types.ts";
 import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, VECTOR, X } from "./0_utilities.ts";
 
@@ -104,7 +104,7 @@ export class TLReader {
   }
 
   readString(): string {
-    return new TextDecoder().decode(this.readBytes());
+    return decodeText(this.readBytes());
   }
 
   async readType(name: string, schema: Schema): Promise<any> {

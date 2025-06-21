@@ -59,6 +59,7 @@ interface Shortcuts<T extends UpdateIntersection> {
     : T["messageReactionCount"] extends object ? T["messageReactionCount"]["chat"]
     : T["myChatMember"] extends object ? T["myChatMember"]["chat"]
     : T["chatMember"] extends object ? T["chatMember"]["chat"]
+    : T["joinRequest"] extends object ? T["joinRequest"]["chat"]
     : undefined;
   from: T["callbackQuery"] extends object ? T["callbackQuery"]["from"]
     : T["inlineQuery"] extends object ? T["inlineQuery"]["from"]
@@ -67,8 +68,9 @@ interface Shortcuts<T extends UpdateIntersection> {
     : T["editedMessage"] extends object ? T["editedMessage"]["from"]
     : T["scheduledMessage"] extends object ? T["scheduledMessage"]["from"]
     : T["preCheckoutQuery"] extends object ? T["preCheckoutQuery"]["from"]
+    : T["joinRequest"] extends object ? T["joinRequest"]["from"]
+    : T["pollAnswer"] extends object ? T["pollAnswer"]["from"]
     : undefined;
-  senderChat: Shortcuts<T>["msg"] extends object ? Shortcuts<T>["msg"]["senderChat"] : undefined;
 }
 
 type Filter<Q extends AnyLevelX> = FilterCore<Q> & Shortcuts<FilterCore<Q>>;

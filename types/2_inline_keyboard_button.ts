@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { cleanObject } from "../1_utilities.ts";
+import { cleanObject, decodeText, encodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { UsernameResolver } from "./_getters.ts";
 import { LoginUrl } from "./0_login_url.ts";
@@ -164,7 +164,7 @@ export function constructInlineKeyboardButton(button_: Api.KeyboardButton): Inli
   if (Api.is("keyboardButtonUrl", button_)) {
     return { text: button_.text, url: button_.url };
   } else if (Api.is("keyboardButtonCallback", button_)) {
-    return { text: button_.text, callbackData: new TextDecoder().decode(button_.data) };
+    return { text: button_.text, callbackData: decodeText(button_.data) };
   } else if (Api.is("keyboardButtonWebView", button_) || Api.is("keyboardButtonSimpleWebView", button_)) {
     return { text: button_.text, miniApp: constructMiniAppInfo(button_.url) };
   } else if (Api.is("keyboardButtonUrlAuth", button_)) {
@@ -198,7 +198,7 @@ export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButto
   if ("url" in button) {
     return { _: "keyboardButtonUrl", text: button.text, url: button.url };
   } else if ("callbackData" in button) {
-    return { _: "keyboardButtonCallback", text: button.text, data: new TextEncoder().encode(button.callbackData) };
+    return { _: "keyboardButtonCallback", text: button.text, data: encodeText(button.callbackData) };
   } else if ("miniApp" in button) {
     return { _: "keyboardButtonWebView", text: button.text, url: button.miniApp.url };
   } else if ("loginUrl" in button) {

@@ -19,6 +19,7 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
+import { encodeText } from "./0_text.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe } from "./1_base64.ts";
 
 Deno.test("base64DecodeUrlSafe", () => {
@@ -40,7 +41,7 @@ Deno.test("base64DecodeUrlSafe", () => {
 
   {
     const actual = base64DecodeUrlSafe("aGk");
-    const expected = new TextEncoder().encode("hi");
+    const expected = encodeText("hi");
 
     assertEquals(actual, expected);
   }

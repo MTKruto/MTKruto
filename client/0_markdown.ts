@@ -25,9 +25,7 @@
 import { unreachable } from "../0_deps.ts";
 import { MessageEntity, MessageEntityType, sortMessageEntities } from "../3_types.ts";
 import { InputError } from "../0_errors.ts";
-
-const enc = new TextEncoder();
-const dec = new TextDecoder();
+import { decodeText, encodeText } from "../1_utilities.ts";
 
 export const CODEPOINTS = {
   "\t": 9,
@@ -102,7 +100,7 @@ function getLinkCustomEmojiId(url_: string) {
 }
 
 export function parseMarkdown(text_: string): [string, MessageEntity[]] {
-  const text = enc.encode(text_);
+  const text = encodeText(text_);
 
   let resultSize = 0;
   let entities: MessageEntity[] = [];
@@ -127,7 +125,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
       continue;
     }
 
-    let reservedCharacters = enc.encode("_*[]()~`>#+-=|{}.!");
+    let reservedCharacters = encodeText("_*[]()~`>#+-=|{}.!");
     if (nestedEntities.length !== 0) {
       switch (nestedEntities[nestedEntities.length - 1].type) {
         case "code":
@@ -286,9 +284,9 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
               throw new Error(`Can't find the end of the URL that starts at offset ${urlBeginPos}.`);
             }
           }
-          userId = getLinkUserId(dec.decode(url));
+          userId = getLinkUserId(decodeText(url));
           if (!userId) {
-            const url_ = getUrl(dec.decode(url));
+            const url_ = getUrl(decodeText(url));
             if (!url_) {
               skipEntity = true;
             } else {
@@ -317,7 +315,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
           if (text[i] !== CODEPOINTS[")"]) {
             throw new InputError(`Can't find the end of the custom emoji URL that starts at offset ${urlBeginPos}.`);
           }
-          customEmojiId = getLinkCustomEmojiId(dec.decode(url));
+          customEmojiId = getLinkCustomEmojiId(decodeText(url));
           break;
         }
         default:
@@ -332,9 +330,9 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
         } else if (customEmojiId) {
           entities.push({ type: "customEmoji", offset: entityOffset, length: entityLength, customEmojiId });
         } else if (type == "textLink") {
-          entities.push({ type, offset: entityOffset, length: entityLength, url: typeof argument === "string" ? argument : dec.decode(argument) });
+          entities.push({ type, offset: entityOffset, length: entityLength, url: typeof argument === "string" ? argument : decodeText(argument) });
         } else if (type == "pre") {
-          entities.push({ type, offset: entityOffset, length: entityLength, language: typeof argument === "string" ? argument : dec.decode(argument) });
+          entities.push({ type, offset: entityOffset, length: entityLength, language: typeof argument === "string" ? argument : decodeText(argument) });
         } else if (type != "customEmoji") {
           entities.push({ type, offset: entityOffset, length: entityLength });
         }
@@ -353,5 +351,5 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
 
   entities = sortMessageEntities(entities);
 
-  return [dec.decode(text.slice(0, resultSize)), entities];
+  return [decodeText(text.slice(0, resultSize)), entities];
 }
