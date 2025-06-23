@@ -24,23 +24,23 @@ export { assertEquals } from "jsr:@std/assert@1.0.13/equals";
 export { unreachable } from "jsr:@std/assert@1.0.13/unreachable";
 export { AssertionError } from "jsr:@std/assert@1.0.13/assertion-error";
 
-export { join } from "jsr:@std/path@1.0.9/join";
-export { extname } from "jsr:@std/path@1.0.9/extname";
-export { basename } from "jsr:@std/path@1.0.9/basename";
-export { toFileUrl } from "jsr:@std/path@1.0.9/to-file-url";
-export { isAbsolute } from "jsr:@std/path@1.0.9/is-absolute";
+export { join } from "jsr:@std/path@1.1.0/join";
+export { extname } from "jsr:@std/path@1.1.0/extname";
+export { basename } from "jsr:@std/path@1.1.0/basename";
+export { toFileUrl } from "jsr:@std/path@1.1.0/to-file-url";
+export { isAbsolute } from "jsr:@std/path@1.1.0/is-absolute";
 
-export { delay } from "jsr:@std/async@1.0.12";
+export { delay } from "jsr:@std/async@1.0.13";
 
-export { concat } from "jsr:@std/bytes@1.0.5/concat";
+export { concat } from "jsr:@std/bytes@1.0.6/concat";
 
 export { iterateReader } from "jsr:@std/io@0.225.2/iterate-reader";
 
-export { format } from "jsr:@std/datetime@0.225.4/format";
+export { format } from "jsr:@std/datetime@0.225.5/format";
 
-export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.4/constants";
+export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.5/constants";
 
-export { toArrayBuffer } from "jsr:@std/streams@1.0.9/to-array-buffer";
+export { toArrayBuffer } from "jsr:@std/streams@1.0.10/to-array-buffer";
 
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.7/base64";
 
