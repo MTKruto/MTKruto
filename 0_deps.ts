@@ -36,6 +36,8 @@ export { concat } from "jsr:@std/bytes@1.0.5/concat";
 
 export { iterateReader } from "jsr:@std/io@0.225.2/iterate-reader";
 
+export { format } from "jsr:@std/datetime@0.225.4/format";
+
 export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.4/constants";
 
 export { toArrayBuffer } from "jsr:@std/streams@1.0.9/to-array-buffer";

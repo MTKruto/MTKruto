@@ -19,6 +19,7 @@
  */
 // deno-lint-ignore-file no-explicit-any
 
+import { format } from "../0_deps.ts";
 import { getNumber, getString } from "./0_env.ts";
 
 let verbosity = getNumber("LOG_VERBOSITY") || 0;
@@ -128,7 +129,7 @@ export function getLogger(scope: string) {
         default:
           fn = provider.log;
       }
-      fn(`[${verbosity_} ${scope}]`, ...args);
+      fn(`[${format(new Date(), "yyyy.MM.dd HH:mm:ss.SSS")} ${verbosity_} ${scope}]`, ...args);
     },
   };
 }
