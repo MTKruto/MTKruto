@@ -1448,7 +1448,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
           }
           if (Api.isOfEnum("Update", result) || Api.isOfEnum("Updates", result)) {
             return new Promise<R>((resolve) => {
-              this.#updateManager.processUpdates(result, true, null, () => resolve(result as R));
+              this.#updateManager.processUpdates(result, true, Mtproto.is("ping", function_) ? null : function_, () => resolve(result as R));
             });
           }
         }
