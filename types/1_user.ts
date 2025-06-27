@@ -21,6 +21,7 @@
 import { cleanObject, getColorFromPeerId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
+import { RestrictionReason } from "./0_restriction_reason.ts";
 
 /** A user. */
 export interface User {
@@ -52,8 +53,12 @@ export interface User {
   isVerified: boolean;
   /** Whether the user is official support. */
   isSupport: boolean;
+  /** Whether the user has been restricted. */
+  isRestricted: boolean;
+  /** The reason why the user has been restricted. */
+  restrictionReason?: RestrictionReason[];
   /** Whether the user is a bot that has been added to the attachment menu by the current user. */
-  addedToAttachmentMenu: boolean;
+  addedToAttachmentMenu?: boolean;
 }
 
 export function constructUser(user_: Api.user): User {
@@ -74,7 +79,9 @@ export function constructUser(user_: Api.user): User {
     isPremium: user_.premium || false,
     isVerified: user_.verified || false,
     isSupport: user_.support || false,
-    addedToAttachmentMenu: user_.attach_menu_enabled || false,
+    isRestricted: user_.restricted || false,
+    restrictionReason: user_.restriction_reason,
+    addedToAttachmentMenu: user_.bot ? user_.attach_menu_enabled || false : undefined,
   };
   if (Api.is("userProfilePhoto", user_.photo)) {
     user.photo = constructChatPhoto(user_.photo, user.id, user_.access_hash ?? 0n);

@@ -21,6 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, getColorFromPeerId, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 import { constructRestrictionReason, RestrictionReason } from "./0_restriction_reason.ts";
 
 /** @unlisted */
@@ -45,7 +46,7 @@ export interface ChatPPrivate extends _ChatPBase {
   /** @discriminator */
   type: "private";
   /** Whether this is a bot's chat. */
-  isBot?: boolean;
+  isBot: boolean;
   /** The first name of the user. */
   firstName: string;
   /** The last name of the user. */
@@ -54,18 +55,26 @@ export interface ChatPPrivate extends _ChatPBase {
   username?: string;
   /** The user's additional usernames. */
   also?: string[];
+  /** The user's profile photo. */
+  photo?: ChatPhoto;
+  /** The user's [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag). */
+  languageCode?: string;
   /** Whether the user has been identified as scam. */
   isScam: boolean;
   /** Whether the user has been identified as an impersonator. */
   isFake: boolean;
-  /** Whether the user is official support. */
-  isSupport: boolean;
+  /** Whether the user is subscribed to Telegram Premium. */
+  isPremium: boolean;
   /** Whether the user has been verified. */
   isVerified: boolean;
+  /** Whether the user is official support. */
+  isSupport: boolean;
   /** Whether the user has been restricted. */
-  isRestricted?: boolean;
+  isRestricted: boolean;
   /** The reason why the user has been restricted. */
   restrictionReason?: RestrictionReason[];
+  /** Whether the user is a bot that has been added to the attachment menu by the current user. */
+  addedToAttachmentMenu?: boolean;
 }
 
 /** @unlisted */
@@ -134,16 +143,19 @@ export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | A
       firstName: chat.first_name || "",
       lastName: chat.last_name,
       username,
+      languageCode: chat.lang_code,
       also: usernames?.filter((v) => v != username),
       isScam: chat.scam || false,
       isFake: chat.fake || false,
-      isSupport: chat.support || false,
+      isPremium: chat.premium || false,
       isVerified: chat.verified || false,
+      isSupport: chat.support || false,
+      isRestricted: chat.restricted || false,
+      restrictionReason: chat.restriction_reason,
+      addedToAttachmentMenu: chat.bot ? chat.attach_menu_enabled || false : undefined,
     };
-
-    if (chat_.isBot) {
-      chat_.isRestricted = chat.restricted || false;
-      chat_.restrictionReason = chat.restriction_reason;
+    if (Api.is("userProfilePhoto", chat.photo)) {
+      chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.access_hash ?? 0n);
     }
 
     return cleanObject(chat_);
