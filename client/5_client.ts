@@ -241,7 +241,7 @@ let id = 0;
 const getEntity = Symbol();
 
 export interface ClientParams extends ClientPlainParams {
-  /** The storage provider to use. Defaults to memory storage. Passing a string constructs a memory storage with the string being the auth string. */
+  /** The storage provider to use. Defaults to memory storage. */
   storage?: Storage;
   /** App's API ID from [my.telegram.org/apps](https://my.telegram.org/apps). Required if no account was previously authorized. */
   apiId?: number;
