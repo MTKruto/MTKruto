@@ -132,7 +132,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
       q: params?.search,
       offset_date: params?.fromDate ? toUnixTimestamp(params.fromDate) : 0,
       offset_user,
-      limit: params?.limit ?? 100,
+      limit: getLimit(params?.limit),
     });
     const peer_ = inputPeerToPeer(peer);
     return await Promise.all(importers.map((v) => constructJoinRequest2(peer_, v, this.#c.getEntity)));
