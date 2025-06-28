@@ -680,3 +680,16 @@ export interface GetLinkPreviewParams {
   /** The message's entities. */
   entities?: MessageEntity[];
 }
+
+export interface GetJoinRequestsParams {
+  /** An invite link. If specified, only join requests from that invite link will be returned. */
+  inviteLink?: string;
+  /** A search query. If specified, only matching users results will be returned. */
+  search?: string;
+  /** A point in time. If specified, results will be fetched from that date. */
+  fromDate?: Date;
+  /** A user ID. If specified, results will be fetched from that user. */
+  fromUserId?: ID;
+  /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
+  limit?: number;
+}
