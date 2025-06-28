@@ -407,17 +407,16 @@ export class UpdateManager {
   }
 
   async #processPtsUpdateInner(update: PtsUpdate, checkGap: boolean) {
+    if (update.pts != 0 && checkGap) {
+      await this.#checkGap(update.pts, update.pts_count);
+      if (await this.#needsGetDifference(update)) {
+        await this.recoverUpdateGap("needsGetDifference");
+      }
+    }
+
     const localState = await this.#getLocalState();
-    if (update.pts != 0) {
-      if (checkGap) {
-        await this.#checkGap(update.pts, update.pts_count);
-        if (await this.#needsGetDifference(update)) {
-          await this.recoverUpdateGap("needsGetDifference");
-        }
-      }
-      if (localState.pts + update.pts_count > update.pts) {
-        return;
-      }
+    if (localState.pts + update.pts_count > update.pts) {
+      return;
     }
 
     if (this.#c.guaranteeUpdateDelivery) {
@@ -703,7 +702,6 @@ export class UpdateManager {
             await this.#processUpdates(update, false);
           }
           if (Api.is("updates.difference", difference)) {
-            await this.#setState(difference.state);
             this.#LrecoverUpdateGap.debug("recovered from update gap");
             break;
           } else if (Api.is("updates.differenceSlice", difference)) {
