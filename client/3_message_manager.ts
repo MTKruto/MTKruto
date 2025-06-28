@@ -30,7 +30,7 @@ import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
 import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
-import { canBeInputChannel, checkArray, checkMessageId, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
+import { canBeInputChannel, checkArray, checkMessageId, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
 
@@ -239,12 +239,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
 
   async getHistory(chatId: ID, params?: GetHistoryParams) { // TODO: get from database properly
     this.#c.storage.assertUser("getHistory");
-    let limit = params?.limit ?? 100;
-    if (limit <= 0) {
-      limit = 1;
-    } else if (limit > 100) {
-      limit = 100;
-    }
+    const limit = getLimit(params?.limit);
     let offsetId = params?.fromMessageId ?? 0;
     if (offsetId < 0) {
       offsetId = 0;
@@ -1284,7 +1279,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
 
   async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams) {
     this.#c.storage.assertUser("searchMessages");
-    const result = await this.#c.invoke({ _: "messages.search", peer: await this.#c.getInputPeer(chatId), q: query, add_offset: 0, filter: messageSearchFilterToTlObject(params?.filter ?? "empty"), hash: 0n, limit: params?.limit ?? 100, max_date: 0, max_id: 0, min_date: 0, min_id: 0, offset_id: params?.after ? params.after : 0, from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined });
+    const result = await this.#c.invoke({ _: "messages.search", peer: await this.#c.getInputPeer(chatId), q: query, add_offset: 0, filter: messageSearchFilterToTlObject(params?.filter ?? "empty"), hash: 0n, limit: getLimit(params?.limit), max_date: 0, max_id: 0, min_date: 0, min_id: 0, offset_id: params?.after ? params.after : 0, from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined });
     if (!("messages" in result)) {
       unreachable();
     }

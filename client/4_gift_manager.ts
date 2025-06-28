@@ -23,6 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { constructClaimedGifts, constructGift, ID } from "../3_types.ts";
 import { GetClaimedGiftsParams, SendGiftParams } from "./0_params.ts";
+import { getLimit } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
 
@@ -48,13 +49,7 @@ export class GiftManager {
   async getClaimedGifts(chatId: ID, params?: GetClaimedGiftsParams) {
     this.#c.storage.assertUser("getClaimedGifts");
     const offset = params?.offset ?? "";
-    let limit = params?.limit ?? 100;
-    if (limit > 100) {
-      limit = 100;
-    }
-    if (limit < 1) {
-      limit = 1;
-    }
+    const limit = getLimit(params?.limit);
     const peer = await this.#c.getInputPeer(chatId);
     const result = await this.#c.invoke({ _: "payments.getSavedStarGifts", peer, offset, limit });
     return await constructClaimedGifts(result, this.#c.getEntity);

@@ -25,7 +25,7 @@ import { Api } from "../2_tl.ts";
 import { ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, constructChatP, constructChatSettings, getChatListItemOrder, ID } from "../3_types.ts";
 import { type CreateChannelParams, type CreateGroupParams, type CreateSupergroupParams, GetChatMembersParams, GetCommonChatsParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
-import { canBeInputChannel, canBeInputUser, getChatListId, toInputChannel, toInputUser } from "./0_utilities.ts";
+import { canBeInputChannel, canBeInputUser, getChatListId, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
 import { MessageManager } from "./3_message_manager.ts";
@@ -429,7 +429,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     const peer = await this.#c.getInputPeer(chatId);
     if (canBeInputChannel(peer)) {
       const channel: Api.inputChannel | Api.inputChannelFromMessage = toInputChannel(peer);
-      const participants = await this.#c.invoke({ _: "channels.getParticipants", channel, filter: { _: "channelParticipantsRecent" }, offset: params?.offset ?? 0, limit: params?.limit ?? 100, hash: 0n });
+      const participants = await this.#c.invoke({ _: "channels.getParticipants", channel, filter: { _: "channelParticipantsRecent" }, offset: params?.offset ?? 0, limit: getLimit(params?.limit), hash: 0n });
       if (Api.is("channels.channelParticipantsNotModified", participants)) {
         unreachable();
       }
@@ -551,13 +551,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       throw new InputError("fromChatId must be a chat identifier.");
     }
     const user_id = await this.#c.getInputUser(userId);
-    let limit = params?.limit ?? 100;
-    if (limit <= 0) {
-      limit = 1;
-    }
-    if (limit > 100) {
-      limit = 100;
-    }
+    const limit = getLimit(params?.limit);
     const result = await this.#c.invoke({ _: "messages.getCommonChats", user_id, max_id: Api.chatIdToPeerId(max_id), limit });
     const chats = new Array<ChatP>();
     for (const chat of result.chats) {
