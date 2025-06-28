@@ -22,9 +22,10 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { toUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
+import { ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, FileSource, ID, Reaction, reactionToTlObject, Update } from "../3_types.ts";
-import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, SetChatMemberRightsParams, SetChatPhotoParams, SetSignaturesEnabledParams } from "./0_params.ts";
+import { inputPeerToPeer } from "../tl/2_telegram.ts";
+import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, SetChatMemberRightsParams, SetChatPhotoParams, SetSignaturesEnabledParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -114,6 +115,27 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
       peer: await this.#c.getInputPeer(chatId),
       link: params?.inviteLink,
     });
+  }
+
+  async getJoinRequests(chatId: ID, params?: GetJoinRequestsParams) {
+    this.#c.storage.assertUser("getJoinRequests");
+    if (typeof params?.inviteLink === "string" && typeof params?.search === "string") {
+      throw new InputError("inviteLink and search cannot be specified together.");
+    }
+    const peer = await this.#c.getInputPeer(chatId);
+    const offset_user: Api.InputUser = params?.fromUserId ? await this.#c.getInputUser(params.fromUserId) : { _: "inputUserEmpty" };
+    const { importers } = await this.#c.invoke({
+      _: "messages.getChatInviteImporters",
+      requested: true,
+      peer,
+      link: params?.inviteLink,
+      q: params?.search,
+      offset_date: params?.fromDate ? toUnixTimestamp(params.fromDate) : 0,
+      offset_user,
+      limit: params?.limit ?? 100,
+    });
+    const peer_ = inputPeerToPeer(peer);
+    return await Promise.all(importers.map((v) => constructJoinRequest2(peer_, v, this.#c.getEntity)));
   }
 
   // INVITE LINKS //
