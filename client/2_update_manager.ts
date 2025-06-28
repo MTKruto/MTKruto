@@ -407,13 +407,14 @@ export class UpdateManager {
   }
 
   async #processPtsUpdateInner(update: PtsUpdate, checkGap: boolean) {
-    const localState = await this.#getLocalState();
+    let localState = await this.#getLocalState();
     if (update.pts != 0) {
       if (checkGap) {
         await this.#checkGap(update.pts, update.pts_count);
         if (await this.#needsGetDifference(update)) {
           await this.recoverUpdateGap("needsGetDifference");
         }
+        localState = await this.#getLocalState();
       }
       if (localState.pts + update.pts_count > update.pts) {
         return;
