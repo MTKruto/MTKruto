@@ -18,12 +18,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/** The necessary information to launch a mini app. */
-export interface MiniAppInfo {
+export interface MiniAppButtonInfo {
   /** An HTTPS URL of the mini app to be opened with additional data. */
   url: string;
 }
 
-export function constructMiniAppInfo(url: string): MiniAppInfo {
+export function constructMiniAppButtonInfo(url: string): MiniAppButtonInfo {
   return { url };
 }

@@ -23,12 +23,12 @@ import { InputError } from "../0_errors.ts";
 import { encodeText, getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { constructVoiceTranscription, deserializeFileId, FileId, InputMedia, isMessageType, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt, VoiceTranscription } from "../3_types.ts";
+import { constructMiniAppInfo, constructVoiceTranscription, deserializeFileId, FileId, InputMedia, isMessageType, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt, VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
@@ -1629,5 +1629,37 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       }
     }
     return [peer, id];
+  }
+
+  async openMiniApp(botId: ID, chatId: ID, params?: OpenMiniAppParams) {
+    this.#c.storage.assertUser("openMiniApp");
+    const from_bot_menu = params?.fromMenu ? true : undefined;
+    const silent = params?.disableNotification ? true : undefined;
+    const compact = params?.mode === "compact" ? true : undefined;
+    const fullscreen = params?.mode === "fullscreen" ? true : undefined;
+    const peer = await this.#c.getInputPeer(chatId);
+    const bot = await this.#c.getInputUser(botId);
+    const url = params?.url;
+    const start_param = params?.startParameter;
+    const theme_params: Api.dataJSON | undefined = params?.themeParameters ? { _: "dataJSON", data: params.themeParameters } : undefined;
+    const platform = this.#c.langPack ?? "";
+    const reply_to = await this.#constructReplyTo(params);
+    const send_as = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
+    const result = await this.#c.invoke({
+      _: "messages.requestWebView",
+      from_bot_menu,
+      silent,
+      compact,
+      fullscreen,
+      peer,
+      bot,
+      url,
+      start_param,
+      theme_params,
+      platform,
+      reply_to,
+      send_as,
+    });
+    return constructMiniAppInfo(result);
   }
 }
