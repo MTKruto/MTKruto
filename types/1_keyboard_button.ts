@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
 import { ChatAdministratorRights, chatAdministratorRightsToTlObject, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
 import { KeyboardButtonPollType } from "./0_keyboard_button_poll_type.ts";
-import { MiniAppInfo } from "./0_mini_app_info.ts";
+import { MiniAppButtonInfo } from "./0_mini_app_button_info.ts";
 
 /** @unlisted */
 export interface KeyboardButtonText {
@@ -76,7 +76,7 @@ export interface KeyboardButtonRequestPoll extends KeyboardButtonText {
 /** @unlisted */
 export interface KeyboardButtonMiniApp extends KeyboardButtonText {
   /** @discriminator */
-  miniApp: MiniAppInfo;
+  miniApp: MiniAppButtonInfo;
 }
 
 /** A button of a custom keyboard. */
