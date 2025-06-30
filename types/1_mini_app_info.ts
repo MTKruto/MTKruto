@@ -18,14 +18,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MiniAppButtonInfo } from "./0_mini_app_button_info.ts";
+import { cleanObject } from "../1_utilities.ts";
+import { Api } from "../2_tl.ts";
+import { MiniAppMode } from "./0_mini_app_mode.ts";
 
-/** A button to be shown along with the results of an inline query. */
-export interface InlineQueryResultButton {
-  /** Label text on the button. */
-  text: string;
-  /** Description of the Mini App that will be launched when the user presses the button. */
-  miniApp?: MiniAppButtonInfo;
-  /** Deep linking parameter for the /start message. */
-  startParameter?: string;
+/** The necessary information to launch a mini app. */
+export interface MiniAppInfo {
+  /** An HTTPS URL of the mini app. */
+  url: string;
+  /** The mode to launch the mini app in. */
+  mode: MiniAppMode;
+  /** The identifier of the mini app session. */
+  queryId?: string;
+}
+
+export function constructMiniAppInfo(result: Api.webViewResultUrl): MiniAppInfo {
+  return cleanObject({
+    url: result.url,
+    mode: result.fullscreen ? "fullscreen" : result.fullsize ? "default" : "compact",
+    queryId: result.query_id ? String(result.query_id) : undefined,
+  });
 }

@@ -24,7 +24,7 @@ import { cleanObject, decodeText, encodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { UsernameResolver } from "./_getters.ts";
 import { LoginUrl } from "./0_login_url.ts";
-import { constructMiniAppInfo, MiniAppInfo } from "./0_mini_app_info.ts";
+import { constructMiniAppButtonInfo, MiniAppButtonInfo } from "./0_mini_app_button_info.ts";
 
 /** @unlisted */
 export interface _InlineKeyboardButtonBase {
@@ -66,7 +66,7 @@ export interface InlineKeyboardButtonMiniApp extends _InlineKeyboardButtonBase {
    * The mini app to launch.
    * @discriminator
    */
-  miniApp: MiniAppInfo;
+  miniApp: MiniAppButtonInfo;
 }
 
 /**
@@ -166,7 +166,7 @@ export function constructInlineKeyboardButton(button_: Api.KeyboardButton): Inli
   } else if (Api.is("keyboardButtonCallback", button_)) {
     return { text: button_.text, callbackData: decodeText(button_.data) };
   } else if (Api.is("keyboardButtonWebView", button_) || Api.is("keyboardButtonSimpleWebView", button_)) {
-    return { text: button_.text, miniApp: constructMiniAppInfo(button_.url) };
+    return { text: button_.text, miniApp: constructMiniAppButtonInfo(button_.url) };
   } else if (Api.is("keyboardButtonUrlAuth", button_)) {
     return { text: button_.text, loginUrl: { url: button_.url, forwardText: button_.fwd_text } };
   } else if (Api.is("keyboardButtonSwitchInline", button_)) {
