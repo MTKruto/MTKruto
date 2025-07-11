@@ -405,7 +405,7 @@ export interface UnpinMessageParams extends _BusinessConnectionIdCommon {
 
 export interface BanChatMemberParams {
   /** A point in time within the future in which the ban will be reverted. */
-  untilDate?: Date;
+  until?: Date;
   /** Whether to delete all of the user's messages. */
   deleteMessages?: boolean;
 }
@@ -414,7 +414,7 @@ export interface SetChatMemberRightsParams {
   /** The member's new rights. All fields default to `true` if the chat's default member rights allow. This means that this method is the same as unbanChatMember if this parameter is not provided or all of its fields are `true`. */
   rights?: ChatMemberRights;
   /** A point in time within the future in which the restriction will be reverted. */
-  untilDate?: Date;
+  until?: Date;
 }
 
 export interface CreateStoryParams extends _CaptionCommon, _UploadCommon {

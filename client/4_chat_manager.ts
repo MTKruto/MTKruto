@@ -202,7 +202,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
         participant: member,
         banned_rights: ({
           _: "chatBannedRights",
-          until_date: params?.untilDate ? toUnixTimestamp(params.untilDate) : 0,
+          until_date: params?.until ? toUnixTimestamp(params.until) : 0,
           view_messages: true,
           send_messages: true,
           send_media: true,
@@ -230,7 +230,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams) {
     const channel = await this.#c.getInputChannel(chatId);
     const member = await this.#c.getInputPeer(memberId);
-    await this.#c.invoke({ _: "channels.editBanned", channel, participant: member, banned_rights: chatMemberRightsToTlObject(params?.rights, params?.untilDate) });
+    await this.#c.invoke({ _: "channels.editBanned", channel, participant: member, banned_rights: chatMemberRightsToTlObject(params?.rights, params?.until) });
   }
 
   // CHAT SETTINGS //
