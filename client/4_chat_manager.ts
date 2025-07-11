@@ -20,7 +20,6 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { toUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, FileSource, ID, Reaction, reactionToTlObject, Update } from "../3_types.ts";
@@ -130,7 +129,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
       peer,
       link: params?.inviteLink,
       q: params?.search,
-      offset_date: params?.fromDate ? toUnixTimestamp(params.fromDate) : 0,
+      offset_date: params?.fromDate ?? 0,
       offset_user,
       limit: getLimit(params?.limit),
     });
@@ -143,13 +142,13 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
     if (params?.requireApproval && params?.limit) {
       throw new InputError("requireApproval cannot be true while limit is specified.");
     }
-    const result = await this.#c.invoke({ _: "messages.exportChatInvite", peer: await this.#c.getInputPeer(chatId), title: params?.title, expire_date: params?.expireAt ? toUnixTimestamp(params.expireAt) : undefined, request_needed: params?.requireApproval ? true : undefined, usage_limit: params?.limit });
+    const result = await this.#c.invoke({ _: "messages.exportChatInvite", peer: await this.#c.getInputPeer(chatId), title: params?.title, expire_date: params?.expireAt, request_needed: params?.requireApproval ? true : undefined, usage_limit: params?.limit });
     return await constructInviteLink(Api.as("chatInviteExported", result), this.#c.getEntity);
   }
 
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams) {
     this.#c.storage.assertUser("getCreatedInviteLinks");
-    const { invites } = await this.#c.invoke({ _: "messages.getExportedChatInvites", peer: await this.#c.getInputPeer(chatId), revoked: params?.revoked ? true : undefined, admin_id: params?.by ? await this.#c.getInputUser(params.by) : { _: "inputUserEmpty" }, limit: getLimit(params?.limit), offset_date: params?.afterDate ? toUnixTimestamp(params.afterDate) : undefined, offset_link: params?.afterInviteLink });
+    const { invites } = await this.#c.invoke({ _: "messages.getExportedChatInvites", peer: await this.#c.getInputPeer(chatId), revoked: params?.revoked ? true : undefined, admin_id: params?.by ? await this.#c.getInputUser(params.by) : { _: "inputUserEmpty" }, limit: getLimit(params?.limit), offset_date: params?.afterDate, offset_link: params?.afterInviteLink });
     return await Promise.all(invites.map((v) => Api.as("chatInviteExported", v)).map((v) => constructInviteLink(v, this.#c.getEntity)));
   }
 
@@ -202,7 +201,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
         participant: member,
         banned_rights: ({
           _: "chatBannedRights",
-          until_date: params?.until ? toUnixTimestamp(params.until) : 0,
+          until_date: params?.until ?? 0,
           view_messages: true,
           send_messages: true,
           send_media: true,

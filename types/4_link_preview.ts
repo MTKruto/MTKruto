@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import { EntityGetter } from "./_getters.ts";
@@ -72,7 +72,7 @@ export interface LinkPreviewLoading extends _LinkPreviewBase {
   /** The URL of the link preview. */
   url?: string;
   /** The point in time in which the link preview started to load. */
-  date: Date;
+  date: number;
 }
 
 /**
@@ -234,7 +234,7 @@ export async function constructLinkPreview(media: Api.messageMediaWebPage, inver
       return cleanObject({
         type: "loading",
         id,
-        date: fromUnixTimestamp(media.webpage.date),
+        date: media.webpage.date,
         url: media.webpage.url,
         smallMedia,
         largeMedia,

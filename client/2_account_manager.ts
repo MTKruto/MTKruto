@@ -20,7 +20,6 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { toUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { birthdayToTlObject, constructInactiveChat, constructUser, ID } from "../3_types.ts";
 import { AddContactParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, UpdateProfileParams } from "./0_params.ts";
@@ -95,7 +94,7 @@ export class AccountManager {
   async setEmojiStatus(id: string, params?: SetEmojiStatusParams) {
     this.#c.storage.assertUser("setEmojiStatus");
     const document_id = BigInt(id);
-    const until = params?.until ? toUnixTimestamp(params.until) : undefined;
+    const until = params?.until;
     const emoji_status: Api.EmojiStatus = { _: "emojiStatus", document_id, until };
     await this.#c.invoke({ _: "account.updateEmojiStatus", emoji_status });
   }
@@ -104,7 +103,7 @@ export class AccountManager {
     this.#c.storage.assertBot("setUserEmojiStatus");
     const user_id = await this.#c.getInputUser(userId);
     const document_id = BigInt(id);
-    const until = params?.until ? toUnixTimestamp(params.until) : undefined;
+    const until = params?.until;
     const emoji_status: Api.EmojiStatus = { _: "emojiStatus", document_id, until };
     await this.#c.invoke({ _: "bots.updateUserEmojiStatus", user_id, emoji_status });
   }

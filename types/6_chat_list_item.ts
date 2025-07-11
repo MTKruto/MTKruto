@@ -38,7 +38,7 @@ export function getChatListItemOrder(lastMessage: Omit<Message, "replyToMessage"
   if (!lastMessage) {
     return p + "0";
   }
-  return p + String((BigInt(Math.floor(lastMessage.date.getTime())) << 32n) + BigInt(lastMessage.id));
+  return p + String((BigInt(Math.floor(lastMessage.date)) << 32n) + BigInt(lastMessage.id));
 }
 
 export async function constructChatListItem(chatId: number, pinned: number, lastMessageId: number, getEntity: EntityGetter, getMessage: MessageGetter): Promise<ChatListItem | null> {

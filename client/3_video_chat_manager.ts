@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { getRandomId, toUnixTimestamp, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { getRandomId, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
 import { constructLiveStreamChannel, constructVideoChat, ID, Update, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
@@ -47,12 +47,12 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
     this.#c = c;
   }
 
-  async #createGroupCall(chatId: ID, title?: string, liveStream?: true, scheduleDate?: Date) {
+  async #createGroupCall(chatId: ID, title?: string, liveStream?: true, scheduleDate?: number) {
     const peer = await this.#c.getInputPeer(chatId);
     if (canBeInputUser(peer)) {
       throw new InputError("Video chats are only available for groups and channels.");
     }
-    const { updates } = await this.#c.invoke({ _: "phone.createGroupCall", peer, random_id: getRandomId(true), title, rtmp_stream: liveStream, schedule_date: scheduleDate ? toUnixTimestamp(scheduleDate) : undefined }).then((v) => Api.as("updates", v));
+    const { updates } = await this.#c.invoke({ _: "phone.createGroupCall", peer, random_id: getRandomId(true), title, rtmp_stream: liveStream, schedule_date: scheduleDate }).then((v) => Api.as("updates", v));
     const updateGroupCall = updates
       .find((v): v is Api.updateGroupCall => Api.is("updateGroupCall", v));
     if (!updateGroupCall) {
@@ -66,7 +66,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate>
     return await this.#createGroupCall(chatId, params?.title, params?.liveStream || undefined) as VideoChatActive;
   }
 
-  async scheduleVideoChat(chatId: ID, startAt: Date, params?: StartVideoChatParams) {
+  async scheduleVideoChat(chatId: ID, startAt: number, params?: StartVideoChatParams) {
     this.#c.storage.assertUser("scheduleVideoChat");
     return await this.#createGroupCall(chatId, params?.title, params?.liveStream || undefined, startAt) as VideoChatScheduled;
   }

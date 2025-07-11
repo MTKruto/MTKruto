@@ -25,7 +25,7 @@ import { Message, MessageForumTopicCreated, MessageForumTopicEdited } from "./5_
 
 export interface Topic {
   id: number;
-  date: Date;
+  date: number;
   creator: ChatP;
   general: boolean;
   closed: boolean;

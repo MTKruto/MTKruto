@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { cleanObject, toUnixTimestamp } from "../1_utilities.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 
 /** The rights of a chat member. */
@@ -81,10 +81,10 @@ export function constructChatMemberRights(rights: Api.chatBannedRights): ChatMem
   });
 }
 
-export function chatMemberRightsToTlObject(rights?: ChatMemberRights, untilDate?: Date): Api.chatBannedRights {
+export function chatMemberRightsToTlObject(rights?: ChatMemberRights, until?: number): Api.chatBannedRights {
   return {
     _: "chatBannedRights",
-    until_date: untilDate ? toUnixTimestamp(untilDate) : 0,
+    until_date: until ?? 0,
     send_messages: rights?.canSendMessages !== false ? undefined : true,
     send_audios: rights?.canSendAudio !== false ? undefined : true,
     send_docs: rights?.canSendDocuments !== false ? undefined : true,

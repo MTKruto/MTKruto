@@ -84,7 +84,7 @@ export interface _SendCommon extends _BusinessConnectionIdCommon, _PaidBroadcast
   /** The identifier of a message effect to be attached to the message. */
   effectId?: number;
   /** If specified, the message will be scheduled to be sent at that date. User-only. */
-  sendAt?: Date;
+  sendAt?: number;
 }
 export interface SendMessageParams extends _SendCommon, _ReplyMarkupCommon {
   /** The parse mode to use. if omitted, the default parse mode will be used. */
@@ -169,7 +169,7 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   /** Duration of the poll in seconds. Must be in the range of 5-600. Cannot be used simultaneously with `closeDate`. */
   openPeriod?: number;
   /** The time in which the poll will be closed. Must be at least 5 seconds in the future, and no more than 600. Cannot be used simultaneously with `openPeriod`. */
-  closeDate?: Date;
+  closeDate?: number;
   /** Whether the poll should be closed as soon as it is sent, allowing no answers. */
   isClosed?: boolean;
 }
@@ -405,7 +405,7 @@ export interface UnpinMessageParams extends _BusinessConnectionIdCommon {
 
 export interface BanChatMemberParams {
   /** A point in time within the future in which the ban will be reverted. */
-  until?: Date;
+  until?: number;
   /** Whether to delete all of the user's messages. */
   deleteMessages?: boolean;
 }
@@ -414,7 +414,7 @@ export interface SetChatMemberRightsParams {
   /** The member's new rights. All fields default to `true` if the chat's default member rights allow. This means that this method is the same as unbanChatMember if this parameter is not provided or all of its fields are `true`. */
   rights?: ChatMemberRights;
   /** A point in time within the future in which the restriction will be reverted. */
-  until?: Date;
+  until?: number;
 }
 
 export interface CreateStoryParams extends _CaptionCommon, _UploadCommon {
@@ -447,7 +447,7 @@ export interface CreateInviteLinkParams {
   /** An optional title to be attached to the link that can only be seen by admins. */
   title?: string;
   /** A point in time within the future in which the invite link will be invalidated. */
-  expireAt?: Date;
+  expireAt?: number;
   /** The times the invite link can be used. Cannot be specified while `requireApproval` is `true`. */
   limit?: number;
   /** Whether an admin must explicitly approve join requests originating from this invite link. Cannot be `true` while `limit` is specified. */
@@ -462,7 +462,7 @@ export interface GetCreatedInviteLinksParams {
   /** Whether only revoked invite links must be returned. */
   revoked?: boolean;
   /** Only get the invite links created after a specific date. */
-  afterDate?: Date;
+  afterDate?: number;
   /** Only get the invite links created after a specific invite link. */
   afterInviteLink?: string;
 }
@@ -572,7 +572,7 @@ export interface StartBotParams {
 
 export interface SetEmojiStatusParams {
   /** If specified, the emoji status will be unset in that date. */
-  until?: Date;
+  until?: number;
 }
 
 export interface AddContactParams {
@@ -688,7 +688,7 @@ export interface GetJoinRequestsParams {
   /** A search query. If specified, only matching users results will be returned. */
   search?: string;
   /** A point in time. If specified, results will be fetched from that date. */
-  fromDate?: Date;
+  fromDate?: number;
   /** A user ID. If specified, results will be fetched from that user. */
   fromUserId?: ID;
   /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */

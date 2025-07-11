@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
@@ -89,7 +89,7 @@ export interface GiftUpgradedComponentOriginalDetails {
   type: "originalDetails";
   senderId?: number;
   recipientId: number;
-  date: Date;
+  date: number;
   message?: string;
   entities?: MessageEntity[];
 }
@@ -157,7 +157,7 @@ export function constructGiftUpgradedComponent(attribute: Api.StarGiftAttribute)
         type: "originalDetails",
         senderId: attribute.sender_id ? Number(attribute.sender_id) : undefined,
         recipientId: Number(attribute.recipient_id),
-        date: fromUnixTimestamp(attribute.date),
+        date: attribute.date,
         message: attribute.message?.text,
         entities: attribute.message ? attribute.message.entities.map(constructMessageEntity).filter((v): v is MessageEntity => !!v) : undefined,
       });

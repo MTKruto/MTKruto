@@ -20,7 +20,7 @@
 
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { encodeText, getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
+import { encodeText, fromUnixTimestamp, getLogger, getRandomId, Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
 import { constructMiniAppInfo, constructVoiceTranscription, deserializeFileId, FileId, InputMedia, isMessageType, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt, VoiceTranscription } from "../3_types.ts";
@@ -299,7 +299,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     const noforwards = params?.protectContent ? true : undefined;
     const sendAs = await this.#resolveSendAs(params);
     const effect = params?.effectId ? BigInt(params.effectId) : undefined;
-    const schedule_date = params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined;
+    const schedule_date = params?.sendAt;
     const allow_paid_floodskip = params?.paidBroadcast ? true : undefined;
 
     let result: Api.Updates;
@@ -403,7 +403,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       }),
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
-      schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+      schedule_date: params?.sendAt,
       allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
     }, { businessConnectionId: params?.businessConnectionId });
 
@@ -439,7 +439,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         }),
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
-        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+        schedule_date: params?.sendAt,
         allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
       { businessConnectionId: params?.businessConnectionId },
@@ -473,7 +473,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       }),
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
-      schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+      schedule_date: params?.sendAt,
       allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
     }, { businessConnectionId: params?.businessConnectionId });
 
@@ -524,7 +524,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
           }),
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
-        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+        schedule_date: params?.sendAt,
         allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
       { businessConnectionId: params?.businessConnectionId },
@@ -692,7 +692,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         message: caption ?? "",
         entities: captionEntities,
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
-        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+        schedule_date: params?.sendAt,
         allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
       { businessConnectionId: params?.businessConnectionId },
@@ -752,7 +752,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     }));
 
     const questionParseResult = await this.parseText(question, { parseMode: params?.questionParseMode, entities: params?.questionEntities });
-    const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate ? toUnixTimestamp(params.closeDate) : undefined, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type == "quiz" ? true : undefined };
+    const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type == "quiz" ? true : undefined };
 
     const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndex !== undefined ? [encodeText(String(params.correctOptionIndex))] : undefined, solution, solution_entities: solutionEntities };
 
@@ -769,7 +769,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         media,
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
-        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+        schedule_date: params?.sendAt,
         allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
       { businessConnectionId: params?.businessConnectionId },
@@ -1532,7 +1532,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   }
 
   async #getCachedVoiceTranscription(message: Message) {
-    const reference = await this.#c.messageStorage.getVoiceTranscriptionReference(message.chat.id, message.id, message.editDate ?? message.date);
+    const reference = await this.#c.messageStorage.getVoiceTranscriptionReference(message.chat.id, message.id, fromUnixTimestamp(message.editDate ?? message.date));
     if (!reference) {
       return null;
     }
@@ -1544,7 +1544,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   }
 
   async #cacheVoiceTranscription(message: Message, voiceTranscription: VoiceTranscription) {
-    await this.#c.messageStorage.setVoiceTranscriptionReference(message.chat.id, message.id, message.editDate ?? message.date, BigInt(voiceTranscription.id));
+    await this.#c.messageStorage.setVoiceTranscriptionReference(message.chat.id, message.id, fromUnixTimestamp(message.editDate ?? message.date), BigInt(voiceTranscription.id));
     await this.#c.messageStorage.setVoiceTranscription(voiceTranscription);
     return voiceTranscription;
   }

@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import { EntityGetter } from "./_getters.ts";
@@ -54,9 +54,9 @@ export interface GiftNonUpgraded {
   /** The amount of Telegram Stars that the gift can be swapped with. */
   conversionPrice: number;
   /** The date of the first sale of the gift if sold out. */
-  firstSaleDate?: Date;
+  firstSaleDate?: number;
   /** The date of the last sale of the gift if sold out. */
-  lastSaleDate?: Date;
+  lastSaleDate?: number;
   /** The amount of stars required to upgrade the gift. */
   upgradePrice?: number;
 }
@@ -155,8 +155,8 @@ export function constructGiftNonUpgraded(gift: Api.starGift): Gift {
   const soldOut = limited ? !!gift.sold_out : undefined;
   const birthday = !!gift.birthday;
   const conversionPrice = Number(gift.convert_stars);
-  const firstSaleDate = limited ? gift.first_sale_date ? fromUnixTimestamp(gift.first_sale_date) : undefined : undefined;
-  const lastSaleDate = limited ? gift.last_sale_date ? fromUnixTimestamp(gift.last_sale_date) : undefined : undefined;
+  const firstSaleDate = limited ? gift.first_sale_date ? gift.first_sale_date : undefined : undefined;
+  const lastSaleDate = limited ? gift.last_sale_date ? gift.last_sale_date : undefined : undefined;
   const upgradePrice = gift.upgrade_stars ? Number(gift.upgrade_stars) : undefined;
   return cleanObject({
     type: "nonupgraded",

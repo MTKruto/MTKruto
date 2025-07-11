@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructChatP } from "./1_chat_p.ts";
@@ -35,7 +35,7 @@ export interface ChatMemberUpdated {
   /** The one who made the change. */
   from: User;
   /** The point in time in which the chat member's status was changed. */
-  date: Date;
+  date: number;
   /** The old status of the chat member. */
   oldChatMember: ChatMember;
   /** The new status of the chat member. */
@@ -58,7 +58,7 @@ export async function constructChatMemberUpdated(update: Api.updateChannelPartic
   const userPeer: Api.peerUser = { ...update, _: "peerUser" };
   const chat = constructChatP(chat_);
   const from = constructUser(from_);
-  const date = fromUnixTimestamp(update.date);
+  const date = update.date;
   const oldChatMember = await constructChatMember(update.prev_participant ?? ({ _: "channelParticipantLeft", peer: userPeer }), getEntity);
   const newChatMember = await constructChatMember(update.new_participant ?? ({ _: "channelParticipantLeft", peer: userPeer }), getEntity);
   const viaSharedFolder = "via_chatlist" in update ? update.via_chatlist ? true : update.invite ? false : undefined : undefined;

@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
@@ -29,7 +29,7 @@ import { constructGift, Gift } from "./3_gift.ts";
 /** A gift claimed by a user or a channel. */
 export interface ClaimedGift {
   /** The time when the gift was claimed. */
-  date: Date;
+  date: number;
   /** The gift. */
   gift: Gift;
   /** Whether the gift is publicly visible. */
@@ -51,7 +51,7 @@ export async function constructClaimedGift(savedStarGift: Api.SavedStarGift, fro
     unreachable();
   }
   const gift = await constructGift(savedStarGift.gift, getEntity);
-  const date = fromUnixTimestamp(savedStarGift.date);
+  const date = savedStarGift.date;
   const public_ = !!savedStarGift.unsaved;
   const sender = fromPeer ? constructChatP(fromPeer) : undefined;
   const message = savedStarGift.message?.text;

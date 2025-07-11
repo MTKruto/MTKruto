@@ -18,7 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { fromUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
@@ -31,13 +30,13 @@ export interface MessageReactionCount {
   /** The message's identifier. */
   messageId: number;
   /** The point in time in which the change was made. */
-  date: Date;
+  date: number;
   /** The reactions made to the post. */
   reactions: ReactionCount[];
 }
 
 export async function constructMessageReactionCount(update: Api.updateBotMessageReactions, getEntity: EntityGetter): Promise<MessageReactionCount | null> {
-  const date = fromUnixTimestamp(update.date);
+  const date = update.date;
   const reactions = update.reactions.map((v) => constructReactionCount(v));
   const entity = await getEntity(update.peer);
   if (entity) {

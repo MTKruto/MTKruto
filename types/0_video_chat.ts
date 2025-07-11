@@ -18,7 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { fromUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 
 /** @unlisted */
@@ -54,7 +53,7 @@ export interface VideoChatActive extends _VideoChatCommon, _VideoChatNotEndedCom
 export interface VideoChatScheduled extends _VideoChatCommon, _VideoChatNotEndedCommon {
   type: "scheduled";
   /** The point in time in which the video chat will be started. */
-  scheduledFor: Date;
+  scheduledFor: number;
 }
 
 /**
@@ -86,7 +85,7 @@ export function constructVideoChat(call: Api.GroupCall): VideoChat {
         type: "scheduled",
         id,
         title,
-        scheduledFor: fromUnixTimestamp(call.schedule_date),
+        scheduledFor: call.schedule_date,
         liveStream,
         participantCount,
       };

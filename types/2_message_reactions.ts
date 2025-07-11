@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructReaction, Reaction } from "./0_reaction.ts";
@@ -36,7 +36,7 @@ export interface MessageReactions {
   /** The chat that changed its reactions to the message. Unset if done on behalf of a user. */
   actorChat?: ChatP;
   /** The point in time in which the change was made. */
-  date: Date;
+  date: number;
   /** The previous reactions. */
   oldReactions: Reaction[];
   /** The current reactions. */
@@ -44,7 +44,7 @@ export interface MessageReactions {
 }
 
 export async function constructMessageReactions(update: Api.updateBotMessageReaction, getEntity: EntityGetter): Promise<MessageReactions | null> {
-  const date = fromUnixTimestamp(update.date);
+  const date = update.date;
   const oldReactions = update.old_reactions.map((v) => constructReaction(v));
   const newReactions = update.new_reactions.map((v) => constructReaction(v));
   const messageId = update.msg_id;

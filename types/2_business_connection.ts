@@ -18,7 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { fromUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructUser, User } from "./1_user.ts";
@@ -30,7 +29,7 @@ export interface BusinessConnection {
   /** The business account that the connection is made with. */
   user: User;
   /** The point in time in which the connection was recently updated. */
-  date: Date;
+  date: number;
   /** Whether the bot can reply to older chats. */
   canReply: boolean;
   /** Whether the connection is active. */
@@ -41,7 +40,7 @@ export async function constructBusinessConnection(connection: Api.botBusinessCon
   return {
     id: connection.connection_id,
     user: constructUser((await getEntity({ ...connection, _: "peerUser" }))!),
-    date: fromUnixTimestamp(connection.date),
+    date: connection.date,
     canReply: !!connection.rights?.reply,
     isEnabled: !connection.disabled,
   };

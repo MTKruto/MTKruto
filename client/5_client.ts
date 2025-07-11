@@ -3686,7 +3686,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param startAt A point in time within the future in which the video chat will be started.
    * @returns The scheduled video chat.
    */
-  async scheduleVideoChat(chatId: ID, startAt: Date, params?: ScheduleVideoChatParams): Promise<VideoChatScheduled> {
+  async scheduleVideoChat(chatId: ID, startAt: number, params?: ScheduleVideoChatParams): Promise<VideoChatScheduled> {
     return await this.#videoChatManager.scheduleVideoChat(chatId, startAt, params);
   }
 
