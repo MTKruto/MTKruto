@@ -1515,7 +1515,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #getUserAccessHash(userId: bigint) {
     const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUser", user_id: userId, access_hash: 0n }] });
-    const user = Api.as("user", users[0]);
+    const user = Api.is("user", users[0]) ? users[0] : undefined;
     if (user) {
       await this.messageStorage.setEntity(user);
     }
@@ -1524,7 +1524,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #getChannelAccessHash(channelId: bigint) {
     const channels = await this.invoke({ _: "channels.getChannels", id: [{ _: "inputChannel", channel_id: channelId, access_hash: 0n }] });
-    const channel = Api.as("channel", channels.chats[0]);
+    const channel = Api.is("channel", channels.chats[0]) ? channels.chats[0] : undefined;
     if (channel) {
       await this.messageStorage.setEntity(channel);
     }
@@ -1541,7 +1541,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       return { _: "inputPeerSelf" };
     }
     const inputPeer = await this.#getInputPeerInner(id);
-    if (((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n) && await this.storage.getAccountType() == "bot") {
+    if (((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n) && await this.storage.getAccountType() == "user") {
       if ("channel_id" in inputPeer) {
         inputPeer.access_hash = await this.#getChannelAccessHash(inputPeer.channel_id);
       } else {
