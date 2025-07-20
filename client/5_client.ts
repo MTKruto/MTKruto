@@ -57,6 +57,8 @@ import { LinkPreviewManager } from "./4_link_preview_manager.ts";
 import { PollManager } from "./4_poll_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
 
+export type { FilterQuery, WithFilter } from "./0_filters.ts";
+
 export interface Context {
   /** The client that received the update. */
   client: Client;
