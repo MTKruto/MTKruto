@@ -21,8 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { PeerGetter } from "./1_chat_p.ts";
-import { ChatP } from "./1_chat_p.ts";
+import { ChatP, PeerGetter } from "./1_chat_p.ts";
 import { constructMessageEntity, MessageEntity } from "./2_message_entity.ts";
 import { constructStoryContent, StoryContent } from "./2_story_content.ts";
 import { constructStoryInteractions, StoryInteractions } from "./2_story_interactions.ts";

@@ -19,8 +19,7 @@
  */
 
 import { Api } from "../2_tl.ts";
-import { PeerGetter } from "./1_chat_p.ts";
-import { ChatP } from "./1_chat_p.ts";
+import { ChatP, PeerGetter } from "./1_chat_p.ts";
 import { constructReactionCount, ReactionCount } from "./1_reaction_count.ts";
 
 /** Information on the reactions made to a channel post. */

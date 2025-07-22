@@ -21,8 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { PeerGetter } from "./1_chat_p.ts";
-import { ChatP, constructChatP } from "./1_chat_p.ts";
+import { ChatP, constructChatP, PeerGetter } from "./1_chat_p.ts";
 import { StickerSetNameGetter } from "./1_sticker.ts";
 import { constructMessage, Message, MessageGetter } from "./6_message.ts";
 

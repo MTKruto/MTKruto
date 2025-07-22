@@ -22,8 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { MessageReference } from "./0_message_reference.ts";
-import { constructReaction, reactionToTlObject } from "./0_reaction.ts";
-import { Reaction } from "./0_reaction.ts";
+import { constructReaction, Reaction, reactionToTlObject } from "./0_reaction.ts";
 import { PeerGetter } from "./1_chat_p.ts";
 import { constructVenue, Venue } from "./1_venue.ts";
 

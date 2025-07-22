@@ -21,8 +21,7 @@
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { constructReaction, Reaction } from "./0_reaction.ts";
-import { PeerGetter } from "./1_chat_p.ts";
-import { ChatP } from "./1_chat_p.ts";
+import { ChatP, PeerGetter } from "./1_chat_p.ts";
 import { constructUser2, User } from "./2_user.ts";
 
 /** The reactions of a user to a messages in a group. */

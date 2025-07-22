@@ -24,10 +24,8 @@ import { Api } from "../2_tl.ts";
 import { Birthday, constructBirthday } from "./0_birthday.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { constructOpeningHours, OpeningHours } from "./0_opening_hours.ts";
-import { PeerGetter } from "./1_chat_p.ts";
-import { ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup } from "./1_chat_p.ts";
-import { constructPhoto } from "./1_photo.ts";
-import { Photo } from "./1_photo.ts";
+import { ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, PeerGetter } from "./1_chat_p.ts";
+import { constructPhoto, Photo } from "./1_photo.ts";
 
 /** @unlisted */
 export interface ChatBase {

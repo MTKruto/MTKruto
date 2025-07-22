@@ -32,8 +32,7 @@ import { constructSelfDestructOption, SelfDestructOption } from "./0_self_destru
 import { constructVoice, Voice } from "./0_voice.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
 import { Audio, constructAudio } from "./1_audio.ts";
-import { isChatPUser, PeerGetter } from "./1_chat_p.ts";
-import { ChatP } from "./1_chat_p.ts";
+import { ChatP, isChatPUser, PeerGetter } from "./1_chat_p.ts";
 import { constructDocument, Document } from "./1_document.ts";
 import { constructGiveaway, Giveaway } from "./1_giveaway.ts";
 import { constructMessageReaction, MessageReaction } from "./1_message_reaction.ts";

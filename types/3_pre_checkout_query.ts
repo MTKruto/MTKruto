@@ -22,8 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { cleanObject, decodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { PeerGetter } from "./1_chat_p.ts";
-import { constructOrderInfo } from "./1_order_info.ts";
-import { OrderInfo } from "./1_order_info.ts";
+import { constructOrderInfo, OrderInfo } from "./1_order_info.ts";
 import { constructUser2, User } from "./2_user.ts";
 
 export interface PreCheckoutQuery {
