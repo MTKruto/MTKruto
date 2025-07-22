@@ -111,7 +111,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate> {
         return null;
       }
     } else {
-      const pollAnswer = await constructPollAnswer(update, this.#c.getEntity);
+      const pollAnswer = constructPollAnswer(update, this.#c.getPeer);
       return { pollAnswer };
     }
   }

@@ -18,13 +18,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
+import { LruCache, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { awaitablePooledMap, base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageKeyPart } from "../2_storage.ts";
 import { Api, TLReader, TLWriter, X } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
-import { Translation, VoiceTranscription } from "../3_types.ts";
+import { ChatP, Translation, VoiceTranscription } from "../3_types.ts";
 
 // key parts
 export const K = {
@@ -56,7 +56,7 @@ export const K = {
     P: (string: string): string => `cache.${string}`,
     usernames: (): StorageKeyPart[] => [K.cache.P("username")],
     username: (v: string): StorageKeyPart[] => [...K.cache.usernames(), v],
-    peers: (): StorageKeyPart[] => [K.cache.P("peer")],
+    peers: (): StorageKeyPart[] => [K.cache.P("peers")],
     peer: (id: number): StorageKeyPart[] => [...K.cache.peers(), id],
     stickerSetNames: (): StorageKeyPart[] => [K.cache.P("stickerSetNames")],
     stickerSetName: (id: bigint, accessHash: bigint): StorageKeyPart[] => [...K.cache.stickerSetNames(), id, accessHash],
@@ -109,6 +109,8 @@ export const K = {
   },
 };
 
+const PEER_CACHE_SIZE = 5_000;
+
 export class StorageOperations {
   #storage: Storage;
   #supportsFiles: boolean;
@@ -144,6 +146,13 @@ export class StorageOperations {
 
   get<T>(...args: Parameters<Storage["get"]>): ReturnType<Storage["get"]> {
     return this.#storage.get<T>(...args);
+  }
+
+  #oncePromises: Record<string, Promise<unknown>> = {};
+  async #once(key: string, promise: () => Promise<unknown>) {
+    await this.#oncePromises[key] ?? (this.#oncePromises[key] = promise().finally(() => {
+      delete this.#oncePromises[key];
+    }));
   }
 
   getMany<T>(...args: Parameters<Storage["getMany"]>): ReturnType<Storage["getMany"]> {
@@ -215,31 +224,21 @@ export class StorageOperations {
   }
 
   async getChannelAccessHash(id: number): Promise<bigint | null> {
-    const channel = await this.getEntity(id);
-    if (channel) {
-      if (!(Api.is("channel", channel)) && !Api.is("channelForbidden", channel)) {
-        unreachable();
-      }
-      if (Api.is("channel", channel) && channel.min) {
-        return null;
-      }
-      return typeof channel.access_hash === "bigint" ? channel.access_hash : null;
+    const peer = await this.getPeer(id);
+    if (peer?.[0].type === "channel" || peer?.[0].type === "supergroup") {
+      return peer[1];
     } else {
+      // TODO: get min peer reference
       return null;
     }
   }
 
   async getUserAccessHash(id: number): Promise<bigint | null> {
-    const user = await this.getEntity(id);
-    if (user) {
-      if (!Api.is("user", user)) {
-        unreachable();
-      }
-      if (user.min) {
-        return null;
-      }
-      return typeof user.access_hash === "bigint" ? user.access_hash : null;
+    const peer = await this.getPeer(id);
+    if (peer?.[0].type === "private") {
+      return peer[1];
     } else {
+      // TODO: get min peer reference
       return null;
     }
   }
@@ -326,17 +325,47 @@ export class StorageOperations {
     return this.#storage.get<number>(K.updates.channelPts(channelId));
   }
 
-  async setEntity(entity: Api.AnyEntity) {
-    await this.#storage.set(K.cache.peer(Api.peerToChatId(entity)), [this.#mustSerialize ? rleEncode(Api.serializeObject(entity)) : entity, new Date()]);
+  #peersToCommit = new Map<number, [ChatP, bigint]>();
+  #peers = new LruCache<number, [ChatP, bigint] | null>(PEER_CACHE_SIZE);
+  setPeer(chatP: ChatP, accessHash: bigint) {
+    if (chatP.type === "private") {
+      return;
+    }
+    const peer: [ChatP, bigint] = [chatP, accessHash];
+    this.#peersToCommit.set(chatP.id, peer);
+    this.#peers.set(chatP.id, peer);
   }
 
-  async getEntity(key: number): Promise<Api.DeserializedType | null> {
-    const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.peer(key));
-    if (peer_ != null) {
-      const [obj_] = peer_;
-      return await this.getTlObject(obj_);
-    } else {
-      return null;
+  async commitPeers() {
+    await this.#once("commitPeers", async () => {
+      await awaitablePooledMap(2, this.#peersToCommit, async ([id, chat]) => await this.#storage.set(K.cache.peer(id), chat));
+      this.#peersToCommit.clear();
+    });
+  }
+
+  async getPeer(chatId: number) {
+    const maybeChat = this.#peers.get(chatId);
+    if (maybeChat !== undefined) {
+      return maybeChat;
+    }
+    await this.#once(`getPeer-${chatId}`, async () => {
+      const peer = await this.#storage.get<[ChatP, bigint]>(K.cache.peer(chatId));
+      this.#peers.set(chatId, peer);
+    });
+    return this.mustGetPeer(chatId);
+  }
+
+  mustGetPeer(chatId: number) {
+    const peer = this.#peers.get(chatId);
+    if (peer === undefined) {
+      unreachable();
+    }
+    return peer;
+  }
+
+  async deletePeers() {
+    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.peers() })) {
+      await this.#storage.set(key, null);
     }
   }
 
@@ -398,7 +427,7 @@ export class StorageOperations {
     return this.#storage.get<bigint>(K.session.serverSalt());
   }
 
-  async setChat(listId: number, chatId: number, pinned: number, topMessageId: number, topMessageDate: Date) {
+  async setChatlistChat(listId: number, chatId: number, pinned: number, topMessageId: number, topMessageDate: Date) {
     await this.#storage.set(K.chatlists.chat(listId, chatId), [pinned, topMessageId, topMessageDate]);
   }
 
@@ -659,12 +688,6 @@ export class StorageOperations {
 
   async deleteStickerSetNames() {
     for await (const [key] of await this.#storage.getMany({ prefix: K.cache.stickerSetNames() })) {
-      await this.#storage.set(key, null);
-    }
-  }
-
-  async deletePeers() {
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.peers() })) {
       await this.#storage.set(key, null);
     }
   }

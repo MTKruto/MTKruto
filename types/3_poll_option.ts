@@ -18,16 +18,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MaybePromise } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { ID } from "./0_id.ts";
+import { constructMessageEntity, MessageEntity } from "./2_message_entity.ts";
 
-/** @unlisted */
-export interface InputPeerGetter {
-  (id: ID): Promise<Api.InputPeer>;
+/** A poll option. */
+export interface PollOption {
+  /** The option's text (1-100 characters). */
+  text: string;
+  /** The entities of the option's text. */
+  entities: MessageEntity[];
+  /** Number of users that voted this option. */
+  voterCount: number;
+  /** Whether this option has been chosen. */
+  chosen: boolean;
 }
 
-/** @unlisted */
-export interface UsernameResolver {
-  (username: string): MaybePromise<Api.inputUser>;
+export function constructPollOption(option: Api.PollAnswer, results: Array<Api.PollAnswerVoters>): PollOption {
+  const result = results.find((v) => v.option.every((v, i) => option.option[i] == v));
+  return {
+    text: option.text.text,
+    entities: option.text.entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v != null),
+    voterCount: result?.voters ?? 0,
+    chosen: result?.chosen ?? false,
+  };
 }

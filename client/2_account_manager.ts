@@ -141,7 +141,7 @@ export class AccountManager {
     if (!Api.is("inputPeerUser", id)) {
       unreachable();
     }
-    const user = await this.#c.getEntity(Api.inputPeerToPeer(id));
+    const user = await this.#c.getPeer(Api.inputPeerToPeer(id));
     if (!user || !("first_name" in user)) {
       unreachable();
     }
@@ -173,7 +173,7 @@ export class AccountManager {
     this.#c.storage.assertUser("updateProfile");
     const selfId = await this.#c.getSelfId();
     const userFull = await this.#getUserFull(selfId);
-    const entity = await this.#c.getEntity(Api.chatIdToPeer(selfId));
+    const entity = await this.#c.getPeer(Api.chatIdToPeer(selfId));
     if (!Api.is("user", entity)) {
       unreachable();
     }

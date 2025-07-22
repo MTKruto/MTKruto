@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject, getColorFromPeerId, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { cleanObject, getColorFromPeerId, MaybePromise, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 import { constructRestrictionReason, RestrictionReason } from "./0_restriction_reason.ts";
@@ -75,6 +75,8 @@ export interface ChatPPrivate extends _ChatPBase {
   restrictionReason?: RestrictionReason[];
   /** Whether the user is a bot that has been added to the attachment menu by the current user. */
   addedToAttachmentMenu?: boolean;
+  /** Whether the user is a bot that has been added to the attachment menu by the current user. */
+  hasMainMiniApp?: boolean;
 }
 
 /** @unlisted */
@@ -153,6 +155,7 @@ export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | A
       isRestricted: chat.restricted || false,
       restrictionReason: chat.restriction_reason,
       addedToAttachmentMenu: chat.bot ? chat.attach_menu_enabled || false : undefined,
+      hasMainMiniApp: chat.bot ? chat.attach_menu_enabled || false : undefined,
     };
     if (Api.is("userProfilePhoto", chat.photo)) {
       chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.access_hash ?? 0n);
@@ -228,4 +231,16 @@ export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | A
   } else {
     unreachable();
   }
+}
+
+/** @unlisted */
+export interface PeerGetter {
+  (peer: Api.peerUser): [ChatPPrivate, bigint] | null;
+  (peer: Api.peerChat): [ChatPGroup, bigint] | null;
+  (peer: Api.peerChannel): [ChatPChannel | ChatPSupergroup, bigint] | null;
+  (peer: Api.peerUser | Api.peerChat | Api.peerChannel): [ChatP, bigint] | null;
+}
+
+export function isChatPUser(chatP: ChatP): chatP is ChatPPrivate {
+  return chatP.type === "private";
 }

@@ -18,16 +18,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MaybePromise } from "../1_utilities.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { ID } from "./0_id.ts";
+import { constructInlineQueryResult, InlineQueryResult } from "./7_inline_query_result.ts";
 
-/** @unlisted */
-export interface InputPeerGetter {
-  (id: ID): Promise<Api.InputPeer>;
+/** An answer to an inline query. */
+export interface InlineQueryAnswer {
+  /** The ID of the inline query that yielded these results. */
+  id: string;
+  /** The inline query results. */
+  results: InlineQueryResult[];
+  /** A parameter that can be passed to next queries with the same text to yield more results. */
+  nextOffset?: string;
 }
 
-/** @unlisted */
-export interface UsernameResolver {
-  (username: string): MaybePromise<Api.inputUser>;
+export function constructInlineQueryAnswer(results: Api.messages_BotResults): InlineQueryAnswer {
+  return cleanObject({
+    id: results.query_id + "",
+    results: results.results.map(constructInlineQueryResult),
+    nextOffset: results.next_offset,
+  });
 }

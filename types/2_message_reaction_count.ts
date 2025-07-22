@@ -19,7 +19,7 @@
  */
 
 import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
+import { PeerGetter } from "./1_chat_p.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructReactionCount, ReactionCount } from "./1_reaction_count.ts";
 
@@ -35,10 +35,10 @@ export interface MessageReactionCount {
   reactions: ReactionCount[];
 }
 
-export async function constructMessageReactionCount(update: Api.updateBotMessageReactions, getEntity: EntityGetter): Promise<MessageReactionCount | null> {
+export function constructMessageReactionCount(update: Api.updateBotMessageReactions, getPeer: PeerGetter): MessageReactionCount | null {
   const date = update.date;
   const reactions = update.reactions.map((v) => constructReactionCount(v));
-  const entity = await getEntity(update.peer);
+  const entity = getPeer(update.peer);
   if (entity) {
     const chat = constructChatP(entity);
     const messageId = update.msg_id;

@@ -20,7 +20,7 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
+import { constructMessageEntity, MessageEntity } from "./1_message_entity.ts";
 import { constructPollOption, PollOption } from "./1_poll_option.ts";
 
 /** A poll. */

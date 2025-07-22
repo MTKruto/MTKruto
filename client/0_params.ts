@@ -22,7 +22,7 @@ import { MaybePromise } from "../1_utilities.ts";
 import { DC } from "../3_transport.ts";
 import { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
 import { MiniAppMode } from "../types/0_mini_app_mode.ts";
-import { ReplyTo } from "../types/2_reply_to.ts";
+import { ReplyTo } from "../types/4_reply_to.ts";
 
 export interface InvokeParams {
   dc?: DC;

@@ -80,15 +80,15 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       if (chat) {
         chat.order = getChatListItemOrder(message, chat.pinned);
         chat.lastMessage = message;
-        await this.#c.storage.setChat(listId, chatId, chat.pinned, message.id, fromUnixTimestamp(message.date));
+        await this.#c.storage.setChatlistChat(listId, chatId, chat.pinned, message.id, fromUnixTimestamp(message.date));
       } else {
         const pinnedChats = await this.#getPinnedChats(listId);
-        const chat = await constructChatListItem3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getEntity);
+        const chat = constructChatListItem3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getPeer);
         if (chat == null) {
           unreachable();
         }
         this.#chats.set(chatId, chat);
-        await this.#c.storage.setChat(listId, chatId, chat.pinned, chat.lastMessage?.id ?? 0, fromUnixTimestamp(chat.lastMessage?.date ?? 0));
+        await this.#c.storage.setChatlistChat(listId, chatId, chat.pinned, chat.lastMessage?.id ?? 0, fromUnixTimestamp(chat.lastMessage?.date ?? 0));
       }
       if (sendUpdate) {
         return () => this.#sendChatUpdate(chatId, !chat);
@@ -101,10 +101,10 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       if (chat) {
         chat.order = getChatListItemOrder(message, chat.pinned);
         chat.lastMessage = message;
-        await this.#c.storage.setChat(listId, chatId, chat.pinned, message.id, fromUnixTimestamp(message.date));
+        await this.#c.storage.setChatlistChat(listId, chatId, chat.pinned, message.id, fromUnixTimestamp(message.date));
       } else {
         const pinnedChats = await this.#getPinnedChats(listId);
-        const chat = await constructChatListItem3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getEntity);
+        const chat = constructChatListItem3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getPeer);
         if (chat == null) {
           unreachable();
         }
@@ -205,13 +205,13 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
   async #updateOrAddChat(chatId: number) {
     const [chat, listId] = this.#getChatAnywhere(chatId);
     if (chat !== undefined) {
-      const newChat = await constructChatListItem3(chatId, chat.pinned, chat.lastMessage, this.#c.getEntity);
+      const newChat = constructChatListItem3(chatId, chat.pinned, chat.lastMessage, this.#c.getPeer);
       if (newChat != null) {
         this.#getChatList(listId).set(chatId, newChat);
         this.#sendChatUpdate(chatId, false);
       }
     } else {
-      const chat = await constructChatListItem(chatId, -1, -1, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
+      const chat = constructChatListItem(chatId, -1, -1, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
       if (chat != null) {
         this.#getChatList(0).set(chatId, chat);
         await this.reassignChatLastMessage(chatId, false, false);
@@ -263,7 +263,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
 
   async #handleUpdateChannel(update: Api.updateChannel) {
     const peer: Api.peerChannel = { ...update, _: "peerChannel" };
-    const channel = await this.#c.getEntity(peer);
+    const channel = await this.#c.getPeer(peer);
     const chatId = Api.peerToChatId(peer);
     await this.#c.storage.setFullChat(chatId, null);
     if (channel != null && "left" in channel && channel.left) {
@@ -277,7 +277,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
 
   async #handleUpdateChat(update: Api.updateChat) { // TODO: handle deactivated (migration)
     const peer: Api.peerChat = { ...update, _: "peerChat" };
-    const chat = await this.#c.getEntity(peer);
+    const chat = await this.#c.getPeer(peer);
     const chatId = Api.peerToChatId(peer);
     await this.#c.storage.setFullChat(chatId, null);
     if (chat != null && "left" in chat && chat.left) {
@@ -291,7 +291,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
 
   async #handleUpdateUser(update: Api.updateUser | Api.updateUserName) {
     const peer: Api.peerUser = { ...update, _: "peerUser" };
-    const chat = await this.#c.getEntity(peer);
+    const chat = await this.#c.getPeer(peer);
     const chatId = Api.peerToChatId(peer);
     await this.#c.storage.setFullChat(chatId, null);
     if (chat != null) {
@@ -318,9 +318,9 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     }
     const chats = new Array<ChatListItem>();
     for (const dialog of dialogs.dialogs) {
-      const chat = await constructChatListItem4(dialog, dialogs, pinnedChats, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
+      const chat = constructChatListItem4(dialog, dialogs, pinnedChats, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
       chats.push(chat);
-      await this.#c.storage.setChat(listId, chat.chat.id, chat.pinned, chat.lastMessage?.id ?? 0, fromUnixTimestamp(chat.lastMessage?.date ?? 0));
+      await this.#c.storage.setChatlistChat(listId, chat.chat.id, chat.pinned, chat.lastMessage?.id ?? 0, fromUnixTimestamp(chat.lastMessage?.date ?? 0));
     }
     return chats;
   }
@@ -377,7 +377,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     if (fullChat == null) {
       throw new InputError("Chat not found.");
     }
-    return await constructChat(fullChat, this.#c.getEntity);
+    return constructChat(fullChat, this.#c.getPeer);
   }
 
   async getChatAdministrators(chatId: ID) {
@@ -390,7 +390,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       }
       const chatMembers = new Array<ChatMember>();
       for (const p of participants.participants) {
-        chatMembers.push(await constructChatMember(p, this.#c.getEntity));
+        chatMembers.push(constructChatMember(p, this.#c.getPeer));
       }
       return chatMembers;
     } else if (Api.is("inputPeerChat", peer)) {
@@ -400,7 +400,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       }
       const chatMembers = new Array<ChatMember>();
       for (const p of fullChat.participants.participants) {
-        chatMembers.push(await constructChatMember(p, this.#c.getEntity));
+        chatMembers.push(constructChatMember(p, this.#c.getPeer));
       }
       return chatMembers;
     } else {
@@ -413,13 +413,13 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
 
     if (canBeInputChannel(peer)) {
       const { participant } = await this.#c.invoke({ _: "channels.getParticipant", channel: toInputChannel(peer), participant: await this.#c.getInputPeer(userId) });
-      return await constructChatMember(participant, this.#c.getEntity);
+      return constructChatMember(participant, this.#c.getPeer);
     } else if (Api.is("inputPeerChat", peer)) {
       const user = await this.#c.getInputUser(userId);
       const userId_ = BigInt(await this.#c.getInputPeerChatId(user));
       const fullChat = await this.#c.invoke({ ...peer, _: "messages.getFullChat" }).then((v) => Api.as("chatFull", v.full_chat));
       const participant = Api.as("chatParticipants", fullChat.participants).participants.find((v) => v.user_id == userId_)!;
-      return await constructChatMember(participant, this.#c.getEntity);
+      return constructChatMember(participant, this.#c.getPeer);
     } else {
       throw new InputError("Expected a channel, supergroup, or group ID. Got a user ID instead.");
     }
@@ -435,7 +435,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       }
       const chatMembers = new Array<ChatMember>();
       for (const p of participants.participants) {
-        chatMembers.push(await constructChatMember(p, this.#c.getEntity));
+        chatMembers.push(constructChatMember(p, this.#c.getPeer));
       }
       return chatMembers;
     } else if (Api.is("inputPeerChat", peer)) {
@@ -445,7 +445,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       }
       const chatMembers = new Array<ChatMember>();
       for (const p of fullChat.participants.participants) {
-        chatMembers.push(await constructChatMember(p, this.#c.getEntity));
+        chatMembers.push(constructChatMember(p, this.#c.getPeer));
       }
       return chatMembers;
     } else {

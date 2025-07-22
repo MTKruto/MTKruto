@@ -21,8 +21,8 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
+import { PeerGetter } from "./1_chat_p.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructStoryPrivacy } from "./1_story_privacy.ts";
 import { StoryPrivacy } from "./1_story_privacy.ts";
@@ -46,9 +46,9 @@ export interface Story {
   captionEntities?: MessageEntity[];
 }
 
-export async function constructStory(story: Api.storyItem, peer: Api.peerUser | Api.peerChat | Api.peerChannel, getEntity: EntityGetter): Promise<Story> {
+export function constructStory(story: Api.storyItem, peer: Api.peerUser | Api.peerChat | Api.peerChannel, getPeer: PeerGetter): Story {
   const id = story.id;
-  const entity = await getEntity(peer);
+  const entity = getPeer(peer);
   if (!entity) {
     unreachable();
   }

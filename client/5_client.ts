@@ -240,7 +240,7 @@ export const handleMigrationError = Symbol("handleMigrationError");
 // global Client ID counter for logs
 let id = 0;
 
-const getEntity = Symbol();
+const getPeer = Symbol();
 
 export interface ClientParams extends ClientPlainParams {
   /** The storage provider to use. Defaults to memory storage. */
@@ -452,7 +452,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       getInputChannel: this.getInputChannel.bind(this),
       getInputUser: this.getInputUser.bind(this),
       getInputPeerChatId: this.#getInputPeerChatId.bind(this),
-      getEntity: this[getEntity].bind(this),
+      getPeer: this[getPeer].bind(this),
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
       outgoingMessages: this.#outgoingMessages,
@@ -1669,13 +1669,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
-  private [getEntity](peer: Api.peerUser): Promise<Api.user | null>;
-  private [getEntity](peer: Api.peerChat): Promise<Api.chat | Api.chatForbidden | null>;
-  private [getEntity](peer: Api.peerChannel): Promise<Api.channel | Api.channelForbidden | null>;
-  private [getEntity](peer: Api.peerUser | Api.peerChat | Api.peerChannel): Promise<Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden | null>;
-  private async [getEntity](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
+  private [getPeer](peer: Api.peerUser): Promise<Api.user | null>;
+  private [getPeer](peer: Api.peerChat): Promise<Api.chat | Api.chatForbidden | null>;
+  private [getPeer](peer: Api.peerChannel): Promise<Api.channel | Api.channelForbidden | null>;
+  private [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel): Promise<Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden | null>;
+  private async [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
     const id = Api.peerToChatId(peer);
-    const entity = await this.messageStorage.getEntity(id);
+    const entity = await this.messageStorage.getPeer(id);
     if (entity == null && await this.storage.getAccountType() == "bot" && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
       await this.getInputPeer(id);
     } else {
@@ -1707,7 +1707,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     if (Api.is("updateUserName", update)) {
       await this.messageStorage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
       const peer: Api.peerUser = { ...update, _: "peerUser" };
-      const entity = await this[getEntity](peer);
+      const entity = await this[getPeer](peer);
       if (entity != null) {
         entity.usernames = update.usernames;
         entity.first_name = update.first_name;
@@ -1837,7 +1837,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @method ac
    */
   async getMe(): Promise<User> {
-    let user_ = await this[getEntity]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) });
+    let user_ = await this[getPeer]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) });
     if (user_ == null) {
       const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUserSelf" }] });
       user_ = Api.as("user", users[0]);

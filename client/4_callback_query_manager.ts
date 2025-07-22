@@ -80,6 +80,6 @@ export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManage
   }
 
   async handleUpdate(update: CallbackQueryManagerUpdate): Promise<Update> {
-    return { callbackQuery: await constructCallbackQuery(update, this.#c.getEntity, this.#c.messageManager.getMessageWithReply.bind(this.#c.messageManager)) };
+    return { callbackQuery: constructCallbackQuery(update, this.#c.getPeer, this.#c.messageManager.getMessageWithReply.bind(this.#c.messageManager)) };
   }
 }

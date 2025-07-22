@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { getLogger, Logger, Mutex, Queue, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { PersistentTimestampInvalid } from "../3_errors.ts";
-import { ID } from "../3_types.ts";
+import { constructChatP, constructUser, ID } from "../3_types.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { C } from "./1_types.ts";
@@ -78,7 +78,6 @@ export class UpdateManager {
   #L$processUpdates: Logger;
   #LfetchState: Logger;
   #LopenChat: Logger;
-  #Lmin: Logger;
 
   constructor(c: C) {
     this.#c = c;
@@ -90,7 +89,6 @@ export class UpdateManager {
     this.#L$processUpdates = L.branch("#processUpdates");
     this.#LfetchState = L.branch("fetchState");
     this.#LopenChat = L.branch("openChat");
-    this.#Lmin = L.branch("min");
   }
 
   static isPtsUpdate(v: Api.Update): v is PtsUpdate {
@@ -198,33 +196,28 @@ export class UpdateManager {
     return minPeerReferences;
   }
 
-  async processChats(chats: Api.Chat[], context: Api.DeserializedType) {
+  async processChats(chats: Api.Chat[], _context: Api.DeserializedType) {
     for (const chat of chats) {
-      if (Api.isOneOf(["channel", "channelForbidden"], chat)) {
-        if (!Api.is("channel", chat) || !chat.min || chat.min && await this.#c.messageStorage.getEntity(Api.peerToChatId(chat)) == null) {
-          await this.#c.messageStorage.setEntity(chat);
-        }
-        if (Api.is("channel", chat) && chat.min) {
-          const entity = await this.#c.messageStorage.getEntity(Api.peerToChatId(chat));
-          const senderChatId = Api.peerToChatId(chat);
-          if (Api.is("channel", entity) && entity.min) {
-            for (const { chatId, senderId, messageId } of this.#extractMinPeerReferences(context)) {
-              if (senderId == senderChatId) {
-                await this.#c.messageStorage.setMinPeerReference(chatId, senderId, messageId);
-                this.#Lmin.debug("channel min peer reference stored", chatId, senderId, messageId);
-              }
-            }
-          }
-        }
-        if ("username" in chat && chat.username) {
-          await this.#c.messageStorage.updateUsernames(Api.peerToChatId(chat), [chat.username]);
-        }
-        if ("usernames" in chat && chat.usernames) {
-          await this.#c.messageStorage.updateUsernames(Api.peerToChatId(chat), chat.usernames.map((v) => v.username));
-        }
-      } else if (Api.isOneOf(["chat", "chatForbidden"], chat)) {
-        await this.#c.messageStorage.setEntity(chat);
-      }
+      await this.processChat(chat);
+    }
+  }
+
+  async processChat(chat: Api.Chat) {
+    if (Api.is("chatEmpty", chat)) {
+      return;
+    }
+    if (Api.is("channel", chat) && chat.min) {
+      return; // TODO
+    }
+    const chatP = constructChatP(chat);
+    const accessHash = "access_hash" in chat ? chat.access_hash ?? 0n : 0n;
+    this.#c.messageStorage.setPeer(chatP, accessHash);
+
+    if ("username" in chat && chat.username) {
+      await this.#c.messageStorage.updateUsernames(Api.peerToChatId(chat), [chat.username]);
+    }
+    if ("usernames" in chat && chat.usernames) {
+      await this.#c.messageStorage.updateUsernames(Api.peerToChatId(chat), chat.usernames.map((v) => v.username));
     }
   }
 
@@ -274,34 +267,29 @@ export class UpdateManager {
     }
   }
 
-  async processUsers(users: Api.User[], context: Api.DeserializedType) {
+  async processUsers(users: Api.User[], _context: Api.DeserializedType) {
     for (const user of users) {
-      if (Api.is("user", user) && user.access_hash) {
-        if (!user.min || user.min && await this.#c.messageStorage.getEntity(Api.peerToChatId(user)) == null) {
-          await this.#c.messageStorage.setEntity(user);
-        }
-        if (user.min) {
-          this.#Lmin.debug("encountered min user");
-        }
-        if (Api.is("user", user) && user.min) {
-          const entity = await this.#c.messageStorage.getEntity(Api.peerToChatId(user));
-          const userId = Api.peerToChatId(user);
-          if (Api.is("user", entity) && entity.min) {
-            for (const { chatId, senderId, messageId } of this.#extractMinPeerReferences(context)) {
-              if (senderId == userId) {
-                await this.#c.messageStorage.setMinPeerReference(chatId, senderId, messageId);
-                this.#Lmin.debug("user min peer reference stored", chatId, senderId, messageId);
-              }
-            }
-          }
-        }
-        if (user.username) {
-          await this.#c.messageStorage.updateUsernames(Api.peerToChatId(user), [user.username]);
-        }
-        if (user.usernames) {
-          await this.#c.messageStorage.updateUsernames(Api.peerToChatId(user), user.usernames.map((v) => v.username));
-        }
-      }
+      await this.processUser(user);
+    }
+  }
+
+  async processUser(user: Api.User) {
+    if (Api.is("userEmpty", user)) {
+      return;
+    }
+    if (user.min) {
+      return; // TODO
+    }
+
+    const user_ = constructUser(user);
+    const accessHash = user.access_hash ?? 0n;
+    await this.#c.messageStorage.setUser(user_, accessHash);
+
+    if (user.username) {
+      await this.#c.messageStorage.updateUsernames(Api.peerToChatId(user), [user.username]);
+    }
+    if (user.usernames) {
+      await this.#c.messageStorage.updateUsernames(Api.peerToChatId(user), user.usernames.map((v) => v.username));
     }
   }
 

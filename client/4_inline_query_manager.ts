@@ -55,9 +55,9 @@ export class InlineQueryManager implements UpdateProcessor<InlineQueryManagerUpd
 
   async handleUpdate(update: InlineQueryManagerUpdate): Promise<Update> {
     if (Api.is("updateBotInlineQuery", update)) {
-      return { inlineQuery: await constructInlineQuery(update, this.#c.getEntity) };
+      return { inlineQuery: constructInlineQuery(update, this.#c.getPeer) };
     } else if (Api.is("updateBotInlineSend", update)) {
-      return { chosenInlineResult: await constructChosenInlineResult(update, this.#c.getEntity) };
+      return { chosenInlineResult: constructChosenInlineResult(update, this.#c.getPeer) };
     } else {
       unreachable();
     }

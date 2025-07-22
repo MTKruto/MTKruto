@@ -43,9 +43,9 @@ export class BusinessConnectionManager implements UpdateProcessor<BusinessConnec
         .then((v) => Api.as("updates", v))
         .then((v) => Api.as("updateBotBusinessConnect", v.updates[0]).connection);
       await this.#c.messageStorage.setBusinessConnection(id, connection_);
-      return await constructBusinessConnection(connection_, this.#c.getEntity);
+      return constructBusinessConnection(connection_, this.#c.getPeer);
     } else {
-      return await constructBusinessConnection(connection_, this.#c.getEntity);
+      return constructBusinessConnection(connection_, this.#c.getPeer);
     }
   }
 
@@ -59,7 +59,7 @@ export class BusinessConnectionManager implements UpdateProcessor<BusinessConnec
     } else {
       await this.#c.messageStorage.setBusinessConnection(update.connection.connection_id, update.connection);
     }
-    const businessConnection = await constructBusinessConnection(update.connection, this.#c.getEntity);
+    const businessConnection = constructBusinessConnection(update.connection, this.#c.getPeer);
     return { businessConnection };
   }
 }

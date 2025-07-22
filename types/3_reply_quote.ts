@@ -18,16 +18,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MaybePromise } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { ID } from "./0_id.ts";
+import { constructMessageEntity, MessageEntity } from "./2_message_entity.ts";
 
-/** @unlisted */
-export interface InputPeerGetter {
-  (id: ID): Promise<Api.InputPeer>;
+/** A reference to a specific part of a message that is being replied to. */
+export interface ReplyQuote {
+  /** The byte offset of the quoted text. */
+  offset: number;
+  /** The quoted text. */
+  text: string;
+  /** The entities of the quoted text. */
+  entities: MessageEntity[];
 }
 
-/** @unlisted */
-export interface UsernameResolver {
-  (username: string): MaybePromise<Api.inputUser>;
+export function constructReplyQuote(quoteText: string | undefined, quoteOffset: number | undefined, quoteEntities: Api.MessageEntity[] | undefined): ReplyQuote {
+  quoteText ??= "";
+  quoteOffset ??= 0;
+  quoteEntities ??= [];
+  return {
+    offset: quoteOffset,
+    text: quoteText,
+    entities: quoteEntities.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v),
+  };
 }

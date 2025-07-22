@@ -20,11 +20,11 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { MessageReference } from "./0_message_reference.ts";
 import { constructReaction, reactionToTlObject } from "./0_reaction.ts";
 import { Reaction } from "./0_reaction.ts";
+import { PeerGetter } from "./1_chat_p.ts";
 import { constructVenue, Venue } from "./1_venue.ts";
 
 /** @unlisted */
@@ -116,7 +116,7 @@ export function constructStoryInteractiveArea(area: Api.MediaArea): StoryInterac
 function storyInteractiveAreaPositionToTlObject(position: StoryInteractiveAreaPosition): Api.mediaAreaCoordinates {
   return { _: "mediaAreaCoordinates", x: position.xPercentage, y: position.yPercentage, w: position.widthPercentage, h: position.heightPercentage, rotation: position.rotationAngle };
 }
-export async function storyInteractiveAreaToTlObject(area: StoryInteractiveArea, getEntity: EntityGetter): Promise<Api.MediaArea> {
+export async function storyInteractiveAreaToTlObject(area: StoryInteractiveArea, getPeer: PeerGetter): Promise<Api.MediaArea> {
   const coordinates = storyInteractiveAreaPositionToTlObject(area.position);
   if ("location" in area) {
     const geo: Api.geoPoint = { _: "geoPoint", lat: area.location.latitude, long: area.location.longitude, access_hash: 0n, accuracy_radius: area.location.horizontalAccuracy };
@@ -137,7 +137,7 @@ export async function storyInteractiveAreaToTlObject(area: StoryInteractiveArea,
     const reaction = reactionToTlObject(area.reaction);
     return { _: "mediaAreaSuggestedReaction", coordinates, reaction, dark: area.dark ? true : undefined, flipped: area.flipped ? true : undefined };
   } else if ("messageReference" in area) {
-    const entity = await getEntity(Api.chatIdToPeer(area.messageReference.chatId));
+    const entity = getPeer(Api.chatIdToPeer(area.messageReference.chatId));
     if (!(Api.is("channel", entity))) {
       unreachable();
     }

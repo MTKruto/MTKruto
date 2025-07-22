@@ -50,7 +50,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     if (Api.is("updates", updates)) {
       const updateStory = updates.updates.find((v): v is Api.updateStory => Api.is("updateStory", v));
       if (updateStory && Api.is("storyItem", updateStory.story)) {
-        return await constructStory(updateStory.story, updateStory.peer, this.#c.getEntity);
+        return constructStory(updateStory.story, updateStory.peer, this.#c.getPeer);
       }
     }
     unreachable();
@@ -92,12 +92,12 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     const entities = parseResult === undefined ? undefined : parseResult[1];
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
-    const privacyRules = await storyPrivacyToTlObject(params?.privacy ?? { everyoneExcept: [] }, this.#c.getEntity);
+    const privacyRules = await storyPrivacyToTlObject(params?.privacy ?? { everyoneExcept: [] }, this.#c.getPeer);
     const mediaAreas = new Array<Api.MediaArea>();
 
     if (params?.interactiveAreas?.length) {
       for (const area of params.interactiveAreas) {
-        mediaAreas.push(await storyInteractiveAreaToTlObject(area, this.#c.getEntity));
+        mediaAreas.push(await storyInteractiveAreaToTlObject(area, this.#c.getPeer));
       }
     }
 
@@ -112,7 +112,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     const stories_ = await this.#c.invoke({ _: "stories.getStoriesByID", peer, id: storyIds });
     const stories = new Array<Story>();
     for (const story of stories_.stories) {
-      stories.push(await constructStory(Api.as("storyItem", story), Api.inputPeerToPeer(peer), this.#c.getEntity));
+      stories.push(constructStory(Api.as("storyItem", story), Api.inputPeerToPeer(peer), this.#c.getPeer));
     }
     return stories;
   }
@@ -169,7 +169,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
       const storyId = update.story.id;
       return { deletedStory: { chatId, storyId } };
     } else if (Api.is("storyItem", update.story)) {
-      const story = await constructStory(update.story, update.peer, this.#c.getEntity);
+      const story = constructStory(update.story, update.peer, this.#c.getPeer);
       return { story };
     } else {
       return null;

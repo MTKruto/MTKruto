@@ -18,16 +18,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MaybePromise } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
 import { ID } from "./0_id.ts";
+import { ReplyQuote } from "./3_reply_quote.ts";
 
 /** @unlisted */
-export interface InputPeerGetter {
-  (id: ID): Promise<Api.InputPeer>;
+export interface ReplyToMessage {
+  /** @discriminator */
+  messageId: number;
+  quote?: ReplyQuote;
 }
 
 /** @unlisted */
-export interface UsernameResolver {
-  (username: string): MaybePromise<Api.inputUser>;
+export interface ReplyToStory {
+  chatId: ID;
+  /** @discriminator */
+  storyId: number;
 }
+
+export type ReplyTo = ReplyToMessage | ReplyToStory;
