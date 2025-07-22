@@ -19,7 +19,6 @@
  */
 // deno-lint-ignore-file no-explicit-any
 
-import { AnyObject, AnyType, Enums, Functions, schema, Types } from "./1_telegram_api.ts";
 import { TLReader } from "./1_tl_reader.ts";
 import { TLWriter } from "./1_tl_writer.ts";
 import { unreachable } from "../0_deps.ts";
@@ -29,39 +28,39 @@ import { as as as_, assertIsValidObject as assertIsValidObject_, is as is_, isOf
 
 export * from "./1_telegram_api.ts";
 
-export type DeserializedType = boolean | number | bigint | string | Uint8Array | AnyType | Array<DeserializedType>;
+export type DeserializedType = boolean | number | bigint | string | Uint8Array | Api.AnyType | Array<DeserializedType>;
 
-export async function deserializeType<T extends (keyof Types) | "X" | string>(name: T, bufferOrReader: TLReader | Uint8Array): Promise<T extends keyof Types ? Types[T] : DeserializedType> {
+export async function deserializeType<T extends (keyof Api.Types) | "X" | string>(name: T, bufferOrReader: TLReader | Uint8Array): Promise<T extends keyof Api.Types ? Api.Types[T] : DeserializedType> {
   const reader = bufferOrReader instanceof Uint8Array ? new TLReader(bufferOrReader) : bufferOrReader;
-  return await reader.readType(name, schema);
+  return await reader.readType(name, Api.schema);
 }
 
-export function serializeObject(object: AnyObject): Uint8Array {
-  return new TLWriter().writeObject(object, schema).buffer;
+export function serializeObject(object: Api.AnyObject): Uint8Array {
+  return new TLWriter().writeObject(object, Api.schema).buffer;
 }
 
-export function isValidObject(object: any): object is AnyType {
-  return isValidObject_(object, schema);
+export function isValidObject(object: any): object is Api.AnyType {
+  return isValidObject_(object, Api.schema);
 }
-export function assertIsValidObject(object: any): asserts object is AnyType {
-  return assertIsValidObject_(object, schema);
+export function assertIsValidObject(object: any): asserts object is Api.AnyType {
+  return assertIsValidObject_(object, Api.schema);
 }
 
-export function is<S extends keyof (Types & Functions)>(name: S, value: unknown): value is S extends keyof Types ? Types[S] : S extends keyof Functions ? Functions[S] : never {
-  return is_(name, value, schema);
+export function is<S extends keyof (Api.Types & Api.Functions)>(name: S, value: unknown): value is S extends keyof Api.Types ? Api.Types[S] : S extends keyof Api.Functions ? Api.Functions[S] : never {
+  return is_(name, value, Api.schema);
 }
-export function isOneOf<S extends keyof (Types & Functions)>(names: S[] | readonly S[], value: unknown): value is S extends keyof Types ? Types[S] : S extends keyof Functions ? Functions[S] : never {
-  return isOneOf_(names as S[], value, schema);
+export function isOneOf<S extends keyof (Api.Types & Api.Functions)>(names: S[] | readonly S[], value: unknown): value is S extends keyof Api.Types ? Api.Types[S] : S extends keyof Api.Functions ? Api.Functions[S] : never {
+  return isOneOf_(names as S[], value, Api.schema);
 }
-export function isOfEnum<S extends keyof Enums>(name: S, value: unknown): value is Enums[S] {
-  return isOfEnum_(name, value, schema);
+export function isOfEnum<S extends keyof Api.Enums>(name: S, value: unknown): value is Api.Enums[S] {
+  return isOfEnum_(name, value, Api.schema);
 }
-export function as<S extends keyof Types>(name: S, value: unknown): Types[S] {
-  return as_(name, value, schema) as Types[S];
+export function as<S extends keyof Api.Types>(name: S, value: unknown): Api.Types[S] {
+  return as_(name, value, Api.schema) as Api.Types[S];
 }
 
 export function mustGetReturnType(name: string): string {
-  return mustGetReturnType_(name, schema);
+  return mustGetReturnType_(name, Api.schema);
 }
 
 const GENERIC_FUNCTIONS = [
