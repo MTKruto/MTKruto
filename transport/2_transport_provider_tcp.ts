@@ -20,7 +20,7 @@
 
 import { ConnectionTCP } from "../connection/1_connection_tcp.ts";
 import { TransportAbridged } from "./1_transport_abridged.ts";
-import { getDcId, getDcIps, TransportProvider } from "./2_transport_provider.ts";
+import { getDcId, getDcIps, TransportProvider } from "./1_transport_provider.ts";
 
 export function transportProviderTcp(params?: {
   ipv6?: boolean;

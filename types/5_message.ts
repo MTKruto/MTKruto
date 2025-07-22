@@ -48,8 +48,8 @@ import { constructVideo, Video } from "./1_video.ts";
 import { constructForwardHeader, ForwardHeader } from "./2_forward_header.ts";
 import { constructGame, Game } from "./2_game.ts";
 import { constructPoll, Poll } from "./2_poll.ts";
+import { constructReplyMarkup, ReplyMarkup } from "./2_reply_markup.ts";
 import { constructSuccessfulPayment, SuccessfulPayment } from "./2_successful_payment.ts";
-import { constructReplyMarkup, ReplyMarkup } from "./3_reply_markup.ts";
 import { constructLinkPreview, LinkPreview } from "./4_link_preview.ts";
 
 const L = getLogger("Message");
