@@ -1686,7 +1686,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   private [mustGetPeer](peer: Api.peerChannel): [ChatPChannel, bigint] | null;
   private [mustGetPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel): [ChatP, bigint] | null;
   private [mustGetPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
-    return this.storage.mustGetPeer(peerToChatId(peer));
+    return this.messageStorage.mustGetPeer(peerToChatId(peer));
   }
 
   async #handleCtxUpdate(update: Update) {
