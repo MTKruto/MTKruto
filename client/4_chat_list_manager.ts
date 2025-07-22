@@ -211,7 +211,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
         this.#sendChatUpdate(chatId, false);
       }
     } else {
-      const chat =await constructChatListItem(chatId, -1, -1, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
+      const chat = await constructChatListItem(chatId, -1, -1, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
       if (chat != null) {
         this.#getChatList(0).set(chatId, chat);
         await this.reassignChatLastMessage(chatId, false, false);

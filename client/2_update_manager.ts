@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { getLogger, Logger, Mutex, Queue, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { PersistentTimestampInvalid } from "../3_errors.ts";
-import { constructChatP, constructUser, ID } from "../3_types.ts";
+import { ID } from "../3_types.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { C } from "./1_types.ts";
@@ -209,7 +209,7 @@ export class UpdateManager {
     if (Api.is("channel", chat) && chat.min) {
       return; // TODO
     }
-    
+
     this.#c.messageStorage.setPeer(chat);
 
     if ("username" in chat && chat.username) {
