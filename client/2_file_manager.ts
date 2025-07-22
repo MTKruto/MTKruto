@@ -437,7 +437,7 @@ export class FileManager {
         };
         const fileUniqueId = toUniqueFileId(fileId_);
         const fileId = serializeFileId(fileId_);
-        const sticker = constructSticker(document_, fileId, fileUniqueId, this.getStickerSetName.bind(this), id_);
+        const sticker = await constructSticker(document_, fileId, fileUniqueId, this.getStickerSetName.bind(this), id_);
         stickers.push(sticker);
       } else {
         shouldFetch = true;
@@ -458,7 +458,7 @@ export class FileManager {
       };
       const fileUniqueId = toUniqueFileId(fileId_);
       const fileId = serializeFileId(fileId_);
-      const sticker = constructSticker(document_, fileId, fileUniqueId, this.getStickerSetName.bind(this), id[i]);
+      const sticker =await constructSticker(document_, fileId, fileUniqueId, this.getStickerSetName.bind(this), id[i]);
       stickers.push(sticker);
     }
     return stickers;

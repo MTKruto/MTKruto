@@ -209,9 +209,8 @@ export class UpdateManager {
     if (Api.is("channel", chat) && chat.min) {
       return; // TODO
     }
-    const chatP = constructChatP(chat);
-    const accessHash = "access_hash" in chat ? chat.access_hash ?? 0n : 0n;
-    this.#c.messageStorage.setPeer(chatP, accessHash);
+    
+    this.#c.messageStorage.setPeer(chat);
 
     if ("username" in chat && chat.username) {
       await this.#c.messageStorage.updateUsernames(Api.peerToChatId(chat), [chat.username]);
@@ -281,9 +280,7 @@ export class UpdateManager {
       return; // TODO
     }
 
-    const user_ = constructUser(user);
-    const accessHash = user.access_hash ?? 0n;
-    await this.#c.messageStorage.setUser(user_, accessHash);
+    this.#c.messageStorage.setPeer(user);
 
     if (user.username) {
       await this.#c.messageStorage.updateUsernames(Api.peerToChatId(user), [user.username]);
@@ -832,7 +829,7 @@ export class UpdateManager {
     if (!chatIds.size) {
       return false;
     }
-    return (await Promise.all(chatIds.values().map((v) => this.#c.messageStorage.getEntity(v)))).some((v) => !v);
+    return (await Promise.all(chatIds.values().map((v) => this.#c.messageStorage.getPeer(v)))).some((v) => !v);
   }
 
   #collectChatIds(object: PtsUpdate | Api.MessageMedia | Api.MessageFwdHeader): Set<number> {

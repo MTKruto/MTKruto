@@ -116,7 +116,7 @@ export function constructStoryInteractiveArea(area: Api.MediaArea): StoryInterac
 function storyInteractiveAreaPositionToTlObject(position: StoryInteractiveAreaPosition): Api.mediaAreaCoordinates {
   return { _: "mediaAreaCoordinates", x: position.xPercentage, y: position.yPercentage, w: position.widthPercentage, h: position.heightPercentage, rotation: position.rotationAngle };
 }
-export async function storyInteractiveAreaToTlObject(area: StoryInteractiveArea, getPeer: PeerGetter): Promise<Api.MediaArea> {
+export function storyInteractiveAreaToTlObject(area: StoryInteractiveArea, getPeer: PeerGetter): Api.MediaArea {
   const coordinates = storyInteractiveAreaPositionToTlObject(area.position);
   if ("location" in area) {
     const geo: Api.geoPoint = { _: "geoPoint", lat: area.location.latitude, long: area.location.longitude, access_hash: 0n, accuracy_radius: area.location.horizontalAccuracy };

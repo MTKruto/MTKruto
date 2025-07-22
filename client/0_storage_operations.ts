@@ -24,7 +24,7 @@ import { awaitablePooledMap, base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFro
 import { Storage, StorageKeyPart } from "../2_storage.ts";
 import { Api, TLReader, TLWriter, X } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
-import { ChatP, Translation, VoiceTranscription } from "../3_types.ts";
+import { ChatP, constructChatP, Translation, VoiceTranscription } from "../3_types.ts";
 
 // key parts
 export const K = {
@@ -327,10 +327,12 @@ export class StorageOperations {
 
   #peersToCommit = new Map<number, [ChatP, bigint]>();
   #peers = new LruCache<number, [ChatP, bigint] | null>(PEER_CACHE_SIZE);
-  setPeer(chatP: ChatP, accessHash: bigint) {
-    if (chatP.type === "private") {
-      return;
-    }
+  setPeer(peer_: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden) {
+    const chatP = constructChatP(peer_);
+    this.setPeer2(chatP, "access_hash" in peer_ ? peer_.access_hash ?? 0n : 0n);
+  }
+
+  setPeer2(chatP: ChatP, accessHash: bigint) {
     const peer: [ChatP, bigint] = [chatP, accessHash];
     this.#peersToCommit.set(chatP.id, peer);
     this.#peers.set(chatP.id, peer);

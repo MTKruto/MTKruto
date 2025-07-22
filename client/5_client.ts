@@ -24,10 +24,11 @@ import { cleanObject, drop, getLogger, Logger, MaybePromise, mustPrompt, mustPro
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { DC, getDcId, TransportProvider } from "../3_transport.ts";
-import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Sticker, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, ChatPPrivate, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructChatP, constructUser2, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Sticker, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
+import { peerToChatId } from "../tl/2_telegram.ts";
 import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMyCommandsParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenMiniAppParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
@@ -242,6 +243,8 @@ let id = 0;
 
 const getPeer = Symbol();
 
+const mustGetPeer = Symbol();
+
 export interface ClientParams extends ClientPlainParams {
   /** The storage provider to use. Defaults to memory storage. */
   storage?: Storage;
@@ -452,7 +455,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       getInputChannel: this.getInputChannel.bind(this),
       getInputUser: this.getInputUser.bind(this),
       getInputPeerChatId: this.#getInputPeerChatId.bind(this),
-      getPeer: this[getPeer].bind(this),
+      getPeer: this[mustGetPeer].bind(this),
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
       outgoingMessages: this.#outgoingMessages,
@@ -1518,18 +1521,12 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async #getUserAccessHash(userId: bigint) {
     const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUser", user_id: userId, access_hash: 0n }] });
     const user = Api.is("user", users[0]) ? users[0] : undefined;
-    if (user) {
-      await this.messageStorage.setEntity(user);
-    }
     return user?.access_hash ?? 0n;
   }
 
   async #getChannelAccessHash(channelId: bigint) {
     const channels = await this.invoke({ _: "channels.getChannels", id: [{ _: "inputChannel", channel_id: channelId, access_hash: 0n }] });
     const channel = Api.is("channel", channels.chats[0]) ? channels.chats[0] : undefined;
-    if (channel) {
-      await this.messageStorage.setEntity(channel);
-    }
     return channel?.access_hash ?? 0n;
   }
 
@@ -1656,9 +1653,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #getMinInputPeer(type: "user" | "channel", reference: { chatId: number; senderId: number; messageId: number }): Promise<Api.inputPeerUserFromMessage | Api.inputPeerChannelFromMessage | null> {
-    const entity = await this.messageStorage.getEntity(reference.chatId);
-    if (Api.isOneOf(["channel", "channelForbidden"], entity) && entity.access_hash) {
-      const peer: Api.inputPeerChannel = { _: "inputPeerChannel", channel_id: entity.id, access_hash: entity.access_hash };
+    const peer_ = await this.messageStorage.getPeer(reference.chatId);
+    if (peer_ !== null && (peer_[0].type === "channel" || peer_[0].type === "supergroup")) {
+      const peer: Api.inputPeerChannel = { _: "inputPeerChannel", channel_id: BigInt(peer_[0].id), access_hash: peer_[1] };
       if (type == "user") {
         return { _: "inputPeerUserFromMessage", peer, msg_id: reference.messageId, user_id: Api.chatIdToPeerId(reference.senderId) };
       } else {
@@ -1669,10 +1666,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
-  private [getPeer](peer: Api.peerUser): Promise<Api.user | null>;
-  private [getPeer](peer: Api.peerChat): Promise<Api.chat | Api.chatForbidden | null>;
-  private [getPeer](peer: Api.peerChannel): Promise<Api.channel | Api.channelForbidden | null>;
-  private [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel): Promise<Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden | null>;
+  private [getPeer](peer: Api.peerUser): Promise<[ChatPPrivate, bigint] | null>;
+  private [getPeer](peer: Api.peerChat): Promise<[ChatPGroup, bigint] | null>;
+  private [getPeer](peer: Api.peerChannel): Promise<[ChatPChannel, bigint] | null>;
+  private [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel): Promise<[ChatP, bigint] | null>;
   private async [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
     const id = Api.peerToChatId(peer);
     const entity = await this.messageStorage.getPeer(id);
@@ -1681,7 +1678,15 @@ export class Client<C extends Context = Context> extends Composer<C> {
     } else {
       return entity;
     }
-    return await this.messageStorage.getEntity(id);
+    return await this.messageStorage.getPeer(id);
+  }
+
+  private [mustGetPeer](peer: Api.peerUser): [ChatPPrivate, bigint] | null;
+  private [mustGetPeer](peer: Api.peerChat): [ChatPGroup, bigint] | null;
+  private [mustGetPeer](peer: Api.peerChannel): [ChatPChannel, bigint] | null;
+  private [mustGetPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel): [ChatP, bigint] | null;
+  private [mustGetPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
+    return this.storage.mustGetPeer(peerToChatId(peer));
   }
 
   async #handleCtxUpdate(update: Update) {
@@ -1703,81 +1708,91 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #handleUpdate(update: Api.Update) {
-    const promises = new Array<() => Promise<Update | null>>();
+    const maybePromises = new Array<() => MaybePromise<Update | null>>();
     if (Api.is("updateUserName", update)) {
       await this.messageStorage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
       const peer: Api.peerUser = { ...update, _: "peerUser" };
-      const entity = await this[getPeer](peer);
-      if (entity != null) {
-        entity.usernames = update.usernames;
-        entity.first_name = update.first_name;
-        entity.last_name = update.last_name;
-        await this.messageStorage.setEntity(entity);
+      const peer_ = await this[getPeer](peer);
+      if (peer_ !== null) {
+        const username = update.usernames[0];
+        if (username !== undefined) {
+          peer_[0].username = username.username;
+          const also = update.usernames.filter((v) => v != username);
+          if (also.length) {
+            peer_[0].also = also.map((v) => v.username);
+          } else {
+            delete peer_[0].also;
+          }
+        } else {
+          delete peer_[0].username;
+        }
+        this.messageStorage.setPeer2(peer_[0], peer_[1]);
       }
     }
 
     if (this.#messageManager.canHandleUpdate(update)) {
-      promises.push(() => this.#messageManager.handleUpdate(update));
+      maybePromises.push(() => this.#messageManager.handleUpdate(update));
     }
 
     if (this.#chatManager.canHandleUpdate(update)) {
-      promises.push(() => this.#chatManager.handleUpdate(update));
+      maybePromises.push(() => this.#chatManager.handleUpdate(update));
     }
 
     if (this.#pollManager.canHandleUpdate(update)) {
-      promises.push(() => this.#pollManager.handleUpdate(update));
+      maybePromises.push(() => this.#pollManager.handleUpdate(update));
     }
 
     if (this.#videoChatManager.canHandleUpdate(update)) {
-      promises.push(() => this.#videoChatManager.handleUpdate(update));
+      maybePromises.push(() => this.#videoChatManager.handleUpdate(update));
     }
 
     if (this.#callbackQueryManager.canHandleUpdate(update)) {
-      promises.push(() => this.#callbackQueryManager.handleUpdate(update));
+      maybePromises.push(() => this.#callbackQueryManager.handleUpdate(update));
     }
 
     if (this.#inlineQueryManager.canHandleUpdate(update)) {
-      promises.push(() => this.#inlineQueryManager.handleUpdate(update));
+      maybePromises.push(() => this.#inlineQueryManager.handleUpdate(update));
     }
 
     if (this.#linkPreviewManager.canHandleUpdate(update)) {
-      promises.push(() => this.#linkPreviewManager.handleUpdate(update));
+      maybePromises.push(() => this.#linkPreviewManager.handleUpdate(update));
     }
 
     if (this.#reactionManager.canHandleUpdate(update)) {
-      promises.push(() => this.#reactionManager.handleUpdate(update));
+      maybePromises.push(() => this.#reactionManager.handleUpdate(update));
     }
 
     if (this.#chatListManager.canHandleUpdate(update)) {
-      promises.push(() => this.#chatListManager.handleUpdate(update));
+      maybePromises.push(() => this.#chatListManager.handleUpdate(update));
     }
 
     if (this.#storyManager.canHandleUpdate(update)) {
-      promises.push(() => this.#storyManager.handleUpdate(update));
+      maybePromises.push(() => this.#storyManager.handleUpdate(update));
     }
 
     if (this.#businessConnectionManager.canHandleUpdate(update)) {
-      promises.push(() => this.#businessConnectionManager.handleUpdate(update));
+      maybePromises.push(() => this.#businessConnectionManager.handleUpdate(update));
     }
 
     if (this.#storyManager.canHandleUpdate(update)) {
-      promises.push(() => this.#storyManager.handleUpdate(update));
+      maybePromises.push(() => this.#storyManager.handleUpdate(update));
     }
 
     if (this.#paymentManager.canHandleUpdate(update)) {
-      promises.push(() => this.#paymentManager.handleUpdate(update));
+      maybePromises.push(() => this.#paymentManager.handleUpdate(update));
     }
 
     if (this.#translationsManager.canHandleUpdate(update)) {
-      promises.push(() => this.#translationsManager.handleUpdate(update));
+      maybePromises.push(() => this.#translationsManager.handleUpdate(update));
     }
 
     return () =>
       Promise.resolve().then(async () => {
         const updates = new Array<Update>();
-        for (const promise of promises) {
+        for (const maybePromise of maybePromises) {
           try {
-            const update = await promise();
+            const value = maybePromise();
+            const update = value instanceof Promise ? await value : value;
             if (update) {
               updates.push(update);
             }
@@ -1837,14 +1852,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @method ac
    */
   async getMe(): Promise<User> {
-    let user_ = await this[getPeer]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) });
-    if (user_ == null) {
+    let chatP = (await this[getPeer]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) }))?.[0] ?? null;
+    if (chatP === null) {
       const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUserSelf" }] });
-      user_ = Api.as("user", users[0]);
-      await this.messageStorage.setEntity(user_);
-      await this.storage.setIsPremium(user_.premium ?? false);
+      chatP = constructChatP(Api.as("user", users[0]));
+      await this.storage.setIsPremium(chatP.isPremium);
     }
-    const user = constructUser(user_);
+    const user = constructUser2(chatP);
     this.#lastGetMe = user;
     return user;
   }

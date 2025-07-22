@@ -22,8 +22,8 @@ import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { PeerGetter } from "./1_chat_p.ts";
-import { ChatP, constructChatP } from "./1_chat_p.ts";
-import { constructUser, User } from "./2_user.ts";
+import { ChatP } from "./1_chat_p.ts";
+import { constructUser2, User } from "./2_user.ts";
 import { constructInviteLink, InviteLink } from "./3_invite_link.ts";
 
 /** A join request. */
@@ -41,17 +41,17 @@ export interface JoinRequest {
 }
 
 export function constructJoinRequest(update: Api.updateBotChatInviteRequester, getPeer: PeerGetter): JoinRequest {
-  const chat_ = getPeer(update.peer);
-  if (!chat_) {
+  const peer = getPeer(update.peer);
+  if (!peer) {
     unreachable();
   }
-  const chat = constructChatP(chat_);
-  const user_ = getPeer({ _: "peerUser", user_id: update.user_id });
-  if (!user_) {
+  const chat = peer[0];
+  const userPeer = getPeer({ _: "peerUser", user_id: update.user_id });
+  if (!userPeer) {
     unreachable();
   }
-  const from = constructUser(user_);
-  const inviteLink = update.invite && Api.is("chatInviteExported", update.invite) ? constructInviteLink(update.invite, getEntity) : undefined;
+  const from = constructUser2(userPeer[0]);
+  const inviteLink = update.invite && Api.is("chatInviteExported", update.invite) ? constructInviteLink(update.invite, getPeer) : undefined;
   return cleanObject({
     chat,
     from,
@@ -62,16 +62,16 @@ export function constructJoinRequest(update: Api.updateBotChatInviteRequester, g
 }
 
 export function constructJoinRequest2(peer: Api.Peer, inviteImporter: Api.ChatInviteImporter, getPeer: PeerGetter): JoinRequest {
-  const chat_ = getPeer(peer);
-  if (!chat_) {
+  const peer_ = getPeer(peer);
+  if (!peer_) {
     unreachable();
   }
-  const chat = constructChatP(chat_);
-  const user_ = getPeer({ _: "peerUser", user_id: inviteImporter.user_id });
-  if (!user_) {
+  const chat = peer_[0];
+  const userPeer = getPeer({ _: "peerUser", user_id: inviteImporter.user_id });
+  if (!userPeer) {
     unreachable();
   }
-  const from = constructUser(user_);
+  const from = constructUser2(userPeer[0]);
   return cleanObject({
     chat,
     from,

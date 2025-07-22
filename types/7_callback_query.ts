@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, cleanObject, decodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { PeerGetter } from "./1_chat_p.ts";
-import { constructUser, User } from "./2_user.ts";
+import { constructUser2, User } from "./2_user.ts";
 import { Message, MessageGetter } from "./6_message.ts";
 
 /** A received callback query. */
@@ -59,12 +59,12 @@ export async function deserializeInlineMessageId(inlineMessageId: string): Promi
   throw ERR_INVALID_INLINE_MESSAGE_ID;
 }
 
-export function constructCallbackQuery(callbackQuery: Api.updateBotCallbackQuery | Api.updateInlineBotCallbackQuery, getPeer: PeerGetter, getMessage: MessageGetter): CallbackQuery {
-  const user_ = getPeer({ _: "peerUser", user_id: callbackQuery.user_id });
-  if (!user_) {
+export async function constructCallbackQuery(callbackQuery: Api.updateBotCallbackQuery | Api.updateInlineBotCallbackQuery, getPeer: PeerGetter, getMessage: MessageGetter): Promise<CallbackQuery> {
+  const peer = getPeer({ _: "peerUser", user_id: callbackQuery.user_id });
+  if (!peer) {
     unreachable();
   }
-  const user = constructUser(user_);
+  const user = constructUser2(peer[0]);
   const id = String(callbackQuery.query_id);
   const gameShortName = callbackQuery.game_short_name;
   const data = callbackQuery.data !== undefined ? decodeText(callbackQuery.data) : undefined;

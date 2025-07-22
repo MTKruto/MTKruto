@@ -27,7 +27,7 @@ import { ParseMode } from "./0_parse_mode.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 import { getPhotoSizes } from "./1_photo.ts";
 import { constructMessageEntity, MessageEntity } from "./2_message_entity.ts";
-import { constructReplyMarkup, ReplyMarkupInlineKeyboard, replyMarkupToTlObject } from "./3_reply_markup.ts";
+import { constructReplyMarkup, ReplyMarkupInlineKeyboard, replyMarkupToTlObject } from "./2_reply_markup.ts";
 import { MessageContent } from "./6_message_content.ts";
 
 /** @unlisted */

@@ -41,9 +41,9 @@ export function getChatListItemOrder(lastMessage: Omit<Message, "replyToMessage"
   return p + String((BigInt(Math.floor(lastMessage.date)) << 32n) + BigInt(lastMessage.id));
 }
 
-export function constructChatListItem(chatId: number, pinned: number, lastMessageId: number, getPeer: PeerGetter, getMessage: MessageGetter): ChatListItem | null {
-  const entity = getPeer(Api.chatIdToPeer(chatId));
-  if (entity == null) {
+export async function constructChatListItem(chatId: number, pinned: number, lastMessageId: number, getPeer: PeerGetter, getMessage: MessageGetter): Promise<ChatListItem | null> {
+  const peer = getPeer(Api.chatIdToPeer(chatId));
+  if (peer == null) {
     return null;
   }
 
@@ -51,7 +51,7 @@ export function constructChatListItem(chatId: number, pinned: number, lastMessag
   const lastMessage = lastMessage_ == null ? undefined : lastMessage_;
 
   return cleanObject({
-    chat: constructChatP(entity),
+    chat: peer[0],
     order: getChatListItemOrder(lastMessage, pinned),
     pinned,
     lastMessage,
@@ -80,13 +80,13 @@ export function constructChatListItem3(chatId: number, pinned: number, lastMessa
   });
 }
 
-export function constructChatListItem4(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice, pinnedChats: number[], getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): ChatListItem {
+export async function constructChatListItem4(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice, pinnedChats: number[], getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<ChatListItem> {
   const topMessage_ = dialogs.messages.find((v) => "id" in v && v.id == dialog.top_message);
   if (!topMessage_) {
     unreachable();
   }
   const pinned = pinnedChats.indexOf(Api.peerToChatId(dialog.peer));
-  const lastMessage = constructMessage(topMessage_, getEntity, getMessage, getStickerSetName, false);
+  const lastMessage = await constructMessage(topMessage_, getPeer, getMessage, getStickerSetName, false);
   const order = getChatListItemOrder(lastMessage, pinned);
   const userId = "user_id" in dialog.peer ? dialog.peer.user_id : null;
   const chatId = "chat_id" in dialog.peer ? dialog.peer.chat_id : null;

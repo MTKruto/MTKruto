@@ -141,12 +141,12 @@ export class AccountManager {
     if (!Api.is("inputPeerUser", id)) {
       unreachable();
     }
-    const user = await this.#c.getPeer(Api.inputPeerToPeer(id));
-    if (!user || !("first_name" in user)) {
+    const peer = this.#c.getPeer(Api.inputPeerToPeer(id));
+    if (!peer || peer[0].type !== "private") {
       unreachable();
     }
-    const first_name = params?.firstName ?? user.first_name ?? "";
-    const last_name = params?.lastName ?? user.last_name ?? "";
+    const first_name = params?.firstName ?? peer[0].firstName ?? "";
+    const last_name = params?.lastName ?? peer[0].lastName ?? "";
     const phone = "";
     const add_phone_privacy_exception = params?.sharePhoneNumber ? true : undefined;
     await this.#c.invoke({ _: "contacts.addContact", add_phone_privacy_exception, id, first_name, last_name, phone });

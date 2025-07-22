@@ -59,7 +59,7 @@ export class LinkPreviewManager implements UpdateProcessor<LinkPreviewManagerUpd
     return Api.isOneOf(linkPreviewManagerUpdates, update);
   }
 
-  async handleUpdate(update: LinkPreviewManagerUpdate): Promise<Update | null> {
+  handleUpdate(update: LinkPreviewManagerUpdate): Update {
     const linkPreview = constructLinkPreview({ _: "messageMediaWebPage", webpage: update.webpage }, undefined, this.#c.getPeer);
     return { linkPreview };
   }

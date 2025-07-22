@@ -34,7 +34,7 @@ const reactionManagerUpdates = [
 
 type ReactionManagerUpdate = Api.Types[(typeof reactionManagerUpdates)[number]];
 
-export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate> {
+export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate, true> {
   #c: C;
 
   constructor(c: C) {

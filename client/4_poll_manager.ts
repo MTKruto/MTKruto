@@ -35,7 +35,7 @@ const pollManagerUpdates = [
 
 type PollManagerUpdate = Api.Types[(typeof pollManagerUpdates)[number]];
 
-export class PollManager implements UpdateProcessor<PollManagerUpdate> {
+export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
   #c: C;
 
   constructor(c: C) {

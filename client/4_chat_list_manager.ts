@@ -45,7 +45,7 @@ const chatListManagerUpdates = [
 
 type ChatListManagerUpdate = Api.Types[(typeof chatListManagerUpdates)[number]];
 
-export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
+export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, true> {
   #c: C;
 
   constructor(c: C) {
@@ -211,7 +211,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
         this.#sendChatUpdate(chatId, false);
       }
     } else {
-      const chat = constructChatListItem(chatId, -1, -1, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
+      const chat =await constructChatListItem(chatId, -1, -1, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
       if (chat != null) {
         this.#getChatList(0).set(chatId, chat);
         await this.reassignChatLastMessage(chatId, false, false);
@@ -318,7 +318,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     }
     const chats = new Array<ChatListItem>();
     for (const dialog of dialogs.dialogs) {
-      const chat = constructChatListItem4(dialog, dialogs, pinnedChats, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
+      const chat = await constructChatListItem4(dialog, dialogs, pinnedChats, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
       chats.push(chat);
       await this.#c.storage.setChatlistChat(listId, chat.chat.id, chat.pinned, chat.lastMessage?.id ?? 0, fromUnixTimestamp(chat.lastMessage?.date ?? 0));
     }

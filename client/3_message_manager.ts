@@ -58,7 +58,7 @@ const messageManagerUpdates = [
 
 type MessageManagerUpdate = Api.Types[(typeof messageManagerUpdates)[number]];
 
-export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
+export class MessageManager implements UpdateProcessor<MessageManagerUpdate, true> {
   #c: C;
   #LresolveFileId: Logger;
 

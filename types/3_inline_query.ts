@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { PeerGetter } from "./1_chat_p.ts";
-import { constructUser, User } from "./2_user.ts";
+import { constructUser2, User } from "./2_user.ts";
 
 /** An incoming inline query. */
 export interface InlineQuery {
@@ -41,12 +41,12 @@ export interface InlineQuery {
 }
 
 export function constructInlineQuery(query_: Api.updateBotInlineQuery, getPeer: PeerGetter): InlineQuery {
-  const user_ = getPeer({ _: "peerUser", user_id: query_.user_id });
-  if (user_ == null) {
+  const peer = getPeer({ _: "peerUser", user_id: query_.user_id });
+  if (peer == null) {
     unreachable();
   }
 
-  const user = constructUser(user_);
+  const user = constructUser2(peer[0]);
 
   let chatType: InlineQuery["chatType"] | undefined;
   if (query_.peer_type !== undefined) {

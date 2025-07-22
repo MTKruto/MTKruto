@@ -33,7 +33,7 @@ import { constructVoice, Voice } from "./0_voice.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
 import { Audio, constructAudio } from "./1_audio.ts";
 import { isChatPUser, PeerGetter } from "./1_chat_p.ts";
-import { ChatP, constructChatP } from "./1_chat_p.ts";
+import { ChatP } from "./1_chat_p.ts";
 import { constructDocument, Document } from "./1_document.ts";
 import { constructGiveaway, Giveaway } from "./1_giveaway.ts";
 import { constructMessageReaction, MessageReaction } from "./1_message_reaction.ts";
@@ -42,14 +42,14 @@ import { constructSticker, Sticker, StickerSetNameGetter } from "./1_sticker.ts"
 import { constructVenue, Venue } from "./1_venue.ts";
 import { constructVideoNote, VideoNote } from "./1_video_note.ts";
 import { constructVideo, Video } from "./1_video.ts";
-import { constructGame, Game } from "./2_game.ts";
 import { constructMessageEntity, MessageEntity } from "./2_message_entity.ts";
-import { constructPoll, Poll } from "./2_poll.ts";
+import { constructReplyMarkup, ReplyMarkup } from "./2_reply_markup.ts";
 import { constructSuccessfulPayment, SuccessfulPayment } from "./2_successful_payment.ts";
-import { constructUser, constructUser2, User } from "./2_user.ts";
+import { constructUser2, User } from "./2_user.ts";
 import { constructForwardHeader, ForwardHeader } from "./3_forward_header.ts";
-import { constructReplyMarkup, ReplyMarkup } from "./3_reply_markup.ts";
+import { constructGame, Game } from "./3_game.ts";
 import { constructReplyQuote, ReplyQuote } from "./3_reply_quote.ts";
+import { constructPoll, Poll } from "./4_poll.ts";
 import { constructLinkPreview, LinkPreview } from "./5_link_preview.ts";
 
 const L = getLogger("Message");
@@ -813,8 +813,8 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     return { ...message, newChatMembers };
   } else if (Api.is("messageActionChatDeleteUser", message_.action)) {
     const peer = getPeer({ _: "peerUser", user_id: message_.action.user_id });
-    if (peer && isChatPUser(peer[0])) {
-      const user = constructUser(peer);
+    if (peer) {
+      const user = constructUser2(peer[0]);
       const leftChatMember = user;
       return { ...message, leftChatMember };
     }
@@ -831,9 +831,9 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     const groupCreated = true;
     const newChatMembers = new Array<User>();
     for (const user_ of message_.action.users) {
-      const entity = getPeer({ _: "peerUser", user_id: user_ });
-      if (entity) {
-        const user = constructUser(entity);
+      const peer = getPeer({ _: "peerUser", user_id: user_ });
+      if (peer) {
+        const user = constructUser2(peer[0]);
         newChatMembers.push(user);
       }
     }
@@ -929,40 +929,22 @@ export async function constructMessage(
   }
 
   let link: string | undefined;
-  let chat_: ChatP | null = null;
-  if (Api.is("peerUser", message_.peer_id)) {
-    const entity = getPeer(message_.peer_id);
-    if (entity) {
-      chat_ = constructChatP(entity);
-    } else {
-      unreachable();
-    }
-  } else if (Api.is("peerChat", message_.peer_id)) {
-    const entity = getPeer(message_.peer_id);
-    if (entity) {
-      chat_ = constructChatP(entity);
-    } else {
-      unreachable();
-    }
-  } else if (Api.is("peerChannel", message_.peer_id)) {
-    const reply_to_top_id = message_.reply_to && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_top_id;
-    const threadId = reply_to_top_id && typeof reply_to_top_id === "number" ? reply_to_top_id + "/" : "";
-    link = `https://t.me/c/${message_.peer_id.channel_id}/${threadId}${message_.id}`;
-    const entity = getPeer(message_.peer_id);
-    if (entity) {
-      chat_ = constructChatP(entity);
-      if (chat_.username) {
-        link = link.replace(`/c/${message_.peer_id.channel_id}/`, `/${chat_.username}/`);
-      }
-    } else {
-      unreachable();
-    }
-  } else {
+  const chat_: ChatP | null = getPeer(message_.peer_id)?.[0] ?? null;
+  if (chat_ === null) {
     unreachable();
   }
 
+  if (Api.is("peerChannel", message_.peer_id)) {
+    const reply_to_top_id = message_.reply_to && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_top_id;
+    const threadId = reply_to_top_id && typeof reply_to_top_id === "number" ? reply_to_top_id + "/" : "";
+    link = `https://t.me/c/${message_.peer_id.channel_id}/${threadId}${message_.id}`;
+    if ("username" in chat_ && chat_.username) {
+      link = link.replace(`/c/${message_.peer_id.channel_id}/`, `/${chat_.username}/`);
+    }
+  }
+
   if (Api.is("messageService", message_)) {
-    return constructServiceMessage(message_, chat_, getEntity, getMessage, getReply_);
+    return constructServiceMessage(message_, chat_, getPeer, getMessage, getReply_);
   }
 
   const message: _MessageBase = {
@@ -978,7 +960,7 @@ export async function constructMessage(
     senderBoostCount: message_.from_boosts_applied,
     effectId: message_.effect ? String(message_.effect) : undefined,
     scheduled: message_.from_scheduled ? true : undefined,
-    ...await getSender(message_, getEntity),
+    ...await getSender(message_, getPeer),
   };
 
   if (message_.reactions) {
@@ -997,7 +979,7 @@ export async function constructMessage(
     message.businessConnectionId = business.connectionId;
     if (business.replyToMessage) {
       message.replyToMessageId = business.replyToMessage.id;
-      message.replyToMessage = constructMessage(business.replyToMessage, getEntity, getMessage, getStickerSetName, false, { connectionId: business.connectionId });
+      message.replyToMessage = await constructMessage(business.replyToMessage, getPeer, getMessage, getStickerSetName, false, { connectionId: business.connectionId });
     }
   } else if (getReply_) {
     Object.assign(message, await getReply(message_, chat_, getMessage));
@@ -1008,17 +990,17 @@ export async function constructMessage(
   }
 
   if (message_.via_bot_id != undefined) {
-    const viaBot = getPeer({ _: "peerUser", user_id: message_.via_bot_id });
-    if (viaBot) {
-      message.viaBot = constructUser(viaBot);
+    const peer = getPeer({ _: "peerUser", user_id: message_.via_bot_id });
+    if (peer) {
+      message.viaBot = constructUser2(peer[0]);
     } else {
       unreachable();
     }
   }
   if (message_.via_business_bot_id != undefined) {
-    const viaBusinessBot = getPeer({ _: "peerUser", user_id: message_.via_business_bot_id });
-    if (viaBusinessBot) {
-      message.viaBusinessBot = constructUser(viaBusinessBot);
+    const peer = getPeer({ _: "peerUser", user_id: message_.via_business_bot_id });
+    if (peer) {
+      message.viaBusinessBot = constructUser2(peer[0]);
     } else {
       unreachable();
     }
@@ -1030,7 +1012,7 @@ export async function constructMessage(
 
   if (Api.is("messageFwdHeader", message_.fwd_from)) {
     message.isAutomaticForward = message_.fwd_from.saved_from_peer != undefined && message_.fwd_from.saved_from_msg_id != undefined;
-    message.forwardFrom = constructForwardHeader(message_.fwd_from, getEntity);
+    message.forwardFrom = constructForwardHeader(message_.fwd_from, getPeer);
   }
 
   if (message_.grouped_id != undefined) {
@@ -1120,7 +1102,7 @@ export async function constructMessage(
         }
       } else if (sticker) {
         const fileId = getFileId(FileType.Sticker);
-        const sticker = constructSticker(document, serializeFileId(fileId), toUniqueFileId(fileId), getStickerSetName);
+        const sticker = await constructSticker(document, serializeFileId(fileId), toUniqueFileId(fileId), getStickerSetName);
         m = { ...message, sticker };
       } else {
         const fileId = getFileId(FileType.Document);
@@ -1150,7 +1132,7 @@ export async function constructMessage(
     const location = constructLocation(message_.media);
     m = { ...message, location };
   } else if (Api.is("messageMediaWebPage", message_.media)) {
-    const linkPreview = constructLinkPreview(message_.media, message_.invert_media, getEntity);
+    const linkPreview = constructLinkPreview(message_.media, message_.invert_media, getPeer);
     if (message_.message) {
       m = { ...messageText, linkPreview };
     } else {

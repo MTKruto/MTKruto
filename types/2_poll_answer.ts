@@ -1,8 +1,7 @@
 import { unreachable } from "../0_deps.ts";
 import { decodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { PeerGetter } from "./1_chat_p.ts";
-import { ChatP, constructChatP } from "./1_chat_p.ts";
+import { ChatP, PeerGetter } from "./1_chat_p.ts";
 
 /** An answer to a poll. */
 export interface PollAnswer {
@@ -16,11 +15,11 @@ export interface PollAnswer {
 
 export function constructPollAnswer(update: Api.updateMessagePollVote, getPeer: PeerGetter): PollAnswer {
   const pollId = String(update.poll_id);
-  const entity = getPeer(update.peer);
-  if (!entity) {
+  const peer = getPeer(update.peer);
+  if (!peer) {
     unreachable();
   }
-  const from = constructChatP(entity);
+  const from = peer[0];
   const optionIndexes = update.options.map((v) => Number(decodeText(v)));
   return {
     pollId,

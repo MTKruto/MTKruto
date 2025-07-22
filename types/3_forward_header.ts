@@ -22,8 +22,8 @@ import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { PeerGetter } from "./1_chat_p.ts";
-import { ChatPChannel, ChatPSupergroup, constructChatP } from "./1_chat_p.ts";
-import { constructUser, User } from "./2_user.ts";
+import { ChatPChannel, ChatPSupergroup } from "./1_chat_p.ts";
+import { constructUser2, User } from "./2_user.ts";
 
 /** @unlisted */
 export interface _ForwardHeaderCommon {
@@ -68,37 +68,37 @@ export type ForwardHeader = ForwardHeaderUser | ForwardHeaderChannel | ForwardHe
 
 export function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, getPeer: PeerGetter): ForwardHeader {
   if (fwdHeader.channel_post && fwdHeader.from_id?._ == "peerChannel") {
-    const chat = getPeer(fwdHeader.from_id);
-    if (chat == null) {
+    const peer = getPeer(fwdHeader.from_id);
+    if (peer == null) {
       unreachable();
     }
     return cleanObject({
       type: "channel",
       date: fwdHeader.date,
-      chat: constructChatP(chat) as ChatPChannel,
+      chat: peer[0] as ChatPChannel,
       messageId: fwdHeader.channel_post,
       authorSignature: fwdHeader.post_author,
     });
   } else if (fwdHeader.from_id?._ == "peerChannel") {
-    const chat = getPeer(fwdHeader.from_id);
-    if (chat == null) {
+    const peer = getPeer(fwdHeader.from_id);
+    if (peer == null) {
       unreachable();
     }
     return cleanObject({
       type: "supergroup",
       date: fwdHeader.date,
-      chat: constructChatP(chat) as ChatPSupergroup,
+      chat: peer[0] as ChatPSupergroup,
       title: fwdHeader.post_author,
     });
   } else if (fwdHeader.from_id?._ == "peerUser") {
-    const user = getPeer(fwdHeader.from_id);
-    if (user == null) {
+    const peer = getPeer(fwdHeader.from_id);
+    if (peer === null || peer[0].type !== "private") {
       unreachable();
     }
     return {
       type: "user",
       date: fwdHeader.date,
-      user: constructUser(user),
+      user: constructUser2(peer[0]),
     };
   } else if (fwdHeader.from_name) {
     return {

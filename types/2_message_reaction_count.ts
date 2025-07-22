@@ -20,7 +20,7 @@
 
 import { Api } from "../2_tl.ts";
 import { PeerGetter } from "./1_chat_p.ts";
-import { ChatP, constructChatP } from "./1_chat_p.ts";
+import { ChatP } from "./1_chat_p.ts";
 import { constructReactionCount, ReactionCount } from "./1_reaction_count.ts";
 
 /** Information on the reactions made to a channel post. */
@@ -38,11 +38,10 @@ export interface MessageReactionCount {
 export function constructMessageReactionCount(update: Api.updateBotMessageReactions, getPeer: PeerGetter): MessageReactionCount | null {
   const date = update.date;
   const reactions = update.reactions.map((v) => constructReactionCount(v));
-  const entity = getPeer(update.peer);
-  if (entity) {
-    const chat = constructChatP(entity);
+  const peer = getPeer(update.peer);
+  if (peer) {
     const messageId = update.msg_id;
-    const messageReactionCount = { chat, messageId, date, reactions };
+    const messageReactionCount = { chat: peer[0], messageId, date, reactions };
     return messageReactionCount;
   } else {
     return null;

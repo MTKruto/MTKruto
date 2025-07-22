@@ -45,7 +45,7 @@ const chatManagerUpdates = [
 
 type ChatManagerUpdate = Api.Types[(typeof chatManagerUpdates)[number]];
 
-export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
+export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   #c: C;
 
   constructor(c: C) {

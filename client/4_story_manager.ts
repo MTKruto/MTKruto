@@ -46,7 +46,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     this.#c = c;
   }
 
-  async #updatesToStory(updates: Api.Updates) {
+  #updatesToStory(updates: Api.Updates) {
     if (Api.is("updates", updates)) {
       const updateStory = updates.updates.find((v): v is Api.updateStory => Api.is("updateStory", v));
       if (updateStory && Api.is("storyItem", updateStory.story)) {
@@ -163,7 +163,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     return Api.isOneOf(storyManagerUpdates, update);
   }
 
-  async handleUpdate(update: StoryManagerUpdate): Promise<Update | null> {
+  handleUpdate(update: StoryManagerUpdate): Update | null {
     if (Api.is("storyItemDeleted", update.story)) {
       const chatId = Api.peerToChatId(update.peer);
       const storyId = update.story.id;

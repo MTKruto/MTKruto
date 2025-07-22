@@ -98,7 +98,7 @@ export type Gift = GiftNonUpgraded | GiftUpgraded;
 
 export function constructGift(gift: Api.StarGift, getPeer: PeerGetter): Gift {
   if (Api.is("starGiftUnique", gift)) {
-    return constructGiftUpgraded(gift, getEntity);
+    return constructGiftUpgraded(gift, getPeer);
   } else {
     return constructGiftNonUpgraded(gift);
   }

@@ -50,7 +50,7 @@ export function constructClaimedGift(savedStarGift: Api.SavedStarGift, fromPeer:
   if (fromPeer && !Api.isOneOf(["user", "chat", "channel"], fromPeer)) {
     unreachable();
   }
-  const gift = constructGift(savedStarGift.gift, getEntity);
+  const gift = constructGift(savedStarGift.gift, getPeer);
   const date = savedStarGift.date;
   const public_ = !!savedStarGift.unsaved;
   const sender = fromPeer ? constructChatP(fromPeer) : undefined;

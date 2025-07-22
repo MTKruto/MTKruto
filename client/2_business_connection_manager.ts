@@ -29,7 +29,7 @@ const businessConnectionManagerUpdates = [
 
 type BusinessConnectionManagerUpdate = Api.Types[(typeof businessConnectionManagerUpdates)[number]];
 
-export class BusinessConnectionManager implements UpdateProcessor<BusinessConnectionManagerUpdate> {
+export class BusinessConnectionManager implements UpdateProcessor<BusinessConnectionManagerUpdate, true> {
   #c: C;
 
   constructor(c: C) {

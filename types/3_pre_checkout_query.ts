@@ -24,7 +24,7 @@ import { Api } from "../2_tl.ts";
 import { PeerGetter } from "./1_chat_p.ts";
 import { constructOrderInfo } from "./1_order_info.ts";
 import { OrderInfo } from "./1_order_info.ts";
-import { constructUser, User } from "./2_user.ts";
+import { constructUser2, User } from "./2_user.ts";
 
 export interface PreCheckoutQuery {
   id: string;
@@ -37,11 +37,11 @@ export interface PreCheckoutQuery {
 }
 
 export function constructPreCheckoutQuery(query: Api.updateBotPrecheckoutQuery, getPeer: PeerGetter): PreCheckoutQuery {
-  const user = getPeer({ _: "peerUser", user_id: query.user_id });
-  if (!user) {
+  const peer = getPeer({ _: "peerUser", user_id: query.user_id });
+  if (!peer) {
     unreachable();
   }
-  const from = constructUser(user);
+  const from = constructUser2(peer[0]);
   return cleanObject({
     id: String(query.query_id),
     from,

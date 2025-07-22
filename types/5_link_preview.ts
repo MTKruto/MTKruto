@@ -400,7 +400,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           smallMedia,
           largeMedia,
           aboveText,
-          gift: constructGift(gift, getEntity),
+          gift: constructGift(gift, getPeer),
         };
         break;
       }

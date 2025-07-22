@@ -24,7 +24,7 @@ import { Api } from "../2_tl.ts";
 import { ChatAdministratorRights, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
 import { ChatMemberRights, constructChatMemberRights } from "./0_chat_member_rights.ts";
 import { PeerGetter } from "./1_chat_p.ts";
-import { constructUser, User } from "./2_user.ts";
+import { constructUser2, User } from "./2_user.ts";
 
 /** @unlisted */
 export type ChatMemberStatus = "creator" | "administrator" | "member" | "restricted" | "left" | "banned";
@@ -77,10 +77,10 @@ export interface ChatMemberBanned extends _ChatMemberBase {
 /** A chat member. */
 export type ChatMember = ChatMemberCreator | ChatMemberAdministrator | ChatMemberMember | ChatMemberRestricted | ChatMemberLeft | ChatMemberBanned;
 
-export function constructChatMember(participant: Api.ChannelParticipant | Api.ChatParticipant, getPeer: PeerGetter): ChatMember {
-  const user_ = "user_id" in participant ? getPeer({ ...participant, _: "peerUser" }) : "peer" in participant ? Api.is("peerUser", participant.peer) ? getPeer(participant.peer) : unreachable() : unreachable(); // TODO: support other peer types
-  if (user_ == null) unreachable();
-  const user = constructUser(user_);
+export function constructChatMember(participant: Api.ChannelParticipant | Api.ChatParticipant | (Omit<Api.ChannelParticipant, "peer"> & { peer: ReturnType<typeof getPeer> }), getPeer: PeerGetter): ChatMember {
+  const peer = "user_id" in participant ? getPeer({ ...participant, _: "peerUser" }) : "peer" in participant ? Array.isArray(participant.peer) ? participant.peer : Api.is("peerUser", participant.peer) ? getPeer(participant.peer) : unreachable() : unreachable(); // TODO: support other peer types
+  if (peer === null || peer[0].type !== "private") unreachable();
+  const user = constructUser2(peer[0]);
   if (Api.is("channelParticipant", participant) || Api.is("chatParticipant", participant)) {
     return {
       status: "member",

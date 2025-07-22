@@ -21,12 +21,10 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { PeerGetter } from "./1_chat_p.ts";
-import { constructChatP } from "./1_chat_p.ts";
-import { ChatP } from "./1_chat_p.ts";
-import { ChatMember, constructChatMember } from "./2_chat_member.ts";
-import { constructUser, User } from "./2_user.ts";
-import { constructInviteLink, InviteLink } from "./3_chat_member.ts";
+import { ChatP, PeerGetter } from "./1_chat_p.ts";
+import { constructUser2, User } from "./2_user.ts";
+import { ChatMember, constructChatMember } from "./3_chat_member.ts";
+import { constructInviteLink, InviteLink } from "./3_invite_link.ts";
 
 /** Changes made to a chat member. */
 export interface ChatMemberUpdated {
@@ -50,19 +48,19 @@ export function constructChatMemberUpdated(update: Api.updateChannelParticipant 
   if (!update.prev_participant && !update.new_participant) {
     unreachable();
   }
-  const chat_ = getPeer("channel_id" in update ? { channel_id: update.channel_id, _: "peerChannel" } : { chat_id: update.chat_id, _: "peerChat" });
-  const from_ = getPeer({ _: "peerUser", user_id: update.actor_id });
-  if (!chat_ || !from_) {
+  const peer = getPeer("channel_id" in update ? { channel_id: update.channel_id, _: "peerChannel" } : { chat_id: update.chat_id, _: "peerChat" });
+  const userPeer = getPeer({ _: "peerUser", user_id: update.actor_id });
+  if (!peer || !userPeer) {
     unreachable();
   }
-  const userPeer: Api.peerUser = { ...update, _: "peerUser" };
-  const chat = constructChatP(chat_);
-  const from = constructUser(from_);
+  const chat = peer[0];
+  const from = constructUser2(userPeer[0]);
   const date = update.date;
-  const oldChatMember = constructChatMember(update.prev_participant ?? ({ _: "channelParticipantLeft", peer: userPeer }), getEntity);
-  const newChatMember = constructChatMember(update.new_participant ?? ({ _: "channelParticipantLeft", peer: userPeer }), getEntity);
+  // TODO
+  const oldChatMember = constructChatMember(update.prev_participant ?? ({ _: "channelParticipantLeft", peer: userPeer }), getPeer);
+  const newChatMember = constructChatMember(update.new_participant ?? ({ _: "channelParticipantLeft", peer: userPeer }), getPeer);
   const viaSharedFolder = "via_chatlist" in update ? update.via_chatlist ? true : update.invite ? false : undefined : undefined;
-  const inviteLink = (update.invite && Api.is("chatInviteExported", update.invite)) ? constructInviteLink(update.invite, getEntity) : undefined;
+  const inviteLink = (update.invite && Api.is("chatInviteExported", update.invite)) ? constructInviteLink(update.invite, getPeer) : undefined;
   return cleanObject({
     chat,
     from,
