@@ -54,6 +54,10 @@ export class StorageMemory implements Storage {
     return false;
   }
 
+  get isMemory(): boolean {
+    return true;
+  }
+
   get<T>(key: readonly StorageKeyPart[]): T | null {
     key = this.#fixKey(key);
     return this.map.get(toString(key)) as T ?? null;

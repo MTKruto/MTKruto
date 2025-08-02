@@ -40,7 +40,7 @@ const videoChatManagerUpdates = [
 
 type VideoChatManagerUpdate = Api.Types[(typeof videoChatManagerUpdates)[number]];
 
-export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate> {
+export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate, true> {
   #c: C;
 
   constructor(c: C) {

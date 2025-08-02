@@ -30,9 +30,11 @@ export { basename } from "jsr:@std/path@1.1.0/basename";
 export { toFileUrl } from "jsr:@std/path@1.1.0/to-file-url";
 export { isAbsolute } from "jsr:@std/path@1.1.0/is-absolute";
 
-export { delay } from "jsr:@std/async@1.0.13";
+export { delay, pooledMap } from "jsr:@std/async@1.0.13";
 
 export { concat } from "jsr:@std/bytes@1.0.6/concat";
+
+export { LruCache } from "jsr:@std/cache@0.2.0/lru-cache";
 
 export { iterateReader } from "jsr:@std/io@0.225.2/iterate-reader";
 
