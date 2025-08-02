@@ -396,7 +396,7 @@ export class StorageOperations {
     });
   }
 
-  async getPeer(chatId: number) {
+  async getPeer(chatId: number): Promise<[ChatP, bigint] | null> {
     const maybeChat = this.#peers.get(chatId);
     if (maybeChat !== undefined) {
       return maybeChat;
@@ -408,7 +408,7 @@ export class StorageOperations {
     return this.mustGetPeer(chatId);
   }
 
-  mustGetPeer(chatId: number) {
+  mustGetPeer(chatId: number): [ChatP, bigint] | null {
     const peer = this.#peers.get(chatId);
     if (peer === undefined) {
       unreachable();
