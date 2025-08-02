@@ -40,8 +40,8 @@ Deno.test("key parts", () => {
   // cache
   assertEquals(K.cache.usernames(), ["cache.username"]);
   assertEquals(K.cache.username("MTKruto"), ["cache.username", "MTKruto"]);
-  assertEquals(K.cache.peers(), ["cache.peer"]);
-  assertEquals(K.cache.peer(123), ["cache.peer", 123]);
+  assertEquals(K.cache.peers(), ["cache.peers"]);
+  assertEquals(K.cache.peer(123), ["cache.peers", 123]);
   assertEquals(K.cache.stickerSetNames(), ["cache.stickerSetNames"]);
   assertEquals(K.cache.stickerSetName(123n, 0n), ["cache.stickerSetNames", 123n, 0n]);
   assertEquals(K.cache.files(), ["cache.files"]);
