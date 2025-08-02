@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { LruCache, unreachable } from "../0_deps.ts";
+import { LruCache, MINUTE, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { awaitablePooledMap, base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { awaitablePooledMap, base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, getLogger, Logger, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Storage, StorageKeyPart } from "../2_storage.ts";
 import { Api, TLReader, TLWriter, X } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
@@ -109,18 +109,18 @@ export const K = {
   },
 };
 
-const PEER_CACHE_SIZE = 5_000;
-
 export class StorageOperations {
   #storage: Storage;
   #supportsFiles: boolean;
   #mustSerialize: boolean;
   #authKeyId: bigint | null = null;
+  #L: Logger;
 
   constructor(storage: Storage) {
     this.#storage = storage;
     this.#supportsFiles = storage.supportsFiles;
     this.#mustSerialize = storage.mustSerialize;
+    this.#L = getLogger("StorageOperations");
   }
 
   get provider(): Storage {
@@ -243,10 +243,58 @@ export class StorageOperations {
     }
   }
 
-  async updateUsernames(id: number, usernames: string[]) {
+  #usernamesToCommit = new Map<string, [number, Date]>();
+  #usernames = new LruCache<string, [number, Date] | null>(20_000);
+  updateUsernames(id: number, usernames: string[]) {
     for (let username of usernames) {
       username = username.toLowerCase();
-      await this.#storage.set(K.cache.username(username), [id, new Date()]);
+      const value: [number, Date] = [id, new Date()];
+      !this.#storage.isMemory && this.#usernamesToCommit.set(username, value);
+      this.#usernames.set(username, value);
+    }
+  }
+
+  async #commitUsernames() {
+    if (this.#storage.isMemory) {
+      return;
+    }
+    await this.#once("commitUsernames", async () => {
+      await awaitablePooledMap(2, this.#usernamesToCommit, async ([username, value]) => await this.#storage.set(K.cache.username(username), value));
+      this.#usernamesToCommit.clear();
+    });
+  }
+
+  #lastCommit: Date | null = null;
+  async commit(force = false) {
+    if (this.#storage.isMemory) {
+      return;
+    }
+    const pending = this.#peersToCommit.size + this.#usernamesToCommit.size;
+    if (pending <= 0) {
+      this.#L.debug("nothing to commit");
+      return;
+    }
+    let commit = false;
+    if (force) {
+      this.#L.debug("committing because force = true");
+      commit = true;
+    } else {
+      if (!commit && pending >= 1_000) {
+        this.#L.debug("committing because pending writes >= threshold");
+        commit = true;
+      } else if (this.#lastCommit === null) {
+        this.#L.debug("committing because there is no last commit");
+        commit = true;
+      } else if (Date.now() - this.#lastCommit.getTime() >= 5 * MINUTE) {
+        this.#L.debug("committing because last commit is older than threshold");
+        commit = true;
+      } else {
+        this.#L.debug("not committing");
+      }
+    }
+    if (commit) {
+      await Promise.all([this.#commitPeers(), this.#commitUsernames()]);
+      this.#lastCommit = new Date();
     }
   }
 
@@ -326,7 +374,7 @@ export class StorageOperations {
   }
 
   #peersToCommit = new Map<number, [ChatP, bigint]>();
-  #peers = new LruCache<number, [ChatP, bigint] | null>(PEER_CACHE_SIZE);
+  #peers = new LruCache<number, [ChatP, bigint] | null>(50_000);
   setPeer(peer_: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden) {
     const chatP = constructChatP(peer_);
     this.setPeer2(chatP, "access_hash" in peer_ ? peer_.access_hash ?? 0n : 0n);
@@ -334,11 +382,14 @@ export class StorageOperations {
 
   setPeer2(chatP: ChatP, accessHash: bigint) {
     const peer: [ChatP, bigint] = [chatP, accessHash];
-    this.#peersToCommit.set(chatP.id, peer);
+    !this.#storage.isMemory && this.#peersToCommit.set(chatP.id, peer);
     this.#peers.set(chatP.id, peer);
   }
 
-  async commitPeers() {
+  async #commitPeers() {
+    if (this.#storage.isMemory) {
+      return;
+    }
     await this.#once("commitPeers", async () => {
       await awaitablePooledMap(2, this.#peersToCommit, async ([id, chat]) => await this.#storage.set(K.cache.peer(id), chat));
       this.#peersToCommit.clear();

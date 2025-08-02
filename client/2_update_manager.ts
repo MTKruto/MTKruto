@@ -196,13 +196,13 @@ export class UpdateManager {
     return minPeerReferences;
   }
 
-  async processChats(chats: Api.Chat[], _context: Api.DeserializedType) {
+  processChats(chats: Api.Chat[], _context: Api.DeserializedType) {
     for (const chat of chats) {
-      await this.processChat(chat);
+      this.processChat(chat);
     }
   }
 
-  async processChat(chat: Api.Chat) {
+  processChat(chat: Api.Chat) {
     if (Api.is("chatEmpty", chat)) {
       return;
     }
@@ -213,10 +213,10 @@ export class UpdateManager {
     this.#c.messageStorage.setPeer(chat);
 
     if ("username" in chat && chat.username) {
-      await this.#c.messageStorage.updateUsernames(Api.peerToChatId(chat), [chat.username]);
+      this.#c.messageStorage.updateUsernames(Api.peerToChatId(chat), [chat.username]);
     }
     if ("usernames" in chat && chat.usernames) {
-      await this.#c.messageStorage.updateUsernames(Api.peerToChatId(chat), chat.usernames.map((v) => v.username));
+      this.#c.messageStorage.updateUsernames(Api.peerToChatId(chat), chat.usernames.map((v) => v.username));
     }
   }
 
@@ -231,7 +231,7 @@ export class UpdateManager {
           }
         }
         if (valid) {
-          await this.processChats(result.chats as Api.Chat[], result);
+          this.processChats(result.chats as Api.Chat[], result);
         }
       }
 
@@ -244,7 +244,7 @@ export class UpdateManager {
           }
         }
         if (valid) {
-          await this.processUsers(result.users as Api.User[], result);
+          this.processUsers(result.users as Api.User[], result);
         }
       }
 
@@ -266,13 +266,13 @@ export class UpdateManager {
     }
   }
 
-  async processUsers(users: Api.User[], _context: Api.DeserializedType) {
+  processUsers(users: Api.User[], _context: Api.DeserializedType) {
     for (const user of users) {
-      await this.processUser(user);
+      this.processUser(user);
     }
   }
 
-  async processUser(user: Api.User) {
+  processUser(user: Api.User) {
     if (Api.is("userEmpty", user)) {
       return;
     }
@@ -283,10 +283,10 @@ export class UpdateManager {
     this.#c.messageStorage.setPeer(user);
 
     if (user.username) {
-      await this.#c.messageStorage.updateUsernames(Api.peerToChatId(user), [user.username]);
+      this.#c.messageStorage.updateUsernames(Api.peerToChatId(user), [user.username]);
     }
     if (user.usernames) {
-      await this.#c.messageStorage.updateUsernames(Api.peerToChatId(user), user.usernames.map((v) => v.username));
+      this.#c.messageStorage.updateUsernames(Api.peerToChatId(user), user.usernames.map((v) => v.username));
     }
   }
 
@@ -678,8 +678,8 @@ export class UpdateManager {
           }
         }
         if (Api.is("updates.difference", difference) || Api.is("updates.differenceSlice", difference)) {
-          await this.processChats(difference.chats, difference);
-          await this.processUsers(difference.users, difference);
+          this.processChats(difference.chats, difference);
+          this.processUsers(difference.users, difference);
           for (const message of difference.new_messages) {
             await this.#processUpdates({ _: "updateNewMessage", message, pts: 0, pts_count: 0 }, false);
           }

@@ -29,6 +29,7 @@ import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNE
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
+import { AbortableLoop } from "./0_abortable_loop.ts";
 import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMyCommandsParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenMiniAppParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
@@ -386,6 +387,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #L: Logger;
   #LsignIn: Logger;
   #LupdateGapRecoveryLoop: Logger;
+  #LstorageWriteLoop: Logger;
   #LhandleMigrationError: Logger;
   #Lmin: Logger;
 
@@ -428,6 +430,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     const L = this.#L = getLogger("Client").client(id++);
     this.#LsignIn = L.branch("signIn");
     this.#LupdateGapRecoveryLoop = L.branch("updateGapRecoveryLoop");
+    this.#LstorageWriteLoop = L.branch("storageWriteLoop");
     this.#LhandleMigrationError = L.branch("[handleMigrationError]");
     this.#Lmin = L.branch("min");
 
@@ -1017,8 +1020,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
       }
       await this.#client!.connect();
       await Promise.all([this.storage.setAuthKey(this.#client!.authKey), this.storage.setDc(this.#client!.dc), this.storage.setServerSalt(this.#client!.serverSalt)]);
-      this.#startUpdateGapRecoveryLoop();
-      this.#startClientDisconnectionLoop();
+      this.#updateGapRecoveryLoop.start();
+      this.#clientDisconnectionLoop.start();
+      if (!this.#messageStorage_.isMemory) {
+        this.#storageWriteLoop.start();
+      } else {
+        this.#L.debug("not starting storageWriteLoop");
+      }
     } finally {
       unlock();
     }
@@ -1038,8 +1046,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   disconnect() {
     this.#disconnectAllClients();
-    this.#clientDisconnectionLoopAbortController?.abort();
-    this.#updateGapRecoveryLoopAbortController?.abort();
+    this.#clientDisconnectionLoop.abort();
+    this.#updateGapRecoveryLoop.abort();
+    this.#storageWriteLoop.abort();
     this.#updateManager.closeAllChats();
   }
 
@@ -1068,67 +1077,54 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   #lastUpdates = new Date();
-  #updateGapRecoveryLoopAbortController?: AbortController;
-  #startUpdateGapRecoveryLoop() {
-    drop(this.#updateGapRecoveryLoop());
-  }
-  async #updateGapRecoveryLoop() {
-    this.#updateGapRecoveryLoopAbortController?.abort();
-    const controller = this.#updateGapRecoveryLoopAbortController = new AbortController();
-    while (this.connected) {
-      try {
-        await delay(60 * SECOND, { signal: controller.signal });
-        if (!this.connected) {
-          break;
-        }
-        controller.signal.throwIfAborted();
-        if (Date.now() - this.#lastUpdates.getTime() >= 15 * MINUTE) {
-          drop(
-            this.#updateManager.recoverUpdateGap("lastUpdates").then(() => {
-              this.#lastUpdates = new Date();
-            }),
-          );
-        }
-      } catch (err) {
-        if (err instanceof DOMException && err.name == "AbortError") {
-          break;
-        } else if (!this.connected) {
-          break;
-        }
-        this.#LupdateGapRecoveryLoop.error(err);
-      }
+  #updateGapRecoveryLoop = new AbortableLoop(async (signal) => {
+    await delay(60 * SECOND, { signal });
+    if (!this.connected) {
+      this.#updateGapRecoveryLoop.abort();
+      return;
     }
-  }
+    if (Date.now() - this.#lastUpdates.getTime() >= 15 * MINUTE) {
+      drop(
+        this.#updateManager.recoverUpdateGap("lastUpdates").then(() => {
+          this.#lastUpdates = new Date();
+        }),
+      );
+    }
+  }, (err) => {
+    if (!this.connected) {
+      this.#updateGapRecoveryLoop.abort();
+    } else {
+      this.#LupdateGapRecoveryLoop.error(err);
+    }
+  });
 
-  #clientDisconnectionLoopAbortController?: AbortController;
-  #startClientDisconnectionLoop() {
-    drop(this.#clientDisconnectionLoop());
-  }
-  async #clientDisconnectionLoop() {
-    const controller = this.#clientDisconnectionLoopAbortController = new AbortController();
-    while (this.connected) {
-      try {
-        await delay(60 * SECOND, { signal: controller.signal });
-        if (!this.connected) {
-          break;
-        }
-        controller.signal.throwIfAborted();
-        const now = Date.now();
-        const disconnectAfter = 5 * MINUTE;
-        this.#clients.map((client, i) => {
-          if (i > 0 && !client.disconnected && client.lastRequest && now - client.lastRequest.getTime() >= disconnectAfter) {
-            client?.disconnect();
-          }
-        });
-      } catch (err) {
-        if (err instanceof DOMException && err.name == "AbortError") {
-          break;
-        } else if (!this.connected) {
-          break;
-        }
+  #clientDisconnectionLoop = new AbortableLoop(async (signal) => {
+    await delay(60 * SECOND, { signal });
+    if (!this.connected) {
+      this.#clientDisconnectionLoop.abort();
+      return;
+    }
+    const now = Date.now();
+    const disconnectAfter = 5 * MINUTE;
+    for (const [i, client] of this.#clients.entries()) {
+      if (i > 0 && !client.disconnected && client.lastRequest && now - client.lastRequest.getTime() >= disconnectAfter) {
+        client?.disconnect();
       }
     }
-  }
+  }, () => {
+    if (!this.connected) {
+      this.#clientDisconnectionLoop.abort();
+    }
+  });
+
+  #storageWriteLoop = new AbortableLoop(async (signal) => {
+    await delay(60 * SECOND, { signal });
+    await this.messageStorage.commit();
+  }, (err) => {
+    this.#LstorageWriteLoop.error(err);
+  }, async () => {
+    await this.messageStorage.commit();
+  });
 
   /**
    * Signs in using the provided parameters if not already signed in.
@@ -1710,7 +1706,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async #handleUpdate(update: Api.Update) {
     const maybePromises = new Array<() => MaybePromise<Update | null>>();
     if (Api.is("updateUserName", update)) {
-      await this.messageStorage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
+      this.messageStorage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
       const peer: Api.peerUser = { ...update, _: "peerUser" };
       const peer_ = await this[getPeer](peer);
       if (peer_ !== null) {
