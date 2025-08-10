@@ -1543,14 +1543,14 @@ export class Client<C extends Context = Context> extends Composer<C> {
       return { _: "inputPeerSelf" };
     }
     const inputPeer = await this.#getInputPeerInner(id);
-    if (((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n) && await this.storage.getAccountType() == "user") {
+    if (((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n) && await this.storage.getAccountType() == "bot") {
       if ("channel_id" in inputPeer) {
         inputPeer.access_hash = await this.#getChannelAccessHash(inputPeer.channel_id);
       } else {
         inputPeer.access_hash = await this.#getUserAccessHash(inputPeer.user_id);
       }
     }
-    if ((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n && await this.storage.getAccountType() == "user") {
+    if ((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n) {
       throw new AccessError(`Cannot access the chat ${id} because there is no access hash for it.`);
     }
     return inputPeer;
