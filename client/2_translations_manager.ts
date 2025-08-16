@@ -34,7 +34,7 @@ const translationsManagerUpdates = [
 
 type TranslationsManagerUpdate = Api.Types[(typeof translationsManagerUpdates)[number]];
 
-export class TranslationsManager implements UpdateProcessor<TranslationsManagerUpdate> {
+export class TranslationsManager implements UpdateProcessor<TranslationsManagerUpdate, true> {
   #c: C;
 
   constructor(c: C) {

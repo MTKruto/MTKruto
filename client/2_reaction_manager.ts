@@ -34,7 +34,7 @@ const reactionManagerUpdates = [
 
 type ReactionManagerUpdate = Api.Types[(typeof reactionManagerUpdates)[number]];
 
-export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate> {
+export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate, true> {
   #c: C;
 
   constructor(c: C) {
@@ -47,14 +47,14 @@ export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate> {
 
   async handleUpdate(update: ReactionManagerUpdate): Promise<Update | null> {
     if (Api.is("updateBotMessageReactions", update)) {
-      const messageReactionCount = await constructMessageReactionCount(update, this.#c.getEntity);
+      const messageReactionCount = constructMessageReactionCount(update, this.#c.getPeer);
       if (messageReactionCount) {
         return { messageReactionCount };
       } else {
         return null;
       }
     } else if (Api.is("updateBotMessageReaction", update)) {
-      const messageReactions = await constructMessageReactions(update, this.#c.getEntity);
+      const messageReactions = constructMessageReactions(update, this.#c.getPeer);
       if (messageReactions) {
         return { messageReactions };
       } else {

@@ -53,6 +53,10 @@ export class StorageLocalStorage implements Storage {
     return true;
   }
 
+  get isMemory(): boolean {
+    return false;
+  }
+
   get<T>(key_: readonly StorageKeyPart[]): T | null {
     const key = this.prefix + toString(key_);
     const value = localStorage.getItem(key);
