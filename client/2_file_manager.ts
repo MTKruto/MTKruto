@@ -25,6 +25,7 @@ import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
 import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
+import { StickersetInvalid } from "../4_errors.ts";
 import { _UploadCommon, DownloadParams } from "./0_params.ts";
 import { UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
 import { C } from "./1_types.ts";
@@ -410,10 +411,18 @@ export class FileManager {
     if (maybeStickerSetName != null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
       return maybeStickerSetName[0];
     } else {
-      const stickerSet = await this.#c.invoke({ _: "messages.getStickerSet", stickerset: inputStickerSet, hash });
-      const name = Api.as("messages.stickerSet", stickerSet).set.short_name;
-      await this.#c.messageStorage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
-      return name;
+      try {
+        const stickerSet = await this.#c.invoke({ _: "messages.getStickerSet", stickerset: inputStickerSet, hash });
+        const name = Api.as("messages.stickerSet", stickerSet).set.short_name;
+        await this.#c.messageStorage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
+        return name;
+      } catch (err) {
+        if (err instanceof StickersetInvalid) {
+          return undefined;
+        } else {
+          throw err;
+        }
+      }
     }
   }
 
