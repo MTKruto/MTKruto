@@ -61,6 +61,7 @@ export * from "./types/0_story_reference.ts";
 export * from "./types/0_switch_inline_query_chosen_chats.ts";
 export * from "./types/0_thumbnail.ts";
 export * from "./types/0_translation.ts";
+export * from "./types/0_upload_progress.ts";
 export * from "./types/0_video_chat.ts";
 export * from "./types/0_voice_transcription.ts";
 export * from "./types/0_voice.ts";

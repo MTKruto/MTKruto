@@ -2603,6 +2603,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return await this.#messageManager.openMiniApp(botId, chatId, params);
   }
 
+  /**
+   * Get a progress ID that can be passed to relevant send* methods to receive upload progress updates for them.
+   *
+   * @method ms
+   * @cache
+   */
+  async getProgressId(): Promise<string> {
+    return await this.#fileManager.getProgressId();
+  }
+
   //
   // ========================= POLLS ========================= //
   //

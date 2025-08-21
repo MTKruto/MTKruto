@@ -213,6 +213,8 @@ export interface _UploadCommon {
   chunkSize?: number;
   /** Upload abort signal. */
   signal?: AbortSignal;
+  /** A progress ID retrieved from the method getProgressId. If specified, updates on the upload progress will be sent. */
+  progressId?: string;
 }
 
 export interface AnswerInlineQueryParams {
