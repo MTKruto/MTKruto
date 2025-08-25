@@ -438,7 +438,7 @@ export interface SearchMessagesParams {
   /** A search filter to apply. */
   filter?: MessageSearchFilter;
   /** A message identifier to start searching after. */
-  after?: number;
+  offset?: number;
   /** The identifier of a message thread to search in. */
   threadId?: number;
   /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */

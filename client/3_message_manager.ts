@@ -237,7 +237,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     return await this.updatesToMessages(to, result);
   }
 
-  async getHistory(chatId: ID, params?: GetHistoryParams) { // TODO: get from database properly
+  async getHistory(chatId: ID, params?: GetHistoryParams) {
     this.#c.storage.assertUser("getHistory");
     const limit = getLimit(params?.limit);
     let offsetId = params?.fromMessageId ?? 0;
@@ -1279,7 +1279,21 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
 
   async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams) {
     this.#c.storage.assertUser("searchMessages");
-    const result = await this.#c.invoke({ _: "messages.search", peer: await this.#c.getInputPeer(chatId), q: query, add_offset: 0, filter: messageSearchFilterToTlObject(params?.filter ?? "empty"), hash: 0n, limit: getLimit(params?.limit), max_date: 0, max_id: 0, min_date: 0, min_id: 0, offset_id: params?.after ? params.after : 0, from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined });
+    const result = await this.#c.invoke({
+      _: "messages.search",
+      peer: await this.#c.getInputPeer(chatId),
+      q: query,
+      add_offset: 0,
+      filter: messageSearchFilterToTlObject(params?.filter ?? "empty"),
+      hash: 0n,
+      limit: getLimit(params?.limit),
+      max_date: 0,
+      max_id: 0,
+      min_date: 0,
+      min_id: 0,
+      offset_id: params?.offset ? params.offset : 0,
+      from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined,
+    });
     if (!("messages" in result)) {
       unreachable();
     }
