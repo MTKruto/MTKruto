@@ -1283,7 +1283,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       _: "messages.search",
       peer: await this.#c.getInputPeer(chatId),
       q: query,
-      add_offset: 0,
+      add_offset: params?.addOffset ?? 0,
       filter: messageSearchFilterToTlObject(params?.filter ?? "empty"),
       hash: 0n,
       limit: getLimit(params?.limit),
