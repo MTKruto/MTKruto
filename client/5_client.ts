@@ -1396,6 +1396,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #setupClient(client: ClientEncrypted) {
     const storage = client.dc == this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.cdn ? "_cdn" : "")));
+    await storage.initialize();
     const [authKey, serverSalt] = await Promise.all([storage.getAuthKey(), storage.getServerSalt()]);
     if (authKey) {
       await client.setAuthKey(authKey);
