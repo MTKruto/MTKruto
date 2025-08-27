@@ -63,9 +63,9 @@ export class InlineQueryManager implements UpdateProcessor<InlineQueryManagerUpd
     }
   }
 
-  async sendInlineQuery(userId: ID, chatId: ID, params?: SendInlineQueryParams) {
+  async sendInlineQuery(botId_: ID, chatId: ID, params?: SendInlineQueryParams) {
     this.#c.storage.assertUser("sendInlineQuery");
-    const bot = await this.#c.getInputUser(userId),
+    const bot = await this.#c.getInputUser(botId_),
       peer = await this.#c.getInputPeer(chatId),
       query = params?.query ?? "",
       offset = params?.offset ?? "";

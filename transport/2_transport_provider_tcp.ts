@@ -18,12 +18,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/** The necessary information to launch a mini app. */
-export interface MiniAppInfo {
-  /** An HTTPS URL of the mini app to be opened with additional data. */
-  url: string;
-}
+import { ConnectionTCP } from "../connection/1_connection_tcp.ts";
+import { TransportAbridged } from "./1_transport_abridged.ts";
+import { getDcId, getDcIps, TransportProvider } from "./1_transport_provider.ts";
 
-export function constructMiniAppInfo(url: string): MiniAppInfo {
-  return { url };
+export function transportProviderTcp(params?: {
+  ipv6?: boolean;
+  obfuscated?: boolean;
+}): TransportProvider {
+  return ({ dc, cdn }) => {
+    const connection = new ConnectionTCP(getDcIps(dc, params?.ipv6 ? "ipv6" : "ipv4")[0], 80);
+    const transport = new TransportAbridged(connection, params?.obfuscated);
+    return { connection, transport, dcId: getDcId(dc, cdn) };
+  };
 }

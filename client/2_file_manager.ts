@@ -25,6 +25,7 @@ import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
 import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
+import { StickersetInvalid } from "../4_errors.ts";
 import { _UploadCommon, DownloadParams } from "./0_params.ts";
 import { UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
 import { C } from "./1_types.ts";
@@ -43,7 +44,23 @@ export class FileManager {
     this.#Lupload = L.branch("upload");
   }
 
+  #progressIds = new Set<bigint>();
+  getProgressId() {
+    let id: bigint;
+    do {
+      id = getRandomId();
+    } while (id === 0n || this.#progressIds.has(id));
+    this.#progressIds.add(id);
+    return Promise.resolve(String(id));
+  }
+
   async upload(file: FileSource, params?: _UploadCommon, checkName?: null | ((name: string) => string), allowStream = true): Promise<Api.InputFile> {
+    if (params?.progressId !== undefined && !this.#progressIds.has(BigInt(params.progressId))) {
+      throw new InputError("Invalid progressId.");
+    }
+    if (params?.progressId !== undefined) {
+      this.#progressIds.delete(BigInt(params.progressId));
+    }
     let { size, name, contents } = await FileManager.#getFileContents(file, params, allowStream);
     if (checkName) {
       name = checkName(name);
@@ -57,7 +74,8 @@ export class FileManager {
     const chunkSize = params?.chunkSize ?? FileManager.#UPLOAD_MAX_CHUNK_SIZE;
     FileManager.validateChunkSize(chunkSize, FileManager.#UPLOAD_MAX_CHUNK_SIZE);
 
-    const fileId = getRandomId();
+    const mustTrackProgress = params?.progressId !== undefined;
+    const fileId = params?.progressId !== undefined ? BigInt(params.progressId) : getRandomId();
 
     const isBig = contents instanceof Uint8Array ? contents.length > FileManager.#BIG_FILE_THRESHOLD : true;
 
@@ -66,9 +84,9 @@ export class FileManager {
 
     let result: { small: boolean; parts: number };
     if (contents instanceof Uint8Array) {
-      result = await this.#uploadBuffer(contents, fileId, chunkSize, poolSize, params?.signal);
+      result = await this.#uploadBuffer(contents, fileId, mustTrackProgress, chunkSize, poolSize, params?.signal);
     } else {
-      result = await this.#uploadStream(contents, fileId, chunkSize, poolSize, params?.signal);
+      result = await this.#uploadStream(contents, fileId, mustTrackProgress, chunkSize, poolSize, params?.signal);
     }
 
     this.#Lupload.debug(`[${fileId}] uploaded ` + result.parts + " part(s)");
@@ -80,16 +98,30 @@ export class FileManager {
     }
   }
 
-  async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, chunkSize: number, poolSize: number, signal: AbortSignal | undefined) {
+  async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, mustTrackProgress: boolean, chunkSize: number, poolSize: number, signal: AbortSignal | undefined) {
     let part: Part;
     let promises = new Array<Promise<void>>();
     let ms = 0.05;
+    let uploaded = 0;
     for await (part of iterateReadableStream(stream.pipeThrough(new PartStream(chunkSize)))) {
       if (!part.small && part.part > 0) {
         await delay(ms);
         ms = Math.max(ms * .8, 0.003);
       }
-      promises.push(this.#uploadPart(fileId, part.totalParts, !part.small, part.part, part.bytes, signal));
+      promises.push(
+        this.#uploadPart(fileId, part.totalParts, !part.small, part.part, part.bytes, signal).then(() => {
+          if (mustTrackProgress) {
+            uploaded += part.bytes.length;
+            this.#c.handleUpdate({
+              uploadProgress: {
+                id: String(fileId),
+                uploaded,
+                total: 0,
+              },
+            });
+          }
+        }),
+      );
       if (promises.length == poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
         await Promise.all(promises);
         promises = [];
@@ -99,12 +131,13 @@ export class FileManager {
     return { small: part!.small, parts: part!.totalParts };
   }
 
-  async #uploadBuffer(buffer: Uint8Array, fileId: bigint, chunkSize: number, poolSize: number, signal: AbortSignal | undefined) {
+  async #uploadBuffer(buffer: Uint8Array, fileId: bigint, mustTrackProgress: boolean, chunkSize: number, poolSize: number, signal: AbortSignal | undefined) {
     const isBig = buffer.byteLength > FileManager.#BIG_FILE_THRESHOLD;
     const partCount = Math.ceil(buffer.byteLength / chunkSize);
     let promises = new Array<Promise<void>>();
     let started = false;
     let ms = 0.05;
+    let uploaded = 0;
     main: for (let part = 0; part < partCount;) {
       for (let i = 0; i < poolSize; ++i) {
         for (let i = 0; i < UPLOAD_REQUEST_PER_CONNECTION; ++i) {
@@ -120,7 +153,20 @@ export class FileManager {
             await delay(ms);
             ms = Math.max(ms * .8, 0.003);
           }
-          promises.push(this.#uploadPart(fileId, partCount, isBig, part++, bytes, signal));
+          promises.push(
+            this.#uploadPart(fileId, partCount, isBig, part++, bytes, signal).then(() => {
+              if (mustTrackProgress) {
+                uploaded += bytes.length;
+                this.#c.handleUpdate({
+                  uploadProgress: {
+                    id: String(fileId),
+                    uploaded,
+                    total: buffer.length,
+                  },
+                });
+              }
+            }),
+          );
           if (promises.length == poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
             await Promise.all(promises);
             promises = [];
@@ -410,10 +456,18 @@ export class FileManager {
     if (maybeStickerSetName != null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
       return maybeStickerSetName[0];
     } else {
-      const stickerSet = await this.#c.invoke({ _: "messages.getStickerSet", stickerset: inputStickerSet, hash });
-      const name = Api.as("messages.stickerSet", stickerSet).set.short_name;
-      await this.#c.messageStorage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
-      return name;
+      try {
+        const stickerSet = await this.#c.invoke({ _: "messages.getStickerSet", stickerset: inputStickerSet, hash });
+        const name = Api.as("messages.stickerSet", stickerSet).set.short_name;
+        await this.#c.messageStorage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
+        return name;
+      } catch (err) {
+        if (err instanceof StickersetInvalid) {
+          return undefined;
+        } else {
+          throw err;
+        }
+      }
     }
   }
 

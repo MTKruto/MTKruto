@@ -52,7 +52,7 @@ export interface Poll {
   /** Duration of the poll in seconds. */
   openPeriod?: number;
   /** The time in which the poll will be closed. */
-  closeDate?: Date;
+  closeDate?: number;
 }
 
 export function constructPoll(media_: Api.messageMediaPoll): Poll {
@@ -73,6 +73,6 @@ export function constructPoll(media_: Api.messageMediaPoll): Poll {
     explanation: media_.results.solution,
     explanationEntities: media_.results.solution_entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v != null),
     openPeriod: poll.close_period,
-    closeDate: poll.close_date ? new Date(poll.close_date * 1000) : undefined,
+    closeDate: poll.close_date,
   });
 }

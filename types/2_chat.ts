@@ -26,8 +26,7 @@ import { Birthday, constructBirthday } from "./0_birthday.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { constructOpeningHours, OpeningHours } from "./0_opening_hours.ts";
 import { ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, constructChatP } from "./1_chat_p.ts";
-import { constructPhoto } from "./1_photo.ts";
-import { Photo } from "./1_photo.ts";
+import { constructPhoto, Photo } from "./1_photo.ts";
 
 /** @unlisted */
 export interface ChatBase {
@@ -54,7 +53,7 @@ export interface ChatGroup extends ChatBase, ChatPGroup {
 }
 
 /** @unlisted */
-export interface ChatPrivate extends ChatBase, ChatPPrivate {
+export interface ChatPrivate extends ChatBase, Omit<ChatPPrivate, "photo"> {
   /** The user's birthday. */
   birthday?: Birthday;
   /** The written address of the business. */

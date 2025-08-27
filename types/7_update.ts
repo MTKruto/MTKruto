@@ -23,6 +23,7 @@ import { ConnectionState } from "./0_connection_state.ts";
 import { MessageReference } from "./0_message_reference.ts";
 import { StoryReference } from "./0_story_reference.ts";
 import { Translation } from "./0_translation.ts";
+import { UploadProgress } from "./0_upload_progress.ts";
 import { VideoChat } from "./0_video_chat.ts";
 import { VoiceTranscription } from "./0_voice_transcription.ts";
 import { BusinessConnection } from "./2_business_connection.ts";
@@ -480,6 +481,24 @@ export interface UpdateLinkPreview {
   linkPreview: LinkPreview;
 }
 
+/**
+ * An upload has progressed.
+ *
+ * ```
+ * client.on("uploadProgress", (ctx) => {
+ *   // ctx.uploadProgress
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateUploadProgress {
+  /**
+   * The new progress of the upload.
+   * @discriminator
+   */
+  uploadProgress: UploadProgress;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -510,6 +529,7 @@ export interface UpdateMap {
   pollAnswer: UpdatePollAnswer;
   voiceTranscription: UpdateVoiceTranscription;
   linkPreview: UpdateLinkPreview;
+  uploadProgress: UpdateUploadProgress;
 }
 
 /** @unlisted */
@@ -542,6 +562,7 @@ export type UpdateIntersection = Partial<
   & UpdatePollAnswer
   & UpdateVoiceTranscription
   & UpdateLinkPreview
+  & UpdateUploadProgress
 >;
 
 /** An incoming update. */
@@ -573,4 +594,5 @@ export type Update =
   | UpdatePoll
   | UpdatePollAnswer
   | UpdateVoiceTranscription
-  | UpdateLinkPreview;
+  | UpdateLinkPreview
+  | UpdateUploadProgress;

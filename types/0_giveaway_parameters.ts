@@ -18,7 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { fromUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 
 /** Giveaway parameters. */
@@ -28,7 +27,7 @@ export interface GiveawayParameters {
   /** The identifiers of additional chats that the user must subscribe to in order to be eligible for the prizes. */
   additionalChatIds: number[];
   /** A point in time within the future in which the winners will be selected. */
-  winnerSelectionDate: Date;
+  winnerSelectionDate: number;
   /** Whether only new members of the chats will be eligible for the prizes. */
   onlyNewMembers: boolean;
   /** A list of countries that are eligible for the prizes. */
@@ -40,7 +39,7 @@ export function constructGiveawayParameters(g: Api.messageMediaGiveaway): Giveaw
   const boostedChatId = Api.peerToChatId({ _: "peerChannel", channel_id: g.channels[0] });
   const additionalChatIds = g.channels.slice(1).map((v) => Api.peerToChatId({ _: "peerChannel", channel_id: v }));
   const onlyNewMembers = g.only_new_subscribers ? true : false;
-  const winnerSelectionDate = fromUnixTimestamp(g.until_date);
+  const winnerSelectionDate = g.until_date;
 
   return { boostedChatId, additionalChatIds, winnerSelectionDate, onlyNewMembers, countries };
 }

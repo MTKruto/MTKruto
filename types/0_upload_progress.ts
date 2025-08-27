@@ -18,22 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "./utilities/0_bigint.ts";
-export * from "./utilities/0_buffer.ts";
-export * from "./utilities/0_color.ts";
-export * from "./utilities/0_gzip.ts";
-export * from "./utilities/0_hash.ts";
-export * from "./utilities/0_mutex.ts";
-export * from "./utilities/0_object.ts";
-export * from "./utilities/0_part_stream.ts";
-export * from "./utilities/0_rle.ts";
-export * from "./utilities/0_text.ts";
-export * from "./utilities/0_types.ts";
-export * from "./utilities/0_units.ts";
-export * from "./utilities/1_auth.ts";
-export * from "./utilities/1_base64.ts";
-export * from "./utilities/1_crypto.ts";
-export * from "./utilities/1_logger.ts";
-export * from "./utilities/1_math.ts";
-export * from "./utilities/0_misc.ts";
-export * from "./utilities/2_queue.ts";
+/** The progress of an upload. */
+export interface UploadProgress {
+  /** The identifier of the upload progress retrieved from the method getProgressId. */
+  id: string;
+  /** Uploaded byte count. */
+  uploaded: number;
+  /** Total byte count if available, otherwise 0. */
+  total: number;
+}

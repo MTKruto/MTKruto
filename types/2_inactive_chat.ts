@@ -19,14 +19,13 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { fromUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 
 /** An inactive chat. */
 export interface InactiveChat {
   /** The time which the chat was last active. */
-  lastActivity: Date;
+  lastActivity: number;
   /** The chat that has been marked as inactive. */
   chat: ChatP;
 }
@@ -37,7 +36,7 @@ export function constructInactiveChat(chat_: Api.Chat, lastActivity: number): In
   }
   const chat = constructChatP(chat_);
   return {
-    lastActivity: fromUnixTimestamp(lastActivity),
+    lastActivity: lastActivity,
     chat,
   };
 }

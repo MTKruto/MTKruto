@@ -20,12 +20,12 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { toUnixTimestamp } from "../1_utilities.ts";
+import { fromUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, constructChatP, constructChatSettings, getChatListItemOrder, ID } from "../3_types.ts";
 import { type CreateChannelParams, type CreateGroupParams, type CreateSupergroupParams, GetChatMembersParams, GetCommonChatsParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
-import { canBeInputChannel, canBeInputUser, getChatListId, toInputChannel, toInputUser } from "./0_utilities.ts";
+import { canBeInputChannel, canBeInputUser, getChatListId, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
 import { MessageManager } from "./3_message_manager.ts";
@@ -80,7 +80,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       if (chat) {
         chat.order = getChatListItemOrder(message, chat.pinned);
         chat.lastMessage = message;
-        await this.#c.storage.setChat(listId, chatId, chat.pinned, message.id, message.date);
+        await this.#c.storage.setChat(listId, chatId, chat.pinned, message.id, fromUnixTimestamp(message.date));
       } else {
         const pinnedChats = await this.#getPinnedChats(listId);
         const chat = await constructChatListItem3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getEntity);
@@ -88,7 +88,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
           unreachable();
         }
         this.#chats.set(chatId, chat);
-        await this.#c.storage.setChat(listId, chatId, chat.pinned, chat.lastMessage?.id ?? 0, chat.lastMessage?.date ?? new Date(0));
+        await this.#c.storage.setChat(listId, chatId, chat.pinned, chat.lastMessage?.id ?? 0, fromUnixTimestamp(chat.lastMessage?.date ?? 0));
       }
       if (sendUpdate) {
         return () => this.#sendChatUpdate(chatId, !chat);
@@ -101,7 +101,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       if (chat) {
         chat.order = getChatListItemOrder(message, chat.pinned);
         chat.lastMessage = message;
-        await this.#c.storage.setChat(listId, chatId, chat.pinned, message.id, message.date);
+        await this.#c.storage.setChat(listId, chatId, chat.pinned, message.id, fromUnixTimestamp(message.date));
       } else {
         const pinnedChats = await this.#getPinnedChats(listId);
         const chat = await constructChatListItem3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getEntity);
@@ -308,7 +308,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       limit = 100;
     }
     const listId = getChatListId(from);
-    const dialogs = await this.#c.invoke({ _: "messages.getDialogs", limit, offset_id: after?.lastMessage?.id ?? 0, offset_date: after?.lastMessage?.date ? toUnixTimestamp(after.lastMessage.date) : 0, offset_peer: after ? await this.#c.getInputPeer(after.chat.id) : { _: "inputPeerEmpty" }, hash: 0n, folder_id: listId });
+    const dialogs = await this.#c.invoke({ _: "messages.getDialogs", limit, offset_id: after?.lastMessage?.id ?? 0, offset_date: after?.lastMessage?.date ?? 0, offset_peer: after ? await this.#c.getInputPeer(after.chat.id) : { _: "inputPeerEmpty" }, hash: 0n, folder_id: listId });
     const pinnedChats = await this.#getPinnedChats(listId);
     if (!(Api.is("messages.dialogs", dialogs)) && !(Api.is("messages.dialogsSlice", dialogs))) {
       unreachable();
@@ -320,7 +320,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     for (const dialog of dialogs.dialogs) {
       const chat = await constructChatListItem4(dialog, dialogs, pinnedChats, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
       chats.push(chat);
-      await this.#c.storage.setChat(listId, chat.chat.id, chat.pinned, chat.lastMessage?.id ?? 0, chat.lastMessage?.date ?? new Date(0));
+      await this.#c.storage.setChat(listId, chat.chat.id, chat.pinned, chat.lastMessage?.id ?? 0, fromUnixTimestamp(chat.lastMessage?.date ?? 0));
     }
     return chats;
   }
@@ -429,7 +429,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
     const peer = await this.#c.getInputPeer(chatId);
     if (canBeInputChannel(peer)) {
       const channel: Api.inputChannel | Api.inputChannelFromMessage = toInputChannel(peer);
-      const participants = await this.#c.invoke({ _: "channels.getParticipants", channel, filter: { _: "channelParticipantsRecent" }, offset: params?.offset ?? 0, limit: params?.limit ?? 100, hash: 0n });
+      const participants = await this.#c.invoke({ _: "channels.getParticipants", channel, filter: { _: "channelParticipantsRecent" }, offset: params?.offset ?? 0, limit: getLimit(params?.limit), hash: 0n });
       if (Api.is("channels.channelParticipantsNotModified", participants)) {
         unreachable();
       }
@@ -551,13 +551,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate> {
       throw new InputError("fromChatId must be a chat identifier.");
     }
     const user_id = await this.#c.getInputUser(userId);
-    let limit = params?.limit ?? 100;
-    if (limit <= 0) {
-      limit = 1;
-    }
-    if (limit > 100) {
-      limit = 100;
-    }
+    const limit = getLimit(params?.limit);
     const result = await this.#c.invoke({ _: "messages.getCommonChats", user_id, max_id: Api.chatIdToPeerId(max_id), limit });
     const chats = new Array<ChatP>();
     for (const chat of result.chats) {

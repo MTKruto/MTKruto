@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { ChatPChannel, ChatPSupergroup, constructChatP } from "./1_chat_p.ts";
@@ -27,7 +27,7 @@ import { constructUser, User } from "./1_user.ts";
 
 /** @unlisted */
 export interface _ForwardHeaderCommon {
-  date: Date;
+  date: number;
 }
 
 /** @unlisted */
@@ -74,7 +74,7 @@ export async function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, ge
     }
     return cleanObject({
       type: "channel",
-      date: fromUnixTimestamp(fwdHeader.date),
+      date: fwdHeader.date,
       chat: constructChatP(chat) as ChatPChannel,
       messageId: fwdHeader.channel_post,
       authorSignature: fwdHeader.post_author,
@@ -86,7 +86,7 @@ export async function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, ge
     }
     return cleanObject({
       type: "supergroup",
-      date: fromUnixTimestamp(fwdHeader.date),
+      date: fwdHeader.date,
       chat: constructChatP(chat) as ChatPSupergroup,
       title: fwdHeader.post_author,
     });
@@ -97,19 +97,19 @@ export async function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, ge
     }
     return {
       type: "user",
-      date: fromUnixTimestamp(fwdHeader.date),
+      date: fwdHeader.date,
       user: constructUser(user),
     };
   } else if (fwdHeader.from_name) {
     return {
       type: "hidden",
-      date: fromUnixTimestamp(fwdHeader.date),
+      date: fwdHeader.date,
       name: fwdHeader.from_name,
     };
   } else {
     return {
       type: "unsupported",
-      date: fromUnixTimestamp(fwdHeader.date),
+      date: fwdHeader.date,
     };
   }
 }

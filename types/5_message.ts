@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject, fromUnixTimestamp, getLogger, MaybePromise, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { cleanObject, getLogger, MaybePromise, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { FileId, FileType, toUniqueFileId } from "./_file_id.ts";
 import { serializeFileId } from "./_file_id.ts";
@@ -48,8 +48,8 @@ import { constructVideo, Video } from "./1_video.ts";
 import { constructForwardHeader, ForwardHeader } from "./2_forward_header.ts";
 import { constructGame, Game } from "./2_game.ts";
 import { constructPoll, Poll } from "./2_poll.ts";
+import { constructReplyMarkup, ReplyMarkup } from "./2_reply_markup.ts";
 import { constructSuccessfulPayment, SuccessfulPayment } from "./2_successful_payment.ts";
-import { constructReplyMarkup, ReplyMarkup } from "./3_reply_markup.ts";
 import { constructLinkPreview, LinkPreview } from "./4_link_preview.ts";
 
 const L = getLogger("Message");
@@ -68,7 +68,7 @@ export interface _MessageBase {
   /** The sender of the message. */
   from: ChatP;
   /** The point in time in which the message was sent. */
-  date: Date;
+  date: number;
   /** The chat where the message was sent to. */
   chat: ChatP;
   /** A link to the message. */
@@ -90,7 +90,7 @@ export interface _MessageBase {
   /** The inline bot that was used to send this message. */
   viaBot?: User;
   /** The point in time in which the message's last edit was made. */
-  editDate?: Date;
+  editDate?: number;
   /** Whether the contents of the message is protected. */
   hasProtectedContent?: boolean;
   /** The identifier of the message's media group. */
@@ -533,7 +533,7 @@ export interface MessageForumTopicReopened extends _MessageBase {
  */
 export interface MessageVideoChatScheduled extends _MessageBase {
   /** @discriminator */
-  videoChatScheduled: { startDate: Date };
+  videoChatScheduled: { startDate: number };
 }
 
 /**
@@ -785,7 +785,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     out: message_.out ?? false,
     id: message_.id,
     chat,
-    date: fromUnixTimestamp(message_.date),
+    date: message_.date,
     isTopicMessage: message_.reply_to && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic ? true : false,
     ...await getSender(message_, getEntity),
   };
@@ -890,7 +890,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
       return { ...message, forumTopicReopened };
     }
   } else if (Api.is("messageActionGroupCallScheduled", message_.action)) {
-    const videoChatScheduled = { startDate: new Date(message_.action.schedule_date * 1000) };
+    const videoChatScheduled = { startDate: message_.action.schedule_date };
     return { ...message, videoChatScheduled };
   } else if (Api.is("messageActionGroupCall", message_.action)) {
     if (message_.action.duration) {
@@ -970,7 +970,7 @@ export async function constructMessage(
     id: message_.id,
     chat: chat_,
     link,
-    date: fromUnixTimestamp(message_.date),
+    date: message_.date,
     views: message_.views,
     forwards: message_.forwards,
     isTopicMessage: message_.reply_to && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic ? true : false,
@@ -1037,8 +1037,8 @@ export async function constructMessage(
     message.mediaGroupId = String(message_.grouped_id);
   }
 
-  if (message_.edit_date != undefined) {
-    message.editDate = fromUnixTimestamp(message_.edit_date);
+  if (message_.edit_date) {
+    message.editDate = message_.edit_date;
   }
 
   const messageText = {

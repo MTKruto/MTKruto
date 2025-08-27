@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { ChatAdministratorRights, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
@@ -52,7 +52,7 @@ export interface ChatMemberAdministrator extends _ChatMemberBase {
 /** @unlisted */
 export interface ChatMemberMember extends _ChatMemberBase {
   status: "member";
-  untilDate?: Date;
+  until?: number;
 }
 
 /** @unlisted */
@@ -60,7 +60,7 @@ export interface ChatMemberRestricted extends _ChatMemberBase {
   status: "restricted";
   isMember: boolean;
   rights: ChatMemberRights;
-  untilDate?: Date;
+  until?: number;
 }
 
 /** @unlisted */
@@ -71,7 +71,7 @@ export interface ChatMemberLeft extends _ChatMemberBase {
 /** @unlisted */
 export interface ChatMemberBanned extends _ChatMemberBase {
   status: "banned";
-  untilDate?: Date;
+  until?: number;
 }
 
 /** A chat member. */
@@ -101,13 +101,13 @@ export async function constructChatMember(participant: Api.ChannelParticipant | 
       title: participant.rank,
     });
   } else if (Api.is("channelParticipantBanned", participant)) {
-    const untilDate = participant.banned_rights.until_date ? fromUnixTimestamp(participant.banned_rights.until_date) : undefined;
+    const until = participant.banned_rights.until_date ? participant.banned_rights.until_date : undefined;
     if (!participant.banned_rights.view_messages) {
       participant.peer;
       return cleanObject({
         status: "banned",
         user,
-        untilDate,
+        until,
       });
     }
     const isMember = participant.left ? true : false;
@@ -117,14 +117,14 @@ export async function constructChatMember(participant: Api.ChannelParticipant | 
       user,
       isMember,
       rights,
-      untilDate,
+      until,
     });
   } else if (Api.is("channelParticipantSelf", participant)) {
-    const untilDate = participant.subscription_until_date ? fromUnixTimestamp(participant.subscription_until_date) : undefined;
+    const until = participant.subscription_until_date ? participant.subscription_until_date : undefined;
     return cleanObject({
       status: "member",
       user,
-      untilDate,
+      until,
     });
   } else if (Api.is("channelParticipantLeft", participant)) {
     return { status: "left", user };

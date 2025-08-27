@@ -20,14 +20,14 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { toUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
+import { ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, FileSource, ID, Reaction, reactionToTlObject, Update } from "../3_types.ts";
-import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, SetChatMemberRightsParams, SetChatPhotoParams, SetSignaturesEnabledParams } from "./0_params.ts";
+import { inputPeerToPeer } from "../tl/2_telegram.ts";
+import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, SetChatMemberRightsParams, SetChatPhotoParams, SetSignaturesEnabledParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
-import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
+import { canBeInputChannel, canBeInputUser, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
 import { MessageManager } from "./3_message_manager.ts";
@@ -116,18 +116,39 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
     });
   }
 
+  async getJoinRequests(chatId: ID, params?: GetJoinRequestsParams) {
+    this.#c.storage.assertUser("getJoinRequests");
+    if (typeof params?.inviteLink === "string" && typeof params?.search === "string") {
+      throw new InputError("inviteLink and search cannot be specified together.");
+    }
+    const peer = await this.#c.getInputPeer(chatId);
+    const offset_user: Api.InputUser = params?.fromUserId ? await this.#c.getInputUser(params.fromUserId) : { _: "inputUserEmpty" };
+    const { importers } = await this.#c.invoke({
+      _: "messages.getChatInviteImporters",
+      requested: true,
+      peer,
+      link: params?.inviteLink,
+      q: params?.search,
+      offset_date: params?.fromDate ?? 0,
+      offset_user,
+      limit: getLimit(params?.limit),
+    });
+    const peer_ = inputPeerToPeer(peer);
+    return await Promise.all(importers.map((v) => constructJoinRequest2(peer_, v, this.#c.getEntity)));
+  }
+
   // INVITE LINKS //
   async createInviteLink(chatId: ID, params?: CreateInviteLinkParams) {
     if (params?.requireApproval && params?.limit) {
       throw new InputError("requireApproval cannot be true while limit is specified.");
     }
-    const result = await this.#c.invoke({ _: "messages.exportChatInvite", peer: await this.#c.getInputPeer(chatId), title: params?.title, expire_date: params?.expireAt ? toUnixTimestamp(params.expireAt) : undefined, request_needed: params?.requireApproval ? true : undefined, usage_limit: params?.limit });
+    const result = await this.#c.invoke({ _: "messages.exportChatInvite", peer: await this.#c.getInputPeer(chatId), title: params?.title, expire_date: params?.expireAt, request_needed: params?.requireApproval ? true : undefined, usage_limit: params?.limit });
     return await constructInviteLink(Api.as("chatInviteExported", result), this.#c.getEntity);
   }
 
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams) {
     this.#c.storage.assertUser("getCreatedInviteLinks");
-    const { invites } = await this.#c.invoke({ _: "messages.getExportedChatInvites", peer: await this.#c.getInputPeer(chatId), revoked: params?.revoked ? true : undefined, admin_id: params?.by ? await this.#c.getInputUser(params.by) : { _: "inputUserEmpty" }, limit: params?.limit ?? 100, offset_date: params?.afterDate ? toUnixTimestamp(params.afterDate) : undefined, offset_link: params?.afterInviteLink });
+    const { invites } = await this.#c.invoke({ _: "messages.getExportedChatInvites", peer: await this.#c.getInputPeer(chatId), revoked: params?.revoked ? true : undefined, admin_id: params?.by ? await this.#c.getInputUser(params.by) : { _: "inputUserEmpty" }, limit: getLimit(params?.limit), offset_date: params?.afterDate, offset_link: params?.afterInviteLink });
     return await Promise.all(invites.map((v) => Api.as("chatInviteExported", v)).map((v) => constructInviteLink(v, this.#c.getEntity)));
   }
 
@@ -180,7 +201,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
         participant: member,
         banned_rights: ({
           _: "chatBannedRights",
-          until_date: params?.untilDate ? toUnixTimestamp(params.untilDate) : 0,
+          until_date: params?.until ?? 0,
           view_messages: true,
           send_messages: true,
           send_media: true,
@@ -208,7 +229,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
   async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams) {
     const channel = await this.#c.getInputChannel(chatId);
     const member = await this.#c.getInputPeer(memberId);
-    await this.#c.invoke({ _: "channels.editBanned", channel, participant: member, banned_rights: chatMemberRightsToTlObject(params?.rights, params?.untilDate) });
+    await this.#c.invoke({ _: "channels.editBanned", channel, participant: member, banned_rights: chatMemberRightsToTlObject(params?.rights, params?.until) });
   }
 
   // CHAT SETTINGS //

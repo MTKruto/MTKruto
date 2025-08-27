@@ -19,13 +19,12 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
-import { constructStoryPrivacy } from "./1_story_privacy.ts";
-import { StoryPrivacy } from "./1_story_privacy.ts";
+import { constructStoryPrivacy, StoryPrivacy } from "./1_story_privacy.ts";
 import { constructStoryContent, StoryContent } from "./2_story_content.ts";
 import { constructStoryInteractions, StoryInteractions } from "./2_story_interactions.ts";
 import { constructStoryInteractiveArea, StoryInteractiveArea } from "./2_story_interactive_area.ts";
@@ -35,7 +34,7 @@ export interface Story {
   out: boolean;
   id: number;
   chat: ChatP;
-  date: Date;
+  date: number;
   edited: boolean;
   content: StoryContent;
   interactiveAreas: StoryInteractiveArea[];
@@ -53,7 +52,7 @@ export async function constructStory(story: Api.storyItem, peer: Api.peerUser | 
     unreachable();
   }
   const chat = constructChatP(entity);
-  const date = fromUnixTimestamp(story.date);
+  const date = story.date;
   const interactiveAreas = (story.media_areas ?? []).map(constructStoryInteractiveArea);
   const highlighted = story.pinned ? true : false;
   const content = constructStoryContent(story.media);

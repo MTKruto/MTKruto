@@ -24,11 +24,11 @@ import { cleanObject, drop, getLogger, Logger, MaybePromise, mustPrompt, mustPro
 import { Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { DC, getDcId, TransportProvider } from "../3_transport.ts";
-import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructUser, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
-import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetLinkPreviewParams, GetMyCommandsParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, type CreateChannelParams, type CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, type CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMyCommandsParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenMiniAppParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, type StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -56,6 +56,8 @@ import { InlineQueryManager } from "./4_inline_query_manager.ts";
 import { LinkPreviewManager } from "./4_link_preview_manager.ts";
 import { PollManager } from "./4_poll_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
+
+export type { FilterQuery, WithFilter } from "./0_filters.ts";
 
 export interface Context {
   /** The client that received the update. */
@@ -241,7 +243,7 @@ let id = 0;
 const getEntity = Symbol();
 
 export interface ClientParams extends ClientPlainParams {
-  /** The storage provider to use. Defaults to memory storage. Passing a string constructs a memory storage with the string being the auth string. */
+  /** The storage provider to use. Defaults to memory storage. */
   storage?: Storage;
   /** App's API ID from [my.telegram.org/apps](https://my.telegram.org/apps). Required if no account was previously authorized. */
   apiId?: number;
@@ -1448,7 +1450,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
           }
           if (Api.isOfEnum("Update", result) || Api.isOfEnum("Updates", result)) {
             return new Promise<R>((resolve) => {
-              this.#updateManager.processUpdates(result, true, null, () => resolve(result as R));
+              this.#updateManager.processUpdates(result, true, Mtproto.is("ping", function_) ? null : function_, () => resolve(result as R));
             });
           }
         }
@@ -1515,7 +1517,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #getUserAccessHash(userId: bigint) {
     const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUser", user_id: userId, access_hash: 0n }] });
-    const user = Api.as("user", users[0]);
+    const user = Api.is("user", users[0]) ? users[0] : undefined;
     if (user) {
       await this.messageStorage.setEntity(user);
     }
@@ -1524,7 +1526,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #getChannelAccessHash(channelId: bigint) {
     const channels = await this.invoke({ _: "channels.getChannels", id: [{ _: "inputChannel", channel_id: channelId, access_hash: 0n }] });
-    const channel = Api.as("channel", channels.chats[0]);
+    const channel = Api.is("channel", channels.chats[0]) ? channels.chats[0] : undefined;
     if (channel) {
       await this.messageStorage.setEntity(channel);
     }
@@ -1534,7 +1536,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   /**
    * Get a chat's inputPeer. Useful when calling API functions directly.
    *
-   * @param id The identifier of the chat.
+   * @param id The identifier of a chat.
    */
   async getInputPeer(id: ID): Promise<Api.InputPeer> {
     if (id === "me" || id == await this.#getSelfId()) {
@@ -1548,7 +1550,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         inputPeer.access_hash = await this.#getUserAccessHash(inputPeer.user_id);
       }
     }
-    if ((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n && await this.storage.getAccountType() == "user") {
+    if ((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n) {
       throw new AccessError(`Cannot access the chat ${id} because there is no access hash for it.`);
     }
     return inputPeer;
@@ -1896,6 +1898,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @method ac
    * @param id The identifier of the business connection.
+   * @cache
    */
   async getBusinessConnection(id: string): Promise<BusinessConnection> {
     return await this.#businessConnectionManager.getBusinessConnection(id);
@@ -1996,7 +1999,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a text message.
    *
    * @method ms
-   * @param chatId The chat to send the message to.
+   * @param chatId The identifier of a chat to send the message to.
    * @param text The message's text.
    * @returns The sent text message.
    */
@@ -2008,7 +2011,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a photo.
    *
    * @method ms
-   * @param chatId The chat to send the photo to.
+   * @param chatId The identifier of a chat to send the photo to.
    * @param photo The photo to send.
    * @returns The sent photo.
    */
@@ -2020,7 +2023,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a document.
    *
    * @method ms
-   * @param chatId The chat to send the document to.
+   * @param chatId The identifier of a chat to send the document to.
    * @param document The document to send.
    * @returns The sent document.
    */
@@ -2032,7 +2035,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a sticker.
    *
    * @method ms
-   * @param chatId The chat to send the sticker to.
+   * @param chatId The identifier of a chat to send the sticker to.
    * @param document The sticker to send.
    * @returns The sent sticker.
    */
@@ -2044,7 +2047,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a video.
    *
    * @method ms
-   * @param chatId The chat to send the video to.
+   * @param chatId The identifier of a chat to send the video to.
    * @param video The video to send.
    * @returns The sent video.
    */
@@ -2056,7 +2059,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send an animation.
    *
    * @method ms
-   * @param chatId The chat to send the animation to.
+   * @param chatId The identifier of a chat to send the animation to.
    * @param animation The animation to send.
    * @returns The sent animation.
    */
@@ -2068,7 +2071,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a voice message.
    *
    * @method ms
-   * @param chatId The chat to send the voice message to.
+   * @param chatId The identifier of a chat to send the voice message to.
    * @param voice The voice to send.
    * @returns The sent voice message.
    */
@@ -2080,7 +2083,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send an audio file.
    *
    * @method ms
-   * @param chatId The chat to send the audio file to.
+   * @param chatId The identifier of a chat to send the audio file to.
    * @param audio The audio to send.
    * @returns The sent audio filr.
    */
@@ -2092,7 +2095,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a media group.
    *
    * @method ms
-   * @param chatId The chat to send the media group to.
+   * @param chatId The identifier of a chat to send the media group to.
    * @param media The media to include in the media group. Animations are not allowed. All of them must be of the same media type, but an exception is that photos and videos can be mixed.
    * @returns The sent messages.
    */
@@ -2104,7 +2107,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a video note.
    *
    * @method ms
-   * @param chatId The chat to send the video note to.
+   * @param chatId The identifier of a chat to send the video note to.
    * @param videoNote The video note to send.
    * @returns The sent video note.
    */
@@ -2116,7 +2119,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a location.
    *
    * @method ms
-   * @param chatId The chat to send the location to.
+   * @param chatId The identifier of a chat to send the location to.
    * @param latitude The location's latitude.
    * @param longitude The location's longitude.
    * @returns The sent location.
@@ -2129,7 +2132,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a contact.
    *
    * @method ms
-   * @param chatId The chat to send the contact to.
+   * @param chatId The identifier of a chat to send the contact to.
    * @param firstName The contact's first name.
    * @param number The contact's phone number.
    * @returns The sent contact.
@@ -2142,7 +2145,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a dice.
    *
    * @method ms
-   * @param chatId The chat to send the dice to.
+   * @param chatId The identifier of a chat to send the dice to.
    * @returns The sent dice.
    */
   async sendDice(chatId: ID, params?: SendDiceParams): Promise<MessageDice> {
@@ -2153,7 +2156,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a venue.
    *
    * @method ms
-   * @param chatId The chat to send the venue to.
+   * @param chatId The identifier of a chat to send the venue to.
    * @param latitude The latitude of the venue.
    * @param longitude The longitude of the venue.
    * @param title The title of the venue.
@@ -2168,7 +2171,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a poll.
    *
    * @method ms
-   * @param chatId The chat to send the poll to.
+   * @param chatId The identifier of a chat to send the poll to.
    * @param question The poll's question.
    * @param options The poll's options.
    * @returns The sent poll.
@@ -2181,7 +2184,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send an invoice. Bot-only.
    *
    * @method ms
-   * @param chatId The chat to send the invoice to.
+   * @param chatId The identifier of a chat to send the invoice to.
    * @param title The invoice's title.
    * @param description The invoice's description.
    * @param payload The invoice's payload.
@@ -2197,8 +2200,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Edit a message's text.
    *
    * @method ms
-   * @param chatId The identifier of the chat that contains the message.
-   * @param messageId The message's identifier.
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
    * @param text The new text of the message.
    * @returns The edited text message.
    */
@@ -2210,8 +2213,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Edit a message's caption.
    *
    * @method ms
-   * @param chatId The identifier of the chat that contains the message.
-   * @param messageId The message's identifier.
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
    * @param text The new caption of the message.
    * @returns The edited message.
    */
@@ -2223,8 +2226,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Edit a message's media.
    *
    * @method ms
-   * @param chatId The identifier of the chat that contains the message.
-   * @param messageId The message's identifier.
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
    * @param media The new media of the message.
    * @returns The edited message.
    */
@@ -2236,7 +2239,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Edit an inline message's media.
    *
    * @method ms
-   * @param inlineMessageId The inline message's identifier.
+   * @param inlineMessageId The identifier of the inline message.
    * @param media The new media of the message.
    */
   async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditInlineMessageMediaParams): Promise<void> {
@@ -2247,7 +2250,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Edit an inline message's text. Bot-only.
    *
    * @method ms
-   * @param inlineMessageId The inline message's identifier.
+   * @param inlineMessageId The identifier of the inline message.
    * @param text The new text of the message.
    */
   async editInlineMessageText(inlineMessageId: string, text: string, params?: EditInlineMessageTextParams): Promise<void> {
@@ -2258,7 +2261,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Edit an inline message's caption. Bot-only.
    *
    * @method ms
-   * @param inlineMessageId The inline message's identifier.
+   * @param inlineMessageId The identifier of the inline message.
    */
   async editInlineMessageCaption(inlineMessageId: string, params?: EditInlineMessageCaptionParams): Promise<void> {
     await this.#messageManager.editInlineMessageCaption(inlineMessageId, params);
@@ -2268,8 +2271,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Edit a message's reply markup.
    *
    * @method ms
-   * @param chatId The identifier of the chat that contains the message.
-   * @param messageId The message's identifier.
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
    * @returns The edited message.
    */
   async editMessageReplyMarkup(
@@ -2284,7 +2287,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Edit an inline message's reply markup. Bot-only.
    *
    * @method ms
-   * @param inlineMessageId The inline message's identifier.
+   * @param inlineMessageId The identifier of the inline message.
    */
   async editInlineMessageReplyMarkup(inlineMessageId: string, params?: EditMessageReplyMarkupParams) {
     await this.#messageManager.editInlineMessageReplyMarkup(inlineMessageId, params);
@@ -2294,8 +2297,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Edit a message's live location.
    *
    * @method ms
-   * @param chatId The identifier of the chat that contains the messages.
-   * @param messageId The message's identifier.
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
    * @param latitude The new latitude.
    * @param longitude The new longitude.
    * @returns The edited location message.
@@ -2314,7 +2317,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Edit an inline message's live location. Bot-only.
    *
    * @method ms
-   * @param inlineMessageId The inline message's identifier.
+   * @param inlineMessageId The identifier of the inline message.
    * @param latitude The new latitude.
    * @param longitude The new longitude.
    * @returns The edited location message.
@@ -2332,12 +2335,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Retrieve multiple messages.
    *
    * @method ms
-   * @param chatId The identifier of the chat to retrieve the messages from.
+   * @param chatId The identifier of a chat to retrieve the messages from.
    * @param messageIds The identifiers of the messages to retrieve.
    * @example ```ts
    * const message = await client.getMessages("@MTKruto", [210, 212]);
    * ```
    * @returns The retrieved messages.
+   * @cache
    */
   async getMessages(chatId: ID, messageIds: number[]): Promise<Message[]> {
     return await this.#messageManager.getMessages(chatId, messageIds);
@@ -2347,12 +2351,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Retrieve a single message.
    *
    * @method ms
-   * @param chatId The identifier of the chat to retrieve the message from.
+   * @param chatId The identifier of a chat.
    * @param messageId The identifier of the message to retrieve.
    * @example ```ts
    * const message = await client.getMessage("@MTKruto", 212);
    * ```
    * @returns The retrieved message.
+   * @cache
    */
   async getMessage(chatId: ID, messageId: number): Promise<Message | null> {
     return await this.#messageManager.getMessage(chatId, messageId);
@@ -2376,7 +2381,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Delete multiple messages.
    *
    * @method ms
-   * @param chatId The identifier of the chat that contains the messages.
+   * @param chatId The identifier of the chat which the message belongs to.
    * @param messageIds The identifiers of the messages to delete.
    */
   async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams) {
@@ -2387,7 +2392,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Delete a single message.
    *
    * @method ms
-   * @param chatId The identifier of the chat that contains the message.
+   * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message to delete.
    */
   async deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams) {
@@ -2398,7 +2403,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Delete all messages sent by a specific member of a chat. User-only.
    *
    * @method ms
-   * @param chatId The identifier of the chat. Must be a supergroup.
+   * @param chatId The identifier of a chat. Must be a supergroup.
    * @param memberId The identifier of the member.
    */
   async deleteChatMemberMessages(chatId: ID, memberId: ID) {
@@ -2409,7 +2414,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Delete multiple scheduled messages.
    *
    * @method ms
-   * @param chatId The identifier of the chat that contains the scheduled messages.
+   * @param chatId The identifier of a chat.
    * @param messageIds The identifiers of the scheduled messages to delete.
    */
   async deleteScheduledMessages(chatId: ID, messageIds: number[]) {
@@ -2420,7 +2425,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Delete a scheduled message.
    *
    * @method ms
-   * @param chatId The identifier of the chat that contains the scheduled message.
+   * @param chatId The identifier of a chat.
    * @param messageId The identifier of the scheduled message to delete.
    */
   async deleteScheduledMessage(chatId: ID, messageId: number) {
@@ -2431,7 +2436,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send multiple scheduled messages before their schedule.
    *
    * @method ms
-   * @param chatId The identifier of the chat that contains the scheduled messages.
+   * @param chatId The identifier of a chat.
    * @param messageIds The identifiers of the scheduled messages to send.
    */
   async sendScheduledMessages(chatId: ID, messageIds: number[]): Promise<Message[]> {
@@ -2442,7 +2447,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a scheduled message before its schedule.
    *
    * @method ms
-   * @param chatId The identifier of the chat that contains the scheduled message.
+   * @param chatId The identifier of a chat.
    * @param messageId The identifier of the scheduled message to send.
    */
   async sendScheduledMessage(chatId: ID, messageId: number): Promise<Message> {
@@ -2453,8 +2458,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Pin a message in a chat.
    *
    * @method ms
-   * @param chatId The identifier of the chat that contains the message.
-   * @param messageId The message's identifier.
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the message.
    */
   async pinMessage(chatId: ID, messageId: number, params?: PinMessageParams) {
     await this.#messageManager.pinMessage(chatId, messageId, params);
@@ -2464,8 +2469,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Unpin a pinned message.
    *
    * @method ms
-   * @param chatId The identifier of the chat that contains the message.
-   * @param messageId The message's identifier.
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the message.
    */
   async unpinMessage(chatId: ID, messageId: number, params?: UnpinMessageParams) {
     await this.#messageManager.unpinMessage(chatId, messageId, params);
@@ -2475,7 +2480,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Unpin all pinned messages.
    *
    * @method ms
-   * @param chatId The identifier of the chat.
+   * @param chatId The identifier of a chat.
    */
   async unpinMessages(chatId: ID) {
     await this.#messageManager.unpinMessages(chatId);
@@ -2485,8 +2490,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Forward multiple messages.
    *
    * @method ms
-   * @param from The identifier of the chat to forward the messages from.
-   * @param to The identifier of the chat to forward the messages to.
+   * @param from The identifier of a chat to forward the messages from.
+   * @param to The identifier of a chat to forward the messages to.
    * @param messageIds The identifiers of the messages to forward.
    * @returns The forwarded messages.
    */
@@ -2498,8 +2503,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Forward a single message.
    *
    * @method ms
-   * @param from The identifier of the chat to forward the message from.
-   * @param to The identifier of the chat to forward the message to.
+   * @param from The identifier of a chat to forward the message from.
+   * @param to The identifier of a chat to forward the message to.
    * @param messageId The identifier of the message to forward.
    * @returns The forwarded message.
    */
@@ -2523,7 +2528,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a chat action.
    *
    * @method ms
-   * @param chatId The chat to send the chat action to.
+   * @param chatId The identifier of a chat to send the chat action to.
    * @param action The chat action.
    * @param messageThreadId The thread to send the chat action to.
    */
@@ -2535,7 +2540,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Search the messages of a chat. User-only.
    *
    * @method ms
-   * @param chatId The identifier of the chat to search the messages in.
+   * @param chatId The identifier of a chat.
    * @param query The message search query.
    */
   async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams): Promise<Message[]> {
@@ -2546,8 +2551,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Mark messages as read. User-only.
    *
    * @method ms
-   * @param chatId The identifier of the chat that includes the messages.
-   * @param untilMessageId The identifier of a message that will be marked as read, along with any other unread messages before it.
+   * @param chatId The identifier of the chat which the messages belong to.
+   * @param untilMessageId The identifier of the message that will be marked as read, along with any other unread messages before it.
    */
   async readMessages(chatId: ID, untilMessageId: number): Promise<void> {
     await this.#messageManager.readMessages(chatId, untilMessageId);
@@ -2568,8 +2573,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Transcribe a voice message. User-only.
    *
    * @method ms
-   * @param chatId The identifier of the chat that includes the message.
+   * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message.
+   * @cache
    */
   async transcribeVoice(chatId: ID, messageId: number): Promise<VoiceTranscription> {
     return await this.#messageManager.transcribeVoice(chatId, messageId);
@@ -2593,6 +2599,28 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async getLinkPreview(text: string, params?: GetLinkPreviewParams): Promise<LinkPreview | null> {
     return await this.#linkPreviewManager.getLinkPreview(text, params);
+  }
+
+  /**
+   * Open a mini app. User-only.
+   *
+   * @method ms
+   * @param botId The identifier of a bot with the mini app.
+   * @param chatId The identifier of the chat from which the mini app is opened.
+   * @cache
+   */
+  async openMiniApp(botId: ID, chatId: ID, params?: OpenMiniAppParams): Promise<MiniAppInfo> {
+    return await this.#messageManager.openMiniApp(botId, chatId, params);
+  }
+
+  /**
+   * Get a progress ID that can be passed to relevant send* methods to receive upload progress updates for them.
+   *
+   * @method ms
+   * @cache
+   */
+  async getProgressId(): Promise<string> {
+    return await this.#fileManager.getProgressId();
   }
 
   //
@@ -2637,6 +2665,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * }
    * ```
    * @returns A generator yielding the contents of the file.
+   * @cache file
    */
   async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown> {
     for await (const chunk of this.#fileManager.download(fileId, params)) {
@@ -2650,6 +2679,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @method fs
    * @param id Identifier of one or more of custom emojis.
    * @returns The custom emoji documents.
+   * @cache
    */
   async getCustomEmojiStickers(id: string | string[]): Promise<Sticker[]> {
     return await this.#fileManager.getCustomEmojiStickers(id);
@@ -2672,6 +2702,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get a chat.
    *
    * @method ch
+   * @cache
    */
   async getChat(chatId: ID): Promise<Chat> {
     return await this.#chatListManager.getChat(chatId);
@@ -2681,7 +2712,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get chat history. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat to get its history.
+   * @param chatId The identifier of a chat.
    */
   async getHistory(chatId: ID, params?: GetHistoryParams): Promise<Message[]> {
     return await this.#messageManager.getHistory(chatId, params);
@@ -2691,7 +2722,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Set a chat's available reactions. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat.
+   * @param chatId The identifier of a chat.
    * @param availableReactions The new available reactions.
    */
   async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]) {
@@ -2702,7 +2733,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Set a chat's photo.
    *
    * @method ch
-   * @param chatId The identifier of the chat.
+   * @param chatId The identifier of a chat.
    * @param photo A photo to set as the chat's photo.
    */
   async setChatPhoto(chatId: ID, photo: FileSource, params?: SetChatPhotoParams) {
@@ -2713,7 +2744,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Delete a chat's photo.
    *
    * @method ch
-   * @param chatId The identifier of the chat.
+   * @param chatId The identifier of a chat.
    */
   async deleteChatPhoto(chatId: ID) {
     await this.#chatManager.deleteChatPhoto(chatId);
@@ -2723,7 +2754,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Ban a member from a chat.
    *
    * @method ch
-   * @param chatId The identifier of the chat.
+   * @param chatId The identifier of a chat.
    * @param memberId The identifier of the member.
    */
   async banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams) {
@@ -2734,7 +2765,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Unban a member from a chat.
    *
    * @method ch
-   * @param chatId The identifier of the chat. Must be a supergroup.
+   * @param chatId The identifier of a chat. Must be a supergroup.
    * @param memberId The identifier of the member.
    */
   async unbanChatMember(chatId: ID, memberId: ID) {
@@ -2745,7 +2776,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Kick a member from a chat. Same as a banChatMember call followed by unbanChatMember.
    *
    * @method ch
-   * @param chatId The identifier of the chat. Must be a supergroup.
+   * @param chatId The identifier of a chat. Must be a supergroup.
    * @param memberId The identifier of the member.
    */
   async kickChatMember(chatId: ID, memberId: ID) {
@@ -2757,8 +2788,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Set the rights of a chat member.
    *
    * @method ch
-   * @param chatId The identifier of the chat. Must be a supergroup.
-   * @param memberId The identifier of a member.
+   * @param chatId The identifier of a chat. Must be a supergroup.
+   * @param memberId The identifier of the member.
    */
   async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams) {
     await this.#chatManager.setChatMemberRights(chatId, memberId, params);
@@ -2768,7 +2799,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get the administrators of a chat.
    *
    * @method ch
-   * @param chatId The identifier of the chat.
+   * @param chatId The identifier of a chat.
    * @returns The chat's administrators.
    */
   async getChatAdministrators(chatId: ID): Promise<ChatMember[]> {
@@ -2779,7 +2810,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Enable join requests in a chat. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat. Must be a channel or a supergroup.
+   * @param chatId The identifier of a chat. Must be a channel or a supergroup.
    */
   async enableJoinRequests(chatId: ID) {
     await this.#chatManager.enableJoinRequests(chatId);
@@ -2789,7 +2820,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Disable join requests in a chat. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat. Must be a channel or a supergroup.
+   * @param chatId The identifier of a chat. Must be a channel or a supergroup.
    */
   async disableJoinRequests(chatId: ID) {
     await this.#chatManager.disableJoinRequests(chatId);
@@ -2809,7 +2840,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get the invite links created for a chat. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat.
+   * @param chatId The identifier of a chat.
    * @returns The invite links created for the chat. This might be a subset of the results if they were less than `limit`. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
    */
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]> {
@@ -2820,7 +2851,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Join a chat. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat to join.
+   * @param chatId The identifier of a chat.
    */
   async joinChat(chatId: ID) {
     await this.#chatManager.joinChat(chatId);
@@ -2830,7 +2861,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Leave a chat.
    *
    * @method ch
-   * @param chatId The identifier of the chat to leave.
+   * @param chatId The identifier of a chat.
    */
   async leaveChat(chatId: ID) {
     await this.#chatManager.leaveChat(chatId);
@@ -2840,7 +2871,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get information on a user's chat membership.
    *
    * @method ch
-   * @param chatId The identifier of a chat that includes the user.
+   * @param chatId The identifier of a chat.
    * @param userId The identifier of the user.
    */
   async getChatMember(chatId: ID, userId: ID): Promise<ChatMember> {
@@ -2851,7 +2882,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get the members of a chat.
    *
    * @method ch
-   * @param chatId The chat to get its members.
+   * @param chatId The identifier of a chat.
    */
   async getChatMembers(chatId: ID, params?: GetChatMembersParams): Promise<ChatMember[]> {
     return await this.#chatListManager.getChatMembers(chatId, params);
@@ -2861,7 +2892,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Set a chat's sticker set.
    *
    * @method ch
-   * @param chatId The identifier of the chat. Must be a supergroup.
+   * @param chatId The identifier of a chat. Must be a supergroup.
    * @param setName The name of the set.
    */
   async setChatStickerSet(chatId: ID, setName: string) {
@@ -2872,7 +2903,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Delete a chat's sticker set.
    *
    * @method ch
-   * @param chatId The identifier of the chat. Must be a supergroup.
+   * @param chatId The identifier of a chat. Must be a supergroup.
    */
   async deleteChatStickerSet(chatId: ID) {
     await this.#messageManager.deleteChatStickerSet(chatId);
@@ -2882,7 +2913,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Set the number of boosts required to circument a chat's default restrictions. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat.
+   * @param chatId The identifier of a chat.
    * @param boosts The number of boosts required to circumvent its restrictions.
    */
   async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number) {
@@ -2893,7 +2924,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Create an invite link.
    *
    * @method ch
-   * @param chatId The identifier of the chat to create the invite link for.
+   * @param chatId The identifier of a chat to create the invite link for.
    * @returns The newly created invite link.
    */
   async createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink> {
@@ -2904,7 +2935,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Approve a join request.
    *
    * @method ch
-   * @param chatId The identifier of the chat that contains the join request.
+   * @param chatId The identifier of a chat with the join request.
    * @param userId The user who made the join request.
    */
   async approveJoinRequest(chatId: ID, userId: ID): Promise<void> {
@@ -2915,7 +2946,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Decline a join request.
    *
    * @method ch
-   * @param chatId The identifier of the chat that contains the join request.
+   * @param chatId The identifier of a chat with the join request.
    * @param userId The user who made the join request.
    */
   async declineJoinRequest(chatId: ID, userId: ID): Promise<void> {
@@ -2926,7 +2957,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Approve all join requests. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat that contains the join requests.
+   * @param chatId The identifier of a chat with the join requests.
    */
   async approveJoinRequests(chatId: ID, params?: ApproveJoinRequestsParams): Promise<void> {
     await this.#chatManager.approveJoinRequests(chatId, params);
@@ -2936,17 +2967,27 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Decline all join requests. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat that contains the join requests.
+   * @param chatId The identifier of a chat with the join requests.
    */
   async declineJoinRequests(chatId: ID, params?: DeclineJoinRequestsParams): Promise<void> {
     await this.#chatManager.declineJoinRequests(chatId, params);
   }
 
   /**
+   * Get pending join requests in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat with the join requests.
+   */
+  async getJoinRequests(chatId: ID, params?: GetJoinRequestsParams): Promise<JoinRequest[]> {
+    return await this.#chatManager.getJoinRequests(chatId, params);
+  }
+
+  /**
    * Add a single user to a chat.
    *
    * @method ch
-   * @param chatId The identifier of the chat to add the user to.
+   * @param chatId The identifier of a chat to add the user to.
    * @param userId The identifier of the user to add to the chat.
    * @returns An array of FailedInvitation that has at most a length of 1. If empty, it means that the user was added.
    */
@@ -2969,7 +3010,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Open a chat.
    *
    * @method ch
-   * @param chatId The chat to open.
+   * @param chatId The identifier of a chat to open.
    */
   async openChat(chatId: ID): Promise<void> {
     await this.#updateManager.openChat(chatId);
@@ -2979,7 +3020,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Close a chat previously opened by openChat.
    *
    * @method ch
-   * @param chatId The chat to close.
+   * @param chatId The identifier of a chat to close.
    */
   async closeChat(chatId: ID): Promise<void> {
     await this.#updateManager.closeChat(chatId);
@@ -3022,7 +3063,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Set the time to live of the messages of a chat. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat.
+   * @param chatId The identifier of a chat.
    * @param messageTtl The time to live of the messages in seconds.
    */
   async setMessageTtl(chatId: ID, messageTtl: number): Promise<void> {
@@ -3043,7 +3084,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Archive a single chat. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat to archive.
+   * @param chatId The identifier of a chat.
    */
   async archiveChat(chatId: ID): Promise<void> {
     await this.#chatListManager.archiveChat(chatId);
@@ -3063,7 +3104,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Unarchive a single chat. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat to unarchive.
+   * @param chatId The identifier of a chat.
    */
   async unarchiveChat(chatId: ID): Promise<void> {
     await this.#chatListManager.unarchiveChat(chatId);
@@ -3083,7 +3124,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get the settings of a chat. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat to get the settings for.
+   * @param chatId The identifier of a chat.
    */
   async getChatSettings(chatId: ID): Promise<ChatSettings> {
     return await this.#chatListManager.getChatSettings(chatId);
@@ -3156,7 +3197,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Hide or show the member list of a group to non-admins. User-only.
    *
    * @method ch
-   * @param chatId The identifier of a group.
+   * @param chatId The identifier of the group.
    * @param visible Whether the member list of the group should be visible.
    */
   async setMemberListVisibility(chatId: ID, visible: boolean): Promise<void> {
@@ -3167,7 +3208,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Enable or disable topics in a group. User-only.
    *
    * @method ch
-   * @param chatId The identifier of a group.
+   * @param chatId The identifier of the group.
    * @param enabled Whether topics should be enabled in the group.
    */
   async setTopicsEnabled(chatId: ID, enabled: boolean): Promise<void> {
@@ -3178,7 +3219,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Enable or disable automatic anti-spam in a group. User-only.
    *
    * @method ch
-   * @param chatId The identifier of a group.
+   * @param chatId The identifier of the group.
    * @param enabled Whether automatic anti-spam should be enabled in the group.
    */
   async setAntispamEnabled(chatId: ID, enabled: boolean): Promise<void> {
@@ -3189,7 +3230,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Enable or disable post signatures in a channel. User-only.
    *
    * @method ch
-   * @param chatId The identifier of a channel.
+   * @param chatId The identifier of the channel.
    * @param enabled Whether post signatures should be enabled in the channel.
    */
   async setSignaturesEnabled(chatId: ID, enabled: boolean, params?: SetSignaturesEnabledParams): Promise<void> {
@@ -3200,7 +3241,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Delete a chat. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat to delete.
+   * @param chatId The identifier of a chat.
    */
   async deleteChat(chatId: ID): Promise<void> {
     await this.#chatManager.deleteChat(chatId);
@@ -3220,7 +3261,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @method ch
    * @param chatId The identifier of a channel.
-   * @param discussionChatId The identifier of the chat to use as discussion for the channel.
+   * @param discussionChatId The identifier of a chat to use as discussion for the channel.
    */
   async setDiscussionChat(chatId: ID, discussionChatId: ID): Promise<void> {
     await this.#chatManager.setDiscussionChat(chatId, discussionChatId);
@@ -3335,13 +3376,14 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send a callback query. User-only.
    *
    * @method cq
-   * @param chatId The chat that includes the messsage.
-   * @param messageId The message that includes at a button responsible for the callback query question.
+   * @param botId The identifier of the bot to send the callback query to.
+   * @param messageId The identifier of the message that includes at a button responsible for the callback query question.
    * @param question The callback query's question.
    * @returns The bot's answer to the callback query.
+   * @cache
    */
-  async sendCallbackQuery(chatId: ID, messageId: number, question: CallbackQueryQuestion): Promise<CallbackQueryAnswer> {
-    return await this.#callbackQueryManager.sendCallbackQuery(chatId, messageId, question);
+  async sendCallbackQuery(botId: ID, messageId: number, question: CallbackQueryQuestion): Promise<CallbackQueryAnswer> {
+    return await this.#callbackQueryManager.sendCallbackQuery(botId, messageId, question);
   }
 
   /**
@@ -3361,19 +3403,20 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Send an inline query. User-only.
    *
    * @method iq
-   * @param userId The ID of the bot to send the inline query to.
-   * @param chatId The ID of the chat from which the inline query is sent.
+   * @param botId The identifier of a bot to send the inline query to.
+   * @param chatId The identifier of the chat from which the inline query is sent.
    * @returns The bot's answer to the inline query.
+   * @cache
    */
-  async sendInlineQuery(userId: ID, chatId: ID, params?: SendInlineQueryParams): Promise<InlineQueryAnswer> {
-    return await this.#inlineQueryManager.sendInlineQuery(userId, chatId, params);
+  async sendInlineQuery(botId: ID, chatId: ID, params?: SendInlineQueryParams): Promise<InlineQueryAnswer> {
+    return await this.#inlineQueryManager.sendInlineQuery(botId, chatId, params);
   }
 
   /**
    * Answer an inline query. Bot-only.
    *
    * @method iq
-   * @param id The ID of the inline query to answer.
+   * @param id The identifier of the inline query to answer.
    * @param results The results to answer with.
    */
   async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
@@ -3520,8 +3563,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Retrieve multiple stories. User-only.
    *
    * @method st
-   * @param chatId The identifier of the chat to retrieve the stories from.
+   * @param chatId The identifier of a chat.
    * @param storyIds The identifiers of the stories to retrieve.
+   * @returns The retrieved stories.
    */
   async getStories(chatId: ID, storyIds: number[]): Promise<Story[]> {
     if (!storyIds.length) {
@@ -3534,7 +3578,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Retrieve a single story. User-only.
    *
    * @method st
-   * @param chatId The identifier of the chat to retrieve the story from.
+   * @param chatId The identifier of a chat.
    * @param storyId The identifier of the story to retrieve.
    * @returns The retrieved story.
    */
@@ -3546,7 +3590,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Delete multiple stories. User-only.
    *
    * @method st
-   * @param chatId The identifier of the chat to delete the stories from.
+   * @param chatId The identifier of a chat.
    * @param storyIds The identifiers of the stories to delete.
    */
   async deleteStories(chatId: ID, storyIds: number[]) {
@@ -3557,7 +3601,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Delete a single story. User-only.
    *
    * @method st
-   * @param chatId The identifier of the chat to delete the story from.
+   * @param chatId The identifier of a chat.
    * @param storyId The identifier of the story to delete.
    */
   async deleteStory(chatId: ID, storyId: number) {
@@ -3568,7 +3612,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Add multiple stories to highlights. User-only.
    *
    * @method st
-   * @param chatId The identifier of the chat that has the stories.
+   * @param chatId The identifier of a chat.
    * @param storyIds The identifiers of the stories to add to highlights.
    */
   async addStoriesToHighlights(chatId: ID, storyIds: number[]) {
@@ -3579,7 +3623,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Add a single story to highlights. User-only.
    *
    * @method st
-   * @param chatId The identifier of the chat that has the story.
+   * @param chatId The identifier of a chat.
    * @param storyId The identifier of the story to add to highlights.
    */
   async addStoryToHighlights(chatId: ID, storyId: number) {
@@ -3590,7 +3634,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Remove multiple stories from highlights. User-only.
    *
    * @method st
-   * @param chatId The identifier of the chat that has the stories.
+   * @param chatId The identifier of a chat.
    * @param storyIds The identifiers of the stories to remove from highlights.
    */
   async removeStoriesFromHighlights(chatId: ID, storyIds: number[]) {
@@ -3601,7 +3645,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Remove a single story from highlights. User-only.
    *
    * @method st
-   * @param chatId The identifier of the chat that has the story.
+   * @param chatId The identifier of a chat.
    * @param storyId The identifier of the story to remove from highlights.
    */
   async removeStoryFromHighlights(chatId: ID, storyId: number) {
@@ -3649,7 +3693,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Start a video chat. User-only.
    *
    * @method vc
-   * @param chatId The chat to start the video chat in.
+   * @param chatId The identifier of a chat to start the video chat in.
    * @returns The started video chat.
    */
   async startVideoChat(chatId: ID, params?: StartVideoChatParams): Promise<VideoChatActive> {
@@ -3660,11 +3704,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Schedule a video chat. User-only.
    *
    * @method vc
-   * @param chatId The chat to schedule the video chat in.
+   * @param chatId The identifier of a chat to schedule the video chat in.
    * @param startAt A point in time within the future in which the video chat will be started.
    * @returns The scheduled video chat.
    */
-  async scheduleVideoChat(chatId: ID, startAt: Date, params?: ScheduleVideoChatParams): Promise<VideoChatScheduled> {
+  async scheduleVideoChat(chatId: ID, startAt: number, params?: ScheduleVideoChatParams): Promise<VideoChatScheduled> {
     return await this.#videoChatManager.scheduleVideoChat(chatId, startAt, params);
   }
 
@@ -3705,6 +3749,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @method vc
    * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
+   * @cache
    */
   async getVideoChat(id: string): Promise<VideoChat> {
     return await this.#videoChatManager.getVideoChat(id);
@@ -3796,7 +3841,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Add a contact. User-only.
    *
    * @method co
-   * @param userId The identifier of a user to add as contact.
+   * @param userId The identifier of the user to add as contact.
    */
   async addContact(userId: ID, params?: AddContactParams): Promise<void> {
     await this.#accountManager.addContact(userId, params);
@@ -3810,6 +3855,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get translations. User-only.
    *
    * @method ta
+   * @cache
    */
   async getTranslations(params?: GetTranslationsParams): Promise<Translation[]> {
     return await this.#translationsManager.getTranslations(params);

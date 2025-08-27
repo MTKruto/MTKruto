@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { EntityGetter } from "./_getters.ts";
 import { constructUser, User } from "./1_user.ts";
@@ -38,7 +38,7 @@ export interface InviteLink {
   /** An optional title. */
   title?: string;
   /** A point in time within the future in which the invite link will be revoked. */
-  expiresAt?: Date;
+  expiresAt?: number;
   /** The times the invite link can be used. */
   limit?: number;
   /** The number of pending join requests originating from this invite link. */
@@ -59,7 +59,7 @@ export async function constructInviteLink(inviteLink_: Api.chatInviteExported, g
   const requiresApproval = inviteLink_.request_needed ? true : false;
   const revoked = inviteLink_.revoked ? true : false;
   const title = inviteLink_.title;
-  const expiresAt = inviteLink_.expire_date ? fromUnixTimestamp(inviteLink_.expire_date) : undefined;
+  const expiresAt = inviteLink_.expire_date ? inviteLink_.expire_date : undefined;
   const limit = inviteLink_.usage_limit ? inviteLink_.usage_limit : undefined;
   const pendingJoinRequestCount = inviteLink_.requested;
   return cleanObject({

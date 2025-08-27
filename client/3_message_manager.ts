@@ -20,17 +20,17 @@
 
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { encodeText, getLogger, getRandomId, Logger, toUnixTimestamp } from "../1_utilities.ts";
+import { encodeText, fromUnixTimestamp, getLogger, getRandomId, Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { constructStickerSet, constructVoiceTranscription, deserializeFileId, FileId, InputMedia, isMessageType, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt, VoiceTranscription } from "../3_types.ts";
+import { constructMiniAppInfo, constructStickerSet, constructVoiceTranscription, deserializeFileId, FileId, InputMedia, isMessageType, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt, VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import { UpdateProcessor } from "./0_update_processor.ts";
-import { canBeInputChannel, checkArray, checkMessageId, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
+import { canBeInputChannel, checkArray, checkMessageId, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import { C as C_ } from "./1_types.ts";
 import { FileManager } from "./2_file_manager.ts";
 
@@ -237,24 +237,33 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     return await this.updatesToMessages(to, result);
   }
 
-  async getHistory(chatId: ID, params?: GetHistoryParams) { // TODO: get from database properly
+  async getHistory(chatId: ID, params?: GetHistoryParams) {
     this.#c.storage.assertUser("getHistory");
-    let limit = params?.limit ?? 100;
-    if (limit <= 0) {
-      limit = 1;
-    } else if (limit > 100) {
-      limit = 100;
-    }
-    let offsetId = params?.fromMessageId ?? 0;
+    const limit = getLimit(params?.limit);
+    let offsetId = params?.offsetId ?? 0;
     if (offsetId < 0) {
       offsetId = 0;
+    }
+    let offsetDate = params?.offsetDate ?? 0;
+    if (offsetDate < 0) {
+      offsetDate = 0;
     }
     const peer = await this.#c.getInputPeer(chatId);
     const messages = new Array<Message>();
     if (messages.length > 0) {
       offsetId = messages[messages.length - 1].id; // TODO: track id of oldest message and don't send requests for it
     }
-    const result = await this.#c.invoke({ _: "messages.getHistory", peer: peer, offset_id: offsetId, offset_date: 0, add_offset: 0, limit, max_id: 0, min_id: 0, hash: 0n });
+    const result = await this.#c.invoke({
+      _: "messages.getHistory",
+      peer: peer,
+      offset_id: offsetId,
+      offset_date: offsetDate,
+      add_offset: params?.addOffset ?? 0,
+      limit,
+      max_id: 0,
+      min_id: 0,
+      hash: 0n,
+    });
 
     if (!("messages" in result)) {
       unreachable();
@@ -304,7 +313,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     const noforwards = params?.protectContent ? true : undefined;
     const sendAs = await this.#resolveSendAs(params);
     const effect = params?.effectId ? BigInt(params.effectId) : undefined;
-    const schedule_date = params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined;
+    const schedule_date = params?.sendAt;
     const allow_paid_floodskip = params?.paidBroadcast ? true : undefined;
 
     let result: Api.Updates;
@@ -408,7 +417,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       }),
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
-      schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+      schedule_date: params?.sendAt,
       allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
     }, { businessConnectionId: params?.businessConnectionId });
 
@@ -444,7 +453,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         }),
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
-        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+        schedule_date: params?.sendAt,
         allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
       { businessConnectionId: params?.businessConnectionId },
@@ -478,7 +487,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       }),
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
-      schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+      schedule_date: params?.sendAt,
       allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
     }, { businessConnectionId: params?.businessConnectionId });
 
@@ -529,7 +538,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
           }),
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
-        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+        schedule_date: params?.sendAt,
         allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
       { businessConnectionId: params?.businessConnectionId },
@@ -697,7 +706,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         message: caption ?? "",
         entities: captionEntities,
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
-        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+        schedule_date: params?.sendAt,
         allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
       { businessConnectionId: params?.businessConnectionId },
@@ -757,7 +766,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     }));
 
     const questionParseResult = await this.parseText(question, { parseMode: params?.questionParseMode, entities: params?.questionEntities });
-    const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate ? toUnixTimestamp(params.closeDate) : undefined, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type == "quiz" ? true : undefined };
+    const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type == "quiz" ? true : undefined };
 
     const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndex !== undefined ? [encodeText(String(params.correctOptionIndex))] : undefined, solution, solution_entities: solutionEntities };
 
@@ -774,7 +783,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         media,
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
-        schedule_date: params?.sendAt ? toUnixTimestamp(params.sendAt) : undefined,
+        schedule_date: params?.sendAt,
         allow_paid_floodskip: params?.paidBroadcast ? true : undefined,
       },
       { businessConnectionId: params?.businessConnectionId },
@@ -1284,7 +1293,21 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
 
   async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams) {
     this.#c.storage.assertUser("searchMessages");
-    const result = await this.#c.invoke({ _: "messages.search", peer: await this.#c.getInputPeer(chatId), q: query, add_offset: 0, filter: messageSearchFilterToTlObject(params?.filter ?? "empty"), hash: 0n, limit: params?.limit ?? 100, max_date: 0, max_id: 0, min_date: 0, min_id: 0, offset_id: params?.after ? params.after : 0, from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined });
+    const result = await this.#c.invoke({
+      _: "messages.search",
+      peer: await this.#c.getInputPeer(chatId),
+      q: query,
+      add_offset: params?.addOffset ?? 0,
+      filter: messageSearchFilterToTlObject(params?.filter ?? "empty"),
+      hash: 0n,
+      limit: getLimit(params?.limit),
+      max_date: 0,
+      max_id: 0,
+      min_date: 0,
+      min_id: 0,
+      offset_id: params?.offset ? params.offset : 0,
+      from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined,
+    });
     if (!("messages" in result)) {
       unreachable();
     }
@@ -1537,7 +1560,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   }
 
   async #getCachedVoiceTranscription(message: Message) {
-    const reference = await this.#c.messageStorage.getVoiceTranscriptionReference(message.chat.id, message.id, message.editDate ?? message.date);
+    const reference = await this.#c.messageStorage.getVoiceTranscriptionReference(message.chat.id, message.id, fromUnixTimestamp(message.editDate ?? message.date));
     if (!reference) {
       return null;
     }
@@ -1549,7 +1572,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   }
 
   async #cacheVoiceTranscription(message: Message, voiceTranscription: VoiceTranscription) {
-    await this.#c.messageStorage.setVoiceTranscriptionReference(message.chat.id, message.id, message.editDate ?? message.date, BigInt(voiceTranscription.id));
+    await this.#c.messageStorage.setVoiceTranscriptionReference(message.chat.id, message.id, fromUnixTimestamp(message.editDate ?? message.date), BigInt(voiceTranscription.id));
     await this.#c.messageStorage.setVoiceTranscription(voiceTranscription);
     return voiceTranscription;
   }
@@ -1639,5 +1662,37 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   async getStickerSet(name: string) {
     const result = await this.#c.invoke({ _: "messages.getStickerSet", hash: 0, stickerset: { _: "inputStickerSetShortName", short_name: name } });
     return constructStickerSet(result);
+  }
+
+  async openMiniApp(botId: ID, chatId: ID, params?: OpenMiniAppParams) {
+    this.#c.storage.assertUser("openMiniApp");
+    const from_bot_menu = params?.fromMenu ? true : undefined;
+    const silent = params?.disableNotification ? true : undefined;
+    const compact = params?.mode === "compact" ? true : undefined;
+    const fullscreen = params?.mode === "fullscreen" ? true : undefined;
+    const peer = await this.#c.getInputPeer(chatId);
+    const bot = await this.#c.getInputUser(botId);
+    const url = params?.url;
+    const start_param = params?.startParameter;
+    const theme_params: Api.dataJSON | undefined = params?.themeParameters ? { _: "dataJSON", data: params.themeParameters } : undefined;
+    const platform = this.#c.langPack ?? "";
+    const reply_to = await this.#constructReplyTo(params);
+    const send_as = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
+    const result = await this.#c.invoke({
+      _: "messages.requestWebView",
+      from_bot_menu,
+      silent,
+      compact,
+      fullscreen,
+      peer,
+      bot,
+      url,
+      start_param,
+      theme_params,
+      platform,
+      reply_to,
+      send_as,
+    });
+    return constructMiniAppInfo(result);
   }
 }

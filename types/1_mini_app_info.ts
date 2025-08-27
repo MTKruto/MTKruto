@@ -18,27 +18,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export class CacheMap<K, V> extends Map<K, V> {
-  #limit: number;
+import { cleanObject } from "../1_utilities.ts";
+import { Api } from "../2_tl.ts";
+import { MiniAppMode } from "./0_mini_app_mode.ts";
 
-  constructor(limit: number, entries?: readonly (readonly [K, V])[] | null);
-  constructor(limit: number);
-  constructor(limit: number, entries?: readonly (readonly [K, V])[] | null) {
-    super(entries);
-    if (!limit || limit < 1) {
-      throw new Error("Invalid size");
-    }
-    this.#limit = limit;
-  }
+/** The necessary information to launch a mini app. */
+export interface MiniAppInfo {
+  /** An HTTPS URL of the mini app. */
+  url: string;
+  /** The mode to launch the mini app in. */
+  mode: MiniAppMode;
+  /** The identifier of the mini app session. */
+  queryId?: string;
+}
 
-  override set(key: K, value: V): typeof this {
-    super.set(key, value);
-    if (this.size > this.#limit) {
-      const k = this.keys().next().value;
-      if (k !== undefined) {
-        this.delete(k);
-      }
-    }
-    return this;
-  }
+export function constructMiniAppInfo(result: Api.webViewResultUrl): MiniAppInfo {
+  return cleanObject({
+    url: result.url,
+    mode: result.fullscreen ? "fullscreen" : result.fullsize ? "default" : "compact",
+    queryId: result.query_id ? String(result.query_id) : undefined,
+  });
 }

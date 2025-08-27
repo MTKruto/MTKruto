@@ -198,6 +198,18 @@ export function repr(value: unknown): string | null {
   }
 }
 
+export function getLimit(limit: number | undefined) {
+  if (typeof limit !== "number") {
+    return 100;
+  } else if (limit < 1) {
+    return 1;
+  } else if (limit > 100) {
+    return 100;
+  } else {
+    return limit;
+  }
+}
+
 export const UPLOAD_REQUEST_PER_CONNECTION = 2;
 
 export const DOWNLOAD_POOL_SIZE = 1;
