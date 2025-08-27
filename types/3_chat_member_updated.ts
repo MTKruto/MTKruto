@@ -21,11 +21,11 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
-import { ChatP, constructChatP } from "./1_chat_p.ts";
-import { constructUser, User } from "./1_user.ts";
-import { ChatMember, constructChatMember } from "./2_chat_member.ts";
-import { constructInviteLink, InviteLink } from "./2_invite_link.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { type ChatP, constructChatP } from "./1_chat_p.ts";
+import { constructUser, type User } from "./1_user.ts";
+import { type ChatMember, constructChatMember } from "./2_chat_member.ts";
+import { constructInviteLink, type InviteLink } from "./2_invite_link.ts";
 
 /** Changes made to a chat member. */
 export interface ChatMemberUpdated {

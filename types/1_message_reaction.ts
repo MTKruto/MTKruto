@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { constructReaction, Reaction } from "./0_reaction.ts";
+import { constructReaction, type Reaction } from "./0_reaction.ts";
 
 /** Represents a type of reaction made to a message. */
 export interface MessageReaction {

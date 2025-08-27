@@ -22,14 +22,14 @@ import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getRandomId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, Update } from "../3_types.ts";
-import { InputStoryContent } from "../types/1_input_story_content.ts";
-import { CreateStoryParams } from "./0_params.ts";
-import { UpdateProcessor } from "./0_update_processor.ts";
+import { constructStory, FileType, type ID, type Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, type Update } from "../3_types.ts";
+import type { InputStoryContent } from "../types/1_input_story_content.ts";
+import type { CreateStoryParams } from "./0_params.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
 import { checkArray, checkStoryId, isHttpUrl } from "./0_utilities.ts";
-import { C as C_ } from "./1_types.ts";
-import { FileManager } from "./2_file_manager.ts";
-import { MessageManager } from "./3_message_manager.ts";
+import type { C as C_ } from "./1_types.ts";
+import type { FileManager } from "./2_file_manager.ts";
+import type { MessageManager } from "./3_message_manager.ts";
 
 type C = C_ & { fileManager: FileManager; messageManager: MessageManager };
 

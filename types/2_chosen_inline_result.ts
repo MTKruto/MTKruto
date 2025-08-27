@@ -21,9 +21,9 @@
 import { unreachable } from "../0_deps.ts";
 import { base64EncodeUrlSafe, cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
-import { constructLocation, Location } from "./0_location.ts";
-import { constructUser, User } from "./1_user.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { constructLocation, type Location } from "./0_location.ts";
+import { constructUser, type User } from "./1_user.ts";
 
 /** A chosen inline result. */
 export interface ChosenInlineResult {

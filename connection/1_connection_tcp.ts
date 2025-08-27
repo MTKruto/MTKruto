@@ -21,7 +21,7 @@
 import { concat, iterateReader } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { getLogger, Mutex } from "../1_utilities.ts";
-import { Connection } from "./0_connection.ts";
+import type { Connection } from "./0_connection.ts";
 
 const L = getLogger("ConnectionTCP");
 

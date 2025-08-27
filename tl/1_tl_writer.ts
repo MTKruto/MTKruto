@@ -22,7 +22,7 @@
 import { concat } from "../0_deps.ts";
 import { TLError } from "./0_tl_error.ts";
 import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./0_utilities.ts";
-import { Schema } from "./0_types.ts";
+import type { Schema } from "./0_types.ts";
 import { bufferFromBigInt } from "../utilities/0_buffer.ts";
 import { encodeText } from "../1_utilities.ts";
 

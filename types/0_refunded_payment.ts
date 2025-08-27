@@ -19,7 +19,7 @@
  */
 
 import { cleanObject, decodeText } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
+import type { Api } from "../2_tl.ts";
 
 /** Information on a refunded payment. */
 export interface RefundedPayment {

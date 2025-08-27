@@ -20,9 +20,9 @@
 
 import { unreachable } from "../0_deps.ts";
 import { decodeText } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
-import { ChatP, constructChatP } from "./1_chat_p.ts";
+import type { Api } from "../2_tl.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { type ChatP, constructChatP } from "./1_chat_p.ts";
 
 /** An answer to a poll. */
 export interface PollAnswer {

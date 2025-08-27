@@ -18,8 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api } from "../2_tl.ts";
-import { Update } from "../3_types.ts";
+import type { Api } from "../2_tl.ts";
+import type { Update } from "../3_types.ts";
 
 export interface UpdateProcessor<U extends Api.Update> {
   canHandleUpdate(update: Api.Update): update is U;

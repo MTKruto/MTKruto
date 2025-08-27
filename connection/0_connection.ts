@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MaybePromise } from "../1_utilities.ts";
+import type { MaybePromise } from "../1_utilities.ts";
 
 export interface ConnectionCallback {
   read(count: number): void;

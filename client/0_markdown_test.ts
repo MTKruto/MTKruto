@@ -19,7 +19,7 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
-import { MessageEntity } from "../3_types.ts";
+import type { MessageEntity } from "../3_types.ts";
 import { parseMarkdown } from "./0_markdown.ts";
 
 Deno.test("italic", () => {

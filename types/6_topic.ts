@@ -20,8 +20,8 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
-import { ChatP } from "./1_chat_p.ts";
-import { Message, MessageForumTopicCreated, MessageForumTopicEdited } from "./5_message.ts";
+import type { ChatP } from "./1_chat_p.ts";
+import type { Message, MessageForumTopicCreated, MessageForumTopicEdited } from "./5_message.ts";
 
 export interface Topic {
   id: number;

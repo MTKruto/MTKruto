@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getLogger, Logger } from "./1_logger.ts";
+import { getLogger, type Logger } from "./1_logger.ts";
 
 export class Queue {
   #logger: Logger;

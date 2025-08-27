@@ -18,8 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api } from "../2_tl.ts";
-import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
+import type { Api } from "../2_tl.ts";
+import { constructMessageEntity, type MessageEntity } from "./0_message_entity.ts";
 
 /** A poll option. */
 export interface PollOption {

@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MessageReaction } from "./1_message_reaction.ts";
+import type { MessageReaction } from "./1_message_reaction.ts";
 
 /** The interactions made with a message. */
 export interface MessageInteractions {

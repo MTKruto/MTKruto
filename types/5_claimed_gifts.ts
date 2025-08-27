@@ -20,8 +20,8 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
-import { ClaimedGift, constructClaimedGift } from "./4_claimed_gift.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { type ClaimedGift, constructClaimedGift } from "./4_claimed_gift.ts";
 
 /** Gifts claimed by a user or a channel. */
 export interface ClaimedGifts {

@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { CTR, MaybePromise } from "../1_utilities.ts";
+import type { CTR, MaybePromise } from "../1_utilities.ts";
 
 export abstract class Transport {
   protected obfuscationParameters: { encryptionCTR: CTR; decryptionCTR: CTR } | null = null;

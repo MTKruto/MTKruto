@@ -19,8 +19,8 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
-import { constructGiveawayParameters, GiveawayParameters } from "./0_giveaway_parameters.ts";
+import type { Api } from "../2_tl.ts";
+import { constructGiveawayParameters, type GiveawayParameters } from "./0_giveaway_parameters.ts";
 
 /** A giveaway. */
 export interface Giveaway {

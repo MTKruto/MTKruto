@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { NetworkStatisticsEntry } from "./0_network_statistics_entry.ts";
+import type { NetworkStatisticsEntry } from "./0_network_statistics_entry.ts";
 
 /** A client's network statistics. */
 export interface NetworkStatistics {

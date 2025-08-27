@@ -21,10 +21,10 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
-import { ChatAdministratorRights, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
-import { ChatMemberRights, constructChatMemberRights } from "./0_chat_member_rights.ts";
-import { constructUser, User } from "./1_user.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { type ChatAdministratorRights, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
+import { type ChatMemberRights, constructChatMemberRights } from "./0_chat_member_rights.ts";
+import { constructUser, type User } from "./1_user.ts";
 
 /** @unlisted */
 export type ChatMemberStatus = "creator" | "administrator" | "member" | "restricted" | "left" | "banned";

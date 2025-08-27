@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
+import type { EntityGetter } from "./_getters.ts";
 
 /** @unlisted */
 export type MessageEntityType =

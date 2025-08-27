@@ -19,7 +19,7 @@
  */
 // deno-lint-ignore-file no-explicit-any
 
-import { AnyObject, AnyType, Enums, Functions, schema, Types } from "./1_mtproto_api.ts";
+import { type AnyObject, type AnyType, type Enums, type Functions, schema, type Types } from "./1_mtproto_api.ts";
 import { TLReader } from "./1_tl_reader.ts";
 import { TLWriter } from "./1_tl_writer.ts";
 import { as as as_, assertIsValidObject as assertIsValidObject_, is as is_, isOfEnum as isOfEnum_, isOneOf as isOneOf_, isValidObject as isValidObject_, mustGetReturnType as mustGetReturnType_ } from "./1_utilities.ts";

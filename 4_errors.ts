@@ -19,8 +19,8 @@
  */
 
 import { unreachable } from "./0_deps.ts";
-import { map, TelegramError, TelegramErrorParams } from "./3_errors.ts";
-import { Mtproto } from "./2_tl.ts";
+import { map, TelegramError, type TelegramErrorParams } from "./3_errors.ts";
+import type { Mtproto } from "./2_tl.ts";
 
 export * from "./3_errors.ts";
 

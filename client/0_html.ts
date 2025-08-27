@@ -20,7 +20,7 @@
 
 import { Parser } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { MessageEntity, MessageEntityBlockquote } from "../3_types.ts";
+import type { MessageEntity, MessageEntityBlockquote } from "../3_types.ts";
 
 export function parseHtml(html: string) {
   html = html.trim();

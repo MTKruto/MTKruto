@@ -20,7 +20,7 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
+import { constructThumbnail, type Thumbnail } from "./0_thumbnail.ts";
 
 /** An audio file. */
 export interface Audio {

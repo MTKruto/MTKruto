@@ -22,13 +22,13 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { fromUnixTimestamp } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, constructChatP, constructChatSettings, getChatListItemOrder, ID } from "../3_types.ts";
-import { type CreateChannelParams, type CreateGroupParams, type CreateSupergroupParams, GetChatMembersParams, GetCommonChatsParams } from "./0_params.ts";
-import { UpdateProcessor } from "./0_update_processor.ts";
+import { type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem, constructChatListItem3, constructChatListItem4, constructChatMember, constructChatP, constructChatSettings, getChatListItemOrder, type ID } from "../3_types.ts";
+import type { CreateChannelParams, CreateGroupParams, CreateSupergroupParams, GetChatMembersParams, GetCommonChatsParams } from "./0_params.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, getChatListId, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
-import { C as C_ } from "./1_types.ts";
-import { FileManager } from "./2_file_manager.ts";
-import { MessageManager } from "./3_message_manager.ts";
+import type { C as C_ } from "./1_types.ts";
+import type { FileManager } from "./2_file_manager.ts";
+import type { MessageManager } from "./3_message_manager.ts";
 
 type C = C_ & { fileManager: FileManager; messageManager: MessageManager };
 

@@ -19,8 +19,8 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
-import { MiniAppMode } from "./0_mini_app_mode.ts";
+import type { Api } from "../2_tl.ts";
+import type { MiniAppMode } from "./0_mini_app_mode.ts";
 
 /** The necessary information to launch a mini app. */
 export interface MiniAppInfo {

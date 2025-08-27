@@ -19,9 +19,9 @@
  */
 
 import { delay, SECOND } from "../0_deps.ts";
-import { drop, getLogger, Logger, Mutex } from "../1_utilities.ts";
-import { Connection, ConnectionCallback } from "../2_connection.ts";
-import { DC, TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
+import { drop, getLogger, type Logger, Mutex } from "../1_utilities.ts";
+import type { Connection, ConnectionCallback } from "../2_connection.ts";
+import { type DC, type TransportProvider, transportProviderTcp, transportProviderWebSocket } from "../3_transport.ts";
 import { SessionState } from "./0_session_state.ts";
 
 // global Session ID counter for logs

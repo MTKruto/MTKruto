@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { FileSource } from "./0_file_source.ts";
+import type { FileSource } from "./0_file_source.ts";
 
 /** @unlisted */
 export interface InputStoryContentPhoto {

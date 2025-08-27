@@ -20,15 +20,15 @@
 
 import { AssertionError, basename, delay, extension, extname, isAbsolute, MINUTE, SECOND, toFileUrl, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { getLogger, getRandomId, iterateReadableStream, kilobyte, Logger, megabyte, mod, Part, PartStream } from "../1_utilities.ts";
+import { getLogger, getRandomId, iterateReadableStream, kilobyte, type Logger, megabyte, mod, type Part, PartStream } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { constructSticker, deserializeFileId, FileId, FileSource, FileType, PhotoSourceType, serializeFileId, Sticker, toUniqueFileId } from "../3_types.ts";
+import { constructSticker, deserializeFileId, type FileId, type FileSource, FileType, PhotoSourceType, serializeFileId, type Sticker, toUniqueFileId } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { StickersetInvalid } from "../4_errors.ts";
-import { _UploadCommon, DownloadParams } from "./0_params.ts";
+import type { _UploadCommon, DownloadParams } from "./0_params.ts";
 import { UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
-import { C } from "./1_types.ts";
+import type { C } from "./1_types.ts";
 
 export class FileManager {
   #c: C;

@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ClientEncrypted } from "./2_client_encrypted.ts";
+import type { ClientEncrypted } from "./2_client_encrypted.ts";
 
 export class ClientEncryptedPool {
   #index = 0;

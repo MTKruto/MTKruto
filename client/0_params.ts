@@ -18,11 +18,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MaybePromise } from "../1_utilities.ts";
-import { DC } from "../3_transport.ts";
-import { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
-import { MiniAppMode } from "../types/0_mini_app_mode.ts";
-import { ReplyTo } from "../types/2_reply_to.ts";
+import type { MaybePromise } from "../1_utilities.ts";
+import type { DC } from "../3_transport.ts";
+import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
+import type { MiniAppMode } from "../types/0_mini_app_mode.ts";
+import type { ReplyTo } from "../types/2_reply_to.ts";
 
 export interface InvokeParams {
   dc?: DC;
