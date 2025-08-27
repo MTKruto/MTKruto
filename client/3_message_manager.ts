@@ -244,12 +244,26 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     if (offsetId < 0) {
       offsetId = 0;
     }
+    let offsetDate = params?.offsetDate ?? 0;
+    if (offsetDate < 0) {
+      offsetDate = 0;
+    }
     const peer = await this.#c.getInputPeer(chatId);
     const messages = new Array<Message>();
     if (messages.length > 0) {
       offsetId = messages[messages.length - 1].id; // TODO: track id of oldest message and don't send requests for it
     }
-    const result = await this.#c.invoke({ _: "messages.getHistory", peer: peer, offset_id: offsetId, offset_date: 0, add_offset: 0, limit, max_id: 0, min_id: 0, hash: 0n });
+    const result = await this.#c.invoke({
+      _: "messages.getHistory",
+      peer: peer,
+      offset_id: offsetId,
+      offset_date: offsetDate,
+      add_offset: params?.addOffset ?? 0,
+      limit,
+      max_id: 0,
+      min_id: 0,
+      hash: 0n,
+    });
 
     if (!("messages" in result)) {
       unreachable();
