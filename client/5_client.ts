@@ -24,7 +24,7 @@ import { cleanObject, drop, getLogger, type Logger, type MaybePromise, mustPromp
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type BotCommand, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatAction, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructUser, type FailedInvitation, type FileSource, type Gift, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputMedia, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type Poll, type PriceTag, type Reaction, type ReplyTo, type SlowModeDuration, type Sticker, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type BotCommand, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatAction, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructUser, type FailedInvitation, type FileSource, type Gift, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputMedia, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type Poll, type PriceTag, type Reaction, type ReplyTo, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
@@ -2583,6 +2583,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
+   * Get a sticker set.
+   *
+   * @method ms
+   * @param name The name of the sticker set or its link.
+   */
+  async getStickerSet(name: string): Promise<StickerSet> {
+    return await this.#messageManager.getStickerSet(name);
+  }
+
+  /*
    * Get the link preview for a message that is about to be sent. User-only.
    *
    * @method ms

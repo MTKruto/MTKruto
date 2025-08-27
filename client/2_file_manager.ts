@@ -213,7 +213,7 @@ export class FileManager {
 
   async #handleError(err: unknown, retryIn: number, logPrefix: string) {
     if (retryIn > 0) {
-      this.#Lupload.warning(`${logPrefix} retrying in ${retryIn} seconds`);
+      this.#Lupload.warning(`${logPrefix} retrying in ${retryIn} seconds:`, err);
       await delay(retryIn * SECOND);
     } else {
       throw err;
@@ -415,13 +415,26 @@ export class FileManager {
           break;
         }
         case FileType.Photo: {
-          const location: Api.inputPhotoFileLocation = {
-            _: "inputPhotoFileLocation",
-            id: fileId_.location.id,
-            access_hash: fileId_.location.accessHash,
-            file_reference: fileId_.fileReference ?? new Uint8Array(),
-            thumb_size: "thumbnailType" in fileId_.location.source ? String.fromCharCode(fileId_.location.source.thumbnailType) : "",
-          };
+          let location: Api.inputPhotoFileLocation | Api.inputStickerSetThumb;
+          if (fileId_.location.source.type === PhotoSourceType.StickerSetThumbnailVersion) {
+            location = {
+              _: "inputStickerSetThumb",
+              stickerset: {
+                _: "inputStickerSetID",
+                id: fileId_.location.source.stickerSetId,
+                access_hash: fileId_.location.source.stickerSetAccessHash,
+              },
+              thumb_version: fileId_.location.source.version,
+            };
+          } else {
+            location = {
+              _: "inputPhotoFileLocation",
+              id: fileId_.location.id,
+              access_hash: fileId_.location.accessHash,
+              file_reference: fileId_.fileReference ?? new Uint8Array(),
+              thumb_size: "thumbnailType" in fileId_.location.source ? String.fromCharCode(fileId_.location.source.thumbnailType) : "",
+            };
+          }
           yield* this.downloadInner(location, fileId_.dcId, params);
           break;
         }

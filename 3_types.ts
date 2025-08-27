@@ -110,6 +110,7 @@ export * from "./types/2_poll.ts";
 export * from "./types/2_pre_checkout_query.ts";
 export * from "./types/2_reply_markup.ts";
 export * from "./types/2_reply_to.ts";
+export * from "./types/2_sticker_set.ts";
 export * from "./types/2_story_content.ts";
 export * from "./types/2_story_interactions.ts";
 export * from "./types/2_story_interactive_area.ts";

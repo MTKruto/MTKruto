@@ -80,17 +80,17 @@ const PhotoSourceType_ = {
 } as const;
 export const PhotoSourceType: Readonly<typeof PhotoSourceType_> = Object.freeze(PhotoSourceType_);
 
-type PhotoSource =
+export type PhotoSource =
   | { type: typeof PhotoSourceType["Legacy"]; secret: bigint }
   | { type: typeof PhotoSourceType["Thumbnail"]; fileType: FileType; thumbnailType: number }
   | { type: typeof PhotoSourceType["ChatPhotoSmall"]; chatId: bigint; chatAccessHash: bigint }
   | { type: typeof PhotoSourceType["ChatPhotoBig"]; chatId: bigint; chatAccessHash: bigint }
   | { type: typeof PhotoSourceType["StickerSetThumbnail"]; stickerSetId: bigint; stickerSetAccessHash: bigint }
   | { type: typeof PhotoSourceType["FullLegacy"]; volumeId: bigint; localId: number; secret: bigint }
-  | { type: typeof PhotoSourceType["ChatPhotoSmallLegacy"]; volumeId: bigint; localId: number }
-  | { type: typeof PhotoSourceType["ChatPhotoBigLegacy"]; volumeId: bigint; localId: number }
-  | { type: typeof PhotoSourceType["StickerSetThumbnailLegacy"]; volumeId: bigint; localId: number }
-  | { type: typeof PhotoSourceType["StickerSetThumbnailVersion"]; version: number };
+  | { type: typeof PhotoSourceType["ChatPhotoSmallLegacy"]; chatId: bigint; chatAccessHash: bigint; volumeId: bigint; localId: number }
+  | { type: typeof PhotoSourceType["ChatPhotoBigLegacy"]; chatId: bigint; chatAccessHash: bigint; volumeId: bigint; localId: number }
+  | { type: typeof PhotoSourceType["StickerSetThumbnailLegacy"]; stickerSetId: bigint; stickerSetAccessHash: bigint; volumeId: bigint; localId: number }
+  | { type: typeof PhotoSourceType["StickerSetThumbnailVersion"]; stickerSetId: bigint; stickerSetAccessHash: bigint; version: number };
 function deserializePhotoSource(reader: TLReader): PhotoSource {
   const type = reader.readInt32() as PhotoSource["type"];
   switch (type) {
@@ -104,11 +104,6 @@ function deserializePhotoSource(reader: TLReader): PhotoSource {
       const chatAccessHash = reader.readInt64();
       return { type, chatId, chatAccessHash };
     }
-    case PhotoSourceType.StickerSetThumbnail: {
-      const stickerSetId = reader.readInt64();
-      const stickerSetAccessHash = reader.readInt64();
-      return { type, stickerSetId, stickerSetAccessHash };
-    }
     case PhotoSourceType.FullLegacy: {
       const volumeId = reader.readInt64();
       const localId = reader.readInt32();
@@ -116,14 +111,30 @@ function deserializePhotoSource(reader: TLReader): PhotoSource {
       return { type, volumeId, localId, secret };
     }
     case PhotoSourceType.ChatPhotoSmallLegacy:
-    case PhotoSourceType.ChatPhotoBigLegacy:
-    case PhotoSourceType.StickerSetThumbnailLegacy: {
+    case PhotoSourceType.ChatPhotoBigLegacy: {
+      const chatId = reader.readInt64();
+      const chatAccessHash = reader.readInt64();
       const volumeId = reader.readInt64();
       const localId = reader.readInt32();
-      return { type, volumeId, localId };
+      return { type, chatId, chatAccessHash, volumeId, localId };
     }
-    case PhotoSourceType.StickerSetThumbnailVersion:
-      return { type, version: reader.readInt32() };
+    case PhotoSourceType.StickerSetThumbnail: {
+      const stickerSetId = reader.readInt64();
+      const stickerSetAccessHash = reader.readInt64();
+      return { type, stickerSetId, stickerSetAccessHash };
+    }
+    case PhotoSourceType.StickerSetThumbnailLegacy: {
+      const stickerSetId = reader.readInt64();
+      const stickerSetAccessHash = reader.readInt64();
+      const volumeId = reader.readInt64();
+      const localId = reader.readInt32();
+      return { type, stickerSetId, stickerSetAccessHash, volumeId, localId };
+    }
+    case PhotoSourceType.StickerSetThumbnailVersion: {
+      const stickerSetId = reader.readInt64();
+      const stickerSetAccessHash = reader.readInt64();
+      return { type, stickerSetId, stickerSetAccessHash, version: reader.readInt32() };
+    }
   }
 }
 function serializePhotoSource(photoSource: PhotoSource, writer: TLWriter) {
@@ -141,10 +152,6 @@ function serializePhotoSource(photoSource: PhotoSource, writer: TLWriter) {
       writer.writeInt64(photoSource.chatId);
       writer.writeInt64(photoSource.chatAccessHash);
       break;
-    case PhotoSourceType.StickerSetThumbnail:
-      writer.writeInt64(photoSource.stickerSetId);
-      writer.writeInt64(photoSource.stickerSetAccessHash);
-      break;
     case PhotoSourceType.FullLegacy:
       writer.writeInt64(photoSource.volumeId);
       writer.writeInt32(photoSource.localId);
@@ -152,11 +159,24 @@ function serializePhotoSource(photoSource: PhotoSource, writer: TLWriter) {
       break;
     case PhotoSourceType.ChatPhotoSmallLegacy:
     case PhotoSourceType.ChatPhotoBigLegacy:
+      writer.writeInt64(photoSource.chatId);
+      writer.writeInt64(photoSource.chatAccessHash);
+      writer.writeInt64(photoSource.volumeId);
+      writer.writeInt32(photoSource.localId);
+      break;
+    case PhotoSourceType.StickerSetThumbnail:
+      writer.writeInt64(photoSource.stickerSetId);
+      writer.writeInt64(photoSource.stickerSetAccessHash);
+      break;
     case PhotoSourceType.StickerSetThumbnailLegacy:
+      writer.writeInt64(photoSource.stickerSetId);
+      writer.writeInt64(photoSource.stickerSetAccessHash);
       writer.writeInt64(photoSource.volumeId);
       writer.writeInt32(photoSource.localId);
       break;
     case PhotoSourceType.StickerSetThumbnailVersion:
+      writer.writeInt64(photoSource.stickerSetId);
+      writer.writeInt64(photoSource.stickerSetAccessHash);
       writer.writeInt32(photoSource.version);
       break;
     default:
