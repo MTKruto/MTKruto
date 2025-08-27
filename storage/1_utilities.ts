@@ -22,16 +22,18 @@ import { decodeBase64, encodeBase64 } from "../0_deps.ts";
 import { unreachable } from "../0_deps.ts";
 import { StorageKeyPart } from "./0_storage.ts";
 
-export enum ValueType {
-  Boolean,
-  Number,
-  String,
-  BigInt,
-  Date,
-  Uint8Array,
-  Array,
-  Map,
-}
+export const ValueType = Object.freeze({
+  Boolean: 0,
+  Number: 1,
+  String: 2,
+  BigInt: 3,
+  Date: 4,
+  Uint8Array: 5,
+  Array: 6,
+  Map: 7,
+});
+
+export type ValueType = typeof ValueType[keyof typeof ValueType];
 
 export function toString(value: unknown): string {
   if (typeof value === "boolean") {

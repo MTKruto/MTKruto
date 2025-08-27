@@ -28,72 +28,74 @@ const PERSISTENT_ID_VERSION = 4;
 const WEB_LOCATION_FLAG = 1 << 24;
 const FILE_REFERENCE_FLAG = 1 << 25;
 
-export enum FileType {
-  Thumbnail,
-  ProfilePhoto,
-  Photo,
-  VoiceNote,
-  Video,
-  Document,
-  Encrypted,
-  Temp,
-  Sticker,
-  Audio,
-  Animation,
-  EncryptedThumbnail,
-  Wallpaper,
-  VideoNote,
-  SecureDecrypted,
-  SecureEncrypted,
-  Background,
-  DocumentAsFile,
-  Ringtone,
-  CallLog,
-  PhotoStory,
-  VideoStory,
-  Size,
-  None,
-}
+export const FileType = Object.freeze({
+  Thumbnail: 0,
+  ProfilePhoto: 1,
+  Photo: 2,
+  VoiceNote: 3,
+  Video: 4,
+  Document: 5,
+  Encrypted: 6,
+  Temp: 7,
+  Sticker: 8,
+  Audio: 9,
+  Animation: 10,
+  EncryptedThumbnail: 11,
+  Wallpaper: 12,
+  VideoNote: 13,
+  SecureDecrypted: 14,
+  SecureEncrypted: 15,
+  Background: 16,
+  DocumentAsFile: 17,
+  Ringtone: 18,
+  CallLog: 19,
+  PhotoStory: 20,
+  VideoStory: 21,
+  Size: 22,
+  None: 23,
+});
 
-enum FileTypeClass {
-  Photo,
-  Document,
-  Secure,
-  Encrypted,
-  Temp,
-}
+export type FileType = typeof FileType[keyof typeof FileType];
 
-export enum PhotoSourceType {
-  Legacy,
-  Thumbnail,
-  ChatPhotoSmall,
-  ChatPhotoBig,
-  StickerSetThumbnail,
-  FullLegacy,
-  ChatPhotoSmallLegacy,
-  ChatPhotoBigLegacy,
-  StickerSetThumbnailLegacy,
-  StickerSetThumbnailVersion,
-}
+const FileTypeClass = Object.freeze({
+  Photo: 0,
+  Document: 1,
+  Secure: 2,
+  Encrypted: 3,
+  Temp: 4,
+});
+
+export const PhotoSourceType = Object.freeze({
+  Legacy: 0,
+  Thumbnail: 1,
+  ChatPhotoSmall: 2,
+  ChatPhotoBig: 3,
+  StickerSetThumbnail: 4,
+  FullLegacy: 5,
+  ChatPhotoSmallLegacy: 6,
+  ChatPhotoBigLegacy: 7,
+  StickerSetThumbnailLegacy: 8,
+  StickerSetThumbnailVersion: 9,
+});
 
 type PhotoSource =
-  | { type: PhotoSourceType.Legacy; secret: bigint }
-  | { type: PhotoSourceType.Thumbnail; fileType: FileType; thumbnailType: number }
-  | { type: PhotoSourceType.ChatPhotoSmall; chatId: bigint; chatAccessHash: bigint }
-  | { type: PhotoSourceType.ChatPhotoBig; chatId: bigint; chatAccessHash: bigint }
-  | { type: PhotoSourceType.StickerSetThumbnail; stickerSetId: bigint; stickerSetAccessHash: bigint }
-  | { type: PhotoSourceType.FullLegacy; volumeId: bigint; localId: number; secret: bigint }
-  | { type: PhotoSourceType.ChatPhotoSmallLegacy; volumeId: bigint; localId: number }
-  | { type: PhotoSourceType.ChatPhotoBigLegacy; volumeId: bigint; localId: number }
-  | { type: PhotoSourceType.StickerSetThumbnailLegacy; volumeId: bigint; localId: number }
-  | { type: PhotoSourceType.StickerSetThumbnailVersion; version: number };
+  | { type: typeof PhotoSourceType["Legacy"]; secret: bigint }
+  | { type: typeof PhotoSourceType["Thumbnail"]; fileType: FileType; thumbnailType: number }
+  | { type: typeof PhotoSourceType["ChatPhotoSmall"]; chatId: bigint; chatAccessHash: bigint }
+  | { type: typeof PhotoSourceType["ChatPhotoBig"]; chatId: bigint; chatAccessHash: bigint }
+  | { type: typeof PhotoSourceType["StickerSetThumbnail"]; stickerSetId: bigint; stickerSetAccessHash: bigint }
+  | { type: typeof PhotoSourceType["FullLegacy"]; volumeId: bigint; localId: number; secret: bigint }
+  | { type: typeof PhotoSourceType["ChatPhotoSmallLegacy"]; volumeId: bigint; localId: number }
+  | { type: typeof PhotoSourceType["ChatPhotoBigLegacy"]; volumeId: bigint; localId: number }
+  | { type: typeof PhotoSourceType["StickerSetThumbnailLegacy"]; volumeId: bigint; localId: number }
+  | { type: typeof PhotoSourceType["StickerSetThumbnailVersion"]; version: number };
 function deserializePhotoSource(reader: TLReader): PhotoSource {
-  const type = reader.readInt32() as PhotoSourceType;
+  const type = reader.readInt32() as PhotoSource["type"];
   switch (type) {
     case PhotoSourceType.Legacy:
       return { type, secret: reader.readInt64() };
     case PhotoSourceType.Thumbnail:
-      return { type, fileType: reader.readInt32(), thumbnailType: reader.readInt32() };
+      return { type, fileType: reader.readInt32() as FileType, thumbnailType: reader.readInt32() };
     case PhotoSourceType.ChatPhotoSmall:
     case PhotoSourceType.ChatPhotoBig: {
       const chatId = reader.readInt64();
@@ -270,7 +272,7 @@ export function deserializeFileId(fileId: string): FileId {
   if (reader.buffer[reader.buffer.length - 1] != PERSISTENT_ID_VERSION) {
     throw new InputError("Unsupported file ID format");
   }
-  const originalType = reader.readInt32();
+  const originalType = reader.readInt32() as FileType;
   const type = ((originalType & ~WEB_LOCATION_FLAG) & ~FILE_REFERENCE_FLAG) as FileType;
   const dcId = reader.readInt32();
 
