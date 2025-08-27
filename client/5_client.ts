@@ -1653,7 +1653,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     const peer_ = await this.messageStorage.getPeer(reference.chatId);
     if (peer_ !== null && (peer_[0].type === "channel" || peer_[0].type === "supergroup")) {
       const peer: Api.inputPeerChannel = { _: "inputPeerChannel", channel_id: BigInt(peer_[0].id), access_hash: peer_[1] };
-      if (type == "user") {
+      if (type === "user") {
         return { _: "inputPeerUserFromMessage", peer, msg_id: reference.messageId, user_id: Api.chatIdToPeerId(reference.senderId) };
       } else {
         return { _: "inputPeerChannelFromMessage", peer, msg_id: reference.messageId, channel_id: Api.chatIdToPeerId(reference.senderId) };
@@ -1670,7 +1670,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   private async [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
     const id = Api.peerToChatId(peer);
     const entity = await this.messageStorage.getPeer(id);
-    if (entity == null && await this.storage.getAccountType() == "bot" && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
+    if (entity === null && await this.storage.getAccountType() === "bot" && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
       await this.getInputPeer(id);
     } else {
       return entity;
@@ -1714,7 +1714,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         const username = update.usernames[0];
         if (username !== undefined) {
           peer_[0].username = username.username;
-          const also = update.usernames.filter((v) => v != username);
+          const also = update.usernames.filter((v) => v !== username);
           if (also.length) {
             peer_[0].also = also.map((v) => v.username);
           } else {

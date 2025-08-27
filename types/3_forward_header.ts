@@ -66,9 +66,9 @@ export interface ForwardHeaderUnsupported extends _ForwardHeaderCommon {
 export type ForwardHeader = ForwardHeaderUser | ForwardHeaderChannel | ForwardHeaderSupergroup | ForwardHeaderHidden | ForwardHeaderUnsupported;
 
 export function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, getPeer: PeerGetter): ForwardHeader {
-  if (fwdHeader.channel_post && fwdHeader.from_id?._ == "peerChannel") {
+  if (fwdHeader.channel_post && fwdHeader.from_id?._ === "peerChannel") {
     const peer = getPeer(fwdHeader.from_id);
-    if (peer == null) {
+    if (peer === null) {
       unreachable();
     }
     return cleanObject({
@@ -78,9 +78,9 @@ export function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, getPeer:
       messageId: fwdHeader.channel_post,
       authorSignature: fwdHeader.post_author,
     });
-  } else if (fwdHeader.from_id?._ == "peerChannel") {
+  } else if (fwdHeader.from_id?._ === "peerChannel") {
     const peer = getPeer(fwdHeader.from_id);
-    if (peer == null) {
+    if (peer === null) {
       unreachable();
     }
     return cleanObject({
@@ -89,7 +89,7 @@ export function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, getPeer:
       chat: peer[0] as ChatPSupergroup,
       title: fwdHeader.post_author,
     });
-  } else if (fwdHeader.from_id?._ == "peerUser") {
+  } else if (fwdHeader.from_id?._ === "peerUser") {
     const peer = getPeer(fwdHeader.from_id);
     if (peer === null || peer[0].type !== "private") {
       unreachable();

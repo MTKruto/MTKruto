@@ -42,7 +42,7 @@ export function getChatListItemOrder(lastMessage: Omit<Message, "replyToMessage"
 
 export async function constructChatListItem(chatId: number, pinned: number, lastMessageId: number, getPeer: PeerGetter, getMessage: MessageGetter): Promise<ChatListItem | null> {
   const peer = getPeer(Api.chatIdToPeer(chatId));
-  if (peer == null) {
+  if (peer === null) {
     return null;
   }
 
@@ -68,7 +68,7 @@ export function constructChatListItem2(entity: Api.user | Api.chat | Api.chatFor
 
 export function constructChatListItem3(chatId: number, pinned: number, lastMessage: Omit<Message, "replyToMessage"> | undefined, getPeer: PeerGetter): ChatListItem | null {
   const chat = getPeer(Api.chatIdToPeer(chatId));
-  if (chat == null) {
+  if (chat === null) {
     return null;
   }
   return cleanObject({
@@ -80,7 +80,7 @@ export function constructChatListItem3(chatId: number, pinned: number, lastMessa
 }
 
 export async function constructChatListItem4(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice, pinnedChats: number[], getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<ChatListItem> {
-  const topMessage_ = dialogs.messages.find((v) => "id" in v && v.id == dialog.top_message);
+  const topMessage_ = dialogs.messages.find((v) => "id" in v && v.id === dialog.top_message);
   if (!topMessage_) {
     unreachable();
   }

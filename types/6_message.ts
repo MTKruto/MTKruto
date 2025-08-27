@@ -988,7 +988,7 @@ export async function constructMessage(
     message.replyMarkup = constructReplyMarkup(message_.reply_markup);
   }
 
-  if (message_.via_bot_id != undefined) {
+  if (message_.via_bot_id !== undefined) {
     const peer = getPeer({ _: "peerUser", user_id: message_.via_bot_id });
     if (peer) {
       message.viaBot = constructUser2(peer[0]);
@@ -996,7 +996,7 @@ export async function constructMessage(
       unreachable();
     }
   }
-  if (message_.via_business_bot_id != undefined) {
+  if (message_.via_business_bot_id !== undefined) {
     const peer = getPeer({ _: "peerUser", user_id: message_.via_business_bot_id });
     if (peer) {
       message.viaBusinessBot = constructUser2(peer[0]);
@@ -1010,7 +1010,7 @@ export async function constructMessage(
   }
 
   if (Api.is("messageFwdHeader", message_.fwd_from)) {
-    message.isAutomaticForward = message_.fwd_from.saved_from_peer != undefined && message_.fwd_from.saved_from_msg_id != undefined;
+    message.isAutomaticForward = message_.fwd_from.saved_from_peer !== undefined && message_.fwd_from.saved_from_msg_id !== undefined;
     message.forwardFrom = constructForwardHeader(message_.fwd_from, getPeer);
   }
 

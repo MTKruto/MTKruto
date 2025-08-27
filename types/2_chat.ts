@@ -82,7 +82,7 @@ export function constructChat(fullChat: Api.userFull | Api.chatFull | Api.channe
     });
   } else if (Api.is("chatFull", fullChat)) {
     const peer = getPeer({ _: "peerChat", chat_id: fullChat.id });
-    if (peer == null) unreachable();
+    if (peer === null) unreachable();
     return cleanObject({
       ...peer[0],
       photo: fullChat.chat_photo && Api.is("photo", fullChat.chat_photo) ? constructPhoto(fullChat.chat_photo) : undefined,
@@ -90,7 +90,7 @@ export function constructChat(fullChat: Api.userFull | Api.chatFull | Api.channe
     });
   } else if (Api.is("channelFull", fullChat)) {
     const peer = getPeer({ _: "peerChannel", channel_id: fullChat.id });
-    if (peer == null) unreachable();
+    if (peer === null) unreachable();
     return cleanObject({
       ...peer[0],
       photo: fullChat.chat_photo && Api.is("photo", fullChat.chat_photo) ? constructPhoto(fullChat.chat_photo) : undefined,

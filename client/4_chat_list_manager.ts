@@ -84,7 +84,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       } else {
         const pinnedChats = await this.#getPinnedChats(listId);
         const chat = constructChatListItem3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getPeer);
-        if (chat == null) {
+        if (chat === null) {
           unreachable();
         }
         this.#chats.set(chatId, chat);
@@ -105,7 +105,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       } else {
         const pinnedChats = await this.#getPinnedChats(listId);
         const chat = constructChatListItem3(chatId, pinnedChats.indexOf(chatId), message, this.#c.getPeer);
-        if (chat == null) {
+        if (chat === null) {
           unreachable();
         }
         this.#chats.set(chatId, chat);
@@ -206,13 +206,13 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     const [chat, listId] = this.#getChatAnywhere(chatId);
     if (chat !== undefined) {
       const newChat = constructChatListItem3(chatId, chat.pinned, chat.lastMessage, this.#c.getPeer);
-      if (newChat != null) {
+      if (newChat !== null) {
         this.#getChatList(listId).set(chatId, newChat);
         this.#sendChatUpdate(chatId, false);
       }
     } else {
       const chat = await constructChatListItem(chatId, -1, -1, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
-      if (chat != null) {
+      if (chat !== null) {
         this.#getChatList(0).set(chatId, chat);
         await this.reassignChatLastMessage(chatId, false, false);
         this.#sendChatUpdate(chatId, true);
@@ -418,7 +418,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       const user = await this.#c.getInputUser(userId);
       const userId_ = BigInt(await this.#c.getInputPeerChatId(user));
       const fullChat = await this.#c.invoke({ ...peer, _: "messages.getFullChat" }).then((v) => Api.as("chatFull", v.full_chat));
-      const participant = Api.as("chatParticipants", fullChat.participants).participants.find((v) => v.user_id == userId_)!;
+      const participant = Api.as("chatParticipants", fullChat.participants).participants.find((v) => v.user_id === userId_)!;
       return constructChatMember(participant, this.#c.getPeer);
     } else {
       throw new InputError("Expected a channel, supergroup, or group ID. Got a user ID instead.");
