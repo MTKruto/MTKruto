@@ -240,7 +240,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   async getHistory(chatId: ID, params?: GetHistoryParams) {
     this.#c.storage.assertUser("getHistory");
     const limit = getLimit(params?.limit);
-    let offsetId = params?.fromMessageId ?? 0;
+    let offsetId = params?.offsetId ?? 0;
     if (offsetId < 0) {
       offsetId = 0;
     }

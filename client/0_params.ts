@@ -367,7 +367,7 @@ export interface ReplyParams {
 
 export interface GetHistoryParams {
   /** The identifier of a message. If specified, the chat history will be fetched from that message. */
-  fromMessageId?: number;
+  offsetId?: number;
   /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
   limit?: number;
 }
