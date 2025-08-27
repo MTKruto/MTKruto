@@ -19,8 +19,13 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
+<<<<<<< HEAD:types/8_inline_query_answer.ts
 import { Api } from "../2_tl.ts";
 import { constructInlineQueryResult, InlineQueryResult } from "./7_inline_query_result.ts";
+=======
+import type { Api } from "../2_tl.ts";
+import { constructInlineQueryResult, type InlineQueryResult } from "./6_inline_query_result.ts";
+>>>>>>> main:types/7_inline_query_answer.ts
 
 /** An answer to an inline query. */
 export interface InlineQueryAnswer {

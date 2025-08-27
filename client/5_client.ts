@@ -20,8 +20,8 @@
 
 import { delay, MINUTE, SECOND, unreachable } from "../0_deps.ts";
 import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
-import { cleanObject, drop, getLogger, Logger, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { Storage, StorageMemory } from "../2_storage.ts";
+import { cleanObject, drop, getLogger, type Logger, type MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { DC, getDcId, TransportProvider } from "../3_transport.ts";
 import { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, type ChatPChannel, type ChatPGroup, ChatPPrivate, type ChatPSupergroup, ChatSettings, ClaimedGifts, ConnectionState, constructChatP, constructUser2, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Sticker, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
@@ -34,8 +34,8 @@ import { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbac
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
-import { ClientPlainParams } from "./1_client_plain.ts";
-import { Composer as Composer_, Middleware, MiddlewareFn, MiddlewareObj, NextFunction } from "./1_composer.ts";
+import type { ClientPlainParams } from "./1_client_plain.ts";
+import { Composer as Composer_, type Middleware, type MiddlewareFn, type MiddlewareObj, type NextFunction } from "./1_composer.ts";
 import { AccountManager } from "./2_account_manager.ts";
 import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
@@ -227,7 +227,7 @@ export interface Context {
 
 export class Composer<C extends Context = Context> extends Composer_<C> {
 }
-export { type Middleware, type MiddlewareFn, type MiddlewareObj, type NextFunction };
+export type { Middleware, MiddlewareFn, MiddlewareObj, NextFunction };
 
 function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
   return (_ctx, next) => next();
@@ -1395,6 +1395,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #setupClient(client: ClientEncrypted) {
     const storage = client.dc == this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.cdn ? "_cdn" : "")));
+    await storage.initialize();
     const [authKey, serverSalt] = await Promise.all([storage.getAuthKey(), storage.getServerSalt()]);
     if (authKey) {
       await client.setAuthKey(authKey);
@@ -2592,6 +2593,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
+   * Get a sticker set.
+   *
+   * @method ms
+   * @param name The name of the sticker set or its link.
+   */
+  async getStickerSet(name: string): Promise<StickerSet> {
+    return await this.#messageManager.getStickerSet(name);
+  }
+
+  /*
    * Get the link preview for a message that is about to be sent. User-only.
    *
    * @method ms
@@ -2611,6 +2622,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async openMiniApp(botId: ID, chatId: ID, params?: OpenMiniAppParams): Promise<MiniAppInfo> {
     return await this.#messageManager.openMiniApp(botId, chatId, params);
+  }
+
+  /**
+   * Get a progress ID that can be passed to relevant send* methods to receive upload progress updates for them.
+   *
+   * @method ms
+   * @cache
+   */
+  async getProgressId(): Promise<string> {
+    return await this.#fileManager.getProgressId();
   }
 
   //

@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Connection, ConnectionCallback } from "../2_connection.ts";
-import { DC } from "../3_transport.ts";
-import { Session } from "../4_session.ts";
+import type { Connection, ConnectionCallback } from "../2_connection.ts";
+import type { DC } from "../3_transport.ts";
+import type { Session } from "../4_session.ts";
 
 export abstract class ClientAbstract {
   abstract session: Session;

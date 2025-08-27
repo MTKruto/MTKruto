@@ -28,82 +28,81 @@ const PERSISTENT_ID_VERSION = 4;
 const WEB_LOCATION_FLAG = 1 << 24;
 const FILE_REFERENCE_FLAG = 1 << 25;
 
-export enum FileType {
-  Thumbnail,
-  ProfilePhoto,
-  Photo,
-  VoiceNote,
-  Video,
-  Document,
-  Encrypted,
-  Temp,
-  Sticker,
-  Audio,
-  Animation,
-  EncryptedThumbnail,
-  Wallpaper,
-  VideoNote,
-  SecureDecrypted,
-  SecureEncrypted,
-  Background,
-  DocumentAsFile,
-  Ringtone,
-  CallLog,
-  PhotoStory,
-  VideoStory,
-  Size,
-  None,
-}
+const FileType_ = {
+  Thumbnail: 0,
+  ProfilePhoto: 1,
+  Photo: 2,
+  VoiceNote: 3,
+  Video: 4,
+  Document: 5,
+  Encrypted: 6,
+  Temp: 7,
+  Sticker: 8,
+  Audio: 9,
+  Animation: 10,
+  EncryptedThumbnail: 11,
+  Wallpaper: 12,
+  VideoNote: 13,
+  SecureDecrypted: 14,
+  SecureEncrypted: 15,
+  Background: 16,
+  DocumentAsFile: 17,
+  Ringtone: 18,
+  CallLog: 19,
+  PhotoStory: 20,
+  VideoStory: 21,
+  Size: 22,
+  None: 23,
+} as const;
+export const FileType: Readonly<typeof FileType_> = Object.freeze(FileType_);
 
-enum FileTypeClass {
-  Photo,
-  Document,
-  Secure,
-  Encrypted,
-  Temp,
-}
+export type FileType = typeof FileType[keyof typeof FileType];
 
-export enum PhotoSourceType {
-  Legacy,
-  Thumbnail,
-  ChatPhotoSmall,
-  ChatPhotoBig,
-  StickerSetThumbnail,
-  FullLegacy,
-  ChatPhotoSmallLegacy,
-  ChatPhotoBigLegacy,
-  StickerSetThumbnailLegacy,
-  StickerSetThumbnailVersion,
-}
+const FileTypeClass = Object.freeze({
+  Photo: 0,
+  Document: 1,
+  Secure: 2,
+  Encrypted: 3,
+  Temp: 4,
+});
 
-type PhotoSource =
-  | { type: PhotoSourceType.Legacy; secret: bigint }
-  | { type: PhotoSourceType.Thumbnail; fileType: FileType; thumbnailType: number }
-  | { type: PhotoSourceType.ChatPhotoSmall; chatId: bigint; chatAccessHash: bigint }
-  | { type: PhotoSourceType.ChatPhotoBig; chatId: bigint; chatAccessHash: bigint }
-  | { type: PhotoSourceType.StickerSetThumbnail; stickerSetId: bigint; stickerSetAccessHash: bigint }
-  | { type: PhotoSourceType.FullLegacy; volumeId: bigint; localId: number; secret: bigint }
-  | { type: PhotoSourceType.ChatPhotoSmallLegacy; volumeId: bigint; localId: number }
-  | { type: PhotoSourceType.ChatPhotoBigLegacy; volumeId: bigint; localId: number }
-  | { type: PhotoSourceType.StickerSetThumbnailLegacy; volumeId: bigint; localId: number }
-  | { type: PhotoSourceType.StickerSetThumbnailVersion; version: number };
+const PhotoSourceType_ = {
+  Legacy: 0,
+  Thumbnail: 1,
+  ChatPhotoSmall: 2,
+  ChatPhotoBig: 3,
+  StickerSetThumbnail: 4,
+  FullLegacy: 5,
+  ChatPhotoSmallLegacy: 6,
+  ChatPhotoBigLegacy: 7,
+  StickerSetThumbnailLegacy: 8,
+  StickerSetThumbnailVersion: 9,
+} as const;
+export const PhotoSourceType: Readonly<typeof PhotoSourceType_> = Object.freeze(PhotoSourceType_);
+
+export type PhotoSource =
+  | { type: typeof PhotoSourceType["Legacy"]; secret: bigint }
+  | { type: typeof PhotoSourceType["Thumbnail"]; fileType: FileType; thumbnailType: number }
+  | { type: typeof PhotoSourceType["ChatPhotoSmall"]; chatId: bigint; chatAccessHash: bigint }
+  | { type: typeof PhotoSourceType["ChatPhotoBig"]; chatId: bigint; chatAccessHash: bigint }
+  | { type: typeof PhotoSourceType["StickerSetThumbnail"]; stickerSetId: bigint; stickerSetAccessHash: bigint }
+  | { type: typeof PhotoSourceType["FullLegacy"]; volumeId: bigint; localId: number; secret: bigint }
+  | { type: typeof PhotoSourceType["ChatPhotoSmallLegacy"]; chatId: bigint; chatAccessHash: bigint; volumeId: bigint; localId: number }
+  | { type: typeof PhotoSourceType["ChatPhotoBigLegacy"]; chatId: bigint; chatAccessHash: bigint; volumeId: bigint; localId: number }
+  | { type: typeof PhotoSourceType["StickerSetThumbnailLegacy"]; stickerSetId: bigint; stickerSetAccessHash: bigint; volumeId: bigint; localId: number }
+  | { type: typeof PhotoSourceType["StickerSetThumbnailVersion"]; stickerSetId: bigint; stickerSetAccessHash: bigint; version: number };
 function deserializePhotoSource(reader: TLReader): PhotoSource {
-  const type = reader.readInt32() as PhotoSourceType;
+  const type = reader.readInt32() as PhotoSource["type"];
   switch (type) {
     case PhotoSourceType.Legacy:
       return { type, secret: reader.readInt64() };
     case PhotoSourceType.Thumbnail:
-      return { type, fileType: reader.readInt32(), thumbnailType: reader.readInt32() };
+      return { type, fileType: reader.readInt32() as FileType, thumbnailType: reader.readInt32() };
     case PhotoSourceType.ChatPhotoSmall:
     case PhotoSourceType.ChatPhotoBig: {
       const chatId = reader.readInt64();
       const chatAccessHash = reader.readInt64();
       return { type, chatId, chatAccessHash };
-    }
-    case PhotoSourceType.StickerSetThumbnail: {
-      const stickerSetId = reader.readInt64();
-      const stickerSetAccessHash = reader.readInt64();
-      return { type, stickerSetId, stickerSetAccessHash };
     }
     case PhotoSourceType.FullLegacy: {
       const volumeId = reader.readInt64();
@@ -112,14 +111,30 @@ function deserializePhotoSource(reader: TLReader): PhotoSource {
       return { type, volumeId, localId, secret };
     }
     case PhotoSourceType.ChatPhotoSmallLegacy:
-    case PhotoSourceType.ChatPhotoBigLegacy:
-    case PhotoSourceType.StickerSetThumbnailLegacy: {
+    case PhotoSourceType.ChatPhotoBigLegacy: {
+      const chatId = reader.readInt64();
+      const chatAccessHash = reader.readInt64();
       const volumeId = reader.readInt64();
       const localId = reader.readInt32();
-      return { type, volumeId, localId };
+      return { type, chatId, chatAccessHash, volumeId, localId };
     }
-    case PhotoSourceType.StickerSetThumbnailVersion:
-      return { type, version: reader.readInt32() };
+    case PhotoSourceType.StickerSetThumbnail: {
+      const stickerSetId = reader.readInt64();
+      const stickerSetAccessHash = reader.readInt64();
+      return { type, stickerSetId, stickerSetAccessHash };
+    }
+    case PhotoSourceType.StickerSetThumbnailLegacy: {
+      const stickerSetId = reader.readInt64();
+      const stickerSetAccessHash = reader.readInt64();
+      const volumeId = reader.readInt64();
+      const localId = reader.readInt32();
+      return { type, stickerSetId, stickerSetAccessHash, volumeId, localId };
+    }
+    case PhotoSourceType.StickerSetThumbnailVersion: {
+      const stickerSetId = reader.readInt64();
+      const stickerSetAccessHash = reader.readInt64();
+      return { type, stickerSetId, stickerSetAccessHash, version: reader.readInt32() };
+    }
   }
 }
 function serializePhotoSource(photoSource: PhotoSource, writer: TLWriter) {
@@ -137,10 +152,6 @@ function serializePhotoSource(photoSource: PhotoSource, writer: TLWriter) {
       writer.writeInt64(photoSource.chatId);
       writer.writeInt64(photoSource.chatAccessHash);
       break;
-    case PhotoSourceType.StickerSetThumbnail:
-      writer.writeInt64(photoSource.stickerSetId);
-      writer.writeInt64(photoSource.stickerSetAccessHash);
-      break;
     case PhotoSourceType.FullLegacy:
       writer.writeInt64(photoSource.volumeId);
       writer.writeInt32(photoSource.localId);
@@ -148,11 +159,24 @@ function serializePhotoSource(photoSource: PhotoSource, writer: TLWriter) {
       break;
     case PhotoSourceType.ChatPhotoSmallLegacy:
     case PhotoSourceType.ChatPhotoBigLegacy:
+      writer.writeInt64(photoSource.chatId);
+      writer.writeInt64(photoSource.chatAccessHash);
+      writer.writeInt64(photoSource.volumeId);
+      writer.writeInt32(photoSource.localId);
+      break;
+    case PhotoSourceType.StickerSetThumbnail:
+      writer.writeInt64(photoSource.stickerSetId);
+      writer.writeInt64(photoSource.stickerSetAccessHash);
+      break;
     case PhotoSourceType.StickerSetThumbnailLegacy:
+      writer.writeInt64(photoSource.stickerSetId);
+      writer.writeInt64(photoSource.stickerSetAccessHash);
       writer.writeInt64(photoSource.volumeId);
       writer.writeInt32(photoSource.localId);
       break;
     case PhotoSourceType.StickerSetThumbnailVersion:
+      writer.writeInt64(photoSource.stickerSetId);
+      writer.writeInt64(photoSource.stickerSetAccessHash);
       writer.writeInt32(photoSource.version);
       break;
     default:
@@ -270,7 +294,7 @@ export function deserializeFileId(fileId: string): FileId {
   if (reader.buffer[reader.buffer.length - 1] != PERSISTENT_ID_VERSION) {
     throw new InputError("Unsupported file ID format");
   }
-  const originalType = reader.readInt32();
+  const originalType = reader.readInt32() as FileType;
   const type = ((originalType & ~WEB_LOCATION_FLAG) & ~FILE_REFERENCE_FLAG) as FileType;
   const dcId = reader.readInt32();
 

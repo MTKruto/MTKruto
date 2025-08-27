@@ -19,8 +19,8 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
-import { constructShippingAddress, ShippingAddress } from "./0_shipping_address.ts";
+import type { Api } from "../2_tl.ts";
+import { constructShippingAddress, type ShippingAddress } from "./0_shipping_address.ts";
 
 export interface OrderInfo {
   name?: string;

@@ -18,8 +18,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+<<<<<<< HEAD:types/3_poll_option.ts
 import { Api } from "../2_tl.ts";
 import { constructMessageEntity, MessageEntity } from "./2_message_entity.ts";
+=======
+import type { Api } from "../2_tl.ts";
+import { constructMessageEntity, type MessageEntity } from "./0_message_entity.ts";
+>>>>>>> main:types/1_poll_option.ts
 
 /** A poll option. */
 export interface PollOption {

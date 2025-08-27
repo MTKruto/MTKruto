@@ -20,19 +20,20 @@
 
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { encodeText, fromUnixTimestamp, getLogger, getRandomId, Logger } from "../1_utilities.ts";
+import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import { PackShortNameInvalid } from "../3_errors.ts";
 import { getDc } from "../3_transport.ts";
-import { constructMiniAppInfo, constructVoiceTranscription, deserializeFileId, FileId, InputMedia, isMessageType, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt, VoiceTranscription } from "../3_types.ts";
-import { assertMessageType, ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
+import { constructMiniAppInfo, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputMedia, isMessageType, type PollOption, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { assertMessageType, type ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
-import { UpdateProcessor } from "./0_update_processor.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
-import { C as C_ } from "./1_types.ts";
-import { FileManager } from "./2_file_manager.ts";
+import type { C as C_ } from "./1_types.ts";
+import type { FileManager } from "./2_file_manager.ts";
 
 const FALLBACK_MIME_TYPE = "application/octet-stream";
 const STICKER_MIME_TYPES = ["image/webp", "video/webm", "application/x-tgsticker"];
@@ -237,19 +238,33 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return await this.updatesToMessages(to, result);
   }
 
-  async getHistory(chatId: ID, params?: GetHistoryParams) { // TODO: get from database properly
+  async getHistory(chatId: ID, params?: GetHistoryParams) {
     this.#c.storage.assertUser("getHistory");
     const limit = getLimit(params?.limit);
-    let offsetId = params?.fromMessageId ?? 0;
+    let offsetId = params?.offsetId ?? 0;
     if (offsetId < 0) {
       offsetId = 0;
+    }
+    let offsetDate = params?.offsetDate ?? 0;
+    if (offsetDate < 0) {
+      offsetDate = 0;
     }
     const peer = await this.#c.getInputPeer(chatId);
     const messages = new Array<Message>();
     if (messages.length > 0) {
       offsetId = messages[messages.length - 1].id; // TODO: track id of oldest message and don't send requests for it
     }
-    const result = await this.#c.invoke({ _: "messages.getHistory", peer: peer, offset_id: offsetId, offset_date: 0, add_offset: 0, limit, max_id: 0, min_id: 0, hash: 0n });
+    const result = await this.#c.invoke({
+      _: "messages.getHistory",
+      peer: peer,
+      offset_id: offsetId,
+      offset_date: offsetDate,
+      add_offset: params?.addOffset ?? 0,
+      limit,
+      max_id: 0,
+      min_id: 0,
+      hash: 0n,
+    });
 
     if (!("messages" in result)) {
       unreachable();
@@ -1279,7 +1294,21 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams) {
     this.#c.storage.assertUser("searchMessages");
-    const result = await this.#c.invoke({ _: "messages.search", peer: await this.#c.getInputPeer(chatId), q: query, add_offset: 0, filter: messageSearchFilterToTlObject(params?.filter ?? "empty"), hash: 0n, limit: getLimit(params?.limit), max_date: 0, max_id: 0, min_date: 0, min_id: 0, offset_id: params?.after ? params.after : 0, from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined });
+    const result = await this.#c.invoke({
+      _: "messages.search",
+      peer: await this.#c.getInputPeer(chatId),
+      q: query,
+      add_offset: params?.addOffset ?? 0,
+      filter: messageSearchFilterToTlObject(params?.filter ?? "empty"),
+      hash: 0n,
+      limit: getLimit(params?.limit),
+      max_date: 0,
+      max_id: 0,
+      min_date: 0,
+      min_id: 0,
+      offset_id: params?.offset ? params.offset : 0,
+      from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined,
+    });
     if (!("messages" in result)) {
       unreachable();
     }
@@ -1629,6 +1658,37 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       }
     }
     return [peer, id];
+  }
+
+  async getStickerSet(name: string) {
+    if (name.includes("/")) {
+      let valid = false;
+      try {
+        const url = new URL(name);
+        const pathname = "/addstickers/";
+        valid = (url.protocol === "http:" || url.protocol === "https:") && url.hostname === "t.me" && url.pathname.startsWith(pathname) && url.pathname.length > PackShortNameInvalid.length;
+        if (valid) {
+          name = url.pathname.slice(pathname.length);
+          if (name.endsWith("/")) {
+            name = name.slice(0, -1);
+            if (name === "") {
+              valid = false;
+            }
+          }
+        }
+      } catch (err) {
+        if (err instanceof TypeError) {
+          valid = false;
+        } else {
+          throw err;
+        }
+      }
+      if (!valid) {
+        throw new InputError("Invalid sticker set name or link.");
+      }
+    }
+    const result = await this.#c.invoke({ _: "messages.getStickerSet", hash: 0, stickerset: { _: "inputStickerSetShortName", short_name: name } });
+    return constructStickerSet(result);
   }
 
   async openMiniApp(botId: ID, chatId: ID, params?: OpenMiniAppParams) {

@@ -26,7 +26,7 @@ import { DC } from "../3_transport.ts";
 import { AbortableLoop } from "../client/0_abortable_loop.ts";
 import { TLWriter } from "../tl/1_tl_writer.ts";
 import { SessionError } from "./0_session_error.ts";
-import { Session, SessionParams } from "./1_session.ts";
+import { Session, type SessionParams } from "./1_session.ts";
 
 // global SessionEncrypted ID counter for logs
 let id = 0;

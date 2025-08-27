@@ -18,8 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MaybePromise } from "../1_utilities.ts";
-import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
+import type { MaybePromise } from "../1_utilities.ts";
+import type { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 import { fromString, isInRange, toString } from "./1_utilities.ts";
 
 export class StorageMemory implements Storage {

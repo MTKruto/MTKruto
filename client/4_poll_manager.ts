@@ -21,10 +21,10 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructPoll, constructPollAnswer, ID, Update } from "../3_types.ts";
-import { UpdateProcessor } from "./0_update_processor.ts";
-import { C as C_ } from "./1_types.ts";
-import { MessageManager } from "./3_message_manager.ts";
+import { constructPoll, constructPollAnswer, type ID, type Update } from "../3_types.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
+import type { C as C_ } from "./1_types.ts";
+import type { MessageManager } from "./3_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };
 

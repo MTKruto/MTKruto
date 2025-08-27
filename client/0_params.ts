@@ -213,6 +213,8 @@ export interface _UploadCommon {
   chunkSize?: number;
   /** Upload abort signal. */
   signal?: AbortSignal;
+  /** A progress ID retrieved from the method getProgressId. If specified, updates on the upload progress will be sent. */
+  progressId?: string;
 }
 
 export interface AnswerInlineQueryParams {
@@ -365,7 +367,11 @@ export interface ReplyParams {
 
 export interface GetHistoryParams {
   /** The identifier of a message. If specified, the chat history will be fetched from that message. */
-  fromMessageId?: number;
+  offsetId?: number;
+  /** A point in time. If specified, the chat history will be fetched from that date. */
+  offsetDate?: number;
+  /** Additional offset. */
+  addOffset?: number;
   /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
   limit?: number;
 }
@@ -436,7 +442,9 @@ export interface SearchMessagesParams {
   /** A search filter to apply. */
   filter?: MessageSearchFilter;
   /** A message identifier to start searching after. */
-  after?: number;
+  offset?: number;
+  /** Additional offset. */
+  addOffset?: number;
   /** The identifier of a message thread to search in. */
   threadId?: number;
   /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */

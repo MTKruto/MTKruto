@@ -19,10 +19,11 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject, getLogger, MaybePromise, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { cleanObject, getLogger, type MaybePromise, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { FileId, FileType, toUniqueFileId } from "./_file_id.ts";
+import { type FileId, FileType, toUniqueFileId } from "./_file_id.ts";
 import { serializeFileId } from "./_file_id.ts";
+<<<<<<< HEAD:types/6_message.ts
 import { constructContact, Contact } from "./0_contact.ts";
 import { constructDice, Dice } from "./0_dice.ts";
 import { constructInvoice, Invoice } from "./0_invoice.ts";
@@ -50,6 +51,36 @@ import { constructGame, Game } from "./3_game.ts";
 import { constructReplyQuote, ReplyQuote } from "./3_reply_quote.ts";
 import { constructPoll, Poll } from "./4_poll.ts";
 import { constructLinkPreview, LinkPreview } from "./5_link_preview.ts";
+=======
+import type { EntityGetter } from "./_getters.ts";
+import { constructContact, type Contact } from "./0_contact.ts";
+import { constructDice, type Dice } from "./0_dice.ts";
+import { constructInvoice, type Invoice } from "./0_invoice.ts";
+import { constructLocation, type Location } from "./0_location.ts";
+import { constructMessageEntity, type MessageEntity } from "./0_message_entity.ts";
+import { constructRefundedPayment, type RefundedPayment } from "./0_refunded_payment.ts";
+import { constructSelfDestructOption, type SelfDestructOption } from "./0_self_destruct_option.ts";
+import { constructVoice, type Voice } from "./0_voice.ts";
+import { type Animation, constructAnimation } from "./1_animation.ts";
+import { type Audio, constructAudio } from "./1_audio.ts";
+import { type ChatP, constructChatP } from "./1_chat_p.ts";
+import { constructDocument, type Document } from "./1_document.ts";
+import { constructGiveaway, type Giveaway } from "./1_giveaway.ts";
+import { constructMessageReaction, type MessageReaction } from "./1_message_reaction.ts";
+import { constructPhoto, type Photo } from "./1_photo.ts";
+import { constructReplyQuote, type ReplyQuote } from "./1_reply_quote.ts";
+import { constructSticker, type Sticker, type StickerSetNameGetter } from "./1_sticker.ts";
+import { constructUser, type User } from "./1_user.ts";
+import { constructVenue, type Venue } from "./1_venue.ts";
+import { constructVideoNote, type VideoNote } from "./1_video_note.ts";
+import { constructVideo, type Video } from "./1_video.ts";
+import { constructForwardHeader, type ForwardHeader } from "./2_forward_header.ts";
+import { constructGame, type Game } from "./2_game.ts";
+import { constructPoll, type Poll } from "./2_poll.ts";
+import { constructReplyMarkup, type ReplyMarkup } from "./2_reply_markup.ts";
+import { constructSuccessfulPayment, type SuccessfulPayment } from "./2_successful_payment.ts";
+import { constructLinkPreview, type LinkPreview } from "./4_link_preview.ts";
+>>>>>>> main:types/5_message.ts
 
 const L = getLogger("Message");
 

@@ -19,7 +19,7 @@
  */
 
 import { Api } from "../2_tl.ts";
-import { constructLocation, Location } from "./0_location.ts";
+import { constructLocation, type Location } from "./0_location.ts";
 
 /** A shared venue. */
 export interface Venue {

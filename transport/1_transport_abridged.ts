@@ -20,7 +20,7 @@
 
 import { concat } from "../0_deps.ts";
 import { bigIntFromBuffer, bufferFromBigInt } from "../1_utilities.ts";
-import { Connection } from "../2_connection.ts";
+import type { Connection } from "../2_connection.ts";
 import { getObfuscationParameters } from "./0_obfuscation.ts";
 import { Transport } from "./0_transport.ts";
 

@@ -20,10 +20,10 @@
 
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructPreCheckoutQuery, ID, Update } from "../3_types.ts";
-import { AnswerPreCheckoutQueryParams } from "./0_params.ts";
-import { UpdateProcessor } from "./0_update_processor.ts";
-import { C } from "./1_types.ts";
+import { constructPreCheckoutQuery, type ID, type Update } from "../3_types.ts";
+import type { AnswerPreCheckoutQueryParams } from "./0_params.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
+import type { C } from "./1_types.ts";
 
 const paymentManagerUpdates = [
   "updateBotPrecheckoutQuery",

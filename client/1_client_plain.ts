@@ -21,9 +21,9 @@
 import { assert, assertEquals, concat, ige256Decrypt, ige256Encrypt, unreachable } from "../0_deps.ts";
 import { bigIntFromBuffer, bufferFromBigInt, factorize, getLogger, getRandomBigInt, modExp, rsaPad, sha1 } from "../1_utilities.ts";
 import { Mtproto } from "../2_tl.ts";
-import { DC, getDcId } from "../3_transport.ts";
-import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
-import { SessionParams, SessionPlain } from "../4_session.ts";
+import { type DC, getDcId } from "../3_transport.ts";
+import { PUBLIC_KEYS, type PublicKeys } from "../4_constants.ts";
+import { type SessionParams, SessionPlain } from "../4_session.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 
 const L = getLogger("ClientPlain");

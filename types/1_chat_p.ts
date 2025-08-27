@@ -21,8 +21,8 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, getColorFromPeerId, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
-import { constructRestrictionReason, RestrictionReason } from "./0_restriction_reason.ts";
+import { type ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
+import { constructRestrictionReason, type RestrictionReason } from "./0_restriction_reason.ts";
 
 /** @unlisted */
 export type ChatType =

@@ -19,7 +19,7 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
-import { Schema } from "./0_types.ts";
+import type { Schema } from "./0_types.ts";
 import { TLWriter } from "./1_tl_writer.ts";
 
 Deno.test("TLWriter", async (t) => {

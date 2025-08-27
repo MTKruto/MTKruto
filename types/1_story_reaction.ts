@@ -18,8 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api } from "../2_tl.ts";
-import { constructReaction, Reaction } from "./0_reaction.ts";
+import type { Api } from "../2_tl.ts";
+import { constructReaction, type Reaction } from "./0_reaction.ts";
 
 /** Represents a type of reaction made to a story. */
 export interface StoryReaction {

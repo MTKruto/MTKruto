@@ -19,9 +19,9 @@
  */
 
 import { Api } from "../2_tl.ts";
-import { constructBusinessConnection, Update } from "../3_types.ts";
-import { UpdateProcessor } from "./0_update_processor.ts";
-import { C } from "./1_types.ts";
+import { constructBusinessConnection, type Update } from "../3_types.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
+import type { C } from "./1_types.ts";
 
 const businessConnectionManagerUpdates = [
   "updateBotBusinessConnect",

@@ -20,7 +20,7 @@
 
 import { ConnectionWebSocket } from "../2_connection.ts";
 import { TransportIntermediate } from "./1_transport_intermediate.ts";
-import { DC, getDcId, TransportProvider } from "./1_transport_provider.ts";
+import { type DC, getDcId, type TransportProvider } from "./1_transport_provider.ts";
 
 const dcToNameMap: Record<DC, string> = {
   "1": "pluto",

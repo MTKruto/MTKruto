@@ -19,11 +19,11 @@
  */
 
 import { Api } from "../2_tl.ts";
-import { constructLinkPreview, Update } from "../3_types.ts";
-import { GetLinkPreviewParams } from "./0_params.ts";
-import { UpdateProcessor } from "./0_update_processor.ts";
-import { C as C_ } from "./1_types.ts";
-import { MessageManager } from "./3_message_manager.ts";
+import { constructLinkPreview, type Update } from "../3_types.ts";
+import type { GetLinkPreviewParams } from "./0_params.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
+import type { C as C_ } from "./1_types.ts";
+import type { MessageManager } from "./3_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };
 

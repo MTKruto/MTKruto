@@ -20,9 +20,16 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+<<<<<<< HEAD:types/3_message_reactions.ts
 import { constructReaction, Reaction } from "./0_reaction.ts";
 import { ChatP, PeerGetter } from "./1_chat_p.ts";
 import { constructUser2, User } from "./2_user.ts";
+=======
+import type { EntityGetter } from "./_getters.ts";
+import { constructReaction, type Reaction } from "./0_reaction.ts";
+import { type ChatP, constructChatP } from "./1_chat_p.ts";
+import { constructUser, type User } from "./1_user.ts";
+>>>>>>> main:types/2_message_reactions.ts
 
 /** The reactions of a user to a messages in a group. */
 export interface MessageReactions {

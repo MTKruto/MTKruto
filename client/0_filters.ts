@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { CallbackQuery, ChosenInlineResult, MessageTypes, UpdateIntersection, UpdateMap } from "../3_types.ts";
+import type { CallbackQuery, ChosenInlineResult, MessageTypes, UpdateIntersection, UpdateMap } from "../3_types.ts";
 
 type AnyLevel1 = keyof UpdateMap;
 type GetLevel1Type<L1 extends AnyLevel1> = UpdateMap[L1];

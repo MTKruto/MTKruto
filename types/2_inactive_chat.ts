@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { ChatP, constructChatP } from "./1_chat_p.ts";
+import { type ChatP, constructChatP } from "./1_chat_p.ts";
 
 /** An inactive chat. */
 export interface InactiveChat {

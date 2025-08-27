@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+<<<<<<< HEAD:types/8_update.ts
 import { AuthorizationState } from "./0_authorization_state.ts";
 import { ConnectionState } from "./0_connection_state.ts";
 import { MessageReference } from "./0_message_reference.ts";
@@ -41,6 +42,32 @@ import { LinkPreview } from "./5_link_preview.ts";
 import { Message } from "./6_message.ts";
 import { CallbackQuery } from "./7_callback_query.ts";
 import { ChatListItem } from "./7_chat_list_item.ts";
+=======
+import type { AuthorizationState } from "./0_authorization_state.ts";
+import type { ConnectionState } from "./0_connection_state.ts";
+import type { MessageReference } from "./0_message_reference.ts";
+import type { StoryReference } from "./0_story_reference.ts";
+import type { Translation } from "./0_translation.ts";
+import type { UploadProgress } from "./0_upload_progress.ts";
+import type { VideoChat } from "./0_video_chat.ts";
+import type { VoiceTranscription } from "./0_voice_transcription.ts";
+import type { BusinessConnection } from "./2_business_connection.ts";
+import type { ChosenInlineResult } from "./2_chosen_inline_result.ts";
+import type { InlineQuery } from "./2_inline_query.ts";
+import type { MessageInteractions } from "./2_message_interactions.ts";
+import type { MessageReactionCount } from "./2_message_reaction_count.ts";
+import type { MessageReactions } from "./2_message_reactions.ts";
+import type { PollAnswer } from "./2_poll_answer.ts";
+import type { Poll } from "./2_poll.ts";
+import type { PreCheckoutQuery } from "./2_pre_checkout_query.ts";
+import type { ChatMemberUpdated } from "./3_chat_member_updated.ts";
+import type { JoinRequest } from "./3_join_request.ts";
+import type { Story } from "./3_story.ts";
+import type { LinkPreview } from "./4_link_preview.ts";
+import type { Message } from "./5_message.ts";
+import type { CallbackQuery } from "./6_callback_query.ts";
+import type { ChatListItem } from "./6_chat_list_item.ts";
+>>>>>>> main:types/7_update.ts
 
 /**
  * A client's connection state was changed.
@@ -480,6 +507,24 @@ export interface UpdateLinkPreview {
   linkPreview: LinkPreview;
 }
 
+/**
+ * An upload has progressed.
+ *
+ * ```
+ * client.on("uploadProgress", (ctx) => {
+ *   // ctx.uploadProgress
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateUploadProgress {
+  /**
+   * The new progress of the upload.
+   * @discriminator
+   */
+  uploadProgress: UploadProgress;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -510,6 +555,7 @@ export interface UpdateMap {
   pollAnswer: UpdatePollAnswer;
   voiceTranscription: UpdateVoiceTranscription;
   linkPreview: UpdateLinkPreview;
+  uploadProgress: UpdateUploadProgress;
 }
 
 /** @unlisted */
@@ -542,6 +588,7 @@ export type UpdateIntersection = Partial<
   & UpdatePollAnswer
   & UpdateVoiceTranscription
   & UpdateLinkPreview
+  & UpdateUploadProgress
 >;
 
 /** An incoming update. */
@@ -573,4 +620,5 @@ export type Update =
   | UpdatePoll
   | UpdatePollAnswer
   | UpdateVoiceTranscription
-  | UpdateLinkPreview;
+  | UpdateLinkPreview
+  | UpdateUploadProgress;

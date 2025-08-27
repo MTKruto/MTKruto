@@ -19,9 +19,15 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
+<<<<<<< HEAD:types/4_poll.ts
 import { Api } from "../2_tl.ts";
 import { constructMessageEntity, MessageEntity } from "./2_message_entity.ts";
 import { constructPollOption, PollOption } from "./3_poll_option.ts";
+=======
+import type { Api } from "../2_tl.ts";
+import { constructMessageEntity, type MessageEntity } from "./0_message_entity.ts";
+import { constructPollOption, type PollOption } from "./1_poll_option.ts";
+>>>>>>> main:types/2_poll.ts
 
 /** A poll. */
 export interface Poll {

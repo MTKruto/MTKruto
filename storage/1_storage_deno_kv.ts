@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
+import type { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 
 function assertInitialized(kv: Deno.Kv | null | undefined) {
   if (!kv) {

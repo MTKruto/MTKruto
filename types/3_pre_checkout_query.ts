@@ -20,10 +20,17 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, decodeText } from "../1_utilities.ts";
+<<<<<<< HEAD:types/3_pre_checkout_query.ts
 import { Api } from "../2_tl.ts";
 import { PeerGetter } from "./1_chat_p.ts";
 import { constructOrderInfo, OrderInfo } from "./1_order_info.ts";
 import { constructUser2, User } from "./2_user.ts";
+=======
+import type { Api } from "../2_tl.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { constructOrderInfo, type OrderInfo } from "./1_order_info.ts";
+import { constructUser, type User } from "./1_user.ts";
+>>>>>>> main:types/2_pre_checkout_query.ts
 
 export interface PreCheckoutQuery {
   id: string;

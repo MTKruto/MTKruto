@@ -20,9 +20,9 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { constructMessageReaction, constructMessageReactionCount, constructMessageReactions, Update } from "../3_types.ts";
-import { UpdateProcessor } from "./0_update_processor.ts";
-import { C } from "./1_types.ts";
+import { constructMessageReaction, constructMessageReactionCount, constructMessageReactions, type Update } from "../3_types.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
+import type { C } from "./1_types.ts";
 
 const reactionManagerUpdates = [
   "updateBotMessageReactions",

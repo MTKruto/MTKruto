@@ -20,8 +20,8 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { InputPeerGetter } from "./_getters.ts";
-import { ID } from "./0_id.ts";
+import type { InputPeerGetter } from "./_getters.ts";
+import type { ID } from "./0_id.ts";
 
 /** @unlisted */
 export interface BotCommandScopeDefault {

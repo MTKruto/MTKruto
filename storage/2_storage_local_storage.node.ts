@@ -19,7 +19,7 @@
  */
 
 import { LocalStorage } from "node-localstorage";
-import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
+import type { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 import { fromString, isInRange, toString } from "./1_utilities.ts";
 
 export class StorageLocalStorage implements Storage {

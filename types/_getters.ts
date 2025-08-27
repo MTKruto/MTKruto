@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MaybePromise } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
-import { ID } from "./0_id.ts";
+import type { MaybePromise } from "../1_utilities.ts";
+import type { Api } from "../2_tl.ts";
+import type { ID } from "./0_id.ts";
 
 /** @unlisted */
 export interface InputPeerGetter {

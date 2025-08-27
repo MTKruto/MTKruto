@@ -20,13 +20,13 @@
 
 import { encodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { CallbackQueryQuestion, constructCallbackQuery, constructCallbackQueryAnswer, ID, Update, validateCallbackQueryQuestion } from "../3_types.ts";
-import { AnswerCallbackQueryParams } from "./0_params.ts";
+import { type CallbackQueryQuestion, constructCallbackQuery, constructCallbackQueryAnswer, type ID, type Update, validateCallbackQueryQuestion } from "../3_types.ts";
+import type { AnswerCallbackQueryParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
-import { UpdateProcessor } from "./0_update_processor.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
 import { checkCallbackQueryId, checkMessageId } from "./0_utilities.ts";
-import { C as C_ } from "./1_types.ts";
-import { MessageManager } from "./3_message_manager.ts";
+import type { C as C_ } from "./1_types.ts";
+import type { MessageManager } from "./3_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };
 

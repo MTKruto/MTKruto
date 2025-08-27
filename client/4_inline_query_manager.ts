@@ -20,12 +20,12 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { constructChosenInlineResult, constructInlineQuery, constructInlineQueryAnswer, ID, InlineQueryResult, inlineQueryResultToTlObject, Update } from "../3_types.ts";
-import { AnswerInlineQueryParams, SendInlineQueryParams } from "./0_params.ts";
-import { UpdateProcessor } from "./0_update_processor.ts";
+import { constructChosenInlineResult, constructInlineQuery, constructInlineQueryAnswer, type ID, type InlineQueryResult, inlineQueryResultToTlObject, type Update } from "../3_types.ts";
+import type { AnswerInlineQueryParams, SendInlineQueryParams } from "./0_params.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
 import { checkInlineQueryId } from "./0_utilities.ts";
-import { C as C_ } from "./1_types.ts";
-import { MessageManager } from "./3_message_manager.ts";
+import type { C as C_ } from "./1_types.ts";
+import type { MessageManager } from "./3_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };
 

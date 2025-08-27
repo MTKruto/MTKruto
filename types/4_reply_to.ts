@@ -18,8 +18,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+<<<<<<< HEAD:types/4_reply_to.ts
 import { ID } from "./0_id.ts";
 import { ReplyQuote } from "./3_reply_quote.ts";
+=======
+import type { ID } from "./0_id.ts";
+import type { ReplyQuote } from "./1_reply_quote.ts";
+>>>>>>> main:types/2_reply_to.ts
 
 /** @unlisted */
 export interface ReplyToMessage {

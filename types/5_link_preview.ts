@@ -21,12 +21,21 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+<<<<<<< HEAD:types/5_link_preview.ts
 import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import { Audio, constructAudio } from "./1_audio.ts";
 import { PeerGetter } from "./1_chat_p.ts";
 import { constructDocument, Document } from "./1_document.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
 import { constructGift, Gift } from "./4_gift.ts";
+=======
+import { type FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { type Audio, constructAudio } from "./1_audio.ts";
+import { constructDocument, type Document } from "./1_document.ts";
+import { constructPhoto, type Photo } from "./1_photo.ts";
+import { constructGift, type Gift } from "./3_gift.ts";
+>>>>>>> main:types/4_link_preview.ts
 
 /**
  * A link preview to be passed as an input.
