@@ -30,7 +30,7 @@ export async function rsaPad(data: Uint8Array, [serverKey, exponent]: [bigint, b
   let tries = 0;
 
   do {
-    if (++tries == 10) {
+    if (++tries === 10) {
       throw new Error("Out of tries");
     }
 

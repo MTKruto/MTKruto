@@ -187,7 +187,7 @@ export class SessionEncrypted extends Session implements Session {
   async #receive() {
     this.#assertNotDisconnected();
     const buffer = await this.transport.transport.receive();
-    if (buffer.length == 4) {
+    if (buffer.length === 4) {
       const int = bigIntFromBuffer(buffer, true, true);
       throw new TransportError(Number(int));
     }
@@ -295,11 +295,11 @@ export class SessionEncrypted extends Session implements Session {
   async #onMessage(msgId: bigint, body: Uint8Array) {
     let reader = new TLReader(body);
     let id = reader.readInt32(false);
-    if (id == GZIP_PACKED) {
+    if (id === GZIP_PACKED) {
       reader = new TLReader(await gunzip(reader.readBytes()));
       id = reader.readInt32(false);
     }
-    if (id == RPC_RESULT) {
+    if (id === RPC_RESULT) {
       this.#onRpcResult(msgId, reader.buffer);
       return;
     }
@@ -339,14 +339,14 @@ export class SessionEncrypted extends Session implements Session {
     let reader = new TLReader(body);
     const reqMsgId = reader.readInt64();
     let id = reader.readInt32(false);
-    if (id == GZIP_PACKED) {
+    if (id === GZIP_PACKED) {
       reader = new TLReader(await gunzip(reader.readBytes()));
       id = reader.readInt32(false);
       reader.unreadInt32();
     } else {
       reader.unreadInt32();
     }
-    if (id == RPC_ERROR) {
+    if (id === RPC_ERROR) {
       const error = await Mtproto.deserializeType("rpc_error", reader);
       this.handlers.onRpcError?.(reqMsgId, error);
     } else {
@@ -447,7 +447,7 @@ export class SessionEncrypted extends Session implements Session {
         }
         controller.signal.throwIfAborted();
       } catch (err) {
-        if (err instanceof DOMException && err.name == "AbortError") {
+        if (err instanceof DOMException && err.name === "AbortError") {
           break;
         } else if (!this.connected) {
           break;

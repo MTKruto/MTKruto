@@ -116,7 +116,7 @@ export class TLReader {
       return primitive;
     }
     const id = this.readInt32(false);
-    if (name == X) {
+    if (name === X) {
       const typeName = schema.identifierToName[id];
       if (!typeName) {
         throw new TLError(`Unknown constructor: ${id.toString(16)}`);
@@ -124,7 +124,7 @@ export class TLReader {
       this.unreadInt32();
       return await this.readType(typeName, schema);
     }
-    if (id == VECTOR) {
+    if (id === VECTOR) {
       return await this.#deserializeVector(name, schema);
     }
     const definition = schema.definitions[name];
@@ -144,14 +144,14 @@ export class TLReader {
       return;
     }
     const definition = schema.definitions[name];
-    if (definition[2] != type) {
+    if (definition[2] !== type) {
       return;
     }
     return await this.#deserializeType(name, definition, id, schema);
   }
 
   async #deserializeType(type: string, desc: ObjectDefinition, id: number, schema: Schema) {
-    if (desc[0] != id) {
+    if (desc[0] !== id) {
       throw new TLError(`Expected constructor ${desc[0].toString(16)} but got ${id}`);
     }
 
@@ -161,12 +161,12 @@ export class TLReader {
       if (isOptionalParam(type)) {
         const { flagField, bitIndex } = analyzeOptionalParam(type);
         const bits = flagFields[flagField];
-        if ((bits & (1 << bitIndex)) == 0) {
+        if ((bits & (1 << bitIndex)) === 0) {
           continue;
         }
       }
 
-      if (type == "#") {
+      if (type === "#") {
         flagFields[name] = this.readInt32();
         continue;
       }
@@ -210,9 +210,9 @@ export class TLReader {
         return this.readInt32();
       case "Bool": {
         const id = this.readInt32(false);
-        if (id == BOOL_TRUE) {
+        if (id === BOOL_TRUE) {
           return true;
-        } else if (id == BOOL_FALSE) {
+        } else if (id === BOOL_FALSE) {
           return false;
         } else {
           throw new TLError(`Expected boolTrue or boolFalse but got ${id}`);

@@ -51,7 +51,7 @@ export function constructTopic(message: Message): Topic {
   const id = forumTopicCreated.id;
   const date = forumTopicCreated.date;
   const creator = forumTopicCreated.from ? forumTopicCreated.from : message.from;
-  const general = forumTopicCreated.id == 1;
+  const general = forumTopicCreated.id === 1;
   const closed = false;
   const hidden = false;
   let name = forumTopicCreated.forumTopicCreated.name;

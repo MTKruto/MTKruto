@@ -74,7 +74,7 @@ export type Chat = ChatChannel | ChatSupergroup | ChatGroup | ChatPrivate;
 export async function constructChat(fullChat: Api.userFull | Api.chatFull | Api.channelFull, getEntity: EntityGetter): Promise<Chat> {
   if (Api.is("userFull", fullChat)) {
     const user = await getEntity({ _: "peerUser", user_id: fullChat.id });
-    if (user == null) unreachable();
+    if (user === null) unreachable();
     const chatP = constructChatP(user);
 
     return cleanObject({
@@ -88,7 +88,7 @@ export async function constructChat(fullChat: Api.userFull | Api.chatFull | Api.
     });
   } else if (Api.is("chatFull", fullChat)) {
     const chat = await getEntity({ _: "peerChat", chat_id: fullChat.id });
-    if (chat == null) unreachable();
+    if (chat === null) unreachable();
     const chatP = constructChatP(chat);
     return cleanObject({
       ...chatP,
@@ -97,7 +97,7 @@ export async function constructChat(fullChat: Api.userFull | Api.chatFull | Api.
     });
   } else if (Api.is("channelFull", fullChat)) {
     const chat = await getEntity({ _: "peerChannel", channel_id: fullChat.id });
-    if (chat == null) unreachable();
+    if (chat === null) unreachable();
     const chatP = constructChatP(chat);
     return cleanObject({
       ...chatP,

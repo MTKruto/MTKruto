@@ -60,7 +60,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate> {
     if (!("poll" in message)) {
       throw new InputError("Message not a poll.");
     }
-    if (message.poll.options.filter((v) => v.chosen).length == 0 && optionIndexes.length == 0) {
+    if (message.poll.options.filter((v) => v.chosen).length === 0 && optionIndexes.length === 0) {
       throw new InputError("No vote has been casted.");
     }
     if (!message.poll.allowMultipleAnswers && optionIndexes.length > 1) {

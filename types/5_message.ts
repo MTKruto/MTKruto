@@ -839,10 +839,10 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     }
     return { ...message, groupCreated, newChatMembers };
   } else if (Api.is("messageActionChannelCreate", message_.action)) {
-    if (message.chat.type == "channel") {
+    if (message.chat.type === "channel") {
       const channelCreated = true;
       return { ...message, channelCreated };
-    } else if (message.chat.type == "supergroup") {
+    } else if (message.chat.type === "supergroup") {
       const supergroupCreated = true;
       return { ...message, supergroupCreated };
     } else {
@@ -1007,7 +1007,7 @@ export async function constructMessage(
     message.replyMarkup = constructReplyMarkup(message_.reply_markup);
   }
 
-  if (message_.via_bot_id != undefined) {
+  if (message_.via_bot_id !== undefined) {
     const viaBot = await getEntity({ _: "peerUser", user_id: message_.via_bot_id });
     if (viaBot) {
       message.viaBot = constructUser(viaBot);
@@ -1015,7 +1015,7 @@ export async function constructMessage(
       unreachable();
     }
   }
-  if (message_.via_business_bot_id != undefined) {
+  if (message_.via_business_bot_id !== undefined) {
     const viaBusinessBot = await getEntity({ _: "peerUser", user_id: message_.via_business_bot_id });
     if (viaBusinessBot) {
       message.viaBusinessBot = constructUser(viaBusinessBot);
@@ -1024,16 +1024,16 @@ export async function constructMessage(
     }
   }
 
-  if (message_.post_author != undefined) {
+  if (message_.post_author !== undefined) {
     message.authorSignature = message_.post_author;
   }
 
   if (Api.is("messageFwdHeader", message_.fwd_from)) {
-    message.isAutomaticForward = message_.fwd_from.saved_from_peer != undefined && message_.fwd_from.saved_from_msg_id != undefined;
+    message.isAutomaticForward = message_.fwd_from.saved_from_peer !== undefined && message_.fwd_from.saved_from_msg_id !== undefined;
     message.forwardFrom = await constructForwardHeader(message_.fwd_from, getEntity);
   }
 
-  if (message_.grouped_id != undefined) {
+  if (message_.grouped_id !== undefined) {
     message.mediaGroupId = String(message_.grouped_id);
   }
 
@@ -1164,7 +1164,7 @@ export async function constructMessage(
     m = { ...message, invoice };
   }
 
-  if (m == null) {
+  if (m === null) {
     const unsupported = true;
     m = { ...message, unsupported };
   }

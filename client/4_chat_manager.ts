@@ -60,7 +60,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
     if (Api.is("updateChannelParticipant", update) || Api.is("updateChatParticipant", update)) {
       const chatMember = await constructChatMemberUpdated(update, this.#c.getEntity);
       const selfId = await this.#c.getSelfId();
-      if (chatMember.oldChatMember.user.id == selfId) {
+      if (chatMember.oldChatMember.user.id === selfId) {
         return { myChatMember: chatMember };
       } else {
         return { chatMember };
@@ -234,7 +234,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
 
   // CHAT SETTINGS //
   async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]) {
-    await this.#c.invoke({ _: "messages.setChatAvailableReactions", peer: await this.#c.getInputPeer(chatId), available_reactions: availableReactions == "none" ? { _: "chatReactionsNone" } : availableReactions == "all" ? { _: "chatReactionsAll" } : Array.isArray(availableReactions) ? ({ _: "chatReactionsSome", reactions: availableReactions.map((v) => reactionToTlObject(v)) }) : unreachable() });
+    await this.#c.invoke({ _: "messages.setChatAvailableReactions", peer: await this.#c.getInputPeer(chatId), available_reactions: availableReactions === "none" ? { _: "chatReactionsNone" } : availableReactions === "all" ? { _: "chatReactionsAll" } : Array.isArray(availableReactions) ? ({ _: "chatReactionsSome", reactions: availableReactions.map((v) => reactionToTlObject(v)) }) : unreachable() });
   }
 
   async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number) {
@@ -419,7 +419,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
           return constructChatP(v);
         }
       })
-      .filter((v): v is ChatP => v != null);
+      .filter((v): v is ChatP => v !== null);
   }
 
   async setDiscussionChat(chatId: ID, discussionChatId: ID) {
@@ -432,7 +432,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
     this.#c.storage.assertUser("transferChat");
     const user_id = await this.#c.getInputUser(userId);
     const isSelf = Api.is("inputUserSelf", user_id);
-    if (isSelf || Api.peerToChatId(user_id) == await this.#c.getSelfId()) {
+    if (isSelf || Api.peerToChatId(user_id) === await this.#c.getSelfId()) {
       throw new InputError("A user ID except that of the current one was expected.");
     }
     const channel = await this.#c.getInputChannel(chatId);

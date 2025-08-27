@@ -51,7 +51,7 @@ export class Queue {
         });
       if (!this.#throw) {
         promise.catch((err) => {
-          this.#logger.error((typeof err === "object" && err != null && "stack" in err) ? err.stack : err);
+          this.#logger.error((typeof err === "object" && err !== null && "stack" in err) ? err.stack : err);
         });
       }
     } else {

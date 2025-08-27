@@ -159,7 +159,7 @@ export class StorageOperations {
   }
 
   async #resetAuthKeyId(authKey: Uint8Array | null) {
-    if (authKey != null) {
+    if (authKey !== null) {
       this.#authKeyId = bigIntFromBuffer((await sha1(authKey)).subarray(-8), true, false);
     } else {
       this.#authKeyId = null;
@@ -186,14 +186,14 @@ export class StorageOperations {
       await this.setApiId(apiId_);
     }
     const [dc, authKey, apiId, accountId, accountType] = await Promise.all([this.getDc(), this.getAuthKey(), this.getApiId(), this.getAccountId(), this.getAccountType()]);
-    if (dc == null || authKey == null || apiId == null || accountId == null || accountType == null) {
+    if (dc === null || authKey === null || apiId === null || accountId === null || accountType === null) {
       throw new Error("Not authorized");
     }
     const writer = new TLWriter();
     writer.writeString(dc);
     writer.writeBytes(authKey);
     writer.writeInt32(apiId);
-    writer.write(new Uint8Array([accountType == "bot" ? 1 : 0]));
+    writer.write(new Uint8Array([accountType === "bot" ? 1 : 0]));
     writer.writeInt64(BigInt(accountId));
     const data = rleEncode(writer.buffer);
     return base64EncodeUrlSafe(data);
@@ -257,7 +257,7 @@ export class StorageOperations {
   }
 
   async setTlObject(key: readonly StorageKeyPart[], value: Api.AnyType | null) {
-    if (value == null) {
+    if (value === null) {
       await this.#storage.set(key, null);
     } else {
       await this.#storage.set(key, this.#mustSerialize ? [value._, rleEncode(Api.serializeObject(value))] : (value as unknown));
@@ -267,7 +267,7 @@ export class StorageOperations {
   async getTlObject(keyOrBuffer: Api.AnyType | Uint8Array | readonly StorageKeyPart[]): Promise<Api.DeserializedType | null> {
     // @ts-ignore: TBD
     const buffer = (keyOrBuffer instanceof Uint8Array || Api.isValidObject(keyOrBuffer)) ? keyOrBuffer : await this.#storage.get<[string, Uint8Array]>(keyOrBuffer);
-    if (buffer != null) {
+    if (buffer !== null) {
       if (buffer instanceof Uint8Array) {
         return await Api.deserializeType(X, rleDecode(buffer));
       } else if (Array.isArray(buffer)) {
@@ -290,7 +290,7 @@ export class StorageOperations {
 
   async setMessage(chatId: number, messageId: number, message: Api.Message | null) {
     if (chatId > ZERO_CHANNEL_ID) {
-      await this.#storage.set(K.messages.messageRef(messageId), message == null ? null : chatId);
+      await this.#storage.set(K.messages.messageRef(messageId), message === null ? null : chatId);
     }
     await this.setTlObject(K.messages.message(chatId, messageId), message);
   }
@@ -298,7 +298,7 @@ export class StorageOperations {
   async deleteMessages() {
     const maybePromises = new Array<MaybePromise<unknown>>();
     for await (const [k, o] of await this.#storage.getMany({ prefix: K.messages.allMessageRefs() })) {
-      maybePromises.push(Promise.all([this.#storage.set(k, null), o == null ? Promise.resolve() : this.#storage.set(K.messages.message(o as number, k[1] as number), null)]));
+      maybePromises.push(Promise.all([this.#storage.set(k, null), o === null ? Promise.resolve() : this.#storage.set(K.messages.message(o as number, k[1] as number), null)]));
     }
     await Promise.all(maybePromises.filter((v) => v instanceof Promise));
   }
@@ -332,7 +332,7 @@ export class StorageOperations {
 
   async getEntity(key: number): Promise<Api.DeserializedType | null> {
     const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.peer(key));
-    if (peer_ != null) {
+    if (peer_ !== null) {
       const [obj_] = peer_;
       return await this.getTlObject(obj_);
     } else {
@@ -346,7 +346,7 @@ export class StorageOperations {
 
   #accountId: number | null = null;
   async getAccountId(): Promise<number | null> {
-    if (this.#accountId != null) {
+    if (this.#accountId !== null) {
       return this.#accountId;
     } else {
       return (this.#accountId = await this.#storage.get<number>(K.auth.accountId()));
@@ -360,7 +360,7 @@ export class StorageOperations {
 
   #accountType: "user" | "bot" | null = null;
   async getAccountType(): Promise<"user" | "bot" | null> {
-    if (this.#accountType != null) {
+    if (this.#accountType !== null) {
       return this.#accountType;
     } else {
       return this.#accountType = await this.#storage.get<"user" | "bot">(K.auth.accountType());
@@ -368,7 +368,7 @@ export class StorageOperations {
   }
 
   get accountType(): "user" | "bot" {
-    if (this.#accountType == null) {
+    if (this.#accountType === null) {
       unreachable();
     }
     return this.#accountType;
@@ -405,7 +405,7 @@ export class StorageOperations {
   async getChats(listId: number): Promise<{ chatId: number; pinned: number; topMessageId: number; topMessageDate: Date }[]> {
     const chats = new Array<{ chatId: number; pinned: number; topMessageId: number; topMessageDate: Date }>();
     for await (const [key, value] of await this.#storage.getMany<[number, number, Date]>({ prefix: K.chatlists.chats(listId) })) {
-      if (key.length != 3 || typeof key[2] !== "number") {
+      if (key.length !== 3 || typeof key[2] !== "number") {
         continue;
       }
       chats.push({ chatId: key[2], pinned: value[0], topMessageId: value[1], topMessageDate: value[2] });
@@ -427,7 +427,7 @@ export class StorageOperations {
 
   async hasAllChats(listId: number): Promise<boolean> {
     const v = await this.#storage.get<boolean>(K.chatlists.hasAllChats(listId));
-    return v == true;
+    return v === true;
   }
 
   async setPinnedChats(listId: number, chatIds: number[] | null) {
@@ -439,14 +439,14 @@ export class StorageOperations {
   }
 
   async getHistory(chatId: number, offsetId: number, limit: number): Promise<Api.Message[]> {
-    if (offsetId == 0) {
+    if (offsetId === 0) {
       offsetId = Infinity;
     }
     ++limit;
     const messages = new Array<Api.Message>();
     for await (const [_, buffer] of await this.#storage.getMany<Uint8Array>({ start: K.messages.message(chatId, 0), end: K.messages.message(chatId, offsetId) }, { limit, reverse: true })) {
       const message = await this.getTlObject(buffer) as Api.Message;
-      if ("id" in message && message.id == offsetId) {
+      if ("id" in message && message.id === offsetId) {
         continue;
       }
       messages.push(message);
@@ -468,7 +468,7 @@ export class StorageOperations {
     for (let i = offset; i < partCount; i++) {
       signal?.throwIfAborted();
       const part = await this.#storage.get<Uint8Array>(K.cache.filePart(id, i));
-      if (part == null) {
+      if (part === null) {
         continue;
       }
       yield part;
@@ -495,7 +495,7 @@ export class StorageOperations {
 
   async getCustomEmojiDocument(id: bigint): Promise<[Api.document, Date] | null> {
     const v = await this.#storage.get<[Uint8Array, Date]>(K.cache.customEmojiDocument(id));
-    if (v != null) {
+    if (v !== null) {
       return [await this.getTlObject(v[0]), v[1]] as [Api.document, Date];
     } else {
       return null;
@@ -503,12 +503,12 @@ export class StorageOperations {
   }
 
   async setBusinessConnection(id: string, connection: Api.botBusinessConnection | null) {
-    await this.#storage.set(K.cache.businessConnection(id), connection == null ? null : this.#mustSerialize ? rleEncode(Api.serializeObject(connection)) : connection);
+    await this.#storage.set(K.cache.businessConnection(id), connection === null ? null : this.#mustSerialize ? rleEncode(Api.serializeObject(connection)) : connection);
   }
 
   async getBusinessConnection(id: string): Promise<Api.botBusinessConnection | null> {
     const v = await this.#storage.get<Uint8Array>(K.cache.businessConnection(id));
-    if (v != null) {
+    if (v !== null) {
       return await this.getTlObject(v) as Api.botBusinessConnection;
     } else {
       return null;
@@ -521,7 +521,7 @@ export class StorageOperations {
 
   async getInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string): Promise<[Api.messages_botResults, Date] | null> {
     const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.inlineQueryAnswer(userId, chatId, query, offset));
-    if (peer_ != null) {
+    if (peer_ !== null) {
       const [obj_, date] = peer_;
       return [Api.as("messages.botResults", await this.getTlObject(obj_)), date];
     } else {
@@ -535,7 +535,7 @@ export class StorageOperations {
 
   async getCallbackQueryAnswer(chatId: number, messageId: number, question: string): Promise<[Api.messages_botCallbackAnswer, Date] | null> {
     const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.callbackQueryAnswer(chatId, messageId, question));
-    if (peer_ != null) {
+    if (peer_ !== null) {
       const [obj_, date] = peer_;
       return [Api.as("messages.botCallbackAnswer", await this.getTlObject(obj_)), date];
     } else {
@@ -596,13 +596,13 @@ export class StorageOperations {
   }
 
   assertUser(source: string) {
-    if (this.accountType != "user") {
+    if (this.accountType !== "user") {
       throw new InputError(`${source}: not user a client`);
     }
   }
 
   assertBot(source: string) {
-    if (this.accountType != "bot") {
+    if (this.accountType !== "bot") {
       throw new InputError(`${source}: not a bot client`);
     }
   }

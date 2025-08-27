@@ -72,7 +72,7 @@ export function constructUser(user_: Api.user): User {
     firstName: user_.first_name || "",
     lastName: user_.last_name,
     username: username,
-    also: usernames?.filter((v) => v != username),
+    also: usernames?.filter((v) => v !== username),
     languageCode: user_.lang_code,
     isScam: user_.scam || false,
     isFake: user_.fake || false,

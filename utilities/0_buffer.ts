@@ -25,15 +25,15 @@ export function bufferFromBigInt(int: bigint | number, byteCount: number, little
     throw new Error("Int too big");
   }
 
-  if (byteCount == 4 || byteCount == 2) { // fast path
+  if (byteCount === 4 || byteCount === 2) { // fast path
     const buffer = new Uint8Array(byteCount);
     const dataView = new DataView(buffer.buffer);
-    (byteCount == 2 ? signed ? dataView.setInt16 : dataView.setUint16 : signed ? dataView.setInt32 : dataView.setUint32).call(dataView, 0, Number(int), littleEndian);
+    (byteCount === 2 ? signed ? dataView.setInt16 : dataView.setUint16 : signed ? dataView.setInt32 : dataView.setUint32).call(dataView, 0, Number(int), littleEndian);
     return buffer;
   }
 
   int = BigInt(typeof int === "number" ? Math.ceil(int) : int);
-  if (byteCount == 8) { // fast path
+  if (byteCount === 8) { // fast path
     const buffer = new Uint8Array(byteCount);
     const dataView = new DataView(buffer.buffer);
     (signed ? dataView.setBigInt64 : dataView.setBigUint64).call(dataView, 0, int, littleEndian);

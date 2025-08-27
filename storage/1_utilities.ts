@@ -43,7 +43,7 @@ export function toString(value: unknown): string {
     return `${ValueType.Number}${value}`;
   } else if (typeof value === "string") {
     return `${ValueType.String}${value}`;
-  } else if (typeof value == "bigint") {
+  } else if (typeof value === "bigint") {
     return `${ValueType.BigInt}${value}`;
   } else if (value instanceof Date) {
     return `${ValueType.Date}${value.getTime()}`;
@@ -59,7 +59,7 @@ export function toString(value: unknown): string {
       }
     });
     return `${ValueType.Array}${items.join("\n")}`;
-  } else if (typeof value === "object" && value != null && Object.getPrototypeOf(value) == Object.prototype) {
+  } else if (typeof value === "object" && value !== null && Object.getPrototypeOf(value) === Object.prototype) {
     return `${ValueType.Map}${toString(Object.entries(value)).slice(1)}`;
   } else {
     unreachable();
@@ -86,9 +86,9 @@ export function fromString<T>(string: string): T {
       for (let i = 0; i < value.length; ++i) {
         const type = Number(value[i]) as ValueType;
         let value_ = "";
-        while (value[++i] != "\n") {
+        while (value[++i] !== "\n") {
           value_ += value[i];
-          if (i == value.length - 1) {
+          if (i === value.length - 1) {
             break;
           }
         }
@@ -120,9 +120,9 @@ export function restoreKey(key: readonly StorageKeyPart[]): StorageKeyPart[] {
   return key.map((v) => {
     if (typeof v === "string") {
       const t = Number(v[0]);
-      if (t == ValueType.BigInt) {
+      if (t === ValueType.BigInt) {
         return BigInt(v.slice(1));
-      } else if (t == ValueType.String) {
+      } else if (t === ValueType.String) {
         return v.slice(1);
       } else {
         return v;

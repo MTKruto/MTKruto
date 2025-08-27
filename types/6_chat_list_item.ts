@@ -34,7 +34,7 @@ export interface ChatListItem {
 }
 
 export function getChatListItemOrder(lastMessage: Omit<Message, "replyToMessage"> | undefined, pinned: number): string {
-  const p = pinned == -1 ? "" : `P${100 - pinned}`;
+  const p = pinned === -1 ? "" : `P${100 - pinned}`;
   if (!lastMessage) {
     return p + "0";
   }
@@ -43,12 +43,12 @@ export function getChatListItemOrder(lastMessage: Omit<Message, "replyToMessage"
 
 export async function constructChatListItem(chatId: number, pinned: number, lastMessageId: number, getEntity: EntityGetter, getMessage: MessageGetter): Promise<ChatListItem | null> {
   const entity = await getEntity(Api.chatIdToPeer(chatId));
-  if (entity == null) {
+  if (entity === null) {
     return null;
   }
 
   const lastMessage_ = lastMessageId > 0 ? await getMessage(chatId, lastMessageId) : null;
-  const lastMessage = lastMessage_ == null ? undefined : lastMessage_;
+  const lastMessage = lastMessage_ === null ? undefined : lastMessage_;
 
   return cleanObject({
     chat: constructChatP(entity),
@@ -69,7 +69,7 @@ export function constructChatListItem2(entity: Api.user | Api.chat | Api.chatFor
 
 export async function constructChatListItem3(chatId: number, pinned: number, lastMessage: Omit<Message, "replyToMessage"> | undefined, getEntity: EntityGetter): Promise<ChatListItem | null> {
   const entity = await getEntity(Api.chatIdToPeer(chatId));
-  if (entity == null) {
+  if (entity === null) {
     return null;
   }
   return cleanObject({
@@ -81,7 +81,7 @@ export async function constructChatListItem3(chatId: number, pinned: number, las
 }
 
 export async function constructChatListItem4(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice, pinnedChats: number[], getEntity: EntityGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<ChatListItem> {
-  const topMessage_ = dialogs.messages.find((v) => "id" in v && v.id == dialog.top_message);
+  const topMessage_ = dialogs.messages.find((v) => "id" in v && v.id === dialog.top_message);
   if (!topMessage_) {
     unreachable();
   }
@@ -91,7 +91,7 @@ export async function constructChatListItem4(dialog: Api.Dialog, dialogs: Api.me
   const userId = "user_id" in dialog.peer ? dialog.peer.user_id : null;
   const chatId = "chat_id" in dialog.peer ? dialog.peer.chat_id : null;
   const channelId = "channel_id" in dialog.peer ? dialog.peer.channel_id : null;
-  const chat__ = chatId != null ? dialogs.chats.find((v) => Api.is("chat", v) && v.id == chatId) : channelId != null ? dialogs.chats.find((v) => Api.is("channel", v) && v.id == channelId) : userId != null ? dialogs.users.find((v) => Api.is("user", v) && v.id == userId) : unreachable();
+  const chat__ = chatId !== null ? dialogs.chats.find((v) => Api.is("chat", v) && v.id === chatId) : channelId !== null ? dialogs.chats.find((v) => Api.is("channel", v) && v.id === channelId) : userId !== null ? dialogs.users.find((v) => Api.is("user", v) && v.id === userId) : unreachable();
   if (!chat__) {
     unreachable();
   }

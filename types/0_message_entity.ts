@@ -265,7 +265,7 @@ export async function messageEntityToTlObject(entity: MessageEntity, getEntity: 
     case "textLink": {
       try {
         const url = new URL(entity.url);
-        if (url.protocol == "tg:" && url.hostname == "user" && (url.pathname == "/" || url.pathname == "")) {
+        if (url.protocol === "tg:" && url.hostname === "user" && (url.pathname === "/" || url.pathname === "")) {
           const id = Number(url.searchParams.get("id"));
           if (!isNaN(id)) {
             const entity_ = await getEntity({ _: "peerUser", user_id: BigInt(id) });

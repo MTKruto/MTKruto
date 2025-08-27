@@ -64,7 +64,7 @@ export function parseHtml(html: string) {
           stack.push({ type: "strikethrough", offset: text.length, length: 0 });
           break;
         case "span":
-          if (attribs.class != "tg-spoiler") {
+          if (attribs.class !== "tg-spoiler") {
             throw new InputError('The class attribute must be "tg-spoiler."');
           }
           /* falls through */

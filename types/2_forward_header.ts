@@ -67,9 +67,9 @@ export interface ForwardHeaderUnsupported extends _ForwardHeaderCommon {
 export type ForwardHeader = ForwardHeaderUser | ForwardHeaderChannel | ForwardHeaderSupergroup | ForwardHeaderHidden | ForwardHeaderUnsupported;
 
 export async function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, getEntity: EntityGetter): Promise<ForwardHeader> {
-  if (fwdHeader.channel_post && fwdHeader.from_id?._ == "peerChannel") {
+  if (fwdHeader.channel_post && fwdHeader.from_id?._ === "peerChannel") {
     const chat = await getEntity(fwdHeader.from_id);
-    if (chat == null) {
+    if (chat === null) {
       unreachable();
     }
     return cleanObject({
@@ -79,9 +79,9 @@ export async function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, ge
       messageId: fwdHeader.channel_post,
       authorSignature: fwdHeader.post_author,
     });
-  } else if (fwdHeader.from_id?._ == "peerChannel") {
+  } else if (fwdHeader.from_id?._ === "peerChannel") {
     const chat = await getEntity(fwdHeader.from_id);
-    if (chat == null) {
+    if (chat === null) {
       unreachable();
     }
     return cleanObject({
@@ -90,9 +90,9 @@ export async function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, ge
       chat: constructChatP(chat) as ChatPSupergroup,
       title: fwdHeader.post_author,
     });
-  } else if (fwdHeader.from_id?._ == "peerUser") {
+  } else if (fwdHeader.from_id?._ === "peerUser") {
     const user = await getEntity(fwdHeader.from_id);
-    if (user == null) {
+    if (user === null) {
       unreachable();
     }
     return {

@@ -56,7 +56,7 @@ export class StorageLocalStorage implements Storage {
   get<T>(key_: readonly StorageKeyPart[]): T | null {
     const key = this.prefix + toString(key_);
     const value = this.#storage.getItem(key);
-    if (value != null) {
+    if (value !== null) {
       return fromString<T>(value);
     } else {
       return null;
@@ -79,7 +79,7 @@ export class StorageLocalStorage implements Storage {
       if (Array.isArray(parts)) {
         if ("prefix" in filter) {
           for (const [i, p] of filter.prefix.entries()) {
-            if (toString(p) != toString(parts[i])) {
+            if (toString(p) !== toString(parts[i])) {
               continue entries;
             }
           }
@@ -96,7 +96,7 @@ export class StorageLocalStorage implements Storage {
 
   set(key_: readonly StorageKeyPart[], value: unknown) {
     const key = this.prefix + toString(key_);
-    if (value != null) {
+    if (value !== null) {
       this.#storage.setItem(key, toString(value));
     } else {
       this.#storage.removeItem(key);

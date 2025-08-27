@@ -58,7 +58,7 @@ function isWhitespace(codepoint: number): boolean {
 function getUrl(url_: string) {
   try {
     const url = new URL(url_);
-    if (url.protocol != "http:" && url.protocol != "https:" && url.protocol != "tg:" && url.protocol != "ton:") {
+    if (url.protocol !== "http:" && url.protocol !== "https:" && url.protocol !== "tg:" && url.protocol !== "ton:") {
       return "";
     } else {
       return url.href;
@@ -70,7 +70,7 @@ function getUrl(url_: string) {
 function getLinkUserId(url_: string) {
   try {
     const url = new URL(url_);
-    if (url.protocol != "tg:" || url.hostname != "user" || url.pathname.slice(1) != "" || url.port != "") {
+    if (url.protocol !== "tg:" || url.hostname !== "user" || url.pathname.slice(1) !== "" || url.port !== "") {
       return 0;
     }
     return Number(url.searchParams.get("id")) || 0;
@@ -81,7 +81,7 @@ function getLinkUserId(url_: string) {
 function getLinkCustomEmojiId(url_: string) {
   try {
     const url = new URL(url_);
-    if (url.protocol != "tg:" || url.hostname != "emoji" || url.pathname.slice(1) != "" || url.port != "") {
+    if (url.protocol !== "tg:" || url.hostname !== "emoji" || url.pathname.slice(1) !== "" || url.port !== "") {
       return "";
     }
     const id_ = url.searchParams.get("id");
@@ -118,7 +118,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
 
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
-    if (c === CODEPOINTS["\\"] && text[i + 1] != null && text[i + 1] > 0 && text[i + 1] <= 126) {
+    if (c === CODEPOINTS["\\"] && text[i + 1] !== undefined && text[i + 1] > 0 && text[i + 1] <= 126) {
       i++;
       utf16Offset += 1;
       text[resultSize++] = text[i];
@@ -209,7 +209,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
             i += 3;
             type = "code";
             let languageEnd = i;
-            while (text[languageEnd] != null && !isWhitespace(text[languageEnd]) && text[languageEnd] !== CODEPOINTS["`"]) {
+            while (text[languageEnd] !== null && !isWhitespace(text[languageEnd]) && text[languageEnd] !== CODEPOINTS["`"]) {
               languageEnd++;
             }
             if (i !== languageEnd && languageEnd < text.length && text[languageEnd] !== CODEPOINTS["`"]) {
@@ -329,11 +329,11 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
           entities.push({ type: "textMention", offset: entityOffset, length: entityLength, userId });
         } else if (customEmojiId) {
           entities.push({ type: "customEmoji", offset: entityOffset, length: entityLength, customEmojiId });
-        } else if (type == "textLink") {
+        } else if (type === "textLink") {
           entities.push({ type, offset: entityOffset, length: entityLength, url: typeof argument === "string" ? argument : decodeText(argument) });
-        } else if (type == "pre") {
+        } else if (type === "pre") {
           entities.push({ type, offset: entityOffset, length: entityLength, language: typeof argument === "string" ? argument : decodeText(argument) });
-        } else if (type != "customEmoji") {
+        } else if (type !== "customEmoji") {
           entities.push({ type, offset: entityOffset, length: entityLength });
         }
       }

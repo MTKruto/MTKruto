@@ -78,7 +78,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     let shouldFetch = false;
     for (const messageId of messageIds) {
       const message = await this.#c.messageStorage.getMessage(chatId_, messageId);
-      if (message == null) {
+      if (message === null) {
         messages_ = [];
         shouldFetch = true;
         break;
@@ -102,7 +102,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         continue;
       }
       const message = await this.constructMessage(message_);
-      if (message.chat.id == chatId_) {
+      if (message.chat.id === chatId_) {
         messages.push(message);
       }
     }
@@ -111,7 +111,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
 
   async getMessageWithReply(chatId: ID, messageId: number) {
     const message = await this.getMessage(chatId, messageId);
-    if (message != null && message.replyToMessageId) {
+    if (message !== null && message.replyToMessageId) {
       message.replyToMessage = await this.getMessage(chatId, message.replyToMessageId) ?? undefined;
     }
     return message;
@@ -205,7 +205,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       }
     } else if (Api.is("updateShortSentMessage", updates)) {
       const message = await this.getMessage(chatId, updates.id);
-      if (message != null) {
+      if (message !== null) {
         messages.push(message);
       }
     }
@@ -597,12 +597,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
 
     if (typeof document === "string") {
       const fileId = this.resolveFileId(document, fileType);
-      if (fileId != null) {
+      if (fileId !== null) {
         media = { _: "inputMediaDocument", id: { ...fileId, _: "inputDocument" }, spoiler, query: otherAttribs.find((v): v is Api.documentAttributeSticker => Api.is("documentAttributeSticker", v))?.alt || undefined, ttl_seconds };
       }
     }
 
-    if (media == null) {
+    if (media === null) {
       if (typeof document === "string" && isHttpUrl(document)) {
         if (!urlSupported) {
           throw new InputError("URL not supported.");
@@ -615,7 +615,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
           if (expectedMimeTypes && !expectedMimeTypes.includes(mimeType)) {
             unreachable();
           }
-          if (name.endsWith(".tgs") && fileType == FileType.Document) {
+          if (name.endsWith(".tgs") && fileType === FileType.Document) {
             name += "-";
           }
           return name;
@@ -627,7 +627,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         if (params?.thumbnail) {
           thumb = await this.#c.fileManager.upload(params.thumbnail, { chunkSize: params?.chunkSize, signal: params?.signal });
         }
-        media = { _: "inputMediaUploadedDocument", file, thumb, spoiler, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, ...otherAttribs], mime_type: mimeType!, force_file: fileType == FileType.Document ? true : undefined, ttl_seconds };
+        media = { _: "inputMediaUploadedDocument", file, thumb, spoiler, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, ...otherAttribs], mime_type: mimeType!, force_file: fileType === FileType.Document ? true : undefined, ttl_seconds };
       }
     }
 
@@ -655,12 +655,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
 
     if (typeof photo === "string") {
       const fileId = this.resolveFileId(photo, [FileType.Photo, FileType.ProfilePhoto]);
-      if (fileId != null) {
+      if (fileId !== null) {
         media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" }, spoiler, ttl_seconds };
       }
     }
 
-    if (media == null) {
+    if (media === null) {
       if (typeof photo === "string" && isHttpUrl(photo)) {
         media = { _: "inputMediaPhotoExternal", url: photo, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined };
       } else {
@@ -724,7 +724,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     } catch (err) {
       this.#LresolveFileId.warning(err);
     }
-    if (fileId != null) {
+    if (fileId !== null) {
       if (!expectedFileType.includes(fileId.type)) {
         unreachable();
       }
@@ -767,7 +767,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     }));
 
     const questionParseResult = await this.parseText(question, { parseMode: params?.questionParseMode, entities: params?.questionEntities });
-    const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type == "quiz" ? true : undefined };
+    const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type === "quiz" ? true : undefined };
 
     const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndex !== undefined ? [encodeText(String(params.correctOptionIndex))] : undefined, solution, solution_entities: solutionEntities };
 
@@ -844,10 +844,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     if (!message) {
       throw new InputError("Message text cannot be empty.");
     }
-    if (params?.linkPreview && params.linkPreview.type != "input") {
+    if (params?.linkPreview && params.linkPreview.type !== "input") {
       throw new InputError("Expected link preview of type input.");
     }
-    const noWebpage = params?.linkPreview && params.linkPreview.type == "input" && params.linkPreview.disable ? true : undefined;
+    const noWebpage = params?.linkPreview && params.linkPreview.type === "input" && params.linkPreview.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
 
     let media: Api.InputMedia | undefined = undefined;
@@ -909,10 +909,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     }
 
     const id = await deserializeInlineMessageId(inlineMessageId);
-    if (params?.linkPreview && params.linkPreview.type != "input") {
+    if (params?.linkPreview && params.linkPreview.type !== "input") {
       throw new InputError("Expected link preview of type input.");
     }
-    const noWebpage = params?.linkPreview && params.linkPreview.type == "input" && params.linkPreview.disable ? true : undefined;
+    const noWebpage = params?.linkPreview && params.linkPreview.type === "input" && params.linkPreview.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
 
     let media: Api.InputMedia | undefined = undefined;
@@ -946,19 +946,19 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
 
     if (typeof document === "string") {
       const fileId = this.resolveFileId(document, fileType);
-      if (fileId != null) {
+      if (fileId !== null) {
         media_ = { _: "inputMediaDocument", id: { ...fileId, _: "inputDocument" }, spoiler, query: otherAttribs.find((v): v is Api.documentAttributeSticker => Api.is("documentAttributeSticker", v))?.alt || undefined };
       }
     }
 
-    if (media_ == null) {
+    if (media_ === null) {
       if (typeof document === "string" && isHttpUrl(document)) {
         media_ = { _: "inputMediaDocumentExternal", url: document, spoiler };
       } else {
         let mimeType: string;
         const file = await this.#c.fileManager.upload(document, media, (name) => {
           mimeType = media?.mimeType ?? contentType(name.split(".").slice(-1)[0]) ?? FALLBACK_MIME_TYPE;
-          if (name.endsWith(".tgs") && fileType == FileType.Document) {
+          if (name.endsWith(".tgs") && fileType === FileType.Document) {
             name += "-";
           }
           return name;
@@ -970,7 +970,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         if ("thumbnail" in media && media.thumbnail) {
           thumb = await this.#c.fileManager.upload(media.thumbnail, { chunkSize: media?.chunkSize, signal: media?.signal });
         }
-        media_ = { _: "inputMediaUploadedDocument", file, thumb, spoiler, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, ...otherAttribs], mime_type: mimeType!, force_file: fileType == FileType.Document ? true : undefined };
+        media_ = { _: "inputMediaUploadedDocument", file, thumb, spoiler, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, ...otherAttribs], mime_type: mimeType!, force_file: fileType === FileType.Document ? true : undefined };
       }
     }
 
@@ -995,12 +995,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
 
       if (typeof media.photo === "string") {
         const fileId = this.resolveFileId(media.photo, [FileType.Photo, FileType.ProfilePhoto]);
-        if (fileId != null) {
+        if (fileId !== null) {
           media_ = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" }, spoiler, ttl_seconds };
         }
       }
 
-      if (media_ == null) {
+      if (media_ === null) {
         if (typeof media.photo === "string" && isHttpUrl(media.photo)) {
           media_ = { _: "inputMediaPhotoExternal", url: media.photo, spoiler };
         } else {
@@ -1149,7 +1149,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     const chosenReactions = (message.reactions ?? []).filter((v) => v.chosen);
     for (const r of chosenReactions) {
       if (reactionEqual(r.reaction, reaction)) {
-        const reactions = chosenReactions.filter((v) => v != r).map((v) => v.reaction);
+        const reactions = chosenReactions.filter((v) => v !== r).map((v) => v.reaction);
         await this.setReactions(chatId, messageId, reactions);
         break;
       }
@@ -1183,12 +1183,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         const isOutgoing = update.message.out;
         let shouldIgnore = false;
         if (isOutgoing) {
-          if (this.#c.outgoingMessages == null) {
-            this.#c.outgoingMessages = this.#c.storage.accountType == "user" ? "all" : "business";
+          if (this.#c.outgoingMessages === null) {
+            this.#c.outgoingMessages = this.#c.storage.accountType === "user" ? "all" : "business";
           }
-          if (this.#c.outgoingMessages == "none") {
+          if (this.#c.outgoingMessages === "none") {
             shouldIgnore = true;
-          } else if (this.#c.outgoingMessages == "business") {
+          } else if (this.#c.outgoingMessages === "business") {
             if (!Api.is("updateBotNewBusinessMessage", update) && !Api.is("updateBotEditBusinessMessage", update)) {
               shouldIgnore = true;
             }
@@ -1225,7 +1225,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       const deletedMessages = new Array<{ chatId: number; messageId: number }>();
       for (const messageId of update.messages) {
         const message = await this.#c.messageStorage.getMessage(chatId, messageId);
-        if (message != null) {
+        if (message !== null) {
           deletedMessages.push({ chatId, messageId });
         }
       }
@@ -1469,13 +1469,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       for (const media_ of media) {
         // deno-lint-ignore no-explicit-any
         const thisMediaType = (media_ as any)?.animation !== undefined ? "animation" : (media_ as any)?.audio !== undefined ? "audio" : (media_ as any)?.photo !== undefined ? "photo" : (media_ as any)?.video !== undefined ? "video" : "document";
-        if (thisMediaType == "animation") {
+        if (thisMediaType === "animation") {
           throw new InputError("Media groups cannot consist of animations.");
         }
-        if ((firstMediaType == "video" || firstMediaType == "photo") && (thisMediaType != "video" && thisMediaType != "photo")) {
+        if ((firstMediaType === "video" || firstMediaType === "photo") && (thisMediaType !== "video" && thisMediaType !== "photo")) {
           throw new InputError(`Media of the type ${firstMediaType} cannot be mixed with those of the type ${thisMediaType}.`);
         }
-        if (firstMediaType != "video" && firstMediaType != "photo" && firstMediaType != thisMediaType) {
+        if (firstMediaType !== "video" && firstMediaType !== "photo" && firstMediaType !== thisMediaType) {
           throw new InputError(`Media of the type ${firstMediaType} cannot be mixed with other types.`);
         }
       }
@@ -1545,7 +1545,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   async transcribeVoice(chatId: ID, messageId: number) {
     this.#c.storage.assertUser("transcribeVoice");
     const message = await this.getMessage(chatId, messageId);
-    if (message == null) {
+    if (message === null) {
       throw new InputError("Message not found.");
     }
     if (!isMessageType(message, "voice")) {
@@ -1580,7 +1580,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
 
   async resolveMessageLink(link: string) {
     const parseResult = MessageManager.parseMessageLink(link);
-    if (parseResult == null) {
+    if (parseResult === null) {
       throw new InputError("Invalid messsage link.");
     }
     const [chatId, messageId] = parseResult;
@@ -1606,10 +1606,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         throw err;
       }
     }
-    if (url.protocol != "http:" && url.protocol != "https:") {
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
       return null;
     }
-    if (url.host != "t.me") {
+    if (url.host !== "t.me") {
       return null;
     }
     const parts = url.pathname.split("/").filter((v) => v);
@@ -1620,7 +1620,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       return null;
     }
     let peer: ID, id: number;
-    if (parts[0] == "c") {
+    if (parts[0] === "c") {
       if (parts.length < 3 || parts.length > 4) {
         return null;
       }
@@ -1646,7 +1646,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     }
     if (typeof peer === "string") {
       try {
-        if (getUsername(peer) != peer) {
+        if (getUsername(peer) !== peer) {
           return null;
         }
       } catch (err) {

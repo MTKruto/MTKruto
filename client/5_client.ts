@@ -609,7 +609,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     const context: Context = {
       ...update,
       client: this as unknown as Client,
-      me: (me == null ? undefined : me) as C["me"],
+      me: (me === null ? undefined : me) as C["me"],
       msg: msg as C["msg"],
       chat: chat as C["chat"],
       from: from as C["from"],
@@ -963,7 +963,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #lastPropagatedConnectionState: ConnectionState | null = null;
   #stateChangeHandler: (connected: boolean) => void = ((connected: boolean) => {
     const connectionState = connected ? "ready" : "notConnected";
-    if (this.#lastPropagatedConnectionState != connectionState) {
+    if (this.#lastPropagatedConnectionState !== connectionState) {
       this.#propagateConnectionState(connectionState);
     }
   }).bind(this);
@@ -996,18 +996,18 @@ export class Client<C extends Context = Context> extends Composer<C> {
         await this.importAuthString(this.#authString);
       }
       const [authKey, dc] = await Promise.all([this.storage.getAuthKey(), this.storage.getDc()]);
-      if (authKey != null && dc != null) {
-        if (!this.#client || this.#client.dc != dc) {
+      if (authKey !== null && dc !== null) {
+        if (!this.#client || this.#client.dc !== dc) {
           this.#client?.disconnect();
           this.#setMainClient(this.#newClient(dc, true, false));
         }
         await this.#client!.setAuthKey(authKey);
-        if (this.#client!.serverSalt == 0n) {
+        if (this.#client!.serverSalt === 0n) {
           this.#client!.serverSalt = await this.storage.getServerSalt() ?? 0n;
         }
       } else {
         const dc = await this.storage.getDc() ?? this.#initialDc;
-        if (!this.#client || this.#client.dc != dc) {
+        if (!this.#client || this.#client.dc !== dc) {
           this.#client?.disconnect();
           this.#setMainClient(this.#newClient(dc, true, false));
         }
@@ -1042,7 +1042,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   #lastPropagatedAuthorizationState: boolean | null = null;
   async #propagateAuthorizationState(authorized: boolean) {
-    if (this.#lastPropagatedAuthorizationState != authorized) {
+    if (this.#lastPropagatedAuthorizationState !== authorized) {
       await this.#handleCtxUpdate({ authorizationState: { authorized } });
       this.#lastPropagatedAuthorizationState = authorized;
     }
@@ -1050,7 +1050,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #getSelfId() {
     const id = await this.storage.getAccountId();
-    if (id == null) {
+    if (id === null) {
       throw new Error("Unauthorized");
     }
     return id;
@@ -1058,7 +1058,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #getIsPremium() {
     const maybeIsPremium = await this.storage.getIsPremium();
-    if (maybeIsPremium != null) {
+    if (maybeIsPremium !== null) {
       return maybeIsPremium;
     }
     return this.#lastGetMe?.isPremium ?? false;
@@ -1087,7 +1087,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
           );
         }
       } catch (err) {
-        if (err instanceof DOMException && err.name == "AbortError") {
+        if (err instanceof DOMException && err.name === "AbortError") {
           break;
         } else if (!this.connected) {
           break;
@@ -1118,7 +1118,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
           }
         });
       } catch (err) {
-        if (err instanceof DOMException && err.name == "AbortError") {
+        if (err instanceof DOMException && err.name === "AbortError") {
           break;
         } else if (!this.connected) {
           break;
@@ -1157,7 +1157,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
     if (typeof params === "undefined") {
       const loginType = mustPromptOneOf("Do you want to login as bot [b] or user [u]?", ["b", "u"] as const);
-      if (loginType == "b") {
+      if (loginType === "b") {
         params = { botToken: mustPrompt("Bot token:") };
       } else {
         params = { phone: () => mustPrompt("Phone number:"), code: () => mustPrompt("Verification code:"), password: () => mustPrompt("Password:") };
@@ -1279,7 +1279,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
           }
         }
       } catch (err) {
-        if (err == restartAuth) {
+        if (err === restartAuth) {
           continue auth;
         } else {
           throw err;
@@ -1332,15 +1332,15 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   #getMainClientMutex = new Mutex();
   async #getMainClient(dc?: DC) {
-    if (dc === undefined || dc == this.#client?.dc) {
+    if (dc === undefined || dc === this.#client?.dc) {
       return this.#client!;
     }
-    let client = this.#clients.find((v) => v.dc == dc);
+    let client = this.#clients.find((v) => v.dc === dc);
     if (client) {
       return client;
     }
     const unlock = await this.#getMainClientMutex.lock();
-    client = this.#clients.find((v) => v.dc == dc);
+    client = this.#clients.find((v) => v.dc === dc);
     if (client) {
       return client;
     }
@@ -1374,7 +1374,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #getUploadPoolSize() {
     const dc = this.#client!.dc;
-    return (dc != "2" && dc != "4") || await this.#getIsPremium() ? 8 : 4;
+    return (dc !== "2" && dc !== "4") || await this.#getIsPremium() ? 8 : 4;
   }
 
   async #getUploadClient() {
@@ -1395,7 +1395,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #setupClient(client: ClientEncrypted) {
-    const storage = client.dc == this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.cdn ? "_cdn" : "")));
+    const storage = client.dc === this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.cdn ? "_cdn" : "")));
     await storage.initialize();
     const [authKey, serverSalt] = await Promise.all([storage.getAuthKey(), storage.getServerSalt()]);
     if (authKey) {
@@ -1418,7 +1418,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #importAuthorization(client: ClientEncrypted) {
-    if (this.#client!.dc == client.dc && this.#client!.cdn == client.cdn) {
+    if (this.#client!.dc === client.dc && this.#client!.cdn === client.cdn) {
       const [authKey, serverSalt] = await Promise.all([this.storage.getAuthKey(), this.storage.getServerSalt()]);
       if (authKey) {
         await client.setAuthKey(authKey);
@@ -1490,7 +1490,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         this.#handleInvokeError = async (ctx, next) => {
           let result: boolean | null = null;
           return await handle(ctx, async () => {
-            if (result != null) return result;
+            if (result !== null) return result;
             result = await handler(ctx, next);
             return result;
           });
@@ -1540,18 +1540,18 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @param id The identifier of a chat.
    */
   async getInputPeer(id: ID): Promise<Api.InputPeer> {
-    if (id === "me" || id == await this.#getSelfId()) {
+    if (id === "me" || id === await this.#getSelfId()) {
       return { _: "inputPeerSelf" };
     }
     const inputPeer = await this.#getInputPeerInner(id);
-    if (((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n) && await this.storage.getAccountType() == "bot") {
+    if (((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash === 0n) && await this.storage.getAccountType() === "bot") {
       if ("channel_id" in inputPeer) {
         inputPeer.access_hash = await this.#getChannelAccessHash(inputPeer.channel_id);
       } else {
         inputPeer.access_hash = await this.#getUserAccessHash(inputPeer.user_id);
       }
     }
-    if ((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash == 0n) {
+    if ((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash === 0n) {
       throw new AccessError(`Cannot access the chat ${id} because there is no access hash for it.`);
     }
     return inputPeer;
@@ -1603,7 +1603,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       id = getUsername(id);
       let resolvedId = 0;
       const maybeUsername = await this.messageStorage.getUsername(id);
-      if (maybeUsername != null && Date.now() - maybeUsername[1].getTime() < USERNAME_TTL) {
+      if (maybeUsername !== null && Date.now() - maybeUsername[1].getTime() < USERNAME_TTL) {
         const [id] = maybeUsername;
         resolvedId = id;
       } else {
@@ -1619,11 +1619,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
         }
       }
       const resolvedIdType = Api.getChatIdPeerType(resolvedId);
-      if (resolvedIdType == "user") {
+      if (resolvedIdType === "user") {
         const accessHash = await this.messageStorage.getUserAccessHash(resolvedId);
 
         peer = { _: "inputPeerUser", user_id: Api.chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n } as Api.inputPeerUser;
-      } else if (resolvedIdType == "channel") {
+      } else if (resolvedIdType === "channel") {
         const accessHash = await this.messageStorage.getChannelAccessHash(resolvedId);
         peer = { _: "inputPeerChannel", channel_id: Api.chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n } as Api.inputPeerChannel;
       } else {
@@ -1634,7 +1634,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       peer = { _: "inputPeerUser", user_id: Api.chatIdToPeerId(id), access_hash: accessHash ?? 0n } as Api.inputPeerUser;
     } else if (-MAX_CHAT_ID <= id) {
       peer = { _: "inputPeerChat", chat_id: BigInt(Math.abs(id)) } as Api.inputPeerChat;
-    } else if (ZERO_CHANNEL_ID - MAX_CHANNEL_ID <= id && id != ZERO_CHANNEL_ID) {
+    } else if (ZERO_CHANNEL_ID - MAX_CHANNEL_ID <= id && id !== ZERO_CHANNEL_ID) {
       const accessHash = await this.messageStorage.getChannelAccessHash(id);
       peer = { _: "inputPeerChannel", channel_id: Api.chatIdToPeerId(id), access_hash: accessHash ?? 0n } as Api.inputPeerChannel;
     } else {
@@ -1660,7 +1660,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     const entity = await this.messageStorage.getEntity(reference.chatId);
     if (Api.isOneOf(["channel", "channelForbidden"], entity) && entity.access_hash) {
       const peer: Api.inputPeerChannel = { _: "inputPeerChannel", channel_id: entity.id, access_hash: entity.access_hash };
-      if (type == "user") {
+      if (type === "user") {
         return { _: "inputPeerUserFromMessage", peer, msg_id: reference.messageId, user_id: Api.chatIdToPeerId(reference.senderId) };
       } else {
         return { _: "inputPeerChannelFromMessage", peer, msg_id: reference.messageId, channel_id: Api.chatIdToPeerId(reference.senderId) };
@@ -1677,7 +1677,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   private async [getEntity](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
     const id = Api.peerToChatId(peer);
     const entity = await this.messageStorage.getEntity(id);
-    if (entity == null && await this.storage.getAccountType() == "bot" && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
+    if (entity === null && await this.storage.getAccountType() === "bot" && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
       await this.getInputPeer(id);
     } else {
       return entity;
@@ -1709,7 +1709,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       await this.messageStorage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
       const peer: Api.peerUser = { ...update, _: "peerUser" };
       const entity = await this[getEntity](peer);
-      if (entity != null) {
+      if (entity !== null) {
         entity.usernames = update.usernames;
         entity.first_name = update.first_name;
         entity.last_name = update.last_name;
@@ -1804,7 +1804,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   #lastGetMe: User | null = null;
   async #getMe() {
-    if (this.#lastGetMe != null) {
+    if (this.#lastGetMe !== null) {
       return this.#lastGetMe;
     } else {
       const user = await this.getMe();
@@ -1816,7 +1816,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #previouslyConnected = false;
   #lastConnectionState = false;
   #onConnectionStateChange(connected: boolean) {
-    if (this.#lastConnectionState != connected) {
+    if (this.#lastConnectionState !== connected) {
       if (connected) {
         if (this.#previouslyConnected) {
           drop(this.#updateManager.recoverUpdateGap("reconnect"));
@@ -1839,7 +1839,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async getMe(): Promise<User> {
     let user_ = await this[getEntity]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) });
-    if (user_ == null) {
+    if (user_ === null) {
       const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUserSelf" }] });
       user_ = Api.as("user", users[0]);
       await this.messageStorage.setEntity(user_);

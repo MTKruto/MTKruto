@@ -63,16 +63,16 @@ export function constructReaction(reaction: Api.Reaction): Reaction {
 }
 
 export function reactionToTlObject(reaction: Reaction): Api.Reaction {
-  return reaction.type == "emoji" ? ({ _: "reactionEmoji", emoticon: reaction.emoji }) : reaction.type == "custom" ? ({ _: "reactionCustomEmoji", document_id: BigInt(reaction.id) }) : { _: "reactionPaid" };
+  return reaction.type === "emoji" ? ({ _: "reactionEmoji", emoticon: reaction.emoji }) : reaction.type === "custom" ? ({ _: "reactionCustomEmoji", document_id: BigInt(reaction.id) }) : { _: "reactionPaid" };
 }
 
 export function reactionEqual(left: Reaction, right: Reaction): boolean {
-  if (left.type == "emoji") {
-    if (right.type == "emoji" && left.emoji == right.emoji) {
+  if (left.type === "emoji") {
+    if (right.type === "emoji" && left.emoji === right.emoji) {
       return true;
     }
-  } else if (left.type == "custom") {
-    if (right.type == "custom" && left.id == right.id) {
+  } else if (left.type === "custom") {
+    if (right.type === "custom" && left.id === right.id) {
       return true;
     }
   }

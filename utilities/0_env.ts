@@ -44,7 +44,7 @@ export function getString(name: string): string | null {
 
 export function getNumber(name: string) {
   const value = getString(name);
-  if (value == null) {
+  if (value === null) {
     return null;
   }
   const number = Number(value);

@@ -89,7 +89,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
     let publicKey: [bigint, bigint] | undefined;
 
     for (const fingerprint of resPq.server_public_key_fingerprints) {
-      const maybePublicKey = this.#publicKeys.find(([k]) => (k == fingerprint));
+      const maybePublicKey = this.#publicKeys.find(([k]) => (k === fingerprint));
       if (maybePublicKey) {
         publicKeyFingerprint = fingerprint;
         publicKey = maybePublicKey[1];
@@ -156,7 +156,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
 
     let dataWithHash = concat([await sha1(data), data]);
 
-    while (dataWithHash.length % 16 != 0) {
+    while (dataWithHash.length % 16 !== 0) {
       dataWithHash = concat([dataWithHash, new Uint8Array(1)]);
     }
 

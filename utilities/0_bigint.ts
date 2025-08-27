@@ -29,7 +29,7 @@ export function modExp(
   while (b > 0n) {
     const leastSignificantBit = b % 2n;
     b /= 2n;
-    if (leastSignificantBit == 1n) {
+    if (leastSignificantBit === 1n) {
       result *= x;
       result %= n;
     }
@@ -82,23 +82,23 @@ export function getRandomId(number?: boolean): bigint | number {
 }
 
 export function gcd(a: bigint, b: bigint) {
-  if (a == 0n) {
+  if (a === 0n) {
     return b;
   }
 
-  while ((a & 1n) == 0n) {
+  while ((a & 1n) === 0n) {
     a >>= 1n;
   }
 
   while (true) {
     if (a > b) {
       a = (a - b) >> 1n;
-      while ((a & 1n) == 0n) {
+      while ((a & 1n) === 0n) {
         a >>= 1n;
       }
     } else if (b > a) {
       b = (b - a) >> 1n;
-      while ((b & 1n) == 0n) {
+      while ((b & 1n) === 0n) {
         b >>= 1n;
       }
     } else {

@@ -68,10 +68,10 @@ export async function constructCallbackQuery(callbackQuery: Api.updateBotCallbac
   const id = String(callbackQuery.query_id);
   const gameShortName = callbackQuery.game_short_name;
   const data = callbackQuery.data !== undefined ? decodeText(callbackQuery.data) : undefined;
-  const chatInstance = callbackQuery.chat_instance == 0n ? "" : String(callbackQuery.chat_instance);
+  const chatInstance = callbackQuery.chat_instance === 0n ? "" : String(callbackQuery.chat_instance);
   if (Api.is("updateBotCallbackQuery", callbackQuery)) {
     const message = await getMessage(Api.peerToChatId(callbackQuery.peer), Number(callbackQuery.msg_id));
-    if (message == null) {
+    if (message === null) {
       unreachable();
     }
     return cleanObject({ id, from: user, message, chatInstance, data, gameShortName });

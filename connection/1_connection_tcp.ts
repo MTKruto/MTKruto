@@ -75,7 +75,7 @@ export class ConnectionTCP implements Connection {
             this.#buffer = concat([this.#buffer, chunk]);
 
             if (
-              this.#nextResolve != null && this.#buffer.length >= this.#nextResolve[0]
+              this.#nextResolve !== null && this.#buffer.length >= this.#nextResolve[0]
             ) {
               this.#nextResolve[1].resolve();
               this.#nextResolve = null;
@@ -96,7 +96,7 @@ export class ConnectionTCP implements Connection {
   }
 
   #rejectRead() {
-    if (this.#nextResolve != null) {
+    if (this.#nextResolve !== null) {
       this.#nextResolve[1].reject(new ConnectionError("Connection was closed"));
       this.#nextResolve = null;
     }

@@ -113,7 +113,7 @@ export class TLWriter {
     if (!maybeDefinition) {
       throw new TLError(`Unknown type: ${value._}`);
     }
-    if (type != "!X" && !this.#isTypeValid(type, value, schema)) {
+    if (type !== "!X" && !this.#isTypeValid(type, value, schema)) {
       throw new TLError(`Expected ${type} but got ${value._}`);
     }
     const type__ = value as any;
@@ -127,7 +127,7 @@ export class TLWriter {
 
       const debugInfo = ` [0x${id.toString(16).toUpperCase()}::${i}]`;
 
-      if (type == "#") {
+      if (type === "#") {
         let flags = 0;
         const flagField_ = name;
 
@@ -135,7 +135,7 @@ export class TLWriter {
           if (isOptionalParam(type)) {
             const { flagField, bitIndex } = analyzeOptionalParam(type);
 
-            if (flagField == flagField_) {
+            if (flagField === flagField_) {
               if (type__[name] !== undefined) {
                 flags |= 1 << bitIndex;
               }
@@ -224,7 +224,7 @@ export class TLWriter {
         return true;
       case "int":
         //
-        if (value == null) {
+        if (value === null) {
           value = 0;
         }
         //
@@ -236,7 +236,7 @@ export class TLWriter {
         return true;
       case "double":
         //
-        if (value == null) {
+        if (value === null) {
           value = 0;
         }
         //
@@ -269,7 +269,7 @@ export class TLWriter {
   }
 
   #isTypeValid(type: string, value: any, schema: Schema) {
-    if (type == value._) {
+    if (type === value._) {
       return true;
     }
     return schema.definitions[value._]?.[2] === type;

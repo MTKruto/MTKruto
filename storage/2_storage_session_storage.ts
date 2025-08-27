@@ -57,7 +57,7 @@ export class StorageSessionStorage implements Storage {
   get<T>(key_: readonly StorageKeyPart[]): T | null {
     const key = this.prefix + toString(key_);
     const value = sessionStorage.getItem(key);
-    if (value != null) {
+    if (value !== null) {
       return fromString<T>(value);
     } else {
       return null;
@@ -80,7 +80,7 @@ export class StorageSessionStorage implements Storage {
       if (Array.isArray(parts)) {
         if ("prefix" in filter) {
           for (const [i, p] of filter.prefix.entries()) {
-            if (toString(p) != toString(parts[i])) {
+            if (toString(p) !== toString(parts[i])) {
               continue entries;
             }
           }
@@ -97,7 +97,7 @@ export class StorageSessionStorage implements Storage {
 
   set(key_: readonly StorageKeyPart[], value: unknown): MaybePromise<void> {
     const key = this.prefix + toString(key_);
-    if (value != null) {
+    if (value !== null) {
       sessionStorage.setItem(key, toString(value));
     } else {
       sessionStorage.removeItem(key);

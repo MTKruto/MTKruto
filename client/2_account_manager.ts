@@ -121,7 +121,7 @@ export class AccountManager {
     if (!Api.is("contacts.contacts", result)) {
       unreachable();
     }
-    return result.users.map((v) => Api.is("user", v) ? constructUser(v) : null).filter((v) => v != null);
+    return result.users.map((v) => Api.is("user", v) ? constructUser(v) : null).filter((v) => v !== null);
   }
 
   async deleteContacts(userIds: ID[]) {
@@ -156,7 +156,7 @@ export class AccountManager {
     const inputPeer = await this.#c.getInputPeer(chatId);
     const chatId_ = await this.#c.getInputPeerChatId(inputPeer);
     let fullChat = await this.#c.storage.getFullChat(chatId_);
-    if (fullChat != null) {
+    if (fullChat !== null) {
       if (!Api.is("userFull", fullChat)) {
         unreachable();
       }

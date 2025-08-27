@@ -63,12 +63,12 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
 
     if (typeof source === "string") {
       const fileId = this.#c.messageManager.resolveFileId(source, FileType.Photo);
-      if (fileId != null) {
+      if (fileId !== null) {
         media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" } };
       }
     }
 
-    if (media == null) {
+    if (media === null) {
       if (typeof source === "string" && isHttpUrl(source)) {
         throw new InputError("URL not supported.");
       } else {

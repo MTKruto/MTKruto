@@ -54,7 +54,7 @@ export async function deserializeMessage(reader: TLReader): Promise<message> {
   const id = reader2.readInt32(false);
   let body: message["body"];
   {
-    if (id == MSG_CONTAINER_CONSTRUCTOR) {
+    if (id === MSG_CONTAINER_CONSTRUCTOR) {
       body = await deserializeMsgContainer(reader2.buffer);
     } else {
       body = reader.buffer;

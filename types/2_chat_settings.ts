@@ -69,7 +69,7 @@ export function constructChatSettings(settings_: Api.messages_peerSettings): Cha
     nameChangeDate: settings_.settings.name_change_date ? settings_.settings.name_change_date : undefined,
     photoChangeDate: settings_.settings.photo_change_date ? settings_.settings.photo_change_date : undefined,
   };
-  const bot = settings_.users.find((v) => v.id == settings_.settings.business_bot_id);
+  const bot = settings_.users.find((v) => v.id === settings_.settings.business_bot_id);
   if (Api.is("user", bot)) {
     settings.businessBot = constructUser(bot);
   }

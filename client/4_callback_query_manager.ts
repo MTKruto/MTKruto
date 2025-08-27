@@ -56,10 +56,10 @@ export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManage
     validateCallbackQueryQuestion(question);
     const peer = await this.#c.getInputPeer(botId), peerId = await this.#c.getInputPeerChatId(peer), questionKey = JSON.stringify(question);
     const maybeAnswer = await this.#c.messageStorage.getCallbackQueryAnswer(peerId, messageId, questionKey);
-    if (maybeAnswer != null && !CallbackQueryManager.#isExpired(maybeAnswer[1], maybeAnswer[0].cache_time)) {
+    if (maybeAnswer !== null && !CallbackQueryManager.#isExpired(maybeAnswer[1], maybeAnswer[0].cache_time)) {
       return constructCallbackQueryAnswer(maybeAnswer[0]);
     }
-    const answer = await this.#c.invoke({ _: "messages.getBotCallbackAnswer", peer, msg_id: messageId, data: "data" in question ? encodeText(question.data) : undefined, game: question.type == "game" ? true : undefined, password: question.type == "password" ? await this.#getPasswordCheck(question.password) : undefined });
+    const answer = await this.#c.invoke({ _: "messages.getBotCallbackAnswer", peer, msg_id: messageId, data: "data" in question ? encodeText(question.data) : undefined, game: question.type === "game" ? true : undefined, password: question.type === "password" ? await this.#getPasswordCheck(question.password) : undefined });
     if (answer.cache_time >= 0) {
       await this.#c.messageStorage.setCallbackQueryAnswer(peerId, messageId, questionKey, answer);
     }

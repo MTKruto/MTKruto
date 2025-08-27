@@ -42,7 +42,7 @@ export interface InlineQuery {
 
 export async function constructInlineQuery(query_: Api.updateBotInlineQuery, getEntity: EntityGetter): Promise<InlineQuery> {
   const user_ = await getEntity({ _: "peerUser", user_id: query_.user_id });
-  if (user_ == null) {
+  if (user_ === null) {
     unreachable();
   }
 
