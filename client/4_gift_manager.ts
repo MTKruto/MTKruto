@@ -72,7 +72,7 @@ export class GiftManager {
 
   async sellGift(userId: ID, messageId: number) {
     const message = await this.#c.messageManager.getMessage(userId, messageId);
-    if (message == null) {
+    if (message === null) {
       throw new InputError("Message not found.");
     }
     await this.#c.invoke({ _: "payments.convertStarGift", stargift: { _: "inputSavedStarGiftUser", msg_id: message.id } });

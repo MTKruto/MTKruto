@@ -74,7 +74,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
   }
 
   constructor(...middleware: Middleware<C>[]) {
-    this.#handle = middleware.length == 0 ? skip : middleware.map(flatten).reduce(concat);
+    this.#handle = middleware.length === 0 ? skip : middleware.map(flatten).reduce(concat);
   }
 
   middleware(): MiddlewareFn<C> {
@@ -138,7 +138,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
     const prefixes = Array.isArray(prefixes_) ? prefixes_ : [prefixes_];
     for (const left of prefixes) {
       for (const right of prefixes) {
-        if (left == right) {
+        if (left === right) {
           continue;
         }
         if (left.startsWith(right) || right.startsWith(left)) {
@@ -147,8 +147,8 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
       }
     }
     return this.on("message:text").filter((ctx) => {
-      const prefixes_ = prefixes.length == 0 ? [!ctx.me?.isBot ? "\\" : "/"] : prefixes;
-      if (prefixes_.length == 0) {
+      const prefixes_ = prefixes.length === 0 ? [!ctx.me?.isBot ? "\\" : "/"] : prefixes;
+      if (prefixes_.length === 0) {
         return false;
       }
       const cmd = ctx.message.text.split(/\s/, 1)[0];
@@ -164,7 +164,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
       }
       const command_ = cmd.split("@", 1)[0].split(prefix, 2)[1].toLowerCase();
       for (const command of commands_) {
-        if (typeof command === "string" && (command.toLowerCase() == command_)) {
+        if (typeof command === "string" && (command.toLowerCase() === command_)) {
           return true;
         } else if (command instanceof RegExp && command.test(command_)) {
           return true;
@@ -181,7 +181,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
     const data_ = Array.isArray(data) ? data : [data];
     return this.on("callbackQuery:data").filter((ctx) => {
       for (const data of data_) {
-        if (typeof data === "string" && data == ctx.callbackQuery.data) {
+        if (typeof data === "string" && data === ctx.callbackQuery.data) {
           return true;
         } else if (data instanceof RegExp && data.test(ctx.callbackQuery.data)) {
           return true;
@@ -198,7 +198,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
     const queries_ = Array.isArray(queries) ? queries : [queries];
     return this.on("inlineQuery").filter((ctx) => {
       for (const query of queries_) {
-        if (typeof query === "string" && query == ctx.inlineQuery.query) {
+        if (typeof query === "string" && query === ctx.inlineQuery.query) {
           return true;
         } else if (query instanceof RegExp && query.test(ctx.inlineQuery.query)) {
           return true;

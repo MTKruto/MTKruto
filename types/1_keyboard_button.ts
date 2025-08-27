@@ -174,7 +174,7 @@ export function keyboardButtonToTlObject(button: KeyboardButton): Api.KeyboardBu
   } else if ("requestLocation" in button) {
     return { _: "keyboardButtonRequestGeoLocation", text: button.text };
   } else if ("requestPoll" in button) {
-    return { _: "keyboardButtonRequestPoll", text: button.text, quiz: button.requestPoll.type == "quiz" };
+    return { _: "keyboardButtonRequestPoll", text: button.text, quiz: button.requestPoll.type === "quiz" };
   } else if ("miniApp" in button) {
     return { _: "keyboardButtonWebView", text: button.text, url: button.miniApp.url };
   } else {

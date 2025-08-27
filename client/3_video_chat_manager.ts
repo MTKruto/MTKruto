@@ -74,7 +74,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
   async #getInputGroupCall(id_: string): Promise<Api.inputGroupCall> {
     const id = BigInt(id_);
     const accessHash = await this.#c.storage.getGroupCallAccessHash(id);
-    if (accessHash == null) {
+    if (accessHash === null) {
       throw new InputError("Video chat not found.");
     }
     return { _: "inputGroupCall", id, access_hash: accessHash };
@@ -120,7 +120,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
 
   async #getCall(id: string) {
     let groupCall: Api.GroupCall | null = await this.#c.storage.getGroupCall(BigInt(id));
-    if (groupCall == null) {
+    if (groupCall === null) {
       const call = await this.#getInputGroupCall(id);
       groupCall = (await this.#c.invoke({ _: "phone.getGroupCall", call, limit: 1 })).call;
     }
@@ -140,20 +140,20 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
       return null; // TODO: handle updates with unspecified chat_id
     }
     let chatId = Number(-update.chat_id);
-    const fullChat = await this.#c.storage.getFullChat(chatId).then((v) => v == null ? this.#c.storage.getFullChat(chatId = ZERO_CHANNEL_ID - Number(update.chat_id)) : v) as Api.channelFull | Api.chatFull | null;
+    const fullChat = await this.#c.storage.getFullChat(chatId).then((v) => v === null ? this.#c.storage.getFullChat(chatId = ZERO_CHANNEL_ID - Number(update.chat_id)) : v) as Api.channelFull | Api.chatFull | null;
     let updateFullChat = false;
     if (Api.is("groupCallDiscarded", update.call)) {
       await this.#c.storage.setGroupCall(update.call.id, null);
       await this.#c.storage.setGroupCallAccessHash(update.call.id, null);
-      if (fullChat != null) {
+      if (fullChat !== null) {
         fullChat.call = undefined;
         updateFullChat = true;
       }
     } else {
       await this.#c.storage.setGroupCall(update.call.id, update.call);
       await this.#c.storage.setGroupCallAccessHash(update.call.id, update.call.access_hash);
-      if (fullChat != null) {
-        if (!("call" in fullChat) || !fullChat.call || !Api.is("inputGroupCall", fullChat.call) || fullChat.call.id != update.call.id) {
+      if (fullChat !== null) {
+        if (!("call" in fullChat) || !fullChat.call || !Api.is("inputGroupCall", fullChat.call) || fullChat.call.id !== update.call.id) {
           fullChat.call = { ...update.call, _: "inputGroupCall" };
           updateFullChat = true;
         }
@@ -189,7 +189,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
       scale,
       time_ms: BigInt(timestamp),
       video_channel: channel,
-      video_quality: quality == "low" ? 0 : quality == "medium" ? 1 : quality == "high" ? 2 : (() => {
+      video_quality: quality === "low" ? 0 : quality === "medium" ? 1 : quality === "high" ? 2 : (() => {
         throw new InputError("Got invalid quality.");
       })(),
     };

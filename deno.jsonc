@@ -11,7 +11,7 @@
   "lint": {
     "rules": {
       "exclude": ["no-node-globals", "no-process-global"],
-      "include": ["verbatim-module-syntax"]
+      "include": ["verbatim-module-syntax", "eqeqeq", "no-console"]
     }
   },
   "tasks": {

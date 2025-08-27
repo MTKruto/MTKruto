@@ -173,10 +173,10 @@ export function constructInlineKeyboardButton(button_: Api.KeyboardButton): Inli
     if (button_.same_peer) {
       return { text: button_.text, switchInlineQueryCurrentChat: button_.query };
     } else if (button_.peer_types && button_.peer_types.length) {
-      const allowUsers = button_.peer_types.some((v) => v._ == "inlineQueryPeerTypeBotPM") || undefined;
-      const allowBots = button_.peer_types.some((v) => v._ == "inlineQueryPeerTypeSameBotPM" || v._ == "inlineQueryPeerTypeBotPM") || undefined;
-      const allowGroups = button_.peer_types.some((v) => v._ == "inlineQueryPeerTypeChat" || v._ == "inlineQueryPeerTypeMegagroup") || undefined;
-      const allowChannels = button_.peer_types.some((v) => v._ == "inlineQueryPeerTypeBroadcast") || undefined;
+      const allowUsers = button_.peer_types.some((v) => v._ === "inlineQueryPeerTypeBotPM") || undefined;
+      const allowBots = button_.peer_types.some((v) => v._ === "inlineQueryPeerTypeSameBotPM" || v._ === "inlineQueryPeerTypeBotPM") || undefined;
+      const allowGroups = button_.peer_types.some((v) => v._ === "inlineQueryPeerTypeChat" || v._ === "inlineQueryPeerTypeMegagroup") || undefined;
+      const allowChannels = button_.peer_types.some((v) => v._ === "inlineQueryPeerTypeBroadcast") || undefined;
       return cleanObject({ text: button_.text, switchInlineQueryChosenChats: { query: button_.query, allowUsers, allowBots, allowGroups, allowChannels } });
     } else {
       return { text: button_.text, switchInlineQuery: button_.query };

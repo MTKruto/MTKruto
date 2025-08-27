@@ -41,7 +41,7 @@ export function analyzeOptionalParam(ntype: string): { flagField: string; bitInd
 }
 
 export function repr(value: unknown): string | null {
-  return value == null ? null : (typeof value === "object" && "_" in value) ? value._ as string : value.constructor.name;
+  return value === undefined ? "undefined" : value === null ? null : (typeof value === "object" && "_" in value) ? value._ as string : value.constructor.name;
 }
 
 export function getVectorItemType(type: string): string | null {

@@ -113,8 +113,8 @@ export class UpdateManager {
     if (typeof this.#c.dropPendingUpdates === "boolean") {
       return this.#c.dropPendingUpdates;
     }
-    if (this.#defaultDropPendingUpdates == null) {
-      this.#defaultDropPendingUpdates = await this.#c.storage.getAccountType() == "bot";
+    if (this.#defaultDropPendingUpdates === null) {
+      this.#defaultDropPendingUpdates = await this.#c.storage.getAccountType() === "bot";
     }
     return this.#defaultDropPendingUpdates;
   }
@@ -174,7 +174,7 @@ export class UpdateManager {
       }
     } else if (Api.is("message", context)) {
       messages.push(context);
-    } else if (context != null && typeof context === "object" && "messages" in context && Array.isArray(context.messages)) {
+    } else if (context !== null && typeof context === "object" && "messages" in context && Array.isArray(context.messages)) {
       for (const message of context.messages) {
         if (Api.is("message", message)) {
           messages.push(message);
@@ -342,13 +342,13 @@ export class UpdateManager {
   async #processChannelPtsUpdateInner(update: Api.updateNewChannelMessage | Api.updateEditChannelMessage | Api.updateDeleteChannelMessages | Api.updateChannelTooLong, checkGap: boolean) {
     const channelId = Api.is("updateNewChannelMessage", update) || Api.is("updateEditChannelMessage", update) ? Api.as("peerChannel", (update.message as Api.message | Api.messageService).peer_id).channel_id : update.channel_id;
     if (Api.is("updateChannelTooLong", update)) {
-      if (update.pts != undefined) {
+      if (update.pts !== undefined) {
         await this.#c.storage.setChannelPts(channelId, update.pts);
       }
       await this.#recoverChannelUpdateGap(channelId, "updateChannelTooLong");
       return;
     }
-    if (update.pts != 0) {
+    if (update.pts !== 0) {
       const ptsCount = update.pts_count;
       if (checkGap) {
         await this.#checkChannelGap(channelId, update.pts, ptsCount);
@@ -363,7 +363,7 @@ export class UpdateManager {
     if (this.#c.guaranteeUpdateDelivery) {
       await this.#c.storage.setUpdate(channelId, update);
     }
-    if (update.pts != 0) {
+    if (update.pts !== 0) {
       await this.#c.storage.setChannelPts(channelId, update.pts);
     }
     this.#queueUpdate(update, channelId, true);
@@ -382,7 +382,7 @@ export class UpdateManager {
   #processChannelPtsUpdate(update: ChannelPtsUpdate, checkGap: boolean) {
     const channelId = Api.is("updateNewChannelMessage", update) || Api.is("updateEditChannelMessage", update) ? Api.as("peerChannel", (update.message as Api.message | Api.messageService).peer_id).channel_id : update.channel_id;
     let queue = this.#channelUpdateQueues.get(channelId);
-    if (queue == undefined) {
+    if (queue === undefined) {
       queue = new Queue(`channelUpdates-${channelId}`);
       this.#channelUpdateQueues.set(channelId, queue);
     }
@@ -392,7 +392,7 @@ export class UpdateManager {
   }
 
   async #processPtsUpdateInner(update: PtsUpdate, checkGap: boolean) {
-    if (update.pts != 0 && checkGap) {
+    if (update.pts !== 0 && checkGap) {
       await this.#checkGap(update.pts, update.pts_count);
       if (await this.#needsGetDifference(update)) {
         await this.recoverUpdateGap("needsGetDifference");
@@ -407,7 +407,7 @@ export class UpdateManager {
     if (this.#c.guaranteeUpdateDelivery) {
       await this.#c.storage.setUpdate(UpdateManager.MAIN_BOX_ID, update);
     }
-    if (update.pts != 0) {
+    if (update.pts !== 0) {
       await this.#setUpdatePts(update.pts);
     }
     this.#queueUpdate(update, 1n, false);
@@ -422,7 +422,7 @@ export class UpdateManager {
 
   async #processQtsUpdateInner(update: QtsUpdate, checkGap: boolean) {
     const localState = await this.#getLocalState();
-    if (update.qts != 0) {
+    if (update.qts !== 0) {
       if (checkGap) {
         await this.#checkGapQts(update.qts);
       }
@@ -434,7 +434,7 @@ export class UpdateManager {
     if (this.#c.guaranteeUpdateDelivery) {
       await this.#c.storage.setUpdate(UpdateManager.MAIN_BOX_ID, update);
     }
-    if (update.qts != 0) {
+    if (update.qts !== 0) {
       await this.#setUpdateQts(update.qts);
     }
     this.#queueUpdate(update, 0n, true);
@@ -466,14 +466,14 @@ export class UpdateManager {
       const seq = updates_.seq;
       const seqStart = "seq_start" in updates_ ? updates_.seq_start : updates_.seq;
       if (checkGap) {
-        if (seqStart == 0) {
+        if (seqStart === 0) {
           checkGap = false;
           this.#L$processUpdates.debug("seqStart=0");
         } else {
           const localState = await this.#getLocalState();
           const localSeq = localState.seq;
 
-          if (localSeq + 1 == seqStart) {
+          if (localSeq + 1 === seqStart) {
             // The update sequence can be applied.
             localState.seq = seq;
             localState.date = updates_.date;
@@ -721,7 +721,7 @@ export class UpdateManager {
     let lastTimeout = 1;
     this.#LrecoverChannelUpdateGap.debug(`recovering channel update gap [${channelId}, ${source}]`);
     const pts_ = await this.#c.storage.getChannelPts(channelId);
-    let pts = pts_ == null ? 1 : pts_;
+    let pts = pts_ === null ? 1 : pts_;
     let retryIn = 5;
     while (true) {
       const { access_hash } = await this.#c.getInputPeer(ZERO_CHANNEL_ID + -Number(channelId)).then((v) => Api.as("inputPeerChannel", v));
@@ -732,7 +732,7 @@ export class UpdateManager {
           pts,
           channel: { _: "inputChannel", channel_id: channelId, access_hash },
           filter: { _: "channelMessagesFilterEmpty" },
-          limit: await this.#c.storage.getAccountType() == "user" ? CHANNEL_DIFFERENCE_LIMIT_USER : CHANNEL_DIFFERENCE_LIMIT_BOT,
+          limit: await this.#c.storage.getAccountType() === "user" ? CHANNEL_DIFFERENCE_LIMIT_USER : CHANNEL_DIFFERENCE_LIMIT_BOT,
         });
         lastTimeout = difference.timeout ?? 1;
       } catch (err) {
@@ -768,7 +768,7 @@ export class UpdateManager {
           await this.#processUpdates({ _: "updateNewChannelMessage", message, pts: 0, pts_count: 0 }, false);
         }
         const pts_ = Api.as("dialog", difference.dialog).pts;
-        if (pts_ != undefined) {
+        if (pts_ !== undefined) {
           pts = pts_;
         } else {
           unreachable();
@@ -790,7 +790,7 @@ export class UpdateManager {
     this.#handleUpdatesSet.add(boxId);
     do {
       const maybeUpdate = await this.#c.storage.getFirstUpdate(boxId);
-      if (maybeUpdate == null) {
+      if (maybeUpdate === null) {
         break;
       }
       const [key, update] = maybeUpdate;

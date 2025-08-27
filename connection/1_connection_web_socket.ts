@@ -62,7 +62,7 @@ export class ConnectionWebSocket implements Connection {
         this.#buffer = concat([this.#buffer, data]);
 
         if (
-          this.#nextResolve != null && this.#buffer.length >= this.#nextResolve[0]
+          this.#nextResolve !== null && this.#buffer.length >= this.#nextResolve[0]
         ) {
           this.#nextResolve[1].resolve();
           this.#nextResolve = null;
@@ -82,7 +82,7 @@ export class ConnectionWebSocket implements Connection {
   }
 
   get connected(): boolean {
-    return !!this.#webSocket && this.#webSocket.readyState == WebSocket.OPEN;
+    return !!this.#webSocket && this.#webSocket.readyState === WebSocket.OPEN;
   }
 
   #isConnecting = false;
@@ -137,7 +137,7 @@ export class ConnectionWebSocket implements Connection {
   }
 
   #rejectRead() {
-    if (this.#nextResolve != null) {
+    if (this.#nextResolve !== null) {
       this.#nextResolve[1].reject(errConnectionNotOpen);
       this.#nextResolve = null;
     }

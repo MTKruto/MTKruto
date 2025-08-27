@@ -192,10 +192,10 @@ function getPhotoSourceCompareType(source: PhotoSource) {
       if (!(0 <= type && type <= 127)) {
         unreachable();
       }
-      if (type == "a".charCodeAt(0)) {
+      if (type === "a".charCodeAt(0)) {
         return 0;
       }
-      if (type == "c".charCodeAt(0)) {
+      if (type === "c".charCodeAt(0)) {
         return 1;
       }
       return type + 5;
@@ -220,12 +220,12 @@ function getPhotoSourceCompareType(source: PhotoSource) {
 }
 function writePhotoSourceUniqueId(photoSource: PhotoSource, writer: TLWriter) {
   const compareType = getPhotoSourceCompareType(photoSource);
-  if (compareType != 2 && compareType != 3) {
+  if (compareType !== 2 && compareType !== 3) {
     writer.write(new Uint8Array([compareType]));
     return;
   }
 
-  if (compareType == 2) {
+  if (compareType === 2) {
     writer.write(new Uint8Array([0x02]));
   }
   writer.writeInt64("volumeId" in photoSource ? photoSource.volumeId : "stickerSetId" in photoSource ? photoSource.stickerSetId : unreachable());
@@ -291,7 +291,7 @@ function hasFileReference(fileType: FileType) {
 
 export function deserializeFileId(fileId: string): FileId {
   const reader = new TLReader(rleDecode(base64DecodeUrlSafe(fileId)));
-  if (reader.buffer[reader.buffer.length - 1] != PERSISTENT_ID_VERSION) {
+  if (reader.buffer[reader.buffer.length - 1] !== PERSISTENT_ID_VERSION) {
     throw new InputError("Unsupported file ID format");
   }
   const originalType = reader.readInt32() as FileType;
@@ -308,7 +308,7 @@ export function deserializeFileId(fileId: string): FileId {
   const id = reader.readInt64();
   const accessHash = reader.readInt64();
 
-  if (getFileTypeClass(type) == FileTypeClass.Photo) {
+  if (getFileTypeClass(type) === FileTypeClass.Photo) {
     const source = deserializePhotoSource(reader);
     return { type, dcId, fileReference, location: { type: "photo", id, accessHash, source } };
   } else {
@@ -322,13 +322,13 @@ export function serializeFileId(fileId: FileId): string {
   if (fileId.fileReference) {
     type |= FILE_REFERENCE_FLAG;
   }
-  if (fileId.location.type == "web") {
+  if (fileId.location.type === "web") {
     type |= WEB_LOCATION_FLAG;
   }
   writer.writeInt32(type);
   writer.writeInt32(fileId.dcId);
 
-  if (fileId.location.type == "web") {
+  if (fileId.location.type === "web") {
     writer.writeString(fileId.location.url);
     writer.writeInt64(fileId.location.accessHash);
   } else {
@@ -339,7 +339,7 @@ export function serializeFileId(fileId: FileId): string {
     writer.writeInt64(fileId.location.id);
     writer.writeInt64(fileId.location.accessHash);
 
-    if (fileId.location.type == "photo") {
+    if (fileId.location.type === "photo") {
       serializePhotoSource(fileId.location.source, writer);
     }
   }
@@ -350,11 +350,11 @@ export function serializeFileId(fileId: FileId): string {
 
 export function toUniqueFileId(fileId: FileId): string {
   const writer = new TLWriter();
-  const type = fileId.location.type == "web" ? 0 : (getFileTypeClass(fileId.type) + 1);
+  const type = fileId.location.type === "web" ? 0 : (getFileTypeClass(fileId.type) + 1);
   writer.writeInt32(type);
-  if (fileId.location.type == "web") {
+  if (fileId.location.type === "web") {
     writer.writeString(fileId.location.url);
-  } else if (fileId.location.type == "common") {
+  } else if (fileId.location.type === "common") {
     writer.writeInt64(fileId.location.id);
   } else {
     switch (fileId.location.source.type) {

@@ -48,7 +48,7 @@ export class SessionPlain extends Session implements Session {
     }
 
     const buffer = await this.transport.transport.receive();
-    if (buffer.length == 4) {
+    if (buffer.length === 4) {
       const int = bigIntFromBuffer(buffer, true, true);
       throw new TransportError(Number(int));
     }

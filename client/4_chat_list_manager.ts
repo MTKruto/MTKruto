@@ -75,7 +75,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     }
 
     const message_ = await this.#c.messageStorage.getLastMessage(chatId);
-    if (message_ != null) {
+    if (message_ !== null) {
       const message = await this.#c.messageManager.constructMessage(message_);
       if (chat) {
         chat.order = getChatListItemOrder(message, chat.pinned);
@@ -156,7 +156,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
   #pinnedChatsLoaded = false;
   async #loadPinnedChats() {
     const [pinnedChats, pinnedArchiveChats] = await Promise.all([this.#c.storage.getPinnedChats(0), this.#c.storage.getPinnedChats(1)]);
-    if (pinnedChats != null && pinnedArchiveChats != null) {
+    if (pinnedChats !== null && pinnedArchiveChats !== null) {
       this.#pinnedChats = pinnedChats;
       this.#pinnedArchiveChats = pinnedArchiveChats;
       this.#storageHadPinnedChats = true;
@@ -164,7 +164,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     this.#pinnedChatsLoaded = true;
   }
   async #fetchPinnedChats(listId: number | null = null) {
-    if (listId == null || listId == 0) {
+    if (listId === null || listId === 0) {
       const dialogs = await this.#c.invoke({ _: "messages.getPinnedDialogs", folder_id: 0 });
       const pinnedChats = new Array<number>();
       for (const dialog of dialogs.dialogs) {
@@ -173,7 +173,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       this.#pinnedChats = pinnedChats;
       await this.#c.storage.setPinnedChats(0, this.#pinnedChats);
     }
-    if (listId == null || listId == 1) {
+    if (listId === null || listId === 1) {
       const dialogs = await this.#c.invoke({ _: "messages.getPinnedDialogs", folder_id: 1 });
       const pinnedArchiveChats = new Array<number>();
       for (const dialog of dialogs.dialogs) {
@@ -182,7 +182,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       this.#pinnedArchiveChats = pinnedArchiveChats;
       await this.#c.storage.setPinnedChats(1, this.#pinnedArchiveChats);
     }
-    if (listId != null && listId != 0 && listId != 1) {
+    if (listId !== null && listId !== 0 && listId !== 1) {
       unreachable();
     }
   }
@@ -231,7 +231,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     for (const { peer, folder_id: listId } of update.folder_peers) {
       const chatId = Api.peerToChatId(peer);
       const [chat, currentListId] = this.#getChatAnywhere(chatId);
-      if (chat !== undefined && listId != currentListId) {
+      if (chat !== undefined && listId !== currentListId) {
         this.#getChatList(currentListId).delete(chatId);
         this.#getChatList(listId).set(chatId, chat);
         this.#sendChatUpdate(chatId, true);
@@ -252,7 +252,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       }
     }
     for (const chat of chats.values()) {
-      if (chat.pinned != -1 && pinnedChats.indexOf(chat.chat.id) == -1) {
+      if (chat.pinned !== -1 && pinnedChats.indexOf(chat.chat.id) === -1) {
         chat.order = getChatListItemOrder(chat.lastMessage, -1);
         chat.pinned = -1;
         await this.#sendChatUpdate(chat.chat.id, false);
@@ -266,7 +266,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     const channel = await this.#c.getPeer(peer);
     const chatId = Api.peerToChatId(peer);
     await this.#c.storage.setFullChat(chatId, null);
-    if (channel != null && "left" in channel && channel.left) {
+    if (channel !== null && "left" in channel && channel.left) {
       this.#removeChat(chatId);
     } else if (Api.is("channelForbidden", channel)) {
       this.#removeChat(chatId);
@@ -280,7 +280,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     const chat = await this.#c.getPeer(peer);
     const chatId = Api.peerToChatId(peer);
     await this.#c.storage.setFullChat(chatId, null);
-    if (chat != null && "left" in chat && chat.left) {
+    if (chat !== null && "left" in chat && chat.left) {
       await this.#removeChat(chatId);
     } else if (Api.is("chatForbidden", chat)) {
       await this.#removeChat(chatId);
@@ -294,7 +294,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     const chat = await this.#c.getPeer(peer);
     const chatId = Api.peerToChatId(peer);
     await this.#c.storage.setFullChat(chatId, null);
-    if (chat != null) {
+    if (chat !== null) {
       await this.#updateOrAddChat(chatId);
     }
   }
@@ -355,7 +355,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     const inputPeer = await this.#c.getInputPeer(chatId);
     const chatId_ = await this.#c.getInputPeerChatId(inputPeer);
     let fullChat = await this.#c.storage.getFullChat(chatId_);
-    if (fullChat != null) {
+    if (fullChat !== null) {
       return fullChat;
     }
     if (canBeInputUser(inputPeer)) {
@@ -366,7 +366,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       fullChat = (await this.#c.invoke({ _: "channels.getFullChannel", channel: toInputChannel(inputPeer) })).full_chat;
     }
     await this.#c.storage.setFullChat(chatId_, fullChat);
-    if (fullChat != null && "call" in fullChat && Api.is("inputGroupCall", fullChat.call)) {
+    if (fullChat !== null && "call" in fullChat && Api.is("inputGroupCall", fullChat.call)) {
       await this.#c.storage.setGroupCallAccessHash(fullChat.call.id, fullChat.call.access_hash);
     }
     return fullChat;
@@ -374,7 +374,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
 
   async getChat(chatId: ID) {
     const fullChat = await this.#getFullChat(chatId);
-    if (fullChat == null) {
+    if (fullChat === null) {
       throw new InputError("Chat not found.");
     }
     return constructChat(fullChat, this.#c.getPeer);
@@ -474,7 +474,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       unreachable();
     }
     const chat = updates.chats[0];
-    if (chat._ != "chat") {
+    if (chat._ !== "chat") {
       unreachable();
     }
     return constructChatP(chat);
@@ -484,8 +484,8 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     title = this.#checkChatTitle(title);
     const updates = await this.#c.invoke({
       _: "channels.createChannel",
-      broadcast: type == "channel" ? true : undefined,
-      megagroup: type == "supergroup" ? true : undefined,
+      broadcast: type === "channel" ? true : undefined,
+      megagroup: type === "supergroup" ? true : undefined,
       forum: params && ("forum" in params) && params.forum ? true : undefined,
       title,
       about: params?.description || "",
@@ -495,7 +495,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       unreachable();
     }
     const chat = updates.chats[0];
-    if (chat._ != "channel") {
+    if (chat._ !== "channel") {
       unreachable();
     }
     return constructChatP(chat);

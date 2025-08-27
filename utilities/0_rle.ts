@@ -24,7 +24,7 @@ export function rleEncode(s: Uint8Array) {
 
   for (const b of s) {
     if (!b) {
-      if (n == 255) {
+      if (n === 255) {
         r.push(0);
         r.push(n);
         n = 1;

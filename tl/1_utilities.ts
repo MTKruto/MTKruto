@@ -23,7 +23,7 @@ import { unreachable } from "../0_deps.ts";
 import type { Schema } from "./0_types.ts";
 
 export function isValidObject(object: any, schema: Schema) {
-  return object != null && typeof object === "object" && typeof object._ === "string" && schema.definitions[object._] !== undefined;
+  return object !== null && typeof object === "object" && typeof object._ === "string" && schema.definitions[object._] !== undefined;
 }
 export function assertIsValidObject(object: any, schema: Schema) {
   if (!isValidObject(object, schema)) {
@@ -42,7 +42,7 @@ export function isOneOf(names: string[], value: unknown, schema: Schema) {
   return names.some((v) => is(v, value, schema));
 }
 export function isOfEnum(name: string, value: any, schema: Schema) {
-  return isValidObject(value, schema) && schema.definitions[value._][2] == name;
+  return isValidObject(value, schema) && schema.definitions[value._][2] === name;
 }
 export function as(name: string, value: unknown, schema: Schema) {
   if (is(name, value, schema)) {

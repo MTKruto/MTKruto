@@ -118,7 +118,7 @@ Deno.test("Ignore invalid user IDs", () => {
 [User](tgs://user?id=123)
 [User](tg://user?id=)
 [User](tg://userr?id=123)`;
-  assertEquals(parseMarkdown(text)[1].filter((v) => v.type == "textMention"), []);
+  assertEquals(parseMarkdown(text)[1].filter((v) => v.type === "textMention"), []);
 });
 
 Deno.test("Ignore invalid URLs", () => {

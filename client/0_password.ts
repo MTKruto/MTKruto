@@ -48,7 +48,7 @@ export function isSafePrime(primeBytes: Uint8Array, g: number) {
       0x6F, 0x4F, 0xAD, 0xF0, 0x34, 0xB1, 0x04, 0x03, 0x11, 0x9C, 0xD8, 0xE3,
       0xB9, 0x2F, 0xCC, 0x5B,
   ]);
-  if (goodPrime.every((v, i) => v == primeBytes[i])) {
+  if (goodPrime.every((v, i) => v === primeBytes[i])) {
     if ([3, 4, 5, 7].includes(g)) {
       return true;
     }

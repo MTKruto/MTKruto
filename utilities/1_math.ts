@@ -52,11 +52,11 @@ export function factorize(pq: bigint): [bigint, bigint] {
         q = b - a;
       }
       p = gcd(q, pq);
-      if (p != one) {
+      if (p !== one) {
         found = true;
         break;
       }
-      if ((j & (j - 1)) == 0) {
+      if ((j & (j - 1)) === 0) {
         b = a;
       }
     }

@@ -87,7 +87,7 @@ export class StorageMemory implements Storage {
       if (Array.isArray(parts)) {
         if ("prefix" in filter) {
           for (const [i, p] of filter.prefix.entries()) {
-            if (toString(p) != toString(parts[i])) {
+            if (toString(p) !== toString(parts[i])) {
               continue entries;
             }
           }
@@ -106,7 +106,7 @@ export class StorageMemory implements Storage {
     key_ = this.#fixKey(key_);
 
     const key = toString(key_);
-    if (value != null) {
+    if (value !== null) {
       this.map.set(key, value);
     } else {
       this.map.delete(key);

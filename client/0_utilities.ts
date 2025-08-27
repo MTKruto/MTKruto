@@ -46,22 +46,22 @@ function validateUsername(string: string, ignoreAt = false) {
   if (ignoreAt && string.startsWith("@")) {
     string = string.slice(1);
   }
-  if (string.length == 0 || string.length > 32) {
+  if (string.length === 0 || string.length > 32) {
     throw errInvalidUsername(string);
   }
   if (!isAlpha(string[0])) {
     throw errInvalidUsername(string);
   }
   for (const c of string) {
-    if (!isAlpha(c) && !isDigit(c) && c != "_") {
+    if (!isAlpha(c) && !isDigit(c) && c !== "_") {
       throw errInvalidUsername(string);
     }
   }
-  if (string[string.length - 1] == "_") {
+  if (string[string.length - 1] === "_") {
     throw errInvalidUsername(string);
   }
   for (let i = 1; i < string.length; ++i) {
-    if (string[i - 1] == "_" && string[i] == "_") {
+    if (string[i - 1] === "_" && string[i] === "_") {
       throw errInvalidUsername(string);
     }
   }
@@ -79,17 +79,17 @@ export function getUsername(string: string) {
       //
     }
   }
-  if (url === null || (url.protocol != "http:" && url.protocol != "https:")) {
+  if (url === null || (url.protocol !== "http:" && url.protocol !== "https:")) {
     return validateUsername(string, true);
   }
-  if (url.hostname != "telegram.dog" && url.hostname != "telegram.me" && url.hostname != "t.me" && !url.hostname.endsWith(".t.me")) {
+  if (url.hostname !== "telegram.dog" && url.hostname !== "telegram.me" && url.hostname !== "t.me" && !url.hostname.endsWith(".t.me")) {
     return validateUsername(string, true);
   }
-  if (url.hostname == "telegram.dog" || url.hostname == "telegram.me" || url.hostname == "t.me") {
+  if (url.hostname === "telegram.dog" || url.hostname === "telegram.me" || url.hostname === "t.me") {
     return validateUsername(url.pathname.split("/")[1]);
   }
   const parts = url.hostname.split(".");
-  if (parts.length != 3) {
+  if (parts.length !== 3) {
     return validateUsername(string);
   }
   return validateUsername(parts[0]);

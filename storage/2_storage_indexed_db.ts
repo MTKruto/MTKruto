@@ -36,7 +36,7 @@ export class StorageIndexedDB implements Storage {
   #supportsFiles: boolean;
 
   constructor(name: string, params?: StorageIndexedDBParams) {
-    if (typeof indexedDB == "undefined") {
+    if (typeof indexedDB === "undefined") {
       throw new Error("Unavailable in current environment");
     }
     this.#name = name;
@@ -100,7 +100,7 @@ export class StorageIndexedDB implements Storage {
     // deno-lint-ignore no-explicit-any
     let tx: IDBRequest<any>;
 
-    if (v == null) {
+    if (v === null) {
       tx = store.delete(fixKey(k));
     } else {
       tx = store.put(v, fixKey(k));
@@ -129,7 +129,7 @@ export class StorageIndexedDB implements Storage {
     return new Promise<T | null>((res, rej) => {
       tx.onerror = rej;
       tx.onsuccess = () => {
-        res(tx.result == undefined ? null : tx.result);
+        res(tx.result === undefined ? null : tx.result);
       };
     });
   }

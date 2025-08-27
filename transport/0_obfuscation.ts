@@ -28,7 +28,7 @@ export async function getObfuscationParameters(protocol: number, connection: Con
   while (true) {
     init = concat([crypto.getRandomValues(new Uint8Array(56)), bufferFromBigInt(protocol, 4, false), crypto.getRandomValues(new Uint8Array(4))]);
 
-    if (init[0] == 0xEF) {
+    if (init[0] === 0xEF) {
       continue;
     }
 
@@ -39,7 +39,7 @@ export async function getObfuscationParameters(protocol: number, connection: Con
     }
 
     const secondInt = dataView.getInt32(4);
-    if (secondInt == 0x00000000) {
+    if (secondInt === 0x00000000) {
       continue;
     }
 

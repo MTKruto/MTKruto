@@ -65,7 +65,7 @@ export class FileManager {
     if (checkName) {
       name = checkName(name);
     }
-    if (size == 0 || size < -1) {
+    if (size === 0 || size < -1) {
       throw new InputError("Invalid file size.");
     }
 
@@ -122,7 +122,7 @@ export class FileManager {
           }
         }),
       );
-      if (promises.length == poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
+      if (promises.length === poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
         await Promise.all(promises);
         promises = [];
       }
@@ -167,7 +167,7 @@ export class FileManager {
               }
             }),
           );
-          if (promises.length == poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
+          if (promises.length === poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
             await Promise.all(promises);
             promises = [];
           }
@@ -232,7 +232,7 @@ export class FileManager {
         throw new InputError("Streamed upload not allowed.");
       }
       contents = source;
-    } else if (typeof source === "object" && source != null && (Symbol.iterator in source || Symbol.asyncIterator in source)) {
+    } else if (typeof source === "object" && source !== null && (Symbol.iterator in source || Symbol.asyncIterator in source)) {
       if (!allowStream) {
         throw new InputError("Streamed upload not allowed.");
       }
@@ -267,10 +267,10 @@ export class FileManager {
         }
       }
       const response = await fetch(url);
-      if (response.body == null) {
+      if (response.body === null) {
         throw new InputError("Invalid response");
       }
-      if (name == "file") {
+      if (name === "file") {
         const contentType = response.headers.get("content-type")?.split(";")[0].trim();
         if (contentType) {
           name += extension(contentType);
@@ -301,10 +301,10 @@ export class FileManager {
     const signal = params?.signal;
     signal?.throwIfAborted();
     const id = "id" in location ? location.id : "photo_id" in location ? location.photo_id : null;
-    if (id != null && this.#c.storage.supportsFiles) {
+    if (id !== null && this.#c.storage.supportsFiles) {
       const file = await this.#c.storage.getFile(id);
-      const partOffset = file == null ? 0 : params?.offset ? Math.ceil(10 / file[1]) - 1 : 0;
-      if (file != null && file[0] > 0) {
+      const partOffset = file === null ? 0 : params?.offset ? Math.ceil(10 / file[1]) - 1 : 0;
+      if (file !== null && file[0] > 0) {
         yield* this.#c.storage.iterFileParts(id, file[0], partOffset, signal);
         return;
       }
@@ -334,13 +334,13 @@ export class FileManager {
 
         if (Api.is("upload.file", file)) {
           yield file.bytes;
-          if (id != null) {
+          if (id !== null) {
             await this.#c.storage.saveFilePart(id, part, file.bytes);
             signal?.throwIfAborted();
           }
           ++part;
           if (file.bytes.length < limit) {
-            if (id != null) {
+            if (id !== null) {
               await this.#c.storage.setFilePartCount(id, part + 1, chunkSize);
               signal?.throwIfAborted();
             }
@@ -377,13 +377,13 @@ export class FileManager {
     if (chunkSize <= 0) {
       throw new InputError("chunkSize must be bigger than zero.");
     }
-    if (chunkSize % 1 != 0) {
+    if (chunkSize % 1 !== 0) {
       throw new InputError("chunkSize must be a whole number.");
     }
     if (chunkSize > max) {
       throw new InputError("chunkSize is too big.");
     }
-    if (mod(chunkSize, 1024) != 0) {
+    if (mod(chunkSize, 1024) !== 0) {
       throw new InputError("chunkSize must be divisible by 1024.");
     }
   }
@@ -392,23 +392,23 @@ export class FileManager {
     if (offset < 0) {
       throw new InputError("offset must not be smaller than zero.");
     }
-    if (offset % 1 != 0) {
+    if (offset % 1 !== 0) {
       throw new InputError("offset must be a whole number.");
     }
-    if (mod(offset, 1024) != 0) {
+    if (mod(offset, 1024) !== 0) {
       throw new InputError("offset must be divisible by 1024.");
     }
   }
 
   async *download(fileId: string, params?: DownloadParams) {
     const fileId_ = deserializeFileId(fileId);
-    if (fileId_.location.type == "photo") {
+    if (fileId_.location.type === "photo") {
       switch (fileId_.type) {
         case FileType.ProfilePhoto: {
-          if (fileId_.location.source.type != PhotoSourceType.ChatPhotoBig && fileId_.location.source.type != PhotoSourceType.ChatPhotoSmall) {
+          if (fileId_.location.source.type !== PhotoSourceType.ChatPhotoBig && fileId_.location.source.type !== PhotoSourceType.ChatPhotoSmall) {
             unreachable();
           }
-          const big = fileId_.location.source.type == PhotoSourceType.ChatPhotoBig;
+          const big = fileId_.location.source.type === PhotoSourceType.ChatPhotoBig;
           const peer = await this.#c.getInputPeer(Number(fileId_.location.source.chatId));
           const location: Api.inputPeerPhotoFileLocation = { _: "inputPeerPhotoFileLocation", big: big ? true : undefined, peer, photo_id: fileId_.location.id };
           yield* this.downloadInner(location, fileId_.dcId, params);
@@ -450,7 +450,7 @@ export class FileManager {
           break;
         }
       }
-    } else if (fileId_.location.type == "common") {
+    } else if (fileId_.location.type === "common") {
       const location: Api.inputDocumentFileLocation = {
         _: "inputDocumentFileLocation",
         id: fileId_.location.id,
@@ -466,7 +466,7 @@ export class FileManager {
 
   async getStickerSetName(inputStickerSet: Api.inputStickerSetID, hash = 0) {
     const maybeStickerSetName = await this.#c.messageStorage.getStickerSetName(inputStickerSet.id, inputStickerSet.access_hash);
-    if (maybeStickerSetName != null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
+    if (maybeStickerSetName !== null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
       return maybeStickerSetName[0];
     } else {
       try {
@@ -494,7 +494,7 @@ export class FileManager {
     let shouldFetch = false;
     for (const id_ of id) {
       const maybeDocument = await this.#c.messageStorage.getCustomEmojiDocument(BigInt(id_));
-      if (maybeDocument != null && Date.now() - maybeDocument[1].getTime() <= FileManager.#CUSTOM_EMOJI_TTL) {
+      if (maybeDocument !== null && Date.now() - maybeDocument[1].getTime() <= FileManager.#CUSTOM_EMOJI_TTL) {
         const document_ = maybeDocument[0];
         const fileId_: FileId = {
           type: FileType.Document,

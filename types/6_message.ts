@@ -838,10 +838,10 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     }
     return { ...message, groupCreated, newChatMembers };
   } else if (Api.is("messageActionChannelCreate", message_.action)) {
-    if (message.chat.type == "channel") {
+    if (message.chat.type === "channel") {
       const channelCreated = true;
       return { ...message, channelCreated };
-    } else if (message.chat.type == "supergroup") {
+    } else if (message.chat.type === "supergroup") {
       const supergroupCreated = true;
       return { ...message, supergroupCreated };
     } else {
@@ -1005,7 +1005,7 @@ export async function constructMessage(
     }
   }
 
-  if (message_.post_author != undefined) {
+  if (message_.post_author !== undefined) {
     message.authorSignature = message_.post_author;
   }
 
@@ -1014,7 +1014,7 @@ export async function constructMessage(
     message.forwardFrom = constructForwardHeader(message_.fwd_from, getPeer);
   }
 
-  if (message_.grouped_id != undefined) {
+  if (message_.grouped_id !== undefined) {
     message.mediaGroupId = String(message_.grouped_id);
   }
 
@@ -1145,7 +1145,7 @@ export async function constructMessage(
     m = { ...message, invoice };
   }
 
-  if (m == null) {
+  if (m === null) {
     const unsupported = true;
     m = { ...message, unsupported };
   }

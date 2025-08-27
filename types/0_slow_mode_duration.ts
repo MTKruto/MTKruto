@@ -29,9 +29,9 @@ export type SlowModeDuration =
 export function slowModeDurationToSeconds(duration: SlowModeDuration): number {
   const amount = Number(duration.slice(0, -1));
   const unit = duration[duration.length - 1];
-  if (unit == "s") {
+  if (unit === "s") {
     return amount;
   }
-  const multiplyBy = unit == "h" ? 60 ** 2 : 60;
+  const multiplyBy = unit === "h" ? 60 ** 2 : 60;
   return amount * multiplyBy;
 }

@@ -146,7 +146,7 @@ export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | A
       lastName: chat.last_name,
       username,
       languageCode: chat.lang_code,
-      also: usernames?.filter((v) => v != username),
+      also: usernames?.filter((v) => v !== username),
       isScam: chat.scam || false,
       isFake: chat.fake || false,
       isPremium: chat.premium || false,
@@ -222,7 +222,7 @@ export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | A
     }
 
     chat_.username = chat.username ?? chat.usernames?.[0].username;
-    chat_.also = chat.usernames?.map((v) => v.username).filter((v) => v != chat_.username);
+    chat_.also = chat.usernames?.map((v) => v.username).filter((v) => v !== chat_.username);
     if (chat_.isRestricted) {
       chat_.restrictionReason = (chat.restriction_reason ?? []).map(constructRestrictionReason);
     }

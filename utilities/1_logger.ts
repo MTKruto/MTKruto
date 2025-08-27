@@ -27,7 +27,7 @@ export function setLogVerbosity(verbosity_: number) {
   verbosity = verbosity_;
 }
 const LOG_FILTER = getString("LOG_FILTER");
-let filter: RegExp | null = LOG_FILTER == null ? null : new RegExp(LOG_FILTER);
+let filter: RegExp | null = LOG_FILTER === null ? null : new RegExp(LOG_FILTER);
 export function setLogFilter(filter_: RegExp | null) {
   filter = filter_;
 }
@@ -109,7 +109,7 @@ export function getLogger(scope: string) {
       if (verbosity < verbosity_) {
         return;
       }
-      if (filter != null && !filter.test(scope)) {
+      if (filter !== null && !filter.test(scope)) {
         return;
       }
       let fn: typeof provider["log"];

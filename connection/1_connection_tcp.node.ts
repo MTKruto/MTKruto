@@ -45,7 +45,7 @@ export class ConnectionTCP implements Connection {
   }
 
   #rejectRead() {
-    if (this.#nextResolve != null) {
+    if (this.#nextResolve !== null) {
       this.#nextResolve[1].reject(errConnectionNotOpen);
       this.#nextResolve = null;
     }
@@ -66,7 +66,7 @@ export class ConnectionTCP implements Connection {
       }
 
       if (
-        this.#nextResolve != null && this.#buffer.length >= this.#nextResolve[0]
+        this.#nextResolve !== null && this.#buffer.length >= this.#nextResolve[0]
       ) {
         const resolve = this.#nextResolve[1].resolve;
         this.#nextResolve = null;
@@ -91,7 +91,7 @@ export class ConnectionTCP implements Connection {
   }
 
   get connected() {
-    return this.#socket?.readyState == "open";
+    return this.#socket?.readyState === "open";
   }
 
   #assertConnected() {
@@ -124,7 +124,7 @@ export class ConnectionTCP implements Connection {
           this.#socket!.write(
             p,
             (err) => {
-              (err === undefined || err == null) ? resolve() : reject(err);
+              (err === undefined || err === null) ? resolve() : reject(err);
             },
           );
         });

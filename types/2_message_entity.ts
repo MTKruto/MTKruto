@@ -265,7 +265,7 @@ export function messageEntityToTlObject(entity: MessageEntity, getPeer: PeerGett
     case "textLink": {
       try {
         const url = new URL(entity.url);
-        if (url.protocol == "tg:" && url.hostname == "user" && (url.pathname == "/" || url.pathname == "")) {
+        if (url.protocol === "tg:" && url.hostname === "user" && (url.pathname === "/" || url.pathname === "")) {
           const id = Number(url.searchParams.get("id"));
           if (!isNaN(id)) {
             const peer = getPeer({ _: "peerUser", user_id: BigInt(id) });

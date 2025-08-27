@@ -58,11 +58,11 @@ export interface Poll {
 export function constructPoll(media_: Api.messageMediaPoll): Poll {
   const poll = media_.poll;
   const correctOption = media_.results.results?.find((v) => v.correct)?.option;
-  const correctOptionIndex = correctOption !== undefined ? poll.answers.findIndex((v) => v.option.every((v, i) => correctOption[i] == v)) : undefined;
+  const correctOptionIndex = correctOption !== undefined ? poll.answers.findIndex((v) => v.option.every((v, i) => correctOption[i] === v)) : undefined;
   return cleanObject({
     id: String(poll.id),
     question: poll.question.text,
-    questionEntities: poll.question.entities.map(constructMessageEntity).filter((v): v is MessageEntity => v != null),
+    questionEntities: poll.question.entities.map(constructMessageEntity).filter((v): v is MessageEntity => v !== null),
     options: poll.answers.map((v) => constructPollOption(v, media_.results.results ?? [])),
     totalVoterCount: media_.results.total_voters ?? 0,
     isClosed: poll.closed || false,
@@ -71,7 +71,7 @@ export function constructPoll(media_: Api.messageMediaPoll): Poll {
     allowMultipleAnswers: poll.quiz ? undefined : poll.multiple_choice || false,
     correctOptionIndex,
     explanation: media_.results.solution,
-    explanationEntities: media_.results.solution_entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v != null),
+    explanationEntities: media_.results.solution_entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v !== null),
     openPeriod: poll.close_period,
     closeDate: poll.close_date,
   });

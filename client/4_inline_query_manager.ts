@@ -71,7 +71,7 @@ export class InlineQueryManager implements UpdateProcessor<InlineQueryManagerUpd
       offset = params?.offset ?? "";
     const botId = await this.#c.getInputPeerChatId(bot), peerId = await this.#c.getInputPeerChatId(peer);
     const maybeResults = await this.#c.messageStorage.getInlineQueryAnswer(botId, peerId, query, offset);
-    if (maybeResults != null && !InlineQueryManager.#isExpired(maybeResults[1], maybeResults[0].cache_time)) {
+    if (maybeResults !== null && !InlineQueryManager.#isExpired(maybeResults[1], maybeResults[0].cache_time)) {
       return constructInlineQueryAnswer(maybeResults[0]);
     }
     const then = new Date();

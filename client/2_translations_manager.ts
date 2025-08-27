@@ -60,7 +60,7 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
 
   async #getTranslationsInner(platform: string, language: string, assert = false): Promise<Translation[]> {
     const maybeTranslations = await this.#c.messageStorage.getTranslations(platform, language);
-    if (maybeTranslations != null) {
+    if (maybeTranslations !== null) {
       return maybeTranslations[1];
     } else if (assert) {
       unreachable();
@@ -76,7 +76,7 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
       this.#updateTranslationsQueue.add(async () => {
         try {
           const maybeTranslations = await this.#c.messageStorage.getTranslations(platform, language);
-          if (maybeTranslations != null) {
+          if (maybeTranslations !== null) {
             const difference = await this.#c.invoke({ _: "langpack.getDifference", lang_pack: platform, lang_code: language, from_version: maybeTranslations[0] });
             const newTranslations = this.#applyLangPackDifference(maybeTranslations[1], difference.strings);
             await this.#c.messageStorage.setTranslations(platform, language, difference.version, newTranslations);
@@ -101,7 +101,7 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
           const maybeTranslations = await this.#c.messageStorage.getTranslations(platform, language);
           let newTranslations: Translation[] | null = null;
           if (maybeTranslations) {
-            if (fromVersion != maybeTranslations[0]) {
+            if (fromVersion !== maybeTranslations[0]) {
               resolve("mustUpdate");
               return;
             }
@@ -114,7 +114,7 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
         }
       });
     });
-    if (result == "mustUpdate") {
+    if (result === "mustUpdate") {
       await this.#updateTranslations(platform, language);
       return await this.#getTranslationsInner(platform, language, true);
     } else {
@@ -125,10 +125,10 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
   #applyLangPackDifference(translations: Translation[], strings: Api.LangPackString[]) {
     for (const string of strings) {
       if (Api.is("langPackStringDeleted", string)) {
-        translations = translations.filter((v) => v.key != string.key);
+        translations = translations.filter((v) => v.key !== string.key);
       } else {
         const newTranslation = constructTranslation(string);
-        const currentTranslation = translations.find((v) => v.key == string.key);
+        const currentTranslation = translations.find((v) => v.key === string.key);
         if (currentTranslation) {
           Object.assign(currentTranslation, newTranslation);
         } else {

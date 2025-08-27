@@ -21,14 +21,14 @@
 import { pooledMap, SECOND, unreachable } from "../0_deps.ts";
 
 export function drop(maybePromise: unknown) {
-  if (maybePromise !== undefined && maybePromise != null && typeof maybePromise === "object" && maybePromise instanceof Promise) {
+  if (maybePromise !== undefined && maybePromise !== null && typeof maybePromise === "object" && maybePromise instanceof Promise) {
     maybePromise.catch(() => {});
   }
 }
 
 export function mustPrompt(message: string) {
   const result = prompt(message);
-  if (result == null) {
+  if (result === null) {
     throw unreachable();
   } else {
     return result;
@@ -38,6 +38,7 @@ export function mustPrompt(message: string) {
 export function mustPromptNumber(message: string) {
   let result = Number(BigInt(mustPrompt(message)));
   while (isNaN(result)) {
+    // deno-lint-ignore no-console
     console.log("Expected a number.");
     result = Number(BigInt(mustPrompt(message)));
   }
@@ -46,7 +47,7 @@ export function mustPromptNumber(message: string) {
 
 export function mustPromptOneOf<T extends readonly string[]>(message: string, choices: T): T[number] {
   let result = prompt(message);
-  while (result == null || !choices.includes(result)) {
+  while (result === null || !choices.includes(result)) {
     result = prompt(message);
   }
   return result;

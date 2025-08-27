@@ -48,7 +48,7 @@ export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.7/base64";
 
 import { contentType as contentType_ } from "jsr:@std/media-types@1.1.0/content-type";
 export const contentType: typeof contentType_ = (extentionOrType) => {
-  if (extentionOrType == "tgs") {
+  if (extentionOrType === "tgs") {
     return "application/x-tgsticker";
   } else {
     return contentType_(extentionOrType);
@@ -56,7 +56,7 @@ export const contentType: typeof contentType_ = (extentionOrType) => {
 };
 import { extension as extension_ } from "jsr:@std/media-types@1.1.0/extension";
 export function extension(mimeType: string) {
-  if (mimeType == "application/x-tgsticker") {
+  if (mimeType === "application/x-tgsticker") {
     return "tgs";
   } else {
     return extension_(mimeType) || "unknown";

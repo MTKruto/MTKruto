@@ -35,7 +35,7 @@ const dcToNameMap: Record<DC, string> = {
 export const transportProviderWebSocket = (params?: { wss?: boolean }): TransportProvider => {
   return ({ dc, cdn }) => {
     params ??= {};
-    params.wss ??= typeof location !== "undefined" && location.protocol == "http:" && location.hostname != "localhost" ? false : true;
+    params.wss ??= typeof location !== "undefined" && location.protocol === "http:" && location.hostname !== "localhost" ? false : true;
     const url = `${params.wss ? "wss" : "ws"}://${dcToNameMap[dc]}${cdn ? "-1" : ""}.web.telegram.org/${dc.endsWith("-test") ? "apiws_test" : "apiws"}`;
     const connection = new ConnectionWebSocket(url);
     const transport = new TransportIntermediate(connection, true);
