@@ -1,8 +1,8 @@
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
-import { Thumbnail } from "./0_thumbnail.ts";
-import { constructSticker2, Sticker } from "./1_sticker.ts";
+import { type FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
+import type { Thumbnail } from "./0_thumbnail.ts";
+import { constructSticker2, type Sticker } from "./1_sticker.ts";
 
 export interface StickerSet {
   name: string;
