@@ -22,7 +22,7 @@ import { decodeBase64, encodeBase64 } from "../0_deps.ts";
 import { unreachable } from "../0_deps.ts";
 import { StorageKeyPart } from "./0_storage.ts";
 
-export const ValueType = Object.freeze({
+const ValueType_ = {
   Boolean: 0,
   Number: 1,
   String: 2,
@@ -31,7 +31,8 @@ export const ValueType = Object.freeze({
   Uint8Array: 5,
   Array: 6,
   Map: 7,
-});
+} as const;
+export const ValueType: Readonly<typeof ValueType_> = Object.freeze(ValueType_);
 
 export type ValueType = typeof ValueType[keyof typeof ValueType];
 

@@ -28,7 +28,7 @@ const PERSISTENT_ID_VERSION = 4;
 const WEB_LOCATION_FLAG = 1 << 24;
 const FILE_REFERENCE_FLAG = 1 << 25;
 
-export const FileType = Object.freeze({
+const FileType_ = {
   Thumbnail: 0,
   ProfilePhoto: 1,
   Photo: 2,
@@ -53,7 +53,8 @@ export const FileType = Object.freeze({
   VideoStory: 21,
   Size: 22,
   None: 23,
-});
+} as const;
+export const FileType: Readonly<typeof FileType_> = Object.freeze(FileType_);
 
 export type FileType = typeof FileType[keyof typeof FileType];
 
@@ -65,7 +66,7 @@ const FileTypeClass = Object.freeze({
   Temp: 4,
 });
 
-export const PhotoSourceType = Object.freeze({
+const PhotoSourceType_ = {
   Legacy: 0,
   Thumbnail: 1,
   ChatPhotoSmall: 2,
@@ -76,7 +77,8 @@ export const PhotoSourceType = Object.freeze({
   ChatPhotoBigLegacy: 7,
   StickerSetThumbnailLegacy: 8,
   StickerSetThumbnailVersion: 9,
-});
+} as const;
+export const PhotoSourceType: Readonly<typeof PhotoSourceType_> = Object.freeze(PhotoSourceType_);
 
 type PhotoSource =
   | { type: typeof PhotoSourceType["Legacy"]; secret: bigint }
