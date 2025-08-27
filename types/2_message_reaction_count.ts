@@ -18,10 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
-import { ChatP, constructChatP } from "./1_chat_p.ts";
-import { constructReactionCount, ReactionCount } from "./1_reaction_count.ts";
+import type { Api } from "../2_tl.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { type ChatP, constructChatP } from "./1_chat_p.ts";
+import { constructReactionCount, type ReactionCount } from "./1_reaction_count.ts";
 
 /** Information on the reactions made to a channel post. */
 export interface MessageReactionCount {

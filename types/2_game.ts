@@ -20,10 +20,10 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
-import { MessageEntity } from "./0_message_entity.ts";
-import { Animation, constructAnimation } from "./1_animation.ts";
-import { constructPhoto, Photo } from "./1_photo.ts";
+import { type FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
+import type { MessageEntity } from "./0_message_entity.ts";
+import { type Animation, constructAnimation } from "./1_animation.ts";
+import { constructPhoto, type Photo } from "./1_photo.ts";
 
 /** A game. */
 export interface Game {

@@ -20,11 +20,11 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
-import { constructLocation, Location } from "./0_location.ts";
-import { MessageReference } from "./0_message_reference.ts";
-import { constructReaction, Reaction, reactionToTlObject } from "./0_reaction.ts";
-import { constructVenue, Venue } from "./1_venue.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { constructLocation, type Location } from "./0_location.ts";
+import type { MessageReference } from "./0_message_reference.ts";
+import { constructReaction, type Reaction, reactionToTlObject } from "./0_reaction.ts";
+import { constructVenue, type Venue } from "./1_venue.ts";
 
 /** @unlisted */
 export interface StoryInteractiveAreaPosition {

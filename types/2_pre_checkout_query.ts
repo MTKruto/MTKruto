@@ -20,10 +20,10 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, decodeText } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
-import { constructOrderInfo, OrderInfo } from "./1_order_info.ts";
-import { constructUser, User } from "./1_user.ts";
+import type { Api } from "../2_tl.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { constructOrderInfo, type OrderInfo } from "./1_order_info.ts";
+import { constructUser, type User } from "./1_user.ts";
 
 export interface PreCheckoutQuery {
   id: string;

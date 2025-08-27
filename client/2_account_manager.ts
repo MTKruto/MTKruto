@@ -21,10 +21,10 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { birthdayToTlObject, constructInactiveChat, constructUser, ID } from "../3_types.ts";
-import { AddContactParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, UpdateProfileParams } from "./0_params.ts";
+import { birthdayToTlObject, constructInactiveChat, constructUser, type ID } from "../3_types.ts";
+import type { AddContactParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, UpdateProfileParams } from "./0_params.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
-import { C } from "./1_types.ts";
+import type { C } from "./1_types.ts";
 
 export class AccountManager {
   #c: C;

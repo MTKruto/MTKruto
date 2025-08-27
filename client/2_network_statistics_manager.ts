@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { C } from "./1_types.ts";
+import type { C } from "./1_types.ts";
 
 export class NetworkStatisticsManager {
   #c: C;

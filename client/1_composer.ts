@@ -19,9 +19,9 @@
  */
 
 import { InputError } from "../0_errors.ts";
-import { MaybePromise } from "../1_utilities.ts";
-import { Update, UpdateIntersection, User } from "../3_types.ts";
-import { FilterQuery, match, WithFilter } from "./0_filters.ts";
+import type { MaybePromise } from "../1_utilities.ts";
+import type { Update, UpdateIntersection, User } from "../3_types.ts";
+import { type FilterQuery, match, type WithFilter } from "./0_filters.ts";
 
 export type NextFunction<T = void> = () => Promise<T>;
 

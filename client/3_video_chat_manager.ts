@@ -23,12 +23,12 @@ import { InputError } from "../0_errors.ts";
 import { getRandomId, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { constructLiveStreamChannel, constructVideoChat, ID, Update, VideoChatActive, VideoChatScheduled } from "../3_types.ts";
-import { DownloadLiveStreamChunkParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
-import { UpdateProcessor } from "./0_update_processor.ts";
+import { constructLiveStreamChannel, constructVideoChat, type ID, type Update, type VideoChatActive, type VideoChatScheduled } from "../3_types.ts";
+import type { DownloadLiveStreamChunkParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputUser } from "./0_utilities.ts";
-import { C as C_ } from "./1_types.ts";
-import { FileManager } from "./2_file_manager.ts";
+import type { C as C_ } from "./1_types.ts";
+import type { FileManager } from "./2_file_manager.ts";
 
 interface C extends C_ {
   fileManager: FileManager;

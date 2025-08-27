@@ -22,9 +22,9 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { cleanObject, decodeText, encodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { UsernameResolver } from "./_getters.ts";
-import { LoginUrl } from "./0_login_url.ts";
-import { constructMiniAppButtonInfo, MiniAppButtonInfo } from "./0_mini_app_button_info.ts";
+import type { UsernameResolver } from "./_getters.ts";
+import type { LoginUrl } from "./0_login_url.ts";
+import { constructMiniAppButtonInfo, type MiniAppButtonInfo } from "./0_mini_app_button_info.ts";
 
 /** @unlisted */
 export interface _InlineKeyboardButtonBase {

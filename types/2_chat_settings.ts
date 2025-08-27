@@ -20,7 +20,7 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { constructUser, User } from "./1_user.ts";
+import { constructUser, type User } from "./1_user.ts";
 
 export interface ChatSettings {
   report: boolean;

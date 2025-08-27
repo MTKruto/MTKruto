@@ -19,8 +19,8 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Connection } from "../2_connection.ts";
-import { Transport } from "./0_transport.ts";
+import type { Connection } from "../2_connection.ts";
+import type { Transport } from "./0_transport.ts";
 
 export type DC = "1" | "2" | "3" | "4" | "5" | "1-test" | "2-test" | "3-test";
 export function getDcIps(dc: DC, version: "ipv4" | "ipv6"): [string, ...string[]] {

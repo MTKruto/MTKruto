@@ -20,9 +20,9 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
-import { constructPhoto, Photo } from "./1_photo.ts";
-import { constructVideo, Video } from "./1_video.ts";
+import { type FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
+import { constructPhoto, type Photo } from "./1_photo.ts";
+import { constructVideo, type Video } from "./1_video.ts";
 
 /** @unlisted */
 export interface StoryContentPhoto {

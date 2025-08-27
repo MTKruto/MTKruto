@@ -18,8 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ID } from "./0_id.ts";
-import { ReplyQuote } from "./1_reply_quote.ts";
+import type { ID } from "./0_id.ts";
+import type { ReplyQuote } from "./1_reply_quote.ts";
 
 /** @unlisted */
 export interface ReplyToMessage {

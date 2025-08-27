@@ -21,11 +21,11 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructClaimedGifts, constructGift, ID } from "../3_types.ts";
-import { GetClaimedGiftsParams, SendGiftParams } from "./0_params.ts";
+import { constructClaimedGifts, constructGift, type ID } from "../3_types.ts";
+import type { GetClaimedGiftsParams, SendGiftParams } from "./0_params.ts";
 import { getLimit } from "./0_utilities.ts";
-import { C as C_ } from "./1_types.ts";
-import { MessageManager } from "./3_message_manager.ts";
+import type { C as C_ } from "./1_types.ts";
+import type { MessageManager } from "./3_message_manager.ts";
 
 interface C extends C_ {
   messageManager: MessageManager;

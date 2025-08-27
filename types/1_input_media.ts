@@ -18,10 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { FileSource } from "./0_file_source.ts";
-import { MessageEntity } from "./0_message_entity.ts";
-import { ParseMode } from "./0_parse_mode.ts";
-import { SelfDestructOption } from "./0_self_destruct_option.ts";
+import type { FileSource } from "./0_file_source.ts";
+import type { MessageEntity } from "./0_message_entity.ts";
+import type { ParseMode } from "./0_parse_mode.ts";
+import type { SelfDestructOption } from "./0_self_destruct_option.ts";
 
 /** @unlisted */
 export interface _InputMediaCommon {

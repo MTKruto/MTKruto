@@ -19,8 +19,8 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
-import { constructStoryReaction, StoryReaction } from "./1_story_reaction.ts";
+import type { Api } from "../2_tl.ts";
+import { constructStoryReaction, type StoryReaction } from "./1_story_reaction.ts";
 
 /** The interactions made with a story. */
 export interface StoryInteractions {

@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MiniAppButtonInfo } from "./0_mini_app_button_info.ts";
+import type { MiniAppButtonInfo } from "./0_mini_app_button_info.ts";
 
 /** A button to be shown along with the results of an inline query. */
 export interface InlineQueryResultButton {

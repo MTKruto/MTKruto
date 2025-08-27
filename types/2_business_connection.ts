@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
-import { constructUser, User } from "./1_user.ts";
+import type { Api } from "../2_tl.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { constructUser, type User } from "./1_user.ts";
 
 /** A business connection. */
 export interface BusinessConnection {

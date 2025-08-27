@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Api } from "../2_tl.ts";
+import type { Api } from "../2_tl.ts";
 
 export type MessageSearchFilter =
   | "empty"

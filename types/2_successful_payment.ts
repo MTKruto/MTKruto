@@ -19,8 +19,8 @@
  */
 
 import { cleanObject, decodeText } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
-import { constructOrderInfo, OrderInfo } from "./1_order_info.ts";
+import type { Api } from "../2_tl.ts";
+import { constructOrderInfo, type OrderInfo } from "./1_order_info.ts";
 
 export interface SuccessfulPayment {
   currency: string;

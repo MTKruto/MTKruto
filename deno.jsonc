@@ -2,14 +2,16 @@
   "lock": false,
   "exclude": [".github/"],
   "compilerOptions": {
-    "lib": ["dom", "dom.asynciterable", "esnext", "deno.unstable"]
+    "lib": ["dom", "dom.asynciterable", "esnext", "deno.unstable"],
+    "verbatimModuleSyntax": true
   },
   "fmt": {
     "lineWidth": 2000
   },
   "lint": {
     "rules": {
-      "exclude": ["no-node-globals", "no-process-global"]
+      "exclude": ["no-node-globals", "no-process-global"],
+      "include": ["verbatim-module-syntax"]
     }
   },
   "tasks": {

@@ -18,10 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MessageEntity } from "./0_message_entity.ts";
-import { ParseMode } from "./0_parse_mode.ts";
-import { PriceTag } from "./0_price_tag.ts";
-import { LinkPreview } from "./4_link_preview.ts";
+import type { MessageEntity } from "./0_message_entity.ts";
+import type { ParseMode } from "./0_parse_mode.ts";
+import type { PriceTag } from "./0_price_tag.ts";
+import type { LinkPreview } from "./4_link_preview.ts";
 
 /**
  * A message content that shares a contact.
