@@ -20,7 +20,7 @@
 
 import { decodeBase64, encodeBase64 } from "../0_deps.ts";
 import { unreachable } from "../0_deps.ts";
-import { StorageKeyPart } from "./0_storage.ts";
+import type { StorageKeyPart } from "./0_storage.ts";
 
 export enum ValueType {
   Boolean,

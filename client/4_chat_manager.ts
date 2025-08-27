@@ -21,16 +21,16 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
-import { chatMemberRightsToTlObject, FileSource, ID, Reaction, reactionToTlObject, Update } from "../3_types.ts";
+import { type ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
+import { chatMemberRightsToTlObject, type FileSource, type ID, type Reaction, reactionToTlObject, type Update } from "../3_types.ts";
 import { inputPeerToPeer } from "../tl/2_telegram.ts";
-import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, SetChatMemberRightsParams, SetChatPhotoParams, SetSignaturesEnabledParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, SetChatMemberRightsParams, SetChatPhotoParams, SetSignaturesEnabledParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
-import { UpdateProcessor } from "./0_update_processor.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
-import { C as C_ } from "./1_types.ts";
-import { FileManager } from "./2_file_manager.ts";
-import { MessageManager } from "./3_message_manager.ts";
+import type { C as C_ } from "./1_types.ts";
+import type { FileManager } from "./2_file_manager.ts";
+import type { MessageManager } from "./3_message_manager.ts";
 
 interface C extends C_ {
   fileManager: FileManager;

@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api } from "../2_tl.ts";
+import type { Api } from "../2_tl.ts";
 
 /** A rolled dice. */
 export interface Dice {

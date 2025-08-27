@@ -20,7 +20,7 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { unreachable } from "../0_deps.ts";
-import { Schema } from "./0_types.ts";
+import type { Schema } from "./0_types.ts";
 
 export function isValidObject(object: any, schema: Schema) {
   return object != null && typeof object === "object" && typeof object._ === "string" && schema.definitions[object._] !== undefined;

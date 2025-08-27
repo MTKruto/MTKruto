@@ -20,11 +20,11 @@
 
 import { InputError } from "../0_errors.ts";
 import { getRandomId } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
-import { assertMessageType, constructTopic, ID } from "../3_types.ts";
-import { CreateTopicParams, EditTopicParams } from "./0_params.ts";
-import { C as C_ } from "./1_types.ts";
-import { MessageManager } from "./3_message_manager.ts";
+import type { Api } from "../2_tl.ts";
+import { assertMessageType, constructTopic, type ID } from "../3_types.ts";
+import type { CreateTopicParams, EditTopicParams } from "./0_params.ts";
+import type { C as C_ } from "./1_types.ts";
+import type { MessageManager } from "./3_message_manager.ts";
 
 interface C extends C_ {
   messageManager: MessageManager;

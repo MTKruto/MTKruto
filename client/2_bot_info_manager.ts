@@ -18,10 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api } from "../2_tl.ts";
-import { BotCommand, botCommandScopeToTlObject } from "../3_types.ts";
-import { GetMyCommandsParams, SetMyCommandsParams } from "./0_params.ts";
-import { C } from "./1_types.ts";
+import type { Api } from "../2_tl.ts";
+import { type BotCommand, botCommandScopeToTlObject } from "../3_types.ts";
+import type { GetMyCommandsParams, SetMyCommandsParams } from "./0_params.ts";
+import type { C } from "./1_types.ts";
 
 export class BotInfoManager {
   #c: C;

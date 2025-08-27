@@ -19,7 +19,7 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
+import type { Api } from "../2_tl.ts";
 
 /** A shared contact. */
 export interface Contact {

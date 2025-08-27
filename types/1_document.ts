@@ -19,7 +19,7 @@
  */
 
 import { Api } from "../2_tl.ts";
-import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
+import { constructThumbnail, type Thumbnail } from "./0_thumbnail.ts";
 
 /** A document. */
 export interface Document {

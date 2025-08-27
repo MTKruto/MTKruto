@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { DC } from "./3_transport.ts";
+import type { DC } from "./3_transport.ts";
 
 export type PublicKeys = readonly [bigint, [bigint, bigint]][];
 

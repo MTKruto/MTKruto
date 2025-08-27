@@ -20,7 +20,7 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
+import { type FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 
 /** A chat photo. */
 export interface ChatPhoto {

@@ -23,7 +23,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { MessageEntity, MessageEntityType, sortMessageEntities } from "../3_types.ts";
+import { type MessageEntity, type MessageEntityType, sortMessageEntities } from "../3_types.ts";
 import { InputError } from "../0_errors.ts";
 import { decodeText, encodeText } from "../1_utilities.ts";
 

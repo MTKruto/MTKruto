@@ -20,7 +20,7 @@
 
 import { concat } from "../0_deps.ts";
 import { bufferFromBigInt, CTR } from "../1_utilities.ts";
-import { Connection } from "../2_connection.ts";
+import type { Connection } from "../2_connection.ts";
 
 export async function getObfuscationParameters(protocol: number, connection: Connection) {
   let init: Uint8Array<ArrayBuffer>;

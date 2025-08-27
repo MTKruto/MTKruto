@@ -18,10 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { cleanObject, MaybePromise } from "../1_utilities.ts";
+import { cleanObject, type MaybePromise } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { constructMaskPosition, MaskPosition } from "./0_mask_position.ts";
-import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
+import { constructMaskPosition, type MaskPosition } from "./0_mask_position.ts";
+import { constructThumbnail, type Thumbnail } from "./0_thumbnail.ts";
 
 /** A sticker. */
 export interface Sticker {

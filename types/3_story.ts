@@ -20,14 +20,14 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
-import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
-import { ChatP, constructChatP } from "./1_chat_p.ts";
-import { constructStoryPrivacy, StoryPrivacy } from "./1_story_privacy.ts";
-import { constructStoryContent, StoryContent } from "./2_story_content.ts";
-import { constructStoryInteractions, StoryInteractions } from "./2_story_interactions.ts";
-import { constructStoryInteractiveArea, StoryInteractiveArea } from "./2_story_interactive_area.ts";
+import type { Api } from "../2_tl.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { constructMessageEntity, type MessageEntity } from "./0_message_entity.ts";
+import { type ChatP, constructChatP } from "./1_chat_p.ts";
+import { constructStoryPrivacy, type StoryPrivacy } from "./1_story_privacy.ts";
+import { constructStoryContent, type StoryContent } from "./2_story_content.ts";
+import { constructStoryInteractions, type StoryInteractions } from "./2_story_interactions.ts";
+import { constructStoryInteractiveArea, type StoryInteractiveArea } from "./2_story_interactive_area.ts";
 
 /** A story. */
 export interface Story {

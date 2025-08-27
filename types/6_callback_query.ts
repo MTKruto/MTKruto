@@ -22,9 +22,9 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, cleanObject, decodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
-import { constructUser, User } from "./1_user.ts";
-import { Message, MessageGetter } from "./5_message.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { constructUser, type User } from "./1_user.ts";
+import type { Message, MessageGetter } from "./5_message.ts";
 
 /** A received callback query. */
 export interface CallbackQuery {

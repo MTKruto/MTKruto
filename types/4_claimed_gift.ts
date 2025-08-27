@@ -21,10 +21,10 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { EntityGetter } from "./_getters.ts";
-import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
-import { ChatP, constructChatP } from "./1_chat_p.ts";
-import { constructGift, Gift } from "./3_gift.ts";
+import type { EntityGetter } from "./_getters.ts";
+import { constructMessageEntity, type MessageEntity } from "./0_message_entity.ts";
+import { type ChatP, constructChatP } from "./1_chat_p.ts";
+import { constructGift, type Gift } from "./3_gift.ts";
 
 /** A gift claimed by a user or a channel. */
 export interface ClaimedGift {

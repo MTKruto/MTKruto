@@ -20,19 +20,19 @@
 
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { encodeText, fromUnixTimestamp, getLogger, getRandomId, Logger } from "../1_utilities.ts";
+import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { constructMiniAppInfo, constructVoiceTranscription, deserializeFileId, FileId, InputMedia, isMessageType, PollOption, PriceTag, SelfDestructOption, selfDestructOptionToInt, VoiceTranscription } from "../3_types.ts";
-import { assertMessageType, ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
+import { constructMiniAppInfo, constructVoiceTranscription, deserializeFileId, type FileId, type InputMedia, isMessageType, type PollOption, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { assertMessageType, type ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, type StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
-import { UpdateProcessor } from "./0_update_processor.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
-import { C as C_ } from "./1_types.ts";
-import { FileManager } from "./2_file_manager.ts";
+import type { C as C_ } from "./1_types.ts";
+import type { FileManager } from "./2_file_manager.ts";
 
 const FALLBACK_MIME_TYPE = "application/octet-stream";
 const STICKER_MIME_TYPES = ["image/webp", "video/webm", "application/x-tgsticker"];

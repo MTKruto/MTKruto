@@ -18,10 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api, Mtproto } from "../2_tl.ts";
-import { ConnectionState, EntityGetter, ID, ParseMode, Update } from "../3_types.ts";
-import { InvokeParams } from "./0_params.ts";
-import { StorageOperations } from "./0_storage_operations.ts";
+import type { Api, Mtproto } from "../2_tl.ts";
+import type { ConnectionState, EntityGetter, ID, ParseMode, Update } from "../3_types.ts";
+import type { InvokeParams } from "./0_params.ts";
+import type { StorageOperations } from "./0_storage_operations.ts";
 
 export interface C {
   id: number;

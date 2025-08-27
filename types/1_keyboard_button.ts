@@ -20,9 +20,9 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { ChatAdministratorRights, chatAdministratorRightsToTlObject, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
-import { KeyboardButtonPollType } from "./0_keyboard_button_poll_type.ts";
-import { MiniAppButtonInfo } from "./0_mini_app_button_info.ts";
+import { type ChatAdministratorRights, chatAdministratorRightsToTlObject, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
+import type { KeyboardButtonPollType } from "./0_keyboard_button_poll_type.ts";
+import type { MiniAppButtonInfo } from "./0_mini_app_button_info.ts";
 
 /** @unlisted */
 export interface KeyboardButtonText {
