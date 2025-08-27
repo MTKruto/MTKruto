@@ -5,12 +5,32 @@ import { PhotoSourceType } from "./_file_id.ts";
 import type { Thumbnail } from "./0_thumbnail.ts";
 import { constructSticker2, type Sticker } from "./1_sticker.ts";
 
+/** A sticker (or emoji) set. */
 export interface StickerSet {
+  /** The unique identifier of the set. */
+  id: string;
+  /** The set's slug. */
   name: string;
+  /** The set's title. */
   title: string;
+  /** The type of the set. */
   type: "regular" | "mask" | "customEmoji";
+  /** The stickers (or emojis) in the set. */
   stickers: Sticker[];
+  /** Thumbnails if available. */
   thumbnails: Thumbnail[];
+  /** Whether the emojis in the set are adaptive. */
+  adaptive: boolean;
+  /** Whether the emojis in the set can be set as channel status. */
+  canSetAsChannelStatus: boolean;
+  /** Whether the current account is the creator of the set. */
+  creator: boolean;
+  /** Whether the set is official. */
+  official: boolean;
+  /** Whether the set is archived. */
+  archived: boolean;
+  /** A point in time in which the set was added to the current account. */
+  addedAt?: number;
 }
 
 export function constructStickerSet(stickerSet: Api.messages_StickerSet): StickerSet {
@@ -60,11 +80,28 @@ export function constructStickerSet(stickerSet: Api.messages_StickerSet): Sticke
     });
   }
 
-  return {
+  const adaptive = !!stickerSet.set.text_color;
+  const canSetAsChannelStatus = !!stickerSet.set.channel_emoji_status;
+  const creator = !!stickerSet.set.creator;
+  const official = !!stickerSet.set.official;
+  const archived = !!stickerSet.set.archived;
+
+  const stickerSet_: StickerSet = {
+    id: String(stickerSet.set.id),
     type,
     name,
     title,
     stickers,
     thumbnails,
+    adaptive,
+    canSetAsChannelStatus,
+    creator,
+    official,
+    archived,
   };
+  if (stickerSet.set.installed_date) {
+    stickerSet_.addedAt = stickerSet.set.installed_date;
+  }
+
+  return stickerSet_;
 }
