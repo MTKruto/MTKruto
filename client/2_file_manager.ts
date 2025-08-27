@@ -213,7 +213,7 @@ export class FileManager {
 
   async #handleError(err: unknown, retryIn: number, logPrefix: string) {
     if (retryIn > 0) {
-      this.#Lupload.warning(`${logPrefix} retrying in ${retryIn} seconds`);
+      this.#Lupload.warning(`${logPrefix} retrying in ${retryIn} seconds:`, err);
       await delay(retryIn * SECOND);
     } else {
       throw err;

@@ -1,6 +1,7 @@
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
 import { type FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
+import { PhotoSourceType } from "./_file_id.ts";
 import type { Thumbnail } from "./0_thumbnail.ts";
 import { constructSticker2, type Sticker } from "./1_sticker.ts";
 
@@ -31,22 +32,33 @@ export function constructStickerSet(stickerSet: Api.messages_StickerSet): Sticke
     };
     return constructSticker2(v, serializeFileId(fileId), toUniqueFileId(fileId), name);
   });
-  const thumbnails = new Array<Thumbnail>(); // TODO
+  const thumbnails = new Array<Thumbnail>();
 
-  // stickerSet.set.thumbs?.map((v) => {
-  //   return constructThumbnail(
-  //     Api.as("photoSize", v),
-  //     {
-  //       _: "document",
-  //       id: stickerSet.set.thumb_document_id,
-  //       access_hash: stickerSet.set.access_hash,
-  //       file_reference: new Uint16Array(),
-  //       date: 0,
-  //       mime_type: '',
-  //       size:
-  //     },
-  //   );
-  // });
+  const thumb = stickerSet.set.thumbs?.[0];
+  if (thumb !== undefined && stickerSet.set.thumb_version !== undefined && stickerSet.set.thumb_dc_id !== undefined && Api.is("photoSize", thumb)) {
+    const fileId: FileId = {
+      type: FileType.Photo,
+      dcId: stickerSet.set.thumb_dc_id,
+      location: {
+        type: "photo",
+        source: {
+          type: PhotoSourceType.StickerSetThumbnailVersion,
+          stickerSetId: stickerSet.set.id,
+          stickerSetAccessHash: stickerSet.set.access_hash,
+          version: stickerSet.set.thumb_version,
+        },
+        id: 0n,
+        accessHash: 0n,
+      },
+    };
+    thumbnails.push({
+      fileId: serializeFileId(fileId),
+      fileUniqueId: toUniqueFileId(fileId),
+      width: thumb.w,
+      height: thumb.h,
+      fileSize: thumb.size,
+    });
+  }
 
   return {
     type,
