@@ -22,6 +22,7 @@ import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import { PackShortNameInvalid } from "../3_errors.ts";
 import { getDc } from "../3_transport.ts";
 import { constructMiniAppInfo, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputMedia, isMessageType, type PollOption, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
@@ -1660,6 +1661,32 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
   }
 
   async getStickerSet(name: string) {
+    if (name.includes("/")) {
+      let valid = false;
+      try {
+        const url = new URL(name);
+        const pathname = "/addstickers/";
+        valid = (url.protocol === "http:" || url.protocol === "https:") && url.hostname === "t.me" && url.pathname.startsWith(pathname) && url.pathname.length > PackShortNameInvalid.length;
+        if (valid) {
+          name = url.pathname.slice(pathname.length);
+          if (name.endsWith("/")) {
+            name = name.slice(0, -1);
+            if (name === "") {
+              valid = false;
+            }
+          }
+        }
+      } catch (err) {
+        if (err instanceof TypeError) {
+          valid = false;
+        } else {
+          throw err;
+        }
+      }
+      if (!valid) {
+        throw new InputError("Invalid sticker set name or link.");
+      }
+    }
     const result = await this.#c.invoke({ _: "messages.getStickerSet", hash: 0, stickerset: { _: "inputStickerSetShortName", short_name: name } });
     return constructStickerSet(result);
   }

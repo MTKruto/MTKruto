@@ -2586,7 +2586,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get a sticker set.
    *
    * @method ms
-   * @param name The name of the sticker set.
+   * @param name The name of the sticker set or its link.
    */
   async getStickerSet(name: string): Promise<StickerSet> {
     return await this.#messageManager.getStickerSet(name);
