@@ -22,23 +22,13 @@ import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { deserializeFileId, FileType, getPhotoFileId, serializeFileId } from "./_file_id.ts";
-<<<<<<< HEAD:types/7_inline_query_result.ts
-import { UsernameResolver } from "./_getters.ts";
-import { ParseMode } from "./0_parse_mode.ts";
-import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
-import { getPhotoSizes } from "./1_photo.ts";
-import { constructMessageEntity, MessageEntity } from "./2_message_entity.ts";
-import { constructReplyMarkup, ReplyMarkupInlineKeyboard, replyMarkupToTlObject } from "./2_reply_markup.ts";
-import { MessageContent } from "./6_message_content.ts";
-=======
 import type { UsernameResolver } from "./_getters.ts";
-import { constructMessageEntity, type MessageEntity } from "./0_message_entity.ts";
 import type { ParseMode } from "./0_parse_mode.ts";
 import { constructThumbnail, type Thumbnail } from "./0_thumbnail.ts";
 import { getPhotoSizes } from "./1_photo.ts";
+import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
 import { constructReplyMarkup, type ReplyMarkupInlineKeyboard, replyMarkupToTlObject } from "./2_reply_markup.ts";
-import type { MessageContent } from "./5_message_content.ts";
->>>>>>> main:types/6_inline_query_result.ts
+import type { MessageContent } from "./6_message_content.ts";
 
 /** @unlisted */
 export type InlineQueryResultType =

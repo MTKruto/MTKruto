@@ -20,13 +20,8 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
-<<<<<<< HEAD:types/7_topic.ts
-import { ChatP } from "./1_chat_p.ts";
-import { Message, MessageForumTopicCreated, MessageForumTopicEdited } from "./6_message.ts";
-=======
 import type { ChatP } from "./1_chat_p.ts";
-import type { Message, MessageForumTopicCreated, MessageForumTopicEdited } from "./5_message.ts";
->>>>>>> main:types/6_topic.ts
+import type { Message, MessageForumTopicCreated, MessageForumTopicEdited } from "./6_message.ts";
 
 export interface Topic {
   id: number;

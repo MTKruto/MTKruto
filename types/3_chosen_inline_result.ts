@@ -21,9 +21,9 @@
 import { unreachable } from "../0_deps.ts";
 import { base64EncodeUrlSafe, cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { constructLocation, Location } from "./0_location.ts";
-import { PeerGetter } from "./1_chat_p.ts";
-import { constructUser, User } from "./2_user.ts";
+import { constructLocation, type Location } from "./0_location.ts";
+import type { PeerGetter } from "./1_chat_p.ts";
+import { constructUser, type User } from "./2_user.ts";
 
 /** A chosen inline result. */
 export interface ChosenInlineResult {

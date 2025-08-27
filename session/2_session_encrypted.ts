@@ -20,9 +20,9 @@
 
 import { assertEquals, concat, delay, ige256Decrypt, ige256Encrypt, initTgCrypto, SECOND } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
-import { bigIntFromBuffer, bufferFromBigInt, drop, getLogger, getRandomId, gunzip, Logger, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
-import { deserializeMessage, message, msg_container, Mtproto, repr, serializeMessage, TLReader, X } from "../2_tl.ts";
-import { DC } from "../3_transport.ts";
+import { bigIntFromBuffer, bufferFromBigInt, drop, getLogger, getRandomId, gunzip, type Logger, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
+import { deserializeMessage, type message, type msg_container, Mtproto, repr, serializeMessage, TLReader, X } from "../2_tl.ts";
+import type { DC } from "../3_transport.ts";
 import { AbortableLoop } from "../client/0_abortable_loop.ts";
 import { TLWriter } from "../tl/1_tl_writer.ts";
 import { SessionError } from "./0_session_error.ts";

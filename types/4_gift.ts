@@ -21,19 +21,11 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-<<<<<<< HEAD:types/4_gift.ts
-import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
-import { PeerGetter } from "./1_chat_p.ts";
-import { constructSticker2, Sticker } from "./1_sticker.ts";
-import { constructUser, User } from "./2_user.ts";
-import { constructGiftUpgradedComponent, GiftUpgradedComponent } from "./3_gift_upgraded_component.ts";
-=======
 import { type FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
-import type { EntityGetter } from "./_getters.ts";
+import type { PeerGetter } from "./1_chat_p.ts";
 import { constructSticker2, type Sticker } from "./1_sticker.ts";
-import { constructUser, type User } from "./1_user.ts";
-import { constructGiftUpgradedComponent, type GiftUpgradedComponent } from "./2_gift_upgraded_component.ts";
->>>>>>> main:types/3_gift.ts
+import { constructUser, type User } from "./2_user.ts";
+import { constructGiftUpgradedComponent, type GiftUpgradedComponent } from "./3_gift_upgraded_component.ts";
 
 /**
  * An non-upgraded gift.

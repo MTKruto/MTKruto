@@ -21,15 +21,9 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-<<<<<<< HEAD:types/3_gift_upgraded_component.ts
-import { FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
-import { constructSticker2, Sticker } from "./1_sticker.ts";
-import { constructMessageEntity, MessageEntity } from "./2_message_entity.ts";
-=======
 import { type FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
-import { constructMessageEntity, type MessageEntity } from "./0_message_entity.ts";
 import { constructSticker2, type Sticker } from "./1_sticker.ts";
->>>>>>> main:types/2_gift_upgraded_component.ts
+import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
 
 /**
  * The model of an upgraded gift.

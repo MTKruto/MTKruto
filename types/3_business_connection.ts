@@ -19,9 +19,9 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { Api } from "../2_tl.ts";
-import { isChatPUser, PeerGetter } from "./1_chat_p.ts";
-import { constructUser2, User } from "./2_user.ts";
+import type { Api } from "../2_tl.ts";
+import { isChatPUser, type PeerGetter } from "./1_chat_p.ts";
+import { constructUser2, type User } from "./2_user.ts";
 
 /** A business connection. */
 export interface BusinessConnection {

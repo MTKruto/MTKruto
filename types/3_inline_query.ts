@@ -20,15 +20,9 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-<<<<<<< HEAD:types/3_inline_query.ts
-import { constructLocation, Location } from "./0_location.ts";
-import { PeerGetter } from "./1_chat_p.ts";
-import { constructUser2, User } from "./2_user.ts";
-=======
-import type { EntityGetter } from "./_getters.ts";
 import { constructLocation, type Location } from "./0_location.ts";
-import { constructUser, type User } from "./1_user.ts";
->>>>>>> main:types/2_inline_query.ts
+import type { PeerGetter } from "./1_chat_p.ts";
+import { constructUser2, type User } from "./2_user.ts";
 
 /** An incoming inline query. */
 export interface InlineQuery {

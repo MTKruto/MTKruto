@@ -20,11 +20,11 @@
 
 import { LruCache, MINUTE, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { awaitablePooledMap, base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, getLogger, Logger, MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { Storage, StorageKeyPart } from "../2_storage.ts";
+import { awaitablePooledMap, base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, getLogger, type Logger, type MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import type { Storage, StorageKeyPart } from "../2_storage.ts";
 import { Api, TLReader, TLWriter, X } from "../2_tl.ts";
-import { DC } from "../3_transport.ts";
-import { ChatP, constructChatP, Translation, VoiceTranscription } from "../3_types.ts";
+import type { DC } from "../3_transport.ts";
+import { type ChatP, constructChatP, type Translation, type VoiceTranscription } from "../3_types.ts";
 
 // key parts
 export const K = {

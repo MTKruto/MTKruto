@@ -21,20 +21,11 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-<<<<<<< HEAD
-import { Birthday, constructBirthday } from "./0_birthday.ts";
-import { constructLocation, Location } from "./0_location.ts";
-import { constructOpeningHours, OpeningHours } from "./0_opening_hours.ts";
-import { ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, PeerGetter } from "./1_chat_p.ts";
-import { constructPhoto, Photo } from "./1_photo.ts";
-=======
-import type { EntityGetter } from "./_getters.ts";
 import { type Birthday, constructBirthday } from "./0_birthday.ts";
 import { constructLocation, type Location } from "./0_location.ts";
 import { constructOpeningHours, type OpeningHours } from "./0_opening_hours.ts";
-import { type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, constructChatP } from "./1_chat_p.ts";
+import type { ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, PeerGetter } from "./1_chat_p.ts";
 import { constructPhoto, type Photo } from "./1_photo.ts";
->>>>>>> main
 
 /** @unlisted */
 export interface ChatBase {

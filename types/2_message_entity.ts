@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { PeerGetter } from "./1_chat_p.ts";
+import type { PeerGetter } from "./1_chat_p.ts";
 
 /** @unlisted */
 export type MessageEntityType =

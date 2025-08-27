@@ -20,8 +20,8 @@
 
 import { unreachable } from "../0_deps.ts";
 import { decodeText } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
-import { ChatP, PeerGetter } from "./1_chat_p.ts";
+import type { Api } from "../2_tl.ts";
+import type { ChatP, PeerGetter } from "./1_chat_p.ts";
 
 /** An answer to a poll. */
 export interface PollAnswer {

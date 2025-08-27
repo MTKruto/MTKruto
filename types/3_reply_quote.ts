@@ -18,13 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-<<<<<<< HEAD:types/3_reply_quote.ts
-import { Api } from "../2_tl.ts";
-import { constructMessageEntity, MessageEntity } from "./2_message_entity.ts";
-=======
 import type { Api } from "../2_tl.ts";
-import { constructMessageEntity, type MessageEntity } from "./0_message_entity.ts";
->>>>>>> main:types/1_reply_quote.ts
+import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
 
 /** A reference to a specific part of a message that is being replied to. */
 export interface ReplyQuote {

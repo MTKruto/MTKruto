@@ -1,4 +1,4 @@
-import { drop, MaybePromise } from "../1_utilities.ts";
+import { drop, type MaybePromise } from "../1_utilities.ts";
 
 export class AbortableLoop {
   #body: (signal: AbortSignal) => MaybePromise<void>;

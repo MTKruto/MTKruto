@@ -20,9 +20,9 @@
 
 import { cleanObject, getColorFromPeerId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
-import { RestrictionReason } from "./0_restriction_reason.ts";
-import { ChatPPrivate } from "./1_chat_p.ts";
+import { type ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
+import type { RestrictionReason } from "./0_restriction_reason.ts";
+import type { ChatPPrivate } from "./1_chat_p.ts";
 
 /** A user. */
 export interface User {
