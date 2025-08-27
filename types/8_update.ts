@@ -18,12 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { UploadProgress } from "./0_upload_progress.ts";
 import type { AuthorizationState } from "./0_authorization_state.ts";
 import type { ConnectionState } from "./0_connection_state.ts";
 import type { MessageReference } from "./0_message_reference.ts";
 import type { StoryReference } from "./0_story_reference.ts";
 import type { Translation } from "./0_translation.ts";
+import type { UploadProgress } from "./0_upload_progress.ts";
 import type { VideoChat } from "./0_video_chat.ts";
 import type { VoiceTranscription } from "./0_voice_transcription.ts";
 import type { MessageInteractions } from "./2_message_interactions.ts";
