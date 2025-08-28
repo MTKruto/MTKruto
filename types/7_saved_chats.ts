@@ -33,7 +33,7 @@ export interface SavedChats {
   total: number;
 }
 
-export async function constructSavedChats(result: Api.messages_SavedDialogs, getEntity: EntityGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter) {
+export async function constructSavedChats(result: Api.messages_SavedDialogs, getEntity: EntityGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<SavedChats> {
   if (Api.is("messages.savedDialogsNotModified", result)) {
     unreachable();
   }

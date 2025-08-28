@@ -37,7 +37,7 @@ export interface SavedChat {
   pinned: boolean;
 }
 
-export async function constructSavedChat(dialog: SavedDialog, result: Api.messages_savedDialogs | Api.messages_savedDialogsSlice, getEntity: EntityGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter) {
+export async function constructSavedChat(dialog: SavedDialog, result: Api.messages_savedDialogs | Api.messages_savedDialogsSlice, getEntity: EntityGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<SavedChat> {
   const message = result.messages.find((v) => v.id === dialog.top_message);
   if (message === undefined) {
     unreachable();
