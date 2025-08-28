@@ -81,7 +81,7 @@ export function getChannelChatId(channelId: bigint): number {
 }
 
 // convenience types
-export type AnyEntity = Api.user | Api.channel | Api.channelForbidden | Api.chat | Api.chatForbidden;
+export type AnyEntity = Api.User | Api.Chat;
 
 export type InputPeerWithIdentifier = Api.inputPeerChat | Api.inputPeerUser | Api.inputPeerChannel | Api.inputPeerUserFromMessage | Api.inputPeerChannelFromMessage;
 
