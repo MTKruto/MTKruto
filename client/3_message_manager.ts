@@ -24,12 +24,12 @@ import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } fr
 import { Api } from "../2_tl.ts";
 import { PackShortNameInvalid } from "../3_errors.ts";
 import { getDc } from "../3_transport.ts";
-import { constructMiniAppInfo, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputMedia, isMessageType, type PollOption, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { constructMiniAppInfo, constructSavedChats, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputMedia, isMessageType, type PollOption, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -1721,5 +1721,66 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       send_as,
     });
     return constructMiniAppInfo(result);
+  }
+
+  async getSavedMessages(chatId: ID, params?: GetSavedMessagesParams) {
+    this.#c.storage.assertUser("getSavedMessages");
+    const peer = await this.#c.getInputPeer(chatId);
+    const limit = getLimit(params?.limit);
+    let offsetId = params?.offsetId ?? 0;
+    if (offsetId < 0) {
+      offsetId = 0;
+    }
+    let offsetDate = params?.offsetDate ?? 0;
+    if (offsetDate < 0) {
+      offsetDate = 0;
+    }
+    const result = await this.#c.invoke({
+      _: "messages.getSavedHistory",
+      peer,
+      limit,
+      offset_id: offsetId,
+      offset_date: offsetDate,
+      add_offset: params?.addOffset ?? 0,
+      hash: 0n,
+      max_id: 0,
+      min_id: 0,
+    });
+
+    if (!("messages" in result)) {
+      unreachable();
+    }
+    const messages = new Array<Message>();
+    for (const message_ of result.messages) {
+      const message = await this.constructMessage(message_, false);
+      messages.push(message);
+    }
+    return messages;
+  }
+
+  async getSavedChats(params?: GetSavedChatsParams) {
+    const limit = getLimit(params?.limit);
+    let offsetId = params?.offsetId ?? 0;
+    if (offsetId < 0) {
+      offsetId = 0;
+    }
+    let offsetDate = params?.offsetDate ?? 0;
+    if (offsetDate < 0) {
+      offsetDate = 0;
+    }
+    let offsetPeer: Api.InputPeer = { _: "inputPeerEmpty" };
+    if (params?.offsetChatId !== undefined) {
+      offsetPeer = await this.#c.getInputPeer(params.offsetChatId);
+    }
+    const result = await this.#c.invoke({
+      _: "messages.getSavedDialogs",
+      hash: 0n,
+      limit,
+      offset_date: offsetDate,
+      offset_id: offsetId,
+      offset_peer: offsetPeer,
+      exclude_pinned: params?.excludePinned || undefined,
+    });
+    return constructSavedChats(result, this.#c.getEntity, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
   }
 }
