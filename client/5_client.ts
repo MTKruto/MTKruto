@@ -2634,6 +2634,25 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return await this.#fileManager.getProgressId();
   }
 
+  /**
+   * Get messages saved from a specific chat.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   */
+  async getSavedMessages(chatId: ID, params?: GetSavedMessagesParams): Promise<Message[]> {
+    return await this.#messageManager.getSavedMessages(chatId, params);
+  }
+
+  /**
+   * Get a list of saved chats.
+   *
+   * @method ms
+   */
+  async getSavedChats(params?: GetSavedChatsParams): Promise<SavedChats> {
+    return await this.#messageManager.getSavedChats(params);
+  }
+
   //
   // ========================= POLLS ========================= //
   //

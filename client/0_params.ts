@@ -376,6 +376,32 @@ export interface GetHistoryParams {
   limit?: number;
 }
 
+export interface GetSavedMessagesParams {
+  /** The identifier of a message. If specified, the messages will be fetched from that message. */
+  offsetId?: number;
+  /** A point in time. If specified, the messages will be fetched from that date. */
+  offsetDate?: number;
+  /** Additional offset. */
+  addOffset?: number;
+  /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
+  limit?: number;
+}
+
+export interface GetSavedChatsParams {
+  /** The identifier of a message. If specified, the list of chats will be fetched from that message. */
+  offsetId?: number;
+  /** A point in time. If specified, the list of chats will be fetched from that date. */
+  offsetDate?: number;
+  /** A chat ID. If specified, the list of chats will be fetched from that chat. */
+  offsetChatId?: ID;
+  /** Additional offset. */
+  addOffset?: number;
+  /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
+  limit?: number;
+  /** Whether to exclude pinned chats. */
+  excludePinned?: boolean;
+}
+
 export interface SetReactionsParams {
   /** Whether to make the new reactions more notable. */
   big?: boolean;
