@@ -31,7 +31,7 @@ import { unreachable } from "jsr:@std/assert@1.0.13/unreachable";
 export interface SavedChat {
   /** The chat. */
   chat: ChatP;
-  /** The chat's last message. */
+  /** The chat's last saved message. */
   lastMessage: Message;
   /** Whether the chat is pinned. */
   pinned: boolean;
