@@ -127,6 +127,8 @@ export * from "./types/6_message.ts";
 export * from "./types/7_callback_query.ts";
 export * from "./types/7_chat_list_item.ts";
 export * from "./types/7_inline_query_result.ts";
+export * from "./types/7_saved_chat.ts";
 export * from "./types/7_topic.ts";
 export * from "./types/8_inline_query_answer.ts";
+export * from "./types/8_saved_chats.ts";
 export * from "./types/8_update.ts";

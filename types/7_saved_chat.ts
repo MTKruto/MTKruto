@@ -21,10 +21,9 @@
 import { Api } from "../2_tl.ts";
 import type { SavedDialog } from "../tl/1_telegram_api.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
-import type { EntityGetter } from "./_getters.ts";
-import { type ChatP, constructChatP } from "./1_chat_p.ts";
+import { type ChatP, constructChatP, type PeerGetter } from "./1_chat_p.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
-import { constructMessage, type Message, type MessageGetter } from "./5_message.ts";
+import { constructMessage, type Message, type MessageGetter } from "./6_message.ts";
 import { unreachable } from "jsr:@std/assert@1.0.13/unreachable";
 
 /** Information on a saved chat. */
@@ -37,7 +36,7 @@ export interface SavedChat {
   pinned: boolean;
 }
 
-export async function constructSavedChat(dialog: SavedDialog, result: Api.messages_savedDialogs | Api.messages_savedDialogsSlice, getEntity: EntityGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<SavedChat> {
+export async function constructSavedChat(dialog: SavedDialog, result: Api.messages_savedDialogs | Api.messages_savedDialogsSlice, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<SavedChat> {
   const message = result.messages.find((v) => v.id === dialog.top_message);
   if (message === undefined) {
     unreachable();
@@ -48,7 +47,7 @@ export async function constructSavedChat(dialog: SavedDialog, result: Api.messag
     unreachable();
   }
   const chat = constructChatP(chat_);
-  const lastMessage = await constructMessage(message, getEntity, getMessage, getStickerSetName, false);
+  const lastMessage = await constructMessage(message, getPeer, getMessage, getStickerSetName, false);
   const pinned = !!dialog.pinned;
   return {
     chat,

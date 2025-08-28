@@ -1781,6 +1781,6 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       offset_peer: offsetPeer,
       exclude_pinned: params?.excludePinned || undefined,
     });
-    return constructSavedChats(result, this.#c.getEntity, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
+    return constructSavedChats(result, this.#c.getPeer, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
   }
 }
