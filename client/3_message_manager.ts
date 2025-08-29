@@ -1292,11 +1292,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     await this.#c.invoke({ _: "messages.setTyping", peer: await this.#c.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId }, { businessConnectionId: params?.businessConnectionId });
   }
 
-  async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams) {
+  async searchMessages(params?: SearchMessagesParams) {
     this.#c.storage.assertUser("searchMessages");
+    const peer: Api.InputPeer = params?.chatId === undefined ? { _: "inputPeerEmpty" } : await this.#c.getInputPeer(params.chatId);
+    const query = params?.query ?? "";
     const result = await this.#c.invoke({
       _: "messages.search",
-      peer: await this.#c.getInputPeer(chatId),
+      peer,
       q: query,
       add_offset: params?.addOffset ?? 0,
       filter: messageSearchFilterToTlObject(params?.filter ?? "empty"),

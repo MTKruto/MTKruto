@@ -463,7 +463,11 @@ export interface CreateStoryParams extends _CaptionCommon, _UploadCommon {
 }
 
 export interface SearchMessagesParams {
-  /** If set, only messages sent by `from` are returned. */
+  /** A chat ID. If specified, only the corresponding chat will be searched. */
+  chatId?: ID;
+  /** A search query. */
+  query?: string;
+  /** If specified, only messages sent by `from` are returned. */
   from?: ID;
   /** A search filter to apply. */
   filter?: MessageSearchFilter;
