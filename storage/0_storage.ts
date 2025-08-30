@@ -33,4 +33,5 @@ export interface Storage {
   branch(id: string): Storage;
   supportsFiles: boolean;
   mustSerialize: boolean;
+  isMemory: boolean;
 }

@@ -76,6 +76,10 @@ export class StorageIndexedDB implements Storage {
     return true;
   }
 
+  get isMemory(): boolean {
+    return false;
+  }
+
   #fixKey(key: readonly StorageKeyPart[]) {
     if (this.#id !== null) {
       return ["__S" + this.#id, ...key];

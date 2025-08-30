@@ -54,6 +54,10 @@ export class StorageSessionStorage implements Storage {
     return false;
   }
 
+  get isMemory(): boolean {
+    return false;
+  }
+
   get<T>(key_: readonly StorageKeyPart[]): T | null {
     const key = this.prefix + toString(key_);
     const value = sessionStorage.getItem(key);

@@ -37,7 +37,7 @@ const callbackQueryManagerUpdates = [
 
 type CallbackQueryManagerUpdate = Api.Types[(typeof callbackQueryManagerUpdates)[number]];
 
-export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManagerUpdate> {
+export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManagerUpdate, true> {
   #c: C;
 
   constructor(c: C) {
@@ -80,6 +80,6 @@ export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManage
   }
 
   async handleUpdate(update: CallbackQueryManagerUpdate): Promise<Update> {
-    return { callbackQuery: await constructCallbackQuery(update, this.#c.getEntity, this.#c.messageManager.getMessageWithReply.bind(this.#c.messageManager)) };
+    return { callbackQuery: await constructCallbackQuery(update, this.#c.getPeer, this.#c.messageManager.getMessageWithReply.bind(this.#c.messageManager)) };
   }
 }
