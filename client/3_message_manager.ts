@@ -1184,7 +1184,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         let shouldIgnore = false;
         if (isOutgoing) {
           if (this.#c.outgoingMessages === null) {
-            this.#c.outgoingMessages = this.#c.storage.accountType === "user" ? "all" : "business";
+            this.#c.outgoingMessages = this.#c.storage.isBot ? "business" : "all";
           }
           if (this.#c.outgoingMessages === "none") {
             shouldIgnore = true;

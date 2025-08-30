@@ -1003,25 +1003,29 @@ export class Client<C extends Context = Context> extends Composer<C> {
       if (this.#authString && !this.#authStringImported) {
         await this.importAuthString(this.#authString);
       }
-      const [authKey, dc] = await Promise.all([this.storage.getAuthKey(), this.storage.getDc()]);
-      if (authKey !== null && dc !== null) {
-        if (!this.#client || this.#client.dc !== dc) {
+      const auth = this.storage.auth.mustGet();
+      if (auth.authKey !== null && auth.dc !== null) {
+        if (!this.#client || this.#client.dc !== auth.dc) {
           this.#client?.disconnect();
-          this.#setMainClient(this.#newClient(dc, true, false));
+          this.#setMainClient(this.#newClient(auth.dc, true, false));
         }
-        await this.#client!.setAuthKey(authKey);
+        await this.#client!.setAuthKey(auth.authKey);
         if (this.#client!.serverSalt === 0n) {
           this.#client!.serverSalt = await this.storage.getServerSalt() ?? 0n;
         }
       } else {
-        const dc = await this.storage.getDc() ?? this.#initialDc;
+        const dc = auth.dc ?? this.#initialDc;
         if (!this.#client || this.#client.dc !== dc) {
           this.#client?.disconnect();
           this.#setMainClient(this.#newClient(dc, true, false));
         }
       }
       await this.#client!.connect();
-      await Promise.all([this.storage.setAuthKey(this.#client!.authKey), this.storage.setDc(this.#client!.dc), this.storage.setServerSalt(this.#client!.serverSalt)]);
+      await this.storage.auth.update((v) => {
+        v.authKey = this.#client!.authKey;
+        v.dc = this.#client!.dc;
+      });
+      await this.storage.setServerSalt(this.#client!.serverSalt);
       this.#updateGapRecoveryLoop.start();
       this.#clientDisconnectionLoop.start();
       if (!this.#messageStorage_.isMemory) {
@@ -1040,8 +1044,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
       newDc += "-test";
     }
     this.disconnect();
-    await this.storage.setDc(newDc as DC);
-    await this.storage.setAuthKey(null);
+    await this.storage.auth.update((v) => {
+      v.authKey = null;
+      v.dc = newDc as DC;
+    });
     await this.connect();
     this.#LhandleMigrationError.debug(`migrated to DC${newDc}`);
   }
@@ -1171,8 +1177,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
       while (true) {
         try {
           const auth = await this.invoke({ _: "auth.importBotAuthorization", api_id: this.#apiId, api_hash: this.#apiHash, bot_auth_token: params.botToken, flags: 0 });
-          await this.storage.setAccountId(Number(Api.as("auth.authorization", auth).user.id));
-          await this.storage.setAccountType("bot");
+          await this.storage.auth.update((v) => {
+            v.userId = Number(Api.as("auth.authorization", auth).user.id);
+            v.isBot = true;
+          });
           break;
         } catch (err) {
           if (err instanceof Migrate) {
@@ -1235,8 +1243,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
               phone_code: code,
               phone_code_hash: sentCode.phone_code_hash,
             });
-            await this.storage.setAccountId(Number(Api.as("auth.authorization", auth).user.id));
-            await this.storage.setAccountType("user");
+            await this.storage.auth.update((v) => {
+              v.userId = Number(Api.as("auth.authorization", auth).user.id);
+              v.isBot = false;
+            });
             this.#LsignIn.debug("signed in as user");
             await this.#propagateAuthorizationState(true);
             await this.#updateManager.fetchState("signIn");
@@ -1265,8 +1275,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
             const input = await checkPassword(password, ap);
 
             const auth = await this.invoke({ _: "auth.checkPassword", password: input });
-            await this.storage.setAccountId(Number(Api.as("auth.authorization", auth).user.id));
-            await this.storage.setAccountType("user");
+            await this.storage.auth.update((v) => {
+              v.userId = Number(Api.as("auth.authorization", auth).user.id);
+              v.isBot = false;
+            });
             this.#LsignIn.debug("signed in as user");
             await this.#propagateAuthorizationState(true);
             await this.#updateManager.fetchState("signIn");
@@ -1398,18 +1410,19 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async #setupClient(client: ClientEncrypted) {
     const storage = client.dc === this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.cdn ? "_cdn" : "")));
     await storage.initialize();
-    const [authKey, serverSalt] = await Promise.all([storage.getAuthKey(), storage.getServerSalt()]);
-    if (authKey) {
-      await client.setAuthKey(authKey);
+    const auth = storage.auth.mustGet();
+    const serverSalt = await storage.getServerSalt();
+    if (auth.authKey !== null) {
+      await client.setAuthKey(auth.authKey);
       if (serverSalt) {
         client.serverSalt = serverSalt;
       }
     }
     await client.connect();
-    if (!authKey) {
+    if (auth.authKey === null) {
       await this.#importAuthorization(client);
     }
-    await storage.setAuthKey(client.authKey);
+    await storage.auth.update((v) => v.authKey = client.authKey);
     if (client.dc !== this.#client!.dc) {
       await storage.setServerSalt(client.serverSalt);
       client.handlers.onNewServerSalt = async (serverSalt) => {
@@ -1420,9 +1433,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #importAuthorization(client: ClientEncrypted) {
     if (this.#client!.dc === client.dc && this.#client!.cdn === client.cdn) {
-      const [authKey, serverSalt] = await Promise.all([this.storage.getAuthKey(), this.storage.getServerSalt()]);
-      if (authKey) {
-        await client.setAuthKey(authKey);
+      const auth = this.storage.auth.mustGet();
+      const serverSalt = await this.storage.getServerSalt();
+      if (auth.authKey !== null) {
+        await client.setAuthKey(auth.authKey);
         if (serverSalt) {
           client.serverSalt = serverSalt;
         }
@@ -1513,7 +1527,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.storage.importAuthString(authString);
     this.#authStringImported = true;
     if (!this.#apiId) {
-      this.#apiId = await this.storage.getApiId() ?? 0;
+      this.#apiId = this.storage.auth.mustGet().apiId;
     }
   }
 
@@ -1539,7 +1553,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       return { _: "inputPeerSelf" };
     }
     const inputPeer = await this.#getInputPeerInner(id);
-    if (((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash === 0n) && await this.storage.getAccountType() === "bot") {
+    if (((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash === 0n) && this.storage.isBot) {
       if ("channel_id" in inputPeer) {
         inputPeer.access_hash = await this.#getChannelAccessHash(inputPeer.channel_id);
       } else {
@@ -1597,7 +1611,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     if (typeof id === "string") {
       id = getUsername(id);
       let resolvedId = 0;
-      const maybeUsername = await this.messageStorage.getUsername(id);
+      const maybeUsername = await this.messageStorage.usernames.get([id]);
       if (maybeUsername !== null && Date.now() - maybeUsername[1].getTime() < USERNAME_TTL) {
         const [id] = maybeUsername;
         resolvedId = id;
@@ -1637,22 +1651,23 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
 
     if (!Api.is("inputPeerChat", peer) && !peer.access_hash) {
-      const chatId = Api.peerToChatId(peer);
-      const minPeerReference = await this.messageStorage.getLastMinPeerReference(chatId);
-      if (minPeerReference) {
-        const minInputPeer = await this.#getMinInputPeer(canBeInputChannel(peer) ? "channel" : "user", { ...minPeerReference, senderId: chatId });
-        if (minInputPeer) {
-          this.#Lmin.debug("resolved input min peer", minInputPeer);
-          peer = minInputPeer;
-        }
-      }
+      // TODO
+      // const chatId = Api.peerToChatId(peer);
+      // const minPeerReference = await this.messageStorage.getLastMinPeerReference(chatId);
+      // if (minPeerReference) {
+      //   const minInputPeer = await this.#getMinInputPeer(canBeInputChannel(peer) ? "channel" : "user", { ...minPeerReference, senderId: chatId });
+      //   if (minInputPeer) {
+      //     this.#Lmin.debug("resolved input min peer", minInputPeer);
+      //     peer = minInputPeer;
+      //   }
+      // }
     }
 
     return peer;
   }
 
   async #getMinInputPeer(type: "user" | "channel", reference: { chatId: number; senderId: number; messageId: number }): Promise<Api.inputPeerUserFromMessage | Api.inputPeerChannelFromMessage | null> {
-    const peer_ = await this.messageStorage.getPeer(reference.chatId);
+    const peer_ = await this.messageStorage.peers.get([reference.chatId]);
     if (peer_ !== null && (peer_[0].type === "channel" || peer_[0].type === "supergroup")) {
       const peer: Api.inputPeerChannel = { _: "inputPeerChannel", channel_id: BigInt(peer_[0].id), access_hash: peer_[1] };
       if (type === "user") {
@@ -1671,13 +1686,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
   private [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel): Promise<[ChatP, bigint] | null>;
   private async [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
     const id = Api.peerToChatId(peer);
-    const entity = await this.messageStorage.getPeer(id);
-    if (entity === null && await this.storage.getAccountType() === "bot" && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
+    const entity = await this.messageStorage.peers.get([id]);
+    if (entity === null && this.storage.isBot && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
       await this.getInputPeer(id);
     } else {
       return entity;
     }
-    return await this.messageStorage.getPeer(id);
+    return await this.messageStorage.peers.get([id]);
   }
 
   private [mustGetPeer](peer: Api.peerUser): [ChatPPrivate, bigint] | null;
@@ -1685,7 +1700,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   private [mustGetPeer](peer: Api.peerChannel): [ChatPChannel, bigint] | null;
   private [mustGetPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel): [ChatP, bigint] | null;
   private [mustGetPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
-    return this.messageStorage.mustGetPeer(peerToChatId(peer));
+    return this.messageStorage.peers.mustGet([peerToChatId(peer)]);
   }
 
   async #handleCtxUpdate(update: Update) {
@@ -1709,7 +1724,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async #handleUpdate(update: Api.Update) {
     const maybePromises = new Array<() => MaybePromise<Update | null>>();
     if (Api.is("updateUserName", update)) {
-      this.messageStorage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
+      const value: [number, Date] = [Number(update.user_id), new Date()];
+      for (const username_ of update.usernames) {
+        const username = username_.username.toLowerCase();
+        this.messageStorage.usernames.set([username], value);
+      }
       const peer: Api.peerUser = { ...update, _: "peerUser" };
       const peer_ = await this[getPeer](peer);
       if (peer_ !== null) {
@@ -1807,7 +1826,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
             if ("deletedMessages" in update) {
               for (const { chatId, messageId } of update.deletedMessages) {
                 await this.messageStorage.setMessage(chatId, messageId, null);
-                await this.#chatListManager.reassignChatLastMessage(chatId);
               }
             }
           }

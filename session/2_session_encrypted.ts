@@ -74,7 +74,7 @@ export class SessionEncrypted extends Session implements Session {
     this.#authKey = key;
   }
 
-  get authKey(): Uint8Array {
+  get authKey(): Uint8Array<ArrayBuffer> {
     return this.#authKey;
   }
 

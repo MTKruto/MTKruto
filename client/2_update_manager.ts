@@ -915,7 +915,7 @@ export class UpdateManager {
           }
           break;
         case "messageActionRequestedPeer":
-          if (this.#c.storage.accountType === "user") {
+          if (!this.#c.storage.isBot) {
             for (const peer of object.message.action.peers) {
               chatIds.add(peerToChatId(peer));
             }

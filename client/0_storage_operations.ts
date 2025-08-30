@@ -18,20 +18,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { LruCache, MINUTE, unreachable } from "../0_deps.ts";
+import { MINUTE } from "../0_deps.ts";
+import { LruCache, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { awaitablePooledMap, base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, getLogger, type Logger, type MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, getLogger, type Logger, type MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { awaitablePooledMap } from "../1_utilities.ts";
 import type { Storage, StorageKeyPart } from "../2_storage.ts";
 import { Api, TLReader, TLWriter, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import { type ChatP, constructChatP, type Translation, type VoiceTranscription } from "../3_types.ts";
 
-// key parts
-export const K = {
-  connection: {
-    P: (string: string): string => `connection.${string}`,
-    apiId: (): StorageKeyPart[] => [K.connection.P("apiId")],
-  },
+const K = {
   session: {
     P: (string: string): string => `session.${string}`,
     serverSalt: (): StorageKeyPart[] => [K.session.P("serverSalt")],
@@ -100,27 +97,47 @@ export const K = {
     allMessageRefs: (): StorageKeyPart[] => [K.messages.P("messageRefs")],
     messageRef: (messageId: number): StorageKeyPart[] => [...K.messages.allMessageRefs(), messageId],
   },
-  chatlists: {
-    P: (string: string): string => `chatlists.${string}`,
-    hasAllChats: (listId: number): StorageKeyPart[] => [K.chatlists.P("hasAllChats"), listId],
-    chats: (listId: number): StorageKeyPart[] => [K.chatlists.P("chats"), listId],
-    chat: (listId: number, chatId: number): StorageKeyPart[] => [...K.chatlists.chats(listId), chatId],
-    pinnedChats: (listId: number): StorageKeyPart[] => [K.chatlists.P("pinnedChats"), listId],
-  },
 };
 
 export class StorageOperations {
   #storage: Storage;
   #supportsFiles: boolean;
   #mustSerialize: boolean;
-  #authKeyId: bigint | null = null;
   #L: Logger;
+  #maps = new Array<StorageMap<StorageKeyPart[], unknown>>();
+  #values = new Array<StorageValue<unknown>>();
+
+  auth: StorageAuth;
+  channelPts: StorageMap<[bigint], number>;
+  peers: StorageMap<[number], [ChatP, bigint]>;
+  usernames: StorageMap<[string], [number, Date]>;
+  translations: StorageMap<[string, string], {
+    version: number;
+    translations: Translation[];
+    date: Date;
+  }>;
 
   constructor(storage: Storage) {
     this.#storage = storage;
     this.#supportsFiles = storage.supportsFiles;
     this.#mustSerialize = storage.mustSerialize;
     this.#L = getLogger("StorageOperations");
+
+    this.auth = this.#addValue(new StorageAuth(storage));
+    this.channelPts = this.#addMap(new StorageMap(storage, "channelPts"));
+    this.peers = this.#addMap(new StorageMap(storage, "peers"));
+    this.usernames = this.#addMap(new StorageMap(storage, "usernames"));
+    this.translations = this.#addMap(new StorageMap(storage, "translations"));
+  }
+
+  #addMap<T extends StorageMap<StorageKeyPart[], unknown>>(map: T): T {
+    this.#maps.push(map);
+    return map;
+  }
+
+  #addValue<T extends StorageValue<unknown>>(value: T): T {
+    this.#values.push(value);
+    return value;
   }
 
   get provider(): Storage {
@@ -133,7 +150,7 @@ export class StorageOperations {
 
   async initialize() {
     await this.#storage.initialize();
-    await this.getAccountType();
+    await this.auth.get();
   }
 
   set(...args: Parameters<Storage["set"]>): ReturnType<Storage["set"]> {
@@ -148,62 +165,24 @@ export class StorageOperations {
     return this.#storage.get<T>(...args);
   }
 
-  #oncePromises: Record<string, Promise<unknown>> = {};
-  async #once(key: string, promise: () => Promise<unknown>) {
-    await this.#oncePromises[key] ?? (this.#oncePromises[key] = promise().finally(() => {
-      delete this.#oncePromises[key];
-    }));
-  }
-
   getMany<T>(...args: Parameters<Storage["getMany"]>): ReturnType<Storage["getMany"]> {
     return this.#storage.getMany<T>(...args);
   }
 
-  async setDc(dc: DC | null) {
-    await this.#storage.set(K.auth.dc(), dc);
-  }
-
-  getDc(): MaybePromise<DC | null> {
-    return this.#storage.get<DC>(K.auth.dc());
-  }
-
-  async #resetAuthKeyId(authKey: Uint8Array | null) {
-    if (authKey !== null) {
-      this.#authKeyId = bigIntFromBuffer((await sha1(authKey)).subarray(-8), true, false);
-    } else {
-      this.#authKeyId = null;
-    }
-  }
-
-  async getAuthKey(): Promise<Uint8Array<ArrayBuffer> | null> {
-    const authKey = await this.#storage.get<Uint8Array<ArrayBuffer>>(K.auth.key());
-    await this.#resetAuthKeyId(authKey);
-    return authKey;
-  }
-
-  async setAuthKey(authKey: Uint8Array | null) {
-    await this.#storage.set(K.auth.key(), authKey);
-    await this.#resetAuthKeyId(authKey);
-  }
-
-  get authKeyId(): bigint | null {
-    return this.#authKeyId;
-  }
-
   async exportAuthString(apiId_?: number | null): Promise<string> {
     if (typeof apiId_ === "number") {
-      await this.setApiId(apiId_);
+      await this.auth.update((v) => v.apiId = apiId_);
     }
-    const [dc, authKey, apiId, accountId, accountType] = await Promise.all([this.getDc(), this.getAuthKey(), this.getApiId(), this.getAccountId(), this.getAccountType()]);
-    if (dc === null || authKey === null || apiId === null || accountId === null || accountType === null) {
+    const auth = this.auth.mustGet();
+    if (auth.dc === null || auth.authKey === null || auth.apiId === 0 || auth.userId === 0) {
       throw new Error("Not authorized");
     }
     const writer = new TLWriter();
-    writer.writeString(dc);
-    writer.writeBytes(authKey);
-    writer.writeInt32(apiId);
-    writer.write(new Uint8Array([accountType === "bot" ? 1 : 0]));
-    writer.writeInt64(BigInt(accountId));
+    writer.writeString(auth.dc);
+    writer.writeBytes(auth.authKey);
+    writer.writeInt32(auth.apiId);
+    writer.write(new Uint8Array([auth.isBot ? 1 : 0]));
+    writer.writeInt64(BigInt(auth.userId));
     const data = rleEncode(writer.buffer);
     return base64EncodeUrlSafe(data);
   }
@@ -211,56 +190,18 @@ export class StorageOperations {
   async importAuthString(string: string) {
     const data = rleDecode(base64DecodeUrlSafe(string));
     const reader = new TLReader(data);
-    const dc = reader.readString();
+    const dc = reader.readString() as DC;
     const authKey = reader.readBytes();
     const apiId = reader.readInt32();
-    const isBot = reader.read(1)[0];
-    const accountId = Number(reader.readInt64());
-    await this.setAccountId(accountId);
-    await this.setAccountType(isBot ? "bot" : "user");
-    await this.setApiId(apiId);
-    await this.setDc(dc as DC);
-    await this.setAuthKey(authKey);
-  }
-
-  async getChannelAccessHash(id: number): Promise<bigint | null> {
-    const peer = await this.getPeer(id);
-    if (peer?.[0].type === "channel" || peer?.[0].type === "supergroup") {
-      return peer[1];
-    } else {
-      // TODO: get min peer reference
-      return null;
-    }
-  }
-
-  async getUserAccessHash(id: number): Promise<bigint | null> {
-    const peer = await this.getPeer(id);
-    if (peer?.[0].type === "private") {
-      return peer[1];
-    } else {
-      // TODO: get min peer reference
-      return null;
-    }
-  }
-
-  #usernamesToCommit = new Map<string, [number, Date]>();
-  #usernames = new LruCache<string, [number, Date] | null>(20_000);
-  updateUsernames(id: number, usernames: string[]) {
-    for (let username of usernames) {
-      username = username.toLowerCase();
-      const value: [number, Date] = [id, new Date()];
-      !this.#storage.isMemory && this.#usernamesToCommit.set(username, value);
-      this.#usernames.set(username, value);
-    }
-  }
-
-  async #commitUsernames() {
-    if (this.#storage.isMemory) {
-      return;
-    }
-    await this.#once("commitUsernames", async () => {
-      await awaitablePooledMap(2, this.#usernamesToCommit, async ([username, value]) => await this.#storage.set(K.cache.username(username), value));
-      this.#usernamesToCommit.clear();
+    const isBot = !!reader.read(1)[0];
+    const userId = Number(reader.readInt64());
+    await this.setAccountId(userId);
+    await this.auth.set({
+      apiId,
+      authKey,
+      dc,
+      isBot,
+      userId,
     });
   }
 
@@ -269,7 +210,7 @@ export class StorageOperations {
     if (this.#storage.isMemory) {
       return;
     }
-    const pending = this.#peersToCommit.size + this.#usernamesToCommit.size;
+    const pending = this.#maps.reduce((a, b) => a + b.pendingUpdateCount, 0);
     if (pending <= 0) {
       this.#L.debug("nothing to commit");
       return;
@@ -293,14 +234,10 @@ export class StorageOperations {
       }
     }
     if (commit) {
-      await Promise.all([this.#commitPeers(), this.#commitUsernames()]);
+      const promises = this.#maps.filter((v) => v.pendingUpdateCount > 0).map((v) => v.commit());
+      await Promise.all(promises);
       this.#lastCommit = new Date();
     }
-  }
-
-  async getUsername(username: string): Promise<[number, Date] | null> {
-    username = username.toLowerCase();
-    return await this.#storage.get<[number, Date]>(K.cache.username(username));
   }
 
   async setTlObject(key: readonly StorageKeyPart[], value: Api.AnyType | null) {
@@ -358,68 +295,13 @@ export class StorageOperations {
     return await this.getTlObject(K.messages.message(chatId, messageId)) as Api.Message | null;
   }
 
-  async getLastMessage(chatId: number): Promise<Api.Message | null> {
-    for await (const [_, buffer] of await this.#storage.getMany<Uint8Array>({ prefix: K.messages.messages(chatId) }, { limit: 1, reverse: true })) {
-      return await this.getTlObject(buffer) as Api.Message;
-    }
-    return null;
-  }
-
-  async setChannelPts(channelId: bigint, pts: number) {
-    await this.#storage.set(K.updates.channelPts(channelId), pts);
-  }
-
-  getChannelPts(channelId: bigint): MaybePromise<number | null> {
-    return this.#storage.get<number>(K.updates.channelPts(channelId));
-  }
-
-  #peersToCommit = new Map<number, [ChatP, bigint]>();
-  #peers = new LruCache<number, [ChatP, bigint] | null>(50_000);
   setPeer(peer_: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden) {
     const chatP = constructChatP(peer_);
     this.setPeer2(chatP, "access_hash" in peer_ ? peer_.access_hash ?? 0n : 0n);
   }
 
   setPeer2(chatP: ChatP, accessHash: bigint) {
-    const peer: [ChatP, bigint] = [chatP, accessHash];
-    !this.#storage.isMemory && this.#peersToCommit.set(chatP.id, peer);
-    this.#peers.set(chatP.id, peer);
-  }
-
-  async #commitPeers() {
-    if (this.#storage.isMemory) {
-      return;
-    }
-    await this.#once("commitPeers", async () => {
-      await awaitablePooledMap(2, this.#peersToCommit, async ([id, chat]) => await this.#storage.set(K.cache.peer(id), chat));
-      this.#peersToCommit.clear();
-    });
-  }
-
-  async getPeer(chatId: number): Promise<[ChatP, bigint] | null> {
-    const maybeChat = this.#peers.get(chatId);
-    if (maybeChat !== undefined) {
-      return maybeChat;
-    }
-    await this.#once(`getPeer-${chatId}`, async () => {
-      const peer = await this.#storage.get<[ChatP, bigint]>(K.cache.peer(chatId));
-      this.#peers.set(chatId, peer);
-    });
-    return this.mustGetPeer(chatId);
-  }
-
-  mustGetPeer(chatId: number): [ChatP, bigint] | null {
-    const peer = this.#peers.get(chatId);
-    if (peer === undefined) {
-      unreachable();
-    }
-    return peer;
-  }
-
-  async deletePeers() {
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.peers() })) {
-      await this.#storage.set(key, null);
-    }
+    this.peers.set([chatP.id], [chatP, accessHash]);
   }
 
   async setAccountId(accountId: number) {
@@ -433,27 +315,6 @@ export class StorageOperations {
     } else {
       return (this.#accountId = await this.#storage.get<number>(K.auth.accountId()));
     }
-  }
-
-  async setAccountType(type: "user" | "bot") {
-    await this.#storage.set(K.auth.accountType(), type);
-    await this.getAccountType();
-  }
-
-  #accountType: "user" | "bot" | null = null;
-  async getAccountType(): Promise<"user" | "bot" | null> {
-    if (this.#accountType !== null) {
-      return this.#accountType;
-    } else {
-      return this.#accountType = await this.#storage.get<"user" | "bot">(K.auth.accountType());
-    }
-  }
-
-  get accountType(): "user" | "bot" {
-    if (this.#accountType === null) {
-      unreachable();
-    }
-    return this.#accountType;
   }
 
   async setIsPremium(isPremium: boolean) {
@@ -478,46 +339,6 @@ export class StorageOperations {
 
   getServerSalt(): MaybePromise<bigint | null> {
     return this.#storage.get<bigint>(K.session.serverSalt());
-  }
-
-  async setChatlistChat(listId: number, chatId: number, pinned: number, topMessageId: number, topMessageDate: Date) {
-    await this.#storage.set(K.chatlists.chat(listId, chatId), [pinned, topMessageId, topMessageDate]);
-  }
-
-  async getChats(listId: number): Promise<{ chatId: number; pinned: number; topMessageId: number; topMessageDate: Date }[]> {
-    const chats = new Array<{ chatId: number; pinned: number; topMessageId: number; topMessageDate: Date }>();
-    for await (const [key, value] of await this.#storage.getMany<[number, number, Date]>({ prefix: K.chatlists.chats(listId) })) {
-      if (key.length !== 3 || typeof key[2] !== "number") {
-        continue;
-      }
-      chats.push({ chatId: key[2], pinned: value[0], topMessageId: value[1], topMessageDate: value[2] });
-    }
-    return chats;
-  }
-
-  async removeChats(listId: number) {
-    for await (const [key] of await this.#storage.getMany({ prefix: K.chatlists.chats(listId) })) {
-      await this.#storage.set(key, null);
-    }
-    await this.setHasAllChats(listId, false);
-    await this.setPinnedChats(listId, null);
-  }
-
-  async setHasAllChats(listId: number, hasAllChats: boolean) {
-    await this.#storage.set(K.chatlists.hasAllChats(listId), hasAllChats);
-  }
-
-  async hasAllChats(listId: number): Promise<boolean> {
-    const v = await this.#storage.get<boolean>(K.chatlists.hasAllChats(listId));
-    return v === true;
-  }
-
-  async setPinnedChats(listId: number, chatIds: number[] | null) {
-    await this.#storage.set(K.chatlists.pinnedChats(listId), chatIds);
-  }
-
-  async getPinnedChats(listId: number): Promise<number[] | null> {
-    return await this.#storage.get<number[]>(K.chatlists.pinnedChats(listId));
   }
 
   async getHistory(chatId: number, offsetId: number, limit: number): Promise<Api.Message[]> {
@@ -678,14 +499,38 @@ export class StorageOperations {
   }
 
   assertUser(source: string) {
-    if (this.accountType !== "user") {
+    if (this.auth.mustGet().isBot) {
       throw new InputError(`${source}: not user a client`);
     }
   }
 
   assertBot(source: string) {
-    if (this.accountType !== "bot") {
+    if (!this.auth.mustGet().isBot) {
       throw new InputError(`${source}: not a bot client`);
+    }
+  }
+
+  get isBot() {
+    return this.auth.mustGet().isBot;
+  }
+
+  async getChannelAccessHash(id: number): Promise<bigint | null> {
+    const peer = await this.peers.get([id]);
+    if (peer?.[0].type === "channel" || peer?.[0].type === "supergroup") {
+      return peer[1];
+    } else {
+      // TODO: get min peer reference
+      return null;
+    }
+  }
+
+  async getUserAccessHash(id: number): Promise<bigint | null> {
+    const peer = await this.peers.get([id]);
+    if (peer?.[0].type === "private") {
+      return peer[1];
+    } else {
+      // TODO: get min peer reference
+      return null;
     }
   }
 
@@ -754,8 +599,6 @@ export class StorageOperations {
   async clear() {
     await Promise.all([
       this.deleteMessages(),
-      this.removeChats(0),
-      this.removeChats(1),
       this.deleteUpdates(),
       this.deleteFiles(),
       this.deleteCustomEmojiDocuments(),
@@ -765,9 +608,9 @@ export class StorageOperations {
       this.deleteFullChats(),
       this.deleteGroupCalls(),
       this.deleteStickerSetNames(),
-      this.deletePeers(),
-      this.deleteUsernames(),
-      this.deleteTranslations(),
+      this.peers.clear(),
+      this.usernames.clear(),
+      this.translations.clear(),
       this.deletePollResults(),
       this.deletePolls(),
       this.deleteVoiceTranscriptions(),
@@ -775,46 +618,10 @@ export class StorageOperations {
     ]);
   }
 
-  async setApiId(apiId: number) {
-    await this.#storage.set(K.connection.apiId(), apiId);
-  }
-
-  async getApiId(): Promise<number | null> {
-    return await this.#storage.get<number>(K.connection.apiId());
-  }
-
   async reset() {
     for await (const [key] of await this.#storage.getMany({ prefix: [] })) {
       await this.#storage.set(key, null);
     }
-  }
-
-  async setMinPeerReference(chatId: number, senderId: number, messageId: number) {
-    await this.#storage.set(K.cache.minPeerReference(senderId, chatId), [{ chatId, messageId }, new Date()]);
-  }
-
-  async getLastMinPeerReference(senderId: number): Promise<{ chatId: number; messageId: number } | null> {
-    const references = new Array<[{ chatId: number; messageId: number }, Date]>();
-    for await (const [, reference] of await this.#storage.getMany<[{ chatId: number; messageId: number }, Date]>({ prefix: K.cache.minPeerReferenceSender(senderId) })) {
-      references.push(reference);
-    }
-    return references.sort((a, b) => b[1].getTime() - a[1].getTime())[0]?.[0] ?? null;
-  }
-
-  async deleteTranslations() {
-    const maybePromises = new Array<MaybePromise<unknown>>();
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.allTranslations() })) {
-      maybePromises.push(this.#storage.set(key, null));
-    }
-    await Promise.all(maybePromises);
-  }
-
-  async getTranslations(platform: string, language: string): Promise<[number, Translation[], Date] | null> {
-    return await this.#storage.get<[number, Translation[], Date]>(K.cache.translations(platform, language));
-  }
-
-  async setTranslations(platform: string, language: string, version: number, translations: Translation[]) {
-    await this.#storage.set(K.cache.translations(platform, language), [version, translations, new Date()]);
   }
 
   async setPollResults(pollId: bigint, pollResults: Api.pollResults) {
@@ -879,5 +686,153 @@ export class StorageOperations {
       maybePromises.push(this.#storage.set(key, null));
     }
     await Promise.all(maybePromises);
+  }
+}
+
+export class StorageMap<K extends StorageKeyPart[], V> {
+  #storage: Storage;
+  #path: StorageKeyPart;
+
+  constructor(storage: Storage, path: StorageKeyPart) {
+    this.#storage = storage;
+    this.#path = path;
+  }
+
+  #pendingUpdates = new Map<K, V>();
+  #cache = new LruCache<K, V | null>(20_000);
+  set(key: K, value: V) {
+    this.#cache.set(key, value);
+    if (!this.#storage.isMemory) {
+      this.#pendingUpdates.set(key, value);
+    }
+  }
+
+  get pendingUpdateCount() {
+    return this.#pendingUpdates.size;
+  }
+
+  mustGet(key: K) {
+    const value = this.#cache.get(key);
+    if (value === undefined) {
+      unreachable();
+    } else {
+      return value;
+    }
+  }
+
+  async clear() {
+    await awaitablePooledMap(10, await this.#storage.getMany({ prefix: [this.#path] }), async ([key]) => await this.#storage.set(key, null));
+  }
+
+  async get(key: K) {
+    let value = this.#cache.get(key);
+    if (value === undefined) {
+      value = await this.#storage.get<V>([this.#path, ...key]);
+      this.#cache.set(key, value);
+    }
+    return value;
+  }
+
+  async commit() {
+    if (this.#storage.isMemory) {
+      return;
+    }
+    await awaitablePooledMap(2, this.#pendingUpdates, async ([key, value]) => await this.#storage.set([this.#path, ...key], value));
+    this.#pendingUpdates.clear();
+  }
+}
+
+export class StorageValue<T> {
+  #storage: Storage;
+  #key: StorageKeyPart[];
+
+  constructor(storage: Storage, path: StorageKeyPart) {
+    this.#storage = storage;
+    this.#key = [path];
+  }
+
+  #updatePending = false;
+  #value?: T | null;
+  set(value: T | null) {
+    this.#value = value;
+    if (!this.#storage.isMemory) {
+      this.#updatePending = true;
+    }
+  }
+
+  get isUpdatePending() {
+    return this.#updatePending;
+  }
+
+  mustGet() {
+    return this.#value === undefined ? unreachable() : this.#value;
+  }
+
+  async get() {
+    if (this.#value === undefined) {
+      this.#value = await this.#storage.get(this.#key);
+    }
+    return this.#value;
+  }
+
+  async commit() {
+    if (this.#storage.isMemory || this.#value === undefined) {
+      return;
+    }
+    await this.#storage.set(this.#key, this.#value);
+    this.#updatePending = false;
+  }
+}
+
+export interface Auth {
+  apiId: number;
+  authKey: Uint8Array<ArrayBuffer> | null;
+  dc: DC | null;
+  isBot: boolean;
+  userId: number;
+}
+export class StorageAuth extends StorageValue<Auth> {
+  constructor(storage: Storage) {
+    super(storage, "auth");
+  }
+
+  override async get() {
+    const value = await super.get();
+    await this.#resetAuthKeyId(value);
+    return value;
+  }
+
+  override mustGet() {
+    return super.mustGet() ?? {
+      apiId: 0,
+      authKey: new Uint8Array(),
+      dc: null,
+      isBot: false,
+      userId: 0,
+    };
+  }
+
+  override async set(auth: Auth | null) {
+    super.set(auth);
+    await this.#resetAuthKeyId(auth);
+  }
+
+  async update(fn: (auth: Auth) => void) {
+    const auth = this.mustGet();
+    fn(auth);
+    await this.set(auth);
+  }
+
+  #authKeyId: bigint | null = null;
+  async #resetAuthKeyId(auth: Auth | null) {
+    if (auth !== null) {
+      this.#authKeyId = bigIntFromBuffer((await sha1(auth.authKey)).subarray(-8), true, false);
+    } else {
+      this.#authKeyId = null;
+    }
+  }
+
+  get authKeyId(): bigint | null {
+    return this.#authKeyId;
   }
 }
