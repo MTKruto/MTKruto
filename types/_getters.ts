@@ -23,14 +23,6 @@ import type { Api } from "../2_tl.ts";
 import type { ID } from "./0_id.ts";
 
 /** @unlisted */
-export interface EntityGetter {
-  (peer: Api.peerUser): MaybePromise<Api.user | null>;
-  (peer: Api.peerChat): MaybePromise<Api.chat | Api.chatForbidden | null>;
-  (peer: Api.peerChannel): MaybePromise<Api.channel | Api.channelForbidden | null>;
-  (peer: Api.peerUser | Api.peerChat | Api.peerChannel): MaybePromise<Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden | null>;
-}
-
-/** @unlisted */
 export interface InputPeerGetter {
   (id: ID): Promise<Api.InputPeer>;
 }

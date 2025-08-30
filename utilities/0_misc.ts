@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { SECOND, unreachable } from "../0_deps.ts";
+import { pooledMap, SECOND, unreachable } from "../0_deps.ts";
 
 export function drop(maybePromise: unknown) {
   if (maybePromise !== undefined && maybePromise !== null && typeof maybePromise === "object" && maybePromise instanceof Promise) {
@@ -73,5 +73,22 @@ export async function* iterateReadableStream(stream: ReadableStream) {
     }
   } finally {
     reader.releaseLock();
+  }
+}
+
+export async function awaitablePooledMap<T, R>(
+  poolLimit: number,
+  array: Iterable<T> | AsyncIterable<T>,
+  iteratorFn: (data: T) => Promise<R>,
+) {
+  const iterable = pooledMap(poolLimit, array, iteratorFn);
+  if (Array.fromAsync !== undefined) {
+    return await Array.fromAsync(iterable);
+  } else {
+    const values = new Array<R>();
+    for await (const value of iterable) {
+      values.push(value);
+    }
+    return values;
   }
 }
