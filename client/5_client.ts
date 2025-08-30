@@ -194,7 +194,7 @@ export interface Context {
   /** Context-aware alias for `client.deleteChatMemberMessages()`. */
   deleteChatMemberMessages: (userId: ID) => Promise<void>;
   /** Context-aware alias for `client.searchMessages()`. */
-  searchMessages: (query: string, params?: SearchMessagesParams) => Promise<Message[]>;
+  searchMessages: (params?: Omit<SearchMessagesParams, "chatId">) => Promise<Message[]>;
   /** Context-aware alias for `client.setBoostsRequiredToCircumventRestrictions()`. */
   setBoostsRequiredToCircumventRestrictions: (boosts: number) => Promise<void>;
   /** Context-aware alias for `client.createInviteLink()`. */
@@ -887,9 +887,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
         const { chatId } = mustGetMsg();
         return this.deleteChatMemberMessages(chatId, userId);
       },
-      searchMessages: (query, params) => {
+      searchMessages: (params) => {
         const { chatId } = mustGetMsg();
-        return this.searchMessages(chatId, query, params);
+        params ??= {};
+        (params as SearchMessagesParams).chatId = chatId;
+        return this.searchMessages(params);
       },
       setBoostsRequiredToCircumventRestrictions: (boosts) => {
         const { chatId } = mustGetMsg();
@@ -2548,14 +2550,12 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Search the messages of a chat. User-only.
+   * Search for messages. User-only.
    *
    * @method ms
-   * @param chatId The identifier of a chat.
-   * @param query The message search query.
    */
-  async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams): Promise<Message[]> {
-    return await this.#messageManager.searchMessages(chatId, query, params);
+  async searchMessages(params?: SearchMessagesParams): Promise<Message[]> {
+    return await this.#messageManager.searchMessages(params);
   }
 
   /**

@@ -18,19 +18,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export { assert } from "jsr:@std/assert@1.0.13/assert";
-export { assertFalse } from "jsr:@std/assert@1.0.13/false";
-export { assertEquals } from "jsr:@std/assert@1.0.13/equals";
-export { unreachable } from "jsr:@std/assert@1.0.13/unreachable";
-export { AssertionError } from "jsr:@std/assert@1.0.13/assertion-error";
+export { assert } from "jsr:@std/assert@1.0.14/assert";
+export { assertFalse } from "jsr:@std/assert@1.0.14/false";
+export { assertEquals } from "jsr:@std/assert@1.0.14/equals";
+export { unreachable } from "jsr:@std/assert@1.0.14/unreachable";
+export { AssertionError } from "jsr:@std/assert@1.0.14/assertion-error";
 
-export { join } from "jsr:@std/path@1.1.0/join";
-export { extname } from "jsr:@std/path@1.1.0/extname";
-export { basename } from "jsr:@std/path@1.1.0/basename";
-export { toFileUrl } from "jsr:@std/path@1.1.0/to-file-url";
-export { isAbsolute } from "jsr:@std/path@1.1.0/is-absolute";
+export { join } from "jsr:@std/path@1.1.2/join";
+export { extname } from "jsr:@std/path@1.1.2/extname";
+export { basename } from "jsr:@std/path@1.1.2/basename";
+export { toFileUrl } from "jsr:@std/path@1.1.2/to-file-url";
+export { isAbsolute } from "jsr:@std/path@1.1.2/is-absolute";
 
-export { delay, pooledMap } from "jsr:@std/async@1.0.13";
+export { delay, pooledMap } from "jsr:@std/async@1.0.14";
 
 export { concat } from "jsr:@std/bytes@1.0.6/concat";
 
@@ -42,7 +42,7 @@ export { format } from "jsr:@std/datetime@0.225.5/format";
 
 export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.5/constants";
 
-export { toArrayBuffer } from "jsr:@std/streams@1.0.10/to-array-buffer";
+export { toArrayBuffer } from "jsr:@std/streams@1.0.11/to-array-buffer";
 
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.7/base64";
 
