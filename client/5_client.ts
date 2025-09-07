@@ -1777,7 +1777,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
     return () =>
       Promise.resolve().then(async () => {
-        const updates = new Array<Update>();
+        const updates: Array<Update> = [{ update }];
         for (const promise of promises) {
           try {
             const update = await promise();
