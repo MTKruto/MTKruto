@@ -81,11 +81,10 @@ export type WithFilter<T, Q extends FilterQuery> = T & Filter<Q>;
 
 export function match<Q extends FilterQuery, T extends object>(filter: Q, value: T) {
   let [type, ...other] = filter.split(":");
-  if (type !== "" && !(type in value)) {
-    return false;
-  }
-  if (other.length === 0 && type !== "" && "update" in value && (value.update as { _: unknown })._ === type) {
+  if (other.length === 0 && type !== "update" && "update" in value && (value.update as { _: unknown })._ === type) {
     return true;
+  } else if (type !== "" && !(type in value)) {
+    return false;
   }
   if (type === "") {
     if (other.length !== 1) {
