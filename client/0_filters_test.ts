@@ -35,4 +35,7 @@ Deno.test("match", () => {
   assert(match("callbackQuery:message", { callbackQuery: { message: {} } }));
   assert(!match("chosenInlineResult:inlineMessageId", { chosenInlineResult: {} }));
   assert(match("chosenInlineResult:inlineMessageId", { chosenInlineResult: { inlineMessageId: {} } }));
+  assert(match("update", { update: { _: "updateNewMessage" } }));
+  assert(match("updateNewMessage", { update: { _: "updateNewMessage" } }));
+  assert(!match("updateNewChannelMessage", { update: { _: "updateNewMessage" } }));
 });

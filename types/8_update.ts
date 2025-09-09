@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import type { Api } from "../2_tl.ts";
 import type { AuthorizationState } from "./0_authorization_state.ts";
 import type { ConnectionState } from "./0_connection_state.ts";
 import type { MessageReference } from "./0_message_reference.ts";
@@ -78,10 +79,28 @@ export interface UpdateConnectionState {
  */
 export interface UpdateAuthorizationState {
   /**
-   *  The client's new authorization state
+   * The client's new authorization state
    * @discriminator
    */
   authorizationState: AuthorizationState;
+}
+
+/**
+ * A low-level (Telegram API) update.
+ *
+ * ```
+ * client.on("update", async (ctx) => {
+ *   // ctx.update
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateLowLevel {
+  /**
+   * The Telegram API update.
+   * @discriminator
+   */
+  update: Api.Update;
 }
 
 /**
@@ -506,6 +525,7 @@ export interface UpdateMap {
   scheduledMessage: UpdateMessageScheduled;
   connectionState: UpdateConnectionState;
   authorizationState: UpdateAuthorizationState;
+  update: UpdateLowLevel;
   deletedMessages: UpdateMessagesDeleted;
   callbackQuery: UpdateCallbackQuery;
   inlineQuery: UpdateInlineQuery;
@@ -536,6 +556,7 @@ export interface UpdateMap {
 export type UpdateIntersection = Partial<
   & UpdateConnectionState
   & UpdateAuthorizationState
+  & UpdateLowLevel
   & UpdateNewMessage
   & UpdateMessageEdited
   & UpdateMessageScheduled
@@ -569,6 +590,7 @@ export type UpdateIntersection = Partial<
 export type Update =
   | UpdateConnectionState
   | UpdateAuthorizationState
+  | UpdateLowLevel
   | UpdateNewMessage
   | UpdateMessageEdited
   | UpdateMessageScheduled

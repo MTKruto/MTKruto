@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import type { Api } from "../2_tl.ts";
 import type { CallbackQuery, ChosenInlineResult, MessageTypes, UpdateIntersection, UpdateMap } from "../3_types.ts";
 
 type AnyLevel1 = keyof UpdateMap;
@@ -43,9 +44,9 @@ type GetLevel2Type<L1 extends string, L2 extends string> = L2 extends keyof Mess
   : L1 extends keyof Level2TypeMap ? L2 extends Level2Map[L1] ? { [P in L1]: Level2TypeMap[P] & { [P in L2]-?: P extends keyof Level2TypeMap[L1] ? NonNullable<Level2TypeMap[L1][P]> : never } } : never
   : never;
 
-type AnyLevelX = AnyLevel1 | AnyLevel2;
+type AnyLevelX = AnyLevel1 | AnyLevel2 | Api.Update["_"];
 
-type FilterCore<Q extends AnyLevelX = AnyLevelX> = Q extends AnyLevel1 ? GetLevel1Type<Q> : Q extends `${infer L1}:${infer L2}` ? GetLevel2Type<L1, L2> : 1;
+type FilterCore<Q extends AnyLevelX = AnyLevelX> = Q extends AnyLevel1 ? GetLevel1Type<Q> : Q extends `${infer L1}:${infer L2}` ? GetLevel2Type<L1, L2> : Q extends Api.Update["_"] ? { update: Extract<Api.Update, { _: Q }> } : 1;
 
 interface Shortcuts<T extends UpdateIntersection> {
   msg: T["message"] extends object ? T["message"]
@@ -72,14 +73,17 @@ interface Shortcuts<T extends UpdateIntersection> {
     : T["pollAnswer"] extends object ? T["pollAnswer"]["from"]
     : undefined;
 }
+type GetShortcuts<T> = T extends UpdateIntersection ? T["update"] extends object ? Record<string, never> : Shortcuts<T> : Record<string, never>;
 
-type Filter<Q extends AnyLevelX> = FilterCore<Q> & Shortcuts<FilterCore<Q>>;
+type Filter<Q extends AnyLevelX> = FilterCore<Q> & GetShortcuts<FilterCore<Q>>;
 export type FilterQuery = AnyLevelX;
 export type WithFilter<T, Q extends FilterQuery> = T & Filter<Q>;
 
 export function match<Q extends FilterQuery, T extends object>(filter: Q, value: T) {
   let [type, ...other] = filter.split(":");
-  if (type !== "" && !(type in value)) {
+  if (other.length === 0 && type !== "update" && "update" in value && (value.update as { _: unknown })._ === type) {
+    return true;
+  } else if (type !== "" && !(type in value)) {
     return false;
   }
   if (type === "") {
