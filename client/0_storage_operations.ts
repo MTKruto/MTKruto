@@ -510,7 +510,7 @@ export class StorageOperations {
     }
   }
 
-  get isBot() {
+  get isBot(): boolean {
     return this.auth.mustGet().isBot;
   }
 
@@ -707,7 +707,7 @@ class StorageMap<K extends StorageKeyPart[], V> {
     }
   }
 
-  get pendingUpdateCount() {
+  get pendingUpdateCount(): number {
     return this.#pendingUpdates.size;
   }
 
@@ -724,7 +724,7 @@ class StorageMap<K extends StorageKeyPart[], V> {
     await awaitablePooledMap(10, await this.#storage.getMany({ prefix: [this.#path] }), async ([key]) => await this.#storage.set(key, null));
   }
 
-  async get(key: K) {
+  async get(key: K): Promise<V | null> {
     let value = this.#cache.get(key);
     if (value === undefined) {
       value = await this.#storage.get<V>([this.#path, ...key]);
@@ -760,15 +760,15 @@ class StorageValue<T> {
     }
   }
 
-  get isUpdatePending() {
+  get isUpdatePending(): boolean {
     return this.#updatePending;
   }
 
-  mustGet() {
+  mustGet(): T | null {
     return this.#value === undefined ? unreachable() : this.#value;
   }
 
-  async get() {
+  async get(): Promise<T | null> {
     if (this.#value === undefined) {
       this.#value = await this.#storage.get(this.#key);
     }
