@@ -59,7 +59,7 @@ const messageManagerUpdates = [
 
 type MessageManagerUpdate = Api.Types[(typeof messageManagerUpdates)[number]];
 
-export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
+export class MessageManager implements UpdateProcessor<MessageManagerUpdate, true> {
   #c: C;
   #LresolveFileId: Logger;
 
@@ -177,7 +177,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
 
   async parseText(text_: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
     const [text, entities_] = MessageManager.parseText(text_, params?.entities ?? [], params?.parseMode ?? this.#c.parseMode);
-    const entities = entities_?.length > 0 ? await Promise.all(entities_.map((v) => messageEntityToTlObject(v, this.#c.getEntity))) : undefined;
+    const entities = entities_?.length > 0 ? await Promise.all(entities_.map((v) => messageEntityToTlObject(v, this.#c.getPeer))) : undefined;
     return [text, entities] as const;
   }
 
@@ -221,7 +221,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
     if (pollId) {
       [poll, pollResults] = await Promise.all([this.#c.messageStorage.getPoll(pollId), this.#c.messageStorage.getPollResults(pollId)]);
     }
-    const message = await constructMessage_(message_, this.#c.getEntity, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r, business, poll ?? undefined, pollResults ?? undefined);
+    const message = constructMessage_(message_, this.#c.getPeer, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r, business, poll ?? undefined, pollResults ?? undefined);
     if (!poll && mediaPoll) {
       await this.#c.storage.setPoll(mediaPoll.poll.id, mediaPoll.poll);
     }
@@ -379,7 +379,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       }
     }
     if ("messageId" in params.replyTo) {
-      return { _: "inputReplyToMessage", reply_to_msg_id: params.replyTo.messageId, top_msg_id: topMsgId, quote_text: params.replyTo.quote?.text, quote_entities: await Promise.all(params.replyTo.quote?.entities.map((v) => messageEntityToTlObject(v, this.#c.getEntity)) ?? []), quote_offset: params.replyTo.quote?.offset } as Api.inputReplyToMessage;
+      return { _: "inputReplyToMessage", reply_to_msg_id: params.replyTo.messageId, top_msg_id: topMsgId, quote_text: params.replyTo.quote?.text, quote_entities: await Promise.all(params.replyTo.quote?.entities.map((v) => messageEntityToTlObject(v, this.#c.getPeer)) ?? []), quote_offset: params.replyTo.quote?.offset } as Api.inputReplyToMessage;
     } else {
       return { _: "inputReplyToStory", peer: await this.#c.getInputPeer(params.replyTo.chatId), story_id: params.replyTo.storyId } as Api.inputReplyToStory;
     }
@@ -1184,7 +1184,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
         let shouldIgnore = false;
         if (isOutgoing) {
           if (this.#c.outgoingMessages === null) {
-            this.#c.outgoingMessages = this.#c.storage.accountType === "user" ? "all" : "business";
+            this.#c.outgoingMessages = this.#c.storage.isBot ? "business" : "all";
           }
           if (this.#c.outgoingMessages === "none") {
             shouldIgnore = true;
@@ -1783,6 +1783,6 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate> {
       offset_peer: offsetPeer,
       exclude_pinned: params?.excludePinned || undefined,
     });
-    return constructSavedChats(result, this.#c.getEntity, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
+    return constructSavedChats(result, this.#c.getPeer, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
   }
 }

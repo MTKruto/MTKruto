@@ -20,10 +20,10 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import type { EntityGetter } from "./_getters.ts";
 import { constructLocation, type Location } from "./0_location.ts";
 import type { MessageReference } from "./0_message_reference.ts";
 import { constructReaction, type Reaction, reactionToTlObject } from "./0_reaction.ts";
+import type { PeerGetter } from "./1_chat_p.ts";
 import { constructVenue, type Venue } from "./1_venue.ts";
 
 /** @unlisted */
@@ -115,7 +115,7 @@ export function constructStoryInteractiveArea(area: Api.MediaArea): StoryInterac
 function storyInteractiveAreaPositionToTlObject(position: StoryInteractiveAreaPosition): Api.mediaAreaCoordinates {
   return { _: "mediaAreaCoordinates", x: position.xPercentage, y: position.yPercentage, w: position.widthPercentage, h: position.heightPercentage, rotation: position.rotationAngle };
 }
-export async function storyInteractiveAreaToTlObject(area: StoryInteractiveArea, getEntity: EntityGetter): Promise<Api.MediaArea> {
+export function storyInteractiveAreaToTlObject(area: StoryInteractiveArea, getPeer: PeerGetter): Api.MediaArea {
   const coordinates = storyInteractiveAreaPositionToTlObject(area.position);
   if ("location" in area) {
     const geo: Api.geoPoint = { _: "geoPoint", lat: area.location.latitude, long: area.location.longitude, access_hash: 0n, accuracy_radius: area.location.horizontalAccuracy };
@@ -136,7 +136,7 @@ export async function storyInteractiveAreaToTlObject(area: StoryInteractiveArea,
     const reaction = reactionToTlObject(area.reaction);
     return { _: "mediaAreaSuggestedReaction", coordinates, reaction, dark: area.dark ? true : undefined, flipped: area.flipped ? true : undefined };
   } else if ("messageReference" in area) {
-    const entity = await getEntity(Api.chatIdToPeer(area.messageReference.chatId));
+    const entity = getPeer(Api.chatIdToPeer(area.messageReference.chatId));
     if (!(Api.is("channel", entity))) {
       unreachable();
     }

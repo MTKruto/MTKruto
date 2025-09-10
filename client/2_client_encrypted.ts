@@ -150,7 +150,7 @@ export class ClientEncrypted extends ClientAbstract {
     }
   }
 
-  get authKey(): Uint8Array {
+  get authKey(): Uint8Array<ArrayBuffer> {
     return this.session.authKey;
   }
 

@@ -21,11 +21,10 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import type { EntityGetter } from "./_getters.ts";
 import { type Birthday, constructBirthday } from "./0_birthday.ts";
 import { constructLocation, type Location } from "./0_location.ts";
 import { constructOpeningHours, type OpeningHours } from "./0_opening_hours.ts";
-import { type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, constructChatP } from "./1_chat_p.ts";
+import type { ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, PeerGetter } from "./1_chat_p.ts";
 import { constructPhoto, type Photo } from "./1_photo.ts";
 
 /** @unlisted */
@@ -62,8 +61,6 @@ export interface ChatPrivate extends ChatBase, Omit<ChatPPrivate, "photo"> {
   location?: Location;
   /** The opening hours of the business. */
   openingHours?: OpeningHours;
-  /** Whether the bot has specified a main mini app. */
-  hasMainMiniApp?: boolean;
 }
 
 /**
@@ -71,36 +68,31 @@ export interface ChatPrivate extends ChatBase, Omit<ChatPPrivate, "photo"> {
  */
 export type Chat = ChatChannel | ChatSupergroup | ChatGroup | ChatPrivate;
 
-export async function constructChat(fullChat: Api.userFull | Api.chatFull | Api.channelFull, getEntity: EntityGetter): Promise<Chat> {
+export function constructChat(fullChat: Api.userFull | Api.chatFull | Api.channelFull, getPeer: PeerGetter): Chat {
   if (Api.is("userFull", fullChat)) {
-    const user = await getEntity({ _: "peerUser", user_id: fullChat.id });
-    if (user === null) unreachable();
-    const chatP = constructChatP(user);
-
+    const peer = getPeer({ _: "peerUser", user_id: fullChat.id });
+    if (!peer) unreachable();
     return cleanObject({
-      ...chatP,
+      ...peer[0],
       birthday: fullChat.birthday ? constructBirthday(fullChat.birthday) : undefined,
       photo: fullChat.profile_photo && Api.is("photo", fullChat.profile_photo) ? constructPhoto(fullChat.profile_photo) : undefined,
       address: fullChat.business_location?.address,
       location: fullChat.business_location?.geo_point && Api.is("geoPoint", fullChat.business_location.geo_point) ? constructLocation(fullChat.business_location.geo_point) : undefined,
       openingHours: fullChat.business_work_hours ? constructOpeningHours(fullChat.business_work_hours) : undefined,
-      hasMainMiniApp: user.bot ? user.bot_has_main_app : undefined,
     });
   } else if (Api.is("chatFull", fullChat)) {
-    const chat = await getEntity({ _: "peerChat", chat_id: fullChat.id });
-    if (chat === null) unreachable();
-    const chatP = constructChatP(chat);
+    const peer = getPeer({ _: "peerChat", chat_id: fullChat.id });
+    if (peer === null) unreachable();
     return cleanObject({
-      ...chatP,
+      ...peer[0],
       photo: fullChat.chat_photo && Api.is("photo", fullChat.chat_photo) ? constructPhoto(fullChat.chat_photo) : undefined,
       videoChatId: Api.is("inputGroupCall", fullChat.call) ? String(fullChat.call.id) : undefined,
     });
   } else if (Api.is("channelFull", fullChat)) {
-    const chat = await getEntity({ _: "peerChannel", channel_id: fullChat.id });
-    if (chat === null) unreachable();
-    const chatP = constructChatP(chat);
+    const peer = getPeer({ _: "peerChannel", channel_id: fullChat.id });
+    if (peer === null) unreachable();
     return cleanObject({
-      ...chatP,
+      ...peer[0],
       photo: fullChat.chat_photo && Api.is("photo", fullChat.chat_photo) ? constructPhoto(fullChat.chat_photo) : undefined,
       videoChatId: Api.is("inputGroupCall", fullChat.call) ? String(fullChat.call.id) : undefined,
     });

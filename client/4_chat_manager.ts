@@ -45,7 +45,7 @@ const chatManagerUpdates = [
 
 type ChatManagerUpdate = Api.Types[(typeof chatManagerUpdates)[number]];
 
-export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
+export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   #c: C;
 
   constructor(c: C) {
@@ -58,7 +58,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
 
   async handleUpdate(update: ChatManagerUpdate): Promise<Update | null> {
     if (Api.is("updateChannelParticipant", update) || Api.is("updateChatParticipant", update)) {
-      const chatMember = await constructChatMemberUpdated(update, this.#c.getEntity);
+      const chatMember = constructChatMemberUpdated(update, this.#c.getPeer);
       const selfId = await this.#c.getSelfId();
       if (chatMember.oldChatMember.user.id === selfId) {
         return { myChatMember: chatMember };
@@ -68,7 +68,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
     }
 
     if (Api.is("updateBotChatInviteRequester", update)) {
-      const joinRequest = await constructJoinRequest(update, this.#c.getEntity);
+      const joinRequest = constructJoinRequest(update, this.#c.getPeer);
       return { joinRequest };
     }
 
@@ -134,7 +134,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
       limit: getLimit(params?.limit),
     });
     const peer_ = inputPeerToPeer(peer);
-    return await Promise.all(importers.map((v) => constructJoinRequest2(peer_, v, this.#c.getEntity)));
+    return await Promise.all(importers.map((v) => constructJoinRequest2(peer_, v, this.#c.getPeer)));
   }
 
   // INVITE LINKS //
@@ -143,13 +143,13 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate> {
       throw new InputError("requireApproval cannot be true while limit is specified.");
     }
     const result = await this.#c.invoke({ _: "messages.exportChatInvite", peer: await this.#c.getInputPeer(chatId), title: params?.title, expire_date: params?.expireAt, request_needed: params?.requireApproval ? true : undefined, usage_limit: params?.limit });
-    return await constructInviteLink(Api.as("chatInviteExported", result), this.#c.getEntity);
+    return constructInviteLink(Api.as("chatInviteExported", result), this.#c.getPeer);
   }
 
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams) {
     this.#c.storage.assertUser("getCreatedInviteLinks");
     const { invites } = await this.#c.invoke({ _: "messages.getExportedChatInvites", peer: await this.#c.getInputPeer(chatId), revoked: params?.revoked ? true : undefined, admin_id: params?.by ? await this.#c.getInputUser(params.by) : { _: "inputUserEmpty" }, limit: getLimit(params?.limit), offset_date: params?.afterDate, offset_link: params?.afterInviteLink });
-    return await Promise.all(invites.map((v) => Api.as("chatInviteExported", v)).map((v) => constructInviteLink(v, this.#c.getEntity)));
+    return await Promise.all(invites.map((v) => Api.as("chatInviteExported", v)).map((v) => constructInviteLink(v, this.#c.getPeer)));
   }
 
   // JOINING AND LEAVING CHATS //

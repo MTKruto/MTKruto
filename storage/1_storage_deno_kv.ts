@@ -52,6 +52,10 @@ export class StorageDenoKV implements Storage {
     return true;
   }
 
+  get isMemory(): boolean {
+    return false;
+  }
+
   branch(id: string): Storage {
     const storage = new StorageDenoKV(this.path);
     storage.#id = id;

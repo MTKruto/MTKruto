@@ -43,7 +43,7 @@ export class GiftManager {
     if (!(Api.is("payments.starGifts", gifts))) {
       unreachable();
     }
-    return await Promise.all(gifts.gifts.map((v) => constructGift(v, this.#c.getEntity)));
+    return await Promise.all(gifts.gifts.map((v) => constructGift(v, this.#c.getPeer)));
   }
 
   async getClaimedGifts(chatId: ID, params?: GetClaimedGiftsParams) {
@@ -52,7 +52,7 @@ export class GiftManager {
     const limit = getLimit(params?.limit);
     const peer = await this.#c.getInputPeer(chatId);
     const result = await this.#c.invoke({ _: "payments.getSavedStarGifts", peer, offset, limit });
-    return await constructClaimedGifts(result, this.#c.getEntity);
+    return constructClaimedGifts(result, this.#c.getPeer);
   }
 
   async sendGift(chatId: ID, giftId: string, params?: SendGiftParams) {
@@ -87,6 +87,6 @@ export class GiftManager {
       throw new InputError("Invalid slug.");
     }
     const result = await this.#c.invoke({ _: "payments.getUniqueStarGift", slug });
-    return await constructGift(result.gift, this.#c.getEntity.bind(this));
+    return constructGift(result.gift, this.#c.getPeer.bind(this));
   }
 }

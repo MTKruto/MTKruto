@@ -23,6 +23,7 @@ import { ConnectionError, TransportError } from "../0_errors.ts";
 import { bigIntFromBuffer, bufferFromBigInt, drop, getLogger, getRandomId, gunzip, type Logger, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
 import { deserializeMessage, type message, type msg_container, Mtproto, repr, serializeMessage, TLReader, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
+import { AbortableLoop } from "../client/0_abortable_loop.ts";
 import { TLWriter } from "../tl/1_tl_writer.ts";
 import { SessionError } from "./0_session_error.ts";
 import { Session, type SessionParams } from "./1_session.ts";
@@ -73,7 +74,7 @@ export class SessionEncrypted extends Session implements Session {
     this.#authKey = key;
   }
 
-  get authKey(): Uint8Array {
+  get authKey(): Uint8Array<ArrayBuffer> {
     return this.#authKey;
   }
 
@@ -86,8 +87,8 @@ export class SessionEncrypted extends Session implements Session {
       await initTgCrypto();
       SessionEncrypted.#TGCRYPTO_INITED = true;
     }
-    this.#startReceiveLoop();
-    this.#startPingLoop();
+    this.#receiveLoop.start();
+    this.#pingLoop.start();
   }
 
   override disconnect(): void {
@@ -253,41 +254,30 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   //// RECEIVE LOOP ////
-
-  #startReceiveLoop() {
-    if (!this.#receiveLoopActive) {
-      drop(this.#receiveLoop());
-    }
-  }
-
-  #receiveLoopActive = false;
-  async #receiveLoop() {
-    this.#receiveLoopActive = true;
+  #receiveLoop = new AbortableLoop(this.#receiveLoopBody.bind(this), (err) => {
+    this.#L.error("unhandled receive loop error:", err);
+  });
+  async #receiveLoopBody() {
+    let message: message;
     try {
-      while (this.connected) {
-        let message: message;
-        try {
-          message = await this.#receive();
-        } catch (err) {
-          this.#L.error("failed to receive message:", err);
-          if (!this.connected) {
-            break;
-          } else {
-            continue;
-          }
-        }
-        try {
-          if (message.body instanceof Uint8Array) {
-            this.#onMessage(message.msg_id, message.body);
-          } else {
-            this.#onMessageContainer(message.msg_id, message.body);
-          }
-        } catch (err) {
-          this.#L.error("failed to handle message:", err);
-        }
+      message = await this.#receive();
+    } catch (err) {
+      this.#L.error("failed to receive message:", err);
+      if (!this.connected) {
+        this.#receiveLoop.abort();
+        return;
+      } else {
+        return;
       }
-    } finally {
-      this.#receiveLoopActive = false;
+    }
+    try {
+      if (message.body instanceof Uint8Array) {
+        this.#onMessage(message.msg_id, message.body);
+      } else {
+        this.#onMessageContainer(message.msg_id, message.body);
+      }
+    } catch (err) {
+      this.#L.error("failed to handle message:", err);
     }
   }
 
@@ -423,38 +413,25 @@ export class SessionEncrypted extends Session implements Session {
 
   //// PING LOOP ////
   #pingInterval = 56 * SECOND;
-  #startPingLoop() {
-    drop(this.#pingLoop());
-  }
   #pingLoopAbortController?: AbortController;
   #LpingLoop: Logger;
-  async #pingLoop() {
-    this.#pingLoopAbortController?.abort();
-    const controller = this.#pingLoopAbortController = new AbortController();
+  #pingLoop = new AbortableLoop(this.#pingLoopBody.bind(this), (err) => {
+    this.#LpingLoop.error(err);
+  });
+  async #pingLoopBody(signal: AbortSignal) {
     let timeElapsed = 0;
-    while (this.connected) {
-      try {
-        await delay(Math.max(0, this.#pingInterval - timeElapsed), { signal: controller.signal });
-        if (!this.connected) {
-          continue;
-        }
-        controller.signal.throwIfAborted();
-        const then = Date.now();
-        try {
-          await this.#sendPingDelayDisconnect(this.#pingInterval / SECOND + 15);
-        } finally {
-          timeElapsed = Date.now() - then;
-        }
-        controller.signal.throwIfAborted();
-      } catch (err) {
-        if (err instanceof DOMException && err.name === "AbortError") {
-          break;
-        } else if (!this.connected) {
-          break;
-        }
-        this.#LpingLoop.error(err);
-      }
+    await delay(Math.max(0, this.#pingInterval - timeElapsed), { signal });
+    if (!this.connected) {
+      return;
     }
+    signal.throwIfAborted();
+    const then = Date.now();
+    try {
+      await this.#sendPingDelayDisconnect(this.#pingInterval / SECOND + 15);
+    } finally {
+      timeElapsed = Date.now() - then;
+    }
+    signal.throwIfAborted();
   }
 
   async #sendPingDelayDisconnect(disconnect_delay: number) {

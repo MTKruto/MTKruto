@@ -19,7 +19,7 @@
  */
 
 import type { Api, Mtproto } from "../2_tl.ts";
-import type { ConnectionState, EntityGetter, ID, ParseMode, Update } from "../3_types.ts";
+import type { ConnectionState, ID, ParseMode, PeerGetter, Update } from "../3_types.ts";
 import type { InvokeParams } from "./0_params.ts";
 import type { StorageOperations } from "./0_storage_operations.ts";
 
@@ -36,7 +36,7 @@ export interface C {
   getInputChannel: (id: ID) => Promise<Api.inputChannel | Api.inputChannelFromMessage>;
   getInputUser: (id: ID) => Promise<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage>;
   getInputPeerChatId: (inputPeer: Api.InputPeer | Api.InputUser | Api.InputChannel) => Promise<number>;
-  getEntity: EntityGetter;
+  getPeer: PeerGetter;
   handleUpdate: (update: Update) => void;
   parseMode: ParseMode;
   outgoingMessages: "none" | "business" | "all" | null;

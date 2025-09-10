@@ -21,13 +21,12 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
-import type { EntityGetter } from "./_getters.ts";
-import { constructMessageEntity, type MessageEntity } from "./0_message_entity.ts";
-import { type ChatP, constructChatP } from "./1_chat_p.ts";
-import { constructStoryPrivacy, type StoryPrivacy } from "./1_story_privacy.ts";
+import type { ChatP, PeerGetter } from "./1_chat_p.ts";
+import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
 import { constructStoryContent, type StoryContent } from "./2_story_content.ts";
 import { constructStoryInteractions, type StoryInteractions } from "./2_story_interactions.ts";
 import { constructStoryInteractiveArea, type StoryInteractiveArea } from "./2_story_interactive_area.ts";
+import { constructStoryPrivacy, type StoryPrivacy } from "./2_story_privacy.ts";
 
 /** A story. */
 export interface Story {
@@ -45,13 +44,13 @@ export interface Story {
   captionEntities?: MessageEntity[];
 }
 
-export async function constructStory(story: Api.storyItem, peer: Api.peerUser | Api.peerChat | Api.peerChannel, getEntity: EntityGetter): Promise<Story> {
+export function constructStory(story: Api.storyItem, peer: Api.peerUser | Api.peerChat | Api.peerChannel, getPeer: PeerGetter): Story {
   const id = story.id;
-  const entity = await getEntity(peer);
-  if (!entity) {
+  const peer_ = getPeer(peer);
+  if (!peer_) {
     unreachable();
   }
-  const chat = constructChatP(entity);
+  const chat = peer_[0];
   const date = story.date;
   const interactiveAreas = (story.media_areas ?? []).map(constructStoryInteractiveArea);
   const highlighted = story.pinned ? true : false;

@@ -24,10 +24,12 @@ import { cleanObject, drop, getLogger, type Logger, type MaybePromise, mustPromp
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type BotCommand, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatAction, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructUser, type FailedInvitation, type FileSource, type Gift, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputMedia, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type Poll, type PriceTag, type Reaction, type ReplyTo, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type BotCommand, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatAction, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputMedia, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type Poll, type PriceTag, type Reaction, type ReplyTo, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
+import { peerToChatId } from "../tl/2_telegram.ts";
+import { AbortableLoop } from "./0_abortable_loop.ts";
 import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenMiniAppParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
@@ -240,7 +242,9 @@ export const handleMigrationError = Symbol("handleMigrationError");
 // global Client ID counter for logs
 let id = 0;
 
-const getEntity = Symbol();
+const getPeer = Symbol();
+
+const mustGetPeer = Symbol();
 
 export interface ClientParams extends ClientPlainParams {
   /** The storage provider to use. Defaults to memory storage. */
@@ -383,6 +387,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #L: Logger;
   #LsignIn: Logger;
   #LupdateGapRecoveryLoop: Logger;
+  #LstorageWriteLoop: Logger;
   #LhandleMigrationError: Logger;
   #Lmin: Logger;
 
@@ -425,6 +430,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     const L = this.#L = getLogger("Client").client(id++);
     this.#LsignIn = L.branch("signIn");
     this.#LupdateGapRecoveryLoop = L.branch("updateGapRecoveryLoop");
+    this.#LstorageWriteLoop = L.branch("storageWriteLoop");
     this.#LhandleMigrationError = L.branch("[handleMigrationError]");
     this.#Lmin = L.branch("min");
 
@@ -452,7 +458,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       getInputChannel: this.getInputChannel.bind(this),
       getInputUser: this.getInputUser.bind(this),
       getInputPeerChatId: this.#getInputPeerChatId.bind(this),
-      getEntity: this[getEntity].bind(this),
+      getPeer: this[mustGetPeer].bind(this),
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
       outgoingMessages: this.#outgoingMessages,
@@ -997,27 +1003,36 @@ export class Client<C extends Context = Context> extends Composer<C> {
       if (this.#authString && !this.#authStringImported) {
         await this.importAuthString(this.#authString);
       }
-      const [authKey, dc] = await Promise.all([this.storage.getAuthKey(), this.storage.getDc()]);
-      if (authKey !== null && dc !== null) {
-        if (!this.#client || this.#client.dc !== dc) {
+      const auth = this.storage.auth.mustGet();
+      if (auth.authKey !== null && auth.dc !== null) {
+        if (!this.#client || this.#client.dc !== auth.dc) {
           this.#client?.disconnect();
-          this.#setMainClient(this.#newClient(dc, true, false));
+          this.#setMainClient(this.#newClient(auth.dc, true, false));
         }
-        await this.#client!.setAuthKey(authKey);
+        await this.#client!.setAuthKey(auth.authKey);
         if (this.#client!.serverSalt === 0n) {
           this.#client!.serverSalt = await this.storage.getServerSalt() ?? 0n;
         }
       } else {
-        const dc = await this.storage.getDc() ?? this.#initialDc;
+        const dc = auth.dc ?? this.#initialDc;
         if (!this.#client || this.#client.dc !== dc) {
           this.#client?.disconnect();
           this.#setMainClient(this.#newClient(dc, true, false));
         }
       }
       await this.#client!.connect();
-      await Promise.all([this.storage.setAuthKey(this.#client!.authKey), this.storage.setDc(this.#client!.dc), this.storage.setServerSalt(this.#client!.serverSalt)]);
-      this.#startUpdateGapRecoveryLoop();
-      this.#startClientDisconnectionLoop();
+      await this.storage.auth.update((v) => {
+        v.authKey = this.#client!.authKey;
+        v.dc = this.#client!.dc;
+      });
+      await this.storage.setServerSalt(this.#client!.serverSalt);
+      this.#updateGapRecoveryLoop.start();
+      this.#clientDisconnectionLoop.start();
+      if (!this.#messageStorage_.isMemory) {
+        this.#storageWriteLoop.start();
+      } else {
+        this.#L.debug("not starting storageWriteLoop");
+      }
     } finally {
       unlock();
     }
@@ -1029,16 +1044,19 @@ export class Client<C extends Context = Context> extends Composer<C> {
       newDc += "-test";
     }
     this.disconnect();
-    await this.storage.setDc(newDc as DC);
-    await this.storage.setAuthKey(null);
+    await this.storage.auth.update((v) => {
+      v.authKey = null;
+      v.dc = newDc as DC;
+    });
     await this.connect();
     this.#LhandleMigrationError.debug(`migrated to DC${newDc}`);
   }
 
   disconnect() {
     this.#disconnectAllClients();
-    this.#clientDisconnectionLoopAbortController?.abort();
-    this.#updateGapRecoveryLoopAbortController?.abort();
+    this.#clientDisconnectionLoop.abort();
+    this.#updateGapRecoveryLoop.abort();
+    this.#storageWriteLoop.abort();
     this.#updateManager.closeAllChats();
   }
 
@@ -1067,67 +1085,54 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   #lastUpdates = new Date();
-  #updateGapRecoveryLoopAbortController?: AbortController;
-  #startUpdateGapRecoveryLoop() {
-    drop(this.#updateGapRecoveryLoop());
-  }
-  async #updateGapRecoveryLoop() {
-    this.#updateGapRecoveryLoopAbortController?.abort();
-    const controller = this.#updateGapRecoveryLoopAbortController = new AbortController();
-    while (this.connected) {
-      try {
-        await delay(60 * SECOND, { signal: controller.signal });
-        if (!this.connected) {
-          break;
-        }
-        controller.signal.throwIfAborted();
-        if (Date.now() - this.#lastUpdates.getTime() >= 15 * MINUTE) {
-          drop(
-            this.#updateManager.recoverUpdateGap("lastUpdates").then(() => {
-              this.#lastUpdates = new Date();
-            }),
-          );
-        }
-      } catch (err) {
-        if (err instanceof DOMException && err.name === "AbortError") {
-          break;
-        } else if (!this.connected) {
-          break;
-        }
-        this.#LupdateGapRecoveryLoop.error(err);
-      }
+  #updateGapRecoveryLoop = new AbortableLoop(async (signal) => {
+    await delay(60 * SECOND, { signal });
+    if (!this.connected) {
+      this.#updateGapRecoveryLoop.abort();
+      return;
     }
-  }
+    if (Date.now() - this.#lastUpdates.getTime() >= 15 * MINUTE) {
+      drop(
+        this.#updateManager.recoverUpdateGap("lastUpdates").then(() => {
+          this.#lastUpdates = new Date();
+        }),
+      );
+    }
+  }, (err) => {
+    if (!this.connected) {
+      this.#updateGapRecoveryLoop.abort();
+    } else {
+      this.#LupdateGapRecoveryLoop.error(err);
+    }
+  });
 
-  #clientDisconnectionLoopAbortController?: AbortController;
-  #startClientDisconnectionLoop() {
-    drop(this.#clientDisconnectionLoop());
-  }
-  async #clientDisconnectionLoop() {
-    const controller = this.#clientDisconnectionLoopAbortController = new AbortController();
-    while (this.connected) {
-      try {
-        await delay(60 * SECOND, { signal: controller.signal });
-        if (!this.connected) {
-          break;
-        }
-        controller.signal.throwIfAborted();
-        const now = Date.now();
-        const disconnectAfter = 5 * MINUTE;
-        this.#clients.map((client, i) => {
-          if (i > 0 && !client.disconnected && client.lastRequest && now - client.lastRequest.getTime() >= disconnectAfter) {
-            client?.disconnect();
-          }
-        });
-      } catch (err) {
-        if (err instanceof DOMException && err.name === "AbortError") {
-          break;
-        } else if (!this.connected) {
-          break;
-        }
+  #clientDisconnectionLoop = new AbortableLoop(async (signal) => {
+    await delay(60 * SECOND, { signal });
+    if (!this.connected) {
+      this.#clientDisconnectionLoop.abort();
+      return;
+    }
+    const now = Date.now();
+    const disconnectAfter = 5 * MINUTE;
+    for (const [i, client] of this.#clients.entries()) {
+      if (i > 0 && !client.disconnected && client.lastRequest && now - client.lastRequest.getTime() >= disconnectAfter) {
+        client?.disconnect();
       }
     }
-  }
+  }, () => {
+    if (!this.connected) {
+      this.#clientDisconnectionLoop.abort();
+    }
+  });
+
+  #storageWriteLoop = new AbortableLoop(async (signal) => {
+    await delay(60 * SECOND, { signal });
+    await this.messageStorage.commit();
+  }, (err) => {
+    this.#LstorageWriteLoop.error(err);
+  }, async () => {
+    await this.messageStorage.commit();
+  });
 
   /**
    * Signs in using the provided parameters if not already signed in.
@@ -1172,8 +1177,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
       while (true) {
         try {
           const auth = await this.invoke({ _: "auth.importBotAuthorization", api_id: this.#apiId, api_hash: this.#apiHash, bot_auth_token: params.botToken, flags: 0 });
-          await this.storage.setAccountId(Number(Api.as("auth.authorization", auth).user.id));
-          await this.storage.setAccountType("bot");
+          await this.storage.auth.update((v) => {
+            v.userId = Number(Api.as("auth.authorization", auth).user.id);
+            v.isBot = true;
+          });
           break;
         } catch (err) {
           if (err instanceof Migrate) {
@@ -1236,8 +1243,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
               phone_code: code,
               phone_code_hash: sentCode.phone_code_hash,
             });
-            await this.storage.setAccountId(Number(Api.as("auth.authorization", auth).user.id));
-            await this.storage.setAccountType("user");
+            await this.storage.auth.update((v) => {
+              v.userId = Number(Api.as("auth.authorization", auth).user.id);
+              v.isBot = false;
+            });
             this.#LsignIn.debug("signed in as user");
             await this.#propagateAuthorizationState(true);
             await this.#updateManager.fetchState("signIn");
@@ -1266,8 +1275,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
             const input = await checkPassword(password, ap);
 
             const auth = await this.invoke({ _: "auth.checkPassword", password: input });
-            await this.storage.setAccountId(Number(Api.as("auth.authorization", auth).user.id));
-            await this.storage.setAccountType("user");
+            await this.storage.auth.update((v) => {
+              v.userId = Number(Api.as("auth.authorization", auth).user.id);
+              v.isBot = false;
+            });
             this.#LsignIn.debug("signed in as user");
             await this.#propagateAuthorizationState(true);
             await this.#updateManager.fetchState("signIn");
@@ -1399,18 +1410,19 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async #setupClient(client: ClientEncrypted) {
     const storage = client.dc === this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.cdn ? "_cdn" : "")));
     await storage.initialize();
-    const [authKey, serverSalt] = await Promise.all([storage.getAuthKey(), storage.getServerSalt()]);
-    if (authKey) {
-      await client.setAuthKey(authKey);
+    const auth = storage.auth.mustGet();
+    const serverSalt = await storage.getServerSalt();
+    if (auth.authKey !== null) {
+      await client.setAuthKey(auth.authKey);
       if (serverSalt) {
         client.serverSalt = serverSalt;
       }
     }
     await client.connect();
-    if (!authKey) {
+    if (auth.authKey === null) {
       await this.#importAuthorization(client);
     }
-    await storage.setAuthKey(client.authKey);
+    await storage.auth.update((v) => v.authKey = client.authKey);
     if (client.dc !== this.#client!.dc) {
       await storage.setServerSalt(client.serverSalt);
       client.handlers.onNewServerSalt = async (serverSalt) => {
@@ -1421,9 +1433,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #importAuthorization(client: ClientEncrypted) {
     if (this.#client!.dc === client.dc && this.#client!.cdn === client.cdn) {
-      const [authKey, serverSalt] = await Promise.all([this.storage.getAuthKey(), this.storage.getServerSalt()]);
-      if (authKey) {
-        await client.setAuthKey(authKey);
+      const auth = this.storage.auth.mustGet();
+      const serverSalt = await this.storage.getServerSalt();
+      if (auth.authKey !== null) {
+        await client.setAuthKey(auth.authKey);
         if (serverSalt) {
           client.serverSalt = serverSalt;
         }
@@ -1514,25 +1527,19 @@ export class Client<C extends Context = Context> extends Composer<C> {
     await this.storage.importAuthString(authString);
     this.#authStringImported = true;
     if (!this.#apiId) {
-      this.#apiId = await this.storage.getApiId() ?? 0;
+      this.#apiId = this.storage.auth.mustGet().apiId;
     }
   }
 
   async #getUserAccessHash(userId: bigint) {
     const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUser", user_id: userId, access_hash: 0n }] });
     const user = Api.is("user", users[0]) ? users[0] : undefined;
-    if (user) {
-      await this.messageStorage.setEntity(user);
-    }
     return user?.access_hash ?? 0n;
   }
 
   async #getChannelAccessHash(channelId: bigint) {
     const channels = await this.invoke({ _: "channels.getChannels", id: [{ _: "inputChannel", channel_id: channelId, access_hash: 0n }] });
     const channel = Api.is("channel", channels.chats[0]) ? channels.chats[0] : undefined;
-    if (channel) {
-      await this.messageStorage.setEntity(channel);
-    }
     return channel?.access_hash ?? 0n;
   }
 
@@ -1546,7 +1553,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       return { _: "inputPeerSelf" };
     }
     const inputPeer = await this.#getInputPeerInner(id);
-    if (((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash === 0n) && await this.storage.getAccountType() === "bot") {
+    if (((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash === 0n) && this.storage.isBot) {
       if ("channel_id" in inputPeer) {
         inputPeer.access_hash = await this.#getChannelAccessHash(inputPeer.channel_id);
       } else {
@@ -1604,7 +1611,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     if (typeof id === "string") {
       id = getUsername(id);
       let resolvedId = 0;
-      const maybeUsername = await this.messageStorage.getUsername(id);
+      const maybeUsername = await this.messageStorage.usernames.get([id]);
       if (maybeUsername !== null && Date.now() - maybeUsername[1].getTime() < USERNAME_TTL) {
         const [id] = maybeUsername;
         resolvedId = id;
@@ -1644,24 +1651,25 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
 
     if (!Api.is("inputPeerChat", peer) && !peer.access_hash) {
-      const chatId = Api.peerToChatId(peer);
-      const minPeerReference = await this.messageStorage.getLastMinPeerReference(chatId);
-      if (minPeerReference) {
-        const minInputPeer = await this.#getMinInputPeer(canBeInputChannel(peer) ? "channel" : "user", { ...minPeerReference, senderId: chatId });
-        if (minInputPeer) {
-          this.#Lmin.debug("resolved input min peer", minInputPeer);
-          peer = minInputPeer;
-        }
-      }
+      // TODO
+      // const chatId = Api.peerToChatId(peer);
+      // const minPeerReference = await this.messageStorage.getLastMinPeerReference(chatId);
+      // if (minPeerReference) {
+      //   const minInputPeer = await this.#getMinInputPeer(canBeInputChannel(peer) ? "channel" : "user", { ...minPeerReference, senderId: chatId });
+      //   if (minInputPeer) {
+      //     this.#Lmin.debug("resolved input min peer", minInputPeer);
+      //     peer = minInputPeer;
+      //   }
+      // }
     }
 
     return peer;
   }
 
   async #getMinInputPeer(type: "user" | "channel", reference: { chatId: number; senderId: number; messageId: number }): Promise<Api.inputPeerUserFromMessage | Api.inputPeerChannelFromMessage | null> {
-    const entity = await this.messageStorage.getEntity(reference.chatId);
-    if (Api.isOneOf(["channel", "channelForbidden"], entity) && entity.access_hash) {
-      const peer: Api.inputPeerChannel = { _: "inputPeerChannel", channel_id: entity.id, access_hash: entity.access_hash };
+    const peer_ = await this.messageStorage.peers.get([reference.chatId]);
+    if (peer_ !== null && (peer_[0].type === "channel" || peer_[0].type === "supergroup")) {
+      const peer: Api.inputPeerChannel = { _: "inputPeerChannel", channel_id: BigInt(peer_[0].id), access_hash: peer_[1] };
       if (type === "user") {
         return { _: "inputPeerUserFromMessage", peer, msg_id: reference.messageId, user_id: Api.chatIdToPeerId(reference.senderId) };
       } else {
@@ -1672,19 +1680,27 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
-  private [getEntity](peer: Api.peerUser): Promise<Api.user | null>;
-  private [getEntity](peer: Api.peerChat): Promise<Api.chat | Api.chatForbidden | null>;
-  private [getEntity](peer: Api.peerChannel): Promise<Api.channel | Api.channelForbidden | null>;
-  private [getEntity](peer: Api.peerUser | Api.peerChat | Api.peerChannel): Promise<Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden | null>;
-  private async [getEntity](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
+  private [getPeer](peer: Api.peerUser): Promise<[ChatPPrivate, bigint] | null>;
+  private [getPeer](peer: Api.peerChat): Promise<[ChatPGroup, bigint] | null>;
+  private [getPeer](peer: Api.peerChannel): Promise<[ChatPChannel, bigint] | null>;
+  private [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel): Promise<[ChatP, bigint] | null>;
+  private async [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
     const id = Api.peerToChatId(peer);
-    const entity = await this.messageStorage.getEntity(id);
-    if (entity === null && await this.storage.getAccountType() === "bot" && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
+    const entity = await this.messageStorage.peers.get([id]);
+    if (entity === null && this.storage.isBot && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
       await this.getInputPeer(id);
     } else {
       return entity;
     }
-    return await this.messageStorage.getEntity(id);
+    return await this.messageStorage.peers.get([id]);
+  }
+
+  private [mustGetPeer](peer: Api.peerUser): [ChatPPrivate, bigint] | null;
+  private [mustGetPeer](peer: Api.peerChat): [ChatPGroup, bigint] | null;
+  private [mustGetPeer](peer: Api.peerChannel): [ChatPChannel, bigint] | null;
+  private [mustGetPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel): [ChatP, bigint] | null;
+  private [mustGetPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
+    return this.messageStorage.peers.mustGet([peerToChatId(peer)]);
   }
 
   async #handleCtxUpdate(update: Update) {
@@ -1706,81 +1722,95 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   async #handleUpdate(update: Api.Update) {
-    const promises = new Array<() => Promise<Update | null>>();
+    const maybePromises = new Array<() => MaybePromise<Update | null>>();
     if (Api.is("updateUserName", update)) {
-      await this.messageStorage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
+      const value: [number, Date] = [Number(update.user_id), new Date()];
+      for (const username_ of update.usernames) {
+        const username = username_.username.toLowerCase();
+        this.messageStorage.usernames.set([username], value);
+      }
       const peer: Api.peerUser = { ...update, _: "peerUser" };
-      const entity = await this[getEntity](peer);
-      if (entity !== null) {
-        entity.usernames = update.usernames;
-        entity.first_name = update.first_name;
-        entity.last_name = update.last_name;
-        await this.messageStorage.setEntity(entity);
+      const peer_ = await this[getPeer](peer);
+      if (peer_ !== null) {
+        const username = update.usernames[0];
+        if (username !== undefined) {
+          peer_[0].username = username.username;
+          const also = update.usernames.filter((v) => v !== username);
+          if (also.length) {
+            peer_[0].also = also.map((v) => v.username);
+          } else {
+            delete peer_[0].also;
+          }
+        } else {
+          delete peer_[0].username;
+        }
+        this.messageStorage.setPeer2(peer_[0], peer_[1]);
       }
     }
 
     if (this.#messageManager.canHandleUpdate(update)) {
-      promises.push(() => this.#messageManager.handleUpdate(update));
+      maybePromises.push(() => this.#messageManager.handleUpdate(update));
     }
 
     if (this.#chatManager.canHandleUpdate(update)) {
-      promises.push(() => this.#chatManager.handleUpdate(update));
+      maybePromises.push(() => this.#chatManager.handleUpdate(update));
     }
 
     if (this.#pollManager.canHandleUpdate(update)) {
-      promises.push(() => this.#pollManager.handleUpdate(update));
+      maybePromises.push(() => this.#pollManager.handleUpdate(update));
     }
 
     if (this.#videoChatManager.canHandleUpdate(update)) {
-      promises.push(() => this.#videoChatManager.handleUpdate(update));
+      maybePromises.push(() => this.#videoChatManager.handleUpdate(update));
     }
 
     if (this.#callbackQueryManager.canHandleUpdate(update)) {
-      promises.push(() => this.#callbackQueryManager.handleUpdate(update));
+      maybePromises.push(() => this.#callbackQueryManager.handleUpdate(update));
     }
 
     if (this.#inlineQueryManager.canHandleUpdate(update)) {
-      promises.push(() => this.#inlineQueryManager.handleUpdate(update));
+      maybePromises.push(() => this.#inlineQueryManager.handleUpdate(update));
     }
 
     if (this.#linkPreviewManager.canHandleUpdate(update)) {
-      promises.push(() => this.#linkPreviewManager.handleUpdate(update));
+      maybePromises.push(() => this.#linkPreviewManager.handleUpdate(update));
     }
 
     if (this.#reactionManager.canHandleUpdate(update)) {
-      promises.push(() => this.#reactionManager.handleUpdate(update));
+      maybePromises.push(() => this.#reactionManager.handleUpdate(update));
     }
 
     if (this.#chatListManager.canHandleUpdate(update)) {
-      promises.push(() => this.#chatListManager.handleUpdate(update));
+      maybePromises.push(() => this.#chatListManager.handleUpdate(update));
     }
 
     if (this.#storyManager.canHandleUpdate(update)) {
-      promises.push(() => this.#storyManager.handleUpdate(update));
+      maybePromises.push(() => this.#storyManager.handleUpdate(update));
     }
 
     if (this.#businessConnectionManager.canHandleUpdate(update)) {
-      promises.push(() => this.#businessConnectionManager.handleUpdate(update));
+      maybePromises.push(() => this.#businessConnectionManager.handleUpdate(update));
     }
 
     if (this.#storyManager.canHandleUpdate(update)) {
-      promises.push(() => this.#storyManager.handleUpdate(update));
+      maybePromises.push(() => this.#storyManager.handleUpdate(update));
     }
 
     if (this.#paymentManager.canHandleUpdate(update)) {
-      promises.push(() => this.#paymentManager.handleUpdate(update));
+      maybePromises.push(() => this.#paymentManager.handleUpdate(update));
     }
 
     if (this.#translationsManager.canHandleUpdate(update)) {
-      promises.push(() => this.#translationsManager.handleUpdate(update));
+      maybePromises.push(() => this.#translationsManager.handleUpdate(update));
     }
 
     return () =>
       Promise.resolve().then(async () => {
         const updates: Array<Update> = [{ update }];
-        for (const promise of promises) {
+        for (const maybePromise of maybePromises) {
           try {
-            const update = await promise();
+            const value = maybePromise();
+            const update = value instanceof Promise ? await value : value;
             if (update) {
               updates.push(update);
             }
@@ -1796,7 +1826,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
             if ("deletedMessages" in update) {
               for (const { chatId, messageId } of update.deletedMessages) {
                 await this.messageStorage.setMessage(chatId, messageId, null);
-                await this.#chatListManager.reassignChatLastMessage(chatId);
               }
             }
           }
@@ -1840,14 +1869,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @method ac
    */
   async getMe(): Promise<User> {
-    let user_ = await this[getEntity]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) });
-    if (user_ === null) {
+    let chatP = (await this[getPeer]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) }))?.[0] ?? null;
+    if (chatP === null) {
       const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUserSelf" }] });
-      user_ = Api.as("user", users[0]);
-      await this.messageStorage.setEntity(user_);
-      await this.storage.setIsPremium(user_.premium ?? false);
+      chatP = constructChatP(Api.as("user", users[0]));
+      await this.storage.setIsPremium(chatP.isPremium);
     }
-    const user = constructUser(user_);
+    const user = constructUser2(chatP);
     this.#lastGetMe = user;
     return user;
   }

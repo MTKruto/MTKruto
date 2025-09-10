@@ -42,9 +42,9 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
     return Api.isOneOf(paymentManagerUpdates, update);
   }
 
-  async handleUpdate(update: PaymentManagerUpdate): Promise<Update | null> {
+  handleUpdate(update: PaymentManagerUpdate): Update | null {
     if (Api.is("updateBotPrecheckoutQuery", update)) {
-      const preCheckoutQuery = await constructPreCheckoutQuery(update, this.#c.getEntity);
+      const preCheckoutQuery = constructPreCheckoutQuery(update, this.#c.getPeer);
       return { preCheckoutQuery };
     }
 
