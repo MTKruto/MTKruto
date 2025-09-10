@@ -35,10 +35,6 @@ export const K = {
   },
   auth: {
     P: (string: string): string => `auth.${string}`,
-    dc: (): StorageKeyPart[] => [K.auth.P("dc")],
-    key: (): StorageKeyPart[] => [K.auth.P("key")],
-    accountId: (): StorageKeyPart[] => [K.auth.P("accountId")],
-    accountType: (): StorageKeyPart[] => [K.auth.P("accountType")],
     isPremium: (): StorageKeyPart[] => [K.auth.P("isPremium")],
   },
   updates: {
@@ -47,14 +43,9 @@ export const K = {
     all: (): StorageKeyPart[] => [K.updates.P("updates")],
     updates: (boxId: bigint): StorageKeyPart[] => [...K.updates.all(), boxId],
     update: (boxId: bigint, id: bigint): StorageKeyPart[] => [...K.updates.updates(boxId), id],
-    channelPts: (channelId: bigint): StorageKeyPart[] => [K.updates.P("channelPts"), channelId],
   },
   cache: {
     P: (string: string): string => `cache.${string}`,
-    usernames: (): StorageKeyPart[] => [K.cache.P("username")],
-    username: (v: string): StorageKeyPart[] => [...K.cache.usernames(), v],
-    peers: (): StorageKeyPart[] => [K.cache.P("peers")],
-    peer: (id: number): StorageKeyPart[] => [...K.cache.peers(), id],
     stickerSetNames: (): StorageKeyPart[] => [K.cache.P("stickerSetNames")],
     stickerSetName: (id: bigint, accessHash: bigint): StorageKeyPart[] => [...K.cache.stickerSetNames(), id, accessHash],
     files: (): StorageKeyPart[] => [K.cache.P("files")],
@@ -75,12 +66,6 @@ export const K = {
     groupCall: (id: bigint): StorageKeyPart[] => [...K.cache.groupCalls(), id],
     groupCallAccessHashes: (): StorageKeyPart[] => [K.cache.P("groupCallAccessHashes")],
     groupCallAccessHash: (id: bigint): StorageKeyPart[] => [...K.cache.groupCallAccessHashes(), id],
-    minPeerReferences: (): StorageKeyPart[] => [K.cache.P("minPeerReferences")],
-    minPeerReference: (senderId: number, chatId: number) => [...K.cache.minPeerReferences(), senderId, chatId],
-    minPeerReferenceSender: (senderId: number) => [...K.cache.minPeerReferences(), senderId],
-    allTranslations: () => [K.cache.P("translations")],
-    platformTranslations: (platform: string) => [...K.cache.allTranslations(), platform],
-    translations: (platform: string, language: string) => [...K.cache.platformTranslations(platform), language],
     pollResults: () => [K.cache.P("pollResults")],
     pollResult: (pollId: bigint) => [...K.cache.pollResults(), pollId],
     polls: () => [K.cache.P("polls")],
@@ -195,7 +180,6 @@ export class StorageOperations {
     const apiId = reader.readInt32();
     const isBot = !!reader.read(1)[0];
     const userId = Number(reader.readInt64());
-    await this.setAccountId(userId);
     await this.auth.set({
       apiId,
       authKey,
@@ -304,16 +288,12 @@ export class StorageOperations {
     this.peers.set([chatP.id], [chatP, accessHash]);
   }
 
-  async setAccountId(accountId: number) {
-    await this.#storage.set(K.auth.accountId(), accountId);
-  }
-
   #accountId: number | null = null;
   async getAccountId(): Promise<number | null> {
     if (this.#accountId !== null) {
       return this.#accountId;
     } else {
-      return (this.#accountId = await this.#storage.get<number>(K.auth.accountId()));
+      return this.#accountId = (await this.auth.get())?.userId ?? null;
     }
   }
 
@@ -586,12 +566,6 @@ export class StorageOperations {
 
   async deleteStickerSetNames() {
     for await (const [key] of await this.#storage.getMany({ prefix: K.cache.stickerSetNames() })) {
-      await this.#storage.set(key, null);
-    }
-  }
-
-  async deleteUsernames() {
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.usernames() })) {
       await this.#storage.set(key, null);
     }
   }

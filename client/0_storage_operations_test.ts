@@ -25,23 +25,13 @@ Deno.test("key parts", () => {
   // session
   assertEquals(K.session.serverSalt(), ["session.serverSalt"]);
 
-  // auth
-  assertEquals(K.auth.dc(), ["auth.dc"]);
-  assertEquals(K.auth.key(), ["auth.key"]);
-  assertEquals(K.auth.accountType(), ["auth.accountType"]);
-
   // updates
   assertEquals(K.updates.state(), ["updates.state"]);
   assertEquals(K.updates.all(), ["updates.updates"]);
   assertEquals(K.updates.updates(123n), ["updates.updates", 123n]);
   assertEquals(K.updates.update(123n, 1n), ["updates.updates", 123n, 1n]);
-  assertEquals(K.updates.channelPts(123n), ["updates.channelPts", 123n]);
 
   // cache
-  assertEquals(K.cache.usernames(), ["cache.username"]);
-  assertEquals(K.cache.username("MTKruto"), ["cache.username", "MTKruto"]);
-  assertEquals(K.cache.peers(), ["cache.peers"]);
-  assertEquals(K.cache.peer(123), ["cache.peers", 123]);
   assertEquals(K.cache.stickerSetNames(), ["cache.stickerSetNames"]);
   assertEquals(K.cache.stickerSetName(123n, 0n), ["cache.stickerSetNames", 123n, 0n]);
   assertEquals(K.cache.files(), ["cache.files"]);
