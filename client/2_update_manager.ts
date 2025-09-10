@@ -109,19 +109,19 @@ export class UpdateManager {
   }
 
   #defaultDropPendingUpdates: boolean | null = null;
-  async #mustDropPendingUpdates() {
+  #mustDropPendingUpdates() {
     if (typeof this.#c.dropPendingUpdates === "boolean") {
       return this.#c.dropPendingUpdates;
     }
     if (this.#defaultDropPendingUpdates === null) {
-      this.#defaultDropPendingUpdates = await this.#c.storage.getAccountType() === "bot";
+      this.#defaultDropPendingUpdates = this.#c.storage.auth.mustGet().isBot;
     }
     return this.#defaultDropPendingUpdates;
   }
 
   #state: Api.updates_State | null | undefined = undefined;
   async #getState() {
-    if (await this.#mustDropPendingUpdates()) {
+    if (this.#mustDropPendingUpdates()) {
       return this.#state ?? null;
     }
     if (this.#state !== undefined) {
@@ -133,7 +133,7 @@ export class UpdateManager {
 
   async #setState(state: Api.updates_State) {
     this.#state = state;
-    if (!await this.#mustDropPendingUpdates()) {
+    if (!this.#mustDropPendingUpdates()) {
       await this.#c.storage.setState(state);
     }
   }
@@ -148,7 +148,7 @@ export class UpdateManager {
     }
     this.#updateState = state;
     this.#LfetchState.debug(`state fetched [${source}]`);
-    if (await this.#mustDropPendingUpdates()) {
+    if (this.#mustDropPendingUpdates()) {
       await this.#setState(state);
     }
   }
@@ -213,10 +213,13 @@ export class UpdateManager {
     this.#c.messageStorage.setPeer(chat);
 
     if ("username" in chat && chat.username) {
-      this.#c.messageStorage.updateUsernames(Api.peerToChatId(chat), [chat.username]);
+      this.#c.messageStorage.usernames.set([chat.username], [Api.peerToChatId(chat), new Date()]);
     }
     if ("usernames" in chat && chat.usernames) {
-      this.#c.messageStorage.updateUsernames(Api.peerToChatId(chat), chat.usernames.map((v) => v.username));
+      const value: [number, Date] = [Api.peerToChatId(chat), new Date()];
+      for (const username of chat.usernames) {
+        this.#c.messageStorage.usernames.set([username.username], value);
+      }
     }
   }
 
@@ -283,10 +286,13 @@ export class UpdateManager {
     this.#c.messageStorage.setPeer(user);
 
     if (user.username) {
-      this.#c.messageStorage.updateUsernames(Api.peerToChatId(user), [user.username]);
+      this.#c.messageStorage.usernames.set([user.username], [Api.peerToChatId(user), new Date()]);
     }
     if (user.usernames) {
-      this.#c.messageStorage.updateUsernames(Api.peerToChatId(user), user.usernames.map((v) => v.username));
+      const value: [number, Date] = [Api.peerToChatId(user), new Date()];
+      for (const username of user.usernames) {
+        this.#c.messageStorage.usernames.set([username.username], value);
+      }
     }
   }
 
@@ -303,15 +309,15 @@ export class UpdateManager {
 
   #nonFirst = new Set<bigint>();
   async #getChannelPtsWithDropPendingUpdatesCheck(channelId: bigint) {
-    if (!(await this.#mustDropPendingUpdates())) {
-      return await this.#c.storage.getChannelPts(channelId);
+    if (!(this.#mustDropPendingUpdates())) {
+      return await this.#c.storage.channelPts.get([channelId]);
     }
     const first = !this.#nonFirst.has(channelId);
     if (first) {
       this.#nonFirst.add(channelId);
       return null;
     } else {
-      return await this.#c.storage.getChannelPts(channelId);
+      return await this.#c.storage.channelPts.get([channelId]);
     }
   }
 
@@ -343,7 +349,7 @@ export class UpdateManager {
     const channelId = Api.is("updateNewChannelMessage", update) || Api.is("updateEditChannelMessage", update) ? Api.as("peerChannel", (update.message as Api.message | Api.messageService).peer_id).channel_id : update.channel_id;
     if (Api.is("updateChannelTooLong", update)) {
       if (update.pts !== undefined) {
-        await this.#c.storage.setChannelPts(channelId, update.pts);
+        this.#c.storage.channelPts.set([channelId], update.pts);
       }
       await this.#recoverChannelUpdateGap(channelId, "updateChannelTooLong");
       return;
@@ -364,7 +370,7 @@ export class UpdateManager {
       await this.#c.storage.setUpdate(channelId, update);
     }
     if (update.pts !== 0) {
-      await this.#c.storage.setChannelPts(channelId, update.pts);
+      this.#c.storage.channelPts.set([channelId], update.pts);
     }
     this.#queueUpdate(update, channelId, true);
   }
@@ -696,8 +702,6 @@ export class UpdateManager {
           }
         } else if (Api.is("updates.differenceTooLong", difference)) {
           await this.#c.messageStorage.deleteMessages();
-          await this.#c.storage.removeChats(0);
-          await this.#c.storage.removeChats(1);
           state.pts = difference.pts;
           this.#LrecoverUpdateGap.debug("received differenceTooLong");
         } else if (Api.is("updates.differenceEmpty", difference)) {
@@ -720,7 +724,7 @@ export class UpdateManager {
   async #recoverChannelUpdateGap(channelId: bigint, source: string) {
     let lastTimeout = 1;
     this.#LrecoverChannelUpdateGap.debug(`recovering channel update gap [${channelId}, ${source}]`);
-    const pts_ = await this.#c.storage.getChannelPts(channelId);
+    const pts_ = await this.#c.storage.channelPts.get([channelId]);
     let pts = pts_ === null ? 1 : pts_;
     let retryIn = 5;
     while (true) {
@@ -732,7 +736,7 @@ export class UpdateManager {
           pts,
           channel: { _: "inputChannel", channel_id: channelId, access_hash },
           filter: { _: "channelMessagesFilterEmpty" },
-          limit: await this.#c.storage.getAccountType() === "user" ? CHANNEL_DIFFERENCE_LIMIT_USER : CHANNEL_DIFFERENCE_LIMIT_BOT,
+          limit: this.#c.storage.auth.mustGet().isBot ? CHANNEL_DIFFERENCE_LIMIT_BOT : CHANNEL_DIFFERENCE_LIMIT_USER,
         });
         lastTimeout = difference.timeout ?? 1;
       } catch (err) {
@@ -748,22 +752,22 @@ export class UpdateManager {
         }
       }
       if (Api.is("updates.channelDifference", difference)) {
-        await this.processChats(difference.chats, difference);
-        await this.processUsers(difference.users, difference);
+        this.processChats(difference.chats, difference);
+        this.processUsers(difference.users, difference);
         for (const message of difference.new_messages) {
           await this.#processUpdates({ _: "updateNewChannelMessage", message, pts: 0, pts_count: 0 }, false);
         }
         for (const update of difference.other_updates) {
           await this.#processUpdates(update, false);
         }
-        await this.#c.storage.setChannelPts(channelId, difference.pts);
+        this.#c.storage.channelPts.set([channelId], difference.pts);
         this.#LrecoverChannelUpdateGap.debug(`recovered from update gap [${channelId}, ${source}]`, channelId, source);
         break;
       } else if (Api.is("updates.channelDifferenceTooLong", difference)) {
         // TODO: invalidate messages
         this.#LrecoverChannelUpdateGap.debug("received channelDifferenceTooLong");
-        await this.processChats(difference.chats, difference);
-        await this.processUsers(difference.users, difference);
+        this.processChats(difference.chats, difference);
+        this.processUsers(difference.users, difference);
         for (const message of difference.messages) {
           await this.#processUpdates({ _: "updateNewChannelMessage", message, pts: 0, pts_count: 0 }, false);
         }
@@ -829,7 +833,7 @@ export class UpdateManager {
     if (!chatIds.size) {
       return false;
     }
-    return (await Promise.all(chatIds.values().map((v) => this.#c.messageStorage.getPeer(v)))).some((v) => !v);
+    return (await Promise.all(chatIds.values().map((v) => this.#c.messageStorage.peers.get([v])))).some((v) => !v);
   }
 
   #collectChatIds(object: PtsUpdate | Api.MessageMedia | Api.MessageFwdHeader): Set<number> {

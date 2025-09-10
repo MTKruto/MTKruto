@@ -191,7 +191,7 @@ export class StorageOperations {
     const data = rleDecode(base64DecodeUrlSafe(string));
     const reader = new TLReader(data);
     const dc = reader.readString() as DC;
-    const authKey = reader.readBytes();
+    const authKey = reader.readBytes() as Uint8Array<ArrayBuffer>;
     const apiId = reader.readInt32();
     const isBot = !!reader.read(1)[0];
     const userId = Number(reader.readInt64());
@@ -825,7 +825,7 @@ export class StorageAuth extends StorageValue<Auth> {
 
   #authKeyId: bigint | null = null;
   async #resetAuthKeyId(auth: Auth | null) {
-    if (auth !== null) {
+    if (auth?.authKey) {
       this.#authKeyId = bigIntFromBuffer((await sha1(auth.authKey)).subarray(-8), true, false);
     } else {
       this.#authKeyId = null;

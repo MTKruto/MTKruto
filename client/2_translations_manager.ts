@@ -59,9 +59,9 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
   }
 
   async #getTranslationsInner(platform: string, language: string, assert = false): Promise<Translation[]> {
-    const maybeTranslations = await this.#c.messageStorage.getTranslations(platform, language);
+    const maybeTranslations = await this.#c.messageStorage.translations.get([platform, language]);
     if (maybeTranslations !== null) {
-      return maybeTranslations[1];
+      return maybeTranslations.translations;
     } else if (assert) {
       unreachable();
     } else {
@@ -75,16 +75,16 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
     await new Promise<void>((resolve, reject) => {
       this.#updateTranslationsQueue.add(async () => {
         try {
-          const maybeTranslations = await this.#c.messageStorage.getTranslations(platform, language);
+          const maybeTranslations = await this.#c.messageStorage.translations.get([platform, language]);
           if (maybeTranslations !== null) {
-            const difference = await this.#c.invoke({ _: "langpack.getDifference", lang_pack: platform, lang_code: language, from_version: maybeTranslations[0] });
-            const newTranslations = this.#applyLangPackDifference(maybeTranslations[1], difference.strings);
-            await this.#c.messageStorage.setTranslations(platform, language, difference.version, newTranslations);
+            const difference = await this.#c.invoke({ _: "langpack.getDifference", lang_pack: platform, lang_code: language, from_version: maybeTranslations.version });
+            const newTranslations = this.#applyLangPackDifference(maybeTranslations.translations, difference.strings);
+            this.#c.messageStorage.translations.set([platform, language], { date: new Date(), version: difference.version, translations: newTranslations });
           } else {
             const pack = await this.#c.invoke({ _: "langpack.getLangPack", lang_pack: platform, lang_code: language });
             const version = pack.version;
             const translations = pack.strings.map(constructTranslation);
-            await this.#c.messageStorage.setTranslations(platform, language, version, translations);
+            this.#c.messageStorage.translations.set([platform, language], { date: new Date(), version, translations });
           }
           resolve();
         } catch (err) {
@@ -98,15 +98,19 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
     const result = await new Promise<Translation[] | null | "mustUpdate">((resolve, reject) => {
       this.#updateTranslationsQueue.add(async () => {
         try {
-          const maybeTranslations = await this.#c.messageStorage.getTranslations(platform, language);
+          const maybeTranslations = await this.#c.messageStorage.translations.get([platform, language]);
           let newTranslations: Translation[] | null = null;
           if (maybeTranslations) {
-            if (fromVersion !== maybeTranslations[0]) {
+            if (fromVersion !== maybeTranslations.version) {
               resolve("mustUpdate");
               return;
             }
-            newTranslations = this.#applyLangPackDifference(maybeTranslations[1], strings);
-            await this.#c.messageStorage.setTranslations(platform, language, version, newTranslations);
+            newTranslations = this.#applyLangPackDifference(maybeTranslations.translations, strings);
+            this.#c.messageStorage.translations.set([platform, language], {
+              date: new Date(),
+              version,
+              translations: newTranslations,
+            });
           }
           resolve(newTranslations);
         } catch (err) {
