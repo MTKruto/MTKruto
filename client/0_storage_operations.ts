@@ -784,7 +784,7 @@ class StorageValue<T> {
   }
 }
 
-export interface Auth {
+interface Auth {
   apiId: number;
   authKey: Uint8Array<ArrayBuffer> | null;
   dc: DC | null;
@@ -796,13 +796,13 @@ class StorageAuth extends StorageValue<Auth> {
     super(storage, "auth");
   }
 
-  override async get() {
+  override async get(): Promise<Auth | null> {
     const value = await super.get();
     await this.#resetAuthKeyId(value);
     return value;
   }
 
-  override mustGet() {
+  override mustGet(): Auth {
     return super.mustGet() ?? {
       apiId: 0,
       authKey: new Uint8Array(),
