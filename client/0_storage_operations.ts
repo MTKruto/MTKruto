@@ -28,7 +28,7 @@ import { Api, TLReader, TLWriter, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import { type ChatP, constructChatP, type Translation, type VoiceTranscription } from "../3_types.ts";
 
-const K = {
+export const K = {
   session: {
     P: (string: string): string => `session.${string}`,
     serverSalt: (): StorageKeyPart[] => [K.session.P("serverSalt")],
