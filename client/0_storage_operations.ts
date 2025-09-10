@@ -689,7 +689,7 @@ export class StorageOperations {
   }
 }
 
-export class StorageMap<K extends StorageKeyPart[], V> {
+class StorageMap<K extends StorageKeyPart[], V> {
   #storage: Storage;
   #path: StorageKeyPart;
 
@@ -742,7 +742,7 @@ export class StorageMap<K extends StorageKeyPart[], V> {
   }
 }
 
-export class StorageValue<T> {
+class StorageValue<T> {
   #storage: Storage;
   #key: StorageKeyPart[];
 
@@ -791,7 +791,7 @@ export interface Auth {
   isBot: boolean;
   userId: number;
 }
-export class StorageAuth extends StorageValue<Auth> {
+class StorageAuth extends StorageValue<Auth> {
   constructor(storage: Storage) {
     super(storage, "auth");
   }
