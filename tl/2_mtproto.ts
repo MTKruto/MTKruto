@@ -33,7 +33,7 @@ export async function deserializeType<T extends (keyof Types) | "X" | string>(na
   return await reader.readType(name, schema);
 }
 
-export function serializeObject(object: AnyObject): Uint8Array {
+export function serializeObject(object: AnyObject): Uint8Array<ArrayBuffer> {
   return new TLWriter().writeObject(object, schema).buffer;
 }
 

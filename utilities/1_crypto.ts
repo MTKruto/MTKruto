@@ -71,7 +71,7 @@ export class CTR {
     return header ? concat([header, encrypted]) : encrypted;
   }
 
-  async #encrypt(data: Uint8Array) {
+  async #encrypt(data: Uint8Array<ArrayBuffer>) {
     return new Uint8Array(
       await crypto.subtle.encrypt(
         {

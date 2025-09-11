@@ -10,7 +10,7 @@
   },
   "lint": {
     "rules": {
-      "exclude": ["no-node-globals", "no-process-global"],
+      "exclude": ["no-node-globals", "no-process-global", "no-import-prefix"],
       "include": ["verbatim-module-syntax", "eqeqeq", "no-console"]
     }
   },

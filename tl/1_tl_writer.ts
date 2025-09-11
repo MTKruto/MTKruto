@@ -27,12 +27,12 @@ import { bufferFromBigInt } from "../utilities/0_buffer.ts";
 import { encodeText } from "../1_utilities.ts";
 
 export class TLWriter {
-  protected _buffer: Uint8Array = new Uint8Array();
+  protected _buffer: Uint8Array<ArrayBuffer> = new Uint8Array();
 
   constructor() {
   }
 
-  get buffer(): Uint8Array {
+  get buffer(): Uint8Array<ArrayBuffer> {
     return this._buffer;
   }
 

@@ -131,7 +131,7 @@ export class FileManager {
     return { small: part!.small, parts: part!.totalParts };
   }
 
-  async #uploadBuffer(buffer: Uint8Array, fileId: bigint, mustTrackProgress: boolean, chunkSize: number, poolSize: number, signal: AbortSignal | undefined) {
+  async #uploadBuffer(buffer: Uint8Array<ArrayBuffer>, fileId: bigint, mustTrackProgress: boolean, chunkSize: number, poolSize: number, signal: AbortSignal | undefined) {
     const isBig = buffer.byteLength > FileManager.#BIG_FILE_THRESHOLD;
     const partCount = Math.ceil(buffer.byteLength / chunkSize);
     let promises = new Array<Promise<void>>();
@@ -180,7 +180,7 @@ export class FileManager {
     return { small: !isBig, parts: partCount };
   }
 
-  async #uploadPart(fileId: bigint, partCount: number, isBig: boolean, index: number, bytes: Uint8Array, signal: AbortSignal | undefined) {
+  async #uploadPart(fileId: bigint, partCount: number, isBig: boolean, index: number, bytes: Uint8Array<ArrayBuffer>, signal: AbortSignal | undefined) {
     let retryIn = 1;
     let errorCount = 0;
     while (true) {
@@ -188,9 +188,9 @@ export class FileManager {
         signal?.throwIfAborted();
         this.#Lupload.debug(`[${fileId}] uploading part ` + (index + 1));
         if (isBig) {
-          await this.#c.invoke({ _: "upload.saveBigFilePart", file_id: fileId, file_part: index, bytes: bytes, file_total_parts: partCount }, { type: "upload" });
+          await this.#c.invoke({ _: "upload.saveBigFilePart", file_id: fileId, file_part: index, bytes, file_total_parts: partCount }, { type: "upload" });
         } else {
-          await this.#c.invoke({ _: "upload.saveFilePart", file_id: fileId, bytes: bytes, file_part: index }, { type: "upload" });
+          await this.#c.invoke({ _: "upload.saveFilePart", file_id: fileId, bytes, file_part: index }, { type: "upload" });
         }
         this.#Lupload.debug(`[${fileId}] uploaded part ` + (index + 1));
         break;
@@ -222,7 +222,7 @@ export class FileManager {
 
   static async #getFileContents(source: FileSource, params: _UploadCommon | undefined, allowStream: boolean) {
     let name = params?.fileName?.trim() || "file";
-    let contents: Uint8Array | ReadableStream<Uint8Array>;
+    let contents: Uint8Array<ArrayBuffer> | ReadableStream<Uint8Array>;
     let size = -1;
     if (source instanceof Uint8Array) {
       contents = source;
