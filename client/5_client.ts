@@ -566,20 +566,22 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   #constructContext = async (update: Update) => {
-    const msg = "message" in update ? update.message : "editedMessage" in update ? update.editedMessage : "scheduledMessage" in update ? update.scheduledMessage : "callbackQuery" in update ? update.callbackQuery.message : undefined;
-    const reactions = "messageInteractions" in update ? update.messageInteractions : undefined;
-    const mustGetMsg = () => {
-      if (msg !== undefined) {
-        return { chatId: msg.chat.id, messageId: msg.id, businessConnectionId: msg.businessConnectionId, senderId: msg.from?.id, userId: msg.from?.id };
-      } else if (reactions !== undefined) {
+    const mustGetMsg = (ctx: Context) => {
+      if (ctx.msg !== undefined) {
+        return { chatId: ctx.msg.chat.id, messageId: ctx.msg.id, businessConnectionId: ctx.msg.businessConnectionId, senderId: ctx.msg.from?.id, userId: ctx.msg.from?.id };
+      }
+
+      const reactions = "messageInteractions" in update ? update.messageInteractions : undefined;
+      if (reactions !== undefined) {
         return { chatId: reactions.chatId, messageId: reactions.messageId };
       } else {
         unreachable();
       }
     };
-    const mustGetUserId = () => {
-      if (msg?.from) {
-        return msg.from.id;
+
+    const mustGetUserId = (ctx: Context) => {
+      if (ctx.msg?.from) {
+        return ctx.msg.from.id;
       } else if ("callbackQuery" in update) {
         return update.callbackQuery.from.id;
       } else if ("chosenInlineResult" in update) {
@@ -600,9 +602,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
       }
       unreachable();
     };
-    const chat_ = "messageReactions" in update ? update.messageReactions.chat : "messageReactionCount" in update ? update.messageReactionCount.chat : "chatMember" in update ? update.chatMember.chat : "myChatMember" in update ? update.myChatMember.chat : "joinRequest" in update ? update.joinRequest.chat : "story" in update ? update.story.chat : undefined;
-    const chat = chat_ ?? msg?.chat;
-    const from = "callbackQuery" in update ? update.callbackQuery.from : "inlineQuery" in update ? update.inlineQuery.from : "chatMember" in update ? update.chatMember.from : "myChatMember" in update ? update.myChatMember.from : "messageReactions" in update ? update.messageReactions.user : "preCheckoutQuery" in update ? update.preCheckoutQuery.from : "joinRequest" in update ? update.joinRequest.from : "businessConnection" in update ? update.businessConnection.user : "pollAnswer" in update ? update.pollAnswer.from : msg?.from ? msg.from : undefined;
     const getReplyTo = (quote: boolean | undefined, chatId: number, messageId: number): ReplyTo | undefined => {
       if ("story" in update) {
         return { chatId: update.story.chat.id, storyId: update.story.id };
@@ -611,15 +610,27 @@ export class Client<C extends Context = Context> extends Composer<C> {
       const shouldQuote = quote === undefined ? !isPrivate : quote;
       return shouldQuote ? { messageId } : undefined;
     };
-    const me = "connectionState" in update ? this.#lastGetMe : ("authorizationState" in update && !update.authorizationState.authorized) ? this.#lastGetMe : await this.#getMe();
+
+    if (this.#lastGetMe === null && !("connectionState" in update) && (!("authorizationState" in update) || ("authorizationState" in update && update.authorizationState.authorized))) {
+      await this.#getMe();
+    }
 
     const context: Context = {
       ...update,
       client: this as unknown as Client,
-      me: (me === null ? undefined : me) as C["me"],
-      msg: msg as C["msg"],
-      chat: chat as C["chat"],
-      from: from as C["from"],
+      get me() {
+        return this.client.#lastGetMe === null ? undefined : this.client.#lastGetMe;
+      },
+      get msg() {
+        return "message" in update ? update.message : "editedMessage" in update ? update.editedMessage : "scheduledMessage" in update ? update.scheduledMessage : "callbackQuery" in update ? update.callbackQuery.message : undefined;
+      },
+      get chat() {
+        return this.msg?.chat ?? ("messageReactions" in update ? update.messageReactions.chat : "messageReactionCount" in update ? update.messageReactionCount.chat : "chatMember" in update ? update.chatMember.chat : "myChatMember" in update ? update.myChatMember.chat : "joinRequest" in update ? update.joinRequest.chat : "story" in update ? update.story.chat : undefined);
+      },
+      get from() {
+        const from = "callbackQuery" in update ? update.callbackQuery.from : "inlineQuery" in update ? update.inlineQuery.from : "chatMember" in update ? update.chatMember.from : "myChatMember" in update ? update.myChatMember.from : "messageReactions" in update ? update.messageReactions.user : "preCheckoutQuery" in update ? update.preCheckoutQuery.from : "joinRequest" in update ? update.joinRequest.from : "businessConnection" in update ? update.businessConnection.user : "pollAnswer" in update ? update.pollAnswer.from : this.msg?.from;
+        return from as C["from"];
+      },
       toJSON() {
         if ("update" in update) {
           return { update: toJSON(update.update) };
@@ -627,341 +638,341 @@ export class Client<C extends Context = Context> extends Composer<C> {
           return update;
         }
       },
-      reply: (text, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      reply(text, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendMessage(chatId, text, { ...params, replyTo, businessConnectionId });
+        return this.client.sendMessage(chatId, text, { ...params, replyTo, businessConnectionId });
       },
-      replyPoll: (question, options, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyPoll(question, options, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendPoll(chatId, question, options, { ...params, replyTo, businessConnectionId });
+        return this.client.sendPoll(chatId, question, options, { ...params, replyTo, businessConnectionId });
       },
-      replyPhoto: (photo, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyPhoto(photo, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendPhoto(chatId, photo, { ...params, replyTo, businessConnectionId });
+        return this.client.sendPhoto(chatId, photo, { ...params, replyTo, businessConnectionId });
       },
-      replyMediaGroup: (media, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyMediaGroup(media, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendMediaGroup(chatId, media, { ...params, replyTo, businessConnectionId });
+        return this.client.sendMediaGroup(chatId, media, { ...params, replyTo, businessConnectionId });
       },
-      replyInvoice: (title, description, payload, currency, prices, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyInvoice(title, description, payload, currency, prices, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendInvoice(chatId, title, description, payload, currency, prices, { ...params, replyTo, businessConnectionId });
+        return this.client.sendInvoice(chatId, title, description, payload, currency, prices, { ...params, replyTo, businessConnectionId });
       },
-      replyDocument: (document, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyDocument(document, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendDocument(chatId, document, { ...params, replyTo, businessConnectionId });
+        return this.client.sendDocument(chatId, document, { ...params, replyTo, businessConnectionId });
       },
-      replySticker: (sticker, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replySticker(sticker, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendSticker(chatId, sticker, { ...params, replyTo, businessConnectionId });
+        return this.client.sendSticker(chatId, sticker, { ...params, replyTo, businessConnectionId });
       },
-      replyContact: (firstName, number, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyContact(firstName, number, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendContact(chatId, firstName, number, { ...params, replyTo, businessConnectionId });
+        return this.client.sendContact(chatId, firstName, number, { ...params, replyTo, businessConnectionId });
       },
-      replyLocation: (latitude, longitude, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyLocation(latitude, longitude, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendLocation(chatId, latitude, longitude, { ...params, replyTo, businessConnectionId });
+        return this.client.sendLocation(chatId, latitude, longitude, { ...params, replyTo, businessConnectionId });
       },
-      replyDice: (params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyDice(params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendDice(chatId, { ...params, replyTo, businessConnectionId });
+        return this.client.sendDice(chatId, { ...params, replyTo, businessConnectionId });
       },
-      replyVenue: (latitude, longitude, title, address, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyVenue(latitude, longitude, title, address, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendVenue(chatId, latitude, longitude, title, address, { ...params, replyTo, businessConnectionId });
+        return this.client.sendVenue(chatId, latitude, longitude, title, address, { ...params, replyTo, businessConnectionId });
       },
-      replyVideo: (video, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyVideo(video, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendVideo(chatId, video, { ...params, replyTo, businessConnectionId });
+        return this.client.sendVideo(chatId, video, { ...params, replyTo, businessConnectionId });
       },
-      replyAnimation: (document, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyAnimation(document, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendAnimation(chatId, document, { ...params, replyTo, businessConnectionId });
+        return this.client.sendAnimation(chatId, document, { ...params, replyTo, businessConnectionId });
       },
-      replyVoice: (document, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyVoice(document, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendVoice(chatId, document, { ...params, replyTo, businessConnectionId });
+        return this.client.sendVoice(chatId, document, { ...params, replyTo, businessConnectionId });
       },
-      replyAudio: (document, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyAudio(document, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendAudio(chatId, document, { ...params, replyTo, businessConnectionId });
+        return this.client.sendAudio(chatId, document, { ...params, replyTo, businessConnectionId });
       },
-      replyVideoNote: (videoNote, params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
+      replyVideoNote(videoNote, params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
         const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.sendVideoNote(chatId, videoNote, { ...params, replyTo, businessConnectionId });
+        return this.client.sendVideoNote(chatId, videoNote, { ...params, replyTo, businessConnectionId });
       },
-      delete: () => {
-        const { chatId, messageId } = mustGetMsg();
-        return this.deleteMessage(chatId, messageId);
+      delete() {
+        const { chatId, messageId } = mustGetMsg(this);
+        return this.client.deleteMessage(chatId, messageId);
       },
-      forward: (to, params) => {
-        const { chatId, messageId } = mustGetMsg();
-        return this.forwardMessage(chatId, to, messageId, params) as unknown as ReturnType<C["forward"]>;
+      forward(to, params) {
+        const { chatId, messageId } = mustGetMsg(this);
+        return this.client.forwardMessage(chatId, to, messageId, params) as unknown as ReturnType<C["forward"]>;
       },
-      pin: (params) => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        return this.pinMessage(chatId, messageId, { ...params, businessConnectionId });
+      pin(params) {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
+        return this.client.pinMessage(chatId, messageId, { ...params, businessConnectionId });
       },
-      unpin: () => {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg();
-        return this.unpinMessage(chatId, messageId, { businessConnectionId });
+      unpin() {
+        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
+        return this.client.unpinMessage(chatId, messageId, { businessConnectionId });
       },
-      banSender: (params) => {
-        const { chatId, senderId } = mustGetMsg();
+      banSender(params) {
+        const { chatId, senderId } = mustGetMsg(this);
         if (!senderId) {
           unreachable();
         }
-        return this.banChatMember(chatId, senderId, params);
+        return this.client.banChatMember(chatId, senderId, params);
       },
-      kickSender: () => {
-        const { chatId, senderId } = mustGetMsg();
+      kickSender() {
+        const { chatId, senderId } = mustGetMsg(this);
         if (!senderId) {
           unreachable();
         }
-        return this.kickChatMember(chatId, senderId);
+        return this.client.kickChatMember(chatId, senderId);
       },
-      setSenderRights: (params) => {
-        const { chatId, senderId } = mustGetMsg();
+      setSenderRights(params) {
+        const { chatId, senderId } = mustGetMsg(this);
         if (!senderId) {
           unreachable();
         }
-        return this.setChatMemberRights(chatId, senderId, params);
+        return this.client.setChatMemberRights(chatId, senderId, params);
       },
-      getChatAdministrators: () => {
-        const { chatId } = mustGetMsg();
-        return this.getChatAdministrators(chatId);
+      getChatAdministrators() {
+        const { chatId } = mustGetMsg(this);
+        return this.client.getChatAdministrators(chatId);
       },
-      react: (reactions, params) => {
-        const { chatId, messageId } = mustGetMsg();
-        return this.setReactions(chatId, messageId, reactions, params);
+      react(reactions, params) {
+        const { chatId, messageId } = mustGetMsg(this);
+        return this.client.setReactions(chatId, messageId, reactions, params);
       },
-      answerCallbackQuery: (params) => {
+      answerCallbackQuery(params) {
         if (!("callbackQuery" in update)) {
           unreachable();
         }
-        return this.answerCallbackQuery(update.callbackQuery.id, params);
+        return this.client.answerCallbackQuery(update.callbackQuery.id, params);
       },
-      answerInlineQuery: (results, params) => {
+      answerInlineQuery(results, params) {
         if (!("inlineQuery" in update)) {
           unreachable();
         }
-        return this.answerInlineQuery(update.inlineQuery.id, results, params);
+        return this.client.answerInlineQuery(update.inlineQuery.id, results, params);
       },
-      sendChatAction: (chatAction, params) => {
-        const { chatId } = mustGetMsg();
-        return this.sendChatAction(chatId, chatAction, params);
+      sendChatAction(chatAction, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.sendChatAction(chatId, chatAction, params);
       },
-      editInlineMessageText: (text, params) => {
+      editInlineMessageText(text, params) {
         const inlineMessageId = mustGetInlineMsgId();
-        return this.editInlineMessageText(inlineMessageId, text, params);
+        return this.client.editInlineMessageText(inlineMessageId, text, params);
       },
-      editInlineMessageMedia: (media, params) => {
+      editInlineMessageMedia(media, params) {
         const inlineMessageId = mustGetInlineMsgId();
-        return this.editInlineMessageMedia(inlineMessageId, media, params);
+        return this.client.editInlineMessageMedia(inlineMessageId, media, params);
       },
-      editInlineMessageCaption: (params) => {
+      editInlineMessageCaption(params) {
         const inlineMessageId = mustGetInlineMsgId();
-        return this.editInlineMessageCaption(inlineMessageId, params);
+        return this.client.editInlineMessageCaption(inlineMessageId, params);
       },
-      editInlineMessageLiveLocation: (latitude, longitude, params) => {
+      editInlineMessageLiveLocation(latitude, longitude, params) {
         const inlineMessageId = mustGetInlineMsgId();
-        return this.editInlineMessageLiveLocation(inlineMessageId, latitude, longitude, params);
+        return this.client.editInlineMessageLiveLocation(inlineMessageId, latitude, longitude, params);
       },
-      editInlineMessageReplyMarkup: (params) => {
+      editInlineMessageReplyMarkup(params) {
         const inlineMessageId = mustGetInlineMsgId();
-        return this.editInlineMessageReplyMarkup(inlineMessageId, params);
+        return this.client.editInlineMessageReplyMarkup(inlineMessageId, params);
       },
-      editMessageText: (messageId, text, params) => {
-        const { chatId } = mustGetMsg();
-        return this.editMessageText(chatId, messageId, text, params);
+      editMessageText(messageId, text, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.editMessageText(chatId, messageId, text, params);
       },
-      editMessageCaption: (messageId, params) => {
-        const { chatId } = mustGetMsg();
-        return this.editMessageCaption(chatId, messageId, params);
+      editMessageCaption(messageId, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.editMessageCaption(chatId, messageId, params);
       },
-      editMessageMedia: (messageId, media, params) => {
-        const { chatId } = mustGetMsg();
-        return this.editMessageMedia(chatId, messageId, media, params);
+      editMessageMedia(messageId, media, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.editMessageMedia(chatId, messageId, media, params);
       },
-      editMessageLiveLocation: (messageId, latitude, longitude, params) => {
-        const { chatId } = mustGetMsg();
-        return this.editMessageLiveLocation(chatId, messageId, latitude, longitude, params);
+      editMessageLiveLocation(messageId, latitude, longitude, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.editMessageLiveLocation(chatId, messageId, latitude, longitude, params);
       },
-      editMessageReplyMarkup: (messageId, params) => {
-        const { chatId } = mustGetMsg();
-        return this.editMessageReplyMarkup(chatId, messageId, params);
+      editMessageReplyMarkup(messageId, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.editMessageReplyMarkup(chatId, messageId, params);
       },
-      getMessage: (messageId) => {
-        const { chatId } = mustGetMsg();
-        return this.getMessage(chatId, messageId);
+      getMessage(messageId) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.getMessage(chatId, messageId);
       },
-      getMessages: (messageIds) => {
-        const { chatId } = mustGetMsg();
-        return this.getMessages(chatId, messageIds);
+      getMessages(messageIds) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.getMessages(chatId, messageIds);
       },
-      forwardMessage: (to, messageId, params) => {
-        const { chatId } = mustGetMsg();
-        return this.forwardMessage(chatId, to, messageId, params);
+      forwardMessage(to, messageId, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.forwardMessage(chatId, to, messageId, params);
       },
-      forwardMessages: (to, messageIds, params) => {
-        const { chatId } = mustGetMsg();
-        return this.forwardMessages(chatId, to, messageIds, params);
+      forwardMessages(to, messageIds, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.forwardMessages(chatId, to, messageIds, params);
       },
-      deleteMessage: (messageId, params) => {
-        const { chatId } = mustGetMsg();
-        return this.deleteMessage(chatId, messageId, params);
+      deleteMessage(messageId, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.deleteMessage(chatId, messageId, params);
       },
-      deleteMessages: (messageIds, params) => {
-        const { chatId } = mustGetMsg();
-        return this.deleteMessages(chatId, messageIds, params);
+      deleteMessages(messageIds, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.deleteMessages(chatId, messageIds, params);
       },
-      pinMessage: (messageId, params) => {
-        const { chatId } = mustGetMsg();
-        return this.pinMessage(chatId, messageId, params);
+      pinMessage(messageId, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.pinMessage(chatId, messageId, params);
       },
-      unpinMessage: (messageId) => {
-        const { chatId } = mustGetMsg();
-        return this.unpinMessage(chatId, messageId);
+      unpinMessage(messageId) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.unpinMessage(chatId, messageId);
       },
-      unpinMessages: () => {
-        const { chatId } = mustGetMsg();
-        return this.unpinMessages(chatId);
+      unpinMessages() {
+        const { chatId } = mustGetMsg(this);
+        return this.client.unpinMessages(chatId);
       },
-      setAvailableReactions: (availableReactions) => {
-        const { chatId } = mustGetMsg();
-        return this.setAvailableReactions(chatId, availableReactions);
+      setAvailableReactions(availableReactions) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.setAvailableReactions(chatId, availableReactions);
       },
-      addReaction: (messageId, reaction, params) => {
-        const { chatId } = mustGetMsg();
-        return this.addReaction(chatId, messageId, reaction, params);
+      addReaction(messageId, reaction, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.addReaction(chatId, messageId, reaction, params);
       },
-      removeReaction: (messageId, reaction) => {
-        const { chatId } = mustGetMsg();
-        return this.removeReaction(chatId, messageId, reaction);
+      removeReaction(messageId, reaction) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.removeReaction(chatId, messageId, reaction);
       },
-      setReactions: (messageId, reactions, params) => {
-        const { chatId } = mustGetMsg();
-        return this.setReactions(chatId, messageId, reactions, params);
+      setReactions(messageId, reactions, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.setReactions(chatId, messageId, reactions, params);
       },
-      read: () => {
-        const { chatId, messageId } = mustGetMsg();
-        return this.readMessages(chatId, messageId);
+      read() {
+        const { chatId, messageId } = mustGetMsg(this);
+        return this.client.readMessages(chatId, messageId);
       },
-      setChatPhoto: (photo, params) => {
-        const { chatId } = mustGetMsg();
-        return this.setChatPhoto(chatId, photo, params);
+      setChatPhoto(photo, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.setChatPhoto(chatId, photo, params);
       },
-      deleteChatPhoto: () => {
-        const { chatId } = mustGetMsg();
-        return this.deleteChatPhoto(chatId);
+      deleteChatPhoto() {
+        const { chatId } = mustGetMsg(this);
+        return this.client.deleteChatPhoto(chatId);
       },
-      banChatMember: (memberId, params) => {
-        const { chatId } = mustGetMsg();
-        return this.banChatMember(chatId, memberId, params);
+      banChatMember(memberId, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.banChatMember(chatId, memberId, params);
       },
-      unbanChatMember: (memberId) => {
-        const { chatId } = mustGetMsg();
-        return this.unbanChatMember(chatId, memberId);
+      unbanChatMember(memberId) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.unbanChatMember(chatId, memberId);
       },
-      kickChatMember: (memberId) => {
-        const { chatId } = mustGetMsg();
-        return this.kickChatMember(chatId, memberId);
+      kickChatMember(memberId) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.kickChatMember(chatId, memberId);
       },
-      setChatMemberRights: (memberId, params) => {
-        const { chatId } = mustGetMsg();
-        return this.setChatMemberRights(chatId, memberId, params);
+      setChatMemberRights(memberId, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.setChatMemberRights(chatId, memberId, params);
       },
-      deleteChatMemberMessages: (userId) => {
-        const { chatId } = mustGetMsg();
-        return this.deleteChatMemberMessages(chatId, userId);
+      deleteChatMemberMessages(userId) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.deleteChatMemberMessages(chatId, userId);
       },
-      searchMessages: (params) => {
-        const { chatId } = mustGetMsg();
+      searchMessages(params) {
+        const { chatId } = mustGetMsg(this);
         params ??= {};
         (params as SearchMessagesParams).chatId = chatId;
-        return this.searchMessages(params);
+        return this.client.searchMessages(params);
       },
-      setBoostsRequiredToCircumventRestrictions: (boosts) => {
-        const { chatId } = mustGetMsg();
-        return this.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
+      setBoostsRequiredToCircumventRestrictions(boosts) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
       },
-      createInviteLink: (params) => {
-        const { chatId } = mustGetMsg();
-        return this.createInviteLink(chatId, params);
+      createInviteLink(params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.createInviteLink(chatId, params);
       },
-      getCreatedInviteLinks: (params) => {
-        const { chatId } = mustGetMsg();
-        return this.getCreatedInviteLinks(chatId, params);
+      getCreatedInviteLinks(params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.getCreatedInviteLinks(chatId, params);
       },
-      leave: () => {
-        const { chatId } = mustGetMsg();
-        return this.leaveChat(chatId);
+      leave() {
+        const { chatId } = mustGetMsg(this);
+        return this.client.leaveChat(chatId);
       },
-      block: () => {
-        return this.blockUser(mustGetUserId());
+      block() {
+        return this.client.blockUser(mustGetUserId(this));
       },
-      unblock: () => {
-        return this.unblockUser(mustGetUserId());
+      unblock() {
+        return this.client.unblockUser(mustGetUserId(this));
       },
-      getChatMember: (userId) => {
-        const { chatId } = mustGetMsg();
-        return this.getChatMember(chatId, userId);
+      getChatMember(userId) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.getChatMember(chatId, userId);
       },
-      getChatMembers: (params) => {
-        const { chatId } = mustGetMsg();
-        return this.getChatMembers(chatId, params);
+      getChatMembers(params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.getChatMembers(chatId, params);
       },
-      setChatStickerSet: (setName) => {
-        const { chatId } = mustGetMsg();
-        return this.setChatStickerSet(chatId, setName);
+      setChatStickerSet(setName) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.setChatStickerSet(chatId, setName);
       },
-      deleteChatStickerSet: () => {
-        const { chatId } = mustGetMsg();
-        return this.deleteChatStickerSet(chatId);
+      deleteChatStickerSet() {
+        const { chatId } = mustGetMsg(this);
+        return this.client.deleteChatStickerSet(chatId);
       },
-      getBusinessConnection: () => {
-        const { businessConnectionId } = mustGetMsg();
+      getBusinessConnection() {
+        const { businessConnectionId } = mustGetMsg(this);
         if (!businessConnectionId) {
           unreachable();
         }
-        return this.getBusinessConnection(businessConnectionId);
+        return this.client.getBusinessConnection(businessConnectionId);
       },
-      answerPreCheckoutQuery: (ok, params) => {
+      answerPreCheckoutQuery(ok, params) {
         if (!("preCheckoutQuery" in update)) {
           unreachable();
         }
-        return this.answerPreCheckoutQuery(update.preCheckoutQuery.id, ok, params);
+        return this.client.answerPreCheckoutQuery(update.preCheckoutQuery.id, ok, params);
       },
-      approveJoinRequest: () => {
-        const { chatId, userId } = mustGetMsg();
+      approveJoinRequest() {
+        const { chatId, userId } = mustGetMsg(this);
         if (!userId) {
           unreachable();
         }
-        return this.approveJoinRequest(chatId, userId);
+        return this.client.approveJoinRequest(chatId, userId);
       },
-      declineJoinRequest: () => {
-        const { chatId, userId } = mustGetMsg();
+      declineJoinRequest() {
+        const { chatId, userId } = mustGetMsg(this);
         if (!userId) {
           unreachable();
         }
-        return this.declineJoinRequest(chatId, userId);
+        return this.client.declineJoinRequest(chatId, userId);
       },
     };
 
