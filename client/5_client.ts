@@ -998,6 +998,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       await this.storage.initialize();
       if (!this.#guaranteeUpdateDelivery) {
         await this.storage.deleteUpdates();
+        await this.storage.commit(true);
       }
       this.#storageInited = true;
     }
@@ -1049,6 +1050,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       } else {
         this.#L.debug("not starting storageWriteLoop");
       }
+      await this.storage.commit(true);
     } finally {
       unlock();
     }
@@ -1068,12 +1070,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#LhandleMigrationError.debug(`migrated to DC${newDc}`);
   }
 
-  disconnect() {
+  async disconnect() {
     this.#disconnectAllClients();
     this.#clientDisconnectionLoop.abort();
     this.#updateGapRecoveryLoop.abort();
     this.#storageWriteLoop.abort();
     this.#updateManager.closeAllChats();
+    await this.messageStorage.commit(true);
   }
 
   #lastPropagatedAuthorizationState: boolean | null = null;
@@ -1144,10 +1147,9 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #storageWriteLoop = new AbortableLoop(async (signal) => {
     await delay(60 * SECOND, { signal });
     await this.messageStorage.commit();
+    await this.storage.commit();
   }, (err) => {
     this.#LstorageWriteLoop.error(err);
-  }, async () => {
-    await this.messageStorage.commit();
   });
 
   /**
@@ -1197,6 +1199,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
             v.userId = Number(Api.as("auth.authorization", auth).user.id);
             v.isBot = true;
           });
+          await this.storage.commit(true);
           break;
         } catch (err) {
           if (err instanceof Migrate) {
@@ -1295,6 +1298,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
               v.userId = Number(Api.as("auth.authorization", auth).user.id);
               v.isBot = false;
             });
+            await this.storage.commit(true);
             this.#LsignIn.debug("signed in as user");
             await this.#propagateAuthorizationState(true);
             await this.#updateManager.fetchState("signIn");

@@ -23,7 +23,7 @@ import { LruCache, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, getLogger, type Logger, type MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { awaitablePooledMap } from "../1_utilities.ts";
-import type { Storage, StorageKeyPart } from "../2_storage.ts";
+import { fromString, type Storage, type StorageKeyPart, toString } from "../2_storage.ts";
 import { Api, TLReader, TLWriter, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import { type ChatP, constructChatP, type Translation, type VoiceTranscription } from "../3_types.ts";
@@ -150,10 +150,6 @@ export class StorageOperations {
     return this.#storage.get<T>(...args);
   }
 
-  getMany<T>(...args: Parameters<Storage["getMany"]>): ReturnType<Storage["getMany"]> {
-    return this.#storage.getMany<T>(...args);
-  }
-
   async exportAuthString(apiId_?: number | null): Promise<string> {
     if (typeof apiId_ === "number") {
       await this.auth.update((v) => v.apiId = apiId_);
@@ -194,7 +190,7 @@ export class StorageOperations {
     if (this.#storage.isMemory) {
       return;
     }
-    const pending = this.#maps.reduce((a, b) => a + b.pendingUpdateCount, 0);
+    const pending = this.#values.filter((v) => v.isUpdatePending).length + this.#maps.filter((v) => v.pendingUpdateCount > 0).length;
     if (pending <= 0) {
       this.#L.debug("nothing to commit");
       return;
@@ -218,8 +214,10 @@ export class StorageOperations {
       }
     }
     if (commit) {
-      const promises = this.#maps.filter((v) => v.pendingUpdateCount > 0).map((v) => v.commit());
-      await Promise.all(promises);
+      const values = this.#values.filter((v) => v.isUpdatePending).map((v) => v.commit());
+      const maps = this.#maps.filter((v) => v.pendingUpdateCount > 0).map((v) => v.commit());
+      await Promise.all(values.concat(maps));
+      this.#L.debug("committed", values.length, "value(s) and", maps.length, "map(s)");
       this.#lastCommit = new Date();
     }
   }
@@ -631,11 +629,11 @@ export class StorageOperations {
   }
 
   async setVoiceTranscription(voiceTranscription: VoiceTranscription) {
-    await this.set(K.cache.voiceTranscription(BigInt(voiceTranscription.id)), voiceTranscription);
+    await this.#storage.set(K.cache.voiceTranscription(BigInt(voiceTranscription.id)), voiceTranscription);
   }
 
   async getVoiceTranscription(transcriptionId: bigint): Promise<VoiceTranscription | null> {
-    return await this.get(K.cache.voiceTranscription(transcriptionId)) as Promise<VoiceTranscription | null>;
+    return await this.#storage.get(K.cache.voiceTranscription(transcriptionId));
   }
 
   async deleteVoiceTranscriptions() {
@@ -647,11 +645,11 @@ export class StorageOperations {
   }
 
   async setVoiceTranscriptionReference(chatId: number, messageId: number, messageEditDate: Date, transcriptionId: bigint) {
-    await this.set(K.cache.voiceTranscriptionReference(chatId, messageId, messageEditDate.getTime()), transcriptionId);
+    await this.#storage.set(K.cache.voiceTranscriptionReference(chatId, messageId, messageEditDate.getTime()), transcriptionId);
   }
 
   async getVoiceTranscriptionReference(chatId: number, messageId: number, messageEditDate: Date): Promise<bigint | null> {
-    return await this.get(K.cache.voiceTranscriptionReference(chatId, messageId, messageEditDate.getTime())) as Promise<bigint | null>;
+    return await this.#storage.get(K.cache.voiceTranscriptionReference(chatId, messageId, messageEditDate.getTime()));
   }
 
   async deleteVoiceTranscriptionReferences() {
@@ -672,12 +670,13 @@ class StorageMap<K extends StorageKeyPart[], V> {
     this.#path = path;
   }
 
-  #pendingUpdates = new Map<K, V>();
-  #cache = new LruCache<K, V | null>(20_000);
+  #pendingUpdates = new Map<string, V>();
+  #cache = new LruCache<string, V | null>(20_000);
   set(key: K, value: V) {
-    this.#cache.set(key, value);
+    const key_ = toString(key);
+    this.#cache.set(key_, value);
     if (!this.#storage.isMemory) {
-      this.#pendingUpdates.set(key, value);
+      this.#pendingUpdates.set(key_, value);
     }
   }
 
@@ -686,7 +685,7 @@ class StorageMap<K extends StorageKeyPart[], V> {
   }
 
   mustGet(key: K) {
-    const value = this.#cache.get(key);
+    const value = this.#cache.get(toString(key));
     if (value === undefined) {
       unreachable();
     } else {
@@ -699,10 +698,11 @@ class StorageMap<K extends StorageKeyPart[], V> {
   }
 
   async get(key: K): Promise<V | null> {
-    let value = this.#cache.get(key);
+    const key_ = toString(key);
+    let value = this.#cache.get(key_);
     if (value === undefined) {
       value = await this.#storage.get<V>([this.#path, ...key]);
-      this.#cache.set(key, value);
+      this.#cache.set(key_, value);
     }
     return value;
   }
@@ -711,7 +711,7 @@ class StorageMap<K extends StorageKeyPart[], V> {
     if (this.#storage.isMemory) {
       return;
     }
-    await awaitablePooledMap(2, this.#pendingUpdates, async ([key, value]) => await this.#storage.set([this.#path, ...key], value));
+    await awaitablePooledMap(2, this.#pendingUpdates, async ([key, value]) => await this.#storage.set([this.#path, ...fromString(key) as StorageKeyPart[]], value));
     this.#pendingUpdates.clear();
   }
 }
