@@ -3258,9 +3258,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @method ch
    * @param chatId The identifier of the group.
    * @param enabled Whether topics should be enabled in the group.
+   * @param tabs Whether topics should be displayed as tabs.
    */
-  async setTopicsEnabled(chatId: ID, enabled: boolean): Promise<void> {
-    await this.#chatManager.setTopicsEnabled(chatId, enabled);
+  async setTopicsEnabled(chatId: ID, enabled: boolean, tabs: boolean): Promise<void> {
+    await this.#chatManager.setTopicsEnabled(chatId, enabled, tabs);
   }
 
   /**

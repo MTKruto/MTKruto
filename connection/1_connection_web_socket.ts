@@ -57,7 +57,7 @@ export class ConnectionWebSocket implements Connection {
           return;
         }
         const unlock = await mutex.lock();
-        const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob || v instanceof Uint8Array ? v : v instanceof ArrayBuffer ? v : unreachable())).arrayBuffer());
+        const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob || v instanceof Uint8Array ? v as Blob | Uint8Array<ArrayBuffer> : v instanceof ArrayBuffer ? v : unreachable())).arrayBuffer());
 
         this.#buffer = concat([this.#buffer, data]);
 

@@ -377,10 +377,10 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     await this.#c.invoke({ _: "channels.toggleParticipantsHidden", channel, enabled });
   }
 
-  async setTopicsEnabled(chatId: ID, enabled: boolean) {
+  async setTopicsEnabled(chatId: ID, enabled: boolean, tabs: boolean) {
     this.#c.storage.assertUser("setTopicsEnabled");
     const channel = await this.#c.getInputChannel(chatId);
-    await this.#c.invoke({ _: "channels.toggleForum", channel, enabled });
+    await this.#c.invoke({ _: "channels.toggleForum", channel, enabled, tabs });
   }
 
   async setAntispamEnabled(chatId: ID, enabled: boolean) {

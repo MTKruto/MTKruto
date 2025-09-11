@@ -48,7 +48,7 @@ export async function constructSavedChat(dialog: SavedDialog, result: Api.messag
   }
   const chat = constructChatP(chat_);
   const lastMessage = await constructMessage(message, getPeer, getMessage, getStickerSetName, false);
-  const pinned = !!dialog.pinned;
+  const pinned = "pinned" in dialog ? !!dialog.pinned : false;
   return {
     chat,
     lastMessage,

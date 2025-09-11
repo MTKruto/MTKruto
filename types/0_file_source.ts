@@ -22,4 +22,4 @@
  * Source to a file. Can be a file ID, a file path, URL, a `Uint8Array`, a potentially async `Uint8Array` iterator, or a readable stream of `Uint8Array`, unless otherwise noted.
  * @unlisted
  */
-export type FileSource = string | URL | Uint8Array | Iterable<Uint8Array> | AsyncIterable<Uint8Array> | ReadableStream<Uint8Array>;
+export type FileSource = string | URL | Uint8Array<ArrayBuffer> | Iterable<Uint8Array> | AsyncIterable<Uint8Array> | ReadableStream<Uint8Array>;

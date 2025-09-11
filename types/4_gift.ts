@@ -120,7 +120,7 @@ export function constructGiftUpgraded(gift: Api.starGiftUnique, getPeer: PeerGet
   const maxUpgrades = gift.availability_total;
   const components = gift.attributes.map(constructGiftUpgradedComponent);
   const address = gift.gift_address;
-  const price = gift.resell_stars !== undefined ? Number(gift.resell_stars) : undefined;
+  const price = gift.resell_amount !== undefined ? Number(gift.resell_amount) : undefined;
   return cleanObject({
     type: "upgraded",
     id,

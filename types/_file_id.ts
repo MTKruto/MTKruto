@@ -241,7 +241,7 @@ type FileLocation =
 export interface FileId {
   type: FileType;
   dcId: number;
-  fileReference?: Uint8Array;
+  fileReference?: Uint8Array<ArrayBuffer>;
   location: FileLocation;
 }
 

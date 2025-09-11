@@ -65,14 +65,14 @@ export const sh = (data: Uint8Array, salt: Uint8Array) => h(concat([salt, data, 
 // PH1(password, salt1, salt2) := SH(SH(password, salt1), salt2)
 export const ph1 = async (password: Uint8Array, salt1: Uint8Array, salt2: Uint8Array) => await sh(await sh(password, salt1), salt2);
 
-export async function pbkdf2(password: Uint8Array, salt: Uint8Array, iterations: number) {
+export async function pbkdf2(password: Uint8Array<ArrayBuffer>, salt: Uint8Array<ArrayBuffer>, iterations: number) {
   const key = await crypto.subtle.importKey("raw", password, "PBKDF2", false, ["deriveBits"]);
   const buffer = await crypto.subtle.deriveBits({ name: "PBKDF2", salt, iterations, hash: "SHA-512" }, key, 512);
   return new Uint8Array(buffer);
 }
 
 // PH2(password, salt1, salt2) := SH(pbkdf2(sha512, PH1(password, salt1, salt2), salt1, 100000), salt2)
-export const ph2 = async (password: Uint8Array, salt1: Uint8Array, salt2: Uint8Array) => await sh(await pbkdf2(await ph1(password, salt1, salt2), salt1, 100_000), salt2);
+export const ph2 = async (password: Uint8Array, salt1: Uint8Array<ArrayBuffer>, salt2: Uint8Array) => await sh(await pbkdf2(await ph1(password, salt1, salt2), salt1, 100_000), salt2);
 
 export function isGoodModExpFirst(
   modexp: bigint,

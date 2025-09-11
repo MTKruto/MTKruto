@@ -35,7 +35,7 @@ export class TLReader {
     return this._buffer;
   }
 
-  read(count: number): Uint8Array {
+  read(count: number): Uint8Array<ArrayBuffer> {
     if (this._buffer.length < count) {
       throw new TLError("No data remaining");
     }
@@ -86,7 +86,7 @@ export class TLReader {
     return bigIntFromBuffer(buffer, true, signed);
   }
 
-  readBytes(): Uint8Array {
+  readBytes(): Uint8Array<ArrayBuffer> {
     let L = this.read(1)[0];
     let padding: number;
     if (L > 253) {
