@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assert, assertEquals, assertFalse } from "../0_deps.ts";
+import { assert, assertEquals, assertFalse, encodeHex } from "../0_deps.ts";
 import { assertThrows } from "../0_test_deps.ts";
-import { analyzeOptionalParam, isOptionalParam } from "./0_utilities.ts";
+import { analyzeOptionalParam, isOptionalParam, toJSON } from "./0_utilities.ts";
 
 Deno.test("isOptionalParam", () => {
   assert(isOptionalParam("flags.8?string"));
@@ -34,4 +34,24 @@ Deno.test("analyzeOptionalParam", () => {
 
   assertEquals(flagField, "flags");
   assertEquals(bitIndex, 0);
+});
+
+Deno.test("toJSON", () => {
+  assertEquals(toJSON(0n), { _: "bigint", bigint: "0" });
+
+  const buffer = crypto.getRandomValues(new Uint8Array(1024));
+  assertEquals(toJSON(buffer), { _: "buffer", buffer: encodeHex(buffer) });
+
+  assertEquals(
+    toJSON({
+      _: "object",
+      buffer,
+      bigint: 1234n,
+    }),
+    {
+      _: "object",
+      buffer: { _: "buffer", buffer: encodeHex(buffer) },
+      bigint: { _: "bigint", bigint: "1234" },
+    },
+  );
 });

@@ -22,7 +22,7 @@ import { delay, MINUTE, SECOND, unreachable } from "../0_deps.ts";
 import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
 import { cleanObject, drop, getLogger, type Logger, type MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { type Storage, StorageMemory } from "../2_storage.ts";
-import { Api, Mtproto } from "../2_tl.ts";
+import { Api, Mtproto, toJSON } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
 import { type BotCommand, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatAction, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputMedia, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type Poll, type PriceTag, type Reaction, type ReplyTo, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
@@ -74,7 +74,8 @@ export interface Context {
   from?: User;
   /** Resolves to `msg?.senderChat`. */
   senderChat?: ChatP;
-  toJSON: () => Update;
+  // deno-lint-ignore no-explicit-any
+  toJSON: () => any;
   /** Context-aware alias for `client.sendMessage()`. */
   reply: (text: string, params?: Omit<SendMessageParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageText>;
   /** Context-aware alias for `client.sendPoll()`. */
@@ -619,8 +620,12 @@ export class Client<C extends Context = Context> extends Composer<C> {
       msg: msg as C["msg"],
       chat: chat as C["chat"],
       from: from as C["from"],
-      get toJSON() {
-        return () => update;
+      toJSON() {
+        if ("update" in update) {
+          return { update: toJSON(update.update) };
+        } else {
+          return update;
+        }
       },
       reply: (text, params) => {
         const { chatId, messageId, businessConnectionId } = mustGetMsg();

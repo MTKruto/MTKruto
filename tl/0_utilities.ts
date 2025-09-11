@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals, assertFalse } from "../0_deps.ts";
+import { assertEquals, assertFalse, encodeHex } from "../0_deps.ts";
 
 export function isOptionalParam(ntype: string): boolean {
   return ntype.includes("?");
@@ -42,6 +42,23 @@ export function analyzeOptionalParam(ntype: string): { flagField: string; bitInd
 
 export function repr(value: unknown): string | null {
   return value === undefined ? "undefined" : value === null ? null : (typeof value === "object" && "_" in value) ? value._ as string : value.constructor.name;
+}
+
+// deno-lint-ignore no-explicit-any
+export function toJSON(object: unknown): any {
+  if (typeof object === "bigint") {
+    return { _: "bigint", bigint: String(object) };
+  } else if (object instanceof Uint8Array) {
+    return { _: "buffer", buffer: encodeHex(object) };
+  } else if (object !== null && typeof object === "object" && ("_" in object)) {
+    const newObject: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(object)) {
+      newObject[key] = toJSON(value);
+    }
+    return newObject;
+  } else {
+    return object;
+  }
 }
 
 export function getVectorItemType(type: string): string | null {

@@ -46,6 +46,8 @@ export { toArrayBuffer } from "jsr:@std/streams@1.0.11/to-array-buffer";
 
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.7/base64";
 
+export { encodeHex } from "jsr:@std/encoding@1.0.7/hex";
+
 import { contentType as contentType_ } from "jsr:@std/media-types@1.1.0/content-type";
 export const contentType: typeof contentType_ = (extentionOrType) => {
   if (extentionOrType === "tgs") {
