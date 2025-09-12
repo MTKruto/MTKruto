@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals, concat, delay, ige256Decrypt, ige256Encrypt, initTgCrypto, SECOND } from "../0_deps.ts";
+import { assertEquals, concat, delay, ige256Decrypt, ige256Encrypt, initTgCrypto, LruCache, SECOND } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
 import { bigIntFromBuffer, bufferFromBigInt, drop, getLogger, getRandomId, gunzip, type Logger, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
 import { deserializeMessage, type message, type msg_container, Mtproto, repr, serializeMessage, TLReader, X } from "../2_tl.ts";
@@ -57,6 +57,8 @@ export class SessionEncrypted extends Session implements Session {
   handlers: Handlers = {};
   #toAcknowledge = new Array<bigint>();
   #pendingMessages = new Set<bigint>();
+  #pendingContainers = new LruCache<bigint, bigint[]>(20_000);
+  #pendingAcks = new LruCache<bigint, bigint[]>(100);
   #pendingPings = new Map<bigint, PendingPing>();
   #L: Logger;
 
@@ -123,6 +125,7 @@ export class SessionEncrypted extends Session implements Session {
       pendingPing.reject(reason);
     }
     this.#pendingPings.clear();
+    this.#pendingContainers.clear();
   }
 
   #onMessageFailed(id: bigint, reason: unknown) {
@@ -135,10 +138,29 @@ export class SessionEncrypted extends Session implements Session {
       } else {
         pendingPing.reject(reason);
       }
-    } else {
-      // message was not sent by us
-      this.handlers.onMessageFailed?.(id, reason);
+      return;
     }
+
+    const pendingAck = this.#pendingAcks.get(id);
+    if (pendingAck) {
+      for (const id of pendingAck) {
+        this.#toAcknowledge.push(id);
+      }
+      this.#pendingAcks.delete(id);
+      return;
+    }
+
+    const pendingContainer = this.#pendingContainers.get(id);
+    if (pendingContainer) {
+      for (const id of pendingContainer) {
+        this.#onMessageFailed(id, reason);
+      }
+      this.#pendingContainers.delete(id);
+      return;
+    }
+
+    // message was not sent by us
+    this.handlers.onMessageFailed?.(id, reason);
   }
 
   #setServerSalt(newServerSalt: bigint) {
@@ -161,12 +183,14 @@ export class SessionEncrypted extends Session implements Session {
     };
 
     if (this.#toAcknowledge.length) {
+      const msg_ids = this.#toAcknowledge.splice(0, 8192);
       const ack: message = {
         _: "message",
         msg_id: this.state.nextMessageId(),
         seqno: this.state.nextSeqNo(false),
-        body: Mtproto.serializeObject({ _: "msgs_ack", msg_ids: this.#toAcknowledge.splice(0, 8192) }),
+        body: Mtproto.serializeObject({ _: "msgs_ack", msg_ids }),
       };
+      this.#pendingAcks.set(ack.msg_id, msg_ids);
       message = {
         _: "message",
         msg_id: this.state.nextMessageId(),
@@ -182,6 +206,9 @@ export class SessionEncrypted extends Session implements Session {
     const payload = await this.#encryptMessage(message);
     await this.transport.transport.send(payload);
     this.#pendingMessages.add(msg_id);
+    if (!(message.body instanceof Uint8Array)) {
+      this.#pendingContainers.set(message.msg_id, message.body.messages.map((v) => v.msg_id));
+    }
     return msg_id;
   }
 
