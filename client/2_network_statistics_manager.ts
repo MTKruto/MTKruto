@@ -18,13 +18,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { getLogger, type Logger } from "../utilities/1_logger.ts";
 import type { C } from "./1_types.ts";
 
 export class NetworkStatisticsManager {
   #c: C;
+  #L: Logger;
 
   constructor(c: C) {
     this.#c = c;
+    this.#L = getLogger("NetworkStatisticsManager");
   }
 
   async getNetworkStatistics() {
@@ -45,16 +48,39 @@ export class NetworkStatisticsManager {
     return { messages, cdn };
   }
 
+  #pendingWrites: Record<string, number> = {};
   getTransportReadWriteCallback(cdn: boolean) {
     return {
-      read: async (count: number) => {
+      read: (count: number) => {
         const key = cdn ? "netstat_cdn_read" : "netstat_messages_read";
-        await this.#c.storage.incr([key], count);
+        this.#pendingWrites[key] = (this.#pendingWrites[key] ?? 0) + count;
+        this.#write();
       },
-      write: async (count: number) => {
+      write: (count: number) => {
         const key = cdn ? "netstat_cdn_write" : "netstat_messages_write";
-        await this.#c.storage.incr([key], count);
+        this.#pendingWrites[key] = (this.#pendingWrites[key] ?? 0) + count;
+        this.#write();
       },
     };
+  }
+
+  #writing = false;
+  async #write() {
+    if (this.#writing) {
+      return;
+    }
+    this.#writing = true;
+    for (const [k, v] of Object.entries(this.#pendingWrites)) {
+      if (v < 1) {
+        continue;
+      }
+      try {
+        await this.#c.messageStorage.incr([k], v);
+        this.#pendingWrites[k] -= v;
+      } catch (err) {
+        this.#L.error("write failed:", err);
+      }
+    }
+    this.#writing = false;
   }
 }

@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { getLogger, type Logger } from "../1_utilities.ts";
 import type { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 
 function assertInitialized(kv: Deno.Kv | null | undefined) {
@@ -31,9 +32,11 @@ export class StorageDenoKV implements Storage {
   kv: Deno.Kv | null = null;
   #id: string | null = null;
   #path?: string;
+  #L: Logger;
 
   constructor(path?: string) {
     this.#path = path;
+    this.#L = getLogger("StorageDenoKV");
   }
 
   get path(): string | undefined {
@@ -121,10 +124,20 @@ export class StorageDenoKV implements Storage {
     key = this.#fixKey(key);
     const kv = assertInitialized(this.kv);
 
-    let result: Awaited<ReturnType<Deno.AtomicOperation["commit"]>> | null = null;
-    while (!result?.ok) {
-      const count = await kv.get<number>(key);
-      result = await kv.atomic().check(count).set(key, (count.value || 0) + by).commit();
+    let lastError: unknown;
+    for (let i = 0; i < 10; ++i) {
+      try {
+        let result: Awaited<ReturnType<Deno.AtomicOperation["commit"]>> | null = null;
+        while (!result?.ok) {
+          const count = await kv.get<number>(key);
+          result = await kv.atomic().check(count).set(key, (count.value || 0) + by).commit();
+        }
+        return;
+      } catch (err) {
+        this.#L.error("incr failed on attempt", i + ":", lastError = err);
+      }
     }
+
+    throw lastError;
   }
 }
