@@ -33,6 +33,8 @@ import { ClientPlain, type ClientPlainParams } from "./1_client_plain.ts";
 // global ClientEncrypted ID counter for logs
 let id = 0;
 
+type SentRequest = { call: Api.AnyFunction | Mtproto.ping; promiseWithResolvers: PromiseWithResolvers<Api.DeserializedType | Mtproto.DeserializedType> };
+
 export interface ClientEncryptedParams extends ClientPlainParams {
   /** The app_version parameter to be passed to initConnection. It is recommended that this parameter is changed if users are authorized. Defaults to _MTKruto_. */
   appVersion?: string;
@@ -56,12 +58,6 @@ export interface ClientEncryptedHandlers {
   onDeserializationError?: () => void;
 }
 
-interface PendingRequest {
-  resolve: (obj: Api.DeserializedType | Mtproto.DeserializedType) => void;
-  reject: (reason?: unknown) => void;
-  call: Api.AnyFunction | Mtproto.ping;
-}
-
 export class ClientEncrypted extends ClientAbstract {
   static #SEND_MAX_TRIES = 10;
   static #AUTH_KEY_CREATION_MAX_TRIES = 10;
@@ -71,7 +67,7 @@ export class ClientEncrypted extends ClientAbstract {
   #L: Logger;
   #plain: ClientPlain;
   session: SessionEncrypted;
-  #pendingRequests = new Map<bigint, PendingRequest>();
+  #sentRequests = new Map<bigint, SentRequest>();
 
   #apiId: number;
   #appVersion: string;
@@ -162,7 +158,7 @@ export class ClientEncrypted extends ClientAbstract {
   lastRequest?: Date;
   async #send(function_: Api.AnyFunction | Mtproto.ping) {
     this.lastRequest = new Date();
-    let body: Uint8Array;
+    let body: Uint8Array<ArrayBuffer>;
     if (Mtproto.is("ping", function_)) {
       body = Mtproto.serializeObject(function_);
     } else {
@@ -213,20 +209,21 @@ export class ClientEncrypted extends ClientAbstract {
     throw new Error(`Failed to invoke function after ${ClientEncrypted.#SEND_MAX_TRIES} tries.`, { cause: lastErr });
   }
 
-  async #resend(request: PendingRequest) {
+  async #resend(request: SentRequest) {
     try {
       const messageId = await this.#send(request.call);
-      this.#pendingRequests.set(messageId, request);
+      this.#sentRequests.set(messageId, request);
     } catch (err) {
-      request.reject(err);
+      request.promiseWithResolvers.reject(err);
     }
   }
 
   async invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T): Promise<R> {
     const messageId = await this.#send(function_);
-    return (await new Promise<Api.DeserializedType | Mtproto.DeserializedType>((resolve, reject) => {
-      this.#pendingRequests.set(messageId, { resolve, reject, call: function_ });
-    })) as R;
+    this.#L.debug("sent", function_._, "with msg_id", messageId);
+    const sentRequest: SentRequest = { call: function_, promiseWithResolvers: Promise.withResolvers() };
+    this.#sentRequests.set(messageId, sentRequest);
+    return await sentRequest.promiseWithResolvers.promise as R;
   }
 
   async #onUpdate(body: Uint8Array) {
@@ -250,47 +247,49 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   async #onMessageFailed(msgId: bigint, error: unknown) {
-    const request = this.#pendingRequests.get(msgId);
+    const request = this.#sentRequests.get(msgId);
     if (request) {
-      this.#pendingRequests.delete(msgId);
+      this.#sentRequests.delete(msgId);
       if (error instanceof SessionError) {
         await this.#resend(request);
       } else {
-        request.reject(error);
+        request.promiseWithResolvers.reject(error);
       }
     }
   }
 
   async #onRpcError(msgId: bigint, error: Mtproto.rpc_error) {
-    const request = this.#pendingRequests.get(msgId);
+    const request = this.#sentRequests.get(msgId);
+    this.#L.debug("received rpc_error with req_msg_id =", msgId, "for", request === undefined ? "unknown" : "known", "request");
     if (request) {
-      this.#pendingRequests.delete(msgId);
+      this.#sentRequests.delete(msgId);
       const reason = constructTelegramError(error, request.call);
       if (reason instanceof ConnectionNotInited) {
         this.#connectionInited = false;
         await this.#resend(request);
       } else {
-        request.reject(constructTelegramError(error, request.call));
+        request.promiseWithResolvers.reject(constructTelegramError(error, request.call));
       }
     }
   }
 
   async #onRpcResult(msgId: bigint, body: Uint8Array) {
-    const request = this.#pendingRequests.get(msgId);
-    if (request) {
+    const sentRequest = this.#sentRequests.get(msgId);
+    this.#L.debug("received rpc_result with req_msg_id =", msgId, "for", sentRequest === undefined ? "unknown" : "known", "request");
+    if (sentRequest) {
       let type: Api.DeserializedType;
       try {
-        type = await Api.deserializeType(Api.mustGetReturnType(request.call._), body);
+        type = await Api.deserializeType(Api.mustGetReturnType(sentRequest.call._), body);
         this.#L.in(type);
         this.#L.debug("received rpc_result", repr(type));
-        request.resolve(type);
+        sentRequest.promiseWithResolvers.resolve(type);
       } catch (err) {
-        request.reject(err);
-        this.#L.error("failed to deserialize RPC result body:", err);
+        sentRequest.promiseWithResolvers.reject(err);
+        this.#L.error("failed to deserialize rpc_result body:", err);
         this.handlers.onDeserializationError?.();
         return;
       } finally {
-        this.#pendingRequests.delete(msgId);
+        this.#sentRequests.delete(msgId);
       }
     }
     if (!this.#connectionInited) {
@@ -299,10 +298,10 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   #onPong(pong: Mtproto.pong) {
-    const pendingRequest = this.#pendingRequests.get(pong.msg_id);
-    if (pendingRequest) {
-      pendingRequest.resolve(pong);
-      this.#pendingRequests.delete(pong.msg_id);
+    const sentRequest = this.#sentRequests.get(pong.msg_id);
+    if (sentRequest) {
+      sentRequest.promiseWithResolvers.resolve(pong);
+      this.#sentRequests.delete(pong.msg_id);
     }
   }
 }

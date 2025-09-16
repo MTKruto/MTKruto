@@ -35,6 +35,10 @@ const GZIP_PACKED = 0x3072CFA1;
 const RPC_RESULT = 0xF35C6D01;
 const RPC_ERROR = Mtproto.schema.definitions["rpc_error"][0];
 
+type PendingMessage = { body: Uint8Array<ArrayBuffer>; promiseWithResolvers: PromiseWithResolvers<bigint> };
+
+type PendingPing = { call: Mtproto.ping_delay_disconnect; promiseWithResolvers: PromiseWithResolvers<Mtproto.pong> };
+
 export interface Handlers {
   onUpdate?: (body: Uint8Array) => void;
   onNewServerSalt?: (serverSalt: bigint) => void;
@@ -44,30 +48,33 @@ export interface Handlers {
   onRpcResult?: (id: bigint, result: Uint8Array) => void;
 }
 
-interface PendingPing {
-  call: Mtproto.ping_delay_disconnect;
-  resolve: (pong: Mtproto.pong) => void;
-  reject: (reason: unknown) => void;
-}
-
 export class SessionEncrypted extends Session implements Session {
+  static #TGCRYPTO_INITED = false;
+
   #id = getRandomId();
+  handlers: Handlers = {};
+  #L: Logger;
+  #LsendLoop: Logger;
+  #LreceiveLoop: Logger;
+  #LpingLoop: Logger;
+
   #authKey = new Uint8Array();
   #authKeyId = 0n;
-  handlers: Handlers = {};
-  #toAcknowledge = new Array<bigint>();
-  #pendingMessages = new Set<bigint>();
-  #pendingContainers = new LruCache<bigint, bigint[]>(20_000);
-  #pendingAcks = new LruCache<bigint, bigint[]>(100);
-  #pendingPings = new Map<bigint, PendingPing>();
-  #L: Logger;
 
-  static #TGCRYPTO_INITED = false;
+  #sentMessages = new Set<bigint>();
+  #pendingMessages = new Array<PendingMessage>();
+  #containers = new LruCache<bigint, bigint[]>(20_000);
+  #pendingPings = new Map<bigint, PendingPing>();
+
+  #toAcknowledge = new Array<bigint>();
+  #pendingAcks = new LruCache<bigint, bigint[]>(100);
 
   constructor(dc: DC, params?: SessionParams) {
     super(dc, params);
     const L = this.#L = getLogger("SessionEncrypted").client(id++);
-    this.#LpingLoop = L.branch("#pingLoop");
+    this.#LsendLoop = L.branch("sendLoop");
+    this.#LreceiveLoop = L.branch("receiveLoop");
+    this.#LpingLoop = L.branch("pingLoop");
   }
 
   async setAuthKey(key: Uint8Array<ArrayBuffer>) {
@@ -90,14 +97,17 @@ export class SessionEncrypted extends Session implements Session {
       SessionEncrypted.#TGCRYPTO_INITED = true;
     }
     this.#receiveLoop.start();
+    this.#sendLoop.start();
     this.#pingLoop.start();
+    this.#awakeSendLoop?.();
   }
 
   override disconnect(): void {
     super.disconnect();
     this.state.reset();
     this.#id = getRandomId();
-    this.#pingLoopAbortController?.abort();
+    this.#pingLoop.abort();
+    this.#awakeSendLoop?.();
     this.#rejectAllPending(new ConnectionError("Not connected."));
   }
 
@@ -117,27 +127,26 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   #rejectAllPending(reason: unknown) {
-    for (const id of this.#pendingMessages) {
+    for (const id of this.#sentMessages) {
       this.#onMessageFailed(id, reason);
     }
-    this.#pendingMessages.clear();
     for (const pendingPing of this.#pendingPings.values()) {
-      pendingPing.reject(reason);
+      pendingPing.promiseWithResolvers.reject(reason);
     }
+    this.#sentMessages.clear();
     this.#pendingPings.clear();
-    this.#pendingContainers.clear();
+    this.#containers.clear();
   }
 
   #onMessageFailed(id: bigint, reason: unknown) {
-    this.#pendingMessages.delete(id);
-    const pendingPing = this.#pendingPings.get(id);
-    if (pendingPing) {
-      this.#pendingPings.delete(id);
-      if (reason instanceof SessionError) {
-        drop(this.#resendPendingPing(pendingPing));
-      } else {
-        pendingPing.reject(reason);
+    this.#sentMessages.delete(id);
+
+    const pendingContainer = this.#containers.get(id);
+    if (pendingContainer) {
+      for (const id of pendingContainer) {
+        this.#onMessageFailed(id, reason);
       }
+      this.#containers.delete(id);
       return;
     }
 
@@ -150,12 +159,14 @@ export class SessionEncrypted extends Session implements Session {
       return;
     }
 
-    const pendingContainer = this.#pendingContainers.get(id);
-    if (pendingContainer) {
-      for (const id of pendingContainer) {
-        this.#onMessageFailed(id, reason);
+    const pendingPing = this.#pendingPings.get(id);
+    if (pendingPing) {
+      this.#pendingPings.delete(id);
+      if (reason instanceof SessionError) {
+        drop(this.#resendPendingPing(pendingPing));
+      } else {
+        pendingPing.promiseWithResolvers.reject(reason);
       }
-      this.#pendingContainers.delete(id);
       return;
     }
 
@@ -168,48 +179,15 @@ export class SessionEncrypted extends Session implements Session {
     this.handlers.onNewServerSalt?.(newServerSalt);
   }
 
-  async send(body: Uint8Array): Promise<bigint> {
+  async send(body: Uint8Array<ArrayBuffer>): Promise<bigint> {
     if (!this.disconnected && !this.connected) {
       await super.waitUntilConnected();
     }
     this.#assertNotDisconnected();
-    const msg_id = this.state.nextMessageId();
-    const seqno = this.state.nextSeqNo(true);
-    let message: message = {
-      _: "message",
-      msg_id,
-      seqno,
-      body,
-    };
-
-    if (this.#toAcknowledge.length) {
-      const msg_ids = this.#toAcknowledge.splice(0, 8192);
-      const ack: message = {
-        _: "message",
-        msg_id: this.state.nextMessageId(),
-        seqno: this.state.nextSeqNo(false),
-        body: Mtproto.serializeObject({ _: "msgs_ack", msg_ids }),
-      };
-      this.#pendingAcks.set(ack.msg_id, msg_ids);
-      message = {
-        _: "message",
-        msg_id: this.state.nextMessageId(),
-        seqno: this.state.nextSeqNo(false),
-        body: {
-          _: "msg_container",
-          messages: [message, ack],
-        },
-      };
-    }
-
-    this.#L.out(message);
-    const payload = await this.#encryptMessage(message);
-    await this.transport.transport.send(payload);
-    this.#pendingMessages.add(msg_id);
-    if (!(message.body instanceof Uint8Array)) {
-      this.#pendingContainers.set(message.msg_id, message.body.messages.map((v) => v.msg_id));
-    }
-    return msg_id;
+    const pendingMessage: PendingMessage = { body, promiseWithResolvers: Promise.withResolvers() };
+    this.#pendingMessages.push(pendingMessage);
+    this.#awakeSendLoop?.();
+    return await pendingMessage.promiseWithResolvers.promise;
   }
 
   async #receive() {
@@ -280,18 +258,99 @@ export class SessionEncrypted extends Session implements Session {
     return deserializeMessage(plainReader);
   }
 
+  //// SEND LOOP ////
+  #awakeSendLoop?: () => void;
+  #sendLoop = new AbortableLoop(this.#sendLoopBody.bind(this), (err) => {
+    this.#LsendLoop.error("unhandled receive loop error:", err);
+  });
+  async #sendLoopBody(loop: AbortableLoop, signal: AbortSignal) {
+    if (!this.connected) {
+      this.#LsendLoop.debug("aborting as not connected");
+      loop.abort();
+      return;
+    }
+    const pendingMessage = this.#pendingMessages.shift();
+    if (pendingMessage === undefined) {
+      this.#LsendLoop.debug("no pending messages");
+      return await new Promise<void>((resolve) => {
+        const onAbort = () => {
+          this.#LsendLoop.debug("got aborted while sleeping");
+          resolve();
+        };
+        signal.addEventListener("abort", onAbort);
+        this.#awakeSendLoop = () => {
+          this.#LsendLoop.debug("got awaken");
+          resolve();
+          signal.removeEventListener("abort", onAbort);
+        };
+      });
+    }
+    const msg_id = this.state.nextMessageId();
+    const seqno = this.state.nextSeqNo(true);
+    let message: message = {
+      _: "message",
+      msg_id,
+      seqno,
+      body: pendingMessage.body,
+    };
+    this.#LsendLoop.debug("msg_id =", msg_id, "seqno =", seqno);
+
+    if (this.#toAcknowledge.length) {
+      const msg_ids = this.#toAcknowledge.splice(0, 8192);
+      this.#LsendLoop.debug("acknowledging", msg_ids.length, "message(s) while sending this one");
+      const ack: message = {
+        _: "message",
+        msg_id: this.state.nextMessageId(),
+        seqno: this.state.nextSeqNo(false),
+        body: Mtproto.serializeObject({ _: "msgs_ack", msg_ids }),
+      };
+      this.#LsendLoop.debug("msgs_ack msg_id =", ack.msg_id, "seqno =", seqno);
+      this.#pendingAcks.set(ack.msg_id, msg_ids);
+      message = {
+        _: "message",
+        msg_id: this.state.nextMessageId(),
+        seqno: this.state.nextSeqNo(false),
+        body: {
+          _: "msg_container",
+          messages: [message, ack],
+        },
+      };
+      this.#LsendLoop.debug("container msg_id =", message.msg_id, "seqno =", message.seqno);
+    }
+
+    try {
+      const payload = await this.#encryptMessage(message);
+      await this.transport.transport.send(payload);
+      pendingMessage.promiseWithResolvers.resolve(msg_id);
+    } catch (err) {
+      pendingMessage.promiseWithResolvers.reject(err);
+      return;
+    }
+
+    this.#LsendLoop.out(message);
+    this.#sentMessages.add(msg_id);
+    if (!(message.body instanceof Uint8Array)) {
+      const msg_ids = message.body.messages.map((v) => v.msg_id);
+      this.#LsendLoop.debug("sent container", message.msg_id, "with messages", ...msg_ids);
+      this.#containers.set(message.msg_id, msg_ids);
+    } else {
+      this.#LsendLoop.debug("sent message", message.msg_id);
+    }
+  }
+
   //// RECEIVE LOOP ////
   #receiveLoop = new AbortableLoop(this.#receiveLoopBody.bind(this), (err) => {
-    this.#L.error("unhandled receive loop error:", err);
+    this.#LreceiveLoop.error("unhandled receive loop error:", err);
   });
-  async #receiveLoopBody() {
+  async #receiveLoopBody(loop: AbortableLoop) {
     let message: message;
     try {
       message = await this.#receive();
     } catch (err) {
-      this.#L.error("failed to receive message:", err);
+      this.#LreceiveLoop.error("failed to receive message:", err);
       if (!this.connected) {
-        this.#receiveLoop.abort();
+        this.#LreceiveLoop.debug("aborting as not connected");
+        loop.abort();
         return;
       } else {
         return;
@@ -299,28 +358,32 @@ export class SessionEncrypted extends Session implements Session {
     }
     try {
       if (message.body instanceof Uint8Array) {
-        this.#onMessage(message.msg_id, message.body);
+        this.#onMessage(message.msg_id, message.body, null);
       } else {
         this.#onMessageContainer(message.msg_id, message.body);
       }
     } catch (err) {
-      this.#L.error("failed to handle message:", err);
+      this.#LreceiveLoop.error("failed to handle message:", err);
     }
   }
 
   //// RECEIVE LOOP HANDLERS ////
-  async #onMessage(msgId: bigint, body: Uint8Array) {
+  async #onMessage(msgId: bigint, body: Uint8Array, containerId: bigint | null) {
+    this.#LreceiveLoop.debug("received message with ID", msgId, "and size", body.length, "inside", ...(containerId === null ? ["no container"] : ["container", containerId]));
+    const logger = this.#LreceiveLoop.branch(msgId + "");
     let reader = new TLReader(body);
     let id = reader.readInt32(false);
     if (id === GZIP_PACKED) {
+      logger.debug("unpacking compressed body");
       reader = new TLReader(await gunzip(reader.readBytes()));
       id = reader.readInt32(false);
     }
     if (id === RPC_RESULT) {
-      this.#onRpcResult(msgId, reader.buffer);
+      this.#onRpcResult(msgId, reader.buffer, logger);
       return;
     }
     if (!Mtproto.schema.identifierToName[id]) {
+      logger.debug("identified body as a non-MTProto constructor");
       reader.unreadInt32();
       this.handlers.onUpdate?.(reader.buffer);
       return;
@@ -330,10 +393,10 @@ export class SessionEncrypted extends Session implements Session {
       reader.unreadInt32();
       type = await Mtproto.deserializeType(X, reader);
     } catch (err) {
-      this.#L.error("failed to deserialize MTProto type:", err);
+      logger.error("failed to deserialize MTProto type:", err);
       return;
     }
-    this.#L.debug("received", repr(type));
+    logger.debug("received", repr(type));
     if (Mtproto.is("new_session_created", type)) {
       this.#onNewSessionCreated(msgId, type);
     } else if (Mtproto.is("pong", type)) {
@@ -341,22 +404,24 @@ export class SessionEncrypted extends Session implements Session {
     } else if (Mtproto.is("bad_server_salt", type)) {
       this.#onBadServerSalt(type);
     } else if (Mtproto.is("bad_msg_notification", type)) {
-      await this.#onBadMsgNotification(msgId, type);
+      await this.#onBadMsgNotification(msgId, type, logger);
     } else if (Mtproto.is("msg_detailed_info", type)) {
-      this.#onMsgDetailedInfo(type);
+      this.#onMsgDetailedInfo(type, logger);
     } else if (Mtproto.is("msg_new_detailed_info", type)) {
-      this.#onMsgNewDetailedInfo(type);
+      this.#onMsgNewDetailedInfo(type, logger);
     } else {
-      this.#L.debug(`unhandled MTProto type: ${repr(type)}`);
+      logger.warning(`unhandled MTProto type: ${repr(type)}`);
     }
   }
 
-  async #onRpcResult(msgId: bigint, body: Uint8Array) {
+  async #onRpcResult(msgId: bigint, body: Uint8Array, logger: Logger) {
+    logger.debug("received rpc_result");
     this.#toAcknowledge.push(msgId);
     let reader = new TLReader(body);
     const reqMsgId = reader.readInt64();
     let id = reader.readInt32(false);
     if (id === GZIP_PACKED) {
+      logger.debug("unpacking compressed rpc_result");
       reader = new TLReader(await gunzip(reader.readBytes()));
       id = reader.readInt32(false);
       reader.unreadInt32();
@@ -364,6 +429,7 @@ export class SessionEncrypted extends Session implements Session {
       reader.unreadInt32();
     }
     if (id === RPC_ERROR) {
+      logger.debug("received rpc_error from message", msgId);
       const error = await Mtproto.deserializeType("rpc_error", reader);
       this.handlers.onRpcError?.(reqMsgId, error);
     } else {
@@ -371,15 +437,17 @@ export class SessionEncrypted extends Session implements Session {
     }
   }
 
-  #onMsgDetailedInfo(msgDetailedInfo: Mtproto.msg_detailed_info) {
+  #onMsgDetailedInfo(msgDetailedInfo: Mtproto.msg_detailed_info, logger: Logger) {
+    logger.debug("scheduling the acknowledgement of", msgDetailedInfo.answer_msg_id, "because of", msgDetailedInfo._);
     this.#toAcknowledge.push(msgDetailedInfo.answer_msg_id);
   }
 
-  #onMsgNewDetailedInfo(msgNewDetailedInfo: Mtproto.msg_new_detailed_info) {
+  #onMsgNewDetailedInfo(msgNewDetailedInfo: Mtproto.msg_new_detailed_info, logger: Logger) {
+    logger.debug("scheduling the acknowledgement of", msgNewDetailedInfo.answer_msg_id, "because of", msgNewDetailedInfo._);
     this.#toAcknowledge.push(msgNewDetailedInfo.answer_msg_id);
   }
 
-  async #onBadMsgNotification(msgId: bigint, badMsgNotification: Mtproto.bad_msg_notification) {
+  async #onBadMsgNotification(msgId: bigint, badMsgNotification: Mtproto.bad_msg_notification, logger: Logger) {
     let low = false;
     switch (badMsgNotification.error_code) {
       case 16: // message ID too low
@@ -389,10 +457,11 @@ export class SessionEncrypted extends Session implements Session {
         this.state.timeDifference = Math.abs(toUnixTimestamp(new Date()) - Number(msgId >> 32n));
         if (!low) {
           this.state.timeDifference = -this.state.timeDifference;
+          logger.debug("resetting time difference to", -this.state.timeDifference, "because the ID of the message", badMsgNotification.bad_msg_id, "was too high");
           await this.#invalidateSession("message ID too high");
           return;
         } else {
-          this.#L.debug("message ID too low, resending message");
+          logger.debug("resending message", badMsgNotification.bad_msg_id, "because its ID was too low");
         }
         break;
       case 48: // bad server salt
@@ -415,7 +484,7 @@ export class SessionEncrypted extends Session implements Session {
     this.#toAcknowledge.push(msgId);
     const pendingPing = this.#pendingPings.get(pong.msg_id);
     if (pendingPing) {
-      pendingPing.resolve(pong);
+      pendingPing.promiseWithResolvers.resolve(pong);
       this.#pendingPings.delete(pong.msg_id);
     } else {
       // pong is not ours
@@ -429,9 +498,10 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   #onMessageContainer(msgId: bigint, msgContainer: msg_container) {
+    this.#LreceiveLoop.debug("received container with ID", msgId, "and", msgContainer.messages.length, "message(s)");
     for (const message of msgContainer.messages) {
       if (message.body instanceof Uint8Array) {
-        this.#onMessage(message.msg_id, message.body);
+        this.#onMessage(message.msg_id, message.body, msgId);
       } else {
         this.#onMessageContainer(msgId, message.body);
       }
@@ -440,12 +510,10 @@ export class SessionEncrypted extends Session implements Session {
 
   //// PING LOOP ////
   #pingInterval = 56 * SECOND;
-  #pingLoopAbortController?: AbortController;
-  #LpingLoop: Logger;
   #pingLoop = new AbortableLoop(this.#pingLoopBody.bind(this), (err) => {
     this.#LpingLoop.error(err);
   });
-  async #pingLoopBody(signal: AbortSignal) {
+  async #pingLoopBody(_loop: AbortableLoop, signal: AbortSignal) {
     let timeElapsed = 0;
     await delay(Math.max(0, this.#pingInterval - timeElapsed), { signal });
     if (!this.connected) {
@@ -465,9 +533,7 @@ export class SessionEncrypted extends Session implements Session {
     const ping_id = getRandomId();
     const call: Mtproto.ping_delay_disconnect = { _: "ping_delay_disconnect", ping_id, disconnect_delay };
     const messageId = await this.send(Mtproto.serializeObject(call));
-    await new Promise((resolve, reject) => {
-      this.#pendingPings.set(messageId, { call, resolve, reject });
-    });
+    this.#pendingPings.set(messageId, { call, promiseWithResolvers: Promise.withResolvers() });
   }
 
   async #resendPendingPing(pendingPing: PendingPing) {
@@ -475,7 +541,7 @@ export class SessionEncrypted extends Session implements Session {
       const messageId = await this.send(Mtproto.serializeObject(pendingPing.call));
       this.#pendingPings.set(messageId, pendingPing);
     } catch (err) {
-      pendingPing.reject(err);
+      pendingPing.promiseWithResolvers.reject(err);
     }
   }
 }

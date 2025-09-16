@@ -21,10 +21,10 @@
 import { drop, type MaybePromise } from "../1_utilities.ts";
 
 export class AbortableLoop {
-  #body: (signal: AbortSignal) => MaybePromise<void>;
-  #onError: (err: unknown) => void;
+  #body: (loop: AbortableLoop, signal: AbortSignal) => MaybePromise<void>;
+  #onError: (loop: AbortableLoop, err: unknown) => void;
 
-  constructor(body: (signal: AbortSignal) => MaybePromise<void>, onError: (err: unknown) => void) {
+  constructor(body: (loop: AbortableLoop, signal: AbortSignal) => MaybePromise<void>, onError: (loop: AbortableLoop, err: unknown) => void) {
     this.#body = body;
     this.#onError = onError;
   }
@@ -44,10 +44,10 @@ export class AbortableLoop {
     const controller = this.#controller = new AbortController();
     do {
       try {
-        await this.#body(controller.signal);
+        await this.#body(this, controller.signal);
       } catch (err) {
         if (!controller.signal.aborted) {
-          this.#onError(err);
+          this.#onError(this, err);
         }
       }
     } while (!controller.signal.aborted);

@@ -1104,10 +1104,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   #lastUpdates = new Date();
-  #updateGapRecoveryLoop = new AbortableLoop(async (signal) => {
+  #updateGapRecoveryLoop = new AbortableLoop(async (loop, signal) => {
     await delay(60 * SECOND, { signal });
     if (!this.connected) {
-      this.#updateGapRecoveryLoop.abort();
+      loop.abort();
       return;
     }
     if (Date.now() - this.#lastUpdates.getTime() >= 15 * MINUTE) {
@@ -1117,18 +1117,18 @@ export class Client<C extends Context = Context> extends Composer<C> {
         }),
       );
     }
-  }, (err) => {
+  }, (loop, err) => {
     if (!this.connected) {
-      this.#updateGapRecoveryLoop.abort();
+      loop.abort();
     } else {
       this.#LupdateGapRecoveryLoop.error(err);
     }
   });
 
-  #clientDisconnectionLoop = new AbortableLoop(async (signal) => {
+  #clientDisconnectionLoop = new AbortableLoop(async (loop, signal) => {
     await delay(60 * SECOND, { signal });
     if (!this.connected) {
-      this.#clientDisconnectionLoop.abort();
+      loop.abort();
       return;
     }
     const now = Date.now();
@@ -1138,13 +1138,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
         client?.disconnect();
       }
     }
-  }, () => {
+  }, (loop) => {
     if (!this.connected) {
-      this.#clientDisconnectionLoop.abort();
+      loop.abort();
     }
   });
 
-  #storageWriteLoop = new AbortableLoop(async (signal) => {
+  #storageWriteLoop = new AbortableLoop(async (_loop, signal) => {
     await delay(60 * SECOND, { signal });
     await this.messageStorage.commit();
     await this.storage.commit();

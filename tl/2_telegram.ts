@@ -35,7 +35,7 @@ export async function deserializeType<T extends (keyof Api.Types) | "X" | string
   return await reader.readType(name, Api.schema);
 }
 
-export function serializeObject(object: Api.AnyObject): Uint8Array {
+export function serializeObject(object: Api.AnyObject): Uint8Array<ArrayBuffer> {
   return new TLWriter().writeObject(object, Api.schema).buffer;
 }
 
