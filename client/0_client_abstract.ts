@@ -37,6 +37,10 @@ export abstract class ClientAbstract {
     this.session.serverSalt = serverSalt;
   }
 
+  get serverSalt(): bigint {
+    return this.session.serverSalt;
+  }
+
   get connected(): boolean {
     return this.session.connected;
   }

@@ -85,6 +85,10 @@ export abstract class Session {
     this.state.serverSalt = serverSalt;
   }
 
+  get serverSalt(): bigint {
+    return this.state.serverSalt;
+  }
+
   #lastState?: boolean;
   async #stateChangeHandler(connected: boolean) {
     if (this.#lastState !== connected) {
