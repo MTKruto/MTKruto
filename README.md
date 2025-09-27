@@ -10,12 +10,11 @@ Cross-runtime JavaScript library for building Telegram clients
 
 ### Key Features
 
-- **Easy-to-use.** Provides high-level [methods](https://mtkruto.deno.dev/methods) and [types](https://mtkruto.deno.dev/types) for convenience.
 - **Cross-runtime.** Supports Node.js, Deno, browsers, and Bun.
 - **Type-safe.** Written in TypeScript with accurate typings.
-- **Made for the Web.** Leverages Web APIs.
-- **Unopinionated.** No hidden behaviors.
-- **Extensible.** Highly customizable.
+- **Prioritizes the Web.** Prefers Web APIs over runtime-specific APIs.
+- **Easy-to-use.** Provides its own high-level API on top of the Telegram API.
+- **Extensible.** Its middleware system lets you integrate external code.
 
 > Note: MTKruto has not reached version 1.0.0 yet. While it can run in production, we currently do not recommend depending on it for critical projects.
 
