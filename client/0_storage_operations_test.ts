@@ -19,7 +19,8 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
-import { K } from "./0_storage_operations.ts";
+import { type StorageKeyPart, StorageLocalStorage } from "../2_storage.ts";
+import { K, StorageOperations } from "./0_storage_operations.ts";
 
 Deno.test("key parts", () => {
   // session
@@ -46,4 +47,46 @@ Deno.test("key parts", () => {
   assertEquals(K.messages.message(123, 1), ["messages.messages", 123, 1]);
   assertEquals(K.messages.allMessageRefs(), ["messages.messageRefs"]);
   assertEquals(K.messages.messageRef(1), ["messages.messageRefs", 1]);
+});
+
+Deno.test("clear", async () => {
+  localStorage.clear();
+  const storage_ = new StorageLocalStorage("test");
+  const storage = new StorageOperations(storage_);
+
+  function keys() {
+    return Array.from(storage_.getMany({ prefix: [] }).map((v) => v[0]));
+  }
+  function assertKeysEqual() {
+    const a = keys().sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+    const e = expectedKeys.sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+    assertEquals(a, e);
+  }
+  function push(key: StorageKeyPart[]) {
+    expectedKeys.push(key);
+    assertKeysEqual();
+  }
+
+  const expectedKeys = new Array<StorageKeyPart[]>();
+  assertKeysEqual();
+
+  await storage.setState({ _: "updates.state", date: 0, pts: 0, qts: 0, seq: 0, unread_count: 0 });
+  push(K.updates.state());
+
+  await storage.auth.set({ apiId: 1, authKey: new Uint8Array(), dc: "2", isBot: true, userId: 1 });
+
+  await storage.commit(true);
+  push(["auth"]);
+
+  const chatId = 1;
+  const messageIds = new Array<number>();
+  const MESSAGE_COUNT = 100;
+  for (let i = 1; i < MESSAGE_COUNT + 1; ++i) {
+    messageIds.push(i);
+    await storage.setMessage(chatId, i, { _: "messageEmpty", id: i });
+    expectedKeys.push(K.messages.messageRef(i));
+    push(K.messages.message(chatId, i));
+  }
+
+  // await storage.setMessage()
 });
