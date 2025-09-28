@@ -22,6 +22,7 @@ export { assert } from "jsr:@std/assert@1.0.14/assert";
 export { assertFalse } from "jsr:@std/assert@1.0.14/false";
 export { assertEquals } from "jsr:@std/assert@1.0.14/equals";
 export { unreachable } from "jsr:@std/assert@1.0.14/unreachable";
+export { assertInstanceOf } from "jsr:@std/assert@1.0.14/instance-of";
 export { AssertionError } from "jsr:@std/assert@1.0.14/assertion-error";
 
 export { join } from "jsr:@std/path@1.1.2/join";
@@ -66,5 +67,3 @@ export function extension(mimeType: string) {
 }
 
 export { ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "jsr:@roj/tgcrypto@1.0.1";
-
-export { Parser } from "npm:htmlparser2@10.0.0";

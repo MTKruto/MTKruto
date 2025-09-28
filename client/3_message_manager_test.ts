@@ -26,7 +26,7 @@ import type { MessageEntity } from "../3_types.ts";
 import { MessageManager } from "./3_message_manager.ts";
 
 Deno.test("parseText() trims trailing whitespaces", async (t) => {
-  const code = `console.log("Hello, world!");`;
+  const code = `\nconsole.log("Hello, world!");`;
   const expected = [
     code,
     [
@@ -42,10 +42,9 @@ Deno.test("parseText() trims trailing whitespaces", async (t) => {
   });
 
   await t.step("HTML", () => {
-    const text = `<pre language="typescript">
-${code}
+    const text = `<pre><code class="language-typescript">${code}
 
-</pre>`; // important blank line
+</code></pre>`; // important blank line
     assertEquals(MessageManager.parseText(text, [], "HTML"), expected);
   });
 
