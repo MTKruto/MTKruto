@@ -18,10 +18,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { typeByExtension } from "jsr:@std/media-types@1.1.0/type-by-extension";
 import { MINUTE } from "../0_deps.ts";
 import { LruCache, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, getLogger, type Logger, type MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, getLogger, type Logger, type MaybePromise, rleDecode, rleEncode, sha1, toUnixTimestamp, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { awaitablePooledMap } from "../1_utilities.ts";
 import { fromString, type Storage, type StorageKeyPart, toString } from "../2_storage.ts";
 import { Api, TLReader, TLWriter, X } from "../2_tl.ts";
@@ -101,6 +102,11 @@ export class StorageOperations {
     translations: Translation[];
     date: Date;
   }>;
+  polls: StorageMap<[bigint], unknown>;
+  pollResults: StorageMap<[bigint], unknown>;
+  stickerSetNames: StorageMap<[bigint, bigint], [string, Date]>;
+  voiceTranscriptions: StorageMap<[bigint], VoiceTranscription>;
+  voiceTranscriptionReferences: StorageMap<[number, number, number], bigint>;
 
   constructor(storage: Storage) {
     this.#storage = storage;
@@ -113,6 +119,11 @@ export class StorageOperations {
     this.peers = this.#addMap(new StorageMap(storage, "peers"));
     this.usernames = this.#addMap(new StorageMap(storage, "usernames"));
     this.translations = this.#addMap(new StorageMap(storage, "translations"));
+    this.polls = this.#addMap(new StorageMap(storage, "polls"));
+    this.pollResults = this.#addMap(new StorageMap(storage, "pollResults"));
+    this.stickerSetNames = this.#addMap(new StorageMap(storage, "stickerSetNames"));
+    this.voiceTranscriptions = this.#addMap(new StorageMap(storage, "voiceTranscriptions"));
+    this.voiceTranscriptionReferences = this.#addMap(new StorageMap(storage, "voiceTranscriptionReferences"));
   }
 
   #addMap<T extends StorageMap<StorageKeyPart[], unknown>>(map: T): T {
@@ -222,22 +233,24 @@ export class StorageOperations {
     }
   }
 
-  async setTlObject(key: readonly StorageKeyPart[], value: Api.AnyType | null) {
+  serializeTlObject(value: Api.AnyType | null): Api.AnyType | [string, Uint8Array] | null {
     if (value === null) {
-      await this.#storage.set(key, null);
+      return null;
+    } else if (this.#mustSerialize) {
+      return [value._, rleEncode(Api.serializeObject(value))];
     } else {
-      await this.#storage.set(key, this.#mustSerialize ? [value._, rleEncode(Api.serializeObject(value))] : (value as unknown));
+      return value;
     }
   }
 
-  async getTlObject(keyOrBuffer: Api.AnyType | Uint8Array | readonly StorageKeyPart[]): Promise<Api.DeserializedType | null> {
-    // @ts-ignore: TBD
-    const buffer = (keyOrBuffer instanceof Uint8Array || Api.isValidObject(keyOrBuffer)) ? keyOrBuffer : await this.#storage.get<[string, Uint8Array]>(keyOrBuffer);
+  async deserializeTlObject<T extends Api.AnyType>(buffer: T | Uint8Array | [string, Uint8Array]): Promise<T>;
+  async deserializeTlObject<T extends Api.AnyType>(buffer: T | Uint8Array | [string, Uint8Array] | null): Promise<T | null>;
+  async deserializeTlObject<T extends Api.AnyType>(buffer: T | Uint8Array | [string, Uint8Array] | null): Promise<T | null> {
     if (buffer !== null) {
       if (buffer instanceof Uint8Array) {
-        return await Api.deserializeType(X, rleDecode(buffer));
+        return await Api.deserializeType(X, rleDecode(buffer)) as T;
       } else if (Array.isArray(buffer)) {
-        return await Api.deserializeType(buffer[0], rleDecode(buffer[1]));
+        return await Api.deserializeType(buffer[0], rleDecode(buffer[1])) as T;
       } else {
         return buffer;
       }
@@ -246,12 +259,20 @@ export class StorageOperations {
     }
   }
 
+  async setTlObject(key: readonly StorageKeyPart[], value: Api.AnyType | null) {
+    await this.#storage.set(key, this.serializeTlObject(value));
+  }
+
+  async getTlObject<T extends Api.AnyType>(key: readonly StorageKeyPart[]): Promise<T | null> {
+    return this.deserializeTlObject<T>(await this.#storage.get(key));
+  }
+
   async setState(state: Api.updates_State) {
     await this.setTlObject(K.updates.state(), state);
   }
 
   async getState(): Promise<Api.updates_State | null> {
-    return await this.getTlObject(K.updates.state()) as Api.updates_State | null;
+    return await this.getTlObject(K.updates.state());
   }
 
   async setMessage(chatId: number, messageId: number, message: Api.Message | null) {
@@ -274,7 +295,7 @@ export class StorageOperations {
   }
 
   async getMessage(chatId: number, messageId: number): Promise<Api.Message | null> {
-    return await this.getTlObject(K.messages.message(chatId, messageId)) as Api.Message | null;
+    return await this.getTlObject(K.messages.message(chatId, messageId));
   }
 
   setPeer(peer_: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden) {
@@ -303,12 +324,12 @@ export class StorageOperations {
     return await this.#storage.get<boolean>(K.auth.isPremium());
   }
 
-  async updateStickerSetName(id: bigint, accessHash: bigint, name: string) {
-    await this.#storage.set(K.cache.stickerSetName(id, accessHash), [name, new Date()]);
+  updateStickerSetName(id: bigint, accessHash: bigint, name: string) {
+    this.stickerSetNames.set([id, accessHash], [name, new Date()]);
   }
 
-  getStickerSetName(id: bigint, accessHash: bigint): MaybePromise<[string, Date] | null> {
-    return this.#storage.get<[string, Date]>(K.cache.stickerSetName(id, accessHash));
+  getStickerSetName(id: bigint, accessHash: bigint): Promise<[string, Date] | null> {
+    return this.stickerSetNames.get([id, accessHash]);
   }
 
   async setServerSalt(serverSalt: bigint) {
@@ -326,7 +347,7 @@ export class StorageOperations {
     ++limit;
     const messages = new Array<Api.Message>();
     for await (const [_, buffer] of await this.#storage.getMany<Uint8Array>({ start: K.messages.message(chatId, 0), end: K.messages.message(chatId, offsetId) }, { limit, reverse: true })) {
-      const message = await this.getTlObject(buffer) as Api.Message;
+      const message = await this.deserializeTlObject<Api.Message>(buffer);
       if ("id" in message && message.id === offsetId) {
         continue;
       }
@@ -377,7 +398,7 @@ export class StorageOperations {
   async getCustomEmojiDocument(id: bigint): Promise<[Api.document, Date] | null> {
     const v = await this.#storage.get<[Uint8Array, Date]>(K.cache.customEmojiDocument(id));
     if (v !== null) {
-      return [await this.getTlObject(v[0]), v[1]] as [Api.document, Date];
+      return [await this.deserializeTlObject<Api.document>(v[0]), v[1]];
     } else {
       return null;
     }
@@ -388,12 +409,7 @@ export class StorageOperations {
   }
 
   async getBusinessConnection(id: string): Promise<Api.botBusinessConnection | null> {
-    const v = await this.#storage.get<Uint8Array>(K.cache.businessConnection(id));
-    if (v !== null) {
-      return await this.getTlObject(v) as Api.botBusinessConnection;
-    } else {
-      return null;
-    }
+    return await this.getTlObject(K.cache.businessConnection(id));
   }
 
   async setInlineQueryAnswer(userId: number, chatId: number, query: string, offset: string, results: Api.messages_botResults, date: Date) {
@@ -404,7 +420,7 @@ export class StorageOperations {
     const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.inlineQueryAnswer(userId, chatId, query, offset));
     if (peer_ !== null) {
       const [obj_, date] = peer_;
-      return [Api.as("messages.botResults", await this.getTlObject(obj_)), date];
+      return [Api.as("messages.botResults", await this.deserializeTlObject(obj_)), date];
     } else {
       return null;
     }
@@ -418,7 +434,7 @@ export class StorageOperations {
     const peer_ = await this.#storage.get<[Uint8Array, Date]>(K.cache.callbackQueryAnswer(chatId, messageId, question));
     if (peer_ !== null) {
       const [obj_, date] = peer_;
-      return [Api.as("messages.botCallbackAnswer", await this.getTlObject(obj_)), date];
+      return [Api.as("messages.botCallbackAnswer", await this.deserializeTlObject(obj_)), date];
     } else {
       return null;
     }
@@ -429,7 +445,7 @@ export class StorageOperations {
   }
 
   async getFullChat(chatId: number): Promise<Api.userFull | Api.channelFull | Api.chatFull | null> {
-    return await this.getTlObject(K.cache.fullChat(chatId)) as Api.userFull | Api.channelFull | Api.chatFull | null;
+    return await this.getTlObject(K.cache.fullChat(chatId));
   }
 
   async setGroupCall(id: bigint, groupCall: Api.groupCall | null) {
@@ -437,7 +453,7 @@ export class StorageOperations {
   }
 
   async getGroupCall(id: bigint): Promise<Api.groupCall | null> {
-    return await this.getTlObject(K.cache.groupCall(id)) as Api.groupCall | null;
+    return await this.getTlObject(K.cache.groupCall(id));
   }
 
   async setGroupCallAccessHash(id: bigint, accessHash: bigint | null) {
@@ -471,7 +487,7 @@ export class StorageOperations {
 
   async getFirstUpdate(boxId: bigint): Promise<[readonly StorageKeyPart[], Api.Update] | null> {
     for await (const [key, update] of await this.#storage.getMany<Uint8Array>({ prefix: K.updates.updates(boxId) }, { limit: 1 })) {
-      return [key, (await this.getTlObject(update)) as Api.Update];
+      return [key, await this.deserializeTlObject<Api.updateAttachMenuBots>(update)];
     }
     return null;
   }
@@ -562,12 +578,6 @@ export class StorageOperations {
     }
   }
 
-  async deleteStickerSetNames() {
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.stickerSetNames() })) {
-      await this.#storage.set(key, null);
-    }
-  }
-
   async clear() {
     await Promise.all([
       this.deleteMessages(),
@@ -579,15 +589,7 @@ export class StorageOperations {
       this.deleteCallbackQueryAnswers(),
       this.deleteFullChats(),
       this.deleteGroupCalls(),
-      this.deleteStickerSetNames(),
-      this.peers.clear(),
-      this.usernames.clear(),
-      this.translations.clear(),
-      this.deletePollResults(),
-      this.deletePolls(),
-      this.deleteVoiceTranscriptions(),
-      this.deleteVoiceTranscriptionReferences(),
-    ]);
+    ].concat(this.#maps.map((v) => v.clear())));
   }
 
   async reset() {
@@ -596,68 +598,36 @@ export class StorageOperations {
     }
   }
 
-  async setPollResults(pollId: bigint, pollResults: Api.pollResults) {
-    await this.setTlObject(K.cache.pollResult(pollId), pollResults);
+  setPollResults(pollId: bigint, pollResults: Api.pollResults) {
+    this.pollResults.set([pollId], this.serializeTlObject(pollResults));
   }
 
   async getPollResults(pollId: bigint): Promise<Api.pollResults | null> {
-    return await this.getTlObject(K.cache.pollResult(pollId)) as Api.pollResults | null;
+    return await this.getTlObject([pollId]);
   }
 
-  async deletePollResults() {
-    const maybePromises = new Array<MaybePromise<unknown>>();
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.pollResults() })) {
-      maybePromises.push(this.#storage.set(key, null));
-    }
-    await Promise.all(maybePromises);
-  }
-
-  async setPoll(pollId: bigint, poll: Api.poll) {
-    await this.setTlObject(K.cache.poll(pollId), poll);
+  setPoll(pollId: bigint, poll: Api.poll) {
+    this.polls.set([pollId], this.serializeTlObject(poll));
   }
 
   async getPoll(pollId: bigint): Promise<Api.poll | null> {
-    return await this.getTlObject(K.cache.poll(pollId)) as Api.poll | null;
+    return await this.getTlObject([pollId]);
   }
 
-  async deletePolls() {
-    const maybePromises = new Array<MaybePromise<unknown>>();
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.polls() })) {
-      maybePromises.push(this.#storage.set(key, null));
-    }
-    await Promise.all(maybePromises);
-  }
-
-  async setVoiceTranscription(voiceTranscription: VoiceTranscription) {
-    await this.#storage.set(K.cache.voiceTranscription(BigInt(voiceTranscription.id)), voiceTranscription);
+  setVoiceTranscription(voiceTranscription: VoiceTranscription) {
+    this.voiceTranscriptions.set([BigInt(voiceTranscription.id)], voiceTranscription);
   }
 
   async getVoiceTranscription(transcriptionId: bigint): Promise<VoiceTranscription | null> {
-    return await this.#storage.get(K.cache.voiceTranscription(transcriptionId));
+    return await this.voiceTranscriptions.get([transcriptionId]);
   }
 
-  async deleteVoiceTranscriptions() {
-    const maybePromises = new Array<MaybePromise<unknown>>();
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.voiceTranscriptions() })) {
-      maybePromises.push(this.#storage.set(key, null));
-    }
-    await Promise.all(maybePromises);
+  setVoiceTranscriptionReference(chatId: number, messageId: number, messageEditDate: number, transcriptionId: bigint) {
+    this.voiceTranscriptionReferences.set([chatId, messageId, messageEditDate], transcriptionId);
   }
 
-  async setVoiceTranscriptionReference(chatId: number, messageId: number, messageEditDate: Date, transcriptionId: bigint) {
-    await this.#storage.set(K.cache.voiceTranscriptionReference(chatId, messageId, messageEditDate.getTime()), transcriptionId);
-  }
-
-  async getVoiceTranscriptionReference(chatId: number, messageId: number, messageEditDate: Date): Promise<bigint | null> {
-    return await this.#storage.get(K.cache.voiceTranscriptionReference(chatId, messageId, messageEditDate.getTime()));
-  }
-
-  async deleteVoiceTranscriptionReferences() {
-    const maybePromises = new Array<MaybePromise<unknown>>();
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.voiceTranscriptions() })) {
-      maybePromises.push(this.#storage.set(key, null));
-    }
-    await Promise.all(maybePromises);
+  async getVoiceTranscriptionReference(chatId: number, messageId: number, messageEditDate: number): Promise<bigint | null> {
+    return await this.voiceTranscriptionReferences.get([chatId, messageId, messageEditDate]);
   }
 }
 

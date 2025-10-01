@@ -223,10 +223,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
     const message = constructMessage_(message_, this.#c.getPeer, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r, business, poll ?? undefined, pollResults ?? undefined);
     if (!poll && mediaPoll) {
-      await this.#c.storage.setPoll(mediaPoll.poll.id, mediaPoll.poll);
+      this.#c.storage.setPoll(mediaPoll.poll.id, mediaPoll.poll);
     }
     if (!pollResults && mediaPoll) {
-      await this.#c.storage.setPollResults(mediaPoll.poll.id, mediaPoll.results);
+      this.#c.storage.setPollResults(mediaPoll.poll.id, mediaPoll.results);
     }
     return message;
   }
@@ -1559,11 +1559,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
     const peer = await this.#c.getInputPeer(chatId);
     const result = await this.#c.invoke({ _: "messages.transcribeAudio", peer, msg_id: messageId });
-    return await this.#cacheVoiceTranscription(message, constructVoiceTranscription(result));
+    return this.#cacheVoiceTranscription(message, constructVoiceTranscription(result));
   }
 
   async #getCachedVoiceTranscription(message: Message) {
-    const reference = await this.#c.messageStorage.getVoiceTranscriptionReference(message.chat.id, message.id, fromUnixTimestamp(message.editDate ?? message.date));
+  const reference = await this.#c.messageStorage.getVoiceTranscriptionReference(message.chat.id, message.id, message.editDate ?? message.date);
     if (!reference) {
       return null;
     }
@@ -1574,9 +1574,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return voiceTranscription;
   }
 
-  async #cacheVoiceTranscription(message: Message, voiceTranscription: VoiceTranscription) {
-    await this.#c.messageStorage.setVoiceTranscriptionReference(message.chat.id, message.id, fromUnixTimestamp(message.editDate ?? message.date), BigInt(voiceTranscription.id));
-    await this.#c.messageStorage.setVoiceTranscription(voiceTranscription);
+  #cacheVoiceTranscription(message: Message, voiceTranscription: VoiceTranscription) {
+    this.#c.messageStorage.setVoiceTranscriptionReference(message.chat.id, message.id, message.editDate ?? message.date, BigInt(voiceTranscription.id));
+    this.#c.messageStorage.setVoiceTranscription(voiceTranscription);
     return voiceTranscription;
   }
 
