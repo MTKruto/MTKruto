@@ -43,7 +43,7 @@ export { format } from "jsr:@std/datetime@0.225.5/format";
 
 export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.5/constants";
 
-export { toArrayBuffer } from "jsr:@std/streams@1.0.11/to-array-buffer";
+export { toArrayBuffer } from "jsr:@std/streams@1.0.12/to-array-buffer";
 
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.7/base64";
 
