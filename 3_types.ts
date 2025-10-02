@@ -34,6 +34,7 @@ export * from "./types/0_contact.ts";
 export * from "./types/0_dice.ts";
 export * from "./types/0_failed_invitation.ts";
 export * from "./types/0_file_source.ts";
+export * from "./types/0_gift_value.ts";
 export * from "./types/0_giveaway_parameters.ts";
 export * from "./types/0_id.ts";
 export * from "./types/0_invoice.ts";

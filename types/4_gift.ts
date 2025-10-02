@@ -26,6 +26,7 @@ import type { PeerGetter } from "./1_chat_p.ts";
 import { constructSticker2, type Sticker } from "./1_sticker.ts";
 import { constructUser, type User } from "./2_user.ts";
 import { constructGiftUpgradedComponent, type GiftUpgradedComponent } from "./3_gift_upgraded_component.ts";
+import type { GiftValue } from "./0_gift_value.ts";
 
 /**
  * An non-upgraded gift.
@@ -91,6 +92,12 @@ export interface GiftUpgraded {
   address?: string;
   /** The amount of stars that can be used to buy the gift.  */
   price?: number;
+  /** The amount of TON that can be used to buy the gift.  */
+  priceTon?: number;
+  /** Whether the gift can be bought only using TON. */
+  tonOnly?: boolean;
+  /** The value of the gift. */
+  value?: GiftValue;
 }
 
 /** A gift. */
@@ -114,13 +121,20 @@ export function constructGiftUpgraded(gift: Api.starGiftUnique, getPeer: PeerGet
       owner = constructUser(entity);
     }
   }
+
+  const starsAmount_ = gift.resell_amount?.find((v) => v._ === "starsAmount");
+  const starsTonAmount_ = gift.resell_amount?.find((v) => v._ === "starsTonAmount");
+
   const ownerName = gift.owner_name;
   const ownerAddress = gift.owner_address;
   const currentUpgrades = gift.availability_issued;
   const maxUpgrades = gift.availability_total;
   const components = gift.attributes.map(constructGiftUpgradedComponent);
   const address = gift.gift_address;
-  const price = gift.resell_amount !== undefined ? Number(gift.resell_amount) : undefined;
+  const price = starsAmount_ ? Number(starsAmount_.amount) : undefined;
+  const priceTon = starsTonAmount_ ? Number(starsTonAmount_.amount / 10000000n) / 100 : undefined;
+  const tonOnly = (price || priceTon) ? !!gift.resale_ton_only : undefined;
+  const value = gift.value_amount ? { amount: Number(gift.value_amount), currency: gift.value_currency ?? "" } : undefined;
   return cleanObject({
     type: "upgraded",
     id,
@@ -134,6 +148,9 @@ export function constructGiftUpgraded(gift: Api.starGiftUnique, getPeer: PeerGet
     components,
     address,
     price,
+    priceTon,
+    tonOnly,
+    value,
   });
 }
 export function constructGiftNonUpgraded(gift: Api.starGift): Gift {
