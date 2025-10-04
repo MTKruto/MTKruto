@@ -26,12 +26,18 @@ import type { ChatP } from "./1_chat_p.ts";
 
 /** An item in a reaction list. */
 export interface MessageReactionListItem {
-  /** The reaction that was made. */
-  reaction: Reaction;
   /** The entity that made the reaction. */
   chat: ChatP;
+  /** The point in time in which the reaction was made. */
+  date: number;
+  /** The reaction that was made. */
+  reaction: Reaction;
   /** Whether this is a big reaction. */
   big: boolean;
+  /** Whether the reaction is unread. */
+  unread: boolean;
+  /** Whether the current user made this reaction. */
+  isCreator: boolean;
 }
 
 export function constructMessageReactionListItem(messagePeerReaction: Api.MessagePeerReaction, list: Api.messages_MessageReactionsList): MessageReactionListItem {
@@ -44,12 +50,18 @@ export function constructMessageReactionListItem(messagePeerReaction: Api.Messag
   } else {
     unreachable();
   }
-  const reaction = constructReaction(messagePeerReaction.reaction);
   const chat = constructChatP(chat_);
+  const date = messagePeerReaction.date;
+  const reaction = constructReaction(messagePeerReaction.reaction);
   const big = !!messagePeerReaction.big;
+  const isCreator = !!messagePeerReaction.my;
+  const unread = !!messagePeerReaction.unread;
   return {
-    reaction,
     chat,
+    date,
+    reaction,
     big,
+    isCreator,
+    unread,
   };
 }
