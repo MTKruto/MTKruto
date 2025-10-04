@@ -347,7 +347,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
         type: "text",
         text: result.send_message.message,
         entities: (result.send_message.entities ?? []).map(constructMessageEntity).filter((v) => v !== null) as MessageEntity[],
-        linkPreview: Api.is("botInlineMessageMediaWebPage", result.send_message) ? { type: "unknown", id: "", url: result.send_message.url, smallMedia: result.send_message.force_small_media ?? false, largeMedia: result.send_message.force_large_media ?? false, aboveText: result.send_message.invert_media ?? false } : undefined,
+        linkPreview: Api.is("botInlineMessageMediaWebPage", result.send_message) ? { type: "unknown", id: "", url: result.send_message.url, hasSmallMedia: result.send_message.force_small_media ?? false, hasLargeMedia: result.send_message.force_large_media ?? false, isAboveText: result.send_message.invert_media ?? false } : undefined,
       }),
       replyMarkup: result.send_message.reply_markup ? constructReplyMarkup(result.send_message.reply_markup) as ReplyMarkupInlineKeyboard : undefined,
     });

@@ -62,7 +62,7 @@ export function constructChatPhoto(photo: Api.userProfilePhoto | Api.chatPhoto, 
       bigFileId,
       bigFileUniqueId,
       hasVideo: photo.has_video || false,
-      personal: false,
+      isPersonal: false,
     });
   } else {
     return cleanObject({
@@ -71,7 +71,7 @@ export function constructChatPhoto(photo: Api.userProfilePhoto | Api.chatPhoto, 
       bigFileId,
       bigFileUniqueId,
       hasVideo: photo.has_video || false,
-      personal: photo.personal ? true : false,
+      isPersonal: photo.personal ? true : false,
     });
   }
 }

@@ -166,25 +166,25 @@ export function constructGiftNonUpgraded(gift: Api.starGift): Gift {
   };
   const sticker = constructSticker2(gift.sticker, serializeFileId(fileId), toUniqueFileId(fileId), undefined, "");
   const price = Number(gift.stars);
-  const limited = !!gift.limited;
-  const remaining = limited ? gift.availability_remains ?? 0 : undefined;
-  const total = limited ? gift.availability_total ?? 0 : undefined;
-  const soldOut = limited ? !!gift.sold_out : undefined;
-  const birthday = !!gift.birthday;
+  const isLimited = !!gift.limited;
+  const isRemaining = isLimited ? gift.availability_remains ?? 0 : undefined;
+  const total = isLimited ? gift.availability_total ?? 0 : undefined;
+  const isSoldOut = isLimited ? !!gift.sold_out : undefined;
+  const isBirthday = !!gift.birthday;
   const conversionPrice = Number(gift.convert_stars);
-  const firstSaleDate = limited ? gift.first_sale_date ? gift.first_sale_date : undefined : undefined;
-  const lastSaleDate = limited ? gift.last_sale_date ? gift.last_sale_date : undefined : undefined;
+  const firstSaleDate = isLimited ? gift.first_sale_date ? gift.first_sale_date : undefined : undefined;
+  const lastSaleDate = isLimited ? gift.last_sale_date ? gift.last_sale_date : undefined : undefined;
   const upgradePrice = gift.upgrade_stars ? Number(gift.upgrade_stars) : undefined;
   return cleanObject({
     type: "nonupgraded",
     id,
     sticker,
     price,
-    limited,
-    remaining,
+    isLimited,
+    isRemaining,
     total,
-    soldOut,
-    birthday,
+    isSoldOut,
+    isBirthday,
     conversionPrice,
     firstSaleDate,
     lastSaleDate,
