@@ -2694,7 +2694,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   /**
    * Get a list of reactions made to a message.
    *
-   * @param chatId The identifier of a message.
+   * @param chatId The identifier of a chat.
    * @param messageId The identifier of the message.
    */
   async getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList> {
