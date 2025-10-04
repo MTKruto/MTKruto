@@ -33,7 +33,7 @@ export interface SavedChat {
   /** The chat's last saved message. */
   lastMessage: Message;
   /** Whether the chat is pinned. */
-  pinned: boolean;
+  isPinned: boolean;
 }
 
 export async function constructSavedChat(dialog: SavedDialog, result: Api.messages_savedDialogs | Api.messages_savedDialogsSlice, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<SavedChat> {
@@ -52,6 +52,6 @@ export async function constructSavedChat(dialog: SavedDialog, result: Api.messag
   return {
     chat,
     lastMessage,
-    pinned,
+    isPinned: pinned,
   };
 }

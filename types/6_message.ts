@@ -59,7 +59,7 @@ const L = getLogger("Message");
  */
 export interface _MessageBase {
   /** Whether the message is outgoing (sent by the current user). */
-  out: boolean;
+  isOutgoing: boolean;
   /** The identifier of the message. */
   id: number;
   /** The identifier of the message's thread. */
@@ -781,7 +781,7 @@ async function getReply(message_: Api.message | Api.messageService, chat: ChatP,
 
 async function constructServiceMessage(message_: Api.messageService, chat: ChatP, getPeer: PeerGetter, getMessage: Message_MessageGetter, getReply_: boolean): Promise<Message> {
   const message: _MessageBase = {
-    out: message_.out ?? false,
+    isOutgoing: message_.out ?? false,
     id: message_.id,
     chat,
     date: message_.date,
@@ -947,7 +947,7 @@ export async function constructMessage(
   }
 
   const message: _MessageBase = {
-    out: message_.out ?? false,
+    isOutgoing: message_.out ?? false,
     id: message_.id,
     chat: chat_,
     link,

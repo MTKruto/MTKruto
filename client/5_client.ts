@@ -611,7 +611,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       return shouldQuote ? { messageId } : undefined;
     };
 
-    if (this.#lastGetMe === null && !("connectionState" in update) && (!("authorizationState" in update) || ("authorizationState" in update && update.authorizationState.authorized))) {
+    if (this.#lastGetMe === null && !("connectionState" in update) && (!("authorizationState" in update) || ("authorizationState" in update && update.authorizationState.isAuthorized))) {
       await this.#getMe();
     }
 
@@ -1082,7 +1082,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   #lastPropagatedAuthorizationState: boolean | null = null;
   async #propagateAuthorizationState(authorized: boolean) {
     if (this.#lastPropagatedAuthorizationState !== authorized) {
-      await this.#handleCtxUpdate({ authorizationState: { authorized } });
+      await this.#handleCtxUpdate({ authorizationState: { isAuthorized: authorized } });
       this.#lastPropagatedAuthorizationState = authorized;
     }
   }

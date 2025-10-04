@@ -31,7 +31,7 @@ export interface _VideoChatNotEndedCommon {
   /** The video chat's title. */
   title: string;
   /** Whether it is a live stream. */
-  liveStream: boolean;
+  isLiveStream: boolean;
   /** The number of current participants. */
   participantCount: number;
 }
@@ -86,7 +86,7 @@ export function constructVideoChat(call: Api.GroupCall): VideoChat {
         id,
         title,
         scheduledFor: call.schedule_date,
-        liveStream,
+        isLiveStream: liveStream,
         participantCount,
       };
     } else {
@@ -94,7 +94,7 @@ export function constructVideoChat(call: Api.GroupCall): VideoChat {
         type: "active",
         id,
         title,
-        liveStream,
+        isLiveStream: liveStream,
         recording: call.record_video_active ? true : false,
         participantCount,
       };
