@@ -20,7 +20,7 @@
 
 import type { MaybePromise } from "../1_utilities.ts";
 import type { DC } from "../3_transport.ts";
-import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
+import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, Reaction, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
 import type { MiniAppMode } from "../types/0_mini_app_mode.ts";
 import type { ReplyTo } from "../types/4_reply_to.ts";
 
@@ -750,4 +750,13 @@ export interface OpenMiniAppParams {
   fromMenu?: boolean;
   /** Information on a message to which relevant messages should be replied to. */
   replyTo?: ReplyTo;
+}
+
+export interface GetMessageReactionsParams {
+  /** A reaction. If specified, only reactions of this type will be returned. */
+  reaction?: Reaction;
+  /** A value returned from the field nextOffset of the results. If specified, the retrieval will start from there. */
+  offset?: string;
+  /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
+  limit?: number;
 }
