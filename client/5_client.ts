@@ -2692,7 +2692,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   }
 
   /**
-   * Get a list of reactions made to a message.
+   * Get a list of reactions made to a message. User-only.
    *
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the message.
