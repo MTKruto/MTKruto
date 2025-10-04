@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Api } from "../2_tl.ts";
+import type { Api } from "../2_tl.ts";
 import type { SavedDialog } from "../tl/1_telegram_api.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { type ChatP, constructChatP, type PeerGetter } from "./1_chat_p.ts";
@@ -43,7 +43,7 @@ export async function constructSavedChat(dialog: SavedDialog, result: Api.messag
   }
   const dialogId = peerToChatId(dialog.peer);
   const chat_ = (dialog.peer._ === "peerUser" ? result.users : result.chats).find((v) => peerToChatId(v) === dialogId);
-  if (chat_ === undefined || Api.isOneOf(["userEmpty", "chatEmpty"], chat_)) {
+  if (chat_ === undefined) {
     unreachable();
   }
   const chat = constructChatP(chat_);
