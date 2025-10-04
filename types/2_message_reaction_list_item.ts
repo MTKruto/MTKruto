@@ -20,9 +20,8 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { constructChatP } from "../3_types.ts";
 import { constructReaction, type Reaction } from "./0_reaction.ts";
-import type { ChatP } from "./1_chat_p.ts";
+import { type ChatP, constructChatP } from "./1_chat_p.ts";
 
 /** An item in a reaction list. */
 export interface MessageReactionListItem {
