@@ -24,8 +24,11 @@ import { constructMessageReactionListItem, type MessageReactionListItem } from "
 
 /** A list of reactions made to a message along with the users or chats that made them. */
 export interface MessageReactionList {
+  /** The reactions. */
   reactions: MessageReactionListItem[];
+  /** Key to fetch further reactions. */
   nextOffset?: string;
+  /** The total number of reactions. */
   count: number;
 }
 
