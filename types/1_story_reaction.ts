@@ -28,12 +28,12 @@ export interface StoryReaction {
   /** The number of those who made this reaction. */
   count: number;
   /** Whether the current user made this reaction. */
-  chosen: boolean;
+  isChosen: boolean;
 }
 
 export function constructStoryReaction(reaction_: Api.reactionCount): StoryReaction {
   const reaction = constructReaction(reaction_.reaction);
   const count = reaction_.count;
   const chosen = reaction_.chosen_order !== undefined ? true : false;
-  return { reaction, count, chosen };
+  return { reaction, count, isChosen: chosen };
 }

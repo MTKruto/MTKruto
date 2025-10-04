@@ -635,12 +635,12 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     }
     const [message, entities] = await parseText(result_.messageContent.text, { entities: result_.messageContent.entities, parseMode: result_.messageContent.parseMode });
     const noWebpage = result_.messageContent?.linkPreview && result_.messageContent?.linkPreview.type === "input" && result_.messageContent?.linkPreview.disable ? true : undefined;
-    const invertMedia = result_.messageContent?.linkPreview?.aboveText ? true : undefined;
+    const invertMedia = result_.messageContent?.linkPreview?.isAboveText ? true : undefined;
 
     let sendMessage: Api.InputBotInlineMessage;
 
     if (result_.messageContent.linkPreview?.url) {
-      sendMessage = { _: "inputBotInlineMessageMediaWebPage", url: result_.messageContent.linkPreview.url, force_large_media: result_.messageContent.linkPreview.largeMedia ? true : undefined, force_small_media: result_.messageContent.linkPreview.smallMedia ? true : undefined, optional: message.length ? undefined : true, message, entities, invert_media: invertMedia, reply_markup: replyMarkup };
+      sendMessage = { _: "inputBotInlineMessageMediaWebPage", url: result_.messageContent.linkPreview.url, force_large_media: result_.messageContent.linkPreview.hasLargeMedia ? true : undefined, force_small_media: result_.messageContent.linkPreview.hasSmallMedia ? true : undefined, optional: message.length ? undefined : true, message, entities, invert_media: invertMedia, reply_markup: replyMarkup };
     } else {
       sendMessage = { _: "inputBotInlineMessageText", message, entities, no_webpage: noWebpage, invert_media: invertMedia, reply_markup: replyMarkup };
     }

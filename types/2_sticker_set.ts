@@ -39,15 +39,15 @@ export interface StickerSet {
   /** Thumbnails if available. */
   thumbnails: Thumbnail[];
   /** Whether the emojis in the set are adaptive. */
-  adaptive: boolean;
+  isAdaptive: boolean;
   /** Whether the emojis in the set can be set as channel status. */
   canSetAsChannelStatus: boolean;
   /** Whether the current account is the creator of the set. */
-  creator: boolean;
+  isCreator: boolean;
   /** Whether the set is official. */
-  official: boolean;
+  isOfficial: boolean;
   /** Whether the set is archived. */
-  archived: boolean;
+  isArchived: boolean;
   /** A point in time in which the set was added to the current account. */
   addedAt?: number;
 }
@@ -112,11 +112,11 @@ export function constructStickerSet(stickerSet: Api.messages_StickerSet): Sticke
     title,
     stickers,
     thumbnails,
-    adaptive,
+    isAdaptive: adaptive,
     canSetAsChannelStatus,
-    creator,
-    official,
-    archived,
+    isCreator: creator,
+    isOfficial: official,
+    isArchived: archived,
   };
   if (stickerSet.set.installed_date) {
     stickerSet_.addedAt = stickerSet.set.installed_date;

@@ -54,8 +54,8 @@ export interface StoryInteractiveAreaVenue extends _StoryInteractiveAreaPosition
 export interface StoryInteractiveAreaReaction extends _StoryInteractiveAreaPositionCommon {
   reaction: Reaction;
   count?: number;
-  dark?: boolean;
-  flipped?: boolean;
+  isDark?: boolean;
+  isFlipped?: boolean;
 }
 
 /** @unlisted */
@@ -96,8 +96,8 @@ export function constructStoryInteractiveArea(area: Api.MediaArea): StoryInterac
       position,
       reaction,
       count: 0, // TODO: count
-      flipped: area.flipped ? true : false,
-      dark: area.dark ? true : false,
+      isFlipped: area.flipped ? true : false,
+      isDark: area.dark ? true : false,
     };
   } else if (Api.is("mediaAreaChannelPost", area)) {
     return {
@@ -134,7 +134,7 @@ export function storyInteractiveAreaToTlObject(area: StoryInteractiveArea, getPe
     };
   } else if ("reaction" in area) {
     const reaction = reactionToTlObject(area.reaction);
-    return { _: "mediaAreaSuggestedReaction", coordinates, reaction, dark: area.dark ? true : undefined, flipped: area.flipped ? true : undefined };
+    return { _: "mediaAreaSuggestedReaction", coordinates, reaction, dark: area.isDark ? true : undefined, flipped: area.isFlipped ? true : undefined };
   } else if ("messageReference" in area) {
     const entity = getPeer(Api.chatIdToPeer(area.messageReference.chatId));
     if (!(Api.is("channel", entity))) {

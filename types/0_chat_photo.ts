@@ -35,7 +35,7 @@ export interface ChatPhoto {
   /** Whether the chat photo is animated. */
   hasVideo: boolean;
   /** Differentiates between user profile photos. */
-  personal: boolean;
+  isPersonal: boolean;
 }
 
 export function constructChatPhoto(photo: Api.userProfilePhoto | Api.chatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto {

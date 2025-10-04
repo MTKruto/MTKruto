@@ -43,7 +43,7 @@ export interface GiftNonUpgraded {
   /** The price of the sticker in Telegram Stars. */
   price: number;
   /** Whether the supply of this gift is limited. */
-  limited: boolean;
+  isLimited: boolean;
   /** The remaining supply of the gift if limited. */
   remaining?: number;
   /** The total supply of the gift if limited. */
@@ -51,7 +51,7 @@ export interface GiftNonUpgraded {
   /** Whether the gift is sold out if limited. */
   soldOut?: boolean;
   /** Whether the gift is dedicated to birthdays. */
-  birthday: boolean;
+  isBirthday: boolean;
   /** The amount of Telegram Stars that the gift can be swapped with. */
   conversionPrice: number;
   /** The date of the first sale of the gift if sold out. */
@@ -95,7 +95,7 @@ export interface GiftUpgraded {
   /** The amount of TON that can be used to buy the gift.  */
   priceTon?: number;
   /** Whether the gift can be bought only using TON. */
-  tonOnly?: boolean;
+  isTonOnly?: boolean;
   /** The value of the gift. */
   value?: GiftValue;
 }

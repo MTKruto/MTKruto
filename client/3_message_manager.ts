@@ -309,7 +309,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
     const noWebpage = params?.linkPreview?.disable ? true : undefined;
-    const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
+    const invertMedia = params?.linkPreview?.isAboveText ? true : undefined;
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
     const sendAs = await this.#resolveSendAs(params);
@@ -326,8 +326,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         media: ({
           _: "inputMediaWebPage",
           url: params.linkPreview.url,
-          force_large_media: params.linkPreview.largeMedia ? true : undefined,
-          force_small_media: params.linkPreview.smallMedia ? true : undefined,
+          force_large_media: params.linkPreview.hasLargeMedia ? true : undefined,
+          force_small_media: params.linkPreview.hasSmallMedia ? true : undefined,
           optional: message.length ? undefined : true,
         }),
         message,
@@ -848,11 +848,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       throw new InputError("Expected link preview of type input.");
     }
     const noWebpage = params?.linkPreview && params.linkPreview.type === "input" && params.linkPreview.disable ? true : undefined;
-    const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
+    const invertMedia = params?.linkPreview?.isAboveText ? true : undefined;
 
     let media: Api.InputMedia | undefined = undefined;
     if (!noWebpage && params?.linkPreview?.url) {
-      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.largeMedia ? true : undefined, force_small_media: params.linkPreview.smallMedia ? true : undefined, optional: message.length ? undefined : true };
+      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.hasLargeMedia ? true : undefined, force_small_media: params.linkPreview.hasSmallMedia ? true : undefined, optional: message.length ? undefined : true };
     }
 
     const result = await this.#c.invoke({
@@ -913,11 +913,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       throw new InputError("Expected link preview of type input.");
     }
     const noWebpage = params?.linkPreview && params.linkPreview.type === "input" && params.linkPreview.disable ? true : undefined;
-    const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
+    const invertMedia = params?.linkPreview?.isAboveText ? true : undefined;
 
     let media: Api.InputMedia | undefined = undefined;
     if (!noWebpage && params?.linkPreview?.url) {
-      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.largeMedia ? true : undefined, force_small_media: params.linkPreview.smallMedia ? true : undefined, optional: message.length ? undefined : true };
+      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.hasLargeMedia ? true : undefined, force_small_media: params.linkPreview.hasSmallMedia ? true : undefined, optional: message.length ? undefined : true };
     }
 
     await this.#c.invoke({
@@ -1233,7 +1233,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     } else if (Api.is("updateDeleteScheduledMessages", update)) {
       const chatId = Api.peerToChatId(update.peer);
       const deletedMessages = update.messages.map((v) => ({ chatId, messageId: v }));
-      return { deletedMessages, scheduled: true };
+      return { deletedMessages, isScheduled: true };
     } else if (Api.is("updateBotDeleteBusinessMessage", update)) {
       const chatId = Api.peerToChatId(update.peer);
       const deletedMessages = update.messages.map((v) => ({ chatId, messageId: v }));

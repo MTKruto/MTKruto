@@ -34,7 +34,7 @@ export interface InviteLink {
   requiresApproval: boolean;
   // TODO: primary?
   /** Whether the invite link is revoked. */
-  revoked: boolean;
+  isRevoked: boolean;
   /** An optional title. */
   title?: string;
   /** A point in time within the future in which the invite link will be revoked. */

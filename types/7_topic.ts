@@ -27,9 +27,9 @@ export interface Topic {
   id: number;
   date: number;
   creator: ChatP;
-  general: boolean;
-  closed: boolean;
-  hidden: boolean;
+  isGeneral: boolean;
+  isClosed: boolean;
+  isHidden: boolean;
   name: string;
   color: number;
   customEmojiId?: string;

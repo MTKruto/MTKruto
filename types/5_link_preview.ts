@@ -40,11 +40,11 @@ export interface InputLinkPreview {
   /** The URL of the preview. */
   url?: string;
   /** Wether the media is to be shown in a small size. */
-  smallMedia?: boolean;
+  hasSmallMedia?: boolean;
   /** Whether the media is to be shown in a large size. */
-  largeMedia?: boolean;
+  hasLargeMedia?: boolean;
   /** Whether the preview is to be shown above the message's text. */
-  aboveText?: boolean;
+  isAboveText?: boolean;
 }
 
 /**
@@ -55,11 +55,11 @@ export interface _LinkPreviewBase {
   /** The ID of the link preview. */
   id: string;
   /** Wether the media is to be shown in a small size. */
-  smallMedia: boolean;
+  hasSmallMedia: boolean;
   /** Whether the media is to be shown in a large size. */
-  largeMedia: boolean;
+  hasLargeMedia: boolean;
   /** Whether the preview is to be shown above the message's text. */
-  aboveText: boolean;
+  isAboveText: boolean;
 }
 
 /**
@@ -255,9 +255,9 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
     type: "unknown",
     id,
     url,
-    smallMedia,
-    largeMedia,
-    aboveText,
+    hasSmallMedia: smallMedia,
+    hasLargeMedia: largeMedia,
+    isAboveText: aboveText,
   };
 
   switch (media.webpage.type) {
@@ -267,9 +267,9 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "embeddedVideo",
           id,
           url,
-          smallMedia,
-          largeMedia,
-          aboveText,
+          hasSmallMedia: smallMedia,
+          hasLargeMedia: largeMedia,
+          isAboveText: aboveText,
           embedUrl: media.webpage.embed_url ?? "",
           width: media.webpage.embed_width ?? 0,
           height: media.webpage.embed_height ?? 0,
@@ -292,9 +292,9 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "video",
           id,
           url,
-          smallMedia,
-          largeMedia,
-          aboveText,
+          hasSmallMedia: smallMedia,
+          hasLargeMedia: largeMedia,
+          isAboveText: aboveText,
           video: constructDocument(document, fileName ?? { _: "documentAttributeFilename", file_name: "Unknown" }, serializeFileId(fileId), toUniqueFileId(fileId)),
           startTimestamp,
           thumbnail: media.webpage.video_cover_photo ? media.webpage.photo ? constructPhoto(Api.as("photo", media.webpage.photo)) : undefined : undefined,
@@ -305,9 +305,9 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "externalVideo",
           id,
           url,
-          smallMedia,
-          largeMedia,
-          aboveText,
+          hasSmallMedia: smallMedia,
+          hasLargeMedia: largeMedia,
+          isAboveText: aboveText,
           embedUrl: media.webpage.embed_url ?? "",
           mimeType: media.webpage.embed_type ?? "",
           width: media.webpage.embed_width ?? 0,
@@ -320,9 +320,9 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "photo",
           id,
           url,
-          smallMedia,
-          largeMedia,
-          aboveText,
+          hasSmallMedia: smallMedia,
+          hasLargeMedia: largeMedia,
+          isAboveText: aboveText,
           photo: constructPhoto(Api.as("photo", media.webpage.photo)),
         };
         break;
@@ -334,9 +334,9 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "embeddedAudio",
           id,
           url,
-          smallMedia,
-          largeMedia,
-          aboveText,
+          hasSmallMedia: smallMedia,
+          hasLargeMedia: largeMedia,
+          isAboveText: aboveText,
           embedUrl: media.webpage.embed_url ?? "",
           width: media.webpage.embed_width ?? 0,
           height: media.webpage.embed_height ?? 0,
@@ -356,9 +356,9 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "audio",
           id,
           url,
-          smallMedia,
-          largeMedia,
-          aboveText,
+          hasSmallMedia: smallMedia,
+          hasLargeMedia: largeMedia,
+          isAboveText: aboveText,
           audio: constructAudio(document, audio, serializeFileId(fileId), toUniqueFileId(fileId)),
         };
         break;
@@ -367,9 +367,9 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "externalAudio",
           id,
           url,
-          smallMedia,
-          largeMedia,
-          aboveText,
+          hasSmallMedia: smallMedia,
+          hasLargeMedia: largeMedia,
+          isAboveText: aboveText,
           embedUrl: media.webpage.embed_url,
           mimeType: media.webpage.embed_type ?? "",
           width: media.webpage.embed_width ?? 0,
@@ -382,9 +382,9 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "photo",
           id,
           url,
-          smallMedia,
-          largeMedia,
-          aboveText,
+          hasSmallMedia: smallMedia,
+          hasLargeMedia: largeMedia,
+          isAboveText: aboveText,
           photo: constructPhoto(Api.as("photo", media.webpage.photo)),
         };
         break;
@@ -397,9 +397,9 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "gift",
           id,
           url,
-          smallMedia,
-          largeMedia,
-          aboveText,
+          hasSmallMedia: smallMedia,
+          hasLargeMedia: largeMedia,
+          isAboveText: aboveText,
           gift: constructGift(gift, getPeer),
         };
         break;
