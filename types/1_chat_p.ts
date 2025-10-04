@@ -131,8 +131,8 @@ export type ChatP = ChatPPrivate | ChatPGroup | ChatPSupergroup | ChatPChannel;
 export function constructChatP(chat: Api.user): ChatPPrivate;
 export function constructChatP(chat: Api.chat | Api.chatForbidden): ChatPGroup;
 export function constructChatP(chat: Api.channel | Api.channelForbidden): ChatPSupergroup | ChatPChannel;
-export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden): ChatP;
-export function constructChatP(chat: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden): ChatP {
+export function constructChatP(chat: Api.User | Api.Chat): ChatP;
+export function constructChatP(chat: Api.User | Api.Chat): ChatP {
   if (Api.is("user", chat)) {
     const id = Number(chat.id);
     const usernames = chat.usernames?.map((v) => v.username);
