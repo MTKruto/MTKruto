@@ -1163,6 +1163,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async signIn(params?: SignInParams) {
     try {
       await this.#updateManager.fetchState("signIn");
+      await this.#getMe();
       await this.#propagateAuthorizationState(true);
       drop(this.#updateManager.recoverUpdateGap("signIn"));
       this.#LsignIn.debug("already signed in");
@@ -1637,8 +1638,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
         resolvedId = id;
       } else {
         const resolved = await this.invoke({ _: "contacts.resolveUsername", username: id });
-        await this.#updateManager.processChats(resolved.chats, resolved);
-        await this.#updateManager.processUsers(resolved.users, resolved);
+        this.#updateManager.processChats(resolved.chats, resolved);
+        this.#updateManager.processUsers(resolved.users, resolved);
         if (Api.is("peerUser", resolved.peer)) {
           resolvedId = Api.peerToChatId(resolved.peer);
         } else if (Api.is("peerChannel", resolved.peer)) {
@@ -1650,7 +1651,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
       const resolvedIdType = Api.getChatIdPeerType(resolvedId);
       if (resolvedIdType === "user") {
         const accessHash = await this.messageStorage.getUserAccessHash(resolvedId);
-
         peer = { _: "inputPeerUser", user_id: Api.chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n } as Api.inputPeerUser;
       } else if (resolvedIdType === "channel") {
         const accessHash = await this.messageStorage.getChannelAccessHash(resolvedId);
@@ -1707,10 +1707,12 @@ export class Client<C extends Context = Context> extends Composer<C> {
   private async [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
     const id = Api.peerToChatId(peer);
     const entity = await this.messageStorage.peers.get([id]);
-    if (entity === null && this.storage.isBot && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
-      await this.getInputPeer(id);
-    } else {
-      return entity;
+    if (entity === null) {
+      if (entity === null && this.storage.isBot && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
+        await this.getInputPeer(id);
+      } else {
+        return entity;
+      }
     }
     return await this.messageStorage.peers.get([id]);
   }
