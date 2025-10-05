@@ -224,7 +224,13 @@ export class UpdateManager {
   }
 
   async processResult(result: Api.DeserializedType) {
-    if (result !== null && typeof result === "object") {
+    if (Array.isArray(result)) { // users.getUsers, bots.getAdminedBots
+      if (Api.isOfEnum("User", result[0])) {
+        for (const user of result) {
+          this.processUser(user as Api.User);
+        }
+      }
+    } else if (result !== null && typeof result === "object") {
       if ("chats" in result) {
         let valid = true;
         for (const chat of result.chats) {
@@ -276,7 +282,7 @@ export class UpdateManager {
   }
 
   processUser(user: Api.User) {
-    if (Api.is("userEmpty", user)) {
+    if (!Api.is("user", user)) {
       return;
     }
     if (user.min) {
