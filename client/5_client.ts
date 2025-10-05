@@ -192,6 +192,8 @@ export interface Context {
   kickChatMember: (memberId: ID) => Promise<void>;
   /** Context-aware alias for `client.setChatMemberRights()`. */
   setChatMemberRights: (memberId: ID, params?: SetChatMemberRightsParams) => Promise<void>;
+  /** Context-aware alias for `client.setChatMemberRights()`. */
+  promoteChatMember: (userId: ID, params?: PromoteChatMemberParams) => Promise<void>;
   /** Context-aware alias for `client.deleteChatMemberMessages()`. */
   deleteChatMemberMessages: (userId: ID) => Promise<void>;
   /** Context-aware alias for `client.searchMessages()`. */
@@ -898,6 +900,10 @@ export class Client<C extends Context = Context> extends Composer<C> {
       setChatMemberRights(memberId, params) {
         const { chatId } = mustGetMsg(this);
         return this.client.setChatMemberRights(chatId, memberId, params);
+      },
+      promoteChatMember(userId, params) {
+        const { chatId } = mustGetMsg(this);
+        return this.client.promoteChatMember(chatId, userId, params);
       },
       deleteChatMemberMessages(userId) {
         const { chatId } = mustGetMsg(this);
