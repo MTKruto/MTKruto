@@ -478,7 +478,7 @@ export class StorageOperations {
 
   assertUser(source: string) {
     if (this.auth.mustGet().isBot) {
-      throw new InputError(`${source}: not user a client`);
+      throw new InputError(`${source}: not a user client`);
     }
   }
 
