@@ -192,7 +192,7 @@ export interface Context {
   kickChatMember: (memberId: ID) => Promise<void>;
   /** Context-aware alias for `client.setChatMemberRights()`. */
   setChatMemberRights: (memberId: ID, params?: SetChatMemberRightsParams) => Promise<void>;
-  /** Context-aware alias for `client.setChatMemberRights()`. */
+  /** Context-aware alias for `client.promoteChatMember()`. */
   promoteChatMember: (userId: ID, params?: PromoteChatMemberParams) => Promise<void>;
   /** Context-aware alias for `client.deleteChatMemberMessages()`. */
   deleteChatMemberMessages: (userId: ID) => Promise<void>;
