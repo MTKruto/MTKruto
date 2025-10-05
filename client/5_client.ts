@@ -2698,6 +2698,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the message.
+   * @method ms
    */
   async getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList> {
     return await this.#messageManager.getMessageReactions(chatId, messageId, params);
