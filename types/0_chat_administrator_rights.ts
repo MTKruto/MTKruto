@@ -88,24 +88,24 @@ export function constructChatAdministratorRights(rights_: Api.ChatAdminRights): 
   return rights;
 }
 
-export function chatAdministratorRightsToTlObject(rights: ChatAdministratorRights): Api.chatAdminRights {
+export function chatAdministratorRightsToTlObject(rights: ChatAdministratorRights | undefined): Api.chatAdminRights {
   return {
     _: "chatAdminRights",
-    anonymous: rights.isAnonymous || undefined,
-    other: rights.canManageChat || undefined,
-    delete_messages: rights.canDeleteMessages || undefined,
-    manage_call: rights.canManageVideoChats || undefined,
-    ban_users: rights.canRestrictMembers || undefined,
-    add_admins: rights.canPromoteMembers || undefined,
-    change_info: rights.canChangeInfo || undefined,
-    invite_users: rights.canInviteUsers || undefined,
-    post_messages: rights.canPostMessages || undefined,
-    edit_messages: rights.canEditMessages || undefined,
-    pin_messages: rights.canPinMessages || undefined,
-    manage_topics: rights.canManageTopics || undefined,
-    post_stories: rights.canPostStories || undefined,
-    edit_stories: rights.canEditStories || undefined,
-    delete_stories: rights.canDeleteStories || undefined,
-    manage_direct_messages: rights.canManageDirectMessages || undefined,
+    anonymous: rights?.isAnonymous || undefined,
+    other: rights?.canManageChat || undefined,
+    delete_messages: rights?.canDeleteMessages || undefined,
+    manage_call: rights?.canManageVideoChats || undefined,
+    ban_users: rights?.canRestrictMembers || undefined,
+    add_admins: rights?.canPromoteMembers || undefined,
+    change_info: rights?.canChangeInfo || undefined,
+    invite_users: rights?.canInviteUsers || undefined,
+    post_messages: rights?.canPostMessages || undefined,
+    edit_messages: rights?.canEditMessages || undefined,
+    pin_messages: rights?.canPinMessages || undefined,
+    manage_topics: rights?.canManageTopics || undefined,
+    post_stories: rights?.canPostStories || undefined,
+    edit_stories: rights?.canEditStories || undefined,
+    delete_stories: rights?.canDeleteStories || undefined,
+    manage_direct_messages: rights?.canManageDirectMessages || undefined,
   };
 }

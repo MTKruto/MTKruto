@@ -20,7 +20,7 @@
 
 import type { MaybePromise } from "../1_utilities.ts";
 import type { DC } from "../3_transport.ts";
-import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, Reaction, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
+import type { Birthday, BotCommandScope, ChatAdministratorRights, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, Reaction, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
 import type { MiniAppMode } from "../types/0_mini_app_mode.ts";
 import type { ReplyTo } from "../types/4_reply_to.ts";
 
@@ -759,4 +759,11 @@ export interface GetMessageReactionsParams {
   offset?: string;
   /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
   limit?: number;
+}
+
+export interface PromoteChatMemberParams {
+  /** The new administrator rights. If left unset, the user will be demoted. */
+  rights?: ChatAdministratorRights;
+  /** The custom title of the administrator. */
+  title?: string;
 }
