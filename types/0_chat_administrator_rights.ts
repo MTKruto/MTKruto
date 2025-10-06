@@ -74,10 +74,10 @@ export function constructChatAdministratorRights(rights_: Api.ChatAdminRights): 
     canEditStories: rights_.edit_stories || false,
     canDeleteStories: rights_.delete_stories || false,
     canManageDirectMessages: rights_.manage_direct_messages || false,
-  }; 
+  };
 }
 
-export function chatAdministratorRightsToTlObject(rights: ChatAdministratorRights): Api.chatAdminRights {
+export function chatAdministratorRightsToTlObject<T extends Partial<ChatAdministratorRights>>(rights: T): Required<T> extends ChatAdministratorRights ? Api.chatAdminRights : unknown {
   return {
     _: "chatAdminRights",
     anonymous: rights.isAnonymous || undefined,
@@ -96,5 +96,5 @@ export function chatAdministratorRightsToTlObject(rights: ChatAdministratorRight
     edit_stories: rights.canEditStories || undefined,
     delete_stories: rights.canDeleteStories || undefined,
     manage_direct_messages: rights.canManageDirectMessages || undefined,
-  };
+  } as Required<T> extends ChatAdministratorRights ? Api.chatAdminRights : never;
 }

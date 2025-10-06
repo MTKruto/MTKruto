@@ -444,7 +444,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   async promoteChatMember(chatId: ID, userId: ID, params?: PromoteChatMemberParams) {
     const channel = await this.#c.getInputChannel(chatId);
     const user_id = await this.#c.getInputUser(userId);
-    const admin_rights = chatAdministratorRightsToTlObject(params?.rights);
+    const admin_rights = chatAdministratorRightsToTlObject(params ?? {});
     const rank = params?.title ?? "";
     await this.#c.invoke({
       _: "channels.editAdmin",
