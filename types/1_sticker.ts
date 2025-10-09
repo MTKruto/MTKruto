@@ -61,8 +61,8 @@ export interface Sticker {
 export type StickerSetNameGetter = (inputStickerSet: Api.inputStickerSetID) => MaybePromise<string | undefined>;
 
 export async function constructSticker(document: Api.document, fileId: string, fileUniqueId: string, getStickerSetName: StickerSetNameGetter, customEmojiId = ""): Promise<Sticker> {
-  const stickerAttribute = document.attributes.find((v): v is Api.documentAttributeSticker => Api.is("documentAttributeSticker", v))!;
-  const setName = Api.is("inputStickerSetID", stickerAttribute.stickerset) ? await getStickerSetName(stickerAttribute.stickerset) : undefined;
+  const stickerAttribute = document.attributes.find((v): v is Api.documentAttributeSticker => Api.is("documentAttributeSticker", v));
+  const setName = Api.is("inputStickerSetID", stickerAttribute?.stickerset) ? await getStickerSetName(stickerAttribute.stickerset) : undefined;
 
   return constructSticker2(document, fileId, fileUniqueId, setName, customEmojiId);
 }
