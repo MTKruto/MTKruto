@@ -20,7 +20,7 @@
 
 import type { MaybePromise } from "../1_utilities.ts";
 import type { DC } from "../3_transport.ts";
-import type { Birthday, BotCommandScope, ChatAdministratorRights, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, Reaction, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
+import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, LinkPreview, MessageEntity, MessageSearchFilter, ParseMode, Reaction, ReplyMarkup, SelfDestructOption, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
 import type { MiniAppMode } from "../types/0_mini_app_mode.ts";
 import type { ReplyTo } from "../types/4_reply_to.ts";
 
