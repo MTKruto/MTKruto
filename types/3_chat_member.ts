@@ -145,6 +145,10 @@ export function constructChatMember(participant: Api.ChannelParticipant | Api.Ch
         canEditMessages: false,
         canPinMessages: true,
         canManageTopics: false,
+        canDeleteStories: false,
+        canEditStories: false,
+        canManageDirectMessages: false,
+        canPostStories: false,
       },
     });
   } else if (Api.is("chatParticipantCreator", participant)) {
