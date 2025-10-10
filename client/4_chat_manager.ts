@@ -21,10 +21,10 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { type ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
+import { chatAdministratorRightsToTlObject, type ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, type FileSource, type ID, type Reaction, reactionToTlObject, type Update } from "../3_types.ts";
 import { inputPeerToPeer } from "../tl/2_telegram.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, SetChatMemberRightsParams, SetChatPhotoParams, SetSignaturesEnabledParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, PromoteChatMemberParams, SetChatMemberRightsParams, SetChatPhotoParams, SetSignaturesEnabledParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -439,5 +439,19 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     const ap = await this.#c.invoke({ _: "account.getPassword" });
     const password_ = await checkPassword(password, ap);
     await this.#c.invoke({ _: "channels.editCreator", channel, user_id, password: password_ });
+  }
+
+  async promoteChatMember(chatId: ID, userId: ID, params?: PromoteChatMemberParams) {
+    const channel = await this.#c.getInputChannel(chatId);
+    const user_id = await this.#c.getInputUser(userId);
+    const admin_rights = chatAdministratorRightsToTlObject(params ?? {});
+    const rank = params?.title ?? "";
+    await this.#c.invoke({
+      _: "channels.editAdmin",
+      channel,
+      user_id,
+      admin_rights,
+      rank,
+    });
   }
 }
