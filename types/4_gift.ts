@@ -22,9 +22,8 @@ import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { type FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
-import type { PeerGetter } from "./1_chat_p.ts";
+import type { ChatP, PeerGetter } from "./1_chat_p.ts";
 import { constructSticker2, type Sticker } from "./1_sticker.ts";
-import { constructUser, type User } from "./2_user.ts";
 import { constructGiftUpgradedComponent, type GiftUpgradedComponent } from "./3_gift_upgraded_component.ts";
 import type { GiftValue } from "./0_gift_value.ts";
 
@@ -80,8 +79,8 @@ export interface GiftUpgraded {
   ownerName?: string;
   /** The address of the TON wallet that owns the gift. */
   ownerAddress?: string;
-  /** The user that owns the gift. */
-  owner?: User;
+  /** The user or chat that owns the gift. */
+  owner?: ChatP;
   /** The count of the amount of upgraded gifts of the same type. */
   currentUpgrades: number;
   /** The maximum count of gifts of the same type that can be upgraded. */
@@ -114,11 +113,11 @@ export function constructGiftUpgraded(gift: Api.starGiftUnique, getPeer: PeerGet
   const id = String(gift.id);
   const title = gift.title;
   const index = gift.num;
-  let owner: User | undefined;
+  let owner: ChatP | undefined;
   if (gift.owner_id) {
-    const entity = getPeer(gift.owner_id);
-    if (Api.is("user", entity)) {
-      owner = constructUser(entity);
+    const peer = getPeer(gift.owner_id);
+    if (peer) {
+      owner = peer[0];
     }
   }
 

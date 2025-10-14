@@ -23,7 +23,7 @@ import { base64EncodeUrlSafe, cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { constructLocation, type Location } from "./0_location.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
-import { constructUser, type User } from "./2_user.ts";
+import { constructUser2, type User } from "./2_user.ts";
 
 /** A chosen inline result. */
 export interface ChosenInlineResult {
@@ -40,13 +40,13 @@ export interface ChosenInlineResult {
 }
 
 export function constructChosenInlineResult(ubis: Api.updateBotInlineSend, getPeer: PeerGetter): ChosenInlineResult {
-  const entity = getPeer({ ...ubis, _: "peerUser" });
-  if (!entity || !(Api.is("user", entity))) {
+  const peer = getPeer({ ...ubis, _: "peerUser" });
+  if (!peer || peer[0].type !== "private") {
     unreachable();
   }
   return cleanObject({
     resultId: ubis.id,
-    from: constructUser(entity),
+    from: constructUser2(peer[0]),
     location: Api.is("geoPoint", ubis.geo) ? constructLocation(ubis.geo) : undefined,
     inlineMessageId: ubis.msg_id === undefined ? undefined : base64EncodeUrlSafe(Api.serializeObject(ubis.msg_id)),
     query: ubis.query,
