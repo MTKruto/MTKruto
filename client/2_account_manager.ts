@@ -173,20 +173,20 @@ export class AccountManager {
     this.#c.storage.assertUser("updateProfile");
     const selfId = await this.#c.getSelfId();
     const userFull = await this.#getUserFull(selfId);
-    const entity = await this.#c.getPeer(Api.chatIdToPeer(selfId));
-    if (!Api.is("user", entity)) {
+    const entity = this.#c.getPeer(Api.chatIdToPeer(selfId));
+    if (!entity || entity[0].type !== "private") {
       unreachable();
     }
     params ??= {};
     if (params?.firstName) {
       params.firstName = params.firstName.trim();
     } else {
-      params.firstName = entity.first_name;
+      params.firstName = entity[0].firstName;
     }
     if (params?.lastName) {
       params.lastName = params.lastName.trim();
     } else {
-      params.lastName = entity.last_name;
+      params.lastName = entity[0].lastName;
     }
     if (params?.bio) {
       params.bio = params.bio.trim();
