@@ -20,8 +20,8 @@
 
 import { assertEquals, assertInstanceOf, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { parseAttributes, parseHtml } from "./0_html.ts";
 import type { MessageEntity } from "../3_types.ts";
+import { parseAttributes, parseHtml } from "./0_html.ts";
 
 function e(fn: () => void, message: string) {
   try {

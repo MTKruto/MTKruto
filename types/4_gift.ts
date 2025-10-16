@@ -22,10 +22,10 @@ import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { type FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
+import type { GiftValue } from "./0_gift_value.ts";
 import type { ChatP, PeerGetter } from "./1_chat_p.ts";
 import { constructSticker2, type Sticker } from "./1_sticker.ts";
 import { constructGiftUpgradedComponent, type GiftUpgradedComponent } from "./3_gift_upgraded_component.ts";
-import type { GiftValue } from "./0_gift_value.ts";
 
 /**
  * An non-upgraded gift.

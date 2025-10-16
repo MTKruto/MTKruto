@@ -475,6 +475,7 @@ export interface user {
   contact_require_premium?: true;
   bot_business?: true;
   bot_has_main_app?: true;
+  bot_forum_view?: true;
   id: bigint;
   access_hash?: bigint;
   first_name?: string;
@@ -1189,6 +1190,7 @@ export interface messageActionGiftPremium {
 
 export interface messageActionTopicCreate {
   _: "messageActionTopicCreate";
+  title_missing?: true;
   title: string;
   icon_color: number;
   icon_emoji_id?: bigint;
@@ -1314,6 +1316,7 @@ export interface messageActionStarGiftUnique {
   saved?: true;
   refunded?: true;
   prepaid_upgrade?: true;
+  assigned?: true;
   gift: StarGift;
   can_export_at?: number;
   transfer_stars?: bigint;
@@ -1323,6 +1326,7 @@ export interface messageActionStarGiftUnique {
   resale_amount?: StarsAmount;
   can_transfer_at?: number;
   can_resell_at?: number;
+  drop_original_details_stars?: bigint;
 }
 
 export interface messageActionPaidMessagesRefunded {
@@ -1384,6 +1388,11 @@ export interface messageActionGiftTon {
   crypto_currency: string;
   crypto_amount: bigint;
   transaction_id?: string;
+}
+
+export interface messageActionSuggestBirthday {
+  _: "messageActionSuggestBirthday";
+  birthday: Birthday;
 }
 
 export interface dialog {
@@ -1506,6 +1515,8 @@ export interface auth_sentCodePaymentRequired {
   phone_code_hash: string;
   support_email_address: string;
   support_email_subject: string;
+  currency: string;
+  amount: bigint;
 }
 
 export interface auth_authorization {
@@ -1718,6 +1729,7 @@ export interface userFull {
   stars_my_pending_rating_date?: number;
   main_tab?: ProfileTab;
   saved_music?: Document;
+  note?: TextWithEntities;
 }
 
 export interface contact {
@@ -1797,6 +1809,7 @@ export interface messages_dialogsNotModified {
 export interface messages_messages {
   _: "messages.messages";
   messages: Array<Message>;
+  topics: Array<ForumTopic>;
   chats: Array<Chat>;
   users: Array<User>;
 }
@@ -1809,6 +1822,7 @@ export interface messages_messagesSlice {
   offset_id_offset?: number;
   search_flood?: SearchPostsFlood;
   messages: Array<Message>;
+  topics: Array<ForumTopic>;
   chats: Array<Chat>;
   users: Array<User>;
 }
@@ -1947,6 +1961,7 @@ export interface updateDeleteMessages {
 export interface updateUserTyping {
   _: "updateUserTyping";
   user_id: bigint;
+  top_msg_id?: number;
   action: SendMessageAction;
 }
 
@@ -2063,6 +2078,7 @@ export interface updateReadHistoryInbox {
   _: "updateReadHistoryInbox";
   folder_id?: number;
   peer: Peer;
+  top_msg_id?: number;
   max_id: number;
   still_unread_count: number;
   pts: number;
@@ -2644,19 +2660,6 @@ export interface updateMessageExtendedMedia {
   extended_media: Array<MessageExtendedMedia>;
 }
 
-export interface updateChannelPinnedTopic {
-  _: "updateChannelPinnedTopic";
-  pinned?: true;
-  channel_id: bigint;
-  topic_id: number;
-}
-
-export interface updateChannelPinnedTopics {
-  _: "updateChannelPinnedTopics";
-  channel_id: bigint;
-  order?: Array<number>;
-}
-
 export interface updateUser {
   _: "updateUser";
   user_id: bigint;
@@ -2885,6 +2888,34 @@ export interface updateMonoForumNoPaidException {
   exception?: true;
   channel_id: bigint;
   saved_peer_id: Peer;
+}
+
+export interface updateGroupCallMessage {
+  _: "updateGroupCallMessage";
+  call: InputGroupCall;
+  from_id: Peer;
+  random_id: bigint;
+  message: TextWithEntities;
+}
+
+export interface updateGroupCallEncryptedMessage {
+  _: "updateGroupCallEncryptedMessage";
+  call: InputGroupCall;
+  from_id: Peer;
+  encrypted_message: Uint8Array<ArrayBuffer>;
+}
+
+export interface updatePinnedForumTopic {
+  _: "updatePinnedForumTopic";
+  pinned?: true;
+  peer: Peer;
+  topic_id: number;
+}
+
+export interface updatePinnedForumTopics {
+  _: "updatePinnedForumTopics";
+  peer: Peer;
+  order?: Array<number>;
 }
 
 export interface updates_state {
@@ -3401,6 +3432,12 @@ export interface sendMessageEmojiInteraction {
 export interface sendMessageEmojiInteractionSeen {
   _: "sendMessageEmojiInteractionSeen";
   emoticon: string;
+}
+
+export interface sendMessageTextDraftAction {
+  _: "sendMessageTextDraftAction";
+  random_id: bigint;
+  text: TextWithEntities;
 }
 
 export interface contacts_found {
@@ -7407,6 +7444,9 @@ export interface groupCall {
   listeners_hidden?: true;
   conference?: true;
   creator?: true;
+  messages_enabled?: true;
+  can_change_messages_enabled?: true;
+  min?: true;
   id: bigint;
   access_hash: bigint;
   participants_count: number;
@@ -7675,7 +7715,7 @@ export interface account_chatThemes {
   themes: Array<ChatTheme>;
   chats: Array<Chat>;
   users: Array<User>;
-  next_offset?: number;
+  next_offset?: string;
 }
 
 export interface sponsoredMessage {
@@ -8053,6 +8093,16 @@ export interface inputInvoiceStarGiftPrepaidUpgrade {
   hash: string;
 }
 
+export interface inputInvoicePremiumAuthCode {
+  _: "inputInvoicePremiumAuthCode";
+  purpose: InputStorePaymentPurpose;
+}
+
+export interface inputInvoiceStarGiftDropOriginalDetails {
+  _: "inputInvoiceStarGiftDropOriginalDetails";
+  stargift: InputSavedStarGift;
+}
+
 export interface payments_exportedInvoice {
   _: "payments.exportedInvoice";
   url: string;
@@ -8338,8 +8388,10 @@ export interface forumTopic {
   pinned?: true;
   short?: true;
   hidden?: true;
+  title_missing?: true;
   id: number;
   date: number;
+  peer: Peer;
   title: string;
   icon_color: number;
   icon_emoji_id?: bigint;
@@ -9030,6 +9082,22 @@ export interface peerColor {
   background_emoji_id?: bigint;
 }
 
+export interface peerColorCollectible {
+  _: "peerColorCollectible";
+  collectible_id: bigint;
+  gift_emoji_id: bigint;
+  background_emoji_id: bigint;
+  accent_color: number;
+  colors: Array<number>;
+  dark_accent_color?: number;
+  dark_colors?: Array<number>;
+}
+
+export interface inputPeerColorCollectible {
+  _: "inputPeerColorCollectible";
+  collectible_id: bigint;
+}
+
 export interface help_peerColorSet {
   _: "help.peerColorSet";
   colors: Array<number>;
@@ -9606,6 +9674,7 @@ export interface starsTransaction {
   stargift_resale?: true;
   posts_search?: true;
   stargift_prepaid_upgrade?: true;
+  stargift_drop_original_details?: true;
   id: string;
   amount: StarsAmount;
   date: number;
@@ -9783,6 +9852,7 @@ export interface starGift {
   birthday?: true;
   require_premium?: true;
   limited_per_user?: true;
+  peer_color_available?: true;
   id: bigint;
   sticker: Document;
   stars: bigint;
@@ -9823,6 +9893,8 @@ export interface starGiftUnique {
   value_amount?: bigint;
   value_currency?: string;
   theme_peer?: Peer;
+  peer_color?: PeerColor;
+  host_id?: Peer;
 }
 
 export interface payments_starGiftsNotModified {
@@ -9993,6 +10065,8 @@ export interface starGiftAttributeOriginalDetails {
 export interface payments_starGiftUpgradePreview {
   _: "payments.starGiftUpgradePreview";
   sample_attributes: Array<StarGiftAttribute>;
+  prices: Array<StarGiftUpgradePrice>;
+  next_prices: Array<StarGiftUpgradePrice>;
 }
 
 export interface users_users {
@@ -10042,6 +10116,7 @@ export interface savedStarGift {
   can_resell_at?: number;
   collection_id?: Array<number>;
   prepaid_upgrade_hash?: string;
+  drop_original_details_stars?: bigint;
 }
 
 export interface payments_savedStarGifts {
@@ -10372,6 +10447,12 @@ export interface inputChatThemeUniqueGift {
   slug: string;
 }
 
+export interface starGiftUpgradePrice {
+  _: "starGiftUpgradePrice";
+  date: number;
+  upgrade_stars: bigint;
+}
+
 export interface invokeAfterMsg<T> {
   _: "invokeAfterMsg";
   msg_id: bigint;
@@ -10623,6 +10704,14 @@ export interface auth_reportMissingCode {
   phone_code_hash: string;
   mnc: string;
   [R]?: boolean;
+}
+
+export interface auth_checkPaidAuth {
+  _: "auth.checkPaidAuth";
+  phone_number: string;
+  phone_code_hash: string;
+  form_id: bigint;
+  [R]?: auth_SentCode;
 }
 
 export interface account_registerDevice {
@@ -11217,8 +11306,7 @@ export interface account_invalidateSignInCodes {
 export interface account_updateColor {
   _: "account.updateColor";
   for_profile?: true;
-  color?: number;
-  background_emoji_id?: bigint;
+  color?: PeerColor;
   [R]?: boolean;
 }
 
@@ -11407,7 +11495,7 @@ export interface account_getSavedMusicIds {
 
 export interface account_getUniqueGiftChatThemes {
   _: "account.getUniqueGiftChatThemes";
-  offset: number;
+  offset: string;
   limit: number;
   hash: bigint;
   [R]?: account_ChatThemes;
@@ -11452,6 +11540,13 @@ export interface users_getSavedMusicByID {
   id: InputUser;
   documents: Array<InputDocument>;
   [R]?: users_SavedMusic;
+}
+
+export interface users_suggestBirthday {
+  _: "users.suggestBirthday";
+  id: InputUser;
+  birthday: Birthday;
+  [R]?: Updates;
 }
 
 export interface contacts_getContactIDs {
@@ -11572,6 +11667,7 @@ export interface contacts_addContact {
   first_name: string;
   last_name: string;
   phone: string;
+  note?: TextWithEntities;
   [R]?: Updates;
 }
 
@@ -11638,6 +11734,13 @@ export interface contacts_getSponsoredPeers {
   _: "contacts.getSponsoredPeers";
   q: string;
   [R]?: contacts_SponsoredPeers;
+}
+
+export interface contacts_updateContactNote {
+  _: "contacts.updateContactNote";
+  id: InputUser;
+  note: TextWithEntities;
+  [R]?: boolean;
 }
 
 export interface messages_getMessages {
@@ -13530,6 +13633,70 @@ export interface messages_toggleSuggestedPostApproval {
   [R]?: Updates;
 }
 
+export interface messages_getForumTopics {
+  _: "messages.getForumTopics";
+  peer: InputPeer;
+  q?: string;
+  offset_date: number;
+  offset_id: number;
+  offset_topic: number;
+  limit: number;
+  [R]?: messages_ForumTopics;
+}
+
+export interface messages_getForumTopicsByID {
+  _: "messages.getForumTopicsByID";
+  peer: InputPeer;
+  topics: Array<number>;
+  [R]?: messages_ForumTopics;
+}
+
+export interface messages_editForumTopic {
+  _: "messages.editForumTopic";
+  peer: InputPeer;
+  topic_id: number;
+  title?: string;
+  icon_emoji_id?: bigint;
+  closed?: boolean;
+  hidden?: boolean;
+  [R]?: Updates;
+}
+
+export interface messages_updatePinnedForumTopic {
+  _: "messages.updatePinnedForumTopic";
+  peer: InputPeer;
+  topic_id: number;
+  pinned: boolean;
+  [R]?: Updates;
+}
+
+export interface messages_reorderPinnedForumTopics {
+  _: "messages.reorderPinnedForumTopics";
+  force?: true;
+  peer: InputPeer;
+  order: Array<number>;
+  [R]?: Updates;
+}
+
+export interface messages_createForumTopic {
+  _: "messages.createForumTopic";
+  title_missing?: true;
+  peer: InputPeer;
+  title: string;
+  icon_color?: number;
+  icon_emoji_id?: bigint;
+  random_id: bigint;
+  send_as?: InputPeer;
+  [R]?: Updates;
+}
+
+export interface messages_deleteTopicHistory {
+  _: "messages.deleteTopicHistory";
+  peer: InputPeer;
+  top_msg_id: number;
+  [R]?: messages_AffectedHistory;
+}
+
 export interface updates_getState {
   _: "updates.getState";
   [R]?: updates_State;
@@ -14126,69 +14293,6 @@ export interface channels_toggleForum {
   channel: InputChannel;
   enabled: boolean;
   tabs: boolean;
-  [R]?: Updates;
-}
-
-export interface channels_createForumTopic {
-  _: "channels.createForumTopic";
-  channel: InputChannel;
-  title: string;
-  icon_color?: number;
-  icon_emoji_id?: bigint;
-  random_id: bigint;
-  send_as?: InputPeer;
-  [R]?: Updates;
-}
-
-export interface channels_getForumTopics {
-  _: "channels.getForumTopics";
-  channel: InputChannel;
-  q?: string;
-  offset_date: number;
-  offset_id: number;
-  offset_topic: number;
-  limit: number;
-  [R]?: messages_ForumTopics;
-}
-
-export interface channels_getForumTopicsByID {
-  _: "channels.getForumTopicsByID";
-  channel: InputChannel;
-  topics: Array<number>;
-  [R]?: messages_ForumTopics;
-}
-
-export interface channels_editForumTopic {
-  _: "channels.editForumTopic";
-  channel: InputChannel;
-  topic_id: number;
-  title?: string;
-  icon_emoji_id?: bigint;
-  closed?: boolean;
-  hidden?: boolean;
-  [R]?: Updates;
-}
-
-export interface channels_updatePinnedForumTopic {
-  _: "channels.updatePinnedForumTopic";
-  channel: InputChannel;
-  topic_id: number;
-  pinned: boolean;
-  [R]?: Updates;
-}
-
-export interface channels_deleteTopicHistory {
-  _: "channels.deleteTopicHistory";
-  channel: InputChannel;
-  top_msg_id: number;
-  [R]?: messages_AffectedHistory;
-}
-
-export interface channels_reorderPinnedForumTopics {
-  _: "channels.reorderPinnedForumTopics";
-  force?: true;
-  channel: InputChannel;
-  order: Array<number>;
   [R]?: Updates;
 }
 
@@ -14837,6 +14941,8 @@ export interface payments_getSavedStarGifts {
   sort_by_value?: true;
   exclude_upgradable?: true;
   exclude_unupgradable?: true;
+  peer_color_available?: true;
+  exclude_hosted?: true;
   peer: InputPeer;
   collection_id?: number;
   offset: string;
@@ -15150,6 +15256,7 @@ export interface phone_toggleGroupCallSettings {
   reset_invite_hash?: true;
   call: InputGroupCall;
   join_muted?: boolean;
+  messages_enabled?: boolean;
   [R]?: Updates;
 }
 
@@ -15323,6 +15430,21 @@ export interface phone_getGroupCallChainBlocks {
   offset: number;
   limit: number;
   [R]?: Updates;
+}
+
+export interface phone_sendGroupCallMessage {
+  _: "phone.sendGroupCallMessage";
+  call: InputGroupCall;
+  random_id: bigint;
+  message: TextWithEntities;
+  [R]?: boolean;
+}
+
+export interface phone_sendGroupCallEncryptedMessage {
+  _: "phone.sendGroupCallEncryptedMessage";
+  call: InputGroupCall;
+  encrypted_message: Uint8Array<ArrayBuffer>;
+  [R]?: boolean;
 }
 
 export interface langpack_getLangPack {
@@ -16007,6 +16129,7 @@ export interface Types {
   "messageActionSuggestedPostSuccess": messageActionSuggestedPostSuccess;
   "messageActionSuggestedPostRefund": messageActionSuggestedPostRefund;
   "messageActionGiftTon": messageActionGiftTon;
+  "messageActionSuggestBirthday": messageActionSuggestBirthday;
   "dialog": dialog;
   "dialogFolder": dialogFolder;
   "photoEmpty": photoEmpty;
@@ -16189,8 +16312,6 @@ export interface Types {
   "updateRecentReactions": updateRecentReactions;
   "updateMoveStickerSetToTop": updateMoveStickerSetToTop;
   "updateMessageExtendedMedia": updateMessageExtendedMedia;
-  "updateChannelPinnedTopic": updateChannelPinnedTopic;
-  "updateChannelPinnedTopics": updateChannelPinnedTopics;
   "updateUser": updateUser;
   "updateAutoSaveSettings": updateAutoSaveSettings;
   "updateStory": updateStory;
@@ -16227,6 +16348,10 @@ export interface Types {
   "updateReadMonoForumInbox": updateReadMonoForumInbox;
   "updateReadMonoForumOutbox": updateReadMonoForumOutbox;
   "updateMonoForumNoPaidException": updateMonoForumNoPaidException;
+  "updateGroupCallMessage": updateGroupCallMessage;
+  "updateGroupCallEncryptedMessage": updateGroupCallEncryptedMessage;
+  "updatePinnedForumTopic": updatePinnedForumTopic;
+  "updatePinnedForumTopics": updatePinnedForumTopics;
   "updates.state": updates_state;
   "updates.differenceEmpty": updates_differenceEmpty;
   "updates.difference": updates_difference;
@@ -16296,6 +16421,7 @@ export interface Types {
   "sendMessageChooseStickerAction": sendMessageChooseStickerAction;
   "sendMessageEmojiInteraction": sendMessageEmojiInteraction;
   "sendMessageEmojiInteractionSeen": sendMessageEmojiInteractionSeen;
+  "sendMessageTextDraftAction": sendMessageTextDraftAction;
   "contacts.found": contacts_found;
   "inputPrivacyKeyStatusTimestamp": inputPrivacyKeyStatusTimestamp;
   "inputPrivacyKeyChatInvite": inputPrivacyKeyChatInvite;
@@ -16995,6 +17121,8 @@ export interface Types {
   "inputInvoiceBusinessBotTransferStars": inputInvoiceBusinessBotTransferStars;
   "inputInvoiceStarGiftResale": inputInvoiceStarGiftResale;
   "inputInvoiceStarGiftPrepaidUpgrade": inputInvoiceStarGiftPrepaidUpgrade;
+  "inputInvoicePremiumAuthCode": inputInvoicePremiumAuthCode;
+  "inputInvoiceStarGiftDropOriginalDetails": inputInvoiceStarGiftDropOriginalDetails;
   "payments.exportedInvoice": payments_exportedInvoice;
   "messages.transcribedAudio": messages_transcribedAudio;
   "help.premiumPromo": help_premiumPromo;
@@ -17125,6 +17253,8 @@ export interface Types {
   "publicForwardStory": publicForwardStory;
   "stats.publicForwards": stats_publicForwards;
   "peerColor": peerColor;
+  "peerColorCollectible": peerColorCollectible;
+  "inputPeerColorCollectible": inputPeerColorCollectible;
   "help.peerColorSet": help_peerColorSet;
   "help.peerColorProfileSet": help_peerColorProfileSet;
   "help.peerColorOption": help_peerColorOption;
@@ -17314,6 +17444,7 @@ export interface Types {
   "inputChatThemeEmpty": inputChatThemeEmpty;
   "inputChatTheme": inputChatTheme;
   "inputChatThemeUniqueGift": inputChatThemeUniqueGift;
+  "starGiftUpgradePrice": starGiftUpgradePrice;
 }
 
 export interface Functions<T = Function> {
@@ -17351,6 +17482,7 @@ export interface Functions<T = Function> {
   "auth.requestFirebaseSms": auth_requestFirebaseSms;
   "auth.resetLoginEmail": auth_resetLoginEmail;
   "auth.reportMissingCode": auth_reportMissingCode;
+  "auth.checkPaidAuth": auth_checkPaidAuth;
   "account.registerDevice": account_registerDevice;
   "account.unregisterDevice": account_unregisterDevice;
   "account.updateNotifySettings": account_updateNotifySettings;
@@ -17476,6 +17608,7 @@ export interface Functions<T = Function> {
   "users.getRequirementsToContact": users_getRequirementsToContact;
   "users.getSavedMusic": users_getSavedMusic;
   "users.getSavedMusicByID": users_getSavedMusicByID;
+  "users.suggestBirthday": users_suggestBirthday;
   "contacts.getContactIDs": contacts_getContactIDs;
   "contacts.getStatuses": contacts_getStatuses;
   "contacts.getContacts": contacts_getContacts;
@@ -17503,6 +17636,7 @@ export interface Functions<T = Function> {
   "contacts.setBlocked": contacts_setBlocked;
   "contacts.getBirthdays": contacts_getBirthdays;
   "contacts.getSponsoredPeers": contacts_getSponsoredPeers;
+  "contacts.updateContactNote": contacts_updateContactNote;
   "messages.getMessages": messages_getMessages;
   "messages.getDialogs": messages_getDialogs;
   "messages.getHistory": messages_getHistory;
@@ -17733,6 +17867,13 @@ export interface Functions<T = Function> {
   "messages.toggleTodoCompleted": messages_toggleTodoCompleted;
   "messages.appendTodoList": messages_appendTodoList;
   "messages.toggleSuggestedPostApproval": messages_toggleSuggestedPostApproval;
+  "messages.getForumTopics": messages_getForumTopics;
+  "messages.getForumTopicsByID": messages_getForumTopicsByID;
+  "messages.editForumTopic": messages_editForumTopic;
+  "messages.updatePinnedForumTopic": messages_updatePinnedForumTopic;
+  "messages.reorderPinnedForumTopics": messages_reorderPinnedForumTopics;
+  "messages.createForumTopic": messages_createForumTopic;
+  "messages.deleteTopicHistory": messages_deleteTopicHistory;
   "updates.getState": updates_getState;
   "updates.getDifference": updates_getDifference;
   "updates.getChannelDifference": updates_getChannelDifference;
@@ -17817,13 +17958,6 @@ export interface Functions<T = Function> {
   "channels.toggleUsername": channels_toggleUsername;
   "channels.deactivateAllUsernames": channels_deactivateAllUsernames;
   "channels.toggleForum": channels_toggleForum;
-  "channels.createForumTopic": channels_createForumTopic;
-  "channels.getForumTopics": channels_getForumTopics;
-  "channels.getForumTopicsByID": channels_getForumTopicsByID;
-  "channels.editForumTopic": channels_editForumTopic;
-  "channels.updatePinnedForumTopic": channels_updatePinnedForumTopic;
-  "channels.deleteTopicHistory": channels_deleteTopicHistory;
-  "channels.reorderPinnedForumTopics": channels_reorderPinnedForumTopics;
   "channels.toggleAntiSpam": channels_toggleAntiSpam;
   "channels.reportAntiSpamFalsePositive": channels_reportAntiSpamFalsePositive;
   "channels.toggleParticipantsHidden": channels_toggleParticipantsHidden;
@@ -17975,6 +18109,8 @@ export interface Functions<T = Function> {
   "phone.inviteConferenceCallParticipant": phone_inviteConferenceCallParticipant;
   "phone.declineConferenceCallInvite": phone_declineConferenceCallInvite;
   "phone.getGroupCallChainBlocks": phone_getGroupCallChainBlocks;
+  "phone.sendGroupCallMessage": phone_sendGroupCallMessage;
+  "phone.sendGroupCallEncryptedMessage": phone_sendGroupCallEncryptedMessage;
   "langpack.getLangPack": langpack_getLangPack;
   "langpack.getStrings": langpack_getStrings;
   "langpack.getDifference": langpack_getDifference;
@@ -18603,6 +18739,7 @@ export interface Enums {
   "account.SavedMusicIds": account_SavedMusicIds;
   "payments.CheckCanSendGiftResult": payments_CheckCanSendGiftResult;
   "InputChatTheme": InputChatTheme;
+  "StarGiftUpgradePrice": StarGiftUpgradePrice;
 }
 
 export type AnyType = Types[keyof Types];
@@ -18661,7 +18798,7 @@ export type Message = messageEmpty | message | messageService;
 
 export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia | messageMediaToDo;
 
-export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon;
+export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday;
 
 export type Dialog = dialog | dialogFolder;
 
@@ -18823,8 +18960,6 @@ export type Update =
   | updateRecentReactions
   | updateMoveStickerSetToTop
   | updateMessageExtendedMedia
-  | updateChannelPinnedTopic
-  | updateChannelPinnedTopics
   | updateUser
   | updateAutoSaveSettings
   | updateStory
@@ -18860,7 +18995,11 @@ export type Update =
   | updateGroupCallChainBlocks
   | updateReadMonoForumInbox
   | updateReadMonoForumOutbox
-  | updateMonoForumNoPaidException;
+  | updateMonoForumNoPaidException
+  | updateGroupCallMessage
+  | updateGroupCallEncryptedMessage
+  | updatePinnedForumTopic
+  | updatePinnedForumTopics;
 
 export type updates_State = updates_state;
 
@@ -18906,7 +19045,7 @@ export type help_Support = help_support;
 
 export type NotifyPeer = notifyPeer | notifyUsers | notifyChats | notifyBroadcasts | notifyForumTopic;
 
-export type SendMessageAction = sendMessageTypingAction | sendMessageCancelAction | sendMessageRecordVideoAction | sendMessageUploadVideoAction | sendMessageRecordAudioAction | sendMessageUploadAudioAction | sendMessageUploadPhotoAction | sendMessageUploadDocumentAction | sendMessageGeoLocationAction | sendMessageChooseContactAction | sendMessageGamePlayAction | sendMessageRecordRoundAction | sendMessageUploadRoundAction | speakingInGroupCallAction | sendMessageHistoryImportAction | sendMessageChooseStickerAction | sendMessageEmojiInteraction | sendMessageEmojiInteractionSeen;
+export type SendMessageAction = sendMessageTypingAction | sendMessageCancelAction | sendMessageRecordVideoAction | sendMessageUploadVideoAction | sendMessageRecordAudioAction | sendMessageUploadAudioAction | sendMessageUploadPhotoAction | sendMessageUploadDocumentAction | sendMessageGeoLocationAction | sendMessageChooseContactAction | sendMessageGamePlayAction | sendMessageRecordRoundAction | sendMessageUploadRoundAction | speakingInGroupCallAction | sendMessageHistoryImportAction | sendMessageChooseStickerAction | sendMessageEmojiInteraction | sendMessageEmojiInteractionSeen | sendMessageTextDraftAction;
 
 export type contacts_Found = contacts_found;
 
@@ -19511,7 +19650,7 @@ export type account_SavedRingtone = account_savedRingtone | account_savedRington
 
 export type AttachMenuPeerType = attachMenuPeerTypeSameBotPM | attachMenuPeerTypeBotPM | attachMenuPeerTypePM | attachMenuPeerTypeChat | attachMenuPeerTypeBroadcast;
 
-export type InputInvoice = inputInvoiceMessage | inputInvoiceSlug | inputInvoicePremiumGiftCode | inputInvoiceStars | inputInvoiceChatInviteSubscription | inputInvoiceStarGift | inputInvoiceStarGiftUpgrade | inputInvoiceStarGiftTransfer | inputInvoicePremiumGiftStars | inputInvoiceBusinessBotTransferStars | inputInvoiceStarGiftResale | inputInvoiceStarGiftPrepaidUpgrade;
+export type InputInvoice = inputInvoiceMessage | inputInvoiceSlug | inputInvoicePremiumGiftCode | inputInvoiceStars | inputInvoiceChatInviteSubscription | inputInvoiceStarGift | inputInvoiceStarGiftUpgrade | inputInvoiceStarGiftTransfer | inputInvoicePremiumGiftStars | inputInvoiceBusinessBotTransferStars | inputInvoiceStarGiftResale | inputInvoiceStarGiftPrepaidUpgrade | inputInvoicePremiumAuthCode | inputInvoiceStarGiftDropOriginalDetails;
 
 export type payments_ExportedInvoice = payments_exportedInvoice;
 
@@ -19661,7 +19800,7 @@ export type PublicForward = publicForwardMessage | publicForwardStory;
 
 export type stats_PublicForwards = stats_publicForwards;
 
-export type PeerColor = peerColor;
+export type PeerColor = peerColor | peerColorCollectible | inputPeerColorCollectible;
 
 export type help_PeerColorSet = help_peerColorSet | help_peerColorProfileSet;
 
@@ -19920,6 +20059,8 @@ export type account_SavedMusicIds = account_savedMusicIdsNotModified | account_s
 export type payments_CheckCanSendGiftResult = payments_checkCanSendGiftResultOk | payments_checkCanSendGiftResultFail;
 
 export type InputChatTheme = inputChatThemeEmpty | inputChatTheme | inputChatThemeUniqueGift;
+
+export type StarGiftUpgradePrice = starGiftUpgradePrice;
 
 export const schema = Object.freeze({
   definitions: {
@@ -20505,6 +20646,7 @@ export const schema = Object.freeze({
         ["contact_require_premium", "flags2.10?true"],
         ["bot_business", "flags2.11?true"],
         ["bot_has_main_app", "flags2.13?true"],
+        ["bot_forum_view", "flags2.16?true"],
         ["id", "long"],
         ["access_hash", "flags.0?long"],
         ["first_name", "flags.1?string"],
@@ -21395,6 +21537,7 @@ export const schema = Object.freeze({
       0x0D999256,
       [
         ["flags", "#"],
+        ["title_missing", "flags.1?true"],
         ["title", "string"],
         ["icon_color", "int"],
         ["icon_emoji_id", "flags.0?long"],
@@ -21550,7 +21693,7 @@ export const schema = Object.freeze({
       "MessageAction",
     ],
     messageActionStarGiftUnique: [
-      0x34F762F3,
+      0x95728543,
       [
         ["flags", "#"],
         ["upgrade", "flags.0?true"],
@@ -21558,6 +21701,7 @@ export const schema = Object.freeze({
         ["saved", "flags.2?true"],
         ["refunded", "flags.5?true"],
         ["prepaid_upgrade", "flags.11?true"],
+        ["assigned", "flags.13?true"],
         ["gift", "StarGift"],
         ["can_export_at", "flags.3?int"],
         ["transfer_stars", "flags.4?long"],
@@ -21567,6 +21711,7 @@ export const schema = Object.freeze({
         ["resale_amount", "flags.8?StarsAmount"],
         ["can_transfer_at", "flags.9?int"],
         ["can_resell_at", "flags.10?int"],
+        ["drop_original_details_stars", "flags.12?long"],
       ],
       "MessageAction",
     ],
@@ -21651,6 +21796,13 @@ export const schema = Object.freeze({
         ["crypto_currency", "string"],
         ["crypto_amount", "long"],
         ["transaction_id", "flags.0?string"],
+      ],
+      "MessageAction",
+    ],
+    messageActionSuggestBirthday: [
+      0x2C8F2A25,
+      [
+        ["birthday", "Birthday"],
       ],
       "MessageAction",
     ],
@@ -21801,12 +21953,14 @@ export const schema = Object.freeze({
       "auth.SentCode",
     ],
     "auth.sentCodePaymentRequired": [
-      0xD7A2FCF9,
+      0xE0955A3C,
       [
         ["store_product", "string"],
         ["phone_code_hash", "string"],
         ["support_email_address", "string"],
         ["support_email_subject", "string"],
+        ["currency", "string"],
+        ["amount", "long"],
       ],
       "auth.SentCode",
     ],
@@ -22006,7 +22160,7 @@ export const schema = Object.freeze({
       "ReportReason",
     ],
     userFull: [
-      0xC577B5AD,
+      0xA02BC13E,
       [
         ["flags", "#"],
         ["blocked", "flags.0?true"],
@@ -22063,6 +22217,7 @@ export const schema = Object.freeze({
         ["stars_my_pending_rating_date", "flags2.18?int"],
         ["main_tab", "flags2.20?ProfileTab"],
         ["saved_music", "flags2.21?Document"],
+        ["note", "flags2.22?TextWithEntities"],
       ],
       "UserFull",
     ],
@@ -22162,16 +22317,17 @@ export const schema = Object.freeze({
       "messages.Dialogs",
     ],
     "messages.messages": [
-      0x8C718E87,
+      0x1D73E7EA,
       [
         ["messages", "Vector<Message>"],
+        ["topics", "Vector<ForumTopic>"],
         ["chats", "Vector<Chat>"],
         ["users", "Vector<User>"],
       ],
       "messages.Messages",
     ],
     "messages.messagesSlice": [
-      0x762B263D,
+      0x5F206716,
       [
         ["flags", "#"],
         ["inexact", "flags.1?true"],
@@ -22180,6 +22336,7 @@ export const schema = Object.freeze({
         ["offset_id_offset", "flags.2?int"],
         ["search_flood", "flags.3?SearchPostsFlood"],
         ["messages", "Vector<Message>"],
+        ["topics", "Vector<ForumTopic>"],
         ["chats", "Vector<Chat>"],
         ["users", "Vector<User>"],
       ],
@@ -22355,9 +22512,11 @@ export const schema = Object.freeze({
       "Update",
     ],
     updateUserTyping: [
-      0xC01E857F,
+      0x2A17BF5C,
       [
+        ["flags", "#"],
         ["user_id", "long"],
+        ["top_msg_id", "flags.0?int"],
         ["action", "SendMessageAction"],
       ],
       "Update",
@@ -22506,11 +22665,12 @@ export const schema = Object.freeze({
       "Update",
     ],
     updateReadHistoryInbox: [
-      0x9C974FDF,
+      0x9E84BC99,
       [
         ["flags", "#"],
         ["folder_id", "flags.0?int"],
         ["peer", "Peer"],
+        ["top_msg_id", "flags.1?int"],
         ["max_id", "int"],
         ["still_unread_count", "int"],
         ["pts", "int"],
@@ -23282,25 +23442,6 @@ export const schema = Object.freeze({
       ],
       "Update",
     ],
-    updateChannelPinnedTopic: [
-      0x192EFBE3,
-      [
-        ["flags", "#"],
-        ["pinned", "flags.0?true"],
-        ["channel_id", "long"],
-        ["topic_id", "int"],
-      ],
-      "Update",
-    ],
-    updateChannelPinnedTopics: [
-      0xFE198602,
-      [
-        ["flags", "#"],
-        ["channel_id", "long"],
-        ["order", "flags.0?Vector<int>"],
-      ],
-      "Update",
-    ],
     updateUser: [
       0x20529438,
       [
@@ -23605,6 +23746,44 @@ export const schema = Object.freeze({
         ["exception", "flags.0?true"],
         ["channel_id", "long"],
         ["saved_peer_id", "Peer"],
+      ],
+      "Update",
+    ],
+    updateGroupCallMessage: [
+      0x78C314E0,
+      [
+        ["call", "InputGroupCall"],
+        ["from_id", "Peer"],
+        ["random_id", "long"],
+        ["message", "TextWithEntities"],
+      ],
+      "Update",
+    ],
+    updateGroupCallEncryptedMessage: [
+      0xC957A766,
+      [
+        ["call", "InputGroupCall"],
+        ["from_id", "Peer"],
+        ["encrypted_message", "bytes"],
+      ],
+      "Update",
+    ],
+    updatePinnedForumTopic: [
+      0x683B2C52,
+      [
+        ["flags", "#"],
+        ["pinned", "flags.0?true"],
+        ["peer", "Peer"],
+        ["topic_id", "int"],
+      ],
+      "Update",
+    ],
+    updatePinnedForumTopics: [
+      0xDEF143D0,
+      [
+        ["flags", "#"],
+        ["peer", "Peer"],
+        ["order", "flags.0?Vector<int>"],
       ],
       "Update",
     ],
@@ -24250,6 +24429,14 @@ export const schema = Object.freeze({
       0xB665902E,
       [
         ["emoticon", "string"],
+      ],
+      "SendMessageAction",
+    ],
+    sendMessageTextDraftAction: [
+      0x376D975C,
+      [
+        ["random_id", "long"],
+        ["text", "TextWithEntities"],
       ],
       "SendMessageAction",
     ],
@@ -29469,6 +29656,9 @@ export const schema = Object.freeze({
         ["listeners_hidden", "flags.13?true"],
         ["conference", "flags.14?true"],
         ["creator", "flags.15?true"],
+        ["messages_enabled", "flags.17?true"],
+        ["can_change_messages_enabled", "flags.18?true"],
+        ["min", "flags.19?true"],
         ["id", "long"],
         ["access_hash", "long"],
         ["participants_count", "int"],
@@ -29807,14 +29997,14 @@ export const schema = Object.freeze({
       "account.ChatThemes",
     ],
     "account.chatThemes": [
-      0x16484857,
+      0xBE098173,
       [
         ["flags", "#"],
         ["hash", "long"],
         ["themes", "Vector<ChatTheme>"],
         ["chats", "Vector<Chat>"],
         ["users", "Vector<User>"],
-        ["next_offset", "flags.0?int"],
+        ["next_offset", "flags.0?string"],
       ],
       "account.ChatThemes",
     ],
@@ -30310,6 +30500,20 @@ export const schema = Object.freeze({
       ],
       "InputInvoice",
     ],
+    inputInvoicePremiumAuthCode: [
+      0x3E77F614,
+      [
+        ["purpose", "InputStorePaymentPurpose"],
+      ],
+      "InputInvoice",
+    ],
+    inputInvoiceStarGiftDropOriginalDetails: [
+      0x0923D8D1,
+      [
+        ["stargift", "InputSavedStarGift"],
+      ],
+      "InputInvoice",
+    ],
     "payments.exportedInvoice": [
       0xAED0CBD9,
       [
@@ -30680,7 +30884,7 @@ export const schema = Object.freeze({
       "ForumTopic",
     ],
     forumTopic: [
-      0x71701DA9,
+      0xCDFF0ECA,
       [
         ["flags", "#"],
         ["my", "flags.1?true"],
@@ -30688,8 +30892,10 @@ export const schema = Object.freeze({
         ["pinned", "flags.3?true"],
         ["short", "flags.5?true"],
         ["hidden", "flags.6?true"],
+        ["title_missing", "flags.7?true"],
         ["id", "int"],
         ["date", "int"],
+        ["peer", "Peer"],
         ["title", "string"],
         ["icon_color", "int"],
         ["icon_emoji_id", "flags.0?long"],
@@ -31587,6 +31793,27 @@ export const schema = Object.freeze({
       ],
       "PeerColor",
     ],
+    peerColorCollectible: [
+      0xB9C0639A,
+      [
+        ["flags", "#"],
+        ["collectible_id", "long"],
+        ["gift_emoji_id", "long"],
+        ["background_emoji_id", "long"],
+        ["accent_color", "int"],
+        ["colors", "Vector<int>"],
+        ["dark_accent_color", "flags.0?int"],
+        ["dark_colors", "flags.1?Vector<int>"],
+      ],
+      "PeerColor",
+    ],
+    inputPeerColorCollectible: [
+      0xB8EA86A9,
+      [
+        ["collectible_id", "long"],
+      ],
+      "PeerColor",
+    ],
     "help.peerColorSet": [
       0x26219A58,
       [
@@ -32348,6 +32575,7 @@ export const schema = Object.freeze({
         ["stargift_resale", "flags.22?true"],
         ["posts_search", "flags.24?true"],
         ["stargift_prepaid_upgrade", "flags.25?true"],
+        ["stargift_drop_original_details", "flags.26?true"],
         ["id", "string"],
         ["amount", "StarsAmount"],
         ["date", "int"],
@@ -32576,6 +32804,7 @@ export const schema = Object.freeze({
         ["birthday", "flags.2?true"],
         ["require_premium", "flags.7?true"],
         ["limited_per_user", "flags.8?true"],
+        ["peer_color_available", "flags.10?true"],
         ["id", "long"],
         ["sticker", "Document"],
         ["stars", "long"],
@@ -32596,7 +32825,7 @@ export const schema = Object.freeze({
       "StarGift",
     ],
     starGiftUnique: [
-      0x1BEFE865,
+      0xB0BF741B,
       [
         ["flags", "#"],
         ["require_premium", "flags.6?true"],
@@ -32619,6 +32848,8 @@ export const schema = Object.freeze({
         ["value_amount", "flags.8?long"],
         ["value_currency", "flags.8?string"],
         ["theme_peer", "flags.10?Peer"],
+        ["peer_color", "flags.11?PeerColor"],
+        ["host_id", "flags.12?Peer"],
       ],
       "StarGift",
     ],
@@ -32841,9 +33072,11 @@ export const schema = Object.freeze({
       "StarGiftAttribute",
     ],
     "payments.starGiftUpgradePreview": [
-      0x167BD90B,
+      0x3DE1DFED,
       [
         ["sample_attributes", "Vector<StarGiftAttribute>"],
+        ["prices", "Vector<StarGiftUpgradePrice>"],
+        ["next_prices", "Vector<StarGiftUpgradePrice>"],
       ],
       "payments.StarGiftUpgradePreview",
     ],
@@ -32881,7 +33114,7 @@ export const schema = Object.freeze({
       "messages.WebPagePreview",
     ],
     savedStarGift: [
-      0x19A9B572,
+      0x8983A452,
       [
         ["flags", "#"],
         ["name_hidden", "flags.0?true"],
@@ -32904,6 +33137,7 @@ export const schema = Object.freeze({
         ["can_resell_at", "flags.14?int"],
         ["collection_id", "flags.15?Vector<int>"],
         ["prepaid_upgrade_hash", "flags.16?string"],
+        ["drop_original_details_stars", "flags.18?long"],
       ],
       "SavedStarGift",
     ],
@@ -33337,6 +33571,14 @@ export const schema = Object.freeze({
       ],
       "InputChatTheme",
     ],
+    starGiftUpgradePrice: [
+      0x99EA331D,
+      [
+        ["date", "int"],
+        ["upgrade_stars", "long"],
+      ],
+      "StarGiftUpgradePrice",
+    ],
     invokeAfterMsg: [
       0xCB9F372D,
       [
@@ -33626,6 +33868,15 @@ export const schema = Object.freeze({
         ["mnc", "string"],
       ],
       "Bool",
+    ],
+    "auth.checkPaidAuth": [
+      0x56E59F9C,
+      [
+        ["phone_number", "string"],
+        ["phone_code_hash", "string"],
+        ["form_id", "long"],
+      ],
+      "auth.SentCode",
     ],
     "account.registerDevice": [
       0xEC86017A,
@@ -34301,12 +34552,11 @@ export const schema = Object.freeze({
       "Bool",
     ],
     "account.updateColor": [
-      0x7CEFA15D,
+      0x684D214E,
       [
         ["flags", "#"],
         ["for_profile", "flags.1?true"],
-        ["color", "flags.2?int"],
-        ["background_emoji_id", "flags.0?long"],
+        ["color", "flags.2?PeerColor"],
       ],
       "Bool",
     ],
@@ -34530,9 +34780,9 @@ export const schema = Object.freeze({
       "account.SavedMusicIds",
     ],
     "account.getUniqueGiftChatThemes": [
-      0xFE74EF9F,
+      0xE42CE9C9,
       [
-        ["offset", "int"],
+        ["offset", "string"],
         ["limit", "int"],
         ["hash", "long"],
       ],
@@ -34584,6 +34834,14 @@ export const schema = Object.freeze({
         ["documents", "Vector<InputDocument>"],
       ],
       "users.SavedMusic",
+    ],
+    "users.suggestBirthday": [
+      0xFC533372,
+      [
+        ["id", "InputUser"],
+        ["birthday", "Birthday"],
+      ],
+      "Updates",
     ],
     "contacts.getContactIDs": [
       0x7ADC669D,
@@ -34715,7 +34973,7 @@ export const schema = Object.freeze({
       "Bool",
     ],
     "contacts.addContact": [
-      0xE8F463D0,
+      0xD9BA2E54,
       [
         ["flags", "#"],
         ["add_phone_privacy_exception", "flags.0?true"],
@@ -34723,6 +34981,7 @@ export const schema = Object.freeze({
         ["first_name", "string"],
         ["last_name", "string"],
         ["phone", "string"],
+        ["note", "flags.1?TextWithEntities"],
       ],
       "Updates",
     ],
@@ -34801,6 +35060,14 @@ export const schema = Object.freeze({
         ["q", "string"],
       ],
       "contacts.SponsoredPeers",
+    ],
+    "contacts.updateContactNote": [
+      0x139F63FB,
+      [
+        ["id", "InputUser"],
+        ["note", "TextWithEntities"],
+      ],
+      "Bool",
     ],
     "messages.getMessages": [
       0x63C66506,
@@ -37002,6 +37269,81 @@ export const schema = Object.freeze({
       ],
       "Updates",
     ],
+    "messages.getForumTopics": [
+      0x3BA47BFF,
+      [
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["q", "flags.0?string"],
+        ["offset_date", "int"],
+        ["offset_id", "int"],
+        ["offset_topic", "int"],
+        ["limit", "int"],
+      ],
+      "messages.ForumTopics",
+    ],
+    "messages.getForumTopicsByID": [
+      0xAF0A4A08,
+      [
+        ["peer", "InputPeer"],
+        ["topics", "Vector<int>"],
+      ],
+      "messages.ForumTopics",
+    ],
+    "messages.editForumTopic": [
+      0xCECC1134,
+      [
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["topic_id", "int"],
+        ["title", "flags.0?string"],
+        ["icon_emoji_id", "flags.1?long"],
+        ["closed", "flags.2?Bool"],
+        ["hidden", "flags.3?Bool"],
+      ],
+      "Updates",
+    ],
+    "messages.updatePinnedForumTopic": [
+      0x175DF251,
+      [
+        ["peer", "InputPeer"],
+        ["topic_id", "int"],
+        ["pinned", "Bool"],
+      ],
+      "Updates",
+    ],
+    "messages.reorderPinnedForumTopics": [
+      0x0E7841F0,
+      [
+        ["flags", "#"],
+        ["force", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["order", "Vector<int>"],
+      ],
+      "Updates",
+    ],
+    "messages.createForumTopic": [
+      0x2F98C3D5,
+      [
+        ["flags", "#"],
+        ["title_missing", "flags.4?true"],
+        ["peer", "InputPeer"],
+        ["title", "string"],
+        ["icon_color", "flags.0?int"],
+        ["icon_emoji_id", "flags.3?long"],
+        ["random_id", "long"],
+        ["send_as", "flags.2?InputPeer"],
+      ],
+      "Updates",
+    ],
+    "messages.deleteTopicHistory": [
+      0xD2816F10,
+      [
+        ["peer", "InputPeer"],
+        ["top_msg_id", "int"],
+      ],
+      "messages.AffectedHistory",
+    ],
     "updates.getState": [
       0xEDD4882A,
       [],
@@ -37683,80 +38025,6 @@ export const schema = Object.freeze({
         ["channel", "InputChannel"],
         ["enabled", "Bool"],
         ["tabs", "Bool"],
-      ],
-      "Updates",
-    ],
-    "channels.createForumTopic": [
-      0xF40C0224,
-      [
-        ["flags", "#"],
-        ["channel", "InputChannel"],
-        ["title", "string"],
-        ["icon_color", "flags.0?int"],
-        ["icon_emoji_id", "flags.3?long"],
-        ["random_id", "long"],
-        ["send_as", "flags.2?InputPeer"],
-      ],
-      "Updates",
-    ],
-    "channels.getForumTopics": [
-      0x0DE560D1,
-      [
-        ["flags", "#"],
-        ["channel", "InputChannel"],
-        ["q", "flags.0?string"],
-        ["offset_date", "int"],
-        ["offset_id", "int"],
-        ["offset_topic", "int"],
-        ["limit", "int"],
-      ],
-      "messages.ForumTopics",
-    ],
-    "channels.getForumTopicsByID": [
-      0xB0831EB9,
-      [
-        ["channel", "InputChannel"],
-        ["topics", "Vector<int>"],
-      ],
-      "messages.ForumTopics",
-    ],
-    "channels.editForumTopic": [
-      0xF4DFA185,
-      [
-        ["flags", "#"],
-        ["channel", "InputChannel"],
-        ["topic_id", "int"],
-        ["title", "flags.0?string"],
-        ["icon_emoji_id", "flags.1?long"],
-        ["closed", "flags.2?Bool"],
-        ["hidden", "flags.3?Bool"],
-      ],
-      "Updates",
-    ],
-    "channels.updatePinnedForumTopic": [
-      0x6C2D9026,
-      [
-        ["channel", "InputChannel"],
-        ["topic_id", "int"],
-        ["pinned", "Bool"],
-      ],
-      "Updates",
-    ],
-    "channels.deleteTopicHistory": [
-      0x34435F2D,
-      [
-        ["channel", "InputChannel"],
-        ["top_msg_id", "int"],
-      ],
-      "messages.AffectedHistory",
-    ],
-    "channels.reorderPinnedForumTopics": [
-      0x2950A18F,
-      [
-        ["flags", "#"],
-        ["force", "flags.0?true"],
-        ["channel", "InputChannel"],
-        ["order", "Vector<int>"],
       ],
       "Updates",
     ],
@@ -38519,6 +38787,8 @@ export const schema = Object.freeze({
         ["sort_by_value", "flags.5?true"],
         ["exclude_upgradable", "flags.7?true"],
         ["exclude_unupgradable", "flags.8?true"],
+        ["peer_color_available", "flags.9?true"],
+        ["exclude_hosted", "flags.10?true"],
         ["peer", "InputPeer"],
         ["collection_id", "flags.6?int"],
         ["offset", "string"],
@@ -38877,12 +39147,13 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "phone.toggleGroupCallSettings": [
-      0x74BBB43D,
+      0xE9723804,
       [
         ["flags", "#"],
         ["reset_invite_hash", "flags.1?true"],
         ["call", "InputGroupCall"],
         ["join_muted", "flags.0?Bool"],
+        ["messages_enabled", "flags.2?Bool"],
       ],
       "Updates",
     ],
@@ -39085,6 +39356,23 @@ export const schema = Object.freeze({
         ["limit", "int"],
       ],
       "Updates",
+    ],
+    "phone.sendGroupCallMessage": [
+      0x87893014,
+      [
+        ["call", "InputGroupCall"],
+        ["random_id", "long"],
+        ["message", "TextWithEntities"],
+      ],
+      "Bool",
+    ],
+    "phone.sendGroupCallEncryptedMessage": [
+      0xE5AFA56D,
+      [
+        ["call", "InputGroupCall"],
+        ["encrypted_message", "bytes"],
+      ],
+      "Bool",
     ],
     "langpack.getLangPack": [
       0xF2F2330A,
@@ -39840,7 +40128,7 @@ export const schema = Object.freeze({
     [0x45D5B021]: "messageActionGiftStars",
     [0xB00C47A2]: "messageActionPrizeStars",
     [0xF24DE7FA]: "messageActionStarGift",
-    [0x34F762F3]: "messageActionStarGiftUnique",
+    [0x95728543]: "messageActionStarGiftUnique",
     [0xAC1F1FCD]: "messageActionPaidMessagesRefunded",
     [0x84B88578]: "messageActionPaidMessagesPrice",
     [0x2FFE2F7A]: "messageActionConferenceCall",
@@ -39850,6 +40138,7 @@ export const schema = Object.freeze({
     [0x95DDCF69]: "messageActionSuggestedPostSuccess",
     [0x69F916F8]: "messageActionSuggestedPostRefund",
     [0xA8A3C699]: "messageActionGiftTon",
+    [0x2C8F2A25]: "messageActionSuggestBirthday",
     [0xD58A08C6]: "dialog",
     [0x71BD134C]: "dialogFolder",
     [0x2331B22D]: "photoEmpty",
@@ -39864,7 +40153,7 @@ export const schema = Object.freeze({
     [0xB2A2F663]: "geoPoint",
     [0x5E002502]: "auth.sentCode",
     [0x2390FE44]: "auth.sentCodeSuccess",
-    [0xD7A2FCF9]: "auth.sentCodePaymentRequired",
+    [0xE0955A3C]: "auth.sentCodePaymentRequired",
     [0x2EA2C0D4]: "auth.authorization",
     [0x44747E9A]: "auth.authorizationSignUpRequired",
     [0xB434E2B8]: "auth.exportedAuthorization",
@@ -39888,7 +40177,7 @@ export const schema = Object.freeze({
     [0xF5DDD6E7]: "inputReportReasonFake",
     [0x0A8EB2BE]: "inputReportReasonIllegalDrugs",
     [0x9EC7863D]: "inputReportReasonPersonalDetails",
-    [0xC577B5AD]: "userFull",
+    [0xA02BC13E]: "userFull",
     [0x145ADE0B]: "contact",
     [0xC13E3C50]: "importedContact",
     [0x16D9703B]: "contactStatus",
@@ -39900,8 +40189,8 @@ export const schema = Object.freeze({
     [0x15BA6C40]: "messages.dialogs",
     [0x71E094F3]: "messages.dialogsSlice",
     [0xF0E3E596]: "messages.dialogsNotModified",
-    [0x8C718E87]: "messages.messages",
-    [0x762B263D]: "messages.messagesSlice",
+    [0x1D73E7EA]: "messages.messages",
+    [0x5F206716]: "messages.messagesSlice",
     [0xC776BA4E]: "messages.channelMessages",
     [0x74535F21]: "messages.messagesNotModified",
     [0x64FF9FD5]: "messages.chats",
@@ -39928,7 +40217,7 @@ export const schema = Object.freeze({
     [0x1F2B0AFD]: "updateNewMessage",
     [0x4E90BFD6]: "updateMessageID",
     [0xA20DB0E5]: "updateDeleteMessages",
-    [0xC01E857F]: "updateUserTyping",
+    [0x2A17BF5C]: "updateUserTyping",
     [0x83487AF0]: "updateChatUserTyping",
     [0x07761198]: "updateChatParticipants",
     [0xE5BDF8DE]: "updateUserStatus",
@@ -39945,7 +40234,7 @@ export const schema = Object.freeze({
     [0xEBE46819]: "updateServiceNotification",
     [0xEE3B272A]: "updatePrivacy",
     [0x05492A13]: "updateUserPhone",
-    [0x9C974FDF]: "updateReadHistoryInbox",
+    [0x9E84BC99]: "updateReadHistoryInbox",
     [0x2F2F21BF]: "updateReadHistoryOutbox",
     [0x7F891213]: "updateWebPage",
     [0xF8227181]: "updateReadMessagesContents",
@@ -40032,8 +40321,6 @@ export const schema = Object.freeze({
     [0x6F7863F4]: "updateRecentReactions",
     [0x86FCCF85]: "updateMoveStickerSetToTop",
     [0xD5A41724]: "updateMessageExtendedMedia",
-    [0x192EFBE3]: "updateChannelPinnedTopic",
-    [0xFE198602]: "updateChannelPinnedTopics",
     [0x20529438]: "updateUser",
     [0xEC05B097]: "updateAutoSaveSettings",
     [0x75B3B798]: "updateStory",
@@ -40070,6 +40357,10 @@ export const schema = Object.freeze({
     [0x77B0E372]: "updateReadMonoForumInbox",
     [0xA4A79376]: "updateReadMonoForumOutbox",
     [0x9F812B08]: "updateMonoForumNoPaidException",
+    [0x78C314E0]: "updateGroupCallMessage",
+    [0xC957A766]: "updateGroupCallEncryptedMessage",
+    [0x683B2C52]: "updatePinnedForumTopic",
+    [0xDEF143D0]: "updatePinnedForumTopics",
     [0xA56C2A3E]: "updates.state",
     [0x5D75A138]: "updates.differenceEmpty",
     [0x00F49CA0]: "updates.difference",
@@ -40139,6 +40430,7 @@ export const schema = Object.freeze({
     [0xB05AC6B1]: "sendMessageChooseStickerAction",
     [0x25972BCB]: "sendMessageEmojiInteraction",
     [0xB665902E]: "sendMessageEmojiInteractionSeen",
+    [0x376D975C]: "sendMessageTextDraftAction",
     [0xB3134D9D]: "contacts.found",
     [0x4F96CB18]: "inputPrivacyKeyStatusTimestamp",
     [0xBDFB0426]: "inputPrivacyKeyChatInvite",
@@ -40780,7 +41072,7 @@ export const schema = Object.freeze({
     [0xC3DFFC04]: "chatTheme",
     [0x3458F9C8]: "chatThemeUniqueGift",
     [0xE011E1C4]: "account.chatThemesNotModified",
-    [0x16484857]: "account.chatThemes",
+    [0xBE098173]: "account.chatThemes",
     [0x7DBF8673]: "sponsoredMessage",
     [0xFFDA656D]: "messages.sponsoredMessages",
     [0x1839490F]: "messages.sponsoredMessagesEmpty",
@@ -40838,6 +41130,8 @@ export const schema = Object.freeze({
     [0xF4997E42]: "inputInvoiceBusinessBotTransferStars",
     [0xC39F5324]: "inputInvoiceStarGiftResale",
     [0x9A0B48B8]: "inputInvoiceStarGiftPrepaidUpgrade",
+    [0x3E77F614]: "inputInvoicePremiumAuthCode",
+    [0x0923D8D1]: "inputInvoiceStarGiftDropOriginalDetails",
     [0xAED0CBD9]: "payments.exportedInvoice",
     [0xCFB9D957]: "messages.transcribedAudio",
     [0x5334759C]: "help.premiumPromo",
@@ -40880,7 +41174,7 @@ export const schema = Object.freeze({
     [0xFCFEB29C]: "stickerKeyword",
     [0xB4073647]: "username",
     [0x023F109B]: "forumTopicDeleted",
-    [0x71701DA9]: "forumTopic",
+    [0xCDFF0ECA]: "forumTopic",
     [0x367617D3]: "messages.forumTopics",
     [0x43B46B20]: "defaultHistoryTTL",
     [0x41BF109B]: "exportedContactToken",
@@ -40968,6 +41262,8 @@ export const schema = Object.freeze({
     [0xEDF3ADD0]: "publicForwardStory",
     [0x93037E20]: "stats.publicForwards",
     [0xB54B5ACF]: "peerColor",
+    [0xB9C0639A]: "peerColorCollectible",
+    [0xB8EA86A9]: "inputPeerColorCollectible",
     [0x26219A58]: "help.peerColorSet",
     [0x767D61EB]: "help.peerColorProfileSet",
     [0xADEC6EBE]: "help.peerColorOption",
@@ -41073,7 +41369,7 @@ export const schema = Object.freeze({
     [0x94CE852A]: "starsGiveawayOption",
     [0x54236209]: "starsGiveawayWinnersOption",
     [0x80AC53C3]: "starGift",
-    [0x1BEFE865]: "starGiftUnique",
+    [0xB0BF741B]: "starGiftUnique",
     [0xA388A368]: "payments.starGiftsNotModified",
     [0x2ED82995]: "payments.starGifts",
     [0x7903E3D9]: "messageReportOption",
@@ -41097,12 +41393,12 @@ export const schema = Object.freeze({
     [0x13ACFF19]: "starGiftAttributePattern",
     [0xD93D859C]: "starGiftAttributeBackdrop",
     [0xE0BFF26C]: "starGiftAttributeOriginalDetails",
-    [0x167BD90B]: "payments.starGiftUpgradePreview",
+    [0x3DE1DFED]: "payments.starGiftUpgradePreview",
     [0x62D706B8]: "users.users",
     [0x315A4974]: "users.usersSlice",
     [0x416C56E8]: "payments.uniqueStarGift",
     [0x8C9A88AC]: "messages.webPagePreview",
-    [0x19A9B572]: "savedStarGift",
+    [0x8983A452]: "savedStarGift",
     [0x95F389B1]: "payments.savedStarGifts",
     [0x69279795]: "inputSavedStarGiftUser",
     [0xF101AA7F]: "inputSavedStarGiftChat",
@@ -41157,7 +41453,8 @@ export const schema = Object.freeze({
     [0x83268483]: "inputChatThemeEmpty",
     [0xC93DE95C]: "inputChatTheme",
     [0x87E5DFE4]: "inputChatThemeUniqueGift",
+    [0x99EA331D]: "starGiftUpgradePrice",
   },
 }) as unknown as Schema;
 
-export const LAYER = 214;
+export const LAYER = 216;
