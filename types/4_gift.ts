@@ -42,7 +42,7 @@ export interface GiftNonUpgraded {
   /** The price of the sticker in Telegram Stars. */
   price: number;
   /** Whether the supply of this gift is limited. */
-  limited: boolean;
+  isLimited: boolean;
   /** The remaining supply of the gift if limited. */
   remaining?: number;
   /** The total supply of the gift if limited. */
@@ -50,7 +50,7 @@ export interface GiftNonUpgraded {
   /** Whether the gift is sold out if limited. */
   soldOut?: boolean;
   /** Whether the gift is dedicated to birthdays. */
-  birthday: boolean;
+  isBirthday: boolean;
   /** The amount of Telegram Stars that the gift can be swapped with. */
   conversionPrice: number;
   /** The date of the first sale of the gift if sold out. */
@@ -94,7 +94,7 @@ export interface GiftUpgraded {
   /** The amount of TON that can be used to buy the gift.  */
   priceTon?: number;
   /** Whether the gift can be bought only using TON. */
-  tonOnly?: boolean;
+  isTonOnly?: boolean;
   /** The value of the gift. */
   value?: GiftValue;
 }
@@ -165,25 +165,25 @@ export function constructGiftNonUpgraded(gift: Api.starGift): Gift {
   };
   const sticker = constructSticker2(gift.sticker, serializeFileId(fileId), toUniqueFileId(fileId), undefined, "");
   const price = Number(gift.stars);
-  const limited = !!gift.limited;
-  const remaining = limited ? gift.availability_remains ?? 0 : undefined;
-  const total = limited ? gift.availability_total ?? 0 : undefined;
-  const soldOut = limited ? !!gift.sold_out : undefined;
-  const birthday = !!gift.birthday;
+  const isLimited = !!gift.limited;
+  const isRemaining = isLimited ? gift.availability_remains ?? 0 : undefined;
+  const total = isLimited ? gift.availability_total ?? 0 : undefined;
+  const isSoldOut = isLimited ? !!gift.sold_out : undefined;
+  const isBirthday = !!gift.birthday;
   const conversionPrice = Number(gift.convert_stars);
-  const firstSaleDate = limited ? gift.first_sale_date ? gift.first_sale_date : undefined : undefined;
-  const lastSaleDate = limited ? gift.last_sale_date ? gift.last_sale_date : undefined : undefined;
+  const firstSaleDate = isLimited ? gift.first_sale_date ? gift.first_sale_date : undefined : undefined;
+  const lastSaleDate = isLimited ? gift.last_sale_date ? gift.last_sale_date : undefined : undefined;
   const upgradePrice = gift.upgrade_stars ? Number(gift.upgrade_stars) : undefined;
   return cleanObject({
     type: "nonupgraded",
     id,
     sticker,
     price,
-    limited,
-    remaining,
+    isLimited,
+    isRemaining,
     total,
-    soldOut,
-    birthday,
+    isSoldOut,
+    isBirthday,
     conversionPrice,
     firstSaleDate,
     lastSaleDate,

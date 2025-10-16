@@ -188,7 +188,7 @@ export interface UpdateMessagesDeleted {
    * @discriminator
    */
   deletedMessages: MessageReference[];
-  scheduled?: boolean;
+  isScheduled?: boolean;
   businessConnectionId?: string;
 }
 

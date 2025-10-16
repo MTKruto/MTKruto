@@ -30,7 +30,7 @@ export interface PollOption {
   /** Number of users that voted this option. */
   voterCount: number;
   /** Whether this option has been chosen. */
-  chosen: boolean;
+  isChosen: boolean;
 }
 
 export function constructPollOption(option: Api.PollAnswer, results: Array<Api.PollAnswerVoters>): PollOption {
@@ -39,6 +39,6 @@ export function constructPollOption(option: Api.PollAnswer, results: Array<Api.P
     text: option.text.text,
     entities: option.text.entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v !== null),
     voterCount: result?.voters ?? 0,
-    chosen: result?.chosen ?? false,
+    isChosen: result?.chosen ?? false,
   };
 }
