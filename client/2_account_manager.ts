@@ -217,13 +217,13 @@ export class AccountManager {
   async setNameColor(color: number, params?: SetNameColorParams) {
     this.#c.storage.assertUser("setNameColor");
     const background_emoji_id = params?.customEmojiId ? BigInt(params.customEmojiId) : undefined;
-    await this.#c.invoke({ _: "account.updateColor", color, background_emoji_id });
+    await this.#c.invoke({ _: "account.updateColor", color: { _: "peerColor", color, background_emoji_id } });
   }
 
   async setProfileColor(color: number, params?: SetProfileColorParams) {
     this.#c.storage.assertUser("setProfileColor");
     const background_emoji_id = params?.customEmojiId ? BigInt(params.customEmojiId) : undefined;
-    await this.#c.invoke({ _: "account.updateColor", for_profile: true, color, background_emoji_id });
+    await this.#c.invoke({ _: "account.updateColor", for_profile: true, color: { _: "peerColor", color, background_emoji_id } });
   }
 
   async setLocation(params?: SetLocationParams) {

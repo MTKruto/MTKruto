@@ -141,7 +141,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
       id,
       type: "private",
       isBot: chat.bot || false,
-      color: chat.color?.color !== undefined ? chat.color.color : getColorFromPeerId(id),
+      color: Api.is("peerColor", chat.color) && chat.color.color !== undefined ? chat.color.color : getColorFromPeerId(id),
       firstName: chat.first_name || "",
       lastName: chat.last_name,
       username,
@@ -198,7 +198,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
     if (chat.megagroup) {
       chat_ = {
         id,
-        color: chat.color?.color !== undefined ? chat.color.color : getColorFromPeerId(id),
+        color: Api.is("peerColor", chat.color) && chat.color.color !== undefined ? chat.color.color : getColorFromPeerId(id),
         type: "supergroup",
         title,
         isScam,
@@ -211,7 +211,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
       const id = ZERO_CHANNEL_ID + -Number(chat.id);
       chat_ = {
         id,
-        color: chat.color?.color !== undefined ? chat.color.color : getColorFromPeerId(id),
+        color: Api.is("peerColor", chat.color) && chat.color.color !== undefined ? chat.color.color : getColorFromPeerId(id),
         type: "channel",
         title,
         isScam,

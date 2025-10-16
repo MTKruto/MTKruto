@@ -70,7 +70,7 @@ export function constructUser(user_: Api.user): User {
   const username = user_.username ?? usernames?.shift();
   const user: User = {
     id,
-    color: user_.color?.color !== undefined ? user_.color.color : getColorFromPeerId(id),
+    color: Api.is("peerColor", user_.color) && user_.color.color !== undefined ? user_.color.color : getColorFromPeerId(id),
     isBot: user_.bot || false,
     firstName: user_.first_name || "",
     lastName: user_.last_name,
