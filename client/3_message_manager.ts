@@ -223,10 +223,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
     const message = constructMessage_(message_, this.#c.getPeer, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r, business, poll ?? undefined, pollResults ?? undefined);
     if (!poll && mediaPoll) {
-      await this.#c.storage.setPoll(mediaPoll.poll.id, mediaPoll.poll);
+      await this.#c.messageStorage.setPoll(mediaPoll.poll.id, mediaPoll.poll);
     }
     if (!pollResults && mediaPoll) {
-      await this.#c.storage.setPollResults(mediaPoll.poll.id, mediaPoll.results);
+      await this.#c.messageStorage.setPollResults(mediaPoll.poll.id, mediaPoll.results);
     }
     return message;
   }

@@ -100,9 +100,9 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
       let poll: Api.poll | null = null;
       if (update.poll) {
         poll = update.poll;
-        await this.#c.storage.setPoll(poll.id, poll);
+        await this.#c.messageStorage.setPoll(poll.id, poll);
       } else {
-        poll = await this.#c.storage.getPoll(update.poll_id);
+        poll = await this.#c.messageStorage.getPoll(update.poll_id);
       }
       if (poll) {
         const messageMediaPoll: Api.messageMediaPoll = { _: "messageMediaPoll", poll, results: update.results };
