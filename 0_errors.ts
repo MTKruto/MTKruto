@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export class MtkrutoError extends Error {
+export abstract class MtkrutoError extends Error {
 }
 
 export class ConnectionError extends MtkrutoError {
