@@ -50,19 +50,19 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
   async #handleUpdateChannel(update: Api.updateChannel) {
     const peer: Api.peerChannel = { ...update, _: "peerChannel" };
     const chatId = Api.peerToChatId(peer);
-    await this.#c.storage.setFullChat(chatId, null);
+    await this.#c.messageStorage.setFullChat(chatId, null);
   }
 
   async #handleUpdateChat(update: Api.updateChat) { // TODO: handle deactivated (migration)
     const peer: Api.peerChat = { ...update, _: "peerChat" };
     const chatId = Api.peerToChatId(peer);
-    await this.#c.storage.setFullChat(chatId, null);
+    await this.#c.messageStorage.setFullChat(chatId, null);
   }
 
   async #handleUpdateUser(update: Api.updateUser | Api.updateUserName) {
     const peer: Api.peerUser = { ...update, _: "peerUser" };
     const chatId = Api.peerToChatId(peer);
-    await this.#c.storage.setFullChat(chatId, null);
+    await this.#c.messageStorage.setFullChat(chatId, null);
   }
 
   async getChats(from: "archived" | "main" = "main", after?: ChatListItem, limit = 100): Promise<ChatListItem[]> {
@@ -103,7 +103,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
   async #getFullChat(chatId: ID) {
     const inputPeer = await this.#c.getInputPeer(chatId);
     const chatId_ = await this.#c.getInputPeerChatId(inputPeer);
-    let fullChat = await this.#c.storage.getFullChat(chatId_);
+    let fullChat = await this.#c.messageStorage.getFullChat(chatId_);
     if (fullChat !== null) {
       return fullChat;
     }
@@ -114,9 +114,9 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     } else if (canBeInputChannel(inputPeer)) {
       fullChat = (await this.#c.invoke({ _: "channels.getFullChannel", channel: toInputChannel(inputPeer) })).full_chat;
     }
-    await this.#c.storage.setFullChat(chatId_, fullChat);
+    await this.#c.messageStorage.setFullChat(chatId_, fullChat);
     if (fullChat !== null && "call" in fullChat && Api.is("inputGroupCall", fullChat.call)) {
-      await this.#c.storage.setGroupCallAccessHash(fullChat.call.id, fullChat.call.access_hash);
+      await this.#c.messageStorage.setGroupCallAccessHash(fullChat.call.id, fullChat.call.access_hash);
     }
     return fullChat;
   }

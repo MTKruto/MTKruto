@@ -114,7 +114,7 @@ export class UpdateManager {
       return this.#c.dropPendingUpdates;
     }
     if (this.#defaultDropPendingUpdates === null) {
-      this.#defaultDropPendingUpdates = this.#c.storage.auth.mustGet().isBot;
+      this.#defaultDropPendingUpdates = this.#c.storage.isBot;
     }
     return this.#defaultDropPendingUpdates;
   }
@@ -742,7 +742,7 @@ export class UpdateManager {
           pts,
           channel: { _: "inputChannel", channel_id: channelId, access_hash },
           filter: { _: "channelMessagesFilterEmpty" },
-          limit: this.#c.storage.auth.mustGet().isBot ? CHANNEL_DIFFERENCE_LIMIT_BOT : CHANNEL_DIFFERENCE_LIMIT_USER,
+          limit: this.#c.storage.isBot ? CHANNEL_DIFFERENCE_LIMIT_BOT : CHANNEL_DIFFERENCE_LIMIT_USER,
         });
         lastTimeout = difference.timeout ?? 1;
       } catch (err) {

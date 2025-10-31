@@ -96,7 +96,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
 
   async handleUpdate(update: PollManagerUpdate): Promise<Update | null> {
     if (Api.is("updateMessagePoll", update)) {
-      await this.#c.storage.setPollResults(update.poll_id, update.results);
+      await this.#c.messageStorage.setPollResults(update.poll_id, update.results);
       let poll: Api.poll | null = null;
       if (update.poll) {
         poll = update.poll;

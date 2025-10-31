@@ -155,7 +155,7 @@ export class AccountManager {
   async #getUserFull(chatId: ID): Promise<Api.userFull> {
     const inputPeer = await this.#c.getInputPeer(chatId);
     const chatId_ = await this.#c.getInputPeerChatId(inputPeer);
-    let fullChat = await this.#c.storage.getFullChat(chatId_);
+    let fullChat = await this.#c.messageStorage.getFullChat(chatId_);
     if (fullChat !== null) {
       if (!Api.is("userFull", fullChat)) {
         unreachable();
