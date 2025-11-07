@@ -139,7 +139,11 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       }
       const chatMembers = new Array<ChatMember>();
       for (const p of participants.participants) {
-        chatMembers.push(constructChatMember(p, this.#c.getPeer));
+        const peer = this.#c.getPeer("peer" in p ? p.peer : { _: "peerUser", user_id: p.user_id });
+        if (!peer) {
+          unreachable();
+        }
+        chatMembers.push(constructChatMember(peer[0], p, this.#c.getPeer));
       }
       return chatMembers;
     } else if (Api.is("inputPeerChat", peer)) {
@@ -149,7 +153,11 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       }
       const chatMembers = new Array<ChatMember>();
       for (const p of fullChat.participants.participants) {
-        chatMembers.push(constructChatMember(p, this.#c.getPeer));
+        const peer = this.#c.getPeer({ _: "peerUser", user_id: p.user_id });
+        if (!peer) {
+          unreachable();
+        }
+        chatMembers.push(constructChatMember(peer[0], p, this.#c.getPeer));
       }
       return chatMembers;
     } else {
@@ -162,13 +170,21 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
 
     if (canBeInputChannel(peer)) {
       const { participant } = await this.#c.invoke({ _: "channels.getParticipant", channel: toInputChannel(peer), participant: await this.#c.getInputPeer(userId) });
-      return constructChatMember(participant, this.#c.getPeer);
+      const memberPeer = this.#c.getPeer("peer" in participant ? participant.peer : { _: "peerUser", user_id: participant.user_id });
+      if (!memberPeer) {
+        unreachable();
+      }
+      return constructChatMember(memberPeer[0], participant, this.#c.getPeer);
     } else if (Api.is("inputPeerChat", peer)) {
       const user = await this.#c.getInputUser(userId);
       const userId_ = BigInt(await this.#c.getInputPeerChatId(user));
       const fullChat = await this.#c.invoke({ ...peer, _: "messages.getFullChat" }).then((v) => Api.as("chatFull", v.full_chat));
       const participant = Api.as("chatParticipants", fullChat.participants).participants.find((v) => v.user_id === userId_)!;
-      return constructChatMember(participant, this.#c.getPeer);
+      const memberPeer = this.#c.getPeer({ _: "peerUser", user_id: participant.user_id });
+      if (!memberPeer) {
+        unreachable();
+      }
+      return constructChatMember(memberPeer[0], participant, this.#c.getPeer);
     } else {
       throw new InputError("Expected a channel, supergroup, or group ID. Got a user ID instead.");
     }
@@ -184,7 +200,11 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       }
       const chatMembers = new Array<ChatMember>();
       for (const p of participants.participants) {
-        chatMembers.push(constructChatMember(p, this.#c.getPeer));
+        const peer = this.#c.getPeer("peer" in p ? p.peer : { _: "peerUser", user_id: p.user_id });
+        if (!peer) {
+          unreachable();
+        }
+        chatMembers.push(constructChatMember(peer[0], p, this.#c.getPeer));
       }
       return chatMembers;
     } else if (Api.is("inputPeerChat", peer)) {
@@ -194,7 +214,11 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       }
       const chatMembers = new Array<ChatMember>();
       for (const p of fullChat.participants.participants) {
-        chatMembers.push(constructChatMember(p, this.#c.getPeer));
+        const peer = this.#c.getPeer({ _: "peerUser", user_id: p.user_id });
+        if (!peer) {
+          unreachable();
+        }
+        chatMembers.push(constructChatMember(peer[0], p, this.#c.getPeer));
       }
       return chatMembers;
     } else {
