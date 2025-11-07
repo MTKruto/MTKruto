@@ -581,6 +581,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
       }
     };
 
+    const mustGetChatId = (ctx: Context) => {
+      if (ctx.chat) {
+        return ctx.chat.id;
+      } else {
+        unreachable();
+      }
+    };
     const mustGetUserId = (ctx: Context) => {
       if (ctx.msg?.from) {
         return ctx.msg.from.id;
@@ -758,7 +765,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         return this.client.setChatMemberRights(chatId, senderId, params);
       },
       getChatAdministrators() {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.getChatAdministrators(chatId);
       },
       react(reactions, params) {
@@ -778,7 +785,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         return this.client.answerInlineQuery(update.inlineQuery.id, results, params);
       },
       sendChatAction(chatAction, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.sendChatAction(chatId, chatAction, params);
       },
       editInlineMessageText(text, params) {
@@ -802,75 +809,75 @@ export class Client<C extends Context = Context> extends Composer<C> {
         return this.client.editInlineMessageReplyMarkup(inlineMessageId, params);
       },
       editMessageText(messageId, text, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.editMessageText(chatId, messageId, text, params);
       },
       editMessageCaption(messageId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.editMessageCaption(chatId, messageId, params);
       },
       editMessageMedia(messageId, media, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.editMessageMedia(chatId, messageId, media, params);
       },
       editMessageLiveLocation(messageId, latitude, longitude, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.editMessageLiveLocation(chatId, messageId, latitude, longitude, params);
       },
       editMessageReplyMarkup(messageId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.editMessageReplyMarkup(chatId, messageId, params);
       },
       getMessage(messageId) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.getMessage(chatId, messageId);
       },
       getMessages(messageIds) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.getMessages(chatId, messageIds);
       },
       forwardMessage(to, messageId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.forwardMessage(chatId, to, messageId, params);
       },
       forwardMessages(to, messageIds, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.forwardMessages(chatId, to, messageIds, params);
       },
       deleteMessage(messageId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.deleteMessage(chatId, messageId, params);
       },
       deleteMessages(messageIds, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.deleteMessages(chatId, messageIds, params);
       },
       pinMessage(messageId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.pinMessage(chatId, messageId, params);
       },
       unpinMessage(messageId) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.unpinMessage(chatId, messageId);
       },
       unpinMessages() {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.unpinMessages(chatId);
       },
       setAvailableReactions(availableReactions) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.setAvailableReactions(chatId, availableReactions);
       },
       addReaction(messageId, reaction, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.addReaction(chatId, messageId, reaction, params);
       },
       removeReaction(messageId, reaction) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.removeReaction(chatId, messageId, reaction);
       },
       setReactions(messageId, reactions, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.setReactions(chatId, messageId, reactions, params);
       },
       read() {
@@ -878,57 +885,57 @@ export class Client<C extends Context = Context> extends Composer<C> {
         return this.client.readMessages(chatId, messageId);
       },
       setChatPhoto(photo, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.setChatPhoto(chatId, photo, params);
       },
       deleteChatPhoto() {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.deleteChatPhoto(chatId);
       },
       banChatMember(memberId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.banChatMember(chatId, memberId, params);
       },
       unbanChatMember(memberId) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.unbanChatMember(chatId, memberId);
       },
       kickChatMember(memberId) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.kickChatMember(chatId, memberId);
       },
       setChatMemberRights(memberId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.setChatMemberRights(chatId, memberId, params);
       },
       promoteChatMember(userId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.promoteChatMember(chatId, userId, params);
       },
       deleteChatMemberMessages(userId) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.deleteChatMemberMessages(chatId, userId);
       },
       searchMessages(params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         params ??= {};
         (params as SearchMessagesParams).chatId = chatId;
         return this.client.searchMessages(params);
       },
       setBoostsRequiredToCircumventRestrictions(boosts) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
       },
       createInviteLink(params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.createInviteLink(chatId, params);
       },
       getCreatedInviteLinks(params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.getCreatedInviteLinks(chatId, params);
       },
       leave() {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.leaveChat(chatId);
       },
       block() {
@@ -938,19 +945,19 @@ export class Client<C extends Context = Context> extends Composer<C> {
         return this.client.unblockUser(mustGetUserId(this));
       },
       getChatMember(userId) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.getChatMember(chatId, userId);
       },
       getChatMembers(params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.getChatMembers(chatId, params);
       },
       setChatStickerSet(setName) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.setChatStickerSet(chatId, setName);
       },
       deleteChatStickerSet() {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.deleteChatStickerSet(chatId);
       },
       getBusinessConnection() {
