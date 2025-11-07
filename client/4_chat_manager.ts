@@ -60,7 +60,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     if (Api.is("updateChannelParticipant", update) || Api.is("updateChatParticipant", update)) {
       const chatMember = constructChatMemberUpdated(update, this.#c.getPeer);
       const selfId = await this.#c.getSelfId();
-      if (chatMember.oldChatMember.user.id === selfId) {
+      if (chatMember.oldChatMember.member.id === selfId) {
         return { myChatMember: chatMember };
       } else {
         return { chatMember };

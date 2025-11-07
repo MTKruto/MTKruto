@@ -23,8 +23,7 @@ import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { type ChatAdministratorRights, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
 import { type ChatMemberRights, constructChatMemberRights } from "./0_chat_member_rights.ts";
-import type { PeerGetter } from "./1_chat_p.ts";
-import { constructUser2, type User } from "./2_user.ts";
+import type { ChatP, PeerGetter } from "./1_chat_p.ts";
 
 /** @unlisted */
 export type ChatMemberStatus = "creator" | "administrator" | "member" | "restricted" | "left" | "banned";
@@ -32,7 +31,7 @@ export type ChatMemberStatus = "creator" | "administrator" | "member" | "restric
 /** @unlisted */
 export interface _ChatMemberBase {
   status: ChatMemberStatus;
-  user: User;
+  member: ChatP;
 }
 
 /** @unlisted */
@@ -77,26 +76,25 @@ export interface ChatMemberBanned extends _ChatMemberBase {
 /** A chat member. */
 export type ChatMember = ChatMemberCreator | ChatMemberAdministrator | ChatMemberMember | ChatMemberRestricted | ChatMemberLeft | ChatMemberBanned;
 
-export function constructChatMember(participant: Api.ChannelParticipant | Api.ChatParticipant | (Omit<Api.ChannelParticipant, "peer"> & { peer: ReturnType<typeof getPeer> }), getPeer: PeerGetter): ChatMember {
+export function constructChatMember(member: ChatP, participant: Api.ChannelParticipant | Api.ChatParticipant | (Omit<Api.ChannelParticipant, "peer"> & { peer: ReturnType<typeof getPeer> }), getPeer: PeerGetter): ChatMember {
   const peer = "user_id" in participant ? getPeer({ ...participant, _: "peerUser" }) : "peer" in participant ? Array.isArray(participant.peer) ? participant.peer : Api.is("peerUser", participant.peer) ? getPeer(participant.peer) : unreachable() : unreachable(); // TODO: support other peer types
   if (peer === null || peer[0].type !== "private") unreachable();
-  const user = constructUser2(peer[0]);
   if (Api.is("channelParticipant", participant) || Api.is("chatParticipant", participant)) {
     return {
       status: "member",
-      user,
+      member,
     };
   } else if (Api.is("channelParticipantCreator", participant)) {
     return cleanObject({
       status: "creator",
-      user,
+      member,
       isAnonymous: participant.admin_rights.anonymous ? true : false,
       title: participant.rank,
     });
   } else if (Api.is("channelParticipantAdmin", participant)) {
     return cleanObject({
       status: "administrator",
-      user,
+      member,
       rights: constructChatAdministratorRights(participant.admin_rights),
       title: participant.rank,
     });
@@ -106,7 +104,7 @@ export function constructChatMember(participant: Api.ChannelParticipant | Api.Ch
       participant.peer;
       return cleanObject({
         status: "banned",
-        user,
+        member,
         until,
       });
     }
@@ -114,7 +112,7 @@ export function constructChatMember(participant: Api.ChannelParticipant | Api.Ch
     const rights = constructChatMemberRights(participant.banned_rights);
     return cleanObject({
       status: "restricted",
-      user,
+      member,
       isMember,
       rights,
       until,
@@ -123,15 +121,15 @@ export function constructChatMember(participant: Api.ChannelParticipant | Api.Ch
     const until = participant.subscription_until_date ? participant.subscription_until_date : undefined;
     return cleanObject({
       status: "member",
-      user,
+      member,
       until,
     });
   } else if (Api.is("channelParticipantLeft", participant)) {
-    return { status: "left", user };
+    return { status: "left", member };
   } else if (Api.is("chatParticipantAdmin", participant)) {
     return cleanObject({
       status: "administrator",
-      user,
+      member,
       rights: {
         isAnonymous: false,
         canManageChat: true,
@@ -154,7 +152,7 @@ export function constructChatMember(participant: Api.ChannelParticipant | Api.Ch
   } else if (Api.is("chatParticipantCreator", participant)) {
     return cleanObject({
       status: "creator",
-      user,
+      member,
       isAnonymous: false,
     });
   } else {
