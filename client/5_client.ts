@@ -205,11 +205,11 @@ export interface Context {
   /** Context-aware alias for `client.getCreatedInviteLinks()`. */
   getCreatedInviteLinks: (params?: GetCreatedInviteLinksParams) => Promise<InviteLink[]>;
   /** Context-aware alias for `client.leaveChat()`. */
-  leave: () => Promise<void>;
+  leaveChat: () => Promise<void>;
   /** Context-aware alias for `client.blockUser()`. */
-  block: () => Promise<void>;
+  blockUser: () => Promise<void>;
   /** Context-aware alias for `client.unblockUser()`. */
-  unblock: () => Promise<void>;
+  unblockUser: () => Promise<void>;
   /** Context-aware alias for `client.getChatMember()`. */
   getChatMember: (userId: ID) => Promise<ChatMember>;
   /** Context-aware alias for `client.getChatMember()`. */
@@ -934,14 +934,14 @@ export class Client<C extends Context = Context> extends Composer<C> {
         const chatId = mustGetChatId(this);
         return this.client.getCreatedInviteLinks(chatId, params);
       },
-      leave() {
+      leaveChat() {
         const chatId = mustGetChatId(this);
         return this.client.leaveChat(chatId);
       },
-      block() {
+      blockUser() {
         return this.client.blockUser(mustGetUserId(this));
       },
-      unblock() {
+      unblockUser() {
         return this.client.unblockUser(mustGetUserId(this));
       },
       getChatMember(userId) {
