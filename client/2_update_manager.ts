@@ -586,9 +586,9 @@ export class UpdateManager {
 
     /// We process the updates when we are sure there is no gap.
     if (Api.is("updates", updates_) || Api.is("updatesCombined", updates_)) {
-      await this.processChats(updates_.chats, updates_);
-      await this.processUsers(updates_.users, updates_);
-      await this.#setUpdateStateDate(updates_.date);
+      this.processChats(updates_.chats, updates_);
+      this.processUsers(updates_.users, updates_);
+      this.#setUpdateStateDate(updates_.date);
     } else if (
       Api.isOneOf([
         "updateShort",
