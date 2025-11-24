@@ -1195,7 +1195,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
 
     if (typeof params === "undefined") {
-      const loginType = mustPromptOneOf("Do you want to login as bot [b] or user [u]?", ["b", "u"] as const);
+      const loginType = mustPromptOneOf("Do you want to sign in as a bot [b] or as a user [u]?", ["b", "u"] as const);
       if (loginType === "b") {
         params = { botToken: mustPrompt("Bot token:") };
       } else {
