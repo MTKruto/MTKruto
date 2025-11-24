@@ -23,7 +23,7 @@ import type { Api } from "../2_tl.ts";
 /** An answer to a callback query. */
 export interface CallbackQueryAnswer {
   /** Whether the answer should be shown as an alert. */
-  alert: boolean;
+  isAlert: boolean;
   /** The text of the answer. */
   text: string;
   /** A potential URL that is to be opened. */
@@ -32,7 +32,7 @@ export interface CallbackQueryAnswer {
 
 export function constructCallbackQueryAnswer(answer: Api.messages_botCallbackAnswer): CallbackQueryAnswer {
   return {
-    alert: !!answer.alert,
+    isAlert: !!answer.alert,
     text: answer.message ?? "",
     url: answer.url ?? "",
   };

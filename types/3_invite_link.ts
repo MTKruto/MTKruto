@@ -34,7 +34,7 @@ export interface InviteLink {
   requiresApproval: boolean;
   // TODO: primary?
   /** Whether the invite link is revoked. */
-  revoked: boolean;
+  isRevoked: boolean;
   /** An optional title. */
   title?: string;
   /** A point in time within the future in which the invite link will be revoked. */
@@ -57,7 +57,7 @@ export function constructInviteLink(inviteLink_: Api.chatInviteExported, getPeer
   const inviteLink = inviteLink_.link;
   const creator = constructUser2(peer[0]);
   const requiresApproval = inviteLink_.request_needed ? true : false;
-  const revoked = inviteLink_.revoked ? true : false;
+  const isRevoked = inviteLink_.revoked ? true : false;
   const title = inviteLink_.title;
   const expiresAt = inviteLink_.expire_date ? inviteLink_.expire_date : undefined;
   const limit = inviteLink_.usage_limit ? inviteLink_.usage_limit : undefined;
@@ -66,7 +66,7 @@ export function constructInviteLink(inviteLink_: Api.chatInviteExported, getPeer
     inviteLink,
     creator,
     requiresApproval,
-    revoked,
+    isRevoked,
     title,
     expiresAt,
     limit,

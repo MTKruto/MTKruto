@@ -60,7 +60,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
     if (!("poll" in message)) {
       throw new InputError("Message not a poll.");
     }
-    if (message.poll.options.filter((v) => v.chosen).length === 0 && optionIndexes.length === 0) {
+    if (message.poll.options.filter((v) => v.isChosen).length === 0 && optionIndexes.length === 0) {
       throw new InputError("No vote has been casted.");
     }
     if (!message.poll.allowMultipleAnswers && optionIndexes.length > 1) {
@@ -71,7 +71,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
         throw new InputError("Got invalid option index.");
       }
     }
-    if (optionIndexes.length > 0 && message.poll.options.map((v, i): [number, boolean] => [i, v.chosen]).filter((v) => v[1]).every(([v]) => optionIndexes.includes(v))) {
+    if (optionIndexes.length > 0 && message.poll.options.map((v, i): [number, boolean] => [i, v.isChosen]).filter((v) => v[1]).every(([v]) => optionIndexes.includes(v))) {
       throw new InputError("The same options are already casted.");
     }
     const peer = await this.#c.getInputPeer(chatId);

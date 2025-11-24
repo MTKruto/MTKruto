@@ -35,7 +35,7 @@ export interface ChatPhoto {
   /** Whether the chat photo is animated. */
   hasVideo: boolean;
   /** Differentiates between user profile photos. */
-  personal: boolean;
+  isPersonal: boolean;
 }
 
 export function constructChatPhoto(photo: Api.userProfilePhoto | Api.chatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto {
@@ -62,7 +62,7 @@ export function constructChatPhoto(photo: Api.userProfilePhoto | Api.chatPhoto, 
       bigFileId,
       bigFileUniqueId,
       hasVideo: photo.has_video || false,
-      personal: false,
+      isPersonal: false,
     });
   } else {
     return cleanObject({
@@ -71,7 +71,7 @@ export function constructChatPhoto(photo: Api.userProfilePhoto | Api.chatPhoto, 
       bigFileId,
       bigFileUniqueId,
       hasVideo: photo.has_video || false,
-      personal: photo.personal ? true : false,
+      isPersonal: photo.personal ? true : false,
     });
   }
 }

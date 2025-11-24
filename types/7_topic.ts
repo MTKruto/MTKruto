@@ -27,9 +27,9 @@ export interface Topic {
   id: number;
   date: number;
   creator: ChatP;
-  general: boolean;
-  closed: boolean;
-  hidden: boolean;
+  isGeneral: boolean;
+  isClosed: boolean;
+  isHidden: boolean;
   name: string;
   color: number;
   customEmojiId?: string;
@@ -51,9 +51,9 @@ export function constructTopic(message: Message): Topic {
   const id = forumTopicCreated.id;
   const date = forumTopicCreated.date;
   const creator = forumTopicCreated.from ? forumTopicCreated.from : message.from;
-  const general = forumTopicCreated.id === 1;
-  const closed = false;
-  const hidden = false;
+  const isGeneral = forumTopicCreated.id === 1;
+  const isClosed = false;
+  const isHidden = false;
   let name = forumTopicCreated.forumTopicCreated.name;
   const color = forumTopicCreated.forumTopicCreated.color;
   let customEmoijId = forumTopicCreated.forumTopicCreated.customEmojiId;
@@ -65,9 +65,9 @@ export function constructTopic(message: Message): Topic {
     id,
     date,
     creator: creator!,
-    general,
-    closed,
-    hidden,
+    isGeneral,
+    isClosed,
+    isHidden,
     name,
     color,
     customEmoijId,
