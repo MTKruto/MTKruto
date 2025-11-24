@@ -501,7 +501,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       this.invoke.use(async ({ error }, next) => {
         if (error instanceof FloodWait && error.seconds <= 10) {
           L.warning("sleeping for", error.seconds, "because of:", error);
-          await new Promise((r) => setTimeout(r, 1000 * error.seconds));
+          await delay(error.seconds * SECOND);
           return true;
         } else {
           return next();

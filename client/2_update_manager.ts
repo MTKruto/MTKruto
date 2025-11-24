@@ -1023,20 +1023,10 @@ export class UpdateManager {
           const Ti = Date.now();
           const timeout = await this.#recoverChannelUpdateGap(channelId, "openChat");
           const dT = Date.now() - Ti;
-          const delay = Math.max(timeout * 1_000 - dT, 0);
-          logger.debug("timeout =", timeout, "delay =", delay, "dT =", dT);
-          if (delay) {
-            await new Promise<void>((r) => {
-              const resolve = () => {
-                r();
-                controller.signal.removeEventListener("abort", resolve);
-                if (controller.signal.aborted) {
-                  clearTimeout(timeout);
-                }
-              };
-              controller.signal.addEventListener("abort", resolve);
-              const timeout = setTimeout(resolve, delay);
-            });
+          const delayMs = Math.max(timeout * 1_000 - dT, 0);
+          logger.debug("timeout =", timeout, "delay =", delayMs, "dT =", dT);
+          if (delayMs) {
+            await delay(delayMs, { signal: controller.signal });
           }
         } catch (err) {
           if (this.#c.disconnected()) {
