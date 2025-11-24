@@ -39,6 +39,10 @@ Deno.test("analyzeOptionalParam", () => {
 Deno.test("toJSON", () => {
   assertEquals(toJSON(0n), { _: "bigint", bigint: "0" });
 
+  assertEquals(toJSON([0n]), [{ _: "bigint", bigint: "0" }]);
+
+  assertEquals(toJSON({ bigint: 0n }), { bigint: { _: "bigint", bigint: "0" } });
+
   const buffer = crypto.getRandomValues(new Uint8Array(1024));
   assertEquals(toJSON(buffer), { _: "buffer", buffer: encodeHex(buffer) });
 
@@ -47,11 +51,13 @@ Deno.test("toJSON", () => {
       _: "object",
       buffer,
       bigint: 1234n,
+      bigints: [1n, 2n, 3n, 4n],
     }),
     {
       _: "object",
       buffer: { _: "buffer", buffer: encodeHex(buffer) },
       bigint: { _: "bigint", bigint: "1234" },
+      bigints: [{ _: "bigint", bigint: "1" }, { _: "bigint", bigint: "2" }, { _: "bigint", bigint: "3" }, { _: "bigint", bigint: "4" }],
     },
   );
 });
