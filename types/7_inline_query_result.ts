@@ -347,7 +347,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
         type: "text",
         text: result.send_message.message,
         entities: (result.send_message.entities ?? []).map(constructMessageEntity).filter((v) => v !== null) as MessageEntity[],
-        linkPreview: Api.is("botInlineMessageMediaWebPage", result.send_message) ? { type: "unknown", id: "", url: result.send_message.url, hasSmallMedia: result.send_message.force_small_media ?? false, hasLargeMedia: result.send_message.force_large_media ?? false, isAboveText: result.send_message.invert_media ?? false } : undefined,
+        linkPreview: Api.is("botInlineMessageMediaWebPage", result.send_message) ? { type: "unknown", id: "", url: result.send_message.url, mediaSize: result.send_message.force_large_media ? "large" : "small", isAboveText: result.send_message.invert_media ?? false } : undefined,
       }),
       replyMarkup: result.send_message.reply_markup ? constructReplyMarkup(result.send_message.reply_markup) as ReplyMarkupInlineKeyboard : undefined,
     });
@@ -640,7 +640,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     let sendMessage: Api.InputBotInlineMessage;
 
     if (result_.messageContent.linkPreview?.url) {
-      sendMessage = { _: "inputBotInlineMessageMediaWebPage", url: result_.messageContent.linkPreview.url, force_large_media: result_.messageContent.linkPreview.hasLargeMedia ? true : undefined, force_small_media: result_.messageContent.linkPreview.hasSmallMedia ? true : undefined, optional: message.length ? undefined : true, message, entities, invert_media: invertMedia, reply_markup: replyMarkup };
+      sendMessage = { _: "inputBotInlineMessageMediaWebPage", url: result_.messageContent.linkPreview.url, force_large_media: result_.messageContent.linkPreview.mediaSize === "large" ? true : undefined, force_small_media: result_.messageContent.linkPreview.mediaSize === "small" ? true : undefined, optional: message.length ? undefined : true, message, entities, invert_media: invertMedia, reply_markup: replyMarkup };
     } else {
       sendMessage = { _: "inputBotInlineMessageText", message, entities, no_webpage: noWebpage, invert_media: invertMedia, reply_markup: replyMarkup };
     }

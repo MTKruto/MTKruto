@@ -326,8 +326,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         media: ({
           _: "inputMediaWebPage",
           url: params.linkPreview.url,
-          force_large_media: params.linkPreview.hasLargeMedia ? true : undefined,
-          force_small_media: params.linkPreview.hasSmallMedia ? true : undefined,
+          force_large_media: params.linkPreview.mediaSize === "large" ? true : undefined,
+          force_small_media: params.linkPreview.mediaSize === "small" ? true : undefined,
           optional: message.length ? undefined : true,
         }),
         message,
@@ -852,7 +852,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     let media: Api.InputMedia | undefined = undefined;
     if (!noWebpage && params?.linkPreview?.url) {
-      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.hasLargeMedia ? true : undefined, force_small_media: params.linkPreview.hasSmallMedia ? true : undefined, optional: message.length ? undefined : true };
+      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.mediaSize === "large" ? true : undefined, force_small_media: params.linkPreview.mediaSize === "small" ? true : undefined, optional: message.length ? undefined : true };
     }
 
     const result = await this.#c.invoke({
@@ -917,7 +917,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     let media: Api.InputMedia | undefined = undefined;
     if (!noWebpage && params?.linkPreview?.url) {
-      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.hasLargeMedia ? true : undefined, force_small_media: params.linkPreview.hasSmallMedia ? true : undefined, optional: message.length ? undefined : true };
+      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.mediaSize === "large" ? true : undefined, force_small_media: params.linkPreview.mediaSize === "small" ? true : undefined, optional: message.length ? undefined : true };
     }
 
     await this.#c.invoke({

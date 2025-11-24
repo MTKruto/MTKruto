@@ -22,6 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { type FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
+import type { LinkPreviewMediaSize } from "./0_link_preview_media_size.ts";
 import { type Audio, constructAudio } from "./1_audio.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 import { constructDocument, type Document } from "./1_document.ts";
@@ -39,10 +40,8 @@ export interface InputLinkPreview {
   disable?: boolean;
   /** The URL of the preview. */
   url?: string;
-  /** Wether the media is to be shown in a small size. */
-  hasSmallMedia?: boolean;
-  /** Whether the media is to be shown in a large size. */
-  hasLargeMedia?: boolean;
+  /** The size of the media that will potentially be shown. */
+  mediaSize?: LinkPreviewMediaSize;
   /** Whether the preview is to be shown above the message's text. */
   isAboveText?: boolean;
 }
@@ -54,10 +53,8 @@ export interface InputLinkPreview {
 export interface _LinkPreviewBase {
   /** The ID of the link preview. */
   id: string;
-  /** Wether the media is to be shown in a small size. */
-  hasSmallMedia: boolean;
-  /** Whether the media is to be shown in a large size. */
-  hasLargeMedia: boolean;
+  /** The size in which the media is expected to be displayed in. */
+  mediaSize: LinkPreviewMediaSize;
   /** Whether the preview is to be shown above the message's text. */
   isAboveText: boolean;
 }
@@ -225,8 +222,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
     unreachable();
   }
   const id = String(media.webpage.id);
-  const hasSmallMedia = !!media.force_small_media;
-  const hasLargeMedia = !!media.force_large_media;
+  const mediaSize: LinkPreviewMediaSize = media.force_large_media ? "large" : "small";
   const isAboveText = !!invert;
 
   switch (media.webpage._) {
@@ -236,8 +232,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
         id,
         date: media.webpage.date,
         url: media.webpage.url,
-        hasSmallMedia,
-        hasLargeMedia,
+        mediaSize,
         isAboveText,
       });
     case "webPageEmpty":
@@ -245,8 +240,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
         type: "notLoaded",
         id,
         url: media.webpage.url,
-        hasSmallMedia,
-        hasLargeMedia,
+        mediaSize,
         isAboveText,
       });
   }
@@ -255,8 +249,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
     type: "unknown",
     id,
     url,
-    hasSmallMedia,
-    hasLargeMedia,
+    mediaSize,
     isAboveText,
   };
 
@@ -267,8 +260,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "embeddedVideo",
           id,
           url,
-          hasSmallMedia,
-          hasLargeMedia,
+          mediaSize,
           isAboveText,
           embedUrl: media.webpage.embed_url ?? "",
           width: media.webpage.embed_width ?? 0,
@@ -292,8 +284,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "video",
           id,
           url,
-          hasSmallMedia,
-          hasLargeMedia,
+          mediaSize,
           isAboveText,
           video: constructDocument(document, fileName ?? { _: "documentAttributeFilename", file_name: "Unknown" }, serializeFileId(fileId), toUniqueFileId(fileId)),
           startTimestamp,
@@ -305,8 +296,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "externalVideo",
           id,
           url,
-          hasSmallMedia,
-          hasLargeMedia,
+          mediaSize,
           isAboveText,
           embedUrl: media.webpage.embed_url ?? "",
           mimeType: media.webpage.embed_type ?? "",
@@ -320,8 +310,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "photo",
           id,
           url,
-          hasSmallMedia,
-          hasLargeMedia,
+          mediaSize,
           isAboveText,
           photo: constructPhoto(Api.as("photo", media.webpage.photo)),
         };
@@ -334,8 +323,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "embeddedAudio",
           id,
           url,
-          hasSmallMedia,
-          hasLargeMedia,
+          mediaSize,
           isAboveText,
           embedUrl: media.webpage.embed_url ?? "",
           width: media.webpage.embed_width ?? 0,
@@ -356,8 +344,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "audio",
           id,
           url,
-          hasSmallMedia,
-          hasLargeMedia,
+          mediaSize,
           isAboveText,
           audio: constructAudio(document, audio, serializeFileId(fileId), toUniqueFileId(fileId)),
         };
@@ -367,8 +354,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "externalAudio",
           id,
           url,
-          hasSmallMedia,
-          hasLargeMedia,
+          mediaSize,
           isAboveText,
           embedUrl: media.webpage.embed_url,
           mimeType: media.webpage.embed_type ?? "",
@@ -382,8 +368,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "photo",
           id,
           url,
-          hasSmallMedia,
-          hasLargeMedia,
+          mediaSize,
           isAboveText,
           photo: constructPhoto(Api.as("photo", media.webpage.photo)),
         };
@@ -397,8 +382,7 @@ export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boo
           type: "gift",
           id,
           url,
-          hasSmallMedia,
-          hasLargeMedia,
+          mediaSize,
           isAboveText,
           gift: constructGift(gift, getPeer),
         };
