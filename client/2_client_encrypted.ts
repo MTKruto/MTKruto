@@ -214,6 +214,7 @@ export class ClientEncrypted extends ClientAbstract {
       const messageId = await this.#send(request.call);
       this.#sentRequests.set(messageId, request);
     } catch (err) {
+      this.#L.error("rejecting message because of resend error:", err);
       request.promiseWithResolvers.reject(err);
     }
   }

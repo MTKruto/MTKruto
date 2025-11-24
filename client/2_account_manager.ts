@@ -155,7 +155,7 @@ export class AccountManager {
   async #getUserFull(chatId: ID): Promise<Api.userFull> {
     const inputPeer = await this.#c.getInputPeer(chatId);
     const chatId_ = await this.#c.getInputPeerChatId(inputPeer);
-    let fullChat = await this.#c.storage.getFullChat(chatId_);
+    let fullChat = await this.#c.messageStorage.getFullChat(chatId_);
     if (fullChat !== null) {
       if (!Api.is("userFull", fullChat)) {
         unreachable();
@@ -173,20 +173,20 @@ export class AccountManager {
     this.#c.storage.assertUser("updateProfile");
     const selfId = await this.#c.getSelfId();
     const userFull = await this.#getUserFull(selfId);
-    const entity = await this.#c.getPeer(Api.chatIdToPeer(selfId));
-    if (!Api.is("user", entity)) {
+    const peer = this.#c.getPeer(Api.chatIdToPeer(selfId));
+    if (!peer || peer[0].type !== "private") {
       unreachable();
     }
     params ??= {};
     if (params?.firstName) {
       params.firstName = params.firstName.trim();
     } else {
-      params.firstName = entity.first_name;
+      params.firstName = peer[0].firstName;
     }
     if (params?.lastName) {
       params.lastName = params.lastName.trim();
     } else {
-      params.lastName = entity.last_name;
+      params.lastName = peer[0].lastName;
     }
     if (params?.bio) {
       params.bio = params.bio.trim();
@@ -217,13 +217,13 @@ export class AccountManager {
   async setNameColor(color: number, params?: SetNameColorParams) {
     this.#c.storage.assertUser("setNameColor");
     const background_emoji_id = params?.customEmojiId ? BigInt(params.customEmojiId) : undefined;
-    await this.#c.invoke({ _: "account.updateColor", color, background_emoji_id });
+    await this.#c.invoke({ _: "account.updateColor", color: { _: "peerColor", color, background_emoji_id } });
   }
 
   async setProfileColor(color: number, params?: SetProfileColorParams) {
     this.#c.storage.assertUser("setProfileColor");
     const background_emoji_id = params?.customEmojiId ? BigInt(params.customEmojiId) : undefined;
-    await this.#c.invoke({ _: "account.updateColor", for_profile: true, color, background_emoji_id });
+    await this.#c.invoke({ _: "account.updateColor", for_profile: true, color: { _: "peerColor", color, background_emoji_id } });
   }
 
   async setLocation(params?: SetLocationParams) {

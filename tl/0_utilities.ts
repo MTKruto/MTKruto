@@ -50,7 +50,11 @@ export function toJSON(object: unknown): any {
     return { _: "bigint", bigint: String(object) };
   } else if (object instanceof Uint8Array) {
     return { _: "buffer", buffer: encodeHex(object) };
-  } else if (object !== null && typeof object === "object" && ("_" in object)) {
+  } else if (object === null) {
+    return null;
+  } else if (Array.isArray(object)) {
+    return object.map(toJSON);
+  } else if (typeof object === "object") {
     const newObject: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(object)) {
       newObject[key] = toJSON(value);

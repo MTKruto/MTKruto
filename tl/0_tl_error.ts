@@ -19,5 +19,6 @@
  */
 
 export class TLError extends Error {
+  override name = "TLError";
   //
 }

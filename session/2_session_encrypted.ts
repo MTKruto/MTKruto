@@ -345,6 +345,7 @@ export class SessionEncrypted extends Session implements Session {
   async #receiveLoopBody(loop: AbortableLoop) {
     let message: message;
     try {
+      this.#LreceiveLoop.debug("receiving");
       message = await this.#receive();
     } catch (err) {
       this.#LreceiveLoop.error("failed to receive message:", err);
@@ -358,9 +359,9 @@ export class SessionEncrypted extends Session implements Session {
     }
     try {
       if (message.body instanceof Uint8Array) {
-        this.#onMessage(message.msg_id, message.body, null);
+        await this.#onMessage(message.msg_id, message.body, null);
       } else {
-        this.#onMessageContainer(message.msg_id, message.body);
+        await this.#onMessageContainer(message.msg_id, message.body);
       }
     } catch (err) {
       this.#LreceiveLoop.error("failed to handle message:", err);
@@ -497,34 +498,39 @@ export class SessionEncrypted extends Session implements Session {
     this.#toAcknowledge.push(msgId);
   }
 
-  #onMessageContainer(msgId: bigint, msgContainer: msg_container) {
+  async #onMessageContainer(msgId: bigint, msgContainer: msg_container) {
     this.#LreceiveLoop.debug("received container with ID", msgId, "and", msgContainer.messages.length, "message(s)");
     for (const message of msgContainer.messages) {
       if (message.body instanceof Uint8Array) {
-        this.#onMessage(message.msg_id, message.body, msgId);
+        await this.#onMessage(message.msg_id, message.body, msgId);
       } else {
-        this.#onMessageContainer(msgId, message.body);
+        await this.#onMessageContainer(msgId, message.body);
       }
     }
   }
 
   //// PING LOOP ////
   #pingInterval = 56 * SECOND;
-  #pingLoop = new AbortableLoop(this.#pingLoopBody.bind(this), (err) => {
+  #pingLoop = new AbortableLoop(this.#pingLoopBody.bind(this), (_, err) => {
     this.#LpingLoop.error(err);
   });
+  #timeElapsed = 0;
   async #pingLoopBody(_loop: AbortableLoop, signal: AbortSignal) {
-    let timeElapsed = 0;
-    await delay(Math.max(0, this.#pingInterval - timeElapsed), { signal });
-    if (!this.connected) {
-      return;
+    const ms = Math.max(0, this.#pingInterval - this.#timeElapsed);
+    if (ms) {
+      this.#LpingLoop.debug(`sending ping in ${ms}ms`);
+      await delay(ms, { signal });
+    } else {
+      this.#LpingLoop.debug("sending ping now");
     }
     signal.throwIfAborted();
     const then = Date.now();
     try {
       await this.#sendPingDelayDisconnect(this.#pingInterval / SECOND + 15);
+      this.#LpingLoop.debug("received pong");
     } finally {
-      timeElapsed = Date.now() - then;
+      this.#timeElapsed = Date.now() - then;
+      this.#LpingLoop.debug(`took ${this.#timeElapsed}`);
     }
     signal.throwIfAborted();
   }
@@ -533,14 +539,18 @@ export class SessionEncrypted extends Session implements Session {
     const ping_id = getRandomId();
     const call: Mtproto.ping_delay_disconnect = { _: "ping_delay_disconnect", ping_id, disconnect_delay };
     const messageId = await this.send(Mtproto.serializeObject(call));
-    this.#pendingPings.set(messageId, { call, promiseWithResolvers: Promise.withResolvers() });
+    const promiseWithResolvers = Promise.withResolvers<Mtproto.pong>();
+    this.#pendingPings.set(messageId, { call, promiseWithResolvers });
+    await promiseWithResolvers.promise;
   }
 
   async #resendPendingPing(pendingPing: PendingPing) {
     try {
       const messageId = await this.send(Mtproto.serializeObject(pendingPing.call));
       this.#pendingPings.set(messageId, pendingPing);
+      this.#LreceiveLoop.debug("ping resent");
     } catch (err) {
+      this.#LreceiveLoop.debug("rejecting ping because of failed resend:", err);
       pendingPing.promiseWithResolvers.reject(err);
     }
   }

@@ -114,7 +114,7 @@ export class UpdateManager {
       return this.#c.dropPendingUpdates;
     }
     if (this.#defaultDropPendingUpdates === null) {
-      this.#defaultDropPendingUpdates = this.#c.storage.auth.mustGet().isBot;
+      this.#defaultDropPendingUpdates = this.#c.storage.isBot;
     }
     return this.#defaultDropPendingUpdates;
   }
@@ -224,7 +224,13 @@ export class UpdateManager {
   }
 
   async processResult(result: Api.DeserializedType) {
-    if (result !== null && typeof result === "object") {
+    if (Array.isArray(result)) { // users.getUsers, bots.getAdminedBots
+      if (Api.isOfEnum("User", result[0])) {
+        for (const user of result) {
+          this.processUser(user as Api.User);
+        }
+      }
+    } else if (result !== null && typeof result === "object") {
       if ("chats" in result) {
         let valid = true;
         for (const chat of result.chats) {
@@ -276,7 +282,7 @@ export class UpdateManager {
   }
 
   processUser(user: Api.User) {
-    if (Api.is("userEmpty", user)) {
+    if (!Api.is("user", user)) {
       return;
     }
     if (user.min) {
@@ -580,9 +586,9 @@ export class UpdateManager {
 
     /// We process the updates when we are sure there is no gap.
     if (Api.is("updates", updates_) || Api.is("updatesCombined", updates_)) {
-      await this.processChats(updates_.chats, updates_);
-      await this.processUsers(updates_.users, updates_);
-      await this.#setUpdateStateDate(updates_.date);
+      this.processChats(updates_.chats, updates_);
+      this.processUsers(updates_.users, updates_);
+      this.#setUpdateStateDate(updates_.date);
     } else if (
       Api.isOneOf([
         "updateShort",
@@ -736,7 +742,7 @@ export class UpdateManager {
           pts,
           channel: { _: "inputChannel", channel_id: channelId, access_hash },
           filter: { _: "channelMessagesFilterEmpty" },
-          limit: this.#c.storage.auth.mustGet().isBot ? CHANNEL_DIFFERENCE_LIMIT_BOT : CHANNEL_DIFFERENCE_LIMIT_USER,
+          limit: this.#c.storage.isBot ? CHANNEL_DIFFERENCE_LIMIT_BOT : CHANNEL_DIFFERENCE_LIMIT_USER,
         });
         lastTimeout = difference.timeout ?? 1;
       } catch (err) {
@@ -1017,20 +1023,10 @@ export class UpdateManager {
           const Ti = Date.now();
           const timeout = await this.#recoverChannelUpdateGap(channelId, "openChat");
           const dT = Date.now() - Ti;
-          const delay = Math.max(timeout * 1_000 - dT, 0);
-          logger.debug("timeout =", timeout, "delay =", delay, "dT =", dT);
-          if (delay) {
-            await new Promise<void>((r) => {
-              const resolve = () => {
-                r();
-                controller.signal.removeEventListener("abort", resolve);
-                if (controller.signal.aborted) {
-                  clearTimeout(timeout);
-                }
-              };
-              controller.signal.addEventListener("abort", resolve);
-              const timeout = setTimeout(resolve, delay);
-            });
+          const delayMs = Math.max(timeout * 1_000 - dT, 0);
+          logger.debug("timeout =", timeout, "delay =", delayMs, "dT =", dT);
+          if (delayMs) {
+            await delay(delayMs, { signal: controller.signal });
           }
         } catch (err) {
           if (this.#c.disconnected()) {

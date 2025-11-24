@@ -18,33 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export abstract class MtkrutoError extends Error {
-}
+import type { Api } from "../2_tl.ts";
+import type { Update } from "../3_types.ts";
 
-export class ConnectionError extends MtkrutoError {
-  constructor(...args: ConstructorParameters<typeof Error>) {
-    super(...args);
-    this.name = "ConnectionError";
-  }
-}
-
-export class AccessError extends MtkrutoError {
-  constructor(...args: ConstructorParameters<typeof Error>) {
-    super(...args);
-    this.name = "AccessError";
-  }
-}
-
-export class InputError extends MtkrutoError {
-  constructor(...args: ConstructorParameters<typeof Error>) {
-    super(...args);
-    this.name = "InputError";
-  }
-}
-
-export class TransportError extends MtkrutoError {
-  constructor(public readonly code: number) {
-    super(`Transport error: ${code}`);
-    this.name = "TransportError";
-  }
+export interface UpdateProcessor<U extends Api.Update, P extends boolean = false> {
+  canHandleUpdate(update: Api.Update): update is U;
+  handleUpdate(update: U): P extends false ? Update | null : Promise<Update | null>;
 }

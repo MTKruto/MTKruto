@@ -52,10 +52,10 @@ export class ForumManager {
       this.#c.storage.assertUser("sendAs");
       send_as = await this.#c.getInputPeer(params.sendAs);
     }
-    const channel = await this.#c.getInputChannel(chatId);
+    const peer = await this.#c.getInputPeer(chatId);
     const updates = await this.#c.invoke({
-      _: "channels.createForumTopic",
-      channel,
+      _: "messages.createForumTopic",
+      peer,
       title,
       icon_color: params?.color,
       icon_emoji_id: params?.customEmojiId ? BigInt(params.customEmojiId) : undefined,
@@ -81,10 +81,10 @@ export class ForumManager {
   async editTopic(chatId: ID, topicId: number, title: string, params?: EditTopicParams) {
     ForumManager.#assertNongenralTopicIdValid(topicId);
     title = ForumManager.#validateTopicTitle(title);
-    const channel = await this.#c.getInputChannel(chatId);
+    const peer = await this.#c.getInputPeer(chatId);
     const updates = await this.#c.invoke({
-      _: "channels.editForumTopic",
-      channel,
+      _: "messages.editForumTopic",
+      peer,
       topic_id: topicId,
       title,
       icon_emoji_id: params?.customEmojiId ? BigInt(params.customEmojiId) : undefined,
@@ -94,10 +94,10 @@ export class ForumManager {
   }
 
   async #toggleGeneralTopicHidden(chatId: ID, hidden: boolean) {
-    const channel = await this.#c.getInputChannel(chatId);
+    const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({
-      _: "channels.editForumTopic",
-      channel,
+      _: "messages.editForumTopic",
+      peer,
       topic_id: 1,
       hidden,
     });
@@ -113,10 +113,10 @@ export class ForumManager {
 
   async #toggleNongeneralTopicClosed(chatId: ID, topicId: number, closed: boolean) {
     ForumManager.#assertNongenralTopicIdValid(topicId);
-    const channel = await this.#c.getInputChannel(chatId);
+    const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({
-      _: "channels.editForumTopic",
-      channel,
+      _: "messages.editForumTopic",
+      peer,
       topic_id: 1,
       closed,
     });
@@ -132,10 +132,10 @@ export class ForumManager {
 
   async #setTopicPinned(chatId: ID, topicId: number, pinned: boolean) {
     ForumManager.#assertAnyTopicIdValid(topicId);
-    const channel = await this.#c.getInputChannel(chatId);
+    const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({
-      _: "channels.updatePinnedForumTopic",
-      channel,
+      _: "messages.updatePinnedForumTopic",
+      peer,
       topic_id: 1,
       pinned,
     });

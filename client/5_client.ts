@@ -30,7 +30,7 @@ import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumb
 import { PhoneCodeInvalid } from "../4_errors.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
-import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenMiniAppParams, PinMessageParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -192,6 +192,8 @@ export interface Context {
   kickChatMember: (memberId: ID) => Promise<void>;
   /** Context-aware alias for `client.setChatMemberRights()`. */
   setChatMemberRights: (memberId: ID, params?: SetChatMemberRightsParams) => Promise<void>;
+  /** Context-aware alias for `client.promoteChatMember()`. */
+  promoteChatMember: (userId: ID, params?: PromoteChatMemberParams) => Promise<void>;
   /** Context-aware alias for `client.deleteChatMemberMessages()`. */
   deleteChatMemberMessages: (userId: ID) => Promise<void>;
   /** Context-aware alias for `client.searchMessages()`. */
@@ -203,11 +205,11 @@ export interface Context {
   /** Context-aware alias for `client.getCreatedInviteLinks()`. */
   getCreatedInviteLinks: (params?: GetCreatedInviteLinksParams) => Promise<InviteLink[]>;
   /** Context-aware alias for `client.leaveChat()`. */
-  leave: () => Promise<void>;
+  leaveChat: () => Promise<void>;
   /** Context-aware alias for `client.blockUser()`. */
-  block: () => Promise<void>;
+  blockUser: () => Promise<void>;
   /** Context-aware alias for `client.unblockUser()`. */
-  unblock: () => Promise<void>;
+  unblockUser: () => Promise<void>;
   /** Context-aware alias for `client.getChatMember()`. */
   getChatMember: (userId: ID) => Promise<ChatMember>;
   /** Context-aware alias for `client.getChatMember()`. */
@@ -499,7 +501,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       this.invoke.use(async ({ error }, next) => {
         if (error instanceof FloodWait && error.seconds <= 10) {
           L.warning("sleeping for", error.seconds, "because of:", error);
-          await new Promise((r) => setTimeout(r, 1000 * error.seconds));
+          await delay(error.seconds * SECOND);
           return true;
         } else {
           return next();
@@ -579,6 +581,13 @@ export class Client<C extends Context = Context> extends Composer<C> {
       }
     };
 
+    const mustGetChatId = (ctx: Context) => {
+      if (ctx.chat) {
+        return ctx.chat.id;
+      } else {
+        unreachable();
+      }
+    };
     const mustGetUserId = (ctx: Context) => {
       if (ctx.msg?.from) {
         return ctx.msg.from.id;
@@ -756,7 +765,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         return this.client.setChatMemberRights(chatId, senderId, params);
       },
       getChatAdministrators() {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.getChatAdministrators(chatId);
       },
       react(reactions, params) {
@@ -776,7 +785,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
         return this.client.answerInlineQuery(update.inlineQuery.id, results, params);
       },
       sendChatAction(chatAction, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.sendChatAction(chatId, chatAction, params);
       },
       editInlineMessageText(text, params) {
@@ -800,75 +809,75 @@ export class Client<C extends Context = Context> extends Composer<C> {
         return this.client.editInlineMessageReplyMarkup(inlineMessageId, params);
       },
       editMessageText(messageId, text, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.editMessageText(chatId, messageId, text, params);
       },
       editMessageCaption(messageId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.editMessageCaption(chatId, messageId, params);
       },
       editMessageMedia(messageId, media, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.editMessageMedia(chatId, messageId, media, params);
       },
       editMessageLiveLocation(messageId, latitude, longitude, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.editMessageLiveLocation(chatId, messageId, latitude, longitude, params);
       },
       editMessageReplyMarkup(messageId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.editMessageReplyMarkup(chatId, messageId, params);
       },
       getMessage(messageId) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.getMessage(chatId, messageId);
       },
       getMessages(messageIds) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.getMessages(chatId, messageIds);
       },
       forwardMessage(to, messageId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.forwardMessage(chatId, to, messageId, params);
       },
       forwardMessages(to, messageIds, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.forwardMessages(chatId, to, messageIds, params);
       },
       deleteMessage(messageId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.deleteMessage(chatId, messageId, params);
       },
       deleteMessages(messageIds, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.deleteMessages(chatId, messageIds, params);
       },
       pinMessage(messageId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.pinMessage(chatId, messageId, params);
       },
       unpinMessage(messageId) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.unpinMessage(chatId, messageId);
       },
       unpinMessages() {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.unpinMessages(chatId);
       },
       setAvailableReactions(availableReactions) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.setAvailableReactions(chatId, availableReactions);
       },
       addReaction(messageId, reaction, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.addReaction(chatId, messageId, reaction, params);
       },
       removeReaction(messageId, reaction) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.removeReaction(chatId, messageId, reaction);
       },
       setReactions(messageId, reactions, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.setReactions(chatId, messageId, reactions, params);
       },
       read() {
@@ -876,75 +885,79 @@ export class Client<C extends Context = Context> extends Composer<C> {
         return this.client.readMessages(chatId, messageId);
       },
       setChatPhoto(photo, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.setChatPhoto(chatId, photo, params);
       },
       deleteChatPhoto() {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.deleteChatPhoto(chatId);
       },
       banChatMember(memberId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.banChatMember(chatId, memberId, params);
       },
       unbanChatMember(memberId) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.unbanChatMember(chatId, memberId);
       },
       kickChatMember(memberId) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.kickChatMember(chatId, memberId);
       },
       setChatMemberRights(memberId, params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.setChatMemberRights(chatId, memberId, params);
       },
+      promoteChatMember(userId, params) {
+        const chatId = mustGetChatId(this);
+        return this.client.promoteChatMember(chatId, userId, params);
+      },
       deleteChatMemberMessages(userId) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.deleteChatMemberMessages(chatId, userId);
       },
       searchMessages(params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         params ??= {};
         (params as SearchMessagesParams).chatId = chatId;
         return this.client.searchMessages(params);
       },
       setBoostsRequiredToCircumventRestrictions(boosts) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
       },
       createInviteLink(params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.createInviteLink(chatId, params);
       },
       getCreatedInviteLinks(params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.getCreatedInviteLinks(chatId, params);
       },
-      leave() {
-        const { chatId } = mustGetMsg(this);
+      leaveChat() {
+        const chatId = mustGetChatId(this);
         return this.client.leaveChat(chatId);
       },
-      block() {
+      blockUser() {
         return this.client.blockUser(mustGetUserId(this));
       },
-      unblock() {
+      unblockUser() {
         return this.client.unblockUser(mustGetUserId(this));
       },
       getChatMember(userId) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.getChatMember(chatId, userId);
       },
       getChatMembers(params) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.getChatMembers(chatId, params);
       },
       setChatStickerSet(setName) {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.setChatStickerSet(chatId, setName);
       },
       deleteChatStickerSet() {
-        const { chatId } = mustGetMsg(this);
+        const chatId = mustGetChatId(this);
         return this.client.deleteChatStickerSet(chatId);
       },
       getBusinessConnection() {
@@ -1163,6 +1176,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   async signIn(params?: SignInParams) {
     try {
       await this.#updateManager.fetchState("signIn");
+      await this.#getMe();
       await this.#propagateAuthorizationState(true);
       drop(this.#updateManager.recoverUpdateGap("signIn"));
       this.#LsignIn.debug("already signed in");
@@ -1637,8 +1651,8 @@ export class Client<C extends Context = Context> extends Composer<C> {
         resolvedId = id;
       } else {
         const resolved = await this.invoke({ _: "contacts.resolveUsername", username: id });
-        await this.#updateManager.processChats(resolved.chats, resolved);
-        await this.#updateManager.processUsers(resolved.users, resolved);
+        this.#updateManager.processChats(resolved.chats, resolved);
+        this.#updateManager.processUsers(resolved.users, resolved);
         if (Api.is("peerUser", resolved.peer)) {
           resolvedId = Api.peerToChatId(resolved.peer);
         } else if (Api.is("peerChannel", resolved.peer)) {
@@ -1650,7 +1664,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
       const resolvedIdType = Api.getChatIdPeerType(resolvedId);
       if (resolvedIdType === "user") {
         const accessHash = await this.messageStorage.getUserAccessHash(resolvedId);
-
         peer = { _: "inputPeerUser", user_id: Api.chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n } as Api.inputPeerUser;
       } else if (resolvedIdType === "channel") {
         const accessHash = await this.messageStorage.getChannelAccessHash(resolvedId);
@@ -1707,10 +1720,12 @@ export class Client<C extends Context = Context> extends Composer<C> {
   private async [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
     const id = Api.peerToChatId(peer);
     const entity = await this.messageStorage.peers.get([id]);
-    if (entity === null && this.storage.isBot && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
-      await this.getInputPeer(id);
-    } else {
-      return entity;
+    if (entity === null) {
+      if (entity === null && this.storage.isBot && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
+        await this.getInputPeer(id);
+      } else {
+        return entity;
+      }
     }
     return await this.messageStorage.peers.get([id]);
   }
@@ -2696,6 +2711,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the message.
+   * @method ms
    */
   async getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList> {
     return await this.#messageManager.getMessageReactions(chatId, messageId, params);
@@ -3445,6 +3461,17 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async unpinTopic(chatId: ID, topicId: number): Promise<void> {
     await this.#forumManager.unpinTopic(chatId, topicId);
+  }
+
+  /**
+   * Promote a chat member.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param userId The identifier of the user to promote.
+   */
+  async promoteChatMember(chatId: ID, userId: ID, params?: PromoteChatMemberParams): Promise<void> {
+    await this.#chatManager.promoteChatMember(chatId, userId, params);
   }
 
   //

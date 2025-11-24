@@ -18,24 +18,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export { assert } from "jsr:@std/assert@1.0.14/assert";
-export { assertFalse } from "jsr:@std/assert@1.0.14/false";
-export { assertEquals } from "jsr:@std/assert@1.0.14/equals";
-export { unreachable } from "jsr:@std/assert@1.0.14/unreachable";
-export { assertInstanceOf } from "jsr:@std/assert@1.0.14/instance-of";
-export { AssertionError } from "jsr:@std/assert@1.0.14/assertion-error";
+export { assert } from "jsr:@std/assert@1.0.16/assert";
+export { assertFalse } from "jsr:@std/assert@1.0.16/false";
+export { assertEquals } from "jsr:@std/assert@1.0.16/equals";
+export { unreachable } from "jsr:@std/assert@1.0.16/unreachable";
+export { assertInstanceOf } from "jsr:@std/assert@1.0.16/instance-of";
+export { AssertionError } from "jsr:@std/assert@1.0.16/assertion-error";
 
-export { join } from "jsr:@std/path@1.1.2/join";
-export { extname } from "jsr:@std/path@1.1.2/extname";
-export { basename } from "jsr:@std/path@1.1.2/basename";
-export { toFileUrl } from "jsr:@std/path@1.1.2/to-file-url";
-export { isAbsolute } from "jsr:@std/path@1.1.2/is-absolute";
+export { join } from "jsr:@std/path@1.1.3/join";
+export { extname } from "jsr:@std/path@1.1.3/extname";
+export { basename } from "jsr:@std/path@1.1.3/basename";
+export { toFileUrl } from "jsr:@std/path@1.1.3/to-file-url";
+export { isAbsolute } from "jsr:@std/path@1.1.3/is-absolute";
 
-export { delay, pooledMap } from "jsr:@std/async@1.0.14";
+export { delay, pooledMap } from "jsr:@std/async@1.0.15";
 
 export { concat } from "jsr:@std/bytes@1.0.6/concat";
 
-export { LruCache } from "jsr:@std/cache@0.2.0/lru-cache";
+export { LruCache } from "jsr:@std/cache@0.2.1/lru-cache";
 
 export { iterateReader } from "jsr:@std/io@0.225.2/iterate-reader";
 

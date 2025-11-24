@@ -22,8 +22,8 @@ import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import type { ChatP, PeerGetter } from "./1_chat_p.ts";
+import { type ChatMember, constructChatMember } from "./2_chat_member.ts";
 import { constructUser2, type User } from "./2_user.ts";
-import { type ChatMember, constructChatMember } from "./3_chat_member.ts";
 import { constructInviteLink, type InviteLink } from "./3_invite_link.ts";
 
 /** Changes made to a chat member. */
@@ -49,16 +49,16 @@ export function constructChatMemberUpdated(update: Api.updateChannelParticipant 
     unreachable();
   }
   const peer = getPeer("channel_id" in update ? { channel_id: update.channel_id, _: "peerChannel" } : { chat_id: update.chat_id, _: "peerChat" });
-  const userPeer = getPeer({ _: "peerUser", user_id: update.actor_id });
-  if (!peer || !userPeer) {
+  const actorPeer = getPeer({ _: "peerUser", user_id: update.actor_id });
+  const memberPeer = getPeer(update.new_participant && "peer" in update.new_participant ? update.new_participant.peer : update.prev_participant && "peer" in update.prev_participant ? update.prev_participant.peer : { _: "peerUser", user_id: update.user_id });
+  if (!peer || !memberPeer || !actorPeer) {
     unreachable();
   }
   const chat = peer[0];
-  const from = constructUser2(userPeer[0]);
+  const from = constructUser2(actorPeer[0]);
   const date = update.date;
-  // TODO
-  const oldChatMember = constructChatMember(update.prev_participant ?? ({ _: "channelParticipantLeft", peer: userPeer }), getPeer);
-  const newChatMember = constructChatMember(update.new_participant ?? ({ _: "channelParticipantLeft", peer: userPeer }), getPeer);
+  const oldChatMember = constructChatMember(memberPeer[0], update.prev_participant ?? ({ _: "channelParticipantLeft", peer: memberPeer }), getPeer);
+  const newChatMember = constructChatMember(memberPeer[0], update.new_participant ?? ({ _: "channelParticipantLeft", peer: memberPeer }), getPeer);
   const viaSharedFolder = "via_chatlist" in update ? update.via_chatlist ? true : update.invite ? false : undefined : undefined;
   const inviteLink = (update.invite && Api.is("chatInviteExported", update.invite)) ? constructInviteLink(update.invite, getPeer) : undefined;
   return cleanObject({

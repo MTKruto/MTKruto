@@ -36,20 +36,26 @@ export class AbortableLoop {
   }
 
   start() {
-    drop(this.#loop());
+    if (this.#controller === undefined) {
+      drop(this.#loop());
+    }
   }
 
   async #loop() {
     this.#controller?.abort();
     const controller = this.#controller = new AbortController();
-    do {
-      try {
-        await this.#body(this, controller.signal);
-      } catch (err) {
-        if (!controller.signal.aborted) {
-          this.#onError(this, err);
+    try {
+      do {
+        try {
+          await this.#body(this, controller.signal);
+        } catch (err) {
+          if (!controller.signal.aborted) {
+            this.#onError(this, err);
+          }
         }
-      }
-    } while (!controller.signal.aborted);
+      } while (!controller.signal.aborted);
+    } finally {
+      this.#controller = undefined;
+    }
   }
 }
