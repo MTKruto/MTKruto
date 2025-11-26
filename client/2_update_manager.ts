@@ -1002,7 +1002,7 @@ export class UpdateManager {
   #openChats = new Map<bigint, { controller: AbortController; promise: Promise<void> }>();
   async openChat(chatId: ID, params?: OpenChatParams) {
     if (params?.timeout !== undefined && (params.timeout < 0 || params?.timeout === 0)) {
-      throw new InputError("An invalid timeout was specified.")
+      throw new InputError("An invalid timeout was specified.");
     }
     const channel = await this.#c.getInputChannel(chatId);
     const channelId = channel.channel_id;
@@ -1029,7 +1029,7 @@ export class UpdateManager {
           const timeout = params?.timeout ?? otherTimeout;
           const dT = Date.now() - Ti;
           const delayMs = Math.max(timeout * SECOND - dT, 0);
-          logger.debug("timeout =", timeout, params?.timeout !== undefined ? '(user-provided)' : '(not user-provided)', "delay =", delayMs, "dT =", dT);
+          logger.debug("timeout =", timeout, params?.timeout !== undefined ? "(user-provided)" : "(not user-provided)", "delay =", delayMs, "dT =", dT);
           if (delayMs) {
             await delay(delayMs, { signal: controller.signal });
           }
