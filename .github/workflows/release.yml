@@ -44,8 +44,6 @@ jobs:
           deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform.ts ${{ github.ref_name }} ./mod.ts
           cd dist
           npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   create-release:
     name: Create Release
