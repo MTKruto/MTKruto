@@ -272,8 +272,8 @@ export interface ClientParams extends ClientPlainParams {
   systemVersion?: string;
   /** Whether to use default handlers. Defaults to `true`. */
   defaultHandlers?: boolean;
-  /** What types of outgoing messages should be received. `business` is only valid for bots. Defaults to `business` for bots, and `all` for users. */
-  outgoingMessages?: "none" | "business" | "all";
+  /** Whether outgoing messages should be sent as high-level updates. Outgoing bot business messages will never be sent. Defaults to `false`. */
+  outgoingMessages?: boolean;
   /** Default command prefixes. Defaults to `"/"` for bots and `"\"` for users. This option must be set separately for nested composers. */
   prefixes?: string | string[];
   /** Whether to guarantee that order-sensitive updates are delivered at least once before delivering next ones. Useful mainly for clients providing a user interface à la Telegram Desktop. Defaults to `false`. */
@@ -381,7 +381,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
   public readonly systemLangCode: string;
   public readonly systemVersion: string;
   readonly #publicKeys?: PublicKeys;
-  readonly #outgoingMessages: NonNullable<ClientParams["outgoingMessages"]> | null;
+  readonly #outgoingMessages: NonNullable<ClientParams["outgoingMessages"]>;
   #persistCache: boolean;
   #disableUpdates: boolean;
   #authString?: string;
@@ -424,7 +424,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
     this.#publicKeys = params?.publicKeys;
-    this.#outgoingMessages = params?.outgoingMessages ?? null;
+    this.#outgoingMessages = params?.outgoingMessages ?? false;
     if (params?.prefixes) {
       this.prefixes = params?.prefixes;
     }

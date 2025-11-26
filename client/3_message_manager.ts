@@ -221,7 +221,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (pollId) {
       [poll, pollResults] = await Promise.all([this.#c.messageStorage.getPoll(pollId), this.#c.messageStorage.getPollResults(pollId)]);
     }
-    const message = constructMessage_(message_, this.#c.getPeer, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r, business, poll ?? undefined, pollResults ?? undefined);
+    const message = await constructMessage_(message_, this.#c.getPeer, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r, business, poll ?? undefined, pollResults ?? undefined);
     if (!poll && mediaPoll) {
       await this.#c.messageStorage.setPoll(mediaPoll.poll.id, mediaPoll.poll);
     }
@@ -1183,15 +1183,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         const isOutgoing = update.message.out;
         let shouldIgnore = false;
         if (isOutgoing) {
-          if (this.#c.outgoingMessages === null) {
-            this.#c.outgoingMessages = this.#c.storage.isBot ? "business" : "all";
-          }
-          if (this.#c.outgoingMessages === "none") {
+          if ("connection_id" in update && update.connection_id === "") {
             shouldIgnore = true;
-          } else if (this.#c.outgoingMessages === "business") {
-            if (!Api.is("updateBotNewBusinessMessage", update) && !Api.is("updateBotEditBusinessMessage", update)) {
-              shouldIgnore = true;
-            }
+          } else {
+            shouldIgnore = !this.#c.outgoingMessages;
           }
         }
         if (!shouldIgnore) {
