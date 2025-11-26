@@ -797,3 +797,8 @@ export interface PromoteChatMemberParams {
   /** The custom title of the administrator. */
   title?: string;
 }
+
+export interface OpenChatParams {
+  /** TTL of update differences for unpolled chats in seconds. Defaults to a value specified by Telegram. */
+  timeout?: number;
+}
