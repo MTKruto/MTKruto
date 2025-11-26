@@ -26,6 +26,7 @@ import { PersistentTimestampInvalid } from "../3_errors.ts";
 import type { ID } from "../3_types.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
+import type { OpenChatParams } from "./0_params.ts";
 import type { C } from "./1_types.ts";
 
 type UpdateHandler = (update: Api.Update) => Promise<(() => Promise<unknown>)>;
@@ -728,7 +729,7 @@ export class UpdateManager {
   }
 
   async #recoverChannelUpdateGap(channelId: bigint, source: string) {
-    let lastTimeout = 1;
+    let lastTimeout = 10;
     this.#LrecoverChannelUpdateGap.debug(`recovering channel update gap [${channelId}, ${source}]`);
     const pts_ = await this.#c.storage.channelPts.get([channelId]);
     let pts = pts_ === null ? 1 : pts_;
@@ -744,7 +745,7 @@ export class UpdateManager {
           filter: { _: "channelMessagesFilterEmpty" },
           limit: this.#c.storage.isBot ? CHANNEL_DIFFERENCE_LIMIT_BOT : CHANNEL_DIFFERENCE_LIMIT_USER,
         });
-        lastTimeout = difference.timeout ?? 1;
+        lastTimeout = difference.timeout ?? lastTimeout;
       } catch (err) {
         if (err instanceof PersistentTimestampInvalid) {
           await delay(retryIn * SECOND);
@@ -999,7 +1000,10 @@ export class UpdateManager {
   }
 
   #openChats = new Map<bigint, { controller: AbortController; promise: Promise<void> }>();
-  async openChat(chatId: ID) {
+  async openChat(chatId: ID, params?: OpenChatParams) {
+    if (params?.timeout !== undefined && (params.timeout < 0 || params?.timeout === 0)) {
+      throw new InputError("An invalid timeout was specified.");
+    }
     const channel = await this.#c.getInputChannel(chatId);
     const channelId = channel.channel_id;
     if (this.#openChats.has(channelId)) {
@@ -1021,10 +1025,11 @@ export class UpdateManager {
         }
         try {
           const Ti = Date.now();
-          const timeout = await this.#recoverChannelUpdateGap(channelId, "openChat");
+          const otherTimeout = await this.#recoverChannelUpdateGap(channelId, "openChat");
+          const timeout = params?.timeout ?? otherTimeout;
           const dT = Date.now() - Ti;
           const delayMs = Math.max(timeout * SECOND - dT, 0);
-          logger.debug("timeout =", timeout, "delay =", delayMs, "dT =", dT);
+          logger.debug("timeout =", timeout, params?.timeout !== undefined ? "(user-provided)" : "(not user-provided)", "delay =", delayMs, "dT =", dT);
           if (delayMs) {
             await delay(delayMs, { signal: controller.signal });
           }
