@@ -24,7 +24,7 @@ import { getLogger, Mutex } from "../1_utilities.ts";
 import type { Connection } from "./0_connection.ts";
 
 const L = getLogger("ConnectionTCP");
-const errConnectionNotOpen = new ConnectionError("Connection not open");
+const errConnectionNotOpen = new ConnectionError("The connection is not open.");
 
 export class ConnectionTCP implements Connection {
   #hostname: string;

@@ -1483,7 +1483,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
 
   async #invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R> {
     if (!this.#client) {
-      throw new ConnectionError("Not connected.");
+      throw new ConnectionError("The connection is not open.");
     }
     let n = 1;
     let client: ClientEncrypted;
@@ -1595,7 +1595,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       }
     }
     if ((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash === 0n) {
-      throw new AccessError(`Cannot access the chat ${id} because there is no access hash for it.`);
+      throw new AccessError(`The chat ${id} cannot be accessed.`);
     }
     return inputPeer;
   }

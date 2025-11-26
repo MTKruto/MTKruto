@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
+import { SECOND, unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
 import { constructChosenInlineResult, constructInlineQuery, constructInlineQueryAnswer, type ID, type InlineQueryResult, inlineQueryResultToTlObject, type Update } from "../3_types.ts";
 import type { AnswerInlineQueryParams, SendInlineQueryParams } from "./0_params.ts";
@@ -83,6 +83,6 @@ export class InlineQueryManager implements UpdateProcessor<InlineQueryManagerUpd
   }
 
   static #isExpired(date: Date, cacheTime: number) {
-    return (Date.now() - date.getTime()) / 1000 > cacheTime;
+    return (Date.now() - date.getTime()) / SECOND > cacheTime;
   }
 }

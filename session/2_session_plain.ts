@@ -27,7 +27,7 @@ import { Session } from "./1_session.ts";
 export class SessionPlain extends Session implements Session {
   async send(data: Uint8Array): Promise<bigint> {
     if (!this.connected) {
-      throw new ConnectionError("Not connected.");
+      throw new ConnectionError("The connection is not open.");
     }
     const messageId = this.state.nextMessageId();
 
@@ -44,7 +44,7 @@ export class SessionPlain extends Session implements Session {
 
   async receive(): Promise<Uint8Array> {
     if (!this.connected) {
-      throw new ConnectionError("Not connected.");
+      throw new ConnectionError("The connection is not open.");
     }
 
     const buffer = await this.transport.transport.receive();

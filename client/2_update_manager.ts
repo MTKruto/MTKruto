@@ -1023,7 +1023,7 @@ export class UpdateManager {
           const Ti = Date.now();
           const timeout = await this.#recoverChannelUpdateGap(channelId, "openChat");
           const dT = Date.now() - Ti;
-          const delayMs = Math.max(timeout * 1_000 - dT, 0);
+          const delayMs = Math.max(timeout * SECOND - dT, 0);
           logger.debug("timeout =", timeout, "delay =", delayMs, "dT =", dT);
           if (delayMs) {
             await delay(delayMs, { signal: controller.signal });
@@ -1032,7 +1032,7 @@ export class UpdateManager {
           if (this.#c.disconnected()) {
             continue; // breaks the loop
           }
-          this.#LopenChat.error("An unexpected error occurred:", err);
+          this.#LopenChat.error("an unexpected error occurred:", err);
         }
       }
     });

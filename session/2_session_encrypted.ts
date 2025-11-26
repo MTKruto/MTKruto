@@ -89,7 +89,7 @@ export class SessionEncrypted extends Session implements Session {
 
   override async connect(): Promise<void> {
     if (!this.connected) {
-      this.#rejectAllPending(new ConnectionError("Not connected."));
+      this.#rejectAllPending(new ConnectionError("The connection was closed."));
     }
     await super.connect();
     if (!SessionEncrypted.#TGCRYPTO_INITED) {
@@ -108,12 +108,12 @@ export class SessionEncrypted extends Session implements Session {
     this.#id = getRandomId();
     this.#pingLoop.abort();
     this.#awakeSendLoop?.();
-    this.#rejectAllPending(new ConnectionError("Not connected."));
+    this.#rejectAllPending(new ConnectionError("The connection was disconnected."));
   }
 
   #assertNotDisconnected() {
     if (this.disconnected) {
-      throw new ConnectionError("Not connected.");
+      throw new ConnectionError("The connection was disconnected.");
     }
   }
 
@@ -123,7 +123,7 @@ export class SessionEncrypted extends Session implements Session {
     this.state.reset();
     this.disconnect();
     await this.connect();
-    this.#rejectAllPending(new SessionError("Session invalidated."));
+    this.#rejectAllPending(new SessionError("The session was invalidated."));
   }
 
   #rejectAllPending(reason: unknown) {

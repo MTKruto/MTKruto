@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { SECOND } from "../0_deps.ts";
 import { encodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { type CallbackQueryQuestion, constructCallbackQuery, constructCallbackQueryAnswer, type ID, type Update, validateCallbackQueryQuestion } from "../3_types.ts";
@@ -67,7 +68,7 @@ export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManage
   }
 
   static #isExpired(date: Date, cacheTime: number) {
-    return (Date.now() - date.getTime()) / 1000 > cacheTime;
+    return (Date.now() - date.getTime()) / SECOND > cacheTime;
   }
 
   async #getPasswordCheck(password: string) {

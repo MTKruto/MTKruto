@@ -211,7 +211,7 @@ export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButto
     const peerTypes = new Array<Api.InlineQueryPeerType>();
     const { allowUsers, allowBots, allowGroups, allowChannels } = button.switchInlineQueryChosenChats;
     if (!allowUsers && !allowBots && !allowGroups && !allowChannels) {
-      throw new InputError("switchInlineQueryChosenChats: At least one chat type must be allowed");
+      throw new InputError("switchInlineQueryChosenChats: At least one chat type must be allowed.");
     }
     if (allowUsers) {
       peerTypes.push({ _: "inlineQueryPeerTypeBotPM" });
