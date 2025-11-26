@@ -56,8 +56,9 @@ export class ConnectionTCP implements Connection {
 
   async open() {
     if (this.connected) {
-      throw new Error("Connection already open");
+      return;
     }
+
     const connection = await this.connect({
       hostname: this.#hostname,
       port: this.#port,

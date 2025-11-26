@@ -88,13 +88,9 @@ export class ConnectionWebSocket implements Connection {
   #isConnecting = false;
   async open() {
     if (this.#isConnecting) {
-      throw new ConnectionError("Already connecting");
+      return;
     }
     this.#isConnecting = true;
-
-    if (this.connected) {
-      throw new ConnectionError("Already connected");
-    }
 
     try {
       this.#webSocket = await this.#initWs();

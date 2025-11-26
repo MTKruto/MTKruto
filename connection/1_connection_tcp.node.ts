@@ -52,6 +52,10 @@ export class ConnectionTCP implements Connection {
   }
 
   open() {
+    if (this.connected) {
+      return;
+    }
+
     this.#socket = new Socket();
     this.#socket.on("close", () => {
       this.#rejectRead();
