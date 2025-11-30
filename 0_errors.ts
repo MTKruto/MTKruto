@@ -48,3 +48,7 @@ export class TransportError extends MtkrutoError {
     this.name = "TransportError";
   }
 }
+
+export class TLError extends MtkrutoError {
+  override name = "TLError";
+}

@@ -18,7 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export { TLError } from "./tl/0_tl_error.ts";
 export * from "./tl/0_utilities.ts";
 export * from "./tl/1_tl_reader.ts";
 export * from "./tl/1_tl_writer.ts";

@@ -20,8 +20,8 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { concat } from "../0_deps.ts";
-import { TLError } from "./0_tl_error.ts";
-import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./0_utilities.ts";
+import { TLError } from "../0_errors.ts";
+import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, constructorIdToHex, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./0_utilities.ts";
 import type { Schema } from "./0_types.ts";
 import { bufferFromBigInt } from "../utilities/0_buffer.ts";
 import { encodeText } from "../1_utilities.ts";
@@ -125,7 +125,7 @@ export class TLWriter {
         continue;
       }
 
-      const debugInfo = ` [0x${id.toString(16).toUpperCase()}::${i}]`;
+      const debugInfo = ` [${constructorIdToHex(id)}::${i}]`;
 
       if (type === "#") {
         let flags = 0;
