@@ -19,14 +19,14 @@
  */
 
 import { concat } from "../0_deps.ts";
-import { bufferFromBigInt, CTR } from "../1_utilities.ts";
+import { CTR, intToBytes } from "../1_utilities.ts";
 import type { Connection } from "../2_connection.ts";
 
 export async function getObfuscationParameters(protocol: number, connection: Connection) {
   let init: Uint8Array<ArrayBuffer>;
 
   while (true) {
-    init = concat([crypto.getRandomValues(new Uint8Array(56)), bufferFromBigInt(protocol, 4, false), crypto.getRandomValues(new Uint8Array(4))]);
+    init = concat([crypto.getRandomValues(new Uint8Array(56)), intToBytes(protocol, 4, { byteOrder: "big", isSigned: false }), crypto.getRandomValues(new Uint8Array(4))]);
 
     if (init[0] === 0xEF) {
       continue;

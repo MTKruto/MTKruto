@@ -19,7 +19,7 @@
  */
 
 import { assert, assertEquals, concat, ige256Decrypt, ige256Encrypt, unreachable } from "../0_deps.ts";
-import { bigIntFromBuffer, bufferFromBigInt, factorize, getLogger, getRandomBigInt, modExp, rsaPad, sha1 } from "../1_utilities.ts";
+import { factorize, getLogger, getRandomInt, intFromBytes, intToBytes, modExp, rsaPad, sha1 } from "../1_utilities.ts";
 import { Mtproto } from "../2_tl.ts";
 import { type DC, getDcId } from "../3_transport.ts";
 import { PUBLIC_KEYS, type PublicKeys } from "../4_constants.ts";
@@ -56,7 +56,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
   }
 
   async createAuthKey(): Promise<[Uint8Array<ArrayBuffer>, bigint]> {
-    const nonce = getRandomBigInt(16, false, true);
+    const nonce = getRandomInt(16);
     LcreateAuthKey.debug("auth key creation started");
 
     let resPq: Mtproto.resPQ | null = null;
@@ -77,13 +77,13 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
       unreachable();
     }
 
-    const pq_ = bigIntFromBuffer(resPq.pq, false, false);
+    const pq_ = intFromBytes(resPq.pq, { byteOrder: "little", isSigned: false });
     LcreateAuthKey.debug(`pq=${pq_}`);
     const [p_, q_] = factorize(pq_);
     LcreateAuthKey.debug("factorized pq");
     LcreateAuthKey.debug(`p=${p_}, q=${q_}`);
-    const p = bufferFromBigInt(p_, 4, false, false);
-    const q = bufferFromBigInt(q_, 4, false, false);
+    const p = intToBytes(p_, 4, { byteOrder: "big", isSigned: false });
+    const q = intToBytes(q_, 4, { byteOrder: "big", isSigned: false });
 
     let publicKeyFingerprint: bigint | undefined;
     let publicKey: [bigint, bigint] | undefined;
@@ -104,7 +104,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
     const dc = getDcId(this.dc, this.cdn);
     const pq = resPq.pq;
     const serverNonce = resPq.server_nonce;
-    const newNonce = getRandomBigInt(32, false, true);
+    const newNonce = getRandomInt(32);
     let encryptedData = await rsaPad(
       Mtproto.serializeObject({
         _: "p_q_inner_data_dc",
@@ -132,18 +132,18 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
     assert(Mtproto.is("server_DH_params_ok", dhParams));
     LcreateAuthKey.debug("got server_DH_params_ok");
 
-    const newNonce_ = bufferFromBigInt(newNonce, 32, true, true);
-    const serverNonce_ = bufferFromBigInt(serverNonce, 16, true, true);
+    const newNonce_ = intToBytes(newNonce, 32);
+    const serverNonce_ = intToBytes(serverNonce, 16);
     const tmpAesKey = concat([await sha1(concat([newNonce_, serverNonce_])), (await sha1(concat([serverNonce_, newNonce_]))).subarray(0, 0 + 12)]);
     const tmpAesIv = concat([(await sha1(concat([serverNonce_, newNonce_]))).subarray(12, 12 + 8), await sha1(concat([newNonce_, newNonce_])), newNonce_.subarray(0, 0 + 4)]);
     const answerWithHash = ige256Decrypt(dhParams.encrypted_answer, tmpAesKey, tmpAesIv);
 
     const dhInnerData = await Mtproto.deserializeType("server_DH_inner_data", answerWithHash.slice(20));
     const { g, g_a: gA_, dh_prime: dhPrime_ } = dhInnerData;
-    const gA = bigIntFromBuffer(gA_, false, false);
-    const dhPrime = bigIntFromBuffer(dhPrime_, false, false);
+    const gA = intFromBytes(gA_, { byteOrder: "big", isSigned: false });
+    const dhPrime = intFromBytes(dhPrime_, { byteOrder: "big", isSigned: false });
 
-    const b = getRandomBigInt(256, false, false);
+    const b = getRandomInt(256, false);
     const gB = modExp(BigInt(g), b, dhPrime);
 
     const data = Mtproto.serializeObject({
@@ -151,7 +151,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
       nonce,
       server_nonce: serverNonce,
       retry_id: 0n,
-      g_b: bufferFromBigInt(gB, 256, false, false),
+      g_b: intToBytes(gB, 256, { byteOrder: "big" }),
     });
 
     let dataWithHash = concat([await sha1(data), data]);
@@ -175,10 +175,10 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
     const salt = newNonce_.subarray(0, 0 + 8).map((v, i) => v ^ serverNonceSlice[i]);
 
     const authKey_ = modExp(gA, b, dhPrime);
-    const authKey = bufferFromBigInt(authKey_, 256, false, false);
+    const authKey = intToBytes(authKey_, 256, { byteOrder: "big", isSigned: false });
 
     LcreateAuthKey.debug("auth key created");
 
-    return [authKey, bigIntFromBuffer(salt, true, false)];
+    return [authKey, intFromBytes(salt)];
   }
 }

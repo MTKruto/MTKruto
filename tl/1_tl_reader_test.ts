@@ -18,7 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals } from "../0_deps.ts";
+import { assertEquals, assertInstanceOf, unreachable } from "../0_deps.ts";
+import { TLError } from "../0_errors.ts";
 import type { Schema } from "./0_types.ts";
 import { BOOL_FALSE, BOOL_TRUE, VECTOR, X } from "./0_utilities.ts";
 import { TLReader } from "./1_tl_reader.ts";
@@ -605,4 +606,98 @@ Deno.test("primitive vectors", async () => {
   }
   const deserialized = await new TLReader(writer.buffer).readType("Vector<double>", emptySchema);
   assertEquals(deserialized, expected);
+});
+
+Deno.test("errors", async () => {
+  const schema: Schema = {
+    definitions: {
+      testObject1: [
+        0x01010101,
+        [["test_string", "string"]],
+        "TestObject",
+      ],
+      testObject2: [
+        0x10101010,
+        [
+          ["boolean1", "Bool"],
+          ["boolean2", "Bool"],
+          ["int", "int"],
+          ["long", "long"],
+          ["int128", "int128"],
+          ["int256", "int256"],
+          ["string", "string"],
+          ["bytes", "bytes"],
+          ["flags", "#"],
+          ["flag1", "flags.0?true"],
+          ["flag2", "flags.1?Vector<testObject1>"],
+          ["flag3", "flags.3?long"],
+        ],
+        "TestObject",
+      ],
+      testObject2Vector: [
+        0x11111111,
+        [
+          ["vector", "flags.1?Vector<testObject2>"],
+        ],
+        "TestObjectVector",
+      ],
+    },
+    identifierToName: {
+      [0x01010101]: "testObject1",
+      [0x10101010]: "testObject2",
+      [0x11111111]: "testObject2Vector",
+    },
+  };
+
+  // unknown type
+  try {
+    const writer = new TLWriter();
+    writer.writeInt32(0x01010101);
+
+    await new TLReader(writer.buffer).readType("someObject2", schema);
+    unreachable();
+  } catch (err) {
+    assertInstanceOf(err, TLError);
+    assertEquals(err.message, "Unknown type: someObject2#1010101");
+  }
+
+  // unknown constructor ID
+  try {
+    const writer = new TLWriter();
+    writer.writeInt32(0x11111110);
+
+    await new TLReader(writer.buffer).readType("X", schema);
+    unreachable();
+  } catch (err) {
+    assertInstanceOf(err, TLError);
+    assertEquals(err.message, "Unknown constructor ID: 11111110");
+  }
+
+  // unexpected constructor ID
+  try {
+    const writer = new TLWriter();
+    writer.writeInt32(0x11111110);
+
+    await new TLReader(writer.buffer).readType("testObject1", schema);
+    unreachable();
+  } catch (err) {
+    assertInstanceOf(err, TLError);
+    assertEquals(err.message, `Expected constructor with ID 1010101 but received 11111110`);
+  }
+
+  // path
+  try {
+    const writer = new TLWriter()
+      .writeInt32(0x10101010) // testObject2
+      .writeInt32(BOOL_FALSE)
+      .writeInt32(BOOL_FALSE);
+
+    await new TLReader(writer.buffer).readType("testObject2", schema);
+    unreachable();
+  } catch (err) {
+    assertInstanceOf(err, TLError);
+    const path = ["[testObject2.]int"];
+    assertEquals(err.path, path);
+    assertEquals(err.message, `No data remaining at ${path.join(" ")}`);
+  }
 });

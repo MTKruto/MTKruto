@@ -19,7 +19,7 @@
  */
 
 import { concat } from "../0_deps.ts";
-import { bufferFromBigInt } from "../1_utilities.ts";
+import { intToBytes } from "../1_utilities.ts";
 import type { Connection } from "../2_connection.ts";
 import { getObfuscationParameters } from "./0_obfuscation.ts";
 import { Transport } from "./0_transport.ts";
@@ -60,7 +60,7 @@ export class TransportIntermediate extends Transport implements Transport {
   }
 
   async send(buffer: Uint8Array) {
-    const length = bufferFromBigInt(buffer.length, 4);
+    const length = intToBytes(buffer.length, 4);
     const data = concat([length, buffer]);
 
     await this.#connection.write(await this.encrypt(data));

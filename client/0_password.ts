@@ -19,7 +19,7 @@
  */
 
 import { concat } from "../0_deps.ts";
-import { bigIntFromBuffer, bufferFromBigInt, encodeText, getRandomBigInt, mod, modExp, sha256 } from "../1_utilities.ts";
+import { encodeText, getRandomInt, intFromBytes, intToBytes, mod, modExp, sha256 } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 
 export function isSafePrime(primeBytes: Uint8Array, g: number) {
@@ -94,7 +94,7 @@ export function pad(bigint: number | bigint | Uint8Array) {
     bigint = BigInt(bigint);
   }
   if (typeof bigint === "bigint") {
-    return bufferFromBigInt(bigint, 256, false);
+    return intToBytes(bigint, 256, { byteOrder: "big", isSigned: false });
   } else {
     return concat([new Uint8Array(256 - bigint.length), bigint]);
   }
@@ -112,7 +112,7 @@ export async function checkPassword(password_: string, ap: Api.account_Password)
   // g := algo.g
   const g = algo.g;
   // p := algo.p
-  const p = bigIntFromBuffer(algo.p, false);
+  const p = intFromBytes(algo.p, { byteOrder: "big", isSigned: false });
   if (!isSafePrime(algo.p, g)) {
     throw new Error("Got unsafe prime");
   }
@@ -135,21 +135,21 @@ export async function checkPassword(password_: string, ap: Api.account_Password)
   const salt2 = algo.salt2;
 
   // g_b := srp_B
-  const gB = bigIntFromBuffer(srpB, false);
+  const gB = intFromBytes(srpB, { byteOrder: "big", isSigned: false });
 
   // k := H(p | g)
-  const k = bigIntFromBuffer(await h(concat([pad(p), pad(g)])), false);
+  const k = intFromBytes(await h(concat([pad(p), pad(g)])), { byteOrder: "big", isSigned: false });
 
   let u = 0n;
   let a = 0n;
   let gA = 0n;
 
   for (let i = 0; i < 1_000; i++) {
-    a = getRandomBigInt(256, false);
+    a = getRandomInt(256, false);
     // g_a := pow(g, a) mod p
     gA = modExp(BigInt(g), a, p);
     if (isGoodModExpFirst(gA, p)) {
-      u = bigIntFromBuffer(await sha256(concat([pad(gA), pad(gB)])), false);
+      u = intFromBytes(await sha256(concat([pad(gA), pad(gB)])), { byteOrder: "big", isSigned: false });
       if (u > 0n) {
         break;
       }
@@ -160,7 +160,7 @@ export async function checkPassword(password_: string, ap: Api.account_Password)
   }
 
   // x := PH2(password, salt1, salt2)
-  const x = bigIntFromBuffer(await ph2(password, salt1, salt2), false);
+  const x = intFromBytes(await ph2(password, salt1, salt2), { byteOrder: "big", isSigned: false });
 
   // v := pow(g, x) mod p
   const v = modExp(BigInt(g), x, p);

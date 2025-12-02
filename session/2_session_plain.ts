@@ -19,7 +19,7 @@
  */
 
 import { ConnectionError, TransportError } from "../0_errors.ts";
-import { bigIntFromBuffer } from "../1_utilities.ts";
+import { intFromBytes } from "../1_utilities.ts";
 import { TLReader } from "../tl/1_tl_reader.ts";
 import { TLWriter } from "../tl/1_tl_writer.ts";
 import { Session } from "./1_session.ts";
@@ -49,7 +49,7 @@ export class SessionPlain extends Session implements Session {
 
     const buffer = await this.transport.transport.receive();
     if (buffer.length === 4) {
-      const int = bigIntFromBuffer(buffer, true, true);
+      const int = intFromBytes(buffer);
       throw new TransportError(Number(int));
     }
 
