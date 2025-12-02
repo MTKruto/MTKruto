@@ -19,8 +19,8 @@
  */
 
 import { concat } from "../0_deps.ts";
-import { bigIntFromBuffer } from "./0_bigint.ts";
-import { bufferFromBigInt } from "./0_buffer.ts";
+import { intFromBytes } from "./0_int.ts";
+import { intToBytes } from "./0_int.ts";
 
 export class CTR {
   #key: CryptoKey;
@@ -89,6 +89,6 @@ export class CTR {
     if (amount < 1) {
       return;
     }
-    this.#iv = bufferFromBigInt(bigIntFromBuffer(this.#iv, false, false) + BigInt(amount), this.#iv.length, false, false);
+    this.#iv = intToBytes(intFromBytes(this.#iv, { byteOrder: "big", isSigned: false }) + BigInt(amount), this.#iv.length, { byteOrder: "big", isSigned: false });
   }
 }

@@ -19,7 +19,7 @@
  */
 
 import { decodeBase64, encodeBase64 } from "../0_deps.ts";
-import { mod } from "./0_bigint.ts";
+import { mod } from "./0_int.ts";
 
 export function base64EncodeUrlSafe(data: Uint8Array | ArrayBuffer | string) {
   return encodeBase64(data).replace(/=*$/, "").replaceAll("+", "-").replaceAll("/", "_");

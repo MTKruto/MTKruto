@@ -21,13 +21,14 @@
 
 import { concat } from "../0_deps.ts";
 import { TLError } from "../0_errors.ts";
-import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, constructorIdToHex, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./0_utilities.ts";
+import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./0_utilities.ts";
 import type { Schema } from "./0_types.ts";
-import { bufferFromBigInt } from "../utilities/0_buffer.ts";
+import { intToBytes } from "../utilities/0_int.ts";
 import { encodeText } from "../1_utilities.ts";
 
 export class TLWriter {
   protected _buffer: Uint8Array<ArrayBuffer> = new Uint8Array();
+  #path = "";
 
   constructor() {
   }
@@ -41,18 +42,18 @@ export class TLWriter {
     return this;
   }
 
-  writeInt24(int: number, signed = true): typeof this {
-    this.write(bufferFromBigInt(int, 24 / 8, true, signed));
+  writeInt24(int: number, isSigned = true): typeof this {
+    this.write(intToBytes(int, 24 / 8, { isSigned, path: this.#path }));
     return this;
   }
 
-  writeInt32(int: number, signed = true): typeof this {
-    this.write(bufferFromBigInt(int, 32 / 8, true, signed));
+  writeInt32(int: number, isSigned = true): typeof this {
+    this.write(intToBytes(int, 32 / 8, { isSigned, path: this.#path }));
     return this;
   }
 
-  writeInt64(int: bigint, signed = true): typeof this {
-    this.write(bufferFromBigInt(int, 64 / 8, true, signed));
+  writeInt64(int: bigint, isSigned = true): typeof this {
+    this.write(intToBytes(int, 64 / 8, { isSigned, path: this.#path }));
     return this;
   }
 
@@ -63,13 +64,13 @@ export class TLWriter {
     return this;
   }
 
-  writeInt128(int: bigint, signed = true): typeof this {
-    this.write(bufferFromBigInt(int, 128 / 8, true, signed));
+  writeInt128(int: bigint, isSigned = true): typeof this {
+    this.write(intToBytes(int, 128 / 8, { isSigned, path: this.#path }));
     return this;
   }
 
-  writeInt256(int: bigint, signed = true): typeof this {
-    this.write(bufferFromBigInt(int, 256 / 8, true, signed));
+  writeInt256(int: bigint, isSigned = true): typeof this {
+    this.write(intToBytes(int, 256 / 8, { isSigned, path: this.#path }));
     return this;
   }
 
@@ -97,35 +98,33 @@ export class TLWriter {
   }
 
   writeObject(value: any, schema: Schema): typeof this {
-    this.#serialize(value._, value, "", schema);
+    this.#serialize(value._, value, schema);
     return this;
   }
 
-  #serialize(type: string, value: any, debugInfo: string, schema: Schema) {
-    if (this.#serializePrimitive(type, value, debugInfo)) {
+  #serialize(type: string, value: any, schema: Schema) {
+    if (this.#serializePrimitive(type, value)) {
       return;
     }
-    if (this.#serializeVector(type, value, debugInfo, schema)) {
+    if (this.#serializeVector(type, value, schema)) {
       return;
     }
 
     const maybeDefinition = schema.definitions[value._];
     if (!maybeDefinition) {
-      throw new TLError(`Unknown type: ${value._}`);
+      throw new TLError(`Unknown constructor: ${value._}`, this.#path);
     }
     if (type !== "!X" && !this.#isTypeValid(type, value, schema)) {
-      throw new TLError(`Expected ${type} but got ${value._}`);
+      throw new TLError(`Expected ${type} but instead got ${value._}`, this.#path);
     }
     const type__ = value as any;
     const [id, parameters_] = maybeDefinition;
     this.writeInt32(id, false);
 
-    for (let [i, [name, type]] of parameters_.entries()) {
+    for (let [name, type] of parameters_.values()) {
       if (isOptionalParam(type) && type__[name] === undefined) {
         continue;
       }
-
-      const debugInfo = ` [${constructorIdToHex(id)}::${i}]`;
 
       if (type === "#") {
         let flags = 0;
@@ -146,40 +145,39 @@ export class TLWriter {
         continue;
       }
 
+      const parent = this.#path;
+      this.#path = `${parent ? `${parent} ` : ""}[${value._}.]${name}`;
+
       if (type__[name] === undefined && !isOptionalParam(type)) {
-        throw new Error(`Missing required parameter: ${name}`);
+        throw new TLError("Missing required field", this.#path);
       }
 
       if (isOptionalParam(type)) {
         type = getOptionalParamInnerType(type);
       }
-      this.#serialize(type, type__[name], debugInfo, schema);
+      this.#serialize(type, type__[name], schema);
     }
 
     return;
   }
 
-  #serializeVector(type: string, value: any, debugInfo: string, schema: Schema) {
+  #serializeVector(type: string, value: any, schema: Schema) {
     const itemType = getVectorItemType(type);
     if (!itemType) {
       return false;
     }
     if (!Array.isArray(value)) {
-      throw new TypeError(`Expected array but received ${repr(value)}${debugInfo}`);
+      throw new TLError(`Expected an array but received ${repr(value)}`, this.#path);
     }
     this.writeInt32(VECTOR, false);
     this.writeInt32(value.length);
     for (const item of value) {
-      this.#serialize(itemType, item, debugInfo, schema);
+      this.#serialize(itemType, item, schema);
     }
     return true;
   }
 
-  #serializePrimitive(
-    type: string,
-    value: any,
-    debugInfo: string,
-  ) {
+  #serializePrimitive(type: string, value: any) {
     const valueRepr = repr(value);
 
     switch (type) {
@@ -187,28 +185,28 @@ export class TLWriter {
         if ((value instanceof Uint8Array)) {
           this.writeBytes(value);
         } else {
-          throw new TLError(`Expected Uint8Array but received ${valueRepr}${debugInfo}`);
+          throw new TLError(`Expected Uint8Array but received ${valueRepr}`, this.#path);
         }
         return true;
       case "int128":
         if (typeof value === "bigint") {
           this.writeInt128(value);
         } else {
-          throw new TLError(`Expected bigint but received ${valueRepr}${debugInfo}`);
+          throw new TLError(`Expected bigint but received ${valueRepr}`, this.#path);
         }
         return true;
       case "int256":
         if (typeof value === "bigint") {
           this.writeInt256(value);
         } else {
-          throw new TLError(`Expected bigint but received ${valueRepr}${debugInfo}`);
+          throw new TLError(`Expected bigint but received ${valueRepr}`, this.#path);
         }
         return true;
       case "long":
         if (typeof value === "bigint") {
           this.writeInt64(value);
         } else {
-          throw new TLError(`Expected bigint but received ${valueRepr}${debugInfo}`);
+          throw new TLError(`Expected bigint but received ${valueRepr}`, this.#path);
         }
         return true;
       case "Bool":
@@ -219,7 +217,7 @@ export class TLWriter {
             this.writeInt32(BOOL_FALSE);
           }
         } else {
-          throw new TLError(`Expected boolean but received ${valueRepr}${debugInfo}`);
+          throw new TLError(`Expected boolean but received ${valueRepr}`, this.#path);
         }
         return true;
       case "int":
@@ -229,9 +227,13 @@ export class TLWriter {
         }
         //
         if (typeof value === "number") {
-          this.writeInt32(value);
+          if (value % 1 === 0) {
+            this.writeInt32(value);
+          } else {
+            throw new TLError("Expected an integer value but received a floating point", this.#path);
+          }
         } else {
-          throw new TLError(`Expected number but received ${valueRepr}${debugInfo}`);
+          throw new TLError(`Expected number but received ${valueRepr}`, this.#path);
         }
         return true;
       case "double":
@@ -243,7 +245,7 @@ export class TLWriter {
         if (typeof value === "number") {
           this.writeDouble(value);
         } else {
-          throw new TLError(`Expected number but received ${valueRepr}${debugInfo}`);
+          throw new TLError(`Expected number but received ${valueRepr}`, this.#path);
         }
         return true;
       case "string":
@@ -260,7 +262,7 @@ export class TLWriter {
         return true;
       case "true":
         if (value !== true) {
-          throw new TLError(`Expected true but received ${valueRepr}${debugInfo}`);
+          throw new TLError(`Expected \`true\` but received ${valueRepr}`, this.#path);
         }
         return true;
       default:

@@ -19,12 +19,14 @@
  */
 // deno-lint-ignore-file no-explicit-any
 
-import { bigIntFromBuffer, decodeText } from "../1_utilities.ts";
+import { decodeText, intFromBytes } from "../1_utilities.ts";
 import { TLError } from "../0_errors.ts";
 import type { ObjectDefinition, Schema } from "./0_types.ts";
 import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, VECTOR, X } from "./0_utilities.ts";
 
 export class TLReader {
+  #path = "";
+
   constructor(protected _buffer: Uint8Array) {
   }
 
@@ -32,40 +34,42 @@ export class TLReader {
     return this._buffer;
   }
 
-  read(count: number): Uint8Array<ArrayBuffer> {
-    if (this._buffer.length < count) {
-      throw new TLError("No data remaining");
+  read(byteCount: number): Uint8Array<ArrayBuffer> {
+    if (this._buffer.byteLength < byteCount) {
+      throw new TLError("No data remaining", this.#path);
     }
-    const buffer = this._buffer.slice(0, count);
-    this._buffer = this._buffer.subarray(count);
+
+    const buffer = this._buffer.slice(0, byteCount);
+    this._buffer = this._buffer.subarray(byteCount);
     return buffer;
   }
 
   unread(count: number) {
     const newOffest = this._buffer.byteOffset - count;
     if (newOffest < 0) {
-      throw new TLError("No data has been read");
+      throw new TLError("No data has been read", this.#path);
     }
+
     this._buffer = new Uint8Array(this._buffer.buffer, newOffest);
   }
 
-  readInt24(signed = true): number {
+  readInt24(isSigned = true): number {
     const buffer = this.read(24 / 8);
-    return Number(bigIntFromBuffer(buffer, true, signed));
+    return Number(intFromBytes(buffer, { isSigned }));
   }
 
-  readInt32(signed = true): number {
+  readInt32(isSigned = true): number {
     const buffer = this.read(32 / 8);
-    return Number(bigIntFromBuffer(buffer, true, signed));
+    return Number(intFromBytes(buffer, { isSigned }));
   }
 
   unreadInt32() {
     this.unread(32 / 8);
   }
 
-  readInt64(signed = true): bigint {
+  readInt64(isSigned = true): bigint {
     const buffer = this.read(64 / 8);
-    return bigIntFromBuffer(buffer, true, signed);
+    return intFromBytes(buffer, { isSigned });
   }
 
   readDouble(): number {
@@ -73,14 +77,14 @@ export class TLReader {
     return new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength).getFloat64(0, true);
   }
 
-  readInt128(signed = true): bigint {
+  readInt128(isSigned = true): bigint {
     const buffer = this.read(128 / 8);
-    return bigIntFromBuffer(buffer, true, signed);
+    return intFromBytes(buffer, { isSigned });
   }
 
-  readInt256(signed = true): bigint {
+  readInt256(isSigned = true): bigint {
     const buffer = this.read(256 / 8);
-    return bigIntFromBuffer(buffer, true, signed);
+    return intFromBytes(buffer, { isSigned });
   }
 
   readBytes(): Uint8Array<ArrayBuffer> {
@@ -116,7 +120,7 @@ export class TLReader {
     if (name === X) {
       const typeName = schema.identifierToName[id];
       if (!typeName) {
-        throw new TLError(`Unknown constructor: ${id.toString(16)}`);
+        throw new TLError(`Unknown constructor: ${id.toString(16)}`, this.#path);
       }
       this.unreadInt32();
       return await this.readType(typeName, schema);
@@ -132,7 +136,7 @@ export class TLReader {
     if (deserializedEnum !== undefined) {
       return deserializedEnum;
     }
-    throw new TLError(`Unknown type: ${name} ID ${id}`);
+    throw new TLError(`Unknown type: ${name} ID ${id}`, this.#path);
   }
 
   async #deserializeEnum(type: string, id: number, schema: Schema) {
@@ -149,7 +153,7 @@ export class TLReader {
 
   async #deserializeType(type: string, desc: ObjectDefinition, id: number, schema: Schema) {
     if (desc[0] !== id) {
-      throw new TLError(`Expected constructor ${desc[0].toString(16)} but got ${id}`);
+      throw new TLError(`Expected constructor ${desc[0].toString(16)} but got ${id}`, this.#path);
     }
 
     const type_: Record<string, any> = { _: type };
@@ -167,6 +171,10 @@ export class TLReader {
         flagFields[name] = this.readInt32();
         continue;
       }
+
+      const parent = this.#path;
+      this.#path = `${parent ? `${parent} ` : ""}[${type}.]${name}`;
+
       const value = await this.readType(type, schema);
       if (typeof value !== "boolean" || value) {
         type_[name] = value;
@@ -179,7 +187,7 @@ export class TLReader {
   async #deserializeVector(type: string, schema: Schema) {
     const itemType = getVectorItemType(type);
     if (!itemType) {
-      throw new TLError(`Expected Vector but received ${type}`);
+      throw new TLError(`Expected Vector but received ${type}`, this.#path);
     }
     const size = this.readInt32();
     const array = new Array<any>();
@@ -212,7 +220,7 @@ export class TLReader {
         } else if (id === BOOL_FALSE) {
           return false;
         } else {
-          throw new TLError(`Expected boolTrue or boolFalse but got ${id}`);
+          throw new TLError(`Expected boolTrue or boolFalse but got ${id}`, this.#path);
         }
       }
       case "string":

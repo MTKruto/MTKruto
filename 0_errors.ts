@@ -51,4 +51,8 @@ export class TransportError extends MtkrutoError {
 
 export class TLError extends MtkrutoError {
   override name = "TLError";
+
+  constructor(message: string, path: string) {
+    super(`${message}${path ? ` at ${path}` : ""}`);
+  }
 }

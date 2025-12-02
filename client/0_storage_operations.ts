@@ -21,7 +21,7 @@
 import { MINUTE } from "../0_deps.ts";
 import { LruCache, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, getLogger, type Logger, type MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { base64DecodeUrlSafe, base64EncodeUrlSafe, getLogger, intFromBytes, type Logger, type MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { awaitablePooledMap } from "../1_utilities.ts";
 import { fromString, type Storage, type StorageKeyPart, toString } from "../2_storage.ts";
 import { Api, TLReader, TLWriter, X } from "../2_tl.ts";
@@ -800,7 +800,7 @@ class StorageAuth extends StorageValue<Auth> {
   #authKeyId: bigint | null = null;
   async #resetAuthKeyId(auth: Auth | null) {
     if (auth?.authKey) {
-      this.#authKeyId = bigIntFromBuffer((await sha1(auth.authKey)).subarray(-8), true, false);
+      this.#authKeyId = intFromBytes((await sha1(auth.authKey)).subarray(-8));
     } else {
       this.#authKeyId = null;
     }

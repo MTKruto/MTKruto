@@ -19,7 +19,7 @@
  */
 
 import { assert, assertEquals } from "../0_deps.ts";
-import { bigIntFromBuffer, getRandomBigInt, getRandomId, mod, modExp } from "./0_bigint.ts";
+import { getRandomId, getRandomInt, intFromBytes, intToBytes, mod, modExp } from "./0_int.ts";
 
 Deno.test("modExp", () => {
   const cases = [
@@ -52,7 +52,7 @@ Deno.test("mod", () => {
   }
 });
 
-Deno.test("bigIntFromBuffer", () => {
+Deno.test("intFromBytes", () => {
   const cases = {
     little: {
       signed: [
@@ -84,28 +84,35 @@ Deno.test("bigIntFromBuffer", () => {
     },
   } as const;
   for (const [buffer, value] of cases.little.signed) {
-    assertEquals(bigIntFromBuffer(buffer, true, true), value);
+    assertEquals(intFromBytes(buffer), value);
+    assertEquals(intFromBytes(buffer, { isSigned: true }), value);
+    assertEquals(intFromBytes(buffer, { byteOrder: "little", isSigned: true }), value);
   }
   for (const [buffer, value] of cases.little.unsigned) {
-    assertEquals(bigIntFromBuffer(buffer, true, false), value);
+    assertEquals(intFromBytes(buffer, { isSigned: false }), value);
+    assertEquals(intFromBytes(buffer, { byteOrder: "little", isSigned: false }), value);
   }
   for (const [buffer, value] of cases.big.signed) {
-    assertEquals(bigIntFromBuffer(buffer, false, true), value);
+    assertEquals(intFromBytes(buffer, { byteOrder: "big" }), value);
+    assertEquals(intFromBytes(buffer, { byteOrder: "big", isSigned: true }), value);
   }
   for (const [buffer, value] of cases.big.unsigned) {
-    assertEquals(bigIntFromBuffer(buffer, false, false), value);
+    assertEquals(intFromBytes(buffer, { byteOrder: "big", isSigned: false }), value);
   }
 });
 
-Deno.test("getRandomBigInt", async (t) => {
+Deno.test("getRandomInt", async (t) => {
   const iterations = 10_000;
   const byteLengths = [3, 4, 8, 16, 32, 64];
 
   await t.step("signed", () => {
     for (let i = 0; i < iterations; i++) {
       for (const byteLength of byteLengths) {
-        const bigInt = getRandomBigInt(byteLength, true, true);
-        assert(Math.ceil(bigInt.toString(2).length / 8) <= byteLength);
+        const int = getRandomInt(byteLength);
+        assert(Math.ceil(int.toString(2).length / 8) <= byteLength);
+
+        const int2 = getRandomInt(byteLength);
+        assert(Math.ceil(int2.toString(2).length / 8) <= byteLength);
       }
     }
   });
@@ -113,7 +120,7 @@ Deno.test("getRandomBigInt", async (t) => {
   await t.step("unsigned", () => {
     for (let i = 0; i < iterations; i++) {
       for (const byteLength of byteLengths) {
-        const bigInt = getRandomBigInt(byteLength, true, false);
+        const bigInt = getRandomInt(byteLength, false);
         assert(bigInt >= 0);
         assert(Math.ceil(bigInt.toString(2).length / 8) <= byteLength);
       }
@@ -128,4 +135,8 @@ Deno.test("getRandomId", () => {
     const bigint = getRandomId();
     assert(Math.ceil(bigint.toString(2).length / 8) <= 8);
   }
+});
+
+Deno.test("intToBytes", () => {
+  assertEquals(intToBytes(-6203395183255650816n, 64 / 8), new Uint8Array([0, 126, 173, 164, 242, 28, 233, 169]));
 });

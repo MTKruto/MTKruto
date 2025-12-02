@@ -19,9 +19,9 @@
  */
 
 import { assert, assertEquals, concat, ige256Encrypt } from "../0_deps.ts";
-import { bigIntFromBuffer, modExp } from "./0_bigint.ts";
-import { bufferFromBigInt } from "./0_buffer.ts";
 import { sha256 } from "./0_hash.ts";
+import { intFromBytes, modExp } from "./0_int.ts";
+import { intToBytes } from "./0_int.ts";
 
 export async function rsaPad(data: Uint8Array, [serverKey, exponent]: [bigint, bigint]) {
   assert(data.length <= 144);
@@ -48,11 +48,11 @@ export async function rsaPad(data: Uint8Array, [serverKey, exponent]: [bigint, b
     const keyAesEncrypted = concat([tempKeyXor, aesEncrypted]);
     assertEquals(keyAesEncrypted.length, 256);
 
-    keyAesEncryptedInt = bigIntFromBuffer(keyAesEncrypted, false, false);
+    keyAesEncryptedInt = intFromBytes(keyAesEncrypted, { byteOrder: "big", isSigned: false });
   } while (keyAesEncryptedInt >= serverKey);
 
   const encryptedDataInt = modExp(keyAesEncryptedInt, exponent, serverKey);
-  const encryptedData = bufferFromBigInt(encryptedDataInt, 256, false, false);
+  const encryptedData = intToBytes(encryptedDataInt, 256, { byteOrder: "big", isSigned: false });
   assertEquals(encryptedData.length, 256);
 
   return encryptedData;

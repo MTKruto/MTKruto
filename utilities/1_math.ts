@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { gcd, getRandomId, mod } from "./0_bigint.ts";
+import { gcd, getRandomId, mod } from "./0_int.ts";
 
 function getRandomNumberInRange(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);

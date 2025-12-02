@@ -20,7 +20,7 @@
 
 import { assertEquals, concat, delay, ige256Decrypt, ige256Encrypt, initTgCrypto, LruCache, SECOND } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
-import { bigIntFromBuffer, bufferFromBigInt, drop, getLogger, getRandomId, gunzip, type Logger, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
+import { drop, getLogger, getRandomId, gunzip, intFromBytes, intToBytes, type Logger, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
 import { deserializeMessage, type message, type msg_container, Mtproto, repr, serializeMessage, TLReader, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import { AbortableLoop } from "../client/0_abortable_loop.ts";
@@ -79,7 +79,7 @@ export class SessionEncrypted extends Session implements Session {
 
   async setAuthKey(key: Uint8Array<ArrayBuffer>) {
     const hash = await sha1(key);
-    this.#authKeyId = bigIntFromBuffer(hash.slice(-8), true, false);
+    this.#authKeyId = intFromBytes(hash.slice(-8));
     this.#authKey = key;
   }
 
@@ -194,7 +194,7 @@ export class SessionEncrypted extends Session implements Session {
     this.#assertNotDisconnected();
     const buffer = await this.transport.transport.receive();
     if (buffer.length === 4) {
-      const int = bigIntFromBuffer(buffer, true, true);
+      const int = intFromBytes(buffer);
       throw new TransportError(Number(int));
     }
     try {
@@ -202,6 +202,7 @@ export class SessionEncrypted extends Session implements Session {
       this.#L.in(decrypted);
       return decrypted;
     } catch (err) {
+      this.#L.error("decryption error:", err);
       await this.#invalidateSession("decryption error");
       throw err;
     }
@@ -236,10 +237,10 @@ export class SessionEncrypted extends Session implements Session {
 
   async #decryptMessage(buffer: Uint8Array) {
     const reader = new TLReader(buffer);
-    assertEquals(reader.readInt64(false), this.#authKeyId);
+    assertEquals(reader.readInt64(), this.#authKeyId);
 
     const messageKey_ = reader.readInt128();
-    const messageKey = bufferFromBigInt(messageKey_, 16, true, true);
+    const messageKey = intToBytes(messageKey_, 16);
 
     const a = await sha256(concat([messageKey, this.#authKey.subarray(8, 44)]));
     const b = await sha256(concat([this.#authKey.subarray(48, 84), messageKey]));
