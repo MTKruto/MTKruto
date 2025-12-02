@@ -20,8 +20,7 @@
 
 import { assert, assertEquals, concat, ige256Encrypt } from "../0_deps.ts";
 import { sha256 } from "./0_hash.ts";
-import { intFromBytes, modExp } from "./0_int.ts";
-import { intToBytes } from "./0_int.ts";
+import { intFromBytes, intToBytes, modExp } from "./0_int.ts";
 
 export async function rsaPad(data: Uint8Array, [serverKey, exponent]: [bigint, bigint]) {
   assert(data.length <= 144);

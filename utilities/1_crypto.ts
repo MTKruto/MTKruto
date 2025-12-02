@@ -19,8 +19,7 @@
  */
 
 import { concat } from "../0_deps.ts";
-import { intFromBytes } from "./0_int.ts";
-import { intToBytes } from "./0_int.ts";
+import { intFromBytes, intToBytes } from "./0_int.ts";
 
 export class CTR {
   #key: CryptoKey;
