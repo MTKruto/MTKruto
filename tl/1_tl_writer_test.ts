@@ -18,12 +18,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals } from "../0_deps.ts";
+import { assertEquals, unreachable } from "../0_deps.ts";
 import { TLError } from "../0_errors.ts";
+import { assertInstanceOf } from "../0_test_deps.ts";
 import type { Schema } from "./0_types.ts";
 import { TLWriter } from "./1_tl_writer.ts";
-import { assertInstanceOf } from "jsr:@std/assert@1.0.16/instance-of";
-import { unreachable } from "jsr:@std/assert@1.0.16/unreachable";
 
 Deno.test("TLWriter", async (t) => {
   const writer = new TLWriter();

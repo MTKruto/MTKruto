@@ -18,8 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals, assertInstanceOf, unreachable } from "../0_deps.ts";
+import { assertEquals, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
+import { assertInstanceOf } from "../0_test_deps.ts";
 import type { MessageEntity } from "../3_types.ts";
 import { parseAttributes, parseHtml } from "./0_html.ts";
 

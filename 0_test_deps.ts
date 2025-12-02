@@ -18,6 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export { assertThrows } from "jsr:@std/assert@1.0.12/throws";
-export { assertNotEquals } from "jsr:@std/assert@1.0.12/not-equals";
-export { assertInstanceOf } from "jsr:@std/assert@1.0.12/instance-of";
+export { assertThrows } from "jsr:@std/assert@1.0.16/throws";
+export { assertNotEquals } from "jsr:@std/assert@1.0.16/not-equals";
+export { assertInstanceOf } from "jsr:@std/assert@1.0.16/instance-of";

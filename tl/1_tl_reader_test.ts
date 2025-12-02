@@ -18,8 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals, assertInstanceOf, unreachable } from "../0_deps.ts";
+import { assertEquals, unreachable } from "../0_deps.ts";
 import { TLError } from "../0_errors.ts";
+import { assertInstanceOf } from "../0_test_deps.ts";
 import type { Schema } from "./0_types.ts";
 import { BOOL_FALSE, BOOL_TRUE, VECTOR, X } from "./0_utilities.ts";
 import { TLReader } from "./1_tl_reader.ts";

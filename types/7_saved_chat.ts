@@ -18,13 +18,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { unreachable } from "../0_deps.ts";
 import type { Api } from "../2_tl.ts";
 import type { SavedDialog } from "../tl/1_telegram_api.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { type ChatP, constructChatP, type PeerGetter } from "./1_chat_p.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
 import { constructMessage, type Message, type MessageGetter } from "./6_message.ts";
-import { unreachable } from "jsr:@std/assert@1.0.13/unreachable";
 
 /** Information on a saved chat. */
 export interface SavedChat {
