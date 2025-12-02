@@ -319,6 +319,7 @@ const schema: Schema = {
   identifierToName: {
     [0x01010101]: "testObject1",
     [0x10101010]: "testObject2",
+    [0x11111111]: "testObject2Vector",
   },
 };
 

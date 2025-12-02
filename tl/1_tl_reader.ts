@@ -22,7 +22,7 @@
 import { decodeText, intFromBytes } from "../1_utilities.ts";
 import { TLError } from "../0_errors.ts";
 import type { ObjectDefinition, Schema } from "./0_types.ts";
-import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, VECTOR, X } from "./0_utilities.ts";
+import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, constructorIdToHex, getOptionalParamInnerType, getVectorItemType, isOptionalParam, VECTOR, X } from "./0_utilities.ts";
 
 export class TLReader {
   #path = new Array<string>();
@@ -120,7 +120,7 @@ export class TLReader {
     if (name === X) {
       const typeName = schema.identifierToName[id];
       if (!typeName) {
-        throw new TLError(`Unknown constructor: ${id.toString(16)}`, this.#path);
+        throw new TLError(`Unknown constructor ID: ${constructorIdToHex(id)}`, this.#path);
       }
       this.unreadInt32();
       return await this.readType(typeName, schema);
@@ -136,7 +136,7 @@ export class TLReader {
     if (deserializedEnum !== undefined) {
       return deserializedEnum;
     }
-    throw new TLError(`Unknown type: ${name} ID ${id}`, this.#path);
+    throw new TLError(`Unknown type: ${name}#${constructorIdToHex(id)}`, this.#path);
   }
 
   async #deserializeEnum(type: string, id: number, schema: Schema) {
@@ -153,22 +153,22 @@ export class TLReader {
 
   async #deserializeType(type: string, desc: ObjectDefinition, id: number, schema: Schema) {
     if (desc[0] !== id) {
-      throw new TLError(`Expected constructor ${desc[0].toString(16)} but got ${id}`, this.#path);
+      throw new TLError(`Expected constructor with ID ${constructorIdToHex(desc[0])} but received ${constructorIdToHex(id)}`, this.#path);
     }
 
     let isFirstPathElementExisting = false;
     const type_: Record<string, any> = { _: type };
     const flagFields: Record<string, number> = {};
-    for (const [name, type] of desc[1]) {
-      if (isOptionalParam(type)) {
-        const { flagField, bitIndex } = analyzeOptionalParam(type);
+    for (const [name, fieldType] of desc[1]) {
+      if (isOptionalParam(fieldType)) {
+        const { flagField, bitIndex } = analyzeOptionalParam(fieldType);
         const bits = flagFields[flagField];
         if ((bits & (1 << bitIndex)) === 0) {
           continue;
         }
       }
 
-      if (type === "#") {
+      if (fieldType === "#") {
         flagFields[name] = this.readInt32();
         continue;
       }
@@ -181,7 +181,7 @@ export class TLReader {
         isFirstPathElementExisting = true;
       }
 
-      const value = await this.readType(type, schema);
+      const value = await this.readType(fieldType, schema);
       if (typeof value !== "boolean" || value) {
         type_[name] = value;
       }
@@ -226,7 +226,7 @@ export class TLReader {
         } else if (id === BOOL_FALSE) {
           return false;
         } else {
-          throw new TLError(`Expected boolTrue or boolFalse but got ${id}`, this.#path);
+          throw new TLError(`Expected boolTrue or boolFalse but received ${constructorIdToHex(id)}`, this.#path);
         }
       }
       case "string":
