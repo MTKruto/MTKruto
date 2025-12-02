@@ -19,8 +19,11 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
+import { TLError } from "../0_errors.ts";
 import type { Schema } from "./0_types.ts";
 import { TLWriter } from "./1_tl_writer.ts";
+import { assertInstanceOf } from "jsr:@std/assert@1.0.16/instance-of";
+import { unreachable } from "jsr:@std/assert@1.0.16/unreachable";
 
 Deno.test("TLWriter", async (t) => {
   const writer = new TLWriter();
@@ -284,7 +287,7 @@ const schema: Schema = {
   definitions: {
     testObject1: [
       0x01010101,
-      [["string", "string"]],
+      [["test_string", "string"]],
       "TestObject",
     ],
     testObject2: [
@@ -304,6 +307,13 @@ const schema: Schema = {
         ["flag3", "flags.3?long"],
       ],
       "TestObject",
+    ],
+    testObject2Vector: [
+      0x11111111,
+      [
+        ["vector", "flags.1?Vector<testObject2>"],
+      ],
+      "TestObjectVector",
     ],
   },
   identifierToName: {
@@ -345,7 +355,7 @@ Deno.test("writeObject", () => {
       string: "MTKruto",
       bytes: new Uint8Array([256, 256, 1, 1]),
       flag1: true,
-      flag2: [{ _: "testObject1", string: "MTKruto" }, { _: "testObject1", string: "MTKruto" }],
+      flag2: [{ _: "testObject1", test_string: "MTKruto" }, { _: "testObject1", test_string: "MTKruto" }],
       // deno-lint-ignore no-explicit-any
     } as any, schema)
     .buffer;
@@ -396,4 +406,89 @@ Deno.test("optional double", () => {
     }, schema)
     .buffer;
   assertEquals(actual, expected);
+});
+
+Deno.test("errors", () => {
+  // unknown constructor
+  try {
+    new TLWriter().writeObject({ _: "testObject3" }, schema);
+    unreachable();
+  } catch (err) {
+    assertInstanceOf(err, TLError);
+    assertEquals(err.message, "Unknown constructor: testObject3");
+  }
+
+  const badTestObject2 = {
+    _: "testObject2",
+    boolean1: true,
+    boolean2: false,
+    int: 0,
+    long: 0n,
+    int128: 0n,
+    int256: 0n,
+    string: "",
+    bytes: new Uint8Array(),
+    flag2: [{ _: "testObject3" }],
+  };
+
+  // unknown constructor not at the root
+  try {
+    new TLWriter().writeObject(badTestObject2, schema);
+    unreachable();
+  } catch (err) {
+    assertInstanceOf(err, TLError);
+    const path = ["[testObject2.]flag2"];
+    assertEquals(err.path, path);
+    assertEquals(err.message, `Unknown constructor: testObject3 at ${path.join(" ")}`);
+  }
+
+  // deeper path
+  try {
+    new TLWriter().writeObject({
+      _: "testObject2Vector",
+      vector: [badTestObject2],
+    }, schema);
+  } catch (err) {
+    assertInstanceOf(err, TLError);
+    const path = ["[testObject2Vector.]vector", "[testObject2.]flag2"];
+    assertEquals(err.path, path);
+    assertEquals(err.message, `Unknown constructor: testObject3 at ${path.join(" ")}`);
+  }
+
+  // a field is marked as required but it is unspecified
+  try {
+    new TLWriter().writeObject({
+      _: "testObject1",
+      test_stringg: "Some text",
+    }, schema);
+    unreachable();
+  } catch (err) {
+    assertInstanceOf(err, TLError);
+    const path = ["[testObject1.]test_string"];
+    assertEquals(err.path, path);
+    assertEquals(err.message, `Missing required field at ${path.join(" ")}`);
+  }
+
+  // a float was specified instead of an int
+  try {
+    new TLWriter().writeObject({
+      _: "testObject2",
+      boolean1: true,
+      boolean2: false,
+      int: 1234.1,
+      long: -922337203685477580n,
+      int128: 3196265793150487616775634918212890625n,
+      int256: 34053716734886053108720723919265766388580600074269200372509658336639404296875n,
+      string: "MTKruto",
+      bytes: new Uint8Array([256, 256, 1, 1]),
+      flag1: true,
+      flag2: [{ _: "testObject1", test_string: "MTKruto" }, { _: "testObject1", test_string: "MTKruto" }],
+    }, schema);
+    unreachable();
+  } catch (err) {
+    assertInstanceOf(err, TLError);
+    const path = ["[testObject2.]int"];
+    assertEquals(err.path, path);
+    assertEquals(err.message, `Expected an integer value but received a floating point at ${path.join(" ")}`);
+  }
 });

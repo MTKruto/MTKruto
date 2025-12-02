@@ -28,7 +28,7 @@ import { encodeText } from "../1_utilities.ts";
 
 export class TLWriter {
   protected _buffer: Uint8Array<ArrayBuffer> = new Uint8Array();
-  #path = "";
+  #path = new Array<string>();
 
   constructor() {
   }
@@ -121,6 +121,7 @@ export class TLWriter {
     const [id, parameters_] = maybeDefinition;
     this.writeInt32(id, false);
 
+    let isFirstPathElementExisting = false;
     for (let [name, type] of parameters_.values()) {
       if (isOptionalParam(type) && type__[name] === undefined) {
         continue;
@@ -145,8 +146,13 @@ export class TLWriter {
         continue;
       }
 
-      const parent = this.#path;
-      this.#path = `${parent ? `${parent} ` : ""}[${value._}.]${name}`;
+      const pathElement = `[${value._}.]${name}`;
+      if (isFirstPathElementExisting) {
+        this.#path[this.#path.length - 1] = pathElement;
+      } else {
+        this.#path.push(pathElement);
+        isFirstPathElementExisting = true;
+      }
 
       if (type__[name] === undefined && !isOptionalParam(type)) {
         throw new TLError("Missing required field", this.#path);

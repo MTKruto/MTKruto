@@ -144,7 +144,7 @@ export interface BufferFromBigintParams {
   /** Whether the integer is a signed one. Defaults to `true`. */
   isSigned?: boolean;
   /** The path to the integer in the TL schema. Unspecified by default. */
-  path?: string;
+  path?: string[];
 }
 
 /**
@@ -157,7 +157,7 @@ export interface BufferFromBigintParams {
 export function intToBytes(int: bigint | number, byteCount: number, {
   byteOrder = "little",
   isSigned = true,
-  path = "",
+  path = [],
 }: BufferFromBigintParams = {}): Uint8Array<ArrayBuffer> {
   const actualByteCount = Math.ceil(int.toString(2).length / 8);
   if (byteCount < actualByteCount) {

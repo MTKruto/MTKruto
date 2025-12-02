@@ -25,7 +25,7 @@ import type { ObjectDefinition, Schema } from "./0_types.ts";
 import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, VECTOR, X } from "./0_utilities.ts";
 
 export class TLReader {
-  #path = "";
+  #path = new Array<string>();
 
   constructor(protected _buffer: Uint8Array) {
   }
@@ -156,6 +156,7 @@ export class TLReader {
       throw new TLError(`Expected constructor ${desc[0].toString(16)} but got ${id}`, this.#path);
     }
 
+    let isFirstPathElementExisting = false;
     const type_: Record<string, any> = { _: type };
     const flagFields: Record<string, number> = {};
     for (const [name, type] of desc[1]) {
@@ -172,8 +173,13 @@ export class TLReader {
         continue;
       }
 
-      const parent = this.#path;
-      this.#path = `${parent ? `${parent} ` : ""}[${type}.]${name}`;
+      const pathElement = `[${type}.]${name}`;
+      if (isFirstPathElementExisting) {
+        this.#path[this.#path.length - 1] = pathElement;
+      } else {
+        this.#path.push(pathElement);
+        isFirstPathElementExisting = true;
+      }
 
       const value = await this.readType(type, schema);
       if (typeof value !== "boolean" || value) {
