@@ -77,7 +77,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
       unreachable();
     }
 
-    const pq_ = intFromBytes(resPq.pq, { byteOrder: "little", isSigned: false });
+    const pq_ = intFromBytes(resPq.pq, { byteOrder: "big", isSigned: false });
     LcreateAuthKey.debug(`pq=${pq_}`);
     const [p_, q_] = factorize(pq_);
     LcreateAuthKey.debug("factorized pq");
