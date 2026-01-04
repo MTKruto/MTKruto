@@ -1902,6 +1902,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Get information on the currently authorized user.
    *
    * @method ac
+   * @returns Information on the currently authorized user.
    */
   async getMe(): Promise<User> {
     let chatP = (await this[getPeer]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) }))?.[0] ?? null;
@@ -1954,6 +1955,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    *
    * @method ac
    * @param id A supergroup ID or a channel ID.
+   * @returns Whether any username was hidden.
    */
   async hideUsernames(id: ID): Promise<boolean> {
     return await this.#accountManager.hideUsernames(id);
@@ -3095,6 +3097,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @method ch
    * @param chatId The identifier of the channel or supergroup to add the users to.
    * @param userId The identifiers of the users to add to the channel or supergroup.
+   * @returns An array of FailedInvitation that has at most a length that is the same as that of the parameter userIds. If empty, it means that all the provided users were added.
    */
   async addChatMembers(chatId: ID, userIds: ID[]): Promise<FailedInvitation[]> {
     return await this.#chatManager.addChatMembers(chatId, userIds);
