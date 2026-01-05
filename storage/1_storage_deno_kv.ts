@@ -1,6 +1,6 @@
 /**
  * MTKruto - Cross-runtime JavaScript library for building Telegram clients
- * Copyright (C) 2023-2025 Roj <https://roj.im/>
+ * Copyright (C) 2023-2026 Roj <https://roj.im/>
  *
  * This file is part of MTKruto.
  *
