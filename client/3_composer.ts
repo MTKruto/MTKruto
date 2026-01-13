@@ -80,8 +80,8 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
   }
 
   #lastGetMe?: User;
-  addUpdateHandler(client: ClientGeneric) {
-    client.addUpdateHandler(async (update) => {
+  getUpdateHandler(client: ClientGeneric) {
+    return async (update: Update) => {
       if (this.#lastGetMe === null && !("connectionState" in update) && (!("authorizationState" in update) || ("authorizationState" in update && update.authorizationState.isAuthorized))) {
         this.#lastGetMe = await client.getMe();
       }
@@ -89,7 +89,7 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
       const ctx = new Context(client, this.#lastGetMe, update);
       const next = () => Promise.resolve();
       await this.#handle(ctx as C, next);
-    });
+    }
   }
 
   middleware(): MiddlewareFn<C> {
