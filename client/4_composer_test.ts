@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Message } from "../3_types.ts";
+import type { Animation, Message } from "../3_types.ts";
 import { Composer } from "./4_composer.ts";
 
 Deno.test("types", () => {
@@ -37,8 +37,7 @@ Deno.test("types", () => {
     let editedMessage: Message = ctx.update.editedMessage;
   });
 
-  composer.on(":animation", (ctx) => {
-    let msg: Message = ctx.msg.animation;
-    let editedMessage: Message | undefined = ctx.update.message;
+  composer.on("message:animation", (ctx) => {
+    let animation: Animation = ctx.msg.animation;
   });
 });
