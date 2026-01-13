@@ -101,9 +101,3 @@ export const MAX_CHANNEL_ID = 997852516352;
 export const CHANNEL_DIFFERENCE_LIMIT_USER = 100;
 
 export const CHANNEL_DIFFERENCE_LIMIT_BOT = 100_000;
-
-export let IS_WORKER = false;
-
-export function setIsWorker(isWorker: boolean) {
-  IS_WORKER = isWorker;
-}
