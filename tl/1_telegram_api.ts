@@ -36,8 +36,46 @@ export interface error {
   text: string;
 }
 
-export interface null_ {
-  _: "null";
+export interface ipPort {
+  _: "ipPort";
+  ipv4: number;
+  port: number;
+}
+
+export interface ipPortSecret {
+  _: "ipPortSecret";
+  ipv4: number;
+  port: number;
+  secret: Uint8Array<ArrayBuffer>;
+}
+
+export interface accessPointRule {
+  _: "accessPointRule";
+  phone_prefix_rules: string;
+  dc_id: number;
+  ips: Array<IpPort>;
+}
+
+export interface help_configSimple {
+  _: "help.configSimple";
+  date: number;
+  expires: number;
+  rules: Array<AccessPointRule>;
+}
+
+export interface inputPeerPhotoFileLocationLegacy {
+  _: "inputPeerPhotoFileLocationLegacy";
+  big?: true;
+  peer: InputPeer;
+  volume_id: bigint;
+  local_id: number;
+}
+
+export interface inputStickerSetThumbLegacy {
+  _: "inputStickerSetThumbLegacy";
+  stickerset: InputStickerSet;
+  volume_id: bigint;
+  local_id: number;
 }
 
 export interface inputPeerEmpty {
@@ -106,6 +144,7 @@ export interface inputPhoneContact {
   phone: string;
   first_name: string;
   last_name: string;
+  note?: TextWithEntities;
 }
 
 export interface inputFile {
@@ -275,6 +314,13 @@ export interface inputMediaPaidMedia {
 export interface inputMediaTodo {
   _: "inputMediaTodo";
   todo: TodoList;
+}
+
+export interface inputMediaStakeDice {
+  _: "inputMediaStakeDice";
+  game_hash: string;
+  ton_amount: bigint;
+  client_seed: Uint8Array<ArrayBuffer>;
 }
 
 export interface inputChatPhotoEmpty {
@@ -490,7 +536,7 @@ export interface user {
   lang_code?: string;
   emoji_status?: EmojiStatus;
   usernames?: Array<Username>;
-  stories_max_id?: number;
+  stories_max_id?: RecentStory;
   color?: PeerColor;
   profile_color?: PeerColor;
   bot_active_users?: number;
@@ -612,7 +658,7 @@ export interface channel {
   default_banned_rights?: ChatBannedRights;
   participants_count?: number;
   usernames?: Array<Username>;
-  stories_max_id?: number;
+  stories_max_id?: RecentStory;
   color?: PeerColor;
   profile_color?: PeerColor;
   emoji_status?: EmojiStatus;
@@ -823,6 +869,8 @@ export interface message {
   report_delivery_until_date?: number;
   paid_message_stars?: bigint;
   suggested_post?: SuggestedPost;
+  schedule_repeat_period?: number;
+  summary_from_language?: string;
 }
 
 export interface messageService {
@@ -944,6 +992,7 @@ export interface messageMediaDice {
   _: "messageMediaDice";
   value: number;
   emoticon: string;
+  game_outcome?: messages_EmojiGameOutcome;
 }
 
 export interface messageMediaStory {
@@ -993,6 +1042,12 @@ export interface messageMediaToDo {
   _: "messageMediaToDo";
   todo: TodoList;
   completions?: Array<TodoCompletion>;
+}
+
+export interface messageMediaVideoStream {
+  _: "messageMediaVideoStream";
+  rtmp_stream?: true;
+  call: InputGroupCall;
 }
 
 export interface messageActionEmpty {
@@ -1182,7 +1237,7 @@ export interface messageActionGiftPremium {
   _: "messageActionGiftPremium";
   currency: string;
   amount: bigint;
-  months: number;
+  days: number;
   crypto_currency?: string;
   crypto_amount?: bigint;
   message?: TextWithEntities;
@@ -1227,7 +1282,7 @@ export interface messageActionGiftCode {
   via_giveaway?: true;
   unclaimed?: true;
   boost_peer?: Peer;
-  months: number;
+  days: number;
   slug: string;
   currency?: string;
   amount?: bigint;
@@ -1297,6 +1352,7 @@ export interface messageActionStarGift {
   can_upgrade?: true;
   prepaid_upgrade?: true;
   upgrade_separate?: true;
+  auction_acquired?: true;
   gift: StarGift;
   message?: TextWithEntities;
   convert_stars?: bigint;
@@ -1307,6 +1363,8 @@ export interface messageActionStarGift {
   saved_id?: bigint;
   prepaid_upgrade_hash?: string;
   gift_msg_id?: number;
+  to_id?: Peer;
+  gift_num?: number;
 }
 
 export interface messageActionStarGiftUnique {
@@ -1317,6 +1375,7 @@ export interface messageActionStarGiftUnique {
   refunded?: true;
   prepaid_upgrade?: true;
   assigned?: true;
+  from_offer?: true;
   gift: StarGift;
   can_export_at?: number;
   transfer_stars?: bigint;
@@ -1393,6 +1452,22 @@ export interface messageActionGiftTon {
 export interface messageActionSuggestBirthday {
   _: "messageActionSuggestBirthday";
   birthday: Birthday;
+}
+
+export interface messageActionStarGiftPurchaseOffer {
+  _: "messageActionStarGiftPurchaseOffer";
+  accepted?: true;
+  declined?: true;
+  gift: StarGift;
+  price: StarsAmount;
+  expires_at: number;
+}
+
+export interface messageActionStarGiftPurchaseOfferDeclined {
+  _: "messageActionStarGiftPurchaseOfferDeclined";
+  expired?: true;
+  gift: StarGift;
+  price: StarsAmount;
 }
 
 export interface dialog {
@@ -2518,7 +2593,8 @@ export interface updateGroupCallParticipants {
 
 export interface updateGroupCall {
   _: "updateGroupCall";
-  chat_id?: bigint;
+  live_story?: true;
+  peer?: Peer;
   call: GroupCall;
 }
 
@@ -2893,9 +2969,7 @@ export interface updateMonoForumNoPaidException {
 export interface updateGroupCallMessage {
   _: "updateGroupCallMessage";
   call: InputGroupCall;
-  from_id: Peer;
-  random_id: bigint;
-  message: TextWithEntities;
+  message: GroupCallMessage;
 }
 
 export interface updateGroupCallEncryptedMessage {
@@ -2916,6 +2990,29 @@ export interface updatePinnedForumTopics {
   _: "updatePinnedForumTopics";
   peer: Peer;
   order?: Array<number>;
+}
+
+export interface updateDeleteGroupCallMessages {
+  _: "updateDeleteGroupCallMessages";
+  call: InputGroupCall;
+  messages: Array<number>;
+}
+
+export interface updateStarGiftAuctionState {
+  _: "updateStarGiftAuctionState";
+  gift_id: bigint;
+  state: StarGiftAuctionState;
+}
+
+export interface updateStarGiftAuctionUserState {
+  _: "updateStarGiftAuctionUserState";
+  gift_id: bigint;
+  user_state: StarGiftAuctionUserState;
+}
+
+export interface updateEmojiGameInfo {
+  _: "updateEmojiGameInfo";
+  info: messages_EmojiGameInfo;
 }
 
 export interface updates_state {
@@ -3500,6 +3597,10 @@ export interface inputPrivacyKeyNoPaidMessages {
   _: "inputPrivacyKeyNoPaidMessages";
 }
 
+export interface inputPrivacyKeySavedMusic {
+  _: "inputPrivacyKeySavedMusic";
+}
+
 export interface privacyKeyStatusTimestamp {
   _: "privacyKeyStatusTimestamp";
 }
@@ -3550,6 +3651,10 @@ export interface privacyKeyStarGiftsAutoSave {
 
 export interface privacyKeyNoPaidMessages {
   _: "privacyKeyNoPaidMessages";
+}
+
+export interface privacyKeySavedMusic {
+  _: "privacyKeySavedMusic";
 }
 
 export interface inputPrivacyValueAllowContacts {
@@ -7111,6 +7216,12 @@ export interface webPageAttributeStarGiftCollection {
   icons: Array<Document>;
 }
 
+export interface webPageAttributeStarGiftAuction {
+  _: "webPageAttributeStarGiftAuction";
+  gift: StarGift;
+  end_date: number;
+}
+
 export interface messages_votesList {
   _: "messages.votesList";
   count: number;
@@ -7458,6 +7569,8 @@ export interface groupCall {
   unmuted_video_limit: number;
   version: number;
   invite_link?: string;
+  send_paid_messages_stars?: bigint;
+  default_send_as?: Peer;
 }
 
 export interface inputGroupCall {
@@ -7497,6 +7610,7 @@ export interface groupCallParticipant {
   raise_hand_rating?: bigint;
   video?: GroupCallParticipantVideo;
   presentation?: GroupCallParticipantVideo;
+  paid_stars_total?: bigint;
 }
 
 export interface phone_groupCall {
@@ -8103,6 +8217,16 @@ export interface inputInvoiceStarGiftDropOriginalDetails {
   stargift: InputSavedStarGift;
 }
 
+export interface inputInvoiceStarGiftAuctionBid {
+  _: "inputInvoiceStarGiftAuctionBid";
+  hide_name?: true;
+  update_bid?: true;
+  peer?: InputPeer;
+  gift_id: bigint;
+  bid_amount: bigint;
+  message?: TextWithEntities;
+}
+
 export interface payments_exportedInvoice {
   _: "payments.exportedInvoice";
   url: string;
@@ -8680,6 +8804,7 @@ export interface storyItemDeleted {
 export interface storyItemSkipped {
   _: "storyItemSkipped";
   close_friends?: true;
+  live?: true;
   id: number;
   date: number;
   expire_date: number;
@@ -8928,7 +9053,7 @@ export interface payments_checkedGiftCode {
   giveaway_msg_id?: number;
   to_id?: bigint;
   date: number;
-  months: number;
+  days: number;
   used_date?: number;
   chats: Array<Chat>;
   users: Array<User>;
@@ -9675,6 +9800,9 @@ export interface starsTransaction {
   posts_search?: true;
   stargift_prepaid_upgrade?: true;
   stargift_drop_original_details?: true;
+  phonegroup_message?: true;
+  stargift_auction_bid?: true;
+  offer?: true;
   id: string;
   amount: StarsAmount;
   date: number;
@@ -9853,6 +9981,7 @@ export interface starGift {
   require_premium?: true;
   limited_per_user?: true;
   peer_color_available?: true;
+  auction?: true;
   id: bigint;
   sticker: Document;
   stars: bigint;
@@ -9869,6 +9998,11 @@ export interface starGift {
   per_user_total?: number;
   per_user_remains?: number;
   locked_until_date?: number;
+  auction_slug?: string;
+  gifts_per_round?: number;
+  auction_start_date?: number;
+  upgrade_variants?: number;
+  background?: StarGiftBackground;
 }
 
 export interface starGiftUnique {
@@ -9892,9 +10026,11 @@ export interface starGiftUnique {
   released_by?: Peer;
   value_amount?: bigint;
   value_currency?: string;
+  value_usd_amount?: bigint;
   theme_peer?: Peer;
   peer_color?: PeerColor;
   host_id?: Peer;
+  offer_min_stars?: number;
 }
 
 export interface payments_starGiftsNotModified {
@@ -10117,6 +10253,7 @@ export interface savedStarGift {
   collection_id?: Array<number>;
   prepaid_upgrade_hash?: string;
   drop_original_details_stars?: bigint;
+  gift_num?: number;
 }
 
 export interface payments_savedStarGifts {
@@ -10205,6 +10342,7 @@ export interface disallowedGiftsSettings {
   disallow_limited_stargifts?: true;
   disallow_unique_stargifts?: true;
   disallow_premium_gifts?: true;
+  disallow_stargifts_from_channels?: true;
 }
 
 export interface sponsoredPeer {
@@ -10289,7 +10427,7 @@ export interface todoList {
 export interface todoCompletion {
   _: "todoCompletion";
   id: number;
-  completed_by: bigint;
+  completed_by: Peer;
   date: number;
 }
 
@@ -10451,6 +10589,264 @@ export interface starGiftUpgradePrice {
   _: "starGiftUpgradePrice";
   date: number;
   upgrade_stars: bigint;
+}
+
+export interface groupCallMessage {
+  _: "groupCallMessage";
+  from_admin?: true;
+  id: number;
+  from_id: Peer;
+  date: number;
+  message: TextWithEntities;
+  paid_message_stars?: bigint;
+}
+
+export interface groupCallDonor {
+  _: "groupCallDonor";
+  top?: true;
+  my?: true;
+  peer_id?: Peer;
+  stars: bigint;
+}
+
+export interface phone_groupCallStars {
+  _: "phone.groupCallStars";
+  total_stars: bigint;
+  top_donors: Array<GroupCallDonor>;
+  chats: Array<Chat>;
+  users: Array<User>;
+}
+
+export interface recentStory {
+  _: "recentStory";
+  live?: true;
+  max_id?: number;
+}
+
+export interface auctionBidLevel {
+  _: "auctionBidLevel";
+  pos: number;
+  amount: bigint;
+  date: number;
+}
+
+export interface starGiftAuctionStateNotModified {
+  _: "starGiftAuctionStateNotModified";
+}
+
+export interface starGiftAuctionState {
+  _: "starGiftAuctionState";
+  version: number;
+  start_date: number;
+  end_date: number;
+  min_bid_amount: bigint;
+  bid_levels: Array<AuctionBidLevel>;
+  top_bidders: Array<bigint>;
+  next_round_at: number;
+  last_gift_num: number;
+  gifts_left: number;
+  current_round: number;
+  total_rounds: number;
+  rounds: Array<StarGiftAuctionRound>;
+}
+
+export interface starGiftAuctionStateFinished {
+  _: "starGiftAuctionStateFinished";
+  start_date: number;
+  end_date: number;
+  average_price: bigint;
+  listed_count?: number;
+  fragment_listed_count?: number;
+  fragment_listed_url?: string;
+}
+
+export interface starGiftAuctionUserState {
+  _: "starGiftAuctionUserState";
+  returned?: true;
+  bid_amount?: bigint;
+  bid_date?: number;
+  min_bid_amount?: bigint;
+  bid_peer?: Peer;
+  acquired_count: number;
+}
+
+export interface payments_starGiftAuctionState {
+  _: "payments.starGiftAuctionState";
+  gift: StarGift;
+  state: StarGiftAuctionState;
+  user_state: StarGiftAuctionUserState;
+  timeout: number;
+  users: Array<User>;
+  chats: Array<Chat>;
+}
+
+export interface starGiftAuctionAcquiredGift {
+  _: "starGiftAuctionAcquiredGift";
+  name_hidden?: true;
+  peer: Peer;
+  date: number;
+  bid_amount: bigint;
+  round: number;
+  pos: number;
+  message?: TextWithEntities;
+  gift_num?: number;
+}
+
+export interface payments_starGiftAuctionAcquiredGifts {
+  _: "payments.starGiftAuctionAcquiredGifts";
+  gifts: Array<StarGiftAuctionAcquiredGift>;
+  users: Array<User>;
+  chats: Array<Chat>;
+}
+
+export interface starGiftActiveAuctionState {
+  _: "starGiftActiveAuctionState";
+  gift: StarGift;
+  state: StarGiftAuctionState;
+  user_state: StarGiftAuctionUserState;
+}
+
+export interface payments_starGiftActiveAuctionsNotModified {
+  _: "payments.starGiftActiveAuctionsNotModified";
+}
+
+export interface payments_starGiftActiveAuctions {
+  _: "payments.starGiftActiveAuctions";
+  auctions: Array<StarGiftActiveAuctionState>;
+  users: Array<User>;
+  chats: Array<Chat>;
+}
+
+export interface inputStarGiftAuction {
+  _: "inputStarGiftAuction";
+  gift_id: bigint;
+}
+
+export interface inputStarGiftAuctionSlug {
+  _: "inputStarGiftAuctionSlug";
+  slug: string;
+}
+
+export interface passkey {
+  _: "passkey";
+  id: string;
+  name: string;
+  date: number;
+  software_emoji_id?: bigint;
+  last_usage_date?: number;
+}
+
+export interface account_passkeys {
+  _: "account.passkeys";
+  passkeys: Array<Passkey>;
+}
+
+export interface account_passkeyRegistrationOptions {
+  _: "account.passkeyRegistrationOptions";
+  options: DataJSON;
+}
+
+export interface auth_passkeyLoginOptions {
+  _: "auth.passkeyLoginOptions";
+  options: DataJSON;
+}
+
+export interface inputPasskeyResponseRegister {
+  _: "inputPasskeyResponseRegister";
+  client_data: DataJSON;
+  attestation_data: Uint8Array<ArrayBuffer>;
+}
+
+export interface inputPasskeyResponseLogin {
+  _: "inputPasskeyResponseLogin";
+  client_data: DataJSON;
+  authenticator_data: Uint8Array<ArrayBuffer>;
+  signature: Uint8Array<ArrayBuffer>;
+  user_handle: string;
+}
+
+export interface inputPasskeyCredentialPublicKey {
+  _: "inputPasskeyCredentialPublicKey";
+  id: string;
+  raw_id: string;
+  response: InputPasskeyResponse;
+}
+
+export interface inputPasskeyCredentialFirebasePNV {
+  _: "inputPasskeyCredentialFirebasePNV";
+  pnv_token: string;
+}
+
+export interface starGiftBackground {
+  _: "starGiftBackground";
+  center_color: number;
+  edge_color: number;
+  text_color: number;
+}
+
+export interface starGiftAuctionRound {
+  _: "starGiftAuctionRound";
+  num: number;
+  duration: number;
+}
+
+export interface starGiftAuctionRoundExtendable {
+  _: "starGiftAuctionRoundExtendable";
+  num: number;
+  duration: number;
+  extend_top: number;
+  extend_window: number;
+}
+
+export interface payments_starGiftUpgradeAttributes {
+  _: "payments.starGiftUpgradeAttributes";
+  attributes: Array<StarGiftAttribute>;
+}
+
+export interface messages_emojiGameOutcome {
+  _: "messages.emojiGameOutcome";
+  seed: Uint8Array<ArrayBuffer>;
+  stake_ton_amount: bigint;
+  ton_amount: bigint;
+}
+
+export interface messages_emojiGameUnavailable {
+  _: "messages.emojiGameUnavailable";
+}
+
+export interface messages_emojiGameDiceInfo {
+  _: "messages.emojiGameDiceInfo";
+  game_hash: string;
+  prev_stake: bigint;
+  current_streak: number;
+  params: Array<number>;
+  plays_left?: number;
+}
+
+export interface invokeWithBusinessConnectionPrefix {
+  _: "invokeWithBusinessConnectionPrefix";
+  connection_id: string;
+  [R]?: Error;
+}
+
+export interface invokeWithGooglePlayIntegrityPrefix {
+  _: "invokeWithGooglePlayIntegrityPrefix";
+  nonce: string;
+  token: string;
+  [R]?: Error;
+}
+
+export interface invokeWithApnsSecretPrefix {
+  _: "invokeWithApnsSecretPrefix";
+  nonce: string;
+  secret: string;
+  [R]?: Error;
+}
+
+export interface invokeWithReCaptchaPrefix {
+  _: "invokeWithReCaptchaPrefix";
+  token: string;
+  [R]?: Error;
 }
 
 export interface invokeAfterMsg<T> {
@@ -10712,6 +11108,21 @@ export interface auth_checkPaidAuth {
   phone_code_hash: string;
   form_id: bigint;
   [R]?: auth_SentCode;
+}
+
+export interface auth_initPasskeyLogin {
+  _: "auth.initPasskeyLogin";
+  api_id: number;
+  api_hash: string;
+  [R]?: auth_PasskeyLoginOptions;
+}
+
+export interface auth_finishPasskeyLogin {
+  _: "auth.finishPasskeyLogin";
+  credential: InputPasskeyCredential;
+  from_dc_id?: number;
+  from_auth_key_id?: bigint;
+  [R]?: auth_Authorization;
 }
 
 export interface account_registerDevice {
@@ -11501,6 +11912,28 @@ export interface account_getUniqueGiftChatThemes {
   [R]?: account_ChatThemes;
 }
 
+export interface account_initPasskeyRegistration {
+  _: "account.initPasskeyRegistration";
+  [R]?: account_PasskeyRegistrationOptions;
+}
+
+export interface account_registerPasskey {
+  _: "account.registerPasskey";
+  credential: InputPasskeyCredential;
+  [R]?: Passkey;
+}
+
+export interface account_getPasskeys {
+  _: "account.getPasskeys";
+  [R]?: account_Passkeys;
+}
+
+export interface account_deletePasskey {
+  _: "account.deletePasskey";
+  id: string;
+  [R]?: boolean;
+}
+
 export interface users_getUsers {
   _: "users.getUsers";
   id: Array<InputUser>;
@@ -11850,6 +12283,7 @@ export interface messages_sendMessage {
   reply_markup?: ReplyMarkup;
   entities?: Array<MessageEntity>;
   schedule_date?: number;
+  schedule_repeat_period?: number;
   send_as?: InputPeer;
   quick_reply_shortcut?: InputQuickReplyShortcut;
   effect?: bigint;
@@ -11875,6 +12309,7 @@ export interface messages_sendMedia {
   reply_markup?: ReplyMarkup;
   entities?: Array<MessageEntity>;
   schedule_date?: number;
+  schedule_repeat_period?: number;
   send_as?: InputPeer;
   quick_reply_shortcut?: InputQuickReplyShortcut;
   effect?: bigint;
@@ -11899,8 +12334,10 @@ export interface messages_forwardMessages {
   top_msg_id?: number;
   reply_to?: InputReplyTo;
   schedule_date?: number;
+  schedule_repeat_period?: number;
   send_as?: InputPeer;
   quick_reply_shortcut?: InputQuickReplyShortcut;
+  effect?: bigint;
   video_timestamp?: number;
   allow_paid_stars?: bigint;
   suggested_post?: SuggestedPost;
@@ -12267,6 +12704,7 @@ export interface messages_editMessage {
   reply_markup?: ReplyMarkup;
   entities?: Array<MessageEntity>;
   schedule_date?: number;
+  schedule_repeat_period?: number;
   quick_reply_shortcut_id?: number;
   [R]?: Updates;
 }
@@ -13697,6 +14135,19 @@ export interface messages_deleteTopicHistory {
   [R]?: messages_AffectedHistory;
 }
 
+export interface messages_getEmojiGameInfo {
+  _: "messages.getEmojiGameInfo";
+  [R]?: messages_EmojiGameInfo;
+}
+
+export interface messages_summarizeText {
+  _: "messages.summarizeText";
+  peer: InputPeer;
+  id: number;
+  to_lang?: string;
+  [R]?: TextWithEntities;
+}
+
 export interface updates_getState {
   _: "updates.getState";
   [R]?: updates_State;
@@ -14242,6 +14693,7 @@ export interface channels_convertToGigagroup {
 export interface channels_getSendAs {
   _: "channels.getSendAs";
   for_paid_reactions?: true;
+  for_live_stories?: true;
   peer: InputPeer;
   [R]?: channels_SendAsPeers;
 }
@@ -15054,6 +15506,49 @@ export interface payments_checkCanSendGift {
   [R]?: payments_CheckCanSendGiftResult;
 }
 
+export interface payments_getStarGiftAuctionState {
+  _: "payments.getStarGiftAuctionState";
+  auction: InputStarGiftAuction;
+  version: number;
+  [R]?: payments_StarGiftAuctionState;
+}
+
+export interface payments_getStarGiftAuctionAcquiredGifts {
+  _: "payments.getStarGiftAuctionAcquiredGifts";
+  gift_id: bigint;
+  [R]?: payments_StarGiftAuctionAcquiredGifts;
+}
+
+export interface payments_getStarGiftActiveAuctions {
+  _: "payments.getStarGiftActiveAuctions";
+  hash: bigint;
+  [R]?: payments_StarGiftActiveAuctions;
+}
+
+export interface payments_resolveStarGiftOffer {
+  _: "payments.resolveStarGiftOffer";
+  decline?: true;
+  offer_msg_id: number;
+  [R]?: Updates;
+}
+
+export interface payments_sendStarGiftOffer {
+  _: "payments.sendStarGiftOffer";
+  peer: InputPeer;
+  slug: string;
+  price: StarsAmount;
+  duration: number;
+  random_id: bigint;
+  allow_paid_stars?: bigint;
+  [R]?: Updates;
+}
+
+export interface payments_getStarGiftUpgradeAttributes {
+  _: "payments.getStarGiftUpgradeAttributes";
+  gift_id: bigint;
+  [R]?: payments_StarGiftUpgradeAttributes;
+}
+
 export interface stickers_createStickerSet {
   _: "stickers.createStickerSet";
   masks?: true;
@@ -15257,6 +15752,7 @@ export interface phone_toggleGroupCallSettings {
   call: InputGroupCall;
   join_muted?: boolean;
   messages_enabled?: boolean;
+  send_paid_messages_stars?: bigint;
   [R]?: Updates;
 }
 
@@ -15368,6 +15864,7 @@ export interface phone_getGroupCallStreamChannels {
 
 export interface phone_getGroupCallStreamRtmpUrl {
   _: "phone.getGroupCallStreamRtmpUrl";
+  live_story?: true;
   peer: InputPeer;
   revoke: boolean;
   [R]?: phone_GroupCallStreamRtmpUrl;
@@ -15437,13 +15934,44 @@ export interface phone_sendGroupCallMessage {
   call: InputGroupCall;
   random_id: bigint;
   message: TextWithEntities;
-  [R]?: boolean;
+  allow_paid_stars?: bigint;
+  send_as?: InputPeer;
+  [R]?: Updates;
 }
 
 export interface phone_sendGroupCallEncryptedMessage {
   _: "phone.sendGroupCallEncryptedMessage";
   call: InputGroupCall;
   encrypted_message: Uint8Array<ArrayBuffer>;
+  [R]?: boolean;
+}
+
+export interface phone_deleteGroupCallMessages {
+  _: "phone.deleteGroupCallMessages";
+  report_spam?: true;
+  call: InputGroupCall;
+  messages: Array<number>;
+  [R]?: Updates;
+}
+
+export interface phone_deleteGroupCallParticipantMessages {
+  _: "phone.deleteGroupCallParticipantMessages";
+  report_spam?: true;
+  call: InputGroupCall;
+  participant: InputPeer;
+  [R]?: Updates;
+}
+
+export interface phone_getGroupCallStars {
+  _: "phone.getGroupCallStars";
+  call: InputGroupCall;
+  [R]?: phone_GroupCallStars;
+}
+
+export interface phone_saveDefaultSendAs {
+  _: "phone.saveDefaultSendAs";
+  call: InputGroupCall;
+  send_as: InputPeer;
   [R]?: boolean;
 }
 
@@ -15788,7 +16316,7 @@ export interface stories_getAllReadPeerStories {
 export interface stories_getPeerMaxIDs {
   _: "stories.getPeerMaxIDs";
   id: Array<InputPeer>;
-  [R]?: Array<number>;
+  [R]?: Array<RecentStory>;
 }
 
 export interface stories_getChatsToSend {
@@ -15880,6 +16408,21 @@ export interface stories_getAlbumStories {
   [R]?: stories_Stories;
 }
 
+export interface stories_startLive {
+  _: "stories.startLive";
+  pinned?: true;
+  noforwards?: true;
+  rtmp_stream?: true;
+  peer: InputPeer;
+  caption?: string;
+  entities?: Array<MessageEntity>;
+  privacy_rules: Array<InputPrivacyRule>;
+  random_id: bigint;
+  messages_enabled?: boolean;
+  send_paid_messages_stars?: bigint;
+  [R]?: Updates;
+}
+
 export interface premium_getBoostsList {
   _: "premium.getBoostsList";
   gifts?: true;
@@ -15962,7 +16505,12 @@ export interface fragment_getCollectibleInfo {
 export interface Types {
   "true": true_;
   "error": error;
-  "null": null_;
+  "ipPort": ipPort;
+  "ipPortSecret": ipPortSecret;
+  "accessPointRule": accessPointRule;
+  "help.configSimple": help_configSimple;
+  "inputPeerPhotoFileLocationLegacy": inputPeerPhotoFileLocationLegacy;
+  "inputStickerSetThumbLegacy": inputStickerSetThumbLegacy;
   "inputPeerEmpty": inputPeerEmpty;
   "inputPeerSelf": inputPeerSelf;
   "inputPeerChat": inputPeerChat;
@@ -15997,6 +16545,7 @@ export interface Types {
   "inputMediaWebPage": inputMediaWebPage;
   "inputMediaPaidMedia": inputMediaPaidMedia;
   "inputMediaTodo": inputMediaTodo;
+  "inputMediaStakeDice": inputMediaStakeDice;
   "inputChatPhotoEmpty": inputChatPhotoEmpty;
   "inputChatUploadedPhoto": inputChatUploadedPhoto;
   "inputChatPhoto": inputChatPhoto;
@@ -16072,6 +16621,7 @@ export interface Types {
   "messageMediaGiveawayResults": messageMediaGiveawayResults;
   "messageMediaPaidMedia": messageMediaPaidMedia;
   "messageMediaToDo": messageMediaToDo;
+  "messageMediaVideoStream": messageMediaVideoStream;
   "messageActionEmpty": messageActionEmpty;
   "messageActionChatCreate": messageActionChatCreate;
   "messageActionChatEditTitle": messageActionChatEditTitle;
@@ -16130,6 +16680,8 @@ export interface Types {
   "messageActionSuggestedPostRefund": messageActionSuggestedPostRefund;
   "messageActionGiftTon": messageActionGiftTon;
   "messageActionSuggestBirthday": messageActionSuggestBirthday;
+  "messageActionStarGiftPurchaseOffer": messageActionStarGiftPurchaseOffer;
+  "messageActionStarGiftPurchaseOfferDeclined": messageActionStarGiftPurchaseOfferDeclined;
   "dialog": dialog;
   "dialogFolder": dialogFolder;
   "photoEmpty": photoEmpty;
@@ -16352,6 +16904,10 @@ export interface Types {
   "updateGroupCallEncryptedMessage": updateGroupCallEncryptedMessage;
   "updatePinnedForumTopic": updatePinnedForumTopic;
   "updatePinnedForumTopics": updatePinnedForumTopics;
+  "updateDeleteGroupCallMessages": updateDeleteGroupCallMessages;
+  "updateStarGiftAuctionState": updateStarGiftAuctionState;
+  "updateStarGiftAuctionUserState": updateStarGiftAuctionUserState;
+  "updateEmojiGameInfo": updateEmojiGameInfo;
   "updates.state": updates_state;
   "updates.differenceEmpty": updates_differenceEmpty;
   "updates.difference": updates_difference;
@@ -16436,6 +16992,7 @@ export interface Types {
   "inputPrivacyKeyBirthday": inputPrivacyKeyBirthday;
   "inputPrivacyKeyStarGiftsAutoSave": inputPrivacyKeyStarGiftsAutoSave;
   "inputPrivacyKeyNoPaidMessages": inputPrivacyKeyNoPaidMessages;
+  "inputPrivacyKeySavedMusic": inputPrivacyKeySavedMusic;
   "privacyKeyStatusTimestamp": privacyKeyStatusTimestamp;
   "privacyKeyChatInvite": privacyKeyChatInvite;
   "privacyKeyPhoneCall": privacyKeyPhoneCall;
@@ -16449,6 +17006,7 @@ export interface Types {
   "privacyKeyBirthday": privacyKeyBirthday;
   "privacyKeyStarGiftsAutoSave": privacyKeyStarGiftsAutoSave;
   "privacyKeyNoPaidMessages": privacyKeyNoPaidMessages;
+  "privacyKeySavedMusic": privacyKeySavedMusic;
   "inputPrivacyValueAllowContacts": inputPrivacyValueAllowContacts;
   "inputPrivacyValueAllowAll": inputPrivacyValueAllowAll;
   "inputPrivacyValueAllowUsers": inputPrivacyValueAllowUsers;
@@ -16984,6 +17542,7 @@ export interface Types {
   "webPageAttributeStickerSet": webPageAttributeStickerSet;
   "webPageAttributeUniqueStarGift": webPageAttributeUniqueStarGift;
   "webPageAttributeStarGiftCollection": webPageAttributeStarGiftCollection;
+  "webPageAttributeStarGiftAuction": webPageAttributeStarGiftAuction;
   "messages.votesList": messages_votesList;
   "bankCardOpenUrl": bankCardOpenUrl;
   "payments.bankCardData": payments_bankCardData;
@@ -17123,6 +17682,7 @@ export interface Types {
   "inputInvoiceStarGiftPrepaidUpgrade": inputInvoiceStarGiftPrepaidUpgrade;
   "inputInvoicePremiumAuthCode": inputInvoicePremiumAuthCode;
   "inputInvoiceStarGiftDropOriginalDetails": inputInvoiceStarGiftDropOriginalDetails;
+  "inputInvoiceStarGiftAuctionBid": inputInvoiceStarGiftAuctionBid;
   "payments.exportedInvoice": payments_exportedInvoice;
   "messages.transcribedAudio": messages_transcribedAudio;
   "help.premiumPromo": help_premiumPromo;
@@ -17445,9 +18005,45 @@ export interface Types {
   "inputChatTheme": inputChatTheme;
   "inputChatThemeUniqueGift": inputChatThemeUniqueGift;
   "starGiftUpgradePrice": starGiftUpgradePrice;
+  "groupCallMessage": groupCallMessage;
+  "groupCallDonor": groupCallDonor;
+  "phone.groupCallStars": phone_groupCallStars;
+  "recentStory": recentStory;
+  "auctionBidLevel": auctionBidLevel;
+  "starGiftAuctionStateNotModified": starGiftAuctionStateNotModified;
+  "starGiftAuctionState": starGiftAuctionState;
+  "starGiftAuctionStateFinished": starGiftAuctionStateFinished;
+  "starGiftAuctionUserState": starGiftAuctionUserState;
+  "payments.starGiftAuctionState": payments_starGiftAuctionState;
+  "starGiftAuctionAcquiredGift": starGiftAuctionAcquiredGift;
+  "payments.starGiftAuctionAcquiredGifts": payments_starGiftAuctionAcquiredGifts;
+  "starGiftActiveAuctionState": starGiftActiveAuctionState;
+  "payments.starGiftActiveAuctionsNotModified": payments_starGiftActiveAuctionsNotModified;
+  "payments.starGiftActiveAuctions": payments_starGiftActiveAuctions;
+  "inputStarGiftAuction": inputStarGiftAuction;
+  "inputStarGiftAuctionSlug": inputStarGiftAuctionSlug;
+  "passkey": passkey;
+  "account.passkeys": account_passkeys;
+  "account.passkeyRegistrationOptions": account_passkeyRegistrationOptions;
+  "auth.passkeyLoginOptions": auth_passkeyLoginOptions;
+  "inputPasskeyResponseRegister": inputPasskeyResponseRegister;
+  "inputPasskeyResponseLogin": inputPasskeyResponseLogin;
+  "inputPasskeyCredentialPublicKey": inputPasskeyCredentialPublicKey;
+  "inputPasskeyCredentialFirebasePNV": inputPasskeyCredentialFirebasePNV;
+  "starGiftBackground": starGiftBackground;
+  "starGiftAuctionRound": starGiftAuctionRound;
+  "starGiftAuctionRoundExtendable": starGiftAuctionRoundExtendable;
+  "payments.starGiftUpgradeAttributes": payments_starGiftUpgradeAttributes;
+  "messages.emojiGameOutcome": messages_emojiGameOutcome;
+  "messages.emojiGameUnavailable": messages_emojiGameUnavailable;
+  "messages.emojiGameDiceInfo": messages_emojiGameDiceInfo;
 }
 
 export interface Functions<T = Function> {
+  "invokeWithBusinessConnectionPrefix": invokeWithBusinessConnectionPrefix;
+  "invokeWithGooglePlayIntegrityPrefix": invokeWithGooglePlayIntegrityPrefix;
+  "invokeWithApnsSecretPrefix": invokeWithApnsSecretPrefix;
+  "invokeWithReCaptchaPrefix": invokeWithReCaptchaPrefix;
   "invokeAfterMsg": invokeAfterMsg<T>;
   "invokeAfterMsgs": invokeAfterMsgs<T>;
   "initConnection": initConnection<T>;
@@ -17483,6 +18079,8 @@ export interface Functions<T = Function> {
   "auth.resetLoginEmail": auth_resetLoginEmail;
   "auth.reportMissingCode": auth_reportMissingCode;
   "auth.checkPaidAuth": auth_checkPaidAuth;
+  "auth.initPasskeyLogin": auth_initPasskeyLogin;
+  "auth.finishPasskeyLogin": auth_finishPasskeyLogin;
   "account.registerDevice": account_registerDevice;
   "account.unregisterDevice": account_unregisterDevice;
   "account.updateNotifySettings": account_updateNotifySettings;
@@ -17602,6 +18200,10 @@ export interface Functions<T = Function> {
   "account.saveMusic": account_saveMusic;
   "account.getSavedMusicIds": account_getSavedMusicIds;
   "account.getUniqueGiftChatThemes": account_getUniqueGiftChatThemes;
+  "account.initPasskeyRegistration": account_initPasskeyRegistration;
+  "account.registerPasskey": account_registerPasskey;
+  "account.getPasskeys": account_getPasskeys;
+  "account.deletePasskey": account_deletePasskey;
   "users.getUsers": users_getUsers;
   "users.getFullUser": users_getFullUser;
   "users.setSecureValueErrors": users_setSecureValueErrors;
@@ -17874,6 +18476,8 @@ export interface Functions<T = Function> {
   "messages.reorderPinnedForumTopics": messages_reorderPinnedForumTopics;
   "messages.createForumTopic": messages_createForumTopic;
   "messages.deleteTopicHistory": messages_deleteTopicHistory;
+  "messages.getEmojiGameInfo": messages_getEmojiGameInfo;
+  "messages.summarizeText": messages_summarizeText;
   "updates.getState": updates_getState;
   "updates.getDifference": updates_getDifference;
   "updates.getChannelDifference": updates_getChannelDifference;
@@ -18061,6 +18665,12 @@ export interface Functions<T = Function> {
   "payments.getStarGiftCollections": payments_getStarGiftCollections;
   "payments.getUniqueStarGiftValueInfo": payments_getUniqueStarGiftValueInfo;
   "payments.checkCanSendGift": payments_checkCanSendGift;
+  "payments.getStarGiftAuctionState": payments_getStarGiftAuctionState;
+  "payments.getStarGiftAuctionAcquiredGifts": payments_getStarGiftAuctionAcquiredGifts;
+  "payments.getStarGiftActiveAuctions": payments_getStarGiftActiveAuctions;
+  "payments.resolveStarGiftOffer": payments_resolveStarGiftOffer;
+  "payments.sendStarGiftOffer": payments_sendStarGiftOffer;
+  "payments.getStarGiftUpgradeAttributes": payments_getStarGiftUpgradeAttributes;
   "stickers.createStickerSet": stickers_createStickerSet;
   "stickers.removeStickerFromSet": stickers_removeStickerFromSet;
   "stickers.changeStickerPosition": stickers_changeStickerPosition;
@@ -18111,6 +18721,10 @@ export interface Functions<T = Function> {
   "phone.getGroupCallChainBlocks": phone_getGroupCallChainBlocks;
   "phone.sendGroupCallMessage": phone_sendGroupCallMessage;
   "phone.sendGroupCallEncryptedMessage": phone_sendGroupCallEncryptedMessage;
+  "phone.deleteGroupCallMessages": phone_deleteGroupCallMessages;
+  "phone.deleteGroupCallParticipantMessages": phone_deleteGroupCallParticipantMessages;
+  "phone.getGroupCallStars": phone_getGroupCallStars;
+  "phone.saveDefaultSendAs": phone_saveDefaultSendAs;
   "langpack.getLangPack": langpack_getLangPack;
   "langpack.getStrings": langpack_getStrings;
   "langpack.getDifference": langpack_getDifference;
@@ -18167,6 +18781,7 @@ export interface Functions<T = Function> {
   "stories.deleteAlbum": stories_deleteAlbum;
   "stories.getAlbums": stories_getAlbums;
   "stories.getAlbumStories": stories_getAlbumStories;
+  "stories.startLive": stories_startLive;
   "premium.getBoostsList": premium_getBoostsList;
   "premium.getMyBoosts": premium_getMyBoosts;
   "premium.applyBoost": premium_applyBoost;
@@ -18185,7 +18800,10 @@ export interface Functions<T = Function> {
 export interface Enums {
   "True": True;
   "Error": Error;
-  "Null": Null;
+  "IpPort": IpPort;
+  "AccessPointRule": AccessPointRule;
+  "help.ConfigSimple": help_ConfigSimple;
+  "InputFileLocation": InputFileLocation;
   "InputPeer": InputPeer;
   "InputUser": InputUser;
   "InputContact": InputContact;
@@ -18194,7 +18812,6 @@ export interface Enums {
   "InputChatPhoto": InputChatPhoto;
   "InputGeoPoint": InputGeoPoint;
   "InputPhoto": InputPhoto;
-  "InputFileLocation": InputFileLocation;
   "Peer": Peer;
   "storage.FileType": storage_FileType;
   "User": User;
@@ -18740,6 +19357,30 @@ export interface Enums {
   "payments.CheckCanSendGiftResult": payments_CheckCanSendGiftResult;
   "InputChatTheme": InputChatTheme;
   "StarGiftUpgradePrice": StarGiftUpgradePrice;
+  "GroupCallMessage": GroupCallMessage;
+  "GroupCallDonor": GroupCallDonor;
+  "phone.GroupCallStars": phone_GroupCallStars;
+  "RecentStory": RecentStory;
+  "AuctionBidLevel": AuctionBidLevel;
+  "StarGiftAuctionState": StarGiftAuctionState;
+  "StarGiftAuctionUserState": StarGiftAuctionUserState;
+  "payments.StarGiftAuctionState": payments_StarGiftAuctionState;
+  "StarGiftAuctionAcquiredGift": StarGiftAuctionAcquiredGift;
+  "payments.StarGiftAuctionAcquiredGifts": payments_StarGiftAuctionAcquiredGifts;
+  "StarGiftActiveAuctionState": StarGiftActiveAuctionState;
+  "payments.StarGiftActiveAuctions": payments_StarGiftActiveAuctions;
+  "InputStarGiftAuction": InputStarGiftAuction;
+  "Passkey": Passkey;
+  "account.Passkeys": account_Passkeys;
+  "account.PasskeyRegistrationOptions": account_PasskeyRegistrationOptions;
+  "auth.PasskeyLoginOptions": auth_PasskeyLoginOptions;
+  "InputPasskeyResponse": InputPasskeyResponse;
+  "InputPasskeyCredential": InputPasskeyCredential;
+  "StarGiftBackground": StarGiftBackground;
+  "StarGiftAuctionRound": StarGiftAuctionRound;
+  "payments.StarGiftUpgradeAttributes": payments_StarGiftUpgradeAttributes;
+  "messages.EmojiGameOutcome": messages_EmojiGameOutcome;
+  "messages.EmojiGameInfo": messages_EmojiGameInfo;
 }
 
 export type AnyType = Types[keyof Types];
@@ -18754,7 +19395,13 @@ export type True = true_;
 
 export type Error = error;
 
-export type Null = null_;
+export type IpPort = ipPort | ipPortSecret;
+
+export type AccessPointRule = accessPointRule;
+
+export type help_ConfigSimple = help_configSimple;
+
+export type InputFileLocation = inputPeerPhotoFileLocationLegacy | inputStickerSetThumbLegacy | inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
 
 export type InputPeer = inputPeerEmpty | inputPeerSelf | inputPeerChat | inputPeerUser | inputPeerChannel | inputPeerUserFromMessage | inputPeerChannelFromMessage;
 
@@ -18764,15 +19411,13 @@ export type InputContact = inputPhoneContact;
 
 export type InputFile = inputFile | inputFileBig | inputFileStoryDocument;
 
-export type InputMedia = inputMediaEmpty | inputMediaUploadedPhoto | inputMediaPhoto | inputMediaGeoPoint | inputMediaContact | inputMediaUploadedDocument | inputMediaDocument | inputMediaVenue | inputMediaPhotoExternal | inputMediaDocumentExternal | inputMediaGame | inputMediaInvoice | inputMediaGeoLive | inputMediaPoll | inputMediaDice | inputMediaStory | inputMediaWebPage | inputMediaPaidMedia | inputMediaTodo;
+export type InputMedia = inputMediaEmpty | inputMediaUploadedPhoto | inputMediaPhoto | inputMediaGeoPoint | inputMediaContact | inputMediaUploadedDocument | inputMediaDocument | inputMediaVenue | inputMediaPhotoExternal | inputMediaDocumentExternal | inputMediaGame | inputMediaInvoice | inputMediaGeoLive | inputMediaPoll | inputMediaDice | inputMediaStory | inputMediaWebPage | inputMediaPaidMedia | inputMediaTodo | inputMediaStakeDice;
 
 export type InputChatPhoto = inputChatPhotoEmpty | inputChatUploadedPhoto | inputChatPhoto;
 
 export type InputGeoPoint = inputGeoPointEmpty | inputGeoPoint;
 
 export type InputPhoto = inputPhotoEmpty | inputPhoto;
-
-export type InputFileLocation = inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
 
 export type Peer = peerUser | peerChat | peerChannel;
 
@@ -18796,9 +19441,9 @@ export type ChatPhoto = chatPhotoEmpty | chatPhoto;
 
 export type Message = messageEmpty | message | messageService;
 
-export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia | messageMediaToDo;
+export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia | messageMediaToDo | messageMediaVideoStream;
 
-export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday;
+export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday | messageActionStarGiftPurchaseOffer | messageActionStarGiftPurchaseOfferDeclined;
 
 export type Dialog = dialog | dialogFolder;
 
@@ -18999,7 +19644,11 @@ export type Update =
   | updateGroupCallMessage
   | updateGroupCallEncryptedMessage
   | updatePinnedForumTopic
-  | updatePinnedForumTopics;
+  | updatePinnedForumTopics
+  | updateDeleteGroupCallMessages
+  | updateStarGiftAuctionState
+  | updateStarGiftAuctionUserState
+  | updateEmojiGameInfo;
 
 export type updates_State = updates_state;
 
@@ -19049,9 +19698,9 @@ export type SendMessageAction = sendMessageTypingAction | sendMessageCancelActio
 
 export type contacts_Found = contacts_found;
 
-export type InputPrivacyKey = inputPrivacyKeyStatusTimestamp | inputPrivacyKeyChatInvite | inputPrivacyKeyPhoneCall | inputPrivacyKeyPhoneP2P | inputPrivacyKeyForwards | inputPrivacyKeyProfilePhoto | inputPrivacyKeyPhoneNumber | inputPrivacyKeyAddedByPhone | inputPrivacyKeyVoiceMessages | inputPrivacyKeyAbout | inputPrivacyKeyBirthday | inputPrivacyKeyStarGiftsAutoSave | inputPrivacyKeyNoPaidMessages;
+export type InputPrivacyKey = inputPrivacyKeyStatusTimestamp | inputPrivacyKeyChatInvite | inputPrivacyKeyPhoneCall | inputPrivacyKeyPhoneP2P | inputPrivacyKeyForwards | inputPrivacyKeyProfilePhoto | inputPrivacyKeyPhoneNumber | inputPrivacyKeyAddedByPhone | inputPrivacyKeyVoiceMessages | inputPrivacyKeyAbout | inputPrivacyKeyBirthday | inputPrivacyKeyStarGiftsAutoSave | inputPrivacyKeyNoPaidMessages | inputPrivacyKeySavedMusic;
 
-export type PrivacyKey = privacyKeyStatusTimestamp | privacyKeyChatInvite | privacyKeyPhoneCall | privacyKeyPhoneP2P | privacyKeyForwards | privacyKeyProfilePhoto | privacyKeyPhoneNumber | privacyKeyAddedByPhone | privacyKeyVoiceMessages | privacyKeyAbout | privacyKeyBirthday | privacyKeyStarGiftsAutoSave | privacyKeyNoPaidMessages;
+export type PrivacyKey = privacyKeyStatusTimestamp | privacyKeyChatInvite | privacyKeyPhoneCall | privacyKeyPhoneP2P | privacyKeyForwards | privacyKeyProfilePhoto | privacyKeyPhoneNumber | privacyKeyAddedByPhone | privacyKeyVoiceMessages | privacyKeyAbout | privacyKeyBirthday | privacyKeyStarGiftsAutoSave | privacyKeyNoPaidMessages | privacyKeySavedMusic;
 
 export type InputPrivacyRule = inputPrivacyValueAllowContacts | inputPrivacyValueAllowAll | inputPrivacyValueAllowUsers | inputPrivacyValueDisallowContacts | inputPrivacyValueDisallowAll | inputPrivacyValueDisallowUsers | inputPrivacyValueAllowChatParticipants | inputPrivacyValueDisallowChatParticipants | inputPrivacyValueAllowCloseFriends | inputPrivacyValueAllowPremium | inputPrivacyValueAllowBots | inputPrivacyValueDisallowBots;
 
@@ -19482,7 +20131,7 @@ export type InputThemeSettings = inputThemeSettings;
 
 export type ThemeSettings = themeSettings;
 
-export type WebPageAttribute = webPageAttributeTheme | webPageAttributeStory | webPageAttributeStickerSet | webPageAttributeUniqueStarGift | webPageAttributeStarGiftCollection;
+export type WebPageAttribute = webPageAttributeTheme | webPageAttributeStory | webPageAttributeStickerSet | webPageAttributeUniqueStarGift | webPageAttributeStarGiftCollection | webPageAttributeStarGiftAuction;
 
 export type messages_VotesList = messages_votesList;
 
@@ -19650,7 +20299,7 @@ export type account_SavedRingtone = account_savedRingtone | account_savedRington
 
 export type AttachMenuPeerType = attachMenuPeerTypeSameBotPM | attachMenuPeerTypeBotPM | attachMenuPeerTypePM | attachMenuPeerTypeChat | attachMenuPeerTypeBroadcast;
 
-export type InputInvoice = inputInvoiceMessage | inputInvoiceSlug | inputInvoicePremiumGiftCode | inputInvoiceStars | inputInvoiceChatInviteSubscription | inputInvoiceStarGift | inputInvoiceStarGiftUpgrade | inputInvoiceStarGiftTransfer | inputInvoicePremiumGiftStars | inputInvoiceBusinessBotTransferStars | inputInvoiceStarGiftResale | inputInvoiceStarGiftPrepaidUpgrade | inputInvoicePremiumAuthCode | inputInvoiceStarGiftDropOriginalDetails;
+export type InputInvoice = inputInvoiceMessage | inputInvoiceSlug | inputInvoicePremiumGiftCode | inputInvoiceStars | inputInvoiceChatInviteSubscription | inputInvoiceStarGift | inputInvoiceStarGiftUpgrade | inputInvoiceStarGiftTransfer | inputInvoicePremiumGiftStars | inputInvoiceBusinessBotTransferStars | inputInvoiceStarGiftResale | inputInvoiceStarGiftPrepaidUpgrade | inputInvoicePremiumAuthCode | inputInvoiceStarGiftDropOriginalDetails | inputInvoiceStarGiftAuctionBid;
 
 export type payments_ExportedInvoice = payments_exportedInvoice;
 
@@ -20062,6 +20711,54 @@ export type InputChatTheme = inputChatThemeEmpty | inputChatTheme | inputChatThe
 
 export type StarGiftUpgradePrice = starGiftUpgradePrice;
 
+export type GroupCallMessage = groupCallMessage;
+
+export type GroupCallDonor = groupCallDonor;
+
+export type phone_GroupCallStars = phone_groupCallStars;
+
+export type RecentStory = recentStory;
+
+export type AuctionBidLevel = auctionBidLevel;
+
+export type StarGiftAuctionState = starGiftAuctionStateNotModified | starGiftAuctionState | starGiftAuctionStateFinished;
+
+export type StarGiftAuctionUserState = starGiftAuctionUserState;
+
+export type payments_StarGiftAuctionState = payments_starGiftAuctionState;
+
+export type StarGiftAuctionAcquiredGift = starGiftAuctionAcquiredGift;
+
+export type payments_StarGiftAuctionAcquiredGifts = payments_starGiftAuctionAcquiredGifts;
+
+export type StarGiftActiveAuctionState = starGiftActiveAuctionState;
+
+export type payments_StarGiftActiveAuctions = payments_starGiftActiveAuctionsNotModified | payments_starGiftActiveAuctions;
+
+export type InputStarGiftAuction = inputStarGiftAuction | inputStarGiftAuctionSlug;
+
+export type Passkey = passkey;
+
+export type account_Passkeys = account_passkeys;
+
+export type account_PasskeyRegistrationOptions = account_passkeyRegistrationOptions;
+
+export type auth_PasskeyLoginOptions = auth_passkeyLoginOptions;
+
+export type InputPasskeyResponse = inputPasskeyResponseRegister | inputPasskeyResponseLogin;
+
+export type InputPasskeyCredential = inputPasskeyCredentialPublicKey | inputPasskeyCredentialFirebasePNV;
+
+export type StarGiftBackground = starGiftBackground;
+
+export type StarGiftAuctionRound = starGiftAuctionRound | starGiftAuctionRoundExtendable;
+
+export type payments_StarGiftUpgradeAttributes = payments_starGiftUpgradeAttributes;
+
+export type messages_EmojiGameOutcome = messages_emojiGameOutcome;
+
+export type messages_EmojiGameInfo = messages_emojiGameUnavailable | messages_emojiGameDiceInfo;
+
 export const schema = Object.freeze({
   definitions: {
     true: [
@@ -20077,10 +20774,60 @@ export const schema = Object.freeze({
       ],
       "Error",
     ],
-    null: [
-      0x56730BCC,
-      [],
-      "Null",
+    ipPort: [
+      0xD433AD73,
+      [
+        ["ipv4", "int"],
+        ["port", "int"],
+      ],
+      "IpPort",
+    ],
+    ipPortSecret: [
+      0x37982646,
+      [
+        ["ipv4", "int"],
+        ["port", "int"],
+        ["secret", "bytes"],
+      ],
+      "IpPort",
+    ],
+    accessPointRule: [
+      0x4679B65F,
+      [
+        ["phone_prefix_rules", "string"],
+        ["dc_id", "int"],
+        ["ips", "vector<IpPort>"],
+      ],
+      "AccessPointRule",
+    ],
+    "help.configSimple": [
+      0x5A592A6C,
+      [
+        ["date", "int"],
+        ["expires", "int"],
+        ["rules", "vector<AccessPointRule>"],
+      ],
+      "help.ConfigSimple",
+    ],
+    inputPeerPhotoFileLocationLegacy: [
+      0x27D69997,
+      [
+        ["flags", "#"],
+        ["big", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["volume_id", "long"],
+        ["local_id", "int"],
+      ],
+      "InputFileLocation",
+    ],
+    inputStickerSetThumbLegacy: [
+      0x0DBAEAE9,
+      [
+        ["stickerset", "InputStickerSet"],
+        ["volume_id", "long"],
+        ["local_id", "int"],
+      ],
+      "InputFileLocation",
     ],
     inputPeerEmpty: [
       0x7F3B18EA,
@@ -20161,12 +20908,14 @@ export const schema = Object.freeze({
       "InputUser",
     ],
     inputPhoneContact: [
-      0xF392B7F4,
+      0x6A1DC4BE,
       [
+        ["flags", "#"],
         ["client_id", "long"],
         ["phone", "string"],
         ["first_name", "string"],
         ["last_name", "string"],
+        ["note", "flags.0?TextWithEntities"],
       ],
       "InputContact",
     ],
@@ -20390,6 +21139,15 @@ export const schema = Object.freeze({
       0x9FC55FDE,
       [
         ["todo", "TodoList"],
+      ],
+      "InputMedia",
+    ],
+    inputMediaStakeDice: [
+      0xF3A9244A,
+      [
+        ["game_hash", "string"],
+        ["ton_amount", "long"],
+        ["client_seed", "bytes"],
       ],
       "InputMedia",
     ],
@@ -20617,7 +21375,7 @@ export const schema = Object.freeze({
       "User",
     ],
     user: [
-      0x020B1422,
+      0x31774388,
       [
         ["flags", "#"],
         ["self", "flags.10?true"],
@@ -20661,7 +21419,7 @@ export const schema = Object.freeze({
         ["lang_code", "flags.22?string"],
         ["emoji_status", "flags.30?EmojiStatus"],
         ["usernames", "flags2.0?Vector<Username>"],
-        ["stories_max_id", "flags2.5?int"],
+        ["stories_max_id", "flags2.5?RecentStory"],
         ["color", "flags2.8?PeerColor"],
         ["profile_color", "flags2.9?PeerColor"],
         ["bot_active_users", "flags2.12?int"],
@@ -20768,7 +21526,7 @@ export const schema = Object.freeze({
       "Chat",
     ],
     channel: [
-      0xFE685355,
+      0x1C32B11C,
       [
         ["flags", "#"],
         ["creator", "flags.0?true"],
@@ -20812,7 +21570,7 @@ export const schema = Object.freeze({
         ["default_banned_rights", "flags.18?ChatBannedRights"],
         ["participants_count", "flags.17?int"],
         ["usernames", "flags2.0?Vector<Username>"],
-        ["stories_max_id", "flags2.4?int"],
+        ["stories_max_id", "flags2.4?RecentStory"],
         ["color", "flags2.7?PeerColor"],
         ["profile_color", "flags2.8?PeerColor"],
         ["emoji_status", "flags2.9?EmojiStatus"],
@@ -21007,7 +21765,7 @@ export const schema = Object.freeze({
       "Message",
     ],
     message: [
-      0x9815CEC8,
+      0x9CB490E9,
       [
         ["flags", "#"],
         ["out", "flags.1?true"],
@@ -21055,6 +21813,8 @@ export const schema = Object.freeze({
         ["report_delivery_until_date", "flags2.5?int"],
         ["paid_message_stars", "flags2.6?long"],
         ["suggested_post", "flags2.7?SuggestedPost"],
+        ["schedule_repeat_period", "flags2.10?int"],
+        ["summary_from_language", "flags2.11?string"],
       ],
       "Message",
     ],
@@ -21204,10 +21964,12 @@ export const schema = Object.freeze({
       "MessageMedia",
     ],
     messageMediaDice: [
-      0x3F7EE58B,
+      0x08CBEC07,
       [
+        ["flags", "#"],
         ["value", "int"],
         ["emoticon", "string"],
+        ["game_outcome", "flags.0?messages.EmojiGameOutcome"],
       ],
       "MessageMedia",
     ],
@@ -21271,6 +22033,15 @@ export const schema = Object.freeze({
         ["flags", "#"],
         ["todo", "TodoList"],
         ["completions", "flags.0?Vector<TodoCompletion>"],
+      ],
+      "MessageMedia",
+    ],
+    messageMediaVideoStream: [
+      0xCA5CAB89,
+      [
+        ["flags", "#"],
+        ["rtmp_stream", "flags.0?true"],
+        ["call", "InputGroupCall"],
       ],
       "MessageMedia",
     ],
@@ -21521,12 +22292,12 @@ export const schema = Object.freeze({
       "MessageAction",
     ],
     messageActionGiftPremium: [
-      0x6C6274FA,
+      0x48E91302,
       [
         ["flags", "#"],
         ["currency", "string"],
         ["amount", "long"],
-        ["months", "int"],
+        ["days", "int"],
         ["crypto_currency", "flags.0?string"],
         ["crypto_amount", "flags.0?long"],
         ["message", "flags.1?TextWithEntities"],
@@ -21581,13 +22352,13 @@ export const schema = Object.freeze({
       "MessageAction",
     ],
     messageActionGiftCode: [
-      0x56D03994,
+      0x31C48347,
       [
         ["flags", "#"],
         ["via_giveaway", "flags.0?true"],
         ["unclaimed", "flags.5?true"],
         ["boost_peer", "flags.1?Peer"],
-        ["months", "int"],
+        ["days", "int"],
         ["slug", "string"],
         ["currency", "flags.2?string"],
         ["amount", "flags.2?long"],
@@ -21668,7 +22439,7 @@ export const schema = Object.freeze({
       "MessageAction",
     ],
     messageActionStarGift: [
-      0xF24DE7FA,
+      0xEA2C31D3,
       [
         ["flags", "#"],
         ["name_hidden", "flags.0?true"],
@@ -21679,6 +22450,7 @@ export const schema = Object.freeze({
         ["can_upgrade", "flags.10?true"],
         ["prepaid_upgrade", "flags.13?true"],
         ["upgrade_separate", "flags.16?true"],
+        ["auction_acquired", "flags.17?true"],
         ["gift", "StarGift"],
         ["message", "flags.1?TextWithEntities"],
         ["convert_stars", "flags.4?long"],
@@ -21689,6 +22461,8 @@ export const schema = Object.freeze({
         ["saved_id", "flags.12?long"],
         ["prepaid_upgrade_hash", "flags.14?string"],
         ["gift_msg_id", "flags.15?int"],
+        ["to_id", "flags.18?Peer"],
+        ["gift_num", "flags.19?int"],
       ],
       "MessageAction",
     ],
@@ -21702,6 +22476,7 @@ export const schema = Object.freeze({
         ["refunded", "flags.5?true"],
         ["prepaid_upgrade", "flags.11?true"],
         ["assigned", "flags.13?true"],
+        ["from_offer", "flags.14?true"],
         ["gift", "StarGift"],
         ["can_export_at", "flags.3?int"],
         ["transfer_stars", "flags.4?long"],
@@ -21803,6 +22578,28 @@ export const schema = Object.freeze({
       0x2C8F2A25,
       [
         ["birthday", "Birthday"],
+      ],
+      "MessageAction",
+    ],
+    messageActionStarGiftPurchaseOffer: [
+      0x774278D4,
+      [
+        ["flags", "#"],
+        ["accepted", "flags.0?true"],
+        ["declined", "flags.1?true"],
+        ["gift", "StarGift"],
+        ["price", "StarsAmount"],
+        ["expires_at", "int"],
+      ],
+      "MessageAction",
+    ],
+    messageActionStarGiftPurchaseOfferDeclined: [
+      0x73ADA76B,
+      [
+        ["flags", "#"],
+        ["expired", "flags.0?true"],
+        ["gift", "StarGift"],
+        ["price", "StarsAmount"],
       ],
       "MessageAction",
     ],
@@ -23254,10 +24051,11 @@ export const schema = Object.freeze({
       "Update",
     ],
     updateGroupCall: [
-      0x97D64341,
+      0x9D2216E0,
       [
         ["flags", "#"],
-        ["chat_id", "flags.0?long"],
+        ["live_story", "flags.2?true"],
+        ["peer", "flags.1?Peer"],
         ["call", "GroupCall"],
       ],
       "Update",
@@ -23750,12 +24548,10 @@ export const schema = Object.freeze({
       "Update",
     ],
     updateGroupCallMessage: [
-      0x78C314E0,
+      0xD8326F0D,
       [
         ["call", "InputGroupCall"],
-        ["from_id", "Peer"],
-        ["random_id", "long"],
-        ["message", "TextWithEntities"],
+        ["message", "GroupCallMessage"],
       ],
       "Update",
     ],
@@ -23784,6 +24580,37 @@ export const schema = Object.freeze({
         ["flags", "#"],
         ["peer", "Peer"],
         ["order", "flags.0?Vector<int>"],
+      ],
+      "Update",
+    ],
+    updateDeleteGroupCallMessages: [
+      0x3E85E92C,
+      [
+        ["call", "InputGroupCall"],
+        ["messages", "Vector<int>"],
+      ],
+      "Update",
+    ],
+    updateStarGiftAuctionState: [
+      0x48E246C2,
+      [
+        ["gift_id", "long"],
+        ["state", "StarGiftAuctionState"],
+      ],
+      "Update",
+    ],
+    updateStarGiftAuctionUserState: [
+      0xDC58F31E,
+      [
+        ["gift_id", "long"],
+        ["user_state", "StarGiftAuctionUserState"],
+      ],
+      "Update",
+    ],
+    updateEmojiGameInfo: [
+      0xFB9C547A,
+      [
+        ["info", "messages.EmojiGameInfo"],
       ],
       "Update",
     ],
@@ -24515,6 +25342,11 @@ export const schema = Object.freeze({
       [],
       "InputPrivacyKey",
     ],
+    inputPrivacyKeySavedMusic: [
+      0x4DBE9226,
+      [],
+      "InputPrivacyKey",
+    ],
     privacyKeyStatusTimestamp: [
       0xBC2EAB30,
       [],
@@ -24577,6 +25409,11 @@ export const schema = Object.freeze({
     ],
     privacyKeyNoPaidMessages: [
       0x17D348D2,
+      [],
+      "PrivacyKey",
+    ],
+    privacyKeySavedMusic: [
+      0xFF7A571B,
       [],
       "PrivacyKey",
     ],
@@ -29236,6 +30073,14 @@ export const schema = Object.freeze({
       ],
       "WebPageAttribute",
     ],
+    webPageAttributeStarGiftAuction: [
+      0x01C641C2,
+      [
+        ["gift", "StarGift"],
+        ["end_date", "int"],
+      ],
+      "WebPageAttribute",
+    ],
     "messages.votesList": [
       0x4899484E,
       [
@@ -29643,7 +30488,7 @@ export const schema = Object.freeze({
       "GroupCall",
     ],
     groupCall: [
-      0x553B0BA1,
+      0xEFB2B617,
       [
         ["flags", "#"],
         ["join_muted", "flags.1?true"],
@@ -29670,6 +30515,8 @@ export const schema = Object.freeze({
         ["unmuted_video_limit", "int"],
         ["version", "int"],
         ["invite_link", "flags.16?string"],
+        ["send_paid_messages_stars", "flags.20?long"],
+        ["default_send_as", "flags.21?Peer"],
       ],
       "GroupCall",
     ],
@@ -29696,7 +30543,7 @@ export const schema = Object.freeze({
       "InputGroupCall",
     ],
     groupCallParticipant: [
-      0xEBA636FE,
+      0x2A3DC7AC,
       [
         ["flags", "#"],
         ["muted", "flags.0?true"],
@@ -29718,6 +30565,7 @@ export const schema = Object.freeze({
         ["raise_hand_rating", "flags.13?long"],
         ["video", "flags.6?GroupCallParticipantVideo"],
         ["presentation", "flags.14?GroupCallParticipantVideo"],
+        ["paid_stars_total", "flags.16?long"],
       ],
       "GroupCallParticipant",
     ],
@@ -30514,6 +31362,19 @@ export const schema = Object.freeze({
       ],
       "InputInvoice",
     ],
+    inputInvoiceStarGiftAuctionBid: [
+      0x1ECAFA10,
+      [
+        ["flags", "#"],
+        ["hide_name", "flags.0?true"],
+        ["update_bid", "flags.2?true"],
+        ["peer", "flags.3?InputPeer"],
+        ["gift_id", "long"],
+        ["bid_amount", "long"],
+        ["message", "flags.1?TextWithEntities"],
+      ],
+      "InputInvoice",
+    ],
     "payments.exportedInvoice": [
       0xAED0CBD9,
       [
@@ -31273,6 +32134,7 @@ export const schema = Object.freeze({
       [
         ["flags", "#"],
         ["close_friends", "flags.8?true"],
+        ["live", "flags.9?true"],
         ["id", "int"],
         ["date", "int"],
         ["expire_date", "int"],
@@ -31587,7 +32449,7 @@ export const schema = Object.freeze({
       "PremiumGiftCodeOption",
     ],
     "payments.checkedGiftCode": [
-      0x284A1096,
+      0xEB983F8F,
       [
         ["flags", "#"],
         ["via_giveaway", "flags.2?true"],
@@ -31595,7 +32457,7 @@ export const schema = Object.freeze({
         ["giveaway_msg_id", "flags.3?int"],
         ["to_id", "flags.0?long"],
         ["date", "int"],
-        ["months", "int"],
+        ["days", "int"],
         ["used_date", "flags.1?int"],
         ["chats", "Vector<Chat>"],
         ["users", "Vector<User>"],
@@ -32576,6 +33438,9 @@ export const schema = Object.freeze({
         ["posts_search", "flags.24?true"],
         ["stargift_prepaid_upgrade", "flags.25?true"],
         ["stargift_drop_original_details", "flags.26?true"],
+        ["phonegroup_message", "flags.27?true"],
+        ["stargift_auction_bid", "flags.28?true"],
+        ["offer", "flags.29?true"],
         ["id", "string"],
         ["amount", "StarsAmount"],
         ["date", "int"],
@@ -32796,7 +33661,7 @@ export const schema = Object.freeze({
       "StarsGiveawayWinnersOption",
     ],
     starGift: [
-      0x80AC53C3,
+      0x313A9547,
       [
         ["flags", "#"],
         ["limited", "flags.0?true"],
@@ -32805,6 +33670,7 @@ export const schema = Object.freeze({
         ["require_premium", "flags.7?true"],
         ["limited_per_user", "flags.8?true"],
         ["peer_color_available", "flags.10?true"],
+        ["auction", "flags.11?true"],
         ["id", "long"],
         ["sticker", "Document"],
         ["stars", "long"],
@@ -32821,11 +33687,16 @@ export const schema = Object.freeze({
         ["per_user_total", "flags.8?int"],
         ["per_user_remains", "flags.8?int"],
         ["locked_until_date", "flags.9?int"],
+        ["auction_slug", "flags.11?string"],
+        ["gifts_per_round", "flags.11?int"],
+        ["auction_start_date", "flags.11?int"],
+        ["upgrade_variants", "flags.12?int"],
+        ["background", "flags.13?StarGiftBackground"],
       ],
       "StarGift",
     ],
     starGiftUnique: [
-      0xB0BF741B,
+      0x569D64C9,
       [
         ["flags", "#"],
         ["require_premium", "flags.6?true"],
@@ -32847,9 +33718,11 @@ export const schema = Object.freeze({
         ["released_by", "flags.5?Peer"],
         ["value_amount", "flags.8?long"],
         ["value_currency", "flags.8?string"],
+        ["value_usd_amount", "flags.8?long"],
         ["theme_peer", "flags.10?Peer"],
         ["peer_color", "flags.11?PeerColor"],
         ["host_id", "flags.12?Peer"],
+        ["offer_min_stars", "flags.13?int"],
       ],
       "StarGift",
     ],
@@ -33114,7 +33987,7 @@ export const schema = Object.freeze({
       "messages.WebPagePreview",
     ],
     savedStarGift: [
-      0x8983A452,
+      0xEAD6805E,
       [
         ["flags", "#"],
         ["name_hidden", "flags.0?true"],
@@ -33138,6 +34011,7 @@ export const schema = Object.freeze({
         ["collection_id", "flags.15?Vector<int>"],
         ["prepaid_upgrade_hash", "flags.16?string"],
         ["drop_original_details_stars", "flags.18?long"],
+        ["gift_num", "flags.19?int"],
       ],
       "SavedStarGift",
     ],
@@ -33253,6 +34127,7 @@ export const schema = Object.freeze({
         ["disallow_limited_stargifts", "flags.1?true"],
         ["disallow_unique_stargifts", "flags.2?true"],
         ["disallow_premium_gifts", "flags.3?true"],
+        ["disallow_stargifts_from_channels", "flags.4?true"],
       ],
       "DisallowedGiftsSettings",
     ],
@@ -33362,10 +34237,10 @@ export const schema = Object.freeze({
       "TodoList",
     ],
     todoCompletion: [
-      0x4CC120B7,
+      0x221BB5E4,
       [
         ["id", "int"],
-        ["completed_by", "long"],
+        ["completed_by", "Peer"],
         ["date", "int"],
       ],
       "TodoCompletion",
@@ -33578,6 +34453,337 @@ export const schema = Object.freeze({
         ["upgrade_stars", "long"],
       ],
       "StarGiftUpgradePrice",
+    ],
+    groupCallMessage: [
+      0x1A8AFC7E,
+      [
+        ["flags", "#"],
+        ["from_admin", "flags.1?true"],
+        ["id", "int"],
+        ["from_id", "Peer"],
+        ["date", "int"],
+        ["message", "TextWithEntities"],
+        ["paid_message_stars", "flags.0?long"],
+      ],
+      "GroupCallMessage",
+    ],
+    groupCallDonor: [
+      0xEE430C85,
+      [
+        ["flags", "#"],
+        ["top", "flags.0?true"],
+        ["my", "flags.1?true"],
+        ["peer_id", "flags.3?Peer"],
+        ["stars", "long"],
+      ],
+      "GroupCallDonor",
+    ],
+    "phone.groupCallStars": [
+      0x9D1DBD26,
+      [
+        ["total_stars", "long"],
+        ["top_donors", "Vector<GroupCallDonor>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+      ],
+      "phone.GroupCallStars",
+    ],
+    recentStory: [
+      0x711D692D,
+      [
+        ["flags", "#"],
+        ["live", "flags.0?true"],
+        ["max_id", "flags.1?int"],
+      ],
+      "RecentStory",
+    ],
+    auctionBidLevel: [
+      0x310240CC,
+      [
+        ["pos", "int"],
+        ["amount", "long"],
+        ["date", "int"],
+      ],
+      "AuctionBidLevel",
+    ],
+    starGiftAuctionStateNotModified: [
+      0xFE333952,
+      [],
+      "StarGiftAuctionState",
+    ],
+    starGiftAuctionState: [
+      0x771A4E66,
+      [
+        ["version", "int"],
+        ["start_date", "int"],
+        ["end_date", "int"],
+        ["min_bid_amount", "long"],
+        ["bid_levels", "Vector<AuctionBidLevel>"],
+        ["top_bidders", "Vector<long>"],
+        ["next_round_at", "int"],
+        ["last_gift_num", "int"],
+        ["gifts_left", "int"],
+        ["current_round", "int"],
+        ["total_rounds", "int"],
+        ["rounds", "Vector<StarGiftAuctionRound>"],
+      ],
+      "StarGiftAuctionState",
+    ],
+    starGiftAuctionStateFinished: [
+      0x972DABBF,
+      [
+        ["flags", "#"],
+        ["start_date", "int"],
+        ["end_date", "int"],
+        ["average_price", "long"],
+        ["listed_count", "flags.0?int"],
+        ["fragment_listed_count", "flags.1?int"],
+        ["fragment_listed_url", "flags.1?string"],
+      ],
+      "StarGiftAuctionState",
+    ],
+    starGiftAuctionUserState: [
+      0x2EEED1C4,
+      [
+        ["flags", "#"],
+        ["returned", "flags.1?true"],
+        ["bid_amount", "flags.0?long"],
+        ["bid_date", "flags.0?int"],
+        ["min_bid_amount", "flags.0?long"],
+        ["bid_peer", "flags.0?Peer"],
+        ["acquired_count", "int"],
+      ],
+      "StarGiftAuctionUserState",
+    ],
+    "payments.starGiftAuctionState": [
+      0x6B39F4EC,
+      [
+        ["gift", "StarGift"],
+        ["state", "StarGiftAuctionState"],
+        ["user_state", "StarGiftAuctionUserState"],
+        ["timeout", "int"],
+        ["users", "Vector<User>"],
+        ["chats", "Vector<Chat>"],
+      ],
+      "payments.StarGiftAuctionState",
+    ],
+    starGiftAuctionAcquiredGift: [
+      0x42B00348,
+      [
+        ["flags", "#"],
+        ["name_hidden", "flags.0?true"],
+        ["peer", "Peer"],
+        ["date", "int"],
+        ["bid_amount", "long"],
+        ["round", "int"],
+        ["pos", "int"],
+        ["message", "flags.1?TextWithEntities"],
+        ["gift_num", "flags.2?int"],
+      ],
+      "StarGiftAuctionAcquiredGift",
+    ],
+    "payments.starGiftAuctionAcquiredGifts": [
+      0x7D5BD1F0,
+      [
+        ["gifts", "Vector<StarGiftAuctionAcquiredGift>"],
+        ["users", "Vector<User>"],
+        ["chats", "Vector<Chat>"],
+      ],
+      "payments.StarGiftAuctionAcquiredGifts",
+    ],
+    starGiftActiveAuctionState: [
+      0xD31BC45D,
+      [
+        ["gift", "StarGift"],
+        ["state", "StarGiftAuctionState"],
+        ["user_state", "StarGiftAuctionUserState"],
+      ],
+      "StarGiftActiveAuctionState",
+    ],
+    "payments.starGiftActiveAuctionsNotModified": [
+      0xDB33DAD0,
+      [],
+      "payments.StarGiftActiveAuctions",
+    ],
+    "payments.starGiftActiveAuctions": [
+      0xAEF6ABBC,
+      [
+        ["auctions", "Vector<StarGiftActiveAuctionState>"],
+        ["users", "Vector<User>"],
+        ["chats", "Vector<Chat>"],
+      ],
+      "payments.StarGiftActiveAuctions",
+    ],
+    inputStarGiftAuction: [
+      0x02E16C98,
+      [
+        ["gift_id", "long"],
+      ],
+      "InputStarGiftAuction",
+    ],
+    inputStarGiftAuctionSlug: [
+      0x7AB58308,
+      [
+        ["slug", "string"],
+      ],
+      "InputStarGiftAuction",
+    ],
+    passkey: [
+      0x98613EBF,
+      [
+        ["flags", "#"],
+        ["id", "string"],
+        ["name", "string"],
+        ["date", "int"],
+        ["software_emoji_id", "flags.0?long"],
+        ["last_usage_date", "flags.1?int"],
+      ],
+      "Passkey",
+    ],
+    "account.passkeys": [
+      0xF8E0AA1C,
+      [
+        ["passkeys", "Vector<Passkey>"],
+      ],
+      "account.Passkeys",
+    ],
+    "account.passkeyRegistrationOptions": [
+      0xE16B5CE1,
+      [
+        ["options", "DataJSON"],
+      ],
+      "account.PasskeyRegistrationOptions",
+    ],
+    "auth.passkeyLoginOptions": [
+      0xE2037789,
+      [
+        ["options", "DataJSON"],
+      ],
+      "auth.PasskeyLoginOptions",
+    ],
+    inputPasskeyResponseRegister: [
+      0x3E63935C,
+      [
+        ["client_data", "DataJSON"],
+        ["attestation_data", "bytes"],
+      ],
+      "InputPasskeyResponse",
+    ],
+    inputPasskeyResponseLogin: [
+      0xC31FC14A,
+      [
+        ["client_data", "DataJSON"],
+        ["authenticator_data", "bytes"],
+        ["signature", "bytes"],
+        ["user_handle", "string"],
+      ],
+      "InputPasskeyResponse",
+    ],
+    inputPasskeyCredentialPublicKey: [
+      0x3C27B78F,
+      [
+        ["id", "string"],
+        ["raw_id", "string"],
+        ["response", "InputPasskeyResponse"],
+      ],
+      "InputPasskeyCredential",
+    ],
+    inputPasskeyCredentialFirebasePNV: [
+      0x5B1CCB28,
+      [
+        ["pnv_token", "string"],
+      ],
+      "InputPasskeyCredential",
+    ],
+    starGiftBackground: [
+      0xAFF56398,
+      [
+        ["center_color", "int"],
+        ["edge_color", "int"],
+        ["text_color", "int"],
+      ],
+      "StarGiftBackground",
+    ],
+    starGiftAuctionRound: [
+      0x3AAE0528,
+      [
+        ["num", "int"],
+        ["duration", "int"],
+      ],
+      "StarGiftAuctionRound",
+    ],
+    starGiftAuctionRoundExtendable: [
+      0x0AA021E5,
+      [
+        ["num", "int"],
+        ["duration", "int"],
+        ["extend_top", "int"],
+        ["extend_window", "int"],
+      ],
+      "StarGiftAuctionRound",
+    ],
+    "payments.starGiftUpgradeAttributes": [
+      0x46C6E36F,
+      [
+        ["attributes", "Vector<StarGiftAttribute>"],
+      ],
+      "payments.StarGiftUpgradeAttributes",
+    ],
+    "messages.emojiGameOutcome": [
+      0xDA2AD647,
+      [
+        ["seed", "bytes"],
+        ["stake_ton_amount", "long"],
+        ["ton_amount", "long"],
+      ],
+      "messages.EmojiGameOutcome",
+    ],
+    "messages.emojiGameUnavailable": [
+      0x59E65335,
+      [],
+      "messages.EmojiGameInfo",
+    ],
+    "messages.emojiGameDiceInfo": [
+      0x44E56023,
+      [
+        ["flags", "#"],
+        ["game_hash", "string"],
+        ["prev_stake", "long"],
+        ["current_streak", "int"],
+        ["params", "Vector<int>"],
+        ["plays_left", "flags.0?int"],
+      ],
+      "messages.EmojiGameInfo",
+    ],
+    invokeWithBusinessConnectionPrefix: [
+      0xDD289F8E,
+      [
+        ["connection_id", "string"],
+      ],
+      "Error",
+    ],
+    invokeWithGooglePlayIntegrityPrefix: [
+      0x1DF92984,
+      [
+        ["nonce", "string"],
+        ["token", "string"],
+      ],
+      "Error",
+    ],
+    invokeWithApnsSecretPrefix: [
+      0x0DAE54F8,
+      [
+        ["nonce", "string"],
+        ["secret", "string"],
+      ],
+      "Error",
+    ],
+    invokeWithReCaptchaPrefix: [
+      0xADBB0F94,
+      [
+        ["token", "string"],
+      ],
+      "Error",
     ],
     invokeAfterMsg: [
       0xCB9F372D,
@@ -33877,6 +35083,24 @@ export const schema = Object.freeze({
         ["form_id", "long"],
       ],
       "auth.SentCode",
+    ],
+    "auth.initPasskeyLogin": [
+      0x518AD0B7,
+      [
+        ["api_id", "int"],
+        ["api_hash", "string"],
+      ],
+      "auth.PasskeyLoginOptions",
+    ],
+    "auth.finishPasskeyLogin": [
+      0x9857AD07,
+      [
+        ["flags", "#"],
+        ["credential", "InputPasskeyCredential"],
+        ["from_dc_id", "flags.0?int"],
+        ["from_auth_key_id", "flags.0?long"],
+      ],
+      "auth.Authorization",
     ],
     "account.registerDevice": [
       0xEC86017A,
@@ -34788,6 +36012,30 @@ export const schema = Object.freeze({
       ],
       "account.ChatThemes",
     ],
+    "account.initPasskeyRegistration": [
+      0x429547E8,
+      [],
+      "account.PasskeyRegistrationOptions",
+    ],
+    "account.registerPasskey": [
+      0x55B41FD6,
+      [
+        ["credential", "InputPasskeyCredential"],
+      ],
+      "Passkey",
+    ],
+    "account.getPasskeys": [
+      0xEA1F0C52,
+      [],
+      "account.Passkeys",
+    ],
+    "account.deletePasskey": [
+      0xF5B5563F,
+      [
+        ["id", "string"],
+      ],
+      "Bool",
+    ],
     "users.getUsers": [
       0x0D91A548,
       [
@@ -35174,7 +36422,7 @@ export const schema = Object.freeze({
       "Bool",
     ],
     "messages.sendMessage": [
-      0xFE05DC9A,
+      0x545CD15A,
       [
         ["flags", "#"],
         ["no_webpage", "flags.1?true"],
@@ -35192,6 +36440,7 @@ export const schema = Object.freeze({
         ["reply_markup", "flags.2?ReplyMarkup"],
         ["entities", "flags.3?Vector<MessageEntity>"],
         ["schedule_date", "flags.10?int"],
+        ["schedule_repeat_period", "flags.24?int"],
         ["send_as", "flags.13?InputPeer"],
         ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
         ["effect", "flags.18?long"],
@@ -35201,7 +36450,7 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "messages.sendMedia": [
-      0xAC55D9C1,
+      0x0330E77F,
       [
         ["flags", "#"],
         ["silent", "flags.5?true"],
@@ -35219,6 +36468,7 @@ export const schema = Object.freeze({
         ["reply_markup", "flags.2?ReplyMarkup"],
         ["entities", "flags.3?Vector<MessageEntity>"],
         ["schedule_date", "flags.10?int"],
+        ["schedule_repeat_period", "flags.24?int"],
         ["send_as", "flags.13?InputPeer"],
         ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
         ["effect", "flags.18?long"],
@@ -35228,7 +36478,7 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "messages.forwardMessages": [
-      0x978928CA,
+      0x13704A7C,
       [
         ["flags", "#"],
         ["silent", "flags.5?true"],
@@ -35245,8 +36495,10 @@ export const schema = Object.freeze({
         ["top_msg_id", "flags.9?int"],
         ["reply_to", "flags.22?InputReplyTo"],
         ["schedule_date", "flags.10?int"],
+        ["schedule_repeat_period", "flags.24?int"],
         ["send_as", "flags.13?InputPeer"],
         ["quick_reply_shortcut", "flags.17?InputQuickReplyShortcut"],
+        ["effect", "flags.18?long"],
         ["video_timestamp", "flags.20?int"],
         ["allow_paid_stars", "flags.21?long"],
         ["suggested_post", "flags.23?SuggestedPost"],
@@ -35659,7 +36911,7 @@ export const schema = Object.freeze({
       "messages.MessageEditData",
     ],
     "messages.editMessage": [
-      0xDFD14005,
+      0x51E842E1,
       [
         ["flags", "#"],
         ["no_webpage", "flags.1?true"],
@@ -35671,6 +36923,7 @@ export const schema = Object.freeze({
         ["reply_markup", "flags.2?ReplyMarkup"],
         ["entities", "flags.3?Vector<MessageEntity>"],
         ["schedule_date", "flags.15?int"],
+        ["schedule_repeat_period", "flags.18?int"],
         ["quick_reply_shortcut_id", "flags.17?int"],
       ],
       "Updates",
@@ -37344,6 +38597,21 @@ export const schema = Object.freeze({
       ],
       "messages.AffectedHistory",
     ],
+    "messages.getEmojiGameInfo": [
+      0xFB7E8CA7,
+      [],
+      "messages.EmojiGameInfo",
+    ],
+    "messages.summarizeText": [
+      0x9D4104E2,
+      [
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
+        ["to_lang", "flags.0?string"],
+      ],
+      "TextWithEntities",
+    ],
     "updates.getState": [
       0xEDD4882A,
       [],
@@ -37967,6 +39235,7 @@ export const schema = Object.freeze({
       [
         ["flags", "#"],
         ["for_paid_reactions", "flags.0?true"],
+        ["for_live_stories", "flags.1?true"],
         ["peer", "InputPeer"],
       ],
       "channels.SendAsPeers",
@@ -38917,6 +40186,57 @@ export const schema = Object.freeze({
       ],
       "payments.CheckCanSendGiftResult",
     ],
+    "payments.getStarGiftAuctionState": [
+      0x5C9FF4D6,
+      [
+        ["auction", "InputStarGiftAuction"],
+        ["version", "int"],
+      ],
+      "payments.StarGiftAuctionState",
+    ],
+    "payments.getStarGiftAuctionAcquiredGifts": [
+      0x6BA2CBEC,
+      [
+        ["gift_id", "long"],
+      ],
+      "payments.StarGiftAuctionAcquiredGifts",
+    ],
+    "payments.getStarGiftActiveAuctions": [
+      0xA5D0514D,
+      [
+        ["hash", "long"],
+      ],
+      "payments.StarGiftActiveAuctions",
+    ],
+    "payments.resolveStarGiftOffer": [
+      0xE9CE781C,
+      [
+        ["flags", "#"],
+        ["decline", "flags.0?true"],
+        ["offer_msg_id", "int"],
+      ],
+      "Updates",
+    ],
+    "payments.sendStarGiftOffer": [
+      0x8FB86B41,
+      [
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["slug", "string"],
+        ["price", "StarsAmount"],
+        ["duration", "int"],
+        ["random_id", "long"],
+        ["allow_paid_stars", "flags.0?long"],
+      ],
+      "Updates",
+    ],
+    "payments.getStarGiftUpgradeAttributes": [
+      0x6D038B58,
+      [
+        ["gift_id", "long"],
+      ],
+      "payments.StarGiftUpgradeAttributes",
+    ],
     "stickers.createStickerSet": [
       0x9021AB67,
       [
@@ -39147,13 +40467,14 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "phone.toggleGroupCallSettings": [
-      0xE9723804,
+      0x974392F2,
       [
         ["flags", "#"],
         ["reset_invite_hash", "flags.1?true"],
         ["call", "InputGroupCall"],
         ["join_muted", "flags.0?Bool"],
         ["messages_enabled", "flags.2?Bool"],
+        ["send_paid_messages_stars", "flags.3?long"],
       ],
       "Updates",
     ],
@@ -39281,8 +40602,10 @@ export const schema = Object.freeze({
       "phone.GroupCallStreamChannels",
     ],
     "phone.getGroupCallStreamRtmpUrl": [
-      0xDEB3ABBF,
+      0x5AF4C73A,
       [
+        ["flags", "#"],
+        ["live_story", "flags.0?true"],
         ["peer", "InputPeer"],
         ["revoke", "Bool"],
       ],
@@ -39358,19 +40681,57 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "phone.sendGroupCallMessage": [
-      0x87893014,
+      0xB1D11410,
       [
+        ["flags", "#"],
         ["call", "InputGroupCall"],
         ["random_id", "long"],
         ["message", "TextWithEntities"],
+        ["allow_paid_stars", "flags.0?long"],
+        ["send_as", "flags.1?InputPeer"],
       ],
-      "Bool",
+      "Updates",
     ],
     "phone.sendGroupCallEncryptedMessage": [
       0xE5AFA56D,
       [
         ["call", "InputGroupCall"],
         ["encrypted_message", "bytes"],
+      ],
+      "Bool",
+    ],
+    "phone.deleteGroupCallMessages": [
+      0xF64F54F7,
+      [
+        ["flags", "#"],
+        ["report_spam", "flags.0?true"],
+        ["call", "InputGroupCall"],
+        ["messages", "Vector<int>"],
+      ],
+      "Updates",
+    ],
+    "phone.deleteGroupCallParticipantMessages": [
+      0x1DBFECA0,
+      [
+        ["flags", "#"],
+        ["report_spam", "flags.0?true"],
+        ["call", "InputGroupCall"],
+        ["participant", "InputPeer"],
+      ],
+      "Updates",
+    ],
+    "phone.getGroupCallStars": [
+      0x6F636302,
+      [
+        ["call", "InputGroupCall"],
+      ],
+      "phone.GroupCallStars",
+    ],
+    "phone.saveDefaultSendAs": [
+      0x4167ADD1,
+      [
+        ["call", "InputGroupCall"],
+        ["send_as", "InputPeer"],
       ],
       "Bool",
     ],
@@ -39768,11 +41129,11 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "stories.getPeerMaxIDs": [
-      0x535983C3,
+      0x78499170,
       [
         ["id", "Vector<InputPeer>"],
       ],
-      "Vector<int>",
+      "Vector<RecentStory>",
     ],
     "stories.getChatsToSend": [
       0xA56A8B60,
@@ -39876,6 +41237,23 @@ export const schema = Object.freeze({
       ],
       "stories.Stories",
     ],
+    "stories.startLive": [
+      0xD069CCDE,
+      [
+        ["flags", "#"],
+        ["pinned", "flags.2?true"],
+        ["noforwards", "flags.4?true"],
+        ["rtmp_stream", "flags.5?true"],
+        ["peer", "InputPeer"],
+        ["caption", "flags.0?string"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
+        ["privacy_rules", "Vector<InputPrivacyRule>"],
+        ["random_id", "long"],
+        ["messages_enabled", "flags.6?Bool"],
+        ["send_paid_messages_stars", "flags.7?long"],
+      ],
+      "Updates",
+    ],
     "premium.getBoostsList": [
       0x60F67660,
       [
@@ -39971,7 +41349,12 @@ export const schema = Object.freeze({
   identifierToName: {
     [0x3FEDD339]: "true",
     [0xC4B9F9BB]: "error",
-    [0x56730BCC]: "null",
+    [0xD433AD73]: "ipPort",
+    [0x37982646]: "ipPortSecret",
+    [0x4679B65F]: "accessPointRule",
+    [0x5A592A6C]: "help.configSimple",
+    [0x27D69997]: "inputPeerPhotoFileLocationLegacy",
+    [0x0DBAEAE9]: "inputStickerSetThumbLegacy",
     [0x7F3B18EA]: "inputPeerEmpty",
     [0x7DA07EC9]: "inputPeerSelf",
     [0x35A95CB9]: "inputPeerChat",
@@ -39983,7 +41366,7 @@ export const schema = Object.freeze({
     [0xF7C1B13F]: "inputUserSelf",
     [0xF21158C6]: "inputUser",
     [0x1DA448E2]: "inputUserFromMessage",
-    [0xF392B7F4]: "inputPhoneContact",
+    [0x6A1DC4BE]: "inputPhoneContact",
     [0xF52FF27F]: "inputFile",
     [0xFA4F0BB5]: "inputFileBig",
     [0x62DC8B48]: "inputFileStoryDocument",
@@ -40006,6 +41389,7 @@ export const schema = Object.freeze({
     [0xC21B8849]: "inputMediaWebPage",
     [0xC4103386]: "inputMediaPaidMedia",
     [0x9FC55FDE]: "inputMediaTodo",
+    [0xF3A9244A]: "inputMediaStakeDice",
     [0x1CA48F57]: "inputChatPhotoEmpty",
     [0xBDCDAEC0]: "inputChatUploadedPhoto",
     [0x8953AD37]: "inputChatPhoto",
@@ -40037,7 +41421,7 @@ export const schema = Object.freeze({
     [0xB3CEA0E4]: "storage.fileMp4",
     [0x1081464C]: "storage.fileWebp",
     [0xD3BC4B7A]: "userEmpty",
-    [0x020B1422]: "user",
+    [0x31774388]: "user",
     [0x4F11BAE1]: "userProfilePhotoEmpty",
     [0x82D1F706]: "userProfilePhoto",
     [0x09D05049]: "userStatusEmpty",
@@ -40049,7 +41433,7 @@ export const schema = Object.freeze({
     [0x29562865]: "chatEmpty",
     [0x41CBF256]: "chat",
     [0x6592A1A7]: "chatForbidden",
-    [0xFE685355]: "channel",
+    [0x1C32B11C]: "channel",
     [0x17D493D5]: "channelForbidden",
     [0x2633421B]: "chatFull",
     [0xE4E0B29D]: "channelFull",
@@ -40061,7 +41445,7 @@ export const schema = Object.freeze({
     [0x37C1011C]: "chatPhotoEmpty",
     [0x1C6E1C11]: "chatPhoto",
     [0x90A6CA84]: "messageEmpty",
-    [0x9815CEC8]: "message",
+    [0x9CB490E9]: "message",
     [0x7A800E0A]: "messageService",
     [0x3DED6320]: "messageMediaEmpty",
     [0x695150D7]: "messageMediaPhoto",
@@ -40075,12 +41459,13 @@ export const schema = Object.freeze({
     [0xF6A548D3]: "messageMediaInvoice",
     [0xB940C666]: "messageMediaGeoLive",
     [0x4BD6E798]: "messageMediaPoll",
-    [0x3F7EE58B]: "messageMediaDice",
+    [0x08CBEC07]: "messageMediaDice",
     [0x68CB6283]: "messageMediaStory",
     [0xAA073BEB]: "messageMediaGiveaway",
     [0xCEAA3EA1]: "messageMediaGiveawayResults",
     [0xA8852491]: "messageMediaPaidMedia",
     [0x8A53B014]: "messageMediaToDo",
+    [0xCA5CAB89]: "messageMediaVideoStream",
     [0xB6AEF7B0]: "messageActionEmpty",
     [0xBD47CBAD]: "messageActionChatCreate",
     [0xB5A1CE5A]: "messageActionChatEditTitle",
@@ -40113,13 +41498,13 @@ export const schema = Object.freeze({
     [0xEBBCA3CB]: "messageActionChatJoinedByRequest",
     [0x47DD8079]: "messageActionWebViewDataSentMe",
     [0xB4C38CB5]: "messageActionWebViewDataSent",
-    [0x6C6274FA]: "messageActionGiftPremium",
+    [0x48E91302]: "messageActionGiftPremium",
     [0x0D999256]: "messageActionTopicCreate",
     [0xC0944820]: "messageActionTopicEdit",
     [0x57DE635E]: "messageActionSuggestProfilePhoto",
     [0x31518E9B]: "messageActionRequestedPeer",
     [0x5060A3F4]: "messageActionSetChatWallPaper",
-    [0x56D03994]: "messageActionGiftCode",
+    [0x31C48347]: "messageActionGiftCode",
     [0xA80F51E4]: "messageActionGiveawayLaunch",
     [0x87E2F155]: "messageActionGiveawayResults",
     [0xCC02AA6D]: "messageActionBoostApply",
@@ -40127,7 +41512,7 @@ export const schema = Object.freeze({
     [0x41B3E202]: "messageActionPaymentRefunded",
     [0x45D5B021]: "messageActionGiftStars",
     [0xB00C47A2]: "messageActionPrizeStars",
-    [0xF24DE7FA]: "messageActionStarGift",
+    [0xEA2C31D3]: "messageActionStarGift",
     [0x95728543]: "messageActionStarGiftUnique",
     [0xAC1F1FCD]: "messageActionPaidMessagesRefunded",
     [0x84B88578]: "messageActionPaidMessagesPrice",
@@ -40139,6 +41524,8 @@ export const schema = Object.freeze({
     [0x69F916F8]: "messageActionSuggestedPostRefund",
     [0xA8A3C699]: "messageActionGiftTon",
     [0x2C8F2A25]: "messageActionSuggestBirthday",
+    [0x774278D4]: "messageActionStarGiftPurchaseOffer",
+    [0x73ADA76B]: "messageActionStarGiftPurchaseOfferDeclined",
     [0xD58A08C6]: "dialog",
     [0x71BD134C]: "dialogFolder",
     [0x2331B22D]: "photoEmpty",
@@ -40300,7 +41687,7 @@ export const schema = Object.freeze({
     [0x5BB98608]: "updatePinnedChannelMessages",
     [0xF89A6A4E]: "updateChat",
     [0xF2EBDB4E]: "updateGroupCallParticipants",
-    [0x97D64341]: "updateGroupCall",
+    [0x9D2216E0]: "updateGroupCall",
     [0xBB9BB9A5]: "updatePeerHistoryTTL",
     [0xD087663A]: "updateChatParticipant",
     [0x985D3ABB]: "updateChannelParticipant",
@@ -40357,10 +41744,14 @@ export const schema = Object.freeze({
     [0x77B0E372]: "updateReadMonoForumInbox",
     [0xA4A79376]: "updateReadMonoForumOutbox",
     [0x9F812B08]: "updateMonoForumNoPaidException",
-    [0x78C314E0]: "updateGroupCallMessage",
+    [0xD8326F0D]: "updateGroupCallMessage",
     [0xC957A766]: "updateGroupCallEncryptedMessage",
     [0x683B2C52]: "updatePinnedForumTopic",
     [0xDEF143D0]: "updatePinnedForumTopics",
+    [0x3E85E92C]: "updateDeleteGroupCallMessages",
+    [0x48E246C2]: "updateStarGiftAuctionState",
+    [0xDC58F31E]: "updateStarGiftAuctionUserState",
+    [0xFB9C547A]: "updateEmojiGameInfo",
     [0xA56C2A3E]: "updates.state",
     [0x5D75A138]: "updates.differenceEmpty",
     [0x00F49CA0]: "updates.difference",
@@ -40445,6 +41836,7 @@ export const schema = Object.freeze({
     [0xD65A11CC]: "inputPrivacyKeyBirthday",
     [0xE1732341]: "inputPrivacyKeyStarGiftsAutoSave",
     [0xBDC597B4]: "inputPrivacyKeyNoPaidMessages",
+    [0x4DBE9226]: "inputPrivacyKeySavedMusic",
     [0xBC2EAB30]: "privacyKeyStatusTimestamp",
     [0x500E6DFA]: "privacyKeyChatInvite",
     [0x3D662B7B]: "privacyKeyPhoneCall",
@@ -40458,6 +41850,7 @@ export const schema = Object.freeze({
     [0x2000A518]: "privacyKeyBirthday",
     [0x2CA4FDF8]: "privacyKeyStarGiftsAutoSave",
     [0x17D348D2]: "privacyKeyNoPaidMessages",
+    [0xFF7A571B]: "privacyKeySavedMusic",
     [0x0D09E07B]: "inputPrivacyValueAllowContacts",
     [0x184B35CE]: "inputPrivacyValueAllowAll",
     [0x131CC67F]: "inputPrivacyValueAllowUsers",
@@ -40993,6 +42386,7 @@ export const schema = Object.freeze({
     [0x50CC03D3]: "webPageAttributeStickerSet",
     [0xCF6F6DB8]: "webPageAttributeUniqueStarGift",
     [0x31CAD303]: "webPageAttributeStarGiftCollection",
+    [0x01C641C2]: "webPageAttributeStarGiftAuction",
     [0x4899484E]: "messages.votesList",
     [0xF568028A]: "bankCardOpenUrl",
     [0x3E24E573]: "payments.bankCardData",
@@ -41030,11 +42424,11 @@ export const schema = Object.freeze({
     [0xE8FD8014]: "peerBlocked",
     [0x7FE91C14]: "stats.messageStats",
     [0x7780BCB4]: "groupCallDiscarded",
-    [0x553B0BA1]: "groupCall",
+    [0xEFB2B617]: "groupCall",
     [0xD8AA840F]: "inputGroupCall",
     [0xFE06823F]: "inputGroupCallSlug",
     [0x8C10603F]: "inputGroupCallInviteMessage",
-    [0xEBA636FE]: "groupCallParticipant",
+    [0x2A3DC7AC]: "groupCallParticipant",
     [0x9E727AAD]: "phone.groupCall",
     [0xF47751B6]: "phone.groupParticipants",
     [0x3081ED9D]: "inlineQueryPeerTypeSameBotPM",
@@ -41132,6 +42526,7 @@ export const schema = Object.freeze({
     [0x9A0B48B8]: "inputInvoiceStarGiftPrepaidUpgrade",
     [0x3E77F614]: "inputInvoicePremiumAuthCode",
     [0x0923D8D1]: "inputInvoiceStarGiftDropOriginalDetails",
+    [0x1ECAFA10]: "inputInvoiceStarGiftAuctionBid",
     [0xAED0CBD9]: "payments.exportedInvoice",
     [0xCFB9D957]: "messages.transcribedAudio",
     [0x5334759C]: "help.premiumPromo",
@@ -41244,7 +42639,7 @@ export const schema = Object.freeze({
     [0xCAE68768]: "stories.peerStories",
     [0xFD5E12BD]: "messages.webPage",
     [0x257E962B]: "premiumGiftCodeOption",
-    [0x284A1096]: "payments.checkedGiftCode",
+    [0xEB983F8F]: "payments.checkedGiftCode",
     [0x4367DAA0]: "payments.giveawayInfo",
     [0xE175E66F]: "payments.giveawayInfoResults",
     [0xB2539D54]: "prepaidGiveaway",
@@ -41368,8 +42763,8 @@ export const schema = Object.freeze({
     [0x4BA3A95A]: "messageReactor",
     [0x94CE852A]: "starsGiveawayOption",
     [0x54236209]: "starsGiveawayWinnersOption",
-    [0x80AC53C3]: "starGift",
-    [0xB0BF741B]: "starGiftUnique",
+    [0x313A9547]: "starGift",
+    [0x569D64C9]: "starGiftUnique",
     [0xA388A368]: "payments.starGiftsNotModified",
     [0x2ED82995]: "payments.starGifts",
     [0x7903E3D9]: "messageReportOption",
@@ -41398,7 +42793,7 @@ export const schema = Object.freeze({
     [0x315A4974]: "users.usersSlice",
     [0x416C56E8]: "payments.uniqueStarGift",
     [0x8C9A88AC]: "messages.webPagePreview",
-    [0x8983A452]: "savedStarGift",
+    [0xEAD6805E]: "savedStarGift",
     [0x95F389B1]: "payments.savedStarGifts",
     [0x69279795]: "inputSavedStarGiftUser",
     [0xF101AA7F]: "inputSavedStarGiftChat",
@@ -41425,7 +42820,7 @@ export const schema = Object.freeze({
     [0xE7E82E12]: "pendingSuggestion",
     [0xCBA9A52F]: "todoItem",
     [0x49B92A26]: "todoList",
-    [0x4CC120B7]: "todoCompletion",
+    [0x221BB5E4]: "todoCompletion",
     [0x0E8E37E5]: "suggestedPost",
     [0x1B0E4F07]: "starsRating",
     [0x9D6B13B0]: "starGiftCollection",
@@ -41454,7 +42849,39 @@ export const schema = Object.freeze({
     [0xC93DE95C]: "inputChatTheme",
     [0x87E5DFE4]: "inputChatThemeUniqueGift",
     [0x99EA331D]: "starGiftUpgradePrice",
+    [0x1A8AFC7E]: "groupCallMessage",
+    [0xEE430C85]: "groupCallDonor",
+    [0x9D1DBD26]: "phone.groupCallStars",
+    [0x711D692D]: "recentStory",
+    [0x310240CC]: "auctionBidLevel",
+    [0xFE333952]: "starGiftAuctionStateNotModified",
+    [0x771A4E66]: "starGiftAuctionState",
+    [0x972DABBF]: "starGiftAuctionStateFinished",
+    [0x2EEED1C4]: "starGiftAuctionUserState",
+    [0x6B39F4EC]: "payments.starGiftAuctionState",
+    [0x42B00348]: "starGiftAuctionAcquiredGift",
+    [0x7D5BD1F0]: "payments.starGiftAuctionAcquiredGifts",
+    [0xD31BC45D]: "starGiftActiveAuctionState",
+    [0xDB33DAD0]: "payments.starGiftActiveAuctionsNotModified",
+    [0xAEF6ABBC]: "payments.starGiftActiveAuctions",
+    [0x02E16C98]: "inputStarGiftAuction",
+    [0x7AB58308]: "inputStarGiftAuctionSlug",
+    [0x98613EBF]: "passkey",
+    [0xF8E0AA1C]: "account.passkeys",
+    [0xE16B5CE1]: "account.passkeyRegistrationOptions",
+    [0xE2037789]: "auth.passkeyLoginOptions",
+    [0x3E63935C]: "inputPasskeyResponseRegister",
+    [0xC31FC14A]: "inputPasskeyResponseLogin",
+    [0x3C27B78F]: "inputPasskeyCredentialPublicKey",
+    [0x5B1CCB28]: "inputPasskeyCredentialFirebasePNV",
+    [0xAFF56398]: "starGiftBackground",
+    [0x3AAE0528]: "starGiftAuctionRound",
+    [0x0AA021E5]: "starGiftAuctionRoundExtendable",
+    [0x46C6E36F]: "payments.starGiftUpgradeAttributes",
+    [0xDA2AD647]: "messages.emojiGameOutcome",
+    [0x59E65335]: "messages.emojiGameUnavailable",
+    [0x44E56023]: "messages.emojiGameDiceInfo",
   },
 }) as unknown as Schema;
 
-export const LAYER = 216;
+export const LAYER = NaN;

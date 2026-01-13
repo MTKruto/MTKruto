@@ -20,10 +20,11 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { getRandomId, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { getRandomId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
 import { constructLiveStreamChannel, constructVideoChat, type ID, type Update, type VideoChatActive, type VideoChatScheduled } from "../3_types.ts";
+import { peerToChatId } from "../tl/2_telegram.ts";
 import type { DownloadLiveStreamChunkParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputUser } from "./0_utilities.ts";
@@ -136,11 +137,11 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
   }
 
   async handleUpdate(update: VideoChatManagerUpdate): Promise<Update | null> {
-    if (!update.chat_id) {
+    if (!update.peer) {
       return null; // TODO: handle updates with unspecified chat_id
     }
-    let chatId = Number(-update.chat_id);
-    const fullChat = await this.#c.messageStorage.getFullChat(chatId).then((v) => v === null ? this.#c.messageStorage.getFullChat(chatId = ZERO_CHANNEL_ID - Number(update.chat_id)) : v) as Api.channelFull | Api.chatFull | null;
+    const chatId = peerToChatId(update.peer);
+    const fullChat = await this.#c.messageStorage.getFullChat(chatId).then((v) => v === null ? this.#c.messageStorage.getFullChat(chatId) : v) as Api.channelFull | Api.chatFull | null;
     let updateFullChat = false;
     if (Api.is("groupCallDiscarded", update.call)) {
       await this.#c.messageStorage.setGroupCall(update.call.id, null);
