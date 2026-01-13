@@ -20,10 +20,10 @@
 
 import { InputError } from "../0_errors.ts";
 import type { MaybePromise } from "../1_utilities.ts";
-import type { Update,  User } from "../3_types.ts";
-import { type FilterQuery, match, type WithFilter } from "./0_filters.ts";
-import type { ClientGeneric } from "./1_client_generic.ts";
+import type { Update, User } from "../3_types.ts";
 import { Context } from "./2_context.ts";
+import { type FilterQuery, match, type WithFilter } from "./3_filters.ts";
+import type { ClientGeneric } from "./1_client_generic.ts";
 
 export type NextFunction<T = void> = () => Promise<T>;
 
@@ -89,7 +89,7 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
       const ctx = new Context(client, this.#lastGetMe, update);
       const next = () => Promise.resolve();
       await this.#handle(ctx as C, next);
-    }
+    };
   }
 
   middleware(): MiddlewareFn<C> {
@@ -102,7 +102,7 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
     return composer;
   }
 
-  branch(predicate: (ctx: C ) => MaybePromise<boolean>, trueHandler_: Middleware<C>, falseHandler_: Middleware<C >): Composer<C> {
+  branch(predicate: (ctx: C) => MaybePromise<boolean>, trueHandler_: Middleware<C>, falseHandler_: Middleware<C>): Composer<C> {
     const trueHandler = flatten(trueHandler_);
     const falseHandler = flatten(falseHandler_);
     return this.use(async (upd, next) => {
@@ -115,16 +115,16 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
   }
 
   filter<D extends C>(
-    predicate: (ctx: C ) => ctx is D,
+    predicate: (ctx: C) => ctx is D,
     ...middleware: Middleware<D>[]
   ): Composer<D>;
   filter(
-    predicate: (ctx: C ) => MaybePromise<boolean>,
-    ...middleware: Middleware<C >[]
+    predicate: (ctx: C) => MaybePromise<boolean>,
+    ...middleware: Middleware<C>[]
   ): Composer<C>;
   filter(
-    predicate: (ctx: C ) => MaybePromise<boolean>,
-    ...middleware: Middleware<C >[]
+    predicate: (ctx: C) => MaybePromise<boolean>,
+    ...middleware: Middleware<C>[]
   ) {
     const composer = new Composer(...middleware);
     this.branch(predicate, composer, skip);

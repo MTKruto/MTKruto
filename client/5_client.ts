@@ -34,9 +34,7 @@ import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCa
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, toInputChannel, toInputUser } from "./0_utilities.ts";
-import type { ClientGeneric } from "./1_client_generic.ts";
 import type { ClientPlainParams } from "./1_client_plain.ts";
-import type { NextFunction } from "./3_composer.ts";
 import { AccountManager } from "./2_account_manager.ts";
 import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
@@ -53,6 +51,8 @@ import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { CallbackQueryManager } from "./4_callback_query_manager.ts";
 import { ChatListManager } from "./4_chat_list_manager.ts";
 import { ChatManager } from "./4_chat_manager.ts";
+import type { ClientGeneric } from "./1_client_generic.ts";
+import type { NextFunction } from "./4_composer.ts";
 import { ForumManager } from "./4_forum_manager.ts";
 import { GiftManager } from "./4_gift_manager.ts";
 import { InlineQueryManager } from "./4_inline_query_manager.ts";
