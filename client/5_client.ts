@@ -20,22 +20,23 @@
 
 import { delay, MINUTE, SECOND, unreachable } from "../0_deps.ts";
 import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
-import { cleanObject, drop, getLogger, type Logger, type MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { drop, getLogger, type Logger, type MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { type Storage, StorageMemory } from "../2_storage.ts";
-import { Api, Mtproto, toJSON } from "../2_tl.ts";
+import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type BotCommand, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatAction, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputMedia, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type Poll, type PriceTag, type Reaction, type ReplyTo, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type BotCommand, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatAction, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputMedia, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type Poll, type PriceTag, type Reaction, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
 import { PhoneCodeInvalid } from "../4_errors.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
-import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
-import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
+import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, toInputChannel, toInputUser } from "./0_utilities.ts";
+import type { ClientGeneric } from "./1_client_generic.ts";
 import type { ClientPlainParams } from "./1_client_plain.ts";
-import { Composer as Composer_, type Middleware, type MiddlewareFn, type MiddlewareObj, type NextFunction } from "./1_composer.ts";
+import type { NextFunction } from "./3_composer.ts";
 import { AccountManager } from "./2_account_manager.ts";
 import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
@@ -59,180 +60,7 @@ import { LinkPreviewManager } from "./4_link_preview_manager.ts";
 import { PollManager } from "./4_poll_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
 
-export type { FilterQuery, WithFilter } from "./0_filters.ts";
-
-export interface Context {
-  /** The client that received the update. */
-  client: Client;
-  /** The currently signed in user. */
-  me?: User;
-  /** Resolves to `message`, `editedMessage`, or the `message` field of `callbackQuery`. */
-  msg?: Message;
-  /** Resolves to `msg?.chat`. */
-  chat?: ChatP;
-  /** Resolves to the `from` field of `message`, `editedMessage`, `callbackQuery`, or `inlineQuery`. */
-  from?: User;
-  /** Resolves to `msg?.senderChat`. */
-  senderChat?: ChatP;
-  // deno-lint-ignore no-explicit-any
-  toJSON: () => any;
-  /** Context-aware alias for `client.sendMessage()`. */
-  reply: (text: string, params?: Omit<SendMessageParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageText>;
-  /** Context-aware alias for `client.sendPoll()`. */
-  replyPoll: (question: string, options: string[], params?: Omit<SendPollParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessagePoll>;
-  /** Context-aware alias for `client.sendPhoto()`. */
-  replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessagePhoto>;
-  /** Context-aware alias for `client.sendMediaGroup()`. */
-  replyMediaGroup: (media: InputMedia[], params?: Omit<SendMediaGroupParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<Message[]>;
-  /** Context-aware alias for `client.sendInvoice()`. */
-  replyInvoice: (title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: Omit<SendInvoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageInvoice>;
-  /** Context-aware alias for `client.sendDocument()`. */
-  replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageDocument>;
-  /** Context-aware alias for `client.sendSticker()`. */
-  replySticker: (sticker: FileSource, params?: Omit<SendStickerParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageSticker>;
-  /** Context-aware alias for `client.sendLocation()`. */
-  replyLocation: (latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageLocation>;
-  /** Context-aware alias for `client.sendDice()`. */
-  replyDice: (params?: Omit<SendDiceParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageDice>;
-  /** Context-aware alias for `client.sendVenue()`. */
-  replyVenue: (latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageVenue>;
-  /** Context-aware alias for `client.sendContact()`. */
-  replyContact: (firstName: string, number: string, params?: Omit<SendContactParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageContact>;
-  /** Context-aware alias for `client.sendVideo()`. */
-  replyVideo: (video: FileSource, params?: Omit<SendVideoParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageVideo>;
-  /** Context-aware alias for `client.sendAnimation()`. */
-  replyAnimation: (animation: FileSource, params?: Omit<SendAnimationParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageAnimation>;
-  /** Context-aware alias for `client.sendVoice()`. */
-  replyVoice: (voice: FileSource, params?: Omit<SendVoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageVoice>;
-  /** Context-aware alias for `client.sendAudio()`. */
-  replyAudio: (audio: FileSource, params?: Omit<SendAudioParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageAudio>;
-  /** Context-aware alias for `client.sendPoll()`. */
-  replyVideoNote: (videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageVideoNote>;
-  /** Context-aware alias for `client.deleteMessage()`. */
-  delete: () => Promise<void>;
-  /** Context-aware alias for `client.forwardMessage()`. */
-  forward: (to: ID, params?: ForwardMessagesParams) => Promise<this["msg"]>;
-  /** Context-aware alias for `client.pinMessage()`. */
-  pin: (params?: PinMessageParams) => Promise<void>;
-  /** Context-aware alias for `client.unpinMessage()`. */
-  unpin: (params?: PinMessageParams) => Promise<void>;
-  /** Context-aware alias for `client.banChatMember()`. */
-  banSender: (params?: BanChatMemberParams) => Promise<void>;
-  /** Context-aware alias for `client.kickChatMember()`. */
-  kickSender: () => Promise<void>;
-  /** Context-aware alias for `client.setChatMemberRights()`. */
-  setSenderRights: (params?: SetChatMemberRightsParams) => Promise<void>;
-  /** Context-aware alias for `client.getChatAdministrators()`. */
-  getChatAdministrators: () => Promise<ChatMember[]>;
-  /** Context-aware alias for `client.setReactions()`. */
-  react: (reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
-  /** Context-aware alias for `client.sendChatAction()`. */
-  sendChatAction: (action: ChatAction, params?: { messageThreadId?: number }) => Promise<void>;
-  /** Context-aware alias for `client.editInlineMessageText()`. */
-  editInlineMessageText: (text: string, params?: EditInlineMessageTextParams) => Promise<void>;
-  /** Context-aware alias for `client.editInlineMessageCaption()`. */
-  editInlineMessageCaption: (params?: EditInlineMessageCaptionParams) => Promise<void>;
-  /** Context-aware alias for `client.editInlineMessageMedia()`. */
-  editInlineMessageMedia: (media: InputMedia, params?: EditInlineMessageMediaParams) => Promise<void>;
-  /** Context-aware alias for `client.editInlineMessageLiveLocation()`. */
-  editInlineMessageLiveLocation: (latitude: number, longitude: number, params?: EditMessageLiveLocationParams) => Promise<void>;
-  /** Context-aware alias for `client.editInlineMessageReplyMarkup()`. */
-  editInlineMessageReplyMarkup: (params?: EditMessageReplyMarkupParams) => Promise<void>;
-  /** Context-aware alias for `client.editMessageText()`. */
-  editMessageText: (messageId: number, text: string, params?: EditMessageTextParams) => Promise<MessageText>;
-  /** Context-aware alias for `client.editMessageCaption()`. */
-  editMessageCaption: (messageId: number, params?: EditMessageCaptionParams) => Promise<Message>;
-  /** Context-aware alias for `client.editMessageMedia()`. */
-  editMessageMedia: (messageId: number, media: InputMedia, params?: EditMessageMediaParams) => Promise<Message>;
-  /** Context-aware alias for `client.editMessageLiveLocation()`. */
-  editMessageLiveLocation: (messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) => Promise<MessageLocation>;
-  /** Context-aware alias for `client.editMessageReplyMarkup()`. */
-  editMessageReplyMarkup: (messageId: number, params?: EditMessageReplyMarkupParams) => Promise<Message>;
-  /** Context-aware alias for `client.answerCallbackQuery()`. */
-  answerCallbackQuery: (params?: AnswerCallbackQueryParams) => Promise<void>;
-  /** Context-aware alias for `client.answerInlineQuery()`. */
-  answerInlineQuery: (results: InlineQueryResult[], params?: AnswerInlineQueryParams) => Promise<void>;
-  /** Context-aware alias for `client.getMessage()`. */
-  getMessage: (messageId: number) => Promise<Message | null>;
-  /** Context-aware alias for `client.getMessages()`. */
-  getMessages: (messageIds: number[]) => Promise<Message[]>;
-  /** Context-aware alias for `client.forwardMessage()`. */
-  forwardMessage: (to: ID, messageId: number, params?: ForwardMessagesParams) => Promise<Message>;
-  /** Context-aware alias for `client.forwardMessages()`. */
-  forwardMessages: (to: ID, messageIds: number[], params?: ForwardMessagesParams) => Promise<Message[]>;
-  /** Context-aware alias for `client.deleteMessage()`. */
-  deleteMessage: (messageId: number, params?: DeleteMessagesParams) => Promise<void>;
-  /** Context-aware alias for `client.deleteMessages()`. */
-  deleteMessages: (messageIds: number[], params?: DeleteMessagesParams) => Promise<void>;
-  /** Context-aware alias for `client.pinMessage()`. */
-  pinMessage: (messageId: number, params?: PinMessageParams) => Promise<void>;
-  /** Context-aware alias for `client.unpinMessage()`. */
-  unpinMessage: (messageId: number) => Promise<void>;
-  /** Context-aware alias for `client.unpinMessages()`. */
-  unpinMessages: () => Promise<void>;
-  /** Context-aware alias for `client.setAvailableReactions()`. */
-  setAvailableReactions: (availableReactions: "none" | "all" | Reaction[]) => Promise<void>;
-  /** Context-aware alias for `client.addReaction()`. */
-  addReaction: (messageId: number, reaction: Reaction, params?: AddReactionParams) => Promise<void>;
-  /** Context-aware alias for `client.removeReaction()`. */
-  removeReaction: (messageId: number, reaction: Reaction) => Promise<void>;
-  /** Context-aware alias for `client.setReactions()`. */
-  setReactions: (messageId: number, reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
-  /** Context-aware alias for `client.readMessages()`. */
-  read(): Promise<void>;
-  /** Context-aware alias for `client.setChatPhoto()`. */
-  setChatPhoto: (photo: FileSource, params?: SetChatPhotoParams) => Promise<void>;
-  /** Context-aware alias for `client.deleteChatPhoto()`. */
-  deleteChatPhoto: () => Promise<void>;
-  /** Context-aware alias for `client.banChatMember()`. */
-  banChatMember: (memberId: ID, params?: BanChatMemberParams) => Promise<void>;
-  /** Context-aware alias for `client.unbanChatMember()`. */
-  unbanChatMember: (memberId: ID) => Promise<void>;
-  /** Context-aware alias for `client.kickChatMember()`. */
-  kickChatMember: (memberId: ID) => Promise<void>;
-  /** Context-aware alias for `client.setChatMemberRights()`. */
-  setChatMemberRights: (memberId: ID, params?: SetChatMemberRightsParams) => Promise<void>;
-  /** Context-aware alias for `client.promoteChatMember()`. */
-  promoteChatMember: (userId: ID, params?: PromoteChatMemberParams) => Promise<void>;
-  /** Context-aware alias for `client.deleteChatMemberMessages()`. */
-  deleteChatMemberMessages: (userId: ID) => Promise<void>;
-  /** Context-aware alias for `client.searchMessages()`. */
-  searchMessages: (params?: Omit<SearchMessagesParams, "chatId">) => Promise<Message[]>;
-  /** Context-aware alias for `client.setBoostsRequiredToCircumventRestrictions()`. */
-  setBoostsRequiredToCircumventRestrictions: (boosts: number) => Promise<void>;
-  /** Context-aware alias for `client.createInviteLink()`. */
-  createInviteLink: (params?: CreateInviteLinkParams) => Promise<InviteLink>;
-  /** Context-aware alias for `client.getCreatedInviteLinks()`. */
-  getCreatedInviteLinks: (params?: GetCreatedInviteLinksParams) => Promise<InviteLink[]>;
-  /** Context-aware alias for `client.leaveChat()`. */
-  leaveChat: () => Promise<void>;
-  /** Context-aware alias for `client.blockUser()`. */
-  blockUser: () => Promise<void>;
-  /** Context-aware alias for `client.unblockUser()`. */
-  unblockUser: () => Promise<void>;
-  /** Context-aware alias for `client.getChatMember()`. */
-  getChatMember: (userId: ID) => Promise<ChatMember>;
-  /** Context-aware alias for `client.getChatMember()`. */
-  getChatMembers: (params?: GetChatMembersParams) => Promise<ChatMember[]>;
-  /** Context-aware alias for `client.setChatStickerSet()`. */
-  setChatStickerSet: (setName: string) => Promise<void>;
-  /** Context-aware alias for `client.deleteChatStickerSet()`. */
-  deleteChatStickerSet: () => Promise<void>;
-  /** Context-aware alias for `client.getBusinessConnection()`. */
-  getBusinessConnection: () => Promise<BusinessConnection>;
-  /** Context-aware alias for `client.answerPreCheckoutQuery()`. */
-  answerPreCheckoutQuery: (ok: boolean, params?: AnswerPreCheckoutQueryParams) => Promise<void>;
-  /** Context-aware alias for `client.approveJoinRequest()`. */
-  approveJoinRequest: () => Promise<void>;
-  /** Context-aware alias for `client.declineJoinRequest()`. */
-  declineJoinRequest: () => Promise<void>;
-}
-
-export class Composer<C extends Context = Context> extends Composer_<C> {
-}
-export type { Middleware, MiddlewareFn, MiddlewareObj, NextFunction };
-
-function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
+function skipInvoke(): InvokeErrorHandler<Client> {
   return (_ctx, next) => next();
 }
 export interface InvokeErrorHandler<C> {
@@ -274,8 +102,6 @@ export interface ClientParams extends ClientPlainParams {
   defaultHandlers?: boolean;
   /** Whether outgoing messages should be sent as high-level updates. Outgoing bot business messages will never be sent. Defaults to `false`. */
   outgoingMessages?: boolean;
-  /** Default command prefixes. Defaults to `"/"` for bots and `"\"` for users. This option must be set separately for nested composers. */
-  prefixes?: string | string[];
   /** Whether to guarantee that order-sensitive updates are delivered at least once before delivering next ones. Useful mainly for clients providing a user interface à la Telegram Desktop. Defaults to `false`. */
   guaranteeUpdateDelivery?: boolean;
   /** Whether to not handle updates received when the client was not running. Defaults to `true` for bots, and `false` for users. */
@@ -305,7 +131,7 @@ export interface ClientParams extends ClientPlainParams {
 /**
  * An MTKruto client.
  */
-export class Client<C extends Context = Context> extends Composer<C> {
+export class Client implements ClientGeneric {
   #clients = new Array<ClientEncrypted>();
   #downloadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
   #uploadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
@@ -398,8 +224,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * Constructs the client.
    */
   constructor(params?: ClientParams) {
-    super();
-
     this.#apiId = params?.apiId ?? 0;
     this.#apiHash = params?.apiHash ?? "";
     this.#transportProvider = params?.transportProvider;
@@ -425,9 +249,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
     this.#publicKeys = params?.publicKeys;
     this.#outgoingMessages = params?.outgoingMessages ?? false;
-    if (params?.prefixes) {
-      this.prefixes = params?.prefixes;
-    }
     this.#guaranteeUpdateDelivery = params?.guaranteeUpdateDelivery ?? false;
 
     const L = this.#L = getLogger("Client").client(id++);
@@ -566,431 +387,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
   get disconnected(): boolean {
     return this.#client?.disconnected ?? true;
   }
-
-  #constructContext = async (update: Update) => {
-    const mustGetMsg = (ctx: Context) => {
-      if (ctx.msg !== undefined) {
-        return { chatId: ctx.msg.chat.id, messageId: ctx.msg.id, businessConnectionId: ctx.msg.businessConnectionId, senderId: ctx.msg.from?.id, userId: ctx.msg.from?.id };
-      }
-
-      const reactions = "messageInteractions" in update ? update.messageInteractions : undefined;
-      if (reactions !== undefined) {
-        return { chatId: reactions.chatId, messageId: reactions.messageId };
-      } else {
-        unreachable();
-      }
-    };
-
-    const mustGetChatId = (ctx: Context) => {
-      if (ctx.chat) {
-        return ctx.chat.id;
-      } else {
-        unreachable();
-      }
-    };
-    const mustGetUserId = (ctx: Context) => {
-      if (ctx.msg?.from) {
-        return ctx.msg.from.id;
-      } else if ("callbackQuery" in update) {
-        return update.callbackQuery.from.id;
-      } else if ("chosenInlineResult" in update) {
-        return update.chosenInlineResult.from.id;
-      } else {
-        unreachable();
-      }
-    };
-    const mustGetInlineMsgId = () => {
-      if ("chosenInlineResult" in update) {
-        if (update.chosenInlineResult.inlineMessageId) {
-          return update.chosenInlineResult.inlineMessageId;
-        }
-      } else if ("callbackQuery" in update) {
-        if (update.callbackQuery.inlineMessageId) {
-          return update.callbackQuery.inlineMessageId;
-        }
-      }
-      unreachable();
-    };
-    const getReplyTo = (quote: boolean | undefined, chatId: number, messageId: number): ReplyTo | undefined => {
-      if ("story" in update) {
-        return { chatId: update.story.chat.id, storyId: update.story.id };
-      }
-      const isPrivate = chatId > 0;
-      const shouldQuote = quote === undefined ? !isPrivate : quote;
-      return shouldQuote ? { messageId } : undefined;
-    };
-
-    if (this.#lastGetMe === null && !("connectionState" in update) && (!("authorizationState" in update) || ("authorizationState" in update && update.authorizationState.isAuthorized))) {
-      await this.#getMe();
-    }
-
-    const context: Context = {
-      ...update,
-      client: this as unknown as Client,
-      get me() {
-        return this.client.#lastGetMe === null ? undefined : this.client.#lastGetMe;
-      },
-      get msg() {
-        return "message" in update ? update.message : "editedMessage" in update ? update.editedMessage : "scheduledMessage" in update ? update.scheduledMessage : "callbackQuery" in update ? update.callbackQuery.message : undefined;
-      },
-      get chat() {
-        return this.msg?.chat ?? ("messageReactions" in update ? update.messageReactions.chat : "messageReactionCount" in update ? update.messageReactionCount.chat : "chatMember" in update ? update.chatMember.chat : "myChatMember" in update ? update.myChatMember.chat : "joinRequest" in update ? update.joinRequest.chat : "story" in update ? update.story.chat : undefined);
-      },
-      get from() {
-        const from = "callbackQuery" in update ? update.callbackQuery.from : "inlineQuery" in update ? update.inlineQuery.from : "chatMember" in update ? update.chatMember.from : "myChatMember" in update ? update.myChatMember.from : "messageReactions" in update ? update.messageReactions.user : "preCheckoutQuery" in update ? update.preCheckoutQuery.from : "joinRequest" in update ? update.joinRequest.from : "businessConnection" in update ? update.businessConnection.user : "pollAnswer" in update ? update.pollAnswer.from : this.msg?.from;
-        return from as C["from"];
-      },
-      toJSON() {
-        if ("update" in update) {
-          return { update: toJSON(update.update) };
-        } else {
-          return update;
-        }
-      },
-      reply(text, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendMessage(chatId, text, { ...params, replyTo, businessConnectionId });
-      },
-      replyPoll(question, options, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendPoll(chatId, question, options, { ...params, replyTo, businessConnectionId });
-      },
-      replyPhoto(photo, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendPhoto(chatId, photo, { ...params, replyTo, businessConnectionId });
-      },
-      replyMediaGroup(media, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendMediaGroup(chatId, media, { ...params, replyTo, businessConnectionId });
-      },
-      replyInvoice(title, description, payload, currency, prices, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendInvoice(chatId, title, description, payload, currency, prices, { ...params, replyTo, businessConnectionId });
-      },
-      replyDocument(document, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendDocument(chatId, document, { ...params, replyTo, businessConnectionId });
-      },
-      replySticker(sticker, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendSticker(chatId, sticker, { ...params, replyTo, businessConnectionId });
-      },
-      replyContact(firstName, number, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendContact(chatId, firstName, number, { ...params, replyTo, businessConnectionId });
-      },
-      replyLocation(latitude, longitude, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendLocation(chatId, latitude, longitude, { ...params, replyTo, businessConnectionId });
-      },
-      replyDice(params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendDice(chatId, { ...params, replyTo, businessConnectionId });
-      },
-      replyVenue(latitude, longitude, title, address, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendVenue(chatId, latitude, longitude, title, address, { ...params, replyTo, businessConnectionId });
-      },
-      replyVideo(video, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendVideo(chatId, video, { ...params, replyTo, businessConnectionId });
-      },
-      replyAnimation(document, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendAnimation(chatId, document, { ...params, replyTo, businessConnectionId });
-      },
-      replyVoice(document, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendVoice(chatId, document, { ...params, replyTo, businessConnectionId });
-      },
-      replyAudio(document, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendAudio(chatId, document, { ...params, replyTo, businessConnectionId });
-      },
-      replyVideoNote(videoNote, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendVideoNote(chatId, videoNote, { ...params, replyTo, businessConnectionId });
-      },
-      delete() {
-        const { chatId, messageId } = mustGetMsg(this);
-        return this.client.deleteMessage(chatId, messageId);
-      },
-      forward(to, params) {
-        const { chatId, messageId } = mustGetMsg(this);
-        return this.client.forwardMessage(chatId, to, messageId, params) as unknown as ReturnType<C["forward"]>;
-      },
-      pin(params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        return this.client.pinMessage(chatId, messageId, { ...params, businessConnectionId });
-      },
-      unpin() {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        return this.client.unpinMessage(chatId, messageId, { businessConnectionId });
-      },
-      banSender(params) {
-        const { chatId, senderId } = mustGetMsg(this);
-        if (!senderId) {
-          unreachable();
-        }
-        return this.client.banChatMember(chatId, senderId, params);
-      },
-      kickSender() {
-        const { chatId, senderId } = mustGetMsg(this);
-        if (!senderId) {
-          unreachable();
-        }
-        return this.client.kickChatMember(chatId, senderId);
-      },
-      setSenderRights(params) {
-        const { chatId, senderId } = mustGetMsg(this);
-        if (!senderId) {
-          unreachable();
-        }
-        return this.client.setChatMemberRights(chatId, senderId, params);
-      },
-      getChatAdministrators() {
-        const chatId = mustGetChatId(this);
-        return this.client.getChatAdministrators(chatId);
-      },
-      react(reactions, params) {
-        const { chatId, messageId } = mustGetMsg(this);
-        return this.client.setReactions(chatId, messageId, reactions, params);
-      },
-      answerCallbackQuery(params) {
-        if (!("callbackQuery" in update)) {
-          unreachable();
-        }
-        return this.client.answerCallbackQuery(update.callbackQuery.id, params);
-      },
-      answerInlineQuery(results, params) {
-        if (!("inlineQuery" in update)) {
-          unreachable();
-        }
-        return this.client.answerInlineQuery(update.inlineQuery.id, results, params);
-      },
-      sendChatAction(chatAction, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.sendChatAction(chatId, chatAction, params);
-      },
-      editInlineMessageText(text, params) {
-        const inlineMessageId = mustGetInlineMsgId();
-        return this.client.editInlineMessageText(inlineMessageId, text, params);
-      },
-      editInlineMessageMedia(media, params) {
-        const inlineMessageId = mustGetInlineMsgId();
-        return this.client.editInlineMessageMedia(inlineMessageId, media, params);
-      },
-      editInlineMessageCaption(params) {
-        const inlineMessageId = mustGetInlineMsgId();
-        return this.client.editInlineMessageCaption(inlineMessageId, params);
-      },
-      editInlineMessageLiveLocation(latitude, longitude, params) {
-        const inlineMessageId = mustGetInlineMsgId();
-        return this.client.editInlineMessageLiveLocation(inlineMessageId, latitude, longitude, params);
-      },
-      editInlineMessageReplyMarkup(params) {
-        const inlineMessageId = mustGetInlineMsgId();
-        return this.client.editInlineMessageReplyMarkup(inlineMessageId, params);
-      },
-      editMessageText(messageId, text, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.editMessageText(chatId, messageId, text, params);
-      },
-      editMessageCaption(messageId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.editMessageCaption(chatId, messageId, params);
-      },
-      editMessageMedia(messageId, media, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.editMessageMedia(chatId, messageId, media, params);
-      },
-      editMessageLiveLocation(messageId, latitude, longitude, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.editMessageLiveLocation(chatId, messageId, latitude, longitude, params);
-      },
-      editMessageReplyMarkup(messageId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.editMessageReplyMarkup(chatId, messageId, params);
-      },
-      getMessage(messageId) {
-        const chatId = mustGetChatId(this);
-        return this.client.getMessage(chatId, messageId);
-      },
-      getMessages(messageIds) {
-        const chatId = mustGetChatId(this);
-        return this.client.getMessages(chatId, messageIds);
-      },
-      forwardMessage(to, messageId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.forwardMessage(chatId, to, messageId, params);
-      },
-      forwardMessages(to, messageIds, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.forwardMessages(chatId, to, messageIds, params);
-      },
-      deleteMessage(messageId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.deleteMessage(chatId, messageId, params);
-      },
-      deleteMessages(messageIds, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.deleteMessages(chatId, messageIds, params);
-      },
-      pinMessage(messageId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.pinMessage(chatId, messageId, params);
-      },
-      unpinMessage(messageId) {
-        const chatId = mustGetChatId(this);
-        return this.client.unpinMessage(chatId, messageId);
-      },
-      unpinMessages() {
-        const chatId = mustGetChatId(this);
-        return this.client.unpinMessages(chatId);
-      },
-      setAvailableReactions(availableReactions) {
-        const chatId = mustGetChatId(this);
-        return this.client.setAvailableReactions(chatId, availableReactions);
-      },
-      addReaction(messageId, reaction, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.addReaction(chatId, messageId, reaction, params);
-      },
-      removeReaction(messageId, reaction) {
-        const chatId = mustGetChatId(this);
-        return this.client.removeReaction(chatId, messageId, reaction);
-      },
-      setReactions(messageId, reactions, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.setReactions(chatId, messageId, reactions, params);
-      },
-      read() {
-        const { chatId, messageId } = mustGetMsg(this);
-        return this.client.readMessages(chatId, messageId);
-      },
-      setChatPhoto(photo, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.setChatPhoto(chatId, photo, params);
-      },
-      deleteChatPhoto() {
-        const chatId = mustGetChatId(this);
-        return this.client.deleteChatPhoto(chatId);
-      },
-      banChatMember(memberId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.banChatMember(chatId, memberId, params);
-      },
-      unbanChatMember(memberId) {
-        const chatId = mustGetChatId(this);
-        return this.client.unbanChatMember(chatId, memberId);
-      },
-      kickChatMember(memberId) {
-        const chatId = mustGetChatId(this);
-        return this.client.kickChatMember(chatId, memberId);
-      },
-      setChatMemberRights(memberId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.setChatMemberRights(chatId, memberId, params);
-      },
-      promoteChatMember(userId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.promoteChatMember(chatId, userId, params);
-      },
-      deleteChatMemberMessages(userId) {
-        const chatId = mustGetChatId(this);
-        return this.client.deleteChatMemberMessages(chatId, userId);
-      },
-      searchMessages(params) {
-        const chatId = mustGetChatId(this);
-        params ??= {};
-        (params as SearchMessagesParams).chatId = chatId;
-        return this.client.searchMessages(params);
-      },
-      setBoostsRequiredToCircumventRestrictions(boosts) {
-        const chatId = mustGetChatId(this);
-        return this.client.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
-      },
-      createInviteLink(params) {
-        const chatId = mustGetChatId(this);
-        return this.client.createInviteLink(chatId, params);
-      },
-      getCreatedInviteLinks(params) {
-        const chatId = mustGetChatId(this);
-        return this.client.getCreatedInviteLinks(chatId, params);
-      },
-      leaveChat() {
-        const chatId = mustGetChatId(this);
-        return this.client.leaveChat(chatId);
-      },
-      blockUser() {
-        return this.client.blockUser(mustGetUserId(this));
-      },
-      unblockUser() {
-        return this.client.unblockUser(mustGetUserId(this));
-      },
-      getChatMember(userId) {
-        const chatId = mustGetChatId(this);
-        return this.client.getChatMember(chatId, userId);
-      },
-      getChatMembers(params) {
-        const chatId = mustGetChatId(this);
-        return this.client.getChatMembers(chatId, params);
-      },
-      setChatStickerSet(setName) {
-        const chatId = mustGetChatId(this);
-        return this.client.setChatStickerSet(chatId, setName);
-      },
-      deleteChatStickerSet() {
-        const chatId = mustGetChatId(this);
-        return this.client.deleteChatStickerSet(chatId);
-      },
-      getBusinessConnection() {
-        const { businessConnectionId } = mustGetMsg(this);
-        if (!businessConnectionId) {
-          unreachable();
-        }
-        return this.client.getBusinessConnection(businessConnectionId);
-      },
-      answerPreCheckoutQuery(ok, params) {
-        if (!("preCheckoutQuery" in update)) {
-          unreachable();
-        }
-        return this.client.answerPreCheckoutQuery(update.preCheckoutQuery.id, ok, params);
-      },
-      approveJoinRequest() {
-        const { chatId, userId } = mustGetMsg(this);
-        if (!userId) {
-          unreachable();
-        }
-        return this.client.approveJoinRequest(chatId, userId);
-      },
-      declineJoinRequest() {
-        const { chatId, userId } = mustGetMsg(this);
-        if (!userId) {
-          unreachable();
-        }
-        return this.client.declineJoinRequest(chatId, userId);
-      },
-    };
-
-    return cleanObject(context as C);
-  };
 
   #propagateConnectionState(connectionState: ConnectionState) {
     this.#queueHandleCtxUpdate({ connectionState });
@@ -1520,7 +916,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
     }
   }
 
-  #handleInvokeError = skipInvoke<C>();
+  #handleInvokeError = skipInvoke();
 
   /**
    * Invokes a function waiting and returning its reply if the second parameter is not `true`. Requires the client
@@ -1530,11 +926,11 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   invoke: {
     <T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R>;
-    use: (handler: InvokeErrorHandler<Client<C>>) => void;
+    use: (handler: InvokeErrorHandler<Client>) => void;
   } = Object.assign(
     this.#invoke,
     {
-      use: (handler: InvokeErrorHandler<Client<C>>) => {
+      use: (handler: InvokeErrorHandler<Client>) => {
         const handle = this.#handleInvokeError;
         this.#handleInvokeError = async (ctx, next) => {
           let result: boolean | null = null;
@@ -1738,12 +1134,24 @@ export class Client<C extends Context = Context> extends Composer<C> {
     return this.messageStorage.peers.mustGet([peerToChatId(peer)]);
   }
 
+  #updateHandlers = new Array<(update: Update) => void | Promise<void>>();
+
+  addUpdateHandler(updateHandler: (update: Update) => void | Promise<void>): void {
+    this.#updateHandlers.push(updateHandler);
+  }
+
+  removeUpdateHandler(updateHandler: (update: Update) => void | Promise<void>): void {
+    this.#updateHandlers = this.#updateHandlers.filter((v) => v !== updateHandler);
+  }
+
   async #handleCtxUpdate(update: Update) {
     if (this.#disableUpdates && !("authorizationState" in update) && !("connectionState" in update)) {
       return;
     }
     try {
-      await this.middleware()(await this.#constructContext(update), resolve);
+      for (const updateHandler of this.#updateHandlers) {
+        await updateHandler(update);
+      }
     } catch (err) {
       this.#L.error("Failed to handle update:", err);
       throw err;

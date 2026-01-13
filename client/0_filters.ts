@@ -20,6 +20,7 @@
 
 import type { Api } from "../2_tl.ts";
 import type { CallbackQuery, ChosenInlineResult, MessageTypes, UpdateIntersection, UpdateMap } from "../3_types.ts";
+import type { Context } from "./2_context.ts";
 
 type AnyLevel1 = keyof UpdateMap;
 type GetLevel1Type<L1 extends AnyLevel1> = UpdateMap[L1];
@@ -75,9 +76,9 @@ interface Shortcuts<T extends UpdateIntersection> {
 }
 type GetShortcuts<T> = T extends UpdateIntersection ? T["update"] extends object ? Record<string, never> : Shortcuts<T> : Record<string, never>;
 
-type Filter<Q extends AnyLevelX> = FilterCore<Q> & GetShortcuts<FilterCore<Q>>;
+type Filter<Q extends AnyLevelX> = {update: FilterCore<Q>} & GetShortcuts<FilterCore<Q>>;
 export type FilterQuery = AnyLevelX;
-export type WithFilter<T, Q extends FilterQuery> = T & Filter<Q>;
+export type WithFilter<T extends Context, Q extends FilterQuery> = T & Filter<Q>;
 
 export function match<Q extends FilterQuery, T extends object>(filter: Q, value: T) {
   let [type, ...other] = filter.split(":");
