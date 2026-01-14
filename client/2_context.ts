@@ -19,8 +19,8 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { toJSON } from "../2_tl.ts";
-import type { ChatAction, FileSource, ID, InlineQueryResult, InputMedia, PriceTag, Reaction, ReplyTo, Update, User } from "../3_types.ts";
+import { type Api, toJSON } from "../2_tl.ts";
+import type { BusinessConnection, ChatAction, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, FileSource, ID, InlineQueryResult, InputMedia, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, PriceTag, Reaction, ReplyTo, Update, User } from "../3_types.ts";
 import type { AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetChatMembersParams, GetCreatedInviteLinksParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 
@@ -35,19 +35,19 @@ export class Context {
     this.#update = update;
   }
 
-  get update() {
+  get update(): Update {
     return this.#update;
   }
 
-  get me() {
+  get me(): User | undefined {
     return this.#me;
   }
 
-  get client() {
+  get client(): ClientGeneric {
     return this.#client;
   }
 
-  get msg() {
+  get msg(): Message | undefined {
     return "message" in this.update ? this.update.message : "editedMessage" in this.update ? this.update.editedMessage : "scheduledMessage" in this.update ? this.update.scheduledMessage : "callbackQuery" in this.update ? this.update.callbackQuery.message : undefined;
   }
 
@@ -106,16 +106,16 @@ export class Context {
     return shouldQuote ? { messageId } : undefined;
   };
 
-  get chat() {
+  get chat(): ChatP | undefined {
     return this.msg?.chat ?? ("messageReactions" in this.update ? this.update.messageReactions.chat : "messageReactionCount" in this.update ? this.update.messageReactionCount.chat : "chatMember" in this.update ? this.update.chatMember.chat : "myChatMember" in this.update ? this.update.myChatMember.chat : "joinRequest" in this.update ? this.update.joinRequest.chat : "story" in this.update ? this.update.story.chat : undefined);
   }
 
-  get from() {
+  get from(): User | ChatPGroup | ChatPSupergroup | ChatPChannel | undefined {
     const from = "callbackQuery" in this.update ? this.update.callbackQuery.from : "inlineQuery" in this.update ? this.update.inlineQuery.from : "chatMember" in this.update ? this.update.chatMember.from : "myChatMember" in this.update ? this.update.myChatMember.from : "messageReactions" in this.update ? this.update.messageReactions.user : "preCheckoutQuery" in this.update ? this.update.preCheckoutQuery.from : "joinRequest" in this.update ? this.update.joinRequest.from : "businessConnection" in this.update ? this.update.businessConnection.user : "pollAnswer" in this.update ? this.update.pollAnswer.from : this.msg?.from;
     return from;
   }
 
-  toJSON() {
+  toJSON(): Update | { update: Api.Update } {
     if ("update" in this.update) {
       return { update: toJSON(this.update.update) };
     } else {
@@ -123,418 +123,418 @@ export class Context {
     }
   }
 
-  reply(text: string, params?: Omit<SendMessageParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async reply(text: string, params?: Omit<SendMessageParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageText> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendMessage(chatId, text, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendMessage(chatId, text, { ...params, replyTo, businessConnectionId });
   }
 
-  replyPoll(question: string, options: string[], params?: Omit<SendPollParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyPoll(question: string, options: string[], params?: Omit<SendPollParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessagePoll> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendPoll(chatId, question, options, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendPoll(chatId, question, options, { ...params, replyTo, businessConnectionId });
   }
 
-  replyPhoto(photo: FileSource, params?: Omit<SendPhotoParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyPhoto(photo: FileSource, params?: Omit<SendPhotoParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessagePhoto> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendPhoto(chatId, photo, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendPhoto(chatId, photo, { ...params, replyTo, businessConnectionId });
   }
 
-  replyMediaGroup(media: InputMedia[], params?: Omit<SendMediaGroupParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyMediaGroup(media: InputMedia[], params?: Omit<SendMediaGroupParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<Message[]> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendMediaGroup(chatId, media, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendMediaGroup(chatId, media, { ...params, replyTo, businessConnectionId });
   }
 
-  replyInvoice(title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: Omit<SendInvoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyInvoice(title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: Omit<SendInvoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageInvoice> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendInvoice(chatId, title, description, payload, currency, prices, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendInvoice(chatId, title, description, payload, currency, prices, { ...params, replyTo, businessConnectionId });
   }
 
-  replyDocument(document: FileSource, params?: Omit<SendDocumentParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyDocument(document: FileSource, params?: Omit<SendDocumentParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageDocument> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendDocument(chatId, document, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendDocument(chatId, document, { ...params, replyTo, businessConnectionId });
   }
 
-  replySticker(sticker: FileSource, params?: Omit<SendStickerParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replySticker(sticker: FileSource, params?: Omit<SendStickerParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageSticker> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendSticker(chatId, sticker, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendSticker(chatId, sticker, { ...params, replyTo, businessConnectionId });
   }
 
-  replyLocation(latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyLocation(latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageLocation> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendLocation(chatId, latitude, longitude, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendLocation(chatId, latitude, longitude, { ...params, replyTo, businessConnectionId });
   }
 
-  replyDice(params?: Omit<SendDiceParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyDice(params?: Omit<SendDiceParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageDice> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendDice(chatId, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendDice(chatId, { ...params, replyTo, businessConnectionId });
   }
 
-  replyVenue(latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyVenue(latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageVenue> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendVenue(chatId, latitude, longitude, title, address, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendVenue(chatId, latitude, longitude, title, address, { ...params, replyTo, businessConnectionId });
   }
 
-  replyContact(firstName: string, number: string, params?: Omit<SendContactParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyContact(firstName: string, number: string, params?: Omit<SendContactParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageContact> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendContact(chatId, firstName, number, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendContact(chatId, firstName, number, { ...params, replyTo, businessConnectionId });
   }
 
-  replyVideo(video: FileSource, params?: Omit<SendVideoParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyVideo(video: FileSource, params?: Omit<SendVideoParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageVideo> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendVideo(chatId, video, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendVideo(chatId, video, { ...params, replyTo, businessConnectionId });
   }
 
-  replyAnimation(animation: FileSource, params?: Omit<SendAnimationParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyAnimation(animation: FileSource, params?: Omit<SendAnimationParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageAnimation> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendAnimation(chatId, animation, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendAnimation(chatId, animation, { ...params, replyTo, businessConnectionId });
   }
 
-  replyVoice(voice: FileSource, params?: Omit<SendVoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyVoice(voice: FileSource, params?: Omit<SendVoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageVoice> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendVoice(chatId, voice, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendVoice(chatId, voice, { ...params, replyTo, businessConnectionId });
   }
 
-  replyAudio(audio: FileSource, params?: Omit<SendAudioParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyAudio(audio: FileSource, params?: Omit<SendAudioParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageAudio> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendAudio(chatId, audio, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendAudio(chatId, audio, { ...params, replyTo, businessConnectionId });
   }
 
-  replyVideoNote(videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyTo" | "businessConnectionId"> & ReplyParams) {
+  async replyVideoNote(videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageVideoNote> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return this.client.sendVideoNote(chatId, videoNote, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendVideoNote(chatId, videoNote, { ...params, replyTo, businessConnectionId });
   }
 
-  delete() {
+  async delete(): Promise<void> {
     const { chatId, messageId } = this.#mustGetMsg();
-    return this.client.deleteMessage(chatId, messageId);
+    return await this.client.deleteMessage(chatId, messageId);
   }
 
-  forward(to: ID, params?: ForwardMessagesParams) {
+  async forward(to: ID, params?: ForwardMessagesParams): Promise<Message> {
     const { chatId, messageId } = this.#mustGetMsg();
-    return this.client.forwardMessage(chatId, to, messageId, params);
+    return await this.client.forwardMessage(chatId, to, messageId, params);
   }
 
-  pin(params?: PinMessageParams) {
+  async pin(params?: PinMessageParams): Promise<void> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    return this.client.pinMessage(chatId, messageId, { ...params, businessConnectionId });
+    return await this.client.pinMessage(chatId, messageId, { ...params, businessConnectionId });
   }
 
-  unpin() {
+  async unpin(): Promise<void> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    return this.client.unpinMessage(chatId, messageId, { businessConnectionId });
+    return await this.client.unpinMessage(chatId, messageId, { businessConnectionId });
   }
 
-  banSender(params?: BanChatMemberParams) {
+  async banSender(params?: BanChatMemberParams): Promise<void> {
     const { chatId, senderId } = this.#mustGetMsg();
     if (!senderId) {
       unreachable();
     }
-    return this.client.banChatMember(chatId, senderId, params);
+    return await this.client.banChatMember(chatId, senderId, params);
   }
 
-  kickSender() {
+  async kickSender(): Promise<void> {
     const { chatId, senderId } = this.#mustGetMsg();
     if (!senderId) {
       unreachable();
     }
-    return this.client.kickChatMember(chatId, senderId);
+    return await this.client.kickChatMember(chatId, senderId);
   }
 
-  setSenderRights(params?: SetChatMemberRightsParams) {
+  async setSenderRights(params?: SetChatMemberRightsParams): Promise<void> {
     const { chatId, senderId } = this.#mustGetMsg();
     if (!senderId) {
       unreachable();
     }
-    return this.client.setChatMemberRights(chatId, senderId, params);
+    return await this.client.setChatMemberRights(chatId, senderId, params);
   }
 
-  getChatAdministrators() {
+  async getChatAdministrators(): Promise<ChatMember[]> {
     const chatId = this.#mustGetChatId();
-    return this.client.getChatAdministrators(chatId);
+    return await this.client.getChatAdministrators(chatId);
   }
 
-  react(reactions: Reaction[], params?: SetReactionsParams) {
+  async react(reactions: Reaction[], params?: SetReactionsParams): Promise<void> {
     const { chatId, messageId } = this.#mustGetMsg();
-    return this.client.setReactions(chatId, messageId, reactions, params);
+    return await this.client.setReactions(chatId, messageId, reactions, params);
   }
 
-  sendChatAction(action: ChatAction, params?: { messageThreadId?: number }) {
+  async sendChatAction(action: ChatAction, params?: { messageThreadId?: number }): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.sendChatAction(chatId, action, params);
+    return await this.client.sendChatAction(chatId, action, params);
   }
 
-  editInlineMessageText(text: string, params?: EditInlineMessageTextParams) {
+  async editInlineMessageText(text: string, params?: EditInlineMessageTextParams): Promise<void> {
     const inlineMessageId = this.#mustGetInlineMsgId();
-    return this.client.editInlineMessageText(inlineMessageId, text, params);
+    return await this.client.editInlineMessageText(inlineMessageId, text, params);
   }
 
-  editInlineMessageCaption(params?: EditInlineMessageCaptionParams) {
+  async editInlineMessageCaption(params?: EditInlineMessageCaptionParams): Promise<void> {
     const inlineMessageId = this.#mustGetInlineMsgId();
-    return this.client.editInlineMessageCaption(inlineMessageId, params);
+    return await this.client.editInlineMessageCaption(inlineMessageId, params);
   }
 
-  editInlineMessageMedia(media: InputMedia, params?: EditInlineMessageMediaParams) {
+  async editInlineMessageMedia(media: InputMedia, params?: EditInlineMessageMediaParams): Promise<void> {
     const inlineMessageId = this.#mustGetInlineMsgId();
-    return this.client.editInlineMessageMedia(inlineMessageId, media, params);
+    return await this.client.editInlineMessageMedia(inlineMessageId, media, params);
   }
 
-  editInlineMessageLiveLocation(latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {
+  async editInlineMessageLiveLocation(latitude: number, longitude: number, params?: EditMessageLiveLocationParams): Promise<void> {
     const inlineMessageId = this.#mustGetInlineMsgId();
-    return this.client.editInlineMessageLiveLocation(inlineMessageId, latitude, longitude, params);
+    return await this.client.editInlineMessageLiveLocation(inlineMessageId, latitude, longitude, params);
   }
 
-  editInlineMessageReplyMarkup(params?: EditMessageReplyMarkupParams) {
+  async editInlineMessageReplyMarkup(params?: EditMessageReplyMarkupParams): Promise<void> {
     const inlineMessageId = this.#mustGetInlineMsgId();
-    return this.client.editInlineMessageReplyMarkup(inlineMessageId, params);
+    return await this.client.editInlineMessageReplyMarkup(inlineMessageId, params);
   }
 
-  editMessageText(messageId: number, text: string, params?: EditMessageTextParams) {
+  async editMessageText(messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText> {
     const chatId = this.#mustGetChatId();
-    return this.client.editMessageText(chatId, messageId, text, params);
+    return await this.client.editMessageText(chatId, messageId, text, params);
   }
 
-  editMessageCaption(messageId: number, params?: EditMessageCaptionParams) {
+  async editMessageCaption(messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
     const chatId = this.#mustGetChatId();
-    return this.client.editMessageCaption(chatId, messageId, params);
+    return await this.client.editMessageCaption(chatId, messageId, params);
   }
 
-  editMessageMedia(messageId: number, media: InputMedia, params?: EditMessageMediaParams) {
+  async editMessageMedia(messageId: number, media: InputMedia, params?: EditMessageMediaParams): Promise<Message> {
     const chatId = this.#mustGetChatId();
-    return this.client.editMessageMedia(chatId, messageId, media, params);
+    return await this.client.editMessageMedia(chatId, messageId, media, params);
   }
 
-  editMessageLiveLocation(messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {
+  async editMessageLiveLocation(messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams): Promise<Message> {
     const chatId = this.#mustGetChatId();
-    return this.client.editMessageLiveLocation(chatId, messageId, latitude, longitude, params);
+    return await this.client.editMessageLiveLocation(chatId, messageId, latitude, longitude, params);
   }
 
-  editMessageReplyMarkup(messageId: number, params?: EditMessageReplyMarkupParams) {
+  async editMessageReplyMarkup(messageId: number, params?: EditMessageReplyMarkupParams): Promise<Message> {
     const chatId = this.#mustGetChatId();
-    return this.client.editMessageReplyMarkup(chatId, messageId, params);
+    return await this.client.editMessageReplyMarkup(chatId, messageId, params);
   }
 
-  answerCallbackQuery(params?: AnswerCallbackQueryParams) {
+  async answerCallbackQuery(params?: AnswerCallbackQueryParams): Promise<void> {
     if (!("callbackQuery" in this.update)) {
       unreachable();
     }
-    return this.client.answerCallbackQuery(this.update.callbackQuery.id, params);
+    return await this.client.answerCallbackQuery(this.update.callbackQuery.id, params);
   }
 
-  answerInlineQuery(results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
+  async answerInlineQuery(results: InlineQueryResult[], params?: AnswerInlineQueryParams): Promise<void> {
     if (!("inlineQuery" in this.update)) {
       unreachable();
     }
-    return this.client.answerInlineQuery(this.update.inlineQuery.id, results, params);
+    return await this.client.answerInlineQuery(this.update.inlineQuery.id, results, params);
   }
 
-  getMessage(messageId: number) {
+  async getMessage(messageId: number): Promise<Message | null> {
     const chatId = this.#mustGetChatId();
-    return this.client.getMessage(chatId, messageId);
+    return await this.client.getMessage(chatId, messageId);
   }
 
-  getMessages(messageIds: number[]) {
+  async getMessages(messageIds: number[]): Promise<Message[]> {
     const chatId = this.#mustGetChatId();
-    return this.client.getMessages(chatId, messageIds);
+    return await this.client.getMessages(chatId, messageIds);
   }
 
-  forwardMessage(to: ID, messageId: number, params?: ForwardMessagesParams) {
+  async forwardMessage(to: ID, messageId: number, params?: ForwardMessagesParams): Promise<Message> {
     const chatId = this.#mustGetChatId();
-    return this.client.forwardMessage(chatId, to, messageId, params);
+    return await this.client.forwardMessage(chatId, to, messageId, params);
   }
 
-  forwardMessages(to: ID, messageIds: number[], params?: ForwardMessagesParams) {
+  async forwardMessages(to: ID, messageIds: number[], params?: ForwardMessagesParams): Promise<Message[]> {
     const chatId = this.#mustGetChatId();
-    return this.client.forwardMessages(chatId, to, messageIds, params);
+    return await this.client.forwardMessages(chatId, to, messageIds, params);
   }
 
-  deleteMessage(messageId: number, params?: DeleteMessagesParams) {
+  async deleteMessage(messageId: number, params?: DeleteMessagesParams): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.deleteMessage(chatId, messageId, params);
+    return await this.client.deleteMessage(chatId, messageId, params);
   }
 
-  deleteMessages(messageIds: number[], params?: DeleteMessagesParams) {
+  async deleteMessages(messageIds: number[], params?: DeleteMessagesParams): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.deleteMessages(chatId, messageIds, params);
+    return await this.client.deleteMessages(chatId, messageIds, params);
   }
 
-  pinMessage(messageId: number, params?: PinMessageParams) {
+  async pinMessage(messageId: number, params?: PinMessageParams): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.pinMessage(chatId, messageId, params);
+    return await this.client.pinMessage(chatId, messageId, params);
   }
 
-  unpinMessage(messageId: number) {
+  async unpinMessage(messageId: number): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.unpinMessage(chatId, messageId);
+    return await this.client.unpinMessage(chatId, messageId);
   }
 
-  unpinMessages() {
+  async unpinMessages(): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.unpinMessages(chatId);
+    return await this.client.unpinMessages(chatId);
   }
 
-  setAvailableReactions(availableReactions: "none" | "all" | Reaction[]) {
+  async setAvailableReactions(availableReactions: "none" | "all" | Reaction[]): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.setAvailableReactions(chatId, availableReactions);
+    return await this.client.setAvailableReactions(chatId, availableReactions);
   }
 
-  addReaction(messageId: number, reaction: Reaction, params?: AddReactionParams) {
+  async addReaction(messageId: number, reaction: Reaction, params?: AddReactionParams): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.addReaction(chatId, messageId, reaction, params);
+    return await this.client.addReaction(chatId, messageId, reaction, params);
   }
 
-  removeReaction(messageId: number, reaction: Reaction) {
+  async removeReaction(messageId: number, reaction: Reaction): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.removeReaction(chatId, messageId, reaction);
+    return await this.client.removeReaction(chatId, messageId, reaction);
   }
 
-  setReactions(messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
+  async setReactions(messageId: number, reactions: Reaction[], params?: SetReactionsParams): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.setReactions(chatId, messageId, reactions, params);
+    return await this.client.setReactions(chatId, messageId, reactions, params);
   }
 
-  read() {
+  async read(): Promise<void> {
     const { chatId, messageId } = this.#mustGetMsg();
-    return this.client.readMessages(chatId, messageId);
+    return await this.client.readMessages(chatId, messageId);
   }
 
-  setChatPhoto(photo: FileSource, params?: SetChatPhotoParams) {
+  async setChatPhoto(photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.setChatPhoto(chatId, photo, params);
+    return await this.client.setChatPhoto(chatId, photo, params);
   }
 
-  deletChatPhoto() {
+  async deletChatPhoto(): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.deleteChatPhoto(chatId);
+    return await this.client.deleteChatPhoto(chatId);
   }
 
-  banChatMember(memberId: ID, params?: BanChatMemberParams) {
+  async banChatMember(memberId: ID, params?: BanChatMemberParams): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.banChatMember(chatId, memberId, params);
+    return await this.client.banChatMember(chatId, memberId, params);
   }
 
-  unbanChatMember(memberId: ID) {
+  async unbanChatMember(memberId: ID): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.unbanChatMember(chatId, memberId);
+    return await this.client.unbanChatMember(chatId, memberId);
   }
 
-  kickChatMember(memberId: ID) {
+  async kickChatMember(memberId: ID): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.kickChatMember(chatId, memberId);
+    return await this.client.kickChatMember(chatId, memberId);
   }
 
-  setChatMemberRights(memberId: ID, params?: SetChatMemberRightsParams) {
+  async setChatMemberRights(memberId: ID, params?: SetChatMemberRightsParams): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.setChatMemberRights(chatId, memberId, params);
+    return await this.client.setChatMemberRights(chatId, memberId, params);
   }
 
-  promoteChatMember(userId: ID, params?: PromoteChatMemberParams) {
+  async promoteChatMember(userId: ID, params?: PromoteChatMemberParams): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.promoteChatMember(chatId, userId, params);
+    return await this.client.promoteChatMember(chatId, userId, params);
   }
 
-  deleteChatMemberMessages(userId: ID) {
+  async deleteChatMemberMessages(userId: ID): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.deleteChatMemberMessages(chatId, userId);
+    return await this.client.deleteChatMemberMessages(chatId, userId);
   }
 
-  searchMessages(params?: Omit<SearchMessagesParams, "chatId">) {
+  async searchMessages(params?: Omit<SearchMessagesParams, "chatId">): Promise<Message[]> {
     const chatId = this.#mustGetChatId();
     params ??= {};
     (params as SearchMessagesParams).chatId = chatId;
-    return this.client.searchMessages(params);
+    return await this.client.searchMessages(params);
   }
 
-  setBoostsRequiredToCircumventRestrictions(boosts: number) {
+  async setBoostsRequiredToCircumventRestrictions(boosts: number): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
+    return await this.client.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
   }
 
-  createInviteLink(params?: CreateInviteLinkParams) {
+  async createInviteLink(params?: CreateInviteLinkParams): Promise<InviteLink> {
     const chatId = this.#mustGetChatId();
-    return this.client.createInviteLink(chatId, params);
+    return await this.client.createInviteLink(chatId, params);
   }
 
-  getCreatedInviteLinks(params?: GetCreatedInviteLinksParams) {
+  async getCreatedInviteLinks(params?: GetCreatedInviteLinksParams): Promise<InviteLink[]> {
     const chatId = this.#mustGetChatId();
-    return this.client.getCreatedInviteLinks(chatId, params);
+    return await this.client.getCreatedInviteLinks(chatId, params);
   }
 
-  leaveChat() {
+  async leaveChat(): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.leaveChat(chatId);
+    return await this.client.leaveChat(chatId);
   }
 
-  blockUser() {
-    return this.client.blockUser(this.#mustGetUserId());
+  async blockUser(): Promise<void> {
+    return await this.client.blockUser(this.#mustGetUserId());
   }
 
-  unblockUser() {
-    return this.client.unblockUser(this.#mustGetUserId());
+  async unblockUser(): Promise<void> {
+    return await this.client.unblockUser(this.#mustGetUserId());
   }
 
-  getChatMember(userId: ID) {
+  async getChatMember(userId: ID): Promise<ChatMember> {
     const chatId = this.#mustGetChatId();
-    return this.client.getChatMember(chatId, userId);
+    return await this.client.getChatMember(chatId, userId);
   }
 
-  getChatMembers(params?: GetChatMembersParams) {
+  async getChatMembers(params?: GetChatMembersParams): Promise<ChatMember[]> {
     const chatId = this.#mustGetChatId();
-    return this.client.getChatMembers(chatId, params);
+    return await this.client.getChatMembers(chatId, params);
   }
 
-  setChatStickerSet(setName: string) {
+  async setChatStickerSet(setName: string): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.setChatStickerSet(chatId, setName);
+    return await this.client.setChatStickerSet(chatId, setName);
   }
 
-  deleteChatStickerSet() {
+  async deleteChatStickerSet(): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return this.client.deleteChatStickerSet(chatId);
+    return await this.client.deleteChatStickerSet(chatId);
   }
 
-  getBusinessConnection() {
+  async getBusinessConnection(): Promise<BusinessConnection> {
     const { businessConnectionId } = this.#mustGetMsg();
     if (!businessConnectionId) {
       unreachable();
     }
-    return this.client.getBusinessConnection(businessConnectionId);
+    return await this.client.getBusinessConnection(businessConnectionId);
   }
 
-  answerPreCheckoutQuery(ok: boolean, params?: AnswerPreCheckoutQueryParams) {
+  async answerPreCheckoutQuery(ok: boolean, params?: AnswerPreCheckoutQueryParams): Promise<void> {
     if (!("preCheckoutQuery" in this.update)) {
       unreachable();
     }
-    return this.client.answerPreCheckoutQuery(this.update.preCheckoutQuery.id, ok, params);
+    return await this.client.answerPreCheckoutQuery(this.update.preCheckoutQuery.id, ok, params);
   }
 
-  approveJoinRequest() {
+  async approveJoinRequest(): Promise<void> {
     const { chatId, userId } = this.#mustGetMsg();
     if (!userId) {
       unreachable();
     }
-    return this.client.approveJoinRequest(chatId, userId);
+    return await this.client.approveJoinRequest(chatId, userId);
   }
 
-  declineJoinRequest() {
+  async declineJoinRequest(): Promise<void> {
     const { chatId, userId } = this.#mustGetMsg();
     if (!userId) {
       unreachable();
     }
-    return this.client.declineJoinRequest(chatId, userId);
+    return await this.client.declineJoinRequest(chatId, userId);
   }
 }

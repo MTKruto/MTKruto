@@ -21,7 +21,7 @@
 import { InputError } from "../0_errors.ts";
 import type { MaybePromise } from "../1_utilities.ts";
 import type { Update, User } from "../3_types.ts";
-import type { ClientGeneric } from "./1_client_generic.ts";
+import type { ClientGeneric, UpdateHandler } from "./1_client_generic.ts";
 import { Context } from "./2_context.ts";
 import { type FilterQuery, match, type WithFilter } from "./3_filters.ts";
 
@@ -60,8 +60,8 @@ export function concat<C = Update>(
   };
 }
 
-export function skip<C>(_ctx: C, next: NextFunction) {
-  return next();
+export async function skip<C>(_ctx: C, next: NextFunction) {
+  return await next();
 }
 
 export class Composer<C extends Context> implements MiddlewareObj<C> {
@@ -80,8 +80,8 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
   }
 
   #lastGetMe?: User;
-  getUpdateHandler(client: ClientGeneric) {
-    return async (update: Update) => {
+  getUpdateHandler(client: ClientGeneric): UpdateHandler {
+    return async (update) => {
       if (this.#lastGetMe === null && !("connectionState" in update) && (!("authorizationState" in update) || ("authorizationState" in update && update.authorizationState.isAuthorized))) {
         this.#lastGetMe = await client.getMe();
       }
