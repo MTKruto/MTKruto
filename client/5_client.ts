@@ -2751,6 +2751,27 @@ export class Client<C extends Context = Context> extends Composer<C> {
   //
 
   /**
+   * Download a chunk of a file.
+   *
+   * @method fs
+   * @param fileId The identifier of a file.
+   * @example ```ts
+   * const chunk = await client.download(fileId, { chunkSize: 256 * 1024 });
+   * ```
+   * @returns The downloaded chunk.
+   * @cache file
+   */
+  async downloadChunk(fileId: string, params?: DownloadParams): Promise<Uint8Array> {
+    const controller = new AbortController()
+    for await (const chunk of this.#fileManager.download(fileId, {...params, signal: controller.signal})) {
+      controller.abort();
+      return chunk;
+    }
+
+    unreachable();
+  }
+
+  /**
    * Download a file.
    *
    * @method fs
@@ -3872,6 +3893,19 @@ export class Client<C extends Context = Context> extends Composer<C> {
    */
   async getLiveStreamChannels(id: string): Promise<LiveStreamChannel[]> {
     return await this.#videoChatManager.getLiveStreamChannels(id);
+  }
+
+  /**
+   * Download a live stream chunk. User-only.
+   *
+   * @method vc
+   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
+   * @param channelId Stream channel ID.
+   * @param scale Stream channel scale.
+   * @param timestamp Millisecond timestamp of the chunk to download.
+   */
+  async *downloadLiveStreamSegment(id: string, channelId: number, scale: number, timestamp: number, params?: DownloadLiveStreamChunkParams): AsyncGenerator<Uint8Array, void, unknown> {
+    yield* this.#videoChatManager.downloadLiveStreamChunk(id, channelId, scale, timestamp, params);
   }
 
   /**
