@@ -136,7 +136,7 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
     ...middleware: Middleware<WithFilter<C, Q>>[]
   ): Composer<WithFilter<C, Q>> {
     return this.filter((ctx): ctx is WithFilter<C, Q> => {
-      return match(filter, ctx);
+      return match(filter, ctx.update);
     }, ...middleware);
   }
 
