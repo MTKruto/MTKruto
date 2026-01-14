@@ -60,8 +60,8 @@ export function concat<C = Update>(
   };
 }
 
-export async function skip<C>(_ctx: C, next: NextFunction) {
-  return await next();
+export function skip<C>(_ctx: C, next: NextFunction): Promise<void> {
+  return next();
 }
 
 export class Composer<C extends Context> implements MiddlewareObj<C> {
