@@ -545,7 +545,7 @@ export interface JoinVideoChatParams {
   video?: boolean;
 }
 
-export interface DownloadLiveStreamChunkParams {
+export interface DownloadLiveStreamSegmentParams {
   /** Video quality. */
   quality?: "low" | "medium" | "high";
   /** Download abort signal. */
