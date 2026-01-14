@@ -82,7 +82,7 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
   #lastGetMe?: User;
   getUpdateHandler(client: ClientGeneric): UpdateHandler {
     return async (update) => {
-      if (this.#lastGetMe === null && !("connectionState" in update) && (!("authorizationState" in update) || ("authorizationState" in update && update.authorizationState.isAuthorized))) {
+      if (!this.#lastGetMe && !("connectionState" in update) && (!("authorizationState" in update) || ("authorizationState" in update && update.authorizationState.isAuthorized))) {
         this.#lastGetMe = await client.getMe();
       }
 
