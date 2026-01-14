@@ -25,19 +25,19 @@ Deno.test("types", () => {
   const composer = new Composer();
 
   composer.on("message", (ctx) => {
-    let msg: Message = ctx.msg;
-    let message: Message = ctx.update.message;
+    const _msg: Message = ctx.msg;
+    const _message: Message = ctx.update.message;
   });
 
   composer.on("editedMessage", (ctx) => {
-    let msg: Message = ctx.msg;
-    let editedMessage: Message = ctx.update.editedMessage;
+    const _msg: Message = ctx.msg;
+    const _editedMessage: Message = ctx.update.editedMessage;
   }).use((ctx) => {
-    let msg: Message = ctx.msg;
-    let editedMessage: Message = ctx.update.editedMessage;
+    const _msg: Message = ctx.msg;
+    const _editedMessage: Message = ctx.update.editedMessage;
   });
 
   composer.on("message:animation", (ctx) => {
-    let animation: Animation = ctx.msg.animation;
+    const _animation: Animation = ctx.msg.animation;
   });
 });
