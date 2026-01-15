@@ -194,7 +194,7 @@ export interface SendInvoiceParams extends _SendCommon, _ReplyMarkupCommon {
 }
 
 export interface DownloadChunkParams {
-  /** Size of each download chunk in bytes. */
+  /** Size of the chunk to download in bytes. */
   chunkSize?: number;
   /** Download offset in bytes. */
   offset?: number;
