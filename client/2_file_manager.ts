@@ -24,7 +24,7 @@ import { getLogger, getRandomId, iterateReadableStream, kilobyte, type Logger, m
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
 import { constructSticker, deserializeFileId, type FileId, type FileSource, FileType, PhotoSourceType, serializeFileId, type Sticker, toUniqueFileId } from "../3_types.ts";
-import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
+import { DOWNLOAD_MAX_CHUNK_SIZE, STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { StickersetInvalid } from "../4_errors.ts";
 import type { _UploadCommon, DownloadParams } from "./0_params.ts";
 import { UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
@@ -34,7 +34,6 @@ export class FileManager {
   #c: C;
   #Lupload: Logger;
   static #UPLOAD_MAX_CHUNK_SIZE = 512 * kilobyte;
-  static #DOWNLOAD_MAX_CHUNK_SIZE = 1 * megabyte;
   static #BIG_FILE_THRESHOLD = 10 * megabyte;
 
   constructor(c: C) {
@@ -310,8 +309,8 @@ export class FileManager {
       }
     }
 
-    const chunkSize = params?.chunkSize ?? FileManager.#DOWNLOAD_MAX_CHUNK_SIZE;
-    FileManager.validateChunkSize(chunkSize, FileManager.#DOWNLOAD_MAX_CHUNK_SIZE);
+    const chunkSize = params?.chunkSize ?? DOWNLOAD_MAX_CHUNK_SIZE;
+    FileManager.validateChunkSize(chunkSize, DOWNLOAD_MAX_CHUNK_SIZE);
     if (params?.offset !== undefined) {
       FileManager.validateOffset(params.offset);
     }

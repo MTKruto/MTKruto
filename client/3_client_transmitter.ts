@@ -5,6 +5,8 @@ import { getLogger } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
 import type { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChatSettings, ClaimedGifts, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import { DOWNLOAD_MAX_CHUNK_SIZE } from "../4_constants.ts";
+import * as errors from "../4_errors.ts";
 
 export class ClientTransmitter implements ClientGeneric {
   static #ID_COUNTER = 0;
@@ -43,7 +45,7 @@ export class ClientTransmitter implements ClientGeneric {
           this.#pendingRequests[messageId]?.resolve(result.data);
         }
       } else {
-        this.#pendingRequests[messageId]?.reject(result.data);
+        this.#pendingRequests[messageId]?.reject(this.#constructError(result.data));
 
         if (messageId === 0) {
           this.#pendingRequests.shift();
@@ -52,6 +54,36 @@ export class ClientTransmitter implements ClientGeneric {
         }
       }
     });
+  }
+
+  #constructError(data: unknown) {
+    if (!data) {
+      return new TypeError("Unknown error");
+    }
+    if (typeof data === "string") {
+      return new Error(data);
+    }
+    if (!Array.isArray(data) || data.length !== 2) {
+      return new TypeError("Unknown error");
+    }
+
+    const [name, args] = data;
+    switch (name) {
+      case "TelegramError":
+        return errors.constructTelegramError(args.error, args.call);
+      case "ConnectionError":
+        return new errors.ConnectionError(args);
+      case "AccessError":
+        return new errors.AccessError(args);
+      case "InputError":
+        return new errors.InputError(args);
+      case "TransportError":
+        return new errors.TransportError(args);
+      case "TLError":
+        return new errors.TLError(args.message, args.path);
+      default:
+        return new TypeError("Unknown error");
+    }
   }
 
   get id() {
@@ -961,6 +993,21 @@ export class ClientTransmitter implements ClientGeneric {
   //
 
   /**
+   * Download a chunk of a file.
+   *
+   * @method fs
+   * @param fileId The identifier of a file.
+   * @example ```ts
+   * const chunk = await client.downloadChunk(fileId, { chunkSize: 256 * 1024 });
+   * ```
+   * @returns The downloaded chunk.
+   * @cache file
+   */
+  async downloadChunk(fileId: string, params?: DownloadParams): Promise<Uint8Array> {
+    return await this.#dispatch("download", fileId, params);
+  }
+
+  /**
    * Download a file.
    *
    * @method fs
@@ -973,7 +1020,21 @@ export class ClientTransmitter implements ClientGeneric {
    * @returns A generator yielding the contents of the file.
    * @cache file
    */
-  async download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown> {
+  async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown> {
+    let offset = 0;
+    const chunkSize = params?.chunkSize ?? DOWNLOAD_MAX_CHUNK_SIZE;
+
+    while (true) {
+      const chunk = await this.downloadChunk(fileId, { chunkSize, offset });
+      yield chunk;
+
+      if (chunk.length < chunkSize) {
+        break;
+      } else {
+        offset += chunk.length;
+      }
+    }
+
     return await this.#dispatch("download", fileId, params);
   }
 

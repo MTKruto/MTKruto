@@ -776,6 +776,19 @@ export abstract class ClientGeneric {
   //
 
   /**
+   * Download a chunk of a file.
+   *
+   * @method fs
+   * @param fileId The identifier of a file.
+   * @example ```ts
+   * const chunk = await client.downloadChunk(fileId, { chunkSize: 256 * 1024 });
+   * ```
+   * @returns The downloaded chunk.
+   * @cache file
+   */
+  abstract downloadChunk(fileId: string, params?: DownloadParams): Promise<Uint8Array>;
+
+  /**
    * Download a file.
    *
    * @method fs
@@ -1692,7 +1705,7 @@ export abstract class ClientGeneric {
   abstract getLiveStreamChannels(id: string): Promise<LiveStreamChannel[]>;
 
   /**
-   * Download a live stream chunk. User-only.
+   * Download a live stream segment. User-only.
    *
    * @method vc
    * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
@@ -1700,7 +1713,7 @@ export abstract class ClientGeneric {
    * @param scale Stream channel scale.
    * @param timestamp Millisecond timestamp of the chunk to download.
    */
-  abstract downloadLiveStreamChunk(id: string, channelId: number, scale: number, timestamp: number, params?: DownloadLiveStreamChunkParams): AsyncGenerator<Uint8Array, void, unknown>;
+  abstract downloadLiveStreamSegment(id: string, channelId: number, scale: number, timestamp: number, params?: DownloadLiveStreamChunkParams): Promise<Uint8Array>;
 
   //
   // ========================= PAYMENTS ========================= //

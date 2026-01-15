@@ -2164,7 +2164,7 @@ export class Client implements ClientGeneric {
    * @method fs
    * @param fileId The identifier of a file.
    * @example ```ts
-   * const chunk = await client.download(fileId, { chunkSize: 256 * 1024 });
+   * const chunk = await client.downloadChunk(fileId, { chunkSize: 256 * 1024 });
    * ```
    * @returns The downloaded chunk.
    * @cache file
