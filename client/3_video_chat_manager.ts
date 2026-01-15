@@ -18,14 +18,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
+import { concat, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getRandomId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
 import { constructLiveStreamChannel, constructVideoChat, type ID, type Update, type VideoChatActive, type VideoChatScheduled } from "../3_types.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
-import type { DownloadLiveStreamChunkParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
+import type { DownloadLiveStreamSegmentParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputUser } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -177,8 +177,8 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
     return streams.channels.map(constructLiveStreamChannel);
   }
 
-  async *downloadLiveStreamChunk(id: string, channel: number, scale: number, timestamp: number, params?: DownloadLiveStreamChunkParams) {
-    this.#c.storage.assertUser("downloadLiveStreamChunk");
+  async downloadLiveStreamSegment(id: string, channel: number, scale: number, timestamp: number, params?: DownloadLiveStreamSegmentParams) {
+    this.#c.storage.assertUser("downloadLiveStreamSegment");
     const call = await this.#getCall(id);
     if (!(Api.is("groupCall", call)) || !call.rtmp_stream) {
       throw new InputError("Not a live stream.");
@@ -194,6 +194,12 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
         throw new InputError("Got invalid quality.");
       })(),
     };
-    yield* this.#c.fileManager.downloadInner(location, call.stream_dc_id ?? unreachable(), params);
+
+    const chunks = new Array<Uint8Array>();
+    for await (const chunk of this.#c.fileManager.downloadInner(location, call.stream_dc_id ?? unreachable(), params)) {
+      chunks.push(chunk);
+    }
+
+    return concat(chunks);
   }
 }
