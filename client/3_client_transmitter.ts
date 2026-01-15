@@ -2079,7 +2079,7 @@ export class ClientTransmitter implements ClientGeneric {
   }
 
   /**
-   * Download a live stream chunk. User-only.
+   * Download a live stream segment. User-only.
    *
    * @method vc
    * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
@@ -2087,8 +2087,8 @@ export class ClientTransmitter implements ClientGeneric {
    * @param scale Stream channel scale.
    * @param timestamp Millisecond timestamp of the chunk to download.
    */
-  async downloadLiveStreamChunk(id: string, channelId: number, scale: number, timestamp: number, params?: DownloadLiveStreamSegmentParams): AsyncGenerator<Uint8Array, void, unknown> {
-    return await this.#dispatch("downloadLiveStreamChunk", id, channelId, scale, timestamp, params);
+  async downloadLiveStreamSegment(id: string, channelId: number, scale: number, timestamp: number, params?: DownloadLiveStreamSegmentParams): Promise<Uint8Array> {
+    return await this.#dispatch("downloadLiveStreamSegment", id, channelId, scale, timestamp, params);
   }
 
   //
