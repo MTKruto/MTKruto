@@ -1,86 +1,126 @@
 /// <reference lib="webworker" />
 
 import type { ClientGeneric, UpdateHandler } from "./1_client_generic.ts";
-import { getLogger } from "../1_utilities.ts";
+import { getLogger, type Logger } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
-import type { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChatSettings, ClaimedGifts, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChatSettings, ClaimedGifts, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { DOWNLOAD_MAX_CHUNK_SIZE } from "../4_constants.ts";
 import * as errors from "../4_errors.ts";
+import type { WorkerRequest } from "./0_worker_request.ts";
+import type { DC } from "../3_transport.ts";
+import type { WorkerError, WorkerResponse } from "./0_worker_response.ts";
+
+export interface ClientTransmitterParams {
+  /** The storage provider to use. Defaults to memory storage. */
+  storage?: "memory" | "indexeddb" | "denokv";
+  /** App's API ID from [my.telegram.org/apps](https://my.telegram.org/apps). Required if no account was previously authorized. */
+  apiId?: number;
+  /** App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Required if no account was previously authorized. */
+  apiHash?: string;
+  /** A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defaults to `ParseMode.None`. */
+  parseMode?: ParseMode;
+  /** The app_version parameter to be passed to initConnection. It is recommended that this parameter is changed if users are authorized. Defaults to _MTKruto_. */
+  appVersion?: string;
+  /** The device_version parameter to be passed to initConnection. The default varies by the current runtime. */
+  deviceModel?: string;
+  /** The client's language to be used for fetching translations. Defaults to the runtime's language or `"en"`. */
+  language?: string;
+  /** The client's platform to be used for fetching translations. Defaults to an empty string. */
+  platform?: string;
+  /** The system_lang_code parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
+  systemLangCode?: string;
+  /** The system_version parameter to be passed to initConnection. The default varies by the current runtime. */
+  systemVersion?: string;
+  /** Whether to use default handlers. Defaults to `true`. */
+  defaultHandlers?: boolean;
+  /** Whether outgoing messages should be sent as high-level updates. Outgoing bot business messages will never be sent. Defaults to `false`. */
+  outgoingMessages?: boolean;
+  /** Whether to guarantee that order-sensitive updates are delivered at least once before delivering next ones. Useful mainly for clients providing a user interface à la Telegram Desktop. Defaults to `false`. */
+  guaranteeUpdateDelivery?: boolean;
+  /** Whether to not handle updates received when the client was not running. Defaults to `true` for bots, and `false` for users. */
+  dropPendingUpdates?: boolean;
+  /**
+   * Whether to persist cache to the provided storage, and not memory. Defaults to `false`.
+   *
+   * Explicitly setting this option to `true` is highly recommended if:
+   *
+   * - User accounts are authorized.
+   * - Less memory usage is demanded.
+   * - The client does not usually have a large uptime.
+   *
+   * When the provided storage takes advantage of memory, nothing changes, even if set to `true`.
+   */
+  persistCache?: boolean;
+  /** Whether to disable receiving updates. UpdateConnectionState and UpdatesAuthorizationState will always be received. Defaults to `false`. */
+  disableUpdates?: boolean;
+  /** An auth string to automatically import. Can be overriden by a later importAuthString call. */
+  authString?: string;
+  /**
+   * The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC.
+   */
+  initialDc?: DC;
+}
 
 export class ClientTransmitter implements ClientGeneric {
-  static #ID_COUNTER = 0;
+  #worker: Worker;
   #id: number;
+  #L: Logger;
+
   // deno-lint-ignore no-explicit-any
   #pendingRequests = new Array<PromiseWithResolvers<any>>();
   #updateHandlers = new Array<UpdateHandler>();
 
-  constructor() {
-    this.#id = ClientTransmitter.#ID_COUNTER++;
-    const logger = getLogger("ClientController").branch(this.#id + "");
-
-    addEventListener("message", async (e) => {
-      if (!Array.isArray(e.data) || e.data.length !== 3) {
-        return;
-      }
-
-      const [clientId, messageId, result] = e.data;
-      if (clientId !== this.#id || typeof messageId !== "number") {
-        return;
-      }
-      if (typeof result !== "object" || result === null) {
-        return;
-      }
-
-      if ("data" in result) {
-        if (messageId === -1) {
-          for (const updateHandler of this.#updateHandlers) {
-            try {
-              await updateHandler(result.data);
-            } catch (err) {
-              logger.error("Error handling update:", err);
-            }
-          }
-        } else {
-          this.#pendingRequests[messageId]?.resolve(result.data);
-        }
-      } else {
-        this.#pendingRequests[messageId]?.reject(this.#constructError(result.data));
-
-        if (messageId === 0) {
-          this.#pendingRequests.shift();
-        } else if (messageId === this.#pendingRequests.length - 1) {
-          this.#pendingRequests.pop();
-        }
-      }
-    });
+  constructor(worker: Worker, id: number) {
+    this.#worker = worker;
+    this.#id = id;
+    this.#L = getLogger("ClientController").branch(this.#id + "");
   }
 
-  #constructError(data: unknown) {
-    if (!data) {
-      return new TypeError("Unknown error");
-    }
-    if (typeof data === "string") {
-      return new Error(data);
-    }
-    if (!Array.isArray(data) || data.length !== 2) {
-      return new TypeError("Unknown error");
+  /** @internal */
+  async handleResponse(response: WorkerResponse) {
+    if (response.clientId !== this.#id) {
+      return;
     }
 
-    const [name, args] = data;
-    switch (name) {
+    if (response.isError) {
+      this.#pendingRequests[response.id]?.reject(this.#constructError(response.data));
+    } else {
+      if (response.id === -1) {
+        for (const updateHandler of this.#updateHandlers) {
+          try {
+            await updateHandler(response.data as Update);
+          } catch (err) {
+            this.#L.error("Error handling update:", err);
+          }
+        }
+      } else {
+        this.#pendingRequests[response.id]?.resolve(response.data);
+      }
+    }
+
+    // clean up pending requests
+    if (response.id === 0) {
+      this.#pendingRequests.shift();
+    } else if (response.id === this.#pendingRequests.length - 1) {
+      this.#pendingRequests.pop();
+    }
+  }
+
+  #constructError(error: WorkerError) {
+    switch (error.name) {
       case "TelegramError":
-        return errors.constructTelegramError(args.error, args.call);
+        return errors.constructTelegramError(error.args.error, error.args.call);
       case "ConnectionError":
-        return new errors.ConnectionError(args);
+        return new errors.ConnectionError(error.args);
       case "AccessError":
-        return new errors.AccessError(args);
+        return new errors.AccessError(error.args);
       case "InputError":
-        return new errors.InputError(args);
+        return new errors.InputError(error.args);
       case "TransportError":
-        return new errors.TransportError(args);
+        return new errors.TransportError(error.args);
       case "TLError":
-        return new errors.TLError(args.message, args.path);
+        return new errors.TLError(error.args.message, error.args.path);
       default:
         return new TypeError("Unknown error");
     }
@@ -95,7 +135,14 @@ export class ClientTransmitter implements ClientGeneric {
     const promiseWithResolvers = Promise.withResolvers<any>();
 
     const index = this.#pendingRequests.push(promiseWithResolvers) - 1;
-    postMessage([index, method, args]);
+
+    const request: WorkerRequest = {
+      clientId: this.#id,
+      id: index,
+      method,
+      args,
+    };
+    this.#worker.postMessage(request);
 
     return await promiseWithResolvers.promise;
   }
@@ -410,7 +457,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @method ms
    * @param chatId The identifier of a chat to send the audio file to.
    * @param audio The audio to send.
-   * @returns The sent audio filr.
+   * @returns The sent audio file.
    */
   async sendAudio(chatId: ID, audio: FileSource, params: SendAudioParams): Promise<MessageAudio> {
     return await this.#dispatch("sendAudio", chatId, audio, params);
