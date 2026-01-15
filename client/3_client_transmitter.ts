@@ -4,7 +4,7 @@ import type { ClientGeneric, UpdateHandler } from "./1_client_generic.ts";
 import { getLogger } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
 import type { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChatSettings, ClaimedGifts, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
-import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamChunkParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 
 export class ClientTransmitter implements ClientGeneric {
   static #ID_COUNTER = 0;
@@ -999,7 +999,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @method ch
    */
   async getChats(params?: GetChatsParams): Promise<ChatListItem[]> {
-    return await this.#dispatch('getChats', params);
+    return await this.#dispatch("getChats", params);
   }
 
   /**
@@ -1019,7 +1019,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @param chatId The identifier of a chat.
    */
   async getHistory(chatId: ID, params?: GetHistoryParams): Promise<Message[]> {
-    return await this.#dispatch('getHistory', chatId, params);
+    return await this.#dispatch("getHistory", chatId, params);
   }
 
   /**
@@ -1030,7 +1030,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @param availableReactions The new available reactions.
    */
   async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]): Promise<void> {
-    return await this.#dispatch('setAvailableReactions', chatId, availableReactions);
+    return await this.#dispatch("setAvailableReactions", chatId, availableReactions);
   }
 
   /**
@@ -1307,7 +1307,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @returns An array of FailedInvitation that has at most a length that is the same as that of the parameter userIds. If empty, it means that all the provided users were added.
    */
   async addChatMembers(chatId: ID, userIds: ID[]): Promise<FailedInvitation[]> {
-    return await this.#dispatch('addChatMembers', chatId, userIds);
+    return await this.#dispatch("addChatMembers", chatId, userIds);
   }
 
   /**
@@ -1381,7 +1381,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @param chatIds The identifiers of the chats to archive.
    */
   async archiveChats(chatIds: ID[]): Promise<void> {
-    return await this.#dispatch('archiveChats', chatIds);
+    return await this.#dispatch("archiveChats", chatIds);
   }
 
   /**
@@ -1401,7 +1401,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @param chatIds The identifiers of the chats to unarchive.
    */
   async unarchiveChats(chatIds: ID[]): Promise<void> {
-    return await this.#dispatch('unarchiveChats', chatIds);
+    return await this.#dispatch("unarchiveChats", chatIds);
   }
 
   /**
@@ -1421,7 +1421,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @param userId The identifier of the user to get the common chats with them.
    */
   async getCommonChats(userId: ID, params?: GetCommonChatsParams): Promise<ChatP[]> {
-    return await this.#dispatch('getCommonChats', userId, params);
+    return await this.#dispatch("getCommonChats", userId, params);
   }
 
   /**
@@ -1606,7 +1606,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @returns The new topic.
    */
   async editTopic(chatId: ID, topicId: number, title: string, params?: EditTopicParams): Promise<Topic> {
-    return await this.#dispatch('editTopic', chatId, topicId, title, params);
+    return await this.#dispatch("editTopic", chatId, topicId, title, params);
   }
 
   /**
@@ -1737,7 +1737,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @param results The results to answer with.
    */
   async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams): Promise<void> {
-    return await this.#dispatch('answerInlineQuery', id, results, params);
+    return await this.#dispatch("answerInlineQuery", id, results, params);
   }
 
   //
@@ -1750,7 +1750,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @method bs
    */
   async setMyDescription(params?: { description?: string; languageCode?: string }): Promise<void> {
-    return await this.#dispatch('setMyDescription', params);
+    return await this.#dispatch("setMyDescription", params);
   }
 
   /**
@@ -1759,7 +1759,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @method bs
    */
   async setMyName(params?: { name?: string; languageCode?: string }): Promise<void> {
-    return await this.#dispatch('setMyName', params);
+    return await this.#dispatch("setMyName", params);
   }
 
   /**
@@ -1768,7 +1768,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @method bs
    */
   async setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }): Promise<void> {
-    return await this.#dispatch('setMyShortDescription', params);
+    return await this.#dispatch("setMyShortDescription", params);
   }
 
   /**
@@ -1778,7 +1778,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @returns The current bot's description in the specified language.
    */
   async getMyDescription(params?: { languageCode?: string }): Promise<string> {
-    return await this.#dispatch('getMyDescription', params);
+    return await this.#dispatch("getMyDescription", params);
   }
 
   /**
@@ -1788,7 +1788,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @returns The current bot's name in the specified language.
    */
   async getMyName(params?: { languageCode?: string }): Promise<string> {
-    return await this.#dispatch('getMyName', params);
+    return await this.#dispatch("getMyName", params);
   }
 
   /**
@@ -1798,7 +1798,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @returns The current bot's short description in the specified language.
    */
   async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
-    return await this.#dispatch('getMyShortDescription', params);
+    return await this.#dispatch("getMyShortDescription", params);
   }
 
   /**
@@ -1808,7 +1808,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @param commands The commands to set.
    */
   async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams): Promise<void> {
-    return await this.#dispatch('setMyCommands', commands, params);
+    return await this.#dispatch("setMyCommands", commands, params);
   }
 
   /**
@@ -1818,7 +1818,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @returns The current bot's commands in the specified language.
    */
   async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
-    return await this.#dispatch('getMyCommands', params);
+    return await this.#dispatch("getMyCommands", params);
   }
 
   //
@@ -1834,7 +1834,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @param reactions The new reactions.
    */
   async setReactions(chatId: ID, messageId: number, reactions: Reaction[], params?: SetReactionsParams): Promise<void> {
-    return await this.#dispatch('setReactions', chatId, messageId, reactions, params);
+    return await this.#dispatch("setReactions", chatId, messageId, reactions, params);
   }
 
   /**
@@ -1846,7 +1846,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @param reaction The reaction to add.
    */
   async addReaction(chatId: ID, messageId: number, reaction: Reaction, params?: AddReactionParams): Promise<void> {
-    return await this.#dispatch('addReaction', chatId, messageId, reaction, params);
+    return await this.#dispatch("addReaction", chatId, messageId, reaction, params);
   }
 
   /**
@@ -1885,7 +1885,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @returns The retrieved stories.
    */
   async getStories(chatId: ID, storyIds: number[]): Promise<Story[]> {
-    return await this.#dispatch('getStories', chatId, storyIds);
+    return await this.#dispatch("getStories", chatId, storyIds);
   }
 
   /**
@@ -1897,7 +1897,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @returns The retrieved story.
    */
   async getStory(chatId: ID, storyId: number): Promise<Story | null> {
-    return await this.#dispatch('getStory', chatId, storyId);
+    return await this.#dispatch("getStory", chatId, storyId);
   }
 
   /**
@@ -1908,7 +1908,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @param storyIds The identifiers of the stories to delete.
    */
   async deleteStories(chatId: ID, storyIds: number[]): Promise<void> {
-    return await this.#dispatch('deleteStories', chatId, storyIds);
+    return await this.#dispatch("deleteStories", chatId, storyIds);
   }
 
   /**
@@ -1929,7 +1929,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @param storyIds The identifiers of the stories to add to highlights.
    */
   async addStoriesToHighlights(chatId: ID, storyIds: number[]): Promise<void> {
-    return await this.#dispatch('addStoriesToHighlights', chatId, storyIds);
+    return await this.#dispatch("addStoriesToHighlights", chatId, storyIds);
   }
 
   /**
@@ -1951,7 +1951,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @param storyIds The identifiers of the stories to remove from highlights.
    */
   async removeStoriesFromHighlights(chatId: ID, storyIds: number[]): Promise<void> {
-    return await this.#dispatch('removeStoriesFromHighlights', chatId, storyIds);
+    return await this.#dispatch("removeStoriesFromHighlights", chatId, storyIds);
   }
 
   /**
@@ -2087,8 +2087,8 @@ export class ClientTransmitter implements ClientGeneric {
    * @param scale Stream channel scale.
    * @param timestamp Millisecond timestamp of the chunk to download.
    */
-  async downloadLiveStreamChunk(id: string, channelId: number, scale: number, timestamp: number, params?: DownloadLiveStreamChunkParams): AsyncGenerator<Uint8Array, void, unknown> {
-    return await this.#dispatch('downloadLiveStreamChunk', id, channelId, scale, timestamp, params);
+  async downloadLiveStreamChunk(id: string, channelId: number, scale: number, timestamp: number, params?: DownloadLiveStreamSegmentParams): AsyncGenerator<Uint8Array, void, unknown> {
+    return await this.#dispatch("downloadLiveStreamChunk", id, channelId, scale, timestamp, params);
   }
 
   //
@@ -2137,7 +2137,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @param userIds The identifiers of contacts to delete.
    */
   async deleteContacts(userIds: ID[]): Promise<void> {
-    return await this.#dispatch('deleteContacts', userIds);
+    return await this.#dispatch("deleteContacts", userIds);
   }
 
   /**
@@ -2171,7 +2171,7 @@ export class ClientTransmitter implements ClientGeneric {
    * @cache
    */
   async getTranslations(params?: GetTranslationsParams): Promise<Translation[]> {
-    return await this.#dispatch('getTranslations', params);
+    return await this.#dispatch("getTranslations", params);
   }
 
   //
