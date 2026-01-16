@@ -52,15 +52,16 @@ import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { CallbackQueryManager } from "./4_callback_query_manager.ts";
 import { ChatListManager } from "./4_chat_list_manager.ts";
 import { ChatManager } from "./4_chat_manager.ts";
-import type { NextFunction } from "./4_composer.ts";
+import { Composer, type NextFunction } from "./4_composer.ts";
 import { ForumManager } from "./4_forum_manager.ts";
 import { GiftManager } from "./4_gift_manager.ts";
 import { InlineQueryManager } from "./4_inline_query_manager.ts";
 import { LinkPreviewManager } from "./4_link_preview_manager.ts";
 import { PollManager } from "./4_poll_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
+import type { Context } from "./2_context.ts";
 
-function skipInvoke(): InvokeErrorHandler<Client> {
+function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
   return (_ctx, next) => next();
 }
 export interface InvokeErrorHandler<C> {
@@ -131,7 +132,7 @@ export interface ClientParams extends ClientPlainParams {
 /**
  * An MTKruto client.
  */
-export class Client implements ClientGeneric {
+export class Client<C extends Context> extends Composer<C> implements ClientGeneric {
   #clients = new Array<ClientEncrypted>();
   #downloadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
   #uploadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
@@ -224,6 +225,8 @@ export class Client implements ClientGeneric {
    * Constructs the client.
    */
   constructor(params?: ClientParams) {
+    super()
+
     this.#apiId = params?.apiId ?? 0;
     this.#apiHash = params?.apiHash ?? "";
     this.#transportProvider = params?.transportProvider;
@@ -916,7 +919,7 @@ export class Client implements ClientGeneric {
     }
   }
 
-  #handleInvokeError = skipInvoke();
+  #handleInvokeError = skipInvoke<C>();
 
   /**
    * Invokes a function waiting and returning its reply if the second parameter is not `true`. Requires the client
@@ -926,11 +929,11 @@ export class Client implements ClientGeneric {
    */
   invoke: {
     <T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R>;
-    use: (handler: InvokeErrorHandler<Client>) => void;
+    use: (handler: InvokeErrorHandler<Client<C>>) => void;
   } = Object.assign(
     this.#invoke,
     {
-      use: (handler: InvokeErrorHandler<Client>) => {
+      use: (handler: InvokeErrorHandler<Client<C>>) => {
         const handle = this.#handleInvokeError;
         this.#handleInvokeError = async (ctx, next) => {
           let result: boolean | null = null;
@@ -1134,24 +1137,12 @@ export class Client implements ClientGeneric {
     return this.messageStorage.peers.mustGet([peerToChatId(peer)]);
   }
 
-  #updateHandlers = new Array<(update: Update) => void | Promise<void>>();
-
-  addUpdateHandler(updateHandler: (update: Update) => void | Promise<void>): void {
-    this.#updateHandlers.push(updateHandler);
-  }
-
-  removeUpdateHandler(updateHandler: (update: Update) => void | Promise<void>): void {
-    this.#updateHandlers = this.#updateHandlers.filter((v) => v !== updateHandler);
-  }
-
   async #handleCtxUpdate(update: Update) {
     if (this.#disableUpdates && !("authorizationState" in update) && !("connectionState" in update)) {
       return;
     }
     try {
-      for (const updateHandler of this.#updateHandlers) {
-        await updateHandler(update);
-      }
+      await this.handleUpdate(this, update)
     } catch (err) {
       this.#L.error("Failed to handle update:", err);
       throw err;
