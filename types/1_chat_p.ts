@@ -21,6 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, getColorFromPeerId, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import { peerToChatId } from "../tl/2_telegram.ts";
 import { type ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 import { constructRestrictionReason, type RestrictionReason } from "./0_restriction_reason.ts";
 
@@ -39,6 +40,8 @@ export interface _ChatPBase {
   type: ChatType;
   /** Identifier of a color that can be displayed instead of the chat's photo. */
   color: number;
+  /** The chat's photo. */
+  photo?: ChatPhoto;
 }
 
 /** @unlisted */
@@ -55,8 +58,6 @@ export interface ChatPPrivate extends _ChatPBase {
   username?: string;
   /** The user's additional usernames. */
   also?: string[];
-  /** The user's profile photo. */
-  photo?: ChatPhoto;
   /** The user's [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag). */
   languageCode?: string;
   /** Whether the user has been identified as scam. */
@@ -163,7 +164,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
 
     return cleanObject(chat_);
   } else if (Api.is("chat", chat) || Api.is("chatForbidden", chat)) {
-    const id = Number(-chat.id);
+    const id = peerToChatId(chat);
     const chat_: ChatPGroup = {
       id,
       type: "group",
@@ -174,12 +175,16 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
 
     if (Api.is("chat", chat)) {
       chat_.isCreator = chat.creator || false;
+      if (Api.is("chatPhoto", chat.photo)) {
+        chat_.photo = constructChatPhoto(chat.photo, id, 0n);
+      }
     }
 
     return cleanObject(chat_);
   } else if (Api.is("channel", chat) || Api.is("channelForbidden", chat)) {
     let chat_: ChatPSupergroup | ChatPChannel;
-    const id = ZERO_CHANNEL_ID + -Number(chat.id);
+    const id = peerToChatId(chat);
+
     if (Api.is("channelForbidden", chat)) {
       const { title } = chat;
       if (chat.megagroup) {
@@ -223,6 +228,11 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
 
     chat_.username = chat.username ?? chat.usernames?.[0].username;
     chat_.also = chat.usernames?.map((v) => v.username).filter((v) => v !== chat_.username);
+
+    if (Api.is("chatPhoto", chat.photo)) {
+      chat_.photo = constructChatPhoto(chat.photo, id, chat.access_hash ?? 0n);
+    }
+
     if (chat_.isRestricted) {
       chat_.restrictionReason = (chat.restriction_reason ?? []).map(constructRestrictionReason);
     }

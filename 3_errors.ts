@@ -1802,6 +1802,14 @@ export class Timeout extends TelegramError {
   //
 }
 
+export class TimeTooBig extends TelegramError {
+  //
+}
+
+export class TimeTooSmall extends TelegramError {
+  //
+}
+
 export class TitleInvalid extends TelegramError {
   //
 }
@@ -2519,6 +2527,8 @@ export const map = {
   THEME_MIME_INVALID: ThemeMimeInvalid,
   THEME_TITLE_INVALID: ThemeTitleInvalid,
   TIMEOUT: Timeout,
+  TIME_TOO_BIG: TimeTooBig,
+  TIME_TOO_SMALL: TimeTooSmall,
   TITLE_INVALID: TitleInvalid,
   TMP_PASSWORD_DISABLED: TmpPasswordDisabled,
   TMP_PASSWORD_INVALID: TmpPasswordInvalid,
