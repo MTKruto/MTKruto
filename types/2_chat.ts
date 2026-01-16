@@ -34,19 +34,19 @@ export interface ChatBase {
 }
 
 /** @unlisted */
-export interface ChatChannel extends ChatBase, ChatPChannel {
+export interface ChatChannel extends ChatBase, Omit<ChatPChannel, "photo"> {
   /** The channel's video chat ID. */
   videoChatId?: string;
 }
 
 /** @unlisted */
-export interface ChatSupergroup extends ChatBase, ChatPSupergroup {
+export interface ChatSupergroup extends ChatBase, Omit<ChatPSupergroup, "photo"> {
   /** The chat's video chat ID. */
   videoChatId?: string;
 }
 
 /** @unlisted */
-export interface ChatGroup extends ChatBase, ChatPGroup {
+export interface ChatGroup extends ChatBase, Omit<ChatPGroup, "photo"> {
   /** The chat's video chat ID. */
   videoChatId?: string;
 }

@@ -21,7 +21,7 @@
 import { InputError } from "../0_errors.ts";
 import type { MaybePromise } from "../1_utilities.ts";
 import type { Update, User } from "../3_types.ts";
-import type { ClientGeneric, UpdateHandler } from "./1_client_generic.ts";
+import type { ClientGeneric } from "./1_client_generic.ts";
 import { Context } from "./2_context.ts";
 import { type FilterQuery, match, type WithFilter } from "./3_filters.ts";
 
@@ -80,8 +80,7 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
   }
 
   #lastGetMe?: User;
-  getUpdateHandler(client: ClientGeneric): UpdateHandler {
-    return async (update) => {
+  async handleUpdate(client: ClientGeneric, update: Update) {
       if (!this.#lastGetMe && !("connectionState" in update) && (!("authorizationState" in update) || ("authorizationState" in update && update.authorizationState.isAuthorized))) {
         this.#lastGetMe = await client.getMe();
       }
@@ -89,7 +88,6 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
       const ctx = new Context(client, this.#lastGetMe, update);
       const next = () => Promise.resolve();
       await this.#handle(ctx as C, next);
-    };
   }
 
   middleware(): MiddlewareFn<C> {

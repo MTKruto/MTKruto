@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 
-import type { ClientGeneric, UpdateHandler } from "./1_client_generic.ts";
+import type { ClientGeneric } from "./1_client_generic.ts";
 import { getLogger, type Logger } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
 import type { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChatSettings, ClaimedGifts, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
@@ -10,6 +10,8 @@ import * as errors from "../4_errors.ts";
 import type { WorkerRequest } from "./0_worker_request.ts";
 import type { DC } from "../3_transport.ts";
 import type { WorkerError, WorkerResponse } from "./0_worker_response.ts";
+import { Composer } from "./4_composer.ts";
+import type { Context } from "./2_context.ts";
 
 export interface ClientTransmitterParams {
   /** The storage provider to use. Defaults to memory storage. */
@@ -62,16 +64,17 @@ export interface ClientTransmitterParams {
   initialDc?: DC;
 }
 
-export class ClientTransmitter implements ClientGeneric {
+export class ClientTransmitter<C extends Context> extends Composer<C> implements ClientGeneric {
   #worker: Worker;
   #id: number;
   #L: Logger;
 
   // deno-lint-ignore no-explicit-any
   #pendingRequests = new Array<PromiseWithResolvers<any>>();
-  #updateHandlers = new Array<UpdateHandler>();
 
   constructor(worker: Worker, id: number) {
+    super()
+    
     this.#worker = worker;
     this.#id = id;
     this.#L = getLogger("ClientController").branch(this.#id + "");
@@ -87,12 +90,10 @@ export class ClientTransmitter implements ClientGeneric {
       this.#pendingRequests[response.id]?.reject(this.#constructError(response.data));
     } else {
       if (response.id === -1) {
-        for (const updateHandler of this.#updateHandlers) {
-          try {
-            await updateHandler(response.data as Update);
-          } catch (err) {
-            this.#L.error("Error handling update:", err);
-          }
+        try {
+          await this.handleUpdate(this, response.data as Update);
+        } catch (err) {
+          this.#L.error("Error handling update:", err);
         }
       } else {
         this.#pendingRequests[response.id]?.resolve(response.data);
@@ -145,14 +146,6 @@ export class ClientTransmitter implements ClientGeneric {
     this.#worker.postMessage(request);
 
     return await promiseWithResolvers.promise;
-  }
-
-  addUpdateHandler(updateHandler: UpdateHandler): void {
-    this.#updateHandlers.push(updateHandler);
-  }
-
-  removeUpdateHandler(updateHandler: UpdateHandler): void {
-    this.#updateHandlers = this.#updateHandlers.filter((v) => v !== updateHandler);
   }
 
   /**
