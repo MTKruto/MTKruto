@@ -2,12 +2,22 @@ import { unreachable } from "../0_deps.ts";
 import { type Logger, mustPrompt, mustPromptOneOf } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { PhoneNumberInvalid } from "../3_errors.ts";
+import { InputError } from "../4_errors.ts";
 import type { SignInParams } from "./0_params.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 
 export const restartAuth = Symbol("restartAuth");
 
 export async function signIn(client: ClientGeneric, logger: Logger, params: SignInParams | undefined) {
+  try {
+    await client.getMe()
+    return;
+  } catch (err) {
+    if ((!(err instanceof InputError))) {
+      throw err;
+    }
+  }
+
   if (typeof params === "undefined") {
     const loginType = mustPromptOneOf("Do you want to sign in as a bot [b] or as a user [u]?", ["b", "u"] as const);
     if (loginType === "b") {

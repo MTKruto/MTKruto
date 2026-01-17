@@ -1250,10 +1250,22 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     if (this.#lastGetMe !== null) {
       return this.#lastGetMe;
     } else {
-      const user = await this.getMe();
+      const user = await this.#getMeInner();
       this.#lastGetMe = user;
       return user;
     }
+  }
+
+  async #getMeInner() {
+    let chatP = (await this[getPeer]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) }))?.[0] ?? null;
+    if (chatP === null) {
+      const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUserSelf" }] });
+      chatP = constructChatP(Api.as("user", users[0]));
+      await this.storage.setIsPremium(chatP.isPremium);
+    }
+    const user = constructUser2(chatP);
+    this.#lastGetMe = user;
+    return user;
   }
 
   #previouslyConnected = false;
@@ -1282,15 +1294,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns Information on the currently authorized user.
    */
   async getMe(): Promise<User> {
-    let chatP = (await this[getPeer]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) }))?.[0] ?? null;
-    if (chatP === null) {
-      const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUserSelf" }] });
-      chatP = constructChatP(Api.as("user", users[0]));
-      await this.storage.setIsPremium(chatP.isPremium);
+    if (this.#lastGetMe === null) {
+      const me = await this.#checkAuthorization()
+      if (!me) {
+        throw new InputError("Not signed in.")
+      } else {
+        return me;
+      }
     }
-    const user = constructUser2(chatP);
-    this.#lastGetMe = user;
-    return user;
+
+    return await this.#getMeInner();
   }
 
   /**
