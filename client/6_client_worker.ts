@@ -42,7 +42,7 @@ export class ClientWorker {
     this.#worker.terminate();
   }
 
-  async createClient(params?: ClientDispatcherParams) {
+  async createClient(params?: ClientDispatcherParams): Promise<ClientDispatcher> {
     const clientId = this.#idCounter++;
     const client = new ClientDispatcher(this.#worker, clientId);
     this.#clients.push(client);

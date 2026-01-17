@@ -60,7 +60,7 @@ export class TLError extends MtkrutoError {
     this.#path = path;
   }
 
-  get originalMessage() {
+  get originalMessage(): string {
     return this.#originalMessage;
   }
 

@@ -156,7 +156,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     }
   }
 
-  get id() {
+  get id(): number {
     return this.#id;
   }
 
@@ -188,11 +188,11 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("initClient", params);
   }
 
-  async connect() {
+  async connect(): Promise<void> {
     return await this.#dispatch("connect");
   }
 
-  async disconnect() {
+  async disconnect(): Promise<void> {
     return await this.#dispatch("disconnect");
   }
 
