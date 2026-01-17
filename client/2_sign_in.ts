@@ -10,7 +10,7 @@ export const restartAuth = Symbol("restartAuth");
 
 export async function signIn(client: ClientGeneric, logger: Logger, params: SignInParams | undefined) {
   try {
-    await client.getMe()
+    await client.getMe();
     return;
   } catch (err) {
     if ((!(err instanceof InputError))) {

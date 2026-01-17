@@ -129,6 +129,15 @@ export function initClient(request: WorkerRequest): WorkerResponse {
 
       const client = new Client({ ...params, storage });
       clients.push(client);
+      client.use((ctx) => {
+        const response: WorkerResponse = {
+          clientId: request.clientId,
+          id: -1,
+          isError: false,
+          data: ctx.update,
+        };
+        postMessage(response);
+      });
 
       return {
         clientId: request.clientId,

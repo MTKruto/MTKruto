@@ -1295,9 +1295,9 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async getMe(): Promise<User> {
     if (this.#lastGetMe === null) {
-      const me = await this.#checkAuthorization()
+      const me = await this.#checkAuthorization();
       if (!me) {
-        throw new InputError("Not signed in.")
+        throw new InputError("Not signed in.");
       } else {
         return me;
       }
