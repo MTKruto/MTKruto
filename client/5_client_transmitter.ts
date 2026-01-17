@@ -3,7 +3,7 @@
 import type { ClientGeneric } from "./1_client_generic.ts";
 import { getLogger, type Logger } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
-import type { BotCommand, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChatSettings, ClaimedGifts, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, PasswordCheckResult, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { DOWNLOAD_MAX_CHUNK_SIZE } from "../4_constants.ts";
 import * as errors from "../4_errors.ts";
@@ -12,6 +12,7 @@ import type { DC } from "../3_transport.ts";
 import type { WorkerError, WorkerResponse } from "./0_worker_response.ts";
 import { Composer } from "./4_composer.ts";
 import type { Context } from "./2_context.ts";
+import { signIn } from "./2_sign_in.ts";
 
 export interface ClientTransmitterParams {
   /** The storage provider to use. Defaults to memory storage. */
@@ -64,20 +65,22 @@ export interface ClientTransmitterParams {
   initialDc?: DC;
 }
 
-export class ClientTransmitter<C extends Context> extends Composer<C> implements ClientGeneric {
+export class ClientTransmitter<C extends Context = Context> extends Composer<C> implements ClientGeneric {
   #worker: Worker;
   #id: number;
   #L: Logger;
+  #LsignIn: Logger;
 
   // deno-lint-ignore no-explicit-any
   #pendingRequests = new Array<PromiseWithResolvers<any>>();
 
   constructor(worker: Worker, id: number) {
-    super()
-    
+    super();
+
     this.#worker = worker;
     this.#id = id;
     this.#L = getLogger("ClientController").branch(this.#id + "");
+    this.#LsignIn = this.#L.branch("signIn");
   }
 
   /** @internal */
@@ -85,6 +88,8 @@ export class ClientTransmitter<C extends Context> extends Composer<C> implements
     if (response.clientId !== this.#id) {
       return;
     }
+
+    this.#L.debug("handling response message", response);
 
     if (response.isError) {
       this.#pendingRequests[response.id]?.reject(this.#constructError(response.data));
@@ -143,9 +148,69 @@ export class ClientTransmitter<C extends Context> extends Composer<C> implements
       method,
       args,
     };
+    this.#L.debug("posted message to worker", request);
     this.#worker.postMessage(request);
 
     return await promiseWithResolvers.promise;
+  }
+
+  #isInited = false;
+  async init(params?: ClientTransmitterParams): Promise<void> {
+    if (this.#isInited) {
+      return;
+    }
+    this.#isInited = true;
+
+    return await this.#dispatch("initClient", params);
+  }
+
+  /**
+   * Send a user verification code.
+   *
+   * @param phoneNumber The phone number to send the code to.
+   * @method ac
+   */
+  async sendCode(phoneNumber: string): Promise<void> {
+    return await this.#dispatch("sendCode", phoneNumber);
+  }
+
+  /**
+   * Check if a code entered by the user was the same as the verification code.
+   *
+   * @param code A code entered by the user.
+   * @method ac
+   */
+  async checkCode(code: string): Promise<CodeCheckResult> {
+    return await this.#dispatch("checkCode", code);
+  }
+
+  /**
+   * Get the user account password's hint.
+   *
+   * @method ac
+   */
+  async getPasswordHint(): Promise<string | null> {
+    return await this.#dispatch("getPasswordHint");
+  }
+
+  /**
+   * Check whether a password entered by the user is the same as the account's one.
+   *
+   * @param password The password to check
+   * @returns The result of the check.
+   */
+  async checkPassword(password: string): Promise<PasswordCheckResult> {
+    return await this.#dispatch("checkPassword", password);
+  }
+
+  /**
+   * Check whether a bot token is valid.
+   *
+   * @param password The password to check
+   * @returns The result of the check.
+   */
+  async checkBotToken(botToken: string): Promise<BotTokenCheckResult> {
+    return await this.#dispatch("checkBotToken", botToken);
   }
 
   /**
@@ -157,7 +222,7 @@ export class ClientTransmitter<C extends Context> extends Composer<C> implements
    * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
    */
   async signIn(params?: SignInParams): Promise<void> {
-    return await this.#dispatch("signIn", params);
+    await signIn(this, this.#LsignIn, params);
   }
 
   async signOut(): Promise<void> {

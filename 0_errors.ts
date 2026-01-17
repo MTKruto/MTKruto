@@ -56,12 +56,12 @@ export class TLError extends MtkrutoError {
 
   constructor(message: string, path: string[]) {
     super(`${message}${path.length ? ` at ${path.join(" ")}` : ""}`);
-    this.#originalMessage = message
+    this.#originalMessage = message;
     this.#path = path;
   }
 
   get originalMessage() {
-    return this.#originalMessage
+    return this.#originalMessage;
   }
 
   get path(): string[] {

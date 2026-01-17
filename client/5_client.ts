@@ -20,18 +20,17 @@
 
 import { delay, MINUTE, SECOND, unreachable } from "../0_deps.ts";
 import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
-import { drop, getLogger, type Logger, type MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { drop, getLogger, type Logger, type MaybePromise, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type BotCommand, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatAction, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputMedia, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type Poll, type PriceTag, type Reaction, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatAction, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputMedia, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PriceTag, type Reaction, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
-import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
-import { PhoneCodeInvalid } from "../4_errors.ts";
+import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
+import type { CodeCheckResult } from "../types/0_code_check_result.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
 import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
-import { checkPassword } from "./0_password.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
@@ -40,10 +39,12 @@ import { AccountManager } from "./2_account_manager.ts";
 import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
 import { ClientEncrypted } from "./2_client_encrypted.ts";
+import type { Context } from "./2_context.ts";
 import { FileManager } from "./2_file_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
+import { signIn } from "./2_sign_in.ts";
 import { TranslationsManager } from "./2_translations_manager.ts";
 import { UpdateManager } from "./2_update_manager.ts";
 import { ClientEncryptedPool } from "./3_client_encrypted_pool.ts";
@@ -59,7 +60,8 @@ import { InlineQueryManager } from "./4_inline_query_manager.ts";
 import { LinkPreviewManager } from "./4_link_preview_manager.ts";
 import { PollManager } from "./4_poll_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
-import type { Context } from "./2_context.ts";
+
+export { restartAuth } from "./2_sign_in.ts";
 
 function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
   return (_ctx, next) => next();
@@ -68,7 +70,6 @@ export interface InvokeErrorHandler<C> {
   (ctx: { client: C; error: unknown; function: Api.AnyFunction | Mtproto.ping; n: number }, next: NextFunction<boolean>): MaybePromise<boolean>;
 }
 
-export const restartAuth = Symbol("restartAuth");
 export const handleMigrationError = Symbol("handleMigrationError");
 
 // global Client ID counter for logs
@@ -132,7 +133,7 @@ export interface ClientParams extends ClientPlainParams {
 /**
  * An MTKruto client.
  */
-export class Client<C extends Context> extends Composer<C> implements ClientGeneric {
+export class Client<C extends Context = Context> extends Composer<C> implements ClientGeneric {
   #clients = new Array<ClientEncrypted>();
   #downloadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
   #uploadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
@@ -225,7 +226,7 @@ export class Client<C extends Context> extends Composer<C> implements ClientGene
    * Constructs the client.
    */
   constructor(params?: ClientParams) {
-    super()
+    super();
 
     this.#apiId = params?.apiId ?? 0;
     this.#apiHash = params?.apiHash ?? "";
@@ -564,6 +565,141 @@ export class Client<C extends Context> extends Composer<C> implements ClientGene
     this.#LstorageWriteLoop.error(err);
   });
 
+  async #checkAuthorization() {
+    if (this.#lastGetMe) {
+      return this.#lastGetMe;
+    }
+
+    try {
+      await this.#updateManager.fetchState("#checkAuthorization");
+      const me = await this.#getMe();
+      await this.#propagateAuthorizationState(true);
+      drop(this.#updateManager.recoverUpdateGap("#checkAuthorization"));
+      return me;
+    } catch (err) {
+      if (!(err instanceof AuthKeyUnregistered) && !(err instanceof SessionRevoked)) {
+        throw err;
+      }
+    }
+  }
+
+  /**
+   * Send a user verification code.
+   *
+   * @param phoneNumber The phone number to send the code to.
+   * @method ac
+   */
+  async sendCode(phoneNumber: string) {
+    const me = await this.#checkAuthorization();
+    if (me) {
+      return;
+    }
+
+    try {
+      await this.#accountManager.sendCode(phoneNumber, this.#apiId, this.#apiHash);
+    } catch (err) {
+      if (err instanceof Migrate) {
+        await this[handleMigrationError](err);
+        await this.#accountManager.sendCode(phoneNumber, this.#apiId, this.#apiHash);
+      } else {
+        throw err;
+      }
+    }
+  }
+
+  /**
+   * Check if a code entered by the user was the same as the verification code.
+   *
+   * @param code A code entered by the user.
+   * @method ac
+   */
+  async checkCode(code: string): Promise<CodeCheckResult> {
+    const result = await this.#accountManager.checkCode(code);
+    if (result.type === "signed_in") {
+      await this.storage.auth.update((v) => {
+        v.userId = result.userId;
+        v.isBot = false;
+      });
+      this.#LsignIn.debug("signed in as user");
+      await this.#propagateAuthorizationState(true);
+      await this.#updateManager.fetchState("checkCode");
+    }
+
+    return result;
+  }
+
+  /**
+   * Get the user account password's hint.
+   *
+   * @method ac
+   */
+  async getPasswordHint(): Promise<string | null> {
+    return await this.#accountManager.getPasswordHint();
+  }
+
+  /**
+   * Check whether a password entered by the user is the same as the account's one.
+   *
+   * @param password The password to check
+   * @returns The result of the check.
+   */
+  async checkPassword(password: string): Promise<PasswordCheckResult> {
+    const result = await this.#accountManager.checkPassword(password);
+    if (result.type === "signed_in") {
+      await this.storage.auth.update((v) => {
+        v.userId = result.userId;
+        v.isBot = false;
+      });
+      await this.storage.commit(true);
+      this.#LsignIn.debug("signed in as user");
+      await this.#propagateAuthorizationState(true);
+      await this.#updateManager.fetchState("checkPassword");
+    }
+
+    return result;
+  }
+
+  /**
+   * Check whether a bot token is valid.
+   *
+   * @param password The password to check
+   * @returns The result of the check.
+   */
+  async checkBotToken(botToken: string): Promise<BotTokenCheckResult> {
+    const me = await this.#checkAuthorization();
+    if (me) {
+      return {
+        type: "signed_in",
+        userId: me.id,
+      };
+    }
+
+    while (true) {
+      try {
+        const result = await this.#accountManager.checkBotToken(botToken, this.#apiId, this.#apiHash);
+        if (result.type === "signed_in") {
+          await this.storage.auth.update((v) => {
+            v.userId = result.userId;
+            v.isBot = true;
+          });
+          await this.storage.commit(true);
+          this.#LsignIn.debug("signed in as bot");
+          await this.#propagateAuthorizationState(true);
+          await this.#updateManager.fetchState("checkBotToken");
+        }
+
+        return result;
+      } catch (err) {
+        if (err instanceof Migrate) {
+          await this[handleMigrationError](err);
+          continue;
+        } else {
+          throw err;
+        }
+      }
+    }
+  }
+
   /**
    * Signs in using the provided parameters if not already signed in.
    * If no parameters are provided, the credentials will be prompted in runtime.
@@ -573,165 +709,7 @@ export class Client<C extends Context> extends Composer<C> implements ClientGene
    * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
    */
   async signIn(params?: SignInParams) {
-    try {
-      await this.#updateManager.fetchState("signIn");
-      await this.#getMe();
-      await this.#propagateAuthorizationState(true);
-      drop(this.#updateManager.recoverUpdateGap("signIn"));
-      this.#LsignIn.debug("already signed in");
-      return;
-    } catch (err) {
-      if (!(err instanceof AuthKeyUnregistered) && !(err instanceof SessionRevoked)) {
-        throw err;
-      }
-    }
-
-    if (!this.#apiId) {
-      throw new InputError("apiId not set");
-    }
-    if (!this.#apiHash) {
-      throw new InputError("apiHash not set");
-    }
-
-    if (typeof params === "undefined") {
-      const loginType = mustPromptOneOf("Do you want to sign in as a bot [b] or as a user [u]?", ["b", "u"] as const);
-      if (loginType === "b") {
-        params = { botToken: mustPrompt("Bot token:") };
-      } else {
-        params = { phone: () => mustPrompt("Phone number:"), code: () => mustPrompt("Verification code:"), password: () => mustPrompt("Password:") };
-      }
-    }
-
-    this.#LsignIn.debug("authorizing with", typeof params === "string" ? "bot token" : Api.is("auth.exportedAuthorization", params) ? "exported authorization" : "AuthorizeUserParams");
-
-    if (params && "botToken" in params) {
-      while (true) {
-        try {
-          const auth = await this.invoke({ _: "auth.importBotAuthorization", api_id: this.#apiId, api_hash: this.#apiHash, bot_auth_token: params.botToken, flags: 0 });
-          await this.storage.auth.update((v) => {
-            v.userId = Number(Api.as("auth.authorization", auth).user.id);
-            v.isBot = true;
-          });
-          await this.storage.commit(true);
-          break;
-        } catch (err) {
-          if (err instanceof Migrate) {
-            await this[handleMigrationError](err);
-            continue;
-          } else {
-            throw err;
-          }
-        }
-      }
-      this.#LsignIn.debug("authorized as bot");
-      await this.#propagateAuthorizationState(true);
-      await this.#updateManager.fetchState("authorize");
-      return;
-    }
-
-    auth: while (true) {
-      try {
-        let phone: string;
-        let sentCode: Api.auth_sentCode;
-        while (true) {
-          try {
-            phone = typeof params.phone === "string" ? params.phone : await params.phone();
-            const sendCode = () =>
-              this.invoke({
-                _: "auth.sendCode",
-                phone_number: phone,
-                api_id: this.#apiId,
-                api_hash: this.#apiHash,
-                settings: { _: "codeSettings" },
-              }).then((v) => Api.as("auth.sentCode", v));
-            try {
-              sentCode = await sendCode();
-            } catch (err) {
-              if (err instanceof Migrate) {
-                await this[handleMigrationError](err);
-                sentCode = await sendCode();
-              } else {
-                throw err;
-              }
-            }
-            break;
-          } catch (err) {
-            if (err instanceof PhoneNumberInvalid) {
-              continue;
-            } else {
-              throw err;
-            }
-          }
-        }
-        this.#LsignIn.debug("verification code sent");
-
-        let err: unknown;
-        code: while (true) {
-          const code = typeof params.code === "string" ? params.code : await params.code();
-          try {
-            const auth = await this.invoke({
-              _: "auth.signIn",
-              phone_number: phone,
-              phone_code: code,
-              phone_code_hash: sentCode.phone_code_hash,
-            });
-            await this.storage.auth.update((v) => {
-              v.userId = Number(Api.as("auth.authorization", auth).user.id);
-              v.isBot = false;
-            });
-            this.#LsignIn.debug("signed in as user");
-            await this.#propagateAuthorizationState(true);
-            await this.#updateManager.fetchState("signIn");
-            return;
-          } catch (err_) {
-            if (err_ instanceof PhoneCodeInvalid) {
-              continue code;
-            } else {
-              err = err_;
-              break code;
-            }
-          }
-        }
-
-        if (!(err instanceof SessionPasswordNeeded)) {
-          throw err;
-        }
-
-        password: while (true) {
-          const ap = await this.invoke({ _: "account.getPassword" });
-          if (!(Api.is("passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow", ap.current_algo))) {
-            throw new Error(`Handling ${ap.current_algo?._} not implemented`);
-          }
-          try {
-            const password = typeof params.password === "string" ? params.password : await params.password(ap.hint ?? null);
-            const input = await checkPassword(password, ap);
-
-            const auth = await this.invoke({ _: "auth.checkPassword", password: input });
-            await this.storage.auth.update((v) => {
-              v.userId = Number(Api.as("auth.authorization", auth).user.id);
-              v.isBot = false;
-            });
-            await this.storage.commit(true);
-            this.#LsignIn.debug("signed in as user");
-            await this.#propagateAuthorizationState(true);
-            await this.#updateManager.fetchState("signIn");
-            return;
-          } catch (err) {
-            if (err instanceof PasswordHashInvalid) {
-              continue password;
-            } else {
-              throw err;
-            }
-          }
-        }
-      } catch (err) {
-        if (err === restartAuth) {
-          continue auth;
-        } else {
-          throw err;
-        }
-      }
-    }
+    await signIn(this, this.#LsignIn, params);
   }
 
   async signOut() {
@@ -1142,7 +1120,7 @@ export class Client<C extends Context> extends Composer<C> implements ClientGene
       return;
     }
     try {
-      await this.handleUpdate(this, update)
+      await this.handleUpdate(this, update);
     } catch (err) {
       this.#L.error("Failed to handle update:", err);
       throw err;

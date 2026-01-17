@@ -1,15 +1,18 @@
-import type { WorkerRequest } from "./0_worker_request.ts";
+import { getLogger } from "../utilities/1_logger.ts";
 import type { WorkerResponse } from "./0_worker_response.ts";
-import { ClientTransmitter, type ClientTransmitterParams } from "./2_client_transmitter.ts";
+import { ClientTransmitter, type ClientTransmitterParams } from "./5_client_transmitter.ts";
 
 export class ClientWorker {
   #worker: Worker;
   #idCounter = 0;
   #clients = new Array<ClientTransmitter>();
+  #L = getLogger("ClientWorker");
 
   constructor(specifier: string | URL, options?: WorkerOptions) {
     this.#worker = new Worker(specifier, options);
     this.#worker.addEventListener("message", (e) => {
+      this.#L.debug("received message from worker", e.data);
+
       const response = e.data as WorkerResponse;
       this.#clients[response.clientId]?.handleResponse(response);
     });
@@ -19,19 +22,16 @@ export class ClientWorker {
     this.#worker.terminate();
   }
 
-  createClient(params?: ClientTransmitterParams) {
+  async createClient(params?: ClientTransmitterParams) {
     const clientId = this.#idCounter++;
     const client = new ClientTransmitter(this.#worker, clientId);
     this.#clients.push(client);
-
-    const initClient: WorkerRequest = {
-      clientId,
-      id: -1,
-    method: 'initClient',
-    args: [params]   
+    try {
+      await client.init(params);
+    } catch (err) {
+      this.#clients = this.#clients.filter((v) => v !== client);
+      throw err;
     }
-    this.#worker.postMessage(initClient)
-
     return client;
   }
 }

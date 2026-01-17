@@ -21,8 +21,10 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { birthdayToTlObject, constructInactiveChat, constructUser, type ID } from "../3_types.ts";
+import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
+import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructInactiveChat, constructUser, type ID, type PasswordCheckResult } from "../3_types.ts";
 import type { AddContactParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, UpdateProfileParams } from "./0_params.ts";
+import { checkPassword } from "./0_password.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { C } from "./1_types.ts";
 
@@ -243,5 +245,93 @@ export class AccountManager {
       geo_point = { _: "inputGeoPoint", lat: params.latitude, long: params.longitude };
     }
     await this.#c.invoke({ _: "account.updateBusinessLocation", address, geo_point });
+  }
+
+  #phoneNumber?: string;
+  #sentCode?: Api.auth_sentCode;
+  async sendCode(phoneNumber: string, apiId: number, apiHash: string) {
+    this.#phoneNumber = phoneNumber;
+    this.#sentCode = await this.#c.invoke({
+      _: "auth.sendCode",
+      phone_number: phoneNumber,
+      api_id: apiId,
+      api_hash: apiHash,
+      settings: { _: "codeSettings" },
+    }).then((v) => Api.as("auth.sentCode", v));
+  }
+
+  async checkCode(code: string): Promise<CodeCheckResult> {
+    if (!this.#phoneNumber || !this.#sentCode) {
+      throw new InputError("Invalid sent code identifier.");
+    }
+
+    try {
+      const auth = await this.#c.invoke({
+        _: "auth.signIn",
+        phone_number: this.#phoneNumber,
+        phone_code: code,
+        phone_code_hash: this.#sentCode.phone_code_hash,
+      });
+
+      return {
+        type: "signed_in",
+        userId: Number(Api.as("auth.authorization", auth).user.id),
+      };
+    } catch (err) {
+      if (err instanceof PhoneCodeInvalid) {
+        return {
+          type: "invalid_code",
+        };
+      } else if (err instanceof SessionPasswordNeeded) {
+        return { type: "password_required" };
+      } else {
+        throw err;
+      }
+    }
+  }
+
+  async #getAccountPassword() {
+    return await this.#c.invoke({ _: "account.getPassword" });
+  }
+
+  #ap?: Api.account_password;
+  async getPasswordHint(): Promise<string | null> {
+    if (!this.#ap) {
+      this.#ap = await this.#getAccountPassword();
+    }
+
+    return this.#ap.hint ?? "";
+  }
+
+  async checkPassword(password: string): Promise<PasswordCheckResult> {
+    if (!this.#ap) {
+      this.#ap = await this.#getAccountPassword();
+    }
+
+    try {
+      const input = await checkPassword(password, this.#ap);
+      const auth = await this.#c.invoke({ _: "auth.checkPassword", password: input });
+
+      return {
+        type: "signed_in",
+        userId: Number(Api.as("auth.authorization", auth).user.id),
+      };
+    } catch (err) {
+      if (err instanceof PasswordHashInvalid) {
+        return {
+          type: "invalid_password",
+        };
+      } else {
+        throw err;
+      }
+    }
+  }
+
+  async checkBotToken(botToken: string, apiId: number, apiHash: string): Promise<BotTokenCheckResult> {
+    const auth = await this.#c.invoke({ _: "auth.importBotAuthorization", api_id: apiId, api_hash: apiHash, bot_auth_token: botToken, flags: 0 });
+    return {
+      type: "signed_in",
+      userId: Number(Api.as("auth.authorization", auth).user.id),
+    };
   }
 }
