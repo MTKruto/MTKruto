@@ -5,7 +5,7 @@ import { StorageIndexedDB } from "./2_storage.ts";
 import { TelegramError } from "./3_errors.ts";
 import { type TelegramErrorParams, TLError } from "./4_errors.ts";
 import type { WorkerResponse } from "./client/0_worker_response.ts";
-import type { ClientTransmitterParams } from "./client/5_client_transmitter.ts";
+import type { ClientDispatcherParams } from "./client/5_client_dispatcher.ts";
 import { Client, type ClientParams, type WorkerRequest } from "./mod.ts";
 import { StorageDenoKV } from "./storage/1_storage_deno_kv.ts";
 
@@ -118,7 +118,7 @@ export function initClient(request: WorkerRequest): WorkerResponse {
     };
   } else {
     try {
-      const params = request.args[0] as ClientTransmitterParams | undefined;
+      const params = request.args[0] as ClientDispatcherParams | undefined;
       let storage: ClientParams["storage"];
 
       const name = `.mktruto-worker.${clients.length}`;

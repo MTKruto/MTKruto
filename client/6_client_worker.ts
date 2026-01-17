@@ -1,11 +1,11 @@
 import { getLogger } from "../utilities/1_logger.ts";
 import type { WorkerResponse } from "./0_worker_response.ts";
-import { ClientTransmitter, type ClientTransmitterParams } from "./5_client_transmitter.ts";
+import { ClientDispatcher, type ClientDispatcherParams } from "./5_client_dispatcher.ts";
 
 export class ClientWorker {
   #worker: Worker;
   #idCounter = 0;
-  #clients = new Array<ClientTransmitter>();
+  #clients = new Array<ClientDispatcher>();
   #L = getLogger("ClientWorker");
 
   constructor(specifier: string | URL, options?: WorkerOptions) {
@@ -22,9 +22,9 @@ export class ClientWorker {
     this.#worker.terminate();
   }
 
-  async createClient(params?: ClientTransmitterParams) {
+  async createClient(params?: ClientDispatcherParams) {
     const clientId = this.#idCounter++;
-    const client = new ClientTransmitter(this.#worker, clientId);
+    const client = new ClientDispatcher(this.#worker, clientId);
     this.#clients.push(client);
     try {
       await client.init(params);

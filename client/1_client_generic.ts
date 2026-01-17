@@ -26,6 +26,12 @@ import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCa
  * A generic MTKruto client.
  */
 export abstract class ClientGeneric {
+  abstract connect(): Promise<void>;
+
+  abstract disconnect(): Promise<void>;
+
+  abstract start(params?: SignInParams): Promise<void>;
+
   /**
    * Send a user verification code.
    *

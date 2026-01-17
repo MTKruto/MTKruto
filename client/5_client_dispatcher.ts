@@ -14,7 +14,7 @@ import { Composer } from "./4_composer.ts";
 import type { Context } from "./2_context.ts";
 import { signIn } from "./2_sign_in.ts";
 
-export interface ClientTransmitterParams {
+export interface ClientDispatcherParams {
   /** The storage provider to use. Defaults to memory storage. */
   storage?: "memory" | "indexeddb" | "denokv";
   /** App's API ID from [my.telegram.org/apps](https://my.telegram.org/apps). Required if no account was previously authorized. */
@@ -65,7 +65,7 @@ export interface ClientTransmitterParams {
   initialDc?: DC;
 }
 
-export class ClientTransmitter<C extends Context = Context> extends Composer<C> implements ClientGeneric {
+export class ClientDispatcher<C extends Context = Context> extends Composer<C> implements ClientGeneric {
   #worker: Worker;
   #id: number;
   #L: Logger;
@@ -116,17 +116,21 @@ export class ClientTransmitter<C extends Context = Context> extends Composer<C> 
   #constructError(error: WorkerError) {
     switch (error.name) {
       case "TelegramError":
-        return errors.constructTelegramError(error.args.error, error.args.call);
+        return errors.constructTelegramError({
+          _: "rpc_error",
+          error_code: error.args[0].error_code,
+          error_message: error.args[0].error_message,
+        }, error.args.call);
       case "ConnectionError":
-        return new errors.ConnectionError(error.args);
+        return new errors.ConnectionError(error.args[0]);
       case "AccessError":
-        return new errors.AccessError(error.args);
+        return new errors.AccessError(error.args[0]);
       case "InputError":
-        return new errors.InputError(error.args);
+        return new errors.InputError(error.args[0]);
       case "TransportError":
-        return new errors.TransportError(error.args);
+        return new errors.TransportError(error.args[0]);
       case "TLError":
-        return new errors.TLError(error.args.message, error.args.path);
+        return new errors.TLError(error.args[0], error.args[1]);
       default:
         return new TypeError("Unknown error");
     }
@@ -155,13 +159,26 @@ export class ClientTransmitter<C extends Context = Context> extends Composer<C> 
   }
 
   #isInited = false;
-  async init(params?: ClientTransmitterParams): Promise<void> {
+  async init(params?: ClientDispatcherParams): Promise<void> {
     if (this.#isInited) {
       return;
     }
     this.#isInited = true;
 
     return await this.#dispatch("initClient", params);
+  }
+
+  async connect() {
+    return await this.#dispatch("connect");
+  }
+
+  async disconnect() {
+    return await this.#dispatch("disconnect");
+  }
+
+  async start(params?: SignInParams) {
+    await this.connect();
+    await this.signIn(params);
   }
 
   /**
