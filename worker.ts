@@ -1,6 +1,5 @@
 /// <reference lib="webworker" />
-import { getLogger } from "./1_utilities.ts";
-import { Client, type ClientDispatcherParams, type ClientParams, errors, StorageIndexedDB, type WorkerRequest, type WorkerResponse } from "./mod.ts";
+import { Client, type ClientDispatcherParams, type ClientParams, errors, getLogger, StorageIndexedDB, type WorkerRequest, type WorkerResponse } from "./mod.ts";
 import { StorageDenoKV } from "./storage/1_storage_deno_kv.ts";
 
 const clients = new Array<Client>();
