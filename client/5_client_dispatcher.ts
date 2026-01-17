@@ -1144,7 +1144,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @cache file
    */
   async downloadChunk(fileId: string, params?: DownloadParams): Promise<Uint8Array> {
-    return await this.#dispatch("download", fileId, params);
+    return await this.#dispatch("downloadChunk", fileId, params);
   }
 
   /**
@@ -1174,8 +1174,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
         offset += chunk.length;
       }
     }
-
-    return await this.#dispatch("download", fileId, params);
   }
 
   /**
