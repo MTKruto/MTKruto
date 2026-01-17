@@ -1,12 +1,6 @@
 /// <reference lib="webworker" />
-import { TransportError } from "./0_errors.ts";
 import { getLogger } from "./1_utilities.ts";
-import { StorageIndexedDB } from "./2_storage.ts";
-import { TelegramError } from "./3_errors.ts";
-import { type TelegramErrorParams, TLError } from "./4_errors.ts";
-import type { WorkerResponse } from "./client/0_worker_response.ts";
-import type { ClientDispatcherParams } from "./client/5_client_dispatcher.ts";
-import { Client, type ClientParams, type WorkerRequest } from "./mod.ts";
+import { Client, type ClientDispatcherParams, type ClientParams, errors, StorageIndexedDB, type WorkerRequest, type WorkerResponse } from "./mod.ts";
 import { StorageDenoKV } from "./storage/1_storage_deno_kv.ts";
 
 const clients = new Array<Client>();
@@ -40,8 +34,8 @@ addEventListener("message", async (e) => {
         data,
       };
     } catch (err) {
-      if (err instanceof TelegramError) {
-        const arg: TelegramErrorParams = {
+      if (err instanceof errors.TelegramError) {
+        const arg: errors.TelegramErrorParams = {
           error_code: err.errorCode,
           error_message: err.errorMessage,
           call: err.cause,
@@ -55,7 +49,7 @@ addEventListener("message", async (e) => {
             args: [arg],
           },
         };
-      } else if (err instanceof TLError) {
+      } else if (err instanceof errors.TLError) {
         response = {
           clientId: request.clientId,
           id: request.id,
@@ -65,7 +59,7 @@ addEventListener("message", async (e) => {
             args: [err.originalMessage, err.path],
           },
         };
-      } else if (err instanceof TransportError) {
+      } else if (err instanceof errors.TransportError) {
         response = {
           clientId: request.clientId,
           id: request.id,
