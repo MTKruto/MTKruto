@@ -60,6 +60,7 @@ export abstract class ClientGeneric {
    *
    * @param password The password to check
    * @returns The result of the check.
+   * @method ac
    */
   abstract checkPassword(password: string): Promise<PasswordCheckResult>;
 
@@ -68,6 +69,7 @@ export abstract class ClientGeneric {
    *
    * @param password The password to check
    * @returns The result of the check.
+   * @method ac
    */
   abstract checkBotToken(botToken: string): Promise<BotTokenCheckResult>;
 

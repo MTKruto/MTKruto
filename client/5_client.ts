@@ -642,6 +642,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @param password The password to check
    * @returns The result of the check.
+   * @method ac
    */
   async checkPassword(password: string): Promise<PasswordCheckResult> {
     const result = await this.#accountManager.checkPassword(password);
@@ -664,6 +665,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @param password The password to check
    * @returns The result of the check.
+   * @method ac
    */
   async checkBotToken(botToken: string): Promise<BotTokenCheckResult> {
     const me = await this.#checkAuthorization();

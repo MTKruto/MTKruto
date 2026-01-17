@@ -233,6 +233,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    *
    * @param password The password to check
    * @returns The result of the check.
+   * @method ac
    */
   async checkPassword(password: string): Promise<PasswordCheckResult> {
     return await this.#dispatch("checkPassword", password);
@@ -243,6 +244,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    *
    * @param password The password to check
    * @returns The result of the check.
+   * @method ac
    */
   async checkBotToken(botToken: string): Promise<BotTokenCheckResult> {
     return await this.#dispatch("checkBotToken", botToken);
