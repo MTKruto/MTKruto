@@ -18,12 +18,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "./client/0_params.ts";
-export * from "./client/0_worker_request.ts";
-export * from "./client/0_worker_response.ts";
-export * from "./client/1_client_plain.ts";
-export * from "./client/2_client_encrypted.ts";
-export * from "./client/4_composer.ts";
-export * from "./client/5_client.ts";
-export * from "./client/5_client_dispatcher.ts";
-export * from "./client/6_client_worker.ts";
+export declare namespace PasswordCheckResult {
+  /** The password entered was incorrect. */
+  export interface InvalidPassword {
+    type: "invalid_password";
+  }
+
+  /** The password was correct. The user was signed in. */
+  export interface SignedIn {
+    type: "signed_in";
+    userId: number;
+  }
+}
+
+/** A result after checking a sent code. */
+export type PasswordCheckResult = PasswordCheckResult.InvalidPassword | PasswordCheckResult.SignedIn;

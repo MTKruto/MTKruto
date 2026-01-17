@@ -20,30 +20,31 @@
 
 import { delay, MINUTE, SECOND, unreachable } from "../0_deps.ts";
 import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
-import { cleanObject, drop, getLogger, type Logger, type MaybePromise, mustPrompt, mustPromptOneOf, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { drop, getLogger, type Logger, type MaybePromise, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { type Storage, StorageMemory } from "../2_storage.ts";
-import { Api, Mtproto, toJSON } from "../2_tl.ts";
+import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type BotCommand, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatAction, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputMedia, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type Poll, type PriceTag, type Reaction, type ReplyTo, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatAction, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputMedia, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PriceTag, type Reaction, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
-import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, SessionRevoked } from "../4_errors.ts";
-import { PhoneCodeInvalid } from "../4_errors.ts";
+import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
+import type { CodeCheckResult } from "../types/0_code_check_result.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
-import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
-import { checkPassword } from "./0_password.ts";
+import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
-import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, resolve, toInputChannel, toInputUser } from "./0_utilities.ts";
+import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, toInputChannel, toInputUser } from "./0_utilities.ts";
+import type { ClientGeneric } from "./1_client_generic.ts";
 import type { ClientPlainParams } from "./1_client_plain.ts";
-import { Composer as Composer_, type Middleware, type MiddlewareFn, type MiddlewareObj, type NextFunction } from "./1_composer.ts";
 import { AccountManager } from "./2_account_manager.ts";
 import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
 import { ClientEncrypted } from "./2_client_encrypted.ts";
+import type { Context } from "./2_context.ts";
 import { FileManager } from "./2_file_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
+import { signIn } from "./2_sign_in.ts";
 import { TranslationsManager } from "./2_translations_manager.ts";
 import { UpdateManager } from "./2_update_manager.ts";
 import { ClientEncryptedPool } from "./3_client_encrypted_pool.ts";
@@ -52,6 +53,7 @@ import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { CallbackQueryManager } from "./4_callback_query_manager.ts";
 import { ChatListManager } from "./4_chat_list_manager.ts";
 import { ChatManager } from "./4_chat_manager.ts";
+import { Composer, type NextFunction } from "./4_composer.ts";
 import { ForumManager } from "./4_forum_manager.ts";
 import { GiftManager } from "./4_gift_manager.ts";
 import { InlineQueryManager } from "./4_inline_query_manager.ts";
@@ -59,178 +61,7 @@ import { LinkPreviewManager } from "./4_link_preview_manager.ts";
 import { PollManager } from "./4_poll_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
 
-export type { FilterQuery, WithFilter } from "./0_filters.ts";
-
-export interface Context {
-  /** The client that received the update. */
-  client: Client;
-  /** The currently signed in user. */
-  me?: User;
-  /** Resolves to `message`, `editedMessage`, or the `message` field of `callbackQuery`. */
-  msg?: Message;
-  /** Resolves to `msg?.chat`. */
-  chat?: ChatP;
-  /** Resolves to the `from` field of `message`, `editedMessage`, `callbackQuery`, or `inlineQuery`. */
-  from?: User;
-  /** Resolves to `msg?.senderChat`. */
-  senderChat?: ChatP;
-  // deno-lint-ignore no-explicit-any
-  toJSON: () => any;
-  /** Context-aware alias for `client.sendMessage()`. */
-  reply: (text: string, params?: Omit<SendMessageParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageText>;
-  /** Context-aware alias for `client.sendPoll()`. */
-  replyPoll: (question: string, options: string[], params?: Omit<SendPollParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessagePoll>;
-  /** Context-aware alias for `client.sendPhoto()`. */
-  replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessagePhoto>;
-  /** Context-aware alias for `client.sendMediaGroup()`. */
-  replyMediaGroup: (media: InputMedia[], params?: Omit<SendMediaGroupParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<Message[]>;
-  /** Context-aware alias for `client.sendInvoice()`. */
-  replyInvoice: (title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: Omit<SendInvoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageInvoice>;
-  /** Context-aware alias for `client.sendDocument()`. */
-  replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageDocument>;
-  /** Context-aware alias for `client.sendSticker()`. */
-  replySticker: (sticker: FileSource, params?: Omit<SendStickerParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageSticker>;
-  /** Context-aware alias for `client.sendLocation()`. */
-  replyLocation: (latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageLocation>;
-  /** Context-aware alias for `client.sendDice()`. */
-  replyDice: (params?: Omit<SendDiceParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageDice>;
-  /** Context-aware alias for `client.sendVenue()`. */
-  replyVenue: (latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageVenue>;
-  /** Context-aware alias for `client.sendContact()`. */
-  replyContact: (firstName: string, number: string, params?: Omit<SendContactParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageContact>;
-  /** Context-aware alias for `client.sendVideo()`. */
-  replyVideo: (video: FileSource, params?: Omit<SendVideoParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageVideo>;
-  /** Context-aware alias for `client.sendAnimation()`. */
-  replyAnimation: (animation: FileSource, params?: Omit<SendAnimationParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageAnimation>;
-  /** Context-aware alias for `client.sendVoice()`. */
-  replyVoice: (voice: FileSource, params?: Omit<SendVoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageVoice>;
-  /** Context-aware alias for `client.sendAudio()`. */
-  replyAudio: (audio: FileSource, params?: Omit<SendAudioParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageAudio>;
-  /** Context-aware alias for `client.sendPoll()`. */
-  replyVideoNote: (videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyTo" | "businessConnectionId"> & ReplyParams) => Promise<MessageVideoNote>;
-  /** Context-aware alias for `client.deleteMessage()`. */
-  delete: () => Promise<void>;
-  /** Context-aware alias for `client.forwardMessage()`. */
-  forward: (to: ID, params?: ForwardMessagesParams) => Promise<this["msg"]>;
-  /** Context-aware alias for `client.pinMessage()`. */
-  pin: (params?: PinMessageParams) => Promise<void>;
-  /** Context-aware alias for `client.unpinMessage()`. */
-  unpin: (params?: PinMessageParams) => Promise<void>;
-  /** Context-aware alias for `client.banChatMember()`. */
-  banSender: (params?: BanChatMemberParams) => Promise<void>;
-  /** Context-aware alias for `client.kickChatMember()`. */
-  kickSender: () => Promise<void>;
-  /** Context-aware alias for `client.setChatMemberRights()`. */
-  setSenderRights: (params?: SetChatMemberRightsParams) => Promise<void>;
-  /** Context-aware alias for `client.getChatAdministrators()`. */
-  getChatAdministrators: () => Promise<ChatMember[]>;
-  /** Context-aware alias for `client.setReactions()`. */
-  react: (reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
-  /** Context-aware alias for `client.sendChatAction()`. */
-  sendChatAction: (action: ChatAction, params?: { messageThreadId?: number }) => Promise<void>;
-  /** Context-aware alias for `client.editInlineMessageText()`. */
-  editInlineMessageText: (text: string, params?: EditInlineMessageTextParams) => Promise<void>;
-  /** Context-aware alias for `client.editInlineMessageCaption()`. */
-  editInlineMessageCaption: (params?: EditInlineMessageCaptionParams) => Promise<void>;
-  /** Context-aware alias for `client.editInlineMessageMedia()`. */
-  editInlineMessageMedia: (media: InputMedia, params?: EditInlineMessageMediaParams) => Promise<void>;
-  /** Context-aware alias for `client.editInlineMessageLiveLocation()`. */
-  editInlineMessageLiveLocation: (latitude: number, longitude: number, params?: EditMessageLiveLocationParams) => Promise<void>;
-  /** Context-aware alias for `client.editInlineMessageReplyMarkup()`. */
-  editInlineMessageReplyMarkup: (params?: EditMessageReplyMarkupParams) => Promise<void>;
-  /** Context-aware alias for `client.editMessageText()`. */
-  editMessageText: (messageId: number, text: string, params?: EditMessageTextParams) => Promise<MessageText>;
-  /** Context-aware alias for `client.editMessageCaption()`. */
-  editMessageCaption: (messageId: number, params?: EditMessageCaptionParams) => Promise<Message>;
-  /** Context-aware alias for `client.editMessageMedia()`. */
-  editMessageMedia: (messageId: number, media: InputMedia, params?: EditMessageMediaParams) => Promise<Message>;
-  /** Context-aware alias for `client.editMessageLiveLocation()`. */
-  editMessageLiveLocation: (messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) => Promise<MessageLocation>;
-  /** Context-aware alias for `client.editMessageReplyMarkup()`. */
-  editMessageReplyMarkup: (messageId: number, params?: EditMessageReplyMarkupParams) => Promise<Message>;
-  /** Context-aware alias for `client.answerCallbackQuery()`. */
-  answerCallbackQuery: (params?: AnswerCallbackQueryParams) => Promise<void>;
-  /** Context-aware alias for `client.answerInlineQuery()`. */
-  answerInlineQuery: (results: InlineQueryResult[], params?: AnswerInlineQueryParams) => Promise<void>;
-  /** Context-aware alias for `client.getMessage()`. */
-  getMessage: (messageId: number) => Promise<Message | null>;
-  /** Context-aware alias for `client.getMessages()`. */
-  getMessages: (messageIds: number[]) => Promise<Message[]>;
-  /** Context-aware alias for `client.forwardMessage()`. */
-  forwardMessage: (to: ID, messageId: number, params?: ForwardMessagesParams) => Promise<Message>;
-  /** Context-aware alias for `client.forwardMessages()`. */
-  forwardMessages: (to: ID, messageIds: number[], params?: ForwardMessagesParams) => Promise<Message[]>;
-  /** Context-aware alias for `client.deleteMessage()`. */
-  deleteMessage: (messageId: number, params?: DeleteMessagesParams) => Promise<void>;
-  /** Context-aware alias for `client.deleteMessages()`. */
-  deleteMessages: (messageIds: number[], params?: DeleteMessagesParams) => Promise<void>;
-  /** Context-aware alias for `client.pinMessage()`. */
-  pinMessage: (messageId: number, params?: PinMessageParams) => Promise<void>;
-  /** Context-aware alias for `client.unpinMessage()`. */
-  unpinMessage: (messageId: number) => Promise<void>;
-  /** Context-aware alias for `client.unpinMessages()`. */
-  unpinMessages: () => Promise<void>;
-  /** Context-aware alias for `client.setAvailableReactions()`. */
-  setAvailableReactions: (availableReactions: "none" | "all" | Reaction[]) => Promise<void>;
-  /** Context-aware alias for `client.addReaction()`. */
-  addReaction: (messageId: number, reaction: Reaction, params?: AddReactionParams) => Promise<void>;
-  /** Context-aware alias for `client.removeReaction()`. */
-  removeReaction: (messageId: number, reaction: Reaction) => Promise<void>;
-  /** Context-aware alias for `client.setReactions()`. */
-  setReactions: (messageId: number, reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
-  /** Context-aware alias for `client.readMessages()`. */
-  read(): Promise<void>;
-  /** Context-aware alias for `client.setChatPhoto()`. */
-  setChatPhoto: (photo: FileSource, params?: SetChatPhotoParams) => Promise<void>;
-  /** Context-aware alias for `client.deleteChatPhoto()`. */
-  deleteChatPhoto: () => Promise<void>;
-  /** Context-aware alias for `client.banChatMember()`. */
-  banChatMember: (memberId: ID, params?: BanChatMemberParams) => Promise<void>;
-  /** Context-aware alias for `client.unbanChatMember()`. */
-  unbanChatMember: (memberId: ID) => Promise<void>;
-  /** Context-aware alias for `client.kickChatMember()`. */
-  kickChatMember: (memberId: ID) => Promise<void>;
-  /** Context-aware alias for `client.setChatMemberRights()`. */
-  setChatMemberRights: (memberId: ID, params?: SetChatMemberRightsParams) => Promise<void>;
-  /** Context-aware alias for `client.promoteChatMember()`. */
-  promoteChatMember: (userId: ID, params?: PromoteChatMemberParams) => Promise<void>;
-  /** Context-aware alias for `client.deleteChatMemberMessages()`. */
-  deleteChatMemberMessages: (userId: ID) => Promise<void>;
-  /** Context-aware alias for `client.searchMessages()`. */
-  searchMessages: (params?: Omit<SearchMessagesParams, "chatId">) => Promise<Message[]>;
-  /** Context-aware alias for `client.setBoostsRequiredToCircumventRestrictions()`. */
-  setBoostsRequiredToCircumventRestrictions: (boosts: number) => Promise<void>;
-  /** Context-aware alias for `client.createInviteLink()`. */
-  createInviteLink: (params?: CreateInviteLinkParams) => Promise<InviteLink>;
-  /** Context-aware alias for `client.getCreatedInviteLinks()`. */
-  getCreatedInviteLinks: (params?: GetCreatedInviteLinksParams) => Promise<InviteLink[]>;
-  /** Context-aware alias for `client.leaveChat()`. */
-  leaveChat: () => Promise<void>;
-  /** Context-aware alias for `client.blockUser()`. */
-  blockUser: () => Promise<void>;
-  /** Context-aware alias for `client.unblockUser()`. */
-  unblockUser: () => Promise<void>;
-  /** Context-aware alias for `client.getChatMember()`. */
-  getChatMember: (userId: ID) => Promise<ChatMember>;
-  /** Context-aware alias for `client.getChatMember()`. */
-  getChatMembers: (params?: GetChatMembersParams) => Promise<ChatMember[]>;
-  /** Context-aware alias for `client.setChatStickerSet()`. */
-  setChatStickerSet: (setName: string) => Promise<void>;
-  /** Context-aware alias for `client.deleteChatStickerSet()`. */
-  deleteChatStickerSet: () => Promise<void>;
-  /** Context-aware alias for `client.getBusinessConnection()`. */
-  getBusinessConnection: () => Promise<BusinessConnection>;
-  /** Context-aware alias for `client.answerPreCheckoutQuery()`. */
-  answerPreCheckoutQuery: (ok: boolean, params?: AnswerPreCheckoutQueryParams) => Promise<void>;
-  /** Context-aware alias for `client.approveJoinRequest()`. */
-  approveJoinRequest: () => Promise<void>;
-  /** Context-aware alias for `client.declineJoinRequest()`. */
-  declineJoinRequest: () => Promise<void>;
-}
-
-export class Composer<C extends Context = Context> extends Composer_<C> {
-}
-export type { Middleware, MiddlewareFn, MiddlewareObj, NextFunction };
+export { restartAuth } from "./2_sign_in.ts";
 
 function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
   return (_ctx, next) => next();
@@ -239,7 +70,6 @@ export interface InvokeErrorHandler<C> {
   (ctx: { client: C; error: unknown; function: Api.AnyFunction | Mtproto.ping; n: number }, next: NextFunction<boolean>): MaybePromise<boolean>;
 }
 
-export const restartAuth = Symbol("restartAuth");
 export const handleMigrationError = Symbol("handleMigrationError");
 
 // global Client ID counter for logs
@@ -274,8 +104,6 @@ export interface ClientParams extends ClientPlainParams {
   defaultHandlers?: boolean;
   /** Whether outgoing messages should be sent as high-level updates. Outgoing bot business messages will never be sent. Defaults to `false`. */
   outgoingMessages?: boolean;
-  /** Default command prefixes. Defaults to `"/"` for bots and `"\"` for users. This option must be set separately for nested composers. */
-  prefixes?: string | string[];
   /** Whether to guarantee that order-sensitive updates are delivered at least once before delivering next ones. Useful mainly for clients providing a user interface à la Telegram Desktop. Defaults to `false`. */
   guaranteeUpdateDelivery?: boolean;
   /** Whether to not handle updates received when the client was not running. Defaults to `true` for bots, and `false` for users. */
@@ -305,7 +133,7 @@ export interface ClientParams extends ClientPlainParams {
 /**
  * An MTKruto client.
  */
-export class Client<C extends Context = Context> extends Composer<C> {
+export class Client<C extends Context = Context> extends Composer<C> implements ClientGeneric {
   #clients = new Array<ClientEncrypted>();
   #downloadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
   #uploadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
@@ -425,9 +253,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
     this.#publicKeys = params?.publicKeys;
     this.#outgoingMessages = params?.outgoingMessages ?? false;
-    if (params?.prefixes) {
-      this.prefixes = params?.prefixes;
-    }
     this.#guaranteeUpdateDelivery = params?.guaranteeUpdateDelivery ?? false;
 
     const L = this.#L = getLogger("Client").client(id++);
@@ -566,431 +391,6 @@ export class Client<C extends Context = Context> extends Composer<C> {
   get disconnected(): boolean {
     return this.#client?.disconnected ?? true;
   }
-
-  #constructContext = async (update: Update) => {
-    const mustGetMsg = (ctx: Context) => {
-      if (ctx.msg !== undefined) {
-        return { chatId: ctx.msg.chat.id, messageId: ctx.msg.id, businessConnectionId: ctx.msg.businessConnectionId, senderId: ctx.msg.from?.id, userId: ctx.msg.from?.id };
-      }
-
-      const reactions = "messageInteractions" in update ? update.messageInteractions : undefined;
-      if (reactions !== undefined) {
-        return { chatId: reactions.chatId, messageId: reactions.messageId };
-      } else {
-        unreachable();
-      }
-    };
-
-    const mustGetChatId = (ctx: Context) => {
-      if (ctx.chat) {
-        return ctx.chat.id;
-      } else {
-        unreachable();
-      }
-    };
-    const mustGetUserId = (ctx: Context) => {
-      if (ctx.msg?.from) {
-        return ctx.msg.from.id;
-      } else if ("callbackQuery" in update) {
-        return update.callbackQuery.from.id;
-      } else if ("chosenInlineResult" in update) {
-        return update.chosenInlineResult.from.id;
-      } else {
-        unreachable();
-      }
-    };
-    const mustGetInlineMsgId = () => {
-      if ("chosenInlineResult" in update) {
-        if (update.chosenInlineResult.inlineMessageId) {
-          return update.chosenInlineResult.inlineMessageId;
-        }
-      } else if ("callbackQuery" in update) {
-        if (update.callbackQuery.inlineMessageId) {
-          return update.callbackQuery.inlineMessageId;
-        }
-      }
-      unreachable();
-    };
-    const getReplyTo = (quote: boolean | undefined, chatId: number, messageId: number): ReplyTo | undefined => {
-      if ("story" in update) {
-        return { chatId: update.story.chat.id, storyId: update.story.id };
-      }
-      const isPrivate = chatId > 0;
-      const shouldQuote = quote === undefined ? !isPrivate : quote;
-      return shouldQuote ? { messageId } : undefined;
-    };
-
-    if (this.#lastGetMe === null && !("connectionState" in update) && (!("authorizationState" in update) || ("authorizationState" in update && update.authorizationState.isAuthorized))) {
-      await this.#getMe();
-    }
-
-    const context: Context = {
-      ...update,
-      client: this as unknown as Client,
-      get me() {
-        return this.client.#lastGetMe === null ? undefined : this.client.#lastGetMe;
-      },
-      get msg() {
-        return "message" in update ? update.message : "editedMessage" in update ? update.editedMessage : "scheduledMessage" in update ? update.scheduledMessage : "callbackQuery" in update ? update.callbackQuery.message : undefined;
-      },
-      get chat() {
-        return this.msg?.chat ?? ("messageReactions" in update ? update.messageReactions.chat : "messageReactionCount" in update ? update.messageReactionCount.chat : "chatMember" in update ? update.chatMember.chat : "myChatMember" in update ? update.myChatMember.chat : "joinRequest" in update ? update.joinRequest.chat : "story" in update ? update.story.chat : undefined);
-      },
-      get from() {
-        const from = "callbackQuery" in update ? update.callbackQuery.from : "inlineQuery" in update ? update.inlineQuery.from : "chatMember" in update ? update.chatMember.from : "myChatMember" in update ? update.myChatMember.from : "messageReactions" in update ? update.messageReactions.user : "preCheckoutQuery" in update ? update.preCheckoutQuery.from : "joinRequest" in update ? update.joinRequest.from : "businessConnection" in update ? update.businessConnection.user : "pollAnswer" in update ? update.pollAnswer.from : this.msg?.from;
-        return from as C["from"];
-      },
-      toJSON() {
-        if ("update" in update) {
-          return { update: toJSON(update.update) };
-        } else {
-          return update;
-        }
-      },
-      reply(text, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendMessage(chatId, text, { ...params, replyTo, businessConnectionId });
-      },
-      replyPoll(question, options, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendPoll(chatId, question, options, { ...params, replyTo, businessConnectionId });
-      },
-      replyPhoto(photo, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendPhoto(chatId, photo, { ...params, replyTo, businessConnectionId });
-      },
-      replyMediaGroup(media, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendMediaGroup(chatId, media, { ...params, replyTo, businessConnectionId });
-      },
-      replyInvoice(title, description, payload, currency, prices, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendInvoice(chatId, title, description, payload, currency, prices, { ...params, replyTo, businessConnectionId });
-      },
-      replyDocument(document, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendDocument(chatId, document, { ...params, replyTo, businessConnectionId });
-      },
-      replySticker(sticker, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendSticker(chatId, sticker, { ...params, replyTo, businessConnectionId });
-      },
-      replyContact(firstName, number, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendContact(chatId, firstName, number, { ...params, replyTo, businessConnectionId });
-      },
-      replyLocation(latitude, longitude, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendLocation(chatId, latitude, longitude, { ...params, replyTo, businessConnectionId });
-      },
-      replyDice(params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendDice(chatId, { ...params, replyTo, businessConnectionId });
-      },
-      replyVenue(latitude, longitude, title, address, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendVenue(chatId, latitude, longitude, title, address, { ...params, replyTo, businessConnectionId });
-      },
-      replyVideo(video, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendVideo(chatId, video, { ...params, replyTo, businessConnectionId });
-      },
-      replyAnimation(document, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendAnimation(chatId, document, { ...params, replyTo, businessConnectionId });
-      },
-      replyVoice(document, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendVoice(chatId, document, { ...params, replyTo, businessConnectionId });
-      },
-      replyAudio(document, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendAudio(chatId, document, { ...params, replyTo, businessConnectionId });
-      },
-      replyVideoNote(videoNote, params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        const replyTo = getReplyTo(params?.quote, chatId, messageId);
-        return this.client.sendVideoNote(chatId, videoNote, { ...params, replyTo, businessConnectionId });
-      },
-      delete() {
-        const { chatId, messageId } = mustGetMsg(this);
-        return this.client.deleteMessage(chatId, messageId);
-      },
-      forward(to, params) {
-        const { chatId, messageId } = mustGetMsg(this);
-        return this.client.forwardMessage(chatId, to, messageId, params) as unknown as ReturnType<C["forward"]>;
-      },
-      pin(params) {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        return this.client.pinMessage(chatId, messageId, { ...params, businessConnectionId });
-      },
-      unpin() {
-        const { chatId, messageId, businessConnectionId } = mustGetMsg(this);
-        return this.client.unpinMessage(chatId, messageId, { businessConnectionId });
-      },
-      banSender(params) {
-        const { chatId, senderId } = mustGetMsg(this);
-        if (!senderId) {
-          unreachable();
-        }
-        return this.client.banChatMember(chatId, senderId, params);
-      },
-      kickSender() {
-        const { chatId, senderId } = mustGetMsg(this);
-        if (!senderId) {
-          unreachable();
-        }
-        return this.client.kickChatMember(chatId, senderId);
-      },
-      setSenderRights(params) {
-        const { chatId, senderId } = mustGetMsg(this);
-        if (!senderId) {
-          unreachable();
-        }
-        return this.client.setChatMemberRights(chatId, senderId, params);
-      },
-      getChatAdministrators() {
-        const chatId = mustGetChatId(this);
-        return this.client.getChatAdministrators(chatId);
-      },
-      react(reactions, params) {
-        const { chatId, messageId } = mustGetMsg(this);
-        return this.client.setReactions(chatId, messageId, reactions, params);
-      },
-      answerCallbackQuery(params) {
-        if (!("callbackQuery" in update)) {
-          unreachable();
-        }
-        return this.client.answerCallbackQuery(update.callbackQuery.id, params);
-      },
-      answerInlineQuery(results, params) {
-        if (!("inlineQuery" in update)) {
-          unreachable();
-        }
-        return this.client.answerInlineQuery(update.inlineQuery.id, results, params);
-      },
-      sendChatAction(chatAction, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.sendChatAction(chatId, chatAction, params);
-      },
-      editInlineMessageText(text, params) {
-        const inlineMessageId = mustGetInlineMsgId();
-        return this.client.editInlineMessageText(inlineMessageId, text, params);
-      },
-      editInlineMessageMedia(media, params) {
-        const inlineMessageId = mustGetInlineMsgId();
-        return this.client.editInlineMessageMedia(inlineMessageId, media, params);
-      },
-      editInlineMessageCaption(params) {
-        const inlineMessageId = mustGetInlineMsgId();
-        return this.client.editInlineMessageCaption(inlineMessageId, params);
-      },
-      editInlineMessageLiveLocation(latitude, longitude, params) {
-        const inlineMessageId = mustGetInlineMsgId();
-        return this.client.editInlineMessageLiveLocation(inlineMessageId, latitude, longitude, params);
-      },
-      editInlineMessageReplyMarkup(params) {
-        const inlineMessageId = mustGetInlineMsgId();
-        return this.client.editInlineMessageReplyMarkup(inlineMessageId, params);
-      },
-      editMessageText(messageId, text, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.editMessageText(chatId, messageId, text, params);
-      },
-      editMessageCaption(messageId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.editMessageCaption(chatId, messageId, params);
-      },
-      editMessageMedia(messageId, media, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.editMessageMedia(chatId, messageId, media, params);
-      },
-      editMessageLiveLocation(messageId, latitude, longitude, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.editMessageLiveLocation(chatId, messageId, latitude, longitude, params);
-      },
-      editMessageReplyMarkup(messageId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.editMessageReplyMarkup(chatId, messageId, params);
-      },
-      getMessage(messageId) {
-        const chatId = mustGetChatId(this);
-        return this.client.getMessage(chatId, messageId);
-      },
-      getMessages(messageIds) {
-        const chatId = mustGetChatId(this);
-        return this.client.getMessages(chatId, messageIds);
-      },
-      forwardMessage(to, messageId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.forwardMessage(chatId, to, messageId, params);
-      },
-      forwardMessages(to, messageIds, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.forwardMessages(chatId, to, messageIds, params);
-      },
-      deleteMessage(messageId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.deleteMessage(chatId, messageId, params);
-      },
-      deleteMessages(messageIds, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.deleteMessages(chatId, messageIds, params);
-      },
-      pinMessage(messageId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.pinMessage(chatId, messageId, params);
-      },
-      unpinMessage(messageId) {
-        const chatId = mustGetChatId(this);
-        return this.client.unpinMessage(chatId, messageId);
-      },
-      unpinMessages() {
-        const chatId = mustGetChatId(this);
-        return this.client.unpinMessages(chatId);
-      },
-      setAvailableReactions(availableReactions) {
-        const chatId = mustGetChatId(this);
-        return this.client.setAvailableReactions(chatId, availableReactions);
-      },
-      addReaction(messageId, reaction, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.addReaction(chatId, messageId, reaction, params);
-      },
-      removeReaction(messageId, reaction) {
-        const chatId = mustGetChatId(this);
-        return this.client.removeReaction(chatId, messageId, reaction);
-      },
-      setReactions(messageId, reactions, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.setReactions(chatId, messageId, reactions, params);
-      },
-      read() {
-        const { chatId, messageId } = mustGetMsg(this);
-        return this.client.readMessages(chatId, messageId);
-      },
-      setChatPhoto(photo, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.setChatPhoto(chatId, photo, params);
-      },
-      deleteChatPhoto() {
-        const chatId = mustGetChatId(this);
-        return this.client.deleteChatPhoto(chatId);
-      },
-      banChatMember(memberId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.banChatMember(chatId, memberId, params);
-      },
-      unbanChatMember(memberId) {
-        const chatId = mustGetChatId(this);
-        return this.client.unbanChatMember(chatId, memberId);
-      },
-      kickChatMember(memberId) {
-        const chatId = mustGetChatId(this);
-        return this.client.kickChatMember(chatId, memberId);
-      },
-      setChatMemberRights(memberId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.setChatMemberRights(chatId, memberId, params);
-      },
-      promoteChatMember(userId, params) {
-        const chatId = mustGetChatId(this);
-        return this.client.promoteChatMember(chatId, userId, params);
-      },
-      deleteChatMemberMessages(userId) {
-        const chatId = mustGetChatId(this);
-        return this.client.deleteChatMemberMessages(chatId, userId);
-      },
-      searchMessages(params) {
-        const chatId = mustGetChatId(this);
-        params ??= {};
-        (params as SearchMessagesParams).chatId = chatId;
-        return this.client.searchMessages(params);
-      },
-      setBoostsRequiredToCircumventRestrictions(boosts) {
-        const chatId = mustGetChatId(this);
-        return this.client.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
-      },
-      createInviteLink(params) {
-        const chatId = mustGetChatId(this);
-        return this.client.createInviteLink(chatId, params);
-      },
-      getCreatedInviteLinks(params) {
-        const chatId = mustGetChatId(this);
-        return this.client.getCreatedInviteLinks(chatId, params);
-      },
-      leaveChat() {
-        const chatId = mustGetChatId(this);
-        return this.client.leaveChat(chatId);
-      },
-      blockUser() {
-        return this.client.blockUser(mustGetUserId(this));
-      },
-      unblockUser() {
-        return this.client.unblockUser(mustGetUserId(this));
-      },
-      getChatMember(userId) {
-        const chatId = mustGetChatId(this);
-        return this.client.getChatMember(chatId, userId);
-      },
-      getChatMembers(params) {
-        const chatId = mustGetChatId(this);
-        return this.client.getChatMembers(chatId, params);
-      },
-      setChatStickerSet(setName) {
-        const chatId = mustGetChatId(this);
-        return this.client.setChatStickerSet(chatId, setName);
-      },
-      deleteChatStickerSet() {
-        const chatId = mustGetChatId(this);
-        return this.client.deleteChatStickerSet(chatId);
-      },
-      getBusinessConnection() {
-        const { businessConnectionId } = mustGetMsg(this);
-        if (!businessConnectionId) {
-          unreachable();
-        }
-        return this.client.getBusinessConnection(businessConnectionId);
-      },
-      answerPreCheckoutQuery(ok, params) {
-        if (!("preCheckoutQuery" in update)) {
-          unreachable();
-        }
-        return this.client.answerPreCheckoutQuery(update.preCheckoutQuery.id, ok, params);
-      },
-      approveJoinRequest() {
-        const { chatId, userId } = mustGetMsg(this);
-        if (!userId) {
-          unreachable();
-        }
-        return this.client.approveJoinRequest(chatId, userId);
-      },
-      declineJoinRequest() {
-        const { chatId, userId } = mustGetMsg(this);
-        if (!userId) {
-          unreachable();
-        }
-        return this.client.declineJoinRequest(chatId, userId);
-      },
-    };
-
-    return cleanObject(context as C);
-  };
 
   #propagateConnectionState(connectionState: ConnectionState) {
     this.#queueHandleCtxUpdate({ connectionState });
@@ -1165,6 +565,141 @@ export class Client<C extends Context = Context> extends Composer<C> {
     this.#LstorageWriteLoop.error(err);
   });
 
+  async #checkAuthorization() {
+    if (this.#lastGetMe) {
+      return this.#lastGetMe;
+    }
+
+    try {
+      await this.#updateManager.fetchState("#checkAuthorization");
+      const me = await this.#getMe();
+      await this.#propagateAuthorizationState(true);
+      drop(this.#updateManager.recoverUpdateGap("#checkAuthorization"));
+      return me;
+    } catch (err) {
+      if (!(err instanceof AuthKeyUnregistered) && !(err instanceof SessionRevoked)) {
+        throw err;
+      }
+    }
+  }
+
+  /**
+   * Send a user verification code.
+   *
+   * @param phoneNumber The phone number to send the code to.
+   * @method ac
+   */
+  async sendCode(phoneNumber: string) {
+    const me = await this.#checkAuthorization();
+    if (me) {
+      return;
+    }
+
+    try {
+      await this.#accountManager.sendCode(phoneNumber, this.#apiId, this.#apiHash);
+    } catch (err) {
+      if (err instanceof Migrate) {
+        await this[handleMigrationError](err);
+        await this.#accountManager.sendCode(phoneNumber, this.#apiId, this.#apiHash);
+      } else {
+        throw err;
+      }
+    }
+  }
+
+  /**
+   * Check if a code entered by the user was the same as the verification code.
+   *
+   * @param code A code entered by the user.
+   * @method ac
+   */
+  async checkCode(code: string): Promise<CodeCheckResult> {
+    const result = await this.#accountManager.checkCode(code);
+    if (result.type === "signed_in") {
+      await this.storage.auth.update((v) => {
+        v.userId = result.userId;
+        v.isBot = false;
+      });
+      this.#LsignIn.debug("signed in as user");
+      await this.#propagateAuthorizationState(true);
+      await this.#updateManager.fetchState("checkCode");
+    }
+
+    return result;
+  }
+
+  /**
+   * Get the user account password's hint.
+   *
+   * @method ac
+   */
+  async getPasswordHint(): Promise<string | null> {
+    return await this.#accountManager.getPasswordHint();
+  }
+
+  /**
+   * Check whether a password entered by the user is the same as the account's one.
+   *
+   * @param password The password to check
+   * @returns The result of the check.
+   */
+  async checkPassword(password: string): Promise<PasswordCheckResult> {
+    const result = await this.#accountManager.checkPassword(password);
+    if (result.type === "signed_in") {
+      await this.storage.auth.update((v) => {
+        v.userId = result.userId;
+        v.isBot = false;
+      });
+      await this.storage.commit(true);
+      this.#LsignIn.debug("signed in as user");
+      await this.#propagateAuthorizationState(true);
+      await this.#updateManager.fetchState("checkPassword");
+    }
+
+    return result;
+  }
+
+  /**
+   * Check whether a bot token is valid.
+   *
+   * @param password The password to check
+   * @returns The result of the check.
+   */
+  async checkBotToken(botToken: string): Promise<BotTokenCheckResult> {
+    const me = await this.#checkAuthorization();
+    if (me) {
+      return {
+        type: "signed_in",
+        userId: me.id,
+      };
+    }
+
+    while (true) {
+      try {
+        const result = await this.#accountManager.checkBotToken(botToken, this.#apiId, this.#apiHash);
+        if (result.type === "signed_in") {
+          await this.storage.auth.update((v) => {
+            v.userId = result.userId;
+            v.isBot = true;
+          });
+          await this.storage.commit(true);
+          this.#LsignIn.debug("signed in as bot");
+          await this.#propagateAuthorizationState(true);
+          await this.#updateManager.fetchState("checkBotToken");
+        }
+
+        return result;
+      } catch (err) {
+        if (err instanceof Migrate) {
+          await this[handleMigrationError](err);
+          continue;
+        } else {
+          throw err;
+        }
+      }
+    }
+  }
+
   /**
    * Signs in using the provided parameters if not already signed in.
    * If no parameters are provided, the credentials will be prompted in runtime.
@@ -1174,165 +709,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
    */
   async signIn(params?: SignInParams) {
-    try {
-      await this.#updateManager.fetchState("signIn");
-      await this.#getMe();
-      await this.#propagateAuthorizationState(true);
-      drop(this.#updateManager.recoverUpdateGap("signIn"));
-      this.#LsignIn.debug("already signed in");
-      return;
-    } catch (err) {
-      if (!(err instanceof AuthKeyUnregistered) && !(err instanceof SessionRevoked)) {
-        throw err;
-      }
-    }
-
-    if (!this.#apiId) {
-      throw new InputError("apiId not set");
-    }
-    if (!this.#apiHash) {
-      throw new InputError("apiHash not set");
-    }
-
-    if (typeof params === "undefined") {
-      const loginType = mustPromptOneOf("Do you want to sign in as a bot [b] or as a user [u]?", ["b", "u"] as const);
-      if (loginType === "b") {
-        params = { botToken: mustPrompt("Bot token:") };
-      } else {
-        params = { phone: () => mustPrompt("Phone number:"), code: () => mustPrompt("Verification code:"), password: () => mustPrompt("Password:") };
-      }
-    }
-
-    this.#LsignIn.debug("authorizing with", typeof params === "string" ? "bot token" : Api.is("auth.exportedAuthorization", params) ? "exported authorization" : "AuthorizeUserParams");
-
-    if (params && "botToken" in params) {
-      while (true) {
-        try {
-          const auth = await this.invoke({ _: "auth.importBotAuthorization", api_id: this.#apiId, api_hash: this.#apiHash, bot_auth_token: params.botToken, flags: 0 });
-          await this.storage.auth.update((v) => {
-            v.userId = Number(Api.as("auth.authorization", auth).user.id);
-            v.isBot = true;
-          });
-          await this.storage.commit(true);
-          break;
-        } catch (err) {
-          if (err instanceof Migrate) {
-            await this[handleMigrationError](err);
-            continue;
-          } else {
-            throw err;
-          }
-        }
-      }
-      this.#LsignIn.debug("authorized as bot");
-      await this.#propagateAuthorizationState(true);
-      await this.#updateManager.fetchState("authorize");
-      return;
-    }
-
-    auth: while (true) {
-      try {
-        let phone: string;
-        let sentCode: Api.auth_sentCode;
-        while (true) {
-          try {
-            phone = typeof params.phone === "string" ? params.phone : await params.phone();
-            const sendCode = () =>
-              this.invoke({
-                _: "auth.sendCode",
-                phone_number: phone,
-                api_id: this.#apiId,
-                api_hash: this.#apiHash,
-                settings: { _: "codeSettings" },
-              }).then((v) => Api.as("auth.sentCode", v));
-            try {
-              sentCode = await sendCode();
-            } catch (err) {
-              if (err instanceof Migrate) {
-                await this[handleMigrationError](err);
-                sentCode = await sendCode();
-              } else {
-                throw err;
-              }
-            }
-            break;
-          } catch (err) {
-            if (err instanceof PhoneNumberInvalid) {
-              continue;
-            } else {
-              throw err;
-            }
-          }
-        }
-        this.#LsignIn.debug("verification code sent");
-
-        let err: unknown;
-        code: while (true) {
-          const code = typeof params.code === "string" ? params.code : await params.code();
-          try {
-            const auth = await this.invoke({
-              _: "auth.signIn",
-              phone_number: phone,
-              phone_code: code,
-              phone_code_hash: sentCode.phone_code_hash,
-            });
-            await this.storage.auth.update((v) => {
-              v.userId = Number(Api.as("auth.authorization", auth).user.id);
-              v.isBot = false;
-            });
-            this.#LsignIn.debug("signed in as user");
-            await this.#propagateAuthorizationState(true);
-            await this.#updateManager.fetchState("signIn");
-            return;
-          } catch (err_) {
-            if (err_ instanceof PhoneCodeInvalid) {
-              continue code;
-            } else {
-              err = err_;
-              break code;
-            }
-          }
-        }
-
-        if (!(err instanceof SessionPasswordNeeded)) {
-          throw err;
-        }
-
-        password: while (true) {
-          const ap = await this.invoke({ _: "account.getPassword" });
-          if (!(Api.is("passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow", ap.current_algo))) {
-            throw new Error(`Handling ${ap.current_algo?._} not implemented`);
-          }
-          try {
-            const password = typeof params.password === "string" ? params.password : await params.password(ap.hint ?? null);
-            const input = await checkPassword(password, ap);
-
-            const auth = await this.invoke({ _: "auth.checkPassword", password: input });
-            await this.storage.auth.update((v) => {
-              v.userId = Number(Api.as("auth.authorization", auth).user.id);
-              v.isBot = false;
-            });
-            await this.storage.commit(true);
-            this.#LsignIn.debug("signed in as user");
-            await this.#propagateAuthorizationState(true);
-            await this.#updateManager.fetchState("signIn");
-            return;
-          } catch (err) {
-            if (err instanceof PasswordHashInvalid) {
-              continue password;
-            } else {
-              throw err;
-            }
-          }
-        }
-      } catch (err) {
-        if (err === restartAuth) {
-          continue auth;
-        } else {
-          throw err;
-        }
-      }
-    }
+    await signIn(this, this.#LsignIn, params);
   }
 
   async signOut() {
@@ -1743,7 +1120,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
       return;
     }
     try {
-      await this.middleware()(await this.#constructContext(update), resolve);
+      await this.handleUpdate(this, update);
     } catch (err) {
       this.#L.error("Failed to handle update:", err);
       throw err;
@@ -1873,10 +1250,22 @@ export class Client<C extends Context = Context> extends Composer<C> {
     if (this.#lastGetMe !== null) {
       return this.#lastGetMe;
     } else {
-      const user = await this.getMe();
+      const user = await this.#getMeInner();
       this.#lastGetMe = user;
       return user;
     }
+  }
+
+  async #getMeInner() {
+    let chatP = (await this[getPeer]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) }))?.[0] ?? null;
+    if (chatP === null) {
+      const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUserSelf" }] });
+      chatP = constructChatP(Api.as("user", users[0]));
+      await this.storage.setIsPremium(chatP.isPremium);
+    }
+    const user = constructUser2(chatP);
+    this.#lastGetMe = user;
+    return user;
   }
 
   #previouslyConnected = false;
@@ -1905,15 +1294,16 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @returns Information on the currently authorized user.
    */
   async getMe(): Promise<User> {
-    let chatP = (await this[getPeer]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) }))?.[0] ?? null;
-    if (chatP === null) {
-      const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUserSelf" }] });
-      chatP = constructChatP(Api.as("user", users[0]));
-      await this.storage.setIsPremium(chatP.isPremium);
+    if (this.#lastGetMe === null) {
+      const me = await this.#checkAuthorization();
+      if (!me) {
+        throw new InputError("Not signed in.");
+      } else {
+        return me;
+      }
     }
-    const user = constructUser2(chatP);
-    this.#lastGetMe = user;
-    return user;
+
+    return await this.#getMeInner();
   }
 
   /**
@@ -2756,7 +2146,7 @@ export class Client<C extends Context = Context> extends Composer<C> {
    * @method fs
    * @param fileId The identifier of a file.
    * @example ```ts
-   * const chunk = await client.download(fileId, { chunkSize: 256 * 1024 });
+   * const chunk = await client.downloadChunk(fileId, { chunkSize: 256 * 1024 });
    * ```
    * @returns The downloaded chunk.
    * @cache file

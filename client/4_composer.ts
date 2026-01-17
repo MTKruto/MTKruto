@@ -20,8 +20,10 @@
 
 import { InputError } from "../0_errors.ts";
 import type { MaybePromise } from "../1_utilities.ts";
-import type { Update, UpdateIntersection, User } from "../3_types.ts";
-import { type FilterQuery, match, type WithFilter } from "./0_filters.ts";
+import type { Update, User } from "../3_types.ts";
+import type { ClientGeneric } from "./1_client_generic.ts";
+import { Context } from "./2_context.ts";
+import { type FilterQuery, match, type WithFilter } from "./3_filters.ts";
 
 export type NextFunction<T = void> = () => Promise<T>;
 
@@ -58,11 +60,11 @@ export function concat<C = Update>(
   };
 }
 
-export function skip<C>(_ctx: C, next: NextFunction) {
+export function skip<C>(_ctx: C, next: NextFunction): Promise<void> {
   return next();
 }
 
-export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
+export class Composer<C extends Context> implements MiddlewareObj<C> {
   #handle: MiddlewareFn<C>;
   #prefixes?: string | string[];
 
@@ -77,17 +79,28 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
     this.#handle = middleware.length === 0 ? skip : middleware.map(flatten).reduce(concat);
   }
 
+  #lastGetMe?: User;
+  async handleUpdate(client: ClientGeneric, update: Update) {
+    if (!this.#lastGetMe && !("connectionState" in update) && (!("authorizationState" in update) || ("authorizationState" in update && update.authorizationState.isAuthorized))) {
+      this.#lastGetMe = await client.getMe();
+    }
+
+    const ctx = new Context(client, this.#lastGetMe, update);
+    const next = () => Promise.resolve();
+    await this.#handle(ctx as C, next);
+  }
+
   middleware(): MiddlewareFn<C> {
     return this.#handle;
   }
 
-  use(...middleware: Middleware<C & UpdateIntersection>[]): Composer<C> {
+  use(...middleware: Middleware<C>[]): Composer<C> {
     const composer = new Composer(...middleware);
     this.#handle = concat(this.#handle, flatten(composer));
     return composer;
   }
 
-  branch(predicate: (ctx: C & UpdateIntersection) => MaybePromise<boolean>, trueHandler_: Middleware<C & UpdateIntersection>, falseHandler_: Middleware<C & UpdateIntersection>): Composer<C> {
+  branch(predicate: (ctx: C) => MaybePromise<boolean>, trueHandler_: Middleware<C>, falseHandler_: Middleware<C>): Composer<C> {
     const trueHandler = flatten(trueHandler_);
     const falseHandler = flatten(falseHandler_);
     return this.use(async (upd, next) => {
@@ -100,16 +113,16 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
   }
 
   filter<D extends C>(
-    predicate: (ctx: C & UpdateIntersection) => ctx is D,
+    predicate: (ctx: C) => ctx is D,
     ...middleware: Middleware<D>[]
   ): Composer<D>;
   filter(
-    predicate: (ctx: C & UpdateIntersection) => MaybePromise<boolean>,
-    ...middleware: Middleware<C & UpdateIntersection>[]
+    predicate: (ctx: C) => MaybePromise<boolean>,
+    ...middleware: Middleware<C>[]
   ): Composer<C>;
   filter(
-    predicate: (ctx: C & UpdateIntersection) => MaybePromise<boolean>,
-    ...middleware: Middleware<C & UpdateIntersection>[]
+    predicate: (ctx: C) => MaybePromise<boolean>,
+    ...middleware: Middleware<C>[]
   ) {
     const composer = new Composer(...middleware);
     this.branch(predicate, composer, skip);
@@ -119,9 +132,9 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
   on<Q extends FilterQuery>(
     filter: Q,
     ...middleware: Middleware<WithFilter<C, Q>>[]
-  ): Composer<WithFilter<C, Q> & UpdateIntersection> {
-    return this.filter((ctx): ctx is WithFilter<C, Q> & UpdateIntersection => {
-      return match(filter, ctx);
+  ): Composer<WithFilter<C, Q>> {
+    return this.filter((ctx): ctx is WithFilter<C, Q> => {
+      return match(filter, ctx.update);
     }, ...middleware);
   }
 
@@ -151,7 +164,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
       if (prefixes_.length === 0) {
         return false;
       }
-      const cmd = ctx.message.text.split(/\s/, 1)[0];
+      const cmd = ctx.update.message.text.split(/\s/, 1)[0];
       const prefix = prefixes_.find((v) => cmd.startsWith(v));
       if (prefix === undefined) {
         return false;
@@ -181,9 +194,9 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
     const data_ = Array.isArray(data) ? data : [data];
     return this.on("callbackQuery:data").filter((ctx) => {
       for (const data of data_) {
-        if (typeof data === "string" && data === ctx.callbackQuery.data) {
+        if (typeof data === "string" && data === ctx.update.callbackQuery.data) {
           return true;
-        } else if (data instanceof RegExp && data.test(ctx.callbackQuery.data)) {
+        } else if (data instanceof RegExp && data.test(ctx.update.callbackQuery.data)) {
           return true;
         }
       }
@@ -198,9 +211,9 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
     const queries_ = Array.isArray(queries) ? queries : [queries];
     return this.on("inlineQuery").filter((ctx) => {
       for (const query of queries_) {
-        if (typeof query === "string" && query === ctx.inlineQuery.query) {
+        if (typeof query === "string" && query === ctx.update.inlineQuery.query) {
           return true;
-        } else if (query instanceof RegExp && query.test(ctx.inlineQuery.query)) {
+        } else if (query instanceof RegExp && query.test(ctx.update.inlineQuery.query)) {
           return true;
         }
       }

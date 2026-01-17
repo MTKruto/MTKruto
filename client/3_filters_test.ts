@@ -19,7 +19,7 @@
  */
 
 import { assert } from "../0_deps.ts";
-import { match } from "./0_filters.ts";
+import { match } from "./3_filters.ts";
 
 Deno.test("match", () => {
   assert(match("message", { message: {} }));

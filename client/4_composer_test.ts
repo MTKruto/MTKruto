@@ -18,12 +18,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "./client/0_params.ts";
-export * from "./client/0_worker_request.ts";
-export * from "./client/0_worker_response.ts";
-export * from "./client/1_client_plain.ts";
-export * from "./client/2_client_encrypted.ts";
-export * from "./client/4_composer.ts";
-export * from "./client/5_client.ts";
-export * from "./client/5_client_dispatcher.ts";
-export * from "./client/6_client_worker.ts";
+import type { Animation, Message } from "../3_types.ts";
+import { Composer } from "./4_composer.ts";
+
+Deno.test("types", () => {
+  const composer = new Composer();
+
+  composer.on("message", (ctx) => {
+    const _msg: Message = ctx.msg;
+    const _message: Message = ctx.update.message;
+  });
+
+  composer.on("editedMessage", (ctx) => {
+    const _msg: Message = ctx.msg;
+    const _editedMessage: Message = ctx.update.editedMessage;
+  }).use((ctx) => {
+    const _msg: Message = ctx.msg;
+    const _editedMessage: Message = ctx.update.editedMessage;
+  });
+
+  composer.on("message:animation", (ctx) => {
+    const _animation: Animation = ctx.msg.animation;
+  });
+});

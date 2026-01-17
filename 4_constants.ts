@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { megabyte } from "./1_utilities.ts";
 import type { DC } from "./3_transport.ts";
 
 export type PublicKeys = readonly [bigint, [bigint, bigint]][];
@@ -101,3 +102,5 @@ export const MAX_CHANNEL_ID = 997852516352;
 export const CHANNEL_DIFFERENCE_LIMIT_USER = 100;
 
 export const CHANNEL_DIFFERENCE_LIMIT_BOT = 100_000;
+
+export const DOWNLOAD_MAX_CHUNK_SIZE = 1 * megabyte;

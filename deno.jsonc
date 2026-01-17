@@ -1,5 +1,9 @@
 {
   "lock": false,
+  "exports": {
+    ".": "./mod.ts",
+    "./worker": "./worker.ts"
+  },
   "exclude": [".github/"],
   "compilerOptions": {
     "lib": ["dom", "dom.asynciterable", "esnext", "deno.unstable"],

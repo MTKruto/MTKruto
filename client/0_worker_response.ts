@@ -18,12 +18,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "./client/0_params.ts";
-export * from "./client/0_worker_request.ts";
-export * from "./client/0_worker_response.ts";
-export * from "./client/1_client_plain.ts";
-export * from "./client/2_client_encrypted.ts";
-export * from "./client/4_composer.ts";
-export * from "./client/5_client.ts";
-export * from "./client/5_client_dispatcher.ts";
-export * from "./client/6_client_worker.ts";
+export interface WorkerError {
+  name: "TelegramError" | "ConnectionError" | "AccessError" | "InputError" | "TransportError" | "TLError";
+  // deno-lint-ignore no-explicit-any
+  args: any;
+}
+
+export declare namespace WorkerResponse {
+  export interface Base {
+    clientId: number;
+    id: number;
+  }
+
+  export interface Error extends Base {
+    isError: true;
+    data: WorkerError;
+  }
+
+  export interface Data extends Base {
+    isError: false;
+    data: unknown;
+  }
+}
+
+export type WorkerResponse = WorkerResponse.Error | WorkerResponse.Data;
