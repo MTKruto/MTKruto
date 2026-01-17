@@ -18,8 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/// <reference lib="webworker" />
-
 import type { ClientGeneric } from "./1_client_generic.ts";
 import { getLogger, type Logger } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
