@@ -49,7 +49,7 @@ import type { ChatListItem } from "./7_chat_list_item.ts";
  *
  * ```
  * client.on("connectionState", (ctx) => {
- *   console.log("The client's connection state is now:", ctx.connectionState);
+ *   console.log("The client's connection state is now:", ctx.update.connectionState);
  * });
  * ```
  * @unlisted
@@ -67,7 +67,7 @@ export interface UpdateConnectionState {
  *
  * ```
  * client.on("authorizationState", async (ctx) => {
- *   if (ctx.authorizationState.authorized) {
+ *   if (ctx.update.authorizationState.authorized) {
  *     const me = await ctx.client.getMe();
  *     console.log("The client is now authorized as", me.firstName);
  *   } else {
@@ -90,7 +90,7 @@ export interface UpdateAuthorizationState {
  *
  * ```
  * client.on("update", async (ctx) => {
- *   // ctx.update
+ *   // ctx.update.update
  * });
  * ```
  * @unlisted
@@ -109,13 +109,13 @@ export interface UpdateLowLevel {
  * ```
  * // Handle text messages
  * client.on("message:text", (ctx) => {
- *   const receivedOrSent = ctx.message.out ? "sent" : "received";
- *   console.log("Just", receivedOrSent, "a text message:", ctx.message.text);
+ *   const receivedOrSent = ctx.update.message.out ? "sent" : "received";
+ *   console.log("Just", receivedOrSent, "a text message:", ctx.update.message.text);
  * });
  *
  * // Handle other messages
  * client.on("message", (ctx) => {
- *   if (ctx.message.out) {
+ *   if (ctx.update.message.out) {
  *    console.log("Just sent a message.");
  *   }
  * });
@@ -138,7 +138,7 @@ export interface UpdateNewMessage {
  * ```
  * client.on("editedMessage", (ctx) => {
  *   console.log("A message was just edited.");
- *   // ctx.editedMessage
+ *   // ctx.update.editedMessage
  * });
  * ```
  * @unlisted
@@ -157,7 +157,7 @@ export interface UpdateMessageEdited {
  * ```
  * client.on("scheduledMessage", (ctx) => {
  *   console.log("A message was just schedueld.");
- *   // ctx.scheduledMessage
+ *   // ctx.update.scheduledMessage
  * });
  * ```
  * @unlisted
@@ -175,7 +175,7 @@ export interface UpdateMessageScheduled {
  *
  * ```
  * client.on("deletedMessages", (ctx) => {
- *   for (const deletedMessage of ctx.deletedMessages) {
+ *   for (const deletedMessage of ctx.update.deletedMessages) {
  *     console.log(deletedMessage);
  *   }
  * });
@@ -197,7 +197,7 @@ export interface UpdateMessagesDeleted {
  *
  * ```
  * client.on("callbackQuery", async (ctx) => {
- *   await ctx.answerCallbackQuery(ctx.callbackQuery.data, { alert: true });
+ *   await ctx.answerCallbackQuery(ctx.update.callbackQuery.data, { alert: true });
  * });
  * ```
  * @unlisted
@@ -215,7 +215,7 @@ export interface UpdateCallbackQuery {
  *
  * ```
  * client.on("inlineQuery", (ctx) => {
- *   const { from, query } = ctx.inlineQuery;
+ *   const { from, query } = ctx.update.inlineQuery;
  *   console.log("User", from.id, "sent an inline query:", query);
  * });
  * ```
@@ -330,7 +330,7 @@ export interface UpdateMyChatMember {
  *
  * ```
  * client.on("deletedStory", (ctx) => {
- *   console.log("The story", ctx.deletedStory, "was deleted");
+ *   console.log("The story", ctx.update.deletedStory, "was deleted");
  * });
  * ```
  * @unlisted
@@ -346,7 +346,7 @@ export interface UpdateDeletedStory {
  * ```
  * client.on("story", (ctx) => {
  *   console.log("title" in ctx.chat ? ctx.chat.title : ctx.chat.firstName, "posted a story");
- *   console.log(ctx.story);
+ *   console.log(ctx.update.story);
  * });
  * ```
  * @unlisted
@@ -361,8 +361,8 @@ export interface UpdateNewStory {
  *
  * ```
  * client.on("businessConnection", (ctx) => {
- *   console.log("Business connection with", ctx.from.id, ctx.businessConnection.isEnabled ? "created" : "lost");
- *   console.log(ctx.businessConnection);
+ *   console.log("Business connection with", ctx.from.id, ctx.update.businessConnection.isEnabled ? "created" : "lost");
+ *   console.log(ctx.update.businessConnection);
  * });
  * ```
  * @unlisted
@@ -377,8 +377,8 @@ export interface UpdateBusinessConnection {
  *
  * ```
  * client.on("videoChat", (ctx) => {
- *   console.log("Video chat", ctx.videoChat.type);
- *   console.log(ctx.videoChat);
+ *   console.log("Video chat", ctx.update.videoChat.type);
+ *   console.log(ctx.update.videoChat);
  * });
  * ```
  * @unlisted
@@ -409,7 +409,7 @@ export interface UpdateJoinRequest {
  * ```
  * client.on("translations", (ctx) => {
  *   console.log("Translations were just updated.");
- *   // ctx.translations
+ *   // ctx.update.translations
  * });
  * ```
  * @unlisted
@@ -432,7 +432,7 @@ export interface UpdateTranslations {
  * ```
  * client.on("poll", (ctx) => {
  *   console.log("A poll just changed.");
- *   // ctx.poll
+ *   // ctx.update.poll
  * });
  * ```
  * @unlisted
@@ -451,7 +451,7 @@ export interface UpdatePoll {
  * ```
  * client.on("pollAnswer", (ctx) => {
  *   console.log("A poll just got an answer.");
- *   // ctx.poll
+ *   // ctx.update.poll
  * });
  * ```
  * @unlisted
@@ -469,7 +469,7 @@ export interface UpdatePollAnswer {
  *
  * ```
  * client.on("voiceTranscription", (ctx) => {
- *   // ctx.voiceTranscription
+ *   // ctx.update.voiceTranscription
  * });
  * ```
  * @unlisted
@@ -487,7 +487,7 @@ export interface UpdateVoiceTranscription {
  *
  * ```
  * client.on("linkPreview", (ctx) => {
- *   // ctx.linkPreview
+ *   // ctx.update.linkPreview
  * });
  * ```
  * @unlisted
@@ -505,7 +505,7 @@ export interface UpdateLinkPreview {
  *
  * ```
  * client.on("uploadProgress", (ctx) => {
- *   // ctx.uploadProgress
+ *   // ctx.update.uploadProgress
  * });
  * ```
  * @unlisted

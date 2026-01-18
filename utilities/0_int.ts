@@ -52,7 +52,7 @@ export function mod(n: bigint | number, m: bigint | number) {
 }
 
 /**
- * Additional parameters for { @link intFromBytes }.
+ * Additional parameters for {@link intFromBytes}.
  */
 export interface IntFromBytesParams {
   /** The byte order of the representation. Defaults to `little`. */
@@ -137,7 +137,7 @@ export function gcd(a: bigint, b: bigint) {
 
 const bufferFromHexString = (hexString: string) => Uint8Array.from(hexString.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)));
 
-/** Additional parameters for { @link intToBuffer }. */
+/** Additional parameters for {@link intToBuffer}. */
 export interface BufferFromBigintParams {
   /** The byte order to use for the representation. Defaults to `little`. */
   byteOrder?: ByteOrder;
