@@ -304,12 +304,10 @@ export class AccountManager {
   }
 
   async checkPassword(password: string): Promise<PasswordCheckResult> {
-    if (!this.#ap) {
-      this.#ap = await this.#getAccountPassword();
-    }
+    const ap = this.#ap = await this.#getAccountPassword();
 
     try {
-      const input = await checkPassword(password, this.#ap);
+      const input = await checkPassword(password, ap);
       const auth = await this.#c.invoke({ _: "auth.checkPassword", password: input });
 
       return {
