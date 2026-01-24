@@ -28,8 +28,10 @@ export class ClientWorker {
   #clients = new Array<ClientDispatcher>();
   #L = getLogger("ClientWorker");
 
-  constructor(specifier: string | URL, options?: WorkerOptions) {
-    this.#worker = new Worker(specifier, options);
+  constructor(specifier: Worker);
+  constructor(specifier: string | URL, options?: WorkerOptions);
+  constructor(specifier: Worker | string | URL, options?: WorkerOptions) {
+    this.#worker = specifier instanceof Worker ? specifier : new Worker(specifier, options);
     this.#worker.addEventListener("message", (e) => {
       this.#L.debug("received message from worker", e.data);
 
