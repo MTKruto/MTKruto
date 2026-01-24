@@ -151,7 +151,7 @@ export function initClient(request: WorkerRequest): WorkerResponse {
       client.use((ctx) => {
         const response: WorkerResponse = {
           clientId: request.clientId,
-          id: -1,
+          id: "",
           isError: false,
           data: ctx.update,
         };

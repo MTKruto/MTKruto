@@ -20,7 +20,7 @@
 
 export interface WorkerRequest {
   clientId: number;
-  id: number;
+  id: string;
   method: "initClient" | string;
   args: unknown[];
 }

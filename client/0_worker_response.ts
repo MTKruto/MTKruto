@@ -27,7 +27,7 @@ export interface WorkerError {
 export declare namespace WorkerResponse {
   export interface Base {
     clientId: number;
-    id: number;
+    id: string;
   }
 
   export interface Error extends Base {

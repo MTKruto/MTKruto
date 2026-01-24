@@ -90,7 +90,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   #LsignIn: Logger;
 
   // deno-lint-ignore no-explicit-any
-  #pendingRequests = new Array<PromiseWithResolvers<any>>();
+  #pendingRequests = new Map<string, PromiseWithResolvers<any>>();
 
   constructor(worker: Worker, id: number) {
     super();
@@ -110,24 +110,19 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     this.#L.debug("handling response message", response);
 
     if (response.isError) {
-      this.#pendingRequests[response.id]?.reject(this.#constructError(response.data));
+      this.#pendingRequests.get(response.id)?.reject(this.#constructError(response.data));
+      this.#pendingRequests.delete(response.id);
     } else {
-      if (response.id === -1) {
+      if (response.id === "") {
         try {
           await this.handleUpdate(this, response.data as Update);
         } catch (err) {
           this.#L.error("Error handling update:", err);
         }
       } else {
-        this.#pendingRequests[response.id]?.resolve(response.data);
+        this.#pendingRequests.get(response.id)?.resolve(response.data);
+        this.#pendingRequests.delete(response.id);
       }
-    }
-
-    // clean up pending requests
-    if (response.id === 0) {
-      this.#pendingRequests.shift();
-    } else if (response.id === this.#pendingRequests.length - 1) {
-      this.#pendingRequests.pop();
     }
   }
 
@@ -162,11 +157,12 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     // deno-lint-ignore no-explicit-any
     const promiseWithResolvers = Promise.withResolvers<any>();
 
-    const index = this.#pendingRequests.push(promiseWithResolvers) - 1;
+    const id = crypto.randomUUID();
+    this.#pendingRequests.set(id, promiseWithResolvers);
 
     const request: WorkerRequest = {
       clientId: this.#id,
-      id: index,
+      id,
       method,
       args,
     };
