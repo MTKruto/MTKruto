@@ -23,14 +23,15 @@ import type { Api, Mtproto } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import type { BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputMedia, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, PasswordCheckResult, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import { DOWNLOAD_MAX_CHUNK_SIZE } from "../4_constants.ts";
-import * as errors from "../4_errors.ts";
 import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetSignaturesEnabledParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
 import type { WorkerRequest } from "./0_worker_request.ts";
-import type { WorkerError, WorkerResponse } from "./0_worker_response.ts";
+import type { WorkerResponse } from "./1_worker_response.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
+import { deserializeWorkerError, type WorkerError } from "./0_worker_error.ts";
 import type { Context } from "./2_context.ts";
 import { signIn } from "./2_sign_in.ts";
 import { Composer } from "./4_composer.ts";
+import { type InvokeErrorHandler, skipInvoke } from "./4_invoke_middleware.ts";
 
 export interface ClientDispatcherParams {
   /** The storage provider to use. Defaults to memory storage. */
@@ -85,19 +86,19 @@ export interface ClientDispatcherParams {
 
 export class ClientDispatcher<C extends Context = Context> extends Composer<C> implements ClientGeneric {
   #worker: Worker;
-  #id: number;
+  #id: string;
   #L: Logger;
   #LsignIn: Logger;
 
   // deno-lint-ignore no-explicit-any
   #pendingRequests = new Map<string, PromiseWithResolvers<any>>();
 
-  constructor(worker: Worker, id: number) {
+  constructor(worker: Worker, id: string) {
     super();
 
     this.#worker = worker;
     this.#id = id;
-    this.#L = getLogger("ClientController").branch(this.#id + "");
+    this.#L = getLogger("ClientDispatcher").branch(this.#id);
     this.#LsignIn = this.#L.branch("signIn");
   }
 
@@ -110,7 +111,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     this.#L.debug("handling response message", response);
 
     if (response.isError) {
-      this.#pendingRequests.get(response.id)?.reject(this.#constructError(response.data));
+      this.#pendingRequests.get(response.id)?.reject(deserializeWorkerError(response.data));
       this.#pendingRequests.delete(response.id);
     } else {
       if (response.id === "") {
@@ -126,30 +127,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     }
   }
 
-  #constructError(error: WorkerError) {
-    switch (error.name) {
-      case "TelegramError":
-        return errors.constructTelegramError({
-          _: "rpc_error",
-          error_code: error.args[0].error_code,
-          error_message: error.args[0].error_message,
-        }, error.args.call);
-      case "ConnectionError":
-        return new errors.ConnectionError(error.args[0]);
-      case "AccessError":
-        return new errors.AccessError(error.args[0]);
-      case "InputError":
-        return new errors.InputError(error.args[0]);
-      case "TransportError":
-        return new errors.TransportError(error.args[0]);
-      case "TLError":
-        return new errors.TLError(error.args[0], error.args[1]);
-      default:
-        return new TypeError("Unknown error");
-    }
-  }
-
-  get id(): number {
+  get id(): string {
     return this.#id;
   }
 
@@ -161,6 +139,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     this.#pendingRequests.set(id, promiseWithResolvers);
 
     const request: WorkerRequest = {
+      type: "request",
       clientId: this.#id,
       id,
       method,
@@ -195,9 +174,59 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     await this.signIn(params);
   }
 
-  async invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R> {
-    return await this.#dispatch("invoke", function_, params);
+  async #invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R> {
+    let n = 1;
+    while (true) {
+      try {
+        await this.#dispatch("invoke", function_, params);
+      } catch (err) {
+        if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
+          continue;
+        } else {
+          throw err;
+        }
+      }
+    }
   }
+
+  #handleInvokeError = skipInvoke<ClientDispatcher<C>>();
+
+  /** @internal */
+  async handleInvokeError(request: WorkerRequest) {
+    const args = request.args[0] as { error: WorkerError; function: Api.AnyFunction | Mtproto.ping; n: number };
+    return await this.#handleInvokeError({
+      client: this,
+      error: deserializeWorkerError(args.error),
+      function: args.function,
+      n: args.n,
+    }, () => Promise.resolve(false));
+  }
+
+  /**
+   * Invokes a function waiting and returning its reply.
+   * Requires the client to be connected.
+   *
+   * @param function_ The function to invoke.
+   */
+  invoke: {
+    <T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R>;
+    use: (handler: InvokeErrorHandler<ClientDispatcher<C>>) => void;
+  } = Object.assign(
+    this.#invoke,
+    {
+      use: (handler: InvokeErrorHandler<ClientDispatcher<C>>) => {
+        const handle = this.#handleInvokeError;
+        this.#handleInvokeError = async (ctx, next) => {
+          let result: boolean | null = null;
+          return await handle(ctx, async () => {
+            if (result !== null) return result;
+            result = await handler(ctx, next);
+            return result;
+          });
+        };
+      },
+    },
+  );
 
   /**
    * Send a user verification code.
@@ -470,7 +499,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param text The message's text.
    * @returns The sent text message.
    */
-  async sendMessage(chatId: ID, text: string, params: SendMessageParams): Promise<MessageText> {
+  async sendMessage(chatId: ID, text: string, params?: SendMessageParams): Promise<MessageText> {
     return await this.#dispatch("sendMessage", chatId, text, params);
   }
 

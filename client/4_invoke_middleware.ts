@@ -18,27 +18,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export interface WorkerError {
-  name: "TelegramError" | "ConnectionError" | "AccessError" | "InputError" | "TransportError" | "TLError";
-  // deno-lint-ignore no-explicit-any
-  args: any;
+import type { MaybePromise } from "../1_utilities.ts";
+import type { Api, Mtproto } from "../2_tl.ts";
+import type { NextFunction } from "./4_composer.ts";
+
+export interface InvokeErrorHandler<C> {
+  (ctx: { client: C; error: unknown; function: Api.AnyFunction | Mtproto.ping; n: number }, next: NextFunction<boolean>): MaybePromise<boolean>;
 }
 
-export declare namespace WorkerResponse {
-  export interface Base {
-    clientId: number;
-    id: string;
-  }
-
-  export interface Error extends Base {
-    isError: true;
-    data: WorkerError;
-  }
-
-  export interface Data extends Base {
-    isError: false;
-    data: unknown;
-  }
+export function skipInvoke<C>(): InvokeErrorHandler<C> {
+  return (_ctx, next) => next();
 }
-
-export type WorkerResponse = WorkerResponse.Error | WorkerResponse.Data;

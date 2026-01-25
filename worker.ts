@@ -19,23 +19,30 @@
  */
 
 import { getLogger } from "./1_utilities.ts";
-import { StorageDenoKV } from "./storage/1_storage_deno_kv.ts";
-import { Client, type ClientDispatcherParams, type ClientParams, errors, StorageIndexedDB, type WorkerRequest, type WorkerResponse } from "./mod.ts";
+import type { ClientDispatcherParams, WorkerRequest, WorkerResponse } from "./mod.ts";
+import { ClientReceiver } from "./client/6_client_receiver.ts";
+import { serializeWorkerError } from "./client/0_worker_error.ts";
 
-const clients = new Array<Client>();
+const clientReceivers = new Map<string, ClientReceiver>();
 const logger = getLogger("MTKrutoWorker");
 
 addEventListener("message", async (e) => {
-  const request = (e as { data: WorkerRequest }).data;
-  const client = clients[request.clientId];
+  const message = (e as { data: WorkerRequest | WorkerResponse }).data;
+  if (message.type === "response") {
+    clientReceivers.get(message.clientId)?.handleResponse(message);
+    return;
+  }
+
+  const clientReceiver = clientReceivers.get(message.clientId);
   let response: WorkerResponse;
 
-  if (request.method === "initClient") {
-    response = initClient(request);
-  } else if (!client) {
+  if (message.method === "initClient") {
+    response = initClient(message);
+  } else if (!clientReceiver) {
     response = {
-      clientId: request.clientId,
-      id: request.id,
+      type: "response",
+      clientId: message.clientId,
+      id: message.id,
       isError: true,
       data: {
         name: "InputError",
@@ -45,72 +52,22 @@ addEventListener("message", async (e) => {
   } else {
     try {
       // @ts-ignore: it works
-      const data = await client[request.method](...request.args);
+      const data = await clientReceiver.client[message.method](...message.args);
       response = {
-        clientId: request.clientId,
-        id: request.id,
+        type: "response",
+        clientId: message.clientId,
+        id: message.id,
         isError: false,
         data,
       };
     } catch (err) {
-      if (err instanceof errors.TelegramError) {
-        const arg: errors.TelegramErrorParams = {
-          error_code: err.errorCode,
-          error_message: err.errorMessage,
-          call: err.cause,
-        };
-        response = {
-          clientId: request.clientId,
-          id: request.id,
-          isError: true,
-          data: {
-            name: "TelegramError",
-            args: [arg],
-          },
-        };
-      } else if (err instanceof errors.TLError) {
-        response = {
-          clientId: request.clientId,
-          id: request.id,
-          isError: true,
-          data: {
-            name: "TLError",
-            args: [err.originalMessage, err.path],
-          },
-        };
-      } else if (err instanceof errors.TransportError) {
-        response = {
-          clientId: request.clientId,
-          id: request.id,
-          isError: true,
-          data: {
-            name: "TransportError",
-            args: [err.code],
-          },
-        };
-      } else if (err instanceof Error) {
-        response = {
-          clientId: request.clientId,
-          id: request.id,
-          isError: true,
-          data: {
-            // deno-lint-ignore no-explicit-any
-            name: err.name as unknown as any,
-            args: [err.message],
-          },
-        };
-      } else {
-        response = {
-          clientId: request.clientId,
-          id: request.id,
-          isError: true,
-          data: {
-            // deno-lint-ignore no-explicit-any
-            name: "Error" as unknown as any, // unknown error
-            args: [err],
-          },
-        };
-      }
+      response = {
+        type: "response",
+        clientId: message.clientId,
+        id: message.id,
+        isError: true,
+        data: serializeWorkerError(err),
+      };
     }
   }
 
@@ -119,8 +76,9 @@ addEventListener("message", async (e) => {
 });
 
 export function initClient(request: WorkerRequest): WorkerResponse {
-  if (clients.length > request.clientId) {
+  if (clientReceivers.has(request.clientId)) {
     return {
+      type: "response",
       clientId: request.clientId,
       id: request.id,
       isError: true,
@@ -132,48 +90,25 @@ export function initClient(request: WorkerRequest): WorkerResponse {
   } else {
     try {
       const params = request.args[0] as ClientDispatcherParams | undefined;
-      let storage: ClientParams["storage"];
-
-      const name = `.mktruto-worker.${clients.length}`;
-      switch (params?.storage) {
-        case "denokv":
-          storage = new StorageDenoKV(name);
-          break;
-        case "indexeddb":
-          storage = new StorageIndexedDB(name);
-          break;
-        case "memory":
-          break;
-      }
-
-      const client = new Client({ ...params, storage });
-      clients.push(client);
-      client.use((ctx) => {
-        const response: WorkerResponse = {
-          clientId: request.clientId,
-          id: "",
-          isError: false,
-          data: ctx.update,
-        };
-        postMessage(response);
-      });
+      const clientReceiver = new ClientReceiver(request.clientId, params);
+      clientReceivers.set(request.clientId, clientReceiver);
 
       return {
+        type: "response",
         clientId: request.clientId,
         id: request.id,
         isError: false,
         data: null,
       };
     } catch (err) {
-      logger.error("Error initing client:", err);
+      clientReceivers.delete(request.clientId);
+      logger.error("error initing client:", err);
       return {
+        type: "response",
         clientId: request.clientId,
         id: request.id,
         isError: true,
-        data: {
-          name: "InputError",
-          args: "Could not init client",
-        },
+        data: serializeWorkerError(new InputEvent("Could not init client")),
       };
     }
   }

@@ -53,22 +53,16 @@ import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { CallbackQueryManager } from "./4_callback_query_manager.ts";
 import { ChatListManager } from "./4_chat_list_manager.ts";
 import { ChatManager } from "./4_chat_manager.ts";
-import { Composer, type NextFunction } from "./4_composer.ts";
+import { Composer } from "./4_composer.ts";
 import { ForumManager } from "./4_forum_manager.ts";
 import { GiftManager } from "./4_gift_manager.ts";
 import { InlineQueryManager } from "./4_inline_query_manager.ts";
 import { LinkPreviewManager } from "./4_link_preview_manager.ts";
 import { PollManager } from "./4_poll_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
+import { type InvokeErrorHandler, skipInvoke } from "./4_invoke_middleware.ts";
 
 export { restartAuth } from "./2_sign_in.ts";
-
-function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
-  return (_ctx, next) => next();
-}
-export interface InvokeErrorHandler<C> {
-  (ctx: { client: C; error: unknown; function: Api.AnyFunction | Mtproto.ping; n: number }, next: NextFunction<boolean>): MaybePromise<boolean>;
-}
 
 export const handleMigrationError = Symbol("handleMigrationError");
 
@@ -899,11 +893,11 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     }
   }
 
-  #handleInvokeError = skipInvoke<C>();
+  #handleInvokeError = skipInvoke<Client<C>>();
 
   /**
-   * Invokes a function waiting and returning its reply if the second parameter is not `true`. Requires the client
-   * to be connected.
+   * Invokes a function waiting and returning its reply.
+   * Requires the client to be connected.
    *
    * @param function_ The function to invoke.
    */
