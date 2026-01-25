@@ -192,7 +192,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   #handleInvokeError = skipInvoke<ClientDispatcher<C>>();
 
   /** @internal */
-  async handleInvokeError(request: WorkerRequest) {
+  async handleInvokeError(request: WorkerRequest): Promise<boolean> {
     const args = request.args[0] as { error: WorkerError; function: Api.AnyFunction | Mtproto.ping; n: number };
     return await this.#handleInvokeError({
       client: this,
