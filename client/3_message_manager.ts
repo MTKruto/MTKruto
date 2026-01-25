@@ -1021,6 +1021,40 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       unreachable();
     }
   }
+  async #resolveInputMediaUpload(media: InputMedia, businessConnectionId?: string): Promise<Api.InputMedia> {
+    const inputMedia = await this.#resolveInputMedia(media);
+    if (Api.is("inputMediaUploadedPhoto", inputMedia) || Api.is("inputMediaUploadedDocument", inputMedia)) {
+      const messageMedia = await this.#c.invoke({
+        _: "messages.uploadMedia",
+        peer: { _: "inputPeerSelf" },
+        media: inputMedia,
+        business_connection_id: businessConnectionId,
+      });
+      if (("photo" in messageMedia) && Api.is("photo", messageMedia.photo)) {
+        return {
+          _: "inputMediaPhoto",
+          id: {
+            _: "inputPhoto",
+            id: messageMedia.photo.id,
+            access_hash: messageMedia.photo.access_hash,
+            file_reference: messageMedia.photo.file_reference,
+          },
+          spoiler: "hasSpoiler" in media && media.hasSpoiler ? true : undefined,
+        };
+      } else if ("document" in messageMedia && Api.is("document", messageMedia.document)) {
+        return {
+          _: "inputMediaDocument",
+          id: { _: "inputDocument", id: messageMedia.document.id, access_hash: messageMedia.document.access_hash, file_reference: messageMedia.document.file_reference },
+          spoiler: "hasSpoiler" in media && media.hasSpoiler ? true : undefined,
+        };
+      } else {
+        unreachable();
+      }
+    }
+
+    return inputMedia;
+  }
+
   async editMessageMedia(
     chatId: ID,
     messageId: number,
@@ -1057,7 +1091,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     await this.#c.invoke({
       _: "messages.editInlineBotMessage",
       id,
-      media: await this.#resolveInputMedia(media),
+      media: await this.#resolveInputMediaUpload(media),
       reply_markup: await this.#constructReplyMarkup(params),
     }, { dc: getDc(id.dc_id) });
   }
