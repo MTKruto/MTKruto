@@ -35,6 +35,7 @@ import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 import type { ClientPlainParams } from "./1_client_plain.ts";
+import { type InvokeErrorHandler, skipInvoke } from "./1_invoke_middleware.ts";
 import { AccountManager } from "./2_account_manager.ts";
 import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
@@ -60,7 +61,6 @@ import { InlineQueryManager } from "./4_inline_query_manager.ts";
 import { LinkPreviewManager } from "./4_link_preview_manager.ts";
 import { PollManager } from "./4_poll_manager.ts";
 import { StoryManager } from "./4_story_manager.ts";
-import { type InvokeErrorHandler, skipInvoke } from "./4_invoke_middleware.ts";
 
 export { restartAuth } from "./2_sign_in.ts";
 

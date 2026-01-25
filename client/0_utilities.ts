@@ -22,6 +22,8 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api, repr as repr_ } from "../2_tl.ts";
 
+export type NextFunction<T = void> = () => Promise<T>;
+
 export const resolve = () => Promise.resolve();
 
 export function isHttpUrl(string: string) {

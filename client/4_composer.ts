@@ -21,11 +21,10 @@
 import { InputError } from "../0_errors.ts";
 import type { MaybePromise } from "../1_utilities.ts";
 import type { Update, User } from "../3_types.ts";
+import type { NextFunction } from "./0_utilities.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 import { Context } from "./2_context.ts";
 import { type FilterQuery, match, type WithFilter } from "./3_filters.ts";
-
-export type NextFunction<T = void> = () => Promise<T>;
 
 export type MiddlewareFn<C> = (
   ctx: C,
