@@ -511,7 +511,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param photo The photo to send.
    * @returns The sent photo.
    */
-  async sendPhoto(chatId: ID, photo: FileSource, params: SendPhotoParams): Promise<MessagePhoto> {
+  async sendPhoto(chatId: ID, photo: FileSource, params?: SendPhotoParams): Promise<MessagePhoto> {
     return await this.#dispatch("sendPhoto", chatId, photo, params);
   }
 
@@ -523,7 +523,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param document The document to send.
    * @returns The sent document.
    */
-  async sendDocument(chatId: ID, document: FileSource, params: SendDocumentParams): Promise<MessageDocument> {
+  async sendDocument(chatId: ID, document: FileSource, params?: SendDocumentParams): Promise<MessageDocument> {
     return await this.#dispatch("sendDocument", chatId, document, params);
   }
 
@@ -535,7 +535,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param document The sticker to send.
    * @returns The sent sticker.
    */
-  async sendSticker(chatId: ID, sticker: FileSource, params: SendStickerParams): Promise<MessageSticker> {
+  async sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams): Promise<MessageSticker> {
     return await this.#dispatch("sendSticker", chatId, sticker, params);
   }
 
@@ -547,7 +547,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param video The video to send.
    * @returns The sent video.
    */
-  async sendVideo(chatId: ID, video: FileSource, params: SendVideoParams): Promise<MessageVideo> {
+  async sendVideo(chatId: ID, video: FileSource, params?: SendVideoParams): Promise<MessageVideo> {
     return await this.#dispatch("sendVideo", chatId, video, params);
   }
 
@@ -559,7 +559,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param animation The animation to send.
    * @returns The sent animation.
    */
-  async sendAnimation(chatId: ID, animation: FileSource, params: SendAnimationParams): Promise<MessageAnimation> {
+  async sendAnimation(chatId: ID, animation: FileSource, params?: SendAnimationParams): Promise<MessageAnimation> {
     return await this.#dispatch("sendAnimation", chatId, animation, params);
   }
 
@@ -571,7 +571,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param voice The voice to send.
    * @returns The sent voice message.
    */
-  async sendVoice(chatId: ID, voice: FileSource, params: SendVoiceParams): Promise<MessageVoice> {
+  async sendVoice(chatId: ID, voice: FileSource, params?: SendVoiceParams): Promise<MessageVoice> {
     return await this.#dispatch("sendVoice", chatId, voice, params);
   }
 
@@ -583,7 +583,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param audio The audio to send.
    * @returns The sent audio file.
    */
-  async sendAudio(chatId: ID, audio: FileSource, params: SendAudioParams): Promise<MessageAudio> {
+  async sendAudio(chatId: ID, audio: FileSource, params?: SendAudioParams): Promise<MessageAudio> {
     return await this.#dispatch("sendAudio", chatId, audio, params);
   }
 
@@ -607,7 +607,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param videoNote The video note to send.
    * @returns The sent video note.
    */
-  async sendVideoNote(chatId: ID, videoNote: FileSource, params: SendVideoNoteParams): Promise<MessageVideoNote> {
+  async sendVideoNote(chatId: ID, videoNote: FileSource, params?: SendVideoNoteParams): Promise<MessageVideoNote> {
     return await this.#dispatch("sendVideoNote", chatId, videoNote, params);
   }
 
@@ -714,7 +714,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param text The new caption of the message.
    * @returns The edited message.
    */
-  async editMessageCaption(chatId: ID, messageId: number, params: EditMessageCaptionParams): Promise<Message> {
+  async editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
     return await this.#dispatch("editMessageCaption", chatId, messageId, params);
   }
 
@@ -738,7 +738,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param inlineMessageId The identifier of the inline message.
    * @param media The new media of the message.
    */
-  async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params: EditInlineMessageMediaParams): Promise<void> {
+  async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditInlineMessageMediaParams): Promise<void> {
     return await this.#dispatch("editInlineMessageMedia", inlineMessageId, media, params);
   }
 
@@ -749,7 +749,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param inlineMessageId The identifier of the inline message.
    * @param text The new text of the message.
    */
-  async editInlineMessageText(inlineMessageId: string, text: string, params: EditInlineMessageTextParams): Promise<void> {
+  async editInlineMessageText(inlineMessageId: string, text: string, params?: EditInlineMessageTextParams): Promise<void> {
     return await this.#dispatch("editInlineMessageText", inlineMessageId, text, params);
   }
 
@@ -876,7 +876,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message to delete.
    */
-  async deleteMessage(chatId: ID, messageId: number, params: DeleteMessageParams): Promise<void> {
+  async deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams): Promise<void> {
     return await this.#dispatch("deleteMessage", chatId, messageId, params);
   }
 
@@ -942,7 +942,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the message.
    */
-  async pinMessage(chatId: ID, messageId: number, params: PinMessageParams): Promise<void> {
+  async pinMessage(chatId: ID, messageId: number, params?: PinMessageParams): Promise<void> {
     return await this.#dispatch("pinMessage", chatId, messageId, params);
   }
 
@@ -953,7 +953,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the message.
    */
-  async unpinMessage(chatId: ID, messageId: number, params: UnpinMessageParams): Promise<void> {
+  async unpinMessage(chatId: ID, messageId: number, params?: UnpinMessageParams): Promise<void> {
     return await this.#dispatch("unpinMessage", chatId, messageId, params);
   }
 
@@ -1001,7 +1001,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param messageId The idenfifier of the poll's message.
    * @returns The new state of the poll.
    */
-  async stopPoll(chatId: ID, messageId: number, params: StopPollParams): Promise<Poll> {
+  async stopPoll(chatId: ID, messageId: number, params?: StopPollParams): Promise<Poll> {
     return await this.#dispatch("stopPoll", chatId, messageId, params);
   }
 
@@ -1088,7 +1088,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param chatId The identifier of the chat from which the mini app is opened.
    * @cache
    */
-  async openMiniApp(botId: ID, chatId: ID, params: OpenMiniAppParams): Promise<MiniAppInfo> {
+  async openMiniApp(botId: ID, chatId: ID, params?: OpenMiniAppParams): Promise<MiniAppInfo> {
     return await this.#dispatch("openMiniApp", botId, chatId, params);
   }
 
@@ -1128,7 +1128,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param messageId The identifier of the message.
    * @method ms
    */
-  async getMessageReactions(chatId: ID, messageId: number, params: GetMessageReactionsParams): Promise<MessageReactionList> {
+  async getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList> {
     return await this.#dispatch("getMessageReactions", chatId, messageId, params);
   }
 
@@ -1270,7 +1270,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param chatId The identifier of a chat.
    * @param photo A photo to set as the chat's photo.
    */
-  async setChatPhoto(chatId: ID, photo: FileSource, params: SetChatPhotoParams): Promise<void> {
+  async setChatPhoto(chatId: ID, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
     return await this.#dispatch("setChatPhoto", chatId, photo, params);
   }
 
@@ -1291,7 +1291,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param chatId The identifier of a chat.
    * @param memberId The identifier of the member.
    */
-  async banChatMember(chatId: ID, memberId: ID, params: BanChatMemberParams): Promise<void> {
+  async banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams): Promise<void> {
     return await this.#dispatch("banChatMember", chatId, memberId, params);
   }
 
@@ -1324,7 +1324,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param chatId The identifier of a chat. Must be a supergroup.
    * @param memberId The identifier of the member.
    */
-  async setChatMemberRights(chatId: ID, memberId: ID, params: SetChatMemberRightsParams): Promise<void> {
+  async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams): Promise<void> {
     return await this.#dispatch("setChatMemberRights", chatId, memberId, params);
   }
 
@@ -1768,7 +1768,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param chatId The identifier of the channel.
    * @param enabled Whether post signatures should be enabled in the channel.
    */
-  async setSignaturesEnabled(chatId: ID, enabled: boolean, params: SetSignaturesEnabledParams): Promise<void> {
+  async setSignaturesEnabled(chatId: ID, enabled: boolean, params?: SetSignaturesEnabledParams): Promise<void> {
     return await this.#dispatch("setSignaturesEnabled", chatId, enabled, params);
   }
 
@@ -1822,7 +1822,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param title The title of the topic.
    * @returns The created topic.
    */
-  async createTopic(chatId: ID, title: string, params: CreateTopicParams): Promise<Topic> {
+  async createTopic(chatId: ID, title: string, params?: CreateTopicParams): Promise<Topic> {
     return await this.#dispatch("createTopic", chatId, title, params);
   }
 
@@ -1910,7 +1910,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param chatId The identifier of a chat.
    * @param userId The identifier of the user to promote.
    */
-  async promoteChatMember(chatId: ID, userId: ID, params: PromoteChatMemberParams): Promise<void> {
+  async promoteChatMember(chatId: ID, userId: ID, params?: PromoteChatMemberParams): Promise<void> {
     return await this.#dispatch("promoteChatMember", chatId, userId, params);
   }
 
@@ -1955,7 +1955,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @returns The bot's answer to the inline query.
    * @cache
    */
-  async sendInlineQuery(botId: ID, chatId: ID, params: SendInlineQueryParams): Promise<InlineQueryAnswer> {
+  async sendInlineQuery(botId: ID, chatId: ID, params?: SendInlineQueryParams): Promise<InlineQueryAnswer> {
     return await this.#dispatch("sendInlineQuery", botId, chatId, params);
   }
 
@@ -2102,7 +2102,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param content The content of the story.
    * @returns The created story.
    */
-  async createStory(chatId: ID, content: InputStoryContent, params: CreateStoryParams): Promise<Story> {
+  async createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams): Promise<Story> {
     return await this.#dispatch("createStory", chatId, content, params);
   }
 
@@ -2251,7 +2251,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param startAt A point in time within the future in which the video chat will be started.
    * @returns The scheduled video chat.
    */
-  async scheduleVideoChat(chatId: ID, startAt: number, params: ScheduleVideoChatParams): Promise<VideoChatScheduled> {
+  async scheduleVideoChat(chatId: ID, startAt: number, params?: ScheduleVideoChatParams): Promise<VideoChatScheduled> {
     return await this.#dispatch("scheduleVideoChat", chatId, startAt, params);
   }
 
@@ -2263,7 +2263,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param params_ WebRTC connection parameters.
    * @returns Parameters to be passed to the used WebRTC library.
    */
-  async joinVideoChat(id: string, params_: string, params: JoinVideoChatParams): Promise<string> {
+  async joinVideoChat(id: string, params_: string, params?: JoinVideoChatParams): Promise<string> {
     return await this.#dispatch("joinVideoChat", id, params_, params);
   }
 
@@ -2332,7 +2332,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param preCheckoutQueryId The identifier of the pre-checkout query.
    * @param ok Whether the checkout is going to be processed.
    */
-  async answerPreCheckoutQuery(preCheckoutQueryId: string, ok: boolean, params: AnswerPreCheckoutQueryParams): Promise<void> {
+  async answerPreCheckoutQuery(preCheckoutQueryId: string, ok: boolean, params?: AnswerPreCheckoutQueryParams): Promise<void> {
     return await this.#dispatch("answerPreCheckoutQuery", preCheckoutQueryId, ok, params);
   }
 
@@ -2434,7 +2434,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param chatId The identifier of a user or a channel to send the gift to.
    * @param giftId The identifier of the gift to send.
    */
-  async sendGift(chatId: ID, giftId: string, params: SendGiftParams): Promise<void> {
+  async sendGift(chatId: ID, giftId: string, params?: SendGiftParams): Promise<void> {
     return await this.#dispatch("sendGift", chatId, giftId, params);
   }
 
