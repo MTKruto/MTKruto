@@ -73,6 +73,11 @@ interface Shortcuts<T extends UpdateIntersection> {
     : T["joinRequest"] extends object ? T["joinRequest"]["from"]
     : T["pollAnswer"] extends object ? T["pollAnswer"]["from"]
     : undefined;
+  message: T["message"];
+  editedMessage: T["editedMessage"];
+  callbackQuery: T["callbackQuery"];
+  inlineQuery: T["inlineQuery"];
+  chosenInlineResult: T["chosenInlineResult"];
 }
 type GetShortcuts<T> = T extends UpdateIntersection ? T["update"] extends object ? Record<string, never> : Shortcuts<T> : Record<string, never>;
 
