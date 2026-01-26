@@ -178,7 +178,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     let n = 1;
     while (true) {
       try {
-        await this.#dispatch("invoke", function_, params);
+        return await this.#dispatch("invoke", function_, params);
       } catch (err) {
         if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
           continue;
