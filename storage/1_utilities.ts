@@ -51,14 +51,10 @@ export function toString(value: unknown): string {
     return `${ValueType.Uint8Array}${encodeBase64(value)}`;
   } else if (Array.isArray(value)) {
     const items = value.map((v) => {
-      if (typeof v === "string" || v instanceof Uint8Array || Array.isArray(v)) {
-        const s = toString(v).slice(1);
-        return String(typeof v === "string" ? ValueType.String : v instanceof Uint8Array ? ValueType.Uint8Array : ValueType.Array) + toString(s.length).slice(1) + "\n" + s;
-      } else {
-        return toString(v);
-      }
+      const s = toString(v);
+      return String(s.length) + "\n" + s;
     });
-    return `${ValueType.Array}${items.join("\n")}`;
+    return `${ValueType.Array}${items.join("")}`;
   } else if (typeof value === "object" && value !== null && Object.getPrototypeOf(value) === Object.prototype) {
     return `${ValueType.Map}${toString(Object.entries(value)).slice(1)}`;
   } else {
@@ -84,26 +80,14 @@ export function fromString<T>(string: string): T {
     case ValueType.Array: {
       const arr = [];
       for (let i = 0; i < value.length; ++i) {
-        const type = Number(value[i]) as ValueType;
-        let value_ = "";
-        while (value[++i] !== "\n") {
-          value_ += value[i];
-          if (i === value.length - 1) {
-            break;
-          }
-        }
+        const length_ = value.slice(i, value.indexOf("\n", i));
+        i += length_.length + 1;
 
-        switch (type) {
-          case ValueType.String:
-          case ValueType.Uint8Array:
-          case ValueType.Array: {
-            const len = Number(value_);
-            ++i;
-            value_ = value.slice(i, i + Number(value_));
-            i += len;
-          }
-        }
-        arr.push(fromString(`${type}${value_}`));
+        const length = Number(length_);
+        const value_ = value.slice(i, i + length);
+        i += value_.length - 1;
+
+        arr.push(fromString(value_));
       }
       return arr as T;
     }

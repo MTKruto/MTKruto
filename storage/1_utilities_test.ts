@@ -67,6 +67,10 @@ Deno.test("fromString(toString)", async (t) => {
   await t.step("Map", () => {
     eq({ a: 1, "b\na\n": 2, 1: 1 });
   });
+
+  await t.step("peer", () => {
+    eq([{ title: "" }, 123n]);
+  });
 });
 
 Deno.test("fixKey uniqueness", () => {
