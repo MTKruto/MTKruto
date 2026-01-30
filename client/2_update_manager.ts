@@ -120,12 +120,12 @@ export class UpdateManager {
     return this.#defaultDropPendingUpdates;
   }
 
-  #state: Api.updates_State | null | undefined = undefined;
+  #state: Api.updates_State | null = null;
   async #getState() {
     if (this.#mustDropPendingUpdates()) {
       return this.#state ?? null;
     }
-    if (this.#state !== undefined) {
+    if (this.#state !== null) {
       return this.#state;
     }
     const state = await this.#c.storage.getState();
@@ -413,7 +413,7 @@ export class UpdateManager {
     }
 
     const localState = await this.#getLocalState();
-    if (localState.pts + update.pts_count > update.pts) {
+    if (update.pts !== 0 && localState.pts + update.pts_count > update.pts) {
       return;
     }
 
@@ -700,10 +700,12 @@ export class UpdateManager {
             await this.#processUpdates(update, false);
           }
           if (Api.is("updates.difference", difference)) {
+            await this.#setState(difference.state);
             this.#LrecoverUpdateGap.debug("recovered from update gap");
             break;
           } else if (Api.is("updates.differenceSlice", difference)) {
             state = difference.intermediate_state;
+            await this.#setState(state);
           } else {
             unreachable();
           }
