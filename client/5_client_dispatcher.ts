@@ -85,7 +85,7 @@ export interface ClientDispatcherParams {
 }
 
 export class ClientDispatcher<C extends Context = Context> extends Composer<C> implements ClientGeneric {
-  #worker: Worker;
+  #worker: Worker | MessagePort;
   #id: string;
   #L: Logger;
   #LsignIn: Logger;
@@ -93,7 +93,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   // deno-lint-ignore no-explicit-any
   #pendingRequests = new Map<string, PromiseWithResolvers<any>>();
 
-  constructor(worker: Worker, id: string) {
+  constructor(worker: Worker | MessagePort, id: string) {
     super();
 
     this.#worker = worker;

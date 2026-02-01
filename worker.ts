@@ -25,9 +25,36 @@ import { serializeWorkerError } from "./client/0_worker_error.ts";
 
 const clientReceivers = new Map<string, ClientReceiver>();
 const logger = getLogger("MTKrutoWorker");
+const ports = new Array<MessagePort>();
 
 addEventListener("message", async (e) => {
-  const message = (e as { data: WorkerRequest | WorkerResponse }).data;
+  const message = (e as unknown as { data: WorkerRequest | WorkerResponse }).data;
+  await handleMessage(message);
+});
+
+addEventListener("connect", (e) => {
+  const connectedPorts = (e as unknown as { ports: MessagePort[] }).ports;
+  for (const port of connectedPorts) {
+    ports.push(port);
+    port.addEventListener("message", async (e) => {
+      const message = (e as unknown as { data: WorkerRequest | WorkerResponse }).data;
+      await handleMessage(message);
+    });
+    port.start();
+  }
+});
+
+function sendMessage(message: WorkerRequest | WorkerResponse) {
+  if (typeof postMessage !== "undefined") {
+    postMessage(message);
+  } else {
+    for (const port of ports) {
+      port.postMessage(message);
+    }
+  }
+}
+
+async function handleMessage(message: WorkerRequest | WorkerResponse) {
   if (message.type === "response") {
     clientReceivers.get(message.clientId)?.handleResponse(message);
     return;
@@ -72,8 +99,8 @@ addEventListener("message", async (e) => {
   }
 
   logger.debug("posting response message", response);
-  postMessage(response);
-});
+  sendMessage(response);
+}
 
 export function initClient(request: WorkerRequest): WorkerResponse {
   if (clientReceivers.has(request.clientId)) {
