@@ -483,6 +483,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#updateGapRecoveryLoop.abort();
     this.#storageWriteLoop.abort();
     this.#updateManager.closeAllChats();
+    await this.storage.commit(true);
     await this.messageStorage.commit(true);
   }
 
@@ -552,7 +553,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   });
 
   #storageWriteLoop = new AbortableLoop(async (_loop, signal) => {
-    await delay(60 * SECOND, { signal });
+    await delay(5 * SECOND, { signal });
     await this.messageStorage.commit();
     await this.storage.commit();
   }, (err) => {
