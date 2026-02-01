@@ -25,18 +25,16 @@ import type { WorkerResponse } from "./1_worker_response.ts";
 import { ClientDispatcher, type ClientDispatcherParams } from "./5_client_dispatcher.ts";
 
 export class ClientWorker {
-  #worker: Worker;
+  #worker: Worker | MessagePort;
   #clients = new Map<string, ClientDispatcher>();
   #L = getLogger("ClientWorker");
 
-  constructor(specifier: Worker);
-  constructor(specifier: string | URL, options?: WorkerOptions);
-  constructor(specifier: Worker | string | URL, options?: WorkerOptions) {
-    this.#worker = specifier instanceof Worker ? specifier : new Worker(specifier, options);
+  constructor(worker: Worker | MessagePort) {
+    this.#worker = worker;
     this.#worker.addEventListener("message", async (e) => {
-      this.#L.debug("received message from worker", e.data);
+      const message = (e as unknown as { data: WorkerRequest | WorkerResponse }).data;
+      this.#L.debug("received message from worker", message);
 
-      const message = e.data as WorkerResponse | WorkerRequest;
       if (message.type === "response") {
         this.#clients.get(message.clientId)?.handleResponse(message);
       } else if (message.type === "request") {
@@ -58,10 +56,6 @@ export class ClientWorker {
     });
   }
 
-  terminate() {
-    this.#worker.terminate();
-  }
-
   async createClient(id: string, params?: ClientDispatcherParams): Promise<ClientDispatcher> {
     if (this.#clients.has(id)) {
       throw new InputError("Client already created");
@@ -74,6 +68,15 @@ export class ClientWorker {
     } catch (err) {
       this.#clients.delete(id);
       throw err;
+    }
+    return client;
+  }
+
+  getClient(id: string): ClientDispatcher {
+    let client = this.#clients.get(id);
+    if (!client) {
+      client = new ClientDispatcher(this.#worker, id);
+      this.#clients.set(id, client);
     }
     return client;
   }

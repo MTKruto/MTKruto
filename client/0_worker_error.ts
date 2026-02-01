@@ -19,6 +19,7 @@
  */
 
 import { AccessError, ConnectionError, InputError, TLError, TransportError } from "../0_errors.ts";
+import { getLogger } from "../1_utilities.ts";
 import { TelegramError, type TelegramErrorParams } from "../3_errors.ts";
 import { constructTelegramError } from "../4_errors.ts";
 
@@ -28,7 +29,9 @@ export interface WorkerError {
   args: any;
 }
 
+const logger = getLogger("serializeWorkerError");
 export function serializeWorkerError(err: unknown): WorkerError {
+  logger.trace(err);
   if (err instanceof TelegramError) {
     const arg: TelegramErrorParams = {
       error_code: err.errorCode,

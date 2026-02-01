@@ -28,13 +28,14 @@ import type { ClientDispatcherParams } from "./5_client_dispatcher.ts";
 import { Client, type ClientParams } from "./5_client.ts";
 
 export class ClientReceiver {
+  #postMessage: typeof globalThis.postMessage;
   #id: string;
   client: Client;
   // deno-lint-ignore no-explicit-any
   #pendingRequests = new Map<string, PromiseWithResolvers<any>>();
   #L: Logger;
 
-  constructor(id: string, params: ClientDispatcherParams | undefined) {
+  constructor(postMessage: typeof globalThis.postMessage, id: string, params: ClientDispatcherParams | undefined) {
     let storage: ClientParams["storage"];
 
     const name = `.mktruto-worker.${id}`;
@@ -49,6 +50,7 @@ export class ClientReceiver {
         break;
     }
 
+    this.#postMessage = postMessage;
     this.#id = id;
     this.#L = getLogger("ClientReceiver").branch(this.#id);
     this.client = new Client({ ...params, storage });
@@ -67,7 +69,9 @@ export class ClientReceiver {
         isError: false,
         data: ctx.update,
       };
-      postMessage(response);
+
+      this.#L.debug("sending response to parent", response);
+      this.#postMessage(response);
     });
   }
 
@@ -102,8 +106,8 @@ export class ClientReceiver {
       method,
       args,
     };
-    this.#L.debug("posted message to parent", request);
-    postMessage(request);
+    this.#L.debug("sending request to parent", request);
+    this.#postMessage(request);
 
     return await promiseWithResolvers.promise;
   }
