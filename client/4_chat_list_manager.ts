@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem4, constructChatMember, constructChatP, constructChatSettings, type ID } from "../3_types.ts";
+import { type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem, constructChatMember, constructChatP, constructChatSettings, type ID } from "../3_types.ts";
 import type { CreateChannelParams, CreateGroupParams, CreateSupergroupParams, GetChatMembersParams, GetCommonChatsParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, getChatListId, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -77,7 +77,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     }
     const chats = new Array<ChatListItem>();
     for (const dialog of dialogs.dialogs) {
-      const chat = await constructChatListItem4(dialog, dialogs, [], this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
+      const chat = await constructChatListItem(dialog, dialogs, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
       chats.push(chat);
     }
     return chats;

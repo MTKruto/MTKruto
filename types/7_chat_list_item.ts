@@ -27,66 +27,12 @@ import { constructMessage, type Message, type MessageGetter } from "./6_message.
 
 export interface ChatListItem {
   chat: ChatP;
-  order: string;
-  pinned: number;
   lastMessage?: Omit<Message, "replyToMessage">;
 }
 
-export function getChatListItemOrder(lastMessage: Omit<Message, "replyToMessage"> | undefined, pinned: number): string {
-  const p = pinned === -1 ? "" : `P${100 - pinned}`;
-  if (!lastMessage) {
-    return p + "0";
-  }
-  return p + String((BigInt(Math.floor(lastMessage.date)) << 32n) + BigInt(lastMessage.id));
-}
-
-export async function constructChatListItem(chatId: number, pinned: number, lastMessageId: number, getPeer: PeerGetter, getMessage: MessageGetter): Promise<ChatListItem | null> {
-  const peer = getPeer(Api.chatIdToPeer(chatId));
-  if (peer === null) {
-    return null;
-  }
-
-  const lastMessage_ = lastMessageId > 0 ? await getMessage(chatId, lastMessageId) : null;
-  const lastMessage = lastMessage_ === null ? undefined : lastMessage_;
-
-  return cleanObject({
-    chat: peer[0],
-    order: getChatListItemOrder(lastMessage, pinned),
-    pinned,
-    lastMessage,
-  });
-}
-
-export function constructChatListItem2(entity: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden, pinned: number, lastMessage: Omit<Message, "replyToMessage"> | undefined): ChatListItem {
-  return cleanObject({
-    chat: constructChatP(entity),
-    order: getChatListItemOrder(lastMessage, pinned),
-    pinned,
-    lastMessage,
-  });
-}
-
-export function constructChatListItem3(chatId: number, pinned: number, lastMessage: Omit<Message, "replyToMessage"> | undefined, getPeer: PeerGetter): ChatListItem | null {
-  const chat = getPeer(Api.chatIdToPeer(chatId));
-  if (chat === null) {
-    return null;
-  }
-  return cleanObject({
-    chat: chat[0],
-    order: getChatListItemOrder(lastMessage, pinned),
-    pinned,
-    lastMessage,
-  });
-}
-
-export async function constructChatListItem4(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice, pinnedChats: number[], getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<ChatListItem> {
+export async function constructChatListItem(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<ChatListItem> {
   const topMessage_ = dialogs.messages.find((v) => "id" in v && v.id === dialog.top_message);
-  if (!topMessage_) {
-    unreachable();
-  }
-  const pinned = pinnedChats.indexOf(Api.peerToChatId(dialog.peer));
-  const lastMessage = await constructMessage(topMessage_, getPeer, getMessage, getStickerSetName, false);
-  const order = getChatListItemOrder(lastMessage, pinned);
+  const lastMessage = topMessage_ ? await constructMessage(topMessage_, getPeer, getMessage, getStickerSetName, false) : undefined;
   const userId = "user_id" in dialog.peer ? dialog.peer.user_id : null;
   const chatId = "chat_id" in dialog.peer ? dialog.peer.chat_id : null;
   const channelId = "channel_id" in dialog.peer ? dialog.peer.channel_id : null;
@@ -96,8 +42,6 @@ export async function constructChatListItem4(dialog: Api.Dialog, dialogs: Api.me
   }
   return cleanObject({
     chat: constructChatP(chat__),
-    order,
     lastMessage,
-    pinned,
   });
 }
