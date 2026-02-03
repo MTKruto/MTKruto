@@ -868,6 +868,14 @@ export abstract class ClientGeneric {
   abstract getChats(params?: GetChatsParams): Promise<ChatListItem[]>;
 
   /**
+   * Get pinned chats from a chat list. User-only.
+   *
+   * @method ch
+   * @param from The chat list to get the pinned chats from. Defaults to main.
+   */
+  abstract getPinnedChats(from?: "archived" | "main"): Promise<ChatListItem[]>;
+
+  /**
    * Get a chat.
    *
    * @method ch

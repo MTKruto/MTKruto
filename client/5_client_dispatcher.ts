@@ -1233,6 +1233,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Get pinned chats from a chat list. User-only.
+   *
+   * @method ch
+   * @param from The chat list to get the pinned chats from. Defaults to main.
+   */
+  async getPinnedChats(from?: "archived" | "main"): Promise<ChatListItem[]> {
+    return await this.#dispatch("getPinnedChats", from);
+  }
+
+  /**
    * Get a chat.
    *
    * @method ch

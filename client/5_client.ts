@@ -2203,6 +2203,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Get pinned chats from a chat list. User-only.
+   *
+   * @method ch
+   * @param from The chat list to get the pinned chats from. Defaults to main.
+   */
+  async getPinnedChats(from?: "archived" | "main"): Promise<ChatListItem[]> {
+    return await this.#chatListManager.getPinnedChats(from);
+  }
+
+  /**
    * Get a chat.
    *
    * @method ch

@@ -30,7 +30,7 @@ export interface ChatListItem {
   lastMessage?: Omit<Message, "replyToMessage">;
 }
 
-export async function constructChatListItem(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<ChatListItem> {
+export async function constructChatListItem(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice | Api.messages_peerDialogs, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<ChatListItem> {
   const topMessage_ = dialogs.messages.find((v) => "id" in v && v.id === dialog.top_message);
   const lastMessage = topMessage_ ? await constructMessage(topMessage_, getPeer, getMessage, getStickerSetName, false) : undefined;
   const userId = "user_id" in dialog.peer ? dialog.peer.user_id : null;

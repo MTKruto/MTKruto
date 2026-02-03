@@ -83,6 +83,18 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     return chats;
   }
 
+  async getPinnedChats(from: "archived" | "main" = "main"): Promise<ChatListItem[]> {
+    this.#c.storage.assertUser("getPinnedChats");
+    const listId = getChatListId(from);
+    const dialogs = await this.#c.invoke({ _: "messages.getPinnedDialogs", folder_id: listId });
+    const chats = new Array<ChatListItem>();
+    for (const dialog of dialogs.dialogs) {
+      const chat = await constructChatListItem(dialog, dialogs, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
+      chats.push(chat);
+    }
+    return chats;
+  }
+
   canHandleUpdate(update: Api.Update): update is ChatListManagerUpdate {
     return Api.isOneOf(chatListManagerUpdates, update);
   }
