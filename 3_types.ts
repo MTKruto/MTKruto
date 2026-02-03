@@ -28,6 +28,7 @@ export * from "./types/0_callback_query_answer.ts";
 export * from "./types/0_callback_query_question.ts";
 export * from "./types/0_chat_action.ts";
 export * from "./types/0_chat_administrator_rights.ts";
+export * from "./types/0_chat_folder.ts";
 export * from "./types/0_chat_member_rights.ts";
 export * from "./types/0_chat_photo.ts";
 export * from "./types/0_code_check_result.ts";

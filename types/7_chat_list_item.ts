@@ -21,13 +21,19 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import { type ChatFolder, constructChatFolder } from "./0_chat_folder.ts";
 import { type ChatP, constructChatP, type PeerGetter } from "./1_chat_p.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
 import { constructMessage, type Message, type MessageGetter } from "./6_message.ts";
 
 export interface ChatListItem {
+  folder?: ChatFolder;
   chat: ChatP;
   lastMessage?: Omit<Message, "replyToMessage">;
+  unreadChatCount?: number;
+  unreadMessageCount?: number;
+  unreadMutedChatCount?: number;
+  unreadMutedMessageCount?: number;
 }
 
 export async function constructChatListItem(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice | Api.messages_peerDialogs, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<ChatListItem> {
@@ -40,8 +46,26 @@ export async function constructChatListItem(dialog: Api.Dialog, dialogs: Api.mes
   if (!chat__) {
     unreachable();
   }
+
+  let folder: ChatFolder | undefined;
+  let unreadChatCount: number | undefined;
+  let unreadMessageCount: number | undefined;
+  let unreadMutedChatCount: number | undefined;
+  let unreadMutedMessageCount: number | undefined;
+  if (Api.is("dialogFolder", dialog)) {
+    folder = constructChatFolder(dialog.folder);
+    unreadChatCount = dialog.unread_unmuted_peers_count;
+    unreadMessageCount = dialog.unread_unmuted_messages_count;
+    unreadMutedChatCount = dialog.unread_muted_peers_count;
+    unreadMutedMessageCount = dialog.unread_muted_messages_count;
+  }
   return cleanObject({
+    folder,
     chat: constructChatP(chat__),
     lastMessage,
+    unreadChatCount,
+    unreadMessageCount,
+    unreadMutedChatCount,
+    unreadMutedMessageCount,
   });
 }
