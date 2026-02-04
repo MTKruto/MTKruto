@@ -24,7 +24,7 @@ import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } fr
 import { Api } from "../2_tl.ts";
 import { PackShortNameInvalid } from "../3_errors.ts";
 import { getDc } from "../3_transport.ts";
-import { constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputMedia, isMessageType, type PollOption, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputMedia, isMessageType, type MessageList, type PollOption, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
@@ -1321,7 +1321,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     await this.#c.invoke({ _: "messages.setTyping", peer: await this.#c.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId }, { businessConnectionId: params?.businessConnectionId });
   }
 
-  async searchMessages(params?: SearchMessagesParams) {
+  async searchMessages(params?: SearchMessagesParams): Promise<MessageList> {
     this.#c.storage.assertUser("searchMessages");
     const peer: Api.InputPeer = params?.chatId === undefined ? { _: "inputPeerEmpty" } : await this.#c.getInputPeer(params.chatId);
     const query = params?.query ?? "";
@@ -1343,12 +1343,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (!("messages" in result)) {
       unreachable();
     }
+    const count = "count" in result ? result.count : result.messages.length;
     const messages = new Array<Message>();
     for (const message_ of result.messages) {
       const message = await this.constructMessage(message_, false);
       messages.push(message);
     }
-    return messages;
+    return { messages, count };
   }
 
   async blockUser(userId: ID) {
