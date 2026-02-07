@@ -117,6 +117,11 @@ export class TLReader {
       return primitive;
     }
     const id = this.readInt32(false);
+    if (id === BOOL_TRUE) {
+      return true;
+    } else if (id === BOOL_FALSE) {
+      return false;
+    }
     if (name === X) {
       const typeName = schema.identifierToName[id];
       if (!typeName) {
