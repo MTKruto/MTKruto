@@ -597,6 +597,7 @@ export interface user {
   bot_business?: true;
   bot_has_main_app?: true;
   bot_forum_view?: true;
+  bot_forum_can_manage_topics?: true;
   id: bigint;
   access_hash?: bigint;
   first_name?: string;
@@ -761,6 +762,7 @@ export interface channelForbidden {
   _: "channelForbidden";
   broadcast?: true;
   megagroup?: true;
+  monoforum?: true;
   id: bigint;
   access_hash: bigint;
   title: string;
@@ -1543,6 +1545,7 @@ export interface messageActionStarGiftUnique {
   prepaid_upgrade?: true;
   assigned?: true;
   from_offer?: true;
+  craft?: true;
   gift: StarGift;
   can_export_at?: number;
   transfer_stars?: bigint;
@@ -1553,6 +1556,7 @@ export interface messageActionStarGiftUnique {
   can_transfer_at?: number;
   can_resell_at?: number;
   drop_original_details_stars?: bigint;
+  can_craft_at?: number;
 }
 
 /** https://core.telegram.org/constructor/messageActionPaidMessagesRefunded */
@@ -1647,6 +1651,18 @@ export interface messageActionStarGiftPurchaseOfferDeclined {
   expired?: true;
   gift: StarGift;
   price: StarsAmount;
+}
+
+/** https://core.telegram.org/constructor/messageActionNewCreatorPending */
+export interface messageActionNewCreatorPending {
+  _: "messageActionNewCreatorPending";
+  new_creator_id: bigint;
+}
+
+/** https://core.telegram.org/constructor/messageActionChangeCreator */
+export interface messageActionChangeCreator {
+  _: "messageActionChangeCreator";
+  new_creator_id: bigint;
 }
 
 /** https://core.telegram.org/constructor/dialog */
@@ -3420,6 +3436,11 @@ export interface updateEmojiGameInfo {
   info: messages_EmojiGameInfo;
 }
 
+/** https://core.telegram.org/constructor/updateStarGiftCraftFail */
+export interface updateStarGiftCraftFail {
+  _: "updateStarGiftCraftFail";
+}
+
 /** https://core.telegram.org/constructor/updates.state */
 export interface updates_state {
   _: "updates.state";
@@ -4716,12 +4737,14 @@ export interface botInfo {
 /** https://core.telegram.org/constructor/keyboardButton */
 export interface keyboardButton {
   _: "keyboardButton";
+  style?: KeyboardButtonStyle;
   text: string;
 }
 
 /** https://core.telegram.org/constructor/keyboardButtonUrl */
 export interface keyboardButtonUrl {
   _: "keyboardButtonUrl";
+  style?: KeyboardButtonStyle;
   text: string;
   url: string;
 }
@@ -4730,6 +4753,7 @@ export interface keyboardButtonUrl {
 export interface keyboardButtonCallback {
   _: "keyboardButtonCallback";
   requires_password?: true;
+  style?: KeyboardButtonStyle;
   text: string;
   data: Uint8Array<ArrayBuffer>;
 }
@@ -4737,12 +4761,14 @@ export interface keyboardButtonCallback {
 /** https://core.telegram.org/constructor/keyboardButtonRequestPhone */
 export interface keyboardButtonRequestPhone {
   _: "keyboardButtonRequestPhone";
+  style?: KeyboardButtonStyle;
   text: string;
 }
 
 /** https://core.telegram.org/constructor/keyboardButtonRequestGeoLocation */
 export interface keyboardButtonRequestGeoLocation {
   _: "keyboardButtonRequestGeoLocation";
+  style?: KeyboardButtonStyle;
   text: string;
 }
 
@@ -4750,6 +4776,7 @@ export interface keyboardButtonRequestGeoLocation {
 export interface keyboardButtonSwitchInline {
   _: "keyboardButtonSwitchInline";
   same_peer?: true;
+  style?: KeyboardButtonStyle;
   text: string;
   query: string;
   peer_types?: Array<InlineQueryPeerType>;
@@ -4758,18 +4785,21 @@ export interface keyboardButtonSwitchInline {
 /** https://core.telegram.org/constructor/keyboardButtonGame */
 export interface keyboardButtonGame {
   _: "keyboardButtonGame";
+  style?: KeyboardButtonStyle;
   text: string;
 }
 
 /** https://core.telegram.org/constructor/keyboardButtonBuy */
 export interface keyboardButtonBuy {
   _: "keyboardButtonBuy";
+  style?: KeyboardButtonStyle;
   text: string;
 }
 
 /** https://core.telegram.org/constructor/keyboardButtonUrlAuth */
 export interface keyboardButtonUrlAuth {
   _: "keyboardButtonUrlAuth";
+  style?: KeyboardButtonStyle;
   text: string;
   fwd_text?: string;
   url: string;
@@ -4780,6 +4810,7 @@ export interface keyboardButtonUrlAuth {
 export interface inputKeyboardButtonUrlAuth {
   _: "inputKeyboardButtonUrlAuth";
   request_write_access?: true;
+  style?: KeyboardButtonStyle;
   text: string;
   fwd_text?: string;
   url: string;
@@ -4789,6 +4820,7 @@ export interface inputKeyboardButtonUrlAuth {
 /** https://core.telegram.org/constructor/keyboardButtonRequestPoll */
 export interface keyboardButtonRequestPoll {
   _: "keyboardButtonRequestPoll";
+  style?: KeyboardButtonStyle;
   quiz?: boolean;
   text: string;
 }
@@ -4796,6 +4828,7 @@ export interface keyboardButtonRequestPoll {
 /** https://core.telegram.org/constructor/inputKeyboardButtonUserProfile */
 export interface inputKeyboardButtonUserProfile {
   _: "inputKeyboardButtonUserProfile";
+  style?: KeyboardButtonStyle;
   text: string;
   user_id: InputUser;
 }
@@ -4803,6 +4836,7 @@ export interface inputKeyboardButtonUserProfile {
 /** https://core.telegram.org/constructor/keyboardButtonUserProfile */
 export interface keyboardButtonUserProfile {
   _: "keyboardButtonUserProfile";
+  style?: KeyboardButtonStyle;
   text: string;
   user_id: bigint;
 }
@@ -4810,6 +4844,7 @@ export interface keyboardButtonUserProfile {
 /** https://core.telegram.org/constructor/keyboardButtonWebView */
 export interface keyboardButtonWebView {
   _: "keyboardButtonWebView";
+  style?: KeyboardButtonStyle;
   text: string;
   url: string;
 }
@@ -4817,6 +4852,7 @@ export interface keyboardButtonWebView {
 /** https://core.telegram.org/constructor/keyboardButtonSimpleWebView */
 export interface keyboardButtonSimpleWebView {
   _: "keyboardButtonSimpleWebView";
+  style?: KeyboardButtonStyle;
   text: string;
   url: string;
 }
@@ -4824,6 +4860,7 @@ export interface keyboardButtonSimpleWebView {
 /** https://core.telegram.org/constructor/keyboardButtonRequestPeer */
 export interface keyboardButtonRequestPeer {
   _: "keyboardButtonRequestPeer";
+  style?: KeyboardButtonStyle;
   text: string;
   button_id: number;
   peer_type: RequestPeerType;
@@ -4836,6 +4873,7 @@ export interface inputKeyboardButtonRequestPeer {
   name_requested?: true;
   username_requested?: true;
   photo_requested?: true;
+  style?: KeyboardButtonStyle;
   text: string;
   button_id: number;
   peer_type: RequestPeerType;
@@ -4845,6 +4883,7 @@ export interface inputKeyboardButtonRequestPeer {
 /** https://core.telegram.org/constructor/keyboardButtonCopy */
 export interface keyboardButtonCopy {
   _: "keyboardButtonCopy";
+  style?: KeyboardButtonStyle;
   text: string;
   copy_text: string;
 }
@@ -8047,14 +8086,19 @@ export interface messages_searchCounter {
 export interface urlAuthResultRequest {
   _: "urlAuthResultRequest";
   request_write_access?: true;
+  request_phone_number?: true;
   bot: User;
   domain: string;
+  browser?: string;
+  platform?: string;
+  ip?: string;
+  region?: string;
 }
 
 /** https://core.telegram.org/constructor/urlAuthResultAccepted */
 export interface urlAuthResultAccepted {
   _: "urlAuthResultAccepted";
-  url: string;
+  url?: string;
 }
 
 /** https://core.telegram.org/constructor/urlAuthResultDefault */
@@ -11428,6 +11472,8 @@ export interface starGiftUnique {
   require_premium?: true;
   resale_ton_only?: true;
   theme_available?: true;
+  burned?: true;
+  crafted?: true;
   id: bigint;
   gift_id: bigint;
   title: string;
@@ -11449,6 +11495,7 @@ export interface starGiftUnique {
   peer_color?: PeerColor;
   host_id?: Peer;
   offer_min_stars?: number;
+  craft_chance_permille?: number;
 }
 
 /** https://core.telegram.org/constructor/payments.starGiftsNotModified */
@@ -11605,9 +11652,10 @@ export interface botVerification {
 /** https://core.telegram.org/constructor/starGiftAttributeModel */
 export interface starGiftAttributeModel {
   _: "starGiftAttributeModel";
+  crafted?: true;
   name: string;
   document: Document;
-  rarity_permille: number;
+  rarity: StarGiftAttributeRarity;
 }
 
 /** https://core.telegram.org/constructor/starGiftAttributePattern */
@@ -11615,7 +11663,7 @@ export interface starGiftAttributePattern {
   _: "starGiftAttributePattern";
   name: string;
   document: Document;
-  rarity_permille: number;
+  rarity: StarGiftAttributeRarity;
 }
 
 /** https://core.telegram.org/constructor/starGiftAttributeBackdrop */
@@ -11627,7 +11675,7 @@ export interface starGiftAttributeBackdrop {
   edge_color: number;
   pattern_color: number;
   text_color: number;
-  rarity_permille: number;
+  rarity: StarGiftAttributeRarity;
 }
 
 /** https://core.telegram.org/constructor/starGiftAttributeOriginalDetails */
@@ -11701,6 +11749,7 @@ export interface savedStarGift {
   prepaid_upgrade_hash?: string;
   drop_original_details_stars?: bigint;
   gift_num?: number;
+  can_craft_at?: number;
 }
 
 /** https://core.telegram.org/constructor/payments.savedStarGifts */
@@ -12357,14 +12406,47 @@ export interface messages_emojiGameDiceInfo {
   plays_left?: number;
 }
 
-/** https://core.telegram.org/method/invokeWithBusinessConnectionPrefix */
+/** https://core.telegram.org/constructor/starGiftAttributeRarity */
+export interface starGiftAttributeRarity {
+  _: "starGiftAttributeRarity";
+  permille: number;
+}
+
+/** https://core.telegram.org/constructor/starGiftAttributeRarityUncommon */
+export interface starGiftAttributeRarityUncommon {
+  _: "starGiftAttributeRarityUncommon";
+}
+
+/** https://core.telegram.org/constructor/starGiftAttributeRarityRare */
+export interface starGiftAttributeRarityRare {
+  _: "starGiftAttributeRarityRare";
+}
+
+/** https://core.telegram.org/constructor/starGiftAttributeRarityEpic */
+export interface starGiftAttributeRarityEpic {
+  _: "starGiftAttributeRarityEpic";
+}
+
+/** https://core.telegram.org/constructor/starGiftAttributeRarityLegendary */
+export interface starGiftAttributeRarityLegendary {
+  _: "starGiftAttributeRarityLegendary";
+}
+
+/** https://core.telegram.org/constructor/keyboardButtonStyle */
+export interface keyboardButtonStyle {
+  _: "keyboardButtonStyle";
+  bg_primary?: true;
+  bg_danger?: true;
+  bg_success?: true;
+  icon?: bigint;
+}
+
 export interface invokeWithBusinessConnectionPrefix {
   _: "invokeWithBusinessConnectionPrefix";
   connection_id: string;
   [R]?: Error;
 }
 
-/** https://core.telegram.org/method/invokeWithGooglePlayIntegrityPrefix */
 export interface invokeWithGooglePlayIntegrityPrefix {
   _: "invokeWithGooglePlayIntegrityPrefix";
   nonce: string;
@@ -12372,7 +12454,6 @@ export interface invokeWithGooglePlayIntegrityPrefix {
   [R]?: Error;
 }
 
-/** https://core.telegram.org/method/invokeWithApnsSecretPrefix */
 export interface invokeWithApnsSecretPrefix {
   _: "invokeWithApnsSecretPrefix";
   nonce: string;
@@ -12380,14 +12461,12 @@ export interface invokeWithApnsSecretPrefix {
   [R]?: Error;
 }
 
-/** https://core.telegram.org/method/invokeWithReCaptchaPrefix */
 export interface invokeWithReCaptchaPrefix {
   _: "invokeWithReCaptchaPrefix";
   token: string;
   [R]?: Error;
 }
 
-/** https://core.telegram.org/method/invokeAfterMsg */
 export interface invokeAfterMsg<T> {
   _: "invokeAfterMsg";
   msg_id: bigint;
@@ -12395,7 +12474,6 @@ export interface invokeAfterMsg<T> {
   [R]?: ReturnType<T>;
 }
 
-/** https://core.telegram.org/method/invokeAfterMsgs */
 export interface invokeAfterMsgs<T> {
   _: "invokeAfterMsgs";
   msg_ids: Array<bigint>;
@@ -12403,7 +12481,6 @@ export interface invokeAfterMsgs<T> {
   [R]?: ReturnType<T>;
 }
 
-/** https://core.telegram.org/method/initConnection */
 export interface initConnection<T> {
   _: "initConnection";
   api_id: number;
@@ -12419,7 +12496,6 @@ export interface initConnection<T> {
   [R]?: ReturnType<T>;
 }
 
-/** https://core.telegram.org/method/invokeWithLayer */
 export interface invokeWithLayer<T> {
   _: "invokeWithLayer";
   layer: number;
@@ -12427,14 +12503,12 @@ export interface invokeWithLayer<T> {
   [R]?: ReturnType<T>;
 }
 
-/** https://core.telegram.org/method/invokeWithoutUpdates */
 export interface invokeWithoutUpdates<T> {
   _: "invokeWithoutUpdates";
   query: T;
   [R]?: ReturnType<T>;
 }
 
-/** https://core.telegram.org/method/invokeWithMessagesRange */
 export interface invokeWithMessagesRange<T> {
   _: "invokeWithMessagesRange";
   range: MessageRange;
@@ -12442,7 +12516,6 @@ export interface invokeWithMessagesRange<T> {
   [R]?: ReturnType<T>;
 }
 
-/** https://core.telegram.org/method/invokeWithTakeout */
 export interface invokeWithTakeout<T> {
   _: "invokeWithTakeout";
   takeout_id: bigint;
@@ -12450,7 +12523,6 @@ export interface invokeWithTakeout<T> {
   [R]?: ReturnType<T>;
 }
 
-/** https://core.telegram.org/method/invokeWithBusinessConnection */
 export interface invokeWithBusinessConnection<T> {
   _: "invokeWithBusinessConnection";
   connection_id: string;
@@ -12458,7 +12530,6 @@ export interface invokeWithBusinessConnection<T> {
   [R]?: ReturnType<T>;
 }
 
-/** https://core.telegram.org/method/invokeWithGooglePlayIntegrity */
 export interface invokeWithGooglePlayIntegrity<T> {
   _: "invokeWithGooglePlayIntegrity";
   nonce: string;
@@ -12467,7 +12538,6 @@ export interface invokeWithGooglePlayIntegrity<T> {
   [R]?: ReturnType<T>;
 }
 
-/** https://core.telegram.org/method/invokeWithApnsSecret */
 export interface invokeWithApnsSecret<T> {
   _: "invokeWithApnsSecret";
   nonce: string;
@@ -12476,7 +12546,6 @@ export interface invokeWithApnsSecret<T> {
   [R]?: ReturnType<T>;
 }
 
-/** https://core.telegram.org/method/invokeWithReCaptcha */
 export interface invokeWithReCaptcha<T> {
   _: "invokeWithReCaptcha";
   token: string;
@@ -12484,7 +12553,6 @@ export interface invokeWithReCaptcha<T> {
   [R]?: ReturnType<T>;
 }
 
-/** https://core.telegram.org/method/auth.sendCode */
 export interface auth_sendCode {
   _: "auth.sendCode";
   phone_number: string;
@@ -12494,7 +12562,6 @@ export interface auth_sendCode {
   [R]?: auth_SentCode;
 }
 
-/** https://core.telegram.org/method/auth.signUp */
 export interface auth_signUp {
   _: "auth.signUp";
   no_joined_notifications?: true;
@@ -12505,7 +12572,6 @@ export interface auth_signUp {
   [R]?: auth_Authorization;
 }
 
-/** https://core.telegram.org/method/auth.signIn */
 export interface auth_signIn {
   _: "auth.signIn";
   phone_number: string;
@@ -12515,26 +12581,22 @@ export interface auth_signIn {
   [R]?: auth_Authorization;
 }
 
-/** https://core.telegram.org/method/auth.logOut */
 export interface auth_logOut {
   _: "auth.logOut";
   [R]?: auth_LoggedOut;
 }
 
-/** https://core.telegram.org/method/auth.resetAuthorizations */
 export interface auth_resetAuthorizations {
   _: "auth.resetAuthorizations";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/auth.exportAuthorization */
 export interface auth_exportAuthorization {
   _: "auth.exportAuthorization";
   dc_id: number;
   [R]?: auth_ExportedAuthorization;
 }
 
-/** https://core.telegram.org/method/auth.importAuthorization */
 export interface auth_importAuthorization {
   _: "auth.importAuthorization";
   id: bigint;
@@ -12542,7 +12604,6 @@ export interface auth_importAuthorization {
   [R]?: auth_Authorization;
 }
 
-/** https://core.telegram.org/method/auth.bindTempAuthKey */
 export interface auth_bindTempAuthKey {
   _: "auth.bindTempAuthKey";
   perm_auth_key_id: bigint;
@@ -12552,7 +12613,6 @@ export interface auth_bindTempAuthKey {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/auth.importBotAuthorization */
 export interface auth_importBotAuthorization {
   _: "auth.importBotAuthorization";
   flags: number;
@@ -12562,20 +12622,17 @@ export interface auth_importBotAuthorization {
   [R]?: auth_Authorization;
 }
 
-/** https://core.telegram.org/method/auth.checkPassword */
 export interface auth_checkPassword {
   _: "auth.checkPassword";
   password: InputCheckPasswordSRP;
   [R]?: auth_Authorization;
 }
 
-/** https://core.telegram.org/method/auth.requestPasswordRecovery */
 export interface auth_requestPasswordRecovery {
   _: "auth.requestPasswordRecovery";
   [R]?: auth_PasswordRecovery;
 }
 
-/** https://core.telegram.org/method/auth.recoverPassword */
 export interface auth_recoverPassword {
   _: "auth.recoverPassword";
   code: string;
@@ -12583,7 +12640,6 @@ export interface auth_recoverPassword {
   [R]?: auth_Authorization;
 }
 
-/** https://core.telegram.org/method/auth.resendCode */
 export interface auth_resendCode {
   _: "auth.resendCode";
   phone_number: string;
@@ -12592,7 +12648,6 @@ export interface auth_resendCode {
   [R]?: auth_SentCode;
 }
 
-/** https://core.telegram.org/method/auth.cancelCode */
 export interface auth_cancelCode {
   _: "auth.cancelCode";
   phone_number: string;
@@ -12600,14 +12655,12 @@ export interface auth_cancelCode {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/auth.dropTempAuthKeys */
 export interface auth_dropTempAuthKeys {
   _: "auth.dropTempAuthKeys";
   except_auth_keys: Array<bigint>;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/auth.exportLoginToken */
 export interface auth_exportLoginToken {
   _: "auth.exportLoginToken";
   api_id: number;
@@ -12616,28 +12669,24 @@ export interface auth_exportLoginToken {
   [R]?: auth_LoginToken;
 }
 
-/** https://core.telegram.org/method/auth.importLoginToken */
 export interface auth_importLoginToken {
   _: "auth.importLoginToken";
   token: Uint8Array<ArrayBuffer>;
   [R]?: auth_LoginToken;
 }
 
-/** https://core.telegram.org/method/auth.acceptLoginToken */
 export interface auth_acceptLoginToken {
   _: "auth.acceptLoginToken";
   token: Uint8Array<ArrayBuffer>;
   [R]?: Authorization;
 }
 
-/** https://core.telegram.org/method/auth.checkRecoveryPassword */
 export interface auth_checkRecoveryPassword {
   _: "auth.checkRecoveryPassword";
   code: string;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/auth.importWebTokenAuthorization */
 export interface auth_importWebTokenAuthorization {
   _: "auth.importWebTokenAuthorization";
   api_id: number;
@@ -12646,7 +12695,6 @@ export interface auth_importWebTokenAuthorization {
   [R]?: auth_Authorization;
 }
 
-/** https://core.telegram.org/method/auth.requestFirebaseSms */
 export interface auth_requestFirebaseSms {
   _: "auth.requestFirebaseSms";
   phone_number: string;
@@ -12657,7 +12705,6 @@ export interface auth_requestFirebaseSms {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/auth.resetLoginEmail */
 export interface auth_resetLoginEmail {
   _: "auth.resetLoginEmail";
   phone_number: string;
@@ -12665,7 +12712,6 @@ export interface auth_resetLoginEmail {
   [R]?: auth_SentCode;
 }
 
-/** https://core.telegram.org/method/auth.reportMissingCode */
 export interface auth_reportMissingCode {
   _: "auth.reportMissingCode";
   phone_number: string;
@@ -12674,7 +12720,6 @@ export interface auth_reportMissingCode {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/auth.checkPaidAuth */
 export interface auth_checkPaidAuth {
   _: "auth.checkPaidAuth";
   phone_number: string;
@@ -12683,7 +12728,6 @@ export interface auth_checkPaidAuth {
   [R]?: auth_SentCode;
 }
 
-/** https://core.telegram.org/method/auth.initPasskeyLogin */
 export interface auth_initPasskeyLogin {
   _: "auth.initPasskeyLogin";
   api_id: number;
@@ -12691,7 +12735,6 @@ export interface auth_initPasskeyLogin {
   [R]?: auth_PasskeyLoginOptions;
 }
 
-/** https://core.telegram.org/method/auth.finishPasskeyLogin */
 export interface auth_finishPasskeyLogin {
   _: "auth.finishPasskeyLogin";
   credential: InputPasskeyCredential;
@@ -12700,7 +12743,6 @@ export interface auth_finishPasskeyLogin {
   [R]?: auth_Authorization;
 }
 
-/** https://core.telegram.org/method/account.registerDevice */
 export interface account_registerDevice {
   _: "account.registerDevice";
   no_muted?: true;
@@ -12712,7 +12754,6 @@ export interface account_registerDevice {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.unregisterDevice */
 export interface account_unregisterDevice {
   _: "account.unregisterDevice";
   token_type: number;
@@ -12721,7 +12762,6 @@ export interface account_unregisterDevice {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.updateNotifySettings */
 export interface account_updateNotifySettings {
   _: "account.updateNotifySettings";
   peer: InputNotifyPeer;
@@ -12729,20 +12769,17 @@ export interface account_updateNotifySettings {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getNotifySettings */
 export interface account_getNotifySettings {
   _: "account.getNotifySettings";
   peer: InputNotifyPeer;
   [R]?: PeerNotifySettings;
 }
 
-/** https://core.telegram.org/method/account.resetNotifySettings */
 export interface account_resetNotifySettings {
   _: "account.resetNotifySettings";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.updateProfile */
 export interface account_updateProfile {
   _: "account.updateProfile";
   first_name?: string;
@@ -12751,21 +12788,18 @@ export interface account_updateProfile {
   [R]?: User;
 }
 
-/** https://core.telegram.org/method/account.updateStatus */
 export interface account_updateStatus {
   _: "account.updateStatus";
   offline: boolean;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getWallPapers */
 export interface account_getWallPapers {
   _: "account.getWallPapers";
   hash: bigint;
   [R]?: account_WallPapers;
 }
 
-/** https://core.telegram.org/method/account.reportPeer */
 export interface account_reportPeer {
   _: "account.reportPeer";
   peer: InputPeer;
@@ -12774,28 +12808,24 @@ export interface account_reportPeer {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.checkUsername */
 export interface account_checkUsername {
   _: "account.checkUsername";
   username: string;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.updateUsername */
 export interface account_updateUsername {
   _: "account.updateUsername";
   username: string;
   [R]?: User;
 }
 
-/** https://core.telegram.org/method/account.getPrivacy */
 export interface account_getPrivacy {
   _: "account.getPrivacy";
   key: InputPrivacyKey;
   [R]?: account_PrivacyRules;
 }
 
-/** https://core.telegram.org/method/account.setPrivacy */
 export interface account_setPrivacy {
   _: "account.setPrivacy";
   key: InputPrivacyKey;
@@ -12803,7 +12833,6 @@ export interface account_setPrivacy {
   [R]?: account_PrivacyRules;
 }
 
-/** https://core.telegram.org/method/account.deleteAccount */
 export interface account_deleteAccount {
   _: "account.deleteAccount";
   reason: string;
@@ -12811,20 +12840,17 @@ export interface account_deleteAccount {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getAccountTTL */
 export interface account_getAccountTTL {
   _: "account.getAccountTTL";
   [R]?: AccountDaysTTL;
 }
 
-/** https://core.telegram.org/method/account.setAccountTTL */
 export interface account_setAccountTTL {
   _: "account.setAccountTTL";
   ttl: AccountDaysTTL;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.sendChangePhoneCode */
 export interface account_sendChangePhoneCode {
   _: "account.sendChangePhoneCode";
   phone_number: string;
@@ -12832,7 +12858,6 @@ export interface account_sendChangePhoneCode {
   [R]?: auth_SentCode;
 }
 
-/** https://core.telegram.org/method/account.changePhone */
 export interface account_changePhone {
   _: "account.changePhone";
   phone_number: string;
@@ -12841,40 +12866,34 @@ export interface account_changePhone {
   [R]?: User;
 }
 
-/** https://core.telegram.org/method/account.updateDeviceLocked */
 export interface account_updateDeviceLocked {
   _: "account.updateDeviceLocked";
   period: number;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getAuthorizations */
 export interface account_getAuthorizations {
   _: "account.getAuthorizations";
   [R]?: account_Authorizations;
 }
 
-/** https://core.telegram.org/method/account.resetAuthorization */
 export interface account_resetAuthorization {
   _: "account.resetAuthorization";
   hash: bigint;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getPassword */
 export interface account_getPassword {
   _: "account.getPassword";
   [R]?: account_Password;
 }
 
-/** https://core.telegram.org/method/account.getPasswordSettings */
 export interface account_getPasswordSettings {
   _: "account.getPasswordSettings";
   password: InputCheckPasswordSRP;
   [R]?: account_PasswordSettings;
 }
 
-/** https://core.telegram.org/method/account.updatePasswordSettings */
 export interface account_updatePasswordSettings {
   _: "account.updatePasswordSettings";
   password: InputCheckPasswordSRP;
@@ -12882,7 +12901,6 @@ export interface account_updatePasswordSettings {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.sendConfirmPhoneCode */
 export interface account_sendConfirmPhoneCode {
   _: "account.sendConfirmPhoneCode";
   hash: string;
@@ -12890,7 +12908,6 @@ export interface account_sendConfirmPhoneCode {
   [R]?: auth_SentCode;
 }
 
-/** https://core.telegram.org/method/account.confirmPhone */
 export interface account_confirmPhone {
   _: "account.confirmPhone";
   phone_code_hash: string;
@@ -12898,7 +12915,6 @@ export interface account_confirmPhone {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getTmpPassword */
 export interface account_getTmpPassword {
   _: "account.getTmpPassword";
   password: InputCheckPasswordSRP;
@@ -12906,39 +12922,33 @@ export interface account_getTmpPassword {
   [R]?: account_TmpPassword;
 }
 
-/** https://core.telegram.org/method/account.getWebAuthorizations */
 export interface account_getWebAuthorizations {
   _: "account.getWebAuthorizations";
   [R]?: account_WebAuthorizations;
 }
 
-/** https://core.telegram.org/method/account.resetWebAuthorization */
 export interface account_resetWebAuthorization {
   _: "account.resetWebAuthorization";
   hash: bigint;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.resetWebAuthorizations */
 export interface account_resetWebAuthorizations {
   _: "account.resetWebAuthorizations";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getAllSecureValues */
 export interface account_getAllSecureValues {
   _: "account.getAllSecureValues";
   [R]?: Array<SecureValue>;
 }
 
-/** https://core.telegram.org/method/account.getSecureValue */
 export interface account_getSecureValue {
   _: "account.getSecureValue";
   types: Array<SecureValueType>;
   [R]?: Array<SecureValue>;
 }
 
-/** https://core.telegram.org/method/account.saveSecureValue */
 export interface account_saveSecureValue {
   _: "account.saveSecureValue";
   value: InputSecureValue;
@@ -12946,14 +12956,12 @@ export interface account_saveSecureValue {
   [R]?: SecureValue;
 }
 
-/** https://core.telegram.org/method/account.deleteSecureValue */
 export interface account_deleteSecureValue {
   _: "account.deleteSecureValue";
   types: Array<SecureValueType>;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getAuthorizationForm */
 export interface account_getAuthorizationForm {
   _: "account.getAuthorizationForm";
   bot_id: bigint;
@@ -12962,7 +12970,6 @@ export interface account_getAuthorizationForm {
   [R]?: account_AuthorizationForm;
 }
 
-/** https://core.telegram.org/method/account.acceptAuthorization */
 export interface account_acceptAuthorization {
   _: "account.acceptAuthorization";
   bot_id: bigint;
@@ -12973,7 +12980,6 @@ export interface account_acceptAuthorization {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.sendVerifyPhoneCode */
 export interface account_sendVerifyPhoneCode {
   _: "account.sendVerifyPhoneCode";
   phone_number: string;
@@ -12981,7 +12987,6 @@ export interface account_sendVerifyPhoneCode {
   [R]?: auth_SentCode;
 }
 
-/** https://core.telegram.org/method/account.verifyPhone */
 export interface account_verifyPhone {
   _: "account.verifyPhone";
   phone_number: string;
@@ -12990,7 +12995,6 @@ export interface account_verifyPhone {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.sendVerifyEmailCode */
 export interface account_sendVerifyEmailCode {
   _: "account.sendVerifyEmailCode";
   purpose: EmailVerifyPurpose;
@@ -12998,7 +13002,6 @@ export interface account_sendVerifyEmailCode {
   [R]?: account_SentEmailCode;
 }
 
-/** https://core.telegram.org/method/account.verifyEmail */
 export interface account_verifyEmail {
   _: "account.verifyEmail";
   purpose: EmailVerifyPurpose;
@@ -13006,7 +13009,6 @@ export interface account_verifyEmail {
   [R]?: account_EmailVerified;
 }
 
-/** https://core.telegram.org/method/account.initTakeoutSession */
 export interface account_initTakeoutSession {
   _: "account.initTakeoutSession";
   contacts?: true;
@@ -13019,46 +13021,39 @@ export interface account_initTakeoutSession {
   [R]?: account_Takeout;
 }
 
-/** https://core.telegram.org/method/account.finishTakeoutSession */
 export interface account_finishTakeoutSession {
   _: "account.finishTakeoutSession";
   success?: true;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.confirmPasswordEmail */
 export interface account_confirmPasswordEmail {
   _: "account.confirmPasswordEmail";
   code: string;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.resendPasswordEmail */
 export interface account_resendPasswordEmail {
   _: "account.resendPasswordEmail";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.cancelPasswordEmail */
 export interface account_cancelPasswordEmail {
   _: "account.cancelPasswordEmail";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getContactSignUpNotification */
 export interface account_getContactSignUpNotification {
   _: "account.getContactSignUpNotification";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.setContactSignUpNotification */
 export interface account_setContactSignUpNotification {
   _: "account.setContactSignUpNotification";
   silent: boolean;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getNotifyExceptions */
 export interface account_getNotifyExceptions {
   _: "account.getNotifyExceptions";
   compare_sound?: true;
@@ -13067,14 +13062,12 @@ export interface account_getNotifyExceptions {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/account.getWallPaper */
 export interface account_getWallPaper {
   _: "account.getWallPaper";
   wallpaper: InputWallPaper;
   [R]?: WallPaper;
 }
 
-/** https://core.telegram.org/method/account.uploadWallPaper */
 export interface account_uploadWallPaper {
   _: "account.uploadWallPaper";
   for_chat?: true;
@@ -13084,7 +13077,6 @@ export interface account_uploadWallPaper {
   [R]?: WallPaper;
 }
 
-/** https://core.telegram.org/method/account.saveWallPaper */
 export interface account_saveWallPaper {
   _: "account.saveWallPaper";
   wallpaper: InputWallPaper;
@@ -13093,7 +13085,6 @@ export interface account_saveWallPaper {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.installWallPaper */
 export interface account_installWallPaper {
   _: "account.installWallPaper";
   wallpaper: InputWallPaper;
@@ -13101,19 +13092,16 @@ export interface account_installWallPaper {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.resetWallPapers */
 export interface account_resetWallPapers {
   _: "account.resetWallPapers";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getAutoDownloadSettings */
 export interface account_getAutoDownloadSettings {
   _: "account.getAutoDownloadSettings";
   [R]?: account_AutoDownloadSettings;
 }
 
-/** https://core.telegram.org/method/account.saveAutoDownloadSettings */
 export interface account_saveAutoDownloadSettings {
   _: "account.saveAutoDownloadSettings";
   low?: true;
@@ -13122,7 +13110,6 @@ export interface account_saveAutoDownloadSettings {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.uploadTheme */
 export interface account_uploadTheme {
   _: "account.uploadTheme";
   file: InputFile;
@@ -13132,7 +13119,6 @@ export interface account_uploadTheme {
   [R]?: Document;
 }
 
-/** https://core.telegram.org/method/account.createTheme */
 export interface account_createTheme {
   _: "account.createTheme";
   slug: string;
@@ -13142,7 +13128,6 @@ export interface account_createTheme {
   [R]?: Theme;
 }
 
-/** https://core.telegram.org/method/account.updateTheme */
 export interface account_updateTheme {
   _: "account.updateTheme";
   format: string;
@@ -13154,7 +13139,6 @@ export interface account_updateTheme {
   [R]?: Theme;
 }
 
-/** https://core.telegram.org/method/account.saveTheme */
 export interface account_saveTheme {
   _: "account.saveTheme";
   theme: InputTheme;
@@ -13162,7 +13146,6 @@ export interface account_saveTheme {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.installTheme */
 export interface account_installTheme {
   _: "account.installTheme";
   dark?: true;
@@ -13172,7 +13155,6 @@ export interface account_installTheme {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getTheme */
 export interface account_getTheme {
   _: "account.getTheme";
   format: string;
@@ -13180,7 +13162,6 @@ export interface account_getTheme {
   [R]?: Theme;
 }
 
-/** https://core.telegram.org/method/account.getThemes */
 export interface account_getThemes {
   _: "account.getThemes";
   format: string;
@@ -13188,40 +13169,34 @@ export interface account_getThemes {
   [R]?: account_Themes;
 }
 
-/** https://core.telegram.org/method/account.setContentSettings */
 export interface account_setContentSettings {
   _: "account.setContentSettings";
   sensitive_enabled?: true;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getContentSettings */
 export interface account_getContentSettings {
   _: "account.getContentSettings";
   [R]?: account_ContentSettings;
 }
 
-/** https://core.telegram.org/method/account.getMultiWallPapers */
 export interface account_getMultiWallPapers {
   _: "account.getMultiWallPapers";
   wallpapers: Array<InputWallPaper>;
   [R]?: Array<WallPaper>;
 }
 
-/** https://core.telegram.org/method/account.getGlobalPrivacySettings */
 export interface account_getGlobalPrivacySettings {
   _: "account.getGlobalPrivacySettings";
   [R]?: GlobalPrivacySettings;
 }
 
-/** https://core.telegram.org/method/account.setGlobalPrivacySettings */
 export interface account_setGlobalPrivacySettings {
   _: "account.setGlobalPrivacySettings";
   settings: GlobalPrivacySettings;
   [R]?: GlobalPrivacySettings;
 }
 
-/** https://core.telegram.org/method/account.reportProfilePhoto */
 export interface account_reportProfilePhoto {
   _: "account.reportProfilePhoto";
   peer: InputPeer;
@@ -13231,33 +13206,28 @@ export interface account_reportProfilePhoto {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.resetPassword */
 export interface account_resetPassword {
   _: "account.resetPassword";
   [R]?: account_ResetPasswordResult;
 }
 
-/** https://core.telegram.org/method/account.declinePasswordReset */
 export interface account_declinePasswordReset {
   _: "account.declinePasswordReset";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getChatThemes */
 export interface account_getChatThemes {
   _: "account.getChatThemes";
   hash: bigint;
   [R]?: account_Themes;
 }
 
-/** https://core.telegram.org/method/account.setAuthorizationTTL */
 export interface account_setAuthorizationTTL {
   _: "account.setAuthorizationTTL";
   authorization_ttl_days: number;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.changeAuthorizationSettings */
 export interface account_changeAuthorizationSettings {
   _: "account.changeAuthorizationSettings";
   confirmed?: true;
@@ -13267,14 +13237,12 @@ export interface account_changeAuthorizationSettings {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getSavedRingtones */
 export interface account_getSavedRingtones {
   _: "account.getSavedRingtones";
   hash: bigint;
   [R]?: account_SavedRingtones;
 }
 
-/** https://core.telegram.org/method/account.saveRingtone */
 export interface account_saveRingtone {
   _: "account.saveRingtone";
   id: InputDocument;
@@ -13282,7 +13250,6 @@ export interface account_saveRingtone {
   [R]?: account_SavedRingtone;
 }
 
-/** https://core.telegram.org/method/account.uploadRingtone */
 export interface account_uploadRingtone {
   _: "account.uploadRingtone";
   file: InputFile;
@@ -13291,41 +13258,35 @@ export interface account_uploadRingtone {
   [R]?: Document;
 }
 
-/** https://core.telegram.org/method/account.updateEmojiStatus */
 export interface account_updateEmojiStatus {
   _: "account.updateEmojiStatus";
   emoji_status: EmojiStatus;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getDefaultEmojiStatuses */
 export interface account_getDefaultEmojiStatuses {
   _: "account.getDefaultEmojiStatuses";
   hash: bigint;
   [R]?: account_EmojiStatuses;
 }
 
-/** https://core.telegram.org/method/account.getRecentEmojiStatuses */
 export interface account_getRecentEmojiStatuses {
   _: "account.getRecentEmojiStatuses";
   hash: bigint;
   [R]?: account_EmojiStatuses;
 }
 
-/** https://core.telegram.org/method/account.clearRecentEmojiStatuses */
 export interface account_clearRecentEmojiStatuses {
   _: "account.clearRecentEmojiStatuses";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.reorderUsernames */
 export interface account_reorderUsernames {
   _: "account.reorderUsernames";
   order: Array<string>;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.toggleUsername */
 export interface account_toggleUsername {
   _: "account.toggleUsername";
   username: string;
@@ -13333,27 +13294,23 @@ export interface account_toggleUsername {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getDefaultProfilePhotoEmojis */
 export interface account_getDefaultProfilePhotoEmojis {
   _: "account.getDefaultProfilePhotoEmojis";
   hash: bigint;
   [R]?: EmojiList;
 }
 
-/** https://core.telegram.org/method/account.getDefaultGroupPhotoEmojis */
 export interface account_getDefaultGroupPhotoEmojis {
   _: "account.getDefaultGroupPhotoEmojis";
   hash: bigint;
   [R]?: EmojiList;
 }
 
-/** https://core.telegram.org/method/account.getAutoSaveSettings */
 export interface account_getAutoSaveSettings {
   _: "account.getAutoSaveSettings";
   [R]?: account_AutoSaveSettings;
 }
 
-/** https://core.telegram.org/method/account.saveAutoSaveSettings */
 export interface account_saveAutoSaveSettings {
   _: "account.saveAutoSaveSettings";
   users?: true;
@@ -13364,20 +13321,17 @@ export interface account_saveAutoSaveSettings {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.deleteAutoSaveExceptions */
 export interface account_deleteAutoSaveExceptions {
   _: "account.deleteAutoSaveExceptions";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.invalidateSignInCodes */
 export interface account_invalidateSignInCodes {
   _: "account.invalidateSignInCodes";
   codes: Array<string>;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.updateColor */
 export interface account_updateColor {
   _: "account.updateColor";
   for_profile?: true;
@@ -13385,35 +13339,30 @@ export interface account_updateColor {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getDefaultBackgroundEmojis */
 export interface account_getDefaultBackgroundEmojis {
   _: "account.getDefaultBackgroundEmojis";
   hash: bigint;
   [R]?: EmojiList;
 }
 
-/** https://core.telegram.org/method/account.getChannelDefaultEmojiStatuses */
 export interface account_getChannelDefaultEmojiStatuses {
   _: "account.getChannelDefaultEmojiStatuses";
   hash: bigint;
   [R]?: account_EmojiStatuses;
 }
 
-/** https://core.telegram.org/method/account.getChannelRestrictedStatusEmojis */
 export interface account_getChannelRestrictedStatusEmojis {
   _: "account.getChannelRestrictedStatusEmojis";
   hash: bigint;
   [R]?: EmojiList;
 }
 
-/** https://core.telegram.org/method/account.updateBusinessWorkHours */
 export interface account_updateBusinessWorkHours {
   _: "account.updateBusinessWorkHours";
   business_work_hours?: BusinessWorkHours;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.updateBusinessLocation */
 export interface account_updateBusinessLocation {
   _: "account.updateBusinessLocation";
   geo_point?: InputGeoPoint;
@@ -13421,21 +13370,18 @@ export interface account_updateBusinessLocation {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.updateBusinessGreetingMessage */
 export interface account_updateBusinessGreetingMessage {
   _: "account.updateBusinessGreetingMessage";
   message?: InputBusinessGreetingMessage;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.updateBusinessAwayMessage */
 export interface account_updateBusinessAwayMessage {
   _: "account.updateBusinessAwayMessage";
   message?: InputBusinessAwayMessage;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.updateConnectedBot */
 export interface account_updateConnectedBot {
   _: "account.updateConnectedBot";
   deleted?: true;
@@ -13445,27 +13391,23 @@ export interface account_updateConnectedBot {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/account.getConnectedBots */
 export interface account_getConnectedBots {
   _: "account.getConnectedBots";
   [R]?: account_ConnectedBots;
 }
 
-/** https://core.telegram.org/method/account.getBotBusinessConnection */
 export interface account_getBotBusinessConnection {
   _: "account.getBotBusinessConnection";
   connection_id: string;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/account.updateBusinessIntro */
 export interface account_updateBusinessIntro {
   _: "account.updateBusinessIntro";
   intro?: InputBusinessIntro;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.toggleConnectedBotPaused */
 export interface account_toggleConnectedBotPaused {
   _: "account.toggleConnectedBotPaused";
   peer: InputPeer;
@@ -13473,28 +13415,24 @@ export interface account_toggleConnectedBotPaused {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.disablePeerConnectedBot */
 export interface account_disablePeerConnectedBot {
   _: "account.disablePeerConnectedBot";
   peer: InputPeer;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.updateBirthday */
 export interface account_updateBirthday {
   _: "account.updateBirthday";
   birthday?: Birthday;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.createBusinessChatLink */
 export interface account_createBusinessChatLink {
   _: "account.createBusinessChatLink";
   link: InputBusinessChatLink;
   [R]?: BusinessChatLink;
 }
 
-/** https://core.telegram.org/method/account.editBusinessChatLink */
 export interface account_editBusinessChatLink {
   _: "account.editBusinessChatLink";
   slug: string;
@@ -13502,61 +13440,52 @@ export interface account_editBusinessChatLink {
   [R]?: BusinessChatLink;
 }
 
-/** https://core.telegram.org/method/account.deleteBusinessChatLink */
 export interface account_deleteBusinessChatLink {
   _: "account.deleteBusinessChatLink";
   slug: string;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getBusinessChatLinks */
 export interface account_getBusinessChatLinks {
   _: "account.getBusinessChatLinks";
   [R]?: account_BusinessChatLinks;
 }
 
-/** https://core.telegram.org/method/account.resolveBusinessChatLink */
 export interface account_resolveBusinessChatLink {
   _: "account.resolveBusinessChatLink";
   slug: string;
   [R]?: account_ResolvedBusinessChatLinks;
 }
 
-/** https://core.telegram.org/method/account.updatePersonalChannel */
 export interface account_updatePersonalChannel {
   _: "account.updatePersonalChannel";
   channel: InputChannel;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.toggleSponsoredMessages */
 export interface account_toggleSponsoredMessages {
   _: "account.toggleSponsoredMessages";
   enabled: boolean;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getReactionsNotifySettings */
 export interface account_getReactionsNotifySettings {
   _: "account.getReactionsNotifySettings";
   [R]?: ReactionsNotifySettings;
 }
 
-/** https://core.telegram.org/method/account.setReactionsNotifySettings */
 export interface account_setReactionsNotifySettings {
   _: "account.setReactionsNotifySettings";
   settings: ReactionsNotifySettings;
   [R]?: ReactionsNotifySettings;
 }
 
-/** https://core.telegram.org/method/account.getCollectibleEmojiStatuses */
 export interface account_getCollectibleEmojiStatuses {
   _: "account.getCollectibleEmojiStatuses";
   hash: bigint;
   [R]?: account_EmojiStatuses;
 }
 
-/** https://core.telegram.org/method/account.getPaidMessagesRevenue */
 export interface account_getPaidMessagesRevenue {
   _: "account.getPaidMessagesRevenue";
   parent_peer?: InputPeer;
@@ -13564,7 +13493,6 @@ export interface account_getPaidMessagesRevenue {
   [R]?: account_PaidMessagesRevenue;
 }
 
-/** https://core.telegram.org/method/account.toggleNoPaidMessagesException */
 export interface account_toggleNoPaidMessagesException {
   _: "account.toggleNoPaidMessagesException";
   refund_charged?: true;
@@ -13574,14 +13502,12 @@ export interface account_toggleNoPaidMessagesException {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.setMainProfileTab */
 export interface account_setMainProfileTab {
   _: "account.setMainProfileTab";
   tab: ProfileTab;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.saveMusic */
 export interface account_saveMusic {
   _: "account.saveMusic";
   unsave?: true;
@@ -13590,14 +13516,12 @@ export interface account_saveMusic {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/account.getSavedMusicIds */
 export interface account_getSavedMusicIds {
   _: "account.getSavedMusicIds";
   hash: bigint;
   [R]?: account_SavedMusicIds;
 }
 
-/** https://core.telegram.org/method/account.getUniqueGiftChatThemes */
 export interface account_getUniqueGiftChatThemes {
   _: "account.getUniqueGiftChatThemes";
   offset: string;
@@ -13606,47 +13530,40 @@ export interface account_getUniqueGiftChatThemes {
   [R]?: account_ChatThemes;
 }
 
-/** https://core.telegram.org/method/account.initPasskeyRegistration */
 export interface account_initPasskeyRegistration {
   _: "account.initPasskeyRegistration";
   [R]?: account_PasskeyRegistrationOptions;
 }
 
-/** https://core.telegram.org/method/account.registerPasskey */
 export interface account_registerPasskey {
   _: "account.registerPasskey";
   credential: InputPasskeyCredential;
   [R]?: Passkey;
 }
 
-/** https://core.telegram.org/method/account.getPasskeys */
 export interface account_getPasskeys {
   _: "account.getPasskeys";
   [R]?: account_Passkeys;
 }
 
-/** https://core.telegram.org/method/account.deletePasskey */
 export interface account_deletePasskey {
   _: "account.deletePasskey";
   id: string;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/users.getUsers */
 export interface users_getUsers {
   _: "users.getUsers";
   id: Array<InputUser>;
   [R]?: Array<User>;
 }
 
-/** https://core.telegram.org/method/users.getFullUser */
 export interface users_getFullUser {
   _: "users.getFullUser";
   id: InputUser;
   [R]?: users_UserFull;
 }
 
-/** https://core.telegram.org/method/users.setSecureValueErrors */
 export interface users_setSecureValueErrors {
   _: "users.setSecureValueErrors";
   id: InputUser;
@@ -13654,14 +13571,12 @@ export interface users_setSecureValueErrors {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/users.getRequirementsToContact */
 export interface users_getRequirementsToContact {
   _: "users.getRequirementsToContact";
   id: Array<InputUser>;
   [R]?: Array<RequirementToContact>;
 }
 
-/** https://core.telegram.org/method/users.getSavedMusic */
 export interface users_getSavedMusic {
   _: "users.getSavedMusic";
   id: InputUser;
@@ -13671,7 +13586,6 @@ export interface users_getSavedMusic {
   [R]?: users_SavedMusic;
 }
 
-/** https://core.telegram.org/method/users.getSavedMusicByID */
 export interface users_getSavedMusicByID {
   _: "users.getSavedMusicByID";
   id: InputUser;
@@ -13679,7 +13593,6 @@ export interface users_getSavedMusicByID {
   [R]?: users_SavedMusic;
 }
 
-/** https://core.telegram.org/method/users.suggestBirthday */
 export interface users_suggestBirthday {
   _: "users.suggestBirthday";
   id: InputUser;
@@ -13687,48 +13600,41 @@ export interface users_suggestBirthday {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/contacts.getContactIDs */
 export interface contacts_getContactIDs {
   _: "contacts.getContactIDs";
   hash: bigint;
   [R]?: Array<number>;
 }
 
-/** https://core.telegram.org/method/contacts.getStatuses */
 export interface contacts_getStatuses {
   _: "contacts.getStatuses";
   [R]?: Array<ContactStatus>;
 }
 
-/** https://core.telegram.org/method/contacts.getContacts */
 export interface contacts_getContacts {
   _: "contacts.getContacts";
   hash: bigint;
   [R]?: contacts_Contacts;
 }
 
-/** https://core.telegram.org/method/contacts.importContacts */
 export interface contacts_importContacts {
   _: "contacts.importContacts";
   contacts: Array<InputContact>;
   [R]?: contacts_ImportedContacts;
 }
 
-/** https://core.telegram.org/method/contacts.deleteContacts */
 export interface contacts_deleteContacts {
   _: "contacts.deleteContacts";
   id: Array<InputUser>;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/contacts.deleteByPhones */
 export interface contacts_deleteByPhones {
   _: "contacts.deleteByPhones";
   phones: Array<string>;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/contacts.block */
 export interface contacts_block {
   _: "contacts.block";
   my_stories_from?: true;
@@ -13736,7 +13642,6 @@ export interface contacts_block {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/contacts.unblock */
 export interface contacts_unblock {
   _: "contacts.unblock";
   my_stories_from?: true;
@@ -13744,7 +13649,6 @@ export interface contacts_unblock {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/contacts.getBlocked */
 export interface contacts_getBlocked {
   _: "contacts.getBlocked";
   my_stories_from?: true;
@@ -13753,7 +13657,6 @@ export interface contacts_getBlocked {
   [R]?: contacts_Blocked;
 }
 
-/** https://core.telegram.org/method/contacts.search */
 export interface contacts_search {
   _: "contacts.search";
   q: string;
@@ -13761,7 +13664,6 @@ export interface contacts_search {
   [R]?: contacts_Found;
 }
 
-/** https://core.telegram.org/method/contacts.resolveUsername */
 export interface contacts_resolveUsername {
   _: "contacts.resolveUsername";
   username: string;
@@ -13769,7 +13671,6 @@ export interface contacts_resolveUsername {
   [R]?: contacts_ResolvedPeer;
 }
 
-/** https://core.telegram.org/method/contacts.getTopPeers */
 export interface contacts_getTopPeers {
   _: "contacts.getTopPeers";
   correspondents?: true;
@@ -13787,7 +13688,6 @@ export interface contacts_getTopPeers {
   [R]?: contacts_TopPeers;
 }
 
-/** https://core.telegram.org/method/contacts.resetTopPeerRating */
 export interface contacts_resetTopPeerRating {
   _: "contacts.resetTopPeerRating";
   category: TopPeerCategory;
@@ -13795,26 +13695,22 @@ export interface contacts_resetTopPeerRating {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/contacts.resetSaved */
 export interface contacts_resetSaved {
   _: "contacts.resetSaved";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/contacts.getSaved */
 export interface contacts_getSaved {
   _: "contacts.getSaved";
   [R]?: Array<SavedContact>;
 }
 
-/** https://core.telegram.org/method/contacts.toggleTopPeers */
 export interface contacts_toggleTopPeers {
   _: "contacts.toggleTopPeers";
   enabled: boolean;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/contacts.addContact */
 export interface contacts_addContact {
   _: "contacts.addContact";
   add_phone_privacy_exception?: true;
@@ -13826,14 +13722,12 @@ export interface contacts_addContact {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/contacts.acceptContact */
 export interface contacts_acceptContact {
   _: "contacts.acceptContact";
   id: InputUser;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/contacts.getLocated */
 export interface contacts_getLocated {
   _: "contacts.getLocated";
   background?: true;
@@ -13842,7 +13736,6 @@ export interface contacts_getLocated {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/contacts.blockFromReplies */
 export interface contacts_blockFromReplies {
   _: "contacts.blockFromReplies";
   delete_message?: true;
@@ -13852,34 +13745,29 @@ export interface contacts_blockFromReplies {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/contacts.resolvePhone */
 export interface contacts_resolvePhone {
   _: "contacts.resolvePhone";
   phone: string;
   [R]?: contacts_ResolvedPeer;
 }
 
-/** https://core.telegram.org/method/contacts.exportContactToken */
 export interface contacts_exportContactToken {
   _: "contacts.exportContactToken";
   [R]?: ExportedContactToken;
 }
 
-/** https://core.telegram.org/method/contacts.importContactToken */
 export interface contacts_importContactToken {
   _: "contacts.importContactToken";
   token: string;
   [R]?: User;
 }
 
-/** https://core.telegram.org/method/contacts.editCloseFriends */
 export interface contacts_editCloseFriends {
   _: "contacts.editCloseFriends";
   id: Array<bigint>;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/contacts.setBlocked */
 export interface contacts_setBlocked {
   _: "contacts.setBlocked";
   my_stories_from?: true;
@@ -13888,20 +13776,17 @@ export interface contacts_setBlocked {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/contacts.getBirthdays */
 export interface contacts_getBirthdays {
   _: "contacts.getBirthdays";
   [R]?: contacts_ContactBirthdays;
 }
 
-/** https://core.telegram.org/method/contacts.getSponsoredPeers */
 export interface contacts_getSponsoredPeers {
   _: "contacts.getSponsoredPeers";
   q: string;
   [R]?: contacts_SponsoredPeers;
 }
 
-/** https://core.telegram.org/method/contacts.updateContactNote */
 export interface contacts_updateContactNote {
   _: "contacts.updateContactNote";
   id: InputUser;
@@ -13909,14 +13794,12 @@ export interface contacts_updateContactNote {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getMessages */
 export interface messages_getMessages {
   _: "messages.getMessages";
   id: Array<InputMessage>;
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/messages.getDialogs */
 export interface messages_getDialogs {
   _: "messages.getDialogs";
   exclude_pinned?: true;
@@ -13929,7 +13812,6 @@ export interface messages_getDialogs {
   [R]?: messages_Dialogs;
 }
 
-/** https://core.telegram.org/method/messages.getHistory */
 export interface messages_getHistory {
   _: "messages.getHistory";
   peer: InputPeer;
@@ -13943,7 +13825,6 @@ export interface messages_getHistory {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/messages.search */
 export interface messages_search {
   _: "messages.search";
   peer: InputPeer;
@@ -13964,7 +13845,6 @@ export interface messages_search {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/messages.readHistory */
 export interface messages_readHistory {
   _: "messages.readHistory";
   peer: InputPeer;
@@ -13972,7 +13852,6 @@ export interface messages_readHistory {
   [R]?: messages_AffectedMessages;
 }
 
-/** https://core.telegram.org/method/messages.deleteHistory */
 export interface messages_deleteHistory {
   _: "messages.deleteHistory";
   just_clear?: true;
@@ -13984,7 +13863,6 @@ export interface messages_deleteHistory {
   [R]?: messages_AffectedHistory;
 }
 
-/** https://core.telegram.org/method/messages.deleteMessages */
 export interface messages_deleteMessages {
   _: "messages.deleteMessages";
   revoke?: true;
@@ -13992,14 +13870,12 @@ export interface messages_deleteMessages {
   [R]?: messages_AffectedMessages;
 }
 
-/** https://core.telegram.org/method/messages.receivedMessages */
 export interface messages_receivedMessages {
   _: "messages.receivedMessages";
   max_id: number;
   [R]?: Array<ReceivedNotifyMessage>;
 }
 
-/** https://core.telegram.org/method/messages.setTyping */
 export interface messages_setTyping {
   _: "messages.setTyping";
   peer: InputPeer;
@@ -14008,7 +13884,6 @@ export interface messages_setTyping {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.sendMessage */
 export interface messages_sendMessage {
   _: "messages.sendMessage";
   no_webpage?: true;
@@ -14035,7 +13910,6 @@ export interface messages_sendMessage {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.sendMedia */
 export interface messages_sendMedia {
   _: "messages.sendMedia";
   silent?: true;
@@ -14062,7 +13936,6 @@ export interface messages_sendMedia {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.forwardMessages */
 export interface messages_forwardMessages {
   _: "messages.forwardMessages";
   silent?: true;
@@ -14089,21 +13962,18 @@ export interface messages_forwardMessages {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.reportSpam */
 export interface messages_reportSpam {
   _: "messages.reportSpam";
   peer: InputPeer;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getPeerSettings */
 export interface messages_getPeerSettings {
   _: "messages.getPeerSettings";
   peer: InputPeer;
   [R]?: messages_PeerSettings;
 }
 
-/** https://core.telegram.org/method/messages.report */
 export interface messages_report {
   _: "messages.report";
   peer: InputPeer;
@@ -14113,21 +13983,18 @@ export interface messages_report {
   [R]?: ReportResult;
 }
 
-/** https://core.telegram.org/method/messages.getChats */
 export interface messages_getChats {
   _: "messages.getChats";
   id: Array<bigint>;
   [R]?: messages_Chats;
 }
 
-/** https://core.telegram.org/method/messages.getFullChat */
 export interface messages_getFullChat {
   _: "messages.getFullChat";
   chat_id: bigint;
   [R]?: messages_ChatFull;
 }
 
-/** https://core.telegram.org/method/messages.editChatTitle */
 export interface messages_editChatTitle {
   _: "messages.editChatTitle";
   chat_id: bigint;
@@ -14135,7 +14002,6 @@ export interface messages_editChatTitle {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.editChatPhoto */
 export interface messages_editChatPhoto {
   _: "messages.editChatPhoto";
   chat_id: bigint;
@@ -14143,7 +14009,6 @@ export interface messages_editChatPhoto {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.addChatUser */
 export interface messages_addChatUser {
   _: "messages.addChatUser";
   chat_id: bigint;
@@ -14152,7 +14017,6 @@ export interface messages_addChatUser {
   [R]?: messages_InvitedUsers;
 }
 
-/** https://core.telegram.org/method/messages.deleteChatUser */
 export interface messages_deleteChatUser {
   _: "messages.deleteChatUser";
   revoke_history?: true;
@@ -14161,7 +14025,6 @@ export interface messages_deleteChatUser {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.createChat */
 export interface messages_createChat {
   _: "messages.createChat";
   users: Array<InputUser>;
@@ -14170,7 +14033,6 @@ export interface messages_createChat {
   [R]?: messages_InvitedUsers;
 }
 
-/** https://core.telegram.org/method/messages.getDhConfig */
 export interface messages_getDhConfig {
   _: "messages.getDhConfig";
   version: number;
@@ -14178,7 +14040,6 @@ export interface messages_getDhConfig {
   [R]?: messages_DhConfig;
 }
 
-/** https://core.telegram.org/method/messages.requestEncryption */
 export interface messages_requestEncryption {
   _: "messages.requestEncryption";
   user_id: InputUser;
@@ -14187,7 +14048,6 @@ export interface messages_requestEncryption {
   [R]?: EncryptedChat;
 }
 
-/** https://core.telegram.org/method/messages.acceptEncryption */
 export interface messages_acceptEncryption {
   _: "messages.acceptEncryption";
   peer: InputEncryptedChat;
@@ -14196,7 +14056,6 @@ export interface messages_acceptEncryption {
   [R]?: EncryptedChat;
 }
 
-/** https://core.telegram.org/method/messages.discardEncryption */
 export interface messages_discardEncryption {
   _: "messages.discardEncryption";
   delete_history?: true;
@@ -14204,7 +14063,6 @@ export interface messages_discardEncryption {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.setEncryptedTyping */
 export interface messages_setEncryptedTyping {
   _: "messages.setEncryptedTyping";
   peer: InputEncryptedChat;
@@ -14212,7 +14070,6 @@ export interface messages_setEncryptedTyping {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.readEncryptedHistory */
 export interface messages_readEncryptedHistory {
   _: "messages.readEncryptedHistory";
   peer: InputEncryptedChat;
@@ -14220,7 +14077,6 @@ export interface messages_readEncryptedHistory {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.sendEncrypted */
 export interface messages_sendEncrypted {
   _: "messages.sendEncrypted";
   silent?: true;
@@ -14230,7 +14086,6 @@ export interface messages_sendEncrypted {
   [R]?: messages_SentEncryptedMessage;
 }
 
-/** https://core.telegram.org/method/messages.sendEncryptedFile */
 export interface messages_sendEncryptedFile {
   _: "messages.sendEncryptedFile";
   silent?: true;
@@ -14241,7 +14096,6 @@ export interface messages_sendEncryptedFile {
   [R]?: messages_SentEncryptedMessage;
 }
 
-/** https://core.telegram.org/method/messages.sendEncryptedService */
 export interface messages_sendEncryptedService {
   _: "messages.sendEncryptedService";
   peer: InputEncryptedChat;
@@ -14250,28 +14104,24 @@ export interface messages_sendEncryptedService {
   [R]?: messages_SentEncryptedMessage;
 }
 
-/** https://core.telegram.org/method/messages.receivedQueue */
 export interface messages_receivedQueue {
   _: "messages.receivedQueue";
   max_qts: number;
   [R]?: Array<bigint>;
 }
 
-/** https://core.telegram.org/method/messages.reportEncryptedSpam */
 export interface messages_reportEncryptedSpam {
   _: "messages.reportEncryptedSpam";
   peer: InputEncryptedChat;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.readMessageContents */
 export interface messages_readMessageContents {
   _: "messages.readMessageContents";
   id: Array<number>;
   [R]?: messages_AffectedMessages;
 }
 
-/** https://core.telegram.org/method/messages.getStickers */
 export interface messages_getStickers {
   _: "messages.getStickers";
   emoticon: string;
@@ -14279,14 +14129,12 @@ export interface messages_getStickers {
   [R]?: messages_Stickers;
 }
 
-/** https://core.telegram.org/method/messages.getAllStickers */
 export interface messages_getAllStickers {
   _: "messages.getAllStickers";
   hash: bigint;
   [R]?: messages_AllStickers;
 }
 
-/** https://core.telegram.org/method/messages.getWebPagePreview */
 export interface messages_getWebPagePreview {
   _: "messages.getWebPagePreview";
   message: string;
@@ -14294,7 +14142,6 @@ export interface messages_getWebPagePreview {
   [R]?: messages_WebPagePreview;
 }
 
-/** https://core.telegram.org/method/messages.exportChatInvite */
 export interface messages_exportChatInvite {
   _: "messages.exportChatInvite";
   legacy_revoke_permanent?: true;
@@ -14307,21 +14154,18 @@ export interface messages_exportChatInvite {
   [R]?: ExportedChatInvite;
 }
 
-/** https://core.telegram.org/method/messages.checkChatInvite */
 export interface messages_checkChatInvite {
   _: "messages.checkChatInvite";
   hash: string;
   [R]?: ChatInvite;
 }
 
-/** https://core.telegram.org/method/messages.importChatInvite */
 export interface messages_importChatInvite {
   _: "messages.importChatInvite";
   hash: string;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getStickerSet */
 export interface messages_getStickerSet {
   _: "messages.getStickerSet";
   stickerset: InputStickerSet;
@@ -14329,7 +14173,6 @@ export interface messages_getStickerSet {
   [R]?: messages_StickerSet;
 }
 
-/** https://core.telegram.org/method/messages.installStickerSet */
 export interface messages_installStickerSet {
   _: "messages.installStickerSet";
   stickerset: InputStickerSet;
@@ -14337,14 +14180,12 @@ export interface messages_installStickerSet {
   [R]?: messages_StickerSetInstallResult;
 }
 
-/** https://core.telegram.org/method/messages.uninstallStickerSet */
 export interface messages_uninstallStickerSet {
   _: "messages.uninstallStickerSet";
   stickerset: InputStickerSet;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.startBot */
 export interface messages_startBot {
   _: "messages.startBot";
   bot: InputUser;
@@ -14354,7 +14195,6 @@ export interface messages_startBot {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getMessagesViews */
 export interface messages_getMessagesViews {
   _: "messages.getMessagesViews";
   peer: InputPeer;
@@ -14363,7 +14203,6 @@ export interface messages_getMessagesViews {
   [R]?: messages_MessageViews;
 }
 
-/** https://core.telegram.org/method/messages.editChatAdmin */
 export interface messages_editChatAdmin {
   _: "messages.editChatAdmin";
   chat_id: bigint;
@@ -14372,14 +14211,12 @@ export interface messages_editChatAdmin {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.migrateChat */
 export interface messages_migrateChat {
   _: "messages.migrateChat";
   chat_id: bigint;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.searchGlobal */
 export interface messages_searchGlobal {
   _: "messages.searchGlobal";
   broadcasts_only?: true;
@@ -14397,7 +14234,6 @@ export interface messages_searchGlobal {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/messages.reorderStickerSets */
 export interface messages_reorderStickerSets {
   _: "messages.reorderStickerSets";
   masks?: true;
@@ -14406,7 +14242,6 @@ export interface messages_reorderStickerSets {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getDocumentByHash */
 export interface messages_getDocumentByHash {
   _: "messages.getDocumentByHash";
   sha256: Uint8Array<ArrayBuffer>;
@@ -14415,14 +14250,12 @@ export interface messages_getDocumentByHash {
   [R]?: Document;
 }
 
-/** https://core.telegram.org/method/messages.getSavedGifs */
 export interface messages_getSavedGifs {
   _: "messages.getSavedGifs";
   hash: bigint;
   [R]?: messages_SavedGifs;
 }
 
-/** https://core.telegram.org/method/messages.saveGif */
 export interface messages_saveGif {
   _: "messages.saveGif";
   id: InputDocument;
@@ -14430,7 +14263,6 @@ export interface messages_saveGif {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getInlineBotResults */
 export interface messages_getInlineBotResults {
   _: "messages.getInlineBotResults";
   bot: InputUser;
@@ -14441,7 +14273,6 @@ export interface messages_getInlineBotResults {
   [R]?: messages_BotResults;
 }
 
-/** https://core.telegram.org/method/messages.setInlineBotResults */
 export interface messages_setInlineBotResults {
   _: "messages.setInlineBotResults";
   gallery?: true;
@@ -14455,7 +14286,6 @@ export interface messages_setInlineBotResults {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.sendInlineBotResult */
 export interface messages_sendInlineBotResult {
   _: "messages.sendInlineBotResult";
   silent?: true;
@@ -14474,7 +14304,6 @@ export interface messages_sendInlineBotResult {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getMessageEditData */
 export interface messages_getMessageEditData {
   _: "messages.getMessageEditData";
   peer: InputPeer;
@@ -14482,7 +14311,6 @@ export interface messages_getMessageEditData {
   [R]?: messages_MessageEditData;
 }
 
-/** https://core.telegram.org/method/messages.editMessage */
 export interface messages_editMessage {
   _: "messages.editMessage";
   no_webpage?: true;
@@ -14499,7 +14327,6 @@ export interface messages_editMessage {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.editInlineBotMessage */
 export interface messages_editInlineBotMessage {
   _: "messages.editInlineBotMessage";
   no_webpage?: true;
@@ -14512,7 +14339,6 @@ export interface messages_editInlineBotMessage {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getBotCallbackAnswer */
 export interface messages_getBotCallbackAnswer {
   _: "messages.getBotCallbackAnswer";
   game?: true;
@@ -14523,7 +14349,6 @@ export interface messages_getBotCallbackAnswer {
   [R]?: messages_BotCallbackAnswer;
 }
 
-/** https://core.telegram.org/method/messages.setBotCallbackAnswer */
 export interface messages_setBotCallbackAnswer {
   _: "messages.setBotCallbackAnswer";
   alert?: true;
@@ -14534,14 +14359,12 @@ export interface messages_setBotCallbackAnswer {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getPeerDialogs */
 export interface messages_getPeerDialogs {
   _: "messages.getPeerDialogs";
   peers: Array<InputDialogPeer>;
   [R]?: messages_PeerDialogs;
 }
 
-/** https://core.telegram.org/method/messages.saveDraft */
 export interface messages_saveDraft {
   _: "messages.saveDraft";
   no_webpage?: true;
@@ -14556,27 +14379,23 @@ export interface messages_saveDraft {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getAllDrafts */
 export interface messages_getAllDrafts {
   _: "messages.getAllDrafts";
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getFeaturedStickers */
 export interface messages_getFeaturedStickers {
   _: "messages.getFeaturedStickers";
   hash: bigint;
   [R]?: messages_FeaturedStickers;
 }
 
-/** https://core.telegram.org/method/messages.readFeaturedStickers */
 export interface messages_readFeaturedStickers {
   _: "messages.readFeaturedStickers";
   id: Array<bigint>;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getRecentStickers */
 export interface messages_getRecentStickers {
   _: "messages.getRecentStickers";
   attached?: true;
@@ -14584,7 +14403,6 @@ export interface messages_getRecentStickers {
   [R]?: messages_RecentStickers;
 }
 
-/** https://core.telegram.org/method/messages.saveRecentSticker */
 export interface messages_saveRecentSticker {
   _: "messages.saveRecentSticker";
   attached?: true;
@@ -14593,14 +14411,12 @@ export interface messages_saveRecentSticker {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.clearRecentStickers */
 export interface messages_clearRecentStickers {
   _: "messages.clearRecentStickers";
   attached?: true;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getArchivedStickers */
 export interface messages_getArchivedStickers {
   _: "messages.getArchivedStickers";
   masks?: true;
@@ -14610,21 +14426,18 @@ export interface messages_getArchivedStickers {
   [R]?: messages_ArchivedStickers;
 }
 
-/** https://core.telegram.org/method/messages.getMaskStickers */
 export interface messages_getMaskStickers {
   _: "messages.getMaskStickers";
   hash: bigint;
   [R]?: messages_AllStickers;
 }
 
-/** https://core.telegram.org/method/messages.getAttachedStickers */
 export interface messages_getAttachedStickers {
   _: "messages.getAttachedStickers";
   media: InputStickeredMedia;
   [R]?: Array<StickerSetCovered>;
 }
 
-/** https://core.telegram.org/method/messages.setGameScore */
 export interface messages_setGameScore {
   _: "messages.setGameScore";
   edit_message?: true;
@@ -14636,7 +14449,6 @@ export interface messages_setGameScore {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.setInlineGameScore */
 export interface messages_setInlineGameScore {
   _: "messages.setInlineGameScore";
   edit_message?: true;
@@ -14647,7 +14459,6 @@ export interface messages_setInlineGameScore {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getGameHighScores */
 export interface messages_getGameHighScores {
   _: "messages.getGameHighScores";
   peer: InputPeer;
@@ -14656,7 +14467,6 @@ export interface messages_getGameHighScores {
   [R]?: messages_HighScores;
 }
 
-/** https://core.telegram.org/method/messages.getInlineGameHighScores */
 export interface messages_getInlineGameHighScores {
   _: "messages.getInlineGameHighScores";
   id: InputBotInlineMessageID;
@@ -14664,7 +14474,6 @@ export interface messages_getInlineGameHighScores {
   [R]?: messages_HighScores;
 }
 
-/** https://core.telegram.org/method/messages.getCommonChats */
 export interface messages_getCommonChats {
   _: "messages.getCommonChats";
   user_id: InputUser;
@@ -14673,7 +14482,6 @@ export interface messages_getCommonChats {
   [R]?: messages_Chats;
 }
 
-/** https://core.telegram.org/method/messages.getWebPage */
 export interface messages_getWebPage {
   _: "messages.getWebPage";
   url: string;
@@ -14681,7 +14489,6 @@ export interface messages_getWebPage {
   [R]?: messages_WebPage;
 }
 
-/** https://core.telegram.org/method/messages.toggleDialogPin */
 export interface messages_toggleDialogPin {
   _: "messages.toggleDialogPin";
   pinned?: true;
@@ -14689,7 +14496,6 @@ export interface messages_toggleDialogPin {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.reorderPinnedDialogs */
 export interface messages_reorderPinnedDialogs {
   _: "messages.reorderPinnedDialogs";
   force?: true;
@@ -14698,14 +14504,12 @@ export interface messages_reorderPinnedDialogs {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getPinnedDialogs */
 export interface messages_getPinnedDialogs {
   _: "messages.getPinnedDialogs";
   folder_id: number;
   [R]?: messages_PeerDialogs;
 }
 
-/** https://core.telegram.org/method/messages.setBotShippingResults */
 export interface messages_setBotShippingResults {
   _: "messages.setBotShippingResults";
   query_id: bigint;
@@ -14714,7 +14518,6 @@ export interface messages_setBotShippingResults {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.setBotPrecheckoutResults */
 export interface messages_setBotPrecheckoutResults {
   _: "messages.setBotPrecheckoutResults";
   success?: true;
@@ -14723,7 +14526,6 @@ export interface messages_setBotPrecheckoutResults {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.uploadMedia */
 export interface messages_uploadMedia {
   _: "messages.uploadMedia";
   business_connection_id?: string;
@@ -14732,7 +14534,6 @@ export interface messages_uploadMedia {
   [R]?: MessageMedia;
 }
 
-/** https://core.telegram.org/method/messages.sendScreenshotNotification */
 export interface messages_sendScreenshotNotification {
   _: "messages.sendScreenshotNotification";
   peer: InputPeer;
@@ -14741,14 +14542,12 @@ export interface messages_sendScreenshotNotification {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getFavedStickers */
 export interface messages_getFavedStickers {
   _: "messages.getFavedStickers";
   hash: bigint;
   [R]?: messages_FavedStickers;
 }
 
-/** https://core.telegram.org/method/messages.faveSticker */
 export interface messages_faveSticker {
   _: "messages.faveSticker";
   id: InputDocument;
@@ -14756,7 +14555,6 @@ export interface messages_faveSticker {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getUnreadMentions */
 export interface messages_getUnreadMentions {
   _: "messages.getUnreadMentions";
   peer: InputPeer;
@@ -14769,7 +14567,6 @@ export interface messages_getUnreadMentions {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/messages.readMentions */
 export interface messages_readMentions {
   _: "messages.readMentions";
   peer: InputPeer;
@@ -14777,7 +14574,6 @@ export interface messages_readMentions {
   [R]?: messages_AffectedHistory;
 }
 
-/** https://core.telegram.org/method/messages.getRecentLocations */
 export interface messages_getRecentLocations {
   _: "messages.getRecentLocations";
   peer: InputPeer;
@@ -14786,7 +14582,6 @@ export interface messages_getRecentLocations {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/messages.sendMultiMedia */
 export interface messages_sendMultiMedia {
   _: "messages.sendMultiMedia";
   silent?: true;
@@ -14807,7 +14602,6 @@ export interface messages_sendMultiMedia {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.uploadEncryptedFile */
 export interface messages_uploadEncryptedFile {
   _: "messages.uploadEncryptedFile";
   peer: InputEncryptedChat;
@@ -14815,7 +14609,6 @@ export interface messages_uploadEncryptedFile {
   [R]?: EncryptedFile;
 }
 
-/** https://core.telegram.org/method/messages.searchStickerSets */
 export interface messages_searchStickerSets {
   _: "messages.searchStickerSets";
   exclude_featured?: true;
@@ -14824,13 +14617,11 @@ export interface messages_searchStickerSets {
   [R]?: messages_FoundStickerSets;
 }
 
-/** https://core.telegram.org/method/messages.getSplitRanges */
 export interface messages_getSplitRanges {
   _: "messages.getSplitRanges";
   [R]?: Array<MessageRange>;
 }
 
-/** https://core.telegram.org/method/messages.markDialogUnread */
 export interface messages_markDialogUnread {
   _: "messages.markDialogUnread";
   unread?: true;
@@ -14839,20 +14630,17 @@ export interface messages_markDialogUnread {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getDialogUnreadMarks */
 export interface messages_getDialogUnreadMarks {
   _: "messages.getDialogUnreadMarks";
   parent_peer?: InputPeer;
   [R]?: Array<DialogPeer>;
 }
 
-/** https://core.telegram.org/method/messages.clearAllDrafts */
 export interface messages_clearAllDrafts {
   _: "messages.clearAllDrafts";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.updatePinnedMessage */
 export interface messages_updatePinnedMessage {
   _: "messages.updatePinnedMessage";
   silent?: true;
@@ -14863,7 +14651,6 @@ export interface messages_updatePinnedMessage {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.sendVote */
 export interface messages_sendVote {
   _: "messages.sendVote";
   peer: InputPeer;
@@ -14872,7 +14659,6 @@ export interface messages_sendVote {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getPollResults */
 export interface messages_getPollResults {
   _: "messages.getPollResults";
   peer: InputPeer;
@@ -14880,14 +14666,12 @@ export interface messages_getPollResults {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getOnlines */
 export interface messages_getOnlines {
   _: "messages.getOnlines";
   peer: InputPeer;
   [R]?: ChatOnlines;
 }
 
-/** https://core.telegram.org/method/messages.editChatAbout */
 export interface messages_editChatAbout {
   _: "messages.editChatAbout";
   peer: InputPeer;
@@ -14895,7 +14679,6 @@ export interface messages_editChatAbout {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.editChatDefaultBannedRights */
 export interface messages_editChatDefaultBannedRights {
   _: "messages.editChatDefaultBannedRights";
   peer: InputPeer;
@@ -14903,14 +14686,12 @@ export interface messages_editChatDefaultBannedRights {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getEmojiKeywords */
 export interface messages_getEmojiKeywords {
   _: "messages.getEmojiKeywords";
   lang_code: string;
   [R]?: EmojiKeywordsDifference;
 }
 
-/** https://core.telegram.org/method/messages.getEmojiKeywordsDifference */
 export interface messages_getEmojiKeywordsDifference {
   _: "messages.getEmojiKeywordsDifference";
   lang_code: string;
@@ -14918,21 +14699,18 @@ export interface messages_getEmojiKeywordsDifference {
   [R]?: EmojiKeywordsDifference;
 }
 
-/** https://core.telegram.org/method/messages.getEmojiKeywordsLanguages */
 export interface messages_getEmojiKeywordsLanguages {
   _: "messages.getEmojiKeywordsLanguages";
   lang_codes: Array<string>;
   [R]?: Array<EmojiLanguage>;
 }
 
-/** https://core.telegram.org/method/messages.getEmojiURL */
 export interface messages_getEmojiURL {
   _: "messages.getEmojiURL";
   lang_code: string;
   [R]?: EmojiURL;
 }
 
-/** https://core.telegram.org/method/messages.getSearchCounters */
 export interface messages_getSearchCounters {
   _: "messages.getSearchCounters";
   peer: InputPeer;
@@ -14942,7 +14720,6 @@ export interface messages_getSearchCounters {
   [R]?: Array<messages_SearchCounter>;
 }
 
-/** https://core.telegram.org/method/messages.requestUrlAuth */
 export interface messages_requestUrlAuth {
   _: "messages.requestUrlAuth";
   peer?: InputPeer;
@@ -14952,10 +14729,10 @@ export interface messages_requestUrlAuth {
   [R]?: UrlAuthResult;
 }
 
-/** https://core.telegram.org/method/messages.acceptUrlAuth */
 export interface messages_acceptUrlAuth {
   _: "messages.acceptUrlAuth";
   write_allowed?: true;
+  share_phone_number?: true;
   peer?: InputPeer;
   msg_id?: number;
   button_id?: number;
@@ -14963,14 +14740,12 @@ export interface messages_acceptUrlAuth {
   [R]?: UrlAuthResult;
 }
 
-/** https://core.telegram.org/method/messages.hidePeerSettingsBar */
 export interface messages_hidePeerSettingsBar {
   _: "messages.hidePeerSettingsBar";
   peer: InputPeer;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getScheduledHistory */
 export interface messages_getScheduledHistory {
   _: "messages.getScheduledHistory";
   peer: InputPeer;
@@ -14978,7 +14753,6 @@ export interface messages_getScheduledHistory {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/messages.getScheduledMessages */
 export interface messages_getScheduledMessages {
   _: "messages.getScheduledMessages";
   peer: InputPeer;
@@ -14986,7 +14760,6 @@ export interface messages_getScheduledMessages {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/messages.sendScheduledMessages */
 export interface messages_sendScheduledMessages {
   _: "messages.sendScheduledMessages";
   peer: InputPeer;
@@ -14994,7 +14767,6 @@ export interface messages_sendScheduledMessages {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.deleteScheduledMessages */
 export interface messages_deleteScheduledMessages {
   _: "messages.deleteScheduledMessages";
   peer: InputPeer;
@@ -15002,7 +14774,6 @@ export interface messages_deleteScheduledMessages {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getPollVotes */
 export interface messages_getPollVotes {
   _: "messages.getPollVotes";
   peer: InputPeer;
@@ -15013,7 +14784,6 @@ export interface messages_getPollVotes {
   [R]?: messages_VotesList;
 }
 
-/** https://core.telegram.org/method/messages.toggleStickerSets */
 export interface messages_toggleStickerSets {
   _: "messages.toggleStickerSets";
   uninstall?: true;
@@ -15023,19 +14793,16 @@ export interface messages_toggleStickerSets {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getDialogFilters */
 export interface messages_getDialogFilters {
   _: "messages.getDialogFilters";
   [R]?: messages_DialogFilters;
 }
 
-/** https://core.telegram.org/method/messages.getSuggestedDialogFilters */
 export interface messages_getSuggestedDialogFilters {
   _: "messages.getSuggestedDialogFilters";
   [R]?: Array<DialogFilterSuggested>;
 }
 
-/** https://core.telegram.org/method/messages.updateDialogFilter */
 export interface messages_updateDialogFilter {
   _: "messages.updateDialogFilter";
   id: number;
@@ -15043,14 +14810,12 @@ export interface messages_updateDialogFilter {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.updateDialogFiltersOrder */
 export interface messages_updateDialogFiltersOrder {
   _: "messages.updateDialogFiltersOrder";
   order: Array<number>;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getOldFeaturedStickers */
 export interface messages_getOldFeaturedStickers {
   _: "messages.getOldFeaturedStickers";
   offset: number;
@@ -15059,7 +14824,6 @@ export interface messages_getOldFeaturedStickers {
   [R]?: messages_FeaturedStickers;
 }
 
-/** https://core.telegram.org/method/messages.getReplies */
 export interface messages_getReplies {
   _: "messages.getReplies";
   peer: InputPeer;
@@ -15074,7 +14838,6 @@ export interface messages_getReplies {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/messages.getDiscussionMessage */
 export interface messages_getDiscussionMessage {
   _: "messages.getDiscussionMessage";
   peer: InputPeer;
@@ -15082,7 +14845,6 @@ export interface messages_getDiscussionMessage {
   [R]?: messages_DiscussionMessage;
 }
 
-/** https://core.telegram.org/method/messages.readDiscussion */
 export interface messages_readDiscussion {
   _: "messages.readDiscussion";
   peer: InputPeer;
@@ -15091,7 +14853,6 @@ export interface messages_readDiscussion {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.unpinAllMessages */
 export interface messages_unpinAllMessages {
   _: "messages.unpinAllMessages";
   peer: InputPeer;
@@ -15100,28 +14861,24 @@ export interface messages_unpinAllMessages {
   [R]?: messages_AffectedHistory;
 }
 
-/** https://core.telegram.org/method/messages.deleteChat */
 export interface messages_deleteChat {
   _: "messages.deleteChat";
   chat_id: bigint;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.deletePhoneCallHistory */
 export interface messages_deletePhoneCallHistory {
   _: "messages.deletePhoneCallHistory";
   revoke?: true;
   [R]?: messages_AffectedFoundMessages;
 }
 
-/** https://core.telegram.org/method/messages.checkHistoryImport */
 export interface messages_checkHistoryImport {
   _: "messages.checkHistoryImport";
   import_head: string;
   [R]?: messages_HistoryImportParsed;
 }
 
-/** https://core.telegram.org/method/messages.initHistoryImport */
 export interface messages_initHistoryImport {
   _: "messages.initHistoryImport";
   peer: InputPeer;
@@ -15130,7 +14887,6 @@ export interface messages_initHistoryImport {
   [R]?: messages_HistoryImport;
 }
 
-/** https://core.telegram.org/method/messages.uploadImportedMedia */
 export interface messages_uploadImportedMedia {
   _: "messages.uploadImportedMedia";
   peer: InputPeer;
@@ -15140,7 +14896,6 @@ export interface messages_uploadImportedMedia {
   [R]?: MessageMedia;
 }
 
-/** https://core.telegram.org/method/messages.startHistoryImport */
 export interface messages_startHistoryImport {
   _: "messages.startHistoryImport";
   peer: InputPeer;
@@ -15148,7 +14903,6 @@ export interface messages_startHistoryImport {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getExportedChatInvites */
 export interface messages_getExportedChatInvites {
   _: "messages.getExportedChatInvites";
   revoked?: true;
@@ -15160,7 +14914,6 @@ export interface messages_getExportedChatInvites {
   [R]?: messages_ExportedChatInvites;
 }
 
-/** https://core.telegram.org/method/messages.getExportedChatInvite */
 export interface messages_getExportedChatInvite {
   _: "messages.getExportedChatInvite";
   peer: InputPeer;
@@ -15168,7 +14921,6 @@ export interface messages_getExportedChatInvite {
   [R]?: messages_ExportedChatInvite;
 }
 
-/** https://core.telegram.org/method/messages.editExportedChatInvite */
 export interface messages_editExportedChatInvite {
   _: "messages.editExportedChatInvite";
   revoked?: true;
@@ -15181,7 +14933,6 @@ export interface messages_editExportedChatInvite {
   [R]?: messages_ExportedChatInvite;
 }
 
-/** https://core.telegram.org/method/messages.deleteRevokedExportedChatInvites */
 export interface messages_deleteRevokedExportedChatInvites {
   _: "messages.deleteRevokedExportedChatInvites";
   peer: InputPeer;
@@ -15189,7 +14940,6 @@ export interface messages_deleteRevokedExportedChatInvites {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.deleteExportedChatInvite */
 export interface messages_deleteExportedChatInvite {
   _: "messages.deleteExportedChatInvite";
   peer: InputPeer;
@@ -15197,14 +14947,12 @@ export interface messages_deleteExportedChatInvite {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getAdminsWithInvites */
 export interface messages_getAdminsWithInvites {
   _: "messages.getAdminsWithInvites";
   peer: InputPeer;
   [R]?: messages_ChatAdminsWithInvites;
 }
 
-/** https://core.telegram.org/method/messages.getChatInviteImporters */
 export interface messages_getChatInviteImporters {
   _: "messages.getChatInviteImporters";
   requested?: true;
@@ -15218,7 +14966,6 @@ export interface messages_getChatInviteImporters {
   [R]?: messages_ChatInviteImporters;
 }
 
-/** https://core.telegram.org/method/messages.setHistoryTTL */
 export interface messages_setHistoryTTL {
   _: "messages.setHistoryTTL";
   peer: InputPeer;
@@ -15226,14 +14973,12 @@ export interface messages_setHistoryTTL {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.checkHistoryImportPeer */
 export interface messages_checkHistoryImportPeer {
   _: "messages.checkHistoryImportPeer";
   peer: InputPeer;
   [R]?: messages_CheckedHistoryImportPeer;
 }
 
-/** https://core.telegram.org/method/messages.setChatTheme */
 export interface messages_setChatTheme {
   _: "messages.setChatTheme";
   peer: InputPeer;
@@ -15241,7 +14986,6 @@ export interface messages_setChatTheme {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getMessageReadParticipants */
 export interface messages_getMessageReadParticipants {
   _: "messages.getMessageReadParticipants";
   peer: InputPeer;
@@ -15249,7 +14993,6 @@ export interface messages_getMessageReadParticipants {
   [R]?: Array<ReadParticipantDate>;
 }
 
-/** https://core.telegram.org/method/messages.getSearchResultsCalendar */
 export interface messages_getSearchResultsCalendar {
   _: "messages.getSearchResultsCalendar";
   peer: InputPeer;
@@ -15260,7 +15003,6 @@ export interface messages_getSearchResultsCalendar {
   [R]?: messages_SearchResultsCalendar;
 }
 
-/** https://core.telegram.org/method/messages.getSearchResultsPositions */
 export interface messages_getSearchResultsPositions {
   _: "messages.getSearchResultsPositions";
   peer: InputPeer;
@@ -15271,7 +15013,6 @@ export interface messages_getSearchResultsPositions {
   [R]?: messages_SearchResultsPositions;
 }
 
-/** https://core.telegram.org/method/messages.hideChatJoinRequest */
 export interface messages_hideChatJoinRequest {
   _: "messages.hideChatJoinRequest";
   approved?: true;
@@ -15280,7 +15021,6 @@ export interface messages_hideChatJoinRequest {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.hideAllChatJoinRequests */
 export interface messages_hideAllChatJoinRequests {
   _: "messages.hideAllChatJoinRequests";
   approved?: true;
@@ -15289,7 +15029,6 @@ export interface messages_hideAllChatJoinRequests {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.toggleNoForwards */
 export interface messages_toggleNoForwards {
   _: "messages.toggleNoForwards";
   peer: InputPeer;
@@ -15297,7 +15036,6 @@ export interface messages_toggleNoForwards {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.saveDefaultSendAs */
 export interface messages_saveDefaultSendAs {
   _: "messages.saveDefaultSendAs";
   peer: InputPeer;
@@ -15305,7 +15043,6 @@ export interface messages_saveDefaultSendAs {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.sendReaction */
 export interface messages_sendReaction {
   _: "messages.sendReaction";
   big?: true;
@@ -15316,7 +15053,6 @@ export interface messages_sendReaction {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getMessagesReactions */
 export interface messages_getMessagesReactions {
   _: "messages.getMessagesReactions";
   peer: InputPeer;
@@ -15324,7 +15060,6 @@ export interface messages_getMessagesReactions {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getMessageReactionsList */
 export interface messages_getMessageReactionsList {
   _: "messages.getMessageReactionsList";
   peer: InputPeer;
@@ -15335,7 +15070,6 @@ export interface messages_getMessageReactionsList {
   [R]?: messages_MessageReactionsList;
 }
 
-/** https://core.telegram.org/method/messages.setChatAvailableReactions */
 export interface messages_setChatAvailableReactions {
   _: "messages.setChatAvailableReactions";
   peer: InputPeer;
@@ -15345,21 +15079,18 @@ export interface messages_setChatAvailableReactions {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getAvailableReactions */
 export interface messages_getAvailableReactions {
   _: "messages.getAvailableReactions";
   hash: number;
   [R]?: messages_AvailableReactions;
 }
 
-/** https://core.telegram.org/method/messages.setDefaultReaction */
 export interface messages_setDefaultReaction {
   _: "messages.setDefaultReaction";
   reaction: Reaction;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.translateText */
 export interface messages_translateText {
   _: "messages.translateText";
   peer?: InputPeer;
@@ -15369,7 +15100,6 @@ export interface messages_translateText {
   [R]?: messages_TranslatedText;
 }
 
-/** https://core.telegram.org/method/messages.getUnreadReactions */
 export interface messages_getUnreadReactions {
   _: "messages.getUnreadReactions";
   peer: InputPeer;
@@ -15383,7 +15113,6 @@ export interface messages_getUnreadReactions {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/messages.readReactions */
 export interface messages_readReactions {
   _: "messages.readReactions";
   peer: InputPeer;
@@ -15392,7 +15121,6 @@ export interface messages_readReactions {
   [R]?: messages_AffectedHistory;
 }
 
-/** https://core.telegram.org/method/messages.searchSentMedia */
 export interface messages_searchSentMedia {
   _: "messages.searchSentMedia";
   q: string;
@@ -15401,21 +15129,18 @@ export interface messages_searchSentMedia {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/messages.getAttachMenuBots */
 export interface messages_getAttachMenuBots {
   _: "messages.getAttachMenuBots";
   hash: bigint;
   [R]?: AttachMenuBots;
 }
 
-/** https://core.telegram.org/method/messages.getAttachMenuBot */
 export interface messages_getAttachMenuBot {
   _: "messages.getAttachMenuBot";
   bot: InputUser;
   [R]?: AttachMenuBotsBot;
 }
 
-/** https://core.telegram.org/method/messages.toggleBotInAttachMenu */
 export interface messages_toggleBotInAttachMenu {
   _: "messages.toggleBotInAttachMenu";
   write_allowed?: true;
@@ -15424,7 +15149,6 @@ export interface messages_toggleBotInAttachMenu {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.requestWebView */
 export interface messages_requestWebView {
   _: "messages.requestWebView";
   from_bot_menu?: true;
@@ -15442,7 +15166,6 @@ export interface messages_requestWebView {
   [R]?: WebViewResult;
 }
 
-/** https://core.telegram.org/method/messages.prolongWebView */
 export interface messages_prolongWebView {
   _: "messages.prolongWebView";
   silent?: true;
@@ -15454,7 +15177,6 @@ export interface messages_prolongWebView {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.requestSimpleWebView */
 export interface messages_requestSimpleWebView {
   _: "messages.requestSimpleWebView";
   from_switch_webview?: true;
@@ -15469,7 +15191,6 @@ export interface messages_requestSimpleWebView {
   [R]?: WebViewResult;
 }
 
-/** https://core.telegram.org/method/messages.sendWebViewResultMessage */
 export interface messages_sendWebViewResultMessage {
   _: "messages.sendWebViewResultMessage";
   bot_query_id: string;
@@ -15477,7 +15198,6 @@ export interface messages_sendWebViewResultMessage {
   [R]?: WebViewMessageSent;
 }
 
-/** https://core.telegram.org/method/messages.sendWebViewData */
 export interface messages_sendWebViewData {
   _: "messages.sendWebViewData";
   bot: InputUser;
@@ -15487,7 +15207,6 @@ export interface messages_sendWebViewData {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.transcribeAudio */
 export interface messages_transcribeAudio {
   _: "messages.transcribeAudio";
   peer: InputPeer;
@@ -15495,7 +15214,6 @@ export interface messages_transcribeAudio {
   [R]?: messages_TranscribedAudio;
 }
 
-/** https://core.telegram.org/method/messages.rateTranscribedAudio */
 export interface messages_rateTranscribedAudio {
   _: "messages.rateTranscribedAudio";
   peer: InputPeer;
@@ -15505,28 +15223,24 @@ export interface messages_rateTranscribedAudio {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getCustomEmojiDocuments */
 export interface messages_getCustomEmojiDocuments {
   _: "messages.getCustomEmojiDocuments";
   document_id: Array<bigint>;
   [R]?: Array<Document>;
 }
 
-/** https://core.telegram.org/method/messages.getEmojiStickers */
 export interface messages_getEmojiStickers {
   _: "messages.getEmojiStickers";
   hash: bigint;
   [R]?: messages_AllStickers;
 }
 
-/** https://core.telegram.org/method/messages.getFeaturedEmojiStickers */
 export interface messages_getFeaturedEmojiStickers {
   _: "messages.getFeaturedEmojiStickers";
   hash: bigint;
   [R]?: messages_FeaturedStickers;
 }
 
-/** https://core.telegram.org/method/messages.reportReaction */
 export interface messages_reportReaction {
   _: "messages.reportReaction";
   peer: InputPeer;
@@ -15535,7 +15249,6 @@ export interface messages_reportReaction {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getTopReactions */
 export interface messages_getTopReactions {
   _: "messages.getTopReactions";
   limit: number;
@@ -15543,7 +15256,6 @@ export interface messages_getTopReactions {
   [R]?: messages_Reactions;
 }
 
-/** https://core.telegram.org/method/messages.getRecentReactions */
 export interface messages_getRecentReactions {
   _: "messages.getRecentReactions";
   limit: number;
@@ -15551,13 +15263,11 @@ export interface messages_getRecentReactions {
   [R]?: messages_Reactions;
 }
 
-/** https://core.telegram.org/method/messages.clearRecentReactions */
 export interface messages_clearRecentReactions {
   _: "messages.clearRecentReactions";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getExtendedMedia */
 export interface messages_getExtendedMedia {
   _: "messages.getExtendedMedia";
   peer: InputPeer;
@@ -15565,20 +15275,17 @@ export interface messages_getExtendedMedia {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.setDefaultHistoryTTL */
 export interface messages_setDefaultHistoryTTL {
   _: "messages.setDefaultHistoryTTL";
   period: number;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getDefaultHistoryTTL */
 export interface messages_getDefaultHistoryTTL {
   _: "messages.getDefaultHistoryTTL";
   [R]?: DefaultHistoryTTL;
 }
 
-/** https://core.telegram.org/method/messages.sendBotRequestedPeer */
 export interface messages_sendBotRequestedPeer {
   _: "messages.sendBotRequestedPeer";
   peer: InputPeer;
@@ -15588,28 +15295,24 @@ export interface messages_sendBotRequestedPeer {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getEmojiGroups */
 export interface messages_getEmojiGroups {
   _: "messages.getEmojiGroups";
   hash: number;
   [R]?: messages_EmojiGroups;
 }
 
-/** https://core.telegram.org/method/messages.getEmojiStatusGroups */
 export interface messages_getEmojiStatusGroups {
   _: "messages.getEmojiStatusGroups";
   hash: number;
   [R]?: messages_EmojiGroups;
 }
 
-/** https://core.telegram.org/method/messages.getEmojiProfilePhotoGroups */
 export interface messages_getEmojiProfilePhotoGroups {
   _: "messages.getEmojiProfilePhotoGroups";
   hash: number;
   [R]?: messages_EmojiGroups;
 }
 
-/** https://core.telegram.org/method/messages.searchCustomEmoji */
 export interface messages_searchCustomEmoji {
   _: "messages.searchCustomEmoji";
   emoticon: string;
@@ -15617,7 +15320,6 @@ export interface messages_searchCustomEmoji {
   [R]?: EmojiList;
 }
 
-/** https://core.telegram.org/method/messages.togglePeerTranslations */
 export interface messages_togglePeerTranslations {
   _: "messages.togglePeerTranslations";
   disabled?: true;
@@ -15625,7 +15327,6 @@ export interface messages_togglePeerTranslations {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getBotApp */
 export interface messages_getBotApp {
   _: "messages.getBotApp";
   app: InputBotApp;
@@ -15633,7 +15334,6 @@ export interface messages_getBotApp {
   [R]?: messages_BotApp;
 }
 
-/** https://core.telegram.org/method/messages.requestAppWebView */
 export interface messages_requestAppWebView {
   _: "messages.requestAppWebView";
   write_allowed?: true;
@@ -15647,7 +15347,6 @@ export interface messages_requestAppWebView {
   [R]?: WebViewResult;
 }
 
-/** https://core.telegram.org/method/messages.setChatWallPaper */
 export interface messages_setChatWallPaper {
   _: "messages.setChatWallPaper";
   for_both?: true;
@@ -15659,7 +15358,6 @@ export interface messages_setChatWallPaper {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.searchEmojiStickerSets */
 export interface messages_searchEmojiStickerSets {
   _: "messages.searchEmojiStickerSets";
   exclude_featured?: true;
@@ -15668,7 +15366,6 @@ export interface messages_searchEmojiStickerSets {
   [R]?: messages_FoundStickerSets;
 }
 
-/** https://core.telegram.org/method/messages.getSavedDialogs */
 export interface messages_getSavedDialogs {
   _: "messages.getSavedDialogs";
   exclude_pinned?: true;
@@ -15681,7 +15378,6 @@ export interface messages_getSavedDialogs {
   [R]?: messages_SavedDialogs;
 }
 
-/** https://core.telegram.org/method/messages.getSavedHistory */
 export interface messages_getSavedHistory {
   _: "messages.getSavedHistory";
   parent_peer?: InputPeer;
@@ -15696,7 +15392,6 @@ export interface messages_getSavedHistory {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/messages.deleteSavedHistory */
 export interface messages_deleteSavedHistory {
   _: "messages.deleteSavedHistory";
   parent_peer?: InputPeer;
@@ -15707,13 +15402,11 @@ export interface messages_deleteSavedHistory {
   [R]?: messages_AffectedHistory;
 }
 
-/** https://core.telegram.org/method/messages.getPinnedSavedDialogs */
 export interface messages_getPinnedSavedDialogs {
   _: "messages.getPinnedSavedDialogs";
   [R]?: messages_SavedDialogs;
 }
 
-/** https://core.telegram.org/method/messages.toggleSavedDialogPin */
 export interface messages_toggleSavedDialogPin {
   _: "messages.toggleSavedDialogPin";
   pinned?: true;
@@ -15721,7 +15414,6 @@ export interface messages_toggleSavedDialogPin {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.reorderPinnedSavedDialogs */
 export interface messages_reorderPinnedSavedDialogs {
   _: "messages.reorderPinnedSavedDialogs";
   force?: true;
@@ -15729,7 +15421,6 @@ export interface messages_reorderPinnedSavedDialogs {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getSavedReactionTags */
 export interface messages_getSavedReactionTags {
   _: "messages.getSavedReactionTags";
   peer?: InputPeer;
@@ -15737,7 +15428,6 @@ export interface messages_getSavedReactionTags {
   [R]?: messages_SavedReactionTags;
 }
 
-/** https://core.telegram.org/method/messages.updateSavedReactionTag */
 export interface messages_updateSavedReactionTag {
   _: "messages.updateSavedReactionTag";
   reaction: Reaction;
@@ -15745,14 +15435,12 @@ export interface messages_updateSavedReactionTag {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getDefaultTagReactions */
 export interface messages_getDefaultTagReactions {
   _: "messages.getDefaultTagReactions";
   hash: bigint;
   [R]?: messages_Reactions;
 }
 
-/** https://core.telegram.org/method/messages.getOutboxReadDate */
 export interface messages_getOutboxReadDate {
   _: "messages.getOutboxReadDate";
   peer: InputPeer;
@@ -15760,28 +15448,24 @@ export interface messages_getOutboxReadDate {
   [R]?: OutboxReadDate;
 }
 
-/** https://core.telegram.org/method/messages.getQuickReplies */
 export interface messages_getQuickReplies {
   _: "messages.getQuickReplies";
   hash: bigint;
   [R]?: messages_QuickReplies;
 }
 
-/** https://core.telegram.org/method/messages.reorderQuickReplies */
 export interface messages_reorderQuickReplies {
   _: "messages.reorderQuickReplies";
   order: Array<number>;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.checkQuickReplyShortcut */
 export interface messages_checkQuickReplyShortcut {
   _: "messages.checkQuickReplyShortcut";
   shortcut: string;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.editQuickReplyShortcut */
 export interface messages_editQuickReplyShortcut {
   _: "messages.editQuickReplyShortcut";
   shortcut_id: number;
@@ -15789,14 +15473,12 @@ export interface messages_editQuickReplyShortcut {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.deleteQuickReplyShortcut */
 export interface messages_deleteQuickReplyShortcut {
   _: "messages.deleteQuickReplyShortcut";
   shortcut_id: number;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getQuickReplyMessages */
 export interface messages_getQuickReplyMessages {
   _: "messages.getQuickReplyMessages";
   shortcut_id: number;
@@ -15805,7 +15487,6 @@ export interface messages_getQuickReplyMessages {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/messages.sendQuickReplyMessages */
 export interface messages_sendQuickReplyMessages {
   _: "messages.sendQuickReplyMessages";
   peer: InputPeer;
@@ -15815,7 +15496,6 @@ export interface messages_sendQuickReplyMessages {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.deleteQuickReplyMessages */
 export interface messages_deleteQuickReplyMessages {
   _: "messages.deleteQuickReplyMessages";
   shortcut_id: number;
@@ -15823,14 +15503,12 @@ export interface messages_deleteQuickReplyMessages {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.toggleDialogFilterTags */
 export interface messages_toggleDialogFilterTags {
   _: "messages.toggleDialogFilterTags";
   enabled: boolean;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getMyStickers */
 export interface messages_getMyStickers {
   _: "messages.getMyStickers";
   offset_id: bigint;
@@ -15838,21 +15516,18 @@ export interface messages_getMyStickers {
   [R]?: messages_MyStickers;
 }
 
-/** https://core.telegram.org/method/messages.getEmojiStickerGroups */
 export interface messages_getEmojiStickerGroups {
   _: "messages.getEmojiStickerGroups";
   hash: number;
   [R]?: messages_EmojiGroups;
 }
 
-/** https://core.telegram.org/method/messages.getAvailableEffects */
 export interface messages_getAvailableEffects {
   _: "messages.getAvailableEffects";
   hash: number;
   [R]?: messages_AvailableEffects;
 }
 
-/** https://core.telegram.org/method/messages.editFactCheck */
 export interface messages_editFactCheck {
   _: "messages.editFactCheck";
   peer: InputPeer;
@@ -15861,7 +15536,6 @@ export interface messages_editFactCheck {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.deleteFactCheck */
 export interface messages_deleteFactCheck {
   _: "messages.deleteFactCheck";
   peer: InputPeer;
@@ -15869,7 +15543,6 @@ export interface messages_deleteFactCheck {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getFactCheck */
 export interface messages_getFactCheck {
   _: "messages.getFactCheck";
   peer: InputPeer;
@@ -15877,7 +15550,6 @@ export interface messages_getFactCheck {
   [R]?: Array<FactCheck>;
 }
 
-/** https://core.telegram.org/method/messages.requestMainWebView */
 export interface messages_requestMainWebView {
   _: "messages.requestMainWebView";
   compact?: true;
@@ -15890,7 +15562,6 @@ export interface messages_requestMainWebView {
   [R]?: WebViewResult;
 }
 
-/** https://core.telegram.org/method/messages.sendPaidReaction */
 export interface messages_sendPaidReaction {
   _: "messages.sendPaidReaction";
   peer: InputPeer;
@@ -15901,7 +15572,6 @@ export interface messages_sendPaidReaction {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.togglePaidReactionPrivacy */
 export interface messages_togglePaidReactionPrivacy {
   _: "messages.togglePaidReactionPrivacy";
   peer: InputPeer;
@@ -15910,20 +15580,17 @@ export interface messages_togglePaidReactionPrivacy {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getPaidReactionPrivacy */
 export interface messages_getPaidReactionPrivacy {
   _: "messages.getPaidReactionPrivacy";
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.viewSponsoredMessage */
 export interface messages_viewSponsoredMessage {
   _: "messages.viewSponsoredMessage";
   random_id: Uint8Array<ArrayBuffer>;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.clickSponsoredMessage */
 export interface messages_clickSponsoredMessage {
   _: "messages.clickSponsoredMessage";
   media?: true;
@@ -15932,7 +15599,6 @@ export interface messages_clickSponsoredMessage {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.reportSponsoredMessage */
 export interface messages_reportSponsoredMessage {
   _: "messages.reportSponsoredMessage";
   random_id: Uint8Array<ArrayBuffer>;
@@ -15940,7 +15606,6 @@ export interface messages_reportSponsoredMessage {
   [R]?: channels_SponsoredMessageReportResult;
 }
 
-/** https://core.telegram.org/method/messages.getSponsoredMessages */
 export interface messages_getSponsoredMessages {
   _: "messages.getSponsoredMessages";
   peer: InputPeer;
@@ -15948,7 +15613,6 @@ export interface messages_getSponsoredMessages {
   [R]?: messages_SponsoredMessages;
 }
 
-/** https://core.telegram.org/method/messages.savePreparedInlineMessage */
 export interface messages_savePreparedInlineMessage {
   _: "messages.savePreparedInlineMessage";
   result: InputBotInlineResult;
@@ -15957,7 +15621,6 @@ export interface messages_savePreparedInlineMessage {
   [R]?: messages_BotPreparedInlineMessage;
 }
 
-/** https://core.telegram.org/method/messages.getPreparedInlineMessage */
 export interface messages_getPreparedInlineMessage {
   _: "messages.getPreparedInlineMessage";
   bot: InputUser;
@@ -15965,7 +15628,6 @@ export interface messages_getPreparedInlineMessage {
   [R]?: messages_PreparedInlineMessage;
 }
 
-/** https://core.telegram.org/method/messages.searchStickers */
 export interface messages_searchStickers {
   _: "messages.searchStickers";
   emojis?: true;
@@ -15978,7 +15640,6 @@ export interface messages_searchStickers {
   [R]?: messages_FoundStickers;
 }
 
-/** https://core.telegram.org/method/messages.reportMessagesDelivery */
 export interface messages_reportMessagesDelivery {
   _: "messages.reportMessagesDelivery";
   push?: true;
@@ -15987,7 +15648,6 @@ export interface messages_reportMessagesDelivery {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.getSavedDialogsByID */
 export interface messages_getSavedDialogsByID {
   _: "messages.getSavedDialogsByID";
   parent_peer?: InputPeer;
@@ -15995,7 +15655,6 @@ export interface messages_getSavedDialogsByID {
   [R]?: messages_SavedDialogs;
 }
 
-/** https://core.telegram.org/method/messages.readSavedHistory */
 export interface messages_readSavedHistory {
   _: "messages.readSavedHistory";
   parent_peer: InputPeer;
@@ -16004,7 +15663,6 @@ export interface messages_readSavedHistory {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/messages.toggleTodoCompleted */
 export interface messages_toggleTodoCompleted {
   _: "messages.toggleTodoCompleted";
   peer: InputPeer;
@@ -16014,7 +15672,6 @@ export interface messages_toggleTodoCompleted {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.appendTodoList */
 export interface messages_appendTodoList {
   _: "messages.appendTodoList";
   peer: InputPeer;
@@ -16023,7 +15680,6 @@ export interface messages_appendTodoList {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.toggleSuggestedPostApproval */
 export interface messages_toggleSuggestedPostApproval {
   _: "messages.toggleSuggestedPostApproval";
   reject?: true;
@@ -16034,7 +15690,6 @@ export interface messages_toggleSuggestedPostApproval {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.getForumTopics */
 export interface messages_getForumTopics {
   _: "messages.getForumTopics";
   peer: InputPeer;
@@ -16046,7 +15701,6 @@ export interface messages_getForumTopics {
   [R]?: messages_ForumTopics;
 }
 
-/** https://core.telegram.org/method/messages.getForumTopicsByID */
 export interface messages_getForumTopicsByID {
   _: "messages.getForumTopicsByID";
   peer: InputPeer;
@@ -16054,7 +15708,6 @@ export interface messages_getForumTopicsByID {
   [R]?: messages_ForumTopics;
 }
 
-/** https://core.telegram.org/method/messages.editForumTopic */
 export interface messages_editForumTopic {
   _: "messages.editForumTopic";
   peer: InputPeer;
@@ -16066,7 +15719,6 @@ export interface messages_editForumTopic {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.updatePinnedForumTopic */
 export interface messages_updatePinnedForumTopic {
   _: "messages.updatePinnedForumTopic";
   peer: InputPeer;
@@ -16075,7 +15727,6 @@ export interface messages_updatePinnedForumTopic {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.reorderPinnedForumTopics */
 export interface messages_reorderPinnedForumTopics {
   _: "messages.reorderPinnedForumTopics";
   force?: true;
@@ -16084,7 +15735,6 @@ export interface messages_reorderPinnedForumTopics {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.createForumTopic */
 export interface messages_createForumTopic {
   _: "messages.createForumTopic";
   title_missing?: true;
@@ -16097,7 +15747,6 @@ export interface messages_createForumTopic {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/messages.deleteTopicHistory */
 export interface messages_deleteTopicHistory {
   _: "messages.deleteTopicHistory";
   peer: InputPeer;
@@ -16105,13 +15754,11 @@ export interface messages_deleteTopicHistory {
   [R]?: messages_AffectedHistory;
 }
 
-/** https://core.telegram.org/method/messages.getEmojiGameInfo */
 export interface messages_getEmojiGameInfo {
   _: "messages.getEmojiGameInfo";
   [R]?: messages_EmojiGameInfo;
 }
 
-/** https://core.telegram.org/method/messages.summarizeText */
 export interface messages_summarizeText {
   _: "messages.summarizeText";
   peer: InputPeer;
@@ -16120,13 +15767,11 @@ export interface messages_summarizeText {
   [R]?: TextWithEntities;
 }
 
-/** https://core.telegram.org/method/updates.getState */
 export interface updates_getState {
   _: "updates.getState";
   [R]?: updates_State;
 }
 
-/** https://core.telegram.org/method/updates.getDifference */
 export interface updates_getDifference {
   _: "updates.getDifference";
   pts: number;
@@ -16138,7 +15783,6 @@ export interface updates_getDifference {
   [R]?: updates_Difference;
 }
 
-/** https://core.telegram.org/method/updates.getChannelDifference */
 export interface updates_getChannelDifference {
   _: "updates.getChannelDifference";
   force?: true;
@@ -16149,7 +15793,6 @@ export interface updates_getChannelDifference {
   [R]?: updates_ChannelDifference;
 }
 
-/** https://core.telegram.org/method/photos.updateProfilePhoto */
 export interface photos_updateProfilePhoto {
   _: "photos.updateProfilePhoto";
   fallback?: true;
@@ -16158,7 +15801,6 @@ export interface photos_updateProfilePhoto {
   [R]?: photos_Photo;
 }
 
-/** https://core.telegram.org/method/photos.uploadProfilePhoto */
 export interface photos_uploadProfilePhoto {
   _: "photos.uploadProfilePhoto";
   fallback?: true;
@@ -16170,14 +15812,12 @@ export interface photos_uploadProfilePhoto {
   [R]?: photos_Photo;
 }
 
-/** https://core.telegram.org/method/photos.deletePhotos */
 export interface photos_deletePhotos {
   _: "photos.deletePhotos";
   id: Array<InputPhoto>;
   [R]?: Array<bigint>;
 }
 
-/** https://core.telegram.org/method/photos.getUserPhotos */
 export interface photos_getUserPhotos {
   _: "photos.getUserPhotos";
   user_id: InputUser;
@@ -16187,7 +15827,6 @@ export interface photos_getUserPhotos {
   [R]?: photos_Photos;
 }
 
-/** https://core.telegram.org/method/photos.uploadContactProfilePhoto */
 export interface photos_uploadContactProfilePhoto {
   _: "photos.uploadContactProfilePhoto";
   suggest?: true;
@@ -16200,7 +15839,6 @@ export interface photos_uploadContactProfilePhoto {
   [R]?: photos_Photo;
 }
 
-/** https://core.telegram.org/method/upload.saveFilePart */
 export interface upload_saveFilePart {
   _: "upload.saveFilePart";
   file_id: bigint;
@@ -16209,7 +15847,6 @@ export interface upload_saveFilePart {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/upload.getFile */
 export interface upload_getFile {
   _: "upload.getFile";
   precise?: true;
@@ -16220,7 +15857,6 @@ export interface upload_getFile {
   [R]?: upload_File;
 }
 
-/** https://core.telegram.org/method/upload.saveBigFilePart */
 export interface upload_saveBigFilePart {
   _: "upload.saveBigFilePart";
   file_id: bigint;
@@ -16230,7 +15866,6 @@ export interface upload_saveBigFilePart {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/upload.getWebFile */
 export interface upload_getWebFile {
   _: "upload.getWebFile";
   location: InputWebFileLocation;
@@ -16239,7 +15874,6 @@ export interface upload_getWebFile {
   [R]?: upload_WebFile;
 }
 
-/** https://core.telegram.org/method/upload.getCdnFile */
 export interface upload_getCdnFile {
   _: "upload.getCdnFile";
   file_token: Uint8Array<ArrayBuffer>;
@@ -16248,7 +15882,6 @@ export interface upload_getCdnFile {
   [R]?: upload_CdnFile;
 }
 
-/** https://core.telegram.org/method/upload.reuploadCdnFile */
 export interface upload_reuploadCdnFile {
   _: "upload.reuploadCdnFile";
   file_token: Uint8Array<ArrayBuffer>;
@@ -16256,7 +15889,6 @@ export interface upload_reuploadCdnFile {
   [R]?: Array<FileHash>;
 }
 
-/** https://core.telegram.org/method/upload.getCdnFileHashes */
 export interface upload_getCdnFileHashes {
   _: "upload.getCdnFileHashes";
   file_token: Uint8Array<ArrayBuffer>;
@@ -16264,7 +15896,6 @@ export interface upload_getCdnFileHashes {
   [R]?: Array<FileHash>;
 }
 
-/** https://core.telegram.org/method/upload.getFileHashes */
 export interface upload_getFileHashes {
   _: "upload.getFileHashes";
   location: InputFileLocation;
@@ -16272,38 +15903,32 @@ export interface upload_getFileHashes {
   [R]?: Array<FileHash>;
 }
 
-/** https://core.telegram.org/method/help.getConfig */
 export interface help_getConfig {
   _: "help.getConfig";
   [R]?: Config;
 }
 
-/** https://core.telegram.org/method/help.getNearestDc */
 export interface help_getNearestDc {
   _: "help.getNearestDc";
   [R]?: NearestDc;
 }
 
-/** https://core.telegram.org/method/help.getAppUpdate */
 export interface help_getAppUpdate {
   _: "help.getAppUpdate";
   source: string;
   [R]?: help_AppUpdate;
 }
 
-/** https://core.telegram.org/method/help.getInviteText */
 export interface help_getInviteText {
   _: "help.getInviteText";
   [R]?: help_InviteText;
 }
 
-/** https://core.telegram.org/method/help.getSupport */
 export interface help_getSupport {
   _: "help.getSupport";
   [R]?: help_Support;
 }
 
-/** https://core.telegram.org/method/help.setBotUpdatesStatus */
 export interface help_setBotUpdatesStatus {
   _: "help.setBotUpdatesStatus";
   pending_updates_count: number;
@@ -16311,74 +15936,63 @@ export interface help_setBotUpdatesStatus {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/help.getCdnConfig */
 export interface help_getCdnConfig {
   _: "help.getCdnConfig";
   [R]?: CdnConfig;
 }
 
-/** https://core.telegram.org/method/help.getRecentMeUrls */
 export interface help_getRecentMeUrls {
   _: "help.getRecentMeUrls";
   referer: string;
   [R]?: help_RecentMeUrls;
 }
 
-/** https://core.telegram.org/method/help.getTermsOfServiceUpdate */
 export interface help_getTermsOfServiceUpdate {
   _: "help.getTermsOfServiceUpdate";
   [R]?: help_TermsOfServiceUpdate;
 }
 
-/** https://core.telegram.org/method/help.acceptTermsOfService */
 export interface help_acceptTermsOfService {
   _: "help.acceptTermsOfService";
   id: DataJSON;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/help.getDeepLinkInfo */
 export interface help_getDeepLinkInfo {
   _: "help.getDeepLinkInfo";
   path: string;
   [R]?: help_DeepLinkInfo;
 }
 
-/** https://core.telegram.org/method/help.getAppConfig */
 export interface help_getAppConfig {
   _: "help.getAppConfig";
   hash: number;
   [R]?: help_AppConfig;
 }
 
-/** https://core.telegram.org/method/help.saveAppLog */
 export interface help_saveAppLog {
   _: "help.saveAppLog";
   events: Array<InputAppEvent>;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/help.getPassportConfig */
 export interface help_getPassportConfig {
   _: "help.getPassportConfig";
   hash: number;
   [R]?: help_PassportConfig;
 }
 
-/** https://core.telegram.org/method/help.getSupportName */
 export interface help_getSupportName {
   _: "help.getSupportName";
   [R]?: help_SupportName;
 }
 
-/** https://core.telegram.org/method/help.getUserInfo */
 export interface help_getUserInfo {
   _: "help.getUserInfo";
   user_id: InputUser;
   [R]?: help_UserInfo;
 }
 
-/** https://core.telegram.org/method/help.editUserInfo */
 export interface help_editUserInfo {
   _: "help.editUserInfo";
   user_id: InputUser;
@@ -16387,20 +16001,17 @@ export interface help_editUserInfo {
   [R]?: help_UserInfo;
 }
 
-/** https://core.telegram.org/method/help.getPromoData */
 export interface help_getPromoData {
   _: "help.getPromoData";
   [R]?: help_PromoData;
 }
 
-/** https://core.telegram.org/method/help.hidePromoData */
 export interface help_hidePromoData {
   _: "help.hidePromoData";
   peer: InputPeer;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/help.dismissSuggestion */
 export interface help_dismissSuggestion {
   _: "help.dismissSuggestion";
   peer: InputPeer;
@@ -16408,7 +16019,6 @@ export interface help_dismissSuggestion {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/help.getCountriesList */
 export interface help_getCountriesList {
   _: "help.getCountriesList";
   lang_code: string;
@@ -16416,34 +16026,29 @@ export interface help_getCountriesList {
   [R]?: help_CountriesList;
 }
 
-/** https://core.telegram.org/method/help.getPremiumPromo */
 export interface help_getPremiumPromo {
   _: "help.getPremiumPromo";
   [R]?: help_PremiumPromo;
 }
 
-/** https://core.telegram.org/method/help.getPeerColors */
 export interface help_getPeerColors {
   _: "help.getPeerColors";
   hash: number;
   [R]?: help_PeerColors;
 }
 
-/** https://core.telegram.org/method/help.getPeerProfileColors */
 export interface help_getPeerProfileColors {
   _: "help.getPeerProfileColors";
   hash: number;
   [R]?: help_PeerColors;
 }
 
-/** https://core.telegram.org/method/help.getTimezonesList */
 export interface help_getTimezonesList {
   _: "help.getTimezonesList";
   hash: number;
   [R]?: help_TimezonesList;
 }
 
-/** https://core.telegram.org/method/channels.readHistory */
 export interface channels_readHistory {
   _: "channels.readHistory";
   channel: InputChannel;
@@ -16451,7 +16056,6 @@ export interface channels_readHistory {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/channels.deleteMessages */
 export interface channels_deleteMessages {
   _: "channels.deleteMessages";
   channel: InputChannel;
@@ -16459,7 +16063,6 @@ export interface channels_deleteMessages {
   [R]?: messages_AffectedMessages;
 }
 
-/** https://core.telegram.org/method/channels.reportSpam */
 export interface channels_reportSpam {
   _: "channels.reportSpam";
   channel: InputChannel;
@@ -16468,7 +16071,6 @@ export interface channels_reportSpam {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/channels.getMessages */
 export interface channels_getMessages {
   _: "channels.getMessages";
   channel: InputChannel;
@@ -16476,7 +16078,6 @@ export interface channels_getMessages {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/channels.getParticipants */
 export interface channels_getParticipants {
   _: "channels.getParticipants";
   channel: InputChannel;
@@ -16487,7 +16088,6 @@ export interface channels_getParticipants {
   [R]?: channels_ChannelParticipants;
 }
 
-/** https://core.telegram.org/method/channels.getParticipant */
 export interface channels_getParticipant {
   _: "channels.getParticipant";
   channel: InputChannel;
@@ -16495,21 +16095,18 @@ export interface channels_getParticipant {
   [R]?: channels_ChannelParticipant;
 }
 
-/** https://core.telegram.org/method/channels.getChannels */
 export interface channels_getChannels {
   _: "channels.getChannels";
   id: Array<InputChannel>;
   [R]?: messages_Chats;
 }
 
-/** https://core.telegram.org/method/channels.getFullChannel */
 export interface channels_getFullChannel {
   _: "channels.getFullChannel";
   channel: InputChannel;
   [R]?: messages_ChatFull;
 }
 
-/** https://core.telegram.org/method/channels.createChannel */
 export interface channels_createChannel {
   _: "channels.createChannel";
   broadcast?: true;
@@ -16524,7 +16121,6 @@ export interface channels_createChannel {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.editAdmin */
 export interface channels_editAdmin {
   _: "channels.editAdmin";
   channel: InputChannel;
@@ -16534,7 +16130,6 @@ export interface channels_editAdmin {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.editTitle */
 export interface channels_editTitle {
   _: "channels.editTitle";
   channel: InputChannel;
@@ -16542,7 +16137,6 @@ export interface channels_editTitle {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.editPhoto */
 export interface channels_editPhoto {
   _: "channels.editPhoto";
   channel: InputChannel;
@@ -16550,7 +16144,6 @@ export interface channels_editPhoto {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.checkUsername */
 export interface channels_checkUsername {
   _: "channels.checkUsername";
   channel: InputChannel;
@@ -16558,7 +16151,6 @@ export interface channels_checkUsername {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/channels.updateUsername */
 export interface channels_updateUsername {
   _: "channels.updateUsername";
   channel: InputChannel;
@@ -16566,21 +16158,18 @@ export interface channels_updateUsername {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/channels.joinChannel */
 export interface channels_joinChannel {
   _: "channels.joinChannel";
   channel: InputChannel;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.leaveChannel */
 export interface channels_leaveChannel {
   _: "channels.leaveChannel";
   channel: InputChannel;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.inviteToChannel */
 export interface channels_inviteToChannel {
   _: "channels.inviteToChannel";
   channel: InputChannel;
@@ -16588,14 +16177,12 @@ export interface channels_inviteToChannel {
   [R]?: messages_InvitedUsers;
 }
 
-/** https://core.telegram.org/method/channels.deleteChannel */
 export interface channels_deleteChannel {
   _: "channels.deleteChannel";
   channel: InputChannel;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.exportMessageLink */
 export interface channels_exportMessageLink {
   _: "channels.exportMessageLink";
   grouped?: true;
@@ -16605,7 +16192,6 @@ export interface channels_exportMessageLink {
   [R]?: ExportedMessageLink;
 }
 
-/** https://core.telegram.org/method/channels.toggleSignatures */
 export interface channels_toggleSignatures {
   _: "channels.toggleSignatures";
   signatures_enabled?: true;
@@ -16614,7 +16200,6 @@ export interface channels_toggleSignatures {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.getAdminedPublicChannels */
 export interface channels_getAdminedPublicChannels {
   _: "channels.getAdminedPublicChannels";
   by_location?: true;
@@ -16623,7 +16208,6 @@ export interface channels_getAdminedPublicChannels {
   [R]?: messages_Chats;
 }
 
-/** https://core.telegram.org/method/channels.editBanned */
 export interface channels_editBanned {
   _: "channels.editBanned";
   channel: InputChannel;
@@ -16632,7 +16216,6 @@ export interface channels_editBanned {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.getAdminLog */
 export interface channels_getAdminLog {
   _: "channels.getAdminLog";
   channel: InputChannel;
@@ -16645,7 +16228,6 @@ export interface channels_getAdminLog {
   [R]?: channels_AdminLogResults;
 }
 
-/** https://core.telegram.org/method/channels.setStickers */
 export interface channels_setStickers {
   _: "channels.setStickers";
   channel: InputChannel;
@@ -16653,7 +16235,6 @@ export interface channels_setStickers {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/channels.readMessageContents */
 export interface channels_readMessageContents {
   _: "channels.readMessageContents";
   channel: InputChannel;
@@ -16661,7 +16242,6 @@ export interface channels_readMessageContents {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/channels.deleteHistory */
 export interface channels_deleteHistory {
   _: "channels.deleteHistory";
   for_everyone?: true;
@@ -16670,7 +16250,6 @@ export interface channels_deleteHistory {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.togglePreHistoryHidden */
 export interface channels_togglePreHistoryHidden {
   _: "channels.togglePreHistoryHidden";
   channel: InputChannel;
@@ -16678,20 +16257,17 @@ export interface channels_togglePreHistoryHidden {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.getLeftChannels */
 export interface channels_getLeftChannels {
   _: "channels.getLeftChannels";
   offset: number;
   [R]?: messages_Chats;
 }
 
-/** https://core.telegram.org/method/channels.getGroupsForDiscussion */
 export interface channels_getGroupsForDiscussion {
   _: "channels.getGroupsForDiscussion";
   [R]?: messages_Chats;
 }
 
-/** https://core.telegram.org/method/channels.setDiscussionGroup */
 export interface channels_setDiscussionGroup {
   _: "channels.setDiscussionGroup";
   broadcast: InputChannel;
@@ -16699,7 +16275,6 @@ export interface channels_setDiscussionGroup {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/channels.editCreator */
 export interface channels_editCreator {
   _: "channels.editCreator";
   channel: InputChannel;
@@ -16708,7 +16283,6 @@ export interface channels_editCreator {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.editLocation */
 export interface channels_editLocation {
   _: "channels.editLocation";
   channel: InputChannel;
@@ -16717,7 +16291,6 @@ export interface channels_editLocation {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/channels.toggleSlowMode */
 export interface channels_toggleSlowMode {
   _: "channels.toggleSlowMode";
   channel: InputChannel;
@@ -16725,20 +16298,17 @@ export interface channels_toggleSlowMode {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.getInactiveChannels */
 export interface channels_getInactiveChannels {
   _: "channels.getInactiveChannels";
   [R]?: messages_InactiveChats;
 }
 
-/** https://core.telegram.org/method/channels.convertToGigagroup */
 export interface channels_convertToGigagroup {
   _: "channels.convertToGigagroup";
   channel: InputChannel;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.getSendAs */
 export interface channels_getSendAs {
   _: "channels.getSendAs";
   for_paid_reactions?: true;
@@ -16747,7 +16317,6 @@ export interface channels_getSendAs {
   [R]?: channels_SendAsPeers;
 }
 
-/** https://core.telegram.org/method/channels.deleteParticipantHistory */
 export interface channels_deleteParticipantHistory {
   _: "channels.deleteParticipantHistory";
   channel: InputChannel;
@@ -16755,7 +16324,6 @@ export interface channels_deleteParticipantHistory {
   [R]?: messages_AffectedHistory;
 }
 
-/** https://core.telegram.org/method/channels.toggleJoinToSend */
 export interface channels_toggleJoinToSend {
   _: "channels.toggleJoinToSend";
   channel: InputChannel;
@@ -16763,7 +16331,6 @@ export interface channels_toggleJoinToSend {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.toggleJoinRequest */
 export interface channels_toggleJoinRequest {
   _: "channels.toggleJoinRequest";
   channel: InputChannel;
@@ -16771,7 +16338,6 @@ export interface channels_toggleJoinRequest {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.reorderUsernames */
 export interface channels_reorderUsernames {
   _: "channels.reorderUsernames";
   channel: InputChannel;
@@ -16779,7 +16345,6 @@ export interface channels_reorderUsernames {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/channels.toggleUsername */
 export interface channels_toggleUsername {
   _: "channels.toggleUsername";
   channel: InputChannel;
@@ -16788,14 +16353,12 @@ export interface channels_toggleUsername {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/channels.deactivateAllUsernames */
 export interface channels_deactivateAllUsernames {
   _: "channels.deactivateAllUsernames";
   channel: InputChannel;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/channels.toggleForum */
 export interface channels_toggleForum {
   _: "channels.toggleForum";
   channel: InputChannel;
@@ -16804,7 +16367,6 @@ export interface channels_toggleForum {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.toggleAntiSpam */
 export interface channels_toggleAntiSpam {
   _: "channels.toggleAntiSpam";
   channel: InputChannel;
@@ -16812,7 +16374,6 @@ export interface channels_toggleAntiSpam {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.reportAntiSpamFalsePositive */
 export interface channels_reportAntiSpamFalsePositive {
   _: "channels.reportAntiSpamFalsePositive";
   channel: InputChannel;
@@ -16820,7 +16381,6 @@ export interface channels_reportAntiSpamFalsePositive {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/channels.toggleParticipantsHidden */
 export interface channels_toggleParticipantsHidden {
   _: "channels.toggleParticipantsHidden";
   channel: InputChannel;
@@ -16828,7 +16388,6 @@ export interface channels_toggleParticipantsHidden {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.updateColor */
 export interface channels_updateColor {
   _: "channels.updateColor";
   for_profile?: true;
@@ -16838,7 +16397,6 @@ export interface channels_updateColor {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.toggleViewForumAsMessages */
 export interface channels_toggleViewForumAsMessages {
   _: "channels.toggleViewForumAsMessages";
   channel: InputChannel;
@@ -16846,14 +16404,12 @@ export interface channels_toggleViewForumAsMessages {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.getChannelRecommendations */
 export interface channels_getChannelRecommendations {
   _: "channels.getChannelRecommendations";
   channel?: InputChannel;
   [R]?: messages_Chats;
 }
 
-/** https://core.telegram.org/method/channels.updateEmojiStatus */
 export interface channels_updateEmojiStatus {
   _: "channels.updateEmojiStatus";
   channel: InputChannel;
@@ -16861,7 +16417,6 @@ export interface channels_updateEmojiStatus {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.setBoostsToUnblockRestrictions */
 export interface channels_setBoostsToUnblockRestrictions {
   _: "channels.setBoostsToUnblockRestrictions";
   channel: InputChannel;
@@ -16869,7 +16424,6 @@ export interface channels_setBoostsToUnblockRestrictions {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.setEmojiStickers */
 export interface channels_setEmojiStickers {
   _: "channels.setEmojiStickers";
   channel: InputChannel;
@@ -16877,7 +16431,6 @@ export interface channels_setEmojiStickers {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/channels.restrictSponsoredMessages */
 export interface channels_restrictSponsoredMessages {
   _: "channels.restrictSponsoredMessages";
   channel: InputChannel;
@@ -16885,7 +16438,6 @@ export interface channels_restrictSponsoredMessages {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.searchPosts */
 export interface channels_searchPosts {
   _: "channels.searchPosts";
   hashtag?: string;
@@ -16898,7 +16450,6 @@ export interface channels_searchPosts {
   [R]?: messages_Messages;
 }
 
-/** https://core.telegram.org/method/channels.updatePaidMessagesPrice */
 export interface channels_updatePaidMessagesPrice {
   _: "channels.updatePaidMessagesPrice";
   broadcast_messages_allowed?: true;
@@ -16907,7 +16458,6 @@ export interface channels_updatePaidMessagesPrice {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.toggleAutotranslation */
 export interface channels_toggleAutotranslation {
   _: "channels.toggleAutotranslation";
   channel: InputChannel;
@@ -16915,7 +16465,6 @@ export interface channels_toggleAutotranslation {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/channels.getMessageAuthor */
 export interface channels_getMessageAuthor {
   _: "channels.getMessageAuthor";
   channel: InputChannel;
@@ -16923,14 +16472,12 @@ export interface channels_getMessageAuthor {
   [R]?: User;
 }
 
-/** https://core.telegram.org/method/channels.checkSearchPostsFlood */
 export interface channels_checkSearchPostsFlood {
   _: "channels.checkSearchPostsFlood";
   query?: string;
   [R]?: SearchPostsFlood;
 }
 
-/** https://core.telegram.org/method/channels.setMainProfileTab */
 export interface channels_setMainProfileTab {
   _: "channels.setMainProfileTab";
   channel: InputChannel;
@@ -16938,7 +16485,12 @@ export interface channels_setMainProfileTab {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.sendCustomRequest */
+export interface channels_getFutureCreatorAfterLeave {
+  _: "channels.getFutureCreatorAfterLeave";
+  channel: InputChannel;
+  [R]?: User;
+}
+
 export interface bots_sendCustomRequest {
   _: "bots.sendCustomRequest";
   custom_method: string;
@@ -16946,7 +16498,6 @@ export interface bots_sendCustomRequest {
   [R]?: DataJSON;
 }
 
-/** https://core.telegram.org/method/bots.answerWebhookJSONQuery */
 export interface bots_answerWebhookJSONQuery {
   _: "bots.answerWebhookJSONQuery";
   query_id: bigint;
@@ -16954,7 +16505,6 @@ export interface bots_answerWebhookJSONQuery {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.setBotCommands */
 export interface bots_setBotCommands {
   _: "bots.setBotCommands";
   scope: BotCommandScope;
@@ -16963,7 +16513,6 @@ export interface bots_setBotCommands {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.resetBotCommands */
 export interface bots_resetBotCommands {
   _: "bots.resetBotCommands";
   scope: BotCommandScope;
@@ -16971,7 +16520,6 @@ export interface bots_resetBotCommands {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.getBotCommands */
 export interface bots_getBotCommands {
   _: "bots.getBotCommands";
   scope: BotCommandScope;
@@ -16979,7 +16527,6 @@ export interface bots_getBotCommands {
   [R]?: Array<BotCommand>;
 }
 
-/** https://core.telegram.org/method/bots.setBotMenuButton */
 export interface bots_setBotMenuButton {
   _: "bots.setBotMenuButton";
   user_id: InputUser;
@@ -16987,28 +16534,24 @@ export interface bots_setBotMenuButton {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.getBotMenuButton */
 export interface bots_getBotMenuButton {
   _: "bots.getBotMenuButton";
   user_id: InputUser;
   [R]?: BotMenuButton;
 }
 
-/** https://core.telegram.org/method/bots.setBotBroadcastDefaultAdminRights */
 export interface bots_setBotBroadcastDefaultAdminRights {
   _: "bots.setBotBroadcastDefaultAdminRights";
   admin_rights: ChatAdminRights;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.setBotGroupDefaultAdminRights */
 export interface bots_setBotGroupDefaultAdminRights {
   _: "bots.setBotGroupDefaultAdminRights";
   admin_rights: ChatAdminRights;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.setBotInfo */
 export interface bots_setBotInfo {
   _: "bots.setBotInfo";
   bot?: InputUser;
@@ -17019,7 +16562,6 @@ export interface bots_setBotInfo {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.getBotInfo */
 export interface bots_getBotInfo {
   _: "bots.getBotInfo";
   bot?: InputUser;
@@ -17027,7 +16569,6 @@ export interface bots_getBotInfo {
   [R]?: bots_BotInfo;
 }
 
-/** https://core.telegram.org/method/bots.reorderUsernames */
 export interface bots_reorderUsernames {
   _: "bots.reorderUsernames";
   bot: InputUser;
@@ -17035,7 +16576,6 @@ export interface bots_reorderUsernames {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.toggleUsername */
 export interface bots_toggleUsername {
   _: "bots.toggleUsername";
   bot: InputUser;
@@ -17044,21 +16584,18 @@ export interface bots_toggleUsername {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.canSendMessage */
 export interface bots_canSendMessage {
   _: "bots.canSendMessage";
   bot: InputUser;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.allowSendMessage */
 export interface bots_allowSendMessage {
   _: "bots.allowSendMessage";
   bot: InputUser;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/bots.invokeWebViewCustomMethod */
 export interface bots_invokeWebViewCustomMethod {
   _: "bots.invokeWebViewCustomMethod";
   bot: InputUser;
@@ -17067,7 +16604,6 @@ export interface bots_invokeWebViewCustomMethod {
   [R]?: DataJSON;
 }
 
-/** https://core.telegram.org/method/bots.getPopularAppBots */
 export interface bots_getPopularAppBots {
   _: "bots.getPopularAppBots";
   offset: string;
@@ -17075,7 +16611,6 @@ export interface bots_getPopularAppBots {
   [R]?: bots_PopularAppBots;
 }
 
-/** https://core.telegram.org/method/bots.addPreviewMedia */
 export interface bots_addPreviewMedia {
   _: "bots.addPreviewMedia";
   bot: InputUser;
@@ -17084,7 +16619,6 @@ export interface bots_addPreviewMedia {
   [R]?: BotPreviewMedia;
 }
 
-/** https://core.telegram.org/method/bots.editPreviewMedia */
 export interface bots_editPreviewMedia {
   _: "bots.editPreviewMedia";
   bot: InputUser;
@@ -17094,7 +16628,6 @@ export interface bots_editPreviewMedia {
   [R]?: BotPreviewMedia;
 }
 
-/** https://core.telegram.org/method/bots.deletePreviewMedia */
 export interface bots_deletePreviewMedia {
   _: "bots.deletePreviewMedia";
   bot: InputUser;
@@ -17103,7 +16636,6 @@ export interface bots_deletePreviewMedia {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.reorderPreviewMedias */
 export interface bots_reorderPreviewMedias {
   _: "bots.reorderPreviewMedias";
   bot: InputUser;
@@ -17112,7 +16644,6 @@ export interface bots_reorderPreviewMedias {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.getPreviewInfo */
 export interface bots_getPreviewInfo {
   _: "bots.getPreviewInfo";
   bot: InputUser;
@@ -17120,14 +16651,12 @@ export interface bots_getPreviewInfo {
   [R]?: bots_PreviewInfo;
 }
 
-/** https://core.telegram.org/method/bots.getPreviewMedias */
 export interface bots_getPreviewMedias {
   _: "bots.getPreviewMedias";
   bot: InputUser;
   [R]?: Array<BotPreviewMedia>;
 }
 
-/** https://core.telegram.org/method/bots.updateUserEmojiStatus */
 export interface bots_updateUserEmojiStatus {
   _: "bots.updateUserEmojiStatus";
   user_id: InputUser;
@@ -17135,7 +16664,6 @@ export interface bots_updateUserEmojiStatus {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.toggleUserEmojiStatusPermission */
 export interface bots_toggleUserEmojiStatusPermission {
   _: "bots.toggleUserEmojiStatusPermission";
   bot: InputUser;
@@ -17143,7 +16671,6 @@ export interface bots_toggleUserEmojiStatusPermission {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.checkDownloadFileParams */
 export interface bots_checkDownloadFileParams {
   _: "bots.checkDownloadFileParams";
   bot: InputUser;
@@ -17152,13 +16679,11 @@ export interface bots_checkDownloadFileParams {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.getAdminedBots */
 export interface bots_getAdminedBots {
   _: "bots.getAdminedBots";
   [R]?: Array<User>;
 }
 
-/** https://core.telegram.org/method/bots.updateStarRefProgram */
 export interface bots_updateStarRefProgram {
   _: "bots.updateStarRefProgram";
   bot: InputUser;
@@ -17167,7 +16692,6 @@ export interface bots_updateStarRefProgram {
   [R]?: StarRefProgram;
 }
 
-/** https://core.telegram.org/method/bots.setCustomVerification */
 export interface bots_setCustomVerification {
   _: "bots.setCustomVerification";
   enabled?: true;
@@ -17177,14 +16701,12 @@ export interface bots_setCustomVerification {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/bots.getBotRecommendations */
 export interface bots_getBotRecommendations {
   _: "bots.getBotRecommendations";
   bot: InputUser;
   [R]?: users_Users;
 }
 
-/** https://core.telegram.org/method/payments.getPaymentForm */
 export interface payments_getPaymentForm {
   _: "payments.getPaymentForm";
   invoice: InputInvoice;
@@ -17192,7 +16714,6 @@ export interface payments_getPaymentForm {
   [R]?: payments_PaymentForm;
 }
 
-/** https://core.telegram.org/method/payments.getPaymentReceipt */
 export interface payments_getPaymentReceipt {
   _: "payments.getPaymentReceipt";
   peer: InputPeer;
@@ -17200,7 +16721,6 @@ export interface payments_getPaymentReceipt {
   [R]?: payments_PaymentReceipt;
 }
 
-/** https://core.telegram.org/method/payments.validateRequestedInfo */
 export interface payments_validateRequestedInfo {
   _: "payments.validateRequestedInfo";
   save?: true;
@@ -17209,7 +16729,6 @@ export interface payments_validateRequestedInfo {
   [R]?: payments_ValidatedRequestedInfo;
 }
 
-/** https://core.telegram.org/method/payments.sendPaymentForm */
 export interface payments_sendPaymentForm {
   _: "payments.sendPaymentForm";
   form_id: bigint;
@@ -17221,13 +16740,11 @@ export interface payments_sendPaymentForm {
   [R]?: payments_PaymentResult;
 }
 
-/** https://core.telegram.org/method/payments.getSavedInfo */
 export interface payments_getSavedInfo {
   _: "payments.getSavedInfo";
   [R]?: payments_SavedInfo;
 }
 
-/** https://core.telegram.org/method/payments.clearSavedInfo */
 export interface payments_clearSavedInfo {
   _: "payments.clearSavedInfo";
   credentials?: true;
@@ -17235,21 +16752,18 @@ export interface payments_clearSavedInfo {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/payments.getBankCardData */
 export interface payments_getBankCardData {
   _: "payments.getBankCardData";
   number: string;
   [R]?: payments_BankCardData;
 }
 
-/** https://core.telegram.org/method/payments.exportInvoice */
 export interface payments_exportInvoice {
   _: "payments.exportInvoice";
   invoice_media: InputMedia;
   [R]?: payments_ExportedInvoice;
 }
 
-/** https://core.telegram.org/method/payments.assignAppStoreTransaction */
 export interface payments_assignAppStoreTransaction {
   _: "payments.assignAppStoreTransaction";
   receipt: Uint8Array<ArrayBuffer>;
@@ -17257,7 +16771,6 @@ export interface payments_assignAppStoreTransaction {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/payments.assignPlayMarketTransaction */
 export interface payments_assignPlayMarketTransaction {
   _: "payments.assignPlayMarketTransaction";
   receipt: DataJSON;
@@ -17265,28 +16778,24 @@ export interface payments_assignPlayMarketTransaction {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/payments.getPremiumGiftCodeOptions */
 export interface payments_getPremiumGiftCodeOptions {
   _: "payments.getPremiumGiftCodeOptions";
   boost_peer?: InputPeer;
   [R]?: Array<PremiumGiftCodeOption>;
 }
 
-/** https://core.telegram.org/method/payments.checkGiftCode */
 export interface payments_checkGiftCode {
   _: "payments.checkGiftCode";
   slug: string;
   [R]?: payments_CheckedGiftCode;
 }
 
-/** https://core.telegram.org/method/payments.applyGiftCode */
 export interface payments_applyGiftCode {
   _: "payments.applyGiftCode";
   slug: string;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/payments.getGiveawayInfo */
 export interface payments_getGiveawayInfo {
   _: "payments.getGiveawayInfo";
   peer: InputPeer;
@@ -17294,7 +16803,6 @@ export interface payments_getGiveawayInfo {
   [R]?: payments_GiveawayInfo;
 }
 
-/** https://core.telegram.org/method/payments.launchPrepaidGiveaway */
 export interface payments_launchPrepaidGiveaway {
   _: "payments.launchPrepaidGiveaway";
   peer: InputPeer;
@@ -17303,13 +16811,11 @@ export interface payments_launchPrepaidGiveaway {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/payments.getStarsTopupOptions */
 export interface payments_getStarsTopupOptions {
   _: "payments.getStarsTopupOptions";
   [R]?: Array<StarsTopupOption>;
 }
 
-/** https://core.telegram.org/method/payments.getStarsStatus */
 export interface payments_getStarsStatus {
   _: "payments.getStarsStatus";
   ton?: true;
@@ -17317,7 +16823,6 @@ export interface payments_getStarsStatus {
   [R]?: payments_StarsStatus;
 }
 
-/** https://core.telegram.org/method/payments.getStarsTransactions */
 export interface payments_getStarsTransactions {
   _: "payments.getStarsTransactions";
   inbound?: true;
@@ -17331,7 +16836,6 @@ export interface payments_getStarsTransactions {
   [R]?: payments_StarsStatus;
 }
 
-/** https://core.telegram.org/method/payments.sendStarsForm */
 export interface payments_sendStarsForm {
   _: "payments.sendStarsForm";
   form_id: bigint;
@@ -17339,7 +16843,6 @@ export interface payments_sendStarsForm {
   [R]?: payments_PaymentResult;
 }
 
-/** https://core.telegram.org/method/payments.refundStarsCharge */
 export interface payments_refundStarsCharge {
   _: "payments.refundStarsCharge";
   user_id: InputUser;
@@ -17347,7 +16850,6 @@ export interface payments_refundStarsCharge {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/payments.getStarsRevenueStats */
 export interface payments_getStarsRevenueStats {
   _: "payments.getStarsRevenueStats";
   dark?: true;
@@ -17356,7 +16858,6 @@ export interface payments_getStarsRevenueStats {
   [R]?: payments_StarsRevenueStats;
 }
 
-/** https://core.telegram.org/method/payments.getStarsRevenueWithdrawalUrl */
 export interface payments_getStarsRevenueWithdrawalUrl {
   _: "payments.getStarsRevenueWithdrawalUrl";
   ton?: true;
@@ -17366,14 +16867,12 @@ export interface payments_getStarsRevenueWithdrawalUrl {
   [R]?: payments_StarsRevenueWithdrawalUrl;
 }
 
-/** https://core.telegram.org/method/payments.getStarsRevenueAdsAccountUrl */
 export interface payments_getStarsRevenueAdsAccountUrl {
   _: "payments.getStarsRevenueAdsAccountUrl";
   peer: InputPeer;
   [R]?: payments_StarsRevenueAdsAccountUrl;
 }
 
-/** https://core.telegram.org/method/payments.getStarsTransactionsByID */
 export interface payments_getStarsTransactionsByID {
   _: "payments.getStarsTransactionsByID";
   ton?: true;
@@ -17382,14 +16881,12 @@ export interface payments_getStarsTransactionsByID {
   [R]?: payments_StarsStatus;
 }
 
-/** https://core.telegram.org/method/payments.getStarsGiftOptions */
 export interface payments_getStarsGiftOptions {
   _: "payments.getStarsGiftOptions";
   user_id?: InputUser;
   [R]?: Array<StarsGiftOption>;
 }
 
-/** https://core.telegram.org/method/payments.getStarsSubscriptions */
 export interface payments_getStarsSubscriptions {
   _: "payments.getStarsSubscriptions";
   missing_balance?: true;
@@ -17398,7 +16895,6 @@ export interface payments_getStarsSubscriptions {
   [R]?: payments_StarsStatus;
 }
 
-/** https://core.telegram.org/method/payments.changeStarsSubscription */
 export interface payments_changeStarsSubscription {
   _: "payments.changeStarsSubscription";
   peer: InputPeer;
@@ -17407,7 +16903,6 @@ export interface payments_changeStarsSubscription {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/payments.fulfillStarsSubscription */
 export interface payments_fulfillStarsSubscription {
   _: "payments.fulfillStarsSubscription";
   peer: InputPeer;
@@ -17415,20 +16910,17 @@ export interface payments_fulfillStarsSubscription {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/payments.getStarsGiveawayOptions */
 export interface payments_getStarsGiveawayOptions {
   _: "payments.getStarsGiveawayOptions";
   [R]?: Array<StarsGiveawayOption>;
 }
 
-/** https://core.telegram.org/method/payments.getStarGifts */
 export interface payments_getStarGifts {
   _: "payments.getStarGifts";
   hash: number;
   [R]?: payments_StarGifts;
 }
 
-/** https://core.telegram.org/method/payments.saveStarGift */
 export interface payments_saveStarGift {
   _: "payments.saveStarGift";
   unsave?: true;
@@ -17436,14 +16928,12 @@ export interface payments_saveStarGift {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/payments.convertStarGift */
 export interface payments_convertStarGift {
   _: "payments.convertStarGift";
   stargift: InputSavedStarGift;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/payments.botCancelStarsSubscription */
 export interface payments_botCancelStarsSubscription {
   _: "payments.botCancelStarsSubscription";
   restore?: true;
@@ -17452,7 +16942,6 @@ export interface payments_botCancelStarsSubscription {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/payments.getConnectedStarRefBots */
 export interface payments_getConnectedStarRefBots {
   _: "payments.getConnectedStarRefBots";
   peer: InputPeer;
@@ -17462,7 +16951,6 @@ export interface payments_getConnectedStarRefBots {
   [R]?: payments_ConnectedStarRefBots;
 }
 
-/** https://core.telegram.org/method/payments.getConnectedStarRefBot */
 export interface payments_getConnectedStarRefBot {
   _: "payments.getConnectedStarRefBot";
   peer: InputPeer;
@@ -17470,7 +16958,6 @@ export interface payments_getConnectedStarRefBot {
   [R]?: payments_ConnectedStarRefBots;
 }
 
-/** https://core.telegram.org/method/payments.getSuggestedStarRefBots */
 export interface payments_getSuggestedStarRefBots {
   _: "payments.getSuggestedStarRefBots";
   order_by_revenue?: true;
@@ -17481,7 +16968,6 @@ export interface payments_getSuggestedStarRefBots {
   [R]?: payments_SuggestedStarRefBots;
 }
 
-/** https://core.telegram.org/method/payments.connectStarRefBot */
 export interface payments_connectStarRefBot {
   _: "payments.connectStarRefBot";
   peer: InputPeer;
@@ -17489,7 +16975,6 @@ export interface payments_connectStarRefBot {
   [R]?: payments_ConnectedStarRefBots;
 }
 
-/** https://core.telegram.org/method/payments.editConnectedStarRefBot */
 export interface payments_editConnectedStarRefBot {
   _: "payments.editConnectedStarRefBot";
   revoked?: true;
@@ -17498,14 +16983,12 @@ export interface payments_editConnectedStarRefBot {
   [R]?: payments_ConnectedStarRefBots;
 }
 
-/** https://core.telegram.org/method/payments.getStarGiftUpgradePreview */
 export interface payments_getStarGiftUpgradePreview {
   _: "payments.getStarGiftUpgradePreview";
   gift_id: bigint;
   [R]?: payments_StarGiftUpgradePreview;
 }
 
-/** https://core.telegram.org/method/payments.upgradeStarGift */
 export interface payments_upgradeStarGift {
   _: "payments.upgradeStarGift";
   keep_original_details?: true;
@@ -17513,7 +16996,6 @@ export interface payments_upgradeStarGift {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/payments.transferStarGift */
 export interface payments_transferStarGift {
   _: "payments.transferStarGift";
   stargift: InputSavedStarGift;
@@ -17521,14 +17003,12 @@ export interface payments_transferStarGift {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/payments.getUniqueStarGift */
 export interface payments_getUniqueStarGift {
   _: "payments.getUniqueStarGift";
   slug: string;
   [R]?: payments_UniqueStarGift;
 }
 
-/** https://core.telegram.org/method/payments.getSavedStarGifts */
 export interface payments_getSavedStarGifts {
   _: "payments.getSavedStarGifts";
   exclude_unsaved?: true;
@@ -17547,14 +17027,12 @@ export interface payments_getSavedStarGifts {
   [R]?: payments_SavedStarGifts;
 }
 
-/** https://core.telegram.org/method/payments.getSavedStarGift */
 export interface payments_getSavedStarGift {
   _: "payments.getSavedStarGift";
   stargift: Array<InputSavedStarGift>;
   [R]?: payments_SavedStarGifts;
 }
 
-/** https://core.telegram.org/method/payments.getStarGiftWithdrawalUrl */
 export interface payments_getStarGiftWithdrawalUrl {
   _: "payments.getStarGiftWithdrawalUrl";
   stargift: InputSavedStarGift;
@@ -17562,7 +17040,6 @@ export interface payments_getStarGiftWithdrawalUrl {
   [R]?: payments_StarGiftWithdrawalUrl;
 }
 
-/** https://core.telegram.org/method/payments.toggleChatStarGiftNotifications */
 export interface payments_toggleChatStarGiftNotifications {
   _: "payments.toggleChatStarGiftNotifications";
   enabled?: true;
@@ -17570,7 +17047,6 @@ export interface payments_toggleChatStarGiftNotifications {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/payments.toggleStarGiftsPinnedToTop */
 export interface payments_toggleStarGiftsPinnedToTop {
   _: "payments.toggleStarGiftsPinnedToTop";
   peer: InputPeer;
@@ -17578,18 +17054,17 @@ export interface payments_toggleStarGiftsPinnedToTop {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/payments.canPurchaseStore */
 export interface payments_canPurchaseStore {
   _: "payments.canPurchaseStore";
   purpose: InputStorePaymentPurpose;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/payments.getResaleStarGifts */
 export interface payments_getResaleStarGifts {
   _: "payments.getResaleStarGifts";
   sort_by_price?: true;
   sort_by_num?: true;
+  for_craft?: true;
   attributes_hash?: bigint;
   gift_id: bigint;
   attributes?: Array<StarGiftAttributeId>;
@@ -17598,7 +17073,6 @@ export interface payments_getResaleStarGifts {
   [R]?: payments_ResaleStarGifts;
 }
 
-/** https://core.telegram.org/method/payments.updateStarGiftPrice */
 export interface payments_updateStarGiftPrice {
   _: "payments.updateStarGiftPrice";
   stargift: InputSavedStarGift;
@@ -17606,7 +17080,6 @@ export interface payments_updateStarGiftPrice {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/payments.createStarGiftCollection */
 export interface payments_createStarGiftCollection {
   _: "payments.createStarGiftCollection";
   peer: InputPeer;
@@ -17615,7 +17088,6 @@ export interface payments_createStarGiftCollection {
   [R]?: StarGiftCollection;
 }
 
-/** https://core.telegram.org/method/payments.updateStarGiftCollection */
 export interface payments_updateStarGiftCollection {
   _: "payments.updateStarGiftCollection";
   peer: InputPeer;
@@ -17627,7 +17099,6 @@ export interface payments_updateStarGiftCollection {
   [R]?: StarGiftCollection;
 }
 
-/** https://core.telegram.org/method/payments.reorderStarGiftCollections */
 export interface payments_reorderStarGiftCollections {
   _: "payments.reorderStarGiftCollections";
   peer: InputPeer;
@@ -17635,7 +17106,6 @@ export interface payments_reorderStarGiftCollections {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/payments.deleteStarGiftCollection */
 export interface payments_deleteStarGiftCollection {
   _: "payments.deleteStarGiftCollection";
   peer: InputPeer;
@@ -17643,7 +17113,6 @@ export interface payments_deleteStarGiftCollection {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/payments.getStarGiftCollections */
 export interface payments_getStarGiftCollections {
   _: "payments.getStarGiftCollections";
   peer: InputPeer;
@@ -17651,21 +17120,18 @@ export interface payments_getStarGiftCollections {
   [R]?: payments_StarGiftCollections;
 }
 
-/** https://core.telegram.org/method/payments.getUniqueStarGiftValueInfo */
 export interface payments_getUniqueStarGiftValueInfo {
   _: "payments.getUniqueStarGiftValueInfo";
   slug: string;
   [R]?: payments_UniqueStarGiftValueInfo;
 }
 
-/** https://core.telegram.org/method/payments.checkCanSendGift */
 export interface payments_checkCanSendGift {
   _: "payments.checkCanSendGift";
   gift_id: bigint;
   [R]?: payments_CheckCanSendGiftResult;
 }
 
-/** https://core.telegram.org/method/payments.getStarGiftAuctionState */
 export interface payments_getStarGiftAuctionState {
   _: "payments.getStarGiftAuctionState";
   auction: InputStarGiftAuction;
@@ -17673,21 +17139,18 @@ export interface payments_getStarGiftAuctionState {
   [R]?: payments_StarGiftAuctionState;
 }
 
-/** https://core.telegram.org/method/payments.getStarGiftAuctionAcquiredGifts */
 export interface payments_getStarGiftAuctionAcquiredGifts {
   _: "payments.getStarGiftAuctionAcquiredGifts";
   gift_id: bigint;
   [R]?: payments_StarGiftAuctionAcquiredGifts;
 }
 
-/** https://core.telegram.org/method/payments.getStarGiftActiveAuctions */
 export interface payments_getStarGiftActiveAuctions {
   _: "payments.getStarGiftActiveAuctions";
   hash: bigint;
   [R]?: payments_StarGiftActiveAuctions;
 }
 
-/** https://core.telegram.org/method/payments.resolveStarGiftOffer */
 export interface payments_resolveStarGiftOffer {
   _: "payments.resolveStarGiftOffer";
   decline?: true;
@@ -17695,7 +17158,6 @@ export interface payments_resolveStarGiftOffer {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/payments.sendStarGiftOffer */
 export interface payments_sendStarGiftOffer {
   _: "payments.sendStarGiftOffer";
   peer: InputPeer;
@@ -17707,14 +17169,26 @@ export interface payments_sendStarGiftOffer {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/payments.getStarGiftUpgradeAttributes */
 export interface payments_getStarGiftUpgradeAttributes {
   _: "payments.getStarGiftUpgradeAttributes";
   gift_id: bigint;
   [R]?: payments_StarGiftUpgradeAttributes;
 }
 
-/** https://core.telegram.org/method/stickers.createStickerSet */
+export interface payments_getCraftStarGifts {
+  _: "payments.getCraftStarGifts";
+  gift_id: bigint;
+  offset: string;
+  limit: number;
+  [R]?: payments_SavedStarGifts;
+}
+
+export interface payments_craftStarGift {
+  _: "payments.craftStarGift";
+  stargift: Array<InputSavedStarGift>;
+  [R]?: Updates;
+}
+
 export interface stickers_createStickerSet {
   _: "stickers.createStickerSet";
   masks?: true;
@@ -17729,14 +17203,12 @@ export interface stickers_createStickerSet {
   [R]?: messages_StickerSet;
 }
 
-/** https://core.telegram.org/method/stickers.removeStickerFromSet */
 export interface stickers_removeStickerFromSet {
   _: "stickers.removeStickerFromSet";
   sticker: InputDocument;
   [R]?: messages_StickerSet;
 }
 
-/** https://core.telegram.org/method/stickers.changeStickerPosition */
 export interface stickers_changeStickerPosition {
   _: "stickers.changeStickerPosition";
   sticker: InputDocument;
@@ -17744,7 +17216,6 @@ export interface stickers_changeStickerPosition {
   [R]?: messages_StickerSet;
 }
 
-/** https://core.telegram.org/method/stickers.addStickerToSet */
 export interface stickers_addStickerToSet {
   _: "stickers.addStickerToSet";
   stickerset: InputStickerSet;
@@ -17752,7 +17223,6 @@ export interface stickers_addStickerToSet {
   [R]?: messages_StickerSet;
 }
 
-/** https://core.telegram.org/method/stickers.setStickerSetThumb */
 export interface stickers_setStickerSetThumb {
   _: "stickers.setStickerSetThumb";
   stickerset: InputStickerSet;
@@ -17761,21 +17231,18 @@ export interface stickers_setStickerSetThumb {
   [R]?: messages_StickerSet;
 }
 
-/** https://core.telegram.org/method/stickers.checkShortName */
 export interface stickers_checkShortName {
   _: "stickers.checkShortName";
   short_name: string;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/stickers.suggestShortName */
 export interface stickers_suggestShortName {
   _: "stickers.suggestShortName";
   title: string;
   [R]?: stickers_SuggestedShortName;
 }
 
-/** https://core.telegram.org/method/stickers.changeSticker */
 export interface stickers_changeSticker {
   _: "stickers.changeSticker";
   sticker: InputDocument;
@@ -17785,7 +17252,6 @@ export interface stickers_changeSticker {
   [R]?: messages_StickerSet;
 }
 
-/** https://core.telegram.org/method/stickers.renameStickerSet */
 export interface stickers_renameStickerSet {
   _: "stickers.renameStickerSet";
   stickerset: InputStickerSet;
@@ -17793,14 +17259,12 @@ export interface stickers_renameStickerSet {
   [R]?: messages_StickerSet;
 }
 
-/** https://core.telegram.org/method/stickers.deleteStickerSet */
 export interface stickers_deleteStickerSet {
   _: "stickers.deleteStickerSet";
   stickerset: InputStickerSet;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/stickers.replaceSticker */
 export interface stickers_replaceSticker {
   _: "stickers.replaceSticker";
   sticker: InputDocument;
@@ -17808,13 +17272,11 @@ export interface stickers_replaceSticker {
   [R]?: messages_StickerSet;
 }
 
-/** https://core.telegram.org/method/phone.getCallConfig */
 export interface phone_getCallConfig {
   _: "phone.getCallConfig";
   [R]?: DataJSON;
 }
 
-/** https://core.telegram.org/method/phone.requestCall */
 export interface phone_requestCall {
   _: "phone.requestCall";
   video?: true;
@@ -17825,7 +17287,6 @@ export interface phone_requestCall {
   [R]?: phone_PhoneCall;
 }
 
-/** https://core.telegram.org/method/phone.acceptCall */
 export interface phone_acceptCall {
   _: "phone.acceptCall";
   peer: InputPhoneCall;
@@ -17834,7 +17295,6 @@ export interface phone_acceptCall {
   [R]?: phone_PhoneCall;
 }
 
-/** https://core.telegram.org/method/phone.confirmCall */
 export interface phone_confirmCall {
   _: "phone.confirmCall";
   peer: InputPhoneCall;
@@ -17844,14 +17304,12 @@ export interface phone_confirmCall {
   [R]?: phone_PhoneCall;
 }
 
-/** https://core.telegram.org/method/phone.receivedCall */
 export interface phone_receivedCall {
   _: "phone.receivedCall";
   peer: InputPhoneCall;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/phone.discardCall */
 export interface phone_discardCall {
   _: "phone.discardCall";
   video?: true;
@@ -17862,7 +17320,6 @@ export interface phone_discardCall {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.setCallRating */
 export interface phone_setCallRating {
   _: "phone.setCallRating";
   user_initiative?: true;
@@ -17872,7 +17329,6 @@ export interface phone_setCallRating {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.saveCallDebug */
 export interface phone_saveCallDebug {
   _: "phone.saveCallDebug";
   peer: InputPhoneCall;
@@ -17880,7 +17336,6 @@ export interface phone_saveCallDebug {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/phone.sendSignalingData */
 export interface phone_sendSignalingData {
   _: "phone.sendSignalingData";
   peer: InputPhoneCall;
@@ -17888,7 +17343,6 @@ export interface phone_sendSignalingData {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/phone.createGroupCall */
 export interface phone_createGroupCall {
   _: "phone.createGroupCall";
   rtmp_stream?: true;
@@ -17899,7 +17353,6 @@ export interface phone_createGroupCall {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.joinGroupCall */
 export interface phone_joinGroupCall {
   _: "phone.joinGroupCall";
   muted?: true;
@@ -17913,7 +17366,6 @@ export interface phone_joinGroupCall {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.leaveGroupCall */
 export interface phone_leaveGroupCall {
   _: "phone.leaveGroupCall";
   call: InputGroupCall;
@@ -17921,7 +17373,6 @@ export interface phone_leaveGroupCall {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.inviteToGroupCall */
 export interface phone_inviteToGroupCall {
   _: "phone.inviteToGroupCall";
   call: InputGroupCall;
@@ -17929,14 +17380,12 @@ export interface phone_inviteToGroupCall {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.discardGroupCall */
 export interface phone_discardGroupCall {
   _: "phone.discardGroupCall";
   call: InputGroupCall;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.toggleGroupCallSettings */
 export interface phone_toggleGroupCallSettings {
   _: "phone.toggleGroupCallSettings";
   reset_invite_hash?: true;
@@ -17947,7 +17396,6 @@ export interface phone_toggleGroupCallSettings {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.getGroupCall */
 export interface phone_getGroupCall {
   _: "phone.getGroupCall";
   call: InputGroupCall;
@@ -17955,7 +17403,6 @@ export interface phone_getGroupCall {
   [R]?: phone_GroupCall;
 }
 
-/** https://core.telegram.org/method/phone.getGroupParticipants */
 export interface phone_getGroupParticipants {
   _: "phone.getGroupParticipants";
   call: InputGroupCall;
@@ -17966,7 +17413,6 @@ export interface phone_getGroupParticipants {
   [R]?: phone_GroupParticipants;
 }
 
-/** https://core.telegram.org/method/phone.checkGroupCall */
 export interface phone_checkGroupCall {
   _: "phone.checkGroupCall";
   call: InputGroupCall;
@@ -17974,7 +17420,6 @@ export interface phone_checkGroupCall {
   [R]?: Array<number>;
 }
 
-/** https://core.telegram.org/method/phone.toggleGroupCallRecord */
 export interface phone_toggleGroupCallRecord {
   _: "phone.toggleGroupCallRecord";
   start?: true;
@@ -17985,7 +17430,6 @@ export interface phone_toggleGroupCallRecord {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.editGroupCallParticipant */
 export interface phone_editGroupCallParticipant {
   _: "phone.editGroupCallParticipant";
   call: InputGroupCall;
@@ -17999,7 +17443,6 @@ export interface phone_editGroupCallParticipant {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.editGroupCallTitle */
 export interface phone_editGroupCallTitle {
   _: "phone.editGroupCallTitle";
   call: InputGroupCall;
@@ -18007,14 +17450,12 @@ export interface phone_editGroupCallTitle {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.getGroupCallJoinAs */
 export interface phone_getGroupCallJoinAs {
   _: "phone.getGroupCallJoinAs";
   peer: InputPeer;
   [R]?: phone_JoinAsPeers;
 }
 
-/** https://core.telegram.org/method/phone.exportGroupCallInvite */
 export interface phone_exportGroupCallInvite {
   _: "phone.exportGroupCallInvite";
   can_self_unmute?: true;
@@ -18022,7 +17463,6 @@ export interface phone_exportGroupCallInvite {
   [R]?: phone_ExportedGroupCallInvite;
 }
 
-/** https://core.telegram.org/method/phone.toggleGroupCallStartSubscription */
 export interface phone_toggleGroupCallStartSubscription {
   _: "phone.toggleGroupCallStartSubscription";
   call: InputGroupCall;
@@ -18030,14 +17470,12 @@ export interface phone_toggleGroupCallStartSubscription {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.startScheduledGroupCall */
 export interface phone_startScheduledGroupCall {
   _: "phone.startScheduledGroupCall";
   call: InputGroupCall;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.saveDefaultGroupCallJoinAs */
 export interface phone_saveDefaultGroupCallJoinAs {
   _: "phone.saveDefaultGroupCallJoinAs";
   peer: InputPeer;
@@ -18045,7 +17483,6 @@ export interface phone_saveDefaultGroupCallJoinAs {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/phone.joinGroupCallPresentation */
 export interface phone_joinGroupCallPresentation {
   _: "phone.joinGroupCallPresentation";
   call: InputGroupCall;
@@ -18053,21 +17490,18 @@ export interface phone_joinGroupCallPresentation {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.leaveGroupCallPresentation */
 export interface phone_leaveGroupCallPresentation {
   _: "phone.leaveGroupCallPresentation";
   call: InputGroupCall;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.getGroupCallStreamChannels */
 export interface phone_getGroupCallStreamChannels {
   _: "phone.getGroupCallStreamChannels";
   call: InputGroupCall;
   [R]?: phone_GroupCallStreamChannels;
 }
 
-/** https://core.telegram.org/method/phone.getGroupCallStreamRtmpUrl */
 export interface phone_getGroupCallStreamRtmpUrl {
   _: "phone.getGroupCallStreamRtmpUrl";
   live_story?: true;
@@ -18076,7 +17510,6 @@ export interface phone_getGroupCallStreamRtmpUrl {
   [R]?: phone_GroupCallStreamRtmpUrl;
 }
 
-/** https://core.telegram.org/method/phone.saveCallLog */
 export interface phone_saveCallLog {
   _: "phone.saveCallLog";
   peer: InputPhoneCall;
@@ -18084,7 +17517,6 @@ export interface phone_saveCallLog {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/phone.createConferenceCall */
 export interface phone_createConferenceCall {
   _: "phone.createConferenceCall";
   muted?: true;
@@ -18097,7 +17529,6 @@ export interface phone_createConferenceCall {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.deleteConferenceCallParticipants */
 export interface phone_deleteConferenceCallParticipants {
   _: "phone.deleteConferenceCallParticipants";
   only_left?: true;
@@ -18108,7 +17539,6 @@ export interface phone_deleteConferenceCallParticipants {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.sendConferenceCallBroadcast */
 export interface phone_sendConferenceCallBroadcast {
   _: "phone.sendConferenceCallBroadcast";
   call: InputGroupCall;
@@ -18116,7 +17546,6 @@ export interface phone_sendConferenceCallBroadcast {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.inviteConferenceCallParticipant */
 export interface phone_inviteConferenceCallParticipant {
   _: "phone.inviteConferenceCallParticipant";
   video?: true;
@@ -18125,14 +17554,12 @@ export interface phone_inviteConferenceCallParticipant {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.declineConferenceCallInvite */
 export interface phone_declineConferenceCallInvite {
   _: "phone.declineConferenceCallInvite";
   msg_id: number;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.getGroupCallChainBlocks */
 export interface phone_getGroupCallChainBlocks {
   _: "phone.getGroupCallChainBlocks";
   call: InputGroupCall;
@@ -18142,7 +17569,6 @@ export interface phone_getGroupCallChainBlocks {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.sendGroupCallMessage */
 export interface phone_sendGroupCallMessage {
   _: "phone.sendGroupCallMessage";
   call: InputGroupCall;
@@ -18153,7 +17579,6 @@ export interface phone_sendGroupCallMessage {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.sendGroupCallEncryptedMessage */
 export interface phone_sendGroupCallEncryptedMessage {
   _: "phone.sendGroupCallEncryptedMessage";
   call: InputGroupCall;
@@ -18161,7 +17586,6 @@ export interface phone_sendGroupCallEncryptedMessage {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/phone.deleteGroupCallMessages */
 export interface phone_deleteGroupCallMessages {
   _: "phone.deleteGroupCallMessages";
   report_spam?: true;
@@ -18170,7 +17594,6 @@ export interface phone_deleteGroupCallMessages {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.deleteGroupCallParticipantMessages */
 export interface phone_deleteGroupCallParticipantMessages {
   _: "phone.deleteGroupCallParticipantMessages";
   report_spam?: true;
@@ -18179,14 +17602,12 @@ export interface phone_deleteGroupCallParticipantMessages {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/phone.getGroupCallStars */
 export interface phone_getGroupCallStars {
   _: "phone.getGroupCallStars";
   call: InputGroupCall;
   [R]?: phone_GroupCallStars;
 }
 
-/** https://core.telegram.org/method/phone.saveDefaultSendAs */
 export interface phone_saveDefaultSendAs {
   _: "phone.saveDefaultSendAs";
   call: InputGroupCall;
@@ -18194,7 +17615,6 @@ export interface phone_saveDefaultSendAs {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/langpack.getLangPack */
 export interface langpack_getLangPack {
   _: "langpack.getLangPack";
   lang_pack: string;
@@ -18202,7 +17622,6 @@ export interface langpack_getLangPack {
   [R]?: LangPackDifference;
 }
 
-/** https://core.telegram.org/method/langpack.getStrings */
 export interface langpack_getStrings {
   _: "langpack.getStrings";
   lang_pack: string;
@@ -18211,7 +17630,6 @@ export interface langpack_getStrings {
   [R]?: Array<LangPackString>;
 }
 
-/** https://core.telegram.org/method/langpack.getDifference */
 export interface langpack_getDifference {
   _: "langpack.getDifference";
   lang_pack: string;
@@ -18220,14 +17638,12 @@ export interface langpack_getDifference {
   [R]?: LangPackDifference;
 }
 
-/** https://core.telegram.org/method/langpack.getLanguages */
 export interface langpack_getLanguages {
   _: "langpack.getLanguages";
   lang_pack: string;
   [R]?: Array<LangPackLanguage>;
 }
 
-/** https://core.telegram.org/method/langpack.getLanguage */
 export interface langpack_getLanguage {
   _: "langpack.getLanguage";
   lang_pack: string;
@@ -18235,14 +17651,12 @@ export interface langpack_getLanguage {
   [R]?: LangPackLanguage;
 }
 
-/** https://core.telegram.org/method/folders.editPeerFolders */
 export interface folders_editPeerFolders {
   _: "folders.editPeerFolders";
   folder_peers: Array<InputFolderPeer>;
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/stats.getBroadcastStats */
 export interface stats_getBroadcastStats {
   _: "stats.getBroadcastStats";
   dark?: true;
@@ -18250,7 +17664,6 @@ export interface stats_getBroadcastStats {
   [R]?: stats_BroadcastStats;
 }
 
-/** https://core.telegram.org/method/stats.loadAsyncGraph */
 export interface stats_loadAsyncGraph {
   _: "stats.loadAsyncGraph";
   token: string;
@@ -18258,7 +17671,6 @@ export interface stats_loadAsyncGraph {
   [R]?: StatsGraph;
 }
 
-/** https://core.telegram.org/method/stats.getMegagroupStats */
 export interface stats_getMegagroupStats {
   _: "stats.getMegagroupStats";
   dark?: true;
@@ -18266,7 +17678,6 @@ export interface stats_getMegagroupStats {
   [R]?: stats_MegagroupStats;
 }
 
-/** https://core.telegram.org/method/stats.getMessagePublicForwards */
 export interface stats_getMessagePublicForwards {
   _: "stats.getMessagePublicForwards";
   channel: InputChannel;
@@ -18276,7 +17687,6 @@ export interface stats_getMessagePublicForwards {
   [R]?: stats_PublicForwards;
 }
 
-/** https://core.telegram.org/method/stats.getMessageStats */
 export interface stats_getMessageStats {
   _: "stats.getMessageStats";
   dark?: true;
@@ -18285,7 +17695,6 @@ export interface stats_getMessageStats {
   [R]?: stats_MessageStats;
 }
 
-/** https://core.telegram.org/method/stats.getStoryStats */
 export interface stats_getStoryStats {
   _: "stats.getStoryStats";
   dark?: true;
@@ -18294,7 +17703,6 @@ export interface stats_getStoryStats {
   [R]?: stats_StoryStats;
 }
 
-/** https://core.telegram.org/method/stats.getStoryPublicForwards */
 export interface stats_getStoryPublicForwards {
   _: "stats.getStoryPublicForwards";
   peer: InputPeer;
@@ -18304,7 +17712,6 @@ export interface stats_getStoryPublicForwards {
   [R]?: stats_PublicForwards;
 }
 
-/** https://core.telegram.org/method/chatlists.exportChatlistInvite */
 export interface chatlists_exportChatlistInvite {
   _: "chatlists.exportChatlistInvite";
   chatlist: InputChatlist;
@@ -18313,7 +17720,6 @@ export interface chatlists_exportChatlistInvite {
   [R]?: chatlists_ExportedChatlistInvite;
 }
 
-/** https://core.telegram.org/method/chatlists.deleteExportedInvite */
 export interface chatlists_deleteExportedInvite {
   _: "chatlists.deleteExportedInvite";
   chatlist: InputChatlist;
@@ -18321,7 +17727,6 @@ export interface chatlists_deleteExportedInvite {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/chatlists.editExportedInvite */
 export interface chatlists_editExportedInvite {
   _: "chatlists.editExportedInvite";
   chatlist: InputChatlist;
@@ -18331,21 +17736,18 @@ export interface chatlists_editExportedInvite {
   [R]?: ExportedChatlistInvite;
 }
 
-/** https://core.telegram.org/method/chatlists.getExportedInvites */
 export interface chatlists_getExportedInvites {
   _: "chatlists.getExportedInvites";
   chatlist: InputChatlist;
   [R]?: chatlists_ExportedInvites;
 }
 
-/** https://core.telegram.org/method/chatlists.checkChatlistInvite */
 export interface chatlists_checkChatlistInvite {
   _: "chatlists.checkChatlistInvite";
   slug: string;
   [R]?: chatlists_ChatlistInvite;
 }
 
-/** https://core.telegram.org/method/chatlists.joinChatlistInvite */
 export interface chatlists_joinChatlistInvite {
   _: "chatlists.joinChatlistInvite";
   slug: string;
@@ -18353,14 +17755,12 @@ export interface chatlists_joinChatlistInvite {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/chatlists.getChatlistUpdates */
 export interface chatlists_getChatlistUpdates {
   _: "chatlists.getChatlistUpdates";
   chatlist: InputChatlist;
   [R]?: chatlists_ChatlistUpdates;
 }
 
-/** https://core.telegram.org/method/chatlists.joinChatlistUpdates */
 export interface chatlists_joinChatlistUpdates {
   _: "chatlists.joinChatlistUpdates";
   chatlist: InputChatlist;
@@ -18368,21 +17768,18 @@ export interface chatlists_joinChatlistUpdates {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/chatlists.hideChatlistUpdates */
 export interface chatlists_hideChatlistUpdates {
   _: "chatlists.hideChatlistUpdates";
   chatlist: InputChatlist;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/chatlists.getLeaveChatlistSuggestions */
 export interface chatlists_getLeaveChatlistSuggestions {
   _: "chatlists.getLeaveChatlistSuggestions";
   chatlist: InputChatlist;
   [R]?: Array<Peer>;
 }
 
-/** https://core.telegram.org/method/chatlists.leaveChatlist */
 export interface chatlists_leaveChatlist {
   _: "chatlists.leaveChatlist";
   chatlist: InputChatlist;
@@ -18390,14 +17787,12 @@ export interface chatlists_leaveChatlist {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/stories.canSendStory */
 export interface stories_canSendStory {
   _: "stories.canSendStory";
   peer: InputPeer;
   [R]?: stories_CanSendStoryCount;
 }
 
-/** https://core.telegram.org/method/stories.sendStory */
 export interface stories_sendStory {
   _: "stories.sendStory";
   pinned?: true;
@@ -18417,7 +17812,6 @@ export interface stories_sendStory {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/stories.editStory */
 export interface stories_editStory {
   _: "stories.editStory";
   peer: InputPeer;
@@ -18430,7 +17824,6 @@ export interface stories_editStory {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/stories.deleteStories */
 export interface stories_deleteStories {
   _: "stories.deleteStories";
   peer: InputPeer;
@@ -18438,7 +17831,6 @@ export interface stories_deleteStories {
   [R]?: Array<number>;
 }
 
-/** https://core.telegram.org/method/stories.togglePinned */
 export interface stories_togglePinned {
   _: "stories.togglePinned";
   peer: InputPeer;
@@ -18447,7 +17839,6 @@ export interface stories_togglePinned {
   [R]?: Array<number>;
 }
 
-/** https://core.telegram.org/method/stories.getAllStories */
 export interface stories_getAllStories {
   _: "stories.getAllStories";
   next?: true;
@@ -18456,7 +17847,6 @@ export interface stories_getAllStories {
   [R]?: stories_AllStories;
 }
 
-/** https://core.telegram.org/method/stories.getPinnedStories */
 export interface stories_getPinnedStories {
   _: "stories.getPinnedStories";
   peer: InputPeer;
@@ -18465,7 +17855,6 @@ export interface stories_getPinnedStories {
   [R]?: stories_Stories;
 }
 
-/** https://core.telegram.org/method/stories.getStoriesArchive */
 export interface stories_getStoriesArchive {
   _: "stories.getStoriesArchive";
   peer: InputPeer;
@@ -18474,7 +17863,6 @@ export interface stories_getStoriesArchive {
   [R]?: stories_Stories;
 }
 
-/** https://core.telegram.org/method/stories.getStoriesByID */
 export interface stories_getStoriesByID {
   _: "stories.getStoriesByID";
   peer: InputPeer;
@@ -18482,14 +17870,12 @@ export interface stories_getStoriesByID {
   [R]?: stories_Stories;
 }
 
-/** https://core.telegram.org/method/stories.toggleAllStoriesHidden */
 export interface stories_toggleAllStoriesHidden {
   _: "stories.toggleAllStoriesHidden";
   hidden: boolean;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/stories.readStories */
 export interface stories_readStories {
   _: "stories.readStories";
   peer: InputPeer;
@@ -18497,7 +17883,6 @@ export interface stories_readStories {
   [R]?: Array<number>;
 }
 
-/** https://core.telegram.org/method/stories.incrementStoryViews */
 export interface stories_incrementStoryViews {
   _: "stories.incrementStoryViews";
   peer: InputPeer;
@@ -18505,7 +17890,6 @@ export interface stories_incrementStoryViews {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/stories.getStoryViewsList */
 export interface stories_getStoryViewsList {
   _: "stories.getStoryViewsList";
   just_contacts?: true;
@@ -18519,7 +17903,6 @@ export interface stories_getStoryViewsList {
   [R]?: stories_StoryViewsList;
 }
 
-/** https://core.telegram.org/method/stories.getStoriesViews */
 export interface stories_getStoriesViews {
   _: "stories.getStoriesViews";
   peer: InputPeer;
@@ -18527,7 +17910,6 @@ export interface stories_getStoriesViews {
   [R]?: stories_StoryViews;
 }
 
-/** https://core.telegram.org/method/stories.exportStoryLink */
 export interface stories_exportStoryLink {
   _: "stories.exportStoryLink";
   peer: InputPeer;
@@ -18535,7 +17917,6 @@ export interface stories_exportStoryLink {
   [R]?: ExportedStoryLink;
 }
 
-/** https://core.telegram.org/method/stories.report */
 export interface stories_report {
   _: "stories.report";
   peer: InputPeer;
@@ -18545,7 +17926,6 @@ export interface stories_report {
   [R]?: ReportResult;
 }
 
-/** https://core.telegram.org/method/stories.activateStealthMode */
 export interface stories_activateStealthMode {
   _: "stories.activateStealthMode";
   past?: true;
@@ -18553,7 +17933,6 @@ export interface stories_activateStealthMode {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/stories.sendReaction */
 export interface stories_sendReaction {
   _: "stories.sendReaction";
   add_to_recent?: true;
@@ -18563,33 +17942,28 @@ export interface stories_sendReaction {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/stories.getPeerStories */
 export interface stories_getPeerStories {
   _: "stories.getPeerStories";
   peer: InputPeer;
   [R]?: stories_PeerStories;
 }
 
-/** https://core.telegram.org/method/stories.getAllReadPeerStories */
 export interface stories_getAllReadPeerStories {
   _: "stories.getAllReadPeerStories";
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/stories.getPeerMaxIDs */
 export interface stories_getPeerMaxIDs {
   _: "stories.getPeerMaxIDs";
   id: Array<InputPeer>;
   [R]?: Array<RecentStory>;
 }
 
-/** https://core.telegram.org/method/stories.getChatsToSend */
 export interface stories_getChatsToSend {
   _: "stories.getChatsToSend";
   [R]?: messages_Chats;
 }
 
-/** https://core.telegram.org/method/stories.togglePeerStoriesHidden */
 export interface stories_togglePeerStoriesHidden {
   _: "stories.togglePeerStoriesHidden";
   peer: InputPeer;
@@ -18597,7 +17971,6 @@ export interface stories_togglePeerStoriesHidden {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/stories.getStoryReactionsList */
 export interface stories_getStoryReactionsList {
   _: "stories.getStoryReactionsList";
   forwards_first?: true;
@@ -18609,7 +17982,6 @@ export interface stories_getStoryReactionsList {
   [R]?: stories_StoryReactionsList;
 }
 
-/** https://core.telegram.org/method/stories.togglePinnedToTop */
 export interface stories_togglePinnedToTop {
   _: "stories.togglePinnedToTop";
   peer: InputPeer;
@@ -18617,7 +17989,6 @@ export interface stories_togglePinnedToTop {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/stories.searchPosts */
 export interface stories_searchPosts {
   _: "stories.searchPosts";
   hashtag?: string;
@@ -18628,7 +17999,6 @@ export interface stories_searchPosts {
   [R]?: stories_FoundStories;
 }
 
-/** https://core.telegram.org/method/stories.createAlbum */
 export interface stories_createAlbum {
   _: "stories.createAlbum";
   peer: InputPeer;
@@ -18637,7 +18007,6 @@ export interface stories_createAlbum {
   [R]?: StoryAlbum;
 }
 
-/** https://core.telegram.org/method/stories.updateAlbum */
 export interface stories_updateAlbum {
   _: "stories.updateAlbum";
   peer: InputPeer;
@@ -18649,7 +18018,6 @@ export interface stories_updateAlbum {
   [R]?: StoryAlbum;
 }
 
-/** https://core.telegram.org/method/stories.reorderAlbums */
 export interface stories_reorderAlbums {
   _: "stories.reorderAlbums";
   peer: InputPeer;
@@ -18657,7 +18025,6 @@ export interface stories_reorderAlbums {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/stories.deleteAlbum */
 export interface stories_deleteAlbum {
   _: "stories.deleteAlbum";
   peer: InputPeer;
@@ -18665,7 +18032,6 @@ export interface stories_deleteAlbum {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/stories.getAlbums */
 export interface stories_getAlbums {
   _: "stories.getAlbums";
   peer: InputPeer;
@@ -18673,7 +18039,6 @@ export interface stories_getAlbums {
   [R]?: stories_Albums;
 }
 
-/** https://core.telegram.org/method/stories.getAlbumStories */
 export interface stories_getAlbumStories {
   _: "stories.getAlbumStories";
   peer: InputPeer;
@@ -18683,7 +18048,6 @@ export interface stories_getAlbumStories {
   [R]?: stories_Stories;
 }
 
-/** https://core.telegram.org/method/stories.startLive */
 export interface stories_startLive {
   _: "stories.startLive";
   pinned?: true;
@@ -18699,7 +18063,6 @@ export interface stories_startLive {
   [R]?: Updates;
 }
 
-/** https://core.telegram.org/method/premium.getBoostsList */
 export interface premium_getBoostsList {
   _: "premium.getBoostsList";
   gifts?: true;
@@ -18709,13 +18072,11 @@ export interface premium_getBoostsList {
   [R]?: premium_BoostsList;
 }
 
-/** https://core.telegram.org/method/premium.getMyBoosts */
 export interface premium_getMyBoosts {
   _: "premium.getMyBoosts";
   [R]?: premium_MyBoosts;
 }
 
-/** https://core.telegram.org/method/premium.applyBoost */
 export interface premium_applyBoost {
   _: "premium.applyBoost";
   slots?: Array<number>;
@@ -18723,14 +18084,12 @@ export interface premium_applyBoost {
   [R]?: premium_MyBoosts;
 }
 
-/** https://core.telegram.org/method/premium.getBoostsStatus */
 export interface premium_getBoostsStatus {
   _: "premium.getBoostsStatus";
   peer: InputPeer;
   [R]?: premium_BoostsStatus;
 }
 
-/** https://core.telegram.org/method/premium.getUserBoosts */
 export interface premium_getUserBoosts {
   _: "premium.getUserBoosts";
   peer: InputPeer;
@@ -18738,45 +18097,38 @@ export interface premium_getUserBoosts {
   [R]?: premium_BoostsList;
 }
 
-/** https://core.telegram.org/method/smsjobs.isEligibleToJoin */
 export interface smsjobs_isEligibleToJoin {
   _: "smsjobs.isEligibleToJoin";
   [R]?: smsjobs_EligibilityToJoin;
 }
 
-/** https://core.telegram.org/method/smsjobs.join */
 export interface smsjobs_join {
   _: "smsjobs.join";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/smsjobs.leave */
 export interface smsjobs_leave {
   _: "smsjobs.leave";
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/smsjobs.updateSettings */
 export interface smsjobs_updateSettings {
   _: "smsjobs.updateSettings";
   allow_international?: true;
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/smsjobs.getStatus */
 export interface smsjobs_getStatus {
   _: "smsjobs.getStatus";
   [R]?: smsjobs_Status;
 }
 
-/** https://core.telegram.org/method/smsjobs.getSmsJob */
 export interface smsjobs_getSmsJob {
   _: "smsjobs.getSmsJob";
   job_id: string;
   [R]?: SmsJob;
 }
 
-/** https://core.telegram.org/method/smsjobs.finishJob */
 export interface smsjobs_finishJob {
   _: "smsjobs.finishJob";
   job_id: string;
@@ -18784,7 +18136,6 @@ export interface smsjobs_finishJob {
   [R]?: boolean;
 }
 
-/** https://core.telegram.org/method/fragment.getCollectibleInfo */
 export interface fragment_getCollectibleInfo {
   _: "fragment.getCollectibleInfo";
   collectible: InputCollectible;
@@ -18971,6 +18322,8 @@ export interface Types {
   "messageActionSuggestBirthday": messageActionSuggestBirthday;
   "messageActionStarGiftPurchaseOffer": messageActionStarGiftPurchaseOffer;
   "messageActionStarGiftPurchaseOfferDeclined": messageActionStarGiftPurchaseOfferDeclined;
+  "messageActionNewCreatorPending": messageActionNewCreatorPending;
+  "messageActionChangeCreator": messageActionChangeCreator;
   "dialog": dialog;
   "dialogFolder": dialogFolder;
   "photoEmpty": photoEmpty;
@@ -19197,6 +18550,7 @@ export interface Types {
   "updateStarGiftAuctionState": updateStarGiftAuctionState;
   "updateStarGiftAuctionUserState": updateStarGiftAuctionUserState;
   "updateEmojiGameInfo": updateEmojiGameInfo;
+  "updateStarGiftCraftFail": updateStarGiftCraftFail;
   "updates.state": updates_state;
   "updates.differenceEmpty": updates_differenceEmpty;
   "updates.difference": updates_difference;
@@ -20326,6 +19680,12 @@ export interface Types {
   "messages.emojiGameOutcome": messages_emojiGameOutcome;
   "messages.emojiGameUnavailable": messages_emojiGameUnavailable;
   "messages.emojiGameDiceInfo": messages_emojiGameDiceInfo;
+  "starGiftAttributeRarity": starGiftAttributeRarity;
+  "starGiftAttributeRarityUncommon": starGiftAttributeRarityUncommon;
+  "starGiftAttributeRarityRare": starGiftAttributeRarityRare;
+  "starGiftAttributeRarityEpic": starGiftAttributeRarityEpic;
+  "starGiftAttributeRarityLegendary": starGiftAttributeRarityLegendary;
+  "keyboardButtonStyle": keyboardButtonStyle;
 }
 
 export interface Functions<T = Function> {
@@ -20867,6 +20227,7 @@ export interface Functions<T = Function> {
   "channels.getMessageAuthor": channels_getMessageAuthor;
   "channels.checkSearchPostsFlood": channels_checkSearchPostsFlood;
   "channels.setMainProfileTab": channels_setMainProfileTab;
+  "channels.getFutureCreatorAfterLeave": channels_getFutureCreatorAfterLeave;
   "bots.sendCustomRequest": bots_sendCustomRequest;
   "bots.answerWebhookJSONQuery": bots_answerWebhookJSONQuery;
   "bots.setBotCommands": bots_setBotCommands;
@@ -20960,6 +20321,8 @@ export interface Functions<T = Function> {
   "payments.resolveStarGiftOffer": payments_resolveStarGiftOffer;
   "payments.sendStarGiftOffer": payments_sendStarGiftOffer;
   "payments.getStarGiftUpgradeAttributes": payments_getStarGiftUpgradeAttributes;
+  "payments.getCraftStarGifts": payments_getCraftStarGifts;
+  "payments.craftStarGift": payments_craftStarGift;
   "stickers.createStickerSet": stickers_createStickerSet;
   "stickers.removeStickerFromSet": stickers_removeStickerFromSet;
   "stickers.changeStickerPosition": stickers_changeStickerPosition;
@@ -21670,6 +21033,8 @@ export interface Enums {
   "payments.StarGiftUpgradeAttributes": payments_StarGiftUpgradeAttributes;
   "messages.EmojiGameOutcome": messages_EmojiGameOutcome;
   "messages.EmojiGameInfo": messages_EmojiGameInfo;
+  "StarGiftAttributeRarity": StarGiftAttributeRarity;
+  "KeyboardButtonStyle": KeyboardButtonStyle;
 }
 
 export type AnyType = Types[keyof Types];
@@ -21732,7 +21097,7 @@ export type Message = messageEmpty | message | messageService;
 
 export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia | messageMediaToDo | messageMediaVideoStream;
 
-export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday | messageActionStarGiftPurchaseOffer | messageActionStarGiftPurchaseOfferDeclined;
+export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday | messageActionStarGiftPurchaseOffer | messageActionStarGiftPurchaseOfferDeclined | messageActionNewCreatorPending | messageActionChangeCreator;
 
 export type Dialog = dialog | dialogFolder;
 
@@ -21937,7 +21302,8 @@ export type Update =
   | updateDeleteGroupCallMessages
   | updateStarGiftAuctionState
   | updateStarGiftAuctionUserState
-  | updateEmojiGameInfo;
+  | updateEmojiGameInfo
+  | updateStarGiftCraftFail;
 
 export type updates_State = updates_state;
 
@@ -23048,6 +22414,10 @@ export type messages_EmojiGameOutcome = messages_emojiGameOutcome;
 
 export type messages_EmojiGameInfo = messages_emojiGameUnavailable | messages_emojiGameDiceInfo;
 
+export type StarGiftAttributeRarity = starGiftAttributeRarity | starGiftAttributeRarityUncommon | starGiftAttributeRarityRare | starGiftAttributeRarityEpic | starGiftAttributeRarityLegendary;
+
+export type KeyboardButtonStyle = keyboardButtonStyle;
+
 export const schema = Object.freeze({
   definitions: {
     true: [
@@ -23694,6 +23064,7 @@ export const schema = Object.freeze({
         ["bot_business", "flags2.11?true"],
         ["bot_has_main_app", "flags2.13?true"],
         ["bot_forum_view", "flags2.16?true"],
+        ["bot_forum_can_manage_topics", "flags2.17?true"],
         ["id", "long"],
         ["access_hash", "flags.0?long"],
         ["first_name", "flags.1?string"],
@@ -23877,6 +23248,7 @@ export const schema = Object.freeze({
         ["flags", "#"],
         ["broadcast", "flags.5?true"],
         ["megagroup", "flags.8?true"],
+        ["monoforum", "flags.10?true"],
         ["id", "long"],
         ["access_hash", "long"],
         ["title", "string"],
@@ -24756,7 +24128,7 @@ export const schema = Object.freeze({
       "MessageAction",
     ],
     messageActionStarGiftUnique: [
-      0x95728543,
+      0xE6C31522,
       [
         ["flags", "#"],
         ["upgrade", "flags.0?true"],
@@ -24766,6 +24138,7 @@ export const schema = Object.freeze({
         ["prepaid_upgrade", "flags.11?true"],
         ["assigned", "flags.13?true"],
         ["from_offer", "flags.14?true"],
+        ["craft", "flags.16?true"],
         ["gift", "StarGift"],
         ["can_export_at", "flags.3?int"],
         ["transfer_stars", "flags.4?long"],
@@ -24776,6 +24149,7 @@ export const schema = Object.freeze({
         ["can_transfer_at", "flags.9?int"],
         ["can_resell_at", "flags.10?int"],
         ["drop_original_details_stars", "flags.12?long"],
+        ["can_craft_at", "flags.15?int"],
       ],
       "MessageAction",
     ],
@@ -24889,6 +24263,20 @@ export const schema = Object.freeze({
         ["expired", "flags.0?true"],
         ["gift", "StarGift"],
         ["price", "StarsAmount"],
+      ],
+      "MessageAction",
+    ],
+    messageActionNewCreatorPending: [
+      0xB07ED085,
+      [
+        ["new_creator_id", "long"],
+      ],
+      "MessageAction",
+    ],
+    messageActionChangeCreator: [
+      0xE188503B,
+      [
+        ["new_creator_id", "long"],
       ],
       "MessageAction",
     ],
@@ -26903,6 +26291,11 @@ export const schema = Object.freeze({
       ],
       "Update",
     ],
+    updateStarGiftCraftFail: [
+      0xAC072444,
+      [],
+      "Update",
+    ],
     "updates.state": [
       0xA56C2A3E,
       [
@@ -28317,49 +27710,59 @@ export const schema = Object.freeze({
       "BotInfo",
     ],
     keyboardButton: [
-      0xA2FA4880,
+      0x7D170CFF,
       [
+        ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
       ],
       "KeyboardButton",
     ],
     keyboardButtonUrl: [
-      0x258AFF05,
+      0xD80C25EC,
       [
+        ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
         ["url", "string"],
       ],
       "KeyboardButton",
     ],
     keyboardButtonCallback: [
-      0x35BBDB6B,
+      0xE62BC960,
       [
         ["flags", "#"],
         ["requires_password", "flags.0?true"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
         ["data", "bytes"],
       ],
       "KeyboardButton",
     ],
     keyboardButtonRequestPhone: [
-      0xB16A6C29,
+      0x417EFD8F,
       [
+        ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
       ],
       "KeyboardButton",
     ],
     keyboardButtonRequestGeoLocation: [
-      0xFC796B3F,
+      0xAA40F94D,
       [
+        ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
       ],
       "KeyboardButton",
     ],
     keyboardButtonSwitchInline: [
-      0x93B9FBB5,
+      0x991399FC,
       [
         ["flags", "#"],
         ["same_peer", "flags.0?true"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
         ["query", "string"],
         ["peer_types", "flags.1?Vector<InlineQueryPeerType>"],
@@ -28367,23 +27770,28 @@ export const schema = Object.freeze({
       "KeyboardButton",
     ],
     keyboardButtonGame: [
-      0x50F41CCF,
+      0x89C590F9,
       [
+        ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
       ],
       "KeyboardButton",
     ],
     keyboardButtonBuy: [
-      0xAFD93FBB,
+      0x3FA53905,
       [
+        ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
       ],
       "KeyboardButton",
     ],
     keyboardButtonUrlAuth: [
-      0x10B78D29,
+      0xF51006F9,
       [
         ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
         ["fwd_text", "flags.0?string"],
         ["url", "string"],
@@ -28392,10 +27800,11 @@ export const schema = Object.freeze({
       "KeyboardButton",
     ],
     inputKeyboardButtonUrlAuth: [
-      0xD02E7FD4,
+      0x68013E72,
       [
         ["flags", "#"],
         ["request_write_access", "flags.0?true"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
         ["fwd_text", "flags.1?string"],
         ["url", "string"],
@@ -28404,49 +27813,60 @@ export const schema = Object.freeze({
       "KeyboardButton",
     ],
     keyboardButtonRequestPoll: [
-      0xBBC7515D,
+      0x7A11D782,
       [
         ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["quiz", "flags.0?Bool"],
         ["text", "string"],
       ],
       "KeyboardButton",
     ],
     inputKeyboardButtonUserProfile: [
-      0xE988037B,
+      0x7D5E07C7,
       [
+        ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
         ["user_id", "InputUser"],
       ],
       "KeyboardButton",
     ],
     keyboardButtonUserProfile: [
-      0x308660C1,
+      0xC0FD5D09,
       [
+        ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
         ["user_id", "long"],
       ],
       "KeyboardButton",
     ],
     keyboardButtonWebView: [
-      0x13767230,
+      0xE846B1A0,
       [
+        ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
         ["url", "string"],
       ],
       "KeyboardButton",
     ],
     keyboardButtonSimpleWebView: [
-      0xA0C0505C,
+      0xE15C4370,
       [
+        ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
         ["url", "string"],
       ],
       "KeyboardButton",
     ],
     keyboardButtonRequestPeer: [
-      0x53D7BFD8,
+      0x5B0F15F5,
       [
+        ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
         ["button_id", "int"],
         ["peer_type", "RequestPeerType"],
@@ -28455,12 +27875,13 @@ export const schema = Object.freeze({
       "KeyboardButton",
     ],
     inputKeyboardButtonRequestPeer: [
-      0xC9662D05,
+      0x02B78156,
       [
         ["flags", "#"],
         ["name_requested", "flags.0?true"],
         ["username_requested", "flags.1?true"],
         ["photo_requested", "flags.2?true"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
         ["button_id", "int"],
         ["peer_type", "RequestPeerType"],
@@ -28469,8 +27890,10 @@ export const schema = Object.freeze({
       "KeyboardButton",
     ],
     keyboardButtonCopy: [
-      0x75D2698E,
+      0xBCC4AF10,
       [
+        ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
         ["copy_text", "string"],
       ],
@@ -32121,19 +31544,25 @@ export const schema = Object.freeze({
       "messages.SearchCounter",
     ],
     urlAuthResultRequest: [
-      0x92D33A0E,
+      0x32FABF1A,
       [
         ["flags", "#"],
         ["request_write_access", "flags.0?true"],
+        ["request_phone_number", "flags.1?true"],
         ["bot", "User"],
         ["domain", "string"],
+        ["browser", "flags.2?string"],
+        ["platform", "flags.2?string"],
+        ["ip", "flags.2?string"],
+        ["region", "flags.2?string"],
       ],
       "UrlAuthResult",
     ],
     urlAuthResultAccepted: [
-      0x8F8C0E4E,
+      0x623A8FA0,
       [
-        ["url", "string"],
+        ["flags", "#"],
+        ["url", "flags.0?string"],
       ],
       "UrlAuthResult",
     ],
@@ -35985,12 +35414,14 @@ export const schema = Object.freeze({
       "StarGift",
     ],
     starGiftUnique: [
-      0x569D64C9,
+      0x85F0A9CD,
       [
         ["flags", "#"],
         ["require_premium", "flags.6?true"],
         ["resale_ton_only", "flags.7?true"],
         ["theme_available", "flags.9?true"],
+        ["burned", "flags.14?true"],
+        ["crafted", "flags.15?true"],
         ["id", "long"],
         ["gift_id", "long"],
         ["title", "string"],
@@ -36012,6 +35443,7 @@ export const schema = Object.freeze({
         ["peer_color", "flags.11?PeerColor"],
         ["host_id", "flags.12?Peer"],
         ["offer_min_stars", "flags.13?int"],
+        ["craft_chance_permille", "flags.16?int"],
       ],
       "StarGift",
     ],
@@ -36192,25 +35624,27 @@ export const schema = Object.freeze({
       "BotVerification",
     ],
     starGiftAttributeModel: [
-      0x39D99013,
+      0x565251E2,
       [
+        ["flags", "#"],
+        ["crafted", "flags.0?true"],
         ["name", "string"],
         ["document", "Document"],
-        ["rarity_permille", "int"],
+        ["rarity", "StarGiftAttributeRarity"],
       ],
       "StarGiftAttribute",
     ],
     starGiftAttributePattern: [
-      0x13ACFF19,
+      0x4E7085EA,
       [
         ["name", "string"],
         ["document", "Document"],
-        ["rarity_permille", "int"],
+        ["rarity", "StarGiftAttributeRarity"],
       ],
       "StarGiftAttribute",
     ],
     starGiftAttributeBackdrop: [
-      0xD93D859C,
+      0x9F2504E4,
       [
         ["name", "string"],
         ["backdrop_id", "int"],
@@ -36218,7 +35652,7 @@ export const schema = Object.freeze({
         ["edge_color", "int"],
         ["pattern_color", "int"],
         ["text_color", "int"],
-        ["rarity_permille", "int"],
+        ["rarity", "StarGiftAttributeRarity"],
       ],
       "StarGiftAttribute",
     ],
@@ -36276,7 +35710,7 @@ export const schema = Object.freeze({
       "messages.WebPagePreview",
     ],
     savedStarGift: [
-      0xEAD6805E,
+      0x41DF43FC,
       [
         ["flags", "#"],
         ["name_hidden", "flags.0?true"],
@@ -36301,6 +35735,7 @@ export const schema = Object.freeze({
         ["prepaid_upgrade_hash", "flags.16?string"],
         ["drop_original_details_stars", "flags.18?long"],
         ["gift_num", "flags.19?int"],
+        ["can_craft_at", "flags.20?int"],
       ],
       "SavedStarGift",
     ],
@@ -37043,6 +36478,44 @@ export const schema = Object.freeze({
         ["plays_left", "flags.0?int"],
       ],
       "messages.EmojiGameInfo",
+    ],
+    starGiftAttributeRarity: [
+      0x36437737,
+      [
+        ["permille", "int"],
+      ],
+      "StarGiftAttributeRarity",
+    ],
+    starGiftAttributeRarityUncommon: [
+      0xDBCE6389,
+      [],
+      "StarGiftAttributeRarity",
+    ],
+    starGiftAttributeRarityRare: [
+      0xF08D516B,
+      [],
+      "StarGiftAttributeRarity",
+    ],
+    starGiftAttributeRarityEpic: [
+      0x78FBF3A8,
+      [],
+      "StarGiftAttributeRarity",
+    ],
+    starGiftAttributeRarityLegendary: [
+      0xCEF7E7A8,
+      [],
+      "StarGiftAttributeRarity",
+    ],
+    keyboardButtonStyle: [
+      0x4FDD3430,
+      [
+        ["flags", "#"],
+        ["bg_primary", "flags.0?true"],
+        ["bg_danger", "flags.1?true"],
+        ["bg_success", "flags.2?true"],
+        ["icon", "flags.3?long"],
+      ],
+      "KeyboardButtonStyle",
     ],
     invokeWithBusinessConnectionPrefix: [
       0xDD289F8E,
@@ -39696,6 +39169,7 @@ export const schema = Object.freeze({
       [
         ["flags", "#"],
         ["write_allowed", "flags.0?true"],
+        ["share_phone_number", "flags.3?true"],
         ["peer", "flags.1?InputPeer"],
         ["msg_id", "flags.1?int"],
         ["button_id", "flags.1?int"],
@@ -41725,6 +41199,13 @@ export const schema = Object.freeze({
       ],
       "Bool",
     ],
+    "channels.getFutureCreatorAfterLeave": [
+      0xA00918AF,
+      [
+        ["channel", "InputChannel"],
+      ],
+      "User",
+    ],
     "bots.sendCustomRequest": [
       0xAA2769ED,
       [
@@ -42399,6 +41880,7 @@ export const schema = Object.freeze({
         ["flags", "#"],
         ["sort_by_price", "flags.1?true"],
         ["sort_by_num", "flags.2?true"],
+        ["for_craft", "flags.4?true"],
         ["attributes_hash", "flags.0?long"],
         ["gift_id", "long"],
         ["attributes", "flags.3?Vector<StarGiftAttributeId>"],
@@ -42525,6 +42007,22 @@ export const schema = Object.freeze({
         ["gift_id", "long"],
       ],
       "payments.StarGiftUpgradeAttributes",
+    ],
+    "payments.getCraftStarGifts": [
+      0xFD05DD00,
+      [
+        ["gift_id", "long"],
+        ["offset", "string"],
+        ["limit", "int"],
+      ],
+      "payments.SavedStarGifts",
+    ],
+    "payments.craftStarGift": [
+      0xB0F9684F,
+      [
+        ["stargift", "Vector<InputSavedStarGift>"],
+      ],
+      "Updates",
     ],
     "stickers.createStickerSet": [
       0x9021AB67,
@@ -43802,7 +43300,7 @@ export const schema = Object.freeze({
     [0x45D5B021]: "messageActionGiftStars",
     [0xB00C47A2]: "messageActionPrizeStars",
     [0xEA2C31D3]: "messageActionStarGift",
-    [0x95728543]: "messageActionStarGiftUnique",
+    [0xE6C31522]: "messageActionStarGiftUnique",
     [0xAC1F1FCD]: "messageActionPaidMessagesRefunded",
     [0x84B88578]: "messageActionPaidMessagesPrice",
     [0x2FFE2F7A]: "messageActionConferenceCall",
@@ -43815,6 +43313,8 @@ export const schema = Object.freeze({
     [0x2C8F2A25]: "messageActionSuggestBirthday",
     [0x774278D4]: "messageActionStarGiftPurchaseOffer",
     [0x73ADA76B]: "messageActionStarGiftPurchaseOfferDeclined",
+    [0xB07ED085]: "messageActionNewCreatorPending",
+    [0xE188503B]: "messageActionChangeCreator",
     [0xD58A08C6]: "dialog",
     [0x71BD134C]: "dialogFolder",
     [0x2331B22D]: "photoEmpty",
@@ -44041,6 +43541,7 @@ export const schema = Object.freeze({
     [0x48E246C2]: "updateStarGiftAuctionState",
     [0xDC58F31E]: "updateStarGiftAuctionUserState",
     [0xFB9C547A]: "updateEmojiGameInfo",
+    [0xAC072444]: "updateStarGiftCraftFail",
     [0xA56C2A3E]: "updates.state",
     [0x5D75A138]: "updates.differenceEmpty",
     [0x00F49CA0]: "updates.difference",
@@ -44213,24 +43714,24 @@ export const schema = Object.freeze({
     [0xD3F924EB]: "messages.stickerSetNotModified",
     [0xC27AC8C7]: "botCommand",
     [0x4D8A0299]: "botInfo",
-    [0xA2FA4880]: "keyboardButton",
-    [0x258AFF05]: "keyboardButtonUrl",
-    [0x35BBDB6B]: "keyboardButtonCallback",
-    [0xB16A6C29]: "keyboardButtonRequestPhone",
-    [0xFC796B3F]: "keyboardButtonRequestGeoLocation",
-    [0x93B9FBB5]: "keyboardButtonSwitchInline",
-    [0x50F41CCF]: "keyboardButtonGame",
-    [0xAFD93FBB]: "keyboardButtonBuy",
-    [0x10B78D29]: "keyboardButtonUrlAuth",
-    [0xD02E7FD4]: "inputKeyboardButtonUrlAuth",
-    [0xBBC7515D]: "keyboardButtonRequestPoll",
-    [0xE988037B]: "inputKeyboardButtonUserProfile",
-    [0x308660C1]: "keyboardButtonUserProfile",
-    [0x13767230]: "keyboardButtonWebView",
-    [0xA0C0505C]: "keyboardButtonSimpleWebView",
-    [0x53D7BFD8]: "keyboardButtonRequestPeer",
-    [0xC9662D05]: "inputKeyboardButtonRequestPeer",
-    [0x75D2698E]: "keyboardButtonCopy",
+    [0x7D170CFF]: "keyboardButton",
+    [0xD80C25EC]: "keyboardButtonUrl",
+    [0xE62BC960]: "keyboardButtonCallback",
+    [0x417EFD8F]: "keyboardButtonRequestPhone",
+    [0xAA40F94D]: "keyboardButtonRequestGeoLocation",
+    [0x991399FC]: "keyboardButtonSwitchInline",
+    [0x89C590F9]: "keyboardButtonGame",
+    [0x3FA53905]: "keyboardButtonBuy",
+    [0xF51006F9]: "keyboardButtonUrlAuth",
+    [0x68013E72]: "inputKeyboardButtonUrlAuth",
+    [0x7A11D782]: "keyboardButtonRequestPoll",
+    [0x7D5E07C7]: "inputKeyboardButtonUserProfile",
+    [0xC0FD5D09]: "keyboardButtonUserProfile",
+    [0xE846B1A0]: "keyboardButtonWebView",
+    [0xE15C4370]: "keyboardButtonSimpleWebView",
+    [0x5B0F15F5]: "keyboardButtonRequestPeer",
+    [0x02B78156]: "inputKeyboardButtonRequestPeer",
+    [0xBCC4AF10]: "keyboardButtonCopy",
     [0x77608B83]: "keyboardButtonRow",
     [0xA03E5B85]: "replyKeyboardHide",
     [0x86B40B08]: "replyKeyboardForceReply",
@@ -44645,8 +44146,8 @@ export const schema = Object.freeze({
     [0xFBD2C296]: "inputFolderPeer",
     [0xE9BAA668]: "folderPeer",
     [0xE844EBFF]: "messages.searchCounter",
-    [0x92D33A0E]: "urlAuthResultRequest",
-    [0x8F8C0E4E]: "urlAuthResultAccepted",
+    [0x32FABF1A]: "urlAuthResultRequest",
+    [0x623A8FA0]: "urlAuthResultAccepted",
     [0xA9D6DB1F]: "urlAuthResultDefault",
     [0xBFB5AD8B]: "channelLocationEmpty",
     [0x209B82DB]: "channelLocation",
@@ -45053,7 +44554,7 @@ export const schema = Object.freeze({
     [0x94CE852A]: "starsGiveawayOption",
     [0x54236209]: "starsGiveawayWinnersOption",
     [0x313A9547]: "starGift",
-    [0x569D64C9]: "starGiftUnique",
+    [0x85F0A9CD]: "starGiftUnique",
     [0xA388A368]: "payments.starGiftsNotModified",
     [0x2ED82995]: "payments.starGifts",
     [0x7903E3D9]: "messageReportOption",
@@ -45073,16 +44574,16 @@ export const schema = Object.freeze({
     [0x82C9E290]: "messages.foundStickers",
     [0xB0CD6617]: "botVerifierSettings",
     [0xF93CD45C]: "botVerification",
-    [0x39D99013]: "starGiftAttributeModel",
-    [0x13ACFF19]: "starGiftAttributePattern",
-    [0xD93D859C]: "starGiftAttributeBackdrop",
+    [0x565251E2]: "starGiftAttributeModel",
+    [0x4E7085EA]: "starGiftAttributePattern",
+    [0x9F2504E4]: "starGiftAttributeBackdrop",
     [0xE0BFF26C]: "starGiftAttributeOriginalDetails",
     [0x3DE1DFED]: "payments.starGiftUpgradePreview",
     [0x62D706B8]: "users.users",
     [0x315A4974]: "users.usersSlice",
     [0x416C56E8]: "payments.uniqueStarGift",
     [0x8C9A88AC]: "messages.webPagePreview",
-    [0xEAD6805E]: "savedStarGift",
+    [0x41DF43FC]: "savedStarGift",
     [0x95F389B1]: "payments.savedStarGifts",
     [0x69279795]: "inputSavedStarGiftUser",
     [0xF101AA7F]: "inputSavedStarGiftChat",
@@ -45170,7 +44671,13 @@ export const schema = Object.freeze({
     [0xDA2AD647]: "messages.emojiGameOutcome",
     [0x59E65335]: "messages.emojiGameUnavailable",
     [0x44E56023]: "messages.emojiGameDiceInfo",
+    [0x36437737]: "starGiftAttributeRarity",
+    [0xDBCE6389]: "starGiftAttributeRarityUncommon",
+    [0xF08D516B]: "starGiftAttributeRarityRare",
+    [0x78FBF3A8]: "starGiftAttributeRarityEpic",
+    [0xCEF7E7A8]: "starGiftAttributeRarityLegendary",
+    [0x4FDD3430]: "keyboardButtonStyle",
   },
 }) as unknown as Schema;
 
-export const LAYER = 221;
+export const LAYER = 222;
