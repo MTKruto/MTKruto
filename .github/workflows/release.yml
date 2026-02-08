@@ -17,6 +17,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.5.7
 
       - run: deno run -A https://raw.githubusercontent.com/MTKruto/tools/main/pre_jsr.ts ${{ github.ref_name }} && git add -A && git -c user.name=CI -c user.email="" commit -am JSR
 
