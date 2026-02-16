@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructClaimedGifts, constructGift, type ID } from "../3_types.ts";
+import { constructClaimedGifts, constructGift, type ID, type InputGift, inputGiftToTlObject } from "../3_types.ts";
 import type { GetClaimedGiftsParams, SendGiftParams } from "./0_params.ts";
 import { getLimit } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -70,12 +70,14 @@ export class GiftManager {
     await this.#c.invoke({ _: "payments.sendStarsForm", form_id: paymentForm.form_id, invoice });
   }
 
-  async sellGift(userId: ID, messageId: number) {
-    const message = await this.#c.messageManager.getMessage(userId, messageId);
-    if (message === null) {
-      throw new InputError("Message not found.");
-    }
-    await this.#c.invoke({ _: "payments.convertStarGift", stargift: { _: "inputSavedStarGiftUser", msg_id: message.id } });
+  async sellGift(gift: InputGift) {
+    const stargift = await inputGiftToTlObject(gift, this.#c.getInputPeer);
+    await this.#c.invoke({ _: "payments.convertStarGift", stargift });
+  }
+
+  async craftGifts(gifts: InputGift[]) {
+    const stargift = await Promise.all(gifts.map((v) => inputGiftToTlObject(v, this.#c.getInputPeer)));
+    await this.#c.invoke({ _: "payments.craftStarGift", stargift });
   }
 
   async getGift(slug: string) {
