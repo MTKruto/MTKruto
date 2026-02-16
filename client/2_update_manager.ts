@@ -508,7 +508,7 @@ export class UpdateManager {
       updates = [
         {
           _: "updateNewMessage",
-          message: ({
+          message: {
             _: "message",
             out: updates_.out,
             mentioned: updates_.mentioned,
@@ -516,7 +516,7 @@ export class UpdateManager {
             silent: updates_.silent,
             id: updates_.id,
             from_id: updates_.out ? ({ _: "peerUser", user_id: BigInt(await this.#c.getSelfId()) }) : ({ _: "peerUser", user_id: updates_.user_id }),
-            peer_id: ({ _: "peerUser", user_id: updates_.user_id }),
+            peer_id: { _: "peerUser", user_id: updates_.user_id },
             message: updates_.message,
             date: updates_.date,
             fwd_from: updates_.fwd_from,
@@ -524,7 +524,7 @@ export class UpdateManager {
             reply_to: updates_.reply_to,
             entities: updates_.entities,
             ttl_period: updates_.ttl_period,
-          }),
+          },
           pts: updates_.pts,
           pts_count: updates_.pts_count,
         },
@@ -533,7 +533,7 @@ export class UpdateManager {
       updates = [
         {
           _: "updateNewMessage",
-          message: ({
+          message: {
             _: "message",
             mentioned: updates_.mentioned,
             media_unread: updates_.media_unread,
@@ -548,7 +548,7 @@ export class UpdateManager {
             message: updates_.message,
             entities: updates_.entities,
             ttl_period: updates_.ttl_period,
-          }),
+          },
           pts: updates_.pts,
           pts_count: updates_.pts_count,
         },
@@ -559,7 +559,7 @@ export class UpdateManager {
       }
       updates = [{
         _: "updateNewMessage",
-        message: ({
+        message: {
           _: "message",
           out: updates_.out,
           silent: call.silent,
@@ -572,7 +572,7 @@ export class UpdateManager {
           // reply_to: call.reply_to, // TODO?
           entities: updates_.entities,
           ttl_period: updates_.ttl_period,
-        }),
+        },
         pts: updates_.pts,
         pts_count: updates_.pts_count,
       }];

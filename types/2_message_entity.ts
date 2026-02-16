@@ -272,7 +272,7 @@ export function messageEntityToTlObject(entity: MessageEntity, getPeer: PeerGett
             if (!peer) {
               unreachable();
             }
-            return { _: "inputMessageEntityMentionName", offset, length, user_id: ({ _: "inputUser", user_id: BigInt(peer[0].id), access_hash: peer[1] }) };
+            return { _: "inputMessageEntityMentionName", offset, length, user_id: { _: "inputUser", user_id: BigInt(peer[0].id), access_hash: peer[1] } };
           }
         }
       } catch {
@@ -285,7 +285,7 @@ export function messageEntityToTlObject(entity: MessageEntity, getPeer: PeerGett
       if (!peer) {
         unreachable();
       }
-      return { _: "inputMessageEntityMentionName", offset, length, user_id: ({ _: "inputUser", user_id: BigInt(peer[0].id), access_hash: peer[1] }) };
+      return { _: "inputMessageEntityMentionName", offset, length, user_id: { _: "inputUser", user_id: BigInt(peer[0].id), access_hash: peer[1] } };
     }
     case "cashtag":
       return { _: "messageEntityCashtag", offset, length };

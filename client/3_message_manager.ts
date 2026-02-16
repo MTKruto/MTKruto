@@ -323,13 +323,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         _: "messages.sendMedia",
         peer,
         random_id: randomId,
-        media: ({
+        media: {
           _: "inputMediaWebPage",
           url: params.linkPreview.url,
           force_large_media: params.linkPreview.mediaSize === "large" ? true : undefined,
           force_small_media: params.linkPreview.mediaSize === "small" ? true : undefined,
           optional: message.length ? undefined : true,
-        }),
+        },
         message,
         invert_media: invertMedia,
         silent,
@@ -403,19 +403,19 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       reply_to: await this.#constructReplyTo(params),
       send_as: sendAs,
       reply_markup: replyMarkup,
-      media: ({
+      media: {
         _: "inputMediaVenue",
-        geo_point: ({
+        geo_point: {
           _: "inputGeoPoint",
           lat: latitude,
           long: longitude,
-        }),
+        },
         title,
         address,
         venue_id: params?.foursquareId ?? "",
         venue_type: params?.foursquareType ?? "",
         provider: "foursquare",
-      }),
+      },
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
       schedule_date: params?.sendAt,
@@ -445,13 +445,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         reply_to: await this.#constructReplyTo(params),
         send_as: sendAs,
         reply_markup: replyMarkup,
-        media: ({
+        media: {
           _: "inputMediaContact",
           phone_number: number,
           first_name: firstName,
           last_name: params?.lastName ?? "",
           vcard: params?.vcard ?? "",
-        }),
+        },
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
         schedule_date: params?.sendAt,
@@ -482,10 +482,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       reply_to: await this.#constructReplyTo(params),
       send_as: sendAs,
       reply_markup: replyMarkup,
-      media: ({
+      media: {
         _: "inputMediaDice",
         emoticon: params?.emoji ?? "🎲",
-      }),
+      },
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
       schedule_date: params?.sendAt,
@@ -518,24 +518,24 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         media: params?.livePeriod !== undefined
           ? ({
             _: "inputMediaGeoLive",
-            geo_point: ({
+            geo_point: {
               _: "inputGeoPoint",
               lat: latitude,
               long: longitude,
               accuracy_radius: params?.horizontalAccuracy,
-            }),
+            },
             heading: params?.heading,
             period: params.livePeriod,
             proximity_notification_radius: params?.proximityAlertRadius,
           })
           : ({
             _: "inputMediaGeoPoint",
-            geo_point: ({
+            geo_point: {
               _: "inputGeoPoint",
               lat: latitude,
               long: longitude,
               accuracy_radius: params?.horizontalAccuracy,
-            }),
+            },
           }),
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
@@ -1391,7 +1391,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       _: "messages.editMessage",
       peer: await this.#c.getInputPeer(chatId),
       id: messageId,
-      media: ({ _: "inputMediaPoll", poll: ({ _: "poll", id: BigInt(message.poll.id), closed: true, question: { _: "textWithEntities", text: "", entities: [] }, answers: [] }) }),
+      media: { _: "inputMediaPoll", poll: { _: "poll", id: BigInt(message.poll.id), closed: true, question: { _: "textWithEntities", text: "", entities: [] }, answers: [] } },
       reply_markup: await this.#constructReplyMarkup(params),
     }, { businessConnectionId: params?.businessConnectionId });
 
@@ -1407,7 +1407,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         _: "messages.editMessage",
         peer: await this.#c.getInputPeer(chatId),
         id: messageId,
-        media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }),
+        media: { _: "inputMediaGeoLive", geo_point: { _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }, heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius },
         reply_markup: await this.#constructReplyMarkup(params),
       }, { businessConnectionId: params?.businessConnectionId });
 
@@ -1424,7 +1424,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     await this.#c.invoke({
       _: "messages.editInlineBotMessage",
       id,
-      media: ({ _: "inputMediaGeoLive", geo_point: ({ _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }), heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius }),
+      media: { _: "inputMediaGeoLive", geo_point: { _: "inputGeoPoint", lat: latitude, long: longitude, accuracy_radius: params?.horizontalAccuracy }, heading: params?.heading, proximity_notification_radius: params?.proximityAlertRadius },
       reply_markup: await this.#constructReplyMarkup(params),
     }, { dc: getDc(id.dc_id) });
   }

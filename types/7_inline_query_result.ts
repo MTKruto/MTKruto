@@ -608,7 +608,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
   const description = "description" in result_ ? result_.description : undefined;
 
   if (document !== null) {
-    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, content: document, send_message: ({ _: "inputBotInlineMessageMediaAuto", message, entities, reply_markup: replyMarkup }) };
+    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, content: document, send_message: { _: "inputBotInlineMessageMediaAuto", message, entities, reply_markup: replyMarkup } };
   } else if (fileId_ !== null) {
     const fileId = deserializeFileId(fileId_);
     return {
@@ -617,18 +617,18 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       type: type === "document" ? "file" : type,
       title,
       description,
-      document: ({
+      document: {
         _: "inputDocument",
         id: "id" in fileId.location ? fileId.location.id : unreachable(),
         access_hash: fileId.location.accessHash,
         file_reference: fileId.fileReference ?? new Uint8Array(),
-      }),
+      },
       send_message: sendMessage,
     };
   } else if (result_.type === "location") {
-    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, send_message: ({ _: "inputBotInlineMessageMediaGeo", geo_point: ({ _: "inputGeoPoint", lat: result_.latitude, long: result_.longitude, accuracy_radius: result_.horizontalAccuracy }), heading: result_.heading, period: result_.livePeriod, proximity_notification_radius: result_.proximityAlertRadius, reply_markup: replyMarkup }) };
+    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, send_message: { _: "inputBotInlineMessageMediaGeo", geo_point: { _: "inputGeoPoint", lat: result_.latitude, long: result_.longitude, accuracy_radius: result_.horizontalAccuracy }, heading: result_.heading, period: result_.livePeriod, proximity_notification_radius: result_.proximityAlertRadius, reply_markup: replyMarkup } };
   } else if (result_.type === "game") {
-    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, send_message: ({ _: "inputBotInlineMessageGame", reply_markup: replyMarkup }) };
+    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, send_message: { _: "inputBotInlineMessageGame", reply_markup: replyMarkup } };
   } else if (result_.type === "article") {
     if (!("text" in result_.messageContent)) {
       unreachable();
@@ -650,7 +650,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     if (!result_.foursquareId || !result_.foursquareType) {
       unreachable();
     }
-    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, send_message: ({ _: "inputBotInlineMessageMediaVenue", geo_point: ({ _: "inputGeoPoint", long: result_.longitude, lat: result_.latitude }), address: result_.address, provider: "foursquare", title: result_.title, venue_id: result_.foursquareId, venue_type: result_.foursquareType, reply_markup: replyMarkup }) };
+    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, send_message: { _: "inputBotInlineMessageMediaVenue", geo_point: { _: "inputGeoPoint", long: result_.longitude, lat: result_.latitude }, address: result_.address, provider: "foursquare", title: result_.title, venue_id: result_.foursquareId, venue_type: result_.foursquareType, reply_markup: replyMarkup } };
   } else {
     unreachable();
   }

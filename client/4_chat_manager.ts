@@ -199,7 +199,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
         _: "channels.editBanned",
         channel: { ...chat, _: "inputChannel" },
         participant: member,
-        banned_rights: ({
+        banned_rights: {
           _: "chatBannedRights",
           until_date: params?.until ?? 0,
           view_messages: true,
@@ -210,7 +210,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
           send_games: true,
           send_inline: true,
           embed_links: true,
-        }),
+        },
       });
     } else if (Api.is("inputPeerChat", chat)) {
       if (!canBeInputUser(member)) {
@@ -223,7 +223,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   async unbanChatMember(chatId: ID, memberId: ID) {
     const channel = await this.#c.getInputChannel(chatId);
     const member = await this.#c.getInputPeer(memberId);
-    await this.#c.invoke({ _: "channels.editBanned", channel, participant: member, banned_rights: ({ _: "chatBannedRights", until_date: 0 }) });
+    await this.#c.invoke({ _: "channels.editBanned", channel, participant: member, banned_rights: { _: "chatBannedRights", until_date: 0 } });
   }
 
   async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams) {
