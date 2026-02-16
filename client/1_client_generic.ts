@@ -171,6 +171,21 @@ export abstract class ClientGeneric {
   abstract checkUsername(username: string, params?: CheckUsernameParams): Promise<boolean>;
 
   /**
+   * Set the username of the current account. User-only.
+   *
+   * @method ac
+   * @param username The username to set.
+   */
+  abstract setUsername(username: string): Promise<void>;
+
+  /**
+   * Remove the current account's username. User-only.
+   *
+   * @method ac
+   */
+  abstract removeUsername(): Promise<void>;
+
+  /**
    * Get a business connection. Bot-only.
    *
    * @method ac
