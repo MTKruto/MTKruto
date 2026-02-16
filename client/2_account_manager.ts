@@ -60,7 +60,7 @@ export class AccountManager {
 
   async checkUsername(username: string, params?: CheckUsernameParams) {
     this.#c.storage.assertUser("checkUsername");
-    const channel = params?.chat ? await this.#c.getInputChannel(params.chat) : undefined;
+    const channel = params?.chatId ? await this.#c.getInputChannel(params.chatId) : undefined;
     if (channel) {
       return await this.#c.invoke({ _: "channels.checkUsername", channel, username });
     } else {

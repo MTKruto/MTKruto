@@ -812,5 +812,5 @@ export interface OpenChatParams {
 
 export interface CheckUsernameParams {
   /** The identifier of a supergroup or a channel. If specified, the username check will be made against it. */
-  chat: ID;
+  chatId: ID;
 }
