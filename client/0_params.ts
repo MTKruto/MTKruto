@@ -809,3 +809,8 @@ export interface OpenChatParams {
   /** TTL of update differences for unpolled chats in seconds. Defaults to a value specified by Telegram. */
   timeout?: number;
 }
+
+export interface CheckUsernameParams {
+  /** The identifier of a supergroup or a channel. If specified, the username check will be made against it. */
+  chat: ID;
+}
