@@ -1337,6 +1337,25 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Set the username of the current account. User-only.
+   *
+   * @method ac
+   * @param username The username to set.
+   */
+  async setUsername(username: string): Promise<void> {
+    await this.#accountManager.setUsername(username);
+  }
+
+  /**
+   * Remove the current account's username. User-only.
+   *
+   * @method ac
+   */
+  async removeUsername(): Promise<void> {
+    await this.#accountManager.removeUsername();
+  }
+
+  /**
    * Reorder the usernames of the current account, a bot account, a supergroup, or a channel's profile. User-only.
    *
    * @method ac

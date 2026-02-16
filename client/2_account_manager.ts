@@ -68,6 +68,16 @@ export class AccountManager {
     }
   }
 
+  async setUsername(username: string) {
+    this.#c.storage.assertUser("setUsername");
+    await this.#c.invoke({ _: "account.updateUsername", username });
+  }
+
+  async removeUsername() {
+    this.#c.storage.assertUser("removeUsername");
+    await this.#c.invoke({ _: "account.updateUsername", username: "" });
+  }
+
   async reorderUsernames(id: ID, order: string[]) {
     this.#c.storage.assertUser("reorderUsernames");
     const peer = await this.#c.getInputPeer(id);

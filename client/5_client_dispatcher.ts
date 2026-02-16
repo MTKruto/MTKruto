@@ -378,6 +378,25 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Set the username of the current account. User-only.
+   *
+   * @method ac
+   * @param username The username to set.
+   */
+  async setUsername(username: string): Promise<void> {
+    return await this.#dispatch("setUsername", username);
+  }
+
+  /**
+   * Remove the current account's username. User-only.
+   *
+   * @method ac
+   */
+  async removeUsername(): Promise<void> {
+    return await this.#dispatch("removeUsername");
+  }
+
+  /**
    * Reorder the usernames of the current account, a bot account, a supergroup, or a channel's profile. User-only.
    *
    * @method ac
