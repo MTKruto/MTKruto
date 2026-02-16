@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
 import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructInactiveChat, constructUser, type ID, type PasswordCheckResult } from "../3_types.ts";
-import type { AddContactParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, UpdateProfileParams } from "./0_params.ts";
+import type { AddContactParams, CheckUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { C } from "./1_types.ts";
@@ -56,6 +56,16 @@ export class AccountManager {
   async hideUsername(id: ID, username: string) {
     this.#c.storage.assertUser("hideUsername");
     await this.#toggleUsername(id, username, false);
+  }
+
+  async checkUsername(username: string, params?: CheckUsernameParams) {
+    this.#c.storage.assertUser("checkUsername");
+    const channel = params?.chatId ? await this.#c.getInputChannel(params.chatId) : undefined;
+    if (channel) {
+      return await this.#c.invoke({ _: "channels.checkUsername", channel, username });
+    } else {
+      return await this.#c.invoke({ _: "account.checkUsername", username });
+    }
   }
 
   async reorderUsernames(id: ID, order: string[]) {
