@@ -91,7 +91,7 @@ export async function botCommandScopeToTlObject(scope: BotCommandScope, getInput
       if (!Api.is("inputPeerUser", user)) {
         unreachable();
       }
-      return { _: "botCommandScopePeerUser", peer: await getInputPeer(scope.chatId), user_id: ({ _: "inputUser", user_id: user.user_id, access_hash: user.access_hash }) };
+      return { _: "botCommandScopePeerUser", peer: await getInputPeer(scope.chatId), user_id: { _: "inputUser", user_id: user.user_id, access_hash: user.access_hash } };
     }
     default:
       unreachable();
