@@ -19,7 +19,9 @@
  */
 
 import { unreachable } from "../0_deps.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import { type ButtonStyle, buttonStyleToTlObject, constructButtonStyle } from "./0_button_style.ts";
 import { type ChatAdministratorRights, chatAdministratorRightsToTlObject, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
 import type { KeyboardButtonPollType } from "./0_keyboard_button_poll_type.ts";
 import type { MiniAppButtonInfo } from "./0_mini_app_button_info.ts";
@@ -28,6 +30,7 @@ import type { MiniAppButtonInfo } from "./0_mini_app_button_info.ts";
 export interface KeyboardButtonText {
   /** @discriminator */
   text: string;
+  style?: ButtonStyle;
 }
 
 /** @unlisted */
@@ -90,18 +93,20 @@ export type KeyboardButton =
   | KeyboardButtonMiniApp;
 
 export function constructKeyboardButton(button_: Api.KeyboardButton): KeyboardButton {
+  const style = constructButtonStyle(button_.style);
   if (Api.is("keyboardButton", button_)) {
-    return { text: button_.text };
+    return cleanObject({ text: button_.text, style });
   } else if (Api.is("keyboardButtonRequestPeer", button_)) {
     if (Api.is("requestPeerTypeUser", button_.peer_type)) {
-      return {
+      return cleanObject({
         text: button_.text,
         requestUser: {
           requestId: button_.button_id,
           userIsBot: button_.peer_type.bot || false,
           userIsPremium: button_.peer_type.premium || false,
         },
-      };
+        style,
+      });
     } else if (Api.is("requestPeerTypeChat", button_.peer_type)) {
       const button: KeyboardButtonRequestChat = {
         text: button_.text,
@@ -120,6 +125,9 @@ export function constructKeyboardButton(button_: Api.KeyboardButton): KeyboardBu
       if (button_.peer_type.user_admin_rights) {
         button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peer_type.user_admin_rights);
       }
+      if (style) {
+        button.style = style;
+      }
       return button;
     } else if (Api.is("requestPeerTypeBroadcast", button_.peer_type)) {
       const button: KeyboardButtonRequestChat = {
@@ -137,47 +145,93 @@ export function constructKeyboardButton(button_: Api.KeyboardButton): KeyboardBu
       if (button_.peer_type.user_admin_rights) {
         button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peer_type.user_admin_rights);
       }
+      if (style) {
+        button.style = style;
+      }
       return button;
     } else {
       unreachable();
     }
   } else if (Api.is("keyboardButtonRequestPhone", button_)) {
-    return { text: button_.text, requestContact: true };
+    return cleanObject({ text: button_.text, requestContact: true, style });
   } else if (Api.is("keyboardButtonRequestGeoLocation", button_)) {
-    return { text: button_.text, requestLocation: true };
+    return cleanObject({ text: button_.text, requestLocation: true, style });
   } else if (Api.is("keyboardButtonRequestPoll", button_)) {
     const button: KeyboardButtonRequestPoll = { text: button_.text, requestPoll: {} };
 
     if (button_.quiz) {
       button.requestPoll.type = "quiz";
     }
+    if (style) {
+      button.style = style;
+    }
 
     return button;
   } else if (Api.is("keyboardButtonWebView", button_) || Api.is("keyboardButtonSimpleWebView", button_)) {
-    return { text: button_.text, miniApp: { url: button_.url } };
+    return cleanObject({ text: button_.text, miniApp: { url: button_.url }, style });
   } else {
     unreachable();
   }
 }
 
 export function keyboardButtonToTlObject(button: KeyboardButton): Api.KeyboardButton {
+  const style = buttonStyleToTlObject(button.style);
   if ("requestUser" in button) {
-    return { _: "keyboardButtonRequestPeer", text: button.text, button_id: button.requestUser.requestId, peer_type: { _: "requestPeerTypeUser", bot: button.requestUser.userIsBot, premium: button.requestUser.userIsPremium }, max_quantity: 1 };
+    return {
+      _: "keyboardButtonRequestPeer",
+      text: button.text,
+      button_id: button.requestUser.requestId,
+      peer_type: { _: "requestPeerTypeUser", bot: button.requestUser.userIsBot, premium: button.requestUser.userIsPremium },
+      max_quantity: 1,
+      style,
+    };
   } else if ("requestChat" in button) {
     if (!button.requestChat.chatIsChannel) { // GUESS
-      return { _: "keyboardButtonRequestPeer", text: button.text, button_id: button.requestChat.requestId, peer_type: { _: "requestPeerTypeChat", forum: button.requestChat.chatIsForum, has_username: button.requestChat.chatHasUsername, creator: button.requestChat.chatIsCreated || undefined, bot_participant: button.requestChat.botIsMember || undefined, bot_admin_rights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined, user_admin_rights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined }, max_quantity: 1 };
+      return {
+        _: "keyboardButtonRequestPeer",
+        text: button.text,
+        button_id: button.requestChat.requestId,
+        peer_type: { _: "requestPeerTypeChat", forum: button.requestChat.chatIsForum, has_username: button.requestChat.chatHasUsername, creator: button.requestChat.chatIsCreated || undefined, bot_participant: button.requestChat.botIsMember || undefined, bot_admin_rights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined, user_admin_rights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined },
+        max_quantity: 1,
+        style,
+      };
     } else {
-      return { _: "keyboardButtonRequestPeer", text: button.text, button_id: button.requestChat.requestId, peer_type: { _: "requestPeerTypeBroadcast", has_username: button.requestChat.chatHasUsername, creator: button.requestChat.chatIsCreated || undefined, bot_admin_rights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined, user_admin_rights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined }, max_quantity: 1 };
+      return {
+        _: "keyboardButtonRequestPeer",
+        text: button.text,
+        button_id: button.requestChat.requestId,
+        peer_type: { _: "requestPeerTypeBroadcast", has_username: button.requestChat.chatHasUsername, creator: button.requestChat.chatIsCreated || undefined, bot_admin_rights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined, user_admin_rights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined },
+        max_quantity: 1,
+        style,
+      };
     }
   } else if ("requestContact" in button) {
-    return { _: "keyboardButtonRequestPhone", text: button.text };
+    return {
+      _: "keyboardButtonRequestPhone",
+      text: button.text,
+      style,
+    };
   } else if ("requestLocation" in button) {
-    return { _: "keyboardButtonRequestGeoLocation", text: button.text };
+    return {
+      _: "keyboardButtonRequestGeoLocation",
+      text: button.text,
+      style,
+    };
   } else if ("requestPoll" in button) {
-    return { _: "keyboardButtonRequestPoll", text: button.text, quiz: button.requestPoll.type === "quiz" };
+    return {
+      _: "keyboardButtonRequestPoll",
+      text: button.text,
+      quiz: button.requestPoll.type === "quiz",
+      style,
+    };
   } else if ("miniApp" in button) {
-    return { _: "keyboardButtonWebView", text: button.text, url: button.miniApp.url };
+    return {
+      _: "keyboardButtonWebView",
+      text: button.text,
+      url: button.miniApp.url,
+      style,
+    };
   } else {
-    return { _: "keyboardButton", text: button.text };
+    return { _: "keyboardButton", text: button.text, style };
   }
 }
