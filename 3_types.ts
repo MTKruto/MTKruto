@@ -24,6 +24,7 @@ export * from "./types/0_authorization_state.ts";
 export * from "./types/0_birthday.ts";
 export * from "./types/0_bot_command.ts";
 export * from "./types/0_bot_token_check_result.ts";
+export * from "./types/0_button_style.ts";
 export * from "./types/0_callback_query_answer.ts";
 export * from "./types/0_callback_query_question.ts";
 export * from "./types/0_chat_action.ts";
