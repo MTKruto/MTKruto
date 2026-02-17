@@ -23,25 +23,39 @@ import type { Api } from "../2_tl.ts";
 import type { InputPeerGetter } from "./_getters.ts";
 import type { ID } from "./0_id.ts";
 
-export declare namespace InputGift {
-  export interface Slug {
-    type: "slug";
-    slug: string;
-  }
-
-  export interface Chat {
-    type: "chat";
-    chatId: ID;
-    id: string;
-  }
-
-  export interface User {
-    type: "user";
-    messageId: number;
-  }
+/**
+ * Reference to a gift by its slug.
+ * @unlisted
+ */
+export interface InputGiftSlug {
+  /** @discriminator */
+  type: "slug";
+  slug: string;
 }
 
-export type InputGift = InputGift.Slug | InputGift.Chat | InputGift.User;
+/**
+ * Reference to a gift in a chat by its ID.
+ * @unlisted
+ */
+export interface InputGiftChat {
+  /** @discriminator */
+  type: "chat";
+  chatId: ID;
+  id: string;
+}
+
+/**
+ * Reference to a gift in a private chat by its message ID.
+ * @unlisted
+ */
+export interface InputGiftUser {
+  /** @discriminator */
+  type: "user";
+  messageId: number;
+}
+
+/** Reference to a gift. */
+export type InputGift = InputGiftSlug | InputGiftChat | InputGiftUser;
 
 export async function inputGiftToTlObject(inputGift: InputGift, getInputPeer: InputPeerGetter): Promise<Api.InputSavedStarGift> {
   switch (inputGift.type) {
