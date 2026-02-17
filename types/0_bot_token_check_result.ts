@@ -18,13 +18,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export declare namespace BotTokenCheckResult {
-  /** The bot token was correct. The bot was signed in. */
-  export interface SignedIn {
-    type: "signed_in";
-    userId: number;
-  }
+/**
+ * The bot token was correct. The bot was signed in.
+ * @unlisted
+ */
+export interface BotTokenCheckResultSignedIn {
+  /** @discriminator */
+  type: "signed_in";
+  userId: number;
 }
 
 /** A result after checking a sent code. */
-export type BotTokenCheckResult = BotTokenCheckResult.SignedIn;
+export type BotTokenCheckResult = BotTokenCheckResultSignedIn;

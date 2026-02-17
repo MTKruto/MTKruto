@@ -18,18 +18,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export declare namespace PasswordCheckResult {
-  /** The password entered was incorrect. */
-  export interface InvalidPassword {
-    type: "invalid_password";
-  }
+/**
+ * The password entered was incorrect.
+ * @unlisted
+ */
+export interface PasswordCheckResultInvalidPassword {
+  /** @discriminator */
+  type: "invalid_password";
+}
 
-  /** The password was correct. The user was signed in. */
-  export interface SignedIn {
-    type: "signed_in";
-    userId: number;
-  }
+/**
+ * The password was correct. The user was signed in.
+ * @unlisted
+ */
+export interface PasswordCheckResultSignedIn {
+  /** @discriminator */
+  type: "signed_in";
+  userId: number;
 }
 
 /** A result after checking a sent code. */
-export type PasswordCheckResult = PasswordCheckResult.InvalidPassword | PasswordCheckResult.SignedIn;
+export type PasswordCheckResult = PasswordCheckResultInvalidPassword | PasswordCheckResultSignedIn;

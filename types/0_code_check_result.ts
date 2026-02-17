@@ -18,18 +18,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/** The code was correct, but an additional password is required to sign in. */
+/**
+ * The code was correct, but an additional password is required to sign in.
+ * @unlisted
+ */
 export interface CodeCheckResultPasswordRequired {
+  /** @discriminator */
   type: "password_required";
 }
 
-/** The code entered was incorrect. */
+/**
+ * The code entered was incorrect.
+ * @unlisted
+ */
 export interface CodeCheckResultInvalidCode {
+  /** @discriminator */
   type: "invalid_code";
 }
 
-/** The code was correct. The user was signed in. */
+/**
+ * The code was correct. The user was signed in.
+ * @unlisted
+ */
 export interface CodeCheckResultSignedIn {
+  /** @discriminator */
   type: "signed_in";
   userId: number;
 }
