@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/** Configuration for switching to inline mode in specific chat types. */
 export interface SwitchInlineQueryChosenChats {
   /** The query to type into the user's message box once switched to inline. */
   query: string;

@@ -18,4 +18,5 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/** The size of a link preview's media. */
 export type LinkPreviewMediaSize = "small" | "large";

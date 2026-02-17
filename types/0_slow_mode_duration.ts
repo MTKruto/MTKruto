@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/** A slow mode duration option. */
 export type SlowModeDuration =
   | "10s"
   | "30s"

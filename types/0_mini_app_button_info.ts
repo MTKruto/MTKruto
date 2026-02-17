@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/** Information on a mini app button. */
 export interface MiniAppButtonInfo {
   /** An HTTPS URL of the mini app to be opened with additional data. */
   url: string;

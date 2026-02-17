@@ -21,23 +21,28 @@
 import { unreachable } from "../0_deps.ts";
 import type { Api } from "../2_tl.ts";
 
+/** @unlisted */
 export interface GiftComponentRarityPerMille {
   type: "perMille";
   perMille: number;
 }
 
+/** @unlisted */
 export interface GiftComponentRarityUncommon {
   type: "uncommon";
 }
 
+/** @unlisted */
 export interface GiftComponentRarityRare {
   type: "rare";
 }
 
+/** @unlisted */
 export interface GiftComponentRarityEpic {
   type: "epic";
 }
 
+/** @unlisted */
 export interface GiftComponentRarityLegendary {
   type: "legendary";
 }
