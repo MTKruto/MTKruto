@@ -278,7 +278,7 @@ export abstract class ClientGeneric {
   abstract sendMessage(chatId: ID, text: string, params?: SendMessageParams): Promise<MessageText>;
 
   /**
-   * Stream a drafted text message.
+   * Stream a drafted text message. Bot-only.
    *
    * @method ms
    * @param chatId The identifier of a chat to send the message to.

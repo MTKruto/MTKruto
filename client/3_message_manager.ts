@@ -297,6 +297,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async sendMessageDraft(chatId: ID, draftId: number, text: string, params?: SendMessageDraftParams) {
+    this.#c.storage.assertBot("sendMessageDraft");
     const [message, entities] = await this.parseText(text, params);
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({

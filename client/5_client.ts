@@ -1493,7 +1493,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Stream a drafted text message.
+   * Stream a drafted text message. Bot-only.
    *
    * @method ms
    * @param chatId The identifier of a chat to send the message to.
