@@ -22,10 +22,15 @@ import { cleanObject } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
 import { constructShippingAddress, type ShippingAddress } from "./0_shipping_address.ts";
 
+/** Information on an order. */
 export interface OrderInfo {
+  /** The name of the ordered item. */
   name?: string;
+  /** Phone number of the recipient. */
   phoneNumber?: string;
+  /** Email adderss of the recipient. */
   email?: string;
+  /** The shipping address of the recipient. */
   shippingAddress?: ShippingAddress;
 }
 

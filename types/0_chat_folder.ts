@@ -20,8 +20,11 @@
 
 import type { Api } from "../2_tl.ts";
 
+/** A chat folder. */
 export interface ChatFolder {
+  /** The identifier of the folder. */
   id: number;
+  /** The title of the folder. */
   title: string;
 }
 

@@ -22,13 +22,21 @@ import { cleanObject, decodeText } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
 import { constructOrderInfo, type OrderInfo } from "./1_order_info.ts";
 
+/** A successful payment. */
 export interface SuccessfulPayment {
+  /** The currency of the payment. */
   currency: string;
+  /** The total amount of the transaction. */
   totalAmount: number;
+  /** The payload of the payment's invoice. */
   invoicePayload: string;
+  /** Telegram payment charge ID. */
   telegramPaymentChargeId: string;
+  /** Provider payment charge ID. */
   providerPaymentChargeId: string;
+  /** The payment's shipping option ID. */
   shippingOptionId?: string;
+  /** The payment's order info. */
   orderInfo?: OrderInfo;
 }
 

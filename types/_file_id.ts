@@ -56,6 +56,7 @@ const FileType_ = {
 } as const;
 export const FileType: Readonly<typeof FileType_> = Object.freeze(FileType_);
 
+/** @unlisted */
 export type FileType = typeof FileType[keyof typeof FileType];
 
 const FileTypeClass = Object.freeze({
@@ -80,6 +81,7 @@ const PhotoSourceType_ = {
 } as const;
 export const PhotoSourceType: Readonly<typeof PhotoSourceType_> = Object.freeze(PhotoSourceType_);
 
+/** @unlisted */
 export type PhotoSource =
   | { type: typeof PhotoSourceType["Legacy"]; secret: bigint }
   | { type: typeof PhotoSourceType["Thumbnail"]; fileType: FileType; thumbnailType: number }

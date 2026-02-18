@@ -23,15 +23,25 @@ import { cleanObject } from "../1_utilities.ts";
 import type { ChatP } from "./1_chat_p.ts";
 import type { Message, MessageForumTopicCreated, MessageForumTopicEdited } from "./6_message.ts";
 
+/** A forum topic. */
 export interface Topic {
+  /** The ID of the topic. */
   id: number;
+  /** The point in time in which the topic was created. */
   date: number;
+  /** The creator of the topic. */
   creator: ChatP;
+  /** Whether this is the general topic. */
   isGeneral: boolean;
+  /** Whether the topic is closed. */
   isClosed: boolean;
+  /** Whether the topic is hidden. */
   isHidden: boolean;
+  /** The name of the topic. */
   name: string;
+  /** The color of the topic. */
   color: number;
+  /** The icon of the topic. */
   customEmojiId?: string;
 }
 

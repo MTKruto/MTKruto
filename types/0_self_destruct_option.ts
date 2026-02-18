@@ -20,12 +20,19 @@
 
 import { InputError } from "../0_errors.ts";
 
-/** @unlisted */
+/**
+ * A message self-destruct option that destructs the message after it has been opened.
+ * @unlisted
+ */
 export type SelfDestructAfterOpen = "afterOpen";
 
-/** @unlisted */
+/**
+ * A message self-destruct option that destructs the message after a specified duration in seconds.
+ * @unlisted
+ */
 export type SelfDestructAfterSeconds = number;
 
+/** A message self-destruct option. */
 export type SelfDestructOption = SelfDestructAfterOpen | SelfDestructAfterSeconds;
 
 const MAX_INT_32 = ~~(0xFFFFFFFF / 2);

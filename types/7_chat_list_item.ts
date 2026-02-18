@@ -26,13 +26,21 @@ import { type ChatP, constructChatP, type PeerGetter } from "./1_chat_p.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
 import { constructMessage, type Message, type MessageGetter } from "./6_message.ts";
 
+/** An item of a chat list. */
 export interface ChatListItem {
+  /** A chat folder. If specified, the item is a chat folder. */
   folder?: ChatFolder;
+  /** The item's chat. */
   chat: ChatP;
+  /** The last message in the chat. */
   lastMessage?: Omit<Message, "replyToMessage">;
+  /** The count of unread chats in the item. */
   unreadChatCount?: number;
+  /** The count of unread messages in the item. */
   unreadMessageCount?: number;
+  /** The count of unread and muted chats. */
   unreadMutedChatCount?: number;
+  /** The count of unread messages from muted chats in the item. */
   unreadMutedMessageCount?: number;
 }
 

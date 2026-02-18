@@ -21,18 +21,34 @@
 import type { ID } from "./0_id.ts";
 import type { ReplyQuote } from "./3_reply_quote.ts";
 
-/** @unlisted */
+/**
+ * Information on a message that another message is replying to.
+ * @unlisted */
 export interface ReplyToMessage {
-  /** @discriminator */
+  /**
+   * The identifier of the message that is being replied to.
+   * @discriminator
+   */
   messageId: number;
+  /**
+   * A quoted part of the message that is being replied to.
+   */
   quote?: ReplyQuote;
 }
 
-/** @unlisted */
+/**
+ * Information on a story that a message is replying to.
+ * @unlisted
+ */
 export interface ReplyToStory {
+  /** The identifier of the chat that posted the story. */
   chatId: ID;
-  /** @discriminator */
+  /**
+   * The identifier of the story that is being replied to.
+   * @discriminator
+   */
   storyId: number;
 }
 
+/** Information on what a message is replying to. */
 export type ReplyTo = ReplyToMessage | ReplyToStory;

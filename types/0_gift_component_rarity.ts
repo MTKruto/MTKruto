@@ -47,6 +47,7 @@ export interface GiftComponentRarityLegendary {
   type: "legendary";
 }
 
+/** The rarity of a gift component. */
 export type GiftComponentRarity = GiftComponentRarityPerMille | GiftComponentRarityUncommon | GiftComponentRarityRare | GiftComponentRarityEpic | GiftComponentRarityLegendary;
 
 export function constructGiftComponentRarity(rarity: Api.StarGiftAttributeRarity): GiftComponentRarity {

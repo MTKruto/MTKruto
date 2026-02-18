@@ -20,9 +20,13 @@
 
 import type { Api } from "../2_tl.ts";
 
+/** A failed invitation. */
 export interface FailedInvitation {
+  /** The identifier of a user that could not be invited. */
   userId: number;
+  /** Whether Telegram Premium is required to invite the user. */
   requiresPremiumToInvite: boolean;
+  /** Whether Telegram Premium is required to message the user. */
   requiresPremiumToMessage: boolean;
 }
 
