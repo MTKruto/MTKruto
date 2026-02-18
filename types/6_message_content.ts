@@ -88,7 +88,7 @@ export interface MessageContentText {
   type: "text";
   /** The message's text. */
   text: string;
-  /** The parse mode to use. if omitted, the default parse mode will be used. */
+  /** The parse mode to use. If omitted, the default parse mode will be used. */
   parseMode?: ParseMode;
   /** The message's entities. */
   entities?: MessageEntity[];
