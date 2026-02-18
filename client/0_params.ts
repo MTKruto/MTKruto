@@ -87,12 +87,21 @@ export interface _SendCommon extends _BusinessConnectionIdCommon, _PaidBroadcast
   sendAt?: number;
 }
 export interface SendMessageParams extends _SendCommon, _ReplyMarkupCommon {
-  /** The parse mode to use. if omitted, the default parse mode will be used. */
+  /** The parse mode to use. If omitted, the default parse mode will be used. */
   parseMode?: ParseMode;
   /** The message's entities. */
   entities?: MessageEntity[];
   /** The message's link preview. */
   linkPreview?: InputLinkPreview;
+}
+
+export interface SendMessageDraftParams {
+  /** The identifier of a thread to send the message to. */
+  messageThreadId?: number;
+  /** The parse mode to use. If omitted, the default parse mode will be used. */
+  parseMode?: ParseMode;
+  /** The message's entities. */
+  entities?: MessageEntity[];
 }
 
 export interface SendChatActionParams extends _BusinessConnectionIdCommon {
@@ -148,9 +157,9 @@ export interface ForwardMessagesParams extends Omit<_SendCommon, "replyToMessage
 export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   /** The entities of the poll's question. */
   questionEntities?: MessageEntity[];
-  /** The parse mode to use for the poll's question. if omitted, the default parse mode will be used. */
+  /** The parse mode to use for the poll's question. If omitted, the default parse mode will be used. */
   questionParseMode?: ParseMode;
-  /** The parse mode to use for the poll's options. if omitted, the default parse mode will be used. */
+  /** The parse mode to use for the poll's options. If omitted, the default parse mode will be used. */
   optionParseMode?: ParseMode;
   /** Whether the poll should be anonymous. */
   isAnonymous?: boolean;
@@ -721,7 +730,7 @@ export interface EditTopicParams {
 }
 
 export interface GetLinkPreviewParams {
-  /** The parse mode to use. if omitted, the default parse mode will be used. */
+  /** The parse mode to use. If omitted, the default parse mode will be used. */
   parseMode?: ParseMode;
   /** The message's entities. */
   entities?: MessageEntity[];
