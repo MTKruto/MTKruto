@@ -25,13 +25,21 @@ import type { PeerGetter } from "./1_chat_p.ts";
 import { constructOrderInfo, type OrderInfo } from "./1_order_info.ts";
 import { constructUser2, type User } from "./2_user.ts";
 
+/** A pre-checkout query. */
 export interface PreCheckoutQuery {
+  /** The identifier of the pre-checkout query. */
   id: string;
+  /** The user that created the pre-checkout query. */
   from: User;
+  /** The currency in which the pre-checkout query is in. */
   currency: string;
+  /** The payment's total amount. */
   totalAmount: number;
+  /** The payload of the payment's invoice. */
   invoicePayload: string;
+  /** The payment's shipping option ID. */
   shippingOptionId?: string;
+  /** The payment's order info. */
   orderInfo?: OrderInfo;
 }
 

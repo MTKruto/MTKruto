@@ -21,6 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import type { Api } from "../2_tl.ts";
 
+/** A message search filter option. */
 export type MessageSearchFilter =
   | "empty"
   | "animations"

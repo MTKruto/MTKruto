@@ -126,4 +126,5 @@ export interface InputMediaVideo extends _InputMediaCommon {
   selfDestruct?: SelfDestructOption;
 }
 
+/** An input media. */
 export type InputMedia = InputMediaAnimation | InputMediaAudio | InputMediaDocument | InputMediaPhoto | InputMediaVideo;

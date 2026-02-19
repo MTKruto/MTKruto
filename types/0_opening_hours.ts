@@ -20,8 +20,11 @@
 
 import type { Api } from "../2_tl.ts";
 
+/** The opening hours of a business. */
 export interface OpeningHours {
+  /** The timezone of the opening hours. */
   timezone: string;
+  /** The opening hours. */
   intervals: [number, number][];
 }
 

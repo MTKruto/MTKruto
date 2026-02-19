@@ -20,6 +20,7 @@
 
 import type { Api } from "../2_tl.ts";
 
+/** A payment invoice. */
 export interface Invoice {
   title: string;
   description: string;
