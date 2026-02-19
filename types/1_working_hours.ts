@@ -18,19 +18,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { MINUTE } from "../0_deps.ts";
 import type { Api } from "../2_tl.ts";
+import type { WorkingHourInterval } from "./0_working_hour_interval.ts";
 
-/** The opening hours of a business. */
-export interface OpeningHours {
-  /** The timezone of the opening hours. */
+/** The working hours of a business. */
+export interface WorkingHours {
+  /** The timezone of the working hours. */
   timezone: string;
-  /** The opening hours. */
-  intervals: [number, number][];
+  /** The working hours. */
+  intervals: WorkingHourInterval[];
 }
 
-export function constructOpeningHours(hours: Api.businessWorkHours): OpeningHours {
+export function constructWorkingHours(hours: Api.businessWorkHours): WorkingHours {
   return {
     timezone: hours.timezone_id,
-    intervals: hours.weekly_open.map((v) => [v.start_minute, v.end_minute]),
+    intervals: hours.weekly_open.map((v) => ({ startsAt: v.start_minute * MINUTE, endsAt: v.end_minute * MINUTE })),
+  };
+}
+
+export function workingHoursToTlObject(workingHours: WorkingHours): Api.businessWorkHours {
+  return {
+    _: "businessWorkHours",
+    timezone_id: workingHours.timezone,
+    weekly_open: workingHours.intervals.map((v) => ({ _: "businessWeeklyOpen", start_minute: ~~(v.startsAt / MINUTE), end_minute: ~~(v.endsAt / MINUTE) })),
   };
 }

@@ -22,8 +22,8 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructInactiveChat, constructUser, type ID, type PasswordCheckResult } from "../3_types.ts";
-import type { AddContactParams, CheckUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, UpdateProfileParams } from "./0_params.ts";
+import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructInactiveChat, constructUser, type ID, type PasswordCheckResult, workingHoursToTlObject } from "../3_types.ts";
+import type { AddContactParams, CheckUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { C } from "./1_types.ts";
@@ -265,6 +265,15 @@ export class AccountManager {
       geo_point = { _: "inputGeoPoint", lat: params.latitude, long: params.longitude };
     }
     await this.#c.invoke({ _: "account.updateBusinessLocation", address, geo_point });
+  }
+
+  async setWorkingHours(params?: SetWorkingHoursParams) {
+    this.#c.storage.assertUser("setWorkingHours");
+    let business_work_hours: Api.businessWorkHours | undefined;
+    if (params?.workingHours) {
+      business_work_hours = workingHoursToTlObject(params.workingHours);
+    }
+    await this.#c.invoke({ _: "account.updateBusinessWorkHours", business_work_hours });
   }
 
   #phoneNumber?: string;
