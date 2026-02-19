@@ -526,6 +526,24 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("setWorkingHours", params);
   }
 
+  /**
+   * Enable sponsored messages on the current user. User-only.
+   *
+   * @method ac
+   */
+  async enableSponsoredMessages(): Promise<void> {
+    return await this.#dispatch("enableSponsoredMessages");
+  }
+
+  /**
+   * Disable sponsored messages on the current user. User-only.
+   *
+   * @method ac
+   */
+  async disableSponsoredMessages(): Promise<void> {
+    return await this.#dispatch("disableSponsoredMessages");
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //
