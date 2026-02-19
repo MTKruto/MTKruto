@@ -23,9 +23,9 @@ import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { type Birthday, constructBirthday } from "./0_birthday.ts";
 import { constructLocation, type Location } from "./0_location.ts";
-import { constructOpeningHours, type OpeningHours } from "./0_opening_hours.ts";
 import type { ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, PeerGetter } from "./1_chat_p.ts";
 import { constructPhoto, type Photo } from "./1_photo.ts";
+import { constructWorkingHours, type WorkingHours } from "./1_working_hours.ts";
 
 /** @unlisted */
 export interface ChatBase {
@@ -57,10 +57,10 @@ export interface ChatPrivate extends ChatBase, Omit<ChatPPrivate, "photo"> {
   birthday?: Birthday;
   /** The written address of the business. */
   address?: string;
-  /** The exact location of the business. */
+  /** The location of the business. */
   location?: Location;
-  /** The opening hours of the business. */
-  openingHours?: OpeningHours;
+  /** The working hours of the business. */
+  workingHours?: WorkingHours;
 }
 
 /**
@@ -78,7 +78,7 @@ export function constructChat(fullChat: Api.userFull | Api.chatFull | Api.channe
       photo: fullChat.profile_photo && Api.is("photo", fullChat.profile_photo) ? constructPhoto(fullChat.profile_photo) : undefined,
       address: fullChat.business_location?.address,
       location: fullChat.business_location?.geo_point && Api.is("geoPoint", fullChat.business_location.geo_point) ? constructLocation(fullChat.business_location.geo_point) : undefined,
-      openingHours: fullChat.business_work_hours ? constructOpeningHours(fullChat.business_work_hours) : undefined,
+      workingHours: fullChat.business_work_hours ? constructWorkingHours(fullChat.business_work_hours) : undefined,
     });
   } else if (Api.is("chatFull", fullChat)) {
     const peer = getPeer({ _: "peerChat", chat_id: fullChat.id });
