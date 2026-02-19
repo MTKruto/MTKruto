@@ -270,6 +270,20 @@ export abstract class ClientGeneric {
    */
   abstract setWorkingHours(params?: SetWorkingHoursParams): Promise<void>;
 
+  /**
+   * Enable sponsored messages on the current user. User-only.
+   *
+   * @method ac
+   */
+  abstract enableSponsoredMessages(): Promise<void>;
+
+  /**
+   * Disable sponsored messages on the current user. User-only.
+   *
+   * @method ac
+   */
+  abstract disableSponsoredMessages(): Promise<void>;
+
   //
   // ========================= MESSAGES ========================= //
   //

@@ -1485,6 +1485,24 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     await this.#accountManager.setWorkingHours(params);
   }
 
+  /**
+   * Enable sponsored messages on the current user. User-only.
+   *
+   * @method ac
+   */
+  async enableSponsoredMessages(): Promise<void> {
+    await this.#accountManager.enableSponsoredMessages();
+  }
+
+  /**
+   * Disable sponsored messages on the current user. User-only.
+   *
+   * @method ac
+   */
+  async disableSponsoredMessages(): Promise<void> {
+    await this.#accountManager.disableSponsoredMessages();
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //

@@ -361,4 +361,18 @@ export class AccountManager {
       userId: Number(Api.as("auth.authorization", auth).user.id),
     };
   }
+
+  async #setIsSponsoredMessagesEnabled(isEnabled: boolean) {
+    await this.#c.invoke({ _: "account.toggleSponsoredMessages", enabled: isEnabled });
+  }
+
+  async enableSponsoredMessages() {
+    this.#c.storage.assertUser("enableSponsoredMessages");
+    await this.#setIsSponsoredMessagesEnabled(true);
+  }
+
+  async disableSponsoredMessages() {
+    this.#c.storage.assertUser("disableSponsoredMessages");
+    await this.#setIsSponsoredMessagesEnabled(false);
+  }
 }
