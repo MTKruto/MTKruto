@@ -385,7 +385,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const topMsgId = params?.messageThreadId;
     if (!params?.replyTo) {
       if (topMsgId) {
-        return { _: "inputReplyToMessage", reply_to_msg_id: topMsgId } as Api.inputReplyToMessage;
+        return { _: "inputReplyToMessage", reply_to_msg_id: topMsgId, top_msg_id: topMsgId } as Api.inputReplyToMessage;
       } else {
         return undefined;
       }
