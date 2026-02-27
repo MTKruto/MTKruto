@@ -122,13 +122,23 @@ export class Context {
     unreachable();
   }
 
-  #getReplyTo = (quote: boolean | undefined, chatId: number, messageId: number): ReplyTo | undefined => {
+  #getReplyTo = (quote: boolean | undefined, chatId: number, messageId: number): { messageThreadId?: number; replyTo?: ReplyTo } => {
     if ("story" in this.update) {
-      return { chatId: this.update.story.chat.id, storyId: this.update.story.id };
+      return { replyTo: { chatId: this.update.story.chat.id, storyId: this.update.story.id } };
     }
+
+    let messageThreadId = undefined;
+    if ("message" in this.update) {
+      messageThreadId = this.update.message.threadId;
+    } else if ("editedMessage" in this.update) {
+      messageThreadId = this.update.editedMessage.threadId;
+    } else if ("scheduledMessage" in this.update) {
+      messageThreadId = this.update.scheduledMessage.threadId;
+    }
+
     const isPrivate = chatId > 0;
     const shouldQuote = quote === undefined ? !isPrivate : quote;
-    return shouldQuote ? { messageId } : undefined;
+    return { messageThreadId, replyTo: shouldQuote ? { messageId } : undefined };
   };
 
   get chat(): ChatP | undefined {
@@ -159,7 +169,7 @@ export class Context {
   async reply(text: string, params?: Omit<SendMessageParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageText> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendMessage(chatId, text, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendMessage(chatId, text, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -168,7 +178,7 @@ export class Context {
   async replyPoll(question: string, options: string[], params?: Omit<SendPollParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessagePoll> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendPoll(chatId, question, options, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendPoll(chatId, question, options, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -177,7 +187,7 @@ export class Context {
   async replyPhoto(photo: FileSource, params?: Omit<SendPhotoParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessagePhoto> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendPhoto(chatId, photo, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendPhoto(chatId, photo, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -186,7 +196,7 @@ export class Context {
   async replyMediaGroup(media: InputMedia[], params?: Omit<SendMediaGroupParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<Message[]> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendMediaGroup(chatId, media, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendMediaGroup(chatId, media, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -195,7 +205,7 @@ export class Context {
   async replyInvoice(title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: Omit<SendInvoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageInvoice> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendInvoice(chatId, title, description, payload, currency, prices, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendInvoice(chatId, title, description, payload, currency, prices, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -204,7 +214,7 @@ export class Context {
   async replyDocument(document: FileSource, params?: Omit<SendDocumentParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageDocument> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendDocument(chatId, document, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendDocument(chatId, document, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -213,7 +223,7 @@ export class Context {
   async replySticker(sticker: FileSource, params?: Omit<SendStickerParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageSticker> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendSticker(chatId, sticker, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendSticker(chatId, sticker, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -222,7 +232,7 @@ export class Context {
   async replyLocation(latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageLocation> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendLocation(chatId, latitude, longitude, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendLocation(chatId, latitude, longitude, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -231,7 +241,7 @@ export class Context {
   async replyDice(params?: Omit<SendDiceParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageDice> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendDice(chatId, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendDice(chatId, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -240,7 +250,7 @@ export class Context {
   async replyVenue(latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageVenue> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendVenue(chatId, latitude, longitude, title, address, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendVenue(chatId, latitude, longitude, title, address, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -249,7 +259,7 @@ export class Context {
   async replyContact(firstName: string, number: string, params?: Omit<SendContactParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageContact> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendContact(chatId, firstName, number, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendContact(chatId, firstName, number, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -258,7 +268,7 @@ export class Context {
   async replyVideo(video: FileSource, params?: Omit<SendVideoParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageVideo> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendVideo(chatId, video, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendVideo(chatId, video, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -267,7 +277,7 @@ export class Context {
   async replyAnimation(animation: FileSource, params?: Omit<SendAnimationParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageAnimation> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendAnimation(chatId, animation, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendAnimation(chatId, animation, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -276,7 +286,7 @@ export class Context {
   async replyVoice(voice: FileSource, params?: Omit<SendVoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageVoice> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendVoice(chatId, voice, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendVoice(chatId, voice, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -285,7 +295,7 @@ export class Context {
   async replyAudio(audio: FileSource, params?: Omit<SendAudioParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageAudio> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendAudio(chatId, audio, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendAudio(chatId, audio, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
@@ -294,7 +304,7 @@ export class Context {
   async replyVideoNote(videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageVideoNote> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
-    return await this.client.sendVideoNote(chatId, videoNote, { ...params, replyTo, businessConnectionId });
+    return await this.client.sendVideoNote(chatId, videoNote, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
