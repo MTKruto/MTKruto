@@ -871,12 +871,14 @@ export interface chatParticipant {
   user_id: bigint;
   inviter_id: bigint;
   date: number;
+  rank?: string;
 }
 
 /** https://core.telegram.org/constructor/chatParticipantCreator */
 export interface chatParticipantCreator {
   _: "chatParticipantCreator";
   user_id: bigint;
+  rank?: string;
 }
 
 /** https://core.telegram.org/constructor/chatParticipantAdmin */
@@ -885,6 +887,7 @@ export interface chatParticipantAdmin {
   user_id: bigint;
   inviter_id: bigint;
   date: number;
+  rank?: string;
 }
 
 /** https://core.telegram.org/constructor/chatParticipantsForbidden */
@@ -944,6 +947,7 @@ export interface message {
   id: number;
   from_id?: Peer;
   from_boosts_applied?: number;
+  from_rank?: string;
   peer_id: Peer;
   saved_peer_id?: Peer;
   fwd_from?: MessageFwdHeader;
@@ -1665,6 +1669,21 @@ export interface messageActionChangeCreator {
   new_creator_id: bigint;
 }
 
+/** https://core.telegram.org/constructor/messageActionNoForwardsToggle */
+export interface messageActionNoForwardsToggle {
+  _: "messageActionNoForwardsToggle";
+  prev_value: boolean;
+  new_value: boolean;
+}
+
+/** https://core.telegram.org/constructor/messageActionNoForwardsRequest */
+export interface messageActionNoForwardsRequest {
+  _: "messageActionNoForwardsRequest";
+  expired?: true;
+  prev_value: boolean;
+  new_value: boolean;
+}
+
 /** https://core.telegram.org/constructor/dialog */
 export interface dialog {
   _: "dialog";
@@ -2002,6 +2021,8 @@ export interface userFull {
   can_view_revenue?: true;
   bot_can_manage_emoji_status?: true;
   display_gifts_button?: true;
+  noforwards_my_enabled?: true;
+  noforwards_peer_enabled?: true;
   id: bigint;
   about?: string;
   settings: PeerSettings;
@@ -3439,6 +3460,15 @@ export interface updateEmojiGameInfo {
 /** https://core.telegram.org/constructor/updateStarGiftCraftFail */
 export interface updateStarGiftCraftFail {
   _: "updateStarGiftCraftFail";
+}
+
+/** https://core.telegram.org/constructor/updateChatParticipantRank */
+export interface updateChatParticipantRank {
+  _: "updateChatParticipantRank";
+  chat_id: bigint;
+  user_id: bigint;
+  rank: string;
+  version: number;
 }
 
 /** https://core.telegram.org/constructor/updates.state */
@@ -5078,6 +5108,20 @@ export interface messageEntityBlockquote {
   length: number;
 }
 
+/** https://core.telegram.org/constructor/messageEntityFormattedDate */
+export interface messageEntityFormattedDate {
+  _: "messageEntityFormattedDate";
+  relative?: true;
+  short_time?: true;
+  long_time?: true;
+  short_date?: true;
+  long_date?: true;
+  day_of_week?: true;
+  offset: number;
+  length: number;
+  date: number;
+}
+
 /** https://core.telegram.org/constructor/inputChannelEmpty */
 export interface inputChannelEmpty {
   _: "inputChannelEmpty";
@@ -5162,6 +5206,7 @@ export interface channelParticipant {
   user_id: bigint;
   date: number;
   subscription_until_date?: number;
+  rank?: string;
 }
 
 /** https://core.telegram.org/constructor/channelParticipantSelf */
@@ -5172,6 +5217,7 @@ export interface channelParticipantSelf {
   inviter_id: bigint;
   date: number;
   subscription_until_date?: number;
+  rank?: string;
 }
 
 /** https://core.telegram.org/constructor/channelParticipantCreator */
@@ -5203,6 +5249,7 @@ export interface channelParticipantBanned {
   kicked_by: bigint;
   date: number;
   banned_rights: ChatBannedRights;
+  rank?: string;
 }
 
 /** https://core.telegram.org/constructor/channelParticipantLeft */
@@ -7104,6 +7151,14 @@ export interface channelAdminLogEventActionToggleAutotranslation {
   new_value: boolean;
 }
 
+/** https://core.telegram.org/constructor/channelAdminLogEventActionParticipantEditRank */
+export interface channelAdminLogEventActionParticipantEditRank {
+  _: "channelAdminLogEventActionParticipantEditRank";
+  user_id: bigint;
+  prev_rank: string;
+  new_rank: string;
+}
+
 /** https://core.telegram.org/constructor/channelAdminLogEvent */
 export interface channelAdminLogEvent {
   _: "channelAdminLogEvent";
@@ -7143,6 +7198,7 @@ export interface channelAdminLogEventsFilter {
   send?: true;
   forums?: true;
   sub_extend?: true;
+  edit_rank?: true;
 }
 
 /** https://core.telegram.org/constructor/popularContact */
@@ -7903,6 +7959,7 @@ export interface chatAdminRights {
   edit_stories?: true;
   delete_stories?: true;
   manage_direct_messages?: true;
+  manage_ranks?: true;
 }
 
 /** https://core.telegram.org/constructor/chatBannedRights */
@@ -7928,6 +7985,7 @@ export interface chatBannedRights {
   send_voices?: true;
   send_docs?: true;
   send_plain?: true;
+  edit_rank?: true;
   until_date: number;
 }
 
@@ -8087,12 +8145,15 @@ export interface urlAuthResultRequest {
   _: "urlAuthResultRequest";
   request_write_access?: true;
   request_phone_number?: true;
+  match_codes_first?: true;
   bot: User;
   domain: string;
   browser?: string;
   platform?: string;
   ip?: string;
   region?: string;
+  match_codes?: Array<string>;
+  user_id_hint?: bigint;
 }
 
 /** https://core.telegram.org/constructor/urlAuthResultAccepted */
@@ -14726,6 +14787,7 @@ export interface messages_requestUrlAuth {
   msg_id?: number;
   button_id?: number;
   url?: string;
+  in_app_origin?: string;
   [R]?: UrlAuthResult;
 }
 
@@ -14737,6 +14799,7 @@ export interface messages_acceptUrlAuth {
   msg_id?: number;
   button_id?: number;
   url?: string;
+  match_code?: string;
   [R]?: UrlAuthResult;
 }
 
@@ -15033,6 +15096,7 @@ export interface messages_toggleNoForwards {
   _: "messages.toggleNoForwards";
   peer: InputPeer;
   enabled: boolean;
+  request_msg_id?: number;
   [R]?: Updates;
 }
 
@@ -15767,6 +15831,41 @@ export interface messages_summarizeText {
   [R]?: TextWithEntities;
 }
 
+export interface messages_editChatCreator {
+  _: "messages.editChatCreator";
+  peer: InputPeer;
+  user_id: InputUser;
+  password: InputCheckPasswordSRP;
+  [R]?: Updates;
+}
+
+export interface messages_getFutureChatCreatorAfterLeave {
+  _: "messages.getFutureChatCreatorAfterLeave";
+  peer: InputPeer;
+  [R]?: User;
+}
+
+export interface messages_editChatParticipantRank {
+  _: "messages.editChatParticipantRank";
+  peer: InputPeer;
+  participant: InputPeer;
+  rank: string;
+  [R]?: Updates;
+}
+
+export interface messages_declineUrlAuth {
+  _: "messages.declineUrlAuth";
+  url: string;
+  [R]?: boolean;
+}
+
+export interface messages_checkUrlAuthMatchCode {
+  _: "messages.checkUrlAuthMatchCode";
+  url: string;
+  match_code: string;
+  [R]?: boolean;
+}
+
 export interface updates_getState {
   _: "updates.getState";
   [R]?: updates_State;
@@ -16126,7 +16225,7 @@ export interface channels_editAdmin {
   channel: InputChannel;
   user_id: InputUser;
   admin_rights: ChatAdminRights;
-  rank: string;
+  rank?: string;
   [R]?: Updates;
 }
 
@@ -16273,14 +16372,6 @@ export interface channels_setDiscussionGroup {
   broadcast: InputChannel;
   group: InputChannel;
   [R]?: boolean;
-}
-
-export interface channels_editCreator {
-  _: "channels.editCreator";
-  channel: InputChannel;
-  user_id: InputUser;
-  password: InputCheckPasswordSRP;
-  [R]?: Updates;
 }
 
 export interface channels_editLocation {
@@ -16483,12 +16574,6 @@ export interface channels_setMainProfileTab {
   channel: InputChannel;
   tab: ProfileTab;
   [R]?: boolean;
-}
-
-export interface channels_getFutureCreatorAfterLeave {
-  _: "channels.getFutureCreatorAfterLeave";
-  channel: InputChannel;
-  [R]?: User;
 }
 
 export interface bots_sendCustomRequest {
@@ -18324,6 +18409,8 @@ export interface Types {
   "messageActionStarGiftPurchaseOfferDeclined": messageActionStarGiftPurchaseOfferDeclined;
   "messageActionNewCreatorPending": messageActionNewCreatorPending;
   "messageActionChangeCreator": messageActionChangeCreator;
+  "messageActionNoForwardsToggle": messageActionNoForwardsToggle;
+  "messageActionNoForwardsRequest": messageActionNoForwardsRequest;
   "dialog": dialog;
   "dialogFolder": dialogFolder;
   "photoEmpty": photoEmpty;
@@ -18551,6 +18638,7 @@ export interface Types {
   "updateStarGiftAuctionUserState": updateStarGiftAuctionUserState;
   "updateEmojiGameInfo": updateEmojiGameInfo;
   "updateStarGiftCraftFail": updateStarGiftCraftFail;
+  "updateChatParticipantRank": updateChatParticipantRank;
   "updates.state": updates_state;
   "updates.differenceEmpty": updates_differenceEmpty;
   "updates.difference": updates_difference;
@@ -18767,6 +18855,7 @@ export interface Types {
   "messageEntitySpoiler": messageEntitySpoiler;
   "messageEntityCustomEmoji": messageEntityCustomEmoji;
   "messageEntityBlockquote": messageEntityBlockquote;
+  "messageEntityFormattedDate": messageEntityFormattedDate;
   "inputChannelEmpty": inputChannelEmpty;
   "inputChannel": inputChannel;
   "inputChannelFromMessage": inputChannelFromMessage;
@@ -19029,6 +19118,7 @@ export interface Types {
   "channelAdminLogEventActionToggleSignatureProfiles": channelAdminLogEventActionToggleSignatureProfiles;
   "channelAdminLogEventActionParticipantSubExtend": channelAdminLogEventActionParticipantSubExtend;
   "channelAdminLogEventActionToggleAutotranslation": channelAdminLogEventActionToggleAutotranslation;
+  "channelAdminLogEventActionParticipantEditRank": channelAdminLogEventActionParticipantEditRank;
   "channelAdminLogEvent": channelAdminLogEvent;
   "channels.adminLogResults": channels_adminLogResults;
   "channelAdminLogEventsFilter": channelAdminLogEventsFilter;
@@ -20127,6 +20217,11 @@ export interface Functions<T = Function> {
   "messages.deleteTopicHistory": messages_deleteTopicHistory;
   "messages.getEmojiGameInfo": messages_getEmojiGameInfo;
   "messages.summarizeText": messages_summarizeText;
+  "messages.editChatCreator": messages_editChatCreator;
+  "messages.getFutureChatCreatorAfterLeave": messages_getFutureChatCreatorAfterLeave;
+  "messages.editChatParticipantRank": messages_editChatParticipantRank;
+  "messages.declineUrlAuth": messages_declineUrlAuth;
+  "messages.checkUrlAuthMatchCode": messages_checkUrlAuthMatchCode;
   "updates.getState": updates_getState;
   "updates.getDifference": updates_getDifference;
   "updates.getChannelDifference": updates_getChannelDifference;
@@ -20198,7 +20293,6 @@ export interface Functions<T = Function> {
   "channels.getLeftChannels": channels_getLeftChannels;
   "channels.getGroupsForDiscussion": channels_getGroupsForDiscussion;
   "channels.setDiscussionGroup": channels_setDiscussionGroup;
-  "channels.editCreator": channels_editCreator;
   "channels.editLocation": channels_editLocation;
   "channels.toggleSlowMode": channels_toggleSlowMode;
   "channels.getInactiveChannels": channels_getInactiveChannels;
@@ -20227,7 +20321,6 @@ export interface Functions<T = Function> {
   "channels.getMessageAuthor": channels_getMessageAuthor;
   "channels.checkSearchPostsFlood": channels_checkSearchPostsFlood;
   "channels.setMainProfileTab": channels_setMainProfileTab;
-  "channels.getFutureCreatorAfterLeave": channels_getFutureCreatorAfterLeave;
   "bots.sendCustomRequest": bots_sendCustomRequest;
   "bots.answerWebhookJSONQuery": bots_answerWebhookJSONQuery;
   "bots.setBotCommands": bots_setBotCommands;
@@ -21097,7 +21190,7 @@ export type Message = messageEmpty | message | messageService;
 
 export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia | messageMediaToDo | messageMediaVideoStream;
 
-export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday | messageActionStarGiftPurchaseOffer | messageActionStarGiftPurchaseOfferDeclined | messageActionNewCreatorPending | messageActionChangeCreator;
+export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday | messageActionStarGiftPurchaseOffer | messageActionStarGiftPurchaseOfferDeclined | messageActionNewCreatorPending | messageActionChangeCreator | messageActionNoForwardsToggle | messageActionNoForwardsRequest;
 
 export type Dialog = dialog | dialogFolder;
 
@@ -21303,7 +21396,8 @@ export type Update =
   | updateStarGiftAuctionState
   | updateStarGiftAuctionUserState
   | updateEmojiGameInfo
-  | updateStarGiftCraftFail;
+  | updateStarGiftCraftFail
+  | updateChatParticipantRank;
 
 export type updates_State = updates_state;
 
@@ -21411,7 +21505,7 @@ export type KeyboardButtonRow = keyboardButtonRow;
 
 export type ReplyMarkup = replyKeyboardHide | replyKeyboardForceReply | replyKeyboardMarkup | replyInlineMarkup;
 
-export type MessageEntity = messageEntityUnknown | messageEntityMention | messageEntityHashtag | messageEntityBotCommand | messageEntityUrl | messageEntityEmail | messageEntityBold | messageEntityItalic | messageEntityCode | messageEntityPre | messageEntityTextUrl | messageEntityMentionName | inputMessageEntityMentionName | messageEntityPhone | messageEntityCashtag | messageEntityUnderline | messageEntityStrike | messageEntityBankCard | messageEntitySpoiler | messageEntityCustomEmoji | messageEntityBlockquote;
+export type MessageEntity = messageEntityUnknown | messageEntityMention | messageEntityHashtag | messageEntityBotCommand | messageEntityUrl | messageEntityEmail | messageEntityBold | messageEntityItalic | messageEntityCode | messageEntityPre | messageEntityTextUrl | messageEntityMentionName | inputMessageEntityMentionName | messageEntityPhone | messageEntityCashtag | messageEntityUnderline | messageEntityStrike | messageEntityBankCard | messageEntitySpoiler | messageEntityCustomEmoji | messageEntityBlockquote | messageEntityFormattedDate;
 
 export type InputChannel = inputChannelEmpty | inputChannel | inputChannelFromMessage;
 
@@ -21614,7 +21708,8 @@ export type ChannelAdminLogEventAction =
   | channelAdminLogEventActionChangeEmojiStickerSet
   | channelAdminLogEventActionToggleSignatureProfiles
   | channelAdminLogEventActionParticipantSubExtend
-  | channelAdminLogEventActionToggleAutotranslation;
+  | channelAdminLogEventActionToggleAutotranslation
+  | channelAdminLogEventActionParticipantEditRank;
 
 export type ChannelAdminLogEvent = channelAdminLogEvent;
 
@@ -23358,27 +23453,33 @@ export const schema = Object.freeze({
       "ChatFull",
     ],
     chatParticipant: [
-      0xC02D4007,
+      0x38E79FDE,
       [
+        ["flags", "#"],
         ["user_id", "long"],
         ["inviter_id", "long"],
         ["date", "int"],
+        ["rank", "flags.0?string"],
       ],
       "ChatParticipant",
     ],
     chatParticipantCreator: [
-      0xE46BCEE4,
+      0xE1F867B8,
       [
+        ["flags", "#"],
         ["user_id", "long"],
+        ["rank", "flags.0?string"],
       ],
       "ChatParticipant",
     ],
     chatParticipantAdmin: [
-      0xA0933F5B,
+      0x0360D5D2,
       [
+        ["flags", "#"],
         ["user_id", "long"],
         ["inviter_id", "long"],
         ["date", "int"],
+        ["rank", "flags.0?string"],
       ],
       "ChatParticipant",
     ],
@@ -23426,7 +23527,7 @@ export const schema = Object.freeze({
       "Message",
     ],
     message: [
-      0x9CB490E9,
+      0x3AE56482,
       [
         ["flags", "#"],
         ["out", "flags.1?true"],
@@ -23448,6 +23549,7 @@ export const schema = Object.freeze({
         ["id", "int"],
         ["from_id", "flags.8?Peer"],
         ["from_boosts_applied", "flags.29?int"],
+        ["from_rank", "flags2.12?string"],
         ["peer_id", "Peer"],
         ["saved_peer_id", "flags.28?Peer"],
         ["fwd_from", "flags.2?MessageFwdHeader"],
@@ -24280,6 +24382,24 @@ export const schema = Object.freeze({
       ],
       "MessageAction",
     ],
+    messageActionNoForwardsToggle: [
+      0xBF7D6572,
+      [
+        ["prev_value", "Bool"],
+        ["new_value", "Bool"],
+      ],
+      "MessageAction",
+    ],
+    messageActionNoForwardsRequest: [
+      0x3E2793BA,
+      [
+        ["flags", "#"],
+        ["expired", "flags.0?true"],
+        ["prev_value", "Bool"],
+        ["new_value", "Bool"],
+      ],
+      "MessageAction",
+    ],
     dialog: [
       0xD58A08C6,
       [
@@ -24655,6 +24775,8 @@ export const schema = Object.freeze({
         ["can_view_revenue", "flags2.9?true"],
         ["bot_can_manage_emoji_status", "flags2.10?true"],
         ["display_gifts_button", "flags2.16?true"],
+        ["noforwards_my_enabled", "flags2.23?true"],
+        ["noforwards_peer_enabled", "flags2.24?true"],
         ["id", "long"],
         ["about", "flags.1?string"],
         ["settings", "PeerSettings"],
@@ -26294,6 +26416,16 @@ export const schema = Object.freeze({
     updateStarGiftCraftFail: [
       0xAC072444,
       [],
+      "Update",
+    ],
+    updateChatParticipantRank: [
+      0xBD8367B9,
+      [
+        ["chat_id", "long"],
+        ["user_id", "long"],
+        ["rank", "string"],
+        ["version", "int"],
+      ],
       "Update",
     ],
     "updates.state": [
@@ -28119,6 +28251,22 @@ export const schema = Object.freeze({
       ],
       "MessageEntity",
     ],
+    messageEntityFormattedDate: [
+      0x904AC7C7,
+      [
+        ["flags", "#"],
+        ["relative", "flags.0?true"],
+        ["short_time", "flags.1?true"],
+        ["long_time", "flags.2?true"],
+        ["short_date", "flags.3?true"],
+        ["long_date", "flags.4?true"],
+        ["day_of_week", "flags.5?true"],
+        ["offset", "int"],
+        ["length", "int"],
+        ["date", "int"],
+      ],
+      "MessageEntity",
+    ],
     inputChannelEmpty: [
       0xEE8C1E86,
       [],
@@ -28210,17 +28358,18 @@ export const schema = Object.freeze({
       "ChannelMessagesFilter",
     ],
     channelParticipant: [
-      0xCB397619,
+      0x1BD54456,
       [
         ["flags", "#"],
         ["user_id", "long"],
         ["date", "int"],
         ["subscription_until_date", "flags.0?int"],
+        ["rank", "flags.2?string"],
       ],
       "ChannelParticipant",
     ],
     channelParticipantSelf: [
-      0x4F607BEF,
+      0xA9478A1A,
       [
         ["flags", "#"],
         ["via_request", "flags.0?true"],
@@ -28228,6 +28377,7 @@ export const schema = Object.freeze({
         ["inviter_id", "long"],
         ["date", "int"],
         ["subscription_until_date", "flags.1?int"],
+        ["rank", "flags.2?string"],
       ],
       "ChannelParticipant",
     ],
@@ -28257,7 +28407,7 @@ export const schema = Object.freeze({
       "ChannelParticipant",
     ],
     channelParticipantBanned: [
-      0x6DF8014E,
+      0xD5F0AD91,
       [
         ["flags", "#"],
         ["left", "flags.0?true"],
@@ -28265,6 +28415,7 @@ export const schema = Object.freeze({
         ["kicked_by", "long"],
         ["date", "int"],
         ["banned_rights", "ChatBannedRights"],
+        ["rank", "flags.2?string"],
       ],
       "ChannelParticipant",
     ],
@@ -30444,6 +30595,15 @@ export const schema = Object.freeze({
       ],
       "ChannelAdminLogEventAction",
     ],
+    channelAdminLogEventActionParticipantEditRank: [
+      0x5806B4EC,
+      [
+        ["user_id", "long"],
+        ["prev_rank", "string"],
+        ["new_rank", "string"],
+      ],
+      "ChannelAdminLogEventAction",
+    ],
     channelAdminLogEvent: [
       0x1FAD68CD,
       [
@@ -30486,6 +30646,7 @@ export const schema = Object.freeze({
         ["send", "flags.16?true"],
         ["forums", "flags.17?true"],
         ["sub_extend", "flags.18?true"],
+        ["edit_rank", "flags.19?true"],
       ],
       "ChannelAdminLogEventsFilter",
     ],
@@ -31339,6 +31500,7 @@ export const schema = Object.freeze({
         ["edit_stories", "flags.15?true"],
         ["delete_stories", "flags.16?true"],
         ["manage_direct_messages", "flags.17?true"],
+        ["manage_ranks", "flags.18?true"],
       ],
       "ChatAdminRights",
     ],
@@ -31366,6 +31528,7 @@ export const schema = Object.freeze({
         ["send_voices", "flags.23?true"],
         ["send_docs", "flags.24?true"],
         ["send_plain", "flags.25?true"],
+        ["edit_rank", "flags.26?true"],
         ["until_date", "int"],
       ],
       "ChatBannedRights",
@@ -31544,17 +31707,20 @@ export const schema = Object.freeze({
       "messages.SearchCounter",
     ],
     urlAuthResultRequest: [
-      0x32FABF1A,
+      0xF8F8EB1E,
       [
         ["flags", "#"],
         ["request_write_access", "flags.0?true"],
         ["request_phone_number", "flags.1?true"],
+        ["match_codes_first", "flags.5?true"],
         ["bot", "User"],
         ["domain", "string"],
         ["browser", "flags.2?string"],
         ["platform", "flags.2?string"],
         ["ip", "flags.2?string"],
         ["region", "flags.2?string"],
+        ["match_codes", "flags.3?Vector<string>"],
+        ["user_id_hint", "flags.4?long"],
       ],
       "UrlAuthResult",
     ],
@@ -39154,18 +39320,19 @@ export const schema = Object.freeze({
       "Vector<messages.SearchCounter>",
     ],
     "messages.requestUrlAuth": [
-      0x198FB446,
+      0x894CC99C,
       [
         ["flags", "#"],
         ["peer", "flags.1?InputPeer"],
         ["msg_id", "flags.1?int"],
         ["button_id", "flags.1?int"],
         ["url", "flags.2?string"],
+        ["in_app_origin", "flags.3?string"],
       ],
       "UrlAuthResult",
     ],
     "messages.acceptUrlAuth": [
-      0xB12C7125,
+      0x67A3F0DE,
       [
         ["flags", "#"],
         ["write_allowed", "flags.0?true"],
@@ -39174,6 +39341,7 @@ export const schema = Object.freeze({
         ["msg_id", "flags.1?int"],
         ["button_id", "flags.1?int"],
         ["url", "flags.2?string"],
+        ["match_code", "flags.4?string"],
       ],
       "UrlAuthResult",
     ],
@@ -39514,10 +39682,12 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "messages.toggleNoForwards": [
-      0xB11EAFA2,
+      0xB2081A35,
       [
+        ["flags", "#"],
         ["peer", "InputPeer"],
         ["enabled", "Bool"],
+        ["request_msg_id", "flags.0?int"],
       ],
       "Updates",
     ],
@@ -40375,6 +40545,46 @@ export const schema = Object.freeze({
       ],
       "TextWithEntities",
     ],
+    "messages.editChatCreator": [
+      0xF743B857,
+      [
+        ["peer", "InputPeer"],
+        ["user_id", "InputUser"],
+        ["password", "InputCheckPasswordSRP"],
+      ],
+      "Updates",
+    ],
+    "messages.getFutureChatCreatorAfterLeave": [
+      0x3B7D0EA6,
+      [
+        ["peer", "InputPeer"],
+      ],
+      "User",
+    ],
+    "messages.editChatParticipantRank": [
+      0xA00F32B0,
+      [
+        ["peer", "InputPeer"],
+        ["participant", "InputPeer"],
+        ["rank", "string"],
+      ],
+      "Updates",
+    ],
+    "messages.declineUrlAuth": [
+      0x35436BBC,
+      [
+        ["url", "string"],
+      ],
+      "Bool",
+    ],
+    "messages.checkUrlAuthMatchCode": [
+      0xC9A47B0B,
+      [
+        ["url", "string"],
+        ["match_code", "string"],
+      ],
+      "Bool",
+    ],
     "updates.getState": [
       0xEDD4882A,
       [],
@@ -40777,12 +40987,13 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "channels.editAdmin": [
-      0xD33C8902,
+      0x9A98AD68,
       [
+        ["flags", "#"],
         ["channel", "InputChannel"],
         ["user_id", "InputUser"],
         ["admin_rights", "ChatAdminRights"],
-        ["rank", "string"],
+        ["rank", "flags.0?string"],
       ],
       "Updates",
     ],
@@ -40954,15 +41165,6 @@ export const schema = Object.freeze({
         ["group", "InputChannel"],
       ],
       "Bool",
-    ],
-    "channels.editCreator": [
-      0x8F38CD1F,
-      [
-        ["channel", "InputChannel"],
-        ["user_id", "InputUser"],
-        ["password", "InputCheckPasswordSRP"],
-      ],
-      "Updates",
     ],
     "channels.editLocation": [
       0x58E63F6D,
@@ -41198,13 +41400,6 @@ export const schema = Object.freeze({
         ["tab", "ProfileTab"],
       ],
       "Bool",
-    ],
-    "channels.getFutureCreatorAfterLeave": [
-      0xA00918AF,
-      [
-        ["channel", "InputChannel"],
-      ],
-      "User",
     ],
     "bots.sendCustomRequest": [
       0xAA2769ED,
@@ -43224,15 +43419,15 @@ export const schema = Object.freeze({
     [0x17D493D5]: "channelForbidden",
     [0x2633421B]: "chatFull",
     [0xE4E0B29D]: "channelFull",
-    [0xC02D4007]: "chatParticipant",
-    [0xE46BCEE4]: "chatParticipantCreator",
-    [0xA0933F5B]: "chatParticipantAdmin",
+    [0x38E79FDE]: "chatParticipant",
+    [0xE1F867B8]: "chatParticipantCreator",
+    [0x0360D5D2]: "chatParticipantAdmin",
     [0x8763D3E1]: "chatParticipantsForbidden",
     [0x3CBC93F8]: "chatParticipants",
     [0x37C1011C]: "chatPhotoEmpty",
     [0x1C6E1C11]: "chatPhoto",
     [0x90A6CA84]: "messageEmpty",
-    [0x9CB490E9]: "message",
+    [0x3AE56482]: "message",
     [0x7A800E0A]: "messageService",
     [0x3DED6320]: "messageMediaEmpty",
     [0x695150D7]: "messageMediaPhoto",
@@ -43315,6 +43510,8 @@ export const schema = Object.freeze({
     [0x73ADA76B]: "messageActionStarGiftPurchaseOfferDeclined",
     [0xB07ED085]: "messageActionNewCreatorPending",
     [0xE188503B]: "messageActionChangeCreator",
+    [0xBF7D6572]: "messageActionNoForwardsToggle",
+    [0x3E2793BA]: "messageActionNoForwardsRequest",
     [0xD58A08C6]: "dialog",
     [0x71BD134C]: "dialogFolder",
     [0x2331B22D]: "photoEmpty",
@@ -43542,6 +43739,7 @@ export const schema = Object.freeze({
     [0xDC58F31E]: "updateStarGiftAuctionUserState",
     [0xFB9C547A]: "updateEmojiGameInfo",
     [0xAC072444]: "updateStarGiftCraftFail",
+    [0xBD8367B9]: "updateChatParticipantRank",
     [0xA56C2A3E]: "updates.state",
     [0x5D75A138]: "updates.differenceEmpty",
     [0x00F49CA0]: "updates.difference",
@@ -43758,6 +43956,7 @@ export const schema = Object.freeze({
     [0x32CA960F]: "messageEntitySpoiler",
     [0xC8CF05F8]: "messageEntityCustomEmoji",
     [0xF1CCAAAC]: "messageEntityBlockquote",
+    [0x904AC7C7]: "messageEntityFormattedDate",
     [0xEE8C1E86]: "inputChannelEmpty",
     [0xF35AEC28]: "inputChannel",
     [0x5B934F9D]: "inputChannelFromMessage",
@@ -43768,11 +43967,11 @@ export const schema = Object.freeze({
     [0x2064674E]: "updates.channelDifference",
     [0x94D42EE7]: "channelMessagesFilterEmpty",
     [0xCD77D957]: "channelMessagesFilter",
-    [0xCB397619]: "channelParticipant",
-    [0x4F607BEF]: "channelParticipantSelf",
+    [0x1BD54456]: "channelParticipant",
+    [0xA9478A1A]: "channelParticipantSelf",
     [0x2FE601D3]: "channelParticipantCreator",
     [0x34C3BB53]: "channelParticipantAdmin",
-    [0x6DF8014E]: "channelParticipantBanned",
+    [0xD5F0AD91]: "channelParticipantBanned",
     [0x1B03F006]: "channelParticipantLeft",
     [0xDE3F3C79]: "channelParticipantsRecent",
     [0xB4608969]: "channelParticipantsAdmins",
@@ -44020,6 +44219,7 @@ export const schema = Object.freeze({
     [0x60A79C79]: "channelAdminLogEventActionToggleSignatureProfiles",
     [0x64642DB3]: "channelAdminLogEventActionParticipantSubExtend",
     [0xC517F77E]: "channelAdminLogEventActionToggleAutotranslation",
+    [0x5806B4EC]: "channelAdminLogEventActionParticipantEditRank",
     [0x1FAD68CD]: "channelAdminLogEvent",
     [0xED8AF74D]: "channels.adminLogResults",
     [0xEA107AE4]: "channelAdminLogEventsFilter",
@@ -44146,7 +44346,7 @@ export const schema = Object.freeze({
     [0xFBD2C296]: "inputFolderPeer",
     [0xE9BAA668]: "folderPeer",
     [0xE844EBFF]: "messages.searchCounter",
-    [0x32FABF1A]: "urlAuthResultRequest",
+    [0xF8F8EB1E]: "urlAuthResultRequest",
     [0x623A8FA0]: "urlAuthResultAccepted",
     [0xA9D6DB1F]: "urlAuthResultDefault",
     [0xBFB5AD8B]: "channelLocationEmpty",
@@ -44680,4 +44880,4 @@ export const schema = Object.freeze({
   },
 }) as unknown as Schema;
 
-export const LAYER = 222;
+export const LAYER = 223;

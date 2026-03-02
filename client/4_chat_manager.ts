@@ -435,10 +435,10 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     if (isSelf || Api.peerToChatId(user_id) === await this.#c.getSelfId()) {
       throw new InputError("A user ID except that of the current one was expected.");
     }
-    const channel = await this.#c.getInputChannel(chatId);
+    const peer = await this.#c.getInputPeer(chatId);
     const ap = await this.#c.invoke({ _: "account.getPassword" });
     const password_ = await checkPassword(password, ap);
-    await this.#c.invoke({ _: "channels.editCreator", channel, user_id, password: password_ });
+    await this.#c.invoke({ _: "messages.editChatCreator", peer, user_id, password: password_ });
   }
 
   async promoteChatMember(chatId: ID, userId: ID, params?: PromoteChatMemberParams) {
