@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { type Api, toJSON } from "../2_tl.ts";
 import type { BusinessConnection, CallbackQuery, ChatAction, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChosenInlineResult, FileSource, ID, InlineQuery, InlineQueryResult, InputMedia, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, PriceTag, Reaction, ReplyTo, Update, User } from "../3_types.ts";
-import type { AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetChatMembersParams, GetCreatedInviteLinksParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
+import type { AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetChatMembersParams, GetCreatedInviteLinksParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 
 /**
@@ -166,16 +166,25 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendMessage}.
    */
-  async reply(text: string, params?: Omit<SendMessageParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageText> {
+  async reply(text: string, params?: Omit<SendMessageParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageText> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendMessage(chatId, text, { ...params, ...replyTo, businessConnectionId });
   }
 
   /**
+   * Context-aware alias for {@link Client.sendMessageDraft}.
+   */
+  async replyDraft(draftId: number, text: string, params?: Omit<SendMessageDraftParams, "messageThreadId"> & ReplyParams): Promise<void> {
+    const { chatId, messageId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
+    return await this.client.sendMessageDraft(chatId, draftId, text, { ...params, ...replyTo });
+  }
+
+  /**
    * Context-aware alias for {@link Client.sendPoll}.
    */
-  async replyPoll(question: string, options: string[], params?: Omit<SendPollParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessagePoll> {
+  async replyPoll(question: string, options: string[], params?: Omit<SendPollParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessagePoll> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendPoll(chatId, question, options, { ...params, ...replyTo, businessConnectionId });
@@ -184,7 +193,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendPhoto}.
    */
-  async replyPhoto(photo: FileSource, params?: Omit<SendPhotoParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessagePhoto> {
+  async replyPhoto(photo: FileSource, params?: Omit<SendPhotoParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessagePhoto> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendPhoto(chatId, photo, { ...params, ...replyTo, businessConnectionId });
@@ -193,7 +202,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendMediaGroup}.
    */
-  async replyMediaGroup(media: InputMedia[], params?: Omit<SendMediaGroupParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<Message[]> {
+  async replyMediaGroup(media: InputMedia[], params?: Omit<SendMediaGroupParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<Message[]> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendMediaGroup(chatId, media, { ...params, ...replyTo, businessConnectionId });
@@ -202,7 +211,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendInvoice}.
    */
-  async replyInvoice(title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: Omit<SendInvoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageInvoice> {
+  async replyInvoice(title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: Omit<SendInvoiceParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageInvoice> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendInvoice(chatId, title, description, payload, currency, prices, { ...params, ...replyTo, businessConnectionId });
@@ -211,7 +220,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendDocument}.
    */
-  async replyDocument(document: FileSource, params?: Omit<SendDocumentParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageDocument> {
+  async replyDocument(document: FileSource, params?: Omit<SendDocumentParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageDocument> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendDocument(chatId, document, { ...params, ...replyTo, businessConnectionId });
@@ -220,7 +229,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendSticker}.
    */
-  async replySticker(sticker: FileSource, params?: Omit<SendStickerParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageSticker> {
+  async replySticker(sticker: FileSource, params?: Omit<SendStickerParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageSticker> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendSticker(chatId, sticker, { ...params, ...replyTo, businessConnectionId });
@@ -229,7 +238,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendLocation}.
    */
-  async replyLocation(latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageLocation> {
+  async replyLocation(latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageLocation> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendLocation(chatId, latitude, longitude, { ...params, ...replyTo, businessConnectionId });
@@ -238,7 +247,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendDice}.
    */
-  async replyDice(params?: Omit<SendDiceParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageDice> {
+  async replyDice(params?: Omit<SendDiceParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageDice> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendDice(chatId, { ...params, ...replyTo, businessConnectionId });
@@ -247,7 +256,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendVenue}.
    */
-  async replyVenue(latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageVenue> {
+  async replyVenue(latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageVenue> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendVenue(chatId, latitude, longitude, title, address, { ...params, ...replyTo, businessConnectionId });
@@ -256,7 +265,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendContact}.
    */
-  async replyContact(firstName: string, number: string, params?: Omit<SendContactParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageContact> {
+  async replyContact(firstName: string, number: string, params?: Omit<SendContactParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageContact> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendContact(chatId, firstName, number, { ...params, ...replyTo, businessConnectionId });
@@ -265,7 +274,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendVideo}.
    */
-  async replyVideo(video: FileSource, params?: Omit<SendVideoParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageVideo> {
+  async replyVideo(video: FileSource, params?: Omit<SendVideoParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageVideo> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendVideo(chatId, video, { ...params, ...replyTo, businessConnectionId });
@@ -274,7 +283,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendAnimation}.
    */
-  async replyAnimation(animation: FileSource, params?: Omit<SendAnimationParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageAnimation> {
+  async replyAnimation(animation: FileSource, params?: Omit<SendAnimationParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageAnimation> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendAnimation(chatId, animation, { ...params, ...replyTo, businessConnectionId });
@@ -283,7 +292,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendVoice}.
    */
-  async replyVoice(voice: FileSource, params?: Omit<SendVoiceParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageVoice> {
+  async replyVoice(voice: FileSource, params?: Omit<SendVoiceParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageVoice> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendVoice(chatId, voice, { ...params, ...replyTo, businessConnectionId });
@@ -292,7 +301,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendAudio}.
    */
-  async replyAudio(audio: FileSource, params?: Omit<SendAudioParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageAudio> {
+  async replyAudio(audio: FileSource, params?: Omit<SendAudioParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageAudio> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendAudio(chatId, audio, { ...params, ...replyTo, businessConnectionId });
@@ -301,7 +310,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendVideoNote}.
    */
-  async replyVideoNote(videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyTo" | "businessConnectionId"> & ReplyParams): Promise<MessageVideoNote> {
+  async replyVideoNote(videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageVideoNote> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.quote, chatId, messageId);
     return await this.client.sendVideoNote(chatId, videoNote, { ...params, ...replyTo, businessConnectionId });
