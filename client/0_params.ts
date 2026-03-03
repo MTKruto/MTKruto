@@ -815,6 +815,8 @@ export interface PromoteChatMemberParams {
   canDeleteStories?: boolean;
   /** Whether the administrator manage direct messages. */
   canManageDirectMessages?: boolean;
+  /** Whether the administrator manage member tags. */
+  canManageTags?: boolean;
   /** The custom title of the administrator. */
   title?: string;
 }
