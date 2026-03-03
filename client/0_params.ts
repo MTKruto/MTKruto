@@ -828,5 +828,10 @@ export interface OpenChatParams {
 
 export interface CheckUsernameParams {
   /** The identifier of a supergroup or a channel. If specified, the username check will be made against it. */
-  chatId: ID;
+  chatId?: ID;
+}
+
+export interface SetChatMemberTagParams {
+  /** The member's new tag. If not set, the member tag will be removed. */
+  tag?: string;
 }
