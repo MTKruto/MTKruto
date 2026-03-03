@@ -43,7 +43,8 @@ export type MessageEntityType =
   | "blockquote"
   | "bankCard"
   | "spoiler"
-  | "customEmoji";
+  | "customEmoji"
+  | "dateTime";
 
 /** @unlisted */
 export interface _MessageEntityBase {
@@ -175,6 +176,16 @@ export interface MessageEntityCustomEmoji extends _MessageEntityBase {
   customEmojiId: string;
 }
 
+/** @unlisted */
+export interface MessageEntityDateTime extends _MessageEntityBase {
+  /** @discriminator */
+  type: "dateTime";
+  /** The format of the date time. */
+  format?: string;
+  /** A point in time. */
+  dateTime: number;
+}
+
 /** A single entity of a message's text or caption. */
 export type MessageEntity =
   | MessageEntityMention
@@ -195,7 +206,8 @@ export type MessageEntity =
   | MessageEntityBlockquote
   | MessageEntityBankCard
   | MessageEntitySpoiler
-  | MessageEntityCustomEmoji;
+  | MessageEntityCustomEmoji
+  | MessageEntityDateTime;
 
 export function constructMessageEntity(obj: Api.MessageEntity): MessageEntity | null {
   if (Api.is("messageEntityMention", obj)) {
@@ -236,6 +248,33 @@ export function constructMessageEntity(obj: Api.MessageEntity): MessageEntity | 
     return { type: "spoiler", offset: obj.offset, length: obj.length };
   } else if (Api.is("messageEntityCustomEmoji", obj)) {
     return { type: "customEmoji", offset: obj.offset, length: obj.length, customEmojiId: String(obj.document_id) };
+  } else if (Api.is("messageEntityFormattedDate", obj)) {
+    let format = "";
+    if (obj.relative) {
+      format += "r";
+    }
+    if (obj.day_of_week) {
+      format += "w";
+    }
+    if (obj.short_date) {
+      format += "d";
+    } else if (obj.long_date) {
+      format += "D";
+    }
+    if (obj.short_time) {
+      format += "t";
+    } else if (obj.long_time) {
+      format += "T";
+    }
+    return cleanObject(
+      {
+        type: "dateTime",
+        offset: obj.offset,
+        length: obj.length,
+        format: format || undefined,
+        dateTime: obj.date,
+      } as const,
+    );
   } else {
     return null;
   }
@@ -303,6 +342,36 @@ export function messageEntityToTlObject(entity: MessageEntity, getPeer: PeerGett
       return { _: "messageEntitySpoiler", offset, length };
     case "customEmoji":
       return { _: "messageEntityCustomEmoji", offset, length, document_id: BigInt(entity.customEmojiId) };
+    case "dateTime": {
+      const entity_: Api.messageEntityFormattedDate = { _: "messageEntityFormattedDate", offset, length, date: entity.dateTime };
+      if (entity.format) {
+        if (entity.format === "r" || entity.format === "R") {
+          entity_.relative = true;
+        } else {
+          for (const character of entity.format) {
+            switch (character) {
+              case "t":
+                entity_.short_time = true;
+                break;
+              case "T":
+                entity_.long_time = true;
+                break;
+              case "d":
+                entity_.short_date = true;
+                break;
+              case "D":
+                entity_.long_date = true;
+                break;
+              case "w":
+              case "W":
+                entity_.day_of_week = true;
+                break;
+            }
+          }
+        }
+      }
+      return entity_;
+    }
   }
 }
 
@@ -326,6 +395,7 @@ const priorities: Record<MessageEntityType, number> = {
   "bankCard": 50,
   "spoiler": 94,
   "customEmoji": 99,
+  "dateTime": 30,
 };
 export function sortMessageEntities(entities: MessageEntity[]): MessageEntity[] {
   return entities.sort(({ offset, type, length }, other) => {

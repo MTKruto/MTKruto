@@ -19,7 +19,7 @@
  */
 
 import { InputError } from "../0_errors.ts";
-import type { MessageEntity, MessageEntityBlockquote } from "../3_types.ts";
+import { type MessageEntity, type MessageEntityBlockquote, sortMessageEntities } from "../3_types.ts";
 
 const TAG_NAMES: string[] = [
   "a",
@@ -70,6 +70,8 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
     userId?: number;
     collapsible?: true;
     customEmojiId?: string;
+    time?: number;
+    timeFormat?: string;
   }
 
   let entities = new Array<MessageEntity>();
@@ -126,7 +128,23 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
       }
       const offset = openTag.openedAt;
       const length = text.length - openTag.openedAt;
-      if (tagName === "a") {
+      if (openTag.time !== undefined) {
+        entities.push({
+          type: "dateTime",
+          offset,
+          length,
+          dateTime: openTag.time,
+          format: openTag.timeFormat,
+        });
+      } else if (openTag.userId !== undefined) {
+        entities.push({
+          type: "textMention",
+          offset,
+          length,
+          userId: openTag.userId,
+        });
+        entityTags.push(openTag);
+      } else if (tagName === "a") {
         let url = openTag.url;
         if (!url) {
           const text_ = text.slice(offset, offset + length);
@@ -182,14 +200,6 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
           });
           entityTags.push(openTag);
         }
-      } else if (openTag.userId !== undefined) {
-        entities.push({
-          type: "textMention",
-          offset,
-          length,
-          userId: openTag.userId,
-        });
-        entityTags.push(openTag);
       } else if (tagName === "blockquote") {
         const entity: MessageEntityBlockquote = {
           type: "blockquote",
@@ -227,6 +237,8 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
       let language: string | undefined;
       let userId: number | undefined;
       let collapsible: true | undefined;
+      let time: number | undefined;
+      let timeFormat: string | undefined;
       let customEmojiId: string | undefined;
       if (tagName === "a") {
         url = attributes?.href;
@@ -254,6 +266,15 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
               throw new InputError(`Invalid ID specified for mention at offset ${i}.`);
             }
           }
+          if (url_.protocol === "tg:" && url_.hostname === "time") {
+            time = Number(url_.searchParams.get("unix"));
+            if (!isNaN(time) && time > 0) {
+              timeFormat = url_.searchParams.get("format") ?? undefined;
+              url = undefined;
+            } else {
+              throw new InputError(`Invalid time specified at offset ${i}.`);
+            }
+          }
         }
       } else if (tagName === "code") {
         language = attributes?.class?.replace("language-", "");
@@ -271,13 +292,13 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
           throw new InputError(`Invalid emoji-id specified for tag tg-emoji at offset ${i}.`);
         }
       }
-      tagStack.push({ tagName, openedAt: text.length, url, language, userId, collapsible, customEmojiId });
+      tagStack.push({ tagName, openedAt: text.length, url, language, userId, collapsible, customEmojiId, time, timeFormat });
     }
     i += end - i;
   }
 
   entities = entities.filter((v) => v.length);
-  entities = sortEntities(entities);
+  entities = sortMessageEntities(entities);
   return [text, entities];
 }
 export function parseAttributes(attributes: string[]): Record<string, string> {
@@ -409,38 +430,3 @@ function isHex(string: string) {
 function isSpace(string: string) {
   return string === " " || string === "\t" || string === "\r" || string === "\n" || string === "\0" || string === "\v";
 }
-
-function sortEntities(entities: MessageEntity[]) {
-  return entities.sort(({ offset, type, length }, other) => {
-    if (offset !== other.offset) {
-      return offset < other.offset ? -1 : 1;
-    }
-    if (length !== other.length) {
-      return length > other.length ? -1 : 1;
-    }
-    const priority = ENTITY_TYPE_PRIORITIES[type];
-    const otherPriority = ENTITY_TYPE_PRIORITIES[other.type];
-    return priority < otherPriority ? -1 : 1;
-  });
-}
-const ENTITY_TYPE_PRIORITIES: Record<MessageEntity["type"], number> = {
-  "mention": 50,
-  "hashtag": 50,
-  "botCommand": 50,
-  "url": 50,
-  "email": 50,
-  "bold": 90,
-  "italic": 91,
-  "code": 20,
-  "pre": 11,
-  "textLink": 49,
-  "textMention": 49,
-  "cashtag": 50,
-  "phoneNumber": 50,
-  "underline": 92,
-  "strikethrough": 93,
-  "blockquote": 0,
-  "bankCard": 50,
-  "spoiler": 94,
-  "customEmoji": 99,
-};
