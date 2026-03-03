@@ -96,6 +96,8 @@ export interface _MessageBase {
   mediaGroupId?: string;
   /** The signature of the message. */
   authorSignature?: string;
+  /** The member tag of the sender of the message. */
+  tag?: string;
   /** The number of times the message was viewed. */
   views?: number;
   /** The number of times the message was forwarded. */
@@ -106,7 +108,7 @@ export interface _MessageBase {
   businessConnectionId?: string;
   /** The number of the boosts made by the sender of the message. */
   senderBoostCount?: number;
-  /** The identifier of the business connection in which the message was sent.*/
+  /** The identifier of the business connection in which the message was sent. */
   viaBusinessBot?: User;
   /** The identifier of the message effect that has been attached to the message. */
   effectId?: string;
@@ -1007,6 +1009,10 @@ export async function constructMessage(
 
   if (message_.post_author !== undefined) {
     message.authorSignature = message_.post_author;
+  }
+
+  if (message_.from_rank !== undefined) {
+    message.tag = message_.from_rank;
   }
 
   if (Api.is("messageFwdHeader", message_.fwd_from)) {
