@@ -198,6 +198,7 @@ export function constructChatMember(member: ChatP, participant: Api.ChannelParti
         canEditStories: false,
         canManageDirectMessages: false,
         canPostStories: false,
+        canManageTags: false,
       },
     });
   } else if (Api.is("chatParticipantCreator", participant)) {
