@@ -301,8 +301,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
             }
           }
           userId = getLinkUserId(decodeText(url));
-          time = getLinkTime(decodeText(url));
-          if (!userId && !time) {
+          if (!userId) {
             const url_ = getUrl(decodeText(url));
             if (!url_) {
               skipEntity = true;
@@ -333,6 +332,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
             throw new InputError(`Can't find the end of the custom emoji URL that starts at offset ${urlBeginPos}.`);
           }
           customEmojiId = getLinkCustomEmojiId(decodeText(url));
+          time = getLinkTime(decodeText(url));
           break;
         }
         default:
