@@ -266,13 +266,15 @@ export function constructMessageEntity(obj: Api.MessageEntity): MessageEntity | 
     } else if (obj.long_time) {
       format += "T";
     }
-    return cleanObject({
-      type: "dateTime",
-      offset: obj.offset,
-      length: obj.length,
-      format: format || undefined,
-      dateTime: obj.date,
-    } as const);
+    return cleanObject(
+      {
+        type: "dateTime",
+        offset: obj.offset,
+        length: obj.length,
+        format: format || undefined,
+        dateTime: obj.date,
+      } as const,
+    );
   } else {
     return null;
   }

@@ -78,6 +78,21 @@ function getLinkUserId(url_: string) {
     return 0;
   }
 }
+function getLinkTime(url_: string) {
+  try {
+    const url = new URL(url_);
+    if (url.protocol !== "tg:" || url.hostname !== "time" || url.pathname.slice(1) !== "" || url.port !== "") {
+      return null;
+    }
+    const time = Number(url.searchParams.get("unix"));
+    if (!time) {
+      return null;
+    }
+    return { time, format: url.searchParams.get("format") ?? undefined };
+  } catch {
+    return null;
+  }
+}
 function getLinkCustomEmojiId(url_: string) {
   try {
     const url = new URL(url_);
@@ -247,6 +262,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
     } else {
       let { type, argument } = nestedEntities[nestedEntities.length - 1];
       let userId = 0;
+      let time: { time: number; format?: string } | null = null;
       let customEmojiId = "";
       let skipEntity = utf16Offset === nestedEntities.at(-1)!.entityOffset;
       switch (type) {
@@ -285,7 +301,8 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
             }
           }
           userId = getLinkUserId(decodeText(url));
-          if (!userId) {
+          time = getLinkTime(decodeText(url));
+          if (!userId && !time) {
             const url_ = getUrl(decodeText(url));
             if (!url_) {
               skipEntity = true;
@@ -329,6 +346,8 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
           entities.push({ type: "textMention", offset: entityOffset, length: entityLength, userId });
         } else if (customEmojiId) {
           entities.push({ type: "customEmoji", offset: entityOffset, length: entityLength, customEmojiId });
+        } else if (time) {
+          entities.push({ type: "dateTime", offset: entityOffset, length: entityLength, dateTime: time.time, format: time.format });
         } else if (type === "textLink") {
           entities.push({ type, offset: entityOffset, length: entityLength, url: typeof argument === "string" ? argument : decodeText(argument) });
         } else if (type === "pre") {

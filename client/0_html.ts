@@ -19,7 +19,7 @@
  */
 
 import { InputError } from "../0_errors.ts";
-import { sortMessageEntities, type MessageEntity, type MessageEntityBlockquote } from "../3_types.ts";
+import { type MessageEntity, type MessageEntityBlockquote, sortMessageEntities } from "../3_types.ts";
 
 const TAG_NAMES: string[] = [
   "a",
@@ -216,13 +216,13 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
         entityTags.push(openTag);
       } else if (openTag.time !== undefined) {
         entities.push({
-          type: 'dateTime',
+          type: "dateTime",
           offset,
           length,
           dateTime: openTag.time,
           format: openTag.timeFormat,
-        })
-      }else {
+        });
+      } else {
         entities.push({
           type: ENTITY_TYPES[TAG_NAMES.indexOf(openTag.tagName)] as "bold" | "italic" | "strikethrough" | "underline" | "spoiler" | "code",
           offset,
@@ -238,7 +238,7 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
       let userId: number | undefined;
       let collapsible: true | undefined;
       let time: number | undefined;
-      let timeFormat: string | undefined
+      let timeFormat: string | undefined;
       let customEmojiId: string | undefined;
       if (tagName === "a") {
         url = attributes?.href;
@@ -266,12 +266,12 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
               throw new InputError(`Invalid ID specified for mention at offset ${i}.`);
             }
           }
-          if (url_.protocol === 'tg:' && url_.hostname === 'time') {
-            time = Number(url_.searchParams.get('id'))
+          if (url_.protocol === "tg:" && url_.hostname === "time") {
+            time = Number(url_.searchParams.get("id"));
             if (!isNaN(time) && time > 0) {
-              timeFormat = url_.searchParams.get('format') ?? undefined
+              timeFormat = url_.searchParams.get("format") ?? undefined;
             } else {
-              throw new InputError(`Invalid time specified at offset ${i}.`)
+              throw new InputError(`Invalid time specified at offset ${i}.`);
             }
           }
         }
@@ -429,4 +429,3 @@ function isHex(string: string) {
 function isSpace(string: string) {
   return string === " " || string === "\t" || string === "\r" || string === "\n" || string === "\0" || string === "\v";
 }
-
