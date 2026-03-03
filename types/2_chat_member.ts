@@ -150,7 +150,7 @@ export function constructChatMember(member: ChatP, participant: Api.ChannelParti
       title: participant.rank,
     });
   } else if (Api.is("channelParticipantBanned", participant)) {
-    const until = participant.banned_rights.until_date ? participant.banned_rights.until_date : undefined;
+    const until = participant.banned_rights.until_date;
     if (!participant.banned_rights.view_messages) {
       participant.peer;
       return cleanObject({
@@ -169,7 +169,7 @@ export function constructChatMember(member: ChatP, participant: Api.ChannelParti
       until,
     });
   } else if (Api.is("channelParticipantSelf", participant)) {
-    const until = participant.subscription_until_date ? participant.subscription_until_date : undefined;
+    const until = participant.subscription_until_date;
     return cleanObject({
       status: "member",
       member,
