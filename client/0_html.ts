@@ -128,7 +128,23 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
       }
       const offset = openTag.openedAt;
       const length = text.length - openTag.openedAt;
-      if (tagName === "a") {
+      if (openTag.time !== undefined) {
+        entities.push({
+          type: "dateTime",
+          offset,
+          length,
+          dateTime: openTag.time,
+          format: openTag.timeFormat,
+        });
+      } else if (openTag.userId !== undefined) {
+        entities.push({
+          type: "textMention",
+          offset,
+          length,
+          userId: openTag.userId,
+        });
+        entityTags.push(openTag);
+      } else if (tagName === "a") {
         let url = openTag.url;
         if (!url) {
           const text_ = text.slice(offset, offset + length);
@@ -184,14 +200,6 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
           });
           entityTags.push(openTag);
         }
-      } else if (openTag.userId !== undefined) {
-        entities.push({
-          type: "textMention",
-          offset,
-          length,
-          userId: openTag.userId,
-        });
-        entityTags.push(openTag);
       } else if (tagName === "blockquote") {
         const entity: MessageEntityBlockquote = {
           type: "blockquote",
@@ -214,14 +222,6 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
           customEmojiId: openTag.customEmojiId,
         });
         entityTags.push(openTag);
-      } else if (openTag.time !== undefined) {
-        entities.push({
-          type: "dateTime",
-          offset,
-          length,
-          dateTime: openTag.time,
-          format: openTag.timeFormat,
-        });
       } else {
         entities.push({
           type: ENTITY_TYPES[TAG_NAMES.indexOf(openTag.tagName)] as "bold" | "italic" | "strikethrough" | "underline" | "spoiler" | "code",
@@ -267,9 +267,10 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
             }
           }
           if (url_.protocol === "tg:" && url_.hostname === "time") {
-            time = Number(url_.searchParams.get("id"));
+            time = Number(url_.searchParams.get("unix"));
             if (!isNaN(time) && time > 0) {
               timeFormat = url_.searchParams.get("format") ?? undefined;
+              url = undefined;
             } else {
               throw new InputError(`Invalid time specified at offset ${i}.`);
             }
