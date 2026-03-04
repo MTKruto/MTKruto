@@ -34,6 +34,8 @@ export { delay, pooledMap } from "jsr:@std/async@1.2.0";
 
 export { concat } from "jsr:@std/bytes@1.0.6/concat";
 
+export { startsWith } from "jsr:@std/bytes@1.0.6/starts-with";
+
 export { LruCache } from "jsr:@std/cache@0.2.2/lru-cache";
 
 export { iterateReader } from "jsr:@std/io@0.225.3/iterate-reader";

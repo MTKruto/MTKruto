@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { contentType, unreachable } from "../0_deps.ts";
+import { contentType, startsWith, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
@@ -676,7 +676,16 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       if (typeof photo === "string" && isHttpUrl(photo)) {
         media = { _: "inputMediaPhotoExternal", url: photo, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined };
       } else {
-        const file = await this.#c.fileManager.upload(photo, params, null, false);
+        const file = await this.#c.fileManager.upload(photo, params, (name, firstPart) => {
+          if (params?.fileName || !firstPart || name.includes(".")) {
+            return name;
+          }
+          if (startsWith(firstPart, new Uint8Array([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]))) {
+            return `${name}.png`;
+          } else {
+            return `${name}.jpg`;
+          }
+        }, false);
         media = { _: "inputMediaUploadedPhoto", file, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined };
       }
     }
