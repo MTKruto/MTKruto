@@ -78,6 +78,8 @@ export interface ChatMemberMember extends _ChatMemberBase {
   status: "member";
   /** A point in time in which the membership expires. */
   until?: number;
+  /** The tag of the member. */
+  tag?: string;
 }
 
 /**
@@ -96,6 +98,8 @@ export interface ChatMemberRestricted extends _ChatMemberBase {
   rights: ChatMemberRights;
   /** A point in time in which the restriction expires. */
   until?: number;
+  /** The tag of the member. */
+  tag?: string;
 }
 
 /**
@@ -161,19 +165,23 @@ export function constructChatMember(member: ChatP, participant: Api.ChannelParti
     }
     const isMember = participant.left ? true : false;
     const rights = constructChatMemberRights(participant.banned_rights);
+    const tag = participant.rank;
     return cleanObject({
       status: "restricted",
       member,
       isMember,
       rights,
       until,
+      tag,
     });
   } else if (Api.is("channelParticipantSelf", participant)) {
     const until = participant.subscription_until_date;
+    const tag = participant.rank;
     return cleanObject({
       status: "member",
       member,
       until,
+      tag,
     });
   } else if (Api.is("channelParticipantLeft", participant)) {
     return { status: "left", member };
