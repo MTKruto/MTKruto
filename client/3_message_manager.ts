@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { contentType, startsWith, unreachable } from "../0_deps.ts";
+import { contentType, equals, startsWith, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
@@ -602,7 +602,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "video");
   }
 
-  async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams & _SpoilCommon | undefined, fileType: FileType, otherAttribs: Api.DocumentAttribute[], urlSupported = true, expectedMimeTypes?: string[]) {
+  async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams & _SpoilCommon | undefined, fileType: FileType, otherAttribs: Api.DocumentAttribute[], urlSupported = true, expectedMimeTypes?: string[], createName?: (firstPart: Uint8Array) => string) {
     let media: Api.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
     const ttl_seconds = params && "selfDestruct" in params && typeof params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct as SelfDestructOption) : undefined;
@@ -621,17 +621,21 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         }
         media = { _: "inputMediaDocumentExternal", url: document, spoiler, ttl_seconds };
       } else {
-        let mimeType: string;
-        const file = await this.#c.fileManager.upload(document, params, (name) => {
-          mimeType = params?.mimeType ?? contentType(name.split(".").slice(-1)[0]) ?? FALLBACK_MIME_TYPE;
-          if (expectedMimeTypes && !expectedMimeTypes.includes(mimeType)) {
-            unreachable();
+        let mimeType: string | undefined;
+        const file = await this.#c.fileManager.upload(document, params, (name, firstPart) => {
+          if (!params?.fileName && firstPart && createName) {
+            name = createName(firstPart);
           }
+          mimeType = params?.mimeType ?? contentType(name.split(".").slice(-1)[0]);
           if (name.endsWith(".tgs") && fileType === FileType.Document) {
             name += "-";
           }
           return name;
         });
+        mimeType ??= FALLBACK_MIME_TYPE;
+        if (mimeType && expectedMimeTypes && !expectedMimeTypes.includes(mimeType)) {
+          unreachable();
+        }
         if (Api.is("inputFileStoryDocument", file)) {
           unreachable();
         }
@@ -639,7 +643,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         if (params?.thumbnail) {
           thumb = await this.#c.fileManager.upload(params.thumbnail, { chunkSize: params?.chunkSize, signal: params?.signal });
         }
-        media = { _: "inputMediaUploadedDocument", file, thumb, spoiler, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, ...otherAttribs], mime_type: mimeType!, force_file: fileType === FileType.Document ? true : undefined, ttl_seconds };
+        media = { _: "inputMediaUploadedDocument", file, thumb, spoiler, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, ...otherAttribs], mime_type: mimeType, force_file: fileType === FileType.Document ? true : undefined, ttl_seconds };
       }
     }
 
@@ -655,7 +659,15 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams) {
     this.#checkParams(params);
-    const message = await this.#sendDocumentInner(chatId, sticker, params, FileType.Sticker, [{ _: "documentAttributeSticker", alt: params?.emoji || "", stickerset: { _: "inputStickerSetEmpty" } }], undefined, STICKER_MIME_TYPES);
+    const message = await this.#sendDocumentInner(chatId, sticker, params, FileType.Sticker, [{ _: "documentAttributeSticker", alt: params?.emoji || "", stickerset: { _: "inputStickerSetEmpty" } }], undefined, STICKER_MIME_TYPES, (firstPart) => {
+      if (startsWith(firstPart, new Uint8Array([0x1F, 0x8B]))) {
+        return "file.tgs";
+      } else if (firstPart.length >= 12 && equals(firstPart.subarray(8, 12), new Uint8Array([0x57, 0x45, 0x42, 0x50]))) {
+        return "file.webp";
+      } else {
+        return "file.webm";
+      }
+    });
     return assertMessageType(message, "sticker");
   }
 
