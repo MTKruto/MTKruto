@@ -37,6 +37,7 @@ import type { FileManager } from "./2_file_manager.ts";
 
 const FALLBACK_MIME_TYPE = "application/octet-stream";
 const STICKER_MIME_TYPES = ["image/webp", "video/webm", "application/x-tgsticker"];
+const ANIMATION_MIME_TYPES = ["image/gif", "video/mp4"];
 
 interface C extends C_ {
   fileManager: FileManager;
@@ -587,10 +588,25 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendAnimation(chatId: ID, animation: FileSource, params?: SendAnimationParams) {
     this.#checkParams(params);
-    const message = await this.#sendDocumentInner(chatId, animation, params, FileType.Animation, [
-      { _: "documentAttributeAnimated" },
-      { _: "documentAttributeVideo", supports_streaming: true, w: params?.width ?? 0, h: params?.height ?? 0, duration: params?.duration ?? 0 },
-    ]);
+    const message = await this.#sendDocumentInner(
+      chatId,
+      animation,
+      params,
+      FileType.Animation,
+      [
+        { _: "documentAttributeAnimated" },
+        { _: "documentAttributeVideo", supports_streaming: true, w: params?.width ?? 0, h: params?.height ?? 0, duration: params?.duration ?? 0 },
+      ],
+      undefined,
+      ANIMATION_MIME_TYPES,
+      (firstPart) => {
+        if (startsWith(firstPart, new Uint8Array([0x47, 0x49, 0x46]))) {
+          return "file.gif";
+        } else {
+          return "file.mp4";
+        }
+      },
+    );
     return assertMessageType(message, "animation");
   }
 
