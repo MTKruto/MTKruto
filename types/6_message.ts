@@ -1080,8 +1080,11 @@ export async function constructMessage(
       const fileName = document.attributes.find((v): v is Api.documentAttributeFilename => Api.is("documentAttributeFilename", v));
       const sticker = document.attributes.find((v): v is Api.documentAttributeSticker => Api.is("documentAttributeSticker", v));
       const video = document.attributes.find((v): v is Api.documentAttributeVideo => Api.is("documentAttributeVideo", v));
-
-      if (animated) {
+      if (sticker) {
+        const fileId = getFileId(FileType.Sticker);
+        const sticker = await constructSticker(document, serializeFileId(fileId), toUniqueFileId(fileId), getStickerSetName);
+        m = { ...message, sticker };
+      } else if (animated) {
         const fileId = getFileId(FileType.Animation);
         const animation = constructAnimation(document, video, fileName, serializeFileId(fileId), toUniqueFileId(fileId));
         m = { ...messageMedia, animation };
@@ -1105,10 +1108,6 @@ export async function constructMessage(
           const audio_ = constructAudio(document, audio, serializeFileId(fileId), toUniqueFileId(fileId));
           m = { ...messageMedia, audio: audio_ };
         }
-      } else if (sticker) {
-        const fileId = getFileId(FileType.Sticker);
-        const sticker = await constructSticker(document, serializeFileId(fileId), toUniqueFileId(fileId), getStickerSetName);
-        m = { ...message, sticker };
       } else {
         const fileId = getFileId(FileType.Document);
         const document_ = constructDocument(document, fileName ?? ({ _: "documentAttributeFilename", file_name: "Unknown" }), serializeFileId(fileId), toUniqueFileId(fileId));
