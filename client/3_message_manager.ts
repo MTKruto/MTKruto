@@ -38,6 +38,10 @@ import type { FileManager } from "./2_file_manager.ts";
 const FALLBACK_MIME_TYPE = "application/octet-stream";
 const STICKER_MIME_TYPES = ["image/webp", "video/webm", "application/x-tgsticker"];
 const ANIMATION_MIME_TYPES = ["image/gif", "video/mp4"];
+const AUDIO_MIME_TYPES = ["audio/mpeg", "audio/mp4"];
+const VOICE_MIME_TYPES = ["audio/ogg", "audio/mpeg", "audio/mp4"];
+const VIDEO_MIME_TYPES = ["video/mp4"];
+const VIDEO_NOTE_MIME_TYPES = ["video/mp4"];
 
 interface C extends C_ {
   fileManager: FileManager;
@@ -564,25 +568,70 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendVideoNote(chatId: ID, audio: FileSource, params?: SendVideoNoteParams) {
     this.#checkParams(params);
-    const message = await this.#sendDocumentInner(chatId, audio, params, FileType.VideoNote, [
-      { _: "documentAttributeVideo", round_message: true, w: params?.length ?? 0, h: params?.length ?? 0, duration: params?.duration ?? 0 },
-    ], false);
+    const message = await this.#sendDocumentInner(
+      chatId,
+      audio,
+      params,
+      FileType.VideoNote,
+      [
+        { _: "documentAttributeVideo", round_message: true, w: params?.length ?? 0, h: params?.length ?? 0, duration: params?.duration ?? 0 },
+      ],
+      false,
+      VIDEO_NOTE_MIME_TYPES,
+      () => "video_note.mp4",
+    );
     return assertMessageType(message, "videoNote");
   }
 
   async sendAudio(chatId: ID, audio: FileSource, params?: SendAudioParams) {
     this.#checkParams(params);
-    const message = await this.#sendDocumentInner(chatId, audio, params, FileType.Audio, [
-      { _: "documentAttributeAudio", duration: params?.duration ?? 0, performer: params?.performer, title: params?.title },
-    ]);
+    const message = await this.#sendDocumentInner(
+      chatId,
+      audio,
+      params,
+      FileType.Audio,
+      [
+        { _: "documentAttributeAudio", duration: params?.duration ?? 0, performer: params?.performer, title: params?.title },
+      ],
+      undefined,
+      AUDIO_MIME_TYPES,
+      (firstPart) => {
+        if (MessageManager.#isM4a(firstPart)) {
+          return "audio.m4a";
+        } else {
+          return "audio.mp3";
+        }
+      },
+    );
     return assertMessageType(message, "audio");
+  }
+
+  static #isM4a(firstPart: Uint8Array) {
+    return firstPart.length >= 10 && startsWith(firstPart.subarray(4), new Uint8Array([0x66, 0x74, 0x79, 0x70, 0x4D, 0x34]));
   }
 
   async sendVoice(chatId: ID, voice: FileSource, params?: SendVoiceParams) {
     this.#checkParams(params);
-    const message = await this.#sendDocumentInner(chatId, voice, params, FileType.VoiceNote, [
-      { _: "documentAttributeAudio", voice: true, duration: params?.duration ?? 0 },
-    ]);
+    const message = await this.#sendDocumentInner(
+      chatId,
+      voice,
+      params,
+      FileType.VoiceNote,
+      [
+        { _: "documentAttributeAudio", voice: true, duration: params?.duration ?? 0 },
+      ],
+      undefined,
+      VOICE_MIME_TYPES,
+      (firstPart) => {
+        if (startsWith(firstPart, new Uint8Array([0x4F, 0x67, 0x67]))) {
+          return "voice.ogg";
+        } else if (MessageManager.#isM4a(firstPart)) {
+          return "voice.m4a";
+        } else {
+          return "voice.mp3";
+        }
+      },
+    );
     return assertMessageType(message, "voice");
   }
 
@@ -612,9 +661,18 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendVideo(chatId: ID, video: FileSource, params?: SendVideoParams) {
     this.#checkParams(params);
-    const message = await this.#sendDocumentInner(chatId, video, params, FileType.Video, [
-      { _: "documentAttributeVideo", supports_streaming: params?.supportsStreaming ? true : undefined, w: params?.width ?? 0, h: params?.height ?? 0, duration: params?.duration ?? 0 },
-    ]);
+    const message = await this.#sendDocumentInner(
+      chatId,
+      video,
+      params,
+      FileType.Video,
+      [
+        { _: "documentAttributeVideo", supports_streaming: params?.supportsStreaming ? true : undefined, w: params?.width ?? 0, h: params?.height ?? 0, duration: params?.duration ?? 0 },
+      ],
+      undefined,
+      VIDEO_MIME_TYPES,
+      () => "video.mp4",
+    );
     return assertMessageType(message, "video");
   }
 
