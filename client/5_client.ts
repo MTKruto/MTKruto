@@ -2807,15 +2807,24 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Enable or disable topics in a group. User-only.
+   * Enable topics in a group. User-only.
    *
    * @method ch
    * @param chatId The identifier of the group.
-   * @param enabled Whether topics should be enabled in the group.
-   * @param tabs Whether topics should be displayed as tabs.
+   * @param isShownAsTabs Whether topics should be displayed as tabs.
    */
-  async setTopicsEnabled(chatId: ID, enabled: boolean, tabs: boolean): Promise<void> {
-    await this.#chatManager.setTopicsEnabled(chatId, enabled, tabs);
+  async enableTopics(chatId: ID, isShownAsTabs: boolean): Promise<void> {
+    await this.#chatManager.enableTopics(chatId, isShownAsTabs);
+  }
+
+  /**
+   * Disable topics in a group. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group.
+   */
+  async disableTopics(chatId: ID): Promise<void> {
+    await this.#chatManager.disableTopics(chatId);
   }
 
   /**

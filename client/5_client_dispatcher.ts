@@ -1836,15 +1836,24 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Enable or disable topics in a group. User-only.
+   * Enable topics in a group. User-only.
    *
    * @method ch
    * @param chatId The identifier of the group.
-   * @param enabled Whether topics should be enabled in the group.
-   * @param tabs Whether topics should be displayed as tabs.
+   * @param isShownAsTabs Whether topics should be displayed as tabs.
    */
-  async setTopicsEnabled(chatId: ID, enabled: boolean, tabs: boolean): Promise<void> {
-    return await this.#dispatch("setTopicsEnabled", chatId, enabled, tabs);
+  async enableTopics(chatId: ID, isShownAsTabs: boolean): Promise<void> {
+    return await this.#dispatch("enableTopics", chatId, isShownAsTabs);
+  }
+
+  /**
+   * Disable topics in a group. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group.
+   */
+  async disableTopics(chatId: ID): Promise<void> {
+    return await this.#dispatch("disableTopics", chatId);
   }
 
   /**

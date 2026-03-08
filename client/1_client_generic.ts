@@ -1355,14 +1355,21 @@ export abstract class ClientGeneric {
   abstract setMemberListVisibility(chatId: ID, isVisible: boolean): Promise<void>;
 
   /**
-   * Enable or disable topics in a group. User-only.
+   * Enable topics in a group. User-only.
    *
    * @method ch
    * @param chatId The identifier of the group.
-   * @param enabled Whether topics should be enabled in the group.
-   * @param tabs Whether topics should be displayed as tabs.
+   * @param isShownAsTabs Whether topics should be displayed as tabs.
    */
-  abstract setTopicsEnabled(chatId: ID, enabled: boolean, tabs: boolean): Promise<void>;
+  abstract enableTopics(chatId: ID, isShownAsTabs: boolean): Promise<void>;
+
+  /**
+   * Disable topics in a group. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group.
+   */
+  abstract disableTopics(chatId: ID): Promise<void>;
 
   /**
    * Enable or disable automatic anti-spam in a group. User-only.
