@@ -2004,6 +2004,26 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("setChatMemberTag", chatId, userId, params);
   }
 
+  /**
+   * Enable sharing in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async enableSharing(chatId: ID): Promise<void> {
+    return await this.#dispatch("enableSharing", chatId);
+  }
+
+  /**
+   * Disable sharing in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async disableSharing(chatId: ID): Promise<void> {
+    return await this.#dispatch("disableSharing", chatId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //

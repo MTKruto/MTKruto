@@ -461,4 +461,17 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     const rank = params?.tag ?? "";
     await this.#c.invoke({ _: "messages.editChatParticipantRank", peer, participant, rank });
   }
+
+  async #setIsSharingEnabled(chatId: ID, isSharingEnabled: boolean) {
+    const peer = await this.#c.getInputPeer(chatId);
+    await this.#c.invoke({ _: "messages.toggleNoForwards", peer, enabled: isSharingEnabled });
+  }
+
+  async enableSharing(chatId: ID) {
+    await this.#setIsSharingEnabled(chatId, true);
+  }
+
+  async disableSharing(chatId: ID) {
+    await this.#setIsSharingEnabled(chatId, false);
+  }
 }
