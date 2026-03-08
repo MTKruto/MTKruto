@@ -486,10 +486,12 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   }
 
   async enableSharing(chatId: ID) {
+    this.#c.storage.assertUser("enableSharing");
     await this.#setIsSharingEnabled(chatId, true);
   }
 
   async disableSharing(chatId: ID) {
+    this.#c.storage.assertUser("disableSharing");
     await this.#setIsSharingEnabled(chatId, false);
   }
 }
