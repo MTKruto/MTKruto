@@ -382,10 +382,12 @@ export class AccountManager {
   }
 
   async pauseBusinessBotConnection(chatId: ID) {
+    this.#c.storage.assertUser("pauseBusinessBotConnection");
     await this.#setIsBusinessBotConnectionPaused(chatId, true);
   }
 
   async resumeBusinessBotConnection(chatId: ID) {
+    this.#c.storage.assertUser("resumeBusinessBotConnection");
     await this.#setIsBusinessBotConnectionPaused(chatId, false);
   }
 }
