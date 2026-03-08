@@ -544,6 +544,24 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("disableSponsoredMessages");
   }
 
+  /**
+   * Pause the business bot in a chat. User-only.
+   *
+   * @method ac
+   */
+  async pauseBusinessBotConnection(chatId: ID): Promise<void> {
+    return await this.#dispatch("pauseBusinessBotConnection", chatId);
+  }
+
+  /**
+   * Resume the business bot in a chat. User-only.
+   *
+   * @method ac
+   */
+  async resumeBusinessBotConnection(chatId: ID): Promise<void> {
+    return await this.#dispatch("resumeBusinessBotConnection", chatId);
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //
