@@ -401,10 +401,19 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     await this.#setIsTopicsEnabled(chatId, true, isShownAsTabs);
   }
 
-  async setAntispamEnabled(chatId: ID, enabled: boolean) {
-    this.#c.storage.assertUser("setTopicsEnabled");
+  async #setIsAntispamEnabled(chatId: ID, isEnabled: boolean) {
     const channel = await this.#c.getInputChannel(chatId);
-    await this.#c.invoke({ _: "channels.toggleAntiSpam", channel, enabled });
+    await this.#c.invoke({ _: "channels.toggleAntiSpam", channel, enabled: isEnabled });
+  }
+
+  async enableAntispam(chatId: ID) {
+    this.#c.storage.assertUser("enableAntispam");
+    await this.#setIsAntispamEnabled(chatId, true);
+  }
+
+  async disableAntispam(chatId: ID) {
+    this.#c.storage.assertUser("disableAntispam");
+    await this.#setIsAntispamEnabled(chatId, false);
   }
 
   async setSignaturesEnabled(chatId: ID, enabled: boolean, params?: SetSignaturesEnabledParams) {

@@ -1379,13 +1379,22 @@ export abstract class ClientGeneric {
   abstract disableTopics(chatId: ID): Promise<void>;
 
   /**
-   * Enable or disable automatic anti-spam in a group. User-only.
+   * Enable automatic anti-spam in a group. User-only.
    *
    * @method ch
    * @param chatId The identifier of the group.
    * @param enabled Whether automatic anti-spam should be enabled in the group.
    */
-  abstract setAntispamEnabled(chatId: ID, enabled: boolean): Promise<void>;
+  abstract enableAntispam(chatId: ID): Promise<void>;
+
+  /**
+   * Disable automatic anti-spam in a group. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group.
+   * @param enabled Whether automatic anti-spam should be enabled in the group.
+   */
+  abstract disableAntispam(chatId: ID): Promise<void>;
 
   /**
    * Enable or disable post signatures in a channel. User-only.

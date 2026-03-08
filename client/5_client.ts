@@ -2837,14 +2837,25 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Enable or disable automatic anti-spam in a group. User-only.
+   * Enable automatic anti-spam in a group. User-only.
    *
    * @method ch
    * @param chatId The identifier of the group.
    * @param enabled Whether automatic anti-spam should be enabled in the group.
    */
-  async setAntispamEnabled(chatId: ID, enabled: boolean): Promise<void> {
-    await this.#chatManager.setAntispamEnabled(chatId, enabled);
+  async enableAntispam(chatId: ID): Promise<void> {
+    await this.#chatManager.enableAntispam(chatId);
+  }
+
+  /**
+   * Disable automatic anti-spam in a group. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group.
+   * @param enabled Whether automatic anti-spam should be enabled in the group.
+   */
+  async disableAntispam(chatId: ID): Promise<void> {
+    await this.#chatManager.disableAntispam(chatId);
   }
 
   /**
