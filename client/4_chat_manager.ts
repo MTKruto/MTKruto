@@ -464,7 +464,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
 
   async #setIsSharingEnabled(chatId: ID, isSharingEnabled: boolean) {
     const peer = await this.#c.getInputPeer(chatId);
-    await this.#c.invoke({ _: "messages.toggleNoForwards", peer, enabled: isSharingEnabled });
+    await this.#c.invoke({ _: "messages.toggleNoForwards", peer, enabled: !isSharingEnabled });
   }
 
   async enableSharing(chatId: ID) {
