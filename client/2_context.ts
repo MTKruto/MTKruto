@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { type Api, toJSON } from "../2_tl.ts";
-import type { BusinessConnection, CallbackQuery, ChatAction, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChosenInlineResult, FileSource, ID, InlineQuery, InlineQueryResult, InputMedia, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, PriceTag, Reaction, ReplyTo, Update, User } from "../3_types.ts";
+import type { BusinessConnection, CallbackQuery, ChatAction, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChosenInlineResult, FileSource, ID, InlineQuery, InlineQueryResult, InputMedia, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, PriceTag, Reaction, ReplyTo, SlowModeDuration, Update, User } from "../3_types.ts";
 import type { AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, BanChatMemberParams, CreateInviteLinkParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetChatMembersParams, GetCreatedInviteLinksParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 
@@ -853,5 +853,37 @@ export class Context {
   async resumeBusinessBotConnection(): Promise<void> {
     const chatId = this.#mustGetChatId();
     return await this.client.resumeBusinessBotConnection(chatId);
+  }
+
+  /**
+   * Context-aware alias for {@link Client.disableSlowMode}.
+   */
+  async disableSlowMode(): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.disableSlowMode(chatId);
+  }
+
+  /**
+   * Context-aware alias for {@link Client.setSlowMode}.
+   */
+  async setSlowMode(duration: SlowModeDuration): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.setSlowMode(chatId, duration);
+  }
+
+  /**
+   * Context-aware alias for {@link Client.setChatTitle}.
+   */
+  async setChatTitle(title: string): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.setChatTitle(chatId, title);
+  }
+
+  /**
+   * Context-aware alias for {@link Client.setChatDescription}.
+   */
+  async setChatDescription(description: string): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.setChatDescription(chatId, description);
   }
 }

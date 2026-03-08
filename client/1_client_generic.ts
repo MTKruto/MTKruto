@@ -1350,9 +1350,9 @@ export abstract class ClientGeneric {
    *
    * @method ch
    * @param chatId The identifier of the group.
-   * @param visible Whether the member list of the group should be visible.
+   * @param isVisible Whether the member list of the group should be visible.
    */
-  abstract setMemberListVisibility(chatId: ID, visible: boolean): Promise<void>;
+  abstract setMemberListVisibility(chatId: ID, isVisible: boolean): Promise<void>;
 
   /**
    * Enable or disable topics in a group. User-only.

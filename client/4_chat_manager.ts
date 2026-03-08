@@ -370,10 +370,10 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     await this.#c.invoke({ _: "messages.editChatAbout", peer, about: description });
   }
 
-  async setMemberListVisibility(chatId: ID, visible: boolean) {
+  async setMemberListVisibility(chatId: ID, isVisible: boolean) {
     this.#c.storage.assertUser("setMemberListVisible");
     const channel = await this.#c.getInputChannel(chatId);
-    const enabled = !visible;
+    const enabled = !isVisible;
     await this.#c.invoke({ _: "channels.toggleParticipantsHidden", channel, enabled });
   }
 

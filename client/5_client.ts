@@ -2800,10 +2800,10 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method ch
    * @param chatId The identifier of the group.
-   * @param visible Whether the member list of the group should be visible.
+   * @param isVisible Whether the member list of the group should be visible.
    */
-  async setMemberListVisibility(chatId: ID, visible: boolean): Promise<void> {
-    await this.#chatManager.setMemberListVisibility(chatId, visible);
+  async setMemberListVisibility(chatId: ID, isVisible: boolean): Promise<void> {
+    await this.#chatManager.setMemberListVisibility(chatId, isVisible);
   }
 
   /**
