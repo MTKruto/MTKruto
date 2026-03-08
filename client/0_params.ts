@@ -681,7 +681,7 @@ export interface SendGiftParams {
   upgrade?: boolean;
 }
 
-export interface SetSignaturesEnabledParams {
+export interface EnableSignaturesParams {
   /** Whether author profiles should be shown in posts. */
   showAuthorProfile?: boolean;
 }

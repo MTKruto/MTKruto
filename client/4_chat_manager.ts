@@ -24,7 +24,7 @@ import { Api } from "../2_tl.ts";
 import { chatAdministratorRightsToTlObject, type ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, type FileSource, type ID, type Reaction, reactionToTlObject, type Update } from "../3_types.ts";
 import { inputPeerToPeer } from "../tl/2_telegram.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, PromoteChatMemberParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetSignaturesEnabledParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, PromoteChatMemberParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -416,10 +416,19 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     await this.#setIsAntispamEnabled(chatId, false);
   }
 
-  async setSignaturesEnabled(chatId: ID, enabled: boolean, params?: SetSignaturesEnabledParams) {
-    this.#c.storage.assertUser("setSignaturesEnabled");
+  async #setIsSignaturesEnabled(chatId: ID, isEnabled: boolean, params?: EnableSignaturesParams) {
     const channel = await this.#c.getInputChannel(chatId);
-    await this.#c.invoke({ _: "channels.toggleSignatures", channel, signatures_enabled: enabled ? true : undefined, profiles_enabled: params?.showAuthorProfile ? true : undefined });
+    await this.#c.invoke({ _: "channels.toggleSignatures", channel, signatures_enabled: isEnabled ? true : undefined, profiles_enabled: params?.showAuthorProfile ? true : undefined });
+  }
+
+  async enableSignatures(chatId: ID, params?: EnableSignaturesParams) {
+    this.#c.storage.assertUser("enableSignatures");
+    await this.#setIsSignaturesEnabled(chatId, true, params);
+  }
+
+  async disableSignatures(chatId: ID) {
+    this.#c.storage.assertUser("disableSignatures");
+    await this.#setIsSignaturesEnabled(chatId, false);
   }
 
   async deleteChat(chatId: ID) {
