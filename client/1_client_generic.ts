@@ -1493,6 +1493,22 @@ export abstract class ClientGeneric {
    */
   abstract setChatMemberTag(chatId: ID, userId: ID, params?: SetChatMemberTagParams): Promise<void>;
 
+  /**
+   * Enable sharing in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract enableSharing(chatId: ID): Promise<void>;
+
+  /**
+   * Disable sharing in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract disableSharing(chatId: ID): Promise<void>;
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //

@@ -2975,6 +2975,26 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     await this.#chatManager.setChatMemberTag(chatId, userId, params);
   }
 
+  /**
+   * Enable sharing in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async enableSharing(chatId: ID): Promise<void> {
+    await this.#chatManager.enableSharing(chatId);
+  }
+
+  /**
+   * Disable sharing in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async disableSharing(chatId: ID): Promise<void> {
+    await this.#chatManager.disableSharing(chatId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
