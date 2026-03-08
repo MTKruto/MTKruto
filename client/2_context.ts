@@ -822,4 +822,20 @@ export class Context {
     }
     return await this.client.setChatMemberTag(chatId, userId, params);
   }
+
+  /**
+   * Context-aware alias for {@link Client.enableSharing}.
+   */
+  async enableSharing(): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.enableSharing(chatId);
+  }
+
+  /**
+   * Context-aware alias for {@link Client.disableSharing}.
+   */
+  async disableSharing(): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.disableSharing(chatId);
+  }
 }
