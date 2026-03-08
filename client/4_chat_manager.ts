@@ -370,11 +370,20 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     await this.#c.invoke({ _: "messages.editChatAbout", peer, about: description });
   }
 
-  async setMemberListVisibility(chatId: ID, isVisible: boolean) {
-    this.#c.storage.assertUser("setMemberListVisible");
+  async #setIsMemberListVisible(chatId: ID, isVisible: boolean) {
     const channel = await this.#c.getInputChannel(chatId);
     const enabled = !isVisible;
     await this.#c.invoke({ _: "channels.toggleParticipantsHidden", channel, enabled });
+  }
+
+  async hideMemberList(chatId: ID) {
+    this.#c.storage.assertUser("hideMemberList");
+    await this.#setIsMemberListVisible(chatId, false);
+  }
+
+  async showMemberList(chatId: ID) {
+    this.#c.storage.assertUser("showMemberList");
+    await this.#setIsMemberListVisible(chatId, true);
   }
 
   async #setIsTopicsEnabled(chatId: ID, isEnabled: boolean, isShownAsTabs: boolean) {
@@ -383,12 +392,12 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   }
 
   async disableTopics(chatId: ID) {
-    this.#c.storage.assertUser("setIsTopicsEnabled");
+    this.#c.storage.assertUser("disableTopics");
     await this.#setIsTopicsEnabled(chatId, false, false);
   }
 
   async enableTopics(chatId: ID, isShownAsTabs: boolean) {
-    this.#c.storage.assertUser("setIsTopicsEnabled");
+    this.#c.storage.assertUser("enableTopics");
     await this.#setIsTopicsEnabled(chatId, true, isShownAsTabs);
   }
 

@@ -1825,14 +1825,23 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Hide or show the member list of a group to non-admins. User-only.
+   * Hide the member list of a group to non-admins. User-only.
    *
    * @method ch
    * @param chatId The identifier of the group.
-   * @param isVisible Whether the member list of the group should be visible.
    */
-  async setMemberListVisibility(chatId: ID, isVisible: boolean): Promise<void> {
-    return await this.#dispatch("setMemberListVisibility", chatId, isVisible);
+  async hideMemberList(chatId: ID): Promise<void> {
+    return await this.#dispatch("hideMemberList", chatId);
+  }
+
+  /**
+   * Show the member list of a group to non-admins. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group.
+   */
+  async showMemberList(chatId: ID): Promise<void> {
+    return await this.#dispatch("showMemberList", chatId);
   }
 
   /**

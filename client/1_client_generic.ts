@@ -1346,13 +1346,20 @@ export abstract class ClientGeneric {
   abstract setChatDescription(chatId: ID, description: string): Promise<void>;
 
   /**
-   * Hide or show the member list of a group to non-admins. User-only.
+   * Hide the member list of a group to non-admins. User-only.
    *
    * @method ch
    * @param chatId The identifier of the group.
-   * @param isVisible Whether the member list of the group should be visible.
    */
-  abstract setMemberListVisibility(chatId: ID, isVisible: boolean): Promise<void>;
+  abstract hideMemberList(chatId: ID): Promise<void>;
+
+  /**
+   * Show the member list of a group to non-admins. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group.
+   */
+  abstract showMemberList(chatId: ID): Promise<void>;
 
   /**
    * Enable topics in a group. User-only.

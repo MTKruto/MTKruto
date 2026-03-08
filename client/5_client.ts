@@ -2796,14 +2796,23 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Hide or show the member list of a group to non-admins. User-only.
+   * Hide the member list of a group to non-admins. User-only.
    *
    * @method ch
    * @param chatId The identifier of the group.
-   * @param isVisible Whether the member list of the group should be visible.
    */
-  async setMemberListVisibility(chatId: ID, isVisible: boolean): Promise<void> {
-    await this.#chatManager.setMemberListVisibility(chatId, isVisible);
+  async hideMemberList(chatId: ID): Promise<void> {
+    await this.#chatManager.hideMemberList(chatId);
+  }
+
+  /**
+   * Show the member list of a group to non-admins. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group.
+   */
+  async showMemberList(chatId: ID): Promise<void> {
+    await this.#chatManager.showMemberList(chatId);
   }
 
   /**
