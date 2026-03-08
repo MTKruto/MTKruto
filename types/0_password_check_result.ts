@@ -37,5 +37,5 @@ export interface PasswordCheckResultSignedIn {
   userId: number;
 }
 
-/** A result after checking a sent code. */
+/** A result after checking a password. */
 export type PasswordCheckResult = PasswordCheckResultInvalidPassword | PasswordCheckResultSignedIn;

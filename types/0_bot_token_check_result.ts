@@ -28,5 +28,5 @@ export interface BotTokenCheckResultSignedIn {
   userId: number;
 }
 
-/** A result after checking a sent code. */
+/** A result after checking a bot token. */
 export type BotTokenCheckResult = BotTokenCheckResultSignedIn;
