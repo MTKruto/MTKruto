@@ -284,6 +284,20 @@ export abstract class ClientGeneric {
    */
   abstract disableSponsoredMessages(): Promise<void>;
 
+  /**
+   * Pause the business bot in a chat. User-only.
+   *
+   * @method ac
+   */
+  abstract pauseBusinessBotConnection(chatId: ID): Promise<void>;
+
+  /**
+   * Resume the business bot in a chat. User-only.
+   *
+   * @method ac
+   */
+  abstract resumeBusinessBotConnection(chatId: ID): Promise<void>;
+
   //
   // ========================= MESSAGES ========================= //
   //

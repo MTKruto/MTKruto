@@ -838,4 +838,20 @@ export class Context {
     const chatId = this.#mustGetChatId();
     return await this.client.disableSharing(chatId);
   }
+
+  /**
+   * Context-aware alias for {@link Client.pauseBusinessBotConnection}.
+   */
+  async pauseBusinessBotConnection(): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.pauseBusinessBotConnection(chatId);
+  }
+
+  /**
+   * Context-aware alias for {@link Client.resumeBusinessBotConnection}.
+   */
+  async resumeBusinessBotConnection(): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.resumeBusinessBotConnection(chatId);
+  }
 }

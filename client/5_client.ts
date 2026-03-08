@@ -1503,6 +1503,24 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     await this.#accountManager.disableSponsoredMessages();
   }
 
+  /**
+   * Pause the business bot in a chat. User-only.
+   *
+   * @method ac
+   */
+  async pauseBusinessBotConnection(chatId: ID): Promise<void> {
+    await this.#accountManager.pauseBusinessBotConnection(chatId);
+  }
+
+  /**
+   * Resume the business bot in a chat. User-only.
+   *
+   * @method ac
+   */
+  async resumeBusinessBotConnection(chatId: ID): Promise<void> {
+    await this.#accountManager.resumeBusinessBotConnection(chatId);
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //

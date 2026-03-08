@@ -375,4 +375,17 @@ export class AccountManager {
     this.#c.storage.assertUser("disableSponsoredMessages");
     await this.#setIsSponsoredMessagesEnabled(false);
   }
+
+  async #setIsBusinessBotConnectionPaused(chatId: ID, isPaused: boolean) {
+    const peer = await this.#c.getInputPeer(chatId);
+    await this.#c.invoke({ _: "account.toggleConnectedBotPaused", peer, paused: isPaused });
+  }
+
+  async pauseBusinessBotConnection(chatId: ID) {
+    await this.#setIsBusinessBotConnectionPaused(chatId, true);
+  }
+
+  async resumeBusinessBotConnection(chatId: ID) {
+    await this.#setIsBusinessBotConnectionPaused(chatId, false);
+  }
 }
