@@ -1015,7 +1015,7 @@ export class UpdateManager {
     const promise = Promise.resolve().then(async () => {
       const logger = this.#LopenChat.branch(Api.peerToChatId(channel) + "");
       while (true) {
-        if (this.#c.disconnected()) {
+        if (this.#c.isDisconnected()) {
           logger.debug("disconnected, stopping the loop");
           this.#openChats.delete(channelId);
           break;
@@ -1036,7 +1036,7 @@ export class UpdateManager {
             await delay(delayMs, { signal: controller.signal });
           }
         } catch (err) {
-          if (this.#c.disconnected()) {
+          if (this.#c.isDisconnected()) {
             continue; // breaks the loop
           }
           this.#LopenChat.error("an unexpected error occurred:", err);

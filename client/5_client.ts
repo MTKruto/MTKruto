@@ -273,7 +273,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       messageStorage: this.messageStorage,
       guaranteeUpdateDelivery: this.#guaranteeUpdateDelivery,
       setConnectionState: this.#propagateConnectionState.bind(this),
-      resetConnectionState: () => this.#stateChangeHandler(this.connected),
+      resetConnectionState: () => this.#stateChangeHandler(this.isConnected),
       getSelfId: this.#getSelfId.bind(this),
       getIsPremium: this.#getIsPremium.bind(this),
       getInputPeer: this.getInputPeer.bind(this),
@@ -285,7 +285,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       parseMode: this.#parseMode,
       outgoingMessages: this.#outgoingMessages,
       dropPendingUpdates: params?.dropPendingUpdates,
-      disconnected: () => this.disconnected,
+      isDisconnected: () => this.isDisconnected,
       langPack: this.platform,
       langCode: this.language,
     };
@@ -345,7 +345,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     client.onConnectionStateChange = this.#onConnectionStateChange.bind(this);
   }
 
-  #newClient(dc: DC, main: boolean, cdn: boolean) {
+  #newClient(dc: DC, main: boolean, isCdn: boolean) {
     const client = new ClientEncrypted(dc, this.#apiId, {
       appVersion: this.appVersion,
       deviceModel: this.deviceModel,
@@ -354,11 +354,11 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       systemLangCode: this.systemLangCode,
       systemVersion: this.systemVersion,
       transportProvider: this.#transportProvider,
-      cdn,
-      disableUpdates: !main || cdn,
+      isCdn: isCdn,
+      disableUpdates: !main || isCdn,
       publicKeys: this.#publicKeys,
     });
-    client.connectionCallback = this.#networkStatisticsManager.getTransportReadWriteCallback(cdn);
+    client.connectionCallback = this.#networkStatisticsManager.getTransportReadWriteCallback(isCdn);
     return client;
   }
 
@@ -379,11 +379,11 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   // direct ClientEncrypted property proxies
-  get connected(): boolean {
-    return this.#client?.connected ?? false;
+  get isConnected(): boolean {
+    return this.#client?.isConnected ?? false;
   }
-  get disconnected(): boolean {
-    return this.#client?.disconnected ?? true;
+  get isDisconnected(): boolean {
+    return this.#client?.isDisconnected ?? true;
   }
 
   #propagateConnectionState(connectionState: ConnectionState) {
@@ -392,8 +392,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   #lastPropagatedConnectionState: ConnectionState | null = null;
-  #stateChangeHandler: (connected: boolean) => void = ((connected: boolean) => {
-    const connectionState = connected ? "ready" : "notConnected";
+  #stateChangeHandler: (isConnected: boolean) => void = ((isConnected: boolean) => {
+    const connectionState = isConnected ? "ready" : "notConnected";
     if (this.#lastPropagatedConnectionState !== connectionState) {
       this.#propagateConnectionState(connectionState);
     }
@@ -420,7 +420,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   async connect() {
     const unlock = await this.#connectMutex.lock();
     try {
-      if (this.connected) {
+      if (this.isConnected) {
         return;
       }
       await this.#initStorage();
@@ -465,7 +465,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
 
   async [handleMigrationError](err: Migrate) {
     let newDc = String(err.dc);
-    if (Math.abs(getDcId(this.#client!.dc, this.#client!.cdn)) >= 10_000) {
+    if (Math.abs(getDcId(this.#client!.dc, this.#client!.isCdn)) >= 10_000) {
       newDc += "-test";
     }
     this.disconnect();
@@ -514,7 +514,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #lastUpdates = new Date();
   #updateGapRecoveryLoop = new AbortableLoop(async (loop, signal) => {
     await delay(60 * SECOND, { signal });
-    if (!this.connected) {
+    if (!this.isConnected) {
       loop.abort();
       return;
     }
@@ -526,7 +526,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       );
     }
   }, (loop, err) => {
-    if (!this.connected) {
+    if (!this.isConnected) {
       loop.abort();
     } else {
       this.#LupdateGapRecoveryLoop.error(err);
@@ -535,19 +535,19 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
 
   #clientDisconnectionLoop = new AbortableLoop(async (loop, signal) => {
     await delay(60 * SECOND, { signal });
-    if (!this.connected) {
+    if (!this.isConnected) {
       loop.abort();
       return;
     }
     const now = Date.now();
     const disconnectAfter = 5 * MINUTE;
     for (const [i, client] of this.#clients.entries()) {
-      if (i > 0 && !client.disconnected && client.lastRequest && now - client.lastRequest.getTime() >= disconnectAfter) {
+      if (i > 0 && !client.isDisconnected && client.lastRequest && now - client.lastRequest.getTime() >= disconnectAfter) {
         client?.disconnect();
       }
     }
   }, (loop) => {
-    if (!this.connected) {
+    if (!this.isConnected) {
       loop.abort();
     }
   });
@@ -745,7 +745,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
         client = await this.#getUploadClient();
         break;
     }
-    if (client !== this.#client && !this.disconnected && client.disconnected) {
+    if (client !== this.#client && !this.isDisconnected && client.isDisconnected) {
       await client.connect();
     }
     return client;
@@ -816,7 +816,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   async #setupClient(client: ClientEncrypted) {
-    const storage = client.dc === this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.cdn ? "_cdn" : "")));
+    const storage = client.dc === this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.isCdn ? "_cdn" : "")));
     await storage.initialize();
     const auth = storage.auth.mustGet();
     const serverSalt = await storage.getServerSalt();
@@ -840,7 +840,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   async #importAuthorization(client: ClientEncrypted) {
-    if (this.#client!.dc === client.dc && this.#client!.cdn === client.cdn) {
+    if (this.#client!.dc === client.dc && this.#client!.isCdn === client.isCdn) {
       const auth = this.storage.auth.mustGet();
       const serverSalt = await this.storage.getServerSalt();
       if (auth.authKey !== null) {
@@ -851,7 +851,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       }
       return;
     }
-    const exportedAuthorization = await this.#client!.invoke({ _: "auth.exportAuthorization", dc_id: getDcId(client.dc, client.cdn) });
+    const exportedAuthorization = await this.#client!.invoke({ _: "auth.exportAuthorization", dc_id: getDcId(client.dc, client.isCdn) });
     await client.invoke({ ...exportedAuthorization, _: "auth.importAuthorization" });
   }
 
@@ -883,7 +883,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
         if (err instanceof AuthKeyUnregistered && !main) {
           await this.#importAuthorization(client);
           continue;
-        } else if (err instanceof ConnectionError && !main && !this.disconnected) {
+        } else if (err instanceof ConnectionError && !main && !this.isDisconnected) {
           continue;
         } else if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
           continue;
@@ -928,7 +928,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
 
   #authStringImported = false;
   async importAuthString(authString: string) {
-    if (this.connected) {
+    if (this.isConnected) {
       throw new Error("Cannot import auth string while the client is connected");
     }
     await this.#initStorage();
@@ -1267,15 +1267,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
 
   #previouslyConnected = false;
   #lastConnectionState = false;
-  #onConnectionStateChange(connected: boolean) {
-    if (this.#lastConnectionState !== connected) {
-      if (connected) {
+  #onConnectionStateChange(isConnected: boolean) {
+    if (this.#lastConnectionState !== isConnected) {
+      if (isConnected) {
         if (this.#previouslyConnected) {
           drop(this.#updateManager.recoverUpdateGap("reconnect"));
         }
         this.#previouslyConnected = true;
       }
-      const connectionState = connected ? "ready" : "notConnected";
+      const connectionState = isConnected ? "ready" : "notConnected";
       this.#queueHandleCtxUpdate({ connectionState });
     }
   }

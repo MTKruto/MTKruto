@@ -44,18 +44,18 @@ export class ConnectionTCP implements Connection {
     this.#port = port;
   }
 
-  get connected(): boolean {
+  get isConnected(): boolean {
     return !!this.#connection && this.#canRead && this.#canWrite;
   }
 
   #assertConnected() {
-    if (!this.connected) {
+    if (!this.isConnected) {
       throw new ConnectionError("The connection is not open.");
     }
   }
 
   async open() {
-    if (this.connected) {
+    if (this.isConnected) {
       return;
     }
 
@@ -90,7 +90,7 @@ export class ConnectionTCP implements Connection {
           this.#rejectRead();
           L.error(err);
         }
-      } while (this.connected);
+      } while (this.isConnected);
       this.stateChangeHandler?.(false);
     });
     this.#connection = connection;
@@ -134,7 +134,7 @@ export class ConnectionTCP implements Connection {
           if (err instanceof Deno.errors.BrokenPipe || err instanceof Deno.errors.ConnectionReset) {
             this.#canWrite = false;
           }
-          if (!this.connected) {
+          if (!this.isConnected) {
             this.stateChangeHandler?.(false);
             throw new ConnectionError("The connection was closed.");
           } else {

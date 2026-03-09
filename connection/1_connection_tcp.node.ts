@@ -52,7 +52,7 @@ export class ConnectionTCP implements Connection {
   }
 
   open() {
-    if (this.connected) {
+    if (this.isConnected) {
       return;
     }
 
@@ -94,12 +94,12 @@ export class ConnectionTCP implements Connection {
     });
   }
 
-  get connected() {
+  get isConnected() {
     return this.#socket?.readyState === "open";
   }
 
   #assertConnected() {
-    if (!this.connected) {
+    if (!this.isConnected) {
       throw errConnectionNotOpen;
     }
   }
@@ -133,7 +133,7 @@ export class ConnectionTCP implements Connection {
           );
         });
       } catch (err) {
-        if (!this.connected) {
+        if (!this.isConnected) {
           throw errConnectionNotOpen;
         } else {
           throw err;

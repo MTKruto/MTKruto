@@ -31,7 +31,7 @@ export interface ClaimedGift {
   /** The gift. */
   gift: Gift;
   /** Whether the gift is publicly visible. */
-  public: boolean;
+  isPublic: boolean;
   /** The sender of the gift. */
   sender?: ChatP;
   /** A message shared when the gift was sent. */
@@ -47,7 +47,7 @@ export interface ClaimedGift {
 export function constructClaimedGift(savedStarGift: Api.SavedStarGift, fromPeer: Api.User | Api.Chat | undefined, getPeer: PeerGetter): ClaimedGift {
   const gift = constructGift(savedStarGift.gift, getPeer);
   const date = savedStarGift.date;
-  const public_ = !!savedStarGift.unsaved;
+  const isPublic = !!savedStarGift.unsaved;
   const sender = fromPeer ? constructChatP(fromPeer) : undefined;
   const message = savedStarGift.message?.text;
   const entities = savedStarGift.message ? savedStarGift.message.entities.map(constructMessageEntity).filter((v): v is MessageEntity => !!v) : undefined;
@@ -56,7 +56,7 @@ export function constructClaimedGift(savedStarGift: Api.SavedStarGift, fromPeer:
   return cleanObject({
     date,
     gift,
-    public: public_,
+    isPublic,
     sender,
     message,
     entities,

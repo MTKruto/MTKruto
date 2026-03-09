@@ -30,14 +30,14 @@ import { constructStoryPrivacy, type StoryPrivacy } from "./2_story_privacy.ts";
 
 /** A story. */
 export interface Story {
-  out: boolean;
+  isOutgoing: boolean;
   id: number;
   chat: ChatP;
   date: number;
-  edited: boolean;
+  isEdited: boolean;
   content: StoryContent;
   interactiveAreas: StoryInteractiveArea[];
-  highlighted: boolean;
+  isHighlighted: boolean;
   interactions?: StoryInteractions;
   privacy?: StoryPrivacy;
   caption?: string;
@@ -53,7 +53,7 @@ export function constructStory(story: Api.storyItem, peer: Api.peerUser | Api.pe
   const chat = peer_[0];
   const date = story.date;
   const interactiveAreas = (story.media_areas ?? []).map(constructStoryInteractiveArea);
-  const highlighted = story.pinned ? true : false;
+  const isHighlighted = story.pinned ? true : false;
   const content = constructStoryContent(story.media);
   const caption = story.caption;
   const captionEntities = story.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v);
@@ -61,14 +61,14 @@ export function constructStory(story: Api.storyItem, peer: Api.peerUser | Api.pe
   const interactions = story.views ? constructStoryInteractions(story.views) : undefined;
 
   return cleanObject({
-    out: story.out ? true : false,
+    isOutgoing: story.out ? true : false,
     id,
     chat,
     date,
     content,
-    edited: story.edited ? true : false,
+    isEdited: story.edited ? true : false,
     interactiveAreas,
-    highlighted,
+    isHighlighted,
     interactions,
     privacy,
     caption,

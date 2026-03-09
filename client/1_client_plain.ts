@@ -101,7 +101,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
       throw new Error("No corresponding public key found");
     }
 
-    const dc = getDcId(this.dc, this.cdn);
+    const dc = getDcId(this.dc, this.isCdn);
     const pq = resPq.pq;
     const serverNonce = resPq.server_nonce;
     const newNonce = getRandomInt(32);

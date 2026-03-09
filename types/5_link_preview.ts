@@ -37,7 +37,7 @@ export interface InputLinkPreview {
   /** @discriminator */
   type: "input";
   /** Whether link preview is disabled. */
-  disable?: boolean;
+  isDisabled?: boolean;
   /** The URL of the preview. */
   url?: string;
   /** The size of the media that will potentially be shown. */

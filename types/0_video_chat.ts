@@ -43,7 +43,7 @@ export interface _VideoChatNotEndedCommon {
 export interface VideoChatActive extends _VideoChatCommon, _VideoChatNotEndedCommon {
   type: "active";
   /** Whether the video chat is being recorded. */
-  recording: boolean;
+  isRecording: boolean;
 }
 
 /**
@@ -96,7 +96,7 @@ export function constructVideoChat(call: Api.GroupCall): VideoChat {
         id,
         title,
         isLiveStream: liveStream,
-        recording: call.record_video_active ? true : false,
+        isRecording: call.record_video_active ? true : false,
         participantCount,
       };
     }

@@ -113,7 +113,7 @@ export interface _MessageBase {
   /** The identifier of the message effect that has been attached to the message. */
   effectId?: string;
   /** Whether the message is scheduled. */
-  scheduled?: boolean;
+  isScheduled?: boolean;
   /** The message's self-destruct preference. */
   selfDestruct?: SelfDestructOption;
 }
@@ -125,7 +125,7 @@ export interface _MessageBase {
 export interface _MessageMediaBase extends _MessageBase {
   caption?: string;
   captionEntities?: MessageEntity[];
-  hasMediaSpoiler?: boolean;
+  isSpoiler?: boolean;
 }
 
 // begin message types
@@ -960,7 +960,7 @@ export async function constructMessage(
     hasProtectedContent: message_.noforwards || false,
     senderBoostCount: message_.from_boosts_applied,
     effectId: message_.effect ? String(message_.effect) : undefined,
-    scheduled: message_.from_scheduled ? true : undefined,
+    isScheduled: message_.from_scheduled ? true : undefined,
     ...await getSender(message_, getPeer),
   };
 
@@ -1049,7 +1049,7 @@ export async function constructMessage(
   }
 
   if (Api.is("messageMediaPhoto", message_.media) || Api.is("messageMediaDocument", message_.media)) {
-    messageMedia.hasMediaSpoiler = message_.media.spoiler || false;
+    messageMedia.isSpoiler = message_.media.spoiler || false;
   }
 
   let m: Message | null = null;

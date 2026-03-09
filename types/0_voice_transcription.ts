@@ -25,7 +25,7 @@ export interface VoiceTranscription {
   /** The identifier of the transcription. */
   id: string;
   /** Whether the transciption is complete. */
-  done: boolean;
+  isCompleted: boolean;
   /** The transcription result. */
   text: string;
 }
@@ -33,7 +33,7 @@ export interface VoiceTranscription {
 export function constructVoiceTranscription(transcribedAudio: Api.messages_TranscribedAudio | Api.updateTranscribedAudio): VoiceTranscription {
   return {
     id: String(transcribedAudio.transcription_id),
-    done: !transcribedAudio.pending,
+    isCompleted: !transcribedAudio.pending,
     text: transcribedAudio.text,
   };
 }

@@ -64,10 +64,10 @@ export interface ReplyMarkupKeyboard {
   /** @discriminator */
   keyboard: KeyboardButton[][];
   isPersistent?: boolean;
-  resizeKeyboard?: boolean;
-  oneTimeKeyboard?: boolean;
+  isResized?: boolean;
+  isOneTime?: boolean;
   inputFieldPlaceholder?: string;
-  selective?: boolean;
+  isSelective?: boolean;
 }
 
 function constructReplyKeyboardMarkup(keyboard_: Api.replyKeyboardMarkup): ReplyMarkupKeyboard {
@@ -80,9 +80,9 @@ function constructReplyKeyboardMarkup(keyboard_: Api.replyKeyboardMarkup): Reply
     rows.push(row);
   }
   return {
-    resizeKeyboard: keyboard_.resize || false,
-    oneTimeKeyboard: keyboard_.single_use || false,
-    selective: keyboard_.selective || false,
+    isResized: keyboard_.resize || false,
+    isOneTime: keyboard_.single_use || false,
+    isSelective: keyboard_.selective || false,
     isPersistent: keyboard_.persistent || false,
     keyboard: rows,
   };
@@ -97,7 +97,7 @@ function replyKeyboardMarkupToTlObject(replyMarkup: ReplyMarkupKeyboard): Api.re
     }
     rows_.push({ _: "keyboardButtonRow", buttons: row_ });
   }
-  return { _: "replyKeyboardMarkup", resize: replyMarkup.resizeKeyboard || undefined, single_use: replyMarkup.oneTimeKeyboard || undefined, selective: replyMarkup.selective || undefined, persistent: replyMarkup.isPersistent || undefined, rows: rows_, placeholder: replyMarkup.inputFieldPlaceholder };
+  return { _: "replyKeyboardMarkup", resize: replyMarkup.isResized || undefined, single_use: replyMarkup.isOneTime || undefined, selective: replyMarkup.isSelective || undefined, persistent: replyMarkup.isPersistent || undefined, rows: rows_, placeholder: replyMarkup.inputFieldPlaceholder };
 }
 
 //
@@ -113,7 +113,7 @@ export interface ReplyMarkupRemoveKeyboard {
    */
   removeKeyboard: true;
   /** Whether to only affect specific users. If true, only users that were mentioned will be affected along with the author of the replied message if any. */
-  selective?: boolean;
+  isSelective?: boolean;
 }
 
 function constructReplyKeyboardRemove(replyMarkup_: Api.replyKeyboardHide): ReplyMarkupRemoveKeyboard {
@@ -121,7 +121,7 @@ function constructReplyKeyboardRemove(replyMarkup_: Api.replyKeyboardHide): Repl
 }
 
 function replyKeyboardRemoveToTlObject(replyMarkup: ReplyMarkupRemoveKeyboard): Api.replyKeyboardHide {
-  return { _: "replyKeyboardHide", selective: replyMarkup.selective || undefined };
+  return { _: "replyKeyboardHide", selective: replyMarkup.isSelective || undefined };
 }
 
 //
@@ -139,7 +139,7 @@ export interface ReplyMarkupForceReply {
   /** A placeholder to be shown in the client's message box. */
   inputFieldPlaceholder?: string;
   /** Whether to only affect specific users. If true, only users that were mentioned will be affected along with the author of the replied message if any. */
-  selective?: boolean;
+  isSelective?: boolean;
 }
 
 function constructForceReply(replyMarkup_: Api.replyKeyboardForceReply) {
@@ -148,13 +148,13 @@ function constructForceReply(replyMarkup_: Api.replyKeyboardForceReply) {
     replyMarkup.inputFieldPlaceholder = replyMarkup_.placeholder;
   }
   if (replyMarkup_.selective) {
-    replyMarkup.selective = true;
+    replyMarkup.isSelective = true;
   }
   return replyMarkup;
 }
 
 function forceReplyToTlObject(replyMarkup: ReplyMarkupForceReply): Api.replyKeyboardForceReply {
-  return { _: "replyKeyboardForceReply", selective: replyMarkup.selective || undefined, placeholder: replyMarkup.inputFieldPlaceholder };
+  return { _: "replyKeyboardForceReply", selective: replyMarkup.isSelective || undefined, placeholder: replyMarkup.inputFieldPlaceholder };
 }
 
 //

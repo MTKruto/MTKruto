@@ -75,7 +75,7 @@ export interface ChatPPrivate extends _ChatPBase {
   /** The reason why the user has been restricted. */
   restrictionReason?: RestrictionReason[];
   /** Whether the user is a bot that has been added to the attachment menu by the current user. */
-  addedToAttachmentMenu?: boolean;
+  isAddedToAttachmentMenu?: boolean;
   /** Whether the user is a bot that has been added to the attachment menu by the current user. */
   hasMainMiniApp?: boolean;
 }
@@ -155,7 +155,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
       isSupport: chat.support || false,
       isRestricted: chat.restricted || false,
       restrictionReason: chat.restriction_reason,
-      addedToAttachmentMenu: chat.bot ? chat.attach_menu_enabled || false : undefined,
+      isAddedToAttachmentMenu: chat.bot ? chat.attach_menu_enabled || false : undefined,
       hasMainMiniApp: chat.bot ? chat.attach_menu_enabled || false : undefined,
     };
     if (Api.is("userProfilePhoto", chat.photo)) {

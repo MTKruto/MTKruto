@@ -88,7 +88,7 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   override async connect(): Promise<void> {
-    if (!this.connected) {
+    if (!this.isConnected) {
       this.#rejectAllPending(new ConnectionError("The connection was closed."));
     }
     await super.connect();
@@ -112,7 +112,7 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   #assertNotDisconnected() {
-    if (this.disconnected) {
+    if (this.isDisconnected) {
       throw new ConnectionError("The connection was disconnected.");
     }
   }
@@ -180,7 +180,7 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   async send(body: Uint8Array<ArrayBuffer>): Promise<bigint> {
-    if (!this.disconnected && !this.connected) {
+    if (!this.isDisconnected && !this.isConnected) {
       await super.waitUntilConnected();
     }
     this.#assertNotDisconnected();
@@ -265,7 +265,7 @@ export class SessionEncrypted extends Session implements Session {
     this.#LsendLoop.error("unhandled receive loop error:", err);
   });
   async #sendLoopBody(loop: AbortableLoop, signal: AbortSignal) {
-    if (!this.connected) {
+    if (!this.isConnected) {
       this.#LsendLoop.debug("aborting as not connected");
       loop.abort();
       return;
@@ -350,7 +350,7 @@ export class SessionEncrypted extends Session implements Session {
       message = await this.#receive();
     } catch (err) {
       this.#LreceiveLoop.error("failed to receive message:", err);
-      if (!this.connected) {
+      if (!this.isConnected) {
         this.#LreceiveLoop.debug("aborting as not connected");
         loop.abort();
         return;

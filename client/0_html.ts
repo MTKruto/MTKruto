@@ -282,13 +282,13 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
         collapsible = true;
       } else if (tagName === "tg-emoji") {
         customEmojiId = attributes?.["emoji-id"];
-        let valid: boolean;
+        let isValid: boolean;
         try {
-          valid = BigInt(customEmojiId ?? "") !== 0n;
+          isValid = BigInt(customEmojiId ?? "") !== 0n;
         } catch {
-          valid = false;
+          isValid = false;
         }
-        if (!valid) {
+        if (!isValid) {
           throw new InputError(`Invalid emoji-id specified for tag tg-emoji at offset ${i}.`);
         }
       }

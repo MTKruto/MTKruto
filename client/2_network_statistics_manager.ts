@@ -49,15 +49,15 @@ export class NetworkStatisticsManager {
   }
 
   #pendingWrites: Record<string, number> = {};
-  getTransportReadWriteCallback(cdn: boolean) {
+  getTransportReadWriteCallback(isCcdn: boolean) {
     return {
       read: (count: number) => {
-        const key = cdn ? "netstat_cdn_read" : "netstat_messages_read";
+        const key = isCcdn ? "netstat_cdn_read" : "netstat_messages_read";
         this.#pendingWrites[key] = (this.#pendingWrites[key] ?? 0) + count;
         this.#write();
       },
       write: (count: number) => {
-        const key = cdn ? "netstat_cdn_write" : "netstat_messages_write";
+        const key = isCcdn ? "netstat_cdn_write" : "netstat_messages_write";
         this.#pendingWrites[key] = (this.#pendingWrites[key] ?? 0) + count;
         this.#write();
       },

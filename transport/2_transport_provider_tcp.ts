@@ -26,7 +26,7 @@ export function transportProviderTcp(params?: {
   ipv6?: boolean;
   obfuscated?: boolean;
 }): TransportProvider {
-  return ({ dc, cdn }) => {
+  return ({ dc, isCdn: cdn }) => {
     const connection = new ConnectionTCP(getDcIps(dc, params?.ipv6 ? "ipv6" : "ipv4")[0], 80);
     const transport = new TransportAbridged(connection, params?.obfuscated);
     return { connection, transport, dcId: getDcId(dc, cdn) };

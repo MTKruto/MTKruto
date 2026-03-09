@@ -26,8 +26,8 @@ export interface ConnectionCallback {
 }
 
 export interface Connection {
-  get connected(): boolean;
-  stateChangeHandler?: (connected: boolean) => void;
+  get isConnected(): boolean;
+  stateChangeHandler?: (isConnected: boolean) => void;
   open(): MaybePromise<void>;
   write(p: Uint8Array): MaybePromise<void>;
   close(): MaybePromise<void>;

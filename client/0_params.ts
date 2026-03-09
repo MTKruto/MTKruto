@@ -33,7 +33,7 @@ export interface AnswerCallbackQueryParams {
   /** A text to be shown to the user. */
   text?: string;
   /** Whether to show the text as an alert (popup). */
-  alert?: boolean;
+  isAlert?: boolean;
   /** A URL to be opened. */
   url?: string;
   /** TTL of answer caches in seconds. */
@@ -72,9 +72,9 @@ export interface _PaidBroadcastCommon {
 
 export interface _SendCommon extends _BusinessConnectionIdCommon, _PaidBroadcastCommon {
   /** Whether to send the message in a silent way without making a sound on the recipients' clients. */
-  disableNotification?: boolean;
+  isSilent?: boolean;
   /** Whether to protect the contents of the message from copying and forwarding. */
-  protectContent?: boolean;
+  isContentProtected?: boolean;
   /** Information on what the message is replying to. */
   replyTo?: ReplyTo;
   /** The identifier of a thread to send the message to. */
@@ -199,7 +199,7 @@ export interface SendInvoiceParams extends _SendCommon, _ReplyMarkupCommon {
   needShippingAddress?: boolean;
   sendPhoneNumberToProvider?: boolean;
   sendEmailToProvider?: boolean;
-  flexible?: boolean;
+  isFlexible?: boolean;
 }
 
 export interface DownloadChunkParams {
@@ -378,7 +378,7 @@ export interface SendDiceParams extends _SendCommon, _ReplyMarkupCommon {
 
 export interface ReplyParams {
   /** Whether to quote the message that is to be replied. Enabled by default for non-private chats. */
-  quote?: boolean;
+  isQuoted?: boolean;
 }
 
 export interface GetHistoryParams {
@@ -420,14 +420,14 @@ export interface GetSavedChatsParams {
 
 export interface SetReactionsParams {
   /** Whether to make the new reactions more notable. */
-  big?: boolean;
+  isBig?: boolean;
   /** Whether to add the reaction to recent reactions. */
   addToRecents?: boolean;
 }
 
 export interface AddReactionParams {
   /** Whether to make the new reaction more notable. */
-  big?: boolean;
+  isBig?: boolean;
   /** Whether to add the reaction to recent reactions. */
   addToRecents?: boolean;
 }
@@ -445,7 +445,7 @@ export interface PinMessageParams extends _BusinessConnectionIdCommon {
   /** Whether to pin the message for both sides. For private chats only. */
   bothSides?: boolean;
   /** Whether to silently pin the message. */
-  disableNotification?: boolean;
+  isSilent?: boolean;
 }
 
 export interface UnpinMessageParams extends _BusinessConnectionIdCommon {
@@ -475,7 +475,7 @@ export interface CreateStoryParams extends _CaptionCommon, _UploadCommon {
   /** Whether to add the story to highlights. */
   highlight?: boolean;
   /** Whether to protect the contents of the story from copying and forwarding. */
-  protectContent?: boolean;
+  isContentProtected?: boolean;
 }
 
 export interface SearchMessagesParams {
@@ -505,7 +505,7 @@ export interface CreateInviteLinkParams {
   /** The times the invite link can be used. Cannot be specified while `requireApproval` is `true`. */
   limit?: number;
   /** Whether an admin must explicitly approve join requests originating from this invite link. Cannot be `true` while `limit` is specified. */
-  requireApproval?: boolean;
+  isApprovalRequired?: boolean;
 }
 
 export interface GetCreatedInviteLinksParams {
@@ -514,7 +514,7 @@ export interface GetCreatedInviteLinksParams {
   /** The maximum number of results to return. Must be in the range 1-100. Defaults to 100. */
   limit?: number;
   /** Whether only revoked invite links must be returned. */
-  revoked?: boolean;
+  isRevoked?: boolean;
   /** Only get the invite links created after a specific date. */
   afterDate?: number;
   /** Only get the invite links created after a specific invite link. */
@@ -544,7 +544,7 @@ export interface StartVideoChatParams {
   /** The video chat's title. */
   title?: string;
   /** Whether this is going to be a live stream. */
-  liveStream?: boolean;
+  isLiveStream?: boolean;
 }
 
 export interface ScheduleVideoChatParams extends StartVideoChatParams {
@@ -556,9 +556,9 @@ export interface JoinVideoChatParams {
   /** Invite hash. */
   inviteHash?: string;
   /** Whether to enable audio. Enabled by default. */
-  audio?: boolean;
+  isAudioEnabled?: boolean;
   /** Whether to enable video. Enabled by default. */
-  video?: boolean;
+  isVideoEnabled?: boolean;
 }
 
 export interface DownloadLiveStreamSegmentParams {
@@ -605,7 +605,7 @@ export interface CreateSupergroupParams {
   /** The description of the supergroup that is to be created. */
   description?: string;
   /** Whether a forum should be created. */
-  forum?: boolean;
+  isForum?: boolean;
   /** Time to live of the messages of the supergroup that is to be created in seconds. */
   messageTtl?: number;
 }
@@ -676,7 +676,7 @@ export interface SendGiftParams {
   /** The entities of the message. */
   entities?: MessageEntity[];
   /** If true, only the receiver of the gift will know the name of the sender. */
-  private?: boolean;
+  isPrivate?: boolean;
   /** Whether the gift should be upgraded before sending it. */
   upgrade?: boolean;
 }
@@ -764,11 +764,11 @@ export interface OpenMiniAppParams {
   /** Theme parameters encoded in JSON. */
   themeParameters?: string;
   /** Whether messages relevant to the mini app session should be sent silently. */
-  disableNotification?: boolean;
+  isSilent?: boolean;
   /** The identifier of a chat to send relevant messages on behalf of. */
   sendAs?: ID;
   /** Whether the mini app is being opened from the menu. */
-  fromMenu?: boolean;
+  isFromMenu?: boolean;
   /** Information on a message to which relevant messages should be replied to. */
   replyTo?: ReplyTo;
 }

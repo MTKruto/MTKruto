@@ -31,7 +31,7 @@ export interface MessageReaction {
   /** A list of identifiers of users who recently made this reaction. */
   choosers: number[];
   /** Whether the current user made this reaction. */
-  chosen: boolean;
+  isChosen: boolean;
 }
 
 export function constructMessageReaction(reaction_: Api.reactionCount, recentReactions: Api.messagePeerReaction[]): MessageReaction {
@@ -49,5 +49,5 @@ export function constructMessageReaction(reaction_: Api.reactionCount, recentRea
   const reaction = constructReaction(reaction_.reaction);
   const count = reaction_.count;
   const chosen = reaction_.chosen_order !== undefined ? true : false;
-  return { reaction, count, choosers, chosen };
+  return { reaction, count, choosers, isChosen: chosen };
 }

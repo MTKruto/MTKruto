@@ -59,7 +59,7 @@ export interface User {
   /** The reason why the user has been restricted. */
   restrictionReason?: RestrictionReason[];
   /** Whether the user is a bot that has been added to the attachment menu by the current user. */
-  addedToAttachmentMenu?: boolean;
+  isAddedToAttachmentMenu?: boolean;
   /** Whether the user is a bot that has a main mini app. */
   hasMainMiniApp?: boolean;
 }
@@ -84,7 +84,7 @@ export function constructUser(user_: Api.user): User {
     isSupport: user_.support || false,
     isRestricted: user_.restricted || false,
     restrictionReason: user_.restriction_reason,
-    addedToAttachmentMenu: user_.bot ? user_.attach_menu_enabled || false : undefined,
+    isAddedToAttachmentMenu: user_.bot ? user_.attach_menu_enabled || false : undefined,
     hasMainMiniApp: user_.bot ? user_.bot_has_main_app || false : undefined,
   };
   if (Api.is("userProfilePhoto", user_.photo)) {
@@ -112,7 +112,7 @@ export function constructUser2(chatP: ChatPPrivate): User {
     isSupport: chatP.isSupport,
     isRestricted: chatP.isRestricted,
     restrictionReason: chatP.restrictionReason,
-    addedToAttachmentMenu: chatP.addedToAttachmentMenu,
+    isAddedToAttachmentMenu: chatP.isAddedToAttachmentMenu,
     hasMainMiniApp: chatP.hasMainMiniApp,
   };
   return cleanObject(user);

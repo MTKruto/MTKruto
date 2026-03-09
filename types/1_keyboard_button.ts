@@ -38,8 +38,8 @@ export interface KeyboardButtonRequestUser extends KeyboardButtonText {
   /** @discriminator */
   requestUser: {
     requestId: number;
-    userIsBot?: boolean;
-    userIsPremium?: boolean;
+    isBot?: boolean;
+    isPremium?: boolean;
   };
 }
 
@@ -48,13 +48,13 @@ export interface KeyboardButtonRequestChat extends KeyboardButtonText {
   /** @discriminator */
   requestChat: {
     requestId: number;
-    chatIsChannel: boolean;
-    chatIsForum?: boolean;
-    chatHasUsername?: boolean;
-    chatIsCreated?: boolean;
+    isChannel: boolean;
+    isForum?: boolean;
+    hasUsername?: boolean;
+    isOwner?: boolean;
     userAdministratorRights?: ChatAdministratorRights;
     botAdministratorRights?: ChatAdministratorRights;
-    botIsMember?: boolean;
+    isBotMember?: boolean;
   };
 }
 
@@ -112,11 +112,11 @@ export function constructKeyboardButton(button_: Api.KeyboardButton): KeyboardBu
         text: button_.text,
         requestChat: {
           requestId: button_.button_id,
-          chatIsChannel: false, // GUESS
-          chatIsForum: button_.peer_type.forum || false,
-          chatHasUsername: button_.peer_type.has_username || false,
-          chatIsCreated: button_.peer_type.creator || false,
-          botIsMember: button_.peer_type.bot_participant || false,
+          isChannel: false, // GUESS
+          isForum: button_.peer_type.forum || false,
+          hasUsername: button_.peer_type.has_username || false,
+          isOwner: button_.peer_type.creator || false,
+          isBotMember: button_.peer_type.bot_participant || false,
         },
       };
       if (button_.peer_type.bot_admin_rights) {
@@ -134,9 +134,9 @@ export function constructKeyboardButton(button_: Api.KeyboardButton): KeyboardBu
         text: button_.text,
         requestChat: {
           requestId: button_.button_id,
-          chatIsChannel: true, // GUESS
-          chatIsCreated: button_.peer_type.creator || false,
-          chatHasUsername: button_.peer_type.has_username || false,
+          isChannel: true, // GUESS
+          isOwner: button_.peer_type.creator || false,
+          hasUsername: button_.peer_type.has_username || false,
         },
       };
       if (button_.peer_type.bot_admin_rights) {
@@ -181,17 +181,17 @@ export function keyboardButtonToTlObject(button: KeyboardButton): Api.KeyboardBu
       _: "keyboardButtonRequestPeer",
       text: button.text,
       button_id: button.requestUser.requestId,
-      peer_type: { _: "requestPeerTypeUser", bot: button.requestUser.userIsBot, premium: button.requestUser.userIsPremium },
+      peer_type: { _: "requestPeerTypeUser", bot: button.requestUser.isBot, premium: button.requestUser.isPremium },
       max_quantity: 1,
       style,
     };
   } else if ("requestChat" in button) {
-    if (!button.requestChat.chatIsChannel) { // GUESS
+    if (!button.requestChat.isChannel) { // GUESS
       return {
         _: "keyboardButtonRequestPeer",
         text: button.text,
         button_id: button.requestChat.requestId,
-        peer_type: { _: "requestPeerTypeChat", forum: button.requestChat.chatIsForum, has_username: button.requestChat.chatHasUsername, creator: button.requestChat.chatIsCreated || undefined, bot_participant: button.requestChat.botIsMember || undefined, bot_admin_rights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined, user_admin_rights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined },
+        peer_type: { _: "requestPeerTypeChat", forum: button.requestChat.isForum, has_username: button.requestChat.hasUsername, creator: button.requestChat.isOwner || undefined, bot_participant: button.requestChat.isBotMember || undefined, bot_admin_rights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined, user_admin_rights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined },
         max_quantity: 1,
         style,
       };
@@ -200,7 +200,7 @@ export function keyboardButtonToTlObject(button: KeyboardButton): Api.KeyboardBu
         _: "keyboardButtonRequestPeer",
         text: button.text,
         button_id: button.requestChat.requestId,
-        peer_type: { _: "requestPeerTypeBroadcast", has_username: button.requestChat.chatHasUsername, creator: button.requestChat.chatIsCreated || undefined, bot_admin_rights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined, user_admin_rights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined },
+        peer_type: { _: "requestPeerTypeBroadcast", has_username: button.requestChat.hasUsername, creator: button.requestChat.isOwner || undefined, bot_admin_rights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined, user_admin_rights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined },
         max_quantity: 1,
         style,
       };

@@ -32,9 +32,9 @@ export interface MessageReactionListItem {
   /** The reaction that was made. */
   reaction: Reaction;
   /** Whether this is a big reaction. */
-  big: boolean;
+  isBig: boolean;
   /** Whether the reaction is unread. */
-  unread: boolean;
+  isUnread: boolean;
   /** Whether the current user made this reaction. */
   isCreator: boolean;
 }
@@ -52,15 +52,15 @@ export function constructMessageReactionListItem(messagePeerReaction: Api.Messag
   const chat = constructChatP(chat_);
   const date = messagePeerReaction.date;
   const reaction = constructReaction(messagePeerReaction.reaction);
-  const big = !!messagePeerReaction.big;
+  const isBig = !!messagePeerReaction.big;
   const isCreator = !!messagePeerReaction.my;
-  const unread = !!messagePeerReaction.unread;
+  const isUnread = !!messagePeerReaction.unread;
   return {
     chat,
     date,
     reaction,
-    big,
+    isBig,
     isCreator,
-    unread,
+    isUnread,
   };
 }
