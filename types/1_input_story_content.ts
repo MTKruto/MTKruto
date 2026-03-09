@@ -33,7 +33,7 @@ export interface InputStoryContentVideo {
   video: FileSource;
   attachedStickerFileIds?: string[];
   duration: number;
-  animation?: boolean;
+  isAnimation?: boolean;
 }
 
 /** A story content when provided as an input. */

@@ -29,8 +29,8 @@ export abstract class ClientAbstract {
     return this.session.dc;
   }
 
-  get cdn(): boolean {
-    return this.session.cdn;
+  get isCdn(): boolean {
+    return this.session.isCdn;
   }
 
   set serverSalt(serverSalt: bigint) {
@@ -41,16 +41,16 @@ export abstract class ClientAbstract {
     return this.session.serverSalt;
   }
 
-  get connected(): boolean {
-    return this.session.connected;
+  get isConnected(): boolean {
+    return this.session.isConnected;
   }
 
   async connect() {
     await this.session.connect();
   }
 
-  get disconnected(): boolean {
-    return this.session.disconnected;
+  get isDisconnected(): boolean {
+    return this.session.isDisconnected;
   }
 
   disconnect() {

@@ -56,7 +56,7 @@ export class GiftManager {
   }
 
   async sendGift(chatId: ID, giftId: string, params?: SendGiftParams) {
-    const hide_name = params?.private ? true : undefined;
+    const hide_name = params?.isPrivate ? true : undefined;
     const include_upgrade = params?.upgrade ? true : undefined;
     const peer = await this.#c.getInputPeer(chatId);
     const gift_id = BigInt(giftId);

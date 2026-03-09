@@ -80,7 +80,7 @@ export interface InlineQueryResultArticle extends _InlineQueryResultBase, _Inlin
   description?: string;
   replyMarkup?: ReplyMarkupInlineKeyboard;
   url?: string;
-  hideUrl?: boolean;
+  isUrlHidden?: boolean;
 }
 
 /** @unlisted */
@@ -634,7 +634,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       unreachable();
     }
     const [message, entities] = await parseText(result_.messageContent.text, { entities: result_.messageContent.entities, parseMode: result_.messageContent.parseMode });
-    const noWebpage = result_.messageContent?.linkPreview && result_.messageContent?.linkPreview.type === "input" && result_.messageContent?.linkPreview.disable ? true : undefined;
+    const noWebpage = result_.messageContent?.linkPreview && result_.messageContent?.linkPreview.type === "input" && result_.messageContent?.linkPreview.isDisabled ? true : undefined;
     const invertMedia = result_.messageContent?.linkPreview?.isAboveText ? true : undefined;
 
     let sendMessage: Api.InputBotInlineMessage;

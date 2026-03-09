@@ -23,16 +23,16 @@ import { Api } from "../2_tl.ts";
 import { constructUser, type User } from "./2_user.ts";
 
 export interface ChatSettings {
-  report: boolean;
-  addToContacts: boolean;
-  block: boolean;
-  shareContact: boolean;
-  contactsException: boolean;
-  reportLocation: boolean;
-  unarchive: boolean;
-  inviteMembers: boolean;
+  canReport: boolean;
+  canAddToContacts: boolean;
+  canBlock: boolean;
+  canShare: boolean;
+  isContactsException: boolean;
+  canReportLocation: boolean;
+  canUnarchive: boolean;
+  canInviteMembers: boolean;
   channelJoinRequest: boolean;
-  businessBotPaused: boolean;
+  isBusinessBotPaused: boolean;
   businessBotCanReply: boolean;
   distance?: number;
   joinRequestChatTitle?: string;
@@ -48,16 +48,16 @@ export interface ChatSettings {
 
 export function constructChatSettings(settings_: Api.messages_peerSettings): ChatSettings {
   const settings: ChatSettings = {
-    report: settings_.settings.report_spam || false,
-    addToContacts: settings_.settings.add_contact || false,
-    block: settings_.settings.block_contact || false,
-    shareContact: settings_.settings.share_contact || false,
-    contactsException: settings_.settings.need_contacts_exception || false,
-    reportLocation: settings_.settings.report_geo || false,
-    unarchive: settings_.settings.autoarchived || false,
-    inviteMembers: settings_.settings.invite_members || false,
+    canReport: settings_.settings.report_spam || false,
+    canAddToContacts: settings_.settings.add_contact || false,
+    canBlock: settings_.settings.block_contact || false,
+    canShare: settings_.settings.share_contact || false,
+    isContactsException: settings_.settings.need_contacts_exception || false,
+    canReportLocation: settings_.settings.report_geo || false,
+    canUnarchive: settings_.settings.autoarchived || false,
+    canInviteMembers: settings_.settings.invite_members || false,
     channelJoinRequest: settings_.settings.request_chat_broadcast || false,
-    businessBotPaused: settings_.settings.business_bot_paused || false,
+    isBusinessBotPaused: settings_.settings.business_bot_paused || false,
     businessBotCanReply: settings_.settings.business_bot_can_reply || false,
     distance: settings_.settings.geo_distance,
     joinRequestChatTitle: settings_.settings.request_chat_title,

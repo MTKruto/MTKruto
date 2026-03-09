@@ -21,7 +21,7 @@
 import { concat } from "../0_deps.ts";
 
 export interface Part {
-  small: boolean;
+  isSmall: boolean;
   part: number;
   totalParts: number;
   bytes: Uint8Array<ArrayBuffer>;
@@ -39,7 +39,7 @@ export class PartStream extends TransformStream<Uint8Array<ArrayBuffer>, Part> {
         chunk = concat([this.#buffer, chunk]);
         while (chunk.byteLength > chunkSize) {
           controller.enqueue({
-            small: false,
+            isSmall: false,
             part: this.#part++,
             totalParts: -1,
             bytes: chunk.slice(0, chunkSize),
@@ -50,7 +50,7 @@ export class PartStream extends TransformStream<Uint8Array<ArrayBuffer>, Part> {
       },
       flush: (controller) => {
         controller.enqueue({
-          small: this.#totalRead <= chunkSize,
+          isSmall: this.#totalRead <= chunkSize,
           part: this.#part,
           totalParts: Math.ceil(this.#totalRead / chunkSize),
           bytes: this.#buffer,

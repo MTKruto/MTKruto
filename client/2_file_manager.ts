@@ -82,7 +82,7 @@ export class FileManager {
     const whatIsUploaded = contents instanceof Uint8Array ? (isBig ? "big file" : "file") + " of size " + size : "stream";
     this.#Lupload.debug("uploading " + whatIsUploaded + " with chunk size of " + chunkSize + " and pool size of " + poolSize + " and file ID of " + fileId);
 
-    let result: { small: boolean; parts: number; firstPart?: Uint8Array };
+    let result: { isSmall: boolean; parts: number; firstPart?: Uint8Array };
     if (contents instanceof Uint8Array) {
       result = await this.#uploadBuffer(contents, fileId, mustTrackProgress, chunkSize, poolSize, params?.signal);
     } else {
@@ -94,7 +94,7 @@ export class FileManager {
       name = checkName(name, result.firstPart);
     }
 
-    if (result.small) {
+    if (result.isSmall) {
       return { _: "inputFile", id: fileId, name, parts: result.parts, md5_checksum: "" };
     } else {
       return { _: "inputFileBig", id: fileId, name, parts: result.parts };
@@ -108,7 +108,7 @@ export class FileManager {
     let uploaded = 0;
     let firstPart: Uint8Array | undefined;
     for await (part of iterateReadableStream(stream.pipeThrough(new PartStream(chunkSize)))) {
-      if (!part.small && part.part > 0) {
+      if (!part.isSmall && part.part > 0) {
         await delay(ms);
         ms = Math.max(ms * .8, 0.003);
       }
@@ -116,7 +116,7 @@ export class FileManager {
         firstPart = part.bytes;
       }
       promises.push(
-        this.#uploadPart(fileId, part.totalParts, !part.small, part.part, part.bytes, signal).then(() => {
+        this.#uploadPart(fileId, part.totalParts, !part.isSmall, part.part, part.bytes, signal).then(() => {
           if (mustTrackProgress) {
             uploaded += part.bytes.length;
             this.#c.handleUpdate({
@@ -135,7 +135,7 @@ export class FileManager {
       }
     }
     await Promise.all(promises);
-    return { small: part!.small, parts: part!.totalParts, firstPart };
+    return { isSmall: part!.isSmall, parts: part!.totalParts, firstPart };
   }
 
   async #uploadBuffer(buffer: Uint8Array<ArrayBuffer>, fileId: bigint, mustTrackProgress: boolean, chunkSize: number, poolSize: number, signal: AbortSignal | undefined) {
@@ -188,7 +188,7 @@ export class FileManager {
       promises = [];
     }
     await Promise.all(promises);
-    return { small: !isBig, parts: partCount, firstPart };
+    return { isSmall: !isBig, parts: partCount, firstPart };
   }
 
   async #uploadPart(fileId: bigint, partCount: number, isBig: boolean, index: number, bytes: Uint8Array<ArrayBuffer>, signal: AbortSignal | undefined) {

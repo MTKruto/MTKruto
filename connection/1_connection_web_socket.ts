@@ -74,14 +74,14 @@ export class ConnectionWebSocket implements Connection {
         if (this.#isConnecting) {
           reject("message" in err ? new ConnectionError(err.message as string) : new ConnectionError("Failed to connect."));
         }
-        if (this.connected) {
+        if (this.isConnected) {
           L.error(err);
         }
       });
     });
   }
 
-  get connected(): boolean {
+  get isConnected(): boolean {
     return !!this.#webSocket && this.#webSocket.readyState === WebSocket.OPEN;
   }
 
@@ -100,7 +100,7 @@ export class ConnectionWebSocket implements Connection {
   }
 
   #assertConnected() {
-    if (!this.connected) {
+    if (!this.isConnected) {
       throw errConnectionNotOpen;
     }
   }

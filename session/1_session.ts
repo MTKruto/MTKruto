@@ -38,25 +38,25 @@ export interface SessionParams {
   /**
    * Whether the connection is with a CDN server. Defaults to false.
    */
-  cdn?: boolean;
+  isCdn?: boolean;
 }
 
 export abstract class Session {
   #dc: DC;
-  #cdn: boolean;
+  #isCdn: boolean;
   protected state: SessionState = new SessionState();
   protected transport: ReturnType<TransportProvider>;
   #lastConnect?: Date;
-  #disconnected = true;
+  #isDisconnected = true;
   #L: Logger;
   #onConnectionStateChange: Connection["stateChangeHandler"];
 
   constructor(dc: DC, params?: SessionParams) {
     this.#dc = dc;
-    this.#cdn = params?.cdn ?? false;
+    this.#isCdn = params?.isCdn ?? false;
 
     const transportProvider = params?.transportProvider ?? defaultTransportProvider();
-    this.transport = transportProvider({ dc: this.#dc, cdn: this.#cdn });
+    this.transport = transportProvider({ dc: this.#dc, isCdn: this.#isCdn });
     this.transport.connection.stateChangeHandler = (connected) => {
       setTimeout(() => {
         drop(this.#stateChangeHandler(connected));
@@ -77,8 +77,8 @@ export abstract class Session {
     return this.#dc;
   }
 
-  get cdn(): boolean {
-    return this.#cdn;
+  get isCdn(): boolean {
+    return this.#isCdn;
   }
 
   set serverSalt(serverSalt: bigint) {
@@ -90,18 +90,18 @@ export abstract class Session {
   }
 
   #lastState?: boolean;
-  async #stateChangeHandler(connected: boolean) {
-    if (this.#lastState !== connected) {
+  async #stateChangeHandler(isConnected: boolean) {
+    if (this.#lastState !== isConnected) {
       setTimeout(() => {
-        this.#onConnectionStateChange?.(connected);
+        this.#onConnectionStateChange?.(isConnected);
       });
     }
-    if (this.#lastState === connected) {
+    if (this.#lastState === isConnected) {
       return;
     }
-    this.#lastState = connected;
-    if (connected || this.#disconnected) {
-      if (this.#disconnected) {
+    this.#lastState = isConnected;
+    if (isConnected || this.#isDisconnected) {
+      if (this.#isDisconnected) {
         this.#L.debug("not reconnecting because explicitly disconnected");
       }
       return;
@@ -116,21 +116,21 @@ export abstract class Session {
     await this.connect();
   }
 
-  get connected(): boolean {
-    return this.transport.connection.connected;
+  get isConnected(): boolean {
+    return this.transport.connection.isConnected;
   }
 
   #connectMutex = new Mutex();
   async connect() {
     const unlock = await this.#connectMutex.lock();
     try {
-      if (this.connected) {
+      if (this.isConnected) {
         return;
       }
       await this.transport.connection.open();
       await this.transport.transport.initialize();
       this.#lastConnect = new Date();
-      this.#disconnected = false;
+      this.#isDisconnected = false;
     } finally {
       unlock();
     }
@@ -140,13 +140,13 @@ export abstract class Session {
     (await this.#connectMutex.lock())();
   }
 
-  get disconnected(): boolean {
-    return this.#disconnected;
+  get isDisconnected(): boolean {
+    return this.#isDisconnected;
   }
 
   disconnect() {
-    this.#disconnected = true;
-    if (this.transport.connection.connected) {
+    this.#isDisconnected = true;
+    if (this.transport.connection.isConnected) {
       this.transport.connection.close();
     }
   }

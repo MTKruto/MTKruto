@@ -48,7 +48,7 @@ export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManage
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
     this.#c.storage.assertBot("answerCallbackQuery");
     checkCallbackQueryId(id);
-    await this.#c.invoke({ _: "messages.setBotCallbackAnswer", query_id: BigInt(id), cache_time: params?.cacheTime ?? 0, message: params?.text, alert: params?.alert ? true : undefined });
+    await this.#c.invoke({ _: "messages.setBotCallbackAnswer", query_id: BigInt(id), cache_time: params?.cacheTime ?? 0, message: params?.text, alert: params?.isAlert ? true : undefined });
   }
 
   async sendCallbackQuery(botId: ID, messageId: number, question: CallbackQueryQuestion) {

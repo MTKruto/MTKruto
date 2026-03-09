@@ -101,7 +101,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
       }
     }
 
-    const updates = await this.#c.invoke({ _: "stories.sendStory", peer, random_id: randomId, media, privacy_rules: privacyRules, caption, entities, noforwards: params?.protectContent ? true : undefined, period: params?.activeFor, pinned: params?.highlight ? true : undefined, media_areas: mediaAreas });
+    const updates = await this.#c.invoke({ _: "stories.sendStory", peer, random_id: randomId, media, privacy_rules: privacyRules, caption, entities, noforwards: params?.isContentProtected ? true : undefined, period: params?.activeFor, pinned: params?.highlight ? true : undefined, media_areas: mediaAreas });
     return await this.#updatesToStory(updates);
   }
 

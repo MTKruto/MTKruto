@@ -34,7 +34,7 @@ Deno.test("exact", async () => {
   let i = 0;
   const expectedTotalParts = [-1, -1, -1, 4];
   for await (const part of stream) {
-    assertEquals(part.small, false);
+    assertEquals(part.isSmall, false);
     assertEquals(part.part, i);
     assertEquals(part.totalParts, expectedTotalParts[i]);
     assertEquals(part.bytes, buffers[i++]);
@@ -49,7 +49,7 @@ Deno.test("small", async () => {
   let i = 0;
   for await (const part of stream) {
     assertEquals(i++, 0);
-    assertEquals(part.small, true);
+    assertEquals(part.isSmall, true);
     assertEquals(part.part, 0);
     assertEquals(part.bytes, buffers[0]);
     assertEquals(part.totalParts, 1);
@@ -65,7 +65,7 @@ Deno.test("small 2", async () => {
   let i = 0;
   for await (const part of stream) {
     assertEquals(i++, 0);
-    assertEquals(part.small, true);
+    assertEquals(part.isSmall, true);
     assertEquals(part.part, 0);
     assertEquals(part.bytes, buffers[0]);
     assertEquals(part.totalParts, 1);

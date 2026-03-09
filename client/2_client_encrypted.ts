@@ -133,7 +133,7 @@ export class ClientEncrypted extends ClientAbstract {
       } catch (err) {
         errored = true;
         lastErr = err;
-        if (this.disconnected) {
+        if (this.isDisconnected) {
           break;
         }
         this.#L.error("failed to create auth key:", err);
@@ -195,7 +195,7 @@ export class ClientEncrypted extends ClientAbstract {
       } catch (err) {
         errored = true;
         lastErr = err;
-        if (this.disconnected) {
+        if (this.isDisconnected) {
           break;
         }
         this.#L.error("send failed:", err);
