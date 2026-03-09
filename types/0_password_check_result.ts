@@ -24,7 +24,7 @@
  */
 export interface PasswordCheckResultInvalidPassword {
   /** @discriminator */
-  type: "invalid_password";
+  type: "invalidPassword";
 }
 
 /**
@@ -33,7 +33,7 @@ export interface PasswordCheckResultInvalidPassword {
  */
 export interface PasswordCheckResultSignedIn {
   /** @discriminator */
-  type: "signed_in";
+  type: "signedIn";
   userId: number;
 }
 

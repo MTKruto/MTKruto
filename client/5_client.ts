@@ -610,7 +610,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async checkCode(code: string): Promise<CodeCheckResult> {
     const result = await this.#accountManager.checkCode(code);
-    if (result.type === "signed_in") {
+    if (result.type === "signedIn") {
       await this.storage.auth.update((v) => {
         v.userId = result.userId;
         v.isBot = false;
@@ -641,7 +641,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async checkPassword(password: string): Promise<PasswordCheckResult> {
     const result = await this.#accountManager.checkPassword(password);
-    if (result.type === "signed_in") {
+    if (result.type === "signedIn") {
       await this.storage.auth.update((v) => {
         v.userId = result.userId;
         v.isBot = false;
@@ -666,7 +666,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     const me = await this.#checkAuthorization();
     if (me) {
       return {
-        type: "signed_in",
+        type: "signedIn",
         userId: me.id,
       };
     }
@@ -674,7 +674,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     while (true) {
       try {
         const result = await this.#accountManager.checkBotToken(botToken, this.#apiId, this.#apiHash);
-        if (result.type === "signed_in") {
+        if (result.type === "signedIn") {
           await this.storage.auth.update((v) => {
             v.userId = result.userId;
             v.isBot = true;

@@ -303,16 +303,16 @@ export class AccountManager {
       });
 
       return {
-        type: "signed_in",
+        type: "signedIn",
         userId: Number(Api.as("auth.authorization", auth).user.id),
       };
     } catch (err) {
       if (err instanceof PhoneCodeInvalid) {
         return {
-          type: "invalid_code",
+          type: "invalidCode",
         };
       } else if (err instanceof SessionPasswordNeeded) {
-        return { type: "password_required" };
+        return { type: "passwordRequired" };
       } else {
         throw err;
       }
@@ -340,13 +340,13 @@ export class AccountManager {
       const auth = await this.#c.invoke({ _: "auth.checkPassword", password: input });
 
       return {
-        type: "signed_in",
+        type: "signedIn",
         userId: Number(Api.as("auth.authorization", auth).user.id),
       };
     } catch (err) {
       if (err instanceof PasswordHashInvalid) {
         return {
-          type: "invalid_password",
+          type: "invalidPassword",
         };
       } else {
         throw err;
@@ -357,7 +357,7 @@ export class AccountManager {
   async checkBotToken(botToken: string, apiId: number, apiHash: string): Promise<BotTokenCheckResult> {
     const auth = await this.#c.invoke({ _: "auth.importBotAuthorization", api_id: apiId, api_hash: apiHash, bot_auth_token: botToken, flags: 0 });
     return {
-      type: "signed_in",
+      type: "signedIn",
       userId: Number(Api.as("auth.authorization", auth).user.id),
     };
   }

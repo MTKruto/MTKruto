@@ -51,7 +51,7 @@ export async function signIn(client: ClientGeneric, logger: Logger, params: Sign
 
   if (params && "botToken" in params) {
     const result = await client.checkBotToken(params.botToken);
-    if (result.type === "signed_in") {
+    if (result.type === "signedIn") {
       return;
     } else {
       unreachable();
@@ -79,11 +79,11 @@ export async function signIn(client: ClientGeneric, logger: Logger, params: Sign
       code: while (true) {
         const code = typeof params.code === "string" ? params.code : await params.code();
         const codeCheckResult = await client.checkCode(code);
-        if (codeCheckResult.type === "signed_in") {
+        if (codeCheckResult.type === "signedIn") {
           return;
-        } else if (codeCheckResult.type === "invalid_code") {
+        } else if (codeCheckResult.type === "invalidCode") {
           continue code;
-        } else if (codeCheckResult.type === "password_required") {
+        } else if (codeCheckResult.type === "passwordRequired") {
           break code;
         } else {
           unreachable();
@@ -94,9 +94,9 @@ export async function signIn(client: ClientGeneric, logger: Logger, params: Sign
       password: while (true) {
         const password = typeof params.password === "string" ? params.password : await params.password(passwordHint);
         const passwordCheckResult = await client.checkPassword(password);
-        if (passwordCheckResult.type === "signed_in") {
+        if (passwordCheckResult.type === "signedIn") {
           return;
-        } else if (passwordCheckResult.type === "invalid_password") {
+        } else if (passwordCheckResult.type === "invalidPassword") {
           continue password;
         } else {
           unreachable();

@@ -24,7 +24,7 @@
  */
 export interface BotTokenCheckResultSignedIn {
   /** @discriminator */
-  type: "signed_in";
+  type: "signedIn";
   userId: number;
 }
 
