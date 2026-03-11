@@ -48,8 +48,8 @@ import { constructUser2, type User } from "./2_user.ts";
 import { constructForwardHeader, type ForwardHeader } from "./3_forward_header.ts";
 import { constructGame, type Game } from "./3_game.ts";
 import { constructReplyQuote, type ReplyQuote } from "./3_reply_quote.ts";
-import { constructPoll, type Poll } from "./4_poll.ts";
 import { type Checklist, constructChecklist } from "./4_checklist.ts";
+import { constructPoll, type Poll } from "./4_poll.ts";
 import { constructLinkPreview, type LinkPreview } from "./5_link_preview.ts";
 
 const L = getLogger("Message");

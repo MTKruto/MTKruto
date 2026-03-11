@@ -901,7 +901,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async sendChecklist(chatId: ID, title: string, items: InputChecklistItem[], params?: SendChecklistParams) {
-    this.#c.storage.assertUser('sendChecklist')
+    this.#c.storage.assertUser("sendChecklist");
     this.#checkParams(params);
     title = title?.trim();
     if (!title) {
@@ -920,7 +920,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       const text = v.text;
       const entities = v.entities;
       const parseResult = this.parseText(text, { parseMode: v.parseMode, entities: entities });
-      return ({ _: "todoItem", id: i, title: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } });
+      return ({ _: "todoItem", id: i + 1, title: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } });
     });
 
     const titleParseResult = this.parseText(title, { parseMode: params?.titleParseMode, entities: params?.titleEntities });

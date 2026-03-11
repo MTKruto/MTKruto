@@ -18,12 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
-import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
+import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
 import { constructUser2, type User } from "./2_user.ts";
-import { unreachable } from "../0_deps.ts";
 
 /**
  * An unchecked checklist item.
