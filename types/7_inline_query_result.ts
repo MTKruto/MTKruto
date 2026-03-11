@@ -488,7 +488,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
 }
 
 // deno-lint-ignore no-explicit-any
-export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => Promise<readonly [string, any[] | undefined]>, usernameResolver: UsernameResolver): Promise<Api.InputBotInlineResult> {
+export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [string, any[] | undefined], usernameResolver: UsernameResolver): Promise<Api.InputBotInlineResult> {
   let document: Api.InputWebDocument | null = null;
   let thumb: Api.inputWebDocument | null = null;
   let fileId_: string | null = null;
@@ -597,7 +597,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
 
   let ret: Awaited<ReturnType<typeof parseText>> = ["", []];
   if ("caption" in result_ && result_.caption) {
-    ret = await parseText(result_.caption, { parseMode: result_.parseMode, entities: result_.captionEntities });
+    ret = parseText(result_.caption, { parseMode: result_.parseMode, entities: result_.captionEntities });
   }
 
   const { type, id } = result_;
@@ -633,7 +633,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     if (!("text" in result_.messageContent)) {
       unreachable();
     }
-    const [message, entities] = await parseText(result_.messageContent.text, { entities: result_.messageContent.entities, parseMode: result_.messageContent.parseMode });
+    const [message, entities] = parseText(result_.messageContent.text, { entities: result_.messageContent.entities, parseMode: result_.messageContent.parseMode });
     const noWebpage = result_.messageContent?.linkPreview && result_.messageContent?.linkPreview.type === "input" && result_.messageContent?.linkPreview.isDisabled ? true : undefined;
     const invertMedia = result_.messageContent?.linkPreview?.isAboveText ? true : undefined;
 
