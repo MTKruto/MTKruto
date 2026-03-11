@@ -18,24 +18,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { cleanObject } from "../1_utilities.ts";
-import type { Api } from "../2_tl.ts";
-import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
+import type { ParseMode } from "./0_parse_mode.ts";
+import type { MessageEntity } from "./2_message_entity.ts";
 
-/** A to-do item. */
-export interface TodoItem {
-  /** The identifier of the to-do item. */
-  id: number;
+/** A to-do item that is to be provided as an input. */
+export interface InputTodoItem {
   /** The item's text. */
   text: string;
   /** The entities of the text. */
   entities?: MessageEntity[];
-}
-
-export function constructTodoItem(todoItem: Api.todoItem): TodoItem {
-  return cleanObject({
-    id: todoItem.id,
-    text: todoItem.title.text,
-    entities: todoItem.title.entities.length ? todoItem.title.entities.map((v) => constructMessageEntity(v)).filter((v) => v !== null) : undefined,
-  });
+  /** The parse mode to use for the text. If omitted, the default parse mode will be used. */
+  parseMode?: ParseMode;
 }

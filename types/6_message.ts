@@ -49,6 +49,7 @@ import { constructForwardHeader, type ForwardHeader } from "./3_forward_header.t
 import { constructGame, type Game } from "./3_game.ts";
 import { constructReplyQuote, type ReplyQuote } from "./3_reply_quote.ts";
 import { constructPoll, type Poll } from "./4_poll.ts";
+import { constructTodoList, type TodoList } from "./4_todo_list.ts";
 import { constructLinkPreview, type LinkPreview } from "./5_link_preview.ts";
 
 const L = getLogger("Message");
@@ -136,7 +137,7 @@ export interface _MessageMediaBase extends _MessageBase {
  */
 export interface MessageText extends _MessageBase {
   /**
-   * The text included in the message
+   * The text included in the message.
    * @discriminator
    */
   text: string;
@@ -160,7 +161,7 @@ export interface MessageLink extends _MessageBase {
 
 /** @unlisted */
 export interface MessagePhoto extends _MessageMediaBase {
-  /** The photo included in the message
+  /** The photo included in the message.
    * @discriminator
    */
   photo: Photo;
@@ -172,7 +173,7 @@ export interface MessagePhoto extends _MessageMediaBase {
  */
 export interface MessageDocument extends _MessageMediaBase {
   /**
-   * The document included in the message
+   * The document included in the message.
    * @discriminator
    */
   document: Document;
@@ -184,7 +185,7 @@ export interface MessageDocument extends _MessageMediaBase {
  */
 export interface MessageVideo extends _MessageMediaBase {
   /**
-   * The video included in the message
+   * The video included in the message.
    * @discriminator
    */
   video: Video;
@@ -196,7 +197,7 @@ export interface MessageVideo extends _MessageMediaBase {
  */
 export interface MessageSticker extends _MessageBase {
   /**
-   * The sticker included in the message
+   * The sticker included in the message.
    * @discriminator
    */
   sticker: Sticker;
@@ -208,7 +209,7 @@ export interface MessageSticker extends _MessageBase {
  */
 export interface MessageAnimation extends _MessageMediaBase {
   /**
-   * The animation included in the message
+   * The animation included in the message.
    * @discriminator
    */
   animation: Animation;
@@ -220,7 +221,7 @@ export interface MessageAnimation extends _MessageMediaBase {
  */
 export interface MessageVoice extends _MessageMediaBase {
   /**
-   * The voice included in the message
+   * The voice included in the message.
    * @discriminator
    */
   voice: Voice;
@@ -232,7 +233,7 @@ export interface MessageVoice extends _MessageMediaBase {
  */
 export interface MessageAudio extends _MessageMediaBase {
   /**
-   * The audio included in the message
+   * The audio included in the message.
    * @discriminator
    */
   audio: Audio;
@@ -244,7 +245,7 @@ export interface MessageAudio extends _MessageMediaBase {
  */
 export interface MessageDice extends _MessageBase {
   /**
-   * The dice included in the message
+   * The dice included in the message.
    * @discriminator
    */
   dice: Dice;
@@ -256,7 +257,7 @@ export interface MessageDice extends _MessageBase {
  */
 export interface MessageVideoNote extends _MessageBase {
   /**
-   * The video note included in the message
+   * The video note included in the message.
    * @discriminator
    */
   videoNote: VideoNote;
@@ -268,7 +269,7 @@ export interface MessageVideoNote extends _MessageBase {
  */
 export interface MessageContact extends _MessageBase {
   /**
-   * The contact included in the message
+   * The contact included in the message.
    * @discriminator
    */
   contact: Contact;
@@ -280,7 +281,7 @@ export interface MessageContact extends _MessageBase {
  */
 export interface MessageGame extends _MessageBase {
   /**
-   * The game included in the message
+   * The game included in the message.
    * @discriminator
    */
   game: Game;
@@ -292,10 +293,22 @@ export interface MessageGame extends _MessageBase {
  */
 export interface MessagePoll extends _MessageBase {
   /**
-   * The poll included in the message
+   * The poll included in the message.
    * @discriminator
    */
   poll: Poll;
+}
+
+/**
+ * A to-do list message.
+ * @unlisted
+ */
+export interface MessageTodoList extends _MessageBase {
+  /**
+   * The todo-list included in the message.
+   * @discriminator
+   */
+  todoList: TodoList;
 }
 
 /**
@@ -304,7 +317,7 @@ export interface MessagePoll extends _MessageBase {
  */
 export interface MessageInvoice extends _MessageBase {
   /**
-   * The invoice included in the message
+   * The invoice included in the message.
    * @discriminator
    */
   invoice: Invoice;
@@ -316,7 +329,7 @@ export interface MessageInvoice extends _MessageBase {
  */
 export interface MessageVenue extends _MessageBase {
   /**
-   * The venue included in the message
+   * The venue included in the message.
    * @discriminator
    */
   venue: Venue;
@@ -328,7 +341,7 @@ export interface MessageVenue extends _MessageBase {
  */
 export interface MessageLocation extends _MessageBase {
   /**
-   * The location included in the message
+   * The location included in the message.
    * @discriminator
    */
   location: Location;
@@ -609,6 +622,7 @@ export interface MessageTypes {
   contact: MessageContact;
   game: MessageGame;
   poll: MessagePoll;
+  todoList: MessageTodoList;
   invoice: MessageInvoice;
   venue: MessageVenue;
   location: MessageLocation;
@@ -654,6 +668,7 @@ const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
   contact: ["contact"],
   game: ["game"],
   poll: ["poll"],
+  todoList: ["todoList"],
   invoice: ["invoice"],
   venue: ["venue"],
   location: ["location"],
@@ -714,6 +729,7 @@ export type Message =
   | MessageContact
   | MessageGame
   | MessagePoll
+  | MessageTodoList
   | MessageInvoice
   | MessageVenue
   | MessageLocation
@@ -1129,6 +1145,9 @@ export async function constructMessage(
     }
     const poll_ = constructPoll(message_.media);
     m = { ...message, poll: poll_ };
+  } else if (Api.is("messageMediaToDo", message_.media)) {
+    const todoList = constructTodoList(message_.media.todo);
+    m = { ...message, todoList };
   } else if (Api.is("messageMediaVenue", message_.media)) {
     const venue = constructVenue(message_.media);
     m = { ...message, venue };

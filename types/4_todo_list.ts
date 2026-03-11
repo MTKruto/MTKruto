@@ -18,10 +18,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { MessageEntity } from "./2_message_entity.ts";
+import { cleanObject } from "../1_utilities.ts";
+import type { Api } from "../2_tl.ts";
+import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
+import { constructTodoItem, type TodoItem } from "./3_todo_item.ts";
 
-/** A to-do list. */
+/** A to-do list that is to be provided as an input. */
 export interface TodoList {
+  /** The to-do list's title. */
   title: string;
-  titleEntities: MessageEntity[];
+  /** The entities of the to-do list's title. */
+  titleEntities?: MessageEntity[];
+  /** The to-do list's items. At least one item must be provided. */
+  items: TodoItem[];
+  /** Whether users other than the creator of the to-do list can add more items. */
+  isExtendableByOthers: boolean;
+  /** Whether users other than the creator of the to-do-list can mark items as completed. */
+  isCompletableByOthers: boolean;
+}
+
+export function constructTodoList(todoList: Api.todoList): TodoList {
+  return cleanObject({
+    title: todoList.title.text,
+    titleEntities: todoList.title.entities.length ? todoList.title.entities.map((v) => constructMessageEntity(v)).filter((v) => v !== null) : undefined,
+    items: todoList.list.map((v) => constructTodoItem(v)),
+    isExtendableByOthers: !!todoList.others_can_append,
+    isCompletableByOthers: !!todoList.others_can_complete,
+  });
 }
