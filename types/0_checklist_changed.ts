@@ -27,6 +27,7 @@ export interface ChecklistChanged {
   /** The identifiers of the unchecked items. */
   uncheckedItems: number[];
 }
+
 export function constructChecklistChanged(action: Api.messageActionTodoCompletions): ChecklistChanged {
   return {
     checkedItems: action.completed,
