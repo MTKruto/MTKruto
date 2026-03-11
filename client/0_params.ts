@@ -160,8 +160,6 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   questionEntities?: MessageEntity[];
   /** The parse mode to use for the poll's question. If omitted, the default parse mode will be used. */
   questionParseMode?: ParseMode;
-  /** The parse mode to use for the poll's options. If omitted, the default parse mode will be used. */
-  optionParseMode?: ParseMode;
   /** Whether the poll should be anonymous. */
   isAnonymous?: boolean;
   /** The type of the poll. */

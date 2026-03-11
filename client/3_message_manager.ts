@@ -24,7 +24,7 @@ import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } fr
 import { Api } from "../2_tl.ts";
 import { PackShortNameInvalid } from "../3_errors.ts";
 import { getDc } from "../3_transport.ts";
-import { constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputMedia, isMessageType, type MessageList, type PollOption, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputMedia, type InputPollOption, isMessageType, type MessageList, type PollOption, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
@@ -844,7 +844,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return null;
   }
 
-  async sendPoll(chatId: ID, question: string, options: (string | PollOption)[], params?: SendPollParams) {
+  async sendPoll(chatId: ID, question: string, options: InputPollOption[], params?: SendPollParams) {
     this.#checkParams(params);
     question = question?.trim();
     if (!question) {
@@ -867,9 +867,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const solutionEntities = parseResult === undefined ? undefined : parseResult[1];
 
     const answers: Api.pollAnswer[] = await Promise.all(options.map(async (v, i) => {
-      const text = typeof v === "string" ? v : v.text;
-      const entities = typeof v === "string" ? [] : v.entities;
-      const parseResult = await this.parseText(text, { parseMode: params?.optionParseMode, entities: entities });
+      const text = v.text;
+      const entities = v.entities;
+      const parseResult = await this.parseText(text, { parseMode: v.parseMode, entities: entities });
       return ({ _: "pollAnswer", option: encodeText(String(i)), text: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } });
     }));
 
