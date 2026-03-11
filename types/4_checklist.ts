@@ -20,29 +20,30 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
+import type { PeerGetter } from "./1_chat_p.ts";
 import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
-import { constructTodoItem, type TodoItem } from "./3_todo_item.ts";
+import { type ChecklistItem, constructChecklistItem } from "./3_checklist_item.ts";
 
-/** A to-do list that is to be provided as an input. */
-export interface TodoList {
-  /** The to-do list's title. */
+/** A checklist. */
+export interface Checklist {
+  /** The checklist's title. */
   title: string;
-  /** The entities of the to-do list's title. */
+  /** The entities of the checklist's title. */
   titleEntities?: MessageEntity[];
-  /** The to-do list's items. At least one item must be provided. */
-  items: TodoItem[];
-  /** Whether users other than the creator of the to-do list can add more items. */
+  /** The checklist's items. At least one item must be provided. */
+  items: ChecklistItem[];
+  /** Whether users other than the creator of the checklist can add more items. */
   isExtendableByOthers: boolean;
-  /** Whether users other than the creator of the to-do-list can mark items as completed. */
-  isCompletableByOthers: boolean;
+  /** Whether users other than the creator of the checklist can mark items as completed. */
+  isCheckableByOthers: boolean;
 }
 
-export function constructTodoList(todoList: Api.todoList): TodoList {
+export function constructChecklist(todoList: Api.todoList, completions: Api.todoCompletion[], getPeer: PeerGetter): Checklist {
   return cleanObject({
     title: todoList.title.text,
     titleEntities: todoList.title.entities.length ? todoList.title.entities.map((v) => constructMessageEntity(v)).filter((v) => v !== null) : undefined,
-    items: todoList.list.map((v) => constructTodoItem(v)),
+    items: todoList.list.map((v) => constructChecklistItem(v, completions, getPeer)),
     isExtendableByOthers: !!todoList.others_can_append,
-    isCompletableByOthers: !!todoList.others_can_complete,
+    isCheckableByOthers: !!todoList.others_can_complete,
   });
 }

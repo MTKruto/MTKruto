@@ -24,11 +24,11 @@ import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } fr
 import { Api } from "../2_tl.ts";
 import { PackShortNameInvalid } from "../3_errors.ts";
 import { getDc } from "../3_transport.ts";
-import { constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputMedia, type InputPollOption, type InputTodoItem, isMessageType, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputChecklistItem, type InputMedia, type InputPollOption, isMessageType, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendTodoListParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -900,7 +900,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "poll");
   }
 
-  async sendTodoList(chatId: ID, title: string, items: InputTodoItem[], params?: SendTodoListParams) {
+  async sendChecklist(chatId: ID, title: string, items: InputChecklistItem[], params?: SendChecklistParams) {
+    this.#c.storage.assertUser('sendChecklist')
     this.#checkParams(params);
     title = title?.trim();
     if (!title) {
@@ -952,7 +953,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     );
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
-    return assertMessageType(message, "todoList");
+    return assertMessageType(message, "checklist");
   }
 
   async editMessageReplyMarkup(

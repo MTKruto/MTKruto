@@ -49,7 +49,7 @@ import { constructForwardHeader, type ForwardHeader } from "./3_forward_header.t
 import { constructGame, type Game } from "./3_game.ts";
 import { constructReplyQuote, type ReplyQuote } from "./3_reply_quote.ts";
 import { constructPoll, type Poll } from "./4_poll.ts";
-import { constructTodoList, type TodoList } from "./4_todo_list.ts";
+import { type Checklist, constructChecklist } from "./4_checklist.ts";
 import { constructLinkPreview, type LinkPreview } from "./5_link_preview.ts";
 
 const L = getLogger("Message");
@@ -300,15 +300,15 @@ export interface MessagePoll extends _MessageBase {
 }
 
 /**
- * A to-do list message.
+ * A checklist message.
  * @unlisted
  */
-export interface MessageTodoList extends _MessageBase {
+export interface MessageChecklist extends _MessageBase {
   /**
-   * The todo-list included in the message.
+   * The checklist included in the message.
    * @discriminator
    */
-  todoList: TodoList;
+  checklist: Checklist;
 }
 
 /**
@@ -622,7 +622,7 @@ export interface MessageTypes {
   contact: MessageContact;
   game: MessageGame;
   poll: MessagePoll;
-  todoList: MessageTodoList;
+  checklist: MessageChecklist;
   invoice: MessageInvoice;
   venue: MessageVenue;
   location: MessageLocation;
@@ -668,7 +668,7 @@ const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
   contact: ["contact"],
   game: ["game"],
   poll: ["poll"],
-  todoList: ["todoList"],
+  checklist: ["checklist"],
   invoice: ["invoice"],
   venue: ["venue"],
   location: ["location"],
@@ -729,7 +729,7 @@ export type Message =
   | MessageContact
   | MessageGame
   | MessagePoll
-  | MessageTodoList
+  | MessageChecklist
   | MessageInvoice
   | MessageVenue
   | MessageLocation
@@ -1146,8 +1146,8 @@ export async function constructMessage(
     const poll_ = constructPoll(message_.media);
     m = { ...message, poll: poll_ };
   } else if (Api.is("messageMediaToDo", message_.media)) {
-    const todoList = constructTodoList(message_.media.todo);
-    m = { ...message, todoList };
+    const todoList = constructChecklist(message_.media.todo, message_.media.completions ?? [], getPeer);
+    m = { ...message, checklist: todoList };
   } else if (Api.is("messageMediaVenue", message_.media)) {
     const venue = constructVenue(message_.media);
     m = { ...message, venue };

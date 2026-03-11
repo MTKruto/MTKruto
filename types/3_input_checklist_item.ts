@@ -21,8 +21,8 @@
 import type { ParseMode } from "./0_parse_mode.ts";
 import type { MessageEntity } from "./2_message_entity.ts";
 
-/** A to-do item that is to be provided as an input. */
-export interface InputTodoItem {
+/** A checklist item that is to be provided as an input. */
+export interface InputChecklistItem {
   /** The item's text. */
   text: string;
   /** The entities of the text. */
