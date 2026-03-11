@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { type Api, toJSON } from "../2_tl.ts";
-import type { BusinessConnection, CallbackQuery, ChatAction, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChosenInlineResult, FileSource, ID, InlineQuery, InlineQueryResult, InputMedia, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, PriceTag, Reaction, ReplyTo, SlowModeDuration, Topic, Update, User } from "../3_types.ts";
+import type { BusinessConnection, CallbackQuery, ChatAction, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChosenInlineResult, FileSource, ID, InlineQuery, InlineQueryResult, InputMedia, InputPollOption, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, PriceTag, Reaction, ReplyTo, SlowModeDuration, Topic, Update, User } from "../3_types.ts";
 import type { AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, BanChatMemberParams, CreateInviteLinkParams, CreateTopicParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetCreatedInviteLinksParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 
@@ -184,7 +184,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendPoll}.
    */
-  async replyPoll(question: string, options: string[], params?: Omit<SendPollParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessagePoll> {
+  async replyPoll(question: string, options: InputPollOption[], params?: Omit<SendPollParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessagePoll> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
     return await this.client.sendPoll(chatId, question, options, { ...params, ...replyTo, businessConnectionId });
