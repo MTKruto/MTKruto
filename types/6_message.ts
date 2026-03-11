@@ -23,6 +23,7 @@ import { cleanObject, getLogger, type MaybePromise, ZERO_CHANNEL_ID } from "../1
 import { Api } from "../2_tl.ts";
 import { type FileId, FileType, toUniqueFileId } from "./_file_id.ts";
 import { serializeFileId } from "./_file_id.ts";
+import { type ChecklistChanged, constructChecklistChanged } from "./0_checklist_changed.ts";
 import { constructContact, type Contact } from "./0_contact.ts";
 import { constructDice, type Dice } from "./0_dice.ts";
 import { constructInvoice, type Invoice } from "./0_invoice.ts";
@@ -51,6 +52,7 @@ import { constructReplyQuote, type ReplyQuote } from "./3_reply_quote.ts";
 import { type Checklist, constructChecklist } from "./4_checklist.ts";
 import { constructPoll, type Poll } from "./4_poll.ts";
 import { constructLinkPreview, type LinkPreview } from "./5_link_preview.ts";
+import { type ChecklistItem, constructChecklistItem } from "./3_checklist_item.ts";
 
 const L = getLogger("Message");
 
@@ -604,6 +606,24 @@ export interface MessageRefundedPayment extends _MessageBase {
   refundedPayment: RefundedPayment;
 }
 
+/**
+ * A checklist was changed.
+ * @unlisted
+ */
+export interface MessageChecklistChanged extends _MessageBase {
+  /** @discriminator */
+  checklistChanged: ChecklistChanged;
+}
+
+/**
+ * A checklist was extended.
+ * @unlisted
+ */
+export interface MessageChecklistExtended extends _MessageBase {
+  /** @discriminator */
+  checklistExtended: ChecklistItem[];
+}
+
 // message type map
 
 /** @unlisted */
@@ -651,6 +671,8 @@ export interface MessageTypes {
   unsupported: MessageUnsupported;
   successfulPayment: MessageSuccessfulPayment;
   refundedPayment: MessageRefundedPayment;
+  checklistChanged: MessageChecklistChanged;
+  checklistExtended: MessageChecklistExtended;
 }
 
 const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
@@ -697,6 +719,8 @@ const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
   unsupported: ["unsupported"],
   successfulPayment: ["successfulPayment"],
   refundedPayment: ["refundedPayment"],
+  checklistChanged: ["checklistChanged"],
+  checklistExtended: ["checklistExtended"],
 };
 export function isMessageType<T extends keyof MessageTypes>(message: Message, type: T): message is MessageTypes[T] {
   for (const key of keys[type]) {
@@ -757,7 +781,9 @@ export type Message =
   | MessageGiveaway
   | MessageUnsupported
   | MessageSuccessfulPayment
-  | MessageRefundedPayment;
+  | MessageRefundedPayment
+  | MessageChecklistChanged
+  | MessageChecklistExtended;
 
 /** @unlisted */
 export interface MessageGetter {
@@ -927,6 +953,12 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
   } else if (Api.is("messageActionPaymentRefunded", message_.action)) {
     const refundedPayment = constructRefundedPayment(message_.action);
     return { ...message, refundedPayment };
+  } else if (Api.is("messageActionTodoCompletions", message_.action)) {
+    const checklistChanged = constructChecklistChanged(message_.action);
+    return { ...message, checklistChanged };
+  } else if (Api.is("messageActionTodoAppendTasks", message_.action)) {
+    const checklistExtended = message_.action.list.map((v) => constructChecklistItem(v, [], getPeer));
+    return { ...message, checklistExtended };
   }
   return { ...message, unsupported: true };
 }
@@ -961,7 +993,7 @@ export async function constructMessage(
   }
 
   if (Api.is("messageService", message_)) {
-    return constructServiceMessage(message_, chat_, getPeer, getMessage, getReply_);
+    return cleanObject(await constructServiceMessage(message_, chat_, getPeer, getMessage, getReply_));
   }
 
   const message: _MessageBase = {

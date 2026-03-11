@@ -32,6 +32,7 @@ export * from "./types/0_chat_administrator_rights.ts";
 export * from "./types/0_chat_folder.ts";
 export * from "./types/0_chat_member_rights.ts";
 export * from "./types/0_chat_photo.ts";
+export * from "./types/0_checklist_changed.ts";
 export * from "./types/0_code_check_result.ts";
 export * from "./types/0_connection_state.ts";
 export * from "./types/0_contact.ts";
