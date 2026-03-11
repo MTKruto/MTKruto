@@ -67,7 +67,7 @@ export interface _ReplyMarkupCommon {
 }
 
 export interface _PaidBroadcastCommon {
-  /** Whether the message is a broadcast that is going to be paid for. */
+  /** Whether the message is a broadcast that is going to be paid for. Bot-only. */
   isPaidBroadcast?: boolean;
 }
 

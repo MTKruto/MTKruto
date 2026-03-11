@@ -180,7 +180,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     }
   }
 
-  // RESTRICTING, BANNING, AND UNBANNING CHAT MEMBERS //
+  // CHAT MEMBERS //
   async banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams) {
     const chat = await this.#c.getInputPeer(chatId);
     if (!(Api.is("inputPeerChannel", chat)) && !(Api.is("inputPeerChat", chat))) {
@@ -232,6 +232,27 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     await this.#c.invoke({ _: "channels.editBanned", channel, participant: member, banned_rights: chatMemberRightsToTlObject(params?.rights, params?.until) });
   }
 
+  async promoteChatMember(chatId: ID, userId: ID, params?: PromoteChatMemberParams) {
+    const channel = await this.#c.getInputChannel(chatId);
+    const user_id = await this.#c.getInputUser(userId);
+    const admin_rights = chatAdministratorRightsToTlObject(params ?? {});
+    const rank = params?.title ?? "";
+    await this.#c.invoke({
+      _: "channels.editAdmin",
+      channel,
+      user_id,
+      admin_rights,
+      rank,
+    });
+  }
+
+  async setChatMemberTag(chatId: ID, userId: ID, params?: SetChatMemberTagParams) {
+    const peer = await this.#c.getInputPeer(chatId);
+    const participant = await this.#c.getInputPeer(userId);
+    const rank = params?.tag ?? "";
+    await this.#c.invoke({ _: "messages.editChatParticipantRank", peer, participant, rank });
+  }
+
   // CHAT SETTINGS //
   async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]) {
     await this.#c.invoke({ _: "messages.setChatAvailableReactions", peer: await this.#c.getInputPeer(chatId), available_reactions: availableReactions === "none" ? { _: "chatReactionsNone" } : availableReactions === "all" ? { _: "chatReactionsAll" } : Array.isArray(availableReactions) ? ({ _: "chatReactionsSome", reactions: availableReactions.map((v) => reactionToTlObject(v)) }) : unreachable() });
@@ -261,73 +282,6 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   async deleteChatStickerSet(chatId: ID) {
     const channel = await this.#c.getInputChannel(chatId);
     await this.#c.invoke({ _: "channels.setStickers", channel, stickerset: { _: "inputStickerSetEmpty" } });
-  }
-
-  // CHAT PHOTOS //
-  async deleteChatPhoto(chatId: ID) {
-    const peer = await this.#c.getInputPeer(chatId);
-    if (!(canBeInputChannel(peer)) && !(Api.is("inputPeerChat", peer))) {
-      unreachable();
-    }
-
-    if (canBeInputChannel(peer)) {
-      await this.#c.invoke({ _: "channels.editPhoto", channel: toInputChannel(peer), photo: { _: "inputChatPhotoEmpty" } });
-    } else if (Api.is("inputPeerChat", peer)) {
-      await this.#c.invoke({ _: "messages.editChatPhoto", chat_id: peer.chat_id, photo: { _: "inputChatPhotoEmpty" } });
-    }
-  }
-
-  async setChatPhoto(chatId: ID, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
-    const peer = await this.#c.getInputPeer(chatId);
-    if (!(canBeInputChannel(peer)) && !(Api.is("inputPeerChat", peer))) {
-      unreachable();
-    }
-
-    const file = await this.#c.fileManager.upload(photo, params);
-    const photo_: Api.inputChatUploadedPhoto = { _: "inputChatUploadedPhoto", file };
-
-    if (canBeInputChannel(peer)) {
-      await this.#c.invoke({ _: "channels.editPhoto", channel: toInputChannel(peer), photo: photo_ });
-    } else if (Api.is("inputPeerChat", peer)) {
-      await this.#c.invoke({ _: "messages.editChatPhoto", chat_id: peer.chat_id, photo: photo_ });
-    }
-  }
-
-  // INVITING MEMBERS //
-  async addChatMember(chatId: ID, userId: ID, params?: AddChatMemberParams) {
-    this.#c.storage.assertUser("addChatMember");
-    const chat = await this.#c.getInputPeer(chatId);
-    if (Api.isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
-      throw new InputError("Cannot add members to private chats");
-    }
-    const user = await this.#c.getInputUser(userId);
-    if (Api.is("inputPeerChat", chat)) {
-      const result = await this.#c.invoke({ _: "messages.addChatUser", chat_id: chat.chat_id, user_id: user, fwd_limit: params?.historyLimit ?? 0 });
-      return result.missing_invitees.map(constructFailedInvitation);
-    } else if (Api.is("inputPeerChannel", chat)) {
-      const result = await this.#c.invoke({ _: "channels.inviteToChannel", channel: { ...chat, _: "inputChannel" }, users: [user] });
-      return result.missing_invitees.map(constructFailedInvitation);
-    }
-    unreachable();
-  }
-
-  async addChatMembers(chatId: ID, userIds: ID[]) {
-    this.#c.storage.assertUser("addChatMembers");
-    const chat = await this.#c.getInputPeer(chatId);
-    if (Api.isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
-      throw new InputError("Cannot add members to private chats");
-    }
-    const users = new Array<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage>();
-    for (const userId of userIds) {
-      users.push(await this.#c.getInputUser(userId));
-    }
-    if (Api.is("inputPeerChat", chat)) {
-      throw new InputError("addChatMembers cannot be used with basic groups");
-    } else if (canBeInputChannel(chat)) {
-      const result = await this.#c.invoke({ _: "channels.inviteToChannel", channel: toInputChannel(chat), users });
-      return result.missing_invitees.map(constructFailedInvitation);
-    }
-    unreachable();
   }
 
   async #toggleSlowMode(chatId: ID, seconds: number) {
@@ -477,27 +431,6 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     await this.#c.invoke({ _: "messages.editChatCreator", peer, user_id, password: password_ });
   }
 
-  async promoteChatMember(chatId: ID, userId: ID, params?: PromoteChatMemberParams) {
-    const channel = await this.#c.getInputChannel(chatId);
-    const user_id = await this.#c.getInputUser(userId);
-    const admin_rights = chatAdministratorRightsToTlObject(params ?? {});
-    const rank = params?.title ?? "";
-    await this.#c.invoke({
-      _: "channels.editAdmin",
-      channel,
-      user_id,
-      admin_rights,
-      rank,
-    });
-  }
-
-  async setChatMemberTag(chatId: ID, userId: ID, params?: SetChatMemberTagParams) {
-    const peer = await this.#c.getInputPeer(chatId);
-    const participant = await this.#c.getInputPeer(userId);
-    const rank = params?.tag ?? "";
-    await this.#c.invoke({ _: "messages.editChatParticipantRank", peer, participant, rank });
-  }
-
   async #setIsSharingEnabled(chatId: ID, isSharingEnabled: boolean) {
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({ _: "messages.toggleNoForwards", peer, enabled: !isSharingEnabled });
@@ -511,5 +444,72 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   async disableSharing(chatId: ID) {
     this.#c.storage.assertUser("disableSharing");
     await this.#setIsSharingEnabled(chatId, false);
+  }
+
+  // CHAT PHOTOS //
+  async deleteChatPhoto(chatId: ID) {
+    const peer = await this.#c.getInputPeer(chatId);
+    if (!(canBeInputChannel(peer)) && !(Api.is("inputPeerChat", peer))) {
+      unreachable();
+    }
+
+    if (canBeInputChannel(peer)) {
+      await this.#c.invoke({ _: "channels.editPhoto", channel: toInputChannel(peer), photo: { _: "inputChatPhotoEmpty" } });
+    } else if (Api.is("inputPeerChat", peer)) {
+      await this.#c.invoke({ _: "messages.editChatPhoto", chat_id: peer.chat_id, photo: { _: "inputChatPhotoEmpty" } });
+    }
+  }
+
+  async setChatPhoto(chatId: ID, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
+    const peer = await this.#c.getInputPeer(chatId);
+    if (!(canBeInputChannel(peer)) && !(Api.is("inputPeerChat", peer))) {
+      unreachable();
+    }
+
+    const file = await this.#c.fileManager.upload(photo, params);
+    const photo_: Api.inputChatUploadedPhoto = { _: "inputChatUploadedPhoto", file };
+
+    if (canBeInputChannel(peer)) {
+      await this.#c.invoke({ _: "channels.editPhoto", channel: toInputChannel(peer), photo: photo_ });
+    } else if (Api.is("inputPeerChat", peer)) {
+      await this.#c.invoke({ _: "messages.editChatPhoto", chat_id: peer.chat_id, photo: photo_ });
+    }
+  }
+
+  // INVITING MEMBERS //
+  async addChatMember(chatId: ID, userId: ID, params?: AddChatMemberParams) {
+    this.#c.storage.assertUser("addChatMember");
+    const chat = await this.#c.getInputPeer(chatId);
+    if (Api.isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
+      throw new InputError("Cannot add members to private chats");
+    }
+    const user = await this.#c.getInputUser(userId);
+    if (Api.is("inputPeerChat", chat)) {
+      const result = await this.#c.invoke({ _: "messages.addChatUser", chat_id: chat.chat_id, user_id: user, fwd_limit: params?.historyLimit ?? 0 });
+      return result.missing_invitees.map(constructFailedInvitation);
+    } else if (Api.is("inputPeerChannel", chat)) {
+      const result = await this.#c.invoke({ _: "channels.inviteToChannel", channel: { ...chat, _: "inputChannel" }, users: [user] });
+      return result.missing_invitees.map(constructFailedInvitation);
+    }
+    unreachable();
+  }
+
+  async addChatMembers(chatId: ID, userIds: ID[]) {
+    this.#c.storage.assertUser("addChatMembers");
+    const chat = await this.#c.getInputPeer(chatId);
+    if (Api.isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
+      throw new InputError("Cannot add members to private chats");
+    }
+    const users = new Array<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage>();
+    for (const userId of userIds) {
+      users.push(await this.#c.getInputUser(userId));
+    }
+    if (Api.is("inputPeerChat", chat)) {
+      throw new InputError("addChatMembers cannot be used with basic groups");
+    } else if (canBeInputChannel(chat)) {
+      const result = await this.#c.invoke({ _: "channels.inviteToChannel", channel: toInputChannel(chat), users });
+      return result.missing_invitees.map(constructFailedInvitation);
+    }
+    unreachable();
   }
 }
