@@ -119,6 +119,7 @@ export * from "./types/3_game.ts";
 export * from "./types/3_gift_upgraded_component.ts";
 export * from "./types/3_inline_query.ts";
 export * from "./types/3_input_media.ts";
+export * from "./types/3_input_poll_option.ts";
 export * from "./types/3_invite_link.ts";
 export * from "./types/3_message_reaction_list.ts";
 export * from "./types/3_message_reactions.ts";
