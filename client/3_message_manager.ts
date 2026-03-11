@@ -868,7 +868,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const answers: Api.pollAnswer[] = options.map((v, i) => {
       const text = v.text;
       const entities = v.entities;
-      const parseResult = this.parseText(text, { parseMode: v.parseMode, entities: entities });
+      const parseResult = this.parseText(text, { parseMode: v.parseMode, entities });
       return ({ _: "pollAnswer", option: encodeText(String(i)), text: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } });
     });
 
@@ -919,7 +919,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const list: Api.todoItem[] = items.map((v, i) => {
       const text = v.text;
       const entities = v.entities;
-      const parseResult = this.parseText(text, { parseMode: v.parseMode, entities: entities });
+      const parseResult = this.parseText(text, { parseMode: v.parseMode, entities });
       return ({ _: "todoItem", id: i + 1, title: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } });
     });
 
