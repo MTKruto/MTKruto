@@ -182,6 +182,17 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   isClosed?: boolean;
 }
 
+export interface SendChecklistParams extends _SendCommon {
+  /** The entities of the to-do list's title. */
+  titleEntities?: MessageEntity[];
+  /** The parse mode to use for the title. If omitted, the default parse mode will be used. */
+  titleParseMode?: ParseMode;
+  /** Whether users other than the creator of the to-do list can add more items. */
+  isExtendableByOthers?: boolean;
+  /** Whether users other than the creator of the to-do-list can mark items as completed. */
+  isCompletableByOthers?: boolean;
+}
+
 export interface SendInvoiceParams extends _SendCommon, _ReplyMarkupCommon {
   providerToken?: string;
   maxTipAmount?: number;

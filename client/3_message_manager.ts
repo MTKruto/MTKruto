@@ -24,12 +24,11 @@ import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } fr
 import { Api } from "../2_tl.ts";
 import { PackShortNameInvalid } from "../3_errors.ts";
 import { getDc } from "../3_transport.ts";
-import { constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputMedia, type InputPollOption, isMessageType, type MessageList, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputChecklistItem, type InputMedia, type InputPollOption, isMessageType, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
-import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, UnpinMessageParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -180,9 +179,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
   }
 
-  async parseText(text_: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
+  parseText(text_: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
     const [text, entities_] = MessageManager.parseText(text_, params?.entities ?? [], params?.parseMode ?? this.#c.parseMode);
-    const entities = entities_?.length > 0 ? await Promise.all(entities_.map((v) => messageEntityToTlObject(v, this.#c.getPeer))) : undefined;
+    const entities = entities_?.length > 0 ? entities_.map((v) => messageEntityToTlObject(v, this.#c.getPeer)) : undefined;
     return [text, entities] as const;
   }
 
@@ -303,7 +302,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendMessageDraft(chatId: ID, draftId: number, text: string, params?: SendMessageDraftParams) {
     this.#c.storage.assertBot("sendMessageDraft");
-    const [message, entities] = await this.parseText(text, params);
+    const [message, entities] = this.parseText(text, params);
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({
       _: "messages.setTyping",
@@ -319,7 +318,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     params?: SendMessageParams,
   ) {
     this.#checkParams(params);
-    const [message, entities] = await this.parseText(text, params);
+    const [message, entities] = this.parseText(text, params);
 
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -795,7 +794,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const caption_ = params?.caption;
-    const parseResult = caption_ !== undefined ? await this.parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }) : undefined;
+    const parseResult = caption_ !== undefined ? this.parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }) : undefined;
 
     const caption = parseResult === undefined ? undefined : parseResult[0];
     const captionEntities = parseResult === undefined ? undefined : parseResult[1];
@@ -861,19 +860,19 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const explanation = params?.explanation;
-    const parseResult = explanation !== undefined ? await this.parseText(explanation, { parseMode: params?.explanationParseMode, entities: params?.explanationEntities }) : undefined;
+    const parseResult = explanation !== undefined ? this.parseText(explanation, { parseMode: params?.explanationParseMode, entities: params?.explanationEntities }) : undefined;
 
     const solution = parseResult === undefined ? undefined : parseResult[0];
     const solutionEntities = parseResult === undefined ? undefined : parseResult[1];
 
-    const answers: Api.pollAnswer[] = await Promise.all(options.map(async (v, i) => {
+    const answers: Api.pollAnswer[] = options.map((v, i) => {
       const text = v.text;
       const entities = v.entities;
-      const parseResult = await this.parseText(text, { parseMode: v.parseMode, entities: entities });
+      const parseResult = this.parseText(text, { parseMode: v.parseMode, entities });
       return ({ _: "pollAnswer", option: encodeText(String(i)), text: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } });
-    }));
+    });
 
-    const questionParseResult = await this.parseText(question, { parseMode: params?.questionParseMode, entities: params?.questionEntities });
+    const questionParseResult = this.parseText(question, { parseMode: params?.questionParseMode, entities: params?.questionEntities });
     const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type === "quiz" ? true : undefined };
 
     const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndex !== undefined ? [encodeText(String(params.correctOptionIndex))] : undefined, solution, solution_entities: solutionEntities };
@@ -899,6 +898,62 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "poll");
+  }
+
+  async sendChecklist(chatId: ID, title: string, items: InputChecklistItem[], params?: SendChecklistParams) {
+    this.#c.storage.assertUser("sendChecklist");
+    this.#checkParams(params);
+    title = title?.trim();
+    if (!title) {
+      throw new Error("Title must not be empty.");
+    }
+    if (!Array.isArray(items) || items.length < 1) {
+      throw new Error("There must be at least one item.");
+    }
+    const peer = await this.#c.getInputPeer(chatId);
+    const randomId = getRandomId();
+    const silent = params?.isSilent ? true : undefined;
+    const noforwards = params?.isContentProtected ? true : undefined;
+    const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
+
+    const list: Api.todoItem[] = items.map((v, i) => {
+      const text = v.text;
+      const entities = v.entities;
+      const parseResult = this.parseText(text, { parseMode: v.parseMode, entities });
+      return ({ _: "todoItem", id: i + 1, title: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } });
+    });
+
+    const titleParseResult = this.parseText(title, { parseMode: params?.titleParseMode, entities: params?.titleEntities });
+    const todo: Api.todoList = {
+      _: "todoList",
+      title: { _: "textWithEntities", text: titleParseResult[0], entities: titleParseResult[1] ?? [] },
+      list,
+      others_can_append: params?.isExtendableByOthers ? true : undefined,
+      others_can_complete: params?.isCompletableByOthers ? true : undefined,
+    };
+
+    const media: Api.inputMediaTodo = { _: "inputMediaTodo", todo };
+
+    const result = await this.#c.invoke(
+      {
+        _: "messages.sendMedia",
+        peer,
+        random_id: randomId,
+        silent,
+        noforwards,
+        reply_to: await this.#constructReplyTo(params),
+        send_as: sendAs,
+        media,
+        message: "",
+        effect: params?.effectId ? BigInt(params.effectId) : undefined,
+        schedule_date: params?.sendAt,
+        allow_paid_floodskip: params?.isPaidBroadcast ? true : undefined,
+      },
+      { businessConnectionId: params?.businessConnectionId },
+    );
+
+    const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
+    return assertMessageType(message, "checklist");
   }
 
   async editMessageReplyMarkup(
@@ -947,7 +1002,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         throw new InputError("The referenced message is not a text message.");
       }
     }
-    const [message, entities] = await this.parseText(text, params);
+    const [message, entities] = this.parseText(text, params);
     if (!message) {
       throw new InputError("Message text cannot be empty.");
     }
@@ -994,7 +1049,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       throw new InputError("The referenced message cannot have a caption.");
     }
 
-    const [message, entities] = await this.parseText(params?.caption ?? "", params);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const result = await this.#c.invoke({
       _: "messages.editMessage",
@@ -1010,7 +1065,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async #editInlineMessageTextInner(inlineMessageId: string, text: string, params?: EditMessageTextParams, allowEmpty = true) {
     this.#checkParams(params);
-    const [message, entities] = await this.parseText(text, params);
+    const [message, entities] = this.parseText(text, params);
     if (!allowEmpty && !message) {
       throw new InputError("Message text cannot be empty.");
     }
@@ -1176,7 +1231,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (!("animation" in message) && !("audio" in message) && !("document" in message) && !("photo" in message) && !("video" in message)) {
       throw new InputError("Unexpected message type.");
     }
-    const [text, entities] = media.caption !== undefined ? await this.parseText(media.caption, { entities: media.captionEntities, parseMode: media.parseMode }) : ["", []];
+    const [text, entities] = media.caption !== undefined ? this.parseText(media.caption, { entities: media.captionEntities, parseMode: media.parseMode }) : ["", []];
     const result = await this.#c.invoke({
       _: "messages.editMessage",
       peer: await this.#c.getInputPeer(chatId),
@@ -1623,7 +1678,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const multiMedia: Api.inputSingleMedia[] = new Array<Api.InputSingleMedia>();
     for (const v of media) {
       const randomId = getRandomId();
-      const [message, entities] = v.caption !== undefined ? await this.parseText(v.caption, { entities: v.captionEntities, parseMode: v.parseMode }) : ["", []];
+      const [message, entities] = v.caption !== undefined ? this.parseText(v.caption, { entities: v.captionEntities, parseMode: v.parseMode }) : ["", []];
       multiMedia.push({ _: "inputSingleMedia", message, entities, random_id: randomId, media: await this.#resolveInputMedia(v) });
     }
 
