@@ -512,4 +512,24 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     }
     unreachable();
   }
+
+  async getRecommendedChannels() {
+    this.#c.storage.assertUser("getRecommendedChannels");
+    const result = await this.#c.invoke({ _: "channels.getChannelRecommendations" });
+    return result.chats.map((v) => constructChatP(v)).filter((v) => v.type === "channel");
+  }
+
+  async getSimilarChannels(chatId: ID) {
+    this.#c.storage.assertUser("getSimilarChannels");
+    const channel = await this.#c.getInputChannel(chatId);
+    const result = await this.#c.invoke({ _: "channels.getChannelRecommendations", channel });
+    return result.chats.map((v) => constructChatP(v)).filter((v) => v.type === "channel");
+  }
+
+  async getSimilarBots(chatId: ID) {
+    this.#c.storage.assertUser("getSimilarBots");
+    const bot = await this.#c.getInputUser(chatId);
+    const result = await this.#c.invoke({ _: "bots.getBotRecommendations", bot });
+    return result.users.map((v) => constructChatP(v)).filter((v) => v.type === "private");
+  }
 }

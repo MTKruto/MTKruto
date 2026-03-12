@@ -3062,6 +3062,38 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     await this.#chatManager.disableSharing(chatId);
   }
 
+  /**
+   * Get recommended channels. User-only.
+   *
+   * @method ch
+   * @returns A list of recommended channels.
+   */
+  async getRecommendedChannels(): Promise<ChatPChannel[]> {
+    return await this.#chatManager.getRecommendedChannels();
+  }
+
+  /**
+   * Get similar channels. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a channel to get similar channels for.
+   * @returns A list of similar channels.
+   */
+  async getSimilarChannels(chatId: ID): Promise<ChatPChannel[]> {
+    return await this.#chatManager.getSimilarChannels(chatId);
+  }
+
+  /**
+   * Get similar bots. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a bot to get similar bots for.
+   * @returns A list of similar bots.
+   */
+  async getSimilarBots(chatId: ID): Promise<ChatPPrivate[]> {
+    return await this.#chatManager.getSimilarBots(chatId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
