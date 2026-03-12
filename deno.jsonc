@@ -10,7 +10,7 @@
     "verbatimModuleSyntax": true
   },
   "fmt": {
-    "lineWidth": 2000
+    "lineWidth": 9999
   },
   "lint": {
     "rules": {

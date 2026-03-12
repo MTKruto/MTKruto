@@ -845,3 +845,10 @@ export interface SetChatMemberTagParams {
   /** The member's new tag. If not set, the member tag will be removed. */
   tag?: string;
 }
+
+export interface UpdateChecklistParams {
+  /** List of identifiers of items to check. */
+  itemsToCheck?: number[];
+  /** List of identifiers of items to uncheck. */
+  itemsToUncheck?: number[];
+}
