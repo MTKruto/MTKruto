@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { chatAdministratorRightsToTlObject, type ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
+import { chatAdministratorRightsToTlObject, type ChatP, constructBotList, constructChannelList, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, type FileSource, type ID, type Reaction, reactionToTlObject, type Update } from "../3_types.ts";
 import { inputPeerToPeer } from "../tl/2_telegram.ts";
 import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, PromoteChatMemberParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams } from "./0_params.ts";
@@ -511,5 +511,25 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
       return result.missing_invitees.map(constructFailedInvitation);
     }
     unreachable();
+  }
+
+  async getRecommendedChannels() {
+    this.#c.storage.assertUser("getRecommendedChannels");
+    const result = await this.#c.invoke({ _: "channels.getChannelRecommendations" });
+    return constructChannelList(result);
+  }
+
+  async getSimilarChannels(chatId: ID) {
+    this.#c.storage.assertUser("getSimilarChannels");
+    const channel = await this.#c.getInputChannel(chatId);
+    const result = await this.#c.invoke({ _: "channels.getChannelRecommendations", channel });
+    return constructChannelList(result);
+  }
+
+  async getSimilarBots(chatId: ID) {
+    this.#c.storage.assertUser("getSimilarBots");
+    const bot = await this.#c.getInputUser(chatId);
+    const result = await this.#c.invoke({ _: "bots.getBotRecommendations", bot });
+    return constructBotList(result);
   }
 }
