@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { type Api, toJSON } from "../2_tl.ts";
-import type { BusinessConnection, CallbackQuery, ChatAction, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPSupergroup, ChosenInlineResult, FileSource, ID, InlineQuery, InlineQueryResult, InputChecklistItem, InputMedia, InputPollOption, InviteLink, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, PriceTag, Reaction, ReplyTo, SlowModeDuration, Topic, Update, User } from "../3_types.ts";
+import type { BusinessConnection, CallbackQuery, ChatAction, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChosenInlineResult, FileSource, ID, InlineQuery, InlineQueryResult, InputChecklistItem, InputMedia, InputPollOption, InviteLink, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, PriceTag, Reaction, ReplyTo, SlowModeDuration, Topic, Update, User } from "../3_types.ts";
 import type { AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, BanChatMemberParams, CreateInviteLinkParams, CreateTopicParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetCreatedInviteLinksParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams } from "./0_params.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 
@@ -1046,5 +1046,21 @@ export class Context {
   async unpinTopic(topicId: number): Promise<void> {
     const chatId = this.#mustGetChatId();
     return await this.client.unpinTopic(chatId, topicId);
+  }
+
+  /**
+   * Context-aware alias for {@link Client.getSimilarChannels}.
+   */
+  async getSimilarChannels(): Promise<ChatPChannel[]> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.getSimilarChannels(chatId);
+  }
+
+  /**
+   * Context-aware alias for {@link Client.getSimilarBots}.
+   */
+  async getSimilarBots(): Promise<ChatPPrivate[]> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.getSimilarBots(chatId);
   }
 }
