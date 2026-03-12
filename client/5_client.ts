@@ -3068,7 +3068,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ch
    * @returns A list of recommended channels.
    */
-  async getRecommendedChannels(): Promise<ChannelList> {
+  async getRecommendedChannels(): Promise<ChatPChannel[]> {
     return await this.#chatManager.getRecommendedChannels();
   }
 
@@ -3079,7 +3079,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a channel to get similar channels for.
    * @returns A list of similar channels.
    */
-  async getSimilarChannels(chatId: ID): Promise<ChannelList> {
+  async getSimilarChannels(chatId: ID): Promise<ChatPChannel[]> {
     return await this.#chatManager.getSimilarChannels(chatId);
   }
 
@@ -3090,7 +3090,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a bot to get similar bots for.
    * @returns A list of similar bots.
    */
-  async getSimilarBots(chatId: ID): Promise<BotList> {
+  async getSimilarBots(chatId: ID): Promise<ChatPPrivate[]> {
     return await this.#chatManager.getSimilarBots(chatId);
   }
 

@@ -46,13 +46,13 @@ import { constructMessageEntity, type MessageEntity } from "./2_message_entity.t
 import { constructReplyMarkup, type ReplyMarkup } from "./2_reply_markup.ts";
 import { constructSuccessfulPayment, type SuccessfulPayment } from "./2_successful_payment.ts";
 import { constructUser2, type User } from "./2_user.ts";
+import { type ChecklistItem, constructChecklistItem } from "./3_checklist_item.ts";
 import { constructForwardHeader, type ForwardHeader } from "./3_forward_header.ts";
 import { constructGame, type Game } from "./3_game.ts";
 import { constructReplyQuote, type ReplyQuote } from "./3_reply_quote.ts";
 import { type Checklist, constructChecklist } from "./4_checklist.ts";
 import { constructPoll, type Poll } from "./4_poll.ts";
 import { constructLinkPreview, type LinkPreview } from "./5_link_preview.ts";
-import { type ChecklistItem, constructChecklistItem } from "./3_checklist_item.ts";
 
 const L = getLogger("Message");
 

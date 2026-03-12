@@ -104,8 +104,6 @@ export * from "./types/2_message_interactions.ts";
 export * from "./types/2_message_reaction_count.ts";
 export * from "./types/2_message_reaction_list_item.ts";
 export * from "./types/2_poll_answer.ts";
-export * from "./types/2_bot_list.ts";
-export * from "./types/2_channel_list.ts";
 export * from "./types/2_reply_markup.ts";
 export * from "./types/2_sticker_set.ts";
 export * from "./types/2_story_content.ts";
