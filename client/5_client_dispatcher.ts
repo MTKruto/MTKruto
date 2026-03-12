@@ -23,7 +23,7 @@ import type { Api, Mtproto } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import type { BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputGift, InputMedia, InputPollOption, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, PasswordCheckResult, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import { DOWNLOAD_MAX_CHUNK_SIZE } from "../4_constants.ts";
-import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateChecklistParams, UpdateProfileParams } from "./0_params.ts";
 import { deserializeWorkerError, type WorkerError } from "./0_worker_error.ts";
 import type { WorkerRequest } from "./0_worker_request.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
@@ -1230,6 +1230,77 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList> {
     return await this.#dispatch("getMessageReactions", chatId, messageId, params);
+  }
+
+  /**
+   * Add items to a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param items The items to add.
+   * @method ms
+   */
+  async addToChecklist(chatId: ID, messageId: number, items: InputChecklistItem[]): Promise<void> {
+    return await this.#dispatch("addToChecklist", chatId, messageId, items);
+  }
+
+  /**
+   * Update a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @method ms
+   */
+  async updateChecklist(chatId: ID, messageId: number, params?: UpdateChecklistParams): Promise<void> {
+    return await this.#dispatch("updateChecklist", chatId, messageId, params);
+  }
+
+  /**
+   * Check multiple items of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param items The identifiers of the items to check.
+   * @method ms
+   */
+  async checkChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void> {
+    return await this.#dispatch("checkChecklistItems", chatId, messageId, items);
+  }
+
+  /**
+   * Uncheck multiple items of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param items The identifiers of the items to uncheck.
+   * @method ms
+   */
+  async uncheckChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void> {
+    return await this.#dispatch("uncheckChecklistItems", chatId, messageId, items);
+  }
+
+  /**
+   * Check a single item of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param item The identifier of the item to check.
+   * @method ms
+   */
+  async checkChecklistItem(chatId: ID, messageId: number, item: number): Promise<void> {
+    return await this.#dispatch("checkChecklistItem", chatId, messageId, item);
+  }
+
+  /**
+   * Uncheck a single item of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param item The identifier of the item to uncheck.
+   * @method ms
+   */
+  async uncheckChecklistItem(chatId: ID, messageId: number, item: number): Promise<void> {
+    return await this.#dispatch("uncheckChecklistItem", chatId, messageId, item);
   }
 
   //

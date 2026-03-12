@@ -30,7 +30,7 @@ import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_er
 import { peerToChatId } from "../tl/2_telegram.ts";
 import type { CodeCheckResult } from "../types/0_code_check_result.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
-import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateProfileParams } from "./0_params.ts";
+import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UpdateChecklistParams, UpdateProfileParams } from "./0_params.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
@@ -2204,6 +2204,77 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList> {
     return await this.#messageManager.getMessageReactions(chatId, messageId, params);
+  }
+
+  /**
+   * Add items to a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param items The items to add.
+   * @method ms
+   */
+  async addToChecklist(chatId: ID, messageId: number, items: InputChecklistItem[]): Promise<void> {
+    await this.#messageManager.addToChecklist(chatId, messageId, items);
+  }
+
+  /**
+   * Update a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @method ms
+   */
+  async updateChecklist(chatId: ID, messageId: number, params?: UpdateChecklistParams): Promise<void> {
+    await this.#messageManager.updateChecklist(chatId, messageId, params);
+  }
+
+  /**
+   * Check multiple items of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param items The identifiers of the items to check.
+   * @method ms
+   */
+  async checkChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void> {
+    await this.#messageManager.checkChecklistItems(chatId, messageId, items);
+  }
+
+  /**
+   * Uncheck multiple items of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param items The identifiers of the items to uncheck.
+   * @method ms
+   */
+  async uncheckChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void> {
+    await this.#messageManager.uncheckChecklistItems(chatId, messageId, items);
+  }
+
+  /**
+   * Check a single item of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param item The identifier of the item to check.
+   * @method ms
+   */
+  async checkChecklistItem(chatId: ID, messageId: number, item: number): Promise<void> {
+    await this.#messageManager.checkChecklistItem(chatId, messageId, item);
+  }
+
+  /**
+   * Uncheck a single item of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param item The identifier of the item to uncheck.
+   * @method ms
+   */
+  async uncheckChecklistItem(chatId: ID, messageId: number, item: number): Promise<void> {
+    await this.#messageManager.uncheckChecklistItem(chatId, messageId, item);
   }
 
   //
