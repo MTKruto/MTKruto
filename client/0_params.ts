@@ -461,6 +461,11 @@ export interface PinMessageParams extends _BusinessConnectionIdCommon {
 export interface UnpinMessageParams extends _BusinessConnectionIdCommon {
 }
 
+export interface UnpinMessagesParams {
+  /** A topic ID. If provided, messages in that topic will be unpinned. */
+  topicId?: number;
+}
+
 export interface BanChatMemberParams {
   /** A point in time within the future in which the ban will be reverted. */
   until?: number;

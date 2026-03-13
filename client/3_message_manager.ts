@@ -28,7 +28,7 @@ import { constructMessageReactionList, constructMiniAppInfo, constructSavedChats
 import { assertMessageType, type ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, UnpinMessageParams, UpdateChecklistParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -1310,8 +1310,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     await this.#c.invoke({ _: "messages.updatePinnedMessage", peer: await this.#c.getInputPeer(chatId), id: checkMessageId(messageId), unpin: true }, { businessConnectionId: params?.businessConnectionId });
   }
 
-  async unpinMessages(chatId: ID) {
-    await this.#c.invoke({ _: "messages.unpinAllMessages", peer: await this.#c.getInputPeer(chatId) });
+  async unpinMessages(chatId: ID, params?: UnpinMessagesParams) {
+    await this.#c.invoke({
+      _: "messages.unpinAllMessages",
+      peer: await this.#c.getInputPeer(chatId),
+      top_msg_id: params?.topicId,
+    });
   }
 
   async #sendReaction(chatId: ID, messageId: number, reactions: Reaction[], params?: AddReactionParams) {
