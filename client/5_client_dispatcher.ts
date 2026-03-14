@@ -470,9 +470,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("setUserEmojiStatus", userId, id, params);
   }
 
-
-
-
   /**
    * Update the profile of the current user. At least one parameter must be specified. User-only.
    *
