@@ -23,7 +23,7 @@ import { constructMessageEntity, type MessageEntity } from "./2_message_entity.t
 
 /** A reference to a specific part of a message that is being replied to. */
 export interface ReplyQuote {
-  /** The byte offset of the quoted text. */
+  /** The offset of the quoted text. */
   offset: number;
   /** The quoted text. */
   text: string;
