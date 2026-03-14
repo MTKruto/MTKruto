@@ -471,6 +471,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Remove the emoji status of a bot's user. Bot-only.
+   *
+   * @method ac
+   * @param userId The identifier of a user of the bot.
+   */
+  async removeUserEmojiStatus(userId: ID): Promise<void> {
+    return await this.#dispatch("removeUserEmojiStatus", userId);
+  }
+
+  /**
    * Update the profile of the current user. At least one parameter must be specified. User-only.
    *
    * @method ac
