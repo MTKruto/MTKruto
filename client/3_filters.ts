@@ -79,7 +79,7 @@ interface Shortcuts<T extends UpdateIntersection> {
   inlineQuery: T["inlineQuery"];
   chosenInlineResult: T["chosenInlineResult"];
 }
-type GetShortcuts<T> = T extends UpdateIntersection ? T["update"] extends object ? Record<string, never> : Shortcuts<T> : Record<string, never>;
+type GetShortcuts<T extends UpdateIntersection> = T["update"] extends object ? Record<string, never> : Shortcuts<T>;
 
 type Filter<Q extends AnyLevelX> = { update: FilterCore<Q> } & GetShortcuts<FilterCore<Q>>;
 export type FilterQuery = AnyLevelX;

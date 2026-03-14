@@ -152,7 +152,7 @@ export function constructGiftUpgraded(gift: Api.starGiftUnique, getPeer: PeerGet
     value,
   });
 }
-export function constructGiftNonUpgraded(gift: Api.starGift): Gift {
+export function constructGiftNonUpgraded(gift: Api.starGift): GiftNonUpgraded {
   if (!Api.is("document", gift.sticker)) {
     unreachable();
   }
