@@ -54,6 +54,7 @@ import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { CallbackQueryManager } from "./4_callback_query_manager.ts";
 import { ChatListManager } from "./4_chat_list_manager.ts";
 import { ChatManager } from "./4_chat_manager.ts";
+import { ChecklistManager } from "./4_checklist_manager.ts";
 import { Composer } from "./4_composer.ts";
 import { ForumManager } from "./4_forum_manager.ts";
 import { GiftManager } from "./4_gift_manager.ts";
@@ -149,6 +150,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #callbackQueryManager: CallbackQueryManager;
   #chatListManager: ChatListManager;
   #chatManager: ChatManager;
+  #checklistManager: ChecklistManager;
   #forumManager: ForumManager;
   #giftManager: GiftManager;
   #inlineQueryManager: InlineQueryManager;
@@ -178,6 +180,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       callbackQueryManager: this.#callbackQueryManager,
       chatListManager: this.#chatListManager,
       chatManager: this.#chatManager,
+      checklistManager: this.#checklistManager,
       forumManager: this.#forumManager,
       giftManager: this.#giftManager,
       inlineQueryManager: this.#inlineQueryManager,
@@ -307,6 +310,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager });
     this.#chatListManager = new ChatListManager({ ...c, fileManager, messageManager });
     this.#chatManager = new ChatManager({ ...c, fileManager, messageManager });
+    this.#checklistManager = new ChecklistManager({ ...c, messageManager });
     this.#forumManager = new ForumManager({ ...c, messageManager });
     this.#giftManager = new GiftManager({ ...c, messageManager });
     this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager });
@@ -2206,77 +2210,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#messageManager.getMessageReactions(chatId, messageId, params);
   }
 
-  /**
-   * Add items to a checklist. User-only.
-   *
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the checklist message.
-   * @param items The items to add.
-   * @method ms
-   */
-  async addToChecklist(chatId: ID, messageId: number, items: InputChecklistItem[]): Promise<void> {
-    await this.#messageManager.addToChecklist(chatId, messageId, items);
-  }
-
-  /**
-   * Update a checklist. User-only.
-   *
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the checklist message.
-   * @method ms
-   */
-  async updateChecklist(chatId: ID, messageId: number, params?: UpdateChecklistParams): Promise<void> {
-    await this.#messageManager.updateChecklist(chatId, messageId, params);
-  }
-
-  /**
-   * Check multiple items of a checklist. User-only.
-   *
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the checklist message.
-   * @param items The identifiers of the items to check.
-   * @method ms
-   */
-  async checkChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void> {
-    await this.#messageManager.checkChecklistItems(chatId, messageId, items);
-  }
-
-  /**
-   * Uncheck multiple items of a checklist. User-only.
-   *
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the checklist message.
-   * @param items The identifiers of the items to uncheck.
-   * @method ms
-   */
-  async uncheckChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void> {
-    await this.#messageManager.uncheckChecklistItems(chatId, messageId, items);
-  }
-
-  /**
-   * Check a single item of a checklist. User-only.
-   *
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the checklist message.
-   * @param item The identifier of the item to check.
-   * @method ms
-   */
-  async checkChecklistItem(chatId: ID, messageId: number, item: number): Promise<void> {
-    await this.#messageManager.checkChecklistItem(chatId, messageId, item);
-  }
-
-  /**
-   * Uncheck a single item of a checklist. User-only.
-   *
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the checklist message.
-   * @param item The identifier of the item to uncheck.
-   * @method ms
-   */
-  async uncheckChecklistItem(chatId: ID, messageId: number, item: number): Promise<void> {
-    await this.#messageManager.uncheckChecklistItem(chatId, messageId, item);
-  }
-
   //
   // ========================= POLLS ========================= //
   //
@@ -2302,6 +2235,81 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async retractVote(chatId: ID, messageId: number) {
     await this.#pollManager.retractVote(chatId, messageId);
+  }
+
+  //
+  // ========================= CHECKLISTS ========================= //
+  //
+
+  /**
+   * Add items to a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param items The items to add.
+   * @method cl
+   */
+  async addToChecklist(chatId: ID, messageId: number, items: InputChecklistItem[]): Promise<void> {
+    await this.#checklistManager.addToChecklist(chatId, messageId, items);
+  }
+
+  /**
+   * Update a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @method cl
+   */
+  async updateChecklist(chatId: ID, messageId: number, params?: UpdateChecklistParams): Promise<void> {
+    await this.#checklistManager.updateChecklist(chatId, messageId, params);
+  }
+
+  /**
+   * Check multiple items of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param items The identifiers of the items to check.
+   * @method cl
+   */
+  async checkChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void> {
+    await this.#checklistManager.checkChecklistItems(chatId, messageId, items);
+  }
+
+  /**
+   * Uncheck multiple items of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param items The identifiers of the items to uncheck.
+   * @method cl
+   */
+  async uncheckChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void> {
+    await this.#checklistManager.uncheckChecklistItems(chatId, messageId, items);
+  }
+
+  /**
+   * Check a single item of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param item The identifier of the item to check.
+   * @method cl
+   */
+  async checkChecklistItem(chatId: ID, messageId: number, item: number): Promise<void> {
+    await this.#checklistManager.checkChecklistItem(chatId, messageId, item);
+  }
+
+  /**
+   * Uncheck a single item of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param item The identifier of the item to uncheck.
+   * @method cl
+   */
+  async uncheckChecklistItem(chatId: ID, messageId: number, item: number): Promise<void> {
+    await this.#checklistManager.uncheckChecklistItem(chatId, messageId, item);
   }
 
   //

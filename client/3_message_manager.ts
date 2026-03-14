@@ -28,7 +28,7 @@ import { constructMessageReactionList, constructMiniAppInfo, constructSavedChats
 import { assertMessageType, type ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -1998,56 +1998,5 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       limit,
     });
     return constructMessageReactionList(messageReactionsList);
-  }
-
-  async addToChecklist(chatId: ID, messageId: number, items: InputChecklistItem[]) {
-    this.#c.storage.assertUser("addToChecklist");
-    const peer = await this.#c.getInputPeer(chatId);
-    const msg_id = messageId;
-    const list = items.map((v): Api.todoItem => {
-      const text = v.text;
-      const entities = v.entities;
-      const parseResult = this.parseText(text, { parseMode: v.parseMode, entities });
-      return { _: "todoItem", id: 0, title: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } };
-    });
-    await this.#c.invoke({ _: "messages.appendTodoList", peer, msg_id, list });
-  }
-
-  async #updateChecklistInner(chatId: ID, messageId: number, params: UpdateChecklistParams | undefined) {
-    if (!params?.itemsToCheck?.length && !params?.itemsToUncheck?.length) {
-      throw new InputError("Both itemsToCheck and itemsToUncheck msut not be empty.");
-    }
-
-    const peer = await this.#c.getInputPeer(chatId);
-    const msg_id = messageId;
-    const completed = params?.itemsToCheck ?? [];
-    const incompleted = params?.itemsToUncheck ?? [];
-
-    await this.#c.invoke({ _: "messages.toggleTodoCompleted", peer, msg_id, completed, incompleted });
-  }
-
-  async updateChecklist(chatId: ID, messageId: number, params?: UpdateChecklistParams) {
-    this.#c.storage.assertUser("updateChecklist");
-    await this.#updateChecklistInner(chatId, messageId, params);
-  }
-
-  async checkChecklistItems(chatId: ID, messageId: number, items: number[]) {
-    this.#c.storage.assertUser("checkChecklistItems");
-    await this.#updateChecklistInner(chatId, messageId, { itemsToCheck: items });
-  }
-
-  async uncheckChecklistItems(chatId: ID, messageId: number, items: number[]) {
-    this.#c.storage.assertUser("uncheckChecklistItems");
-    await this.#updateChecklistInner(chatId, messageId, { itemsToUncheck: items });
-  }
-
-  async checkChecklistItem(chatId: ID, messageId: number, item: number) {
-    this.#c.storage.assertUser("checkChecklistItem");
-    await this.#updateChecklistInner(chatId, messageId, { itemsToCheck: [item] });
-  }
-
-  async uncheckChecklistItem(chatId: ID, messageId: number, item: number) {
-    this.#c.storage.assertUser("uncheckChecklistItem");
-    await this.#updateChecklistInner(chatId, messageId, { itemsToUncheck: [item] });
   }
 }

@@ -20,14 +20,14 @@
 
 import { MINUTE } from "../0_deps.ts";
 import type { Api } from "../2_tl.ts";
-import type { WorkingHourInterval } from "./0_working_hour_interval.ts";
+import type { WorkingHoursInterval } from "./0_working_hours_interval.ts";
 
 /** The working hours of a business. */
 export interface WorkingHours {
   /** The timezone of the working hours. */
   timezone: string;
   /** The working hours. */
-  intervals: WorkingHourInterval[];
+  intervals: WorkingHoursInterval[];
 }
 
 export function constructWorkingHours(hours: Api.businessWorkHours): WorkingHours {

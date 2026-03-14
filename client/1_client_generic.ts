@@ -871,65 +871,6 @@ export abstract class ClientGeneric {
    */
   abstract getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList>;
 
-  /**
-   * Add items to a checklist. User-only.
-   *
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the checklist message.
-   * @param items The items to add.
-   * @method ms
-   */
-  abstract addToChecklist(chatId: ID, messageId: number, items: InputChecklistItem[]): Promise<void>;
-
-  /**
-   * Update a checklist. User-only.
-   *
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the checklist message.
-   * @method ms
-   */
-  abstract updateChecklist(chatId: ID, messageId: number, params?: UpdateChecklistParams): Promise<void>;
-
-  /**
-   * Check multiple items of a checklist. User-only.
-   *
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the checklist message.
-   * @param items The identifiers of the items to check.
-   * @method ms
-   */
-  abstract checkChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void>;
-
-  /**
-   * Uncheck multiple items of a checklist. User-only.
-   *
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the checklist message.
-   * @param items The identifiers of the items to uncheck.
-   * @method ms
-   */
-  abstract uncheckChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void>;
-
-  /**
-   * Check a single item of a checklist. User-only.
-   *
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the checklist message.
-   * @param item The identifier of the item to check.
-   * @method ms
-   */
-  abstract checkChecklistItem(chatId: ID, messageId: number, item: number): Promise<void>;
-
-  /**
-   * Uncheck a single item of a checklist. User-only.
-   *
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the checklist message.
-   * @param item The identifier of the item to uncheck.
-   * @method ms
-   */
-  abstract uncheckChecklistItem(chatId: ID, messageId: number, item: number): Promise<void>;
-
   //
   // ========================= POLLS ========================= //
   //
@@ -952,6 +893,69 @@ export abstract class ClientGeneric {
    * @param messageId The identifier of the message that includes the poll.
    */
   abstract retractVote(chatId: ID, messageId: number): Promise<void>;
+
+  //
+  // ========================= CHECKLISTS ========================= //
+  //
+
+  /**
+   * Add items to a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param items The items to add.
+   * @method cl
+   */
+  abstract addToChecklist(chatId: ID, messageId: number, items: InputChecklistItem[]): Promise<void>;
+
+  /**
+   * Update a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @method cl
+   */
+  abstract updateChecklist(chatId: ID, messageId: number, params?: UpdateChecklistParams): Promise<void>;
+
+  /**
+   * Check multiple items of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param items The identifiers of the items to check.
+   * @method cl
+   */
+  abstract checkChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void>;
+
+  /**
+   * Uncheck multiple items of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param items The identifiers of the items to uncheck.
+   * @method cl
+   */
+  abstract uncheckChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void>;
+
+  /**
+   * Check a single item of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param item The identifier of the item to check.
+   * @method cl
+   */
+  abstract checkChecklistItem(chatId: ID, messageId: number, item: number): Promise<void>;
+
+  /**
+   * Uncheck a single item of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param item The identifier of the item to uncheck.
+   * @method cl
+   */
+  abstract uncheckChecklistItem(chatId: ID, messageId: number, item: number): Promise<void>;
 
   //
   // ========================= FILES ========================= //
