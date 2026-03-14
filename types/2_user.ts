@@ -22,6 +22,7 @@ import { cleanObject, getColorFromPeerId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { type ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 import type { RestrictionReason } from "./0_restriction_reason.ts";
+import { constructUserStatus, type UserStatus } from "./0_user_status.ts";
 import type { ChatPPrivate } from "./1_chat_p.ts";
 
 /** A user. */
@@ -40,6 +41,8 @@ export interface User {
   username?: string;
   /** The user's additional usernames. */
   also?: string[];
+  /** The user's status. */
+  status?: UserStatus;
   /** The user's profile photo. */
   photo?: ChatPhoto;
   /** The user's [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag). */
@@ -76,6 +79,7 @@ export function constructUser(user_: Api.user): User {
     lastName: user_.last_name,
     username: username,
     also: usernames?.filter((v) => v !== username),
+    status: user_.status ? constructUserStatus(user_.status) : undefined,
     languageCode: user_.lang_code,
     isScam: user_.scam || false,
     isFake: user_.fake || false,
