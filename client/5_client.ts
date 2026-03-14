@@ -3730,7 +3730,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#giftManager.getGift(slug);
   }
 
-
   /**
    * Transfer a gift. User-only.
    *
