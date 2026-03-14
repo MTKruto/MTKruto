@@ -2751,4 +2751,15 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   async getGift(slug: string): Promise<Gift> {
     return await this.#dispatch("getGift", slug);
   }
+
+  /**
+   * Transfer a gift. User-only.
+   *
+   * @method gf
+   * @param chatId The identifier of a chat to transfer the gift to.
+   * @param gift The gift to transfer.
+   */
+  async transferGift(chatId: ID, gift: InputGift): Promise<void> {
+    return await this.#dispatch("transferGift", chatId, gift);
+  }
 }
