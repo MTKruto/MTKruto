@@ -2108,4 +2108,13 @@ export abstract class ClientGeneric {
    * @param slug The slug of a gift.
    */
   abstract getGift(slug: string): Promise<Gift>;
+
+  /**
+   * Transfer a gift. User-only.
+   *
+   * @method gf
+   * @param chatId The identifier of a chat to transfer the gift to.
+   * @param gift The gift to transfer.
+   */
+  abstract transferGift(chatId: ID, gift: InputGift): Promise<void>;
 }
