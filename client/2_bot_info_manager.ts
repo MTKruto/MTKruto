@@ -31,7 +31,7 @@ const botInfoManagerUpdates = [
 
 type BotInfoManagerUpdate = Api.Types[(typeof botInfoManagerUpdates)[number]];
 
-export class BotInfoManager implements UpdateProcessor<BotInfoManagerUpdate, true> {
+export class BotInfoManager implements UpdateProcessor<BotInfoManagerUpdate, false> {
   #c: C;
 
   constructor(c: C) {
@@ -100,10 +100,10 @@ export class BotInfoManager implements UpdateProcessor<BotInfoManagerUpdate, tru
     });
   }
 
-  async handleUpdate(update: BotInfoManagerUpdate): Promise<Update | null> {
+  handleUpdate(update: BotInfoManagerUpdate): Update {
     const botId = Number(update.bot_id);
     const chatId = peerToChatId(update.peer);
     const commands = update.commands;
-    return await Promise.resolve({ botCommands: { botId, chatId, commands } });
+    return { botCommands: { botId, chatId, commands } };
   }
 }

@@ -1221,6 +1221,10 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       maybePromises.push(() => this.#botInfoManager.handleUpdate(update));
     }
 
+    if (this.#accountManager.canHandleUpdate(update)) {
+      maybePromises.push(() => this.#accountManager.handleUpdate(update));
+    }
+
     return () =>
       Promise.resolve().then(async () => {
         const updates: Array<Update> = [{ update }];

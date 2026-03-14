@@ -22,17 +22,28 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructInactiveChat, constructUser, type ID, type InputEmojiStatus, type PasswordCheckResult, workingHoursToTlObject } from "../3_types.ts";
+import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructEmojiStatus, constructInactiveChat, constructUser, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
 import type { AddContactParams, CheckUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { C } from "./1_types.ts";
 
-export class AccountManager {
+const accountManagerUpdates = [
+  "updateUserEmojiStatus",
+] as const;
+
+type AccountManagerUpdate = Api.Types[(typeof accountManagerUpdates)[number]];
+
+export class AccountManager implements UpdateProcessor<AccountManagerUpdate, false> {
   #c: C;
 
   constructor(c: C) {
     this.#c = c;
+  }
+
+  canHandleUpdate(update: Api.Update): update is Api.updateUserEmojiStatus {
+    return Api.isOneOf(accountManagerUpdates, update);
   }
 
   async #toggleUsername(id: ID, username: string, active: boolean) {
@@ -410,5 +421,15 @@ export class AccountManager {
   async resumeBusinessBotConnection(chatId: ID) {
     this.#c.storage.assertUser("resumeBusinessBotConnection");
     await this.#setIsBusinessBotConnectionPaused(chatId, false);
+  }
+
+  handleUpdate(update: Api.updateUserEmojiStatus): Update {
+    const userId = Number(update.user_id);
+    if (Api.is("emojiStatusEmpty", update.emoji_status)) {
+      return { emojiStatusRemoved: true, userId };
+    } else {
+      const emojiStatus = constructEmojiStatus(update.emoji_status);
+      return { emojiStatus, userId };
+    }
   }
 }
