@@ -20,12 +20,14 @@
 
 /** @unlisted */
 export interface InputEmojiStatusCustomEmoji {
+  /** @discriminator */
   type: "customEmoji";
   customEmojiId: string;
 }
 
 /** @unlisted */
 export interface InputEmojiStatusGift {
+  /** @discriminator */
   type: "gift";
   giftId: number;
 }
