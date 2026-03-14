@@ -126,6 +126,11 @@ export class AccountManager {
     await this.#c.invoke({ _: "account.updateEmojiStatus", emoji_status });
   }
 
+  async removeEmojiStatus() {
+    this.#c.storage.assertUser("removeEmojiStatus");
+    await this.#c.invoke({ _: "account.updateEmojiStatus", emoji_status: { _: "emojiStatusEmpty" } });
+  }
+
   async setUserEmojiStatus(userId: ID, id: string, params?: SetEmojiStatusParams) {
     this.#c.storage.assertBot("setUserEmojiStatus");
     const user_id = await this.#c.getInputUser(userId);
