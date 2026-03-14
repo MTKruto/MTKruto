@@ -91,4 +91,11 @@ export class GiftManager {
     const result = await this.#c.invoke({ _: "payments.getUniqueStarGift", slug });
     return constructGift(result.gift, this.#c.getPeer.bind(this));
   }
+
+  async transferGift(chatId: ID, gift: InputGift) {
+    this.#c.storage.assertUser("transferGift");
+    const stargift = await inputGiftToTlObject(gift, this.#c.getInputPeer);
+    const to_id = await this.#c.getInputPeer(chatId);
+    await this.#c.invoke({ _: "payments.transferStarGift", stargift, to_id });
+  }
 }
