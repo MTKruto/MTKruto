@@ -52,8 +52,8 @@ import { constructGame, type Game } from "./3_game.ts";
 import { constructReplyQuote, type ReplyQuote } from "./3_reply_quote.ts";
 import { type Checklist, constructChecklist } from "./4_checklist.ts";
 import { constructPoll, type Poll } from "./4_poll.ts";
-import type { GiftNonUpgradedInformation } from "./5_gift_non_upgraded_information.ts";
-import type { GiftUpgradedInformation } from "./5_gift_upgraded_information.ts";
+import { constructGiftNonUpgradedInformation, type GiftNonUpgradedInformation } from "./5_gift_non_upgraded_information.ts";
+import { constructGiftUpgradedInformation, type GiftUpgradedInformation } from "./5_gift_upgraded_information.ts";
 import { constructLinkPreview, type LinkPreview } from "./5_link_preview.ts";
 
 const L = getLogger("Message");
@@ -693,8 +693,8 @@ export interface MessageTypes {
   refundedPayment: MessageRefundedPayment;
   checklistChanged: MessageChecklistChanged;
   checklistExtended: MessageChecklistExtended;
-  // giftNonUpgraded: MessageGiftNonUpgraded;
-  // giftUpgraded: MessageGiftUpgraded;
+  giftNonUpgraded: MessageGiftNonUpgraded;
+  giftUpgraded: MessageGiftUpgraded;
 }
 
 const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
@@ -743,8 +743,8 @@ const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
   refundedPayment: ["refundedPayment"],
   checklistChanged: ["checklistChanged"],
   checklistExtended: ["checklistExtended"],
-  // giftNonUpgraded: ["giftNonUpgraded"],
-  // giftUpgraded: ["giftUpgraded"],
+  giftNonUpgraded: ["giftNonUpgraded"],
+  giftUpgraded: ["giftUpgraded"],
 };
 export function isMessageType<T extends keyof MessageTypes>(message: Message, type: T): message is MessageTypes[T] {
   for (const key of keys[type]) {
@@ -986,11 +986,11 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     const checklistExtended = message_.action.list.map((v) => constructChecklistItem(v, [], getPeer));
     return { ...message, checklistExtended };
   } else if (Api.is("messageActionStarGift", message_.action)) {
-    // const giftNonUpgraded = constructGiftNonUpgradedInformation(message_.action, getPeer);
-    // return { ...message, giftNonUpgraded };
+    const giftNonUpgraded = constructGiftNonUpgradedInformation(message_.action, getPeer);
+    return { ...message, giftNonUpgraded };
   } else if (Api.is("messageActionStarGiftUnique", message_.action)) {
-    // const giftUpgraded = constructGiftUpgradedInformation(message_.action, getPeer);
-    // return { ...message, giftUpgraded };
+    const giftUpgraded = constructGiftUpgradedInformation(message_.action, getPeer);
+    return { ...message, giftUpgraded };
   }
   return { ...message, unsupported: true };
 }
