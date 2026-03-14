@@ -137,6 +137,8 @@ export * from "./types/4_join_request.ts";
 export * from "./types/4_poll.ts";
 export * from "./types/4_reply_to.ts";
 export * from "./types/5_claimed_gift.ts";
+export * from "./types/5_gift_non_upgraded_information.ts";
+export * from "./types/5_gift_upgraded_information.ts";
 export * from "./types/5_link_preview.ts";
 export * from "./types/6_claimed_gifts.ts";
 export * from "./types/6_message_content.ts";

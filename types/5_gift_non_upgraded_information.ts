@@ -21,10 +21,9 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { constructGiftNonUpgraded } from "../3_types.ts";
 import type { ChatP, PeerGetter } from "./1_chat_p.ts";
 import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
-import type { GiftNonUpgraded } from "./4_gift.ts";
+import { constructGiftNonUpgraded, type GiftNonUpgraded } from "./4_gift.ts";
 
 /** Information on a non-upgraded gift. */
 export interface GiftNonUpgradedInformation {
