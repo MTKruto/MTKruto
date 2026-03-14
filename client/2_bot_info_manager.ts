@@ -18,16 +18,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Api } from "../2_tl.ts";
-import { type BotCommand, botCommandScopeToTlObject } from "../3_types.ts";
+import { Api } from "../2_tl.ts";
+import { type BotCommand, botCommandScopeToTlObject, type Update } from "../3_types.ts";
+import { peerToChatId } from "../tl/2_telegram.ts";
 import type { GetMyCommandsParams, SetMyCommandsParams } from "./0_params.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
 import type { C } from "./1_types.ts";
 
-export class BotInfoManager {
+const botInfoManagerUpdates = [
+  "updateBotCommands",
+] as const;
+
+type BotInfoManagerUpdate = Api.Types[(typeof botInfoManagerUpdates)[number]];
+
+export class BotInfoManager implements UpdateProcessor<BotInfoManagerUpdate, true> {
   #c: C;
 
   constructor(c: C) {
     this.#c = c;
+  }
+
+  canHandleUpdate(update: Api.Update): update is BotInfoManagerUpdate {
+    return Api.isOneOf(botInfoManagerUpdates, update);
   }
 
   async #setMyInfo(info: Omit<Api.bots_setBotInfo, "_" | "bot">) {
@@ -86,5 +98,12 @@ export class BotInfoManager {
       lang_code: params?.languageCode ?? "",
       scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.#c.getInputPeer),
     });
+  }
+
+  async handleUpdate(update: BotInfoManagerUpdate): Promise<Update | null> {
+    const botId = Number(update.bot_id);
+    const chatId = peerToChatId(update.peer);
+    const commands = update.commands;
+    return await Promise.resolve({ botCommands: { botId, chatId, commands } });
   }
 }

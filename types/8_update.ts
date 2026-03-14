@@ -27,6 +27,7 @@ import type { Translation } from "./0_translation.ts";
 import type { UploadProgress } from "./0_upload_progress.ts";
 import type { VideoChat } from "./0_video_chat.ts";
 import type { VoiceTranscription } from "./0_voice_transcription.ts";
+import type { BotCommands } from "./1_bot_commands.ts";
 import type { MessageInteractions } from "./2_message_interactions.ts";
 import type { MessageReactionCount } from "./2_message_reaction_count.ts";
 import type { PollAnswer } from "./2_poll_answer.ts";
@@ -518,6 +519,24 @@ export interface UpdateUploadProgress {
   uploadProgress: UploadProgress;
 }
 
+/**
+ * A bot's list of commands changed. User-only.
+ *
+ * ```
+ * client.on("botCommands", (ctx) => {
+ *   // ctx.update.botCommands
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateBotCommands {
+  /**
+   * The new command list.
+   * @discriminator
+   */
+  botCommands: BotCommands;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -550,6 +569,7 @@ export interface UpdateMap {
   voiceTranscription: UpdateVoiceTranscription;
   linkPreview: UpdateLinkPreview;
   uploadProgress: UpdateUploadProgress;
+  botCommands: UpdateBotCommands;
 }
 
 /** @unlisted */
@@ -584,6 +604,7 @@ export type UpdateIntersection = Partial<
   & UpdateVoiceTranscription
   & UpdateLinkPreview
   & UpdateUploadProgress
+  & UpdateBotCommands
 >;
 
 /** An incoming update. */
@@ -617,4 +638,5 @@ export type Update =
   | UpdatePollAnswer
   | UpdateVoiceTranscription
   | UpdateLinkPreview
-  | UpdateUploadProgress;
+  | UpdateUploadProgress
+  | UpdateBotCommands;

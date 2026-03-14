@@ -76,6 +76,7 @@ export * from "./types/0_working_hours_interval.ts";
 export * from "./types/1_animation.ts";
 export * from "./types/1_audio.ts";
 export * from "./types/1_bot_command_scope.ts";
+export * from "./types/1_bot_commands.ts";
 export * from "./types/1_chat_p.ts";
 export * from "./types/1_document.ts";
 export * from "./types/1_giveaway.ts";
