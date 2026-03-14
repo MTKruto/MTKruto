@@ -43,6 +43,7 @@ export * from "./types/0_gift_component_rarity.ts";
 export * from "./types/0_gift_value.ts";
 export * from "./types/0_giveaway_parameters.ts";
 export * from "./types/0_id.ts";
+export * from "./types/0_input_emoji_status.ts";
 export * from "./types/0_invoice.ts";
 export * from "./types/0_keyboard_button_poll_type.ts";
 export * from "./types/0_link_preview_media_size.ts";

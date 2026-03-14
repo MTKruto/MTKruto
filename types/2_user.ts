@@ -71,6 +71,7 @@ export function constructUser(user_: Api.user): User {
   const id = Number(user_.id);
   const usernames = user_.usernames?.map((v) => v.username);
   const username = user_.username ?? usernames?.shift();
+  user_.emoji_status;
   const user: User = {
     id,
     color: Api.is("peerColor", user_.color) && user_.color.color !== undefined ? user_.color.color : getColorFromPeerId(id),

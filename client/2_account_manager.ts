@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructInactiveChat, constructUser, type ID, type PasswordCheckResult, workingHoursToTlObject } from "../3_types.ts";
+import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructInactiveChat, constructUser, type ID, type InputEmojiStatus, type PasswordCheckResult, workingHoursToTlObject } from "../3_types.ts";
 import type { AddContactParams, CheckUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -113,11 +113,16 @@ export class AccountManager {
     await this.#c.invoke({ _: "account.updateStatus", offline: !online });
   }
 
-  async setEmojiStatus(id: string, params?: SetEmojiStatusParams) {
+  async setEmojiStatus(emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams) {
     this.#c.storage.assertUser("setEmojiStatus");
-    const document_id = BigInt(id);
-    const until = params?.until;
-    const emoji_status: Api.EmojiStatus = { _: "emojiStatus", document_id, until };
+    let emoji_status: Api.EmojiStatus;
+    if (emojiStatus.type === "customEmoji") {
+      const document_id = BigInt(emojiStatus.customEmojiId);
+      const until = params?.until;
+      emoji_status = { _: "emojiStatus", document_id, until };
+    } else {
+      emoji_status = { _: "inputEmojiStatusCollectible", collectible_id: BigInt(emojiStatus.giftId) };
+    }
     await this.#c.invoke({ _: "account.updateEmojiStatus", emoji_status });
   }
 
