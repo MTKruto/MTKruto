@@ -1431,10 +1431,10 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method ac
    * @param userId The identifier of a user of the bot.
-   * @param id The identifier of the emoji to be used as the new status.
+   * @param emojiStatus The emoji or gift to set as the new emoji status.
    */
-  async setUserEmojiStatus(userId: ID, id: string, params?: SetEmojiStatusParams) {
-    await this.#accountManager.setUserEmojiStatus(userId, id, params);
+  async setUserEmojiStatus(userId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams) {
+    await this.#accountManager.setUserEmojiStatus(userId, emojiStatus, params);
   }
 
   /**

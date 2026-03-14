@@ -222,9 +222,9 @@ export abstract class ClientGeneric {
    *
    * @method ac
    * @param userId The identifier of a user of the bot.
-   * @param id The identifier of the emoji to be used as the new status.
+   * @param emojiStatus The emoji or gift to set as the new emoji status.
    */
-  abstract setUserEmojiStatus(userId: ID, id: string, params?: SetEmojiStatusParams): Promise<void>;
+  abstract setUserEmojiStatus(userId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void>;
 
   /**
    * Update the profile of the current user. At least one parameter must be specified. User-only.

@@ -464,10 +464,10 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    *
    * @method ac
    * @param userId The identifier of a user of the bot.
-   * @param id The identifier of the emoji to be used as the new status.
+   * @param emojiStatus The emoji or gift to set as the new emoji status.
    */
-  async setUserEmojiStatus(userId: ID, id: string, params?: SetEmojiStatusParams): Promise<void> {
-    return await this.#dispatch("setUserEmojiStatus", userId, id, params);
+  async setUserEmojiStatus(userId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void> {
+    return await this.#dispatch("setUserEmojiStatus", userId, emojiStatus, params);
   }
 
   /**

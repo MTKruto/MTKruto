@@ -116,12 +116,12 @@ export class AccountManager {
   async setEmojiStatus(emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams) {
     this.#c.storage.assertUser("setEmojiStatus");
     let emoji_status: Api.EmojiStatus;
+    const until = params?.until;
     if (emojiStatus.type === "customEmoji") {
       const document_id = BigInt(emojiStatus.customEmojiId);
-      const until = params?.until;
       emoji_status = { _: "emojiStatus", document_id, until };
     } else {
-      emoji_status = { _: "inputEmojiStatusCollectible", collectible_id: BigInt(emojiStatus.giftId) };
+      emoji_status = { _: "inputEmojiStatusCollectible", collectible_id: BigInt(emojiStatus.giftId), until };
     }
     await this.#c.invoke({ _: "account.updateEmojiStatus", emoji_status });
   }
@@ -131,12 +131,17 @@ export class AccountManager {
     await this.#c.invoke({ _: "account.updateEmojiStatus", emoji_status: { _: "emojiStatusEmpty" } });
   }
 
-  async setUserEmojiStatus(userId: ID, id: string, params?: SetEmojiStatusParams) {
+  async setUserEmojiStatus(userId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams) {
     this.#c.storage.assertBot("setUserEmojiStatus");
     const user_id = await this.#c.getInputUser(userId);
-    const document_id = BigInt(id);
     const until = params?.until;
-    const emoji_status: Api.EmojiStatus = { _: "emojiStatus", document_id, until };
+    let emoji_status: Api.EmojiStatus;
+    if (emojiStatus.type === "customEmoji") {
+      const document_id = BigInt(emojiStatus.customEmojiId);
+      emoji_status = { _: "emojiStatus", document_id, until };
+    } else {
+      emoji_status = { _: "inputEmojiStatusCollectible", collectible_id: BigInt(emojiStatus.giftId), until };
+    }
     await this.#c.invoke({ _: "bots.updateUserEmojiStatus", user_id, emoji_status });
   }
 
