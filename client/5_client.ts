@@ -1418,6 +1418,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Remove the current account's emoji status. User-only.
+   *
+   * @method ac
+   */
+  async removeEmojiStatus(): Promise<void> {
+    await this.#accountManager.removeEmojiStatus();
+  }
+
+  /**
    * Set the emoji status of a bot's user. Bot-only.
    *
    * @method ac

@@ -211,6 +211,13 @@ export abstract class ClientGeneric {
   abstract setEmojiStatus(emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void>;
 
   /**
+   * Remove the current account's emoji status. User-only.
+   *
+   * @method ac
+   */
+  abstract removeEmojiStatus(): Promise<void>;
+
+  /**
    * Set the emoji status of a bot's user. Bot-only.
    *
    * @method ac
