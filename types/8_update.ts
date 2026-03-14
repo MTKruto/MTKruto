@@ -21,6 +21,7 @@
 import type { Api } from "../2_tl.ts";
 import type { AuthorizationState } from "./0_authorization_state.ts";
 import type { ConnectionState } from "./0_connection_state.ts";
+import type { EmojiStatus } from "./0_emoji_status.ts";
 import type { MessageReference } from "./0_message_reference.ts";
 import type { StoryReference } from "./0_story_reference.ts";
 import type { Translation } from "./0_translation.ts";
@@ -537,6 +538,44 @@ export interface UpdateBotCommands {
   botCommands: BotCommands;
 }
 
+/**
+ * A user's emoji status was changed. User-only.
+ *
+ * ```
+ * client.on("emojiStatus", (ctx) => {
+ *   // ctx.update.emojiStatus
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateEmojiStatus {
+  /**
+   * The new command list.
+   * @discriminator
+   */
+  emojiStatus: EmojiStatus;
+  userId: number;
+}
+
+/**
+ * A user's emoji status was removed. User-only.
+ *
+ * ```
+ * client.on("emojiStatusRemoved", (ctx) => {
+ *   // ctx.update.emojiStatusRemoved
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateEmojiStatusRemoved {
+  /**
+   * The new command list.
+   * @discriminator
+   */
+  emojiStatusRemoved: true;
+  userId: number;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -570,6 +609,8 @@ export interface UpdateMap {
   linkPreview: UpdateLinkPreview;
   uploadProgress: UpdateUploadProgress;
   botCommands: UpdateBotCommands;
+  emojiStatus: UpdateEmojiStatus;
+  emojiStatusRemoved: UpdateEmojiStatusRemoved;
 }
 
 /** @unlisted */
@@ -605,6 +646,8 @@ export type UpdateIntersection = Partial<
   & UpdateLinkPreview
   & UpdateUploadProgress
   & UpdateBotCommands
+  & UpdateEmojiStatus
+  & UpdateEmojiStatusRemoved
 >;
 
 /** An incoming update. */
@@ -639,4 +682,6 @@ export type Update =
   | UpdateVoiceTranscription
   | UpdateLinkPreview
   | UpdateUploadProgress
-  | UpdateBotCommands;
+  | UpdateBotCommands
+  | UpdateEmojiStatus
+  | UpdateEmojiStatusRemoved;
