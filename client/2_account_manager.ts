@@ -145,6 +145,12 @@ export class AccountManager {
     await this.#c.invoke({ _: "bots.updateUserEmojiStatus", user_id, emoji_status });
   }
 
+  async removeUserEmojiStatus(userId: ID) {
+    this.#c.storage.assertBot("removeUserEmojiStatus");
+    const user_id = await this.#c.getInputUser(userId);
+    await this.#c.invoke({ _: "bots.updateUserEmojiStatus", user_id, emoji_status: { _: "emojiStatusEmpty" } });
+  }
+
   async setBotCanSetEmojiStatus(botId: ID, canSetEmojiStatus: boolean) {
     this.#c.storage.assertUser("setBotCanSetEmojiStatus");
     const bot = await this.#c.getInputUser(botId);

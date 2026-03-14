@@ -227,6 +227,14 @@ export abstract class ClientGeneric {
   abstract setUserEmojiStatus(userId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void>;
 
   /**
+   * Remove the emoji status of a bot's user. Bot-only.
+   *
+   * @method ac
+   * @param userId The identifier of a user of the bot.
+   */
+  abstract removeUserEmojiStatus(userId: ID): Promise<void>;
+
+  /**
    * Update the profile of the current user. At least one parameter must be specified. User-only.
    *
    * @method ac

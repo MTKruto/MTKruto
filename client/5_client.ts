@@ -1438,6 +1438,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Remove the emoji status of a bot's user. Bot-only.
+   *
+   * @method ac
+   * @param userId The identifier of a user of the bot.
+   */
+  async removeUserEmojiStatus(userId: ID): Promise<void> {
+    await this.#accountManager.removeUserEmojiStatus(userId);
+  }
+
+  /**
    * Update the profile of the current user. At least one parameter must be specified. User-only.
    *
    * @method ac
