@@ -21,6 +21,7 @@
 import { cleanObject, getColorFromPeerId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { type ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
+import { constructEmojiStatus, type EmojiStatus } from "./0_emoji_status.ts";
 import type { RestrictionReason } from "./0_restriction_reason.ts";
 import { constructUserStatus, type UserStatus } from "./0_user_status.ts";
 import type { ChatPPrivate } from "./1_chat_p.ts";
@@ -43,6 +44,8 @@ export interface User {
   also?: string[];
   /** The user's status. */
   status?: UserStatus;
+  /** The user's emoji status. */
+  emojiStatus?: EmojiStatus;
   /** The user's profile photo. */
   photo?: ChatPhoto;
   /** The user's [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag). */
@@ -81,6 +84,7 @@ export function constructUser(user_: Api.user): User {
     username: username,
     also: usernames?.filter((v) => v !== username),
     status: user_.status ? constructUserStatus(user_.status) : undefined,
+    emojiStatus: user_.emoji_status ? constructEmojiStatus(user_.emoji_status) : undefined,
     languageCode: user_.lang_code,
     isScam: user_.scam || false,
     isFake: user_.fake || false,

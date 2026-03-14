@@ -23,6 +23,7 @@ import { cleanObject, getColorFromPeerId, ZERO_CHANNEL_ID } from "../1_utilities
 import { Api } from "../2_tl.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { type ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
+import { constructEmojiStatus, type EmojiStatus } from "./0_emoji_status.ts";
 import { constructRestrictionReason, type RestrictionReason } from "./0_restriction_reason.ts";
 import { constructUserStatus, type UserStatus } from "./0_user_status.ts";
 
@@ -61,6 +62,8 @@ export interface ChatPPrivate extends _ChatPBase {
   also?: string[];
   /** The user's status. */
   status?: UserStatus;
+  /** The user's emoji status. */
+  emojiStatus?: EmojiStatus;
   /** The user's [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag). */
   languageCode?: string;
   /** Whether the user has been identified as scam. */
@@ -152,6 +155,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
       languageCode: chat.lang_code,
       also: usernames?.filter((v) => v !== username),
       status: chat.status ? constructUserStatus(chat.status) : undefined,
+      emojiStatus: chat.emoji_status ? constructEmojiStatus(chat.emoji_status) : undefined,
       isScam: chat.scam || false,
       isFake: chat.fake || false,
       isPremium: chat.premium || false,
