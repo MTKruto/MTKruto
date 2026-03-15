@@ -36,6 +36,7 @@ interface StaticHas {
   command(commands: ContextCommands, fallbackPrefixes: string | string[] | undefined): <C extends Context>(ctx: C) => ctx is WithFilter<typeof ctx, "message:text">;
   callbackQuery(data: string | RegExp | (string | RegExp)[]): <C extends Context>(ctx: C) => ctx is WithFilter<typeof ctx, "callbackQuery:data">;
   inlineQuery(queries: string | RegExp | (string | RegExp)[]): <C extends Context>(ctx: C) => ctx is WithFilter<typeof ctx, "inlineQuery">;
+  chosenInlineResult(queries: string | RegExp | (string | RegExp)[]): <C extends Context>(ctx: C) => ctx is WithFilter<typeof ctx, "chosenInlineResult">;
   chatType<T extends ChatP["type"]>(chatType: T | T[]): <C extends Context>(ctx: C) => ctx is WithChatType<typeof ctx, T>;
 }
 
@@ -122,6 +123,24 @@ const staticHas: StaticHas = {
         if (typeof query === "string" && query === ctx.update.inlineQuery.query) {
           return true;
         } else if (query instanceof RegExp && query.test(ctx.update.inlineQuery.query)) {
+          return true;
+        }
+      }
+      return false;
+    };
+  },
+  chosenInlineResult(queries: string | RegExp | (string | RegExp)[]) {
+    const hasChosenInlineResult = staticHas.filterQuery("chosenInlineResult");
+    const queries_ = Array.isArray(queries) ? queries : [queries];
+    return <C extends Context>(ctx: C): ctx is WithFilter<typeof ctx, "chosenInlineResult"> => {
+      if (!hasChosenInlineResult(ctx)) {
+        return false;
+      }
+
+      for (const query of queries_) {
+        if (typeof query === "string" && query === ctx.update.chosenInlineResult.query) {
+          return true;
+        } else if (query instanceof RegExp && query.test(ctx.update.chosenInlineResult.query)) {
           return true;
         }
       }
@@ -278,6 +297,10 @@ export class Context {
 
   hasInlineQuery(queries: string | RegExp | (string | RegExp)[]): this is WithFilter<typeof this, "inlineQuery"> {
     return Context.has.inlineQuery(queries)(this);
+  }
+
+  hasChosenInlineResult(queries: string | RegExp | (string | RegExp)[]): this is WithFilter<typeof this, "chosenInlineResult"> {
+    return Context.has.chosenInlineResult(queries)(this);
   }
 
   hasChatType<T extends ChatP["type"]>(chatType: T | T[]): this is WithChatType<typeof this, T> {

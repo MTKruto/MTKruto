@@ -156,6 +156,13 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
     return this.filter(Context.has.inlineQuery(queries), ...middleware);
   }
 
+  chosenInlineResult(
+    queries: string | RegExp | (string | RegExp)[],
+    ...middleware: Middleware<WithFilter<C, "chosenInlineResult">>[]
+  ): Composer<WithFilter<C, "chosenInlineResult">> {
+    return this.filter(Context.has.chosenInlineResult(queries), ...middleware);
+  }
+
   chatType<T extends ChatP["type"]>(chatType: T | T[], ...middleware: Middleware<WithChatType<C, T>>[]): Composer<WithChatType<C, T>> {
     return this.filter(Context.has.chatType(chatType), ...middleware);
   }
