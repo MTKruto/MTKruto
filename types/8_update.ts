@@ -550,7 +550,7 @@ export interface UpdateBotCommands {
  */
 export interface UpdateEmojiStatus {
   /**
-   * The new command list.
+   * The new emoji status.
    * @discriminator
    */
   emojiStatus: EmojiStatus;
@@ -568,10 +568,7 @@ export interface UpdateEmojiStatus {
  * @unlisted
  */
 export interface UpdateEmojiStatusRemoved {
-  /**
-   * The new command list.
-   * @discriminator
-   */
+  /** @discriminator */
   emojiStatusRemoved: true;
   userId: number;
 }

@@ -142,6 +142,26 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#c.invoke({ _: "account.updateEmojiStatus", emoji_status: { _: "emojiStatusEmpty" } });
   }
 
+  async setChannelEmojiStatus(chatId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams) {
+    this.#c.storage.assertUser("setChannelEmojiStatus");
+    const channel = await this.#c.getInputChannel(chatId);
+    const until = params?.until;
+    let emoji_status: Api.EmojiStatus;
+    if (emojiStatus.type === "customEmoji") {
+      const document_id = BigInt(emojiStatus.customEmojiId);
+      emoji_status = { _: "emojiStatus", document_id, until };
+    } else {
+      emoji_status = { _: "inputEmojiStatusCollectible", collectible_id: BigInt(emojiStatus.giftId), until };
+    }
+    await this.#c.invoke({ _: "channels.updateEmojiStatus", channel, emoji_status });
+  }
+
+  async removeChannelEmojiStatus(chatId: ID) {
+    this.#c.storage.assertUser("removeChannelEmojiStatus");
+    const channel = await this.#c.getInputChannel(chatId);
+    await this.#c.invoke({ _: "channels.updateEmojiStatus", channel, emoji_status: { _: "emojiStatusEmpty" } });
+  }
+
   async setUserEmojiStatus(userId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams) {
     this.#c.storage.assertBot("setUserEmojiStatus");
     const user_id = await this.#c.getInputUser(userId);

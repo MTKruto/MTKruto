@@ -218,6 +218,23 @@ export abstract class ClientGeneric {
   abstract removeEmojiStatus(): Promise<void>;
 
   /**
+   * Set the emoji status of a channel. User-only.
+   *
+   * @method ac
+   * @param chatId The identifier of a channel.
+   * @param emojiStatus The emoji or gift to set as the new emoji status.
+   */
+  abstract setChannelEmojiStatus(chatId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void>;
+
+  /**
+   * Remove the emoji status of a channel. User-only.
+   *
+   * @method ac
+   * @param chatId The identifier of a channel.
+   */
+  abstract removeChannelEmojiStatus(chatId: ID): Promise<void>;
+
+  /**
    * Set the emoji status of a bot's user. Bot-only.
    *
    * @method ac

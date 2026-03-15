@@ -1431,6 +1431,27 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Set the emoji status of a channel. User-only.
+   *
+   * @method ac
+   * @param chatId The identifier of a channel.
+   * @param emojiStatus The emoji or gift to set as the new emoji status.
+   */
+  async setChannelEmojiStatus(chatId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void> {
+    await this.#accountManager.setChannelEmojiStatus(chatId, emojiStatus, params);
+  }
+
+  /**
+   * Remove the emoji status of a channel. User-only.
+   *
+   * @method ac
+   * @param chatId The identifier of a channel.
+   */
+  async removeChannelEmojiStatus(chatId: ID): Promise<void> {
+    await this.#accountManager.removeChannelEmojiStatus(chatId);
+  }
+
+  /**
    * Set the emoji status of a bot's user. Bot-only.
    *
    * @method ac
