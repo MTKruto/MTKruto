@@ -21,6 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import type { Api } from "../2_tl.ts";
 
+/** @unlisted */
 export interface _EmojiStatusBase {
   until?: number;
 }
@@ -47,6 +48,7 @@ export interface EmojiStatusGift extends _EmojiStatusBase {
   textColor: number;
 }
 
+/** Any type of emoji status. */
 export type EmojiStatus = EmojiStatusCustomEmoji | EmojiStatusGift;
 
 export function constructEmojiStatus(emojiStatus: Api.EmojiStatus): EmojiStatus {
